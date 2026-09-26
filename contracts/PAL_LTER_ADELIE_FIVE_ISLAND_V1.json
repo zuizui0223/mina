@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-pal-lter-adelie-five-island-v1",
+  "date": "2026-09-26",
+  "status": "pre_outcome_frozen",
+  "source": {
+    "dataset_id": "AdeliePenguinCensus",
+    "title": "Adelie penguin area-wide breeding population census, 1991, present.",
+    "endpoint": "Palmer LTER ERDDAP",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "observed_time_coverage": [
+      "1991-11-03",
+      "2017-11-24"
+    ]
+  },
+  "ecological_question": "Under shared regional marine forcing, do the five historically monitored Palmer Adélie breeding islands decline synchronously, or do island-specific breeding filters produce divergent rates and extinction timing?",
+  "islands": {
+    "CHR": "Christine Island",
+    "COR": "Cormorant Island",
+    "HUM": "Humble Island",
+    "LIT": "Litchfield Island",
+    "TOR": "Torgersen Island"
+  },
+  "why_this_is_island_ecology": [
+    "All five islands lie in the same local Palmer marine neighborhood and are censused synoptically, reducing large-scale oceanographic differences relative to broad geographic comparisons.",
+    "Penguins obtain food at sea, so island-to-island differences primarily represent breeding-patch filters rather than complete terrestrial trophic environments.",
+    "The design therefore tests how local island habitat modulates a shared regional forcing."
+  ],
+  "preprocessing": {
+    "annual_unit": "study_name x island_name",
+    "island_total": "sum num_breeding_pairs across all colony_code rows in the annual island census",
+    "no_colony_tracking_claim": true,
+    "require_unique_study_island_colony_rows_after_exact_duplicate_removal": true,
+    "missing_breeding_pairs": "fail closed for that island-year",
+    "negative_counts": "invalid",
+    "year": "calendar year parsed from ERDDAP time",
+    "repeated_dates_within_study_island": "allowed only if colony_code rows form one census date; otherwise flag for review"
+  },
+  "primary_quantities": [
+    "annual island breeding-pair total",
+    "regional total across the five islands for years with all five islands observed",
+    "each island's share of the regional population",
+    "fraction remaining relative to its first complete observation",
+    "first observed zero following a positive count and whether zero persists",
+    "annual finite log growth log(N_t/N_t-1) for consecutive positive observations",
+    "pairwise correlation of annual log growth on overlapping years",
+    "community synchrony phi = Var(sum island counts)/(sum island temporal SD)^2 on the complete five-island panel"
+  ],
+  "primary_hypotheses": {
+    "L1_shared_decline": "A strong shared regional component should appear as declining total Adélie breeding pairs and positively correlated annual growth across islands.",
+    "L2_local_fate_divergence": "If island physical filters matter, decline magnitude and local extinction timing should differ substantially among islands despite shared regional forcing.",
+    "L3_rank_reordering": "Island population ranks and regional population shares should change through time rather than remain fixed under perfectly proportional decline.",
+    "L4_extinction_not_simple_scaling": "Local extinction should occur earlier on some islands than expected from a uniform multiplicative decline applied to all islands."
+  },
+  "falsification": {
+    "local_filter_story_weakened_if": [
+      "all islands retain nearly constant regional shares",
+      "annual changes are almost perfectly synchronous",
+      "decline fractions and extinction timing differ little beyond sampling noise"
+    ]
+  },
+  "inference_boundaries": [
+    "This stage does not attribute island differences to snow, geomorphology, competition, or sea ice; those mechanisms are tested only after this descriptive pattern is frozen.",
+    "A zero is interpreted as zero breeding pairs in the LTER census, not permanent biological extinction unless subsequent censuses remain zero.",
+    "Colony_code changes are not interpreted as colonization/extinction of independent colonies; primary response is island total.",
+    "The ERDDAP title says present, but the current exposed time coverage ends in 2017; claims are restricted to the available 1991-2017 panel."
+  ],
+  "next_stage_if_supported": "Freeze and test regional sea-ice versus island-specific snow/geomorphology predictors against annual island deviations from the shared regional trajectory."
+}
