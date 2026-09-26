@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-local-network-stage2-result-v1",
+  "validated_date": "2026-09-26",
+  "contract_id": "mina-palmer-local-island-network-stage2-abundance-v1",
+  "source": {
+    "mapppdr_repository": "CCheCastaldo/mapppdr",
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "palmer_penguins_commit": "8957207b78d6ccd1b4654a9dd9c9041b657478ab"
+  },
+  "execution": {
+    "workflow_run_id": 36241747121,
+    "head_sha": "94e4fd861b91cc2a3b3c4edbb21bf16d0a894915",
+    "artifact_id": 10906590758,
+    "artifact_digest": "sha256:a131e0f06858fc42fb2149d87d55bd48d4a24a837d4d0d6a5f07abb62d71e85b",
+    "conclusion": "success"
+  },
+  "design": {
+    "primary_true_islands": [
+      "TORG",
+      "LITC",
+      "HUMB",
+      "CHIS",
+      "CORM",
+      "DREA"
+    ],
+    "non_island_benchmark": [
+      "BISC"
+    ],
+    "species": [
+      "Adelie",
+      "Chinstrap",
+      "Gentoo"
+    ],
+    "abundance_lane": "species-specific observed nest counts; complete community not required",
+    "composition_lane": "all APBP-known breeders must have same-year nest count or explicit absence"
+  },
+  "estimability_gate": {
+    "multi_island_adelie_trend_estimable": true,
+    "primary_adelie_trend_sites": [
+      "LITC",
+      "HUMB",
+      "CORM"
+    ],
+    "multi_island_composition_reassembly_estimable": false,
+    "primary_composition_trajectory_sites": []
+  },
+  "abundance_endpoints": {
+    "TORG": {
+      "Adelie": {
+        "n_years": 8,
+        "first_year": 1955,
+        "first_count": 9000,
+        "last_year": 1986,
+        "last_count": 8528,
+        "fraction_remaining": 0.9475555555555556
+      },
+      "Chinstrap": {
+        "n_years": 2,
+        "first_year": 1971,
+        "first_count": 1,
+        "last_year": 2008,
+        "last_count": 0
+      }
+    },
+    "LITC": {
+      "Adelie": {
+        "n_years": 31,
+        "first_year": 1955,
+        "first_count": 1000,
+        "last_year": 2008,
+        "last_count": 0,
+        "explicit_zero_years": [
+          2007,
+          2008
+        ],
+        "fraction_remaining": 0
+      }
+    },
+    "HUMB": {
+      "Adelie": {
+        "n_years": 10,
+        "first_year": 1955,
+        "first_count": 3000,
+        "last_year": 2011,
+        "last_count": 587,
+        "fraction_remaining": 0.19566666666666666
+      },
+      "Chinstrap": {
+        "n_years": 2,
+        "first_year": 1986,
+        "first_count": 1,
+        "last_year": 2011,
+        "last_count": 0
+      }
+    },
+    "CHIS": {
+      "Adelie": {
+        "n_years": 6,
+        "first_year": 1971,
+        "first_count": 2170,
+        "last_year": 1987,
+        "last_count": 1151,
+        "fraction_remaining": 0.5304147465437788
+      }
+    },
+    "CORM": {
+      "Adelie": {
+        "n_years": 10,
+        "first_year": 1974,
+        "first_count": 1000,
+        "last_year": 1986,
+        "last_count": 693,
+        "fraction_remaining": 0.693
+      }
+    },
+    "DREA": {
+      "Adelie": {
+        "n_years": 3,
+        "first_year": 1984,
+        "first_count": 10000,
+        "last_year": 2008,
+        "last_count": 1887,
+        "fraction_remaining": 0.1887
+      },
+      "Chinstrap": {
+        "n_years": 4,
+        "first_year": 1978,
+        "first_count": 46,
+        "last_year": 1998,
+        "last_count": 250,
+        "fold_change": 5.434782608695652
+      }
+    },
+    "BISC": {
+      "role": "non_island_benchmark",
+      "Adelie": {
+        "n_years": 13,
+        "first_year": 1971,
+        "first_count": 3020,
+        "last_year": 2025,
+        "last_count": 408,
+        "fraction_remaining": 0.13509933774834437
+      },
+      "Gentoo": {
+        "n_years": 19,
+        "first_year": 1984,
+        "first_count": 0,
+        "last_year": 2025,
+        "last_count": 5405,
+        "explicit_zero_years": [
+          1984
+        ]
+      }
+    }
+  },
+  "benchmark_functional_reassembly": {
+    "site": "BISC",
+    "from_year": 1984,
+    "from_composition": {
+      "Adelie": 1,
+      "Chinstrap": 0,
+      "Gentoo": 0
+    },
+    "to_year": 2025,
+    "to_composition": {
+      "Adelie": 0.07018751075176329,
+      "Chinstrap": 0,
+      "Gentoo": 0.9298124892482367
+    },
+    "cwm_change": {
+      "bill_length_mm": 8.0845,
+      "bill_depth_mm": -3.1328,
+      "flipper_length_mm": 25.1246,
+      "body_mass_g": 1279.54
+    },
+    "interpretation": "observed assembly-driven functional replacement at the non-island benchmark; fixed species trait centroids, not historical within-species trait evolution"
+  },
+  "supported": [
+    "Adelie abundance decline is replicated across several local breeding islands rather than being confined to Biscoe Point.",
+    "Local assembly endpoints are heterogeneous: Litchfield reaches observed local extinction without focal-species replacement, while Biscoe Point shows strong Adelie-to-gentoo replacement.",
+    "Dream is consistent with a distinct Adelie-decline/chinstrap-increase pathway, but synchronized community-composition coverage is insufficient for a confirmatory replacement trajectory.",
+    "The frozen six-island APBP panel supports a multi-island Adelie abundance question but not a replicated multi-island community-composition reassembly analysis."
+  ],
+  "not_supported": [
+    "uniform gentoo replacement across Palmer Archipelago islands",
+    "a claim that true islands prevent gentoo colonization in general",
+    "competitive displacement as the cause of reciprocal abundance changes",
+    "a replicated six-island community-weighted trait trajectory from MAPPPD alone",
+    "a modern Torgersen trend from the sparse pinned APBP series"
+  ],
+  "next_gate": "Use Palmer LTER annual census data to extend modern Adelie trajectories and recover synchronized site-year replication before testing sea ice, snow/geomorphology, or heterospecific abundance mechanisms."
+}

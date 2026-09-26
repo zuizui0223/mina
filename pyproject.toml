@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mina-island-reassembly"
-version = "0.1.0"
+version = "0.2.0"
 description = "Island community reassembly analyses for Palmer Archipelago penguins"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -17,6 +17,7 @@ dev = ["pytest>=8"]
 [project.scripts]
 mina-palmer = "mina.palmer:main"
 mina-longterm = "mina.longterm:main"
+mina-network = "mina.network:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

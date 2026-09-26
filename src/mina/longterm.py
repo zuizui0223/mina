@@ -101,20 +101,52 @@ def _join_metadata(
     return sites, species_lookup
 
 
-def site_year_species_counts(
+def _species_lookup(species_csv: str | Path) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for row in _read_csv(species_csv):
+        label = canonical_species(
+            " ".join(
+                [
+                    row.get("common_name", ""),
+                    row.get("genus", ""),
+                    row.get("species", ""),
+                ]
+            )
+        )
+        if label is not None:
+            result[row["species_id"]] = label
+    return result
+
+
+def site_year_species_matrix(
     observations_csv: str | Path,
     sites_csv: str | Path,
     species_csv: str | Path,
+    site_species_csv: str | Path,
 ) -> list[dict[str, object]]:
-    """Return one nest-count estimate per site/species/year.
+    """Return one conservative nest value for every observed site-year/species.
 
-    Positive presence-only records remain missing. Explicit nest absence
-    (presence == 0) may contribute a zero. Multiple numeric surveys are
-    summarized by the median, avoiding outcome-dependent selection.
+    Rules:
+    - numeric nest counts -> median within site/species/year;
+    - explicit nest absence -> zero;
+    - species never listed as breeding at the site -> structural zero;
+    - known breeding species without a count/absence that year -> missing.
+
+    A site-year enters the matrix if at least one focal species has a nest
+    count/absence record that year.
     """
-    sites, species_lookup = _join_metadata(sites_csv, species_csv)
-    grouped: dict[tuple[str, str, int], list[float]] = defaultdict(list)
+    sites = {row["site_id"]: row for row in _read_csv(sites_csv)}
+    species_lookup = _species_lookup(species_csv)
+
+    known_breeders: dict[str, set[str]] = defaultdict(set)
+    for row in _read_csv(site_species_csv):
+        label = species_lookup.get(row.get("species_id", ""))
+        if label is not None:
+            known_breeders[row["site_id"]].add(label)
+
+    numeric: dict[tuple[str, str, int], list[float]] = defaultdict(list)
     explicit_absence: set[tuple[str, str, int]] = set()
+    observed_site_years: set[tuple[str, int]] = set()
 
     for row in _read_csv(observations_csv):
         if not str(row.get("type", "")).lower().startswith("nest"):
@@ -130,70 +162,102 @@ def site_year_species_counts(
             year = int(float(row["year"]))
         except (KeyError, TypeError, ValueError):
             continue
+        observed_site_years.add((row["site_id"], year))
         key = (row["site_id"], species, year)
         if _finite(row.get("count")):
             value = float(row["count"])
             if value < 0:
                 raise ValueError("negative count")
-            grouped[key].append(value)
+            numeric[key].append(value)
         elif str(row.get("presence", "")).strip() in {"0", "0.0"}:
             explicit_absence.add(key)
 
     output: list[dict[str, object]] = []
-    all_keys = set(grouped) | explicit_absence
-    for site_id, species, year in sorted(all_keys, key=lambda x: (x[2], x[0], x[1])):
-        values = grouped.get((site_id, species, year), [])
-        if values:
-            count = float(median(values))
-            source = "median_numeric_nest_count"
-        else:
-            count = 0.0
-            source = "explicit_nest_absence"
+    for site_id, year in sorted(observed_site_years, key=lambda x: (x[1], x[0])):
         site = sites[site_id]
-        output.append(
-            {
-                "site_id": site_id,
-                "site_name": site["site_name"],
-                "island": canonical_island(site["site_name"]),
-                "species": species,
-                "year": year,
-                "count": count,
-                "source": source,
-                "n_numeric_surveys": len(values),
-            }
-        )
+        island = canonical_island(site["site_name"])
+        for species in FOCAL_SPECIES:
+            key = (site_id, species, year)
+            values = numeric.get(key, [])
+            if values:
+                value: float | None = float(median(values))
+                source = "median_numeric_nest_count"
+            elif key in explicit_absence:
+                value = 0.0
+                source = "explicit_nest_absence"
+            elif species not in known_breeders.get(site_id, set()):
+                value = 0.0
+                source = "structural_zero_not_known_breeder"
+            else:
+                value = None
+                source = "missing_known_breeder"
+            output.append(
+                {
+                    "site_id": site_id,
+                    "site_name": site["site_name"],
+                    "island": island,
+                    "species": species,
+                    "year": year,
+                    "count": value,
+                    "source": source,
+                    "n_numeric_surveys": len(values),
+                }
+            )
     return output
 
 
 def island_year_counts(
-    site_counts: list[dict[str, object]],
+    site_matrix: list[dict[str, object]],
 ) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
-    """Aggregate to islands without silently imputing unobserved species."""
-    groups: dict[tuple[str, int], list[dict[str, object]]] = defaultdict(list)
-    for row in site_counts:
-        groups[(str(row["island"]), int(row["year"]))].append(row)
+    """Aggregate complete site-year matrices to islands without imputation."""
+    site_year: dict[tuple[str, int], list[dict[str, object]]] = defaultdict(list)
+    for row in site_matrix:
+        site_year[(str(row["site_id"]), int(row["year"]))].append(row)
+
+    complete_site_year: dict[tuple[str, int], dict[str, float]] = {}
+    incomplete_site_year: set[tuple[str, int]] = set()
+    site_info: dict[str, tuple[str, str]] = {}
+    for key, rows in site_year.items():
+        site_id, year = key
+        site_info[site_id] = (str(rows[0]["site_name"]), str(rows[0]["island"]))
+        values: dict[str, float] = {}
+        for species in FOCAL_SPECIES:
+            match = next(row for row in rows if row["species"] == species)
+            if match["count"] is None:
+                incomplete_site_year.add(key)
+                break
+            values[species] = float(match["count"])
+        else:
+            complete_site_year[key] = values
+
+    island_year_sites: dict[tuple[str, int], list[str]] = defaultdict(list)
+    for site_id, year in site_year:
+        island = site_info[site_id][1]
+        island_year_sites[(island, year)].append(site_id)
 
     included: list[dict[str, object]] = []
     excluded: list[dict[str, object]] = []
-    for (island, year), rows in sorted(groups.items(), key=lambda x: (x[0][0], x[0][1])):
-        by_species: dict[str, float] = {}
-        for species in FOCAL_SPECIES:
-            values = [float(row["count"]) for row in rows if row["species"] == species]
-            if values:
-                by_species[species] = sum(values)
-        missing = [species for species in FOCAL_SPECIES if species not in by_species]
-        sites = sorted({str(row["site_id"]) for row in rows})
-        if missing:
+    for (island, year), sites in sorted(
+        island_year_sites.items(), key=lambda x: (x[0][0], x[0][1])
+    ):
+        sites = sorted(set(sites))
+        bad = [site for site in sites if (site, year) in incomplete_site_year]
+        if bad:
             excluded.append(
                 {
                     "island": island,
                     "year": year,
-                    "reason": "species_observation_incomplete",
-                    "missing_species": missing,
+                    "reason": "known_breeder_missing_at_observed_site",
+                    "incomplete_sites": bad,
                     "site_coverage": sites,
                 }
             )
             continue
+        by_species = {species: 0.0 for species in FOCAL_SPECIES}
+        for site in sites:
+            values = complete_site_year[(site, year)]
+            for species in FOCAL_SPECIES:
+                by_species[species] += values[species]
         total = sum(by_species.values())
         if total <= 0:
             excluded.append(
@@ -296,33 +360,73 @@ def transitions(
     return out
 
 
+def estimability_gate(
+    panel: list[dict[str, object]],
+    change: list[dict[str, object]],
+) -> dict[str, object]:
+    status: dict[str, object] = {}
+    for island in ISLANDS:
+        years = sorted(int(row["year"]) for row in panel if row["island"] == island)
+        transitions_i = [
+            row for row in change
+            if row["island"] == island and bool(row["primary_eligible"])
+        ]
+        n_years = len(years)
+        span = years[-1] - years[0] if len(years) >= 2 else 0
+        status[island] = {
+            "n_island_years": n_years,
+            "first_year": years[0] if years else None,
+            "last_year": years[-1] if years else None,
+            "calendar_span_years": span,
+            "primary_transition_count": len(transitions_i),
+            "descriptive_trajectory_eligible": n_years >= 5,
+            "trend_model_eligible": n_years >= 10 and span >= 8,
+        }
+    trend_islands = [
+        island for island in ISLANDS
+        if status[island]["trend_model_eligible"]
+    ]
+    return {
+        "by_island": status,
+        "trend_eligible_islands": trend_islands,
+        "longterm_comparative_trend_estimable": len(trend_islands) >= 2,
+        "minimum_islands_for_comparative_trend": 2,
+    }
+
+
 def analyze_longterm(
     palmer_raw: str | Path,
     sites_csv: str | Path,
     species_csv: str | Path,
+    site_species_csv: str | Path,
     observations_csv: str | Path,
 ) -> dict[str, object]:
     centroids = species_trait_centroids(palmer_raw)
-    site_counts = site_year_species_counts(observations_csv, sites_csv, species_csv)
-    panel, excluded = island_year_counts(site_counts)
+    site_matrix = site_year_species_matrix(
+        observations_csv, sites_csv, species_csv, site_species_csv
+    )
+    panel, excluded = island_year_counts(site_matrix)
     panel = add_community_traits(panel, centroids)
     change = transitions(panel, centroids)
+    gate = estimability_gate(panel, change)
     return {
-        "schema_version": 1,
-        "analysis_id": "mina-longterm-island-community-reassembly-v1",
+        "schema_version": 2,
+        "analysis_id": "mina-longterm-island-community-reassembly-v2",
         "status": "longterm_data_opened_under_frozen_rules",
         "trait_centroids": centroids,
-        "site_year_species_count_rows": len(site_counts),
+        "site_year_species_matrix_rows": len(site_matrix),
         "island_year_panel": panel,
         "excluded_island_years": excluded,
         "transitions": change,
+        "estimability_gate": gate,
         "primary_transition_count": sum(bool(row["primary_eligible"]) for row in change),
         "rules": {
             "count_type": "nests/breeding pairs only",
-            "positive_presence_without_count": "missing",
+            "positive_presence_without_count": "missing for known breeders",
             "explicit_nest_absence": "zero",
+            "species_not_known_to_breed_at_site": "structural zero",
             "within_site_species_year_replicates": "median",
-            "missing_species": "exclude island-year; never silently zero",
+            "known_breeder_missing_count": "exclude island-year; never silently zero",
             "primary_transition_requires_identical_site_coverage": True,
             "historical_within_species_trait_change_inferred": False,
         },
@@ -334,14 +438,22 @@ def main() -> int:
     parser.add_argument("--palmer-raw", required=True, type=Path)
     parser.add_argument("--sites", required=True, type=Path)
     parser.add_argument("--species", required=True, type=Path)
+    parser.add_argument("--site-species", required=True, type=Path)
     parser.add_argument("--observations", required=True, type=Path)
     parser.add_argument("--out", required=True, type=Path)
     args = parser.parse_args()
     result = analyze_longterm(
-        args.palmer_raw, args.sites, args.species, args.observations
+        args.palmer_raw,
+        args.sites,
+        args.species,
+        args.site_species,
+        args.observations,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    args.out.write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     return 0
 
 

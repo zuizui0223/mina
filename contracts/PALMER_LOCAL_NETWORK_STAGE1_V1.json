@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-local-island-network-stage1-v1",
+  "date": "2026-09-26",
+  "status": "pre_abundance_inventory_frozen",
+  "purpose": "Define the local Palmer breeding-site network and true-island subset before opening APBP abundance outcomes for the expanded network.",
+  "center": {
+    "name": "NSF Palmer Station",
+    "latitude": -64.77416666666667,
+    "longitude": -64.05333333333333,
+    "source": "NSF location 64°46.45′S, 64°3.2′W"
+  },
+  "radius_km": 20,
+  "rationale": [
+    "The radius contains all three Palmer Penguins field sites while remaining a local breeding neighborhood exposed to broadly shared regional marine forcing.",
+    "Site inclusion is based only on coordinates and landform identity, not abundance trajectories.",
+    "Biscoe Point is retained as a non-island breeding-site benchmark but excluded from the primary true-island subset."
+  ],
+  "stage1_data_allowed": [
+    "sites",
+    "species",
+    "site_species"
+  ],
+  "stage1_data_prohibited": [
+    "penguin_obs",
+    "year-specific counts",
+    "abundance trends"
+  ],
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502"
+  },
+  "focal_taxa": [
+    "Adelie",
+    "Chinstrap",
+    "Gentoo"
+  ],
+  "stage1_outputs": [
+    "all APBP breeding sites within 20 km of Palmer Station",
+    "coordinates and distances",
+    "known focal breeding species membership",
+    "candidate landform classification list"
+  ],
+  "stage2_rule": "Freeze true-island membership from names/gazetteer evidence before exporting penguin_obs for the expanded network.",
+  "scientific_role": {
+    "primary": "true Palmer Archipelago islands as replicated breeding habitat patches",
+    "benchmark": "Biscoe Point as a non-island Anvers breeding site with documented gentoo colonization"
+  }
+}

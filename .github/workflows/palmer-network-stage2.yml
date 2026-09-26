@@ -1,0 +1,80 @@
+name: palmer-network-stage2
+
+on:
+  push:
+    branches:
+      - analysis/mapppd-estimability-gate-v1
+    paths:
+      - "src/mina/network.py"
+      - "scripts/export_palmer_network_abundance.R"
+      - "contracts/PALMER_LOCAL_NETWORK_STAGE2_ABUNDANCE_V1.json"
+      - ".github/workflows/palmer-network-stage2.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Install mina
+        run: python -m pip install -e .
+
+      - name: Fetch pinned Palmer trait data
+        run: python scripts/fetch_palmer_raw.py build/penguins_raw.csv
+
+      - name: Export frozen network abundance data
+        run: Rscript scripts/export_palmer_network_abundance.R build/palmer_network_stage2
+
+      - name: Run six-island network analysis
+        run: |
+          mina-network \
+            --palmer-raw build/penguins_raw.csv \
+            --sites build/palmer_network_stage2/sites.csv \
+            --species build/palmer_network_stage2/species.csv \
+            --site-species build/palmer_network_stage2/site_species.csv \
+            --observations build/palmer_network_stage2/penguin_obs.csv \
+            --out build/palmer_network_result.json
+
+      - name: Print ecological result summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x = json.loads(Path("build/palmer_network_result.json").read_text())
+          print("breeding_membership=")
+          print(json.dumps(x["breeding_membership"], indent=2, sort_keys=True))
+          print("estimability_gate=")
+          print(json.dumps(x["estimability_gate"], indent=2, sort_keys=True))
+          print("abundance_summaries=")
+          for r in x["abundance_summaries"]:
+              if r["known_breeder"] and r["n_observed_years"]:
+                  print(
+                      r["site_id"], r["species"],
+                      r["n_observed_years"],
+                      r["first_year"], r["first_count"],
+                      "->", r["last_year"], r["last_count"],
+                      "log_ratio=", r["log_last_over_first"],
+                      "zeros=", r["observed_zero_years"],
+                  )
+          print("composition_transitions=")
+          for r in x["composition_transitions"]:
+              if r["relative_abundance_turnover"] > 0:
+                  print(
+                      r["site_id"], r["from_year"], r["to_year"],
+                      "turnover=", r["relative_abundance_turnover"],
+                      "delta_total=", r["delta_total_nests"],
+                      "delta_flipper=", r["delta_cwm"]["flipper_length_mm"],
+                  )
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-network-stage2
+          path: |
+            build/palmer_network_result.json
+            build/palmer_network_stage2

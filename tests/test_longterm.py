@@ -1,25 +1,26 @@
 import csv
-from pathlib import Path
 
 from mina.longterm import (
     add_community_traits,
     island_year_counts,
-    site_year_species_counts,
+    site_year_species_matrix,
     transitions,
 )
 
 
-def _write(path: Path, header, rows):
+def _write(path, header, rows):
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
         writer.writerow(header)
         writer.writerows(rows)
 
 
-def test_explicit_absence_and_missing_species_are_distinct(tmp_path):
+def test_structural_zero_differs_from_missing_known_breeder(tmp_path):
     sites = tmp_path / "sites.csv"
     species = tmp_path / "species.csv"
+    site_species = tmp_path / "site_species.csv"
     obs = tmp_path / "obs.csv"
+
     _write(sites, ["site_id", "site_name"], [["s1", "Dream Island colony"]])
     _write(
         species,
@@ -30,24 +31,66 @@ def test_explicit_absence_and_missing_species_are_distinct(tmp_path):
             ["g", "Gentoo", "Pygoscelis", "papua"],
         ],
     )
+    # Adelie and Chinstrap are known breeders; Gentoo is not.
+    _write(site_species, ["site_id", "species_id"], [["s1", "a"], ["s1", "c"]])
     _write(
         obs,
         ["site_id", "species_id", "year", "type", "presence", "count"],
         [
             ["s1", "a", 2000, "nests", 1, 100],
             ["s1", "a", 2000, "nests", 1, 120],
-            ["s1", "c", 2000, "nests", 0, ""],
-            # Gentoo intentionally unobserved.
+            # Chinstrap is a known breeder but has no 2000 observation.
+            # Gentoo is not a known breeder and should be structural zero.
         ],
     )
-    counts = site_year_species_counts(obs, sites, species)
-    adelie = next(row for row in counts if row["species"] == "Adelie")
-    chinstrap = next(row for row in counts if row["species"] == "Chinstrap")
-    assert adelie["count"] == 110
-    assert chinstrap["count"] == 0
-    panel, excluded = island_year_counts(counts)
+
+    matrix = site_year_species_matrix(obs, sites, species, site_species)
+    by_species = {row["species"]: row for row in matrix}
+    assert by_species["Adelie"]["count"] == 110
+    assert by_species["Chinstrap"]["count"] is None
+    assert by_species["Chinstrap"]["source"] == "missing_known_breeder"
+    assert by_species["Gentoo"]["count"] == 0
+    assert by_species["Gentoo"]["source"] == "structural_zero_not_known_breeder"
+
+    panel, excluded = island_year_counts(matrix)
     assert panel == []
-    assert excluded[0]["missing_species"] == ["Gentoo"]
+    assert excluded[0]["reason"] == "known_breeder_missing_at_observed_site"
+
+
+def test_explicit_absence_completes_known_breeder(tmp_path):
+    sites = tmp_path / "sites.csv"
+    species = tmp_path / "species.csv"
+    site_species = tmp_path / "site_species.csv"
+    obs = tmp_path / "obs.csv"
+
+    _write(sites, ["site_id", "site_name"], [["s1", "Dream Island colony"]])
+    _write(
+        species,
+        ["species_id", "common_name", "genus", "species"],
+        [
+            ["a", "Adelie", "Pygoscelis", "adeliae"],
+            ["c", "Chinstrap", "Pygoscelis", "antarcticus"],
+            ["g", "Gentoo", "Pygoscelis", "papua"],
+        ],
+    )
+    _write(site_species, ["site_id", "species_id"], [["s1", "a"], ["s1", "c"]])
+    _write(
+        obs,
+        ["site_id", "species_id", "year", "type", "presence", "count"],
+        [
+            ["s1", "a", 2000, "nests", 1, 100],
+            ["s1", "c", 2000, "nests", 0, ""],
+        ],
+    )
+
+    matrix = site_year_species_matrix(obs, sites, species, site_species)
+    panel, excluded = island_year_counts(matrix)
+    assert excluded == []
+    assert panel[0]["counts"] == {
+        "Adelie": 100.0,
+        "Chinstrap": 0.0,
+        "Gentoo": 0.0,
+    }
 
 
 def test_cwm_change_equals_replacement_component():
@@ -70,9 +113,24 @@ def test_cwm_change_equals_replacement_component():
         },
     ]
     centroids = {
-        "Adelie": {"bill_length_mm": 1, "bill_depth_mm": 1, "flipper_length_mm": 1, "body_mass_g": 1},
-        "Chinstrap": {"bill_length_mm": 2, "bill_depth_mm": 2, "flipper_length_mm": 2, "body_mass_g": 2},
-        "Gentoo": {"bill_length_mm": 4, "bill_depth_mm": 4, "flipper_length_mm": 4, "body_mass_g": 4},
+        "Adelie": {
+            "bill_length_mm": 1,
+            "bill_depth_mm": 1,
+            "flipper_length_mm": 1,
+            "body_mass_g": 1,
+        },
+        "Chinstrap": {
+            "bill_length_mm": 2,
+            "bill_depth_mm": 2,
+            "flipper_length_mm": 2,
+            "body_mass_g": 2,
+        },
+        "Gentoo": {
+            "bill_length_mm": 4,
+            "bill_depth_mm": 4,
+            "flipper_length_mm": 4,
+            "body_mass_g": 4,
+        },
     }
     enriched = add_community_traits(panel, centroids)
     change = transitions(enriched, centroids)[0]

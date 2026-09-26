@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-local-island-network-stage2-abundance-v1",
+  "date": "2026-09-26",
+  "status": "pre_abundance_frozen_after_stage1_metadata_inventory",
+  "stage1_contract": "contracts/PALMER_LOCAL_NETWORK_STAGE1_V1.json",
+  "inventory_source": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "radius_km": 20,
+    "site_count": 11
+  },
+  "primary_true_island_sites": [
+    {
+      "site_id": "TORG",
+      "site_name": "Torgersen Island"
+    },
+    {
+      "site_id": "LITC",
+      "site_name": "Litchfield Island"
+    },
+    {
+      "site_id": "HUMB",
+      "site_name": "Humble Island"
+    },
+    {
+      "site_id": "CHIS",
+      "site_name": "Christine Island"
+    },
+    {
+      "site_id": "CORM",
+      "site_name": "Cormorant Island"
+    },
+    {
+      "site_id": "DREA",
+      "site_name": "Dream Island"
+    }
+  ],
+  "benchmark_sites": [
+    {
+      "site_id": "BISC",
+      "site_name": "Biscoe Point",
+      "role": "non_island_Anvers_benchmark"
+    }
+  ],
+  "excluded_metadata_sites": [
+    {
+      "site_id": "DREW",
+      "reason": "compound/ambiguous Dream Island West (Casey Islands) site"
+    },
+    {
+      "site_id": "JOUB",
+      "reason": "Joubin Islands is a multi-island aggregate rather than a single comparable island"
+    },
+    {
+      "site_id": "MONA",
+      "reason": "Cape Monaco is an Anvers Island cape, not an island"
+    },
+    {
+      "site_id": "ANVS",
+      "reason": "Anvers Island South West is a main-island site, not a discrete small island"
+    }
+  ],
+  "outcome_lanes": {
+    "species_abundance": {
+      "unit": "site x species x year",
+      "rule": "use numeric nest/breeding-pair count or explicit absence independently for each species; no requirement that all sympatric species were counted in the same year",
+      "outputs": [
+        "count trajectory",
+        "first and last observed count",
+        "observed zero years",
+        "log ratio where both endpoints positive"
+      ]
+    },
+    "community_composition": {
+      "unit": "site x year",
+      "rule": "require every APBP-known focal breeder at the site to have a numeric nest count or explicit absence that year; non-breeders are structural zeros",
+      "outputs": [
+        "relative abundance",
+        "effective species diversity",
+        "community-weighted morphology",
+        "between-observation compositional turnover"
+      ]
+    }
+  },
+  "primary_hypotheses": {
+    "N1_nonuniform_reassembly": "Regional environmental change does not yield uniform species replacement across local breeding patches; true small islands may lose Adelie abundance without gentoo replacement while the Biscoe Point benchmark undergoes Adelie-to-gentoo replacement.",
+    "N2_island_vacancy": "At true islands that are Adelie-dominated and lack gentoo breeding membership, decline can reduce total colony abundance without a compensatory shift toward the gentoo functional phenotype.",
+    "N3_alternative_replacement": "Dream Island provides a distinct possible Adelie-to-chinstrap reassembly pathway, testing whether replacement depends on resident/colonizing species identity rather than warming alone.",
+    "N4_shared_forcing_local_outcomes": "If nearby breeding sites share regional marine forcing but differ in geomorphology and breeding habitat, abundance trajectories should be only partially synchronous and local extirpation/replacement states should differ among sites."
+  },
+  "interpretation_boundaries": [
+    "The primary island set was frozen from site metadata before opening expanded-network abundance outcomes.",
+    "Do not label absence from a year as zero unless APBP records explicit absence.",
+    "Do not infer competitive displacement from reciprocal abundance changes without a separate interaction analysis.",
+    "Biscoe Point is not a true small island and must remain a benchmark rather than being pooled as an island replicate.",
+    "Community-weighted morphology uses fixed species centroids and represents assembly-driven functional change, not historical trait evolution."
+  ]
+}

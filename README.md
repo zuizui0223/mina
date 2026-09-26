@@ -87,6 +87,7 @@ mina-longterm \
   --palmer-raw data/penguins_raw.csv \
   --sites build/mapppdr/sites.csv \
   --species build/mapppdr/species.csv \
+  --site-species build/mapppdr/site_species.csv \
   --observations build/mapppdr/penguin_obs.csv \
   --out build/longterm.json
 ```
@@ -94,9 +95,12 @@ mina-longterm \
 The default long-term analysis is deliberately strict:
 
 - nests/breeding-pair counts only;
-- missing species observations are **not** silently converted to zero;
-- an explicit absence may become zero only when the source record says
+- missing observations for a **known breeding species** are not silently
+  converted to zero;
+- an explicit absence may become zero when the source record says
   `presence = 0`;
+- a species not listed by APBP as breeding at that site may be treated as a
+  structural zero;
 - repeated same-site/species/year counts are summarized by their median;
 - island-year transitions are marked primary-eligible only when the set of
   contributing APBP sites is unchanged.
@@ -107,3 +111,12 @@ The biological project was migrated from
 `zuizui0223/odsp` branch `ecology/penguin-island-reassembly-v1`
 (draft PR #186). Frozen ODSP N2 evidence remains in ODSP and is not rewritten by
 this repository.
+
+
+## Ecological framing
+
+See `docs/ECOLOGICAL_SYSTEM.md`. The project treats penguin breeding islands
+as **externally subsidized systems**: the main trophic resource base is marine,
+the breeding surface is terrestrial and strongly filtered by snow/geomorphology,
+direct competition is localized rather than assumed absent, and penguins
+themselves engineer the terrestrial ecosystem through marine nutrient import.

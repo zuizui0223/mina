@@ -1,0 +1,33 @@
+name: palmer-network-inventory
+
+on:
+  push:
+    branches:
+      - analysis/mapppd-estimability-gate-v1
+    paths:
+      - "scripts/inventory_palmer_network.R"
+      - "contracts/PALMER_LOCAL_NETWORK_STAGE1_V1.json"
+      - ".github/workflows/palmer-network-inventory.yml"
+  workflow_dispatch:
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Build outcome-blind local network inventory
+        run: Rscript scripts/inventory_palmer_network.R build/palmer_network_inventory
+
+      - name: Print inventory
+        run: |
+          echo "--- sites within 20 km ---"
+          cat build/palmer_network_inventory/sites_within_20km.csv
+          echo "--- focal breeding membership ---"
+          cat build/palmer_network_inventory/focal_breeding_membership.csv
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-network-inventory
+          path: build/palmer_network_inventory
