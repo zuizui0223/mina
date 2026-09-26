@@ -1,0 +1,73 @@
+name: mapppd-estimability-gate
+
+on:
+  push:
+    branches:
+      - analysis/mapppd-estimability-gate-v1
+  pull_request:
+    paths:
+      - "src/mina/longterm.py"
+      - "scripts/export_mapppdr.R"
+      - "scripts/fetch_palmer_raw.py"
+      - "contracts/PALMER_ISLAND_REASSEMBLY_V1.json"
+      - ".github/workflows/mapppd-estimability-gate.yml"
+  workflow_dispatch:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Install mina
+        run: python -m pip install -e .
+
+      - name: Fetch pinned Palmer traits
+        run: python scripts/fetch_palmer_raw.py build/penguins_raw.csv
+
+      - name: Export pinned APBP/MAPPPD focal tables
+        run: Rscript scripts/export_mapppdr.R build/mapppdr
+
+      - name: Run long-term estimability gate
+        run: |
+          mina-longterm \
+            --palmer-raw build/penguins_raw.csv \
+            --sites build/mapppdr/sites.csv \
+            --species build/mapppdr/species.csv \
+            --site-species build/mapppdr/site_species.csv \
+            --observations build/mapppdr/penguin_obs.csv \
+            --out build/longterm.json
+
+      - name: Print estimability summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x = json.loads(Path("build/longterm.json").read_text())
+          print("site_year_species_matrix_rows=", x["site_year_species_matrix_rows"])
+          print("retained_island_years=", len(x["island_year_panel"]))
+          print("excluded_island_years=", len(x["excluded_island_years"]))
+          print("primary_transition_count=", x["primary_transition_count"])
+          print("estimability_gate=")
+          print(json.dumps(x["estimability_gate"], indent=2, sort_keys=True))
+          print("island_year_counts=")
+          for island in ("Biscoe", "Dream", "Torgersen"):
+              ys = [r["year"] for r in x["island_year_panel"] if r["island"] == island]
+              print(island, len(ys), min(ys) if ys else None, max(ys) if ys else None)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mapppd-estimability-gate
+          path: |
+            build/longterm.json
+            build/mapppdr/sites.csv
+            build/mapppdr/species.csv
+            build/mapppdr/site_species.csv
+            build/mapppdr/penguin_obs.csv
