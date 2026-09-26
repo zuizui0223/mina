@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-regional-local-mechanism-v1",
+  "date": "2026-09-26",
+  "status": "sea_ice_values_unopened_at_freeze_static_habitat_is_published_external_predictor",
+  "prerequisites": {
+    "lter_result": "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+    "lter_result_frozen": true
+  },
+  "question": "Can the two-scale five-island demographic pattern be partitioned into a regional sea-ice signal and a static island breeding-habitat filter?",
+  "regional_lane": {
+    "source": {
+      "package_id": "knb-lter-pal.151.9",
+      "title": "Seasonal sea ice indices including timing of ice-edge advance/retreat, ice season duration and actual ice days for PAL LTER sub-regions",
+      "repository": "Environmental Data Initiative / PASTA",
+      "source_reference": "Stammerjohn seasonal sea ice indices; package version 9",
+      "documented_ice_year": "February/March-to-February/March sea-ice year; use dataset's own ice-year label"
+    },
+    "primary_predictor": "ice season duration (days)",
+    "secondary_descriptive_predictor": "day of retreat",
+    "subregion_rule": "use the North/South PAL LTER subregion spanning grid lines 600 to 200 when present; fail closed rather than substitute a different subregion",
+    "alignment_rule": "ice-year beginning in calendar year y predicts breeding-population growth from census y to census y+1, so the complete ice season precedes the response census",
+    "primary_response": "log1p(total breeding pairs across CHR,COR,HUM,LIT,TOR at y+1) - log1p(total at y)",
+    "island_response": "same annual log1p growth per island, retained for heterogeneity diagnostics",
+    "model": "regional_growth ~ standardized ice_duration",
+    "direction": "longer ice duration is predicted to be associated with less-negative / more-positive Adelie regional population growth",
+    "robustness": [
+      "Pearson correlation and OLS slope",
+      "Spearman rank correlation",
+      "leave-one-year-out sign stability",
+      "report effect sizes and uncertainty; no stepwise predictor search"
+    ]
+  },
+  "local_lane": {
+    "status": "external replication, not fresh predictor discovery",
+    "source": {
+      "citation": "Fraser et al. 2013, A Nonmarine Source of Variability in Adelie Penguin Demography, Oceanography 26(3):207-209",
+      "doi": "10.5670/oceanog.2013.64"
+    },
+    "predictor": "percent suboptimal breeding habitat based on southwest aspect under dominant northeasterly storm winds",
+    "values_percent": {
+      "LIT": 89.5,
+      "COR": 63,
+      "CHR": 46.8,
+      "TOR": 44.3,
+      "HUM": 44.2
+    },
+    "response": "frozen 1991-2017 island-specific annual multiplicative population-change slope",
+    "analysis": [
+      "Pearson correlation",
+      "Spearman correlation",
+      "exact 5! permutation p-values",
+      "OLS slope with effect-size reporting"
+    ],
+    "interpretation": "This lane asks whether the previously published geomorphology ranking continues to predict decline rates in the independently extended 1991-2017 census result."
+  },
+  "synthesis": {
+    "supported_if": "regional sea ice explains meaningful interannual variation in five-island total growth while suboptimal habitat predicts between-island long-term decline severity",
+    "interpretation": "shared marine forcing sets temporal direction while terrestrial island geometry modulates local vulnerability",
+    "not_allowed": [
+      "claim sea ice is the only regional driver",
+      "claim habitat correlation proves snow accumulation caused every decline",
+      "claim local residual variation is competition",
+      "pool the five islands as statistically independent replicates of regional climate"
+    ]
+  }
+}
