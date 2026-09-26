@@ -77,5 +77,5 @@ def test_cwm_change_equals_replacement_component():
     enriched = add_community_traits(panel, centroids)
     change = transitions(enriched, centroids)[0]
     assert change["primary_eligible"] is True
-    assert change["relative_abundance_turnover"] == 0.6
+    assert abs(change["relative_abundance_turnover"] - 0.6) < 1e-12
     assert change["replacement_identity_max_abs_error"] < 1e-12
