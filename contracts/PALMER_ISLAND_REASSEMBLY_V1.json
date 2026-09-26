@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-reassembly-v1",
+  "date": "2026-09-26",
+  "status": "exploratory_three_year_result_open_longterm_rules_frozen",
+  "provenance": {
+    "source_repository": "zuizui0223/odsp",
+    "source_branch": "ecology/penguin-island-reassembly-v1",
+    "source_pr": 186,
+    "frozen_n2_receipt": "N2_STAGE2_REAL_DATA_RESULT_RECEIPT_V1.json",
+    "frozen_n2_is_not_modified_here": true
+  },
+  "ecological_question": "Across neighboring Palmer Archipelago breeding islands, is penguin functional differentiation generated mainly by species turnover, or does a persistent within-species island phenotype remain after restricting to Adelie penguins?",
+  "focal_islands": [
+    "Biscoe",
+    "Dream",
+    "Torgersen"
+  ],
+  "focal_species": [
+    "Adelie",
+    "Chinstrap",
+    "Gentoo"
+  ],
+  "three_year_hypotheses": {
+    "H1_turnover": "Archipelago-scale morphology-to-island predictability is dominated by species composition rather than persistent within-species island morphology.",
+    "H2_persistent_island": "Persistent Adelie island phenotypes should produce fixed island effects after controlling sex, year, laying date and clutch completion.",
+    "H3_temporal_reassembly": "Temporally labile colony states should produce island-by-year structure and reversals of pairwise island contrasts.",
+    "H4_cross_year_transfer": "Persistent island phenotypes should classify held-out-year Adelie individuals above the one-third balanced-accuracy reference."
+  },
+  "longterm_primary_question": "Does long-term functional change on Antarctic breeding islands occur mainly through changes in species composition and abundance rather than inferred within-species morphological change?",
+  "longterm_rules": {
+    "source": "APBP/MAPPPD",
+    "count_type": "nests/breeding pairs only",
+    "missing_positive_presence_without_count": "missing",
+    "explicit_nest_absence": "zero allowed",
+    "replicated_site_species_year_counts": "median",
+    "missing_species_record": "exclude island-year; do not silently convert to zero",
+    "primary_between_year_transition": "same contributing site coverage in both years",
+    "interpolation": false,
+    "historical_within_species_trait_change_inferred": false
+  },
+  "interpretation_boundaries": [
+    "No evolutionary local-adaptation claim from these observational data.",
+    "No individual-plasticity claim from island-by-year structural trait differences because different adults were sampled.",
+    "Body mass is condition-sensitive and is reported separately from structural traits.",
+    "Blood stable isotopes integrate pre-breeding foraging and are not local summer island-foraging measurements.",
+    "Community-weighted historical morphology initially uses fixed species trait centroids; it quantifies assembly-driven functional change, not historical trait evolution."
+  ]
+}

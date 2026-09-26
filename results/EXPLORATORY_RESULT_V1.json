@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-adelie-island-reassembly-exploratory-v1",
+  "date": "2026-09-26",
+  "status": "exploratory_not_confirmatory",
+  "source": {
+    "repository": "allisonhorst/palmerpenguins",
+    "commit": "8957207b78d6ccd1b4654a9dd9c9041b657478ab",
+    "git_blob": "ba99fbd527f0bb983b3d9615ef5c81a5917ab7d9",
+    "file": "inst/extdata/penguins_raw.csv",
+    "adelie_rows_raw": 152
+  },
+  "frozen_odsp_context": {
+    "naive_pooled_morphology_gain": 0.3894565006712757,
+    "species_layer_gain": 0.5360132625954789,
+    "species_conditioned_morphology_gain": -0.08374806363025576
+  },
+  "within_adelie_models": {
+    "bill_length": {
+      "n": 146,
+      "fixed_island_partial_r2": 0.016633372656765677,
+      "fixed_island_delta_aicc": 1.99788229988485,
+      "island_by_year_partial_r2_given_main": 0.02822189007879304,
+      "island_by_year_delta_aicc": 5.115113517958321
+    },
+    "bill_depth": {
+      "n": 146,
+      "fixed_island_partial_r2": 0.015375350305374466,
+      "fixed_island_delta_aicc": 2.184540940564869,
+      "island_by_year_partial_r2_given_main": 0.08478819326044912,
+      "island_by_year_delta_aicc": -3.6407948558533096
+    },
+    "flipper_length": {
+      "n": 146,
+      "fixed_island_partial_r2": 0.047879756134015454,
+      "fixed_island_delta_aicc": -2.716557711641144,
+      "island_by_year_partial_r2_given_main": 0.04717204612162672,
+      "island_by_year_delta_aicc": 2.2399150557552048
+    },
+    "body_mass": {
+      "n": 146,
+      "fixed_island_partial_r2": 0.002933748139328413,
+      "fixed_island_delta_aicc": 4.01782158173819,
+      "island_by_year_partial_r2_given_main": 0.10753556678949323,
+      "island_by_year_delta_aicc": -7.315448291429448
+    },
+    "delta15N": {
+      "n": 139,
+      "fixed_island_partial_r2": 0.03234868353888689,
+      "fixed_island_delta_aicc": -0.0994732228099906,
+      "island_by_year_partial_r2_given_main": 0.0923852472875699,
+      "island_by_year_delta_aicc": -4.105504579352441
+    },
+    "delta13C": {
+      "n": 139,
+      "fixed_island_partial_r2": 0.008114288384689722,
+      "fixed_island_delta_aicc": 3.338841683775229,
+      "island_by_year_partial_r2_given_main": 0.02858241555860441,
+      "island_by_year_delta_aicc": 5.337658425619509
+    }
+  },
+  "pairwise_island_sign_reversals": {
+    "bill_length": "3/3",
+    "bill_depth": "3/3",
+    "flipper_length": "2/3",
+    "body_mass": "3/3",
+    "delta15N": "3/3",
+    "delta13C": "3/3"
+  },
+  "cross_year_transfer": {
+    "structural_morphology": {
+      "n_complete": 146,
+      "mean_balanced_accuracy": 0.34237329434697855,
+      "chance_reference": 0.3333333333333333
+    },
+    "isotopic_niche": {
+      "n_complete": 139,
+      "mean_balanced_accuracy": 0.34027777777777773,
+      "chance_reference": 0.3333333333333333
+    }
+  },
+  "provisional_interpretation": "Across the full assemblage, island-associated morphology is mainly compositional. Within Adelie, a fixed island phenotype is weak over this three-year window and several traits show stronger island-by-year reassembly; cross-year island identity is essentially non-transferable from morphology or isotopes.",
+  "prohibited_inferences": [
+    "local adaptation",
+    "individual phenotypic plasticity",
+    "causal sea-ice effect",
+    "general island-biogeographic law from three islands and three years"
+  ]
+}
