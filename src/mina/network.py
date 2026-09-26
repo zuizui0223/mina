@@ -231,6 +231,11 @@ def abundance_summaries(
                         else None
                     ),
                     "log_last_over_first": log_ratio,
+                    "fraction_remaining": (
+                        last_count / first_count
+                        if first_count is not None and last_count is not None and first_count > 0
+                        else None
+                    ),
                     "observed_zero_years": [
                         int(row["year"]) for row in rows if float(row["count"]) == 0.0
                     ],
@@ -380,6 +385,7 @@ def composition_transitions(
 def estimability_gate(
     summaries: list[dict[str, object]],
     panel: list[dict[str, object]],
+    membership: dict[str, set[str]],
 ) -> dict[str, object]:
     adelie = {
         str(row["site_id"]): row
@@ -401,10 +407,13 @@ def estimability_gate(
             ),
             "adelie_n_observed_years": int(adelie[site]["n_observed_years"]),
             "adelie_trend_model_eligible": bool(adelie[site]["trend_model_eligible"]),
+            "known_breeder_count": len(membership.get(site, set())),
             "complete_composition_years": len(comp_years),
             "composition_first_year": comp_years[0] if comp_years else None,
             "composition_last_year": comp_years[-1] if comp_years else None,
-            "composition_trajectory_eligible": len(comp_years) >= 5,
+            "composition_trajectory_eligible": (
+                len(membership.get(site, set())) >= 2 and len(comp_years) >= 5
+            ),
         }
 
     primary_adelie_trend_sites = [
@@ -449,7 +458,7 @@ def analyze_network(
     summaries = abundance_summaries(observed, membership)
     panel, excluded = community_panel(observed, membership, centroids)
     transitions = composition_transitions(panel, centroids)
-    gate = estimability_gate(summaries, panel)
+    gate = estimability_gate(summaries, panel, membership)
 
     return {
         "schema_version": 1,
