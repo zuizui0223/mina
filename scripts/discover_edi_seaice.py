@@ -119,8 +119,31 @@ def main() -> int:
     print("ERDDAP_SEARCH")
     print(manifest["erddap_search"]["head"])
 
-    if not any(x["status"]==200 and x["bytes"]>0 for x in downloads) and status!=200:
-        raise SystemExit("neither PASTA entities nor Palmer ERDDAP search are publicly readable")
+    # Exact entity identifier independently recoverable from the public
+    # Diou-Cass 2026 reproducibility repository, which documents this same
+    # knb-lter-pal.151.9 package and reads it over plain HTTP.
+    exact_entity=(
+        "http://pasta.lternet.edu/package/data/eml/"
+        "knb-lter-pal/151/9/13bb2b05f1e930574150d9cd8ab04b8a"
+    )
+    exact_status,exact_data,exact_headers=fetch(exact_entity)
+    (args.out_dir/"seasonal_seaice.csv").write_bytes(exact_data)
+    manifest["exact_entity"]={
+        "url":exact_entity,
+        "entity_id":"13bb2b05f1e930574150d9cd8ab04b8a",
+        "status":exact_status,
+        "bytes":len(exact_data),
+        "sha256":hashlib.sha256(exact_data).hexdigest(),
+        "content_type":exact_headers.get("Content-Type"),
+        "head":exact_data[:3000].decode("utf-8","replace"),
+        "provenance_mirror":"qdioucass/pallter_decadalpigmentindices:data_code_analysis/dataset curation/3_PALLTER_EDISeaIceDataImport.py"
+    }
+    (args.out_dir/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
+    print("EXACT_ENTITY")
+    print(json.dumps(manifest["exact_entity"],indent=2))
+
+    if exact_status!=200 or len(exact_data)<100:
+        raise SystemExit("exact frozen EDI sea-ice entity was not readable")
     return 0
 
 
