@@ -31,20 +31,35 @@ jobs:
             --out build/static_habitat_result.json
           cat build/static_habitat_result.json
 
-      - name: Fetch frozen EDI sea-ice entity
-        run: python scripts/fetch_seaice_edi.py build/seaice_raw.txt
+      - name: Fetch frozen sea-ice source
+        run: python scripts/fetch_seaice_edi.py build/seaice_source.bin
 
-      - name: Inspect sea-ice schema
+      - name: Inspect sea-ice source schema
         run: |
           python - <<'PY'
           from pathlib import Path
-          p = Path("build/seaice_raw.txt")
-          text = p.read_text(encoding="utf-8", errors="replace")
-          lines = text.splitlines()
-          print("line_count=", len(lines))
-          print("first_lines=")
-          for line in lines[:5]:
-              print(line)
+          import zipfile
+          import xml.etree.ElementTree as ET
+
+          p = Path("build/seaice_source.bin")
+          data = p.read_bytes()
+          print("magic=", data[:8])
+          if data.startswith(b"PK"):
+              with zipfile.ZipFile(p) as zf:
+                  names = zf.namelist()
+                  print("xlsx_zip_members=", len(names))
+                  workbook = ET.fromstring(zf.read("xl/workbook.xml"))
+                  ns = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+                  sheets = [
+                      el.attrib["name"]
+                      for el in workbook.findall("m:sheets/m:sheet", ns)
+                  ]
+                  print("workbook_sheets=", sheets)
+          else:
+              text = data.decode("utf-8", errors="replace")
+              print("first_lines=")
+              for line in text.splitlines()[:8]:
+                  print(line)
           PY
 
       - uses: actions/upload-artifact@v4
@@ -52,4 +67,4 @@ jobs:
           name: palmer-regional-local-mechanism
           path: |
             build/static_habitat_result.json
-            build/seaice_raw.txt
+            build/seaice_source.bin
