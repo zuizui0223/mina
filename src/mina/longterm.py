@@ -101,27 +101,6 @@ def _join_metadata(
     return sites, species_lookup
 
 
-def breeding_membership(
-    site_species_csv: str | Path,
-    species_csv: str | Path,
-) -> dict[str, set[str]]:
-    """Known breeding species by APBP site.
-
-    Absence from this table can be used as a structural zero. Presence in the
-    table does *not* imply zero in unsurveyed years: those remain missing unless
-    a numeric count or explicit absence is recorded.
-    """
-    _, species_lookup = _join_metadata(Path(site_species_csv).parent / "sites.csv", species_csv)
-    # The helper above needs sites.csv only to construct the species map; make
-    # the membership itself independent of site metadata.
-    members: dict[str, set[str]] = defaultdict(set)
-    for row in _read_csv(site_species_csv):
-        label = species_lookup.get(row.get("species_id", ""))
-        if label is not None:
-            members[row["site_id"]].add(label)
-    return dict(members)
-
-
 def _species_lookup(species_csv: str | Path) -> dict[str, str]:
     result: dict[str, str] = {}
     for row in _read_csv(species_csv):
