@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-lter-five-island-synchrony-result-v1",
+  "validated_date": "2026-09-26",
+  "contract_id": "mina-palmer-lter-five-island-synchrony-v1",
+  "source": {
+    "title": "Adelie penguin area-wide breeding population census, 1991, present.",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "erddap_dataset_id": "AdeliePenguinCensus",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "source_row_count": 1489
+  },
+  "execution": {
+    "workflow_run_id": 36243263745,
+    "head_sha": "fe2ffa8c61315db21966b73018f3b265a9021ebf",
+    "artifact_id": 10906912288,
+    "artifact_digest": "sha256:a46af6bc841bf8fa9d0369552e6bc821705d8e45612a72f1188a61e05b7fac36",
+    "conclusion": "success"
+  },
+  "synchronized_panel": {
+    "years": [
+      1991,
+      1992,
+      1993,
+      1994,
+      1995,
+      1996,
+      1997,
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017
+    ],
+    "n_years": 27,
+    "excluded_incomplete_years": []
+  },
+  "endpoints": {
+    "CHR": {
+      "name": "Christine Island",
+      "first_count": 1410,
+      "last_count": 27,
+      "fraction_remaining": 0.019148936170212766
+    },
+    "COR": {
+      "name": "Cormorant Island",
+      "first_count": 681,
+      "last_count": 23,
+      "fraction_remaining": 0.033773861967694566
+    },
+    "HUM": {
+      "name": "Humble Island",
+      "first_count": 1085,
+      "last_count": 68,
+      "fraction_remaining": 0.06267281105990784
+    },
+    "LIT": {
+      "name": "Litchfield Island",
+      "first_count": 497,
+      "last_count": 0,
+      "fraction_remaining": 0,
+      "first_zero_year": 2007
+    },
+    "TOR": {
+      "name": "Torgersen Island",
+      "first_count": 3016,
+      "last_count": 22,
+      "fraction_remaining": 0.007294429708222812
+    }
+  },
+  "common_long_term_component": {
+    "pc1_variance_fraction": 0.9640284642946518,
+    "pc1_loadings": {
+      "CHR": 0.4392819878858744,
+      "COR": 0.4548456008182724,
+      "HUM": 0.45138422239872067,
+      "LIT": 0.4384791205234141,
+      "TOR": 0.4518131905664274
+    },
+    "interpretation": "All five standardized log-abundance trajectories share an exceptionally strong same-sign long-term component."
+  },
+  "annual_growth_synchrony": {
+    "median_pairwise_correlation": 0.372946951188161,
+    "mean_pairwise_correlation": 0.3725839054446965,
+    "strongest_pairs": {
+      "COR_TOR": 0.7145909638304372,
+      "COR_HUM": 0.7092668476108265
+    },
+    "weakest_pair": {
+      "CHR_LIT": -0.12340401238888728
+    },
+    "interpretation": "Short-term annual responses are only moderately synchronous despite the near-common long-term decline."
+  },
+  "common_growth_sensitivity": {
+    "CHR": {
+      "beta": 0.21898243208891865,
+      "r2": 0.028697923734929076,
+      "residual_sd": 0.2491026623407965
+    },
+    "COR": {
+      "beta": 0.6397940219875625,
+      "r2": 0.6530914315470309,
+      "residual_sd": 0.08616942529388598
+    },
+    "HUM": {
+      "beta": 0.6012760979098302,
+      "r2": 0.44332162021193644,
+      "residual_sd": 0.12485466957563437
+    },
+    "LIT": {
+      "beta": 0.5702242334856941,
+      "r2": 0.0458106423944904,
+      "residual_sd": 0.4264126770883784
+    },
+    "TOR": {
+      "beta": 0.7730101173969706,
+      "r2": 0.21714211819278795,
+      "residual_sd": 0.25328829905554384
+    }
+  },
+  "additive_decomposition": {
+    "unique_year_fraction": 0.5351902708929314,
+    "unique_island_fraction": 0.3300802390239986,
+    "residual_fraction": 0.13472949008307022,
+    "additive_r2": 0.8652705099169298
+  },
+  "trend_slopes_annual_multiplicative_change": {
+    "CHR": -0.12201837819548811,
+    "COR": -0.12966280809795816,
+    "HUM": -0.10884936337813456,
+    "LIT": -0.2786965435892925,
+    "TOR": -0.17415163180751314
+  },
+  "supported": [
+    "All five nearby Adelie island populations share a dominant long-term decline component.",
+    "The strength of the long-term shared component does not imply tight year-to-year synchrony; annual growth correlations are moderate and heterogeneous.",
+    "Island identity accounts for substantial persistent variation in log abundance in addition to the shared year component.",
+    "Litchfield is an extreme local endpoint, reaching zero breeding pairs from 2007 onward while the other four islands persist at low abundance through 2017.",
+    "The data support a two-scale ecological framing: regional forcing sets the common direction while local island filters modulate annual response and extinction risk."
+  ],
+  "not_supported": [
+    "a causal sea-ice effect from the year component alone",
+    "a claim that island residuals are caused by competition",
+    "uniform annual demographic synchrony across the five islands",
+    "equivalent extinction risk across neighboring islands"
+  ],
+  "next_gate": "Freeze a mechanism model comparing regional sea-ice forcing with static island physical-habitat quality before opening those predictor values."
+}
