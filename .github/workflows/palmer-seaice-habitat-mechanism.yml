@@ -1,0 +1,61 @@
+name: palmer-seaice-habitat-mechanism
+
+on:
+  push:
+    branches:
+      - analysis/seaice-habitat-mechanism-v1
+    paths:
+      - "src/mina/mechanism.py"
+      - "scripts/fetch_seaice_mirror.py"
+      - "contracts/PALMER_SEAICE_HABITAT_MECHANISM_V1.json"
+      - ".github/workflows/palmer-seaice-habitat-mechanism.yml"
+  pull_request:
+    paths:
+      - "src/mina/mechanism.py"
+      - "scripts/fetch_seaice_mirror.py"
+      - "contracts/PALMER_SEAICE_HABITAT_MECHANISM_V1.json"
+      - ".github/workflows/palmer-seaice-habitat-mechanism.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install mina
+        run: python -m pip install -e .
+      - name: Fetch Palmer LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Fetch pinned sea-ice mirror
+        run: python scripts/fetch_seaice_mirror.py build/seaice.csv
+      - name: Run frozen mechanism analysis
+        run: |
+          mina-mechanism \
+            --census build/adelie_census.csv \
+            --seaice build/seaice.csv \
+            --out build/mechanism_result.json
+      - name: Print mechanism result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/mechanism_result.json").read_text())
+          print("decision=",x["decision"])
+          print("primary_mse=",x["primary_loyo"]["mse"])
+          print("primary_gain=",x["primary_loyo"]["primary_mse_gain_M0_minus_M1"])
+          print("interaction_gain=",x["primary_loyo"]["secondary_mse_gain_M1_minus_M2"])
+          print("coefficients=",x["full_coefficients"])
+          print("bootstrap=",json.dumps(x["year_cluster_bootstrap"],indent=2))
+          for k,v in x["sensitivity"].items():
+              print("sensitivity",k,v["primary_mse_gain_M0_minus_M1"],v["secondary_mse_gain_M1_minus_M2"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-seaice-habitat-mechanism
+          path: |
+            build/adelie_census.csv
+            build/seaice.csv
+            build/mechanism_result.json
