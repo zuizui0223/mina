@@ -33,18 +33,35 @@ for (object in objects) {
   }
 }
 
+# Exact field sites represented by the Palmer Penguins study.
+# Do not use substring matching: "Mount Biscoe" is in Enderby Land and is not
+# the Palmer Archipelago Biscoe Point colony.
+PALMER_SITE_NAMES <- c("Biscoe Point", "Dream Island", "Torgersen Island")
 focal_sites <- sites[
-  grepl("Biscoe|Dream|Torgersen", sites$site_name, ignore.case = TRUE),
+  sites$site_name %in% PALMER_SITE_NAMES,
   ,
   drop = FALSE
 ]
+if (nrow(focal_sites) != length(PALMER_SITE_NAMES)) {
+  stop("did not resolve exactly the three Palmer field sites")
+}
 
+# Prefer common-name matching as a taxonomy-version-stable selector. Keep the
+# genus/epithet route as an explicit fallback.
+common <- tolower(species$common_name)
 focal_species <- species[
-  species$genus == "Pygoscelis" &
-    species$species %in% c("adeliae", "antarcticus", "papua"),
+  grepl("adel", common) |
+    grepl("chinstrap", common) |
+    grepl("gentoo", common) |
+    (species$genus == "Pygoscelis" &
+       species$species %in% c("adeliae", "antarcticus", "antarctica", "papua")),
   ,
   drop = FALSE
 ]
+if (nrow(focal_species) != 3) {
+  print(species)
+  stop(sprintf("expected three focal Pygoscelis species, observed %d", nrow(focal_species)))
+}
 
 focal_site_species <- site_species[
   site_species$site_id %in% focal_sites$site_id &
