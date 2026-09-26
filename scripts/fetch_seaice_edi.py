@@ -15,8 +15,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import io
 import re
 import urllib.request
+import zipfile
 from pathlib import Path
 
 SCOPE = "knb-lter-pal"
@@ -83,31 +85,71 @@ def _zenodo_fallback() -> tuple[bytes, dict[str, str]]:
     record = json.loads(_get(api, accept="application/json").decode("utf-8"))
     files = record.get("files", [])
     print("zenodo_files=")
-    candidates = []
+
+    direct_candidates = []
+    archive_candidates = []
     for item in files:
         key = str(item.get("key") or item.get("filename") or "")
         links = item.get("links", {})
         download = links.get("content") or links.get("self")
         print(f"  {key}\t{download}")
+        if not download:
+            continue
         lower = key.lower()
-        if (
-            download
-            and lower.endswith((".csv", ".txt", ".tsv", ".dat"))
-            and ("ice" in lower or "sea" in lower)
+        if lower.endswith((".csv", ".txt", ".tsv", ".dat")) and (
+            "ice" in lower or "sea" in lower
         ):
-            candidates.append((key, download))
-    if len(candidates) != 1:
+            direct_candidates.append((key, download))
+        elif lower.endswith(".zip"):
+            archive_candidates.append((key, download))
+
+    if len(direct_candidates) == 1:
+        key, url = direct_candidates[0]
+        data = _get(url)
+        return data, {
+            "transport": "zenodo_palphenology_fallback",
+            "url": url,
+            "record": ZENODO_RECORD,
+            "file": key,
+        }
+    if direct_candidates:
         raise RuntimeError(
-            "Zenodo fallback requires exactly one mechanically selected "
-            f"sea/ice tabular file; candidates={candidates!r}"
+            f"multiple direct sea/ice tabular candidates: {direct_candidates!r}"
         )
-    key, url = candidates[0]
-    data = _get(url)
+
+    if len(archive_candidates) != 1:
+        raise RuntimeError(
+            "Zenodo fallback requires exactly one archive when no direct "
+            f"tabular candidate exists; archives={archive_candidates!r}"
+        )
+
+    archive_key, archive_url = archive_candidates[0]
+    archive_data = _get(archive_url)
+    with zipfile.ZipFile(io.BytesIO(archive_data)) as zf:
+        names = [name for name in zf.namelist() if not name.endswith("/")]
+        print("zenodo_archive_files=")
+        for name in names:
+            print("  " + name)
+        candidates = [
+            name
+            for name in names
+            if name.lower().endswith((".csv", ".txt", ".tsv", ".dat"))
+            and ("ice" in name.lower() or "sea" in name.lower())
+        ]
+        if len(candidates) != 1:
+            raise RuntimeError(
+                "Zenodo archive requires exactly one mechanically selected "
+                f"sea/ice tabular file; candidates={candidates!r}"
+            )
+        inner = candidates[0]
+        data = zf.read(inner)
+
     return data, {
-        "transport": "zenodo_palphenology_fallback",
-        "url": url,
+        "transport": "zenodo_palphenology_zip_fallback",
+        "url": archive_url,
         "record": ZENODO_RECORD,
-        "file": key,
+        "archive": archive_key,
+        "file": inner,
     }
 
 
