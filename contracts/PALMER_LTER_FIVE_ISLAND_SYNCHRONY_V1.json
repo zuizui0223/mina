@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-lter-five-island-synchrony-v1",
+  "date": "2026-09-26",
+  "status": "pre_outcome_frozen",
+  "source": {
+    "title": "Adelie penguin area-wide breeding population census, 1991, present.",
+    "institution": "Palmer Station Antarctica LTER / National Science Foundation",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "erddap_dataset_id": "AdeliePenguinCensus",
+    "erddap_projection": [
+      "study_name",
+      "time",
+      "island_name",
+      "colony_code",
+      "num_breeding_pairs"
+    ],
+    "metadata_time_coverage": [
+      "1991-11-03",
+      "2017-11-24"
+    ]
+  },
+  "focal_islands": {
+    "CHR": "Christine Island",
+    "COR": "Cormorant Island",
+    "HUM": "Humble Island",
+    "LIT": "Litchfield Island",
+    "TOR": "Torgersen Island"
+  },
+  "data_unit": "colony-level breeding-pair census",
+  "aggregation": {
+    "island_year_total": "sum all numeric colony-level breeding-pair counts within island and census year",
+    "duplicate_colony_rule": "fail closed if the same study, island, colony and year appears more than once",
+    "nonnegative_counts_required": true,
+    "synchronized_primary_panel": "years with valid totals for all five islands",
+    "no_interpolation": true
+  },
+  "derived_quantities": {
+    "abundance_scale": "log1p(island breeding-pair total)",
+    "endpoint_fraction": "last observed total / first observed positive total",
+    "annual_growth": "log1p(N_t) - log1p(N_t-1) for adjacent calendar years only",
+    "pairwise_synchrony": "Pearson correlation among island annual-growth series",
+    "common_component": "PC1 of island-standardized log1p abundance over synchronized years",
+    "common_growth_sensitivity": "for each island regress annual growth on the mean annual growth of the other four islands",
+    "additive_decomposition": "compare null, island-only, year-only and island+year OLS models on log1p abundance"
+  },
+  "hypotheses": {
+    "L1_shared_regional_decline": "The five nearby islands should share a dominant long-term temporal component because they experience the same regional marine climate forcing.",
+    "L2_local_response_heterogeneity": "Despite shared forcing, annual growth sensitivity and terminal decline should differ among islands, consistent with island-specific breeding-habitat filters.",
+    "L3_extinction_as_local_endpoint": "Litchfield local extinction should appear as an extreme local endpoint rather than implying synchronous extinction across all islands.",
+    "L4_no_mechanism_yet": "Synchrony and residual heterogeneity identify the scale of variation but do not by themselves establish sea ice, snow, geomorphology or competition as causes."
+  },
+  "primary_outputs": [
+    "complete synchronized island-year panel size",
+    "island endpoint fractions and extinction years",
+    "pairwise annual-growth correlation matrix and median correlation",
+    "PC1 variance explained and island loadings",
+    "leave-one-island-out common-growth beta, R2 and residual SD",
+    "unique year, unique island and residual fractions from additive log1p decomposition"
+  ],
+  "interpretation_boundaries": [
+    "Do not call the year effect a causal sea-ice effect until sea-ice data are joined prospectively.",
+    "Do not interpret island residuals as competition; they may reflect geomorphology, snow, colony structure or observation noise.",
+    "Do not treat post-extinction zeros as evidence of continued demographic response after local extinction.",
+    "The five islands are neighboring breeding patches under shared regional ocean forcing, not independent biogeographic regions."
+  ],
+  "next_gate": "After this synchrony result is frozen, define a mechanism contract before joining sea-ice and island physical-habitat predictors."
+}

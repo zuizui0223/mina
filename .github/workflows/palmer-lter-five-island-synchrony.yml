@@ -1,0 +1,64 @@
+name: palmer-lter-five-island-synchrony
+
+on:
+  push:
+    branches:
+      - analysis/lter-five-island-synchrony-v1
+    paths:
+      - "src/mina/lter.py"
+      - "scripts/fetch_lter_census.py"
+      - "contracts/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_V1.json"
+      - ".github/workflows/palmer-lter-five-island-synchrony.yml"
+  pull_request:
+    paths:
+      - "src/mina/lter.py"
+      - "scripts/fetch_lter_census.py"
+      - "contracts/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_V1.json"
+      - ".github/workflows/palmer-lter-five-island-synchrony.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install mina
+        run: python -m pip install -e .
+
+      - name: Fetch Palmer LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+
+      - name: Run frozen five-island synchrony analysis
+        run: |
+          mina-lter \
+            --census build/adelie_census.csv \
+            --out build/lter_five_island_result.json
+
+      - name: Print result summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x = json.loads(Path("build/lter_five_island_result.json").read_text())
+          print("synchronized_panel=", x["synchronized_panel"])
+          print("endpoints=")
+          print(json.dumps(x["endpoints"], indent=2, sort_keys=True))
+          print("growth_synchrony=", x["growth_synchrony"])
+          print("common_component=", x["common_component"])
+          print("common_growth_sensitivity=")
+          print(json.dumps(x["common_growth_sensitivity"], indent=2, sort_keys=True))
+          print("trend_slopes=")
+          print(json.dumps(x["trend_slopes"], indent=2, sort_keys=True))
+          print("additive_decomposition=", x["additive_decomposition"])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-lter-five-island-synchrony
+          path: |
+            build/adelie_census.csv
+            build/lter_five_island_result.json
