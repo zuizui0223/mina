@@ -32,7 +32,16 @@
     "secondary_descriptive_metrics": [
       "day of retreat",
       "actual ice days"
-    ]
+    ],
+    "transport_mirror": {
+      "repository": "qdioucass/pallter_decadalpigmentindices",
+      "commit": "aa11abacdd3a9d64a9d6a7574d6ee12f073cf62c",
+      "path": "data_code_analysis/local data/PALLTER_EDISeaIceDataframe.csv",
+      "lfs_sha256": "8a310b2af2abd5b27604100cc082b65c38f1274f0f6eb689514a2ffb8c2f7393",
+      "bytes": 2418,
+      "generation_script": "data_code_analysis/dataset curation/3_PALLTER_EDISeaIceDataImport.py",
+      "note": "transport mirror only; scientific source remains EDI knb-lter-pal.151.9 entity 13bb2b05f1e930574150d9cd8ab04b8a"
+    }
   },
   "island_physical_prior": {
     "source": "Fraser et al. 2013, A Nonmarine Source of Variability in Adelie Penguin Demography, Oceanography 26(3)",
@@ -93,4 +102,4 @@
     "repeat primary M1 on four persistently extant islands CHR,COR,HUM,TOR"
   ],
   "next_gate": "Only after this result is frozen may precipitation/snow metrics or heterospecific abundance be added as additional mechanism predictors."
-}
+}\n
