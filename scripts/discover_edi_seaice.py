@@ -99,8 +99,28 @@ def main() -> int:
     (args.out_dir/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
     print(json.dumps(manifest,indent=2))
 
-    if not any(x["status"]==200 and x["bytes"]>0 for x in downloads):
-        raise SystemExit("no public data entity downloaded")
+    # PASTA revision 9 currently denies anonymous entity reads despite the
+    # published DOI. Fall back to the Palmer LTER ERDDAP catalog and record
+    # matching public mirrors without changing the frozen scientific endpoint.
+    erddap_search=(
+        "https://pallter-data.marine.rutgers.edu/erddap/search/index.csv"
+        "?page=1&itemsPerPage=1000&searchFor=sea%20ice"
+    )
+    status,data,headers=fetch(erddap_search)
+    (args.out_dir/"erddap_search.csv").write_bytes(data)
+    manifest["erddap_search"]={
+        "url":erddap_search,
+        "status":status,
+        "bytes":len(data),
+        "sha256":hashlib.sha256(data).hexdigest(),
+        "head":data[:5000].decode("utf-8","replace"),
+    }
+    (args.out_dir/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
+    print("ERDDAP_SEARCH")
+    print(manifest["erddap_search"]["head"])
+
+    if not any(x["status"]==200 and x["bytes"]>0 for x in downloads) and status!=200:
+        raise SystemExit("neither PASTA entities nor Palmer ERDDAP search are publicly readable")
     return 0
 
 
