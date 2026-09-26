@@ -1,0 +1,26 @@
+name: discover-seaice-source
+
+on:
+  push:
+    branches:
+      - analysis/seaice-habitat-mechanism-v1
+    paths:
+      - "contracts/PALMER_SEAICE_HABITAT_MECHANISM_V1.json"
+      - "scripts/discover_edi_seaice.py"
+      - ".github/workflows/discover-seaice-source.yml"
+  workflow_dispatch:
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Discover pinned EDI sea-ice entity
+        run: python scripts/discover_edi_seaice.py build/seaice_source
+      - uses: actions/upload-artifact@v4
+        with:
+          name: seaice-source-discovery
+          path: build/seaice_source
