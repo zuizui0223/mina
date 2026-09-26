@@ -130,19 +130,40 @@ def _zenodo_fallback() -> tuple[bytes, dict[str, str]]:
         print("zenodo_archive_files=")
         for name in names:
             print("  " + name)
+        seaice_code = [
+            name for name in names
+            if name.lower().endswith("code/3. sea ice phenology.r")
+        ]
+        if len(seaice_code) == 1:
+            print("seaice_analysis_code=")
+            print(zf.read(seaice_code[0]).decode("utf-8", errors="replace"))
+
         candidates = [
             name
             for name in names
             if name.lower().endswith((".csv", ".txt", ".tsv", ".dat"))
             and ("ice" in name.lower() or "sea" in name.lower())
         ]
-        if len(candidates) != 1:
+        if len(candidates) == 1:
+            inner = candidates[0]
+            data = zf.read(inner)
+        elif not candidates:
+            workbooks = [
+                name for name in names
+                if name.lower().endswith("/data/pal datasets.xlsx")
+            ]
+            if len(workbooks) != 1:
+                raise RuntimeError(
+                    "No direct sea-ice table and expected exactly one "
+                    f"Pal Datasets.xlsx workbook; workbooks={workbooks!r}"
+                )
+            inner = workbooks[0]
+            data = zf.read(inner)
+        else:
             raise RuntimeError(
-                "Zenodo archive requires exactly one mechanically selected "
-                f"sea/ice tabular file; candidates={candidates!r}"
+                "Zenodo archive contains multiple mechanically selected "
+                f"sea/ice tabular files; candidates={candidates!r}"
             )
-        inner = candidates[0]
-        data = zf.read(inner)
 
     return data, {
         "transport": "zenodo_palphenology_zip_fallback",
