@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-seaice-habitat-mechanism-v1",
+  "date": "2026-09-27",
+  "status": "pre_seaice_value_frozen",
+  "prerequisite_result": "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+  "response": {
+    "unit": "island x adjacent breeding-season year",
+    "islands": [
+      "CHR",
+      "COR",
+      "HUM",
+      "LIT",
+      "TOR"
+    ],
+    "years": "1992-2017 where both N[t-1] and N[t] exist",
+    "definition": "g_it = log1p(N_it) - log1p(N_i,t-1)",
+    "zero_counts": "retained via log1p; no pseudo-count beyond +1 transform"
+  },
+  "regional_predictor": {
+    "source": {
+      "package_id": "knb-lter-pal.151.9",
+      "version": 9,
+      "doi": "10.6073/pasta/4207e529832840db2282498d9f4f4f05",
+      "title": "Seasonal sea ice indices ... 1979/80 to 2023/24 ice seasons"
+    },
+    "region": "PAL DSR Grid",
+    "primary_metric": "ice season duration (days)",
+    "alignment": "For breeding census year t, use the complete sea-ice season ending in calendar year t (the preceding winter relative to the November census). Never use a sea-ice season that extends beyond census year t.",
+    "standardization": "z-score using training years within each leave-one-year-out fold",
+    "primary_direction": "longer preceding sea-ice duration predicts higher / less-negative Adelie annual growth",
+    "secondary_descriptive_metrics": [
+      "day of retreat",
+      "actual ice days"
+    ]
+  },
+  "island_physical_prior": {
+    "source": "Fraser et al. 2013, A Nonmarine Source of Variability in Adelie Penguin Demography, Oceanography 26(3)",
+    "variable": "suboptimal breeding habitat percent derived from wind-oriented hillshade / southwest-aspect snow-retention proxy",
+    "values_percent": {
+      "LIT": 89.5,
+      "COR": 63,
+      "CHR": 46.8,
+      "TOR": 44.3,
+      "HUM": 44.2
+    },
+    "epistemic_status": "prior-known published predictor, not fresh discovery",
+    "use": "center and scale across the five islands; use only as an interaction modifier of the regional sea-ice predictor in the primary panel model",
+    "prohibited_claim": "Do not present the previously published habitat-decline association as an independent replication."
+  },
+  "models": {
+    "M0": {
+      "formula": "g_it ~ island fixed effects",
+      "role": "local-baseline model"
+    },
+    "M1": {
+      "formula": "g_it ~ island fixed effects + z_seaice_duration_t",
+      "role": "primary regional-forcing model"
+    },
+    "M2": {
+      "formula": "g_it ~ island fixed effects + z_seaice_duration_t + z_seaice_duration_t:z_suboptimal_habitat_i",
+      "role": "secondary regional-by-local-filter interaction model"
+    }
+  },
+  "validation": {
+    "scheme": "leave-one-calendar-year-out; all five island rows for a held-out year are excluded together",
+    "metric": "mean squared error on annual growth",
+    "primary_quantity": "MSE(M0) - MSE(M1), positive means sea ice improves year transfer",
+    "secondary_quantity": "MSE(M1) - MSE(M2), positive means the habitat interaction improves year transfer",
+    "fold_count_expected": 26,
+    "no_hyperparameter_tuning": true
+  },
+  "descriptive_coefficients": {
+    "regional_beta": "M1 full-data coefficient for standardized sea-ice duration",
+    "interaction_beta": "M2 full-data coefficient for seaice x habitat",
+    "uncertainty": "year-cluster bootstrap with 10000 resamples and fixed seed 20260927; descriptive because only 26 annual clusters"
+  },
+  "decision_rules": {
+    "regional_support": "primary LOYO MSE gain > 0 AND full-data regional beta > 0",
+    "habitat_moderation_support": "secondary LOYO MSE gain > 0; interaction sign is reported but no directional sign was predeclared",
+    "no_support": "nonpositive predictive gain for the corresponding added term"
+  },
+  "interpretation_boundaries": [
+    "Predictive support for sea-ice duration is not by itself causal identification.",
+    "The sea-ice predictor is common to all five islands and therefore explains regional annual variation, not island identity.",
+    "The habitat metric is previously published and partly motivated by historical population trends; only its moderation of year-to-year sea-ice response is treated as the new test here.",
+    "Do not infer competition from residual island heterogeneity.",
+    "Post-extinction Litchfield zeros are retained for population-state prediction but sensitivity analyses must report results excluding years after first persistent zero."
+  ],
+  "sensitivity_analyses": [
+    "repeat M0/M1/M2 excluding Litchfield years after its first persistent zero",
+    "repeat using actual ice days instead of season duration as a non-primary robustness check",
+    "repeat primary M1 on four persistently extant islands CHR,COR,HUM,TOR"
+  ],
+  "next_gate": "Only after this result is frozen may precipitation/snow metrics or heterospecific abundance be added as additional mechanism predictors."
+}
