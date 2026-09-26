@@ -37,7 +37,9 @@
     "missing_species_record": "exclude island-year; do not silently convert to zero",
     "primary_between_year_transition": "same contributing site coverage in both years",
     "interpolation": false,
-    "historical_within_species_trait_change_inferred": false
+    "historical_within_species_trait_change_inferred": false,
+    "species_not_known_to_breed_at_site": "structural zero allowed using APBP site_species membership",
+    "known_breeder_without_year_count": "missing; island-year excluded"
   },
   "interpretation_boundaries": [
     "No evolutionary local-adaptation claim from these observational data.",
@@ -45,5 +47,37 @@
     "Body mass is condition-sensitive and is reported separately from structural traits.",
     "Blood stable isotopes integrate pre-breeding foraging and are not local summer island-foraging measurements.",
     "Community-weighted historical morphology initially uses fixed species trait centroids; it quantifies assembly-driven functional change, not historical trait evolution."
-  ]
+  ],
+  "ecological_system": {
+    "framing": "externally subsidized breeding islands",
+    "rationale": [
+      "Pygoscelis penguins forage at sea but reproduce on land, so the breeding island does not contain the main trophic resource base.",
+      "Island occupancy and breeding performance can therefore be strongly filtered by snow-free nesting area, geomorphology, precipitation and access to the marine foraging landscape.",
+      "Direct biotic interactions are not assumed absent: nest-site competition can occur locally and marine foraging niches can overlap or partition.",
+      "Penguins also transport marine nutrients onto land and alter soils and terrestrial microbial/plant communities, so they are ecosystem engineers as well as island occupants."
+    ],
+    "island_ecology_contrast": "Unlike many terrestrial island communities, local food-web interactions and resource production are partly externalized to the surrounding ocean while breeding habitat is spatially discrete on land."
+  },
+  "special_system_hypotheses": {
+    "E1_abiotic_first_breeding_filter": "If terrestrial trophic interactions are secondary at the island scale, colony persistence and reassembly should track snow, geomorphology and regional sea-ice forcing more strongly than local heterospecific abundance.",
+    "E2_localized_biotic_interaction": "Where species share nesting space, heterospecific abundance may matter through nest-site competition; this should be strongest in mixed or spatially overlapping colonies rather than as a universal island-wide effect.",
+    "E3_marine_partitioning": "Coexisting species may reduce trophic competition by spatial or temporal partitioning of marine foraging areas, decoupling local terrestrial coexistence from a single shared island food resource.",
+    "E4_biovector_feedback": "Colony abundance should modify the terrestrial island environment through marine-derived nutrient deposition, creating a feedback from penguin community composition to soils, vegetation and microbial communities.",
+    "E5_externalized_resource_island_biogeography": "For these central-place marine foragers, effective island quality should depend on ice-free breeding habitat and access to marine resources, not only classical island area and isolation."
+  },
+  "interaction_boundary": {
+    "do_not_assume_interaction_free": true,
+    "test_competition_separately": true,
+    "candidate_biotic_predictors": [
+      "heterospecific nest abundance at shared breeding sites",
+      "local total colony density",
+      "mixed-colony spatial overlap when available"
+    ],
+    "candidate_abiotic_predictors": [
+      "snow persistence or snow-free nesting area",
+      "island geomorphology/topography",
+      "precipitation",
+      "regional sea-ice timing/duration"
+    ]
+  }
 }
