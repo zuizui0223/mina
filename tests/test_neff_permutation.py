@@ -76,3 +76,32 @@ def test_permutation_diagnostic_runs_on_synthetic_fixture(tmp_path, monkeypatch)
     assert len(perm)==len(rows)
     result=mod.loyo(perm,"effective")
     assert "mse_gain_C0_minus_C1" in result
+
+
+def test_fast_fwl_matches_exact_loyo(tmp_path):
+    census=tmp_path/"census.csv"
+    _write_fixture(census)
+    import numpy as np
+    import mina.neff_permutation as mod
+
+    rows=transition_rows(census)
+    matrix=mod._permutation_predictor_matrix(rows,permutations=5,seed=99)
+    fast_gain,fast_beta=mod._fast_permutation_statistics(rows,matrix)
+
+    for column in range(matrix.shape[1]):
+        perm=[]
+        for index,row in enumerate(rows):
+            copied=dict(row)
+            copied["effective_colony_number"]=__import__("math").expm1(
+                float(matrix[index,column])
+            )
+            perm.append(copied)
+        exact=mod.loyo(perm,"effective")
+        exact_beta=mod.full_coefficient(perm,"effective")
+        assert np.isclose(
+            fast_gain[column],
+            exact["mse_gain_C0_minus_C1"],
+            atol=1e-12,
+            rtol=0,
+        )
+        assert np.isclose(fast_beta[column],exact_beta,atol=1e-12,rtol=0)
