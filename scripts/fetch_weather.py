@@ -11,9 +11,9 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-SCIENTIFIC_PACKAGE="knb-lter-pal.28.8"
-SCIENTIFIC_DOI="10.6073/pasta/cddd3985350334b876cd7d6d1a5bc7bf"
-SCIENTIFIC_ENTITY="375b34051b162d84516ec2d02f864675"
+SCIENTIFIC_PACKAGE="Palmer LTER daily weather ver.9"
+SCIENTIFIC_DOI="10.6073/pasta/3eefb45dbfb784c3cabe3690ea46fe9e"
+SCIENTIFIC_ENTITY="public ver.9 snapshot"
 
 MIRROR_REPO="coding-for-reproducible-research/CfRR_Courses"
 MIRROR_COMMIT="de62ff56db79f75c2a63e737f3cc4f63c9363a2c"
@@ -64,8 +64,8 @@ def main() -> int:
         )
     if len(rows)!=10674:
         raise RuntimeError(f"expected 10674 daily rows, observed {len(rows)}")
-    if rows[0][date_field]!="1989-04-01":
-        raise RuntimeError(f"unexpected first date: {rows[0][date_field]!r}")
+    if rows[0][date_field]!="1989-04-01" or rows[-1][date_field]!="2023-06-30":
+        raise RuntimeError(f"unexpected date coverage: {rows[0][date_field]!r}..{rows[-1][date_field]!r}")
     if rows[0][rainfall_field] not in {"0","0.0","0.00"}:
         raise RuntimeError("first rainfall value disagrees with published EDI structure")
     if rows[0][snow_field] not in {"0","0.0","0.00"}:
