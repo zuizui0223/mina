@@ -31,11 +31,28 @@ def test_mechanism_audit_preserves_frozen_directions():
     assert by[">50-pair group count"]["relative_error_reduction"] > 0
 
 
-def test_synthesis_v3_includes_spatial_boundary():
+def test_synthesis_v4_includes_spatial_boundary():
     from mina.synthesis import build
     root=Path(__file__).resolve().parents[1]/"results"
     x=build(root)
     spatial=x["local_colony_state"]["external_spatial_triangulation"]
-    assert x["synthesis_id"].endswith("-v3")
+    assert x["synthesis_id"].endswith("-v4")
     assert spatial["phenomenon_level_convergence"] is True
     assert spatial["identifier_level_validation"] is False
+
+
+def test_synthesis_v4_locks_structured_neff_nulls():
+    from mina.synthesis import build
+    root=Path(__file__).resolve().parents[1]/"results"
+    x=build(root)
+    n=x["local_colony_state"]["effective_colony_number"]
+    assert n["predictive_supported_after_uncertainty"] is False
+    assert abs(n["predictive_gain_permutation_p"]-0.2622368881555922)<1e-12
+    assert n["circular_shift"]["retained_against_both"] is True
+    assert n["circular_shift"]["independent_island_p"]<1e-4
+    assert abs(n["circular_shift"]["joint_persistent_islands_exact_p"]-(1/416))<1e-12
+    assert max(
+        n["circular_coupling"]["poisson_p_ge_observed"],
+        n["circular_coupling"]["gamma_poisson_cv10_p_ge_observed"],
+        n["circular_coupling"]["gamma_poisson_cv20_p_ge_observed"],
+    )<0.01
