@@ -85,6 +85,30 @@ def load_units(path: str | Path) -> list[dict[str, object]]:
     return units
 
 
+def _same_both_fraction(
+    pair: dict[str, object],
+    units: list[dict[str, object]],
+    date_override: dict[tuple[int, int], date] | None = None,
+) -> float:
+    i = int(pair["i"])
+    j = int(pair["j"])
+    shared = tuple(int(y) for y in pair["_shared_years"])
+    same_both = 0
+    for year in shared:
+        if date_override is None:
+            a0 = units[i]["series"][year - 1][0]
+            a1 = units[i]["series"][year][0]
+            b0 = units[j]["series"][year - 1][0]
+            b1 = units[j]["series"][year][0]
+        else:
+            a0 = date_override[(i, year - 1)]
+            a1 = date_override[(i, year)]
+            b0 = date_override[(j, year - 1)]
+            b1 = date_override[(j, year)]
+        same_both += int(a0 == b0 and a1 == b1)
+    return same_both / len(shared)
+
+
 def build_pair_records(
     units: list[dict[str, object]],
     date_override: dict[tuple[int, int], date] | None = None,
@@ -96,7 +120,7 @@ def build_pair_records(
             b = units[j]
             if str(a["island"]) != str(b["island"]):
                 continue
-            shared = sorted(set(a["growth"]) & set(b["growth"]))
+            shared = tuple(sorted(set(a["growth"]) & set(b["growth"])))
             if len(shared) < MIN_SHARED:
                 continue
             xa = np.asarray([float(a["growth"][y]) for y in shared], dtype=float)
@@ -104,34 +128,39 @@ def build_pair_records(
             if float(np.std(xa, ddof=1)) <= 0 or float(np.std(xb, ddof=1)) <= 0:
                 continue
             r = float(np.clip(np.corrcoef(xa, xb)[0, 1], -0.999999, 0.999999))
-            same_both = 0
-            for year in shared:
-                if date_override is None:
-                    a0 = a["series"][year - 1][0]
-                    a1 = a["series"][year][0]
-                    b0 = b["series"][year - 1][0]
-                    b1 = b["series"][year][0]
-                else:
-                    a0 = date_override[(i, year - 1)]
-                    a1 = date_override[(i, year)]
-                    b0 = date_override[(j, year - 1)]
-                    b1 = date_override[(j, year)]
-                same_both += int(a0 == b0 and a1 == b1)
-            pairs.append(
-                {
-                    "i": i,
-                    "j": j,
-                    "island": str(a["island"]),
-                    "n_shared": len(shared),
-                    "weight": float(len(shared) - 3),
-                    "z_r": float(np.arctanh(r)),
-                    "r": r,
-                    "same_both_endpoint_fraction": same_both / len(shared),
-                }
+            pair = {
+                "i": i,
+                "j": j,
+                "island": str(a["island"]),
+                "n_shared": len(shared),
+                "weight": float(len(shared) - 3),
+                "z_r": float(np.arctanh(r)),
+                "r": r,
+                "_shared_years": shared,
+            }
+            pair["same_both_endpoint_fraction"] = _same_both_fraction(
+                pair, units, date_override
             )
+            pairs.append(pair)
     if not pairs:
         raise ValueError("no informative within-island colony pairs")
     return pairs
+
+
+def update_date_predictors(
+    base_pairs: list[dict[str, object]],
+    units: list[dict[str, object]],
+    date_override: dict[tuple[int, int], date],
+) -> list[dict[str, object]]:
+    """Update only timing predictors; growth correlations and Fisher weights are invariant."""
+    out: list[dict[str, object]] = []
+    for row in base_pairs:
+        copied = dict(row)
+        copied["same_both_endpoint_fraction"] = _same_both_fraction(
+            row, units, date_override
+        )
+        out.append(copied)
+    return out
 
 
 def focal_beta(pairs: list[dict[str, object]]) -> float:
@@ -184,7 +213,7 @@ def analyze(
     null = np.empty(n_permutations, dtype=float)
     for k in range(n_permutations):
         override = permuted_dates(units, rng)
-        null_pairs = build_pair_records(units, override)
+        null_pairs = update_date_predictors(observed_pairs, units, override)
         null[k] = focal_beta(null_pairs)
     p_upper = float((1 + np.sum(null >= beta)) / (n_permutations + 1))
     same = np.asarray(
