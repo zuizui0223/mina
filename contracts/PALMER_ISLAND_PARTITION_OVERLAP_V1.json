@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-partition-overlap-v1",
+  "date": "2026-09-27",
+  "status": "frozen_after_id_continuity_audit_before_overlap_outcome_access",
+  "prerequisite": [
+    "contracts/PALMER_ISLAND_PARTITION_V1.json",
+    "descriptive colony-ID continuity audit showing non-random code start/stop events on CHR and TOR"
+  ],
+  "rationale": "The complete-case V1 estimand failed its predeclared 75% retention validity gate because administrative/observational colony-code start-stop patterns remove otherwise informative trajectories. V2 changes the estimand rather than changing that gate: use all observed adjacent-year growth intervals without imputing missing codes or merging identifiers.",
+  "data": {
+    "source": "Palmer LTER AdeliePenguinCensus",
+    "years": "1991-2017 inclusive",
+    "unit": "island-specific colony_code",
+    "inclusion": "retain colony codes with at least one positive reported count; never-positive administrative codes contribute no demographic trajectory and are excluded",
+    "missingness_rule": "a growth interval exists only when the same colony_code is reported in both adjacent years; no missing value is treated as zero and no colony codes are merged or relabeled"
+  },
+  "primary_statistic": {
+    "pairwise_growth_correlation": "Pearson r between two colony-code annual log1p-growth series using their shared observed adjacent-year intervals",
+    "minimum_overlap": "at least 4 shared growth intervals, the smallest n giving positive Fisher-z information weight n-3",
+    "weighting": "Fisher z=atanh(r), weighted by n_shared-3; transform the weighted mean back with tanh separately for within-island and between-island pairs",
+    "contrast": "weighted Fisher-mean r within observed islands minus weighted Fisher-mean r between observed islands",
+    "direction": "two-sided primary test; positive contrast means colonies on the same island are more synchronous, negative means they are less synchronous"
+  },
+  "null": {
+    "scheme": "permute observed island labels within five fixed rank strata of each colony code's mean log1p abundance over its reported years",
+    "preservation": [
+      "all colony trajectories and their missingness patterns",
+      "global island group sizes",
+      "island label composition within abundance strata"
+    ],
+    "permutations": 20000,
+    "seed": 20260927
+  },
+  "validity": [
+    "each observed island must have at least two included colony codes",
+    "the observed partition must have positive Fisher-information weight for both within-island and between-island pair sets"
+  ],
+  "decision_rule": "island demographic partition is supported for this overlap estimand only if the validity conditions pass and the empirical two-sided permutation p for the within-minus-between correlation contrast is <= 0.05",
+  "interpretation_boundaries": [
+    "V1 remains formally invalid under its original 75% complete-case retention rule; V2 does not retroactively rescue it.",
+    "A positive V2 result shows that nominal island membership captures colony-level temporal covariance despite code start-stop patterns.",
+    "Without colony coordinates, V2 cannot distinguish coastline/island identity from geographic distance or other spatially structured island-level environments.",
+    "Covariance does not identify dispersal or individual movement.",
+    "Do not change overlap length, Fisher weighting, abundance strata, transforms, or permutation scheme after opening V2."
+  ],
+  "next_gate": "If V2 is supported, freeze a GIS distance-conditioned test before opening colony coordinates. If unsupported, close the island-partition claim for Palmer rather than tune the overlap estimator."
+}
