@@ -1,27 +1,34 @@
 #!/usr/bin/env python3
-"""Fetch the frozen Palmer Station daily weather dataset used by the local-filter test."""
+"""Fetch frozen Palmer Station daily weather, with AMRDC transport discovery."""
 from __future__ import annotations
 
 import argparse
 import hashlib
-import urllib.error
+import re
 import urllib.request
+from urllib.parse import urljoin
 from pathlib import Path
 
 PACKAGE="knb-lter-pal.28.8"
 DOI="10.6073/pasta/cddd3985350334b876cd7d6d1a5bc7bf"
 ENTITY="375b34051b162d84516ec2d02f864675"
-CANDIDATES=(
+EDI_URLS=(
     f"https://pasta.lternet.edu/package/data/eml/knb-lter-pal/28/8/{ENTITY}",
     f"http://pasta.lternet.edu/package/data/eml/knb-lter-pal/28/8/{ENTITY}",
 )
+AMRDC_BASE="https://amrc.ssec.wisc.edu/data/ftp/pub/palmer/climatology/"
 UA="Mozilla/5.0 mina-island-reassembly/0.5"
 
 
 def fetch(url: str) -> bytes:
-    req=urllib.request.Request(url,headers={"User-Agent":UA,"Accept":"text/csv,text/plain,*/*"})
+    req=urllib.request.Request(url,headers={"User-Agent":UA,"Accept":"*/*"})
     with urllib.request.urlopen(req,timeout=90) as r:
         return r.read()
+
+
+def valid_edi(data: bytes) -> bool:
+    head=data[:2500]
+    return len(data)>1000 and b"Date" in head and (b"Rainfall" in head or b"Precip" in head)
 
 
 def main() -> int:
@@ -29,40 +36,54 @@ def main() -> int:
     parser.add_argument("out",type=Path)
     args=parser.parse_args()
     failures=[]
-    data=None
-    used=None
-    for url in CANDIDATES:
+    for url in EDI_URLS:
         try:
-            candidate=fetch(url)
+            data=fetch(url)
         except Exception as exc:
             failures.append(f"{url}: {exc!r}")
             continue
-        text=candidate[:500].decode("utf-8","replace")
-        if len(candidate)<1000 or "not authorized" in text.lower():
-            failures.append(f"{url}: rejected response bytes={len(candidate)} head={text!r}")
-            continue
-        data=candidate
-        used=url
-        break
-    if data is None:
+        if valid_edi(data):
+            args.out.parent.mkdir(parents=True,exist_ok=True)
+            args.out.write_bytes(data)
+            print(f"scientific_package={PACKAGE}")
+            print(f"doi={DOI}")
+            print(f"entity={ENTITY}")
+            print("transport=EDI direct")
+            print(f"transport_url={url}")
+            print(f"sha256={hashlib.sha256(data).hexdigest()}")
+            print(f"bytes={len(data)}")
+            return 0
+        failures.append(f"{url}: invalid bytes={len(data)}")
+
+    # EDI currently returns 403 to anonymous CI. Discover the upstream AMRDC
+    # climatology archive used by the same Palmer Station weather product.
+    try:
+        listing=fetch(AMRDC_BASE).decode("utf-8","replace")
+    except Exception as exc:
         raise RuntimeError(
-            "Palmer weather entity could not be fetched from frozen EDI endpoints. "
-            + " | ".join(failures)
-        )
-    if b"Date" not in data[:1000] or b"Precip" not in data[:2000]:
-        raise RuntimeError("weather entity lacks expected Date/Precipitation schema")
-    args.out.parent.mkdir(parents=True,exist_ok=True)
-    args.out.write_bytes(data)
-    print(f"package={PACKAGE}")
+            "EDI weather unavailable and AMRDC archive listing failed. "
+            + " | ".join(failures) + f" | AMRDC: {exc!r}"
+        ) from exc
+
+    hrefs=[]
+    for href in re.findall(r'href=["\']([^"\']+)["\']',listing,re.I):
+        if href.startswith("?") or href in {"../","/"}:
+            continue
+        hrefs.append(urljoin(AMRDC_BASE,href))
+    print(f"scientific_package={PACKAGE}")
     print(f"doi={DOI}")
     print(f"entity={ENTITY}")
-    print(f"transport_url={used}")
-    print(f"sha256={hashlib.sha256(data).hexdigest()}")
-    print(f"bytes={len(data)}")
-    print("first_lines=")
-    for line in data.decode("utf-8-sig","replace").splitlines()[:4]:
-        print(line[:1000])
-    return 0
+    print("EDI_failures=" + " | ".join(failures))
+    print(f"amrdc_listing_sha256={hashlib.sha256(listing.encode()).hexdigest()}")
+    print(f"amrdc_link_count={len(hrefs)}")
+    print("amrdc_links=")
+    for url in hrefs[:200]:
+        print(url)
+
+    raise RuntimeError(
+        "EDI entity is unavailable; AMRDC transport inventory printed above. "
+        "Freeze a deterministic AMRDC reconstruction rule before opening values."
+    )
 
 
 if __name__=="__main__":
