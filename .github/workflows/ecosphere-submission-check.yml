@@ -1,0 +1,77 @@
+name: ecosphere-submission-check
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - submission/ecosphere-v0.4.1
+    paths:
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_4.md"
+      - "docs/FIGURE_CAPTIONS_V3.md"
+      - "docs/REFERENCES_V3.bib"
+      - "docs/TITLE_PAGE_ECOSPHERE_TEMPLATE.md"
+      - "docs/COVER_LETTER_ECOSPHERE_V1.md"
+      - "docs/AI_DISCLOSURE_ECOSPHERE_V1.md"
+      - "docs/SUBMISSION_CHECKLIST_ECOSPHERE_V1.md"
+      - "contracts/PALMER_ECOSPHERE_SUBMISSION_V0_4_1.json"
+      - "src/mina/ecosphere_guard.py"
+      - "tests/test_ecosphere_guard.py"
+      - "pyproject.toml"
+      - ".github/workflows/ecosphere-submission-check.yml"
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_4.md"
+      - "docs/FIGURE_CAPTIONS_V3.md"
+      - "docs/REFERENCES_V3.bib"
+      - "docs/TITLE_PAGE_ECOSPHERE_TEMPLATE.md"
+      - "docs/COVER_LETTER_ECOSPHERE_V1.md"
+      - "docs/AI_DISCLOSURE_ECOSPHERE_V1.md"
+      - "docs/SUBMISSION_CHECKLIST_ECOSPHERE_V1.md"
+      - "contracts/PALMER_ECOSPHERE_SUBMISSION_V0_4_1.json"
+      - "src/mina/ecosphere_guard.py"
+      - "tests/test_ecosphere_guard.py"
+      - "pyproject.toml"
+      - ".github/workflows/ecosphere-submission-check.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run full test suite
+        run: pytest
+      - name: Guard scientific manuscript
+        run: |
+          mina-manuscript-guard \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_4.md \
+            --captions docs/FIGURE_CAPTIONS_V3.md \
+            --bibliography docs/REFERENCES_V3.bib \
+            --results results > build-ecosphere-science-check.json
+      - name: Guard Ecosphere submission package
+        run: |
+          mina-ecosphere-guard \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_4.md \
+            --title-page docs/TITLE_PAGE_ECOSPHERE_TEMPLATE.md \
+            --ai-disclosure docs/AI_DISCLOSURE_ECOSPHERE_V1.md \
+            | tee build-ecosphere-format-check.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecosphere-submission-v0-4-1
+          path: |
+            docs/MANUSCRIPT_ECOSPHERE_V0_4.md
+            docs/FIGURE_CAPTIONS_V3.md
+            docs/REFERENCES_V3.bib
+            docs/TITLE_PAGE_ECOSPHERE_TEMPLATE.md
+            docs/COVER_LETTER_ECOSPHERE_V1.md
+            docs/AI_DISCLOSURE_ECOSPHERE_V1.md
+            docs/SUBMISSION_CHECKLIST_ECOSPHERE_V1.md
+            build-ecosphere-science-check.json
+            build-ecosphere-format-check.json
