@@ -120,7 +120,7 @@ def figure3(data: Path, out: Path) -> None:
     axes[0].invert_yaxis()
     axes[0].set_xlabel("Excess beta variability (β − 1)")
     axes[0].set_title("Raw abundance: nested beta transition")
-    axes[0].legend(frameon=False, loc="lower right")
+    axes[0].legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=2)
     axes[0].axvline(0, linewidth=0.8)
     axes[0].set_xlim(0, max(within) + 0.040)
     for i, r in enumerate(raw):
@@ -164,7 +164,7 @@ def figure3(data: Path, out: Path) -> None:
     axes[1].set_ylabel("Beta variability (β = 1/φ)")
     axes[1].set_title("Centered signals retain the hierarchy")
     axes[1].axhline(1.0, linewidth=0.8)
-    axes[1].legend(frameon=False, loc="center left", bbox_to_anchor=(1.02, 0.5))
+    axes[1].legend(frameon=False, loc="upper center")
 
     fig.tight_layout()
     _save(fig, out, "figure3_hierarchical_variability")
