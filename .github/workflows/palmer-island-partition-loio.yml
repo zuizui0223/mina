@@ -1,0 +1,59 @@
+name: palmer-island-partition-loio
+
+on:
+  push:
+    branches:
+      - analysis/island-partition-v1
+    paths:
+      - "src/mina/island_partition_loio.py"
+      - "tests/test_island_partition_loio.py"
+      - "contracts/PALMER_ISLAND_PARTITION_LOIO_V1.json"
+      - ".github/workflows/palmer-island-partition-loio.yml"
+  pull_request:
+    paths:
+      - "src/mina/island_partition_loio.py"
+      - "tests/test_island_partition_loio.py"
+      - "contracts/PALMER_ISLAND_PARTITION_LOIO_V1.json"
+      - ".github/workflows/palmer-island-partition-loio.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen LOIO tests
+        run: pytest -q tests/test_island_partition_loio.py
+      - name: Fetch frozen LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run leave-one-island-out robustness
+        run: |
+          python -m mina.island_partition_loio \
+            --census build/adelie_census.csv \
+            --out build/island_partition_loio_result.json \
+            --permutations 20000 \
+            --base-seed 20260927
+      - name: Print LOIO receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/island_partition_loio_result.json").read_text())
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          for island,row in x["results"].items():
+              print(
+                  island,
+                  "contrast=",row["observed"]["partition_contrast_r"],
+                  "within=",row["observed"]["within_fisher_mean_r"],
+                  "between=",row["observed"]["between_fisher_mean_r"],
+                  "p=",row["null"]["two_sided_p"],
+              )
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-partition-loio
+          path: build/island_partition_loio_result.json
