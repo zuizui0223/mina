@@ -1,124 +1,150 @@
-"""Descriptive audit of Palmer LTER island census timing."""
+"""Descriptive audit of Palmer LTER island and subcolony census timing."""
 from __future__ import annotations
 
 import argparse
 import csv
 import json
-from collections import defaultdict
-from datetime import datetime
+from collections import Counter, defaultdict
+from datetime import date, datetime
 from itertools import combinations
 from pathlib import Path
 
 from .lter import ISLANDS
 
 
-def _parse_date(value: str):
+def _parse_date(value: str) -> date:
     return datetime.fromisoformat(value.replace("Z", "+00:00")).date()
+
+
+def _median(values: list[int]) -> float | None:
+    if not values:
+        return None
+    ordered = sorted(values)
+    n = len(ordered)
+    if n % 2:
+        return float(ordered[n // 2])
+    return float((ordered[n // 2 - 1] + ordered[n // 2]) / 2)
+
+
+def _ordinal_to_iso(value: float) -> str:
+    # Median can fall halfway between two dates; retain the numeric ordinal
+    # separately and use the earlier calendar date only as a display label.
+    return str(date.fromordinal(int(value)))
 
 
 def audit(path: str | Path) -> dict[str, object]:
     with Path(path).open("r", encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
-    dates: dict[tuple[int, str], set] = defaultdict(set)
+
+    cell_rows: dict[tuple[int, str], list[date]] = defaultdict(list)
     for row in rows:
         island = str(row.get("island_name", "")).strip()
         if island not in ISLANDS:
             continue
         value = str(row.get("time", "")).strip()
         try:
-            date = _parse_date(value)
+            census_date = _parse_date(value)
         except (ValueError, TypeError):
             continue
-        if 1991 <= date.year <= 2017:
-            dates[(date.year, island)].add(date)
+        if 1991 <= census_date.year <= 2017:
+            cell_rows[(census_date.year, island)].append(census_date)
 
-    multi_date_cells = {
-        f"{year}_{island}": sorted(str(x) for x in local)
-        for (year, island), local in dates.items()
-        if len(local) != 1
-    }
-    if multi_date_cells:
-        raise ValueError(f"multiple census dates within island-year: {multi_date_cells}")
+    cells: dict[tuple[int, str], dict[str, object]] = {}
+    for (year, island), local in sorted(cell_rows.items()):
+        ordinals = [d.toordinal() for d in local]
+        unique = sorted(set(local))
+        counts = Counter(local)
+        modal_n = max(counts.values())
+        median_ordinal = float(_median(ordinals))
+        cells[(year, island)] = {
+            "year": year,
+            "island": island,
+            "n_colony_rows": len(local),
+            "n_unique_dates": len(unique),
+            "unique_dates": [str(d) for d in unique],
+            "within_island_span_days": max(ordinals) - min(ordinals),
+            "modal_date_fraction": modal_n / len(local),
+            "median_date_ordinal": median_ordinal,
+            "median_date_display": _ordinal_to_iso(median_ordinal),
+        }
 
+    complete_years = [
+        year
+        for year in range(1991, 2018)
+        if all((year, island) in cells for island in ISLANDS)
+    ]
     yearly = []
-    pair_diffs = []
-    for year in range(1991, 2018):
-        if not all((year, island) in dates for island in ISLANDS):
-            continue
+    cross_pair_diffs: list[float] = []
+    for year in complete_years:
         local = {
-            island: next(iter(dates[(year, island)]))
+            island: float(cells[(year, island)]["median_date_ordinal"])
             for island in ISLANDS
         }
-        ordinals = [date.toordinal() for date in local.values()]
-        span = max(ordinals) - min(ordinals)
+        values = list(local.values())
         diffs = {}
         for a, b in combinations(ISLANDS, 2):
-            value = abs((local[a] - local[b]).days)
-            diffs[f"{a}__{b}"] = value
-            pair_diffs.append(value)
+            difference = abs(local[a] - local[b])
+            diffs[f"{a}__{b}"] = difference
+            cross_pair_diffs.append(difference)
         yearly.append(
             {
                 "year": year,
-                "dates": {island: str(local[island]) for island in ISLANDS},
-                "five_island_span_days": span,
-                "pairwise_absolute_day_differences": diffs,
+                "median_dates": {
+                    island: cells[(year, island)]["median_date_display"]
+                    for island in ISLANDS
+                },
+                "five_island_median_date_span_days": max(values) - min(values),
+                "pairwise_absolute_median_date_differences": diffs,
             }
         )
 
-    spans = [int(row["five_island_span_days"]) for row in yearly]
-    pair_diffs_sorted = sorted(pair_diffs)
-
-    def median(values):
-        n = len(values)
-        if n == 0:
-            return None
-        ordered = sorted(values)
-        if n % 2:
-            return float(ordered[n // 2])
-        return float((ordered[n // 2 - 1] + ordered[n // 2]) / 2)
+    internal_spans = [
+        int(cell["within_island_span_days"]) for cell in cells.values()
+    ]
+    multi_date = [
+        cell for cell in cells.values() if int(cell["n_unique_dates"]) > 1
+    ]
+    cross_spans = [
+        float(row["five_island_median_date_span_days"]) for row in yearly
+    ]
 
     return {
-        "schema_version": 1,
-        "analysis_id": "mina-palmer-census-timing-audit-v1",
-        "n_complete_years": len(yearly),
-        "yearly": yearly,
-        "five_island_span_days": {
-            "median": median(spans),
-            "max": max(spans) if spans else None,
-            "fraction_same_day": (
-                sum(x == 0 for x in spans) / len(spans) if spans else None
+        "schema_version": 2,
+        "analysis_id": "mina-palmer-census-timing-audit-v2",
+        "n_complete_years": len(complete_years),
+        "n_island_year_cells": len(cells),
+        "within_island_year_timing": {
+            "n_multi_date_cells": len(multi_date),
+            "fraction_single_date": (
+                sum(span == 0 for span in internal_spans) / len(internal_spans)
+                if internal_spans else None
             ),
-            "fraction_within_1_day": (
-                sum(x <= 1 for x in spans) / len(spans) if spans else None
-            ),
-            "fraction_within_3_days": (
-                sum(x <= 3 for x in spans) / len(spans) if spans else None
-            ),
-            "fraction_within_7_days": (
-                sum(x <= 7 for x in spans) / len(spans) if spans else None
-            ),
+            "median_span_days": _median(internal_spans),
+            "max_span_days": max(internal_spans) if internal_spans else None,
+            "multi_date_cells": multi_date,
         },
-        "all_pairwise_day_difference": {
-            "n": len(pair_diffs_sorted),
-            "median": median(pair_diffs_sorted),
-            "max": max(pair_diffs_sorted) if pair_diffs_sorted else None,
-            "fraction_same_day": (
-                sum(x == 0 for x in pair_diffs_sorted) / len(pair_diffs_sorted)
-                if pair_diffs_sorted else None
+        "cross_island_median_timing": {
+            "yearly": yearly,
+            "median_five_island_span_days": _median(cross_spans),
+            "max_five_island_span_days": max(cross_spans) if cross_spans else None,
+            "pairwise_median_absolute_difference_days": _median(cross_pair_diffs),
+            "pairwise_max_absolute_difference_days": (
+                max(cross_pair_diffs) if cross_pair_diffs else None
             ),
-            "fraction_within_1_day": (
-                sum(x <= 1 for x in pair_diffs_sorted) / len(pair_diffs_sorted)
-                if pair_diffs_sorted else None
+            "pairwise_fraction_same_median_date": (
+                sum(x == 0 for x in cross_pair_diffs) / len(cross_pair_diffs)
+                if cross_pair_diffs else None
             ),
-            "fraction_within_3_days": (
-                sum(x <= 3 for x in pair_diffs_sorted) / len(pair_diffs_sorted)
-                if pair_diffs_sorted else None
+            "pairwise_fraction_within_3_days": (
+                sum(x <= 3 for x in cross_pair_diffs) / len(cross_pair_diffs)
+                if cross_pair_diffs else None
             ),
         },
         "interpretation_boundary": {
             "descriptive_only": True,
-            "small_date_offsets_do_not_rule_out_counting_error": True,
-            "large_date_offsets_would_motivate_explicit_timing_sensitivity": True,
+            "subcolonies_within_an_island_are_not_always_counted_same_day": True,
+            "timing_audit_alone_does_not_rule_out_shared_observer_error": True,
+            "date_separated_pair_test_is_required_to_address_same_day_batching": True,
         },
     }
 
@@ -130,7 +156,10 @@ def main() -> int:
     args = p.parse_args()
     result = audit(args.census)
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    args.out.write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     return 0
 
 
