@@ -1,0 +1,73 @@
+name: palmer-island-chick-success
+
+on:
+  push:
+    branches:
+      - validation/island-chick-success-coherence-v1
+    paths:
+      - "scripts/fetch_lter_chick_counts.py"
+      - "src/mina/island_chick_success.py"
+      - "tests/test_island_chick_success.py"
+      - "contracts/PALMER_ISLAND_CHICK_SUCCESS_COHERENCE_V1.json"
+      - ".github/workflows/palmer-island-chick-success.yml"
+  pull_request:
+    paths:
+      - "scripts/fetch_lter_chick_counts.py"
+      - "src/mina/island_chick_success.py"
+      - "tests/test_island_chick_success.py"
+      - "contracts/PALMER_ISLAND_CHICK_SUCCESS_COHERENCE_V1.json"
+      - ".github/workflows/palmer-island-chick-success.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen synthetic tests
+        run: pytest -q tests/test_island_chick_success.py
+      - name: Fetch frozen adult and chick censuses
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+      - name: Run independent chick-success validation
+        run: |
+          python -m mina.island_chick_success \
+            --chicks build/adelie_chicks.csv \
+            --adult-census build/adelie_census.csv \
+            --out build/island_chick_success.json \
+            --permutations 20000 \
+            --seed 20260927
+      - name: Print independent validation receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/island_chick_success.json").read_text())
+          print("n_rows=",x["n_usable_chick_rows"],"season_range=",x["season_range"])
+          for key in ("five_island_primary","four_island_no_litchfield"):
+              v=x[key]
+              print(
+                  key,
+                  "n=",v["n_eligible_colonies"],
+                  "contrast=",v["observed"]["island_success_covariance_contrast"],
+                  "within=",v["observed"]["within_mean_pairseason_product"],
+                  "between=",v["observed"]["between_mean_pairseason_product"],
+                  "p=",v["null"]["two_sided_p"],
+                  "supported=",v["supported"],
+              )
+              print("per_island=",json.dumps(v["per_island"],sort_keys=True))
+          print("adult_overlap=",json.dumps(x["adult_denominator_overlap"],sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-chick-success
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/island_chick_success.json
