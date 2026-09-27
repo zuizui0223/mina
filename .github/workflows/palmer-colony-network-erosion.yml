@@ -1,0 +1,51 @@
+name: palmer-colony-network-erosion
+
+on:
+  push:
+    branches:
+      - analysis/colony-network-erosion-v1
+    paths:
+      - "src/mina/colony_network.py"
+      - "contracts/PALMER_COLONY_NETWORK_EROSION_V1.json"
+      - ".github/workflows/palmer-colony-network-erosion.yml"
+  pull_request:
+    paths:
+      - "src/mina/colony_network.py"
+      - "contracts/PALMER_COLONY_NETWORK_EROSION_V1.json"
+      - ".github/workflows/palmer-colony-network-erosion.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e .
+      - name: Fetch frozen LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run colony-network erosion test
+        run: |
+          mina-colony-network \
+            --census build/adelie_census.csv \
+            --out build/colony_network_result.json
+      - name: Print result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/colony_network_result.json").read_text())
+          print("primary=",json.dumps(x["primary"],indent=2,sort_keys=True))
+          print("sensitivities=")
+          for k,v in x["sensitivities"].items():
+              print(k,"gain=",v["loyo"]["mse_gain_C0_minus_C1"],"beta=",v["coefficient"])
+          print("code_diagnostics=",json.dumps(x["code_diagnostics"],indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-colony-network-erosion
+          path: |
+            build/adelie_census.csv
+            build/colony_network_result.json
