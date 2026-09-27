@@ -1,0 +1,139 @@
+{
+  "analysis_id": "mina-palmer-island-partition-v1",
+  "decision": {
+    "island_partition_detected": false,
+    "pairwise_direction": "within_island_more_synchronous",
+    "within_island_spatial_insurance_supported": false
+  },
+  "eligible_group_sizes": {
+    "CHR": 11,
+    "COR": 7,
+    "HUM": 9,
+    "LIT": 9,
+    "TOR": 15
+  },
+  "excluded_incomplete": {
+    "CHR": [
+      "11.0",
+      "3.1",
+      "4.2",
+      "7.0"
+    ],
+    "COR": [],
+    "HUM": [],
+    "LIT": [],
+    "TOR": [
+      "19.0",
+      "19.1",
+      "6.0"
+    ]
+  },
+  "excluded_zero_growth_variance": {
+    "CHR": [],
+    "COR": [],
+    "HUM": [],
+    "LIT": [],
+    "TOR": []
+  },
+  "interpretation_boundary": {
+    "colony_coordinates_not_used": true,
+    "complete_case_colony_units_only": true,
+    "distance_conditioned_test_requires_colony_gis_crosswalk": true,
+    "no_migration_inference_from_covariance_alone": true,
+    "tests_island_partition_not_coastline_effect_beyond_distance": true
+  },
+  "n_eligible_units": 51,
+  "null": {
+    "hierarchy_gap_phi": {
+      "mean": 0.3412693179314375,
+      "q95": 0.4577622765531471,
+      "sd": 0.07727748384156048,
+      "upper_p": 0.9792510374481276
+    },
+    "mean_within_growth_phi": {
+      "lower_p": 0.9988000599970002,
+      "mean": 0.19495879293346466,
+      "q05": 0.1707327314483161,
+      "sd": 0.015977887993147578
+    },
+    "n_permutations": 20000,
+    "n_size_strata": 5,
+    "partition_contrast_r": {
+      "mean": 0.014542586808037902,
+      "q025": -0.025031296355846267,
+      "q975": 0.06524013234301186,
+      "sd": 0.023282272278843587,
+      "two_sided_p": 0.002999850007499625
+    },
+    "seed": 20260927,
+    "type": "island labels permuted within five predeclared mean-log1p-abundance rank strata"
+  },
+  "observed": {
+    "among_group_total_growth_phi": 0.44052105019088356,
+    "between_fisher_mean_r": 0.09373074905197049,
+    "hierarchy_gap_phi": 0.18526487119184248,
+    "mean_within_growth_phi": 0.2552561789990411,
+    "partition_contrast_r": 0.10539399193333737,
+    "wang_loreau_by_group": {
+      "CHR": {
+        "alpha_cv2": 0.8862496457570873,
+        "beta": 1.1412580199781663,
+        "gamma_cv2": 0.7765550210758145,
+        "phi": 0.8762260439748158
+      },
+      "COR": {
+        "alpha_cv2": 0.7579929491172267,
+        "beta": 1.0640026995077323,
+        "gamma_cv2": 0.7123975808218503,
+        "phi": 0.939847239544276
+      },
+      "HUM": {
+        "alpha_cv2": 0.7316658010428079,
+        "beta": 1.0941025513702731,
+        "gamma_cv2": 0.668736034045855,
+        "phi": 0.9139911050820442
+      },
+      "LIT": {
+        "alpha_cv2": 1.4957489842002458,
+        "beta": 1.0489387887267851,
+        "gamma_cv2": 1.4259640317199105,
+        "phi": 0.9533444761002807
+      },
+      "TOR": {
+        "alpha_cv2": 1.2749713431257192,
+        "beta": 1.0537721646835068,
+        "gamma_cv2": 1.2099117682698026,
+        "phi": 0.9489717355557055
+      }
+    },
+    "within_fisher_mean_r": 0.19912474098530786,
+    "within_growth_phi_by_group": {
+      "CHR": 0.22418037971472154,
+      "COR": 0.2859502259009037,
+      "HUM": 0.19452384186674293,
+      "LIT": 0.3733297114849714,
+      "TOR": 0.19829673602786582
+    }
+  },
+  "retention_fraction": {
+    "CHR": 0.7333333333333333,
+    "COR": 1.0,
+    "HUM": 1.0,
+    "LIT": 1.0,
+    "TOR": 0.8333333333333334
+  },
+  "schema_version": 1,
+  "total_unique_codes": {
+    "CHR": 15,
+    "COR": 7,
+    "HUM": 9,
+    "LIT": 9,
+    "TOR": 18
+  },
+  "validity_pass": false,
+  "years": [
+    1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
+    2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
+    2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017
+  ]
+}
