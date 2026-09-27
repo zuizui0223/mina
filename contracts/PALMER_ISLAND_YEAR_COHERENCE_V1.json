@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-year-coherence-v1",
+  "date": "2026-09-27",
+  "status": "frozen_before_unbalanced_all-period_outcome_access",
+  "motivation": "The complete-case island-partition analysis showed a strong ungated within-island covariance signal but failed its predeclared completeness gate because colony identifiers are structurally unbalanced. The phase validation confirmed the signal for 1991-2006 but could not validly evaluate 2007-2017 after extinction and identifier discontinuities. This analysis tests the same ecological proposition without requiring complete colony histories.",
+  "data": {
+    "source": "Palmer LTER AdeliePenguinCensus",
+    "years": "1991-2017",
+    "growth_observation": "For an island-specific colony_code, use an annual transition only when both adjacent census years are reported. Retain positive-to-zero and zero-to-positive transitions; exclude zero-to-zero transitions.",
+    "eligible_colony": "At least 3 informative annual transitions and non-zero SD of annual log1p growth.",
+    "no_imputation": true,
+    "no_code_merging": true
+  },
+  "residualization": [
+    "For each eligible colony, standardize its informative annual log1p-growth values to mean 0 and SD 1 across its own observed transitions.",
+    "For each end year, subtract the mean standardized growth across all eligible colonies observed in that year. This removes the regional year component without using island labels."
+  ],
+  "primary_statistic": {
+    "name": "island_year_covariance_contrast",
+    "definition": "Across all co-observed colony-pair × year products of regional-residualized standardized growth, compute mean product for pairs assigned to the same island minus mean product for pairs assigned to different islands.",
+    "ecological_meaning": "Positive values indicate that colonies on the same island share annual deviations beyond colony-specific scale and the regional year effect."
+  },
+  "null": {
+    "type": "static pseudo-island label permutation",
+    "strata": "Order eligible colonies first by number of informative transitions and break ties by mean log1p abundance; split this deterministic ranked list into 5 equal-count strata. Permute observed island labels within strata, preserving label counts in each stratum.",
+    "permutations": 20000,
+    "seed": 20260927,
+    "test": "two-sided permutation p; support additionally requires observed contrast > 0"
+  },
+  "analyses": {
+    "primary": "All five islands across all eligible 1991-2017 transitions.",
+    "sensitivity": "Repeat after excluding Litchfield Island entirely.",
+    "strong_confirmation": "Both primary and four-island sensitivity must have positive contrast and two-sided p <= 0.05."
+  },
+  "descriptive_outputs": [
+    "same-island and between-island mean pair-year products",
+    "number of eligible colonies and informative transitions per island",
+    "per-island within-island pair-year mean product",
+    "early 1991-2006 and late 2007-2017 contrasts using the same frozen residualization/statistic, descriptive only"
+  ],
+  "interpretation_boundaries": [
+    "This tests island-level demographic coherence, not coastline effects after geographic distance is controlled.",
+    "A positive result does not identify dispersal, habitat, foraging, or observer processes as the mechanism.",
+    "The within-island spatial-insurance hypothesis remains unsupported and is not rescued by this analysis.",
+    "The analysis is explicitly a post-primary missingness-robust validation prompted by the failed complete-case validity gate.",
+    "Do not change the eligibility threshold, residualization, pair-year statistic, stratification rule, permutation count, Litchfield sensitivity, or decision rule after outcomes are opened."
+  ]
+}
