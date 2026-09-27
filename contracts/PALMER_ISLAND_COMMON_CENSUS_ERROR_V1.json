@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-common-census-error-v1",
+  "date": "2026-09-27",
+  "status": "frozen_before_shared-error_outcome_access",
+  "prerequisite_result": "results/PALMER_ISLAND_YEAR_COHERENCE_RESULT_V1.json",
+  "question": "Could fully shared island-year census error, in the absence of biological island coherence, generate the observed same-island annual covariance contrast?",
+  "observed_target": {
+    "statistic": "five-island island_year_covariance_contrast",
+    "value": 0.09279582032316958
+  },
+  "latent_null": {
+    "biological_structure": "Use the exact eligible colony trajectories and missingness from the frozen island-year coherence analysis, but permute static island labels within the same five coverage/abundance rank strata used by that analysis before adding measurement error.",
+    "purpose": "Break the observed colony-to-island biological alignment while preserving each colony time series, abundance scale, coverage and the island-size composition of the null assignment."
+  },
+  "measurement_error": {
+    "family": "mean-one lognormal multiplicative factor shared perfectly by every reported colony assigned to the same pseudo-island in the same census year",
+    "cv_grid": [
+      0,
+      0.02,
+      0.05,
+      0.1,
+      0.2,
+      0.3,
+      0.5
+    ],
+    "construction": "For CV c, sigma2=log(1+c^2); multiply each observed colony count at island i/year t by exp(N(-sigma2/2,sigma2)). Missing rows remain missing. Recompute annual growth, colony standardization, regional-year residualization and the exact frozen covariance contrast.",
+    "rationale": "This is deliberately favorable to the observer-error alternative because all colonies within an island share the full annual multiplicative error."
+  },
+  "simulation": {
+    "replicates_per_cv": 20000,
+    "seed": 20260927,
+    "label_permutation": "new stratified pseudo-island assignment per replicate",
+    "error_draw": "new shared island-year factors per replicate"
+  },
+  "decision_rules": {
+    "strong_robustness": "For every fixed CV through 0.20, upper-tail probability P(simulated contrast >= observed) <= 0.05.",
+    "moderate_robustness": "Strong robustness fails, but every fixed CV through 0.10 has upper-tail probability <= 0.05.",
+    "fragile_to_shared_error": "At CV <= 0.10, upper-tail probability exceeds 0.05.",
+    "no_threshold_interpolation": "Report the predeclared grid only; do not tune intermediate CV values after outcomes."
+  },
+  "sensitivity": {
+    "four_island_no_litchfield": {
+      "observed_target": 0.08571095302780918,
+      "rule": "repeat the same fixed CV grid after excluding Litchfield; report but do not use to override the primary five-island classification"
+    }
+  },
+  "interpretation_boundaries": [
+    "These CV values are sensitivity scenarios, not estimates of actual Palmer LTER observer error.",
+    "Failure to reproduce the observed contrast under this model does not rule out all forms of survey bias, code-boundary changes or spatially structured observation error.",
+    "A result robust to fully shared island-year multiplicative error strengthens the demographic-coherence interpretation but does not identify its biological mechanism.",
+    "Do not change the error family, CV grid, permutation strata, replicate count, target statistic or decision thresholds after outcomes are opened."
+  ]
+}
