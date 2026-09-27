@@ -12,6 +12,7 @@ on:
       - "contracts/PALMER_NEFF_CIRCULAR_SHIFT_V1.json"
       - "src/mina/neff_circular_shift.py"
       - "tests/test_neff_circular_shift.py"
+      - "pyproject.toml"
       - ".github/workflows/neff-circular-shift.yml"
   pull_request:
     paths:
@@ -36,7 +37,7 @@ jobs:
         run: python scripts/fetch_lter_census.py build/adelie_census.csv
       - name: Run autocorrelation-preserving circular-shift null
         run: |
-          python -m mina.neff_circular_shift \
+          mina-neff-circular-shift \
             --census build/adelie_census.csv \
             --out build/neff_circular_shift.json \
             --simulations 100000 \
