@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-network-erosion-v1",
+  "date": "2026-09-27",
+  "status": "post_environment_negative_fresh_hypothesis_pre_topology_outcome_access",
+  "prerequisites": [
+    "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+    "results/PALMER_SEAICE_HABITAT_MECHANISM_RESULT_V1.json",
+    "results/PALMER_SEAICE_TIMESCALE_SEPARATION_RESULT_V1.json",
+    "results/PALMER_WEATHER_X_HABITAT_MECHANISM_RESULT_V2.json"
+  ],
+  "motivation": "Simple annual and smoothed sea-ice-duration predictors and an annual snowfall-by-habitat interaction do not explain the common decline plus local heterogeneity. Test a biologically distinct terrestrial state variable: within-island breeding-colony network structure.",
+  "ecological_hypothesis": "Loss and concentration of occupied breeding subcolonies represent erosion of usable terrestrial breeding habitat; lower colony-network diversity at census year t should predict more negative island population growth from t to t+1, beyond current abundance and secular time trend.",
+  "data": {
+    "source": "Palmer LTER AdeliePenguinCensus",
+    "years": "1991-2017",
+    "islands": [
+      "CHR",
+      "COR",
+      "HUM",
+      "LIT",
+      "TOR"
+    ],
+    "colony_unit": "colony_code within island and census year"
+  },
+  "predictor": {
+    "primary": "effective_colony_number_t = 1 / sum_j(p_jt^2), where p_jt is colony j share of positive island breeding pairs at year t",
+    "transform": "log1p(effective_colony_number_t), standardized using training rows within each LOYO fold",
+    "direction": "positive coefficient: broader colony network at t predicts higher / less-negative growth to t+1",
+    "undefined_rule": "exclude intervals whose starting island total is zero"
+  },
+  "response": "g_i,t+1 = log1p(N_i,t+1) - log1p(N_i,t); positive-to-zero extinction transitions retained; zero-start intervals excluded",
+  "models": {
+    "C0": "next_growth ~ island fixed effects + z(log1p current abundance) + z(year)",
+    "C1": "C0 + z(log1p effective colony number)"
+  },
+  "validation": {
+    "scheme": "leave-one-end-year-out; all islands with response ending in the held-out year are removed together",
+    "metric": "mean squared prediction error",
+    "primary_gain": "MSE(C0)-MSE(C1), positive favors colony-network information",
+    "no_tuning": true
+  },
+  "decision_rule": "support requires primary_gain > 0 and full-data effective-colony-number coefficient > 0",
+  "sensitivities": [
+    "replace effective colony number with log1p active positive-colony count",
+    "add previous-year island growth to C0/C1 where available",
+    "repeat on persistently extant islands CHR,COR,HUM,TOR"
+  ],
+  "interpretation_boundaries": [
+    "Colony topology is derived from the same census as abundance and is an internal demographic state, not an independent causal habitat measurement.",
+    "A positive result would show predictive information in within-island colony structure, not prove that habitat loss caused the next-year decline.",
+    "Colony-code definitions are treated as stable observational units; results must report code counts by island and year and flag discontinuities.",
+    "Do not tune alternative topology indices after opening the primary result; active-colony count is the only predeclared alternate."
+  ],
+  "next_gate": "If supported, seek external spatial/topographic mapping of colony codes to test habitat-state causality. If unsupported, close colony-topology as a predictive mechanism and move to prey/recruitment pathways."
+}
