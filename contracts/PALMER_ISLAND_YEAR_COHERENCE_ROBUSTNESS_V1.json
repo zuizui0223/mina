@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-year-coherence-robustness-v1",
+  "date": "2026-09-27",
+  "status": "post-positive audit frozen before robustness outcomes",
+  "prerequisite_result": "results/PALMER_ISLAND_YEAR_COHERENCE_RESULT_V1.json",
+  "purpose": "Test whether the supported island-year covariance contrast is an artifact of extinction/recolonization zero transitions or dependence on a single island.",
+  "frozen_base": "Use the same colony standardization, regional-year residualization, pair-year covariance contrast, five rank strata, 20,000 static-label permutations and two-sided p-value as PALMER_ISLAND_YEAR_COHERENCE_V1 unless explicitly changed below.",
+  "audits": {
+    "positive_to_positive_only": {
+      "change": "Retain only annual transitions with positive breeding-pair counts at both start and end; all other rules unchanged.",
+      "analyses": [
+        "five islands",
+        "four islands excluding Litchfield"
+      ],
+      "rule": "robust if both contrasts are positive and both permutation p-values <= 0.05"
+    },
+    "leave_one_island_out": {
+      "change": "Use the original informative-transition rule, but repeat the all-period analysis five times, each time excluding exactly one of CHR,COR,HUM,LIT,TOR.",
+      "rule": "not single-island-driven only if all five leave-one-island-out contrasts are positive and all five two-sided permutation p-values <= 0.05"
+    }
+  },
+  "overall_rule": "strong robustness requires both the positive-to-positive-only audit and the complete leave-one-island-out audit to pass.",
+  "interpretation_boundaries": [
+    "These are post-positive robustness audits, not independent confirmations.",
+    "Failure of any strict audit must be reported rather than repaired by changing thresholds or subsets.",
+    "No additional transition threshold, colony minimum, outlier trimming, or island subset may be introduced after outcomes are opened."
+  ]
+}
