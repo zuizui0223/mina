@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-neff-year-block-permutation-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-neff-year-block-permutation-v1",
+  "prerequisite_result": "results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36310864770,
+    "head_sha": "64478e17d31118b432e9fc34356cd8bd626b9e9b",
+    "artifact_id": 10928796649,
+    "artifact_digest": "sha256:3032d5a03d9bcacb670a37b0c00130c7b02bd7e2c55ef1a90b65e3edd67aff50",
+    "permutations": 20000,
+    "seed": 20260927,
+    "conclusion": "success"
+  },
+  "null_design": {
+    "unit": "start-year N_eff block",
+    "preserved": [
+      "next-year growth response",
+      "current island abundance",
+      "island identity",
+      "start/end year",
+      "within-year cross-island N_eff covariance",
+      "five-island versus four-island availability structure",
+      "frozen LOYO folds and training-only standardization"
+    ],
+    "permuted": "mapping of N_eff year blocks to target start years within mechanically defined island-availability strata"
+  },
+  "strata": [
+    {
+      "islands": [
+        "CHR",
+        "COR",
+        "HUM",
+        "LIT",
+        "TOR"
+      ],
+      "start_years": [
+        1991,
+        1992,
+        1993,
+        1994,
+        1995,
+        1996,
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006
+      ],
+      "n_years": 16
+    },
+    {
+      "islands": [
+        "CHR",
+        "COR",
+        "HUM",
+        "TOR"
+      ],
+      "start_years": [
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016
+      ],
+      "n_years": 10
+    }
+  ],
+  "observed": {
+    "n_rows": 120,
+    "n_end_years": 26,
+    "c0_mse": 0.07311311591779704,
+    "c1_mse": 0.07208427500194671,
+    "mse_gain_c0_minus_c1": 0.0010288409158503292,
+    "full_data_coefficient": 0.11679896749684507
+  },
+  "gain_null": {
+    "mean": -0.00020158082850439975,
+    "sd": 0.002358413013573858,
+    "q_0_025": -0.0036407221266039217,
+    "q_0_50": -0.0007070348943826119,
+    "q_0_95": 0.00441693687767883,
+    "q_0_975": 0.0053902726178932745,
+    "q_0_99": 0.00642070109050453,
+    "proportion_gain_positive": 0.38835,
+    "observed_percentile": 0.7378,
+    "exceedances_ge_observed": 5244,
+    "one_sided_permutation_p": 0.2622368881555922
+  },
+  "coefficient_null": {
+    "mean": -0.03230163957704774,
+    "sd": 0.028232379265251673,
+    "q_0_025": -0.08016680907790331,
+    "q_0_50": -0.03471380847682758,
+    "q_0_95": 0.018049979669726563,
+    "q_0_975": 0.029709652751068218,
+    "q_0_99": 0.04371484090633091,
+    "proportion_beta_positive": 0.1285,
+    "exceedances_ge_observed": 1,
+    "one_sided_permutation_p": 0.0000999950002499875
+  },
+  "decision": {
+    "held_out_gain_unusual": false,
+    "coefficient_unusual": true,
+    "primary_positive_predictive_pillar_survives": false
+  },
+  "interpretation": [
+    "The observed held-out-year MSE gain is compatible with chance year-block alignments under the frozen permutation null (p=0.262).",
+    "The positive full-data conditional coefficient is highly unusual under the same block permutation, so the data retain an in-sample/conditional association between N_eff and next-year growth.",
+    "These two facts must be separated: association is present, but the claimed out-of-year predictive increment is not demonstrably stronger than permutation noise.",
+    "The JAE manuscript should not retain N_eff as its sole positive predictive pillar on the basis of the original +0.00103 gain."
+  ],
+  "next_gate": "Before retaining the coefficient as an ecological state association, run a predeclared same-census measurement-error/mechanical-coupling diagnostic. Journal targeting should be reassessed after that diagnostic."
+}
