@@ -15,6 +15,7 @@ on:
       - "docs/REFERENCES_V4.bib"
       - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json"
       - "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json"
+      - "results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json"
       - "results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json"
       - "src/mina/manuscript_guard.py"
       - "tests/**"
@@ -27,6 +28,7 @@ on:
       - "docs/REFERENCES_V4.bib"
       - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json"
       - "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json"
+      - "results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json"
       - "results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json"
       - "src/mina/manuscript_guard.py"
       - "tests/**"
@@ -62,6 +64,9 @@ jobs:
           hierarchy = json.loads(
               Path("results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json").read_text()
           )
+          component_audit = json.loads(
+              Path("results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json").read_text()
+          )
           momentum = json.loads(
               Path("results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json").read_text()
           )
@@ -81,6 +86,9 @@ jobs:
               f'{m["independent_full_series_circular_shift"]["one_sided_p"]:.5f}':
                   "two-lag independent circular p",
               "5/416": "two-lag exact joint shift count",
+              "0.00562": "component-count normalized excess beta",
+              "0.982": "component-count raw among correlation",
+              "post-hoc component-count": "component-count audit boundary",
               "not as proof": "causal-insurance boundary",
               "not a causal": "N_eff causal boundary",
               "cannot remove all time-varying confounding":
@@ -121,6 +129,41 @@ jobs:
                       f"{label} contract/receipt drift: {expected} != {observed}"
                   )
 
+          audit_contract = contract["required_component_count_audit"]
+          audit_checks = {
+              "normalized_excess_among": (
+                  audit_contract["normalized_excess_beta"]["among_islands"],
+                  component_audit["raw_normalized_excess_beta"]["among_islands"][
+                      "normalized_excess_beta"
+                  ],
+              ),
+              "normalized_excess_COR": (
+                  audit_contract["normalized_excess_beta"]["COR"],
+                  component_audit["raw_normalized_excess_beta"]["COR"][
+                      "normalized_excess_beta"
+                  ],
+              ),
+              "raw_pairwise_among": (
+                  audit_contract["pairwise_mean_correlation"]["raw_abundance"][
+                      "among_islands"
+                  ],
+                  component_audit["pairwise_mean_correlation"]["raw_abundance"][
+                      "among_islands"
+                  ],
+              ),
+          }
+          for label, (expected, observed) in audit_checks.items():
+              if not math.isclose(
+                  float(expected), float(observed), rel_tol=0.0, abs_tol=1e-12
+              ):
+                  raise SystemExit(
+                      f"{label} contract/receipt drift: {expected} != {observed}"
+                  )
+          if not component_audit["decision"][
+              "hierarchy_not_explained_only_by_more_within_island_units"
+          ]:
+              raise SystemExit("component-count audit no longer retains hierarchy")
+
           if not hierarchy["supported"]:
               raise SystemExit("hierarchy result receipt missing supported claims")
           if contract["versioning"]["v0.5_remains_immutable_provenance"] is not True:
@@ -130,6 +173,7 @@ jobs:
               "status": "pass",
               "required_tokens": required,
               "hierarchy_result_id": hierarchy["result_id"],
+              "component_audit_result_id": component_audit["result_id"],
               "momentum_result_id": momentum["result_id"],
               "contract_id": contract["contract_id"],
           }, indent=2, sort_keys=True))
@@ -144,5 +188,6 @@ jobs:
             docs/REFERENCES_V4.bib
             contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json
             results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json
+            results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json
             results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json
             build-ecosphere-v0-6-base-guard.json
