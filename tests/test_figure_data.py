@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from mina.figure_data import _figure3_mechanisms
+from mina.figure_data import _figure3_hierarchy, _figure3_mechanisms
 
 
 def _receipt(name):
@@ -56,3 +56,19 @@ def test_synthesis_v4_locks_structured_neff_nulls():
         n["circular_coupling"]["gamma_poisson_cv10_p_ge_observed"],
         n["circular_coupling"]["gamma_poisson_cv20_p_ge_observed"],
     )<0.01
+
+
+def test_hierarchy_figure_data_matches_frozen_receipt():
+    h=_receipt("PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json")
+    raw,centered=_figure3_hierarchy(h)
+    primary=raw[0]
+    assert abs(primary["beta_within"]-1.0737035331938372)<1e-12
+    assert abs(primary["beta_among"]-1.0112310830110414)<1e-12
+    assert abs(primary["beta_total"]-1.0857623867043855)<1e-12
+    assert abs(primary["within_log_beta_share"]-0.8642664462053955)<1e-12
+    assert all(row["beta_within"]>row["beta_among"] for row in raw)
+    assert all(row["all_within_exceed_among"] is True for row in centered)
+    assert all(
+        row["within_beta_min"]>row["among_beta"]
+        for row in centered
+    )
