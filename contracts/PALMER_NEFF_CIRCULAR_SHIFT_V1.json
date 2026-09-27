@@ -50,10 +50,10 @@
     "island sequence lengths and shift-frequency diagnostics"
   ],
   "interpretation_rules": {
-    "association_survives_structured_null": "one-sided circular-shift p <= 0.05",
-    "association_not_distinguishable_from_serial_structure": "one-sided circular-shift p > 0.05",
-    "manuscript_if_survives": "N_eff may remain a conditional association, explicitly supported only after circular-shift control and still not a robust held-out predictor.",
-    "manuscript_if_fails": "Remove inferential emphasis from the N_eff coefficient and retain it only as a descriptive within-census pattern; revise synthesis, figures and Ecosphere manuscript before submission."
+    "association_retained_against_serial_structure": "Require BOTH primary independent-island circular-shift one-sided p <= 0.05 and exact joint-shift sensitivity p <= 0.05.",
+    "association_not_distinguishable_from_serial_structure": "If either structured-null p > 0.05, remove inferential emphasis from the N_eff coefficient and retain it only as a descriptive pattern.",
+    "manuscript_if_survives": "N_eff may remain a conditional association, explicitly supported only after both circular-shift controls and still not a robust held-out predictor.",
+    "manuscript_if_fails": "Remove inferential emphasis from the N_eff coefficient; revise synthesis, figures and Ecosphere manuscript before submission."
   },
   "boundaries": [
     "This is a correction to the null distribution for the already-frozen N_eff coefficient, not a new topology endpoint.",
