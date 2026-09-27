@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-mapppd-scar-land-assignment-v1",
+  "date": "2026-09-27",
+  "status": "frozen_after_zero_tolerance_geometry_audit_before_tolerance_results",
+  "sources": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "scar_add_dataset": "High resolution vector polygons of the Antarctic coastline",
+    "scar_add_edition": "7.12",
+    "scar_add_doi": "10.5285/13c4d2f1-8903-4d7f-8977-592121975554"
+  },
+  "motivation": "Zero-tolerance point-in-polygon assigns 511/729 MAPPPD sites uniquely but leaves 218 coastal site points outside land polygons, including known island sites such as Beaufort Island. Resolve coordinate/coastline mismatch without using demographic outcomes.",
+  "assignment_rule": {
+    "direct": "surface='land' point-in-polygon at 0 m",
+    "fallback_tolerances_m": [
+      50,
+      100,
+      250,
+      500,
+      1000,
+      2500,
+      5000
+    ],
+    "fallback": "for a site with no direct land match, query the listed tolerances in ascending order and accept the first tolerance returning exactly one land polygon",
+    "ambiguity": "if a tolerance returns multiple land polygons, do not select among them; continue only if a later tolerance is not used to override that ambiguity. Mark ambiguous.",
+    "unresolved": "if no tolerance through 5000 m returns exactly one polygon, leave unresolved",
+    "no_name_based_assignment": true,
+    "no_demographic_outcome_access_for_assignment": true
+  },
+  "attributes": [
+    "FID",
+    "surface",
+    "Shape__Area"
+  ],
+  "landmass_definition": {
+    "parent_id": "SCAR FID",
+    "mainland_operational_definition": "the assigned land polygon with the largest Shape__Area among all uniquely assigned MAPPPD sites",
+    "island_operational_definition": "any uniquely assigned land polygon other than the operational mainland polygon",
+    "note": "This identifies physically separated landmasses; it does not imply demographic independence."
+  },
+  "analysis_boundary": [
+    "No tolerance outside the frozen grid may be introduced after results are opened.",
+    "No site may be assigned by its name when the geometric rule is unresolved or ambiguous.",
+    "The geometry audit is preprocessing only; no population synchrony effect is calculated in this stage."
+  ]
+}
