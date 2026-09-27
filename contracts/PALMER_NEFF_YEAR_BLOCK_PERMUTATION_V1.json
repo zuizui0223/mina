@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-neff-year-block-permutation-v1",
+  "date": "2026-09-27",
+  "status": "post_positive_uncertainty_diagnostic_pre_permutation_execution",
+  "prerequisite_result": "results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+  "motivation": "The only positive core result has a small held-out MSE gain (0.00102884) and lacks a null distribution. Quantify whether an equally large gain commonly arises when the year-specific effective-colony state is disconnected from next-year growth while all baseline variables and the LOYO procedure remain unchanged.",
+  "frozen_observed": {
+    "n_rows": 120,
+    "n_end_years": 26,
+    "full_data_coefficient": 0.11679896749684501,
+    "c0_mse": 0.07311311591779704,
+    "c1_mse": 0.07208427500194672,
+    "mse_gain_c0_minus_c1": 0.0010288409158503153
+  },
+  "permutation_unit": "start-year block of effective_colony_number values across islands",
+  "null_construction": [
+    "Keep response next_growth, current_total, island identity, start_year and end_year fixed on every row.",
+    "Within each start-year availability stratum, randomly permute donor years.",
+    "For every target year and island, replace effective_colony_number only with the value from the same island in the donor year.",
+    "Use a single donor-year mapping for all islands in that year, preserving the cross-island covariance structure of the topology block.",
+    "Define strata only by the set of islands with an eligible transition so five-island pre-extinction years are never exchanged with four-island post-Litchfield years.",
+    "Re-run the exact frozen leave-one-end-year-out C0/C1 pipeline, including training-fold standardization, for every permutation."
+  ],
+  "strata_definition": "derived mechanically from the tuple of island IDs present in each start year; no outcome-dependent strata",
+  "permutations": 20000,
+  "seed": 20260927,
+  "primary_statistic": "MSE(C0)-MSE(C1)",
+  "primary_p_value": "(1 + number of permuted gains >= observed gain) / (B + 1), one-sided",
+  "secondary_statistic": "full-data standardized effective-colony coefficient",
+  "reported_null_summaries": [
+    "mean, SD, 2.5%, 50%, 95%, 97.5% and 99% quantiles of permuted MSE gain",
+    "proportion of permutations with gain > 0",
+    "observed-gain percentile in the null distribution",
+    "one-sided coefficient permutation p-value and coefficient null quantiles"
+  ],
+  "interpretation_rules": {
+    "strong_against_null": "primary permutation p <= 0.05",
+    "weak_or_noise_compatible": "primary permutation p > 0.05",
+    "manuscript_consequence": "If p > 0.05, the colony-network result cannot remain a positive pillar of the JAE manuscript. If p <= 0.05, report the permutation uncertainty explicitly and proceed to a separate same-census mechanical-coupling diagnostic before strengthening novelty claims."
+  },
+  "boundaries": [
+    "This is a post-positive diagnostic, not an independent preregistered confirmation.",
+    "The null tests incremental year-specific alignment of N_eff, not causality or external habitat fragmentation.",
+    "No alternative topology metric, permutation stratum, seed or statistic may be selected after seeing the result.",
+    "Do not change the frozen C0/C1 models or LOYO folds."
+  ]
+}
