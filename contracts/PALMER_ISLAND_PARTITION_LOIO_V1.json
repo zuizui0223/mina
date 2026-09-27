@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-partition-loio-v1",
+  "date": "2026-09-27",
+  "status": "post_positive_overlap_result_frozen_before_loio_outcomes",
+  "prerequisite": "PALMER_ISLAND_PARTITION_OVERLAP_V1 primary result: positive within-minus-between colony-growth correlation contrast under the frozen missingness-aware estimator",
+  "purpose": "Test whether the positive island-partition contrast is driven by any single island, especially the locally extinct Litchfield series.",
+  "procedure": {
+    "omissions": [
+      "CHR",
+      "COR",
+      "HUM",
+      "LIT",
+      "TOR"
+    ],
+    "estimator": "exactly the frozen overlap V1 Fisher-z weighted within-minus-between colony-growth correlation contrast",
+    "null": "within each omitted-island subset, permute remaining island labels within five fixed mean-log1p-abundance rank strata",
+    "permutations_per_omission": 20000,
+    "seed_rule": "20260927 + omission index in the fixed CHR,COR,HUM,LIT,TOR order"
+  },
+  "decisions": {
+    "directional_robustness": "all five leave-one-island-out contrasts must remain > 0",
+    "strong_permutation_robustness": "all five leave-one-island-out two-sided permutation p-values must be <= 0.05",
+    "interpretation": "failure of strong robustness does not erase the frozen primary result, but prevents claiming that the partition signal is geographically distributed across the Palmer panel"
+  },
+  "boundaries": [
+    "No island will be selected or excluded based on its result.",
+    "No alternative correlation estimator, overlap threshold, abundance strata or permutation scheme will be opened.",
+    "This is a post-positive robustness diagnostic, not independent replication."
+  ]
+}
