@@ -1,0 +1,84 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-palmer-census-timing-audit-result-v2",
+  "validated_date": "2026-09-27",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36319817693,
+    "run_attempt": 2,
+    "head_sha": "5e99998e0ee9a665850bcb43aa16cbbf463856a3",
+    "artifact_id": 10932565685,
+    "artifact_digest": "sha256:a35993121918da7cdb9d8e564e1d48e628654fe659b3135766f656000a11da3c",
+    "conclusion": "success"
+  },
+  "coverage": {
+    "n_complete_years": 27,
+    "n_island_year_cells": 135
+  },
+  "within_island_year_timing": {
+    "fraction_single_date": 0.8962962962962963,
+    "n_multi_date_cells": 14,
+    "median_span_days": 0,
+    "max_span_days": 30
+  },
+  "cross_island_median_timing": {
+    "median_five_island_span_days": 2,
+    "max_five_island_span_days": 34,
+    "pairwise_median_absolute_difference_days": 0,
+    "pairwise_max_absolute_difference_days": 34,
+    "pairwise_fraction_same_median_date": 0.5185185185185185,
+    "pairwise_fraction_within_3_days": 0.8444444444444444
+  },
+  "multi_date_examples": [
+    {
+      "year": 1996,
+      "island": "TOR",
+      "span_days": 2,
+      "dates": [
+        "1996-11-18",
+        "1996-11-19",
+        "1996-11-20"
+      ]
+    },
+    {
+      "year": 1997,
+      "island": "COR",
+      "span_days": 30,
+      "dates": [
+        "1997-11-26",
+        "1997-12-26"
+      ]
+    },
+    {
+      "year": 2003,
+      "island": "CHR",
+      "span_days": 7,
+      "dates": [
+        "2003-11-21",
+        "2003-11-28"
+      ]
+    },
+    {
+      "year": 2004,
+      "island": "TOR",
+      "span_days": 18,
+      "dates": [
+        "2004-11-18",
+        "2004-11-24",
+        "2004-11-30",
+        "2004-12-06"
+      ]
+    }
+  ],
+  "interpretation": "Most island-year colony rows share one census date, but 14 island-year cells are split across multiple dates, sometimes by weeks. Cross-island median dates are often close (median five-island span two days), with occasional large offsets. A simple model in which all same-island colonies are necessarily counted in one exact same-day batch is therefore false, but timing alone does not eliminate shared observer or protocol error.",
+  "boundaries": [
+    "descriptive timing audit only",
+    "does not calibrate counting error",
+    "does not establish a biological island mechanism",
+    "exact same-date batch sensitivity is evaluated separately"
+  ]
+}
