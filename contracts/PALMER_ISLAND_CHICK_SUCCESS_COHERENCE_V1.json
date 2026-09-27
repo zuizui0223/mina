@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-chick-success-coherence-v1",
+  "date": "2026-09-27",
+  "status": "frozen_before_chick_success_outcome_access",
+  "prerequisite_results": [
+    "results/PALMER_ISLAND_YEAR_COHERENCE_RESULT_V1.json",
+    "results/PALMER_ISLAND_YEAR_TIMING_AUDIT_RESULT_V1.json"
+  ],
+  "external_dataset": {
+    "dataset_id": "AdeliePenguinAdultandChickCounts",
+    "title": "Adelie penguin colony-specific chick production, 1991, present.",
+    "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "columns": [
+      "study_name",
+      "time",
+      "island_name",
+      "colony_code",
+      "num_breeding_pairs",
+      "num_chicks",
+      "census_time"
+    ],
+    "independence": "January chick-production census; same geographic colony identifiers as the breeding-population census, but a later life-stage count and reproductive-success endpoint."
+  },
+  "question": "Do colonies on the same island share annual deviations in reproductive success, providing an independent life-stage validation of island-scale demographic coherence?",
+  "season_definition": "For January chick censuses, season_start_year = calendar year(time) - 1.",
+  "response": {
+    "primary": "chicks_per_pair = num_chicks / num_breeding_pairs for rows with num_breeding_pairs > 0 and finite nonnegative num_chicks",
+    "biological_basis": "The source metadata explicitly identifies chicks creched per breeding pair as an integrated breeding-success metric.",
+    "transform": "Within each island-specific colony_code, z-standardize chicks_per_pair across observed seasons.",
+    "regional_residualization": "Within each season, subtract the mean standardized reproductive success across all eligible colonies observed that season."
+  },
+  "eligibility": {
+    "colony": "At least 5 informative seasons and non-zero temporal SD in chicks_per_pair.",
+    "no_imputation": true,
+    "no_code_merging": true,
+    "duplicate_rule": "Fail if more than one usable row exists for the same island, colony_code and season_start_year."
+  },
+  "statistic": {
+    "primary": "Mean product of residualized colony reproductive success over same-island co-observed colony-pair × seasons minus the corresponding mean for different-island pairs.",
+    "expected_direction": "positive"
+  },
+  "null": {
+    "labels": "Static observed island labels permuted within five deterministic strata formed by ranking eligible colonies by number of informative seasons, then mean log1p breeding-pair abundance, then stable identifier tie-breaks.",
+    "permutations": 20000,
+    "seed": 20260927,
+    "test": "two-sided permutation p; support additionally requires positive observed contrast"
+  },
+  "analyses": {
+    "primary": "All five islands.",
+    "sensitivity": "Exclude Litchfield Island entirely.",
+    "strong_independent_validation": "Both primary and no-Litchfield analyses must have positive contrast and two-sided p <= 0.05."
+  },
+  "provenance_diagnostic": {
+    "adult_count_overlap": "Match chick-dataset num_breeding_pairs to the November breeding census by island, colony and season_start_year and report exact-equality fraction where both exist.",
+    "role": "Descriptive only; quantifies how much the denominator is shared with the original adult census and does not alter the frozen decision."
+  },
+  "interpretation_boundaries": [
+    "A positive result would independently validate an island-level biological signal in reproductive performance, not prove that coastline boundaries cause it.",
+    "The numerator chick census is a different life-stage observation, but the breeding-pair denominator may be copied from or shared with the adult census; the overlap diagnostic must be reported.",
+    "A negative result does not invalidate adult-count island-label covariance; it limits the demographic generality of that pattern.",
+    "Do not change the response metric, 5-season eligibility threshold, standardization, regional residualization, strata, permutation count, island sensitivity, or decision rule after chick-count outcomes are opened."
+  ]
+}
