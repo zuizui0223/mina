@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-neff-circular-shift-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-neff-circular-shift-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36316939285,
+    "head_sha": "53ff6ef342d2658d2784c313cf16f382987e3739",
+    "artifact_id": 10930972749,
+    "artifact_digest": "sha256:e6326fec14d9a8d229379d72eb9c4ff25c3ae283a860db6c66a42a88c0d48e88",
+    "simulations": 100000,
+    "seed": 20260927,
+    "conclusion": "success"
+  },
+  "observed": {
+    "n_rows": 120,
+    "n_end_years": 26,
+    "standardized_beta": 0.11679896749684501,
+    "held_out_mse_gain": 0.0010288409158503153
+  },
+  "primary_independent_island_circular_shift": {
+    "coefficient_null": {
+      "mean": 0.0005354197585497622,
+      "sd": 0.03152258164353598,
+      "q_0_025": -0.05245801563363935,
+      "q_0_05": -0.047412353488645455,
+      "q_0_50": -0.0019923820605958196,
+      "q_0_95": 0.05507728398097306,
+      "q_0_975": 0.06275981935304922,
+      "q_0_99": 0.0712653555468897,
+      "proportion_positive": 0.47889,
+      "exceedances_ge_observed": 0,
+      "one_sided_p": 0.00000999990000099999,
+      "monte_carlo_se": 0.000009999850001874979,
+      "two_sided_abs_exceedances": 0,
+      "two_sided_abs_p": 0.00000999990000099999
+    }
+  },
+  "joint_persistent_island_shift_sensitivity": {
+    "n_exact_combinations": 416,
+    "coefficient_null": {
+      "mean": 0.00004525276199312235,
+      "sd": 0.035763926991295526,
+      "q_0_025": -0.05888525463772657,
+      "q_0_05": -0.05116327321234353,
+      "q_0_50": -0.0012107621585459643,
+      "q_0_95": 0.059635384362341344,
+      "q_0_975": 0.07217979854789398,
+      "q_0_99": 0.08441198391047615,
+      "proportion_positive": 0.4831730769230769,
+      "exceedances_ge_observed": 1,
+      "exact_one_sided_p": 0.002403846153846154,
+      "two_sided_abs_exceedances": 1,
+      "exact_two_sided_abs_p": 0.002403846153846154
+    },
+    "interpretation": "The identity alignment is the only one of 416 exact joint-shift combinations reaching the observed coefficient."
+  },
+  "decision": {
+    "primary_independent_shift_p_le_0_05": true,
+    "joint_shift_p_le_0_05": true,
+    "association_retained_against_both_structured_nulls": true
+  },
+  "interpretation": [
+    "The observed +0.1168 conditional coefficient remains extreme when each island's N_eff sequence is circularly shifted, preserving its cyclic temporal ordering, autocorrelation structure and spectrum.",
+    "The result also survives an exact sensitivity that preserves the full cross-island N_eff covariance structure among CHR, COR, HUM and TOR.",
+    "The earlier very small coefficient p-value is therefore not explained by the year-block null having destroyed predictor serial structure.",
+    "This does not restore the failed held-out predictive claim; the year-block predictive-gain diagnostic remains p=0.262.",
+    "Circular shifting is a structured surrogate with a wrap-around boundary, not a causal or generative ecological model."
+  ],
+  "next_gate": "Complete the circular-shift version of the mechanical-coupling count-error diagnostic before final manuscript reconciliation.",
+  "provenance_note": "Execution metadata points to the corrected post-roundoff-fix workflow in which the identity shift is counted in the exact 416-member tail, yielding exact p=1/416 rather than zero."
+}

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mina-island-reassembly"
-version = "0.14.0"
+version = "0.15.0"
 description = "Island community reassembly analyses for Palmer Archipelago penguins"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -32,6 +32,7 @@ mina-manuscript-guard = "mina.manuscript_guard:main"
 mina-jae-guard = "mina.jae_guard:main"
 mina-neff-permutation = "mina.neff_permutation:main"
 mina-neff-coupling = "mina.neff_coupling:main"
+mina-neff-circular-shift = "mina.neff_circular_shift:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

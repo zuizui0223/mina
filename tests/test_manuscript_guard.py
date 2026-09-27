@@ -49,3 +49,24 @@ def test_manuscript_v04_ecosphere_after_neff_diagnostics():
     assert "Palmer Penguins data set" not in text
     assert "withdraw the claim that effective colony number provides robust held-out-year predictive information" in text
     assert "timescale-dependent" in text.lower()
+
+
+def test_manuscript_v05_ecosphere_after_structured_neff_nulls():
+    root=Path(__file__).resolve().parents[1]
+    out=validate(
+        root/"docs/MANUSCRIPT_ECOSPHERE_V0_5.md",
+        root/"docs/FIGURE_CAPTIONS_V4.md",
+        root/"docs/REFERENCES_V3.bib",
+        root/"results",
+    )
+    assert out["prohibited_claim_check"]=="pass"
+    assert out["unknown_citations"]==[]
+    assert out["citation_count"]>=12
+    assert out["manuscript_words"]>3000
+    text=(root/"docs/MANUSCRIPT_ECOSPHERE_V0_5.md").read_text()
+    assert "0.262" in text
+    assert "*p* < 0.00001" in text
+    assert "1/416 = **0.0024**" in text
+    assert "0.00780" in text
+    assert "predictive claim remains withdrawn" in text
+    assert "Palmer Penguins data set" not in text

@@ -1,0 +1,65 @@
+name: neff-circular-shift
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - validation/neff-circular-shift-v1
+    paths:
+      - "contracts/PALMER_NEFF_CIRCULAR_SHIFT_V1.json"
+      - "src/mina/neff_circular_shift.py"
+      - "tests/test_neff_circular_shift.py"
+      - "pyproject.toml"
+      - ".github/workflows/neff-circular-shift.yml"
+  pull_request:
+    paths:
+      - "contracts/PALMER_NEFF_CIRCULAR_SHIFT_V1.json"
+      - "src/mina/neff_circular_shift.py"
+      - "tests/test_neff_circular_shift.py"
+      - ".github/workflows/neff-circular-shift.yml"
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run tests
+        run: pytest
+      - name: Fetch frozen Palmer census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run autocorrelation-preserving circular-shift null
+        run: |
+          mina-neff-circular-shift \
+            --census build/adelie_census.csv \
+            --out build/neff_circular_shift.json \
+            --simulations 100000 \
+            --seed 20260927
+      - name: Print diagnostic
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/neff_circular_shift.json").read_text())
+          print("observed=",json.dumps(x["observed"],indent=2,sort_keys=True))
+          print("primary=",json.dumps(
+              x["primary_independent_island_shift"]["coefficient_null"],
+              indent=2,sort_keys=True
+          ))
+          print("joint=",json.dumps(
+              x["joint_persistent_island_shift_sensitivity"]["coefficient_null"],
+              indent=2,sort_keys=True
+          ))
+          print("decision=",json.dumps(x["decision"],indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: neff-circular-shift
+          path: build/neff_circular_shift.json

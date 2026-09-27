@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-neff-circular-coupling-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-neff-circular-coupling-v1",
+  "prerequisites": [
+    "results/PALMER_NEFF_CIRCULAR_SHIFT_RESULT_V1.json",
+    "results/PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json"
+  ],
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36317248679,
+    "head_sha": "8885bda7bad4738d0b70a03c8742b91f0440cbfb",
+    "artifact_id": 10930703596,
+    "artifact_digest": "sha256:4243826717bae0d61192bc829d2fb82f0897c4d1dcb5a4dba3d6d26abf07a72e",
+    "simulations_per_error_model": 10000,
+    "seed": 20260927,
+    "conclusion": "success"
+  },
+  "observed_standardized_beta": 0.11679896749684507,
+  "error_models": {
+    "poisson": {
+      "coupled_beta": {
+        "mean": 0.00657497432952594,
+        "median": 0.003322642612002902,
+        "sd": 0.03349377787275987,
+        "q_0_025": -0.051529999040694746,
+        "q_0_05": -0.043765150713478106,
+        "q_0_95": 0.06448910261466122,
+        "q_0_975": 0.0762693532990296,
+        "proportion_positive": 0.5403,
+        "exceedances_ge_observed": 2,
+        "one_sided_probability_ge_observed": 0.00029997000299970003
+      },
+      "decoupled_beta": {
+        "mean": 0.008784157577555282,
+        "median": 0.005627346690682275,
+        "sd": 0.032040539637735614,
+        "q_0_025": -0.044750849254316716,
+        "q_0_05": -0.03925495019109175,
+        "q_0_95": 0.06433241878525389,
+        "q_0_975": 0.07247260656374845,
+        "proportion_positive": 0.5653,
+        "exceedances_ge_observed": 5,
+        "one_sided_probability_ge_observed": 0.0005999400059994001
+      },
+      "paired_coupling_bias": {
+        "mean": -0.002209183248029345,
+        "median": -0.0019752854172046985,
+        "sd": 0.014159543366702294,
+        "q_0_025": -0.03051252754239038,
+        "q_0_05": -0.02557233121701391,
+        "q_0_95": 0.02081521093003806,
+        "q_0_975": 0.025499597652489738,
+        "proportion_positive": 0.4398,
+        "mean_fraction_of_observed_beta": -0.018914407339166064,
+        "median_fraction_of_observed_beta": -0.016911839715176027
+      }
+    },
+    "gamma_poisson_cv10": {
+      "coupled_beta": {
+        "mean": 0.010083100751766844,
+        "median": 0.007662102200438184,
+        "sd": 0.035257579493297164,
+        "q_0_025": -0.052027348746134856,
+        "q_0_05": -0.04322941829951371,
+        "q_0_95": 0.07057462589182795,
+        "q_0_975": 0.08114370735755434,
+        "proportion_positive": 0.5791,
+        "exceedances_ge_observed": 14,
+        "one_sided_probability_ge_observed": 0.0014998500149985001
+      },
+      "decoupled_beta": {
+        "mean": 0.009667855451178497,
+        "median": 0.0068102826787103474,
+        "sd": 0.032687482410499326,
+        "q_0_025": -0.045677279046189116,
+        "q_0_05": -0.03963557749457763,
+        "q_0_95": 0.06639240379594835,
+        "q_0_975": 0.07509046943585447,
+        "proportion_positive": 0.5775,
+        "exceedances_ge_observed": 6,
+        "one_sided_probability_ge_observed": 0.0006999300069993001
+      },
+      "paired_coupling_bias": {
+        "mean": 0.00041524530058834806,
+        "median": 0.0005821508885379381,
+        "sd": 0.01748120800032515,
+        "q_0_025": -0.033878547696122814,
+        "q_0_05": -0.028188410809425857,
+        "q_0_95": 0.028960300481827187,
+        "q_0_975": 0.03421356057192644,
+        "proportion_positive": 0.513,
+        "mean_fraction_of_observed_beta": 0.0035552137958716505,
+        "median_fraction_of_observed_beta": 0.004984212626311641
+      }
+    },
+    "gamma_poisson_cv20": {
+      "coupled_beta": {
+        "mean": 0.01805180773426753,
+        "median": 0.015347587663291449,
+        "sd": 0.040493411991869614,
+        "q_0_025": -0.05535976550855382,
+        "q_0_05": -0.045248026777979615,
+        "q_0_95": 0.08723291538069551,
+        "q_0_975": 0.0999885764123248,
+        "proportion_positive": 0.651,
+        "exceedances_ge_observed": 77,
+        "one_sided_probability_ge_observed": 0.007799220077992201
+      },
+      "decoupled_beta": {
+        "mean": 0.01023271881264295,
+        "median": 0.006860663197319642,
+        "sd": 0.03506243162728253,
+        "q_0_025": -0.048626749167857565,
+        "q_0_05": -0.04236821752564462,
+        "q_0_95": 0.07195140035164671,
+        "q_0_975": 0.08092131398123363,
+        "proportion_positive": 0.5756,
+        "exceedances_ge_observed": 20,
+        "one_sided_probability_ge_observed": 0.0020997900209979003
+      },
+      "paired_coupling_bias": {
+        "mean": 0.00781908892162458,
+        "median": 0.007716189618343763,
+        "sd": 0.023858043209014978,
+        "q_0_025": -0.03967998079326157,
+        "q_0_05": -0.030965608548022723,
+        "q_0_95": 0.04647479949447595,
+        "q_0_975": 0.05436799682170583,
+        "proportion_positive": 0.6263,
+        "mean_fraction_of_observed_beta": 0.06694484625333513,
+        "median_fraction_of_observed_beta": 0.06606385127978284
+      }
+    }
+  },
+  "decision": {
+    "observed_beta_unusual_under_all_coupled_circular_nulls": true
+  },
+  "interpretation": [
+    "Replacing the original year-block latent-topology null with island-wise circular shifts does not eliminate the N_eff coefficient anomaly.",
+    "Under all three fixed count-error models, an observed-scale coupled coefficient remains rare (p=0.00030, 0.00150, and 0.00780).",
+    "Median paired coupling bias is -1.7%, +0.5%, and +6.6% of the observed beta under Poisson, CV10%, and CV20%, respectively.",
+    "The N_eff coefficient can therefore remain as a bounded conditional association after controlling for serial structure and the fixed shared-count-error sensitivities.",
+    "This does not restore held-out predictive support; predictive-gain permutation p remains 0.262."
+  ],
+  "manuscript_consequence": "Describe N_eff as a conditional association that survives serial-structure-preserving circular-shift nulls and fixed circular-shift count-error coupling sensitivities, while explicitly retaining the failed held-out predictive-gain result (p=0.262).",
+  "next_gate": "Reconcile synthesis, figures and Ecosphere manuscript; do not open additional N_eff null families or topology metrics."
+}
