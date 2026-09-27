@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-ecosphere-manuscript-v0.4",
+  "date": "2026-09-27",
+  "status": "post_neff_uncertainty_reframed_manuscript_no_new_endpoint_family",
+  "target": {
+    "first_shot": "Ecosphere",
+    "article_type": "Article",
+    "candidate_tracks": [
+      "Animal Ecology",
+      "Coastal and Marine Ecology"
+    ],
+    "fallback": "Ecology and Evolution"
+  },
+  "supersedes_submission_position": [
+    "contracts/PALMER_JAE_SUBMISSION_V0_3.json",
+    "contracts/PALMER_JAE_FINAL_PACKAGING_V0_3_1.json"
+  ],
+  "prerequisite_results": [
+    "results/PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json",
+    "results/PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json"
+  ],
+  "manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_4.md",
+  "core_claim": "A shared regional decline across neighboring externally subsidized breeding islands resolves into heterogeneous local ecological endpoints; colony organization remains conditionally associated with demographic state but is not a robust held-out predictor.",
+  "required_interpretations": [
+    "PC1/synchrony contrast is descriptive context consistent with established timescale-dependent synchrony theory.",
+    "N_eff held-out predictive gain is null-compatible under synchronized year-block permutation (p=0.26224).",
+    "N_eff coefficient may remain only as a conditional association; fixed count-error simulations do not generate an observed-scale coefficient.",
+    "Torgersen mapping is phenomenon-level triangulation, not identifier-level validation.",
+    "Palmer Penguins audit is removed from the primary Introduction motivation."
+  ],
+  "prohibited": [
+    "describe N_eff as a supported held-out predictor",
+    "present 96.4% PC1 as a novel synchrony phenomenon",
+    "claim simple shared census error has been empirically ruled out beyond the fixed stylized simulations",
+    "submit the archived JAE v0.3/v0.3.1 manuscript without rewriting its N_eff claims",
+    "open further topology metrics, climate windows or precipitation months for the core paper"
+  ]
+}
