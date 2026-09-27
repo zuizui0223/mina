@@ -40,12 +40,13 @@ def test_enrich_lags_uses_previous_transition_growth():
 
 def test_shifted_coefficient_identity_matches_direct_standardized_fit():
     rows = []
+    lag_pattern = [None, -0.04, 0.02, -0.01, 0.035, -0.025]
     for island, offset in (("CHR", 0.0), ("COR", 0.2)):
         for k, year in enumerate(range(2000, 2006)):
             current = 100.0 - 3.0 * k + 10.0 * offset
-            eff = 1.5 + 0.3 * k + offset
-            lag1 = None if k == 0 else -0.04 + 0.01 * k
-            lag2 = None if k < 2 else -0.05 + 0.01 * (k - 1)
+            eff = 1.5 + 0.3 * k + 0.03 * (k ** 2) + offset
+            lag1 = lag_pattern[k]
+            lag2 = None if k < 2 else lag_pattern[k - 1]
             next_growth = (
                 -0.08
                 + 0.06 * math.log1p(eff)
