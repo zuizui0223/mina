@@ -127,6 +127,7 @@ def figure3(data: Path, out: Path) -> None:
             if r["decision_supported"] == "true"
             else "not supported"
         )
+        diagnostic = r.get("diagnostic", "")
         if values[i] >= 0:
             text_x = values[i] + 0.25
             text_ha = "left"
@@ -139,7 +140,10 @@ def figure3(data: Path, out: Path) -> None:
         ax.text(
             text_x,
             i,
-            f"{direction}; {supported}",
+            (
+                f"{direction}; {supported}"
+                + (f"; {diagnostic}" if diagnostic else "")
+            ),
             va="center",
             ha=text_ha,
             fontsize=7.5,
@@ -174,7 +178,7 @@ def figure4(data: Path, out: Path) -> None:
     axes[0].set_xlabel("Effective-colony residual")
     axes[0].set_ylabel("Next-year growth residual")
     axes[0].set_title(
-        f"Conditional colony-network signal (β={slope:.3f})"
+        f"Conditional colony association (β={slope:.3f}; gain perm. p=0.262)"
     )
 
     for island in islands:
