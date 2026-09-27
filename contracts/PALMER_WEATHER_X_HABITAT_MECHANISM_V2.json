@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-weather-x-habitat-mechanism-v2",
+  "date": "2026-09-27",
+  "status": "pre_outcome_frozen_source_revision",
+  "supersedes": {
+    "contract_id": "mina-palmer-weather-x-habitat-mechanism-v1",
+    "reason": "Frozen EDI ver.8 entity returned HTTP 403 before any mechanism outcome was computed. V2 preserves the biological hypothesis, response, model family, validation, direction and thresholds; only the accessible weather revision and explicit snow field are updated.",
+    "v1_outcome_accessed": false
+  },
+  "prerequisite_result": "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+  "question": "Does year-to-year snowfall immediately before breeding interact with island snow-retention habitat to explain deviations from the otherwise shared regional Adelie population trajectory?",
+  "response": {
+    "annual_growth": "log1p(N_i,t) - log1p(N_i,t-1) for adjacent annual censuses",
+    "extinction_rule": "retain the positive-to-zero extinction transition; exclude zero-to-zero post-extinction intervals",
+    "local_deviation": "island annual growth minus the mean annual growth of all other eligible islands in the same interval"
+  },
+  "predictor": {
+    "scientific_source": {
+      "title": "Daily weather averages for Palmer Station, Antarctica (1989-2023) ver 9",
+      "doi": "10.6073/pasta/3eefb45dbfb784c3cabe3690ea46fe9e",
+      "version": 9
+    },
+    "transport_snapshot": {
+      "repository": "coding-for-reproducible-research/CfRR_Courses",
+      "commit": "de62ff56db79f75c2a63e737f3cc4f63c9363a2c",
+      "path": "individual_modules/working_with_data_in_R/data/PalmerStation_Daily_Weather.csv",
+      "git_blob_sha": "4b7a462346eef71ebfab1c2ca9a935a66de8886c",
+      "provenance_readme": "individual_modules/working_with_data_in_R/data/README"
+    },
+    "primary_field": "Precipitation Snow (cm)",
+    "annual_metric": "number of October calendar days immediately before the November census with numeric Precipitation Snow (cm) > 0",
+    "trace_rule": "non-numeric trace code T is not counted as a numeric observation or positive day",
+    "missingness": "a year is eligible only when at least 25 October days have numeric snow-precipitation observations",
+    "standardization": "z-score eligible-year October snow-precipitation-day counts within each training fold"
+  },
+  "static_island_modifier": {
+    "name": "fraction of breeding habitat classified as suboptimal/snow-prone",
+    "source": "Fraser et al. 2013, Oceanography 26(3), Table 1",
+    "values_percent": {
+      "CHR": 46.8,
+      "COR": 63,
+      "HUM": 44.2,
+      "LIT": 89.5,
+      "TOR": 44.3
+    },
+    "role": "previously published physical-habitat vulnerability modifier; not independent fresh static evidence",
+    "standardization": "z-score across the five islands"
+  },
+  "primary_model": {
+    "null": "local_deviation ~ island_fixed_effect",
+    "full": "local_deviation ~ island_fixed_effect + z_october_snow_days + z_october_snow_days:z_suboptimal_habitat",
+    "directional_prediction": "interaction coefficient < 0",
+    "leave_one_year_out": "withhold all island observations from one interval end-year; predictor scaling is training-only",
+    "support_rule": "interaction coefficient < 0 AND full model leave-one-year-out RMSE < null RMSE"
+  },
+  "falsification": [
+    "interaction coefficient is nonnegative",
+    "full model does not improve leave-one-year-out RMSE",
+    "fewer than 15 eligible annual intervals remain after the 25-day completeness rule"
+  ],
+  "interpretation_boundaries": [
+    "Palmer Station snowfall is a regional/local weather proxy and not direct snow depth on each island.",
+    "The published habitat modifier is prior-known and its static decline association is not counted as new evidence.",
+    "The interaction test does not establish causality.",
+    "Post-extinction Litchfield zero-to-zero intervals are excluded by design."
+  ]
+}
