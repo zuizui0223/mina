@@ -46,8 +46,11 @@ def main() -> int:
 
     normalized={norm(field):field for field in fields}
     date_field=normalized.get("date")
-    rainfall_field=next(
-        (field for field in fields if "rainfall" in norm(field)),
+    melted_field=next(
+        (
+            field for field in fields
+            if "precip" in norm(field) and "melted" in norm(field)
+        ),
         None,
     )
     snow_field=next(
@@ -57,19 +60,19 @@ def main() -> int:
         ),
         None,
     )
-    if date_field is None or rainfall_field is None or snow_field is None:
+    if date_field is None or snow_field is None:
         raise RuntimeError(
-            "weather mirror lacks normalized EDI Date/Rainfall/Snow fields; "
+            "weather mirror lacks normalized Date/Snow-precipitation fields; "
             f"observed fields={fields!r}"
         )
     if len(rows)!=10674:
         raise RuntimeError(f"expected 10674 daily rows, observed {len(rows)}")
     if rows[0][date_field]!="1989-04-01" or rows[-1][date_field]!="2023-06-30":
         raise RuntimeError(f"unexpected date coverage: {rows[0][date_field]!r}..{rows[-1][date_field]!r}")
-    if rows[0][rainfall_field] not in {"0","0.0","0.00"}:
-        raise RuntimeError("first rainfall value disagrees with published EDI structure")
     if rows[0][snow_field] not in {"0","0.0","0.00"}:
         raise RuntimeError("first snow-precipitation value disagrees with published EDI structure")
+    if melted_field is not None and rows[0][melted_field] not in {"0","0.0","0.00"}:
+        raise RuntimeError("first melted-precipitation value disagrees with published EDI structure")
 
     args.out.parent.mkdir(parents=True,exist_ok=True)
     args.out.write_bytes(data)
@@ -85,7 +88,7 @@ def main() -> int:
     print(f"rows={len(rows)}")
     print("fields=" + ",".join(fields))
     print(f"validated_date_field={date_field}")
-    print(f"validated_rainfall_field={rainfall_field}")
+    print(f"validated_melted_precipitation_field={melted_field}")
     print(f"validated_snow_field={snow_field}")
     return 0
 
