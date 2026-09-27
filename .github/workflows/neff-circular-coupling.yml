@@ -1,0 +1,62 @@
+name: neff-circular-coupling
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - validation/neff-circular-shift-v1
+    paths:
+      - "contracts/PALMER_NEFF_CIRCULAR_COUPLING_V1.json"
+      - "src/mina/neff_circular_coupling.py"
+      - "tests/test_neff_circular_coupling.py"
+      - ".github/workflows/neff-circular-coupling.yml"
+  pull_request:
+    paths:
+      - "contracts/PALMER_NEFF_CIRCULAR_COUPLING_V1.json"
+      - "src/mina/neff_circular_coupling.py"
+      - "tests/test_neff_circular_coupling.py"
+      - ".github/workflows/neff-circular-coupling.yml"
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run tests
+        run: pytest
+      - name: Fetch frozen Palmer census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run circular-shift mechanical-coupling diagnostic
+        run: |
+          python -m mina.neff_circular_coupling \
+            --census build/adelie_census.csv \
+            --out build/neff_circular_coupling.json \
+            --simulations 10000 \
+            --seed 20260927
+      - name: Print diagnostic
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/neff_circular_coupling.json").read_text())
+          print("observed_beta=",x["observed_standardized_beta"])
+          for name,row in x["error_models"].items():
+              print(name,json.dumps({
+                  "coupled":row["coupled_beta"],
+                  "decoupled":row["decoupled_beta"],
+                  "bias":row["paired_coupling_bias"],
+              },indent=2,sort_keys=True))
+          print("decision=",json.dumps(x["decision"],indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: neff-circular-coupling
+          path: build/neff_circular_coupling.json
