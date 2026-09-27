@@ -59,11 +59,15 @@ Current work is limited to:
 - figure and reproducibility packaging;
 - manuscript prose, citations and submission materials.
 
+The current reviewer-facing draft is **v0.2**. It keeps all frozen endpoints, softens the colony-network claim to match its modest held-out effect size, and strengthens the connection to seabird-island / land-sea subsidy ecology.
+
 See:
 
 - `docs/MANUSCRIPT_SPINE_V2.md`
-- `docs/MANUSCRIPT_V0_1.md`
-- `docs/FIGURE_CAPTIONS_V1.md`
+- `docs/MANUSCRIPT_V0_2.md`
+- `docs/FIGURE_CAPTIONS_V2.md`
+- `docs/REVIEWER_AUDIT_V0_1.md`
+- `docs/MANUSCRIPT_V0_1.md` (archived first draft)
 - `contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json`
 - `results/PALMER_MANUSCRIPT_FIGURE_PACKAGE_RESULT_V1.json`
 
