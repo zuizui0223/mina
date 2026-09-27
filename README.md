@@ -59,12 +59,12 @@ Current work is limited to:
 - figure and reproducibility packaging;
 - manuscript prose, citations and submission materials.
 
-The current reviewer-facing draft is **v0.2**. It keeps all frozen endpoints, softens the colony-network claim to match its modest held-out effect size, and strengthens the connection to seabird-island / land-sea subsidy ecology.
+The current reviewer-facing scientific draft is **v0.2**. A journal-targeted **JAE submission draft v0.3** adds a numbered abstract, eight keywords, Materials and Methods naming, a Data Availability statement, an anonymous cover letter and automated Journal of Animal Ecology format checks without changing ecological endpoints.
 
 See:
 
 - `docs/MANUSCRIPT_SPINE_V2.md`
-- `docs/MANUSCRIPT_V0_2.md`
+- `docs/MANUSCRIPT_JAE_V0_3.md`\n- `docs/COVER_LETTER_JAE_V1.md`\n- `docs/JOURNAL_FIT_V1.md`\n- `docs/MANUSCRIPT_V0_2.md`
 - `docs/FIGURE_CAPTIONS_V2.md`
 - `docs/REVIEWER_AUDIT_V0_1.md`
 - `docs/MANUSCRIPT_V0_1.md` (archived first draft)

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mina-island-reassembly"
-version = "0.11.0"
+version = "0.12.0"
 description = "Island community reassembly analyses for Palmer Archipelago penguins"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -29,6 +29,7 @@ mina-spatial-triangulation = "mina.spatial_triangulation:main"
 mina-figure-data = "mina.figure_data:main"
 mina-figures = "mina.figures:main"
 mina-manuscript-guard = "mina.manuscript_guard:main"
+mina-jae-guard = "mina.jae_guard:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

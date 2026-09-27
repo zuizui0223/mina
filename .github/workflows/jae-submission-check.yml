@@ -1,0 +1,61 @@
+name: jae-submission-check
+
+on:
+  push:
+    branches:
+      - submission/jae-v0.3
+    paths:
+      - "docs/MANUSCRIPT_JAE_V0_3.md"
+      - "docs/FIGURE_CAPTIONS_V2.md"
+      - "docs/REFERENCES_V2.bib"
+      - "docs/COVER_LETTER_JAE_V1.md"
+      - "docs/JOURNAL_FIT_V1.md"
+      - "contracts/PALMER_JAE_SUBMISSION_V0_3.json"
+      - "src/mina/jae_guard.py"
+      - "pyproject.toml"
+      - ".github/workflows/jae-submission-check.yml"
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_JAE_V0_3.md"
+      - "docs/FIGURE_CAPTIONS_V2.md"
+      - "docs/REFERENCES_V2.bib"
+      - "docs/COVER_LETTER_JAE_V1.md"
+      - "docs/JOURNAL_FIT_V1.md"
+      - "contracts/PALMER_JAE_SUBMISSION_V0_3.json"
+      - "src/mina/jae_guard.py"
+      - ".github/workflows/jae-submission-check.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Guard frozen scientific claims
+        run: |
+          mina-manuscript-guard \
+            --manuscript docs/MANUSCRIPT_JAE_V0_3.md \
+            --captions docs/FIGURE_CAPTIONS_V2.md \
+            --bibliography docs/REFERENCES_V2.bib \
+            --results results > build-jae-claim-check.json
+      - name: Guard JAE submission format
+        run: |
+          mina-jae-guard \
+            --manuscript docs/MANUSCRIPT_JAE_V0_3.md \
+            --captions docs/FIGURE_CAPTIONS_V2.md \
+            --bibliography docs/REFERENCES_V2.bib | tee build-jae-format-check.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-jae-v0-3
+          path: |
+            docs/MANUSCRIPT_JAE_V0_3.md
+            docs/FIGURE_CAPTIONS_V2.md
+            docs/REFERENCES_V2.bib
+            docs/COVER_LETTER_JAE_V1.md
+            docs/JOURNAL_FIT_V1.md
+            build-jae-claim-check.json
+            build-jae-format-check.json
