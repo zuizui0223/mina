@@ -104,7 +104,74 @@ def figure2(data: Path, out: Path) -> None:
 def figure3(data: Path, out: Path) -> None:
     import matplotlib.pyplot as plt
 
-    rows = _rows(data / "figure3_mechanism_audit.csv")
+    raw = _rows(data / "figure3_hierarchy_raw.csv")
+    pairwise = _rows(data / "figure3_hierarchy_pairwise.csv")
+
+    fig, axes = plt.subplots(1, 2, figsize=(12.4, 4.8))
+
+    labels = ["Primary COR/HUM/LIT", "Pre-extinction", "COR/HUM only"]
+    y = np.arange(len(raw))
+    height = 0.34
+    within = [float(r["beta_within"]) - 1.0 for r in raw]
+    among = [float(r["beta_among"]) - 1.0 for r in raw]
+    axes[0].barh(y - height / 2, within, height=height, label="Within islands")
+    axes[0].barh(y + height / 2, among, height=height, label="Among islands")
+    axes[0].set_yticks(y, labels)
+    axes[0].invert_yaxis()
+    axes[0].set_xlabel("Excess beta variability (β − 1)")
+    axes[0].set_title("Raw abundance: nested beta transition")
+    axes[0].legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=2)
+    axes[0].axvline(0, linewidth=0.8)
+    axes[0].set_xlim(0, max(within) + 0.040)
+    for i, r in enumerate(raw):
+        axes[0].text(
+            max(within[i], among[i]) + 0.004,
+            i,
+            f"within share={100*float(r['within_log_beta_share']):.1f}%",
+            va="center",
+            fontsize=7.5,
+        )
+
+    x = np.arange(len(pairwise))
+    series = (
+        ("among_islands", "Among islands", "s", -0.18),
+        ("COR", "Cormorant", "o", -0.06),
+        ("HUM", "Humble", "^", 0.06),
+        ("LIT", "Litchfield", "D", 0.18),
+    )
+    for key, label, marker, offset in series:
+        axes[1].scatter(
+            x + offset,
+            [float(r[key]) for r in pairwise],
+            marker=marker,
+            s=46,
+            label=label,
+        )
+    axes[1].set_xticks(
+        x,
+        ["Raw\nabundance", "Detrended\nlog1p", "Annual\nlog1p growth"],
+    )
+    axes[1].set_ylabel("Mean pairwise Pearson r")
+    axes[1].set_title("Component-count audit")
+    axes[1].axhline(0.0, linewidth=0.8)
+    axes[1].set_ylim(-0.15, 1.05)
+    axes[1].legend(
+        frameon=False,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.16),
+        ncol=2,
+        fontsize=8,
+    )
+
+    fig.tight_layout()
+    _save(fig, out, "figure3_hierarchical_variability")
+    plt.close(fig)
+
+
+def figure4(data: Path, out: Path) -> None:
+    import matplotlib.pyplot as plt
+
+    rows = _rows(data / "figure4_mechanism_audit.csv")
     labels = [r["test"] for r in rows]
     values = [100 * float(r["relative_error_reduction"]) for r in rows]
     y = np.arange(len(rows))
@@ -147,16 +214,16 @@ def figure3(data: Path, out: Path) -> None:
             fontsize=7.5,
         )
     ax.grid(axis="x", alpha=0.2)
-    _save(fig, out, "figure3_mechanism_audit")
+    _save(fig, out, "figure4_mechanism_audit")
     plt.close(fig)
 
 
-def figure4(data: Path, out: Path) -> None:
+def figure5(data: Path, out: Path) -> None:
     import matplotlib.pyplot as plt
 
-    transitions = _rows(data / "figure4_colony_transitions.csv")
-    states = _rows(data / "figure4_colony_states.csv")
-    external = _rows(data / "figure4_external_torgersen.csv")[0]
+    transitions = _rows(data / "figure5_colony_transitions.csv")
+    states = _rows(data / "figure5_colony_states.csv")
+    external = _rows(data / "figure5_external_torgersen.csv")[0]
     islands = ["CHR", "COR", "HUM", "LIT", "TOR"]
 
     x = np.asarray(
@@ -204,7 +271,7 @@ def figure4(data: Path, out: Path) -> None:
         f"Torgersen mapped footprints: 23 → {external['active_subcolonies_2022']}"
     )
     axes[1].legend(frameon=False, ncol=2)
-    _save(fig, out, "figure4_colony_network")
+    _save(fig, out, "figure5_colony_network")
     plt.close(fig)
 
 
@@ -221,6 +288,7 @@ def main() -> int:
     figure2(a.data_dir, a.out_dir)
     figure3(a.data_dir, a.out_dir)
     figure4(a.data_dir, a.out_dir)
+    figure5(a.data_dir, a.out_dir)
     return 0
 
 
