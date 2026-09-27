@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-weather-x-habitat-mechanism-v1",
+  "date": "2026-09-26",
+  "status": "pre_weather_outcome_join_frozen",
+  "prerequisite_result": "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+  "question": "Does year-to-year precipitation immediately before breeding interact with island snow-retention habitat to explain deviations from the otherwise shared regional Adelie population trajectory?",
+  "response": {
+    "annual_growth": "log1p(N_i,t) - log1p(N_i,t-1) for adjacent annual censuses",
+    "extinction_rule": "retain the positive-to-zero extinction transition; exclude zero-to-zero post-extinction intervals",
+    "local_deviation": "island annual growth minus the mean annual growth of all other eligible islands in the same interval"
+  },
+  "predictor": {
+    "weather_source": {
+      "title": "Daily averaged weather timeseries at Palmer Station, Antarctica",
+      "doi": "10.6073/pasta/cddd3985350334b876cd7d6d1a5bc7bf",
+      "package_id": "knb-lter-pal.28.8",
+      "temporal_coverage": "1989-01-01 through 2019-03-31"
+    },
+    "annual_metric": "number of October calendar days immediately before the November census with numeric daily precipitation > 0",
+    "missingness": "a year is eligible only when at least 25 October days have numeric precipitation observations",
+    "standardization": "z-score eligible-year October precipitation-day counts across the frozen census interval"
+  },
+  "static_island_modifier": {
+    "name": "fraction of breeding habitat classified as suboptimal/snow-prone",
+    "source": "Fraser et al. 2013, Oceanography 26(3), Table 1",
+    "role": "external physical-habitat vulnerability modifier; values are topographic/hillshade-derived but were previously associated with population decline, so this interaction test is a synthesis/follow-up rather than a wholly independent habitat discovery",
+    "values_percent": {
+      "CHR": 46.8,
+      "COR": 63,
+      "HUM": 44.2,
+      "LIT": 89.5,
+      "TOR": 44.3
+    },
+    "standardization": "z-score across the five islands"
+  },
+  "primary_model": {
+    "null": "local_deviation ~ island_fixed_effect",
+    "full": "local_deviation ~ island_fixed_effect + z_habitat * z_october_precip_days",
+    "directional_prediction": "interaction coefficient < 0",
+    "score": [
+      "interaction coefficient",
+      "delta_R2",
+      "leave_one_year_out_RMSE_change"
+    ],
+    "leave_one_year_out": "refit both models after withholding all island observations from one interval end-year"
+  },
+  "falsification": [
+    "interaction coefficient is nonnegative",
+    "full model does not improve leave-one-year-out RMSE",
+    "effect depends on Litchfield post-extinction zero-to-zero intervals, which are excluded by design",
+    "October precipitation coverage fails the predeclared 25-day completeness rule for too many years to retain at least 15 annual intervals"
+  ],
+  "secondary_descriptive_outputs": [
+    "island-specific correlation between local deviation and October precipitation days",
+    "interaction residuals by island and year"
+  ],
+  "prohibited_claims": [
+    "precipitation is equivalent to measured island snow depth",
+    "the interaction establishes causality",
+    "the habitat modifier is independent fresh evidence because its published definition has already been related to population decline",
+    "absence of the interaction means island physical filtering is unimportant"
+  ],
+  "next_gate": "Only after this result is frozen, open a separate regional sea-ice mechanism lane with its own predeclared temporal alignment."
+}

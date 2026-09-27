@@ -1,0 +1,58 @@
+name: palmer-weather-x-habitat
+
+on:
+  push:
+    branches:
+      - analysis/environmental-mechanism-v1
+    paths:
+      - "src/mina/weather.py"
+      - "scripts/fetch_weather.py"
+      - "contracts/PALMER_WEATHER_X_HABITAT_MECHANISM_V2.json"
+      - ".github/workflows/palmer-weather-x-habitat.yml"
+  pull_request:
+    paths:
+      - "src/mina/weather.py"
+      - "scripts/fetch_weather.py"
+      - "contracts/PALMER_WEATHER_X_HABITAT_MECHANISM_V1.json"
+      - ".github/workflows/palmer-weather-x-habitat.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install mina
+        run: python -m pip install -e .
+      - name: Fetch frozen census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Fetch frozen Palmer weather
+        run: python scripts/fetch_weather.py build/palmer_weather.csv
+      - name: Run precipitation x habitat mechanism
+        run: |
+          mina-weather \
+            --census build/adelie_census.csv \
+            --weather build/palmer_weather.csv \
+            --out build/weather_habitat_result.json
+      - name: Print result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/weather_habitat_result.json").read_text())
+          print("weather_schema=",x["weather_schema"])
+          print("eligible_weather_year_count=",len(x["eligible_weather_years"]))
+          print("model=",json.dumps(x["model"],indent=2,sort_keys=True))
+          print("loyo=",json.dumps(x["leave_one_year_out"],indent=2,sort_keys=True))
+          print("decision=",x["decision"])
+          print("by_island=",json.dumps(x["descriptive_by_island"],indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-weather-x-habitat
+          path: |
+            build/palmer_weather.csv
+            build/weather_habitat_result.json
