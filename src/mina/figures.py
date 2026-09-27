@@ -105,7 +105,7 @@ def figure3(data: Path, out: Path) -> None:
     import matplotlib.pyplot as plt
 
     raw = _rows(data / "figure3_hierarchy_raw.csv")
-    centered = _rows(data / "figure3_hierarchy_centered.csv")
+    pairwise = _rows(data / "figure3_hierarchy_pairwise.csv")
 
     fig, axes = plt.subplots(1, 2, figsize=(12.4, 4.8))
 
@@ -132,39 +132,36 @@ def figure3(data: Path, out: Path) -> None:
             fontsize=7.5,
         )
 
-    x = np.arange(len(centered))
-    among_values = np.asarray(
-        [float(r["among_beta"]) for r in centered], dtype=float
+    x = np.arange(len(pairwise))
+    series = (
+        ("among_islands", "Among islands", "s", -0.18),
+        ("COR", "Cormorant", "o", -0.06),
+        ("HUM", "Humble", "^", 0.06),
+        ("LIT", "Litchfield", "D", 0.18),
     )
-    within_median = np.asarray(
-        [float(r["within_beta_median"]) for r in centered], dtype=float
-    )
-    within_min = np.asarray(
-        [float(r["within_beta_min"]) for r in centered], dtype=float
-    )
-    within_max = np.asarray(
-        [float(r["within_beta_max"]) for r in centered], dtype=float
-    )
-    yerr = np.vstack(
-        [within_median - within_min, within_max - within_median]
-    )
-    axes[1].scatter(x - 0.08, among_values, marker="s", label="Among islands")
-    axes[1].errorbar(
-        x + 0.08,
-        within_median,
-        yerr=yerr,
-        fmt="o",
-        capsize=4,
-        label="Within islands: median and range",
-    )
+    for key, label, marker, offset in series:
+        axes[1].scatter(
+            x + offset,
+            [float(r[key]) for r in pairwise],
+            marker=marker,
+            s=46,
+            label=label,
+        )
     axes[1].set_xticks(
         x,
-        ["Detrended\nlog1p abundance", "Annual\nlog1p growth"],
+        ["Raw\nabundance", "Detrended\nlog1p", "Annual\nlog1p growth"],
     )
-    axes[1].set_ylabel("Beta variability (β = 1/φ)")
-    axes[1].set_title("Centered signals retain the hierarchy")
-    axes[1].axhline(1.0, linewidth=0.8)
-    axes[1].legend(frameon=False, loc="upper center")
+    axes[1].set_ylabel("Mean pairwise Pearson r")
+    axes[1].set_title("Component-count audit")
+    axes[1].axhline(0.0, linewidth=0.8)
+    axes[1].set_ylim(-0.15, 1.05)
+    axes[1].legend(
+        frameon=False,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.16),
+        ncol=2,
+        fontsize=8,
+    )
 
     fig.tight_layout()
     _save(fig, out, "figure3_hierarchical_variability")
