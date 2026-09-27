@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-year-timing-audit-v1",
+  "date": "2026-09-27",
+  "status": "frozen_before_exact-census-schedule-conditioned outcome access",
+  "motivation": "Same-island subcolonies are often censused on identical dates, so apparent within-island annual coherence could reflect shared census timing rather than a demographic island effect. This audit conditions exactly on the start- and end-census dates used to form each annual growth observation.",
+  "prerequisites": [
+    "contracts/PALMER_ISLAND_YEAR_COHERENCE_V1.json"
+  ],
+  "data_and_residualization": {
+    "eligibility": "Identical to PALMER_ISLAND_YEAR_COHERENCE_V1: island-specific colony_code with >=3 informative adjacent-year transitions; zero-to-zero transitions excluded; no imputation or code merging.",
+    "colony_standardization": "Identical to PALMER_ISLAND_YEAR_COHERENCE_V1.",
+    "regional_year_residualization": "Identical to PALMER_ISLAND_YEAR_COHERENCE_V1."
+  },
+  "timing_match": {
+    "pair_year_inclusion": "Include a colony-pair × end-year record only if both colonies were censused on exactly the same calendar date in the start year and exactly the same calendar date in the end year.",
+    "schedule_block": "(end_year, common_start_census_date, common_end_census_date)",
+    "rationale": "Within a schedule block, any timing-induced phenology bias from the two census dates is shared by within-island and between-island pairs."
+  },
+  "statistic": {
+    "response": "Product of the two regional-residualized standardized colony-growth values for the matched pair-year.",
+    "model": "response ~ schedule_block fixed effects + same_island",
+    "coefficient": "Within-schedule fixed-effect coefficient for same_island, computed by demeaning response and the same_island indicator within each schedule block.",
+    "expected_direction": "positive"
+  },
+  "null": {
+    "labels": "Static colony island labels are permuted within the same five deterministic transition-count/abundance rank strata frozen in PALMER_ISLAND_YEAR_COHERENCE_V1.",
+    "permutations": 20000,
+    "seed": 20260927,
+    "inference": "two-sided permutation p; support also requires positive observed same_island coefficient"
+  },
+  "analyses": {
+    "primary": "All five islands.",
+    "sensitivity": "Exclude Litchfield entirely.",
+    "strong_timing_robustness": "Both primary and four-island sensitivity have positive coefficient and two-sided p <= 0.05."
+  },
+  "interpretation_boundaries": [
+    "A positive result means exact shared census dates are insufficient to explain the island-coherence signal.",
+    "This does not rule out other island-specific observation processes such as observer identity or unrecorded within-day protocols.",
+    "A negative result requires downgrading the demographic interpretation of island coherence.",
+    "This remains a post-result audit and does not convert earlier exploratory analyses into preregistered evidence.",
+    "Do not alter date matching, schedule block definition, residualization, permutation strata, permutation count, or decision rule after opening the result."
+  ]
+}
