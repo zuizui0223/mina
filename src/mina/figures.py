@@ -104,7 +104,76 @@ def figure2(data: Path, out: Path) -> None:
 def figure3(data: Path, out: Path) -> None:
     import matplotlib.pyplot as plt
 
-    rows = _rows(data / "figure3_mechanism_audit.csv")
+    raw = _rows(data / "figure3_hierarchy_raw.csv")
+    centered = _rows(data / "figure3_hierarchy_centered.csv")
+
+    fig, axes = plt.subplots(1, 2, figsize=(11.2, 4.8))
+
+    labels = [r["analysis"] for r in raw]
+    y = np.arange(len(raw))
+    height = 0.34
+    within = [float(r["beta_within"]) - 1.0 for r in raw]
+    among = [float(r["beta_among"]) - 1.0 for r in raw]
+    axes[0].barh(y - height / 2, within, height=height, label="Within islands")
+    axes[0].barh(y + height / 2, among, height=height, label="Among islands")
+    axes[0].set_yticks(y, labels)
+    axes[0].invert_yaxis()
+    axes[0].set_xlabel("Excess beta variability (β − 1)")
+    axes[0].set_title("Raw abundance: nested beta transition")
+    axes[0].legend(frameon=False)
+    axes[0].axvline(0, linewidth=0.8)
+    for i, r in enumerate(raw):
+        axes[0].text(
+            max(within[i], among[i]) + 0.003,
+            i,
+            f"within share={100*float(r['within_log_beta_share']):.1f}%",
+            va="center",
+            fontsize=7.5,
+        )
+
+    x = np.arange(len(centered))
+    among_values = np.asarray(
+        [float(r["among_beta"]) for r in centered], dtype=float
+    )
+    within_median = np.asarray(
+        [float(r["within_beta_median"]) for r in centered], dtype=float
+    )
+    within_min = np.asarray(
+        [float(r["within_beta_min"]) for r in centered], dtype=float
+    )
+    within_max = np.asarray(
+        [float(r["within_beta_max"]) for r in centered], dtype=float
+    )
+    yerr = np.vstack(
+        [within_median - within_min, within_max - within_median]
+    )
+    axes[1].scatter(x - 0.08, among_values, marker="s", label="Among islands")
+    axes[1].errorbar(
+        x + 0.08,
+        within_median,
+        yerr=yerr,
+        fmt="o",
+        capsize=4,
+        label="Within islands: median and range",
+    )
+    axes[1].set_xticks(
+        x,
+        ["Detrended\nlog1p abundance", "Annual\nlog1p growth"],
+    )
+    axes[1].set_ylabel("Beta variability (β = 1/φ)")
+    axes[1].set_title("Centered signals: within-island compensation persists")
+    axes[1].axhline(1.0, linewidth=0.8)
+    axes[1].legend(frameon=False)
+
+    fig.tight_layout()
+    _save(fig, out, "figure3_hierarchical_variability")
+    plt.close(fig)
+
+
+def figure4(data: Path, out: Path) -> None:
+    import matplotlib.pyplot as plt
+
+    rows = _rows(data / "figure4_mechanism_audit.csv")
     labels = [r["test"] for r in rows]
     values = [100 * float(r["relative_error_reduction"]) for r in rows]
     y = np.arange(len(rows))
@@ -147,16 +216,16 @@ def figure3(data: Path, out: Path) -> None:
             fontsize=7.5,
         )
     ax.grid(axis="x", alpha=0.2)
-    _save(fig, out, "figure3_mechanism_audit")
+    _save(fig, out, "figure4_mechanism_audit")
     plt.close(fig)
 
 
-def figure4(data: Path, out: Path) -> None:
+def figure5(data: Path, out: Path) -> None:
     import matplotlib.pyplot as plt
 
-    transitions = _rows(data / "figure4_colony_transitions.csv")
-    states = _rows(data / "figure4_colony_states.csv")
-    external = _rows(data / "figure4_external_torgersen.csv")[0]
+    transitions = _rows(data / "figure5_colony_transitions.csv")
+    states = _rows(data / "figure5_colony_states.csv")
+    external = _rows(data / "figure5_external_torgersen.csv")[0]
     islands = ["CHR", "COR", "HUM", "LIT", "TOR"]
 
     x = np.asarray(
@@ -204,7 +273,7 @@ def figure4(data: Path, out: Path) -> None:
         f"Torgersen mapped footprints: 23 → {external['active_subcolonies_2022']}"
     )
     axes[1].legend(frameon=False, ncol=2)
-    _save(fig, out, "figure4_colony_network")
+    _save(fig, out, "figure5_colony_network")
     plt.close(fig)
 
 
@@ -221,6 +290,7 @@ def main() -> int:
     figure2(a.data_dir, a.out_dir)
     figure3(a.data_dir, a.out_dir)
     figure4(a.data_dir, a.out_dir)
+    figure5(a.data_dir, a.out_dir)
     return 0
 
 
