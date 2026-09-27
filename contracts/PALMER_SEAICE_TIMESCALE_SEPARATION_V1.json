@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-seaice-timescale-separation-v1",
+  "date": "2026-09-27",
+  "status": "post_negative_fresh_hypothesis_pre_smoothed_predictor_access",
+  "prerequisite_result": "results/PALMER_SEAICE_HABITAT_MECHANISM_RESULT_V1.json",
+  "motivation": "The preregistered one-year positive sea-ice-duration mechanism was not supported despite a 96.4% common long-term abundance component. Test a predeclared low-frequency mechanism without tuning the smoothing window on outcomes.",
+  "primary_timescale_years": 5,
+  "response": {
+    "definition": "G_K(t) = [log1p(sum_i N_i,t) - log1p(sum_i N_i,t-K)] / K",
+    "primary_K": 5,
+    "census_years": "1991-2017",
+    "islands": [
+      "CHR",
+      "COR",
+      "HUM",
+      "LIT",
+      "TOR"
+    ]
+  },
+  "predictor": {
+    "metric": "PAL DSR Grid SIDuration",
+    "definition": "mean SIDuration over annual transition years t-K+1 through t",
+    "primary_K": 5,
+    "direction": "longer low-frequency sea-ice duration predicts less-negative K-year population growth",
+    "source": "same frozen EDI/mirror source as PALMER_SEAICE_HABITAT_MECHANISM_V1"
+  },
+  "models": {
+    "T0": "G5 ~ centered interval-midpoint year",
+    "T1": "G5 ~ centered interval-midpoint year + z(trailing-5-year mean SIDuration)"
+  },
+  "validation": {
+    "scheme": "purged leave-one-window-out",
+    "purge_rule": "For held-out interval [t-5,t], exclude every training window sharing any census endpoint or annual transition year with that interval.",
+    "metric": "MSE of annualized 5-year growth",
+    "primary_gain": "MSE(T0)-MSE(T1)",
+    "decision": "support only if primary gain > 0 and full-data sea-ice coefficient > 0"
+  },
+  "robustness": [
+    "repeat the same predeclared procedure at K=3",
+    "repeat the same predeclared procedure at K=7",
+    "repeat K=5 after excluding Litchfield from the summed population"
+  ],
+  "diagnostics": [
+    "report correlation between midpoint year and trailing sea ice to expose trend collinearity",
+    "report non-overlapping phase-specific sea-ice coefficients for K=5",
+    "report number of training windows per purged fold"
+  ],
+  "interpretation_boundaries": [
+    "This is a new post-negative hypothesis, not an independent preregistration.",
+    "A positive result would support timescale separation, not prove sea ice is causal.",
+    "A nonpositive incremental gain over time trend would reject the simple low-frequency sea-ice explanation.",
+    "Do not tune K after seeing results; K=5 is primary and K=3/7 are fixed robustness checks."
+  ],
+  "next_gate": "Only after freezing this result may additional sea-ice phenology variables, prey mediators, or terrestrial weather mechanisms be opened."
+}
