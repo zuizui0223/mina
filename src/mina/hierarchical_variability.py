@@ -240,6 +240,11 @@ def nested_raw_decomposition(
         }
         per_island[island] = wang_loreau_raw(local)
 
+    all_per_island_exceed_among = all(
+        float(per_island[island]["beta_spatial"]) > beta_among
+        for island in islands
+    )
+
     return {
         "islands": list(islands),
         "first_year": years[0],
@@ -256,6 +261,9 @@ def nested_raw_decomposition(
         "log_beta_share_within_islands": within_log_share,
         "log_beta_share_among_islands": among_log_share,
         "per_island_subcolony_variability": per_island,
+        "all_per_island_subcolony_beta_exceed_among_beta": bool(
+            all_per_island_exceed_among
+        ),
     }
 
 
@@ -310,6 +318,8 @@ def centered_signal_sensitivity(
         ],
         dtype=float,
     )
+    among_beta = float(among["beta_spatial"])
+    all_within_exceed = bool(np.all(within_beta > among_beta))
     return {
         "transform": transform,
         "among_islands": among,
@@ -318,6 +328,10 @@ def centered_signal_sensitivity(
             "min": float(np.min(within_beta)),
             "median": float(np.median(within_beta)),
             "max": float(np.max(within_beta)),
+            "median_ratio_to_among_beta": float(
+                np.median(within_beta) / among_beta
+            ),
+            "all_within_island_beta_exceed_among_beta": all_within_exceed,
         },
         "boundary": (
             "Non-additive log transforms are not used for an exact "
@@ -427,6 +441,19 @@ def analyze(path: str | Path) -> dict[str, object]:
             "same_ordering_without_litchfield": persistent_order,
             "hierarchy_ordering_retained_across_fixed_raw_sensitivities": bool(
                 primary_order and pre_order and persistent_order
+            ),
+            "all_primary_stable_islands_individually_exceed_among_beta": bool(
+                primary["all_per_island_subcolony_beta_exceed_among_beta"]
+            ),
+            "all_detrended_within_island_beta_exceed_among_beta": bool(
+                detrended["within_beta_summary"][
+                    "all_within_island_beta_exceed_among_beta"
+                ]
+            ),
+            "all_growth_within_island_beta_exceed_among_beta": bool(
+                growth["within_beta_summary"][
+                    "all_within_island_beta_exceed_among_beta"
+                ]
             ),
         },
         "interpretation_boundary": {
