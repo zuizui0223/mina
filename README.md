@@ -1,122 +1,98 @@
 # mina
 
-Development repository for the **Palmer Archipelago penguin island-reassembly**
-project.
+Development and manuscript repository for the **Palmer Archipelago penguin
+island-ecology** study.
 
-## Biological question
+## Current ecological claim
 
-Do neighboring Antarctic breeding islands maintain persistent local penguin
-phenotypes, or is archipelago-scale functional differentiation generated mainly
-by **species turnover plus temporally labile within-species states**?
+Five neighboring Adélie penguin island populations share an exceptionally
+strong long-term decline, but their annual dynamics and extinction endpoints
+are not interchangeable.
 
-This project grew out of the frozen ODSP Palmer Penguins audit. The ODSP result
-is retained as provenance, not as the biological endpoint:
+Across the complete 1991–2017 five-island Palmer LTER panel:
 
-- pooled morphology -> island gain: **+0.3895**
-- species-identity component: **+0.5360**
-- morphology increment after conditioning on species: **-0.0837**
+- PC1 explains **96.4%** of standardized log-abundance variation;
+- median pairwise annual-growth correlation is only **0.373**;
+- year uniquely accounts for **53.5%** of total log-abundance variance;
+- island identity accounts for **33.0%**;
+- Litchfield reaches local extinction while four neighboring islands persist at
+  low abundance through 2017.
 
-That reversal motivates an ecological decomposition:
+Finite prospective tests did **not** support simple positive annual sea-ice
+duration, 3/5/7-year sea-ice-duration rescue, or October snowfall × static
+snow-prone-habitat formulations.
 
-1. **between-species sorting / turnover among islands**;
-2. **persistent within-species island differentiation**;
-3. **island x year reassembly within a species**.
+The one positive local-state result is narrow: **effective colony number**
+(`1 / sum(p_j^2)`) has a positive conditional coefficient (**+0.1168**) and
+slightly improves held-out-year next-year growth prediction beyond island,
+current abundance and secular time. Active-colony count does not transfer, and
+an externally fixed >50-pair threshold improves prediction only with the
+opposite coefficient direction to its historical hypothesis.
 
-The focal within-species control is Adélie penguins, which occur on Biscoe,
-Dream and Torgersen in the Palmer Penguins data.
-
-## Current exploratory result
-
-Using the pinned raw Palmer Penguins data (2007/08--2009/10):
-
-- fixed island effects within Adélie are small for most measured traits;
-- island x year structure is stronger for bill depth, body mass and delta15N;
-- most pairwise island contrasts reverse sign among years;
-- leave-one-year-out island classification is essentially at the three-island
-  reference:
-  - structural morphology: balanced accuracy **0.342**
-  - isotopic niche: balanced accuracy **0.340**
-  - reference: **0.333**
-
-The current interpretation is therefore **community/colony reassembly**, not
-evolutionary local adaptation or demonstrated individual plasticity.
-
-## Repository layout
-
-- `src/mina/palmer.py` — Adélie-only island x year analysis.
-- `src/mina/longterm.py` — APBP/MAPPPD abundance -> island community trait
-  trajectories and turnover.
-- `contracts/PALMER_ISLAND_REASSEMBLY_V1.json` — hypotheses and scope.
-- `results/EXPLORATORY_RESULT_V1.json` — current three-year result receipt.
-- `docs/LONGTERM_EXTENSION_V1.md` — long-term island-biogeographic design.
-- `scripts/fetch_palmer_raw.py` — fetch the pinned Palmer raw table.
-- `scripts/export_mapppdr.R` — export focal APBP/MAPPPD tables.
-- `tests/` — synthetic tests that do not depend on network access.
-
-## Install
-
-```bash
-python -m pip install -e ".[dev]"
-```
-
-## Reproduce the three-year analysis
-
-```bash
-python scripts/fetch_palmer_raw.py data/penguins_raw.csv
-mina-palmer --raw data/penguins_raw.csv --out build/palmer_result.json
-```
-
-Pinned Palmer source:
-
-- repository: `allisonhorst/palmerpenguins`
-- commit: `8957207b78d6ccd1b4654a9dd9c9041b657478ab`
-- Git blob: `ba99fbd527f0bb983b3d9615ef5c81a5917ab7d9`
-
-## Long-term extension
-
-Export the APBP/MAPPPD focal observations in R:
-
-```bash
-Rscript scripts/export_mapppdr.R build/mapppdr
-```
-
-Then build the conservative island-year panel:
-
-```bash
-mina-longterm \
-  --palmer-raw data/penguins_raw.csv \
-  --sites build/mapppdr/sites.csv \
-  --species build/mapppdr/species.csv \
-  --site-species build/mapppdr/site_species.csv \
-  --observations build/mapppdr/penguin_obs.csv \
-  --out build/longterm.json
-```
-
-The default long-term analysis is deliberately strict:
-
-- nests/breeding-pair counts only;
-- missing observations for a **known breeding species** are not silently
-  converted to zero;
-- an explicit absence may become zero when the source record says
-  `presence = 0`;
-- a species not listed by APBP as breeding at that site may be treated as a
-  structural zero;
-- repeated same-site/species/year counts are summarized by their median;
-- island-year transitions are marked primary-eligible only when the set of
-  contributing APBP sites is unchanged.
-
-## Provenance
-
-The biological project was migrated from
-`zuizui0223/odsp` branch `ecology/penguin-island-reassembly-v1`
-(draft PR #186). Frozen ODSP N2 evidence remains in ODSP and is not rewritten by
-this repository.
-
+Independent Torgersen spatial reconstruction shows real breeding-footprint
+contraction (23 historic active subcolonies -> five active in 2022) and
+topographically non-random attrition. This is **phenomenon-level spatial
+convergence**, not colony-ID-level validation: the public LTER `colony_code`
+values have not been crosswalked one-to-one to the independent GIS polygons.
 
 ## Ecological framing
 
-See `docs/ECOLOGICAL_SYSTEM.md`. The project treats penguin breeding islands
-as **externally subsidized systems**: the main trophic resource base is marine,
-the breeding surface is terrestrial and strongly filtered by snow/geomorphology,
-direct competition is localized rather than assumed absent, and penguins
-themselves engineer the terrestrial ecosystem through marine nutrient import.
+mina treats penguin breeding islands as **externally subsidized breeding
+patches**. Food resources are primarily marine; breeding surfaces are discrete
+and terrestrial. Regional marine processes can therefore impose a shared
+demographic direction while local snow, geomorphology, colony history and
+remaining nest-space organization shape vulnerability.
+
+Direct biotic interactions are not assumed absent. They are treated as
+localized and testable rather than as the default explanation for whole-island
+trajectories.
+
+## Development state
+
+Core ecological endpoint development is **closed**. The repository terminal
+rule forbids opening additional climate windows, precipitation months,
+colony-size thresholds or topology indices for the core paper.
+
+Current work is limited to:
+
+- external validation / spatial crosswalk resolution;
+- figure and reproducibility packaging;
+- manuscript prose, citations and submission materials.
+
+See:
+
+- `docs/MANUSCRIPT_SPINE_V2.md`
+- `docs/MANUSCRIPT_V0_1.md`
+- `docs/FIGURE_CAPTIONS_V1.md`
+- `contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json`
+- `results/PALMER_MANUSCRIPT_FIGURE_PACKAGE_RESULT_V1.json`
+
+## Reproduce
+
+Install:
+
+```bash
+python -m pip install -e ".[dev,figures]"
+```
+
+Fetch the frozen census:
+
+```bash
+python scripts/fetch_lter_census.py build/adelie_census.csv
+```
+
+Primary analyses:
+
+```bash
+mina-lter --census build/adelie_census.csv --out build/lter.json
+mina-colony-network --census build/adelie_census.csv --out build/colony.json
+```
+
+The manuscript figure workflow additionally exports pinned APBP/MAPPPD site
+metadata and regenerates Figure 1–4 data before rendering PNG and PDF outputs.
+
+## Provenance
+
+The project began as a biological follow-up to the frozen ODSP Palmer Penguins
+audit. ODSP remains the methodological provenance source; all current biological
+development and manuscript work belongs in `mina`.
