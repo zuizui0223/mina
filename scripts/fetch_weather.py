@@ -1,89 +1,72 @@
 #!/usr/bin/env python3
-"""Fetch frozen Palmer Station daily weather, with AMRDC transport discovery."""
+"""Fetch a pinned public mirror of the frozen EDI Palmer daily weather table."""
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
-import re
+import io
+import urllib.parse
 import urllib.request
-from urllib.parse import urljoin
 from pathlib import Path
 
-PACKAGE="knb-lter-pal.28.8"
-DOI="10.6073/pasta/cddd3985350334b876cd7d6d1a5bc7bf"
-ENTITY="375b34051b162d84516ec2d02f864675"
-EDI_URLS=(
-    f"https://pasta.lternet.edu/package/data/eml/knb-lter-pal/28/8/{ENTITY}",
-    f"http://pasta.lternet.edu/package/data/eml/knb-lter-pal/28/8/{ENTITY}",
+SCIENTIFIC_PACKAGE="knb-lter-pal.28.8"
+SCIENTIFIC_DOI="10.6073/pasta/cddd3985350334b876cd7d6d1a5bc7bf"
+SCIENTIFIC_ENTITY="375b34051b162d84516ec2d02f864675"
+
+MIRROR_REPO="coding-for-reproducible-research/CfRR_Courses"
+MIRROR_COMMIT="de62ff56db79f75c2a63e737f3cc4f63c9363a2c"
+MIRROR_PATH="individual_modules/working_with_data_in_R/data/PalmerStation_Daily_Weather.csv"
+MIRROR_BLOB_SHA="4b7a462346eef71ebfab1c2ca9a935a66de8886c"
+URL=(
+    "https://raw.githubusercontent.com/"
+    f"{MIRROR_REPO}/{MIRROR_COMMIT}/"
+    + urllib.parse.quote(MIRROR_PATH,safe="/")
 )
-AMRDC_BASE="https://amrc.ssec.wisc.edu/data/ftp/pub/palmer/climatology/"
 UA="Mozilla/5.0 mina-island-reassembly/0.5"
 
 
-def fetch(url: str) -> bytes:
-    req=urllib.request.Request(url,headers={"User-Agent":UA,"Accept":"*/*"})
-    with urllib.request.urlopen(req,timeout=90) as r:
-        return r.read()
-
-
-def valid_edi(data: bytes) -> bool:
-    head=data[:2500]
-    return len(data)>1000 and b"Date" in head and (b"Rainfall" in head or b"Precip" in head)
-
-
 def main() -> int:
-    parser=argparse.ArgumentParser()
-    parser.add_argument("out",type=Path)
-    args=parser.parse_args()
-    failures=[]
-    for url in EDI_URLS:
-        try:
-            data=fetch(url)
-        except Exception as exc:
-            failures.append(f"{url}: {exc!r}")
-            continue
-        if valid_edi(data):
-            args.out.parent.mkdir(parents=True,exist_ok=True)
-            args.out.write_bytes(data)
-            print(f"scientific_package={PACKAGE}")
-            print(f"doi={DOI}")
-            print(f"entity={ENTITY}")
-            print("transport=EDI direct")
-            print(f"transport_url={url}")
-            print(f"sha256={hashlib.sha256(data).hexdigest()}")
-            print(f"bytes={len(data)}")
-            return 0
-        failures.append(f"{url}: invalid bytes={len(data)}")
+    p=argparse.ArgumentParser()
+    p.add_argument("out",type=Path)
+    args=p.parse_args()
+    req=urllib.request.Request(URL,headers={"User-Agent":UA})
+    with urllib.request.urlopen(req,timeout=90) as r:
+        data=r.read()
+    if len(data)<1_000_000:
+        raise RuntimeError(f"weather mirror unexpectedly small: {len(data)} bytes")
 
-    # EDI currently returns 403 to anonymous CI. Discover the upstream AMRDC
-    # climatology archive used by the same Palmer Station weather product.
-    try:
-        listing=fetch(AMRDC_BASE).decode("utf-8","replace")
-    except Exception as exc:
-        raise RuntimeError(
-            "EDI weather unavailable and AMRDC archive listing failed. "
-            + " | ".join(failures) + f" | AMRDC: {exc!r}"
-        ) from exc
+    text=data.decode("utf-8-sig","strict")
+    reader=csv.DictReader(io.StringIO(text))
+    rows=list(reader)
+    fields=reader.fieldnames or []
+    expected={"Date","Rainfall..mm.","Precipitation.Snow..cm."}
+    missing=sorted(expected-set(fields))
+    if missing:
+        raise RuntimeError(f"weather mirror missing expected EDI columns: {missing}")
+    if len(rows)!=10674:
+        raise RuntimeError(f"expected 10674 daily rows, observed {len(rows)}")
+    if rows[0]["Date"]!="1989-04-01":
+        raise RuntimeError(f"unexpected first date: {rows[0]['Date']!r}")
+    if rows[0]["Rainfall..mm."] not in {"0","0.0"}:
+        raise RuntimeError("first rainfall value disagrees with published EDI structure")
+    if rows[0]["Precipitation.Snow..cm."] not in {"0","0.0"}:
+        raise RuntimeError("first snow-precipitation value disagrees with published EDI structure")
 
-    hrefs=[]
-    for href in re.findall(r'href=["\']([^"\']+)["\']',listing,re.I):
-        if href.startswith("?") or href in {"../","/"}:
-            continue
-        hrefs.append(urljoin(AMRDC_BASE,href))
-    print(f"scientific_package={PACKAGE}")
-    print(f"doi={DOI}")
-    print(f"entity={ENTITY}")
-    print("EDI_failures=" + " | ".join(failures))
-    print(f"amrdc_listing_sha256={hashlib.sha256(listing.encode()).hexdigest()}")
-    print(f"amrdc_link_count={len(hrefs)}")
-    print("amrdc_links=")
-    for url in hrefs[:200]:
-        print(url)
-
-    raise RuntimeError(
-        "EDI entity is unavailable; AMRDC transport inventory printed above. "
-        "Freeze a deterministic AMRDC reconstruction rule before opening values."
-    )
+    args.out.parent.mkdir(parents=True,exist_ok=True)
+    args.out.write_bytes(data)
+    print(f"scientific_package={SCIENTIFIC_PACKAGE}")
+    print(f"scientific_doi={SCIENTIFIC_DOI}")
+    print(f"scientific_entity={SCIENTIFIC_ENTITY}")
+    print(f"transport_repo={MIRROR_REPO}")
+    print(f"transport_commit={MIRROR_COMMIT}")
+    print(f"transport_path={MIRROR_PATH}")
+    print(f"transport_blob_sha={MIRROR_BLOB_SHA}")
+    print(f"sha256={hashlib.sha256(data).hexdigest()}")
+    print(f"bytes={len(data)}")
+    print(f"rows={len(rows)}")
+    print("fields=" + ",".join(fields))
+    return 0
 
 
 if __name__=="__main__":
