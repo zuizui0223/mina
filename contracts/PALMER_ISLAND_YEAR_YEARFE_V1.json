@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-year-yearfe-v1",
+  "date": "2026-09-27",
+  "status": "post-positive audit frozen before year-fixed-effect outcome access",
+  "prerequisite_result": "results/PALMER_ISLAND_YEAR_COHERENCE_RESULT_V1.json",
+  "motivation": "Same-island colony pairs can have more similar observation-year coverage than between-island pairs. If pair-product magnitude varies by year, unequal year representation could create an apparent island contrast. Condition the pair-year comparison exactly on end year.",
+  "frozen_base": "Use the identical colony eligibility, colony-wise growth standardization, regional-year residualization and static abundance/transition-count stratified label permutation from PALMER_ISLAND_YEAR_COHERENCE_V1.",
+  "statistic": {
+    "response": "Product of two regional-residualized standardized colony-growth values for every co-observed colony pair × end year.",
+    "model": "response ~ end_year fixed effects + same_island",
+    "coefficient": "same_island coefficient computed after demeaning both response and same_island indicator within end year",
+    "expected_direction": "positive"
+  },
+  "null": {
+    "type": "static colony island-label permutation within the same five deterministic strata used in PALMER_ISLAND_YEAR_COHERENCE_V1",
+    "permutations": 20000,
+    "seed": 20260927,
+    "inference": "two-sided permutation p; support also requires positive coefficient"
+  },
+  "analyses": {
+    "primary": "All five islands.",
+    "sensitivity": "Exclude Litchfield.",
+    "strong_year_robustness": "Both coefficients positive with two-sided p <= 0.05."
+  },
+  "interpretation_boundaries": [
+    "A positive result shows unequal observation-year coverage and year-specific pair-product baselines are insufficient to explain island coherence.",
+    "This does not control geographic distance, exact census date, observer identity, or unrecorded protocol differences.",
+    "This is a post-positive audit; no alternative year weighting or block definition may be selected after outcomes are opened."
+  ]
+}
