@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-year-leave-one-out-v1",
+  "date": "2026-09-27",
+  "status": "frozen_after_primary_positive_before_leave-one-island-out outcomes",
+  "prerequisite_result": "results/PALMER_ISLAND_YEAR_COHERENCE_RESULT_V1.json",
+  "question": "Is the supported island-year covariance contrast robust to removal of any single Palmer island?",
+  "method": "Repeat the exact frozen missingness-robust island-year coherence analysis on all five four-island subsets formed by omitting CHR, COR, HUM, LIT, or TOR. Recompute colony standardization, regional year residualization, coverage/abundance strata, pseudo-island permutations and the covariance contrast within each subset.",
+  "permutations": 20000,
+  "seed_rule": "20260927 + omission index in fixed order CHR,COR,HUM,LIT,TOR",
+  "decision_rule": "uniform robustness requires every omission to retain a positive observed contrast and two-sided permutation p <= 0.05",
+  "boundaries": [
+    "This is a post-positive robustness analysis, not an independent discovery test.",
+    "All five omissions are reported regardless of outcome.",
+    "Do not change eligibility, residualization, stratification, statistic or significance rule after results are opened."
+  ]
+}
