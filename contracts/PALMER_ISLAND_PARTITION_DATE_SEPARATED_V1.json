@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-partition-date-separated-v1",
+  "date": "2026-09-27",
+  "status": "frozen_after_timing_structure_audit_before_date_separated_outcome_access",
+  "prerequisite": [
+    "results/PALMER_ISLAND_PARTITION_OVERLAP_RESULT_V1.json",
+    "census timing audit establishing that some island-year colony rows are collected on multiple dates"
+  ],
+  "question": "Can the positive within-island colony-growth synchrony contrast survive when shared same-day census batches are removed from the pairwise growth observations?",
+  "data": {
+    "source": "Palmer LTER AdeliePenguinCensus",
+    "years": "1991-2017 inclusive",
+    "unit": "island-specific colony_code",
+    "missingness": "retain only observed adjacent-year growth intervals; no missing-as-zero and no identifier merging"
+  },
+  "primary_strict": {
+    "interval_rule": "for a pair of colony codes, retain an annual growth interval only if the two colonies were counted on different dates at both the start year and the end year",
+    "minimum_overlap": "at least 4 retained intervals, giving positive Fisher-z information weight n-3",
+    "statistic": "same Fisher-z information-weighted within-island minus between-island growth-correlation contrast used in overlap V1",
+    "null": "permute island labels within five fixed mean-log1p-abundance rank strata while trajectories, dates and missingness remain attached to colony units",
+    "permutations": 20000,
+    "seed": 20260927,
+    "decision": "support against exact same-day batch confounding only if the strict estimator is valid and its two-sided permutation p <= 0.05"
+  },
+  "relaxed_diagnostic": {
+    "interval_rule": "retain intervals where census dates differ at at least one endpoint",
+    "role": "descriptive sensitivity only; cannot by itself rule out a same-day error contribution at the other endpoint"
+  },
+  "boundaries": [
+    "This test addresses exact same-date batching only, not observer identity, protocol-level error, or island-wide biological/environmental shocks.",
+    "If the strict estimator has inadequate information, report it as inconclusive rather than relax the primary rule.",
+    "Do not change the 4-interval minimum, date rule, Fisher weighting, abundance strata, transform, or permutation scheme after opening the result."
+  ]
+}
