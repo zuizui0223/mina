@@ -64,7 +64,7 @@ This addresses the spurious-regression concern without restoring the failed
 predictive claim.
 
 The evidence therefore supports **association without robust out-of-year
-prediction**. The manuscript has been reframed as v0.4 with **Ecosphere as the
+prediction**. The manuscript is now **v0.5** with **Ecosphere as the
 recommended first shot** and **Ecology and Evolution as fallback**. Archived
 JAE v0.3/v0.3.1 files remain provenance only.
 
