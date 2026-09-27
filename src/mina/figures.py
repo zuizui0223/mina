@@ -127,12 +127,21 @@ def figure3(data: Path, out: Path) -> None:
             if r["decision_supported"] == "true"
             else "not supported"
         )
+        if values[i] >= 0:
+            text_x = values[i] + 0.25
+            text_ha = "left"
+        else:
+            # Keep the annotation near the zero reference rather than at the
+            # far negative bar tip, so a strongly negative validation result
+            # cannot collide with the y-axis test label.
+            text_x = 0.35
+            text_ha = "left"
         ax.text(
-            values[i] + (0.25 if values[i] >= 0 else -0.25),
+            text_x,
             i,
             f"{direction}; {supported}",
             va="center",
-            ha="left" if values[i] >= 0 else "right",
+            ha=text_ha,
             fontsize=7.5,
         )
     ax.grid(axis="x", alpha=0.2)
