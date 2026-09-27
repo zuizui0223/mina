@@ -68,5 +68,5 @@ def test_manuscript_v05_ecosphere_after_structured_neff_nulls():
     assert "*p* < 0.00001" in text
     assert "1/416 = **0.0024**" in text
     assert "0.00780" in text
-    assert "do not treat it as a predictive result" in text
+    assert "predictive claim remains withdrawn" in text
     assert "Palmer Penguins data set" not in text
