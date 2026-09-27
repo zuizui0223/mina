@@ -58,17 +58,25 @@ def test_synthesis_v4_locks_structured_neff_nulls():
     )<0.01
 
 
-def test_hierarchy_figure_data_matches_frozen_receipt():
+def test_hierarchy_figure_data_matches_frozen_receipts():
     h=_receipt("PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json")
-    raw,centered=_figure3_hierarchy(h)
+    a=_receipt("PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json")
+    raw,pairwise=_figure3_hierarchy(h,a)
     primary=raw[0]
     assert abs(primary["beta_within"]-1.0737035331938372)<1e-12
     assert abs(primary["beta_among"]-1.0112310830110414)<1e-12
     assert abs(primary["beta_total"]-1.0857623867043855)<1e-12
     assert abs(primary["within_log_beta_share"]-0.8642664462053955)<1e-12
     assert all(row["beta_within"]>row["beta_among"] for row in raw)
-    assert all(row["all_within_exceed_among"] is True for row in centered)
-    assert all(
-        row["within_beta_min"]>row["among_beta"]
-        for row in centered
-    )
+
+    labels={
+        "Raw abundance": "raw_abundance",
+        "Detrended log1p": "linear_detrended_log1p",
+        "Annual log1p growth": "annual_log1p_growth",
+    }
+    for row in pairwise:
+        frozen=a["pairwise_mean_correlation"][labels[row["analysis"]]]
+        assert abs(row["among_islands"]-frozen["among_islands"])<1e-12
+        for island in ("COR","HUM","LIT"):
+            assert abs(row[island]-frozen[island])<1e-12
+            assert row[island] < row["among_islands"]
