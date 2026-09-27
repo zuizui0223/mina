@@ -1,0 +1,46 @@
+name: palmer-same-day-batch
+
+on:
+  push:
+    branches:
+      - analysis/island-partition-v1
+    paths:
+      - "src/mina/same_day_batch.py"
+      - "tests/test_same_day_batch.py"
+      - "contracts/PALMER_SAME_DAY_BATCH_V1.json"
+      - ".github/workflows/palmer-same-day-batch.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest -q tests/test_same_day_batch.py
+      - run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - run: |
+          python -m mina.same_day_batch \
+            --census build/adelie_census.csv \
+            --out build/same_day_batch_result.json \
+            --permutations 20000 \
+            --seed 20260927
+      - name: Print result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/same_day_batch_result.json").read_text())
+          print("n_units=",x["n_units"])
+          print("n_pairs=",x["n_within_island_pairs"])
+          print("observed=",json.dumps(x["observed"],sort_keys=True))
+          print("null=",json.dumps(x["null"],sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-same-day-batch
+          path: build/same_day_batch_result.json
