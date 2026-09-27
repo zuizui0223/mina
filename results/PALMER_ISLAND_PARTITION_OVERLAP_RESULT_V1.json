@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-island-partition-overlap-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-island-partition-overlap-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36319155103,
+    "head_sha": "f4d3b5b462be68277982689e135c6b8df3e088f1",
+    "artifact_id": 10931289980,
+    "artifact_digest": "sha256:c915a7d9d2f0dba6fda90d836e366a633539e20795eb03c5b68e757ab4330be4",
+    "conclusion": "success"
+  },
+  "data": {
+    "n_units": 57,
+    "group_sizes": {
+      "CHR": 14,
+      "COR": 7,
+      "HUM": 9,
+      "LIT": 9,
+      "TOR": 18
+    },
+    "n_informative_pairs": 1540,
+    "n_within_pairs": 320,
+    "n_between_pairs": 1220,
+    "validity_pass": true
+  },
+  "observed": {
+    "within_fisher_mean_r": 0.1843126433037157,
+    "between_fisher_mean_r": 0.09498067675682627,
+    "partition_contrast_r": 0.08933196654688942,
+    "within_information_weight": 6855,
+    "between_information_weight": 26572
+  },
+  "null": {
+    "n_permutations": 20000,
+    "n_size_strata": 5,
+    "seed": 20260927,
+    "mean": 0.009401073928835074,
+    "sd": 0.021585433312721305,
+    "q025": -0.027964131153778132,
+    "q975": 0.05624600851021612,
+    "two_sided_p": 0.0034998250087495625
+  },
+  "decision": {
+    "island_partition_supported": true,
+    "direction": "within_island_more_synchronous"
+  },
+  "interpretation": "Nominal island membership captures colony-level annual demographic covariance beyond abundance-matched pseudo-island partitions even when colony-code start/stop patterns are retained as missing rather than imputed. The supported direction is island-level synchronization, not spatial insurance via compensatory subcolony dynamics.",
+  "boundaries": [
+    "The invalid V1 complete-case result is not retroactively rescued.",
+    "No colony identifiers are merged and missing codes are not treated as zero.",
+    "The result does not isolate coastline identity from geographic distance or other island-level environmental structure.",
+    "The result does not identify dispersal as the mechanism."
+  ]
+}
