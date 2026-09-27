@@ -127,6 +127,8 @@ def figure3(data: Path, out: Path) -> None:
             if r["decision_supported"] == "true"
             else "not supported"
         )
+        if r.get("permutation_p"):
+            supported += f"; block-perm p={float(r['permutation_p']):.3f}"
         if values[i] >= 0:
             text_x = values[i] + 0.25
             text_ha = "left"
@@ -173,8 +175,12 @@ def figure4(data: Path, out: Path) -> None:
     axes[0].axvline(0, linewidth=0.8)
     axes[0].set_xlabel("Effective-colony residual")
     axes[0].set_ylabel("Next-year growth residual")
+    gain_perm_p = float(external.get("neff_gain_permutation_p", "nan"))
+    beta_perm_p = float(external.get("neff_beta_permutation_p", "nan"))
     axes[0].set_title(
-        f"Conditional colony-network signal (β={slope:.3f})"
+        "Conditional colony-organization association\n"
+        f"β={slope:.3f}; gain permutation p={gain_perm_p:.3f}; "
+        f"β permutation p={beta_perm_p:.4f}"
     )
 
     for island in islands:
