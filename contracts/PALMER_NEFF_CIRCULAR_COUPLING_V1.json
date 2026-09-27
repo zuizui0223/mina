@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-neff-circular-coupling-v1",
+  "date": "2026-09-27",
+  "status": "post_circular_shift_pre_simulation_execution",
+  "prerequisites": [
+    "contracts/PALMER_NEFF_CIRCULAR_SHIFT_V1.json",
+    "results/PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json"
+  ],
+  "motivation": "The original same-census mechanical-coupling simulation destroyed latent N_eff alignment with a year-block permutation that did not preserve serial structure. Repeat the identical fixed count-error models using island-wise circular shifts of latent colony composition so the topology null retains each island's temporal ordering, cyclic autocorrelation and trend shape.",
+  "frozen_observed_beta": 0.11679896749684501,
+  "latent_topology_null": {
+    "construction": [
+      "For each replicate and island, draw one circular lag uniformly from 0,...,n_i-1 over the eligible positive-current transition years.",
+      "Reject only the global identity lag vector.",
+      "For each target current island-year, retain its observed total abundance but replace its latent colony-share vector with the same island's circularly shifted donor-year share vector.",
+      "Do not permute totals, response years, island identity or secular time.",
+      "For terminal next-year states that are not eligible current transitions, use their observed colony-share vector for count simulation."
+    ],
+    "preservation": [
+      "island-specific topology marginal distribution",
+      "island-specific cyclic temporal ordering and circular autocovariance",
+      "island-specific Fourier power spectrum",
+      "observed total-abundance trajectory and calendar years"
+    ],
+    "broken_relation": "calendar alignment between latent colony composition/N_eff and future growth"
+  },
+  "paired_coupling_design": {
+    "coupled": "derive N_eff_t and current_total_t from the same simulated colony-count vector A",
+    "decoupled": "derive N_eff_t from A but current_total_t from independent vector B",
+    "next_total": "use the same independent B state series for next-year totals in both coupled and decoupled fits, preserving census-to-census continuity",
+    "target_quantity": "beta_coupled - beta_decoupled isolates coefficient shift due to sharing current-year count error between N_eff and the growth denominator/baseline abundance"
+  },
+  "simulations_per_error_model": 10000,
+  "seed": 20260927,
+  "error_models": [
+    {
+      "name": "poisson",
+      "multiplicative_cv": 0
+    },
+    {
+      "name": "gamma_poisson_cv10",
+      "multiplicative_cv": 0.1
+    },
+    {
+      "name": "gamma_poisson_cv20",
+      "multiplicative_cv": 0.2
+    }
+  ],
+  "model": "same frozen full-data C1 coefficient model: next_growth ~ island fixed effects + z(log1p current abundance) + z(year) + z(log1p N_eff)",
+  "primary_outputs": [
+    "coupled beta null distribution and one-sided probability beta >= observed",
+    "decoupled beta null distribution and one-sided probability beta >= observed",
+    "paired coupling-bias distribution",
+    "median and mean paired coupling bias as fractions of observed beta"
+  ],
+  "interpretation_rules": {
+    "association_survives_circular_coupling": "observed beta remains unusual (one-sided p <= 0.05) under all three coupled circular-shift count-error nulls",
+    "association_fails_circular_coupling": "any coupled circular-shift error model has p > 0.05",
+    "manuscript_if_survives": "Retain N_eff only as a conditional association that survives serial-structure-preserving coefficient and fixed shared-count-error diagnostics; predictive claim remains withdrawn.",
+    "manuscript_if_fails": "Downgrade N_eff to descriptive only despite the coefficient-only circular-shift result."
+  },
+  "boundaries": [
+    "This replaces the latent topology null of the original mechanical-coupling diagnostic; it does not add an error-model family.",
+    "Poisson and fixed 10%/20% Gamma-Poisson models remain stylized sensitivities, not calibrated observer-error models.",
+    "No additional CV values, noise families, lag restrictions or topology metrics may be added after execution.",
+    "Held-out predictive gain remains unsupported regardless of this result."
+  ]
+}
