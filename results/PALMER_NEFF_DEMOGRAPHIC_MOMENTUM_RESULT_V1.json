@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-neff-demographic-momentum-result-v1",
+  "validated_date": "2026-09-28",
+  "contract_id": "mina-palmer-neff-demographic-momentum-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36329642103,
+    "head_sha": "b508510750c0caac2317199fd1c94bbc521c4b5e",
+    "artifact_id": 10934829209,
+    "artifact_digest": "sha256:4817a4d03af5d24bf4af2d1238711fcb8804bca8301e38aae075cf38982a3b35",
+    "conclusion": "success"
+  },
+  "original_model": {
+    "n_rows": 120,
+    "standardized_neff_beta": 0.11679896749684501,
+    "loyo_mse_gain": 0.0010288409158503153
+  },
+  "lag1": {
+    "n_rows": 115,
+    "n_end_years": 25,
+    "standardized_neff_beta": 0.11849651213599004,
+    "loyo_mse_gain": 0.0009286183774917245,
+    "independent_full_series_circular_shift": {
+      "exceedances_ge_observed": 15,
+      "simulations": 100000,
+      "one_sided_p": 0.00015999840001599985,
+      "null_q_0_975": 0.07723841975421325
+    },
+    "joint_full_series_exact_shift": {
+      "exceedances_ge_observed": 2,
+      "n_exact_combinations": 416,
+      "exact_one_sided_p": 0.004807692307692308
+    }
+  },
+  "lag1_lag2": {
+    "n_rows": 110,
+    "n_end_years": 24,
+    "standardized_neff_beta": 0.11260540832528995,
+    "loyo_mse_gain": 0.000444125252832564,
+    "independent_full_series_circular_shift": {
+      "exceedances_ge_observed": 101,
+      "simulations": 100000,
+      "one_sided_p": 0.001019989800101999,
+      "null_q_0_975": 0.07886982035808127
+    },
+    "joint_full_series_exact_shift": {
+      "exceedances_ge_observed": 5,
+      "n_exact_combinations": 416,
+      "exact_one_sided_p": 0.01201923076923077
+    }
+  },
+  "effect_retention": {
+    "lag1_lag2_beta_fraction_of_original": 0.9640959225802374,
+    "lag1_lag2_beta_absolute_change": -0.004193559171555061,
+    "lag1_lag2_gain_fraction_of_original": 0.4316753406579907
+  },
+  "supported": [
+    "The positive N_eff coefficient is not explained away by conditioning on growth over the preceding one or two annual intervals.",
+    "The lag1+lag2 coefficient remains unusual under the same full-series island-wise circular-shift null family used for the original coefficient.",
+    "The same qualitative result holds in the exact 416-member shift group preserving N_eff covariance among the four persistent islands.",
+    "Incremental held-out-year MSE improvement becomes smaller after conditioning on two years of demographic momentum."
+  ],
+  "not_supported": [
+    "a robust out-of-year predictive claim",
+    "causal inference that colony organization determines growth",
+    "an early-warning interpretation",
+    "a claim that two lagged growth controls remove all time-varying confounding"
+  ],
+  "ecological_interpretation": "Effective colony number retains a small positive association with next-year island growth after recent demographic momentum is controlled, so the signal is not well described as a proxy for continuing decline alone. Its incremental held-out predictive contribution is nevertheless very small and becomes smaller with two lagged growth terms."
+}

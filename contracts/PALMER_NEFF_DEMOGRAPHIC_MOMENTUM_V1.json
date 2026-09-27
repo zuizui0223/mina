@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-neff-demographic-momentum-v1",
+  "date": "2026-09-28",
+  "status": "frozen_confound_sensitivity_reusing_existing_structured_null_family",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "expected_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "question": "Does the positive conditional association between effective colony number at year t and growth from t to t+1 persist after conditioning on recent demographic momentum?",
+  "base_model": {
+    "response": "log1p abundance growth from t to t+1",
+    "predictor": "standardized log1p effective colony number at t",
+    "controls": [
+      "island fixed effects",
+      "standardized current log1p abundance at t",
+      "standardized census year"
+    ]
+  },
+  "momentum_models": {
+    "lag1": {
+      "additional_controls": [
+        "growth from t-1 to t"
+      ],
+      "complete_case_rule": "exclude transitions lacking t-1 positive abundance"
+    },
+    "lag1_lag2": {
+      "additional_controls": [
+        "growth from t-1 to t",
+        "growth from t-2 to t-1"
+      ],
+      "complete_case_rule": "exclude transitions lacking either lagged growth"
+    }
+  },
+  "held_out_evaluation": {
+    "scheme": "leave one end-year out",
+    "comparison": "baseline with momentum controls versus the same baseline plus N_eff",
+    "role": "effect-size context only; the earlier synchronized year-block test already rejected a robust predictive interpretation"
+  },
+  "structured_null_reuse": {
+    "important": "This is not a new N_eff null family.",
+    "independent_island_shift": "Reuse the exact full-series island-wise circular-shift generator and seed from PALMER_NEFF_CIRCULAR_SHIFT_V1; shift the complete N_eff sequences first, then fit the momentum-conditioned complete-case sample.",
+    "joint_shift": "Reuse the exact 26 x 16 full-series group: one common lag for CHR/COR/HUM/TOR and an independent LIT lag. Do not redefine the permutation group after dropping early lag-ineligible rows.",
+    "simulations": 100000,
+    "seed": 20260927
+  },
+  "reporting": {
+    "primary_quantities": [
+      "standardized N_eff coefficient",
+      "LOYO delta MSE",
+      "independent circular-shift one-sided p",
+      "joint circular-shift exact one-sided p"
+    ],
+    "comparison_rows": [
+      "original no-momentum model",
+      "lag1 model",
+      "lag1+lag2 model"
+    ],
+    "interpretation": "Assess whether demographic momentum materially attenuates the association. Do not restore a predictive or causal claim."
+  },
+  "boundaries": [
+    "No early-warning interpretation.",
+    "No causal spatial-insurance claim.",
+    "No claim that lag controls remove all time-varying confounding.",
+    "No new topology metric, threshold, climate window, or null family is opened by this sensitivity.",
+    "The held-out gain is descriptive because the previously frozen synchronized block test already failed."
+  ]
+}
