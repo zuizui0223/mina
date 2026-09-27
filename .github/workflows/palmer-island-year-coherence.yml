@@ -1,0 +1,66 @@
+name: palmer-island-year-coherence
+
+on:
+  push:
+    branches:
+      - validation/island-year-coherence-v1
+    paths:
+      - "src/mina/island_year_coherence.py"
+      - "tests/test_island_year_coherence.py"
+      - "contracts/PALMER_ISLAND_YEAR_COHERENCE_V1.json"
+      - ".github/workflows/palmer-island-year-coherence.yml"
+  pull_request:
+    paths:
+      - "src/mina/island_year_coherence.py"
+      - "tests/test_island_year_coherence.py"
+      - "contracts/PALMER_ISLAND_YEAR_COHERENCE_V1.json"
+      - ".github/workflows/palmer-island-year-coherence.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen synthetic tests
+        run: pytest -q tests/test_island_year_coherence.py
+      - name: Fetch frozen LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run frozen unbalanced coherence validation
+        run: |
+          python -m mina.island_year_coherence \
+            --census build/adelie_census.csv \
+            --out build/island_year_coherence.json \
+            --permutations 20000 \
+            --seed 20260927
+      - name: Print validation receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/island_year_coherence.json").read_text())
+          for key in ("five_island_all_period","four_island_no_litchfield"):
+              v=x[key]
+              print(
+                  key,
+                  "n=",v["n_eligible_colonies"],
+                  "contrast=",v["observed"]["island_year_covariance_contrast"],
+                  "within=",v["observed"]["within_mean_pairyear_product"],
+                  "between=",v["observed"]["between_mean_pairyear_product"],
+                  "p=",v["null"]["two_sided_p"],
+                  "supported=",v["supported"],
+              )
+              print("periods=",json.dumps(v["descriptive_periods"],sort_keys=True))
+              print("per_island=",json.dumps(v["per_island"],sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-year-coherence
+          path: |
+            build/adelie_census.csv
+            build/island_year_coherence.json
