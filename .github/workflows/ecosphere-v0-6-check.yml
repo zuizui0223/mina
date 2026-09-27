@@ -11,7 +11,7 @@ on:
     paths:
       - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
       - "docs/MANUSCRIPT_SPINE_V5.md"
-      - "docs/FIGURE_CAPTIONS_V4.md"
+      - "docs/FIGURE_CAPTIONS_V5.md"
       - "docs/REFERENCES_V4.bib"
       - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json"
       - "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json"
@@ -22,7 +22,7 @@ on:
     paths:
       - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
       - "docs/MANUSCRIPT_SPINE_V5.md"
-      - "docs/FIGURE_CAPTIONS_V4.md"
+      - "docs/FIGURE_CAPTIONS_V5.md"
       - "docs/REFERENCES_V4.bib"
       - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json"
       - "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json"
@@ -46,7 +46,7 @@ jobs:
         run: |
           mina-manuscript-guard \
             --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_6.md \
-            --captions docs/FIGURE_CAPTIONS_V4.md \
+            --captions docs/FIGURE_CAPTIONS_V5.md \
             --bibliography docs/REFERENCES_V4.bib \
             --results results | tee build-ecosphere-v0-6-base-guard.json
       - name: Guard hierarchical v0.6 claims against frozen receipts
@@ -95,7 +95,7 @@ jobs:
           path: |
             docs/MANUSCRIPT_ECOSPHERE_V0_6.md
             docs/MANUSCRIPT_SPINE_V5.md
-            docs/FIGURE_CAPTIONS_V4.md
+            docs/FIGURE_CAPTIONS_V5.md
             docs/REFERENCES_V4.bib
             contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json
             results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json
