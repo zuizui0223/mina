@@ -332,7 +332,7 @@ def analyze(census_path: str | Path, weather_path: str | Path) -> dict[str, obje
     rmse_change = float(cv_full["rmse"] - cv_null["rmse"])
     return {
         "schema_version": 1,
-        "analysis_id": "mina-palmer-weather-x-habitat-mechanism-v1",
+        "analysis_id": "mina-palmer-weather-x-habitat-mechanism-v2",
         "weather_schema": schema,
         "eligible_weather_years": eligible_weather,
         "analysis_rows": rows,
