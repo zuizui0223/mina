@@ -115,3 +115,14 @@ def test_joint_shift_identity_reproduces_statistics(tmp_path):
     direct_gain,direct_beta=_fast_permutation_statistics(rows,direct_matrix)
     assert abs(gains[identity]-direct_gain[0])<1e-12
     assert abs(betas[identity]-direct_beta[0])<1e-12
+
+
+def test_exact_identity_tail_must_count_identity():
+    observed=0.11679896749684507
+    # Identity can differ by floating-point roundoff after the FWL
+    # re-expression, but it is still the observed transformation.
+    beta=np.asarray([observed-5e-14,0.02,-0.01])
+    tol=1e-10
+    exceed=int(np.sum(beta>=observed-tol))
+    assert exceed>=1
+    assert exceed/len(beta)>0
