@@ -1,0 +1,38 @@
+name: santora-adpe-colony-units
+
+on:
+  push:
+    branches:
+      - analysis/mapppd-island-boundary-v1
+    paths:
+      - "scripts/fetch_santora_adpe_5km.py"
+      - ".github/workflows/santora-adpe-colony-units.yml"
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch published colony shapefile
+        run: python scripts/fetch_santora_adpe_5km.py build/santora_adpe
+      - name: Inspect shapefile schema
+        run: |
+          python -m pip install pyshp
+          python - <<'PY'
+          import shapefile
+          r=shapefile.Reader("build/santora_adpe/ADPE-5km.shp")
+          print("shapeType=",r.shapeType)
+          print("n_records=",len(r))
+          print("fields=",r.fields)
+          print("first_records=",r.records()[:10])
+          print("bbox=",r.bbox)
+          print("prj=",open("build/santora_adpe/ADPE-5km.prj").read())
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: santora-adpe-5km
+          path: build/santora_adpe
