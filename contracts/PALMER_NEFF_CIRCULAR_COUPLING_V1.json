@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-neff-circular-coupling-v1",
   "date": "2026-09-27",
-  "status": "post_circular_shift_pre_simulation_execution",
+  "status": "pre_circular_shift_outcome_pre_circular_coupling_execution",
   "prerequisites": [
     "contracts/PALMER_NEFF_CIRCULAR_SHIFT_V1.json",
     "results/PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json"
@@ -65,5 +65,6 @@
     "Poisson and fixed 10%/20% Gamma-Poisson models remain stylized sensitivities, not calibrated observer-error models.",
     "No additional CV values, noise families, lag restrictions or topology metrics may be added after execution.",
     "Held-out predictive gain remains unsupported regardless of this result."
-  ]
+  ],
+  "freeze_note": "This contract was frozen before the circular-shift outcome receipt existed; the Poisson and 10%/20% Gamma-Poisson families are inherited unchanged from the earlier mechanical-coupling diagnostic."
 }
