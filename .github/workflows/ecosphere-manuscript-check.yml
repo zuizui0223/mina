@@ -7,13 +7,14 @@ concurrency:
 on:
   push:
     branches:
-      - manuscript/ecosphere-reframe-v0.4
+      - validation/neff-circular-shift-v1
     paths:
-      - "docs/MANUSCRIPT_ECOSPHERE_V0_4.md"
-      - "docs/FIGURE_CAPTIONS_V3.md"
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_5.md"
+      - "docs/FIGURE_CAPTIONS_V4.md"
       - "docs/REFERENCES_V3.bib"
       - "docs/JOURNAL_FIT_V2.md"
-      - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_4.json"
+      - "docs/JOURNAL_FIT_V3.md"
+      - "contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V4.json"
       - "src/mina/synthesis.py"
       - "src/mina/figure_data.py"
       - "src/mina/figures.py"
@@ -23,11 +24,11 @@ on:
       - ".github/workflows/ecosphere-manuscript-check.yml"
   pull_request:
     paths:
-      - "docs/MANUSCRIPT_ECOSPHERE_V0_4.md"
-      - "docs/FIGURE_CAPTIONS_V3.md"
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_5.md"
+      - "docs/FIGURE_CAPTIONS_V4.md"
       - "docs/REFERENCES_V3.bib"
       - "docs/JOURNAL_FIT_V2.md"
-      - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_4.json"
+      - "contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V4.json"
       - "src/mina/synthesis.py"
       - "src/mina/figure_data.py"
       - "src/mina/figures.py"
@@ -51,24 +52,24 @@ jobs:
       - name: Guard Ecosphere manuscript
         run: |
           mina-manuscript-guard \
-            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_4.md \
-            --captions docs/FIGURE_CAPTIONS_V3.md \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_5.md \
+            --captions docs/FIGURE_CAPTIONS_V4.md \
             --bibliography docs/REFERENCES_V3.bib \
             --results results | tee build-ecosphere-manuscript-check.json
-      - name: Build synthesis v3
+      - name: Build synthesis v4
         run: |
           mina-synthesis \
             --results results \
-            --out-json build/synthesis-v3.json \
-            --out-md build/synthesis-v3.md
+            --out-json build/synthesis-v4.json \
+            --out-md build/synthesis-v4.md
       - uses: actions/upload-artifact@v4
         with:
-          name: ecosphere-v0-4-check
+          name: ecosphere-v0-5-check
           path: |
-            docs/MANUSCRIPT_ECOSPHERE_V0_4.md
-            docs/FIGURE_CAPTIONS_V3.md
+            docs/MANUSCRIPT_ECOSPHERE_V0_5.md
+            docs/FIGURE_CAPTIONS_V4.md
             docs/REFERENCES_V3.bib
             docs/JOURNAL_FIT_V2.md
             build-ecosphere-manuscript-check.json
-            build/synthesis-v3.json
-            build/synthesis-v3.md
+            build/synthesis-v4.json
+            build/synthesis-v4.md
