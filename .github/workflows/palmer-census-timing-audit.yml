@@ -1,0 +1,43 @@
+name: palmer-census-timing-audit
+
+on:
+  push:
+    branches:
+      - analysis/island-partition-v1
+    paths:
+      - "src/mina/census_timing_audit.py"
+      - "tests/test_census_timing_audit.py"
+      - ".github/workflows/palmer-census-timing-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest -q tests/test_census_timing_audit.py
+      - run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - run: |
+          python -m mina.census_timing_audit \
+            --census build/adelie_census.csv \
+            --out build/census_timing_audit.json
+      - name: Print timing audit
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/census_timing_audit.json").read_text())
+          print("n_complete_years=",x["n_complete_years"])
+          print("five_island_span_days=",json.dumps(x["five_island_span_days"],sort_keys=True))
+          print("pairwise=",json.dumps(x["all_pairwise_day_difference"],sort_keys=True))
+          for row in x["yearly"]:
+              print(row["year"],row["five_island_span_days"],row["dates"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-census-timing-audit
+          path: build/census_timing_audit.json
