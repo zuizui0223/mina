@@ -22,12 +22,14 @@ Finite prospective tests did **not** support simple positive annual sea-ice
 duration, 3/5/7-year sea-ice-duration rescue, or October snowfall × static
 snow-prone-habitat formulations.
 
-The one positive local-state result is narrow: **effective colony number**
-(`1 / sum(p_j^2)`) has a positive conditional coefficient (**+0.1168**) and
-slightly improves held-out-year next-year growth prediction beyond island,
-current abundance and secular time. Active-colony count does not transfer, and
-an externally fixed >50-pair threshold improves prediction only with the
-opposite coefficient direction to its historical hypothesis.
+Effective colony number (`1 / sum(p_j^2)`) has a positive conditional
+coefficient (**+0.1168**) after island, current abundance and time are
+controlled. However, its small held-out MSE gain (**+0.00103**) is compatible
+with synchronized year-block permutation noise (**p = 0.262**), so it is no
+longer treated as a supported predictive result. The coefficient itself remains
+unusual under year-block permutation and under the fixed Poisson / 10% / 20%
+Gamma-Poisson count-error coupling sensitivities; it is retained only as a
+bounded conditional association.
 
 Independent Torgersen spatial reconstruction shows real breeding-footprint
 contraction (23 historic active subcolonies -> five active in 2022) and
@@ -47,20 +49,20 @@ Direct biotic interactions are not assumed absent. They are treated as
 localized and testable rather than as the default explanation for whole-island
 trajectories.
 
-## Submission status after N_eff uncertainty diagnostic
+## Submission status after N_eff uncertainty diagnostics
 
-**JAE submission is paused.** The frozen 20,000-replicate year-block
-permutation diagnostic shows that the observed held-out MSE gain from effective
-colony number (+0.00103) is not unusual under shuffled year alignment
-(one-sided p = **0.262**; observed percentile = **73.8%**). The full-data
-conditional coefficient remains unusual under the same permutation
-(p ≈ **0.00010**), so the current distinction is **association without robust
-held-out predictive gain**.
+**JAE submission remains paused.** The frozen 20,000-replicate year-block
+permutation shows that the observed held-out MSE gain (+0.00103) is not unusual
+(one-sided **p = 0.262**; observed percentile **73.8%**). The subsequent
+mechanical-coupling diagnostic shows that the +0.1168 coefficient is unusual
+under all three fixed count-error nulls, so simple shared census error is not
+sufficient to generate an observed-scale coefficient under those stylized
+sensitivities.
 
-The JAE v0.3/v0.3.1 files are retained as provenance but are not submission
-ready. The next required diagnostic is same-census measurement-error /
-mechanical-coupling analysis before the coefficient is retained as an ecological
-state association.
+The evidence therefore supports **association without robust out-of-year
+prediction**. The manuscript has been reframed as v0.4 with **Ecosphere as the
+recommended first shot** and **Ecology and Evolution as fallback**. Archived
+JAE v0.3/v0.3.1 files remain provenance only.
 
 ## Development state
 
@@ -74,10 +76,18 @@ Current work is limited to:
 - figure and reproducibility packaging;
 - manuscript prose, citations and submission materials.
 
-The current reviewer-facing scientific draft is **v0.2**. A journal-targeted **JAE submission draft v0.3** adds a numbered abstract, eight keywords, Materials and Methods naming, a Data Availability statement, an anonymous cover letter and automated Journal of Animal Ecology format checks without changing ecological endpoints.
+The current scientific draft is **Ecosphere-oriented v0.4**, revised after the
+N_eff permutation and count-error diagnostics. PC1/synchrony is now explicitly
+descriptive context within established scale-dependent synchrony theory;
+Palmer Penguins is removed from the primary Introduction motivation; and N_eff
+is described only as a conditional association.
 
 See:
 
+- `docs/MANUSCRIPT_ECOSPHERE_V0_4.md`
+- `docs/JOURNAL_FIT_V2.md`
+- `docs/FIGURE_CAPTIONS_V3.md`
+- `docs/REFERENCES_V3.bib`
 - `docs/MANUSCRIPT_SPINE_V2.md`
 - `docs/MANUSCRIPT_JAE_V0_3.md`
 - `docs/COVER_LETTER_JAE_V1.md`
