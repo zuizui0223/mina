@@ -17,6 +17,8 @@ FILES={
     "spatial":"PALMER_EXTERNAL_SPATIAL_TRIANGULATION_RESULT_V1.json",
     "neff_perm":"PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json",
     "neff_coupling":"PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json",
+    "neff_circular":"PALMER_NEFF_CIRCULAR_SHIFT_RESULT_V1.json",
+    "neff_circular_coupling":"PALMER_NEFF_CIRCULAR_COUPLING_RESULT_V1.json",
 }
 
 
@@ -34,6 +36,7 @@ def build(results_dir: str|Path) -> dict[str,object]:
     weather=r["weather"]; colony=r["colony"]; large=r["large"]
     exploratory=r["exploratory"]; network=r["network"]; spatial=r["spatial"]
     perm=r["neff_perm"]; coupling=r["neff_coupling"]
+    circular=r["neff_circular"]; circular_coupling=r["neff_circular_coupling"]
 
     if sea["primary_result"]["decision"]["regional_support"] is not False:
         raise ValueError("annual sea-ice decision drifted")
@@ -50,16 +53,20 @@ def build(results_dir: str|Path) -> dict[str,object]:
     if perm["decision"]["primary_positive_predictive_pillar_survives"] is not False:
         raise ValueError("N_eff permutation decision drifted")
     if coupling["decision"]["observed_beta_unusual_under_all_coupled_nulls"] is not True:
-        raise ValueError("N_eff coupling diagnostic drifted")
+        raise ValueError("legacy N_eff coupling diagnostic drifted")
+    if circular["decision"]["association_retained_against_both_structured_nulls"] is not True:
+        raise ValueError("N_eff circular-shift decision drifted")
+    if circular_coupling["decision"]["observed_beta_unusual_under_all_coupled_circular_nulls"] is not True:
+        raise ValueError("N_eff circular-coupling decision drifted")
 
     endpoint_fractions={
         island:float(row["fraction_remaining"])
         for island,row in sync["endpoints"].items()
     }
     return {
-        "schema_version":3,
-        "synthesis_id":"mina-palmer-island-ecology-synthesis-v3",
-        "core_claim":"Neighboring Adelie breeding islands share a strong long-term regional decline but diverge in annual dynamics and local ecological endpoints. Simple sea-ice-duration and snowfall formulations do not explain that divergence. Within-island effective colony number is conditionally associated with next-year growth, but its small held-out predictive gain is compatible with year-block permutation noise; independent Torgersen mapping nevertheless confirms real habitat-structured sub-colony attrition.",
+        "schema_version":4,
+        "synthesis_id":"mina-palmer-island-ecology-synthesis-v4",
+        "core_claim":"Neighboring Adelie breeding islands share a strong long-term regional decline but diverge in annual dynamics and local ecological endpoints. Simple sea-ice-duration and snowfall formulations do not explain that divergence. Within-island effective colony number has a positive conditional association with next-year growth that survives serial-structure-preserving circular-shift and fixed shared-count-error nulls, but its small held-out predictive gain remains compatible with permutation noise; independent Torgersen mapping confirms real habitat-structured sub-colony attrition.",
         "origin":{
             "status":"historical motivation only; not part of the core manuscript argument",
             "pooled_morphology_gain":exploratory["frozen_odsp_context"]["naive_pooled_morphology_gain"],
@@ -107,17 +114,22 @@ def build(results_dir: str|Path) -> dict[str,object]:
                 "predictive_gain_permutation_p":perm["gain_null"]["one_sided_permutation_p"],
                 "predictive_gain_null_percentile":perm["gain_null"]["observed_percentile"],
                 "predictive_supported_after_uncertainty":False,
-                "beta_permutation_p":perm["coefficient_null"]["one_sided_permutation_p"],
-                "association_retained":True,
-                "coupling":{
-                    "poisson_p_ge_observed":coupling["error_models"]["poisson"]["coupled_beta"]["one_sided_probability_ge_observed"],
-                    "gamma_poisson_cv10_p_ge_observed":coupling["error_models"]["gamma_poisson_cv10"]["coupled_beta"]["one_sided_probability_ge_observed"],
-                    "gamma_poisson_cv20_p_ge_observed":coupling["error_models"]["gamma_poisson_cv20"]["coupled_beta"]["one_sided_probability_ge_observed"],
+                "legacy_beta_block_permutation_p":perm["coefficient_null"]["one_sided_permutation_p"],
+                "circular_shift":{
+                    "independent_island_p":circular["primary_independent_island_circular_shift"]["coefficient_null"]["one_sided_p"],
+                    "joint_persistent_islands_exact_p":circular["joint_persistent_island_shift_sensitivity"]["coefficient_null"]["exact_one_sided_p"],
+                    "retained_against_both":circular["decision"]["association_retained_against_both_structured_nulls"],
+                },
+                "circular_coupling":{
+                    "poisson_p_ge_observed":circular_coupling["error_models"]["poisson"]["coupled_beta"]["one_sided_probability_ge_observed"],
+                    "gamma_poisson_cv10_p_ge_observed":circular_coupling["error_models"]["gamma_poisson_cv10"]["coupled_beta"]["one_sided_probability_ge_observed"],
+                    "gamma_poisson_cv20_p_ge_observed":circular_coupling["error_models"]["gamma_poisson_cv20"]["coupled_beta"]["one_sided_probability_ge_observed"],
                     "max_median_bias_fraction_of_observed":max(
-                        abs(float(coupling["error_models"][name]["paired_coupling_bias"]["median_fraction_of_observed_beta"]))
+                        abs(float(circular_coupling["error_models"][name]["paired_coupling_bias"]["median_fraction_of_observed_beta"]))
                         for name in ("poisson","gamma_poisson_cv10","gamma_poisson_cv20")
                     ),
                 },
+                "association_retained":True,
             },
             "active_colony_count":{
                 "gain":colony["sensitivities"]["active_colony_count"]["mse_gain_c0_minus_c1"],
@@ -140,8 +152,8 @@ def build(results_dir: str|Path) -> dict[str,object]:
             "synchrony":"The common long-term trend versus moderate annual synchrony is consistent with established timescale-dependent synchrony theory and is descriptive context rather than a stand-alone novelty claim.",
             "regional":"The tested sea-ice-duration formulations do not identify the mechanism of the common regional decline.",
             "local":"Local endpoints differ among breeding patches, including persistence, vacancy/extinction and species replacement.",
-            "colony_state":"Effective colony number retains an unusual conditional coefficient, but its +0.00103 held-out MSE gain is not unusual under year-block permutation (p=0.262); it must not be described as robust out-of-year prediction.",
-            "measurement_error":"Fixed Poisson and 10%/20% Gamma-Poisson coupling simulations do not generate an observed-scale positive coefficient, so simple shared census error is not sufficient to explain the association.",
+            "colony_state":"Effective colony number retains a positive conditional coefficient that survives independent island-wise circular shifts (p<1e-5) and an exact cross-island-covariance-preserving shift sensitivity (p=0.0024), but its +0.00103 held-out MSE gain is not unusual under year-block permutation (p=0.262); it is an association, not robust out-of-year prediction.",
+            "measurement_error":"With latent topology also circularly shifted, fixed Poisson and 10%/20% Gamma-Poisson coupled simulations still rarely generate an observed-scale coefficient (p=0.00030, 0.00150, 0.00780); simple shared census error under these stylized models is not sufficient to explain the association.",
             "external_triangulation":"Independent Torgersen mapping confirms strong, habitat-structured sub-colony attrition at the phenomenon level.",
             "causal_boundary":"No public one-to-one colony_code/GIS polygon crosswalk is resolved; causal habitat-fragmentation claims remain out of scope.",
         },
@@ -157,7 +169,7 @@ def markdown(x: dict[str,object]) -> str:
     d=x["five_island_decline"]; m=x["prospective_mechanism_tests"]
     c=x["local_colony_state"]; n=c["effective_colony_number"]
     endpoints=d["endpoint_fraction_remaining"]; s=c["external_spatial_triangulation"]
-    return f"""# Palmer island-ecology synthesis v3
+    return f"""# Palmer island-ecology synthesis v4
 
 ## Central result
 
@@ -175,7 +187,7 @@ Annual and five-year sea-ice-duration formulations and October snowfall × snow-
 
 ## Colony organization after uncertainty diagnostics
 
-The conditional N_eff coefficient is **{n["beta"]:+.4f}**. The original held-out MSE gain is **{n["gain"]:+.6f}**, but the year-block permutation p-value is **{n["predictive_gain_permutation_p"]:.3f}**; robust predictive support is therefore withdrawn. The coefficient itself remains unusual under year-block permutation (p≈**{n["beta_permutation_p"]:.4g}**) and under all three fixed count-error coupling simulations.
+The conditional N_eff coefficient is **{n["beta"]:+.4f}**. The original held-out MSE gain is **{n["gain"]:+.6f}**, but the year-block predictive-gain p-value is **{n["predictive_gain_permutation_p"]:.3f}**; robust predictive support is therefore withdrawn. The coefficient survives independent island-wise circular shifts (p=**{n["circular_shift"]["independent_island_p"]:.3g}**) and the exact joint-shift sensitivity (p=**{n["circular_shift"]["joint_persistent_islands_exact_p"]:.4f}**). Under circular-shift count-error coupling nulls, the largest coupled p-value across the three fixed error models is **{max(n["circular_coupling"]["poisson_p_ge_observed"],n["circular_coupling"]["gamma_poisson_cv10_p_ge_observed"],n["circular_coupling"]["gamma_poisson_cv20_p_ge_observed"]):.4f}**.
 
 ## External spatial triangulation
 
