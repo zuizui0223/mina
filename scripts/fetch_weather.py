@@ -65,8 +65,8 @@ def main() -> int:
             "weather mirror lacks normalized Date/Snow-precipitation fields; "
             f"observed fields={fields!r}"
         )
-    if len(rows)!=10674:
-        raise RuntimeError(f"expected 10674 daily rows, observed {len(rows)}")
+    if len(rows)!=12477:
+        raise RuntimeError(f"expected 12477 rows in pinned ver.9 mirror, observed {len(rows)}")
     if rows[0][date_field]!="1989-04-01" or rows[-1][date_field]!="2023-06-30":
         raise RuntimeError(f"unexpected date coverage: {rows[0][date_field]!r}..{rows[-1][date_field]!r}")
     if rows[0][snow_field] not in {"0","0.0","0.00"}:
