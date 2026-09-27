@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-island-year-timing-audit-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-island-year-timing-audit-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36323691206,
+    "head_sha": "ac455c12ea67e1e68cda02f851003e7bc7812052",
+    "artifact_id": 10933551199,
+    "artifact_digest": "sha256:974ed9e46a25224e8ddbc3c6cd4499d18eae1f315367fe72c9615247edc3f3fd",
+    "conclusion": "success"
+  },
+  "five_island": {
+    "observed_same_island_fixed_effect": 0.07038813858768338,
+    "permutation_p_two_sided": 0.039798010099495025,
+    "n_matched_pairyear_records": 6065,
+    "n_schedule_blocks": 85,
+    "n_variable_blocks": 38,
+    "pooled_within_mean_pairyear_product": 0.06925236349686138,
+    "pooled_between_mean_pairyear_product": -0.03555818528956963,
+    "supported": true
+  },
+  "four_island_no_litchfield": {
+    "observed_same_island_fixed_effect": 0.07641123590491923,
+    "permutation_p_two_sided": 0.06179691015449228,
+    "n_matched_pairyear_records": 5013,
+    "n_schedule_blocks": 77,
+    "n_variable_blocks": 38,
+    "pooled_within_mean_pairyear_product": 0.056150421906261454,
+    "pooled_between_mean_pairyear_product": -0.04266885565393016,
+    "supported": false
+  },
+  "decision": {
+    "primary_timing_robust": true,
+    "no_litchfield_timing_robust": false,
+    "strong_timing_robustness": false
+  },
+  "interpretation": [
+    "Exact shared start/end census dates are insufficient to explain the five-island island-coherence signal.",
+    "The no-Litchfield effect estimate remains positive and similar in magnitude but misses the predeclared p<=0.05 threshold, so strong timing robustness is not claimed.",
+    "Other island-specific observation processes remain possible."
+  ]
+}

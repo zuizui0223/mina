@@ -1,0 +1,65 @@
+name: palmer-island-year-timing-audit
+
+on:
+  push:
+    branches:
+      - validation/island-year-timing-audit-v1
+    paths:
+      - "src/mina/island_year_timing_audit.py"
+      - "tests/test_island_year_timing_audit.py"
+      - "contracts/PALMER_ISLAND_YEAR_TIMING_AUDIT_V1.json"
+      - ".github/workflows/palmer-island-year-timing-audit.yml"
+  pull_request:
+    paths:
+      - "src/mina/island_year_timing_audit.py"
+      - "tests/test_island_year_timing_audit.py"
+      - "contracts/PALMER_ISLAND_YEAR_TIMING_AUDIT_V1.json"
+      - ".github/workflows/palmer-island-year-timing-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run synthetic timing audit
+        run: pytest -q tests/test_island_year_timing_audit.py
+      - name: Fetch frozen LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run exact census-schedule audit
+        run: |
+          python -m mina.island_year_timing_audit \
+            --census build/adelie_census.csv \
+            --out build/island_year_timing_audit.json \
+            --permutations 20000 \
+            --seed 20260927
+      - name: Print timing audit receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/island_year_timing_audit.json").read_text())
+          for key in ("five_island","four_island_no_litchfield"):
+              v=x[key]
+              print(
+                  key,
+                  "coef=",v["observed_same_island_fixed_effect"],
+                  "p=",v["null"]["two_sided_p"],
+                  "records=",v["n_matched_pairyear_records"],
+                  "blocks=",v["n_schedule_blocks"],
+                  "variable_blocks=",v["n_blocks_with_observed_within_between_variation"],
+                  "supported=",v["supported"],
+              )
+              print("pooled=",json.dumps(v["pooled_matched_schedule"],sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-year-timing-audit
+          path: |
+            build/adelie_census.csv
+            build/island_year_timing_audit.json
