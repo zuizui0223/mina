@@ -64,7 +64,12 @@ The current reviewer-facing scientific draft is **v0.2**. A journal-targeted **J
 See:
 
 - `docs/MANUSCRIPT_SPINE_V2.md`
-- `docs/MANUSCRIPT_JAE_V0_3.md`\n- `docs/COVER_LETTER_JAE_V1.md`\n- `docs/JOURNAL_FIT_V1.md`\n- `docs/MANUSCRIPT_V0_2.md`
+- `docs/MANUSCRIPT_JAE_V0_3.md`
+- `docs/COVER_LETTER_JAE_V1.md`
+- `docs/JOURNAL_FIT_V1.md`
+- `docs/TITLE_PAGE_JAE_TEMPLATE.md`
+- `docs/SUBMISSION_CHECKLIST_JAE_V1.md`
+- `docs/MANUSCRIPT_V0_2.md`
 - `docs/FIGURE_CAPTIONS_V2.md`
 - `docs/REVIEWER_AUDIT_V0_1.md`
 - `docs/MANUSCRIPT_V0_1.md` (archived first draft)
