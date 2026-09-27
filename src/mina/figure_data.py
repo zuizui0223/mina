@@ -44,6 +44,8 @@ RESULT_FILES = {
     "spatial": "PALMER_EXTERNAL_SPATIAL_TRIANGULATION_RESULT_V1.json",
     "neff_perm": "PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json",
     "neff_coupling": "PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json",
+    "neff_circular": "PALMER_NEFF_CIRCULAR_SHIFT_RESULT_V1.json",
+    "neff_circular_coupling": "PALMER_NEFF_CIRCULAR_COUPLING_RESULT_V1.json",
 }
 
 
@@ -458,14 +460,25 @@ def build(
         _figure4_tables(census_csv, results["colony"], results["spatial"])
     )
     neff_perm_p = float(results["neff_perm"]["gain_null"]["one_sided_permutation_p"])
-    neff_beta_perm_p = float(results["neff_perm"]["coefficient_null"]["one_sided_permutation_p"])
-    coupling_max_p = max(
-        float(results["neff_coupling"]["error_models"][name]["coupled_beta"]["one_sided_probability_ge_observed"])
+    circular_independent_p = float(
+        results["neff_circular"]["primary_independent_island_circular_shift"]
+        ["coefficient_null"]["one_sided_p"]
+    )
+    circular_joint_p = float(
+        results["neff_circular"]["joint_persistent_island_shift_sensitivity"]
+        ["coefficient_null"]["exact_one_sided_p"]
+    )
+    circular_coupling_max_p = max(
+        float(
+            results["neff_circular_coupling"]["error_models"][name]
+            ["coupled_beta"]["one_sided_probability_ge_observed"]
+        )
         for name in ("poisson", "gamma_poisson_cv10", "gamma_poisson_cv20")
     )
     fig4_external[0]["neff_gain_permutation_p"] = neff_perm_p
-    fig4_external[0]["neff_beta_permutation_p"] = neff_beta_perm_p
-    fig4_external[0]["neff_max_coupling_null_p"] = coupling_max_p
+    fig4_external[0]["neff_beta_circular_independent_p"] = circular_independent_p
+    fig4_external[0]["neff_beta_circular_joint_p"] = circular_joint_p
+    fig4_external[0]["neff_max_circular_coupling_null_p"] = circular_coupling_max_p
 
     _write_csv(out / "figure1_sites.csv", fig1)
     _write_csv(out / "figure2_trajectories.csv", fig2)
@@ -497,8 +510,9 @@ def build(
             **checks2,
             "conditional_effective_colony_slope": topology_slope,
             "effective_colony_gain_permutation_p": neff_perm_p,
-            "effective_colony_beta_permutation_p": neff_beta_perm_p,
-            "effective_colony_max_coupling_null_p": coupling_max_p,
+            "effective_colony_beta_circular_independent_p": circular_independent_p,
+            "effective_colony_beta_circular_joint_p": circular_joint_p,
+            "effective_colony_max_circular_coupling_null_p": circular_coupling_max_p,
             "spatial_phenomenon_convergence": bool(
                 results["spatial"]["decision"][
                     "phenomenon_level_spatial_convergence"
