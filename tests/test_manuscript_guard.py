@@ -47,5 +47,5 @@ def test_manuscript_v04_ecosphere_after_neff_diagnostics():
     assert "0.262" in text
     assert "5,244/20,000" in text
     assert "Palmer Penguins data set" not in text
-    assert "robust held-out-year predictive information" not in text
+    assert "withdraw the claim that effective colony number provides robust held-out-year predictive information" in text
     assert "timescale-dependent" in text.lower()
