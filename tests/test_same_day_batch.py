@@ -1,7 +1,16 @@
 import csv
 import math
 
-from mina.same_day_batch import analyze
+import numpy as np
+
+from mina.same_day_batch import (
+    analyze,
+    build_pair_records,
+    focal_beta,
+    load_units,
+    permuted_dates,
+    update_date_predictors,
+)
 
 ISLANDS=("CHR","COR","HUM","LIT","TOR")
 
@@ -37,3 +46,25 @@ def test_same_day_batch_positive_fixture(tmp_path):
     x=analyze(p,n_permutations=199,seed=19)
     assert x["n_within_island_pairs"]>0
     assert x["observed"]["focal_beta_fisher_z_per_fraction"]>0
+
+
+def test_perf_update_matches_full_recomputation(tmp_path):
+    p=tmp_path/"c.csv"
+    _fixture(p)
+    units=load_units(p)
+    base=build_pair_records(units)
+    rng=np.random.default_rng(77)
+    override=permuted_dates(units,rng)
+    slow=build_pair_records(units,override)
+    fast=update_date_predictors(base,units,override)
+    assert len(slow)==len(fast)
+    assert np.isclose(focal_beta(slow),focal_beta(fast),rtol=0,atol=1e-15)
+    assert all(
+        np.isclose(
+            float(a["same_both_endpoint_fraction"]),
+            float(b["same_both_endpoint_fraction"]),
+            rtol=0,
+            atol=0,
+        )
+        for a,b in zip(slow,fast)
+    )
