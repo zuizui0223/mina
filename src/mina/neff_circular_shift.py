@@ -243,8 +243,15 @@ def diagnose(
 
     joint_matrix, joint_combos = joint_shift_matrix(rows)
     joint_gains, joint_betas = _fast_permutation_statistics(rows, joint_matrix)
-    joint_ge = int(np.sum(joint_betas >= observed_beta))
-    joint_abs = int(np.sum(np.abs(joint_betas) >= abs(observed_beta)))
+    # The identity transformation is part of the exact randomization group and
+    # must count as at least one statistic as extreme as observed. Numerical
+    # re-expression through FWL can differ from the direct fit at roundoff scale,
+    # so use the same strict 1e-10 identity tolerance for exact tail membership.
+    tolerance = 1e-10
+    joint_ge = int(np.sum(joint_betas >= observed_beta - tolerance))
+    joint_abs = int(
+        np.sum(np.abs(joint_betas) >= abs(observed_beta) - tolerance)
+    )
     joint_one = joint_ge / len(joint_betas)
     joint_two = joint_abs / len(joint_betas)
 
