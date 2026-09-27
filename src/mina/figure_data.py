@@ -46,6 +46,8 @@ RESULT_FILES = {
     "neff_coupling": "PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json",
     "neff_circular": "PALMER_NEFF_CIRCULAR_SHIFT_RESULT_V1.json",
     "neff_circular_coupling": "PALMER_NEFF_CIRCULAR_COUPLING_RESULT_V1.json",
+    "hierarchy": "PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json",
+    "hierarchy_component_audit": "PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json",
 }
 
 
@@ -241,6 +243,75 @@ def _error_row(
         "decision_supported": supported,
     }
 
+
+def _figure3_hierarchy(
+    hierarchy: dict,
+    component_audit: dict,
+) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    primary = hierarchy["primary_raw_abundance"]
+    fixed = hierarchy["fixed_raw_sensitivities"]
+    raw = [
+        {
+            "analysis": "Primary 1991-2017 COR/HUM/LIT",
+            "beta_within": float(primary["beta_within_islands"]),
+            "beta_among": float(primary["beta_among_islands"]),
+            "beta_total": float(primary["beta_total_subcolony_to_archipelago"]),
+            "within_log_beta_share": float(primary["log_beta_share_within_islands"]),
+        },
+        {
+            "analysis": "Pre-extinction 1991-2006",
+            "beta_within": float(
+                fixed["pre_litchfield_extinction_1991_2006"]["beta_within_islands"]
+            ),
+            "beta_among": float(
+                fixed["pre_litchfield_extinction_1991_2006"]["beta_among_islands"]
+            ),
+            "beta_total": float(
+                fixed["pre_litchfield_extinction_1991_2006"]["beta_total"]
+            ),
+            "within_log_beta_share": float(
+                fixed["pre_litchfield_extinction_1991_2006"][
+                    "log_beta_share_within_islands"
+                ]
+            ),
+        },
+        {
+            "analysis": "Persistent stable COR/HUM",
+            "beta_within": float(
+                fixed["persistent_stable_roster_COR_HUM"]["beta_within_islands"]
+            ),
+            "beta_among": float(
+                fixed["persistent_stable_roster_COR_HUM"]["beta_among_islands"]
+            ),
+            "beta_total": float(
+                fixed["persistent_stable_roster_COR_HUM"]["beta_total"]
+            ),
+            "within_log_beta_share": float(
+                fixed["persistent_stable_roster_COR_HUM"][
+                    "log_beta_share_within_islands"
+                ]
+            ),
+        },
+    ]
+
+    pairwise = []
+    source = component_audit["pairwise_mean_correlation"]
+    for key, label in (
+        ("raw_abundance", "Raw abundance"),
+        ("linear_detrended_log1p", "Detrended log1p"),
+        ("annual_log1p_growth", "Annual log1p growth"),
+    ):
+        item = source[key]
+        pairwise.append(
+            {
+                "analysis": label,
+                "among_islands": float(item["among_islands"]),
+                "COR": float(item["COR"]),
+                "HUM": float(item["HUM"]),
+                "LIT": float(item["LIT"]),
+            }
+        )
+    return raw, pairwise
 
 def _figure3_mechanisms(r: dict[str, dict]) -> list[dict[str, object]]:
     sea = r["seaice"]["primary_result"]
@@ -455,8 +526,11 @@ def build(
     fig2, fig2_pairs, checks2 = _figure2_tables(
         census_csv, results["synchrony"]
     )
-    fig3 = _figure3_mechanisms(results)
-    fig4_states, fig4_transitions, fig4_external, topology_slope = (
+    fig3_raw, fig3_pairwise = _figure3_hierarchy(
+        results["hierarchy"], results["hierarchy_component_audit"]
+    )
+    fig4 = _figure3_mechanisms(results)
+    fig5_states, fig5_transitions, fig5_external, topology_slope = (
         _figure4_tables(census_csv, results["colony"], results["spatial"])
     )
     neff_perm_p = float(results["neff_perm"]["gain_null"]["one_sided_permutation_p"])
@@ -475,22 +549,24 @@ def build(
         )
         for name in ("poisson", "gamma_poisson_cv10", "gamma_poisson_cv20")
     )
-    fig4_external[0]["neff_gain_permutation_p"] = neff_perm_p
-    fig4_external[0]["neff_beta_circular_independent_p"] = circular_independent_p
-    fig4_external[0]["neff_beta_circular_joint_p"] = circular_joint_p
-    fig4_external[0]["neff_max_circular_coupling_null_p"] = circular_coupling_max_p
+    fig5_external[0]["neff_gain_permutation_p"] = neff_perm_p
+    fig5_external[0]["neff_beta_circular_independent_p"] = circular_independent_p
+    fig5_external[0]["neff_beta_circular_joint_p"] = circular_joint_p
+    fig5_external[0]["neff_max_circular_coupling_null_p"] = circular_coupling_max_p
 
     _write_csv(out / "figure1_sites.csv", fig1)
     _write_csv(out / "figure2_trajectories.csv", fig2)
     _write_csv(out / "figure2_pairwise_synchrony.csv", fig2_pairs)
-    _write_csv(out / "figure3_mechanism_audit.csv", fig3)
-    _write_csv(out / "figure4_colony_states.csv", fig4_states)
-    _write_csv(out / "figure4_colony_transitions.csv", fig4_transitions)
-    _write_csv(out / "figure4_external_torgersen.csv", fig4_external)
+    _write_csv(out / "figure3_hierarchy_raw.csv", fig3_raw)
+    _write_csv(out / "figure3_hierarchy_pairwise.csv", fig3_pairwise)
+    _write_csv(out / "figure4_mechanism_audit.csv", fig4)
+    _write_csv(out / "figure5_colony_states.csv", fig5_states)
+    _write_csv(out / "figure5_colony_transitions.csv", fig5_transitions)
+    _write_csv(out / "figure5_external_torgersen.csv", fig5_external)
 
     manifest = {
-        "schema_version": 1,
-        "package_id": "mina-manuscript-figure-data-v1",
+        "schema_version": 2,
+        "package_id": "mina-manuscript-figure-data-v2",
         "source_fingerprints": {
             "census_sha256": _sha256(census_csv),
             "sites_sha256": _sha256(sites_csv),
@@ -502,12 +578,35 @@ def build(
             "figure1_sites": len(fig1),
             "figure2_trajectories": len(fig2),
             "figure2_pairwise_synchrony": len(fig2_pairs),
-            "figure3_mechanism_audit": len(fig3),
-            "figure4_colony_states": len(fig4_states),
-            "figure4_colony_transitions": len(fig4_transitions),
+            "figure3_hierarchy_raw": len(fig3_raw),
+            "figure3_hierarchy_centered": len(fig3_pairwise),
+            "figure4_mechanism_audit": len(fig4),
+            "figure5_colony_states": len(fig5_states),
+            "figure5_colony_transitions": len(fig5_transitions),
         },
         "frozen_checks": {
             **checks2,
+            "hierarchy_beta_within": float(
+                results["hierarchy"]["primary_raw_abundance"]["beta_within_islands"]
+            ),
+            "hierarchy_beta_among": float(
+                results["hierarchy"]["primary_raw_abundance"]["beta_among_islands"]
+            ),
+            "hierarchy_beta_total": float(
+                results["hierarchy"]["primary_raw_abundance"][
+                    "beta_total_subcolony_to_archipelago"
+                ]
+            ),
+            "hierarchy_within_log_beta_share": float(
+                results["hierarchy"]["primary_raw_abundance"][
+                    "log_beta_share_within_islands"
+                ]
+            ),
+            "hierarchy_component_count_audit_pass": bool(
+                results["hierarchy_component_audit"]["decision"][
+                    "hierarchy_not_explained_only_by_more_within_island_units"
+                ]
+            ),
             "conditional_effective_colony_slope": topology_slope,
             "effective_colony_gain_permutation_p": neff_perm_p,
             "effective_colony_beta_circular_independent_p": circular_independent_p,
