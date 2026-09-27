@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-ecosphere-submission-v0.4.1",
+  "date": "2026-09-27",
+  "status": "submission_packaging_science_frozen_human_metadata_pending",
+  "scientific_manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_4.md",
+  "target": {
+    "journal": "Ecosphere",
+    "article_type": "Article",
+    "subject_track": "Animal Ecology",
+    "guidelines_revision": "September 2026"
+  },
+  "format_rules": {
+    "continuous_line_numbering_initial_submission": true,
+    "abstract_max_words": 350,
+    "abstract_citations_or_urls": false,
+    "keywords_min": 6,
+    "keywords_max": 12,
+    "title_page_in_main_document": true,
+    "title_page_requires": [
+      "journal",
+      "manuscript type",
+      "subject track",
+      "title",
+      "authors",
+      "affiliations",
+      "corresponding author",
+      "Open Research Statement",
+      "keywords"
+    ],
+    "body_order": [
+      "Abstract",
+      "Introduction",
+      "Methods",
+      "Results",
+      "Discussion",
+      "Conclusions"
+    ],
+    "double_spaced_12pt_times_new_roman": true,
+    "letter_portrait_one_inch_margins": true
+  },
+  "open_research": {
+    "code_peer_review_location": "https://github.com/zuizui0223/mina",
+    "code_peer_review_status": "public GitHub acceptable during peer review under ESA policy",
+    "permanent_archive_on_acceptance": [
+      "Dryad",
+      "Zenodo"
+    ],
+    "source_data_already_public": true
+  },
+  "unresolved_human_metadata": [
+    "author list and order",
+    "affiliations",
+    "corresponding author and email",
+    "acknowledgments",
+    "funding",
+    "author contributions",
+    "conflict of interest statement",
+    "final AI-use disclosure wording"
+  ],
+  "scientific_terminal_rule": "No new endpoint family, climate window, precipitation month, topology metric, threshold search, or count-error grid may be introduced during Ecosphere packaging."
+}
