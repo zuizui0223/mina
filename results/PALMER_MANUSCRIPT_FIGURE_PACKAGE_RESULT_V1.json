@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-manuscript-figure-package-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-island-ecology-synthesis-v2",
+  "execution": {
+    "workflow_run_id": 36297152851,
+    "head_sha": "aaab9b44af0428a744e2339b5ef83dbd818f9ead",
+    "artifact_id": 10923973368,
+    "artifact_digest": "sha256:05346a4e24a81942ccb9ad07651060bc280a5a159470220e53fa1c211a674966",
+    "artifact_size_bytes": 683549,
+    "conclusion": "success"
+  },
+  "frozen_sources": {
+    "census_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "apbp_sites_sha256": "b2cc5eab87eb0a9159a585fdd2f1fe4c648a3e4b68c344284e1a3cf4c8b0be1b",
+    "apbp_species_sha256": "ee21661156f9420019c2337babf9a034c3ce32f9a29a7829b41a4780a2d41bf2",
+    "apbp_site_species_sha256": "696240908486ee1ab7aa979cf54c05c37686350fad30ae3677291e452cdcf2bf"
+  },
+  "figure_data_rows": {
+    "figure1_sites": 7,
+    "figure2_trajectories": 135,
+    "figure2_pairwise_synchrony": 10,
+    "figure3_mechanism_audit": 7,
+    "figure4_colony_states": 135,
+    "figure4_colony_transitions": 120
+  },
+  "drift_guards": {
+    "pc1_variance_fraction": 0.9640284642946518,
+    "median_pairwise_growth_correlation": 0.372946951188161,
+    "conditional_effective_colony_slope": 0.11679896749684505,
+    "spatial_phenomenon_convergence": true,
+    "spatial_identifier_level_validation": false
+  },
+  "rendered_outputs": [
+    "figure1_palmer_network.png",
+    "figure1_palmer_network.pdf",
+    "figure2_common_decline.png",
+    "figure2_common_decline.pdf",
+    "figure3_mechanism_audit.png",
+    "figure3_mechanism_audit.pdf",
+    "figure4_colony_network.png",
+    "figure4_colony_network.pdf"
+  ],
+  "presentation_rules": [
+    "Figure 3 plots relative held-out error reduction because native tests use both MSE and RMSE; the native metric remains in the figure-data table.",
+    "Figure 3 never compares raw coefficient magnitudes across predictor families; it reports coefficient direction relative to each frozen prediction.",
+    "Figure 4 uses partial residuals against the exact frozen baseline and must reproduce the effective-colony coefficient.",
+    "Torgersen spatial evidence is displayed as phenomenon-level convergence only; identifier-level colony-code validation remains false."
+  ],
+  "decision": "manuscript_figure_package_reproducible",
+  "next_gate": "Merge the figure package, then restrict core-paper development to prose, captions, citations, and submission/reproducibility packaging unless an external colony-code-to-GIS crosswalk becomes available."
+}
