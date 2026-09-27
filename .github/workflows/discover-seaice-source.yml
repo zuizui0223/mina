@@ -6,7 +6,6 @@ on:
       - analysis/seaice-habitat-mechanism-v1
     paths:
       - "contracts/PALMER_SEAICE_HABITAT_MECHANISM_V1.json"
-      - "scripts/discover_edi_seaice.py"
       - ".github/workflows/discover-seaice-source.yml"
   workflow_dispatch:
 
@@ -15,12 +14,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-      - name: Discover pinned EDI sea-ice entity
-        run: python scripts/discover_edi_seaice.py build/seaice_source
+          path: mina
+
+      - name: Checkout published Palmer LTER sea-ice extraction
+        uses: actions/checkout@v4
+        with:
+          repository: qdioucass/pallter_decadalpigmentindices
+          ref: aa11abacdd3a9d64a9d6a7574d6ee12f073cf62c
+          path: published
+          lfs: true
+          sparse-checkout: |
+            data_code_analysis/local data/PALLTER_EDISeaIceDataframe.csv
+          sparse-checkout-cone-mode: false
+
+      - name: Validate LFS materialization and inspect schema
+        run: |
+          FILE="published/data_code_analysis/local data/PALLTER_EDISeaIceDataframe.csv"
+          test -f "$FILE"
+          if grep -q "git-lfs.github.com/spec" "$FILE"; then
+            echo "LFS object was not materialized"
+            exit 1
+          fi
+          mkdir -p mina/build/seaice_source
+          cp "$FILE" mina/build/seaice_source/PALLTER_EDISeaIceDataframe.csv
+          sha256sum "$FILE" | tee mina/build/seaice_source/sha256.txt
+          echo "--- schema/head ---"
+          head -n 12 "$FILE"
+
       - uses: actions/upload-artifact@v4
         with:
           name: seaice-source-discovery
-          path: build/seaice_source
+          path: mina/build/seaice_source
