@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-colony-network-erosion-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-colony-network-erosion-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36292092967,
+    "head_sha": "4ece82591fd5b852162db9555ec889244a85b3d6",
+    "artifact_id": 10922223641,
+    "artifact_digest": "sha256:dda3767d451eb644f08e0c46702b194d3bd1389265e139d369e6eec4740f779c",
+    "conclusion": "success"
+  },
+  "primary": {
+    "predictor": "log1p effective colony number at census year t",
+    "response": "next-year island log1p growth",
+    "baseline": "island fixed effects + current log1p abundance + year",
+    "full_data_coefficient": 0.11679896749684501,
+    "loyo": {
+      "n_rows": 120,
+      "n_years": 26,
+      "c0_mse": 0.07311311591779704,
+      "c1_mse": 0.07208427500194672,
+      "mse_gain_c0_minus_c1": 0.0010288409158503153
+    },
+    "decision": "supported"
+  },
+  "sensitivities": {
+    "active_colony_count": {
+      "coefficient": 0.16372314538145685,
+      "mse_gain_c0_minus_c1": -0.0017876750214815967,
+      "interpretation": "directionally positive coefficient but no held-out-year predictive improvement"
+    },
+    "add_previous_growth": {
+      "coefficient": 0.11849651213599004,
+      "mse_gain_c0_minus_c1": 0.0009286183774917245,
+      "interpretation": "primary effective-colony signal persists after adding demographic momentum"
+    },
+    "four_persistently_extant_islands": {
+      "coefficient": 0.12001127636361833,
+      "mse_gain_c0_minus_c1": 0.0035412373540517073,
+      "interpretation": "signal is not driven by Litchfield extinction/post-extinction structure"
+    }
+  },
+  "colony_code_diagnostics": {
+    "CHR": {
+      "min_reported_rows": 13,
+      "max_reported_rows": 14
+    },
+    "COR": {
+      "min_reported_rows": 7,
+      "max_reported_rows": 7
+    },
+    "HUM": {
+      "min_reported_rows": 9,
+      "max_reported_rows": 9
+    },
+    "LIT": {
+      "min_reported_rows": 9,
+      "max_reported_rows": 9
+    },
+    "TOR": {
+      "min_reported_rows": 16,
+      "max_reported_rows": 17
+    }
+  },
+  "supported": [
+    "Within-island breeding-colony structure contains small but positive held-out-year information about next-year island demographic growth beyond current abundance, island identity and secular year trend.",
+    "The predeclared effective-colony-number coefficient is positive and the full model improves leave-one-year-out MSE.",
+    "The signal persists when previous-year demographic growth is added and becomes stronger when analysis is restricted to the four islands that remain extant.",
+    "The result is more specific than simple occupied-colony count: active colony count alone does not improve held-out-year prediction."
+  ],
+  "not_supported": [
+    "a claim that the number of active colonies alone is a robust predictive mechanism",
+    "causal inference that terrestrial habitat loss caused next-year population decline",
+    "a claim that colony-code topology is an external habitat measurement",
+    "a claim that this small predictive gain explains the dominant long-term regional decline"
+  ],
+  "ecological_interpretation": "For these marine-foraging island breeders, the terrestrial signal appears in the internal distribution of breeders among subcolonies: populations spread more evenly across multiple breeding colonies retain slightly better next-year demographic performance than expected from current abundance and long-term decline alone. This is consistent with colony-network erosion as a local vulnerability state, but requires external spatial/topographic validation.",
+  "next_gate": "Map colony codes to external spatial/topographic habitat information before making a causal habitat-fragmentation claim. Freeze any spatial validation design before opening colony coordinates or colony-specific habitat quality."
+}
