@@ -1,0 +1,47 @@
+name: palmer-island-year-yearfe
+
+on:
+  push:
+    branches:
+      - validation/island-year-yearfe-v1
+    paths:
+      - "src/mina/island_year_yearfe.py"
+      - "tests/test_island_year_yearfe.py"
+      - "contracts/PALMER_ISLAND_YEAR_YEARFE_V1.json"
+      - ".github/workflows/palmer-island-year-yearfe.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest -q tests/test_island_year_yearfe.py
+      - run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - run: |
+          python -m mina.island_year_yearfe \
+            --census build/adelie_census.csv \
+            --out build/island_year_yearfe.json \
+            --permutations 20000 \
+            --seed 20260927
+      - name: Print audit
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/island_year_yearfe.json").read_text())
+          for key in ("five_island","four_island_no_litchfield"):
+              v=x[key]
+              print(key,"coef=",v["observed_same_island_year_fixed_effect"],"p=",v["null"]["two_sided_p"],"supported=",v["supported"],"records=",v["n_pairyear_records"])
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-year-yearfe
+          path: |
+            build/adelie_census.csv
+            build/island_year_yearfe.json
