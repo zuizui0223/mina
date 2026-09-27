@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-large-breeding-group-threshold-v1",
+  "date": "2026-09-27",
+  "status": "post_colony_network_positive_external_threshold_validation_pre_outcome_access",
+  "prerequisite_result": "results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+  "external_prior": {
+    "source": "Palmer Antarctica LTER 2011-12 Annual Report, seabird findings",
+    "statement": "Island-specific asymmetries were hypothesized to reflect loss of large penguin breeding groups, defined as groups in excess of 50 breeding pairs, citing Fraser and Patterson 1997.",
+    "threshold_breeding_pairs": 50,
+    "role": "externally specified threshold fixed before this validation is opened"
+  },
+  "hypothesis": "Islands retaining more >50-pair breeding groups at census year t should have higher / less-negative population growth from t to t+1 after accounting for island identity, current total abundance and secular year trend.",
+  "response": "g_i,t+1 = log1p(N_i,t+1)-log1p(N_i,t); starting-zero intervals excluded, positive-to-zero transitions retained",
+  "primary_predictor": "large_group_count_t = number of colony_code groups with breeding_pairs > 50 at year t; transform log1p and standardize in each training fold",
+  "models": {
+    "G0": "next_growth ~ island fixed effects + z(log1p current abundance) + z(year)",
+    "G1": "G0 + z(log1p large_group_count)"
+  },
+  "validation": {
+    "scheme": "leave-one-end-year-out with all islands of a held-out end-year excluded together",
+    "metric": "mean squared error",
+    "support_rule": "G1 MSE < G0 MSE AND full-data large-group coefficient > 0",
+    "no_threshold_search": true
+  },
+  "fixed_sensitivity": {
+    "predictor": "fraction of current island breeding pairs occurring in >50-pair groups",
+    "direction": "positive",
+    "role": "secondary only; threshold remains 50"
+  },
+  "interpretation_boundaries": [
+    "This is an external-threshold validation using the same census, not an independent population dataset.",
+    "A positive result supports the historical large-group-loss hypothesis predictively but does not identify the causal benefit of large groups.",
+    "Do not search alternative pair thresholds after outcome access.",
+    "Do not treat colony-code groups as spatially equivalent without external mapping."
+  ]
+}
