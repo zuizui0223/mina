@@ -1,0 +1,64 @@
+name: palmer-island-common-census-error
+
+on:
+  push:
+    branches:
+      - validation/island-common-census-error-v1
+    paths:
+      - "src/mina/island_common_census_error.py"
+      - "tests/test_island_common_census_error.py"
+      - "contracts/PALMER_ISLAND_COMMON_CENSUS_ERROR_V1.json"
+      - ".github/workflows/palmer-island-common-census-error.yml"
+  pull_request:
+    paths:
+      - "src/mina/island_common_census_error.py"
+      - "tests/test_island_common_census_error.py"
+      - "contracts/PALMER_ISLAND_COMMON_CENSUS_ERROR_V1.json"
+      - ".github/workflows/palmer-island-common-census-error.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen synthetic tests
+        run: pytest -q tests/test_island_common_census_error.py
+      - name: Fetch frozen LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run shared census-error diagnostic
+        run: |
+          python -m mina.island_common_census_error \
+            --census build/adelie_census.csv \
+            --out build/island_common_census_error.json \
+            --replicates 20000 \
+            --seed 20260927
+      - name: Print diagnostic receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/island_common_census_error.json").read_text())
+          for key in ("five_island_primary","four_island_no_litchfield_sensitivity"):
+              print(key)
+              for cv,v in x[key]["grid"].items():
+                  print(
+                      cv,
+                      "mean=",v["mean"],
+                      "q95=",v["q95"],
+                      "q99=",v["q99"],
+                      "exceed=",v["exceedances"],
+                      "p=",v["upper_p"],
+                  )
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-common-census-error
+          path: |
+            build/adelie_census.csv
+            build/island_common_census_error.json
