@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-external-spatial-triangulation-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-external-spatial-triangulation-v1",
+  "prerequisite_result": "results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+  "execution": {
+    "workflow_run_id": 36296408009,
+    "head_sha": "a8e972241d13b580854bdc47103e096966ebaaf2",
+    "artifact_id": 10923928039,
+    "artifact_digest": "sha256:849b77d0ee382a377cd74dca8854af5dd4b3381105cbe52e03e4a8186b62ba0f",
+    "conclusion": "success"
+  },
+  "internal_colony_network": {
+    "effective_colony_beta": 0.11679896749684501,
+    "heldout_mse_gain": 0.0010288409158503153
+  },
+  "external_torgersen_spatial": {
+    "historic_active_subcolonies": 23,
+    "active_subcolonies_2022": 5,
+    "active_footprint_fraction": 0.21739130434782608,
+    "south_extinction_fraction": 1,
+    "north_extinction_fraction": 0.6153846153846154,
+    "south_minus_north_extinction_fraction": 0.3846153846153846,
+    "active_to_extinct_historic_area_ratio": 3.122940430925222,
+    "area_extinction_year_correlation_R": 0.75,
+    "area_extinction_year_p": 0.0009
+  },
+  "decision": {
+    "phenomenon_level_spatial_convergence": true,
+    "identifier_level_validation": false,
+    "causal_fragmentation_validated": false
+  },
+  "supported": [
+    "Independent mapped Torgersen breeding footprints show strong contraction from 23 historic sub-colonies to five active footprints by 2022.",
+    "Spatial attrition is non-random with respect to physical habitat: all historic south-aspect sub-colonies are extinct while five north-aspect footprints remain active.",
+    "Larger historic sub-colonies tended to persist longer, providing an external spatial correlate of local persistence.",
+    "These mapped patterns converge at the phenomenon level with the census-derived result that a more distributed breeder configuration carries modest positive next-year demographic information."
+  ],
+  "not_supported": [
+    "one-to-one validation of Palmer LTER colony_code against the independent GIS polygon identifiers",
+    "a causal claim that physical habitat fragmentation causes the effective-colony-number predictive signal",
+    "equivalence between effective colony number and mapped habitat area or connectivity",
+    "a claim that larger breeding groups are intrinsically protective"
+  ],
+  "crosswalk_status": {
+    "lter_colony_code_to_published_polygon": "not_resolved",
+    "consequence": "Use spatial evidence as independent process-level triangulation only; retain the causal and identifier-level validation boundary."
+  },
+  "manuscript_role": "Strengthens Discussion D4 from an unvalidated topology interpretation to external phenomenon-level spatial convergence while preserving the unresolved colony-ID crosswalk caveat.",
+  "next_gate": "Core ecological result family is closed. Proceed to figure-data exports, reproducibility checks and manuscript packaging unless an external colony-code/polygon crosswalk becomes available."
+}

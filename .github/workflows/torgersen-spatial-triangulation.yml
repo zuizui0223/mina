@@ -1,0 +1,41 @@
+name: torgersen-spatial-triangulation
+
+on:
+  push:
+    branches:
+      - validation/torgersen-spatial-triangulation-v1
+    paths:
+      - "external/TORGERSEN_SPATIAL_EVIDENCE_V1.json"
+      - "contracts/PALMER_EXTERNAL_SPATIAL_TRIANGULATION_V1.json"
+      - "src/mina/spatial_triangulation.py"
+      - ".github/workflows/torgersen-spatial-triangulation.yml"
+  pull_request:
+    paths:
+      - "external/TORGERSEN_SPATIAL_EVIDENCE_V1.json"
+      - "contracts/PALMER_EXTERNAL_SPATIAL_TRIANGULATION_V1.json"
+      - "src/mina/spatial_triangulation.py"
+      - ".github/workflows/torgersen-spatial-triangulation.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Build external spatial triangulation
+        run: |
+          mina-spatial-triangulation \
+            --colony-result results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json \
+            --evidence external/TORGERSEN_SPATIAL_EVIDENCE_V1.json \
+            --out-json build/PALMER_EXTERNAL_SPATIAL_TRIANGULATION_RESULT_V1.json \
+            --out-md build/PALMER_EXTERNAL_SPATIAL_TRIANGULATION_V1.md
+      - name: Print result
+        run: cat build/PALMER_EXTERNAL_SPATIAL_TRIANGULATION_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: torgersen-spatial-triangulation
+          path: build/

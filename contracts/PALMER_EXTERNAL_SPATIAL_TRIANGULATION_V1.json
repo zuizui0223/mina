@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-external-spatial-triangulation-v1",
+  "date": "2026-09-27",
+  "status": "post_core_result_external_triangulation",
+  "prerequisite_result": "results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+  "external_evidence": "external/TORGERSEN_SPATIAL_EVIDENCE_V1.json",
+  "question": "Does independent spatial mapping of Torgersen sub-colony attrition converge with the census-derived colony-network erosion signal, without claiming an unresolved colony-code-to-polygon crosswalk?",
+  "tests": {
+    "T1_spatial_contraction": "External mapping must show substantial contraction in the number of historically occupied sub-colony footprints.",
+    "T2_nonrandom_topographic_attrition": "External mapping must show that extinction/persistence is structured by independent physical habitat attributes such as aspect, elevation, or historic colony area.",
+    "T3_internal_predictive_signal": "The frozen mina effective-colony-number result must retain positive coefficient and positive held-out-year gain.",
+    "T4_identifier_crosswalk": "A formal identifier-level validation is allowed only if a machine-readable mapping from LTER colony_code to external polygon IDs is available."
+  },
+  "decision_logic": {
+    "phenomenon_level_convergence": "T1 + T2 + T3",
+    "identifier_level_validation": "T4",
+    "causal_fragmentation_claim": "prohibited unless identifier-level mapping plus independent topographic measurements are joined under a new prospective design"
+  },
+  "interpretation_boundaries": [
+    "The 2025 spatial study overlaps the Palmer demographic system and therefore is external spatial evidence, not a wholly independent population replication.",
+    "Do not equate effective colony number with mapped habitat area or physical connectivity.",
+    "Do not infer that large colonies are intrinsically protective; the >50-pair directional validation already failed.",
+    "Do not claim colony-code-level topographic validation until the crosswalk is resolved.",
+    "This stage adds no new tuned colony topology metric."
+  ],
+  "terminal_rule": "For the core paper, use this as spatial triangulation only. Further work must resolve the colony-code/polygon crosswalk or remain separate future research."
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "evidence_id": "torgersen-spatial-evidence-v1",
+  "frozen_date": "2026-09-27",
+  "role": "external published spatial triangulation; not a preregistered independent demographic replication",
+  "focal_site": "Torgersen Island",
+  "sources": [
+    {
+      "source_id": "cimino_2025_landscape_ecology",
+      "citation": "Cimino MA, Larsen GD, Johnston DW, Groff DV. 2025. Long-term, landscape- and wind-driven snow conditions influence Adélie penguin colony extinctions. Landscape Ecology 40:78.",
+      "doi": "10.1007/s10980-025-02088-y",
+      "evidence_type": "independent spatial reconstruction using historic maps, drone imagery, GPS, DSM and satellite snow mapping",
+      "observations": {
+        "historic_active_subcolonies_1989": 23,
+        "extinct_subcolonies_by_2022": 18,
+        "active_subcolonies_2022": 5,
+        "south_aspect_historic_subcolonies": 10,
+        "south_aspect_extinct_by_2022": 10,
+        "north_aspect_historic_subcolonies": 13,
+        "north_aspect_extinct_by_2022": 8,
+        "north_aspect_active_2022": 5,
+        "south_pairs_1993": 2237,
+        "north_pairs_1993": 5018,
+        "south_decline_fraction_to_2022": 1,
+        "north_decline_fraction_to_2022": 0.88,
+        "extinct_historic_area_mean_m2": 1578,
+        "extinct_historic_area_range_m2": [
+          212,
+          3433
+        ],
+        "active_historic_area_mean_m2": 4928,
+        "active_historic_area_range_m2": [
+          1462,
+          8427
+        ],
+        "active_2022_area_mean_m2": 97,
+        "active_2022_pair_range": [
+          15,
+          396
+        ],
+        "area_extinction_year_correlation_R": 0.75,
+        "area_extinction_year_p": 0.0009,
+        "south_area_decline_rate_R": -0.84,
+        "south_area_decline_rate_p": 0.004
+      },
+      "qualitative_findings": [
+        "All south-aspect historic sub-colonies were extinct by 2022.",
+        "Active 2022 sub-colonies occurred only on the north aspect.",
+        "Larger historic sub-colonies went extinct later than smaller sub-colonies.",
+        "South-aspect sub-colonies went extinct earlier than similarly sized north-aspect sub-colonies."
+      ]
+    },
+    {
+      "source_id": "patterson_2003_historic_geomorphology",
+      "citation": "Patterson DL, Easter-Pilcher A, Fraser WR. 2003. The effects of human activity and environmental variability on long-term changes in Adelie penguin populations at Palmer Station, Antarctica.",
+      "evidence_type": "historic Torgersen colony-level habitat/population analysis",
+      "observations": {
+        "colonies_at_start_1989": 23,
+        "colony_size_range_pairs": [
+          30,
+          1400
+        ]
+      },
+      "qualitative_findings": [
+        "Colony aspect and colony area were significant predictors of colony population change.",
+        "South-facing colonies declined faster than north-facing colonies, consistent with snow-deposition differences."
+      ]
+    },
+    {
+      "source_id": "duke_2022_drone_archive",
+      "citation": "Larsen GD et al. 2022. Aerial data from drone surveys of coastal habitats on the West Antarctic Peninsula during austral summer 2019-2020. Duke Research Data Repository.",
+      "doi": "10.7924/r4sf2xs2w",
+      "license": "CC0 1.0",
+      "evidence_type": "raw external geospatial archive",
+      "observations": {
+        "products": [
+          "orthomosaics",
+          "digital surface models",
+          "raw imagery",
+          "ground control points"
+        ],
+        "nominal_ground_sample_distance_cm": [
+          1.5,
+          3
+        ],
+        "torgersen_and_humble_in_scope": true
+      },
+      "limitation": "The public archive does not provide a machine-readable crosswalk between Palmer LTER census colony_code values and the historic/current polygon identifiers used in the 2025 spatial reconstruction."
+    }
+  ],
+  "crosswalk_status": {
+    "lter_colony_code_to_published_polygon": "not_resolved",
+    "reason": "The LTER census defines colony_code as island-specific nominal colony identifiers, while the accessible spatial publication describes mapped polygons but no public machine-readable colony-code crosswalk was located.",
+    "consequence": "Phenomenon-level spatial triangulation is possible; identifier-level validation of the mina effective-colony metric against independent polygon topography is not yet possible."
+  }
+}
