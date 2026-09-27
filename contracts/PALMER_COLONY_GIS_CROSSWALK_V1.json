@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-gis-crosswalk-v1",
+  "date": "2026-09-27",
+  "status": "frozen_after_invalid_island_partition_v1_before_crosswalk_decisions",
+  "prerequisite": "results/PALMER_ISLAND_PARTITION_RESULT_V1.json",
+  "objective": "Resolve whether Palmer LTER colony_code values correspond to persistent physical breeding subcolonies, independently of the v1 demographic covariance result.",
+  "allowed_evidence": [
+    "published colony maps and numbered-colony tables",
+    "peer-reviewed supplementary files",
+    "Palmer LTER or EDI metadata and spatial products",
+    "georeferenced GIS polygons, centroids, orthomosaics or historical survey maps",
+    "documented code renames, splits or merges from source custodians or archival documentation"
+  ],
+  "prohibited_evidence_for_identity_matching": [
+    "similarity of abundance trajectories",
+    "maximizing within-island covariance",
+    "maximizing the island-partition test statistic",
+    "post-outcome demographic similarity used to choose aliases"
+  ],
+  "crosswalk_schema": [
+    "island",
+    "raw_colony_code",
+    "first_observed_year",
+    "last_observed_year",
+    "physical_unit_id",
+    "relation_to_physical_unit",
+    "geometry_or_centroid_source",
+    "confidence_grade",
+    "evidence_reference",
+    "notes"
+  ],
+  "relation_values": [
+    "same",
+    "rename",
+    "split",
+    "merge",
+    "unknown"
+  ],
+  "confidence_grades": {
+    "A": "direct documented code-to-map/polygon/coordinate match",
+    "B": "documented rename, split or merge anchored to a known historical physical footprint",
+    "C": "unresolved or inferential; not eligible for confirmatory identity assignment"
+  },
+  "analysis_policy": {
+    "primary_identity_set": "grade A only",
+    "sensitivity_identity_set": "grades A+B, preserving documented split/merge structure",
+    "grade_C": "excluded from confirmatory distance-conditioned tests",
+    "missing_code_years": "must not be converted to zero unless the source explicitly documents true zero occupancy for that physical unit"
+  },
+  "required_outputs_before_next_model": [
+    "frozen crosswalk table with evidence for every assignment",
+    "mapped physical-unit coordinates or polygons for eligible units",
+    "pairwise geographic distance matrix",
+    "coverage summary by island and year",
+    "explicit unresolved-code list"
+  ],
+  "next_analysis_boundary": "Do not freeze or run the distance-conditioned same-island model until crosswalk coverage and distance-range overlap are known. The next model must distinguish geographic distance from same-island membership and must be specified before demographic outcomes are re-opened under the resolved physical-unit identities."
+}
