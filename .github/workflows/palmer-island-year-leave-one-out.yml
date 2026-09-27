@@ -1,0 +1,43 @@
+name: palmer-island-year-leave-one-out
+on:
+  push:
+    branches: [validation/island-year-leave-one-out-v1]
+    paths:
+      - "src/mina/island_year_leave_one_out.py"
+      - "contracts/PALMER_ISLAND_YEAR_LEAVE_ONE_OUT_V1.json"
+      - ".github/workflows/palmer-island-year-leave-one-out.yml"
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -e .
+      - run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run frozen leave-one-island-out family
+        run: |
+          python -m mina.island_year_leave_one_out \
+            --census build/adelie_census.csv \
+            --out build/island_year_leave_one_out.json \
+            --permutations 20000 \
+            --seed 20260927
+      - name: Print receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/island_year_leave_one_out.json").read_text())
+          for omitted,v in x["omissions"].items():
+              print(omitted,
+                    "contrast=",v["observed"]["island_year_covariance_contrast"],
+                    "p=",v["null"]["two_sided_p"],
+                    "n=",v["n_eligible_colonies"],
+                    "supported=",v["supported"])
+          print("decision=",x["decision"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-year-leave-one-out
+          path: build/island_year_leave_one_out.json
