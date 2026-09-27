@@ -94,12 +94,75 @@ The Palmer Basin / SW Anvers Island management mapping includes a dedicated
 Torgersen Island zones map. This is useful for georeferencing and management
 boundaries but is not yet known to encode individual penguin subcolony IDs.
 
+
+## S6. Sanchez (1999), USGS Open-File Report 99-402
+
+Source:
+https://pubs.usgs.gov/of/1999/0402/
+
+Relevant evidence:
+
+- the Palmer-area project inventoried existing image/vector data, built a GIS
+  data dictionary, and used Torgersen as the first target-island template;
+- the report documents GPS survey control for target islands including
+  Christine, Cormorant, Humble, Litchfield and Torgersen;
+- the Torgersen control station TOR1 was established by GPS static survey and
+  adjusted by USGS in 1999;
+- Patterson (2001) describes the associated 1998/99 cooperative mapping as using
+  low-altitude aerial photography and sub-meter GPS to map perimeters of active
+  and extinct Adélie colonies across the Palmer target islands.
+
+Use in crosswalk: establishes that region-wide historical colony-perimeter GIS
+work and geodetic control existed. The remaining task is retrieval of the
+derived island orthobases / colony layers and their identifier metadata.
+
+## S7. Sanchez & Fraser (2001), island orthobases
+
+Evidence source:
+the Palmer-area Antarctic Specially Managed Area documentation cites
+`Litchfield Island Orthobase` (Sanchez & Fraser 2001) as a 6-cm digital
+orthophotograph with a digital terrain model and approximately ±2 m horizontal
+and vertical accuracy, distributed with the USGS mapping products.
+
+Use in crosswalk: confirms that high-resolution, georeferenced historical island
+bases were produced beyond Torgersen. Search for archived Torgersen, Christine,
+Cormorant and Humble counterparts before concluding that only Torgersen is
+resolvable.
+
+## S8. Bird et al. (2020), 2017 Torgersen UAS colony polygons
+
+Article:
+https://doi.org/10.3390/rs12223692
+
+Data:
+https://doi.org/10.7924/r4cv4jq6j
+
+Code:
+https://github.com/cbirdferrer/penguin-counting
+
+Relevant evidence:
+
+- all of Torgersen Island was surveyed on 6 February 2017 with RGB,
+  multispectral and thermal UAS imagery;
+- reported final ground sampling distances were approximately 2.28 cm RGB,
+  7.58 cm multispectral and 11.6 cm thermal;
+- the workflow generated final colony polygons and joined penguin detections /
+  manual points to those colony shapes to estimate per-colony abundance and
+  density;
+- the article explicitly states that the data and code are publicly archived in
+  the Duke Research Data Repository;
+- the public GitHub repository contains the ArcGIS toolbox/workflow but not the
+  study imagery or colony layers themselves.
+
+Use in crosswalk: provides an independent 2017 physical-colony geometry layer
+close to the end of the LTER 1991–2017 census window. The decisive check is
+whether the Duke archive includes stable colony identifiers or enough
+georeferenced geometry to align these shapes with historical polygons and the
+LTER field map.
+
 ## Current assessment
 
-A physically grounded Torgersen crosswalk is feasible. The bottleneck is no
-longer the existence of spatial information; it is obtaining an explicit,
-auditable association between the LTER nominal `colony_code` values and the
-historic/georeferenced subcolony footprints.
+A physically grounded Torgersen crosswalk is now strongly supported as feasible. Historical 1998/99 GIS mapping, later georeferenced historic footprints, 2017 UAS colony polygons, 2020 drone orthomosaics and 2022 GPS perimeters all exist in the source trail. The bottleneck is no longer geometry availability; it is recovering an explicit, auditable association between the LTER nominal `colony_code` values and those physical footprints. The USGS orthobase evidence also makes a multi-island crosswalk plausible rather than a Torgersen-only possibility.
 
 No crosswalk assignments are frozen in this registry. In particular:
 
@@ -111,12 +174,15 @@ No crosswalk assignments are frozen in this registry. In particular:
 
 ## Next retrieval targets
 
-1. Cimino et al. (2025) supplementary material, especially S3/S13 and any
-   sub-colony table or geospatial identifier.
-2. archived Palmer/EDI geospatial layers or drone products underlying the
-   1998/99, 2020 and 2022 Torgersen perimeters.
-3. historical field maps or census protocols that print colony numbers directly
-   on Torgersen/Humble/Christine/Cormorant/Litchfield maps.
-4. only after source-based identity resolution: calculate physical-unit
+1. inspect the Duke archive for DOI 10.7924/r4cv4jq6j and inventory any
+   Torgersen polygon/shapefile/geodatabase/CSV identifiers;
+2. retrieve USGS OFR 99-402 companion GIS / orthobase products and search for
+   Torgersen, Christine, Cormorant and Humble island products in addition to the
+   documented Litchfield orthobase;
+3. retrieve Cimino et al. (2025) supplementary material, especially S3/S13 and
+   any sub-colony table or geospatial identifier;
+4. locate historical field maps or census protocols that print LTER colony
+   numbers directly on the five Palmer islands;
+5. only after source-based identity resolution: calculate physical-unit
    centroids/pairwise distances and freeze a distance-conditioned same-island
    boundary model.
