@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-hierarchy-component-count-audit-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-hierarchy-component-count-audit-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36329692486,
+    "head_sha": "ed8789dfd98ad14e7a67f4eb86f3e85e40360e1f",
+    "artifact_id": 10935660728,
+    "artifact_digest": "sha256:adb68f8bce3a380927818298d6a4c5ea5f08fb9087a5681602142058aac35aff",
+    "conclusion": "success"
+  },
+  "status": "post_hoc_component_count_robustness_diagnostic",
+  "eligible_islands": ["COR", "HUM", "LIT"],
+  "raw_normalized_excess_beta": {
+    "among_islands": {
+      "n_units": 3,
+      "beta_spatial": 1.0112310830110414,
+      "normalized_excess_beta": 0.0056155415055206825
+    },
+    "COR": {
+      "n_units": 7,
+      "beta_spatial": 1.064002699507732,
+      "normalized_excess_beta": 0.010667116584622013
+    },
+    "HUM": {
+      "n_units": 9,
+      "beta_spatial": 1.0941025513702736,
+      "normalized_excess_beta": 0.011762818921284196
+    },
+    "LIT": {
+      "n_units": 9,
+      "beta_spatial": 1.0489387887267851,
+      "normalized_excess_beta": 0.006117348590848143
+    }
+  },
+  "pairwise_mean_correlation": {
+    "raw_abundance": {
+      "among_islands": 0.9819200025396069,
+      "COR": 0.8221255081215388,
+      "HUM": 0.8026121461831139,
+      "LIT": 0.8738739009094325
+    },
+    "linear_detrended_log1p": {
+      "among_islands": 0.6703552946780263,
+      "COR": -0.029918363224446045,
+      "HUM": 0.09132364411393545,
+      "LIT": 0.46732391241036747
+    },
+    "annual_log1p_growth": {
+      "among_islands": 0.481586962574622,
+      "COR": 0.17481770991205256,
+      "HUM": 0.09180222978011371,
+      "LIT": 0.24739733586100357
+    }
+  },
+  "decision": {
+    "all_within_normalized_excess_beta_above_among": true,
+    "all_signals_all_within_mean_pairwise_correlations_below_among": true,
+    "hierarchy_not_explained_only_by_more_within_island_units": true
+  },
+  "interpretation_boundary": {
+    "post_hoc_diagnostic": true,
+    "confirmatory_endpoint": false,
+    "causal_inference": false,
+    "pairwise_correlation_replaces_wang_loreau_partition": false
+  }
+}
