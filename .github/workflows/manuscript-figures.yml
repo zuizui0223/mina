@@ -1,0 +1,86 @@
+name: manuscript-figures
+
+on:
+  push:
+    branches:
+      - manuscript/figure-package-v1
+    paths:
+      - "src/mina/figure_data.py"
+      - "src/mina/figures.py"
+      - "src/mina/synthesis.py"
+      - "results/*.json"
+      - "contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json"
+      - ".github/workflows/manuscript-figures.yml"
+  pull_request:
+    paths:
+      - "src/mina/figure_data.py"
+      - "src/mina/figures.py"
+      - "src/mina/synthesis.py"
+      - "results/*.json"
+      - "contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json"
+      - ".github/workflows/manuscript-figures.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Install manuscript dependencies
+        run: python -m pip install -e ".[dev,figures]"
+
+      - name: Fetch frozen census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+
+      - name: Export pinned APBP network metadata
+        run: Rscript scripts/export_palmer_network_abundance.R build/network
+
+      - name: Build figure data
+        run: |
+          mina-figure-data \
+            --census build/adelie_census.csv \
+            --sites build/network/sites.csv \
+            --species build/network/species.csv \
+            --site-species build/network/site_species.csv \
+            --results results \
+            --out-dir build/figure_data
+
+      - name: Render Figures 1-4
+        run: |
+          mina-figures \
+            --data-dir build/figure_data \
+            --out-dir build/figures
+
+      - name: Build synthesis v2
+        run: |
+          mina-synthesis \
+            --results results \
+            --out-json build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json \
+            --out-md build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.md
+
+      - name: Verify expected outputs
+        run: |
+          test -s build/figure_data/manifest.json
+          test -s build/figures/figure1_palmer_network.png
+          test -s build/figures/figure1_palmer_network.pdf
+          test -s build/figures/figure2_common_decline.png
+          test -s build/figures/figure2_common_decline.pdf
+          test -s build/figures/figure3_mechanism_audit.png
+          test -s build/figures/figure3_mechanism_audit.pdf
+          test -s build/figures/figure4_colony_network.png
+          test -s build/figures/figure4_colony_network.pdf
+          cat build/figure_data/manifest.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-manuscript-figures
+          path: |
+            build/figure_data
+            build/figures
+            build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json
+            build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.md

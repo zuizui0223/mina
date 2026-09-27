@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mina-island-reassembly"
-version = "0.9.0"
+version = "0.10.0"
 description = "Island community reassembly analyses for Palmer Archipelago penguins"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,6 +13,7 @@ dependencies = ["numpy>=1.24"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+figures = ["matplotlib>=3.8,<4"]
 
 [project.scripts]
 mina-palmer = "mina.palmer:main"
@@ -25,6 +26,8 @@ mina-colony-network = "mina.colony_network:main"
 mina-large-groups = "mina.large_groups:main"
 mina-synthesis = "mina.synthesis:main"
 mina-spatial-triangulation = "mina.spatial_triangulation:main"
+mina-figure-data = "mina.figure_data:main"
+mina-figures = "mina.figures:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

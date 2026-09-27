@@ -12,6 +12,7 @@ FILES={
     "weather":"PALMER_WEATHER_X_HABITAT_MECHANISM_RESULT_V2.json",
     "colony":"PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
     "large":"PALMER_LARGE_BREEDING_GROUP_THRESHOLD_RESULT_V1.json",
+    "spatial":"PALMER_EXTERNAL_SPATIAL_TRIANGULATION_RESULT_V1.json",
 }
 
 def load(results_dir: str|Path) -> dict[str,dict]:
@@ -22,7 +23,7 @@ def build(results_dir: str|Path) -> dict[str,object]:
     r=load(results_dir)
     sync=r["synchrony"]; sea=r["seaice"]; time=r["timescale"]
     weather=r["weather"]; colony=r["colony"]; large=r["large"]
-    exploratory=r["exploratory"]; network=r["network"]
+    exploratory=r["exploratory"]; network=r["network"]; spatial=r["spatial"]
 
     if colony["primary"]["decision"]!="supported":
         raise ValueError("colony-network positive endpoint drifted")
@@ -34,15 +35,19 @@ def build(results_dir: str|Path) -> dict[str,object]:
         raise ValueError("snowfall x habitat decision drifted")
     if large["primary"]["decision"]!="not_supported":
         raise ValueError("external >50-pair directional decision drifted")
+    if spatial["decision"]["phenomenon_level_spatial_convergence"] is not True:
+        raise ValueError("external spatial convergence endpoint drifted")
+    if spatial["decision"]["identifier_level_validation"] is not False:
+        raise ValueError("colony-code crosswalk boundary drifted")
 
     endpoint_fractions={
         island:float(row["fraction_remaining"])
         for island,row in sync["endpoints"].items()
     }
     return {
-        "schema_version":1,
-        "synthesis_id":"mina-palmer-island-ecology-synthesis-v1",
-        "core_claim":"A nearly common long-term Adelie decline across neighboring islands coexists with strongly local collapse dynamics; simple climate/weather proxies do not prospectively explain that heterogeneity, while distributed breeding-colony structure carries a small positive signal of next-year local demographic resilience.",
+        "schema_version":2,
+        "synthesis_id":"mina-palmer-island-ecology-synthesis-v2",
+        "core_claim":"A nearly common long-term Adelie decline across neighboring islands coexists with strongly local collapse dynamics; simple climate/weather proxies do not prospectively explain that heterogeneity, while distributed breeding-colony structure carries a small positive signal of next-year local demographic resilience and independent Torgersen mapping shows real, habitat-structured sub-colony attrition.",
         "origin":{
             "pooled_morphology_gain":exploratory["frozen_odsp_context"]["naive_pooled_morphology_gain"],
             "species_layer_gain":exploratory["frozen_odsp_context"]["species_layer_gain"],
@@ -101,19 +106,27 @@ def build(results_dir: str|Path) -> dict[str,object]:
                 "gain":large["fixed_sensitivity"]["loyo"]["mse_gain_g0_minus_g1"],
                 "beta":large["fixed_sensitivity"]["coefficient"],
             },
+            "external_spatial_triangulation":{
+                "phenomenon_level_convergence":spatial["decision"]["phenomenon_level_spatial_convergence"],
+                "identifier_level_validation":spatial["decision"]["identifier_level_validation"],
+                "torgersen_active_footprint_fraction":spatial["external_torgersen_spatial"]["active_footprint_fraction"],
+                "south_extinction_fraction":spatial["external_torgersen_spatial"]["south_extinction_fraction"],
+                "north_extinction_fraction":spatial["external_torgersen_spatial"]["north_extinction_fraction"],
+            },
         },
         "terminal_interpretation":{
             "regional":"The five islands share the direction of long-term decline, but the tested sea-ice-duration formulations do not identify its mechanism.",
             "local":"Island-specific vulnerability is substantial, and a distributed colony network predicts slightly better next-year performance beyond abundance and time.",
             "specificity":"The positive topology result is about distribution/evenness rather than simply having more active colonies or more >50-pair breeding groups.",
-            "causal_boundary":"All colony-structure tests are predictive state indicators until independently mapped breeding-habitat data validate a causal pathway.",
+            "external_triangulation":"Independent Torgersen mapping confirms strong, habitat-structured sub-colony attrition, providing process-level spatial convergence with the internal colony-network signal.",
+            "causal_boundary":"The public LTER colony_code values are not yet crosswalked one-to-one to the independent GIS polygons, so identifier-level validation and causal habitat-fragmentation claims remain out of scope.",
         },
     }
 
 def markdown(x: dict[str,object]) -> str:
     d=x["five_island_decline"]; m=x["prospective_mechanism_tests"]; c=x["local_colony_state"]
-    endpoints=d["endpoint_fraction_remaining"]
-    return f"""# Palmer island-ecology synthesis v1
+    endpoints=d["endpoint_fraction_remaining"]; s=c["external_spatial_triangulation"]
+    return f"""# Palmer island-ecology synthesis v2
 
 ## Central result
 
@@ -135,15 +148,17 @@ These are failures of specific predeclared formulations, not evidence that marin
 
 ## Local breeding-network state
 
-Effective colony number adds a small positive held-out-year increment (MSE gain **{c["effective_colony_number"]["gain"]:+.4f}**, beta **{c["effective_colony_number"]["beta"]:+.3f}**). The signal persists after adding previous demographic growth and strengthens when locally extinct Litchfield is excluded.
+Effective colony number adds a small positive held-out-year increment (MSE gain **{c["effective_colony_number"]["gain"]:+.4f}**, beta **{c["effective_colony_number"]["beta"]:+.3f}**). Active-colony count does not improve transfer. The externally fixed >50-pair group count improves prediction but has the opposite sign to its historical positive-direction hypothesis.
 
-The specificity checks matter. Active-colony count alone has gain **{c["active_colony_count"]["gain"]:+.4f}**. The externally fixed >50-pair group count improves prediction (gain **{c["external_gt50_group_count"]["gain"]:+.4f}**) but its coefficient is **{c["external_gt50_group_count"]["beta"]:+.3f}**, opposite the historical positive-direction hypothesis. Thus the supported signal is better described as **distribution/evenness across breeding subcolonies**, not simple retention of many or large groups.
+## External spatial triangulation
+
+Independent mapped Torgersen footprints retain only **{100*s["torgersen_active_footprint_fraction"]:.1f}%** of the historic active sub-colony count by 2022. The extinction fraction is **{100*s["south_extinction_fraction"]:.1f}%** for south-aspect historic footprints versus **{100*s["north_extinction_fraction"]:.1f}%** for north-aspect footprints. This is process-level spatial convergence with colony-network erosion, not an identifier-level validation of the exact LTER `colony_code` metric.
 
 ## Ecological interpretation
 
-Palmer penguins create an unusually clean island-ecology contrast because food resources are largely marine while breeding habitat is discrete and terrestrial. Regional processes can therefore impose a common demographic direction without producing identical local dynamics. The current evidence is consistent with a hierarchy in which regional forcing sets the broad decline, while the internal spatial organization of breeding colonies indexes local vulnerability.
+Palmer penguins create an unusually clean island-ecology contrast because food resources are largely marine while breeding habitat is discrete and terrestrial. Regional processes can impose a common demographic direction without producing identical local dynamics. The internal organization of breeding colonies indexes local vulnerability, and independent Torgersen mapping confirms that real breeding footprints contract non-randomly across physical habitat.
 
-The colony-network result remains predictive, not causal. External spatial/topographic mapping of colony codes is required before calling this habitat fragmentation.
+The causal boundary remains explicit: no public one-to-one crosswalk between LTER `colony_code` and the independent GIS polygons has been resolved.
 """
 
 def main() -> int:
@@ -158,4 +173,6 @@ def main() -> int:
     a.out_json.write_text(json.dumps(x,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     a.out_md.write_text(markdown(x),encoding="utf-8")
     return 0
-if __name__=="__main__": raise SystemExit(main())
+
+if __name__=="__main__":
+    raise SystemExit(main())
