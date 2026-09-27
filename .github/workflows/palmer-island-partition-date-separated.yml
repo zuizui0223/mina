@@ -1,0 +1,50 @@
+name: palmer-island-partition-date-separated
+
+on:
+  push:
+    branches:
+      - analysis/island-partition-v1
+    paths:
+      - "src/mina/island_partition_date_separated.py"
+      - "tests/test_island_partition_date_separated.py"
+      - "contracts/PALMER_ISLAND_PARTITION_DATE_SEPARATED_V1.json"
+      - ".github/workflows/palmer-island-partition-date-separated.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest -q tests/test_island_partition_date_separated.py
+      - run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - run: |
+          python -m mina.island_partition_date_separated \
+            --census build/adelie_census.csv \
+            --out build/island_partition_date_separated_result.json \
+            --permutations 20000 \
+            --seed 20260927
+      - name: Print result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/island_partition_date_separated_result.json").read_text())
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          for key in ("strict","relaxed_descriptive"):
+              row=x[key]
+              print(key,"valid=",row.get("validity_pass"),"pairs=",row.get("n_informative_pairs"),"islands=",row.get("within_contributing_islands"))
+              if row.get("validity_pass"):
+                  print(key,"observed=",json.dumps(row["observed"],sort_keys=True))
+                  print(key,"null=",json.dumps(row["null"],sort_keys=True))
+              else:
+                  print(key,"reason=",row.get("reason"))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-partition-date-separated
+          path: build/island_partition_date_separated_result.json
