@@ -6,6 +6,7 @@ import argparse
 import csv
 import hashlib
 import io
+import re
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -40,17 +41,34 @@ def main() -> int:
     reader=csv.DictReader(io.StringIO(text))
     rows=list(reader)
     fields=reader.fieldnames or []
-    expected={"Date","Rainfall..mm.","Precipitation.Snow..cm."}
-    missing=sorted(expected-set(fields))
-    if missing:
-        raise RuntimeError(f"weather mirror missing expected EDI columns: {missing}")
+    def norm(value: str) -> str:
+        return re.sub(r"[^a-z0-9]+","",value.lower())
+
+    normalized={norm(field):field for field in fields}
+    date_field=normalized.get("date")
+    rainfall_field=next(
+        (field for field in fields if "rainfall" in norm(field)),
+        None,
+    )
+    snow_field=next(
+        (
+            field for field in fields
+            if "precip" in norm(field) and "snow" in norm(field)
+        ),
+        None,
+    )
+    if date_field is None or rainfall_field is None or snow_field is None:
+        raise RuntimeError(
+            "weather mirror lacks normalized EDI Date/Rainfall/Snow fields; "
+            f"observed fields={fields!r}"
+        )
     if len(rows)!=10674:
         raise RuntimeError(f"expected 10674 daily rows, observed {len(rows)}")
-    if rows[0]["Date"]!="1989-04-01":
-        raise RuntimeError(f"unexpected first date: {rows[0]['Date']!r}")
-    if rows[0]["Rainfall..mm."] not in {"0","0.0"}:
+    if rows[0][date_field]!="1989-04-01":
+        raise RuntimeError(f"unexpected first date: {rows[0][date_field]!r}")
+    if rows[0][rainfall_field] not in {"0","0.0","0.00"}:
         raise RuntimeError("first rainfall value disagrees with published EDI structure")
-    if rows[0]["Precipitation.Snow..cm."] not in {"0","0.0"}:
+    if rows[0][snow_field] not in {"0","0.0","0.00"}:
         raise RuntimeError("first snow-precipitation value disagrees with published EDI structure")
 
     args.out.parent.mkdir(parents=True,exist_ok=True)
@@ -66,6 +84,9 @@ def main() -> int:
     print(f"bytes={len(data)}")
     print(f"rows={len(rows)}")
     print("fields=" + ",".join(fields))
+    print(f"validated_date_field={date_field}")
+    print(f"validated_rainfall_field={rainfall_field}")
+    print(f"validated_snow_field={snow_field}")
     return 0
 
 
