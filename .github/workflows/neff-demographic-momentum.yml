@@ -1,0 +1,61 @@
+name: neff-demographic-momentum
+
+on:
+  push:
+    branches:
+      - analysis/neff-momentum-v1
+    paths:
+      - "src/mina/neff_momentum.py"
+      - "tests/test_neff_momentum.py"
+      - "contracts/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_V1.json"
+      - ".github/workflows/neff-demographic-momentum.yml"
+      - "pyproject.toml"
+  pull_request:
+    paths:
+      - "src/mina/neff_momentum.py"
+      - "tests/test_neff_momentum.py"
+      - "contracts/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_V1.json"
+      - ".github/workflows/neff-demographic-momentum.yml"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run momentum unit tests
+        run: python -m pytest tests/test_neff_momentum.py
+      - name: Fetch frozen Palmer census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run demographic-momentum sensitivity
+        run: |
+          mina-neff-momentum \
+            --census build/adelie_census.csv \
+            --out build/neff_momentum_result.json \
+            --simulations 100000 \
+            --seed 20260927
+      - name: Print result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          x = json.loads(Path("build/neff_momentum_result.json").read_text())
+          print("original=", x["original_model"])
+          for name, model in x["momentum_models"].items():
+              print(name, "beta=", model["standardized_neff_beta"],
+                    "gain=", model["loyo"]["mse_gain_C0_minus_C1"])
+              print(name, "null=", x["structured_null_reuse"][name])
+          print("retention=", x["effect_retention"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: neff-demographic-momentum
+          path: |
+            build/adelie_census.csv
+            build/neff_momentum_result.json
