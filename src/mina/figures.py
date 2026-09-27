@@ -176,11 +176,12 @@ def figure4(data: Path, out: Path) -> None:
     axes[0].set_xlabel("Effective-colony residual")
     axes[0].set_ylabel("Next-year growth residual")
     gain_perm_p = float(external.get("neff_gain_permutation_p", "nan"))
-    beta_perm_p = float(external.get("neff_beta_permutation_p", "nan"))
+    beta_circ_p = float(external.get("neff_beta_circular_independent_p", "nan"))
+    beta_joint_p = float(external.get("neff_beta_circular_joint_p", "nan"))
     axes[0].set_title(
         "Conditional colony-organization association\n"
-        f"β={slope:.3f}; gain permutation p={gain_perm_p:.3f}; "
-        f"β permutation p={beta_perm_p:.4f}"
+        f"β={slope:.3f}; predictive-gain p={gain_perm_p:.3f}; "
+        f"circular β p={beta_circ_p:.1e}; joint p={beta_joint_p:.4f}"
     )
 
     for island in islands:
