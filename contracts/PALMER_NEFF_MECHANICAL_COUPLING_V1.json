@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-neff-mechanical-coupling-v1",
+  "date": "2026-09-27",
+  "status": "post_permutation_diagnostic_pre_simulation_execution",
+  "prerequisites": [
+    "results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+    "results/PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json"
+  ],
+  "motivation": "The full-data standardized N_eff coefficient remains highly unusual under year-block permutation, but both predictor and response use the same census at year t. Test whether shared census-count error and small-colony zeroing can mechanically generate an observed-scale positive coefficient when the latent year-specific topology-growth alignment has been destroyed.",
+  "frozen_observed_beta": 0.11679896749684507,
+  "latent_null": {
+    "total_abundance": "retain the observed island-year total as the latent expected total",
+    "colony_composition": "replace each target island-year composition with the same island's composition from a year-block-permuted donor year, using the identical five-island/four-island strata frozen in PALMER_NEFF_YEAR_BLOCK_PERMUTATION_V1",
+    "effect": "destroys latent year-specific N_eff to next-year-growth alignment while retaining island identity, broad availability phase, target abundance trajectory, and within-year donor-block topology structure"
+  },
+  "primary_error_model": {
+    "name": "independent Poisson colony counts",
+    "construction": "For each target start island-year, draw colony counts independently as Poisson(target observed total × donor-year colony shares). If a state known occupied in the frozen data is drawn as total zero, resample that state until total > 0.",
+    "rationale": "stylized lower-bound count-noise model; not claimed to be an empirically calibrated observer-error distribution"
+  },
+  "paired_coupling_design": {
+    "coupled": "derive N_eff_t and current_total_t from the same simulated colony-count vector A; derive next_total_t+1 from independent total draw B",
+    "decoupled": "derive N_eff_t from simulated vector A but current_total_t and next_total_t+1 from independent total draws B",
+    "shared_next_draw": "the same B next-year total is used in coupled and decoupled fits within each replicate",
+    "target_quantity": "paired difference beta_coupled - beta_decoupled isolates the expected coefficient shift caused by sharing current-year count error between N_eff and the growth denominator/baseline abundance"
+  },
+  "simulations": 10000,
+  "seed": 20260927,
+  "model": "same full-data C1 coefficient model: next_growth ~ island fixed effects + z(log1p current abundance) + z(year) + z(log1p N_eff)",
+  "primary_outputs": [
+    "coupled beta null distribution and one-sided probability beta >= observed beta",
+    "decoupled beta null distribution and one-sided probability beta >= observed beta",
+    "paired coupling-bias distribution beta_coupled - beta_decoupled",
+    "median coupling bias as a fraction of observed beta",
+    "proportion of coupled and decoupled coefficients > 0"
+  ],
+  "fixed_sensitivities": [
+    {
+      "error_model": "gamma-Poisson colony-level overdispersion",
+      "multiplicative_cv": 0.1,
+      "definition": "each positive colony mean is multiplied by an independent Gamma factor with mean 1 and CV 0.10 before the Poisson draw"
+    },
+    {
+      "error_model": "gamma-Poisson colony-level overdispersion",
+      "multiplicative_cv": 0.2,
+      "definition": "each positive colony mean is multiplied by an independent Gamma factor with mean 1 and CV 0.20 before the Poisson draw"
+    }
+  ],
+  "interpretation_rules": {
+    "mechanical_generation_concerning": "observed beta is not unusual (one-sided p > 0.05) in the coupled topology-null simulation",
+    "shared_error_bias_material": "report the paired bias magnitude relative to observed beta; do not impose a post hoc threshold",
+    "coefficient_survives_this_diagnostic": "observed beta remains unusual (p <= 0.05) under all three predeclared error models and paired coupling bias is small relative to the observed beta"
+  },
+  "boundaries": [
+    "This is a post-positive diagnostic, not independent biological replication.",
+    "Poisson and fixed 10%/20% overdispersion are stylized count-error sensitivities, not estimates of Palmer census observer error.",
+    "No alternative CV grid, noise family, topology metric, or coefficient threshold may be selected after simulation results are opened.",
+    "The held-out predictive gain already failed year-block permutation and is not rescued by this coefficient diagnostic."
+  ],
+  "manuscript_consequence": "If the coefficient survives, it may remain only as a conditional same-census association with explicit uncertainty; if it fails, remove N_eff as a biological result rather than retuning the topology model."
+}
