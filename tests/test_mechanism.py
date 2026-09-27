@@ -1,44 +1,40 @@
 import csv
+import math
 
-from mina.mechanism import HABITAT_SUBOPTIMAL_PERCENT, analyze
+from mina.mechanism import ISLANDS, analyze
 
 
-def _write_census(path):
-    with path.open("w", newline="", encoding="utf-8") as handle:
-        w = csv.writer(handle)
+def _census(path):
+    with path.open("w",newline="",encoding="utf-8") as h:
+        w=csv.writer(h)
         w.writerow(["study_name","time","island_name","colony_code","num_breeding_pairs"])
         w.writerow(["","UTC","","","1"])
-        islands = ["CHR","COR","HUM","LIT","TOR"]
-        counts = {i:1000 + j*100 for j,i in enumerate(islands)}
-        for year in range(1991, 2009):
-            wet = (year % 5)
-            for island in islands:
-                h = HABITAT_SUBOPTIMAL_PERCENT[island]
-                if year > 1991:
-                    # shared decline plus stronger wet-year loss on high-risk islands
-                    counts[island] *= 0.96 * (1 - 0.0005 * h * wet)
-                total=max(0, round(counts[island]))
-                w.writerow([f"PAL{year}",f"{year}-11-15T00:00:00Z",island,"1",total])
+        counts={i:1000+100*k for k,i in enumerate(ISLANDS)}
+        for year in range(1991,2018):
+            if year>1991:
+                ice=150+20*math.sin(year)
+                for k,i in enumerate(ISLANDS):
+                    growth=-0.08+0.0015*(ice-150)+0.003*k
+                    counts[i]=max(0,counts[i]*math.exp(growth))
+            for i in ISLANDS:
+                w.writerow([f"PAL{year}",f"{year}-11-20T00:00:00Z",i,"1.0",round(counts[i])])
 
 
-def _write_weather(path):
-    with path.open("w", newline="", encoding="utf-8") as handle:
-        w=csv.writer(handle)
-        w.writerow(["Date","Precipitation_mm","AirTemp"])
-        for year in range(1989, 2010):
-            wet=year % 5
-            for day in range(1,32):
-                p=1.0 if day <= 5 + wet else 0.0
-                w.writerow([f"{year}-10-{day:02d}",p,-3])
+def _seaice(path):
+    with path.open("w",newline="",encoding="utf-8") as h:
+        w=csv.writer(h)
+        w.writerow(["Year","SIAdvance","SIRetreat","SIDuration","IceDays","SIRetrProx","SIExtent","SIArea","OWArea","TotalSIConc"])
+        for year in range(1991,2021):
+            duration=150+20*math.sin(year)
+            w.writerow([year,150,300,duration,duration-10,-65,1,1,1,1])
 
 
-def test_weather_habitat_pipeline(tmp_path):
+def test_mechanism_pipeline(tmp_path):
     census=tmp_path/"census.csv"
-    weather=tmp_path/"weather.csv"
-    _write_census(census)
-    _write_weather(weather)
-    result=analyze(census,weather)
-    assert result["model"]["interaction_coefficient"] < 0
-    assert result["model"]["directional_prediction_met"] is True
-    assert result["weather_schema"]["date_field"] == "Date"
-    assert result["weather_schema"]["precipitation_field"] == "Precipitation_mm"
+    sea=tmp_path/"sea.csv"
+    _census(census); _seaice(sea)
+    x=analyze(census,sea)
+    assert x["growth_row_count"]==26*5
+    assert x["primary_loyo"]["n_years"]==26
+    assert x["full_coefficients"]["regional_beta_M1"]>0
+    assert x["primary_loyo"]["primary_mse_gain_M0_minus_M1"]>0
