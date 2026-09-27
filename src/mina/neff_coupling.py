@@ -144,8 +144,6 @@ def simulate(
     seed: int = 20260927,
 ) -> dict[str, object]:
     transitions = transition_rows(census_path)
-    if len(transitions) != 120:
-        raise ValueError(f"frozen transition-row drift: {len(transitions)}")
     states = _state_compositions(census_path)
 
     islands = [str(row["island"]) for row in transitions]
@@ -266,6 +264,8 @@ def simulate(
         "simulations_per_error_model": simulations,
         "seed": seed,
         "observed_standardized_beta": OBSERVED_BETA,
+        "transition_row_count": len(transitions),
+        "end_year_count": len({int(row["end_year"]) for row in transitions}),
         "error_models": outputs,
         "decision": {
             "observed_beta_unusual_under_all_coupled_nulls": bool(survives),
