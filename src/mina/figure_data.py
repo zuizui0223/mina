@@ -47,6 +47,7 @@ RESULT_FILES = {
     "neff_circular": "PALMER_NEFF_CIRCULAR_SHIFT_RESULT_V1.json",
     "neff_circular_coupling": "PALMER_NEFF_CIRCULAR_COUPLING_RESULT_V1.json",
     "hierarchy": "PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json",
+    "hierarchy_component_audit": "PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json",
 }
 
 
@@ -245,6 +246,7 @@ def _error_row(
 
 def _figure3_hierarchy(
     hierarchy: dict,
+    component_audit: dict,
 ) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
     primary = hierarchy["primary_raw_abundance"]
     fixed = hierarchy["fixed_raw_sensitivities"]
@@ -292,31 +294,24 @@ def _figure3_hierarchy(
         },
     ]
 
-    centered = []
+    pairwise = []
+    source = component_audit["pairwise_mean_correlation"]
     for key, label in (
-        ("linear_detrended_log1p", "Detrended log1p abundance"),
+        ("raw_abundance", "Raw abundance"),
+        ("linear_detrended_log1p", "Detrended log1p"),
         ("annual_log1p_growth", "Annual log1p growth"),
     ):
-        item = hierarchy["centered_signal_sensitivities"][key]
-        centered.append(
+        item = source[key]
+        pairwise.append(
             {
                 "analysis": label,
-                "among_beta": float(item["among_island_beta"]),
-                "within_beta_min": float(item["within_island_beta_min"]),
-                "within_beta_median": float(item["within_island_beta_median"]),
-                "within_beta_max": float(item["within_island_beta_max"]),
-                "median_within_to_among_ratio": float(
-                    item["median_within_to_among_ratio"]
-                ),
-                "all_within_exceed_among": bool(
-                    item[
-                        "all_three_within_island_beta_values_exceed_among_island_beta"
-                    ]
-                ),
+                "among_islands": float(item["among_islands"]),
+                "COR": float(item["COR"]),
+                "HUM": float(item["HUM"]),
+                "LIT": float(item["LIT"]),
             }
         )
-    return raw, centered
-
+    return raw, pairwise
 
 def _figure3_mechanisms(r: dict[str, dict]) -> list[dict[str, object]]:
     sea = r["seaice"]["primary_result"]
@@ -531,7 +526,9 @@ def build(
     fig2, fig2_pairs, checks2 = _figure2_tables(
         census_csv, results["synchrony"]
     )
-    fig3_raw, fig3_centered = _figure3_hierarchy(results["hierarchy"])
+    fig3_raw, fig3_pairwise = _figure3_hierarchy(
+        results["hierarchy"], results["hierarchy_component_audit"]
+    )
     fig4 = _figure3_mechanisms(results)
     fig5_states, fig5_transitions, fig5_external, topology_slope = (
         _figure4_tables(census_csv, results["colony"], results["spatial"])
@@ -561,7 +558,7 @@ def build(
     _write_csv(out / "figure2_trajectories.csv", fig2)
     _write_csv(out / "figure2_pairwise_synchrony.csv", fig2_pairs)
     _write_csv(out / "figure3_hierarchy_raw.csv", fig3_raw)
-    _write_csv(out / "figure3_hierarchy_centered.csv", fig3_centered)
+    _write_csv(out / "figure3_hierarchy_pairwise.csv", fig3_pairwise)
     _write_csv(out / "figure4_mechanism_audit.csv", fig4)
     _write_csv(out / "figure5_colony_states.csv", fig5_states)
     _write_csv(out / "figure5_colony_transitions.csv", fig5_transitions)
@@ -582,7 +579,7 @@ def build(
             "figure2_trajectories": len(fig2),
             "figure2_pairwise_synchrony": len(fig2_pairs),
             "figure3_hierarchy_raw": len(fig3_raw),
-            "figure3_hierarchy_centered": len(fig3_centered),
+            "figure3_hierarchy_centered": len(fig3_pairwise),
             "figure4_mechanism_audit": len(fig4),
             "figure5_colony_states": len(fig5_states),
             "figure5_colony_transitions": len(fig5_transitions),
@@ -603,6 +600,11 @@ def build(
             "hierarchy_within_log_beta_share": float(
                 results["hierarchy"]["primary_raw_abundance"][
                     "log_beta_share_within_islands"
+                ]
+            ),
+            "hierarchy_component_count_audit_pass": bool(
+                results["hierarchy_component_audit"]["decision"][
+                    "hierarchy_not_explained_only_by_more_within_island_units"
                 ]
             ),
             "conditional_effective_colony_slope": topology_slope,
