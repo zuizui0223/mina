@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-same-day-batch-v1",
+  "date": "2026-09-27",
+  "status": "frozen_after_supported_overlap_partition_before_batch_slope_outcome_access",
+  "prerequisite": [
+    "results/PALMER_ISLAND_PARTITION_OVERLAP_RESULT_V1.json",
+    "results/PALMER_CENSUS_TIMING_AUDIT_RESULT_V2.json",
+    "results/PALMER_ISLAND_PARTITION_DATE_SEPARATED_RESULT_V1.json"
+  ],
+  "question": "Within the same island, are colony pairs that are more often counted on the exact same dates more synchronous, as expected under a simple shared census-batch error explanation?",
+  "data": {
+    "source": "Palmer LTER AdeliePenguinCensus",
+    "years": "1991-2017 inclusive",
+    "pair_inclusion": "same-island colony-code pairs with at least 4 shared observed adjacent-year growth intervals and non-zero growth variance",
+    "missingness": "no missing-as-zero and no colony-code merging"
+  },
+  "primary_predictor": {
+    "name": "same_both_endpoint_fraction",
+    "definition": "among shared growth intervals for a colony pair, fraction where the two colonies have the same census date at both t-1 and t",
+    "expected_under_simple_batch_error": "positive association with Fisher-z transformed pairwise growth correlation"
+  },
+  "model": {
+    "response": "atanh(pairwise growth Pearson r)",
+    "fixed_effects": "one-hot island effects plus same_both_endpoint_fraction",
+    "weights": "Fisher information n_shared-3",
+    "focal_statistic": "weighted least-squares coefficient of same_both_endpoint_fraction"
+  },
+  "null": {
+    "construction": "within every island-year, independently permute observed census dates among colony codes while leaving counts, missingness and annual growth attached to the original codes",
+    "purpose": "preserve island-year timing distributions and all demographic trajectories while breaking code-specific same-date pairing",
+    "permutations": 20000,
+    "seed": 20260927
+  },
+  "decision_rule": {
+    "support_simple_same_day_batch_pattern": "focal coefficient > 0 and empirical upper-tail permutation p <= 0.05",
+    "otherwise": "report no evidence that exact same-day co-counting explains stronger within-island synchrony; do not claim all observation error is ruled out"
+  },
+  "boundaries": [
+    "A positive timing slope would be compatible with batch error but could also reflect spatially clustered census routes or biological proximity.",
+    "A null/negative slope addresses exact same-day timing only; observer identity, protocol-wide error and island-wide environmental shocks remain possible.",
+    "Do not tune date similarity definitions, pair overlap thresholds, model covariates or permutation scheme after opening the result."
+  ]
+}
