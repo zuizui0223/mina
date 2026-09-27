@@ -1,0 +1,36 @@
+name: mapppd-island-boundary-inventory
+
+on:
+  push:
+    branches:
+      - analysis/mapppd-island-boundary-v1
+    paths:
+      - "scripts/export_mapppdr_all.R"
+      - ".github/workflows/mapppd-island-boundary-inventory.yml"
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - name: Export complete pinned MAPPPD tables
+        run: Rscript scripts/export_mapppdr_all.R build/mapppdr_all
+      - name: Print schemas and row counts
+        run: |
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          for name in ("sites","species","site_species","penguin_obs"):
+              p=Path("build/mapppdr_all")/f"{name}.csv"
+              with p.open(encoding="utf-8-sig",newline="") as h:
+                  r=csv.reader(h)
+                  header=next(r)
+                  n=sum(1 for _ in r)
+              print(name,"rows=",n,"columns=",header)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mapppdr-all-pinned
+          path: build/mapppdr_all
