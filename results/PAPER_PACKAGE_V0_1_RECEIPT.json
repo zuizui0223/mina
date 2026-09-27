@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-island-ecology-paper-package-v0.1",
+  "validated_date": "2026-09-27",
+  "synthesis_contract": "contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V1.json",
+  "manuscript": "manuscript/MANUSCRIPT_V0_1.md",
+  "manuscript_approx_word_count": 3832,
+  "execution": {
+    "workflow_run_id": 36293122970,
+    "head_sha": "7706c30eaeb5e814a07e79b70b04bedfe88df862",
+    "artifact_id": 10922757157,
+    "artifact_name": "palmer-island-ecology-paper-v0.1",
+    "artifact_digest": "sha256:2e7bd30d923581e0175720a1e880e2480f0f8879db10a7219f2105a5ca2c54b4",
+    "conclusion": "success"
+  },
+  "paper_data_outputs": [
+    "figure2_five_island_trajectories.csv",
+    "figure3_prospective_mechanism_tests.csv",
+    "figure4_colony_network_state.csv",
+    "table1_island_endpoints.csv",
+    "supplement_assembly_endpoints.csv"
+  ],
+  "central_claim": "Across neighboring Antarctic breeding islands, Adelie populations share an exceptionally strong long-term decline but differ in annual dynamics and extinction, while a modest local resilience signal resides in the distribution of breeders among subcolonies rather than in the tested simple sea-ice-duration, snowfall, or large-group-retention formulations.",
+  "scientific_endpoint_family_frozen": true,
+  "allowed_next_work": [
+    "figure rendering and visual quality control",
+    "reference and prose editing that does not change result interpretation",
+    "external spatial/topographic validation under a new pre-outcome contract",
+    "journal formatting and submission packaging"
+  ],
+  "prohibited_next_work": [
+    "post hoc search of new sea-ice duration windows for the core paper",
+    "post hoc search of new precipitation months for the core paper",
+    "post hoc search of colony-size thresholds",
+    "post hoc search of alternative colony topology indices to replace effective colony number"
+  ]
+}
