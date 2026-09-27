@@ -1,0 +1,48 @@
+name: manuscript-check
+
+on:
+  push:
+    branches:
+      - manuscript/core-draft-v0.1
+    paths:
+      - "docs/MANUSCRIPT_V0_1.md"
+      - "docs/FIGURE_CAPTIONS_V1.md"
+      - "docs/REFERENCES_V1.bib"
+      - "contracts/PALMER_MANUSCRIPT_V0_1.json"
+      - "src/mina/manuscript_guard.py"
+      - ".github/workflows/manuscript-check.yml"
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_V0_1.md"
+      - "docs/FIGURE_CAPTIONS_V1.md"
+      - "docs/REFERENCES_V1.bib"
+      - "contracts/PALMER_MANUSCRIPT_V0_1.json"
+      - "src/mina/manuscript_guard.py"
+      - ".github/workflows/manuscript-check.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Guard manuscript
+        run: |
+          mina-manuscript-guard \
+            --manuscript docs/MANUSCRIPT_V0_1.md \
+            --captions docs/FIGURE_CAPTIONS_V1.md \
+            --bibliography docs/REFERENCES_V1.bib \
+            --results results | tee build-manuscript-check.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-manuscript-v0-1
+          path: |
+            docs/MANUSCRIPT_V0_1.md
+            docs/FIGURE_CAPTIONS_V1.md
+            docs/REFERENCES_V1.bib
+            docs/MANUSCRIPT_SPINE_V2.md
+            build-manuscript-check.json
