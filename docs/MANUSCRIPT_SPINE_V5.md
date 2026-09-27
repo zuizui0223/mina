@@ -47,17 +47,24 @@ N_eff remains:
 
 > **conditional association, not prediction, not causality**
 
-Frozen coefficient:
+Frozen coefficient and momentum sensitivity:
 
 - primary beta = **+0.1168**
-- after adding previous-year growth = **+0.1185**
-- year-block held-out-gain test p = **0.262**
-- circular-shift coefficient null remains extreme
+- after one lagged growth term = **+0.1185**
+- after two lagged growth terms = **+0.1126** (**96.4%** of the original coefficient)
+- two-lag LOYO gain = **+0.000444** (**43.2%** of the original gain)
+- two-lag independent full-series circular-shift p = **0.00102**
+- two-lag exact covariance-preserving shift p = **5/416 = 0.0120**
+- year-block held-out-gain test for the original predictive increment p = **0.262**
 - fixed circular count-error sensitivities remain below p = 0.01
 
-The hierarchical result does not prove that temporal compensation causes the
-N_eff coefficient. It instead shows why internal breeding-patch organization
-is an ecologically appropriate level to examine.
+The hierarchy result does not prove that temporal compensation causes the
+N_eff coefficient. The lagged-growth checks show that the association is not
+well described as continuing one- or two-year decline momentum, while the
+shrinking held-out gain reinforces that it carries little incremental
+out-of-year predictive information. Internal breeding-patch organization is
+therefore an ecologically appropriate level to examine without being promoted
+to a causal or early-warning mechanism.
 
 ## Context rather than novelty
 
@@ -95,7 +102,7 @@ Not allowed:
    robust to pre-extinction, Litchfield-removal, detrending and growth checks.
 5. Report bounded environmental mechanism failures.
 6. Position N_eff as a small structured-null-robust conditional association,
-   including the previous-growth sensitivity.
+   including the one- and two-year demographic-momentum sensitivities.
 7. Use Torgersen only as phenomenon-level spatial triangulation.
 8. End with colony-code/GIS crosswalk and external-archipelago replication as
    the decisive next tests.
