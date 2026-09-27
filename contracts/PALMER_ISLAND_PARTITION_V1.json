@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-partition-v1",
+  "date": "2026-09-27",
+  "status": "frozen_before_opening_island_partition_result",
+  "motivation": "Test whether geographic islands are actual demographic partitions rather than assumed population units in a highly mobile colonial marine predator.",
+  "prerequisites": [
+    "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+    "results/PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json"
+  ],
+  "data": {
+    "source": "Palmer LTER AdeliePenguinCensus",
+    "years": "1991-2017 inclusive",
+    "colony_unit": "island-specific colony_code",
+    "eligibility": "retain colony units reported in every frozen year with non-zero temporal variance in annual log1p growth",
+    "no_imputation": true,
+    "validity_gate": "each island must retain at least two eligible colony units and at least 75% of its unique reported colony codes"
+  },
+  "primary_question": "Does the observed island partition structure colony-level annual demographic covariance more strongly than abundance-matched pseudo-island partitions?",
+  "metrics": {
+    "colony_growth": "g_j,t = log1p(N_j,t) - log1p(N_j,t-1)",
+    "partition_contrast_r": "Fisher-mean pairwise colony-growth correlation within observed groups minus Fisher-mean correlation between groups; direction is not predeclared",
+    "growth_synchrony_phi": "sum of all entries of the temporal covariance matrix divided by squared sum of temporal SDs",
+    "hierarchy_gap_phi": "synchrony phi among group-total annual growth minus the equal-weight mean synchrony phi among colony growth within groups",
+    "wang_loreau": "for each observed island report alpha_CV, gamma_CV, phi and beta=1/phi on nonnegative abundance time series"
+  },
+  "null": {
+    "type": "permute island labels within five fixed rank strata of colony mean log1p abundance",
+    "purpose": "preserve island group sizes and each island's abundance-stratum composition while breaking the observed colony-to-island assignment",
+    "permutations": 20000,
+    "seed": 20260927
+  },
+  "decisions": {
+    "Q1_island_partition": "supported only if validity gate passes and the empirical two-sided permutation p for partition_contrast_r is <= 0.05",
+    "H1_within_island_spatial_insurance": "supported only if validity gate passes, hierarchy_gap_phi > 0, and its upper-tail permutation p is <= 0.05",
+    "component_diagnostic": "report lower-tail permutation p for mean within-group growth phi but do not use it as an additional support gate"
+  },
+  "interpretation_boundaries": [
+    "A positive Q1 result means the observed island labels capture demographic covariance structure beyond the abundance-matched pseudo-island null; it does not isolate a coastline effect from geographic distance.",
+    "A positive H1 result supports aggregation-scale spatial insurance but does not identify individual movement as its mechanism.",
+    "Colony coordinates are not used. A distance-conditioned coastline test requires a colony-code-to-GIS crosswalk.",
+    "Do not introduce alternative completeness thresholds, abundance-stratum counts, synchrony metrics, growth transforms or permutation schemes after opening the primary result."
+  ],
+  "next_gate": "If Q1 and/or H1 is supported, freeze a distance-conditioned GIS crosswalk design before opening colony coordinates. If both are unsupported, do not rescue the island-boundary claim by changing metrics or thresholds."
+}
