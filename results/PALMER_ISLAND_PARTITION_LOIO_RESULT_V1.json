@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-island-partition-loio-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-island-partition-loio-v1",
+  "prerequisite_result": "results/PALMER_ISLAND_PARTITION_OVERLAP_RESULT_V1.json",
+  "execution": {
+    "workflow_run_id": 36319382601,
+    "head_sha": "9954fc01ba42cdbb43c38e388589dee4e82e9cb3",
+    "artifact_id": 10931479039,
+    "artifact_digest": "sha256:b73ebc1362b34a186fe3c8e9e0d3f77f8fac51739018b25550f6081c0459dc1f",
+    "conclusion": "success"
+  },
+  "results": {
+    "CHR": {
+      "omitted": "CHR",
+      "contrast": 0.060243157287756505,
+      "within_r": 0.19480111568177041,
+      "between_r": 0.1345579583940139,
+      "two_sided_p": 0.18619069046547673
+    },
+    "COR": {
+      "omitted": "COR",
+      "contrast": 0.10222768842436945,
+      "within_r": 0.18201599103462487,
+      "between_r": 0.07978830261025542,
+      "two_sided_p": 0.0036998150092495377
+    },
+    "HUM": {
+      "omitted": "HUM",
+      "contrast": 0.10463657053844051,
+      "within_r": 0.19395567437039038,
+      "between_r": 0.08931910383194987,
+      "two_sided_p": 0.004499775011249437
+    },
+    "LIT": {
+      "omitted": "LIT",
+      "contrast": 0.05505118529236555,
+      "within_r": 0.15265029360172253,
+      "between_r": 0.09759910830935697,
+      "two_sided_p": 0.04329783510824459
+    },
+    "TOR": {
+      "omitted": "TOR",
+      "contrast": 0.1313376090655357,
+      "within_r": 0.20783772047118726,
+      "between_r": 0.07650011140565154,
+      "two_sided_p": 0.0030998450077496125
+    }
+  },
+  "decision": {
+    "directional_robustness": true,
+    "strong_permutation_robustness": false
+  },
+  "interpretation": "The positive island-partition contrast is not caused by any single island: it remains positive after each omission and remains significant when Litchfield is excluded. Statistical strength is not uniform; removing Christine makes the reduced four-island test non-significant, so the effect should not be described as equally strong across islands."
+}
