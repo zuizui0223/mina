@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-neff-circular-shift-v1",
+  "date": "2026-09-27",
+  "status": "post_positive_null_correction_pre_execution",
+  "prerequisites": [
+    "results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+    "results/PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json",
+    "results/PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json"
+  ],
+  "motivation": "The year-block permutation destroys the temporal ordering, autocorrelation and trend structure of N_eff. Re-evaluate the conditional N_eff coefficient under a null that preserves each island's complete observed predictor sequence up to a circular time shift while breaking its alignment to next-year growth.",
+  "frozen_observed": {
+    "n_rows": 120,
+    "n_end_years": 26,
+    "standardized_beta": 0.11679896749684501,
+    "held_out_mse_gain": 0.0010288409158503153
+  },
+  "primary_null": {
+    "name": "independent island-wise circular shifts",
+    "construction": [
+      "For each island, order eligible transition rows by start_year.",
+      "Keep response next_growth, current_total, island identity, start_year and end_year fixed.",
+      "Transform only log1p(effective_colony_number).",
+      "For each replicate, draw one circular lag independently for each island, uniformly from all lags 0,...,n_i-1.",
+      "Reject only the global identity vector in which every island receives lag 0.",
+      "Apply the selected lag to the complete N_eff sequence within that island.",
+      "Do not resample, permute or jitter values within the shifted sequence."
+    ],
+    "preservation": [
+      "each island's N_eff marginal distribution",
+      "each island's complete cyclic ordering",
+      "each island's circular autocovariance function",
+      "each island's Fourier power spectrum / periodogram",
+      "each island's observed trend shape up to cyclic relocation",
+      "the original response, abundance and calendar-time series"
+    ],
+    "broken_relation": "calendar alignment between island-specific N_eff states and next-year growth",
+    "caveat": "Circular shifting imposes a wrap-around boundary and is therefore a structured surrogate, not a literal generative ecological process."
+  },
+  "simulations": 100000,
+  "seed": 20260927,
+  "primary_statistic": "full-data standardized coefficient of log1p(N_eff) in the frozen C1 model",
+  "primary_p_value": "(1 + number of circular-shift coefficients >= observed beta) / (B + 1), one-sided for the predeclared positive direction",
+  "secondary_outputs": [
+    "two-sided probability based on abs(beta_shift) >= abs(beta_observed)",
+    "null mean, SD and 2.5%, 5%, 50%, 95%, 97.5%, 99% quantiles",
+    "proportion of shifted coefficients > 0",
+    "held-out MSE-gain distribution under the same shifts as a secondary diagnostic",
+    "Monte Carlo standard error of the primary p-value",
+    "island sequence lengths and shift-frequency diagnostics"
+  ],
+  "interpretation_rules": {
+    "association_survives_structured_null": "one-sided circular-shift p <= 0.05",
+    "association_not_distinguishable_from_serial_structure": "one-sided circular-shift p > 0.05",
+    "manuscript_if_survives": "N_eff may remain a conditional association, explicitly supported only after circular-shift control and still not a robust held-out predictor.",
+    "manuscript_if_fails": "Remove inferential emphasis from the N_eff coefficient and retain it only as a descriptive within-census pattern; revise synthesis, figures and Ecosphere manuscript before submission."
+  },
+  "boundaries": [
+    "This is a correction to the null distribution for the already-frozen N_eff coefficient, not a new topology endpoint.",
+    "No alternative lag restriction, smoothing, phase-randomization method, detrending rule or p-value definition may be selected after results are opened.",
+    "The existing year-block permutation p=0.262 for held-out predictive gain remains valid evidence against a robust predictive claim regardless of the circular-shift coefficient result.",
+    "The mechanical-coupling simulations do not rescue an association that fails this serial-structure-preserving null.",
+    "No causal habitat-fragmentation claim follows from a surviving coefficient."
+  ],
+  "submission_gate": "Ecosphere PR #21 remains draft until this diagnostic is frozen and manuscript/synthesis claims are reconciled."
+}
