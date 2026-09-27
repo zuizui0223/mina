@@ -62,5 +62,22 @@
     "The mechanical-coupling simulations do not rescue an association that fails this serial-structure-preserving null.",
     "No causal habitat-fragmentation claim follows from a surviving coefficient."
   ],
-  "submission_gate": "Ecosphere PR #21 remains draft until this diagnostic is frozen and manuscript/synthesis claims are reconciled."
+  "submission_gate": "Ecosphere PR #21 remains draft until this diagnostic is frozen and manuscript/synthesis claims are reconciled.",
+  "secondary_joint_shift_sensitivity": {
+    "name": "joint circular shift for four persistent islands plus independent Litchfield shift",
+    "construction": [
+      "CHR, COR, HUM and TOR each have the same 26 eligible transition years and receive one common circular lag k_persistent in 0,...,25.",
+      "LIT receives an independent circular lag k_LIT in 0,...,15 over its 16 eligible pre-extinction transition years.",
+      "Enumerate all 26 x 16 = 416 lag combinations exactly, including the identity combination.",
+      "Compute the same full-data standardized N_eff coefficient for every combination."
+    ],
+    "preservation": [
+      "the complete individual temporal structure of each island",
+      "the exact cross-island N_eff covariance structure among CHR/COR/HUM/TOR",
+      "the complete Litchfield temporal structure",
+      "all response, abundance and calendar-time values"
+    ],
+    "p_value": "exact proportion of all 416 combinations with beta >= observed beta; identity is included as one member of the randomization group",
+    "role": "fixed sensitivity to the loss of cross-island predictor covariance under the primary independent-island shift null"
+  }
 }
