@@ -1,0 +1,42 @@
+name: paper-package
+on:
+  push:
+    branches: [manuscript/v0.1]
+  pull_request:
+    paths:
+      - "manuscript/**"
+      - "src/mina/paper_data.py"
+      - "tests/test_paper_data.py"
+      - ".github/workflows/paper-package.yml"
+      - "results/*.json"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest
+      - name: Fetch frozen Palmer LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Build manuscript figure/table data
+        run: |
+          mina-paper-data \
+            --results results \
+            --census build/adelie_census.csv \
+            --out-dir build/paper_data
+      - name: Copy manuscript package
+        run: |
+          mkdir -p build/manuscript
+          cp manuscript/MANUSCRIPT_V0_1.md build/manuscript/
+          cp docs/MANUSCRIPT_SPINE_V1.md build/manuscript/
+          cp contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V1.json build/manuscript/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-ecology-paper-v0.1
+          path: |
+            build/manuscript
+            build/paper_data
