@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-large-breeding-group-threshold-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-large-breeding-group-threshold-v1",
+  "prerequisite_result": "results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+  "external_prior": {
+    "threshold_pairs": 50,
+    "source": "Palmer Antarctica LTER 2011-12 Annual Report; historical hypothesis attributed there to Fraser and Patterson 1997",
+    "role": "externally specified threshold; no threshold search in mina"
+  },
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36292296550,
+    "head_sha": "3491a8b5fa2576ea87e7262c1aa8293c5c9fdfc9",
+    "artifact_id": 10923240429,
+    "artifact_digest": "sha256:74d7292f326d7927e88a59af5666ec49f028f1beee6f9aca1c084c8d819bff09",
+    "conclusion": "success"
+  },
+  "primary": {
+    "predictor": "log1p number of colony-code groups with >50 breeding pairs at census year t",
+    "response": "next-year island log1p growth",
+    "baseline": "island fixed effects + current log1p abundance + secular year",
+    "coefficient": -0.2213130538633375,
+    "loyo": {
+      "n_rows": 120,
+      "n_years": 26,
+      "g0_mse": 0.07311311591779704,
+      "g1_mse": 0.06905674543928034,
+      "mse_gain_g0_minus_g1": 0.004056370478516702
+    },
+    "directional_prediction": "positive",
+    "directional_prediction_met": false,
+    "predictive_improvement": true,
+    "decision": "not_supported"
+  },
+  "fixed_sensitivity": {
+    "predictor": "fraction of island breeding pairs residing in >50-pair groups",
+    "coefficient": -0.09387793454005985,
+    "loyo": {
+      "g0_mse": 0.07311311591779704,
+      "g1_mse": 0.07143962536409688,
+      "mse_gain_g0_minus_g1": 0.0016734905537001549
+    },
+    "directional_prediction": "positive",
+    "directional_prediction_met": false,
+    "predictive_improvement": true
+  },
+  "synthesis_with_colony_network": {
+    "effective_colony_number_result": "supported with positive coefficient and positive held-out-year gain",
+    "active_colony_count_result": "positive coefficient but negative held-out-year gain",
+    "external_large_group_count_result": "positive held-out-year gain but negative coefficient",
+    "interpretation": "The supported colony-topology signal is not equivalent to retaining more >50-pair groups. The data favor a distribution/evenness property of breeders among subcolonies over the pre-existing directional large-group-retention hypothesis."
+  },
+  "supported": [
+    "The externally fixed >50-pair variables contain held-out-year predictive information beyond island identity, current abundance and secular time trend.",
+    "Both large-group count and the fraction of breeders in large groups reduce leave-one-year-out prediction error.",
+    "Their fitted coefficients are negative rather than the externally predicted positive direction."
+  ],
+  "not_supported": [
+    "the historical directional hypothesis that retaining more >50-pair breeding groups predicts better next-year island growth after current abundance and time trend are controlled",
+    "a threshold-search interpretation; 50 pairs was fixed externally and no alternative thresholds were examined",
+    "a causal claim that large breeding groups reduce demographic resilience",
+    "equivalence between the >50-pair result and the supported effective-colony-number result"
+  ],
+  "ecological_interpretation": "Large-group status and colony-network diversity are not interchangeable. Conditional on current island abundance and year, a more even distribution of breeders among colonies predicts slightly better next-year performance, whereas having more or a larger fraction of >50-pair groups predicts in the opposite direction to the historical hypothesis despite improving prediction. This points away from a simple 'large groups are protective' mechanism and toward colony configuration/evenness as the more relevant internal state.",
+  "next_gate": "Do not search alternative pair thresholds. Seek external spatial/topographic information for colony codes, or consolidate the multi-scale ecological manuscript before opening another mechanism family."
+}
