@@ -463,6 +463,9 @@ def build(
         float(results["neff_coupling"]["error_models"][name]["coupled_beta"]["one_sided_probability_ge_observed"])
         for name in ("poisson", "gamma_poisson_cv10", "gamma_poisson_cv20")
     )
+    fig4_external[0]["neff_gain_permutation_p"] = neff_perm_p
+    fig4_external[0]["neff_beta_permutation_p"] = neff_beta_perm_p
+    fig4_external[0]["neff_max_coupling_null_p"] = coupling_max_p
 
     _write_csv(out / "figure1_sites.csv", fig1)
     _write_csv(out / "figure2_trajectories.csv", fig2)
