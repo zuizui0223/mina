@@ -1,0 +1,31 @@
+name: palmer-large-breeding-group-threshold
+on:
+  push:
+    branches: [analysis/large-breeding-group-threshold-v1]
+  pull_request:
+    paths:
+      - "src/mina/large_groups.py"
+      - "contracts/PALMER_LARGE_BREEDING_GROUP_THRESHOLD_V1.json"
+      - ".github/workflows/palmer-large-groups.yml"
+  workflow_dispatch:
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -e .
+      - run: python scripts/fetch_lter_census.py build/census.csv
+      - run: mina-large-groups --census build/census.csv --out build/result.json
+      - run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("build/result.json"))
+          print("primary=",json.dumps(x["primary"],indent=2))
+          print("sensitivity=",json.dumps(x["sensitivity_large_group_fraction"],indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-large-breeding-group-threshold
+          path: build/result.json
