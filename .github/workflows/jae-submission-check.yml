@@ -4,12 +4,16 @@ on:
   push:
     branches:
       - submission/jae-v0.3
+      - submission/jae-final-packaging-v0.3.1
     paths:
       - "docs/MANUSCRIPT_JAE_V0_3.md"
       - "docs/FIGURE_CAPTIONS_V2.md"
       - "docs/REFERENCES_V2.bib"
       - "docs/COVER_LETTER_JAE_V1.md"
       - "docs/JOURNAL_FIT_V1.md"
+      - "docs/TITLE_PAGE_JAE_TEMPLATE.md"
+      - "docs/SUBMISSION_CHECKLIST_JAE_V1.md"
+      - "contracts/PALMER_JAE_FINAL_PACKAGING_V0_3_1.json"
       - "contracts/PALMER_JAE_SUBMISSION_V0_3.json"
       - "src/mina/jae_guard.py"
       - "pyproject.toml"
@@ -23,6 +27,7 @@ on:
       - "docs/JOURNAL_FIT_V1.md"
       - "contracts/PALMER_JAE_SUBMISSION_V0_3.json"
       - "src/mina/jae_guard.py"
+      - "pyproject.toml"
       - ".github/workflows/jae-submission-check.yml"
   workflow_dispatch:
 
@@ -57,5 +62,7 @@ jobs:
             docs/REFERENCES_V2.bib
             docs/COVER_LETTER_JAE_V1.md
             docs/JOURNAL_FIT_V1.md
+            docs/TITLE_PAGE_JAE_TEMPLATE.md
+            docs/SUBMISSION_CHECKLIST_JAE_V1.md
             build-jae-claim-check.json
             build-jae-format-check.json
