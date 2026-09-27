@@ -1,0 +1,102 @@
+name: ecosphere-v0-6-check
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - manuscript/ecosphere-v0.6-hierarchy
+    paths:
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
+      - "docs/MANUSCRIPT_SPINE_V5.md"
+      - "docs/FIGURE_CAPTIONS_V4.md"
+      - "docs/REFERENCES_V4.bib"
+      - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json"
+      - "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json"
+      - "src/mina/manuscript_guard.py"
+      - "tests/**"
+      - ".github/workflows/ecosphere-v0-6-check.yml"
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
+      - "docs/MANUSCRIPT_SPINE_V5.md"
+      - "docs/FIGURE_CAPTIONS_V4.md"
+      - "docs/REFERENCES_V4.bib"
+      - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json"
+      - "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json"
+      - "src/mina/manuscript_guard.py"
+      - "tests/**"
+      - ".github/workflows/ecosphere-v0-6-check.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev,figures]"
+      - name: Run test suite
+        run: pytest
+      - name: Guard manuscript citations and legacy frozen values
+        run: |
+          mina-manuscript-guard \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_6.md \
+            --captions docs/FIGURE_CAPTIONS_V4.md \
+            --bibliography docs/REFERENCES_V4.bib \
+            --results results | tee build-ecosphere-v0-6-base-guard.json
+      - name: Guard hierarchical v0.6 claims against frozen receipts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          manuscript = Path("docs/MANUSCRIPT_ECOSPHERE_V0_6.md").read_text()
+          result = json.loads(
+              Path("results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json").read_text()
+          )
+          contract = json.loads(
+              Path("contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json").read_text()
+          )
+
+          p = result["primary_raw_abundance"]
+          required = {
+              f'{p["beta_within_islands"]:.4f}': "primary beta within",
+              f'{p["beta_among_islands"]:.4f}': "primary beta among",
+              f'{p["beta_total_subcolony_to_archipelago"]:.4f}': "primary beta total",
+              f'{100*p["log_beta_share_within_islands"]:.1f}%': "within log-beta share",
+              "+0.1185": "previous-growth-conditioned N_eff coefficient",
+              "not as proof": "causal-insurance boundary",
+              "not a causal": "N_eff causal boundary",
+          }
+          missing = {label: token for token, label in required.items() if token not in manuscript}
+          if missing:
+              raise SystemExit(f"v0.6 hierarchy guard missing: {missing}")
+
+          if not result["supported"]:
+              raise SystemExit("hierarchy result receipt missing supported claims")
+          if contract["versioning"]["v0.5_remains_immutable_provenance"] is not True:
+              raise SystemExit("v0.5 provenance gate drifted")
+
+          print(json.dumps({
+              "status": "pass",
+              "required_tokens": required,
+              "hierarchy_result_id": result["result_id"],
+              "contract_id": contract["contract_id"],
+          }, indent=2, sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecosphere-v0-6-check
+          path: |
+            docs/MANUSCRIPT_ECOSPHERE_V0_6.md
+            docs/MANUSCRIPT_SPINE_V5.md
+            docs/FIGURE_CAPTIONS_V4.md
+            docs/REFERENCES_V4.bib
+            contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json
+            results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json
+            build-ecosphere-v0-6-base-guard.json
