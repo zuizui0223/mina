@@ -1,0 +1,61 @@
+name: palmer-island-partition
+
+on:
+  push:
+    branches:
+      - analysis/island-partition-v1
+    paths:
+      - "src/mina/island_partition.py"
+      - "tests/test_island_partition.py"
+      - "contracts/PALMER_ISLAND_PARTITION_V1.json"
+      - "pyproject.toml"
+      - ".github/workflows/palmer-island-partition.yml"
+  pull_request:
+    paths:
+      - "src/mina/island_partition.py"
+      - "tests/test_island_partition.py"
+      - "contracts/PALMER_ISLAND_PARTITION_V1.json"
+      - "pyproject.toml"
+      - ".github/workflows/palmer-island-partition.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen synthetic tests
+        run: pytest -q tests/test_island_partition.py
+      - name: Fetch frozen LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run island-partition test
+        run: |
+          mina-island-partition \
+            --census build/adelie_census.csv \
+            --out build/island_partition_result.json \
+            --permutations 20000 \
+            --seed 20260927
+      - name: Print decision receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          x=json.loads(Path("build/island_partition_result.json").read_text())
+          print("validity_pass=",x["validity_pass"])
+          print("eligible_group_sizes=",x["eligible_group_sizes"])
+          print("retention_fraction=",x["retention_fraction"])
+          print("observed=",json.dumps(x["observed"],indent=2,sort_keys=True))
+          print("null=",json.dumps(x["null"],indent=2,sort_keys=True))
+          print("decision=",json.dumps(x["decision"],indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-partition
+          path: |
+            build/adelie_census.csv
+            build/island_partition_result.json
