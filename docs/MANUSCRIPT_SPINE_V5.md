@@ -37,6 +37,13 @@ The hierarchy ordering is retained:
 - for linearly detrended log1p abundance in every eligible island;
 - for annual log1p growth in every eligible island.
 
+A fixed **post-hoc component-count audit** addresses the unequal number of
+component series. Normalized excess beta, \((\beta-1)/(n-1)\), is **0.00562**
+among islands but **0.01067**, **0.01176** and **0.00612** within COR, HUM and
+LIT. Mean pairwise correlations are also lower within every eligible island
+than among islands for raw abundance, detrended log1p abundance and annual
+growth. This is a robustness diagnostic, not a new confirmatory endpoint.
+
 Across all five island totals, raw beta is only **1.0137** (phi = 0.9864), so
 the shared long-term decline leaves little raw temporal compensation among
 islands.
@@ -81,6 +88,7 @@ to a causal or early-warning mechanism.
 Allowed:
 
 - temporal compensation is stronger within eligible islands than among islands;
+- the component-count robustness audit retains the same ordering;
 - the state hierarchy and buffering hierarchy differ;
 - island totals are strongly synchronous in their long-term decline;
 - internal breeding components retain more asynchronous dynamics.
@@ -99,7 +107,8 @@ Not allowed:
 2. Introduce state hierarchy versus buffering hierarchy.
 3. Show that raw island-to-archipelago compensation is weak.
 4. Show that the larger nested beta transition occurs within islands and is
-   robust to pre-extinction, Litchfield-removal, detrending and growth checks.
+   robust to pre-extinction, Litchfield-removal, detrending, growth and the
+   post-hoc component-count audit.
 5. Report bounded environmental mechanism failures.
 6. Position N_eff as a small structured-null-robust conditional association,
    including the one- and two-year demographic-momentum sensitivities.
