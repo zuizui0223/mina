@@ -30,10 +30,15 @@ def _ols(x: np.ndarray,y: np.ndarray) -> np.ndarray:
     return beta
 
 
-def _island_design(islands: list[str]) -> np.ndarray:
-    x=np.zeros((len(islands),len(ISLANDS)),dtype=float)
-    lookup={v:i for i,v in enumerate(ISLANDS)}
+def _island_design(
+    islands: list[str],
+    levels: tuple[str, ...],
+) -> np.ndarray:
+    x=np.zeros((len(islands),len(levels)),dtype=float)
+    lookup={v:i for i,v in enumerate(levels)}
     for r,island in enumerate(islands):
+        if island not in lookup:
+            raise ValueError(f"unexpected island for active design: {island}")
         x[r,lookup[island]]=1.0
     return x
 
@@ -95,8 +100,13 @@ def _habitat_z(islands: list[str]) -> np.ndarray:
     return (raw-float(np.mean(all_raw)))/float(np.std(all_raw,ddof=1))
 
 
-def _design(islands: list[str],sea_z: np.ndarray,model: str) -> np.ndarray:
-    base=_island_design(islands)
+def _design(
+    islands: list[str],
+    sea_z: np.ndarray,
+    model: str,
+    levels: tuple[str, ...],
+) -> np.ndarray:
+    base=_island_design(islands,levels)
     if model=="M0":
         return base
     if model=="M1":
@@ -115,6 +125,7 @@ def loyo(rows: list[dict[str,object]],seaice: dict[int,dict[str,float]],metric: 
         and not (exclude_lit_after_zero and r["island"]=="LIT" and int(r["year"])>=2007)
     ]
     years=sorted({int(r["year"]) for r in local})
+    levels=tuple(island for island in ISLANDS if island in {str(r["island"]) for r in local})
     values=np.asarray([seaice[int(r["year"])][metric] for r in local],dtype=float)
     y=np.asarray([float(r["growth"]) for r in local],dtype=float)
     islands=[str(r["island"]) for r in local]
@@ -128,8 +139,8 @@ def loyo(rows: list[dict[str,object]],seaice: dict[int,dict[str,float]],metric: 
         ztr,zte,_,_=_standardize_train(values,train,test)
         rec={"year":year,"n_test":int(np.sum(test))}
         for model in ("M0","M1","M2"):
-            xtr=_design([islands[i] for i in np.where(train)[0]],ztr,model)
-            xte=_design([islands[i] for i in np.where(test)[0]],zte,model)
+            xtr=_design([islands[i] for i in np.where(train)[0]],ztr,model,levels)
+            xte=_design([islands[i] for i in np.where(test)[0]],zte,model,levels)
             beta=_ols(xtr,y[train])
             err=y[test]-xte@beta
             mse=float(np.mean(err**2))
@@ -159,8 +170,9 @@ def full_coefficients(rows: list[dict[str,object]],seaice: dict[int,dict[str,flo
     y=np.asarray([float(r["growth"]) for r in local],dtype=float)
     sea=np.asarray([seaice[int(r["year"])][metric] for r in local],dtype=float)
     sea=(sea-float(np.mean(sea)))/float(np.std(sea,ddof=1))
-    b1=_ols(_design(islands,sea,"M1"),y)
-    b2=_ols(_design(islands,sea,"M2"),y)
+    levels=tuple(island for island in ISLANDS if island in set(islands))
+    b1=_ols(_design(islands,sea,"M1",levels),y)
+    b2=_ols(_design(islands,sea,"M2",levels),y)
     return {
         "regional_beta_M1":float(b1[-1]),
         "regional_beta_M2":float(b2[-2]),
@@ -190,8 +202,8 @@ def bootstrap_coefficients(rows: list[dict[str,object]],seaice: dict[int,dict[st
             continue
         sea=(sea-float(np.mean(sea)))/sd
         try:
-            b1=_ols(_design(islands,sea,"M1"),yy)
-            b2=_ols(_design(islands,sea,"M2"),yy)
+            b1=_ols(_design(islands,sea,"M1",ISLANDS),yy)
+            b2=_ols(_design(islands,sea,"M2",ISLANDS),yy)
         except ValueError:
             continue
         regional.append(float(b1[-1]))
