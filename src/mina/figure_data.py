@@ -40,6 +40,8 @@ RESULT_FILES = {
     "timescale": "PALMER_SEAICE_TIMESCALE_SEPARATION_RESULT_V1.json",
     "weather": "PALMER_WEATHER_X_HABITAT_MECHANISM_RESULT_V2.json",
     "colony": "PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+    "neff_permutation": "PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json",
+    "neff_coupling": "PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json",
     "large": "PALMER_LARGE_BREEDING_GROUP_THRESHOLD_RESULT_V1.json",
     "spatial": "PALMER_EXTERNAL_SPATIAL_TRIANGULATION_RESULT_V1.json",
 }
@@ -219,6 +221,7 @@ def _error_row(
     full_error: float,
     metric: str,
     supported: bool,
+    diagnostic: str = "",
 ) -> dict[str, object]:
     observed = "positive" if beta > 0 else "negative" if beta < 0 else "zero"
     gain = baseline_error - full_error
@@ -235,6 +238,7 @@ def _error_row(
         "absolute_error_gain": gain,
         "relative_error_reduction": gain / baseline_error,
         "decision_supported": supported,
+        "diagnostic": diagnostic,
     }
 
 
@@ -288,7 +292,12 @@ def _figure3_mechanisms(r: dict[str, dict]) -> list[dict[str, object]]:
             float(colony["primary"]["loyo"]["c0_mse"]),
             float(colony["primary"]["loyo"]["c1_mse"]),
             "MSE",
-            colony["primary"]["decision"] == "supported",
+            False,
+            diagnostic=(
+                "gain permutation p="
+                f'{float(r["neff_permutation"]["gain_null"]["one_sided_permutation_p"]):.3f}; '
+                "conditional beta retained"
+            ),
         ),
         _error_row(
             "Active colony count",
@@ -485,6 +494,12 @@ def build(
             ),
             "spatial_identifier_level_validation": bool(
                 results["spatial"]["decision"]["identifier_level_validation"]
+            ),
+            "neff_gain_permutation_p": float(
+                results["neff_permutation"]["gain_null"]["one_sided_permutation_p"]
+            ),
+            "neff_coefficient_permutation_p": float(
+                results["neff_permutation"]["coefficient_null"]["one_sided_permutation_p"]
             ),
         },
     }
