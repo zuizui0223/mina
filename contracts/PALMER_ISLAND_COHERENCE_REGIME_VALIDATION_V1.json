@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-coherence-regime-validation-v1",
+  "date": "2026-09-27",
+  "status": "frozen_after_primary_validity_failure_and_id_audit_before_regime_outcomes",
+  "prerequisite_results": [
+    "results/PALMER_ISLAND_PARTITION_RESULT_V1.json",
+    "results/PALMER_COLONY_ID_CONTINUITY_AUDIT_V1.json"
+  ],
+  "rationale": "The original complete-1991-2017 colony panel failed its predeclared 75% retention gate only on Christine Island. A descriptive identifier audit showed structured reporting discontinuities centered on 2006/2007 rather than diffuse missingness. This validation addresses that metadata discontinuity without changing the original result or threshold.",
+  "phase_definition": {
+    "early": "1991-2006 inclusive",
+    "late": "2007-2017 inclusive",
+    "basis": "The boundary is fixed at the observed multi-code reporting discontinuity: CHR 3.1 and 4.2 and TOR 6.0 cease after 2006, while CHR 11.0 appears from 2007 onward.",
+    "no_phase_search": true
+  },
+  "colony_eligibility": {
+    "candidate": "island-specific colony_code with at least one positive breeding-pair observation inside the phase",
+    "eligible": "candidate code reported in every year of the phase and with non-zero temporal variance in annual log1p growth",
+    "rationale_for_positive_history": "all-zero administrative/reporting rows contain no demographic trajectory and cannot contribute a correlation",
+    "no_imputation": true,
+    "no_code_merging": true,
+    "retention_gate": "eligible / positive-history candidate codes >= 0.75 on every included island, with at least two eligible codes per island"
+  },
+  "statistic": {
+    "response": "annual colony growth = diff(log1p breeding pairs)",
+    "contrast": "Fisher-mean within-island pairwise growth correlation minus Fisher-mean between-island pairwise growth correlation",
+    "expected_direction": "positive, based on the frozen exploratory primary result",
+    "significance": "retain the original two-sided abundance-stratified pseudo-island permutation test and additionally require positive observed contrast"
+  },
+  "null": {
+    "construction": "permute island labels within five fixed rank strata of phase-specific colony mean log1p abundance",
+    "permutations": 20000,
+    "seed": 20260927,
+    "no_alternative_null_search": true
+  },
+  "primary_validation": {
+    "groups": [
+      "CHR",
+      "COR",
+      "HUM",
+      "LIT",
+      "TOR"
+    ],
+    "rule": "island coherence replicates only if both early and late phases pass the validity gate, both contrasts are positive, and both two-sided permutation p-values are <= 0.05"
+  },
+  "litchfield_sensitivity": {
+    "groups": [
+      "CHR",
+      "COR",
+      "HUM",
+      "TOR"
+    ],
+    "rule": "signal is not Litchfield-driven only if both early and late extant-only contrasts are positive with two-sided permutation p <= 0.05 and both validity gates pass"
+  },
+  "overall_rule": "strong confirmation requires both primary phase replication and the extant-only sensitivity. Otherwise report the exact component outcomes without rescue analyses.",
+  "interpretation_boundaries": [
+    "This validates island-label demographic coherence, not a coastline effect independent of geographic distance.",
+    "Positive within-island synchrony does not identify migration, habitat, foraging, or observer error as the mechanism.",
+    "The previously proposed within-island spatial-insurance hypothesis remains unsupported and is not retested here.",
+    "Do not alter phase boundary, completeness threshold, candidate-code definition, number of abundance strata, transform, statistic, or null after outcomes are opened."
+  ]
+}
