@@ -32,10 +32,22 @@ jobs:
           from pathlib import Path
           x=json.loads(Path("build/census_timing_audit.json").read_text())
           print("n_complete_years=",x["n_complete_years"])
-          print("within_island_year_timing=",json.dumps({k:v for k,v in x["within_island_year_timing"].items() if k!="multi_date_cells"},sort_keys=True))
-          print("cross_island_median_timing=",json.dumps({k:v for k,v in x["cross_island_median_timing"].items() if k!="yearly"},sort_keys=True))
-          for row in x["yearly"]:
-              print(row["year"],row["five_island_span_days"],row["dates"])
+          print("within_island_year_timing=",json.dumps(
+              {k:v for k,v in x["within_island_year_timing"].items() if k!="multi_date_cells"},
+              sort_keys=True,
+          ))
+          print("cross_island_median_timing=",json.dumps(
+              {k:v for k,v in x["cross_island_median_timing"].items() if k!="yearly"},
+              sort_keys=True,
+          ))
+          for row in x["within_island_year_timing"]["multi_date_cells"]:
+              print(
+                  "multi_date",
+                  row["year"],
+                  row["island"],
+                  row["within_island_span_days"],
+                  row["unique_dates"],
+              )
           PY
       - uses: actions/upload-artifact@v4
         with:
