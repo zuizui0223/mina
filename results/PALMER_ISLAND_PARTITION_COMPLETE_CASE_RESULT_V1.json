@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-island-partition-complete-case-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-island-partition-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36317485881,
+    "head_sha": "eb2bc5ca10d69094a3a54c23ad94cd0550f10c8a",
+    "artifact_id": 10930934109,
+    "artifact_digest": "sha256:00c18ad25d43179ebc1ddfd4a74a06498e9b68c6a39f8359d6c58a9aff04b6fd",
+    "conclusion": "success"
+  },
+  "validity": {
+    "pass": false,
+    "reason": "Predeclared >=75% complete-code retention gate failed on Christine Island.",
+    "eligible_group_sizes": {
+      "CHR": 11,
+      "COR": 7,
+      "HUM": 9,
+      "LIT": 9,
+      "TOR": 15
+    },
+    "retention_fraction": {
+      "CHR": 0.7333333333333333,
+      "COR": 1,
+      "HUM": 1,
+      "LIT": 1,
+      "TOR": 0.8333333333333334
+    }
+  },
+  "observed_descriptive_only": {
+    "within_fisher_mean_r": 0.19912474098530786,
+    "between_fisher_mean_r": 0.09373074905197049,
+    "partition_contrast_r": 0.10539399193333737,
+    "mean_within_growth_phi": 0.2552561789990411,
+    "among_group_total_growth_phi": 0.44052105019088356,
+    "hierarchy_gap_phi": 0.18526487119184248
+  },
+  "permutation_descriptive_only": {
+    "partition_contrast_two_sided_p": 0.002999850007499625,
+    "hierarchy_gap_upper_p": 0.9792510374481276,
+    "mean_within_growth_phi_lower_p": 0.9988000599970002
+  },
+  "decision": {
+    "island_partition_supported_under_v1": false,
+    "within_island_spatial_insurance_supported": false
+  },
+  "interpretation": "The complete-case analysis cannot support the island-partition claim because its frozen data-retention validity gate failed. Its descriptive direction is within-island synchronization, not within-island compensatory asynchrony."
+}
