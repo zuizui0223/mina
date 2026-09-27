@@ -88,12 +88,14 @@ def weather_schema(path: str | Path) -> tuple[list[dict[str, str]], str, str]:
             date_rank.append((0 if n == "date" else 1, field))
         if "precip" in n:
             penalty = 0
-            for flag in ("flag", "qc", "quality", "code", "solid"):
+            for flag in ("flag", "qc", "quality", "code"):
                 if flag in n:
                     penalty += 20
-            # Prefer liquid/melted precipitation when multiple forms exist.
-            if "melt" in n or "liquid" in n:
-                penalty -= 5
+            # The frozen biological hypothesis is snow-retention at breeding
+            # sites. Prefer the explicit snowfall/solid-precipitation field
+            # when the source contains both melted and snow precipitation.
+            if "snow" in n:
+                penalty -= 100
             precip_rank.append((penalty + len(n), field))
 
     if not date_rank:
