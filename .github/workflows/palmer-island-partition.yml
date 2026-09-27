@@ -6,6 +6,7 @@ on:
       - analysis/island-partition-v1
     paths:
       - "src/mina/island_partition.py"
+      - "src/mina/colony_id_audit.py"
       - "tests/test_island_partition.py"
       - "contracts/PALMER_ISLAND_PARTITION_V1.json"
       - "pyproject.toml"
@@ -13,6 +14,7 @@ on:
   pull_request:
     paths:
       - "src/mina/island_partition.py"
+      - "src/mina/colony_id_audit.py"
       - "tests/test_island_partition.py"
       - "contracts/PALMER_ISLAND_PARTITION_V1.json"
       - "pyproject.toml"
@@ -39,19 +41,26 @@ jobs:
             --out build/island_partition_result.json \
             --permutations 20000 \
             --seed 20260927
-      - name: Print decision receipt
+      - name: Run descriptive colony-ID audit
+        run: |
+          python -m mina.colony_id_audit \
+            --census build/adelie_census.csv \
+            --out build/colony_id_audit.json
+      - name: Print decision receipt and ID audit
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
 
           x=json.loads(Path("build/island_partition_result.json").read_text())
+          a=json.loads(Path("build/colony_id_audit.json").read_text())
           print("validity_pass=",x["validity_pass"])
           print("eligible_group_sizes=",x["eligible_group_sizes"])
           print("retention_fraction=",x["retention_fraction"])
           print("observed=",json.dumps(x["observed"],indent=2,sort_keys=True))
           print("null=",json.dumps(x["null"],indent=2,sort_keys=True))
           print("decision=",json.dumps(x["decision"],indent=2,sort_keys=True))
+          print("id_audit=",json.dumps(a["islands"],indent=2,sort_keys=True))
           PY
       - uses: actions/upload-artifact@v4
         with:
@@ -59,3 +68,4 @@ jobs:
           path: |
             build/adelie_census.csv
             build/island_partition_result.json
+            build/colony_id_audit.json
