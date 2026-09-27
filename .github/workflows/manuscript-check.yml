@@ -4,19 +4,28 @@ on:
   push:
     branches:
       - manuscript/core-draft-v0.1
+      - manuscript/reviewer-revision-v0.2
     paths:
       - "docs/MANUSCRIPT_V0_1.md"
+      - "docs/MANUSCRIPT_V0_2.md"
       - "docs/FIGURE_CAPTIONS_V1.md"
+      - "docs/FIGURE_CAPTIONS_V2.md"
       - "docs/REFERENCES_V1.bib"
+      - "docs/REFERENCES_V2.bib"
       - "contracts/PALMER_MANUSCRIPT_V0_1.json"
+      - "contracts/PALMER_MANUSCRIPT_V0_2.json"
       - "src/mina/manuscript_guard.py"
       - ".github/workflows/manuscript-check.yml"
   pull_request:
     paths:
       - "docs/MANUSCRIPT_V0_1.md"
+      - "docs/MANUSCRIPT_V0_2.md"
       - "docs/FIGURE_CAPTIONS_V1.md"
+      - "docs/FIGURE_CAPTIONS_V2.md"
       - "docs/REFERENCES_V1.bib"
+      - "docs/REFERENCES_V2.bib"
       - "contracts/PALMER_MANUSCRIPT_V0_1.json"
+      - "contracts/PALMER_MANUSCRIPT_V0_2.json"
       - "src/mina/manuscript_guard.py"
       - ".github/workflows/manuscript-check.yml"
   workflow_dispatch:
@@ -30,19 +39,28 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev]"
-      - name: Guard manuscript
+      - name: Guard manuscript v0.1
         run: |
           mina-manuscript-guard \
             --manuscript docs/MANUSCRIPT_V0_1.md \
             --captions docs/FIGURE_CAPTIONS_V1.md \
             --bibliography docs/REFERENCES_V1.bib \
-            --results results | tee build-manuscript-check.json
+            --results results > build-manuscript-check-v0.1.json
+      - name: Guard manuscript v0.2
+        run: |
+          mina-manuscript-guard \
+            --manuscript docs/MANUSCRIPT_V0_2.md \
+            --captions docs/FIGURE_CAPTIONS_V2.md \
+            --bibliography docs/REFERENCES_V2.bib \
+            --results results | tee build-manuscript-check-v0.2.json
       - uses: actions/upload-artifact@v4
         with:
-          name: palmer-manuscript-v0-1
+          name: palmer-manuscript-v0-2
           path: |
-            docs/MANUSCRIPT_V0_1.md
-            docs/FIGURE_CAPTIONS_V1.md
-            docs/REFERENCES_V1.bib
+            docs/MANUSCRIPT_V0_2.md
+            docs/FIGURE_CAPTIONS_V2.md
+            docs/REFERENCES_V2.bib
+            docs/REVIEWER_AUDIT_V0_1.md
             docs/MANUSCRIPT_SPINE_V2.md
-            build-manuscript-check.json
+            build-manuscript-check-v0.1.json
+            build-manuscript-check-v0.2.json
