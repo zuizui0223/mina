@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-island-common-census-error-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-island-common-census-error-v1",
+  "prerequisite_result": "results/PALMER_ISLAND_YEAR_COHERENCE_RESULT_V1.json",
+  "execution": {
+    "workflow_run_id": 36324154478,
+    "head_sha": "e1f88bad254b36d6ed4a48792c426446a6430707",
+    "conclusion": "success"
+  },
+  "five_island_primary": {
+    "observed_target": 0.09279582032316958,
+    "grid": {
+      "0.00": {
+        "mean": 0.016284652476424844,
+        "q95": 0.03975518401825584,
+        "q99": 0.05021927053941683,
+        "exceedances": 0,
+        "upper_p": 0.00004999750012499375
+      },
+      "0.02": {
+        "mean": 0.020498766645419733,
+        "q95": 0.0447164010408168,
+        "q99": 0.05682501871185321,
+        "exceedances": 0,
+        "upper_p": 0.00004999750012499375
+      },
+      "0.05": {
+        "mean": 0.04128310164454305,
+        "q95": 0.07086250920637382,
+        "q99": 0.08426083285990658,
+        "exceedances": 72,
+        "upper_p": 0.003649817509124544
+      },
+      "0.10": {
+        "mean": 0.09938347870413093,
+        "q95": 0.1459388847325527,
+        "q99": 0.1688496932673523,
+        "exceedances": 11467,
+        "upper_p": 0.5733713314334283
+      },
+      "0.20": {
+        "mean": 0.23781856509378427,
+        "q95": 0.32594891582811875,
+        "q99": 0.36853327726987234,
+        "exceedances": 20000,
+        "upper_p": 1
+      },
+      "0.30": {
+        "mean": 0.36025080919716673,
+        "q95": 0.47909760477988034,
+        "q99": 0.5360904357149394,
+        "exceedances": 20000,
+        "upper_p": 1
+      },
+      "0.50": {
+        "mean": 0.5292027457422495,
+        "q95": 0.6857907212154811,
+        "q99": 0.7528272886120189,
+        "exceedances": 20000,
+        "upper_p": 1
+      }
+    }
+  },
+  "four_island_no_litchfield_sensitivity": {
+    "observed_target": 0.08571095302780918,
+    "grid": {
+      "0.00": {
+        "mean": 0.029021531209969073,
+        "q95": 0.05456124614661801,
+        "q99": 0.06645669528848303,
+        "exceedances": 7,
+        "upper_p": 0.00039998000099995
+      },
+      "0.02": {
+        "mean": 0.03333716036104406,
+        "q95": 0.06026337066023763,
+        "q99": 0.07265526546481488,
+        "exceedances": 32,
+        "upper_p": 0.0016499175041247937
+      },
+      "0.05": {
+        "mean": 0.054932175696236006,
+        "q95": 0.0876385470904854,
+        "q99": 0.10308194014782328,
+        "exceedances": 1174,
+        "upper_p": 0.05874706264686766
+      },
+      "0.10": {
+        "mean": 0.11586542056408115,
+        "q95": 0.16857291177272768,
+        "q99": 0.195411965736353,
+        "exceedances": 16895,
+        "upper_p": 0.8447577621118944
+      },
+      "0.20": {
+        "mean": 0.25664645648889667,
+        "q95": 0.3569507816845757,
+        "q99": 0.40714658282611116,
+        "exceedances": 20000,
+        "upper_p": 1
+      },
+      "0.30": {
+        "mean": 0.3772975371075545,
+        "q95": 0.5136830588532224,
+        "q99": 0.5849785193665044,
+        "exceedances": 20000,
+        "upper_p": 1
+      },
+      "0.50": {
+        "mean": 0.5425614409170793,
+        "q95": 0.7260566074304282,
+        "q99": 0.8008492717733895,
+        "exceedances": 20000,
+        "upper_p": 1
+      }
+    }
+  },
+  "decision": {
+    "classification": "fragile_to_shared_error",
+    "robust_through_cv_10pct": false,
+    "robust_through_cv_20pct": false
+  },
+  "interpretation": [
+    "The five-island coherence contrast remains unusual under a deliberately fully shared 5% island-year multiplicative count-error scenario but not under 10%.",
+    "The no-Litchfield sensitivity is no longer unusual at 5% shared error.",
+    "Therefore the adult-count covariance pattern is statistically robust to missingness, zero-transition and single-island audits, but public adult counts alone do not distinguish biological island coherence from sufficiently large island-year shared observation error.",
+    "The CV grid is a sensitivity analysis, not an empirical estimate of Palmer census error."
+  ],
+  "boundaries": [
+    "Do not infer that actual Palmer observer error is 5%, 10%, or any tested CV.",
+    "Do not claim observation error is ruled out.",
+    "Use an independent life-stage or external dataset to test whether island-level structure recurs outside the adult census."
+  ]
+}
