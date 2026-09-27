@@ -16,6 +16,7 @@ def test_mechanism_audit_preserves_frozen_directions():
         "weather":_receipt("PALMER_WEATHER_X_HABITAT_MECHANISM_RESULT_V2.json"),
         "colony":_receipt("PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json"),
         "large":_receipt("PALMER_LARGE_BREEDING_GROUP_THRESHOLD_RESULT_V1.json"),
+        "neff_perm":_receipt("PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json"),
     }
     rows=_figure3_mechanisms(r)
     by={row["test"]:row for row in rows}
@@ -24,15 +25,17 @@ def test_mechanism_audit_preserves_frozen_directions():
     assert by["October snowfall x habitat"]["direction_matches"] is False
     assert by["Effective colony number"]["direction_matches"] is True
     assert by["Effective colony number"]["relative_error_reduction"] > 0
+    assert by["Effective colony number"]["decision_supported"] is False
+    assert abs(by["Effective colony number"]["permutation_p"]-0.2622368881555922)<1e-12
     assert by[">50-pair group count"]["direction_matches"] is False
     assert by[">50-pair group count"]["relative_error_reduction"] > 0
 
 
-def test_synthesis_v2_includes_spatial_boundary():
+def test_synthesis_v3_includes_spatial_boundary():
     from mina.synthesis import build
     root=Path(__file__).resolve().parents[1]/"results"
     x=build(root)
     spatial=x["local_colony_state"]["external_spatial_triangulation"]
-    assert x["synthesis_id"].endswith("-v2")
+    assert x["synthesis_id"].endswith("-v3")
     assert spatial["phenomenon_level_convergence"] is True
     assert spatial["identifier_level_validation"] is False

@@ -1,15 +1,19 @@
 name: manuscript-figures
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
-      - manuscript/figure-package-v1
+      - manuscript/ecosphere-reframe-v0.4
     paths:
       - "src/mina/figure_data.py"
       - "src/mina/figures.py"
       - "src/mina/synthesis.py"
       - "results/*.json"
-      - "contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json"
+      - "contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V3.json"
       - ".github/workflows/manuscript-figures.yml"
   pull_request:
     paths:
@@ -17,7 +21,7 @@ on:
       - "src/mina/figures.py"
       - "src/mina/synthesis.py"
       - "results/*.json"
-      - "contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json"
+      - "contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V3.json"
       - ".github/workflows/manuscript-figures.yml"
   workflow_dispatch:
 
@@ -56,12 +60,12 @@ jobs:
             --data-dir build/figure_data \
             --out-dir build/figures
 
-      - name: Build synthesis v2
+      - name: Build synthesis v3
         run: |
           mina-synthesis \
             --results results \
-            --out-json build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json \
-            --out-md build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.md
+            --out-json build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V3.json \
+            --out-md build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V3.md
 
       - name: Verify expected outputs
         run: |
@@ -82,5 +86,5 @@ jobs:
           path: |
             build/figure_data
             build/figures
-            build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json
-            build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.md
+            build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V3.json
+            build/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V3.md

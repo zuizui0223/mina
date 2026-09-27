@@ -42,6 +42,8 @@ RESULT_FILES = {
     "colony": "PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
     "large": "PALMER_LARGE_BREEDING_GROUP_THRESHOLD_RESULT_V1.json",
     "spatial": "PALMER_EXTERNAL_SPATIAL_TRIANGULATION_RESULT_V1.json",
+    "neff_perm": "PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json",
+    "neff_coupling": "PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json",
 }
 
 
@@ -244,6 +246,7 @@ def _figure3_mechanisms(r: dict[str, dict]) -> list[dict[str, object]]:
     weather = r["weather"]
     colony = r["colony"]
     large = r["large"]
+    neff_perm = r["neff_perm"]
 
     base_colony = float(colony["primary"]["loyo"]["c0_mse"])
     active_gain = float(
@@ -280,16 +283,22 @@ def _figure3_mechanisms(r: dict[str, dict]) -> list[dict[str, object]]:
             "RMSE",
             weather["decision"] == "supported",
         ),
-        _error_row(
-            "Effective colony number",
-            "internal colony state",
-            float(colony["primary"]["full_data_coefficient"]),
-            "positive",
-            float(colony["primary"]["loyo"]["c0_mse"]),
-            float(colony["primary"]["loyo"]["c1_mse"]),
-            "MSE",
-            colony["primary"]["decision"] == "supported",
-        ),
+        {
+            **_error_row(
+                "Effective colony number",
+                "internal colony state",
+                float(colony["primary"]["full_data_coefficient"]),
+                "positive",
+                float(colony["primary"]["loyo"]["c0_mse"]),
+                float(colony["primary"]["loyo"]["c1_mse"]),
+                "MSE",
+                False,
+            ),
+            "permutation_p": float(
+                neff_perm["gain_null"]["one_sided_permutation_p"]
+            ),
+            "diagnostic_note": "held-out gain not unusual under year-block permutation",
+        },
         _error_row(
             "Active colony count",
             "specificity",
@@ -448,6 +457,15 @@ def build(
     fig4_states, fig4_transitions, fig4_external, topology_slope = (
         _figure4_tables(census_csv, results["colony"], results["spatial"])
     )
+    neff_perm_p = float(results["neff_perm"]["gain_null"]["one_sided_permutation_p"])
+    neff_beta_perm_p = float(results["neff_perm"]["coefficient_null"]["one_sided_permutation_p"])
+    coupling_max_p = max(
+        float(results["neff_coupling"]["error_models"][name]["coupled_beta"]["one_sided_probability_ge_observed"])
+        for name in ("poisson", "gamma_poisson_cv10", "gamma_poisson_cv20")
+    )
+    fig4_external[0]["neff_gain_permutation_p"] = neff_perm_p
+    fig4_external[0]["neff_beta_permutation_p"] = neff_beta_perm_p
+    fig4_external[0]["neff_max_coupling_null_p"] = coupling_max_p
 
     _write_csv(out / "figure1_sites.csv", fig1)
     _write_csv(out / "figure2_trajectories.csv", fig2)
@@ -478,6 +496,9 @@ def build(
         "frozen_checks": {
             **checks2,
             "conditional_effective_colony_slope": topology_slope,
+            "effective_colony_gain_permutation_p": neff_perm_p,
+            "effective_colony_beta_permutation_p": neff_beta_perm_p,
+            "effective_colony_max_coupling_null_p": coupling_max_p,
             "spatial_phenomenon_convergence": bool(
                 results["spatial"]["decision"][
                     "phenomenon_level_spatial_convergence"
