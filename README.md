@@ -47,6 +47,21 @@ Direct biotic interactions are not assumed absent. They are treated as
 localized and testable rather than as the default explanation for whole-island
 trajectories.
 
+## Submission status after N_eff uncertainty diagnostic
+
+**JAE submission is paused.** The frozen 20,000-replicate year-block
+permutation diagnostic shows that the observed held-out MSE gain from effective
+colony number (+0.00103) is not unusual under shuffled year alignment
+(one-sided p = **0.262**; observed percentile = **73.8%**). The full-data
+conditional coefficient remains unusual under the same permutation
+(p ≈ **0.00010**), so the current distinction is **association without robust
+held-out predictive gain**.
+
+The JAE v0.3/v0.3.1 files are retained as provenance but are not submission
+ready. The next required diagnostic is same-census measurement-error /
+mechanical-coupling analysis before the coefficient is retained as an ecological
+state association.
+
 ## Development state
 
 Core ecological endpoint development is **closed**. The repository terminal
