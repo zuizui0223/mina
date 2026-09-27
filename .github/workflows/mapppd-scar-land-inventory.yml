@@ -1,0 +1,49 @@
+name: mapppd-scar-land-inventory
+
+on:
+  push:
+    branches:
+      - analysis/mapppd-island-boundary-v1
+    paths:
+      - "scripts/export_mapppdr_all.R"
+      - "scripts/assign_scar_land_polygons.py"
+      - ".github/workflows/mapppd-scar-land-inventory.yml"
+  workflow_dispatch:
+
+jobs:
+  map-sites:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Export complete pinned MAPPPD tables
+        run: Rscript scripts/export_mapppdr_all.R build/mapppdr_all
+      - name: Assign site points to SCAR ADD land polygons
+        run: |
+          python scripts/assign_scar_land_polygons.py \
+            --sites build/mapppdr_all/sites.csv \
+            --out build/site_land_polygon.csv \
+            --meta build/site_land_polygon_meta.json
+      - name: Print mapping summary
+        run: |
+          cat build/site_land_polygon_meta.json
+          python - <<'PY'
+          import csv
+          from collections import Counter
+          with open("build/site_land_polygon.csv",encoding="utf-8",newline="") as h:
+              rows=list(csv.DictReader(h))
+          c=Counter(r["status"] for r in rows)
+          print("status_counts=",dict(c))
+          misses=[r for r in rows if r["status"]!="unique_direct_land_match"]
+          print("first_unmatched=",[(r["site_id"],r["site_name"],r["status"]) for r in misses[:30]])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mapppd-scar-land-inventory
+          path: |
+            build/mapppdr_all
+            build/site_land_polygon.csv
+            build/site_land_polygon_meta.json
