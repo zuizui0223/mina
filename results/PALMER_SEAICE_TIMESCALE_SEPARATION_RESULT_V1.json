@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-seaice-timescale-separation-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-seaice-timescale-separation-v1",
+  "prerequisite_result": "results/PALMER_SEAICE_HABITAT_MECHANISM_RESULT_V1.json",
+  "execution": {
+    "workflow_run_id": 36286683121,
+    "head_sha": "f9986c3d8a1450eedbc1791f7a5474872ecad434",
+    "artifact_id": 10920083842,
+    "artifact_digest": "sha256:e9ad568f71757bfe454bab4683c971855c112525b862a80c6d4167075d4d7eb1",
+    "conclusion": "success"
+  },
+  "primary_K5": {
+    "n_windows": 22,
+    "full_fit": {
+      "seaice_beta_T1": -0.016248515122874844,
+      "time_beta_T0": -0.03573236636364155,
+      "time_beta_T1": -0.039914432699171186,
+      "time_seaice_correlation": -0.25738144709863825
+    },
+    "purged_validation": {
+      "mse_T0": 0.0037264130911604746,
+      "mse_T1": 0.005014128443083573,
+      "gain_T0_minus_T1": -0.0012877153519230983,
+      "min_train_windows": 11
+    },
+    "phase_diagnostic": {
+      "positive_phase_count": 2,
+      "finite_phase_count": 5,
+      "seaice_betas": [
+        -0.016442072440828757,
+        -0.033578317925985444,
+        -0.11306095741365962,
+        0.029047931450398502,
+        0.013224446822596287
+      ]
+    }
+  },
+  "fixed_robustness": {
+    "K3": {
+      "predictive_gain": -0.003240939098684944,
+      "seaice_beta": -0.023324786407513308
+    },
+    "K7": {
+      "predictive_gain": -0.021053396259748367,
+      "seaice_beta": -0.007143501637451358
+    },
+    "four_persistently_extant_islands_K5": {
+      "predictive_gain": -0.0007008770857304856,
+      "seaice_beta": -0.01556304029634683
+    }
+  },
+  "decision": {
+    "timescale_separation_supported": false,
+    "primary_predictive_gain_positive": false,
+    "primary_direction_positive": false
+  },
+  "supported": [
+    "The preregistered five-year low-frequency rescue is not supported: trailing five-year sea-ice duration worsens purged out-of-window prediction beyond a linear time baseline and its coefficient is negative.",
+    "The result is not sensitive to the primary smoothing choice: fixed K=3 and K=7 checks also produce negative coefficients and negative predictive gains.",
+    "Removing locally extinct Litchfield from the summed population does not restore a positive low-frequency sea-ice relation.",
+    "Only two of five non-overlapping K=5 phase subsets have positive sea-ice coefficients."
+  ],
+  "not_supported": [
+    "that the common long-term Adelie decline is explained by a simple positive sea-ice-duration effect hidden by annual demographic noise",
+    "a timescale-rescue interpretation for sea-ice season duration at 3, 5 or 7 years",
+    "a causal claim that sea ice is irrelevant to Adelie ecology",
+    "post hoc searching across additional smoothing windows to recover a positive association"
+  ],
+  "interpretation": "The strong common population decline is robust, but neither annual nor predeclared low-frequency sea-ice season duration accounts for it in the expected positive direction after explicit temporal baselines and purged validation. The next mechanistic work should therefore move to distinct pathways—sea-ice phenology/prey mediation or terrestrial breeding conditions—rather than continue smoothing the same duration index.",
+  "terminal_rule": "Do not add additional duration smoothing windows to this hypothesis family."
+}
