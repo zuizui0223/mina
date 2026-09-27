@@ -68,5 +68,5 @@ def test_manuscript_v05_ecosphere_after_structured_neff_nulls():
     assert "9.9999 × 10⁻⁶" in text
     assert "1/416 = 0.00240" in text
     assert "0.00780" in text
-    assert "not treating it as a predictive result" in text
+    assert "do not treat it as a predictive result" in text
     assert "Palmer Penguins data set" not in text
