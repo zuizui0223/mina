@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-weather-x-habitat-mechanism-result-v2",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-weather-x-habitat-mechanism-v2",
+  "prerequisite_result": "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+  "source": {
+    "census": {
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+    },
+    "weather": {
+      "scientific_doi": "10.6073/pasta/3eefb45dbfb784c3cabe3690ea46fe9e",
+      "transport_repository": "coding-for-reproducible-research/CfRR_Courses",
+      "transport_commit": "de62ff56db79f75c2a63e737f3cc4f63c9363a2c",
+      "transport_blob_sha": "4b7a462346eef71ebfab1c2ca9a935a66de8886c",
+      "downloaded_sha256": "93d0cd3d668a1f3bcd13da1f283b3ee4fee1885444c13173cb241f88925603e0",
+      "bytes": 1068423,
+      "rows": 12477,
+      "date_field": "Date",
+      "predictor_field": "Precipitation Snow (cm)"
+    }
+  },
+  "execution": {
+    "workflow_run_id": 36291855358,
+    "head_sha": "45b85b0c927faef4f2b1f3ad88b258433ac5123b",
+    "artifact_id": 10922089198,
+    "artifact_digest": "sha256:fd03f799f1462a93fcc6b43ac6a43f0fcc5d6202e7d90c061c6ac3cd78962001",
+    "conclusion": "success"
+  },
+  "coverage": {
+    "eligible_weather_year_count": 21,
+    "analysis_interval_year_count": 16,
+    "analysis_rows": 70,
+    "completeness_rule": "at least 25 numeric October snow-precipitation days"
+  },
+  "model": {
+    "null": {
+      "r2": 0.2515061797339303,
+      "in_sample_rmse": 0.277699784463787
+    },
+    "full": {
+      "r2": 0.2865700117169845,
+      "in_sample_rmse": 0.27111722670407906,
+      "precipitation_coefficient": 0.008460071754941961,
+      "interaction_coefficient": 0.07275819020772743
+    },
+    "delta_r2": 0.03506383198305418,
+    "directional_prediction_met": false
+  },
+  "leave_one_year_out": {
+    "null_rmse": 0.3077293142657885,
+    "full_rmse": 0.3252715499931717,
+    "rmse_change_full_minus_null": 0.017542235727383226,
+    "prediction_improved": false
+  },
+  "descriptive_by_island": {
+    "CHR": {
+      "n": 16,
+      "precip_deviation_correlation": -0.1081341948986198,
+      "mean_local_deviation": 0.02508087474430983
+    },
+    "COR": {
+      "n": 16,
+      "precip_deviation_correlation": -0.01792165261895507,
+      "mean_local_deviation": 0.07483182373180701
+    },
+    "HUM": {
+      "n": 16,
+      "precip_deviation_correlation": -0.18565839912628862,
+      "mean_local_deviation": 0.11445032008307918
+    },
+    "LIT": {
+      "n": 6,
+      "precip_deviation_correlation": 0.37722775530275326,
+      "mean_local_deviation": -0.4987816065529966
+    },
+    "TOR": {
+      "n": 16,
+      "precip_deviation_correlation": -0.08751368638515174,
+      "mean_local_deviation": -0.0273199161018223
+    }
+  },
+  "decision": "not_supported",
+  "supported": [
+    "The predeclared negative snowfall-by-snow-prone-habitat interaction is not supported.",
+    "Adding October snowfall days and its interaction with published island habitat modestly improves in-sample R2 but worsens leave-one-year-out prediction.",
+    "The observed interaction coefficient is positive, opposite the predeclared directional prediction.",
+    "Litchfield remains the strongest negative local demographic deviation, but the available annual snowfall proxy does not explain that vulnerability in the predeclared interaction model."
+  ],
+  "not_supported": [
+    "a simple annual snowfall amplification mechanism in which snow-prone islands perform relatively worse in snowier Octobers",
+    "causal attribution of island-specific demographic deviations to Palmer Station snowfall",
+    "a claim that terrestrial physical filtering is unimportant; only this annual proxy interaction is rejected",
+    "competitive interaction as an explanation for the residual island differences"
+  ],
+  "synthesis_with_prior_stages": {
+    "seaice_annual": "not supported; positive directional sea-ice-duration mechanism failed",
+    "seaice_timescale_3_5_7_year": "not supported",
+    "october_snow_x_habitat": "not supported",
+    "remaining_pattern": "strong common long-term decline plus substantial persistent and annual island heterogeneity remains unexplained by these simple linear annual/low-frequency forcing proxies"
+  },
+  "next_gate": "Do not tune additional sea-ice-duration windows or precipitation months on the same outcome. Move to a distinct process hypothesis with externally defined predictors, such as breeding-habitat state/colony history or prey-mediated demographic pathways."
+}
