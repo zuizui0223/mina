@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-chick-count-coherence-v1",
+  "date": "2026-09-27",
+  "status": "frozen_before_chick_dataset_outcome_access",
+  "prerequisite_contract": "contracts/PALMER_ISLAND_CHICK_SUCCESS_COHERENCE_V1.json",
+  "rationale": "The chick-success ratio may share its breeding-pair denominator with the November adult census. Test an orthogonal endpoint based only on January chick counts before any chick-data outcome is opened.",
+  "data": {
+    "dataset_id": "AdeliePenguinAdultandChickCounts",
+    "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "response_source": "num_chicks only",
+    "season_start_year": "calendar year(time)-1",
+    "no_adult_denominator": true
+  },
+  "response": {
+    "annual_transition": "diff(log1p num_chicks) for adjacent breeding seasons with both colony rows observed",
+    "zero_rule": "retain positive-to-zero and zero-to-positive; exclude zero-to-zero",
+    "eligibility": "island-specific colony_code with >=3 informative transitions and non-zero temporal SD",
+    "standardization": "z-standardize informative annual chick-count growth within colony",
+    "regional_residualization": "subtract the season-end mean standardized growth across all eligible colonies observed that transition"
+  },
+  "statistic": "Mean residual product for same-island colony-pair × transition records minus mean residual product for different-island pairs.",
+  "null": {
+    "labels": "Static observed island labels permuted within five deterministic strata ranked by number of informative chick transitions, then mean log1p chick abundance, then stable identifier.",
+    "permutations": 20000,
+    "seed": 20260927,
+    "test": "two-sided permutation p; support also requires positive observed contrast"
+  },
+  "analyses": {
+    "primary": "All five islands",
+    "sensitivity": "Exclude Litchfield",
+    "strong_numerator_validation": "Both analyses positive with p <= 0.05"
+  },
+  "interpretation_boundaries": [
+    "A positive result cannot be generated solely by reuse of the adult breeding-pair denominator because num_chicks is the only response.",
+    "The chick census itself may still contain shared island-year observation effects or shared census timing.",
+    "Do not change transition rules, eligibility, transform, strata, permutations, or island sensitivity after outcomes are opened."
+  ]
+}
