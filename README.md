@@ -76,6 +76,8 @@ Current work is limited to:
 - figure and reproducibility packaging;
 - manuscript prose, citations and submission materials.
 
+The **Ecosphere v0.4.1 submission package** is now the active packaging line; author metadata and final word-processor formatting remain human-completion items.
+
 The current scientific draft is **Ecosphere-oriented v0.4**, revised after the
 N_eff permutation and count-error diagnostics. PC1/synchrony is now explicitly
 descriptive context within established scale-dependent synchrony theory;
@@ -85,10 +87,14 @@ is described only as a conditional association.
 See:
 
 - `docs/MANUSCRIPT_ECOSPHERE_V0_4.md`
+- `docs/TITLE_PAGE_ECOSPHERE_TEMPLATE.md`
+- `docs/COVER_LETTER_ECOSPHERE_V1.md`
+- `docs/AI_DISCLOSURE_ECOSPHERE_V1.md`
+- `docs/SUBMISSION_CHECKLIST_ECOSPHERE_V1.md`
 - `docs/JOURNAL_FIT_V2.md`
 - `docs/FIGURE_CAPTIONS_V3.md`
 - `docs/REFERENCES_V3.bib`
-- `docs/MANUSCRIPT_SPINE_V2.md`
+- `docs/MANUSCRIPT_SPINE_V3.md`
 - `docs/MANUSCRIPT_JAE_V0_3.md`
 - `docs/COVER_LETTER_JAE_V1.md`
 - `docs/JOURNAL_FIT_V1.md`
@@ -98,7 +104,7 @@ See:
 - `docs/FIGURE_CAPTIONS_V2.md`
 - `docs/REVIEWER_AUDIT_V0_1.md`
 - `docs/MANUSCRIPT_V0_1.md` (archived first draft)
-- `contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V2.json`
+- `contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V3.json`
 - `results/PALMER_MANUSCRIPT_FIGURE_PACKAGE_RESULT_V1.json`
 
 ## Reproduce
