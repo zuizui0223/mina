@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-island-year-coherence-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-island-year-coherence-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36323160164,
+    "head_sha": "04c2a37de00e33012965713db653ee64aa20bf74",
+    "artifact_id": 10933940004,
+    "artifact_digest": "sha256:da13363e565437101854cf0da7991f43285e6bccc83caeb12a7a6373cf782bad",
+    "conclusion": "success"
+  },
+  "primary_five_island": {
+    "n_eligible_colonies": 56,
+    "within_mean_pairyear_product": 0.05617748675148201,
+    "between_mean_pairyear_product": -0.03661833357168757,
+    "island_year_covariance_contrast": 0.09279582032316958,
+    "within_pairyears": 3919,
+    "between_pairyears": 14148,
+    "permutation_p_two_sided": 0.0000999950002499875,
+    "supported": true
+  },
+  "four_island_no_litchfield": {
+    "n_eligible_colonies": 47,
+    "within_mean_pairyear_product": 0.04359629472233412,
+    "between_mean_pairyear_product": -0.04211465830547506,
+    "island_year_covariance_contrast": 0.08571095302780918,
+    "within_pairyears": 3594,
+    "between_pairyears": 10002,
+    "permutation_p_two_sided": 0.000999950002499875,
+    "supported": true
+  },
+  "period_descriptives": {
+    "early_1991_2006": {
+      "five_island_contrast": 0.0837791550505795,
+      "four_island_contrast": 0.07200534076898141
+    },
+    "late_2007_2017": {
+      "five_island_contrast": 0.1806329187889395,
+      "four_island_contrast": 0.1841795313741313
+    }
+  },
+  "per_island_within_pairyear_product": {
+    "CHR": 0.10870817683336051,
+    "COR": 0.05002388368577847,
+    "HUM": 0.08456114261050077,
+    "LIT": 0.1413814885632245,
+    "TOR": -0.006591824628284643
+  },
+  "decision": {
+    "primary_supported": true,
+    "not_litchfield_driven": true,
+    "strong_confirmation": true
+  },
+  "interpretation": [
+    "After standardizing each colony's informative annual growth series and removing the regional year mean, colony pairs on the same island share substantially more annual covariance than pairs on different islands.",
+    "The signal survives exclusion of Litchfield and is present descriptively in both the early and late portions of the record.",
+    "This supports island-scale demographic coherence but does not identify a coastline effect independent of distance or a specific mechanism.",
+    "The earlier within-island spatial-insurance hypothesis is not supported; the dominant pattern is same-island synchrony rather than compensation."
+  ]
+}
