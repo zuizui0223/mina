@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-island-partition-date-separated-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-palmer-island-partition-date-separated-v1",
+  "prerequisite_result": "results/PALMER_ISLAND_PARTITION_OVERLAP_RESULT_V1.json",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36319959122,
+    "head_sha": "2316251ab4be1453d72494ed8c0d8a5d32741235",
+    "artifact_id": 10932431196,
+    "artifact_digest": "sha256:50d03f6d7397f3da1da6ba97fa42412d0a5007cfd170e64047f143dda50deaed",
+    "conclusion": "success"
+  },
+  "strict": {
+    "validity_pass": false,
+    "n_informative_pairs": 755,
+    "reason": "empty pair class under observed labels after requiring different census dates at both interval endpoints",
+    "decision": "inconclusive"
+  },
+  "relaxed_descriptive": {
+    "validity_pass": true,
+    "n_informative_pairs": 1297,
+    "within_contributing_islands": [
+      "CHR",
+      "COR",
+      "HUM",
+      "TOR"
+    ],
+    "observed": {
+      "within_fisher_mean_r": 0.44636912899959175,
+      "between_fisher_mean_r": 0.11482163036287954,
+      "partition_contrast_r": 0.3315474986367122,
+      "n_within_pairs": 77,
+      "n_between_pairs": 1220,
+      "within_information_weight": 118,
+      "between_information_weight": 18364
+    },
+    "null": {
+      "n_permutations": 20000,
+      "seed": 20260928,
+      "mean": 0.009244432603935817,
+      "sd": 0.026546224330928816,
+      "q025": -0.04093560061361466,
+      "q975": 0.06366375647547337,
+      "two_sided_p": 0.0000999950002499875
+    }
+  },
+  "decision": {
+    "exact_same_day_batch_explanation_ruled_out": false,
+    "reason": "the predeclared strict estimator was not identifiable in the observed island partition",
+    "partial_timing_robustness": "strong relaxed contrast when at least one interval endpoint was counted on different dates"
+  },
+  "interpretation": "The supported overlap island-partition result cannot yet be declared free of shared census-error mechanisms. However, its direction becomes stronger among pairwise growth observations that are not same-date batches at both interval endpoints, arguing against a simple explanation in which exact same-day batching alone creates the entire signal.",
+  "boundaries": [
+    "The relaxed diagnostic can retain a same-day census at one interval endpoint.",
+    "Observer identity and protocol-level correlated error remain unresolved.",
+    "No dispersal or causal island mechanism is inferred."
+  ]
+}
