@@ -1,0 +1,61 @@
+name: mapppd-scar-land-resolution
+
+on:
+  push:
+    branches:
+      - analysis/mapppd-island-boundary-v1
+    paths:
+      - "scripts/export_mapppdr_all.R"
+      - "scripts/assign_scar_land_polygons.py"
+      - "scripts/resolve_scar_land_polygons.py"
+      - "contracts/MAPPPD_SCAR_LAND_ASSIGNMENT_V1.json"
+      - ".github/workflows/mapppd-scar-land-resolution.yml"
+  workflow_dispatch:
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Export complete pinned MAPPPD tables
+        run: Rscript scripts/export_mapppdr_all.R build/mapppdr_all
+      - name: Reproduce zero-tolerance audit
+        run: |
+          python scripts/assign_scar_land_polygons.py \
+            --sites build/mapppdr_all/sites.csv \
+            --out build/site_land_polygon_direct.csv \
+            --meta build/site_land_polygon_direct_meta.json
+      - name: Apply frozen coastal tolerance grid
+        run: |
+          python scripts/resolve_scar_land_polygons.py \
+            --sites build/mapppdr_all/sites.csv \
+            --direct-audit build/site_land_polygon_direct.csv \
+            --out build/site_land_polygon_resolved.csv \
+            --meta build/site_land_polygon_resolved_meta.json
+      - name: Print resolution summary
+        run: |
+          cat build/site_land_polygon_resolved_meta.json
+          python - <<'PY'
+          import csv
+          from collections import Counter
+          with open("build/site_land_polygon_resolved.csv",encoding="utf-8",newline="") as h:
+              rows=list(csv.DictReader(h))
+          print("status=",dict(Counter(r["status"] for r in rows)))
+          print("class=",dict(Counter(r["landmass_class"] for r in rows)))
+          print("tolerance=",dict(Counter(r["assignment_tolerance_m"] for r in rows if r["status"]=="unique_land_match")))
+          unresolved=[r for r in rows if r["status"]!="unique_land_match"]
+          print("unresolved_first=",[(r["site_id"],r["site_name"],r["status"],r["candidate_land_fids"]) for r in unresolved[:30]])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mapppd-scar-land-resolution
+          path: |
+            build/mapppdr_all
+            build/site_land_polygon_direct.csv
+            build/site_land_polygon_direct_meta.json
+            build/site_land_polygon_resolved.csv
+            build/site_land_polygon_resolved_meta.json
