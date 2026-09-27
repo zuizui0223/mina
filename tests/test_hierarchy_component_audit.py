@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from mina.hierarchy_component_audit import (
     _normalized_excess,
@@ -7,8 +8,8 @@ from mina.hierarchy_component_audit import (
 
 
 def test_normalized_excess_beta_removes_unit_count_scale():
-    assert _normalized_excess(1.2,3)==0.1
-    assert _normalized_excess(1.4,5)==0.1
+    assert _normalized_excess(1.2,3)==pytest.approx(0.1)
+    assert _normalized_excess(1.4,5)==pytest.approx(0.1)
 
 
 def test_pairwise_summary_identical_series_is_one():
