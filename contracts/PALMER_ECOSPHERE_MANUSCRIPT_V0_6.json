@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "contract_id": "mina-palmer-ecosphere-manuscript-v0.6",
-  "date": "2026-09-27",
-  "status": "hierarchical_variability_promoted_to_main_manuscript",
+  "date": "2026-09-28",
+  "status": "hierarchical_variability_and_demographic_momentum_promoted",
   "parent_manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_5.md",
   "manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_6.md",
   "bibliography": "docs/REFERENCES_V4.bib",
@@ -25,6 +25,13 @@
   "required_neff_boundary": {
     "coefficient": 0.11679896749684501,
     "lag1_conditioned_coefficient": 0.11849651213599004,
+    "lag1_lag2_conditioned_coefficient": 0.11260540832528995,
+    "lag1_lag2_beta_fraction_of_original": 0.9640959225802374,
+    "lag1_lag2_loyo_gain": 0.000444125252832564,
+    "lag1_lag2_gain_fraction_of_original": 0.4316753406579907,
+    "lag1_lag2_independent_circular_p": 0.001019989800101999,
+    "lag1_lag2_joint_exact_p": 0.01201923076923077,
+    "lag1_lag2_joint_exceedances": "5/416",
     "year_block_predictive_p": 0.262,
     "predictive_claim": false,
     "causal_claim": false,
@@ -35,7 +42,8 @@
     "subcolony asynchrony proves dispersal-mediated rescue",
     "N_eff is a supported predictor",
     "colony codes are equivalent to GIS polygons",
-    "86.4 percent is a causal mechanism fraction"
+    "86.4 percent is a causal mechanism fraction",
+    "lagged growth controls remove all time-varying confounding"
   ],
   "versioning": {
     "v0.5_remains_immutable_provenance": true,
@@ -47,5 +55,6 @@
     "hierarchy_figure": "Figure 3",
     "mechanism_audit_figure": "Figure 4",
     "colony_organization_figure": "Figure 5"
-  }
+  },
+  "momentum_result": "results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json"
 }
