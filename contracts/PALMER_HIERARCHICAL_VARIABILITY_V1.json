@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-hierarchical-variability-v1",
+  "date": "2026-09-27",
+  "status": "descriptive_hierarchical_extension_rules_frozen_before_repository_implementation",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "expected_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "ecological_question": "At which nested spatial level is temporal population variability reduced: among subcolonies within breeding islands, or among islands within the Palmer Archipelago?",
+  "framing": {
+    "primary": "hierarchical variability partition",
+    "not_a_claim": [
+      "causal habitat insurance",
+      "early warning",
+      "forecasting",
+      "dispersal mechanism identification"
+    ],
+    "link_to_neff": "The N_eff result motivates a scale question: whether spatial organization within islands contains more temporal compensation than island-to-island dynamics."
+  },
+  "primary_units": {
+    "stable_colony_roster_islands": ["COR", "HUM", "LIT"],
+    "reason": "Only islands with an unchanged reported colony-code roster across the complete 1991-2017 census are eligible for the primary subcolony-to-island decomposition.",
+    "years": [1991, 2017],
+    "expected_n_years": 27
+  },
+  "w_loreau_raw_abundance_definition": {
+    "citation": "Wang & Loreau 2014, Ecology Letters 17:891-901, doi:10.1111/ele.12292",
+    "alpha_cv2": "(sum_i sigma_i / sum_i mu_i)^2",
+    "gamma_cv2": "Var_t(sum_i X_it) / (sum_i mu_i)^2",
+    "beta_spatial": "alpha_cv2 / gamma_cv2",
+    "phi_synchrony": "gamma_cv2 / alpha_cv2 = 1 / beta_spatial",
+    "data_scale": "raw nonnegative breeding-pair abundance"
+  },
+  "nested_primary_decomposition": {
+    "alpha_subcolony_cv2": "Wang-Loreau alpha variability across every stable colony code nested in COR/HUM/LIT",
+    "alpha_island_cv2": "Wang-Loreau alpha variability treating COR/HUM/LIT island totals as local units",
+    "gamma_archipelago_cv2": "Wang-Loreau gamma variability of the summed COR/HUM/LIT total",
+    "beta_within_islands": "alpha_subcolony_cv2 / alpha_island_cv2",
+    "beta_among_islands": "alpha_island_cv2 / gamma_archipelago_cv2",
+    "beta_total": "alpha_subcolony_cv2 / gamma_archipelago_cv2",
+    "required_identity": "beta_total == beta_within_islands * beta_among_islands",
+    "descriptive_hierarchy_signal": "beta_within_islands > beta_among_islands"
+  },
+  "fixed_sensitivities": {
+    "pre_litchfield_extinction": {
+      "years": [1991, 2006],
+      "purpose": "check that the hierarchy ordering is not created by post-extinction zeros on Litchfield"
+    },
+    "persistent_stable_roster_only": {
+      "islands": ["COR", "HUM"],
+      "years": [1991, 2017],
+      "purpose": "remove Litchfield entirely while retaining only stable colony-code rosters"
+    },
+    "five_island_archipelago": {
+      "islands": ["CHR", "COR", "HUM", "LIT", "TOR"],
+      "purpose": "describe island-to-archipelago variability without requiring colony-code continuity"
+    },
+    "four_persistent_islands": {
+      "islands": ["CHR", "COR", "HUM", "TOR"],
+      "purpose": "describe island-to-archipelago variability without Litchfield"
+    }
+  },
+  "centered_signal_sensitivities": {
+    "linear_detrended_log1p_abundance": true,
+    "annual_log1p_growth": true,
+    "reported_metric": "covariance-based spatial synchrony phi and beta=1/phi only",
+    "important_boundary": "Do not report alpha/gamma CV for centered residuals or growth because their means can be zero or negative; the raw-abundance Wang-Loreau CV decomposition is the primary hierarchy result."
+  },
+  "roster_gate": {
+    "audit_all_five_islands": true,
+    "primary_requires_exactly_one_roster_variant": true,
+    "nonstable_islands_are_not_zero_filled_or_silently_reconciled": true,
+    "colony_code_changes_are_reported_explicitly": true
+  },
+  "interpretation_boundary": [
+    "beta>1 indicates temporal compensation/asynchrony, not a demonstrated causal spatial-insurance mechanism",
+    "the decomposition does not identify movement or dispersal among colony codes",
+    "colony codes are census units and are not assumed to be one-to-one GIS subcolony polygons",
+    "the analysis is descriptive and uses the already-opened long-term census; no confirmatory p-value is attached to the hierarchy ordering"
+  ]
+}
