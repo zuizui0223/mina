@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mina-island-reassembly"
-version = "0.5.0"
+version = "0.6.0"
 description = "Island community reassembly analyses for Palmer Archipelago penguins"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -21,6 +21,7 @@ mina-network = "mina.network:main"
 mina-lter = "mina.lter:main"
 mina-mechanism = "mina.mechanism:main"
 mina-weather = "mina.weather:main"
+mina-colony-network = "mina.colony_network:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
