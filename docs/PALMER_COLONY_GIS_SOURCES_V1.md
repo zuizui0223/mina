@@ -116,18 +116,27 @@ Use in crosswalk: establishes that region-wide historical colony-perimeter GIS
 work and geodetic control existed. The remaining task is retrieval of the
 derived island orthobases / colony layers and their identifier metadata.
 
-## S7. Sanchez & Fraser (2001), island orthobases
+## S7. Sanchez / USGS Palmer orthobases
 
-Evidence source:
-the Palmer-area Antarctic Specially Managed Area documentation cites
-`Litchfield Island Orthobase` (Sanchez & Fraser 2001) as a 6-cm digital
-orthophotograph with a digital terrain model and approximately ±2 m horizontal
-and vertical accuracy, distributed with the USGS mapping products.
+Evidence sources:
+USGS project history and Palmer-area management documentation.
 
-Use in crosswalk: confirms that high-resolution, georeferenced historical island
-bases were produced beyond Torgersen. Search for archived Torgersen, Christine,
-Cormorant and Humble counterparts before concluding that only Torgersen is
-resolvable.
+Relevant evidence:
+
+- a USGS project-history record states that in 1998–99 Richard D. Sanchez
+  developed orthobases for **Biscoe, Christine, Cormorant, Dream, Humble,
+  Litchfield and Torgersen Islands** near Palmer Station to map Adélie penguin
+  habitat pattern/trend and its relationship to regional climate change;
+- the Palmer-area management documentation separately cites the
+  `Litchfield Island Orthobase` (Sanchez & Fraser 2001) as a 6-cm digital
+  orthophotograph with a digital terrain model and approximately ±2 m
+  horizontal and vertical accuracy.
+
+Use in crosswalk: upgrades the historical spatial backbone from a
+Torgersen/Litchfield possibility to documented orthobase production on all five
+islands in the present LTER analysis (Christine, Cormorant, Humble, Litchfield,
+Torgersen). The remaining issue is archive retrieval and colony-identifier
+attributes, not whether suitable historical base mapping existed.
 
 ## S8. Bird et al. (2020), 2017 Torgersen UAS colony polygons
 
@@ -176,9 +185,9 @@ No crosswalk assignments are frozen in this registry. In particular:
 
 1. inspect the Duke archive for DOI 10.7924/r4cv4jq6j and inventory any
    Torgersen polygon/shapefile/geodatabase/CSV identifiers;
-2. retrieve USGS OFR 99-402 companion GIS / orthobase products and search for
-   Torgersen, Christine, Cormorant and Humble island products in addition to the
-   documented Litchfield orthobase;
+2. retrieve the documented USGS orthobases for Christine, Cormorant, Humble,
+   Litchfield and Torgersen and inventory any colony-perimeter layers / attribute
+   keys distributed with them;
 3. retrieve Cimino et al. (2025) supplementary material, especially S3/S13 and
    any sub-colony table or geospatial identifier;
 4. locate historical field maps or census protocols that print LTER colony
