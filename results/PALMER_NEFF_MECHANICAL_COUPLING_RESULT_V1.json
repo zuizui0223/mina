@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-neff-mechanical-coupling-result-v1",
+  "validated_date": "2026-09-27",
+  "contract_id": "mina-neff-mechanical-coupling-v1",
+  "prerequisites": [
+    "results/PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+    "results/PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json"
+  ],
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36311405423,
+    "head_sha": "38ed23e80155afaa74ce156e48e79fcee42c395c",
+    "artifact_id": 10929132152,
+    "artifact_digest": "sha256:6179cf09c7d7a6857f57a88b7e90e35e85d0a8a843c9dd61c1754e1c880a1622",
+    "simulations_per_error_model": 10000,
+    "seed": 20260927,
+    "conclusion": "success"
+  },
+  "observed_standardized_beta": 0.11679896749684507,
+  "error_models": {
+    "poisson": {
+      "coupled_beta": {
+        "mean": -0.019109810653415365,
+        "median": -0.021033956456241114,
+        "sd": 0.034783801802446744,
+        "q_0_025": -0.08258185750995939,
+        "q_0_05": -0.0732775158076025,
+        "q_0_95": 0.0415587024969941,
+        "q_0_975": 0.05564802639155688,
+        "proportion_positive": 0.2737,
+        "exceedances_ge_observed": 7,
+        "one_sided_probability_ge_observed": 0.0007999200079992001
+      },
+      "decoupled_beta": {
+        "mean": -0.016235366082033863,
+        "median": -0.0188552803261725,
+        "sd": 0.033786555481831654,
+        "q_0_025": -0.07412393095784037,
+        "q_0_05": -0.06692567849101219,
+        "q_0_95": 0.043804428689137094,
+        "q_0_975": 0.05739517152078758,
+        "proportion_positive": 0.2919,
+        "exceedances_ge_observed": 9,
+        "one_sided_probability_ge_observed": 0.000999900009999
+      },
+      "paired_coupling_bias": {
+        "mean": -0.0028744445713815045,
+        "median": -0.0026990358313533705,
+        "sd": 0.017285523093872938,
+        "q_0_025": -0.037449496235888516,
+        "q_0_05": -0.03150575235907713,
+        "q_0_95": 0.02517091923592986,
+        "q_0_975": 0.030303609423185125,
+        "mean_fraction_of_observed_beta": -0.02461018819758957,
+        "median_fraction_of_observed_beta": -0.023108387764012348,
+        "proportion_positive": 0.4323
+      }
+    },
+    "gamma_poisson_cv10": {
+      "coupled_beta": {
+        "mean": -0.013853011925069507,
+        "median": -0.015616124589874297,
+        "sd": 0.03736187891016886,
+        "q_0_025": -0.0820104005807648,
+        "q_0_05": -0.07224894547715335,
+        "q_0_95": 0.05074818877974323,
+        "q_0_975": 0.0645275963552501,
+        "proportion_positive": 0.3402,
+        "exceedances_ge_observed": 5,
+        "one_sided_probability_ge_observed": 0.0005999400059994001
+      },
+      "decoupled_beta": {
+        "mean": -0.01452886608018087,
+        "median": -0.017375219398300865,
+        "sd": 0.035830848752467184,
+        "q_0_025": -0.07680998553029884,
+        "q_0_05": -0.06826163043296535,
+        "q_0_95": 0.048354951758061246,
+        "q_0_975": 0.062162354899334485,
+        "proportion_positive": 0.322,
+        "exceedances_ge_observed": 7,
+        "one_sided_probability_ge_observed": 0.0007999200079992001
+      },
+      "paired_coupling_bias": {
+        "mean": 0.0006758541551113638,
+        "median": 0.000961832400211653,
+        "sd": 0.021208981810539543,
+        "q_0_025": -0.04147319453160211,
+        "q_0_05": -0.03455692037096356,
+        "q_0_95": 0.03451372065169267,
+        "q_0_975": 0.041660530342045726,
+        "mean_fraction_of_observed_beta": 0.005786473712874386,
+        "median_fraction_of_observed_beta": 0.008234939236407494,
+        "proportion_positive": 0.5187
+      }
+    },
+    "gamma_poisson_cv20": {
+      "coupled_beta": {
+        "mean": -0.0003518205749651358,
+        "median": -0.002102262138050143,
+        "sd": 0.04279217349455107,
+        "q_0_025": -0.07886938865355113,
+        "q_0_05": -0.06750427641034273,
+        "q_0_95": 0.07252388207949369,
+        "q_0_975": 0.08898714417375694,
+        "proportion_positive": 0.4813,
+        "exceedances_ge_observed": 63,
+        "one_sided_probability_ge_observed": 0.006399360063993601
+      },
+      "decoupled_beta": {
+        "mean": -0.01099371789362861,
+        "median": -0.01323533571675519,
+        "sd": 0.04018593508417541,
+        "q_0_025": -0.08343074376538286,
+        "q_0_05": -0.07232915137251272,
+        "q_0_95": 0.058215697950715926,
+        "q_0_975": 0.07250487572622924,
+        "proportion_positive": 0.3737,
+        "exceedances_ge_observed": 33,
+        "one_sided_probability_ge_observed": 0.0033996600339966003
+      },
+      "paired_coupling_bias": {
+        "mean": 0.010641897318663477,
+        "median": 0.010281704275717451,
+        "sd": 0.028733994099427482,
+        "q_0_025": -0.04585461136290533,
+        "q_0_05": -0.03614291912507741,
+        "q_0_95": 0.059064453173427164,
+        "q_0_975": 0.06777009263094974,
+        "mean_fraction_of_observed_beta": 0.09111294000908811,
+        "median_fraction_of_observed_beta": 0.08802906820212411,
+        "proportion_positive": 0.647
+      }
+    }
+  },
+  "decision": {
+    "observed_beta_unusual_under_all_coupled_nulls": true,
+    "held_out_predictive_gain_already_failed": true
+  },
+  "interpretation": [
+    "The observed standardized conditional coefficient remains unusual under all three predeclared topology-null count-error simulations.",
+    "Sharing current-year census error between N_eff and the growth denominator does not generate an observed-scale positive coefficient under the fixed Poisson or 10%/20% Gamma-Poisson sensitivities.",
+    "Median paired coupling bias is -2.3%, +0.8%, and +8.8% of the observed beta under Poisson, CV10%, and CV20% respectively.",
+    "This supports retention of N_eff only as a conditional same-census association, not as a robust held-out-year predictive result.",
+    "The simulations are stylized sensitivities, not empirically calibrated Palmer observer-error models."
+  ],
+  "manuscript_consequence": "Withdraw the positive predictive claim and report the permutation p=0.262. If N_eff remains in the manuscript, describe beta +0.1168 as a conditional association that survives the fixed mechanical-coupling sensitivities, while explicitly noting that its out-of-year error reduction is not stronger than the year-block permutation null.",
+  "next_gate": "Reframe the manuscript and journal target; do not open further topology metrics or error-model tuning for the core paper."
+}
