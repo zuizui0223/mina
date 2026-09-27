@@ -80,7 +80,7 @@ Current work is limited to:
 - figure and reproducibility packaging;
 - manuscript prose, citations and submission materials.
 
-The current scientific draft is **Ecosphere-oriented v0.5**, reconciled after
+The **Ecosphere v0.5.1 submission package** is the active packaging line. Author metadata and final word-processor formatting remain human-completion items.\n\nThe current scientific draft is **Ecosphere-oriented v0.5**, reconciled after
 the year-block predictive-gain test, autocorrelation-preserving circular-shift
 coefficient tests, and circular-shift count-error diagnostics. PC1/synchrony is now explicitly
 descriptive context within established scale-dependent synchrony theory;
@@ -89,7 +89,7 @@ is described only as a conditional association.
 
 See:
 
-- `docs/MANUSCRIPT_ECOSPHERE_V0_5.md`
+- `docs/MANUSCRIPT_ECOSPHERE_V0_5.md`\n- `docs/TITLE_PAGE_ECOSPHERE_TEMPLATE.md`\n- `docs/COVER_LETTER_ECOSPHERE_V2.md`\n- `docs/AI_DISCLOSURE_ECOSPHERE_V1.md`\n- `docs/SUBMISSION_CHECKLIST_ECOSPHERE_V2.md`
 - `docs/JOURNAL_FIT_V3.md`
 - `docs/JOURNAL_FIT_V2.md` (pre-circular-shift journal-fit record)
 - `docs/FIGURE_CAPTIONS_V4.md`
