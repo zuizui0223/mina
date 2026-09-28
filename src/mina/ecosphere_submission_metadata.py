@@ -129,7 +129,7 @@ def author_line(data: dict[str,Any]) -> str:
         marker=",".join(ids)
         rendered=_text(author.get("name"))
         if marker:
-            rendered+=f"^{'/'.join(ids)}^"
+            rendered+=f"^{marker}^"
         if bool(author.get("corresponding")):
             rendered+="*"
         parts.append(rendered)
@@ -169,3 +169,27 @@ def ai_disclosure_suffix(data: dict[str,Any]) -> str:
         + joined
         + "."
     )
+
+
+def main() -> int:
+    import argparse
+
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--metadata",required=True,type=Path)
+    parser.add_argument("--out",type=Path)
+    parser.add_argument("--require-complete",action="store_true")
+    args=parser.parse_args()
+    data=load_metadata(args.metadata)
+    result=validate_metadata(data)
+    if args.require_complete:
+        require_complete_metadata(data)
+    payload=json.dumps(result,indent=2,sort_keys=True)+"\n"
+    if args.out:
+        args.out.parent.mkdir(parents=True,exist_ok=True)
+        args.out.write_text(payload,encoding="utf-8")
+    print(payload,end="")
+    return 0
+
+
+if __name__=="__main__":
+    raise SystemExit(main())
