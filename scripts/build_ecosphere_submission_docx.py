@@ -176,27 +176,28 @@ def _add_line_numbering(sect_pr) -> None:
     node = OxmlElement("w:lnNumType")
     node.set(qn("w:countBy"), "1")
     node.set(qn("w:start"), "1")
-    node.set(qn("w:restart"), "continuous")
+    node.set(qn("w:restart"), "newSection")
     node.set(qn("w:distance"), "360")
     sect_pr.append(node)
+
+
+def _suppress_line_number(paragraph) -> None:
+    p_pr = paragraph._p.get_or_add_pPr()
+    if p_pr.find(qn("w:suppressLineNumbers")) is None:
+        p_pr.append(OxmlElement("w:suppressLineNumbers"))
 
 
 def _page_number(paragraph) -> None:
     paragraph.clear()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = paragraph.add_run()
-    begin = OxmlElement("w:fldChar")
-    begin.set(qn("w:fldCharType"), "begin")
-    instr = OxmlElement("w:instrText")
-    instr.set(qn("xml:space"), "preserve")
-    instr.text = " PAGE "
-    separate = OxmlElement("w:fldChar")
-    separate.set(qn("w:fldCharType"), "separate")
+    field = OxmlElement("w:fldSimple")
+    field.set(qn("w:instr"), "PAGE")
+    run = OxmlElement("w:r")
     text = OxmlElement("w:t")
     text.text = "1"
-    end = OxmlElement("w:fldChar")
-    end.set(qn("w:fldCharType"), "end")
-    run._r.extend([begin, instr, separate, text, end])
+    run.append(text)
+    field.append(run)
+    paragraph._p.append(field)
 
 
 def _split_title_section(doc: Document) -> None:
@@ -218,6 +219,7 @@ def _split_title_section(doc: Document) -> None:
     p_pr.append(title_sect_pr)
     for run in list(marker._p.findall(qn("w:r"))):
         marker._p.remove(run)
+    _suppress_line_number(marker)
 
     _add_line_numbering(body_sect_pr)
 
@@ -232,9 +234,9 @@ def _apply_word_format(doc: Document) -> None:
             style.font.size = Pt(12)
             style.element.rPr.rFonts.set(qn("w:eastAsia"), "Times New Roman")
 
-    def format_paragraph(paragraph) -> None:
+    def format_paragraph(paragraph, line_spacing: float) -> None:
         paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
-        paragraph.paragraph_format.line_spacing = 2.0
+        paragraph.paragraph_format.line_spacing = line_spacing
         paragraph.paragraph_format.space_after = Pt(0)
         for run in paragraph.runs:
             run.font.name = "Times New Roman"
@@ -243,13 +245,19 @@ def _apply_word_format(doc: Document) -> None:
                 qn("w:eastAsia"), "Times New Roman"
             )
 
+    body_started = False
     for paragraph in doc.paragraphs:
-        format_paragraph(paragraph)
+        if paragraph.text.strip() == "Abstract":
+            body_started = True
+        format_paragraph(paragraph, 2.0 if body_started else 1.0)
+        if not body_started:
+            _suppress_line_number(paragraph)
+
     for table in doc.tables:
         for row in table.rows:
             for cell in row.cells:
                 for paragraph in cell.paragraphs:
-                    format_paragraph(paragraph)
+                    format_paragraph(paragraph, 2.0)
 
     for index, section in enumerate(doc.sections):
         section.footer.is_linked_to_previous = False
