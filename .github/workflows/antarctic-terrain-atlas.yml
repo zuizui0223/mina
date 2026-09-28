@@ -1,0 +1,47 @@
+name: antarctic-terrain-atlas
+
+on:
+  push:
+    branches: [analysis/antarctic-terrain-atlas-v1]
+    paths:
+      - "scripts/extract_antarctic_terrain_atlas.py"
+      - "contracts/ANTARCTIC_TERRAIN_ATLAS_V1.json"
+      - ".github/workflows/antarctic-terrain-atlas.yml"
+  pull_request:
+    paths:
+      - "scripts/extract_antarctic_terrain_atlas.py"
+      - "contracts/ANTARCTIC_TERRAIN_ATLAS_V1.json"
+      - ".github/workflows/antarctic-terrain-atlas.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy pyreadr rasterio pyproj
+      - name: Fetch pinned mapppdr
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Download REMA v2.0 500 m full-domain mosaic
+        run: |
+          mkdir -p build/rema
+          curl -L --fail --retry 5 --retry-delay 5             'https://data.pgc.umn.edu/elev/dem/setsm/REMA/mosaic/v2.0/500m/rema_mosaic_500m_v2.0.tar.gz'             -o build/rema/rema_mosaic_500m_v2.0.tar.gz
+          tar -xzf build/rema/rema_mosaic_500m_v2.0.tar.gz -C build/rema
+          find build/rema -type f -name '*.tif' -print
+          tif="$(find build/rema -type f -name '*.tif' | head -1)"
+          test -n "$tif"
+          echo "REMA_TIF=$tif" >> "$GITHUB_ENV"
+      - name: Build outcome-blind terrain atlas traits
+        run: |
+          python scripts/extract_antarctic_terrain_atlas.py             --mapppdr-dir build/mapppdr             --rema-tif "$REMA_TIF"             --source-archive build/rema/rema_mosaic_500m_v2.0.tar.gz             --out-json build/ANTARCTIC_TERRAIN_ATLAS_GATE1D_A_RESULT_V1.json             --out-csv build/ANTARCTIC_PENGUIN_TERRAIN_ATLAS_V1.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: antarctic-penguin-terrain-atlas-v1
+          path: |
+            build/ANTARCTIC_TERRAIN_ATLAS_GATE1D_A_RESULT_V1.json
+            build/ANTARCTIC_PENGUIN_TERRAIN_ATLAS_V1.csv
