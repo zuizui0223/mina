@@ -6,13 +6,13 @@ on:
       - analysis/antarctic-breeding-island-atlas-v1
     paths:
       - "scripts/audit_add_site_matching.py"
-      - "scripts/diagnose_add_service.py"
+      - "scripts/diagnose_add_crs.py"
       - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_V1.json"
       - ".github/workflows/antarctic-breeding-island-atlas-gate1a.yml"
   pull_request:
     paths:
       - "scripts/audit_add_site_matching.py"
-      - "scripts/diagnose_add_service.py"
+      - "scripts/diagnose_add_crs.py"
       - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_V1.json"
       - ".github/workflows/antarctic-breeding-island-atlas-gate1a.yml"
   workflow_dispatch:
@@ -36,6 +36,11 @@ jobs:
           python scripts/diagnose_add_crs.py \
             --mapppdr-dir build/mapppdr \
             --out build/add_crs_diagnostic.json
+      - name: Upload CRS diagnostic early
+        uses: actions/upload-artifact@v4
+        with:
+          name: antarctic-add-crs-diagnostic-v1
+          path: build/add_crs_diagnostic.json
       - name: Audit SCAR ADD land matching
         run: |
           python scripts/audit_add_site_matching.py \
