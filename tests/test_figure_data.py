@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from mina.figure_data import _figure3_hierarchy, _figure3_mechanisms
+from mina.figure_data import _figure3_count_error, _figure3_hierarchy, _figure3_mechanisms
 
 
 def _receipt(name):
@@ -80,3 +80,22 @@ def test_hierarchy_figure_data_matches_frozen_receipts():
         for island in ("COR","HUM","LIT"):
             assert abs(row[island]-frozen[island])<1e-12
             assert row[island] < row["among_islands"]
+
+
+
+def test_hierarchy_count_error_figure_data_matches_frozen_receipt():
+    e=_receipt("PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json")
+    rows=_figure3_count_error(e)
+    by={row["error_model"]:row for row in rows}
+    assert len(rows)==3
+    assert abs(by["poisson"]["observed"]-0.05994543544868112)<1e-12
+    assert by["poisson"]["null_q_0_975"] < by["poisson"]["observed"]
+    assert by["gamma_poisson_cv10"]["null_q_0_975"] < by["gamma_poisson_cv10"]["observed"]
+    assert (
+        by["gamma_poisson_cv20"]["null_q_0_025"]
+        < by["gamma_poisson_cv20"]["observed"]
+        < by["gamma_poisson_cv20"]["null_q_0_975"]
+    )
+    assert by["poisson"]["one_sided_p"] < 1e-4
+    assert by["gamma_poisson_cv10"]["one_sided_p"] < 1e-4
+    assert abs(by["gamma_poisson_cv20"]["one_sided_p"]-0.44753552464475355)<1e-12
