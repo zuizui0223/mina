@@ -6,11 +6,13 @@ on:
       - analysis/antarctic-breeding-island-atlas-v1
     paths:
       - "scripts/audit_add_site_matching.py"
+      - "scripts/diagnose_add_service.py"
       - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_V1.json"
       - ".github/workflows/antarctic-breeding-island-atlas-gate1a.yml"
   pull_request:
     paths:
       - "scripts/audit_add_site_matching.py"
+      - "scripts/diagnose_add_service.py"
       - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_V1.json"
       - ".github/workflows/antarctic-breeding-island-atlas-gate1a.yml"
   workflow_dispatch:
