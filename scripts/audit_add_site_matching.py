@@ -10,10 +10,7 @@ from pathlib import Path
 import pandas as pd
 import pyreadr
 import requests
-from pyproj import Transformer
 from requests.adapters import HTTPAdapter
-from shapely.geometry import Point, shape
-from shapely.ops import transform as shapely_transform
 from urllib3.util.retry import Retry
 
 PINNED_MAPPPDR_COMMIT = "88c73a507e0921b2541c218c71eaf16721bc6502"
@@ -130,62 +127,35 @@ def _query_one(
             "spatialReference": {"wkid": 4326},
         }
     )
-
-    data = _get_json(
-        session,
-        f"{layer_url}/query",
-        f="geojson",
-        where=f"{surface_field}='land'",
-        geometry=geometry,
-        geometryType="esriGeometryPoint",
-        inSR=4326,
-        spatialRel="esriSpatialRelIntersects",
-        distance=max(DISTANCES_M),
-        units="esriSRUnit_Meter",
-        outFields="*",
-        returnGeometry="true",
-        outSR=4326,
-    )
-    features = data.get("features", [])
-
-    transformer = Transformer.from_crs(4326, 3031, always_xy=True)
-    point = shapely_transform(
-        transformer.transform,
-        Point(float(site["longitude"]), float(site["latitude"])),
-    )
-
-    distances = []
-    attributes = []
-    for feature in features:
-        geometry_value = feature.get("geometry")
-        if not geometry_value:
-            continue
-        projected = shapely_transform(
-            transformer.transform,
-            shape(geometry_value),
-        )
-        distances.append(float(point.distance(projected)))
-        attributes.append(feature.get("properties", {}))
-
     result = {
         "site_id": str(site["site_id"]),
         "site_name": str(site["site_name"]),
         "region": str(site["region"]),
         "latitude": float(site["latitude"]),
         "longitude": float(site["longitude"]),
-        "nearby_land_polygon_count_5km": len(distances),
-        "nearest_land_distance_m": min(distances) if distances else None,
         "matches": {},
     }
+
     for distance in DISTANCES_M:
-        selected = [
-            attrs
-            for d, attrs in zip(distances, attributes)
-            if d <= float(distance) + 1e-6
-        ]
+        params = {
+            "f": "json",
+            "where": f"{surface_field}='land'",
+            "geometry": geometry,
+            "geometryType": "esriGeometryPoint",
+            "inSR": 4326,
+            "spatialRel": "esriSpatialRelIntersects",
+            "outFields": "*",
+            "returnGeometry": "false",
+        }
+        if distance > 0:
+            params["distance"] = distance
+            params["units"] = "esriSRUnit_Meter"
+        data = _get_json(session, f"{layer_url}/query", **params)
+        features = data.get("features", [])
+        attrs = [feature.get("attributes", {}) for feature in features]
         result["matches"][str(distance)] = {
-            "land_count": len(selected),
-            "land_attributes": selected,
+            "land_count": len(attrs),
+            "land_attributes": attrs,
         }
     return result
 
