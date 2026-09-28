@@ -24,6 +24,7 @@ def _base_files(tmp_path):
     contract.write_text(
         json.dumps(
             {
+                "title":"Common decline, divergent endpoints: hierarchical demography across Antarctic penguin breeding islands",
                 "human_only_blockers":[
                     "complete author list",
                     "all affiliations",
@@ -48,6 +49,7 @@ def _base_files(tmp_path):
 def test_submission_guard_passes_structure_but_stays_blocked(tmp_path):
     manuscript,title_page,contract=_base_files(tmp_path)
     result=inspect(manuscript,title_page,contract)
+    assert result["structural_checks"]["title_matches_submission_contract"] is True
     assert result["structural_checks"]["title_within_limit"] is True
     assert result["structural_checks"]["abstract_within_limit"] is True
     assert result["structural_checks"]["keywords_within_range"] is True
