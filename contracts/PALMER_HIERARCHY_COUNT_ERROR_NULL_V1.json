@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-palmer-hierarchy-count-error-null-v1",
   "date": "2026-09-28",
-  "status": "count_error_null_frozen_before_repository_result_receipt",
+  "status": "post_positive_observation_error_sensitivity_rules_frozen_after_issue_identification",
   "source": {
     "dataset": "Palmer LTER AdeliePenguinCensus",
     "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
@@ -10,8 +10,15 @@
   },
   "question": "Can independent subcolony counting error alone create an apparent within-island beta-variability signal as large as the observed hierarchical separation?",
   "eligible_units": {
-    "islands": ["COR", "HUM", "LIT"],
-    "years": [1991, 2017],
+    "islands": [
+      "COR",
+      "HUM",
+      "LIT"
+    ],
+    "years": [
+      1991,
+      2017
+    ],
     "reason": "Same stable-roster units as the frozen primary hierarchical decomposition."
   },
   "latent_complete_synchrony_null": {
@@ -23,28 +30,29 @@
   "error_models": [
     {
       "name": "poisson",
-      "multiplicative_cv": 0.0
+      "multiplicative_cv": 0
     },
     {
       "name": "gamma_poisson_cv10",
-      "multiplicative_cv": 0.10
+      "multiplicative_cv": 0.1
     },
     {
       "name": "gamma_poisson_cv20",
-      "multiplicative_cv": 0.20
+      "multiplicative_cv": 0.2
     }
   ],
-  "error_model_reuse": "Same Poisson and independent Gamma-Poisson multiplicative-CV families used in the frozen N_eff mechanical-coupling diagnostic.",
+  "error_model_reuse": "Same Poisson and independent Gamma-Poisson multiplicative-CV families used in the frozen N_eff mechanical-coupling diagnostic; the Gamma-Poisson CV values are sensitivity levels, not Palmer-specific observer-error estimates.",
   "simulation": {
     "replicates_per_error_model": 100000,
     "seed": 20260928,
     "batch_size": 2000
   },
   "primary_statistics": {
-    "raw_beta_within": "Wang-Loreau beta from colony-code units to islands.",
+    "raw_beta_within": "Wang-Loreau beta from all 25 colony-code units to the three island totals; one-sided Monte Carlo tail against the observed frozen value.",
     "raw_beta_among": "Wang-Loreau beta from islands to the three-island aggregate.",
     "raw_log_beta_contrast": "log(beta_within / beta_among); one-sided Monte Carlo tail against the observed frozen value.",
-    "raw_order_probability": "Null probability beta_within > beta_among."
+    "raw_order_probability": "Null probability beta_within > beta_among.",
+    "raw_all_three_order_probability": "Null probability that each of COR, HUM and LIT individually has within-island beta greater than the among-island beta."
   },
   "fixed_centered_sensitivities": {
     "linear_detrended_log1p": "Median within-island covariance beta divided by among-island covariance beta.",
@@ -52,14 +60,18 @@
     "boundary": "These are non-additive sensitivities only; they are not alpha/gamma decompositions."
   },
   "decision_rules": {
-    "measurement_error_robust_raw_hierarchy": "Observed raw log-beta contrast must be in the upper 5% tail under all three frozen error models.",
-    "centered_signal_robustness": "Centered-signal ratios are reported as fixed diagnostics, not promoted if compatible with the error-only null.",
+    "measurement_error_robust_raw_hierarchy": "Both observed raw beta_within and observed raw log-beta contrast must be in the upper 5% tail under all three frozen error models.",
+    "centered_signal_robustness": "Detrended and annual-growth median within/among ratios are reported as fixed diagnostics and are not promoted as rescue endpoints if compatible with the error-only null.",
     "no_model_tuning": "Do not add intermediate CV values, alternative fixed-share definitions, correlated-error structures, or extra transformations unless an external empirical error calibration is obtained."
   },
   "interpretation_boundary": [
-    "Failure under an error model does not prove that counting error caused the observed hierarchy.",
-    "Success under an error model does not calibrate actual Palmer observer error.",
+    "The Gamma-Poisson CV10% and CV20% models are uncalibrated sensitivities, not estimates of Palmer observer error.",
+    "Failure under CV20% does not prove that counting error caused the hierarchy; it means the current data cannot exclude that level of independent multiplicative error.",
+    "Passing Poisson or CV10% does not prove biological buffering.",
+    "Centered log1p and growth diagnostics are non-additive sensitivities and do not restore the exact Wang-Loreau alpha/beta/gamma identity.",
     "The diagnostic tests measurement-error robustness of the hierarchy, not the N_eff coefficient.",
-    "The raw additive abundance decomposition remains the only exact Wang-Loreau alpha/beta/gamma partition."
-  ]
+    "No new error models are opened without external empirical calibration."
+  ],
+  "motivation": "Independent census error among subcolonies can create apparent asynchrony that averages out when counts are summed. The error-model family is inherited unchanged from the frozen N_eff mechanical-coupling diagnostic.",
+  "positive_state_condition": "For a frozen positive island-year, redraw the full simulated subcolony count vector only if all simulated counts are zero, matching the known-positive-state conditioning in the N_eff error diagnostic."
 }

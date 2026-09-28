@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from mina.hierarchy_count_error import _raw_batch, _tail
+from mina.hierarchy_count_error import _draw_batch, _raw_batch, _tail
 
 
 def test_latent_proportional_subcolonies_have_beta_within_one():
@@ -39,3 +39,30 @@ def test_monte_carlo_tail_uses_plus_one_correction():
         0.5,
         abs_tol=1e-12,
     )
+
+
+
+def test_positive_state_draws_never_collapse_to_all_zero():
+    rng=np.random.default_rng(123)
+    state={}
+    for island in ("COR","HUM","LIT"):
+        totals=np.asarray([1.0,0.0,2.0])
+        latent=np.asarray([
+            totals*0.4,
+            totals*0.6,
+        ])
+        state[island]={
+            "latent_means":latent,
+            "island_totals":totals,
+        }
+    counts=_draw_batch(
+        state,
+        simulations=200,
+        multiplicative_cv=0.0,
+        rng=rng,
+    )
+    for island in ("COR","HUM","LIT"):
+        total=np.sum(counts[island],axis=1)
+        assert np.all(total[:,0]>0)
+        assert np.all(total[:,1]==0)
+        assert np.all(total[:,2]>0)
