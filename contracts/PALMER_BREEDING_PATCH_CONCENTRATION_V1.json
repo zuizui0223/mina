@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-breeding-patch-concentration-v1",
+  "date": "2026-09-28",
+  "status": "post_hoc_ecological_extension_frozen_before_repository_execution",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "expected_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "ecological_question": "As Adélie island populations decline, do breeders become increasingly concentrated among the remaining colony-code breeding components faster than expected from abundance decline and independent counting error alone?",
+  "motivation": {
+    "source": "Reviewer-style ecological audit after the hierarchy count-error result",
+    "external_context": "Independent Torgersen mapping documents contraction from 23 historic active subcolonies to five active footprints by 2022 and habitat-structured extinction.",
+    "confirmatory_status": "post_hoc_directional_ecological_extension; not preregistered"
+  },
+  "eligible_units": {
+    "islands": [
+      "COR",
+      "HUM",
+      "LIT"
+    ],
+    "years": [
+      1991,
+      2017
+    ],
+    "gate": "unchanged colony-code roster across the complete synchronized census",
+    "note": "Litchfield contributes only positive-total years to its concentration slope."
+  },
+  "metric": {
+    "name": "effective_colony_number",
+    "formula": "N_eff = (sum_j n_j)^2 / sum_j n_j^2 = 1 / sum_j p_j^2",
+    "observed_statistic": "OLS slope of annual N_eff against centered calendar year within each island, using years with positive observed island total.",
+    "direction": "more negative slope = progressive concentration of breeders into fewer/effectively dominant colony-code components"
+  },
+  "fixed_null": {
+    "latent_composition": "time-invariant pooled colony-code shares estimated from cumulative 1991-2017 breeding-pair counts within each island",
+    "annual_total": "observed island total retained as the latent annual total",
+    "interpretation": "No biological redistribution among colony-code components; all apparent N_eff change arises from the declining total and observation error.",
+    "implementation_reuse": "Same pooled latent state and Poisson / Gamma-Poisson error family as PALMER_HIERARCHY_COUNT_ERROR_NULL_V1."
+  },
+  "error_models": [
+    {
+      "name": "poisson",
+      "multiplicative_cv": 0
+    },
+    {
+      "name": "gamma_poisson_cv10",
+      "multiplicative_cv": 0.1
+    },
+    {
+      "name": "gamma_poisson_cv20",
+      "multiplicative_cv": 0.2
+    }
+  ],
+  "simulation": {
+    "replicates_per_error_model": 100000,
+    "seed": 20260928,
+    "batch_size": 2000,
+    "positive_island_years_conditioned_nonzero": true
+  },
+  "primary_inference": {
+    "island_tail": "one-sided probability that a fixed-composition/error-only draw has an N_eff slope <= the observed island slope",
+    "joint_tail": "one-sided probability that all three simulated island slopes are simultaneously <= their observed island-specific slopes",
+    "support_rule": "Each island-specific p <= 0.05 and the three-island joint p <= 0.05 under all three frozen error models."
+  },
+  "interpretation_boundary": [
+    "A supported result indicates progressive concentration/reorganization beyond simple abundance decline and the frozen independent count-error family.",
+    "It does not identify which physical nesting polygons were lost because colony codes are not crosswalked one-to-one to GIS subcolonies.",
+    "It does not identify snow, topography, predation, dispersal or habitat quality as the causal mechanism.",
+    "The external Torgersen spatial reconstruction is independent phenomenon-level triangulation, not identifier-level validation.",
+    "No alternate concentration index, time window, intermediate CV value, or colony-roster reconciliation may be introduced to rescue the endpoint."
+  ]
+}
