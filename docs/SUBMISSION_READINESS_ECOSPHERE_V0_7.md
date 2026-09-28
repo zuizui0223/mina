@@ -2,7 +2,7 @@
 
 ## Current status
 
-**Scientific content: READY at v0.7. Submission metadata: BLOCKED pending author confirmation. Word preview: PENDING v0.7 render QA.**
+**Scientific content: READY at v0.7. Word preview: QA PASSED. Submission metadata: BLOCKED pending author confirmation.**
 
 The scientific manuscript is `docs/MANUSCRIPT_ECOSPHERE_V0_7.md`. The previous v0.6 submission package is provenance only.
 
@@ -24,6 +24,9 @@ The scientific manuscript is `docs/MANUSCRIPT_ECOSPHERE_V0_7.md`. The previous v
 - Public code/reproducibility repository is available for peer review.
 
 ## Word Main Document
+
+The v0.7 preview has been rendered and visually inspected across all **35 pages**. Continuous line numbering runs **1–737**. Equations, count-error Methods/Results, references, AI disclosure, and Figure 1–5 captions render correctly. The source defects found during the first render (plain alpha/gamma/phi tokens and duplicated headings) were fixed and the document was re-rendered.
+
 
 The Word builder is version-agnostic and takes the manuscript title from the supplied H1. For v0.7 use:
 
