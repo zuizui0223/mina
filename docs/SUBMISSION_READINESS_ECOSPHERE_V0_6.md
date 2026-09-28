@@ -57,7 +57,9 @@ Before upload:
 - Double-spaced manuscript text, references, figure captions, and table captions/notes.
 - Left aligned, not fully justified.
 - Page numbering from the title page.
-- Continuous line numbering beginning after the title page and continuing through References.
+
+The detailed general-formatting subsection also describes numbering as starting after the title page; because the initial-submission checklist explicitly requires continuous line numbering on all pages, this package follows the stricter all-pages rule.
+- Continuous line numbering on **all manuscript pages**, including the title page, following the stricter initial-submission requirement in the September 2026 Ecosphere guidelines.
 - Abstract begins on a new page.
 - Tables, if any, begin on new pages in the Main Document.
 - Figure captions are grouped once in their own section.
