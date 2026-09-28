@@ -23,6 +23,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install pandas pyreadr
+      - name: Compile audit script
+        run: python -m py_compile scripts/audit_mapppd_observation_methods.py
       - name: Fetch pinned mapppdr
         run: |
           git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
