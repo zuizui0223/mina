@@ -18,6 +18,7 @@ The frozen scientific manuscript remains `docs/MANUSCRIPT_ECOSPHERE_V0_6.md`. Th
 - Primary external data sources already have permanent identifiers.
 - The reproducible Word preview has been generated and visually inspected across all **31 pages**: title-page separation, continuous all-page line numbering (**1–663**), page numbering, equations, materialized citations/references, AI disclosure, and Figure 1–5 captions all render correctly.
 - The public metadata template is `submission/ECOSPHERE_METADATA_TEMPLATE.json`; completed author/contact metadata should normally be kept in an untracked local copy rather than committed to the public repository.
+- Frozen ScholarOne copy/paste fields are in `submission/SCHOLARONE_COPY_FIELDS_ECOSPHERE_V0_6.md`.
 
 ## Required submission additions
 
