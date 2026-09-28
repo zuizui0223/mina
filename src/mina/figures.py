@@ -127,7 +127,7 @@ def figure3(data: Path, out: Path) -> None:
         axes[0].text(
             max(within[i], among[i]) + 0.004,
             i,
-            f"within share={100*float(r['within_log_beta_share']):.1f}%",
+            f"observed log-β share={100*float(r['within_log_beta_share']):.1f}%",
             va="center",
             fontsize=7.5,
         )
@@ -163,7 +163,7 @@ def figure3(data: Path, out: Path) -> None:
     axes[1].set_title("Independent count-error null")
     for i, r in enumerate(count_error):
         p = float(r["one_sided_p"])
-        label = "p<0.00001" if p < 0.00001 else f"p={p:.3f}"
+        label = "p=0.000010" if p < 0.00002 else f"p={p:.3f}"
         axes[1].text(
             i,
             max(uppers[i], observed) + 0.004,
