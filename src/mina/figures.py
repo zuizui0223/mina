@@ -105,7 +105,7 @@ def figure3(data: Path, out: Path) -> None:
     import matplotlib.pyplot as plt
 
     raw = _rows(data / "figure3_hierarchy_raw.csv")
-    pairwise = _rows(data / "figure3_hierarchy_pairwise.csv")
+    count_error = _rows(data / "figure3_hierarchy_count_error.csv")
 
     fig, axes = plt.subplots(1, 2, figsize=(12.4, 4.8))
 
@@ -132,34 +132,55 @@ def figure3(data: Path, out: Path) -> None:
             fontsize=7.5,
         )
 
-    x = np.arange(len(pairwise))
-    series = (
-        ("among_islands", "Among islands", "s", -0.18),
-        ("COR", "Cormorant", "o", -0.06),
-        ("HUM", "Humble", "^", 0.06),
-        ("LIT", "Litchfield", "D", 0.18),
+    x = np.arange(len(count_error))
+    means = np.asarray(
+        [float(r["null_mean_log_beta_contrast"]) for r in count_error]
     )
-    for key, label, marker, offset in series:
-        axes[1].scatter(
-            x + offset,
-            [float(r[key]) for r in pairwise],
-            marker=marker,
-            s=46,
-            label=label,
-        )
+    uppers = np.asarray(
+        [float(r["null_q975_log_beta_contrast"]) for r in count_error]
+    )
+    observed = float(count_error[0]["observed_log_beta_contrast"])
+    axes[1].scatter(x, means, s=54, label="Null mean")
+    axes[1].scatter(
+        x,
+        uppers,
+        marker="_",
+        s=180,
+        label="Null 97.5th percentile",
+    )
+    axes[1].vlines(x, means, uppers, linewidth=1.1)
+    axes[1].axhline(
+        observed,
+        linestyle="--",
+        linewidth=1.1,
+        label="Observed contrast",
+    )
     axes[1].set_xticks(
         x,
-        ["Raw\nabundance", "Detrended\nlog1p", "Annual\nlog1p growth"],
+        [r["label"].replace("Gamma-Poisson ", "GP\n") for r in count_error],
     )
-    axes[1].set_ylabel("Mean pairwise Pearson r")
-    axes[1].set_title("Component-count audit")
-    axes[1].axhline(0.0, linewidth=0.8)
-    axes[1].set_ylim(-0.15, 1.05)
+    axes[1].set_ylabel("log(βwithin / βamong)")
+    axes[1].set_title("Independent count-error null")
+    for i, r in enumerate(count_error):
+        p = float(r["one_sided_p"])
+        label = "p<0.00001" if p < 0.00001 else f"p={p:.3f}"
+        axes[1].text(
+            i,
+            max(uppers[i], observed) + 0.004,
+            label,
+            ha="center",
+            va="bottom",
+            fontsize=8,
+        )
+    axes[1].set_ylim(
+        0,
+        max(float(np.max(uppers)), observed) + 0.025,
+    )
     axes[1].legend(
         frameon=False,
         loc="upper center",
         bbox_to_anchor=(0.5, -0.16),
-        ncol=2,
+        ncol=1,
         fontsize=8,
     )
 
