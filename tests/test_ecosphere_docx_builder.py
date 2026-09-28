@@ -16,13 +16,14 @@ _strip_submission_source = module._strip_submission_source
 _normalize_submission_markdown = module._normalize_submission_markdown
 _strip_caption_heading = module._strip_caption_heading
 _combined_markdown = module._combined_markdown
+_extract_title = module._extract_title
 _add_line_numbering = module._add_line_numbering
 
 
 def test_strip_source_removes_submission_duplicates_and_adds_ai_disclosure():
     text = """# A title
 
-**Ecosphere-oriented manuscript v0.6 — provenance**
+**Ecosphere-oriented manuscript v0.7 — provenance**
 
 ## Abstract
 
@@ -68,7 +69,7 @@ def test_normalize_submission_markdown_replaces_underbrace_and_old_repo_text():
 
 
 def test_strip_caption_heading_preserves_figure_1():
-    raw = """# Figure captions v5
+    raw = """# Figure captions v6
 
 ## Figure 1. First figure
 
@@ -77,7 +78,7 @@ Caption body.
 ## Figure 2. Second figure
 """
     out = _strip_caption_heading(raw)
-    assert "Figure captions v5" not in out
+    assert "Figure captions v6" not in out
     assert "## Figure 1. First figure" in out
     assert "## Figure 2. Second figure" in out
 
@@ -99,7 +100,7 @@ Frozen.
 
 See docs/REFERENCES_V4.bib.
 """
-    captions = """# Figure captions v5
+    captions = """# Figure captions v6
 
 ## Figure 1. First figure
 
@@ -153,3 +154,8 @@ def test_line_numbering_is_continuous():
     assert node.get(qn("w:countBy")) == "1"
     assert node.get(qn("w:start")) == "0"
     assert node.get(qn("w:restart")) == "continuous"
+
+
+def test_extract_title_is_dynamic():
+    manuscript = "# New manuscript title\n\n## Abstract\nText."
+    assert _extract_title(manuscript) == "New manuscript title"
