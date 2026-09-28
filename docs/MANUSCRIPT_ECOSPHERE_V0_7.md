@@ -100,7 +100,7 @@ where \(N_t\) is the observed island total. This construction forces all latent 
 
 We added independent observation error using the same fixed families used in the N_eff mechanical-coupling diagnostic: Poisson sampling and Gamma–Poisson sampling with 10% or 20% independent multiplicative coefficient of variation. We ran **100,000** simulations per error model. The primary statistic was the raw additive-scale contrast \(\log(\beta_{within}/\beta_{among})\). Fixed secondary diagnostics compared the observed median within-island/among-island covariance-beta ratio after linear detrending of \(\log(1+N)\) and after annual \(\log(1+N)\) growth. These error models are stylized sensitivity models, not calibrated Palmer observer-error distributions; the public census archive does not provide record-level error estimates. We therefore did not tune additional CV values or alternative latent-composition definitions after seeing the result.
 
-### Post-positive uncertainty and count-error diagnostics
+### N_eff post-positive uncertainty and count-error diagnostics
 
 Because the original effective-colony analysis produced only a small held-out error reduction, we froze an uncertainty diagnostic before using the result as a manuscript pillar. We kept next-year growth, current abundance, island identity and year fixed and permuted only effective colony number as synchronized start-year blocks. Donor values came from the same island in another year, with a common donor-year mapping across islands; years were stratified mechanically by island availability so the five-island pre-extinction phase was not mixed with the four-island post-Litchfield phase. We repeated the exact leave-one-end-year-out C0/C1 pipeline for 20,000 permutations. The primary statistic was \(\Delta\mathrm{MSE}=\mathrm{MSE}(C0)-\mathrm{MSE}(C1)\).
 
@@ -208,7 +208,7 @@ Five neighbouring Adélie breeding islands underwent a strongly coherent multi-d
 
 ## Data availability
 
-The primary Palmer LTER Adélie penguin census is publicly archived at DOI 10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e. The sea-ice and Palmer Station weather sources used in the bounded mechanism tests are publicly archived at DOI 10.6073/pasta/4207e529832840db2282498d9f4f4f05 and DOI 10.6073/pasta/3eefb45dbfb784c3cabe3690ea46fe9e, respectively. Broader penguin assembly data are available through APBP/MAPPPD [@checastaldo2023]. Analysis code, frozen endpoint contracts, result receipts and figure-building scripts will be supplied as an anonymized repository snapshot for peer review and archived with a permanent DOI on acceptance.
+The primary Palmer LTER Adélie penguin census is publicly archived at DOI 10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e. The sea-ice and Palmer Station weather sources used in the bounded mechanism tests are publicly archived at DOI 10.6073/pasta/4207e529832840db2282498d9f4f4f05 and DOI 10.6073/pasta/3eefb45dbfb784c3cabe3690ea46fe9e, respectively. Broader penguin assembly data are available through APBP/MAPPPD [@checastaldo2023]. Novel analysis code, frozen endpoint contracts, result receipts and figure-building scripts are publicly accessible for peer review at https://github.com/zuizui0223/mina. If accepted, the exact code and derived-output release will be archived in a permanent repository with a DOI.
 
 ## References
 
