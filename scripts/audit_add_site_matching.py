@@ -197,6 +197,7 @@ def _download_all_land(
             outFields="*",
             returnGeometry="true",
             outSR=3031,
+            maxAllowableOffset=1,
         )
         if spatial_reference is None:
             spatial_reference = data.get("spatialReference")
@@ -386,6 +387,7 @@ def audit(root: Path) -> dict:
         "scar_add_fields": fields,
         "downloaded_land_polygon_count": len(geoms),
         "geometry_transport": "esri_json_native_epsg3031",
+        "geometry_generalization_m": 1,
         "repaired_invalid_polygon_count": repaired,
         "raw_native_coordinate_bounds_m": raw_bounds,
         "native_spatial_reference": native_spatial_reference,
