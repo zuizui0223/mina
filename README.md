@@ -18,15 +18,22 @@ Across the complete 1991–2017 five-island Palmer LTER panel:
 - Litchfield reaches local extinction while four neighboring islands persist at
   low abundance through 2017.
 
-The nested variability analysis separates this **state hierarchy** from the
-scale of temporal compensation. In the three islands with unchanged
-colony-code rosters (Cormorant, Humble and Litchfield), raw Wang–Loreau beta
-variability is **1.0737** from subcolonies to islands but only **1.0112** from
-islands to the archipelago; **86.4%** of the total additive log-beta transition
-occurs at the within-island step. The ordering remains before Litchfield
-extinction, after removing Litchfield, after linear detrending and for annual
-log growth. Across all five island totals, raw beta is only **1.0137**, so the
-shared long-term decline leaves little temporal compensation among islands.
+The nested variability analysis reveals an **observed** scale hierarchy, but
+the biological interpretation is measurement-error sensitive. In the three
+islands with unchanged colony-code rosters (Cormorant, Humble and Litchfield),
+raw Wang–Loreau beta variability is **1.0737** from colony-code components to
+islands and **1.0112** from islands to the three-island aggregate; **86.4%** of
+the observed additive log-beta transition lies at the lower step.
+
+A fully synchronous-subcolony count-error null changes the inference. The raw
+hierarchy is far above independent Poisson and inherited Gamma–Poisson CV10%
+expectations (100,000 simulations; both primary one-sided p values
+**0.000010**), but is compatible with the uncalibrated CV20% sensitivity
+(beta-within **p = 0.924**; log-contrast **p = 0.448**). Detrended and
+annual-growth contrasts are also compatible with error-only nulls and are not
+used as rescue endpoints. The hierarchy is therefore a real property of the
+observed census table, but it is **not identified as biological temporal
+buffering across the full frozen error family**.
 
 Finite prospective tests did **not** support simple positive annual sea-ice
 duration, 3/5/7-year sea-ice-duration rescue, or October snowfall × static
@@ -64,52 +71,55 @@ Direct biotic interactions are not assumed absent. They are treated as
 localized and testable rather than as the default explanation for whole-island
 trajectories.
 
-## Submission status after hierarchy and N_eff robustness diagnostics
+## Submission status after hierarchy count-error audit
 
-**JAE submission remains paused.** The frozen 20,000-replicate year-block
-permutation shows that the observed held-out MSE gain (+0.00103) is not unusual
-(one-sided **p = 0.262**; observed percentile **73.8%**). The subsequent serial-structure correction shows that the +0.1168 coefficient
-remains extreme under autocorrelation-preserving circular shifts and under the
-same fixed count-error sensitivities rebuilt on that structured topology null.
-This addresses the spurious-regression concern without restoring the failed
-predictive claim.
+**Ecosphere packaging is paused at v0.7 pending final scientific QA and author
+metadata.** The observed sub-island beta hierarchy survives Poisson and CV10%
+count-error sensitivities but not the inherited, uncalibrated CV20% scenario.
+It is therefore retained as a scale-explicit descriptive pattern with an
+identification boundary, not as a demonstrated buffering mechanism.
 
-The main positive result is now the **hierarchical separation of demographic
-state and temporal compensation**. The N_eff result remains complementary:
-association without robust out-of-year prediction. The current manuscript is
-**v0.6**, with **Ecosphere as the recommended first shot** and **Ecology and
-Evolution as fallback**. v0.5 and the archived JAE v0.3/v0.3.1 files remain
-provenance only.
+Effective colony number is now deliberately separated from the beta hierarchy.
+Its standardized coefficient remains **+0.1126** after two lagged growth terms
+and remains unusual under frozen serial-structure and count-error nulls, while
+its incremental held-out predictive gain is only **+0.000444** and the original
+gain is null-compatible (**p = 0.262**). The defensible claim is a weak,
+robust conditional association rather than prediction, causation, or early
+warning.
+
+The current scientific draft is **Ecosphere-oriented v0.7**. v0.6 and earlier
+submission files remain immutable provenance.
 
 ## Development state
 
-Core same-census endpoint development is **closed at v0.6**. The repository
-terminal rule forbids opening additional hierarchy metrics, beta definitions,
-colony-roster reconciliations, climate windows, precipitation months,
-colony-size thresholds or topology indices for the core paper.
+Core same-census endpoint development is **closed at v0.7**. The repository
+terminal rule forbids adding intermediate count-error CV values, alternate beta
+definitions, transformed rescue endpoints, colony-roster reconciliations,
+climate windows, precipitation months, colony-size thresholds or topology
+indices for the core paper.
 
-Current work is limited to:
+Current scientific work is limited to evidence that changes identifiability:
 
-- external validation / spatial crosswalk resolution;
-- figure and reproducibility packaging;
-- manuscript prose, citations and submission materials.
+- external calibration of Palmer replicate-observer count error;
+- colony-code / GIS spatial crosswalk resolution;
+- replication in another monitored archipelago;
+- figure, reproducibility and submission packaging.
 
-The current scientific draft is **Ecosphere-oriented v0.6**. PC1/synchrony
-remains descriptive context within established scale-dependent synchrony
-theory; the positive ecological contribution is the nested
-subcolony–island–archipelago variability result. N_eff is retained only as a
-conditional association and now includes the frozen one- and two-year
-demographic-momentum sensitivities.
+The current scientific draft is **Ecosphere-oriented v0.7**. PC1/synchrony is
+descriptive context; nested beta is an observed scale pattern with an explicit
+count-error boundary; N_eff is retained as a separate weak conditional
+association.
 
 See:
 
-- `docs/MANUSCRIPT_ECOSPHERE_V0_6.md`
-- `docs/MANUSCRIPT_SPINE_V5.md`
-- `docs/FIGURE_CAPTIONS_V5.md`
-- `docs/REFERENCES_V4.bib`
-- `docs/HIERARCHICAL_VARIABILITY_EXTENSION_V1.md`
+- `docs/MANUSCRIPT_ECOSPHERE_V0_7.md`
+- `docs/MANUSCRIPT_SPINE_V6.md`
+- `docs/FIGURE_CAPTIONS_V6.md`
+- `docs/REFERENCES_V5.bib`
+- `results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json`
 - `results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json`
 - `results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json`
+- `docs/MANUSCRIPT_ECOSPHERE_V0_6.md` (provenance)
 - `docs/MANUSCRIPT_ECOSPHERE_V0_5.md` (provenance)
 - `docs/JOURNAL_FIT_V3.md`
 - `docs/JOURNAL_FIT_V2.md` (pre-circular-shift journal-fit record)

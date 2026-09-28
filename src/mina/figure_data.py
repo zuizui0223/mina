@@ -48,6 +48,7 @@ RESULT_FILES = {
     "neff_circular_coupling": "PALMER_NEFF_CIRCULAR_COUPLING_RESULT_V1.json",
     "hierarchy": "PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json",
     "hierarchy_component_audit": "PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json",
+    "hierarchy_count_error": "PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json",
 }
 
 
@@ -313,6 +314,54 @@ def _figure3_hierarchy(
         )
     return raw, pairwise
 
+
+def _figure3_count_error(
+    receipt: dict,
+) -> list[dict[str, object]]:
+    labels = (
+        ("poisson", "Poisson"),
+        ("gamma_poisson_cv10", "Gamma-Poisson CV10%"),
+        ("gamma_poisson_cv20", "Gamma-Poisson CV20%"),
+    )
+    observed = float(receipt["observed"]["raw_log_beta_contrast"])
+    rows: list[dict[str, object]] = []
+    for key, label in labels:
+        item = receipt["error_models"][key]
+        rows.append(
+            {
+                "error_model": key,
+                "label": label,
+                "multiplicative_cv": (
+                    0.0 if key == "poisson"
+                    else 0.10 if key.endswith("cv10")
+                    else 0.20
+                ),
+                "observed_log_beta_contrast": observed,
+                "null_mean_log_beta_contrast": float(
+                    item["raw_log_beta_contrast_null_mean"]
+                ),
+                "null_q975_log_beta_contrast": float(
+                    item["raw_log_beta_contrast_null_q_0_975"]
+                ),
+                "one_sided_p": float(
+                    item["raw_log_beta_contrast_p"]
+                ),
+                "observed_beta_within": float(
+                    receipt["observed"]["raw_beta_within"]
+                ),
+                "null_mean_beta_within": float(
+                    item["raw_beta_within_null_mean"]
+                ),
+                "null_q975_beta_within": float(
+                    item["raw_beta_within_null_q_0_975"]
+                ),
+                "beta_within_one_sided_p": float(
+                    item["raw_beta_within_p"]
+                ),
+            }
+        )
+    return rows
+
 def _figure3_mechanisms(r: dict[str, dict]) -> list[dict[str, object]]:
     sea = r["seaice"]["primary_result"]
     time = r["timescale"]["primary_K5"]
@@ -529,6 +578,9 @@ def build(
     fig3_raw, fig3_pairwise = _figure3_hierarchy(
         results["hierarchy"], results["hierarchy_component_audit"]
     )
+    fig3_count_error = _figure3_count_error(
+        results["hierarchy_count_error"]
+    )
     fig4 = _figure3_mechanisms(results)
     fig5_states, fig5_transitions, fig5_external, topology_slope = (
         _figure4_tables(census_csv, results["colony"], results["spatial"])
@@ -559,6 +611,10 @@ def build(
     _write_csv(out / "figure2_pairwise_synchrony.csv", fig2_pairs)
     _write_csv(out / "figure3_hierarchy_raw.csv", fig3_raw)
     _write_csv(out / "figure3_hierarchy_pairwise.csv", fig3_pairwise)
+    _write_csv(
+        out / "figure3_hierarchy_count_error.csv",
+        fig3_count_error,
+    )
     _write_csv(out / "figure4_mechanism_audit.csv", fig4)
     _write_csv(out / "figure5_colony_states.csv", fig5_states)
     _write_csv(out / "figure5_colony_transitions.csv", fig5_transitions)
@@ -580,6 +636,7 @@ def build(
             "figure2_pairwise_synchrony": len(fig2_pairs),
             "figure3_hierarchy_raw": len(fig3_raw),
             "figure3_hierarchy_centered": len(fig3_pairwise),
+            "figure3_hierarchy_count_error": len(fig3_count_error),
             "figure4_mechanism_audit": len(fig4),
             "figure5_colony_states": len(fig5_states),
             "figure5_colony_transitions": len(fig5_transitions),
@@ -606,6 +663,16 @@ def build(
                 results["hierarchy_component_audit"]["decision"][
                     "hierarchy_not_explained_only_by_more_within_island_units"
                 ]
+            ),
+            "hierarchy_count_error_robust_all_models": bool(
+                results["hierarchy_count_error"]["decision"][
+                    "raw_hierarchy_measurement_error_robust"
+                ]
+            ),
+            "hierarchy_count_error_cv20_contrast_p": float(
+                results["hierarchy_count_error"]["error_models"][
+                    "gamma_poisson_cv20"
+                ]["raw_log_beta_contrast_p"]
             ),
             "conditional_effective_colony_slope": topology_slope,
             "effective_colony_gain_permutation_p": neff_perm_p,

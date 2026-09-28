@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-ecosphere-manuscript-v0.7",
+  "date": "2026-09-28",
+  "status": "count_error_boundary_integrated",
+  "parent_manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_6.md",
+  "manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_7.md",
+  "bibliography": "docs/REFERENCES_V5.bib",
+  "captions": "docs/FIGURE_CAPTIONS_V6.md",
+  "central_contribution": "Regional decline and island-level endpoints are strongly differentiated across scales; the observed sub-island variability hierarchy exceeds low-to-moderate independent count-error expectations but is not identifiable as biological buffering under the full inherited error-sensitivity family, while N_eff remains a separate weak but structured-null- and count-error-robust conditional association.",
+  "required_hierarchy_results": {
+    "stable_roster_islands": [
+      "COR",
+      "HUM",
+      "LIT"
+    ],
+    "beta_within_islands": 1.0737035331938372,
+    "beta_among_islands": 1.0112310830110414,
+    "beta_total": 1.0857623867043855,
+    "within_log_beta_share": 0.8642664462053955,
+    "status": "observed_descriptive_pattern"
+  },
+  "required_hierarchy_count_error_boundary": {
+    "result": "results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json",
+    "simulations_per_error_model": 100000,
+    "poisson_beta_within_p": 0.00000999990000099999,
+    "poisson_contrast_p": 0.00000999990000099999,
+    "cv10_beta_within_p": 0.00000999990000099999,
+    "cv10_contrast_p": 0.00000999990000099999,
+    "cv20_beta_within_p": 0.924250757492425,
+    "cv20_contrast_p": 0.44753552464475355,
+    "poisson_detrended_ratio_p": 0.05358946410535895,
+    "poisson_growth_ratio_p": 0.44721552784472157,
+    "cv20_detrended_ratio_p": 0.1906280937190628,
+    "cv20_growth_ratio_p": 0.5299647003529965,
+    "raw_hierarchy_measurement_error_robust": false,
+    "raw_hierarchy_unusual_under_poisson_and_cv10": true,
+    "centered_signals_are_not_rescue_endpoints": true,
+    "cv20_is_uncalibrated_sensitivity": true
+  },
+  "required_protocol_context": {
+    "repeated_independent_counts": true,
+    "minimum_counts_per_colony": 3,
+    "typical_between_count_target_percent": 5,
+    "large_colony_target_percent": 10,
+    "large_colony_threshold_pairs": 1000,
+    "record_level_replicate_errors_available_in_analysis_table": false,
+    "source": "Patterson 2001 Palmer/Torgersen protocol description; CCAMLR CEMP context"
+  },
+  "required_neff_boundary": {
+    "coefficient": 0.11679896749684501,
+    "lag1_lag2_conditioned_coefficient": 0.11260540832528995,
+    "lag1_lag2_beta_fraction_of_original": 0.9640959225802374,
+    "lag1_lag2_loyo_gain": 0.000444125252832564,
+    "lag1_lag2_independent_circular_p": 0.001019989800101999,
+    "lag1_lag2_joint_exact_p": 0.01201923076923077,
+    "year_block_predictive_p": 0.262,
+    "max_frozen_count_error_p": 0.0078,
+    "predictive_claim": false,
+    "causal_claim": false,
+    "early_warning_claim": false
+  },
+  "prohibited_interpretations": [
+    "most detectable temporal compensation occurs within islands",
+    "the hierarchy is measurement-error robust",
+    "detrended or annual-growth beta rescues the hierarchy",
+    "Gamma-Poisson CV20% estimates actual Palmer observer error",
+    "beta variability proves causal spatial insurance",
+    "N_eff is a supported predictor",
+    "N_eff measures spatial insurance",
+    "component-count audit addresses observation error",
+    "86.4 percent is a causal mechanism fraction"
+  ],
+  "required_language_boundaries": [
+    "observed nested variability",
+    "uncalibrated 20% sensitivity",
+    "cannot identify biological buffering from beta variability alone",
+    "replicate-count uncertainty is unavailable",
+    "separate conditional state signal"
+  ],
+  "versioning": {
+    "v0_6_remains_immutable_provenance": true,
+    "cwm_extension_promoted": false
+  },
+  "figure_package": {
+    "figure_count": 5,
+    "hierarchy_figure": "Figure 3",
+    "hierarchy_error_null_in_figure3": true,
+    "component_count_audit_in_main_figure": false,
+    "mechanism_audit_figure": "Figure 4",
+    "colony_organization_figure": "Figure 5"
+  },
+  "title": "Hierarchical demography of Antarctic penguin breeding islands: divergent fate and measurement-sensitive buffering",
+  "references_required": [
+    "santinjanin2014",
+    "loreau2021",
+    "patterson2001",
+    "ccamlr2014"
+  ]
+}
