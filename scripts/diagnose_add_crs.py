@@ -31,6 +31,25 @@ def first_coord(geometry):
     return None
 
 
+def geometry_bounds(geometry):
+    coords = [
+        coord[:2]
+        for ring in ((geometry or {}).get("rings") or [])
+        for coord in ring
+        if len(coord) >= 2
+    ]
+    if not coords:
+        return None
+    xs = [float(x) for x, _ in coords]
+    ys = [float(y) for _, y in coords]
+    return {
+        "min_x": min(xs),
+        "min_y": min(ys),
+        "max_x": max(xs),
+        "max_y": max(ys),
+    }
+
+
 def _load_sites(root: Path):
     data = pyreadr.read_r(str(root / "data" / "sites.rda"))
     if "sites" in data:
@@ -138,6 +157,70 @@ def main():
             "queries": probes,
         }
 
+    known_fids = []
+    for rec in known.values():
+        if not isinstance(rec, dict):
+            continue
+        query = ((rec.get("queries") or {}).get("intersect") or {})
+        attrs = query.get("sample_attributes") or []
+        if attrs and attrs[0].get("FID") is not None:
+            known_fids.append(int(attrs[0]["FID"]))
+    known_fids = sorted(set(known_fids))
+
+    single_fid_geometry = {}
+    for fid in known_fids:
+        d = get(
+            SERVICE_URL + "/query",
+            f="json",
+            objectIds=str(fid),
+            outFields="FID,surface",
+            returnGeometry="true",
+            outSR=3031,
+        )
+        feat = d["features"][0]
+        geom = feat.get("geometry")
+        single_fid_geometry[str(fid)] = {
+            "response_spatial_reference": d.get("spatialReference"),
+            "first_coord": first_coord(geom),
+            "bounds": geometry_bounds(geom),
+        }
+
+    batch_fid_geometry = {}
+    if known_fids:
+        d = get(
+            SERVICE_URL + "/query",
+            f="json",
+            objectIds=",".join(str(fid) for fid in known_fids),
+            outFields="FID,surface",
+            returnGeometry="true",
+            outSR=3031,
+        )
+        for feat in d.get("features", []):
+            attrs = feat.get("attributes") or {}
+            fid = attrs.get("FID")
+            geom = feat.get("geometry")
+            batch_fid_geometry[str(fid)] = {
+                "response_spatial_reference": d.get("spatialReference"),
+                "first_coord": first_coord(geom),
+                "bounds": geometry_bounds(geom),
+            }
+
+    transport_comparison = {}
+    for fid in known_fids:
+        key = str(fid)
+        one = single_fid_geometry.get(key)
+        many = batch_fid_geometry.get(key)
+        same_first_coord = (
+            one is not None
+            and many is not None
+            and one.get("first_coord") == many.get("first_coord")
+        )
+        transport_comparison[key] = {
+            "single": one,
+            "batch": many,
+            "same_first_coord": same_first_coord,
+        }
+
     out = {
         "layer_name": meta.get("name"),
         "extent": meta.get("extent"),
@@ -147,6 +230,7 @@ def main():
         "object_id": oid,
         "samples": samples,
         "known_site_service_queries": known,
+        "known_fid_geometry_transport": transport_comparison,
     }
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
