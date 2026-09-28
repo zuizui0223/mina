@@ -31,10 +31,6 @@ from mina.ecosphere_submission_metadata import (
     require_complete_metadata,
 )
 
-TITLE = (
-    "Common decline, divergent endpoints: hierarchical demography across "
-    "Antarctic penguin breeding islands"
-)
 MARKER = "[[SECTION_BREAK_AFTER_TITLE]]"
 
 OPEN_RESEARCH = (
@@ -105,6 +101,16 @@ CURRENT_DATA_AVAILABILITY = (
 )
 
 
+def _extract_title(text: str) -> str:
+    first = text.splitlines()[0] if text.splitlines() else ""
+    if not first.startswith("# "):
+        raise ValueError("manuscript must begin with an H1 title")
+    title = first[2:].strip()
+    if not title:
+        raise ValueError("empty manuscript title")
+    return title
+
+
 def _normalize_submission_markdown(text: str) -> str:
     """Normalize Markdown constructs that do not round-trip cleanly to DOCX."""
     text = text.replace(
@@ -132,7 +138,7 @@ def _strip_submission_source(text: str) -> str:
     for index, line in enumerate(lines):
         if index == 0 and line.startswith("# "):
             continue
-        if line.startswith("**Ecosphere-oriented manuscript v0.6"):
+        if line.startswith("**Ecosphere-oriented manuscript v0."):
             continue
         if line.startswith("**Keywords:**"):
             continue
@@ -228,6 +234,7 @@ def _combined_markdown(
     captions: str,
     metadata: dict[str, object] | None = None,
 ) -> str:
+    title_text = _extract_title(manuscript)
     body = _strip_submission_source(manuscript)
     caption_body = _strip_caption_heading(captions)
     blocks=_metadata_blocks(metadata)
@@ -248,7 +255,7 @@ def _combined_markdown(
 
 Article — Animal Ecology
 
-# {TITLE}
+# {title_text}
 
 **Authors:** {blocks["authors"]}
 
@@ -401,7 +408,7 @@ def _split_title_section(doc: Document) -> None:
     _add_line_numbering(body_sect_pr)
 
 
-def _apply_word_format(doc: Document) -> None:
+def _apply_word_format(doc: Document, title_text: str) -> None:
     for section in doc.sections:
         _set_section_layout(section)
 
@@ -440,7 +447,7 @@ def _apply_word_format(doc: Document) -> None:
         _add_line_numbering(section._sectPr)
 
     props = doc.core_properties
-    props.title = TITLE
+    props.title = title_text
     props.subject = "Ecosphere Article submission preview"
     props.author = ""
     props.last_modified_by = ""
@@ -461,6 +468,7 @@ def build(
         metadata=load_metadata(metadata_path)
         if require_complete:
             require_complete_metadata(metadata)
+    title_text = _extract_title(manuscript)
     source = _combined_markdown(manuscript, captions, metadata=metadata)
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -485,7 +493,7 @@ def build(
         _split_title_section(doc)
         doc.save(tmpdir / "split.docx")
         doc = Document(tmpdir / "split.docx")
-        _apply_word_format(doc)
+        _apply_word_format(doc, title_text)
         out_path.parent.mkdir(parents=True, exist_ok=True)
         doc.save(out_path)
 
