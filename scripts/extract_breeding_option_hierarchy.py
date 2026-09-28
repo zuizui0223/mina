@@ -208,8 +208,8 @@ def main()->int:
         "decision":{
             "tier2_richness_primary":bool(r_rich_shan is None or abs(r_rich_shan)>=0.8),
             "tier2_shannon_sensitivity_only":bool(r_rich_shan is not None and abs(r_rich_shan)>=0.8),
-            "tier3_sensitivity_only":true,
-            "tier1_context_only":true
+            "tier3_sensitivity_only":True,
+            "tier1_context_only":True
         },
         "derived_csv":a.out_csv.name,
         "boundary":[
