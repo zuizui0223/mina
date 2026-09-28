@@ -223,6 +223,10 @@ def audit(root: Path) -> dict:
     sites = _candidate_sites(root)
     session = _session()
     layer_url, meta = _discover_layer(session)
+    field_names = [str(f.get("name", "")) for f in meta.get("fields", [])]
+    surface_field = next(
+        name for name in field_names if name.lower() == "surface"
+    )
     geoms, attrs = _download_land_polygons(session, layer_url, meta, sites)
     tree = STRtree(geoms)
     transformer = Transformer.from_crs(4326, 3031, always_xy=True)
