@@ -32,7 +32,7 @@ jobs:
           python scripts/audit_add_site_matching_v3.py \
             --mapppdr-dir build/mapppdr \
             --out build/add_site_match_audit_v3.json \
-            --delay-s 1.10
+            --delay-s 0.10
       - uses: actions/upload-artifact@v4
         if: always()
         with:
