@@ -60,6 +60,24 @@ jobs:
           ).read_text())
 
           title=manuscript.splitlines()[0].removeprefix("# ").strip()
+          expected_title=(
+              "Hierarchical demography of Antarctic penguin breeding islands: "
+              "divergent fate and measurement-sensitive buffering"
+          )
+          if title != expected_title:
+              raise SystemExit(f"unexpected v0.7 title: {title}")
+          for path,text_value in (
+              ("manuscript",manuscript),
+              ("captions",captions),
+          ):
+              bad=[
+                  ord(ch) for ch in text_value
+                  if ord(ch)<32 and ch not in "\n\r\t"
+              ]
+              if bad:
+                  raise SystemExit(
+                      f"{path} contains control characters: {bad}"
+                  )
           abstract=manuscript.split("## Abstract",1)[1].split(
               "**Keywords:**",1
           )[0]
@@ -106,10 +124,20 @@ jobs:
                   f"v0.7 forbidden legacy claims present: {found}"
               )
 
-          for cite in ("@patterson2001","@ccamlr2014"):
+          for cite in (
+              "@patterson2001",
+              "@ccamlr2014",
+              "@santinjanin2014",
+              "@loreau2021",
+          ):
               if cite not in manuscript:
-                  raise SystemExit(f"missing protocol citation {cite}")
-          for entry in ("patterson2001","ccamlr2014"):
+                  raise SystemExit(f"missing required citation {cite}")
+          for entry in (
+              "patterson2001",
+              "ccamlr2014",
+              "santinjanin2014",
+              "loreau2021",
+          ):
               if "{"+entry+"," not in bibliography:
                   raise SystemExit(f"missing bibliography entry {entry}")
 
