@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
 """Outcome-blind APBP site-to-SCAR-ADD land-polygon matching audit.
 
-Gate 1A deliberately uses server-side point-distance queries only. Polygon
-geometry is not downloaded until the matching tolerance itself is frozen.
+Gate 1A downloads the complete SCAR ADD v7.12 land layer through simple
+paginated attribute queries, then performs all distance calculations locally
+in EPSG:3031. No penguin demographic outcome is used.
 """
 from __future__ import annotations
 
 import argparse
-import concurrent.futures
 import json
 from pathlib import Path
 
 import pandas as pd
 import pyreadr
 import requests
+from pyproj import Transformer
 from requests.adapters import HTTPAdapter
+from shapely.geometry import Point, shape
+from shapely.ops import transform as shapely_transform
+from shapely.strtree import STRtree
 from urllib3.util.retry import Retry
 
 PINNED_MAPPPDR_COMMIT = "88c73a507e0921b2541c218c71eaf16721bc6502"
@@ -45,7 +49,7 @@ def _session() -> requests.Session:
         total=6,
         backoff_factor=0.8,
         status_forcelist=(429, 500, 502, 503, 504),
-        allowed_methods=("GET", "POST"),
+        allowed_methods=("GET",),
         respect_retry_after_header=True,
     )
     session.mount("https://", HTTPAdapter(max_retries=retry))
@@ -54,7 +58,7 @@ def _session() -> requests.Session:
 
 
 def _get_json(session: requests.Session, url: str, **params):
-    response = session.get(url, params=params, timeout=60)
+    response = session.get(url, params=params, timeout=120)
     response.raise_for_status()
     data = response.json()
     if "error" in data:
@@ -106,98 +110,136 @@ def _candidate_sites(root: Path) -> pd.DataFrame:
     return out[["site_id", "site_name", "region", "latitude", "longitude"]]
 
 
-def _count_land(
+def _download_all_land(
     session: requests.Session,
     layer_url: str,
     surface_field: str,
-    longitude: float,
-    latitude: float,
-    distance_m: int,
-) -> int:
-    geometry = json.dumps(
-        {
-            "x": float(longitude),
-            "y": float(latitude),
-            "spatialReference": {"wkid": 4326},
-        }
+    object_id_field: str,
+    page_size: int = 250,
+) -> tuple[list, list[dict], int]:
+    count_data = _get_json(
+        session,
+        f"{layer_url}/query",
+        f="json",
+        where=f"{surface_field}='land'",
+        returnCountOnly="true",
     )
-    params = {
-        "f": "json",
-        "where": f"{surface_field}='land'",
-        "geometry": geometry,
-        "geometryType": "esriGeometryPoint",
-        "inSR": 4326,
-        "spatialRel": "esriSpatialRelIntersects",
-        "returnCountOnly": "true",
-    }
-    if distance_m > 0:
-        params["distance"] = distance_m
-        params["units"] = "esriSRUnit_Meter"
+    expected = int(count_data.get("count", 0))
+    if expected <= 0:
+        raise RuntimeError("SCAR ADD returned zero land polygons")
 
-    data = _get_json(session, f"{layer_url}/query", **params)
-    return int(data.get("count", 0))
-
-
-def _query_site(
-    site: dict,
-    layer_url: str,
-    surface_field: str,
-    distances: tuple[int, ...],
-) -> dict:
-    session = _session()
-    counts = {}
-    for distance in distances:
-        counts[str(distance)] = _count_land(
+    features = []
+    offset = 0
+    while offset < expected:
+        data = _get_json(
             session,
-            layer_url,
-            surface_field,
-            float(site["longitude"]),
-            float(site["latitude"]),
-            distance,
+            f"{layer_url}/query",
+            f="geojson",
+            where=f"{surface_field}='land'",
+            outFields="*",
+            returnGeometry="true",
+            outSR=4326,
+            resultOffset=offset,
+            resultRecordCount=page_size,
+            orderByFields=object_id_field,
+        )
+        batch = data.get("features", [])
+        if not batch:
+            raise RuntimeError(
+                f"empty ADD page at offset {offset} of {expected}"
+            )
+        features.extend(batch)
+        offset += len(batch)
+
+    if len(features) != expected:
+        raise RuntimeError(
+            f"ADD pagination drift: {len(features)} != {expected}"
         )
 
-    return {
-        "site_id": str(site["site_id"]),
-        "site_name": str(site["site_name"]),
-        "region": str(site["region"]),
-        "latitude": float(site["latitude"]),
-        "longitude": float(site["longitude"]),
-        "land_match_counts": counts,
-    }
+    transformer = Transformer.from_crs(4326, 3031, always_xy=True)
+    geoms = []
+    attrs = []
+    repaired = 0
+    for feature in features:
+        geom_value = feature.get("geometry")
+        if not geom_value:
+            continue
+        geom = shape(geom_value)
+        if not geom.is_valid:
+            geom = geom.buffer(0)
+            repaired += 1
+        projected = shapely_transform(transformer.transform, geom)
+        if projected.is_empty:
+            continue
+        geoms.append(projected)
+        attrs.append(feature.get("properties", {}))
+
+    return geoms, attrs, repaired
 
 
-def audit(root: Path, workers: int = 12) -> dict:
+def audit(root: Path) -> dict:
     sites = _candidate_sites(root)
     session = _session()
     layer_url, meta, surface_field = _discover_layer(session)
+    object_id_field = str(meta.get("objectIdField") or "")
+    if not object_id_field:
+        raise RuntimeError("SCAR ADD layer has no objectIdField")
 
-    records = sites.to_dict(orient="records")
+    geoms, attrs, repaired = _download_all_land(
+        session,
+        layer_url,
+        surface_field,
+        object_id_field,
+    )
+    tree = STRtree(geoms)
+    transformer = Transformer.from_crs(4326, 3031, always_xy=True)
 
-    def run_distances(distances: tuple[int, ...]) -> list[dict]:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
-            return list(
-                pool.map(
-                    lambda site: _query_site(
-                        site,
-                        layer_url,
-                        surface_field,
-                        distances,
-                    ),
-                    records,
-                )
+    matched = []
+    for site in sites.to_dict(orient="records"):
+        point = shapely_transform(
+            transformer.transform,
+            Point(float(site["longitude"]), float(site["latitude"])),
+        )
+        nearby_indices = tree.query(point.buffer(max(DISTANCES_M)))
+        local = []
+        for index in nearby_indices:
+            idx = int(index)
+            distance = float(point.distance(geoms[idx]))
+            local.append((distance, attrs[idx]))
+        local.sort(key=lambda item: item[0])
+
+        counts = {}
+        for distance in DISTANCES_M:
+            counts[str(distance)] = sum(
+                d <= float(distance) + 1e-6 for d, _ in local
             )
 
-    # Exact and the maximum frozen tolerance are sufficient to decide whether
-    # any smaller tolerance can possibly pass the >=95% coverage rule.
-    matched = run_distances((0, 5000))
-    n_sites = len(matched)
+        matched.append(
+            {
+                "site_id": str(site["site_id"]),
+                "site_name": str(site["site_name"]),
+                "region": str(site["region"]),
+                "latitude": float(site["latitude"]),
+                "longitude": float(site["longitude"]),
+                "nearest_land_distance_m": (
+                    local[0][0] if local else None
+                ),
+                "nearest_land_attributes": (
+                    local[0][1] if local else None
+                ),
+                "land_match_counts": counts,
+            }
+        )
 
-    def summarize(distance: int) -> dict:
+    n_sites = len(matched)
+    summaries = {}
+    selected_distance = None
+    for distance in DISTANCES_M:
         key = str(distance)
         counts = [int(r["land_match_counts"][key]) for r in matched]
         any_count = sum(v >= 1 for v in counts)
         multiple_count = sum(v > 1 for v in counts)
-        return {
+        summary = {
             "distance_m": distance,
             "candidate_sites": n_sites,
             "land_match_count": any_count,
@@ -208,42 +250,14 @@ def audit(root: Path, workers: int = 12) -> dict:
             ),
             "unmatched_count": n_sites - any_count,
         }
-
-    summaries = {
-        "0": summarize(0),
-        "5000": summarize(5000),
-    }
-
-    five_k_passes_coverage = (
-        summaries["5000"]["land_match_fraction"] is not None
-        and summaries["5000"]["land_match_fraction"] >= 0.95
-    )
-
-    # Only if 5 km has sufficient coverage can a smaller distance satisfy the
-    # frozen rule. Query the intermediate distances then.
-    if five_k_passes_coverage:
-        intermediate = run_distances((500, 1000, 2000))
-        by_id = {r["site_id"]: r for r in matched}
-        for row in intermediate:
-            by_id[row["site_id"]]["land_match_counts"].update(
-                row["land_match_counts"]
-            )
-        matched = [by_id[str(site["site_id"])] for site in records]
-        for distance in (500, 1000, 2000):
-            summaries[str(distance)] = summarize(distance)
-
-    selected_distance = None
-    for distance in DISTANCES_M:
-        key = str(distance)
-        if key not in summaries:
-            continue
-        summary = summaries[key]
+        summaries[key] = summary
         if (
-            summary["land_match_fraction"] >= 0.95
+            selected_distance is None
+            and n_sites
+            and summary["land_match_fraction"] >= 0.95
             and summary["multiple_land_match_fraction"] <= 0.05
         ):
             selected_distance = distance
-            break
 
     region_summary = {}
     for region in sorted({str(r["region"]) for r in matched}):
@@ -268,14 +282,32 @@ def audit(root: Path, workers: int = 12) -> dict:
             ],
         }
 
+    finite = sorted(
+        float(r["nearest_land_distance_m"])
+        for r in matched
+        if r["nearest_land_distance_m"] is not None
+    )
+    quantiles = {}
+    if finite:
+        for label, q in (
+            ("q0", 0.0),
+            ("q25", 0.25),
+            ("q50", 0.5),
+            ("q75", 0.75),
+            ("q90", 0.9),
+            ("q95", 0.95),
+            ("q100", 1.0),
+        ):
+            idx = round(q * (len(finite) - 1))
+            quantiles[label] = finite[idx]
+
     fields = [str(f.get("name", "")) for f in meta.get("fields", [])]
     return {
-        "schema_version": 3,
+        "schema_version": 4,
         "audit_id": "mina-antarctic-add-site-match-audit-v1",
         "implementation": (
-            "ArcGIS server-side point-distance count query; exact + 5 km "
-            "queried first, intermediate frozen distances queried only if "
-            "5 km meets the frozen coverage gate"
+            "complete paginated SCAR ADD land layer downloaded through "
+            "simple attribute queries; distances calculated locally in EPSG:3031"
         ),
         "mapppdr_commit": PINNED_MAPPPDR_COMMIT,
         "candidate_species_ids": list(PRIMARY_SPECIES),
@@ -284,9 +316,12 @@ def audit(root: Path, workers: int = 12) -> dict:
         "scar_add_feature_service": SERVICE_URL,
         "scar_add_layer_url": layer_url,
         "scar_add_layer_name": meta.get("name"),
-        "scar_add_object_id_field": meta.get("objectIdField"),
+        "scar_add_object_id_field": object_id_field,
         "scar_add_surface_field": surface_field,
         "scar_add_fields": fields,
+        "downloaded_land_polygon_count": len(geoms),
+        "repaired_invalid_polygon_count": repaired,
+        "nearest_land_distance_quantiles_m": quantiles,
         "distance_summaries": summaries,
         "region_summary": region_summary,
         "selected_distance_m": selected_distance,
@@ -299,10 +334,9 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mapppdr-dir", required=True, type=Path)
     parser.add_argument("--out", required=True, type=Path)
-    parser.add_argument("--workers", type=int, default=12)
     args = parser.parse_args()
 
-    result = audit(args.mapppdr_dir, workers=args.workers)
+    result = audit(args.mapppdr_dir)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
         json.dumps(result, indent=2, sort_keys=True) + "\n",
