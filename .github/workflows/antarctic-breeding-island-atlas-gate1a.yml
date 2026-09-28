@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install spatial-audit dependencies
-        run: python -m pip install pandas pyreadr requests
+        run: python -m pip install pandas pyreadr requests shapely pyproj
       - name: Fetch pinned mapppdr source
         run: |
           git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
