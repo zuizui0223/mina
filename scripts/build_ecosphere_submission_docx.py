@@ -319,7 +319,7 @@ def build(
             [
                 "pandoc",
                 str(source_path),
-                "--from=markdown+raw_attribute",
+                "--from=markdown+raw_attribute+tex_math_single_backslash",
                 "--to=docx",
                 "--citeproc",
                 f"--bibliography={bibliography_path}",
