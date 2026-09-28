@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-ecosphere-manuscript-v0.7",
+  "date": "2026-09-28",
+  "status": "count_error_bounded_hierarchy_with_robust_neff_association",
+  "parent_manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_6.md",
+  "manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_7.md",
+  "bibliography": "docs/REFERENCES_V4.bib",
+  "captions": "docs/FIGURE_CAPTIONS_V6.md",
+  "title": "Common decline, divergent endpoints: scale-dependent demography across Antarctic penguin breeding islands",
+  "central_contribution": "Island demographic fates diverge under a shared regional decline. The observed raw within-island variability hierarchy exceeds low-to-moderate independent count error but is not robust to the frozen 20% multiplicative-error sensitivity, whereas effective colony number retains a small conditional association after momentum, serial-structure and its separately frozen count-error diagnostics.",
+  "required_raw_hierarchy": {
+    "stable_roster_islands": ["COR", "HUM", "LIT"],
+    "beta_within": 1.0737035331938372,
+    "beta_among": 1.0112310830110414,
+    "beta_total": 1.0857623867043855,
+    "within_log_beta_share": 0.8642664462053955
+  },
+  "required_hierarchy_count_error": {
+    "result": "results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json",
+    "simulations_per_model": 100000,
+    "observed_raw_log_beta_contrast": 0.05994543544868112,
+    "poisson_raw_contrast_p": 0.00000999990000099999,
+    "cv10_raw_contrast_p": 0.00000999990000099999,
+    "cv20_raw_contrast_p": 0.45013549864501357,
+    "cv20_raw_beta_within_p": 0.9239307606923931,
+    "poisson_detrended_ratio_p": 0.05373946260537395,
+    "poisson_growth_ratio_p": 0.4479055209447905,
+    "poisson_probability_all_three_growth_within_exceed_among": 0.99853,
+    "measurement_error_robust_across_full_error_family": false,
+    "robust_under_poisson_and_cv10": true
+  },
+  "required_neff_boundary": {
+    "coefficient": 0.11679896749684501,
+    "lag1_lag2_conditioned_coefficient": 0.11260540832528995,
+    "lag1_lag2_beta_fraction_of_original": 0.9640959225802374,
+    "lag1_lag2_loyo_gain": 0.000444125252832564,
+    "lag1_lag2_independent_circular_p": 0.001019989800101999,
+    "lag1_lag2_joint_exact_p": 0.01201923076923077,
+    "year_block_predictive_p": 0.262,
+    "predictive_claim": false,
+    "causal_claim": false,
+    "early_warning_claim": false
+  },
+  "required_component_count_audit": {
+    "result": "results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json",
+    "status": "post_hoc_arithmetic_robustness_diagnostic",
+    "retains_raw_ordering": true,
+    "does_not_override_count_error_boundary": true
+  },
+  "prohibited_interpretations": [
+    "the hierarchical variability pattern is robust to the full frozen count-error family",
+    "the 20 percent error sensitivity is an empirically calibrated Palmer observer-error estimate",
+    "counting error caused the observed hierarchy",
+    "detrended or annual-growth beta provides stronger independent evidence for biological buffering",
+    "beta variability proves causal spatial insurance",
+    "subcolony asynchrony proves dispersal-mediated rescue",
+    "N_eff is a supported predictor",
+    "N_eff is validated by the hierarchical beta result",
+    "colony codes are equivalent to GIS polygons",
+    "86.4 percent is a causal mechanism fraction",
+    "lagged growth controls remove all time-varying confounding"
+  ],
+  "versioning": {
+    "v0.6_remains_immutable_provenance": true,
+    "scientific_change_requires_v0.7": true,
+    "cwm_extension_promoted": false
+  },
+  "figure_package": {
+    "figure_count": 5,
+    "hierarchy_figure": "Figure 3",
+    "figure3_right_panel": "complete-synchrony count-error null",
+    "component_count_audit_in_text_only": true
+  }
+}
