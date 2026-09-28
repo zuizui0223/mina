@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-mapppd-observation-method-audit-v1",
+  "date": "2026-09-29",
+  "status": "audit_passed_method_heterogeneity_frozen_before_outcomes",
+  "paper_lane": "Paper 2",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "candidate_species_ids": [
+      "ADPE",
+      "CHPE",
+      "GEPE"
+    ],
+    "candidate_gate": "at least 5 distinct nest-count years spanning at least 10 years",
+    "expected_site_species_units": 152
+  },
+  "allowed_fields": [
+    "site_id",
+    "species_id",
+    "year",
+    "type",
+    "accuracy",
+    "vantage"
+  ],
+  "prohibited_fields": [
+    "count",
+    "presence"
+  ],
+  "audit_outputs": [
+    "record-level vantage distribution",
+    "record-level accuracy distribution",
+    "site-species units using one versus multiple vantage categories",
+    "site-species units with observation-vantage changes through time",
+    "ground-only units",
+    "units containing aerial/UAV/VHR/satellite observations",
+    "units with missing accuracy metadata",
+    "same-year mixed-vantage conflicts"
+  ],
+  "purpose": "Freeze observation-method heterogeneity before demographic trend effects or island-trait associations are opened.",
+  "result_receipt": "results/MAPPPD_OBSERVATION_METHOD_AUDIT_RESULT_V1.json",
+  "design_consequence": {
+    "primary": "all eligible nest-count records with accuracy-aware observation error",
+    "vantage": "explicit observation-model adjustment or fixed sensitivity",
+    "ground_only": "secondary sensitivity only",
+    "no_outcomes_opened": true
+  }
+}

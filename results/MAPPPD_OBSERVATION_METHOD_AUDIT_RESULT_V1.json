@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-mapppd-observation-method-audit-result-v1",
+  "validated_date": "2026-09-29",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "candidate_site_species_units": 152,
+    "candidate_nest_records": 2871
+  },
+  "execution": {
+    "workflow_run_id": 36491610728,
+    "artifact_id": 11000619329,
+    "artifact_digest": "sha256:a8ec6038300c54d2bc35e04bf8dc807d6e0e813e50e8b0c91ff1b92729cafc5b",
+    "head_sha": "f408a654c5630104a35a59c10de81f2623ff94a7",
+    "conclusion": "success"
+  },
+  "record_level": {
+    "vantage_counts": {
+      "ground": 2036,
+      "aerial": 509,
+      "uav": 137,
+      "vhr": 26,
+      "ground_photo": 32,
+      "aerial_photo": 4,
+      "offshore_vessel": 17,
+      "missing": 110
+    },
+    "accuracy_counts": {
+      "1": 1977,
+      "2": 702,
+      "3": 116,
+      "4": 38,
+      "5": 38
+    },
+    "accuracy_missing": 0
+  },
+  "unit_level": {
+    "single_vantage_units": 61,
+    "multi_vantage_units": 91,
+    "ground_only_units": 54,
+    "units_with_remote_imagery": 95,
+    "units_with_same_year_mixed_vantage": 36,
+    "units_with_any_missing_accuracy": 0,
+    "units_with_any_missing_vantage": 46
+  },
+  "species_summary": {
+    "ADPE": {
+      "units": 57,
+      "ground_only": 13,
+      "multi_vantage": 37,
+      "remote": 43,
+      "same_year_mixed": 9
+    },
+    "CHPE": {
+      "units": 46,
+      "ground_only": 22,
+      "multi_vantage": 24,
+      "remote": 23,
+      "same_year_mixed": 7
+    },
+    "GEPE": {
+      "units": 49,
+      "ground_only": 19,
+      "multi_vantage": 30,
+      "remote": 29,
+      "same_year_mixed": 20
+    }
+  },
+  "design_consequence": {
+    "primary_ground_only_analysis": false,
+    "reason_ground_only": "Only 54/152 candidate series are ground-only, causing severe sample loss and likely geographic/method selection bias.",
+    "use_all_eligible_records_primary": true,
+    "accuracy_role": "Use the complete 1-5 accuracy metadata in the observation-error component of the demographic trend model.",
+    "vantage_role": "Include observation-vantage structure in the observation model or a predeclared adjustment/sensitivity; do not assume method invariance.",
+    "ground_only_role": "secondary sensitivity only",
+    "same_year_mixed_vantage_role": "useful internal information for auditing vantage offsets because 36 candidate series contain at least one same-year mixed-vantage observation."
+  },
+  "boundary": [
+    "Count values were not summarized in this audit beyond pre-frozen temporal eligibility.",
+    "No demographic trend or island-trait association was fit."
+  ]
+}
