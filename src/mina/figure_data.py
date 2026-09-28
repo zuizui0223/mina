@@ -49,6 +49,7 @@ RESULT_FILES = {
     "hierarchy": "PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json",
     "hierarchy_component_audit": "PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json",
     "hierarchy_count_error": "PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json",
+    "breeding_concentration": "PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
 }
 
 
@@ -362,6 +363,61 @@ def _figure3_count_error(
         )
     return rows
 
+def _figure3_concentration(
+    census_csv: str | Path,
+    receipt: dict,
+) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    states = colony_states(census_csv)
+    eligible = ("COR", "HUM", "LIT")
+    trajectories: list[dict[str, object]] = []
+    first_neff: dict[str, float] = {}
+    for island in eligible:
+        local = sorted(
+            [
+                row for row in states
+                if str(row["island"]) == island
+                and row["effective_colony_number"] is not None
+                and float(row["total"]) > 0
+            ],
+            key=lambda row: int(row["year"]),
+        )
+        if not local:
+            raise ValueError(f"no positive N_eff trajectory for {island}")
+        first = float(local[0]["effective_colony_number"])
+        first_neff[island] = first
+        for row in local:
+            value = float(row["effective_colony_number"])
+            trajectories.append(
+                {
+                    "island": island,
+                    "year": int(row["year"]),
+                    "effective_colony_number": value,
+                    "relative_to_first": value / first,
+                    "breeding_pairs": float(row["total"]),
+                }
+            )
+
+    slopes: list[dict[str, object]] = []
+    cv20 = receipt["null_slope_summaries"]["gamma_poisson_cv20"]
+    for island in eligible:
+        obs = receipt["observed"][island]
+        null = cv20[island]
+        slopes.append(
+            {
+                "island": island,
+                "observed_slope": float(obs["slope_per_year"]),
+                "null_mean_slope_cv20": float(null["mean"]),
+                "null_q025_slope_cv20": float(null["q_0_025"]),
+                "null_q975_slope_cv20": float(null["q_0_975"]),
+                "cv20_one_sided_p": float(null["p"]),
+                "first_neff": float(obs["first_neff"]),
+                "last_neff": float(obs["last_neff"]),
+                "fractional_change": float(obs["fractional_change"]),
+            }
+        )
+    return trajectories, slopes
+
+
 def _figure3_mechanisms(r: dict[str, dict]) -> list[dict[str, object]]:
     sea = r["seaice"]["primary_result"]
     time = r["timescale"]["primary_K5"]
@@ -581,6 +637,9 @@ def build(
     fig3_count_error = _figure3_count_error(
         results["hierarchy_count_error"]
     )
+    fig3_concentration, fig3_concentration_slopes = _figure3_concentration(
+        census_csv, results["breeding_concentration"]
+    )
     fig4 = _figure3_mechanisms(results)
     fig5_states, fig5_transitions, fig5_external, topology_slope = (
         _figure4_tables(census_csv, results["colony"], results["spatial"])
@@ -615,6 +674,14 @@ def build(
         out / "figure3_hierarchy_count_error.csv",
         fig3_count_error,
     )
+    _write_csv(
+        out / "figure3_concentration_trajectories.csv",
+        fig3_concentration,
+    )
+    _write_csv(
+        out / "figure3_concentration_slopes.csv",
+        fig3_concentration_slopes,
+    )
     _write_csv(out / "figure4_mechanism_audit.csv", fig4)
     _write_csv(out / "figure5_colony_states.csv", fig5_states)
     _write_csv(out / "figure5_colony_transitions.csv", fig5_transitions)
@@ -637,6 +704,8 @@ def build(
             "figure3_hierarchy_raw": len(fig3_raw),
             "figure3_hierarchy_centered": len(fig3_pairwise),
             "figure3_hierarchy_count_error": len(fig3_count_error),
+            "figure3_concentration_trajectories": len(fig3_concentration),
+            "figure3_concentration_slopes": len(fig3_concentration_slopes),
             "figure4_mechanism_audit": len(fig4),
             "figure5_colony_states": len(fig5_states),
             "figure5_colony_transitions": len(fig5_transitions),
@@ -673,6 +742,16 @@ def build(
                 results["hierarchy_count_error"]["error_models"][
                     "gamma_poisson_cv20"
                 ]["raw_log_beta_contrast_p"]
+            ),
+            "breeding_concentration_supported": bool(
+                results["breeding_concentration"]["decision"][
+                    "progressive_concentration_supported_under_all_frozen_error_models"
+                ]
+            ),
+            "breeding_concentration_cv20_joint_p": float(
+                results["breeding_concentration"]["cv20"][
+                    "joint_three_island_p"
+                ]
             ),
             "conditional_effective_colony_slope": topology_slope,
             "effective_colony_gain_permutation_p": neff_perm_p,

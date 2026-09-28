@@ -1,0 +1,180 @@
+name: ecosphere-v0-8-check
+
+on:
+  push:
+    branches:
+      - manuscript/ecosphere-v0.8-breeding-concentration
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_8.md"
+      - "docs/FIGURE_CAPTIONS_V7.md"
+      - "docs/REFERENCES_V6.bib"
+      - "docs/MANUSCRIPT_SPINE_V7.md"
+      - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_8.json"
+      - "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+      - "src/mina/figure_data.py"
+      - "src/mina/figures.py"
+      - "tests/**"
+      - ".github/workflows/ecosphere-v0-8-check.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev,figures]"
+      - name: Run test suite
+        run: pytest
+      - name: Guard manuscript citations and frozen values
+        run: |
+          mina-manuscript-guard \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_8.md \
+            --captions docs/FIGURE_CAPTIONS_V7.md \
+            --bibliography docs/REFERENCES_V6.bib \
+            --results results | tee build-ecosphere-v0-8-base-guard.json
+      - name: Guard v0.8 ecological claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          import math
+          import re
+          from pathlib import Path
+
+          manuscript=Path("docs/MANUSCRIPT_ECOSPHERE_V0_8.md").read_text()
+          captions=Path("docs/FIGURE_CAPTIONS_V7.md").read_text()
+          bibliography=Path("docs/REFERENCES_V6.bib").read_text()
+          contract=json.loads(Path(
+              "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_8.json"
+          ).read_text())
+          concentration=json.loads(Path(
+              "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+          ).read_text())
+          hierarchy=json.loads(Path(
+              "results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json"
+          ).read_text())
+          momentum=json.loads(Path(
+              "results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json"
+          ).read_text())
+
+          title=manuscript.splitlines()[0].removeprefix("# ").strip()
+          if title != contract["title"]:
+              raise SystemExit(f"title drift: {title}")
+          if len(title)>120:
+              raise SystemExit(f"title too long: {len(title)}")
+
+          abstract=manuscript.split("## Abstract",1)[1].split(
+              "**Keywords:**",1
+          )[0]
+          words=re.findall(r"\b[\w’'-]+\b",re.sub(r"[*_]", "", abstract))
+          if len(words)>350:
+              raise SystemExit(f"abstract too long: {len(words)}")
+
+          for path,text_value in (("manuscript",manuscript),("captions",captions)):
+              bad=[
+                  ord(ch) for ch in text_value
+                  if ord(ch)<32 and ch not in "\n\r\t"
+              ]
+              if bad:
+                  raise SystemExit(f"{path} control chars: {bad}")
+
+          required = (
+              "progressive concentration",
+              "proportional thinning",
+              "3.54",
+              "2.86",
+              "4.62",
+              "2.28",
+              "5.78",
+              "0.038",
+              "0.000010",
+              "+0.1126",
+              "+0.000444",
+              "phenomenon-level",
+          )
+          missing=[token for token in required if token not in manuscript]
+          if missing:
+              raise SystemExit(f"required v0.8 tokens missing: {missing}")
+
+          forbidden = (
+              "most detectable temporal compensation occurs within islands",
+              "principal observable temporal compensation lay below the island level",
+              "the hierarchy is measurement-error robust",
+              "N_eff is a supported predictor",
+              "N_eff measures spatial insurance",
+              "colony codes are equivalent to GIS polygons",
+              "concentration causes population decline",
+          )
+          found=[token for token in forbidden if token in manuscript]
+          if found:
+              raise SystemExit(f"forbidden legacy/causal claims: {found}")
+
+          for cite in ("@schmidt2021","@cimino2025","@wang2014"):
+              if cite not in manuscript and cite not in captions:
+                  raise SystemExit(f"missing required citation {cite}")
+          for entry in ("schmidt2021","cimino2025","wang2014"):
+              if "{"+entry+"," not in bibliography:
+                  raise SystemExit(f"missing bibliography entry {entry}")
+
+          if concentration["decision"][
+              "progressive_concentration_supported_under_all_frozen_error_models"
+          ] is not True:
+              raise SystemExit("concentration result no longer supported")
+
+          c20=contract["primary_concentration_result"]["cv20_p"]
+          for island in ("COR","HUM","LIT"):
+              frozen=float(c20[island])
+              observed=float(
+                  concentration["cv20"][
+                      {"COR":"COR_p","HUM":"HUM_p","LIT":"LIT_p"}[island]
+                  ]
+              )
+              if not math.isclose(frozen,observed,abs_tol=1e-12,rel_tol=0):
+                  raise SystemExit(f"{island} concentration p drift")
+          if not math.isclose(
+              float(c20["joint"]),
+              float(concentration["cv20"]["joint_three_island_p"]),
+              abs_tol=1e-12,rel_tol=0,
+          ):
+              raise SystemExit("joint concentration p drift")
+
+          if hierarchy["decision"]["raw_hierarchy_measurement_error_robust"] is not False:
+              raise SystemExit("beta hierarchy unexpectedly robust")
+
+          m=momentum["lag1_lag2"]
+          if not math.isclose(
+              float(contract["secondary_neff_boundary"][
+                  "lag1_lag2_conditioned_coefficient"
+              ]),
+              float(m["standardized_neff_beta"]),
+              abs_tol=1e-12,rel_tol=0,
+          ):
+              raise SystemExit("two-lag N_eff coefficient drift")
+
+          if "Figure 3. Adélie decline progressively concentrates breeders" not in captions:
+              raise SystemExit("Figure 3 no longer concentration-led")
+          if "CV20%" not in captions or "0.0380" not in captions:
+              raise SystemExit("Figure 3 missing severe-error boundary")
+
+          print(json.dumps({
+              "status":"pass",
+              "title_chars":len(title),
+              "abstract_words":len(words),
+              "concentration_result_id":concentration["result_id"],
+              "contract_id":contract["contract_id"],
+          },indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecosphere-v0-8-check
+          path: |
+            docs/MANUSCRIPT_ECOSPHERE_V0_8.md
+            docs/FIGURE_CAPTIONS_V7.md
+            docs/REFERENCES_V6.bib
+            docs/MANUSCRIPT_SPINE_V7.md
+            contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_8.json
+            results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json
+            build-ecosphere-v0-8-base-guard.json
