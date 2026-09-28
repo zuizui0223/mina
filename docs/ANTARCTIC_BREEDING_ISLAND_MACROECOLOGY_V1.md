@@ -95,15 +95,16 @@ Use coarser mosaics for continental-scale extraction unless a finer scale is jus
 
 ## Species comparison
 
-Primary macro comparison:
+Primary macro trend comparison:
 - Adélie
 - chinstrap
 - gentoo
-- emperor
 
-Adélie/chinstrap/gentoo provide terrestrial-breeding contrasts. Emperor provides a breeding-substrate contrast because many colonies depend on sea ice rather than terrestrial island geometry.
+Gate 0 shows **152 candidate Pygoscelis site × species units** with at least five nest-count years spanning at least 10 years (Adélie 57, chinstrap 46, gentoo 49), and **92** under the stricter ≥10 years / ≥20-year-span gate.
 
-Macaroni and king remain secondary until the inventory demonstrates enough site/time replication south of 60°S. A later 50–60°S extension can add sub-Antarctic islands under a separate domain contract.
+Emperor does **not** provide enough repeated nest-count sites in the pinned APBP snapshot for the same trend analysis (1 candidate unit). It is retained only as a future breeding-substrate contrast that requires a separate frozen demographic source or a different predeclared response such as colony persistence/occupancy.
+
+Macaroni (2 candidate units) and king (0) are excluded from the primary south-of-60 trend lane. A later 50–60°S sub-Antarctic extension must have its own data-coverage and domain contract.
 
 ## Highest-value tests
 
@@ -124,18 +125,22 @@ Macaroni and king remain secondary until the inventory demonstrates enough site/
 
 ## Stage gates
 
-### Gate 0 — inventory
+### Gate 0 — inventory — PASSED
 
-Count real APBP coverage:
-- sites;
-- species;
-- observation years;
-- nest-count records;
-- sites with ≥2/5/10/20 years;
-- temporal span ≥10/20/30 years;
-- site-species units satisfying candidate trend criteria.
+Pinned MAPPPD inventory:
+- **729 sites**
+- **918 site × species links**
+- **5,487 observations**
+- **4,032 nest-count records**
+- **1892–2026**
+- **155** candidate trend-eligible site × species units
+- **94** stricter trend-eligible units
+- candidate Pygoscelis total: **152**
+- stricter Pygoscelis total: **92**
 
-No ecological model is fit at Gate 0.
+Result receipt: `results/MAPPPD_MACRO_INVENTORY_RESULT_V1.json`.
+
+No ecological outcome model was fit at Gate 0.
 
 ### Gate 1 — atlas feasibility
 
