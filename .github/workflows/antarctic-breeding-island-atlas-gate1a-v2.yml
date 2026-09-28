@@ -1,0 +1,50 @@
+name: antarctic-breeding-island-atlas-gate1a-v2
+
+on:
+  push:
+    branches:
+      - analysis/antarctic-breeding-island-atlas-gate1a-v2
+    paths:
+      - "scripts/audit_add_coverage_gate_v2.py"
+      - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_GATE1A_V2.json"
+      - ".github/workflows/antarctic-breeding-island-atlas-gate1a-v2.yml"
+  pull_request:
+    paths:
+      - "scripts/audit_add_coverage_gate_v2.py"
+      - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_GATE1A_V2.json"
+      - ".github/workflows/antarctic-breeding-island-atlas-gate1a-v2.yml"
+  workflow_dispatch:
+
+jobs:
+  gate1a-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas pyreadr requests
+      - name: Fetch pinned mapppdr source
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Run coverage-only land gate
+        run: |
+          python scripts/audit_add_coverage_gate_v2.py \
+            --mapppdr-dir build/mapppdr \
+            --out build/add_coverage_gate1a_v2.json \
+            --throttle-seconds 1.1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: antarctic-add-coverage-gate1a-v2
+          path: build/add_coverage_gate1a_v2.json
+      - name: Enforce frozen coverage rule
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/add_coverage_gate1a_v2.json").read_text())
+          if not x["gate1a_v2_passed"]:
+              raise SystemExit("Gate 1A v2 failed: <95% land coverage by 5 km")
+          print("selected_distance_m=",x["selected_distance_m"])
+          PY
