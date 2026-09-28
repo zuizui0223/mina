@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-ecosphere-submission-package-v0.8",
+  "date": "2026-09-28",
+  "status": "v0.8_submission_shell_word_qa_validated_human_metadata_blocked",
+  "journal": "Ecosphere",
+  "manuscript_type": "Article",
+  "subject_track": "Animal Ecology",
+  "title": "Regional decline, local concentration: within-island reorganization of Adélie penguin breeding groups",
+  "readiness_audit_id": "mina-ecosphere-v0.8-submission-readiness-v1",
+  "scientific_manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_8.md",
+  "scientific_contract": "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_8.json",
+  "bibliography": "docs/REFERENCES_V6.bib",
+  "figure_captions": "docs/FIGURE_CAPTIONS_V7.md",
+  "concentration_result": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+  "author_guidelines_checked": "2026-09-28",
+  "initial_submission_requirements": {
+    "title_max_characters_including_spaces": 120,
+    "abstract_max_words": 350,
+    "keywords_min": 6,
+    "keywords_max": 12,
+    "main_document_title_page_required": true,
+    "open_research_statement_on_title_page": true,
+    "page_numbers_required": true,
+    "letter_page_size": true,
+    "one_inch_margins": true,
+    "font": "Times New Roman 12 pt",
+    "double_spaced": true,
+    "conflict_of_interest_statement_required": true,
+    "figure_captions_grouped_before_figures": true,
+    "continuous_line_numbers_all_manuscript_pages": true
+  },
+  "scientific_claim_boundary": {
+    "progressive_concentration_primary": true,
+    "proportional_thinning_rejected_under_full_frozen_error_family": true,
+    "colony_code_equals_gis_polygon": false,
+    "causal_habitat_mechanism": false,
+    "neff_predictive_claim": false,
+    "neff_causal_claim": false,
+    "beta_hierarchy_primary": false,
+    "beta_hierarchy_measurement_error_robust": false
+  },
+  "human_only_blockers": [
+    "complete author list in publication order",
+    "all affiliations and present addresses",
+    "single corresponding author and email",
+    "author contribution statement confirmed by all authors",
+    "funding acknowledgments and grant identifiers confirmed",
+    "conflict-of-interest statement confirmed",
+    "complete inventory of any AI tools used beyond OpenAI ChatGPT",
+    "dual-publication/overlap statement confirmed by all authors"
+  ],
+  "metadata_template": "submission/ECOSPHERE_METADATA_TEMPLATE.json",
+  "word_preview": {
+    "builder": "scripts/build_ecosphere_submission_docx.py",
+    "preview_generated_and_visually_checked": true,
+    "preview_page_count": 35,
+    "preview_qa_date": "2026-09-28",
+    "author_complete_document_pending": true,
+    "line_numbering_qa": "visually_confirmed_all_35_pages_continuous_1_to_728",
+    "critical_sections_checked": [
+      "title page",
+      "abstract",
+      "progressive concentration methods",
+      "progressive concentration results",
+      "hierarchical variability and observation-error secondary context",
+      "N_eff uncertainty results",
+      "references",
+      "Figure 1-5 captions",
+      "AI disclosure"
+    ],
+    "synthetic_complete_metadata_path_rendered": true
+  },
+  "scholarone_copy_fields": "submission/SCHOLARONE_COPY_FIELDS_ECOSPHERE_V0_8.md",
+  "post_acceptance_tasks": [
+    "archive the exact code and derived-output version of record in a permanent repository",
+    "mint and insert the permanent archive DOI (planned: Zenodo)",
+    "update the final Open Research Statement with the version-of-record DOI"
+  ],
+  "terminal_rule": "Do not change scientific endpoints while resolving v0.8 submission metadata or formatting."
+}
