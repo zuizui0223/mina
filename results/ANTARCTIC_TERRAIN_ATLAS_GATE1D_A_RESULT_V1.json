@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-antarctic-terrain-atlas-gate1d-a-result-v1",
+  "validated_date": "2026-09-29",
+  "source_sites": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "candidate_site_species_units": 152,
+    "distinct_candidate_sites": 122
+  },
+  "rema": {
+    "version": "2.0",
+    "resolution_m": 500,
+    "source_url": "https://data.pgc.umn.edu/elev/dem/setsm/REMA/mosaic/v2.0/500m/rema_mosaic_500m_v2.0.tar.gz",
+    "archive_sha256": "87c41aee247d058c5e0bdb0cd3f7677a36c00ad91c9881259e058b9b07812c40",
+    "dem_file": "rema_mosaic_500m_v2.0_dem.tif",
+    "dem_sha256": "e19303a2fef417ed040823f4fcf9b263c4765db15677ca2942c03c4fdbbaaabc",
+    "crs": "EPSG:3031",
+    "vertical_reference": "WGS84 ellipsoid"
+  },
+  "execution": {
+    "workflow_run_id": 36490682577,
+    "artifact_id": 11001148358,
+    "artifact_digest": "sha256:93b4c6e7fd02519edc20baebb74847991dfb2168e75361884219a55f184d98d5",
+    "head_sha": "4fa0a8fd4b5b02ef3742a6df7e3e6b453edc0270",
+    "conclusion": "success"
+  },
+  "coverage": {
+    "radius_1000m": {
+      "sites_with_valid_dem": 122,
+      "fraction": 1
+    },
+    "radius_2000m": {
+      "sites_with_valid_dem": 122,
+      "fraction": 1
+    },
+    "radius_5000m": {
+      "sites_with_valid_dem": 122,
+      "fraction": 1
+    },
+    "gate_passed": true
+  },
+  "primary_scale_2000m": {
+    "relief_p90_p10_m": {
+      "min": 0.354688,
+      "q10": 6.417031,
+      "q25": 20.08418,
+      "median": 91.504297,
+      "q75": 220.266602,
+      "q90": 484.726016,
+      "max": 988.725
+    },
+    "elevation_sd_m": {
+      "min": 0.536975,
+      "q10": 5.76266,
+      "q25": 17.223925,
+      "median": 48.884554,
+      "q75": 92.644036,
+      "q90": 194.398273,
+      "max": 428.044766
+    },
+    "median_elevation_m": {
+      "min": -56.21875,
+      "q10": -44.297656,
+      "q25": 14.816406,
+      "median": 18.59375,
+      "q75": 22.625977,
+      "q90": 29.095313,
+      "max": 400.039062
+    }
+  },
+  "collinearity_audit": {
+    "relief_vs_elevation_sd_r": 0.99067,
+    "site_elevation_vs_relief_r": 0.297186,
+    "site_elevation_vs_elevation_sd_r": 0.286442
+  },
+  "decision": {
+    "gate_passed": true,
+    "primary_terrain_trait": "elevation_relief_p90_p10_m_2000m",
+    "elevation_sd_status": "sensitivity_only_due_to_r_0.991_with_relief",
+    "absolute_elevation_status": "context_only_until_vertical_datum_is_geoid_corrected",
+    "no_demographic_outcomes_opened": true
+  },
+  "interpretation": [
+    "The terrain block has complete spatial coverage for all 122 candidate sites at the frozen 2 km scale.",
+    "Local topographic relief varies by nearly three orders of magnitude and can support a macroecological contrast.",
+    "Relief and elevation SD are effectively redundant, so relief is retained as the single primary terrain-heterogeneity trait.",
+    "Raw REMA absolute elevations are ellipsoidal and include negative coastal values; they are not promoted as a primary ecological predictor without geoid correction."
+  ],
+  "boundary": [
+    "Terrain is local topographic context, not occupied nesting habitat.",
+    "No terrain trait was selected using penguin demographic outcomes."
+  ]
+}
