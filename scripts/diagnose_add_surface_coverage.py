@@ -95,7 +95,7 @@ def point_counts(s,layer_url,lon,lat):
         "spatialRel":"esriSpatialRelIntersects",
     }
     out={}
-    for distance in (0,5000,50000):
+    for distance in (0,5000):
         params=dict(base)
         if distance:
             params["distance"]=distance
@@ -146,11 +146,8 @@ def main()->int:
         for f in distinct.get("features",[])
     })
 
-    surface_counts={
-        value:count_query(s,layer_url,f"surface='{value}'")
-        for value in surfaces
-        if value not in {"None","null"}
-    }
+    total_count=count_query(s,layer_url,"1=1")
+    land_count=count_query(s,layer_url,"surface='land'")
 
     result={
         "schema_version":1,
@@ -159,7 +156,8 @@ def main()->int:
         "layer_name":meta.get("name"),
         "declared_extent":meta.get("extent"),
         "surface_values":surfaces,
-        "surface_counts":surface_counts,
+        "total_feature_count":total_count,
+        "land_feature_count":land_count,
         "points":{
             name:{
                 "longitude":lon,
