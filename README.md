@@ -30,9 +30,16 @@ is constrained by terrestrial or sea-ice breeding substrate. This lets the
 program distinguish regional marine forcing from local breeding-patch
 filtering.
 
-The Paper 2 lane is currently at **Gate 0: data-coverage inventory**. No
-macroecological outcome model is opened before site/trait extraction rules are
-frozen.
+The Paper 2 lane has **passed Gate 0**. The pinned MAPPPD snapshot contains
+729 sites, 5,487 observations and 4,032 nest-count records. The predeclared
+candidate trend gate retains **152 Pygoscelis site × species units** (Adélie
+57, chinstrap 46, gentoo 49); a stricter gate retains 92. Emperor, macaroni
+and king do not have enough repeated nest-count series for the same primary
+trend model.
+
+The next stage is outcome-blind construction of the Antarctic Penguin
+Breeding-Island Atlas; no macroecological response model is opened before the
+site/trait extraction rules are frozen.
 
 Program documents:
 - `contracts/MINA_RESEARCH_PROGRAM_V1.json`
