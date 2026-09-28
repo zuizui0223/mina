@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 import requests
+import pyreadr
 
 SERVICE_URL = (
     "https://services7.arcgis.com/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/"
@@ -30,8 +31,54 @@ def first_coord(geometry):
     return None
 
 
+def _load_sites(root: Path):
+    data = pyreadr.read_r(str(root / "data" / "sites.rda"))
+    if "sites" in data:
+        return data["sites"]
+    if len(data) == 1:
+        return next(iter(data.values()))
+    raise ValueError(f"cannot resolve sites table: {list(data)}")
+
+
+def _point_query(lon: float, lat: float, distance_m: int | None):
+    geometry = json.dumps(
+        {
+            "x": float(lon),
+            "y": float(lat),
+            "spatialReference": {"wkid": 4326},
+        }
+    )
+    params = {
+        "f": "json",
+        "where": "1=1",
+        "geometry": geometry,
+        "geometryType": "esriGeometryPoint",
+        "inSR": 4326,
+        "spatialRel": "esriSpatialRelIntersects",
+        "outFields": "FID,surface",
+        "returnGeometry": "false",
+    }
+    if distance_m is not None:
+        params["distance"] = int(distance_m)
+        params["units"] = "esriSRUnit_Meter"
+    d = get(SERVICE_URL + "/query", **params)
+    features = d.get("features", [])
+    counts = {}
+    for feat in features:
+        surface = str((feat.get("attributes") or {}).get("surface"))
+        counts[surface] = counts.get(surface, 0) + 1
+    return {
+        "feature_count": len(features),
+        "surface_counts": counts,
+        "sample_attributes": [
+            feat.get("attributes", {}) for feat in features[:10]
+        ],
+    }
+
+
 def main():
     p = argparse.ArgumentParser()
+    p.add_argument("--mapppdr-dir", required=True, type=Path)
     p.add_argument("--out", required=True, type=Path)
     a = p.parse_args()
 
@@ -66,6 +113,31 @@ def main():
             "attributes": feat.get("attributes"),
         }
 
+    sites = _load_sites(a.mapppdr_dir)
+    known_ids = ("TORG", "PENG", "GOPT", "FRAE")
+    known = {}
+    for site_id in known_ids:
+        rows = sites[sites["site_id"] == site_id]
+        if len(rows) != 1:
+            known[site_id] = {"error": f"site rows={len(rows)}"}
+            continue
+        row = rows.iloc[0]
+        probes = {}
+        for distance in (None, 5000, 50000):
+            key = "intersect" if distance is None else f"within_{distance}m"
+            probes[key] = _point_query(
+                float(row["longitude"]),
+                float(row["latitude"]),
+                distance,
+            )
+        known[site_id] = {
+            "site_name": str(row["site_name"]),
+            "region": str(row["region"]),
+            "latitude": float(row["latitude"]),
+            "longitude": float(row["longitude"]),
+            "queries": probes,
+        }
+
     out = {
         "layer_name": meta.get("name"),
         "extent": meta.get("extent"),
@@ -74,6 +146,7 @@ def main():
         "fullExtent": meta.get("fullExtent"),
         "object_id": oid,
         "samples": samples,
+        "known_site_service_queries": known,
     }
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
