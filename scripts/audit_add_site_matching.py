@@ -61,6 +61,15 @@ def _get_json(session: requests.Session, url: str, **params):
     return data
 
 
+def _post_json(session: requests.Session, url: str, **params):
+    response = session.post(url, data=params, timeout=120)
+    response.raise_for_status()
+    data = response.json()
+    if "error" in data:
+        raise RuntimeError(f"ArcGIS error: {data['error']}")
+    return data
+
+
 def _discover_layer(session: requests.Session) -> tuple[str, dict]:
     root = _get_json(session, SERVICE_URL, f="json")
     candidates = []
@@ -131,7 +140,7 @@ def _download_land_polygons(
         "units": "esriSRUnit_Meter",
     }
 
-    id_data = _get_json(
+    id_data = _post_json(
         session,
         f"{layer_url}/query",
         f="json",
