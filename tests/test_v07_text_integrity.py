@@ -46,3 +46,14 @@ def test_v07_forbidden_buffering_claims_do_not_return():
         "hierarchy is measurement-error robust",
     )
     assert all(token not in text for token in forbidden)
+
+
+def test_v07_has_no_duplicate_heading_markup_or_plain_math_tokens():
+    text = MANUSCRIPT.read_text(encoding="utf-8")
+    assert "## Conclusion## Conclusion" not in text
+    assert "## Data availability## Data availability" not in text
+    assert "### Simple sea-ice-duration and snowfall formulations did not explain the scale mismatch###" not in text
+    assert "(alpha_{sub}" not in text
+    assert "(alpha_{island}" not in text
+    assert "(gamma_{arch}" not in text
+    assert "((phi=" not in text
