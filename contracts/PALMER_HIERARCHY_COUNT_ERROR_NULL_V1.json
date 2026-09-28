@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-hierarchy-count-error-null-v1",
+  "date": "2026-09-28",
+  "status": "count_error_null_frozen_before_repository_result_receipt",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "expected_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "question": "Can independent subcolony counting error alone create an apparent within-island beta-variability signal as large as the observed hierarchical separation?",
+  "eligible_units": {
+    "islands": ["COR", "HUM", "LIT"],
+    "years": [1991, 2017],
+    "reason": "Same stable-roster units as the frozen primary hierarchical decomposition."
+  },
+  "latent_complete_synchrony_null": {
+    "fixed_composition": "For each island, q_j is the colony-code share of cumulative breeding pairs across all 1991-2017 censuses.",
+    "latent_mean": "lambda_jt = observed island total N_t * q_j",
+    "interpretation": "Every latent subcolony trajectory within an island is exactly proportional to the island total, so latent within-island beta variability equals one before observation error is added.",
+    "island_trajectories": "Observed island totals are retained as latent annual means so the empirical among-island trajectory structure is not destroyed."
+  },
+  "error_models": [
+    {
+      "name": "poisson",
+      "multiplicative_cv": 0.0
+    },
+    {
+      "name": "gamma_poisson_cv10",
+      "multiplicative_cv": 0.10
+    },
+    {
+      "name": "gamma_poisson_cv20",
+      "multiplicative_cv": 0.20
+    }
+  ],
+  "error_model_reuse": "Same Poisson and independent Gamma-Poisson multiplicative-CV families used in the frozen N_eff mechanical-coupling diagnostic.",
+  "simulation": {
+    "replicates_per_error_model": 100000,
+    "seed": 20260928,
+    "batch_size": 2000
+  },
+  "primary_statistics": {
+    "raw_beta_within": "Wang-Loreau beta from colony-code units to islands.",
+    "raw_beta_among": "Wang-Loreau beta from islands to the three-island aggregate.",
+    "raw_log_beta_contrast": "log(beta_within / beta_among); one-sided Monte Carlo tail against the observed frozen value.",
+    "raw_order_probability": "Null probability beta_within > beta_among."
+  },
+  "fixed_centered_sensitivities": {
+    "linear_detrended_log1p": "Median within-island covariance beta divided by among-island covariance beta.",
+    "annual_log1p_growth": "Median within-island covariance beta divided by among-island covariance beta.",
+    "boundary": "These are non-additive sensitivities only; they are not alpha/gamma decompositions."
+  },
+  "decision_rules": {
+    "measurement_error_robust_raw_hierarchy": "Observed raw log-beta contrast must be in the upper 5% tail under all three frozen error models.",
+    "centered_signal_robustness": "Centered-signal ratios are reported as fixed diagnostics, not promoted if compatible with the error-only null.",
+    "no_model_tuning": "Do not add intermediate CV values, alternative fixed-share definitions, correlated-error structures, or extra transformations unless an external empirical error calibration is obtained."
+  },
+  "interpretation_boundary": [
+    "Failure under an error model does not prove that counting error caused the observed hierarchy.",
+    "Success under an error model does not calibrate actual Palmer observer error.",
+    "The diagnostic tests measurement-error robustness of the hierarchy, not the N_eff coefficient.",
+    "The raw additive abundance decomposition remains the only exact Wang-Loreau alpha/beta/gamma partition."
+  ]
+}
