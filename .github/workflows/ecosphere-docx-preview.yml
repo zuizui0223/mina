@@ -3,7 +3,7 @@ name: ecosphere-docx-preview
 on:
   push:
     branches:
-      - submission/ecosphere-v0.6-docx-preview-v1
+      - submission/ecosphere-v0.7-package-v2
     paths:
       - "scripts/build_ecosphere_submission_docx.py"
       - "tests/test_ecosphere_submission_metadata.py"
@@ -12,9 +12,9 @@ on:
       - "tests/test_ecosphere_docx_builder.py"
       - ".github/workflows/ecosphere-docx-preview.yml"
       - "pyproject.toml"
-      - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
-      - "docs/REFERENCES_V4.bib"
-      - "docs/FIGURE_CAPTIONS_V5.md"
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_7.md"
+      - "docs/REFERENCES_V5.bib"
+      - "docs/FIGURE_CAPTIONS_V6.md"
   pull_request:
     paths:
       - "scripts/build_ecosphere_submission_docx.py"
@@ -24,9 +24,9 @@ on:
       - "tests/test_ecosphere_docx_builder.py"
       - ".github/workflows/ecosphere-docx-preview.yml"
       - "pyproject.toml"
-      - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
-      - "docs/REFERENCES_V4.bib"
-      - "docs/FIGURE_CAPTIONS_V5.md"
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_7.md"
+      - "docs/REFERENCES_V5.bib"
+      - "docs/FIGURE_CAPTIONS_V6.md"
   workflow_dispatch:
 
 jobs:
@@ -58,10 +58,10 @@ jobs:
       - name: Build Word submission preview
         run: |
           python scripts/build_ecosphere_submission_docx.py \
-            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_6.md \
-            --bibliography docs/REFERENCES_V4.bib \
-            --captions docs/FIGURE_CAPTIONS_V5.md \
-            --out build/Ecosphere_v0_6_SUBMISSION_PREVIEW.docx
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_7.md \
+            --bibliography docs/REFERENCES_V5.bib \
+            --captions docs/FIGURE_CAPTIONS_V6.md \
+            --out build/Ecosphere_v0_7_SUBMISSION_PREVIEW.docx
       - name: Build synthetic author-complete Word path
         run: |
           python - <<'PY'
@@ -98,16 +98,16 @@ jobs:
             --metadata build/synthetic_submission_metadata.json \
             --require-complete
           python scripts/build_ecosphere_submission_docx.py \
-            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_6.md \
-            --bibliography docs/REFERENCES_V4.bib \
-            --captions docs/FIGURE_CAPTIONS_V5.md \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_7.md \
+            --bibliography docs/REFERENCES_V5.bib \
+            --captions docs/FIGURE_CAPTIONS_V6.md \
             --metadata build/synthetic_submission_metadata.json \
             --require-complete-metadata \
-            --out build/Ecosphere_v0_6_SYNTHETIC_COMPLETE.docx
+            --out build/Ecosphere_v0_7_SYNTHETIC_COMPLETE.docx
       - uses: actions/upload-artifact@v4
         with:
-          name: ecosphere-v0-6-docx-preview
+          name: ecosphere-v0-7-docx-preview
           path: |
-            build/Ecosphere_v0_6_SUBMISSION_PREVIEW.docx
-            build/Ecosphere_v0_6_SYNTHETIC_COMPLETE.docx
+            build/Ecosphere_v0_7_SUBMISSION_PREVIEW.docx
+            build/Ecosphere_v0_7_SYNTHETIC_COMPLETE.docx
             build/ecosphere_metadata_template_audit.json
