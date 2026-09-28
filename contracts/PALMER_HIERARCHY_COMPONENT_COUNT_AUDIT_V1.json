@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-hierarchy-component-count-audit-v1",
+  "date": "2026-09-27",
+  "status": "post_hoc_diagnostic_frozen_after_identifying_component_count_comparability_issue",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "expected_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "reason": "Raw beta variability has a component-count-dependent upper range. The audit asks whether the within-island hierarchy remains visible using pairwise correlation and a simple beta-excess normalization.",
+  "eligible_islands": ["COR", "HUM", "LIT"],
+  "diagnostics": {
+    "raw_normalized_excess_beta": "(beta - 1) / (n_units - 1), computed separately for each eligible island and for the three island totals",
+    "pairwise_correlation": "mean and median Pearson correlation among component trajectories, compared among islands versus within each eligible island",
+    "signals": [
+      "raw breeding-pair abundance",
+      "linearly detrended log1p abundance",
+      "annual log1p growth"
+    ]
+  },
+  "directional_checks": {
+    "normalized_excess": "each eligible island > among-island value",
+    "pairwise_synchrony": "each eligible island mean pairwise correlation < among-island mean pairwise correlation for every fixed signal"
+  },
+  "interpretation_boundary": [
+    "post-hoc robustness diagnostic, not a preregistered endpoint",
+    "no p-value or causal inference",
+    "pairwise correlation is a component-count comparability check, not a replacement for the exact Wang-Loreau decomposition",
+    "colony codes remain census units rather than GIS polygons"
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-ecosphere-manuscript-v0.6",
+  "date": "2026-09-28",
+  "status": "hierarchical_variability_and_demographic_momentum_promoted",
+  "parent_manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_5.md",
+  "manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_6.md",
+  "bibliography": "docs/REFERENCES_V4.bib",
+  "central_contribution": "Island identity structures demographic state and endpoint, whereas most detectable temporal compensation occurs among breeding subcolonies within islands.",
+  "required_hierarchy_results": {
+    "stable_roster_islands": [
+      "COR",
+      "HUM",
+      "LIT"
+    ],
+    "beta_within_islands": 1.0737035331938372,
+    "beta_among_islands": 1.0112310830110414,
+    "beta_total": 1.0857623867043855,
+    "within_log_beta_share": 0.8642664462053955,
+    "pre_extinction_ordering_retained": true,
+    "without_litchfield_ordering_retained": true,
+    "all_detrended_within_beta_exceed_among": true,
+    "all_growth_within_beta_exceed_among": true
+  },
+  "required_neff_boundary": {
+    "coefficient": 0.11679896749684501,
+    "lag1_conditioned_coefficient": 0.11849651213599004,
+    "lag1_lag2_conditioned_coefficient": 0.11260540832528995,
+    "lag1_lag2_beta_fraction_of_original": 0.9640959225802374,
+    "lag1_lag2_loyo_gain": 0.000444125252832564,
+    "lag1_lag2_gain_fraction_of_original": 0.4316753406579907,
+    "lag1_lag2_independent_circular_p": 0.001019989800101999,
+    "lag1_lag2_joint_exact_p": 0.01201923076923077,
+    "lag1_lag2_joint_exceedances": "5/416",
+    "year_block_predictive_p": 0.262,
+    "predictive_claim": false,
+    "causal_claim": false,
+    "early_warning_claim": false
+  },
+  "prohibited_interpretations": [
+    "beta variability proves causal spatial insurance",
+    "subcolony asynchrony proves dispersal-mediated rescue",
+    "N_eff is a supported predictor",
+    "colony codes are equivalent to GIS polygons",
+    "86.4 percent is a causal mechanism fraction",
+    "lagged growth controls remove all time-varying confounding",
+    "component-count audit is a new confirmatory endpoint"
+  ],
+  "versioning": {
+    "v0.5_remains_immutable_provenance": true,
+    "cwm_extension_promoted": false
+  },
+  "captions": "docs/FIGURE_CAPTIONS_V5.md",
+  "figure_package": {
+    "figure_count": 5,
+    "hierarchy_figure": "Figure 3",
+    "mechanism_audit_figure": "Figure 4",
+    "colony_organization_figure": "Figure 5"
+  },
+  "momentum_result": "results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json",
+  "required_component_count_audit": {
+    "result": "results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json",
+    "status": "post_hoc_robustness_diagnostic",
+    "normalized_excess_beta": {
+      "among_islands": 0.0056155415055206825,
+      "COR": 0.010667116584622013,
+      "HUM": 0.011762818921284196,
+      "LIT": 0.006117348590848143
+    },
+    "pairwise_mean_correlation": {
+      "raw_abundance": {
+        "among_islands": 0.9819200025396069,
+        "COR": 0.8221255081215388,
+        "HUM": 0.8026121461831139,
+        "LIT": 0.8738739009094325
+      },
+      "linear_detrended_log1p": {
+        "among_islands": 0.6703552946780263,
+        "COR": -0.029918363224446045,
+        "HUM": 0.09132364411393545,
+        "LIT": 0.46732391241036747
+      },
+      "annual_log1p_growth": {
+        "among_islands": 0.481586962574622,
+        "COR": 0.17481770991205256,
+        "HUM": 0.09180222978011371,
+        "LIT": 0.24739733586100357
+      }
+    },
+    "all_within_normalized_excess_beta_above_among": true,
+    "all_signals_all_within_pairwise_correlations_below_among": true,
+    "confirmatory_endpoint": false
+  }
+}

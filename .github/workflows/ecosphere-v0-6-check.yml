@@ -1,0 +1,193 @@
+name: ecosphere-v0-6-check
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - manuscript/ecosphere-v0.6-hierarchy
+    paths:
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
+      - "docs/MANUSCRIPT_SPINE_V5.md"
+      - "docs/FIGURE_CAPTIONS_V5.md"
+      - "docs/REFERENCES_V4.bib"
+      - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json"
+      - "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json"
+      - "results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json"
+      - "results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json"
+      - "src/mina/manuscript_guard.py"
+      - "tests/**"
+      - ".github/workflows/ecosphere-v0-6-check.yml"
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
+      - "docs/MANUSCRIPT_SPINE_V5.md"
+      - "docs/FIGURE_CAPTIONS_V5.md"
+      - "docs/REFERENCES_V4.bib"
+      - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json"
+      - "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json"
+      - "results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json"
+      - "results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json"
+      - "src/mina/manuscript_guard.py"
+      - "tests/**"
+      - ".github/workflows/ecosphere-v0-6-check.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev,figures]"
+      - name: Run test suite
+        run: pytest
+      - name: Guard manuscript citations and legacy frozen values
+        run: |
+          mina-manuscript-guard \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_6.md \
+            --captions docs/FIGURE_CAPTIONS_V5.md \
+            --bibliography docs/REFERENCES_V4.bib \
+            --results results | tee build-ecosphere-v0-6-base-guard.json
+      - name: Guard hierarchical and momentum v0.6 claims against frozen receipts
+        run: |
+          python - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          manuscript = Path("docs/MANUSCRIPT_ECOSPHERE_V0_6.md").read_text()
+          hierarchy = json.loads(
+              Path("results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json").read_text()
+          )
+          component_audit = json.loads(
+              Path("results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json").read_text()
+          )
+          momentum = json.loads(
+              Path("results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json").read_text()
+          )
+          contract = json.loads(
+              Path("contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json").read_text()
+          )
+
+          p = hierarchy["primary_raw_abundance"]
+          m = momentum["lag1_lag2"]
+          required = {
+              f'{p["beta_within_islands"]:.4f}': "primary beta within",
+              f'{p["beta_among_islands"]:.4f}': "primary beta among",
+              f'{p["beta_total_subcolony_to_archipelago"]:.4f}': "primary beta total",
+              f'{100*p["log_beta_share_within_islands"]:.1f}%': "within log-beta share",
+              f'{m["standardized_neff_beta"]:+.4f}': "two-lag N_eff coefficient",
+              f'{m["loyo_mse_gain"]:+.6f}': "two-lag held-out gain",
+              f'{m["independent_full_series_circular_shift"]["one_sided_p"]:.5f}':
+                  "two-lag independent circular p",
+              "5/416": "two-lag exact joint shift count",
+              "0.00562": "component-count normalized excess beta",
+              "0.982": "component-count raw among correlation",
+              "post-hoc component-count": "component-count audit boundary",
+              "not as proof": "causal-insurance boundary",
+              "not a causal": "N_eff causal boundary",
+              "cannot remove all time-varying confounding":
+                  "lagged-growth confounding boundary",
+          }
+          missing = {
+              label: token
+              for token, label in required.items()
+              if token not in manuscript
+          }
+          if missing:
+              raise SystemExit(f"v0.6 guard missing: {missing}")
+
+          c = contract["required_neff_boundary"]
+          checks = {
+              "lag1_lag2_beta": (
+                  c["lag1_lag2_conditioned_coefficient"],
+                  m["standardized_neff_beta"],
+              ),
+              "lag1_lag2_gain": (
+                  c["lag1_lag2_loyo_gain"],
+                  m["loyo_mse_gain"],
+              ),
+              "lag1_lag2_independent_p": (
+                  c["lag1_lag2_independent_circular_p"],
+                  m["independent_full_series_circular_shift"]["one_sided_p"],
+              ),
+              "lag1_lag2_joint_p": (
+                  c["lag1_lag2_joint_exact_p"],
+                  m["joint_full_series_exact_shift"]["exact_one_sided_p"],
+              ),
+          }
+          for label, (expected, observed) in checks.items():
+              if not math.isclose(
+                  float(expected), float(observed), rel_tol=0.0, abs_tol=1e-12
+              ):
+                  raise SystemExit(
+                      f"{label} contract/receipt drift: {expected} != {observed}"
+                  )
+
+          audit_contract = contract["required_component_count_audit"]
+          audit_checks = {
+              "normalized_excess_among": (
+                  audit_contract["normalized_excess_beta"]["among_islands"],
+                  component_audit["raw_normalized_excess_beta"]["among_islands"][
+                      "normalized_excess_beta"
+                  ],
+              ),
+              "normalized_excess_COR": (
+                  audit_contract["normalized_excess_beta"]["COR"],
+                  component_audit["raw_normalized_excess_beta"]["COR"][
+                      "normalized_excess_beta"
+                  ],
+              ),
+              "raw_pairwise_among": (
+                  audit_contract["pairwise_mean_correlation"]["raw_abundance"][
+                      "among_islands"
+                  ],
+                  component_audit["pairwise_mean_correlation"]["raw_abundance"][
+                      "among_islands"
+                  ],
+              ),
+          }
+          for label, (expected, observed) in audit_checks.items():
+              if not math.isclose(
+                  float(expected), float(observed), rel_tol=0.0, abs_tol=1e-12
+              ):
+                  raise SystemExit(
+                      f"{label} contract/receipt drift: {expected} != {observed}"
+                  )
+          if not component_audit["decision"][
+              "hierarchy_not_explained_only_by_more_within_island_units"
+          ]:
+              raise SystemExit("component-count audit no longer retains hierarchy")
+
+          if not hierarchy["supported"]:
+              raise SystemExit("hierarchy result receipt missing supported claims")
+          if contract["versioning"]["v0.5_remains_immutable_provenance"] is not True:
+              raise SystemExit("v0.5 provenance gate drifted")
+
+          print(json.dumps({
+              "status": "pass",
+              "required_tokens": required,
+              "hierarchy_result_id": hierarchy["result_id"],
+              "component_audit_result_id": component_audit["result_id"],
+              "momentum_result_id": momentum["result_id"],
+              "contract_id": contract["contract_id"],
+          }, indent=2, sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecosphere-v0-6-check
+          path: |
+            docs/MANUSCRIPT_ECOSPHERE_V0_6.md
+            docs/MANUSCRIPT_SPINE_V5.md
+            docs/FIGURE_CAPTIONS_V5.md
+            docs/REFERENCES_V4.bib
+            contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_6.json
+            results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json
+            results/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json
+            results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json
+            build-ecosphere-v0-6-base-guard.json

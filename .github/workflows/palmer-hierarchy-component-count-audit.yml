@@ -1,0 +1,56 @@
+name: palmer-hierarchy-component-count-audit
+
+on:
+  push:
+    branches:
+      - manuscript/ecosphere-v0.6-hierarchy
+    paths:
+      - "src/mina/hierarchy_component_audit.py"
+      - "tests/test_hierarchy_component_audit.py"
+      - "contracts/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_V1.json"
+      - "pyproject.toml"
+      - ".github/workflows/palmer-hierarchy-component-count-audit.yml"
+  pull_request:
+    paths:
+      - "src/mina/hierarchy_component_audit.py"
+      - "tests/test_hierarchy_component_audit.py"
+      - "contracts/PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_V1.json"
+      - "pyproject.toml"
+      - ".github/workflows/palmer-hierarchy-component-count-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run audit unit tests
+        run: pytest tests/test_hierarchy_component_audit.py
+      - name: Fetch frozen LTER census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run component-count audit
+        run: |
+          mina-hierarchy-component-audit \
+            --census build/adelie_census.csv \
+            --out build/hierarchy_component_count_audit.json
+      - name: Require both hierarchy diagnostics
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/hierarchy_component_count_audit.json").read_text())
+          d=x["decision"]
+          assert d["all_within_normalized_excess_beta_above_among"]
+          assert d["all_signals_all_within_mean_pairwise_correlations_below_among"]
+          print(json.dumps(d,indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-hierarchy-component-count-audit
+          path: |
+            build/adelie_census.csv
+            build/hierarchy_component_count_audit.json

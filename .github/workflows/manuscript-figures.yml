@@ -55,7 +55,7 @@ jobs:
             --results results \
             --out-dir build/figure_data
 
-      - name: Render Figures 1-4
+      - name: Render Figures 1-5
         run: |
           mina-figures \
             --data-dir build/figure_data \
@@ -75,10 +75,12 @@ jobs:
           test -s build/figures/figure1_palmer_network.pdf
           test -s build/figures/figure2_common_decline.png
           test -s build/figures/figure2_common_decline.pdf
-          test -s build/figures/figure3_mechanism_audit.png
-          test -s build/figures/figure3_mechanism_audit.pdf
-          test -s build/figures/figure4_colony_network.png
-          test -s build/figures/figure4_colony_network.pdf
+          test -s build/figures/figure3_hierarchical_variability.png
+          test -s build/figures/figure3_hierarchical_variability.pdf
+          test -s build/figures/figure4_mechanism_audit.png
+          test -s build/figures/figure4_mechanism_audit.pdf
+          test -s build/figures/figure5_colony_network.png
+          test -s build/figures/figure5_colony_network.pdf
           cat build/figure_data/manifest.json
 
       - uses: actions/upload-artifact@v4
