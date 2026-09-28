@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-breeding-patch-concentration-result-v1",
+  "validated_date": "2026-09-28",
+  "contract_id": "mina-palmer-breeding-patch-concentration-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36397540988,
+    "head_sha": "544e8e562744f6aa4613f3951498779090ef06c0",
+    "artifact_id": 10959385511,
+    "artifact_digest": "sha256:5e06043fb9c535864d0733d2171e640f928217d4f248c0e8be212e0f88000d9a",
+    "conclusion": "success",
+    "simulations_per_error_model": 100000,
+    "seed": 20260928
+  },
+  "observed": {
+    "COR": {
+      "first_neff": 3.535167892670656,
+      "last_neff": 2.8594594594594596,
+      "fractional_change": -0.19113899359974384,
+      "slope_per_year": -0.030975710379891816
+    },
+    "HUM": {
+      "first_neff": 4.624639076034649,
+      "last_neff": 2.2845849802371543,
+      "fractional_change": -0.5059971291433084,
+      "slope_per_year": -0.08550466131872993
+    },
+    "LIT": {
+      "first_neff": 5.78299346803081,
+      "last_neff": 1,
+      "fractional_change": -0.8270791752527236,
+      "last_positive_year": 2006,
+      "slope_per_year": -0.36807876113755644
+    }
+  },
+  "cv20": {
+    "COR_p": 0.037999620003799965,
+    "HUM_p": 0.00000999990000099999,
+    "LIT_p": 0.00000999990000099999,
+    "joint_three_island_p": 0.00000999990000099999
+  },
+  "poisson_joint_p": 0.00000999990000099999,
+  "cv10_joint_p": 0.00000999990000099999,
+  "decision": {
+    "progressive_concentration_supported_under_all_frozen_error_models": true
+  },
+  "supported": [
+    "Across all three stable-roster Palmer islands, effective colony number declined more rapidly than expected from a time-invariant within-island composition subjected to the observed island-total trajectory and the frozen independent count-error family.",
+    "The result survives the inherited uncalibrated Gamma-Poisson CV20% sensitivity in each island individually and jointly.",
+    "Adelie population decline in these islands is accompanied by progressive concentration of breeders among a smaller effective set of colony-code breeding components rather than simple proportional thinning."
+  ],
+  "not_supported": [
+    "one-to-one physical interpretation of colony codes as mapped subcolony polygons",
+    "a causal claim that snow, topography, predation or dispersal generated the concentration",
+    "a claim that the concentration itself causes future population decline",
+    "a claim that Gamma-Poisson CV20% estimates actual Palmer observer error"
+  ],
+  "ecological_interpretation": "The Palmer Adélie decline has a within-island spatial-demographic architecture: breeder distributions become progressively concentrated as island populations contract, beyond the concentration expected from lower abundance and independent counting noise alone. Independent Torgersen mapping provides phenomenon-level convergence by documenting strong subcolony-footprint contraction and habitat-structured extinction, but the unresolved census-code/GIS crosswalk prevents patch-level causal attribution."
+}
