@@ -268,16 +268,25 @@ Adélie penguin; breeding patches; hierarchical variability; island ecology; lon
 {MARKER}
 
 """
-    additional_ack=(
-        " " + blocks["additional_ack"]
-        if blocks["additional_ack"]
-        else ""
+    def sentence(value: str) -> str:
+        value=value.strip()
+        if not value:
+            return ""
+        return value if value[-1] in ".!?" else value + "."
+
+    funding=sentence(blocks["funding"])
+    additional=sentence(blocks["additional_ack"])
+    acknowledgments_extra=" ".join(
+        value for value in (funding,additional) if value
     )
+    if acknowledgments_extra:
+        acknowledgments_extra=" " + acknowledgments_extra
+
     backmatter = f"""
 
 ## Acknowledgments
 
-We thank the Palmer Station Antarctica Long Term Ecological Research program and the field teams and data stewards who collected and curated the long-term penguin census at Palmer Station, Antarctica. {blocks["funding"]}.{additional_ack} {AI_DISCLOSURE}{blocks["ai_suffix"]}
+We thank the Palmer Station Antarctica Long Term Ecological Research program and the field teams and data stewards who collected and curated the long-term penguin census at Palmer Station, Antarctica.{acknowledgments_extra} {AI_DISCLOSURE}{blocks["ai_suffix"]}
 
 ## Author Contributions
 
