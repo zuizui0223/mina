@@ -106,6 +106,7 @@ def _download_land_polygons(
     session: requests.Session,
     layer_url: str,
     meta: dict,
+    sites: pd.DataFrame,
 ) -> tuple[list, list[dict]]:
     field_names = [str(f.get("name", "")) for f in meta.get("fields", [])]
     surface_field = next(name for name in field_names if name.lower() == "surface")
@@ -113,37 +114,54 @@ def _download_land_polygons(
     if not object_id:
         raise RuntimeError("missing object ID field")
 
-    count = _get_json(
+    multipoint = {
+        "points": [
+            [float(row.longitude), float(row.latitude)]
+            for row in sites.itertuples(index=False)
+        ],
+        "spatialReference": {"wkid": 4326},
+    }
+    filter_params = {
+        "where": f"{surface_field}='land'",
+        "geometry": json.dumps(multipoint),
+        "geometryType": "esriGeometryMultipoint",
+        "inSR": 4326,
+        "spatialRel": "esriSpatialRelIntersects",
+        "distance": max(DISTANCES_M),
+        "units": "esriSRUnit_Meter",
+    }
+
+    id_data = _get_json(
         session,
         f"{layer_url}/query",
         f="json",
-        where=f"{surface_field}='land'",
-        returnCountOnly="true",
-    ).get("count")
-    if count is None:
-        raise RuntimeError("land polygon count unavailable")
+        returnIdsOnly="true",
+        **filter_params,
+    )
+    object_ids = sorted(int(v) for v in id_data.get("objectIds", []) or [])
+    if not object_ids:
+        raise RuntimeError("no SCAR land polygons found within 5 km of candidate sites")
 
-    max_records = int(meta.get("maxRecordCount") or 1000)
-    page_size = min(max_records, 1000)
     features = []
-    for offset in range(0, int(count), page_size):
+    for start in range(0, len(object_ids), 200):
+        chunk = object_ids[start : start + 200]
         data = _get_json(
             session,
             f"{layer_url}/query",
             f="geojson",
-            where=f"{surface_field}='land'",
+            objectIds=",".join(str(v) for v in chunk),
             outFields=f"{object_id},{surface_field}",
             returnGeometry="true",
             outSR=4326,
-            orderByFields=f"{object_id} ASC",
-            resultOffset=offset,
-            resultRecordCount=page_size,
             maxAllowableOffset=0.0005,
         )
         features.extend(data.get("features", []))
 
-    if len(features) != int(count):
-        raise RuntimeError(f"land polygon pagination drift: {len(features)} != {count}")
+    if len(features) != len(object_ids):
+        raise RuntimeError(
+            f"candidate-neighborhood polygon retrieval drift: "
+            f"{len(features)} != {len(object_ids)}"
+        )
 
     transformer = Transformer.from_crs(4326, 3031, always_xy=True)
     geoms = []
@@ -165,7 +183,7 @@ def audit(root: Path) -> dict:
     sites = _candidate_sites(root)
     session = _session()
     layer_url, meta = _discover_layer(session)
-    geoms, attrs = _download_land_polygons(session, layer_url, meta)
+    geoms, attrs = _download_land_polygons(session, layer_url, meta, sites)
     tree = STRtree(geoms)
     transformer = Transformer.from_crs(4326, 3031, always_xy=True)
 
@@ -242,7 +260,7 @@ def audit(root: Path) -> dict:
         "scar_add_layer_name": meta.get("name"),
         "scar_add_object_id_field": meta.get("objectIdField"),
         "scar_add_fields": fields,
-        "downloaded_land_polygon_count": len(geoms),
+        "candidate_neighborhood_land_polygon_count": len(geoms),
         "geometry_generalization_degrees": 0.0005,
         "distance_summaries": summaries,
         "selected_distance_m": selected_distance,
