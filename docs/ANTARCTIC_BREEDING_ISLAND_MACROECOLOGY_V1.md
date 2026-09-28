@@ -142,17 +142,40 @@ Result receipt: `results/MAPPPD_MACRO_INVENTORY_RESULT_V1.json`.
 
 No ecological outcome model was fit at Gate 0.
 
-### Gate 1 — atlas feasibility
+### Gate 1 — breeding-option atlas — PASSED
 
-Freeze:
-- study domain;
-- site type;
-- island polygon matching;
-- buffers;
-- trait list;
-- missingness thresholds.
+The primary atlas lane no longer depends on literal island-polygon assignment.
+Using the Antarctic Ecosystem Inventory v1.0 at 100 m resolution, mina derives
+site-centered breeding-option traits before any demographic outcome is opened.
 
-Build traits without opening demographic responses.
+Frozen primary scale: **2 km** around each candidate breeding site.
+
+Coverage:
+- **118 / 122 sites (96.7%)** contain mapped ice-free ecosystem cells at 2 km;
+- the same four sites remain uncovered at 1, 2 and 5 km: FRAE, FRAW, GOPT, WPEC;
+- these four remain missing by contract rather than being rescued by widening the radius.
+
+At 2 km across the 122 candidate sites:
+- mapped ice-free area: **0–928 ha**, median **243 ha**;
+- ecosystem-class richness: **0–9**, median **3**;
+- ecosystem Shannon diversity: **0–1.86**, median **0.83**.
+
+Result receipt:
+`results/ANTARCTIC_BREEDING_OPTIONS_ATLAS_GATE1_RESULT_V1.json`.
+
+The atlas is a newly derived mina dataset. It is not occupied nesting area;
+it is a site-centered proxy for the quantity and heterogeneity of terrestrial
+breeding options.
+
+Literal offshore-island/mainland identity, total landmass area and mainland
+distance remain a secondary geometry lane because raw SCAR coastline FIDs are
+not themselves biological islands and public FeatureServer throttling made
+per-site landmass resolution an unsuitable critical path.
+
+### Gate 1D — terrain and melt augmentation — NEXT
+
+Add terrain and melt/climate traits to the same frozen 122-site set and the
+same 2 km primary scale before demographic outcomes are opened.
 
 ### Gate 2 — outcome contract
 

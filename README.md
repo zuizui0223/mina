@@ -37,9 +37,14 @@ candidate trend gate retains **152 Pygoscelis site × species units** (Adélie
 and king do not have enough repeated nest-count series for the same primary
 trend model.
 
-The next stage is outcome-blind construction of the Antarctic Penguin
-Breeding-Island Atlas; no macroecological response model is opened before the
-site/trait extraction rules are frozen.
+Gate 1 has now built the first outcome-blind Antarctic Penguin
+Breeding-Island Atlas layer. At the frozen 2 km scale, **118/122 candidate
+sites (96.7%)** have mapped ice-free ecosystem habitat. The derived traits
+span substantial variation (ice-free area 0–928 ha; ecosystem richness 0–9),
+so this is now a real user-constructed spatial dataset rather than a plan.
+
+The next stage augments the same frozen sites with terrain and melt/climate
+traits. Demographic outcomes remain unopened until the atlas is frozen.
 
 Program documents:
 - `contracts/MINA_RESEARCH_PROGRAM_V1.json`

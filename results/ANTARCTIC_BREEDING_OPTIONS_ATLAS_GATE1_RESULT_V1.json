@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-antarctic-breeding-options-atlas-gate1-result-v1",
+  "validated_date": "2026-09-29",
+  "source_sites": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "candidate_site_species_units": 152,
+    "distinct_candidate_sites": 122
+  },
+  "ecosystem_inventory": {
+    "doi": "10.5281/zenodo.11629115",
+    "raster_file": "AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif",
+    "raster_md5": "cde880d73f7f18b44aecf5690aa2dc92",
+    "vat_dbf_md5": "fa5363b1c0d882b4343e239d03dc2ba4",
+    "resolution_m": 100,
+    "crs": "EPSG:3031"
+  },
+  "execution": {
+    "workflow_run_id": 36489980162,
+    "artifact_id": 11000822448,
+    "artifact_digest": "sha256:04fddb4ef0960874a9016885b514fd99d6d7717058144f1dd73c049aec35ef5f",
+    "head_sha": "bfaff4697eaa197d341431ea0d283ef124f4937d",
+    "conclusion": "success"
+  },
+  "frozen_scales": {
+    "coverage_diagnostic_radius_m": 500,
+    "sensitivity_radii_m": [
+      1000,
+      5000
+    ],
+    "primary_radius_m": 2000
+  },
+  "coverage": {
+    "radius_500m": {
+      "sites_with_data": 114,
+      "fraction": 0.9344262295081968
+    },
+    "radius_1000m": {
+      "sites_with_data": 118,
+      "fraction": 0.9672131147540983
+    },
+    "radius_2000m": {
+      "sites_with_data": 118,
+      "fraction": 0.9672131147540983
+    },
+    "radius_5000m": {
+      "sites_with_data": 118,
+      "fraction": 0.9672131147540983
+    },
+    "gate_rule": "at least 90% of candidate sites contain one or more mapped ice-free ecosystem pixels within the frozen 2 km radius",
+    "gate_passed": true
+  },
+  "missing_sites_all_1km_2km_5km": [
+    {
+      "site_id": "FRAE",
+      "site_name": "Franklin Island East",
+      "region": "Victoria Land",
+      "latitude": -76.1581,
+      "longitude": 168.4101
+    },
+    {
+      "site_id": "FRAW",
+      "site_name": "Franklin Island West",
+      "region": "Victoria Land",
+      "latitude": -76.1618,
+      "longitude": 168.3383
+    },
+    {
+      "site_id": "GOPT",
+      "site_name": "Gourlay Point",
+      "region": "South Orkney Islands",
+      "latitude": -60.7309,
+      "longitude": -45.5863
+    },
+    {
+      "site_id": "WPEC",
+      "site_name": "Watson Peninsula (east coast)",
+      "region": "South Orkney Islands",
+      "latitude": -60.6761,
+      "longitude": -44.5436
+    }
+  ],
+  "primary_trait_distributions_2km": {
+    "mapped_ice_free_area_ha": {
+      "min": 0,
+      "q10": 37,
+      "q25": 114,
+      "median": 243,
+      "q75": 372.25,
+      "q90": 543.7,
+      "max": 928
+    },
+    "ecosystem_value_richness": {
+      "min": 0,
+      "q10": 2,
+      "q25": 3,
+      "median": 3,
+      "q75": 5,
+      "q90": 7,
+      "max": 9
+    },
+    "ecosystem_value_shannon": {
+      "nonmissing_n": 118,
+      "min": 0,
+      "q10": 0.22746743607797026,
+      "q25": 0.3990278009007145,
+      "median": 0.8281396086945945,
+      "q75": 1.1278926248884904,
+      "q90": 1.43465547747084,
+      "max": 1.8562463685985116
+    },
+    "dominant_ecosystem_value_fraction": {
+      "nonmissing_n": 118,
+      "min": 0.2649572649572649,
+      "q10": 0.4382483370288249,
+      "q25": 0.5199315743092634,
+      "median": 0.6589147286821706,
+      "q75": 0.885492957746479,
+      "q90": 0.9486263244736894,
+      "max": 1
+    }
+  },
+  "primary_trait_correlations_2km": {
+    "ice_free_area_vs_richness": 0.240188,
+    "ice_free_area_vs_shannon": -0.101816,
+    "richness_vs_shannon": 0.855962
+  },
+  "regional_coverage_notes": {
+    "Central-west Antarctic Peninsula": "58/58 sites covered at 2 km",
+    "South Shetland Islands": "22/22 sites covered at 2 km",
+    "Victoria Land": "25/27 sites covered at 2 km",
+    "South Orkney Islands": "0/2 sites covered at 2 km",
+    "other candidate regions": "all candidate sites covered at 2 km"
+  },
+  "interpretation": [
+    "The frozen 2 km breeding-option atlas passes its predeclared spatial coverage gate with 96.7% site coverage.",
+    "Ice-free habitat amount and ecosystem diversity vary substantially among candidate breeding sites, so the atlas contains meaningful spatial signal rather than near-constant traits.",
+    "The four uncovered sites remain missing by contract; the primary radius is not widened to rescue them.",
+    "The atlas is a newly derived mina dataset built before demographic outcomes are opened.",
+    "Ecosystem richness and Shannon diversity are strongly correlated and should not be entered together as unregularized co-primary predictors without a predeclared dimension-reduction or alternative-model rule."
+  ],
+  "boundary": [
+    "Mapped ice-free area is not occupied nesting area.",
+    "Ecosystem diversity is a breeding-option proxy, not a demonstrated mechanism.",
+    "Literal offshore-island/mainland identity and total island area remain a secondary geometry lane.",
+    "No penguin demographic response has been joined at this gate."
+  ]
+}
