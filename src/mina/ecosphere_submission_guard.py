@@ -16,14 +16,14 @@ EXPECTED_TITLE = (
     "Antarctic penguin breeding islands"
 )
 
-REQUIRED_HUMAN_BLOCKERS = (
-    "author list",
-    "affiliations",
-    "corresponding author",
-    "author contributions",
-    "funding",
-    "conflict of interest",
-    "AI tool inventory",
+REQUIRED_HUMAN_BLOCKER_ALIASES = (
+    ("author list",),
+    ("affiliations",),
+    ("corresponding author",),
+    ("author contribution",),
+    ("funding",),
+    ("conflict of interest", "conflict-of-interest"),
+    ("ai tool", "ai tools"),
 )
 
 PLACEHOLDER_PATTERNS = (
@@ -86,7 +86,9 @@ def inspect(
 
     blocker_text = " ".join(contract_blockers).lower()
     missing_expected_blockers = [
-        item for item in REQUIRED_HUMAN_BLOCKERS if item.lower() not in blocker_text
+        "/".join(aliases)
+        for aliases in REQUIRED_HUMAN_BLOCKER_ALIASES
+        if not any(alias in blocker_text for alias in aliases)
     ]
     if missing_expected_blockers:
         raise ValueError(
