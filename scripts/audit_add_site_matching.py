@@ -142,10 +142,11 @@ def _query_site(
     site: dict,
     layer_url: str,
     surface_field: str,
+    distances: tuple[int, ...],
 ) -> dict:
     session = _session()
     counts = {}
-    for distance in DISTANCES_M:
+    for distance in distances:
         counts[str(distance)] = _count_land(
             session,
             layer_url,
@@ -171,24 +172,32 @@ def audit(root: Path, workers: int = 12) -> dict:
     layer_url, meta, surface_field = _discover_layer(session)
 
     records = sites.to_dict(orient="records")
-    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
-        matched = list(
-            pool.map(
-                lambda site: _query_site(site, layer_url, surface_field),
-                records,
-            )
-        )
 
+    def run_distances(distances: tuple[int, ...]) -> list[dict]:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
+            return list(
+                pool.map(
+                    lambda site: _query_site(
+                        site,
+                        layer_url,
+                        surface_field,
+                        distances,
+                    ),
+                    records,
+                )
+            )
+
+    # Exact and the maximum frozen tolerance are sufficient to decide whether
+    # any smaller tolerance can possibly pass the >=95% coverage rule.
+    matched = run_distances((0, 5000))
     n_sites = len(matched)
-    summaries = {}
-    selected_distance = None
-    for distance in DISTANCES_M:
+
+    def summarize(distance: int) -> dict:
         key = str(distance)
         counts = [int(r["land_match_counts"][key]) for r in matched]
         any_count = sum(v >= 1 for v in counts)
         multiple_count = sum(v > 1 for v in counts)
-
-        summary = {
+        return {
             "distance_m": distance,
             "candidate_sites": n_sites,
             "land_match_count": any_count,
@@ -199,15 +208,42 @@ def audit(root: Path, workers: int = 12) -> dict:
             ),
             "unmatched_count": n_sites - any_count,
         }
-        summaries[key] = summary
 
+    summaries = {
+        "0": summarize(0),
+        "5000": summarize(5000),
+    }
+
+    five_k_passes_coverage = (
+        summaries["5000"]["land_match_fraction"] is not None
+        and summaries["5000"]["land_match_fraction"] >= 0.95
+    )
+
+    # Only if 5 km has sufficient coverage can a smaller distance satisfy the
+    # frozen rule. Query the intermediate distances then.
+    if five_k_passes_coverage:
+        intermediate = run_distances((500, 1000, 2000))
+        by_id = {r["site_id"]: r for r in matched}
+        for row in intermediate:
+            by_id[row["site_id"]]["land_match_counts"].update(
+                row["land_match_counts"]
+            )
+        matched = [by_id[str(site["site_id"])] for site in records]
+        for distance in (500, 1000, 2000):
+            summaries[str(distance)] = summarize(distance)
+
+    selected_distance = None
+    for distance in DISTANCES_M:
+        key = str(distance)
+        if key not in summaries:
+            continue
+        summary = summaries[key]
         if (
-            selected_distance is None
-            and n_sites
-            and summary["land_match_fraction"] >= 0.95
+            summary["land_match_fraction"] >= 0.95
             and summary["multiple_land_match_fraction"] <= 0.05
         ):
             selected_distance = distance
+            break
 
     region_summary = {}
     for region in sorted({str(r["region"]) for r in matched}):
@@ -234,9 +270,13 @@ def audit(root: Path, workers: int = 12) -> dict:
 
     fields = [str(f.get("name", "")) for f in meta.get("fields", [])]
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "audit_id": "mina-antarctic-add-site-match-audit-v1",
-        "implementation": "ArcGIS server-side point-distance count query",
+        "implementation": (
+            "ArcGIS server-side point-distance count query; exact + 5 km "
+            "queried first, intermediate frozen distances queried only if "
+            "5 km meets the frozen coverage gate"
+        ),
         "mapppdr_commit": PINNED_MAPPPDR_COMMIT,
         "candidate_species_ids": list(PRIMARY_SPECIES),
         "candidate_site_species_units": 152,
