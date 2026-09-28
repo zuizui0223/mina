@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-neff-momentum-v1",
+  "date": "2026-09-28",
+  "status": "demographic_momentum_sensitivity_frozen_before_ci_receipt",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "expected_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "question": "Does the positive N_eff coefficient persist after conditioning on one- and two-year demographic momentum, or is N_eff merely a proxy for recent decline inertia?",
+  "models": {
+    "original": "next_growth ~ island + z(log1p current abundance) + z(year) + z(log1p N_eff)",
+    "lag1": "original + z(growth[t-1])",
+    "lag1_lag2": "original + z(growth[t-1]) + z(growth[t-2])"
+  },
+  "fixed_checks": {
+    "coefficient": "standardized N_eff coefficient remains positive and close in magnitude to the original +0.1167989675",
+    "prediction": "report leave-one-end-year-out C0-C1 MSE gain without restoring a predictive claim",
+    "structured_null": "reuse the already-frozen full-series island-wise circular-shift family; no new permutation family is introduced",
+    "joint_null": "reuse the exact 26 x 16 persistent-islands/Litchfield shift family preserving cross-island N_eff covariance among persistent islands"
+  },
+  "sample_rule": {
+    "lag1": "complete cases for growth[t-1]",
+    "lag1_lag2": "complete cases for growth[t-1] and growth[t-2]",
+    "no_imputation": true
+  },
+  "interpretation": {
+    "supported_if": [
+      "lag1 and lag1+lag2 N_eff coefficients remain positive",
+      "both coefficients remain unusual under the reused structured-null family"
+    ],
+    "not_supported": [
+      "robust out-of-year prediction",
+      "causal protection",
+      "early-warning use",
+      "a claim that demographic momentum has no ecological role"
+    ]
+  },
+  "terminal_rule": "This closes the demographic-momentum confounding check. Do not add lag3+, alternative smoothing windows, autoregressive orders, or new N_eff null families to rescue or enlarge the claim."
+}
