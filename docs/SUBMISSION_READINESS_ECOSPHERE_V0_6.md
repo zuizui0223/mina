@@ -16,7 +16,7 @@ The frozen scientific manuscript remains `docs/MANUSCRIPT_ECOSPHERE_V0_6.md`. Th
 - Hierarchical-variability, component-count, N_eff momentum, structured-null, and manuscript-number guards pass.
 - The code repository is publicly accessible for peer review.
 - Primary external data sources already have permanent identifiers.
-- The reproducible Word preview has been generated and visually inspected across all **31 pages**: title-page separation, body line numbering, page numbering, equations, materialized citations/references, AI disclosure, and Figure 1–5 captions all render correctly.
+- The reproducible Word preview has been generated and visually inspected across all **31 pages**: title-page separation, continuous all-page line numbering (**1–663**), page numbering, equations, materialized citations/references, AI disclosure, and Figure 1–5 captions all render correctly.
 - The public metadata template is `submission/ECOSPHERE_METADATA_TEMPLATE.json`; completed author/contact metadata should normally be kept in an untracked local copy rather than committed to the public repository.
 
 ## Required submission additions
