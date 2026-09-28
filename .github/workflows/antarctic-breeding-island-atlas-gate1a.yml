@@ -31,8 +31,7 @@ jobs:
           git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
       - name: Audit SCAR ADD land matching
         run: |
-          python scripts/audit_add_site_matching.py             --mapppdr-dir build/mapppdr             --out build/add_site_match_audit_v1.json             --workers 12
-      - uses: actions/upload-artifact@v4
+          python scripts/audit_add_site_matching.py             --mapppdr-dir build/mapppdr             --out build/add_site_match_audit_v1.json - uses: actions/upload-artifact@v4
         with:
           name: antarctic-add-site-match-audit-v1
           path: build/add_site_match_audit_v1.json
