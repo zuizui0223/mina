@@ -8,7 +8,6 @@ matching tolerance has been frozen. No penguin demographic outcome is used.
 from __future__ import annotations
 
 import argparse
-import concurrent.futures
 import json
 import time
 from pathlib import Path
@@ -56,12 +55,20 @@ def _session() -> requests.Session:
 
 
 def _get_json(session: requests.Session, url: str, **params):
-    response = session.get(url, params=params, timeout=120)
-    response.raise_for_status()
-    data = response.json()
-    if "error" in data:
-        raise RuntimeError(f"ArcGIS error: {data['error']}")
-    return data
+    for attempt in range(4):
+        response = session.get(url, params=params, timeout=120)
+        response.raise_for_status()
+        data = response.json()
+        error = data.get("error")
+        if not error:
+            return data
+        if int(error.get("code", -1)) == 429 and attempt < 3:
+            # FeatureServer documents a 60/minute quota for these spatial
+            # queries. Sleep beyond the one-minute window and retry unchanged.
+            time.sleep(65)
+            continue
+        raise RuntimeError(f"ArcGIS error: {error}")
+    raise RuntimeError("unreachable ArcGIS retry state")
 
 
 def _discover_layer(session: requests.Session) -> tuple[str, dict, str]:
@@ -140,59 +147,51 @@ def _query_land_ids(
     return sorted(int(v) for v in (data.get("objectIds") or []))
 
 
-def _query_site(
-    site: dict,
-    layer_url: str,
-    surface_field: str,
-) -> dict:
-    session = _session()
-    matches = {}
-    for distance in DISTANCES_M:
-        ids = _query_land_ids(
-            session,
-            layer_url,
-            surface_field,
-            float(site["longitude"]),
-            float(site["latitude"]),
-            distance,
-        )
-        matches[str(distance)] = {
-            "land_count": len(ids),
-            "land_object_ids": ids,
-        }
-        time.sleep(0.01)
-
-    return {
-        "site_id": str(site["site_id"]),
-        "site_name": str(site["site_name"]),
-        "region": str(site["region"]),
-        "latitude": float(site["latitude"]),
-        "longitude": float(site["longitude"]),
-        "matches": matches,
-    }
-
-
-def audit(root: Path, workers: int = 4) -> dict:
+def audit(root: Path, throttle_seconds: float = 1.1) -> dict:
     sites = _candidate_sites(root)
     session = _session()
     layer_url, meta, surface_field = _discover_layer(session)
 
-    records = sites.to_dict(orient="records")
-    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
-        matched = list(
-            pool.map(
-                lambda site: _query_site(site, layer_url, surface_field),
-                records,
-            )
-        )
-    matched.sort(key=lambda row: row["site_id"])
+    records = sorted(
+        sites.to_dict(orient="records"),
+        key=lambda row: str(row["site_id"]),
+    )
+    matched = [
+        {
+            "site_id": str(site["site_id"]),
+            "site_name": str(site["site_name"]),
+            "region": str(site["region"]),
+            "latitude": float(site["latitude"]),
+            "longitude": float(site["longitude"]),
+            "matches": {},
+        }
+        for site in records
+    ]
 
     n_sites = len(matched)
     summaries = {}
     selected_distance = None
+
+    # Distances are queried in the predeclared order. Once the frozen rule is
+    # satisfied there is no need to open larger tolerances.
     for distance in DISTANCES_M:
-        key = str(distance)
-        counts = [int(row["matches"][key]["land_count"]) for row in matched]
+        counts = []
+        for site, row in zip(records, matched):
+            ids = _query_land_ids(
+                session,
+                layer_url,
+                surface_field,
+                float(site["longitude"]),
+                float(site["latitude"]),
+                distance,
+            )
+            row["matches"][str(distance)] = {
+                "land_count": len(ids),
+                "land_object_ids": ids,
+            }
+            counts.append(len(ids))
+            time.sleep(throttle_seconds)
+
         any_count = sum(value >= 1 for value in counts)
         multiple_count = sum(value > 1 for value in counts)
         summary = {
@@ -206,65 +205,57 @@ def audit(root: Path, workers: int = 4) -> dict:
             ),
             "unmatched_count": n_sites - any_count,
         }
-        summaries[key] = summary
+        summaries[str(distance)] = summary
+
         if (
-            selected_distance is None
-            and n_sites
+            n_sites
             and summary["land_match_fraction"] >= 0.95
             and summary["multiple_land_match_fraction"] <= 0.05
         ):
             selected_distance = distance
+            break
 
     region_summary = {}
+    queried_distances = [int(key) for key in summaries]
+    last_distance = max(queried_distances) if queried_distances else None
     for region in sorted({str(row["region"]) for row in matched}):
         local = [row for row in matched if str(row["region"]) == region]
-        region_summary[region] = {
+        rec = {
             "candidate_sites": len(local),
-            "exact_land_matches": sum(
-                int(row["matches"]["0"]["land_count"]) >= 1
-                for row in local
-            ),
-            "within_5km_land_matches": sum(
-                int(row["matches"]["5000"]["land_count"]) >= 1
-                for row in local
-            ),
-            "unmatched_exact": [
-                str(row["site_id"])
-                for row in local
-                if int(row["matches"]["0"]["land_count"]) == 0
-            ],
-            "unmatched_within_5km": [
-                str(row["site_id"])
-                for row in local
-                if int(row["matches"]["5000"]["land_count"]) == 0
-            ],
-            "multiple_exact": [
-                str(row["site_id"])
-                for row in local
-                if int(row["matches"]["0"]["land_count"]) > 1
-            ],
-            "multiple_within_5km": [
-                str(row["site_id"])
-                for row in local
-                if int(row["matches"]["5000"]["land_count"]) > 1
-            ],
         }
+        for distance in queried_distances:
+            key = str(distance)
+            rec[f"match_count_{distance}m"] = sum(
+                int(row["matches"][key]["land_count"]) >= 1
+                for row in local
+            )
+            rec[f"multiple_count_{distance}m"] = sum(
+                int(row["matches"][key]["land_count"]) > 1
+                for row in local
+            )
+        if last_distance is not None:
+            key = str(last_distance)
+            rec["unmatched_at_largest_queried_distance"] = [
+                str(row["site_id"])
+                for row in local
+                if int(row["matches"][key]["land_count"]) == 0
+            ]
+        region_summary[region] = rec
 
     assigned = {}
     if selected_distance is not None:
         key = str(selected_distance)
         for row in matched:
             ids = row["matches"][key]["land_object_ids"]
-            assigned[row["site_id"]] = (
-                ids[0] if len(ids) == 1 else None
-            )
+            assigned[row["site_id"]] = ids[0] if len(ids) == 1 else None
 
     return {
-        "schema_version": 6,
+        "schema_version": 7,
         "audit_id": "mina-antarctic-add-site-match-audit-v1",
         "implementation": (
             "authoritative ArcGIS FeatureServer point-to-land spatial queries; "
-            "no local continent-scale polygon reconstruction"
+            "predeclared distance order; quota-safe sequential requests; stop "
+            "at the first distance satisfying the frozen rule"
         ),
         "mapppdr_commit": PINNED_MAPPPDR_COMMIT,
         "candidate_species_ids": list(PRIMARY_SPECIES),
@@ -276,6 +267,8 @@ def audit(root: Path, workers: int = 4) -> dict:
         "scar_add_object_id_field": meta.get("objectIdField"),
         "scar_add_surface_field": surface_field,
         "scar_add_layer_extent": meta.get("extent"),
+        "request_throttle_seconds": throttle_seconds,
+        "queried_distances_m": queried_distances,
         "distance_summaries": summaries,
         "region_summary": region_summary,
         "selected_distance_m": selected_distance,
@@ -289,10 +282,13 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mapppdr-dir", required=True, type=Path)
     parser.add_argument("--out", required=True, type=Path)
-    parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--throttle-seconds", type=float, default=1.1)
     args = parser.parse_args()
 
-    result = audit(args.mapppdr_dir, workers=args.workers)
+    result = audit(
+        args.mapppdr_dir,
+        throttle_seconds=args.throttle_seconds,
+    )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
         json.dumps(result, indent=2, sort_keys=True) + "\n",
