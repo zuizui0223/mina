@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from collections import Counter
 from pathlib import Path
 
@@ -22,20 +23,13 @@ SERVICE_URL = (
 )
 DIAGNOSTIC_SITE_IDS = (
     "TORG",
-    "CORM",
-    "HUMB",
-    "LITC",
-    "BISC",
     "PENG",
-    "ARDL",
     "GOPT",
-    "FRAW",
     "FRAE",
 )
 REGION_ENVELOPES = {
     "south_shetlands": (-61.5, -63.5, -56.5, -60.0),
     "palmer": (-65.5, -65.5, -60.0, -63.0),
-    "south_orkneys": (-47.0, -61.5, -43.0, -60.0),
     "ross_sea_west": (164.0, -78.5, 171.0, -75.0),
 }
 
@@ -54,12 +48,20 @@ def _session() -> requests.Session:
 
 
 def _get(session: requests.Session, url: str, **params):
-    r = session.get(url, params=params, timeout=120)
-    r.raise_for_status()
-    data = r.json()
-    if "error" in data:
-        raise RuntimeError(data["error"])
-    return data
+    for attempt in range(6):
+        r = session.get(url, params=params, timeout=120)
+        r.raise_for_status()
+        data = r.json()
+        error = data.get("error")
+        if not error:
+            return data
+        if int(error.get("code", 0)) == 429 and attempt < 5:
+            # ArcGIS can return quota errors as HTTP 200 JSON, so urllib3
+            # retries do not see them. Respect the documented minute quota.
+            time.sleep(65)
+            continue
+        raise RuntimeError(error)
+    raise RuntimeError("ArcGIS query retry loop exhausted")
 
 
 def _load_sites(root: Path):
@@ -164,7 +166,7 @@ def diagnose(root: Path) -> dict:
             "latitude": float(row["latitude"]),
             "longitude": float(row["longitude"]),
         }
-        for distance in (None, 5000, 50000, 150000):
+        for distance in (None, 5000, 50000):
             data = _point_query(
                 session,
                 layer_url,
