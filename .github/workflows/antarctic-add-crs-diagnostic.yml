@@ -1,0 +1,27 @@
+name: antarctic-add-crs-diagnostic
+
+on:
+  push:
+    branches:
+      - analysis/antarctic-breeding-island-atlas-v1
+    paths:
+      - "scripts/diagnose_add_crs.py"
+      - ".github/workflows/antarctic-add-crs-diagnostic.yml"
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install requests
+      - run: |
+          python scripts/diagnose_add_crs.py \
+            --out build/add_crs_diagnostic.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: antarctic-add-crs-diagnostic
+          path: build/add_crs_diagnostic.json
