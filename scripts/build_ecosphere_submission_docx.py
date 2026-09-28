@@ -175,7 +175,7 @@ def _add_line_numbering(sect_pr) -> None:
     _remove_line_numbering(sect_pr)
     node = OxmlElement("w:lnNumType")
     node.set(qn("w:countBy"), "1")
-    node.set(qn("w:start"), "1")
+    node.set(qn("w:start"), "0")
     node.set(qn("w:restart"), "newSection")
     node.set(qn("w:distance"), "360")
     sect_pr.append(node)
@@ -190,6 +190,7 @@ def _suppress_line_number(paragraph) -> None:
 def _page_number(paragraph) -> None:
     paragraph.clear()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    _suppress_line_number(paragraph)
     field = OxmlElement("w:fldSimple")
     field.set(qn("w:instr"), "PAGE")
     run = OxmlElement("w:r")
