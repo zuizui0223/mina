@@ -104,78 +104,65 @@ def figure2(data: Path, out: Path) -> None:
 def figure3(data: Path, out: Path) -> None:
     import matplotlib.pyplot as plt
 
-    raw = _rows(data / "figure3_hierarchy_raw.csv")
-    count_error = _rows(data / "figure3_hierarchy_count_error.csv")
+    trajectories = _rows(data / "figure3_concentration_trajectories.csv")
+    slopes = _rows(data / "figure3_concentration_slopes.csv")
+    islands = ("COR", "HUM", "LIT")
 
-    fig, axes = plt.subplots(1, 2, figsize=(12.4, 4.8))
+    fig, axes = plt.subplots(1, 2, figsize=(11.8, 4.8))
 
-    labels = ["Primary COR/HUM/LIT", "Pre-extinction", "COR/HUM only"]
-    y = np.arange(len(raw))
-    height = 0.34
-    within = [float(r["beta_within"]) - 1.0 for r in raw]
-    among = [float(r["beta_among"]) - 1.0 for r in raw]
-    axes[0].barh(y - height / 2, within, height=height, label="Within islands")
-    axes[0].barh(y + height / 2, among, height=height, label="Among islands")
-    axes[0].set_yticks(y, labels)
-    axes[0].invert_yaxis()
-    axes[0].set_xlabel("Excess beta variability (β − 1)")
-    axes[0].set_title("Raw abundance: nested beta transition")
-    axes[0].legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=2)
-    axes[0].axvline(0, linewidth=0.8)
-    axes[0].set_xlim(0, max(within) + 0.040)
-    for i, r in enumerate(raw):
-        axes[0].text(
-            max(within[i], among[i]) + 0.004,
-            i,
-            f"observed log-β share={100*float(r['within_log_beta_share']):.1f}%",
-            va="center",
-            fontsize=7.5,
+    for island in islands:
+        local = [r for r in trajectories if r["island"] == island]
+        axes[0].plot(
+            [int(r["year"]) for r in local],
+            [float(r["relative_to_first"]) for r in local],
+            marker="o",
+            markersize=3,
+            linewidth=1.3,
+            label=island,
         )
+    axes[0].axhline(1.0, linewidth=0.8)
+    axes[0].set_xlabel("Year")
+    axes[0].set_ylabel("Effective colony number / first observed value")
+    axes[0].set_title("Breeders concentrate during island decline")
+    axes[0].legend(frameon=False)
 
-    x = np.arange(len(count_error))
-    means = np.asarray(
-        [float(r["null_mean_log_beta_contrast"]) for r in count_error]
+    y = np.arange(len(slopes))
+    observed = np.asarray([float(r["observed_slope"]) for r in slopes])
+    means = np.asarray([float(r["null_mean_slope_cv20"]) for r in slopes])
+    lower = np.asarray([float(r["null_q025_slope_cv20"]) for r in slopes])
+    upper = np.asarray([float(r["null_q975_slope_cv20"]) for r in slopes])
+    xerr = np.vstack([means - lower, upper - means])
+    axes[1].errorbar(
+        means,
+        y,
+        xerr=xerr,
+        fmt="o",
+        capsize=3,
+        label="Fixed-composition CV20 null (95%)",
     )
-    uppers = np.asarray(
-        [float(r["null_q975_log_beta_contrast"]) for r in count_error]
-    )
-    observed = float(count_error[0]["observed_log_beta_contrast"])
-    axes[1].scatter(x, means, s=54, label="Null mean")
     axes[1].scatter(
-        x,
-        uppers,
-        marker="_",
-        s=180,
-        label="Null 97.5th percentile",
-    )
-    axes[1].vlines(x, means, uppers, linewidth=1.1)
-    axes[1].axhline(
         observed,
-        linestyle="--",
-        linewidth=1.1,
-        label="Observed contrast",
+        y,
+        marker="D",
+        s=52,
+        label="Observed slope",
     )
-    axes[1].set_xticks(
-        x,
-        [r["label"].replace("Gamma-Poisson ", "GP\n") for r in count_error],
-    )
-    axes[1].set_ylabel("log(βwithin / βamong)")
-    axes[1].set_title("Independent count-error null")
-    for i, r in enumerate(count_error):
-        p = float(r["one_sided_p"])
+    axes[1].axvline(0.0, linewidth=0.8)
+    axes[1].set_yticks(y, [r["island"] for r in slopes])
+    axes[1].invert_yaxis()
+    axes[1].set_xlabel("N_eff slope per year")
+    axes[1].set_title("Concentration exceeds a severe count-error null")
+    for i, r in enumerate(slopes):
+        p = float(r["cv20_one_sided_p"])
         label = "p=0.000010" if p < 0.00002 else f"p={p:.3f}"
         axes[1].text(
+            min(observed[i], lower[i]) - 0.012,
             i,
-            max(uppers[i], observed) + 0.004,
             label,
-            ha="center",
-            va="bottom",
+            ha="right",
+            va="center",
             fontsize=8,
         )
-    axes[1].set_ylim(
-        0,
-        max(float(np.max(uppers)), observed) + 0.025,
-    )
     axes[1].legend(
         frameon=False,
         loc="upper center",
@@ -185,9 +172,8 @@ def figure3(data: Path, out: Path) -> None:
     )
 
     fig.tight_layout()
-    _save(fig, out, "figure3_hierarchical_variability")
+    _save(fig, out, "figure3_breeding_concentration")
     plt.close(fig)
-
 
 def figure4(data: Path, out: Path) -> None:
     import matplotlib.pyplot as plt
