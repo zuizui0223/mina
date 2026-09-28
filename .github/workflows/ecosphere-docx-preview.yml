@@ -1,0 +1,54 @@
+name: ecosphere-docx-preview
+
+on:
+  push:
+    branches:
+      - submission/ecosphere-v0.6-docx-preview-v1
+    paths:
+      - "scripts/build_ecosphere_submission_docx.py"
+      - "tests/test_ecosphere_docx_builder.py"
+      - ".github/workflows/ecosphere-docx-preview.yml"
+      - "pyproject.toml"
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
+      - "docs/REFERENCES_V4.bib"
+      - "docs/FIGURE_CAPTIONS_V5.md"
+  pull_request:
+    paths:
+      - "scripts/build_ecosphere_submission_docx.py"
+      - "tests/test_ecosphere_docx_builder.py"
+      - ".github/workflows/ecosphere-docx-preview.yml"
+      - "pyproject.toml"
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_6.md"
+      - "docs/REFERENCES_V4.bib"
+      - "docs/FIGURE_CAPTIONS_V5.md"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev,submission]"
+      - name: Install pandoc
+        run: |
+          if ! command -v pandoc >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y pandoc
+          fi
+          pandoc --version | head -1
+      - name: Run builder tests
+        run: python -m pytest tests/test_ecosphere_docx_builder.py
+      - name: Build Word submission preview
+        run: |
+          python scripts/build_ecosphere_submission_docx.py \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_6.md \
+            --bibliography docs/REFERENCES_V4.bib \
+            --captions docs/FIGURE_CAPTIONS_V5.md \
+            --out build/Ecosphere_v0_6_SUBMISSION_PREVIEW.docx
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecosphere-v0-6-docx-preview
+          path: build/Ecosphere_v0_6_SUBMISSION_PREVIEW.docx
