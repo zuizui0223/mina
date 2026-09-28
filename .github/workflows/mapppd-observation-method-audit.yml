@@ -1,0 +1,38 @@
+name: mapppd-observation-method-audit
+
+on:
+  push:
+    branches: [analysis/mapppd-observation-method-audit-v1]
+    paths:
+      - "scripts/audit_mapppd_observation_methods.py"
+      - "contracts/MAPPPD_OBSERVATION_METHOD_AUDIT_V1.json"
+      - ".github/workflows/mapppd-observation-method-audit.yml"
+  pull_request:
+    paths:
+      - "scripts/audit_mapppd_observation_methods.py"
+      - "contracts/MAPPPD_OBSERVATION_METHOD_AUDIT_V1.json"
+      - ".github/workflows/mapppd-observation-method-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas pyreadr
+      - name: Fetch pinned mapppdr
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Audit candidate observation methods
+        run: |
+          python scripts/audit_mapppd_observation_methods.py \
+            --mapppdr-dir build/mapppdr \
+            --out build/MAPPPD_OBSERVATION_METHOD_AUDIT_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mapppd-observation-method-audit-v1
+          path: build/MAPPPD_OBSERVATION_METHOD_AUDIT_RESULT_V1.json
