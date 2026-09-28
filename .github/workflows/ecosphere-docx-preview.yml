@@ -6,6 +6,9 @@ on:
       - submission/ecosphere-v0.6-docx-preview-v1
     paths:
       - "scripts/build_ecosphere_submission_docx.py"
+      - "tests/test_ecosphere_submission_metadata.py"
+      - "submission/ECOSPHERE_METADATA_TEMPLATE.json"
+      - "src/mina/ecosphere_submission_metadata.py"
       - "tests/test_ecosphere_docx_builder.py"
       - ".github/workflows/ecosphere-docx-preview.yml"
       - "pyproject.toml"
@@ -39,8 +42,16 @@ jobs:
             sudo apt-get install -y pandoc
           fi
           pandoc --version | head -1
-      - name: Run builder tests
-        run: python -m pytest tests/test_ecosphere_docx_builder.py
+      - name: Run builder and metadata tests
+        run: |
+          python -m pytest \
+            tests/test_ecosphere_docx_builder.py \
+            tests/test_ecosphere_submission_metadata.py
+      - name: Audit public metadata template
+        run: |
+          mina-ecosphere-submission-metadata \
+            --metadata submission/ECOSPHERE_METADATA_TEMPLATE.json \
+            --out build/ecosphere_metadata_template_audit.json
       - name: Build Word submission preview
         run: |
           python scripts/build_ecosphere_submission_docx.py \
@@ -51,4 +62,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ecosphere-v0-6-docx-preview
-          path: build/Ecosphere_v0_6_SUBMISSION_PREVIEW.docx
+          path: |
+            build/Ecosphere_v0_6_SUBMISSION_PREVIEW.docx
+            build/ecosphere_metadata_template_audit.json
