@@ -133,7 +133,7 @@ def main():
         }
 
     sites = _load_sites(a.mapppdr_dir)
-    known_ids = ("TORG", "PENG", "GOPT", "FRAE")
+    known_ids = ("TORG", "HUMB", "LITC", "CORM", "PENG", "ARDL", "GOPT", "FRAE", "CRZE")
     known = {}
     for site_id in known_ids:
         rows = sites[sites["site_id"] == site_id]
