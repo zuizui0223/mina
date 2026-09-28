@@ -1,0 +1,79 @@
+name: palmer-hierarchy-count-error-null
+
+on:
+  push:
+    branches:
+      - analysis/hierarchy-count-error-null-v1
+    paths:
+      - "src/mina/hierarchy_count_error.py"
+      - "tests/test_hierarchy_count_error.py"
+      - "contracts/PALMER_HIERARCHY_COUNT_ERROR_NULL_V1.json"
+      - ".github/workflows/palmer-hierarchy-count-error-null.yml"
+      - "pyproject.toml"
+  pull_request:
+    paths:
+      - "src/mina/hierarchy_count_error.py"
+      - "tests/test_hierarchy_count_error.py"
+      - "contracts/PALMER_HIERARCHY_COUNT_ERROR_NULL_V1.json"
+      - ".github/workflows/palmer-hierarchy-count-error-null.yml"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run count-error null unit tests
+        run: python -m pytest tests/test_hierarchy_count_error.py
+      - name: Fetch frozen Palmer census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run 100k hierarchy count-error null
+        run: |
+          mina-hierarchy-count-error \
+            --census build/adelie_census.csv \
+            --out build/hierarchy_count_error_result.json \
+            --simulations 100000 \
+            --seed 20260928 \
+            --batch-size 2000
+      - name: Print key result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(
+              Path("build/hierarchy_count_error_result.json").read_text()
+          )
+          print("observed=",json.dumps(x["observed_statistics"],sort_keys=True))
+          for name,model in x["error_models"].items():
+              print(
+                  name,
+                  "raw_contrast_p=",
+                  model["raw_log_beta_contrast"][
+                      "one_sided_probability_ge_observed"
+                  ],
+                  "raw_within_p=",
+                  model["raw_beta_within"][
+                      "one_sided_probability_ge_observed"
+                  ],
+                  "detrended_ratio_p=",
+                  model["linear_detrended_log1p"][
+                      "median_within_to_among_ratio"
+                  ]["one_sided_probability_ge_observed"],
+                  "growth_ratio_p=",
+                  model["annual_log1p_growth"][
+                      "median_within_to_among_ratio"
+                  ]["one_sided_probability_ge_observed"],
+              )
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-hierarchy-count-error-null
+          path: |
+            build/adelie_census.csv
+            build/hierarchy_count_error_result.json
