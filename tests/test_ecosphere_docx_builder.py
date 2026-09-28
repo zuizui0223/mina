@@ -16,6 +16,7 @@ _strip_submission_source = module._strip_submission_source
 _normalize_submission_markdown = module._normalize_submission_markdown
 _strip_caption_heading = module._strip_caption_heading
 _combined_markdown = module._combined_markdown
+_add_line_numbering = module._add_line_numbering
 
 
 def test_strip_source_removes_submission_duplicates_and_adds_ai_disclosure():
@@ -139,3 +140,16 @@ Caption body.
     assert "https://example.org/review-code" in out
     assert "[AUTHOR" not in out
     assert "[FUNDING" not in out
+
+
+def test_line_numbering_is_continuous():
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+
+    sect_pr = OxmlElement("w:sectPr")
+    _add_line_numbering(sect_pr)
+    node = sect_pr.find(qn("w:lnNumType"))
+    assert node is not None
+    assert node.get(qn("w:countBy")) == "1"
+    assert node.get(qn("w:start")) == "0"
+    assert node.get(qn("w:restart")) == "continuous"

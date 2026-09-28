@@ -16,7 +16,7 @@ The frozen scientific manuscript remains `docs/MANUSCRIPT_ECOSPHERE_V0_6.md`. Th
 - Hierarchical-variability, component-count, N_eff momentum, structured-null, and manuscript-number guards pass.
 - The code repository is publicly accessible for peer review.
 - Primary external data sources already have permanent identifiers.
-- The reproducible Word preview has been generated and visually inspected across all **31 pages**: title-page separation, body line numbering, page numbering, equations, materialized citations/references, AI disclosure, and Figure 1–5 captions all render correctly.
+- The reproducible Word preview has been generated and visually inspected across all **31 pages**: title-page separation, continuous all-page line numbering (**1–663**), page numbering, equations, materialized citations/references, AI disclosure, and Figure 1–5 captions all render correctly.
 - The public metadata template is `submission/ECOSPHERE_METADATA_TEMPLATE.json`; completed author/contact metadata should normally be kept in an untracked local copy rather than committed to the public repository.
 
 ## Required submission additions
@@ -57,7 +57,9 @@ Before upload:
 - Double-spaced manuscript text, references, figure captions, and table captions/notes.
 - Left aligned, not fully justified.
 - Page numbering from the title page.
-- Continuous line numbering beginning after the title page and continuing through References.
+
+The detailed general-formatting subsection also describes numbering as starting after the title page; because the initial-submission checklist explicitly requires continuous line numbering on all pages, this package follows the stricter all-pages rule.
+- Continuous line numbering on **all manuscript pages**, including the title page, following the stricter initial-submission requirement in the September 2026 Ecosphere guidelines.
 - Abstract begins on a new page.
 - Tables, if any, begin on new pages in the Main Document.
 - Figure captions are grouped once in their own section.
