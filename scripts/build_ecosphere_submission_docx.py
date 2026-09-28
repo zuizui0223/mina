@@ -62,6 +62,59 @@ METHODS_AI_DISCLOSURE = (
 )
 
 
+UNDERBRACE_SOURCE = r"""\[
+\beta_{total}
+=\frac{\alpha_{sub}}{\gamma_{arch}}
+=\underbrace{\frac{\alpha_{sub}}{\alpha_{island}}}_{\beta_{within}}
+\underbrace{\frac{\alpha_{island}}{\gamma_{arch}}}_{\beta_{among}}.
+\]"""
+
+UNDERBRACE_REPLACEMENT = r"""\[
+\beta_{total}
+=\frac{\alpha_{sub}}{\gamma_{arch}}
+=\beta_{within}\beta_{among}.
+\]
+\[
+\beta_{within}=\frac{\alpha_{sub}}{\alpha_{island}},
+\qquad
+\beta_{among}=\frac{\alpha_{island}}{\gamma_{arch}}.
+\]"""
+
+OLD_DATA_AVAILABILITY = (
+    "Analysis code, frozen endpoint contracts, result receipts and "
+    "figure-building scripts will be supplied as an anonymized repository "
+    "snapshot for peer review and archived with a permanent DOI on acceptance."
+)
+
+CURRENT_DATA_AVAILABILITY = (
+    "Novel analysis code, frozen endpoint contracts, result receipts and "
+    "figure-building scripts are publicly accessible for peer review at "
+    "https://github.com/zuizui0223/mina. If accepted, the exact code and "
+    "derived-output release will be archived in a permanent repository with "
+    "a DOI."
+)
+
+
+def _normalize_submission_markdown(text: str) -> str:
+    """Normalize Markdown constructs that do not round-trip cleanly to DOCX."""
+    text = text.replace(
+        "Following Wang and Loreau [@wang2014]",
+        "Following @wang2014",
+    )
+    text = text.replace(UNDERBRACE_SOURCE, UNDERBRACE_REPLACEMENT)
+    text = text.replace(OLD_DATA_AVAILABILITY, CURRENT_DATA_AVAILABILITY)
+
+    # Pandoc/OMML can leave a stray glyph when an inline math expression ends
+    # with '=' and bold Markdown begins immediately after the math delimiter,
+    # e.g. \(\beta=\)**1.0111**. Keep the exact value inside the math span.
+    text = re.sub(
+        r"\\\(([^()\n]*?=)\\\)\*\*([^*\n]+)\*\*",
+        lambda match: r"\(" + match.group(1) + match.group(2) + r"\)",
+        text,
+    )
+    return text
+
+
 def _strip_submission_source(text: str) -> str:
     lines = text.splitlines()
     out: list[str] = []
@@ -80,7 +133,7 @@ def _strip_submission_source(text: str) -> str:
             continue
         out.append(line)
 
-    cleaned = "\n".join(out).rstrip()
+    cleaned = _normalize_submission_markdown("\n".join(out).rstrip())
     heading = "### Reproducibility and frozen result family"
     if heading not in cleaned:
         raise ValueError("reproducibility heading not found for AI disclosure")
@@ -100,7 +153,7 @@ def _strip_caption_heading(text: str) -> str:
         or lines[0].startswith("**")
     ):
         lines.pop(0)
-    return "\n".join(lines).strip()
+    return _normalize_submission_markdown("\n".join(lines).strip())
 
 
 def _combined_markdown(manuscript: str, captions: str) -> str:
