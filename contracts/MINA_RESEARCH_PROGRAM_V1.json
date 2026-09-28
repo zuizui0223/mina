@@ -19,7 +19,10 @@
       "status": "Gate 0 passed for Pygoscelis trend lane; atlas design next",
       "primary_domain": "breeding sites south of 60 S",
       "secondary_extension": "50-60 S sub-Antarctic islands only after an explicit data-coverage gate",
-      "inventory_result": "results/MAPPPD_MACRO_INVENTORY_RESULT_V1.json"
+      "inventory_result": "results/MAPPPD_MACRO_INVENTORY_RESULT_V1.json",
+      "geography_audit": "results/MAPPPD_MACRO_GEOGRAPHY_AUDIT_RESULT_V1.json",
+      "geographic_scope": "Antarctic-wide study domain with geographically uneven long-term monitoring",
+      "primary_modeling_strategy": "species-specific Pygoscelis models first; cross-species synthesis second; pooled hierarchical model secondary and region-adjusted"
     }
   },
   "paper2_question": "When marine trophic resources lie outside the breeding patch, which properties of the breeding substrate determine whether regional environmental change is realized locally as persistence, decline, extinction, colonization or replacement?",
@@ -118,5 +121,14 @@
     "stricter_site_species_units": 94,
     "stricter_pygoscelis_units": 92,
     "decision": "proceed to outcome-blind breeding-island atlas construction"
+  },
+  "gate0_geography": {
+    "candidate_units": 152,
+    "distinct_sites": 122,
+    "apbp_regions": 10,
+    "ccamlr_units": 5,
+    "largest_region_fraction": 0.46710526315789475,
+    "top_three_region_fraction": 0.8881578947368421,
+    "design_consequence": "species and region are partially confounded, especially for chinstrap and gentoo; do not make an unqualified pooled species x island-trait model the primary test"
   }
 }
