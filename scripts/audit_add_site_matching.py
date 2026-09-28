@@ -139,6 +139,7 @@ def _download_all_land(
             outFields="*",
             returnGeometry="true",
             outSR=4326,
+            maxAllowableOffset=0.0001,
         )
         batch = data.get("features", [])
         if len(batch) != len(chunk):
@@ -317,6 +318,7 @@ def audit(root: Path) -> dict:
         "scar_add_surface_field": surface_field,
         "scar_add_fields": fields,
         "downloaded_land_polygon_count": len(geoms),
+        "geometry_generalization_degrees": 0.0001,
         "repaired_invalid_polygon_count": repaired,
         "nearest_land_distance_quantiles_m": quantiles,
         "distance_summaries": summaries,
