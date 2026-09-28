@@ -201,9 +201,29 @@ def _page_number(paragraph) -> None:
 
 
 def _split_title_section(doc: Document) -> None:
-    marker = next((p for p in doc.paragraphs if p.text.strip() == MARKER), None)
-    if marker is None:
+    paragraphs = list(doc.paragraphs)
+    marker_index = next(
+        (
+            index
+            for index, paragraph in enumerate(paragraphs)
+            if paragraph.text.strip() == MARKER
+        ),
+        None,
+    )
+    if marker_index is None:
         raise ValueError("title/body section marker missing")
+
+    marker = paragraphs[marker_index]
+    boundary = next(
+        (
+            paragraph
+            for paragraph in reversed(paragraphs[:marker_index])
+            if paragraph.text.strip()
+        ),
+        None,
+    )
+    if boundary is None:
+        raise ValueError("title-page boundary paragraph missing")
 
     body_sect_pr = doc.element.body.sectPr
     title_sect_pr = copy.deepcopy(body_sect_pr)
@@ -215,11 +235,17 @@ def _split_title_section(doc: Document) -> None:
         title_sect_pr.insert(0, type_node)
     type_node.set(qn("w:val"), "nextPage")
 
-    p_pr = marker._p.get_or_add_pPr()
-    p_pr.append(title_sect_pr)
-    for run in list(marker._p.findall(qn("w:r"))):
-        marker._p.remove(run)
-    _suppress_line_number(marker)
+    boundary_p_pr = boundary._p.get_or_add_pPr()
+    existing = boundary_p_pr.find(qn("w:sectPr"))
+    if existing is not None:
+        boundary_p_pr.remove(existing)
+    boundary_p_pr.append(title_sect_pr)
+    _suppress_line_number(boundary)
+
+    parent = marker._p.getparent()
+    if parent is None:
+        raise ValueError("section marker is detached")
+    parent.remove(marker._p)
 
     _add_line_numbering(body_sect_pr)
 
