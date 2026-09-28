@@ -44,6 +44,9 @@ Final formatting gate:
 - Abstract starts on a new page.
 - Figure captions grouped once after References.
 - No control-character or math-rendering defects.
+- **35-page v0.7 preview visually inspected; continuous line numbers 1–736 confirmed.**
+- Count-error Methods/Results, new observation-error references, and Figure 3 caption were checked at full-page render resolution.
+- Synthetic author-complete metadata path also rendered successfully.
 
 ## Required AI disclosure
 
