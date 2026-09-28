@@ -1,7 +1,44 @@
 # mina
 
-Development and manuscript repository for the **Palmer Archipelago penguin
-island-ecology** study.
+Research program for **penguin breeding-island ecology**, linking a local
+long-term discovery system at Palmer Station to Antarctic-wide comparative
+macroecology.
+
+## Research program
+
+### Paper 1 / v1 — Palmer discovery system
+
+Paper 1 is scientifically frozen at **v1**. Its manuscript implementation is
+the concentration-led Ecosphere v0.8 package. The central result is that
+regional Adélie decline was accompanied by progressive within-island
+concentration of breeders beyond proportional thinning and the frozen
+independent count-error family.
+
+Canonical manifest: `docs/PAPER1_V1.md`.
+
+### Paper 2 lane — Antarctic-wide breeding-island macroecology
+
+The next lane asks how breeding-site architecture filters penguin population
+fate across Antarctica. APBP/MAPPPD supplies demographic site anchors; mina
+will construct a new **Antarctic Penguin Breeding-Island Atlas** from
+independent spatial layers (SCAR ADD coastline, Antarctic Ecosystem Inventory,
+REMA and related frozen sources).
+
+The conceptual focus is on **externally subsidized breeding islands**:
+penguins obtain food primarily from the marine environment while reproduction
+is constrained by terrestrial or sea-ice breeding substrate. This lets the
+program distinguish regional marine forcing from local breeding-patch
+filtering.
+
+The Paper 2 lane is currently at **Gate 0: data-coverage inventory**. No
+macroecological outcome model is opened before site/trait extraction rules are
+frozen.
+
+Program documents:
+- `contracts/MINA_RESEARCH_PROGRAM_V1.json`
+- `docs/ANTARCTIC_BREEDING_ISLAND_MACROECOLOGY_V1.md`
+
+---
 
 ## Current ecological claim
 
