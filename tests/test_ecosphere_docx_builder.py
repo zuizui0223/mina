@@ -15,6 +15,7 @@ METHODS_AI_DISCLOSURE = module.METHODS_AI_DISCLOSURE
 _strip_submission_source = module._strip_submission_source
 _normalize_submission_markdown = module._normalize_submission_markdown
 _strip_caption_heading = module._strip_caption_heading
+_combined_markdown = module._combined_markdown
 
 
 def test_strip_source_removes_submission_duplicates_and_adds_ai_disclosure():
@@ -78,3 +79,63 @@ Caption body.
     assert "Figure captions v5" not in out
     assert "## Figure 1. First figure" in out
     assert "## Figure 2. Second figure" in out
+
+
+def test_combined_markdown_uses_complete_metadata():
+    manuscript = """# Frozen title
+
+## Abstract
+
+Text.
+
+**Keywords:** a; b; c; d; e; f
+
+### Reproducibility and frozen result family
+
+Frozen.
+
+## References
+
+See docs/REFERENCES_V4.bib.
+"""
+    captions = """# Figure captions v5
+
+## Figure 1. First figure
+
+Caption body.
+"""
+    metadata = {
+        "authors": [
+            {
+                "name": "A. Author",
+                "affiliation_ids": ["1"],
+                "corresponding": True,
+                "email": "a@example.org",
+            }
+        ],
+        "affiliations": {
+            "1": "Department A, University A, City, Country"
+        },
+        "present_addresses": [],
+        "funding_acknowledgments": "Supported by grant X.",
+        "additional_acknowledgments": "We thank C. Colleague.",
+        "author_contributions": "A. Author: Conceptualization, analysis, writing.",
+        "conflict_of_interest": "The author declares no conflict of interest.",
+        "ai_tool_inventory_confirmed": True,
+        "additional_ai_tools": [],
+        "dual_publication_statement": "No overlapping manuscript is under review elsewhere.",
+        "review_code_url": "https://example.org/review-code",
+        "permanent_archive_doi": None,
+    }
+    out = _combined_markdown(manuscript, captions, metadata=metadata)
+    assert "**Authors:** A. Author^1^*" in out
+    assert "^1^ Department A, University A" in out
+    assert "**Corresponding author:** A. Author, a@example.org" in out
+    assert "Present address(es)" not in out
+    assert "Supported by grant X." in out
+    assert "Supported by grant X.." not in out
+    assert "A. Author: Conceptualization, analysis, writing." in out
+    assert "The author declares no conflict of interest." in out
+    assert "https://example.org/review-code" in out
+    assert "[AUTHOR" not in out
+    assert "[FUNDING" not in out
