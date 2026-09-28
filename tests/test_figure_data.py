@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from mina.figure_data import _figure3_count_error, _figure3_hierarchy, _figure3_mechanisms
+from mina.figure_data import _figure3_concentration, _figure3_count_error, _figure3_hierarchy, _figure3_mechanisms
 
 
 def _receipt(name):
@@ -93,3 +93,20 @@ def test_hierarchy_count_error_figure_data_matches_receipt():
     assert abs(by["gamma_poisson_cv20"]["one_sided_p"]-0.44753552464475355)<1e-12
     assert by["gamma_poisson_cv20"]["null_mean_beta_within"] > by["gamma_poisson_cv20"]["observed_beta_within"]
     assert by["gamma_poisson_cv10"]["null_q975_log_beta_contrast"] < by["gamma_poisson_cv10"]["observed_log_beta_contrast"]
+
+
+def test_breeding_concentration_figure_data_matches_receipt():
+    root=Path(__file__).resolve().parents[1]
+    census=root/"build"/"adelie_census.csv"
+    if not census.exists():
+        return
+    receipt=_receipt("PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json")
+    trajectories,slopes=_figure3_concentration(census,receipt)
+    assert {row["island"] for row in trajectories}=={"COR","HUM","LIT"}
+    by={row["island"]:row for row in slopes}
+    assert abs(by["COR"]["observed_slope"]+0.030975710379891816)<1e-12
+    assert abs(by["HUM"]["observed_slope"]+0.08550466131872993)<1e-12
+    assert abs(by["LIT"]["observed_slope"]+0.36807876113755644)<1e-12
+    assert abs(by["COR"]["cv20_one_sided_p"]-0.037999620003799965)<1e-12
+    assert by["HUM"]["cv20_one_sided_p"]<2e-5
+    assert by["LIT"]["cv20_one_sided_p"]<2e-5
