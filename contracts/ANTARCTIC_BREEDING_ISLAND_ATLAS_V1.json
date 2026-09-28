@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-breeding-island-atlas-v1",
+  "date": "2026-09-28",
+  "status": "gate1a_spatial_match_audit_frozen_before_execution",
+  "parent_program": "contracts/MINA_RESEARCH_PROGRAM_V1.json",
+  "paper_lane": "Paper 2",
+  "purpose": "Build the site-side spatial scaffold before any macroecological demographic outcome is modeled.",
+  "source_sites": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "primary_species_ids": ["ADPE", "CHPE", "GEPE"],
+    "candidate_gate": "at least 5 distinct nest-count years spanning at least 10 years",
+    "expected_site_species_units": 152,
+    "outcome_blind_constraint": "Only site coordinates, species identity, and temporal-coverage metadata may be used. Population trend direction, effect sizes, and endpoint outcomes are not used in Gate 1A."
+  },
+  "scar_add": {
+    "dataset": "High resolution vector polygons of the Antarctic coastline",
+    "version": "7.12",
+    "doi": "10.5285/13c4d2f1-8903-4d7f-8977-592121975554",
+    "feature_service": "https://services7.arcgis.com/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/High_resolution_vector_polygons_of_the_Antarctic_coastline/FeatureServer",
+    "target_surface": "land",
+    "domain": "south of 60 S"
+  },
+  "spatial_match_audit": {
+    "candidate_distances_m": [0, 500, 1000, 2000, 5000],
+    "summary_unit": "distinct candidate APBP site_id",
+    "selection_rule": "Choose the smallest distance at which at least 95% of candidate sites have one or more land-polygon matches and no more than 5% have multiple land-polygon matches. If no distance satisfies both criteria, Gate 1A fails and no site-type classification is opened.",
+    "no_manual_rescue_before_rule": true,
+    "record_unresolved_sites": true,
+    "record_multiple_match_sites": true
+  },
+  "next_gate_only_if_passed": {
+    "name": "Gate 1B island/mainland classification",
+    "planned_derivations": [
+      "assigned land-polygon identifier",
+      "offshore island versus continental/peninsular land",
+      "land-polygon area",
+      "distance to continental land for offshore islands",
+      "nearest breeding-site distance"
+    ],
+    "prohibited_before_gate1a_pass": [
+      "fitting population trend models",
+      "testing island traits against decline",
+      "changing the candidate time-series gate",
+      "choosing a spatial tolerance based on demographic outcomes"
+    ]
+  }
+}
