@@ -156,10 +156,10 @@ def figure3(data: Path, out: Path) -> None:
         p = float(r["cv20_one_sided_p"])
         label = "p=0.000010" if p < 0.00002 else f"p={p:.3f}"
         axes[1].text(
-            min(observed[i], lower[i]) - 0.012,
+            observed[i] + 0.012,
             i,
             label,
-            ha="right",
+            ha="left",
             va="center",
             fontsize=8,
         )
