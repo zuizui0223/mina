@@ -64,8 +64,11 @@ def _get(session: requests.Session, url: str, **params):
 
 def _load_sites(root: Path):
     data = pyreadr.read_r(str(root / "data" / "sites.rda"))
-    sites = data.get("sites") or next(iter(data.values()))
-    return sites
+    if "sites" in data:
+        return data["sites"]
+    if len(data) == 1:
+        return next(iter(data.values()))
+    raise ValueError(f"cannot resolve sites table: {list(data)}")
 
 
 def _layer(session: requests.Session):
