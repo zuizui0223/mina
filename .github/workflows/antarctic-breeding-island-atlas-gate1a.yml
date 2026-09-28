@@ -1,0 +1,38 @@
+name: antarctic-breeding-island-atlas-gate1a
+
+on:
+  push:
+    branches:
+      - analysis/antarctic-breeding-island-atlas-v1
+    paths:
+      - "scripts/audit_add_site_matching.py"
+      - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_V1.json"
+      - ".github/workflows/antarctic-breeding-island-atlas-gate1a.yml"
+  pull_request:
+    paths:
+      - "scripts/audit_add_site_matching.py"
+      - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_V1.json"
+      - ".github/workflows/antarctic-breeding-island-atlas-gate1a.yml"
+  workflow_dispatch:
+
+jobs:
+  gate1a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install spatial-audit dependencies
+        run: python -m pip install pandas pyreadr requests
+      - name: Fetch pinned mapppdr source
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Audit SCAR ADD land matching
+        run: |
+          python scripts/audit_add_site_matching.py             --mapppdr-dir build/mapppdr             --out build/add_site_match_audit_v1.json             --workers 4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: antarctic-add-site-match-audit-v1
+          path: build/add_site_match_audit_v1.json
