@@ -1,0 +1,52 @@
+name: antarctic-breeding-island-atlas-gate1a-v4
+
+on:
+  push:
+    branches: [analysis/antarctic-breeding-island-atlas-v4]
+    paths:
+      - "scripts/assign_add_land_fid_v4.py"
+      - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_GATE1A_V4.json"
+      - ".github/workflows/antarctic-breeding-island-atlas-gate1a-v4.yml"
+  pull_request:
+    paths:
+      - "scripts/assign_add_land_fid_v4.py"
+      - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_GATE1A_V4.json"
+      - ".github/workflows/antarctic-breeding-island-atlas-gate1a-v4.yml"
+  workflow_dispatch:
+
+jobs:
+  gate1a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas pyreadr requests
+      - name: Fetch pinned mapppdr
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Assign unique SCAR land-FID anchors
+        run: |
+          python scripts/assign_add_land_fid_v4.py \
+            --mapppdr-dir build/mapppdr \
+            --out build/add_site_assignment_v4.json \
+            --delay-s 0.05
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: antarctic-add-site-assignment-v4
+          path: build/add_site_assignment_v4.json
+      - name: Enforce frozen Gate 1A v4 rule
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/add_site_assignment_v4.json").read_text())
+          print("status_counts=",x["assignment_status_counts"])
+          print("unique_fraction=",x["unique_assignment_fraction"])
+          print("unresolved_fraction=",x["unresolved_fraction"])
+          if not x["gate1a_passed"]:
+              raise SystemExit("Gate 1A v4 failed the frozen unique-assignment rule")
+          PY
