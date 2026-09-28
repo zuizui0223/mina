@@ -12,7 +12,7 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 METHODS_AI_DISCLOSURE = module.METHODS_AI_DISCLOSURE
-_strip_submission_source = module._strip_submission_source
+_strip_submission_source = module._strip_submission_source\n_normalize_submission_markdown = module._normalize_submission_markdown
 
 
 def test_strip_source_removes_submission_duplicates_and_adds_ai_disclosure():
@@ -39,3 +39,25 @@ See docs/REFERENCES_V4.bib.
     assert "**Keywords:**" not in out
     assert "See docs/REFERENCES_V4.bib." not in out
     assert METHODS_AI_DISCLOSURE in out
+
+
+def test_normalize_submission_markdown_fixes_word_math_boundaries():
+    raw = (
+        r"Following Wang and Loreau [@wang2014]. "
+        r"Yielded \(\beta=\)**1.0111** and "
+        r"\(\beta_{within}=\)**1.1030**."
+    )
+    out = _normalize_submission_markdown(raw)
+    assert "Following @wang2014" in out
+    assert r"\(\beta=1.0111\)" in out
+    assert r"\(\beta_{within}=1.1030\)" in out
+    assert r"\)**" not in out
+
+
+def test_normalize_submission_markdown_replaces_underbrace_and_old_repo_text():
+    raw = module.UNDERBRACE_SOURCE + "\n\n" + module.OLD_DATA_AVAILABILITY
+    out = _normalize_submission_markdown(raw)
+    assert r"\underbrace" not in out
+    assert r"\beta_{within}=\frac{\alpha_{sub}}{\alpha_{island}}" in out
+    assert "https://github.com/zuizui0223/mina" in out
+    assert "anonymized repository snapshot" not in out
