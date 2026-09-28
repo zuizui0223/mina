@@ -72,6 +72,18 @@ def _alpha_cv2(matrix: np.ndarray) -> np.ndarray:
     return (np.sum(sds, axis=1) / total_mean) ** 2
 
 
+def _wang_beta_batch(matrix: np.ndarray) -> np.ndarray:
+    alpha = _alpha_cv2(matrix)
+    aggregate = np.sum(matrix, axis=1)
+    total_mean = np.sum(np.mean(matrix, axis=2), axis=1)
+    gamma = (
+        np.std(aggregate, axis=1, ddof=1) / total_mean
+    ) ** 2
+    if np.any(gamma <= 0):
+        raise ValueError("zero simulated unit aggregate variability")
+    return alpha / gamma
+
+
 def _raw_batch(
     counts: dict[str, np.ndarray],
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -182,7 +194,40 @@ def _draw_batch(
                 latent,
                 (simulations,) + latent.shape,
             )
-        counts[island] = rng.poisson(means).astype(float)
+        local = rng.poisson(means).astype(float)
+
+        # Match the existing N_eff count-error diagnostic: a census state
+        # known to have positive total abundance may be noisy, but the error
+        # draw is conditioned on retaining at least one detected breeding pair.
+        island_totals = np.asarray(
+            state[island]["island_totals"],
+            dtype=float,
+        )
+        for year_index in np.where(island_totals > 0)[0]:
+            zero_rows = np.where(
+                np.sum(local[:, :, year_index], axis=1) == 0
+            )[0]
+            while zero_rows.size:
+                retry_mean = np.broadcast_to(
+                    latent[:, year_index],
+                    (zero_rows.size, latent.shape[0]),
+                ).copy()
+                if multiplicative_cv > 0:
+                    shape = 1.0 / (multiplicative_cv**2)
+                    retry_mean *= rng.gamma(
+                        shape=shape,
+                        scale=1.0 / shape,
+                        size=retry_mean.shape,
+                    )
+                local[zero_rows, :, year_index] = rng.poisson(
+                    retry_mean
+                ).astype(float)
+                still_zero = (
+                    np.sum(local[zero_rows, :, year_index], axis=1)
+                    == 0
+                )
+                zero_rows = zero_rows[still_zero]
+        counts[island] = local
     return counts
 
 
@@ -268,6 +313,7 @@ def simulate(
         raw_contrast: list[np.ndarray] = []
         detrended_ratio: list[np.ndarray] = []
         growth_ratio: list[np.ndarray] = []
+        raw_all: list[np.ndarray] = []
         detrended_all: list[np.ndarray] = []
         growth_all: list[np.ndarray] = []
 
@@ -276,6 +322,17 @@ def simulate(
             n = min(batch_size, simulations - completed)
             batch = _draw_batch(state, n, cv, rng)
             beta_within, beta_among, contrast = _raw_batch(batch)
+            per_island_raw = np.stack(
+                [
+                    _wang_beta_batch(batch[island])
+                    for island in STABLE_ROSTER_ISLANDS
+                ],
+                axis=1,
+            )
+            raw_gt = np.all(
+                per_island_raw > beta_among[:, None],
+                axis=1,
+            )
             detrended, detrended_gt = _centered_ratio_batch(
                 batch,
                 "linear_detrended_log1p",
@@ -287,6 +344,7 @@ def simulate(
             raw_within.append(beta_within)
             raw_among.append(beta_among)
             raw_contrast.append(contrast)
+            raw_all.append(raw_gt)
             detrended_ratio.append(detrended)
             growth_ratio.append(growth)
             detrended_all.append(detrended_gt)
@@ -296,6 +354,7 @@ def simulate(
         bw = np.concatenate(raw_within)
         ba = np.concatenate(raw_among)
         contrast = np.concatenate(raw_contrast)
+        raw_gt = np.concatenate(raw_all)
         detrended = np.concatenate(detrended_ratio)
         growth = np.concatenate(growth_ratio)
         detrended_gt = np.concatenate(detrended_all)
@@ -317,6 +376,9 @@ def simulate(
             ),
             "raw_probability_beta_within_exceeds_beta_among": float(
                 np.mean(bw > ba)
+            ),
+            "raw_probability_all_three_within_beta_exceed_among": float(
+                np.mean(raw_gt)
             ),
             "linear_detrended_log1p": {
                 "median_within_to_among_ratio": _tail(
@@ -340,7 +402,7 @@ def simulate(
             },
         }
 
-    raw_p = {
+    contrast_p = {
         name: float(
             outputs[name]["raw_log_beta_contrast"][
                 "one_sided_probability_ge_observed"
@@ -348,9 +410,20 @@ def simulate(
         )
         for name, _ in ERROR_MODELS
     }
-    raw_robust_all = all(value <= 0.05 for value in raw_p.values())
+    within_p = {
+        name: float(
+            outputs[name]["raw_beta_within"][
+                "one_sided_probability_ge_observed"
+            ]
+        )
+        for name, _ in ERROR_MODELS
+    }
+    raw_robust_all = all(
+        contrast_p[name] <= 0.05 and within_p[name] <= 0.05
+        for name, _ in ERROR_MODELS
+    )
     raw_robust_low_error = all(
-        raw_p[name] <= 0.05
+        contrast_p[name] <= 0.05 and within_p[name] <= 0.05
         for name in ("poisson", "gamma_poisson_cv10")
     )
 
@@ -392,9 +465,11 @@ def simulate(
             "raw_hierarchy_measurement_error_robust": bool(
                 raw_robust_all
             ),
+            "centered_signals_are_not_rescue_endpoints": True,
         },
         "interpretation_boundary": {
             "stylized_error_not_empirically_calibrated_for_palmer": True,
+            "known_positive_island_years_conditioned_nonzero": True,
             "failure_does_not_prove_count_error_explanation": True,
             "success_does_not_estimate_actual_observer_error": True,
             "centered_log_signals_are_not_exact_wang_loreau_partitions": True,
