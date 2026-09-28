@@ -36,19 +36,11 @@ jobs:
           python scripts/audit_add_site_matching.py \
             --mapppdr-dir build/mapppdr \
             --out build/add_site_match_audit_v1.json
-      - name: Run SCAR ADD service diagnostics
-        if: always()
-        run: |
-          python scripts/diagnose_add_service.py \
-            --mapppdr-dir build/mapppdr \
-            --out build/add_service_diagnostic_v1.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: antarctic-add-site-match-audit-v1
-          path: |
-            build/add_site_match_audit_v1.json
-            build/add_service_diagnostic_v1.json
+          path: build/add_site_match_audit_v1.json
       - name: Enforce frozen Gate 1A rule
         run: |
           python - <<'PY'
