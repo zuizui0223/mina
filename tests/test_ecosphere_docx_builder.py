@@ -12,7 +12,8 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 METHODS_AI_DISCLOSURE = module.METHODS_AI_DISCLOSURE
-_strip_submission_source = module._strip_submission_source\n_normalize_submission_markdown = module._normalize_submission_markdown
+_strip_submission_source = module._strip_submission_source
+_normalize_submission_markdown = module._normalize_submission_markdown
 
 
 def test_strip_source_removes_submission_duplicates_and_adds_ai_disclosure():
