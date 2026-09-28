@@ -1,0 +1,48 @@
+name: antarctic-breeding-island-atlas-gate1a-v2
+on:
+  push:
+    branches: [analysis/antarctic-breeding-island-atlas-v2]
+    paths:
+      - "scripts/audit_add_site_matching_v2.py"
+      - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_GATE1A_V2.json"
+      - ".github/workflows/antarctic-breeding-island-atlas-gate1a-v2.yml"
+  pull_request:
+    paths:
+      - "scripts/audit_add_site_matching_v2.py"
+      - "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_GATE1A_V2.json"
+      - ".github/workflows/antarctic-breeding-island-atlas-gate1a-v2.yml"
+  workflow_dispatch:
+jobs:
+  gate1a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install pandas pyreadr requests shapely pyproj
+      - name: Fetch pinned mapppdr
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Run Gate 1A v2
+        run: |
+          python scripts/audit_add_site_matching_v2.py \
+            --mapppdr-dir build/mapppdr \
+            --out build/add_site_match_audit_v2.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: antarctic-add-site-match-audit-v2
+          path: build/add_site_match_audit_v2.json
+      - name: Enforce frozen gate
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/add_site_match_audit_v2.json").read_text())
+          if not x["anchor_validation_passed"]:
+              raise SystemExit("Gate 1A v2 failed anchor validation")
+          if not x["gate1a_passed"]:
+              raise SystemExit("Gate 1A v2 failed frozen 95%/5% matching rule")
+          print("selected_distance_m=",x["selected_distance_m"])
+          PY
