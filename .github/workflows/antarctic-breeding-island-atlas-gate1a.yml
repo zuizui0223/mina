@@ -35,6 +35,19 @@ jobs:
             --mapppdr-dir build/mapppdr \
             --out build/add_site_match_audit_v1.json
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: antarctic-add-site-match-audit-v1
           path: build/add_site_match_audit_v1.json
+      - name: Enforce frozen Gate 1A rule
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/add_site_match_audit_v1.json").read_text())
+          if not x["gate1a_passed"]:
+              raise SystemExit(
+                  "Gate 1A failed exactly as frozen; inspect uploaded diagnostics"
+              )
+          print("selected_distance_m=",x["selected_distance_m"])
+          PY
