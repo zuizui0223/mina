@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "program_id": "mina-research-program-v1",
+  "date": "2026-09-28",
+  "program_name": "Penguin breeding-island macroecology",
+  "repository": "zuizui0223/mina",
+  "core_concept": "Externally subsidized breeding islands: penguins acquire trophic resources in the marine environment but reproduction is constrained by discrete terrestrial or sea-ice breeding substrates, allowing regional marine forcing to be separated from local breeding-patch filtering.",
+  "paper_lanes": {
+    "paper1_v1": {
+      "title": "Regional decline, local concentration: within-island reorganization of Adelie penguin breeding groups",
+      "role": "local discovery system",
+      "spatial_extent": "Palmer Archipelago",
+      "status": "scientifically frozen; author metadata pending",
+      "canonical_manifest": "docs/PAPER1_V1.md"
+    },
+    "paper2": {
+      "working_title": "Breeding-island architecture filters penguin population fate across Antarctica",
+      "role": "Antarctic-wide macroecological generalization",
+      "status": "data-availability and trait-design phase",
+      "primary_domain": "breeding sites south of 60 S",
+      "secondary_extension": "50-60 S sub-Antarctic islands only after an explicit data-coverage gate"
+    }
+  },
+  "paper2_question": "When marine trophic resources lie outside the breeding patch, which properties of the breeding substrate determine whether regional environmental change is realized locally as persistence, decline, extinction, colonization or replacement?",
+  "paper2_hypotheses": {
+    "H1_regional_forcing_local_fate": "Population trajectories share regional components, but site fate retains predictable variation associated with breeding-site properties.",
+    "H2_habitat_option": "After regional forcing is accounted for, the amount and heterogeneity of usable ice-free breeding habitat increase persistence by providing alternative breeding options during environmental deterioration.",
+    "H3_island_architecture": "For terrestrial breeders, area alone is less informative than the geometry, relief, ice-free habitat amount, ecosystem heterogeneity and isolation of the breeding site.",
+    "H4_breeding_substrate_interaction": "Effects of terrestrial island architecture are strongest for terrestrial-breeding Pygoscelis species and weak or absent for emperor penguins breeding on sea ice, providing a substrate-based negative-control comparison.",
+    "H5_palmer_generalization": "The Palmer Paper 1 pattern of internal breeding-structure reorganization predicts that declining terrestrial colonies should show stronger local concentration or site loss where breeding-habitat options are fewer."
+  },
+  "primary_species": [
+    "Adelie penguin",
+    "chinstrap penguin",
+    "gentoo penguin",
+    "emperor penguin"
+  ],
+  "secondary_species_gate": {
+    "species": [
+      "macaroni penguin",
+      "king penguin"
+    ],
+    "rule": "include only if the inventory shows sufficient south-of-60 site and temporal replication; otherwise reserve for the 50-60 S extension"
+  },
+  "spatial_unit": {
+    "primary_key": "APBP site_id x species_id",
+    "regional_context": [
+      "APBP region",
+      "CCAMLR subarea",
+      "Antarctic ecosystem/bioregional unit"
+    ],
+    "site_type_to_derive": [
+      "offshore land island",
+      "continental/peninsular coastal breeding patch",
+      "ice-shelf or fast-ice breeding site",
+      "unresolved"
+    ]
+  },
+  "new_user_constructed_dataset": {
+    "name": "Antarctic Penguin Breeding-Island Atlas",
+    "principle": "MAPPPD/APBP supplies breeding-site anchors and demographic observations; island/breeding-site traits are newly derived in mina from independent spatial layers.",
+    "candidate_traits": [
+      "land/island area",
+      "distance to continental land or nearest large landmass",
+      "nearest breeding-site distance",
+      "coastline complexity",
+      "ice-free area within fixed buffers",
+      "elevation",
+      "relief",
+      "slope",
+      "rugosity",
+      "aspect/exposure summaries",
+      "Antarctic Ecosystem Inventory habitat-complex richness",
+      "Major Environment Unit",
+      "melt/climate summaries",
+      "local breeding-site species richness"
+    ]
+  },
+  "frozen_external_sources_for_design": {
+    "mapppdr_pilot_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "mapppd_paper_doi": "10.3897/BDJ.11.e101476",
+    "scar_add_high_resolution_coastline_v7_12_doi": "10.5285/13c4d2f1-8903-4d7f-8977-592121975554",
+    "antarctic_ecosystem_inventory_v1_spatial_doi": "10.5281/zenodo.11629115",
+    "rema_mosaic_v2_doi": "10.7910/DVN/EBW8UC"
+  },
+  "design_order": [
+    "inventory APBP/MAPPPD temporal and species coverage without fitting ecological models",
+    "freeze site-type rules and spatial trait extraction",
+    "build the Antarctic Penguin Breeding-Island Atlas outcome-blind",
+    "freeze demographic response eligibility and trend/end-state definitions",
+    "only then join demographic outcomes and fit macroecological models"
+  ],
+  "anti_p_hacking_rules": [
+    "no selecting island traits because they correlate with observed population trends",
+    "no changing minimum time-series length after outcome effects are inspected",
+    "no redefining island versus continental sites using outcome information",
+    "no treating APBP site points as literal island polygons without spatial intersection",
+    "no claiming a tectonic Antarctic Plate boundary is equivalent to the biological study domain"
+  ]
+}
