@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from pathlib import Path
 
 import pandas as pd
@@ -58,12 +59,18 @@ def _session() -> requests.Session:
 
 
 def _get_json(session: requests.Session, url: str, **params):
-    response = session.get(url, params=params, timeout=120)
-    response.raise_for_status()
-    data = response.json()
-    if "error" in data:
-        raise RuntimeError(f"ArcGIS error: {data['error']}")
-    return data
+    for attempt in range(4):
+        response = session.get(url, params=params, timeout=120)
+        response.raise_for_status()
+        data = response.json()
+        error = data.get("error")
+        if not error:
+            return data
+        if int(error.get("code", 0)) == 429 and attempt < 3:
+            time.sleep(65)
+            continue
+        raise RuntimeError(f"ArcGIS error: {error}")
+    raise RuntimeError("ArcGIS query retry loop exhausted")
 
 
 def _discover_layer(session: requests.Session) -> tuple[str, dict, str]:
