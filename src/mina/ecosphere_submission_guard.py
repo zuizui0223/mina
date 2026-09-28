@@ -6,6 +6,8 @@ import json
 import re
 from pathlib import Path
 
+from .ecosphere_submission_metadata import load_metadata, validate_metadata
+
 TITLE_LIMIT = 120
 ABSTRACT_LIMIT = 350
 KEYWORDS_MIN = 6
@@ -24,6 +26,7 @@ REQUIRED_HUMAN_BLOCKER_ALIASES = (
     ("funding",),
     ("conflict of interest", "conflict-of-interest"),
     ("ai tool", "ai tools"),
+    ("dual-publication", "overlap"),
 )
 
 PLACEHOLDER_PATTERNS = (
@@ -52,6 +55,8 @@ def inspect(
     manuscript: str | Path,
     title_page: str | Path,
     contract: str | Path,
+    metadata: str | Path | None = None,
+    word_qa_confirmed: bool = False,
 ) -> dict[str, object]:
     manuscript_text = Path(manuscript).read_text(encoding="utf-8")
     title_page_text = Path(title_page).read_text(encoding="utf-8")
@@ -74,8 +79,17 @@ def inspect(
         "public_review_code_link_present": (
             "https://github.com/zuizui0223/mina" in title_page_text
         ),
+        "preview_word_qa_recorded": bool(
+            contract_data.get("word_preview",{}).get(
+                "preview_generated_and_visually_checked"
+            )
+        ),
     }
-    failed = [name for name, value in structural.items() if isinstance(value, bool) and not value]
+    failed = [
+        name
+        for name, value in structural.items()
+        if isinstance(value, bool) and not value
+    ]
     if failed:
         raise ValueError(f"submission structural checks failed: {failed}")
 
@@ -83,7 +97,6 @@ def inspect(
         pattern for pattern in PLACEHOLDER_PATTERNS if pattern in title_page_text
     ]
     contract_blockers = list(contract_data.get("human_only_blockers", []))
-
     blocker_text = " ".join(contract_blockers).lower()
     missing_expected_blockers = [
         "/".join(aliases)
@@ -96,26 +109,41 @@ def inspect(
             + ", ".join(missing_expected_blockers)
         )
 
-    blockers = []
-    if unresolved_placeholders:
-        blockers.append("title-page author metadata unresolved")
-    blockers.extend(contract_blockers)
-    blockers.append("submission Word Main Document not yet assembled and visually checked")
-    blockers.append("AI disclosure not yet inserted into the assembled Main Document")
-    blockers.append("ScholarOne dual-publication response not yet author-confirmed")
+    metadata_result=None
+    blockers: list[str]=[]
+    if metadata is None:
+        blockers.extend(contract_blockers)
+        blockers.append(
+            "author-complete Word Main Document not yet generated and visually checked"
+        )
+    else:
+        metadata_result=validate_metadata(load_metadata(metadata))
+        blockers.extend(
+            f"metadata unresolved: {field}"
+            for field in metadata_result["unresolved_fields"]
+        )
+        if not word_qa_confirmed:
+            blockers.append(
+                "author-complete Word Main Document not yet visually checked"
+            )
 
     return {
-        "schema_version": 1,
-        "audit_id": "mina-ecosphere-v0.6-submission-readiness-v1",
+        "schema_version": 2,
+        "audit_id": "mina-ecosphere-v0.6-submission-readiness-v2",
         "structural_checks": structural,
-        "unresolved_title_page_placeholders": unresolved_placeholders,
+        "unresolved_title_page_template_placeholders": unresolved_placeholders,
+        "metadata_validation": metadata_result,
+        "word_qa_confirmed_for_author_complete_document": bool(word_qa_confirmed),
         "blocking_items": blockers,
         "ready_for_scholarone": len(blockers) == 0,
+        "post_acceptance_tasks": contract_data.get("post_acceptance_tasks", []),
         "boundary": {
             "scientific_endpoints_changed": False,
             "author_metadata_invented": False,
             "coi_assumed": False,
             "funding_assumed": False,
+            "permanent_archive_doi_required_before_initial_submission": False,
+            "ai_disclosure_already_present_in_docx_builder": True,
         },
     }
 
@@ -125,10 +153,18 @@ def main() -> int:
     parser.add_argument("--manuscript", required=True, type=Path)
     parser.add_argument("--title-page", required=True, type=Path)
     parser.add_argument("--contract", required=True, type=Path)
+    parser.add_argument("--metadata", type=Path)
+    parser.add_argument("--word-qa-confirmed", action="store_true")
     parser.add_argument("--out", type=Path)
     parser.add_argument("--expect-blocked", action="store_true")
     args = parser.parse_args()
-    result = inspect(args.manuscript, args.title_page, args.contract)
+    result = inspect(
+        args.manuscript,
+        args.title_page,
+        args.contract,
+        metadata=args.metadata,
+        word_qa_confirmed=args.word_qa_confirmed,
+    )
     if args.expect_blocked and result["ready_for_scholarone"]:
         raise ValueError("expected unresolved human submission metadata")
     if args.out:
