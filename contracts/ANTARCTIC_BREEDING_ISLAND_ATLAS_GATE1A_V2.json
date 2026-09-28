@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-breeding-island-atlas-gate1a-v2",
+  "date": "2026-09-29",
+  "status": "coverage_gate_frozen_before_execution",
+  "paper_lane": "Paper 2",
+  "source_sites": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "species_ids": ["ADPE", "CHPE", "GEPE"],
+    "temporal_gate": "at least 5 distinct nest-count years spanning at least 10 years",
+    "expected_site_species_units": 152,
+    "expected_distinct_sites": 122
+  },
+  "scar_add": {
+    "dataset": "High resolution vector polygons of the Antarctic coastline",
+    "version": "7.12",
+    "doi": "10.5285/13c4d2f1-8903-4d7f-8977-592121975554",
+    "feature_service": "https://services7.arcgis.com/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/High_resolution_vector_polygons_of_the_Antarctic_coastline/FeatureServer",
+    "surface": "land"
+  },
+  "why_v2": {
+    "v1_problem": "The v1 <=5% multiple-polygon rule confounded matching ambiguity with genuine archipelago density.",
+    "pre_outcome_diagnostic": "Known Torgersen Island intersects exactly one land polygon at 0 m but has 60 land polygons within 5 km; therefore the number of polygons inside a buffer is not a valid uniqueness metric.",
+    "change": "Gate 1A now audits only whether a site has at least one land polygon within the predeclared tolerance. Polygon assignment uniqueness is deferred to Gate 1B."
+  },
+  "coverage_gate": {
+    "candidate_distances_m": [0, 500, 1000, 2000, 5000],
+    "selection_rule": "Choose the smallest distance at which at least 95% of the 122 candidate APBP sites have one or more SCAR ADD land polygons at or within that distance.",
+    "algorithm": "Query distances in ascending order. Sites matched at a smaller distance are carried forward and are not re-queried. Stop at the first distance satisfying the 95% rule.",
+    "request_throttle_seconds": 1.1,
+    "arcgis_quota_handling": "No parallel spatial requests. Retry JSON-level ArcGIS 429 responses after 65 seconds without changing query parameters.",
+    "failure_rule": "If 95% coverage is not reached by 5 km, Gate 1A v2 fails; do not expand the tolerance."
+  },
+  "output_only": [
+    "first land-match distance for each site",
+    "land object IDs returned at first match",
+    "coverage by tolerance",
+    "coverage by APBP region",
+    "unmatched sites at 5 km"
+  ],
+  "outcome_blind_boundary": [
+    "no population trend or endpoint is read",
+    "no demographic response is joined",
+    "no island trait is tested",
+    "no manual site-name rescue is allowed before Gate 1A v2 is evaluated"
+  ],
+  "next_gate": "Gate 1B assigns one land polygon per covered site using a separately frozen nearest-polygon rule and derives island architecture."
+}
