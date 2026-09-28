@@ -16,7 +16,8 @@
     "conclusion": "success",
     "simulations_per_error_model": 100000,
     "seed": 20260928,
-    "positive_island_years_conditioned_nonzero": true
+    "positive_island_years_conditioned_nonzero": true,
+    "full_artifact_quantiles_preserved": true
   },
   "observed": {
     "raw_beta_within": 1.0737035331938372,
@@ -37,7 +38,14 @@
       "growth_ratio_p": 0.44721552784472157,
       "probability_all_three_raw_within_beta_exceed_among": 0.99953,
       "probability_all_three_detrended_within_beta_exceed_among": 0.8264,
-      "probability_all_three_growth_within_beta_exceed_among": 0.9983
+      "probability_all_three_growth_within_beta_exceed_among": 0.9983,
+      "raw_log_beta_contrast_null_summary": {
+        "mean": 0.01327488836528773,
+        "median": 0.013264990424044634,
+        "sd": 0.0027204914458288584,
+        "q_0_025": 0.007974612655544293,
+        "q_0_975": 0.018676535314813354
+      }
     },
     "gamma_poisson_cv10": {
       "raw_beta_within_null_mean": 1.0428892405605914,
@@ -50,7 +58,14 @@
       "growth_ratio_p": 0.4775752242477575,
       "probability_all_three_raw_within_beta_exceed_among": 0.99988,
       "probability_all_three_detrended_within_beta_exceed_among": 0.79644,
-      "probability_all_three_growth_within_beta_exceed_among": 0.99792
+      "probability_all_three_growth_within_beta_exceed_among": 0.99792,
+      "raw_log_beta_contrast_null_summary": {
+        "mean": 0.025242982232218818,
+        "median": 0.025216828057140973,
+        "sd": 0.004817776281208026,
+        "q_0_025": 0.0158967666065353,
+        "q_0_975": 0.03484702103204101
+      }
     },
     "gamma_poisson_cv20": {
       "raw_beta_within_null_mean": 1.0882061575385549,
@@ -63,7 +78,14 @@
       "growth_ratio_p": 0.5299647003529965,
       "probability_all_three_raw_within_beta_exceed_among": 0.99989,
       "probability_all_three_detrended_within_beta_exceed_among": 0.73671,
-      "probability_all_three_growth_within_beta_exceed_among": 0.99552
+      "probability_all_three_growth_within_beta_exceed_among": 0.99552,
+      "raw_log_beta_contrast_null_summary": {
+        "mean": 0.05879049099923405,
+        "median": 0.05851079932502176,
+        "sd": 0.011236605553115337,
+        "q_0_025": 0.037382564695528704,
+        "q_0_975": 0.08169485202078279
+      }
     }
   },
   "decision": {
