@@ -116,7 +116,7 @@ def _download_all_land(
     surface_field: str,
     object_id_field: str,
     chunk_size: int = 100,
-) -> tuple[list, list[dict], int]:
+) -> tuple[list, list[dict], int, dict, object]:
     id_data = _get_json(
         session,
         f"{layer_url}/query",
@@ -129,6 +129,7 @@ def _download_all_land(
         raise RuntimeError("SCAR ADD returned zero land polygon IDs")
 
     features = []
+    geojson_crs = None
     for start in range(0, len(object_ids), chunk_size):
         chunk = object_ids[start : start + chunk_size]
         data = _get_json(
@@ -141,6 +142,8 @@ def _download_all_land(
             outSR=4326,
             maxAllowableOffset=0.0001,
         )
+        if geojson_crs is None:
+            geojson_crs = data.get("crs")
         batch = data.get("features", [])
         if len(batch) != len(chunk):
             raise RuntimeError(
@@ -158,11 +161,20 @@ def _download_all_land(
     geoms = []
     attrs = []
     repaired = 0
+    raw_minx = float("inf")
+    raw_miny = float("inf")
+    raw_maxx = float("-inf")
+    raw_maxy = float("-inf")
     for feature in features:
         geom_value = feature.get("geometry")
         if not geom_value:
             continue
         geom = shape(geom_value)
+        bx0, by0, bx1, by1 = geom.bounds
+        raw_minx = min(raw_minx, float(bx0))
+        raw_miny = min(raw_miny, float(by0))
+        raw_maxx = max(raw_maxx, float(bx1))
+        raw_maxy = max(raw_maxy, float(by1))
         if not geom.is_valid:
             geom = geom.buffer(0)
             repaired += 1
@@ -172,7 +184,13 @@ def _download_all_land(
         geoms.append(projected)
         attrs.append(feature.get("properties", {}))
 
-    return geoms, attrs, repaired
+    raw_bounds = {
+        "min_x": raw_minx,
+        "min_y": raw_miny,
+        "max_x": raw_maxx,
+        "max_y": raw_maxy,
+    }
+    return geoms, attrs, repaired, raw_bounds, geojson_crs
 
 
 def audit(root: Path) -> dict:
@@ -183,7 +201,7 @@ def audit(root: Path) -> dict:
     if not object_id_field:
         raise RuntimeError("SCAR ADD layer has no objectIdField")
 
-    geoms, attrs, repaired = _download_all_land(
+    geoms, attrs, repaired, raw_bounds, geojson_crs = _download_all_land(
         session,
         layer_url,
         surface_field,
@@ -320,6 +338,8 @@ def audit(root: Path) -> dict:
         "downloaded_land_polygon_count": len(geoms),
         "geometry_generalization_degrees": 0.0001,
         "repaired_invalid_polygon_count": repaired,
+        "raw_geojson_coordinate_bounds": raw_bounds,
+        "raw_geojson_crs": geojson_crs,
         "nearest_land_distance_quantiles_m": quantiles,
         "distance_summaries": summaries,
         "region_summary": region_summary,
