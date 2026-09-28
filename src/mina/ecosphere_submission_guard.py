@@ -13,7 +13,7 @@ ABSTRACT_LIMIT = 350
 KEYWORDS_MIN = 6
 KEYWORDS_MAX = 12
 
-EXPECTED_TITLE = (
+LEGACY_V06_TITLE = (
     "Common decline, divergent endpoints: hierarchical demography across "
     "Antarctic penguin breeding islands"
 )
@@ -64,11 +64,14 @@ def inspect(
 
     first_line = manuscript_text.splitlines()[0]
     title = re.sub(r"^#\s*", "", first_line).strip()
+    expected_title = str(
+        contract_data.get("title") or LEGACY_V06_TITLE
+    ).strip()
     abstract_words = len(re.findall(r"\b[\w’'-]+\b", _abstract(manuscript_text)))
     keywords = _keywords(manuscript_text)
 
     structural = {
-        "title_matches_frozen_v0_6": title == EXPECTED_TITLE,
+        "title_matches_submission_contract": title == expected_title,
         "title_characters": len(title),
         "title_within_limit": len(title) <= TITLE_LIMIT,
         "abstract_words": abstract_words,
@@ -129,7 +132,12 @@ def inspect(
 
     return {
         "schema_version": 2,
-        "audit_id": "mina-ecosphere-v0.6-submission-readiness-v2",
+        "audit_id": str(
+            contract_data.get(
+                "readiness_audit_id",
+                "mina-ecosphere-submission-readiness-v2",
+            )
+        ),
         "structural_checks": structural,
         "unresolved_title_page_template_placeholders": unresolved_placeholders,
         "metadata_validation": metadata_result,
