@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-breeding-island-atlas-gate1b-v1",
+  "date": "2026-09-29",
+  "status": "planned_and_frozen_pending_gate1a_pass",
+  "parent_contract": "contracts/ANTARCTIC_BREEDING_ISLAND_ATLAS_V1.json",
+  "paper_lane": "Paper 2",
+  "purpose": "Derive a minimal, outcome-blind breeding-landform atlas before adding terrain, snow, melt, ecosystem or demographic-response variables.",
+  "activation_gate": {
+    "required": "Gate 1A passes its original 95% land-match / <=5% multiple-match rule",
+    "selected_distance_source": "Gate 1A result receipt",
+    "no_redefinition_after_demographic_outcomes": true
+  },
+  "units": {
+    "site_unit": "distinct APBP site_id among the frozen Pygoscelis candidate set",
+    "demographic_unit_later": "APBP site_id x species_id",
+    "coordinate_source": "pinned mapppdr site coordinate",
+    "land_polygon_source": "SCAR ADD v7.12 FeatureServer land polygon assigned under Gate 1A"
+  },
+  "continental_reference": {
+    "rule": "Query the SCAR ADD land layer at the South Pole (0 E, 90 S). Gate 1B requires exactly one intersecting land polygon; its object ID is the continental reference polygon.",
+    "failure_rule": "If zero or multiple land polygons intersect the South Pole, do not substitute an area threshold or named polygon; Gate 1B fails pending source review."
+  },
+  "site_type": {
+    "offshore_island": "assigned land object ID differs from the continental reference object ID",
+    "continental_or_peninsular": "assigned land object ID equals the continental reference object ID",
+    "unresolved": "Gate 1A does not yield exactly one assigned polygon at the selected tolerance",
+    "no_manual_name_based_reclassification": true
+  },
+  "primary_traits": [
+    {
+      "name": "land_polygon_area_m2",
+      "definition": "Area of the assigned SCAR ADD land polygon in the native EPSG:3031 metric CRS; validate against server Shape__Area before release."
+    },
+    {
+      "name": "offshore_island",
+      "definition": "Binary site-type classification from the continental-reference rule."
+    },
+    {
+      "name": "distance_to_continental_land_m",
+      "definition": "Minimum EPSG:3031 polygon-to-polygon distance between the assigned offshore-island polygon and the continental reference polygon; zero for continental/peninsular sites."
+    },
+    {
+      "name": "nearest_candidate_penguin_site_distance_m",
+      "definition": "Minimum EPSG:3031 point-to-point distance from the APBP site coordinate to any other distinct candidate APBP site, irrespective of species."
+    }
+  ],
+  "quality_checks": {
+    "assigned_polygon_geometry": "Fetch each assigned polygon individually from the FeatureServer in native EPSG:3031; do not reuse the failed continent-scale bulk-geometry transport.",
+    "area": [
+      "positive finite area for every resolved polygon",
+      "locally computed polygon area and server Shape__Area agree within 1% where Shape__Area is available"
+    ],
+    "classification": [
+      "Torgersen Island, Penguin Island and Franklin Island East must classify as offshore islands if present in the candidate set",
+      "a known continental/peninsular candidate site must classify as continental_or_peninsular; the site is selected before demographic outcomes are opened"
+    ],
+    "isolation": "offshore-island distances must be positive and continental/peninsular distances must equal zero",
+    "nearest_site": "all distances positive for distinct coordinates; exact coordinate duplicates are reported rather than jittered"
+  },
+  "not_yet_opened": [
+    "population trend direction",
+    "extinction/persistence outcome",
+    "colonization or replacement outcome",
+    "REMA terrain variables",
+    "snow or melt variables",
+    "Antarctic Ecosystem Inventory habitat richness",
+    "sea-ice or marine climate predictors",
+    "interactions with demographic outcomes"
+  ],
+  "next_gate": "Gate 1C adds habitat-option and terrain traits only after Gate 1B geometry is frozen and audited."
+}
