@@ -152,14 +152,18 @@ def figure3(data: Path, out: Path) -> None:
     axes[1].invert_yaxis()
     axes[1].set_xlabel("N_eff slope per year")
     axes[1].set_title("Concentration exceeds a severe count-error null")
+    axes[1].set_xlim(
+        float(min(np.min(observed), np.min(lower))) - 0.085,
+        float(max(np.max(upper), 0.0)) + 0.025,
+    )
     for i, r in enumerate(slopes):
         p = float(r["cv20_one_sided_p"])
         label = "p=0.000010" if p < 0.00002 else f"p={p:.3f}"
         axes[1].text(
-            observed[i] + 0.012,
+            observed[i] - 0.012,
             i,
             label,
-            ha="left",
+            ha="right",
             va="center",
             fontsize=8,
         )
