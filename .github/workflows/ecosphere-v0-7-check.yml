@@ -172,7 +172,7 @@ jobs:
           lag2=momentum["lag1_lag2"]
           for label,expected,observed in (
               ("lag2_beta",neff["lag1_lag2_conditioned_coefficient"],lag2["standardized_neff_beta"]),
-              ("lag2_gain",neff["lag1_lag2_loyo_gain"],lag2["loyo_mse_gain_C0_minus_C1"]),
+              ("lag2_gain",neff["lag1_lag2_loyo_gain"],lag2["loyo"]["mse_gain_C0_minus_C1"]),
               ("lag2_circular_p",neff["lag1_lag2_independent_circular_p"],lag2["independent_full_series_circular_shift"]["one_sided_p"]),
               ("lag2_joint_p",neff["lag1_lag2_joint_exact_p"],lag2["joint_full_series_exact_shift"]["exact_one_sided_p"]),
           ):
