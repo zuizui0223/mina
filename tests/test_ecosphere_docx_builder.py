@@ -14,6 +14,7 @@ spec.loader.exec_module(module)
 METHODS_AI_DISCLOSURE = module.METHODS_AI_DISCLOSURE
 _strip_submission_source = module._strip_submission_source
 _normalize_submission_markdown = module._normalize_submission_markdown
+_strip_caption_heading = module._strip_caption_heading
 
 
 def test_strip_source_removes_submission_duplicates_and_adds_ai_disclosure():
@@ -62,3 +63,18 @@ def test_normalize_submission_markdown_replaces_underbrace_and_old_repo_text():
     assert r"\beta_{within}=\frac{\alpha_{sub}}{\alpha_{island}}" in out
     assert "https://github.com/zuizui0223/mina" in out
     assert "anonymized repository snapshot" not in out
+
+
+def test_strip_caption_heading_preserves_figure_1():
+    raw = """# Figure captions v5
+
+## Figure 1. First figure
+
+Caption body.
+
+## Figure 2. Second figure
+"""
+    out = _strip_caption_heading(raw)
+    assert "Figure captions v5" not in out
+    assert "## Figure 1. First figure" in out
+    assert "## Figure 2. Second figure" in out
