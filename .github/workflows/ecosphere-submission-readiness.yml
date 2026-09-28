@@ -3,24 +3,24 @@ name: ecosphere-submission-readiness
 on:
   push:
     branches:
-      - submission/ecosphere-v0.6-package-v1
+      - submission/ecosphere-v0.7-package-v2
     paths:
       - "src/mina/ecosphere_submission_guard.py"
       - "tests/test_ecosphere_submission_guard.py"
-      - "contracts/PALMER_ECOSPHERE_SUBMISSION_PACKAGE_V0_6.json"
-      - "docs/TITLE_PAGE_ECOSPHERE_V0_6_TEMPLATE.md"
-      - "docs/SUBMISSION_READINESS_ECOSPHERE_V0_6.md"
-      - "docs/COVER_LETTER_ECOSPHERE_V0_6.md"
+      - "contracts/PALMER_ECOSPHERE_SUBMISSION_PACKAGE_V0_7.json"
+      - "docs/TITLE_PAGE_ECOSPHERE_V0_7_TEMPLATE.md"
+      - "docs/SUBMISSION_READINESS_ECOSPHERE_V0_7.md"
+      - "docs/COVER_LETTER_ECOSPHERE_V0_7.md"
       - ".github/workflows/ecosphere-submission-readiness.yml"
       - "pyproject.toml"
   pull_request:
     paths:
       - "src/mina/ecosphere_submission_guard.py"
       - "tests/test_ecosphere_submission_guard.py"
-      - "contracts/PALMER_ECOSPHERE_SUBMISSION_PACKAGE_V0_6.json"
-      - "docs/TITLE_PAGE_ECOSPHERE_V0_6_TEMPLATE.md"
-      - "docs/SUBMISSION_READINESS_ECOSPHERE_V0_6.md"
-      - "docs/COVER_LETTER_ECOSPHERE_V0_6.md"
+      - "contracts/PALMER_ECOSPHERE_SUBMISSION_PACKAGE_V0_7.json"
+      - "docs/TITLE_PAGE_ECOSPHERE_V0_7_TEMPLATE.md"
+      - "docs/SUBMISSION_READINESS_ECOSPHERE_V0_7.md"
+      - "docs/COVER_LETTER_ECOSPHERE_V0_7.md"
       - ".github/workflows/ecosphere-submission-readiness.yml"
       - "pyproject.toml"
   workflow_dispatch:
@@ -36,15 +36,15 @@ jobs:
       - run: python -m pip install -e ".[dev]"
       - name: Run submission guard tests
         run: python -m pytest tests/test_ecosphere_submission_guard.py
-      - name: Audit frozen v0.6 submission shell
+      - name: Audit frozen v0.7 submission shell
         run: |
           mina-ecosphere-submission-guard \
-            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_6.md \
-            --title-page docs/TITLE_PAGE_ECOSPHERE_V0_6_TEMPLATE.md \
-            --contract contracts/PALMER_ECOSPHERE_SUBMISSION_PACKAGE_V0_6.json \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_7.md \
+            --title-page docs/TITLE_PAGE_ECOSPHERE_V0_7_TEMPLATE.md \
+            --contract contracts/PALMER_ECOSPHERE_SUBMISSION_PACKAGE_V0_7.json \
             --out build/ecosphere_submission_readiness.json \
             --expect-blocked
       - uses: actions/upload-artifact@v4
         with:
-          name: ecosphere-v0-6-submission-readiness
+          name: ecosphere-v0-7-submission-readiness
           path: build/ecosphere_submission_readiness.json
