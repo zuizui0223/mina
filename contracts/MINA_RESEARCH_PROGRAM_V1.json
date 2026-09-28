@@ -16,9 +16,10 @@
     "paper2": {
       "working_title": "Breeding-island architecture filters penguin population fate across Antarctica",
       "role": "Antarctic-wide macroecological generalization",
-      "status": "data-availability and trait-design phase",
+      "status": "Gate 0 passed for Pygoscelis trend lane; atlas design next",
       "primary_domain": "breeding sites south of 60 S",
-      "secondary_extension": "50-60 S sub-Antarctic islands only after an explicit data-coverage gate"
+      "secondary_extension": "50-60 S sub-Antarctic islands only after an explicit data-coverage gate",
+      "inventory_result": "results/MAPPPD_MACRO_INVENTORY_RESULT_V1.json"
     }
   },
   "paper2_question": "When marine trophic resources lie outside the breeding patch, which properties of the breeding substrate determine whether regional environmental change is realized locally as persistence, decline, extinction, colonization or replacement?",
@@ -32,15 +33,16 @@
   "primary_species": [
     "Adelie penguin",
     "chinstrap penguin",
-    "gentoo penguin",
-    "emperor penguin"
+    "gentoo penguin"
   ],
   "secondary_species_gate": {
     "species": [
       "macaroni penguin",
       "king penguin"
     ],
-    "rule": "include only if the inventory shows sufficient south-of-60 site and temporal replication; otherwise reserve for the 50-60 S extension"
+    "status": "insufficient for the primary south-of-60 trend lane",
+    "evidence": "candidate gate: macaroni=2, king=0",
+    "rule": "reserve for a separately contracted sub-Antarctic extension"
   },
   "spatial_unit": {
     "primary_key": "APBP site_id x species_id",
@@ -84,10 +86,10 @@
     "rema_mosaic_v2_doi": "10.7910/DVN/EBW8UC"
   },
   "design_order": [
-    "inventory APBP/MAPPPD temporal and species coverage without fitting ecological models",
-    "freeze site-type rules and spatial trait extraction",
+    "Gate 0 complete: inventory APBP/MAPPPD temporal and species coverage without fitting ecological models",
+    "freeze site-type rules and spatial trait extraction for the Pygoscelis atlas",
     "build the Antarctic Penguin Breeding-Island Atlas outcome-blind",
-    "freeze demographic response eligibility and trend/end-state definitions",
+    "freeze demographic response eligibility, observation-method handling and trend/end-state definitions",
     "only then join demographic outcomes and fit macroecological models"
   ],
   "anti_p_hacking_rules": [
@@ -96,5 +98,25 @@
     "no redefining island versus continental sites using outcome information",
     "no treating APBP site points as literal island polygons without spatial intersection",
     "no claiming a tectonic Antarctic Plate boundary is equivalent to the biological study domain"
-  ]
+  ],
+  "substrate_contrast_extension": {
+    "species": "emperor penguin",
+    "status": "not viable in the same APBP nest-count trend lane",
+    "evidence": "1 candidate trend-eligible site-species unit in the pinned MAPPPD inventory",
+    "next_rule": "open only with a separate frozen emperor demographic source or a different predeclared response such as occupancy/colony persistence"
+  },
+  "gate0_result": {
+    "total_sites": 729,
+    "observations": 5487,
+    "nest_count_records": 4032,
+    "years": [
+      1892,
+      2026
+    ],
+    "candidate_site_species_units": 155,
+    "candidate_pygoscelis_units": 152,
+    "stricter_site_species_units": 94,
+    "stricter_pygoscelis_units": 92,
+    "decision": "proceed to outcome-blind breeding-island atlas construction"
+  }
 }
