@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from mina.figure_data import _figure3_hierarchy, _figure3_mechanisms
+from mina.figure_data import _figure3_count_error, _figure3_hierarchy, _figure3_mechanisms
 
 
 def _receipt(name):
@@ -80,3 +80,16 @@ def test_hierarchy_figure_data_matches_frozen_receipts():
         for island in ("COR","HUM","LIT"):
             assert abs(row[island]-frozen[island])<1e-12
             assert row[island] < row["among_islands"]
+
+
+
+def test_hierarchy_count_error_figure_data_matches_receipt():
+    r=_receipt("PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json")
+    rows=_figure3_count_error(r)
+    assert len(rows)==3
+    by={row["error_model"]:row for row in rows}
+    assert abs(by["poisson"]["one_sided_p"]-9.99990000099999e-06)<1e-15
+    assert abs(by["gamma_poisson_cv10"]["one_sided_p"]-9.99990000099999e-06)<1e-15
+    assert abs(by["gamma_poisson_cv20"]["one_sided_p"]-0.44753552464475355)<1e-12
+    assert by["gamma_poisson_cv20"]["null_mean_beta_within"] > by["gamma_poisson_cv20"]["observed_beta_within"]
+    assert by["gamma_poisson_cv10"]["null_q975_log_beta_contrast"] < by["gamma_poisson_cv10"]["observed_log_beta_contrast"]
