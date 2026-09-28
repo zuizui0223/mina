@@ -126,7 +126,7 @@ def main()->int:
         },
         "species_summary":species_summary,
         "unit_details":unit_rows,
-        "outcome_blind":true,
+        "outcome_blind":True,
         "boundary":"Counts were used only to establish pre-frozen temporal eligibility; count values were not inspected or summarized in this audit."
     }
     a.out.parent.mkdir(parents=True,exist_ok=True)
