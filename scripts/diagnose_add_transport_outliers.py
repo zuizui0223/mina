@@ -45,6 +45,15 @@ def _get(s: requests.Session, url: str, **params):
     return x
 
 
+def _post(s: requests.Session, url: str, **data):
+    r = s.post(url, data=data, timeout=120)
+    r.raise_for_status()
+    x = r.json()
+    if "error" in x:
+        raise RuntimeError(x["error"])
+    return x
+
+
 def _layer(s: requests.Session):
     root = _get(s, SERVICE_URL, f="json")
     found = []
@@ -67,7 +76,7 @@ def _coords(geometry: dict):
 
 
 def _query_ids(s, layer_url, ids, out_sr):
-    return _get(
+    return _post(
         s,
         f"{layer_url}/query",
         f="json",
