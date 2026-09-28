@@ -16,12 +16,14 @@ The frozen scientific manuscript remains `docs/MANUSCRIPT_ECOSPHERE_V0_6.md`. Th
 - Hierarchical-variability, component-count, N_eff momentum, structured-null, and manuscript-number guards pass.
 - The code repository is publicly accessible for peer review.
 - Primary external data sources already have permanent identifiers.
+- The reproducible Word preview has been generated and visually inspected across all **31 pages**: title-page separation, body line numbering, page numbering, equations, materialized citations/references, AI disclosure, and Figure 1–5 captions all render correctly.
+- The public metadata template is `submission/ECOSPHERE_METADATA_TEMPLATE.json`; completed author/contact metadata should normally be kept in an untracked local copy rather than committed to the public repository.
 
 ## Required submission additions
 
 ### Title page
 
-Use `docs/TITLE_PAGE_ECOSPHERE_V0_6_TEMPLATE.md` and prepend the completed title page to the Word Main Document. It must contain journal, manuscript type/track, exact title, all authors and affiliations, one corresponding author/email, Open Research Statement, and 6–12 key words.
+The Word builder already creates the title-page section. Copy `submission/ECOSPHERE_METADATA_TEMPLATE.json` to an untracked local JSON file and complete it; then pass that file to `scripts/build_ecosphere_submission_docx.py --metadata ... --require-complete-metadata`. The builder fills all authors and affiliations, one corresponding author/email, the Open Research Statement, and the frozen 8 keywords.
 
 ### Backmatter
 
@@ -39,7 +41,7 @@ Because OpenAI ChatGPT was used beyond spelling/grammar, the submission must dis
 
 > OpenAI ChatGPT (GPT-5.6 Sol) was used during analysis and manuscript development to assist with code drafting and review, statistical sensitivity-analysis scripting, literature searching, and editorial drafting. All analyses were executed from version-controlled code, numerical results were checked against frozen result receipts, cited literature was independently verified, and the authors remain responsible for all analyses, interpretations, and text.
 
-Add an appropriately brief section-level disclosure in the Reproducibility/Methods text and repeat the disclosure in the Acknowledgments. If any additional AI tools were used, expand the statement before submission.
+The Word builder already inserts an appropriately brief disclosure in the Reproducibility/Methods text and the full disclosure in the Acknowledgments. Before final generation, confirm the complete AI-tool inventory; any additional tools entered in the metadata JSON are appended to both disclosures.
 
 ### Open Research
 
@@ -70,7 +72,14 @@ Before upload:
 5. Confirm funding text and identifiers.
 6. Confirm conflict-of-interest statement.
 7. Confirm the complete AI-tool inventory.
-8. Confirm whether the public GitHub link remains the review code link or is replaced by a private-for-review repository.
-9. At acceptance, mint a permanent DOI for the exact code/derived-output release.
+8. Confirm the dual-publication/overlap statement used in ScholarOne and the cover letter.
+9. Confirm whether the public GitHub link remains the review code link or is replaced by another accessible review repository.
+10. Generate the **author-complete** Word Main Document and visually inspect that final rendered file.
 
-The submission guard is intentionally fail-closed: it reports **not ready for ScholarOne** until these author-controlled fields are explicitly resolved.
+The submission guard is intentionally fail-closed: metadata completeness alone is insufficient; `ready_for_scholarone=true` requires both complete metadata and confirmed visual QA of the author-complete Word file.
+
+## Post-acceptance tasks (not initial-submission blockers)
+
+- Archive the exact code and derived-output version of record in a permanent repository.
+- Mint the permanent archive DOI (planned: Zenodo).
+- Update the final Open Research Statement with that DOI.

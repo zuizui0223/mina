@@ -21,6 +21,16 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt
 
+from mina.ecosphere_submission_metadata import (
+    affiliation_lines,
+    ai_disclosure_suffix,
+    author_line,
+    corresponding_text,
+    load_metadata,
+    present_address_text,
+    require_complete_metadata,
+)
+
 TITLE = (
     "Common decline, divergent endpoints: hierarchical demography across "
     "Antarctic penguin breeding islands"
@@ -158,26 +168,98 @@ def _strip_caption_heading(text: str) -> str:
     return _normalize_submission_markdown("\n".join(lines).strip())
 
 
-def _combined_markdown(manuscript: str, captions: str) -> str:
+def _open_research(metadata: dict[str, object] | None) -> str:
+    if metadata is None:
+        return OPEN_RESEARCH
+    review_url=str(metadata.get("review_code_url") or "").strip()
+    doi=str(metadata.get("permanent_archive_doi") or "").strip()
+    text=OPEN_RESEARCH.replace(
+        "https://github.com/zuizui0223/mina",
+        review_url or "https://github.com/zuizui0223/mina",
+    )
+    if doi:
+        old=(
+            "If the manuscript is accepted, the exact version of record of "
+            "the analysis code and derived outputs will be archived in a "
+            "permanent repository with a DOI, and the final Open Research "
+            "Statement will be updated with that identifier."
+        )
+        new=(
+            "The exact version of record of the analysis code and derived "
+            "outputs is archived at DOI " + doi + "."
+        )
+        text=text.replace(old,new)
+    return text
+
+
+def _metadata_blocks(
+    metadata: dict[str, object] | None,
+) -> dict[str, str]:
+    if metadata is None:
+        return {
+            "authors":"[AUTHOR 1], [AUTHOR 2], [...]",
+            "affiliations":"[AFFILIATIONS — REQUIRED]",
+            "present":"[PRESENT ADDRESSES OR DELETE]",
+            "corresponding":"[ONE AUTHOR NAME], [EMAIL ADDRESS]",
+            "funding":"[FUNDING ACKNOWLEDGMENTS AND GRANT IDENTIFIERS — REQUIRED]",
+            "additional_ack":"",
+            "contributions":"[AUTHOR CONTRIBUTIONS — REQUIRED; confirm CRediT-style roles with every author.]",
+            "coi":"[CONFLICT-OF-INTEREST STATEMENT — REQUIRED; confirm with every author.]",
+            "ai_suffix":"",
+        }
+
+    present=present_address_text(metadata)
+    additional=str(metadata.get("additional_acknowledgments") or "").strip()
+    return {
+        "authors":author_line(metadata),
+        "affiliations":affiliation_lines(metadata),
+        "present":present,
+        "corresponding":corresponding_text(metadata),
+        "funding":str(metadata.get("funding_acknowledgments") or "").strip(),
+        "additional_ack":additional,
+        "contributions":str(metadata.get("author_contributions") or "").strip(),
+        "coi":str(metadata.get("conflict_of_interest") or "").strip(),
+        "ai_suffix":ai_disclosure_suffix(metadata),
+    }
+
+
+def _combined_markdown(
+    manuscript: str,
+    captions: str,
+    metadata: dict[str, object] | None = None,
+) -> str:
     body = _strip_submission_source(manuscript)
     caption_body = _strip_caption_heading(captions)
+    blocks=_metadata_blocks(metadata)
+    open_research=_open_research(metadata)
+    methods_disclosure=METHODS_AI_DISCLOSURE + blocks["ai_suffix"]
+    body=body.replace(
+        METHODS_AI_DISCLOSURE,
+        methods_disclosure,
+        1,
+    )
+
+    present_line=(
+        f"**Present address(es), if applicable:** {blocks['present']}\n\n"
+        if metadata is None or blocks["present"]!="None."
+        else ""
+    )
     title = f"""Ecosphere
 
 Article — Animal Ecology
 
 # {TITLE}
 
-**Authors:** [AUTHOR 1], [AUTHOR 2], [...]
+**Authors:** {blocks["authors"]}
 
-**Affiliations:** [AFFILIATIONS — REQUIRED]
+**Affiliations:**  
+{blocks["affiliations"]}
 
-**Present address(es), if applicable:** [PRESENT ADDRESSES OR DELETE]
-
-**Corresponding author:** [ONE AUTHOR NAME], [EMAIL ADDRESS]
+{present_line}**Corresponding author:** {blocks["corresponding"]}
 
 ## Open Research Statement
 
-{OPEN_RESEARCH}
+{open_research}
 
 ## Key words/phrases
 
@@ -186,19 +268,33 @@ Adélie penguin; breeding patches; hierarchical variability; island ecology; lon
 {MARKER}
 
 """
+    def sentence(value: str) -> str:
+        value=value.strip()
+        if not value:
+            return ""
+        return value if value[-1] in ".!?" else value + "."
+
+    funding=sentence(blocks["funding"])
+    additional=sentence(blocks["additional_ack"])
+    acknowledgments_extra=" ".join(
+        value for value in (funding,additional) if value
+    )
+    if acknowledgments_extra:
+        acknowledgments_extra=" " + acknowledgments_extra
+
     backmatter = f"""
 
 ## Acknowledgments
 
-We thank the Palmer Station Antarctica Long Term Ecological Research program and the field teams and data stewards who collected and curated the long-term penguin census at Palmer Station, Antarctica. [FUNDING ACKNOWLEDGMENTS AND GRANT IDENTIFIERS — REQUIRED]. {AI_DISCLOSURE}
+We thank the Palmer Station Antarctica Long Term Ecological Research program and the field teams and data stewards who collected and curated the long-term penguin census at Palmer Station, Antarctica.{acknowledgments_extra} {AI_DISCLOSURE}{blocks["ai_suffix"]}
 
 ## Author Contributions
 
-[AUTHOR CONTRIBUTIONS — REQUIRED; confirm CRediT-style roles with every author.]
+{blocks["contributions"]}
 
 ## Conflict of Interest Statement
 
-[CONFLICT-OF-INTEREST STATEMENT — REQUIRED; confirm with every author.]
+{blocks["coi"]}
 
 ## References
 
@@ -360,10 +456,17 @@ def build(
     bibliography_path: Path,
     captions_path: Path,
     out_path: Path,
+    metadata_path: Path | None = None,
+    require_complete: bool = False,
 ) -> None:
     manuscript = manuscript_path.read_text(encoding="utf-8")
     captions = captions_path.read_text(encoding="utf-8")
-    source = _combined_markdown(manuscript, captions)
+    metadata=None
+    if metadata_path is not None:
+        metadata=load_metadata(metadata_path)
+        if require_complete:
+            require_complete_metadata(metadata)
+    source = _combined_markdown(manuscript, captions, metadata=metadata)
 
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = Path(tmp)
@@ -398,12 +501,16 @@ def main() -> int:
     parser.add_argument("--bibliography", required=True, type=Path)
     parser.add_argument("--captions", required=True, type=Path)
     parser.add_argument("--out", required=True, type=Path)
+    parser.add_argument("--metadata", type=Path)
+    parser.add_argument("--require-complete-metadata", action="store_true")
     args = parser.parse_args()
     build(
         args.manuscript,
         args.bibliography,
         args.captions,
         args.out,
+        metadata_path=args.metadata,
+        require_complete=args.require_complete_metadata,
     )
     return 0
 
