@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-hierarchy-count-error-null-result-v1",
+  "validated_date": "2026-09-28",
+  "contract_id": "mina-palmer-hierarchy-count-error-null-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "workflow_run_id": 36389910231,
+    "head_sha": "634ed7dec48071d9e7ff38f081555947d8cee82c",
+    "artifact_id": 10956475021,
+    "artifact_digest": "sha256:28f7141bde3aec0644aee4574fc5e46ff2d808dad399c2e4239975b3c0513221",
+    "conclusion": "success",
+    "simulations_per_error_model": 100000,
+    "seed": 20260928
+  },
+  "observed": {
+    "raw_beta_within": 1.0737035331938372,
+    "raw_beta_among": 1.0112310830110414,
+    "raw_log_beta_contrast": 0.05994543544868112,
+    "detrended_median_within_to_among_ratio": 2.9184897496695155,
+    "growth_median_within_to_among_ratio": 2.3216048972794874
+  },
+  "error_models": {
+    "poisson": {
+      "raw_beta_within_null_mean": 1.027353265589339,
+      "raw_beta_within_p": 0.00000999990000099999,
+      "raw_log_beta_contrast_null_mean": 0.013274869017046208,
+      "raw_log_beta_contrast_p": 0.00000999990000099999,
+      "detrended_ratio_p": 0.05373946260537395,
+      "growth_ratio_p": 0.4479055209447905,
+      "probability_all_three_within_beta_exceed_among_growth": 0.99853
+    },
+    "gamma_poisson_cv10": {
+      "raw_beta_within_null_mean": 1.0428878354087854,
+      "raw_beta_within_p": 0.00000999990000099999,
+      "raw_log_beta_contrast_null_mean": 0.025252167716333224,
+      "raw_log_beta_contrast_p": 0.00000999990000099999,
+      "detrended_ratio_p": 0.08202917970820292,
+      "growth_ratio_p": 0.4782252177478225,
+      "probability_all_three_within_beta_exceed_among_growth": 0.99761
+    },
+    "gamma_poisson_cv20": {
+      "raw_beta_within_null_mean": 1.0882321622828899,
+      "raw_beta_within_p": 0.9239307606923931,
+      "raw_log_beta_contrast_null_mean": 0.058824369669288536,
+      "raw_log_beta_contrast_p": 0.45013549864501357,
+      "detrended_ratio_p": 0.1906680933190668,
+      "growth_ratio_p": 0.5284247157528424,
+      "probability_all_three_within_beta_exceed_among_growth": 0.99572
+    }
+  },
+  "decision": {
+    "raw_hierarchy_measurement_error_robust": false,
+    "raw_hierarchy_unusual_under_poisson_and_cv10": true,
+    "raw_hierarchy_unusual_under_cv20": false,
+    "detrended_hierarchy_unusual_under_poisson": false,
+    "growth_hierarchy_unusual_under_poisson": false
+  },
+  "supported": [
+    "The observed raw hierarchy is much larger than expected from independent Poisson counting error or the frozen Gamma-Poisson CV10% sensitivity.",
+    "The raw hierarchy is not unusual under the frozen Gamma-Poisson CV20% sensitivity.",
+    "The stronger detrended and annual-growth hierarchy cannot be used as measurement-error-robust evidence because the error-only null commonly generates effects of the observed scale.",
+    "Annual growth ordering in which all three within-island beta values exceed among-island beta is expected almost always under the error-only null."
+  ],
+  "not_supported": [
+    "a claim that the hierarchical buffering result is robust to the full frozen count-error family",
+    "promotion of detrended or annual-growth beta as stronger confirmatory evidence",
+    "a claim that CV20% represents empirically calibrated Palmer observer error",
+    "a claim that counting error caused the observed hierarchy"
+  ],
+  "ecological_interpretation": "The raw subcolony-to-island variability reduction exceeds what low-to-moderate independent count error generates, but the present census lacks record-level observer-error metadata needed to distinguish that biological signal from a conservative 20% multiplicative-error scenario. The hierarchy should therefore be treated as measurement-error-sensitive descriptive evidence, while the N_eff coefficient remains separately robust under its frozen count-error diagnostic."
+}
