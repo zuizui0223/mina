@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-palmer-ecosphere-submission-package-v0.7",
   "date": "2026-09-28",
-  "status": "v0.7_submission_shell_pending_word_qa_and_human_metadata",
+  "status": "v0.7_submission_shell_word_preview_validated_human_metadata_blocked",
   "journal": "Ecosphere",
   "manuscript_type": "Article",
   "subject_track": "Animal Ecology",
@@ -75,11 +75,12 @@
   "metadata_template": "submission/ECOSPHERE_METADATA_TEMPLATE.json",
   "word_preview": {
     "builder": "scripts/build_ecosphere_submission_docx.py",
-    "preview_generated_and_visually_checked": false,
-    "preview_page_count": null,
-    "preview_qa_date": null,
+    "preview_generated_and_visually_checked": true,
+    "preview_page_count": 35,
+    "preview_qa_date": "2026-09-28",
     "author_complete_document_pending": true,
-    "line_numbering_qa": "pending_v0.7_render"
+    "line_numbering_qa": "visually_confirmed_all_35_pages_continuous_1_to_737",
+    "math_and_heading_qa": "alpha/gamma/phi math and duplicate-heading defects fixed; rerender verified"
   },
   "scholarone_copy_fields": "submission/SCHOLARONE_COPY_FIELDS_ECOSPHERE_V0_7.md",
   "post_acceptance_tasks": [
