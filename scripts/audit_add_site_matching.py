@@ -158,7 +158,7 @@ def _download_all_land(
     layer_url: str,
     surface_field: str,
     object_id_field: str,
-    chunk_size: int = 50,
+    chunk_size: int = 200,
 ) -> tuple[list, list[dict], int, dict, object]:
     id_data = _get_json(
         session,
