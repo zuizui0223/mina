@@ -206,7 +206,7 @@ This difference in robustness is informative. The concentration test conditions 
 
 ### An externally subsidized island system exposes breeding-patch filtering
 
-The Palmer system provides a demographic complement to the more familiar ecosystem-engineering view of seabird islands. Seabirds are well known to move marine-derived nutrients onto land and alter recipient island ecosystems [@mulder2011; @grant2022]. Our analysis focuses on the reciprocal constraint: the breeding population itself remains tied to discrete terrestrial breeding groups even when its principal food resources are external, and those within-island groups can be progressively pruned or concentrated during decline. These penguins acquire food in the ocean but concentrate reproduction on discrete terrestrial patches. This externalization of trophic resources reduces—but does not eliminate—the overlap between “island food supply” and “island breeding habitat.” Marine niche partitioning can also permit closely related species to coexist despite dietary overlap [@pickett2018]. As a result, terrestrial breeding-patch structure can emerge as a distinct axis of local vulnerability.
+The Palmer system provides a demographic complement to the more familiar ecosystem-engineering view of seabird islands. Seabirds are well known to move marine-derived nutrients onto land and alter recipient island ecosystems [@mulder2011; @grant2022]. Our analysis focuses on the reciprocal constraint: the breeding population itself remains tied to discrete terrestrial breeding groups even when its principal food resources are external, and those within-island groups can be progressively reorganized and concentrated during decline. These penguins acquire food in the ocean but concentrate reproduction on discrete terrestrial patches. This externalization of trophic resources reduces—but does not eliminate—the overlap between “island food supply” and “island breeding habitat.” Marine niche partitioning can also permit closely related species to coexist despite dietary overlap [@pickett2018]. As a result, terrestrial breeding-patch structure can emerge as a distinct axis of local vulnerability.
 
 This perspective also clarifies why regional and local processes need not compete as explanations. Regional marine change may set the broad demographic direction, while terrestrial patch quality, colony history and the geometry of remaining nest habitat determine how that direction is realized locally. Biscoe Point further shows that local outcomes can include species replacement rather than simple vacancy. The appropriate island-ecology object is therefore not only species presence or total abundance, but the coupled state of regional marine forcing, breeding-patch occupancy and within-patch colony organization.
 
@@ -230,4 +230,4 @@ The primary Palmer LTER Adélie penguin census is publicly archived at DOI 10.60
 
 ## References
 
-See `docs/REFERENCES_V5.bib`.
+See `docs/REFERENCES_V6.bib`.
