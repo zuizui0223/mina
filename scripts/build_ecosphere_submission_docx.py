@@ -327,7 +327,7 @@ def _add_line_numbering(sect_pr) -> None:
     node = OxmlElement("w:lnNumType")
     node.set(qn("w:countBy"), "1")
     node.set(qn("w:start"), "0")
-    node.set(qn("w:restart"), "newSection")
+    node.set(qn("w:restart"), "continuous")
     node.set(qn("w:distance"), "360")
     sect_pr.append(node)
 
@@ -379,7 +379,7 @@ def _split_title_section(doc: Document) -> None:
 
     body_sect_pr = doc.element.body.sectPr
     title_sect_pr = copy.deepcopy(body_sect_pr)
-    _remove_line_numbering(title_sect_pr)
+    _add_line_numbering(title_sect_pr)
 
     type_node = title_sect_pr.find(qn("w:type"))
     if type_node is None:
@@ -392,7 +392,6 @@ def _split_title_section(doc: Document) -> None:
     if existing is not None:
         boundary_p_pr.remove(existing)
     boundary_p_pr.append(title_sect_pr)
-    _suppress_line_number(boundary)
 
     parent = marker._p.getparent()
     if parent is None:
@@ -428,8 +427,6 @@ def _apply_word_format(doc: Document) -> None:
         if paragraph.text.strip() == "Abstract":
             body_started = True
         format_paragraph(paragraph, 2.0 if body_started else 1.0)
-        if not body_started:
-            _suppress_line_number(paragraph)
 
     for table in doc.tables:
         for row in table.rows:
@@ -440,9 +437,7 @@ def _apply_word_format(doc: Document) -> None:
     for index, section in enumerate(doc.sections):
         section.footer.is_linked_to_previous = False
         _page_number(section.footer.paragraphs[0])
-        _remove_line_numbering(section._sectPr)
-        if index > 0:
-            _add_line_numbering(section._sectPr)
+        _add_line_numbering(section._sectPr)
 
     props = doc.core_properties
     props.title = TITLE
