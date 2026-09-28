@@ -75,6 +75,8 @@ def _query_ids(s, layer_url, ids, out_sr):
         outFields="FID,surface",
         returnGeometry="true",
         outSR=out_sr,
+        maxAllowableOffset=5000,
+        geometryPrecision=0,
     )
 
 
@@ -102,8 +104,8 @@ def main() -> int:
     offenders=[]
     scanned=0
     response_srs={}
-    for start in range(0,len(ids),100):
-        chunk=ids[start:start+100]
+    for start in range(0,len(ids),1000):
+        chunk=ids[start:start+1000]
         data=_query_ids(s,layer_url,chunk,3031)
         sr=data.get("spatialReference")
         response_srs[str(start)]=sr
