@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-mapppd-macro-geography-audit-result-v1",
+  "validated_date": "2026-09-29",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "temporal_gate": "at least 5 distinct nest-count years spanning at least 10 years"
+  },
+  "execution": {
+    "workflow_run_id": 36445935002,
+    "artifact_id": 10981136111,
+    "artifact_digest": "sha256:2912e7196c7f7df033ae5186bd79cb835088159f478e2cc6fedaa9698cd0c711",
+    "conclusion": "success"
+  },
+  "candidate_sample": {
+    "site_species_units": 152,
+    "distinct_sites": 122,
+    "apbp_regions": 10,
+    "ccamlr_units": 5,
+    "largest_region_unit_fraction": 0.46710526315789475,
+    "top_three_regions_unit_fraction": 0.8881578947368421,
+    "latitude_bands": {
+      "60-65S": 99,
+      "65-70S": 26,
+      "70-75S": 18,
+      "75-80S": 9,
+      "80-90S": 0
+    }
+  },
+  "dominant_regions": {
+    "Central-west Antarctic Peninsula": 71,
+    "South Shetland Islands": 37,
+    "Victoria Land": 27
+  },
+  "species_geography": {
+    "Adelie": {
+      "units": 57,
+      "regions": 9,
+      "major_regions": {
+        "Victoria Land": 27,
+        "Central-west Antarctic Peninsula": 11,
+        "South Shetland Islands": 7
+      }
+    },
+    "Chinstrap": {
+      "units": 46,
+      "regions": 4,
+      "major_regions": {
+        "Central-west Antarctic Peninsula": 24,
+        "South Shetland Islands": 20
+      }
+    },
+    "Gentoo": {
+      "units": 49,
+      "regions": 4,
+      "major_regions": {
+        "Central-west Antarctic Peninsula": 36,
+        "South Shetland Islands": 10
+      }
+    }
+  },
+  "stricter_sample": {
+    "site_species_units": 92,
+    "distinct_sites": 72,
+    "dominant_regions": {
+      "Central-west Antarctic Peninsula": 39,
+      "Victoria Land": 26,
+      "South Shetland Islands": 24
+    }
+  },
+  "decision": {
+    "broad_coverage_flag": true,
+    "strong_single_region_concentration_flag": false,
+    "geographically_balanced": false,
+    "outcome_models_opened": false,
+    "primary_analysis_should_be_species_specific": true
+  },
+  "interpretation": [
+    "The candidate sample spans a genuinely broad Antarctic domain but is geographically uneven: 88.8% of candidate site-species units occur in the three dominant regions.",
+    "Adelie provides the broadest geographic replication; chinstrap and gentoo candidate series are concentrated in Antarctic Peninsula regions.",
+    "Species identity and geography are therefore partially confounded. The primary macroecological analysis should estimate island-architecture relationships separately by species and compare their direction/magnitude, rather than relying on an unqualified pooled species interaction.",
+    "Any pooled hierarchical model must include explicit regional structure and be secondary to the species-specific analyses."
+  ]
+}
