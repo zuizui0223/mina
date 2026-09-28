@@ -18,6 +18,9 @@ on:
   pull_request:
     paths:
       - "scripts/build_ecosphere_submission_docx.py"
+      - "tests/test_ecosphere_submission_metadata.py"
+      - "submission/ECOSPHERE_METADATA_TEMPLATE.json"
+      - "src/mina/ecosphere_submission_metadata.py"
       - "tests/test_ecosphere_docx_builder.py"
       - ".github/workflows/ecosphere-docx-preview.yml"
       - "pyproject.toml"
@@ -59,9 +62,52 @@ jobs:
             --bibliography docs/REFERENCES_V4.bib \
             --captions docs/FIGURE_CAPTIONS_V5.md \
             --out build/Ecosphere_v0_6_SUBMISSION_PREVIEW.docx
+      - name: Build synthetic author-complete Word path
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data={
+              "authors":[
+                  {
+                      "name":"Example Author",
+                      "affiliation_ids":["1"],
+                      "corresponding":True,
+                      "email":"author@example.org",
+                  }
+              ],
+              "affiliations":{
+                  "1":"Example Department, Example University, City, Country"
+              },
+              "present_addresses":[],
+              "funding_acknowledgments":"Synthetic CI funding text",
+              "additional_acknowledgments":"",
+              "author_contributions":"Example Author: Conceptualization, analysis, writing.",
+              "conflict_of_interest":"Synthetic CI conflict-of-interest text.",
+              "ai_tool_inventory_confirmed":True,
+              "additional_ai_tools":[],
+              "dual_publication_statement":"Synthetic CI overlap statement.",
+              "review_code_url":"https://github.com/zuizui0223/mina",
+              "permanent_archive_doi":None,
+          }
+          Path("build/synthetic_submission_metadata.json").write_text(
+              json.dumps(data,indent=2)+"\n",encoding="utf-8"
+          )
+          PY
+          mina-ecosphere-submission-metadata \
+            --metadata build/synthetic_submission_metadata.json \
+            --require-complete
+          python scripts/build_ecosphere_submission_docx.py \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_6.md \
+            --bibliography docs/REFERENCES_V4.bib \
+            --captions docs/FIGURE_CAPTIONS_V5.md \
+            --metadata build/synthetic_submission_metadata.json \
+            --require-complete-metadata \
+            --out build/Ecosphere_v0_6_SYNTHETIC_COMPLETE.docx
       - uses: actions/upload-artifact@v4
         with:
           name: ecosphere-v0-6-docx-preview
           path: |
             build/Ecosphere_v0_6_SUBMISSION_PREVIEW.docx
+            build/Ecosphere_v0_6_SYNTHETIC_COMPLETE.docx
             build/ecosphere_metadata_template_audit.json
