@@ -18,7 +18,7 @@ import requests
 from pyproj import Transformer
 from requests.adapters import HTTPAdapter
 from shapely.geometry import Point, Polygon
-from shapely.ops import transform as shapely_transform, unary_union
+from shapely.ops import transform as shapely_transform
 from shapely.strtree import STRtree
 from urllib3.util.retry import Retry
 
@@ -117,19 +117,15 @@ def _candidate_sites(root: Path) -> pd.DataFrame:
     return out[["site_id", "site_name", "region", "latitude", "longitude"]]
 
 
-def _signed_area(coords: list[list[float]]) -> float:
-    area = 0.0
-    for i in range(len(coords) - 1):
-        x1, y1 = coords[i][0], coords[i][1]
-        x2, y2 = coords[i + 1][0], coords[i + 1][1]
-        area += x1 * y2 - x2 * y1
-    return 0.5 * area
-
-
 def _esri_rings_to_geometry(rings: list[list[list[float]]]):
-    """Convert Esri polygon rings in native projected coordinates to Shapely."""
-    outers = []
-    holes = []
+    """Build polygon geometry without trusting ring orientation.
+
+    Esri rings encode multipart shells and holes, but orientation can become
+    unreliable after transport/reprojection. Repeated symmetric difference
+    reproduces the even/odd fill rule: disjoint shells are added, holes are
+    removed, and islands nested inside holes are added back.
+    """
+    geom = None
     repaired = 0
     for ring in rings or []:
         if len(ring) < 4:
@@ -142,23 +138,14 @@ def _esri_rings_to_geometry(rings: list[list[list[float]]]):
             repaired += 1
         if poly.is_empty:
             continue
-        if _signed_area(ring) < 0:
-            outers.append(poly)
-        else:
-            holes.append(poly)
+        geom = poly if geom is None else geom.symmetric_difference(poly)
 
-    if not outers:
-        outers = holes
-        holes = []
-
-    geom = unary_union(outers)
-    if holes:
-        geom = geom.difference(unary_union(holes))
+    if geom is None:
+        return Polygon(), repaired
     if not geom.is_valid:
         geom = geom.buffer(0)
         repaired += 1
     return geom, repaired
-
 
 def _download_all_land(
     session: requests.Session,
