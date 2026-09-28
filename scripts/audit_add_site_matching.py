@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import json
 from pathlib import Path
 
@@ -142,6 +143,31 @@ def _direct_server_count(
     return int(data.get("count", 0))
 
 
+def _direct_counts_for_site(
+    site: dict,
+    layer_url: str,
+    surface_field: str,
+) -> tuple[str, int, int]:
+    session = _session()
+    exact = _direct_server_count(
+        session,
+        layer_url,
+        surface_field,
+        float(site["longitude"]),
+        float(site["latitude"]),
+        0,
+    )
+    within_5km = _direct_server_count(
+        session,
+        layer_url,
+        surface_field,
+        float(site["longitude"]),
+        float(site["latitude"]),
+        5000,
+    )
+    return str(site["site_id"]), exact, within_5km
+
+
 def _download_land_polygons(
     session: requests.Session,
     layer_url: str,
@@ -231,9 +257,25 @@ def audit(root: Path) -> dict:
     tree = STRtree(geoms)
     transformer = Transformer.from_crs(4326, 3031, always_xy=True)
 
+    site_records = sites.to_dict(orient="records")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        direct_results = list(
+            pool.map(
+                lambda site: _direct_counts_for_site(
+                    site,
+                    layer_url,
+                    surface_field,
+                ),
+                site_records,
+            )
+        )
+    direct_lookup = {
+        site_id: (exact, within_5km)
+        for site_id, exact, within_5km in direct_results
+    }
+
     matched = []
-    direct_session = _session()
-    for site in sites.to_dict(orient="records"):
+    for site in site_records:
         point = shapely_transform(
             transformer.transform,
             Point(float(site["longitude"]), float(site["latitude"])),
@@ -246,22 +288,7 @@ def audit(root: Path) -> dict:
             distances.append(float(point.distance(geom)))
             nearby_attrs.append(attrs[int(index)])
 
-        direct_exact = _direct_server_count(
-            direct_session,
-            layer_url,
-            surface_field,
-            float(site["longitude"]),
-            float(site["latitude"]),
-            0,
-        )
-        direct_5km = _direct_server_count(
-            direct_session,
-            layer_url,
-            surface_field,
-            float(site["longitude"]),
-            float(site["latitude"]),
-            5000,
-        )
+        direct_exact, direct_5km = direct_lookup[str(site["site_id"])]
 
         record = {
             "site_id": str(site["site_id"]),
