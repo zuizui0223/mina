@@ -31,16 +31,6 @@ jobs:
         run: |
           git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
           git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
-      - name: Diagnose SCAR ADD CRS transport
-        run: |
-          python scripts/diagnose_add_crs.py \
-            --mapppdr-dir build/mapppdr \
-            --out build/add_crs_diagnostic.json
-      - name: Upload CRS diagnostic early
-        uses: actions/upload-artifact@v4
-        with:
-          name: antarctic-add-crs-diagnostic-v1
-          path: build/add_crs_diagnostic.json
       - name: Audit SCAR ADD land matching
         run: |
           python scripts/audit_add_site_matching.py \
@@ -50,9 +40,7 @@ jobs:
         if: always()
         with:
           name: antarctic-add-site-match-audit-v1
-          path: |
-            build/add_site_match_audit_v1.json
-            build/add_crs_diagnostic.json
+          path: build/add_site_match_audit_v1.json
       - name: Enforce frozen Gate 1A rule
         run: |
           python - <<'PY'
