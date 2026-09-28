@@ -34,6 +34,7 @@ jobs:
       - name: Diagnose SCAR ADD CRS transport
         run: |
           python scripts/diagnose_add_crs.py \
+            --mapppdr-dir build/mapppdr \
             --out build/add_crs_diagnostic.json
       - name: Audit SCAR ADD land matching
         run: |
