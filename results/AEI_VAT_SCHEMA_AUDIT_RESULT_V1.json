@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-aei-vat-schema-audit-result-v1",
+  "validated_date": "2026-09-29",
+  "source": {
+    "dataset": "Antarctic Ecosystem Inventory: Spatial data for Ice-free lands v1.0",
+    "doi": "10.5281/zenodo.11629115",
+    "vat_file": "AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf",
+    "vat_md5": "fa5363b1c0d882b4343e239d03dc2ba4"
+  },
+  "execution": {
+    "workflow_run_id": 36490900316,
+    "artifact_id": 11001353266,
+    "artifact_digest": "sha256:a858841c254bc7643f15dccee8d0757359b76eed7a63e285986b4f97d54c7878",
+    "head_sha": "5e183fd9061510d11fca646d7b1ee781d7025253",
+    "conclusion": "success"
+  },
+  "row_count": 269,
+  "fields": [
+    "Value",
+    "Count",
+    "order",
+    "ID_Tier3",
+    "Name_Tier3",
+    "ID_Tier1",
+    "Name_Tier1",
+    "ID_Tier2",
+    "Name_Tier2",
+    "ACBR_Name",
+    "Extent_ha"
+  ],
+  "hierarchy": {
+    "tier1": {
+      "field": "Name_Tier1",
+      "unique_names": 9,
+      "meaning": "Major Environment Type"
+    },
+    "tier2": {
+      "field": "Name_Tier2",
+      "unique_names": 33,
+      "meaning": "Habitat Complex"
+    },
+    "tier3": {
+      "field": "Name_Tier3",
+      "unique_names": 269,
+      "meaning": "Bioregional Ecosystem Type"
+    },
+    "raster_value": {
+      "field": "Value",
+      "unique_values": 269,
+      "maps_one_to_one_to_tier3": true
+    }
+  },
+  "design_consequence": {
+    "primary_breeding_option_diversity_candidate": "Tier 2 Habitat Complex richness/diversity at the frozen 2 km radius",
+    "tier1_role": "broad environmental context",
+    "tier3_role": "fine-grained sensitivity because Tier 3 includes bioregional subdivision",
+    "raw_value_richness_interpretation": "Tier 3 Bioregional Ecosystem Type richness"
+  },
+  "outcome_blind": true
+}

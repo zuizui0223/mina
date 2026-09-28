@@ -1,0 +1,39 @@
+name: antarctic-ecosystem-vat-audit
+
+on:
+  push:
+    branches: [analysis/antarctic-ecosystem-vat-audit-v1]
+    paths:
+      - "scripts/audit_aei_vat_schema.py"
+      - ".github/workflows/antarctic-ecosystem-vat-audit.yml"
+  pull_request:
+    paths:
+      - "scripts/audit_aei_vat_schema.py"
+      - ".github/workflows/antarctic-ecosystem-vat-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install dbfread
+      - name: Download AEI VAT
+        run: |
+          mkdir -p build/aei
+          curl -L --fail --retry 5 --retry-delay 5 \
+            'https://zenodo.org/records/11629115/files/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf?download=1' \
+            -o build/aei/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf
+          echo 'fa5363b1c0d882b4343e239d03dc2ba4  build/aei/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf' | md5sum -c -
+      - name: Audit VAT schema
+        run: |
+          python scripts/audit_aei_vat_schema.py \
+            --vat-dbf build/aei/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf \
+            --out build/AEI_VAT_SCHEMA_AUDIT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aei-vat-schema-audit-v1
+          path: build/AEI_VAT_SCHEMA_AUDIT_V1.json
