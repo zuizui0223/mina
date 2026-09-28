@@ -15,7 +15,8 @@
     "artifact_digest": "sha256:28f7141bde3aec0644aee4574fc5e46ff2d808dad399c2e4239975b3c0513221",
     "conclusion": "success",
     "simulations_per_error_model": 100000,
-    "seed": 20260928
+    "seed": 20260928,
+    "full_artifact_quantiles_preserved": true
   },
   "observed": {
     "raw_beta_within": 1.0737035331938372,
@@ -32,7 +33,29 @@
       "raw_log_beta_contrast_p": 0.00000999990000099999,
       "detrended_ratio_p": 0.05373946260537395,
       "growth_ratio_p": 0.4479055209447905,
-      "probability_all_three_within_beta_exceed_among_growth": 0.99853
+      "probability_all_three_within_beta_exceed_among_growth": 0.99853,
+      "raw_beta_within_null_summary": {
+        "mean": 1.027353265589339,
+        "q_0_025": 1.0231663443429535,
+        "q_0_975": 1.031975392251251,
+        "median": 1.027284337842198,
+        "sd": 0.002250608920763264
+      },
+      "raw_beta_among_null_summary": {
+        "mean": 1.0138043595292212,
+        "q_0_025": 1.0107584666246332,
+        "q_0_975": 1.0173425527355766,
+        "median": 1.0137171678642787,
+        "sd": 0.0016754632977632523
+      },
+      "raw_log_beta_contrast_null_summary": {
+        "mean": 0.013274869017046208,
+        "q_0_025": 0.007983885957853987,
+        "q_0_975": 0.018659216773421465,
+        "median": 0.013250737628287185,
+        "sd": 0.002723948599328001
+      },
+      "probability_all_three_within_beta_exceed_among_detrended": 0.82317
     },
     "gamma_poisson_cv10": {
       "raw_beta_within_null_mean": 1.0428878354087854,
@@ -41,7 +64,29 @@
       "raw_log_beta_contrast_p": 0.00000999990000099999,
       "detrended_ratio_p": 0.08202917970820292,
       "growth_ratio_p": 0.4782252177478225,
-      "probability_all_three_within_beta_exceed_among_growth": 0.99761
+      "probability_all_three_within_beta_exceed_among_growth": 0.99761,
+      "raw_beta_within_null_summary": {
+        "mean": 1.0428878354087854,
+        "q_0_025": 1.0352354617508202,
+        "q_0_975": 1.0516504232362311,
+        "median": 1.0426726874658103,
+        "sd": 0.00418926044164643
+      },
+      "raw_beta_among_null_summary": {
+        "mean": 1.016878174218492,
+        "q_0_025": 1.0119122288799736,
+        "q_0_975": 1.0230655172971421,
+        "median": 1.0166568115451664,
+        "sd": 0.0028486290494665403
+      },
+      "raw_log_beta_contrast_null_summary": {
+        "mean": 0.025252167716333224,
+        "q_0_025": 0.015847849622770218,
+        "q_0_975": 0.03496363660434775,
+        "median": 0.025196241768629786,
+        "sd": 0.00485454074716613
+      },
+      "probability_all_three_within_beta_exceed_among_detrended": 0.79382
     },
     "gamma_poisson_cv20": {
       "raw_beta_within_null_mean": 1.0882321622828899,
@@ -50,7 +95,29 @@
       "raw_log_beta_contrast_p": 0.45013549864501357,
       "detrended_ratio_p": 0.1906680933190668,
       "growth_ratio_p": 0.5284247157528424,
-      "probability_all_three_within_beta_exceed_among_growth": 0.99572
+      "probability_all_three_within_beta_exceed_among_growth": 0.99572,
+      "raw_beta_within_null_summary": {
+        "mean": 1.0882321622828899,
+        "q_0_025": 1.0692513410704272,
+        "q_0_975": 1.1111426696336986,
+        "median": 1.0875444041184452,
+        "sd": 0.010707469335303576
+      },
+      "raw_beta_among_null_summary": {
+        "mean": 1.0260322326858895,
+        "q_0_025": 1.0160466881995545,
+        "q_0_975": 1.039671105010282,
+        "median": 1.0253758353039517,
+        "sd": 0.006044918765985834
+      },
+      "raw_log_beta_contrast_null_summary": {
+        "mean": 0.058824369669288536,
+        "q_0_025": 0.03744469292251771,
+        "q_0_975": 0.08167721421640178,
+        "median": 0.05854060934787876,
+        "sd": 0.011269676109524913
+      },
+      "probability_all_three_within_beta_exceed_among_detrended": 0.73366
     }
   },
   "decision": {
