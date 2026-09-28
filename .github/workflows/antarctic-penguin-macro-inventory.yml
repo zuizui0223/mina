@@ -1,0 +1,43 @@
+name: antarctic-penguin-macro-inventory
+
+on:
+  push:
+    branches:
+      - program/paper1-v1-antarctic-macro-v1
+    paths:
+      - "scripts/inventory_mapppd_macro.R"
+      - "contracts/MINA_RESEARCH_PROGRAM_V1.json"
+      - "docs/ANTARCTIC_BREEDING_ISLAND_MACROECOLOGY_V1.md"
+      - ".github/workflows/antarctic-penguin-macro-inventory.yml"
+  pull_request:
+    paths:
+      - "scripts/inventory_mapppd_macro.R"
+      - "contracts/MINA_RESEARCH_PROGRAM_V1.json"
+      - "docs/ANTARCTIC_BREEDING_ISLAND_MACROECOLOGY_V1.md"
+      - ".github/workflows/antarctic-penguin-macro-inventory.yml"
+  workflow_dispatch:
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "release"
+      - name: Install minimal R dependency
+        run: Rscript -e 'install.packages("jsonlite", repos="https://cloud.r-project.org")'
+      - name: Fetch pinned mapppdr source
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          test "$(git -C build/mapppdr rev-parse HEAD)" = "88c73a507e0921b2541c218c71eaf16721bc6502"
+      - name: Inventory APBP/MAPPPD macro coverage
+        run: |
+          Rscript scripts/inventory_mapppd_macro.R             --mapppdr-dir build/mapppdr             --out build/mapppd_macro_inventory_v1.json
+      - name: Print inventory
+        run: cat build/mapppd_macro_inventory_v1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mapppd-macro-inventory-v1
+          path: build/mapppd_macro_inventory_v1.json
