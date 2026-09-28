@@ -31,11 +31,24 @@ from mina.ecosphere_submission_metadata import (
     require_complete_metadata,
 )
 
-TITLE = (
-    "Common decline, divergent endpoints: hierarchical demography across "
-    "Antarctic penguin breeding islands"
-)
 MARKER = "[[SECTION_BREAK_AFTER_TITLE]]"
+
+
+def _manuscript_title(text: str) -> str:
+    first = text.splitlines()[0].strip()
+    if not first.startswith("# "):
+        raise ValueError("manuscript must start with a level-1 title")
+    title = first[2:].strip()
+    if not title:
+        raise ValueError("empty manuscript title")
+    return title
+
+
+def _manuscript_keywords(text: str) -> str:
+    match = re.search(r"\*\*Keywords:\*\*\s*(.+)", text)
+    if not match:
+        raise ValueError("manuscript missing Keywords line")
+    return match.group(1).strip()
 
 OPEN_RESEARCH = (
     "The primary Palmer Station Antarctica Long Term Ecological Research "
@@ -132,7 +145,7 @@ def _strip_submission_source(text: str) -> str:
     for index, line in enumerate(lines):
         if index == 0 and line.startswith("# "):
             continue
-        if line.startswith("**Ecosphere-oriented manuscript v0.6"):
+        if line.startswith("**Ecosphere-oriented manuscript v0."):
             continue
         if line.startswith("**Keywords:**"):
             continue
@@ -228,6 +241,8 @@ def _combined_markdown(
     captions: str,
     metadata: dict[str, object] | None = None,
 ) -> str:
+    title_text = _manuscript_title(manuscript)
+    keywords_text = _manuscript_keywords(manuscript)
     body = _strip_submission_source(manuscript)
     caption_body = _strip_caption_heading(captions)
     blocks=_metadata_blocks(metadata)
@@ -248,7 +263,7 @@ def _combined_markdown(
 
 Article — Animal Ecology
 
-# {TITLE}
+# {title_text}
 
 **Authors:** {blocks["authors"]}
 
@@ -263,7 +278,7 @@ Article — Animal Ecology
 
 ## Key words/phrases
 
-Adélie penguin; breeding patches; hierarchical variability; island ecology; long-term monitoring; population dynamics; spatial synchrony; temporal compensation
+{keywords_text}
 
 {MARKER}
 
@@ -401,7 +416,7 @@ def _split_title_section(doc: Document) -> None:
     _add_line_numbering(body_sect_pr)
 
 
-def _apply_word_format(doc: Document) -> None:
+def _apply_word_format(doc: Document, title: str) -> None:
     for section in doc.sections:
         _set_section_layout(section)
 
@@ -440,7 +455,7 @@ def _apply_word_format(doc: Document) -> None:
         _add_line_numbering(section._sectPr)
 
     props = doc.core_properties
-    props.title = TITLE
+    props.title = title
     props.subject = "Ecosphere Article submission preview"
     props.author = ""
     props.last_modified_by = ""
@@ -455,6 +470,7 @@ def build(
     require_complete: bool = False,
 ) -> None:
     manuscript = manuscript_path.read_text(encoding="utf-8")
+    title = _manuscript_title(manuscript)
     captions = captions_path.read_text(encoding="utf-8")
     metadata=None
     if metadata_path is not None:
@@ -485,7 +501,7 @@ def build(
         _split_title_section(doc)
         doc.save(tmpdir / "split.docx")
         doc = Document(tmpdir / "split.docx")
-        _apply_word_format(doc)
+        _apply_word_format(doc, title)
         out_path.parent.mkdir(parents=True, exist_ok=True)
         doc.save(out_path)
 
