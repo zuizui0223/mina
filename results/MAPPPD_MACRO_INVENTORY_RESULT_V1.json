@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-mapppd-macro-inventory-result-v1",
+  "validated_date": "2026-09-28",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "apbp_doi": "10.3897/BDJ.11.e101476"
+  },
+  "execution": {
+    "workflow_run_id": 36411186558,
+    "head_sha": "e2ab034324d21820e22d82b88efb11ceafb14562",
+    "artifact_id": 10964168570,
+    "artifact_digest": "sha256:af659db9ea6690c2c7541837be495db8707756425bfc79ebed0d4345f35351ec",
+    "conclusion": "success"
+  },
+  "scale": {
+    "total_sites": 729,
+    "total_site_species_links": 918,
+    "total_observation_records": 5487,
+    "total_nest_count_records": 4032,
+    "observation_year_min": 1892,
+    "observation_year_max": 2026,
+    "regions": 21,
+    "ccamlr_units": 9
+  },
+  "candidate_trend_gate": {
+    "definition": "at least 5 distinct nest-count years spanning at least 10 years",
+    "total_site_species_units": 155,
+    "Adelie": 57,
+    "Chinstrap": 46,
+    "Gentoo": 49,
+    "Emperor": 1,
+    "Macaroni": 2,
+    "King": 0,
+    "pygoscelis_total": 152
+  },
+  "stricter_trend_gate": {
+    "definition": "at least 10 distinct nest-count years spanning at least 20 years",
+    "total_site_species_units": 94,
+    "Adelie": 39,
+    "Chinstrap": 23,
+    "Gentoo": 30,
+    "Emperor": 1,
+    "Macaroni": 1,
+    "King": 0,
+    "pygoscelis_total": 92
+  },
+  "species_site_context": {
+    "Adelie": {
+      "known_breeding_sites": 287,
+      "sites_with_nest_counts": 268
+    },
+    "Chinstrap": {
+      "known_breeding_sites": 369,
+      "sites_with_nest_counts": 334
+    },
+    "Gentoo": {
+      "known_breeding_sites": 142,
+      "sites_with_nest_counts": 120
+    },
+    "Emperor": {
+      "known_breeding_sites": 68,
+      "sites_with_nest_counts": 24
+    },
+    "Macaroni": {
+      "known_breeding_sites": 44,
+      "sites_with_nest_counts": 38
+    },
+    "King": {
+      "known_breeding_sites": 8,
+      "sites_with_nest_counts": 1
+    }
+  },
+  "observation_method_context": {
+    "ground": 2706,
+    "aerial": 540,
+    "vhr": 267,
+    "uav": 193,
+    "ground_photo": 78,
+    "offshore_vessel": 45,
+    "sentinel": 13,
+    "aerial_photo": 10,
+    "landsat": 10,
+    "missing_vantage": 170
+  },
+  "decision": {
+    "pygoscelis_macro_trend_lane_viable": true,
+    "emperor_same_trend_lane_viable": false,
+    "king_same_trend_lane_viable": false,
+    "macaroni_same_trend_lane_viable": false,
+    "outcome_models_opened": false
+  },
+  "interpretation": [
+    "The south-of-60 APBP/MAPPPD snapshot is large enough for an Antarctic-wide Pygoscelis site-by-species trend comparison.",
+    "Adelie, chinstrap and gentoo together provide 152 candidate and 92 stricter trend-eligible site-by-species units.",
+    "Emperor penguins do not provide enough repeated nest-count sites in this APBP snapshot for the same trend model and require a separate data lane if used as a breeding-substrate contrast.",
+    "Observation vantage and accuracy are heterogeneous and must be handled explicitly before demographic outcomes are modeled."
+  ]
+}
