@@ -9,68 +9,79 @@
     "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
   },
   "execution": {
-    "workflow_run_id": 36389910231,
-    "head_sha": "634ed7dec48071d9e7ff38f081555947d8cee82c",
-    "artifact_id": 10956475021,
-    "artifact_digest": "sha256:28f7141bde3aec0644aee4574fc5e46ff2d808dad399c2e4239975b3c0513221",
+    "workflow_run_id": 36391026323,
+    "head_sha": "14297bdd2a58c8273f6bc036bffee5fd9fd7bb1e",
+    "artifact_id": 10956730097,
+    "artifact_digest": "sha256:bc3d169b3df6c1f877c62d0c428122954a3ebcc7f686be2cbdc44c9261f0e23f",
     "conclusion": "success",
     "simulations_per_error_model": 100000,
-    "seed": 20260928
+    "seed": 20260928,
+    "positive_island_years_conditioned_nonzero": true
   },
   "observed": {
     "raw_beta_within": 1.0737035331938372,
     "raw_beta_among": 1.0112310830110414,
     "raw_log_beta_contrast": 0.05994543544868112,
-    "detrended_median_within_to_among_ratio": 2.9184897496695155,
+    "detrended_median_within_to_among_ratio": 2.9184897496695146,
     "growth_median_within_to_among_ratio": 2.3216048972794874
   },
   "error_models": {
     "poisson": {
-      "raw_beta_within_null_mean": 1.027353265589339,
+      "raw_beta_within_null_mean": 1.0273533334515639,
+      "raw_beta_within_null_q_0_975": 1.031961258404606,
       "raw_beta_within_p": 0.00000999990000099999,
-      "raw_log_beta_contrast_null_mean": 0.013274869017046208,
+      "raw_log_beta_contrast_null_mean": 0.01327488836528773,
+      "raw_log_beta_contrast_null_q_0_975": 0.018676535314813354,
       "raw_log_beta_contrast_p": 0.00000999990000099999,
-      "detrended_ratio_p": 0.05373946260537395,
-      "growth_ratio_p": 0.4479055209447905,
-      "probability_all_three_within_beta_exceed_among_growth": 0.99853
+      "detrended_ratio_p": 0.05358946410535895,
+      "growth_ratio_p": 0.44721552784472157,
+      "probability_all_three_raw_within_beta_exceed_among": 0.99953,
+      "probability_all_three_detrended_within_beta_exceed_among": 0.8264,
+      "probability_all_three_growth_within_beta_exceed_among": 0.9983
     },
     "gamma_poisson_cv10": {
-      "raw_beta_within_null_mean": 1.0428878354087854,
+      "raw_beta_within_null_mean": 1.0428892405605914,
+      "raw_beta_within_null_q_0_975": 1.0516291670321614,
       "raw_beta_within_p": 0.00000999990000099999,
-      "raw_log_beta_contrast_null_mean": 0.025252167716333224,
+      "raw_log_beta_contrast_null_mean": 0.025242982232218818,
+      "raw_log_beta_contrast_null_q_0_975": 0.03484702103204101,
       "raw_log_beta_contrast_p": 0.00000999990000099999,
-      "detrended_ratio_p": 0.08202917970820292,
-      "growth_ratio_p": 0.4782252177478225,
-      "probability_all_three_within_beta_exceed_among_growth": 0.99761
+      "detrended_ratio_p": 0.08219917800821992,
+      "growth_ratio_p": 0.4775752242477575,
+      "probability_all_three_raw_within_beta_exceed_among": 0.99988,
+      "probability_all_three_detrended_within_beta_exceed_among": 0.79644,
+      "probability_all_three_growth_within_beta_exceed_among": 0.99792
     },
     "gamma_poisson_cv20": {
-      "raw_beta_within_null_mean": 1.0882321622828899,
-      "raw_beta_within_p": 0.9239307606923931,
-      "raw_log_beta_contrast_null_mean": 0.058824369669288536,
-      "raw_log_beta_contrast_p": 0.45013549864501357,
-      "detrended_ratio_p": 0.1906680933190668,
-      "growth_ratio_p": 0.5284247157528424,
-      "probability_all_three_within_beta_exceed_among_growth": 0.99572
+      "raw_beta_within_null_mean": 1.0882061575385549,
+      "raw_beta_within_null_q_0_975": 1.1110634211212456,
+      "raw_beta_within_p": 0.924250757492425,
+      "raw_log_beta_contrast_null_mean": 0.05879049099923405,
+      "raw_log_beta_contrast_null_q_0_975": 0.08169485202078279,
+      "raw_log_beta_contrast_p": 0.44753552464475355,
+      "detrended_ratio_p": 0.1906280937190628,
+      "growth_ratio_p": 0.5299647003529965,
+      "probability_all_three_raw_within_beta_exceed_among": 0.99989,
+      "probability_all_three_detrended_within_beta_exceed_among": 0.73671,
+      "probability_all_three_growth_within_beta_exceed_among": 0.99552
     }
   },
   "decision": {
     "raw_hierarchy_measurement_error_robust": false,
     "raw_hierarchy_unusual_under_poisson_and_cv10": true,
     "raw_hierarchy_unusual_under_cv20": false,
-    "detrended_hierarchy_unusual_under_poisson": false,
-    "growth_hierarchy_unusual_under_poisson": false
+    "centered_signals_are_not_rescue_endpoints": true
   },
   "supported": [
-    "The observed raw hierarchy is much larger than expected from independent Poisson counting error or the frozen Gamma-Poisson CV10% sensitivity.",
-    "The raw hierarchy is not unusual under the frozen Gamma-Poisson CV20% sensitivity.",
-    "The stronger detrended and annual-growth hierarchy cannot be used as measurement-error-robust evidence because the error-only null commonly generates effects of the observed scale.",
-    "Annual growth ordering in which all three within-island beta values exceed among-island beta is expected almost always under the error-only null."
+    "The observed raw hierarchy is far larger than expected from independent Poisson error or the inherited Gamma-Poisson CV10% sensitivity.",
+    "The raw hierarchy is compatible with the inherited, uncalibrated Gamma-Poisson CV20% sensitivity.",
+    "The stronger-looking detrended and annual-growth hierarchy statistics are compatible with the error-only null and therefore cannot serve as rescue evidence."
   ],
   "not_supported": [
-    "a claim that the hierarchical buffering result is robust to the full frozen count-error family",
-    "promotion of detrended or annual-growth beta as stronger confirmatory evidence",
-    "a claim that CV20% represents empirically calibrated Palmer observer error",
-    "a claim that counting error caused the observed hierarchy"
+    "a claim that the hierarchy is robust to the entire frozen count-error family",
+    "a claim that counting error caused the observed hierarchy",
+    "a claim that 20% multiplicative CV estimates Palmer observer error",
+    "promotion of detrended or growth beta as a measurement-error-robust primary endpoint"
   ],
-  "ecological_interpretation": "The raw subcolony-to-island variability reduction exceeds what low-to-moderate independent count error generates, but the present census lacks record-level observer-error metadata needed to distinguish that biological signal from a conservative 20% multiplicative-error scenario. The hierarchy should therefore be treated as measurement-error-sensitive descriptive evidence, while the N_eff coefficient remains separately robust under its frozen count-error diagnostic."
+  "ecological_interpretation": "The raw subcolony-to-island variability reduction exceeds low-to-moderate independent count-error expectations but is not identifiable as biological temporal buffering under an uncalibrated 20% multiplicative-error scenario. The hierarchy must therefore be presented as measurement-error-sensitive descriptive evidence unless external census-protocol information can bound the relevant observer error below that level."
 }
