@@ -6,58 +6,56 @@ island-ecology** study.
 ## Current ecological claim
 
 Five neighboring Adélie penguin island populations share an exceptionally
-strong long-term decline, but their annual dynamics and extinction endpoints
-are not interchangeable.
+strong long-term decline, but the decline also has an **internal spatial-demographic
+architecture**.
 
 Across the complete 1991–2017 five-island Palmer LTER panel:
 
 - PC1 explains **96.4%** of standardized log-abundance variation;
-- median pairwise annual-growth correlation is only **0.373**;
+- median pairwise annual-growth correlation is **0.373**;
 - year uniquely accounts for **53.5%** of total log-abundance variance;
 - island identity accounts for **33.0%**;
-- Litchfield reaches local extinction while four neighboring islands persist at
+- Litchfield reaches local extinction while neighboring islands persist at
   low abundance through 2017.
 
-The nested variability analysis reveals an **observed** scale hierarchy, but
-the biological interpretation is measurement-error sensitive. In the three
-islands with unchanged colony-code rosters (Cormorant, Humble and Litchfield),
-raw Wang–Loreau beta variability is **1.0737** from colony-code components to
-islands and **1.0112** from islands to the three-island aggregate; **86.4%** of
-the observed additive log-beta transition lies at the lower step.
+The strongest new ecological result is within islands. In the three islands
+with unchanged colony-code rosters, effective colony number declines
+progressively during population loss:
 
-A fully synchronous-subcolony count-error null changes the inference. The raw
-hierarchy is far above independent Poisson and inherited Gamma–Poisson CV10%
-expectations (100,000 simulations; both primary one-sided p values
-**0.000010**), but is compatible with the uncalibrated CV20% sensitivity
-(beta-within **p = 0.924**; log-contrast **p = 0.448**). Detrended and
-annual-growth contrasts are also compatible with error-only nulls and are not
-used as rescue endpoints. The hierarchy is therefore a real property of the
-observed census table, but it is **not identified as biological temporal
-buffering across the full frozen error family**.
+- Cormorant: **3.54 → 2.86** (**−19.1%**), slope **−0.0310 yr⁻¹**;
+- Humble: **4.62 → 2.28** (**−50.6%**), slope **−0.0855 yr⁻¹**;
+- Litchfield: **5.78 → 1.00** by its final positive census in 2006
+  (**−82.7%**), slope **−0.3681 yr⁻¹**.
 
-Finite prospective tests did **not** support simple positive annual sea-ice
-duration, 3/5/7-year sea-ice-duration rescue, or October snowfall × static
-snow-prone-habitat formulations.
+A fixed-composition null retains the exact observed island-total trajectory and
+adds independent Poisson, Gamma–Poisson CV10%, or Gamma–Poisson CV20% count
+error. Even under the severe uncalibrated CV20% sensitivity, the observed
+concentration slopes remain unusual (Cormorant **p = 0.0380**; Humble and
+Litchfield **p = 0.000010** each), and zero of 100,000 simulations reproduce
+slopes simultaneously as negative on all three islands (plus-one joint
+**p = 0.000010**). The decline is therefore not adequately described as
+simple proportional thinning of a fixed breeding distribution plus independent
+count noise: breeders become concentrated among a smaller effective set of
+colony-code breeding components.
 
-Effective colony number (`1 / sum(p_j^2)`) remains a secondary,
-bounded result. Its standardized conditional coefficient is **+0.1168** after
-island, current abundance and time are controlled. Conditioning on the
-preceding two annual growth intervals leaves a coefficient of **+0.1126**
-(**96.4%** of the original), and the same full-series structured null remains
-unusual (100,000 independent circular shifts: **p = 0.00102**; exact
-covariance-preserving shifts: **5/416 = 0.0120**). In contrast, the
-two-lag held-out MSE gain is only **+0.000444**, and the original held-out gain
-(**+0.00103**) is compatible with synchronized year-block permutation noise
-(**p = 0.262**). Fixed circular-shift count-error sensitivities also retain the
-association (largest coupled-null p = 0.00780). N_eff is therefore retained as
-a weak but structured-null- and momentum-robust conditional association, not a
-supported predictor, causal mechanism or early-warning indicator.
+Effective colony number also remains positively associated with next-year
+growth after island, current abundance, secular time and the preceding two
+growth intervals are controlled (**+0.1126**; structured-null p = **0.00102**,
+exact joint p = **0.0120**). Its incremental held-out MSE gain is only
+**+0.000444**, so it is retained as a weak conditional state association, not a
+supported predictor, mechanism, or early-warning indicator.
 
-Independent Torgersen spatial reconstruction shows real breeding-footprint
-contraction (23 historic active subcolonies -> five active in 2022) and
-topographically non-random attrition. This is **phenomenon-level spatial
-convergence**, not colony-ID-level validation: the public LTER `colony_code`
-values have not been crosswalked one-to-one to the independent GIS polygons.
+Independent Torgersen mapping documents physical contraction from **23**
+historic active subcolonies to **five** active footprints by 2022 and
+habitat-structured extinction. This is phenomenon-level spatial convergence,
+not colony-ID-level validation: public LTER colony codes have not been
+crosswalked one-to-one to the GIS polygons.
+
+The Wang–Loreau beta hierarchy remains secondary context. Observed raw beta is
+**1.0737** from colony-code components to islands and **1.0112** from islands
+to the aggregate, but an uncalibrated CV20% fully synchronous count-error null
+can reproduce that difference. It is therefore not used as proof of biological
+spatial insurance.
 
 ## Ecological framing
 
@@ -71,72 +69,51 @@ Direct biotic interactions are not assumed absent. They are treated as
 localized and testable rather than as the default explanation for whole-island
 trajectories.
 
-## Submission status after hierarchy count-error audit
+## Submission status after breeding-concentration analysis
 
-**Ecosphere packaging is paused at v0.7 pending final scientific QA and author
-metadata.** The observed sub-island beta hierarchy survives Poisson and CV10%
-count-error sensitivities but not the inherited, uncalibrated CV20% scenario.
-It is therefore retained as a scale-explicit descriptive pattern with an
-identification boundary, not as a demonstrated buffering mechanism.
+The current scientific draft is **Ecosphere-oriented v0.8**. The central
+positive result is progressive within-island concentration during Adélie
+decline. The v0.7 measurement-error audit remains important because it prevents
+the observed beta hierarchy from being overinterpreted as biological
+buffering.
 
-Effective colony number is now deliberately separated from the beta hierarchy.
-Its standardized coefficient remains **+0.1126** after two lagged growth terms
-and remains unusual under frozen serial-structure and count-error nulls, while
-its incremental held-out predictive gain is only **+0.000444** and the original
-gain is null-compatible (**p = 0.262**). The defensible claim is a weak,
-robust conditional association rather than prediction, causation, or early
-warning.
+The scientific claim stack is now:
 
-The current scientific draft is **Ecosphere-oriented v0.7**. v0.6 and earlier
-submission files remain immutable provenance.
+1. shared regional decline with divergent island fate;
+2. progressive concentration of breeders among a smaller effective set of
+   colony-code components, robust to the full frozen count-error family;
+3. a separate weak N_eff–next-year-growth conditional association;
+4. independent Torgersen spatial contraction as phenomenon-level
+   triangulation;
+5. a measurement-sensitive beta hierarchy retained only as context.
+
+Submission metadata remain author-controlled. v0.7 and earlier manuscripts are
+provenance only.
 
 ## Development state
 
-Core same-census endpoint development is **closed at v0.7**. The repository
-terminal rule forbids adding intermediate count-error CV values, alternate beta
-definitions, transformed rescue endpoints, colony-roster reconciliations,
-climate windows, precipitation months, colony-size thresholds or topology
-indices for the core paper.
+Core same-census endpoint development is **closed at v0.8**. The terminal rule
+forbids alternate concentration indices, intermediate count-error CV values,
+tuned time windows, colony-roster reconciliation, transformed rescue
+endpoints, additional topology metrics, or new same-census climate searches.
 
-Current scientific work is limited to evidence that changes identifiability:
+New biological interpretation must come from external evidence:
 
-- external calibration of Palmer replicate-observer count error;
-- colony-code / GIS spatial crosswalk resolution;
-- replication in another monitored archipelago;
-- figure, reproducibility and submission packaging.
-
-The current scientific draft is **Ecosphere-oriented v0.7**. PC1/synchrony is
-descriptive context; nested beta is an observed scale pattern with an explicit
-count-error boundary; N_eff is retained as a separate weak conditional
-association.
+- colony-code / GIS-polygon crosswalks;
+- replicate-observer count-error calibration;
+- direct habitat attributes of retained and lost breeding components;
+- independent replication in another monitored Adélie system.
 
 See:
 
-- `docs/MANUSCRIPT_ECOSPHERE_V0_7.md`
-- `docs/MANUSCRIPT_SPINE_V6.md`
-- `docs/FIGURE_CAPTIONS_V6.md`
-- `docs/REFERENCES_V5.bib`
-- `results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json`
-- `results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json`
+- `docs/MANUSCRIPT_ECOSPHERE_V0_8.md`
+- `docs/MANUSCRIPT_SPINE_V7.md`
+- `docs/FIGURE_CAPTIONS_V7.md`
+- `docs/REFERENCES_V6.bib`
+- `results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
 - `results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json`
-- `docs/MANUSCRIPT_ECOSPHERE_V0_6.md` (provenance)
-- `docs/MANUSCRIPT_ECOSPHERE_V0_5.md` (provenance)
-- `docs/JOURNAL_FIT_V3.md`
-- `docs/JOURNAL_FIT_V2.md` (pre-circular-shift journal-fit record)
-- `docs/FIGURE_CAPTIONS_V4.md`
-- `docs/REFERENCES_V3.bib`
-- `docs/MANUSCRIPT_SPINE_V4.md`
-- `docs/MANUSCRIPT_JAE_V0_3.md`
-- `docs/COVER_LETTER_JAE_V1.md`
-- `docs/JOURNAL_FIT_V1.md`
-- `docs/TITLE_PAGE_JAE_TEMPLATE.md`
-- `docs/SUBMISSION_CHECKLIST_JAE_V1.md`
-- `docs/MANUSCRIPT_V0_2.md`
-- `docs/FIGURE_CAPTIONS_V2.md`
-- `docs/REVIEWER_AUDIT_V0_1.md`
-- `docs/MANUSCRIPT_V0_1.md` (archived first draft)
-- `contracts/PALMER_ISLAND_ECOLOGY_SYNTHESIS_V4.json`
-- `results/PALMER_MANUSCRIPT_FIGURE_PACKAGE_RESULT_V1.json`
+- `results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json`
+- `docs/MANUSCRIPT_ECOSPHERE_V0_7.md` (provenance)
 
 ## Reproduce
 
