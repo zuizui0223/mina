@@ -111,6 +111,37 @@ def _candidate_sites(root: Path) -> pd.DataFrame:
     return out[["site_id", "site_name", "region", "latitude", "longitude"]]
 
 
+def _direct_server_count(
+    session: requests.Session,
+    layer_url: str,
+    surface_field: str,
+    longitude: float,
+    latitude: float,
+    distance_m: int,
+) -> int:
+    geometry = json.dumps(
+        {
+            "x": float(longitude),
+            "y": float(latitude),
+            "spatialReference": {"wkid": 4326},
+        }
+    )
+    params = {
+        "f": "json",
+        "where": f"{surface_field}='land'",
+        "geometry": geometry,
+        "geometryType": "esriGeometryPoint",
+        "inSR": 4326,
+        "spatialRel": "esriSpatialRelIntersects",
+        "returnCountOnly": "true",
+    }
+    if distance_m > 0:
+        params["distance"] = distance_m
+        params["units"] = "esriSRUnit_Meter"
+    data = _get_json(session, f"{layer_url}/query", **params)
+    return int(data.get("count", 0))
+
+
 def _download_land_polygons(
     session: requests.Session,
     layer_url: str,
@@ -197,6 +228,7 @@ def audit(root: Path) -> dict:
     transformer = Transformer.from_crs(4326, 3031, always_xy=True)
 
     matched = []
+    direct_session = _session()
     for site in sites.to_dict(orient="records"):
         point = shapely_transform(
             transformer.transform,
@@ -210,6 +242,23 @@ def audit(root: Path) -> dict:
             distances.append(float(point.distance(geom)))
             nearby_attrs.append(attrs[int(index)])
 
+        direct_exact = _direct_server_count(
+            direct_session,
+            layer_url,
+            surface_field,
+            float(site["longitude"]),
+            float(site["latitude"]),
+            0,
+        )
+        direct_5km = _direct_server_count(
+            direct_session,
+            layer_url,
+            surface_field,
+            float(site["longitude"]),
+            float(site["latitude"]),
+            5000,
+        )
+
         record = {
             "site_id": str(site["site_id"]),
             "site_name": str(site["site_name"]),
@@ -217,6 +266,10 @@ def audit(root: Path) -> dict:
             "latitude": float(site["latitude"]),
             "longitude": float(site["longitude"]),
             "nearest_land_distance_m": min(distances) if distances else None,
+            "direct_server_checks": {
+                "exact_land_count": direct_exact,
+                "within_5km_land_count": direct_5km,
+            },
             "matches": {},
         }
         for distance in DISTANCES_M:
@@ -233,6 +286,21 @@ def audit(root: Path) -> dict:
 
     summaries = {}
     n_sites = len(matched)
+    direct_exact_count = sum(
+        int(r["direct_server_checks"]["exact_land_count"]) >= 1
+        for r in matched
+    )
+    direct_5km_count = sum(
+        int(r["direct_server_checks"]["within_5km_land_count"]) >= 1
+        for r in matched
+    )
+    direct_vs_local_5km_disagreement = sum(
+        (
+            int(r["direct_server_checks"]["within_5km_land_count"]) >= 1
+        )
+        != (int(r["matches"]["5000"]["land_count"]) >= 1)
+        for r in matched
+    )
     selected_distance = None
     for distance in DISTANCES_M:
         key = str(distance)
@@ -302,6 +370,19 @@ def audit(root: Path) -> dict:
         "candidate_neighborhood_land_polygon_count": len(geoms),
         "geometry_generalization_degrees": 0.0005,
         "distance_summaries": summaries,
+        "direct_server_checks": {
+            "exact_land_match_count": direct_exact_count,
+            "exact_land_match_fraction": (
+                direct_exact_count / n_sites if n_sites else None
+            ),
+            "within_5km_land_match_count": direct_5km_count,
+            "within_5km_land_match_fraction": (
+                direct_5km_count / n_sites if n_sites else None
+            ),
+            "direct_vs_local_5km_disagreement_count": (
+                direct_vs_local_5km_disagreement
+            ),
+        },
         "diagnostic_nearest_land_distance_bins_m": diagnostic_bins,
         "region_summary": region_summary,
         "selected_distance_m": selected_distance,
