@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-terrain-atlas-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_rema_terrain_extraction_frozen_before_execution",
+  "parent_program": "contracts/MINA_RESEARCH_PROGRAM_V1.json",
+  "paper_lane": "Paper 2",
+  "purpose": "Add a terrain-context block to the frozen Pygoscelis site atlas without opening demographic outcomes.",
+  "source_sites": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "primary_species_ids": ["ADPE", "CHPE", "GEPE"],
+    "candidate_gate": "at least 5 distinct nest-count years spanning at least 10 years",
+    "expected_site_species_units": 152,
+    "expected_distinct_sites": 122,
+    "outcome_blind_constraint": "Population trend direction, abundance change, extinction, colonization and replacement outcomes remain unopened."
+  },
+  "rema": {
+    "dataset": "Reference Elevation Model of Antarctica (REMA) mosaic",
+    "version": "2.0",
+    "source_url": "https://data.pgc.umn.edu/elev/dem/setsm/REMA/mosaic/v2.0/500m/rema_mosaic_500m_v2.0.tar.gz",
+    "resolution_m": 500,
+    "elevation_reference": "WGS84 ellipsoid",
+    "source_note": "Use the unfilled v2.0 500 m full-domain mosaic. Do not switch to a filled DEM to rescue missing sites."
+  },
+  "spatial_scales": {
+    "primary_radius_m": 2000,
+    "sensitivity_radii_m": [1000, 5000],
+    "all_radii_m": [1000, 2000, 5000]
+  },
+  "derived_traits_per_radius": [
+    "valid_dem_pixel_count",
+    "elevation_median_m",
+    "elevation_mean_m",
+    "elevation_sd_m",
+    "elevation_p10_m",
+    "elevation_p90_m",
+    "elevation_relief_p90_p10_m"
+  ],
+  "point_trait": "nearest-valid-pixel elevation at the APBP site coordinate",
+  "primary_traits": [
+    "site_elevation_m",
+    "elevation_relief_p90_p10_m_2000m",
+    "elevation_sd_m_2000m"
+  ],
+  "coverage_gate": {
+    "rule": "At least 90% of the 122 candidate APBP sites must have at least one valid REMA pixel within the frozen 2 km primary radius.",
+    "minimum_primary_radius_coverage_fraction": 0.90,
+    "no_filled_dem_rescue_if_failed": true,
+    "record_missing_sites": true
+  },
+  "boundary": [
+    "REMA terrain is local topographic context, not occupied nesting habitat.",
+    "Terrain traits are not selected based on penguin outcomes.",
+    "The 2 km primary scale is inherited from the breeding-option atlas and is not retuned.",
+    "No demographic response is joined at this gate."
+  ],
+  "next_gate_only_if_passed": {
+    "name": "Gate 1D-B melt/climate augmentation",
+    "rule": "Add melt/climate variables to the same frozen site set and 2 km primary scale before opening demographic outcomes."
+  }
+}
