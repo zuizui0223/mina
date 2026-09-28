@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-ecosphere-manuscript-v0.8",
+  "date": "2026-09-28",
+  "status": "breeding_component_concentration_promoted",
+  "parent_manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_7.md",
+  "manuscript": "docs/MANUSCRIPT_ECOSPHERE_V0_8.md",
+  "bibliography": "docs/REFERENCES_V6.bib",
+  "captions": "docs/FIGURE_CAPTIONS_V7.md",
+  "title": "Regional decline, local concentration: within-island reorganization of Adélie penguin breeding groups",
+  "central_contribution": "Adelie island populations become progressively concentrated among a smaller effective set of within-island colony-code breeding components during decline, beyond the concentration expected from the observed abundance trajectory and the full frozen independent count-error family.",
+  "primary_concentration_result": {
+    "result": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+    "eligible_islands": [
+      "COR",
+      "HUM",
+      "LIT"
+    ],
+    "observed": {
+      "COR": {
+        "first_neff": 3.535167892670656,
+        "last_neff": 2.8594594594594596,
+        "fractional_change": -0.19113899359974384,
+        "slope": -0.030975710379891816
+      },
+      "HUM": {
+        "first_neff": 4.624639076034649,
+        "last_neff": 2.2845849802371543,
+        "fractional_change": -0.5059971291433084,
+        "slope": -0.08550466131872993
+      },
+      "LIT": {
+        "first_neff": 5.78299346803081,
+        "last_neff": 1,
+        "fractional_change": -0.8270791752527236,
+        "slope": -0.36807876113755644,
+        "last_positive_year": 2006
+      }
+    },
+    "cv20_p": {
+      "COR": 0.037999620003799965,
+      "HUM": 0.00000999990000099999,
+      "LIT": 0.00000999990000099999,
+      "joint": 0.00000999990000099999
+    },
+    "supported_under_all_frozen_error_models": true
+  },
+  "secondary_neff_boundary": {
+    "lag1_lag2_conditioned_coefficient": 0.11260540832528995,
+    "lag1_lag2_loyo_gain": 0.000444125252832564,
+    "lag1_lag2_independent_circular_p": 0.001019989800101999,
+    "lag1_lag2_joint_exact_p": 0.01201923076923077,
+    "year_block_predictive_p": 0.262,
+    "max_frozen_count_error_p": 0.0078,
+    "predictive_claim": false,
+    "causal_claim": false,
+    "early_warning_claim": false
+  },
+  "secondary_hierarchy_boundary": {
+    "beta_within": 1.0737035331938372,
+    "beta_among": 1.0112310830110414,
+    "within_log_beta_share": 0.8642664462053955,
+    "raw_hierarchy_measurement_error_robust": false,
+    "cv20_beta_within_p": 0.924250757492425,
+    "cv20_contrast_p": 0.44753552464475355,
+    "centered_signals_are_not_rescue_endpoints": true
+  },
+  "external_triangulation": {
+    "torgersen_historic_active_subcolonies": 23,
+    "torgersen_active_footprints_2022": 5,
+    "identifier_level_validation": false,
+    "physical_patch_mechanism_identified": false
+  },
+  "prohibited_interpretations": [
+    "colony codes are equivalent to mapped nesting polygons",
+    "progressive concentration causes population decline",
+    "snow topography predation or dispersal is the identified cause of concentration",
+    "N_eff is a supported predictor or early-warning signal",
+    "beta variability proves causal spatial insurance",
+    "the beta hierarchy is measurement-error robust",
+    "CV20% estimates actual Palmer observer error",
+    "Torgersen mapping directly validates census colony-code identities"
+  ],
+  "required_language_boundaries": [
+    "progressive concentration",
+    "proportional thinning",
+    "colony-code breeding components",
+    "beyond declining total abundance and independent count error",
+    "phenomenon-level spatial triangulation",
+    "not robust held-out prediction"
+  ],
+  "figure_package": {
+    "figure_count": 5,
+    "primary_ecological_figure": "Figure 3",
+    "figure3_topic": "breeding-component concentration",
+    "hierarchy_main_figure": false,
+    "mechanism_audit_figure": "Figure 4",
+    "conditional_association_and_spatial_triangulation": "Figure 5"
+  },
+  "versioning": {
+    "v0_7_remains_immutable_provenance": true
+  }
+}
