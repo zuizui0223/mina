@@ -115,45 +115,42 @@ def _download_all_land(
     layer_url: str,
     surface_field: str,
     object_id_field: str,
-    page_size: int = 250,
+    chunk_size: int = 100,
 ) -> tuple[list, list[dict], int]:
-    count_data = _get_json(
+    id_data = _get_json(
         session,
         f"{layer_url}/query",
         f="json",
         where=f"{surface_field}='land'",
-        returnCountOnly="true",
+        returnIdsOnly="true",
     )
-    expected = int(count_data.get("count", 0))
-    if expected <= 0:
-        raise RuntimeError("SCAR ADD returned zero land polygons")
+    object_ids = sorted(int(v) for v in (id_data.get("objectIds") or []))
+    if not object_ids:
+        raise RuntimeError("SCAR ADD returned zero land polygon IDs")
 
     features = []
-    offset = 0
-    while offset < expected:
+    for start in range(0, len(object_ids), chunk_size):
+        chunk = object_ids[start : start + chunk_size]
         data = _get_json(
             session,
             f"{layer_url}/query",
             f="geojson",
-            where=f"{surface_field}='land'",
+            objectIds=",".join(str(v) for v in chunk),
             outFields="*",
             returnGeometry="true",
             outSR=4326,
-            resultOffset=offset,
-            resultRecordCount=page_size,
-            orderByFields=object_id_field,
         )
         batch = data.get("features", [])
-        if not batch:
+        if len(batch) != len(chunk):
             raise RuntimeError(
-                f"empty ADD page at offset {offset} of {expected}"
+                f"ADD object-ID chunk drift at {start}: "
+                f"{len(batch)} != {len(chunk)}"
             )
         features.extend(batch)
-        offset += len(batch)
 
-    if len(features) != expected:
+    if len(features) != len(object_ids):
         raise RuntimeError(
-            f"ADD pagination drift: {len(features)} != {expected}"
+            f"ADD retrieval drift: {len(features)} != {len(object_ids)}"
         )
 
     transformer = Transformer.from_crs(4326, 3031, always_xy=True)
