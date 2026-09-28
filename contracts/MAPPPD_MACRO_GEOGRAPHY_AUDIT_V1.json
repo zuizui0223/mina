@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-mapppd-macro-geography-audit-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_geographic_coverage_audit_frozen_before_execution",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "primary_species_ids": ["ADPE", "CHPE", "GEPE"]
+  },
+  "candidate_gate": {
+    "definition": "at least 5 distinct nest-count years spanning at least 10 years",
+    "expected_site_species_units": 152,
+    "expected_distinct_sites": 122
+  },
+  "stricter_gate": {
+    "definition": "at least 10 distinct nest-count years spanning at least 20 years",
+    "expected_site_species_units": 92
+  },
+  "audit_outputs": [
+    "candidate and stricter units by APBP region",
+    "candidate and stricter units by CCAMLR unit",
+    "candidate sites by latitude band",
+    "species x region counts",
+    "fraction of candidate units in the largest one and three regions",
+    "candidate-site fraction among all APBP sites in each region"
+  ],
+  "interpretation_rules": {
+    "broad_coverage_flag": "candidate units occupy at least 5 APBP regions and at least 3 CCAMLR units",
+    "strong_regional_concentration_flag": "the largest APBP region contains more than 50% of candidate site-species units",
+    "paper_language": "Use 'Antarctic-wide' only as a study-domain description, never as a claim of spatially balanced sampling. If strong regional concentration is flagged, explicitly describe the comparison as geographically uneven."
+  },
+  "outcome_blind_boundary": [
+    "do not inspect population trend direction",
+    "do not fit ecological models",
+    "do not alter the temporal eligibility gate after seeing geography",
+    "do not drop regions because of anticipated effect direction"
+  ]
+}
