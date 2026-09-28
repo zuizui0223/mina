@@ -377,7 +377,7 @@ def _figure3_concentration(
                 row for row in states
                 if str(row["island"]) == island
                 and row["effective_colony_number"] is not None
-                and float(row["total_breeding_pairs"]) > 0
+                and float(row["total"]) > 0
             ],
             key=lambda row: int(row["year"]),
         )
@@ -393,7 +393,7 @@ def _figure3_concentration(
                     "year": int(row["year"]),
                     "effective_colony_number": value,
                     "relative_to_first": value / first,
-                    "breeding_pairs": float(row["total_breeding_pairs"]),
+                    "breeding_pairs": float(row["total"]),
                 }
             )
 
