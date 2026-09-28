@@ -109,7 +109,7 @@ def main()->int:
     p=argparse.ArgumentParser()
     p.add_argument("--mapppdr-dir",required=True,type=Path)
     p.add_argument("--out",required=True,type=Path)
-    p.add_argument("--delay-s",type=float,default=0.08)
+    p.add_argument("--delay-s",type=float,default=1.10)
     a=p.parse_args()
 
     sites=candidate_sites(a.mapppdr_dir)
