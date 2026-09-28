@@ -2,7 +2,7 @@
 
 ## Current status
 
-**Scientific content: READY at v0.8. Submission metadata: BLOCKED pending author confirmation. Word preview: PENDING v0.8 render QA.**
+**Scientific content: READY at v0.8. Word preview: QA PASSED. Submission metadata: BLOCKED pending author confirmation.**
 
 The scientific manuscript is `docs/MANUSCRIPT_ECOSPHERE_V0_8.md`. v0.7 and earlier submission packages remain provenance only.
 
@@ -45,7 +45,9 @@ Final formatting gate:
 - Abstract starts on a new page.
 - Figure captions grouped once after References.
 - No control-character, citation, or math-rendering defects.
-- Fresh v0.8 Word preview must be visually inspected before submission.
+- **35-page v0.8 preview visually inspected; continuous line numbers 1–728 confirmed.**
+- Progressive-concentration Methods/Results, secondary hierarchy material, references, Figure 1–5 captions, and AI disclosure were checked at full-page render resolution.
+- Synthetic author-complete metadata path also rendered successfully.
 
 ## Required AI disclosure
 
