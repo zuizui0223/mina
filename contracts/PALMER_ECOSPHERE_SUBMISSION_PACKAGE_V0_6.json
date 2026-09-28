@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-palmer-ecosphere-submission-package-v0.6",
   "date": "2026-09-28",
-  "status": "submission_shell_structurally_ready_human_metadata_blocked",
+  "status": "submission_shell_and_docx_preview_validated_human_metadata_blocked",
   "journal": "Ecosphere",
   "manuscript_type": "Article",
   "subject_track": "Animal Ecology",
@@ -64,7 +64,20 @@
     "funding acknowledgments and grant identifiers confirmed",
     "conflict-of-interest statement confirmed",
     "complete inventory of any AI tools used beyond OpenAI ChatGPT",
-    "final decision on code/data permanent repository and DOI after acceptance"
+    "dual-publication/overlap statement confirmed by all authors"
   ],
-  "terminal_rule": "Do not alter scientific endpoints while resolving submission metadata or formatting. Any scientific change requires a new manuscript version."
+  "terminal_rule": "Do not alter scientific endpoints while resolving submission metadata or formatting. Any scientific change requires a new manuscript version.",
+  "metadata_template": "submission/ECOSPHERE_METADATA_TEMPLATE.json",
+  "word_preview": {
+    "builder": "scripts/build_ecosphere_submission_docx.py",
+    "preview_generated_and_visually_checked": true,
+    "preview_page_count": 31,
+    "preview_qa_date": "2026-09-28",
+    "author_complete_document_pending": true
+  },
+  "post_acceptance_tasks": [
+    "archive the exact code and derived-output version of record in a permanent repository",
+    "mint and insert the permanent archive DOI (planned: Zenodo)",
+    "update the final Open Research Statement with the version-of-record DOI"
+  ]
 }
