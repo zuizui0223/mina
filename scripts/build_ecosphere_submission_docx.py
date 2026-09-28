@@ -147,11 +147,13 @@ def _strip_submission_source(text: str) -> str:
 
 def _strip_caption_heading(text: str) -> str:
     lines = text.splitlines()
-    while lines and (
-        not lines[0].strip()
-        or lines[0].startswith("#")
-        or lines[0].startswith("**")
-    ):
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    # Remove only the file-level H1 ("Figure captions v5 ..."). Preserve the
+    # first actual caption heading ("## Figure 1 ...").
+    if lines and lines[0].startswith("# ") and not lines[0].startswith("## "):
+        lines.pop(0)
+    while lines and not lines[0].strip():
         lines.pop(0)
     return _normalize_submission_markdown("\n".join(lines).strip())
 
