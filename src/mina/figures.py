@@ -105,7 +105,7 @@ def figure3(data: Path, out: Path) -> None:
     import matplotlib.pyplot as plt
 
     raw = _rows(data / "figure3_hierarchy_raw.csv")
-    pairwise = _rows(data / "figure3_hierarchy_pairwise.csv")
+    count_error = _rows(data / "figure3_hierarchy_count_error.csv")
 
     fig, axes = plt.subplots(1, 2, figsize=(12.4, 4.8))
 
@@ -119,8 +119,13 @@ def figure3(data: Path, out: Path) -> None:
     axes[0].set_yticks(y, labels)
     axes[0].invert_yaxis()
     axes[0].set_xlabel("Excess beta variability (β − 1)")
-    axes[0].set_title("Raw abundance: nested beta transition")
-    axes[0].legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=2)
+    axes[0].set_title("Observed raw-abundance hierarchy")
+    axes[0].legend(
+        frameon=False,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.16),
+        ncol=2,
+    )
     axes[0].axvline(0, linewidth=0.8)
     axes[0].set_xlim(0, max(within) + 0.040)
     for i, r in enumerate(raw):
@@ -132,36 +137,44 @@ def figure3(data: Path, out: Path) -> None:
             fontsize=7.5,
         )
 
-    x = np.arange(len(pairwise))
-    series = (
-        ("among_islands", "Among islands", "s", -0.18),
-        ("COR", "Cormorant", "o", -0.06),
-        ("HUM", "Humble", "^", 0.06),
-        ("LIT", "Litchfield", "D", 0.18),
+    x = np.arange(len(count_error))
+    means = np.asarray([float(r["null_mean"]) for r in count_error])
+    lower = np.asarray([float(r["null_q_0_025"]) for r in count_error])
+    upper = np.asarray([float(r["null_q_0_975"]) for r in count_error])
+    observed = float(count_error[0]["observed"])
+    axes[1].errorbar(
+        x,
+        means,
+        yerr=np.vstack([means - lower, upper - means]),
+        fmt="o",
+        capsize=4,
     )
-    for key, label, marker, offset in series:
-        axes[1].scatter(
-            x + offset,
-            [float(r[key]) for r in pairwise],
-            marker=marker,
-            s=46,
-            label=label,
-        )
+    axes[1].axhline(
+        observed,
+        linestyle="--",
+        linewidth=1.2,
+        label=f"Observed = {observed:.3f}",
+    )
     axes[1].set_xticks(
         x,
-        ["Raw\nabundance", "Detrended\nlog1p", "Annual\nlog1p growth"],
+        ["Poisson", "Gamma-Poisson\nCV10%", "Gamma-Poisson\nCV20%"],
     )
-    axes[1].set_ylabel("Mean pairwise Pearson r")
-    axes[1].set_title("Component-count audit")
+    axes[1].set_ylabel("log(βwithin / βamong)")
+    axes[1].set_title("Complete-synchrony count-error null")
     axes[1].axhline(0.0, linewidth=0.8)
-    axes[1].set_ylim(-0.15, 1.05)
-    axes[1].legend(
-        frameon=False,
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.16),
-        ncol=2,
-        fontsize=8,
-    )
+    pad = max(0.003, 0.06 * float(np.max(upper) - np.min(lower)))
+    for i, row in enumerate(count_error):
+        p = float(row["one_sided_p"])
+        label = "p<0.00001" if p <= 1.0e-5 else f"p={p:.3f}"
+        axes[1].text(
+            i,
+            float(row["null_q_0_975"]) + pad,
+            label,
+            ha="center",
+            va="bottom",
+            fontsize=8,
+        )
+    axes[1].legend(frameon=False, loc="upper left")
 
     fig.tight_layout()
     _save(fig, out, "figure3_hierarchical_variability")
