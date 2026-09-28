@@ -16,8 +16,8 @@ import pyreadr
 import requests
 from pyproj import Transformer
 from requests.adapters import HTTPAdapter
-from shapely.geometry import Point, shape
-from shapely.ops import transform as shapely_transform
+from shapely.geometry import Point, Polygon
+from shapely.ops import transform as shapely_transform, unary_union
 from shapely.strtree import STRtree
 from urllib3.util.retry import Retry
 
@@ -110,12 +110,55 @@ def _candidate_sites(root: Path) -> pd.DataFrame:
     return out[["site_id", "site_name", "region", "latitude", "longitude"]]
 
 
+def _signed_area(coords: list[list[float]]) -> float:
+    area = 0.0
+    for i in range(len(coords) - 1):
+        x1, y1 = coords[i][0], coords[i][1]
+        x2, y2 = coords[i + 1][0], coords[i + 1][1]
+        area += x1 * y2 - x2 * y1
+    return 0.5 * area
+
+
+def _esri_rings_to_geometry(rings: list[list[list[float]]]):
+    """Convert Esri polygon rings in native projected coordinates to Shapely."""
+    outers = []
+    holes = []
+    repaired = 0
+    for ring in rings or []:
+        if len(ring) < 4:
+            continue
+        poly = Polygon(ring)
+        if poly.is_empty:
+            continue
+        if not poly.is_valid:
+            poly = poly.buffer(0)
+            repaired += 1
+        if poly.is_empty:
+            continue
+        if _signed_area(ring) < 0:
+            outers.append(poly)
+        else:
+            holes.append(poly)
+
+    if not outers:
+        outers = holes
+        holes = []
+
+    geom = unary_union(outers)
+    if holes:
+        geom = geom.difference(unary_union(holes))
+    if not geom.is_valid:
+        geom = geom.buffer(0)
+        repaired += 1
+    return geom, repaired
+
+
 def _download_all_land(
     session: requests.Session,
     layer_url: str,
     surface_field: str,
     object_id_field: str,
-    chunk_size: int = 100,
+    chunk_size: int = 50,
 ) -> tuple[list, list[dict], int, dict, object]:
     id_data = _get_json(
         session,
@@ -128,36 +171,6 @@ def _download_all_land(
     if not object_ids:
         raise RuntimeError("SCAR ADD returned zero land polygon IDs")
 
-    features = []
-    geojson_crs = None
-    for start in range(0, len(object_ids), chunk_size):
-        chunk = object_ids[start : start + chunk_size]
-        data = _get_json(
-            session,
-            f"{layer_url}/query",
-            f="geojson",
-            objectIds=",".join(str(v) for v in chunk),
-            outFields="*",
-            returnGeometry="true",
-            outSR=4326,
-            maxAllowableOffset=0.0001,
-        )
-        if geojson_crs is None:
-            geojson_crs = data.get("crs")
-        batch = data.get("features", [])
-        if len(batch) != len(chunk):
-            raise RuntimeError(
-                f"ADD object-ID chunk drift at {start}: "
-                f"{len(batch)} != {len(chunk)}"
-            )
-        features.extend(batch)
-
-    if len(features) != len(object_ids):
-        raise RuntimeError(
-            f"ADD retrieval drift: {len(features)} != {len(object_ids)}"
-        )
-
-    transformer = Transformer.from_crs(4326, 3031, always_xy=True)
     geoms = []
     attrs = []
     repaired = 0
@@ -165,24 +178,52 @@ def _download_all_land(
     raw_miny = float("inf")
     raw_maxx = float("-inf")
     raw_maxy = float("-inf")
-    for feature in features:
-        geom_value = feature.get("geometry")
-        if not geom_value:
-            continue
-        geom = shape(geom_value)
-        bx0, by0, bx1, by1 = geom.bounds
-        raw_minx = min(raw_minx, float(bx0))
-        raw_miny = min(raw_miny, float(by0))
-        raw_maxx = max(raw_maxx, float(bx1))
-        raw_maxy = max(raw_maxy, float(by1))
-        if not geom.is_valid:
-            geom = geom.buffer(0)
-            repaired += 1
-        projected = shapely_transform(transformer.transform, geom)
-        if projected.is_empty:
-            continue
-        geoms.append(projected)
-        attrs.append(feature.get("properties", {}))
+    spatial_reference = None
+
+    for start in range(0, len(object_ids), chunk_size):
+        chunk = object_ids[start : start + chunk_size]
+        data = _get_json(
+            session,
+            f"{layer_url}/query",
+            f="json",
+            objectIds=",".join(str(v) for v in chunk),
+            outFields="*",
+            returnGeometry="true",
+            outSR=3031,
+        )
+        if spatial_reference is None:
+            spatial_reference = data.get("spatialReference")
+        batch = data.get("features", [])
+        if len(batch) != len(chunk):
+            raise RuntimeError(
+                f"ADD object-ID chunk drift at {start}: "
+                f"{len(batch)} != {len(chunk)}"
+            )
+
+        for feature in batch:
+            geom_value = feature.get("geometry") or {}
+            rings = geom_value.get("rings") or []
+            for ring in rings:
+                for coord in ring:
+                    if len(coord) < 2:
+                        continue
+                    x, y = float(coord[0]), float(coord[1])
+                    raw_minx = min(raw_minx, x)
+                    raw_miny = min(raw_miny, y)
+                    raw_maxx = max(raw_maxx, x)
+                    raw_maxy = max(raw_maxy, y)
+
+            geom, n_repaired = _esri_rings_to_geometry(rings)
+            repaired += n_repaired
+            if geom.is_empty:
+                continue
+            geoms.append(geom)
+            attrs.append(feature.get("attributes", {}))
+
+    if len(geoms) != len(object_ids):
+        raise RuntimeError(
+            f"ADD retrieval/geometry drift: {len(geoms)} != {len(object_ids)}"
+        )
 
     raw_bounds = {
         "min_x": raw_minx,
@@ -190,7 +231,7 @@ def _download_all_land(
         "max_x": raw_maxx,
         "max_y": raw_maxy,
     }
-    return geoms, attrs, repaired, raw_bounds, geojson_crs
+    return geoms, attrs, repaired, raw_bounds, spatial_reference
 
 
 def audit(root: Path) -> dict:
@@ -201,7 +242,7 @@ def audit(root: Path) -> dict:
     if not object_id_field:
         raise RuntimeError("SCAR ADD layer has no objectIdField")
 
-    geoms, attrs, repaired, raw_bounds, geojson_crs = _download_all_land(
+    geoms, attrs, repaired, raw_bounds, native_spatial_reference = _download_all_land(
         session,
         layer_url,
         surface_field,
@@ -319,11 +360,12 @@ def audit(root: Path) -> dict:
 
     fields = [str(f.get("name", "")) for f in meta.get("fields", [])]
     return {
-        "schema_version": 4,
+        "schema_version": 5,
         "audit_id": "mina-antarctic-add-site-match-audit-v1",
         "implementation": (
-            "complete paginated SCAR ADD land layer downloaded through "
-            "simple attribute queries; distances calculated locally in EPSG:3031"
+            "complete SCAR ADD land layer downloaded as native Esri JSON "
+            "rings in EPSG:3031; no WGS84 GeoJSON round-trip; distances "
+            "calculated locally in EPSG:3031"
         ),
         "mapppdr_commit": PINNED_MAPPPDR_COMMIT,
         "candidate_species_ids": list(PRIMARY_SPECIES),
@@ -336,10 +378,10 @@ def audit(root: Path) -> dict:
         "scar_add_surface_field": surface_field,
         "scar_add_fields": fields,
         "downloaded_land_polygon_count": len(geoms),
-        "geometry_generalization_degrees": 0.0001,
+        "geometry_transport": "esri_json_native_epsg3031",
         "repaired_invalid_polygon_count": repaired,
-        "raw_geojson_coordinate_bounds": raw_bounds,
-        "raw_geojson_crs": geojson_crs,
+        "raw_native_coordinate_bounds_m": raw_bounds,
+        "native_spatial_reference": native_spatial_reference,
         "nearest_land_distance_quantiles_m": quantiles,
         "distance_summaries": summaries,
         "region_summary": region_summary,
