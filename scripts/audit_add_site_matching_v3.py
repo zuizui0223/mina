@@ -79,7 +79,13 @@ def session()->requests.Session:
     return s
 
 
-def query_ids(s:requests.Session,lon:float,lat:float,distance:int)->list[int]:
+def query_ids(
+    s:requests.Session,
+    lon:float,
+    lat:float,
+    distance:int,
+    max_attempts:int=20,
+)->list[int]:
     geometry=json.dumps({
         "x":float(lon),
         "y":float(lat),
@@ -97,19 +103,33 @@ def query_ids(s:requests.Session,lon:float,lat:float,distance:int)->list[int]:
     if distance>0:
         params["distance"]=int(distance)
         params["units"]="esriSRUnit_Meter"
-    r=s.get(LAYER+"/query",params=params,timeout=120)
-    r.raise_for_status()
-    x=r.json()
-    if "error" in x:
-        raise RuntimeError(x["error"])
-    return sorted(int(v) for v in (x.get("objectIds") or []))
+
+    for attempt in range(1,max_attempts+1):
+        r=s.get(LAYER+"/query",params=params,timeout=120)
+        if r.status_code==429:
+            retry_after=float(r.headers.get("Retry-After","65"))
+            time.sleep(max(65.0,retry_after))
+            continue
+        r.raise_for_status()
+        x=r.json()
+        error=x.get("error")
+        if error:
+            if int(error.get("code",0))==429:
+                time.sleep(65.0)
+                continue
+            raise RuntimeError(error)
+        return sorted(int(v) for v in (x.get("objectIds") or []))
+    raise RuntimeError(
+        f"ArcGIS quota retry exhausted at lon={lon}, lat={lat}, "
+        f"distance={distance}"
+    )
 
 
 def main()->int:
     p=argparse.ArgumentParser()
     p.add_argument("--mapppdr-dir",required=True,type=Path)
     p.add_argument("--out",required=True,type=Path)
-    p.add_argument("--delay-s",type=float,default=1.10)
+    p.add_argument("--delay-s",type=float,default=0.10)
     a=p.parse_args()
 
     sites=candidate_sites(a.mapppdr_dir)
@@ -134,6 +154,23 @@ def main()->int:
             "longitude":float(row["longitude"]),
             "matching_fids":matches,
         })
+        a.out.parent.mkdir(parents=True,exist_ok=True)
+        a.out.write_text(
+            json.dumps(
+                {
+                    "schema_version":3,
+                    "audit_id":"mina-antarctic-add-site-match-audit-v3",
+                    "status":"running",
+                    "completed_sites":len(records),
+                    "expected_sites":122,
+                    "api_calls":api_calls,
+                    "site_matches":records,
+                },
+                indent=2,
+                sort_keys=True,
+            )+"\\n",
+            encoding="utf-8",
+        )
 
     summaries={}
     selected=None
