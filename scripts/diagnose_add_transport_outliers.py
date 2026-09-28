@@ -180,7 +180,7 @@ def main() -> int:
         "requery_by_out_sr":requery,
         "interpretation_rule":{
             "transport_problem_if":"same FID requested in EPSG:3031 returns coordinates outside declared EPSG:3031 extent while 4326/3857 coordinates are geographically plausible",
-            "no_threshold_changes":true,
+            "no_threshold_changes":True,
         },
     }
     a.out.parent.mkdir(parents=True,exist_ok=True)
