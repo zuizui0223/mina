@@ -1,0 +1,219 @@
+name: ecosphere-v0-7-check
+
+on:
+  push:
+    branches:
+      - manuscript/ecosphere-v0.7-count-error-boundary
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_ECOSPHERE_V0_7.md"
+      - "docs/FIGURE_CAPTIONS_V6.md"
+      - "docs/REFERENCES_V5.bib"
+      - "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_7.json"
+      - "results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json"
+      - "src/mina/figure_data.py"
+      - "src/mina/figures.py"
+      - "tests/**"
+      - ".github/workflows/ecosphere-v0-7-check.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev,figures]"
+      - name: Run test suite
+        run: pytest
+      - name: Guard manuscript citations and frozen values
+        run: |
+          mina-manuscript-guard \
+            --manuscript docs/MANUSCRIPT_ECOSPHERE_V0_7.md \
+            --captions docs/FIGURE_CAPTIONS_V6.md \
+            --bibliography docs/REFERENCES_V5.bib \
+            --results results | tee build-ecosphere-v0-7-base-guard.json
+      - name: Guard v0.7 count-error claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          import math
+          import re
+          from pathlib import Path
+
+          manuscript=Path("docs/MANUSCRIPT_ECOSPHERE_V0_7.md").read_text()
+          captions=Path("docs/FIGURE_CAPTIONS_V6.md").read_text()
+          bibliography=Path("docs/REFERENCES_V5.bib").read_text()
+          contract=json.loads(Path(
+              "contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_7.json"
+          ).read_text())
+          hierarchy=json.loads(Path(
+              "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json"
+          ).read_text())
+          error=json.loads(Path(
+              "results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json"
+          ).read_text())
+          momentum=json.loads(Path(
+              "results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json"
+          ).read_text())
+
+          title=manuscript.splitlines()[0].removeprefix("# ").strip()
+          abstract=manuscript.split("## Abstract",1)[1].split(
+              "**Keywords:**",1
+          )[0]
+          words=re.findall(r"\b[\w’'-]+\b",re.sub(r"[*_]", "", abstract))
+          if len(title)>120:
+              raise SystemExit(f"title too long: {len(title)}")
+          if len(words)>350:
+              raise SystemExit(f"abstract too long: {len(words)}")
+
+          required = {
+              "1.0737":"observed beta within",
+              "1.0112":"observed beta among",
+              "86.4%":"observed log-beta share",
+              "0.924":"CV20 beta-within p",
+              "0.448":"CV20 contrast p",
+              "0.000010":"low-error Monte Carlo p",
+              "100,000":"simulation count",
+              "uncalibrated 20%":"CV20 calibration boundary",
+              "not used as rescue evidence":"centered-signal boundary",
+              "replicate-count":"replicate error boundary",
+              "±5%":"historical typical agreement target",
+              "±10%":"historical large-colony target",
+              "+0.1126":"two-lag N_eff coefficient",
+              "+0.000444":"two-lag held-out gain",
+              "separate conditional state signal":"N_eff/hierarchy separation",
+          }
+          missing={
+              label:token for token,label in required.items()
+              if token not in manuscript
+          }
+          if missing:
+              raise SystemExit(f"v0.7 required tokens missing: {missing}")
+
+          forbidden = [
+              "most detectable temporal compensation occurs within islands",
+              "principal observable temporal compensation lay below the island level",
+              "larger and robust variability reduction occurred",
+              "The strongest inference is thus hierarchical rather than predictive",
+              "hierarchy is measurement-error robust",
+          ]
+          found=[token for token in forbidden if token in manuscript]
+          if found:
+              raise SystemExit(
+                  f"v0.7 forbidden legacy claims present: {found}"
+              )
+
+          for cite in ("@patterson2001","@ccamlr2014"):
+              if cite not in manuscript:
+                  raise SystemExit(f"missing protocol citation {cite}")
+          for entry in ("patterson2001","ccamlr2014"):
+              if "{"+entry+"," not in bibliography:
+                  raise SystemExit(f"missing bibliography entry {entry}")
+
+          p=hierarchy["primary_raw_abundance"]
+          expected=contract["required_hierarchy_results"][
+              "beta_within_islands"
+          ]
+          if not math.isclose(
+              float(p["beta_within_islands"]),
+              float(expected),
+              rel_tol=0.0,
+              abs_tol=1e-12,
+          ):
+              raise SystemExit("hierarchy beta-within drift")
+
+          e=contract["required_hierarchy_count_error_boundary"]
+          checks = {
+              "poisson_beta": (
+                  e["poisson_beta_within_p"],
+                  error["error_models"]["poisson"]["raw_beta_within_p"],
+              ),
+              "poisson_contrast": (
+                  e["poisson_contrast_p"],
+                  error["error_models"]["poisson"][
+                      "raw_log_beta_contrast_p"
+                  ],
+              ),
+              "cv10_contrast": (
+                  e["cv10_contrast_p"],
+                  error["error_models"]["gamma_poisson_cv10"][
+                      "raw_log_beta_contrast_p"
+                  ],
+              ),
+              "cv20_beta": (
+                  e["cv20_beta_within_p"],
+                  error["error_models"]["gamma_poisson_cv20"][
+                      "raw_beta_within_p"
+                  ],
+              ),
+              "cv20_contrast": (
+                  e["cv20_contrast_p"],
+                  error["error_models"]["gamma_poisson_cv20"][
+                      "raw_log_beta_contrast_p"
+                  ],
+              ),
+          }
+          for label,(expected,observed) in checks.items():
+              if not math.isclose(
+                  float(expected),
+                  float(observed),
+                  rel_tol=0.0,
+                  abs_tol=1e-12,
+              ):
+                  raise SystemExit(
+                      f"{label} drift: {expected} != {observed}"
+                  )
+
+          if error["decision"][
+              "raw_hierarchy_measurement_error_robust"
+          ] is not False:
+              raise SystemExit(
+                  "error receipt no longer marks hierarchy non-robust"
+              )
+          if error["decision"][
+              "raw_hierarchy_unusual_under_poisson_and_cv10"
+          ] is not True:
+              raise SystemExit("low/moderate error boundary drifted")
+
+          m=momentum["lag1_lag2"]
+          neff_expected=contract["required_neff_boundary"][
+              "lag1_lag2_conditioned_coefficient"
+          ]
+          if not math.isclose(
+              float(neff_expected),
+              float(m["standardized_neff_beta"]),
+              rel_tol=0.0,
+              abs_tol=1e-12,
+          ):
+              raise SystemExit("N_eff momentum drift")
+
+          if "0.448" not in captions:
+              raise SystemExit(
+                  "Figure 3 caption missing CV20 boundary"
+              )
+          if "not proof of biological spatial insurance" not in captions:
+              raise SystemExit(
+                  "Figure 3 caption missing causal boundary"
+              )
+
+          print(json.dumps({
+              "status":"pass",
+              "title_chars":len(title),
+              "abstract_words":len(words),
+              "contract_id":contract["contract_id"],
+              "count_error_result_id":error["result_id"],
+          },indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecosphere-v0-7-check
+          path: |
+            docs/MANUSCRIPT_ECOSPHERE_V0_7.md
+            docs/FIGURE_CAPTIONS_V6.md
+            docs/REFERENCES_V5.bib
+            contracts/PALMER_ECOSPHERE_MANUSCRIPT_V0_7.json
+            results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json
+            build-ecosphere-v0-7-base-guard.json
