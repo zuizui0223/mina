@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-v4-source-generality-recovery",
+  "date": "2026-09-29",
+  "status": "pre_outcome_source_robustness_for_primary_generality_estimand",
+  "parents": [
+    "contracts/PAPER2_CROSS_SPECIES_GENERALITY_V4.json",
+    "results/PAPER2_V3_SOURCE_SENSITIVITY_RESULT_V1.json"
+  ],
+  "rationale": "Species-specific Adelie exclude-unknown recovery is below the frozen species-specific threshold (86/100), while the paper-level V4 estimand is the cross-species median gamma_AH. Robustness of the primary paper claim must therefore be tested directly without erasing the Adelie-specific limitation.",
+  "exclude_unknown": {
+    "supported_units": {
+      "ADPE": 40,
+      "CHPE": 30,
+      "GEPE": 28
+    },
+    "statistic": "median of the three species-specific V3 gamma_AH estimates in each replicate",
+    "common_crossover_truth": -0.35,
+    "gate": {
+      "max_abs_median_bias": 0.1,
+      "negative_fraction": 0.9,
+      "at_least_two_species_negative_fraction": 0.9,
+      "null_max_abs_median": 0.05,
+      "null_q05_q95_contains_zero": true
+    },
+    "species_specific_reporting": "Adelie 86/100 V3 sign recovery remains disclosed even if the cross-species statistic passes."
+  },
+  "ground_only": {
+    "supported_units": {
+      "ADPE": 14,
+      "CHPE": 26,
+      "GEPE": 23
+    },
+    "ADPE": "coverage_limited_nonblocking",
+    "statistic": "mean/median of CHPE and GEPE gamma_AH estimates",
+    "gate": {
+      "max_abs_median_bias": 0.1,
+      "both_species_negative_fraction": 0.9,
+      "null_max_abs_median": 0.05,
+      "null_q05_q95_contains_zero": true
+    }
+  },
+  "simulation": {
+    "replicates_per_scenario": 100,
+    "scenarios": [
+      "null",
+      "common crossover gamma_AH=-0.35"
+    ],
+    "estimator": "unchanged spatially adjusted V3",
+    "observation_calibration": "full synthetic 2100-record layout; source filter applies only to demographic reconstruction"
+  },
+  "unlock_rule": "Paper-level source robustness passes only if both exclude-unknown cross-species and ground-only CHPE/GEPE gates pass. This does not convert the Adelie species-specific sensitivity into a pass.",
+  "boundary": [
+    "No threshold is relaxed from V4/V3.",
+    "No real count magnitude is opened.",
+    "No favorable species subset is selected in exclude-unknown mode.",
+    "Universal wording remains prohibited if any species-specific robustness is limited."
+  ]
+}
