@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-integrated-sensitivity-support-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_observation_source_sensitivity_support_frozen_before_demographic_outcomes",
+  "paper_lane": "Paper 2",
+  "purpose": "Determine whether exclude-unknown and raw-ground-only demographic reconstructions retain enough frozen predictor-complete units to support pre-outcome integrated recovery, before any real count magnitude is opened.",
+  "modes": {
+    "exclude_unknown": {
+      "record_filter": "vantage_family != unknown",
+      "support_rule": ">=5 distinct breeding seasons, span >=10 years, and at least one season in both the first and last thirds of 1980-2025"
+    },
+    "ground_only": {
+      "record_filter": "raw vantage exactly ground; aerial/offshore direct counts are excluded",
+      "support_rule": ">=5 distinct breeding seasons, span >=10 years, and at least one season in both the first and last thirds of 1980-2025"
+    }
+  },
+  "process_frames": {
+    "ADPE": "predictor-complete CCAMLR primary frame from Gate 2E-A/V2",
+    "CHPE": "predictor-complete APBP-region primary frame from Gate 2E-A/V2",
+    "GEPE": "predictor-complete species-wide primary frame from Gate 2E-A/V2"
+  },
+  "estimability": {
+    "min_supported_units_per_species": 20,
+    "classification": {
+      "testable": ">=20 supported predictor-complete units",
+      "coverage_limited": "<20; report unavailable and do not broaden ground-only to all direct observations"
+    }
+  },
+  "downstream_recovery": {
+    "nuisance_calibration": "shared image offset and accuracy scales continue to be calibrated from the full frozen synthetic metadata in integrated recovery",
+    "filtered_role": "the sensitivity filter applies to the records used for demographic reconstruction/process fitting",
+    "thresholds": "use the same focal forcing/AxH recovery thresholds as the integrated primary estimator; do not relax for a sensitivity"
+  },
+  "boundary": [
+    "No real count magnitude is summarized, transformed, compared or modeled.",
+    "The count column is used only as a non-missingness flag to reconstruct the already-frozen cohort.",
+    "No radius, site trait, temporal window, forcing partition or interaction may change.",
+    "Ground-only means raw ground exactly, not the broader direct family."
+  ]
+}
