@@ -2,7 +2,20 @@
 """Outcome-blind forcing-support audit helpers for Paper 2 Gate 2C."""
 from __future__ import annotations
 
+import argparse
+import json
 import math
+from pathlib import Path
+
+import pandas as pd
+import pyreadr
+
+
+MAPPPDR_COMMIT = "88c73a507e0921b2541c218c71eaf16721bc6502"
+SPECIES = ("ADPE", "CHPE", "GEPE")
+EXPECTED_GATE0 = {"ADPE": 57, "CHPE": 46, "GEPE": 49}
+EXPECTED_BRIDGED = {"ADPE": 44, "CHPE": 34, "GEPE": 29}
+WINDOW = (1980, 2025)
 
 
 def _thirds(start: int, end: int) -> tuple[tuple[int, int], tuple[int, int], tuple[int, int]]:
@@ -185,3 +198,175 @@ def summarize_forcing_support(
         "window": [start, end],
         "species": species_result,
     }
+
+
+
+def _load_rda(path: Path, expected: str) -> pd.DataFrame:
+    result = pyreadr.read_r(str(path))
+    if expected in result:
+        value = result[expected]
+    elif len(result) == 1:
+        value = next(iter(result.values()))
+    else:
+        raise ValueError(f"cannot resolve {expected}: {list(result)}")
+    if not isinstance(value, pd.DataFrame):
+        raise TypeError(expected)
+    return value
+
+
+def _clean_label(value):
+    if pd.isna(value):
+        return None
+    text = str(value).strip()
+    return text if text else None
+
+
+def build_frozen_unit_rows(
+    obs: pd.DataFrame,
+    sites: pd.DataFrame,
+) -> list[dict]:
+    """Reconstruct the frozen 107 units and discard count magnitudes immediately."""
+    nest = obs[
+        obs["species_id"].isin(SPECIES)
+        & (obs["type"] == "nests")
+        & obs["count"].notna()
+    ].copy()
+    nest["year"] = pd.to_numeric(nest["year"], errors="coerce")
+    nest["season"] = pd.to_numeric(nest["season"], errors="coerce")
+
+    candidates: list[tuple[str, str]] = []
+    for (site_id, species_id), local in nest.dropna(subset=["year"]).groupby(
+        ["site_id", "species_id"]
+    ):
+        years = sorted({int(v) for v in local["year"]})
+        if len(years) >= 5 and max(years) - min(years) >= 10:
+            candidates.append((str(site_id), str(species_id)))
+
+    gate0_by_species = {
+        sp: sum(species_id == sp for _, species_id in candidates)
+        for sp in SPECIES
+    }
+    if gate0_by_species != EXPECTED_GATE0:
+        raise ValueError(f"Gate0 species drift: {gate0_by_species} != {EXPECTED_GATE0}")
+
+    grouped = {
+        (str(site_id), str(species_id)): local
+        for (site_id, species_id), local in nest.groupby(["site_id", "species_id"])
+    }
+    start, end = WINDOW
+    first, _, last = _thirds(start, end)
+    bridged: list[tuple[str, str, list[int]]] = []
+    for site_id, species_id in candidates:
+        local = grouped[(site_id, species_id)]
+        seasons = sorted(
+            {
+                int(v)
+                for v in pd.to_numeric(local["season"], errors="coerce").dropna()
+                if start <= int(v) <= end
+            }
+        )
+        n = len(seasons)
+        span = max(seasons) - min(seasons) if seasons else 0
+        has_first = any(first[0] <= v <= first[1] for v in seasons)
+        has_last = any(last[0] <= v <= last[1] for v in seasons)
+        if n >= 5 and span >= 10 and has_first and has_last:
+            bridged.append((site_id, species_id, seasons))
+
+    validate_frozen_cohort(len(candidates), len(bridged))
+    bridged_by_species = {
+        sp: sum(species_id == sp for _, species_id, _ in bridged)
+        for sp in SPECIES
+    }
+    if bridged_by_species != EXPECTED_BRIDGED:
+        raise ValueError(
+            f"bridged species drift: {bridged_by_species} != {EXPECTED_BRIDGED}"
+        )
+
+    meta = sites.copy()
+    meta["site_id"] = meta["site_id"].astype(str)
+    meta = meta.set_index("site_id")
+
+    rows: list[dict] = []
+    for site_id, species_id, seasons in bridged:
+        if site_id not in meta.index:
+            raise ValueError(f"missing site metadata: {site_id}")
+        m = meta.loc[site_id]
+        rows.append(
+            {
+                "unit_id": f"{species_id}|{site_id}",
+                "site_id": site_id,
+                "species_id": species_id,
+                "region": _clean_label(m.get("region")),
+                "ccamlr_id": _clean_label(m.get("ccamlr_id")),
+                "first_observed_season": min(seasons),
+                "last_observed_season": max(seasons),
+                "n_observed_seasons": len(seasons),
+                "seasons": seasons,
+            }
+        )
+    return sorted(rows, key=lambda r: (r["species_id"], r["site_id"]))
+
+
+def audit(root: Path) -> dict:
+    data = root / "data"
+    obs = _load_rda(data / "penguin_obs.rda", "penguin_obs")
+    sites = _load_rda(data / "sites.rda", "sites")
+    rows = build_frozen_unit_rows(obs, sites)
+    support = summarize_forcing_support(rows, WINDOW[0], WINDOW[1])
+    selected = {
+        sp: support["species"][sp]["selected_level"]
+        for sp in SPECIES
+    }
+    return {
+        "schema_version": 1,
+        "audit_id": "mina-paper2-forcing-support-audit-v1",
+        "mapppdr_commit": MAPPPDR_COMMIT,
+        "primary_time_field": "season",
+        "primary_window": list(WINDOW),
+        "bridged_site_species_units": len(rows),
+        "species_units": {
+            sp: sum(r["species_id"] == sp for r in rows)
+            for sp in SPECIES
+        },
+        "support": support,
+        "decision": {
+            "selected_forcing_level_by_species": selected,
+            "all_species_forcing_identifiable": all(v is not None for v in selected.values()),
+            "selection_rule": (
+                "choose APBP region, else CCAMLR, else species-wide; "
+                "a level is selectable only when every frozen unit belongs "
+                "to a qualifying group at that level"
+            ),
+            "no_count_magnitudes_opened": True,
+        },
+        "unit_rows": rows,
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mapppdr-dir", required=True, type=Path)
+    parser.add_argument("--out-json", required=True, type=Path)
+    parser.add_argument("--out-csv", required=True, type=Path)
+    args = parser.parse_args()
+
+    result = audit(args.mapppdr_dir)
+    args.out_json.parent.mkdir(parents=True, exist_ok=True)
+    json_result = {k: v for k, v in result.items() if k != "unit_rows"}
+    args.out_json.write_text(
+        json.dumps(json_result, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    csv_rows = []
+    for row in result["unit_rows"]:
+        out = dict(row)
+        out["seasons"] = ";".join(str(v) for v in row["seasons"])
+        csv_rows.append(out)
+    pd.DataFrame(csv_rows).to_csv(args.out_csv, index=False)
+
+    print(json.dumps(json_result, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
