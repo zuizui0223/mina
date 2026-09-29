@@ -1,0 +1,61 @@
+name: paper2-r-main-recovery-v1
+
+concurrency:
+  group: paper2-r-main-recovery-v1-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [analysis/paper2-r-main-v1]
+    paths:
+      - "contracts/PAPER2_R_MAIN_RECOVERY_V1.json"
+      - "scripts/simulate_paper2_r_main_recovery_v1.py"
+      - ".github/workflows/paper2-r-main-recovery-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  recover:
+    runs-on: ubuntu-22.04
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas pyreadr
+      - name: Compile frozen R recovery runner
+        run: python -m py_compile scripts/simulate_paper2_r_main_recovery_v1.py
+      - name: Fetch pinned mapppdr
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Download frozen predictor and forcing inputs
+        run: |
+          mkdir -p build/forcing build/options build/terrain
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+          gh run download 36490682577 -n antarctic-penguin-terrain-atlas-v1 -D build/terrain
+          test -f build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json
+          test -f build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv
+          test -f build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv
+          test -f build/terrain/ANTARCTIC_PENGUIN_TERRAIN_ATLAS_V1.csv
+      - name: Run frozen synthetic terrain recovery
+        run: |
+          python -m scripts.simulate_paper2_r_main_recovery_v1 \
+            --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --breeding-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --terrain-csv build/terrain/ANTARCTIC_PENGUIN_TERRAIN_ATLAS_V1.csv \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/PAPER2_R_MAIN_RECOVERY_RESULT_V1.json \
+            --replicates 100
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-r-main-recovery-v1
+          path: build/PAPER2_R_MAIN_RECOVERY_RESULT_V1.json
+          if-no-files-found: warn
