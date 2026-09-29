@@ -3,13 +3,160 @@
   "bridged_site_species_units": 107,
   "decision": {
     "all_species_forcing_identifiable": true,
+    "modeling_eligibility_by_species": {
+      "ADPE": {
+        "coverage_fraction": 0.9545454545454546,
+        "covered_units": [
+          "ADPE|ADAR",
+          "ADPE|ANNE",
+          "ADPE|ARDL",
+          "ADPE|BEAU",
+          "ADPE|BERT",
+          "ADPE|BISC",
+          "ADPE|BONG",
+          "ADPE|BRDM",
+          "ADPE|BRDN",
+          "ADPE|BRDS",
+          "ADPE|CHAL",
+          "ADPE|CMID",
+          "ADPE|CNOR",
+          "ADPE|COTT",
+          "ADPE|CRZE",
+          "ADPE|CRZW",
+          "ADPE|CSOU",
+          "ADPE|DOWN",
+          "ADPE|DUKE",
+          "ADPE|FISH",
+          "ADPE|FRAE",
+          "ADPE|FRAW",
+          "ADPE|HUMB",
+          "ADPE|INEX",
+          "ADPE|JONE",
+          "ADPE|LION",
+          "ADPE|LLAN",
+          "ADPE|MAND",
+          "ADPE|NORF",
+          "ADPE|PCHA",
+          "ADPE|PENG",
+          "ADPE|PEPO",
+          "ADPE|PETE",
+          "ADPE|PHIL",
+          "ADPE|POSS",
+          "ADPE|PTHO",
+          "ADPE|ROYD",
+          "ADPE|STRA",
+          "ADPE|SVEN",
+          "ADPE|WHEA",
+          "ADPE|WOOD",
+          "ADPE|YALO"
+        ],
+        "excluded_units": [
+          "ADPE|PGEO",
+          "ADPE|WPEC"
+        ],
+        "level": "ccamlr",
+        "qualifying_groups": [
+          "48.1",
+          "88.1"
+        ]
+      },
+      "CHPE": {
+        "coverage_fraction": 0.9705882352941176,
+        "covered_units": [
+          "CHPE|ARDL",
+          "CHPE|BART",
+          "CHPE|DEMA",
+          "CHPE|DUPT",
+          "CHPE|ECKE",
+          "CHPE|FARE",
+          "CHPE|FORT",
+          "CHPE|GAST",
+          "CHPE|GEOR",
+          "CHPE|HALF",
+          "CHPE|HANN",
+          "CHPE|HYDR",
+          "CHPE|HYDS",
+          "CHPE|LION",
+          "CHPE|LLAN",
+          "CHPE|ORNE",
+          "CHPE|PALA",
+          "CHPE|PAPT",
+          "CHPE|PCHA",
+          "CHPE|PENG",
+          "CHPE|PETE",
+          "CHPE|PING",
+          "CHPE|RENI",
+          "CHPE|SPIG",
+          "CHPE|SPIP",
+          "CHPE|SPRI",
+          "CHPE|STRA",
+          "CHPE|TETR",
+          "CHPE|TURR",
+          "CHPE|UCHA",
+          "CHPE|USEF",
+          "CHPE|WATE",
+          "CHPE|WEEK"
+        ],
+        "excluded_units": [
+          "CHPE|STNK"
+        ],
+        "level": "apbp_region",
+        "qualifying_groups": [
+          "Central-west Antarctic Peninsula",
+          "South Shetland Islands"
+        ]
+      },
+      "GEPE": {
+        "coverage_fraction": 0.9655172413793104,
+        "covered_units": [
+          "GEPE|ARDL",
+          "GEPE|BART",
+          "GEPE|BISC",
+          "GEPE|BRYE",
+          "GEPE|CIER",
+          "GEPE|CUVE",
+          "GEPE|DAMO",
+          "GEPE|DANC",
+          "GEPE|GEOR",
+          "GEPE|GLAN",
+          "GEPE|HUMP",
+          "GEPE|JOUB",
+          "GEPE|JOUG",
+          "GEPE|LION",
+          "GEPE|LLAN",
+          "GEPE|LOUB",
+          "GEPE|MIKK",
+          "GEPE|ONEI",
+          "GEPE|ORNE",
+          "GEPE|PCHA",
+          "GEPE|PETE",
+          "GEPE|PLEN",
+          "GEPE|RONE",
+          "GEPE|SHIR",
+          "GEPE|SKOT",
+          "GEPE|STRA",
+          "GEPE|USEF",
+          "GEPE|YANK"
+        ],
+        "excluded_units": [
+          "GEPE|STNK"
+        ],
+        "level": "apbp_region",
+        "qualifying_groups": [
+          "Central-west Antarctic Peninsula",
+          "South Shetland Islands"
+        ]
+      }
+    },
+    "modeling_selection_rule": "choose the finest APBP or CCAMLR level where qualifying groups cover at least 95% of frozen units and at least two groups qualify; otherwise use species-wide if it qualifies; unsupported units are excluded only from lambda coupling estimation",
     "no_count_magnitudes_opened": true,
-    "selected_forcing_level_by_species": {
+    "primary_coupling_units": 103,
+    "strict_complete_coverage_level_by_species": {
       "ADPE": "species_wide",
       "CHPE": "ccamlr",
       "GEPE": "ccamlr"
     },
-    "selection_rule": "choose APBP region, else CCAMLR, else species-wide; a level is selectable only when every frozen unit belongs to a qualifying group at that level"
+    "strict_selection_rule": "choose APBP region, else CCAMLR, else species-wide; a strict level is selectable only when every frozen unit belongs to a qualifying group at that level"
   },
   "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
   "primary_time_field": "season",
@@ -435,6 +582,62 @@
             ]
           }
         },
+        "modeling_eligibility": {
+          "coverage_fraction": 0.9545454545454546,
+          "covered_units": [
+            "ADPE|ADAR",
+            "ADPE|ANNE",
+            "ADPE|ARDL",
+            "ADPE|BEAU",
+            "ADPE|BERT",
+            "ADPE|BISC",
+            "ADPE|BONG",
+            "ADPE|BRDM",
+            "ADPE|BRDN",
+            "ADPE|BRDS",
+            "ADPE|CHAL",
+            "ADPE|CMID",
+            "ADPE|CNOR",
+            "ADPE|COTT",
+            "ADPE|CRZE",
+            "ADPE|CRZW",
+            "ADPE|CSOU",
+            "ADPE|DOWN",
+            "ADPE|DUKE",
+            "ADPE|FISH",
+            "ADPE|FRAE",
+            "ADPE|FRAW",
+            "ADPE|HUMB",
+            "ADPE|INEX",
+            "ADPE|JONE",
+            "ADPE|LION",
+            "ADPE|LLAN",
+            "ADPE|MAND",
+            "ADPE|NORF",
+            "ADPE|PCHA",
+            "ADPE|PENG",
+            "ADPE|PEPO",
+            "ADPE|PETE",
+            "ADPE|PHIL",
+            "ADPE|POSS",
+            "ADPE|PTHO",
+            "ADPE|ROYD",
+            "ADPE|STRA",
+            "ADPE|SVEN",
+            "ADPE|WHEA",
+            "ADPE|WOOD",
+            "ADPE|YALO"
+          ],
+          "excluded_units": [
+            "ADPE|PGEO",
+            "ADPE|WPEC"
+          ],
+          "level": "ccamlr",
+          "qualifying_groups": [
+            "48.1",
+            "88.1"
+          ]
+        },
         "n_units": 44,
         "selected_level": "species_wide"
       },
@@ -723,6 +926,52 @@
             ]
           }
         },
+        "modeling_eligibility": {
+          "coverage_fraction": 0.9705882352941176,
+          "covered_units": [
+            "CHPE|ARDL",
+            "CHPE|BART",
+            "CHPE|DEMA",
+            "CHPE|DUPT",
+            "CHPE|ECKE",
+            "CHPE|FARE",
+            "CHPE|FORT",
+            "CHPE|GAST",
+            "CHPE|GEOR",
+            "CHPE|HALF",
+            "CHPE|HANN",
+            "CHPE|HYDR",
+            "CHPE|HYDS",
+            "CHPE|LION",
+            "CHPE|LLAN",
+            "CHPE|ORNE",
+            "CHPE|PALA",
+            "CHPE|PAPT",
+            "CHPE|PCHA",
+            "CHPE|PENG",
+            "CHPE|PETE",
+            "CHPE|PING",
+            "CHPE|RENI",
+            "CHPE|SPIG",
+            "CHPE|SPIP",
+            "CHPE|SPRI",
+            "CHPE|STRA",
+            "CHPE|TETR",
+            "CHPE|TURR",
+            "CHPE|UCHA",
+            "CHPE|USEF",
+            "CHPE|WATE",
+            "CHPE|WEEK"
+          ],
+          "excluded_units": [
+            "CHPE|STNK"
+          ],
+          "level": "apbp_region",
+          "qualifying_groups": [
+            "Central-west Antarctic Peninsula",
+            "South Shetland Islands"
+          ]
+        },
         "n_units": 34,
         "selected_level": "ccamlr"
       },
@@ -981,6 +1230,47 @@
             ]
           }
         },
+        "modeling_eligibility": {
+          "coverage_fraction": 0.9655172413793104,
+          "covered_units": [
+            "GEPE|ARDL",
+            "GEPE|BART",
+            "GEPE|BISC",
+            "GEPE|BRYE",
+            "GEPE|CIER",
+            "GEPE|CUVE",
+            "GEPE|DAMO",
+            "GEPE|DANC",
+            "GEPE|GEOR",
+            "GEPE|GLAN",
+            "GEPE|HUMP",
+            "GEPE|JOUB",
+            "GEPE|JOUG",
+            "GEPE|LION",
+            "GEPE|LLAN",
+            "GEPE|LOUB",
+            "GEPE|MIKK",
+            "GEPE|ONEI",
+            "GEPE|ORNE",
+            "GEPE|PCHA",
+            "GEPE|PETE",
+            "GEPE|PLEN",
+            "GEPE|RONE",
+            "GEPE|SHIR",
+            "GEPE|SKOT",
+            "GEPE|STRA",
+            "GEPE|USEF",
+            "GEPE|YANK"
+          ],
+          "excluded_units": [
+            "GEPE|STNK"
+          ],
+          "level": "apbp_region",
+          "qualifying_groups": [
+            "Central-west Antarctic Peninsula",
+            "South Shetland Islands"
+          ]
+        },
         "n_units": 29,
         "selected_level": "ccamlr"
       }
@@ -993,10 +1283,10 @@
   "result_id": "mina-paper2-forcing-support-audit-result-v1",
   "validated_date": "2026-09-29",
   "execution": {
-    "workflow_run_id": 36515672339,
-    "artifact_id": 11011385739,
-    "artifact_digest": "sha256:6c6ece944a9c73df8b3137da2c9bd267289d71588830294df1029013459a271f",
-    "head_sha": "56277d701299bd79b1161c48a28363a836ed148b",
+    "workflow_run_id": 36516089547,
+    "artifact_id": 11011360768,
+    "artifact_digest": "sha256:901917cd9f515088239418e30dcbd73831366f16036b45684e0e0654bf3fbebd",
+    "head_sha": "881b1b0a022f754e90e13d950510b5519d5475c4",
     "conclusion": "success"
   }
 }
