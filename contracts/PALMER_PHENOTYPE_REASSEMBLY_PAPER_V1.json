@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-phenotype-reassembly-paper-v1",
+  "date": "2026-09-29",
+  "status": "post_outcome_extension_frozen_before_within_year_transfer_analysis",
+  "lane": "independent_ecological_short_paper",
+  "relationship_to_mina_program": {
+    "paper1_ecosphere_v1_modified": false,
+    "paper2_macroecology_modified": false,
+    "new_lane_name": "Palmer phenotype reassembly",
+    "repository": "zuizui0223/mina"
+  },
+  "working_title": "Apparent island phenotypes in Palmer penguins are compositional and temporally reassembled",
+  "one_sentence_claim": "Functional differentiation among neighboring Palmer breeding sites is generated mainly by species sorting, while within Adelie penguins island-associated morphology is temporally labile and transfers poorly across years.",
+  "ecological_question": "Does a persistent within-species island phenotype remain after species turnover is removed, or are island-associated trait differences reassembled among years?",
+  "evidence_stack": {
+    "community_scale": {
+      "source": "frozen ODSP Stage-2 Palmer Penguins result imported as provenance only",
+      "naive_pooled_morphology_gain": 0.3894565006712757,
+      "species_layer_gain": 0.5360132625954789,
+      "species_conditioned_morphology_gain": -0.08374806363025576,
+      "ecological_role": "establish that the conspicuous assemblage-level island phenotype is mainly compositional rather than a stable within-species morphology effect",
+      "method_novelty_claim": false
+    },
+    "adelie_existing_three_year": {
+      "source": "results/EXPLORATORY_RESULT_V1.json",
+      "raw_rows": 152,
+      "structural_traits": [
+        "bill_length",
+        "bill_depth",
+        "flipper_length"
+      ],
+      "body_mass_role": "condition-sensitive secondary trait only",
+      "isotopes_role": "secondary prebreeding niche sensitivity only",
+      "existing_cross_year_structural_balanced_accuracy": 0.34237329434697855,
+      "chance_reference": 0.3333333333333333,
+      "pairwise_sign_reversals": {
+        "bill_length": "3/3",
+        "bill_depth": "3/3",
+        "flipper_length": "2/3",
+        "body_mass": "3/3",
+        "delta15N": "3/3",
+        "delta13C": "3/3"
+      }
+    }
+  },
+  "new_extension": {
+    "analysis_id": "within_year_vs_cross_year_island_transfer_v1",
+    "result_opened": false,
+    "primary_trait_set": [
+      "Culmen Length (mm)",
+      "Culmen Depth (mm)",
+      "Flipper Length (mm)"
+    ],
+    "secondary_trait_set": [
+      "Delta 15 N (o/oo)",
+      "Delta 13 C (o/oo)"
+    ],
+    "islands": [
+      "Biscoe",
+      "Dream",
+      "Torgersen"
+    ],
+    "years": [
+      "PAL0708",
+      "PAL0809",
+      "PAL0910"
+    ],
+    "sex_adjustment": true,
+    "classifier": "nearest centroid after training-only sex centering and training-only feature scaling",
+    "within_year_validation": "leave-one-individual-out within each year; every heldout individual is classified from same-year training individuals only",
+    "cross_year_validation": "existing leave-one-year-out; heldout year is never used to estimate sex means, scales or island centroids",
+    "metric": "balanced accuracy across the three islands",
+    "primary_summary": [
+      "within-year balanced accuracy by year and mean across years",
+      "leave-one-year-out balanced accuracy by heldout year and mean across years",
+      "persistence_gap = mean_within_year_balanced_accuracy - mean_cross_year_balanced_accuracy"
+    ],
+    "no_model_tuning": true,
+    "no_alternate_classifier_after_result": true,
+    "no_trait_subset_search": true
+  },
+  "interpretation_rules": {
+    "supports_temporal_reassembly_if": [
+      "primary structural within-year mean balanced accuracy exceeds the frozen one-third chance reference",
+      "primary structural persistence_gap is positive",
+      "cross-year structural mean remains near the frozen chance reference",
+      "existing sign reversals remain descriptively concordant"
+    ],
+    "persistent_ecotype_support_requires": [
+      "cross-year structural mean balanced accuracy materially above one-third chance",
+      "fixed island effects consistent across years rather than repeated sign reversals"
+    ],
+    "no_binary_significance_gate": true,
+    "reason": "three years are too few to turn this post-outcome extension into a confirmatory population-level test; effect size and transfer contrast are primary"
+  },
+  "manuscript_role": {
+    "central_results_order": [
+      "assemblage-level island phenotype is dominated by species composition",
+      "within Adelie fixed island effects are weak",
+      "island contrasts reverse across years",
+      "same-year versus cross-year transfer distinguishes ephemeral spatial structure from persistent island phenotype"
+    ],
+    "ecological_terms": [
+      "species sorting",
+      "community assembly",
+      "temporal reassembly",
+      "functional differentiation",
+      "breeding-site identity"
+    ],
+    "prohibited_method_framing": [
+      "ODSP framework paper",
+      "information-transfer method novelty",
+      "cross-validation methods paper"
+    ]
+  },
+  "boundaries": [
+    "No local adaptation claim.",
+    "No individual plasticity claim because individuals are not repeatedly measured.",
+    "No causal island habitat mechanism claim.",
+    "No claim that isotopes measure local summer island foraging.",
+    "No general island-biogeographic law from three islands and three years.",
+    "Biscoe Point long-term replacement is contextual assembly evidence and not a replicate of the three Palmer Penguins island sample."
+  ],
+  "terminal_rule": "After the single within-year versus cross-year extension is frozen, no alternate classifier, trait subset, distance metric, year grouping, or rescue analysis may be added to strengthen this lane."
+}
