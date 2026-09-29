@@ -1,0 +1,505 @@
+{
+  "audit_id": "mina-paper2-integrated-recovery-v1",
+  "decision": {
+    "all_species_have_integrated_scale": false,
+    "counts_may_be_opened": false,
+    "no_real_demographic_count_magnitudes_opened": true,
+    "primary_integrated_gate_passed": false,
+    "primary_observation_gate_passed": true,
+    "selected_integrated_scale_by_species": {
+      "ADPE": null,
+      "CHPE": null,
+      "GEPE": null
+    },
+    "specieswide_integrated_gate_passed": false,
+    "specieswide_observation_gate_passed": true,
+    "specieswide_sensitivity_completed": true
+  },
+  "primary": {
+    "gate": {
+      "finite_estimate_fraction": 1,
+      "observation_checks": {
+        "accuracy1_bias": true,
+        "accuracy2plus_bias": true,
+        "offset_bias": true
+      },
+      "passes": false,
+      "species_pass": {
+        "ADPE": false,
+        "CHPE": false,
+        "GEPE": false
+      }
+    },
+    "observation": {
+      "delta_image": {
+        "bias": -0.0006421572914547535,
+        "median": 0.13911978508370387,
+        "q05": 0.10322312793422866,
+        "q95": 0.17049343183353005
+      },
+      "sigma1": {
+        "median": 0.04922756645597136,
+        "relative_bias": 0.008964968533829146
+      },
+      "sigma2plus": {
+        "median": 0.213552798961829,
+        "relative_bias": -0.042980190536073236
+      },
+      "truth": {
+        "delta_image": 0.13976194237515863,
+        "sigma1": 0.04879016416943204,
+        "sigma2plus": 0.22314355131420976
+      }
+    },
+    "observation_gate": {
+      "checks": {
+        "accuracy1_bias": true,
+        "accuracy2plus_bias": true,
+        "offset_bias": true
+      },
+      "passes": true
+    },
+    "replicates_per_scenario": 100,
+    "simulation": {
+      "delta_image": 0.13976194237515863,
+      "drift_mean": -0.01,
+      "drift_sd": 0.01,
+      "forcing_sd": 0.08,
+      "loading_sd": 0.15,
+      "process_sd": 0.04,
+      "sigma1": 0.04879016416943204,
+      "sigma2plus": 0.22314355131420976
+    },
+    "species": {
+      "ADPE": {
+        "crossover": {
+          "median_gamma_a": 0.02285906058256581,
+          "median_gamma_ah": -0.29318316570536795,
+          "median_lambda_correlation": 0.16862226506271744,
+          "negative_gamma_a_fraction": 0.46,
+          "negative_gamma_ah_fraction": 0.71,
+          "q05_gamma_a": -0.6325768108068052,
+          "q05_gamma_ah": -1.4018663373193738,
+          "q95_gamma_a": 0.8279326936142377,
+          "q95_gamma_ah": 0.8604286912634844
+        },
+        "forcing_groups": {
+          "48.1": {
+            "median_corr": 0.6268267020497502,
+            "q05_corr": 0.32931321124306995
+          },
+          "88.1": {
+            "median_corr": 0.3056775706006276,
+            "q05_corr": -0.07362577323487637
+          }
+        },
+        "gate": {
+          "checks": {
+            "crossover_bias": true,
+            "crossover_sign": false,
+            "factor_median": false,
+            "factor_q05": false,
+            "null_center": false,
+            "null_contains_zero": true,
+            "simple_a_bias": true,
+            "simple_a_sign": false,
+            "simple_no_spurious_crossover": false
+          },
+          "passes": false
+        },
+        "null": {
+          "median_gamma_a": 0.08294977667054303,
+          "median_gamma_ah": 0.1002526185885351,
+          "median_lambda_correlation": 0.08490830174699165,
+          "negative_gamma_a_fraction": 0.43,
+          "negative_gamma_ah_fraction": 0.44,
+          "q05_gamma_a": -0.5651758891606824,
+          "q05_gamma_ah": -0.9255713583607621,
+          "q95_gamma_a": 0.9079790496807696,
+          "q95_gamma_ah": 0.996333327668928
+        },
+        "simple_buffering": {
+          "median_gamma_a": -0.1873991225895673,
+          "median_gamma_ah": 0.07764630628885844,
+          "median_lambda_correlation": 0.12846831453528032,
+          "negative_gamma_a_fraction": 0.67,
+          "negative_gamma_ah_fraction": 0.46,
+          "q05_gamma_a": -0.8534095509590218,
+          "q05_gamma_ah": -1.2220341774733259,
+          "q95_gamma_a": 0.5857992050870109,
+          "q95_gamma_ah": 1.0229908814778914
+        }
+      },
+      "CHPE": {
+        "crossover": {
+          "median_gamma_a": -0.08614793870236231,
+          "median_gamma_ah": -0.31162480504353873,
+          "median_lambda_correlation": 0.2723676014853889,
+          "negative_gamma_a_fraction": 0.66,
+          "negative_gamma_ah_fraction": 0.93,
+          "q05_gamma_a": -0.4268943620498253,
+          "q05_gamma_ah": -0.590110783089239,
+          "q95_gamma_a": 0.3638940034691421,
+          "q95_gamma_ah": 0.061530024627479286
+        },
+        "forcing_groups": {
+          "Central-west Antarctic Peninsula": {
+            "median_corr": 0.4651113674706165,
+            "q05_corr": 0.12581560853337442
+          },
+          "South Shetland Islands": {
+            "median_corr": 0.6358486131007888,
+            "q05_corr": 0.30064119094568886
+          }
+        },
+        "gate": {
+          "checks": {
+            "crossover_bias": true,
+            "crossover_sign": true,
+            "factor_median": false,
+            "factor_q05": false,
+            "null_center": true,
+            "null_contains_zero": true,
+            "simple_a_bias": true,
+            "simple_a_sign": true,
+            "simple_no_spurious_crossover": true
+          },
+          "passes": false
+        },
+        "null": {
+          "median_gamma_a": -0.06768615645021722,
+          "median_gamma_ah": 0.03480337029435547,
+          "median_lambda_correlation": 0.1314519252061835,
+          "negative_gamma_a_fraction": 0.67,
+          "negative_gamma_ah_fraction": 0.4,
+          "q05_gamma_a": -0.43583247620512544,
+          "q05_gamma_ah": -0.19590916617639334,
+          "q95_gamma_a": 0.2828766038004237,
+          "q95_gamma_ah": 0.3061169424663449
+        },
+        "simple_buffering": {
+          "median_gamma_a": -0.2944838798478845,
+          "median_gamma_ah": 0.029058423104061103,
+          "median_lambda_correlation": 0.3104239906538995,
+          "negative_gamma_a_fraction": 0.93,
+          "negative_gamma_ah_fraction": 0.47,
+          "q05_gamma_a": -0.5301451843758005,
+          "q05_gamma_ah": -0.2859338628461522,
+          "q95_gamma_a": 0.018466722476605663,
+          "q95_gamma_ah": 0.3010396386357066
+        }
+      },
+      "GEPE": {
+        "crossover": {
+          "median_gamma_a": -0.030027851765326588,
+          "median_gamma_ah": -0.3010001066458068,
+          "median_lambda_correlation": 0.5190293853506653,
+          "negative_gamma_a_fraction": 0.56,
+          "negative_gamma_ah_fraction": 0.9,
+          "q05_gamma_a": -0.6902595114341894,
+          "q05_gamma_ah": -0.7152372895081412,
+          "q95_gamma_a": 0.5446595216494547,
+          "q95_gamma_ah": 0.22705319980285285
+        },
+        "forcing_groups": {
+          "GEPE": {
+            "median_corr": 0.7403046338645788,
+            "q05_corr": 0.39384175992114206
+          }
+        },
+        "gate": {
+          "checks": {
+            "crossover_bias": true,
+            "crossover_sign": true,
+            "factor_median": true,
+            "factor_q05": true,
+            "null_center": true,
+            "null_contains_zero": true,
+            "simple_a_bias": true,
+            "simple_a_sign": false,
+            "simple_no_spurious_crossover": true
+          },
+          "passes": false
+        },
+        "null": {
+          "median_gamma_a": -0.032217993081662205,
+          "median_gamma_ah": 0.029059680774136783,
+          "median_lambda_correlation": 0.17416561947509407,
+          "negative_gamma_a_fraction": 0.59,
+          "negative_gamma_ah_fraction": 0.46,
+          "q05_gamma_a": -0.6206338232519621,
+          "q05_gamma_ah": -0.4821407410358127,
+          "q95_gamma_a": 0.45417976275692634,
+          "q95_gamma_ah": 0.35859430296882283
+        },
+        "simple_buffering": {
+          "median_gamma_a": -0.21138837187609988,
+          "median_gamma_ah": 0.043767240725867525,
+          "median_lambda_correlation": 0.35686420094167426,
+          "negative_gamma_a_fraction": 0.77,
+          "negative_gamma_ah_fraction": 0.39,
+          "q05_gamma_a": -0.6920255182371824,
+          "q05_gamma_ah": -0.2589765661748745,
+          "q95_gamma_a": 0.49265306754015353,
+          "q95_gamma_ah": 0.41802261410059716
+        }
+      }
+    }
+  },
+  "primary_frame_units": {
+    "ADPE": 40,
+    "CHPE": 33,
+    "GEPE": 29
+  },
+  "primary_scale_by_species": {
+    "ADPE": "ccamlr",
+    "CHPE": "apbp_region",
+    "GEPE": "species_wide"
+  },
+  "replicates_per_scenario": 100,
+  "schema_version": 1,
+  "species_wide_sensitivity": {
+    "gate": {
+      "finite_estimate_fraction": 1,
+      "observation_checks": {
+        "accuracy1_bias": true,
+        "accuracy2plus_bias": true,
+        "offset_bias": true
+      },
+      "passes": false,
+      "species_pass": {
+        "ADPE": false,
+        "CHPE": false,
+        "GEPE": false
+      }
+    },
+    "observation": {
+      "delta_image": {
+        "bias": -0.001190082477199067,
+        "median": 0.13857185989795956,
+        "q05": 0.11021530200536854,
+        "q95": 0.16741376862404794
+      },
+      "sigma1": {
+        "median": 0.04871335159954504,
+        "relative_bias": -0.0015743453869156217
+      },
+      "sigma2plus": {
+        "median": 0.21268240913516626,
+        "relative_bias": -0.046880773015542415
+      },
+      "truth": {
+        "delta_image": 0.13976194237515863,
+        "sigma1": 0.04879016416943204,
+        "sigma2plus": 0.22314355131420976
+      }
+    },
+    "observation_gate": {
+      "checks": {
+        "accuracy1_bias": true,
+        "accuracy2plus_bias": true,
+        "offset_bias": true
+      },
+      "passes": true
+    },
+    "replicates_per_scenario": 100,
+    "simulation": {
+      "delta_image": 0.13976194237515863,
+      "drift_mean": -0.01,
+      "drift_sd": 0.01,
+      "forcing_sd": 0.08,
+      "loading_sd": 0.15,
+      "process_sd": 0.04,
+      "sigma1": 0.04879016416943204,
+      "sigma2plus": 0.22314355131420976
+    },
+    "species": {
+      "ADPE": {
+        "crossover": {
+          "median_gamma_a": 0.09813236199239159,
+          "median_gamma_ah": -0.20073572446234225,
+          "median_lambda_correlation": 0.17319230259369367,
+          "negative_gamma_a_fraction": 0.31,
+          "negative_gamma_ah_fraction": 0.63,
+          "q05_gamma_a": -0.34745230166858493,
+          "q05_gamma_ah": -1.0565317830887095,
+          "q95_gamma_a": 0.6623099957383567,
+          "q95_gamma_ah": 0.9034294730103949
+        },
+        "forcing_groups": {
+          "ADPE": {
+            "median_corr": 0.4415546264098896,
+            "q05_corr": 0.11381686227952988
+          }
+        },
+        "gate": {
+          "checks": {
+            "crossover_bias": false,
+            "crossover_sign": false,
+            "factor_median": false,
+            "factor_q05": false,
+            "null_center": false,
+            "null_contains_zero": true,
+            "simple_a_bias": false,
+            "simple_a_sign": false,
+            "simple_no_spurious_crossover": true
+          },
+          "passes": false
+        },
+        "null": {
+          "median_gamma_a": 0.1649236138443264,
+          "median_gamma_ah": 0.2496288471110763,
+          "median_lambda_correlation": 0.08869854474349356,
+          "negative_gamma_a_fraction": 0.31,
+          "negative_gamma_ah_fraction": 0.34,
+          "q05_gamma_a": -0.47054971839180143,
+          "q05_gamma_ah": -0.8126740757289173,
+          "q95_gamma_a": 0.8126124360189997,
+          "q95_gamma_ah": 1.5276887065617994
+        },
+        "simple_buffering": {
+          "median_gamma_a": -0.1448454249557245,
+          "median_gamma_ah": 0.010633124829873698,
+          "median_lambda_correlation": 0.12272166115968625,
+          "negative_gamma_a_fraction": 0.63,
+          "negative_gamma_ah_fraction": 0.49,
+          "q05_gamma_a": -1.0641490236065465,
+          "q05_gamma_ah": -1.1538692392210186,
+          "q95_gamma_a": 0.6024952453051807,
+          "q95_gamma_ah": 1.0520958934304432
+        }
+      },
+      "CHPE": {
+        "crossover": {
+          "median_gamma_a": -0.009422758733317643,
+          "median_gamma_ah": -0.319274483337127,
+          "median_lambda_correlation": 0.3870369070376769,
+          "negative_gamma_a_fraction": 0.52,
+          "negative_gamma_ah_fraction": 0.98,
+          "q05_gamma_a": -0.33330140296959354,
+          "q05_gamma_ah": -0.5532630358002525,
+          "q95_gamma_a": 0.35570675557300085,
+          "q95_gamma_ah": -0.06997947110003519
+        },
+        "forcing_groups": {
+          "CHPE": {
+            "median_corr": 0.6881032754187313,
+            "q05_corr": 0.28343720854174
+          }
+        },
+        "gate": {
+          "checks": {
+            "crossover_bias": true,
+            "crossover_sign": true,
+            "factor_median": false,
+            "factor_q05": false,
+            "null_center": true,
+            "null_contains_zero": true,
+            "simple_a_bias": true,
+            "simple_a_sign": true,
+            "simple_no_spurious_crossover": true
+          },
+          "passes": false
+        },
+        "null": {
+          "median_gamma_a": 0.04039964778058712,
+          "median_gamma_ah": -0.022665965969782636,
+          "median_lambda_correlation": 0.15964487924829524,
+          "negative_gamma_a_fraction": 0.45,
+          "negative_gamma_ah_fraction": 0.56,
+          "q05_gamma_a": -0.2624321745664896,
+          "q05_gamma_ah": -0.2406534751372326,
+          "q95_gamma_a": 0.380821763260228,
+          "q95_gamma_ah": 0.19868160803371224
+        },
+        "simple_buffering": {
+          "median_gamma_a": -0.23559080376172445,
+          "median_gamma_ah": -0.020413672441704566,
+          "median_lambda_correlation": 0.31395896580473576,
+          "negative_gamma_a_fraction": 0.91,
+          "negative_gamma_ah_fraction": 0.6,
+          "q05_gamma_a": -0.5419821458670304,
+          "q05_gamma_ah": -0.27149112081792903,
+          "q95_gamma_a": 0.06323010815437818,
+          "q95_gamma_ah": 0.23218142172816875
+        }
+      },
+      "GEPE": {
+        "crossover": {
+          "median_gamma_a": 0.00023127735650814928,
+          "median_gamma_ah": -0.31167527909554393,
+          "median_lambda_correlation": 0.5645103487408216,
+          "negative_gamma_a_fraction": 0.49,
+          "negative_gamma_ah_fraction": 0.88,
+          "q05_gamma_a": -0.5212488060957665,
+          "q05_gamma_ah": -0.6816318326768452,
+          "q95_gamma_a": 0.48124859945900644,
+          "q95_gamma_ah": 0.15210665452981412
+        },
+        "forcing_groups": {
+          "GEPE": {
+            "median_corr": 0.7276488311661118,
+            "q05_corr": 0.4252917867922668
+          }
+        },
+        "gate": {
+          "checks": {
+            "crossover_bias": true,
+            "crossover_sign": false,
+            "factor_median": true,
+            "factor_q05": true,
+            "null_center": true,
+            "null_contains_zero": true,
+            "simple_a_bias": true,
+            "simple_a_sign": false,
+            "simple_no_spurious_crossover": true
+          },
+          "passes": false
+        },
+        "null": {
+          "median_gamma_a": -0.022983927575670693,
+          "median_gamma_ah": 0.02009154503988062,
+          "median_lambda_correlation": 0.21254741112364853,
+          "negative_gamma_a_fraction": 0.52,
+          "negative_gamma_ah_fraction": 0.43,
+          "q05_gamma_a": -0.40984953235281135,
+          "q05_gamma_ah": -0.29039102464481475,
+          "q95_gamma_a": 0.43553882773842795,
+          "q95_gamma_ah": 0.38430920522942785
+        },
+        "simple_buffering": {
+          "median_gamma_a": -0.21660685464105559,
+          "median_gamma_ah": 0.054307412187019954,
+          "median_lambda_correlation": 0.3095688468802546,
+          "negative_gamma_a_fraction": 0.78,
+          "negative_gamma_ah_fraction": 0.4,
+          "q05_gamma_a": -0.7047215172789375,
+          "q05_gamma_ah": -0.3957061337504621,
+          "q95_gamma_a": 0.2514458928819835,
+          "q95_gamma_ah": 0.4676065485003442
+        }
+      }
+    }
+  },
+  "specieswide_frame_units": {
+    "ADPE": 41,
+    "CHPE": 34,
+    "GEPE": 29
+  },
+  "result_id": "mina-paper2-integrated-recovery-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36532519485,
+    "head_sha": "f6bc16c170ed77704f7e8a3a65a611ebed16f108",
+    "conclusion": "failure",
+    "artifact_id": null,
+    "artifact_note": "Workflow intentionally exited nonzero because counts_may_be_opened=false; JSON recovered from the completed workflow log."
+  },
+  "status": "FAILED_PRE_OUTCOME_GATE",
+  "failure_interpretation": [
+    "The frozen observation nuisance layer remained recoverable after integer count generation.",
+    "The two-stage collapse -> adjacent difference -> free site loading -> trait regression estimator did not reliably recover shared forcing/loadings once realistic observation error was propagated.",
+    "No real demographic count magnitude was opened. Gate failure therefore triggers estimator redesign rather than threshold tuning.",
+    "The next estimator must model the trait effect on loadings jointly/hierarchically and propagate observation uncertainty rather than treating collapsed states as effectively observed."
+  ]
+}
