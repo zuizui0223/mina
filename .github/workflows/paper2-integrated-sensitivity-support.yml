@@ -1,0 +1,58 @@
+name: paper2-integrated-sensitivity-support
+
+on:
+  push:
+    branches: [analysis/paper2-integrated-sensitivity-v1]
+    paths:
+      - "scripts/simulate_paper2_integrated_sensitivity.py"
+      - "tests/test_paper2_integrated_sensitivity.py"
+      - "contracts/PAPER2_INTEGRATED_SENSITIVITY_RECOVERY_V1.json"
+      - "scripts/simulate_paper2_observation_recovery.py"
+      - ".github/workflows/paper2-integrated-sensitivity-support.yml"
+  pull_request:
+    paths:
+      - "scripts/simulate_paper2_integrated_sensitivity.py"
+      - "tests/test_paper2_integrated_sensitivity.py"
+      - "contracts/PAPER2_INTEGRATED_SENSITIVITY_RECOVERY_V1.json"
+      - "scripts/simulate_paper2_observation_recovery.py"
+      - ".github/workflows/paper2-integrated-sensitivity-support.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-22.04
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas pyreadr
+      - name: Run sensitivity support tests
+        run: python -m unittest tests.test_paper2_integrated_sensitivity -v
+      - name: Fetch pinned mapppdr
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Download frozen outcome-blind inputs
+        run: |
+          mkdir -p build/forcing build/options
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+      - name: Audit observation-source sensitivity support
+        run: |
+          python -m scripts.simulate_paper2_integrated_sensitivity \
+            --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --breeding-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --latent-json results/PAPER2_LATENT_FACTOR_RECOVERY_RESULT_V1.json \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/PAPER2_INTEGRATED_SENSITIVITY_SUPPORT_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-integrated-sensitivity-support-v1
+          path: build/PAPER2_INTEGRATED_SENSITIVITY_SUPPORT_RESULT_V1.json
