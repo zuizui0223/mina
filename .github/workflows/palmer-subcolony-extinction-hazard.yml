@@ -1,0 +1,79 @@
+name: palmer-subcolony-extinction-hazard
+
+on:
+  push:
+    branches:
+      - analysis/palmer-subcolony-extinction-hazard-v1
+    paths:
+      - "src/mina/colony_extinction_hazard.py"
+      - "tests/test_colony_extinction_hazard.py"
+      - "contracts/PALMER_SUBCOLONY_EXTINCTION_HAZARD_V1.json"
+      - "scripts/fetch_lter_census.py"
+      - ".github/workflows/palmer-subcolony-extinction-hazard.yml"
+  pull_request:
+    paths:
+      - "src/mina/colony_extinction_hazard.py"
+      - "tests/test_colony_extinction_hazard.py"
+      - "contracts/PALMER_SUBCOLONY_EXTINCTION_HAZARD_V1.json"
+      - "scripts/fetch_lter_census.py"
+      - ".github/workflows/palmer-subcolony-extinction-hazard.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen synthetic tests
+        run: pytest -q tests/test_colony_extinction_hazard.py
+      - name: Fetch frozen Palmer census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run exploratory frozen hazard analysis
+        run: |
+          python -m mina.colony_extinction_hazard \
+            --census build/adelie_census.csv \
+            --out build/palmer_subcolony_extinction_hazard.json \
+            --permutations 20000 \
+            --seed 20260929
+      - name: Print analysis receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          x = json.loads(
+              Path("build/palmer_subcolony_extinction_hazard.json").read_text()
+          )
+          print("status=", x["inference_status"])
+          for key in ("primary_stable_roster", "five_island_sensitivity"):
+              block = x[key]
+              h = block["matched_hazard"]
+              f = h["conditional_logit"]
+              d = h["descriptive_risk_set_comparison"]
+              t = block["proportional_thinning_null"]
+              print(
+                  key,
+                  "strata=", h["n_informative_strata"],
+                  "risk_rows=", h["n_risk_rows"],
+                  "events=", h["n_durable_extinctions"],
+                  "beta=", f["beta_per_sd_log1p_pairs"],
+                  "or=", f["odds_ratio_per_sd"],
+                  "perm_p=", h["permutation"]["two_sided_p"],
+                  "event_median_pairs=", d["durable_extinction_events"]["median_pairs"],
+                  "survivor_median_pairs=", d["same_stratum_survivors"]["median_pairs"],
+                  "zeros=", t["observed_next_year_zero_transitions"],
+                  "null_mean_zeros=", t["null"]["mean_zero_transitions"],
+                  "thin_p=", t["null"]["upper_tail_p"],
+              )
+          print("decision=", json.dumps(x["decision"], sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-subcolony-extinction-hazard
+          path: |
+            build/adelie_census.csv
+            build/palmer_subcolony_extinction_hazard.json
