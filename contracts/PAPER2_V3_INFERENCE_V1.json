@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-v3-inference-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_real_outcomes",
+  "primary_model": "V3 species-wide forcing + frozen trait-adjustment blocks + A + H + A:H loading model",
+  "primary_statistic": "gamma_AH",
+  "alternative": "gamma_AH < 0",
+  "permutation": {
+    "B": 9999,
+    "seed": 20260929,
+    "unit": "site x species unit",
+    "scheme": "Within each species and frozen trait-adjustment block, permute the complete site-trait tuple (A,H,A:H) among site time series. Singleton blocks remain fixed. Refit the complete V3 process/loading model for every permutation, including shared forcing, site drift, process SD, block intercepts and residual loadings. Observation nuisance calibration is held fixed because it is trait-independent.",
+    "p_value": "(1 + number of permuted gamma_AH <= observed gamma_AH)/(B+1)"
+  },
+  "multiple_species": {
+    "tests": 3,
+    "adjustment": "Holm adjustment across ADPE, CHPE and GEPE primary gamma_AH permutation p-values",
+    "generality_wording": "A cross-species replicated crossover is claimed only if all three gamma_AH estimates are negative; species-specific adjusted p-values are reported rather than selecting a favorable species subset."
+  },
+  "crossover_classification": {
+    "low_area_H_slope": "gamma_H - gamma_AH",
+    "high_area_H_slope": "gamma_H + gamma_AH",
+    "rule": "Use the option-fragmentation crossover label only when gamma_AH<0, low-area H slope >=0, and high-area H slope <0. A significant interaction without both marginal-slope signs is described as scale-dependent heterogeneity rather than crossover."
+  },
+  "secondary_models": [
+    "A-only, H-only and R-only effects use the same V3 loading engine and frozen spatial adjustment.",
+    "A+H+R+A:H combined model is secondary synthesis only.",
+    "mu/site-drift associations are secondary and cannot replace a null lambda result."
+  ],
+  "terminal_rules": [
+    "Do not change permutation blocks, sidedness, B, or species multiplicity rule after counts are opened.",
+    "Do not permute across geographic adjustment blocks.",
+    "Do not condition permutations on the observed sign or p-value.",
+    "No post-outcome species subset becomes primary."
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-v3-source-sensitivity-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36540853450,
+    "artifact_id": 11020302854,
+    "artifact_digest": "sha256:886204ba3c7689fd3e6f4ee9dc10be3c5f3403003f7b44029a897373695fdd7c",
+    "conclusion": "failure_after_full_100_replicate_execution"
+  },
+  "decision": {
+    "source_sensitivity_passed": false,
+    "counts_may_be_opened": false,
+    "no_real_count_magnitudes_opened": true,
+    "ADPE_ground_only": "coverage_limited_nonblocking"
+  },
+  "exclude_unknown": {
+    "ADPE": {
+      "supported_units": 40,
+      "passes": false,
+      "forcing_median_corr": 0.8212233834380396,
+      "forcing_q05_corr": 0.6656738824441986,
+      "crossover_median_gamma_ah": -0.3089553033563661,
+      "crossover_negative_fraction": 0.86,
+      "null_median_gamma_ah": -0.04161748239928325,
+      "failed_check": "crossover_sign_only"
+    },
+    "CHPE": {
+      "supported_units": 30,
+      "passes": true,
+      "crossover_median_gamma_ah": -0.34507268200900154,
+      "crossover_negative_fraction": 1
+    },
+    "GEPE": {
+      "supported_units": 28,
+      "passes": true,
+      "crossover_median_gamma_ah": -0.35805607510007864,
+      "crossover_negative_fraction": 1
+    }
+  },
+  "ground_only": {
+    "ADPE": {
+      "supported_units": 14,
+      "status": "coverage_limited"
+    },
+    "CHPE": {
+      "supported_units": 26,
+      "passes": true,
+      "crossover_median_gamma_ah": -0.3254081581560877,
+      "crossover_negative_fraction": 1
+    },
+    "GEPE": {
+      "supported_units": 23,
+      "passes": true,
+      "crossover_median_gamma_ah": -0.362051589492581,
+      "crossover_negative_fraction": 1
+    }
+  },
+  "interpretation": [
+    "V3 core recovery passes, but the predeclared source-robustness gate does not.",
+    "The sole failing recovery check is Adelie exclude-unknown crossover sign recovery: 86/100 versus the frozen >=90/100 rule.",
+    "No recovery threshold is relaxed and real outcomes remain locked.",
+    "Chinstrap and gentoo pass both testable observation-source sensitivities."
+  ]
+}
