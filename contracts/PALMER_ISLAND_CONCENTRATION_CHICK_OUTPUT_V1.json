@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-concentration-chick-output-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_concentration_chick_output_association_execution",
+  "motivation": "Colony-level chick/extinction linkage is not estimable because colony-code identity is unstable across the adult and chick tables for most matched extinction events. Island aggregation removes that crosswalk dependency and directly tests whether demographic concentration is accompanied by a change in reproductive output.",
+  "question": "As Adelie breeders become concentrated into fewer effective colony-code components within Palmer islands, does island-level chick output per breeding population increase, decrease, or remain unchanged after controlling island identity, year and island abundance?",
+  "biological_contrasts": {
+    "quality_sorting_refuge": "If breeders retreat preferentially into locally favorable breeding space, greater concentration should be associated with higher chick output conditional on current breeding abundance and shared annual conditions.",
+    "degradation_or_small_group_disadvantage": "If concentration reflects deterioration of the remaining breeding system, greater concentration should be associated with lower chick output.",
+    "decoupling": "If chick output is unrelated to concentration after controls, within-island demographic reorganization and same-season reproductive performance are separable processes."
+  },
+  "sources": {
+    "adult_census": {
+      "dataset": "Palmer LTER AdeliePenguinCensus",
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+    },
+    "chick_snapshot": {
+      "edi_package": "knb-lter-pal.88.8",
+      "entity_id": "b4062890db09a72628786650dacfbf1f",
+      "public_mirror_repository": "robitalec/2023-CSEE-reproducible-workflows-workshop",
+      "public_mirror_commit": "d782d30e5d28c468d53390abf86eb77eec685826",
+      "public_mirror_blob_sha": "60bda785762787dda0c16415fb1aa9a4360e974a",
+      "role": "island-season chick totals only"
+    }
+  },
+  "pre_outcome_inventory": {
+    "matched_island_years": 135,
+    "islands": 5,
+    "years_per_island": 27,
+    "season_range": [1991, 2017],
+    "log1p_correlation_chick_table_adults_vs_adult_census_total": 0.9727050026776236,
+    "median_smoothed_adult_total_ratio": 0.9444206926036768,
+    "fraction_adult_totals_within_twofold": 0.8518518518518519
+  },
+  "aggregation": {
+    "chicks": "Within island and season, sum cleaned colony-level Chicks. For duplicate island-colony-season keys with identical chick counts retain one value; for conflicting chick counts exclude the ambiguous key.",
+    "adult_pairs": "Sum frozen November breeding-pair census counts within island and season.",
+    "effective_colony_number": "1 / sum(p_j^2), where p_j is each positive colony_code breeding-pair count divided by the island total; identical to the established concentration metric.",
+    "concentration_predictor": "C = -log(effective_colony_number), so larger C means stronger concentration.",
+    "response": "Y = log1p(total island chick count)."
+  },
+  "primary_model": {
+    "formula": "Y_it = island_FE_i + year_FE_t + beta_N * log1p(adult_pairs_it) + beta_C * z(C_it) + error_it",
+    "target": "beta_C",
+    "reason_for_abundance_term": "Separates reproductive output associated with concentration from the trivial effect that larger breeding populations produce more chicks.",
+    "reason_for_year_FE": "Conditions on regional annual reproductive/environmental variation shared among nearby islands.",
+    "reason_for_island_FE": "Conditions on persistent island differences in habitat and monitoring scale."
+  },
+  "primary_inference": {
+    "null": "The temporal alignment between within-island concentration and reproductive output contains no information beyond island identity, year and abundance.",
+    "procedure": "For each Monte Carlo replicate, circularly shift the complete 27-year concentration series within each island by an independently sampled non-zero lag, refit the identical model, and record beta_C.",
+    "simulations": 100000,
+    "seed": 20260930,
+    "two_sided_p": "2 * min(lower-tail, upper-tail) with +1 correction, capped at 1",
+    "directional_outputs": "Also report one-sided upper and lower Monte Carlo p values.",
+    "alpha": 0.05
+  },
+  "decision": {
+    "quality_sorting_signal": "beta_C > 0 and upper-tail p <= 0.05.",
+    "degradation_signal": "beta_C < 0 and lower-tail p <= 0.05.",
+    "decoupled": "two-sided p > 0.05.",
+    "strong": "The primary direction is unchanged when each island is removed in turn and when largest-colony share replaces C."
+  },
+  "sensitivities": {
+    "largest_share": "Replace C with logit-clipped largest positive colony share, keeping all other controls and the same circular-shift inference.",
+    "exclude_litchfield": "Refit after excluding Litchfield, whose adult population reaches zero.",
+    "early_late": "Report 1991-2003 and 2004-2017 coefficients descriptively; do not promote a subgroup over the primary full-period result.",
+    "chick_rate_display": "Report total chicks / adult breeding pairs by island-year descriptively, but do not use the raw ratio as the primary regression response."
+  },
+  "interpretation_boundaries": [
+    "A positive concentration coefficient is consistent with quality sorting into productive breeding space, but does not identify snow, predation or other habitat mechanisms.",
+    "A negative coefficient is not an Allee-effect test because the predictor is spatial concentration, not individual density or per-capita social interaction.",
+    "A null coefficient means no detectable same-season reproductive consequence of concentration after controls; it does not imply that chick production is unimportant demographically at longer lags.",
+    "Do not use colony-level chick/extinction results as corroboration because that linkage failed its identifier-coherence gate.",
+    "Cimino et al. 2025 already establishes fine-scale terrain/snow effects on Palmer sub-colony persistence; this analysis addresses the demographic-reproductive consequence of island-level reorganization instead."
+  ]
+}
