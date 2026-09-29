@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-neutral-attrition-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-neutral-attrition-v1",
+  "analysis_commit": "8f8b8b836fb5a03460f9cc987e8db8c1c8e07872",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "simulations": 100000,
+    "seed": 20260930,
+    "local_reproduction": "success"
+  },
+  "per_island": {
+    "COR": {
+      "observed_slope": -0.030975710379891816,
+      "neutral_slope_mean": -0.03916314266573665,
+      "neutral_slope_q025": -0.1019799128829081,
+      "neutral_slope_q975": 0.030969211262303523,
+      "one_sided_probability_slope_le_observed": 0.6040339596604034,
+      "observed_terminal_neff": 2.8594594594594596,
+      "neutral_terminal_neff_mean": 2.4137094169915922,
+      "one_sided_probability_terminal_le_observed": 0.7407325926740732,
+      "decision": "compatible_with_sequential_neutral_attrition"
+    },
+    "HUM": {
+      "observed_slope": -0.08550466131872993,
+      "neutral_slope_mean": -0.044886225405857856,
+      "neutral_slope_q025": -0.11821802667432714,
+      "neutral_slope_q975": 0.03915690669585446,
+      "one_sided_probability_slope_le_observed": 0.16132838671613284,
+      "observed_terminal_neff": 2.2845849802371543,
+      "neutral_terminal_neff_mean": 3.421853355433006,
+      "one_sided_probability_terminal_le_observed": 0.0999490005099949,
+      "decision": "directionally_faster_than_neutral_but_not_unusual"
+    },
+    "LIT": {
+      "observed_slope": -0.36807876113755644,
+      "neutral_slope_mean": -0.15737904987458448,
+      "neutral_slope_q025": -0.25982856815307304,
+      "neutral_slope_q975": -0.05079661479538775,
+      "one_sided_probability_slope_le_observed": 0.00000999990000099999,
+      "observed_terminal_neff": 1.0,
+      "neutral_terminal_neff_mean": 2.380372,
+      "one_sided_probability_terminal_le_observed": 0.05118948810511895,
+      "decision": "concentration_rate_exceeds_sequential_neutral_attrition"
+    }
+  },
+  "joint_all_three_slopes_le_observed": {
+    "count": 0,
+    "probability": 0.00000999990000099999
+  },
+  "decision": {
+    "COR_more_concentrated_than_neutral": false,
+    "HUM_more_concentrated_than_neutral": false,
+    "LIT_more_concentrated_than_neutral": true,
+    "uniform_non_neutral_concentration_across_islands": false
+  },
+  "ecological_interpretation": "Most of the apparent within-island concentration is compatible with neutral demographic attrition once shrinking island totals and absorbing local zeros are allowed to generate path dependence. Litchfield is the exception: its effective colony number collapsed substantially faster than this sequential neutral drift benchmark, indicating an additional local filter or disturbance beyond generic demographic thinning.",
+  "paper_implication": "Reframe concentration as a two-component process: neutral attrition provides the background rule of colony-network erosion, whereas the Litchfield trajectory is a non-neutral collapse that motivates targeted habitat, snow, predation or disturbance tests. This is stronger than treating concentration itself as generic evidence for social facilitation."
+}
