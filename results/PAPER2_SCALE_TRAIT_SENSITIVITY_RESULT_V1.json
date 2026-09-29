@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-scale-trait-sensitivity-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36574922378,
+    "artifact_id": 11036479530,
+    "artifact_digest": "sha256:772f69d1fff6d155df342f3d014217635833f39e7c3085693a4777a1aaa4f80c",
+    "conclusion": "success"
+  },
+  "primary_reference": {
+    "variant": "radius_2000m_tier2_richness",
+    "cross_species_median_gamma_ah": -0.31822603579776854,
+    "species_gamma_ah": {
+      "ADPE": -0.303571047069412,
+      "CHPE": -1.1843982732708647,
+      "GEPE": -0.31822603579776854
+    },
+    "primary_permutation_p": 0.0947
+  },
+  "variants": {
+    "radius_1000m": {
+      "cross_species_median_gamma_ah": -0.0576551287747558,
+      "negative_species": 2,
+      "crossover_species": [
+        "GEPE"
+      ],
+      "species_gamma_ah": {
+        "ADPE": 0.10138102048565405,
+        "CHPE": -0.0576551287747558,
+        "GEPE": -0.08980251955107542
+      }
+    },
+    "radius_5000m": {
+      "cross_species_median_gamma_ah": 0.1067807758917031,
+      "negative_species": 0,
+      "crossover_species": [],
+      "species_gamma_ah": {
+        "ADPE": 0.057765945078199314,
+        "CHPE": 1.1375287419066076,
+        "GEPE": 0.1067807758917031
+      }
+    },
+    "shannon_2000m": {
+      "cross_species_median_gamma_ah": -0.16348692372558385,
+      "negative_species": 2,
+      "crossover_species": [
+        "CHPE",
+        "GEPE"
+      ],
+      "species_gamma_ah": {
+        "ADPE": 0.08166409932916766,
+        "CHPE": -0.9866332626149139,
+        "GEPE": -0.16348692372558385
+      }
+    }
+  },
+  "decision": {
+    "interaction_direction_scale_invariant": false,
+    "interaction_direction_metric_invariant": false,
+    "primary_result_replaced": false,
+    "new_p_values_created": false
+  },
+  "interpretation": [
+    "The negative A x H interaction is not spatial-scale invariant: it weakens strongly at 1 km and reverses at 5 km.",
+    "Replacing Tier 2 richness with Tier 2 Shannon at 2 km preserves the crossover pattern in chinstrap and gentoo but not Adelie.",
+    "The primary 2 km richness interaction should therefore be described as scale-dependent and non-confirmatory, not as a general island-architecture law.",
+    "No sensitivity variant is promoted to primary or given a new inferential p-value."
+  ]
+}
