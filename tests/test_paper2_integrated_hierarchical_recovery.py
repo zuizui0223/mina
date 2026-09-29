@@ -10,6 +10,7 @@ from scripts.simulate_paper2_integrated_hierarchical_recovery import (
     fit_hierarchical_dataset,
     group_center_traits,
     profile_process_sd,
+    evaluate_hierarchical_configuration,
 )
 from scripts.simulate_paper2_integrated_recovery import (
     simulate_integrated_dataset,
@@ -69,6 +70,24 @@ class ProcessProfileTests(unittest.TestCase):
         )
         self.assertGreaterEqual(estimate,0.005)
         self.assertLessEqual(estimate,0.30)
+
+
+class HierarchicalMonteCarloTests(unittest.TestCase):
+    def test_configuration_is_deterministic_and_has_frozen_scenarios(self):
+        frames,metadata=dense_fixture()
+        first=evaluate_hierarchical_configuration(
+            frames,metadata,replicates=3,seed_offset=7700
+        )
+        second=evaluate_hierarchical_configuration(
+            frames,metadata,replicates=3,seed_offset=7700
+        )
+        self.assertEqual(first,second)
+        self.assertIn("observation_gate",first)
+        self.assertIn("species",first)
+        self.assertIn("TEST",first["species"])
+        for name in ("null","crossover","simple_buffering"):
+            self.assertIn(name,first["species"]["TEST"])
+        self.assertIn("gate",first["species"]["TEST"])
 
 
 class DenseHierarchicalRecoveryTests(unittest.TestCase):
