@@ -1,0 +1,114 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-paper2-integrated-hierarchical-recovery-v2",
+  "date": "2026-09-29",
+  "status": "pre_outcome_hierarchical_estimator_recovery_frozen_after_v1_synthetic_failure",
+  "parent_failure": "results/PAPER2_INTEGRATED_RECOVERY_RESULT_V1.json",
+  "motivation": "Gate 2E-C v1 recovered observation nuisance parameters but failed to recover shared forcing/site loadings reliably after realistic count error. V2 changes the estimator, not the data, simulation truths, ecological hypothesis, or recovery thresholds.",
+  "retained_inputs": {
+    "window": [
+      1980,
+      2025
+    ],
+    "primary_forcing_scales": {
+      "ADPE": "ccamlr",
+      "CHPE": "apbp_region",
+      "GEPE": "species_wide"
+    },
+    "specieswide_sensitivity": true,
+    "predictor_transform": "same frozen A=z(log1p area), H=z(Tier2 richness), AH=A*H",
+    "observation_scale": "log1p(nonnegative count)",
+    "shared_image_offset": true,
+    "accuracy_structure": "1 versus pooled 2-5"
+  },
+  "simulation": {
+    "replicates_per_species_scale_scenario": 100,
+    "forcing_sd": 0.08,
+    "loading_residual_sd": 0.15,
+    "process_sd": 0.04,
+    "drift_mean": -0.01,
+    "drift_sd": 0.01,
+    "delta_image_log": 0.13976194237515863,
+    "sigma_accuracy_1_log": 0.04879016416943205,
+    "sigma_accuracy_2_5_log": 0.22314355131420976,
+    "scenarios": {
+      "null": {
+        "gamma_a": 0,
+        "gamma_h": 0,
+        "gamma_ah": 0
+      },
+      "crossover": {
+        "gamma_a": 0,
+        "gamma_h": 0,
+        "gamma_ah": -0.35
+      },
+      "simple_buffering": {
+        "gamma_a": -0.25,
+        "gamma_h": 0,
+        "gamma_ah": 0
+      }
+    }
+  },
+  "estimator": {
+    "family": "alternating penalized linear-Gaussian state-space / hierarchical loading model",
+    "latent_state": "Annual log1p-scale latent abundance is estimated jointly from observations and process transitions rather than replaced by collapsed point states.",
+    "observation": "Same-season method-corrected observations enter with the estimated observation variance from the frozen accuracy structure.",
+    "process": "x[i,t+1]-x[i,t] = mu_i + lambda_i * F[g,t] + epsilon[i,t], with process variance estimated from process residuals.",
+    "loading_model": "lambda_i is estimated jointly with forcing and is shrunk toward a forcing-group-adjusted trait mean containing A, H and A:H. Site residual loading variance is estimated, not fixed to the simulation truth.",
+    "group_effect_equivalence": "A, H and A:H are centered within forcing group before the loading regression, which is algebraically equivalent to including forcing-group intercepts for the trait slopes.",
+    "identification": [
+      "mean F[g,t] = 0 over supported transitions within each forcing group",
+      "mean lambda_i = 1 within each forcing group"
+    ],
+    "coordinate_updates": [
+      "calibrate shared observation nuisance on full synthetic metadata",
+      "collapse same-season records to z_hat and known observation variance",
+      "smooth annual latent states by weighted least squares using observation and process penalties",
+      "update shared forcing from smoothed annual increments",
+      "update site mu/lambda with a Gaussian loading-deviation penalty around the trait-predicted loading",
+      "renormalize loadings within forcing group and rescale forcing",
+      "update gamma_A, gamma_H and gamma_AH from group-centered loading structure",
+      "update process variance and residual loading variance from current residuals"
+    ],
+    "iterations": 12,
+    "initialization": {
+      "process_sd": 0.1,
+      "loading_residual_sd": 0.3,
+      "gamma": [
+        0,
+        0,
+        0
+      ],
+      "lambda": 1,
+      "note": "Initial values are deliberately not the synthetic truths."
+    },
+    "variance_floors": {
+      "process_sd": 0.005,
+      "loading_residual_sd": 0.05,
+      "purpose": "numerical regularization only; floors are well below the frozen synthetic truths"
+    }
+  },
+  "recovery_gate": {
+    "inheritance": "exactly the Gate 2E-C v1 thresholds; no relaxation after failure",
+    "min_group_median_forcing_correlation": 0.7,
+    "min_group_q05_forcing_correlation": 0.3,
+    "max_abs_crossover_median_bias": 0.1,
+    "min_crossover_negative_fraction": 0.9,
+    "max_abs_null_median_gamma_ah": 0.05,
+    "null_q05_q95_must_contain_zero": true,
+    "max_abs_simple_buffering_gamma_a_bias": 0.1,
+    "min_simple_buffering_gamma_a_negative_fraction": 0.9,
+    "max_abs_simple_buffering_median_gamma_ah": 0.06,
+    "max_abs_image_offset_median_bias_log": 0.03,
+    "max_accuracy_1_median_relative_sigma_bias": 0.15,
+    "max_accuracy_2_5_median_relative_sigma_bias": 0.3,
+    "finite_estimate_fraction": 1
+  },
+  "unlock_rule": "Real count magnitudes remain locked unless V2 passes at an allowed scale for every species, the shared observation gate passes, the mandatory species-wide sensitivity is completed, and the separate observation-source sensitivity pre-gate is completed.",
+  "boundary": [
+    "No real count magnitude is read or modeled.",
+    "No v1 simulation truth, recovery threshold, predictor, interaction, buffer radius, time window or forcing partition is changed.",
+    "Failure of V2 does not permit another threshold relaxation; it triggers either a different pre-outcome estimator or abandonment/demotion of the latent-response-filter estimand.",
+    "The local process-variance ecological claim remains separately blocked pending its own recovery gate."
+  ]
+}
