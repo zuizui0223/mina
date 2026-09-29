@@ -1,0 +1,32 @@
+name: Palmer phenotype reassembly frozen result
+
+on:
+  pull_request:
+    paths:
+      - 'results/PALMER_PHENOTYPE_REASSEMBLY_RESULT_V1.json'
+      - 'docs/PALMER_PHENOTYPE_REASSEMBLY_MANUSCRIPT_SPINE_V1.md'
+      - 'README.md'
+      - 'tests/test_palmer_phenotype_reassembly_result.py'
+      - 'tests/test_palmer_phenotype_manuscript_spine.py'
+      - '.github/workflows/palmer-phenotype-reassembly-result.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install mina
+        run: python -m pip install -e '.[dev]'
+      - name: Validate frozen ecological result and paper boundary
+        run: >-
+          python -m pytest -q
+          tests/test_palmer_phenotype_reassembly_result.py
+          tests/test_palmer_phenotype_manuscript_spine.py
+          tests/test_palmer_persistence.py
