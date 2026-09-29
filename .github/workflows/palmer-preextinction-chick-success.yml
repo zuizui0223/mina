@@ -1,0 +1,57 @@
+name: palmer-preextinction-chick-success
+
+on:
+  push:
+    branches:
+      - analysis/palmer-preextinction-chick-success-v1
+    paths:
+      - "src/mina/preextinction_chick_success.py"
+      - "tests/test_preextinction_chick_success.py"
+      - "scripts/fetch_lter_chick_counts.py"
+      - "contracts/PALMER_PREEXTINCTION_CHICK_SUCCESS_V1.json"
+      - ".github/workflows/palmer-preextinction-chick-success.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen tests
+        run: pytest -q tests/test_preextinction_chick_success.py
+      - name: Fetch adult and chick censuses
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+      - name: Run frozen chick-success mechanism test
+        run: |
+          python -m mina.preextinction_chick_success \
+            --adult-census build/adelie_census.csv \
+            --chicks build/adelie_chicks.csv \
+            --out build/preextinction_chick_success.json \
+            --permutations 100000
+      - name: Print result receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/preextinction_chick_success.json").read_text())
+          print("matched=",x["matched_rows"],"season_range=",x["season_range"])
+          print("overlap=",json.dumps(x["denominator_overlap"],sort_keys=True))
+          print("primary=",json.dumps(x["primary_preextinction_success"],sort_keys=True))
+          print("size_gradient=",json.dumps(x["secondary_size_success_gradient"],sort_keys=True))
+          print("adjusted=",json.dumps(x["event_effect_after_size"],sort_keys=True))
+          print("trajectory_slope=",x["survivor_island_trajectory"].get("within_island_slope_success_on_log_neff"))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-preextinction-chick-success
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/preextinction_chick_success.json
