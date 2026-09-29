@@ -139,6 +139,7 @@ def build_frozen_real_records(obs:pd.DataFrame)->pd.DataFrame:
     left=out.drop(columns=["count"]).sort_values(
         ["species_id","site_id","season","vantage_family","accuracy_group"]
     ).reset_index(drop=True)
+    left=left[meta.columns]
     if not left.equals(meta):
         raise ValueError("real-record cohort does not match frozen metadata cohort")
     return out
