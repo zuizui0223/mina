@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-chick-season-key-resolution-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_frozen_before_num_chicks_access",
+  "prerequisite": "contracts/PALMER_CHICK_KEY_AUDIT_V1.json",
+  "source_dataset": "AdeliePenguinAdultandChickCounts",
+  "audit_evidence": {
+    "usable_positive_adult_rows": 805,
+    "study_name_pattern_parseable_rows": 805,
+    "study_name_pattern": "PALYYZZ",
+    "distinct_study_seasons": 27,
+    "all_study_suffixes_are_consecutive_seasons": true,
+    "calendar_date_consistent_with_study_season": 803,
+    "calendar_date_inconsistent_rows": 2,
+    "inconsistent_rows": [
+      {
+        "study_name": "PAL9798",
+        "time": "1997-01-29T00:00:00Z",
+        "island": "LIT",
+        "colony_code": "8.0",
+        "adult_pairs": 70,
+        "census_time": "1400"
+      },
+      {
+        "study_name": "PAL9798",
+        "time": "1997-01-29T00:00:00Z",
+        "island": "LIT",
+        "colony_code": "9.0",
+        "adult_pairs": 28,
+        "census_time": "1400"
+      }
+    ],
+    "coarse_calendar_season_duplicate_keys": 2,
+    "study_season_duplicate_keys_after_positive_adult_filter": 0,
+    "num_chicks_accessed": false
+  },
+  "frozen_resolution": {
+    "season_start_year": "Parse the first two digits YY from study_name PALYYZZ; map YY >= 90 to 19YY and YY < 90 to 20YY.",
+    "validation": "Require ZZ to equal season_start_year + 1 modulo century and fail closed otherwise.",
+    "time_role": "Retain time as observation-date metadata only; do not use calendar year(time)-1 as the primary season key.",
+    "duplicate_rule": "After five-island, finite positive adult-pair eligibility and study-derived season assignment, fail closed if island + raw colony_code + study-derived season is duplicated.",
+    "no_outcome_based_selection": true
+  },
+  "rationale": "The two coarse duplicate keys are not repeated measurements of the same study season. They are rows assigned to different PAL study seasons whose calendar date field is inconsistent for PAL9798. Using the documented study identifier resolves the key collision without inspecting num_chicks.",
+  "downstream_change": "PALMER_PREEXTINCTION_CHICK_SUCCESS_V1 must use study-derived season_start_year for exact matching to the November adult census.",
+  "interpretation_boundary": [
+    "This contract resolves row identity only and makes no statement about reproductive-success outcomes.",
+    "Do not choose among rows using num_chicks or chicks_per_pair.",
+    "If any outcome-bearing row violates the frozen study-name parsing or duplicate rule, fail closed."
+  ]
+}
