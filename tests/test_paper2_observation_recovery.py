@@ -7,6 +7,7 @@ except ModuleNotFoundError as exc:
     raise unittest.SkipTest("observation-recovery tests require numpy/pandas") from exc
 
 from scripts.simulate_paper2_observation_recovery import (
+    build_frozen_observation_metadata,
     estimate_accuracy_scales,
     estimate_method_offset,
     evaluate_observation_recovery,
@@ -88,6 +89,43 @@ class MonteCarloTests(unittest.TestCase):
         self.assertIn("accuracy",out)
         self.assertIn("gate",out)
         self.assertEqual(out["replicates"],8)
+
+
+
+class FrozenMetadataTests(unittest.TestCase):
+    def test_rebuilds_107_units_without_count_leakage(self):
+        gate0={"ADPE":57,"CHPE":46,"GEPE":49}
+        bridged={"ADPE":44,"CHPE":34,"GEPE":29}
+        rows=[]
+        unit_index=0
+        for species_id in ("ADPE","CHPE","GEPE"):
+            for j in range(gate0[species_id]):
+                site_id=f"S{unit_index:03d}"
+                years=[1980,1985,1990,1995,2000]
+                seasons=(
+                    [1980,1990,2000,2010,2020]
+                    if j < bridged[species_id]
+                    else [1995,2000,2005,2010,2015]
+                )
+                for k,(year,season) in enumerate(zip(years,seasons)):
+                    rows.append({
+                        "site_id":site_id,
+                        "species_id":species_id,
+                        "type":"nests",
+                        "count":100000+unit_index*10+k,
+                        "year":year,
+                        "season":season,
+                        "vantage":"ground photo" if k==0 else "ground",
+                        "accuracy":1 if k<3 else 2,
+                    })
+                unit_index+=1
+        out=build_frozen_observation_metadata(pd.DataFrame(rows))
+        self.assertEqual(out[["site_id","species_id"]].drop_duplicates().shape[0],107)
+        self.assertNotIn("count",out.columns)
+        self.assertNotIn("year",out.columns)
+        self.assertEqual(set(out["accuracy_group"]),{"1","2-5"})
+        self.assertIn("image_based",set(out["vantage_family"]))
+        self.assertTrue(out["group_id"].str.contains("\\|").all())
 
 
 if __name__=="__main__":
