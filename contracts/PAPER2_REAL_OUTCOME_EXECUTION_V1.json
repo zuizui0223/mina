@@ -2,9 +2,9 @@
   "schema_version": 1,
   "contract_id": "mina-paper2-real-outcome-execution-v1",
   "date": "2026-09-29",
-  "status": "LOCKED_PENDING_OBSERVATION_SOURCE_RECOVERY",
+  "status": "UNLOCKED_FOR_FROZEN_EXECUTION",
   "paper_lane": "Paper 2",
-  "unlock_condition": "Real count magnitudes remain locked. Unlock requires a pre-outcome hierarchical integrated-recovery receipt (PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json) with hierarchical core recovery passing under the frozen mandatory species-wide gate, plus completion of the frozen observation-source recovery: exclude-unknown must pass for ADPE/CHPE/GEPE; ground-only must pass for its outcome-blind testable species CHPE and GEPE, while ADPE is reported coverage-limited (14/40 units) and is nonblocking.",
+  "unlock_condition": "Satisfied on 2026-09-29. Real counts may now be opened only through the frozen spatially adjusted V3 execution path and the frozen V4 paper-level estimand.",
   "sources": {
     "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
     "time_field": "season",
@@ -116,5 +116,17 @@
     "integrated_v2": "required; one-stage/hierarchical process-observation estimator must pass without relaxing v1 simulation truths or recovery thresholds",
     "observation_source_sensitivity": "required by contracts/PAPER2_INTEGRATED_SENSITIVITY_RECOVERY_V1.json before real outcomes",
     "process_variance": "optional for count opening but required before any decoupling-with-local-instability claim"
-  }
+  },
+  "unlock_receipts": {
+    "spatial_v3": "results/PAPER2_SPATIAL_ADJUSTED_V3_RESULT_V1.json",
+    "h_main_v5": "results/PAPER2_H_MAIN_RECOVERY_V5_RESULT_V1.json",
+    "cross_species_v4": "results/PAPER2_CROSS_SPECIES_GENERALITY_V4_RESULT_V1.json",
+    "paper_level_source_robustness": "results/PAPER2_V4_SOURCE_GENERALITY_RESULT_V1.json"
+  },
+  "unlock_notes": [
+    "All four pre-outcome gates passed under frozen simulation truths/thresholds.",
+    "Adelie species-specific exclude-unknown recovery remains below its species-specific threshold and must be disclosed; this does not invalidate the paper-level V4 source robustness.",
+    "Terrain R and process-variance ecology remain secondary/blocked unless separately recovered."
+  ],
+  "real_execution_rule": "The first real-outcome run must fit the frozen species-wide V3 crossover model exactly once before any outcome-dependent code or model change. The primary paper-level statistic is the median gamma_AH across the three species. All species-specific estimates are retained and reported."
 }
