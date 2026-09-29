@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-phenotype-reassembly-result-v1",
+  "validated_date": "2026-09-29",
+  "contract_id": "mina-palmer-phenotype-reassembly-v1",
+  "contract_merge_sha": "7b7e96d29938aa08581f2da814e07bf66e2c16a1",
+  "execution": {
+    "workflow_run_id": 36535873528,
+    "run_attempt": 1,
+    "head_sha": "fc2b07f1e348e0041f3addc52d7fc883c67368b2",
+    "artifact_id": 11018646322,
+    "artifact_name": "palmer-phenotype-persistence-v1",
+    "artifact_digest": "sha256:537d0c626bb182dcbafb4554c9371d6b75e71777ec74291d03051795b6a22cd9",
+    "result_sha256": "852f3280b2b5116b63952355343de6b1c4eda12beeb683a5317cd34ea8df2367",
+    "raw_csv_sha256": "144f623143c9360fd77322a4f86acb06dc198814dbd2669724c63e6457b907bd",
+    "source_commit": "8957207b78d6ccd1b4654a9dd9c9041b657478ab",
+    "source_git_blob": "ba99fbd527f0bb983b3d9615ef5c81a5917ab7d9"
+  },
+  "assemblage_scale": {
+    "naive_pooled_morphology_gain": 0.3894565006712757,
+    "species_layer_gain": 0.5360132625954789,
+    "species_conditioned_morphology_gain": -0.08374806363025576,
+    "interpretation": "The assemblage-level island phenotype is dominated by species composition rather than positive morphology information beyond species identity."
+  },
+  "within_adelie_existing": {
+    "fixed_island_partial_r2": {
+      "bill_length": 0.016633372656765677,
+      "bill_depth": 0.015375350305374466,
+      "flipper_length": 0.047879756134015454
+    },
+    "island_by_year_partial_r2_given_main": {
+      "bill_length": 0.02822189007879304,
+      "bill_depth": 0.08478819326044912,
+      "flipper_length": 0.04717204612162672
+    },
+    "pairwise_island_sign_reversals": {
+      "bill_length": "3/3",
+      "bill_depth": "3/3",
+      "flipper_length": "2/3"
+    }
+  },
+  "structural_morphology_persistence": {
+    "n_complete": 146,
+    "chance_balanced_accuracy": 0.3333333333333333,
+    "within_year_balanced_accuracy": {
+      "PAL0708": 0.5035087719298246,
+      "PAL0809": 0.3912037037037037,
+      "PAL0910": 0.45
+    },
+    "cross_year_balanced_accuracy": {
+      "PAL0708": 0.32573099415204676,
+      "PAL0809": 0.3680555555555555,
+      "PAL0910": 0.3333333333333333
+    },
+    "mean_within_year_balanced_accuracy": 0.44823749187784273,
+    "mean_cross_year_balanced_accuracy": 0.34237329434697855,
+    "persistence_gap": 0.10586419753086418,
+    "interpretation": "Island-associated structural morphology is detectable within years but does not transfer materially across years."
+  },
+  "isotopic_niche_sensitivity": {
+    "n_complete": 139,
+    "chance_balanced_accuracy": 0.3333333333333333,
+    "mean_within_year_balanced_accuracy": 0.3597222222222222,
+    "mean_cross_year_balanced_accuracy": 0.34027777777777773,
+    "persistence_gap": 0.019444444444444486,
+    "role": "secondary sensitivity only because blood isotopes integrate pre-breeding foraging and are not local summer island-foraging measurements"
+  },
+  "ecological_interpretation": {
+    "supported": [
+      "apparent functional differentiation among Palmer breeding sites is strongly compositional at the assemblage scale",
+      "within Adelie penguins, fixed island morphology effects are weak over the three-year Palmer Penguins window",
+      "structural morphology contains modest same-year island information but that information is nearly lost when transferred to a different year",
+      "repeated sign reversals of pairwise island contrasts are concordant with temporal reassembly rather than a stable island-specific phenotype",
+      "species sorting and year-specific within-species structure can jointly generate an apparent island phenotype without requiring a persistent local ecotype"
+    ],
+    "not_supported": [
+      "local adaptation to individual Palmer islands",
+      "individual phenotypic plasticity",
+      "a causal snow, habitat, competition, or foraging mechanism",
+      "persistent within-species island ecotypes",
+      "a general island-biogeographic law from three islands and three years",
+      "a claim that isotope differences represent local summer island foraging"
+    ]
+  },
+  "manuscript_position": {
+    "ecological_paper_supported": true,
+    "method_paper_positioning": false,
+    "odsp_role": "provenance and assemblage-scale decomposition only",
+    "primary_ecological_terms": [
+      "species sorting",
+      "temporal reassembly",
+      "functional differentiation",
+      "within-species temporal instability",
+      "breeding-island assembly"
+    ],
+    "paper1_ecosphere_modified": false,
+    "paper2_macroecology_modified": false
+  }
+}
