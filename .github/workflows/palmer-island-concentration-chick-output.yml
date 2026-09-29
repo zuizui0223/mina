@@ -1,0 +1,44 @@
+name: palmer-island-concentration-chick-output
+
+on:
+  push:
+    branches:
+      - analysis/palmer-colony-extinction-hazard-v1
+    paths:
+      - "src/mina/island_concentration_chicks.py"
+      - "tests/test_island_concentration_chicks.py"
+      - "contracts/PALMER_ISLAND_CONCENTRATION_CHICK_OUTPUT_V1.json"
+      - "contracts/PALMER_ISLAND_CONCENTRATION_CHICK_OUTPUT_EXECUTION_V1.json"
+      - ".github/workflows/palmer-island-concentration-chick-output.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest -q tests/test_island_concentration_chicks.py
+      - run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_palmer_chick_snapshot.py build/adelie_chicks_snapshot.csv
+      - run: |
+          python -m mina.island_concentration_chicks             --adult-census build/adelie_census.csv             --chicks build/adelie_chicks_snapshot.csv             --out build/island_concentration_chicks.json             --simulations 100000 --seed 20260930
+      - name: Receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/island_concentration_chicks.json").read_text())
+          print("inventory",json.dumps(x["inventory"],sort_keys=True))
+          print("primary",json.dumps(x["primary_concentration"],sort_keys=True))
+          print("sensitivity",json.dumps(x["sensitivities"],sort_keys=True))
+          print("decision",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-island-concentration-chick-output
+          path: build/island_concentration_chicks.json
