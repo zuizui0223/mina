@@ -4,7 +4,7 @@
   "date": "2026-09-29",
   "status": "LOCKED_AFTER_GATE_2E_C_V1_FAILURE",
   "paper_lane": "Paper 2",
-  "unlock_condition": "Real count magnitudes remain locked. Unlock requires a new pre-outcome hierarchical integrated-recovery receipt (PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json) with decision.counts_may_be_opened=true, plus completion of the frozen integrated observation-source sensitivity recovery gate.",
+  "unlock_condition": "Real count magnitudes remain locked. Unlock requires a pre-outcome hierarchical integrated-recovery receipt (PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json) with hierarchical core recovery passing under the frozen mandatory species-wide gate, plus completion of the frozen observation-source recovery: exclude-unknown must pass for ADPE/CHPE/GEPE; ground-only must pass for its outcome-blind testable species CHPE and GEPE, while ADPE is reported coverage-limited (14/40 units) and is nonblocking.",
   "sources": {
     "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
     "time_field": "season",
@@ -80,11 +80,12 @@
   },
   "mandatory_sensitivities": {
     "forcing_scale": "Refit every species with one species-wide forcing using predictor-complete units ADPE=41, CHPE=34, GEPE=29. If the focal trait direction or crossover classification materially changes, report forcing-scale dependence.",
-    "exclude_unknown_vantage": "Remove the 62 unknown-vantage records and rerun the full pipeline with the same estimators.",
-    "ground_only": "Use ground observations only for the demographic reconstruction; report as robustness/coverage sensitivity and never substitute it for the primary result because it is stronger.",
+    "exclude_unknown_vantage": "Outcome-blind support is ADPE=39, CHPE=29, GEPE=28; all are testable. Synthetic hierarchical recovery under the identical estimator and thresholds must pass all three species before real outcomes unlock.",
+    "ground_only": "Outcome-blind raw-ground support is ADPE=14, CHPE=25, GEPE=23. CHPE and GEPE are recovery-testable and must pass their synthetic hierarchical ground-only recovery. ADPE is coverage-limited and must be reported unavailable; do not broaden it to the full direct family and do not count unavailability as robustness failure.",
     "observation_timing": "report exact-date and <=14-day image-offset sensitivity when estimable",
     "shannon": "Tier 2 Shannon remains sensitivity-only as previously frozen",
-    "radii": "1 km and 5 km trait versions remain sensitivity-only; they cannot replace the 2 km primary scale"
+    "radii": "1 km and 5 km trait versions remain sensitivity-only; they cannot replace the 2 km primary scale",
+    "observation_source_support_receipt": "results/PAPER2_INTEGRATED_SENSITIVITY_SUPPORT_RESULT_V1.json"
   },
   "process_variance_claim": {
     "status": "blocked_pending PAPER2_PROCESS_VARIANCE_RECOVERY_V1",
