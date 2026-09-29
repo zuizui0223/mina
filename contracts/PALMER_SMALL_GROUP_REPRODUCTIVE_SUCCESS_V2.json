@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-small-group-reproductive-success-v2",
+  "date": "2026-09-29",
+  "status": "FROZEN_BEFORE_SOURCE_PAIRED_SIZE_SUCCESS_EXECUTION",
+  "supersedes": "mina-palmer-small-group-reproductive-success-v1",
+  "supersession_reason": "The v1 analysis treated the legacy chick table's num_breeding_pairs field as the reproductive denominator and derived season from calendar date. A post-result semantics audit found biologically impossible ratios and study_name/date conflicts. V2 therefore uses the independent November breeding census as the pair denominator and study_name as the season identifier before opening the repaired size-success result.",
+  "sources": {
+    "chicks": {
+      "dataset_id": "AdeliePenguinAdultandChickCounts",
+      "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+      "role": "colony-specific January chick counts only",
+      "used_fields": [
+        "study_name",
+        "island_name",
+        "colony_code",
+        "num_chicks",
+        "time",
+        "census_time"
+      ],
+      "prohibited_primary_field": "num_breeding_pairs"
+    },
+    "breeding_pairs": {
+      "dataset_id": "AdeliePenguinCensus",
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "role": "independent November colony-specific breeding-pair denominator",
+      "used_fields": [
+        "study_name",
+        "island_name",
+        "colony_code",
+        "num_breeding_pairs",
+        "time"
+      ]
+    }
+  },
+  "season_key": {
+    "primary": "study_name",
+    "rationale": "The PAL study identifier encodes the breeding season and is shared by the November breeding-pair census and January chick census. Calendar year minus one is not used because legacy chick-table dates contain at least one conflict with study_name.",
+    "match_key": [
+      "study_name",
+      "island_name",
+      "colony_code"
+    ]
+  },
+  "source_pairing": {
+    "adult_duplicate_rule": "Fail closed if more than one finite nonnegative breeding-pair row exists for the same study_name × island × colony_code.",
+    "chick_duplicate_rule": "If multiple finite nonnegative chick counts exist for the same study_name × island × colony_code, retain the maximum num_chicks; ties are resolved by lexicographically smallest time then census_time. This rule is frozen before the paired result is computed and follows the census convention of retaining the maximum among repeated counts.",
+    "unmatched_rows": "Do not impute. Report unmatched chick and adult keys.",
+    "required_pairs": ">0",
+    "required_chicks": ">=0"
+  },
+  "question": "Within the same Palmer island and breeding season, do smaller Adelie breeding groups produce fewer chicks per independently censused breeding pair than larger contemporaneous groups?",
+  "biological_hypothesis": {
+    "name": "small-group reproductive disadvantage",
+    "prediction": "After conditioning on island-season total chick production, chick counts are shifted toward colony codes with more November breeding pairs relative to the equal-per-pair expectation.",
+    "mechanism_boundary": "A positive result is compatible with an Allee-like small-group disadvantage, edge/predation effects, or habitat quality, but cannot identify which mechanism caused it."
+  },
+  "group_definition": {
+    "unit": "island_name × study_name",
+    "focal_islands": [
+      "CHR",
+      "COR",
+      "HUM",
+      "LIT",
+      "TOR"
+    ],
+    "minimum_colonies": 4,
+    "minimum_total_chicks": 1,
+    "predictor": "x_i = z(log1p November breeding pairs) within island-season, using population SD (ddof=0)"
+  },
+  "primary_null": {
+    "name": "equal per-pair reproductive success conditional on observed island-season totals",
+    "conditioning": "Within each eligible island-season, fix the observed total chick count C_g and the independent November breeding-pair counts n_i.",
+    "probabilities": "p_i = n_i / sum_j n_j",
+    "simulation": "Allocate C_g chicks multinomially with probabilities p_i.",
+    "meaning": "Group size affects expected chick number only through the number of breeding pairs, not per-pair reproductive output."
+  },
+  "primary_statistic": {
+    "per_group_score": "U_g = sum_i chicks_i*x_i - C_g*sum_i p_i*x_i",
+    "per_group_information": "I_g = C_g*Var_p(x_i)",
+    "global_score": "Z = sum_g U_g / sqrt(sum_g I_g)",
+    "expected_direction": "positive"
+  },
+  "inference": {
+    "monte_carlo_draws": 100000,
+    "seed": 20260930,
+    "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05
+  },
+  "effect_size": {
+    "model": "Within each island-season, expected chick allocation proportional to n_i * exp(beta*x_i).",
+    "report": "beta and exp(beta); exp(beta) is the multiplicative change in expected chicks per breeding pair for a +1 SD increase in log1p group size.",
+    "role": "descriptive; primary Monte Carlo score test governs inference"
+  },
+  "prespecified_diagnostics": [
+    "Number and fraction of chick rows matched to the independent breeding census.",
+    "Distribution of paired chicks / breeding pairs.",
+    "Count of paired rows with chicks > 2 × breeding pairs; report but do not silently alter the primary."
+  ],
+  "sensitivities": {
+    "exclude_litchfield": "Repeat after excluding Litchfield.",
+    "leave_one_island_out": "Repeat after excluding each island.",
+    "pairs_at_least_2": "Require November pair count >=2.",
+    "pairs_at_least_5": "Require November pair count >=5.",
+    "biologically_inconsistent_ratio": "Repeat after excluding colony-season rows with chicks > 2 × breeding pairs.",
+    "no_legacy_date_conflict": "Repeat after excluding chick rows whose calendar-derived season disagrees with the numeric season encoded in study_name, where study_name is parseable.",
+    "dirichlet_multinomial_A100": "Allow moderate unstructured within-island-season overdispersion around proportional probabilities.",
+    "dirichlet_multinomial_A25": "Allow strong unstructured within-island-season overdispersion."
+  },
+  "decision_rule": {
+    "primary_support": "Observed Z > 0 and primary one-sided Monte Carlo p <= 0.05.",
+    "source_robust_support": "Primary support plus positive Z and p <= 0.05 after excluding biologically inconsistent ratios and after excluding legacy date-conflict rows.",
+    "stronger_pattern": "Source-robust support plus positive direction in all five leave-one-island-out analyses and both pair-count thresholds.",
+    "overdispersion_boundary": "Failure under A25 must be reported and prevents describing the association as insensitive to strong colony-level heterogeneity."
+  },
+  "interpretation_boundaries": [
+    "Do not use the superseded v1 result as independent replication.",
+    "Do not call a positive result proof of skua predation, social facilitation or a demographic Allee effect.",
+    "Do not assume colony_code is a mapped physical subcolony polygon.",
+    "Do not use chick-table num_breeding_pairs in the primary or sensitivity denominator.",
+    "Do not derive primary season from chick calendar date.",
+    "Do not remove chicks > 2 × pairs from the primary after seeing the sign; they are handled only in the frozen sensitivity.",
+    "The legacy ERDDAP snapshot remains the frozen primary source; the 2024 EDI update is a future version-replication, not a replacement chosen after outcome inspection."
+  ]
+}
