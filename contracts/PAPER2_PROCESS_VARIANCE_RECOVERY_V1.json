@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-process-variance-recovery-v1",
+  "date": "2026-09-29",
+  "status": "secondary_outcome_blind_variance_recovery_frozen_before_demographic_outcomes",
+  "paper_lane": "Paper 2",
+  "role": "secondary claim gate; never blocks the primary response-filter test",
+  "question": "Can site-level local process variance be recovered well enough from the frozen sampling schedules to distinguish demographic buffering from decoupling-with-local-instability?",
+  "source_integrated_branch": "analysis/paper2-integrated-recovery-v2",
+  "simulation": {
+    "replicates_per_species_scenario": 100,
+    "retained_forcing_scales": {
+      "ADPE": "ccamlr",
+      "CHPE": "apbp_region",
+      "GEPE": "species_wide"
+    },
+    "baseline_process_sd": 0.04,
+    "high_variance_multiplier": 2,
+    "variance_pattern": "half of sites within each species receive baseline process SD and half receive 2x process SD, assigned deterministically from an outcome-blind ordering balanced across forcing groups",
+    "all_other_process_and_observation_parameters": "identical to PAPER2_INTEGRATED_RECOVERY_V1"
+  },
+  "estimator": {
+    "rule": "After integrated fitting, compute site residual increment variance after fitted drift and fitted shared-forcing contribution. Correct interval residual squares for collapsed observation variance at both interval endpoints and divide by interval duration.",
+    "aggregation": "Pool corrected residual variance per site with nonnegative truncation only at the variance-estimate boundary.",
+    "minimum_information": "at least 4 usable adjacent-season residual intervals per site"
+  },
+  "gate": {
+    "min_true_estimated_process_variance_spearman": 0.6,
+    "min_high_vs_low_variance_direction_fraction": 0.8,
+    "max_median_log_variance_ratio_bias": 0.4,
+    "finite_estimate_fraction": 0.95
+  },
+  "interpretation": [
+    "Pass: Paper 2 may test whether weak regional coupling coexists with elevated local process variance.",
+    "Fail: remove/demote the decoupling-with-instability claim; do not change the primary lambda or A x H model.",
+    "No site trait is selected or changed based on this variance recovery."
+  ],
+  "boundary": [
+    "No real count magnitude is opened.",
+    "This gate cannot rescue or overturn a failed primary integrated recovery gate.",
+    "No alternative residual definition, minimum-interval threshold or variance transformation may be selected after real outcomes are opened."
+  ]
+}
