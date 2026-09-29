@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-observation-timing-sensitivity-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36574081201,
+    "artifact_id": 11035049081,
+    "artifact_digest": "sha256:54b64192af894b748190c797c3b5339baf6f2bb2b1e80b8f2c75b66c71823e2c",
+    "conclusion": "success"
+  },
+  "primary_reference": {
+    "same_season_delta_image": 0.03955478972384191,
+    "same_season_multiplicative_factor": 1.040347497675567,
+    "cross_species_median_gamma_ah": -0.31822603579776854
+  },
+  "exact_date": {
+    "pairs": 23,
+    "pairs_by_species": {
+      "ADPE": 3,
+      "CHPE": 7,
+      "GEPE": 13
+    },
+    "delta_image": 0.06651631189668203,
+    "multiplicative_factor": 1.068778397735785,
+    "sigma_accuracy_1": 0.2331658956673662,
+    "sigma_accuracy_2_5": 0.45172596399147963,
+    "cross_species_median_gamma_ah": -0.32604150427317613,
+    "negative_species": 3,
+    "crossover_species": [
+      "CHPE",
+      "GEPE"
+    ],
+    "species_gamma_ah": {
+      "ADPE": -0.2915524623721192,
+      "CHPE": -1.2344208623571908,
+      "GEPE": -0.32604150427317613
+    }
+  },
+  "within_14_days": {
+    "pairs": 53,
+    "pairs_by_species": {
+      "ADPE": 4,
+      "CHPE": 15,
+      "GEPE": 34
+    },
+    "delta_image": 0.056187643510157995,
+    "multiplicative_factor": 1.0577961536985403,
+    "sigma_accuracy_1": 0.2333037194157558,
+    "sigma_accuracy_2_5": 0.44979130606567674,
+    "cross_species_median_gamma_ah": -0.3232120475068594,
+    "negative_species": 3,
+    "crossover_species": [
+      "CHPE",
+      "GEPE"
+    ],
+    "species_gamma_ah": {
+      "ADPE": -0.2963578228531646,
+      "CHPE": -1.2157879629538795,
+      "GEPE": -0.3232120475068594
+    }
+  },
+  "decision": {
+    "primary_offset_replaced": false,
+    "timing_sensitivity_changes_interaction_direction": false,
+    "timing_sensitivity_changes_crossover_species": false,
+    "inferential_p_values_recomputed": false
+  },
+  "interpretation": [
+    "Restricting direct-image calibration to exact-date or <=14-day pairs increases the estimated image/direct multiplicative offset modestly but leaves the focal gamma_AH direction and cross-species median essentially unchanged.",
+    "Chinstrap and gentoo retain the full crossover sign classification; Adelie remains negative-interaction but not full crossover.",
+    "This sensitivity supports calibration robustness but does not alter the non-confirmatory primary permutation result."
+  ]
+}
