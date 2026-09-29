@@ -9,6 +9,7 @@ from scripts.run_paper2_coupling_diagnostic import (
     leave_one_out_forcing,
     estimate_lambda,
     fit_trait_regression,
+    filter_observations,
 )
 
 
@@ -80,6 +81,20 @@ class TraitRegressionTests(unittest.TestCase):
         self.assertAlmostEqual(fit["coefficients"]["A_x_H"], -1.25, places=8)
         self.assertAlmostEqual(fit["marginal_H_at_A_minus1"], 1.35, places=8)
         self.assertAlmostEqual(fit["marginal_H_at_A_plus1"], -1.15, places=8)
+
+
+class ObservationSensitivityFilterTests(unittest.TestCase):
+    def test_frozen_vantage_sensitivity_filters(self):
+        df = pd.DataFrame({
+            "vantage":["ground","aerial","uav",None],
+            "count":[1,1,1,1],
+        })
+        self.assertEqual(len(filter_observations(df, "all")), 4)
+        self.assertEqual(len(filter_observations(df, "exclude_unknown")), 3)
+        self.assertEqual(len(filter_observations(df, "direct")), 2)
+        ground = filter_observations(df, "ground_only")
+        self.assertEqual(len(ground), 1)
+        self.assertEqual(ground.iloc[0]["vantage"], "ground")
 
 
 if __name__ == "__main__":
