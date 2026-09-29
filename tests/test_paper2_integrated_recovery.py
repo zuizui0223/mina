@@ -89,11 +89,17 @@ def dense_species_fixture():
     metadata=[]
     for i in range(len(frame)):
         for season in range(1980,2026):
-            metadata.append({
-                "group_id":f"S{i}|ADPE|{season}",
-                "site_id":f"S{i}","species_id":"ADPE","season":season,
-                "vantage_family":"direct","accuracy_group":"1",
-            })
+            for family,accuracy in (
+                ("direct","1"),
+                ("image_based","1"),
+                ("direct","2-5"),
+                ("image_based","2-5"),
+            ):
+                metadata.append({
+                    "group_id":f"S{i}|ADPE|{season}",
+                    "site_id":f"S{i}","species_id":"ADPE","season":season,
+                    "vantage_family":family,"accuracy_group":accuracy,
+                })
     return frame,pd.DataFrame(metadata)
 
 
