@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-observation-timing-sensitivity-v1",
+  "date": "2026-09-29",
+  "status": "prespecified_secondary_observation_timing_sensitivity",
+  "pre_outcome_basis": "contracts/PAPER2_REAL_OUTCOME_EXECUTION_V1.json observation_timing sensitivity and Gate 2B date-overlap audit",
+  "modes": {
+    "exact_date": {
+      "match": "direct and image-based records within the same site x species x season with both dates known and absolute date difference = 0 days",
+      "expected_pairs": 23
+    },
+    "within_14_days": {
+      "match": "direct and image-based records within the same site x species x season with both dates known and absolute date difference <= 14 days",
+      "expected_pairs": 53
+    }
+  },
+  "offset_estimator": "For every eligible direct-image record pair, compute log1p(image count)-log1p(direct count); the shared timing-matched offset is the unweighted mean across eligible pairs.",
+  "precision_recalibration": "After fixing the timing-matched shared offset, re-estimate pooled within-season accuracy-group SDs from the full 2100-record cohort using the same 1 vs 2-5 structure.",
+  "refit": "Refit the unchanged primary spatially adjusted V3 A+H+A:H model for ADPE/CHPE/GEPE using the timing-matched offset and recalibrated accuracy SDs.",
+  "reporting": [
+    "timing-matched delta_image and multiplicative factor",
+    "species gamma_A, gamma_H, gamma_AH and crossover classification",
+    "cross-species median gamma_AH"
+  ],
+  "inference": "descriptive sensitivity only; primary 9999-permutation p-values are not recomputed or replaced",
+  "guardrails": [
+    "The same-season primary offset remains the primary calibration regardless of which timing sensitivity looks more favorable.",
+    "No species-specific timing offset is introduced.",
+    "No unmatched records are dropped from the V3 process fit; matching is used only to estimate the shared offset."
+  ]
+}
