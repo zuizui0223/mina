@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-size-reproduction-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_colony_size_reproduction_endpoint_execution",
+  "provenance_note": "The Palmer chick-production source and schema were previously probed on a failed validation branch, but no colony-size versus reproductive-output statistic or result was computed or opened. This contract freezes that new endpoint before execution.",
+  "source": {
+    "dataset_id": "AdeliePenguinAdultandChickCounts",
+    "title": "Adelie penguin colony-specific chick production, 1991, present.",
+    "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "columns": [
+      "study_name",
+      "time",
+      "island_name",
+      "colony_code",
+      "num_breeding_pairs",
+      "num_chicks",
+      "census_time"
+    ],
+    "focal_islands": ["CHR", "COR", "HUM", "LIT", "TOR"]
+  },
+  "question": "Within the same Palmer island and breeding season, do larger Adelie breeding groups produce chicks disproportionately faster than breeding-pair number, as predicted by a positive group-size effect on reproductive performance?",
+  "biological_hypothesis": {
+    "name": "size-dependent reproductive advantage",
+    "null": "Expected chick production is proportional to breeding-pair number within each island-season.",
+    "alternative": "Expected chick production scales superlinearly with breeding-pair number, consistent with higher chicks per pair in larger groups.",
+    "mechanistic_scope": "A superlinear effect would be consistent with social facilitation and/or reduced per-pair predation pressure in larger groups, but would not identify the causal mechanism by itself."
+  },
+  "season_definition": "For January chick-production censuses, season_start_year = calendar year(time) - 1.",
+  "eligibility": {
+    "row": "Finite num_breeding_pairs > 0 and finite num_chicks >= 0.",
+    "duplicate_rule": "Fail closed if more than one usable row exists for the same island, colony_code and season_start_year.",
+    "island_season_risk_set": "At least 3 eligible colony codes, non-zero variance in log breeding-pair number, and total chicks > 0.",
+    "no_imputation": true,
+    "no_colony_code_merging": true
+  },
+  "primary_model": {
+    "family": "conditional Poisson / multinomial allocation within island-season",
+    "equation": "E[chicks_i] proportional to pairs_i^beta within each island-season.",
+    "conditioning": "Condition on the observed total chick count C_s in each island-season, so p_i(beta) = pairs_i^beta / sum_j pairs_j^beta.",
+    "null_beta": 1.0,
+    "alternative": "beta > 1",
+    "reason": "This avoids regressing chicks-per-pair on pair number, which would share a denominator and can create mathematical coupling."
+  },
+  "effect_size": {
+    "estimate": "Common beta maximizing the summed conditional multinomial log-likelihood across eligible island-seasons.",
+    "interpretation": "beta = 1 means constant chicks per pair; beta > 1 means larger groups have higher per-pair reproductive output; beta < 1 means diminishing per-pair output with group size.",
+    "interval": "Observed-information Wald 95% CI, reported descriptively."
+  },
+  "primary_inference": {
+    "statistic": "Conditional score U at beta = 1 summed across island-seasons.",
+    "null_simulation": "Within each island-season, simulate chick counts from Multinomial(C_s, pairs_i / sum pairs) while holding pair counts and C_s fixed.",
+    "draws": 100000,
+    "seed": 20262929,
+    "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05,
+    "support": "beta_hat > 1 and one-sided p <= 0.05"
+  },
+  "sensitivities": {
+    "exclude_litchfield": "Repeat after excluding Litchfield Island.",
+    "leave_one_island_out": "Report beta_hat and score direction after removing each island in turn.",
+    "minimum_pairs_2": "Repeat after excluding rows with only one breeding pair.",
+    "overdispersion_cv10": "Exploratory Gamma-Poisson colony-level resampling around proportional means with CV=0.10.",
+    "overdispersion_cv20": "Same with CV=0.20."
+  },
+  "diagnostics": {
+    "adult_denominator_overlap": "Where possible, compare the chick-dataset breeding-pair count with the November breeding census by island, colony and season; report exact-equality fraction.",
+    "ratio_descriptive_only": "chicks_per_pair may be summarized for display but must not be the primary regression response."
+  },
+  "interpretation_boundaries": [
+    "A positive result supports size-dependent reproductive performance, not a specific predator or social mechanism.",
+    "A null or beta <= 1 result argues against using social facilitation as the explanation for the observed concentration/extinction ordering.",
+    "Do not infer causality from colony size if unmeasured terrain or snow exposure could jointly affect size and chick production.",
+    "Do not change the ratio-free primary model after seeing the result."
+  ]
+}
