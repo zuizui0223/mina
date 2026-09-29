@@ -4,6 +4,7 @@ from mina.concentration_chick_output import (
     _fit,
     adult_states,
     build_panel,
+    load_chicks,
 )
 
 
@@ -95,3 +96,15 @@ def test_fixed_effect_fit_recovers_concentration_direction():
         rel_tol=1e-9,
         abs_tol=1e-9,
     )
+
+
+def test_pal_study_name_defines_season_even_when_calendar_date_is_inconsistent(tmp_path):
+    path = tmp_path / "chicks.csv"
+    path.write_text(
+        "study_name,time,island_name,colony_code,num_breeding_pairs,num_chicks,census_time\n"
+        "PAL9798,1997-01-29T00:00:00Z,LIT,8.0,70,35,1400\n",
+        encoding="utf-8",
+    )
+    rows = load_chicks(path)
+    assert len(rows) == 1
+    assert rows[0]["season"] == 1997
