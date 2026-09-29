@@ -97,6 +97,41 @@ def dense_species_fixture():
     return frame,pd.DataFrame(metadata)
 
 
+class JointIntegratedTests(unittest.TestCase):
+    def test_joint_fit_estimates_observation_nuisance_from_same_counts(self):
+        frame,metadata=dense_species_fixture()
+        frames={"ADPE":frame}
+        sim=simulate_integrated_dataset(
+            frames,metadata,
+            gamma_a=0.0,gamma_ah=-0.35,seed=777,
+            forcing_sd=0.10,loading_sd=0.0,process_sd=0.0,
+            drift_mean=-0.01,drift_sd=0.0,
+            delta_image=np.log(1.15),
+            sigma1=np.log(1.05),sigma2plus=np.log(1.25),
+        )
+        fit=fit_integrated_dataset(
+            frames,
+            sim["observations"],
+            sim["truth"],
+        )
+        self.assertLess(
+            abs(fit["observation"]["delta_image"]-np.log(1.15)),0.03
+        )
+        self.assertLess(
+            abs(
+                fit["observation"]["accuracy"]["1"]["sigma"]
+                -np.log(1.05)
+            )/np.log(1.05),
+            0.15,
+        )
+        self.assertLess(
+            abs(fit["species"]["ADPE"]["gamma_ah"]+0.35),0.08
+        )
+        self.assertGreater(
+            fit["species"]["ADPE"]["forcing_correlation"]["G1"],0.90
+        )
+
+
 class IntegratedSpeciesTests(unittest.TestCase):
     def test_dense_near_noiseless_integer_counts_recover_crossover(self):
         frame,metadata=dense_species_fixture()
