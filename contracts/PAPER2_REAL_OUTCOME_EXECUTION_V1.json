@@ -2,9 +2,9 @@
   "schema_version": 1,
   "contract_id": "mina-paper2-real-outcome-execution-v1",
   "date": "2026-09-29",
-  "status": "frozen_but_blocked_until_integrated_recovery_passes",
+  "status": "LOCKED_AFTER_GATE_2E_C_V1_FAILURE",
   "paper_lane": "Paper 2",
-  "unlock_condition": "results/PAPER2_INTEGRATED_RECOVERY_RESULT_V1.json must report decision.counts_may_be_opened = true from the pre-outcome Gate 2E-C workflow.",
+  "unlock_condition": "Real count magnitudes remain locked. Unlock requires a new pre-outcome hierarchical integrated-recovery receipt (PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json) with decision.counts_may_be_opened=true, plus completion of the frozen integrated observation-source sensitivity recovery gate.",
   "sources": {
     "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
     "time_field": "season",
@@ -27,22 +27,14 @@
     "date_matched_method_sensitivity": "secondary: recompute the image-direct offset from exact-date pairs and <=14-day pairs separately when estimable; do not replace the primary same-season offset based on which is more favorable"
   },
   "primary_process": {
-    "scales": {
-      "ADPE": "ccamlr",
-      "CHPE": "apbp_region",
-      "GEPE": "species_wide"
-    },
-    "predictor_complete_units": {
-      "ADPE": 40,
-      "CHPE": 33,
-      "GEPE": 29
-    },
-    "model": "Adjacent collapsed-season changes are decomposed into site drift mu_i + normalized site loading lambda_i times unknown shared forcing F_g,t + residual process variation, using the exact frozen 8-iteration alternating weighted least-squares estimator from Gate 2E-C.",
-    "identification": [
+    "status": "SUPERSEDED_BEFORE_REAL_OUTCOMES",
+    "failed_model": "Gate 2E-C v1 used method-corrected same-season collapse followed by adjacent differences, free site-specific loading recovery, and a second-stage trait regression.",
+    "failure_reason": "Under the frozen synthetic count/observation process, the observation nuisance parameters remained recoverable but shared forcing/site loadings and trait effects were not reliably recovered across species.",
+    "replacement_requirement": "Gate 2E-C v2 must propagate observation uncertainty and estimate the trait-loading relationship jointly/hierarchically rather than treating noisy site loadings as observed responses.",
+    "retained_identification": [
       "mean annual forcing = 0 within each forcing group",
       "mean site loading = 1 within each forcing group"
-    ],
-    "interval_weight": "1/sqrt(interval length), unchanged from Gate 2E-A/C"
+    ]
   },
   "site_trait_models": {
     "standardization": "A, H and R use the already-frozen transforms and are standardized within each species analysis frame.",
@@ -96,6 +88,13 @@
     "Do not replace the shared image offset with species-specific offsets in the primary model.",
     "A null or opposite A x H result is a valid falsification and does not trigger model searching.",
     "The latent shared factor is not named as a specific climate mechanism without an independent environmental attribution analysis.",
-    "Results from superseded PR #65 are not consulted to alter this contract."
-  ]
+    "Results from superseded PR #65 are not consulted to alter this contract.",
+    "Do not relax Gate 2E-C v1 simulation truths or recovery thresholds to unlock real counts; estimator redesign must be validated against the same frozen stress test."
+  ],
+  "required_pre_outcome_gates": {
+    "integrated_v1": "FAILED and frozen at results/PAPER2_INTEGRATED_RECOVERY_RESULT_V1.json",
+    "integrated_v2": "required; one-stage/hierarchical process-observation estimator must pass without relaxing v1 simulation truths or recovery thresholds",
+    "observation_source_sensitivity": "required by contracts/PAPER2_INTEGRATED_SENSITIVITY_RECOVERY_V1.json before real outcomes",
+    "process_variance": "optional for count opening but required before any decoupling-with-local-instability claim"
+  }
 }
