@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "contract_id": "mina-paper2-spatially-adjusted-hierarchical-recovery-v3",
+  "date": "2026-09-29",
+  "status": "pre_outcome_spatial_adjustment_frozen_after_specieswide_v2_selection",
+  "parent_v2": "results/PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json",
+  "motivation": "V2 selects species-wide forcing for all three species. The ecological site-trait effect must therefore remain protected from broad spatial composition differences that were previously absorbed by regional forcing groups.",
+  "forcing_scale": {
+    "ADPE": "species_wide",
+    "CHPE": "species_wide",
+    "GEPE": "species_wide"
+  },
+  "trait_adjustment": {
+    "ADPE": {
+      "field": "ccamlr_id",
+      "blocks": {
+        "88.1": 25,
+        "48.1": 15,
+        "58.4.1": 1
+      }
+    },
+    "CHPE": {
+      "field": "region",
+      "blocks": {
+        "Central-west Antarctic Peninsula": 18,
+        "South Shetland Islands": 15,
+        "Elephant Island": 1
+      }
+    },
+    "GEPE": {
+      "field": "region",
+      "blocks": {
+        "Central-west Antarctic Peninsula": 21,
+        "South Shetland Islands": 7,
+        "Elephant Island": 1
+      }
+    }
+  },
+  "loading_model": "lambda_i = 1 + alpha_block[i] + gamma_A A_within_block + gamma_H H_within_block + gamma_AH AH_within_block + b_i",
+  "identification": [
+    "one species-wide forcing has mean zero over annual transitions",
+    "A, H and A:H are centered within the frozen trait-adjustment block",
+    "residual b has mean zero within each trait-adjustment block",
+    "block intercepts have site-count-weighted mean zero, implying species-wide mean lambda = 1"
+  ],
+  "singleton_rule": "A singleton adjustment block has centered trait values exactly zero and therefore contributes to the block intercept but not to the site-trait slopes.",
+  "simulation": {
+    "replicate_scenarios": 100,
+    "truths": "exactly inherit V2: null, crossover gamma_AH=-0.35, simple buffering gamma_A=-0.25",
+    "observation_truths": "exactly inherit V2",
+    "thresholds": "exactly inherit V2; no relaxation"
+  },
+  "unlock": "Real outcomes remain locked unless spatially adjusted V3 passes the same recovery thresholds for all three species and observation-source sensitivity recovery also passes for all outcome-blind testable species.",
+  "boundary": [
+    "No real count magnitude is read or modeled.",
+    "Forcing remains species-wide; regional blocks are adjustment strata only and are not separate latent forcing factors.",
+    "No block is selected from outcomes. The fields are the previously frozen geography used in Gate 2C/2D.",
+    "No site is deleted because its block is a singleton."
+  ]
+}
