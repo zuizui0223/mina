@@ -1,0 +1,37 @@
+name: paper2-v2-sensitivity-support
+on:
+  push:
+    branches: [analysis/paper2-hierarchical-v2-clean]
+    paths:
+      - "scripts/audit_paper2_v2_sensitivity_support.py"
+      - ".github/workflows/paper2-v2-sensitivity-support.yml"
+  pull_request:
+    paths:
+      - "scripts/audit_paper2_v2_sensitivity_support.py"
+      - ".github/workflows/paper2-v2-sensitivity-support.yml"
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-22.04
+    permissions: {actions: read, contents: read}
+    env: {GH_TOKEN: "${{ github.token }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install pandas pyreadr numpy
+      - run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          mkdir -p build/forcing build/options
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+      - run: |
+          python -m scripts.audit_paper2_v2_sensitivity_support \
+            --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --breeding-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/PAPER2_V2_SENSITIVITY_SUPPORT_RESULT.json
+      - uses: actions/upload-artifact@v4
+        with: {name: paper2-v2-sensitivity-support, path: build/PAPER2_V2_SENSITIVITY_SUPPORT_RESULT.json}

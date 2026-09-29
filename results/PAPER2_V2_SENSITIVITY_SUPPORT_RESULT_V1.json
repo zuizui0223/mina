@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-paper2-v2-sensitivity-support-result",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36539450423,
+    "artifact_id": 11019503615,
+    "artifact_digest": "sha256:cc17c099f09bb8ffad6b0a90db1f50dfd97e2753df6a64d7c2d9abe5a00ffd5e",
+    "conclusion": "success"
+  },
+  "frame_units": {
+    "ADPE": 41,
+    "CHPE": 34,
+    "GEPE": 29
+  },
+  "forcing_scale_by_species": {
+    "ADPE": "species_wide",
+    "CHPE": "species_wide",
+    "GEPE": "species_wide"
+  },
+  "modes": {
+    "exclude_unknown": {
+      "ADPE": {
+        "supported_units": 40,
+        "classification": "testable"
+      },
+      "CHPE": {
+        "supported_units": 30,
+        "classification": "testable"
+      },
+      "GEPE": {
+        "supported_units": 28,
+        "classification": "testable"
+      }
+    },
+    "ground_only": {
+      "ADPE": {
+        "supported_units": 14,
+        "classification": "coverage_limited"
+      },
+      "CHPE": {
+        "supported_units": 26,
+        "classification": "testable"
+      },
+      "GEPE": {
+        "supported_units": 23,
+        "classification": "testable"
+      }
+    }
+  },
+  "decision": {
+    "exclude_unknown_all_species_testable": true,
+    "ground_only_testable_species": [
+      "CHPE",
+      "GEPE"
+    ],
+    "ground_only_ADPE": "coverage_limited_nonblocking",
+    "no_real_count_magnitudes_opened": true
+  }
+}

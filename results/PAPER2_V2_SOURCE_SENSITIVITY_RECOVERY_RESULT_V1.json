@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-v2-source-sensitivity-recovery-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36539772364,
+    "artifact_id": 11019754171,
+    "artifact_digest": "sha256:dd1cdbca760d864977449698722e5becf5d2e29112b5c962268db403ada681bb",
+    "conclusion": "failure"
+  },
+  "decision": {
+    "exclude_unknown_passed": false,
+    "ground_only_testable_species_passed": true,
+    "ADPE_ground_only": "coverage_limited_nonblocking",
+    "observation_source_sensitivity_completed": false,
+    "counts_may_be_opened": false,
+    "no_real_count_magnitudes_opened": true
+  },
+  "exclude_unknown": {
+    "ADPE": {
+      "supported_units": 40,
+      "passes": false,
+      "forcing_median_corr": 0.833240125523648,
+      "forcing_q05_corr": 0.6725734284548803,
+      "crossover_median_gamma_ah": -0.3902931752010944,
+      "crossover_negative_fraction": 0.88,
+      "null_median_gamma_ah": -0.02150107286963849,
+      "failed_check": "crossover_sign_only"
+    },
+    "CHPE": {
+      "supported_units": 30,
+      "passes": true,
+      "crossover_median_gamma_ah": -0.3475540301753249,
+      "crossover_negative_fraction": 1
+    },
+    "GEPE": {
+      "supported_units": 28,
+      "passes": true,
+      "crossover_median_gamma_ah": -0.3584087454094823,
+      "crossover_negative_fraction": 1
+    }
+  },
+  "ground_only": {
+    "ADPE": {
+      "supported_units": 14,
+      "status": "coverage_limited"
+    },
+    "CHPE": {
+      "supported_units": 26,
+      "passes": true,
+      "crossover_median_gamma_ah": -0.34958572719738457,
+      "crossover_negative_fraction": 1
+    },
+    "GEPE": {
+      "supported_units": 23,
+      "passes": true,
+      "crossover_median_gamma_ah": -0.331160584118625,
+      "crossover_negative_fraction": 1
+    }
+  },
+  "interpretation": [
+    "The V2 source-sensitivity gate fails only because Adelie exclude-unknown recovers the negative crossover in 88/100 replicates versus the frozen 90/100 requirement.",
+    "No threshold is relaxed and real outcomes remain locked.",
+    "Because the final estimator is being strengthened to spatially adjusted V3 before outcomes, observation-source sensitivity must be rerun with V3 rather than rescuing V2."
+  ]
+}

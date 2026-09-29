@@ -2,9 +2,9 @@
   "schema_version": 1,
   "contract_id": "mina-paper2-real-outcome-execution-v1",
   "date": "2026-09-29",
-  "status": "LOCKED_AFTER_GATE_2E_C_V1_FAILURE",
+  "status": "LOCKED_PENDING_OBSERVATION_SOURCE_RECOVERY",
   "paper_lane": "Paper 2",
-  "unlock_condition": "Real count magnitudes remain locked. Unlock requires a new pre-outcome hierarchical integrated-recovery receipt (PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json) with decision.counts_may_be_opened=true, plus completion of the frozen integrated observation-source sensitivity recovery gate.",
+  "unlock_condition": "Real count magnitudes remain locked. Unlock requires a pre-outcome hierarchical integrated-recovery receipt (PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json) with hierarchical core recovery passing under the frozen mandatory species-wide gate, plus completion of the frozen observation-source recovery: exclude-unknown must pass for ADPE/CHPE/GEPE; ground-only must pass for its outcome-blind testable species CHPE and GEPE, while ADPE is reported coverage-limited (14/40 units) and is nonblocking.",
   "sources": {
     "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
     "time_field": "season",
@@ -27,31 +27,50 @@
     "date_matched_method_sensitivity": "secondary: recompute the image-direct offset from exact-date pairs and <=14-day pairs separately when estimable; do not replace the primary same-season offset based on which is more favorable"
   },
   "primary_process": {
-    "status": "SUPERSEDED_BEFORE_REAL_OUTCOMES",
-    "failed_model": "Gate 2E-C v1 used method-corrected same-season collapse followed by adjacent differences, free site-specific loading recovery, and a second-stage trait regression.",
-    "failure_reason": "Under the frozen synthetic count/observation process, the observation nuisance parameters remained recoverable but shared forcing/site loadings and trait effects were not reliably recovered across species.",
-    "replacement_requirement": "Gate 2E-C v2 must propagate observation uncertainty and estimate the trait-loading relationship jointly/hierarchically rather than treating noisy site loadings as observed responses.",
-    "retained_identification": [
-      "mean annual forcing = 0 within each forcing group",
-      "mean site loading = 1 within each forcing group"
-    ]
+    "status": "HIERARCHICAL_V2_CORE_PASSED",
+    "selected_forcing_scale": {
+      "ADPE": "species_wide",
+      "CHPE": "species_wide",
+      "GEPE": "species_wide"
+    },
+    "predictor_complete_units": {
+      "ADPE": 41,
+      "CHPE": 34,
+      "GEPE": 29
+    },
+    "estimator": "hierarchical interval-marginal linear-Gaussian loading model from PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_V2",
+    "loading_model": "lambda_i = 1 + centered site-trait effect(s) + residual b_i; trait effects are fitted jointly with shared forcing rather than post-hoc on free lambda estimates",
+    "interval_variance": "duration * process_sd^2 + endpoint observation variances",
+    "identification": [
+      "mean annual forcing = 0 within species",
+      "mean site loading = 1 within species"
+    ],
+    "note": "Regional ADPE and CHPE forcing configurations failed the frozen integrated recovery criteria and are not used for real outcomes."
   },
   "site_trait_models": {
     "standardization": "A, H and R use the already-frozen transforms and are standardized within each species analysis frame.",
     "main_effect_order": [
-      "lambda ~ forcing_group + A",
-      "lambda ~ forcing_group + H",
-      "lambda ~ forcing_group + R"
+      "hierarchical loading fit with A only",
+      "hierarchical loading fit with H only",
+      "hierarchical loading fit with R only"
     ],
-    "crossover": "lambda ~ forcing_group + A + H + A:H",
+    "crossover": "hierarchical loading fit with A + H + A:H",
     "crossover_definition": {
       "beta_AH": "must be < 0",
       "low_area_H_slope": "beta_H - beta_AH; crossover pattern requires >= 0 at A=-1 SD",
       "high_area_H_slope": "beta_H + beta_AH; crossover pattern requires < 0 at A=+1 SD",
       "wording_rule": "Do not call the result an option-fragmentation crossover unless all three directional conditions hold."
     },
-    "secondary_combined": "lambda ~ forcing_group + A + H + R + A:H",
-    "mean_growth_secondary": "mu_i is analyzed against the same staged trait models to distinguish response filtering from ordinary habitat-quality associations."
+    "secondary_combined": "hierarchical loading fit with A + H + R + A:H; secondary synthesis only",
+    "mean_growth_secondary": "mu_i is analyzed against the same staged trait models to distinguish response filtering from ordinary habitat-quality associations.",
+    "hierarchical_engine_alignment": {
+      "A_main": "Use the same hierarchical loading engine with loading model lambda_i = 1 + gamma_A * A_centered_within_forcing_group + b_i.",
+      "H_main": "Use the same hierarchical loading engine with loading model lambda_i = 1 + gamma_H * H_centered_within_forcing_group + b_i.",
+      "R_main": "Use the same hierarchical loading engine with loading model lambda_i = 1 + gamma_R * R_centered_within_forcing_group + b_i. R is not inferred by regressing a separately estimated lambda_hat after fitting.",
+      "crossover": "Use the V2 hierarchical loading model with forcing-group-centered A, H and A:H jointly plus residual b_i.",
+      "secondary_combined": "Only after the four staged fits, use one hierarchical loading engine with centered A, H, R and A:H jointly as a secondary synthesis.",
+      "reason": "This keeps real-outcome estimation aligned with the estimator that passed/fails pre-outcome recovery; no primary site-trait effect is estimated from noisy post-hoc lambda_hat."
+    }
   },
   "inference": {
     "primary_crossover_statistic": "beta_AH from the dedicated crossover model",
@@ -72,11 +91,12 @@
   },
   "mandatory_sensitivities": {
     "forcing_scale": "Refit every species with one species-wide forcing using predictor-complete units ADPE=41, CHPE=34, GEPE=29. If the focal trait direction or crossover classification materially changes, report forcing-scale dependence.",
-    "exclude_unknown_vantage": "Remove the 62 unknown-vantage records and rerun the full pipeline with the same estimators.",
-    "ground_only": "Use ground observations only for the demographic reconstruction; report as robustness/coverage sensitivity and never substitute it for the primary result because it is stronger.",
+    "exclude_unknown_vantage": "Outcome-blind support is ADPE=39, CHPE=29, GEPE=28; all are testable. Synthetic hierarchical recovery under the identical estimator and thresholds must pass all three species before real outcomes unlock.",
+    "ground_only": "Outcome-blind raw-ground support is ADPE=14, CHPE=25, GEPE=23. CHPE and GEPE are recovery-testable and must pass their synthetic hierarchical ground-only recovery. ADPE is coverage-limited and must be reported unavailable; do not broaden it to the full direct family and do not count unavailability as robustness failure.",
     "observation_timing": "report exact-date and <=14-day image-offset sensitivity when estimable",
     "shannon": "Tier 2 Shannon remains sensitivity-only as previously frozen",
-    "radii": "1 km and 5 km trait versions remain sensitivity-only; they cannot replace the 2 km primary scale"
+    "radii": "1 km and 5 km trait versions remain sensitivity-only; they cannot replace the 2 km primary scale",
+    "observation_source_support_receipt": "results/PAPER2_INTEGRATED_SENSITIVITY_SUPPORT_RESULT_V1.json"
   },
   "process_variance_claim": {
     "status": "blocked_pending PAPER2_PROCESS_VARIANCE_RECOVERY_V1",

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-v2-observation-source-recovery-v1",
+  "date": "2026-09-29",
+  "status": "pre_outcome_source_sensitivity_recovery_frozen",
+  "parent": "results/PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json",
+  "forcing_scale": {
+    "ADPE": "species_wide",
+    "CHPE": "species_wide",
+    "GEPE": "species_wide"
+  },
+  "support": {
+    "exclude_unknown": {
+      "ADPE": 40,
+      "CHPE": 30,
+      "GEPE": 28
+    },
+    "ground_only": {
+      "ADPE": "coverage_limited_14",
+      "CHPE": 26,
+      "GEPE": 23
+    }
+  },
+  "calibration": "Each synthetic replicate estimates shared image offset and accuracy scales from the full 2100-record synthetic metadata. Source filters are applied only to demographic reconstruction.",
+  "simulation": {
+    "replicates_per_scenario": 100,
+    "scenarios": {
+      "null": {
+        "gamma_a": 0,
+        "gamma_ah": 0
+      },
+      "crossover": {
+        "gamma_a": 0,
+        "gamma_ah": -0.35
+      }
+    },
+    "inherit_core_truths": true
+  },
+  "gate": {
+    "min_group_median_forcing_correlation": 0.7,
+    "min_group_q05_forcing_correlation": 0.3,
+    "max_abs_crossover_median_bias": 0.1,
+    "min_crossover_negative_fraction": 0.9,
+    "max_abs_null_median_gamma_ah": 0.05,
+    "null_q05_q95_must_contain_zero": true
+  },
+  "unlock": "exclude_unknown must pass ADPE/CHPE/GEPE; ground_only must pass CHPE/GEPE. ADPE ground_only is coverage-limited and nonblocking.",
+  "boundary": [
+    "No real count magnitude is read or modeled.",
+    "No recovery threshold, predictor, forcing scale, time window or interaction may change.",
+    "Ground-only means raw vantage exactly ground."
+  ]
+}
