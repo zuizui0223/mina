@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-v3-permutation-execution-v1",
+  "date": "2026-09-29",
+  "status": "frozen_real_outcome_inference_execution",
+  "parent_inference_contract": "contracts/PAPER2_V3_INFERENCE_V1.json",
+  "point_estimate_receipt": "results/PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json",
+  "B": 9999,
+  "seed": 20260929,
+  "global_indexing": {
+    "permutation_indices": "0..9998",
+    "rng_rule": "For species index s in [0,1,2] and global permutation index k, initialize numpy default_rng with SeedSequence([20260929,k,s]).",
+    "sharding": "Shards partition global indices only; the permutation generated for an index is independent of shard count/order."
+  },
+  "permutation_scheme": {
+    "unit": "complete site-trait tuple (A,H,A:H)",
+    "strata": "within species x frozen V3 trait_block",
+    "singleton_blocks": "fixed",
+    "outcomes": "all count records, seasons, observation metadata and site identities remain attached to their original sites",
+    "refit": "For every permutation refit the complete frozen V3 species model, including species-wide forcing, site drift, process SD, block intercepts and residual loadings. Observation nuisance calibration is held fixed at the real full-data calibration because it is trait-independent."
+  },
+  "primary_statistics": {
+    "paper_level": "median gamma_AH across ADPE, CHPE, GEPE",
+    "species_specific": "gamma_AH for each species",
+    "direction": "lower/more negative",
+    "p_value": "(1 + count(permuted statistic <= observed statistic))/(9999+1)"
+  },
+  "multiplicity": {
+    "paper_level": "single preregistered primary test; no adjustment",
+    "species_specific": "Holm adjust the three species-specific one-sided permutation p-values"
+  },
+  "computation": {
+    "shards": 20,
+    "shard_rule": "global index k assigned by contiguous partition; all 9999 unique indices covered exactly once",
+    "aggregation": "concatenate shard outputs, require exactly 9999 unique global indices, then compute p-values from the frozen observed point estimates"
+  },
+  "terminal_rules": [
+    "No alternative permutation blocks, two-sided p-value, seed, B, species subset or fitted statistic may be substituted after results.",
+    "The paper-level conclusion is based on the cross-species median; species-specific p-values cannot replace a null paper-level result.",
+    "All three species-specific estimates and adjusted p-values are reported regardless of significance."
+  ]
+}
