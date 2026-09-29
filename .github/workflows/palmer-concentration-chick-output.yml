@@ -1,0 +1,84 @@
+name: palmer-concentration-chick-output
+
+on:
+  push:
+    branches:
+      - analysis/palmer-concentration-chick-output-v1
+    paths:
+      - "scripts/fetch_lter_chick_counts.py"
+      - "src/mina/concentration_chick_output.py"
+      - "tests/test_concentration_chick_output.py"
+      - "contracts/PALMER_CONCENTRATION_CHICK_OUTPUT_V1.json"
+      - ".github/workflows/palmer-concentration-chick-output.yml"
+  pull_request:
+    paths:
+      - "scripts/fetch_lter_chick_counts.py"
+      - "src/mina/concentration_chick_output.py"
+      - "tests/test_concentration_chick_output.py"
+      - "contracts/PALMER_CONCENTRATION_CHICK_OUTPUT_V1.json"
+      - ".github/workflows/palmer-concentration-chick-output.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen tests
+        run: pytest -q tests/test_concentration_chick_output.py
+      - name: Fetch frozen adult and chick censuses
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+      - name: Run concentration to chick-output test
+        id: analysis
+        continue-on-error: true
+        run: |
+          python -m mina.concentration_chick_output \
+            --adult-census build/adelie_census.csv \
+            --chicks build/adelie_chicks.csv \
+            --out build/palmer_concentration_chick_output.json \
+            --permutations 20000 \
+            --seed 20260929
+      - name: Print receipt
+        if: steps.analysis.outcome == 'success'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/palmer_concentration_chick_output.json").read_text())
+          p=x["primary"]
+          print("source=", json.dumps(x["source"],sort_keys=True))
+          print("eligibility=", json.dumps(p["eligibility"],sort_keys=True))
+          print("fit=", json.dumps(p["fit"],sort_keys=True))
+          print("perm=", json.dumps(p["permutation"],sort_keys=True))
+          print("decision=", json.dumps(x["decision"],sort_keys=True))
+          print("loo=", json.dumps(x["sensitivities"]["leave_one_island_out"],sort_keys=True))
+          PY
+      - name: Print fetch diagnostic on failure
+        if: steps.analysis.outcome == 'failure'
+        run: |
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          for p in ("build/adelie_census.csv","build/adelie_chicks.csv"):
+              with Path(p).open(encoding="utf-8-sig",newline="") as h:
+                  rows=list(csv.DictReader(h))
+              print(p, "rows=",len(rows), "columns=",rows[0].keys() if rows else [])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: palmer-concentration-chick-output
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/palmer_concentration_chick_output.json
+          if-no-files-found: warn
+      - name: Fail after artifact upload when analysis failed
+        if: steps.analysis.outcome == 'failure'
+        run: exit 1
