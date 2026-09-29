@@ -444,7 +444,7 @@ def run_pipeline(
             trend_fit = fit_trait_regression(
                 model_df,
                 "trend_slope",
-                permutations=permutations,
+                permutations=0,
                 seed=20260929 + 100,
             )
 
