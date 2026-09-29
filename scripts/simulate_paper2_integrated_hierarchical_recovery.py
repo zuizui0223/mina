@@ -167,21 +167,36 @@ def _smooth_states(
         site["x"]=np.linalg.lstsq(A,b,rcond=None)[0]
 
 
-def _update_site_parameters(
+def _update_site_and_gamma_joint(
     sites:list[dict],
     frame:pd.DataFrame,
     forcing:dict[str,np.ndarray],
-    gamma:np.ndarray,
     process_sd:float,
     loading_sd:float,
-)->tuple[np.ndarray,np.ndarray,dict[str,np.ndarray]]:
+    *,
+    min_loading_sd:float=0.05,
+)->tuple[np.ndarray,np.ndarray,np.ndarray,float]:
+    """Jointly update site drift, trait slopes, and residual site loadings.
+
+    Model annual increments as
+      d_it = mu_i + F_gt * (1 + X_i gamma + b_i) + error,
+    with a Gaussian penalty on b_i and exact within-group mean(b)=0
+    identification constraints.
+    """
     n=len(frame)
-    mu=np.zeros(n,dtype=float)
-    lam=np.ones(n,dtype=float)
+    p=3
     tau=max(float(process_sd),1e-8)
     sig=max(float(loading_sd),1e-8)
     X=frame[["Ac","Hc","AHc"]].to_numpy(dtype=float)
-    target=1.0+X@gamma
+    labels=frame["forcing_group"].astype(str).to_numpy()
+    groups=sorted(set(labels.tolist()))
+
+    n_increment_rows=sum(len(site["years"])-1 for site in sites)
+    n_prior_rows=n
+    n_cols=n+p+n
+    A=np.zeros((n_increment_rows+n_prior_rows,n_cols),dtype=float)
+    y=np.zeros(n_increment_rows+n_prior_rows,dtype=float)
+    r=0
     for i,site in enumerate(sites):
         years=site["years"]
         d=np.diff(site["x"])
@@ -189,37 +204,41 @@ def _update_site_parameters(
             forcing[site["group"]][int(year)-START_YEAR]
             for year in years[:-1]
         ],dtype=float)
-        A=np.column_stack([np.ones(len(d)),f])/tau
-        b=d/tau
-        A=np.vstack([A,np.asarray([[0.0,1.0/sig]])])
-        b=np.concatenate([b,np.asarray([target[i]/sig])])
-        coef=np.linalg.lstsq(A,b,rcond=None)[0]
-        mu[i]=float(coef[0])
-        lam[i]=float(coef[1])
+        for delta,ft in zip(d,f):
+            A[r,i]=1.0/tau
+            A[r,n:n+p]=(float(ft)*X[i])/tau
+            A[r,n+p+i]=float(ft)/tau
+            y[r]=(float(delta)-float(ft))/tau
+            r+=1
 
-    labels=frame["forcing_group"].astype(str).to_numpy()
-    for g in sorted(set(labels.tolist())):
+    for i in range(n):
+        A[r,n+p+i]=1.0/sig
+        r+=1
+
+    # Exact identification: residual site loading deviations sum to zero
+    # within each frozen forcing group. Because traits are group-centered,
+    # this also enforces mean(lambda)=1 in every group.
+    C=np.zeros((len(groups),n_cols),dtype=float)
+    for gi,g in enumerate(groups):
         idx=np.flatnonzero(labels==g)
-        mean=float(lam[idx].mean())
-        if abs(mean)<1e-8:
-            raise ValueError(f"near-zero mean loading in group {g}")
-        lam[idx]/=mean
-        forcing[g]*=mean
-    return mu,lam,forcing
+        C[gi,n+p+idx]=1.0/len(idx)
 
+    ata=A.T@A
+    aty=A.T@y
+    kkt=np.block([
+        [ata,C.T],
+        [C,np.zeros((len(groups),len(groups)),dtype=float)],
+    ])
+    rhs=np.concatenate([aty,np.zeros(len(groups),dtype=float)])
+    sol=np.linalg.lstsq(kkt,rhs,rcond=None)[0][:n_cols]
 
-def _update_gamma_and_loading_sd(
-    frame:pd.DataFrame,
-    lam:np.ndarray,
-    *,
-    min_loading_sd:float=0.05,
-)->tuple[np.ndarray,float]:
-    X=frame[["Ac","Hc","AHc"]].to_numpy(dtype=float)
-    y=np.asarray(lam,dtype=float)-1.0
-    gamma=np.linalg.lstsq(X,y,rcond=None)[0]
-    residual=y-X@gamma
-    sd=float(np.sqrt(np.mean(residual*residual)))
-    return gamma,max(sd,float(min_loading_sd))
+    mu=sol[:n]
+    gamma=sol[n:n+p]
+    b=sol[n+p:]
+    lam=1.0+X@gamma+b
+    residual_sd=float(np.sqrt(np.mean(b*b)))
+    loading_sd_new=max(residual_sd,float(min_loading_sd))
+    return mu,lam,gamma,loading_sd_new
 
 
 def _profile_from_observed_intervals(
@@ -285,20 +304,18 @@ def fit_hierarchical_species(
     for _ in range(int(iterations)):
         _smooth_states(sites,mu,lam,forcing,process_sd)
         forcing,mu=_update_forcing(sites,frame,mu,lam,forcing)
-        mu,lam,forcing=_update_site_parameters(
-            sites,frame,forcing,gamma,process_sd,loading_sd
+        mu,lam,gamma,loading_sd=_update_site_and_gamma_joint(
+            sites,frame,forcing,process_sd,loading_sd
         )
-        gamma,loading_sd=_update_gamma_and_loading_sd(frame,lam)
         process_sd=_profile_from_observed_intervals(
             sites,frame,mu,lam,forcing
         )
 
     _smooth_states(sites,mu,lam,forcing,process_sd)
     forcing,mu=_update_forcing(sites,frame,mu,lam,forcing)
-    mu,lam,forcing=_update_site_parameters(
-        sites,frame,forcing,gamma,process_sd,loading_sd
+    mu,lam,gamma,loading_sd=_update_site_and_gamma_joint(
+        sites,frame,forcing,process_sd,loading_sd
     )
-    gamma,loading_sd=_update_gamma_and_loading_sd(frame,lam)
 
     corr={}
     if truth_forcing is not None:
