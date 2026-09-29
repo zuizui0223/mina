@@ -194,6 +194,43 @@ class FrozenSupportValidationTests(unittest.TestCase):
             validate_frozen_support(drift)
 
 
+class AuditEnforcementTests(unittest.TestCase):
+    def test_run_audit_enforces_support_when_requested(self):
+        # Small synthetic input is intentionally not the frozen 2100-record layout.
+        rows=[]
+        gate0={"ADPE":57,"CHPE":46,"GEPE":49}
+        bridged={"ADPE":44,"CHPE":34,"GEPE":29}
+        unit_index=0
+        for species_id in ("ADPE","CHPE","GEPE"):
+            for j in range(gate0[species_id]):
+                site_id=f"E{unit_index:03d}"
+                years=[1980,1985,1990,1995,2000]
+                seasons=(
+                    [1980,1990,2000,2010,2020]
+                    if j < bridged[species_id]
+                    else [1995,2000,2005,2010,2015]
+                )
+                for year,season in zip(years,seasons):
+                    for vantage,accuracy in (
+                        ("ground",1),("ground photo",1),
+                        ("ground",2),("ground photo",2),
+                    ):
+                        rows.append({
+                            "site_id":site_id,"species_id":species_id,
+                            "type":"nests","count":100000+unit_index,
+                            "year":year,"season":season,
+                            "vantage":vantage,"accuracy":accuracy,
+                        })
+                unit_index+=1
+        with self.assertRaises(ValueError):
+            run_observation_audit(
+                pd.DataFrame(rows),
+                replicates=2,
+                seed_offset=100,
+                enforce_frozen_support=True,
+            )
+
+
 class EndToEndAuditTests(unittest.TestCase):
     def test_synthetic_full_cohort_audit_runs_without_count_output(self):
         gate0={"ADPE":57,"CHPE":46,"GEPE":49}
