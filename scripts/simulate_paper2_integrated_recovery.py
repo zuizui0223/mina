@@ -7,6 +7,10 @@ import pandas as pd
 
 from scripts.simulate_paper2_latent_factor_recovery import fit_unknown_factor
 from scripts.simulate_paper2_observation_recovery import (
+    fit_observation_calibration_fast,
+    prepare_observation_recovery_design,
+)
+from scripts.simulate_paper2_observation_recovery import (
     DELTA_IMAGE_TRUTH,
     SIGMA_1_TRUTH,
     SIGMA_2PLUS_TRUTH,
@@ -337,4 +341,151 @@ def run_integrated_replicate(
     return {
         "observation":calibration,
         "species":species_fit,
+    }
+
+
+def simulate_integrated_dataset(
+    frames:dict[str,pd.DataFrame],
+    observation_metadata:pd.DataFrame,
+    *,
+    gamma_a:float,
+    gamma_ah:float,
+    seed:int,
+    forcing_sd:float,
+    loading_sd:float,
+    process_sd:float,
+    drift_mean:float,
+    drift_sd:float,
+    delta_image:float,
+    sigma1:float,
+    sigma2plus:float,
+)->dict:
+    """Generate one joint synthetic count dataset with shared observation nuisance."""
+    metadata=observation_metadata.reset_index(drop=True).copy()
+    required={
+        "group_id","site_id","species_id","season",
+        "vantage_family","accuracy_group",
+    }
+    missing=required-set(metadata.columns)
+    if missing:
+        raise ValueError(f"missing observation metadata columns: {sorted(missing)}")
+    metadata["record_id"]=np.arange(len(metadata),dtype=int)
+    metadata["unit_id"]=(
+        metadata["species_id"].astype(str)+"|"+metadata["site_id"].astype(str)
+    )
+    count=np.full(len(metadata),np.nan,dtype=float)
+    truths={}
+    covered_ids:set[int]=set()
+
+    for index,species_id in enumerate(sorted(frames)):
+        frame=frames[species_id].reset_index(drop=True).copy()
+        sim=simulate_species_counts(
+            frame,
+            metadata,
+            gamma_a=gamma_a,
+            gamma_ah=gamma_ah,
+            seed=seed+10000*(index+1),
+            forcing_sd=forcing_sd,
+            loading_sd=loading_sd,
+            process_sd=process_sd,
+            drift_mean=drift_mean,
+            drift_sd=drift_sd,
+            delta_image=delta_image,
+            sigma1=sigma1,
+            sigma2plus=sigma2plus,
+        )
+        observed=sim["observations"]
+        for rid,value in zip(
+            observed["record_id"].astype(int),
+            observed["count"].astype(int),
+        ):
+            count[rid]=float(value)
+            covered_ids.add(int(rid))
+        truths[species_id]={
+            "true_forcing":sim["true_forcing"],
+            "true_lambda":sim["true_lambda"],
+            "true_mu":sim["true_mu"],
+        }
+
+    # Calibration-only units outside the trait/process frames retain the actual
+    # metadata structure but receive an independent same-season latent mean.
+    remaining=np.flatnonzero(~np.isfinite(count))
+    if len(remaining):
+        rng=np.random.default_rng(seed+9000000)
+        remain_frame=metadata.iloc[remaining].copy()
+        latent_by_group={
+            str(group):float(rng.normal(8.0,1.0))
+            for group in sorted(remain_frame["group_id"].astype(str).unique())
+        }
+        for rid in remaining:
+            row=metadata.iloc[int(rid)]
+            accuracy=str(row["accuracy_group"])
+            if accuracy=="1":
+                sigma=float(sigma1)
+            elif accuracy=="2-5":
+                sigma=float(sigma2plus)
+            else:
+                raise ValueError(f"unsupported accuracy group: {accuracy}")
+            method=(
+                float(delta_image)
+                if str(row["vantage_family"])=="image_based"
+                else 0.0
+            )
+            z=(
+                latent_by_group[str(row["group_id"])]
+                +method
+                +float(rng.normal(0.0,sigma))
+            )
+            count[int(rid)]=float(
+                counts_from_analysis_scale(np.asarray([z]))[0]
+            )
+
+    if np.any(~np.isfinite(count)):
+        raise ValueError("synthetic count generation left missing records")
+    metadata["count"]=count.astype(np.int64)
+    return {
+        "observations":metadata.drop(columns=["record_id"]),
+        "truth":truths,
+    }
+
+
+def fit_integrated_dataset(
+    frames:dict[str,pd.DataFrame],
+    observations:pd.DataFrame,
+    truth:dict[str,dict]|None=None,
+)->dict:
+    """Estimate shared nuisance once, then recover each species process."""
+    records=observations.reset_index(drop=True).copy()
+    design=prepare_observation_recovery_design(records)
+    log_observed=count_to_analysis_scale(
+        pd.to_numeric(records["count"],errors="coerce").to_numpy()
+    )
+    observation=fit_observation_calibration_fast(log_observed,design)
+
+    species={}
+    for species_id in sorted(frames):
+        frame=frames[species_id].reset_index(drop=True).copy()
+        target=set(frame["unit_id"].astype(str))
+        local=records[
+            (
+                records["species_id"].astype(str)
+                +"|"
+                +records["site_id"].astype(str)
+            ).isin(target)
+        ].copy()
+        truth_meta=(truth or {}).get(species_id,{})
+        fit=fit_species_from_counts(
+            frame,
+            local,
+            delta_image=float(observation["delta_image"]),
+            sigma1=float(observation["accuracy"]["1"]["sigma"]),
+            sigma2plus=float(observation["accuracy"]["2-5"]["sigma"]),
+            truth_forcing=truth_meta.get("true_forcing"),
+            true_lambda=truth_meta.get("true_lambda"),
+        )
+        species[species_id]=fit
+
+    return {
+        "observation":observation,
+        "species":species,
     }
