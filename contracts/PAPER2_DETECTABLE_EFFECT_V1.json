@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-retrospective-detectable-effect-v1",
+  "date": "2026-09-29",
+  "status": "post_inference_operating_characteristic",
+  "purpose": "Quantify the common cross-species A x H effect magnitude that the frozen Paper 2 design would detect with 80% and 90% probability under the actual temporal/observation layout and the realized preregistered permutation critical value.",
+  "inferential_anchor": {
+    "primary_result": "results/PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json",
+    "B": 9999,
+    "seed": 20260929,
+    "rejection_rule": "same one-sided alpha=0.05 paper-level rule as the frozen primary test",
+    "critical_value": "derive exactly from the 9999 frozen paper-level permutation statistics; a synthetic statistic is detected when its frozen permutation p-value would be <=0.05"
+  },
+  "simulation": {
+    "estimator": "unchanged spatially adjusted V3",
+    "forcing_scale": "species-wide for all three species",
+    "trait_blocks": "unchanged V3 spatial blocks",
+    "observation_layout": "full frozen 2100-record metadata",
+    "truth": "same gamma_AH in all three species; gamma_A=0",
+    "effect_grid": [
+      -0.2,
+      -0.25,
+      -0.3,
+      -0.35,
+      -0.4,
+      -0.45,
+      -0.5,
+      -0.55,
+      -0.6
+    ],
+    "replicates_per_effect": 300,
+    "fixed_parameters": {
+      "forcing_sd": 0.08,
+      "loading_sd": 0.15,
+      "process_sd": 0.04,
+      "drift_mean": -0.01,
+      "drift_sd": 0.01,
+      "delta_image": "log(1.15)",
+      "sigma_accuracy_1": "log(1.05)",
+      "sigma_accuracy_2_5": "log(1.25)"
+    }
+  },
+  "summaries": [
+    "detection fraction and Wilson 95% interval at each effect",
+    "median fitted cross-species gamma_AH at each effect",
+    "MDE80 and MDE90 by linear interpolation in absolute effect magnitude between adjacent frozen grid points"
+  ],
+  "interpretation_boundary": [
+    "This is a post-inference operating-characteristic analysis, not a new hypothesis test.",
+    "The realized permutation critical value is conditioned on the frozen observed design/outcomes; call the result a retrospective detectable-effect threshold, not prospective design power.",
+    "No effect grid point is chosen or removed based on the observed p=0.0947.",
+    "This analysis cannot turn a non-significant observed effect into evidence for absence; it only bounds which common-effect magnitudes the study was well positioned to detect."
+  ]
+}
