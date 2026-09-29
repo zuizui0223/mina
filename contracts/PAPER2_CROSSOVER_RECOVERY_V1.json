@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-crossover-oracle-recovery-v1",
+  "date": "2026-09-29",
+  "status": "synthetic_recovery_grid_frozen_before_demographic_outcomes",
+  "input_frame": "PAPER2_PRIMARY_COUPLING_FRAME_V1.csv",
+  "replicates": 200,
+  "estimand": "gamma_AH effect of A x H on the site loading to shared forcing",
+  "fixed_parameters": {
+    "forcing_sd": 0.08,
+    "site_loading_sd": 0.12,
+    "gamma_A": -0.15,
+    "gamma_H": 0.0,
+    "gamma_R": -0.10,
+    "base_gamma_AH_grid": [0.0, -0.20, -0.35, -0.50],
+    "noise_scenarios": {
+      "low_noise": {"process_sd": 0.03, "observation_sd": 0.05},
+      "base_noise": {"process_sd": 0.05, "observation_sd": 0.08},
+      "high_noise": {"process_sd": 0.10, "observation_sd": 0.15}
+    }
+  },
+  "calibration": {
+    "detection_rule": "within each species and noise scenario, use the empirical 5th percentile of gamma_AH estimates generated under gamma_AH = 0 as the one-sided null threshold",
+    "moderate_effect_for_noise_stress": -0.35
+  },
+  "interpretation": [
+    "This is an oracle-forcing upper-bound recovery test conditional on the shared regional forcing being known.",
+    "It tests whether the frozen sampling schedule and predictor geometry can carry the A x H signal.",
+    "It does not validate latent-factor estimation, select a real effect size, or justify a power claim for the eventual demographic model.",
+    "High-noise loss of detection is a limitation to report, not a reason to tune the cohort, radius or predictor set."
+  ],
+  "boundary": [
+    "No real demographic count magnitude is opened.",
+    "Simulation parameters cannot be changed after real outcomes are opened.",
+    "The simulation cannot be used to choose a more favorable species subset or alternative interaction."
+  ]
+}
