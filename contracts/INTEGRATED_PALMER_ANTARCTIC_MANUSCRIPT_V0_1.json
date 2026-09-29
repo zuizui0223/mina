@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-integrated-palmer-antarctic-manuscript-v0.1",
   "date": "2026-09-29",
-  "status": "integrated_spine_frozen_for_manuscript_build",
+  "status": "integrated_manuscript_draft_v0.1_ready_for_figure_and_journal_formatting",
   "working_title": "Local reorganization without a transferable island-resilience rule in Antarctic penguins",
   "alternative_title": "From within-island concentration to continental limits: testing island-structured demography in Antarctic penguins",
   "core_question": "When populations experience broad environmental forcing, does island individuality create predictable demographic responses across scales?",
@@ -123,5 +123,18 @@
   "source_manuscripts": [
     "docs/MANUSCRIPT_ECOSPHERE_V0_8.md",
     "docs/PAPER2_MANUSCRIPT_SPINE_V0_1.md"
-  ]
+  ],
+  "manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_1.md",
+  "bibliography": "docs/REFERENCES_V6.bib",
+  "post_inference_diagnostics": {
+    "detectable_effect": {
+      "MDE80_abs_gamma_AH": 0.49765625,
+      "MDE90_abs_gamma_AH": 0.5385714285714286,
+      "interpretation": "very large common interactions were detectable; moderate common interactions near the observed magnitude remain unresolved"
+    },
+    "radius_null": {
+      "joint_switch_plus_contrast_plus1_probability": 0.081,
+      "interpretation": "radius sensitivity is retained as robustness evidence, not biological scale dependence"
+    }
+  }
 }

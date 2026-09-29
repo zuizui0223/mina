@@ -376,7 +376,7 @@ Panel A: low-area and high-area H slopes by species.
 
 Panel B: 1/2/5 km interaction estimates.
 
-Panel C: radius-null diagnostic once completed.
+Panel C: completed joint multi-radius null showing that the observed sign reversal does not exceed the prespecified biological scale-dependence criterion.
 
 Optional inset: retrospective detectable-effect curve.
 
