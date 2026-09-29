@@ -118,6 +118,17 @@ def summarize(vals:np.ndarray,maps:dict[int,dict[str,str]],pixel_area_m2:float):
     if len(recognized)!=len(vals):
         unknown=sorted(set(int(v) for v in vals if int(v) not in maps))
         raise ValueError(f"unmapped raster values: {unknown[:20]}")
+    if not recognized:
+        return {
+            "mapped_ice_free_pixel_count":0,
+            "mapped_ice_free_area_ha":None,
+            "tier1_richness":None,
+            "tier1_shannon":None,
+            "tier2_richness":None,
+            "tier2_shannon":None,
+            "tier3_richness":None,
+            "tier3_shannon":None,
+        }
     out={
         "mapped_ice_free_pixel_count":len(recognized),
         "mapped_ice_free_area_ha":len(recognized)*pixel_area_m2/10000.0,
