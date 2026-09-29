@@ -1,0 +1,59 @@
+name: paper2-v3-source-sensitivity
+concurrency:
+  group: paper2-v3-source-sensitivity-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+on:
+  push:
+    branches: [analysis/paper2-v3-source-sensitivity]
+    paths:
+      - "scripts/simulate_paper2_v3_source_sensitivity.py"
+      - "contracts/PAPER2_V3_SOURCE_SENSITIVITY_RECOVERY_V1.json"
+      - ".github/workflows/paper2-v3-source-sensitivity.yml"
+  pull_request:
+    paths:
+      - "scripts/simulate_paper2_v3_source_sensitivity.py"
+      - "contracts/PAPER2_V3_SOURCE_SENSITIVITY_RECOVERY_V1.json"
+      - ".github/workflows/paper2-v3-source-sensitivity.yml"
+  workflow_dispatch:
+jobs:
+  recover:
+    runs-on: ubuntu-22.04
+    permissions: {actions: read, contents: read}
+    env: {GH_TOKEN: "${{ github.token }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install numpy pandas pyreadr
+      - run: python -m py_compile scripts/simulate_paper2_v3_source_sensitivity.py
+      - run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          mkdir -p build/forcing build/options
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+      - name: Run V3 source sensitivity
+        run: |
+          set +e
+          python -m scripts.simulate_paper2_v3_source_sensitivity \
+            --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --breeding-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --mapppdr-dir build/mapppdr --out-json build/PAPER2_V3_SOURCE_SENSITIVITY_RESULT.json --replicates 100
+          echo "$?" > build/status.txt
+          exit 0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v3-source-sensitivity
+          path: |
+            build/PAPER2_V3_SOURCE_SENSITIVITY_RESULT.json
+            build/status.txt
+      - name: Enforce V3 source sensitivity
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("build/PAPER2_V3_SOURCE_SENSITIVITY_RESULT.json"))
+          assert r["decision"]["source_sensitivity_passed"] is True, r["decision"]
+          assert r["decision"]["no_real_count_magnitudes_opened"] is True
+          PY
