@@ -155,7 +155,7 @@ def leave_one_out_forcing(
             out.append(
                 {
                     "unit_id": row.unit_id,
-                    "site_id": row.site_id,
+                    "site_id": getattr(row, "site_id", str(row.unit_id).split("|", 1)[-1]),
                     "species_id": sp,
                     "forcing_group": group,
                     "season": int(season),
