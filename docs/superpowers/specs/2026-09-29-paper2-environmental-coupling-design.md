@@ -144,11 +144,13 @@ The `A x H` interaction uses only already-frozen predictors and is frozen **befo
 
 ### H1 — breeding-space buffering
 
-More ice-free breeding space reduces the magnitude of coupling to adverse shared regional forcing.
+More ice-free breeding space reduces the signed site loading on the shared regional forcing under the fixed positive factor orientation.
 
 Operational prediction:
 
-- `gamma_A < 0` for coupling magnitude under the primary factor orientation.
+- `gamma_A < 0` for the signed coupling coefficient under the primary factor orientation.
+
+Because individual `lambda` values are allowed to cross zero, absolute coupling magnitude (`|lambda|`) is reported descriptively rather than substituted for the predeclared signed-loading test.
 
 This is the simple insurance prediction and is not the main novelty.
 
@@ -237,7 +239,7 @@ A region x species forcing group is independently estimable only if it meets all
 
 - at least 5 bridged site x species units;
 - at least 15 seasons with observations from >=3 distinct units;
-- at least 10 seasons in which >=50% of its retained units have either an observation or a state-space bridge between observed seasons;
+- at least 10 seasons in which >=50% of its retained units are temporally covered, where a unit is covered in a season only when that season lies between its first and last observed season in the frozen window;
 - at least 3 units spanning both the first and last thirds of 1980–2025.
 
 The audit chooses the finest grouping level that satisfies the rule without inspecting counts.
