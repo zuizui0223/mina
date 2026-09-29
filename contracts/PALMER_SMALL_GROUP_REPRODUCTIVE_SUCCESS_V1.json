@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-small-group-reproductive-success-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_size_performance_association_execution",
+  "provenance_note": "The chick-production dataset was previously targeted for a different island-coherence validation, whose workflow failed before producing a frozen result. This contract is prospective for the specific within-island-season association between breeding-group size and chicks per pair.",
+  "source": {
+    "dataset_id": "AdeliePenguinAdultandChickCounts",
+    "title": "Adelie penguin colony-specific chick production, 1991, present.",
+    "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "columns": [
+      "study_name",
+      "time",
+      "island_name",
+      "colony_code",
+      "num_breeding_pairs",
+      "num_chicks",
+      "census_time"
+    ],
+    "focal_islands": ["CHR", "COR", "HUM", "LIT", "TOR"]
+  },
+  "question": "Within the same Palmer island and breeding season, do smaller Adelie breeding groups produce fewer chicks per breeding pair than expected under equal per-pair reproductive success?",
+  "biological_hypothesis": {
+    "name": "small-group reproductive disadvantage",
+    "prediction": "Larger contemporaneous colony codes have higher per-pair chick production than smaller colony codes within the same island-season.",
+    "mechanistic_scope": "A positive size-performance effect is consistent with an Allee-like social or predation-mediated disadvantage of small groups, but does not by itself identify the mechanism."
+  },
+  "season_definition": "For January chick censuses, season_start_year = calendar year(time) - 1.",
+  "row_eligibility": {
+    "num_breeding_pairs": "finite and > 0",
+    "num_chicks": "finite and >= 0",
+    "duplicate_rule": "Fail closed if more than one usable row exists for the same island, colony_code and season_start_year.",
+    "no_imputation": true,
+    "no_code_merging": true
+  },
+  "risk_set": {
+    "unit": "island x season_start_year",
+    "minimum_colonies": 4,
+    "size_variation_required": "non-zero SD in log1p breeding-pair count",
+    "minimum_total_chicks": 1,
+    "predictor": "log1p breeding-pair count, z-standardized within island-season for reporting; the null uses the exact pair counts."
+  },
+  "primary_null": {
+    "name": "equal per-pair reproductive success",
+    "conditioning": "Condition separately on each island-season total chick count and the observed breeding-pair counts of all eligible colony codes.",
+    "allocation": "Under the null, total chicks C_g are allocated multinomially among colonies with probabilities p_i = pairs_i / sum_j pairs_j.",
+    "meaning": "Expected chick production is exactly proportional to breeding-pair count, so group size can change sampling variance but not expected chicks per pair."
+  },
+  "primary_statistic": {
+    "per_group_score": "U_g = sum_i chicks_i*x_i - C_g*sum_i p_i*x_i, where x_i is within-group z(log1p pairs).",
+    "per_group_information": "I_g = C_g * Var_p(x_i).",
+    "global_score": "Z = sum_g U_g / sqrt(sum_g I_g).",
+    "expected_direction": "positive",
+    "interpretation": "Positive Z means chick production is shifted toward larger groups beyond proportional expectation."
+  },
+  "inference": {
+    "monte_carlo_draws": 100000,
+    "seed": 20260929,
+    "simulation": "For every draw, independently simulate each eligible island-season from its frozen multinomial null and recompute the same global Z.",
+    "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05
+  },
+  "effect_size": {
+    "model": "Conditional multinomial log-linear size effect within island-season: probability proportional to pairs_i * exp(beta*x_i).",
+    "report": "beta and exp(beta), where exp(beta) is the multiplicative change in expected chicks per pair for a 1-SD larger log group size within an island-season.",
+    "role": "descriptive effect size; Monte Carlo score test is the primary inferential gate."
+  },
+  "sensitivities": {
+    "exclude_litchfield": "Repeat primary test after removing Litchfield Island.",
+    "leave_one_island_out": "Repeat after removing each island in turn.",
+    "pairs_at_least_2": "Require >=2 breeding pairs.",
+    "pairs_at_least_5": "Require >=5 breeding pairs.",
+    "dirichlet_multinomial_cv10": "Replace fixed multinomial probabilities by a Dirichlet-multinomial with concentration A=100 around proportional probabilities before allocating chicks.",
+    "dirichlet_multinomial_cv20": "Same with concentration A=25."
+  },
+  "decision_rule": {
+    "support": "Primary observed Z > 0 and one-sided Monte Carlo p <= 0.05.",
+    "stronger_pattern": "Primary support plus positive observed Z in all five leave-one-island-out analyses and under both pair-count thresholds.",
+    "mechanistic_language": "Even if supported, describe the result as small-group reproductive disadvantage or an Allee-like pattern, not as proof of skua predation or social facilitation."
+  },
+  "interpretation_boundaries": [
+    "Do not use the failed extinction-order exchangeability test as independent evidence for an Allee effect; the size-conditioned thinning null already showed that extinction ordering is mechanically expected.",
+    "Do not claim that colony_code is a mapped physical patch.",
+    "Do not infer predator causality without an independent predation measure.",
+    "Do not switch from chicks per pair to another reproductive endpoint after seeing this result.",
+    "Report the proportional null and overdispersion sensitivities regardless of outcome."
+  ]
+}
