@@ -7,12 +7,14 @@ on:
       - "scripts/audit_paper2_forcing_support.py"
       - "tests/test_paper2_forcing_support.py"
       - "contracts/PAPER2_FORCING_SUPPORT_AUDIT_V1.json"
+      - "contracts/PAPER2_FORCING_MODEL_ELIGIBILITY_V1.json"
       - ".github/workflows/paper2-forcing-support-audit.yml"
   pull_request:
     paths:
       - "scripts/audit_paper2_forcing_support.py"
       - "tests/test_paper2_forcing_support.py"
       - "contracts/PAPER2_FORCING_SUPPORT_AUDIT_V1.json"
+      - "contracts/PAPER2_FORCING_MODEL_ELIGIBILITY_V1.json"
       - ".github/workflows/paper2-forcing-support-audit.yml"
   workflow_dispatch:
 
