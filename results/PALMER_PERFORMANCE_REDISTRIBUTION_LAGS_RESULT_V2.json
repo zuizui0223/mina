@@ -1,0 +1,130 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-palmer-performance-redistribution-lags-result-v2",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-performance-redistribution-lags-v2",
+  "provenance_status": "post_exposure_provenance_repair_validation",
+  "provenance_note": "V1 used the wrong chick season key. V2 repaired only that provenance rule by inheriting the earlier outcome-blind PALYYZZ season-key contract. Observed lag coefficients had been seen before V2; therefore this result is fixed-specification validation, not a fully preregistered confirmatory test.",
+  "source": {
+    "adult_census": {
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+      "rows": 1489
+    },
+    "chick_census": {
+      "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+      "sha256": "40485a328af51727e019c2cd99e4795c098499fef86a9d4b2af435a6de5373e0",
+      "usable_rows": 805
+    }
+  },
+  "execution": {
+    "workflow_run_id": 36625871126,
+    "workflow_conclusion": "success",
+    "head_sha": "d2751eb59a54fe20dd0e8e4705de241389471a07",
+    "artifact_id": 11061265420,
+    "artifact_digest": "sha256:4a729f8016bca91472a42ab4492580d5ce82738052c2303a41e48321b3f1b125",
+    "analysis_output_sha256": "73f23a5f7f32bc6ed5e6c2c3964cbe6dc7b77b18dd62ae7b892223df60313a34",
+    "permutations": 100000,
+    "cross_environment_max_numeric_abs_difference": 1.0408340855860843e-16
+  },
+  "primary_lag_profile": {
+    "lag_1": {
+      "n_rows": 761,
+      "beta": 0.10036304420074608,
+      "one_sided_upper_p": 0.00000999990000099999,
+      "role": "known-type one-year association; mechanically coupled"
+    },
+    "lag_2": {
+      "n_rows": 754,
+      "beta": 0.040890746633273245,
+      "one_sided_upper_p": 0.0032699673003269967,
+      "role": "bias-resistant primary endpoint"
+    },
+    "lag_3": {
+      "n_rows": 747,
+      "beta": 0.051079361804774,
+      "one_sided_upper_p": 0.0013599864001359986
+    },
+    "lag_4": {
+      "n_rows": 738,
+      "beta": 0.02231787005980023,
+      "one_sided_upper_p": 0.12120878791212088
+    },
+    "lag_5": {
+      "n_rows": 730,
+      "beta": -0.014770189881336883,
+      "one_sided_upper_p": 0.7700222997770022
+    }
+  },
+  "delayed_recruitment_echo": {
+    "contrast_mean_beta45_minus_mean_beta23": -0.04221121412979195,
+    "null_95_interval": [
+      -0.03662491556095149,
+      0.03700338981942618
+    ],
+    "one_sided_upper_p": 0.987730122698773,
+    "supported": false
+  },
+  "sensitivities": {
+    "exclude_litchfield": {
+      "beta_2": 0.04803009887679954,
+      "p_2": 0.0013899861001389986,
+      "recruitment_contrast": -0.04304733077903843,
+      "recruitment_p": 0.98860011399886
+    },
+    "minimum_prior_size_2": {
+      "beta_2": 0.043743560605672555,
+      "p_2": 0.0014699853001469984,
+      "recruitment_contrast": -0.03319031256107522,
+      "recruitment_p": 0.9786702132978671
+    },
+    "minimum_total_chicks_10": {
+      "beta_2": 0.040890746633273245,
+      "p_2": 0.0027099729002709972,
+      "recruitment_contrast": -0.04221121412979195,
+      "recruitment_p": 0.987490125098749
+    },
+    "logratio_success_metric": {
+      "beta_2": 0.07097730196738737,
+      "p_2": 0.00001999980000199998,
+      "recruitment_contrast": -0.07561343843612592,
+      "recruitment_p": 0.999980000199998
+    }
+  },
+  "leave_one_island_out": {
+    "CHR": {
+      "beta_2": 0.04184492094702623,
+      "recruitment_contrast": -0.03151369702779039
+    },
+    "COR": {
+      "beta_2": 0.03750903219996713,
+      "recruitment_contrast": -0.041693879004367704
+    },
+    "HUM": {
+      "beta_2": 0.04376490503250361,
+      "recruitment_contrast": -0.04881152465481842
+    },
+    "LIT": {
+      "beta_2": 0.04803009887679959,
+      "recruitment_contrast": -0.043047330779038454
+    },
+    "TOR": {
+      "beta_2": 0.03148520499359661,
+      "recruitment_contrast": -0.043127285415864365
+    }
+  },
+  "decision": {
+    "bias_resistant_lag2_supported_under_fixed_specification": true,
+    "delayed_recruitment_echo_supported": false,
+    "confirmatory_preregistration_claim_allowed": false
+  },
+  "ecological_interpretation": "Relative colony reproductive performance carries short-lived temporal information about subsequent within-island redistribution after removing island-transition mean growth, prior group size and persistent colony identity. The association remains at the denominator-separated lag-2 endpoint and across frozen sensitivities, but fades by lags 4-5 and provides strong evidence against the predeclared delayed recruitment-echo pattern. This is compatible with short-term performance-linked settlement, retention, or other dynamic local-state processes; colony counts do not identify individual public-information use.",
+  "claim_boundary": [
+    "Do not claim first evidence of public-information use in Adelie penguins.",
+    "Do not call the result a fully preregistered confirmatory test because the V2 provenance repair occurred after observed coefficients were exposed.",
+    "Do not interpret the lag-1 association alone mechanistically because predictor and outcome share the predictor-year adult census.",
+    "Do not claim a 4-5 year natal recruitment echo; the preregistered contrast is negative.",
+    "Do not claim that dynamic state replaces terrain, snow or geomorphology.",
+    "Do not infer individual movement or cue use from colony-level counts."
+  ]
+}
