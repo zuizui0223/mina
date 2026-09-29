@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-preextinction-chick-success-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_chick_success_outcome_access",
+  "prerequisite_result": "results/PALMER_COLONY_EXTINCTION_HAZARD_RESULT_V1.json",
+  "motivation": "Durable colony-code losses are strongly concentrated among small groups under an exchangeable null, but that size ordering is fully compatible with neutral size-dependent demographic thinning. A mechanistic test therefore needs an independent biological performance endpoint measured before disappearance.",
+  "external_dataset": {
+    "dataset_id": "AdeliePenguinAdultandChickCounts",
+    "title": "Adelie penguin colony-specific chick production, 1991, present.",
+    "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "columns": [
+      "study_name",
+      "time",
+      "island_name",
+      "colony_code",
+      "num_breeding_pairs",
+      "num_chicks",
+      "census_time"
+    ],
+    "season_alignment": "For January chick censuses, season_start_year = calendar year(time) - 1 and is matched to the November adult breeding census of that year."
+  },
+  "question": "Do Palmer Adelie colony codes that undergo durable extinction in the following census already show depressed reproductive success in the immediately preceding breeding season?",
+  "population_frame": {
+    "risk_sets": "Use the primary durable-extinction risk sets from PALMER_COLONY_EXTINCTION_HAZARD_V1, indexed by island and adult census year t, with event status defined at t+1.",
+    "match": "Exact match on island, raw colony_code string and season_start_year=t.",
+    "eligibility": "Require finite nonnegative num_chicks, finite num_breeding_pairs > 0 in the chick dataset, and a classified event/non-event transition at t -> t+1.",
+    "no_imputation": true,
+    "no_colony_code_merging": true
+  },
+  "response": {
+    "primary": "chicks_per_pair = num_chicks / num_breeding_pairs from the January chick-production census.",
+    "risk_set_standardization": "Within each matched island-year risk set, z-standardize chicks_per_pair when at least 3 matched colonies are present and SD > 0.",
+    "primary_contrast": "Mean z(chicks_per_pair) among next-year durable-extinction colonies minus mean among next-year non-events, averaged with equal weight across informative event-bearing risk sets.",
+    "expected_direction_if_preextinction_reproductive_failure": "negative"
+  },
+  "primary_inference": {
+    "null": "Within each informative matched island-year risk set, next-year event labels are exchangeable with respect to the already-observed chick-success values.",
+    "permutation": "Preserve the observed number of events in each risk set and permute event identities among matched colonies.",
+    "permutations": 100000,
+    "seed": 20260940,
+    "p_value": "one-sided lower-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05,
+    "minimum_event_risk_sets": 3
+  },
+  "secondary_tests": {
+    "size_success_gradient": {
+      "question": "Do smaller contemporaneous breeding groups have lower chick success within the same island-year?",
+      "predictor": "within-risk-set z(log1p adult breeding pairs) from the adult census at t",
+      "response": "within-risk-set z(chicks_per_pair)",
+      "statistic": "pooled OLS slope after island-year demeaning, equivalent to a within-risk-set association",
+      "expected_direction_if_social_facilitation": "positive",
+      "permutation": "shuffle chick-success values within island-year risk sets; 100000 draws; seed 20260941"
+    },
+    "event_effect_after_size": {
+      "question": "Do next-year extinction colonies underperform even after accounting for current group size?",
+      "model": "z(chicks_per_pair) ~ event_next_year + z(log1p current pairs) + island indicators + centered year",
+      "expected_event_coefficient": "negative",
+      "role": "descriptive effect-size decomposition; primary permutation remains the confirmatory gate"
+    },
+    "survivor_island_trajectory": {
+      "question": "As breeding distributions concentrate, is island-level reproductive output per breeding pair maintained, improved or degraded?",
+      "metric": "total chicks / total chick-dataset breeding pairs across matched positive colonies within each island-season",
+      "concentration_predictor": "effective colony number from the adult census in the same season",
+      "role": "descriptive mechanism discrimination only; not a causal test"
+    }
+  },
+  "sensitivities": {
+    "log1p_success": "Repeat the primary risk-set contrast using z(log1p(chicks_per_pair)).",
+    "rank_success": "Repeat using within-risk-set fractional ranks of chicks_per_pair.",
+    "exclude_litchfield": "Repeat primary analysis after excluding Litchfield.",
+    "prior_count_ge2": "Repeat after requiring adult prior count >= 2 pairs.",
+    "denominator_overlap": "Report exact equality fraction between chick-dataset num_breeding_pairs and the November adult census denominator for the matched island-colony-season rows."
+  },
+  "decision_logic": {
+    "preextinction_reproductive_failure_supported": "Primary contrast < 0 and one-sided permutation p <= 0.05.",
+    "social_facilitation_consistent": "Secondary size-success gradient > 0 with permutation p <= 0.05.",
+    "good_site_retreat_pattern": "Primary pre-extinction failure is absent while island-level chicks per pair is maintained or increases as effective colony number declines.",
+    "broad_local_failure_pattern": "Primary pre-extinction failure is present and/or island-level chicks per pair declines as concentration increases.",
+    "no_mechanistic_resolution": "If neither pre-extinction reproductive failure nor size-success gradient is supported, retain concentration as demographic reorganization without assigning a social or reproductive mechanism."
+  },
+  "interpretation_boundaries": [
+    "Chick success can support temporal ordering of reproductive performance before disappearance but does not by itself identify predation, snow or social facilitation.",
+    "The chick numerator is a distinct life-stage endpoint; the breeding-pair denominator may overlap the adult census and must be audited.",
+    "Do not change the event definition, season alignment, response, risk-set weighting or primary permutation after chick outcomes are opened.",
+    "Do not treat a null result as evidence that all surviving breeding sites are equal in quality."
+  ]
+}
