@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-integrated-recovery-failed-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36532519485,
+    "head_sha": "f6bc16c170ed77704f7e8a3a65a611ebed16f108",
+    "conclusion": "failure_after_full_100_replicate_integrated_execution"
+  },
+  "boundary": {
+    "real_demographic_count_magnitudes_opened": false,
+    "observation_metadata_only": true
+  },
+  "decision": {
+    "counts_may_be_opened": false,
+    "all_species_have_integrated_scale": false,
+    "primary_observation_gate_passed": true,
+    "specieswide_observation_gate_passed": true
+  },
+  "primary": {
+    "ADPE": {
+      "forcing_groups": {
+        "48.1": {
+          "median_corr": 0.6268267020497502,
+          "q05_corr": 0.32931321124306995
+        },
+        "88.1": {
+          "median_corr": 0.3056775706006276,
+          "q05_corr": -0.07362577323487637
+        }
+      },
+      "crossover": {
+        "median_gamma_ah": -0.29318316570536795,
+        "negative_fraction": 0.71
+      },
+      "simple_buffering": {
+        "median_gamma_a": -0.1873991225895673,
+        "negative_fraction": 0.67
+      },
+      "gate_pass": false
+    },
+    "CHPE": {
+      "forcing_groups": {
+        "Central-west Antarctic Peninsula": {
+          "median_corr": 0.4651113674706165,
+          "q05_corr": 0.12581560853337442
+        },
+        "South Shetland Islands": {
+          "median_corr": 0.6358486131007888,
+          "q05_corr": 0.30064119094568886
+        }
+      },
+      "crossover": {
+        "median_gamma_ah": -0.31162480504353873,
+        "negative_fraction": 0.93
+      },
+      "simple_buffering": {
+        "median_gamma_a": -0.2944838798478845,
+        "negative_fraction": 0.93
+      },
+      "gate_pass": false
+    },
+    "GEPE": {
+      "forcing_groups": {
+        "GEPE": {
+          "median_corr": 0.7403046338645788,
+          "q05_corr": 0.39384175992114206
+        }
+      },
+      "crossover": {
+        "median_gamma_ah": -0.3010001066458068,
+        "negative_fraction": 0.9
+      },
+      "simple_buffering": {
+        "median_gamma_a": -0.21138837187609988,
+        "negative_fraction": 0.77
+      },
+      "gate_pass": false
+    }
+  },
+  "diagnosis": {
+    "observation_layer": "passed; offset and both accuracy-scale biases remained within frozen bounds",
+    "process_layer": "failed for all species under the integrated count reconstruction",
+    "code_path_issue": "collapse_same_season computes endpoint observation_var, but build_interval_payload discards it and fit_unknown_factor weights intervals only by 1/sqrt(duration).",
+    "interpretation": "The failure does not justify relaxing recovery thresholds. It identifies a mismatch between the frozen heteroskedastic observation model and the duration-only latent-factor estimator."
+  },
+  "next_action": "Freeze and test an observation-variance-aware interval GLS estimator before any real outcome is opened."
+}
