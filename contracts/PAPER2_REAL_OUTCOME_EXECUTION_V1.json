@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-real-outcome-execution-v1",
+  "date": "2026-09-29",
+  "status": "frozen_but_blocked_until_integrated_recovery_passes",
+  "paper_lane": "Paper 2",
+  "unlock_condition": "results/PAPER2_INTEGRATED_RECOVERY_RESULT_V1.json must report decision.counts_may_be_opened = true from the pre-outcome Gate 2E-C workflow.",
+  "sources": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "time_field": "season",
+    "window": [
+      1980,
+      2025
+    ],
+    "bridged_units": 107,
+    "predictors": "contracts/PAPER2_OUTCOME_BLIND_PREDICTOR_SET_V1.json",
+    "forcing_scale": "results/PAPER2_LATENT_FACTOR_RECOVERY_RESULT_V1.json",
+    "observation_structure": "results/PAPER2_OBSERVATION_RECOVERY_RESULT_V1.json"
+  },
+  "observation_pipeline": {
+    "analysis_scale": "log1p(nonnegative nest count)",
+    "image_offset": "One shared image-minus-direct offset. Within each site x species x season containing both known families, compute mean(log1p(image)) - mean(log1p(direct)); delta_image is the unweighted mean across mixed groups.",
+    "accuracy_scales": "After subtracting the shared image offset, estimate sigma_1 and sigma_2_5 by pooling within-site x species x season residual sums of squares only among repeated records in the same collapsed accuracy group.",
+    "unknown_vantage": "retain with no method mean shift; use its recorded accuracy class for observation precision; mandatory exclusion sensitivity",
+    "same_season_collapse": "inverse estimated observation-variance weighted mean of method-corrected log1p counts",
+    "raw_vantage_offsets": "not primary; sensitivity only",
+    "date_matched_method_sensitivity": "secondary: recompute the image-direct offset from exact-date pairs and <=14-day pairs separately when estimable; do not replace the primary same-season offset based on which is more favorable"
+  },
+  "primary_process": {
+    "scales": {
+      "ADPE": "ccamlr",
+      "CHPE": "apbp_region",
+      "GEPE": "species_wide"
+    },
+    "predictor_complete_units": {
+      "ADPE": 40,
+      "CHPE": 33,
+      "GEPE": 29
+    },
+    "model": "Adjacent collapsed-season changes are decomposed into site drift mu_i + normalized site loading lambda_i times unknown shared forcing F_g,t + residual process variation, using the exact frozen 8-iteration alternating weighted least-squares estimator from Gate 2E-C.",
+    "identification": [
+      "mean annual forcing = 0 within each forcing group",
+      "mean site loading = 1 within each forcing group"
+    ],
+    "interval_weight": "1/sqrt(interval length), unchanged from Gate 2E-A/C"
+  },
+  "site_trait_models": {
+    "standardization": "A, H and R use the already-frozen transforms and are standardized within each species analysis frame.",
+    "main_effect_order": [
+      "lambda ~ forcing_group + A",
+      "lambda ~ forcing_group + H",
+      "lambda ~ forcing_group + R"
+    ],
+    "crossover": "lambda ~ forcing_group + A + H + A:H",
+    "crossover_definition": {
+      "beta_AH": "must be < 0",
+      "low_area_H_slope": "beta_H - beta_AH; crossover pattern requires >= 0 at A=-1 SD",
+      "high_area_H_slope": "beta_H + beta_AH; crossover pattern requires < 0 at A=+1 SD",
+      "wording_rule": "Do not call the result an option-fragmentation crossover unless all three directional conditions hold."
+    },
+    "secondary_combined": "lambda ~ forcing_group + A + H + R + A:H",
+    "mean_growth_secondary": "mu_i is analyzed against the same staged trait models to distinguish response filtering from ordinary habitat-quality associations."
+  },
+  "inference": {
+    "primary_crossover_statistic": "beta_AH from the dedicated crossover model",
+    "directional_permutation": {
+      "permutations": 10000,
+      "seed": 20260929,
+      "scheme": "permute lambda within the frozen forcing groups of each species; refit the identical crossover model; p = (1 + number beta_AH_perm <= beta_AH_observed)/(B+1)",
+      "reason": "tests the frozen site-trait association while preserving forcing-group structure"
+    },
+    "effect_reporting": [
+      "beta_AH and its within-group permutation distribution",
+      "low-area and high-area H marginal slopes",
+      "A, H and R single-predictor coefficients",
+      "number of units and forcing groups",
+      "lambda distribution and fitted forcing summaries"
+    ],
+    "cross_species_rule": "Species-specific results remain primary. Generality is described from direction and effect-size concordance across the three species; no post-outcome species subset may be chosen."
+  },
+  "mandatory_sensitivities": {
+    "forcing_scale": "Refit every species with one species-wide forcing using predictor-complete units ADPE=41, CHPE=34, GEPE=29. If the focal trait direction or crossover classification materially changes, report forcing-scale dependence.",
+    "exclude_unknown_vantage": "Remove the 62 unknown-vantage records and rerun the full pipeline with the same estimators.",
+    "ground_only": "Use ground observations only for the demographic reconstruction; report as robustness/coverage sensitivity and never substitute it for the primary result because it is stronger.",
+    "observation_timing": "report exact-date and <=14-day image-offset sensitivity when estimable",
+    "shannon": "Tier 2 Shannon remains sensitivity-only as previously frozen",
+    "radii": "1 km and 5 km trait versions remain sensitivity-only; they cannot replace the 2 km primary scale"
+  },
+  "process_variance_claim": {
+    "status": "blocked_pending PAPER2_PROCESS_VARIANCE_RECOVERY_V1",
+    "rule": "Only test/interpret decoupling-with-local-instability if the separate pre-outcome process-variance recovery gate passes. Otherwise omit/demote this claim without altering lambda/AxH inference."
+  },
+  "terminal_rules": [
+    "No new primary site trait, radius, year subset, geographic partition, transform or interaction may be introduced after counts are opened.",
+    "Do not change the retained forcing scale because the ecological coefficient is weak or opposite-signed.",
+    "Do not replace the shared image offset with species-specific offsets in the primary model.",
+    "A null or opposite A x H result is a valid falsification and does not trigger model searching.",
+    "The latent shared factor is not named as a specific climate mechanism without an independent environmental attribution analysis.",
+    "Results from superseded PR #65 are not consulted to alter this contract."
+  ]
+}
