@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-concentration-chick-success-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-concentration-chick-success-v1",
+  "source": {
+    "adult_dataset": "Palmer LTER AdeliePenguinCensus",
+    "adult_doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "adult_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "chick_dataset": "AdeliePenguinAdultandChickCounts",
+    "chick_doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "chick_sha256": "40485a328af51727e019c2cd99e4795c098499fef86a9d4b2af435a6de5373e0"
+  },
+  "execution": {
+    "workflow_run_id": 36624371392,
+    "workflow_head_sha": "87cd6a6189c9f9fca7bfacd4c3c218b884826df7",
+    "artifact_id": 11058794747,
+    "artifact_digest": "sha256:76eb521341a7b1c4f5ab61ee07e0a3bbb415da01a41054668bc66ca093280f68",
+    "conclusion": "success",
+    "permutations": 100000,
+    "seed": 20260930
+  },
+  "primary": {
+    "scope": ["COR", "HUM", "LIT"],
+    "n_island_seasons": 70,
+    "beta_neff": 0.02765770079122523,
+    "null_mean": 0.00039848208509752974,
+    "null_sd": 0.05383610037102379,
+    "null_q025": -0.09546551798150478,
+    "null_q50": -0.0016142412942038613,
+    "null_q975": 0.10972057698132864,
+    "two_sided_p": 0.6260437395626044,
+    "decision": "nonconfirmatory"
+  },
+  "sensitivities": {
+    "cor_hum_only": {
+      "n_island_seasons": 54,
+      "beta_neff": 0.04249720469478856,
+      "two_sided_p": 0.27729722702772974,
+      "decision": "nonconfirmatory"
+    },
+    "first_difference": {
+      "n_changes": 67,
+      "beta_delta_log_neff": -0.42078583404995434,
+      "beta_delta_log_abundance": -0.005264838460836753,
+      "role": "directional sensitivity only; no frozen permutation inference attached"
+    },
+    "all_five_descriptive": {
+      "n_island_seasons": 124,
+      "beta_neff": 0.10627272799410337,
+      "role": "descriptive only because CHR and TOR have colony-code roster changes"
+    }
+  },
+  "breeding_success_range_check": {
+    "n_all_five_island_seasons": 124,
+    "min_chicks_per_pair": 0.0,
+    "median_chicks_per_pair": 1.120329263780984,
+    "max_chicks_per_pair": 1.9039301310043668,
+    "n_outside_0_2": 0
+  },
+  "decision": {
+    "concentration_breeding_success_association_supported": false,
+    "reproductive_deterioration_supported": false,
+    "selective_retreat_supported": false,
+    "breeding_success_pathway_nonconfirmatory": true
+  },
+  "ecological_interpretation": "The strong long-term concentration of adult Adelie breeders among fewer colony-code components is not accompanied by a confirmatory change in island-level chicks per breeding pair after controlling adult abundance, persistent island differences and shared breeding-season effects. Thus the Palmer reorganization cannot currently be explained as either progressive reproductive deterioration or selective retreat into increasingly productive breeding space.",
+  "paper_implication": "The adult breeding distribution reorganizes strongly while this independent reproductive-output endpoint does not track concentration detectably. This narrows the likely mechanism away from a simple contemporaneous breeding-success pathway and toward other life stages or state variables, including adult survival/recruitment, snow/terrain constraints, dispersal/site fidelity or predation that affects colony occupancy without a detectable island-level productivity signature.",
+  "interpretation_boundaries": [
+    "Non-confirmatory association is not proof that breeding success is constant or irrelevant.",
+    "Island aggregation was required because colony-level chick-dataset breeding-pair denominators fail a hard biological-coherence audit.",
+    "The first-difference negative coefficient is not promoted over the frozen circular-shift primary result.",
+    "No causal terrain, snow, predation or survival mechanism is identified here."
+  ],
+  "next_gate": "Use prospectively frozen terrain/snow-exposure predictors and species life-history contrasts to test whether terrestrial breeding constraints act differently in Adelie, chinstrap and gentoo penguins."
+}
