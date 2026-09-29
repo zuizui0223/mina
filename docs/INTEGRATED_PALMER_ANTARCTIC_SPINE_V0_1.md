@@ -209,28 +209,45 @@ If >0.05:
 
 ## Information content of the null primary result
 
-**PENDING — retrospective detectable-effect analysis**
-
 The observed paper-level effect is −0.318 and the frozen 5% permutation
 boundary is approximately −0.424.
 
-A post-inference operating-characteristic simulation will report:
+A post-inference operating-characteristic analysis reused the unchanged V3
+simulation/model on the real frozen observation layout and compared synthetic
+common effects with the exact frozen 9,999-permutation rejection rule.
 
-- detection probability for common gamma_AH magnitudes 0.20–0.60;
-- MDE80;
-- MDE90.
+Detection fractions were:
+
+| true common gamma_AH | detection fraction |
+| ---: | ---: |
+| −0.20 | 0.000 |
+| −0.25 | 0.0367 |
+| −0.30 | 0.0467 |
+| −0.35 | 0.1167 |
+| −0.40 | 0.3800 |
+| −0.45 | 0.5967 |
+| −0.50 | 0.8100 |
+| −0.55 | 0.9267 |
+| −0.60 | 0.9667 |
+
+The resulting retrospective detectable-effect thresholds are:
+
+- **MDE80 = |gamma_AH| 0.498**;
+- **MDE90 = |gamma_AH| 0.539**.
+
+The observed absolute effect, 0.318, is only about 64% of MDE80.
+
+Therefore the primary null is **not** strong evidence that an interaction of
+the observed/moderate magnitude is absent. The design had little power for a
+common interaction around −0.30 to −0.35. It was, however, highly sensitive to
+very large common interactions around −0.55 or stronger.
 
 This analysis is a sensitivity diagnostic, not an equivalence test and not an
-upper confidence bound.
+upper confidence bound. Do not write that effects larger than 0.50 are ruled
+out. The defensible wording is:
 
-It may show either:
-
-1. the study would usually have detected effects materially larger than the
-   observed one, making the negative result more informative; or
-2. even fairly large effects are difficult to detect, implying that the null
-   primary result is mainly inconclusive rather than evidence of absence.
-
-The manuscript wording must follow the result.
+> the study was well positioned to detect a very large common interaction, but
+> not a moderate interaction of the magnitude actually observed.
 
 ## Integrated ecological result
 
