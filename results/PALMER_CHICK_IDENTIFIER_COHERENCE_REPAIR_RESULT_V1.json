@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-chick-identifier-coherence-repair-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-chick-identifier-coherence-repair-v1",
+  "execution": {
+    "workflow_run_id": 36623709860,
+    "artifact_id": 11058673682,
+    "conclusion": "success",
+    "simulations_requested_if_estimable": 100000,
+    "seed": 20260930
+  },
+  "source": {
+    "adult_census_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "chick_snapshot_sha256": "5424b42c30e7a63b35caa730a1658a6f3a7824662372a3e7f82c01529985a9be"
+  },
+  "primary_2x_gate": {
+    "exact_key_matches": 190,
+    "coherence_passing_rows": 143,
+    "coherence_passing_events": 1,
+    "informative_risk_sets": 1,
+    "informative_events": 1,
+    "estimable": false
+  },
+  "threshold_sensitivities": {
+    "strict_1_5x": {
+      "coherence_passing_rows": 114,
+      "coherence_passing_events": 1,
+      "informative_risk_sets": 1,
+      "estimable": false
+    },
+    "lenient_3x": {
+      "coherence_passing_rows": 158,
+      "coherence_passing_events": 1,
+      "informative_risk_sets": 1,
+      "estimable": false
+    }
+  },
+  "decision": {
+    "colony_level_preextinction_chick_test_estimable": false,
+    "preextinction_reproductive_penalty_supported": false,
+    "preextinction_reproductive_penalty_rejected": false,
+    "reason": "Cross-table identifier coherence leaves only one matched extinction event/risk set under every frozen threshold; the contract requires at least five informative risk sets."
+  },
+  "ecological_interpretation": "The available chick snapshot cannot support a colony-level test of reproductive performance immediately before durable colony-code extinction. This is an identification/coverage limit, not evidence that reproductive performance is unrelated to extinction.",
+  "paper_implication": "Do not use colony-level chick production as corroboration of the extinction mechanism. Move the reproductive test to island-level aggregation, where code splitting and relabeling do not determine the unit of inference."
+}
