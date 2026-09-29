@@ -1,0 +1,111 @@
+name: Palmer phenotype persistence one-shot v1
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'contracts/PALMER_PHENOTYPE_REASSEMBLY_EXECUTION_V1.json'
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify one-shot execution boundary
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          marker = json.loads(
+              Path("contracts/PALMER_PHENOTYPE_REASSEMBLY_EXECUTION_V1.json").read_text()
+          )
+          expected = "7b7e96d29938aa08581f2da814e07bf66e2c16a1"
+          if marker["contract_merge_sha"] != expected:
+              raise SystemExit("Palmer phenotype contract merge SHA mismatch")
+          subprocess.run(
+              ["git", "merge-base", "--is-ancestor", expected, "HEAD"],
+              check=True,
+          )
+          added = subprocess.check_output(
+              ["git", "diff", "--diff-filter=A", "--name-only", "HEAD^", "HEAD"],
+              text=True,
+          ).splitlines()
+          if "contracts/PALMER_PHENOTYPE_REASSEMBLY_EXECUTION_V1.json" not in added:
+              raise SystemExit("one-shot marker was not newly added; refusing rerun")
+          PY
+
+      - name: Install mina
+        run: python -m pip install -e .
+
+      - name: Fetch pinned Palmer Penguins raw table
+        run: |
+          mkdir -p build/palmer_phenotype
+          python scripts/fetch_palmer_raw.py build/palmer_phenotype/penguins_raw.csv             | tee build/palmer_phenotype/source_receipt.txt
+
+      - name: Run frozen temporal persistence analysis
+        run: |
+          python scripts/run_palmer_persistence.py             --raw build/palmer_phenotype/penguins_raw.csv             --out build/palmer_phenotype/PALMER_PHENOTYPE_PERSISTENCE_RESULT_V1.json
+
+      - name: Freeze execution metadata
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path("build/palmer_phenotype")
+          result_path = root / "PALMER_PHENOTYPE_PERSISTENCE_RESULT_V1.json"
+          raw_path = root / "penguins_raw.csv"
+          result = json.loads(result_path.read_text())
+          metadata = {
+              "schema_version": 1,
+              "execution_id": "mina-palmer-phenotype-persistence-one-shot-v1",
+              "contract_id": "mina-palmer-phenotype-reassembly-v1",
+              "contract_merge_sha": "7b7e96d29938aa08581f2da814e07bf66e2c16a1",
+              "head_sha": os.environ["GITHUB_SHA"],
+              "workflow_run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "source_commit": "8957207b78d6ccd1b4654a9dd9c9041b657478ab",
+              "source_git_blob": "ba99fbd527f0bb983b3d9615ef5c81a5917ab7d9",
+              "raw_csv_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
+              "result_sha256": hashlib.sha256(result_path.read_bytes()).hexdigest(),
+              "structural_summary": result["structural_morphology"],
+              "isotope_summary": result["isotopic_niche"],
+          }
+          (root / "PALMER_PHENOTYPE_PERSISTENCE_EXECUTION_V1.json").write_text(
+              json.dumps(metadata, indent=2, sort_keys=True) + "\n"
+          )
+          print(json.dumps({
+              "structural_within": result["structural_morphology"]["mean_within_year_balanced_accuracy"],
+              "structural_cross": result["structural_morphology"]["mean_cross_year_balanced_accuracy"],
+              "structural_gap": result["structural_morphology"]["persistence_gap"],
+              "isotope_within": result["isotopic_niche"]["mean_within_year_balanced_accuracy"],
+              "isotope_cross": result["isotopic_niche"]["mean_cross_year_balanced_accuracy"],
+              "isotope_gap": result["isotopic_niche"]["persistence_gap"],
+          }, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-phenotype-persistence-v1
+          path: |
+            build/palmer_phenotype/PALMER_PHENOTYPE_PERSISTENCE_RESULT_V1.json
+            build/palmer_phenotype/PALMER_PHENOTYPE_PERSISTENCE_EXECUTION_V1.json
+            build/palmer_phenotype/source_receipt.txt
+          if-no-files-found: error
+          retention-days: 90
