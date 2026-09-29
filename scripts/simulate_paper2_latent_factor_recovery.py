@@ -294,6 +294,109 @@ def fit_unknown_factor(
     }
 
 
+
+def _zscore(series: pd.Series) -> pd.Series:
+    values = pd.to_numeric(series, errors="coerce")
+    sd = float(values.std(ddof=0))
+    if not np.isfinite(sd) or sd <= 0:
+        raise ValueError(f"zero/nonfinite predictor variance: {series.name}")
+    return (values - float(values.mean())) / sd
+
+
+def build_scale_frame(
+    forcing_result: dict,
+    forcing_units: pd.DataFrame,
+    breeding_options: pd.DataFrame,
+    species_id: str,
+    scale: str,
+) -> pd.DataFrame:
+    """Build one outcome-blind recovery frame at a frozen forcing scale."""
+    species_id = str(species_id)
+    meta = forcing_result["decision"]["modeling_eligibility_by_species"][species_id]
+
+    units = forcing_units[
+        forcing_units["species_id"].astype(str).eq(species_id)
+    ].copy()
+
+    if scale == "species_wide":
+        selected = units
+    else:
+        if scale != str(meta["level"]):
+            raise ValueError(
+                f"{species_id}: requested regional scale {scale} != frozen {meta['level']}"
+            )
+        selected_ids = {str(v) for v in meta["covered_units"]}
+        selected = units[
+            units["unit_id"].astype(str).isin(selected_ids)
+        ].copy()
+        if len(selected) != len(selected_ids):
+            raise ValueError(
+                f"{species_id}: forcing-unit drift {len(selected)} != {len(selected_ids)}"
+            )
+
+    bcols = [
+        "site_id",
+        "mapped_ice_free_pixel_count_2000m",
+        "mapped_ice_free_area_ha_2000m",
+        "tier2_richness_2000m",
+    ]
+    frame = selected.merge(
+        breeding_options[bcols],
+        on="site_id",
+        how="left",
+        validate="many_to_one",
+    )
+
+    pixel_count = pd.to_numeric(
+        frame["mapped_ice_free_pixel_count_2000m"],
+        errors="coerce",
+    )
+    frame = frame.loc[pixel_count > 0].copy()
+    frame["A_raw"] = np.log1p(
+        pd.to_numeric(
+            frame["mapped_ice_free_area_ha_2000m"],
+            errors="coerce",
+        )
+    )
+    frame["H_raw"] = pd.to_numeric(
+        frame["tier2_richness_2000m"],
+        errors="coerce",
+    )
+    frame = frame.dropna(subset=["A_raw", "H_raw", "seasons"]).copy()
+
+    frame["A"] = _zscore(frame["A_raw"])
+    frame["H"] = _zscore(frame["H_raw"])
+    frame["AH"] = frame["A"] * frame["H"]
+
+    if scale == "ccamlr":
+        frame["forcing_group"] = frame["ccamlr_id"]
+    elif scale == "apbp_region":
+        frame["forcing_group"] = frame["region"]
+    elif scale == "species_wide":
+        frame["forcing_group"] = species_id
+    else:
+        raise ValueError(f"unsupported forcing scale: {scale}")
+
+    bad_group = (
+        frame["forcing_group"].isna()
+        | frame["forcing_group"].astype(str).str.strip().eq("")
+    )
+    if bool(bad_group.any()):
+        bad = frame.loc[bad_group, "unit_id"].astype(str).tolist()
+        raise ValueError(f"missing forcing group for units: {bad}")
+
+    keep = [
+        "unit_id",
+        "site_id",
+        "species_id",
+        "forcing_group",
+        "A",
+        "H",
+        "AH",
+        "seasons",
+    ]
+    return frame[keep].sort_values("unit_id").reset_index(drop=True)
+
 def evaluate_recovery_gate(
     summary: dict,
     *,
