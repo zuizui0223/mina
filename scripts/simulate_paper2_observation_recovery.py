@@ -477,6 +477,29 @@ def _metadata_support(metadata:pd.DataFrame)->dict:
     }
 
 
+
+EXPECTED_SUPPORT={
+    "records":2100,
+    "bridged_units":107,
+    "season_groups":1721,
+    "repeated_groups":273,
+    "direct_records":1889,
+    "image_based_records":149,
+    "unknown_vantage_records":62,
+    "mixed_direct_image_groups":41,
+    "mixed_direct_image_groups_by_species":{
+        "ADPE":9,"CHPE":10,"GEPE":22,
+    },
+}
+
+
+def validate_frozen_support(support:dict)->None:
+    """Fail closed if the frozen Gate 2B observation metadata drifts."""
+    if support!=EXPECTED_SUPPORT:
+        raise ValueError(
+            f"observation metadata drift: {support} != {EXPECTED_SUPPORT}"
+        )
+
 def run_observation_audit(
     obs:pd.DataFrame,
     *,
@@ -487,21 +510,7 @@ def run_observation_audit(
     metadata=build_frozen_observation_metadata(obs)
     support=_metadata_support(metadata)
 
-    expected={
-        "records":2100,
-        "bridged_units":107,
-        "season_groups":1721,
-        "repeated_groups":273,
-        "direct_records":1889,
-        "image_based_records":149,
-        "unknown_vantage_records":62,
-        "mixed_direct_image_groups":41,
-        "mixed_direct_image_groups_by_species":{
-            "ADPE":9,"CHPE":10,"GEPE":22,
-        },
-    }
-    if support!=expected:
-        raise ValueError(f"observation metadata drift: {support} != {expected}")
+    validate_frozen_support(support)
 
     recovery=evaluate_observation_recovery(
         metadata,
