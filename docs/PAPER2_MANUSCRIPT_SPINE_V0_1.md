@@ -293,7 +293,7 @@ negative species = 2/3
 full crossover = chinstrap + gentoo
 ```
 
-Therefore the interaction is not scale invariant.
+The raw interaction is not stable across radii, but the joint multi-radius permutation diagnostic does not establish biological scale dependence.
 
 The manuscript should not present “island heterogeneity changes from
 fragmentation to insurance” as a general law. The defensible ecological point
@@ -400,7 +400,7 @@ tests.
 This rules out the easy fallback story that total breeding space alone is the
 robust signal.
 
-### Result 5 — robustness and scale dependence
+### Result 5 — robustness and radius sensitivity
 
 Show:
 
@@ -453,7 +453,7 @@ This makes the difference between:
 
 immediately visible.
 
-### Figure 4 — Scale dependence
+### Figure 4 — Radius sensitivity and its null expectation
 
 Plot gamma_AH by spatial support:
 
@@ -480,9 +480,7 @@ hierarchical model of species-wide demographic forcing. At the prespecified
 three species, with full point-estimate crossover geometry in chinstrap and
 gentoo penguins. However, the preregistered cross-species block-permutation test
 was non-confirmatory (median gamma_AH = -0.318, p = 0.0947), and a simpler
-breeding-space buffering hypothesis was also unsupported. The interaction was
-stable to observation-timing calibration but strongly dependent on spatial
-support, weakening at 1 km and reversing at 5 km. These results do not support
+breeding-space buffering hypothesis was also unsupported. The interaction was stable to observation-timing calibration and varied strongly across spatial supports, but the observed 2-to-5 km sign reversal did not exceed the prespecified joint multi-radius null (plus-one probability = 0.0810). It is therefore treated as radius sensitivity rather than established biological scale dependence. These results do not support
 a scale-invariant demographic buffering rule based on breeding-island
 architecture. Instead, they show that local island structure can be associated
 with demographic coupling at particular spatial scales without yielding a
@@ -500,9 +498,7 @@ negative p-value.
 
 ### 2. Explain why the negative result is informative
 
-The design had enough synthetic recovery power to detect the predeclared
-effects under the real temporal/observation structure. Therefore the result is
-not simply “the model could not work”.
+The estimator passed pre-outcome recovery gates, but post-inference operating-characteristic analysis shows that the frozen paper-level test had little sensitivity to common interactions around the observed magnitude. Detection reached about 80% only near |gamma_AH|=0.50 and 90% near 0.54. Therefore the result is neither a model failure nor evidence of equivalence: it constrains very large common effects more strongly than moderate ones.
 
 The observed pattern is real enough to produce concordant point estimates but
 not stable enough across spatial support to justify a general rule.
