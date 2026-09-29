@@ -7,6 +7,7 @@ except ModuleNotFoundError as exc:
     raise unittest.SkipTest("latent-factor recovery tests require numpy/pandas") from exc
 
 from scripts.simulate_paper2_latent_factor_recovery import (
+    build_scale_frame,
     evaluate_recovery_gate,
     fit_unknown_factor,
     select_recovered_scale,
@@ -104,6 +105,56 @@ class LatentFactorRecoveryTests(unittest.TestCase):
                 {"passes": False},
             )
         )
+
+
+class FrozenFrameTests(unittest.TestCase):
+    def synthetic_inputs(self):
+        forcing_result = {
+            "decision": {
+                "modeling_eligibility_by_species": {
+                    "ADPE": {
+                        "level": "ccamlr",
+                        "covered_units": ["ADPE|S1", "ADPE|S2", "ADPE|S3", "ADPE|S4"],
+                    }
+                }
+            }
+        }
+        forcing_units = pd.DataFrame([
+            {"unit_id": f"ADPE|S{i}", "site_id": f"S{i}", "species_id": "ADPE",
+             "region": "R1" if i < 4 else "R2", "ccamlr_id": "48.1" if i < 4 else "88.1",
+             "seasons": "1980;1985;1990;2000;2010;2020"}
+            for i in range(1, 6)
+        ])
+        breeding = pd.DataFrame([
+            {"site_id": "S1", "mapped_ice_free_pixel_count_2000m": 10,
+             "mapped_ice_free_area_ha_2000m": 100, "tier2_richness_2000m": 2},
+            {"site_id": "S2", "mapped_ice_free_pixel_count_2000m": 12,
+             "mapped_ice_free_area_ha_2000m": 200, "tier2_richness_2000m": 3},
+            {"site_id": "S3", "mapped_ice_free_pixel_count_2000m": 14,
+             "mapped_ice_free_area_ha_2000m": 300, "tier2_richness_2000m": 4},
+            {"site_id": "S4", "mapped_ice_free_pixel_count_2000m": 0,
+             "mapped_ice_free_area_ha_2000m": None, "tier2_richness_2000m": None},
+            {"site_id": "S5", "mapped_ice_free_pixel_count_2000m": 16,
+             "mapped_ice_free_area_ha_2000m": 500, "tier2_richness_2000m": 6},
+        ])
+        return forcing_result, forcing_units, breeding
+
+    def test_regional_frame_masks_zero_pixel_site(self):
+        result, units, breeding = self.synthetic_inputs()
+        frame = build_scale_frame(result, units, breeding, "ADPE", "ccamlr")
+        self.assertEqual(set(frame["unit_id"]), {"ADPE|S1", "ADPE|S2", "ADPE|S3"})
+        self.assertEqual(set(frame["forcing_group"]), {"48.1"})
+        self.assertAlmostEqual(float(frame["A"].mean()), 0.0, places=10)
+        self.assertAlmostEqual(float(frame["H"].mean()), 0.0, places=10)
+
+    def test_specieswide_frame_uses_all_bridged_predictor_complete_units(self):
+        result, units, breeding = self.synthetic_inputs()
+        frame = build_scale_frame(result, units, breeding, "ADPE", "species_wide")
+        self.assertEqual(
+            set(frame["unit_id"]),
+            {"ADPE|S1", "ADPE|S2", "ADPE|S3", "ADPE|S5"},
+        )
+        self.assertEqual(set(frame["forcing_group"]), {"ADPE"})
 
 
 if __name__ == "__main__":
