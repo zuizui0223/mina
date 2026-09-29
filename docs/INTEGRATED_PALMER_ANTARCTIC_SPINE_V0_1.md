@@ -443,6 +443,7 @@ Do not:
 - present the latent species-wide factor as a specific climate mechanism.
 - interpret the retained species-wide factor as evidence for species-wide biological synchrony.
 
-The pending MDE and radius-null diagnostics may refine the strength of the
-negative/scale interpretation, but they cannot change the frozen primary
-hypothesis test.
+The MDE and radius-null diagnostics refine the strength of the interpretation
+without changing the frozen primary hypothesis test: the design was sensitive
+to very large common interactions but not moderate ones, and the observed
+cross-radius sign reversal did not exceed the prespecified joint null criterion.
