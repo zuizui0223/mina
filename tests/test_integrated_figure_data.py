@@ -1,7 +1,13 @@
 import json
+import unittest
 from pathlib import Path
 
-import pandas as pd
+try:
+    import pandas as pd
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest(
+        "integrated figure-data tests require pandas"
+    ) from exc
 
 from scripts.build_integrated_figure_data import build
 
