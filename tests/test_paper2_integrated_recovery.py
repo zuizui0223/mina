@@ -12,6 +12,7 @@ from scripts.simulate_paper2_integrated_recovery import (
     count_to_analysis_scale,
     counts_from_analysis_scale,
     fit_species_from_counts,
+    run_integrated_replicate,
     simulate_species_counts,
 )
 
@@ -134,6 +135,42 @@ class IntegratedSpeciesTests(unittest.TestCase):
         self.assertEqual(payload["records"][0][:4],(0,"G1",1980,1990))
         self.assertAlmostEqual(payload["records"][0][4],0.5,places=12)
         self.assertAlmostEqual(payload["records"][1][4],-0.3,places=12)
+
+
+class IntegratedJointRecoveryTests(unittest.TestCase):
+    def test_one_dense_replicate_recovers_nuisance_and_crossover(self):
+        frame,_=dense_species_fixture()
+        rows=[]
+        for i in range(len(frame)):
+            for season in range(1980,2026):
+                for family,accuracy in (
+                    ("direct","1"),("image_based","1"),
+                    ("direct","2-5"),("image_based","2-5"),
+                ):
+                    rows.append({
+                        "group_id":f"S{i}|ADPE|{season}",
+                        "site_id":f"S{i}","species_id":"ADPE","season":season,
+                        "vantage_family":family,"accuracy_group":accuracy,
+                    })
+        metadata=pd.DataFrame(rows)
+        out=run_integrated_replicate(
+            {"ADPE":frame},
+            metadata,
+            gamma_a=0.0,
+            gamma_ah=-0.35,
+            seed=707,
+            forcing_sd=0.08,
+            loading_sd=0.0,
+            process_sd=0.02,
+            drift_mean=-0.01,
+            drift_sd=0.0,
+        )
+        self.assertLess(
+            abs(out["observation"]["delta_image"]-np.log(1.15)),0.03
+        )
+        fit=out["species"]["ADPE"]
+        self.assertLess(abs(fit["gamma_ah"]+0.35),0.10)
+        self.assertGreater(fit["forcing_correlation"]["G1"],0.90)
 
 
 if __name__=="__main__":
