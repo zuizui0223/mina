@@ -79,30 +79,44 @@ def figure_rows(result: dict[str, object]) -> dict[str, list[dict[str, object]]]
         )
 
     fig3: list[dict[str, object]] = []
-    for domain, payload in (
-        ("structural_morphology", structural),
-        ("isotopic_niche", isotopes),
-    ):
-        for year, value in payload["within_year_balanced_accuracy"].items():
-            fig3.append(
-                {
-                    "domain": domain,
-                    "validation": "within_year_leave_one_out",
-                    "year": year,
-                    "balanced_accuracy": value,
-                    "chance_reference": payload["chance_balanced_accuracy"],
-                }
-            )
-        for year, value in payload["cross_year_balanced_accuracy"].items():
-            fig3.append(
-                {
-                    "domain": domain,
-                    "validation": "leave_one_year_out",
-                    "year": year,
-                    "balanced_accuracy": value,
-                    "chance_reference": payload["chance_balanced_accuracy"],
-                }
-            )
+    for year, value in structural["within_year_balanced_accuracy"].items():
+        fig3.append(
+            {
+                "domain": "structural_morphology",
+                "validation": "within_year_leave_one_out",
+                "year": year,
+                "balanced_accuracy": value,
+                "chance_reference": structural["chance_balanced_accuracy"],
+            }
+        )
+    for year, value in structural["cross_year_balanced_accuracy"].items():
+        fig3.append(
+            {
+                "domain": "structural_morphology",
+                "validation": "leave_one_year_out",
+                "year": year,
+                "balanced_accuracy": value,
+                "chance_reference": structural["chance_balanced_accuracy"],
+            }
+        )
+    fig3.extend(
+        [
+            {
+                "domain": "isotopic_niche",
+                "validation": "within_year_mean",
+                "year": "mean",
+                "balanced_accuracy": isotopes["mean_within_year_balanced_accuracy"],
+                "chance_reference": isotopes["chance_balanced_accuracy"],
+            },
+            {
+                "domain": "isotopic_niche",
+                "validation": "cross_year_mean",
+                "year": "mean",
+                "balanced_accuracy": isotopes["mean_cross_year_balanced_accuracy"],
+                "chance_reference": isotopes["chance_balanced_accuracy"],
+            },
+        ]
+    )
 
     return {
         "figure1_assemblage_decomposition.csv": fig1,
