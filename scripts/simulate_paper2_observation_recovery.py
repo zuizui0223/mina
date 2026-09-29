@@ -506,11 +506,9 @@ def run_observation_audit(
     replicates:int=200,
     seed_offset:int=3000000,
 )->dict:
-    """Rebuild frozen metadata, verify Gate 2B support, then run synthetic recovery."""
+    """Rebuild metadata and run synthetic observation recovery."""
     metadata=build_frozen_observation_metadata(obs)
     support=_metadata_support(metadata)
-
-    validate_frozen_support(support)
 
     recovery=evaluate_observation_recovery(
         metadata,
@@ -538,6 +536,7 @@ def main()->int:
 
     obs=_load_rda(args.mapppdr_dir/"data"/"penguin_obs.rda","penguin_obs")
     result=run_observation_audit(obs,replicates=args.replicates)
+    validate_frozen_support(result["metadata"])
     args.out_json.parent.mkdir(parents=True,exist_ok=True)
     args.out_json.write_text(
         json.dumps(result,indent=2,sort_keys=True)+"\n",
