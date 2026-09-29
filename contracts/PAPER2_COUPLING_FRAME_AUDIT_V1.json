@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-coupling-frame-audit-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_predictor_frame_rules_frozen_before_demographic_outcomes",
+  "inputs": {
+    "forcing_support_result": "results/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json",
+    "forcing_support_artifact_id": 11011632239,
+    "breeding_option_hierarchy_artifact_id": 11001289630,
+    "terrain_artifact_id": 11001148358
+  },
+  "primary_rule": {
+    "eligible_coupling_units": 103,
+    "breeding_option_coverage": "mapped_ice_free_pixel_count_2000m must be > 0",
+    "zero_pixel_interpretation": "missing spatial coverage, never ecological zero",
+    "expected_uncovered_units_within_coupling_cohort": ["ADPE|FRAE", "ADPE|FRAW"],
+    "expected_predictor_complete_units": 101,
+    "expected_by_species": {"ADPE": 40, "CHPE": 33, "GEPE": 28}
+  },
+  "transformations": {
+    "A": "within-species z(log1p(mapped_ice_free_area_ha_2000m))",
+    "H": "within-species z(tier2_richness_2000m)",
+    "R": "within-species z(log1p(elevation_relief_p90_p10_m_2000m))",
+    "AH": "A * H"
+  },
+  "design_diagnostics": {
+    "interaction_model_requires_full_rank": true,
+    "max_vif_warning_threshold": 10,
+    "condition_number_warning_threshold": 10,
+    "purpose": "detect structural aliasing of A x H with main effects or frozen forcing geography before outcomes are opened"
+  },
+  "boundary": [
+    "No penguin count magnitude is read or used.",
+    "The original atlas extraction is preserved as provenance; masking occurs in the downstream modeling frame.",
+    "The 2 km radius and frozen trait definitions are not changed.",
+    "The two uncovered Adélie units are not reclassified, imputed or rescued with a wider radius."
+  ]
+}
