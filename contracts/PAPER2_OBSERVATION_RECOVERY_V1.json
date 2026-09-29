@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-observation-recovery-v1",
+  "date": "2026-09-29",
+  "status": "synthetic_observation_recovery_frozen_before_demographic_outcomes",
+  "paper_lane": "Paper 2",
+  "purpose": "Validate the frozen direct-versus-image mean offset and accuracy-1 versus pooled-2-5 observation scales using only actual observation metadata and synthetic log-scale measurements before real count magnitudes are opened.",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "primary_time_field": "season",
+    "primary_window": [
+      1980,
+      2025
+    ],
+    "frozen_bridged_units": 107,
+    "expected_records": 2100,
+    "expected_direct_records": 1889,
+    "expected_image_based_records": 149,
+    "expected_unknown_vantage_records": 62,
+    "expected_mixed_direct_image_groups": 41
+  },
+  "simulation": {
+    "replicates_per_scenario": 200,
+    "offset_truth_log": 0.139761942375159,
+    "offset_truth_multiplicative": 1.15,
+    "offset_null_log": 0,
+    "accuracy_1_sigma_log": 0.048790164169432,
+    "accuracy_2_5_sigma_log": 0.22314355131421,
+    "latent_group_mean_sd": 1,
+    "rationale": "Synthetic scales represent a moderate method effect and multiplicative measurement noise. They are recovery targets, not claims about the real data-generating values."
+  },
+  "estimator": {
+    "method_offset": "For each site x species x season containing both direct and image-based records, compute mean(image log-observation) - mean(direct log-observation); estimate delta_image as the unweighted mean across mixed groups.",
+    "unknown_vantage": "Exclude unknown-vantage records from method-offset and accuracy-scale calibration. Their primary-model treatment remains the frozen Gate 2B rule with a mandatory exclusion sensitivity.",
+    "accuracy_scales": "After subtracting the estimated image offset, within each site x species x season and collapsed accuracy group, use only groups with >=2 known-vantage observations. Pool within-group sums of squares over residual degrees of freedom to estimate sigma for accuracy 1 and pooled 2-5.",
+    "singleton_rule": "Singleton groups contribute no variance information."
+  },
+  "recovery_gate": {
+    "max_abs_median_offset_bias_log": 0.03,
+    "min_correct_offset_sign_fraction": 0.95,
+    "max_abs_null_median_offset_log": 0.02,
+    "null_q05_q95_must_contain_zero": true,
+    "max_accuracy_1_median_relative_sigma_bias": 0.15,
+    "max_accuracy_2_5_median_relative_sigma_bias": 0.3,
+    "require_finite_estimate_fraction": 1
+  },
+  "diagnostics": [
+    "report mixed direct-image group counts overall and by species",
+    "report repeated groups and residual degrees of freedom for each collapsed accuracy class",
+    "report species-specific offset recovery as a non-gating diagnostic while the primary offset is shared across species"
+  ],
+  "boundary": [
+    "Real count magnitudes are never read, summarized, transformed or modeled; count is used only as a non-missingness flag to reconstruct the frozen cohort.",
+    "The shared image offset is a cross-species observation parameter; ecological process effects remain species-specific.",
+    "No raw-vantage-specific offset is promoted.",
+    "If any primary recovery check fails, do not open real demographic count magnitudes and do not tune thresholds or simulation values post hoc. A new fallback observation-model contract is required."
+  ]
+}
