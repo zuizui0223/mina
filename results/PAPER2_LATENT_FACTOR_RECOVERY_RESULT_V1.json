@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-latent-factor-recovery-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36523087499,
+    "artifact_id": 11013645797,
+    "artifact_digest": "sha256:d5643d902becbb078fdc7c9bd93b6829fc5e210c2df1f5ecadec9c03b9ffff10",
+    "head_sha": "a43063e8791d875f34a7eacf0c95d7bd255a00fe",
+    "conclusion": "success"
+  },
+  "source": {
+    "primary_window": [1980, 2025],
+    "replicates_per_scale_scenario": 100,
+    "forcing_support_workflow_run_id": 36517700369,
+    "forcing_support_artifact_id": 11012045716,
+    "corrected_breeding_options_workflow_run_id": 36520281872,
+    "corrected_breeding_options_artifact_id": 11012935837,
+    "no_real_count_magnitudes_opened": true
+  },
+  "simulation": {
+    "forcing_sd": 0.08,
+    "loading_sd": 0.15,
+    "process_sd": 0.04,
+    "drift_mean": -0.01,
+    "drift_sd": 0.01,
+    "crossover_gamma_ah": -0.35,
+    "null_gamma_ah": 0.0,
+    "als_iterations": 8
+  },
+  "species": {
+    "ADPE": {
+      "gate2c_regional_scale": "ccamlr",
+      "regional_passed": true,
+      "selected_recovered_scale": "ccamlr",
+      "regional_units": 40,
+      "regional_forcing_groups": {
+        "48.1": {
+          "median_forcing_correlation": 0.947600020695866,
+          "q05_forcing_correlation": 0.8933373002018182
+        },
+        "88.1": {
+          "median_forcing_correlation": 0.9636330244446979,
+          "q05_forcing_correlation": 0.8949991269891849
+        }
+      },
+      "regional_crossover": {
+        "truth_gamma_ah": -0.35,
+        "median_gamma_ah": -0.3582373540525935,
+        "negative_fraction": 1.0
+      },
+      "regional_null": {
+        "median_gamma_ah": -0.003520441541947712,
+        "q05_gamma_ah": -0.1468152758822914,
+        "q95_gamma_ah": 0.15862593667760685
+      },
+      "species_wide_passed": true
+    },
+    "CHPE": {
+      "gate2c_regional_scale": "apbp_region",
+      "regional_passed": true,
+      "selected_recovered_scale": "apbp_region",
+      "regional_units": 33,
+      "regional_forcing_groups": {
+        "Central-west Antarctic Peninsula": {
+          "median_forcing_correlation": 0.7679139043494801,
+          "q05_forcing_correlation": 0.4904309577249604
+        },
+        "South Shetland Islands": {
+          "median_forcing_correlation": 0.9361360827926354,
+          "q05_forcing_correlation": 0.8828121852412405
+        }
+      },
+      "regional_crossover": {
+        "truth_gamma_ah": -0.35,
+        "median_gamma_ah": -0.33434259308147357,
+        "negative_fraction": 0.99
+      },
+      "regional_null": {
+        "median_gamma_ah": 0.0033584512376495027,
+        "q05_gamma_ah": -0.1346426035617096,
+        "q95_gamma_ah": 0.14254902616093515
+      },
+      "species_wide_passed": true
+    },
+    "GEPE": {
+      "gate2c_regional_scale": "apbp_region",
+      "regional_passed": false,
+      "regional_failure": [
+        "factor_median",
+        "factor_q05"
+      ],
+      "selected_recovered_scale": "species_wide",
+      "regional_units": 28,
+      "regional_forcing_groups": {
+        "Central-west Antarctic Peninsula": {
+          "median_forcing_correlation": 0.3488282132616032,
+          "q05_forcing_correlation": -0.028555425310684942
+        },
+        "South Shetland Islands": {
+          "median_forcing_correlation": 0.9207293519222925,
+          "q05_forcing_correlation": 0.8222972309892658
+        }
+      },
+      "regional_crossover": {
+        "truth_gamma_ah": -0.35,
+        "median_gamma_ah": -0.33819850432048326,
+        "negative_fraction": 1.0
+      },
+      "species_wide": {
+        "passed": true,
+        "units": 29,
+        "median_forcing_correlation": 0.9750608492414254,
+        "q05_forcing_correlation": 0.9579948060636263,
+        "crossover_median_gamma_ah": -0.3430404805207156,
+        "crossover_negative_fraction": 1.0,
+        "null_median_gamma_ah": -0.0017140044141212866,
+        "null_q05_gamma_ah": -0.078386637695705,
+        "null_q95_gamma_ah": 0.08409357026546568
+      }
+    }
+  },
+  "decision": {
+    "selected_recovered_scale_by_species": {
+      "ADPE": "ccamlr",
+      "CHPE": "apbp_region",
+      "GEPE": "species_wide"
+    },
+    "all_species_have_recovered_scale": true,
+    "regional_support_is_not_sufficient_for_factor_recoverability": true,
+    "gentoo_regional_factor_rejected_before_real_outcomes": true,
+    "observation_layer_validated": false,
+    "next_gate": "Gate 2E-B synthetic count-observation recovery using the frozen vantage and accuracy structure"
+  },
+  "interpretation": [
+    "Adelie and chinstrap retain recoverable regional shared-forcing definitions under the frozen real breeding-season schedules.",
+    "Gentoo passes the Gate 2C temporal-support criterion but fails latent regional-factor recovery because the Central-west Antarctic Peninsula factor is weakly recovered; gentoo therefore falls back to a species-wide shared factor before any real abundance outcome is opened.",
+    "The A x H crossover is recoverable under the retained scales in the synthetic latent-state schedule experiment.",
+    "This gate validates schedule-level latent-factor recovery only. It does not validate the count observation likelihood, direct-versus-image offset, accuracy-class observation error, or real ecological effect."
+  ]
+}
