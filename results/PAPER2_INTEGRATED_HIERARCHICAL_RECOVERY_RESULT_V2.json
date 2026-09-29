@@ -1,0 +1,108 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-paper2-integrated-hierarchical-recovery-result-v2",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36536462327,
+    "artifact_id": 11018899810,
+    "artifact_digest": "sha256:706038cacac95d662e9b05f3ad3769da618cb3d078785686736aefc57a7e6730",
+    "head_sha": "d224b3e14c8791c6a74f41396af483cc75209086",
+    "conclusion": "success"
+  },
+  "decision": {
+    "hierarchical_core_passed": true,
+    "primary_hierarchical_gate_passed": false,
+    "specieswide_hierarchical_gate_passed": true,
+    "primary_observation_gate_passed": true,
+    "specieswide_observation_gate_passed": true,
+    "selected_hierarchical_scale_by_species": {
+      "ADPE": "species_wide",
+      "CHPE": "species_wide",
+      "GEPE": "species_wide"
+    },
+    "all_species_have_hierarchical_scale": true,
+    "observation_source_sensitivity_completed": false,
+    "counts_may_be_opened": false,
+    "no_real_demographic_count_magnitudes_opened": true
+  },
+  "regional_primary": {
+    "ADPE": {
+      "passes": false,
+      "forcing_median": {
+        "48.1": 0.8099177498837691,
+        "88.1": 0.5245071917238228
+      },
+      "forcing_q05": {
+        "48.1": 0.6205190193851747,
+        "88.1": 0.30739691235568883
+      },
+      "crossover_median_gamma_ah": -0.36755218708461923,
+      "crossover_negative_fraction": 0.82
+    },
+    "CHPE": {
+      "passes": false,
+      "forcing_median": {
+        "Central-west Antarctic Peninsula": 0.5622106499043926,
+        "South Shetland Islands": 0.8452802764916121
+      },
+      "forcing_q05": {
+        "Central-west Antarctic Peninsula": 0.2852022174784046,
+        "South Shetland Islands": 0.7504902814149239
+      },
+      "crossover_median_gamma_ah": -0.3294011487032463,
+      "crossover_negative_fraction": 0.99
+    },
+    "GEPE": {
+      "passes": true,
+      "forcing_median": {
+        "GEPE": 0.8985124399600286
+      },
+      "forcing_q05": {
+        "GEPE": 0.792441720321012
+      },
+      "crossover_median_gamma_ah": -0.3417843622952633,
+      "crossover_negative_fraction": 1
+    }
+  },
+  "species_wide": {
+    "observation_gate_passes": true,
+    "species": {
+      "ADPE": {
+        "passes": true,
+        "forcing_median_corr": 0.8601079907428808,
+        "forcing_q05_corr": 0.7388755492792802,
+        "crossover_median_gamma_ah": -0.3240146781216803,
+        "crossover_negative_fraction": 0.96,
+        "simple_buffering_median_gamma_a": -0.2360149366278536,
+        "simple_buffering_negative_fraction": 0.99,
+        "null_median_gamma_ah": 0.03482568663910293
+      },
+      "CHPE": {
+        "passes": true,
+        "forcing_median_corr": 0.8781935939111372,
+        "forcing_q05_corr": 0.7272553884688487,
+        "crossover_median_gamma_ah": -0.3473746317766069,
+        "crossover_negative_fraction": 1,
+        "simple_buffering_median_gamma_a": -0.2545117797494625,
+        "simple_buffering_negative_fraction": 1,
+        "null_median_gamma_ah": 0.006873940134923918
+      },
+      "GEPE": {
+        "passes": true,
+        "forcing_median_corr": 0.9000339604654637,
+        "forcing_q05_corr": 0.7962679744352014,
+        "crossover_median_gamma_ah": -0.3373638034870127,
+        "crossover_negative_fraction": 1,
+        "simple_buffering_median_gamma_a": -0.23965382402516464,
+        "simple_buffering_negative_fraction": 0.99,
+        "null_median_gamma_ah": 0.02013991021559936
+      }
+    }
+  },
+  "interpretation": [
+    "The hierarchical estimator passes the frozen integrated recovery gate only at species-wide forcing for all three species.",
+    "Regional forcing is not retained for Adelie or chinstrap because their regional configurations fail the unchanged forcing/crossover recovery thresholds.",
+    "The predeclared option-fragmentation crossover and simple-buffering controls are recoverable under species-wide forcing for all three species.",
+    "Real counts remain locked until the predeclared observation-source recovery sensitivities are completed."
+  ]
+}
