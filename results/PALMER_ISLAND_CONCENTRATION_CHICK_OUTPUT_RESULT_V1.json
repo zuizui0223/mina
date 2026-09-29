@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-island-concentration-chick-output-result-v1",
+  "validated_date": "2026-09-30",
+  "contracts": [
+    "mina-palmer-island-concentration-chick-output-v1",
+    "mina-palmer-island-concentration-chick-output-execution-v1"
+  ],
+  "execution": {
+    "workflow_run_id": 36624574331,
+    "artifact_id": 11059244328,
+    "head_sha": "c8e01f716293e67e2070bc72d8fea25ae886cba8",
+    "conclusion": "success",
+    "simulations": 100000,
+    "seed": 20260930
+  },
+  "source": {
+    "adult_census_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "chick_snapshot_sha256": "5424b42c30e7a63b35caa730a1658a6f3a7824662372a3e7f82c01529985a9be"
+  },
+  "analysis_frame": {
+    "eligible_island_years": 124,
+    "CHR": 27,
+    "COR": 27,
+    "HUM": 27,
+    "LIT": 16,
+    "TOR": 27,
+    "post_extinction_litchfield_zero_years_excluded": 11
+  },
+  "primary": {
+    "predictor": "z(-log effective_colony_number)",
+    "response": "log1p(total island chick count)",
+    "controls": "island fixed effects + year fixed effects + log1p island breeding-pair total",
+    "beta_concentration": -0.38894969322690476,
+    "circular_shift_null_mean": 0.005520513362050974,
+    "null_95_interval": [-0.2752551186205032, 0.2301397216235267],
+    "lower_tail_p": 0.0009099909000909991,
+    "two_sided_p": 0.0018199818001819982,
+    "decision": "degradation_signal"
+  },
+  "robustness": {
+    "exclude_litchfield": {
+      "beta": -0.36686216743018424,
+      "two_sided_p": 0.0008599914000859991
+    },
+    "leave_one_island_out_beta": {
+      "CHR": -0.13466199177085084,
+      "COR": -0.5371685725058,
+      "HUM": -0.41888468945549273,
+      "LIT": -0.3668621674301837,
+      "TOR": -0.4073945857626643
+    },
+    "early_1991_2003_beta": -1.1544409118946766,
+    "late_2004_2017_beta": -0.4121072426614575,
+    "largest_colony_share": {
+      "beta": -0.01445367056399924,
+      "two_sided_p": 0.6962130378696213,
+      "interpretation": "The signal is not reproduced by dominance of the single largest colony alone."
+    }
+  },
+  "decision": {
+    "quality_sorting_refuge_supported": false,
+    "reproductive_degradation_with_concentration_supported": true,
+    "largest_colony_dominance_mechanism_supported": false,
+    "leave_one_island_direction_stable": true
+  },
+  "ecological_interpretation": "As Palmer Adelie breeders become distributed across fewer effective colony-code components, island-level chick production is lower than expected from the current number of breeding pairs, persistent island differences, and shared annual conditions. This argues against a simple retreat-to-the-best-sites interpretation of demographic concentration. The reproductive association is tied to erosion of the distributed breeding network rather than merely to the share held by the single largest colony.",
+  "mechanistic_boundary": "The result does not by itself identify snow, predation, food limitation, density dependence or an Allee effect. Fine-scale snow/terrain effects on Palmer sub-colony persistence are already established by Cimino et al. 2025; the new result concerns the reproductive consequence of island-level demographic reorganization.",
+  "paper_implication": "The Palmer story can now be written as a sequence: shared regional decline -> non-proportional within-island concentration -> size-ordered zero crossing that is mechanically expected -> reduced reproductive output as the breeding network contracts. Static island architecture need not predict this process across Antarctica, explaining why the original Paper 2 macro-architecture effect was weak and scale dependent."
+}
