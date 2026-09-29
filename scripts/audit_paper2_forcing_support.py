@@ -79,3 +79,109 @@ def select_level(level_summaries: dict[str, dict], unit_ids: set[str]) -> str | 
         if covered == target:
             return level
     return None
+
+
+
+def validate_frozen_cohort(candidate_units: int, bridged_units: int) -> None:
+    """Fail closed if the previously frozen Gate 0 / Gate 2A cohort drifts."""
+    if candidate_units != 152:
+        raise ValueError(f"Gate0 cohort drift: {candidate_units} != 152")
+    if bridged_units != 107:
+        raise ValueError(f"bridged cohort drift: {bridged_units} != 107")
+
+
+def _usable_label(value) -> bool:
+    if value is None:
+        return False
+    text = str(value).strip()
+    return bool(text and text.lower() not in {"nan", "na", "none"})
+
+
+def summarize_forcing_support(
+    unit_rows: list[dict],
+    start: int,
+    end: int,
+) -> dict:
+    """Summarize support metadata without using demographic count magnitudes."""
+    rows = sorted(
+        unit_rows,
+        key=lambda r: (str(r["species_id"]), str(r["unit_id"])),
+    )
+    species_result: dict[str, dict] = {}
+
+    for species_id in sorted({str(r["species_id"]) for r in rows}):
+        local = [r for r in rows if str(r["species_id"]) == species_id]
+        target = {str(r["unit_id"]) for r in local}
+        levels: dict[str, dict] = {}
+
+        for level, field in (
+            ("apbp_region", "region"),
+            ("ccamlr", "ccamlr_id"),
+        ):
+            missing = sum(not _usable_label(r.get(field)) for r in local)
+            labels = sorted(
+                {
+                    str(r[field])
+                    for r in local
+                    if _usable_label(r.get(field))
+                }
+            )
+            groups = []
+            for label in labels:
+                members = [r for r in local if str(r.get(field)) == label]
+                seasons = {
+                    str(r["unit_id"]): [int(v) for v in r.get("seasons", [])]
+                    for r in members
+                }
+                summary = evaluate_group(seasons, start, end)
+                groups.append(
+                    {
+                        "group": label,
+                        "unit_ids": sorted(seasons),
+                        **summary,
+                    }
+                )
+            qualifying_covered = sorted(
+                {
+                    unit
+                    for g in groups
+                    if g["qualifies"]
+                    for unit in g["unit_ids"]
+                }
+            )
+            levels[level] = {
+                "missing_label_units": int(missing),
+                "groups": groups,
+                "qualifying_covered_units": qualifying_covered,
+                "complete_qualifying_coverage": set(qualifying_covered) == target,
+            }
+
+        seasons = {
+            str(r["unit_id"]): [int(v) for v in r.get("seasons", [])]
+            for r in local
+        }
+        species_group = {
+            "group": species_id,
+            "unit_ids": sorted(seasons),
+            **evaluate_group(seasons, start, end),
+        }
+        levels["species_wide"] = {
+            "missing_label_units": 0,
+            "groups": [species_group],
+            "qualifying_covered_units": (
+                sorted(target) if species_group["qualifies"] else []
+            ),
+            "complete_qualifying_coverage": bool(species_group["qualifies"]),
+        }
+
+        selected = select_level(levels, target)
+        species_result[species_id] = {
+            "n_units": len(target),
+            "selected_level": selected,
+            "levels": levels,
+        }
+
+    return {
+        "window": [start, end],
+        "species": species_result,
+    }
