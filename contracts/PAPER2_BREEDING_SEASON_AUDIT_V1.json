@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-breeding-season-audit-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_time_axis_audit_frozen_before_execution",
+  "paper_lane": "Paper 2",
+  "purpose": "Choose the ecological time index for Antarctic penguin trend modeling before count magnitudes are analyzed.",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "frozen_gate0_cohort": "152 Pygoscelis site x species units selected using observation availability only",
+    "primary_species_ids": [
+      "ADPE",
+      "CHPE",
+      "GEPE"
+    ]
+  },
+  "competing_time_fields": {
+    "year": "calendar year of observation",
+    "season": "APBP breeding-season label; austral-summer observations can belong to the season beginning in the previous calendar year"
+  },
+  "decision_rule": {
+    "rule": "Use APBP season as the primary demographic time index if season is non-missing for at least 95% of nest-count records belonging to the frozen 152-unit cohort. Otherwise retain calendar year.",
+    "rationale": "Breeding season is the biologically coherent annual unit for Antarctic penguin reproduction; the threshold prevents excessive time-axis missingness.",
+    "no_count_magnitudes_used": true
+  },
+  "audits": [
+    "fraction of candidate nest-count records with non-missing season",
+    "fraction and month distribution of records with year != season",
+    "species-specific year-season mismatch fractions",
+    "recompute fixed candidate-window eligibility using season within the same frozen Gate0 cohort",
+    "compare selected common window and bridged-unit counts to the previous calendar-year audit"
+  ],
+  "candidate_windows": [
+    [
+      1980,
+      2025
+    ],
+    [
+      1990,
+      2025
+    ],
+    [
+      2000,
+      2025
+    ],
+    [
+      2010,
+      2025
+    ]
+  ],
+  "bridged_criterion": {
+    "minimum_distinct_time_units": 5,
+    "minimum_span": 10,
+    "first_third_required": true,
+    "last_third_required": true
+  },
+  "window_selection_rule": "On the chosen time axis, select the longest candidate window for which each Pygoscelis species retains at least 50% of its frozen Gate0 units under the bridged criterion.",
+  "boundary": [
+    "Count values are not summarized or modeled.",
+    "The frozen 152-unit Gate0 cohort is not expanded using season.",
+    "Breeding-option predictor definitions are not changed.",
+    "Once selected here, the primary time index cannot be changed after demographic outcomes are opened."
+  ]
+}
