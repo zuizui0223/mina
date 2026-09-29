@@ -2,7 +2,15 @@
 """Outcome-blind support filters for integrated observation-source sensitivities."""
 from __future__ import annotations
 
+import argparse
+import json
+from pathlib import Path
+
 import pandas as pd
+import pyreadr
+
+from scripts.simulate_paper2_latent_factor_recovery import build_scale_frame
+from scripts.simulate_paper2_observation_recovery import build_frozen_observation_metadata
 
 
 WINDOW=(1980,2025)
@@ -84,3 +92,98 @@ def filter_process_support(
         "supported_unit_ids":sorted(supported),
         "detail":detail,
     }
+
+
+def _load_rda(path:Path,expected:str)->pd.DataFrame:
+    result=pyreadr.read_r(str(path))
+    if expected in result:
+        frame=result[expected]
+    elif len(result)==1:
+        frame=next(iter(result.values()))
+    else:
+        raise ValueError(f"cannot resolve {expected}: {list(result)}")
+    if not isinstance(frame,pd.DataFrame):
+        raise TypeError(expected)
+    return frame
+
+
+def audit_sensitivity_support(
+    forcing_result:dict,
+    forcing_units:pd.DataFrame,
+    breeding_options:pd.DataFrame,
+    latent_result:dict,
+    metadata:pd.DataFrame,
+)->dict:
+    scales={
+        str(k):str(v)
+        for k,v in latent_result["decision"][
+            "selected_recovered_scale_by_species"
+        ].items()
+    }
+    expected={"ADPE":"ccamlr","CHPE":"apbp_region","GEPE":"species_wide"}
+    if scales!=expected:
+        raise ValueError(f"scale drift: {scales} != {expected}")
+
+    frames={
+        sp:build_scale_frame(
+            forcing_result,forcing_units,breeding_options,sp,scales[sp]
+        )
+        for sp in ("ADPE","CHPE","GEPE")
+    }
+    result={}
+    for mode in ("exclude_unknown","ground_only"):
+        result[mode]={}
+        for sp,frame in frames.items():
+            supported,meta=filter_process_support(frame,metadata,mode=mode)
+            result[mode][sp]={
+                "candidate_units":int(len(frame)),
+                "supported_units":int(len(supported)),
+                "coverage_fraction":float(
+                    len(supported)/len(frame) if len(frame) else 0.0
+                ),
+                "recovery_testable":bool(len(supported)>=20),
+                "supported_unit_ids":meta["supported_unit_ids"],
+                "dropped_units":sorted(
+                    set(frame["unit_id"].astype(str))
+                    -set(supported["unit_id"].astype(str))
+                ),
+            }
+    return {
+        "schema_version":1,
+        "audit_id":"mina-paper2-integrated-sensitivity-support-v1",
+        "primary_scale_by_species":scales,
+        "min_supported_units_per_species":20,
+        "modes":result,
+        "no_real_count_magnitudes_opened":True,
+    }
+
+
+def main()->int:
+    p=argparse.ArgumentParser()
+    p.add_argument("--forcing-json",required=True,type=Path)
+    p.add_argument("--forcing-csv",required=True,type=Path)
+    p.add_argument("--breeding-csv",required=True,type=Path)
+    p.add_argument("--latent-json",required=True,type=Path)
+    p.add_argument("--mapppdr-dir",required=True,type=Path)
+    p.add_argument("--out-json",required=True,type=Path)
+    a=p.parse_args()
+
+    forcing_result=json.loads(a.forcing_json.read_text(encoding="utf-8"))
+    forcing_units=pd.read_csv(a.forcing_csv)
+    breeding_options=pd.read_csv(a.breeding_csv)
+    latent_result=json.loads(a.latent_json.read_text(encoding="utf-8"))
+    obs=_load_rda(a.mapppdr_dir/"data"/"penguin_obs.rda","penguin_obs")
+    metadata=build_frozen_observation_metadata(obs)
+    result=audit_sensitivity_support(
+        forcing_result,forcing_units,breeding_options,latent_result,metadata
+    )
+    a.out_json.parent.mkdir(parents=True,exist_ok=True)
+    a.out_json.write_text(
+        json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf-8"
+    )
+    print(json.dumps(result,indent=2,sort_keys=True))
+    return 0
+
+
+if __name__=="__main__":
+    raise SystemExit(main())
