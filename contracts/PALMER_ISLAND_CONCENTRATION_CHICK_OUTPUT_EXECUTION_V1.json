@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-island-concentration-chick-output-execution-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_model_execution",
+  "parent_contract": "mina-palmer-island-concentration-chick-output-v1",
+  "clarifications": {
+    "zero_adult_island_years": "Exclude island-years with adult breeding-pair total <= 0 because effective colony number and its log concentration are undefined. This principally affects post-extinction Litchfield years and is not coded as an extreme concentration value.",
+    "eligible_shift_series": "Within each island, order all primary-model island-years with adult total > 0 and finite concentration, and circularly shift concentration over that ordered eligible series by a sampled non-zero lag from 1 to n_i-1.",
+    "year_fixed_effects": "Retain year fixed effects for every year represented by at least one eligible island-year.",
+    "standardization": "For every fitted dataset, z-standardize the concentration predictor using the mean and sample SD of that fitted dataset. For null replicates, circularly shift raw concentration first and then z-standardize over the same model rows.",
+    "rank_rule": "Fail closed if the OLS design is rank deficient."
+  },
+  "no_other_changes": true
+}
