@@ -884,6 +884,7 @@ def run_hierarchical_audit(
         all(v is not None for v in selected.values())
         and primary["observation_gate"]["passes"]
         and specieswide["observation_gate"]["passes"]
+        and specieswide["gate"]["passes"]
     )
     return {
         "schema_version":2,
