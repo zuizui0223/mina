@@ -1,0 +1,29 @@
+name: paper2-integrated-recovery
+
+on:
+  push:
+    branches: [analysis/paper2-integrated-recovery-v2]
+    paths:
+      - "scripts/simulate_paper2_integrated_recovery.py"
+      - "tests/test_paper2_integrated_recovery.py"
+      - "contracts/PAPER2_INTEGRATED_RECOVERY_V1.json"
+      - ".github/workflows/paper2-integrated-recovery.yml"
+  pull_request:
+    paths:
+      - "scripts/simulate_paper2_integrated_recovery.py"
+      - "tests/test_paper2_integrated_recovery.py"
+      - "contracts/PAPER2_INTEGRATED_RECOVERY_V1.json"
+      - ".github/workflows/paper2-integrated-recovery.yml"
+  workflow_dispatch:
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas pyreadr
+      - name: Run integrated-recovery tests
+        run: python -m unittest tests.test_paper2_integrated_recovery -v
