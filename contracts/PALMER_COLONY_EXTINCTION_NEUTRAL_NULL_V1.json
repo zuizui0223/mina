@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-extinction-neutral-null-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_size_conditioned_neutral_null_execution",
+  "prerequisite": "contracts/PALMER_COLONY_EXTINCTION_HAZARD_V1.json",
+  "motivation": "The exchangeable risk-set null does not account for the mechanical fact that a small group has a higher probability of reaching zero under equal per-capita demographic sampling. This gate asks whether the observed durable extinctions are more size-selective than that neutral expectation.",
+  "question": "Do durable colony-code extinctions concentrate in small groups more strongly than expected under proportional, size-dependent demographic sampling alone?",
+  "risk_sets": "Use exactly the primary event-bearing island-year risk sets from PALMER_COLONY_EXTINCTION_HAZARD_V1 after its minimum-size and nonzero-SD rules.",
+  "neutral_model": {
+    "family": "proportional independent Poisson resampling",
+    "prior_counts": "n_i = breeding pairs in at-risk colony i at t-1",
+    "next_total": "M = sum of observed t counts over those same at-risk colony codes; entrants or previously-zero colony codes are excluded from M",
+    "expected_count": "lambda_i = M * n_i / sum_j n_j",
+    "zero_probability": "q_i = exp(-lambda_i)",
+    "biological_meaning": "All groups have the same expected per-capita multiplier; finite demographic sampling alone creates a size-dependent chance of zero."
+  },
+  "conditioning": {
+    "observed_event_count": "Within each risk set condition on exactly K, the observed number of durable-extinction events.",
+    "subset_probability": "For every K-subset S of the risk set, weight S by product(q_i for i in S) * product(1-q_j for j not in S), then normalize across all K-subsets.",
+    "enumeration": "Enumerate all K-subsets exactly; fail closed if a risk set would require more than 100000 subsets."
+  },
+  "statistic": {
+    "same_as_primary": "Within-risk-set standardized log1p prior-size event-minus-non-event contrast, averaged with equal weight across risk sets.",
+    "expected_if_excess_small_group_vulnerability": "Observed contrast is more negative than draws from the size-conditioned neutral null."
+  },
+  "inference": {
+    "joint_draws": 100000,
+    "seed": 20260929,
+    "p_value": "one-sided lower-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05
+  },
+  "sensitivities": {
+    "gamma_poisson_cv10": "Replace q_i by (1 + CV^2 * lambda_i)^(-1/CV^2) with CV=0.10.",
+    "gamma_poisson_cv20": "Same with CV=0.20.",
+    "decline_only_binomial": "For risk sets with M <= sum n_i, use equal per-pair retention s=M/sum n_i and q_i=(1-s)^n_i; condition on K as above."
+  },
+  "decision_rule": {
+    "mechanism_gate_pass": "Observed contrast < neutral mean and one-sided p <= 0.05 under the primary Poisson null.",
+    "strong": "Primary gate passes and the sign of observed-minus-null contrast remains negative under CV10, CV20 and decline-only binomial sensitivities.",
+    "interpretation_if_fail": "The exchangeable-null result is compatible with the mechanical zero-risk of small groups and cannot be used as evidence for social facilitation, predation vulnerability or an Allee-like mechanism."
+  },
+  "interpretation_boundaries": [
+    "Passing this gate supports supra-proportional small-group vulnerability, not a specific predator or social mechanism.",
+    "The null is a demographic-sampling benchmark, not a full mechanistic population model.",
+    "Do not select a different zero-probability family after seeing which one yields significance.",
+    "Report both the exchangeable-null result and this size-conditioned gate regardless of outcome."
+  ]
+}
