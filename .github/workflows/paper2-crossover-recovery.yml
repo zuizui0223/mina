@@ -1,0 +1,33 @@
+name: paper2-crossover-recovery
+
+on:
+  push:
+    branches: [analysis/paper2-crossover-recovery-v1]
+    paths:
+      - "scripts/build_paper2_coupling_frame.py"
+      - "scripts/simulate_paper2_crossover_recovery.py"
+      - "tests/test_paper2_crossover_recovery.py"
+      - "contracts/PAPER2_COUPLING_FRAME_AUDIT_V1.json"
+      - "contracts/PAPER2_CROSSOVER_RECOVERY_V1.json"
+      - ".github/workflows/paper2-crossover-recovery.yml"
+  pull_request:
+    paths:
+      - "scripts/build_paper2_coupling_frame.py"
+      - "scripts/simulate_paper2_crossover_recovery.py"
+      - "tests/test_paper2_crossover_recovery.py"
+      - "contracts/PAPER2_COUPLING_FRAME_AUDIT_V1.json"
+      - "contracts/PAPER2_CROSSOVER_RECOVERY_V1.json"
+      - ".github/workflows/paper2-crossover-recovery.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas
+      - name: Run crossover unit tests
+        run: python -m unittest tests.test_paper2_crossover_recovery -v
