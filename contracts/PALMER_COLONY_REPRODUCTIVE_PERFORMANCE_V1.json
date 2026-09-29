@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-reproductive-performance-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_new_size_productivity_endpoint_execution",
+  "provenance_note": "The Palmer adult census and durable-extinction labels are already known. A prior validation branch fetched the chick-production dataset but did not produce a successful result for this size-productivity or pre-extinction-performance endpoint. This contract freezes the new endpoint, estimability gates, null and decision rules before executing them.",
+  "source": {
+    "chick_dataset_id": "AdeliePenguinAdultandChickCounts",
+    "title": "Adelie penguin colony-specific chick production, 1991, present.",
+    "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "columns": [
+      "study_name",
+      "time",
+      "island_name",
+      "colony_code",
+      "num_breeding_pairs",
+      "num_chicks",
+      "census_time"
+    ],
+    "adult_extinction_dataset": "Palmer LTER AdeliePenguinCensus",
+    "adult_extinction_doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "focal_islands": ["CHR", "COR", "HUM", "LIT", "TOR"]
+  },
+  "biological_question": "Before invoking social facilitation or predation, is reproductive output itself density dependent within Palmer Adelie breeding colonies?",
+  "hypotheses": {
+    "H1_size_productivity": "Within the same island and breeding season, larger colony codes have higher chicks per breeding pair than smaller colony codes.",
+    "H2_within_colony": "The size-productivity relationship remains positive after controlling stable colony identity and shared island-season conditions.",
+    "H3_pre_extinction": "Colony codes that will undergo durable extinction have lower reproductive output in the immediately preceding breeding season than contemporaneous survivors."
+  },
+  "season_definition": "For January chick censuses, season_start_year = calendar year(time) - 1, matching the preceding November breeding season.",
+  "row_eligibility": {
+    "adult_pairs": "finite integer-valued num_breeding_pairs > 0",
+    "chicks": "finite integer-valued num_chicks >= 0",
+    "biological_cap": "require num_chicks <= 2 * num_breeding_pairs; fail closed if violated",
+    "duplicate_rule": "fail closed if more than one usable row exists for island, colony_code and season_start_year",
+    "no_imputation": true,
+    "no_colony_code_merging": true
+  },
+  "primary_H1": {
+    "analysis_unit": "island-season",
+    "group_eligibility": "at least 3 usable colony codes, positive total chicks, and non-zero SD of log1p breeding-pair count",
+    "predictor": "within-island-season z-score of log1p(num_breeding_pairs)",
+    "response": "chicks_per_pair = num_chicks / num_breeding_pairs",
+    "group_statistic": "OLS slope of chicks_per_pair on standardized log1p pair count with an intercept; because predictor is centered, slope equals sum(z*y)/sum(z^2)",
+    "paper_statistic": "equal-weight mean group slope across all eligible island-seasons",
+    "expected_direction": "positive",
+    "estimability_gate": "at least 15 eligible island-seasons and at least 60 usable colony-season rows"
+  },
+  "primary_null": {
+    "name": "equal-per-pair chick-slot productivity",
+    "conditioning": "Within each eligible island-season, condition on observed breeding-pair counts and observed total chick count.",
+    "capacity": "Each breeding pair contributes two potential chick slots, so colony capacity is 2 * num_breeding_pairs.",
+    "simulation": "Allocate the observed total chicks across colony capacities using a multivariate hypergeometric draw. This preserves the biological 0-2 chicks-per-pair cap and makes expected chick production proportional to breeding-pair abundance.",
+    "joint_simulations": 100000,
+    "seed": 20260930,
+    "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05
+  },
+  "secondary_H2_two_way_fixed_effect": {
+    "eligibility": "colonies with at least 5 usable seasons; island-seasons must contain at least 2 retained colonies",
+    "model": "OLS of chicks_per_pair on log1p pair count with colony fixed effects and island-season fixed effects",
+    "target": "coefficient on log1p pair count",
+    "expected_direction": "positive",
+    "null": "Use the same multivariate-hypergeometric chick allocations and refit the identical fixed-effect model for each joint simulation.",
+    "role": "tests whether the association is not solely due to stable colony quality or shared annual conditions"
+  },
+  "secondary_H3_pre_extinction": {
+    "event_labels": "Use durable-extinction transitions from PALMER_COLONY_EXTINCTION_HAZARD_V1 with its primary three-zero rule and right-censoring.",
+    "join": "For transition start_year t, join chick-production season_start_year t by island and colony_code.",
+    "risk_set_eligibility": "at least one future durable-extinction colony and one non-event survivor with usable chick data in the same island-start_year risk set.",
+    "group_statistic": "mean chicks_per_pair among future-extinction colonies minus mean among non-event colonies",
+    "paper_statistic": "equal-weight mean group contrast across informative risk sets",
+    "expected_direction": "negative",
+    "estimability_gate": "at least 5 informative risk sets and at least 8 future-extinction colonies with chick data",
+    "null": "Within each informative risk set, condition on joined colony pair counts and total chicks and allocate chicks by the same multivariate-hypergeometric equal-per-pair null; keep extinction labels fixed.",
+    "p_value": "one-sided lower-tail Monte Carlo p with +1 correction"
+  },
+  "decision_rule": {
+    "H1_support": "primary mean slope > 0 and upper-tail p <= 0.05",
+    "strong_density_dependence": "H1 supported and H2 coefficient > 0 with upper-tail p <= 0.05",
+    "pre_extinction_performance_penalty": "H3 contrast < 0 and lower-tail p <= 0.05",
+    "mechanistic_interpretation": "Only strong_density_dependence permits saying the data contain an Allee-like reproductive-performance signature. Even then, do not identify social facilitation or skua predation uniquely. H3 adds temporal coherence if supported."
+  },
+  "interpretation_boundaries": [
+    "A positive size-productivity relationship is consistent with density-dependent reproductive performance but can also arise from transient habitat or predator conditions correlated with colony size.",
+    "Colony fixed effects reduce confounding by stable patch quality but do not prove causality.",
+    "Do not interpret failure of H1 as evidence that colony size has no ecological relevance; it only rejects this reproductive-output pathway.",
+    "Do not use raw chicks-per-pair asymptotic standard errors as the primary inference; the hypergeometric null is the inferential gate.",
+    "Do not change the chick-slot capacity, eligibility thresholds, tail direction or event definition after the outcomes are opened."
+  ]
+}
