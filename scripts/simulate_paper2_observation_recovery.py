@@ -505,6 +505,7 @@ def run_observation_audit(
     *,
     replicates:int=200,
     seed_offset:int=3000000,
+    enforce_frozen_support:bool=True,
 )->dict:
     """Rebuild metadata and run synthetic observation recovery."""
     metadata=build_frozen_observation_metadata(obs)
@@ -523,6 +524,7 @@ def run_observation_audit(
         "decision":{
             "observation_layer_recoverable":bool(recovery["gate"]["passes"]),
             "no_real_demographic_magnitudes_opened":True,
+            "frozen_support_enforced":bool(enforce_frozen_support),
         },
     }
 
