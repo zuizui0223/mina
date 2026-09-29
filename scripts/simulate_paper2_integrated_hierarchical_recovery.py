@@ -41,6 +41,30 @@ def group_center_traits(frame: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+
+def _solve_constrained_system(
+    A:np.ndarray,
+    y:np.ndarray,
+    C:np.ndarray,
+)->np.ndarray:
+    """Solve constrained least squares; use exact solve with SVD fallback."""
+    A=np.asarray(A,dtype=float)
+    y=np.asarray(y,dtype=float)
+    C=np.asarray(C,dtype=float)
+    ata=A.T@A
+    aty=A.T@y
+    k=C.shape[0]
+    kkt=np.block([
+        [ata,C.T],
+        [C,np.zeros((k,k),dtype=float)],
+    ])
+    rhs=np.concatenate([aty,np.zeros(k,dtype=float)])
+    try:
+        sol=np.linalg.solve(kkt,rhs)
+    except np.linalg.LinAlgError:
+        sol=np.linalg.lstsq(kkt,rhs,rcond=None)[0]
+    return sol[:A.shape[1]]
+
 def profile_process_sd(
     residual,
     duration,
@@ -61,10 +85,8 @@ def profile_process_sd(
     if np.any(d<=0) or np.any(v<0) or np.any(~np.isfinite(r+d+v)):
         raise ValueError("invalid process-profile inputs")
     grid=np.geomspace(float(min_sd),float(max_sd),int(grid_size))
-    nll=[]
-    for sd in grid:
-        var=d*sd*sd+v
-        nll.append(0.5*float(np.sum(np.log(var)+(r*r)/var)))
+    var=d[None,:]*(grid[:,None]**2)+v[None,:]
+    nll=0.5*np.sum(np.log(var)+(r[None,:]**2)/var,axis=1)
     return float(grid[int(np.argmin(nll))])
 
 
@@ -314,49 +336,46 @@ def _interval_variance(interval:dict,process_sd:float)->float:
     )
 
 
+
 def _solve_forcing_interval(
     intervals:list[dict],
     frame:pd.DataFrame,
     lam:np.ndarray,
     process_sd:float,
 )->tuple[np.ndarray,dict[str,np.ndarray]]:
+    """Solve independent forcing-group WLS blocks with identical constraints."""
     n=len(frame)
-    groups=sorted(frame["forcing_group"].astype(str).unique())
-    gindex={g:j for j,g in enumerate(groups)}
+    labels=frame["forcing_group"].astype(str).to_numpy()
+    groups=sorted(set(labels.tolist()))
     T=len(TRANSITION_YEARS)
-    cols=n+len(groups)*T
-    A=np.zeros((len(intervals),cols),dtype=float)
-    y=np.zeros(len(intervals),dtype=float)
-    for r,it in enumerate(intervals):
-        i=int(it["site"])
-        g=str(it["group"])
-        var=max(_interval_variance(it,process_sd),1e-12)
-        w=1.0/np.sqrt(var)
-        A[r,i]=float(it["duration"])*w
-        start=n+gindex[g]*T
-        for year in range(int(it["first"]),int(it["last"])):
-            A[r,start+(year-START_YEAR)]=float(lam[i])*w
-        y[r]=float(it["delta"])*w
+    mu=np.zeros(n,dtype=float)
+    forcing={}
 
-    C=np.zeros((len(groups),cols),dtype=float)
-    for gi,g in enumerate(groups):
-        start=n+gi*T
-        C[gi,start:start+T]=1.0/T
-    ata=A.T@A
-    aty=A.T@y
-    kkt=np.block([
-        [ata,C.T],
-        [C,np.zeros((len(groups),len(groups)),dtype=float)],
-    ])
-    rhs=np.concatenate([aty,np.zeros(len(groups),dtype=float)])
-    sol=np.linalg.lstsq(kkt,rhs,rcond=None)[0][:cols]
-    mu=sol[:n]
-    forcing={
-        g:sol[n+gindex[g]*T:n+(gindex[g]+1)*T].copy()
-        for g in groups
-    }
+    for g in groups:
+        site_idx=np.flatnonzero(labels==g)
+        global_to_local={int(site):j for j,site in enumerate(site_idx)}
+        local_intervals=[it for it in intervals if str(it["group"])==g]
+        cols=len(site_idx)+T
+        A=np.zeros((len(local_intervals),cols),dtype=float)
+        y=np.zeros(len(local_intervals),dtype=float)
+        for r,it in enumerate(local_intervals):
+            global_i=int(it["site"])
+            local_i=global_to_local[global_i]
+            var=max(_interval_variance(it,process_sd),1e-12)
+            w=1.0/np.sqrt(var)
+            A[r,local_i]=float(it["duration"])*w
+            start_f=len(site_idx)
+            for year in range(int(it["first"]),int(it["last"])):
+                A[r,start_f+(year-START_YEAR)]=float(lam[global_i])*w
+            y[r]=float(it["delta"])*w
+
+        C=np.zeros((1,cols),dtype=float)
+        C[0,len(site_idx):]=1.0/T
+        sol=_solve_constrained_system(A,y,C)
+        mu[site_idx]=sol[:len(site_idx)]
+        forcing[g]=sol[len(site_idx):].copy()
+
     return mu,forcing
-
 
 def _forcing_sum(forcing:dict[str,np.ndarray],it:dict)->float:
     f=forcing[str(it["group"])]
@@ -402,14 +421,7 @@ def _solve_site_gamma_interval(
     for gi,g in enumerate(groups):
         idx=np.flatnonzero(labels==g)
         C[gi,n+p+idx]=1.0/len(idx)
-    ata=A.T@A
-    aty=A.T@y
-    kkt=np.block([
-        [ata,C.T],
-        [C,np.zeros((len(groups),len(groups)),dtype=float)],
-    ])
-    rhs=np.concatenate([aty,np.zeros(len(groups),dtype=float)])
-    sol=np.linalg.lstsq(kkt,rhs,rcond=None)[0][:cols]
+    sol=_solve_constrained_system(A,y,C)
     mu=sol[:n]
     gamma=sol[n:n+p]
     b=sol[n+p:]
