@@ -2,7 +2,10 @@
 """Synthetic latent-factor schedule recovery for Paper 2 Gate 2E-A."""
 from __future__ import annotations
 
+import argparse
+import json
 import math
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -397,6 +400,248 @@ def build_scale_frame(
     ]
     return frame[keep].sort_values("unit_id").reset_index(drop=True)
 
+
+def _quantile(values: list[float], q: float) -> float:
+    return float(np.quantile(np.asarray(values, dtype=float), q))
+
+
+def _run_scenario(
+    frame: pd.DataFrame,
+    *,
+    gamma_ah: float,
+    replicates: int,
+    seed_offset: int,
+) -> dict:
+    gamma_hats: list[float] = []
+    lambda_corrs: list[float] = []
+    group_corrs: dict[str, list[float]] = {
+        group: []
+        for group in sorted(frame["forcing_group"].astype(str).unique())
+    }
+
+    for replicate in range(replicates):
+        sim = simulate_latent_schedule(
+            frame,
+            gamma_ah=gamma_ah,
+            seed=seed_offset + replicate,
+            forcing_sd=0.08,
+            loading_sd=0.15,
+            process_sd=0.04,
+            drift_mean=-0.01,
+            drift_sd=0.01,
+        )
+        fit = fit_unknown_factor(
+            frame,
+            sim["intervals"],
+            iterations=8,
+        )
+        gamma_hats.append(float(fit["gamma_ah"]))
+        if fit["lambda_correlation"] is not None:
+            lambda_corrs.append(float(fit["lambda_correlation"]))
+        for group, value in fit["forcing_correlation"].items():
+            group_corrs[group].append(float(value))
+
+    return {
+        "gamma_hats": gamma_hats,
+        "lambda_correlations": lambda_corrs,
+        "forcing_correlations": group_corrs,
+    }
+
+
+def _scenario_summary(raw: dict) -> dict:
+    gamma = raw["gamma_hats"]
+    lambdas = raw["lambda_correlations"]
+    forcing = {
+        group: {
+            "median_corr": float(np.median(values)),
+            "q05_corr": _quantile(values, 0.05),
+            "q95_corr": _quantile(values, 0.95),
+        }
+        for group, values in sorted(raw["forcing_correlations"].items())
+    }
+    return {
+        "median_gamma_ah": float(np.median(gamma)),
+        "mean_gamma_ah": float(np.mean(gamma)),
+        "q05_gamma_ah": _quantile(gamma, 0.05),
+        "q95_gamma_ah": _quantile(gamma, 0.95),
+        "negative_fraction": float(np.mean(np.asarray(gamma) < 0.0)),
+        "median_lambda_correlation": (
+            float(np.median(lambdas)) if lambdas else None
+        ),
+        "forcing_groups": forcing,
+    }
+
+
+def evaluate_scale(
+    frame: pd.DataFrame,
+    *,
+    replicates: int,
+    seed_offset: int,
+) -> dict:
+    """Run fixed null and crossover recovery scenarios at one forcing scale."""
+    if replicates < 2:
+        raise ValueError("replicates must be >=2")
+
+    crossover_raw = _run_scenario(
+        frame,
+        gamma_ah=-0.35,
+        replicates=replicates,
+        seed_offset=seed_offset,
+    )
+    null_raw = _run_scenario(
+        frame,
+        gamma_ah=0.0,
+        replicates=replicates,
+        seed_offset=seed_offset + 100000,
+    )
+    crossover = _scenario_summary(crossover_raw)
+    null = _scenario_summary(null_raw)
+
+    groups = sorted(frame["forcing_group"].astype(str).unique())
+    forcing_groups = {}
+    for group in groups:
+        c = crossover["forcing_groups"][group]
+        n = null["forcing_groups"][group]
+        forcing_groups[group] = {
+            "median_corr": min(c["median_corr"], n["median_corr"]),
+            "q05_corr": min(c["q05_corr"], n["q05_corr"]),
+            "crossover_median_corr": c["median_corr"],
+            "null_median_corr": n["median_corr"],
+        }
+
+    summary = {
+        "n_units": int(len(frame)),
+        "n_groups": int(frame["forcing_group"].nunique()),
+        "forcing_groups": forcing_groups,
+        "crossover": {
+            k: v for k, v in crossover.items()
+            if k != "forcing_groups"
+        },
+        "null": {
+            k: v for k, v in null.items()
+            if k != "forcing_groups"
+        },
+        "replicates": int(replicates),
+    }
+    summary["gate"] = evaluate_recovery_gate(
+        summary,
+        crossover_truth=-0.35,
+    )
+    return summary
+
+
+def run_recovery_audit(
+    forcing_result: dict,
+    forcing_units: pd.DataFrame,
+    breeding_options: pd.DataFrame,
+    *,
+    replicates: int,
+) -> dict:
+    species_results = {}
+    selected = {}
+
+    for index, species_id in enumerate(("ADPE", "CHPE", "GEPE")):
+        regional_scale = str(
+            forcing_result["decision"]["modeling_eligibility_by_species"][
+                species_id
+            ]["level"]
+        )
+        regional_frame = build_scale_frame(
+            forcing_result,
+            forcing_units,
+            breeding_options,
+            species_id,
+            regional_scale,
+        )
+        specieswide_frame = build_scale_frame(
+            forcing_result,
+            forcing_units,
+            breeding_options,
+            species_id,
+            "species_wide",
+        )
+
+        regional = evaluate_scale(
+            regional_frame,
+            replicates=replicates,
+            seed_offset=1000000 + index * 200000,
+        )
+        specieswide = evaluate_scale(
+            specieswide_frame,
+            replicates=replicates,
+            seed_offset=2000000 + index * 200000,
+        )
+        chosen = select_recovered_scale(
+            regional_scale,
+            regional["gate"],
+            specieswide["gate"],
+        )
+        selected[species_id] = chosen
+        species_results[species_id] = {
+            "gate2c_regional_scale": regional_scale,
+            "regional": regional,
+            "species_wide": specieswide,
+            "selected_recovered_scale": chosen,
+        }
+
+    return {
+        "schema_version": 1,
+        "audit_id": "mina-paper2-latent-factor-recovery-v1",
+        "primary_window": [START_YEAR, END_YEAR],
+        "replicates_per_scale_scenario": int(replicates),
+        "simulation": {
+            "forcing_sd": 0.08,
+            "loading_sd": 0.15,
+            "process_sd": 0.04,
+            "drift_mean": -0.01,
+            "drift_sd": 0.01,
+            "crossover_gamma_ah": -0.35,
+            "null_gamma_ah": 0.0,
+            "als_iterations": 8,
+        },
+        "species": species_results,
+        "decision": {
+            "selected_recovered_scale_by_species": selected,
+            "all_species_have_recovered_scale": bool(
+                all(value is not None for value in selected.values())
+            ),
+            "no_real_count_magnitudes_opened": True,
+            "observation_layer_validated": False,
+        },
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--forcing-json", required=True, type=Path)
+    parser.add_argument("--forcing-csv", required=True, type=Path)
+    parser.add_argument("--breeding-csv", required=True, type=Path)
+    parser.add_argument("--out-json", required=True, type=Path)
+    parser.add_argument("--replicates", type=int, default=100)
+    args = parser.parse_args()
+
+    forcing_result = json.loads(
+        args.forcing_json.read_text(encoding="utf-8")
+    )
+    forcing_units = pd.read_csv(args.forcing_csv)
+    breeding_options = pd.read_csv(args.breeding_csv)
+
+    result = run_recovery_audit(
+        forcing_result,
+        forcing_units,
+        breeding_options,
+        replicates=args.replicates,
+    )
+    args.out_json.parent.mkdir(parents=True, exist_ok=True)
+    args.out_json.write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
+    if not result["decision"]["all_species_have_recovered_scale"]:
+        raise SystemExit("latent-factor recovery failed for one or more species")
+    return 0
+
 def evaluate_recovery_gate(
     summary: dict,
     *,
@@ -555,3 +800,7 @@ def select_recovered_scale(
     if specieswide_result.get("passes"):
         return "species_wide"
     return None
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
