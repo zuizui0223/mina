@@ -4,57 +4,58 @@
   "validated_date": "2026-09-29",
   "contract_id": "mina-paper2-terrain-main-recovery-v1",
   "execution": {
-    "workflow_run_id": 36586352284,
-    "head_sha": "bff832e86ce8ecd860da6ccdefa376699b7ad982",
-    "artifact_id": 11042449383,
-    "artifact_digest": "sha256:daf78d3d4d18268fed83de0ddd9fd80f29b0208fb78bcc018127c4300f3c330b",
+    "workflow_run_id": 36589628345,
+    "head_sha": "1d045e7f392b8f6e5c891094ee5ed80e16727255",
+    "artifact_id": 11042944019,
+    "artifact_digest": "sha256:8a37ebd64274464d6e3dedbc7ebec17aa6a25706a197faed38855576fc145df1",
     "conclusion": "success",
-    "replicates_per_scenario": 100
+    "replicates_per_scenario": 100,
+    "terrain_zscore_ddof": 0
   },
-  "terrain_trait": "z(log1p(elevation_relief_p90_p10_m_2000m)) within species, centered within frozen spatial block in the loading model",
+  "terrain_trait": "z(log1p(elevation_relief_p90_p10_m_2000m)) within species using population SD (ddof=0), centered within frozen spatial block in the loading model",
   "species": {
     "ADPE": {
       "null": {
-        "median_gamma_R": 0.0166339330516021,
-        "q05": -0.21496412398402198,
-        "q95": 0.21594203590037683
+        "median_gamma_R": 0.01642982798375583,
+        "q05": -0.2123264274769033,
+        "q95": 0.21329234001957464
       },
       "terrain_effect": {
         "truth_gamma_R": -0.25,
-        "median_gamma_R": -0.2108352064166914,
-        "q05": -0.4123525376975513,
-        "q95": -0.08927473334450646,
+        "median_gamma_R": -0.21138173088536838,
+        "q05": -0.4100310862003629,
+        "q95": -0.09074118722538889,
         "negative_fraction": 0.98
       },
       "passes": true
     },
     "CHPE": {
       "null": {
-        "median_gamma_R": -0.011405551518656153,
-        "q05": -0.11980843301558283,
-        "q95": 0.0908931927188298
+        "median_gamma_R": -0.011236571043428258,
+        "q05": -0.11803339513913723,
+        "q95": 0.08954655245548575
       },
       "terrain_effect": {
         "truth_gamma_R": -0.25,
-        "median_gamma_R": -0.25085241156234384,
-        "q05": -0.35110257448259236,
-        "q95": -0.14718870407839232,
-        "negative_fraction": 1.0
+        "median_gamma_R": -0.250839781180984,
+        "q05": -0.3487725555556202,
+        "q95": -0.14911215481974693,
+        "negative_fraction": 1
       },
       "passes": true
     },
     "GEPE": {
       "null": {
-        "median_gamma_R": -0.008959925165146371,
-        "q05": -0.12786963660404982,
-        "q95": 0.10577655345028471
+        "median_gamma_R": -0.008804088491894381,
+        "q05": -0.12564564718328355,
+        "q95": 0.10393682087508856
       },
       "terrain_effect": {
         "truth_gamma_R": -0.25,
-        "median_gamma_R": -0.2508668085386673,
-        "q05": -0.35524910456473363,
-        "q95": -0.12020092228721226,
-        "negative_fraction": 1.0
+        "median_gamma_R": -0.2507937982777374,
+        "q05": -0.3539584268241948,
+        "q95": -0.12252561922905225,
+        "negative_fraction": 1
       },
       "passes": true
     }
@@ -65,9 +66,10 @@
     "real_gamma_R_may_be_opened": true,
     "real_gamma_R_computed_in_this_gate": false
   },
+  "provenance_correction": "Supersedes the earlier receipt that referenced run 36586352284. That run used ddof=1 for terrain standardization. The corrected run 36589628345 was executed after aligning terrain standardization to the frozen Paper 2 ddof=0 transform, before any real gamma_R was computed.",
   "interpretation": [
-    "The frozen one-trait V3 terrain loading estimator recovers a nonzero gamma_R of -0.25 with acceptable bias and sign in all three Pygoscelis species.",
-    "Null recovery remains centered near zero with the frozen 5th-95th interval spanning zero in all three species.",
-    "This result validates estimability only and contains no real terrain coefficient."
+    "The corrected frozen one-trait V3 terrain loading estimator recovers gamma_R=-0.25 with acceptable bias and sign in all three Pygoscelis species.",
+    "Null recovery remains centered near zero with the 5th-95th interval spanning zero in all three species.",
+    "This gate validates estimability only; no real terrain coefficient was computed."
   ]
 }
