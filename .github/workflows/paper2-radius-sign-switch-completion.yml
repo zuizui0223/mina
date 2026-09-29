@@ -5,6 +5,9 @@ on:
     branches: [analysis/paper2-radius-switch-completion]
     paths:
       - ".github/workflows/paper2-radius-sign-switch-completion.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/paper2-radius-sign-switch-completion.yml"
   workflow_dispatch:
 
 jobs:
