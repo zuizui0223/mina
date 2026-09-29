@@ -2,9 +2,9 @@
   "schema_version": 1,
   "contract_id": "mina-paper2-real-outcome-execution-v1",
   "date": "2026-09-29",
-  "status": "LOCKED_PENDING_OBSERVATION_SOURCE_RECOVERY",
+  "status": "LOCKED_PENDING_CROSS_SPECIES_GENERALITY_V4",
   "paper_lane": "Paper 2",
-  "unlock_condition": "Real count magnitudes remain locked. Unlock requires a pre-outcome hierarchical integrated-recovery receipt (PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json) with hierarchical core recovery passing under the frozen mandatory species-wide gate, plus completion of the frozen observation-source recovery: exclude-unknown must pass for ADPE/CHPE/GEPE; ground-only must pass for its outcome-blind testable species CHPE and GEPE, while ADPE is reported coverage-limited (14/40 units) and is nonblocking.",
+  "unlock_condition": "Real count magnitudes remain locked. Unlock requires: (1) spatially adjusted V3 core recovery PASS; (2) nonzero H-main V5 recovery PASS; (3) V4 cross-species generality recovery PASS; and (4) V4 paper-level observation-source robustness PASS. Adelie species-specific exclude-unknown remains a disclosed limitation and cannot support universal wording even if the V4 paper-level statistic passes.",
   "sources": {
     "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
     "time_field": "season",
@@ -14,8 +14,9 @@
     ],
     "bridged_units": 107,
     "predictors": "contracts/PAPER2_OUTCOME_BLIND_PREDICTOR_SET_V1.json",
-    "forcing_scale": "results/PAPER2_LATENT_FACTOR_RECOVERY_RESULT_V1.json",
-    "observation_structure": "results/PAPER2_OBSERVATION_RECOVERY_RESULT_V1.json"
+    "forcing_scale": "results/PAPER2_SPATIAL_ADJUSTED_V3_RESULT_V1.json",
+    "observation_structure": "results/PAPER2_OBSERVATION_RECOVERY_RESULT_V1.json",
+    "observation_source_support": "results/PAPER2_V2_SENSITIVITY_SUPPORT_RESULT_V1.json"
   },
   "observation_pipeline": {
     "analysis_scale": "log1p(nonnegative nest count)",
@@ -27,8 +28,8 @@
     "date_matched_method_sensitivity": "secondary: recompute the image-direct offset from exact-date pairs and <=14-day pairs separately when estimable; do not replace the primary same-season offset based on which is more favorable"
   },
   "primary_process": {
-    "status": "HIERARCHICAL_V2_CORE_PASSED",
-    "selected_forcing_scale": {
+    "status": "SPATIALLY_ADJUSTED_V3_CORE_PASSED",
+    "forcing_scale": {
       "ADPE": "species_wide",
       "CHPE": "species_wide",
       "GEPE": "species_wide"
@@ -38,83 +39,82 @@
       "CHPE": 34,
       "GEPE": 29
     },
-    "estimator": "hierarchical interval-marginal linear-Gaussian loading model from PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_V2",
-    "loading_model": "lambda_i = 1 + centered site-trait effect(s) + residual b_i; trait effects are fitted jointly with shared forcing rather than post-hoc on free lambda estimates",
+    "estimator": "species-specific V3 hierarchical interval-marginal model",
+    "loading_model": "lambda_i = 1 + alpha_spatial_block[i] + gamma_A*A_within_block + gamma_H*H_within_block + gamma_AH*(A:H)_within_block + residual b_i",
+    "trait_adjustment_blocks": {
+      "ADPE": "CCAMLR unit",
+      "CHPE": "APBP region",
+      "GEPE": "APBP region"
+    },
+    "singleton_rule": "Singleton geographic blocks contribute a block intercept but zero centered trait leverage.",
     "interval_variance": "duration * process_sd^2 + endpoint observation variances",
     "identification": [
-      "mean annual forcing = 0 within species",
-      "mean site loading = 1 within species"
+      "one species-wide forcing has mean zero over annual transitions",
+      "site-trait columns are centered within frozen spatial adjustment blocks",
+      "residual b has mean zero within each spatial block",
+      "site-count-weighted block intercept mean is zero, implying species-wide mean lambda = 1"
     ],
-    "note": "Regional ADPE and CHPE forcing configurations failed the frozen integrated recovery criteria and are not used for real outcomes."
+    "recovery_receipt": "results/PAPER2_SPATIAL_ADJUSTED_V3_RESULT_V1.json",
+    "note": "Regional ADPE and CHPE latent forcing configurations are not used in real outcomes because they failed frozen integrated recovery; geography is retained only as an outcome-blind loading-adjustment block."
   },
   "site_trait_models": {
-    "standardization": "A, H and R use the already-frozen transforms and are standardized within each species analysis frame.",
-    "main_effect_order": [
-      "hierarchical loading fit with A only",
-      "hierarchical loading fit with H only",
-      "hierarchical loading fit with R only"
-    ],
-    "crossover": "hierarchical loading fit with A + H + A:H",
+    "standardization": "A and H use the frozen 2 km transforms; trait effects are centered within the frozen V3 spatial adjustment block for each species.",
+    "primary_crossover": "V3 loading fit with A + H + A:H",
     "crossover_definition": {
       "beta_AH": "must be < 0",
-      "low_area_H_slope": "beta_H - beta_AH; crossover pattern requires >= 0 at A=-1 SD",
-      "high_area_H_slope": "beta_H + beta_AH; crossover pattern requires < 0 at A=+1 SD",
-      "wording_rule": "Do not call the result an option-fragmentation crossover unless all three directional conditions hold."
+      "low_area_H_slope": "gamma_H - gamma_AH; crossover label requires >= 0 at A=-1 SD",
+      "high_area_H_slope": "gamma_H + gamma_AH; crossover label requires < 0 at A=+1 SD",
+      "wording_rule": "Use 'option-fragmentation crossover' only when all three directional conditions hold. Otherwise describe an area-dependent heterogeneity effect."
     },
-    "secondary_combined": "hierarchical loading fit with A + H + R + A:H; secondary synthesis only",
-    "mean_growth_secondary": "mu_i is analyzed against the same staged trait models to distinguish response filtering from ordinary habitat-quality associations.",
-    "hierarchical_engine_alignment": {
-      "A_main": "Use the same hierarchical loading engine with loading model lambda_i = 1 + gamma_A * A_centered_within_forcing_group + b_i.",
-      "H_main": "Use the same hierarchical loading engine with loading model lambda_i = 1 + gamma_H * H_centered_within_forcing_group + b_i.",
-      "R_main": "Use the same hierarchical loading engine with loading model lambda_i = 1 + gamma_R * R_centered_within_forcing_group + b_i. R is not inferred by regressing a separately estimated lambda_hat after fitting.",
-      "crossover": "Use the V2 hierarchical loading model with forcing-group-centered A, H and A:H jointly plus residual b_i.",
-      "secondary_combined": "Only after the four staged fits, use one hierarchical loading engine with centered A, H, R and A:H jointly as a secondary synthesis.",
-      "reason": "This keeps real-outcome estimation aligned with the estimator that passed/fails pre-outcome recovery; no primary site-trait effect is estimated from noisy post-hoc lambda_hat."
-    }
+    "recovered_components": {
+      "gamma_A": "simple-buffering scenario recovered in V3",
+      "gamma_H": "nonzero H-main recovery passed in PAPER2_H_MAIN_RECOVERY_V5_RESULT_V1.json",
+      "gamma_AH": "crossover recovery passed in V3"
+    },
+    "terrain_R": "secondary only. Do not make a primary R or decoupling/local-instability claim without a separate nonzero R/process-variance recovery gate.",
+    "mean_growth_secondary": "mu/site-drift associations remain secondary and cannot replace a null lambda interaction."
   },
   "inference": {
-    "primary_crossover_statistic": "beta_AH from the dedicated crossover model",
+    "primary_paper_level_statistic": "median of species-specific gamma_AH across ADPE, CHPE and GEPE",
+    "species_specific_reporting": "Always report all three V3 gamma_AH estimates and their species-specific block-preserving permutation results; no favorable subset selection.",
     "directional_permutation": {
-      "permutations": 10000,
+      "permutations": 9999,
       "seed": 20260929,
-      "scheme": "permute lambda within the frozen forcing groups of each species; refit the identical crossover model; p = (1 + number beta_AH_perm <= beta_AH_observed)/(B+1)",
-      "reason": "tests the frozen site-trait association while preserving forcing-group structure"
+      "scheme": "Within each species and frozen V3 spatial block, permute the complete site-trait tuple (A,H,A:H) among site time series. Singleton blocks remain fixed. Refit the complete V3 model for each permutation, including species-wide forcing, site drift, process SD, block intercepts and residual loadings. Compute the cross-species median gamma_AH for each joint permutation.",
+      "p_value": "(1 + number of permuted cross-species median gamma_AH <= observed median gamma_AH)/(9999+1)"
     },
-    "effect_reporting": [
-      "beta_AH and its within-group permutation distribution",
-      "low-area and high-area H marginal slopes",
-      "A, H and R single-predictor coefficients",
-      "number of units and forcing groups",
-      "lambda distribution and fitted forcing summaries"
-    ],
-    "cross_species_rule": "Species-specific results remain primary. Generality is described from direction and effect-size concordance across the three species; no post-outcome species subset may be chosen."
+    "generality_rule": "The paper-level claim is a cross-species Pygoscelis tendency, not universality. At least two of three observed species-specific gamma_AH estimates must be negative. Universal wording is prohibited unless all species-specific estimates and robustness lanes independently support the same classification.",
+    "crossover_classification": "In each species, use the crossover label only if gamma_AH<0, gamma_H-gamma_AH>=0 and gamma_H+gamma_AH<0."
   },
   "mandatory_sensitivities": {
-    "forcing_scale": "Refit every species with one species-wide forcing using predictor-complete units ADPE=41, CHPE=34, GEPE=29. If the focal trait direction or crossover classification materially changes, report forcing-scale dependence.",
-    "exclude_unknown_vantage": "Outcome-blind support is ADPE=39, CHPE=29, GEPE=28; all are testable. Synthetic hierarchical recovery under the identical estimator and thresholds must pass all three species before real outcomes unlock.",
-    "ground_only": "Outcome-blind raw-ground support is ADPE=14, CHPE=25, GEPE=23. CHPE and GEPE are recovery-testable and must pass their synthetic hierarchical ground-only recovery. ADPE is coverage-limited and must be reported unavailable; do not broaden it to the full direct family and do not count unavailability as robustness failure.",
-    "observation_timing": "report exact-date and <=14-day image-offset sensitivity when estimable",
-    "shannon": "Tier 2 Shannon remains sensitivity-only as previously frozen",
-    "radii": "1 km and 5 km trait versions remain sensitivity-only; they cannot replace the 2 km primary scale",
-    "observation_source_support_receipt": "results/PAPER2_INTEGRATED_SENSITIVITY_SUPPORT_RESULT_V1.json"
+    "exclude_unknown_vantage": "Final species-wide V3 support: ADPE=40, CHPE=30, GEPE=28. Adelie species-specific V3 recovery is limited (86/100 negative crossover) and must be disclosed. Paper-level robustness is judged by the frozen V4 cross-species median statistic.",
+    "ground_only": "Final species-wide V3 support: ADPE=14 (coverage-limited, nonblocking), CHPE=26, GEPE=23. Paper-level partial robustness uses CHPE+GEPE only and must retain both species.",
+    "observation_timing": "Report exact-date and <=14-day image-offset sensitivity when estimable; do not replace primary same-season calibration based on favorability.",
+    "shannon": "Tier 2 Shannon remains sensitivity-only; it cannot replace frozen Tier 2 richness.",
+    "radii": "1 km and 5 km remain sensitivity-only; they cannot replace the 2 km primary traits.",
+    "source_robustness_receipt": "results/PAPER2_V4_SOURCE_GENERALITY_RESULT_V1.json once merged"
   },
   "process_variance_claim": {
-    "status": "blocked_pending PAPER2_PROCESS_VARIANCE_RECOVERY_V1",
-    "rule": "Only test/interpret decoupling-with-local-instability if the separate pre-outcome process-variance recovery gate passes. Otherwise omit/demote this claim without altering lambda/AxH inference."
+    "status": "BLOCKED",
+    "rule": "Process SD repeatedly reaches the profiling floor in pre-outcome recovery. Do not interpret local process variance, stability, or decoupling-with-instability in Paper 2 unless a separate recovery gate is designed and passed before outcomes."
   },
   "terminal_rules": [
-    "No new primary site trait, radius, year subset, geographic partition, transform or interaction may be introduced after counts are opened.",
-    "Do not change the retained forcing scale because the ecological coefficient is weak or opposite-signed.",
-    "Do not replace the shared image offset with species-specific offsets in the primary model.",
-    "A null or opposite A x H result is a valid falsification and does not trigger model searching.",
-    "The latent shared factor is not named as a specific climate mechanism without an independent environmental attribution analysis.",
-    "Results from superseded PR #65 are not consulted to alter this contract.",
-    "Do not relax Gate 2E-C v1 simulation truths or recovery thresholds to unlock real counts; estimator redesign must be validated against the same frozen stress test."
+    "No new primary site trait, radius, temporal subset, spatial block, transform, or interaction may be introduced after counts are opened.",
+    "Do not return to regional forcing after species-wide forcing was selected by recovery.",
+    "Do not broaden raw-ground-only to the full direct family.",
+    "Do not relax the frozen recovery thresholds because Adelie species-specific exclude-unknown is underpowered.",
+    "A null or opposite cross-species median gamma_AH is a valid falsification and does not trigger model searching.",
+    "All species-specific results remain reported even when the paper-level median is primary.",
+    "The latent species-wide factor is not named as a specific climate mechanism without an independent environmental attribution analysis.",
+    "Results from superseded empirical PR #65 are not consulted to alter this contract."
   ],
   "required_pre_outcome_gates": {
-    "integrated_v1": "FAILED and frozen at results/PAPER2_INTEGRATED_RECOVERY_RESULT_V1.json",
-    "integrated_v2": "required; one-stage/hierarchical process-observation estimator must pass without relaxing v1 simulation truths or recovery thresholds",
-    "observation_source_sensitivity": "required by contracts/PAPER2_INTEGRATED_SENSITIVITY_RECOVERY_V1.json before real outcomes",
-    "process_variance": "optional for count opening but required before any decoupling-with-local-instability claim"
+    "integrated_v1": "FAILED and frozen",
+    "integrated_v2": "PASSED only at species-wide forcing; retained as model-development history",
+    "spatial_v3": "PASSED and defines the final species-specific estimator",
+    "h_main_v5": "PASSED and validates nonzero gamma_H recovery",
+    "cross_species_v4": "PENDING; required before count opening",
+    "paper_level_source_robustness": "PASSED in V4 source-generality recovery, but counts remain locked until V4 generality itself passes",
+    "process_variance": "not required for count opening because that ecological claim is blocked"
   }
 }
