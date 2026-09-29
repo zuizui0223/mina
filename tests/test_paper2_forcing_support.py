@@ -1,6 +1,11 @@
 import unittest
 
-from scripts.audit_paper2_forcing_support import (\n    evaluate_group,\n    select_level,\n    summarize_forcing_support,\n    validate_frozen_cohort,\n)
+from scripts.audit_paper2_forcing_support import (
+    evaluate_group,
+    select_level,
+    summarize_forcing_support,
+    validate_frozen_cohort,
+)
 
 
 class EvaluateGroupTests(unittest.TestCase):
@@ -90,10 +95,6 @@ class SelectLevelTests(unittest.TestCase):
         self.assertIsNone(select_level(levels, units))
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class CohortAndAuditTests(unittest.TestCase):
     def test_frozen_cohort_drift_fails_closed(self):
         validate_frozen_cohort(152, 107)
@@ -106,26 +107,34 @@ class CohortAndAuditTests(unittest.TestCase):
         seasons = list(range(1980, 2026, 3))
         rows = []
         for i in range(5):
-            rows.append({
-                "unit_id": f"ADPE|u{i}",
-                "species_id": "ADPE",
-                "region": "A" if i < 4 else None,
-                "ccamlr_id": "48.1",
-                "seasons": seasons,
-            })
+            rows.append(
+                {
+                    "unit_id": f"ADPE|u{i}",
+                    "species_id": "ADPE",
+                    "region": "A" if i < 4 else None,
+                    "ccamlr_id": "48.1",
+                    "seasons": seasons,
+                }
+            )
         result = summarize_forcing_support(rows, 1980, 2025)
         self.assertEqual(result["species"]["ADPE"]["selected_level"], "ccamlr")
-        self.assertEqual(result["species"]["ADPE"]["levels"]["apbp_region"]["missing_label_units"], 1)
+        self.assertEqual(
+            result["species"]["ADPE"]["levels"]["apbp_region"]["missing_label_units"],
+            1,
+        )
 
     def test_support_summary_contains_no_demographic_count_magnitude(self):
         seasons = list(range(1980, 2026, 3))
-        rows = [{
-            "unit_id": f"GEPE|u{i}",
-            "species_id": "GEPE",
-            "region": "A",
-            "ccamlr_id": "48.1",
-            "seasons": seasons,
-        } for i in range(5)]
+        rows = [
+            {
+                "unit_id": f"GEPE|u{i}",
+                "species_id": "GEPE",
+                "region": "A",
+                "ccamlr_id": "48.1",
+                "seasons": seasons,
+            }
+            for i in range(5)
+        ]
         result = summarize_forcing_support(rows, 1980, 2025)
         rendered = repr(result).lower()
         self.assertNotIn("'count'", rendered)
@@ -133,13 +142,20 @@ class CohortAndAuditTests(unittest.TestCase):
 
     def test_selected_level_is_deterministic_from_support_metadata(self):
         seasons = list(range(1980, 2026, 3))
-        rows = [{
-            "unit_id": f"CHPE|u{i}",
-            "species_id": "CHPE",
-            "region": "A",
-            "ccamlr_id": "48.1",
-            "seasons": seasons,
-        } for i in range(5)]
+        rows = [
+            {
+                "unit_id": f"CHPE|u{i}",
+                "species_id": "CHPE",
+                "region": "A",
+                "ccamlr_id": "48.1",
+                "seasons": seasons,
+            }
+            for i in range(5)
+        ]
         first = summarize_forcing_support(rows, 1980, 2025)
         second = summarize_forcing_support(list(reversed(rows)), 1980, 2025)
         self.assertEqual(first, second)
+
+
+if __name__ == "__main__":
+    unittest.main()
