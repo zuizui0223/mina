@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-terrain-main-recovery-result-v1",
+  "validated_date": "2026-09-29",
+  "contract_id": "mina-paper2-terrain-main-recovery-v1",
+  "execution": {
+    "workflow_run_id": 36586352284,
+    "head_sha": "bff832e86ce8ecd860da6ccdefa376699b7ad982",
+    "artifact_id": 11042449383,
+    "artifact_digest": "sha256:daf78d3d4d18268fed83de0ddd9fd80f29b0208fb78bcc018127c4300f3c330b",
+    "conclusion": "success",
+    "replicates_per_scenario": 100
+  },
+  "terrain_trait": "z(log1p(elevation_relief_p90_p10_m_2000m)) within species, centered within frozen spatial block in the loading model",
+  "species": {
+    "ADPE": {
+      "null": {
+        "median_gamma_R": 0.0166339330516021,
+        "q05": -0.21496412398402198,
+        "q95": 0.21594203590037683
+      },
+      "terrain_effect": {
+        "truth_gamma_R": -0.25,
+        "median_gamma_R": -0.2108352064166914,
+        "q05": -0.4123525376975513,
+        "q95": -0.08927473334450646,
+        "negative_fraction": 0.98
+      },
+      "passes": true
+    },
+    "CHPE": {
+      "null": {
+        "median_gamma_R": -0.011405551518656153,
+        "q05": -0.11980843301558283,
+        "q95": 0.0908931927188298
+      },
+      "terrain_effect": {
+        "truth_gamma_R": -0.25,
+        "median_gamma_R": -0.25085241156234384,
+        "q05": -0.35110257448259236,
+        "q95": -0.14718870407839232,
+        "negative_fraction": 1.0
+      },
+      "passes": true
+    },
+    "GEPE": {
+      "null": {
+        "median_gamma_R": -0.008959925165146371,
+        "q05": -0.12786963660404982,
+        "q95": 0.10577655345028471
+      },
+      "terrain_effect": {
+        "truth_gamma_R": -0.25,
+        "median_gamma_R": -0.2508668085386673,
+        "q05": -0.35524910456473363,
+        "q95": -0.12020092228721226,
+        "negative_fraction": 1.0
+      },
+      "passes": true
+    }
+  },
+  "decision": {
+    "terrain_R_main_recoverable": true,
+    "all_species_pass": true,
+    "real_gamma_R_may_be_opened": true,
+    "real_gamma_R_computed_in_this_gate": false
+  },
+  "interpretation": [
+    "The frozen one-trait V3 terrain loading estimator recovers a nonzero gamma_R of -0.25 with acceptable bias and sign in all three Pygoscelis species.",
+    "Null recovery remains centered near zero with the frozen 5th-95th interval spanning zero in all three species.",
+    "This result validates estimability only and contains no real terrain coefficient."
+  ]
+}
