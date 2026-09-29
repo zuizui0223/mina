@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-temporal-overlap-audit-result-v1",
+  "validated_date": "2026-09-29",
+  "source": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "candidate_site_species_units": 152
+  },
+  "execution": {
+    "workflow_run_id": 36507233235,
+    "artifact_id": 11007647318,
+    "artifact_digest": "sha256:3c4d03f3865740df52dd3547f28bddfa83eb3327755ec06e86af29c7a37fc092",
+    "head_sha": "175781a5da72652a0aaa0849fde128c1da92f6e2",
+    "conclusion": "success"
+  },
+  "selected_primary_window": [
+    1980,
+    2025
+  ],
+  "selection_rule": "longest candidate window with at least 50% bridged coverage within each Pygoscelis species",
+  "selected_window_summary": {
+    "bridged_units": 108,
+    "bridged_fraction_of_gate0": 0.7105263157894737,
+    "species": {
+      "ADPE": {
+        "gate0": 57,
+        "bridged": 44,
+        "fraction": 0.7719298245614035,
+        "regions": 7,
+        "median_distinct_years": 11,
+        "median_span_years": 38
+      },
+      "CHPE": {
+        "gate0": 46,
+        "bridged": 35,
+        "fraction": 0.7608695652173914,
+        "regions": 3,
+        "median_distinct_years": 10,
+        "median_span_years": 37
+      },
+      "GEPE": {
+        "gate0": 49,
+        "bridged": 29,
+        "fraction": 0.5918367346938775,
+        "regions": 3,
+        "median_distinct_years": 14,
+        "median_span_years": 34
+      }
+    }
+  },
+  "primary_predictor_complete_case": {
+    "breeding_option_missing_site_ids": [
+      "FRAE",
+      "FRAW",
+      "GOPT",
+      "WPEC"
+    ],
+    "bridged_units_missing_primary_breeding_option_traits": [
+      {
+        "site_id": "FRAE",
+        "species_id": "ADPE"
+      },
+      {
+        "site_id": "FRAW",
+        "species_id": "ADPE"
+      },
+      {
+        "site_id": "WPEC",
+        "species_id": "ADPE"
+      }
+    ],
+    "complete_units": 105,
+    "species_complete_units": {
+      "ADPE": 41,
+      "CHPE": 35,
+      "GEPE": 29
+    }
+  },
+  "alternative_windows": {
+    "1990-2025": {
+      "qualifies": true,
+      "bridged_units": 83
+    },
+    "2000-2025": {
+      "qualifies": false,
+      "bridged_units": 79
+    },
+    "2010-2025": {
+      "qualifies": false,
+      "bridged_units": 69
+    }
+  },
+  "decision": {
+    "common_window_trend_endpoint_available": true,
+    "primary_window_start": 1980,
+    "primary_window_end": 2025,
+    "no_demographic_values_opened": true
+  },
+  "boundary": [
+    "Only observation-year availability was used to choose the window.",
+    "Count magnitudes, abundance trends and site-trait associations were not inspected.",
+    "The 1980-2025 window must not be changed after demographic outcomes are opened."
+  ]
+}
