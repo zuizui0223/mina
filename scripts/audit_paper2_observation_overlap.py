@@ -14,8 +14,8 @@ import pyreadr
 MAPPPDR_COMMIT="88c73a507e0921b2541c218c71eaf16721bc6502"
 SPECIES=("ADPE","CHPE","GEPE")
 WINDOW=(1980,2025)
-DIRECT={"ground","aerial","offshore_vessel"}
-IMAGE={"ground_photo","aerial_photo","uav","vhr","landsat","sentinel"}
+DIRECT={"ground","aerial","offshore vessel"}
+IMAGE={"ground photo","aerial photo","uav","vhr","landsat","sentinel"}
 
 
 def load_rda(path:Path,expected:str)->pd.DataFrame:
