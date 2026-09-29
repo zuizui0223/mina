@@ -16,6 +16,9 @@ WINDOW = (1980, 2025)
 EXPECTED_GATE0 = {"ADPE": 57, "CHPE": 46, "GEPE": 49}
 EXPECTED_GATE0_TOTAL = 152
 EXPECTED_BRIDGED_TOTAL = 107
+EXPECTED_BRIDGED = {"ADPE": 44, "CHPE": 34, "GEPE": 29}
+MODELING_MIN_COVERAGE = 0.95
+MODELING_MIN_REGIONAL_GROUPS = 2
 
 
 def _thirds(start: int, end: int) -> tuple[tuple[int, int], tuple[int, int], tuple[int, int]]:
@@ -95,6 +98,62 @@ def select_level(level_summaries: dict[str, dict], unit_ids: set[str]) -> str | 
     return None
 
 
+def select_modeling_level(
+    level_summaries: dict[str, dict],
+    unit_ids: set[str],
+    min_coverage_fraction: float = MODELING_MIN_COVERAGE,
+) -> dict:
+    """Choose outcome-blind modeling level allowing <=5% unsupported regional units."""
+    target = {str(v) for v in unit_ids}
+    n_target = len(target)
+    empty = {
+        "level": None,
+        "coverage_fraction": 0.0,
+        "covered_units": [],
+        "excluded_units": sorted(target),
+        "qualifying_groups": [],
+    }
+    if not target:
+        return empty
+
+    for level in ("apbp_region", "ccamlr"):
+        groups = level_summaries.get(level, {}).get("groups", [])
+        qualifying = [g for g in groups if g.get("qualifies")]
+        if len(qualifying) < MODELING_MIN_REGIONAL_GROUPS:
+            continue
+        covered = {
+            str(unit)
+            for group in qualifying
+            for unit in group.get("unit_ids", [])
+        } & target
+        fraction = len(covered) / n_target
+        if fraction >= min_coverage_fraction:
+            return {
+                "level": level,
+                "coverage_fraction": fraction,
+                "covered_units": sorted(covered),
+                "excluded_units": sorted(target - covered),
+                "qualifying_groups": sorted(str(g["group"]) for g in qualifying),
+            }
+
+    wide_groups = level_summaries.get("species_wide", {}).get("groups", [])
+    qualifying_wide = [g for g in wide_groups if g.get("qualifies")]
+    covered = {
+        str(unit)
+        for group in qualifying_wide
+        for unit in group.get("unit_ids", [])
+    } & target
+    if covered == target and qualifying_wide:
+        return {
+            "level": "species_wide",
+            "coverage_fraction": 1.0,
+            "covered_units": sorted(target),
+            "excluded_units": [],
+            "qualifying_groups": sorted(str(g["group"]) for g in qualifying_wide),
+        }
+    return empty
+
+
 def validate_frozen_cohort(gate0_total: int, bridged_total: int) -> None:
     if gate0_total != EXPECTED_GATE0_TOTAL:
         raise ValueError(
@@ -144,9 +203,24 @@ def _level_summary(
                 **support,
             }
         )
+    qualifying_covered = sorted({
+        str(unit)
+        for group in groups
+        if group["qualifies"]
+        for unit in group["unit_ids"]
+    })
+    all_labeled_units = sorted({
+        str(unit)
+        for group in groups
+        for unit in group["unit_ids"]
+    })
     return {
         "missing_label_units": missing,
         "groups": groups,
+        "qualifying_covered_units": qualifying_covered,
+        "complete_qualifying_coverage": (
+            missing == 0 and qualifying_covered == all_labeled_units
+        ),
     }
 
 
@@ -168,10 +242,15 @@ def summarize_forcing_support(
             "ccamlr": _level_summary(local, "ccamlr_id", start, end),
             "species_wide": _level_summary(local, None, start, end),
         }
+        if levels["species_wide"]["groups"]:
+            levels["species_wide"]["groups"][0]["group"] = species_id
         species_result[species_id] = {
             "n_units": len(unit_ids),
             "levels": levels,
             "selected_level": select_level(levels, unit_ids),
+            "modeling_eligibility": select_modeling_level(
+                levels, unit_ids, MODELING_MIN_COVERAGE
+            ),
         }
 
     return {
@@ -195,12 +274,9 @@ def _load_rda(path: Path, expected: str) -> pd.DataFrame:
     return frame
 
 
-def build_frozen_cohort(root: Path) -> tuple[list[dict], pd.DataFrame]:
-    """Rebuild Gate 0 and the frozen 1980-2025 breeding-season cohort."""
-    sites = _load_rda(root / "data" / "sites.rda", "sites")
-    obs = _load_rda(root / "data" / "penguin_obs.rda", "penguin_obs")
-
-    # Count values are used only as missing/non-missing eligibility flags here.
+def build_frozen_unit_rows(obs: pd.DataFrame, sites: pd.DataFrame) -> list[dict]:
+    """Build the frozen 107-unit support table without retaining count magnitudes."""
+    # Count values are used only as missing/non-missing eligibility flags.
     # The magnitude column is discarded immediately after this filter.
     nest = obs[
         obs["species_id"].isin(SPECIES)
@@ -277,16 +353,29 @@ def build_frozen_cohort(root: Path) -> tuple[list[dict], pd.DataFrame]:
         )
 
     validate_frozen_cohort(len(gate0_units), len(rows))
-    unit_frame = pd.DataFrame(
-        [
-            {
-                k: v
-                for k, v in row.items()
-                if k != "seasons"
-            }
-            for row in rows
-        ]
-    )
+    bridged_by_species = pd.Series(
+        [row["species_id"] for row in rows], dtype="object"
+    ).value_counts().to_dict()
+    observed_bridged = {
+        sp: int(bridged_by_species.get(sp, 0))
+        for sp in SPECIES
+    }
+    if observed_bridged != EXPECTED_BRIDGED:
+        raise ValueError(
+            f"bridged species drift: {observed_bridged} != {EXPECTED_BRIDGED}"
+        )
+    return rows
+
+
+def build_frozen_cohort(root: Path) -> tuple[list[dict], pd.DataFrame]:
+    """Load MAPPPD and rebuild the frozen 1980-2025 breeding-season cohort."""
+    sites = _load_rda(root / "data" / "sites.rda", "sites")
+    obs = _load_rda(root / "data" / "penguin_obs.rda", "penguin_obs")
+    rows = build_frozen_unit_rows(obs, sites)
+    unit_frame = pd.DataFrame([
+        {k: v for k, v in row.items() if k != "seasons"}
+        for row in rows
+    ])
     return rows, unit_frame
 
 
@@ -302,8 +391,22 @@ def audit(root: Path) -> tuple[dict, pd.DataFrame]:
         "primary_time_field": "season",
         **support,
         "decision": {
-            sp: details["selected_level"]
-            for sp, details in support["species"].items()
+            "strict_complete_level_by_species": {
+                sp: details["selected_level"]
+                for sp, details in support["species"].items()
+            },
+            "modeling_eligibility_by_species": {
+                sp: details["modeling_eligibility"]
+                for sp, details in support["species"].items()
+            },
+            "all_species_forcing_identifiable": all(
+                details["modeling_eligibility"]["level"] is not None
+                for details in support["species"].values()
+            ),
+            "primary_coupling_units": sum(
+                len(details["modeling_eligibility"]["covered_units"])
+                for details in support["species"].values()
+            ),
         },
     }
     return result, unit_frame
