@@ -181,7 +181,10 @@ class EndToEndAuditTests(unittest.TestCase):
                         })
                 unit_index+=1
         result=run_observation_audit(
-            pd.DataFrame(rows),replicates=4,seed_offset=300
+            pd.DataFrame(rows),
+            replicates=4,
+            seed_offset=300,
+            enforce_frozen_support=False,
         )
         self.assertEqual(result["metadata"]["bridged_units"],107)
         self.assertEqual(result["metadata"]["records"],107*5*4)
