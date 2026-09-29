@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-breeding-space-buffering-secondary-v1",
+  "date": "2026-09-29",
+  "status": "prespecified_secondary_H1_execution_after_primary_interaction_inference",
+  "pre_outcome_basis": [
+    "docs/superpowers/specs/2026-09-29-paper2-environmental-coupling-design.md H1",
+    "contracts/PAPER2_OUTCOME_BLIND_PREDICTOR_SET_V1.json modeling_order",
+    "V3 simple-buffering recovery scenario gamma_A=-0.25"
+  ],
+  "scientific_hypothesis": "More breeding-space amount reduces signed coupling to the shared species-wide forcing.",
+  "A_only_model": "Use the unchanged spatially adjusted V3 engine with H and A:H columns fixed to zero; lambda_i = 1 + alpha_block + gamma_A * A_centered_within_block + b_i.",
+  "alternative": "gamma_A < 0",
+  "inference": {
+    "B": 9999,
+    "seed": 20260929,
+    "scheme": "Within each species and frozen V3 spatial block, permute A among site time series; refit the complete A-only V3 model for every permutation.",
+    "p_value": "(1 + number gamma_A_perm <= gamma_A_observed)/(9999+1)",
+    "species_multiplicity": "Holm adjustment across ADPE, CHPE, GEPE",
+    "cross_species_p_value": "none; concordance is descriptive only"
+  },
+  "H_only_secondary": {
+    "model": "same V3 engine with A and A:H fixed to zero",
+    "reporting": "point estimates only; no directional inferential claim because the design does not specify a context-free sign for H"
+  },
+  "terrain_R": "not inferentially opened; nonzero R recovery was not frozen pre-outcome",
+  "interpretation_guardrails": [
+    "This secondary H1 cannot replace or reclassify the non-confirmatory primary A:H permutation result.",
+    "If A-only is supported, describe simple breeding-space buffering separately from the suggestive option-fragmentation interaction.",
+    "No new paper-level pooled A test is introduced."
+  ]
+}
