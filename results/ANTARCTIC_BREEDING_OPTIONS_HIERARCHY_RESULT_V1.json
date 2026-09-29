@@ -9,10 +9,10 @@
     "vat_md5": "fa5363b1c0d882b4343e239d03dc2ba4"
   },
   "execution": {
-    "workflow_run_id": 36491613166,
-    "artifact_id": 11001289630,
-    "artifact_digest": "sha256:a750a919f61c42234c2b7a634b98590d7f22779cb62b129d650e206befd37bbd",
-    "head_sha": "7282e01ef0d2d636b1925c5eceaaa82e9ab7ee91",
+    "workflow_run_id": 36520281872,
+    "artifact_id": 11012935837,
+    "artifact_digest": "sha256:aa287d9b1bffefc0d8cc9320097d77617711f5a0ac2c8bacdf84f3f71fa03595",
+    "head_sha": "9c5074b74cd0cda67bf9026a068fcc223cd3916f",
     "conclusion": "success"
   },
   "sample": {
@@ -67,7 +67,7 @@
     "tier3_meaning": "Bioregional Ecosystem Type"
   },
   "collinearity_audit_2km": {
-    "ice_free_area_vs_tier2_richness_r": 0.24018824319610094,
+    "ice_free_area_vs_tier2_richness_r": 0.164163404116651,
     "tier2_richness_vs_shannon_r": 0.8559622801044031
   },
   "decision": {
@@ -82,11 +82,13 @@
   "interpretation": [
     "Habitat Complex richness at 2 km captures breeding-option heterogeneity distinct from simple ice-free area.",
     "Tier 2 richness and Shannon are redundant enough that only richness remains primary.",
-    "Coverage is 96.7% at all frozen radii; the same four uncovered sites remain missing rather than being rescued by widening radius."
+    "Coverage is 96.7% at all frozen radii; FRAE, FRAW, GOPT and WPEC have zero mapped AEI cells and their ecological metrics are encoded as missing rather than true zeroes.",
+    "After excluding unsupported sites as required by the frozen missingness rule, ice-free area and Tier 2 richness correlate r = 0.164."
   ],
   "boundary": [
     "Habitat Complex richness is a site-centered breeding-option proxy, not occupied nesting habitat.",
     "Mapped ice-free area is not occupied nesting area.",
+    "Zero mapped AEI cells is a coverage failure: area, richness and diversity metrics are missing, not ecological zeroes.",
     "No trait was selected using penguin demographic outcomes."
   ]
 }

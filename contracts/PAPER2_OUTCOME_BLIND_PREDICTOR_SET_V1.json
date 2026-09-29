@@ -41,7 +41,7 @@
     }
   ],
   "pre_outcome_collinearity": {
-    "ice_free_area_vs_tier2_richness_r": 0.24018824319610094,
+    "ice_free_area_vs_tier2_richness_r": 0.164163404116651,
     "tier2_richness_vs_tier2_shannon_r": 0.8559622801044031,
     "relief_vs_elevation_sd_r": 0.99067,
     "decisions": [
@@ -77,7 +77,7 @@
       "GOPT",
       "WPEC"
     ],
-    "rule": "Do not widen the 2 km radius or impute primary breeding-option traits to rescue these four sites. Primary models using breeding-option predictors use complete site-level predictor cases; terrain-only diagnostics may retain all 122 sites but are not co-primary."
+    "rule": "Do not widen the 2 km radius or impute primary breeding-option traits to rescue these four sites. Zero mapped AEI cells is treated as missing ecological support, not as area=0 or richness=0. Primary models using breeding-option predictors use complete site-level predictor cases; terrain-only diagnostics may retain all 122 sites but are not co-primary."
   },
   "modeling_order": [
     "fit species-specific models first",

@@ -155,10 +155,13 @@ Coverage:
 - the same four sites remain uncovered at 1, 2 and 5 km: FRAE, FRAW, GOPT, WPEC;
 - these four remain missing by contract rather than being rescued by widening the radius.
 
-At 2 km across the 122 candidate sites:
-- mapped ice-free area: **0–928 ha**, median **243 ha**;
-- ecosystem-class richness: **0–9**, median **3**;
+At 2 km among the **118 covered candidate sites**:
+- mapped ice-free area: **6–928 ha**, median **258 ha**;
+- Habitat Complex richness: **1–9**, median **3**;
 - ecosystem Shannon diversity: **0–1.86**, median **0.83**.
+
+The four uncovered sites are represented as missing ecological metrics in the
+derived table; they are not interpreted as true zero-area or zero-richness sites.
 
 Result receipt:
 `results/ANTARCTIC_BREEDING_OPTIONS_ATLAS_GATE1_RESULT_V1.json`.
@@ -190,7 +193,7 @@ All are standardized within modeling datasets after the frozen transformation.
 Tier 2 Shannon diversity is sensitivity-only because it correlates **r = 0.856**
 with richness. Elevation SD is sensitivity-only because it correlates
 **r = 0.991** with relief. Ice-free area and Habitat Complex richness remain
-distinct (**r = 0.240**).
+distinct (**r = 0.164** after the frozen missingness rule is applied).
 
 No additional co-primary static melt, temperature, precipitation, wind or
 insolation variables are opened: those abiotic dimensions already contribute
