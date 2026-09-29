@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-chick-identifier-coherence-repair-v1",
+  "date": "2026-09-30",
+  "status": "post_primary_provenance_repair_frozen_before_repaired_outcome_execution",
+  "parent_contract": "mina-palmer-preextinction-chick-performance-v1",
+  "trigger": {
+    "issue": "The first exact-code chick/extinction join was dominated by a single CHR 2003 risk set with a Pearson contrast >100.",
+    "diagnosis": "For the event colony CHR 7.1 in season 2003, the frozen November adult census reports 2 breeding pairs whereas the January chick table Adults field reports 277, so exact colony_code equality is not sufficient evidence that the two tables refer to the same breeding-group unit in every season.",
+    "interpretation": "The unrepaired primary chick result is provenance-invalid for ecological inference rather than evidence of enhanced pre-extinction reproduction."
+  },
+  "outcome_independent_inventory": {
+    "same_key_matches_with_finite_chick_adults": 1441,
+    "log1p_adult_count_correlation": 0.9420349077935898,
+    "median_smoothed_ratio": 1.0,
+    "fraction_within_twofold": 0.8625954198473282
+  },
+  "coherence_gate": {
+    "comparison": "For each exact island + colony_code + season match, compare the frozen November breeding-pair count N with the chick-table Adults field A.",
+    "required": "N > 0, A > 0, and 0.5 <= A/N <= 2.0.",
+    "role": "This is an identifier/provenance gate only. The Adults field is not used as the reproductive-performance denominator or outcome.",
+    "rationale": "A more-than-twofold magnitude disagreement within the same breeding season is treated as insufficient evidence that identical colony_code labels identify the same breeding-group unit across the two source tables."
+  },
+  "duplicate_handling": {
+    "identical_chick_duplicates": "If chick counts are identical and exactly one duplicate row has Adults > 0, retain that positive-Adults record for the coherence gate.",
+    "conflicting_chick_counts": "Exclude the island-colony-season key.",
+    "multiple_positive_adult_values": "Exclude unless both Adults and Chicks are identical."
+  },
+  "repaired_test": {
+    "risk_sets": "Start from the frozen parent durable-extinction risk sets; retain only joined colony-season rows passing the coherence gate.",
+    "minimum": "At least 5 informative risk sets with at least one event and one non-event after gating, otherwise declare insufficient coverage.",
+    "null": "Exactly the frozen within-island-season proportional Multinomial chick-allocation null from PALMER_PREEXTINCTION_CHICK_PERFORMANCE_V1.",
+    "statistic": "Exactly the frozen event-minus-non-event Pearson reproductive-performance residual contrast, equal weighted across informative risk sets.",
+    "simulations": 100000,
+    "seed": 20260930,
+    "tail": "one-sided lower tail"
+  },
+  "threshold_sensitivities": {
+    "strict_1_5x": "Require 1/1.5 <= A/N <= 1.5.",
+    "lenient_3x": "Require 1/3 <= A/N <= 3.",
+    "rule": "Report both regardless of direction; do not select a threshold by significance."
+  },
+  "decision": {
+    "exploratory_signal": "At the frozen 2x gate, observed contrast < 0 and p <= 0.05, with negative observed contrasts at both 1.5x and 3x gates.",
+    "no_signal": "Otherwise do not claim a pre-extinction reproductive penalty.",
+    "status": "Even if supported, this is a post-primary provenance-repaired exploratory result, not an independent confirmatory result."
+  },
+  "boundaries": [
+    "Do not interpret excluded rows as biologically anomalous; they are identifier-incoherent for this cross-table analysis.",
+    "Do not further tune the magnitude threshold after repaired outcomes are opened.",
+    "Do not infer recruitment causality, Allee effects, snow, predation or food mechanisms from the repaired chick test alone.",
+    "The unrepaired exact-code result must remain documented as a failed provenance gate."
+  ]
+}
