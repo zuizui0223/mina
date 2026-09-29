@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-cross-species-generality-v4",
+  "date": "2026-09-29",
+  "status": "pre_outcome_generality_estimand_frozen_after_v3_core_pass_and_source_power_failure",
+  "parent_v3": "results/PAPER2_SPATIAL_ADJUSTED_V3_RESULT_V1.json",
+  "motivation": "V3 recovers the crossover in all three full-metadata species fits, but Adelie exclude-unknown recovery is 86/100 against the frozen 90/100 species-specific sensitivity threshold. The paper-level ecological question is a cross-species island-filter tendency, not a requirement that every species-specific estimate be individually high-powered.",
+  "primary_estimand": {
+    "statistic": "median(gamma_AH_ADPE, gamma_AH_CHPE, gamma_AH_GEPE)",
+    "interpretation": "cross-species central tendency in the area-by-habitat-heterogeneity loading interaction",
+    "universal_wording_prohibited": true,
+    "generality_wording": "cross-species tendency or replicated Pygoscelis response; never universal unless all three species-specific estimates independently support the same directional classification"
+  },
+  "recovery_scenarios": {
+    "null_all_species": {
+      "ADPE": 0,
+      "CHPE": 0,
+      "GEPE": 0
+    },
+    "common_crossover": {
+      "ADPE": -0.35,
+      "CHPE": -0.35,
+      "GEPE": -0.35
+    },
+    "adelie_only": {
+      "ADPE": -0.35,
+      "CHPE": 0,
+      "GEPE": 0
+    },
+    "chinstrap_only": {
+      "ADPE": 0,
+      "CHPE": -0.35,
+      "GEPE": 0
+    },
+    "gentoo_only": {
+      "ADPE": 0,
+      "CHPE": 0,
+      "GEPE": -0.35
+    }
+  },
+  "gate": {
+    "replicates_per_scenario": 100,
+    "common_crossover_max_abs_median_bias": 0.1,
+    "common_crossover_negative_fraction": 0.9,
+    "common_crossover_at_least_two_species_negative_fraction": 0.9,
+    "null_max_abs_median": 0.05,
+    "null_q05_q95_must_contain_zero": true,
+    "single_species_driver_max_abs_median": 0.1,
+    "single_species_driver_at_least_two_negative_fraction_max": 0.8
+  },
+  "source_sensitivity": {
+    "exclude_unknown": "Primary cross-species median must pass null/common-crossover recovery using ADPE=40, CHPE=30, GEPE=28 supported units.",
+    "ground_only": "ADPE is coverage-limited. For this partial robustness lane the statistic is median/mean of CHPE and GEPE gamma_AH, and both species must be negative in >=90% of crossover replicates.",
+    "rule": "A species-specific sensitivity failure remains reported even if the cross-species estimand passes."
+  },
+  "real_inference": {
+    "permutation_B": 9999,
+    "seed": 20260929,
+    "scheme": "Independently permute complete site-trait tuples within each species and frozen V3 spatial block, refit all three V3 models, and compute the median gamma_AH across species for each joint permutation.",
+    "p_value": "(1 + number of permuted median gamma_AH <= observed median gamma_AH)/(B+1)",
+    "species_specific_results": "always report all three species-specific gamma_AH values and permutation p-values; no favorable subset selection"
+  },
+  "guardrail_scenario": "If a single-species-driver simulation produces a strong cross-species median, the generality estimand is rejected before outcomes.",
+  "boundary": [
+    "No real count magnitude is opened.",
+    "V3 species-specific estimator, trait blocks, forcing scale, observation model and thresholds do not change.",
+    "This changes the paper-level estimand, not any species-specific fitted result.",
+    "Adelie source sensitivity remains explicitly limited even if the cross-species generality gate passes."
+  ]
+}
