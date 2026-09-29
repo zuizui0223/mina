@@ -1,5 +1,9 @@
 name: paper2-integrated-recovery
 
+concurrency:
+  group: paper2-integrated-recovery-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [analysis/paper2-integrated-recovery-v2]
