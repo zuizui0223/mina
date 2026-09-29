@@ -844,13 +844,16 @@ def run_integrated_audit(
             specieswide["observation_gate"]["passes"]
         ),
         "primary_integrated_gate_passed":bool(primary["gate"]["passes"]),
+        "specieswide_integrated_gate_passed":bool(
+            specieswide["gate"]["passes"]
+        ),
         "specieswide_sensitivity_completed":True,
         "no_real_demographic_count_magnitudes_opened":True,
     }
     decision["counts_may_be_opened"] = bool(
         decision["all_species_have_integrated_scale"]
         and decision["primary_observation_gate_passed"]
-        and decision["specieswide_observation_gate_passed"]
+        and decision["specieswide_integrated_gate_passed"]
     )
 
     return {
