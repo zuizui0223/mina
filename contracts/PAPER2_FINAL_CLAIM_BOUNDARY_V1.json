@@ -52,16 +52,17 @@
   },
   "robustness": {
     "observation_timing": "stable: exact-date and <=14-day offsets preserve all three negative gamma_AH signs and CHPE/GEPE crossover classification",
-    "spatial_scale": "not stable: 1 km weak/mixed; 5 km all gamma_AH positive",
+    "spatial_scale": "raw interaction estimates vary strongly across 1/2/5 km, but the joint sign-switch-plus-contrast null probability is 0.0810; treat this as radius sensitivity/instability, not established biological scale dependence",
     "heterogeneity_metric": "partly stable: 2 km Shannon preserves CHPE/GEPE crossover but not ADPE"
   },
   "allowed_claims": [
     "At the frozen 2 km Habitat Complex-richness scale, all three Pygoscelis species showed negative area-by-heterogeneity point estimates.",
     "The preregistered cross-species permutation test did not confirm a general interaction at alpha=0.05.",
     "Simple breeding-space buffering was also not supported by species-specific permutation tests.",
-    "The interaction was robust to observation-timing calibration but not to spatial radius, indicating strong scale dependence.",
     "Chinstrap and gentoo showed the full point-estimate option-fragmentation sign pattern at the primary 2 km richness scale, but these species-specific interactions did not survive Holm-adjusted permutation inference.",
-    "Breeding-island architecture therefore cannot currently be treated as a scale-invariant demographic filter of shared Antarctic forcing."
+    "Breeding-island architecture therefore cannot currently be treated as a scale-invariant demographic filter of shared Antarctic forcing.",
+    "The interaction is sensitive to the spatial radius used to define breeding landscapes, but the observed 2-to-5 km sign reversal is compatible with the joint block-permutation null (plus-one probability 0.0810) and is not treated as established biological scale dependence.",
+    "The non-confirmatory primary result does not exclude moderate common interactions: retrospective detection was low near |gamma_AH|=0.30, whereas common effects around 0.50-0.55 would usually have been detected."
   ],
   "prohibited_claims": [
     "Island architecture buffers Antarctic penguin populations.",
@@ -69,8 +70,24 @@
     "The option-fragmentation crossover is a general island-ecology law.",
     "Adelie, chinstrap, and gentoo all show a confirmed crossover.",
     "The 5 km or Shannon sensitivity may replace the frozen primary 2 km richness analysis.",
-    "Process variance or local demographic instability has an ecological interpretation; process-SD recovery remains blocked."
+    "Process variance or local demographic instability has an ecological interpretation; process-SD recovery remains blocked.",
+    "The 1/2/5 km sign reversal demonstrates biological scale dependence.",
+    "The primary null result establishes absence/equivalence of an area-by-heterogeneity effect."
   ],
-  "paper_level_framing": "A stringent test of reproductive-island buffering reveals directional but non-confirmatory and spatially scale-dependent effects, showing that local breeding-site architecture does not translate into a simple macroecological resilience rule.",
-  "paper1_link": "Paper 1 documents within-island demographic reorganization. Paper 2 tests whether static breeding-island architecture predicts how that broader forcing is transmitted across colonies; the failure of a general predictor shows that local reorganization does not automatically scale into a transferable island-resilience rule."
+  "paper_level_framing": "A stringent test of reproductive-island buffering found directionally concordant but non-confirmatory effects. The study was sensitive to very large common interactions, while moderate interactions remained weakly detectable; apparent cross-radius sign reversal did not exceed the frozen joint null. Static breeding-island architecture therefore does not yield a confirmed transferable macroecological resilience rule.",
+  "paper1_link": "Paper 1 documents within-island demographic reorganization. Paper 2 tests whether static breeding-island architecture predicts how that broader forcing is transmitted across colonies; the failure of a general predictor shows that local reorganization does not automatically scale into a transferable island-resilience rule.",
+  "information_content": {
+    "retrospective_detectable_effect": {
+      "MDE80_abs_gamma_AH": 0.49765625,
+      "MDE90_abs_gamma_AH": 0.5385714285714286,
+      "observed_abs_cross_species_median": 0.31822603579776854,
+      "interpretation": "The design had low sensitivity to a common interaction around the observed magnitude but high sensitivity to very large common interactions around 0.50-0.55. This is not an equivalence bound."
+    },
+    "radius_sign_switch_null": {
+      "joint_switch_plus_observed_contrast_probability": 0.081,
+      "sign_switch_probability": 0.2478,
+      "observed_contrast_probability": 0.0971,
+      "interpretation": "The observed 2 km negative to 5 km positive reversal does not meet the frozen <=0.05 criterion for biological scale-dependence language."
+    }
+  }
 }
