@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-integrated-recovery-v1",
+  "date": "2026-09-29",
+  "status": "integrated_synthetic_recovery_frozen_before_demographic_outcomes",
+  "observation_transform": "log1p(count)",
+  "primary_forcing_scales": {
+    "ADPE": "ccamlr",
+    "CHPE": "apbp_region",
+    "GEPE": "species_wide"
+  },
+  "allowed_fallback": "species_wide only for a regional scale that fails integrated recovery",
+  "simulation": {
+    "replicates_per_species_scale_scenario": 100,
+    "forcing_sd": 0.08,
+    "loading_residual_sd": 0.15,
+    "process_sd": 0.04,
+    "drift_mean": -0.01,
+    "drift_sd": 0.01,
+    "delta_image_log": 0.13976194237515863,
+    "sigma_accuracy_1_log": 0.04879016416943205,
+    "sigma_accuracy_2_5_log": 0.22314355131420976,
+    "scenarios": {
+      "null": {
+        "gamma_a": 0,
+        "gamma_h": 0,
+        "gamma_ah": 0
+      },
+      "crossover": {
+        "gamma_a": 0,
+        "gamma_h": 0,
+        "gamma_ah": -0.35
+      },
+      "simple_buffering": {
+        "gamma_a": -0.25,
+        "gamma_h": 0,
+        "gamma_ah": 0
+      }
+    },
+    "als_iterations": 8
+  },
+  "fit_order": [
+    "shared observation calibration from repeated same-season records",
+    "method correction and inverse-variance same-season collapse",
+    "interval construction on observed seasons",
+    "unknown forcing plus normalized site-loading recovery",
+    "group + A + H + A:H loading regression"
+  ],
+  "gate": {
+    "min_group_median_forcing_correlation": 0.7,
+    "min_group_q05_forcing_correlation": 0.3,
+    "max_abs_crossover_median_bias": 0.1,
+    "min_crossover_negative_fraction": 0.9,
+    "max_abs_null_median_gamma_ah": 0.05,
+    "null_q05_q95_must_contain_zero": true,
+    "max_abs_simple_buffering_gamma_a_bias": 0.1,
+    "min_simple_buffering_gamma_a_negative_fraction": 0.9,
+    "max_abs_simple_buffering_median_gamma_ah": 0.06,
+    "max_abs_image_offset_median_bias_log": 0.03,
+    "max_accuracy_1_median_relative_sigma_bias": 0.15,
+    "max_accuracy_2_5_median_relative_sigma_bias": 0.3,
+    "finite_estimate_fraction": 1,
+    "inheritance_note": "Factor and crossover thresholds exactly inherit Gate 2E-A; adding the observation layer does not relax the latent-process recovery standard."
+  },
+  "secondary_process_variance_lane": {
+    "blocks_primary_gate": false,
+    "rule": "A separate outcome-blind simulation decides whether local process variance can support the decoupling-with-instability claim. Failure removes that claim but does not alter the primary response-filter test."
+  },
+  "boundary": [
+    "No real demographic count magnitude may be read, summarized, transformed or modeled.",
+    "The log1p transform is frozen before checking whether real count values include zeros.",
+    "No new predictor, radius, geographic partition or interaction may be introduced to rescue failure.",
+    "Species-specific image offsets remain diagnostic only.",
+    "Primary integrated recovery and the mandatory species-wide forcing sensitivity must be completed before real count magnitudes are opened."
+  ],
+  "mandatory_forcing_sensitivity": {
+    "scale": "species_wide for ADPE, CHPE and GEPE",
+    "replicates_per_species_scale_scenario": 100,
+    "interpretation": "Run the identical null, crossover and simple-buffering scenarios with one species-wide forcing per species. If a retained regional scale fails but its species-wide fit passes, species-wide is the only allowed fallback. If the primary and species-wide ecological readouts materially disagree, the eventual result is forcing-scale dependent."
+  },
+  "observation_sensitivities": {
+    "exclude_unknown": "mandatory after the primary integrated gate; remove unknown-vantage records before same-season collapse while retaining the shared nuisance calibration learned from known-method overlap",
+    "ground_only": "mandatory robustness lane after the primary integrated gate; use raw ground observations only for the process reconstruction and do not reinterpret failure as evidence against the primary model",
+    "blocking_primary_gate": false
+  }
+}

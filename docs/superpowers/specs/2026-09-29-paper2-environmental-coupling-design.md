@@ -541,34 +541,94 @@ Paper 2 succeeds scientifically if it can distinguish these three propositions:
 
 The headline island-ecology claim is justified only by proposition 2, especially if the option–fragmentation crossover is supported.
 
-## 16. Immediate next implementation step
+## 16. Gate 2E-C v1 — integrated synthetic recovery — FAILED
 
-Gate 2E-A validates the latent shared-forcing process on the real season
-schedule, with retained scales **Adélie = CCAMLR, chinstrap = APBP region,
-gentoo = species-wide**. Gate 2E-B separately validates the frozen shared
-image offset and accuracy-1 versus pooled-2–5 observation-error structure on
-the real 2,100-record metadata layout.
+Gate 2E-A showed that the **latent process** is recoverable from the frozen
+season schedules when latent states are observed without count error. Gate 2E-B
+showed separately that the shared image offset and coarse accuracy scales are
+recoverable from the frozen repeated-observation structure.
 
-The next and final pre-outcome gate is **Gate 2E-C: integrated synthetic
-process-plus-observation recovery**.
+Gate 2E-C v1 then combined those layers using the predeclared zero-safe
+`log1p(count)` transform, synthetic integer counts on the actual 2,100-record
+metadata layout, estimated observation nuisance parameters, inverse-variance
+same-season collapse, adjacent-season changes, free site-specific loading
+recovery, and a second-stage trait regression.
 
-Do **not** open real demographic count magnitudes until one integrated
-estimator can recover, from synthetic observations generated on the real
-record layout:
+That integrated estimator **failed the frozen recovery gate**. Real count
+magnitudes remain unopened.
 
-- the retained shared forcing at each species' Gate 2E-A scale;
-- normalized site loadings `lambda`;
-- the null and negative `A x H` scenarios;
-- a shared direct-versus-image observation offset;
-- the frozen two-level accuracy observation scales or their explicitly frozen
-  treatment;
-- local process variance sufficiently well to distinguish buffering from
-  decoupling-with-instability;
-- mandatory species-wide forcing, missing-vantage-exclusion and ground-only
-  sensitivities.
+The observation layer itself continued to pass:
 
-The integrated model must be **zero-safe by construction** before outcomes
-are opened; the likelihood or transformation cannot be chosen after seeing
-whether the real series contain zero nest counts.
+- image-offset median bias: about **−0.0006 log units**;
+- accuracy-1 relative sigma bias: about **+0.9%**;
+- pooled accuracy-2–5 relative sigma bias: about **−4.3%**.
 
-Only after Gate 2E-C passes may the frozen real count magnitudes be opened.
+The failure was in propagation from noisy counts to shared forcing and site
+loadings. For example:
+
+- Adélie regional forcing correlations fell to median **0.63** in CCAMLR 48.1
+  and **0.31** in 88.1; crossover sign recovery was only **71%**.
+- Chinstrap retained a well-centered crossover estimate
+  (median gamma_AH about **−0.31**, sign recovery **93%**) but its two regional
+  forcing factors recovered at only about **0.47** and **0.64** median
+  correlation, below the frozen factor gate.
+- Gentoo species-wide forcing remained recoverable (median correlation about
+  **0.74**) and the crossover median was about **−0.30**, but the
+  simple-buffering control recovered the negative A effect in only **77%** of
+  replicates.
+
+The mandatory species-wide forcing sensitivity also failed as a complete
+integrated solution. Therefore no species has an approved integrated scale and
+`counts_may_be_opened = false`.
+
+Receipt:
+`results/PAPER2_INTEGRATED_RECOVERY_RESULT_V1.json`.
+
+### Why v1 failed
+
+This is not an observation-calibration failure. The weak link is the
+**two-stage demographic estimator**:
+
+1. collapse noisy records to a seasonal point estimate;
+2. difference adjacent observed seasons;
+3. estimate every site loading essentially freely;
+4. treat those noisy loading estimates as responses in a separate site-trait
+   regression.
+
+That construction amplifies endpoint observation noise and does not let the
+frozen site-trait structure help estimate the loadings themselves.
+
+### Gate 2E-C v2 — required estimator redesign
+
+Do **not** relax v1 simulation truths, thresholds, cohort rules, forcing
+geography, trait definitions or the A × H hypothesis.
+
+The next estimator must instead be a **one-stage / hierarchical loading model**
+that:
+
+- carries estimated same-season observation variance into the demographic
+  likelihood or interval weights;
+- estimates the site-trait effect on loading jointly with the latent shared
+  forcing, rather than regressing on noisy free-loading point estimates;
+- represents site loading as a trait-predicted component plus a residual
+  site-loading deviation;
+- estimates or profiles process variance rather than silently treating
+  collapsed seasonal states as observed truth;
+- retains the same group-identification constraints used in v1;
+- passes the exact same null, crossover, simple-buffering and observation
+  recovery stress tests before any real count magnitude is opened.
+
+The statistical redesign is motivated by the pre-outcome synthetic failure,
+not by any observed ecological result. Existing Antarctic penguin work likewise
+uses hierarchical population-dynamics models that explicitly separate process
+and observation error rather than relying on noisy colony-level point
+trajectories.
+
+Before real outcomes are unlocked, the new integrated estimator must also
+complete the already-frozen species-wide forcing sensitivity and the
+outcome-blind observation-source sensitivities in
+`contracts/PAPER2_INTEGRATED_SENSITIVITY_RECOVERY_V1.json`.
+
+The decoupling-with-local-instability claim remains separately blocked until a
+process-variance recovery gate passes.
+
