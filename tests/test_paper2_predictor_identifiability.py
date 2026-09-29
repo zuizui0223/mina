@@ -24,7 +24,7 @@ def balanced_frame(n_per_quadrant=4):
                     "A":a + 0.05*rep,
                     "H":h + 0.10*rep,
                     "R":(-1 if group=="G1" else 1) + 0.03*rep,
-                    "H_raw":1 + ((i+rep) % 4),
+                    "H_raw":1 + (rep % 4),
                 })
                 i+=1
     return pd.DataFrame(rows)
