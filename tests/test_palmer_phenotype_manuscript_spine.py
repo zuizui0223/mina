@@ -14,7 +14,8 @@ def test_spine_centers_species_sorting_and_temporal_reassembly():
     assert "**0.4482**" in text
     assert "**0.3424**" in text
     assert "**0.1059**" in text
-    assert "temporally unstable island phenotype" in text
+    assert "temporally unstable" in text
+    assert "species sorting plus temporal reassembly" in text
     assert "ODSP methodological novelty" in text
 
 
