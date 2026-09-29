@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-extinction-hazard-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_new_extinction_endpoint_execution",
+  "provenance_note": "The Palmer colony-count data and concentration summaries have been analyzed previously. This is not outcome-blind preregistration of the dataset; it prospectively freezes a new durable-extinction endpoint, risk-set construction, statistic, null and decision rule before that endpoint is computed.",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "downloaded_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "focal_islands": ["CHR", "COR", "HUM", "LIT", "TOR"],
+    "unit": "reported colony_code within island and breeding season"
+  },
+  "question": "During the Palmer Adelie decline, do small breeding groups disappear non-randomly before larger groups within the same island-year risk set?",
+  "biological_hypothesis": {
+    "name": "small-group vulnerability",
+    "prediction": "A colony code that is small immediately before a transition has a higher probability of durable local disappearance than larger contemporaneous colony codes on the same island.",
+    "mechanistic_scope": "A positive result is consistent with social facilitation and/or size-dependent predation vulnerability, but colony counts alone do not identify either mechanism causally."
+  },
+  "endpoint": {
+    "entry": "A colony_code enters the risk set after its first strictly positive breeding-pair count.",
+    "primary_event": "The first census year with count == 0 after a positive census, provided that the colony remains at zero in every later observed annual census and at least two later annual censuses are available.",
+    "event_time": "Assign the event to the first zero year; predictors are measured in the immediately preceding positive year.",
+    "censoring": "Rows without sufficient future follow-up to establish the primary event are right-censored and cannot contribute an extinction event.",
+    "reappearance": "Any later positive count means the earlier zero is not a durable-extinction event.",
+    "no_imputation": true,
+    "consecutive_years_only": true
+  },
+  "risk_set": {
+    "definition": "For each island and transition year t-1 -> t, include colony codes with a strictly positive count at t-1 and an observed count at t.",
+    "primary_predictor": "log1p breeding pairs at t-1",
+    "relative_size_report": "colony count at t-1 divided by island total at t-1; descriptive because within an island-year it is a monotone rescaling of absolute colony size.",
+    "minimum_risk_set_size": 2,
+    "minimum_event_risk_sets_for_inference": 3
+  },
+  "primary_statistic": {
+    "risk_set_standardization": "Within each island-year risk set, z-standardize log1p prior colony size using all at-risk colonies when SD > 0.",
+    "contrast": "Mean standardized prior size among durable-extinction events minus mean standardized prior size among non-events, pooling event-bearing risk sets with equal weight per risk set.",
+    "expected_direction": "negative",
+    "interpretation": "Negative values mean colonies that disappear were already smaller than contemporaneous colonies exposed to the same island-year context."
+  },
+  "null_and_inference": {
+    "null": "Conditional on each island-year risk set and its observed number of durable extinctions, event identities are exchangeable among at-risk colony codes.",
+    "permutation": "Permute event labels independently within each event-bearing island-year risk set while preserving the observed number of events in that risk set.",
+    "n_permutations": 100000,
+    "seed": 20260929,
+    "p_value": "one-sided lower-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05
+  },
+  "effect_size_outputs": [
+    "number of at-risk colony-year transitions",
+    "number of durable-extinction events and event-bearing risk sets",
+    "primary standardized size contrast",
+    "event and survivor prior-size summaries",
+    "risk-set matched event/non-event size ratio on the original count scale where defined",
+    "event rates by pooled prior-size quartile as a descriptive display"
+  ],
+  "secondary_hazard_model": {
+    "role": "effect-size summary, not the primary inferential gate",
+    "model": "discrete-time logistic regression of event on within-risk-set standardized log1p prior colony size, with island indicators and centered calendar year",
+    "expected_size_coefficient": "negative",
+    "inference": "report coefficient and odds ratio; primary permutation test governs the confirmatory decision"
+  },
+  "sensitivities": {
+    "two_zero_rule": "Repeat with durable extinction requiring the first zero plus at least one later annual zero and no later positive count.",
+    "exclude_litchfield": "Repeat the primary risk-set permutation after excluding Litchfield Island.",
+    "leave_one_island_out": "Report the primary contrast after removing each island in turn.",
+    "count_threshold": "Repeat after requiring prior count >= 2 pairs to reduce dependence on one-pair observations."
+  },
+  "decision_rule": {
+    "support": "Primary contrast < 0 and one-sided permutation p <= 0.05.",
+    "stronger_mechanistic_pattern": "Support plus negative contrast in at least 4 of 5 leave-one-island-out analyses and the two-zero sensitivity.",
+    "failure": "Otherwise do not claim systematic small-group extinction."
+  },
+  "interpretation_boundaries": [
+    "Do not call colony_code a mapped physical patch unless an external code-to-polygon crosswalk is established.",
+    "Do not infer skua predation, social facilitation, snow exposure or habitat quality directly from this analysis.",
+    "Do not describe the test as fully outcome-blind; earlier Palmer analyses used the same count dataset.",
+    "Do not replace the primary durable-extinction rule or risk-set permutation with a more favorable post hoc definition.",
+    "A positive result identifies size-selective disappearance within shared island-year conditions, not the cause of the regional Adelie decline."
+  ]
+}
