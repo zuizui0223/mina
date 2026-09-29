@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-radius-sign-switch-null-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "source_workflow_run_id": 36578054922,
+    "source_shards": 20,
+    "total_permutations": 9999,
+    "seed": 20260929,
+    "source_shards_all_success": true,
+    "aggregation": "Exact local aggregation of the 20 original successful shard JSON artifacts using the production aggregate logic; indices 0..9998 present exactly once. The GitHub aggregate job was runner-queued at the time of receipt creation and is an independent reproduction check."
+  },
+  "observed": {
+    "median_gamma_ah_1000m": -0.0576551287747558,
+    "median_gamma_ah_2000m": -0.31822603579776854,
+    "median_gamma_ah_5000m": 0.1067807758917031,
+    "contrast_5000_minus_2000": 0.42500681168947163,
+    "range_across_radii": 0.42500681168947163
+  },
+  "null_probabilities": {
+    "directional_sign_switch_2_to_5": {
+      "count": 2477,
+      "plus1_probability": 0.2478
+    },
+    "contrast_5_minus_2_ge_observed": {
+      "count": 970,
+      "plus1_probability": 0.0971
+    },
+    "joint_switch_and_contrast": {
+      "count": 809,
+      "plus1_probability": 0.081
+    },
+    "range_ge_observed": {
+      "count": 2644,
+      "plus1_probability": 0.2645
+    },
+    "ordered_2_lt_1_lt_5_and_range": {
+      "count": 764,
+      "plus1_probability": 0.0765
+    }
+  },
+  "null_distributions": {
+    "contrast_5000_minus_2000": {
+      "q05": -0.47348549,
+      "median": 0.0163178,
+      "q95": 0.56020481
+    },
+    "range": {
+      "q05": 0.07378247,
+      "median": 0.29486241,
+      "q95": 0.69933893
+    }
+  },
+  "decision": {
+    "prespecified_joint_probability": 0.081,
+    "ecological_scale_dependence_language_allowed": false,
+    "diagnostic_not_primary_inference": true,
+    "primary_2km_analysis_replaced": false
+  },
+  "interpretation": [
+    "The observed 2 km negative to 5 km positive sign change is not rare under the joint block-preserving null.",
+    "The prespecified sign-switch-plus-observed-contrast event has probability 0.0810, above the <=0.05 criterion required before biological scale-dependence language is allowed.",
+    "The radius sensitivity should therefore be described as instability compatible with finite-sample/block-permutation fluctuation, not as an established ecological scale-dependence phenomenon.",
+    "The raw 1/2/5 km point estimates remain reportable and the frozen 2 km analysis remains primary."
+  ]
+}
