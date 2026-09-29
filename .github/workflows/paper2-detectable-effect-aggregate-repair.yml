@@ -1,0 +1,53 @@
+name: paper2-detectable-effect-aggregate-repair
+
+on:
+  push:
+    branches: [analysis/paper2-detectable-effect-v1]
+    paths:
+      - "results/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json"
+      - ".github/workflows/paper2-detectable-effect-aggregate-repair.yml"
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-22.04
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install numpy pandas pyreadr
+      - name: Download original frozen reference/effect artifacts
+        run: |
+          mkdir -p build/ref build/effects
+          gh run download 36578040292 -n paper2-detectable-effect-reference -D build/ref
+          gh run download 36578040292 -p 'paper2-detectable-effect--*' -D build/effects
+          find build/effects -name 'effect_*.json' -print
+      - name: Re-aggregate without rerunning simulations
+        run: |
+          python -m scripts.run_paper2_detectable_effect \
+            --mode aggregate \
+            --reference-json build/ref/PAPER2_DETECTABLE_EFFECT_REFERENCE.json \
+            --effect-glob 'build/effects/**/effect_*.json' \
+            --out-json build/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json
+      - name: Compare with frozen receipt
+        run: |
+          python - <<'PY'
+          import json, math
+          calc=json.load(open("build/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json"))
+          frozen=json.load(open("results/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json"))
+          for key in ("MDE80_abs_gamma_ah","MDE90_abs_gamma_ah"):
+              a=calc["thresholds"][key]
+              b=frozen["thresholds"][key]
+              assert math.isclose(a,b,rel_tol=0,abs_tol=1e-12),(key,a,b)
+          assert len(calc["effects"])==9
+          print("MDE aggregate exactly reproduces frozen receipt.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-detectable-effect-repaired-v1
+          path: build/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json

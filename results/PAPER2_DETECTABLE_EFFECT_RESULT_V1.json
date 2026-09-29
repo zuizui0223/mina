@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-retrospective-detectable-effect-result-v1",
+  "validated_date": "2026-09-29",
+  "frozen_permutation_reference": {
+    "B": 9999,
+    "q05": -0.4235460652554809,
+    "rank_499_value": -0.4237698873679433,
+    "rank_500_value": -0.4235460652554809
+  },
+  "effects": [
+    {
+      "truth_gamma_ah": -0.2,
+      "detection_fraction": 0,
+      "wilson95": [
+        0,
+        0.012642971224546034
+      ],
+      "median_fitted": -0.19705842331253637
+    },
+    {
+      "truth_gamma_ah": -0.25,
+      "detection_fraction": 0.03666666666666667,
+      "wilson95": [
+        0.02059530516285303,
+        0.06445384817189295
+      ],
+      "median_fitted": -0.260029126051858
+    },
+    {
+      "truth_gamma_ah": -0.3,
+      "detection_fraction": 0.04666666666666667,
+      "wilson95": [
+        0.027998933682334012,
+        0.07679736022792105
+      ],
+      "median_fitted": -0.29623898798980264
+    },
+    {
+      "truth_gamma_ah": -0.35,
+      "detection_fraction": 0.11666666666666667,
+      "wilson95": [
+        0.08509313461466292,
+        0.15793314332415567
+      ],
+      "median_fitted": -0.3343337511097314
+    },
+    {
+      "truth_gamma_ah": -0.4,
+      "detection_fraction": 0.38,
+      "wilson95": [
+        0.3269187519503734,
+        0.4361155611435176
+      ],
+      "median_fitted": -0.39466889185198073
+    },
+    {
+      "truth_gamma_ah": -0.45,
+      "detection_fraction": 0.5966666666666667,
+      "wilson95": [
+        0.540271195643406,
+        0.6506178299198485
+      ],
+      "median_fitted": -0.44679107069847124
+    },
+    {
+      "truth_gamma_ah": -0.5,
+      "detection_fraction": 0.81,
+      "wilson95": [
+        0.7617962081751881,
+        0.8503651496655933
+      ],
+      "median_fitted": -0.4934088347930331
+    },
+    {
+      "truth_gamma_ah": -0.55,
+      "detection_fraction": 0.9266666666666666,
+      "wilson95": [
+        0.8914686583942826,
+        0.9510760061607713
+      ],
+      "median_fitted": -0.5447848025199828
+    },
+    {
+      "truth_gamma_ah": -0.6,
+      "detection_fraction": 0.9666666666666667,
+      "wilson95": [
+        0.9397381741959452,
+        0.9817950526611452
+      ],
+      "median_fitted": -0.583977553414534
+    }
+  ],
+  "thresholds": {
+    "MDE80_abs_gamma_ah": 0.49765625,
+    "MDE90_abs_gamma_ah": 0.5385714285714286
+  },
+  "observed_reference": {
+    "observed_cross_species_median_gamma_ah": -0.31822603579776854,
+    "observed_permutation_p": 0.0947,
+    "observed_abs_effect_relative_to_MDE80": 0.6394601143377775,
+    "observed_abs_effect_relative_to_MDE90": 0.5908604321997822
+  },
+  "decision": {
+    "study_well_powered_for_abs_common_effect_0_50_or_larger": true,
+    "study_well_powered_for_abs_common_effect_0_30": false,
+    "absence_or_equivalence_established": false
+  },
+  "interpretation": [
+    "Under the frozen real observation layout and the realized 9999-permutation rejection rule, a common gamma_AH of about -0.50 is detected in approximately 80% of repeated datasets and about -0.54 in 90%.",
+    "A common effect around -0.30 is detected only about 5% of the time, so the observed non-confirmatory effect at -0.318 cannot be interpreted as evidence that effects of that magnitude are absent.",
+    "The analysis does make the negative result informative against very large cross-species effects: effects around -0.50 to -0.55 would usually have been detected.",
+    "This is a retrospective operating characteristic, not an equivalence test or confidence bound."
+  ]
+}
