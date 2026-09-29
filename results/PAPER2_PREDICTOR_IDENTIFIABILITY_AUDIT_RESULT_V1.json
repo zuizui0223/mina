@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-predictor-identifiability-audit-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36520909490,
+    "artifact_id": 11013355767,
+    "artifact_digest": "sha256:754db1e8afc8c9e1d8b6adaf190b7e577724272646ee0fb03ca6f3ebe8283f09",
+    "head_sha": "197ad1d05eda08fdb0b0069779e2a6cb29b6bf2d",
+    "conclusion": "success"
+  },
+  "sources": {
+    "forcing_support_artifact_id": 11012045716,
+    "corrected_breeding_options_artifact_id": 11012935837,
+    "terrain_artifact_id": 11001148358,
+    "no_demographic_outcomes_opened": true
+  },
+  "sample": {
+    "source_coupling_units": 103,
+    "complete_predictor_units": 101,
+    "complete_by_species": {
+      "ADPE": 40,
+      "CHPE": 33,
+      "GEPE": 28
+    },
+    "dropped_for_missing_predictors_by_species": {
+      "ADPE": 2,
+      "CHPE": 0,
+      "GEPE": 0
+    }
+  },
+  "species": {
+    "ADPE": {
+      "forcing_level": "ccamlr",
+      "selected_groups": [
+        "48.1",
+        "88.1"
+      ],
+      "group_complete_units": [
+        15,
+        25
+      ],
+      "group_unique_habitat_complex_values": [
+        5,
+        7
+      ],
+      "quadrant_counts": {
+        "++": 14,
+        "+-": 10,
+        "-+": 4,
+        "--": 12
+      },
+      "crossover_condition_number": 3.7245034545265803,
+      "interaction_vif": 2.260114520450759,
+      "secondary_combined_condition_number": 5.221706699390373,
+      "group_eta_squared": {
+        "A": 0.17509291342503125,
+        "H": 0.008541824614607025,
+        "R": 0.4099973239612697
+      },
+      "crossover_eligible": true
+    },
+    "CHPE": {
+      "forcing_level": "apbp_region",
+      "selected_groups": [
+        "Central-west Antarctic Peninsula",
+        "South Shetland Islands"
+      ],
+      "group_complete_units": [
+        18,
+        15
+      ],
+      "group_unique_habitat_complex_values": [
+        7,
+        4
+      ],
+      "quadrant_counts": {
+        "++": 9,
+        "+-": 9,
+        "-+": 6,
+        "--": 9
+      },
+      "crossover_condition_number": 4.0259531634964345,
+      "interaction_vif": 1.249747691592674,
+      "secondary_combined_condition_number": 4.993846567971268,
+      "group_eta_squared": {
+        "A": 0.44315576509551285,
+        "H": 0.03236326109391124,
+        "R": 0.1339500008177488
+      },
+      "crossover_eligible": true
+    },
+    "GEPE": {
+      "forcing_level": "apbp_region",
+      "selected_groups": [
+        "Central-west Antarctic Peninsula",
+        "South Shetland Islands"
+      ],
+      "group_complete_units": [
+        21,
+        7
+      ],
+      "group_unique_habitat_complex_values": [
+        8,
+        3
+      ],
+      "quadrant_counts": {
+        "++": 9,
+        "+-": 8,
+        "-+": 4,
+        "--": 7
+      },
+      "crossover_condition_number": 4.315078449106893,
+      "interaction_vif": 1.1914440165907512,
+      "secondary_combined_condition_number": 4.722205535372426,
+      "group_eta_squared": {
+        "A": 0.19940190090723586,
+        "H": 0.1111111111111111,
+        "R": 0.002141004269458565
+      },
+      "crossover_eligible": true
+    }
+  },
+  "decision": {
+    "program_level_crossover_primary": true,
+    "primary_crossover_model": "group + A + H + A:H",
+    "secondary_combined_model": "group + A + H + R + A:H",
+    "main_effect_order": "A, H and R are each estimated in predeclared single-predictor-plus-structure models before the crossover model; the four-term combined model remains secondary.",
+    "forcing_scale_sensitivity_required": "Refit the coupling analysis with a species-wide shared factor using all frozen bridged units; site-trait tests use complete predictor cases. This guards the 95% regional eligibility choice."
+  },
+  "interpretation": [
+    "The A x H crossover is structurally estimable in all three species before demographic outcomes are opened.",
+    "All three species have full-rank crossover design matrices, interaction VIF below 5, condition number below 10, and at least three units in every species-level A/H quadrant.",
+    "Chinstrap breeding-space amount is moderately structured by the two selected APBP regions (eta-squared 0.443), so group structure is mandatory for the A main effect.",
+    "The corrected missingness treatment removes two unsupported Adelie predictor rows from the primary regional coupling cohort rather than treating them as ecological zeroes."
+  ]
+}

@@ -1,0 +1,52 @@
+name: paper2-predictor-identifiability-audit
+
+on:
+  push:
+    branches: [analysis/paper2-predictor-identifiability-v1]
+    paths:
+      - "scripts/audit_paper2_predictor_identifiability.py"
+      - "tests/test_paper2_predictor_identifiability.py"
+      - "contracts/PAPER2_PREDICTOR_IDENTIFIABILITY_AUDIT_V1.json"
+      - ".github/workflows/paper2-predictor-identifiability-audit.yml"
+  pull_request:
+    paths:
+      - "scripts/audit_paper2_predictor_identifiability.py"
+      - "tests/test_paper2_predictor_identifiability.py"
+      - "contracts/PAPER2_PREDICTOR_IDENTIFIABILITY_AUDIT_V1.json"
+      - ".github/workflows/paper2-predictor-identifiability-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - name: Run predictor-identifiability unit tests
+        run: python -m unittest tests.test_paper2_predictor_identifiability -v
+      - name: Download frozen source artifacts
+        run: |
+          mkdir -p build/forcing build/options build/terrain
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+          gh run download 36490682577 -n antarctic-penguin-terrain-atlas-v1 -D build/terrain
+      - name: Audit predictor identifiability
+        run: |
+          python scripts/audit_paper2_predictor_identifiability.py \
+            --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --breeding-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --terrain-csv build/terrain/ANTARCTIC_PENGUIN_TERRAIN_ATLAS_V1.csv \
+            --out-json build/PAPER2_PREDICTOR_IDENTIFIABILITY_AUDIT_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-predictor-identifiability-audit-v1
+          path: build/PAPER2_PREDICTOR_IDENTIFIABILITY_AUDIT_RESULT_V1.json

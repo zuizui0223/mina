@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-predictor-identifiability-audit-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_predictor_design_gate_frozen_before_demographic_outcomes",
+  "paper_lane": "Paper 2",
+  "purpose": "Determine whether the predeclared breeding-space x breeding-option crossover is structurally estimable within each species after frozen forcing-cohort selection and predictor missingness, without using demographic count magnitudes.",
+  "source_artifacts": {
+    "forcing_support": {
+      "workflow_run_id": 36517700369,
+      "artifact_id": 11012045716,
+      "digest": "sha256:d3938bde3301711e495ef1da6af89ccc201c129a0d397c5d28e029445bf4306f"
+    },
+    "breeding_options": {
+      "workflow_run_id": 36520281872,
+      "artifact_id": 11012935837,
+      "digest": "sha256:aa287d9b1bffefc0d8cc9320097d77617711f5a0ac2c8bacdf84f3f71fa03595"
+    },
+    "terrain": {
+      "workflow_run_id": 36490682577,
+      "artifact_id": 11001148358,
+      "digest": "sha256:93b4c6e7fd02519edc20baebb74847991dfb2168e75361884219a55f184d98d5"
+    }
+  },
+  "transforms": {
+    "A": "z within species of log1p(mapped_ice_free_area_ha_2000m), complete cases only",
+    "H": "z within species of tier2_richness_2000m, complete cases only",
+    "R": "z within species of log1p(elevation_relief_p90_p10_m_2000m), complete cases only",
+    "interaction": "A * H",
+    "group": "CCAMLR for ADPE; APBP region for CHPE and GEPE, inherited from Gate 2C"
+  },
+  "crossover_gate": {
+    "min_complete_units_per_species": 25,
+    "min_complete_units_per_selected_group": 5,
+    "min_unique_habitat_complex_values_per_selected_group": 3,
+    "min_units_in_each_species_level_AH_quadrant": 3,
+    "max_crossover_condition_number": 10,
+    "max_interaction_vif": 5,
+    "require_full_rank": true
+  },
+  "interpretation_rules": [
+    "The crossover model contains group structure, A, H and A x H. R is tested separately first and enters only the secondary combined model, preserving the frozen predictor modeling order.",
+    "The secondary combined A + H + R + A x H condition number is reported but does not determine primary crossover eligibility.",
+    "Group eta-squared for A, H and R is descriptive confounding information, not an outcome-based selection rule.",
+    "If any species fails its crossover gate, the interaction is not used as a program-level primary cross-species claim; species-specific eligible results may remain bounded secondary evidence."
+  ],
+  "boundary": [
+    "No demographic count magnitude, trend direction, fitted loading or site-trait association is used.",
+    "The four zero-AEI-cell sites remain missing for A and H and are not converted to ecological zeroes.",
+    "No alternative buffer radius or new predictor is searched to rescue the interaction."
+  ]
+}
