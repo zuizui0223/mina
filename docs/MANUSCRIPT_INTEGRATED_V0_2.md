@@ -71,7 +71,7 @@ A=z{log(1+mathrm{ice	ext{-}free area})},
 and breeding-option heterogeneity was
 
 [
-H=z(mathrm{Tier 2 Habitat Complex richness}).
+H=z\\{\\mathrm{Tier\\ 2\\ Habitat\\ Complex\\ richness}\\}.
 ]
 
 The focal interaction was (A	imes H). Terrain relief was frozen as a separate predictor but was not used to rescue the primary interaction.
@@ -93,13 +93,13 @@ lambda_i =
 +b_i,
 ]
 
-where (alpha_{b(i)}) is the frozen spatial-block effect and (b_i) is a residual site loading deviation. Site-trait terms were centered within the frozen spatial block. The latent annual forcing had mean zero and site loadings were identified to a species-wide mean of one.
+where \\(\\alpha_{b(i)}\\) is the frozen spatial-block effect and \\(b_i\\) is a residual site loading deviation. Site-trait terms were centered within the frozen spatial block. The latent annual forcing had mean zero and site loadings were identified to a species-wide mean of one.
 
 The process model used log1p abundance and propagated endpoint observation variance into interval likelihoods. Pre-outcome synthetic recovery required the estimator to recover null, simple-buffering and crossover scenarios under the real observation schedule. Species-wide forcing, the focal interaction and the cross-species median estimand all passed the frozen recovery rules before real outcomes were opened.
 
 #### Primary hypothesis and inference
 
-The primary paper-level statistic was the median (gamma_{AH}) across the three species. The directional alternative was more negative. We used 9,999 permutations. Within each species and frozen spatial block, the complete site-trait tuple ((A,H,A	imes H)) was permuted among site time series, singleton blocks were fixed, and the complete V3 model—including forcing, drift, process variance, block intercepts and residual loadings—was re-estimated.
+The primary paper-level statistic was the median \\(\\gamma_{AH}\\) across the three species. The directional alternative was more negative. We used 9,999 permutations. Within each species and frozen spatial block, the complete site-trait tuple ((A,H,A	imes H)) was permuted among site time series, singleton blocks were fixed, and the complete V3 model—including forcing, drift, process variance, block intercepts and residual loadings—was re-estimated.
 
 The paper-level p-value was
 
@@ -112,20 +112,20 @@ Species-specific interaction p-values used the same one-sided rule and were Holm
 A full point-estimate option–fragmentation crossover required
 
 [
-gamma_{AH}<0,
+\\gamma_{AH}<0,
 ]
 
 [
-gamma_H-gamma_{AH}geq 0
+\\gamma_H-\\gamma_{AH}\\geq 0
 ]
 
-at (A=-1) SD, and
+at \\(A=-1\\) SD, and
 
 [
-gamma_H+gamma_{AH}<0
+\\gamma_H+\\gamma_{AH}<0
 ]
 
-at (A=+1) SD.
+at \\(A=+1\\) SD.
 
 #### Prespecified secondary and robustness analyses
 
