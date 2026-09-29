@@ -17,7 +17,9 @@
     "scheme": "Within each species and frozen V3 spatial block, permute A among site time series; refit the complete A-only V3 model for every permutation.",
     "p_value": "(1 + number gamma_A_perm <= gamma_A_observed)/(9999+1)",
     "species_multiplicity": "Holm adjustment across ADPE, CHPE, GEPE",
-    "cross_species_p_value": "none; concordance is descriptive only"
+    "cross_species_p_value": "none; concordance is descriptive only",
+    "global_index_rng": "For species index s and global permutation index k, use numpy SeedSequence([20260929,k,s,101]); the extra fixed tag separates H1 permutations from the primary A:H permutation stream.",
+    "shards": 20
   },
   "H_only_secondary": {
     "model": "same V3 engine with A and A:H fixed to zero",
