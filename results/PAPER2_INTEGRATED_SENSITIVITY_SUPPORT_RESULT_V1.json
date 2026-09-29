@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-integrated-sensitivity-support-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36536438468,
+    "artifact_id": 11018956783,
+    "artifact_digest": "sha256:af8580dd0417b54f02308f650e7f35eed6e6fe7bb5b87db60d36aa2be19452d1",
+    "head_sha": "c38e1e8ff7b6dace2bd4a713aa881bd8ddf243e4",
+    "conclusion": "success"
+  },
+  "boundary": {
+    "no_real_count_magnitudes_opened": true
+  },
+  "primary_scale_by_species": {
+    "ADPE": "ccamlr",
+    "CHPE": "apbp_region",
+    "GEPE": "species_wide"
+  },
+  "min_supported_units_per_species": 20,
+  "modes": {
+    "exclude_unknown": {
+      "ADPE": {
+        "candidate_units": 40,
+        "supported_units": 39,
+        "coverage_fraction": 0.975,
+        "recovery_testable": true,
+        "dropped_units": [
+          "ADPE|PCHA"
+        ]
+      },
+      "CHPE": {
+        "candidate_units": 33,
+        "supported_units": 29,
+        "coverage_fraction": 0.8787878787878788,
+        "recovery_testable": true,
+        "dropped_units": [
+          "CHPE|DUPT",
+          "CHPE|FORT",
+          "CHPE|RENI",
+          "CHPE|SPRI"
+        ]
+      },
+      "GEPE": {
+        "candidate_units": 29,
+        "supported_units": 28,
+        "coverage_fraction": 0.9655172413793104,
+        "recovery_testable": true,
+        "dropped_units": [
+          "GEPE|SHIR"
+        ]
+      }
+    },
+    "ground_only": {
+      "ADPE": {
+        "candidate_units": 40,
+        "supported_units": 14,
+        "coverage_fraction": 0.35,
+        "recovery_testable": false,
+        "interpretation": "coverage-limited; do not classify as robustness failure"
+      },
+      "CHPE": {
+        "candidate_units": 33,
+        "supported_units": 25,
+        "coverage_fraction": 0.7575757575757576,
+        "recovery_testable": true
+      },
+      "GEPE": {
+        "candidate_units": 29,
+        "supported_units": 23,
+        "coverage_fraction": 0.7931034482758621,
+        "recovery_testable": true
+      }
+    }
+  },
+  "decision": {
+    "exclude_unknown_recovery_required_for": [
+      "ADPE",
+      "CHPE",
+      "GEPE"
+    ],
+    "ground_only_recovery_required_for": [
+      "CHPE",
+      "GEPE"
+    ],
+    "ground_only_coverage_limited_for": [
+      "ADPE"
+    ],
+    "no_filter_broadening_allowed": true
+  }
+}
