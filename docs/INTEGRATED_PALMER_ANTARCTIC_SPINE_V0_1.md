@@ -112,6 +112,14 @@ retained separately as an adjustment stratum in the loading model:
 - Adélie: CCAMLR block;
 - chinstrap/gentoo: APBP region.
 
+**Important interpretation boundary:** the species-wide factor is an
+identifiability/model-resolution decision, not evidence that biological forcing
+is literally synchronized at the full species-range scale. Finer regional
+factors were rejected by pre-outcome recovery because they could not be
+reliably identified from the frozen temporal layout. The manuscript must not
+turn that fallback into an ecological result about the spatial scale of
+synchrony.
+
 ### Primary island-architecture test
 
 At the frozen 2 km scale:
@@ -405,6 +413,7 @@ Do not:
 - interpret process SD ecologically;
 - use phenotype results as rescue evidence;
 - present the latent species-wide factor as a specific climate mechanism.
+- interpret the retained species-wide factor as evidence for species-wide biological synchrony.
 
 The pending MDE and radius-null diagnostics may refine the strength of the
 negative/scale interpretation, but they cannot change the frozen primary
