@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-chick-productivity-size-null-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_frozen_before_num_chicks_access",
+  "prerequisites": [
+    "contracts/PALMER_PREEXTINCTION_CHICK_SUCCESS_V1.json",
+    "contracts/PALMER_CHICK_SEASON_KEY_RESOLUTION_V1.json"
+  ],
+  "question": "Within the same Palmer island and breeding season, do larger Adelie breeding groups produce more chicks per breeding pair than expected under equal per-pair productivity?",
+  "biological_hypothesis": "Positive density dependence in reproductive output is expected under social facilitation or size-dependent protection, whereas equal per-pair productivity predicts chick totals proportional to breeding-pair counts.",
+  "analysis_frame": {
+    "rows": "Use outcome-bearing chick rows that pass the frozen five-island, positive-pair and study-derived season-key rules and match an adult-census colony transition in the same island and season.",
+    "risk_set": "island x study-derived breeding season",
+    "minimum_colonies": 3,
+    "no_imputation": true,
+    "no_colony_code_merging": true
+  },
+  "observed_statistic": {
+    "size": "Within each island-season, z-standardize log1p adult-census breeding pairs.",
+    "productivity": "num_chicks / chick-dataset num_breeding_pairs.",
+    "within_set_slope": "OLS slope of productivity on standardized adult-census size; because size is mean-zero this equals sum(z_size * productivity) / sum(z_size^2).",
+    "joint_statistic": "Mean within-set slope with equal weight per island-season.",
+    "expected_direction": "positive"
+  },
+  "neutral_model": {
+    "family": "conditional proportional Poisson / multinomial",
+    "conditioning": "Within each island-season hold fixed observed total chicks C and chick-dataset breeding-pair denominators d_i.",
+    "allocation": "Draw (C_1,...,C_k) ~ Multinomial(C, p_i=d_i/sum d_i).",
+    "meaning": "All breeding pairs have equal expected chick productivity; colony size affects expected chick count only through the number of pairs.",
+    "statistic_per_draw": "Recompute productivity C_i/d_i and the same equal-weight mean within-set slope."
+  },
+  "inference": {
+    "joint_draws": 100000,
+    "seed": 20260942,
+    "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05,
+    "support": "Observed joint slope > 0 and p <= 0.05."
+  },
+  "sensitivities": {
+    "chick_denominator_size": "Repeat size predictor using z(log1p chick-dataset breeding pairs)) instead of the November adult-census size; require the same sign for a strong result.",
+    "exclude_litchfield": "Repeat after excluding Litchfield Island.",
+    "prior_count_ge2": "Repeat after requiring adult-census breeding pairs >= 2.",
+    "year_balance": "Report per-island mean slopes and leave-one-island-out joint slopes."
+  },
+  "interpretation": {
+    "if_supported": "Consistent with supra-proportional reproductive performance of larger breeding groups, a stronger signature of positive density dependence than extinction order alone.",
+    "if_not_supported": "Do not invoke social facilitation from the small-first extinction sequence; retain concentration as demographic reorganization unless another independent mechanism test succeeds."
+  },
+  "boundaries": [
+    "This test cannot distinguish social facilitation from correlated habitat quality, predation or other size-associated colony properties.",
+    "Do not replace the proportional multinomial null with a more favorable distribution after opening num_chicks.",
+    "Report this test regardless of whether it agrees with the simpler chicks-per-pair permutation gradient."
+  ]
+}
