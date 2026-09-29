@@ -11,6 +11,9 @@ from scripts.simulate_paper2_observation_recovery import (
     estimate_accuracy_scales,
     estimate_method_offset,
     evaluate_observation_recovery,
+    fit_observation_calibration,
+    fit_observation_calibration_fast,
+    prepare_observation_recovery_design,
     run_observation_audit,
     simulate_observation_records,
     validate_frozen_support,
@@ -71,6 +74,44 @@ class ObservationEstimatorTests(unittest.TestCase):
             sigma2plus=np.log(1.25),seed=77
         )
         self.assertEqual(a["log_observed"].tolist(),b["log_observed"].tolist())
+
+
+class FastEstimatorEquivalenceTests(unittest.TestCase):
+    def test_fast_estimator_matches_reference_estimator(self):
+        rows=[]
+        for g in range(12):
+            group=f"q{g}"
+            species=("ADPE","CHPE","GEPE")[g%3]
+            rows.extend([
+                {"group_id":group,"species_id":species,"vantage_family":"direct","accuracy_group":"1"},
+                {"group_id":group,"species_id":species,"vantage_family":"image_based","accuracy_group":"1"},
+                {"group_id":group,"species_id":species,"vantage_family":"direct","accuracy_group":"2-5"},
+                {"group_id":group,"species_id":species,"vantage_family":"image_based","accuracy_group":"2-5"},
+            ])
+        metadata=pd.DataFrame(rows)
+        sim=simulate_observation_records(
+            metadata,
+            delta_image=np.log(1.15),
+            sigma1=np.log(1.05),
+            sigma2plus=np.log(1.25),
+            seed=91,
+        )
+        slow=fit_observation_calibration(sim)
+        design=prepare_observation_recovery_design(metadata)
+        fast=fit_observation_calibration_fast(
+            sim["log_observed"].to_numpy(dtype=float),design
+        )
+        self.assertAlmostEqual(slow["delta_image"],fast["delta_image"],places=12)
+        self.assertAlmostEqual(
+            slow["accuracy"]["1"]["sigma"],
+            fast["accuracy"]["1"]["sigma"],
+            places=12,
+        )
+        self.assertAlmostEqual(
+            slow["accuracy"]["2-5"]["sigma"],
+            fast["accuracy"]["2-5"]["sigma"],
+            places=12,
+        )
 
 
 class MonteCarloTests(unittest.TestCase):
