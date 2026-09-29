@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-terrain-main-recovery-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_real_R_main_execution",
+  "parent": "contracts/PAPER2_TERRAIN_LIFE_HISTORY_V1.json",
+  "purpose": "Verify that the one-trait V3 hierarchical loading estimator can recover the already-prespecified terrain main effect on the exact 41/34/29 primary frames before any gamma_R value is computed.",
+  "estimator": {
+    "loading_model": "lambda_i = 1 + alpha_block[i] + gamma_R * R_centered_within_block[i] + b_i",
+    "forcing": "species-wide latent forcing",
+    "spatial_blocks": {"ADPE": "CCAMLR", "CHPE": "APBP region", "GEPE": "APBP region"},
+    "observation_model": "same frozen image offset, accuracy variance and same-season collapse machinery as V3",
+    "process_profile": "same process-SD profile update as V3",
+    "loading_residual_floor": 0.05
+  },
+  "simulation": {
+    "replicates_per_scenario": 100,
+    "scenarios": {
+      "null": {"gamma_R": 0.0},
+      "terrain_effect": {"gamma_R": -0.25}
+    },
+    "forcing_sd": 0.08,
+    "loading_sd": 0.15,
+    "process_sd": 0.04,
+    "drift_mean": -0.01,
+    "drift_sd": 0.01,
+    "delta_image": "log(1.15)",
+    "sigma_accuracy_1": "log(1.05)",
+    "sigma_accuracy_2plus": "log(1.25)"
+  },
+  "gate_per_species": {
+    "terrain_effect_bias": "abs(median(gamma_R_hat) - (-0.25)) <= 0.10",
+    "terrain_effect_sign": "fraction(gamma_R_hat < 0) >= 0.90",
+    "null_center": "abs(median(null gamma_R_hat)) <= 0.05",
+    "null_contains_zero": "q05(null) <= 0 <= q95(null)"
+  },
+  "unlock": "Real R-main coefficients may be computed only if all four checks pass for all three species.",
+  "boundaries": [
+    "Do not relax simulation truths or thresholds after a failed gate.",
+    "Do not substitute the A/H/A:H three-coefficient estimator for the frozen R-only estimator.",
+    "A recovery pass validates estimability, not an ecological terrain effect."
+  ]
+}
