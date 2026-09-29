@@ -94,6 +94,61 @@ def select_level(level_summaries: dict[str, dict], unit_ids: set[str]) -> str | 
     return None
 
 
+def select_modeling_level(
+    level_summaries: dict[str, dict],
+    unit_ids: set[str],
+    min_coverage: float = 0.95,
+) -> dict:
+    """Choose the finest estimable multi-group level for the coupling model."""
+    target = {str(v) for v in unit_ids}
+    if not target:
+        return {
+            "level": None,
+            "coverage_fraction": 0.0,
+            "qualifying_groups": [],
+            "covered_units": [],
+            "excluded_units": [],
+        }
+
+    for level in ("apbp_region", "ccamlr"):
+        groups = [
+            g for g in level_summaries.get(level, {}).get("groups", [])
+            if g.get("qualifies")
+        ]
+        covered = {
+            str(v)
+            for group in groups
+            for v in group.get("unit_ids", [])
+        }
+        fraction = len(covered & target) / len(target)
+        if fraction >= min_coverage and len(groups) >= 2:
+            return {
+                "level": level,
+                "coverage_fraction": fraction,
+                "qualifying_groups": [str(g.get("group")) for g in groups],
+                "covered_units": sorted(covered & target),
+                "excluded_units": sorted(target - covered),
+            }
+
+    sw_groups = level_summaries.get("species_wide", {}).get("groups", [])
+    if len(sw_groups) == 1 and sw_groups[0].get("qualifies"):
+        return {
+            "level": "species_wide",
+            "coverage_fraction": 1.0,
+            "qualifying_groups": [str(sw_groups[0].get("group"))],
+            "covered_units": sorted(target),
+            "excluded_units": [],
+        }
+
+    return {
+        "level": None,
+        "coverage_fraction": 0.0,
+        "qualifying_groups": [],
+        "covered_units": [],
+        "excluded_units": sorted(target),
+    }
+
+
 
 def validate_frozen_cohort(candidate_units: int, bridged_units: int) -> None:
     """Fail closed if the previously frozen Gate 0 / Gate 2A cohort drifts."""
@@ -188,9 +243,11 @@ def summarize_forcing_support(
         }
 
         selected = select_level(levels, target)
+        modeling = select_modeling_level(levels, target, 0.95)
         species_result[species_id] = {
             "n_units": len(target),
             "selected_level": selected,
+            "modeling_eligibility": modeling,
             "levels": levels,
         }
 
@@ -317,6 +374,10 @@ def audit(root: Path) -> dict:
         sp: support["species"][sp]["selected_level"]
         for sp in SPECIES
     }
+    modeling = {
+        sp: support["species"][sp]["modeling_eligibility"]
+        for sp in SPECIES
+    }
     return {
         "schema_version": 1,
         "audit_id": "mina-paper2-forcing-support-audit-v1",
@@ -330,8 +391,10 @@ def audit(root: Path) -> dict:
         },
         "support": support,
         "decision": {
-            "selected_forcing_level_by_species": selected,
-            "all_species_forcing_identifiable": all(v is not None for v in selected.values()),
+            "strict_complete_coverage_level_by_species": selected,
+            "modeling_eligibility_by_species": modeling,
+            "primary_coupling_units": int(sum(len(v["covered_units"]) for v in modeling.values())),
+            "all_species_forcing_identifiable": all(v["level"] is not None for v in modeling.values()),
             "selection_rule": (
                 "choose APBP region, else CCAMLR, else species-wide; "
                 "a level is selectable only when every frozen unit belongs "
