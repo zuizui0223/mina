@@ -687,10 +687,14 @@ def evaluate_integrated_configuration(
             observation["sigma2plus"]["relative_bias"]
         )<=0.30,
     }
+    observation_gate={
+        "passes":bool(all(observation_checks.values())),
+        "checks":observation_checks,
+    }
     gate={
         "passes":bool(
             all(species_checks.values())
-            and all(observation_checks.values())
+            and observation_gate["passes"]
             and finite==total
         ),
         "species_pass":species_checks,
@@ -710,6 +714,7 @@ def evaluate_integrated_configuration(
             "sigma2plus":sigma2_truth,
         },
         "observation":observation,
+        "observation_gate":observation_gate,
         "species":species,
         "gate":gate,
     }
