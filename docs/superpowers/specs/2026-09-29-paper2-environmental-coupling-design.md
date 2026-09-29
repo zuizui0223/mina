@@ -242,9 +242,25 @@ A region x species forcing group is independently estimable only if it meets all
 - at least 10 seasons in which >=50% of its retained units are temporally covered, where a unit is covered in a season only when that season lies between its first and last observed season in the frozen window;
 - at least 3 units spanning both the first and last thirds of 1980–2025.
 
-The audit chooses the finest grouping level that satisfies the rule without inspecting counts.
+The strict Gate 2C diagnostic first evaluated complete coverage: a level counted as complete only when every frozen bridged unit belonged to a qualifying group. That diagnostic is retained as an audit result, but it exposed an outcome-blind design problem: one or two isolated series can force an otherwise well-supported multi-region species onto a species-wide factor.
 
-If APBP and CCAMLR groupings both fail for a species, use a species-wide shared year factor and do not invent a new geography after outcomes are opened.
+Before demographic count magnitudes were opened, the modeling-eligibility rule was therefore refined and separately frozen:
+
+- choose the finest APBP or CCAMLR level for which qualifying groups jointly contain at least **95%** of that species' frozen bridged units;
+- require at least **two qualifying groups** at that regional level;
+- units outside those estimable groups remain available for secondary long-run growth/trend analyses but are excluded from the shared-forcing `lambda` estimand;
+- if neither APBP nor CCAMLR satisfies the rule, use species-wide forcing only if its support gate qualifies;
+- the 95% threshold reuses the atlas program's pre-existing completeness tolerance and cannot be changed after abundance outcomes are opened.
+
+The outcome-blind Gate 2C support audit selected:
+
+- **Adélie:** CCAMLR, 42/44 units (95.5%), groups 48.1 and 88.1; `PGEO` and `WPEC` excluded from coupling only.
+- **Chinstrap:** APBP region, 33/34 units (97.1%), Central-west Antarctic Peninsula and South Shetland Islands; `STNK` excluded from coupling only.
+- **Gentoo:** APBP region, 28/29 units (96.6%), Central-west Antarctic Peninsula and South Shetland Islands; `STNK` excluded from coupling only.
+
+The primary shared-forcing coupling cohort is therefore **103/107 units (96.3%)**. No count magnitude, trend direction, or site-trait association was used to choose these scales.
+
+Contract: `contracts/PAPER2_FORCING_MODEL_ELIGIBILITY_V1.json`.
 
 ## 9. Observation model
 
