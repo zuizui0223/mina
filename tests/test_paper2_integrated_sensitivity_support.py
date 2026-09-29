@@ -1,6 +1,11 @@
 import unittest
 
-import pandas as pd
+try:
+    import pandas as pd
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest(
+        "integrated sensitivity support tests require pandas"
+    ) from exc
 
 from scripts.audit_paper2_integrated_sensitivity_support import (
     filter_process_support,
