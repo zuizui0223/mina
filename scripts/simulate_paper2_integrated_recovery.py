@@ -660,10 +660,10 @@ def evaluate_integrated_configuration(
         simple=_scenario_gamma_summary(species_records[sp]["simple_buffering"])
         checks={
             "factor_median":all(v["median_corr"]>=0.70 for v in groups.values()),
-            "factor_q05":all(v["q05_corr"]>=0.25 for v in groups.values()),
-            "crossover_bias":abs(crossover["median_gamma_ah"]+0.35)<=0.12,
+            "factor_q05":all(v["q05_corr"]>=0.30 for v in groups.values()),
+            "crossover_bias":abs(crossover["median_gamma_ah"]+0.35)<=0.10,
             "crossover_sign":crossover["negative_gamma_ah_fraction"]>=0.90,
-            "null_center":abs(null["median_gamma_ah"])<=0.06,
+            "null_center":abs(null["median_gamma_ah"])<=0.05,
             "null_contains_zero":(
                 null["q05_gamma_ah"]<=0.0<=null["q95_gamma_ah"]
             ),
