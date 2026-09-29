@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-integrated-palmer-antarctic-claim-boundary-v1",
+  "date": "2026-09-29",
+  "status": "integrated_claim_boundary_frozen_after_paper2_inference_and_diagnostics",
+  "working_title": "Local reorganization without a transferable island-resilience rule in Antarctic penguins",
+  "core_claim": "Island individuality is visible in local demographic endpoints and within-island reorganization, but static breeding-island architecture does not provide a confirmed, transferable Antarctic-wide rule for demographic resilience.",
+  "part_I_Palmer": {
+    "system": "five neighboring Adelie penguin breeding islands near Palmer Station, 1991-2017",
+    "shared_decline": "PC1 of standardized log abundance = 96.4%",
+    "primary_phenomenon": "decline accompanied by concentration among within-island breeding components",
+    "effective_colony_number": {
+      "Cormorant": "3.54 -> 2.86 (-19%)",
+      "Humble": "4.62 -> 2.28 (-51%)",
+      "Litchfield": "5.78 -> 1.00 before local extinction (-83%)"
+    },
+    "frozen_null_evidence": {
+      "Cormorant_p": 0.038,
+      "Humble_plus1_p": 0.00001,
+      "Litchfield_plus1_p": 0.00001,
+      "joint_plus1_p": 0.00001
+    },
+    "allowed_interpretation": "Regional decline has a within-island spatial-demographic architecture; breeders become progressively concentrated as island populations contract."
+  },
+  "part_II_Antarctic": {
+    "frozen_frame": {
+      "bridged_units": 107,
+      "records": 2100,
+      "predictor_complete_units": {
+        "ADPE": 41,
+        "CHPE": 34,
+        "GEPE": 29
+      },
+      "window": "1980-2025 breeding seasons"
+    },
+    "primary_interaction": {
+      "species_gamma_AH": {
+        "ADPE": -0.303571047069412,
+        "CHPE": -1.1843982732708647,
+        "GEPE": -0.31822603579776854
+      },
+      "cross_species_median": -0.31822603579776854,
+      "permutation_B": 9999,
+      "one_sided_p": 0.0947,
+      "decision": "non_confirmatory"
+    },
+    "simple_A_buffering": {
+      "gamma_A": {
+        "ADPE": -0.2804028980046804,
+        "CHPE": -0.20047316201865784,
+        "GEPE": -0.07057389241675813
+      },
+      "Holm_p": {
+        "ADPE": 0.4278,
+        "CHPE": 0.6134,
+        "GEPE": 0.6134
+      },
+      "decision": "unsupported"
+    },
+    "detectable_effect": {
+      "MDE80_abs_gamma_AH": 0.49765625,
+      "MDE90_abs_gamma_AH": 0.5385714285714286,
+      "interpretation": "The study had little detection probability for a common interaction around 0.30 but would usually detect a very large common interaction around 0.50-0.55. This is not an equivalence test."
+    },
+    "radius_diagnostic": {
+      "observed_medians": {
+        "km1": -0.0576551287747558,
+        "km2": -0.31822603579776854,
+        "km5": 0.1067807758917031
+      },
+      "joint_sign_switch_plus_contrast_probability": 0.081,
+      "decision": "Do not call the radius reversal an ecological scale-dependence discovery; report sensitivity/instability compatible with the block-permutation null."
+    },
+    "observation_timing": "Exact-date and <=14-day image-offset calibrations preserve all three negative primary gamma_AH signs and the chinstrap/gentoo point-estimate crossover classification.",
+    "scale_trait_sensitivity": "The point-estimate interaction weakens at 1 km, reverses at 5 km, and is partly metric-dependent; none of these sensitivity variants replaces the frozen primary analysis."
+  },
+  "integrated_conclusion": [
+    "Local within-island reorganization is strongly supported.",
+    "A transferable macroecological buffering rule based on static island architecture is not supported.",
+    "The Paper 2 null is informative against very large common effects but not against moderate effects of the observed magnitude.",
+    "Apparent spatial-radius reversal is not unusual enough under the frozen joint null to be treated as biological scale dependence.",
+    "Local ecological organization can be real at one hierarchical level without being transportable information at another."
+  ],
+  "prohibited_claims": [
+    "Island architecture generally buffers Antarctic penguin populations.",
+    "A general option-fragmentation crossover is established across Pygoscelis.",
+    "The 1/2/5 km reversal proves ecological scale dependence.",
+    "The Paper 2 null proves the true interaction is zero or smaller than MDE80.",
+    "Species-wide latent forcing identifies a specific climate mechanism.",
+    "Process-SD differences have an ecological interpretation.",
+    "Palmer and Antarctic-wide datasets are pooled as if they were one homogeneous analysis."
+  ],
+  "manuscript_structure": {
+    "part_I": "Palmer discovery: common decline, divergent local endpoints, within-island concentration",
+    "bridge": "Does local island organization scale into a transferable predictor of resilience?",
+    "part_II": "Antarctic-wide confirmatory test: negative/non-confirmatory interaction, unsupported simple buffering",
+    "diagnostic_close": "MDE shows limits of the null; radius null shows apparent scale reversal is not established biologically",
+    "discussion": "hierarchical information: local reorganization without macroecological transportability"
+  },
+  "odsp_role": "Intellectual origin only: apparent island information can belong to species, regional, island, or within-island levels. ODSP terminology need not appear in the manuscript."
+}
