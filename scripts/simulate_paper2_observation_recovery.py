@@ -117,6 +117,10 @@ def build_frozen_observation_metadata(obs:pd.DataFrame)->pd.DataFrame:
         "species_id":cohort["species_id"].astype(str),
         "season":cohort["season"].astype(int),
         "vantage_family":cohort["vantage"].map(_vantage_family),
+        "vantage_raw":cohort["vantage"].map(
+            lambda v: "missing" if pd.isna(v)
+            else str(v).strip().lower().replace("_"," ")
+        ),
         "accuracy_group":cohort["accuracy"].map(_accuracy_group),
     })
     out["group_id"]=(
@@ -124,7 +128,7 @@ def build_frozen_observation_metadata(obs:pd.DataFrame)->pd.DataFrame:
     )
     columns=[
         "group_id","site_id","species_id","season",
-        "vantage_family","accuracy_group",
+        "vantage_family","vantage_raw","accuracy_group",
     ]
     return out[columns].sort_values(
         ["species_id","site_id","season","vantage_family","accuracy_group"]
