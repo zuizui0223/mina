@@ -1,0 +1,76 @@
+{
+  "schema_version": 3,
+  "result_id": "mina-paper2-spatial-adjusted-v3-result",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36541204673,
+    "artifact_id": 11021047196,
+    "artifact_digest": "sha256:1c14a89607c33d3a58609f3f4045d15aebb9e22bed3cceebd0797485f2c2364d",
+    "conclusion": "success"
+  },
+  "decision": {
+    "spatially_adjusted_core_passed": true,
+    "counts_may_be_opened": false,
+    "no_real_count_magnitudes_opened": true
+  },
+  "forcing_scale_by_species": {
+    "ADPE": "species_wide",
+    "CHPE": "species_wide",
+    "GEPE": "species_wide"
+  },
+  "trait_blocks": {
+    "ADPE": {
+      "88.1": 25,
+      "48.1": 15,
+      "58.4.1": 1
+    },
+    "CHPE": {
+      "Central-west Antarctic Peninsula": 18,
+      "South Shetland Islands": 15,
+      "Elephant Island": 1
+    },
+    "GEPE": {
+      "Central-west Antarctic Peninsula": 21,
+      "South Shetland Islands": 7,
+      "Elephant Island": 1
+    }
+  },
+  "species": {
+    "ADPE": {
+      "passes": true,
+      "forcing_median_corr": 0.8471053562536863,
+      "forcing_q05_corr": 0.6516167291585278,
+      "crossover_median_gamma_ah": -0.3563520019065244,
+      "crossover_negative_fraction": 0.92,
+      "simple_buffering_median_gamma_a": -0.27395133140070405,
+      "simple_buffering_negative_fraction": 0.94,
+      "null_median_gamma_ah": 0.013611327795028973
+    },
+    "CHPE": {
+      "passes": true,
+      "forcing_median_corr": 0.8694496271953595,
+      "forcing_q05_corr": 0.7217902695759476,
+      "crossover_median_gamma_ah": -0.3586568660415085,
+      "crossover_negative_fraction": 1,
+      "simple_buffering_median_gamma_a": -0.24926761984563142,
+      "simple_buffering_negative_fraction": 0.99,
+      "null_median_gamma_ah": -0.002086103953378239
+    },
+    "GEPE": {
+      "passes": true,
+      "forcing_median_corr": 0.8932774913394342,
+      "forcing_q05_corr": 0.7963973120206086,
+      "crossover_median_gamma_ah": -0.31980287560428766,
+      "crossover_negative_fraction": 0.99,
+      "simple_buffering_median_gamma_a": -0.2350012412370608,
+      "simple_buffering_negative_fraction": 0.98,
+      "null_median_gamma_ah": 0.011998819607633177
+    }
+  },
+  "interpretation": [
+    "Species-wide shared forcing with predeclared spatial loading-adjustment blocks passes every frozen recovery check in all three species.",
+    "The island-trait effect is therefore structurally recoverable as a within-block comparison rather than a between-region contrast.",
+    "Local process-variance ecology remains unopened because process SD frequently reaches the profiling floor in some scenarios.",
+    "Real outcomes remain locked pending observation-source robustness."
+  ]
+}
