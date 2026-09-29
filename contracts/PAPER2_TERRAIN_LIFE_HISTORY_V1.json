@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-terrain-life-history-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_any_real_terrain_R_coefficient_is_computed",
+  "provenance_class": {
+    "terrain_predictor": "pre-outcome primary predictor; frozen in PAPER2_OUTCOME_BLIND_PREDICTOR_SET_V1",
+    "R_main_model": "pre-outcome staged model; explicitly specified in PAPER2_REAL_OUTCOME_EXECUTION_V1",
+    "primary_penguin_counts": "already opened for the A x H analysis",
+    "life_history_order": "new secondary biological prediction frozen now, after A x H outcomes but before any R-main fit or gamma_R value is opened"
+  },
+  "question": "Does frozen 2-km local topographic relief alter site coupling to shared species-wide demographic forcing, and is that terrain dependence ordered among Pygoscelis species as predicted from breeding-life-history sensitivity?",
+  "predictor": {
+    "field": "elevation_relief_p90_p10_m_2000m",
+    "transform": "z(log1p(field)) within each species primary analysis frame",
+    "source": "ANTARCTIC_PENGUIN_TERRAIN_ATLAS_V1.csv from REMA v2.0 500 m",
+    "coverage": "122/122 candidate sites have valid 2-km terrain support",
+    "ecological_boundary": "relief is terrain heterogeneity, not a direct measurement of slope, wind exposure, snow-free ground or occupied nest microhabitat"
+  },
+  "primary_frame": {
+    "rule": "Use exactly the frozen V3 A/H predictor-complete units so terrain coefficients are directly comparable to existing Paper 2 fits.",
+    "expected_units": {"ADPE": 41, "CHPE": 34, "GEPE": 29},
+    "forcing": "species-wide latent forcing for all three species",
+    "spatial_adjustment": {"ADPE": "CCAMLR block", "CHPE": "APBP region", "GEPE": "APBP region"}
+  },
+  "model": {
+    "loading": "lambda_i = 1 + alpha_block[i] + gamma_R * R_centered_within_block[i] + b_i",
+    "constraints": [
+      "mean residual loading deviation b_i = 0 within each frozen spatial block",
+      "site-count-weighted mean block intercept = 0",
+      "species-wide mean loading remains anchored at 1"
+    ],
+    "observation_model": "identical frozen observation calibration and interval-variance treatment used by the real V3 fit",
+    "fit_order": "fit R alone; do not condition on A, H or A:H in the primary R-main fit"
+  },
+  "inference": {
+    "species_statistic": "gamma_R",
+    "species_null": "Within each species and frozen V3 spatial block, permute the complete scalar R value among site time series and refit the R-only hierarchical loading model.",
+    "permutations": 9999,
+    "seed": 20260946,
+    "species_test": "two-sided permutation p because the original pre-outcome terrain predictor did not freeze a signed gamma_R prediction",
+    "multiplicity": "Holm-adjust the three species-specific two-sided p-values"
+  },
+  "secondary_life_history_prediction": {
+    "status": "post-primary-outcome but pre-R-fit; biological secondary test",
+    "prediction": "Terrain buffering is strongest in Adelie, intermediate in chinstrap, and weakest in gentoo: gamma_R_ADPE < gamma_R_CHPE < gamma_R_GEPE, with gamma_R_ADPE < 0.",
+    "ordered_score": "min(-gamma_R_ADPE, gamma_R_CHPE - gamma_R_ADPE, gamma_R_GEPE - gamma_R_CHPE)",
+    "support_requirement": "observed ordered_score > 0 and upper-tail block-permutation p <= 0.05 using the same independent within-species block permutations as the species tests",
+    "wording_if_supported": "species-ordered terrain dependence consistent with the life-history prediction",
+    "wording_if_failed": "no support for a life-history ordering of terrain dependence"
+  },
+  "sensitivities": {
+    "terrain_metric": "replace 2-km relief with 2-km elevation SD; sensitivity only because r=0.99067 with relief",
+    "radius": "1 km and 5 km relief; sensitivity only and never replace 2 km primary",
+    "terrain_only_expanded_frame": "where the frozen forcing/observation cohort and terrain are available, fit a terrain-only expanded frame as a coverage sensitivity; never replace the 41/34/29 primary frame",
+    "observation_source": "exclude-unknown source sensitivity where recovered support permits"
+  },
+  "decision_boundaries": [
+    "Do not call relief a snow-clearing mechanism without an independent snow/wind exposure analysis.",
+    "Do not use the already-observed A x H result to alter the terrain transform, radius, block structure or species order.",
+    "Do not select a subset of species after seeing gamma_R.",
+    "The pre-outcome R-main test and the newly frozen species-order test must be reported separately.",
+    "A terrain effect on loading is response filtering, not evidence that terrain changes mean population growth unless the separately staged mean-growth analysis supports that claim."
+  ]
+}
