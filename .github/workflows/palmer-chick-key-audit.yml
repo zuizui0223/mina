@@ -1,0 +1,55 @@
+name: palmer-chick-key-audit
+
+on:
+  push:
+    branches:
+      - validation/palmer-chick-key-audit-v1
+    paths:
+      - "contracts/PALMER_CHICK_KEY_AUDIT_V1.json"
+      - "scripts/fetch_lter_chick_metadata.py"
+      - "src/mina/chick_key_audit.py"
+      - "tests/test_chick_key_audit.py"
+      - ".github/workflows/palmer-chick-key-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run synthetic audit test
+        run: pytest -q tests/test_chick_key_audit.py
+      - name: Fetch outcome-blind chick metadata
+        run: python scripts/fetch_lter_chick_metadata.py build/chick_metadata.csv
+      - name: Audit row-key semantics
+        run: |
+          python -m mina.chick_key_audit \
+            --metadata build/chick_metadata.csv \
+            --out build/chick_key_audit.json
+      - name: Print outcome-blind audit receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          x = json.loads(Path("build/chick_key_audit.json").read_text())
+          print("status=", x["status"])
+          print("outcome_accessed=", x["outcome_column_accessed"])
+          print("usable_rows=", x["n_usable_metadata_rows"])
+          print("duplicate_keys=", x["coarse_duplicate_key_count"])
+          print("candidate_keys=", json.dumps(
+              x["candidate_key_collisions"], sort_keys=True
+          ))
+          for g in x["coarse_duplicate_groups"]:
+              print("duplicate_group=", json.dumps(g, sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-chick-key-audit
+          path: |
+            build/chick_metadata.csv
+            build/chick_key_audit.json
