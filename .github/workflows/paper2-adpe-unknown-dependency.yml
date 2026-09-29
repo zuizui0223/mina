@@ -2,6 +2,10 @@ name: paper2-adpe-unknown-dependency
 on:
   push:
     branches: [analysis/paper2-adpe-unknown-dependency]
+  pull_request:
+    paths:
+      - "scripts/audit_paper2_adpe_unknown_dependency.py"
+      - ".github/workflows/paper2-adpe-unknown-dependency.yml"
   workflow_dispatch:
 jobs:
   audit:
