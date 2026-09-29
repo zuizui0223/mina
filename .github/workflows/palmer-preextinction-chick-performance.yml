@@ -1,0 +1,50 @@
+name: palmer-preextinction-chick-performance
+
+on:
+  push:
+    branches:
+      - analysis/palmer-colony-extinction-hazard-v1
+    paths:
+      - "src/mina/preextinction_chick.py"
+      - "tests/test_preextinction_chick.py"
+      - "scripts/fetch_palmer_chick_snapshot.py"
+      - "contracts/PALMER_PREEXTINCTION_CHICK_PERFORMANCE_V1.json"
+      - ".github/workflows/palmer-preextinction-chick-performance.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run tests
+        run: pytest -q tests/test_preextinction_chick.py
+      - name: Fetch frozen inputs
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_palmer_chick_snapshot.py build/adelie_chicks_snapshot.csv
+      - name: Run pre-extinction chick test
+        run: |
+          python -m mina.preextinction_chick             --adult-census build/adelie_census.csv             --chicks build/adelie_chicks_snapshot.csv             --out build/preextinction_chick.json             --simulations 100000             --seed 20260930
+      - name: Print receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/preextinction_chick.json").read_text())
+          print("join=",json.dumps(x["join_inventory"],sort_keys=True))
+          print("primary=",json.dumps(x["primary_multinomial_null"],sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          print("observed=",json.dumps(x["observed"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-preextinction-chick-performance
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks_snapshot.csv
+            build/preextinction_chick.json
