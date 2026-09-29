@@ -125,22 +125,17 @@ The primary ecological target is not simply whether `mu` is less negative.
 
 ## 6. Primary island-filter model
 
-Within each species, site coupling is modeled as:
+Within each species, the frozen modeling order is deliberately staged rather than placing every term in one primary model.
 
-```text
-lambda_i
-  = 1
-  + gamma_A * A_i
-  + gamma_H * H_i
-  + gamma_R * R_i
-  + gamma_AH * A_i * H_i
-  + u_region
-  + u_site
-```
+1. Fit each frozen site predictor separately against coupling, with the selected forcing-group structure:
+   - `group + A`
+   - `group + H`
+   - `group + R`
+2. Test the single predeclared ecological interaction in a dedicated crossover model:
+   - `group + A + H + A:H`
+3. Fit `group + A + H + R + A:H` only as a **secondary combined synthesis** if diagnostics remain acceptable.
 
-The three frozen predictors remain the only co-primary site variables.
-
-The `A x H` interaction uses only already-frozen predictors and is frozen **before** count magnitudes are opened.
+The three frozen predictors remain the only co-primary site variables. The `A x H` interaction uses only already-frozen predictors and was frozen **before** count magnitudes were opened. This ordering preserves the earlier predictor-set contract: main effects are not allowed to disappear inside a more complex combined model before their standalone relationships are reported.
 
 ### H1 — breeding-space buffering
 
@@ -261,6 +256,52 @@ The outcome-blind Gate 2C support audit selected:
 The primary shared-forcing coupling cohort is therefore **103/107 units (96.3%)**. No count magnitude, trend direction, or site-trait association was used to choose these scales.
 
 Contract: `contracts/PAPER2_FORCING_MODEL_ELIGIBILITY_V1.json`.
+
+### Gate 2D — predictor identifiability — PASSED
+
+Before demographic outcomes were opened, the selected coupling cohort was joined
+to the frozen 2 km site predictors and audited as a design matrix only.
+
+The corrected breeding-option missingness rule leaves **101 complete predictor
+units** for the primary regional coupling analysis:
+
+- Adélie: **40**
+- chinstrap: **33**
+- gentoo: **28**
+
+The predeclared crossover matrix `group + A + H + A:H` is full rank in all
+three species. Interaction VIF is **2.26 / 1.25 / 1.19** and condition number is
+**3.72 / 4.03 / 4.32** for Adélie / chinstrap / gentoo. Every species has at
+least four units in each A/H sign quadrant, and each selected forcing group
+retains at least three distinct Habitat Complex richness values.
+
+Therefore the option–fragmentation crossover remains a structurally estimable
+primary interaction. This gate says only that the interaction can be estimated;
+it does not say that the ecological effect exists.
+
+Receipt:
+`results/PAPER2_PREDICTOR_IDENTIFIABILITY_AUDIT_RESULT_V1.json`.
+
+### Forcing-scale sensitivity — FROZEN
+
+The 95% regional-eligibility rule is not treated as invisible analyst
+flexibility. An outcome-blind threshold audit shows that the regional choices
+are unchanged at 90% and 95% coverage, whereas a 97.5% or 100% completeness
+requirement sends all three species to a species-wide forcing factor.
+
+The primary analysis therefore retains the frozen regional forcing definitions,
+but a **species-wide shared-forcing fit is mandatory** using all 107 bridged
+units, with **104 complete predictor cases** (Adélie 41, chinstrap 34, gentoo
+29). The observation model, priors, site predictors, transforms and time window
+must remain identical.
+
+A response-filter conclusion is called scale-robust only when the regional and
+species-wide fits agree qualitatively on the focal site-trait effect and do not
+reverse the A × H crossover. If they disagree materially, the result is reported
+as **forcing-scale dependent** rather than choosing the more favorable scale.
+
+Contract:
+`contracts/PAPER2_FORCING_SCALE_SENSITIVITY_V1.json`.
 
 ## 9. Observation model
 
@@ -400,12 +441,24 @@ The headline island-ecology claim is justified only by proposition 2, especially
 
 ## 16. Immediate next implementation step
 
-Run Gate 2C using timestamps and geography only.
+Gate 2C and the outcome-blind predictor-identifiability gate are complete.
+The next gate is **synthetic model recovery**.
 
-Do **not** open demographic count magnitudes until Gate 2C freezes:
+Do **not** open real demographic count magnitudes until a demographic-response
+contract freezes:
 
-- forcing group definitions;
-- fallback hierarchy actually selected for each species;
-- exact state-space demographic likelihood;
-- priors and observation-error treatment;
-- reporting rules for `lambda`, `mu`, the `A x H` interaction and local process variance.
+- the exact latent population process and factor evolution;
+- the count observation likelihood, including zero counts;
+- priors and identification constraints for `F`, `lambda`, process variance
+  and the direct-versus-image observation offset;
+- the accuracy-1 versus accuracy-2–5 observation-scale structure;
+- the staged site-predictor model order defined above;
+- the mandatory species-wide forcing sensitivity;
+- simulation scenarios under the null, simple buffering, crossover and
+  decoupling-with-local-variance cases;
+- predeclared recovery/calibration criteria that determine whether the
+  `lambda` and `A x H` estimands are reliable enough to open real outcomes.
+
+The recovery simulation may use the **real observation schedule and metadata**
+but must generate synthetic abundance/count values. Real count magnitudes remain
+closed until the recovery gate passes.
