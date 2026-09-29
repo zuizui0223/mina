@@ -17,7 +17,13 @@
       "num_chicks",
       "census_time"
     ],
-    "focal_islands": ["CHR", "COR", "HUM", "LIT", "TOR"]
+    "focal_islands": [
+      "CHR",
+      "COR",
+      "HUM",
+      "LIT",
+      "TOR"
+    ]
   },
   "question": "Within the same Palmer island and breeding season, do smaller Adelie breeding groups produce fewer chicks per breeding pair than expected under equal per-pair reproductive success?",
   "biological_hypothesis": {
@@ -29,7 +35,7 @@
   "row_eligibility": {
     "num_breeding_pairs": "finite and > 0",
     "num_chicks": "finite and >= 0",
-    "duplicate_rule": "Fail closed if more than one usable row exists for the same island, colony_code and season_start_year.",
+    "duplicate_rule": "If multiple usable rows share island, colony_code and season_start_year, retain the row with the largest num_chicks; break ties by largest num_breeding_pairs, then lexicographically smallest census_time. This rule is frozen before duplicate values are inspected and follows the general census practice of using the maximum count when multiple counts exist.",
     "no_imputation": true,
     "no_code_merging": true
   },
@@ -71,7 +77,8 @@
     "pairs_at_least_2": "Require >=2 breeding pairs.",
     "pairs_at_least_5": "Require >=5 breeding pairs.",
     "dirichlet_multinomial_cv10": "Replace fixed multinomial probabilities by a Dirichlet-multinomial with concentration A=100 around proportional probabilities before allocating chicks.",
-    "dirichlet_multinomial_cv20": "Same with concentration A=25."
+    "dirichlet_multinomial_cv20": "Same with concentration A=25.",
+    "exclude_duplicate_keys": "Repeat the primary analysis after dropping every colony-season key that had more than one usable source row, regardless of which row would be retained."
   },
   "decision_rule": {
     "support": "Primary observed Z > 0 and one-sided Monte Carlo p <= 0.05.",
@@ -83,6 +90,7 @@
     "Do not claim that colony_code is a mapped physical patch.",
     "Do not infer predator causality without an independent predation measure.",
     "Do not switch from chicks per pair to another reproductive endpoint after seeing this result.",
-    "Report the proportional null and overdispersion sensitivities regardless of outcome."
+    "Report the proportional null and overdispersion sensitivities regardless of outcome.",
+    "Report the number and identity count of duplicate colony-season keys and the exclude-duplicate-keys sensitivity."
   ]
 }
