@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-concentration-chick-output-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_concentration_to_chick_output_join",
+  "provenance_note": "A prior chick-success coherence workflow on another branch fetched the chick dataset but failed before producing an outcome receipt. This contract freezes a distinct island-season concentration/output analysis before its join is executed; it is not claimed as globally outcome-blind to every use of the source dataset.",
+  "question": "As declining Palmer Adelie populations concentrate breeders into fewer effective colony-code groups, is subsequent island-level chick production higher, lower, or unchanged after accounting for the number of breeding pairs and shared year effects?",
+  "biological_discrimination": {
+    "quality_refuge": "If concentration reallocates breeders toward relatively better nesting locations, chick output should be higher than expected at a given adult breeding-pair total.",
+    "performance_erosion": "If concentration accompanies deterioration of the remaining breeding system, chick output should be lower than expected at a given adult breeding-pair total.",
+    "no_coherent_effect": "If concentration is mainly a demographic rearrangement without a consistent reproductive-performance consequence, the adjusted association should be weak or unstable."
+  },
+  "adult_predictor_source": {
+    "dataset": "AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "season": "calendar year of November breeding census",
+    "focal_islands": ["CHR", "COR", "HUM", "LIT", "TOR"]
+  },
+  "chick_response_source": {
+    "dataset_id": "AdeliePenguinAdultandChickCounts",
+    "historical_doi_used_by_existing_fetch_contract": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "response": "num_chicks only for the primary outcome",
+    "season_mapping": "January chick census calendar year minus 1",
+    "reason_for_denominator_free_primary": "Avoid making the primary reproductive endpoint a ratio that reuses breeding-pair counts."
+  },
+  "adult_island_season_predictors": {
+    "adult_total_pairs": "sum November num_breeding_pairs over all reported colony codes",
+    "effective_colony_number": "1 / sum(s_i^2), where s_i is the share of adult pairs in each positive colony code",
+    "concentration": "-log(effective_colony_number), so larger values mean stronger concentration",
+    "largest_colony_share": "maximum positive colony share; sensitivity only"
+  },
+  "chick_island_season_response": {
+    "total_chicks": "sum finite nonnegative num_chicks over January colony rows",
+    "primary_transformation": "log1p(total_chicks)",
+    "coverage": "Represented-adult fraction is calculated from the November adult census using the set of colony codes present in the chick dataset for that island-season.",
+    "primary_eligibility": "adult_total_pairs > 0, total_chicks observed, effective colony number defined, and represented-adult fraction >= 0.90",
+    "no_imputation": true
+  },
+  "primary_model": {
+    "formula": "log1p(total_chicks) ~ concentration + log1p(adult_total_pairs) + island fixed effects + season fixed effects",
+    "estimand": "coefficient of concentration",
+    "quality_refuge_direction": "positive",
+    "performance_erosion_direction": "negative"
+  },
+  "inference": {
+    "null": "No temporal alignment between concentration and adjusted chick output within islands beyond adult abundance and shared season effects.",
+    "permutation": "Independently circularly shift the concentration series within each island by a uniformly sampled nonzero offset over that island's ordered eligible seasons; refit the frozen model.",
+    "n_permutations": 20000,
+    "seed": 20260929,
+    "test": "two-sided Monte Carlo p with +1 correction",
+    "alpha": 0.05
+  },
+  "sensitivities": {
+    "coverage_095": "Repeat with represented-adult fraction >= 0.95.",
+    "exclude_litchfield": "Repeat without Litchfield.",
+    "largest_share": "Replace concentration with logit-transformed largest-colony share using epsilon 1e-6.",
+    "ratio_endpoint": "Use total_chicks / adult_total_pairs as a descriptive reproductive-success sensitivity with island and season fixed effects.",
+    "leave_one_island_out": "Report primary concentration coefficient after dropping each island in turn."
+  },
+  "decision_rule": {
+    "quality_refuge_supported": "primary concentration coefficient > 0 and two-sided permutation p <= 0.05, with the same positive sign in at least 4 of 5 leave-one-island-out fits",
+    "performance_erosion_supported": "primary concentration coefficient < 0 and two-sided permutation p <= 0.05, with the same negative sign in at least 4 of 5 leave-one-island-out fits",
+    "otherwise": "No coherent reproductive-performance consequence of concentration is supported."
+  },
+  "interpretation_boundaries": [
+    "A concentration coefficient is an association and does not identify nest quality, predation, snow or social facilitation as the cause.",
+    "Colony codes are not assumed to be mapped physical subcolonies.",
+    "Do not use chicks-per-pair as the primary endpoint.",
+    "Do not change the 0.90 coverage gate, concentration metric, fixed effects or circular-shift test after chick outcomes are joined.",
+    "A null result is informative: it would separate real demographic concentration from a consistent reproductive-performance mechanism."
+  ]
+}
