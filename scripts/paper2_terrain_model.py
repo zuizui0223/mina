@@ -24,7 +24,7 @@ PRIMARY_TERRAIN_FIELD = "elevation_relief_p90_p10_m_2000m"
 
 def _zscore(values: pd.Series) -> pd.Series:
     x = pd.to_numeric(values, errors="raise").astype(float)
-    sd = float(x.std(ddof=1))
+    sd = float(x.std(ddof=0))
     if not math.isfinite(sd) or sd <= 0:
         raise ValueError("zero/nonfinite terrain variance")
     return (x - float(x.mean())) / sd
