@@ -1,0 +1,43 @@
+name: paper2-observation-recovery
+
+on:
+  push:
+    branches: [analysis/paper2-observation-recovery-v1]
+    paths:
+      - "scripts/simulate_paper2_observation_recovery.py"
+      - "tests/test_paper2_observation_recovery.py"
+      - "contracts/PAPER2_OBSERVATION_RECOVERY_V1.json"
+      - ".github/workflows/paper2-observation-recovery.yml"
+  pull_request:
+    paths:
+      - "scripts/simulate_paper2_observation_recovery.py"
+      - "tests/test_paper2_observation_recovery.py"
+      - "contracts/PAPER2_OBSERVATION_RECOVERY_V1.json"
+      - ".github/workflows/paper2-observation-recovery.yml"
+  workflow_dispatch:
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas pyreadr
+      - name: Run observation-recovery tests
+        run: python -m unittest tests.test_paper2_observation_recovery -v
+      - name: Fetch pinned mapppdr
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Run observation recovery on frozen metadata
+        run: |
+          python scripts/simulate_paper2_observation_recovery.py \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/PAPER2_OBSERVATION_RECOVERY_RESULT_V1.json \
+            --replicates 200
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-observation-recovery-v1
+          path: build/PAPER2_OBSERVATION_RECOVERY_RESULT_V1.json

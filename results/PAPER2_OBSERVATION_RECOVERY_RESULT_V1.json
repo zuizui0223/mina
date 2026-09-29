@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-observation-recovery-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36525707031,
+    "artifact_id": 11014174238,
+    "artifact_digest": "sha256:3afe8190371e91f582610108d423a4a8bbccffb638fc5c5cb62ce3f9fa08b2db",
+    "head_sha": "b8eef47b51ff1ed9b1b28365ed4c1dbaebbb4757",
+    "conclusion": "success"
+  },
+  "metadata": {
+    "bridged_units": 107,
+    "records": 2100,
+    "season_groups": 1721,
+    "repeated_groups": 273,
+    "direct_records": 1889,
+    "image_based_records": 149,
+    "unknown_vantage_records": 62,
+    "mixed_direct_image_groups": 41,
+    "mixed_direct_image_groups_by_species": {
+      "ADPE": 9,
+      "CHPE": 10,
+      "GEPE": 22
+    }
+  },
+  "recovery": {
+    "replicates": 200,
+    "support": {
+      "mixed_direct_image_groups": 41,
+      "accuracy_1_repeat_groups": 196,
+      "accuracy_1_residual_df": 296,
+      "accuracy_2_5_repeat_groups": 9,
+      "accuracy_2_5_residual_df": 9
+    },
+    "offset": {
+      "truth_log": 0.13976194237515863,
+      "median_log": 0.13867353729218143,
+      "bias_log": -0.0010884050829771952,
+      "q05_log": 0.10540336536669008,
+      "q95_log": 0.16998273376458603,
+      "correct_sign_fraction": 1,
+      "species_diagnostic_median_log": {
+        "ADPE": 0.13557651492044798,
+        "CHPE": 0.13785905056921022,
+        "GEPE": 0.13868419041739757
+      }
+    },
+    "null_offset": {
+      "median_log": -0.0011420995397889433,
+      "q05_log": -0.03563747841385623,
+      "q95_log": 0.030301804025988557
+    },
+    "accuracy": {
+      "1": {
+        "truth_sigma_log": 0.04879016416943205,
+        "median_sigma_log": 0.049019527230490016,
+        "relative_bias": 0.004701010233568096
+      },
+      "2-5": {
+        "truth_sigma_log": 0.22314355131420976,
+        "median_sigma_log": 0.21846410492550067,
+        "relative_bias": -0.020970565186174437
+      }
+    },
+    "finite_estimate_fraction": 1,
+    "all_frozen_checks_passed": true
+  },
+  "decision": {
+    "observation_layer_recoverable": true,
+    "shared_image_offset_primary": true,
+    "accuracy_structure_primary": "accuracy 1 versus pooled accuracy 2-5",
+    "unknown_vantage": "retain without method offset; mandatory exclusion sensitivity",
+    "raw_vantage_offsets": "sensitivity only",
+    "no_real_demographic_magnitudes_opened": true,
+    "next_gate": "Gate 2E-C integrated synthetic process-plus-observation recovery"
+  },
+  "interpretation": [
+    "The actual frozen observation metadata structure can recover a moderate shared image-method offset without using real count magnitudes.",
+    "The coarse accuracy-1 versus pooled-2-5 scale structure is recoverable under the frozen repeated-observation layout despite only nine pooled-2-5 repeated groups.",
+    "Species-specific image offsets remain diagnostics only; the primary observation offset is shared across species as frozen in Gate 2B.",
+    "Passing this gate validates the observation nuisance layer in isolation; the process and observation layers must still pass an integrated synthetic recovery before real counts are opened."
+  ]
+}
