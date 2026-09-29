@@ -177,6 +177,30 @@ per-site landmass resolution an unsuitable critical path.
 Add terrain and melt/climate traits to the same frozen 122-site set and the
 same 2 km primary scale before demographic outcomes are opened.
 
+### Gate 1E — primary predictor set — FROZEN
+
+Before demographic outcomes are opened, Paper 2 now has three co-primary
+site-side ecological dimensions at the frozen 2 km scale:
+
+1. **Breeding-space amount** — log1p(mapped ice-free area).
+2. **Breeding-option heterogeneity** — Habitat Complex (Tier 2) richness.
+3. **Terrain heterogeneity** — log1p(relief p90–p10).
+
+All are standardized within modeling datasets after the frozen transformation.
+Tier 2 Shannon diversity is sensitivity-only because it correlates **r = 0.856**
+with richness. Elevation SD is sensitivity-only because it correlates
+**r = 0.991** with relief. Ice-free area and Habitat Complex richness remain
+distinct (**r = 0.240**).
+
+No additional co-primary static melt, temperature, precipitation, wind or
+insolation variables are opened: those abiotic dimensions already contribute
+to the AEI Habitat Complex classification. Time-varying environmental forcing
+belongs in the demographic model rather than in the frozen site-architecture
+trait block.
+
+Contract:
+`contracts/PAPER2_OUTCOME_BLIND_PREDICTOR_SET_V1.json`.
+
 ### Gate 2 — outcome contract
 
 Only after the atlas is frozen, define:
