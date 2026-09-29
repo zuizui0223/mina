@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-v3-source-sensitivity-recovery",
+  "date": "2026-09-29",
+  "status": "pre_outcome_stacked_on_spatial_v3",
+  "parent": "contracts/PAPER2_SPATIALLY_ADJUSTED_HIERARCHICAL_RECOVERY_V3.json",
+  "support": {
+    "exclude_unknown": {
+      "ADPE": 40,
+      "CHPE": 30,
+      "GEPE": 28
+    },
+    "ground_only": {
+      "ADPE": "coverage_limited_14",
+      "CHPE": 26,
+      "GEPE": 23
+    }
+  },
+  "calibration": "full 2100-record synthetic metadata; filter only process reconstruction records",
+  "scenarios": {
+    "null": {
+      "gamma_a": 0,
+      "gamma_ah": 0
+    },
+    "crossover": {
+      "gamma_a": 0,
+      "gamma_ah": -0.35
+    }
+  },
+  "replicates": 100,
+  "gate": {
+    "forcing_median": 0.7,
+    "forcing_q05": 0.3,
+    "crossover_bias": 0.1,
+    "crossover_negative_fraction": 0.9,
+    "null_abs_median": 0.05,
+    "null_interval_contains_zero": true
+  },
+  "unlock": "exclude_unknown ADPE/CHPE/GEPE and ground-only CHPE/GEPE must pass; ADPE ground-only is coverage-limited and nonblocking.",
+  "boundary": [
+    "No threshold relaxation after the V2 88/100 Adelie failure.",
+    "No real count magnitude is opened.",
+    "Use the exact V3 spatial-adjustment blocks."
+  ]
+}
