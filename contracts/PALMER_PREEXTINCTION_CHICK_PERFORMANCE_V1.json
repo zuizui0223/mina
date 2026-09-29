@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-preextinction-chick-performance-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_joining_chick_output_to_durable_extinction_labels",
+  "parent_result": "results/PALMER_COLONY_EXTINCTION_ZERO_BOUNDARY_AUDIT_RESULT_V1.json",
+  "question": "Do Palmer Adelie breeding groups that subsequently undergo durable colony-code extinction already show depressed chick production in the immediately preceding breeding season, after conditioning on their breeding-pair abundance and shared island-year reproductive conditions?",
+  "biological_hypothesis": {
+    "name": "pre-extinction reproductive-performance syndrome",
+    "prediction": "Within the same island and breeding season, colony codes that will be durably absent at the next breeding census produce fewer creched chicks than expected from their current breeding-pair abundance.",
+    "mechanistic_role": "This tests an upstream local-state signal before the stochastic zero boundary. It does not assume that one season of low chick production causes next-year disappearance, because recruits enter the breeding population years later."
+  },
+  "sources": {
+    "adult_census": {
+      "dataset": "Palmer LTER AdeliePenguinCensus",
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+      "role": "frozen durable-extinction labels, prior breeding-pair counts and island-year risk sets"
+    },
+    "chick_snapshot": {
+      "edi_package": "knb-lter-pal.88.8",
+      "entity_id": "b4062890db09a72628786650dacfbf1f",
+      "public_mirror_repository": "robitalec/2023-CSEE-reproducible-workflows-workshop",
+      "public_mirror_path": "raw-data/adelie-adult-chick-counts.csv",
+      "public_mirror_blob_sha": "60bda785762787dda0c16415fb1aa9a4360e974a",
+      "inventory_only_before_freeze": {
+        "rows": 1540,
+        "date_range": ["1992-01-26", "2021-01-26"],
+        "islands": ["CHR", "COR", "HUM", "LIT", "TOR"],
+        "duplicate_island_colony_season_keys": 4
+      },
+      "newer_reference": {
+        "edi_package": "knb-lter-pal.88.9",
+        "doi": "10.6073/PASTA/BB249FBFAA0208DE277E6BE62DE84858",
+        "coverage_description": "Adelie penguin colony-specific chick production, 1991-2024",
+        "role": "provenance/update target; do not silently mix revisions in the primary analysis"
+      }
+    }
+  },
+  "season_alignment": {
+    "chick_season_start_year": "calendar year(Date GMT) - 1",
+    "hazard_transition": "adult breeding-pair census at season t -> adult breeding-pair census at season t+1",
+    "chick_timing": "January chick count from breeding season t, after the adult census at t and before the adult census at t+1"
+  },
+  "chick_data_cleaning": {
+    "primary_uses": "Chicks only; the Adults field in the chick table is not used as the denominator or size predictor.",
+    "duplicate_rule": "For an island-colony-season key with multiple records, retain a single chick count only if all finite chick counts are exactly identical; otherwise exclude that key as ambiguous.",
+    "nonnegative_chicks_required": true,
+    "no_imputation": true,
+    "no_colony_code_merging": true,
+    "reason_for_external_adult_size": "Use the already-frozen November breeding-pair census for size so the test does not inherit duplicate or zero Adult fields from the January chick table."
+  },
+  "eligibility": {
+    "base": "Use the parent hazard primary transitions and durable-extinction definition without alteration.",
+    "joined_row": "Exact island + colony_code + season_start_year match to a unique cleaned chick count.",
+    "risk_set": "At least one durable-extinction event and at least one non-event with joined chick data in the same island-year; at least 2 joined colonies total.",
+    "minimum_informative_risk_sets": 5,
+    "fail_if_below_minimum": true
+  },
+  "size_conditioned_reproductive_null": {
+    "within_each_risk_set": "Condition on the observed total chicks C across joined at-risk colony codes.",
+    "equal_per_pair_productivity": "Expected allocation probability p_j = prior_breeding_pairs_j / sum prior_breeding_pairs over joined colonies.",
+    "sampling_null": "Draw chick counts jointly as Multinomial(C, p).",
+    "interpretation": "Under the null, every breeding pair has the same expected contribution to chick production within that island-season; differences arise only from finite count allocation."
+  },
+  "primary_statistic": {
+    "colony_performance_score": "Pearson residual r_j = (observed_chicks_j - C*p_j) / sqrt(max(C*p_j, 1e-12)).",
+    "risk_set_contrast": "mean r_j among durable-extinction events minus mean r_j among non-events.",
+    "cross_risk_set_statistic": "equal-weight mean of risk-set contrasts.",
+    "expected_direction": "negative"
+  },
+  "inference": {
+    "simulations": 100000,
+    "seed": 20260930,
+    "procedure": "For every simulation, independently draw a multinomial chick allocation within every informative risk set using the frozen size-conditioned null, recompute the same equal-weight cross-risk-set statistic, and compare with the observed statistic.",
+    "p_value": "one-sided lower-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05
+  },
+  "secondary_outputs": [
+    "number of matched colony-season rows, informative risk sets and matched durable-extinction events",
+    "event and non-event mean/median observed chicks",
+    "event and non-event mean Pearson performance residual",
+    "risk-set-specific observed contrasts",
+    "leave-one-island-out primary contrast and p value when estimable",
+    "same test excluding risk sets with total chicks < 10",
+    "same test using deviance residuals from the proportional multinomial expectation as a descriptive sensitivity"
+  ],
+  "decision_rule": {
+    "support": "Observed cross-risk-set reproductive-performance contrast < 0 and one-sided multinomial-null p <= 0.05.",
+    "strong": "Support plus negative leave-one-island-out contrast for at least 4 of the 5 islands where estimable.",
+    "no_support": "Otherwise do not claim a colony-level pre-extinction reproductive penalty."
+  },
+  "interpretation_boundaries": [
+    "A supported result would identify a local pre-extinction performance syndrome, not a causal effect of chick production on next-year adult occupancy.",
+    "Do not call low chick production an Allee effect without an independent nonlinear density test.",
+    "Do not attribute the syndrome specifically to snow, predation, food or disturbance without a separate predictor test.",
+    "The January chick census and November adult census share colony identifiers but are distinct life-stage observations; exact data provenance and duplicate exclusions must be reported.",
+    "The primary source revision is 88.8 because it is the accessible frozen snapshot. Revision 88.9 may be used only as a prespecified replication/update after the 88.8 primary result is frozen."
+  ]
+}
