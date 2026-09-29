@@ -1,8 +1,11 @@
 import unittest
 
+import pandas as pd
+
 from scripts.audit_paper2_forcing_support import (
     evaluate_group,
     select_level,
+    build_frozen_unit_rows,
     summarize_forcing_support,
     validate_frozen_cohort,
 )
@@ -102,6 +105,55 @@ class CohortAndAuditTests(unittest.TestCase):
             validate_frozen_cohort(151, 107)
         with self.assertRaises(ValueError):
             validate_frozen_cohort(152, 106)
+
+
+
+    def test_build_frozen_rows_reproduces_107_without_count_leakage(self):
+        gate0 = {"ADPE": 57, "CHPE": 46, "GEPE": 49}
+        bridged = {"ADPE": 44, "CHPE": 34, "GEPE": 29}
+        obs_rows = []
+        site_rows = []
+        unit_index = 0
+        for species_id in ("ADPE", "CHPE", "GEPE"):
+            for j in range(gate0[species_id]):
+                site_id = f"S{unit_index:03d}"
+                site_rows.append(
+                    {
+                        "site_id": site_id,
+                        "region": "R1",
+                        "ccamlr_id": "48.1",
+                    }
+                )
+                years = [1980, 1985, 1990, 1995, 2000]
+                seasons = (
+                    [1980, 1990, 2000, 2010, 2020]
+                    if j < bridged[species_id]
+                    else [1995, 2000, 2005, 2010, 2015]
+                )
+                for k, (year, season) in enumerate(zip(years, seasons)):
+                    obs_rows.append(
+                        {
+                            "site_id": site_id,
+                            "species_id": species_id,
+                            "type": "nests",
+                            "count": 100000 + unit_index * 10 + k,
+                            "year": year,
+                            "season": season,
+                        }
+                    )
+                unit_index += 1
+
+        rows = build_frozen_unit_rows(
+            pd.DataFrame(obs_rows),
+            pd.DataFrame(site_rows),
+        )
+        self.assertEqual(len(rows), 107)
+        by_species = {}
+        for row in rows:
+            by_species[row["species_id"]] = by_species.get(row["species_id"], 0) + 1
+            self.assertNotIn("count", row)
+            self.assertNotIn("abundance", row)
+        self.assertEqual(by_species, bridged)
 
     def test_missing_apbp_label_forces_coarser_complete_level(self):
         seasons = list(range(1980, 2026, 3))
