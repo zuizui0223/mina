@@ -1,0 +1,66 @@
+name: palmer-concentration-chick-success
+
+on:
+  push:
+    branches:
+      - analysis/palmer-colony-reproductive-performance-v1
+    paths:
+      - "scripts/fetch_lter_census.py"
+      - "scripts/fetch_lter_chick_counts.py"
+      - "src/mina/concentration_chick_success.py"
+      - "tests/test_concentration_chick_success.py"
+      - "contracts/PALMER_CONCENTRATION_CHICK_SUCCESS_V1.json"
+      - ".github/workflows/palmer-concentration-chick-success.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen synthetic tests
+        run: pytest -q tests/test_concentration_chick_success.py tests/test_colony_extinction_hazard.py
+      - name: Fetch frozen Palmer adult and chick censuses
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+      - name: Run concentration-chick-success analysis
+        run: |
+          python -m mina.concentration_chick_success \
+            --adult-census build/adelie_census.csv \
+            --chick-census build/adelie_chicks.csv \
+            --out build/palmer_concentration_chick_success.json \
+            --permutations 100000 \
+            --seed 20260930
+      - name: Print result receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/palmer_concentration_chick_success.json").read_text())
+          p=x["primary"]
+          print(
+              "primary",
+              "n=",p["n_rows"],
+              "beta_neff=",p["beta_neff"],
+              "p=",p["two_sided_p"],
+              "supported=",p["supported"],
+          )
+          print("first_difference=",json.dumps(x["sensitivities"]["first_difference"],sort_keys=True))
+          print("cor_hum=",json.dumps(x["sensitivities"]["cor_hum_only"],sort_keys=True))
+          print("all_five=",json.dumps(x["sensitivities"]["all_five_descriptive"],sort_keys=True))
+          print("range=",json.dumps(x["success_denominator_check"],sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          print("direction=",x["direction"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-concentration-chick-success
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/palmer_concentration_chick_success.json
