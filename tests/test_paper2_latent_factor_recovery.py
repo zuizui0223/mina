@@ -8,6 +8,7 @@ except ModuleNotFoundError as exc:
 
 from scripts.simulate_paper2_latent_factor_recovery import (
     build_scale_frame,
+    evaluate_scale,
     evaluate_recovery_gate,
     fit_unknown_factor,
     select_recovered_scale,
@@ -105,6 +106,18 @@ class LatentFactorRecoveryTests(unittest.TestCase):
                 {"passes": False},
             )
         )
+
+
+class MonteCarloSummaryTests(unittest.TestCase):
+    def test_evaluate_scale_is_deterministic_for_fixed_seed(self):
+        frame = dense_frame()
+        first = evaluate_scale(frame, replicates=4, seed_offset=700)
+        second = evaluate_scale(frame, replicates=4, seed_offset=700)
+        self.assertEqual(first, second)
+        self.assertIn("forcing_groups", first)
+        self.assertIn("crossover", first)
+        self.assertIn("null", first)
+        self.assertIn("gate", first)
 
 
 class FrozenFrameTests(unittest.TestCase):
