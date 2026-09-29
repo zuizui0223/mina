@@ -6,6 +6,13 @@ import numpy as np
 import pandas as pd
 
 from scripts.simulate_paper2_latent_factor_recovery import fit_unknown_factor
+from scripts.simulate_paper2_observation_recovery import (
+    DELTA_IMAGE_TRUTH,
+    SIGMA_1_TRUTH,
+    SIGMA_2PLUS_TRUTH,
+    fit_observation_calibration_fast,
+    prepare_observation_recovery_design,
+)
 
 
 def count_to_analysis_scale(counts) -> np.ndarray:
@@ -262,3 +269,72 @@ def fit_species_from_counts(
     )
     fit["collapsed_seasons"]=int(len(collapsed))
     return fit
+
+
+def run_integrated_replicate(
+    process_frames:dict[str,pd.DataFrame],
+    observation_metadata:pd.DataFrame,
+    *,
+    gamma_a:float,
+    gamma_ah:float,
+    seed:int,
+    forcing_sd:float,
+    loading_sd:float,
+    process_sd:float,
+    drift_mean:float,
+    drift_sd:float,
+)->dict:
+    """Generate synthetic counts, calibrate observation error, then fit each species."""
+    if not process_frames:
+        raise ValueError("no process frames")
+
+    simulations={}
+    observation_parts=[]
+    for index,species_id in enumerate(sorted(process_frames)):
+        sim=simulate_species_counts(
+            process_frames[species_id],
+            observation_metadata[
+                observation_metadata["species_id"].astype(str).eq(str(species_id))
+            ],
+            gamma_a=gamma_a,
+            gamma_ah=gamma_ah,
+            seed=seed+index*10000,
+            forcing_sd=forcing_sd,
+            loading_sd=loading_sd,
+            process_sd=process_sd,
+            drift_mean=drift_mean,
+            drift_sd=drift_sd,
+            delta_image=DELTA_IMAGE_TRUTH,
+            sigma1=SIGMA_1_TRUTH,
+            sigma2plus=SIGMA_2PLUS_TRUTH,
+        )
+        simulations[species_id]=sim
+        observation_parts.append(sim["observations"])
+
+    combined=pd.concat(observation_parts,ignore_index=True)
+    design=prepare_observation_recovery_design(combined)
+    calibration=fit_observation_calibration_fast(
+        count_to_analysis_scale(combined["count"].to_numpy(dtype=float)),
+        design,
+    )
+
+    species_fit={}
+    for species_id,frame in sorted(process_frames.items()):
+        obs=combined[
+            combined["species_id"].astype(str).eq(str(species_id))
+        ].copy()
+        sim=simulations[species_id]
+        species_fit[species_id]=fit_species_from_counts(
+            frame,
+            obs,
+            delta_image=float(calibration["delta_image"]),
+            sigma1=float(calibration["accuracy"]["1"]["sigma"]),
+            sigma2plus=float(calibration["accuracy"]["2-5"]["sigma"]),
+            truth_forcing=sim["true_forcing"],
+            true_lambda=sim["true_lambda"],
+        )
+
+    return {
+        "observation":calibration,
+        "species":species_fit,
+    }
