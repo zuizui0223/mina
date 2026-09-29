@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-final-claim-boundary-v1",
+  "date": "2026-09-29",
+  "paper_lane": "Paper 2",
+  "status": "post_inference_claim_boundary",
+  "primary_question": "Does breeding-island architecture systematically alter local demographic coupling to shared species-wide forcing in Pygoscelis penguins?",
+  "primary_result": {
+    "statistic": "median gamma_AH across ADPE, CHPE, GEPE",
+    "observed": -0.31822603579776854,
+    "permutation_p": 0.0947,
+    "decision": "non_confirmatory"
+  },
+  "species_interaction": {
+    "ADPE": {
+      "gamma_AH": -0.303571047069412,
+      "raw_p": 0.2162,
+      "holm_p": 0.2162,
+      "crossover": false
+    },
+    "CHPE": {
+      "gamma_AH": -1.1843982732708647,
+      "raw_p": 0.0661,
+      "holm_p": 0.1689,
+      "crossover": true
+    },
+    "GEPE": {
+      "gamma_AH": -0.31822603579776854,
+      "raw_p": 0.0563,
+      "holm_p": 0.1689,
+      "crossover": true
+    }
+  },
+  "secondary_breeding_space_H1": {
+    "status": "prespecified_secondary_nonconfirmatory",
+    "gamma_A": {
+      "ADPE": -0.2804028980046804,
+      "CHPE": -0.20047316201865784,
+      "GEPE": -0.07057389241675813
+    },
+    "raw_p": {
+      "ADPE": 0.1426,
+      "CHPE": 0.4225,
+      "GEPE": 0.3067
+    },
+    "holm_p": {
+      "ADPE": 0.4278,
+      "CHPE": 0.6134,
+      "GEPE": 0.6134
+    },
+    "interpretation": "directionally concordant but unsupported; cannot rescue the primary interaction"
+  },
+  "robustness": {
+    "observation_timing": "stable: exact-date and <=14-day offsets preserve all three negative gamma_AH signs and CHPE/GEPE crossover classification",
+    "spatial_scale": "not stable: 1 km weak/mixed; 5 km all gamma_AH positive",
+    "heterogeneity_metric": "partly stable: 2 km Shannon preserves CHPE/GEPE crossover but not ADPE"
+  },
+  "allowed_claims": [
+    "At the frozen 2 km Habitat Complex-richness scale, all three Pygoscelis species showed negative area-by-heterogeneity point estimates.",
+    "The preregistered cross-species permutation test did not confirm a general interaction at alpha=0.05.",
+    "Simple breeding-space buffering was also not supported by species-specific permutation tests.",
+    "The interaction was robust to observation-timing calibration but not to spatial radius, indicating strong scale dependence.",
+    "Chinstrap and gentoo showed the full point-estimate option-fragmentation sign pattern at the primary 2 km richness scale, but these species-specific interactions did not survive Holm-adjusted permutation inference.",
+    "Breeding-island architecture therefore cannot currently be treated as a scale-invariant demographic filter of shared Antarctic forcing."
+  ],
+  "prohibited_claims": [
+    "Island architecture buffers Antarctic penguin populations.",
+    "Habitat heterogeneity generally switches from fragmentation to insurance across Pygoscelis.",
+    "The option-fragmentation crossover is a general island-ecology law.",
+    "Adelie, chinstrap, and gentoo all show a confirmed crossover.",
+    "The 5 km or Shannon sensitivity may replace the frozen primary 2 km richness analysis.",
+    "Process variance or local demographic instability has an ecological interpretation; process-SD recovery remains blocked."
+  ],
+  "paper_level_framing": "A stringent test of reproductive-island buffering reveals directional but non-confirmatory and spatially scale-dependent effects, showing that local breeding-site architecture does not translate into a simple macroecological resilience rule.",
+  "paper1_link": "Paper 1 documents within-island demographic reorganization. Paper 2 tests whether static breeding-island architecture predicts how that broader forcing is transmitted across colonies; the failure of a general predictor shows that local reorganization does not automatically scale into a transferable island-resilience rule."
+}
