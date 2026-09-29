@@ -52,7 +52,7 @@ jobs:
           test -f build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv
       - name: Run integrated process-observation recovery
         run: |
-          python scripts/simulate_paper2_integrated_recovery.py \
+          python -m scripts.simulate_paper2_integrated_recovery \
             --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
             --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
             --breeding-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
