@@ -1,0 +1,52 @@
+name: integrated-manuscript-v0-2
+
+on:
+  push:
+    branches: [integrated/manuscript-v0.2]
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_V0_2.md"
+      - "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md"
+      - "contracts/INTEGRATED_PALMER_ANTARCTIC_MANUSCRIPT_V0_2.json"
+      - "scripts/build_integrated_figure_data.py"
+      - "tests/test_integrated_figure_data.py"
+      - ".github/workflows/integrated-manuscript-v0-2.yml"
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_V0_2.md"
+      - "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md"
+      - "contracts/INTEGRATED_PALMER_ANTARCTIC_MANUSCRIPT_V0_2.json"
+      - "scripts/build_integrated_figure_data.py"
+      - "tests/test_integrated_figure_data.py"
+      - ".github/workflows/integrated-manuscript-v0-2.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install pandas pytest
+      - run: python -m pytest tests/test_integrated_figure_data.py -q
+      - name: Build frozen figure-data package
+        run: python -m scripts.build_integrated_figure_data --out-dir build/integrated-figures
+      - name: Manuscript guard
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path("docs/MANUSCRIPT_INTEGRATED_V0_2.md")
+          t=p.read_text()
+          assert "PENDING" not in t
+          assert "marginally significant" not in t.lower()
+          assert "\x0c" not in t
+          assert "\t" not in t
+          assert "0.0947" in t
+          assert "0.0810" in t
+          assert "0.498" in t and "0.539" in t
+          print("Integrated manuscript v0.2 guard passed.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integrated-manuscript-v0-2-figure-data
+          path: build/integrated-figures
