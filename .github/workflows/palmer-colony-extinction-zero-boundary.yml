@@ -1,0 +1,51 @@
+name: palmer-colony-extinction-zero-boundary
+
+on:
+  push:
+    branches:
+      - analysis/palmer-colony-extinction-hazard-v1
+    paths:
+      - "src/mina/colony_extinction.py"
+      - "src/mina/colony_extinction_zero_boundary.py"
+      - "tests/test_colony_extinction.py"
+      - "contracts/PALMER_COLONY_EXTINCTION_ZERO_BOUNDARY_AUDIT_V1.json"
+      - ".github/workflows/palmer-colony-extinction-zero-boundary.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run extinction tests
+        run: pytest -q tests/test_colony_extinction.py tests/test_colony_extinction_hazard.py
+      - name: Fetch frozen Palmer census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Run zero-boundary audit
+        run: |
+          python -m mina.colony_extinction_zero_boundary \
+            --census build/adelie_census.csv \
+            --out build/palmer_colony_extinction_zero_boundary.json \
+            --simulations 100000 \
+            --seed 20260930
+      - name: Print audit receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/palmer_colony_extinction_zero_boundary.json").read_text())
+          print("risksets=",x["n_event_risk_sets"])
+          for k,v in x["models"].items():
+              print(k,"obs=",v["observed_contrast"],"null_mean=",v["null_mean"],"p=",v["one_sided_lower_p"])
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-colony-extinction-zero-boundary
+          path: |
+            build/adelie_census.csv
+            build/palmer_colony_extinction_zero_boundary.json
