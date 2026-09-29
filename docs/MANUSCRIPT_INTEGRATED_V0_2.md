@@ -43,7 +43,7 @@ Year and island factors were also used descriptively to partition shared tempora
 For island-year (t), let (p_j) be the fraction of breeding pairs assigned to colony code (j). We defined effective colony number as
 
 [
-N_{mathrm{eff}}=rac{1}{sum_j p_j^2}.
+N_{mathrm{eff}}=\\frac{1}{sum_j p_j^2}.
 ]
 
 The concentration analysis was restricted to Cormorant, Humble and Litchfield, the three islands whose reported colony-code rosters remained unchanged across the synchronized period. For Litchfield, only positive-abundance years were retained.
@@ -104,7 +104,7 @@ The primary paper-level statistic was the median \\(\\gamma_{AH}\\) across the t
 The paper-level p-value was
 
 [
-p=rac{1+#{T_{mathrm{perm}}leq T_{mathrm{obs}}}}{9,999+1}.
+p=\\frac{1+#{T_{mathrm{perm}}leq T_{mathrm{obs}}}}{9,999+1}.
 ]
 
 Species-specific interaction p-values used the same one-sided rule and were Holm-adjusted across the three species.
