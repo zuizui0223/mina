@@ -1,0 +1,57 @@
+name: palmer-colony-reproductive-performance
+
+on:
+  push:
+    branches:
+      - analysis/palmer-colony-reproductive-performance-v1
+    paths:
+      - "scripts/fetch_lter_chick_counts.py"
+      - "src/mina/colony_reproductive_performance.py"
+      - "tests/test_colony_reproductive_performance.py"
+      - "contracts/PALMER_COLONY_REPRODUCTIVE_PERFORMANCE_V1.json"
+      - ".github/workflows/palmer-colony-reproductive-performance.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen synthetic tests
+        run: pytest -q tests/test_colony_reproductive_performance.py tests/test_colony_extinction_hazard.py
+      - name: Fetch frozen Palmer adult and chick censuses
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+      - name: Run reproductive-performance analysis
+        run: |
+          python -m mina.colony_reproductive_performance \
+            --chicks build/adelie_chicks.csv \
+            --adult-census build/adelie_census.csv \
+            --out build/palmer_colony_reproductive_performance.json \
+            --simulations 100000 \
+            --seed 20260930
+      - name: Print result receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/palmer_colony_reproductive_performance.json").read_text())
+          h1=x["H1_size_productivity"];h2=x["H2_two_way_fixed_effect"];h3=x["H3_pre_extinction_performance"]
+          print("source=",x["source"])
+          print("H1=",json.dumps({k:h1.get(k) for k in ("estimable","n_groups","n_rows","observed_mean_slope","one_sided_upper_p","supported")},sort_keys=True))
+          print("H2=",json.dumps({k:h2.get(k) for k in ("estimable","n_rows","n_colonies","n_island_seasons","observed_log_size_coefficient","one_sided_upper_p","supported")},sort_keys=True))
+          print("H3=",json.dumps({k:h3.get(k) for k in ("estimable","n_informative_risk_sets","n_informative_events","observed_event_minus_survivor_success","one_sided_lower_p","supported")},sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-colony-reproductive-performance
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/palmer_colony_reproductive_performance.json
