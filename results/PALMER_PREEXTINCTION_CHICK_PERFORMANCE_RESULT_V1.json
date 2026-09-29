@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-preextinction-chick-performance-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-preextinction-chick-performance-v1",
+  "execution": {
+    "workflow_run_id": 36622956274,
+    "artifact_id": 11059411770,
+    "head_sha": "1d434d108fd07609dd26c474402a5f5b373e0f23",
+    "conclusion": "success",
+    "simulations": 100000,
+    "seed": 20260930
+  },
+  "source": {
+    "adult_census_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "chick_snapshot_sha256": "5424b42c30e7a63b35caa730a1658a6f3a7824662372a3e7f82c01529985a9be"
+  },
+  "join": {
+    "matched_colony_season_rows": 190,
+    "matched_durable_events": 9,
+    "informative_risk_sets": 6,
+    "informative_matched_events": 7,
+    "ambiguous_duplicate_keys_excluded": 2
+  },
+  "unrepaired_primary": {
+    "observed_pearson_contrast": 15.743806079243557,
+    "null_mean": 0.0009311488837315582,
+    "one_sided_lower_p": 1.0,
+    "preextinction_reproductive_penalty_supported": false
+  },
+  "provenance_failure": {
+    "status": "primary_ecological_interpretation_invalidated",
+    "dominant_risk_set": {
+      "island": "CHR",
+      "season": 2003,
+      "pearson_contrast": 104.46392578071163
+    },
+    "diagnostic": "The event colony CHR 7.1 has 2 breeding pairs in the frozen November adult census but Adults=277 in the January chick table for the same labeled season/code, demonstrating that exact colony_code equality is not a sufficient cross-table identifier in all years.",
+    "consequence": "Do not interpret the positive unrepaired contrast as enhanced reproductive performance before extinction."
+  },
+  "decision": {
+    "ecological_null_supported": false,
+    "ecological_positive_supported": false,
+    "cross_table_identifier_coherence_failed": true,
+    "result_role": "failed provenance gate"
+  },
+  "next_gate": "Apply the frozen outcome-independent Adults-versus-breeding-pairs coherence gate and assess whether sufficient event coverage remains."
+}
