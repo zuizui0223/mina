@@ -414,6 +414,119 @@ def survivor_trajectory(
     }
 
 
+
+def productivity_size_null(
+    rows: list[dict[str, object]],
+    *,
+    permutations: int = N_PERMUTATIONS,
+    seed: int = 20260942,
+    size_source: str = "adult",
+) -> dict[str, object]:
+    """Test positive density dependence against equal per-pair chick output."""
+    groups: dict[tuple[str, int], list[dict[str, object]]] = defaultdict(list)
+    for row in rows:
+        groups[(str(row["island"]), int(row["season"]))].append(row)
+
+    prepared: list[dict[str, object]] = []
+    for (island, season), local in sorted(groups.items()):
+        if len(local) < 3:
+            continue
+        if size_source == "adult":
+            size_raw = np.asarray(
+                [float(r["adult_prior_count"]) for r in local], dtype=float
+            )
+        elif size_source == "chick_denominator":
+            size_raw = np.asarray(
+                [float(r["chick_dataset_adult_pairs"]) for r in local], dtype=float
+            )
+        else:
+            raise ValueError(size_source)
+        x = np.log1p(size_raw)
+        sx = float(np.std(x, ddof=1))
+        if sx <= 0:
+            continue
+        z = (x - float(np.mean(x))) / sx
+        denom = np.asarray(
+            [float(r["chick_dataset_adult_pairs"]) for r in local], dtype=float
+        )
+        chicks = np.asarray([float(r["chicks"]) for r in local], dtype=float)
+        if np.any(denom <= 0) or np.any(chicks < 0):
+            raise ValueError("invalid chick productivity row")
+        rounded = np.rint(chicks)
+        if np.max(np.abs(chicks - rounded)) > 1e-8:
+            raise ValueError("non-integer chick count in conditional multinomial test")
+        total_chicks = int(np.sum(rounded))
+        if total_chicks <= 0:
+            continue
+        productivity = chicks / denom
+        slope = float((z @ productivity) / (z @ z))
+        prepared.append(
+            {
+                "island": island,
+                "season": season,
+                "z_size": z,
+                "denominator": denom,
+                "total_chicks": total_chicks,
+                "observed_slope": slope,
+            }
+        )
+    if len(prepared) < 3:
+        return {
+            "estimable": False,
+            "reason": "fewer than three eligible island-season risk sets",
+            "n_risk_sets": len(prepared),
+            "size_source": size_source,
+        }
+
+    observed = float(np.mean([float(g["observed_slope"]) for g in prepared]))
+    rng = np.random.default_rng(seed)
+    null = np.zeros(permutations, dtype=float)
+    for g in prepared:
+        z = np.asarray(g["z_size"], dtype=float)
+        denom = np.asarray(g["denominator"], dtype=float)
+        prob = denom / float(np.sum(denom))
+        draws = rng.multinomial(
+            int(g["total_chicks"]), prob, size=permutations
+        ).astype(float)
+        productivity = draws / denom[None, :]
+        null += (productivity @ z) / float(z @ z)
+    null /= len(prepared)
+    p = float((1 + int(np.sum(null >= observed))) / (permutations + 1))
+
+    per_island: dict[str, object] = {}
+    for island in ISLANDS:
+        local = [g for g in prepared if g["island"] == island]
+        if local:
+            per_island[island] = {
+                "n_risk_sets": len(local),
+                "mean_observed_slope": float(
+                    np.mean([float(g["observed_slope"]) for g in local])
+                ),
+            }
+    leave_one_out: dict[str, float | None] = {}
+    for island in ISLANDS:
+        local = [g for g in prepared if g["island"] != island]
+        leave_one_out[island] = (
+            float(np.mean([float(g["observed_slope"]) for g in local]))
+            if local
+            else None
+        )
+
+    return {
+        "estimable": True,
+        "size_source": size_source,
+        "n_risk_sets": len(prepared),
+        "observed_mean_within_set_slope": observed,
+        "null_mean": float(np.mean(null)),
+        "null_q025": float(np.quantile(null, 0.025)),
+        "null_q975": float(np.quantile(null, 0.975)),
+        "one_sided_upper_p": p,
+        "supported": bool(observed > 0 and p <= 0.05),
+        "per_island": per_island,
+        "leave_one_island_out_observed_slopes": leave_one_out,
+    }
+
+
 def analyze(
     adult_path: str | Path,
     chick_path: str | Path,
@@ -447,6 +560,27 @@ def analyze(
     size_grad = size_success_gradient(
         matched, permutations=permutations, seed=SIZE_SEED
     )
+    productivity_null = productivity_size_null(
+        matched, permutations=permutations, seed=20260942, size_source="adult"
+    )
+    productivity_null_chick_size = productivity_size_null(
+        matched,
+        permutations=permutations,
+        seed=20260943,
+        size_source="chick_denominator",
+    )
+    productivity_null_no_lit = productivity_size_null(
+        no_lit_rows,
+        permutations=permutations,
+        seed=20260944,
+        size_source="adult",
+    )
+    productivity_null_ge2 = productivity_size_null(
+        ge2,
+        permutations=permutations,
+        seed=20260945,
+        size_source="adult",
+    )
     adjusted = event_effect_after_size(matched)
     trajectory = survivor_trajectory(matched)
 
@@ -468,14 +602,23 @@ def analyze(
             "prior_count_ge2": ge2_result,
         },
         "secondary_size_success_gradient": size_grad,
+        "productivity_size_conditioned_null": {
+            "adult_census_size_primary": productivity_null,
+            "chick_denominator_size_sensitivity": productivity_null_chick_size,
+            "exclude_litchfield": productivity_null_no_lit,
+            "prior_count_ge2": productivity_null_ge2,
+        },
         "event_effect_after_size": adjusted,
         "survivor_island_trajectory": trajectory,
         "decision": {
             "preextinction_reproductive_failure_supported": bool(
                 primary.get("supported", False)
             ),
-            "social_facilitation_consistent": bool(
+            "social_facilitation_consistent_simple_gradient": bool(
                 size_grad.get("supported", False)
+            ),
+            "positive_density_dependence_supported_by_proportional_null": bool(
+                productivity_null.get("supported", False)
             ),
         },
     }
