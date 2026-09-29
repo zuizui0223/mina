@@ -662,6 +662,8 @@ def run_observation_audit(
     """Rebuild metadata and run synthetic observation recovery."""
     metadata=build_frozen_observation_metadata(obs)
     support=_metadata_support(metadata)
+    if enforce_frozen_support:
+        validate_frozen_support(support)
 
     recovery=evaluate_observation_recovery(
         metadata,
@@ -689,8 +691,11 @@ def main()->int:
     args=parser.parse_args()
 
     obs=_load_rda(args.mapppdr_dir/"data"/"penguin_obs.rda","penguin_obs")
-    result=run_observation_audit(obs,replicates=args.replicates)
-    validate_frozen_support(result["metadata"])
+    result=run_observation_audit(
+        obs,
+        replicates=args.replicates,
+        enforce_frozen_support=True,
+    )
     args.out_json.parent.mkdir(parents=True,exist_ok=True)
     args.out_json.write_text(
         json.dumps(result,indent=2,sort_keys=True)+"\n",
