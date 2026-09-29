@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-loss-neutral-control-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_neutral_simulation_after_primary_result",
+  "primary_result_seen": true,
+  "question": "Does fixed colony composition plus the observed island-total trajectory and count stochasticity reproduce the observed size-selective durable colony loss?",
+  "primary_islands": ["COR", "HUM", "LIT"],
+  "sensitivity_islands": ["COR", "HUM"],
+  "observed_statistic": "Use the exact durable-loss risk-set size contrast from PALMER_COLONY_EXTINCTION_HAZARD_V1, with equal weight per informative island-year risk set.",
+  "neutral_state": "Within each island, cumulative 1991-2017 colony-code shares are fixed through time; each year's latent colony means equal those shares times the observed island total.",
+  "error_models": {
+    "poisson": 0.0,
+    "gamma_poisson_cv10": 0.10,
+    "gamma_poisson_cv20": 0.20
+  },
+  "replicates_per_model": 100000,
+  "seed": 20260929,
+  "batch_size": 2000,
+  "positive_total_conditioning": "If an observed island-year total is positive, redraw a simulated island-year only when its simulated aggregate is zero.",
+  "p_value": "lower-tail Monte Carlo probability with +1 correction among valid simulated statistics",
+  "decision": "Reject this neutral explanation only when p <= 0.05 in all three models for COR+HUM+LIT; the stronger result additionally requires the same for COR+HUM.",
+  "boundaries": [
+    "This is a post-primary-result mechanism control, not an outcome-blind preregistration.",
+    "Passing this control does not identify predation, social facilitation, snow or dispersal.",
+    "Failing this control blocks an Allee-like biological interpretation of the primary size effect.",
+    "The CV models are stylized rather than empirically calibrated observer-error estimates."
+  ]
+}
