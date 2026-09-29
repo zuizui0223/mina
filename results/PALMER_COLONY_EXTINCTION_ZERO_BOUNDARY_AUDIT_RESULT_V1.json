@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-colony-extinction-zero-boundary-audit-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-colony-extinction-zero-boundary-audit-v1",
+  "parent_result": "mina-palmer-colony-extinction-hazard-result-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "audit_code_commit": "3414b0910579735a33bdfea532400362a09154df",
+    "workflow_head_sha": "da4c481bcf40ae5a98583a0121cb5463738ccb43",
+    "workflow_run_id": 36622153951,
+    "artifact_id": 11058711690,
+    "conclusion": "success",
+    "simulations": 100000,
+    "seed": 20260930
+  },
+  "consistency_check": {
+    "parent_primary_standardized_size_contrast": -1.7091639499787392,
+    "audit_observed_standardized_size_contrast": -1.7091639499787392,
+    "exact_match": true,
+    "event_bearing_risk_sets": 30
+  },
+  "models": {
+    "poisson_proportional_thinning": {
+      "observed_contrast": -1.7091639499787392,
+      "null_mean": -1.8428469278261823,
+      "null_q025": -1.852385149650628,
+      "null_q50": -1.845197009798287,
+      "null_q975": -1.8197798748525371,
+      "one_sided_lower_p": 1.0
+    },
+    "gamma_poisson_cv10": {
+      "observed_contrast": -1.7091639499787392,
+      "null_mean": -1.84169951341341,
+      "null_q025": -1.852385149650628,
+      "null_q50": -1.8441007819924626,
+      "null_q975": -1.816139170842827,
+      "one_sided_lower_p": 1.0
+    },
+    "gamma_poisson_cv20": {
+      "observed_contrast": -1.7091639499787392,
+      "null_mean": -1.8378609143197764,
+      "null_q025": -1.852385149650628,
+      "null_q50": -1.841280058550345,
+      "null_q975": -1.8024301951680086,
+      "one_sided_lower_p": 0.999920000799992
+    }
+  },
+  "decision": {
+    "small_colonies_disappear_first_descriptively": true,
+    "exchangeable_identity_null_rejected": true,
+    "size_ordering_exceeds_proportional_zero_boundary": false,
+    "social_facilitation_supported_by_extinction_order": false,
+    "predation_vulnerability_supported_by_extinction_order": false
+  },
+  "ecological_interpretation": "Durable colony-code extinction is strongly size ordered, but the ordering is fully explained by the mechanical probability that small proportional groups hit zero under shared island-year decline. Indeed, the frozen proportional zero-boundary null predicts slightly stronger size selectivity than observed. Extinction order therefore cannot be used as evidence for an Allee-like social-facilitation or skua-predation mechanism.",
+  "paper_implication": "Keep the robust empirical statement that decline is realized by sequential loss of already-small breeding groups, but treat size-selective extinction as the geometry of approaching zero rather than a mechanism. Mechanism discrimination must move to an independent state variable such as reproductive success, snow/terrain exposure or predation.",
+  "next_gate": "Test whether small colony codes have depressed chicks-per-pair before extinction after conditioning on island-year context. That test can distinguish a pre-extinction performance penalty from neutral zero-hitting."
+}
