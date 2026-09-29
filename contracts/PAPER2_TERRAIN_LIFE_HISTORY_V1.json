@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-terrain-life-history-v1",
+  "date": "2026-09-30",
+  "status": "terrain_coefficient_frozen_before_inferential_opening",
+  "paper_lane": "Paper 2 ecological mechanism extension",
+  "provenance_status": {
+    "terrain_predictor_frozen_before_any_demographic_outcome_opening": true,
+    "terrain_result_previously_inferentially_opened": false,
+    "other_paper2_demographic_results_already_known": true,
+    "classification": "post-outcome extension using a genuinely pre-outcome predictor; not a fully outcome-blind new paper"
+  },
+  "biological_motivation": {
+    "primary": "Snow-free terrestrial breeding space is constrained by geomorphology. Palmer studies show that topography interacts with wind and precipitation to structure snow accumulation and Adélie breeding phenology/colony persistence.",
+    "life_history_contrast": "Adélie penguins show strong nest-site fidelity and early-season exposure to snow conditions, whereas gentoo penguins show greater flexibility in breeding phenology and nest-site relocation. Therefore a static terrain context is predicted to be more strongly associated with demographic coupling in Adélie than in gentoo.",
+    "literature": [
+      "Cimino et al. 2019 Ecology and Evolution, doi:10.1002/ece3.5481",
+      "Cimino et al. 2025 Landscape Ecology, doi:10.1007/s10980-025-02088-y",
+      "Volkman & Trivelpiece 1981 Wilson Bulletin 93:243-248",
+      "Juáres et al. / gentoo breeding-phenology literature: greater temporal and nest-site flexibility under local snow conditions"
+    ]
+  },
+  "terrain_predictor": {
+    "source_contract": "contracts/ANTARCTIC_TERRAIN_ATLAS_V1.json",
+    "source_result": "results/ANTARCTIC_TERRAIN_ATLAS_GATE1D_A_RESULT_V1.json",
+    "field": "elevation_relief_p90_p10_m_2000m",
+    "transform": "T = z_all_122_sites(log1p(relief_m)); one global site-level standardization shared across species",
+    "coverage": "122/122 candidate sites at 2 km",
+    "ecological_meaning": "local topographic relief / terrain-option context, not direct snow exposure, slope, aspect or occupied nest microhabitat",
+    "no_trait_search": true
+  },
+  "demographic_frame": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "window": [1980, 2025],
+    "species": ["ADPE", "CHPE", "GEPE"],
+    "terrain_only_expected_units": {
+      "ADPE": 44,
+      "CHPE": 34,
+      "GEPE": 29
+    },
+    "reason_for_107_units": "Terrain has complete coverage and is analyzed independently of the four AEI breeding-option missing sites; no breeding-option completeness filter is applied.",
+    "observation_calibration": "inherit frozen Paper 2 observation model and species-wide forcing estimator unchanged"
+  },
+  "spatial_adjustment": {
+    "forcing_scale": "species-wide for all three species",
+    "ADPE_trait_block": "ccamlr_id",
+    "CHPE_trait_block": "APBP region",
+    "GEPE_trait_block": "APBP region",
+    "model": "lambda_i = 1 + alpha_block[i] + gamma_T * T_within_block + b_i",
+    "identification": "inherit V3 block-intercept and residual-loading constraints",
+    "implementation": "reuse frozen fit_spatial_species with T in the A slot and H=AH=0"
+  },
+  "pre_real_terrain_recovery_gate": {
+    "required": true,
+    "real_terrain_coefficients_must_remain_unprinted_until_pass": true,
+    "replicates_per_scenario": 100,
+    "scenarios": {
+      "null": "gamma_T = 0 for each species",
+      "negative_terrain": "gamma_T = -0.30 for each species"
+    },
+    "thresholds_per_species": [
+      "abs(median gamma_T under null) <= 0.08",
+      "null 5-95% interval contains 0",
+      "abs(median gamma_T + 0.30) <= 0.12 under negative-terrain truth",
+      "fraction(gamma_T < 0) >= 0.85 under negative-terrain truth"
+    ],
+    "failure_rule": "If any species fails, stop terrain inference; do not relax thresholds."
+  },
+  "primary_hypothesis": {
+    "name": "life-history-specific terrain association",
+    "statistic": "Delta_AG = gamma_T_ADPE - gamma_T_GEPE",
+    "prediction": "Delta_AG < 0",
+    "meaning": "The association between topographic relief and loading on shared species-wide forcing is more negative in Adélie than gentoo.",
+    "important_boundary": "A negative contrast is a species-difference result; it does not itself prove terrain buffering or a snow mechanism."
+  },
+  "secondary_predictions": {
+    "species_specific": "For each species, test gamma_T < 0 with block-preserving permutations and Holm-adjust the three one-sided p-values.",
+    "chinstrap": "Report whether gamma_T_CHPE lies between ADPE and GEPE as a descriptive life-history ordering; no separate confirmatory rank p-value.",
+    "absolute_interpretation": "Only a negative species-specific gamma_T supported after Holm may be described as evidence that greater relief is associated with weaker coupling to shared forcing in that species."
+  },
+  "permutation_inference": {
+    "permutations": 9999,
+    "seed": 20260930,
+    "scheme": "Within each species and frozen trait-adjustment block, permute the global-standardized terrain T values across site-species units; preserve outcomes, observation records, forcing schedule and block membership.",
+    "primary_p": "one-sided lower-tail plus-one p for Delta_AG",
+    "species_p": "one-sided lower-tail plus-one p for gamma_T, followed by Holm correction",
+    "alpha": 0.05
+  },
+  "sensitivities": {
+    "terrain_scale": [
+      "1 km relief using the identically defined pre-existing atlas field",
+      "5 km relief using the identically defined pre-existing atlas field"
+    ],
+    "terrain_metric": "2 km elevation SD is sensitivity-only because it is r=0.99067 with 2 km relief",
+    "role": "sensitivities cannot replace the frozen 2 km relief primary result"
+  },
+  "decision_rule": {
+    "primary_life_history_contrast_supported": "Delta_AG < 0 and one-sided permutation p <= 0.05",
+    "adelie_terrain_buffering_supported": "ADPE gamma_T < 0 and ADPE Holm p <= 0.05",
+    "mechanistic_snow_claim_allowed": false,
+    "if_nonconfirmatory": "retain terrain as a documented life-history-motivated negative result; do not search slope/aspect/snow products in this paper"
+  },
+  "interpretation_boundaries": [
+    "REMA relief is potential topographic context, not occupied nesting habitat.",
+    "Relief does not encode aspect, prevailing-wind exposure, snow depth or melt timing.",
+    "Species ranges and geography differ, so frozen within-block centering is mandatory.",
+    "Do not infer that terrain causes demographic resilience from a static association.",
+    "Do not introduce new terrain metrics after opening gamma_T except the prespecified 1 km, 5 km and elevation-SD sensitivities.",
+    "Do not use Palmer-only snow results as if they directly establish a continent-wide Pygoscelis mechanism."
+  ]
+}
