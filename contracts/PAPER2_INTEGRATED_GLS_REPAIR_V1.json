@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-integrated-gls-repair-v1",
+  "date": "2026-09-29",
+  "status": "pre_outcome_estimator_repair_frozen_after_failed_gate_2e_c",
+  "parent_failure": "results/PAPER2_INTEGRATED_RECOVERY_FAILED_V1.json",
+  "rationale": "The first integrated recovery preserved the Gate 2E-B observation variances through same-season collapse but discarded them before the latent-factor fit. The repair uses the implied variance of adjacent collapsed-state differences rather than relaxing any recovery threshold.",
+  "interval_model": {
+    "response": "delta = state_hat(t2) - state_hat(t1)",
+    "mean": "mu_i * duration + lambda_i * sum_{t=t1}^{t2-1} F_g,t",
+    "variance": "q_species * duration + observation_var(t1) + observation_var(t2)",
+    "weight": "1 / sqrt(variance)"
+  },
+  "process_variance_estimation": {
+    "parameter": "q_species = annual residual process variance on the log1p scale",
+    "initialization": "Using adjacent collapsed-season intervals, estimate a site drift from each site's endpoint trajectory, form residual increments, and estimate q by the nonnegative method-of-moments slope q = max(q_floor, sum(duration * (residual^2 - endpoint_observation_variance)) / sum(duration^2)).",
+    "outer_updates": 3,
+    "update_after_each_factor_fit": "Recompute interval residuals from fitted mu, normalized lambda and forcing, then apply the same nonnegative moment estimator.",
+    "q_floor": 0.000001
+  },
+  "factor_fit": {
+    "als_iterations_per_outer_update": 8,
+    "forcing_constraint": "mean annual forcing = 0 within group",
+    "loading_constraint": "mean site loading = 1 within group",
+    "loading_trait_regression": "forcing-group fixed effects + A + H + A:H",
+    "no_temporal_smoothing_or_new_prior": true
+  },
+  "recovery_gate": "Exactly inherit all Gate 2E-C thresholds; no threshold is relaxed.",
+  "confirmatory_simulation": {
+    "replicates_per_species_scale_scenario": 100,
+    "seeds": "new deterministic seed block disjoint from the failed Gate 2E-C run",
+    "scenarios": [
+      "null",
+      "crossover gamma_AH=-0.35",
+      "simple buffering gamma_A=-0.25"
+    ],
+    "configurations": [
+      "retained primary forcing scales",
+      "mandatory species-wide forcing sensitivity"
+    ]
+  },
+  "terminal_rules": [
+    "Do not open real count magnitudes unless the repaired 100-replicate integrated gate passes.",
+    "Do not tune q floor, outer iterations, ALS iterations or thresholds after seeing the repaired confirmation results.",
+    "If the repair still fails, the shared-forcing loading analysis is not sufficiently recoverable under the frozen observation structure and must be redesigned or abandoned before outcomes are opened.",
+    "Observation-source sensitivities and the separate local-process-variance claim remain blocked until the repaired primary gate passes."
+  ]
+}
