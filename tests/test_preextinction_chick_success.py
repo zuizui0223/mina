@@ -2,6 +2,7 @@ from mina.preextinction_chick_success import (
     event_success_test,
     informative_sets,
     size_success_gradient,
+    productivity_size_null,
 )
 
 
@@ -76,3 +77,15 @@ def test_log_and_rank_transforms_remain_directionally_negative():
     rank_sets = informative_sets(rows, transform="rank")
     assert all(x["observed_contrast"] < 0 for x in log_sets)
     assert all(x["observed_contrast"] < 0 for x in rank_sets)
+
+
+def test_proportional_productivity_null_detects_positive_density_dependence():
+    result = productivity_size_null(
+        _matched_panel(),
+        permutations=4999,
+        seed=9,
+        size_source="adult",
+    )
+    assert result["estimable"] is True
+    assert result["observed_mean_within_set_slope"] > 0
+    assert result["supported"] is True
