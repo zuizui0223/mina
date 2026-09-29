@@ -5,6 +5,127 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+SPECIES=("ADPE","CHPE","GEPE")
+WINDOW=(1980,2025)
+EXPECTED_GATE0={"ADPE":57,"CHPE":46,"GEPE":49}
+EXPECTED_BRIDGED={"ADPE":44,"CHPE":34,"GEPE":29}
+
+
+def _thirds(start:int,end:int):
+    width=end-start+1
+    cut1=start+(width//3)-1
+    cut2=start+(2*width//3)-1
+    return (start,cut1),(cut1+1,cut2),(cut2+1,end)
+
+
+def _vantage_family(value)->str:
+    if pd.isna(value):
+        return "unknown"
+    value_text=str(value).strip().lower().replace("_"," ")
+    if value_text in {"ground","aerial","offshore vessel"}:
+        return "direct"
+    if value_text in {"ground photo","aerial photo","uav","vhr","landsat","sentinel"}:
+        return "image_based"
+    raise ValueError(f"unrecognized vantage: {value}")
+
+
+def _accuracy_group(value)->str:
+    if pd.isna(value):
+        raise ValueError("missing accuracy in frozen count record")
+    code=int(float(value))
+    if code==1:
+        return "1"
+    if 2<=code<=5:
+        return "2-5"
+    raise ValueError(f"invalid accuracy code: {value}")
+
+
+def build_frozen_observation_metadata(obs:pd.DataFrame)->pd.DataFrame:
+    """Reconstruct the frozen 107-unit record structure and discard count magnitudes."""
+    required={"site_id","species_id","type","count","year","season","vantage","accuracy"}
+    _require_columns(obs,required)
+    nest=obs[
+        obs["species_id"].isin(SPECIES)
+        & obs["type"].eq("nests")
+        & obs["count"].notna()
+    ].copy()
+    nest["year"]=pd.to_numeric(nest["year"],errors="coerce")
+    nest["season"]=pd.to_numeric(nest["season"],errors="coerce")
+
+    gate0=[]
+    for (site,species),local in nest.dropna(subset=["year"]).groupby(
+        ["site_id","species_id"]
+    ):
+        years=sorted({int(v) for v in local["year"]})
+        if len(years)>=5 and max(years)-min(years)>=10:
+            gate0.append((str(site),str(species)))
+    gate0_by_species={
+        sp:sum(species==sp for _,species in gate0)
+        for sp in SPECIES
+    }
+    if gate0_by_species!=EXPECTED_GATE0:
+        raise ValueError(
+            f"Gate0 species drift: {gate0_by_species} != {EXPECTED_GATE0}"
+        )
+
+    grouped={
+        (str(site),str(species)):local
+        for (site,species),local in nest.groupby(["site_id","species_id"])
+    }
+    start,end=WINDOW
+    first,_,last=_thirds(start,end)
+    bridged=[]
+    for site,species in gate0:
+        local=grouped[(site,species)]
+        seasons=sorted({
+            int(v) for v in local["season"].dropna()
+            if start<=int(v)<=end
+        })
+        if not seasons:
+            continue
+        span=max(seasons)-min(seasons)
+        has_first=any(first[0]<=v<=first[1] for v in seasons)
+        has_last=any(last[0]<=v<=last[1] for v in seasons)
+        if len(seasons)>=5 and span>=10 and has_first and has_last:
+            bridged.append((site,species))
+    bridged_by_species={
+        sp:sum(species==sp for _,species in bridged)
+        for sp in SPECIES
+    }
+    if bridged_by_species!=EXPECTED_BRIDGED:
+        raise ValueError(
+            f"bridged species drift: {bridged_by_species} != {EXPECTED_BRIDGED}"
+        )
+
+    keys=set(bridged)
+    keep_mask=nest.apply(
+        lambda row:(str(row["site_id"]),str(row["species_id"])) in keys,
+        axis=1,
+    )
+    cohort=nest[
+        keep_mask
+        & nest["season"].between(start,end,inclusive="both")
+    ].copy()
+
+    out=pd.DataFrame({
+        "site_id":cohort["site_id"].astype(str),
+        "species_id":cohort["species_id"].astype(str),
+        "season":cohort["season"].astype(int),
+        "vantage_family":cohort["vantage"].map(_vantage_family),
+        "accuracy_group":cohort["accuracy"].map(_accuracy_group),
+    })
+    out["group_id"]=(
+        out["site_id"]+"|"+out["species_id"]+"|"+out["season"].astype(str)
+    )
+    columns=[
+        "group_id","site_id","species_id","season",
+        "vantage_family","accuracy_group",
+    ]
+    return out[columns].sort_values(
+        ["species_id","site_id","season","vantage_family","accuracy_group"]
+    ).reset_index(drop=True)
+
+
 DELTA_IMAGE_TRUTH=float(np.log(1.15))
 SIGMA_1_TRUTH=float(np.log(1.05))
 SIGMA_2PLUS_TRUTH=float(np.log(1.25))
