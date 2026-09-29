@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-reproductive-denominator-audit-v1",
+  "date": "2026-09-30",
+  "status": "post_outcome_semantics_resolution_audit",
+  "purpose": "Resolve the apparent contradiction between a positive Palmer colony-size reproductive-performance result and a null same-denominator ratio sensitivity by separating denominator source from statistical estimand.",
+  "sources": {
+    "adult_census": {
+      "dataset": "AdeliePenguinCensus",
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "role": "independent November breeding-pair counts"
+    },
+    "chick_census": {
+      "dataset": "AdeliePenguinAdultandChickCounts",
+      "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+      "role": "January chick counts plus legacy num_breeding_pairs field"
+    }
+  },
+  "common_frame": {
+    "key": [
+      "study_name",
+      "island_name",
+      "colony_code"
+    ],
+    "require": "adult November pairs >0, legacy chick-table pairs >0, chicks >=0",
+    "group": "island x study_name",
+    "minimum_colonies": 4,
+    "minimum_total_chicks": 1,
+    "require_nonzero_log_size_variance_for_both_denominators": true,
+    "expected_after_current_sources": {
+      "groups": 95,
+      "colony_rows": 727
+    }
+  },
+  "denominator_comparison": {
+    "model": "conditional multinomial log-linear allocation of total island-season chicks",
+    "baseline_probability": "proportional to chosen pair denominator",
+    "size_effect": "probability proportional to pairs_i * exp(beta * z(log1p pairs_i))",
+    "sources": [
+      "independent_adult",
+      "legacy_chick_table"
+    ],
+    "inference": {
+      "monte_carlo_draws": 100000,
+      "seeds": {
+        "independent_adult": 20260930,
+        "legacy_chick_table": 20260931
+      },
+      "one_sided_direction": "positive",
+      "alpha": 0.05
+    },
+    "reason": "Count-space conditioning avoids the algebraic coupling created by regressing chicks/pairs directly on the same pair denominator."
+  },
+  "ratio_diagnostic": {
+    "response": "chicks / legacy chick-table pairs",
+    "predictors": [
+      "z(log1p independent adult pairs)",
+      "z(log1p legacy chick-table pairs)"
+    ],
+    "summary": "equal-weight mean within-island-season OLS slopes on the same common frame",
+    "inference_role": "descriptive only"
+  },
+  "spatial_generality": {
+    "outputs": [
+      "per-island conditional beta under each denominator source",
+      "leave-one-island-out beta under independent adult denominator"
+    ],
+    "generality_rule": "Do not claim a Palmer-wide positive-density-dependence mechanism if island-specific beta signs disagree or any leave-one-island-out adult-denominator beta is <=0."
+  },
+  "semantics_checks": [
+    "fraction of legacy chick-table rows with chicks > 2 * legacy pairs",
+    "fraction of independent-adult matched rows with chicks > 2 * adult pairs",
+    "fraction of pair denominators exactly matching between sources",
+    "median absolute and relative pair-count differences"
+  ],
+  "interpretation_boundary": [
+    "This audit is post-outcome and resolves measurement/statistical semantics; it is not a new confirmatory ecological test.",
+    "A positive pooled count-space effect does not establish an Allee effect, social facilitation or predation mechanism.",
+    "If island signs disagree, report spatial heterogeneity rather than a common Palmer small-group disadvantage.",
+    "The legacy ratio regression is not treated as a robustness gold standard because its denominator fails independent measurement-semantics checks.",
+    "Strong unstructured overdispersion sensitivity from the previously frozen v2 result remains part of the final claim boundary."
+  ]
+}
