@@ -1,5 +1,9 @@
 import unittest
-import numpy as np
+try:
+    import numpy as np
+    import pandas as pd  # noqa: F401
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest("V4 generality tests require numpy/pandas") from exc
 from scripts.simulate_paper2_cross_species_generality_v4 import summarize
 
 class GeneralityAggregationTests(unittest.TestCase):
