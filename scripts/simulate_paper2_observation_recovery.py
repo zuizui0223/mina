@@ -2,8 +2,13 @@
 """Synthetic observation-layer recovery for Paper 2 Gate 2E-B."""
 from __future__ import annotations
 
+import argparse
+import json
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
+import pyreadr
 
 SPECIES=("ADPE","CHPE","GEPE")
 WINDOW=(1980,2025)
@@ -427,3 +432,113 @@ def evaluate_observation_recovery(
     }
     summary["gate"]={"passes":bool(all(checks.values())),"checks":checks}
     return summary
+
+
+def _load_rda(path:Path,expected:str)->pd.DataFrame:
+    result=pyreadr.read_r(str(path))
+    if expected in result:
+        frame=result[expected]
+    elif len(result)==1:
+        frame=next(iter(result.values()))
+    else:
+        raise ValueError(f"cannot resolve {expected}: {list(result)}")
+    if not isinstance(frame,pd.DataFrame):
+        raise TypeError(expected)
+    return frame
+
+
+def _metadata_support(metadata:pd.DataFrame)->dict:
+    family=metadata["vantage_family"].value_counts().to_dict()
+    mixed_by_species={sp:0 for sp in SPECIES}
+    mixed_total=0
+    repeated_groups=0
+    for _,local in metadata.groupby("group_id",sort=True):
+        if len(local)>=2:
+            repeated_groups+=1
+        families=set(local["vantage_family"].astype(str))
+        if {"direct","image_based"}<=families:
+            mixed_total+=1
+            sp=str(local["species_id"].iloc[0])
+            mixed_by_species[sp]=mixed_by_species.get(sp,0)+1
+    return {
+        "records":int(len(metadata)),
+        "bridged_units":int(
+            metadata[["site_id","species_id"]].drop_duplicates().shape[0]
+        ),
+        "season_groups":int(metadata["group_id"].nunique()),
+        "repeated_groups":int(repeated_groups),
+        "direct_records":int(family.get("direct",0)),
+        "image_based_records":int(family.get("image_based",0)),
+        "unknown_vantage_records":int(family.get("unknown",0)),
+        "mixed_direct_image_groups":int(mixed_total),
+        "mixed_direct_image_groups_by_species":{
+            sp:int(mixed_by_species.get(sp,0)) for sp in SPECIES
+        },
+    }
+
+
+def run_observation_audit(
+    obs:pd.DataFrame,
+    *,
+    replicates:int=200,
+    seed_offset:int=3000000,
+)->dict:
+    """Rebuild frozen metadata, verify Gate 2B support, then run synthetic recovery."""
+    metadata=build_frozen_observation_metadata(obs)
+    support=_metadata_support(metadata)
+
+    expected={
+        "records":2100,
+        "bridged_units":107,
+        "season_groups":1721,
+        "repeated_groups":273,
+        "direct_records":1889,
+        "image_based_records":149,
+        "unknown_vantage_records":62,
+        "mixed_direct_image_groups":41,
+        "mixed_direct_image_groups_by_species":{
+            "ADPE":9,"CHPE":10,"GEPE":22,
+        },
+    }
+    if support!=expected:
+        raise ValueError(f"observation metadata drift: {support} != {expected}")
+
+    recovery=evaluate_observation_recovery(
+        metadata,
+        replicates=replicates,
+        seed_offset=seed_offset,
+    )
+    return {
+        "schema_version":1,
+        "audit_id":"mina-paper2-observation-recovery-v1",
+        "metadata":support,
+        "recovery":recovery,
+        "decision":{
+            "observation_layer_recoverable":bool(recovery["gate"]["passes"]),
+            "no_real_demographic_magnitudes_opened":True,
+        },
+    }
+
+
+def main()->int:
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--mapppdr-dir",required=True,type=Path)
+    parser.add_argument("--out-json",required=True,type=Path)
+    parser.add_argument("--replicates",type=int,default=200)
+    args=parser.parse_args()
+
+    obs=_load_rda(args.mapppdr_dir/"data"/"penguin_obs.rda","penguin_obs")
+    result=run_observation_audit(obs,replicates=args.replicates)
+    args.out_json.parent.mkdir(parents=True,exist_ok=True)
+    args.out_json.write_text(
+        json.dumps(result,indent=2,sort_keys=True)+"\n",
+        encoding="utf-8",
+    )
+    print(json.dumps(result,indent=2,sort_keys=True))
+    if not result["decision"]["observation_layer_recoverable"]:
+        raise SystemExit("observation recovery gate failed")
+    return 0
+
+
+if __name__=="__main__":
+    raise SystemExit(main())
