@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-first-real-v3-fit-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36548419514,
+    "artifact_id": 11023586901,
+    "artifact_digest": "sha256:23ba92fb435973e6995367353ea8294b525af2bd9703aafcc7bc3a7efbdc68b3",
+    "head_sha": "9b0fbaa9dfef578b3f325125e0207d7a52666d71",
+    "conclusion": "success"
+  },
+  "inference_status": "point_estimates_only; frozen 9999-permutation inference pending",
+  "observation_calibration": {
+    "delta_image": 0.03955478972384191,
+    "image_multiplicative_factor": 1.040347497675567,
+    "sigma_accuracy_1": 0.23360035993324252,
+    "sigma_accuracy_2_5": 0.44671397642748195
+  },
+  "primary_cross_species": {
+    "median_gamma_ah": -0.31822603579776854,
+    "negative_species": 3,
+    "all_species_negative": true,
+    "species_with_crossover_classification": [
+      "CHPE",
+      "GEPE"
+    ]
+  },
+  "primary": {
+    "ADPE": {
+      "gamma_a": -0.3991492113862376,
+      "gamma_h": 0.34847344888490533,
+      "gamma_ah": -0.303571047069412,
+      "low_area_H_slope": 0.6520444959543173,
+      "high_area_H_slope": 0.04490240181549332,
+      "crossover_classification": false,
+      "process_sd": 0.005,
+      "loading_residual_sd": 0.05,
+      "n_units": 41,
+      "n_records": 830
+    },
+    "CHPE": {
+      "gamma_a": -0.7051198797217615,
+      "gamma_h": 0.7169602910921737,
+      "gamma_ah": -1.1843982732708647,
+      "low_area_H_slope": 1.9013585643630384,
+      "high_area_H_slope": -0.4674379821786909,
+      "crossover_classification": true,
+      "process_sd": 0.005,
+      "loading_residual_sd": 0.05,
+      "n_units": 34,
+      "n_records": 570
+    },
+    "GEPE": {
+      "gamma_a": -0.25523559001127116,
+      "gamma_h": 0.10898259183797973,
+      "gamma_ah": -0.31822603579776854,
+      "low_area_H_slope": 0.4272086276357483,
+      "high_area_H_slope": -0.2092434439597888,
+      "crossover_classification": true,
+      "process_sd": 0.005,
+      "loading_residual_sd": 0.05,
+      "n_units": 29,
+      "n_records": 671
+    }
+  },
+  "source_sensitivities": {
+    "exclude_unknown": {
+      "aggregate_median_gamma_ah": -0.37866317956817785,
+      "negative_species": 3,
+      "ADPE": {
+        "gamma_ah": -0.3488363055111208,
+        "crossover_classification": false,
+        "n_units": 40,
+        "n_records": 763
+      },
+      "CHPE": {
+        "gamma_ah": -1.6312674290862659,
+        "crossover_classification": true,
+        "n_units": 30,
+        "n_records": 535
+      },
+      "GEPE": {
+        "gamma_ah": -0.37866317956817785,
+        "crossover_classification": true,
+        "n_units": 28,
+        "n_records": 621
+      }
+    },
+    "ground_only": {
+      "aggregate_median_gamma_ah": -0.6400739478182506,
+      "negative_species": 2,
+      "ADPE": "coverage_limited_14_units",
+      "CHPE": {
+        "gamma_ah": -0.9117626106847414,
+        "crossover_classification": true,
+        "n_units": 26,
+        "n_records": 484
+      },
+      "GEPE": {
+        "gamma_ah": -0.3683852849517597,
+        "crossover_classification": true,
+        "n_units": 23,
+        "n_records": 547
+      }
+    }
+  },
+  "process_variance_interpretation_allowed": false,
+  "provenance": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "real_count_magnitudes_opened": true,
+    "frozen_records": 2100,
+    "unlock_status": "UNLOCKED_FOR_FROZEN_EXECUTION"
+  },
+  "interpretation_boundary": [
+    "No inferential significance claim is made from these point estimates.",
+    "The frozen 9999-permutation inference remains mandatory before interpreting the paper-level gamma_AH result.",
+    "Process-variance ecology remains blocked because the fitted process SD hits the frozen lower profile bound in all three primary species fits."
+  ]
+}
