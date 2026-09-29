@@ -395,10 +395,16 @@ def audit(root: Path) -> dict:
             "modeling_eligibility_by_species": modeling,
             "primary_coupling_units": int(sum(len(v["covered_units"]) for v in modeling.values())),
             "all_species_forcing_identifiable": all(v["level"] is not None for v in modeling.values()),
-            "selection_rule": (
+            "strict_selection_rule": (
                 "choose APBP region, else CCAMLR, else species-wide; "
-                "a level is selectable only when every frozen unit belongs "
+                "a strict level is selectable only when every frozen unit belongs "
                 "to a qualifying group at that level"
+            ),
+            "modeling_selection_rule": (
+                "choose the finest APBP or CCAMLR level where qualifying groups "
+                "cover at least 95% of frozen units and at least two groups qualify; "
+                "otherwise use species-wide if it qualifies; unsupported units are "
+                "excluded only from lambda coupling estimation"
             ),
             "no_count_magnitudes_opened": True,
         },
