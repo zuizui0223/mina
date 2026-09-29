@@ -1,0 +1,29 @@
+name: paper2-integrated-hierarchical-recovery-v2
+
+on:
+  push:
+    branches: [analysis/paper2-integrated-hierarchical-v2]
+    paths:
+      - "scripts/simulate_paper2_integrated_hierarchical_recovery.py"
+      - "tests/test_paper2_integrated_hierarchical_recovery.py"
+      - "contracts/PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_V2.json"
+      - ".github/workflows/paper2-integrated-hierarchical-recovery-v2.yml"
+  pull_request:
+    paths:
+      - "scripts/simulate_paper2_integrated_hierarchical_recovery.py"
+      - "tests/test_paper2_integrated_hierarchical_recovery.py"
+      - "contracts/PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_V2.json"
+      - ".github/workflows/paper2-integrated-hierarchical-recovery-v2.yml"
+  workflow_dispatch:
+
+jobs:
+  recover:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas pyreadr
+      - name: Run hierarchical integrated recovery tests
+        run: python -m unittest tests.test_paper2_integrated_hierarchical_recovery -v
