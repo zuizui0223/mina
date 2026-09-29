@@ -17,19 +17,22 @@ from scripts.simulate_paper2_integrated_recovery import (
 
 
 def dense_fixture():
+    """Realistic-size algebra fixture: 16 sites in each of two forcing groups."""
     seasons=";".join(str(y) for y in range(1980,2026))
-    vals=[
-        (-1.5,-1.2),(-1.0,1.1),(-0.5,-0.8),(-0.2,1.4),
-        (0.2,-1.1),(0.6,0.7),(1.0,-0.4),(1.4,1.0),
-    ]
-    frame=pd.DataFrame([
-        {
-            "unit_id":f"TEST|S{i}","site_id":f"S{i}","species_id":"TEST",
-            "forcing_group":"G1" if i<4 else "G2",
-            "A":a,"H":h,"AH":a*h,"seasons":seasons,
-        }
-        for i,(a,h) in enumerate(vals)
-    ])
+    avals=(-1.5,-0.5,0.5,1.5)
+    hvals=(-1.2,-0.4,0.4,1.2)
+    rows_frame=[]
+    i=0
+    for group in ("G1","G2"):
+        for a in avals:
+            for h in hvals:
+                rows_frame.append({
+                    "unit_id":f"TEST|S{i}","site_id":f"S{i}",
+                    "species_id":"TEST","forcing_group":group,
+                    "A":a,"H":h,"AH":a*h,"seasons":seasons,
+                })
+                i+=1
+    frame=pd.DataFrame(rows_frame)
     rows=[]
     for _,row in frame.iterrows():
         for season in range(1980,2026):
