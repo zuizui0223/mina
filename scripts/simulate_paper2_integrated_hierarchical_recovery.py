@@ -269,6 +269,172 @@ def _profile_from_observed_intervals(
     )
 
 
+def _build_observed_intervals(
+    frame:pd.DataFrame,
+    collapsed:pd.DataFrame,
+)->list[dict]:
+    intervals=[]
+    local_frame=frame.reset_index(drop=True)
+    for i,row in local_frame.iterrows():
+        local=collapsed[
+            collapsed["site_id"].astype(str).eq(str(row["site_id"]))
+            & collapsed["species_id"].astype(str).eq(str(row["species_id"]))
+        ].sort_values("season")
+        if len(local)<2:
+            raise ValueError(f"{row['unit_id']} has fewer than 2 collapsed seasons")
+        seasons=local["season"].astype(int).to_numpy()
+        z=local["state_hat"].astype(float).to_numpy()
+        v=local["observation_var"].astype(float).to_numpy()
+        for k in range(len(seasons)-1):
+            first,last=int(seasons[k]),int(seasons[k+1])
+            intervals.append({
+                "site":int(i),
+                "group":str(row["forcing_group"]),
+                "first":first,
+                "last":last,
+                "duration":float(last-first),
+                "delta":float(z[k+1]-z[k]),
+                "obs_var":float(v[k+1]+v[k]),
+            })
+    return intervals
+
+
+def _interval_variance(interval:dict,process_sd:float)->float:
+    return (
+        float(interval["duration"])*float(process_sd)**2
+        +float(interval["obs_var"])
+    )
+
+
+def _solve_forcing_interval(
+    intervals:list[dict],
+    frame:pd.DataFrame,
+    lam:np.ndarray,
+    process_sd:float,
+)->tuple[np.ndarray,dict[str,np.ndarray]]:
+    n=len(frame)
+    groups=sorted(frame["forcing_group"].astype(str).unique())
+    gindex={g:j for j,g in enumerate(groups)}
+    T=len(TRANSITION_YEARS)
+    cols=n+len(groups)*T
+    A=np.zeros((len(intervals),cols),dtype=float)
+    y=np.zeros(len(intervals),dtype=float)
+    for r,it in enumerate(intervals):
+        i=int(it["site"])
+        g=str(it["group"])
+        var=max(_interval_variance(it,process_sd),1e-12)
+        w=1.0/np.sqrt(var)
+        A[r,i]=float(it["duration"])*w
+        start=n+gindex[g]*T
+        for year in range(int(it["first"]),int(it["last"])):
+            A[r,start+(year-START_YEAR)]=float(lam[i])*w
+        y[r]=float(it["delta"])*w
+
+    C=np.zeros((len(groups),cols),dtype=float)
+    for gi,g in enumerate(groups):
+        start=n+gi*T
+        C[gi,start:start+T]=1.0/T
+    ata=A.T@A
+    aty=A.T@y
+    kkt=np.block([
+        [ata,C.T],
+        [C,np.zeros((len(groups),len(groups)),dtype=float)],
+    ])
+    rhs=np.concatenate([aty,np.zeros(len(groups),dtype=float)])
+    sol=np.linalg.lstsq(kkt,rhs,rcond=None)[0][:cols]
+    mu=sol[:n]
+    forcing={
+        g:sol[n+gindex[g]*T:n+(gindex[g]+1)*T].copy()
+        for g in groups
+    }
+    return mu,forcing
+
+
+def _forcing_sum(forcing:dict[str,np.ndarray],it:dict)->float:
+    f=forcing[str(it["group"])]
+    return float(np.sum(
+        f[int(it["first"])-START_YEAR:int(it["last"])-START_YEAR]
+    ))
+
+
+def _solve_site_gamma_interval(
+    intervals:list[dict],
+    frame:pd.DataFrame,
+    forcing:dict[str,np.ndarray],
+    process_sd:float,
+    loading_sd:float,
+    *,
+    min_loading_sd:float=0.05,
+)->tuple[np.ndarray,np.ndarray,np.ndarray,float]:
+    n=len(frame)
+    p=3
+    X=frame[["Ac","Hc","AHc"]].to_numpy(dtype=float)
+    labels=frame["forcing_group"].astype(str).to_numpy()
+    groups=sorted(set(labels.tolist()))
+    sig=max(float(loading_sd),1e-8)
+    cols=n+p+n
+    A=np.zeros((len(intervals)+n,cols),dtype=float)
+    y=np.zeros(len(intervals)+n,dtype=float)
+    r=0
+    for it in intervals:
+        i=int(it["site"])
+        fsum=_forcing_sum(forcing,it)
+        var=max(_interval_variance(it,process_sd),1e-12)
+        w=1.0/np.sqrt(var)
+        A[r,i]=float(it["duration"])*w
+        A[r,n:n+p]=fsum*X[i]*w
+        A[r,n+p+i]=fsum*w
+        y[r]=(float(it["delta"])-fsum)*w
+        r+=1
+    for i in range(n):
+        A[r,n+p+i]=1.0/sig
+        r+=1
+
+    C=np.zeros((len(groups),cols),dtype=float)
+    for gi,g in enumerate(groups):
+        idx=np.flatnonzero(labels==g)
+        C[gi,n+p+idx]=1.0/len(idx)
+    ata=A.T@A
+    aty=A.T@y
+    kkt=np.block([
+        [ata,C.T],
+        [C,np.zeros((len(groups),len(groups)),dtype=float)],
+    ])
+    rhs=np.concatenate([aty,np.zeros(len(groups),dtype=float)])
+    sol=np.linalg.lstsq(kkt,rhs,rcond=None)[0][:cols]
+    mu=sol[:n]
+    gamma=sol[n:n+p]
+    b=sol[n+p:]
+    lam=1.0+X@gamma+b
+    loading_sd_new=max(
+        float(np.sqrt(np.mean(b*b))),
+        float(min_loading_sd),
+    )
+    return mu,lam,gamma,loading_sd_new
+
+
+def _profile_interval_process_sd(
+    intervals:list[dict],
+    mu:np.ndarray,
+    lam:np.ndarray,
+    forcing:dict[str,np.ndarray],
+)->float:
+    residual=[]
+    duration=[]
+    obs_var=[]
+    for it in intervals:
+        i=int(it["site"])
+        fsum=_forcing_sum(forcing,it)
+        pred=float(it["duration"])*float(mu[i])+float(lam[i])*fsum
+        residual.append(float(it["delta"])-pred)
+        duration.append(float(it["duration"]))
+        obs_var.append(float(it["obs_var"]))
+    return profile_process_sd(
+        residual,duration,obs_var,
+        min_sd=0.005,max_sd=0.30,grid_size=80,
+    )
+
+
 def fit_hierarchical_species(
     process_frame:pd.DataFrame,
     observations:pd.DataFrame,
@@ -280,6 +446,7 @@ def fit_hierarchical_species(
     true_lambda:list[float]|None=None,
     iterations:int=12,
 )->dict:
+    """Hierarchical interval-marginal fit with observation-error propagation."""
     frame=group_center_traits(process_frame.reset_index(drop=True))
     collapsed=collapse_same_season(
         observations,
@@ -287,34 +454,34 @@ def fit_hierarchical_species(
         sigma1=float(sigma1),
         sigma2plus=float(sigma2plus),
     )
-    sites=_site_data(frame,collapsed)
+    intervals=_build_observed_intervals(frame,collapsed)
 
     n=len(frame)
-    mu=np.asarray([
-        float(np.mean(np.diff(site["x"]))) for site in sites
-    ],dtype=float)
-    lam=np.ones(n,dtype=float)
     gamma=np.zeros(3,dtype=float)
+    lam=np.ones(n,dtype=float)
     process_sd_initial=0.10
     process_sd=process_sd_initial
     loading_sd=0.30
-    forcing=_forcing_template(frame)
-    forcing,mu=_update_forcing(sites,frame,mu,lam,forcing)
+    mu,forcing=_solve_forcing_interval(
+        intervals,frame,lam,process_sd
+    )
 
     for _ in range(int(iterations)):
-        _smooth_states(sites,mu,lam,forcing,process_sd)
-        forcing,mu=_update_forcing(sites,frame,mu,lam,forcing)
-        mu,lam,gamma,loading_sd=_update_site_and_gamma_joint(
-            sites,frame,forcing,process_sd,loading_sd
+        mu,forcing=_solve_forcing_interval(
+            intervals,frame,lam,process_sd
         )
-        process_sd=_profile_from_observed_intervals(
-            sites,frame,mu,lam,forcing
+        mu,lam,gamma,loading_sd=_solve_site_gamma_interval(
+            intervals,frame,forcing,process_sd,loading_sd
+        )
+        process_sd=_profile_interval_process_sd(
+            intervals,mu,lam,forcing
         )
 
-    _smooth_states(sites,mu,lam,forcing,process_sd)
-    forcing,mu=_update_forcing(sites,frame,mu,lam,forcing)
-    mu,lam,gamma,loading_sd=_update_site_and_gamma_joint(
-        sites,frame,forcing,process_sd,loading_sd
+    mu,forcing=_solve_forcing_interval(
+        intervals,frame,lam,process_sd
+    )
+    mu,lam,gamma,loading_sd=_solve_site_gamma_interval(
+        intervals,frame,forcing,process_sd,loading_sd
     )
 
     corr={}
@@ -347,6 +514,8 @@ def fit_hierarchical_species(
         "process_sd_initial":float(process_sd_initial),
         "loading_residual_sd":float(loading_sd),
         "iterations":int(iterations),
+        "intervals":int(len(intervals)),
+        "estimator":"hierarchical_interval_marginal",
     }
 
 
