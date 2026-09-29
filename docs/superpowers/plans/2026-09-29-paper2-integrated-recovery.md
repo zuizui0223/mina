@@ -79,10 +79,10 @@ No true forcing, true loading, true state or true observation parameter is suppl
 For each retained species scale:
 
 - every forcing group median forcing correlation >= 0.70;
-- every forcing group 5th-percentile forcing correlation >= 0.25;
-- crossover median gamma_AH bias <= 0.12;
+- every forcing group 5th-percentile forcing correlation >= 0.30;
+- crossover median gamma_AH bias <= 0.10;
 - crossover negative fraction >= 0.90;
-- null absolute median gamma_AH <= 0.06 and 5th-95th interval contains zero;
+- null absolute median gamma_AH <= 0.05 and 5th-95th interval contains zero;
 - simple-buffering median gamma_A bias <= 0.10 and >=90% negative;
 - simple-buffering absolute median gamma_AH <= 0.06;
 - image-offset absolute median bias <= 0.03;
