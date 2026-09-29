@@ -2,11 +2,20 @@
 """Integrated synthetic process-plus-observation recovery for Paper 2 Gate 2E-C."""
 from __future__ import annotations
 
+import argparse
+import json
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
+import pyreadr
 
-from scripts.simulate_paper2_latent_factor_recovery import fit_unknown_factor
+from scripts.simulate_paper2_latent_factor_recovery import (
+    build_scale_frame,
+    fit_unknown_factor,
+)
 from scripts.simulate_paper2_observation_recovery import (
+    build_frozen_observation_metadata,
     fit_observation_calibration_fast,
     prepare_observation_recovery_design,
 )
@@ -704,3 +713,199 @@ def evaluate_integrated_configuration(
         "species":species,
         "gate":gate,
     }
+
+
+def _load_rda(path:Path,expected:str)->pd.DataFrame:
+    result=pyreadr.read_r(str(path))
+    if expected in result:
+        frame=result[expected]
+    elif len(result)==1:
+        frame=next(iter(result.values()))
+    else:
+        raise ValueError(f"cannot resolve {expected}: {list(result)}")
+    if not isinstance(frame,pd.DataFrame):
+        raise TypeError(expected)
+    return frame
+
+
+def build_recovery_frames(
+    forcing_result:dict,
+    forcing_units:pd.DataFrame,
+    breeding_options:pd.DataFrame,
+    scale_by_species:dict[str,str],
+)->dict[str,pd.DataFrame]:
+    frames={}
+    for species_id in ("ADPE","CHPE","GEPE"):
+        scale=str(scale_by_species[species_id])
+        frame=build_scale_frame(
+            forcing_result,
+            forcing_units,
+            breeding_options,
+            species_id,
+            scale,
+        )
+        frames[species_id]=frame
+    return frames
+
+
+def run_integrated_audit(
+    forcing_result:dict,
+    forcing_units:pd.DataFrame,
+    breeding_options:pd.DataFrame,
+    observation_metadata:pd.DataFrame,
+    latent_recovery_result:dict,
+    *,
+    replicates:int=100,
+)->dict:
+    """Run primary retained scales plus mandatory species-wide sensitivity."""
+    retained={
+        str(k):str(v)
+        for k,v in latent_recovery_result["decision"][
+            "selected_recovered_scale_by_species"
+        ].items()
+    }
+    if retained != {
+        "ADPE":"ccamlr",
+        "CHPE":"apbp_region",
+        "GEPE":"species_wide",
+    }:
+        raise ValueError(f"retained scale drift: {retained}")
+
+    primary_frames=build_recovery_frames(
+        forcing_result,
+        forcing_units,
+        breeding_options,
+        retained,
+    )
+    expected_primary={"ADPE":40,"CHPE":33,"GEPE":29}
+    observed_primary={
+        sp:int(len(frame)) for sp,frame in primary_frames.items()
+    }
+    if observed_primary!=expected_primary:
+        raise ValueError(
+            f"primary integrated frame drift: {observed_primary} != {expected_primary}"
+        )
+
+    specieswide_scales={
+        "ADPE":"species_wide",
+        "CHPE":"species_wide",
+        "GEPE":"species_wide",
+    }
+    specieswide_frames=build_recovery_frames(
+        forcing_result,
+        forcing_units,
+        breeding_options,
+        specieswide_scales,
+    )
+    expected_specieswide={"ADPE":41,"CHPE":34,"GEPE":29}
+    observed_specieswide={
+        sp:int(len(frame)) for sp,frame in specieswide_frames.items()
+    }
+    if observed_specieswide!=expected_specieswide:
+        raise ValueError(
+            "species-wide integrated frame drift: "
+            f"{observed_specieswide} != {expected_specieswide}"
+        )
+
+    primary=evaluate_integrated_configuration(
+        primary_frames,
+        observation_metadata,
+        replicates=replicates,
+        seed_offset=4000000,
+    )
+    specieswide=evaluate_integrated_configuration(
+        specieswide_frames,
+        observation_metadata,
+        replicates=replicates,
+        seed_offset=6000000,
+    )
+
+    selected={}
+    for sp in ("ADPE","CHPE","GEPE"):
+        if primary["species"][sp]["gate"]["passes"]:
+            selected[sp]=retained[sp]
+        elif specieswide["species"][sp]["gate"]["passes"]:
+            selected[sp]="species_wide"
+        else:
+            selected[sp]=None
+
+    decision={
+        "selected_integrated_scale_by_species":selected,
+        "all_species_have_integrated_scale":bool(
+            all(value is not None for value in selected.values())
+        ),
+        "primary_observation_gate_passed":bool(primary["observation_gate"]["passes"]),
+        "specieswide_observation_gate_passed":bool(
+            specieswide["observation_gate"]["passes"]
+        ),
+        "primary_integrated_gate_passed":bool(primary["gate"]["passes"]),
+        "specieswide_sensitivity_completed":True,
+        "no_real_demographic_count_magnitudes_opened":True,
+    }
+    decision["counts_may_be_opened"] = bool(
+        decision["all_species_have_integrated_scale"]
+        and decision["primary_observation_gate_passed"]
+        and decision["specieswide_observation_gate_passed"]
+    )
+
+    return {
+        "schema_version":1,
+        "audit_id":"mina-paper2-integrated-recovery-v1",
+        "replicates_per_scenario":int(replicates),
+        "primary_scale_by_species":retained,
+        "primary_frame_units":observed_primary,
+        "specieswide_frame_units":observed_specieswide,
+        "primary":primary,
+        "species_wide_sensitivity":specieswide,
+        "decision":decision,
+    }
+
+
+def main()->int:
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--forcing-json",required=True,type=Path)
+    parser.add_argument("--forcing-csv",required=True,type=Path)
+    parser.add_argument("--breeding-csv",required=True,type=Path)
+    parser.add_argument("--latent-recovery-json",required=True,type=Path)
+    parser.add_argument("--mapppdr-dir",required=True,type=Path)
+    parser.add_argument("--out-json",required=True,type=Path)
+    parser.add_argument("--replicates",type=int,default=100)
+    args=parser.parse_args()
+
+    forcing_result=json.loads(
+        args.forcing_json.read_text(encoding="utf-8")
+    )
+    forcing_units=pd.read_csv(args.forcing_csv)
+    breeding_options=pd.read_csv(args.breeding_csv)
+    latent_result=json.loads(
+        args.latent_recovery_json.read_text(encoding="utf-8")
+    )
+    obs=_load_rda(
+        args.mapppdr_dir/"data"/"penguin_obs.rda",
+        "penguin_obs",
+    )
+    metadata=build_frozen_observation_metadata(obs)
+    if len(metadata)!=2100:
+        raise ValueError(f"observation metadata drift: {len(metadata)} != 2100")
+
+    result=run_integrated_audit(
+        forcing_result,
+        forcing_units,
+        breeding_options,
+        metadata,
+        latent_result,
+        replicates=args.replicates,
+    )
+    args.out_json.parent.mkdir(parents=True,exist_ok=True)
+    args.out_json.write_text(
+        json.dumps(result,indent=2,sort_keys=True)+"\n",
+        encoding="utf-8",
+    )
+    print(json.dumps(result,indent=2,sort_keys=True))
+    if not result["decision"]["counts_may_be_opened"]:
+        raise SystemExit("integrated recovery gate failed")
+    return 0
+
+
+if __name__=="__main__":
+    raise SystemExit(main())
