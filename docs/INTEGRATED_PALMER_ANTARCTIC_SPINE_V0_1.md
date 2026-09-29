@@ -211,11 +211,21 @@ often the null generates both:
 1. a negative 2 km median and positive 5 km median; and
 2. a 5 km minus 2 km contrast at least as large as the observed **0.425**.
 
-After 8,999 of the frozen 9,999 permutations, this joint event had occurred 742
-times. Even if none of the remaining 1,000 permutations contained the event,
-the final plus-one probability could not fall below **0.0743**.
+Across the full frozen **9,999** joint permutations:
 
-Therefore the ecological scale-dependence criterion is definitively not met.
+- the simple 2 km negative → 5 km positive sign switch occurred with
+  plus-one probability **0.2478**;
+- a 5 km − 2 km contrast at least as large as the observed **0.425** occurred
+  with probability **0.0971**;
+- the prespecified **joint sign-switch + contrast** event occurred 809 times,
+  giving plus-one probability **0.0810**;
+- a 1/2/5 km range at least as large as observed occurred with probability
+  **0.2645**;
+- the exact observed ordering `2 km < 1 km < 5 km` together with an
+  observed-size range occurred with probability **0.0765**.
+
+Therefore the prespecified ecological scale-dependence criterion
+(joint probability <= 0.05) is not met.
 
 The correct interpretation is:
 
@@ -223,9 +233,6 @@ The correct interpretation is:
 > is spatially supported, but the observed sign reversal is compatible with
 > finite-sample/block-permutation fluctuation and should not itself be treated
 > as a biological scale-dependence discovery.
-
-The final exact 9,999-permutation probability is reported in the analysis
-receipt once all shards are aggregated; it cannot change this decision.
 
 ## Information content of the null primary result
 
