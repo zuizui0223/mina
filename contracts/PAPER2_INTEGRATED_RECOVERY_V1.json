@@ -69,6 +69,17 @@
     "No real demographic count magnitude may be read, summarized, transformed or modeled.",
     "The log1p transform is frozen before checking whether real count values include zeros.",
     "No new predictor, radius, geographic partition or interaction may be introduced to rescue failure.",
-    "Species-specific image offsets remain diagnostic only."
-  ]
+    "Species-specific image offsets remain diagnostic only.",
+    "Primary integrated recovery and the mandatory species-wide forcing sensitivity must be completed before real count magnitudes are opened."
+  ],
+  "mandatory_forcing_sensitivity": {
+    "scale": "species_wide for ADPE, CHPE and GEPE",
+    "replicates_per_species_scale_scenario": 100,
+    "interpretation": "Run the identical null, crossover and simple-buffering scenarios with one species-wide forcing per species. If a retained regional scale fails but its species-wide fit passes, species-wide is the only allowed fallback. If the primary and species-wide ecological readouts materially disagree, the eventual result is forcing-scale dependent."
+  },
+  "observation_sensitivities": {
+    "exclude_unknown": "mandatory after the primary integrated gate; remove unknown-vantage records before same-season collapse while retaining the shared nuisance calibration learned from known-method overlap",
+    "ground_only": "mandatory robustness lane after the primary integrated gate; use raw ground observations only for the process reconstruction and do not reinterpret failure as evidence against the primary model",
+    "blocking_primary_gate": false
+  }
 }
