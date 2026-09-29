@@ -1,6 +1,10 @@
 import unittest
-import numpy as np
-import pandas as pd
+try:
+    import numpy as np
+    import pandas as pd
+    import pyreadr  # noqa: F401
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest("Paper 2 radius-null tests require numpy/pandas/pyreadr") from exc
 
 from scripts.run_paper2_radius_sign_switch_null import (
     permute_multiradius_within_blocks,
