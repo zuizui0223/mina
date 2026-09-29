@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-h-main-recovery-v5-result",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36546094776,
+    "artifact_id": 11022607586,
+    "artifact_digest": "sha256:4b61b796028d548de20ed4350520c0ad1a9a2296205c354441120a500537a8e1",
+    "conclusion": "success"
+  },
+  "decision": {
+    "h_main_recoverable": true,
+    "counts_may_be_opened": false,
+    "no_real_count_magnitudes_opened": true
+  },
+  "truth_gamma_h": -0.25,
+  "species": {
+    "ADPE": {
+      "median_gamma_h": -0.23559637789290128,
+      "negative_fraction": 1,
+      "null_median": 0.0013896132223414903,
+      "passes": true
+    },
+    "CHPE": {
+      "median_gamma_h": -0.2584156998533831,
+      "negative_fraction": 1,
+      "null_median": 0.0015530843412540365,
+      "passes": true
+    },
+    "GEPE": {
+      "median_gamma_h": -0.25935833831447686,
+      "negative_fraction": 0.99,
+      "null_median": -0.012439506564446055,
+      "passes": true
+    }
+  },
+  "interpretation": [
+    "A nonzero Habitat Complex main effect is recoverable under the unchanged V3 estimator in all three species.",
+    "The low-area and high-area H slopes used to classify the option-fragmentation crossover can therefore be interpreted only after the primary interaction also satisfies the frozen V3/V4 criteria.",
+    "Terrain R remains secondary because an analogous nonzero R recovery gate has not been run."
+  ]
+}

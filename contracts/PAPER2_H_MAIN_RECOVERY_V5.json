@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-h-main-recovery-v5",
+  "date": "2026-09-29",
+  "status": "pre_outcome_nonzero_H_recovery",
+  "parent_v3": "contracts/PAPER2_SPATIALLY_ADJUSTED_HIERARCHICAL_RECOVERY_V3.json",
+  "purpose": "Validate recovery of a nonzero Habitat Complex main effect because crossover classification uses gamma_H ± gamma_AH.",
+  "scenario": {
+    "truth_gamma_H": -0.25,
+    "truth_gamma_A": 0,
+    "truth_gamma_AH": 0,
+    "implementation": "Generate synthetic lambda using the frozen H values as the simulator's A input while fitting the unchanged V3 model to the original A/H/A:H columns."
+  },
+  "replicates": 100,
+  "gate": {
+    "max_abs_median_bias": 0.1,
+    "negative_fraction": 0.9,
+    "null_max_abs_median": 0.05,
+    "null_q05_q95_must_contain_zero": true
+  },
+  "boundary": [
+    "V3 estimator and spatial blocks do not change.",
+    "No real count magnitude is opened.",
+    "Terrain R remains secondary and is not promoted to the primary crossover claim without separate recovery."
+  ]
+}
