@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-small-group-reproductive-success-result-v1",
+  "validated_date": "2026-09-29",
+  "contract_id": "mina-palmer-small-group-reproductive-success-v1",
+  "source": {
+    "dataset": "AdeliePenguinAdultandChickCounts",
+    "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "sha256": "40485a328af51727e019c2cd99e4795c098499fef86a9d4b2af435a6de5373e0",
+    "usable_rows": 803,
+    "duplicate_key_count": 2,
+    "duplicate_keys": [
+      "LIT:8.0:1996",
+      "LIT:9.0:1996"
+    ]
+  },
+  "execution": {
+    "workflow_run_id": 36588519123,
+    "head_sha": "1f33883b32da12344f520177cf7c114ccb110de4",
+    "artifact_id": 11043367819,
+    "artifact_digest": "sha256:e4e64eeb4ca927d1551a2bda5a30e4b933f097b3384e47a3c69e1284ba19c90d",
+    "conclusion": "success",
+    "monte_carlo_draws": 100000,
+    "seed": 20260929
+  },
+  "analysis_frame": {
+    "n_groups": 95,
+    "n_colony_rows": 741,
+    "n_seasons": 24,
+    "season_range": [
+      1991,
+      2014
+    ],
+    "by_island": {
+      "CHR": {
+        "n_groups": 22,
+        "n_colony_rows": 224,
+        "total_pairs": 13738,
+        "total_chicks": 19022
+      },
+      "COR": {
+        "n_groups": 17,
+        "n_colony_rows": 93,
+        "total_pairs": 6989,
+        "total_chicks": 9332
+      },
+      "HUM": {
+        "n_groups": 24,
+        "n_colony_rows": 131,
+        "total_pairs": 7249,
+        "total_chicks": 15232
+      },
+      "LIT": {
+        "n_groups": 10,
+        "n_colony_rows": 75,
+        "total_pairs": 3188,
+        "total_chicks": 4376
+      },
+      "TOR": {
+        "n_groups": 22,
+        "n_colony_rows": 218,
+        "total_pairs": 17459,
+        "total_chicks": 29356
+      }
+    }
+  },
+  "primary_equal_per_pair_null": {
+    "observed_z": 10.26547505558937,
+    "one_sided_upper_p": 0.00000999990000099999,
+    "null_mean_z": -0.00018463301178743577,
+    "null_sd_z": 1.003329315028285,
+    "decision": "supported"
+  },
+  "effect_size": {
+    "beta_per_within_group_sd_log1p_pairs": 0.05510073472687783,
+    "multiplicative_per_pair_success_per_1sd_larger_group": 1.0566470503665442,
+    "naive_information_se": 0.005368282319418847,
+    "wald_95ci_beta": [
+      0.04457890138081689,
+      0.06562256807293877
+    ],
+    "role": "descriptive effect size; Monte Carlo score test is primary"
+  },
+  "sensitivities": {
+    "exclude_duplicate_keys": {
+      "observed_z": 10.06121211591098,
+      "p": 0.00000999990000099999
+    },
+    "exclude_litchfield": {
+      "observed_z": 7.308427891373893,
+      "p": 0.00000999990000099999
+    },
+    "pairs_at_least_2": {
+      "observed_z": 10.732750696097836,
+      "p": 0.00000999990000099999
+    },
+    "pairs_at_least_5": {
+      "observed_z": 10.992674756995477,
+      "p": 0.00000999990000099999
+    },
+    "leave_one_island_out": {
+      "CHR": {
+        "observed_z": 10.12878708562308,
+        "p": 0.00000999990000099999
+      },
+      "COR": {
+        "observed_z": 12.512037327939314,
+        "p": 0.00000999990000099999
+      },
+      "HUM": {
+        "observed_z": 9.603273617315638,
+        "p": 0.00000999990000099999
+      },
+      "LIT": {
+        "observed_z": 7.308427891373893,
+        "p": 0.00000999990000099999
+      },
+      "TOR": {
+        "observed_z": 6.241561743483519,
+        "p": 0.00000999990000099999
+      }
+    },
+    "dirichlet_multinomial_A100": {
+      "observed_z": 10.26547505558937,
+      "null_sd_z": 3.7022921483307276,
+      "p": 0.0024399756002439973,
+      "supported": true
+    },
+    "dirichlet_multinomial_A25": {
+      "observed_z": 10.26547505558937,
+      "null_sd_z": 7.078608053175678,
+      "p": 0.07124928750712493,
+      "supported": false
+    }
+  },
+  "decision": {
+    "small_group_reproductive_disadvantage_supported_under_primary_equal_per_pair_null": true,
+    "positive_all_leave_one_island_out": true,
+    "robust_to_duplicate_key_exclusion": true,
+    "robust_to_pairs_thresholds": true,
+    "robust_to_moderate_dirichlet_multinomial_overdispersion_A100": true,
+    "robust_to_strong_dirichlet_multinomial_overdispersion_A25": false,
+    "social_facilitation_or_predation_mechanism_proven": false
+  },
+  "ecological_interpretation": "Within the same Palmer island and breeding season, chick production is shifted toward larger Adelie breeding groups beyond expectation from breeding-pair number alone. This is an independent reproductive-performance signal that is not reducible to the mechanical fact that small groups more readily reach zero under thinning. Its specific cause remains unresolved, and inference is sensitive to allowing very strong unstructured colony-level overdispersion.",
+  "paper_implication": "The Palmer mechanism story should distinguish two size effects: durable extinction ordering is mechanically expected under proportional thinning, whereas per-pair chick production contains an additional positive group-size association. This supports a small-group reproductive disadvantage as a biological candidate mechanism, while requiring habitat, edge/predation, snow, or other colony-level covariates to identify why.",
+  "interpretation_boundaries": [
+    "Do not identify skua predation from this result alone.",
+    "Do not call the result proof of social facilitation or an Allee mechanism.",
+    "Do not treat colony_code as a mapped physical patch.",
+    "Report failure under the strongest A=25 Dirichlet-multinomial overdispersion sensitivity.",
+    "The legacy ERDDAP snapshot is the frozen primary source; updated LTER package versions should be treated as version-replication rather than silently replacing it."
+  ]
+}
