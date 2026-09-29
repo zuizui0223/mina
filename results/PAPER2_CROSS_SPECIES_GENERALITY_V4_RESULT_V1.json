@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-cross-species-generality-v4-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36545894781,
+    "artifact_id": 11022583632,
+    "artifact_digest": "sha256:e6264bd4cf663f9ca4135a146a8220c9cbe4bf495504698d684b54d3ea9ed945",
+    "conclusion": "success"
+  },
+  "decision": {
+    "generality_estimand_recoverable": true,
+    "counts_may_be_opened": false,
+    "no_real_count_magnitudes_opened": true
+  },
+  "common_crossover": {
+    "aggregate_median_gamma_ah": -0.35065304507770456,
+    "aggregate_negative_fraction": 1,
+    "at_least_two_species_negative_fraction": 1,
+    "q05": -0.4636579635978088,
+    "q95": -0.22919534701337635,
+    "species_median_gamma": {
+      "ADPE": -0.417050259913339,
+      "CHPE": -0.3323136967265241,
+      "GEPE": -0.3447292304570235
+    },
+    "passes": true
+  },
+  "null": {
+    "aggregate_median_gamma_ah": -0.011109518101713033,
+    "q05": -0.11475641188772091,
+    "q95": 0.1494528648277789,
+    "passes": true
+  },
+  "single_species_guards": {
+    "adelie_only": {
+      "aggregate_median": -0.04891709859676929,
+      "at_least_two_negative_fraction": 0.73,
+      "passes": true
+    },
+    "chinstrap_only": {
+      "aggregate_median": -0.029441709919255692,
+      "at_least_two_negative_fraction": 0.59,
+      "passes": true
+    },
+    "gentoo_only": {
+      "aggregate_median": -0.06390862444938189,
+      "at_least_two_negative_fraction": 0.74,
+      "passes": true
+    }
+  },
+  "interpretation": [
+    "The cross-species median gamma_AH is recoverable when all three species share the crossover.",
+    "The generality statistic does not falsely reproduce a strong common effect when the crossover exists in only one species.",
+    "The paper-level claim is therefore a cross-species Pygoscelis tendency, not universality; all species-specific estimates remain reported."
+  ]
+}
