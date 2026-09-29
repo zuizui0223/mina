@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-forcing-model-eligibility-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_refinement_frozen_after_strict_support_audit_before_demographic_outcomes",
+  "paper_lane": "Paper 2",
+  "parent_audit_contract": "contracts/PAPER2_FORCING_SUPPORT_AUDIT_V1.json",
+  "parent_strict_result": "results/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json",
+  "rationale": "The strict all-units rule was found, using timing and geography only, to collapse otherwise estimable multi-region structure because of one or two isolated series. This refinement preserves estimable regional replication while excluding unsupported units only from the shared-forcing coupling estimand.",
+  "selection_rule": {
+    "hierarchy": [
+      "apbp_region",
+      "ccamlr",
+      "species_wide"
+    ],
+    "min_unit_coverage_fraction_for_regional_level": 0.95,
+    "min_qualifying_groups_for_regional_level": 2,
+    "regional_level_rule": "Choose the finest APBP or CCAMLR level where qualifying groups jointly contain at least 95% of that species' frozen bridged units and there are at least two qualifying groups.",
+    "fallback": "If neither regional level qualifies, use species-wide forcing only if the species-wide group satisfies the frozen forcing-group support criteria.",
+    "unsupported_units": "Retain unsupported units in secondary long-run growth/trend analyses but exclude them from the lambda shared-forcing coupling estimand.",
+    "no_outcome_based_deletion": true
+  },
+  "frozen_support_criteria_inherited": {
+    "min_units_per_forcing_group": 5,
+    "min_seasons_with_observations_from_at_least_3_units": 15,
+    "min_seasons_with_temporal_coverage_from_at_least_half_units": 10,
+    "temporal_coverage_half_rule": "ceil(0.5 * n_units)",
+    "min_units_spanning_first_and_last_thirds": 3
+  },
+  "justification_for_0_95": "Uses the same 95% completeness tolerance already adopted in the outcome-blind atlas gates; demographic count magnitudes, trends and site-trait associations remain unopened.",
+  "terminal_boundary": [
+    "Do not change 0.95 after count magnitudes are opened.",
+    "Do not lower the minimum of two qualifying regional groups after count magnitudes are opened.",
+    "Do not move unsupported units back into lambda estimation by post-outcome pooling.",
+    "No new geographic partition may be introduced after demographic outcomes are opened."
+  ]
+}

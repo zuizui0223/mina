@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-forcing-support-audit-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_forcing_support_audit_frozen_before_execution",
+  "paper_lane": "Paper 2",
+  "purpose": "Choose the finest geographic scale that can support a shared demographic forcing factor for each Pygoscelis species without inspecting count magnitudes.",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "primary_time_field": "season",
+    "primary_window": [
+      1980,
+      2025
+    ],
+    "expected_gate0_units": 152,
+    "expected_bridged_units": 107,
+    "expected_bridged_by_species": {
+      "ADPE": 44,
+      "CHPE": 34,
+      "GEPE": 29
+    }
+  },
+  "hierarchy": [
+    "apbp_region",
+    "ccamlr",
+    "species_wide"
+  ],
+  "forcing_group_qualification": {
+    "min_units": 5,
+    "min_seasons_with_observations_from_at_least_3_units": 15,
+    "min_seasons_with_temporal_coverage_from_at_least_half_units": 10,
+    "temporal_coverage_half_rule": "ceil(0.5 * n_units)",
+    "min_units_spanning_first_and_last_thirds": 3
+  },
+  "level_selection_rule": "For a species, choose the first level in the fixed hierarchy for which every frozen bridged unit belongs to a qualifying group. Missing geography labels or unsupported small groups make that level incomplete and force fallback. Do not drop units to rescue a finer level.",
+  "boundary": [
+    "Count is used only as a non-missingness flag to reconstruct the already-frozen nest-count cohort.",
+    "No count magnitude is summarized, compared, transformed, modeled, printed or written to the audit outputs.",
+    "No site trait is used in this audit.",
+    "The 107-unit cohort and 1980-2025 breeding-season window cannot be changed to rescue a finer forcing scale.",
+    "If species-wide support fails, the shared-forcing loading model is not opened for that species."
+  ]
+}
