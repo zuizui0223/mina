@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-empirical-coupling-diagnostic-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_demographic_count_magnitudes_opened",
+  "role": "pre-state-space empirical signal diagnostic; not final confirmatory model",
+  "source": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "time_field": "season",
+    "window": [
+      1980,
+      2025
+    ],
+    "forcing_support_receipt": "results/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json",
+    "coupling_candidate_units": 103
+  },
+  "frozen_trait_artifacts": {
+    "breeding_options": {
+      "workflow_run_id": 36491613166,
+      "artifact_id": 11001289630,
+      "artifact_digest": "sha256:a750a919f61c42234c2b7a634b98590d7f22779cb62b129d650e206befd37bbd",
+      "file": "ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv"
+    },
+    "terrain": {
+      "workflow_run_id": 36490682577,
+      "artifact_id": 11001148358,
+      "artifact_digest": "sha256:93b4c6e7fd02519edc20baebb74847991dfb2168e75361884219a55f184d98d5",
+      "file": "ANTARCTIC_PENGUIN_TERRAIN_ATLAS_V1.csv"
+    }
+  },
+  "observation_harmonization": {
+    "response": "log1p(nest count)",
+    "direct_categories": [
+      "ground",
+      "aerial",
+      "offshore vessel"
+    ],
+    "image_categories": [
+      "ground photo",
+      "aerial photo",
+      "uav",
+      "vhr",
+      "landsat",
+      "sentinel"
+    ],
+    "image_offset": "Within each species, for every site-species-season containing both direct and image-based records, compute median(log1p(image)) - median(log1p(direct)); the species offset is the median of those mixed-season differences.",
+    "adjustment": "Subtract the species image offset from image-based log counts. Direct and unknown-vantage records receive no mean adjustment.",
+    "season_aggregation": "Median adjusted log count within site-species-season.",
+    "accuracy_role": "Not used to weight the empirical point diagnostic; the final state-space model retains the already-frozen accuracy 1 versus pooled 2-5 observation-scale structure."
+  },
+  "coupling_estimator": {
+    "detrending": "Within each unit, OLS adjusted_log_count ~ intercept + centered breeding season; retain slope as secondary mean-trend diagnostic and use residuals for coupling.",
+    "forcing_group": "Use exactly the Gate 2C modeling-eligibility geography for that species and unit.",
+    "forcing": "For each focal unit-season, median detrended residual among other units in the same forcing group observed that season.",
+    "leave_one_out": true,
+    "min_peer_units_per_season": 3,
+    "min_matched_seasons_for_lambda": 6,
+    "standardization": "Within each focal unit's matched seasons, z-standardize the leave-one-out forcing.",
+    "lambda": "OLS slope from focal residual ~ intercept + forcing_z."
+  },
+  "primary_trait_model": {
+    "species_specific": true,
+    "complete_case_only": true,
+    "predictors": {
+      "A": "z(log1p(mapped_ice_free_area_ha_2000m))",
+      "H": "z(tier2_richness_2000m)",
+      "R": "z(log1p(elevation_relief_p90_p10_m_2000m))",
+      "interaction": "A * H"
+    },
+    "forcing_group_fixed_effect": true,
+    "primary_statistic": "beta_AH",
+    "crossover_readout": {
+      "low_area": "d lambda / d H at A=-1 SD = beta_H - beta_AH",
+      "high_area": "d lambda / d H at A=+1 SD = beta_H + beta_AH",
+      "predicted_pattern": "beta_AH < 0, low-area H effect >= 0, high-area H effect < 0"
+    },
+    "uncertainty": {
+      "descriptive_covariance": "HC3 robust OLS",
+      "permutation_test": "5000 permutations of lambda within forcing group, deterministic seed 20260929",
+      "directional_p": "fraction of permuted beta_AH <= observed beta_AH, with +1 correction"
+    }
+  },
+  "secondary_diagnostics": [
+    "Regress each unit's secular log-count trend slope on the same A + H + R + A:H + forcing-group design to distinguish response filtering from ordinary mean-trend association.",
+    "Report empirical lambda support counts and forcing-group composition by species.",
+    "Direct-only re-estimation is sensitivity-only if at least 20 trait-complete lambda estimates remain within a species."
+  ],
+  "outcome_blind_support_note": {
+    "min_matched_seasons_6_support_before_counts": {
+      "ADPE": 39,
+      "CHPE": 28,
+      "GEPE": 26
+    },
+    "basis": "Computed from season-presence metadata only, before count magnitudes were opened."
+  },
+  "terminal_rules": [
+    "Do not change the minimum of 6 matched seasons after inspecting counts.",
+    "Do not replace the leave-one-out forcing with a pooled forcing containing the focal unit.",
+    "Do not add or remove site traits, interactions, radii, years, or forcing groups based on diagnostic results.",
+    "A null or opposite-signed beta_AH remains a valid falsification of the crossover hypothesis.",
+    "Do not describe this empirical diagnostic as the final state-space inference."
+  ]
+}
