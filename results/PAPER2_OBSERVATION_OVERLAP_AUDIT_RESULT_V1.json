@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-observation-overlap-audit-result-v1",
+  "validated_date": "2026-09-29",
+  "source": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "primary_time_field": "season",
+    "primary_window": [
+      1980,
+      2025
+    ],
+    "bridged_site_species_units": 107
+  },
+  "execution": {
+    "workflow_run_id": 36508358314,
+    "artifact_id": 11008256006,
+    "artifact_digest": "sha256:4589de88e91294e3fb9ff35fd77eaa1a30a0fdb56dbe8c69f996bb6882c655e0",
+    "head_sha": "58e52234f5421f836e36cbf717e94b36064f5358",
+    "conclusion": "success"
+  },
+  "records": {
+    "total": 2100,
+    "vantage_family": {
+      "direct": 1889,
+      "image_based": 149,
+      "unknown": 62
+    },
+    "raw_vantage": {
+      "ground": 1363,
+      "aerial": 509,
+      "uav": 94,
+      "ground photo": 31,
+      "vhr": 20,
+      "offshore vessel": 17,
+      "aerial photo": 4,
+      "missing": 62
+    }
+  },
+  "overlap": {
+    "site_species_season_groups": 1721,
+    "repeated_record_groups": 273,
+    "mixed_raw_vantage_groups": 61,
+    "mixed_family_groups": 60,
+    "mixed_direct_image_groups": 41,
+    "mixed_direct_image_groups_by_species": {
+      "ADPE": 9,
+      "CHPE": 10,
+      "GEPE": 22
+    },
+    "direct_image_pairs_with_known_dates": 92,
+    "direct_image_pairs_exact_date": 23,
+    "direct_image_pairs_within_14_days": 53
+  },
+  "accuracy_repeat_support": {
+    "class_1_groups": 196,
+    "class_2_groups": 15,
+    "pooled_3_to_5_groups": 0
+  },
+  "decision": {
+    "primary_vantage_mean_structure": "direct reference + image_based offset; raw-vantage-specific offsets sensitivity-only",
+    "primary_direct_vs_image_offset_identifiable": true,
+    "primary_accuracy_precision_structure": "accuracy 1 versus pooled accuracy 2-5",
+    "missing_vantage_handling": "retain in primary as unknown-method records without a separately identified method offset; require sensitivity excluding missing-vantage records",
+    "ground_only_sensitivity": true,
+    "no_count_magnitudes_opened": true
+  },
+  "boundary": [
+    "The observation model is fixed using metadata overlap only.",
+    "No count ratios or method-specific count biases have been inspected.",
+    "Raw platform-specific offsets are not promoted to primary.",
+    "Observation-model structure cannot be changed after demographic count outcomes are opened."
+  ]
+}
