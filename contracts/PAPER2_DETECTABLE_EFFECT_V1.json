@@ -41,14 +41,16 @@
     }
   },
   "summaries": [
-    "detection fraction and Wilson 95% interval at each effect",
+    "raw detection fraction and Wilson 95% interval at each frozen effect-grid point",
     "median fitted cross-species gamma_AH at each effect",
-    "MDE80 and MDE90 by linear interpolation in absolute effect magnitude between adjacent frozen grid points"
+    "for MDE interpolation only, fit a nondecreasing isotonic regression to detection fraction versus absolute gamma_AH magnitude using equal replicate weights",
+    "MDE80 and MDE90 by linear interpolation on that frozen isotonic curve between adjacent effect magnitudes"
   ],
   "interpretation_boundary": [
     "This is a post-inference operating-characteristic analysis, not a new hypothesis test.",
     "The realized permutation critical value is conditioned on the frozen observed design/outcomes; call the result a retrospective detectable-effect threshold, not prospective design power.",
     "No effect grid point is chosen or removed based on the observed p=0.0947.",
-    "This analysis cannot turn a non-significant observed effect into evidence for absence; it only bounds which common-effect magnitudes the study was well positioned to detect."
+    "This analysis cannot turn a non-significant observed effect into evidence for absence; it only bounds which common-effect magnitudes the study was well positioned to detect.",
+    "Raw detection fractions are always shown; isotonic smoothing is used only to stabilize interpolation of the operating-characteristic threshold."
   ]
 }
