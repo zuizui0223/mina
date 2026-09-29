@@ -9,6 +9,7 @@ on:
       - "tests/test_paper2_crossover_recovery.py"
       - "contracts/PAPER2_COUPLING_FRAME_AUDIT_V1.json"
       - "contracts/PAPER2_CROSSOVER_RECOVERY_V1.json"
+      - "results/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json"
       - ".github/workflows/paper2-crossover-recovery.yml"
   pull_request:
     paths:
@@ -17,12 +18,18 @@ on:
       - "tests/test_paper2_crossover_recovery.py"
       - "contracts/PAPER2_COUPLING_FRAME_AUDIT_V1.json"
       - "contracts/PAPER2_CROSSOVER_RECOVERY_V1.json"
+      - "results/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json"
       - ".github/workflows/paper2-crossover-recovery.yml"
   workflow_dispatch:
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,3 +38,53 @@ jobs:
       - run: python -m pip install numpy pandas
       - name: Run crossover unit tests
         run: python -m unittest tests.test_paper2_crossover_recovery -v
+
+      - name: Fetch frozen outcome-blind artifacts
+        run: |
+          mkdir -p build/forcing build/hierarchy build/terrain
+          gh api repos/${{ github.repository }}/actions/artifacts/11011632239/zip > build/forcing.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/11001289630/zip > build/hierarchy.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/11001148358/zip > build/terrain.zip
+          unzip -q build/forcing.zip -d build/forcing
+          unzip -q build/hierarchy.zip -d build/hierarchy
+          unzip -q build/terrain.zip -d build/terrain
+
+      - name: Build guarded primary coupling frame
+        run: |
+          python scripts/build_paper2_coupling_frame.py \
+            --forcing-units build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --forcing-result results/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
+            --hierarchy build/hierarchy/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --terrain build/terrain/ANTARCTIC_PENGUIN_TERRAIN_ATLAS_V1.csv \
+            --out-csv build/PAPER2_PRIMARY_COUPLING_FRAME_V1.csv \
+            --out-json build/PAPER2_COUPLING_FRAME_AUDIT_RESULT_V1.json
+
+      - name: Verify frozen coupling-frame contract
+        run: |
+          python - <<'PY'
+          import json
+          contract=json.load(open("contracts/PAPER2_COUPLING_FRAME_AUDIT_V1.json"))
+          result=json.load(open("build/PAPER2_COUPLING_FRAME_AUDIT_RESULT_V1.json"))
+          rule=contract["primary_rule"]
+          assert result["eligible_coupling_units"] == rule["eligible_coupling_units"]
+          assert result["predictor_complete_units"] == rule["expected_predictor_complete_units"]
+          assert result["uncovered_breeding_option_units"] == rule["expected_uncovered_units_within_coupling_cohort"]
+          assert result["predictor_complete_by_species"] == rule["expected_by_species"]
+          assert result["interaction_design_estimable"] is True
+          assert result["no_demographic_magnitudes_opened"] is True
+          PY
+
+      - name: Run oracle-forcing crossover recovery grid
+        run: |
+          python scripts/simulate_paper2_crossover_recovery.py \
+            --frame build/PAPER2_PRIMARY_COUPLING_FRAME_V1.csv \
+            --out build/PAPER2_CROSSOVER_RECOVERY_RESULT_V1.json \
+            --replicates 200
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-crossover-recovery-v1
+          path: |
+            build/PAPER2_PRIMARY_COUPLING_FRAME_V1.csv
+            build/PAPER2_COUPLING_FRAME_AUDIT_RESULT_V1.json
+            build/PAPER2_CROSSOVER_RECOVERY_RESULT_V1.json
