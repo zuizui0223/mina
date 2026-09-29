@@ -1,13 +1,14 @@
 {
   "schema_version": 1,
   "result_id": "mina-paper2-radius-sign-switch-null-result-v1",
-  "validated_date": "2026-09-29",
+  "validated_date": "2026-09-30",
   "execution": {
-    "source_workflow_run_id": 36578054922,
-    "successful_shards": 20,
+    "workflow_run_id": 36578054922,
+    "artifact_id": 11041572305,
+    "artifact_digest": "sha256:fc74ba4b9c9e9318810e03fad9e3fdd23171b611b4d092a857a381b98877a5de",
+    "conclusion": "success",
     "B": 9999,
-    "seed": 20260929,
-    "aggregation": "Reproduced from all 20 successful frozen shard artifacts using the production aggregate logic before the queued GitHub aggregate job started."
+    "seed": 20260929
   },
   "observed": {
     "median_gamma_ah_1000m": -0.0576551287747558,
@@ -19,27 +20,22 @@
   "null_probabilities": {
     "directional_sign_switch_2_to_5": {
       "count": 2477,
-      "mc_probability": 0.24772477247724772,
       "plus1_probability": 0.2478
     },
     "contrast_5_minus_2_ge_observed": {
       "count": 970,
-      "mc_probability": 0.09700970097009701,
       "plus1_probability": 0.0971
     },
     "joint_switch_and_contrast": {
       "count": 809,
-      "mc_probability": 0.0809080908090809,
       "plus1_probability": 0.081
     },
     "range_ge_observed": {
       "count": 2644,
-      "mc_probability": 0.2644264426442644,
       "plus1_probability": 0.2645
     },
     "ordered_2_lt_1_lt_5_and_range": {
       "count": 764,
-      "mc_probability": 0.07640764076407641,
       "plus1_probability": 0.0765
     }
   },
@@ -56,14 +52,14 @@
     }
   },
   "decision": {
-    "joint_switch_plus_contrast_probability": 0.081,
     "ecological_scale_dependence_language_allowed": false,
+    "joint_switch_plus_contrast_probability": 0.081,
     "diagnostic_not_primary_inference": true
   },
   "interpretation": [
-    "The raw 2 km negative to 5 km positive reversal is not rare under the joint multi-radius block-preserving null.",
-    "The observed 5 km minus 2 km contrast is also not below the frozen 0.05 interpretation threshold.",
-    "Therefore the radius result should be described as sensitivity or instability to spatial support, not as established biological scale dependence.",
-    "The frozen 2 km primary analysis remains unchanged."
+    "The observed 2 km negative to 5 km positive sign switch is not unusual enough under the block-preserving multiradius null to support an ecological scale-dependence claim.",
+    "A sign switch alone occurs in about one quarter of null permutations, and the joint sign-switch-plus-observed-contrast event has probability 0.081.",
+    "The 1/2/5 km sensitivity should therefore be described as radius sensitivity or instability compatible with finite-sample/permutation fluctuation, not as a biological scale-dependent discovery.",
+    "The raw radius-specific point estimates remain reported and the frozen 2 km analysis remains primary."
   ]
 }
