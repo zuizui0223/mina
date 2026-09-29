@@ -1,0 +1,29 @@
+name: Palmer phenotype persistence pre-result
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/PALMER_PHENOTYPE_REASSEMBLY_PAPER_V1.json'
+      - 'src/mina/palmer_persistence.py'
+      - 'scripts/run_palmer_persistence.py'
+      - 'tests/test_palmer_persistence.py'
+      - '.github/workflows/palmer-phenotype-persistence-pr.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install mina
+        run: python -m pip install -e '.[dev]'
+      - name: Validate frozen Palmer persistence extension without raw-data execution
+        run: python -m pytest -q tests/test_palmer_persistence.py
+      - name: Compile runner
+        run: python -m py_compile scripts/run_palmer_persistence.py
