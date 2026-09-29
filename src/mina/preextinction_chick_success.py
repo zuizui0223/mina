@@ -43,12 +43,15 @@ def load_chick_rows(path: str | Path) -> list[dict[str, object]]:
         chicks = float(row["num_chicks"])
         if adults <= 0 or chicks < 0:
             continue
-        time = str(row.get("time", "")).strip()
-        try:
-            census_year = int(time[:4])
-        except (TypeError, ValueError):
-            continue
-        season = census_year - 1
+        study = str(row.get("study_name", "")).strip()
+        if len(study) != 7 or not study.startswith("PAL") or not study[3:].isdigit():
+            raise ValueError(f"unparseable PAL study season: {study!r}")
+        start_yy = int(study[3:5])
+        end_yy = int(study[5:7])
+        season = (1900 + start_yy) if start_yy >= 90 else (2000 + start_yy)
+        expected_end = (season + 1) % 100
+        if end_yy != expected_end:
+            raise ValueError(f"non-consecutive PAL study season: {study!r}")
         code = str(row.get("colony_code", "")).strip()
         key = (island, code, season)
         if key in seen:
@@ -56,6 +59,7 @@ def load_chick_rows(path: str | Path) -> list[dict[str, object]]:
         seen.add(key)
         out.append(
             {
+                "study_name": study,
                 "island": island,
                 "colony_code": code,
                 "season": season,
