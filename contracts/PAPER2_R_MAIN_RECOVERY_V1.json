@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-r-main-recovery-v1",
+  "date": "2026-09-29",
+  "status": "frozen_before_terrain_R_outcome_access",
+  "paper_lane": "Paper 2",
+  "scope_note": "MAPPPD count outcomes have already been opened for the frozen A/H/A:H analyses, but the prespecified terrain R coefficient has not been fitted or inspected. This gate is therefore pre-R-outcome computational validation, not a claim that the whole study remains outcome-blind.",
+  "authoritative_parent": "contracts/PAPER2_REAL_OUTCOME_EXECUTION_V1.json",
+  "terrain_source": {
+    "contract": "contracts/ANTARCTIC_TERRAIN_ATLAS_V1.json",
+    "artifact_run_id": 36490682577,
+    "artifact_name": "antarctic-penguin-terrain-atlas-v1",
+    "primary_trait": "elevation_relief_p90_p10_m_2000m",
+    "transform": "log1p then z-standardize within each species analysis frame",
+    "spatial_centering": "center the standardized trait within the frozen V3 trait_block before loading estimation"
+  },
+  "estimator": {
+    "engine": "unchanged V3 hierarchical loading/process estimator",
+    "implementation_mapping": "Place standardized terrain R in the existing A slot, set H=0 and A:H=0, and interpret fitted gamma_A as gamma_R. This yields exactly one active site-trait column while preserving the V3 forcing, block-intercept, residual-loading and observation-calibration machinery.",
+    "trait_blocks": {
+      "ADPE": "CCAMLR block",
+      "CHPE": "APBP region",
+      "GEPE": "APBP region"
+    },
+    "expected_units": {
+      "ADPE": 41,
+      "CHPE": 34,
+      "GEPE": 29
+    }
+  },
+  "synthetic_recovery": {
+    "scenarios": {
+      "null": "gamma_R = 0",
+      "R_effect": "gamma_R = -0.25"
+    },
+    "replicates_per_scenario": 100,
+    "seeds": {
+      "null_base": 43000000,
+      "R_effect_base": 44000000
+    },
+    "simulation_parameters": {
+      "forcing_sd": 0.08,
+      "loading_sd": 0.15,
+      "process_sd": 0.04,
+      "drift_mean": -0.01,
+      "drift_sd": 0.01,
+      "delta_image": "log(1.15)",
+      "sigma_accuracy_1": "log(1.05)",
+      "sigma_accuracy_2_5": "log(1.25)"
+    }
+  },
+  "species_gate": {
+    "R_effect_bias": "abs(median_gamma_R + 0.25) <= 0.10",
+    "R_effect_sign": "fraction(gamma_R < 0) >= 0.90",
+    "null_center": "abs(median_gamma_R) <= 0.05",
+    "null_contains_zero": "5th percentile <= 0 <= 95th percentile"
+  },
+  "paper_gate": "All four checks must pass independently in ADPE, CHPE and GEPE before the real terrain R_main fit is executed.",
+  "real_fit_after_pass": {
+    "model": "lambda_i = 1 + alpha_spatial_block[i] + gamma_R * R_i + b_i",
+    "point_estimate": "gamma_R for each species",
+    "inference_boundary": "Do not invent a new confirmatory p-value unless a terrain-specific permutation rule is already frozen elsewhere. If no such rule exists, retain R_main as a prespecified point-estimate analysis and label any newly designed permutation inference post-outcome."
+  },
+  "interpretation_boundaries": [
+    "Passing recovery establishes estimator identifiability for R under the frozen simulation stress test; it does not establish an ecological terrain effect.",
+    "Do not inspect real gamma_R values before the recovery gate is frozen and executed.",
+    "Do not modify the 2 km relief trait, transformation, spatial blocks, species cohort or estimator based on the real R result.",
+    "Any species life-history ordering of gamma_R that was not frozen before counts were opened is exploratory interpretation."
+  ]
+}
