@@ -1,0 +1,344 @@
+#!/usr/bin/env python3
+"""Synthetic latent-factor schedule recovery for Paper 2 Gate 2E-A."""
+from __future__ import annotations
+
+import math
+from typing import Any
+
+import numpy as np
+import pandas as pd
+
+START_YEAR = 1980
+END_YEAR = 2025
+TRANSITION_YEARS = tuple(range(START_YEAR, END_YEAR))
+YEAR_INDEX = {year: i for i, year in enumerate(range(START_YEAR, END_YEAR + 1))}
+TRANSITION_INDEX = {year: i for i, year in enumerate(TRANSITION_YEARS)}
+
+
+def _parse_seasons(value: Any) -> list[int]:
+    if isinstance(value, (list, tuple, np.ndarray, pd.Series)):
+        values = value
+    else:
+        values = str(value).split(";")
+    out = []
+    for value in values:
+        text = str(value).strip()
+        if not text or text.lower() == "nan":
+            continue
+        year = int(float(text))
+        if START_YEAR <= year <= END_YEAR:
+            out.append(year)
+    return sorted(set(out))
+
+
+def _group_indices(frame: pd.DataFrame) -> tuple[list[str], dict[str, np.ndarray]]:
+    groups = sorted(frame["forcing_group"].astype(str).unique())
+    labels = frame["forcing_group"].astype(str).to_numpy()
+    return groups, {g: np.flatnonzero(labels == g) for g in groups}
+
+
+def simulate_latent_schedule(
+    frame: pd.DataFrame,
+    *,
+    gamma_ah: float,
+    seed: int,
+    forcing_sd: float,
+    loading_sd: float,
+    process_sd: float,
+    drift_mean: float,
+    drift_sd: float,
+) -> dict:
+    """Generate latent annual states, then retain only real observation seasons."""
+    required = {"unit_id", "forcing_group", "A", "H", "AH", "seasons"}
+    missing = required - set(frame.columns)
+    if missing:
+        raise ValueError(f"missing columns: {sorted(missing)}")
+
+    local = frame.reset_index(drop=True).copy()
+    rng = np.random.default_rng(seed)
+    groups, group_rows = _group_indices(local)
+    n_sites = len(local)
+    n_transitions = len(TRANSITION_YEARS)
+
+    true_forcing: dict[str, np.ndarray] = {}
+    for group in groups:
+        values = rng.normal(0.0, forcing_sd, n_transitions)
+        true_forcing[group] = values - float(values.mean())
+
+    true_lambda = (
+        1.0
+        + gamma_ah * local["AH"].to_numpy(dtype=float)
+        + rng.normal(0.0, loading_sd, n_sites)
+    )
+    for group, idx in group_rows.items():
+        true_lambda[idx] -= float(true_lambda[idx].mean()) - 1.0
+
+    true_mu = rng.normal(drift_mean, drift_sd, n_sites)
+    state = np.zeros((n_sites, END_YEAR - START_YEAR + 1), dtype=float)
+    state[:, 0] = rng.normal(8.0, 0.5, n_sites)
+
+    group_labels = local["forcing_group"].astype(str).to_numpy()
+    for t, year in enumerate(TRANSITION_YEARS):
+        forcing = np.array(
+            [true_forcing[group][t] for group in group_labels],
+            dtype=float,
+        )
+        state[:, t + 1] = (
+            state[:, t]
+            + true_mu
+            + true_lambda * forcing
+            + rng.normal(0.0, process_sd, n_sites)
+        )
+
+    records: list[tuple[int, str, int, int, float]] = []
+    for i, row in local.iterrows():
+        seasons = _parse_seasons(row["seasons"])
+        if len(seasons) < 2:
+            continue
+        group = str(row["forcing_group"])
+        for first, last in zip(seasons[:-1], seasons[1:]):
+            delta = (
+                state[i, YEAR_INDEX[last]]
+                - state[i, YEAR_INDEX[first]]
+            )
+            records.append((i, group, first, last, float(delta)))
+
+    return {
+        "intervals": {
+            "records": records,
+            "true_forcing": {
+                group: values.tolist()
+                for group, values in true_forcing.items()
+            },
+            "true_lambda": true_lambda.tolist(),
+        },
+        "true_forcing": {
+            group: values.tolist()
+            for group, values in true_forcing.items()
+        },
+        "true_lambda": true_lambda.tolist(),
+    }
+
+
+def _solve_factor_given_loadings(
+    frame: pd.DataFrame,
+    records: list[tuple[int, str, int, int, float]],
+    loadings: np.ndarray,
+    *,
+    constraint_weight: float = 100.0,
+) -> tuple[np.ndarray, dict[str, np.ndarray]]:
+    n_sites = len(frame)
+    groups, _ = _group_indices(frame)
+    group_index = {group: j for j, group in enumerate(groups)}
+    n_t = len(TRANSITION_YEARS)
+
+    n_rows = len(records) + len(groups)
+    matrix = np.zeros((n_rows, n_sites + len(groups) * n_t), dtype=float)
+    response = np.zeros(n_rows, dtype=float)
+
+    row_i = 0
+    for site_i, group, first, last, delta in records:
+        duration = last - first
+        weight = 1.0 / math.sqrt(duration)
+        matrix[row_i, site_i] = duration * weight
+        start_col = n_sites + group_index[group] * n_t
+        for year in range(first, last):
+            matrix[row_i, start_col + TRANSITION_INDEX[year]] = (
+                loadings[site_i] * weight
+            )
+        response[row_i] = delta * weight
+        row_i += 1
+
+    # Identification: each group forcing has mean zero.
+    for group in groups:
+        start_col = n_sites + group_index[group] * n_t
+        matrix[row_i, start_col : start_col + n_t] = (
+            constraint_weight / n_t
+        )
+        row_i += 1
+
+    solution = np.linalg.lstsq(matrix, response, rcond=None)[0]
+    mu = solution[:n_sites]
+    forcing = {}
+    for group in groups:
+        start_col = n_sites + group_index[group] * n_t
+        forcing[group] = solution[start_col : start_col + n_t].copy()
+    return mu, forcing
+
+
+def _solve_loadings_given_factor(
+    frame: pd.DataFrame,
+    records: list[tuple[int, str, int, int, float]],
+    forcing: dict[str, np.ndarray],
+) -> tuple[np.ndarray, np.ndarray]:
+    n_sites = len(frame)
+    by_site: list[list[tuple[int, str, int, int, float]]] = [
+        [] for _ in range(n_sites)
+    ]
+    for record in records:
+        by_site[record[0]].append(record)
+
+    mu = np.zeros(n_sites, dtype=float)
+    loadings = np.zeros(n_sites, dtype=float)
+
+    for site_i, local_records in enumerate(by_site):
+        if len(local_records) < 2:
+            raise ValueError(
+                f"site {frame.iloc[site_i]['unit_id']} has <2 recovery intervals"
+            )
+        design = []
+        response = []
+        for _, group, first, last, delta in local_records:
+            duration = last - first
+            forcing_sum = sum(
+                forcing[group][TRANSITION_INDEX[year]]
+                for year in range(first, last)
+            )
+            weight = 1.0 / math.sqrt(duration)
+            design.append([duration * weight, forcing_sum * weight])
+            response.append(delta * weight)
+        coef = np.linalg.lstsq(
+            np.asarray(design, dtype=float),
+            np.asarray(response, dtype=float),
+            rcond=None,
+        )[0]
+        mu[site_i] = coef[0]
+        loadings[site_i] = coef[1]
+
+    groups, group_rows = _group_indices(frame)
+    for group in groups:
+        idx = group_rows[group]
+        mean_loading = float(loadings[idx].mean())
+        if abs(mean_loading) < 1e-10:
+            raise ValueError(f"near-zero mean loading in group {group}")
+        loadings[idx] /= mean_loading
+        forcing[group] *= mean_loading
+
+    return mu, loadings
+
+
+def _loading_regression(frame: pd.DataFrame, loadings: np.ndarray) -> np.ndarray:
+    group_dummies = pd.get_dummies(
+        frame["forcing_group"].astype(str),
+        drop_first=True,
+        dtype=float,
+    )
+    matrix = np.column_stack(
+        [
+            np.ones(len(frame), dtype=float),
+            group_dummies.to_numpy(dtype=float),
+            frame[["A", "H", "AH"]].to_numpy(dtype=float),
+        ]
+    )
+    coef = np.linalg.lstsq(matrix, loadings, rcond=None)[0]
+    return coef[-3:]
+
+
+def fit_unknown_factor(
+    frame: pd.DataFrame,
+    intervals: dict | list,
+    *,
+    iterations: int = 8,
+) -> dict:
+    """Fit shared forcing and site loadings without using the true forcing."""
+    local = frame.reset_index(drop=True).copy()
+    if isinstance(intervals, dict):
+        records = intervals["records"]
+        true_forcing = intervals.get("true_forcing")
+        true_lambda = intervals.get("true_lambda")
+    else:
+        records = intervals
+        true_forcing = None
+        true_lambda = None
+
+    loadings = np.ones(len(local), dtype=float)
+    forcing: dict[str, np.ndarray] = {}
+
+    for _ in range(iterations):
+        _, forcing = _solve_factor_given_loadings(
+            local, records, loadings
+        )
+        _, loadings = _solve_loadings_given_factor(
+            local, records, forcing
+        )
+
+    gamma = _loading_regression(local, loadings)
+    forcing_correlation: dict[str, float] = {}
+    if true_forcing is not None:
+        for group, estimated in forcing.items():
+            truth = np.asarray(true_forcing[group], dtype=float)
+            corr = float(np.corrcoef(truth, estimated)[0, 1])
+            forcing_correlation[group] = corr
+
+    lambda_correlation = None
+    if true_lambda is not None:
+        lambda_correlation = float(
+            np.corrcoef(
+                np.asarray(true_lambda, dtype=float),
+                loadings,
+            )[0, 1]
+        )
+
+    return {
+        "gamma_a": float(gamma[0]),
+        "gamma_h": float(gamma[1]),
+        "gamma_ah": float(gamma[2]),
+        "lambda_hat": loadings.tolist(),
+        "forcing_hat": {
+            group: values.tolist()
+            for group, values in forcing.items()
+        },
+        "forcing_correlation": forcing_correlation,
+        "lambda_correlation": lambda_correlation,
+        "iterations": int(iterations),
+    }
+
+
+def evaluate_recovery_gate(
+    summary: dict,
+    *,
+    crossover_truth: float,
+) -> dict:
+    checks = {
+        "factor_median": all(
+            float(values["median_corr"]) >= 0.70
+            for values in summary["forcing_groups"].values()
+        ),
+        "factor_q05": all(
+            float(values["q05_corr"]) >= 0.30
+            for values in summary["forcing_groups"].values()
+        ),
+        "crossover_bias": (
+            abs(
+                float(summary["crossover"]["median_gamma_ah"])
+                - crossover_truth
+            )
+            <= 0.10
+        ),
+        "crossover_sign": (
+            float(summary["crossover"]["negative_fraction"]) >= 0.90
+        ),
+        "null_center": (
+            abs(float(summary["null"]["median_gamma_ah"])) <= 0.05
+        ),
+        "null_contains_zero": (
+            float(summary["null"]["q05_gamma_ah"]) <= 0.0
+            <= float(summary["null"]["q95_gamma_ah"])
+        ),
+    }
+    return {
+        "passes": bool(all(checks.values())),
+        "checks": checks,
+    }
+
+
+def select_recovered_scale(
+    regional_scale: str,
+    regional_result: dict,
+    specieswide_result: dict,
+) -> str | None:
+    if regional_result.get("passes"):
+        return regional_scale
+    if specieswide_result.get("passes"):
+        return "species_wide"
+    return None
