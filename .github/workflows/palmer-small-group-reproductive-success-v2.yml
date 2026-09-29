@@ -1,0 +1,61 @@
+name: palmer-small-group-reproductive-success-v2
+
+concurrency:
+  group: palmer-small-group-reproductive-success-v2
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - analysis/palmer-small-group-reproductive-success-v2
+    paths:
+      - "contracts/PALMER_SMALL_GROUP_REPRODUCTIVE_SUCCESS_V2.json"
+      - "src/mina/small_group_reproductive_success_v2.py"
+      - "tests/test_small_group_reproductive_success_v2.py"
+      - "scripts/fetch_lter_chick_counts.py"
+      - "scripts/fetch_lter_census.py"
+      - ".github/workflows/palmer-small-group-reproductive-success-v2.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run synthetic/source-pairing tests
+        run: pytest -q tests/test_small_group_reproductive_success_v2.py
+      - name: Fetch frozen Palmer censuses
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_adults.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+      - name: Run frozen source-paired test
+        run: |
+          python -m mina.small_group_reproductive_success_v2 \
+            --chicks build/adelie_chicks.csv \
+            --adult-census build/adelie_adults.csv \
+            --out build/palmer_small_group_reproductive_success_v2.json \
+            --draws 100000 \
+            --seed 20260930
+      - name: Print receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/palmer_small_group_reproductive_success_v2.json").read_text())
+          print("pairing=",json.dumps(x["pairing_diagnostics"],sort_keys=True))
+          print("frame=",json.dumps(x["analysis_frame"],sort_keys=True))
+          print("primary=",json.dumps(x["primary_equal_per_pair_null"],sort_keys=True))
+          print("effect=",json.dumps(x["effect_size"],sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-small-group-reproductive-success-v2
+          path: |
+            build/adelie_adults.csv
+            build/adelie_chicks.csv
+            build/palmer_small_group_reproductive_success_v2.json
