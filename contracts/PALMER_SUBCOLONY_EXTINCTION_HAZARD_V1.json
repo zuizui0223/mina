@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-subcolony-extinction-hazard-v1",
+  "date": "2026-09-29",
+  "status": "post_outcome_exploratory_frozen_for_reproducibility",
+  "status_note": "The durable-extinction endpoint was inspected during feasibility/design on 2026-09-29 before this contract was committed. This analysis is therefore exploratory and must not be described as preregistered, pre-outcome, or confirmatory. The frozen specification exists to make the exploratory result reproducible and to prevent further outcome-contingent tuning.",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "expected_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "data_unit": "colony_code x breeding-season census",
+    "years": [1991, 2017]
+  },
+  "question": "During the Palmer Adélie decline, do durable colony-code extinctions occur preferentially from smaller breeding groups, beyond shared island-year exposure and beyond the zero attrition expected under simple proportional thinning?",
+  "biological_motivation": {
+    "candidate_processes": [
+      "greater edge exposure and predation risk in small breeding groups",
+      "loss of social facilitation or other positive density dependence",
+      "local breeding-habitat quality correlated with colony size"
+    ],
+    "identification_boundary": "The census alone cannot distinguish these mechanisms. A small-group-first pattern is treated as a mechanism-generating observation, not as proof of predation, social facilitation, snow, or terrain effects."
+  },
+  "analysis_scope": {
+    "primary": {
+      "islands": ["COR", "HUM", "LIT"],
+      "reason": "These are the three stable-roster islands already used by the pre-existing breeding-patch concentration analysis; this restriction avoids interpreting colony-code roster changes as biological extinction."
+    },
+    "sensitivity": {
+      "islands": ["CHR", "COR", "HUM", "LIT", "TOR"],
+      "rule": "Retain the same event definition and require continuous future observation of each colony code; transitions with an active code missing at t+1 are excluded from the proportional-thinning diagnostic."
+    }
+  },
+  "risk_set": {
+    "entry": "A colony code enters a one-year risk interval only when its breeding-pair count is >0 at year t and the same code is observed at adjacent year t+1.",
+    "no_interpolation": true,
+    "pre_entry_zeros": "excluded",
+    "terminal_positive": "right-censored"
+  },
+  "event": {
+    "name": "durable_extinction",
+    "definition": "count at t+1 equals zero, the colony code is continuously observed in every later island census year through the dataset endpoint, and every later observed count remains zero",
+    "transient_zero_followed_by_reappearance": "not an event"
+  },
+  "matched_hazard": {
+    "predictor": "z(log1p breeding pairs at t), standardized across informative risk rows within the analysis scope",
+    "conditioning": "exact conditional logistic likelihood within island x start-year strata",
+    "informative_stratum": "contains at least one durable-extinction event and at least one survivor",
+    "permutation": {
+      "n": 20000,
+      "seed_primary": 20260929,
+      "seed_five_island": 20260930,
+      "scheme": "Within each informative island-year stratum, hold the observed number of events fixed and randomize which risk-set members receive the event label.",
+      "statistic": "sum of standardized log1p breeding-pair size among event colonies",
+      "p_value": "two-sided randomization p"
+    },
+    "size_share_identifiability": "Because island total is fixed inside an island-year stratum, absolute group size and within-island share encode nearly the same ordering. They are not entered simultaneously as independent causal predictors. Share is descriptive only."
+  },
+  "proportional_thinning_diagnostic": {
+    "purpose": "Test whether one-year zero attrition is far more frequent than expected if the observed next-year breeding-pair mass were allocated proportionally to current colony-code shares.",
+    "simulation": "For each eligible island-year transition, retain the observed next-year breeding-pair mass assigned to codes active at t and allocate it multinomially among those codes in proportion to their t shares. Mass in new or reappearing codes is conditioned out rather than reassigned.",
+    "statistic": "total number of active-at-t colony codes receiving zero at t+1",
+    "n": 20000,
+    "seed_primary": 20260931,
+    "seed_five_island": 20260932,
+    "tail": "upper",
+    "boundary": "This is a one-step allocation null, not a full demographic process model and not a direct model of durable extinction."
+  },
+  "exploratory_readout": {
+    "ordered_small_group_attrition_flag": "true only when the primary stable-roster matched hazard has a negative size coefficient with randomization p <= 0.05 and the primary proportional-thinning diagnostic has more observed zeros than its 97.5% null quantile with upper-tail p <= 0.05",
+    "interpretation": "A positive flag motivates independent mechanism tests; it does not convert this post-outcome analysis into confirmatory evidence."
+  },
+  "prohibited_claims": [
+    "Small colony size causally causes extinction.",
+    "Skua predation caused the observed attrition.",
+    "Social facilitation or an Allee effect has been identified from these census data.",
+    "Snow or terrain has been shown to drive colony-code extinction.",
+    "colony_code is equivalent to a mapped physical subcolony polygon.",
+    "This analysis was preregistered or frozen before the extinction outcome was inspected."
+  ],
+  "next_prospective_gates": [
+    "Resolve chick-census duplicate-key semantics without using num_chicks, then freeze a chick-production validation before opening the chick outcome.",
+    "Freeze a species x terrain life-history test before joining terrain predictors to demographic outcomes."
+  ]
+}
