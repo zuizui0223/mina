@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-forcing-scale-sensitivity-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_forcing_scale_sensitivity_frozen_before_demographic_outcomes",
+  "paper_lane": "Paper 2",
+  "rationale": "The outcome-blind Gate 2C audit selects regional forcing at a 95% unit-coverage tolerance, but the selected scale changes to species-wide under a 97.5% or 100% completeness requirement. The primary regional result therefore requires a predeclared species-wide forcing sensitivity.",
+  "threshold_audit": {
+    "tested_unit_coverage_thresholds": [
+      0.9,
+      0.95,
+      0.975,
+      1
+    ],
+    "selection_rule_at_regional_levels": "finest APBP or CCAMLR level with at least two qualifying groups and qualifying-group unit coverage at or above the threshold; otherwise species-wide if supported",
+    "results": {
+      "0.90": {
+        "ADPE": "ccamlr",
+        "CHPE": "apbp_region",
+        "GEPE": "apbp_region"
+      },
+      "0.95": {
+        "ADPE": "ccamlr",
+        "CHPE": "apbp_region",
+        "GEPE": "apbp_region"
+      },
+      "0.975": {
+        "ADPE": "species_wide",
+        "CHPE": "species_wide",
+        "GEPE": "species_wide"
+      },
+      "1.0": {
+        "ADPE": "species_wide",
+        "CHPE": "species_wide",
+        "GEPE": "species_wide"
+      }
+    }
+  },
+  "primary_analysis": {
+    "ADPE": {
+      "forcing_level": "ccamlr",
+      "forcing_groups": [
+        "48.1",
+        "88.1"
+      ],
+      "coupling_units": 42,
+      "predictor_complete_units": 40
+    },
+    "CHPE": {
+      "forcing_level": "apbp_region",
+      "forcing_groups": [
+        "Central-west Antarctic Peninsula",
+        "South Shetland Islands"
+      ],
+      "coupling_units": 33,
+      "predictor_complete_units": 33
+    },
+    "GEPE": {
+      "forcing_level": "apbp_region",
+      "forcing_groups": [
+        "Central-west Antarctic Peninsula",
+        "South Shetland Islands"
+      ],
+      "coupling_units": 28,
+      "predictor_complete_units": 28
+    }
+  },
+  "mandatory_sensitivity": {
+    "forcing_level": "species_wide",
+    "bridged_units": {
+      "ADPE": 44,
+      "CHPE": 34,
+      "GEPE": 29
+    },
+    "predictor_complete_units": {
+      "ADPE": 41,
+      "CHPE": 34,
+      "GEPE": 29
+    },
+    "total_bridged_units": 107,
+    "total_predictor_complete_units": 104,
+    "missing_predictor_units": [
+      "ADPE|FRAE",
+      "ADPE|FRAW",
+      "ADPE|WPEC"
+    ],
+    "rule": "Refit the same demographic process and the same frozen site-predictor tests with one species-wide shared forcing per species. Do not retune priors, predictors, temporal window, observation model, or site-trait transforms."
+  },
+  "interpretation_rule": [
+    "A response-filter conclusion is scale-robust only if the primary regional-forcing analysis and the species-wide sensitivity agree in the qualitative direction of the focal site-trait effect and do not reverse the A x H crossover.",
+    "If the regional and species-wide analyses disagree materially, report the response-filter result as forcing-scale dependent rather than choosing the scale that gives the stronger ecological effect.",
+    "The regional forcing analysis remains primary because it was selected by the frozen 95% outcome-blind support rule; the species-wide fit is a mandatory sensitivity, not a competing post-outcome model search."
+  ],
+  "boundary": [
+    "No demographic count magnitude, fitted trend, fitted loading, or site-trait association was inspected to define this sensitivity.",
+    "The 90/95/97.5/100% threshold audit uses only Gate 2C support metadata.",
+    "No additional geographic partition may be introduced after outcomes are opened."
+  ]
+}
