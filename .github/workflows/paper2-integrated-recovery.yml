@@ -50,8 +50,9 @@ jobs:
           test -f build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json
           test -f build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv
           test -f build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv
-      - name: Run integrated process-observation recovery
+      - name: Reproduce frozen Gate 2E-C v1 failure
         run: |
+          set +e
           python -m scripts.simulate_paper2_integrated_recovery \
             --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
             --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
@@ -60,6 +61,17 @@ jobs:
             --mapppdr-dir build/mapppdr \
             --out-json build/PAPER2_INTEGRATED_RECOVERY_RESULT_V1.json \
             --replicates 100
+          status=$?
+          set -e
+          test "$status" -ne 0
+          python - <<'PY'
+          import json
+          result=json.load(open("build/PAPER2_INTEGRATED_RECOVERY_RESULT_V1.json"))
+          assert result["decision"]["counts_may_be_opened"] is False
+          assert result["decision"]["primary_observation_gate_passed"] is True
+          assert result["decision"]["all_species_have_integrated_scale"] is False
+          print("Gate 2E-C v1 failure reproduced; real outcomes remain locked.")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: paper2-integrated-recovery-v1
