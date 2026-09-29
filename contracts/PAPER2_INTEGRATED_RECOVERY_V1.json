@@ -48,10 +48,10 @@
   ],
   "gate": {
     "min_group_median_forcing_correlation": 0.7,
-    "min_group_q05_forcing_correlation": 0.25,
-    "max_abs_crossover_median_bias": 0.12,
+    "min_group_q05_forcing_correlation": 0.3,
+    "max_abs_crossover_median_bias": 0.1,
     "min_crossover_negative_fraction": 0.9,
-    "max_abs_null_median_gamma_ah": 0.06,
+    "max_abs_null_median_gamma_ah": 0.05,
     "null_q05_q95_must_contain_zero": true,
     "max_abs_simple_buffering_gamma_a_bias": 0.1,
     "min_simple_buffering_gamma_a_negative_fraction": 0.9,
@@ -59,7 +59,8 @@
     "max_abs_image_offset_median_bias_log": 0.03,
     "max_accuracy_1_median_relative_sigma_bias": 0.15,
     "max_accuracy_2_5_median_relative_sigma_bias": 0.3,
-    "finite_estimate_fraction": 1
+    "finite_estimate_fraction": 1,
+    "inheritance_note": "Factor and crossover thresholds exactly inherit Gate 2E-A; adding the observation layer does not relax the latent-process recovery standard."
   },
   "secondary_process_variance_lane": {
     "blocks_primary_gate": false,
