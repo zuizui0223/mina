@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-extinction-neutral-thinning-v1",
+  "date": "2026-09-29",
+  "status": "frozen_after_exchangeability_hazard_result_but_before_neutral_thinning_result",
+  "prerequisite": "contracts/PALMER_COLONY_EXTINCTION_HAZARD_V1.json",
+  "motivation": "An exchangeability hazard test can be significant even when all breeding pairs follow the same per-capita demographic process, because a small colony has a mechanically higher probability of reaching zero. This test asks whether durable-extinction identities are more biased toward small colonies than that neutral size arithmetic predicts.",
+  "endpoint": "Use the identical primary durable-extinction events, censoring, risk sets and standardized prior-size contrast frozen in PALMER_COLONY_EXTINCTION_HAZARD_V1.",
+  "neutral_model": {
+    "name": "island-year proportional Poisson branching",
+    "prior_count": "n_i = breeding pairs in colony i at t-1",
+    "shared_growth_multiplier": "r = sum_i N_i,t / sum_i n_i over analyzable previously-positive colonies in the same island-year risk set",
+    "one_step_count_model": "N_i,t ~ Poisson(r * n_i), independently across colony codes",
+    "mechanical_zero_probability": "q_i = exp(-r * n_i)",
+    "reason": "This preserves a common expected per-pair demographic multiplier within each island-year while allowing smaller groups to reach zero more often purely by demographic arithmetic."
+  },
+  "conditional_identity_null": {
+    "conditioning": "Condition on the observed number m of durable-extinction events in each event-bearing risk set.",
+    "subset_weight": "Under independent Bernoulli zero indicators with probabilities q_i, the conditional probability of an m-colony event subset is proportional to the product over selected colonies of q_i/(1-q_i).",
+    "implementation": "Enumerate all size-m subsets when feasible and sample from normalized log-weights; fail closed on numerical degeneracy.",
+    "statistic": "Same equal-risk-set-weighted standardized prior-size contrast as the primary exchangeability test.",
+    "permutations": 100000,
+    "seed": 20260933,
+    "p_value": "one-sided lower-tail Monte Carlo p with +1 correction",
+    "alpha": 0.05
+  },
+  "decision_rule": {
+    "excess_small_group_extinction": "Observed contrast < 0 and weighted-null p <= 0.05.",
+    "mechanistic_boundary": "Even support does not identify predation or social facilitation; it only rejects a shared per-capita Poisson branching explanation for the size ordering of durable extinctions.",
+    "if_not_supported": "Describe small-group disappearance as compatible with neutral demographic arithmetic under shared island-year decline; do not use it as evidence for an Allee/social-facilitation mechanism."
+  },
+  "sensitivities": {
+    "exclude_litchfield": "Repeat the weighted-null test after excluding Litchfield.",
+    "prior_count_ge2": "Repeat after requiring prior count >= 2 pairs.",
+    "two_zero_endpoint": "Repeat with the two-zero durable-extinction sensitivity from the hazard contract."
+  },
+  "interpretation_boundaries": [
+    "The null is a demographic benchmark, not a literal mechanistic model of Adelie recruitment, survival or dispersal.",
+    "The null conditions on observed island-year total change and therefore tests within-island size ordering rather than the regional cause of decline.",
+    "Do not call a rejection proof of predation, social facilitation, snow effects or habitat quality.",
+    "Do not modify q_i, subset weighting, statistic, seed or alpha after opening this weighted-null result."
+  ]
+}
