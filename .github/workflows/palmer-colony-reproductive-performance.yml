@@ -27,7 +27,72 @@ jobs:
         run: |
           python scripts/fetch_lter_census.py build/adelie_census.csv
           python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+      - name: Audit chick-count measurement semantics
+        run: |
+          python - <<'PY'
+          import csv,json,math
+          from collections import defaultdict
+          from pathlib import Path
+
+          with Path("build/adelie_chicks.csv").open(newline="",encoding="utf-8-sig") as f:
+              chick=list(csv.DictReader(f))
+          with Path("build/adelie_census.csv").open(newline="",encoding="utf-8-sig") as f:
+              adult=list(csv.DictReader(f))
+
+          def finite(x):
+              try:return math.isfinite(float(x))
+              except:return False
+
+          adult_lookup={}
+          for r in adult:
+              if not finite(r.get("num_breeding_pairs")): continue
+              adult_lookup[(r.get("island_name","").strip(),r.get("colony_code","").strip(),int(r["time"][:4]))]=float(r["num_breeding_pairs"])
+
+          usable=[];viol=[];overlap=0;exact=0;reldiff=[]
+          for r in chick:
+              if not finite(r.get("num_breeding_pairs")) or not finite(r.get("num_chicks")): continue
+              p=float(r["num_breeding_pairs"]);c=float(r["num_chicks"])
+              if p<=0 or c<0: continue
+              season=int(r["time"][:4])-1
+              key=(r.get("island_name","").strip(),r.get("colony_code","").strip(),season)
+              ratio=c/p
+              usable.append((key,p,c,ratio))
+              if c>2*p: viol.append((key,p,c,ratio))
+              if key in adult_lookup:
+                  overlap+=1
+                  a=adult_lookup[key]
+                  if a==p: exact+=1
+                  if a>0: reldiff.append(abs(p-a)/a)
+
+          ratios=sorted(x[3] for x in usable)
+          def q(frac):
+              if not ratios:return None
+              return ratios[min(len(ratios)-1,int(frac*(len(ratios)-1)))]
+          audit={
+              "n_usable_rows":len(usable),
+              "n_over_2_chicks_per_pair":len(viol),
+              "fraction_over_2":len(viol)/len(usable) if usable else None,
+              "max_chicks_per_pair":max(ratios) if ratios else None,
+              "q50_chicks_per_pair":q(.5),
+              "q95_chicks_per_pair":q(.95),
+              "q99_chicks_per_pair":q(.99),
+              "adult_census_overlap_n":overlap,
+              "adult_census_exact_pair_count_n":exact,
+              "adult_census_exact_pair_count_fraction":exact/overlap if overlap else None,
+              "adult_census_median_relative_pair_difference":(
+                  sorted(reldiff)[len(reldiff)//2] if reldiff else None
+              ),
+              "largest_cap_violations":[
+                  {"island":k[0],"colony_code":k[1],"season":k[2],"pairs":p,"chicks":c,"ratio":ratio}
+                  for k,p,c,ratio in sorted(viol,key=lambda x:x[3],reverse=True)[:20]
+              ]
+          }
+          Path("build/chick_measurement_audit.json").write_text(json.dumps(audit,indent=2,sort_keys=True)+"\n")
+          print(json.dumps(audit,indent=2,sort_keys=True))
+          PY
       - name: Run reproductive-performance analysis
+        id: analysis
+        continue-on-error: true
         run: |
           python -m mina.colony_reproductive_performance \
             --chicks build/adelie_chicks.csv \
@@ -36,6 +101,7 @@ jobs:
             --simulations 100000 \
             --seed 20260930
       - name: Print result receipt
+        if: steps.analysis.outcome == 'success'
         run: |
           python - <<'PY'
           import json
@@ -49,9 +115,11 @@ jobs:
           print("decision=",json.dumps(x["decision"],sort_keys=True))
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: palmer-colony-reproductive-performance
           path: |
             build/adelie_census.csv
             build/adelie_chicks.csv
+            build/chick_measurement_audit.json
             build/palmer_colony_reproductive_performance.json
