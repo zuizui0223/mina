@@ -1,5 +1,10 @@
 import unittest
-import numpy as np
+try:
+    import numpy as np
+    import pandas as pd  # noqa: F401
+    import pyreadr  # noqa: F401
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest("Paper 2 detectable-effect tests require numpy/pandas/pyreadr") from exc
 
 from scripts.run_paper2_detectable_effect import (
     isotonic_non_decreasing,
