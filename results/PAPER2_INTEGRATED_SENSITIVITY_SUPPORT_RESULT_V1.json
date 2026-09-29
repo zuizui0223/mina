@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-integrated-sensitivity-support-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36536760463,
+    "artifact_id": 11019091344,
+    "artifact_digest": "sha256:e2625f5420a31a91ea44a6eb2ce2829452785e4926cf20cb996ec2af1afd1f6a",
+    "head_sha": "c17ec3b37b3aa0b3fdc6e16f2fb709736925de01",
+    "conclusion": "success"
+  },
+  "primary_frame_units": {
+    "ADPE": 40,
+    "CHPE": 33,
+    "GEPE": 29
+  },
+  "forcing_scale_by_species": {
+    "ADPE": "ccamlr",
+    "CHPE": "apbp_region",
+    "GEPE": "species_wide"
+  },
+  "modes": {
+    "exclude_unknown": {
+      "ADPE": {
+        "supported_units": 39,
+        "coverage_fraction": 0.975,
+        "classification": "testable"
+      },
+      "CHPE": {
+        "supported_units": 29,
+        "coverage_fraction": 0.8787878787878788,
+        "classification": "testable"
+      },
+      "GEPE": {
+        "supported_units": 28,
+        "coverage_fraction": 0.9655172413793104,
+        "classification": "testable"
+      }
+    },
+    "ground_only": {
+      "ADPE": {
+        "supported_units": 14,
+        "coverage_fraction": 0.35,
+        "classification": "coverage_limited"
+      },
+      "CHPE": {
+        "supported_units": 25,
+        "coverage_fraction": 0.7575757575757576,
+        "classification": "testable"
+      },
+      "GEPE": {
+        "supported_units": 23,
+        "coverage_fraction": 0.7931034482758621,
+        "classification": "testable"
+      }
+    }
+  },
+  "decision": {
+    "exclude_unknown_all_species_testable": true,
+    "ground_only_all_species_testable": false,
+    "ground_only_ADPE_interpretation": "coverage_limited; unavailable as a species-level recovery test and must not be reclassified as robustness failure",
+    "no_real_demographic_count_magnitudes_opened": true
+  },
+  "interpretation": [
+    "Excluding unknown-vantage records retains enough predictor-complete temporal support for all three species.",
+    "Raw ground-only reconstruction is testable for chinstrap and gentoo but not Adelie; only 14/40 Adelie primary-frame units retain the frozen temporal support rule.",
+    "Ground-only is therefore a partial robustness lane, not an all-species unlock requirement."
+  ]
+}
