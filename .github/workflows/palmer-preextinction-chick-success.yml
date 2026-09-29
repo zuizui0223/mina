@@ -10,6 +10,7 @@ on:
       - "scripts/fetch_lter_chick_counts.py"
       - "contracts/PALMER_PREEXTINCTION_CHICK_SUCCESS_V1.json"
       - "contracts/PALMER_CHICK_SEASON_KEY_RESOLUTION_V1.json"
+      - "contracts/PALMER_CHICK_PRODUCTIVITY_SIZE_NULL_V1.json"
       - ".github/workflows/palmer-preextinction-chick-success.yml"
   workflow_dispatch:
 
@@ -45,6 +46,7 @@ jobs:
           print("overlap=",json.dumps(x["denominator_overlap"],sort_keys=True))
           print("primary=",json.dumps(x["primary_preextinction_success"],sort_keys=True))
           print("size_gradient=",json.dumps(x["secondary_size_success_gradient"],sort_keys=True))
+          print("productivity_null=",json.dumps(x["productivity_size_conditioned_null"],sort_keys=True))
           print("adjusted=",json.dumps(x["event_effect_after_size"],sort_keys=True))
           print("trajectory_slope=",x["survivor_island_trajectory"].get("within_island_slope_success_on_log_neff"))
           print("decision=",json.dumps(x["decision"],sort_keys=True))
