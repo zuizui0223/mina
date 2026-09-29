@@ -105,13 +105,28 @@ def load_chicks(path):
             )
         ):
             continue
-        time = str(
-            row.get("time", "")
+        study = str(
+            row.get("study_name", "")
         ).strip()
-        try:
-            season = int(time[:4]) - 1
-        except (TypeError, ValueError):
-            continue
+        if (
+            len(study) != 7
+            or not study.startswith("PAL")
+            or not study[3:].isdigit()
+        ):
+            raise ValueError(
+                f"unparseable PAL study season: {study!r}"
+            )
+        start_yy = int(study[3:5])
+        end_yy = int(study[5:7])
+        season = (
+            1900 + start_yy
+            if start_yy >= 90
+            else 2000 + start_yy
+        )
+        if end_yy != (season + 1) % 100:
+            raise ValueError(
+                f"non-consecutive PAL study season: {study!r}"
+            )
         code = str(
             row.get("colony_code", "")
         ).strip()
