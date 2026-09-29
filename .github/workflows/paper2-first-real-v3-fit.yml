@@ -1,0 +1,71 @@
+name: paper2-first-real-v3-fit
+
+concurrency:
+  group: paper2-first-real-v3-fit-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [analysis/paper2-real-fit-v1]
+    paths:
+      - "scripts/run_paper2_real_v3_fit.py"
+      - ".github/workflows/paper2-first-real-v3-fit.yml"
+      - "contracts/PAPER2_REAL_OUTCOME_EXECUTION_V1.json"
+  pull_request:
+    paths:
+      - "scripts/run_paper2_real_v3_fit.py"
+      - ".github/workflows/paper2-first-real-v3-fit.yml"
+      - "contracts/PAPER2_REAL_OUTCOME_EXECUTION_V1.json"
+  workflow_dispatch:
+
+jobs:
+  fit:
+    runs-on: ubuntu-22.04
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas pyreadr
+      - name: Compile frozen runner
+        run: python -m py_compile scripts/run_paper2_real_v3_fit.py
+      - name: Fetch pinned mapppdr
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Download frozen outcome-blind inputs
+        run: |
+          mkdir -p build/forcing build/options
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+          test -f build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json
+          test -f build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv
+          test -f build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv
+      - name: Run first frozen real-outcome fit
+        run: |
+          python -m scripts.run_paper2_real_v3_fit \
+            --unlock-contract contracts/PAPER2_REAL_OUTCOME_EXECUTION_V1.json \
+            --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --breeding-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json
+      - name: Verify execution provenance only
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("build/PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json"))
+          assert r["provenance"]["real_count_magnitudes_opened"] is True
+          assert r["provenance"]["frozen_records"] == 2100
+          assert r["inference_status"].startswith("point_estimates_only")
+          print("Frozen first real fit completed; no ecological result-based gate applied.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-first-real-v3-fit-v1
+          path: build/PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json
