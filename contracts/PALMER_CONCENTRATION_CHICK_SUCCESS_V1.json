@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-concentration-chick-success-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_concentration_success_association_execution",
+  "prerequisites": [
+    "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+    "results/PALMER_CHICK_MEASUREMENT_SEMANTICS_AUDIT_RESULT_V1.json",
+    "results/PALMER_COLONY_EXTINCTION_ZERO_BOUNDARY_AUDIT_RESULT_V1.json"
+  ],
+  "motivation": "Colony-code extinction order is size-selective but does not exceed a proportional zero-boundary null. The next independent biological question is whether the already-established within-island concentration trajectory is accompanied by a change in island-level breeding success.",
+  "source_and_aggregation": {
+    "adult_dataset": "Palmer LTER AdeliePenguinCensus",
+    "adult_doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "chick_dataset": "AdeliePenguinAdultandChickCounts",
+    "chick_doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "season": "January chick census belongs to the breeding season beginning in the previous calendar year.",
+    "adult_island_total": "sum November breeding-pair counts across all reported colony codes within island-year",
+    "chick_island_total": "sum January num_chicks across all reported colony codes within island-season; do not use the chick dataset's colony-level num_breeding_pairs field as a denominator",
+    "breeding_success": "chick_island_total / adult_island_total for adult_island_total > 0",
+    "effective_colony_number": "1 / sum((colony_count / adult_island_total)^2) across strictly positive colony-code counts",
+    "biological_range_check": "require 0 <= breeding_success <= 2 for every included island-season; fail closed otherwise"
+  },
+  "primary_scope": {
+    "islands": ["COR", "HUM", "LIT"],
+    "reason": "These are the stable-roster islands used in the preregistered breeding-patch concentration result. CHR and TOR have colony-code roster changes and are excluded from primary inference.",
+    "time": "all joined positive-adult island-seasons available from 1991-2017; LIT contributes only while adult total is positive"
+  },
+  "primary_model": {
+    "response": "island breeding_success in chicks per breeding pair",
+    "concentration_predictor": "within-island z-score of log(effective_colony_number)",
+    "abundance_control": "within-island z-score of log1p(adult_island_total)",
+    "fixed_effects": ["island", "season_start_year"],
+    "target": "coefficient beta_neff on standardized log effective-colony number",
+    "estimation": "OLS using Frisch-Waugh-Lovell residualization against abundance control plus island and year fixed effects"
+  },
+  "inference": {
+    "null": "After residualizing breeding success and concentration against abundance, island and year effects, their within-island temporal alignment is exchangeable up to circular time shifts.",
+    "permutation": "Independently circular-shift the reduced-model breeding-success residual series within each focal island, preserving each island's residual distribution and serial ordering, then recompute beta using the frozen residualized concentration predictor.",
+    "permutations": 100000,
+    "seed": 20260930,
+    "test": "two-sided Monte Carlo p based on absolute beta, with +1 correction",
+    "alpha": 0.05
+  },
+  "directional_interpretation": {
+    "beta_positive": "Higher effective colony number predicts higher breeding success; therefore increasing concentration (lower Neff) is associated with reproductive deterioration.",
+    "beta_negative": "Higher effective colony number predicts lower breeding success; therefore increasing concentration is associated with maintained or improved breeding success, consistent with selective retreat toward better-performing breeding space.",
+    "non_confirmatory": "Do not choose between reproductive deterioration and selective-retreat explanations from this endpoint."
+  },
+  "sensitivities": {
+    "first_difference": "Regress annual change in breeding success on annual change in log Neff and annual change in log1p abundance, after removing shared end-year means; report the Neff-change coefficient.",
+    "cor_hum_only": "Repeat the primary two-way fixed-effect coefficient using only COR and HUM, which remain extant through 2017.",
+    "all_five_descriptive": "Report the same coefficient for all five islands as descriptive only because CHR and TOR have colony-code roster changes.",
+    "success_denominator_check": "Report island-season breeding-success ranges and confirm zero 0-2 cap violations."
+  },
+  "decision_rule": {
+    "association_supported": "two-sided permutation p <= 0.05",
+    "reproductive_deterioration_supported": "association_supported and beta_neff > 0",
+    "selective_retreat_supported": "association_supported and beta_neff < 0",
+    "otherwise": "breeding-success pathway is non-confirmatory"
+  },
+  "interpretation_boundaries": [
+    "This is an association between within-island spatial-demographic concentration and breeding success, not proof that concentration causes breeding success.",
+    "Year fixed effects absorb shared regional breeding-season conditions; island fixed effects absorb persistent island differences.",
+    "Controlling adult abundance separates concentration from the simple effect of population size but does not remove all time-varying habitat confounding.",
+    "Do not use colony-level chicks-per-pair for primary inference without a validated colony-code denominator crosswalk.",
+    "Do not interpret a null result as proof that breeding success is constant; it means concentration does not explain additional island-year variation under the frozen model."
+  ]
+}
