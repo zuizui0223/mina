@@ -1,37 +1,22 @@
 name: palmer-chick-data-export
-
 on:
   push:
-    branches:
-      - analysis/palmer-colony-extinction-hazard-v1
-    paths:
-      - ".github/workflows/palmer-chick-data-export.yml"
+    branches: [analysis/palmer-colony-extinction-hazard-v1]
+    paths: [".github/workflows/palmer-chick-data-export.yml"]
   workflow_dispatch:
-
 jobs:
   export:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Fetch adult and chick censuses
+      - name: Probe EDI package
         run: |
-          python scripts/fetch_lter_census.py build/adelie_census.csv
-          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
-      - name: Basic receipt
-        run: |
-          python - <<'PY'
-          import csv
-          for path in ("build/adelie_census.csv","build/adelie_chicks.csv"):
-              with open(path,encoding="utf-8-sig",newline="") as f:
-                  rows=list(csv.DictReader(f))
-              print(path,len(rows),rows[0] if rows else None)
-          PY
+          mkdir -p build
+          curl -L --fail --max-time 90 -o build/metadata.xml "https://pasta.lternet.edu/package/metadata/eml/knb-lter-pal/88/9" || true
+          curl -L --fail --max-time 90 -o build/data_index.txt "https://pasta.lternet.edu/package/data/eml/knb-lter-pal/88/9" || true
+          wc -c build/* || true
+          head -c 3000 build/data_index.txt || true
       - uses: actions/upload-artifact@v4
         with:
-          name: palmer-chick-data-export
-          path: |
-            build/adelie_census.csv
-            build/adelie_chicks.csv
+          name: palmer-chick-data-probe
+          path: build/*
