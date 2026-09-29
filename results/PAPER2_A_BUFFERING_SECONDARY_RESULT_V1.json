@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-a-buffering-secondary-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "original_workflow_run_id": 36565392530,
+    "original_shards": 10,
+    "permutations": 9999,
+    "seed": 20260929,
+    "aggregate_repair": "Observed point estimates were numerically identical across shards to machine precision but exact JSON equality failed. Aggregation was recomputed from the original 10 successful shard artifacts with 1e-10 numerical equality validation; no permutation was regenerated or changed."
+  },
+  "species": {
+    "ADPE": {
+      "A_only": {
+        "gamma_A": -0.2804028980046804,
+        "process_sd": 0.005,
+        "loading_residual_sd": 0.05
+      },
+      "A_permutation": {
+        "extreme_permutations": 1425,
+        "raw_p_value": 0.1426,
+        "holm_p_value": 0.4278,
+        "distribution": {
+          "q01": -0.5686023595407964,
+          "q05": -0.4299997000112395,
+          "median": -0.006524334333185722,
+          "q95": 0.2575049620090714,
+          "q99": 0.3356271406397682
+        }
+      },
+      "H_only_descriptive": {
+        "gamma_H": 0.2944340009909492
+      }
+    },
+    "CHPE": {
+      "A_only": {
+        "gamma_A": -0.20047316201865784,
+        "process_sd": 0.005,
+        "loading_residual_sd": 0.05
+      },
+      "A_permutation": {
+        "extreme_permutations": 4224,
+        "raw_p_value": 0.4225,
+        "holm_p_value": 0.6134,
+        "distribution": {
+          "q01": -1.681434627702908,
+          "q05": -1.1788177101263653,
+          "median": 0.005086362119322563,
+          "q95": 1.0992772855004194,
+          "q99": 1.4975020199538425
+        }
+      },
+      "H_only_descriptive": {
+        "gamma_H": 0.5178848526570771
+      }
+    },
+    "GEPE": {
+      "A_only": {
+        "gamma_A": -0.07057389241675813,
+        "process_sd": 0.005,
+        "loading_residual_sd": 0.05
+      },
+      "A_permutation": {
+        "extreme_permutations": 3066,
+        "raw_p_value": 0.3067,
+        "holm_p_value": 0.6134,
+        "distribution": {
+          "q01": -0.47415999984824075,
+          "q05": -0.31929865516983397,
+          "median": -0.0056465558286586115,
+          "q95": 0.3054189957408652,
+          "q99": 0.43571760894590383
+        }
+      },
+      "H_only_descriptive": {
+        "gamma_H": -0.006058230124139578
+      }
+    }
+  },
+  "directional_concordance": {
+    "negative_A_species": 3,
+    "negative_H_species": 1
+  },
+  "decision": {
+    "any_species_A_Holm_rejection_at_0_05": false,
+    "simple_breeding_space_buffering_supported": false,
+    "primary_AH_result_replaced": false,
+    "cross_species_A_p_value_created": false,
+    "terrain_R_inference_opened": false
+  },
+  "interpretation": [
+    "All three A-only point estimates are negative, but none is supported by the preregistered one-sided permutation test after Holm adjustment.",
+    "The simple breeding-space buffering H1 is therefore not supported as a species-specific inferential result.",
+    "H-only point estimates are positive in Adelie and chinstrap and near zero in gentoo; no directional H inference was preregistered.",
+    "This secondary result does not rescue or reclassify the non-confirmatory primary A x H interaction."
+  ]
+}

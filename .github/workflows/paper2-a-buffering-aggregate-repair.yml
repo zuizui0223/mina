@@ -1,0 +1,49 @@
+name: paper2-a-buffering-aggregate-repair
+
+on:
+  push:
+    branches: [analysis/paper2-a-buffering-secondary-v1]
+    paths:
+      - "scripts/run_paper2_a_buffering_secondary.py"
+      - "contracts/PAPER2_A_BUFFERING_SECONDARY_V1.json"
+      - ".github/workflows/paper2-a-buffering-aggregate-repair.yml"
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-22.04
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install numpy pandas pyreadr
+      - name: Download successful frozen shards from original run
+        run: |
+          mkdir -p build/shards
+          gh run download 36565392530 -p 'paper2-a-buffering-shard-*' -D build/shards
+          find build/shards -name 'shard_*.json' -print
+      - name: Aggregate without rerunning permutations
+        run: |
+          python -m scripts.run_paper2_a_buffering_secondary \
+            --mode aggregate --B 9999 --seed 20260929 \
+            --shard-glob 'build/shards/**/shard_*.json' \
+            --out-json build/PAPER2_A_BUFFERING_SECONDARY_RESULT_V1.json
+      - name: Verify frozen execution
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("build/PAPER2_A_BUFFERING_SECONDARY_RESULT_V1.json"))
+          assert r["B"] == 9999
+          assert set(r["species"]) == {"ADPE","CHPE","GEPE"}
+          assert r["interpretation_boundary"]["primary_AH_result_replaced"] is False
+          print("A-buffer aggregate repaired using original 9999 permutations.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-a-buffering-secondary-repaired-v1
+          path: build/PAPER2_A_BUFFERING_SECONDARY_RESULT_V1.json
