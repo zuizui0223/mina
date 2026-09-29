@@ -15,9 +15,9 @@
     "life_history_contrast": "Adélie penguins show strong nest-site fidelity and early-season exposure to snow conditions, whereas gentoo penguins show greater flexibility in breeding phenology and nest-site relocation. Therefore a static terrain context is predicted to be more strongly associated with demographic coupling in Adélie than in gentoo.",
     "literature": [
       "Cimino et al. 2019 Ecology and Evolution, doi:10.1002/ece3.5481",
-      "Cimino et al. 2025 Landscape Ecology, doi:10.1007/s10980-025-02088-y",
-      "Volkman & Trivelpiece 1981 Wilson Bulletin 93:243-248",
-      "Juáres et al. / gentoo breeding-phenology literature: greater temporal and nest-site flexibility under local snow conditions"
+      "Hinke et al. 2012 Marine Ecology Progress Series 454:91-104, doi:10.3354/meps09633",
+      "Trivelpiece et al. comparative Adélie/Chinstrap breeding biology at Signy Island (Adélie breeding approximately one month earlier)",
+      "Juárez et al. 2013 Polar Research 32:18448, doi:10.3402/polar.v32i0.18448"
     ]
   },
   "terrain_predictor": {
@@ -31,8 +31,15 @@
   },
   "demographic_frame": {
     "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
-    "window": [1980, 2025],
-    "species": ["ADPE", "CHPE", "GEPE"],
+    "window": [
+      1980,
+      2025
+    ],
+    "species": [
+      "ADPE",
+      "CHPE",
+      "GEPE"
+    ],
     "terrain_only_expected_units": {
       "ADPE": 44,
       "CHPE": 34,
@@ -48,7 +55,7 @@
     "GEPE_trait_block": "APBP region",
     "model": "lambda_i = 1 + alpha_block[i] + gamma_T * T_within_block + b_i",
     "identification": "inherit V3 block-intercept and residual-loading constraints",
-    "implementation": "reuse frozen fit_spatial_species with T in the A slot and H=AH=0"
+    "implementation": "Use a dedicated one-predictor terrain solver with exactly one gamma_T column; inherit V3 forcing estimation, block intercepts, within-block centering, residual-loading constraints, observation calibration and process-SD profiling unchanged. Do not emulate this by adding zero H/AH columns."
   },
   "pre_real_terrain_recovery_gate": {
     "required": true,
@@ -64,7 +71,8 @@
       "abs(median gamma_T + 0.30) <= 0.12 under negative-terrain truth",
       "fraction(gamma_T < 0) >= 0.85 under negative-terrain truth"
     ],
-    "failure_rule": "If any species fails, stop terrain inference; do not relax thresholds."
+    "failure_rule": "If any species fails, stop terrain inference; do not relax thresholds.",
+    "implementation": "Synthetic datasets use the frozen real observation schedule and a one-predictor loading truth. Recovery is evaluated with the exact dedicated terrain solver used for the real fit."
   },
   "primary_hypothesis": {
     "name": "life-history-specific terrain association",
