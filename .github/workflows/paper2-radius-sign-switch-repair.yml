@@ -1,0 +1,47 @@
+name: paper2-radius-sign-switch-repair
+
+on:
+  push:
+    branches: [analysis/paper2-radius-repair-13-17]
+    paths:
+      - ".github/workflows/paper2-radius-sign-switch-repair.yml"
+  workflow_dispatch:
+
+jobs:
+  permute:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [13, 17]
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas pyreadr
+      - run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          mkdir -p build/forcing build/options build/radius
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+      - name: Re-run frozen multiradius shard
+        run: |
+          python -m scripts.run_paper2_radius_sign_switch_null \
+            --mode shard --B 9999 --seed 20260929 \
+            --n-shards 20 --shard ${{ matrix.shard }} \
+            --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --breeding-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/radius/shard_${{ matrix.shard }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-radius-repair-shard-${{ matrix.shard }}
+          path: build/radius/shard_${{ matrix.shard }}.json
