@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-preextinction-chick-success-result-v1",
+  "validated_date": "2026-09-29",
+  "contracts": [
+    "mina-palmer-preextinction-chick-success-v1",
+    "mina-palmer-chick-season-key-resolution-v1",
+    "mina-palmer-chick-productivity-size-null-v1"
+  ],
+  "source": {
+    "adult_census": {
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+    },
+    "chick_census": {
+      "dataset_id": "AdeliePenguinAdultandChickCounts",
+      "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+      "sha256": "40485a328af51727e019c2cd99e4795c098499fef86a9d4b2af435a6de5373e0"
+    }
+  },
+  "execution": {
+    "workflow_run_id": 36584974167,
+    "head_sha": "2c7faa5d6cff203d5385436ed99e5c77b3905d88",
+    "artifact_id": 11042372764,
+    "artifact_digest": "sha256:6f129b86ad67156dc4e81a0710e1d104bb2dffcbbd5aee87126eb539d77c20f0",
+    "analysis_output_sha256": "8d93b1875b6ae2f8ce97cf214b1c9c0e81081582eb388b7a6c627b5310366e17",
+    "conclusion": "success",
+    "permutations": 100000
+  },
+  "matched_panel": {
+    "rows": 779,
+    "season_range": [1991, 2016],
+    "adult_denominator_overlap": {
+      "n_exact": 37,
+      "exact_fraction": 0.04749679075738126,
+      "median_absolute_pair_difference": 11.0
+    }
+  },
+  "preextinction_reproductive_success": {
+    "event_bearing_risk_sets": 3,
+    "events": 4,
+    "matched_rows": 23,
+    "observed_event_minus_survivor_z_success": -0.9198355011894184,
+    "one_sided_lower_p": 0.06262937370626294,
+    "decision": "non_confirmatory",
+    "sensitivities": {
+      "log1p_success": {
+        "contrast": -0.9661829483045281,
+        "p": 0.057819421805781944
+      },
+      "rank_success": {
+        "contrast": -0.773648476647259,
+        "p": 0.0956390436095639
+      },
+      "exclude_litchfield": {
+        "contrast": -0.9198355011894184,
+        "p": 0.061539384606153935
+      },
+      "prior_count_ge2": {
+        "contrast": -0.9198355011894184,
+        "p": 0.06189938100618994
+      }
+    }
+  },
+  "size_productivity_gradient": {
+    "simple_standardized_gradient": {
+      "n_island_seasons": 106,
+      "slope": 0.39747143788356243,
+      "one_sided_upper_p": 0.00000999990000099999
+    },
+    "proportional_productivity_null": {
+      "size_source": "independent adult November census",
+      "n_island_seasons": 106,
+      "observed_mean_within_set_slope": 0.22621141012736434,
+      "null_mean": -0.00005253610524742355,
+      "null_95_interval": [-0.028296870472953477, 0.028019373547392822],
+      "one_sided_upper_p": 0.00000999990000099999,
+      "decision": "supported",
+      "per_island_mean_slopes": {
+        "CHR": 0.18428410250518149,
+        "COR": 0.031395621551160706,
+        "HUM": 0.37245064305806524,
+        "LIT": 0.5104818179566832,
+        "TOR": 0.19633355268090533
+      },
+      "leave_one_island_out_slopes": {
+        "CHR": 0.23719237164745985,
+        "COR": 0.2895265414146305,
+        "HUM": 0.17868365942488654,
+        "LIT": 0.1965999093118103,
+        "TOR": 0.2340365632681036
+      },
+      "exclude_litchfield": {
+        "slope": 0.1965999093118103,
+        "p": 0.00000999990000099999
+      },
+      "prior_count_ge2": {
+        "slope": 0.22530038196997162,
+        "p": 0.00000999990000099999
+      }
+    },
+    "same_denominator_size_sensitivity": {
+      "size_source": "chick-dataset breeding-pair denominator",
+      "observed_mean_within_set_slope": 0.0016235707250073761,
+      "one_sided_upper_p": 0.45908540914590856,
+      "decision": "unsupported"
+    }
+  },
+  "island_level_concentration_coherence": {
+    "within_island_slope_success_on_log_neff": 0.8744913092358705,
+    "role": "secondary observational coherence only",
+    "interpretation": "As effective colony number declines within islands, island-level chicks per pair tends to decline; shared temporal forcing remains a possible explanation."
+  },
+  "decision": {
+    "preextinction_reproductive_failure_supported": false,
+    "positive_density_dependence_supported": true,
+    "extinction_order_identifies_social_facilitation": false
+  },
+  "ecological_interpretation": "Larger Palmer Adelie breeding groups show higher reproductive output per pair relative to a frozen proportional-productivity null, providing independent evidence of positive group-size dependence. However, only four durable-extinction events have matched pre-extinction chick data and their reproductive-success deficit is non-confirmatory. Combined with the separate size-conditioned extinction null, group-size biology is present but a causal pathway from reduced group size to durable local extinction is not established.",
+  "claim_boundary": [
+    "Do not use small-first extinction ordering itself as evidence for an Allee effect or skua mechanism.",
+    "Do not claim that low chick productivity caused the observed durable extinctions.",
+    "The positive group-size productivity gradient is consistent with social facilitation, size-dependent protection, or correlated habitat quality; it does not distinguish among them.",
+    "The adult-census size predictor is independent enough from the chick-dataset denominator to avoid treating a shared-denominator association as the primary evidence."
+  ]
+}
