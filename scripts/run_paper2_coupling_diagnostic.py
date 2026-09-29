@@ -29,6 +29,24 @@ def family(value) -> str:
     return "unknown"
 
 
+def filter_observations(obs: pd.DataFrame, mode: str = "all") -> pd.DataFrame:
+    """Apply frozen observation-method sensitivity filters."""
+    x = obs.copy()
+    fam = x["vantage"].map(family)
+    if mode == "all":
+        return x
+    if mode == "exclude_unknown":
+        return x.loc[fam != "unknown"].copy()
+    if mode == "direct":
+        return x.loc[fam == "direct"].copy()
+    if mode == "ground_only":
+        raw = x["vantage"].map(
+            lambda v: "" if pd.isna(v) else str(v).strip().lower()
+        )
+        return x.loc[raw == "ground"].copy()
+    raise ValueError(f"unknown observation filter mode: {mode}")
+
+
 def estimate_image_offsets(obs: pd.DataFrame) -> dict[str, float]:
     """Estimate species-specific image minus direct offsets on log1p scale."""
     x = obs.copy()
@@ -389,7 +407,7 @@ def run_pipeline(
     options: pd.DataFrame,
     terrain: pd.DataFrame,
     permutations: int = 5000,
-    direct_only: bool = False,
+    vantage_mode: str = "all",
 ) -> tuple[dict, pd.DataFrame]:
     traits = build_trait_table(options, terrain)
     eligibility = support["decision"]["modeling_eligibility_by_species"]
@@ -412,12 +430,11 @@ def run_pipeline(
         x["unit_id"].isin(covered)
         & x["season"].between(WINDOW[0], WINDOW[1], inclusive="both")
     ].copy()
-    if direct_only:
-        x = x[x["vantage"].map(family) == "direct"].copy()
+    x = filter_observations(x, vantage_mode)
 
     offsets = (
         {sp: 0.0 for sp in SPECIES}
-        if direct_only
+        if vantage_mode in {"direct", "ground_only"}
         else estimate_image_offsets(x)
     )
     offset_details = image_offset_support(x, offsets)
@@ -476,7 +493,7 @@ def run_pipeline(
         "diagnostic_id": "mina-paper2-empirical-coupling-diagnostic-v1",
         "window": list(WINDOW),
         "method": "detrended abundance residual coupling to leave-one-out contemporaneous regional median",
-        "direct_only": bool(direct_only),
+        "vantage_mode": vantage_mode,
         "species": species_results,
     }
     return result, sites
@@ -504,7 +521,7 @@ def main() -> int:
         options,
         terrain,
         permutations=args.permutations,
-        direct_only=False,
+        vantage_mode="all",
     )
     direct, _ = run_pipeline(
         obs,
@@ -512,13 +529,36 @@ def main() -> int:
         options,
         terrain,
         permutations=args.permutations,
-        direct_only=True,
+        vantage_mode="direct",
+    )
+    no_unknown, _ = run_pipeline(
+        obs,
+        support,
+        options,
+        terrain,
+        permutations=args.permutations,
+        vantage_mode="exclude_unknown",
+    )
+    ground, _ = run_pipeline(
+        obs,
+        support,
+        options,
+        terrain,
+        permutations=args.permutations,
+        vantage_mode="ground_only",
     )
     for sp in SPECIES:
-        n = direct["species"][sp]["trait_complete_lambda_units"]
-        primary["species"][sp]["direct_only_sensitivity"] = (
-            direct["species"][sp] if n >= 20 else {"available": False, "trait_complete_lambda_units": n}
-        )
+        for key, sensitivity in (
+            ("direct_only_sensitivity", direct),
+            ("missing_vantage_exclusion_sensitivity", no_unknown),
+            ("ground_only_sensitivity", ground),
+        ):
+            n = sensitivity["species"][sp]["trait_complete_lambda_units"]
+            primary["species"][sp][key] = (
+                sensitivity["species"][sp]
+                if n >= 20
+                else {"available": False, "trait_complete_lambda_units": n}
+            )
     primary["boundary"] = [
         "This is an empirical pre-state-space diagnostic, not the final demographic model.",
         "Regional forcing is leave-one-out; the focal unit never contributes to its own forcing predictor.",
