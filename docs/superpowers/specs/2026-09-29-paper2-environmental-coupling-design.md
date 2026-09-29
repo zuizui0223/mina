@@ -385,7 +385,7 @@ observed count_j
 Frozen decisions:
 
 - direct = reference;
-- one image-based mean offset;
+- one image-based mean offset shared across species;
 - unknown vantage retained without its own identified mean offset;
 - observation precision grouped as accuracy 1 versus pooled 2–5;
 - raw-vantage offsets sensitivity-only;
@@ -394,7 +394,43 @@ Frozen decisions:
 
 Accuracy flags correspond approximately to increasing count uncertainty (historically about ±5%, ±10%, ±25%, ±50%, ±90% for classes 1–5), but the primary model uses the already-frozen 1 versus 2–5 split rather than five freely estimated scales.
 
-The exact likelihood and priors are to be fixed in the demographic-response contract before counts are opened.
+### Gate 2E-B — synthetic observation recovery — PASSED
+
+The exact frozen **2,100-record** metadata layout was reconstructed without
+opening any real count magnitude:
+
+- direct records: **1,889**;
+- image-based records: **149**;
+- unknown vantage: **62**;
+- mixed direct/image site × species × season groups: **41**
+  (Adélie 9, chinstrap 10, gentoo 22).
+
+Using 200 synthetic replicates with a moderate shared image effect
+`delta_image = log(1.15) = 0.1398`, the median recovered offset was
+**0.1387** (bias **−0.0011**; 5th–95th percentile **0.105–0.170**) and the
+correct sign was recovered in **100%** of replicates. Under the offset-null
+simulation, the median was **−0.0011** and the 5th–95th percentile interval
+(**−0.0356, 0.0303**) contained zero.
+
+The collapsed accuracy scales were also recoverable from within-season
+replication after method correction:
+
+- accuracy 1: 196 repeat groups, residual df 296; truth log-SD 0.04879,
+  median recovery **0.04902** (relative bias **+0.5%**);
+- pooled accuracy 2–5: 9 repeat groups, residual df 9; truth log-SD 0.22314,
+  median recovery **0.21846** (relative bias **−2.1%**).
+
+All frozen recovery checks passed. Species-specific image-offset estimates are
+reported only as diagnostics; the primary observation parameter remains one
+shared image offset.
+
+Receipt:
+`results/PAPER2_OBSERVATION_RECOVERY_RESULT_V1.json`.
+
+This gate validates the observation nuisance layer **in isolation**. It does
+not yet demonstrate that shared forcing, site loadings, crossover effects and
+observation nuisance parameters are jointly recoverable in one integrated
+model.
 
 ## 10. Species and geography
 
@@ -507,26 +543,32 @@ The headline island-ecology claim is justified only by proposition 2, especially
 
 ## 16. Immediate next implementation step
 
-Gate 2E-A shows that the latent shared-forcing process is recoverable at the
-retained species-specific scales, after falling gentoo back from APBP-region
-to species-wide forcing.
+Gate 2E-A validates the latent shared-forcing process on the real season
+schedule, with retained scales **Adélie = CCAMLR, chinstrap = APBP region,
+gentoo = species-wide**. Gate 2E-B separately validates the frozen shared
+image offset and accuracy-1 versus pooled-2–5 observation-error structure on
+the real 2,100-record metadata layout.
 
-The next gate is **Gate 2E-B: synthetic count-observation recovery**.
+The next and final pre-outcome gate is **Gate 2E-C: integrated synthetic
+process-plus-observation recovery**.
 
-Do **not** open real demographic count magnitudes until a demographic-response
-contract and recovery experiment freeze and validate:
+Do **not** open real demographic count magnitudes until one integrated
+estimator can recover, from synthetic observations generated on the real
+record layout:
 
-- the exact count observation likelihood, including zero counts;
-- the direct-versus-image mean offset already identified at Gate 2B;
-- the accuracy-1 versus pooled-accuracy-2–5 observation-scale structure;
-- handling of unknown-vantage records;
-- priors and identification constraints for `F`, `lambda`, process variance
-  and observation parameters;
-- the staged site-predictor model order defined above;
-- simulation scenarios under null, simple buffering, crossover and
-  decoupling-with-local-variance cases;
-- mandatory missing-vantage-exclusion and ground-only recovery sensitivities.
+- the retained shared forcing at each species' Gate 2E-A scale;
+- normalized site loadings `lambda`;
+- the null and negative `A x H` scenarios;
+- a shared direct-versus-image observation offset;
+- the frozen two-level accuracy observation scales or their explicitly frozen
+  treatment;
+- local process variance sufficiently well to distinguish buffering from
+  decoupling-with-instability;
+- mandatory species-wide forcing, missing-vantage-exclusion and ground-only
+  sensitivities.
 
-Gate 2E-B may use the **real record schedule, vantage labels and accuracy
-metadata**, but all abundance/count values must be synthetic. Real count
-magnitudes remain closed until the observation-layer recovery gate passes.
+The integrated model must be **zero-safe by construction** before outcomes
+are opened; the likelihood or transformation cannot be chosen after seeing
+whether the real series contain zero nest counts.
+
+Only after Gate 2E-C passes may the frozen real count magnitudes be opened.
