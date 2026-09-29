@@ -2,8 +2,13 @@
 """Hierarchical integrated process-observation recovery for Paper 2 Gate 2E-C v2."""
 from __future__ import annotations
 
+import argparse
+import json
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
+import pyreadr
 
 from scripts.simulate_paper2_integrated_recovery import (
     START_YEAR,
@@ -13,9 +18,11 @@ from scripts.simulate_paper2_integrated_recovery import (
     collapse_same_season,
     simulate_integrated_dataset,
 )
+from scripts.simulate_paper2_latent_factor_recovery import build_scale_frame
 from scripts.simulate_paper2_observation_recovery import (
     prepare_observation_recovery_design,
     fit_observation_calibration_fast,
+    build_frozen_observation_metadata,
 )
 
 
@@ -779,3 +786,170 @@ def evaluate_hierarchical_configuration(
         "species":species,
         "gate":gate,
     }
+
+
+def _load_rda(path:Path,expected:str)->pd.DataFrame:
+    result=pyreadr.read_r(str(path))
+    if expected in result:
+        frame=result[expected]
+    elif len(result)==1:
+        frame=next(iter(result.values()))
+    else:
+        raise ValueError(f"cannot resolve {expected}: {list(result)}")
+    if not isinstance(frame,pd.DataFrame):
+        raise TypeError(expected)
+    return frame
+
+
+def build_hierarchical_frames(
+    forcing_result:dict,
+    forcing_units:pd.DataFrame,
+    breeding_options:pd.DataFrame,
+    scale_by_species:dict[str,str],
+)->dict[str,pd.DataFrame]:
+    frames={}
+    for sp in ("ADPE","CHPE","GEPE"):
+        frames[sp]=build_scale_frame(
+            forcing_result,forcing_units,breeding_options,sp,str(scale_by_species[sp])
+        )
+    return frames
+
+
+def run_hierarchical_audit(
+    forcing_result:dict,
+    forcing_units:pd.DataFrame,
+    breeding_options:pd.DataFrame,
+    observation_metadata:pd.DataFrame,
+    latent_recovery_result:dict,
+    *,
+    replicates:int=100,
+)->dict:
+    retained={
+        str(k):str(v)
+        for k,v in latent_recovery_result["decision"][
+            "selected_recovered_scale_by_species"
+        ].items()
+    }
+    expected_retained={
+        "ADPE":"ccamlr",
+        "CHPE":"apbp_region",
+        "GEPE":"species_wide",
+    }
+    if retained!=expected_retained:
+        raise ValueError(f"retained scale drift: {retained} != {expected_retained}")
+
+    primary_frames=build_hierarchical_frames(
+        forcing_result,forcing_units,breeding_options,retained
+    )
+    observed_primary={sp:int(len(frame)) for sp,frame in primary_frames.items()}
+    expected_primary={"ADPE":40,"CHPE":33,"GEPE":29}
+    if observed_primary!=expected_primary:
+        raise ValueError(
+            f"primary hierarchical frame drift: {observed_primary} != {expected_primary}"
+        )
+
+    specieswide_scales={sp:"species_wide" for sp in ("ADPE","CHPE","GEPE")}
+    specieswide_frames=build_hierarchical_frames(
+        forcing_result,forcing_units,breeding_options,specieswide_scales
+    )
+    observed_specieswide={
+        sp:int(len(frame)) for sp,frame in specieswide_frames.items()
+    }
+    expected_specieswide={"ADPE":41,"CHPE":34,"GEPE":29}
+    if observed_specieswide!=expected_specieswide:
+        raise ValueError(
+            f"species-wide hierarchical frame drift: "
+            f"{observed_specieswide} != {expected_specieswide}"
+        )
+
+    primary=evaluate_hierarchical_configuration(
+        primary_frames,observation_metadata,
+        replicates=replicates,seed_offset=12000000,
+    )
+    specieswide=evaluate_hierarchical_configuration(
+        specieswide_frames,observation_metadata,
+        replicates=replicates,seed_offset=15000000,
+    )
+
+    selected={}
+    for sp in ("ADPE","CHPE","GEPE"):
+        if primary["species"][sp]["gate"]["passes"]:
+            selected[sp]=retained[sp]
+        elif specieswide["species"][sp]["gate"]["passes"]:
+            selected[sp]="species_wide"
+        else:
+            selected[sp]=None
+
+    hierarchical_core_passed=bool(
+        all(v is not None for v in selected.values())
+        and primary["observation_gate"]["passes"]
+        and specieswide["observation_gate"]["passes"]
+    )
+    return {
+        "schema_version":2,
+        "audit_id":"mina-paper2-integrated-hierarchical-recovery-v2",
+        "replicates_per_scenario":int(replicates),
+        "primary_scale_by_species":retained,
+        "primary_frame_units":observed_primary,
+        "specieswide_frame_units":observed_specieswide,
+        "primary":primary,
+        "species_wide_sensitivity":specieswide,
+        "decision":{
+            "selected_hierarchical_scale_by_species":selected,
+            "all_species_have_hierarchical_scale":bool(
+                all(v is not None for v in selected.values())
+            ),
+            "primary_observation_gate_passed":bool(
+                primary["observation_gate"]["passes"]
+            ),
+            "specieswide_observation_gate_passed":bool(
+                specieswide["observation_gate"]["passes"]
+            ),
+            "primary_hierarchical_gate_passed":bool(primary["gate"]["passes"]),
+            "specieswide_hierarchical_gate_passed":bool(
+                specieswide["gate"]["passes"]
+            ),
+            "hierarchical_core_passed":hierarchical_core_passed,
+            "observation_source_sensitivity_completed":False,
+            "counts_may_be_opened":False,
+            "no_real_demographic_count_magnitudes_opened":True,
+        },
+    }
+
+
+def main()->int:
+    p=argparse.ArgumentParser()
+    p.add_argument("--forcing-json",required=True,type=Path)
+    p.add_argument("--forcing-csv",required=True,type=Path)
+    p.add_argument("--breeding-csv",required=True,type=Path)
+    p.add_argument("--latent-recovery-json",required=True,type=Path)
+    p.add_argument("--mapppdr-dir",required=True,type=Path)
+    p.add_argument("--out-json",required=True,type=Path)
+    p.add_argument("--replicates",type=int,default=100)
+    a=p.parse_args()
+
+    forcing_result=json.loads(a.forcing_json.read_text(encoding="utf-8"))
+    forcing_units=pd.read_csv(a.forcing_csv)
+    breeding_options=pd.read_csv(a.breeding_csv)
+    latent_result=json.loads(a.latent_recovery_json.read_text(encoding="utf-8"))
+    obs=_load_rda(a.mapppdr_dir/"data"/"penguin_obs.rda","penguin_obs")
+    metadata=build_frozen_observation_metadata(obs)
+    if len(metadata)!=2100:
+        raise ValueError(f"observation metadata drift: {len(metadata)} != 2100")
+
+    result=run_hierarchical_audit(
+        forcing_result,forcing_units,breeding_options,
+        metadata,latent_result,replicates=a.replicates,
+    )
+    a.out_json.parent.mkdir(parents=True,exist_ok=True)
+    a.out_json.write_text(
+        json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf-8"
+    )
+    print(json.dumps(result,indent=2,sort_keys=True))
+    if not result["decision"]["hierarchical_core_passed"]:
+        raise SystemExit("hierarchical integrated recovery gate failed")
+    return 0
+
+
+if __name__=="__main__":
+    raise SystemExit(main())
