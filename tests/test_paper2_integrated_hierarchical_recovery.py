@@ -11,6 +11,7 @@ from scripts.simulate_paper2_integrated_hierarchical_recovery import (
     group_center_traits,
     profile_process_sd,
     evaluate_hierarchical_configuration,
+    _solve_constrained_system,
 )
 from scripts.simulate_paper2_integrated_recovery import (
     simulate_integrated_dataset,
@@ -57,6 +58,27 @@ class TraitCenteringTests(unittest.TestCase):
             self.assertAlmostEqual(float(g["Ac"].mean()),0.0,places=12)
             self.assertAlmostEqual(float(g["Hc"].mean()),0.0,places=12)
             self.assertAlmostEqual(float(g["AHc"].mean()),0.0,places=12)
+
+
+class LinearAlgebraEquivalenceTests(unittest.TestCase):
+    def test_constrained_solver_matches_lstsq_kkt(self):
+        A=np.array([
+            [1.0,0.0,1.0],
+            [0.0,1.0,1.0],
+            [1.0,1.0,0.0],
+            [2.0,1.0,1.0],
+        ])
+        y=np.array([1.0,2.0,2.5,4.0])
+        C=np.array([[0.0,0.5,0.5]])
+        got=_solve_constrained_system(A,y,C)
+        ata=A.T@A
+        kkt=np.block([
+            [ata,C.T],
+            [C,np.zeros((1,1))],
+        ])
+        rhs=np.concatenate([A.T@y,np.zeros(1)])
+        expected=np.linalg.lstsq(kkt,rhs,rcond=None)[0][:A.shape[1]]
+        np.testing.assert_allclose(got,expected,rtol=1e-10,atol=1e-10)
 
 
 class ProcessProfileTests(unittest.TestCase):
