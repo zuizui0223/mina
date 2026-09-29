@@ -138,6 +138,23 @@ class JointIntegratedTests(unittest.TestCase):
         )
 
 
+class IntegratedMonteCarloTests(unittest.TestCase):
+    def test_integrated_configuration_is_deterministic(self):
+        frame,metadata=dense_species_fixture()
+        frames={"ADPE":frame}
+        first=evaluate_integrated_configuration(
+            frames,metadata,replicates=3,seed_offset=500
+        )
+        second=evaluate_integrated_configuration(
+            frames,metadata,replicates=3,seed_offset=500
+        )
+        self.assertEqual(first,second)
+        self.assertIn("observation",first)
+        self.assertIn("species",first)
+        self.assertIn("gate",first)
+        self.assertIn("ADPE",first["species"])
+
+
 class IntegratedSpeciesTests(unittest.TestCase):
     def test_dense_near_noiseless_integer_counts_recover_crossover(self):
         frame,metadata=dense_species_fixture()
