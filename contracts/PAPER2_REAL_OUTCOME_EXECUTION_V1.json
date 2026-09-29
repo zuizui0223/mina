@@ -27,7 +27,7 @@
     "date_matched_method_sensitivity": "secondary: recompute the image-direct offset from exact-date pairs and <=14-day pairs separately when estimable; do not replace the primary same-season offset based on which is more favorable"
   },
   "primary_process": {
-    "status": "HIERARCHICAL_V2_CORE_PASSED",
+    "status": "SPATIALLY_ADJUSTED_V3_CORE_PASSED",
     "selected_forcing_scale": {
       "ADPE": "species_wide",
       "CHPE": "species_wide",
@@ -38,14 +38,21 @@
       "CHPE": 34,
       "GEPE": 29
     },
-    "estimator": "hierarchical interval-marginal linear-Gaussian loading model from PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_V2",
-    "loading_model": "lambda_i = 1 + centered site-trait effect(s) + residual b_i; trait effects are fitted jointly with shared forcing rather than post-hoc on free lambda estimates",
+    "estimator": "spatially adjusted hierarchical V3 loading/process estimator frozen in contracts/PAPER2_SPATIALLY_ADJUSTED_HIERARCHICAL_RECOVERY_V3.json",
+    "loading_model": "lambda_i = 1 + alpha_spatial_block[i] + centered site-trait effect(s) + residual b_i; trait effects are fitted jointly with shared species-wide forcing",
+    "trait_adjustment": {
+      "ADPE": "CCAMLR block",
+      "CHPE": "APBP region",
+      "GEPE": "APBP region"
+    },
     "interval_variance": "duration * process_sd^2 + endpoint observation variances",
     "identification": [
-      "mean annual forcing = 0 within species",
-      "mean site loading = 1 within species"
+      "mean annual species-wide forcing = 0",
+      "site-trait terms centered within frozen spatial adjustment block",
+      "residual loading deviations mean zero within block",
+      "site-count-weighted block intercept mean zero, preserving species-wide mean lambda = 1"
     ],
-    "note": "Regional ADPE and CHPE forcing configurations failed the frozen integrated recovery criteria and are not used for real outcomes."
+    "note": "Regional forcing partitions were rejected by pre-outcome integrated recovery; geography is retained only as a loading-adjustment stratum."
   },
   "site_trait_models": {
     "standardization": "A, H and R use the already-frozen transforms and are standardized within each species analysis frame.",
@@ -73,21 +80,23 @@
     }
   },
   "inference": {
-    "primary_crossover_statistic": "beta_AH from the dedicated crossover model",
-    "directional_permutation": {
-      "permutations": 10000,
-      "seed": 20260929,
-      "scheme": "permute lambda within the frozen forcing groups of each species; refit the identical crossover model; p = (1 + number beta_AH_perm <= beta_AH_observed)/(B+1)",
-      "reason": "tests the frozen site-trait association while preserving forcing-group structure"
-    },
-    "effect_reporting": [
-      "beta_AH and its within-group permutation distribution",
-      "low-area and high-area H marginal slopes",
-      "A, H and R single-predictor coefficients",
-      "number of units and forcing groups",
-      "lambda distribution and fitted forcing summaries"
+    "authoritative_contracts": [
+      "contracts/PAPER2_V3_INFERENCE_V1.json",
+      "contracts/PAPER2_CROSS_SPECIES_GENERALITY_V4.json"
     ],
-    "cross_species_rule": "Species-specific results remain primary. Generality is described from direction and effect-size concordance across the three species; no post-outcome species subset may be chosen."
+    "paper_level_primary_statistic": "median gamma_AH across ADPE, CHPE and GEPE",
+    "species_specific_statistic": "gamma_AH for each species",
+    "directional_permutation": {
+      "permutations": 9999,
+      "seed": 20260929,
+      "alternative": "more negative",
+      "scheme": "Within each species and frozen V3 spatial block, permute the complete site-trait tuple (A,H,A:H) among site time series; singleton blocks remain fixed; refit the complete V3 model for every permutation.",
+      "paper_level_p": "(1 + number permuted median gamma_AH <= observed median gamma_AH)/(9999+1)",
+      "species_p": "same one-sided rule for each species; Holm-adjust the three species-specific p-values"
+    },
+    "crossover_classification": "Call option-fragmentation crossover only when gamma_AH<0, gamma_H-gamma_AH>=0, and gamma_H+gamma_AH<0.",
+    "source_robustness": "Paper-level source robustness was recovered pre-outcome in results/PAPER2_V4_SOURCE_GENERALITY_RESULT_V1.json; Adelie species-specific exclude-unknown power limitation remains disclosed.",
+    "process_variance": "No local-instability claim is allowed unless a separate process-variance recovery gate passes."
   },
   "mandatory_sensitivities": {
     "forcing_scale": "Refit every species with one species-wide forcing using predictor-complete units ADPE=41, CHPE=34, GEPE=29. If the focal trait direction or crossover classification materially changes, report forcing-scale dependence.",
@@ -128,5 +137,6 @@
     "Adelie species-specific exclude-unknown recovery remains below its species-specific threshold and must be disclosed; this does not invalidate the paper-level V4 source robustness.",
     "Terrain R and process-variance ecology remain secondary/blocked unless separately recovered."
   ],
-  "real_execution_rule": "The first real-outcome run must fit the frozen species-wide V3 crossover model exactly once before any outcome-dependent code or model change. The primary paper-level statistic is the median gamma_AH across the three species. All species-specific estimates are retained and reported."
+  "real_execution_rule": "The first real-outcome run must fit the frozen species-wide V3 crossover model exactly once before any outcome-dependent code or model change. The primary paper-level statistic is the median gamma_AH across the three species. All species-specific estimates are retained and reported.",
+  "contract_sync_note": "Updated after real-outcome unlock only to mirror authoritative pre-outcome V3/V4 contracts already merged before counts were opened; no estimator, statistic, seed, permutation rule, threshold, predictor or sensitivity is changed."
 }
