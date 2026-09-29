@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - run: python -m pip install numpy pandas pyreadr pytest
-      - run: pytest -q tests/test_paper2_terrain_real.py
+      - run: PYTHONPATH=. pytest -q tests/test_paper2_terrain_real.py
 
   permute:
     needs: test
