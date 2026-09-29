@@ -16,7 +16,7 @@
     "paper2": {
       "working_title": "Breeding-island architecture filters penguin population fate across Antarctica",
       "role": "Antarctic-wide macroecological generalization",
-      "status": "Gate 1 passed: outcome-blind breeding-option atlas built for 118/122 candidate sites; terrain/melt augmentation next",
+      "status": "Outcome-blind site predictor set frozen; demographic response contract next",
       "primary_domain": "breeding sites south of 60 S",
       "secondary_extension": "50-60 S sub-Antarctic islands only after an explicit data-coverage gate",
       "inventory_result": "results/MAPPPD_MACRO_INVENTORY_RESULT_V1.json",
@@ -24,7 +24,14 @@
       "geographic_scope": "Antarctic-wide study domain with geographically uneven long-term monitoring",
       "primary_modeling_strategy": "species-specific Pygoscelis models first; cross-species synthesis second; pooled hierarchical model secondary and region-adjusted",
       "breeding_options_result": "results/ANTARCTIC_BREEDING_OPTIONS_ATLAS_GATE1_RESULT_V1.json",
-      "geometry_lane_status": "secondary/deferred: literal SCAR landmass assignment is not on the critical path"
+      "geometry_lane_status": "secondary/deferred: literal SCAR landmass assignment is not on the critical path",
+      "breeding_options_hierarchy_result": "results/ANTARCTIC_BREEDING_OPTIONS_HIERARCHY_RESULT_V1.json",
+      "predictor_set_contract": "contracts/PAPER2_OUTCOME_BLIND_PREDICTOR_SET_V1.json",
+      "primary_site_predictors": [
+        "z(log1p(mapped ice-free area within 2 km))",
+        "z(Tier 2 Habitat Complex richness within 2 km)",
+        "z(log1p(local terrain relief p90-p10 within 2 km))"
+      ]
     }
   },
   "paper2_question": "When marine trophic resources lie outside the breeding patch, which properties of the breeding substrate determine whether regional environmental change is realized locally as persistence, decline, extinction, colonization or replacement?",
@@ -86,8 +93,8 @@
     "gate1_coverage_fraction": 0.9672131147540983,
     "gate1_primary_traits": [
       "mapped ice-free area within 2 km",
-      "ecosystem-class richness within 2 km",
-      "ecosystem-class Shannon diversity within 2 km"
+      "Tier 2 Habitat Complex richness within 2 km",
+      "local terrain relief p90-p10 within 2 km"
     ]
   },
   "frozen_external_sources_for_design": {
@@ -98,10 +105,10 @@
     "rema_mosaic_v2_doi": "10.7910/DVN/EBW8UC"
   },
   "design_order": [
-    "Gate 0 complete: inventory APBP/MAPPPD temporal and species coverage without fitting ecological models",
-    "Gate 1 complete: build outcome-blind site-centered breeding-option traits from Antarctic Ecosystem Inventory at the frozen 2 km primary scale",
-    "Gate 1D next: augment terrain and melt/climate traits at the same frozen site set and primary scale",
-    "freeze demographic response eligibility, observation-method handling and trend/end-state definitions",
+    "Gate 0 complete: MAPPPD temporal/species/geographic/method coverage audited without fitting demographic models",
+    "Gate 1 complete: outcome-blind breeding-option and terrain traits built at the frozen 2 km primary scale",
+    "Gate 1E complete: primary site predictor set frozen before demographic outcomes",
+    "Gate 2 next: freeze demographic response eligibility, observation model and trend/fate estimands",
     "only then join demographic outcomes and fit species-specific macroecological models"
   ],
   "anti_p_hacking_rules": [
@@ -111,7 +118,9 @@
     "no treating APBP site points as literal island polygons without spatial intersection",
     "no claiming a tectonic Antarctic Plate boundary is equivalent to the biological study domain",
     "do not widen the 2 km primary breeding-option radius to rescue the four uncovered sites",
-    "do not enter ecosystem richness and Shannon diversity together as unregularized co-primary predictors; freeze an alternative-model or dimension-reduction rule before outcomes are opened"
+    "do not enter ecosystem richness and Shannon diversity together as unregularized co-primary predictors; freeze an alternative-model or dimension-reduction rule before outcomes are opened",
+    "no new co-primary static climate/melt/terrain traits after Gate 1E; AEI Habitat Complex already integrates those abiotic dimensions",
+    "no changing site-predictor transformations after demographic outcomes are opened"
   ],
   "substrate_contrast_extension": {
     "species": "emperor penguin",
