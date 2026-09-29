@@ -1,7 +1,12 @@
 import unittest
 
-import numpy as np
-import pandas as pd
+try:
+    import numpy as np
+    import pandas as pd
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest(
+        "Paper 2 crossover tests require numpy and pandas"
+    ) from exc
 
 from scripts.build_paper2_coupling_frame import (
     build_primary_coupling_frame,
