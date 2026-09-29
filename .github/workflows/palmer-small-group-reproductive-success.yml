@@ -1,5 +1,9 @@
 name: palmer-small-group-reproductive-success
 
+concurrency:
+  group: palmer-small-group-reproductive-success
+  cancel-in-progress: true
+
 on:
   push:
     branches:
