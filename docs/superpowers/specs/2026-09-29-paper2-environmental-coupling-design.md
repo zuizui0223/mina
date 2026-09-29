@@ -303,6 +303,72 @@ as **forcing-scale dependent** rather than choosing the more favorable scale.
 Contract:
 `contracts/PAPER2_FORCING_SCALE_SENSITIVITY_V1.json`.
 
+### Gate 2E-A — latent-factor schedule recovery — PASSED WITH ONE FALLBACK
+
+The Gate 2C temporal-support criterion was not treated as sufficient evidence
+that the corresponding latent forcing can actually be recovered from the
+irregular census schedule. Before any real abundance magnitude was opened,
+the frozen 1980–2025 observation seasons were therefore used in a synthetic
+latent-state recovery experiment.
+
+Each species/scale was tested over 100 null and 100 crossover simulations with:
+
+- shared-forcing SD = 0.08;
+- site-loading residual SD = 0.15;
+- process SD = 0.04;
+- site-drift mean = -0.01 and SD = 0.01;
+- crossover truth `gamma_AH = -0.35`;
+- null truth `gamma_AH = 0`;
+- eight fixed alternating-least-squares iterations.
+
+The fit did **not** receive the simulated forcing. It estimated annual shared
+forcing and site loadings jointly from inter-observation changes, with
+mean-zero forcing and mean-one loading identification within forcing group.
+The true forcing was used only after fitting to score recovery.
+
+The frozen recovery gate required every forcing group to have median
+true-versus-estimated forcing correlation >=0.70 and 5th-percentile correlation
+>=0.30, while the crossover estimate had to recover `-0.35` with absolute
+median bias <=0.10 and >=90% negative estimates. The null estimate had to
+remain centered within +/-0.05 with its 5th–95th percentile interval spanning
+zero.
+
+Results:
+
+- **Adélie:** CCAMLR forcing retained. Group median correlations were **0.948**
+  (48.1) and **0.964** (88.1), with 5th percentiles **0.893** and **0.895**.
+  Median recovered `gamma_AH = -0.358`; 100% of crossover replicates were
+  negative.
+- **Chinstrap:** APBP-region forcing retained. Median correlations were
+  **0.768** (Central-west Antarctic Peninsula) and **0.936** (South Shetland
+  Islands), with 5th percentiles **0.490** and **0.883**. Median recovered
+  `gamma_AH = -0.334`; 99% were negative.
+- **Gentoo:** the Gate 2C APBP-region scale **failed** latent-factor recovery.
+  The Central-west Antarctic Peninsula factor had median correlation only
+  **0.349** and 5th percentile **-0.029**, even though the synthetic crossover
+  coefficient itself remained recoverable. The predeclared fallback therefore
+  applies: **gentoo uses one species-wide shared forcing**. Under that scale,
+  forcing correlation was **0.975** (5th percentile **0.958**) and median
+  recovered `gamma_AH = -0.343`, with 100% negative recovery.
+
+The primary forcing definition is therefore now:
+
+- Adélie: **CCAMLR**;
+- chinstrap: **APBP region**;
+- gentoo: **species-wide**.
+
+This is an important design correction: temporal overlap sufficient to define
+a candidate forcing group does not guarantee that the factor is recoverable
+from the actual sampling schedule.
+
+Receipt:
+`results/PAPER2_LATENT_FACTOR_RECOVERY_RESULT_V1.json`.
+
+This gate validates only the latent demographic process under the real
+observation-season schedule. It does **not** validate the count observation
+likelihood, direct-versus-image offset, accuracy-class error structure, or any
+real ecological effect.
+
 ## 9. Observation model
 
 The observation layer must inherit the frozen Gate 2B result.
@@ -441,24 +507,26 @@ The headline island-ecology claim is justified only by proposition 2, especially
 
 ## 16. Immediate next implementation step
 
-Gate 2C and the outcome-blind predictor-identifiability gate are complete.
-The next gate is **synthetic model recovery**.
+Gate 2E-A shows that the latent shared-forcing process is recoverable at the
+retained species-specific scales, after falling gentoo back from APBP-region
+to species-wide forcing.
+
+The next gate is **Gate 2E-B: synthetic count-observation recovery**.
 
 Do **not** open real demographic count magnitudes until a demographic-response
-contract freezes:
+contract and recovery experiment freeze and validate:
 
-- the exact latent population process and factor evolution;
-- the count observation likelihood, including zero counts;
+- the exact count observation likelihood, including zero counts;
+- the direct-versus-image mean offset already identified at Gate 2B;
+- the accuracy-1 versus pooled-accuracy-2–5 observation-scale structure;
+- handling of unknown-vantage records;
 - priors and identification constraints for `F`, `lambda`, process variance
-  and the direct-versus-image observation offset;
-- the accuracy-1 versus accuracy-2–5 observation-scale structure;
+  and observation parameters;
 - the staged site-predictor model order defined above;
-- the mandatory species-wide forcing sensitivity;
-- simulation scenarios under the null, simple buffering, crossover and
+- simulation scenarios under null, simple buffering, crossover and
   decoupling-with-local-variance cases;
-- predeclared recovery/calibration criteria that determine whether the
-  `lambda` and `A x H` estimands are reliable enough to open real outcomes.
+- mandatory missing-vantage-exclusion and ground-only recovery sensitivities.
 
-The recovery simulation may use the **real observation schedule and metadata**
-but must generate synthetic abundance/count values. Real count magnitudes remain
-closed until the recovery gate passes.
+Gate 2E-B may use the **real record schedule, vantage labels and accuracy
+metadata**, but all abundance/count values must be synthetic. Real count
+magnitudes remain closed until the observation-layer recovery gate passes.
