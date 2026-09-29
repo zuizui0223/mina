@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-chick-key-audit-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_frozen_before_num_chicks_access",
+  "purpose": "Resolve row-key semantics in the Palmer LTER adult-and-chick census before defining any colony-level reproductive-success model.",
+  "source": {
+    "dataset_id": "AdeliePenguinAdultandChickCounts",
+    "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+    "projection_allowed": [
+      "study_name",
+      "time",
+      "island_name",
+      "colony_code",
+      "num_breeding_pairs",
+      "census_time"
+    ],
+    "forbidden_during_audit": [
+      "num_chicks"
+    ]
+  },
+  "trigger": "The earlier island-chick-success workflow failed on duplicate usable key ('LIT', '8.0', 1996) when keying rows only by island, colony_code, and season_start_year.",
+  "season_rule": "season_start_year = calendar year(time) - 1",
+  "usable_row_rule": "five Palmer islands; finite num_breeding_pairs > 0; parseable time and non-empty colony_code",
+  "audit_keys": {
+    "coarse": ["island_name", "colony_code", "season_start_year"],
+    "plus_study": ["study_name", "island_name", "colony_code", "season_start_year"],
+    "plus_time": ["time", "island_name", "colony_code"],
+    "plus_census_time": [
+      "island_name",
+      "colony_code",
+      "season_start_year",
+      "census_time"
+    ],
+    "full_nonoutcome": [
+      "study_name",
+      "time",
+      "island_name",
+      "colony_code",
+      "census_time"
+    ]
+  },
+  "outputs": [
+    "number of usable metadata rows",
+    "number and identity of coarse duplicate keys",
+    "all non-outcome fields for each duplicate group",
+    "collision count under each candidate key",
+    "whether duplicate groups agree on adult breeding-pair counts",
+    "whether duplicate groups differ in study_name, time, or census_time"
+  ],
+  "decision_boundary": [
+    "Do not choose a deduplication rule until the non-outcome audit is recorded.",
+    "Do not inspect num_chicks to decide which duplicate row to retain.",
+    "If a finer documented non-outcome key uniquely separates rows, preserve those rows as distinct observations and redesign the reproductive-success unit accordingly.",
+    "If rows are exact duplicates on all non-outcome fields, a deterministic duplicate-collapse rule may be frozen before num_chicks is opened.",
+    "If duplicate semantics remain ambiguous after the non-outcome audit, colony-level chick-success inference remains blocked."
+  ],
+  "next_gate": "After key semantics are resolved, freeze the colony-level chick-production model before retrieving or analyzing num_chicks."
+}
