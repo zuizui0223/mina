@@ -32,9 +32,9 @@ The Palmer analysis used annual breeding-pair censuses from five Adélie breedin
 
 We standardized each island's log-abundance trajectory and used principal component analysis to quantify the common temporal component. Annual log growth was
 
-[
-g_{i,t}=log(1+N_{i,t})-log(1+N_{i,t-1}).
-]
+$
+g_{i,t}=\log(1+N_{i,t})-\log(1+N_{i,t-1}).
+$
 
 Year and island factors were also used descriptively to partition shared temporal and persistent island-level variation. These terms are descriptive and are not interpreted as identified environmental mechanisms.
 
@@ -42,9 +42,9 @@ Year and island factors were also used descriptively to partition shared tempora
 
 For island-year (t), let (p_j) be the fraction of breeding pairs assigned to colony code (j). We defined effective colony number as
 
-[
-N_{mathrm{eff}}=\\frac{1}{sum_j p_j^2}.
-]
+$
+N_{\mathrm{eff}}=\frac{1}{\sum_j p_j^2}.
+$
 
 The concentration analysis was restricted to Cormorant, Humble and Litchfield, the three islands whose reported colony-code rosters remained unchanged across the synchronized period. For Litchfield, only positive-abundance years were retained.
 
@@ -64,17 +64,17 @@ The broad-scale analysis used MAPPPD/APBP abundance data pinned to a fixed sourc
 
 Predictor construction was completed without demographic outcome magnitudes. At the primary 2 km radius, breeding-space amount was
 
-[
-A=z{log(1+mathrm{ice	ext{-}free area})},
-]
+$
+A=z\left\{\log\left[1+\mathrm{ice\text{-}free\ area}\right]\right\}.
+$
 
 and breeding-option heterogeneity was
 
-[
-H=z\\{\\mathrm{Tier\\ 2\\ Habitat\\ Complex\\ richness}\\}.
-]
+$
+H=z\left\{\mathrm{Tier\ 2\ Habitat\ Complex\ richness}\right\}.
+$
 
-The focal interaction was (A	imes H). Terrain relief was frozen as a separate predictor but was not used to rescue the primary interaction.
+The focal interaction was \(A \times H\). Terrain relief was frozen as a separate predictor but was not used to rescue the primary interaction.
 
 #### Observation model and recovery gates
 
@@ -84,48 +84,48 @@ Before real count magnitudes were opened, we required the complete estimation pi
 
 Within each species, site coupling was modelled conceptually as
 
-[
-lambda_i =
-1+alpha_{b(i)}
-+gamma_A A_i
-+gamma_H H_i
-+gamma_{AH}A_iH_i
-+b_i,
-]
+$
+\lambda_i =
+1+\alpha_{b(i)}
++\gamma_A A_i
++\gamma_H H_i
++\gamma_{AH}A_iH_i
++b_i.
+$
 
-where \\(\\alpha_{b(i)}\\) is the frozen spatial-block effect and \\(b_i\\) is a residual site loading deviation. Site-trait terms were centered within the frozen spatial block. The latent annual forcing had mean zero and site loadings were identified to a species-wide mean of one.
+where \(\alpha_{b(i)}\) is the frozen spatial-block effect and \(b_i\) is a residual site loading deviation. Site-trait terms were centered within the frozen spatial block. The latent annual forcing had mean zero and site loadings were identified to a species-wide mean of one.
 
 The process model used log1p abundance and propagated endpoint observation variance into interval likelihoods. Pre-outcome synthetic recovery required the estimator to recover null, simple-buffering and crossover scenarios under the real observation schedule. Species-wide forcing, the focal interaction and the cross-species median estimand all passed the frozen recovery rules before real outcomes were opened.
 
 #### Primary hypothesis and inference
 
-The primary paper-level statistic was the median \\(\\gamma_{AH}\\) across the three species. The directional alternative was more negative. We used 9,999 permutations. Within each species and frozen spatial block, the complete site-trait tuple ((A,H,A	imes H)) was permuted among site time series, singleton blocks were fixed, and the complete V3 model—including forcing, drift, process variance, block intercepts and residual loadings—was re-estimated.
+The primary paper-level statistic was the median \(\gamma_{AH}\) across the three species. The directional alternative was more negative. We used 9,999 permutations. Within each species and frozen spatial block, the complete site-trait tuple \((A,H,A\times H)\) was permuted among site time series, singleton blocks were fixed, and the complete V3 model—including forcing, drift, process variance, block intercepts and residual loadings—was re-estimated.
 
 The paper-level p-value was
 
-[
-p=\\frac{1+#{T_{mathrm{perm}}leq T_{mathrm{obs}}}}{9,999+1}.
-]
+$
+p=\frac{1+\#\{T_{\mathrm{perm}}\leq T_{\mathrm{obs}}\}}{9{,}999+1}.
+$
 
 Species-specific interaction p-values used the same one-sided rule and were Holm-adjusted across the three species.
 
 A full point-estimate option–fragmentation crossover required
 
-[
-\\gamma_{AH}<0,
-]
+$
+\gamma_{AH}<0,
+$
 
-[
-\\gamma_H-\\gamma_{AH}\\geq 0
-]
+$
+\gamma_H-\gamma_{AH}\geq 0
+$
 
-at \\(A=-1\\) SD, and
+at \(A=-1\) SD, and
 
-[
-\\gamma_H+\\gamma_{AH}<0
-]
+$
+\gamma_H+\gamma_{AH}<0
+$
 
-at \\(A=+1\\) SD.
+at \(A=+1\) SD.
 
 #### Prespecified secondary and robustness analyses
 
