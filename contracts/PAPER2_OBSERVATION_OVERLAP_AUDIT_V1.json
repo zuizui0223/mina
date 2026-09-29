@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-observation-overlap-audit-v1",
+  "date": "2026-09-29",
+  "status": "outcome_blind_observation_overlap_audit_frozen_before_execution",
+  "paper_lane": "Paper 2",
+  "sample": {
+    "source_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "frozen_gate0_units": 152,
+    "primary_time_field": "season",
+    "primary_window": [
+      1980,
+      2025
+    ],
+    "expected_bridged_units": 107,
+    "primary_species": [
+      "ADPE",
+      "CHPE",
+      "GEPE"
+    ]
+  },
+  "primary_vantage_family_definition": {
+    "direct": [
+      "ground",
+      "aerial",
+      "offshore_vessel"
+    ],
+    "image_based": [
+      "ground_photo",
+      "aerial_photo",
+      "uav",
+      "vhr",
+      "landsat",
+      "sentinel"
+    ],
+    "unknown": [
+      "missing/NA"
+    ],
+    "rationale": "Separate direct visual counts from counts derived from images while keeping sparse platform-specific categories available for sensitivity diagnostics."
+  },
+  "audits": [
+    "record counts by raw vantage and collapsed vantage family",
+    "site-species-season groups with repeated observations",
+    "mixed raw-vantage and mixed family groups",
+    "direct versus image-based co-observation groups overall and by species",
+    "exact-date and <=14-day direct-image overlap when dates are known",
+    "raw-vantage overlap graph counts",
+    "accuracy-class record counts by family",
+    "same-family repeated-observation groups by accuracy class",
+    "units that change vantage family through time"
+  ],
+  "identification_rules": {
+    "direct_image_mean_offset": "Promote a direct-vs-image mean offset to the primary observation model only if there are at least 20 site-species-season mixed-family groups overall and at least two species each contribute at least 5 such groups.",
+    "raw_vantage_offsets": "Raw vantage-specific offsets remain sensitivity-only unless every retained category has at least 10 mixed-vantage season groups connecting it directly or indirectly to ground.",
+    "accuracy_variance": "Estimate separate observation-scale parameters for accuracy classes 1, 2 and pooled 3-5 if each of those three groups has at least 20 repeated-observation season groups; otherwise use the coarser split 1 versus 2-5.",
+    "unknown_vantage": "Never assign a mean offset from missing vantage; treat missing-vantage records as unknown-method observations and assess them in a sensitivity that excludes them."
+  },
+  "boundary": [
+    "Count magnitudes are not summarized, compared or modeled.",
+    "Only metadata and record co-occurrence are used.",
+    "The 107-unit season-based cohort and 1980-2025 window are not changed.",
+    "Observation-model decisions made here cannot be changed after count magnitudes are opened."
+  ]
+}
