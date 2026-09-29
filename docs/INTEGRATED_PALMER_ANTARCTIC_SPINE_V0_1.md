@@ -199,21 +199,33 @@ Raw sensitivity:
 Tier 2 Shannon at 2 km gives median gamma_AH = **−0.163** and retains the
 chinstrap/gentoo crossover classification but not Adélie.
 
-### Interpretation gate
+### Radius sign-switch null
 
-**PENDING — radius sign-switch permutation null**
+The raw 1/2/5 km estimates change substantially, but this pattern is **not**
+evidence for a biological scale effect.
 
-The manuscript must not call the 1/2/5 km change an ecological
-scale-dependence result until the joint block-preserving multi-radius null
-determines whether the observed 2 km negative → 5 km positive change and its
-magnitude are unusual.
+A joint block-preserving multi-radius permutation keeps each site's complete
+1/2/5 km trait tuple together, preserving cross-radius covariance, and asks how
+often the null generates both:
 
-If the joint null probability is <=0.05:
-- scale dependence may be interpreted biologically.
+1. a negative 2 km median and positive 5 km median; and
+2. a 5 km minus 2 km contrast at least as large as the observed **0.425**.
 
-If >0.05:
-- describe this only as radius sensitivity/instability compatible with sampling
-  fluctuation.
+After 8,999 of the frozen 9,999 permutations, this joint event had occurred 742
+times. Even if none of the remaining 1,000 permutations contained the event,
+the final plus-one probability could not fall below **0.0743**.
+
+Therefore the ecological scale-dependence criterion is definitively not met.
+
+The correct interpretation is:
+
+> the island-architecture estimate is sensitive to how the breeding landscape
+> is spatially supported, but the observed sign reversal is compatible with
+> finite-sample/block-permutation fluctuation and should not itself be treated
+> as a biological scale-dependence discovery.
+
+The final exact 9,999-permutation probability is reported in the analysis
+receipt once all shards are aggregated; it cannot change this decision.
 
 ## Information content of the null primary result
 
@@ -280,8 +292,10 @@ Not supported.
 
 This is the main cross-scale conclusion.
 
-> **Local demographic reorganization is real, but macroecological
-> predictability from static island architecture is limited.**
+> **Local demographic reorganization is clear, but the Antarctic-wide data do
+> not establish a transferable static-island rule for its demographic
+> consequences. Moderate common effects remain unresolved, while very large
+> common effects were readily detectable.**
 
 ## Relation to ODSP
 
@@ -393,14 +407,21 @@ a transportable predictor at another.
 
 This is the manuscript's strongest general ecological idea.
 
-### 5. Negative result as a scaling result
+### 5. A bounded negative result, not evidence of absence
 
-Do not write that “islands do not matter”.
+Do not write that “islands do not matter” or that the macroecological effect is
+zero.
+
+The operating-characteristic analysis shows low sensitivity to a common
+interaction around the observed magnitude (about 0.32), but high sensitivity
+to very large common interactions (MDE80 about 0.50; MDE90 about 0.54).
 
 Write that:
 
-> **the ecological organization visible within islands is not captured by a
-> simple, static and transferable island-architecture rule at Antarctic scale.**
+> **the ecological organization visible within islands did not yield a
+> confirmed, transferable static-island rule at Antarctic scale; the analysis
+> was capable of detecting very large common effects but leaves moderate common
+> effects unresolved.**
 
 ## Terminal rules
 
