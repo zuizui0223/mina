@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-neutral-attrition-v1",
+  "date": "2026-09-30",
+  "status": "post_hazard_extension_frozen_before_sequential_null_execution",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "expected_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "motivation": "The newly opened durable-extinction analysis showed that disappearing colony codes are consistently small, but a post-outcome one-step proportional-Poisson diagnostic indicated that size-selective zeros can arise mechanically from demographic thinning. This contract freezes a new sequential neutral-drift test before that trajectory-level result is computed.",
+  "question": "Can progressive within-island concentration during the Palmer Adelie decline arise from neutral demographic attrition alone, without habitat-specific or socially mediated differences among colony codes?",
+  "eligible_islands": ["COR", "HUM", "LIT"],
+  "eligibility_reason": "These are the pre-existing stable-roster islands used in PALMER_BREEDING_PATCH_CONCENTRATION_V1.",
+  "observed_endpoint": {
+    "metric": "effective colony number N_eff = total^2 / sum_j n_j^2",
+    "statistic": "OLS slope of N_eff against calendar year over positive-total years",
+    "values_inherited_from": "PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1"
+  },
+  "sequential_neutral_null": {
+    "initial_state": "Observed colony-code counts in 1991.",
+    "annual_total_constraint": "For each later year, use the observed island total exactly.",
+    "transition": "Allocate that year's observed total by a multinomial draw with probabilities equal to the immediately preceding simulated colony proportions.",
+    "absorbing_zero": "A simulated colony code with zero abundance has zero probability in subsequent years.",
+    "biological_meaning": "All colony codes are exchangeable apart from their inherited abundance; concentration arises only through finite-population drift while the observed island-wide decline is imposed externally.",
+    "replicates": 100000,
+    "seed": 20260930
+  },
+  "primary_inference": {
+    "per_island": "One-sided probability that neutral attrition produces an N_eff slope <= the observed slope.",
+    "joint": "Probability that all three islands simultaneously have slopes <= their observed island-specific slopes.",
+    "interpretation": {
+      "p_gt_0_05": "Observed concentration is not more extreme than neutral attrition for that endpoint.",
+      "p_le_0_05": "Observed concentration exceeds what sequential neutral attrition usually produces."
+    }
+  },
+  "secondary_outputs": [
+    "neutral slope mean and 95% interval by island",
+    "neutral terminal N_eff distribution by island",
+    "probability of reaching observed-or-lower terminal N_eff",
+    "fraction of simulations with complete local extinction by the observed Litchfield extinction year when observed total is forced to zero"
+  ],
+  "decision_boundary": [
+    "This is a post-hoc mechanism diagnostic, not a preregistered confirmatory test.",
+    "Do not interpret neutral fit as proof that ecological interactions are absent.",
+    "Do not interpret rejection as proof of predation, snow or habitat quality.",
+    "The model deliberately excludes recolonization; if it over-concentrates relative to observations, that is evidence that an absorbing-drift null is too strong, not evidence against demographic stochasticity generally.",
+    "No migration, rescue, colony-specific fitness or habitat terms may be added before the frozen sequential null is executed."
+  ]
+}
