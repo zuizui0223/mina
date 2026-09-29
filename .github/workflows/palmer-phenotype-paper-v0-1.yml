@@ -1,0 +1,35 @@
+name: Palmer phenotype paper v0.1
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/build_palmer_phenotype_paper_v0_1.py'
+      - 'tests/test_palmer_phenotype_paper_build.py'
+      - 'results/PALMER_PHENOTYPE_REASSEMBLY_RESULT_V1.json'
+      - '.github/workflows/palmer-phenotype-paper-v0-1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install mina
+        run: python -m pip install -e '.[dev]'
+      - name: Validate paper builder
+        run: python -m pytest -q tests/test_palmer_phenotype_paper_build.py
+      - name: Build manuscript and figure data
+        run: |
+          python scripts/build_palmer_phenotype_paper_v0_1.py             --out-dir build/palmer_phenotype_paper_v0_1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-phenotype-paper-v0-1
+          path: build/palmer_phenotype_paper_v0_1/
+          if-no-files-found: error
+          retention-days: 90
