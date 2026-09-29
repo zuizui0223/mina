@@ -11,6 +11,7 @@ from scripts.simulate_paper2_integrated_recovery import (
     TRANSITION_YEARS,
     count_to_analysis_scale,
     collapse_same_season,
+    simulate_integrated_dataset,
 )
 from scripts.simulate_paper2_observation_recovery import (
     prepare_observation_recovery_design,
@@ -554,3 +555,227 @@ def fit_hierarchical_dataset(
             iterations=12,
         )
     return {"observation":observation,"species":species}
+
+
+def _q(values:list[float],q:float)->float:
+    arr=np.asarray(values,dtype=float)
+    if arr.size==0:
+        raise ValueError("cannot summarize empty vector")
+    return float(np.quantile(arr,q))
+
+
+def _hierarchical_scenario_summary(records:list[dict])->dict:
+    gamma_a=[float(r["gamma_a"]) for r in records]
+    gamma_ah=[float(r["gamma_ah"]) for r in records]
+    lambda_corr=[
+        float(r["lambda_correlation"])
+        for r in records
+        if r.get("lambda_correlation") is not None
+    ]
+    process_sd=[float(r["process_sd"]) for r in records]
+    loading_sd=[float(r["loading_residual_sd"]) for r in records]
+    return {
+        "median_gamma_a":_q(gamma_a,0.50),
+        "q05_gamma_a":_q(gamma_a,0.05),
+        "q95_gamma_a":_q(gamma_a,0.95),
+        "negative_gamma_a_fraction":float(np.mean(np.asarray(gamma_a)<0.0)),
+        "median_gamma_ah":_q(gamma_ah,0.50),
+        "q05_gamma_ah":_q(gamma_ah,0.05),
+        "q95_gamma_ah":_q(gamma_ah,0.95),
+        "negative_gamma_ah_fraction":float(np.mean(np.asarray(gamma_ah)<0.0)),
+        "median_lambda_correlation":(
+            _q(lambda_corr,0.50) if lambda_corr else None
+        ),
+        "median_process_sd":_q(process_sd,0.50),
+        "q05_process_sd":_q(process_sd,0.05),
+        "q95_process_sd":_q(process_sd,0.95),
+        "median_loading_residual_sd":_q(loading_sd,0.50),
+    }
+
+
+def evaluate_hierarchical_configuration(
+    frames:dict[str,pd.DataFrame],
+    observation_metadata:pd.DataFrame,
+    *,
+    replicates:int=100,
+    seed_offset:int=0,
+)->dict:
+    """Run the frozen V1 scenarios with the hierarchical V2 estimator."""
+    if replicates<2:
+        raise ValueError("replicates must be >=2")
+    scenarios={
+        "null":{"gamma_a":0.0,"gamma_ah":0.0},
+        "crossover":{"gamma_a":0.0,"gamma_ah":-0.35},
+        "simple_buffering":{"gamma_a":-0.25,"gamma_ah":0.0},
+    }
+    forcing_sd=0.08
+    loading_sd=0.15
+    process_sd=0.04
+    drift_mean=-0.01
+    drift_sd=0.01
+    delta_truth=float(np.log(1.15))
+    sigma1_truth=float(np.log(1.05))
+    sigma2_truth=float(np.log(1.25))
+
+    observation_records=[]
+    species_records={
+        sp:{name:[] for name in scenarios}
+        for sp in sorted(frames)
+    }
+    forcing_corr={sp:{} for sp in sorted(frames)}
+    finite=0
+    total=0
+
+    for scenario_index,(scenario,truths) in enumerate(scenarios.items()):
+        for rep in range(replicates):
+            seed=seed_offset+scenario_index*100000+rep
+            sim=simulate_integrated_dataset(
+                frames,
+                observation_metadata,
+                gamma_a=float(truths["gamma_a"]),
+                gamma_ah=float(truths["gamma_ah"]),
+                seed=seed,
+                forcing_sd=forcing_sd,
+                loading_sd=loading_sd,
+                process_sd=process_sd,
+                drift_mean=drift_mean,
+                drift_sd=drift_sd,
+                delta_image=delta_truth,
+                sigma1=sigma1_truth,
+                sigma2plus=sigma2_truth,
+            )
+            fit=fit_hierarchical_dataset(
+                frames,sim["observations"],sim["truth"]
+            )
+            obs=fit["observation"]
+            observation_records.append({
+                "scenario":scenario,
+                "delta_image":float(obs["delta_image"]),
+                "sigma1":float(obs["accuracy"]["1"]["sigma"]),
+                "sigma2plus":float(obs["accuracy"]["2-5"]["sigma"]),
+            })
+            current_finite=all(np.isfinite([
+                float(obs["delta_image"]),
+                float(obs["accuracy"]["1"]["sigma"]),
+                float(obs["accuracy"]["2-5"]["sigma"]),
+            ]))
+            for sp,sfit in fit["species"].items():
+                species_records[sp][scenario].append(sfit)
+                current_finite=current_finite and all(np.isfinite([
+                    float(sfit["gamma_a"]),
+                    float(sfit["gamma_h"]),
+                    float(sfit["gamma_ah"]),
+                    float(sfit["process_sd"]),
+                    float(sfit["loading_residual_sd"]),
+                ]))
+                for group,value in sfit["forcing_correlation"].items():
+                    forcing_corr[sp].setdefault(str(group),[]).append(float(value))
+                    current_finite=current_finite and np.isfinite(float(value))
+            total+=1
+            if current_finite:
+                finite+=1
+
+    delta_vals=[r["delta_image"] for r in observation_records]
+    sigma1_vals=[r["sigma1"] for r in observation_records]
+    sigma2_vals=[r["sigma2plus"] for r in observation_records]
+    observation={
+        "truth":{
+            "delta_image":delta_truth,
+            "sigma1":sigma1_truth,
+            "sigma2plus":sigma2_truth,
+        },
+        "delta_image":{
+            "median":_q(delta_vals,0.50),
+            "q05":_q(delta_vals,0.05),
+            "q95":_q(delta_vals,0.95),
+        },
+        "sigma1":{"median":_q(sigma1_vals,0.50)},
+        "sigma2plus":{"median":_q(sigma2_vals,0.50)},
+    }
+    observation["delta_image"]["bias"]=(
+        observation["delta_image"]["median"]-delta_truth
+    )
+    observation["sigma1"]["relative_bias"]=(
+        (observation["sigma1"]["median"]-sigma1_truth)/sigma1_truth
+    )
+    observation["sigma2plus"]["relative_bias"]=(
+        (observation["sigma2plus"]["median"]-sigma2_truth)/sigma2_truth
+    )
+
+    species={}
+    species_checks={}
+    for sp in sorted(frames):
+        groups={
+            group:{
+                "median_corr":_q(values,0.50),
+                "q05_corr":_q(values,0.05),
+            }
+            for group,values in sorted(forcing_corr[sp].items())
+        }
+        null=_hierarchical_scenario_summary(species_records[sp]["null"])
+        crossover=_hierarchical_scenario_summary(
+            species_records[sp]["crossover"]
+        )
+        simple=_hierarchical_scenario_summary(
+            species_records[sp]["simple_buffering"]
+        )
+        checks={
+            "factor_median":all(v["median_corr"]>=0.70 for v in groups.values()),
+            "factor_q05":all(v["q05_corr"]>=0.30 for v in groups.values()),
+            "crossover_bias":abs(crossover["median_gamma_ah"]+0.35)<=0.10,
+            "crossover_sign":crossover["negative_gamma_ah_fraction"]>=0.90,
+            "null_center":abs(null["median_gamma_ah"])<=0.05,
+            "null_contains_zero":(
+                null["q05_gamma_ah"]<=0.0<=null["q95_gamma_ah"]
+            ),
+            "simple_a_bias":abs(simple["median_gamma_a"]+0.25)<=0.10,
+            "simple_a_sign":simple["negative_gamma_a_fraction"]>=0.90,
+            "simple_no_spurious_crossover":abs(simple["median_gamma_ah"])<=0.06,
+        }
+        species[sp]={
+            "forcing_groups":groups,
+            "null":null,
+            "crossover":crossover,
+            "simple_buffering":simple,
+            "gate":{"passes":bool(all(checks.values())),"checks":checks},
+        }
+        species_checks[sp]=bool(all(checks.values()))
+
+    observation_checks={
+        "offset_bias":abs(observation["delta_image"]["bias"])<=0.03,
+        "accuracy1_bias":abs(observation["sigma1"]["relative_bias"])<=0.15,
+        "accuracy2plus_bias":abs(
+            observation["sigma2plus"]["relative_bias"]
+        )<=0.30,
+    }
+    observation_gate={
+        "passes":bool(all(observation_checks.values())),
+        "checks":observation_checks,
+    }
+    gate={
+        "passes":bool(
+            all(species_checks.values())
+            and observation_gate["passes"]
+            and finite==total
+        ),
+        "species_pass":species_checks,
+        "observation_checks":observation_checks,
+        "finite_estimate_fraction":float(finite/total),
+    }
+    return {
+        "replicates_per_scenario":int(replicates),
+        "simulation":{
+            "forcing_sd":forcing_sd,
+            "loading_sd":loading_sd,
+            "process_sd":process_sd,
+            "drift_mean":drift_mean,
+            "drift_sd":drift_sd,
+            "delta_image":delta_truth,
+            "sigma1":sigma1_truth,
+            "sigma2plus":sigma2_truth,
+        },
+        "observation":observation,
+        "observation_gate":observation_gate,
+        "species":species,
+        "gate":gate,
+    }
