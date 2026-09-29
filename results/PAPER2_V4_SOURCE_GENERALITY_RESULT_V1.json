@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-v4-source-generality-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36546496851,
+    "artifact_id": 11022922222,
+    "artifact_digest": "sha256:b41efd140302c33bbb08e47a7d385b60060276f785b52ce2dbf9f405165af4cf",
+    "conclusion": "success"
+  },
+  "decision": {
+    "paper_level_source_robustness_passed": true,
+    "ADPE_species_specific_exclude_unknown": "failed_86_of_100_and_remains_a_limitation",
+    "counts_may_be_opened": false,
+    "no_real_count_magnitudes_opened": true
+  },
+  "exclude_unknown": {
+    "aggregate_median_gamma_ah": -0.3472267261878951,
+    "aggregate_negative_fraction": 1,
+    "at_least_two_species_negative_fraction": 1,
+    "null_median": -0.006927265930388425,
+    "species_median_gamma": {
+      "ADPE": -0.3748242060021739,
+      "CHPE": -0.3477706175276694,
+      "GEPE": -0.3512387533163209
+    },
+    "passes": true
+  },
+  "ground_only": {
+    "aggregate_median_gamma_ah": -0.3481153018324772,
+    "aggregate_negative_fraction": 1,
+    "both_species_negative_fraction": 0.99,
+    "null_median": 0.010329472502808645,
+    "species_median_gamma": {
+      "CHPE": -0.3477293342312361,
+      "GEPE": -0.3382208674421916
+    },
+    "ADPE": "coverage_limited_nonblocking",
+    "passes": true
+  },
+  "interpretation": [
+    "The paper-level cross-species interaction estimand remains recoverable after excluding unknown vantage records.",
+    "The partial raw-ground-only robustness lane also passes for its two outcome-blind testable species.",
+    "This does not erase the Adelie species-specific exclude-unknown power limitation and does not justify universal wording."
+  ]
+}
