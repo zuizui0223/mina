@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-subcolony-extinction-hazard-result-v1",
+  "validated_date": "2026-09-29",
+  "contract_id": "mina-palmer-subcolony-extinction-hazard-v1",
+  "inference_status": "post_outcome_exploratory_frozen_for_reproducibility",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "source_row_count": 1489,
+    "reproduction_source": {
+      "previous_validated_workflow_run_id": 36243263745,
+      "previous_validated_artifact_id": 10906912288
+    }
+  },
+  "primary_stable_roster": {
+    "islands": ["COR", "HUM", "LIT"],
+    "matched_hazard": {
+      "n_informative_island_year_strata": 12,
+      "n_risk_rows": 71,
+      "n_durable_extinctions": 18,
+      "event_median_previous_pairs": 5.5,
+      "event_mean_previous_pairs": 8.11111111111111,
+      "event_median_previous_share": 0.029197080291970802,
+      "survivor_median_previous_pairs": 47.0,
+      "survivor_mean_previous_pairs": 64.22641509433963,
+      "survivor_median_previous_share": 0.16666666666666666,
+      "beta_per_sd_log1p_pairs": -2.6606003195347054,
+      "se": 0.8015973642577985,
+      "beta_ci95": [-4.23173115347999, -1.0894694855894205],
+      "odds_ratio_per_sd": 0.06990624306229637,
+      "odds_ratio_ci95": [0.01452721992027245, 0.3363949087234035],
+      "randomization_p_two_sided": 0.0000999950002499875,
+      "permutations": 20000,
+      "seed": 20260929
+    },
+    "proportional_thinning_diagnostic": {
+      "n_island_year_transitions": 68,
+      "observed_next_year_zero_transitions": 20,
+      "null_mean": 2.3638,
+      "null_q95": [1.0, 5.0],
+      "null_max": 8,
+      "upper_tail_p": 0.00004999750012499375,
+      "simulations": 20000,
+      "seed": 20260931
+    }
+  },
+  "five_island_sensitivity": {
+    "islands": ["CHR", "COR", "HUM", "LIT", "TOR"],
+    "matched_hazard": {
+      "n_informative_island_year_strata": 29,
+      "n_risk_rows": 212,
+      "n_durable_extinctions": 43,
+      "event_median_previous_pairs": 5.0,
+      "survivor_median_previous_pairs": 48.0,
+      "beta_per_sd_log1p_pairs": -2.7555498738031265,
+      "se": 0.5073396919130762,
+      "beta_ci95": [-3.7499356699527557, -1.7611640776534974],
+      "odds_ratio_per_sd": 0.06357405234990075,
+      "odds_ratio_ci95": [0.023519258802374536, 0.1718447067634576],
+      "randomization_p_two_sided": 0.0000999950002499875
+    },
+    "proportional_thinning_diagnostic": {
+      "n_island_year_transitions": 117,
+      "skipped_for_missing_next_code": 3,
+      "observed_next_year_zero_transitions": 48,
+      "null_mean": 7.17705,
+      "null_q95": [3.0, 12.0],
+      "null_max": 16,
+      "upper_tail_p": 0.00004999750012499375
+    }
+  },
+  "decision": {
+    "exploratory_ordered_small_group_attrition_pattern_present": true,
+    "meaning": "Durable extinctions were strongly ordered toward smaller breeding groups within the same island-year risk sets, and one-year zero attrition greatly exceeded a simple proportional-thinning allocation null."
+  },
+  "ecological_interpretation": "The Palmer Adélie decline is not only a reduction in island totals or effective colony number. Loss is strongly ordered within islands: durable colony-code extinctions arise from groups that were much smaller immediately beforehand. The excess of zero transitions over a simple proportional-thinning null shows that this pattern is not reproduced by merely reallocating the observed declining abundance in proportion to current colony shares. This is consistent with size-dependent vulnerability, but the census data do not identify its biological cause.",
+  "supported_exploratory_statements": [
+    "Within informative COR/HUM/LIT island-year risk sets, durable-extinction groups had a median of 5.5 breeding pairs immediately beforehand versus 47 pairs among same-stratum survivors.",
+    "The matched size coefficient was strongly negative and the within-stratum randomization statistic was extreme under the frozen exploratory calculation.",
+    "Observed one-year zero attrition on the stable-roster islands was 20 transitions versus a simple proportional-thinning null mean of 2.36 and 97.5% quantile of 5.",
+    "The same qualitative pattern was retained in the five-island sensitivity analysis."
+  ],
+  "not_supported": [
+    "causal identification of skua predation",
+    "causal identification of social facilitation or an Allee effect",
+    "causal identification of snow or terrain",
+    "equating colony_code with a mapped physical subcolony polygon",
+    "calling this analysis preregistered or confirmatory",
+    "treating the proportional-thinning diagnostic as a complete demographic stochasticity model"
+  ],
+  "next_gate": "Use genuinely unopened endpoints to distinguish candidate mechanisms: first resolve chick-census duplicate-key semantics outcome-blind and freeze a chick-production test; independently freeze a species-by-terrain life-history test before outcome linkage."
+}
