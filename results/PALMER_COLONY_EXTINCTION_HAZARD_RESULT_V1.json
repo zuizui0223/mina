@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-colony-extinction-hazard-result-v1",
+  "validated_date": "2026-09-29",
+  "contracts": [
+    "mina-palmer-colony-extinction-hazard-v1",
+    "mina-palmer-colony-extinction-neutral-null-v1"
+  ],
+  "code_commit": "862964c9f48138b20de615a46681f026958724e1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "execution": {
+    "permutations": 100000,
+    "seed": 20260929,
+    "local_reproduction": "success",
+    "github_workflow_run_id": 36580958599,
+    "github_workflow_status_at_receipt_write": "queued"
+  },
+  "primary_exchangeable_risk_set_test": {
+    "raw_transition_rows": 878,
+    "raw_durable_events": 45,
+    "eligible_risk_set_rows": 873,
+    "eligible_events": 44,
+    "event_bearing_risk_sets": 30,
+    "observed_standardized_size_contrast": -1.7091639499787392,
+    "permutation_p_one_sided": 0.00000999990000099999,
+    "event_prior_pairs_median": 5.5,
+    "non_event_prior_pairs_median": 47.0,
+    "event_prior_pairs_mean": 6.75,
+    "non_event_prior_pairs_mean": 78.8552472858866,
+    "median_within_riskset_event_to_non_event_mean_count_ratio": 0.10405014193765985,
+    "decision": "supported_against_exchangeable_identity_null"
+  },
+  "secondary_discrete_time_logistic": {
+    "size_coefficient_per_within_riskset_sd": -2.4890664856421463,
+    "naive_hessian_se": 0.3542403498841075,
+    "odds_ratio_per_1sd_larger_prior_size": 0.08298740035652982,
+    "wald_95ci_coefficient": [
+      -3.183377571414997,
+      -1.7947553998692956
+    ],
+    "role": "descriptive; not the mechanism gate"
+  },
+  "exchangeable_sensitivities": {
+    "two_zero_rule": {
+      "contrast": -1.713152617674181,
+      "p": 0.00000999990000099999
+    },
+    "exclude_litchfield": {
+      "contrast": -1.7182114254551188,
+      "p": 0.00000999990000099999
+    },
+    "prior_count_at_least_2": {
+      "contrast": -1.6615872619995185,
+      "p": 0.00000999990000099999
+    },
+    "leave_one_island_out_contrasts": {
+      "CHR": -1.6758841454858149,
+      "COR": -1.6792811177093077,
+      "HUM": -1.7699203969634534,
+      "LIT": -1.7182114254551188,
+      "TOR": -1.6946423808277165
+    }
+  },
+  "size_conditioned_neutral_gate": {
+    "poisson_primary": {
+      "observed_contrast": -1.7091639499787392,
+      "neutral_mean": -1.8428330617858888,
+      "observed_minus_neutral_mean": 0.13366911180714958,
+      "one_sided_lower_p": 1.0,
+      "mechanism_gate_pass": false
+    },
+    "gamma_poisson_cv10": {
+      "neutral_mean": -1.841713383371154,
+      "observed_minus_neutral_mean": 0.13254943339241487,
+      "one_sided_lower_p": 1.0,
+      "mechanism_gate_pass": false
+    },
+    "gamma_poisson_cv20": {
+      "neutral_mean": -1.8378834809428963,
+      "observed_minus_neutral_mean": 0.12871953096415711,
+      "one_sided_lower_p": 0.999970000299997,
+      "mechanism_gate_pass": false
+    },
+    "decline_only_binomial": {
+      "observed_contrast": -1.7132919774523157,
+      "neutral_mean": -1.8460447527023824,
+      "observed_minus_neutral_mean": 0.1327527752500668,
+      "one_sided_lower_p": 1.0,
+      "mechanism_gate_pass": false
+    }
+  },
+  "decision": {
+    "small_groups_disappear_first_descriptively": true,
+    "exchangeable_identity_null_rejected": true,
+    "supra_proportional_small_group_vulnerability_supported": false,
+    "social_facilitation_or_predation_mechanism_supported": false
+  },
+  "ecological_interpretation": "Durable colony-code losses occur overwhelmingly among already small breeding groups, but that ordering is no stronger than expected under proportional demographic sampling once the mechanical size dependence of reaching zero is built into the null. The Palmer concentration result therefore should not be interpreted as evidence for an Allee-like social-facilitation or predation mechanism from extinction order alone.",
+  "paper_implication": "Retain within-island concentration as a real demographic reorganization result, but move mechanism discrimination to independent reproductive-success and terrain/life-history tests rather than treating selective loss of small colony codes as causal evidence."
+}
