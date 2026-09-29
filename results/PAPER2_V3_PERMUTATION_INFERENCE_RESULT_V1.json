@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-v3-permutation-inference-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36562405904,
+    "artifact_id": 11031131921,
+    "artifact_digest": "sha256:225729be3d57e9c5639cdde817dd4dfcee7f9a3ca40dc0beee5076fee3b8567c",
+    "head_sha": "5afa0882740dfec29eccd3803e1877f94aa371a7",
+    "conclusion": "success"
+  },
+  "B": 9999,
+  "seed": 20260929,
+  "primary": {
+    "statistic": "median gamma_AH across ADPE, CHPE, GEPE",
+    "observed": -0.31822603579776854,
+    "alternative": "more negative",
+    "extreme_permutations": 946,
+    "p_value": 0.0947,
+    "permutation_distribution": {
+      "q01": -0.6794679259968728,
+      "q05": -0.4235460652554809,
+      "median": 0.0027132369557933294,
+      "q95": 0.36635535829913757,
+      "q99": 0.53523495654894
+    }
+  },
+  "species": {
+    "ADPE": {
+      "observed_gamma_ah": -0.303571047069412,
+      "raw_p_value": 0.2162,
+      "holm_p_value": 0.2162
+    },
+    "CHPE": {
+      "observed_gamma_ah": -1.1843982732708647,
+      "raw_p_value": 0.0661,
+      "holm_p_value": 0.1689
+    },
+    "GEPE": {
+      "observed_gamma_ah": -0.31822603579776854,
+      "raw_p_value": 0.0563,
+      "holm_p_value": 0.1689
+    }
+  },
+  "observed_context": {
+    "all_species_gamma_ah_negative": true,
+    "full_crossover_classification_species": [
+      "CHPE",
+      "GEPE"
+    ]
+  },
+  "decision": {
+    "frozen_primary_permutation_test_rejects_at_0_05": false,
+    "species_specific_holm_rejections_at_0_05": [],
+    "result_class": "directionally_concordant_but_not_confirmatory",
+    "process_variance_claim_allowed": false
+  },
+  "interpretation": [
+    "All three observed species-specific gamma_AH estimates are negative, but the preregistered cross-species median permutation test does not reject the block-preserving null at alpha=0.05.",
+    "Chinstrap and gentoo show the full point-estimate option-fragmentation crossover sign pattern, but neither species-specific interaction survives Holm-adjusted permutation inference.",
+    "The result supports describing a suggestive cross-species tendency, not an established general island-ecology rule.",
+    "No alternative block structure, sidedness, species subset, or permutation test is substituted after observing this result."
+  ]
+}
