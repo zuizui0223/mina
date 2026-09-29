@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-extinction-thinning-null-v1",
+  "date": "2026-09-29",
+  "status": "post_outcome_mechanistic_falsification",
+  "depends_on": "mina-palmer-colony-extinction-hazard-v1",
+  "reason_for_addition": "The frozen exchangeability test showed strong size-selective durable extinction. Because small groups can hit zero under individual-independent stochastic thinning even without social facilitation, an explicit size-dependent mechanistic null is required before interpreting that result biologically.",
+  "question": "Is the observed size selectivity of durable colony-code disappearance stronger than expected from proportional individual-independent thinning alone?",
+  "null_model": {
+    "scope": "Each event-bearing island-year risk set is treated separately.",
+    "rate": "lambda = total next-year count among labeled at-risk colony codes / total prior-year count among those colony codes.",
+    "count_model": "For colony i, next-year count is Poisson(lambda * prior_count_i).",
+    "zero_probability": "q_i = exp(-lambda * prior_count_i).",
+    "conditioning": "Condition on the observed number k of durable-extinction events in each risk set. Under independent Poisson counts, event identities are sampled with conditional subset weight proportional to product_i[q_i/(1-q_i)] over the k selected colonies.",
+    "statistic": "The same equal-risk-set standardized prior-size contrast used by the frozen hazard contract.",
+    "permutations": 100000,
+    "seed": 20261929
+  },
+  "directional_test": {
+    "excess_small_group_vulnerability": "Observed contrast more negative than the proportional-thinning null.",
+    "lower_tail_p": "Monte Carlo lower-tail p with +1 correction.",
+    "interpretation": "Only a lower-tail deviation would support size selectivity beyond proportional demographic stochasticity."
+  },
+  "sensitivities": [
+    "exclude Litchfield Island",
+    "require prior count >= 2 breeding pairs",
+    "two-zero durable-extinction rule"
+  ],
+  "interpretation_boundaries": [
+    "This analysis was designed after the exchangeability result was known and is exploratory falsification, not preregistered confirmation.",
+    "Failure to exceed the thinning null argues against using size-selective disappearance itself as evidence for social facilitation, predation or an Allee effect.",
+    "The Poisson model is a deliberately simple individual-independent benchmark, not a complete demographic process model.",
+    "A separate reproductive-success analysis is required to test whether small groups have lower chicks per breeding pair."
+  ]
+}
