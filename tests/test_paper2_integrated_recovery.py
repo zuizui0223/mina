@@ -16,6 +16,8 @@ from scripts.simulate_paper2_integrated_recovery import (
     fit_species_from_counts,
     run_integrated_replicate,
     simulate_integrated_dataset,
+    fit_observation_aware_factor,
+    estimate_process_variance_mom,
     simulate_species_counts,
 )
 
@@ -156,6 +158,44 @@ class IntegratedMonteCarloTests(unittest.TestCase):
         self.assertIn("species",first)
         self.assertIn("gate",first)
         self.assertIn("ADPE",first["species"])
+
+
+class ObservationAwareGLSTests(unittest.TestCase):
+    def test_zero_observation_variance_reduces_to_duration_weighting(self):
+        frame,_=dense_species_fixture()
+        rows=[]
+        for i,row in frame.reset_index(drop=True).iterrows():
+            seasons=[1980,1990,2000,2010,2020]
+            values=[5.0,5.2,5.1,5.4,5.3]
+            for season,value in zip(seasons,values):
+                rows.append({
+                    "group_id":f"S{i}|ADPE|{season}",
+                    "site_id":f"S{i}","species_id":"ADPE",
+                    "season":season,"state_hat":value+0.01*i,
+                    "observation_var":0.0,"n_records":1,
+                })
+        collapsed=pd.DataFrame(rows)
+        fit=fit_observation_aware_factor(
+            frame,collapsed,
+            truth_forcing=None,true_lambda=None,
+            outer_updates=1,q_initial=0.01,
+        )
+        self.assertTrue(np.isfinite(fit["gamma_ah"]))
+        self.assertGreater(fit["process_variance"],0.0)
+
+    def test_process_variance_moment_downweights_endpoint_noise(self):
+        records=[
+            (0,"G1",1980,1990,0.2,0.01),
+            (0,"G1",1990,2000,0.2,1.00),
+            (1,"G1",1980,1990,-0.1,0.01),
+            (1,"G1",1990,2000,-0.1,1.00),
+        ]
+        residuals=np.array([0.2,0.2,-0.1,-0.1],dtype=float)
+        q=estimate_process_variance_mom(records,residuals,q_floor=1e-6)
+        self.assertGreaterEqual(q,1e-6)
+        low=1.0/np.sqrt(q*10+0.01)
+        high=1.0/np.sqrt(q*10+1.00)
+        self.assertGreater(low,high)
 
 
 class IntegratedSpeciesTests(unittest.TestCase):
