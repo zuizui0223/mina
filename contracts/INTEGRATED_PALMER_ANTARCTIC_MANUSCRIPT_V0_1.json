@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-integrated-palmer-antarctic-manuscript-v0.1",
+  "date": "2026-09-29",
+  "status": "integrated_spine_frozen_for_manuscript_build",
+  "working_title": "Local reorganization without a transferable island-resilience rule in Antarctic penguins",
+  "alternative_title": "From within-island concentration to continental limits: testing island-structured demography in Antarctic penguins",
+  "core_question": "When populations experience broad environmental forcing, does island individuality create predictable demographic responses across scales?",
+  "central_claim": "Island individuality is visible in local demographic endpoints and within-island reorganization, but it does not automatically yield a static, transferable macroecological rule for resilience.",
+  "structure": {
+    "part_I": {
+      "system": "Palmer Station five-island Adelie discovery system, 1991-2017",
+      "role": "phenomenon discovery",
+      "main_result": "Regional decline is accompanied by within-island concentration among a smaller effective set of breeding components rather than simple proportional thinning.",
+      "evidence": {
+        "PC1_standardized_log_abundance_fraction": 0.964,
+        "effective_colony_number_change": {
+          "Cormorant": "3.54 to 2.86 (-19%)",
+          "Humble": "4.62 to 2.28 (-51%)",
+          "Litchfield": "5.78 to 1.00 (-83%) before local extinction"
+        },
+        "null_support": {
+          "Cormorant_p": 0.038,
+          "Humble_plus_one_p": 0.00001,
+          "Litchfield_plus_one_p": 0.00001,
+          "joint_plus_one_p": 0.00001
+        }
+      },
+      "claim_boundary": "Local within-island reorganization is supported; predictive growth gain, beta hierarchy and specific forcing mechanisms remain secondary/nonconfirmatory."
+    },
+    "part_II": {
+      "system": "Antarctic-wide three-species Pygoscelis test, 1980-2025",
+      "role": "generality/transferability test",
+      "analysis_frame": {
+        "gate0_units": 152,
+        "temporally_bridged_units": 107,
+        "frozen_records": 2100,
+        "final_predictor_complete_units": {
+          "ADPE": 41,
+          "CHPE": 34,
+          "GEPE": 29
+        }
+      },
+      "primary_result": {
+        "gamma_AH": {
+          "ADPE": -0.303571047069412,
+          "CHPE": -1.1843982732708647,
+          "GEPE": -0.31822603579776854
+        },
+        "cross_species_median": -0.31822603579776854,
+        "permutation_B": 9999,
+        "one_sided_p": 0.0947,
+        "decision": "non_confirmatory"
+      },
+      "simple_space_buffering": {
+        "gamma_A": {
+          "ADPE": -0.2804028980046804,
+          "CHPE": -0.20047316201865784,
+          "GEPE": -0.07057389241675813
+        },
+        "holm_p": {
+          "ADPE": 0.4278,
+          "CHPE": 0.6134,
+          "GEPE": 0.6134
+        },
+        "decision": "unsupported"
+      },
+      "information_content": {
+        "MDE80_abs_gamma_AH": 0.49765625,
+        "MDE90_abs_gamma_AH": 0.5385714285714286,
+        "interpretation": "Moderate common interactions around the observed magnitude remain weakly detectable; very large common interactions around 0.50-0.55 would usually have been detected."
+      },
+      "radius_diagnostic": {
+        "observed_median_gamma_AH": {
+          "km1": -0.0576551287747558,
+          "km2": -0.31822603579776854,
+          "km5": 0.1067807758917031
+        },
+        "joint_switch_plus_contrast_plus1_probability": 0.081,
+        "decision": "radius_sensitive_but_not_established_biological_scale_dependence"
+      },
+      "claim_boundary": "Static breeding-island architecture is not confirmed as a transferable, scale-invariant demographic filter of shared Antarctic forcing."
+    }
+  },
+  "cross_scale_inference": {
+    "supported": [
+      "Local demographic organization can change systematically during decline.",
+      "The existence of local island-structured reorganization does not imply that simple static island traits provide transferable macroecological predictions across islands.",
+      "A large common area-by-heterogeneity effect across all three Pygoscelis species is disfavored by the operating-characteristic analysis, whereas moderate common effects remain unresolved."
+    ],
+    "not_supported": [
+      "Island architecture generally buffers Antarctic penguin populations.",
+      "The option-fragmentation crossover is a general Pygoscelis law.",
+      "The observed 1/2/5 km sign reversal proves biological scale dependence.",
+      "The retained latent species-wide forcing identifies a specific climate mechanism.",
+      "The primary non-rejection demonstrates absence or equivalence."
+    ]
+  },
+  "phenotype_lane": {
+    "default_placement": "supplement_or_brief_discussion",
+    "reason": "Most phenotype variation is species-composition driven; Adelie island-level phenotype differences are weak/unstable and do not carry the integrated causal argument.",
+    "promotion_rule": "Do not promote without a separately frozen sign-reversal null and a clear contribution to the cross-scale argument."
+  },
+  "odsp_link": {
+    "manuscript_use": "conceptual_origin_only",
+    "axis": "Information that appears to belong to islands can arise at species, regional, island and within-island levels; transfer across those hierarchical levels must be tested rather than assumed."
+  },
+  "figure_spine": [
+    "Fig 1: Palmer trajectories/concentration + Antarctic-wide map framing the scale transition.",
+    "Fig 2: Palmer within-island concentration against fixed-composition/count-error nulls.",
+    "Fig 3: Antarctic-wide gamma_AH effects and cross-species permutation null.",
+    "Fig 4: marginal-slope geometry plus 1/2/5 km radius sensitivity and radius-null expectation; optional MDE inset."
+  ],
+  "terminal_rules": [
+    "Do not pool Paper 1 and Paper 2 p-values into a synthetic significance statistic.",
+    "Do not use the strong Palmer result to rescue the nonconfirmatory Antarctic-wide interaction.",
+    "Do not call p=0.0947 marginal, trending or near-significant.",
+    "Do not call the radius sign reversal biological scale dependence because the frozen joint null probability is 0.0810.",
+    "Do not convert the retrospective MDE into an equivalence claim or confidence bound.",
+    "Do not elevate phenotype or process-variance lanes to rescue the integrated story."
+  ],
+  "manuscript_spine": "docs/INTEGRATED_PALMER_ANTARCTIC_SPINE_V0_1.md",
+  "source_manuscripts": [
+    "docs/MANUSCRIPT_ECOSPHERE_V0_8.md",
+    "docs/PAPER2_MANUSCRIPT_SPINE_V0_1.md"
+  ]
+}
