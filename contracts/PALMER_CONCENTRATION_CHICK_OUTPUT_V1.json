@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-palmer-concentration-chick-output-v1",
   "date": "2026-09-29",
-  "status": "frozen_before_concentration_to_chick_output_join",
+  "status": "frozen_before_concentration_to_chick_output_join; season key amended outcome-blind after metadata audit",
   "provenance_note": "A prior chick-success coherence workflow on another branch fetched the chick dataset but failed before producing an outcome receipt. This contract freezes a distinct island-season concentration/output analysis before its join is executed; it is not claimed as globally outcome-blind to every use of the source dataset.",
   "question": "As declining Palmer Adelie populations concentrate breeders into fewer effective colony-code groups, is subsequent island-level chick production higher, lower, or unchanged after accounting for the number of breeding pairs and shared year effects?",
   "biological_discrimination": {
@@ -20,7 +20,7 @@
     "dataset_id": "AdeliePenguinAdultandChickCounts",
     "historical_doi_used_by_existing_fetch_contract": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
     "response": "num_chicks only for the primary outcome",
-    "season_mapping": "January chick census calendar year minus 1",
+    "season_mapping": "Use the outcome-blind frozen PAL study identifier rule in PALMER_CHICK_SEASON_KEY_RESOLUTION_V1: parse PALYYZZ as season_start_year=YY; calendar time is observation-date metadata only.",
     "reason_for_denominator_free_primary": "Avoid making the primary reproductive endpoint a ratio that reuses breeding-pair counts."
   },
   "adult_island_season_predictors": {
@@ -66,7 +66,7 @@
     "A concentration coefficient is an association and does not identify nest quality, predation, snow or social facilitation as the cause.",
     "Colony codes are not assumed to be mapped physical subcolonies.",
     "Do not use chicks-per-pair as the primary endpoint.",
-    "Do not change the 0.90 coverage gate, concentration metric, fixed effects or circular-shift test after chick outcomes are joined.",
+    "Do not change the study-derived season key, 0.90 coverage gate, concentration metric, fixed effects or circular-shift test after chick outcomes are joined.",
     "A null result is informative: it would separate real demographic concentration from a consistent reproductive-performance mechanism."
   ]
 }
