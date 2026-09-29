@@ -50,11 +50,11 @@
     }
   },
   "estimator": {
-    "family": "alternating penalized linear-Gaussian state-space / hierarchical loading model",
-    "latent_state": "Annual log1p-scale latent abundance is estimated jointly from observations and process transitions rather than replaced by collapsed point states.",
+    "family": "alternating hierarchical interval-marginal linear-Gaussian state-space estimator",
+    "latent_state": "Same-season observations are collapsed to a log1p-scale estimate plus its observation variance. Adjacent observed-season changes are then modeled with marginal variance duration*tau^2 + v_start + v_end; collapsed states are not treated as error-free.",
     "observation": "Same-season method-corrected observations enter with the estimated observation variance from the frozen accuracy structure.",
-    "process": "x[i,t+1]-x[i,t] = mu_i + lambda_i * F[g,t] + epsilon[i,t], with process variance estimated from process residuals.",
-    "loading_model": "lambda_i is estimated jointly with forcing and is shrunk toward a forcing-group-adjusted trait mean containing A, H and A:H. Site residual loading variance is estimated, not fixed to the simulation truth.",
+    "process": "Delta z_i,k = duration*mu_i + lambda_i * sum_t F_g,t + error, where Var(error)=duration*tau^2 + v_start + v_end.",
+    "loading_model": "lambda_i = 1 + Xc_i gamma + b_i, with Xc containing forcing-group-centered A, H and A:H, exact mean(b)=0 constraints within forcing group, and an estimated Gaussian residual-loading SD.",
     "group_effect_equivalence": "A, H and A:H are centered within forcing group before the loading regression, which is algebraically equivalent to including forcing-group intercepts for the trait slopes.",
     "identification": [
       "mean F[g,t] = 0 over supported transitions within each forcing group",
@@ -62,13 +62,12 @@
     ],
     "coordinate_updates": [
       "calibrate shared observation nuisance on full synthetic metadata",
-      "collapse same-season records to z_hat and known observation variance",
-      "smooth annual latent states by weighted least squares using observation and process penalties",
-      "update shared forcing from smoothed annual increments",
-      "update site mu/lambda with a Gaussian loading-deviation penalty around the trait-predicted loading",
-      "renormalize loadings within forcing group and rescale forcing",
-      "update gamma_A, gamma_H and gamma_AH from group-centered loading structure",
-      "update process variance and residual loading variance from current residuals"
+      "collapse same-season records to z_hat plus observation variance",
+      "given lambda and tau, solve site drift and annual shared forcing jointly by observation-error-aware interval WLS with exact mean-forcing constraints",
+      "given forcing and tau, solve site drift, gamma_A, gamma_H, gamma_AH and residual site loadings jointly in one constrained penalized WLS system",
+      "enforce exact mean residual loading deviation = 0 within each forcing group, so mean lambda = 1 because traits are group-centered",
+      "profile process SD from the observed-interval marginal likelihood Var(delta)=duration*tau^2+v_start+v_end",
+      "update residual loading SD from the jointly estimated site deviations"
     ],
     "iterations": 12,
     "initialization": {
@@ -86,7 +85,8 @@
       "process_sd": 0.005,
       "loading_residual_sd": 0.05,
       "purpose": "numerical regularization only; floors are well below the frozen synthetic truths"
-    }
+    },
+    "revision_note": "An earlier implementation under this same pre-outcome V2 design smoothed annual latent states directly. Dense TDD recovered the crossover but strongly shrank the simple A effect toward zero because early low process-variance estimates locked states toward the initial gamma=0 model. That implementation never reached the full frozen recovery gate. The formal V2 estimator therefore uses the marginal interval likelihood above; simulation truths and recovery thresholds are unchanged."
   },
   "recovery_gate": {
     "inheritance": "exactly the Gate 2E-C v1 thresholds; no relaxation after failure",
