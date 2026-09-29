@@ -1,0 +1,101 @@
+name: paper2-terrain-real-v1
+
+concurrency:
+  group: paper2-terrain-real-v1-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [analysis/paper2-terrain-real-v1]
+    paths:
+      - "contracts/PAPER2_TERRAIN_LIFE_HISTORY_V1.json"
+      - "contracts/PAPER2_TERRAIN_MAIN_RECOVERY_V1.json"
+      - "scripts/paper2_terrain_model.py"
+      - "scripts/run_paper2_terrain_real.py"
+      - "tests/test_paper2_terrain_real.py"
+      - ".github/workflows/paper2-terrain-real-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install numpy pandas pyreadr pytest
+      - run: pytest -q tests/test_paper2_terrain_real.py
+
+  permute:
+    needs: test
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9]
+    permissions: {actions: read, contents: read}
+    env: {GH_TOKEN: "${{ github.token }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install numpy pandas pyreadr
+      - name: Fetch pinned mapppdr and frozen inputs
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          mkdir -p build/forcing build/options build/terrain build/rmain
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+          gh run download 36490682577 -n antarctic-penguin-terrain-atlas-v1 -D build/terrain
+      - name: Run frozen terrain permutation shard
+        run: |
+          python -m scripts.run_paper2_terrain_real \
+            --mode shard --B 9999 --seed 20260946 \
+            --n-shards 10 --shard ${{ matrix.shard }} \
+            --forcing-json build/forcing/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --breeding-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --terrain-csv build/terrain/ANTARCTIC_PENGUIN_TERRAIN_ATLAS_V1.csv \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/rmain/shard_${{ matrix.shard }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-terrain-real-shard-${{ matrix.shard }}
+          path: build/rmain/shard_${{ matrix.shard }}.json
+
+  aggregate:
+    needs: permute
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install numpy pandas pyreadr
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: paper2-terrain-real-shard-*
+          path: build/shards
+          merge-multiple: true
+      - name: Aggregate frozen terrain inference
+        run: |
+          python -m scripts.run_paper2_terrain_real \
+            --mode aggregate --B 9999 --seed 20260946 \
+            --shard-glob 'build/shards/shard_*.json' \
+            --out-json build/PAPER2_TERRAIN_REAL_RESULT_V1.json
+      - name: Verify frozen result schema
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("build/PAPER2_TERRAIN_REAL_RESULT_V1.json"))
+          assert r["B"] == 9999
+          assert set(r["species"]) == {"ADPE","CHPE","GEPE"}
+          assert r["interpretation_boundary"]["R_main_prespecified_before_primary_counts_opened"] is True
+          print("gamma_R=",{s:r["species"][s]["gamma_R"] for s in r["species"]})
+          print("order=",r["life_history_order"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-terrain-real-v1
+          path: build/PAPER2_TERRAIN_REAL_RESULT_V1.json
