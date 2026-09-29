@@ -29,8 +29,7 @@ def _finite(value: str | None) -> bool:
 def load_rows(path: str | Path) -> list[dict[str, object]]:
     with Path(path).open("r", encoding="utf-8-sig", newline="") as handle:
         raw = list(csv.DictReader(handle))
-    out: list[dict[str, object]] = []
-    seen: set[tuple[str, str, int]] = set()
+    candidates: dict[tuple[str, str, int], list[dict[str, object]]] = defaultdict(list)
     for row in raw:
         island = str(row.get("island_name", "")).strip()
         if island not in ISLANDS:
@@ -51,10 +50,7 @@ def load_rows(path: str | Path) -> list[dict[str, object]]:
         season = census_year - 1
         code = str(row.get("colony_code", "")).strip()
         key = (island, code, season)
-        if key in seen:
-            raise ValueError(f"duplicate usable chick row: {key!r}")
-        seen.add(key)
-        out.append(
+        candidates[key].append(
             {
                 "study_name": str(row.get("study_name", "")).strip(),
                 "time": time,
@@ -67,6 +63,20 @@ def load_rows(path: str | Path) -> list[dict[str, object]]:
                 "census_time": str(row.get("census_time", "")).strip(),
             }
         )
+
+    out: list[dict[str, object]] = []
+    for key, local in sorted(candidates.items()):
+        chosen = sorted(
+            local,
+            key=lambda r: (
+                -float(r["chicks"]),
+                -float(r["pairs"]),
+                str(r["census_time"]),
+            ),
+        )[0]
+        chosen = dict(chosen)
+        chosen["source_duplicate_count"] = len(local)
+        out.append(chosen)
     if not out:
         raise ValueError("no usable chick-production rows")
     return out
@@ -77,11 +87,14 @@ def build_groups(
     *,
     islands: tuple[str, ...] = ISLANDS,
     min_pairs: float = 1.0,
+    exclude_duplicate_keys: bool = False,
 ) -> list[dict[str, object]]:
     allowed = set(islands)
     grouped: dict[tuple[str, int], list[dict[str, object]]] = defaultdict(list)
     for row in rows:
         if str(row["island"]) not in allowed:
+            continue
+        if exclude_duplicate_keys and int(row.get("source_duplicate_count", 1)) > 1:
             continue
         if float(row["pairs"]) < min_pairs:
             continue
@@ -350,6 +363,11 @@ def analyze(
         local = [g for g in groups if str(g["island"]) != island]
         loo[island] = combine_test(local, contributions)
 
+    no_duplicate_groups = build_groups(rows, exclude_duplicate_keys=True)
+    no_duplicate, _ = multinomial_test(
+        no_duplicate_groups, n_draws=n_draws, seed=seed + 19
+    )
+
     threshold2_groups = build_groups(rows, min_pairs=2.0)
     threshold2, _ = multinomial_test(
         threshold2_groups, n_draws=n_draws, seed=seed + 20
@@ -391,6 +409,12 @@ def analyze(
             "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
             "sha256": hashlib.sha256(source_bytes).hexdigest(),
             "usable_rows": len(rows),
+            "duplicate_key_count": int(sum(int(r.get("source_duplicate_count", 1)) > 1 for r in rows)),
+            "duplicate_keys": [
+                f"{r['island']}:{r['colony_code']}:{r['season']}"
+                for r in rows
+                if int(r.get("source_duplicate_count", 1)) > 1
+            ],
         },
         "analysis_frame": _group_summary(groups),
         "primary_equal_per_pair_null": primary,
@@ -398,6 +422,7 @@ def analyze(
         "sensitivities": {
             "exclude_litchfield": loo["LIT"],
             "leave_one_island_out": loo,
+            "exclude_duplicate_keys": no_duplicate,
             "pairs_at_least_2": threshold2,
             "pairs_at_least_5": threshold5,
             "dirichlet_multinomial_A100": dm10,
