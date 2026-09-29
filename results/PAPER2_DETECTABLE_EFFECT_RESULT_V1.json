@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-retrospective-detectable-effect-result-v1",
+  "validated_date": "2026-09-29",
+  "execution": {
+    "workflow_run_id": 36578040292,
+    "reference": {
+      "artifact_id": 11037104418,
+      "digest": "sha256:7d2071b24f0b7faf6983f8900173584a94e52fb57bf4f2777b56e7e5e7ae042c"
+    },
+    "effect_artifacts": {
+      "paper2-detectable-effect--0.6": {
+        "artifact_id": 11039656032,
+        "digest": "sha256:ca3cee8e5737f9734f974804ee176e91ada3105d7a9d1f57334b66465492c839"
+      },
+      "paper2-detectable-effect--0.35": {
+        "artifact_id": 11039561250,
+        "digest": "sha256:f202d3322d6d29a5938ef0b0e9301770215ed6997aeeca3ef8483d3a1cf27d84"
+      },
+      "paper2-detectable-effect--0.45": {
+        "artifact_id": 11039282614,
+        "digest": "sha256:7fd7fa2a1b568a7a5d39a85576427d9726eaef7204722429c25e7a5eff7c2135"
+      },
+      "paper2-detectable-effect--0.5": {
+        "artifact_id": 11039162788,
+        "digest": "sha256:96e8f0e5f7a9f8f3abe9fa7937e7c146e09e5b4d3e47f6ee47700f97d8ee0789"
+      },
+      "paper2-detectable-effect--0.25": {
+        "artifact_id": 11039153192,
+        "digest": "sha256:03a8774ce6b0317ffacd8a9532aacc2576b41c4a6221b4dd8b1dd8f3cf2732f7"
+      },
+      "paper2-detectable-effect--0.3": {
+        "artifact_id": 11039130358,
+        "digest": "sha256:71eb40e35032b638c0361a2d7b8e6aa8a995dc88d96ab28e617af72769c2f003"
+      },
+      "paper2-detectable-effect--0.2": {
+        "artifact_id": 11039001560,
+        "digest": "sha256:ecfb5c1e1648f0631a7837c9591c5a9ff2df9cfee9705480daa9a57c075d0301"
+      },
+      "paper2-detectable-effect--0.55": {
+        "artifact_id": 11038562023,
+        "digest": "sha256:e056bad42a5a88def22a766d274637ca43ccc5b4cc03c4126db24585cfe0f908"
+      },
+      "paper2-detectable-effect--0.4": {
+        "artifact_id": 11038496661,
+        "digest": "sha256:1fa93d7a2a47615b8782e58b32ddcba57e18c33cc6f1953a03c446169425aa43"
+      }
+    },
+    "aggregation_note": "All nine frozen effect-grid artifacts and the frozen 9999-permutation reference were successful. The result was independently aggregated with the contract-specified monotone/isotonic rule; raw detection fractions were already monotone, so isotonic values equal raw values."
+  },
+  "frozen_permutation_reference": {
+    "B": 9999,
+    "q05": -0.4235460652554809,
+    "rank_499_value": -0.4243927584827548,
+    "rank_500_value": -0.42410972823974696
+  },
+  "effects": [
+    {
+      "abs_gamma_ah": 0.2,
+      "detection_fraction": 0,
+      "detections": 0,
+      "replicates": 300,
+      "wilson95": [
+        0,
+        0.012642971224546034
+      ]
+    },
+    {
+      "abs_gamma_ah": 0.25,
+      "detection_fraction": 0.03666666666666667,
+      "detections": 11,
+      "replicates": 300,
+      "wilson95": [
+        0.02059530516285303,
+        0.06445384817189295
+      ]
+    },
+    {
+      "abs_gamma_ah": 0.3,
+      "detection_fraction": 0.04666666666666667,
+      "detections": 14,
+      "replicates": 300,
+      "wilson95": [
+        0.027998933682334012,
+        0.07679736022792105
+      ]
+    },
+    {
+      "abs_gamma_ah": 0.35,
+      "detection_fraction": 0.11666666666666667,
+      "detections": 35,
+      "replicates": 300,
+      "wilson95": [
+        0.08509313461466292,
+        0.15793314332415567
+      ]
+    },
+    {
+      "abs_gamma_ah": 0.4,
+      "detection_fraction": 0.38,
+      "detections": 114,
+      "replicates": 300,
+      "wilson95": [
+        0.3269187519503734,
+        0.4361155611435176
+      ]
+    },
+    {
+      "abs_gamma_ah": 0.45,
+      "detection_fraction": 0.5966666666666667,
+      "detections": 179,
+      "replicates": 300,
+      "wilson95": [
+        0.540271195643406,
+        0.6506178299198485
+      ]
+    },
+    {
+      "abs_gamma_ah": 0.5,
+      "detection_fraction": 0.81,
+      "detections": 243,
+      "replicates": 300,
+      "wilson95": [
+        0.7617962081751881,
+        0.8503651496655933
+      ]
+    },
+    {
+      "abs_gamma_ah": 0.55,
+      "detection_fraction": 0.9266666666666666,
+      "detections": 278,
+      "replicates": 300,
+      "wilson95": [
+        0.8914686583942826,
+        0.9510760061607713
+      ]
+    },
+    {
+      "abs_gamma_ah": 0.6,
+      "detection_fraction": 0.9666666666666667,
+      "detections": 290,
+      "replicates": 300,
+      "wilson95": [
+        0.9397381741959452,
+        0.9817950526611452
+      ]
+    }
+  ],
+  "thresholds": {
+    "MDE80_abs_gamma_ah": 0.49765625,
+    "MDE90_abs_gamma_ah": 0.5385714285714286
+  },
+  "observed_reference": {
+    "observed_cross_species_median_gamma_ah": -0.31822603579776854,
+    "observed_permutation_p": 0.0947,
+    "observed_abs_over_MDE80": 0.6394494910849979,
+    "observed_abs_over_MDE90": 0.5908706234971829
+  },
+  "decision": {
+    "moderate_observed_size_effect_well_powered": false,
+    "very_large_common_effect_well_detected": true,
+    "primary_inference_replaced": false,
+    "result_class": "sensitive_to_large_common_effects_but_low_sensitivity_at_observed_scale"
+  },
+  "interpretation": [
+    "The frozen design had little probability of rejecting the primary null for a common interaction around |gamma_AH|=0.30-0.35, close to the observed paper-level magnitude.",
+    "Detection exceeded 80% at about |gamma_AH|=0.498 and 90% at about 0.539.",
+    "The non-confirmatory primary result therefore does not establish absence of a moderate common interaction; it does argue against interpreting a missed very large common interaction as the sole explanation.",
+    "These thresholds are retrospective operating characteristics, not an equivalence bound or confidence interval."
+  ]
+}
