@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-extinction-zero-boundary-audit-v1",
+  "date": "2026-09-30",
+  "status": "post_primary_hazard_pre_null_execution",
+  "parent_contract": "mina-palmer-colony-extinction-hazard-v1",
+  "motivation": "The primary matched-risk-set test showed that durable extinctions occur in smaller colony codes. This audit asks whether that ordering is more size-selective than expected from the trivial fact that small counts have a higher probability of reaching zero under proportional stochastic thinning.",
+  "scope": "Mechanism falsification audit; not an independent confirmatory test because the primary extinction result is already known.",
+  "risk_sets": "Use the exact event-bearing island-year risk sets and durable-extinction labels from PALMER_COLONY_EXTINCTION_HAZARD_V1, excluding risk sets with fewer than two at-risk colonies or no survivor comparator.",
+  "common_rate": {
+    "definition": "For each risk set, r_t = sum(next-year counts over the same prior-positive at-risk colony codes) / sum(prior counts over those codes).",
+    "role": "Conditions on the shared island-year demographic change experienced by the risk set."
+  },
+  "zero_models": [
+    {
+      "name": "poisson_proportional_thinning",
+      "mean": "mu_j = r_t * n_j",
+      "zero_probability": "q_j = exp(-mu_j)"
+    },
+    {
+      "name": "gamma_poisson_cv10",
+      "multiplicative_cv": 0.10,
+      "zero_probability": "q_j = (shape / (shape + mu_j))^shape, shape = 1/CV^2"
+    },
+    {
+      "name": "gamma_poisson_cv20",
+      "multiplicative_cv": 0.20,
+      "zero_probability": "q_j = (shape / (shape + mu_j))^shape, shape = 1/CV^2"
+    }
+  ],
+  "conditional_event_identity_null": {
+    "conditioning": "Within each risk set preserve the observed number k of durable extinctions.",
+    "subset_probability": "Under independent Bernoulli zero probabilities q_j, conditional on exactly k events, a candidate event subset S has probability proportional to product_{j in S} q_j/(1-q_j).",
+    "implementation": "Enumerate all k-subsets exactly within each risk set, normalize their weights, then Monte Carlo sample one subset per risk set.",
+    "simulations": 100000,
+    "seed": 20260930
+  },
+  "statistic": "The same equal-risk-set-weighted event-minus-survivor standardized log1p prior-size contrast as the primary hazard contract.",
+  "tail": "one-sided probability that the zero-boundary null statistic is <= the observed statistic, with +1 Monte Carlo correction.",
+  "decision": {
+    "exceeds_zero_boundary": "Observed contrast < 0 and p <= 0.05 under all three zero models.",
+    "size_selection_only": "Primary exchangeability test is supported but one or more zero-boundary models have p > 0.05.",
+    "interpretation": "Only exceeds_zero_boundary permits saying size-selective disappearance is stronger than expected from proportional stochastic zero-hitting alone."
+  },
+  "boundaries": [
+    "Even if the audit is passed, do not identify skua predation or social facilitation as the unique cause.",
+    "If the audit fails, retain the descriptive result that durable extinctions occur from small colony codes, but do not present the size effect itself as evidence for an Allee/social mechanism.",
+    "Do not tune the common-rate definition, CV values, tail, or event conditioning after null results are opened."
+  ]
+}
