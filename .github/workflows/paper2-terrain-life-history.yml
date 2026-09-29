@@ -16,8 +16,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: python -m pip install numpy pandas pyreadr
-      - run: python -m unittest tests.test_paper2_terrain_life_history -v
+      - run: python -m pip install numpy pandas pyreadr pytest
+      - run: pytest -q tests/test_paper2_terrain_life_history.py
 
   recovery:
     needs: test
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: python -m pip install numpy pandas pyreadr
+      - run: python -m pip install numpy pandas pyreadr pytest
       - name: Fetch frozen inputs
         run: |
           git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
@@ -76,7 +76,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: python -m pip install numpy pandas pyreadr
+      - run: python -m pip install numpy pandas pyreadr pytest
       - name: Fetch frozen inputs
         run: |
           git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
@@ -113,7 +113,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: python -m pip install numpy pandas pyreadr
+      - run: python -m pip install numpy pandas pyreadr pytest
       - uses: actions/download-artifact@v4
         with:
           pattern: paper2-terrain-shard-*
