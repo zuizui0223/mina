@@ -1,10 +1,22 @@
 from __future__ import annotations
 
 import csv
-import json
+import importlib.util
 from pathlib import Path
+import sys
 
-from scripts.build_palmer_phenotype_paper_v0_1 import build, manuscript_text, _read_result
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / "scripts" / "build_palmer_phenotype_paper_v0_1.py"
+SPEC = importlib.util.spec_from_file_location("palmer_phenotype_paper_builder", SCRIPT)
+MODULE = importlib.util.module_from_spec(SPEC)
+assert SPEC.loader is not None
+sys.modules[SPEC.name] = MODULE
+SPEC.loader.exec_module(MODULE)
+
+build = MODULE.build
+manuscript_text = MODULE.manuscript_text
+_read_result = MODULE._read_result
 
 
 def test_manuscript_uses_frozen_ecological_result_without_method_reframing():
@@ -17,7 +29,7 @@ def test_manuscript_uses_frozen_ecological_result_without_method_reframing():
     assert "0.448" in text
     assert "0.342" in text
     assert "species-sorting and temporal-reassembly interpretation" in text
-    assert "methods novelty" not in text.lower()
+    assert "No methods novelty is claimed." in text
     assert "ODSP framework" not in text
 
 
