@@ -52,6 +52,36 @@ Program documents:
 
 ---
 
+## Independent Palmer phenotype reassembly lane
+
+A separate short-paper lane now asks where the conspicuous Palmer
+breeding-site phenotype comes from.
+
+The frozen ecological result is hierarchical:
+
+- across the full assemblage, morphology-to-site predictability is dominated by
+  species identity;
+- within Adélie penguins, fixed island morphology effects are small;
+- structural island contrasts repeatedly reverse among years;
+- same-year island classification is modestly above chance
+  (**balanced accuracy 0.448**), while leave-one-year-out transfer falls almost
+  to the three-island chance reference (**0.342** vs **0.333**).
+
+The biological interpretation is therefore **species sorting plus temporal
+reassembly**, not a persistent within-species island ecotype.
+
+This lane is independent of frozen Paper 1 and the Antarctic-wide Paper 2
+programme. It does not reopen either paper and does not make an ODSP methods
+claim.
+
+Canonical files:
+
+- `contracts/PALMER_PHENOTYPE_REASSEMBLY_PAPER_V1.json`
+- `results/PALMER_PHENOTYPE_REASSEMBLY_RESULT_V1.json`
+- `docs/PALMER_PHENOTYPE_REASSEMBLY_MANUSCRIPT_SPINE_V1.md`
+
+---
+
 ## Current ecological claim
 
 Five neighboring Adélie penguin island populations share an exceptionally
