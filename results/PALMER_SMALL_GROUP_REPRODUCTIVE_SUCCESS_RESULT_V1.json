@@ -150,5 +150,9 @@
     "Do not treat colony_code as a mapped physical patch.",
     "Report failure under the strongest A=25 Dirichlet-multinomial overdispersion sensitivity.",
     "The legacy ERDDAP snapshot is the frozen primary source; updated LTER package versions should be treated as version-replication rather than silently replacing it."
-  ]
+  ],
+  "status": "SUPERSEDED_DO_NOT_USE_FOR_ECOLOGICAL_INFERENCE",
+  "superseded_reason": "Post-result semantics audit found that the legacy chick table's num_breeding_pairs field is not sufficiently reliable as the colony-season reproductive denominator: many rows imply >2 chicks per reported pair and some calendar dates conflict with study_name season identifiers. The primary biological endpoint must instead pair chick counts with the independent November breeding-pair census by study_name × island × colony_code.",
+  "superseded_by": "PALMER_SMALL_GROUP_REPRODUCTIVE_SUCCESS_V2",
+  "audit_value": "Retained as a transparent failed analysis path; its strong association must not be cited as evidence for small-group reproductive disadvantage."
 }
