@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-breeding-season-audit-result-v1",
+  "validated_date": "2026-09-29",
+  "source": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "frozen_gate0_units": 152,
+    "candidate_nest_records": 2871
+  },
+  "execution": {
+    "workflow_run_id": 36507782439,
+    "artifact_id": 11008210397,
+    "artifact_digest": "sha256:eb2024f8cb0f6fda075350a9b2a5cc95b0f6bfe9dabd745fd5693aa9be339e85",
+    "head_sha": "4b5bb07d980ad7eeb78cea6de02de6c0ba6a1683",
+    "conclusion": "success"
+  },
+  "time_axis_audit": {
+    "season_nonmissing_records": 2871,
+    "season_nonmissing_fraction": 1,
+    "year_season_mismatch_records": 631,
+    "year_season_mismatch_fraction": 0.21978404737025425,
+    "mismatch_month_counts": {
+      "1": 578,
+      "2": 50,
+      "3": 3
+    },
+    "species_mismatch_fraction": {
+      "ADPE": 0.10511363636363637,
+      "CHPE": 0.22131147540983606,
+      "GEPE": 0.33056325023084027
+    }
+  },
+  "decision": {
+    "primary_time_field": "season",
+    "reason": "season coverage is 100%, exceeding the frozen 95% threshold; 22.0% of records differ from calendar year, concentrated in austral-summer months",
+    "primary_window": [
+      1980,
+      2025
+    ],
+    "no_count_magnitudes_opened": true
+  },
+  "primary_season_window": {
+    "bridged_units": 107,
+    "bridged_fraction_of_gate0": 0.7039473684210527,
+    "species": {
+      "ADPE": {
+        "gate0": 57,
+        "bridged": 44,
+        "fraction": 0.7719298245614035
+      },
+      "CHPE": {
+        "gate0": 46,
+        "bridged": 34,
+        "fraction": 0.7391304347826086
+      },
+      "GEPE": {
+        "gate0": 49,
+        "bridged": 29,
+        "fraction": 0.5918367346938775
+      }
+    }
+  },
+  "primary_predictor_complete_case": {
+    "missing_breeding_option_units": [
+      {
+        "site_id": "FRAE",
+        "species_id": "ADPE"
+      },
+      {
+        "site_id": "FRAW",
+        "species_id": "ADPE"
+      },
+      {
+        "site_id": "WPEC",
+        "species_id": "ADPE"
+      }
+    ],
+    "complete_units": 104,
+    "species_complete_units": {
+      "ADPE": 41,
+      "CHPE": 34,
+      "GEPE": 29
+    }
+  },
+  "comparison_to_calendar_year": {
+    "calendar_year_bridged_units": 108,
+    "breeding_season_bridged_units": 107,
+    "only_species_count_change": "CHPE 35 -> 34",
+    "selected_window_unchanged": true
+  },
+  "boundary": [
+    "The frozen 152-unit Gate0 cohort is unchanged.",
+    "Only the annual time label changed from calendar year to APBP breeding season.",
+    "The 1980-2025 window remains fixed.",
+    "Count magnitudes, trends and site-trait effects were not inspected."
+  ]
+}
