@@ -54,7 +54,7 @@ class CouplingFrameTests(unittest.TestCase):
         for sp in ("ADPE","CHPE"):
             for i in range(6):
                 uid=f"{sp}|S{sp[-1]}{i}"
-                site=f"S{sp[-1]}{i}"
+                site=f"{sp}_S{i}"
                 rows.append({"unit_id":uid,"site_id":site,"species_id":sp,"region":"R1" if i<3 else "R2","ccamlr_id":"48.1" if i<3 else "88.1","seasons":"1980;1985;1990;1995;2000"})
                 h.append({"site_id":site,"mapped_ice_free_pixel_count_2000m":10+i,"mapped_ice_free_area_ha_2000m":10.0*(i+1),"tier2_richness_2000m":1+i})
                 t.append({"site_id":site,"elevation_relief_p90_p10_m_2000m":5.0*(i+1)})
