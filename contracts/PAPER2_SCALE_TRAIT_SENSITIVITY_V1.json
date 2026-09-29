@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-scale-trait-sensitivity-v1",
+  "date": "2026-09-29",
+  "status": "prespecified_descriptive_sensitivity_after_primary_inference",
+  "pre_outcome_basis": "contracts/PAPER2_OUTCOME_BLIND_PREDICTOR_SET_V1.json sensitivity_only",
+  "variants": {
+    "radius_1000m": {
+      "A": "z(log1p(mapped_ice_free_area_ha_1000m))",
+      "H": "z(tier2_richness_1000m)"
+    },
+    "radius_5000m": {
+      "A": "z(log1p(mapped_ice_free_area_ha_5000m))",
+      "H": "z(tier2_richness_5000m)"
+    },
+    "shannon_2000m": {
+      "A": "z(log1p(mapped_ice_free_area_ha_2000m))",
+      "H": "z(tier2_shannon_2000m)"
+    }
+  },
+  "fixed_elements": [
+    "species-wide forcing for ADPE/CHPE/GEPE",
+    "V3 spatial adjustment blocks",
+    "same 41/34/29 predictor-complete species units",
+    "same full 2100-record observation calibration",
+    "same A+H+A:H V3 estimator"
+  ],
+  "reporting": [
+    "species gamma_A, gamma_H, gamma_AH",
+    "low-area and high-area H slopes",
+    "crossover classification",
+    "cross-species median gamma_AH and count of negative species"
+  ],
+  "inference": "descriptive sensitivity only; no new permutation p-values and no replacement of the primary 2 km richness inference",
+  "guardrails": [
+    "Do not select the variant with the strongest effect.",
+    "Do not promote Shannon or 1/5 km to primary.",
+    "The primary result remains the 2 km richness result with frozen p=0.0947."
+  ]
+}
