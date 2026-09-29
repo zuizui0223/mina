@@ -1,0 +1,29 @@
+name: paper2-coupling-diagnostic
+
+on:
+  push:
+    branches: [analysis/paper2-coupling-diagnostic-v1]
+    paths:
+      - "scripts/run_paper2_coupling_diagnostic.py"
+      - "tests/test_paper2_coupling_diagnostic.py"
+      - "contracts/PAPER2_COUPLING_DIAGNOSTIC_V1.json"
+      - ".github/workflows/paper2-coupling-diagnostic.yml"
+  pull_request:
+    paths:
+      - "scripts/run_paper2_coupling_diagnostic.py"
+      - "tests/test_paper2_coupling_diagnostic.py"
+      - "contracts/PAPER2_COUPLING_DIAGNOSTIC_V1.json"
+      - ".github/workflows/paper2-coupling-diagnostic.yml"
+  workflow_dispatch:
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas scipy statsmodels pyreadr
+      - name: Run diagnostic unit tests
+        run: python -m unittest tests.test_paper2_coupling_diagnostic -v
