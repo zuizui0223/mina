@@ -1,6 +1,12 @@
 import unittest
 
-import pandas as pd
+try:
+    import pandas as pd
+    import pyreadr  # noqa: F401
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest(
+        "Paper 2 forcing-support tests require pandas and pyreadr"
+    ) from exc
 
 from scripts.audit_paper2_forcing_support import (
     evaluate_group,
