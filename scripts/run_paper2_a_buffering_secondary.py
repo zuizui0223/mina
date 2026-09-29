@@ -141,8 +141,20 @@ def aggregate(paths,*,B,seed):
             raise ValueError(f"shard contract drift {path}")
         if observed is None:
             observed=x["observed"]
-        elif x["observed"]!=observed:
-            raise ValueError("observed point estimates differ across shards")
+        else:
+            # Independent shard jobs may differ at machine-roundoff scale because
+            # the observed V3 fit is recomputed under threaded BLAS. Validate the
+            # scientifically relevant coefficients numerically rather than by
+            # exact JSON float equality.
+            for sp in SPECIES:
+                for mode,key in (("A_only","gamma_A"),("H_only","gamma_H")):
+                    ref=float(observed[sp][mode][key])
+                    cur=float(x["observed"][sp][mode][key])
+                    if not np.isclose(ref,cur,rtol=1e-10,atol=1e-10):
+                        raise ValueError(
+                            f"observed point estimate drift {sp} {mode} {key}: "
+                            f"{cur} != {ref}"
+                        )
         rows.extend(x["permutations"])
         shards.append({"shard":int(x["shard"]),"start":int(x["start"]),"stop":int(x["stop"])})
     indices=sorted(int(r["index"]) for r in rows)
