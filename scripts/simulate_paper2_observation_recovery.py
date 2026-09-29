@@ -279,6 +279,148 @@ def fit_observation_calibration(frame:pd.DataFrame)->dict:
     }
 
 
+
+def prepare_observation_recovery_design(metadata:pd.DataFrame)->dict:
+    """Precompute contrast weights and within-group variance indices."""
+    _require_columns(
+        metadata,
+        {"group_id","species_id","vantage_family","accuracy_group"},
+    )
+    local=metadata.reset_index(drop=True).copy()
+    n=len(local)
+    family=local["vantage_family"].astype(str).to_numpy()
+    species=local["species_id"].astype(str).to_numpy()
+    group_id=local["group_id"].astype(str).to_numpy()
+    accuracy=local["accuracy_group"].astype(str).to_numpy()
+    known=np.isin(family,["direct","image_based"])
+    is_image=(family=="image_based").astype(float)
+
+    group_labels=sorted(set(group_id.tolist()))
+    group_to_idx={g:i for i,g in enumerate(group_labels)}
+    group_code=np.asarray([group_to_idx[g] for g in group_id],dtype=int)
+
+    mixed_groups=[]
+    method_weight=np.zeros(n,dtype=float)
+    species_weights={}
+    species_mixed_counts={}
+    for g in group_labels:
+        idx=np.flatnonzero(group_id==g)
+        d=idx[family[idx]=="direct"]
+        im=idx[family[idx]=="image_based"]
+        if len(d)==0 or len(im)==0:
+            continue
+        mixed_groups.append(g)
+        sp=str(species[idx[0]])
+        species_mixed_counts[sp]=species_mixed_counts.get(sp,0)+1
+
+    n_mixed=len(mixed_groups)
+    if n_mixed==0:
+        raise ValueError("no mixed direct-image groups")
+    for g in mixed_groups:
+        idx=np.flatnonzero(group_id==g)
+        d=idx[family[idx]=="direct"]
+        im=idx[family[idx]=="image_based"]
+        method_weight[d]-=1.0/(n_mixed*len(d))
+        method_weight[im]+=1.0/(n_mixed*len(im))
+
+    for sp in sorted(set(species.tolist())):
+        sp_groups=[]
+        for g in mixed_groups:
+            idx=np.flatnonzero(group_id==g)
+            if str(species[idx[0]])==sp:
+                sp_groups.append(g)
+        if not sp_groups:
+            continue
+        weight=np.zeros(n,dtype=float)
+        for g in sp_groups:
+            idx=np.flatnonzero(group_id==g)
+            d=idx[family[idx]=="direct"]
+            im=idx[family[idx]=="image_based"]
+            weight[d]-=1.0/(len(sp_groups)*len(d))
+            weight[im]+=1.0/(len(sp_groups)*len(im))
+        species_weights[sp]=weight
+
+    accuracy_design={}
+    for ag in ("1","2-5"):
+        idx=np.flatnonzero(known & (accuracy==ag))
+        labels=group_id[idx]
+        unique=sorted(set(labels.tolist()))
+        label_to_code={g:i for i,g in enumerate(unique)}
+        codes=np.asarray([label_to_code[g] for g in labels],dtype=int)
+        counts=np.bincount(codes,minlength=len(unique)).astype(int)
+        accuracy_design[ag]={
+            "idx":idx,
+            "codes":codes,
+            "counts":counts,
+            "repeat_groups":int(np.sum(counts>=2)),
+            "residual_df":int(np.sum(np.maximum(counts-1,0))),
+        }
+
+    return {
+        "n_records":int(n),
+        "group_code":group_code,
+        "n_groups":int(len(group_labels)),
+        "known":known,
+        "is_image":is_image,
+        "accuracy":accuracy,
+        "method_weight":method_weight,
+        "mixed_groups":int(n_mixed),
+        "species_weights":species_weights,
+        "species_mixed_counts":{
+            sp:int(v) for sp,v in sorted(species_mixed_counts.items())
+        },
+        "accuracy_design":accuracy_design,
+    }
+
+
+def fit_observation_calibration_fast(
+    log_observed:np.ndarray,
+    design:dict,
+)->dict:
+    """Numerically equivalent calibration using precomputed numpy indices."""
+    y=np.asarray(log_observed,dtype=float)
+    if y.shape!=(design["n_records"],):
+        raise ValueError("log-observation vector length mismatch")
+
+    delta=float(design["method_weight"]@y)
+    corrected=y-delta*design["is_image"]
+    accuracy_out={}
+    for ag in ("1","2-5"):
+        meta=design["accuracy_design"][ag]
+        idx=meta["idx"]
+        codes=meta["codes"]
+        counts=meta["counts"]
+        df=int(meta["residual_df"])
+        if df<=0:
+            raise ValueError(f"no repeated groups for accuracy {ag}")
+        values=corrected[idx]
+        sums=np.bincount(codes,weights=values,minlength=len(counts))
+        sumsq=np.bincount(codes,weights=values*values,minlength=len(counts))
+        sse=float(np.sum(sumsq-(sums*sums)/counts))
+        # Guard tiny negative roundoff only.
+        if sse<0 and abs(sse)<1e-10:
+            sse=0.0
+        if sse<0:
+            raise ValueError(f"negative pooled SSE for accuracy {ag}: {sse}")
+        accuracy_out[ag]={
+            "sigma":float(np.sqrt(sse/df)),
+            "repeat_groups":int(meta["repeat_groups"]),
+            "residual_df":df,
+        }
+
+    by_species={}
+    for sp,weight in design["species_weights"].items():
+        by_species[sp]={
+            "mixed_groups":int(design["species_mixed_counts"][sp]),
+            "delta_image":float(weight@y),
+        }
+    return {
+        "delta_image":delta,
+        "mixed_groups":int(design["mixed_groups"]),
+        "by_species":by_species,
+        "accuracy":accuracy_out,
+    }
+
 def _q(values:list[float],q:float)->float:
     arr=np.asarray(values,dtype=float)
     if arr.size==0:
@@ -296,6 +438,8 @@ def evaluate_observation_recovery(
     if replicates<2:
         raise ValueError("replicates must be >=2")
 
+    design=prepare_observation_recovery_design(metadata)
+
     offset_hats=[]
     null_hats=[]
     sigma1_hats=[]
@@ -311,7 +455,10 @@ def evaluate_observation_recovery(
             sigma2plus=SIGMA_2PLUS_TRUTH,
             seed=seed_offset+rep,
         )
-        fit=fit_observation_calibration(sim)
+        fit=fit_observation_calibration_fast(
+            sim["log_observed"].to_numpy(dtype=float),
+            design,
+        )
         offset_hats.append(float(fit["delta_image"]))
         sigma1_hats.append(float(fit["accuracy"]["1"]["sigma"]))
         sigma2_hats.append(float(fit["accuracy"]["2-5"]["sigma"]))
@@ -325,7 +472,10 @@ def evaluate_observation_recovery(
             sigma2plus=SIGMA_2PLUS_TRUTH,
             seed=seed_offset+100000+rep,
         )
-        null_fit=fit_observation_calibration(null_sim)
+        null_fit=fit_observation_calibration_fast(
+            null_sim["log_observed"].to_numpy(dtype=float),
+            design,
+        )
         null_hats.append(float(null_fit["delta_image"]))
 
         vals=[
@@ -342,14 +492,16 @@ def evaluate_observation_recovery(
     med_sigma2=_q(sigma2_hats,0.5)
     med_null=_q(null_hats,0.5)
 
-    first_fit=fit_observation_calibration(
-        simulate_observation_records(
-            metadata,
-            delta_image=DELTA_IMAGE_TRUTH,
-            sigma1=SIGMA_1_TRUTH,
-            sigma2plus=SIGMA_2PLUS_TRUTH,
-            seed=seed_offset+999999,
-        )
+    first_sim=simulate_observation_records(
+        metadata,
+        delta_image=DELTA_IMAGE_TRUTH,
+        sigma1=SIGMA_1_TRUTH,
+        sigma2plus=SIGMA_2PLUS_TRUTH,
+        seed=seed_offset+999999,
+    )
+    first_fit=fit_observation_calibration_fast(
+        first_sim["log_observed"].to_numpy(dtype=float),
+        design,
     )
 
     summary={
