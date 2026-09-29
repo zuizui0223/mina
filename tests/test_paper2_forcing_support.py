@@ -5,6 +5,7 @@ import pandas as pd
 from scripts.audit_paper2_forcing_support import (
     evaluate_group,
     select_level,
+    select_modeling_level,
     build_frozen_unit_rows,
     summarize_forcing_support,
     validate_frozen_cohort,
@@ -207,6 +208,71 @@ class CohortAndAuditTests(unittest.TestCase):
         first = summarize_forcing_support(rows, 1980, 2025)
         second = summarize_forcing_support(list(reversed(rows)), 1980, 2025)
         self.assertEqual(first, second)
+
+
+class ModelingLevelSelectionTests(unittest.TestCase):
+    def test_allows_fine_scale_when_two_groups_cover_at_least_95_percent(self):
+        units = {f"u{i}" for i in range(34)}
+        levels = {
+            "apbp_region": {
+                "groups": [
+                    {"group": "A", "unit_ids": [f"u{i}" for i in range(18)], "qualifies": True},
+                    {"group": "B", "unit_ids": [f"u{i}" for i in range(18, 33)], "qualifies": True},
+                    {"group": "C", "unit_ids": ["u33"], "qualifies": False},
+                ]
+            },
+            "ccamlr": {
+                "groups": [{"group": "48.1", "unit_ids": sorted(units), "qualifies": True}]
+            },
+            "species_wide": {
+                "groups": [{"group": "all", "unit_ids": sorted(units), "qualifies": True}]
+            },
+        }
+        result = select_modeling_level(levels, units, 0.95)
+        self.assertEqual(result["level"], "apbp_region")
+        self.assertEqual(len(result["covered_units"]), 33)
+        self.assertEqual(result["excluded_units"], ["u33"])
+
+    def test_falls_to_ccamlr_when_apbp_coverage_is_below_95_percent(self):
+        units = {f"u{i}" for i in range(44)}
+        levels = {
+            "apbp_region": {
+                "groups": [
+                    {"group": "A", "unit_ids": [f"u{i}" for i in range(6)], "qualifies": True},
+                    {"group": "B", "unit_ids": [f"u{i}" for i in range(6, 33)], "qualifies": True},
+                ]
+            },
+            "ccamlr": {
+                "groups": [
+                    {"group": "48.1", "unit_ids": [f"u{i}" for i in range(15)], "qualifies": True},
+                    {"group": "88.1", "unit_ids": [f"u{i}" for i in range(15, 42)], "qualifies": True},
+                    {"group": "48.2", "unit_ids": ["u42"], "qualifies": False},
+                    {"group": "58.4.1", "unit_ids": ["u43"], "qualifies": False},
+                ]
+            },
+            "species_wide": {
+                "groups": [{"group": "all", "unit_ids": sorted(units), "qualifies": True}]
+            },
+        }
+        result = select_modeling_level(levels, units, 0.95)
+        self.assertEqual(result["level"], "ccamlr")
+        self.assertEqual(len(result["covered_units"]), 42)
+        self.assertEqual(set(result["excluded_units"]), {"u42", "u43"})
+
+    def test_species_wide_is_last_resort(self):
+        units = {f"u{i}" for i in range(10)}
+        levels = {
+            "apbp_region": {"groups": []},
+            "ccamlr": {
+                "groups": [{"group": "48.1", "unit_ids": [f"u{i}" for i in range(9)], "qualifies": True}]
+            },
+            "species_wide": {
+                "groups": [{"group": "all", "unit_ids": sorted(units), "qualifies": True}]
+            },
+        }
+        result = select_modeling_level(levels, units, 0.95)
+        self.assertEqual(result["level"], "species_wide")
+        self.assertEqual(result["coverage_fraction"], 1.0)
 
 
 if __name__ == "__main__":
