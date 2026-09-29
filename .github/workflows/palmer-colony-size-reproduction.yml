@@ -1,0 +1,70 @@
+name: palmer-colony-size-reproduction
+
+on:
+  push:
+    branches:
+      - analysis/palmer-colony-size-reproduction-v1
+    paths:
+      - "scripts/fetch_lter_chick_counts.py"
+      - "src/mina/colony_size_reproduction.py"
+      - "tests/test_colony_size_reproduction.py"
+      - "contracts/PALMER_COLONY_SIZE_REPRODUCTION_V1.json"
+      - ".github/workflows/palmer-colony-size-reproduction.yml"
+  pull_request:
+    paths:
+      - "scripts/fetch_lter_chick_counts.py"
+      - "src/mina/colony_size_reproduction.py"
+      - "tests/test_colony_size_reproduction.py"
+      - "contracts/PALMER_COLONY_SIZE_REPRODUCTION_V1.json"
+      - ".github/workflows/palmer-colony-size-reproduction.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen synthetic tests
+        run: pytest -q tests/test_colony_size_reproduction.py
+      - name: Fetch frozen adult and chick censuses
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+      - name: Run ratio-free reproductive scaling analysis
+        run: |
+          python -m mina.colony_size_reproduction \
+            --chicks build/adelie_chicks.csv \
+            --adult-census build/adelie_census.csv \
+            --out build/colony_size_reproduction.json \
+            --draws 100000 \
+            --seed 20262929
+      - name: Print result receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/colony_size_reproduction.json").read_text())
+          print("panel=",x["primary_panel"])
+          print("effect=",x["primary_effect"])
+          print("inference=",x["primary_inference"])
+          print("decision=",x["decision"])
+          print("overlap=",x["adult_denominator_overlap"])
+          print("exclude_lit=",x["sensitivities"]["exclude_litchfield"])
+          print("min_pairs_2=",x["sensitivities"]["minimum_pairs_2"])
+          print("loo=",x["sensitivities"]["leave_one_island_out"])
+          print("cv10=",x["sensitivities"]["overdispersion_cv10"])
+          print("cv20=",x["sensitivities"]["overdispersion_cv20"])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: palmer-colony-size-reproduction
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/colony_size_reproduction.json
+          if-no-files-found: warn
