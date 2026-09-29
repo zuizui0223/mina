@@ -1,6 +1,9 @@
 import unittest
-import numpy as np
-import pandas as pd
+try:
+    import numpy as np
+    import pandas as pd
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest("V3 spatial recovery tests require numpy/pandas") from exc
 from scripts.simulate_paper2_spatial_adjusted_v3 import center_within_block, solve_site_gamma_block
 
 class CenterTests(unittest.TestCase):
