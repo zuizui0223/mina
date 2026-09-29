@@ -7,9 +7,12 @@ except ModuleNotFoundError as exc:
     raise unittest.SkipTest("integrated recovery tests require numpy/pandas") from exc
 
 from scripts.simulate_paper2_integrated_recovery import (
+    build_interval_payload,
     collapse_same_season,
     count_to_analysis_scale,
     counts_from_analysis_scale,
+    fit_species_from_counts,
+    simulate_species_counts,
 )
 
 
@@ -67,6 +70,70 @@ class SameSeasonCollapseTests(unittest.TestCase):
         self.assertEqual(len(out),1)
         self.assertAlmostEqual(float(out.iloc[0]["state_hat"]),7.0,places=3)
         self.assertAlmostEqual(float(out.iloc[0]["observation_var"]),s1**2,places=12)
+
+
+def dense_species_fixture():
+    seasons=";".join(str(y) for y in range(1980,2026))
+    vals=[
+        (-1.5,-1.2),(-1.0,1.1),(-0.5,-0.8),(-0.2,1.4),
+        (0.2,-1.1),(0.6,0.7),(1.0,-0.4),(1.4,1.0),
+    ]
+    frame=pd.DataFrame([
+        {
+            "unit_id":f"ADPE|S{i}","site_id":f"S{i}","species_id":"ADPE",
+            "forcing_group":"G1","A":a,"H":h,"AH":a*h,"seasons":seasons,
+        }
+        for i,(a,h) in enumerate(vals)
+    ])
+    metadata=[]
+    for i in range(len(frame)):
+        for season in range(1980,2026):
+            metadata.append({
+                "group_id":f"S{i}|ADPE|{season}",
+                "site_id":f"S{i}","species_id":"ADPE","season":season,
+                "vantage_family":"direct","accuracy_group":"1",
+            })
+    return frame,pd.DataFrame(metadata)
+
+
+class IntegratedSpeciesTests(unittest.TestCase):
+    def test_dense_near_noiseless_integer_counts_recover_crossover(self):
+        frame,metadata=dense_species_fixture()
+        sim=simulate_species_counts(
+            frame,metadata,
+            gamma_a=0.0,gamma_ah=-0.35,seed=123,
+            forcing_sd=0.10,loading_sd=0.0,process_sd=0.0,
+            drift_mean=-0.01,drift_sd=0.0,
+            delta_image=0.0,sigma1=1e-6,sigma2plus=1e-6,
+        )
+        fit=fit_species_from_counts(
+            frame,sim["observations"],
+            delta_image=0.0,sigma1=1e-6,sigma2plus=1e-6,
+            truth_forcing=sim["true_forcing"],
+            true_lambda=sim["true_lambda"],
+        )
+        self.assertLess(abs(fit["gamma_ah"]+0.35),0.06)
+        self.assertGreater(fit["forcing_correlation"]["G1"],0.98)
+
+    def test_interval_payload_uses_adjacent_observed_seasons(self):
+        frame=pd.DataFrame([{
+            "unit_id":"ADPE|S1","site_id":"S1","species_id":"ADPE",
+            "forcing_group":"G1","A":0.0,"H":0.0,"AH":0.0,
+            "seasons":"1980;1990;2000",
+        }])
+        collapsed=pd.DataFrame([
+            {"group_id":"S1|ADPE|1980","site_id":"S1","species_id":"ADPE",
+             "season":1980,"state_hat":5.0,"observation_var":0.1,"n_records":1},
+            {"group_id":"S1|ADPE|1990","site_id":"S1","species_id":"ADPE",
+             "season":1990,"state_hat":5.5,"observation_var":0.1,"n_records":1},
+            {"group_id":"S1|ADPE|2000","site_id":"S1","species_id":"ADPE",
+             "season":2000,"state_hat":5.2,"observation_var":0.1,"n_records":1},
+        ])
+        payload=build_interval_payload(frame,collapsed)
+        self.assertEqual(len(payload["records"]),2)
+        self.assertEqual(payload["records"][0][:4],(0,"G1",1980,1990))
+        self.assertAlmostEqual(payload["records"][0][4],0.5,places=12)
+        self.assertAlmostEqual(payload["records"][1][4],-0.3,places=12)
 
 
 if __name__=="__main__":
