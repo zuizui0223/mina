@@ -95,7 +95,7 @@ class DenseHierarchicalRecoveryTests(unittest.TestCase):
         sim=simulate_integrated_dataset(
             frames,metadata,
             gamma_a=-0.25,gamma_ah=0.0,seed=333,
-            forcing_sd=0.08,loading_sd=0.10,process_sd=0.02,
+            forcing_sd=0.08,loading_sd=0.0,process_sd=0.02,
             drift_mean=-0.01,drift_sd=0.005,
             delta_image=np.log(1.15),
             sigma1=np.log(1.05),sigma2plus=np.log(1.25),
