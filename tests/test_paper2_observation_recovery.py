@@ -13,6 +13,7 @@ from scripts.simulate_paper2_observation_recovery import (
     evaluate_observation_recovery,
     run_observation_audit,
     simulate_observation_records,
+    validate_frozen_support,
 )
 
 
@@ -128,6 +129,28 @@ class FrozenMetadataTests(unittest.TestCase):
         self.assertIn("image_based",set(out["vantage_family"]))
         self.assertTrue(out["group_id"].str.contains("\\|").all())
 
+
+
+class FrozenSupportValidationTests(unittest.TestCase):
+    def test_expected_support_passes_and_drift_fails_closed(self):
+        expected={
+            "records":2100,
+            "bridged_units":107,
+            "season_groups":1721,
+            "repeated_groups":273,
+            "direct_records":1889,
+            "image_based_records":149,
+            "unknown_vantage_records":62,
+            "mixed_direct_image_groups":41,
+            "mixed_direct_image_groups_by_species":{
+                "ADPE":9,"CHPE":10,"GEPE":22,
+            },
+        }
+        validate_frozen_support(expected)
+        drift=dict(expected)
+        drift["records"]=2099
+        with self.assertRaises(ValueError):
+            validate_frozen_support(drift)
 
 
 class EndToEndAuditTests(unittest.TestCase):
