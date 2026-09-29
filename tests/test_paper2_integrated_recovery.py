@@ -11,8 +11,11 @@ from scripts.simulate_paper2_integrated_recovery import (
     collapse_same_season,
     count_to_analysis_scale,
     counts_from_analysis_scale,
+    evaluate_integrated_configuration,
+    fit_integrated_dataset,
     fit_species_from_counts,
     run_integrated_replicate,
+    simulate_integrated_dataset,
     simulate_species_counts,
 )
 
