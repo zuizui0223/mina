@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -308,6 +309,7 @@ def main()->int:
         "unlock_status":lock["status"],
         "real_count_magnitudes_opened":True,
         "frozen_records":EXPECTED_RECORDS,
+        "runner_git_sha":os.environ.get("GITHUB_SHA"),
     }
     a.out_json.parent.mkdir(parents=True,exist_ok=True)
     a.out_json.write_text(
