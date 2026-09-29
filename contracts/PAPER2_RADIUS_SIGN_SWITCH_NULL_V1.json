@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-radius-sign-switch-null-v1",
+  "date": "2026-09-29",
+  "status": "post_inference_scale_interpretation_diagnostic",
+  "purpose": "Assess whether the observed 1/2/5 km change in the cross-species A x H interaction is more extreme than expected from finite-sample fluctuation under the same block-preserving trait-association null.",
+  "observed": {
+    "median_gamma_ah_1000m": -0.0576551287747558,
+    "median_gamma_ah_2000m": -0.31822603579776854,
+    "median_gamma_ah_5000m": 0.1067807758917031,
+    "contrast_5000_minus_2000": 0.42500681168947163,
+    "range_across_radii": 0.42500681168947163,
+    "order": "2000m < 1000m < 5000m",
+    "sign_pattern": "1000m negative; 2000m negative; 5000m positive"
+  },
+  "permutation": {
+    "B": 9999,
+    "seed": 20260929,
+    "strata": "species x frozen V3 spatial block",
+    "unit": "one complete multi-radius trait tuple per site: [A1,H1,AH1,A2,H2,AH2,A5,H5,AH5]",
+    "scheme": "Within each species x spatial block, apply one site permutation to the entire 1/2/5 km trait tuple, preserving cross-radius trait correlation. Outcomes, site identities, observation data and forcing remain fixed. Refit the complete V3 model independently at each radius.",
+    "singleton_blocks": "fixed"
+  },
+  "diagnostics": [
+    "P_null(median_2km < 0 and median_5km > 0)",
+    "P_null(median_5km - median_2km >= observed contrast)",
+    "P_null(sign switch 2km negative to 5km positive AND contrast >= observed)",
+    "P_null(range across 1/2/5km >= observed range)",
+    "P_null(median_2km < median_1km < median_5km AND range >= observed)"
+  ],
+  "interpretation_rule": {
+    "strong_scale_dependence": "Use ecological scale-dependence language only if the joint directional sign-switch-plus-contrast null probability <=0.05.",
+    "weak_or_null": "If >0.05, describe the radius sensitivity as instability compatible with sampling/permutation fluctuation, not as an ecological discovery.",
+    "regardless": "Always report the raw 1/2/5 km point estimates and keep 2 km as the frozen primary scale."
+  },
+  "boundary": [
+    "This is a post-inference interpretation diagnostic, not a new primary test.",
+    "No radius is promoted or dropped based on this result.",
+    "The same permutation map is used jointly across radii to preserve multi-scale trait covariance.",
+    "No additional radii are opened."
+  ]
+}
