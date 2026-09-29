@@ -1,6 +1,9 @@
 import unittest
-import numpy as np
-import pandas as pd
+try:
+    import numpy as np
+    import pandas as pd
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest("Paper 2 permutation tests require numpy/pandas") from exc
 
 from scripts.run_paper2_v3_permutation import (
     permutation_bounds,
