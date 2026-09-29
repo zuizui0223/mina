@@ -32,7 +32,7 @@ def load_chick_rows(path: str | Path) -> list[dict[str, object]]:
     with Path(path).open("r", encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
     out: list[dict[str, object]] = []
-    seen: set[tuple[str, str, int]] = set()
+    seen: dict[tuple[str, str, int], dict[str, str]] = {}
     for row in rows:
         island = str(row.get("island_name", "")).strip()
         if island not in ISLANDS:
@@ -56,8 +56,10 @@ def load_chick_rows(path: str | Path) -> list[dict[str, object]]:
             continue
         key = (island, code, season)
         if key in seen:
-            raise ValueError(f"duplicate usable chick row: {key!r}")
-        seen.add(key)
+            raise ValueError(
+                f"duplicate usable chick row: {key!r}; first={seen[key]!r}; second={row!r}"
+            )
+        seen[key] = dict(row)
         out.append(
             {
                 "study_name": str(row.get("study_name", "")).strip(),
