@@ -76,12 +76,18 @@ def infer_semantics(frame:pd.DataFrame)->dict:
     # audit never summarizes their values.
     pairs_col=None
     chicks_col=None
+    nest_date_col=None
+    chick_date_col=None
     for c in columns:
         n=_norm(c)
         if pairs_col is None and ("total number of nests" in n or n in {"breeding pairs","pairs","total nests"}):
             pairs_col=c
         if chicks_col is None and ("total number of chicks" in n or n in {"chicks","fledglings","chicks expected to fledge"}):
             chicks_col=c
+        if nest_date_col is None and "date of nest count" in n:
+            nest_date_col=c
+        if chick_date_col is None and "date chick count" in n:
+            chick_date_col=c
 
     comments_col=None
     for c in columns:
@@ -95,16 +101,51 @@ def infer_semantics(frame:pd.DataFrame)->dict:
         "colony_col":colony_col,
         "pairs_col":pairs_col,
         "chicks_col":chicks_col,
+        "nest_date_col":nest_date_col,
+        "chick_date_col":chick_date_col,
         "comments_col":comments_col,
         "season_scores":season_scores,
         "colony_scores":colony_scores,
     }
 
 
+
+
+def season_from_date(value)->int|None:
+    dt=pd.to_datetime(value,dayfirst=True,errors="coerce")
+    if pd.isna(dt):
+        return None
+    year=int(dt.year)
+    month=int(dt.month)
+    return year if month>=7 else year-1
+
+
+def reconstruct_season_start(frame:pd.DataFrame,sem:dict)->pd.Series:
+    if sem["season_col"] is not None:
+        return frame[sem["season_col"]].map(season_start)
+    candidates=[]
+    for key in ("nest_date_col","chick_date_col"):
+        col=sem.get(key)
+        if col is not None:
+            candidates.append(frame[col].map(season_from_date))
+    if not candidates:
+        return pd.Series([None]*len(frame),index=frame.index,dtype="object")
+    out=candidates[0].copy()
+    for other in candidates[1:]:
+        mismatch=out.notna() & other.notna() & out.ne(other)
+        if bool(mismatch.any()):
+            bad=frame.loc[mismatch].index.tolist()
+            raise ValueError(f"nest/chick dates imply conflicting seasons at rows {bad[:10]}")
+        out=out.where(out.notna(),other)
+    return out
+
 def audit_table(frame:pd.DataFrame)->dict:
     sem=infer_semantics(frame)
-    required=("season_col","colony_col","pairs_col","chicks_col")
+    required=("colony_col","pairs_col","chicks_col")
     missing=[k for k in required if sem[k] is None]
+    date_support=sem.get("nest_date_col") is not None or sem.get("chick_date_col") is not None
+    if sem["season_col"] is None and not date_support:
+        missing.append("season_or_date_metadata")
     if missing:
         return {
             "status":"schema_unresolved",
@@ -114,10 +155,10 @@ def audit_table(frame:pd.DataFrame)->dict:
             "effect_computed":False,
         }
 
-    season_col=sem["season_col"]; colony_col=sem["colony_col"]
+    colony_col=sem["colony_col"]
     pairs_col=sem["pairs_col"]; chicks_col=sem["chicks_col"]
     x=frame.copy()
-    x["_season_start"]=x[season_col].map(season_start)
+    x["_season_start"]=reconstruct_season_start(x,sem)
     x["_colony"]=x[colony_col].astype(str).str.strip()
     x["_literal_atomic"]=~x["_colony"].str.contains(r"\+",regex=True)
     x["_pairs_present"]=x[pairs_col].notna()
