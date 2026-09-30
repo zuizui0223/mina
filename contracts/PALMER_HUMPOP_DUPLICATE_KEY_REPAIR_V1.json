@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "repair_id": "mina-palmer-humpop-duplicate-key-repair-v1",
+  "date": "2026-09-30",
+  "status": "source_semantic_repair_frozen_before_primary_performance_arrival_coefficient",
+  "parent_gate": "mina-palmer-humpop-arrival-schema-gate-v1",
+  "problem": "The official archived HUMPOP table contains multiple rows for some identical studyName + Date + Island + Colony keys, but the archive schema contains no time, observer, subsite, or replicate identifier that could distinguish those records.",
+  "audit": {
+    "historical_1992_2020_rows": 3173,
+    "duplicate_keys": 37,
+    "duplicate_keys_with_identical_adult_counts": 9,
+    "duplicate_keys_with_discordant_adult_counts": 28,
+    "dominant_pattern": "Many discordant duplicates occur for PAL9293, HUM colony 2.1.",
+    "performance_arrival_model_fit_before_repair": false
+  },
+  "frozen_resolution": {
+    "rule": "Exclude every observation belonging to a duplicated studyName + Date + Island + Colony key from all HUMPOP arrival-curve analyses, regardless of whether the duplicated adult counts agree.",
+    "no_averaging": true,
+    "no_first_or_last_record_selection": true,
+    "no_manual_reconciliation": true,
+    "rationale": "The archive does not document within-key replicate semantics, so any numerical combination rule would be arbitrary. Excluding the ambiguous date-colony key is fail-closed and independent of the performance-arrival association."
+  },
+  "unchanged": [
+    "raw colony-code exact matching",
+    "50 percent first upward crossing endpoint",
+    "25 and 75 percent sensitivity endpoints",
+    "prior-size control",
+    "colony and arrival-season fixed effects",
+    "within-predictor-season permutation null",
+    "100000 permutations",
+    "minimum 100 matched colony-seasons",
+    "minimum 10 predictor seasons",
+    "minimum 3 colonies per predictor season",
+    "one-sided lower-tail alpha 0.05"
+  ],
+  "claim_boundary": [
+    "The repair occurs after HUMPOP arrival values were opened for duplicate auditing but before any performance-arrival coefficient was computed.",
+    "No result from ambiguous duplicated date-colony keys may be used.",
+    "If the fail-closed repair leaves insufficient information under the frozen minimum-information rule, the analysis stops."
+  ]
+}
