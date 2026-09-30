@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-island-carrier-benchmark-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_usap_601443_601444_data_values_are_opened",
+  "role": "external mechanism benchmark for the Palmer carrier-identifiability result; not a Palmer replication or causal identification",
+  "public_sources": {
+    "resighting": {
+      "usap_dc_id": "601444",
+      "doi": "10.15784/601444",
+      "title": "Adelie penguin resighting data 1997-2021 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science",
+      "temporal_extent": ["1997-12-01", "2021-01-31"],
+      "file_name": "band_resighting_1997-2021.csv",
+      "file_size_mb_reported": 25.1,
+      "license": "CC BY 4.0"
+    },
+    "banding": {
+      "usap_dc_id": "601443",
+      "doi": "10.15784/601443",
+      "title": "Adelie penguin banding data 1994-2021 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science"
+    }
+  },
+  "literature_context_known_before_data_open": [
+    "Ross Island multistate mark-recapture work reports very low movement among breeding colonies once birds have bred, while temporary nonbreeding/breeding sabbaticals can be much more common.",
+    "This literature motivates the benchmark but its published estimates are not treated as outcomes of the analysis below.",
+    "Ross Island is an external ecological system and cannot identify the latent carrier in Palmer."
+  ],
+  "schema_gate": {
+    "required_for_any_analysis": [
+      "stable individual or band identifier",
+      "resight date or breeding-season identifier",
+      "resight site/colony/location field"
+    ],
+    "required_for_known_age_filter": [
+      "banding table shares stable individual identifier with resighting table",
+      "banding date/season or known age at banding"
+    ],
+    "required_for_breeding_propensity_model": [
+      "explicit breeding-state/status observation or a documented observation model distinguishing breeding state from nondetection",
+      "sampling/resighting effort information sufficient to estimate detection probability"
+    ],
+    "fail_closed_rules": [
+      "If stable individual identity cannot be linked across years, stop.",
+      "If location cannot be mapped reproducibly to a finite set of breeding sites, stop spatial-transition analysis.",
+      "Do not code a missing resighting as nonbreeding.",
+      "Do not estimate breeding propensity from encounter gaps without a detection model."
+    ]
+  },
+  "B1_conditional_location_fidelity": {
+    "question": "Among marked Adelie penguins resighted in two consecutive breeding seasons, how often is the next-year resighting at the same breeding-site category versus a different category?",
+    "unit": "individual x consecutive-season transition with at least one eligible resighting in both seasons",
+    "multiple_resights_within_season": "Use a deterministic site assignment only if the schema documents breeding/residency status or if all eligible resights for the individual-season agree on site. Discordant multi-site seasons are excluded from the primary endpoint and counted separately.",
+    "primary_endpoint": "switch_fraction = number of consecutive-season transitions assigned to different sites / number of assignable consecutive-season transitions",
+    "uncertainty": "individual-cluster bootstrap 10000 resamples, seed 20260980",
+    "age_filter": "If known age is available, primary biological benchmark uses birds age >= 5 years; otherwise report all assignable marked birds and do not label them established breeders.",
+    "interpretation": "A low switch fraction constrains the plausibility of mature-bird spatial switching at the spatial scale encoded by this dataset, but does not measure Palmer subcolony movement."
+  },
+  "B2_gap_structure": {
+    "role": "descriptive only unless explicit breeding state and detection model pass the schema gate",
+    "endpoint": "For individuals observed in seasons t and t+2, report the fraction not resighted in t+1.",
+    "prohibited_interpretation": "Do not call a one-season encounter gap a breeding sabbatical, nonbreeding state, mortality, or emigration without a state/detection model."
+  },
+  "B3_breeding_propensity_gate": {
+    "default_status": "blocked",
+    "unlock_condition": "All breeding-propensity schema requirements are present and documented before fitting any model.",
+    "if_unlocked": "Freeze a separate contract before fitting multistate capture-recapture/HMM estimates; do not reuse this benchmark contract as permission to explore."
+  },
+  "cross_system_comparison": {
+    "allowed": [
+      "Compare the order of magnitude and spatial scale of observed Ross Island location switching with the qualitative carrier possibilities left unidentified at Palmer.",
+      "Use the benchmark to argue that some latent carriers are biologically more or less plausible, while retaining Palmer non-identifiability."
+    ],
+    "prohibited": [
+      "Transfer a Ross Island movement probability numerically into the Palmer model as if it were a Palmer parameter.",
+      "Claim that Ross Island fidelity proves Palmer breeding propensity is the carrier.",
+      "Treat Ross Island breeding-site categories as equivalent to Palmer colony_code spatial scale without an explicit crosswalk."
+    ]
+  },
+  "decision": {
+    "movement_channel_descriptively_rare": "switch_fraction upper 95% bootstrap bound < 0.05, only at the dataset's own site scale",
+    "movement_channel_not_rare": "otherwise",
+    "carrier_identified_for_palmer": false
+  }
+}
