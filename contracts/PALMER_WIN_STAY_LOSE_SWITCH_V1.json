@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-win-stay-lose-switch-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_P1_P2_P3_endpoints_are_computed",
+  "paper_role": "mechanism diagnostic following the exposed short-lag redistribution and performance-memory results",
+  "provenance_boundary": {
+    "source_data_previously_inspected": true,
+    "known_before_this_contract": [
+      "Within-island relative reproductive performance predicts later relative colony redistribution at lag 2 and lag 3 under the fixed-specification Palmer lag analysis.",
+      "A delayed lag-4/5 recruitment echo is unsupported.",
+      "Relative reproductive performance has weak one- to two-year persistence, and past performance retains information about lag-2 redistribution after current measured performance.",
+      "Torgersen contributes disproportionately to measured performance persistence."
+    ],
+    "not_computed_before_this_contract": [
+      "P1 poor-performance breeder share versus later island-total growth.",
+      "P1 poor-loss versus good-gain compensation diagnostic.",
+      "P2 island-level reproductive performance versus later between-island growth.",
+      "P3 negative-versus-positive performance hinge asymmetry in lag-2 within-island redistribution."
+    ],
+    "claim": "These are prospectively frozen new endpoints on previously inspected Palmer source data; they are mechanistic follow-ups, not independent confirmation."
+  },
+  "hypothesis": {
+    "name": "adult win-stay / lose-switch breeding redistribution",
+    "statement": "Adults associated with relatively poor reproductive colonies are more likely to leave or fail to return to those colony components over the next one to three years, while redistribution is concentrated within islands rather than between islands.",
+    "boundary": "Colony-count data cannot identify individual movement, prospecting, temporary breeding nonparticipation, mortality or immigration. Support is therefore compatible with adult breeding redistribution, not proof of individual dispersal."
+  },
+  "shared_definitions": {
+    "performance_state": "Use the PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2 Pearson-residual state S_i,t: colony chick production relative to size-proportional expectation, z-standardized within island-season.",
+    "primary_lag": "Use the bias-resistant lag-2 alignment throughout P1-P3: performance in season t predicts adult redistribution/growth during t+1 -> t+2.",
+    "adult_source": "Independent November AdeliePenguinCensus breeding-pair counts.",
+    "chick_source": "AdeliePenguinAdultandChickCounts with study-name-derived season key frozen in PALMER_CHICK_SEASON_KEY_RESOLUTION_V1.",
+    "focal_islands": [
+      "CHR",
+      "COR",
+      "HUM",
+      "LIT",
+      "TOR"
+    ],
+    "no_colony_code_merging": true,
+    "no_imputation": true
+  },
+  "P1": {
+    "name": "within-island compensation / no island-total loss channel",
+    "predictor": {
+      "poor_breeder_share": "For each performance-eligible island-season t, sum independent adult pairs in colonies with S_i,t < 0 and divide by independent adult pairs across all performance-matched colonies in that island-season.",
+      "transform": "z-standardize poor_breeder_share across eligible island-seasons after eligibility is fixed.",
+      "coverage_report": "Report matched adult-pair coverage = matched colony pairs / total island adult pairs at t.",
+      "coverage_sensitivity": "Repeat after requiring matched adult-pair coverage >= 0.80; do not use coverage to select the primary result."
+    },
+    "outcome": "Y_I,t = log1p(total adult pairs_I,t+2) - log1p(total adult pairs_I,t+1), using all colony codes in the independent adult census.",
+    "model": "Y_I,t ~ beta_P1 * z(poor_breeder_share_I,t) + z(log1p total adult pairs_I,t+1) + island fixed effects + outcome-transition-year fixed effects.",
+    "interpretation": {
+      "within_island_redistribution": "Poor-performance occupancy changes composition but need not depress island-total growth; beta_P1 should not be materially negative.",
+      "mortality_or_breeding_skip": "A larger share of breeders in poor colonies should predict more negative island-total growth."
+    },
+    "meaningful_effect_margin": {
+      "log_growth_per_1sd": 0.048790164169432,
+      "interpretation": "5% multiplicative change in annual island growth per 1 SD increase in predictor."
+    },
+    "inference": {
+      "method": "transition-year block bootstrap; resample outcome-transition years with replacement and retain all eligible islands from each sampled year; island and year are treated as fixed ecological levels, not a superpopulation of islands",
+      "replicates": 20000,
+      "seed": 20261001,
+      "primary_bound": "5th percentile of bootstrap beta_P1",
+      "decision": {
+        "compatible_with_within_island_redistribution": "bootstrap q05(beta_P1) > -log(1.05)",
+        "meaningful_loss_channel_supported": "bootstrap q95(beta_P1) < -log(1.05)",
+        "otherwise": "inconclusive"
+      }
+    },
+    "compensation_diagnostic": {
+      "role": "descriptive only",
+      "poor_loss": "At t+1 -> t+2, sum positive pair losses among colonies classified S_i,t < 0.",
+      "good_gain": "At t+1 -> t+2, sum positive pair gains among colonies classified S_i,t >= 0.",
+      "compensation_ratio": "good_gain / poor_loss when poor_loss > 0.",
+      "warning": "This accounting diagnostic cannot distinguish movement from coincident recruitment, mortality or breeding skipping."
+    }
+  },
+  "P2": {
+    "name": "island as the redistribution boundary",
+    "predictor": {
+      "island_performance": "Within each season t, aggregate matched colony chicks and independent adult pairs by island. Compute size-conditioned island chick performance using a Pearson residual from the across-island proportional allocation of total Palmer chicks by island adult pairs, then z-standardize across eligible islands in that season.",
+      "eligibility": "At least 3 eligible islands in the season, positive total Palmer chicks, positive matched adult pairs per retained island.",
+      "transform": "The within-season z-standardized island performance is Z_I,t."
+    },
+    "outcome": "Same lag-2 island-total growth Y_I,t as P1.",
+    "model": "Y_I,t ~ beta_P2 * Z_I,t + z(log1p total adult pairs_I,t+1) + island fixed effects + outcome-transition-year fixed effects.",
+    "interpretation": {
+      "cross_island_performance_tracking": "If adults commonly shift among Palmer islands toward successful islands, beta_P2 should be meaningfully positive.",
+      "island_boundary": "If redistribution is predominantly within island, a biologically important positive beta_P2 should be absent."
+    },
+    "meaningful_effect_margin": {
+      "log_growth_per_1sd": 0.048790164169432,
+      "interpretation": "5% multiplicative change in annual island growth per 1 SD higher relative island performance."
+    },
+    "inference": {
+      "method": "same 20,000 transition-year block bootstrap framework as P1",
+      "replicates": 20000,
+      "seed": 20261002,
+      "primary_bound": "95th percentile of bootstrap beta_P2",
+      "decision": {
+        "island_boundary_compatible": "bootstrap q95(beta_P2) < log(1.05)",
+        "meaningful_cross_island_tracking_supported": "bootstrap q05(beta_P2) > log(1.05)",
+        "otherwise": "inconclusive"
+      }
+    }
+  },
+  "P3": {
+    "name": "lose-switch asymmetry",
+    "panel": "Use the exact lag-2 colony panel from PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2 before outcome fitting.",
+    "model": {
+      "negative_component": "S_minus = min(S_i,t, 0)",
+      "positive_component": "S_plus = max(S_i,t, 0)",
+      "hinge": "R_i,t+1 = beta_loss * S_minus + beta_win * S_plus + gamma * z_log_size_i,t+1 + island:colony_code fixed effects + error",
+      "asymmetry": "delta = beta_loss - beta_win",
+      "interpretation": "Because S_minus is negative, beta_loss > 0 means increasingly poor performance predicts increasingly negative subsequent relative redistribution. beta_loss > beta_win indicates a stronger response below the island-season performance mean."
+    },
+    "null_model": "R_i,t+1 ~ beta_linear * S_i,t + gamma * z_log_size_i,t+1 + island:colony_code fixed effects.",
+    "inference": {
+      "method": "Freedman-Lane residual permutation conditional on the null linear performance effect. Fit the null model, permute null residuals within predictor island-season, add them back to null fitted values, refit the hinge model, and compare delta.",
+      "permutations": 100000,
+      "seed": 20261003,
+      "p_value": "(1 + number of permuted delta >= observed delta)/(100000 + 1)",
+      "decision": "supported only if delta > 0, beta_loss > 0, and one-sided p <= 0.05"
+    },
+    "sensitivities": [
+      "exclude Litchfield",
+      "minimum outcome-interval starting colony size >= 2 pairs",
+      "alternate within-island-season standardized logratio performance metric",
+      "leave one island out: report delta sign; do not require each leave-one-out p-value"
+    ]
+  },
+  "joint_interpretation": {
+    "strongest_pattern": "P1 compatible with no meaningful island-total loss + P2 compatible with no meaningful cross-island performance tracking + P3 positive lose-switch asymmetry.",
+    "wording_if_strongest": "Aggregate colony counts are consistent with short-lag, performance-linked redistribution concentrated within islands, with stronger response to poor reproductive performance.",
+    "not_allowed": [
+      "individual adults were observed moving from poor to good colonies",
+      "public information use is proven",
+      "mortality or temporary nonbreeding has been excluded",
+      "the island is a closed demographic population",
+      "the mechanism is confirmatory or independently replicated"
+    ],
+    "mixed_results": "Report P1, P2 and P3 separately; do not average them into a mechanism score."
+  },
+  "terminal_rules": [
+    "Do not change lag from 2 after opening P1-P3.",
+    "Do not change the S=0 hinge location after opening P3.",
+    "Do not replace the 5%/SD P1-P2 meaningful-effect margin after seeing results.",
+    "Do not use a non-significant ordinary p-value as evidence for P1 or P2; the prespecified one-sided bootstrap bounds govern those claims.",
+    "Do not introduce new islands, colony mergers, thresholds or performance metrics except the frozen sensitivities.",
+    "Do not use P1-P3 to retroactively label the exposed lag-2 result confirmatory."
+  ]
+}
