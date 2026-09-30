@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "diagnostic_id": "mina-palmer-repro-detectability-decomposition-v1",
+  "date": "2026-10-01",
+  "status": "post_result_interpretation_diagnostic",
+  "parent_results": [
+    "results/PALMER_REPRO_REDISTRIBUTION_RESULT_V1.json",
+    "results/PALMER_REPRO_SAME_PANEL_METRIC_DIAGNOSTIC_RESULT_V1.json"
+  ],
+  "outcome_exposure": {
+    "repro_primary_result_seen": true,
+    "same_panel_chick_state_coefficient_seen": true,
+    "confirmatory_use_allowed": false,
+    "purpose": "Quantify whether the failed mean-nest-success replication can plausibly be attributed mainly to low design sensitivity or small monitored-nest samples, and decompose mean nest production into success frequency versus brood size among successful nests."
+  },
+  "common_panel": {
+    "definition": "Exact Humble same-panel diagnostic intersection: REPRO lag-1 rows with the previously frozen colony-wide chick state available under the V2 season-key rules.",
+    "expected_rows": 61,
+    "expected_predictor_seasons": 15,
+    "controls": "Same prior-size z score and colony fixed effects used in the existing same-panel diagnostic."
+  },
+  "detectability_simulation": {
+    "benchmark_effect": "Use beta_ref = 0.10402777305744605, the already observed colony-wide chick-state coefficient on the exact common panel. This is a benchmark, not a hypothesized REPRO effect.",
+    "additional_effect_grid": [0.03, 0.06, 0.10402777305744605, 0.15],
+    "noise": "Estimate residual SD from the common-panel REPRO mean-state model after prior-size and colony fixed effects; simulate Gaussian residual noise in the control-residualized subspace.",
+    "predictor": "Observed standardized REPRO mean chicks-to-creche-per-monitored-nest state.",
+    "test": "For each simulated dataset, refit the same coefficient and evaluate it against 9,999 within-predictor-season REPRO-state permutations using the existing one-sided upper-tail rule.",
+    "simulations_per_effect": 2000,
+    "permutations_per_simulation": 9999,
+    "seed": 20261001,
+    "interpretation": "This is conditional design sensitivity if the REPRO state truly carried a coefficient of the stated standardized magnitude. It does not account for all latent-variable measurement mismatch."
+  },
+  "sampling_stability": {
+    "bootstrap_replicates": 5000,
+    "seed": 20261002,
+    "rule": "Within each common-panel colony-season, resample monitored nests with replacement at the observed sample size; recompute mean chicks per nest and within-season z-standardization.",
+    "statistic": "Pearson correlation between each bootstrap REPRO state vector and the original REPRO state vector across the 61 common-panel rows.",
+    "name": "bootstrap state stability",
+    "boundary": "Do not call this a formal test-retest reliability coefficient."
+  },
+  "production_decomposition": {
+    "identity": "mean chicks reaching creche per monitored nest = proportion of monitored nests with at least one creched chick × mean creched chicks among successful monitored nests.",
+    "success_frequency": "Use the already prespecified binary-any-creche sensitivity only in its original non-rescue role.",
+    "conditional_brood_size": {
+      "definition": "Among monitored nests with >=1 creched chick, mean creched chicks per successful nest.",
+      "standardization": "Within island-season z score among colony-seasons where the metric is defined; require at least 3 finite colonies in the season.",
+      "model": "Same next-year relative-growth response, prior-size control and colony fixed effects.",
+      "inference": "100,000 within-predictor-season label permutations; post hoc descriptive only.",
+      "seed": 20261003
+    }
+  },
+  "decision_language": {
+    "if_benchmark_power_high_and_bootstrap_stability_moderate_or_high": "State that limited panel size alone is unlikely to explain the non-replication, while measurement error and sampling selectivity remain possible.",
+    "if_benchmark_power_low": "State that under-detection remains a substantial explanation and do not interpret metric mismatch biologically.",
+    "decomposition": "Use the decomposition only to describe which component of monitored-nest production carries any directional signal; it cannot rescue the failed frozen primary endpoint."
+  },
+  "claim_boundaries": [
+    "Do not convert any diagnostic p-value into a new primary or confirmatory result.",
+    "Do not use a significant success-frequency sensitivity to rescue the failed REPRO primary endpoint.",
+    "Do not claim that penguins perceive creche counts, chick visibility or public information from this diagnostic.",
+    "Do not claim that monitored-nest sampling noise is absent even if design detectability is high.",
+    "Do not modify the JBI paper-level conclusion that the colony-wide late-season state is not interchangeable with generic nest productivity."
+  ]
+}
