@@ -193,14 +193,14 @@ def run_configuration(
         performance,
         "loss_avoidance_relative",
         permutations=permutations,
-        seed=seed + 1,
+        seed=seed,
     )
     entry = component_test(
         panel,
         performance,
         "entry_log_relative",
         permutations=permutations,
-        seed=seed + 2,
+        seed=seed,
     )
 
     gain_adj, avoid_adj = holm_two(
