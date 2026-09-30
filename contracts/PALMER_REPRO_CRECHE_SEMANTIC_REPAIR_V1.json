@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "repair_id": "mina-palmer-repro-creche-semantic-repair-v1",
+  "date": "2026-09-30",
+  "status": "source_semantic_repair_frozen_before_performance_growth_coefficient",
+  "parent_contract": "mina-palmer-repro-redistribution-v1",
+  "problem": "Historical REPRO archive rows encode absence of a chick creche date as numeric 0, whereas recent annual files encode the corresponding absence as a blank nullable Int64 value. The parent contract's generic non-empty rule would incorrectly count historical zeroes as successful creche events.",
+  "source_audit": {
+    "official_schema": "PAL-LTER/pal-seabirds station_schema.csv declares both Chick 1 Creche Date and Chick 2 Creche Date as nullable Int64.",
+    "historical_1992_2020": {
+      "rows": 1787,
+      "chick1_positive": 1428,
+      "chick1_zero": 359,
+      "chick2_positive": 1024,
+      "chick2_zero": 763
+    },
+    "2021": {
+      "rows": 30,
+      "chick1_positive": 26,
+      "chick1_zero": 4,
+      "chick2_positive": 21,
+      "chick2_zero": 9
+    },
+    "2022_rows": 0,
+    "2023_2026": "Creche fields use positive integer dates or blank values rather than zeroes.",
+    "creche_999_occurrences_all_files": 0,
+    "performance_growth_coefficient_computed_before_repair": false
+  },
+  "frozen_resolution": {
+    "successful_creche_event": "A creche field counts as one chick reaching creche if and only if it parses as a finite numeric value > 0.",
+    "no_creche_event": [
+      "numeric 0",
+      "empty string",
+      "NULL",
+      "other nonnumeric missing representation"
+    ],
+    "creched_chicks_per_nest": "sum the two successful-creche indicators; allowed values 0, 1, 2.",
+    "no_imputation": true,
+    "no_date_value_used_beyond_presence_of_positive_event": true
+  },
+  "unchanged": [
+    "five monitored nests minimum per colony-season",
+    "within-island-season standardization",
+    "lag-1 primary redistribution endpoint",
+    "prior-size control",
+    "colony fixed effects",
+    "within-island-season permutation null",
+    "100000 permutations",
+    "minimum-information gate",
+    "all prespecified sensitivities and decision rules"
+  ],
+  "claim_boundary": [
+    "This repair addresses archive encoding only and is not selected using the performance-growth association.",
+    "Do not use hatch, loss, or lay dates to redefine reproductive success after this repair.",
+    "If later metadata document a different meaning for zero/blank creche fields, stop and audit rather than selecting the interpretation that improves the association."
+  ]
+}
