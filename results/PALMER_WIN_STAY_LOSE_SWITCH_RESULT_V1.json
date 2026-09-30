@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-win-stay-lose-switch-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-win-stay-lose-switch-v1",
+  "execution": {
+    "workflow_run_id": 36650660409,
+    "artifact_id": 11070577451,
+    "artifact_digest": "sha256:09e2142b310ee12825a3096b816604e39de58bfb307cc1683b675df263cbbe12",
+    "head_sha": "6d4e94c5a657e79f643febadf19a5f0f4870fe82",
+    "conclusion": "success"
+  },
+  "source_counts": {
+    "adult_rows": 1489,
+    "usable_chick_rows": 805,
+    "performance_rows": 768
+  },
+  "P1": {
+    "primary": {
+      "n_rows": 104,
+      "n_transition_years": 25,
+      "beta": 0.027451679635325216,
+      "bootstrap_replicates": 20000,
+      "q05": 0.0017820922087629545,
+      "q50": 0.026479813505154895,
+      "q95": 0.05360347436401863,
+      "margin": 0.04879016416943205,
+      "decision": "compatible_with_within_island_redistribution",
+      "mean_matched_coverage": 0.9610669874323143,
+      "minimum_matched_coverage": 0.5114709851551957
+    },
+    "coverage_ge_0_80": {
+      "n_rows": 97,
+      "n_transition_years": 24,
+      "beta": 0.020156904925057274,
+      "q05": -0.0015577298264314895,
+      "q50": 0.01863272333819449,
+      "q95": 0.041641788006727735,
+      "decision": "compatible_with_within_island_redistribution"
+    },
+    "compensation_diagnostic": {
+      "n_island_seasons": 104,
+      "n_with_positive_poor_loss": 96,
+      "median_compensation_ratio": 0,
+      "q25_compensation_ratio": 0,
+      "q75_compensation_ratio": 0.3141025641025641
+    },
+    "interpretation": "A larger share of breeders occupying below-average-performance colony components does not predict the prespecified meaningful negative island-total growth effect two years later. This is compatible with redistribution or replacement within the island-scale population, but direct matched poor-loss/good-gain accounting does not show simple one-for-one compensation."
+  },
+  "P2": {
+    "n_rows": 115,
+    "n_transition_years": 25,
+    "beta": 0.057835887249766155,
+    "bootstrap_replicates": 20000,
+    "q05": 0.019377968078315152,
+    "q50": 0.057934561368562204,
+    "q95": 0.10618353512710854,
+    "margin": 0.04879016416943205,
+    "decision": "inconclusive",
+    "n_island_performance_rows": 123,
+    "n_performance_seasons": 27,
+    "interpretation": "Relative island reproductive performance has a positive point association with later island-total growth, but the frozen +5%/SD meaningful-effect decision is inconclusive. The data therefore do not establish the island as a closed redistribution boundary."
+  },
+  "P3": {
+    "primary": {
+      "n_rows": 754,
+      "beta_loss": 0.03438901120947814,
+      "beta_win": 0.046956293982426185,
+      "delta": -0.012567282772948045,
+      "permutations": 100000,
+      "one_sided_upper_p": 0.5791142088579114,
+      "null_q025": -0.09709991943651089,
+      "null_q975": 0.1004585481279163,
+      "supported": false
+    },
+    "sensitivities": {
+      "exclude_litchfield": {
+        "delta": 0.006179029334789601,
+        "p": 0.43790562094379054,
+        "supported": false
+      },
+      "minimum_prior_size_2": {
+        "delta": 0.031871457445817354,
+        "p": 0.25503744962550373,
+        "supported": false
+      },
+      "alternate_logratio_metric": {
+        "delta": 0.039890348104188275,
+        "p": 0.22086779132208678,
+        "supported": false
+      }
+    },
+    "leave_one_island_out_delta": {
+      "CHR": 0.04714820770981812,
+      "COR": -0.030705890407963777,
+      "HUM": 0.019731759106342457,
+      "LIT": 0.006179029334789837,
+      "TOR": -0.10276249352188549
+    },
+    "interpretation": "The preregistered lose-switch asymmetry is not supported. In the primary fit the positive-performance slope is slightly larger than the negative-performance slope, and the asymmetry changes sign across leave-one-island-out fits."
+  },
+  "decision": {
+    "P1": "compatible_within_island_redistribution_or_replacement",
+    "P2": "inconclusive_island_boundary",
+    "P3": "lose_switch_asymmetry_not_supported",
+    "strongest_joint_pattern_supported": false,
+    "specific_win_stay_lose_switch_mechanism_supported": false
+  },
+  "ecological_interpretation": [
+    "The exposed lag-2/3 result still indicates that relative reproductive state carries short-lived information about subsequent within-island redistribution.",
+    "P1 narrows the mechanism by showing that exposure to poor-performing colony components is not followed by a biologically meaningful island-total loss; this is difficult to reconcile with a simple model in which the same poor-performance signal acts mainly through island-wide mortality or breeding nonparticipation.",
+    "However, the descriptive compensation accounting does not show direct one-for-one transfer from poor to good measured colony components.",
+    "P2 does not establish that islands are closed movement units; the observed coefficient is positive and the frozen meaningful-effect interval is inconclusive.",
+    "P3 rejects the specific prediction that below-average performance generates a stronger redistribution response than above-average performance.",
+    "The surviving mechanism class is therefore broader: short-lived adult/local demographic reallocation, retention, participation, immigration/emigration, or another dynamic process, potentially layered with persistent habitat state."
+  ],
+  "claim_boundary": [
+    "Do not call the Palmer result win-stay/lose-switch.",
+    "Do not claim observed adult movement between colony components.",
+    "Do not claim island-scale demographic closure.",
+    "Do not claim mortality or temporary nonbreeding has been excluded.",
+    "P1 supports absence of a prespecified meaningful negative island-total channel, not exact zero-sum compensation.",
+    "P2 and P3 must be reported as non-support/inconclusive rather than omitted.",
+    "The independent Signy replication remains necessary to test transferability of the short-lag redistribution result."
+  ]
+}
