@@ -1,0 +1,27 @@
+name: ross-individual-schema-audit
+
+on:
+  push:
+    branches:
+      - audit/ross-individual-schema-v1
+    paths:
+      - "scripts/audit_ross_individual_schema.py"
+      - ".github/workflows/ross-individual-schema-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Audit public Ross Sea schemas only
+        run: |
+          python scripts/audit_ross_individual_schema.py \
+            --out build/ross_individual_schema_audit.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ross-individual-schema-audit
+          path: build/ross_individual_schema_audit.json
