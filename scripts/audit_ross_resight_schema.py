@@ -67,7 +67,11 @@ def main() -> int:
     readme_url = f"{BASE}/readme/{DATASET_UID}"
     readme = fetch_text(readme_url)
     if not readme.strip():
-        raise RuntimeError("empty USAP-DC README")
+        raise RuntimeError("empty USAP-DC resight README")
+    banding_readme_url = f"{BASE}/readme/{BANDING_UID}"
+    banding_readme = fetch_text(banding_readme_url)
+    if not banding_readme.strip():
+        raise RuntimeError("empty USAP-DC banding README")
 
     token = os.environ.get("USAP_DC_API_KEY", "").strip()
     result: dict[str, object] = {
@@ -78,6 +82,9 @@ def main() -> int:
         "readme_url": readme_url,
         "readme_retrieved": True,
         "readme_text": readme,
+        "banding_readme_url": banding_readme_url,
+        "banding_readme_retrieved": True,
+        "banding_readme_text": banding_readme,
         "api_key_present": bool(token),
         "resight_header": None,
         "banding_header": None,
