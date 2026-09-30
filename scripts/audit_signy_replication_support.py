@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import io
 import json
 import re
@@ -82,7 +83,11 @@ def infer_semantics(frame:pd.DataFrame)->dict:
     chick_date_col=None
     for c in columns:
         n=_norm(c)
-        if pairs_col is None and ("total number of nests" in n or n in {"breeding pairs","pairs","total nests"}):
+        if pairs_col is None and (
+            "total number of nests" in n
+            or "total number of pairs" in n
+            or n in {"breeding pairs","pairs","total nests"}
+        ):
             pairs_col=c
         if chicks_col is None and ("total number of chicks" in n or n in {"chicks","fledglings","chicks expected to fledge"}):
             chicks_col=c
@@ -239,16 +244,47 @@ def read_official_zip(path:Path)->tuple[pd.DataFrame,dict]:
         candidates=[]
         for name in csvs:
             raw=z.read(name)
-            frame=None
+            text=None
+            used_encoding=None
             last=None
             for enc in ("utf-8-sig","utf-8","latin-1"):
                 try:
-                    frame=pd.read_csv(io.BytesIO(raw),encoding=enc)
+                    text=raw.decode(enc)
+                    used_encoding=enc
                     break
                 except Exception as exc:
                     last=exc
-            if frame is None:
-                raise ValueError(f"cannot parse {name}: {last}")
+            if text is None:
+                raise ValueError(f"cannot decode {name}: {last}")
+
+            rows=list(csv.reader(io.StringIO(text)))
+            if not rows:
+                raise ValueError(f"empty CSV: {name}")
+            header=[str(x).strip() for x in rows[0]]
+            width=len(header)
+            repaired_overflow=0
+            padded_short=0
+            fixed=[]
+            for line_no,row in enumerate(rows[1:],start=2):
+                if len(row)==0 or all(str(v).strip()=="" for v in row):
+                    continue
+                if len(row)>width:
+                    # Official files occasionally contain unquoted commas in
+                    # the final free-text Comments field. Preserve the first
+                    # width-1 fields exactly and join only the overflow back
+                    # into the final field.
+                    row=row[:width-1]+[",".join(row[width-1:])]
+                    repaired_overflow+=1
+                elif len(row)<width:
+                    row=row+[""]*(width-len(row))
+                    padded_short+=1
+                if len(row)!=width:
+                    raise ValueError(
+                        f"cannot normalize {name} line {line_no}: "
+                        f"{len(row)} fields for {width}-column header"
+                    )
+                fixed.append(row)
+            frame=pd.DataFrame(fixed,columns=header)
             headers=" ".join(_norm(x) for x in frame.columns)
             score=(
                 4*("chick" in headers)
@@ -256,22 +292,30 @@ def read_official_zip(path:Path)->tuple[pd.DataFrame,dict]:
                 +2*("season" in headers)
                 +len(frame)/10000
             )
-            candidates.append((score,name,frame,len(raw)))
+            candidates.append(
+                (score,name,frame,len(raw),used_encoding,repaired_overflow,padded_short)
+            )
         candidates.sort(key=lambda x:x[0],reverse=True)
-        score,name,frame,size=candidates[0]
+        score,name,frame,size,encoding,repaired_overflow,padded_short=candidates[0]
         manifest=[
             {
                 "name":n,
                 "rows":int(len(df)),
                 "columns":[str(x) for x in df.columns],
                 "bytes":int(sz),
+                "encoding":enc,
+                "overflow_comment_rows_repaired":int(over),
+                "short_rows_padded":int(short),
                 "selection_score":float(sc),
             }
-            for sc,n,df,sz in candidates
+            for sc,n,df,sz,enc,over,short in candidates
         ]
         return frame,{
             "selected_csv":name,
             "selected_score":float(score),
+            "selected_encoding":encoding,
+            "selected_overflow_comment_rows_repaired":int(repaired_overflow),
+            "selected_short_rows_padded":int(padded_short),
             "zip_members":z.namelist(),
             "csv_manifest":manifest,
         }
