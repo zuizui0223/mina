@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "gate_id": "mina-palmer-individual-movement-data-gate-v1",
+  "date": "2026-09-30",
+  "status": "blocked_pending_individual_resight_source",
+  "parent_result": "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json",
+  "scientific_question": "Which individuals carry the short-lived history linking colony reproductive performance to later within-island redistribution: experienced breeders through retention/breeding dispersal, prospecting prebreeders through settlement, or neither?",
+  "why_this_gate_exists": [
+    "Colony-level lag analyses show that past relative reproductive performance predicts later redistribution.",
+    "Measured reproductive-performance autocorrelation is supported for one year but not two or three years under the frozen eligible-colony null.",
+    "The bridge diagnostic remains positive after conditioning on measured next-year performance, prior size and colony identity.",
+    "These aggregate patterns cannot identify individual retention, immigration, prospecting or breeding dispersal."
+  ],
+  "public_evidence_that_individual_data_exist": {
+    "palmer_census_metadata": {
+      "dataset_id": "AdeliePenguinCensus",
+      "source": "https://pallter-data.marine.rutgers.edu/erddap/tabledap/AdeliePenguinCensus",
+      "evidence": "Methods state that new bands are applied annually and that returning previously banded penguins are searched for with standardized effort by two people searching every Humble Island colony every two days throughout the field season."
+    },
+    "fledgling_weights": {
+      "dataset_id": "AdeliePenguinFledglingWeights",
+      "source": "https://marine.rutgers.edu/cool/data/lter/datasets.php?dataset_id=AdeliePenguinFledglingWeights",
+      "evidence": "Public table includes island_name, colony_code, band_number and fledging weight; band_number is documented as the ID associated with a tag or band."
+    },
+    "historical_resighting_study": {
+      "citation": "Chapman et al. 2010, as summarized in Cimino et al. 2014 Marine Ecology Progress Series 513:253-268",
+      "evidence": "Humble Island fledglings were individually banded and later adult resight status was recorded; the published comparison reports higher fledging mass among birds that were subsequently resighted."
+    }
+  },
+  "catalog_search_2026_09_30": {
+    "searched": [
+      "Palmer LTER ERDDAP/public catalog for band, resight, HUMPOP and REPRO terms",
+      "Palmer/Rutgers public dataset pages for band_number/resighting/returning-bird datasets",
+      "EDI-indexed web results for Palmer Adelie band/resight datasets"
+    ],
+    "public_joinable_resight_table_found": false,
+    "what_is_publicly_joinable_now": "Fledgling records include band_number, but no public table containing later band_number x year x location/status/resight observations was identified.",
+    "conclusion": "Individual-level mechanism test is scientifically feasible in principle but not executable from the currently identified public tables."
+  },
+  "required_source_schema_to_open_gate": {
+    "minimum_fields": [
+      "individual band/tag identifier",
+      "observation or breeding season/year",
+      "observation location or colony identifier",
+      "detection/resight indicator or explicit observation record"
+    ],
+    "strongly_preferred_fields": [
+      "breeding status",
+      "paired/nesting status",
+      "sex",
+      "age or birth cohort",
+      "natal colony",
+      "previous breeding colony",
+      "search effort or protocol information"
+    ],
+    "join_requirement": "The individual identifier must be linkable within the resight table across years; natal/fledgling records are optional for adult-retention tests but required for natal-recruitment tests."
+  },
+  "frozen_analysis_if_source_is_found": {
+    "adult_retention_primary": {
+      "population": "Previously observed breeding adults with known colony at season t and an adequately searched season t+1.",
+      "response": "Return to the same colony at t+1 versus observed at a different breeding colony; birds not detected cannot be treated as dispersers without an explicit multistate detection model.",
+      "primary_predictor": "Relative reproductive performance S of the bird's colony at t, using the already frozen colony-performance definition.",
+      "prediction": "Lower colony performance at t is associated with a lower probability of same-colony return / higher conditional breeding dispersal at t+1.",
+      "controls": [
+        "previous colony identity",
+        "year or cohort",
+        "age/experience when available",
+        "sex when available",
+        "search effort/detection process"
+      ],
+      "model_family": "multistate capture-recapture preferred when nondetection is represented; conditional logistic/binomial model allowed only for a fully observed resighted subset and must be labelled conditional on resighting."
+    },
+    "prebreeder_settlement_secondary": {
+      "population": "Known-age prebreeders/prospectors observed before first breeding, if prospecting and first-breeding location are available.",
+      "response": "First breeding colony/location.",
+      "predictor": "Recent relative reproductive performance of candidate colonies available before settlement.",
+      "prediction": "Settlement probability increases with recently observed colony performance after accounting for natal-colony affinity and colony availability.",
+      "boundary": "Do not substitute a 4-5 year natal cohort association for prospecting information; the prior aggregate recruitment-echo test was negative."
+    }
+  },
+  "decision_rule": {
+    "current": "STOP individual-mechanism inference until a qualifying individual resight dataset is identified and its schema is audited before outcomes are analyzed.",
+    "if_source_found": "Freeze detection model, eligibility, predictor alignment, and decision thresholds before computing performance-linked movement effects.",
+    "if_source_not_found": "Retain manuscript claim at history-dependent within-island redistribution; do not label the carrier as public information, adult retention, breeding dispersal, prospecting or recruitment."
+  },
+  "claim_boundaries": [
+    "Existence of standardized band searches does not imply that the underlying individual records are publicly accessible.",
+    "A band_number in the fledgling table alone cannot establish later survival or recruitment.",
+    "Nondetection is not equivalent to mortality or dispersal.",
+    "Colony-level count changes cannot identify individual movement.",
+    "No direct public-information mechanism claim is allowed while this gate remains blocked."
+  ]
+}
