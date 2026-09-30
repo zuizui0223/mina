@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "gate_id": "mina-pointe-geologie-figshare-replication-gate-v1",
+  "date": "2026-09-30",
+  "status": "blocked_by_raw_data_access",
+  "source": {
+    "paper": "Meheust et al. 2024, Human infrastructures correspond to higher Adelie penguin breeding success and growth rate",
+    "doi": "10.1007/s00442-024-05523-0",
+    "figshare_doi": "10.6084/m9.figshare.22341229",
+    "reviewer_share_link": "https://figshare.com/s/b1c3f4a3b7f20a277cf8",
+    "study_frame_from_paper": {
+      "years": "1998-2021",
+      "islands": ["Petrels", "Bernard", "Rostand"],
+      "colonies_after_author_merging": 83,
+      "adult_count_timing": "mid-November",
+      "fledged_chick_count_timing": "mid-February following the breeding-pair census",
+      "breeding_success_definition": "fledged chicks F_{i+1} / breeding pairs A_i"
+    }
+  },
+  "access_audit": {
+    "paper_and_pdf_accessible": true,
+    "figshare_article_page_accessible_in_current_runtime": false,
+    "figshare_api_accessible_in_current_runtime": false,
+    "figshare_ndownloader_accessible_in_current_runtime": false,
+    "github_mirror_found": false,
+    "raw_values_opened": false
+  },
+  "purpose": "Directly test whether the denominator-separated short-lag performance-to-redistribution pattern observed at Palmer is reproduced in an independent Adelie colony system using the authors' deposited colony-year data.",
+  "required_schema": {
+    "minimum_fields": [
+      "stable author-defined colony identifier",
+      "breeding season/year",
+      "breeding-pair count",
+      "fledged-chick count or breeding success"
+    ],
+    "preferred_fields": [
+      "island identifier",
+      "author eligibility/exclusion flag"
+    ],
+    "no_manual_spatial_reconstruction": true,
+    "no_new_colony_merging": true
+  },
+  "frozen_analysis_if_gate_opens": {
+    "source_identity": "Use the deposited author-processed colony identities exactly as provided; do not reconstruct colony boundaries from maps.",
+    "performance": {
+      "raw": "BS_i,t = fledged_chicks_i,t / breeding_pairs_i,t when breeding_pairs_i,t > 0",
+      "year_relative_state": "Within each breeding season, z-standardize BS across eligible colonies; call this S_i,t.",
+      "island_year_sensitivity": "If island identifiers are available, repeat after z-standardizing within island x year."
+    },
+    "growth": {
+      "g_i,u": "log1p(N_i,u+1) - log1p(N_i,u) for adjacent annual counts only",
+      "relative_growth": "Subtract the annual mean growth across all eligible colonies in the primary analysis; island-year demeaning is the prespecified sensitivity if island identity is available."
+    },
+    "published_replication_check": {
+      "role": "First reproduce the paper's reported lag-correlation signs using the deposited data before fitting the new model.",
+      "expected_reported_pattern": {
+        "same_year": "negative",
+        "one_year_lag": "positive",
+        "two_year_lag": "slightly negative"
+      },
+      "failure_rule": "If the deposited data and published code cannot reproduce the reported lag signs within obvious deterministic processing choices, STOP for provenance audit before the new model."
+    },
+    "primary_bias_resistant_model": {
+      "endpoint_alignment": "S_i,t predicts redistribution during t+1 -> t+2, corresponding to the Palmer denominator-separated lag-2 endpoint.",
+      "formula": "relative_growth_i,t+1 = beta * S_i,t + gamma * z(log1p(N_i,t+1)) + colony fixed effect + error",
+      "prediction": "beta > 0",
+      "permutation_null": "Permute S_i,t among all eligible colonies within predictor year t while preserving missingness, future growth, current size and colony identity.",
+      "permutations": 100000,
+      "seed": 20261001,
+      "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+      "alpha": 0.05
+    },
+    "secondary": {
+      "same_interval": "Report S_i,t -> t to t+1 relative growth as mechanically coupled/descriptive only.",
+      "next_next_interval": "Report S_i,t -> t+2 to t+3 relative growth using the same controls and permutation family.",
+      "leave_one_island_out": "If island is available, report observed primary beta after dropping each island.",
+      "exclude_station_core": "Only if the deposited data provide an explicit author-defined station/core grouping; otherwise do not construct one."
+    },
+    "minimum_information": {
+      "matched_colony_year_rows": 300,
+      "predictor_years": 12,
+      "minimum_colonies_per_year": 10,
+      "stop_if_failed": true
+    }
+  },
+  "decision": {
+    "direct_external_replication": "Primary beta > 0 with p <= 0.05 after successfully reproducing the published lag-sign audit.",
+    "non_replication": "Primary endpoint estimable but fails the directional/inference rule.",
+    "blocked": "Raw deposited data cannot be accessed or required schema/information is unavailable."
+  },
+  "claim_boundaries": [
+    "The published 2024 lag correlation is literature triangulation, not our independent reanalysis.",
+    "Do not describe direct replication as successful while the Figshare gate remains blocked.",
+    "Do not infer public-information use from a positive aggregate colony-level coefficient alone.",
+    "Do not tune lags, demeaning scale, colony definitions, controls, thresholds or alpha after raw values are opened.",
+    "The paper's own colony merging must be inherited rather than modified post hoc."
+  ]
+}

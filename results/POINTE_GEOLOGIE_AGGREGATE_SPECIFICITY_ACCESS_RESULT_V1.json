@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-pointe-geologie-aggregate-specificity-access-result-v1",
+  "date": "2026-09-30",
+  "contract_id": "mina-pointe-geologie-aggregate-specificity-v1",
+  "status": "BLOCKED_raw_file_access",
+  "source": {
+    "doi": "10.5068/D1KT10",
+    "file": "data_pub.csv",
+    "dryad_file_stream_id": 903562,
+    "metadata_page_accessible": true,
+    "metadata_confirms_fields": ["YEAR", "SPECIES", "ABUN", "CHICKS", "BS"],
+    "metadata_confirms_adelie_whole_population_counts": true
+  },
+  "access_attempts": {
+    "dryad_landing_page": "success",
+    "individual_file_download_via_web_runtime": "HTTP 403",
+    "individual_file_download_via_container_handoff": "failed",
+    "dryad_api_v2_via_web_runtime": "inaccessible",
+    "reproduction_code_repository": "accessible but Data/ is intentionally gitignored and contains no values"
+  },
+  "outcome_values_opened": false,
+  "model_fitted": false,
+  "decision": null,
+  "next_action": "Run the already frozen aggregate specificity contract only if the exact Dryad data_pub.csv becomes accessible without changing the specification.",
+  "claim_boundary": [
+    "Do not infer a null or positive aggregate carry-over from this access failure.",
+    "Do not substitute a different Pointe Geologie aggregate dataset after learning its outcome values.",
+    "The frozen contract remains valid for the exact Dryad file when access becomes available."
+  ]
+}

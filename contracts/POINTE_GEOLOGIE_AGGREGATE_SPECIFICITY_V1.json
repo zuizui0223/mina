@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-pointe-geologie-aggregate-specificity-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_dryad_adelie_values_are_opened",
+  "role": "external specificity control for the Palmer performance-history result; not a colony-level replication",
+  "source": {
+    "dataset": "Lack of synchronized breeding success in a seabird community: extreme events, niche separation, and environmental variability",
+    "repository": "Dryad",
+    "doi": "10.5068/D1KT10",
+    "file": "data_pub.csv",
+    "metadata_only_known_before_freeze": {
+      "coverage": "1980-2016",
+      "fields": ["YEAR", "SPECIES", "ABUN", "CHICKS", "BS"],
+      "adelie_sampling": "breeding pairs and fledged chicks recorded for the entire Pointe Geologie Adelie colony/archipelago population"
+    }
+  },
+  "scientific_question": "Can a lagged breeding-success-to-growth association resembling the Palmer history signal occur at whole-population scale, where within-population colony redistribution cannot change total abundance?",
+  "logic": {
+    "if_positive": "A positive bias-resistant lag-2 association at the aggregate scale demonstrates that such temporal carry-over is not specific to within-colony redistribution or public-information-driven settlement; environmental persistence or demographic carry-over remain sufficient classes of explanation.",
+    "if_null": "A null aggregate result is compatible with greater specificity of the Palmer within-island signal, but does not prove redistribution or public-information use."
+  },
+  "eligibility": {
+    "species": "Use only the Adelie penguin row series. Match species by an unambiguous dataset label containing Adelie or Pygoscelis adeliae; if no unique match, STOP.",
+    "numeric": "Require finite YEAR, ABUN, CHICKS and BS with ABUN > 0.",
+    "duplicate_year": "Fail closed if more than one eligible Adelie row exists for the same YEAR.",
+    "time_span": "Find all contiguous runs of consecutive calendar years. Primary analysis uses the longest run; ties are resolved by choosing the earliest run.",
+    "minimum_consecutive_years": 25,
+    "stop_rule": "If the longest eligible consecutive run contains fewer than 25 years, STOP without fitting."
+  },
+  "audit": {
+    "breeding_success_consistency": "Report max absolute difference between supplied BS and CHICKS/ABUN. Do not redefine BS unless a discrepancy larger than 1e-8 is found; if larger, STOP for source audit before inference."
+  },
+  "endpoints": {
+    "mechanically_coupled_lag1": {
+      "definition": "g1_t = log(ABUN_{t+1}) - log(ABUN_t), predictor BS_t",
+      "role": "descriptive only because BS_t = CHICKS_t/ABUN_t and g1_t shares ABUN_t",
+      "no_inferential_claim": true
+    },
+    "primary_bias_resistant_lag2": {
+      "definition": "g2_t = log(ABUN_{t+2}) - log(ABUN_{t+1}), predictor BS_t",
+      "controls": [
+        "z(log(ABUN_{t+1}))",
+        "centered calendar year t"
+      ],
+      "model": "g2_t = beta2 * z(BS_t) + gamma * z(log(ABUN_{t+1})) + eta * centered_year_t + error",
+      "prediction_for_specificity_failure": "beta2 > 0"
+    },
+    "secondary_lag3": {
+      "definition": "g3_t = log(ABUN_{t+3}) - log(ABUN_{t+2}), predictor BS_t",
+      "controls": [
+        "z(log(ABUN_{t+2}))",
+        "centered calendar year t"
+      ],
+      "role": "descriptive temporal persistence comparison with Palmer"
+    }
+  },
+  "inference": {
+    "primary_statistic": "full-data beta2 on standardized BS",
+    "null": "Preserve the entire observed breeding-success time series and its autocorrelation by circularly shifting BS relative to abundance/growth while keeping outcome, abundance control and calendar year fixed.",
+    "allowed_shifts": "All non-zero circular shifts of the complete predictor vector over the frozen longest consecutive annual span.",
+    "p_value": "one-sided upper-tail exact circular-shift p = (1 + number shifted beta2 >= observed beta2) / (1 + number allowed shifts)",
+    "alpha": 0.05,
+    "note": "Because exact circular shifts are few, report the full null range and rank as well as p."
+  },
+  "secondary_diagnostics": {
+    "lag1": "Report beta1 from the same control structure using ABUN_t as the size control, but do not use it for mechanism inference.",
+    "lag3": "Report beta3 and its circular-shift rank descriptively.",
+    "remove_extreme_year": "Identify the single year with the lowest supplied BS only after the primary result is frozen; repeat beta2 without that predictor year as a prespecified sensitivity, but do not let it replace the primary.",
+    "first_difference_bs": "Descriptive only: regress g2_t on BS_t - BS_{t-1} for years where defined; no support decision."
+  },
+  "decision": {
+    "aggregate_carryover_supported": "beta2 > 0 and exact one-sided circular-shift p <= 0.05.",
+    "specificity_interpretation_if_supported": "The Palmer lag-2 association cannot be treated as specific evidence of within-island redistribution/public information because a comparable carry-over exists in an aggregate population where internal redistribution leaves total abundance unchanged.",
+    "specificity_interpretation_if_not_supported": "No aggregate lag-2 carry-over is detected under this control; this is compatible with but does not establish a redistribution-specific Palmer process."
+  },
+  "claim_boundaries": [
+    "This is not an external replication of the Palmer colony-level effect because the Dryad data are aggregate Pointe Geologie population data.",
+    "Do not use the mechanically coupled lag-1 endpoint as evidence for public information or demographic memory.",
+    "Do not infer individual movement from aggregate population data.",
+    "Do not tune lags, controls, consecutive-span selection, alpha, or the circular-shift null after Dryad values are opened.",
+    "A positive aggregate lag-2 effect weakens mechanistic specificity; a null result does not prove Palmer public-information use."
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-mechanism-stop-rule-v1",
+  "date": "2026-09-30",
+  "status": "frozen_after_independent_repro_primary_failure",
+  "triggering_results": [
+    "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+    "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json",
+    "results/PALMER_REPRO_REDISTRIBUTION_RESULT_V1.json",
+    "results/PALMER_HUMPOP_ARRIVAL_RESULT_V1.json"
+  ],
+  "reason": "The Palmer colony-wide chick-production state yielded a positive short-lag history signal, but a prospectively frozen independent nest-level reproductive-success primary endpoint did not confirm the association. Continuing to search alternative Palmer reproductive endpoints after this failure would create a high risk of outcome-driven endpoint selection.",
+  "closed_palmer_lanes": [
+    "new definitions based on egg-lay dates",
+    "new definitions based on egg-loss dates",
+    "new definitions based on hatch dates",
+    "new definitions based on chick-loss dates",
+    "new thresholds or transformations of REPRO chosen after the primary result",
+    "additional chick-production transformations beyond already frozen sensitivities",
+    "lowering HUMPOP minimum-information requirements",
+    "post hoc colony merging or hand-built colony crosswalks",
+    "additional lag scanning beyond the previously frozen lag families"
+  ],
+  "allowed_next_evidence": [
+    {
+      "lane": "Pointe Geologie direct replication",
+      "condition": "Raw Figshare colony-year data become accessible and are analyzed exactly under POINTE_GEOLOGIE_FIGSHARE_REPLICATION_GATE_V1."
+    },
+    {
+      "lane": "individual movement",
+      "condition": "A qualifying band/resight table opens PALMER_INDIVIDUAL_MOVEMENT_DATA_GATE_V1 and the movement model is frozen before outcomes."
+    },
+    {
+      "lane": "new independent population panel",
+      "condition": "Eligibility criteria and analysis are frozen before candidate outcome values from the new population(s) are inspected."
+    },
+    {
+      "lane": "new primary field data",
+      "condition": "Prospective individual or colony observations collected under a predeclared design."
+    }
+  ],
+  "current_claim_ceiling": "Palmer Adelie breeding distributions show a short-lived, history-dependent association between a previously defined colony-wide reproductive state and subsequent within-island redistribution. The association is not independently reproduced by the frozen mean-creched-chicks-per-monitored-nest endpoint, and its individual carrier remains unresolved.",
+  "prohibited_upgrades": [
+    "public information is demonstrated",
+    "successful colonies attract immigrants",
+    "adults leave poor colonies",
+    "social facilitation causes concentration",
+    "reproductive success generally predicts colony redistribution",
+    "static habitat is unimportant"
+  ]
+}
