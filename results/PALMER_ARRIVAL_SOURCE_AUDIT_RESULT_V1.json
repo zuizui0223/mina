@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-arrival-source-audit-result-v1",
+  "audited_date": "2026-09-30",
+  "source": {
+    "repository": "PAL-LTER/pal-seabirds",
+    "commit": "523e74a064e2f1153704a32731631cbff4395e73",
+    "path": "station/formatted/Adelie_Humble_Population_Arrival/Adelie_Humble_Population_Arrival_1992_2020.csv",
+    "git_blob_sha": "98cbe512be3899f108c22f44a3ff985ef890a3ff",
+    "sha256": "37f6129dbb25d0c17b0a079ac056874e2fedbc39bc13dd0e0b2e4a85677a35ba",
+    "parsed_rows": 3173
+  },
+  "audit_scope": "raw-key integrity only; no t25/t50/t75 arrival metric and no performance-arrival association was computed",
+  "duplicate_key": [
+    "studyName",
+    "Date",
+    "Island",
+    "Colony"
+  ],
+  "findings": {
+    "duplicate_keys_total": 37,
+    "exact_duplicate_keys": 9,
+    "discordant_duplicate_keys": 28,
+    "discordant_distribution": {
+      "studyName": {
+        "PAL9293": 28
+      },
+      "island": {
+        "HUM": 28
+      },
+      "colony": {
+        "2.1": 28
+      }
+    },
+    "roster_evidence": {
+      "PAL9192": {
+        "1.1": 28,
+        "1.2": 28,
+        "1.3": 28,
+        "2.1": 28,
+        "2.2": 28
+      },
+      "PAL9293": {
+        "1.1": 30,
+        "1.2": 30,
+        "1.3": 30,
+        "2.1": 59,
+        "2.2": 0
+      },
+      "PAL9394": {
+        "1.1": 6,
+        "1.2": 6,
+        "1.3": 6,
+        "2.1": 6,
+        "2.2": 6,
+        "4.0": 1,
+        "5.0": 1
+      }
+    },
+    "interpretation": "The only discordant duplicate structure is a full-season PAL9293 anomaly in which colony 2.2 disappears while colony 2.1 is nearly doubled. This is consistent with two logical colony streams being collapsed to code 2.1, but the source does not objectively identify which repeated row belongs to which logical colony."
+  },
+  "frozen_repair_recommendation": {
+    "exact_duplicates": "collapse only when Adults values are identical, as already specified",
+    "discordant_season": "exclude PAL9293 entirely from derived arrival outcomes",
+    "prohibited": [
+      "do not average discordant same-day counts",
+      "do not choose min or max",
+      "do not relabel one of the two 2.1 streams as 2.2 without an external source key",
+      "do not inspect t50 or model results before freezing the repair"
+    ]
+  }
+}
