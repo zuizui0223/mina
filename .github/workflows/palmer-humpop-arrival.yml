@@ -1,0 +1,68 @@
+name: palmer-humpop-arrival
+
+on:
+  push:
+    branches:
+      - analysis/palmer-humpop-arrival-gate-v1
+    paths:
+      - "scripts/fetch_pal_humpop.py"
+      - "src/mina/humpop_arrival.py"
+      - "tests/test_humpop_arrival.py"
+      - "contracts/PALMER_HUMPOP_ARRIVAL_SCHEMA_GATE_V1.json"
+      - "results/PALMER_HUMPOP_ARRIVAL_SCHEMA_GATE_RESULT_V1.json"
+      - ".github/workflows/palmer-humpop-arrival.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen tests
+        run: pytest -q tests/test_humpop_arrival.py
+      - name: Fetch frozen Palmer sources
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+          python scripts/fetch_pal_humpop.py build/humpop.csv
+      - name: Run frozen HUMPOP arrival test
+        run: |
+          python -m mina.humpop_arrival \
+            --adult-census build/adelie_census.csv \
+            --chicks build/adelie_chicks.csv \
+            --humpop build/humpop.csv \
+            --out build/humpop_arrival.json \
+            --permutations 100000
+      - name: Print receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/humpop_arrival.json").read_text())
+          print("source_counts=",x["source_counts"])
+          p=x["primary_midpoint_50"]
+          print("matching=",json.dumps(p["matching"],sort_keys=True))
+          print("primary_estimable=",p.get("estimable"))
+          if "test" in p:
+              print("primary=",json.dumps(p["test"],sort_keys=True))
+          else:
+              print("primary_failure_reasons=",json.dumps(p.get("failure_reasons"),sort_keys=True))
+          for name,v in x["sensitivities"].items():
+              if isinstance(v,dict) and "test" in v:
+                  print(name,json.dumps(v["test"],sort_keys=True))
+              else:
+                  print(name,json.dumps(v,sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-humpop-arrival
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/humpop.csv
+            build/humpop_arrival.json
