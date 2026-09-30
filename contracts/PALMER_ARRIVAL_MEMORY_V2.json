@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-palmer-arrival-memory-v2",
+  "date": "2026-09-30",
+  "status": "pre_outcome_source_transport_repair_frozen_before_colony_season_arrival_metrics_are_computed",
+  "supersedes": "mina-palmer-arrival-memory-v1",
+  "repair_scope": {
+    "reason": "The V1 contract required EDI revision 8 or a byte-identical mirror. A pinned official PAL-LTER source-processing repository was subsequently located. Its README states that the repository contains raw data and code used to aggregate the Palmer LTER seabird datasets that are archived at EDI, and its Fraser conversion script maps the historical HUMPOP.xls fields directly to the standardized arrival CSV without outcome-dependent filtering.",
+    "outcome_exposure_before_repair": "Only publicly displayed example raw rows used for schema discovery were seen. No colony-season t25/t50/t75 metric, no matched performance-arrival panel, and no model coefficient or p-value had been computed.",
+    "analysis_definition_changed": false,
+    "arrival_metric_changed": false,
+    "eligibility_changed": false,
+    "model_changed": false,
+    "decision_rule_changed": false,
+    "only_change": "Permit the pinned official PAL-LTER standardized CSV as the transport source rather than requiring byte identity with an EDI entity."
+  },
+  "transport_source": {
+    "repository": "PAL-LTER/pal-seabirds",
+    "repository_role": "official Palmer LTER Seabirds Archive managed by the PAL Information Manager",
+    "commit": "523e74a064e2f1153704a32731631cbff4395e73",
+    "path": "station/formatted/Adelie_Humble_Population_Arrival/Adelie_Humble_Population_Arrival_1992_2020.csv",
+    "git_blob_sha": "98cbe512be3899f108c22f44a3ff985ef890a3ff",
+    "historical_raw_source": "station/original/2020_fraser/HUMPOP.xls",
+    "conversion_script": "station/original/convert_station_fraser.py",
+    "conversion_mapping": {
+      "SEASON": "studyName",
+      "DATE": "Date",
+      "ISL": "Island",
+      "LOC": "Colony",
+      "TOTADULTS": "Adults"
+    },
+    "conversion_operations": [
+      "convert SEASON to PAL study identifier",
+      "rename fields",
+      "sort by Date, Island, Colony",
+      "write CSV without index"
+    ],
+    "expected_schema": ["studyName", "Date", "Island", "Colony", "Adults"],
+    "source_validation": [
+      "Fail if the downloaded bytes do not match the pinned Git blob SHA through GitHub provenance.",
+      "Fail if the header differs from the expected schema.",
+      "Fail on negative finite adult counts.",
+      "Record SHA256, byte count and parsed row count before analysis."
+    ]
+  },
+  "scientific_source": {
+    "dataset": "Adelie penguin breeding population arrival chronology on Humble Island",
+    "historical_edi_package": "knb-lter-pal/92/8",
+    "historical_datazoo_dataset": 92,
+    "relationship": "The official PAL-LTER repository states that its processed station datasets are archived in EDI; the pinned 1992-2020 CSV is generated from the Fraser-era HUMPOP source used for this long-term dataset."
+  },
+  "analysis": {
+    "inherit_every_analysis_rule_from": "mina-palmer-arrival-memory-v1",
+    "primary_question": "Does relatively high reproductive performance in a Humble colony during season t predict earlier breeding-adult return to that same colony in season t+1?",
+    "primary_response": "within-season centered t50 from the monotone-envelope normalized arrival curve",
+    "primary_prediction": "alpha < 0",
+    "permutations": 100000,
+    "seed": 20260970,
+    "alpha": 0.05,
+    "minimum_rows": 150
+  },
+  "claim_boundaries": [
+    "All V1 mechanism and interpretation boundaries remain in force.",
+    "The official formatted arrival CSV is a transport representation of the historical source, not individual band-resight data.",
+    "Do not change any analysis rule after derived arrival outcomes are opened."
+  ]
+}
