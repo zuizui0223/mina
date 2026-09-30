@@ -155,10 +155,12 @@ def annualize_resights(
         if age is not None and age < 0:
             raise ValueError(f"band {band} observed before natal cohort season")
 
-        visited_ross = sorted(
-            {str(r["Colony"]) for r in rows if str(r["Colony"]) in ROSS_COLONIES}
-        )
-        visited_all = sorted({str(r["Colony"]) for r in rows})
+        visited_ross_set = {
+            str(r["Colony"]) for r in rows if str(r["Colony"]) in ROSS_COLONIES
+        }
+        visited_ross = [c for c in ROSS_COLONIES if c in visited_ross_set]
+        visited_all_set = {str(r["Colony"]) for r in rows}
+        visited_all = [c for c in STUDY_COLONIES if c in visited_all_set]
         br_colonies = sorted(
             {
                 str(r["Colony"])
