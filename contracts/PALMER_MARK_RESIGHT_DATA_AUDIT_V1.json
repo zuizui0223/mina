@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-mark-resight-data-audit-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_any_individual-movement_analysis",
+  "parent_analysis": "mina-palmer-performance-memory-v1",
+  "question": "Is there a public Palmer/Humble Adélie individual-level band-resight or equivalent movement dataset that can directly distinguish retention, breeding dispersal, or recruitment among colony codes?",
+  "minimum_required_fields": [
+    "individual identifier (band/tag number)",
+    "observation season or date",
+    "observed island/colony or sub-colony",
+    "observation status sufficient to distinguish breeding presence from incidental presence, or a documented breeding-state field"
+  ],
+  "preferred_fields": [
+    "natal colony",
+    "birth year or known age",
+    "breeding status",
+    "sex",
+    "first/last sighting dates",
+    "repeated observations within season"
+  ],
+  "eligibility": {
+    "public_access": "Data bytes or a documented public archive/download must be accessible without author contact.",
+    "Palmer_relevance": "Humble Island or the Palmer Station Adélie study population must be included.",
+    "movement_identifiability": "Observed location must vary at colony/sub-colony scale or otherwise permit a site-fidelity/dispersal endpoint.",
+    "no_proxy_substitution": "Fledgling band assignment alone is not a resight dataset; tracking/foraging paths alone do not identify breeding-site movement."
+  },
+  "search_sources": [
+    "Palmer LTER ERDDAP/data catalog",
+    "Environmental Data Initiative catalog",
+    "USAP Data Center",
+    "indexed Palmer LTER publications and metadata",
+    "paper-linked data repositories"
+  ],
+  "decision_rule": {
+    "direct_movement_gate_open": "At least one public dataset satisfies all minimum required fields and Palmer relevance.",
+    "partial_gate": "Public banded-individual source data exist but later resight location/status data are not publicly located.",
+    "gate_closed": "No public individual identifier source or resight evidence is located."
+  },
+  "claim_boundary": [
+    "A failed public-data search is not evidence that the underlying resight records do not exist.",
+    "Do not claim public-information use, breeding dispersal, or retention from colony-count analyses alone.",
+    "Do not infer movement from fledgling weight/band records without later individual resight locations.",
+    "If only non-public resight records exist, stop the individual-movement lane rather than reconstructing identities indirectly."
+  ]
+}
