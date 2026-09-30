@@ -54,3 +54,12 @@ def test_jbi_figure_caption_format():
     assert "**(b)**" in text
     assert "EPSG:4326" in text
     assert "2-km scale bar" in text
+
+
+def test_all_jbi_citation_keys_exist_in_frozen_bibliography():
+    text=_text()
+    cited=set(re.findall(r"@([A-Za-z0-9_:-]+)",text))
+    bib=Path("docs/REFERENCES_V6.bib").read_text(encoding="utf-8")
+    keys=set(re.findall(r"@\w+\{([^,]+),",bib))
+    assert cited
+    assert cited <= keys, sorted(cited-keys)
