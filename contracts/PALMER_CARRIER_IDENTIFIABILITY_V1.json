@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-carrier-identifiability-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_identifiability_verifier_execution",
+  "motivation": "Palmer colony counts and chick production identify short-term history dependence, but the biological carrier of that history remains uncertain.",
+  "observables": {
+    "B_i_t": "breeding-pair count for colony i in year t",
+    "S_i_t": "relative reproductive-performance state frozen in PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2",
+    "R_i_t": "within-island relative breeder-count growth"
+  },
+  "latent_transition_decomposition": {
+    "identity": "B_i,t+1 = A_i,t+1 + M_i,t+1 + J_i,t+1",
+    "A": "surviving local adults that attend and breed at colony i",
+    "M": "net movement of already mature birds into minus out of colony i",
+    "J": "first-time recruitment into the observed breeding population at colony i",
+    "attendance_note": "A combines adult survival, site retention and breeding propensity because non-breeding adults are not observed in the census."
+  },
+  "carrier_coefficients": {
+    "attendance": "A_i,t+1 contains theta_A * S_i,t",
+    "movement": "M_i,t+1 contains theta_M * S_i,t",
+    "recruitment": "J_i,t+1 contains theta_J * S_i,t",
+    "observable_total": "The breeder-count response identifies theta_total = theta_A + theta_M + theta_J unless external information separates components."
+  },
+  "primary_identifiability_tests": {
+    "T1_design_rank": "Show that a regression using the same observed S_i,t column for attendance, movement and recruitment has identical design columns; only their sum is estimable.",
+    "T2_transition_map_rank": "For K colonies, the observation map y = A + M + J has Jacobian [I I I], rank K and nullity 2K before further constraints.",
+    "T3_within_island_movement_conservation": "Even imposing sum_i M_i,t = 0 leaves more latent dimensions than K breeder-count observations for K >= 2.",
+    "T4_twin_generators": "Construct attendance-driven and movement-driven latent histories that produce exactly the same B_i,t+1 for the same S_i,t while satisfying nonnegative observed breeder counts."
+  },
+  "decision_rule": {
+    "carrier_identifiable_from_counts": "true only if all frozen rank/nullity checks give zero latent nullity and the twin-generator equality fails",
+    "expected": false
+  },
+  "external_data_gate": {
+    "historical_evidence": "Palmer/Humble studies banded approximately 1000 Adelie chicks annually and standardized searches for returning banded birds, so individual encounter histories existed historically.",
+    "public_search_result": "No public individual ID x year x breeding-colony encounter-history table was located in the currently indexed Palmer ERDDAP/EDI/USAP sources during this audit.",
+    "currently_public_tracking": "2018/19-2024/25 Palmer GPS/dive data are public but target foraging movement rather than historical breeding-colony transitions.",
+    "minimum_data_to_break_confounding": [
+      "individual resight histories with colony and breeding status",
+      "or counts of breeding and identifiable non-breeding adults by colony/year",
+      "or independent immigration/emigration/recruitment estimates"
+    ]
+  },
+  "interpretation_boundaries": [
+    "Do not infer adult dispersal, breeding propensity, retention or first recruitment as the unique carrier from breeder counts alone.",
+    "A significant past-performance bridge coefficient does not remove this structural confounding.",
+    "External literature may motivate a mechanism but cannot identify which mechanism generated the Palmer count series.",
+    "The result is an identifiability statement, not evidence that all latent mechanisms are equally biologically plausible."
+  ]
+}

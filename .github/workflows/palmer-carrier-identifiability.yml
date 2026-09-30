@@ -1,0 +1,46 @@
+name: palmer-carrier-identifiability
+
+on:
+  push:
+    branches:
+      - analysis/palmer-carrier-identifiability-v1
+    paths:
+      - "src/mina/carrier_identifiability.py"
+      - "tests/test_carrier_identifiability.py"
+      - "contracts/PALMER_CARRIER_IDENTIFIABILITY_V1.json"
+      - ".github/workflows/palmer-carrier-identifiability.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run identifiability tests
+        run: pytest -q tests/test_carrier_identifiability.py
+      - name: Run exact verifier
+        run: |
+          python -m mina.carrier_identifiability \
+            --out build/carrier_identifiability.json \
+            --max-k 20
+      - name: Print receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/carrier_identifiability.json").read_text())
+          print("carrier_design=",x["carrier_coefficient_design"])
+          print("k2_unconstrained=",x["transition_rank_unconstrained"][0])
+          print("k5_movement_only=",x["transition_rank_movement_conserving_without_recruitment"][3])
+          print("k5_with_recruitment=",x["transition_rank_movement_conserving_with_recruitment"][3])
+          print("twins=",x["twin_generators"])
+          print("decision=",x["decision"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-carrier-identifiability
+          path: build/carrier_identifiability.json

@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-carrier-identifiability-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-carrier-identifiability-v1",
+  "execution": {
+    "workflow_run_id": 36663711992,
+    "workflow_conclusion": "success",
+    "head_sha": "bb57986e923aaf1d787902c81cee17b444385479",
+    "artifact_id": 11074764936,
+    "artifact_digest": "sha256:4a676bd204c47831be8e056bf5ce23c81aae57399eabe8ef391634d9015980a9"
+  },
+  "carrier_coefficient_design": {
+    "n_rows": 5,
+    "n_carrier_coefficients": 3,
+    "rank": 1,
+    "nullity": 2,
+    "singular_values": [
+      3.3852621759621515,
+      1.7287067989157964e-16,
+      5.908657966133497e-33
+    ]
+  },
+  "rank_examples": {
+    "k2_unconstrained": {
+      "n_observations": 2,
+      "n_latent_parameters": 6,
+      "rank": 2,
+      "nullity": 4
+    },
+    "k5_movement_conserving_without_recruitment": {
+      "n_observations": 5,
+      "n_latent_parameters": 9,
+      "rank": 5,
+      "nullity": 4
+    },
+    "k5_movement_conserving_with_recruitment": {
+      "n_observations": 5,
+      "n_latent_parameters": 14,
+      "rank": 5,
+      "nullity": 9
+    }
+  },
+  "exact_twin_generators": {
+    "movement_conserves_island_total": true,
+    "all_attendance_nonnegative": true,
+    "all_recruitment_nonnegative": true,
+    "attendance_vs_movement_max_abs_observed_difference": 0,
+    "attendance_vs_recruitment_max_abs_observed_difference": 0
+  },
+  "decision": {
+    "carrier_identifiable_from_colony_counts": false,
+    "attendance_vs_movement_separable": false,
+    "attendance_vs_recruitment_separable": false
+  },
+  "ecological_interpretation": "The Palmer colony-count and chick-performance series identify short-term history dependence in breeder redistribution, but they cannot structurally identify whether that history is carried by local adult attendance/breeding propensity, net movement of mature birds, or first recruitment. Even imposing within-island conservation of mature-bird movement leaves a non-zero latent null space, and exact biologically admissible latent decompositions can generate identical observed breeder counts.",
+  "public_data_gate": {
+    "historical_band_resights_existed": true,
+    "historical_context": "Palmer/Humble protocols annually banded approximately 1000 Adelie chicks and standardized searches for returning banded birds across all Humble colonies.",
+    "indexed_public_individual_encounter_table_found": false,
+    "current_public_tracking_scope": "2018/19-2024/25 GPS and dive-depth foraging tracks near Palmer Station; not a historical breeding-colony encounter history.",
+    "minimum_data_needed": [
+      "individual ID x year x breeding colony x breeding status resight histories",
+      "or independent estimates of breeding propensity/nonbreeder attendance",
+      "or independent immigration/emigration/recruitment estimates"
+    ]
+  },
+  "claim_boundary": [
+    "Do not name adult dispersal, breeding propensity, retention, or first recruitment as the unique carrier from breeder counts alone.",
+    "A significant past-performance bridge coefficient does not remove this structural confounding.",
+    "Literature can alter biological plausibility but cannot identify which carrier generated the Palmer count series.",
+    "The result does not imply all latent mechanisms are equally plausible; it states that the current observables do not uniquely distinguish them."
+  ]
+}
