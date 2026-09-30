@@ -106,6 +106,9 @@ def check(root: Path) -> dict[str, object]:
         and paper2["decision"]["result_class"]
         == "directionally_concordant_but_not_confirmatory"
     )
+        and paper2["decision"]["result_class"]
+        == "directionally_concordant_but_not_confirmatory"
+    )
 
     failed = [name for name, ok in checks.items() if not ok]
     return {
