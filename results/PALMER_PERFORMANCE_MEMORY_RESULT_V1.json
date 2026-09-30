@@ -16,18 +16,18 @@
     }
   },
   "execution": {
-    "workflow_run_id": 36649200584,
+    "workflow_run_id": 36659833572,
     "workflow_conclusion": "success",
-    "head_sha": "677a1655c12aa381aa3cb2d9985669fcfd625ad1",
-    "artifact_id": 11069422609,
-    "artifact_digest": "sha256:743e6e6b417cd5b82a79fcf3d4ebea445255197241ab82d8242bbe3075b3718e",
-    "analysis_output_sha256": "a189d73e8666cda173d5f3bf31c42fdd808f11d9c3d81ee9fe04f0ebf0312743",
+    "head_sha": "8ef069331da29dd5681ea8ed466bf7a50bd3410d",
+    "artifact_id": 11073408493,
+    "artifact_digest": "sha256:22604dd9b8a564e948623e6312a28dafc702919e4e66c92d7e01aff3e85ea6f3",
+    "analysis_output_sha256": "23d03956b35fb9eae046896dbfc04ce0374615e3c68c6e3d90c79509c099ddea",
     "permutations_per_test": 100000
   },
   "performance_memory": {
     "lag_1": {
       "n_rows": 701,
-      "rho": 0.06393421233477087,
+      "rho": 0.06393421233477088,
       "one_sided_upper_p": 0.025779742202577973,
       "supported": true
     },
@@ -39,7 +39,7 @@
     },
     "lag_3": {
       "n_rows": 600,
-      "rho": 0.0479305596017772,
+      "rho": 0.047930559601777195,
       "one_sided_upper_p": 0.05862941370586294,
       "supported": false
     }
@@ -47,50 +47,48 @@
   "bridge_diagnostic": {
     "model": "lag-2 relative redistribution ~ past performance S_t + current performance S_t+1 + outcome-interval prior size + colony fixed effect",
     "n_rows": 695,
-    "delta_past": 0.02961089769818018,
+    "delta_past": 0.029610897698180417,
     "one_sided_upper_p": 0.0072599274007259925,
     "supported": true,
     "interpretation": "Past performance retains incremental information about t+1 to t+2 redistribution after measured t+1 performance, current group size and persistent colony identity are included."
   },
   "sensitivities": {
     "exclude_litchfield": {
-      "rho_1": 0.09699109386719294,
+      "rho_1": 0.09699109386719293,
       "rho_1_p": 0.003099969000309997,
-      "delta_past": 0.031398618961570285,
+      "delta_past": 0.03139861896157035,
       "delta_past_p": 0.007149928500714993
     },
     "alternate_logratio_metric": {
-      "rho_1": 0.061849417754135425,
+      "rho_1": 0.061849417754135404,
       "rho_1_p": 0.024359756402435977,
-      "delta_past": 0.04217791512010338,
+      "delta_past": 0.042177915120103694,
       "delta_past_p": 0.0008699913000869992
     },
     "minimum_prior_size_2": {
-      "rho_1": 0.06393421233477087,
-      "rho_1_p": 0.026019739802601975,
-      "delta_past": 0.03174171944465425,
-      "delta_past_p": 0.0037699623003769962
+      "delta_past": 0.03174171944465436,
+      "delta_past_p": 0.003749962500374996
     },
     "leave_one_island_out_observed": {
       "CHR": {
         "rho_1": 0.06767042916487025,
-        "delta_past": 0.03920848888738609
+        "delta_past": 0.03920848888738613
       },
       "COR": {
-        "rho_1": 0.06812906102416326,
-        "delta_past": 0.021784455910770436
+        "rho_1": 0.06812906102416327,
+        "delta_past": 0.02178445591077047
       },
       "HUM": {
         "rho_1": 0.07546491377400953,
-        "delta_past": 0.026792447652453883
+        "delta_past": 0.0267924476524539
       },
       "LIT": {
-        "rho_1": 0.09699109386719294,
-        "delta_past": 0.031398618961570285
+        "rho_1": 0.09699109386719293,
+        "delta_past": 0.03139861896157035
       },
       "TOR": {
-        "rho_1": 0.0018419652464003013,
-        "delta_past": 0.03116374327884672
+        "rho_1": 0.0018419652464002985,
+        "delta_past": 0.031163743278846696
       }
     }
   },
@@ -98,16 +96,17 @@
     "frozen_pattern": "mixed_pattern",
     "measured_performance_state_persists_short_term": true,
     "past_performance_adds_information_beyond_current_performance": true,
-    "simple_persistent_state_sufficient_explanation": false,
+    "persistent_state_alone_ruled_out": false,
     "persistent_local_environment_excluded": false,
     "individual_public_information_proven": false
   },
-  "ecological_interpretation": "Relative reproductive performance has weak but detectable one- to two-year memory, so a persistent local-state pathway remains viable. However, past performance still predicts later within-island redistribution after contemporaneous performance, outcome-interval group size and persistent colony identity are included. The leave-one-island-out diagnostic further separates the two signals: removing Torgersen nearly eliminates observed one-year performance memory while leaving the bridge coefficient positive, whereas removing any other single island leaves both coefficients positive. This is consistent with layered dynamics in which persistent local habitat/state effects, especially at terrain-sensitive Torgersen, coexist with a broader short-lived biological memory carried by settlement, retention, breeding dispersal or another unmeasured demographic process.",
+  "ecological_interpretation": "Relative reproductive performance has weak but detectable one- to two-year memory, so persistent local-state processes remain viable. Past performance also retains incremental information about later within-island redistribution after measured t+1 performance, outcome-interval group size and persistent colony identity are included. Because measured reproductive performance is an imperfect proxy for any latent environmental state, that bridge coefficient does not by itself prove a separate biological-memory mechanism. The leave-one-island-out diagnostic shows that the one-year performance autocorrelation is spatially heterogeneous: excluding Torgersen nearly removes rho_1, whereas the bridge coefficient remains positive under every single-island exclusion. The defensible conclusion is therefore a mixed history-dependent system in which persistent local state and short-lived demographic information are both viable, while the identity of the process carrying that history remains unresolved.",
   "claim_boundary": [
     "Do not claim the persistent local environment has been ruled out.",
+    "Do not claim that a significant bridge coefficient proves a distinct biological-memory mechanism; measurement error in current performance or an unmeasured persistent state can leave incremental information in past performance.",
     "Do not interpret the bridge model as causal mediation because S_t+1 is post-t.",
     "Do not infer individual public-information use, prospecting, immigration or breeding dispersal from colony counts alone.",
-    "The Torgersen leave-one-out pattern is a prespecified sensitivity and is mechanistically suggestive, not proof that snow causes the observed performance autocorrelation.",
-    "Direct discrimination among adult retention, breeding dispersal and prospecting requires individual-level mark-resight or tracking data."
+    "The Torgersen leave-one-out pattern is a prespecified sensitivity showing spatial heterogeneity in performance autocorrelation, not proof that terrain or snow causes that autocorrelation.",
+    "Direct discrimination among adult retention, breeding dispersal, prospecting and persistent environmental state requires individual-level movement/resight data and/or colony-specific time-varying environmental measurements."
   ]
 }
