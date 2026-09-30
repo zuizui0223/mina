@@ -26,13 +26,13 @@ def season_start_year_from_date(value: str) -> int:
         observed = datetime.strptime(str(value).strip(), "%m/%d/%Y").date()
     except ValueError as exc:
         raise ValueError(f"invalid documented Ross date: {value!r}") from exc
-    if observed.month in (11, 12):
+    if observed.month in (10, 11, 12):
         return observed.year
-    if observed.month == 1:
+    if observed.month in (1, 2, 3):
         return observed.year - 1
     raise ValueError(
         f"off-window Ross observation month {observed.month}; "
-        "primary contract permits Nov-Jan only"
+        "primary contract permits Oct-Mar only"
     )
 
 
