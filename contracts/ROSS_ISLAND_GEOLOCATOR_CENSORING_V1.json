@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-island-geolocator-censoring-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_behavioral_rows_are_opened",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "external_basis": {
+    "citation": "Dugger et al. 2026, Frontiers in Ecology and Evolution 14:1868960",
+    "published_rule": "239 birds at Cape Crozier and Cape Royds were coded unavailable during 2016-2018 while wearing geolocator tags on their legs to account for possible device effects on survival or detection."
+  },
+  "schema_status": {
+    "public_resight_readme_contains_explicit_geolocator_field": false,
+    "exact_csv_header_verified": false,
+    "tagged_individual_id_list_found_in_public_metadata": false
+  },
+  "frozen_resolution_hierarchy": {
+    "preferred": "If, before full behavioral-row access, an authoritative public source provides the 239 Band IDs and tagged seasons, reproduce the published individual-season censoring exactly.",
+    "fallback_if_ids_not_recoverable": [
+      "Exclude all first-breeding choice events with first_breeding_season in 2016, 2017, or 2018 from the primary analysis.",
+      "Treat banded-breeder performance years 2016, 2017, and 2018 as unavailable unless tagged breeder-seasons can be removed using an authoritative ID list.",
+      "Do not infer that an unmarked resight row was untagged merely because Notes or other free-text fields lack a geolocator mention."
+    ]
+  },
+  "interaction_with_other_gates": {
+    "bird_rule": "The independent BIRD post-2013 candidate-set exclusion remains unchanged.",
+    "information_gate": "Apply geolocator censoring before counting source-level and multi-candidate events for the frozen 100/50 thresholds.",
+    "performance_gate": "A missing/censored performance year removes the entire first-breeding event when that prior year is required; do not substitute a different lookback year."
+  },
+  "claim_boundary": [
+    "Do not identify tagged individuals from behavioral outcome patterns.",
+    "Do not use free-text Notes to construct a post hoc tagged subset after outcomes are opened unless a parsing rule is frozen from external documentation first.",
+    "Do not drop this censoring because it reduces sample size.",
+    "This is a design-protection rule, not evidence that geolocators materially affected the birds in this dataset."
+  ]
+}
