@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "diagnostic_id": "mina-palmer-repro-same-panel-metric-diagnostic-v1",
+  "date": "2026-09-30",
+  "status": "post_result_diagnostic_frozen_after_primary_repro_result",
+  "parent_result": "results/PALMER_REPRO_REDISTRIBUTION_RESULT_V1.json",
+  "purpose": "Determine whether the failed independent REPRO validation reflects a weak Humble validation panel or a biological mismatch between nest-level reproductive success and the previously defined colony-wide chick-production state.",
+  "outcome_exposure": {
+    "repro_primary_result_seen": true,
+    "same_panel_diagnostic_values_seen_before_this_file": true,
+    "confirmatory_use_allowed": false
+  },
+  "fixed_comparison": {
+    "panel": "Exact REPRO lag-1 validation panel restricted further to colony-seasons with an available previously frozen chick-production performance state; n=61, all Humble Island.",
+    "response": "The same next-year within-island relative colony growth used by the REPRO primary model.",
+    "controls": "The same outcome-interval prior-size z score and colony fixed effects.",
+    "predictors_compared": [
+      "previously frozen colony-wide chick-production state",
+      "REPRO mean creched chicks per monitored nest",
+      "REPRO proportion of monitored nests with at least one chick reaching creche"
+    ],
+    "permutation_diagnostic": "For descriptive calibration only, permute each predictor among the complete common-panel colonies within predictor season while holding response and controls fixed; 100000 draws. P-values are explicitly post hoc and cannot create a new confirmatory claim."
+  },
+  "questions": [
+    "Does the previously frozen chick-production signal remain present inside the narrow REPRO validation subset?",
+    "Does controlling for nest-level success materially reduce the chick-production coefficient?",
+    "Are the two performance measures sufficiently correlated to justify calling them the same biological state?"
+  ],
+  "claim_boundaries": [
+    "Do not use the post-hoc p-values as independent replication.",
+    "Do not reinterpret a significant secondary REPRO metric as rescue of the failed REPRO primary endpoint.",
+    "If chick-production remains predictive while nest-level performance does not, rename the former as a late-season colony-wide state rather than generic reproductive success.",
+    "Do not infer public-information use or individual movement from this diagnostic."
+  ]
+}
