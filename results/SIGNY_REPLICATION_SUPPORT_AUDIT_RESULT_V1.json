@@ -3,10 +3,10 @@
   "result_id": "mina-signy-replication-support-audit-result-v1",
   "validated_date": "2026-09-30",
   "execution": {
-    "workflow_run_id": 36656014661,
-    "artifact_id": 11072452104,
-    "artifact_digest": "sha256:9787bac3a181c7ff6ea03f3d8d4256b98c78b2de4b902299d16d8267f704854f",
-    "head_sha": "cb20808f758cf622874378a069d5159748a6ad80",
+    "workflow_run_id": 36656423116,
+    "artifact_id": 11073086443,
+    "artifact_digest": "sha256:6953511d798efccd7c7da60337c274ef364d8a820ccdd0b1388cdaa28a739d70",
+    "head_sha": "66cf8e825d95ddd8d84796692b72fe76f54a98ed",
     "conclusion": "success"
   },
   "source": {
@@ -17,8 +17,9 @@
     "parser_repairs": {
       "overflow_comment_rows": 18,
       "short_rows": 0,
-      "rule": "Only overflow fields beyond the fixed 14-column header are joined back into the final free-text COMMENTS column."
-    }
+      "rule": "Preserve first 13 fields exactly and join only overflow fields into final COMMENTS."
+    },
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62"
   },
   "frozen_semantics": {
     "season": "SEASON",
