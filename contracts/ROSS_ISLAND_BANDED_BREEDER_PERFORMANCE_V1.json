@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-island-banded-breeder-performance-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_resight_behavioral_rows_are_opened",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "state_contract": "mina-ross-island-state-reconstruction-v1",
+  "performance_source_decision": {
+    "preferred_external_source": "USAP-DC 600007 chick counts",
+    "preferred_external_source_status": "incomplete_for_primary_three-colony_choice",
+    "reason": "README documents chick counts only at Capes Royds and Crozier; Cape Bird is not covered, so this source cannot assign a performance predictor to all three Ross Island choice colonies.",
+    "frozen_fallback": "banded-breeder chick-presence index reconstructed from USAP-DC 601444 resight records",
+    "fallback_was_predeclared": true
+  },
+  "raw_code_semantics": {
+    "Chicks_0": "no chicks observed",
+    "Chicks_1": "one chick observed",
+    "Chicks_2": "two chicks observed",
+    "Chicks_8": "at least one chick observed",
+    "Chicks_9": "unknown/did not check"
+  },
+  "breeder_season_eligibility": {
+    "breeder_state": "Individual-season must be classified BR under ROSS_ISLAND_STATE_RECONSTRUCTION_V1.",
+    "colony": "Use the unique breeding colony established by BR evidence.",
+    "interpretable_chick_observation": "At least one resight row in that breeder-season must have Chicks in {0,1,2,8}. Rows with Chicks=9 are ignored for chick-presence classification.",
+    "success": "1 if any interpretable row has Chicks in {1,2,8}.",
+    "failure": "0 if at least one interpretable row exists and every interpretable row has Chicks=0.",
+    "unknown": "Exclude breeder-season from the performance denominator if all Chicks entries are 9 or otherwise uninterpretable.",
+    "one_record_per_bird": "Each breeder contributes exactly one binary chick-presence value per season regardless of number of resights."
+  },
+  "colony_year_index": {
+    "unit": "Ross colony x breeding season",
+    "colonies": ["CROZ", "ROYD", "BIRD"],
+    "minimum_eligible_breeders": 20,
+    "raw_index": "number of eligible breeder-seasons with chick_presence=1 divided by number of eligible breeder-seasons with interpretable chick presence",
+    "three_colony_completeness": "A breeding season is eligible as a performance year only if all three Ross colonies each have at least 20 eligible breeder-seasons.",
+    "standardization": "Within each eligible performance year, z-standardize the three raw colony indices across CROZ, ROYD and BIRD; call the standardized predictor P_c,t.",
+    "whole_colony_claim_prohibited": true,
+    "name": "banded-breeder chick-presence index"
+  },
+  "temporal_alignment": {
+    "first_breeding_season": "y",
+    "performance_predictor": "P_c,y-1 only",
+    "colony_size_control": "MAPPPD log1p breeding pairs for c,y-1 under ROSS_ISLAND_COLONY_SIZE_CONTROL_V1",
+    "same_season_performance": "prohibited",
+    "two_or_more_year_average": "prohibited in the primary test"
+  },
+  "choice_event_eligibility_effect": {
+    "performance": "Every colony in the individual's frozen candidate set must have P_c,y-1. Otherwise exclude the entire first-breeding event.",
+    "colony_size": "Every candidate colony must also have valid MAPPPD size for y-1. Otherwise exclude the entire event.",
+    "bird_gap": "Because Cape Bird resighting effort is unavailable/intermittent after 2013, a performance year lacking valid BIRD breeder data cannot be rescued by using only Royds/Crozier."
+  },
+  "primary_choice_model": {
+    "inherited_candidate_set": "Union of distinct PB-visited Ross colonies in the two seasons before first breeding.",
+    "formula": "chosen_colony ~ P_c,y-1 + natal_colony_indicator + log1p(MAPPPD breeding_pairs_c,y-1), stratified by individual first-breeding event.",
+    "primary_coefficient": "P_c,y-1",
+    "prediction": "positive",
+    "inference": "Use the 100000 within-performance-year colony-label permutation defined in ROSS_ISLAND_RESIGHT_SCHEMA_GATE_V1.",
+    "minimum_information": "Use the unchanged minimum-information gate from ROSS_ISLAND_RESIGHT_SCHEMA_GATE_V1."
+  },
+  "secondary_external_calibration": {
+    "source": "USAP-DC 600007 Royds/Crozier chick counts",
+    "role": "If its column schema becomes available without movement-outcome inspection, compare annual Royds-vs-Crozier ordering with the banded-breeder chick-presence index descriptively.",
+    "cannot_change_primary_predictor": true
+  },
+  "observation_effort_boundary": [
+    "This index is based on banded breeders and may not represent whole-colony productivity.",
+    "Unknown chick checks are excluded rather than coded as failures.",
+    "Multiple resights do not give a breeder extra weight.",
+    "The index may reflect both true reproductive outcome and observation process; it is used as a pre-settlement colony-year state, not as an unbiased census of chicks."
+  ],
+  "claim_boundaries": [
+    "A positive choice coefficient would support settlement toward colonies with higher prior banded-breeder chick presence among colonies actually prospected; it would not prove that chicks themselves were the cue.",
+    "Do not relabel the index as whole-colony reproductive success.",
+    "Do not lower the 20-breeder threshold after movement outcomes are opened.",
+    "Do not use a two-colony Royds/Crozier subset as a rescue if the three-colony performance gate removes too many events.",
+    "Do not change the one-year lookback after movement outcomes are opened."
+  ]
+}

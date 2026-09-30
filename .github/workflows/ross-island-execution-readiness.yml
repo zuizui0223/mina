@@ -1,0 +1,37 @@
+name: ross-island-execution-readiness
+
+on:
+  push:
+    branches:
+      - validation/ross-island-resight-gate-v1
+    paths:
+      - "scripts/audit_ross_execution_readiness.py"
+      - "scripts/guard_ross_resight_outcome_access.py"
+      - "results/ROSS_ISLAND_RESIGHT_SCHEMA_GATE_RESULT_V1.json"
+      - "results/ROSS_ISLAND_EXACT_HEADER_PROPOSED_RECEIPT_V1.json"
+      - "results/ROSS_ISLAND_CHOICE_ENGINE_SYNTHETIC_RESULT_V2.json"
+      - "results/ROSS_ISLAND_STATE_ENGINE_SYNTHETIC_RESULT_V2.json"
+      - "results/ROSS_ISLAND_END_TO_END_SYNTHETIC_RESULT_V1.json"
+      - "results/ROSS_INDEPENDENT_PERFORMANCE_SOURCE_AUDIT_V1.json"
+      - "results/ROSS_ISLAND_COLONY_SIZE_CONTROL_RESULT_V1.json"
+      - ".github/workflows/ross-island-execution-readiness.yml"
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Assert real behavioral access is locked
+        run: |
+          python scripts/guard_ross_resight_outcome_access.py --assert-locked
+      - name: Audit scientific readiness and lock integrity
+        run: |
+          python scripts/audit_ross_execution_readiness.py             --repo-root .             --out build/ross_execution_readiness.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ross-island-execution-readiness
+          path: build/ross_execution_readiness.json

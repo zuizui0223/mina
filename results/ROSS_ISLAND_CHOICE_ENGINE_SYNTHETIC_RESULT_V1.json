@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-choice-engine-synthetic-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-ross-island-choice-engine-v1",
+  "execution": {
+    "workflow_run_id": 36732465616,
+    "workflow_conclusion": "success",
+    "head_sha": "0aaf36cb2d0bf05ea769b09c3a2ae644f70d1b87",
+    "test_file": "tests/test_ross_choice.py",
+    "tests_passed": 9,
+    "real_behavioral_rows_used": 0
+  },
+  "validated_properties": [
+    "Conditional multinomial logit recovers a strong positive performance preference in simulated choices.",
+    "Estimated performance coefficient remains near zero when synthetic choices are generated independently of performance.",
+    "A 999-draw synthetic permutation test detects a strong simulated performance effect.",
+    "All candidate rows in the same performance year share the same colony-label permutation within a replicate.",
+    "Permutation changes only performance labels; chosen outcomes, candidate sets, natal indicators and size controls remain fixed.",
+    "Frozen minimum-information thresholds are implemented.",
+    "Events with multiple chosen alternatives are rejected.",
+    "Events with fewer than two candidates are rejected.",
+    "Row-level performance values must exactly match the frozen year-by-colony performance table."
+  ],
+  "decision": {
+    "choice_engine_ready_before_real_data": true,
+    "raw_csv_loader_allowed_before_header_gate": false,
+    "movement_outcomes_opened": false
+  }
+}

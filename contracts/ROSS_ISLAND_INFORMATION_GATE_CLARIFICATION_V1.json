@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "clarification_id": "mina-ross-island-information-gate-clarification-v1",
+  "date": "2026-09-30",
+  "status": "pre_outcome_implementation_clarification",
+  "behavioral_rows_read": 0,
+  "amends_implementation_of": [
+    "mina-ross-island-resight-schema-gate-v1",
+    "mina-ross-island-choice-engine-v2"
+  ],
+  "problem": "The frozen minimum-information language contains two distinct counts: at least 100 otherwise eligible first-breeding events, and at least 50 events with at least two observed candidate colonies. The first choice-engine implementation only receives multi-candidate choice rows and therefore incorrectly used the same model-event count for both thresholds, effectively requiring >=100 multi-candidate events.",
+  "frozen_intent_preserved": {
+    "source_gate": {
+      "eligible_first_breeding_events_before_multi_candidate_filter": 100,
+      "definition": "Known-age first-breeding events satisfying the frozen state, temporal, performance, colony-size and detection-availability rules before requiring a candidate set of at least two actually visited colonies."
+    },
+    "choice_model_gate": {
+      "events_with_at_least_two_observed_candidate_colonies": 50,
+      "definition": "Subset of source-gate events whose two-season PB candidate set contains 2-3 Ross colonies and includes the first breeding colony."
+    },
+    "temporal_gate": {
+      "unique_first_breeding_years_among_choice_events": 8
+    },
+    "destination_gate": {
+      "distinct_chosen_destination_colonies_among_choice_events": 2
+    }
+  },
+  "implementation_change": [
+    "The parser/state-builder must produce an outcome-blind source-gate receipt containing the count of eligible first-breeding events before the multi-candidate filter.",
+    "The conditional-choice engine accepts that source count explicitly.",
+    "The engine requires source_count >=100 and model_choice_events >=50, rather than requiring model_choice_events >=100.",
+    "All biological eligibility rules, covariates, candidate-set rules, permutation inference and alpha remain unchanged."
+  ],
+  "why_not_posthoc_relaxation": "No real Ross behavioral row, first-breeding event count, candidate-set size, destination, coefficient or p-value has been inspected. This change restores the literal two-stage thresholds already written in the original frozen gate rather than choosing a threshold in response to observed sample size.",
+  "claim_boundary": [
+    "Do not lower either 100 or 50 after data access.",
+    "Do not count events excluded by the frozen detection, performance, size, state or temporal rules toward the source gate.",
+    "Do not count a one-colony prospecting history as a choice-model event.",
+    "If source gate passes but choice-model gate fails, stop without fitting the performance-choice coefficient."
+  ]
+}

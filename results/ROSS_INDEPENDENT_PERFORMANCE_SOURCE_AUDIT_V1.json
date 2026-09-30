@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-independent-performance-source-audit-v1",
+  "validated_date": "2026-09-30",
+  "status": "NO_COMPLETE_THREE_COLONY_EXTERNAL_PERFORMANCE_SOURCE",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "outcome_blind_status": {
+    "ross_behavioral_rows_read": 0,
+    "settlement_outcomes_opened": false,
+    "movement_transition_frequencies_opened": false
+  },
+  "sources_audited": {
+    "usap_600007": {
+      "title": "Adelie penguin chick counts 1997-2009",
+      "status": "incomplete_for_three_colony_primary",
+      "coverage_statement": "Public README/catalog coverage is Cape Royds and Cape Crozier; Cape Bird is absent.",
+      "consequence": "Cannot define the frozen Royds-Bird-Crozier performance predictor."
+    },
+    "usap_600006": {
+      "title": "Adelie penguin chick measurements 1996-2009",
+      "status": "incomplete_for_three_colony_primary",
+      "coverage_statement": "Public archive exposes Cape Crozier and Cape Royds chick-measurement files; no Cape Bird file is present.",
+      "consequence": "Cannot define a three-colony whole-system predictor."
+    },
+    "mapppd": {
+      "repository": "CCheCastaldo/mapppdr",
+      "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+      "workflow_run_id": 36735005485,
+      "artifact_id": 11106407513,
+      "artifact_digest": "sha256:9e3fe715da2b4a23bc37af70db1fee81cb79b15906c658f084d4bbd0be4127c2",
+      "chick_count_magnitudes_exported": false,
+      "ross_behavioral_rows_read": 0,
+      "component_scheme": {
+        "sites": [
+          "ROYD",
+          "BRDN",
+          "BRDM",
+          "BRDS",
+          "CRZE",
+          "CRZW"
+        ],
+        "chick_records_at_target_sites": 0,
+        "common_prior_performance_years_1996_2012": 0,
+        "three_colony_gate": false
+      },
+      "parent_scheme": {
+        "existing_parent_sites": [
+          "ROYD",
+          "CROZ"
+        ],
+        "missing_parent_site": "Cape Bird",
+        "chick_records_at_existing_parent_sites": 0,
+        "common_prior_performance_years_1996_2012": 0,
+        "three_colony_gate": false
+      }
+    }
+  },
+  "decision": {
+    "independent_three_colony_chick_state_available": false,
+    "use_two_colony_rescue": false,
+    "frozen_fallback_retained": "prior-year banded-breeder chick-presence index under ROSS_ISLAND_BANDED_BREEDER_PERFORMANCE_V1",
+    "reason": "The fallback was predeclared before Ross behavioral rows were opened, and all independent three-colony candidate sources fail on source coverage rather than on association with movement outcomes."
+  },
+  "claim_boundary": [
+    "Do not describe the fallback index as whole-colony reproductive success.",
+    "Do not shrink the primary choice analysis to Royds and Crozier to exploit USAP 600007 or 600006.",
+    "Do not use MAPPPD chick values because the pinned target-site audit contains no such records.",
+    "No Ross settlement outcome has been inspected in making this source decision."
+  ]
+}

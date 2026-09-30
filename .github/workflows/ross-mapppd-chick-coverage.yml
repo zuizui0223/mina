@@ -1,0 +1,47 @@
+name: ross-mapppd-chick-coverage
+
+on:
+  push:
+    branches:
+      - validation/ross-island-resight-gate-v1
+    paths:
+      - "scripts/audit_ross_mapppd_chick_coverage.py"
+      - ".github/workflows/ross-mapppd-chick-coverage.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas pyreadr
+      - name: Fetch pinned mapppdr source
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Audit chick-count coverage only
+        run: |
+          python scripts/audit_ross_mapppd_chick_coverage.py \
+            --mapppdr-dir build/mapppdr \
+            --out build/ross_mapppd_chick_coverage.json
+      - name: Enforce movement-outcome blindness
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/ross_mapppd_chick_coverage.json").read_text())
+          assert x["movement_behavioral_rows_read"] == 0
+          assert x["chick_count_magnitudes_exported"] is False
+          print("n_component_common_prior_performance_years=",x["n_component_common_prior_performance_years_1996_2012"])
+          print("n_parent_common_prior_performance_years=",x["n_parent_common_prior_performance_years_1996_2012"])
+          print("component_three_colony_coverage_gate=",x["component_three_colony_coverage_gate"])
+          print("parent_three_colony_coverage_gate=",x["parent_three_colony_coverage_gate"])
+          print("three_colony_coverage_gate=",x["three_colony_coverage_gate"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ross-mapppd-chick-coverage
+          path: build/ross_mapppd_chick_coverage.json

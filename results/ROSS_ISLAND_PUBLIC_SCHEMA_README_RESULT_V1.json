@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-public-schema-readme-result-v1",
+  "validated_date": "2026-09-30",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "status": "README_SCHEMA_SUFFICIENT_IN_PRINCIPLE_HEADER_STILL_BLOCKED",
+  "execution": {
+    "workflow_run_id": 36728875382,
+    "workflow_conclusion": "success",
+    "head_sha": "a8e5d01244790605025f978a413bf2092c70dc66",
+    "artifact_id": 11103338993,
+    "artifact_digest": "sha256:275f3044b8363fc4d0bf5d4e2e3605a4ee194026334b651d82e5400d6bcc213e",
+    "behavioral_rows_read": 0,
+    "api_key_present": false
+  },
+  "resight_dataset": {
+    "usap_dc_uid": "601444",
+    "doi": "10.15784/601444",
+    "file": "band_resighting_1997-2021.csv",
+    "readme_retrieved": true,
+    "exact_csv_header_retrieved": false,
+    "documented_fields": {
+      "Band": "five-digit individual band identifier; leading zero omitted for oldest bands",
+      "Band Seen": "Y/N observation state",
+      "Eggs": "0,1,2,8,9",
+      "Chicks": "0,1,2,8,9",
+      "Sex": "M,F,U",
+      "Sexed How": "field-method code",
+      "Band Gap": "0,1,2,3,9",
+      "Nest Position": "positive integer nest position within subcolony",
+      "Subcolony": "alphanumeric local subcolony identifier",
+      "Chick Size 1": "ordinal field code",
+      "Chick Size 2": "ordinal field code",
+      "Notes": "free text / field codes",
+      "Area": "local area code",
+      "Colony": "CROZ, ROYD, BIRD, BEAU",
+      "Flagged": "Y/N",
+      "Date": "month/day/year",
+      "Latitude": "WGS84 decimal degrees when available",
+      "Longitude": "WGS84 decimal degrees when available",
+      "Initials": "observer initials"
+    },
+    "egg_codes": {
+      "0": "no eggs",
+      "1": "one egg",
+      "2": "two eggs",
+      "8": "at least one egg",
+      "9": "unknown or not checked"
+    },
+    "chick_codes": {
+      "0": "no chicks",
+      "1": "one chick",
+      "2": "two chicks",
+      "8": "at least one chick",
+      "9": "unknown or not checked"
+    },
+    "sampling_note": "Observers typically spent several hours per day reading band numbers; nests of banded penguins were marked when first observed with eggs or chicks and were typically monitored about every four days."
+  },
+  "banding_dataset": {
+    "usap_dc_uid": "601443",
+    "doi": "10.15784/601443",
+    "readme_retrieved": true,
+    "exact_csv_header_retrieved": false,
+    "documented_fields": {
+      "Low": "low band number in an assigned sequence",
+      "High": "high band number in an assigned sequence",
+      "Colony": "colony where bands were attached",
+      "Season": "four-digit austral breeding season, e.g. 9495"
+    },
+    "natal_colony_recoverable_from_band_ranges": true,
+    "cohort_recoverable_from_season": true
+  },
+  "external_chick_count_dataset": {
+    "usap_dc_uid": "600007",
+    "readme_retrieved": true,
+    "coverage_documented": ["Cape Royds", "Cape Crozier"],
+    "cape_bird_documented": false,
+    "three_colony_primary_performance_source": false
+  },
+  "state_reconstruction_implication": {
+    "published_operational_states_reconstructable_in_principle": true,
+    "frozen_contract": "contracts/ROSS_ISLAND_STATE_RECONSTRUCTION_V1.json",
+    "breeder_evidence_from_public_schema": "Eggs or Chicks in {1,2,8}",
+    "prebreeder_definition_requires_age_at_least_2_and no prior breeding under frozen contract": true
+  },
+  "unlock_status": {
+    "exact_header_validator": "scripts/validate_ross_exact_headers.py",
+    "full_data_access_guard": "scripts/guard_ross_resight_outcome_access.py",
+    "exact_csv_header_verified": false,
+    "movement_analysis_unlocked": false,
+    "next_required_action": "Add USAP_DC_API_KEY, rerun schema-only audit, freeze exact header/parser receipt, then explicitly unlock."
+  },
+  "claim_boundary": [
+    "The README is sufficient to freeze biological state semantics but not to assume exact CSV column order or parser compatibility.",
+    "No individual movement rows, candidate sets, settlement destinations, event counts, coefficients or p-values have been inspected.",
+    "Do not bypass the exact-header gate.",
+    "Do not treat README-based schema knowledge as a movement result."
+  ]
+}

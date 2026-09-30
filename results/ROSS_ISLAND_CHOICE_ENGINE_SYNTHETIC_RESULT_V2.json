@@ -1,0 +1,83 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-ross-island-choice-engine-synthetic-result-v2",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-ross-island-choice-engine-v2",
+  "amendment": "mina-ross-island-detection-control-amendment-v1",
+  "execution": {
+    "workflow_run_id": 36739329009,
+    "workflow_conclusion": "success",
+    "head_sha": "2ca67d09598f3d8fa69c07819784d1150a4482c6",
+    "tests_passed": 22,
+    "choice_engine_tests": 14,
+    "detection_proxy_tests": 8,
+    "real_behavioral_rows_used": 0
+  },
+  "model_validated": {
+    "covariates": [
+      "performance_state",
+      "natal_colony_indicator",
+      "log1p_colony_size",
+      "z_log_resight_days",
+      "is_ROYD",
+      "is_BIRD"
+    ],
+    "reference_alternative": "CROZ",
+    "primary_coefficient": "beta_performance",
+    "permutation_count_for_real_analysis": 100000,
+    "performance_only_permutation": true
+  },
+  "detection_proxy_validated": {
+    "primary_proxy": "within-outcome-season z(log1p distinct non-focal resight dates) across CROZ/ROYD/BIRD",
+    "sensitivity_proxy": "within-outcome-season z(log1p distinct non-focal Date x observer pairs)",
+    "austral_season_mapping": "Oct-Dec -> same calendar year; Jan-Mar -> previous calendar year; Apr-Sep excluded",
+    "focal_individual_rows_excluded": true,
+    "all_three_colonies_required": true,
+    "bird_candidate_post_2013_fail_closed": true
+  },
+  "validated_properties": [
+    "Strong synthetic performance preference is recovered after adding detection-effort and stable-colony controls.",
+    "Performance coefficient remains near zero under a synthetic no-performance-effect generator with detection and colony effects present.",
+    "Synthetic permutation inference detects a strong planted performance effect.",
+    "A single performance-year colony-label permutation is shared by every event in that year.",
+    "Permutation changes only performance and holds natal, size, effort, colony effects, candidate sets and chosen outcomes fixed.",
+    "ROYD and BIRD alternative indicators are derived deterministically from candidate colony.",
+    "Frozen information gate remains implemented.",
+    "Multiple chosen alternatives fail closed.",
+    "Single-option events fail closed.",
+    "Row performance inconsistent with the frozen year table fails closed.",
+    "Non-finite detection-effort covariate fails closed.",
+    "Any candidate set containing BIRD in first-breeding season 2014 or later fails closed.",
+    "January observations map to the preceding austral breeding-season start year.",
+    "April-September observations do not enter the frozen breeding-season effort proxy.",
+    "Focal individual observations cannot create their own detection-effort support.",
+    "Every event requires non-focal resight-date support at all three Ross colonies.",
+    "Equal resight-day coverage produces zero effort contrast.",
+    "Date-observer sensitivity counts distinct pairs and ignores empty observer labels.",
+    "Unknown candidate colonies fail closed.",
+    "The source-level >=100 first-breeding threshold and model-level >=50 multi-candidate threshold are enforced as distinct gates.",
+    "A source eligible count smaller than the multi-candidate choice count fails closed."
+  ],
+  "decision": {
+    "choice_engine_v2_ready_before_real_data": true,
+    "detection_proxy_builder_ready_before_real_data": true,
+    "choice_engine_v1_superseded_for_primary_analysis": true,
+    "raw_csv_loader_allowed_before_header_gate": false,
+    "movement_outcomes_opened": false
+  },
+  "claim_boundary": [
+    "Synthetic validation establishes implementation behavior, not ecological evidence.",
+    "The detection proxy reduces but does not eliminate observation-process bias and is not a true survey-effort log.",
+    "The conditional-choice analysis remains distinct from a full multistate capture-recapture model.",
+    "No Ross first-breeding event count, destination distribution, coefficient or p-value has been observed."
+  ],
+  "information_gate_clarification": {
+    "contract": "mina-ross-island-information-gate-clarification-v1",
+    "source_gate": "eligible first-breeding events before multi-candidate filter >= 100",
+    "choice_model_gate": "multi-candidate choice events >= 50",
+    "temporal_gate": "choice events span >= 8 first-breeding years",
+    "destination_gate": "choice events include >= 2 chosen destination colonies",
+    "previous_implementation_issue": "v1 used the multi-candidate count for both 100 and 50 thresholds",
+    "behavioral_rows_seen_before_repair": 0
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-island-bird-sampling-censoring-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_behavioral_rows_are_opened",
+  "parent_contracts": [
+    "mina-ross-island-detection-control-amendment-v1",
+    "mina-ross-island-banded-breeder-performance-v1"
+  ],
+  "external_basis": {
+    "citation": "Dugger et al. 2026, Frontiers in Ecology and Evolution 14:1868960",
+    "published_sampling": "Cape Bird was resighted similarly to Royds and Crozier through 2013; regular chick banding and annual resighting ended after 2013 and later effort was intermittent."
+  },
+  "primary_performance_year_rule": {
+    "allowed_years": "performance_year <= 2013",
+    "prohibited_years": "performance_year >= 2014",
+    "reason": "The three-colony performance index requires comparable Bird sampling. A numerical >=20 Bird breeder threshold cannot by itself restore the regular sampling regime after 2013.",
+    "no_posthoc_exception": true
+  },
+  "first_breeding_implication": {
+    "primary_requires_performance_year": "y-1",
+    "latest_possible_first_breeding_season_from_performance_rule": 2014,
+    "bird_candidate_rule": "The separate detection amendment still excludes any 2014 first-breeding event whose candidate set contains BIRD.",
+    "2014_roy_d_croz_only": "A 2014 event can remain eligible only if its observed candidate set excludes BIRD and all other frozen controls are valid."
+  },
+  "geolocator_implication": {
+    "primary_choice_analysis": "The 2016-2018 geolocator censoring does not affect the primary choice analysis because the Bird performance-year rule makes first-breeding seasons after 2014 ineligible.",
+    "secondary_or_future_models": "ROSS_ISLAND_GEOLOCATOR_CENSORING_V1 remains binding for any later analysis that uses 2016-2018 observations."
+  },
+  "information_gate": "Apply this performance-year restriction before computing both the source-level >=100 and multi-candidate >=50 event counts.",
+  "claim_boundary": [
+    "Do not use intermittent Bird data after 2013 to extend the primary performance time series.",
+    "Do not drop Bird from the performance standardization to rescue later years.",
+    "Do not substitute a two-colony Royds/Crozier performance contrast for the frozen three-colony index.",
+    "The restriction is an observation-design safeguard, not a biological claim about Bird after 2013."
+  ]
+}

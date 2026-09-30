@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "gate_id": "mina-ross-island-resight-schema-gate-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_resight_or_colony-performance_values_are_opened",
+  "paper_role": "independent individual-level mechanism test for the Palmer late-season colony-state hypothesis",
+  "source_candidates": {
+    "resight": {
+      "dataset_uid": "601444",
+      "doi": "10.15784/601444",
+      "title": "Adelie penguin resighting data 1997-2021 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science",
+      "file": "band_resighting_1997-2021.csv",
+      "md5": "aaae6ddad6d12081b5a68466794438a2",
+      "license": "CC BY 4.0",
+      "temporal_extent": ["1997-12-01", "2021-01-31"]
+    },
+    "banding": {
+      "dataset_uid": "601443",
+      "doi": "10.15784/601443",
+      "title": "Adelie penguin banding data 1994-2021 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science",
+      "role": "natal colony and cohort/age source if not already carried in the resight table"
+    },
+    "independent_colony_performance_candidate": {
+      "dataset_uid": "600007",
+      "title": "Adelie penguin chick counts 1997-2009 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science",
+      "role": "preferred independent colony-year late-season state if its schema permits an objective colony-level performance quantity"
+    }
+  },
+  "known_before_data_access": {
+    "published_mark_recapture_design": [
+      "Ross Island study covers Cape Royds, Cape Bird and Cape Crozier.",
+      "Chicks were individually banded and colonies searched repeatedly during breeding seasons.",
+      "Every resighting recorded band identity and breeding status; nests of breeders were relocated to determine reproductive outcome.",
+      "Published analysis classifies states as unobservable, pre-breeder, breeder and non-breeder combined with colony location.",
+      "Pre-breeder movement among colonies is materially more common than breeder movement; breeder movement is <0.2%."
+    ],
+    "not_novel": [
+      "Estimating age-specific recruitment, breeding propensity or colony-transition probabilities in these data.",
+      "Showing that pre-breeders move among Ross Island colonies more than established breeders."
+    ],
+    "target_novelty": "Test whether recent biological performance of a colony predicts individual prospecting-to-first-breeding settlement choices, rather than merely describing movement rates."
+  },
+  "schema_only_stage": {
+    "allowed": [
+      "README contents",
+      "CSV header/column names",
+      "data types and coded-value documentation",
+      "row counts",
+      "date/season coverage",
+      "unique-value labels without frequencies for categorical code dictionaries",
+      "whether individual ID, date/year, colony, reproductive state, nesting status and reproductive outcome fields exist",
+      "whether banding data provide natal colony and banding year"
+    ],
+    "prohibited": [
+      "individual transition frequencies",
+      "settlement destinations",
+      "colony-year performance values",
+      "associations between performance and settlement",
+      "selection of years, states, colonies or code mappings based on movement outcomes"
+    ]
+  },
+  "gate_decisions": {
+    "GO_prebreeder_choice": "Require stable individual ID, observation season/year, observed colony, and a reproductive-state or nest-status field that objectively distinguishes pre-breeder observations from first breeding. Natal colony/age must be recoverable either from the resight or banding dataset.",
+    "GO_adult_retention_secondary": "Require stable individual ID, breeding colony in consecutive years, breeding status, and documented survey years. This route is secondary because published breeder movement is extremely rare.",
+    "PERFORMANCE_SOURCE_GATE_REQUIRED": "If individual movement schema passes but resight data lack an objective colony-year reproductive-performance field, do not inspect movement outcomes until an independent performance source is schema-audited and its predictor definition is frozen.",
+    "STOP": "If individual identity, colony, or reproductive-state semantics cannot be established objectively, do not use the dataset for the mechanism test."
+  },
+  "preferred_individual_test_if_GO": {
+    "name": "prospecting-to-first-breeding settlement choice",
+    "analysis_unit": "individual first-breeding event",
+    "eligibility": [
+      "Known-age bird observed at age >=2 as a pre-breeder before first recorded breeding.",
+      "At least two Ross Island colonies are in that individual's observed prospecting choice set during the frozen lookback window.",
+      "First breeding colony is observed in a survey year with valid detection effort.",
+      "Candidate-colony performance is measured before first breeding."
+    ],
+    "prospecting_choice_set": "Only colonies at which the individual was actually observed as a pre-breeder during the immediately preceding two breeding seasons. Do not define unvisited colonies as available choices in the primary model.",
+    "performance_lookback": "For each candidate colony, use the most recent complete breeding-season performance state prior to the individual's first breeding season. Same-season post-settlement performance is prohibited.",
+    "primary_model": "Conditional logistic choice model within individual first-breeding event: chosen_colony ~ z_recent_colony_performance + natal_colony_indicator + log_colony_size, with each individual's observed candidate set as the stratum.",
+    "primary_prediction": "Coefficient on recent colony performance > 0.",
+    "primary_inference": {
+      "permutation_null": "Within each performance year, permute colony-performance labels among the three Ross Island colonies, rebuild individual candidate-set predictors, and refit the conditional choice model.",
+      "permutations": 100000,
+      "seed": 20261001,
+      "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+      "alpha": 0.05
+    },
+    "minimum_information": {
+      "eligible_first_breeding_events": 100,
+      "events_with_at_least_two_observed_candidate_colonies": 50,
+      "unique_first_breeding_years": 8,
+      "each_of_two_or_more_destination_colonies_represented": true
+    }
+  },
+  "performance_source_hierarchy": {
+    "P1_independent_colony_counts": {
+      "priority": 1,
+      "source_candidate": "USAP-DC 600007 chick counts plus an independently documented breeding-pair/census denominator if required by the source semantics.",
+      "rule": "Freeze an objective colony-year late-season state before reading individual settlement outcomes."
+    },
+    "P2_resight_breeder_outcomes": {
+      "priority": 2,
+      "allowed_only_if": "The resight schema contains individual breeder reproductive outcome and no suitable independent colony-performance source is available.",
+      "state_definition": "Aggregate reproductive outcome among banded breeders by colony-year, excluding any focal individual if it can contribute to that colony-year predictor.",
+      "minimum_breeders_per_colony_year": 20,
+      "boundary": "Label this a banded-breeder performance index, not whole-colony reproductive success."
+    },
+    "no_performance_source": "If neither source is estimable under its frozen schema gate, stop the public-information test rather than substituting colony size, survival, or a post hoc environmental proxy."
+  },
+  "secondary_tests_if_GO": {
+    "adult_breeder_retention": {
+      "question": "Does prior colony performance predict whether an established breeder is next observed breeding at the same colony?",
+      "role": "secondary because breeder dispersal is published as <0.2%; do not treat sparse events as primary evidence.",
+      "model": "Multistate capture-recapture preferred. A conditional analysis among resighted breeders may be reported only as conditional on detection."
+    },
+    "prebreeder_prospecting_location": {
+      "question": "Before first breeding, are high-performance colonies disproportionately included among colonies an individual visits?",
+      "role": "secondary because observation effort/detection may differ among colonies."
+    }
+  },
+  "detection_and_missingness": {
+    "bird_after_2013": "Published methods state Cape Bird resighting effort became intermittent after 2013. Years without surveys must be coded unavailable/censored, not nondetection.",
+    "nondetection": "Never classify an unobserved bird as dead, emigrated, non-breeding, or absent from a colony without an explicit detection model.",
+    "multiple_same_year_resights": "Preserve all raw observations through schema audit. Any annual state-collapsing rule must be frozen before examining performance-conditioned transitions."
+  },
+  "claim_boundaries": [
+    "A positive prospecting-choice result would support performance-linked settlement among colonies actually visited by pre-breeders; it would not establish the sensory or social cue used.",
+    "Do not call the test a replication of Palmer reproductive success: Palmer's predictive variable is now conservatively termed a late-season colony-wide state.",
+    "Do not infer candidate availability from geographic proximity alone in the primary test.",
+    "Do not use same-season reproductive performance measured after settlement.",
+    "Do not replace the prospecting primary test with adult breeder dispersal if the prospecting endpoint is non-significant.",
+    "Do not tune state codes, lookback windows, minimum sample sizes, candidate sets or alpha after movement outcomes are opened."
+  ]
+}

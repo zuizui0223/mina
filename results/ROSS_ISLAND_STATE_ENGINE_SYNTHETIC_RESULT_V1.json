@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-state-engine-synthetic-result-v1",
+  "validated_date": "2026-10-01",
+  "contracts": [
+    "mina-ross-island-state-reconstruction-v1",
+    "mina-ross-island-season-alignment-v1",
+    "mina-ross-island-banded-breeder-performance-v1"
+  ],
+  "execution": {
+    "workflow_run_id": 36739755020,
+    "workflow_conclusion": "success",
+    "head_sha": "1c75d9e8feffeb7a10ae97714cab98f274ffc161",
+    "test_file": "tests/test_ross_states.py",
+    "tests_passed": 9,
+    "real_behavioral_rows_used": 0
+  },
+  "validated_properties": [
+    "Nov-Dec observations map to the calendar-year breeding-season start; January maps to the previous year; off-window dates fail closed.",
+    "Banding seasons map to cohort start years and overlapping band intervals fail closed.",
+    "Pre-breeder, first breeder, and later non-breeder states are reconstructed from canonical documented Eggs/Chicks codes.",
+    "Ross prospecting visits remain available as a multi-colony candidate set within PB seasons.",
+    "A prior Beaufort breeding event prevents a later Ross breeding observation from being treated as first reproduction.",
+    "Breeding evidence at multiple colonies in one season is flagged ambiguous and excluded from first-breeding choice construction.",
+    "Chicks=9-only breeder seasons remain unknown rather than being coded as reproductive failure.",
+    "The banded-breeder performance index gives one binary contribution per breeder-season and standardizes only complete three-colony years.",
+    "Choice rows attach prior-year performance, natal-colony indicator, and prior-year colony size and exclude entire events when a candidate control is missing."
+  ],
+  "decision": {
+    "canonical_state_engine_ready": true,
+    "raw_csv_loader_implemented": false,
+    "raw_csv_loader_allowed_before_header_gate": false,
+    "movement_outcomes_opened": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-end-to-end-synthetic-result-v1",
+  "validated_date": "2026-10-01",
+  "contracts": [
+    "mina-ross-island-state-reconstruction-v1",
+    "mina-ross-island-season-alignment-v2",
+    "mina-ross-island-banded-breeder-performance-v1",
+    "mina-ross-island-detection-control-amendment-v1",
+    "mina-ross-island-choice-engine-v2",
+    "mina-ross-island-information-gate-clarification-v1"
+  ],
+  "execution": {
+    "workflow_run_id": 36740939606,
+    "workflow_conclusion": "success",
+    "head_sha": "c29f4018a64fb4cd339e2096758e027769e2046f",
+    "test_file": "tests/test_ross_pipeline_end_to_end.py",
+    "tests_passed": 1,
+    "real_behavioral_rows_used": 0
+  },
+  "synthetic_design": {
+    "complete_performance_years": 12,
+    "background_breeders_per_colony_year": 30,
+    "focal_first_breeding_events": 250,
+    "candidate_colonies_per_focal_event": 3,
+    "choice_option_rows": 750,
+    "first_breeding_years": 10,
+    "synthetic_permutation_draws": 999,
+    "planted_performance_effect": "positive"
+  },
+  "pipeline_validated": [
+    "canonical documented observation rows -> annual reproductive states",
+    "band inventory -> natal colony and age",
+    "annual breeder records -> complete three-colony prior-year performance state",
+    "PB histories -> source first-breeding events and multi-candidate sets",
+    "raw observation dates -> non-focal outcome-season resight-day proxy",
+    "source eligibility -> separate >=100 source and >=50 choice gates",
+    "prior performance + natal + size + detection proxy -> V2 canonical choice rows",
+    "choice rows -> six-coefficient conditional multinomial logit",
+    "performance-only year-level colony-label permutation -> one-sided inference"
+  ],
+  "decision": {
+    "full_parser_independent_pipeline_ready": true,
+    "only_real_data_specific_missing_layer": "exact-header-approved USAP-DC CSV loader",
+    "behavioral_outcomes_opened": false
+  },
+  "claim_boundary": [
+    "Synthetic success is implementation validation, not ecological evidence.",
+    "No Ross event count, destination distribution, coefficient, or p-value has been observed.",
+    "The raw loader remains prohibited until the exact-header receipt is manually frozen."
+  ]
+}

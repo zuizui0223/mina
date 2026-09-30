@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "boundary_id": "mina-palmer-late-season-colony-state-claim-boundary-v1",
+  "date": "2026-09-30",
+  "status": "post_validation_claim_boundary",
+  "evidence_base": [
+    "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+    "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json",
+    "results/PALMER_REPRO_REDISTRIBUTION_RESULT_V1.json",
+    "results/PALMER_REPRO_SAME_PANEL_METRIC_DIAGNOSTIC_RESULT_V1.json",
+    "results/PALMER_HUMPOP_ARRIVAL_RESULT_V1.json"
+  ],
+  "preferred_term": "late-season colony-wide state",
+  "deprecated_term_for_primary_chick_state": "generic reproductive success",
+  "why_term_changed": "The colony-wide chick-production state remains predictive of subsequent redistribution on the same Humble validation panel, whereas independently monitored nest-level mean chicks reaching creche does not. The two states are weakly correlated and are not interchangeable measures of one latent reproductive-success variable.",
+  "supported_claims": [
+    "During Palmer decline, breeders become progressively concentrated among fewer effective colony-code groups.",
+    "The previously defined late-season colony-wide chick state contains short-lived information about subsequent within-island redistribution after shared island-transition growth, prior group size and persistent colony identity are controlled.",
+    "The association persists at a denominator-separated lag-2 endpoint and fades by lags 4-5.",
+    "Measured colony-specific state has weak one-year memory but no confirmed two- or three-year memory under the repaired eligible-colony null.",
+    "Past late-season state retains incremental information after measured next-year state, prior size and colony identity are included, while latent environment and measurement error remain viable explanations.",
+    "Inside the exact Humble REPRO validation subset, the original late-season chick state remains strongly associated with next-year redistribution."
+  ],
+  "not_supported": [
+    "A general claim that mean nest reproductive success predicts subsequent redistribution.",
+    "Independent REPRO replication of the Palmer chick-state result.",
+    "A 4-5-year natal recruitment echo as the main carrier of the signal.",
+    "Performance-linked breeder arrival from HUMPOP under the frozen minimum-information rule.",
+    "Individual public-information use.",
+    "Adult retention, breeding dispersal, immigration or prospecting as the identified carrier.",
+    "A claim that static terrain, snow or physical habitat are unimportant."
+  ],
+  "interpretation": "The current Palmer result is best treated as a history-dependent redistribution pattern linked to a late-season colony-wide biological state. That state may integrate chick survival, spatial aggregation, local social conditions, unmeasured habitat state, and observation-process components. Its carrier and cue cannot be identified from Palmer colony counts alone.",
+  "next_mechanism_gate": {
+    "branch": "validation/ross-island-resight-gate-v1",
+    "target": "Independent Ross Island prospecting-to-first-breeding choice using known-age individual resight histories.",
+    "reason": "Individual movement/state data are required to distinguish settlement/retention mechanisms from aggregate colony-state correlations."
+  },
+  "writing_rules": [
+    "Use 'late-season colony-wide state' for the frozen colony-wide chick predictor unless a sentence specifically describes its construction.",
+    "Do not use 'reproductive success predicts redistribution' as the paper-level conclusion.",
+    "When discussing public information, use 'compatible with' only as a hypothesis requiring individual validation, not as the Palmer result.",
+    "Keep the failed REPRO primary endpoint and the stopped HUMPOP endpoint visible in the evidence chain."
+  ]
+}

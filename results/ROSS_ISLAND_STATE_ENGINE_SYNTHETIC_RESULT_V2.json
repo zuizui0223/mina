@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-ross-island-state-engine-synthetic-result-v2",
+  "validated_date": "2026-10-01",
+  "contracts": [
+    "mina-ross-island-state-reconstruction-v1",
+    "mina-ross-island-season-alignment-v2",
+    "mina-ross-island-detection-control-amendment-v1",
+    "mina-ross-island-information-gate-clarification-v1"
+  ],
+  "execution": {
+    "workflow_run_id": 36740830324,
+    "workflow_conclusion": "success",
+    "head_sha": "f35b2ad2167036f54e2ceb8fb34fcf7ba371942e",
+    "tests_passed": 11,
+    "real_behavioral_rows_used": 0
+  },
+  "validated_properties": [
+    "Oct-Dec observations map to the same austral breeding-season start year and Jan-Mar to the preceding year; Apr-Sep fail closed.",
+    "Band inventory uniquely recovers natal colony and cohort; overlapping intervals fail closed.",
+    "PB, BR, NB and ambiguous multi-colony breeding states are reconstructed from documented Eggs/Chicks codes.",
+    "Prior Beaufort breeding prevents a later Ross observation from being treated as first reproduction.",
+    "Chicks=9-only checks remain unknown rather than failure.",
+    "Banded-breeder chick-presence performance is one value per breeder-season and requires complete three-colony years.",
+    "Source first-breeding events are separated from the multi-candidate choice-model subset.",
+    "Canonical detection observations preserve individual, date, colony and observer fields without reading a real CSV.",
+    "Source-gate eligibility can retain one-candidate events before the frozen >=2 candidate choice filter.",
+    "V2 choice rows require complete three-colony performance, colony-size controls, and finite event-specific resight-day detection proxies.",
+    "Events with missing candidate controls are excluded as whole events rather than partially repaired."
+  ],
+  "decision": {
+    "canonical_state_and_event_builder_ready": true,
+    "choice_engine_v2_compatible": true,
+    "raw_csv_loader_implemented": false,
+    "movement_outcomes_opened": false
+  }
+}

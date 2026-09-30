@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-ross-island-exact-header-proposed-receipt-v1",
+  "validated_date": "2026-10-01",
+  "status": "BLOCKED_NO_EXACT_HEADERS",
+  "source_audit": "results/ROSS_ISLAND_PUBLIC_README_SCHEMA_RECEIPT_V1.json",
+  "behavioral_rows_read": 0,
+  "resight_header": null,
+  "banding_header": null,
+  "resight_required": [
+    "Band",
+    "Chicks",
+    "Colony",
+    "Date",
+    "Eggs"
+  ],
+  "banding_required": [
+    "Colony",
+    "High",
+    "Low",
+    "Season"
+  ],
+  "missing_resight_required": [
+    "Band",
+    "Chicks",
+    "Colony",
+    "Date",
+    "Eggs"
+  ],
+  "missing_banding_required": [
+    "Colony",
+    "High",
+    "Low",
+    "Season"
+  ],
+  "header_parser_ready": false,
+  "movement_analysis_unlock_candidate": false,
+  "manual_freeze_required_before_full_download": true,
+  "next_step": "Request a free USAP-DC API key via the documented route, add repository secret USAP_DC_API_KEY, rerun the schema-only workflow, then manually review and freeze the exact-header/parser receipt before any full behavioral download.",
+  "latest_schema_workflow": {
+    "run_id": 36741654720,
+    "artifact_id": 11109868591,
+    "artifact_digest": "sha256:75cd059ac3391733672cedd90d017c77da81bef3d1d7513300665f1ec7330a16",
+    "head_sha": "5f448a49e0d3614ba1220939c928b4db46111bb2",
+    "swagger_documents_api_key_required": true,
+    "anonymous_http_status": 200,
+    "anonymous_response_rejected_as_non_csv_html": true,
+    "api_key_present": false
+  },
+  "note": "Official USAP-DC Swagger requires X-Auth-Token for datafile access. The anonymous endpoint probe returned HTML and was explicitly rejected as non-CSV. No exact header is available; this receipt cannot unlock full-data access."
+}

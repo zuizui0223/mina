@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-island-settlement-estimand-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_behavioral_rows_are_opened",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "published_context": {
+    "published_prospecting_definition": "A pre-breeder remains in the pre-breeder reproductive state while being observed at a non-natal Ross Island colony.",
+    "published_recruitment_definition": "Transition from pre-breeder to breeder.",
+    "published_result_context": "Pre-breeder movement varies strongly by age and origin colony; established breeders rarely move among colonies.",
+    "novelty_boundary": "The primary test below does not re-estimate prospecting or recruitment rates. It conditions on an individual's observed prospecting history and tests whether prior colony state predicts the destination of first breeding among colonies that individual actually visited."
+  },
+  "primary_estimand": {
+    "name": "performance-linked terminal settlement conditional on observed prospecting set",
+    "conditioning": "The individual has already visited at least two Ross colonies as a PB during the two seasons immediately preceding first breeding.",
+    "choice_set": "Union of those actually visited PB colonies only.",
+    "outcome": "Which candidate colony becomes the individual's first observed breeding colony.",
+    "contrast": "Within the same individual event, compare candidate colonies differing in prior-year banded-breeder performance, natal status and colony size.",
+    "performance_effect": "Conditional log-odds change in choosing a candidate colony per unit of prior-year standardized banded-breeder chick-presence state, holding natal-colony indicator and log colony size fixed.",
+    "does_not_estimate": [
+      "Whether performance affects whether a bird prospects at all.",
+      "Whether performance affects which colonies enter the prospecting set.",
+      "Population-level immigration rate.",
+      "Detection probability.",
+      "Adult breeder dispersal."
+    ]
+  },
+  "secondary_estimand": {
+    "name": "performance-linked prospecting-set inclusion",
+    "status": "secondary_only",
+    "reason": "The resight dataset can identify PB visits, but candidate-colony inclusion is more directly exposed to colony-specific search/detection effort. It is therefore not allowed to rescue a null primary settlement-choice result.",
+    "future_model_boundary": "Any secondary prospecting-inclusion model must include a separately frozen observation-effort treatment before its outcome is opened."
+  },
+  "why_primary_is_useful": [
+    "Conditioning on actually observed candidate colonies avoids asserting that geographically available but unvisited colonies were behaviorally available to a focal bird.",
+    "The within-individual choice comparison removes individual-level propensity to recruit in that year from the primary contrast.",
+    "Natal affinity and colony size are retained as competing explanations for choice among visited colonies.",
+    "Using only prior-year performance prevents same-season post-settlement success from becoming a predictor."
+  ],
+  "interpretation_if_positive": "Among colonies that pre-breeders actually prospected shortly before recruitment, first breeding is disproportionately directed toward colonies with better prior biological state. This supports performance-linked settlement choice but does not identify the sensory/social cue or prove that reproductive performance itself was observed by the bird.",
+  "interpretation_if_null": "Do not conclude that public information is absent. A null result would specifically reject the frozen conditional-settlement prediction at the available power/coverage; performance could still affect prospecting-set formation or operate at finer spatial scales.",
+  "claim_boundaries": [
+    "Do not describe the primary model as a test of the already published prospecting-rate pattern.",
+    "Do not infer availability of unvisited colonies.",
+    "Do not let a secondary prospecting-set analysis rescue the primary result.",
+    "Do not expand the lookback window or candidate set after outcomes are opened."
+  ]
+}
