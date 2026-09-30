@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-island-choice-engine-v1",
+  "date": "2026-09-30",
+  "status": "implementation_frozen_before_behavioral_rows_are_opened",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "purpose": "Define and test the parser-independent conditional-choice estimator and performance-label permutation engine using synthetic data only.",
+  "canonical_choice_table": {
+    "one_row_per": "individual first-breeding event x candidate colony",
+    "required_fields": [
+      "event_id",
+      "first_breeding_season",
+      "performance_year",
+      "candidate_colony",
+      "chosen",
+      "performance_state",
+      "natal_colony_indicator",
+      "log1p_colony_size"
+    ],
+    "chosen_rule": "Exactly one chosen=1 row per event.",
+    "candidate_count": "At least 2 and at most 3 Ross Island colonies per event.",
+    "performance_year": "first_breeding_season - 1"
+  },
+  "model": {
+    "family": "conditional multinomial logit with individual first-breeding event as stratum",
+    "linear_predictor": "beta_perf * performance_state + beta_natal * natal_colony_indicator + beta_size * log1p_colony_size",
+    "intercept": "none; event-specific intercept conditions out",
+    "estimator": "Newton-Raphson maximum conditional likelihood using analytic gradient and information matrix",
+    "convergence": {
+      "max_iterations": 50,
+      "coefficient_tolerance": 1e-10,
+      "gradient_tolerance": 1e-9,
+      "singular_information": "use Moore-Penrose pseudoinverse and flag rank deficiency; do not drop a covariate based on outcome"
+    },
+    "primary_coefficient": "beta_perf"
+  },
+  "permutation": {
+    "count": 100000,
+    "seed": 20261001,
+    "unit": "performance_year",
+    "rule": "For each Monte Carlo replicate and each performance year independently, uniformly permute the three Ross colony performance labels CROZ, ROYD, BIRD. Candidate-set membership, chosen colony, natal indicator, colony size and missingness remain fixed.",
+    "years_with_incomplete_three_colony_performance": "Events from those years are ineligible before model fitting under ROSS_ISLAND_BANDED_BREEDER_PERFORMANCE_V1.",
+    "refit": "Refit the full three-covariate conditional logit for every replicate.",
+    "p_value": "(1 + number of null beta_perf >= observed beta_perf) / (B + 1)",
+    "direction": "upper tail"
+  },
+  "information_gate": {
+    "eligible_first_breeding_events": 100,
+    "events_with_at_least_two_observed_candidate_colonies": 50,
+    "unique_first_breeding_years": 8,
+    "destination_requirement": "At least two distinct chosen Ross colonies.",
+    "failure": "STOP before fitting the observed model or permutations."
+  },
+  "synthetic_tests_required": [
+    "recover positive performance preference from simulated two/three-option choices",
+    "recover near-zero performance coefficient when choices are generated independently of performance",
+    "permutation preserves chosen outcomes, candidate sets, natal indicator and size while changing only performance labels",
+    "all rows for the same performance year use one common colony-label permutation within a replicate",
+    "reject events with zero/multiple chosen alternatives",
+    "reject candidate sets outside 2-3 options"
+  ],
+  "loader_boundary": [
+    "No real resight CSV loader is implemented or invoked until the exact CSV header is retrieved under the schema-only gate.",
+    "The real-data parser may map documented raw columns into this canonical choice table but may not change the model, candidate-set definition, covariates, permutation or minimum-information rule."
+  ]
+}
