@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "gate_id": "mina-palmer-humpop-arrival-schema-gate-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_humpop_entity_values_are_opened",
+  "parent_results": [
+    "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+    "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json"
+  ],
+  "source_candidate": {
+    "package_id": "knb-lter-pal.92.9",
+    "title": "Adelie penguin breeding population arrival chronology on Humble Island, 1991-2026",
+    "repository": "Environmental Data Initiative",
+    "latest_revision_uploaded_utc": "2026-09-28 19:03:17",
+    "historical_sampling_description": "Palmer LTER standard sampling describes breeding-adult arrival chronology on Humble Island approximately every two days from 1 October to 15 November."
+  },
+  "purpose": "Determine, before inspecting arrival-count values, whether HUMPOP can provide an independent colony-level process endpoint linking prior reproductive performance to subsequent breeder return/settlement timing.",
+  "schema_only_stage": {
+    "allowed_before_decision": [
+      "entity names",
+      "column names and metadata descriptions",
+      "data types",
+      "documented units",
+      "documented sampling frequency",
+      "documented missing-value codes",
+      "row counts and temporal coverage",
+      "whether raw colony_code is present",
+      "whether repeated within-season observation dates are present"
+    ],
+    "prohibited_before_decision": [
+      "inspection of numerical arrival counts",
+      "plots of arrival trajectories",
+      "correlations with reproductive performance",
+      "selection of years or colonies based on observed arrival behavior"
+    ]
+  },
+  "gate": {
+    "GO_colony_process_test": "Require a raw colony identifier that can be mapped without aggregation or manual recoding to the existing Humble colony_code frame, repeated observation dates within breeding season, and a numeric breeder abundance / occupied-nest quantity suitable for reconstructing an arrival curve.",
+    "BACKGROUND_ONLY": "If data contain only Humble-island totals or an island-wide arrival index with no colony identifier, use only as descriptive phenology context; do not use it to explain colony redistribution.",
+    "STOP": "If colony identity cannot be linked objectively, within-season effort/meaning is undocumented, or the count field is not interpretable as breeding-adult arrival/occupancy, do not analyze the outcome."
+  },
+  "frozen_analysis_if_GO": {
+    "population": "Humble Island colony codes with an eligible reproductive-performance state in breeding season t and a reconstructable arrival curve in season t+1.",
+    "predictor": "S_i,t, exactly the relative reproductive-performance state frozen in PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2.",
+    "prior_size_control": "z(log1p breeding pairs_i,t) from the independent November adult census.",
+    "arrival_curve": {
+      "season_alignment": "Use the dataset's documented breeding-season identifier if available; otherwise freeze a deterministic mapping from observation date to austral breeding season before reading count values.",
+      "normalization": "For each colony-season, divide each arrival count by the maximum observed count for that colony-season after applying only documented missing-value rules.",
+      "monotonicity": "Do not force the raw series to be monotone. The primary endpoint uses the first observed crossing of 0.5 of the season maximum; if the series never has at least one observation below 0.5 and one at/above 0.5, that colony-season is not estimable.",
+      "primary_endpoint": "arrival_midpoint_day = linearly interpolated date of the first 50% crossing, expressed as days from 1 October.",
+      "secondary_endpoints": [
+        "first observation date with normalized abundance >= 0.25",
+        "first observation date with normalized abundance >= 0.75"
+      ]
+    },
+    "primary_model": "arrival_midpoint_day_i,t+1 = beta * S_i,t + gamma * z_log_size_i,t + colony_code fixed effect + arrival-season fixed effect + error.",
+    "prediction": "beta < 0: colonies with better prior reproductive performance reach half of their season maximum earlier in the following spring.",
+    "primary_inference": {
+      "null": "Within each predictor breeding season t, colony labels of S_i,t are exchangeable with respect to next-season arrival timing after the frozen controls.",
+      "permutation": "Permute S_i,t among eligible Humble colonies within predictor season; preserve all arrival data, missingness and controls.",
+      "permutations": 100000,
+      "seed": 20260980,
+      "p_value": "one-sided lower-tail Monte Carlo p with +1 correction",
+      "alpha": 0.05
+    },
+    "minimum_information": {
+      "minimum_matched_colony_seasons": 100,
+      "minimum_unique_predictor_seasons": 10,
+      "minimum_colonies_per_predictor_season": 3
+    },
+    "sensitivities": [
+      "repeat with 25% crossing endpoint",
+      "repeat with 75% crossing endpoint",
+      "exclude colony-seasons with fewer than 4 within-season observations",
+      "leave-one-colony-out observed beta",
+      "repeat after requiring prior adult breeding-pair count >= 2"
+    ]
+  },
+  "interpretation_if_GO": {
+    "supported": "Prior colony performance predicts the timing at which breeders accumulate at that colony in the following spring, providing an independent return/settlement-process correlate of the previously observed history-dependent redistribution.",
+    "not_supported": "Do not use aggregate arrival chronology to support adult retention/settlement as the carrier of demographic history."
+  },
+  "claim_boundaries": [
+    "Earlier colony-level arrival would not distinguish returning experienced breeders from immigrants or prospectors unless individual IDs are present.",
+    "An island-total arrival curve cannot test colony-specific public information.",
+    "Arrival timing is not equivalent to survival, recruitment, or breeding dispersal.",
+    "Do not change the 50% crossing endpoint, model controls or permutation scheme after arrival-count values are opened.",
+    "The individual movement data gate remains blocked unless a longitudinal resight table with individual IDs and locations is identified."
+  ]
+}
