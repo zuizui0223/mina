@@ -61,9 +61,11 @@ def test_permutation_null_uses_full_eligible_predictor_group() -> None:
         {"island": "TOR", "colony": "3", "season": 2000, "state": -1.0},
         {"island": "TOR", "colony": "1", "season": 2001, "state": 0.4},
         {"island": "TOR", "colony": "2", "season": 2001, "state": -0.4},
+        {"island": "TOR", "colony": "1", "season": 2002, "state": 0.2},
+        {"island": "TOR", "colony": "2", "season": 2002, "state": -0.2},
     ]
     panel = memory_panel(performance, 1)
-    assert len(panel) == 2
+    assert len(panel) == 4
     model = _prepare_permutation_model(
         panel,
         performance,
