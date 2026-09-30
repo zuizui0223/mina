@@ -356,12 +356,26 @@ def run_endpoint(
         endpoints,
         minimum_prior_size=minimum_prior_size,
     )
+    reasons = []
+    if len(panel) < 100:
+        reasons.append("fewer_than_100_matched_colony_seasons")
+    if diagnostic["n_predictor_seasons"] < 10:
+        reasons.append("fewer_than_10_predictor_seasons")
+    if reasons:
+        return {
+            "threshold": threshold,
+            "n_arrival_endpoints": len(endpoints),
+            "matching": diagnostic,
+            "estimable": False,
+            "failure_reasons": reasons,
+        }
     model = _prepare_model(panel, performance)
     test = permutation_test(model, permutations=permutations, seed=seed)
     return {
         "threshold": threshold,
         "n_arrival_endpoints": len(endpoints),
         "matching": diagnostic,
+        "estimable": True,
         "test": test,
     }
 
@@ -390,6 +404,32 @@ def analyze(
         permutations=permutations,
         seed=SEED,
     )
+    if not primary["estimable"]:
+        return {
+            "schema_version": 1,
+            "analysis_id": "mina-palmer-humpop-arrival-v1",
+            "gate_id": "mina-palmer-humpop-arrival-schema-gate-v1",
+            "source_counts": {
+                "adult_rows": len(adults),
+                "usable_chick_rows": len(chicks),
+                "humble_performance_rows": len(performance),
+                "humpop_rows": len(humpop),
+                "humpop_duplicate_audit": humpop_audit,
+            },
+            "primary_midpoint_50": primary,
+            "sensitivities": {},
+            "decision": {
+                "status": "STOP_insufficient_information",
+                "arrival_process_supported": None,
+                "individual_movement_identified": False,
+                "posthoc_threshold_or_crosswalk_rescue_allowed": False,
+            },
+            "interpretation_boundary": {
+                "no_performance_arrival_coefficient_computed": True,
+                "individual_band_resight_gate_remains_blocked": True,
+            },
+        }
+
     q25 = run_endpoint(
         adults,
         performance,
@@ -458,6 +498,7 @@ def analyze(
             "leave_one_colony_out_observed_beta": loo,
         },
         "decision": {
+            "status": "estimated",
             "arrival_process_supported": bool(primary["test"]["supported"]),
             "individual_movement_identified": False,
         },
