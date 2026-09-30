@@ -24,30 +24,25 @@ def figure1(palmer:Path,out:Path):
     sites=rows(palmer/"figure1_sites.csv")
     traj=rows(palmer/"figure2_trajectories.csv")
     islands=["CHR","COR","HUM","LIT","TOR"]
+    focal_names={"Christine Island","Cormorant Island","Humble Island","Litchfield Island","Torgersen Island"}
+    focal_sites=[r for r in sites if r["site_name"] in focal_names]
 
     fig,axes=plt.subplots(1,2,figsize=(11.2,4.7))
     ax=axes[0]
-    for role,marker,label in (
-        ("primary_true_island","o","Palmer island"),
-        ("benchmark_non_island","s","Non-island benchmark"),
-    ):
-        local=[r for r in sites if r["site_role"]==role]
-        if not local:
-            continue
-        ax.scatter(
-            [float(r["longitude"]) for r in local],
-            [float(r["latitude"]) for r in local],
-            marker=marker,s=58,label=label,
-        )
-    for r in sites:
+    ax.scatter(
+        [float(r["longitude"]) for r in focal_sites],
+        [float(r["latitude"]) for r in focal_sites],
+        marker="o",s=58,
+    )
+    for r in focal_sites:
         ax.annotate(
-            r["site_name"].replace(" Island","").replace(" Point",""),
+            r["site_name"].replace(" Island",""),
             (float(r["longitude"]),float(r["latitude"])),
             xytext=(4,3),textcoords="offset points",fontsize=7.5,
         )
     ax.set_xlabel("Longitude");ax.set_ylabel("Latitude")
     ax.set_title("A  Palmer breeding-island system")
-    ax.legend(frameon=False,fontsize=8);ax.grid(alpha=.2)
+    ax.grid(alpha=.2)
 
     ax=axes[1]
     for island in islands:
@@ -108,7 +103,8 @@ def figure3(data:Path,out:Path):
     import matplotlib.pyplot as plt
     spp=rows(data/"figure3_species_interactions.csv")
     null=rows(data/"figure3_paper_level_null.csv")[0]
-    labels=[r["species_id"] for r in spp]
+    species_names={"ADPE":"Adélie","CHPE":"Chinstrap","GEPE":"Gentoo"}
+    labels=[species_names.get(r["species_id"],r["species_id"]) for r in spp]
     values=np.asarray([float(r["gamma_ah"]) for r in spp])
     y=np.arange(len(spp))
 
@@ -120,9 +116,10 @@ def figure3(data:Path,out:Path):
     axes[0].set_title("A  Species-specific interaction")
     for i,r in enumerate(spp):
         axes[0].text(
-            values[i],i+0.18,
+            .98,i+0.16,
             f"raw p={float(r['raw_p_value']):.3f}; Holm={float(r['holm_p_value']):.3f}",
-            ha="center",fontsize=7,
+            transform=axes[0].get_yaxis_transform(),
+            ha="right",va="center",fontsize=7,
         )
 
     obs=float(null["observed_median_gamma_ah"])
@@ -178,6 +175,7 @@ def figure4(data:Path,out:Path):
     axes[1].fill_between(xx,lo,hi,alpha=.15)
     axes[1].axhline(.8,linewidth=.8,linestyle="--")
     axes[1].axhline(.9,linewidth=.8,linestyle="--")
+    axes[1].axvline(.31822603579776854,linewidth=1.0,linestyle="--")
     axes[1].axvline(.49765625,linewidth=.8,linestyle=":")
     axes[1].axvline(.5385714285714286,linewidth=.8,linestyle=":")
     axes[1].set_ylim(-.02,1.02)
@@ -185,7 +183,7 @@ def figure4(data:Path,out:Path):
     axes[1].set_ylabel("Detection probability")
     axes[1].set_title("B  Retrospective detectability")
     axes[1].text(
-        .03,.06,"MDE80=0.498; MDE90=0.539",
+        .03,.06,"observed=0.318; MDE80=0.498; MDE90=0.539",
         transform=axes[1].transAxes,fontsize=8,
     )
     fig.tight_layout()
