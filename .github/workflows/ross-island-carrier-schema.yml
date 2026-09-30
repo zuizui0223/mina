@@ -1,0 +1,24 @@
+name: ross-island-carrier-schema
+
+on:
+  push:
+    branches:
+      - analysis/ross-island-carrier-benchmark-v1
+    paths:
+      - "src/mina/ross_carrier_schema.py"
+      - "tests/test_ross_carrier_schema.py"
+      - "contracts/ROSS_ISLAND_CARRIER_BENCHMARK_V1.json"
+      - ".github/workflows/ross-island-carrier-schema.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run schema-gate tests
+        run: pytest -q tests/test_ross_carrier_schema.py
