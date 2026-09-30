@@ -292,12 +292,19 @@ def analyze(
         permutations=permutations,
         seed_offset=200,
     )
-    prior_ge2 = _primary_configuration(
+    performance_primary = performance_rows(adults, chicks)
+    prior_ge2_panel = bridge_panel(
         adults,
-        chicks,
+        performance_primary,
         minimum_prior_size=2.0,
+    )
+    prior_ge2 = permutation_test(
+        _prepare_model(
+            prior_ge2_panel,
+            extra_controls=("current_state", "zsize"),
+        ),
         permutations=permutations,
-        seed_offset=300,
+        seed=20261001,
     )
     loo = {
         island: _observed_leave_one_out(adults, chicks, island)
@@ -327,7 +334,9 @@ def analyze(
         "sensitivities": {
             "exclude_litchfield": no_lit,
             "alternate_logratio_metric": logratio,
-            "minimum_prior_size_2": prior_ge2,
+            "minimum_prior_size_2": {
+                "bridge": prior_ge2,
+            },
             "leave_one_island_out_observed": loo,
         },
         "decision": {
