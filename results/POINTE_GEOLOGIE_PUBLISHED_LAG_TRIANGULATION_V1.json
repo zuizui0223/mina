@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-pointe-geologie-published-lag-triangulation-v1",
+  "date": "2026-09-30",
+  "status": "published_external_evidence_not_reanalysis",
+  "source": {
+    "citation": "Meheust Y, Delord K, Bonnet-Lebrun AS, et al. 2024. Oecologia 204:675-688.",
+    "doi": "10.1007/s00442-024-05523-0",
+    "study_years": "1998-2021",
+    "colonies": 83,
+    "islands": 3
+  },
+  "method_reported_by_source": {
+    "breeding_success": "fledged chicks / breeding pairs for each colony and breeding cycle",
+    "annual_growth": "colony annual growth rate",
+    "temporal_correction": "annual growth was smoothed by subtracting annual mean growth across colonies; breeding-success and growth quantities were corrected for temporal variability before lag correlation",
+    "interpretive_hypothesis": "positive one-year lag was interpreted by the authors as coherent with prospecting new breeders using public information"
+  },
+  "reported_lag_profile": {
+    "zero_year_lag": {
+      "pearson_r": -0.345,
+      "p_reported": "<0.001"
+    },
+    "one_year_lag": {
+      "pearson_r": 0.375,
+      "p_reported": "<0.001"
+    },
+    "two_year_lag": {
+      "pearson_r": -0.073,
+      "p_reported": 0.039
+    },
+    "later_lags": "no significant correlation coefficients reported"
+  },
+  "relationship_to_palmer": {
+    "concordance": "The independent Pointe Geologie system also shows a positive short-delayed breeding-performance/growth association after annual temporal correction, qualitatively concordant with the Palmer history-dependent signal.",
+    "important_difference": "The external published lag profile turns slightly negative at the next lag, whereas the Palmer fixed-specification coefficients remain positive through its lag-3 endpoint before fading.",
+    "specificity": "This literature evidence establishes cross-system recurrence of a short-lag pattern but does not identify public information as the causal carrier."
+  },
+  "epistemic_boundary": [
+    "Values are reported results from the paper, not recomputed from raw data.",
+    "The Figshare raw-data replication gate remains blocked in the current runtime.",
+    "Do not count the reported p-values as new independent tests performed in mina.",
+    "Do not claim exact methodological equivalence to the Palmer model until the deposited data are reanalyzed under the frozen replication contract."
+  ]
+}
