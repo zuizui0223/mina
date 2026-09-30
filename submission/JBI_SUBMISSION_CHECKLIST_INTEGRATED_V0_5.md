@@ -13,13 +13,13 @@
 - [x] Main headers follow Introduction / Materials and Methods / Results / Discussion.
 - [x] Data Accessibility Statement present.
 - [x] Double-anonymous language used in the main manuscript.
-- [x] Current scientific source is integrated v0.5, not the obsolete Signy-centred JBI package.
+- [x] Current scientific source is integrated v0.5, not the obsolete Signy-centred JBI package.\n- [x] JBI is the sole active submission target; the GEB v0.5 branch is archival only unless JBI declines the manuscript.
 
 ## Scientific positioning locked
 
 - [x] Palmer predictor is “late-season colony-wide state,” not generic reproductive success.
 - [x] Palmer lag-2 remains fixed-specification validation after provenance repair.
-- [x] REPRO mean nest success non-replication is retained.
+- [x] REPRO mean nest success non-replication is retained.\n- [x] Post-result REPRO detectability/decomposition is interpretation-only: benchmark β=0.104 detectability ≈89.8%, bootstrap state stability median r≈0.799, successful-nest brood size β≈−0.033 (post-hoc p≈0.779); none rescues the failed primary endpoint.
 - [x] HUMPOP is reported as stopped for insufficient frozen information, not as a null effect.
 - [x] Public-information use is not claimed.
 - [x] Ainley 1995 and Santora 2020 precedents for Antarctic penguin geography are explicit.
