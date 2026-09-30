@@ -5,11 +5,11 @@
   "contract_id": "mina-ross-island-choice-engine-v2",
   "amendment": "mina-ross-island-detection-control-amendment-v1",
   "execution": {
-    "workflow_run_id": 36738377627,
+    "workflow_run_id": 36739329009,
     "workflow_conclusion": "success",
-    "head_sha": "1199a372d1c4520b4a2b745c474483ff6c542600",
-    "tests_passed": 20,
-    "choice_engine_tests": 12,
+    "head_sha": "2ca67d09598f3d8fa69c07819784d1150a4482c6",
+    "tests_passed": 22,
+    "choice_engine_tests": 14,
     "detection_proxy_tests": 8,
     "real_behavioral_rows_used": 0
   },
@@ -54,7 +54,9 @@
     "Every event requires non-focal resight-date support at all three Ross colonies.",
     "Equal resight-day coverage produces zero effort contrast.",
     "Date-observer sensitivity counts distinct pairs and ignores empty observer labels.",
-    "Unknown candidate colonies fail closed."
+    "Unknown candidate colonies fail closed.",
+    "The source-level >=100 first-breeding threshold and model-level >=50 multi-candidate threshold are enforced as distinct gates.",
+    "A source eligible count smaller than the multi-candidate choice count fails closed."
   ],
   "decision": {
     "choice_engine_v2_ready_before_real_data": true,
@@ -68,5 +70,14 @@
     "The detection proxy reduces but does not eliminate observation-process bias and is not a true survey-effort log.",
     "The conditional-choice analysis remains distinct from a full multistate capture-recapture model.",
     "No Ross first-breeding event count, destination distribution, coefficient or p-value has been observed."
-  ]
+  ],
+  "information_gate_clarification": {
+    "contract": "mina-ross-island-information-gate-clarification-v1",
+    "source_gate": "eligible first-breeding events before multi-candidate filter >= 100",
+    "choice_model_gate": "multi-candidate choice events >= 50",
+    "temporal_gate": "choice events span >= 8 first-breeding years",
+    "destination_gate": "choice events include >= 2 chosen destination colonies",
+    "previous_implementation_issue": "v1 used the multi-candidate count for both 100 and 50 thresholds",
+    "behavioral_rows_seen_before_repair": 0
+  }
 }
