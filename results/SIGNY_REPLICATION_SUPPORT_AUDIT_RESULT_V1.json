@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-signy-replication-support-audit-result-v1",
+  "validated_date": "2026-09-30",
+  "execution": {
+    "workflow_run_id": 36656014661,
+    "artifact_id": 11072452104,
+    "artifact_digest": "sha256:9787bac3a181c7ff6ea03f3d8d4256b98c78b2de4b902299d16d8267f704854f",
+    "head_sha": "cb20808f758cf622874378a069d5159748a6ad80",
+    "conclusion": "success"
+  },
+  "source": {
+    "official_doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "ramadda_entryid": "daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "csv": "signy_adelie_breeding_success.csv",
+    "rows": 310,
+    "parser_repairs": {
+      "overflow_comment_rows": 18,
+      "short_rows": 0,
+      "rule": "Only overflow fields beyond the fixed 14-column header are joined back into the final free-text COMMENTS column."
+    }
+  },
+  "frozen_semantics": {
+    "season": "SEASON",
+    "colony": "COLONY",
+    "breeding_pairs": "TOTAL_NUMBER_OF_PAIRS",
+    "chicks": "TOTAL_NUMBER_OF_CHICKS"
+  },
+  "primary_window": {
+    "season_start_years": [
+      1996,
+      2019
+    ],
+    "n_seasons_present": 24,
+    "n_literal_colonies": 11
+  },
+  "lag2_support": {
+    "performance_rows": 177,
+    "lag2_rows": 153,
+    "predictor_seasons": 22,
+    "literal_colonies": 9,
+    "atomic_only_lag2_rows": 133,
+    "pooled_label_enters_primary": true
+  },
+  "gate": {
+    "required_predictor_seasons": 8,
+    "required_colonies": 4,
+    "required_lag2_rows": 40,
+    "passes": true
+  },
+  "decision": {
+    "independent_replication_feasible": true,
+    "effect_computed": false,
+    "atomic_label_sensitivity_required": true
+  },
+  "boundary": [
+    "This receipt contains support counts only and no fitted Signy replication effect.",
+    "The pooled literal label A1 + A60 is retained in the primary analysis exactly as published and excluded in the mandatory atomic-label sensitivity.",
+    "The primary replication remains the Palmer-supported lag-2 performance-linked redistribution coefficient."
+  ]
+}
