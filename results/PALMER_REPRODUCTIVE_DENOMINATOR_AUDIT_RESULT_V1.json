@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-reproductive-denominator-audit-result-v1",
+  "validated_date": "2026-09-30",
+  "execution": {
+    "workflow_run_id": 36624848853,
+    "artifact_id": 11059479556,
+    "artifact_digest": "sha256:9471698d35e770c2609e4683da4543d48a7419ab72070000055de2712a5a6adf",
+    "conclusion": "success",
+    "monte_carlo_draws": 100000
+  },
+  "common_frame": {
+    "n_groups": 95,
+    "n_colony_rows": 727
+  },
+  "measurement": {
+    "exact_pair_match_n": 37,
+    "exact_pair_match_fraction": 0.046954314720812185,
+    "median_absolute_pair_difference": 11,
+    "median_relative_difference_vs_adult": 0.2840785169029444,
+    "legacy_chicks_gt_2x_pairs_n": 173,
+    "legacy_chicks_gt_2x_pairs_fraction": 0.21954314720812182,
+    "adult_chicks_gt_2x_pairs_n": 10,
+    "adult_chicks_gt_2x_pairs_fraction": 0.012690355329949238
+  },
+  "same_frame_count_space": {
+    "independent_adult": {
+      "beta": 0.04546486074902935,
+      "multiplicative_per_1sd": 1.0465142302416597,
+      "z": 9.514291555746981,
+      "p": 0.00000999990000099999,
+      "island_beta": {
+        "CHR": -0.07845527091057508,
+        "COR": 0.013290362898830921,
+        "HUM": 0.020398229794713556,
+        "LIT": 0.12568736223233615,
+        "TOR": 0.15605341880649787
+      },
+      "leave_one_out_beta": {
+        "CHR": 0.09035001673653263,
+        "COR": 0.05011833740344453,
+        "HUM": 0.052070366660399395,
+        "LIT": 0.03989475826834317,
+        "TOR": -0.009959348342441476
+      }
+    },
+    "legacy_chick_table": {
+      "beta": 0.043271313541066114,
+      "multiplicative_per_1sd": 1.0442211677636686,
+      "z": 8.763023337325022,
+      "p": 0.00000999990000099999,
+      "island_beta": {
+        "CHR": 0.013573581345476794,
+        "COR": -0.04925491638698264,
+        "HUM": 0.042493210103039365,
+        "LIT": 0.19970334760804628,
+        "TOR": 0.08037983649805441
+      },
+      "leave_one_out_beta": {
+        "CHR": 0.05500738795535015,
+        "COR": 0.05871871723071164,
+        "HUM": 0.043471456570932744,
+        "LIT": 0.031797834373185126,
+        "TOR": 0.027412320404542806
+      }
+    }
+  },
+  "ratio_diagnostic": {
+    "overall_mean_slope": {
+      "independent_adult_predictor": 0.2364562955605104,
+      "legacy_same_denominator_predictor": 0.006436880576472009
+    },
+    "interpretation": "The null same-denominator ratio slope and the positive count-space size effect are different estimands. Ratio regression is highly sensitive to denominator semantics and is not the inferential gold standard."
+  },
+  "prior_v2_boundaries": {
+    "full_v2_effect_multiplicative_per_1sd": 1.0507855263796289,
+    "full_v2_primary_p": 0.00000999990000099999,
+    "full_v2_leave_out_TOR_supported": false,
+    "full_v2_strong_dirichlet_multinomial_A25_p": 0.08194918050819491,
+    "interpretation": "The pooled positive count-space signal is not robust to every island deletion and not robust to the strongest frozen unstructured overdispersion sensitivity."
+  },
+  "extinction_and_preextinction_context": {
+    "zero_boundary": {
+      "size_ordering_exceeds_proportional_zero_boundary": false,
+      "poisson_lower_p": 1,
+      "gamma_poisson_cv20_lower_p": 0.999920000799992,
+      "interpretation": "Small-first disappearance is descriptive geometry of zero-hitting, not evidence of Allee effects or predation."
+    },
+    "preextinction_chick_success": {
+      "event_bearing_risk_sets": 3,
+      "events": 4,
+      "contrast": -0.9198355011894184,
+      "one_sided_lower_p": 0.06262937370626294,
+      "supported": false
+    }
+  },
+  "decision": {
+    "denominator_source_alone_explains_positive_count_space_effect": false,
+    "ratio_same_denominator_null_invalidates_count_space_effect": false,
+    "palmer_wide_positive_density_dependence_supported": false,
+    "general_allee_like_reproductive_mechanism_supported": false,
+    "preextinction_reproductive_collapse_supported": false
+  },
+  "final_claim_boundary": [
+    "A pooled positive colony-size association with chick allocation exists in count space, but it is strongly island-dependent and cannot be described as a Palmer-wide reproductive law.",
+    "The legacy chick-table breeding-pair field is too inconsistent to serve as the definitive reproductive denominator or ratio-based robustness check.",
+    "The apparent contradiction between the positive count-space result and null same-denominator ratio sensitivity is primarily an estimand/measurement-semantics conflict, not a clean biological replication failure.",
+    "Small-first extinction ordering is mechanically expected under proportional zero-hitting and cannot identify an Allee or predation mechanism.",
+    "Pre-extinction reproductive decline is non-confirmatory.",
+    "Do not write that colonies concentrate into larger groups because those groups universally rear more chicks per pair."
+  ]
+}
