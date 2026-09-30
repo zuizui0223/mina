@@ -69,3 +69,15 @@ def test_colony_fixed_effect_model_recovers_negative_state_timing_signal() -> No
             )
     model = _prepare_model(panel, "relative_t50")
     assert model["observed"] == pytest.approx(-1.25)
+
+
+def test_frozen_source_repair_excludes_pal9293_before_duplicate_check() -> None:
+    rows = [
+        _row(1992, "2.1", "1992-10-13", 3),
+        _row(1992, "2.1", "1992-10-13", 6),
+        _row(1992, "2.1", "1992-10-15", 24),
+        _row(1992, "2.1", "1992-10-18", 85),
+        _row(1992, "2.1", "1992-10-22", 103),
+        _row(1992, "2.1", "1992-10-24", 211),
+    ]
+    assert arrival_metrics(rows) == []
