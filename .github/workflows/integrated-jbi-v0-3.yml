@@ -1,0 +1,54 @@
+name: integrated-jbi-v0-3
+
+on:
+  push:
+    branches: [submission/jbi-format-v0.3]
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_JBI_V0_3.md"
+      - "docs/TITLE_PAGE_JBI_INTEGRATED_V0_3_TEMPLATE.md"
+      - "docs/COVER_LETTER_JBI_INTEGRATED_V0_1.md"
+      - "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md"
+      - "contracts/INTEGRATED_JBI_FORMAT_V0_3.json"
+      - "contracts/INTEGRATED_JBI_POSITIONING_V0_1.json"
+      - "submission/JBI_SUBMISSION_CHECKLIST_INTEGRATED_V0_3.md"
+      - "tests/test_integrated_jbi_format.py"
+      - ".github/workflows/integrated-jbi-v0-3.yml"
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_JBI_V0_3.md"
+      - "docs/TITLE_PAGE_JBI_INTEGRATED_V0_3_TEMPLATE.md"
+      - "docs/COVER_LETTER_JBI_INTEGRATED_V0_1.md"
+      - "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md"
+      - "contracts/INTEGRATED_JBI_FORMAT_V0_3.json"
+      - "contracts/INTEGRATED_JBI_POSITIONING_V0_1.json"
+      - "submission/JBI_SUBMISSION_CHECKLIST_INTEGRATED_V0_3.md"
+      - "tests/test_integrated_jbi_format.py"
+      - ".github/workflows/integrated-jbi-v0-3.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install pytest
+      - name: Run JBI format guard
+        run: python -m pytest tests/test_integrated_jbi_format.py -q
+      - name: Manuscript claim-boundary guard
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          t=Path("docs/MANUSCRIPT_INTEGRATED_JBI_V0_3.md").read_text(encoding="utf-8")
+          low=t.lower()
+          assert "p=0.0947" in low or "p = 0.0947" in low
+          assert "0.0810" in t
+          assert "0.498" in t and "0.539" in t
+          assert "marginally significant" not in low
+          assert "near significant" not in low
+          assert "approached significance" not in low
+          assert "species-wide biological synchrony" not in low
+          assert "## anonymous-review note" in low
+          print("JBI v0.3 claim-boundary guard passed.")
+          PY
