@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-integrated-manuscript-v0.4-literature-gap-validation-result-v1",
+  "validated_date": "2026-10-01",
+  "contract_id": "mina-integrated-palmer-antarctic-manuscript-v0.4",
+  "branch": "manuscript/integrated-v0.4-literature-gap",
+  "manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_4.md",
+  "references": "docs/REFERENCES_V7.bib",
+  "execution": {
+    "workflow_run_id": 36787397188,
+    "workflow_conclusion": "success",
+    "head_sha": "076bc7da22ad6fff83765b4187f08b8a837f68cd",
+    "artifact_id": 11129898344,
+    "artifact_digest": "sha256:b9ac270b81c236df97999b4532dd45da0a59f64c9b65697c7c18f645c5973bae"
+  },
+  "checks": {
+    "all_checks_pass": true,
+    "required_public_information_precedents_cited": true,
+    "adelie_one_year_precedent_cited": true,
+    "lag1_novelty_ceiling_explicit": true,
+    "novel_inference_restricted_to_denominator_separated_history_and_metric_specificity": true,
+    "palmer_physical_habitat_relevance_retained": true,
+    "ross_published_context_only": true,
+    "ross_unpublished_results_absent": true,
+    "part2_nonconfirmatory_status_retained": true,
+    "frozen_palmer_lag2_unchanged": true,
+    "frozen_repro_result_unchanged": true,
+    "frozen_paper2_decision_unchanged": true
+  },
+  "literature_gap_decision": {
+    "public_information_discovery_is_not_novel_claim": true,
+    "one_year_performance_growth_association_is_not_novel_claim": true,
+    "primary_novelty": [
+      "denominator-separated short-lag history in a late-season colony-wide state",
+      "predeclared lag profile that does not support a 4-5-year recruitment echo",
+      "independent nest-level non-replication demonstrating metric-specific biological information",
+      "cross-scale contrast between locally informative dynamic history and limited transferability of static island descriptors"
+    ],
+    "scientific_results_changed_from_v0_3": false,
+    "figure_data_changed_from_v0_3": false
+  }
+}
