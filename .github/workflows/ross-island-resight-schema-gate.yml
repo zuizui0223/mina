@@ -7,6 +7,7 @@ on:
     paths:
       - "contracts/ROSS_ISLAND_RESIGHT_SCHEMA_GATE_V1.json"
       - "scripts/audit_ross_resight_schema.py"
+      - "scripts/validate_ross_exact_headers.py"
       - ".github/workflows/ross-island-resight-schema-gate.yml"
   workflow_dispatch:
 
@@ -36,7 +37,26 @@ jobs:
           print("resight_header=",x["resight_header"])
           print("banding_header=",x["banding_header"])
           PY
+      - name: Build proposed exact-header receipt
+        run: |
+          python scripts/validate_ross_exact_headers.py \
+            --audit build/ross_resight_schema_audit.json \
+            --out build/ross_exact_header_proposed_receipt.json
+      - name: Confirm proposed receipt cannot auto-unlock
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/ross_exact_header_proposed_receipt.json").read_text())
+          assert x["behavioral_rows_read"] == 0
+          assert x.get("manual_freeze_required_before_full_download", True) is True
+          print("proposed_receipt_status=",x["status"])
+          print("header_parser_ready=",x["header_parser_ready"])
+          print("manual_freeze_required=True")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: ross-island-resight-schema-audit
-          path: build/ross_resight_schema_audit.json
+          path: |
+            build/ross_resight_schema_audit.json
+            build/ross_exact_header_proposed_receipt.json
