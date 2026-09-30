@@ -1,0 +1,70 @@
+name: integrated-figures-v0-1
+
+on:
+  push:
+    branches: [integrated/figures-v0.1]
+    paths:
+      - "src/mina/integrated_figures.py"
+      - "scripts/build_integrated_figure_data.py"
+      - "contracts/INTEGRATED_FIGURE_PACKAGE_V0_1.json"
+      - "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md"
+      - ".github/workflows/integrated-figures-v0-1.yml"
+  pull_request:
+    paths:
+      - "src/mina/integrated_figures.py"
+      - "scripts/build_integrated_figure_data.py"
+      - "contracts/INTEGRATED_FIGURE_PACKAGE_V0_1.json"
+      - "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md"
+      - ".github/workflows/integrated-figures-v0-1.yml"
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: r-lib/actions/setup-r@v2
+      - name: Install dependencies
+        run: python -m pip install -e ".[dev,figures]" pandas
+      - name: Fetch frozen Palmer census
+        run: python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Export pinned Palmer network metadata
+        run: Rscript scripts/export_palmer_network_abundance.R build/network
+      - name: Build frozen Palmer figure data
+        run: |
+          mina-figure-data \
+            --census build/adelie_census.csv \
+            --sites build/network/sites.csv \
+            --species build/network/species.csv \
+            --site-species build/network/site_species.csv \
+            --results results \
+            --out-dir build/palmer_figure_data
+      - name: Build integrated Paper 2 figure data
+        run: python scripts/build_integrated_figure_data.py --out-dir build/integrated_figure_data
+      - name: Render integrated Figures 1-4
+        run: |
+          python -m mina.integrated_figures \
+            --palmer-data build/palmer_figure_data \
+            --integrated-data build/integrated_figure_data \
+            --out-dir build/integrated_figures
+      - name: Verify outputs
+        run: |
+          for stem in \
+            figure1_shared_decline \
+            figure2_palmer_concentration \
+            figure3_antarctic_interaction \
+            figure4_limits_of_transfer
+          do
+            test -s "build/integrated_figures/${stem}.png"
+            test -s "build/integrated_figures/${stem}.pdf"
+          done
+          test -s build/integrated_figure_data/figure_data_manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integrated-palmer-antarctic-figures-v0-1
+          path: |
+            build/integrated_figures
+            build/integrated_figure_data

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-integrated-figure-package-v0.1",
+  "date": "2026-09-30",
+  "status": "frozen_figure_rendering_from_committed_results",
+  "manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_2.md",
+  "captions": "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md",
+  "figures": {
+    "figure1": {
+      "stem": "figure1_shared_decline",
+      "role": "Palmer system + shared decline/divergent endpoints",
+      "data_sources": [
+        "existing frozen Palmer site metadata",
+        "1991-2017 synchronized Palmer census"
+      ]
+    },
+    "figure2": {
+      "stem": "figure2_palmer_concentration",
+      "role": "within-island concentration + fixed-composition null",
+      "receipt": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+    },
+    "figure3": {
+      "stem": "figure3_antarctic_interaction",
+      "role": "species interactions + cross-species permutation null",
+      "receipts": [
+        "results/PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json",
+        "results/PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json"
+      ]
+    },
+    "figure4": {
+      "stem": "figure4_limits_of_transfer",
+      "role": "radius sensitivity + retrospective detectability",
+      "receipts": [
+        "results/PAPER2_SCALE_TRAIT_SENSITIVITY_RESULT_V1.json",
+        "results/PAPER2_RADIUS_SIGN_SWITCH_NULL_RESULT_V1.json",
+        "results/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json"
+      ]
+    }
+  },
+  "rendering": {
+    "formats": [
+      "png",
+      "pdf"
+    ],
+    "png_dpi": 300,
+    "style": "matplotlib defaults with no inferential color coding",
+    "rule": "display pieces must show null/non-confirmatory evidence as clearly as point-estimate patterns"
+  },
+  "boundaries": [
+    "No new ecological analysis is performed by the renderer.",
+    "No figure may hide the primary p=0.0947 or radius-null p=0.081 result.",
+    "No sensitivity variant is visually promoted above the frozen 2 km primary analysis.",
+    "Palmer secondary mechanism/prediction diagnostics are not main integrated figures."
+  ]
+}
