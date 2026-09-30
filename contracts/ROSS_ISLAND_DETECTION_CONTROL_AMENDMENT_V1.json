@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "amendment_id": "mina-ross-island-detection-control-amendment-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_behavioral_rows_are_opened",
+  "amends": [
+    "mina-ross-island-resight-schema-gate-v1",
+    "mina-ross-island-choice-engine-v1"
+  ],
+  "reason_for_amendment": {
+    "external_evidence_reviewed_before_outcome_access": [
+      "Published Ross Island methods report repeated colony searches during breeding seasons.",
+      "Cape Bird was searched regularly through 2013 but only intermittently from 2014 onward.",
+      "The published resighting model assigns all model weight to a detection structure including reproductive-state-by-age plus colony, showing that detection is not exchangeable among all individual-state-colony combinations."
+    ],
+    "risk": "A conditional model of observed first-breeding colony can confound settlement choice with colony-specific and time-varying resighting probability if observation structure is ignored.",
+    "behavioral_rows_read_before_amendment": 0
+  },
+  "primary_detection_controls": {
+    "stable_colony_alternative_effects": {
+      "reference": "CROZ",
+      "covariates": ["is_ROYD", "is_BIRD"],
+      "purpose": "Absorb time-stable colony differences in resighting probability and baseline settlement attractiveness.",
+      "permutation_behavior": "Held fixed while prior-year performance labels are permuted."
+    },
+    "bird_post_2013_rule": {
+      "rule": "Exclude an entire first-breeding event when first_breeding_season >= 2014 and BIRD is present in the frozen candidate set.",
+      "reason": "Published methods describe Cape Bird resighting as intermittent after 2013; candidate-specific nondetection cannot be repaired by treating Bird as simply unchosen.",
+      "no_partial_candidate_deletion": true
+    },
+    "outcome_season_resight_day_proxy": {
+      "raw_definition": "For Ross colony c and first-breeding season y, count distinct Date values with at least one valid resight record at c in season y after excluding all rows belonging to the focal individual event.",
+      "name": "resight_days_c_y",
+      "transform": "z-standardize log1p(resight_days_c_y) across CROZ, ROYD and BIRD within outcome season y; call it E_c,y.",
+      "all_three_requirement": "All three Ross colonies must have at least one non-focal valid resight date in season y; otherwise the first-breeding event is excluded.",
+      "model_role": "E_c,y is a primary nuisance covariate for differential opportunity to observe first breeding.",
+      "interpretation_boundary": "This is a detection-effort proxy, not true search effort. The resight table records detections rather than a complete survey-day log, so E_c,y may also depend on abundance and bird availability."
+    }
+  },
+  "season_mapping": {
+    "rule": "Observation dates in October-December map to breeding season start year = calendar year; January-March map to start year = calendar year - 1.",
+    "out_of_window": "April-September records are not used to construct primary breeding-season state or detection proxy unless the public README or exact header metadata documents a different breeding-season convention before full outcome access.",
+    "rationale": "Published Ross searches occur primarily November-January and the study labels austral seasons by their starting year."
+  },
+  "choice_engine_v2": {
+    "supersedes_primary_model_in": "mina-ross-island-choice-engine-v1",
+    "linear_predictor": "beta_perf * performance_state + beta_natal * natal_colony_indicator + beta_size * log1p_colony_size + beta_effort * E_c,y + beta_royd * is_ROYD + beta_bird * is_BIRD",
+    "primary_coefficient": "beta_perf",
+    "permutation": "Unchanged: permute only prior-year three-colony performance labels within performance year; chosen outcome, candidate set, natal, size, effort proxy and colony alternative effects remain fixed.",
+    "information_gate": "Unchanged except events failing the prospective detection-control eligibility rules are removed before the frozen event-count thresholds are evaluated."
+  },
+  "prespecified_detection_sensitivity": {
+    "name": "date_observer_effort",
+    "conditional_on_exact_header": "Run only if the exact resight CSV header contains Initials exactly as documented by the public README.",
+    "definition": "Count distinct (Date, Initials) pairs with a valid non-focal resight at colony c in outcome season y, transform as within-season z(log1p(count)), and substitute for E_c,y.",
+    "role": "Sensitivity only; cannot rescue a failed primary performance coefficient.",
+    "reason": "Approximates observer-days while acknowledging that observer initials are not a formal effort log."
+  },
+  "performance_precision_sensitivity": {
+    "rule": "Repeat the primary model requiring at least 40 rather than 20 interpretable banded breeders in every colony of the prior performance year.",
+    "role": "Stricter sensitivity only; cannot rescue a failed primary analysis and may be non-estimable."
+  },
+  "not_allowed": [
+    "Do not use the total number of resight rows as the primary effort covariate because it is strongly abundance-dependent.",
+    "Do not infer zero search effort from zero resight rows without applying the fail-closed event exclusion.",
+    "Do not reintroduce Bird candidate events from 2014 onward based on observed outcomes.",
+    "Do not drop stable colony effects, the effort proxy, or the Bird censoring rule because they weaken significance.",
+    "Do not change the performance permutation or minimum-information thresholds."
+  ],
+  "interpretation_boundary": [
+    "The V2 control reduces, but does not eliminate, detection bias; it is not a full multistate capture-recapture observation model.",
+    "A positive beta_perf remains a conditional settlement-choice association among observed prospectors, not an unbiased population-wide migration probability.",
+    "A null result cannot distinguish biological absence from residual observation-process limitations."
+  ]
+}
