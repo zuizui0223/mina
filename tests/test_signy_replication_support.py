@@ -1,8 +1,16 @@
+import tempfile
 import unittest
+import zipfile
+from pathlib import Path
 
 import pandas as pd
 
-from scripts.audit_signy_replication_support import audit_table, season_start, season_from_date
+from scripts.audit_signy_replication_support import (
+    audit_table,
+    read_official_zip,
+    season_from_date,
+    season_start,
+)
 
 
 class SeasonParsingTests(unittest.TestCase):
@@ -61,6 +69,26 @@ class SupportAuditTests(unittest.TestCase):
         self.assertEqual(out["status"],"support_audited")
         self.assertTrue(out["gate"]["passes"])
         self.assertEqual(out["primary_window"]["seasons_present"][0],1996)
+
+
+class OfficialZipTests(unittest.TestCase):
+    def test_breeding_csv_selected_by_schema_not_filename(self):
+        with tempfile.TemporaryDirectory() as td:
+            path=Path(td)/"signy.zip"
+            breeding=pd.DataFrame({
+                "Colony":["A2","A3"],
+                "Season":["1996-1997","1996-1997"],
+                "Total number of pairs":[10,20],
+                "Total number of chicks":[5,10],
+            })
+            gps=pd.DataFrame({"Latitude":[-60.7],"Longitude":[-45.6]})
+            with zipfile.ZipFile(path,"w") as z:
+                z.writestr("weird_name.csv",breeding.to_csv(index=False))
+                z.writestr("coordinates.csv",gps.to_csv(index=False))
+            frame,meta=read_official_zip(path)
+            self.assertEqual(meta["selected_csv"],"weird_name.csv")
+            self.assertIn("Total number of chicks",frame.columns)
+            self.assertIn("Total number of pairs",frame.columns)
 
 
 if __name__=="__main__":
