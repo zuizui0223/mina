@@ -1,0 +1,55 @@
+name: integrated-jbi-v0-4
+
+on:
+  push:
+    branches: [submission/jbi-format-v0.4]
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_JBI_V0_4.md"
+      - "docs/TITLE_PAGE_JBI_INTEGRATED_V0_4_TEMPLATE.md"
+      - "docs/SUPPLEMENT_INTEGRATED_V0_2.md"
+      - "docs/COVER_LETTER_JBI_INTEGRATED_V0_2.md"
+      - "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md"
+      - "contracts/INTEGRATED_JBI_FORMAT_V0_4.json"
+      - "contracts/INTEGRATED_JBI_POSITIONING_V0_2.json"
+      - "contracts/INTEGRATED_JBI_SUBMISSION_PACKAGE_V0_4.json"
+      - "submission/JBI_SUBMISSION_CHECKLIST_INTEGRATED_V0_4.md"
+      - "tests/test_integrated_jbi_v04.py"
+      - ".github/workflows/integrated-jbi-v0-4.yml"
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_JBI_V0_4.md"
+      - "docs/TITLE_PAGE_JBI_INTEGRATED_V0_4_TEMPLATE.md"
+      - "docs/SUPPLEMENT_INTEGRATED_V0_2.md"
+      - "docs/COVER_LETTER_JBI_INTEGRATED_V0_2.md"
+      - "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md"
+      - "contracts/INTEGRATED_JBI_FORMAT_V0_4.json"
+      - "contracts/INTEGRATED_JBI_POSITIONING_V0_2.json"
+      - "contracts/INTEGRATED_JBI_SUBMISSION_PACKAGE_V0_4.json"
+      - "submission/JBI_SUBMISSION_CHECKLIST_INTEGRATED_V0_4.md"
+      - "tests/test_integrated_jbi_v04.py"
+      - ".github/workflows/integrated-jbi-v0-4.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install pytest
+      - run: python -m pytest tests/test_integrated_jbi_v04.py -q
+      - name: Claim-boundary guard
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          t=Path("docs/MANUSCRIPT_INTEGRATED_JBI_V0_4.md").read_text().lower()
+          assert "p = 0.0947" in t or "p=0.0947" in t
+          assert "0.0810" in t
+          assert "0.498" in t and "0.539" in t
+          assert "0.0213" in t and "0.279" in t
+          assert "did not replicate" in t
+          assert "marginally significant" not in t
+          assert "near significant" not in t
+          print("JBI v0.4 claim-boundary guard passed.")
+          PY

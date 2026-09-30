@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "package_id": "mina-integrated-jbi-submission-v0.4",
+  "date": "2026-09-30",
+  "status": "scientific_text_figures_and_dynamic_transfer_update_ready_pending_author_archive_and_taxon_image_fields",
+  "target_journal": "Journal of Biogeography",
+  "anonymous_review_files": {
+    "main_manuscript": "docs/MANUSCRIPT_INTEGRATED_JBI_V0_4.md",
+    "supporting_information": "docs/SUPPLEMENT_INTEGRATED_V0_2.md",
+    "figure_captions": "docs/INTEGRATED_FIGURE_CAPTIONS_V0_1.md",
+    "figures": [
+      "figure1_shared_decline.pdf",
+      "figure2_palmer_concentration.pdf",
+      "figure3_antarctic_interaction.pdf",
+      "figure4_limits_of_transfer.pdf"
+    ]
+  },
+  "identifying_files": {
+    "title_page": "docs/TITLE_PAGE_JBI_INTEGRATED_V0_4_TEMPLATE.md",
+    "cover_letter": "docs/COVER_LETTER_JBI_INTEGRATED_V0_2.md"
+  },
+  "scientific_source_of_truth": {
+    "integrated_manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_3.md",
+    "manuscript_contract": "contracts/INTEGRATED_PALMER_ANTARCTIC_MANUSCRIPT_V0_3.json",
+    "paper2_claim_boundary": "contracts/PAPER2_FINAL_CLAIM_BOUNDARY_V1.json",
+    "supplement_contract": "contracts/INTEGRATED_SUPPLEMENT_V0_2.json",
+    "primary_paper2_inference": "results/PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json",
+    "detectable_effect": "results/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json",
+    "radius_null": "results/PAPER2_RADIUS_SIGN_SWITCH_NULL_RESULT_V1.json",
+    "simple_buffering": "results/PAPER2_A_BUFFERING_SECONDARY_RESULT_V1.json",
+    "observation_timing": "results/PAPER2_OBSERVATION_TIMING_SENSITIVITY_RESULT_V1.json",
+    "scale_trait_sensitivity": "results/PAPER2_SCALE_TRAIT_SENSITIVITY_RESULT_V1.json",
+    "palmer_concentration": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+    "palmer_denominator_audit": "results/PALMER_REPRODUCTIVE_DENOMINATOR_AUDIT_RESULT_V1.json",
+    "palmer_performance_lags": "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+    "palmer_performance_memory": "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json",
+    "palmer_mechanism_followup": "results/PALMER_WIN_STAY_LOSE_SWITCH_RESULT_V1.json",
+    "signy_replication": "results/SIGNY_PERFORMANCE_REDISTRIBUTION_REPLICATION_RESULT_V1.json"
+  },
+  "figure_provenance": {
+    "renderer": "src/mina/integrated_figures.py",
+    "package_contract": "contracts/INTEGRATED_FIGURE_PACKAGE_V0_1.json",
+    "frozen_figure_data_builder": "scripts/build_integrated_figure_data.py",
+    "rule": "Submission figures must be rendered from the committed JBI renderer at the final submission commit; no manual value edits."
+  },
+  "journal_format_contract": "contracts/INTEGRATED_JBI_FORMAT_V0_4.json",
+  "positioning_contract": "contracts/INTEGRATED_JBI_POSITIONING_V0_2.json",
+  "readiness_checklist": "submission/JBI_SUBMISSION_CHECKLIST_INTEGRATED_V0_4.md",
+  "outstanding_author_controlled": [
+    "final author order and names",
+    "affiliations",
+    "corresponding author",
+    "ORCIDs",
+    "funding and acknowledgements",
+    "conflict-of-interest declaration",
+    "author contributions",
+    "JBI biosketch",
+    "all-author final approval",
+    "originality/not-under-consideration confirmation",
+    "licensed/author-owned taxon image"
+  ],
+  "outstanding_reproducibility": [
+    "create permanent archival release and DOI/URL",
+    "insert permanent archive URL into Data Accessibility Statement",
+    "freeze final submission git tag/commit",
+    "verify public-data licence compatibility for redistributed derived files"
+  ],
+  "locked_scientific_boundaries": [
+    "paper-level A x H permutation p=0.0947 is non-confirmatory",
+    "simple A-only buffering is unsupported",
+    "MDE80=0.49765625 and MDE90=0.5385714285714286 are retrospective operating characteristics, not equivalence bounds",
+    "radius sign-switch-plus-contrast p=0.0810 prohibits a biological scale-dependence claim",
+    "species-wide forcing is an identifiability/model-resolution choice, not evidence of species-wide biological synchrony",
+    "Palmer lag-2/3 performance-linked redistribution is fixed-specification validation after exposed provenance repair, not independent confirmation",
+    "Palmer lose-switch asymmetry is unsupported",
+    "Signy primary lag-2 replication is unsupported (beta=0.0213, p=0.279); comment-filter sensitivity cannot replace it",
+    "no individual movement, prospecting or cue-use claim is licensed by colony-count data"
+  ]
+}
