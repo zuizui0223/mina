@@ -1,0 +1,21 @@
+# Integrated figure captions v0.2
+
+## Figure 1. Shared regional decline provides the background for local demographic history
+
+**A.** Locations of the five Palmer breeding-island populations. **B.** Annual breeding-pair abundance for the synchronized Adélie island populations, 1991–2017. Standardized log-abundance trajectories share a dominant long-term component (PC1 = **96.4%**), while local endpoints differ in persistence, severe decline and extinction. The panel establishes shared regional decline without implying identical within-island demographic trajectories.
+
+## Figure 2. Palmer decline contains both spatial concentration and short-lived colony-state history
+
+**A. Spatial concentration.** Effective colony number, (N_{\mathrm{eff}}=1/\sum_j p_j^2), for Cormorant, Humble and Litchfield, the three islands with unchanged colony-code rosters. Effective colony number declined from **3.54 to 2.86**, **4.62 to 2.28** and **5.78 to 1.00**, respectively. Under the most severe frozen fixed-composition Gamma–Poisson CV20% null, one-sided probabilities were **0.0380**, **0.000010** and **0.000010**; the joint plus-one probability was **0.000010**.
+
+**B. Lag profile of the late-season colony-wide state.** Coefficients linking relative colony state in season (t) to later within-island redistribution. Lag 1 is positive (**β = 0.1004**) but is marked as mechanically coupled because predictor construction and the (t\rightarrow t+1) transition share the predictor-year adult count. The denominator-separated primary endpoint remains positive at lag 2 (**β = 0.0409, p = 0.00327**) and lag 3 (**β = 0.0511, p = 0.00136**) before fading at lag 4 (**β = 0.0223, p = 0.121**) and lag 5 (**β = −0.0148, p = 0.770**). The predeclared delayed recruitment-echo contrast is negative (**−0.0422, p = 0.988**). These lag results are fixed-specification validation after the documented provenance repair, not fully outcome-blind preregistration.
+
+**C. Independent reproductive metric does not replicate the same state signal.** The frozen REPRO primary endpoint, mean chicks reaching crèche per monitored nest, has **β = 0.0296, p = 0.232** for next-year relative redistribution; lag 2 is **β = −0.0164, p = 0.629**. The prespecified binary-any-crèche sensitivity is positive but cannot rescue the failed primary endpoint. In the post-result common Humble panel diagnostic, the original colony-wide state retains **β = 0.1040**, whereas mean nest success is **β = 0.0291**; their standardized states correlate only **r = 0.132**. Diagnostic estimates are visually distinguished from frozen primary tests.
+
+## Figure 3. Antarctic-wide island-architecture interaction is directionally concordant but non-confirmatory
+
+**A.** Species-specific area × habitat-heterogeneity loading effects ((\gamma_{AH})) from the frozen 2 km V3 model: Adélie **−0.304**, chinstrap **−1.184** and gentoo **−0.318**. Chinstrap and gentoo satisfy the full point-estimate option–fragmentation crossover geometry; Adélie shows attenuation but not sign reversal. **B.** Frozen 9,999-permutation distribution of the preregistered paper-level median (\gamma_{AH}). The observed median is **−0.318** and the one-sided permutation probability is **0.0947**. Species-specific Holm-adjusted tests also do not reject. The figure shows concordant direction without confirmatory cross-species support.
+
+## Figure 4. The Antarctic result is sensitive to spatial support and weakly powered for effects near the observed magnitude
+
+**A.** Cross-species median (\gamma_{AH}) at **1 km = −0.058**, **2 km = −0.318** and **5 km = +0.107**, with 2 km Shannon shown separately. The joint block-preserving multi-radius null gives **p = 0.0810** for the observed 2 km negative → 5 km positive switch plus an observed-size contrast. Radius variation is therefore treated as sensitivity, not established biological scale dependence. **B.** Retrospective detection curve for a common three-species interaction under the frozen primary permutation rule. Detection is **81.0%** at a true effect of −0.50 and **92.7%** at −0.55; interpolated thresholds are **MDE80 ≈ 0.498** and **MDE90 ≈ 0.539**. The observed absolute median (0.318) lies below those thresholds, so non-rejection constrains very large common effects more strongly than moderate ones.
