@@ -3,7 +3,7 @@
 > **Double-anonymous review:** Do not merge author-identifying fields into the
 > anonymous main manuscript.
 
-**Title:** Local demographic reorganization does not scale into a transferable island-resilience rule in Antarctic penguins
+**Title:** Local demographic reorganization does not imply a transferable island-resilience rule in Antarctic penguins
 
 **Running title:** Island information across scales
 
