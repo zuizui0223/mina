@@ -1,0 +1,29 @@
+name: integrated-manuscript-v0-4-literature-gap
+
+on:
+  push:
+    branches:
+      - manuscript/integrated-v0.4-literature-gap
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_V0_4.md"
+      - "docs/REFERENCES_V7.bib"
+      - "contracts/INTEGRATED_PALMER_ANTARCTIC_MANUSCRIPT_V0_4.json"
+      - "scripts/check_integrated_manuscript_v0_4.py"
+      - ".github/workflows/integrated-manuscript-v0-4-literature-gap.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Guard literature-gap and novelty boundaries
+        run: |
+          python scripts/check_integrated_manuscript_v0_4.py             --repo-root .             --out build/integrated_v0_4_literature_gap_guard.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integrated-v0-4-literature-gap-guard
+          path: build/integrated_v0_4_literature_gap_guard.json
