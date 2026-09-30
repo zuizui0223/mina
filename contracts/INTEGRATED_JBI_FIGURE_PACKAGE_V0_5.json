@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-integrated-jbi-figure-package-v0.5",
+  "date": "2026-10-01",
+  "status": "display_only_reformat_from_frozen_results",
+  "manuscript": "docs/MANUSCRIPT_INTEGRATED_JBI_V0_5.md",
+  "captions": "docs/INTEGRATED_FIGURE_CAPTIONS_JBI_V0_5.md",
+  "source_renderers": {
+    "figure1": "scripts/render_integrated_figures_jbi_v0_5.py using minimal Palmer display data",
+    "figures2_to_4_scientific_logic": "scripts/render_integrated_figures_v0_3.py",
+    "jbi_wrapper": "scripts/render_integrated_figures_jbi_v0_5.py"
+  },
+  "figure_data": {
+    "figure1_builder": "scripts/build_jbi_figure1_data_v0_5.py",
+    "figures2_to_4_builder": "scripts/build_integrated_figure_data_v0_3.py",
+    "palmer_census": "frozen Palmer LTER census via scripts/fetch_lter_census.py",
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502"
+  },
+  "display_changes_only": [
+    "lower-case JBI panel labels (a), (b), (c)",
+    "stand-alone JBI captions defining region, taxa, symbols and abbreviations",
+    "Figure 1 local geographic display explicitly documented as equirectangular aspect correction with 2 km scale bar",
+    "JBI-specific output filenames"
+  ],
+  "scientific_values_changed": false,
+  "figure_data_changed_from_integrated_v0_3": false,
+  "outputs": [
+    "figure1_shared_decline_jbi_v0_5.pdf",
+    "figure1_shared_decline_jbi_v0_5.png",
+    "figure2_palmer_dynamic_history_jbi_v0_5.pdf",
+    "figure2_palmer_dynamic_history_jbi_v0_5.png",
+    "figure3_antarctic_interaction_jbi_v0_5.pdf",
+    "figure3_antarctic_interaction_jbi_v0_5.png",
+    "figure4_scale_and_detectability_jbi_v0_5.pdf",
+    "figure4_scale_and_detectability_jbi_v0_5.png"
+  ],
+  "boundaries": [
+    "No display sensitivity may replace the frozen primary 2 km inference.",
+    "The paper-level p=0.0947 and radius-null p=0.0810 must remain visible in captions or displays.",
+    "Post-hoc Palmer common-panel diagnostics must remain visually distinct from frozen primary endpoints.",
+    "No inferential color coding or manual point editing is allowed.",
+    "Generated files are CI artifacts; source-of-truth values remain committed result receipts."
+  ]
+}
