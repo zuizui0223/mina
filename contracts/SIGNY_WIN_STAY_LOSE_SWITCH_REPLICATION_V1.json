@@ -117,6 +117,14 @@
     "adult_column": "TOTAL_NUMBER_OF_PAIRS",
     "chick_column": "TOTAL_NUMBER_OF_CHICKS",
     "parser_rule": "Fixed official header; if an unquoted comma creates overflow fields, preserve the first width-1 fields and join overflow only into final COMMENTS. No numeric field may be shifted or imputed.",
-    "support_receipt": "results/SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json"
+    "support_receipt": "results/SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json",
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62",
+    "support_gate": {
+      "predictor_seasons": 22,
+      "literal_colonies": 9,
+      "lag2_rows": 153,
+      "atomic_only_lag2_rows": 133,
+      "passes": true
+    }
   }
 }
