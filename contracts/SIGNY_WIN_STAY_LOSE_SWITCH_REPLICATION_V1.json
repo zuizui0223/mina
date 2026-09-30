@@ -31,7 +31,10 @@
     "breeding_pairs": "Use the dataset's annual breeding-pair measure derived from the nest census under the published Signy protocol.",
     "reproductive_output": "Use creched chicks / chicks expected to fledge field only if it is available at the same literal colony-season; do not substitute zero for NA or comments indicating missed surveys.",
     "state": "Within each eligible Signy season, compute colony chick output relative to size-proportional expectation and z-standardize the Pearson residual exactly as in Palmer.",
-    "minimum_colonies_per_season": 3
+    "minimum_colonies_per_season": 3,
+    "eligibility": "Within the frozen 1996/97–2019/20 window, a colony-season enters performance-state construction only when TOTAL_NUMBER_OF_PAIRS is finite and >0, TOTAL_NUMBER_OF_CHICKS is finite and >=0, and the literal colony label is observed. Retain a season only with >=3 eligible literal labels, positive total breeding pairs and positive total chicks.",
+    "expected_chicks": "E_i,t = total_chicks_t * breeding_pairs_i,t / total_breeding_pairs_t across eligible literal colony labels.",
+    "pearson_residual": "(chicks_i,t - E_i,t) / sqrt(max(E_i,t * (1 - breeding_pairs_i,t/total_breeding_pairs_t), 1e-12)); z-standardize within season."
   },
   "primary_replication": {
     "endpoint": "Palmer-style bias-resistant lag-2 redistribution coefficient beta_2",
@@ -43,7 +46,18 @@
     "prediction": "beta_2 > 0",
     "inference": "Within predictor season, permute reproductive-performance state among eligible literal colony labels, refit complete model, one-sided upper-tail Monte Carlo p.",
     "permutations": 100000,
-    "seed": 20261010
+    "seed": 20261010,
+    "model": {
+      "outcome": "For literal colony i, R_i,t+1 = [log1p(pairs_i,t+2)-log1p(pairs_i,t+1)] minus the mean of that log growth across eligible Signy labels in the same t+1 -> t+2 transition.",
+      "predictor": "z-standardized within-season Pearson performance state S_i,t.",
+      "controls": [
+        "within-transition z(log1p pairs_i,t+1)",
+        "literal colony fixed effects"
+      ],
+      "estimation": "OLS after the same residualization used by PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2.",
+      "inference": "Within each predictor season t, permute S_i,t among eligible literal colony labels, refit the full model, one-sided upper-tail Monte Carlo p.",
+      "decision": "beta_2 > 0 and p <= 0.05."
+    }
   },
   "mechanism_replication": {
     "endpoint": "P3 lose-switch hinge asymmetry at lag 2",
@@ -56,9 +70,24 @@
     "palmer_status": "Palmer P3 lose-switch asymmetry was not supported (primary delta = -0.0126; one-sided p = 0.5791)."
   },
   "secondary": [
-    "lag-1 and lag-3 coefficients are descriptive replication-profile endpoints; lag-1 retains denominator-overlap caution if present.",
-    "Repeat primary lag-2 and P3 on the atomic-label-only subset excluding labels containing '+'.",
-    "Repeat excluding seasons whose published comments indicate nonstandard/late counts or explicit unreliability, using comment flags only—not outcome values—to define the exclusion."
+    {
+      "name": "lag_profile_descriptive",
+      "rule": "Report lag-1 and lag-3 observed coefficients using the same model; no new inferential decision is attached. Lag-1 retains the shared-denominator caveat."
+    },
+    {
+      "name": "atomic_label_only",
+      "rule": "Exclude every literal colony label containing '+' from performance and redistribution rows; repeat lag-2 and the P3 hinge.",
+      "lag2_seed": 20261012,
+      "hinge_seed": 20261013
+    },
+    {
+      "name": "comment_flag_exclusion",
+      "rule": "Exclude an entire breeding season if any published comment in that season matches the frozen nonstandard-count regex; repeat lag-2 and the P3 hinge.",
+      "regex": "(?i)(unreliable|logistical constraint|optimum time|late count|late survey|base.*open.*late|base.*shut.*early|prevented.*count)",
+      "lag2_seed": 20261014,
+      "hinge_seed": 20261015,
+      "boundary": "Season exclusion is determined from comment text only, never from pair/chick values or fitted effects."
+    }
   ],
   "eligibility_gate_before_outcomes": {
     "required_primary_seasons": 8,
@@ -73,11 +102,21 @@
     "Do not change the Palmer lag from 2 after Signy effect estimates are computed.",
     "Do not claim individual breeding dispersal from colony counts.",
     "Do not describe a positive Signy P3 result as replication of the Palmer lose-switch mechanism, because Palmer P3 was not supported.",
-    "Do not let the secondary P3 hinge result replace a null lag-2 primary replication."
+    "Do not let the secondary P3 hinge result replace a null lag-2 primary replication.",
+    "Do not use TOTAL_NUMBER_OF_PAIRS_WITHOUT_EGGS or TOTAL_NUMBER_PAIRS_WITH_EGGS as the adult-abundance denominator; use the official TOTAL_NUMBER_OF_PAIRS column.",
+    "Do not alter season/comment exclusions, literal-label handling, lags, controls, seeds or alpha after the first Signy fitted coefficient is computed."
   ],
   "interpretation": {
     "lag2_supported_P3_supported": "Independent replication of short-lag performance-linked redistribution plus evidence that Signy, unlike Palmer, also shows the prespecified lose-switch asymmetry.",
     "lag2_supported_P3_not_supported": "Independent replication of the Palmer-supported dynamic redistribution signal, with the same absence of evidence for a specific lose-switch asymmetry.",
     "lag2_not_supported": "The Palmer short-lag redistribution signal does not transfer to Signy under the frozen comparable design; P3 cannot rescue a failed primary replication."
+  },
+  "source_execution": {
+    "official_download": "RAMADDA zip.tree for entryid daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "selected_file": "signy_adelie_breeding_success.csv",
+    "adult_column": "TOTAL_NUMBER_OF_PAIRS",
+    "chick_column": "TOTAL_NUMBER_OF_CHICKS",
+    "parser_rule": "Fixed official header; if an unquoted comma creates overflow fields, preserve the first width-1 fields and join overflow only into final COMMENTS. No numeric field may be shifted or imputed.",
+    "support_receipt": "results/SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json"
   }
 }
