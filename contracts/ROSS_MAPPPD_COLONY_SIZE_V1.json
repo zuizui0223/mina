@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-mapppd-colony-size-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_resight_behavioral_rows_are_opened",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "object": "penguin_obs",
+    "species_id": "ADPE",
+    "count_type": "nests",
+    "interpretation": "MAPPPD documentation defines nests as breeding pairs."
+  },
+  "source_audit": {
+    "roy1": "Cape Royds is site ROYD and has nest counts.",
+    "bird_components": ["BRDN: Cape Bird North", "BRDM: Cape Bird Middle", "BRDS: Cape Bird South"],
+    "crozier_components": ["CRZE: Cape Crozier (east)", "CRZW: Cape Crozier (west)"],
+    "crozier_parent": "CROZ: Cape Crozier exists but has no nest-count records in the pinned snapshot.",
+    "duplicate_component_years_exist": true,
+    "accuracy_documentation": "MAPPPD documents accuracy as a traditional 5-point census precision score but the package documentation used here does not establish an ordering rule suitable for selecting among duplicate same-site/year counts."
+  },
+  "frozen_resolution": {
+    "same_component_year_duplicate": "If a component site has more than one finite nest count in the same year, mark that component-year unavailable; do not average, select by count value, or choose by accuracy score.",
+    "cape_royds": "Use ROYD count only when exactly one finite nest count exists that year.",
+    "cape_bird": "Sum BRDN + BRDM + BRDS only when each of the three components has exactly one finite nest count that year.",
+    "cape_crozier": "Sum CRZE + CRZW only when each of the two components has exactly one finite nest count that year. Do not use empty parent site CROZ.",
+    "complete_control_year": "For the primary individual-choice analysis, colony-size control is available only when all three reconstructed colony totals are available in the predictor year.",
+    "transform": "Use log1p reconstructed breeding-pair count. Within each predictor year, z-standardize across Royds, Bird, and Crozier for the conditional choice model.",
+    "no_interpolation": true,
+    "no_carry_forward": true
+  },
+  "primary_alignment": {
+    "choice_event_first_breeding_season": "t",
+    "size_control_year": "t-1",
+    "reason": "Use only pre-settlement colony size and align it to the same year as the frozen performance predictor."
+  },
+  "claim_boundaries": [
+    "Component summation is a source-semantic reconstruction, not a new ecological result.",
+    "Do not fill incomplete component years with parent-site values, temporal interpolation, or ratios from adjacent years.",
+    "Do not select among duplicate counts using the magnitude that improves the movement model.",
+    "If this fail-closed rule leaves insufficient first-breeding events under the existing minimum-information gate, stop rather than relaxing the rule."
+  ]
+}
