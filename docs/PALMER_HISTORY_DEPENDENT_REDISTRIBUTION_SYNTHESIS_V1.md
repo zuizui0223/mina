@@ -75,3 +75,28 @@ The clean conceptual link to Paper 2 is not “state beats place.” It is:
 > **Static landscape architecture did not yield a transferable macroecological response rule, whereas within Palmer, dynamically updated colony state contains short-lived information about where breeders subsequently accumulate.**
 
 That distinction preserves both the negative Paper 2 result and the known role of snow, geomorphology and other physical breeding conditions.
+
+
+## Independent monitored-nest replication
+
+A separate Palmer reproductive-success dataset (REPRO) was prospectively frozen as an independent performance replication before its outcome values were opened. REPRO follows individually monitored nests and records laying, hatching, loss and creche dates. The frozen primary colony state was the within-island-season standardized binomial residual of the probability that a monitored nest produced at least one chick reaching creche.
+
+After conservative source-semantic repairs for archive date sentinels and duplicate nest histories, the primary panel contained 60 Humble colony-seasons across 15 predictor seasons. The preregistered lag-2 association did **not** replicate:
+
+- primary creche-success beta = -0.02019, one-sided p = 0.609;
+- minimum 10 monitored nests: beta = -0.03613, p = 0.867;
+- hatch-success sensitivity: beta = 0.00077, p = 0.506.
+
+This changes the ecological interpretation materially.
+
+The Palmer evidence should **not** be described as a generic reproductive-performance effect. The predictive temporal signal is specific to the previously defined aggregate chick-production/colony-state measure, or to biological dimensions correlated with that measure but not captured by binary monitored-nest success.
+
+The independent null does not invalidate the earlier chick-production lag association: the two analyses use different performance measures, and the REPRO replication is restricted to Humble Island. But it blocks a broad claim that “colonies with higher reproductive success attract or retain more breeders.”
+
+Accordingly, the preferred synthesis is now:
+
+> **Within-island breeder redistribution is history-dependent, but the informative history is metric-specific: an aggregate chick-production-derived colony state predicts later redistribution, whereas an independent binary monitored-nest success state does not.**
+
+No additional REPRO endpoint will be searched post hoc. In particular, brood-size, chicks-per-monitored-nest, alternative nest weighting, relaxed nest thresholds, manual colony aggregation or alternative lags are prohibited as rescue analyses.
+
+Receipt: `results/PALMER_REPRO_PERFORMANCE_REPLICATION_RESULT_V1.json`
