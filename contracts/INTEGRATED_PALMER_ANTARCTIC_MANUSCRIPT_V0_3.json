@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-integrated-palmer-antarctic-manuscript-v0.3",
+  "date": "2026-10-01",
+  "status": "integrated_manuscript_v0.3_scientific_narrative_frozen",
+  "manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_3.md",
+  "parent": "docs/MANUSCRIPT_INTEGRATED_V0_2.md",
+  "title": "Local demographic history does not reduce to static island architecture in Antarctic penguins",
+  "central_claim": "Dynamic within-island biological state can carry short-lived demographic history even when static breeding-island architecture does not yield a confirmed, scale-invariant response rule across Antarctic penguin populations.",
+  "part_I": {
+    "role": "local history-dependent reorganization system",
+    "concentration_claim": "Palmer Adelie decline includes within-island concentration beyond proportional thinning plus prespecified count error.",
+    "state_claim": "A late-season colony-wide state predicts later within-island redistribution under the fixed-specification lag analysis after shared island-transition growth, prior group size and persistent colony identity are controlled.",
+    "primary_bias_resistant_lag2": {
+      "beta": 0.040890746633273245,
+      "permutation_p": 0.0032699673003269967,
+      "inference_status": "fixed-specification validation after provenance repair; not fully outcome-blind preregistration"
+    },
+    "lag_profile": {
+      "beta_1": 0.10036304420074608,
+      "beta_2": 0.040890746633273245,
+      "beta_3": 0.051079361804774,
+      "beta_4": 0.02231787005980023,
+      "beta_5": -0.014770189881336883,
+      "recruitment_echo_contrast": -0.04221121412979195,
+      "recruitment_echo_p": 0.987730122698773
+    },
+    "state_memory": {
+      "rho_1": 0.06393,
+      "rho_1_p": 0.03776,
+      "rho_2_p": 0.07638,
+      "rho_3_p": 0.11063,
+      "bridge_delta_past": 0.02961,
+      "bridge_p": 0.00154,
+      "role": "mechanism diagnostic only; bridge is not causal mediation"
+    },
+    "independent_repro_validation": {
+      "primary_beta": 0.02960239689099827,
+      "primary_p": 0.23194768052319475,
+      "lag2_beta": -0.016358983087058774,
+      "lag2_p": 0.6291637083629164,
+      "supported": false,
+      "implication": "Do not generalize the late-season colony-wide state as generic nest reproductive success."
+    },
+    "same_panel_diagnostic": {
+      "common_panel_n": 61,
+      "colony_wide_state_beta": 0.10402777305744605,
+      "nest_mean_beta": 0.029059834671428798,
+      "state_vs_nest_r": 0.13161449316495238,
+      "role": "post-result diagnostic only"
+    },
+    "arrival_gate": "HUMPOP colony-level arrival endpoint stopped before coefficient fitting because the frozen information minimum was not met."
+  },
+  "part_II": {
+    "role": "cross-island transferability test",
+    "primary": "2 km A x H cross-species median gamma_AH = -0.318; 9999-permutation one-sided p = 0.0947; non-confirmatory",
+    "simple_buffering": "A-only point estimates are negative in all three species but no Holm-adjusted rejection",
+    "radius": "joint 2-to-5 km sign-switch-plus-contrast null p=0.081; radius sensitivity, not established scale dependence",
+    "power_boundary": "MDE80 |gamma_AH|≈0.50 and MDE90≈0.54; moderate common effects near the observed magnitude remain unresolved"
+  },
+  "cross_scale_interpretation": [
+    "The local result is not 'state beats place': Palmer terrain, snow and geomorphology remain biologically relevant.",
+    "The local result is that realized breeding-landscape value contains a dynamic historical component not captured by static colony identity or abundance alone.",
+    "The macro result is that static breeding-space amount and habitat-option heterogeneity do not compress that local complexity into a confirmed transferable Antarctic-wide rule.",
+    "The REPRO failure narrows the Palmer state to a late-season colony-wide biological state rather than generic reproductive success."
+  ],
+  "ross_status": {
+    "role": "prospective independent individual-level mechanism test, not current manuscript evidence",
+    "execution_readiness": "READY_PARSER_INDEPENDENT",
+    "real_data_status": "LOCKED_PENDING_EXACT_HEADERS",
+    "behavioral_rows_read": 0,
+    "manuscript_rule": "Do not cite Ross coefficients, sample sizes, directions or results because none have been opened."
+  },
+  "prohibited_language": [
+    "state replaces habitat",
+    "place is irrelevant",
+    "generic reproductive success predicts redistribution",
+    "Palmer proves public-information use",
+    "Palmer lag analysis was fully preregistered or outcome-blind",
+    "HUMPOP showed no arrival effect",
+    "Ross Island confirms the mechanism",
+    "marginally significant",
+    "near significant",
+    "biological scale dependence from the 1/2/5 km reversal",
+    "island architecture buffers Antarctic penguins",
+    "species-wide latent forcing is a specific identified climate driver"
+  ],
+  "manuscript_priorities": [
+    "Make late-season state and independent REPRO non-replication central to Part I.",
+    "Retain concentration as the spatial-demographic entry point rather than the final Palmer mechanism claim.",
+    "Keep Part II inferentially independent and non-confirmatory.",
+    "Frame the synthesis as dynamic local history versus limited transferability of static descriptors, not a state-versus-place dichotomy.",
+    "Keep provenance-repair and post-hoc diagnostic labels explicit.",
+    "Keep Ross Island outside the evidentiary Results until the exact-header gate is unlocked and outcomes are run."
+  ]
+}
