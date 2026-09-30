@@ -75,3 +75,24 @@ The clean conceptual link to Paper 2 is not “state beats place.” It is:
 > **Static landscape architecture did not yield a transferable macroecological response rule, whereas within Palmer, dynamically updated colony state contains short-lived information about where breeders subsequently accumulate.**
 
 That distinction preserves both the negative Paper 2 result and the known role of snow, geomorphology and other physical breeding conditions.
+
+
+## HUMPOP colony-arrival route
+
+An official PAL-LTER source repository (`PAL-LTER/pal-seabirds`) was identified. Its conversion code shows that HUMPOP is genuinely colony-level: raw `SEASON, DATE, ISL, LOC, TOTADULTS` are archived as `studyName, Date, Island, Colony, Adults`, and the same raw `LOC` field is used for colony identity in the adult census.
+
+This source passed a prospectively frozen schema gate before arrival-count values were opened. The subsequent frozen test required exact raw colony-code matching, a first upward 50% crossing of each colony-season maximum, at least three colonies per predictor season, at least 10 predictor seasons, and at least 100 matched colony-seasons.
+
+The information gate failed before any performance-arrival model was fit:
+
+- 106 estimable 50% arrival endpoints;
+- 84 exact performance × next-season arrival matches;
+- 69 matched colony-seasons after the >=3-colony season rule;
+- 18 predictor seasons;
+- required minimum = 100 matched colony-seasons.
+
+Therefore HUMPOP is **not a negative result**. It is a predeclared **STOP for insufficient information**. No coefficient, p-value, or direction for performance-linked arrival exists. The analysis may not be rescued by lowering the threshold, switching to the 25%/75% endpoints, or creating a post hoc colony-code crosswalk.
+
+Receipt: `results/PALMER_HUMPOP_ARRIVAL_RESULT_V1.json`
+
+This closes the aggregate arrival route. Direct discrimination among adult retention, breeding dispersal, prospecting and immigration still requires the unresolved longitudinal band-resight source.
