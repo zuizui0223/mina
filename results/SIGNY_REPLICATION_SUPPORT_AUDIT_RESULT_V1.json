@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-signy-replication-support-audit-result-v1",
+  "validated_date": "2026-09-30",
+  "execution": {
+    "workflow_run_id": 36656423116,
+    "artifact_id": 11073086443,
+    "artifact_digest": "sha256:6953511d798efccd7c7da60337c274ef364d8a820ccdd0b1388cdaa28a739d70",
+    "head_sha": "66cf8e825d95ddd8d84796692b72fe76f54a98ed",
+    "conclusion": "success"
+  },
+  "source": {
+    "official_doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "ramadda_entryid": "daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "csv": "signy_adelie_breeding_success.csv",
+    "rows": 310,
+    "parser_repairs": {
+      "overflow_comment_rows": 18,
+      "short_rows": 0,
+      "rule": "Preserve first 13 fields exactly and join only overflow fields into final COMMENTS."
+    },
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62"
+  },
+  "frozen_semantics": {
+    "season": "SEASON",
+    "colony": "COLONY",
+    "breeding_pairs": "TOTAL_NUMBER_OF_PAIRS",
+    "chicks": "TOTAL_NUMBER_OF_CHICKS"
+  },
+  "primary_window": {
+    "season_start_years": [
+      1996,
+      2019
+    ],
+    "n_seasons_present": 24,
+    "n_literal_colonies": 11
+  },
+  "lag2_support": {
+    "performance_rows": 177,
+    "lag2_rows": 153,
+    "predictor_seasons": 22,
+    "literal_colonies": 9,
+    "atomic_only_lag2_rows": 133,
+    "pooled_label_enters_primary": true
+  },
+  "gate": {
+    "required_predictor_seasons": 8,
+    "required_colonies": 4,
+    "required_lag2_rows": 40,
+    "passes": true
+  },
+  "decision": {
+    "independent_replication_feasible": true,
+    "effect_computed": false,
+    "atomic_label_sensitivity_required": true
+  },
+  "boundary": [
+    "This receipt contains support counts only and no fitted Signy replication effect.",
+    "The pooled literal label A1 + A60 is retained in the primary analysis exactly as published and excluded in the mandatory atomic-label sensitivity.",
+    "The primary replication remains the Palmer-supported lag-2 performance-linked redistribution coefficient."
+  ]
+}
