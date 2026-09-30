@@ -35,7 +35,7 @@ def _save(fig: plt.Figure, out_dir: Path, stem: str) -> list[str]:
 
 def render_figure1(palmer_data: Path, out_dir: Path) -> list[str]:
     sites = _rows(palmer_data / "figure1_sites.csv")
-    trajectories = _rows(palmer_data / "figure2_trajectories.csv")
+    trajectories = _rows(palmer_data / "figure1_trajectories.csv")
     islands = ["CHR", "COR", "HUM", "LIT", "TOR"]
     focal_names = {
         "Christine Island",
