@@ -19,6 +19,7 @@ DATASET_UID = "601444"
 RESIGHT_FILE = "band_resighting_1997-2021.csv"
 BANDING_UID = "601443"
 BANDING_FILE = "band_inv_1994-2021.csv"
+CHICKCOUNT_UID = "600007"
 BASE = "https://www.usap-dc.org"
 
 
@@ -72,6 +73,10 @@ def main() -> int:
     banding_readme = fetch_text(banding_readme_url)
     if not banding_readme.strip():
         raise RuntimeError("empty USAP-DC banding README")
+    chickcount_readme_url = f"{BASE}/readme/{CHICKCOUNT_UID}"
+    chickcount_readme = fetch_text(chickcount_readme_url)
+    if not chickcount_readme.strip():
+        raise RuntimeError("empty USAP-DC chick-count README")
 
     token = os.environ.get("USAP_DC_API_KEY", "").strip()
     result: dict[str, object] = {
@@ -85,6 +90,9 @@ def main() -> int:
         "banding_readme_url": banding_readme_url,
         "banding_readme_retrieved": True,
         "banding_readme_text": banding_readme,
+        "chickcount_readme_url": chickcount_readme_url,
+        "chickcount_readme_retrieved": True,
+        "chickcount_readme_text": chickcount_readme,
         "api_key_present": bool(token),
         "resight_header": None,
         "banding_header": None,
@@ -111,6 +119,7 @@ def main() -> int:
     print("status=", result["status"])
     print("readme_retrieved=", result["readme_retrieved"])
     print("banding_readme_retrieved=", result["banding_readme_retrieved"])
+    print("chickcount_readme_retrieved=", result["chickcount_readme_retrieved"])
     print("api_key_present=", result["api_key_present"])
     print("behavioral_rows_read=0")
     if result["resight_header"]:
