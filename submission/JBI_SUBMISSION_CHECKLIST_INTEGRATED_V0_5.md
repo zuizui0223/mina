@@ -9,7 +9,7 @@
 - [x] Title <=115 characters including spaces (current: 106).
 - [x] Running title <40 characters.
 - [x] 6–10 keywords, alphabetized.
-- [x] Main text approximately <=6,000 words (current automated count: 5,996).
+- [x] Main text approximately <=6,000 words (current automated count: 5,878).
 - [x] Main headers follow Introduction / Materials and Methods / Results / Discussion.
 - [x] Data Accessibility Statement present.
 - [x] Double-anonymous language used in the main manuscript.
