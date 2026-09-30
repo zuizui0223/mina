@@ -63,13 +63,17 @@ def audit(root: Path) -> dict[str, object]:
         zip(sites["site_id"].astype(str), sites["site_name"].astype(str))
     )
     parent_ids: dict[str, str] = {}
+    missing_parent_sites: dict[str, str] = {}
     for colony, name in PARENT_NAMES.items():
         matches = sites[sites["site_name"].astype(str) == name]
-        if len(matches) != 1:
+        if len(matches) == 1:
+            parent_ids[colony] = str(matches.iloc[0]["site_id"])
+        elif len(matches) == 0:
+            missing_parent_sites[colony] = name
+        else:
             raise ValueError(
-                f"expected one parent site for {colony}={name!r}, observed {len(matches)}"
+                f"ambiguous parent site for {colony}={name!r}: {len(matches)} matches"
             )
-        parent_ids[colony] = str(matches.iloc[0]["site_id"])
 
     wanted_ids = {
         component
@@ -160,11 +164,14 @@ def audit(root: Path) -> dict[str, object]:
         parent_ambiguous[colony] = sorted(
             int(year) for year, n in counts.items() if int(n) > 1
         )
-    parent_common = (
-        set(parent_complete["ROYD"])
-        & set(parent_complete["BIRD"])
-        & set(parent_complete["CROZ"])
-    )
+    if set(parent_complete) == {"ROYD", "BIRD", "CROZ"}:
+        parent_common = (
+            set(parent_complete["ROYD"])
+            & set(parent_complete["BIRD"])
+            & set(parent_complete["CROZ"])
+        )
+    else:
+        parent_common = set()
     parent_mark_window = sorted(
         y for y in parent_common if 1996 <= y <= 2012
     )
@@ -178,6 +185,7 @@ def audit(root: Path) -> dict[str, object]:
         "species_id": str(species_id),
         "site_coverage": component,
         "parent_site_ids": parent_ids,
+        "missing_parent_sites": missing_parent_sites,
         "ambiguous_component_years": ambiguous,
         "component_complete_years_by_colony": colony_complete,
         "component_common_complete_years_all_three": sorted(component_common),
