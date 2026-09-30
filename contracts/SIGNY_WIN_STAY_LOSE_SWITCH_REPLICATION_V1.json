@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-signy-win-stay-lose-switch-replication-v1",
+  "date": "2026-09-30",
+  "status": "metadata_only_frozen_before_signy_effect_computation",
+  "replication_role": "independent system replication of Palmer P3/lag mechanism; not used to redefine Palmer outcomes",
+  "source": {
+    "dataset": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020",
+    "authors": "Dunn et al. 2021",
+    "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "provider": "NERC EDS UK Polar Data Centre / British Antarctic Survey",
+    "access": "no access constraints",
+    "metadata_fact": "nine predetermined Adelie colonies were surveyed annually; occupied/incubating nests, chicks and fledglings are recorded; from 1996/97 onward data conform to CCAMLR CEMP methods"
+  },
+  "primary_window": {
+    "start_season": "1996-1997",
+    "end_season": "2019-2020",
+    "rationale": "BAS metadata states standard CCAMLR methods were implemented in 1996 and earlier count timing/methods may have varied."
+  },
+  "colony_identity": {
+    "known_from_metadata_mirror": [
+      "Atomic labels include A2, A3, A4, A41, A62, A63, A64 and later A39.",
+      "A1 and A60 appear as a pooled label 'A1 + A60' in later seasons.",
+      "Some colonies become extinct/abandoned and some seasons have missing counts."
+    ],
+    "primary_rule": "Treat each literal published colony label as an observational unit. Do not split 'A1 + A60' into A1 and A60 and do not merge any other labels post hoc.",
+    "continuity_rule": "A unit is eligible for lag analysis only across seasons in which its literal label is unchanged and the required breeding-pair/chick fields are observed.",
+    "atomic_sensitivity": "Repeat after excluding every non-atomic '+' label. This sensitivity is mandatory if the pooled A1 + A60 label enters the primary panel."
+  },
+  "performance_definition": {
+    "breeding_pairs": "Use the dataset's annual breeding-pair measure derived from the nest census under the published Signy protocol.",
+    "reproductive_output": "Use creched chicks / chicks expected to fledge field only if it is available at the same literal colony-season; do not substitute zero for NA or comments indicating missed surveys.",
+    "state": "Within each eligible Signy season, compute colony chick output relative to size-proportional expectation and z-standardize the Pearson residual exactly as in Palmer.",
+    "minimum_colonies_per_season": 3
+  },
+  "primary_replication": {
+    "endpoint": "Palmer-style bias-resistant lag-2 redistribution coefficient beta_2",
+    "outcome": "Relative log growth of breeding pairs during t+1 -> t+2, centered across eligible Signy colonies in that transition.",
+    "controls": [
+      "z-standardized prior colony size",
+      "literal colony fixed effects"
+    ],
+    "prediction": "beta_2 > 0",
+    "inference": "Within predictor season, permute reproductive-performance state among eligible literal colony labels, refit complete model, one-sided upper-tail Monte Carlo p.",
+    "permutations": 100000,
+    "seed": 20261010
+  },
+  "mechanism_replication": {
+    "endpoint": "P3 lose-switch hinge asymmetry at lag 2",
+    "hinge": "S_minus=min(S,0), S_plus=max(S,0); delta=beta_loss-beta_win",
+    "prediction": "delta > 0 and beta_loss > 0",
+    "inference": "Freedman-Lane residual permutation conditional on the linear S effect, within predictor season; same construction as Palmer P3.",
+    "permutations": 100000,
+    "seed": 20261011
+  },
+  "secondary": [
+    "lag-1 and lag-3 coefficients are descriptive replication-profile endpoints; lag-1 retains denominator-overlap caution if present.",
+    "Repeat primary lag-2 and P3 on the atomic-label-only subset excluding labels containing '+'.",
+    "Repeat excluding seasons whose published comments indicate nonstandard/late counts or explicit unreliability, using comment flags only—not outcome values—to define the exclusion."
+  ],
+  "eligibility_gate_before_outcomes": {
+    "required_primary_seasons": 8,
+    "required_primary_colonies": 4,
+    "required_lag2_rows": 40,
+    "rule": "If the metadata/schema audit cannot support these minimums without inspecting fitted effects, classify Signy as infeasible for this replication and do not relax the thresholds."
+  },
+  "prohibited": [
+    "Do not use pre-1996 seasons in the primary analysis.",
+    "Do not infer zero chicks/pairs from NA or operational comments.",
+    "Do not split pooled colony identifiers using outcome patterns.",
+    "Do not change the Palmer lag from 2 after Signy effect estimates are computed.",
+    "Do not claim individual breeding dispersal from colony counts."
+  ],
+  "interpretation": {
+    "supported_lag2_and_P3": "Independent system-level support for a short-lag, performance-linked redistribution rule consistent with lose-switch breeding dynamics.",
+    "lag2_only": "Independent replication of dynamic performance-linked redistribution, but not the asymmetric lose-switch mechanism.",
+    "neither": "The Palmer mechanism signal does not transfer to Signy under the frozen comparable design."
+  }
+}
