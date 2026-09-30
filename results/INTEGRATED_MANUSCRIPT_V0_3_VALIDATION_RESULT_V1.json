@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-integrated-manuscript-v0.3-validation-result-v1",
+  "validated_date": "2026-10-01",
+  "contract_id": "mina-integrated-palmer-antarctic-manuscript-v0.3",
+  "branch": "manuscript/integrated-v0.3",
+  "manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_3.md",
+  "figure_captions": "docs/INTEGRATED_FIGURE_CAPTIONS_V0_3.md",
+  "execution": {
+    "workflow_run_id": 36746429536,
+    "workflow_conclusion": "success",
+    "head_sha": "2d3fef5b76902b3e00613efc8c001e967507b255",
+    "artifact_id": 11111829706,
+    "artifact_digest": "sha256:1484f28f60d7282c351409ba6bc5c35864f38e2b291484765d1a6639796faf60"
+  },
+  "validations": {
+    "manuscript_claim_guard_passed": true,
+    "frozen_figure_data_tests_passed": 3,
+    "figure_data_package_built": true,
+    "submission_figures_rendered": true,
+    "rendered_files_verified": 6,
+    "manuscript_version_label": "v0.3",
+    "caption_version_label": "v0.3",
+    "ross_behavioral_results_in_current_manuscript": false
+  },
+  "scientific_boundaries_verified": [
+    "Palmer lag-2 is fixed-specification validation after provenance repair, not fully outcome-blind preregistration.",
+    "The 4-5-year recruitment echo is reported as unsupported.",
+    "Independent REPRO mean nest success is reported as non-replicating and cannot be rescued by a positive sensitivity.",
+    "The Palmer predictor is labelled late-season colony-wide state rather than generic reproductive success.",
+    "HUMPOP is reported as stopped at its frozen information gate, not as a null arrival effect.",
+    "Paper 2 remains directionally concordant but non-confirmatory at the frozen 2 km primary test.",
+    "Radius variation remains sensitivity rather than established biological scale dependence.",
+    "Ross Island remains prospective and outside the evidentiary Results."
+  ],
+  "decision": {
+    "integrated_v0_3_scientific_family_validated": true,
+    "manuscript_and_figure_data_consistent_with_frozen_receipts": true,
+    "independent_of_ross_behavioral_branch": true,
+    "ready_for_manuscript_pull_request": true
+  }
+}
