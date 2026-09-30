@@ -106,7 +106,7 @@ class OfficialZipTests(unittest.TestCase):
             frame,meta=read_official_zip(path)
             self.assertEqual(frame.loc[0,"Total number of pairs"],"100")
             self.assertEqual(frame.loc[0,"Total number of chicks"],"50")
-            self.assertEqual(frame.loc[0,"Comments"],"snow,meltwater,low area")
+            self.assertEqual(frame.loc[0,"Comments"],"snow, meltwater, low area")
             self.assertEqual(meta["selected_overflow_comment_rows_repaired"],1)
             out=audit_table(frame)
             self.assertEqual(out["status"],"support_audited")
