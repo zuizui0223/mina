@@ -27,12 +27,14 @@ def _obs(band, date, colony, eggs=0, chicks=0):
     }
 
 
-def test_documented_nov_jan_season_alignment() -> None:
+def test_frozen_oct_mar_season_alignment() -> None:
+    assert season_start_year_from_date("10/31/2000") == 2000
     assert season_start_year_from_date("11/20/2000") == 2000
     assert season_start_year_from_date("12/31/2000") == 2000
     assert season_start_year_from_date("01/05/2001") == 2000
-    with pytest.raises(ValueError, match="Nov-Jan"):
-        season_start_year_from_date("10/31/2000")
+    assert season_start_year_from_date("03/15/2001") == 2000
+    with pytest.raises(ValueError, match="Oct-Mar"):
+        season_start_year_from_date("04/01/2001")
 
 
 def test_banding_season_and_unique_interval_match() -> None:
