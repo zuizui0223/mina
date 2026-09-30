@@ -513,7 +513,8 @@ Do not claim:
 - observed movement of individual adults among colonies;
 - island-scale demographic closure;
 - public-information use or prospecting;
-- that the Signy comment-filter sensitivity rescues the null primary test.
+- a positive independent replication at Signy — **do not call Signy a positive independent replication**;
+- that the Signy comment-filter sensitivity rescues the null primary test — it **cannot replace the null frozen Signy primary result**.
 
 ---
 
