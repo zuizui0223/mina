@@ -186,7 +186,7 @@ Independent Torgersen mapping showed a parallel physical contraction from 23 his
 
 [**Figure 1–2 near here**]
 
-### Secondary Palmer dynamic signal did not independently replicate at Signy
+### Secondary Palmer dynamic signal did not replicate at Signy
 
 At Palmer, relative reproductive performance carried short-lived information
 about later within-island redistribution under the fixed specification. The
