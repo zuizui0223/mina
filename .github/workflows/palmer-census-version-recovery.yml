@@ -1,0 +1,35 @@
+name: palmer-census-version-recovery
+
+on:
+  push:
+    branches:
+      - audit/palmer-census-version-completeness-v1
+    paths:
+      - "scripts/fetch_palmer_census_v8_audit.py"
+      - "scripts/fetch_lter_census.py"
+      - "contracts/PALMER_CENSUS_VERSION_COMPLETENESS_AUDIT_V1.json"
+      - ".github/workflows/palmer-census-version-recovery.yml"
+  workflow_dispatch:
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch frozen old census
+        run: python scripts/fetch_lter_census.py build/old_census.csv
+      - name: Recover and verify EDI census v8
+        run: python scripts/fetch_palmer_census_v8_audit.py --out-dir build/v8
+      - name: Show recovered files
+        run: |
+          find build/v8 -maxdepth 1 -type f -printf "%f %s bytes\n" | sort
+          cat build/v8/manifest.tsv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-census-version-recovery
+          path: |
+            build/old_census.csv
+            build/v8/*
