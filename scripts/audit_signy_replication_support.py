@@ -77,24 +77,36 @@ def infer_semantics(frame:pd.DataFrame)->dict:
 
     # Numeric count candidates are identified by header semantics only; support
     # audit never summarizes their values.
-    pairs_col=None
-    chicks_col=None
-    nest_date_col=None
-    chick_date_col=None
-    for c in columns:
-        n=_norm(c)
-        if pairs_col is None and (
-            "total number of nests" in n
-            or "total number of pairs" in n
-            or n in {"breeding pairs","pairs","total nests"}
-        ):
-            pairs_col=c
-        if chicks_col is None and ("total number of chicks" in n or n in {"chicks","fledglings","chicks expected to fledge"}):
-            chicks_col=c
-        if nest_date_col is None and "date of nest count" in n:
-            nest_date_col=c
-        if chick_date_col is None and "date chick count" in n:
-            chick_date_col=c
+    normalized={str(c):_norm(c) for c in columns}
+
+    def exact_first(names):
+        wanted={_norm(x) for x in names}
+        for col,norm in normalized.items():
+            if norm in wanted:
+                return col
+        return None
+
+    pairs_col=exact_first([
+        "Total number of pairs",
+        "Breeding pairs",
+        "Pairs",
+        "Total number of nests",
+        "Total nests",
+    ])
+    chicks_col=exact_first([
+        "Total number of chicks",
+        "Chicks",
+        "Chicks expected to fledge",
+        "Fledglings",
+    ])
+    nest_date_col=exact_first([
+        "Date pair count",
+        "Date of nest count",
+    ])
+    chick_date_col=exact_first([
+        "Date chick count",
+        "Date of chick count",
+    ])
 
     comments_col=None
     for c in columns:
