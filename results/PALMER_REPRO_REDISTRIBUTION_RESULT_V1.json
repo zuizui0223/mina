@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-repro-redistribution-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-repro-redistribution-v1",
+  "semantic_repair": "mina-palmer-repro-creche-semantic-repair-v1",
+  "source": {
+    "adult_census": {
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+      "rows": 1489
+    },
+    "chick_census": {
+      "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+      "sha256": "40485a328af51727e019c2cd99e4795c098499fef86a9d4b2af435a6de5373e0",
+      "usable_rows": 805
+    },
+    "repro": {
+      "repository": "PAL-LTER/pal-seabirds",
+      "commit": "523e74a064e2f1153704a32731631cbff4395e73",
+      "files": 7,
+      "raw_rows": 2057,
+      "combined_sha256": "5e2e93a2bacca96f58f724851c026c3b4d970081506920f3aab585f15fa42725",
+      "duplicate_nest_keys": 12,
+      "rows_excluded_by_duplicate_rule": 24,
+      "usable_nest_rows": 2033
+    }
+  },
+  "execution": {
+    "workflow_run_id": 36696971421,
+    "workflow_conclusion": "success",
+    "head_sha": "e3133172674a39e65ef4972b768939e006a2b90d",
+    "artifact_id": 11087244156,
+    "artifact_digest": "sha256:8b24c9425da1e4a0ffe1e7166b680a6fa142d2a26fe533a3006b0ee3f4d328f8",
+    "analysis_output_sha256": "0c372a4b5d743387aefe249c7c54ae3942f3e79047874402347e5a240d9cf79b",
+    "permutations_per_test": 100000
+  },
+  "primary_information_gate": {
+    "matched_colony_seasons": 63,
+    "predictor_island_seasons": 15,
+    "required_minimum_rows": 50,
+    "required_minimum_predictor_island_seasons": 10,
+    "passed": true
+  },
+  "primary_lag1": {
+    "response": "next-year within-island relative colony growth",
+    "predictor": "within-island-season z score of mean creched chicks per monitored nest",
+    "minimum_monitored_nests": 5,
+    "beta": 0.02960239689099827,
+    "null_95_interval": [
+      -0.0743859474097562,
+      0.07054024438214093
+    ],
+    "one_sided_upper_p": 0.23194768052319475,
+    "supported": false
+  },
+  "secondary_lag2": {
+    "beta": -0.016358983087058774,
+    "null_95_interval": [
+      -0.13596541868054327,
+      0.11402907760231937
+    ],
+    "one_sided_upper_p": 0.6291637083629164,
+    "supported": false
+  },
+  "sensitivities": {
+    "binary_any_creche": {
+      "role": "prespecified sensitivity only; cannot rescue failed primary endpoint",
+      "beta": 0.06788778857921648,
+      "one_sided_upper_p": 0.040519594804051956,
+      "supported_on_its_own": true
+    },
+    "minimum_nests_10": {
+      "estimable": false,
+      "matched_colony_seasons": 30,
+      "predictor_island_seasons": 9,
+      "failure_reasons": [
+        "fewer_than_50_matched_colony_seasons",
+        "fewer_than_10_predictor_island_seasons"
+      ]
+    },
+    "exclude_litchfield": {
+      "beta": 0.02960239689099827,
+      "one_sided_upper_p": 0.23323766762332376,
+      "note": "Primary panel contains no estimable Litchfield contribution; exclusion leaves result unchanged."
+    },
+    "minimum_prior_size_2": {
+      "beta": 0.02960239689099827,
+      "one_sided_upper_p": 0.23527764722352776
+    },
+    "leave_one_colony_out_observed_beta": {
+      "HUM:1.1": 0.02736028439190663,
+      "HUM:1.2": 0.028712681420293148,
+      "HUM:2.0": 0.02960239689099827,
+      "HUM:2.1": 0.029463131780950613,
+      "HUM:2.2": 0.050008901273984954,
+      "HUM:3.0": null,
+      "HUM:3.1": -0.01780849131909907,
+      "HUM:4.0": null,
+      "HUM:5.0": null
+    }
+  },
+  "convergent_validity_with_chick_production_state": {
+    "n_matched_colony_seasons": 61,
+    "pearson_r": 0.13161449316495238,
+    "interpretation": "The independently sampled nest-success state is only weakly aligned with the previously used colony-wide chick-production state."
+  },
+  "decision": {
+    "independent_nest_validation_supported": false,
+    "strong_replication_pattern": false,
+    "public_information_mechanism_confirmed": false
+  },
+  "ecological_interpretation": "Mean chicks reaching creche per monitored nest does not confirm the previously observed performance-linked redistribution signal. The primary coefficient is positive but small relative to its frozen permutation null, and the lag-2 coefficient is slightly negative. A prespecified binary-any-creche sensitivity is positive, but the failed primary endpoint prevents using that sensitivity as a rescue. The weak correlation between nest-level performance and the colony-wide chick-production state indicates that these measures capture different aspects of breeding performance. Therefore the Palmer evidence supports history-dependent redistribution associated with the previously defined colony-wide state, but not a general claim that local nest reproductive success predicts subsequent breeder redistribution.",
+  "claim_boundary": [
+    "Do not use the significant binary-any-creche sensitivity to rescue the failed primary endpoint.",
+    "Do not claim independent nest-level replication of performance-linked redistribution.",
+    "Do not infer public-information use, adult retention, breeding dispersal, immigration or prospecting.",
+    "Do not tune the monitored-nest threshold or substitute hatch/loss endpoints after seeing this result.",
+    "The earlier chick-production lag result remains valid under its own frozen specification but is now narrower in biological interpretation.",
+    "Further mechanism/generalization tests should move to an independent population or individual-level resight data rather than additional Palmer reproductive endpoints."
+  ]
+}
