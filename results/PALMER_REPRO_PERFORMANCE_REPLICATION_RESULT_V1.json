@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-repro-performance-replication-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-repro-performance-replication-v1",
+  "source_repairs": [
+    "mina-palmer-repro-date-sentinel-repair-v1",
+    "mina-palmer-repro-duplicate-nest-repair-v1"
+  ],
+  "source": {
+    "adult_census": {
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+      "rows": 1489
+    },
+    "repro": {
+      "repository": "PAL-LTER/pal-seabirds",
+      "commit": "523e74a064e2f1153704a32731631cbff4395e73",
+      "files": 7,
+      "raw_rows": 2057,
+      "combined_sha256": "5e2e93a2bacca96f58f724851c026c3b4d970081506920f3aab585f15fa42725",
+      "eligible_rows_before_duplicate_exclusion": 1976,
+      "duplicate_eligible_nest_keys_excluded": 11,
+      "rows_excluded_by_duplicate_rule": 22,
+      "eligible_nest_rows": 1954,
+      "ineligible_rows_without_observed_lay_date": 81
+    }
+  },
+  "execution": {
+    "workflow_run_id": 36695950479,
+    "workflow_conclusion": "success",
+    "head_sha": "c5307744a12449901d4ab18f80dd139be4892014",
+    "artifact_id": 11087497448,
+    "artifact_digest": "sha256:46a051d3a1a661d5df34d239dd947966e6aac2ce8db307f7f34819e8eeffe317",
+    "analysis_output_sha256": "3f6bd42d09f1863a71c1227ec8c0d63bb8be95c7bc8557687c9665d186f69409",
+    "permutations": 100000
+  },
+  "primary": {
+    "performance_endpoint": "Within-island-season standardized binomial Pearson residual of monitored nests producing at least one chick reaching creche, among nests with an observed laying date.",
+    "matched_islands": [
+      "HUM"
+    ],
+    "n_matched_colony_seasons": 60,
+    "n_predictor_seasons": 15,
+    "matched_colony_codes": [
+      "HUM:1.2",
+      "HUM:2.1",
+      "HUM:2.2",
+      "HUM:3.0",
+      "HUM:3.1",
+      "HUM:4.0",
+      "HUM:5.0"
+    ],
+    "beta_repro": -0.02018574449686124,
+    "null_mean": 0.00038317347614287393,
+    "null_95_interval": [
+      -0.12128579433414276,
+      0.12873800467407648
+    ],
+    "one_sided_upper_p": 0.6092539074609253,
+    "independent_replication_supported": false
+  },
+  "sensitivities": {
+    "minimum_10_nests": {
+      "n_rows": 30,
+      "n_predictor_seasons": 9,
+      "beta_repro": -0.03612906051835594,
+      "one_sided_upper_p": 0.8665313346866531,
+      "supported": false
+    },
+    "hatch_success": {
+      "n_rows": 60,
+      "n_predictor_seasons": 15,
+      "beta_repro": 0.0007745194006062864,
+      "one_sided_upper_p": 0.5064349356506435,
+      "supported": false
+    },
+    "exclude_litchfield": {
+      "note": "Identical to primary because all matched REPRO colony-seasons are on Humble Island.",
+      "beta_repro": -0.02018574449686124,
+      "one_sided_upper_p": 0.6094039059609404,
+      "supported": false
+    },
+    "leave_one_island_out": {
+      "CHR": -0.02018574449686124,
+      "COR": -0.02018574449686124,
+      "HUM": null,
+      "LIT": -0.02018574449686124,
+      "TOR": -0.02018574449686124
+    }
+  },
+  "decision": {
+    "independent_monitored_nest_replication_supported": false,
+    "generic_reproductive_performance_claim_supported": false,
+    "original_chick_count_state_result_invalidated": false,
+    "metric_dependence_identified": true,
+    "individual_movement_identified": false
+  },
+  "ecological_interpretation": "The lag-2 redistribution association previously observed for the chick-production-derived colony state does not replicate with an independently constructed monitored-nest reproductive-performance state on Humble Island. The primary creche-success coefficient is small, opposite in sign to the preregistered prediction, and well inside the permutation null; a hatch-success sensitivity is essentially zero. Therefore the defensible inference is not that generic reproductive success predicts later redistribution. Instead, temporal information appears specific to the aggregate chick-production/colony-state construction previously analyzed, or to dimensions of colony state not captured by binary monitored-nest success. Because the independent replication is restricted to Humble Island and 60 colony-seasons, it does not by itself identify why the metrics differ.",
+  "claim_boundary": [
+    "Do not describe the earlier chick-production state as a general reproductive-performance effect.",
+    "Do not interpret the negative primary point estimate as evidence that successful nests repel future breeders; the effect is unsupported and the null interval is wide.",
+    "Do not rescue the replication by changing the nest endpoint, using brood-size or chick-number metrics, merging colony codes, lowering the five-nest threshold, or changing the lag after seeing this result.",
+    "Do not claim the monitored-nest result falsifies public-information use in Adelie penguins; it tests one frozen performance metric on Humble Island.",
+    "The prior chick-count lag-2 result remains a reproducible association under its fixed specification, but its biological interpretation is now metric-dependent.",
+    "Direct identification of retention, breeding dispersal, immigration or prospecting remains blocked by the missing longitudinal individual resight table."
+  ]
+}

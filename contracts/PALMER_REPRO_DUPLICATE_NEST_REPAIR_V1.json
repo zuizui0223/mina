@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "repair_id": "mina-palmer-repro-duplicate-nest-repair-v1",
+  "date": "2026-09-30",
+  "status": "source_semantic_repair_frozen_before_any_repro_performance_redistribution_coefficient",
+  "parent_contract": "mina-palmer-repro-performance-replication-v1",
+  "problem": "The official REPRO archive contains multiple eligible rows for some identical season + island + raw colony + site + nest keys. The duplicated rows are biologically distinct histories such as relay or third-egg records rather than exact duplicate rows.",
+  "audit": {
+    "historical_1992_2020_raw_rows": 1787,
+    "eligible_rows_under_frozen_lay_date_rule": 1743,
+    "duplicate_eligible_nest_keys": 11,
+    "identical_duplicate_keys": 0,
+    "discordant_duplicate_keys": 11,
+    "notes_examples": [
+      "RELAY",
+      "RELAY 2E",
+      "3rd EGG",
+      "3 EGG CLUTCH",
+      "E3 for Nest 2"
+    ],
+    "performance_or_future_growth_coefficient_computed_before_repair": false
+  },
+  "frozen_resolution": {
+    "rule": "Exclude every row belonging to a duplicated eligible season + island + colony + site + nest key from the primary and all sensitivity analyses.",
+    "no_attempt_selection": true,
+    "no_success_based_selection": true,
+    "no_first_or_last_row_selection": true,
+    "no_aggregation_across_relay_or_third_egg_records": true,
+    "rationale": "The frozen analysis unit is one monitored nest history per key. Once multiple biological histories occupy the same key, no contract-defined rule identifies a single history. Excluding the ambiguous nest key preserves the original unit without outcome-based reconciliation."
+  },
+  "unchanged": [
+    "1-998 observed-event date rule",
+    "primary creche-success endpoint",
+    "minimum 5 eligible nests per colony-season",
+    "minimum 3 colonies per island-season",
+    "binomial Pearson-residual performance state",
+    "exact raw colony-code matching",
+    "lag-2 redistribution outcome",
+    "minimum-information gate",
+    "100000 permutations and decision rule"
+  ],
+  "claim_boundary": [
+    "This repair was defined after REPRO values were opened for duplicate semantics but before any performance-to-redistribution coefficient was computed.",
+    "Excluded relay/third-egg nest keys cannot be reintroduced in a sensitivity analysis.",
+    "If exclusion causes the information gate to fail, the independent REPRO replication stops rather than changing the nest unit."
+  ]
+}
