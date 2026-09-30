@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-sea-individual-movement-schema-gate-result-v1",
+  "date": "2026-09-30",
+  "gate_id": "mina-ross-sea-individual-movement-schema-gate-v1",
+  "outcome_values_opened_before_decision": false,
+  "decision": "GO_MOVEMENT_ONLY_DATA_DEPENDENCY",
+  "movement_source": {
+    "resight_dataset": {
+      "usap_dc_id": "601444",
+      "doi": "10.15784/601444",
+      "file": "band_resighting_1997-2021.csv",
+      "size": "25.1 MB",
+      "md5": "aaae6ddad6d12081b5a68466794438a2",
+      "license": "CC BY 4.0",
+      "raw_rows_opened": false
+    },
+    "banding_dataset": {
+      "usap_dc_id": "601443",
+      "doi": "10.15784/601443",
+      "file": "band_inv_1994-2021.csv",
+      "size": "11.4 kB",
+      "md5": "3da33defa4decc82b6e317c7fa9f9044",
+      "license": "CC BY 4.0",
+      "raw_rows_opened": false
+    },
+    "independent_schema_validation": {
+      "paper": "Age and colony variation in Adelie penguin metapopulation vital rates: insights from a 25-year mark-recapture study",
+      "year": 2026,
+      "doi": "10.3389/fevo.2026.1868960",
+      "data_availability_source": "USAP-DC 601444",
+      "study_years": "1996-2020",
+      "colonies": [
+        "Cape Royds",
+        "Cape Bird",
+        "Cape Crozier"
+      ],
+      "reproductive_states": [
+        "unobservable",
+        "pre-breeder",
+        "breeder",
+        "non-breeder"
+      ],
+      "movement_structure": "individual transitions among reproductive state x colony strata were estimated in a multi-state mark-recapture model",
+      "detection_structure": "annual resighting probability modeled explicitly; Cape Bird 2014-2020 encounter histories censored for years without regular surveys",
+      "confirms_longitudinal_individual_movement_information": true
+    }
+  },
+  "performance_predictor_audit": {
+    "valid_public_machine_readable_colony_performance_table_found": false,
+    "usap_chick_counts_600007": {
+      "status": "insufficient_as_performance_predictor",
+      "reason": "raw chick count alone confounds reproductive output with colony size; the frozen gate forbids treating it as reproductive performance without an adult breeding-pair denominator"
+    },
+    "dugger_2014": {
+      "doi": "10.3389/fevo.2014.00068",
+      "years": "1997-2010",
+      "colonies": [
+        "Cape Royds",
+        "Cape Bird",
+        "Cape Crozier"
+      ],
+      "documented_metric": "annual chicks per pair",
+      "documented_method": "occupied breeding territories in sampled subcolonies during late incubation plus chick counts in the same subcolonies in mid-January",
+      "machine_readable_annual_colony_table_found": false,
+      "role": "published evidence that the required performance state existed, but not a retrievable companion table under the current audit"
+    }
+  },
+  "access_audit": {
+    "usap_api": {
+      "swagger": "https://www.usap-dc.org/api/v2.0/swagger.json",
+      "datafile_endpoint": "/api/v2.0/datafiles/{dataset_uid}/{file_name}",
+      "requires_api_key_header": "X-Auth-Token",
+      "free_key_request": "info@usap-dc.org",
+      "key_available_in_current_runtime": false
+    },
+    "public_ui_download": "requires reCAPTCHA",
+    "pointblue_raw_repository": {
+      "landing_page_accessible": true,
+      "directories_documented": [
+        "band",
+        "chickon",
+        "chickcount",
+        "resight",
+        "wb",
+        "weather"
+      ],
+      "underlying_S3_directory_listing_accessible_in_current_runtime": false
+    }
+  },
+  "gate_requirements": {
+    "stable_individual_longitudinal_linkage": true,
+    "year_or_season": true,
+    "colony_state_transitions": true,
+    "explicit_detection_process": true,
+    "age_or_known_age_structure": true,
+    "reproductive_state": true,
+    "valid_colony_performance_predictor": false
+  },
+  "interpretation": "The Ross Sea data can support direct individual movement, recruitment, breeding-propensity and philopatry analyses, but the currently identified public sources do not provide a machine-readable colony-performance series that satisfies the frozen performance-linked movement hypothesis. Therefore the public-information/performance-linked movement test remains data-dependent rather than being approximated with raw chick counts.",
+  "next_allowed_actions": [
+    "Obtain authenticated access to USAP-DC 601444/601443 and audit only the frozen schema before any new movement analysis.",
+    "Obtain a machine-readable annual colony reproductive-performance table for Royds, Bird and Crozier; freeze its join and performance definition before opening values.",
+    "If individual own reproductive success is found in a separate public table, create a distinct own-success dispersal contract before inspecting outcome associations."
+  ],
+  "claim_boundaries": [
+    "Do not code nondetection as movement or mortality.",
+    "Do not use USAP raw chick counts as colony reproductive performance without a denominator.",
+    "Do not claim the Ross Sea data currently test performance-linked public information.",
+    "Published multi-state results demonstrate that individual movement is observable and modelable, not that colony performance causes movement."
+  ]
+}
