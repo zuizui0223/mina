@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "result_id": "mina-ross-island-resight-schema-gate-result-v1",
-  "validated_date": "2026-09-30",
+  "validated_date": "2026-10-01",
   "gate_id": "mina-ross-island-resight-schema-gate-v1",
   "status": "BLOCKED_EXACT_HEADER_ACCESS_AFTER_SCIENTIFIC_SCHEMA_GO",
   "outcome_blind_status": {
@@ -11,15 +11,20 @@
     "colony_performance_values_opened": false
   },
   "public_schema_audit": {
-    "latest_workflow_run_id": 36731179601,
-    "latest_artifact_id": 11105421331,
-    "latest_artifact_digest": "sha256:bf9066e6598a4aca33576e0caed126e072c2de2c8ce4b562a00ba08bd28239ec",
+    "latest_workflow_run_id": 36741654720,
+    "latest_artifact_id": 11109868591,
+    "latest_artifact_digest": "sha256:75cd059ac3391733672cedd90d017c77da81bef3d1d7513300665f1ec7330a16",
     "api_key_present": false,
     "resight_readme_retrieved": true,
     "banding_readme_retrieved": true,
     "chick_count_600007_readme_retrieved": true,
     "csv_header_retrieved": false,
-    "behavioral_rows_read": 0
+    "behavioral_rows_read": 0,
+    "swagger_documents_api_key_required": true,
+    "anonymous_header_attempted": true,
+    "anonymous_header_http_status": 200,
+    "anonymous_header_non_csv": true,
+    "anonymous_response_interpretation": "USAP datafile endpoint returned an HTML document under anonymous access; it was rejected as non-CSV and no behavioral data row was read."
   },
   "resight_schema_supported_by_readme": {
     "stable_individual_id": "Band",
@@ -118,15 +123,22 @@
     "three_colony_prior_performance_definition_frozen": true,
     "prior_colony_size_control_viable": true,
     "schema_scientifically_sufficient_in_principle": true,
-    "preferred_primary_test": "prospecting-to-first-breeding settlement choice"
+    "preferred_primary_test": "prospecting-to-first-breeding settlement choice",
+    "detection_control_contract": "contracts/ROSS_ISLAND_DETECTION_CONTROL_AMENDMENT_V1.json",
+    "choice_engine_contract": "contracts/ROSS_ISLAND_CHOICE_ENGINE_V2.json",
+    "season_alignment_contract": "contracts/ROSS_ISLAND_SEASON_ALIGNMENT_V2.json",
+    "information_gate_contract": "contracts/ROSS_ISLAND_INFORMATION_GATE_CLARIFICATION_V1.json",
+    "parser_independent_end_to_end_validated": true,
+    "end_to_end_result": "results/ROSS_ISLAND_END_TO_END_SYNTHETIC_RESULT_V1.json"
   },
   "raw_access": {
     "usap_dc_resight_dataset": "601444",
     "file": "band_resighting_1997-2021.csv",
-    "documented_access_requirement": "USAP-DC file download API requires an API key; repository secret USAP_DC_API_KEY is currently absent.",
+    "documented_access_requirement": "USAP-DC Swagger documents X-Auth-Token/API-key authorization for the datafile endpoint; repository secret USAP_DC_API_KEY is absent.",
     "exact_csv_header_verified": false,
     "full_behavioral_download_allowed": false,
-    "authentication_bypass_attempted": false
+    "authentication_bypass_attempted": false,
+    "anonymous_header_route": "HTTP 200 non-CSV HTML; rejected by schema audit"
   },
   "decision": {
     "scientific_schema_gate": "GO_prebreeder_choice",
