@@ -35,7 +35,10 @@ jobs:
           x=json.loads(Path("build/ross_mapppd_chick_coverage.json").read_text())
           assert x["movement_behavioral_rows_read"] == 0
           assert x["chick_count_magnitudes_exported"] is False
-          print("n_common_prior_performance_years=",x["n_common_prior_performance_years_1996_2012"])
+          print("n_component_common_prior_performance_years=",x["n_component_common_prior_performance_years_1996_2012"])
+          print("n_parent_common_prior_performance_years=",x["n_parent_common_prior_performance_years_1996_2012"])
+          print("component_three_colony_coverage_gate=",x["component_three_colony_coverage_gate"])
+          print("parent_three_colony_coverage_gate=",x["parent_three_colony_coverage_gate"])
           print("three_colony_coverage_gate=",x["three_colony_coverage_gate"])
           PY
       - uses: actions/upload-artifact@v4
