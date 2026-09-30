@@ -6,19 +6,19 @@
 
 ## Abstract
 
-**Aim.** To test whether demographic information that is measurable within a breeding landscape remains informative when represented by static landscape descriptors at broader spatial scales.
+**Aim.** To test whether demographic information measurable within breeding landscapes remains informative when compressed into static descriptors at broader scales.
 
 **Location.** Palmer Archipelago, western Antarctic Peninsula, and breeding sites across Antarctica.
 
-**Time period.** Palmer analyses: 1991–2017. Antarctic-wide analyses: 1980–2025.
+**Time period.** Palmer: 1991–2017. Antarctic-wide: 1980–2025.
 
 **Major taxa studied.** Adélie penguin (*Pygoscelis adeliae*) locally; Adélie, chinstrap (*P. antarcticus*) and gentoo penguins (*P. papua*) across Antarctica.
 
-**Methods.** We combined within-island colony censuses, chick counts and monitored-nest reproductive histories at Palmer with Antarctic Penguin Biogeography Project abundance data. We tested whether a relative late-season colony state predicted later within-island redistribution using denominator-separated lags and within-season permutations, then asked whether the association replicated with an independent nest-level endpoint. Separately, we preregistered an Antarctic-wide test of whether breeding-space amount and habitat-complex heterogeneity predicted site coupling to shared demographic forcing across three species.
+**Methods.** We combined Palmer colony censuses, chick counts and nest histories with Antarctic-wide abundance data. We tested whether late-season colony state predicted later redistribution using denominator-separated lags and permutations, and whether an independent nest endpoint replicated the association. Separately, we preregistered a three-species test of breeding-space amount × habitat-complex heterogeneity.
 
-**Results.** Palmer breeders became concentrated into fewer effective colony-code groups during decline. Late-season colony state predicted redistribution during the denominator-separated *t*+1 to *t*+2 interval (β = 0.0409, *p* = 0.00327), persisted at lag 3 and faded by lags 4–5; a predeclared 4–5-year recruitment-echo contrast was negative. Independent mean chicks reaching crèche per monitored nest did not replicate the association (β = 0.0296, *p* = 0.232). Across 104 predictor-complete site × species units, area × habitat-complex interactions were negative in all three species but the preregistered cross-species test was non-confirmatory (median γ_AH = −0.318, *p* = 0.0947), and radius variation did not establish biological scale dependence.
+**Results.** Palmer breeders concentrated into fewer colony-code groups. Colony state predicted redistribution at the denominator-separated lag 2 (β = 0.0409, *p* = 0.00327), remained positive at lag 3 and faded by lags 4–5; the predeclared 4–5-year recruitment-echo prediction was unsupported. Mean chicks reaching crèche per monitored nest did not replicate the association (β = 0.0296, *p* = 0.232). Across 104 predictor-complete site × species units, area × heterogeneity estimates were negative in all three species, but the preregistered cross-species test was non-confirmatory (median γ_AH = −0.318, *p* = 0.0947); radius variation did not establish biological scale dependence.
 
-**Main conclusions.** A specific late-season colony-wide state carries short-lived local demographic history, but this information is not interchangeable with generic nest productivity and does not reduce to a confirmed scale-invariant rule in static island descriptors. Ecological information can therefore be valid locally without remaining transferable after spatial aggregation.
+**Main conclusions.** A specific late-season colony-wide state carries short-lived local demographic history but is not interchangeable with generic nest productivity. Static island descriptors did not provide a confirmed scale-invariant transfer rule. Ecological information can therefore be valid locally without remaining transferable after spatial aggregation.
 
 **Keywords:** Adélie penguin; Antarctic Peninsula; breeding islands; colony state; demographic redistribution; history dependence; island ecology; macroecology; spatial scale
 
