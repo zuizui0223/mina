@@ -1,289 +1,569 @@
-# Integrated Palmer–Antarctic Supplement spine v0.2
+# Supporting Information — integrated Palmer–Antarctic manuscript v0.3 / JBI v0.4
 
-## Purpose
+## S1. Scope and inferential role
 
-The Supplement preserves the analyses needed to audit the integrated manuscript
-without allowing secondary or exploratory results to compete with the two core
-claims:
+This Supporting Information documents the analyses needed to audit the main
+manuscript without changing its inferential hierarchy. The two core results are:
 
-1. Palmer decline is accompanied by within-island concentration beyond
+1. Palmer Adélie decline is accompanied by within-island concentration beyond
    proportional thinning plus prespecified count error.
 2. Static breeding-island architecture does not yield a confirmed transferable
    Antarctic-wide response rule.
 
-No Supplement result may rescue a null main-text result.
+All secondary analyses below retain their frozen interpretation boundaries. A
+Supplementary result cannot replace or rescue a non-confirmatory main-text
+result.
 
-## Supplementary Methods S1 — Data provenance and frozen sources
+---
 
-Document:
+## S2. Data provenance and frozen analysis frames
 
-- Palmer LTER census DOI and checksum;
-- MAPPPD/APBP pinned commit;
-- Antarctic Ecosystem Inventory source and checksum;
-- all derived predictor receipts;
-- frozen temporal windows and site × species eligibility rules.
+### S2.1 Palmer census
 
-Include a machine-readable table mapping every manuscript number to its receipt.
+The Palmer discovery analysis used the Palmer LTER Adélie penguin area-wide
+breeding population census (DOI
+10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e). The frozen downloaded file had
+SHA-256
+`b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16`.
+The synchronized island-total panel contained five islands over 1991–2017.
+Colony-code concentration analyses were restricted to Cormorant (COR), Humble
+(HUM) and Litchfield (LIT), whose reported colony-code rosters remained stable
+over the synchronized interval.
 
-## Supplementary Methods S2 — Palmer concentration nulls
+### S2.2 Antarctic-wide abundance data
 
-Expand the fixed-composition null construction:
+The broad-scale analysis used MAPPPD/APBP data pinned to commit
+`88c73a507e0921b2541c218c71eaf16721bc6502`. The frozen 1980–2025 breeding
+season window produced 107 temporally bridged site × species units and 2,100
+nest-count records. Observation metadata comprised 1,889 direct records, 149
+image-based records and 62 records with unknown vantage.
 
-- cumulative colony-code composition;
-- annual island-total preservation;
-- Poisson, Gamma–Poisson CV10 and CV20 observation error;
-- 100,000 simulations;
-- island-specific and joint one-sided probabilities.
+After the final species-wide V3 forcing decision and primary predictor
+missingness rules, the real-outcome site × species frames contained 41 Adélie,
+34 chinstrap and 29 gentoo units.
 
-Include the full annual N_eff trajectories and raw slopes.
+### Table S1. Frozen analysis frames
 
-## Supplementary Results S3 — Palmer secondary demographic diagnostics
+| Component | Frozen size / rule |
+| --- | --- |
+| Palmer synchronized panel | 5 islands × 27 years |
+| Palmer concentration subset | COR, HUM, LIT |
+| Antarctic Gate-0 candidates | 152 site × species units |
+| Antarctic bridged cohort | 107 units |
+| Antarctic nest-count records | 2,100 |
+| Final Adélie V3 units | 41 |
+| Final chinstrap V3 units | 34 |
+| Final gentoo V3 units | 29 |
+| Primary breeding-landscape radius | 2 km |
+| Primary heterogeneity metric | Tier-2 Habitat Complex richness |
 
-These analyses are retained for context but are not primary evidence.
+---
 
-### S3.1 Effective-colony-number / next-year growth association
+## S3. Palmer concentration analysis and count-error nulls
 
-Report the conditional association after lagged growth terms and all mechanical
-coupling / circular-shift / year-block permutation checks.
+For each island-year, effective colony number was
 
-Boundary:
+\[
+N_{\mathrm{eff}}=\frac{1}{\sum_j p_j^2},
+\]
 
-- association may be reported;
-- weak held-out predictive increment may be reported;
-- do not call N_eff a validated predictor of future growth.
+where \(p_j\) is the fraction of breeding pairs assigned to colony code \(j\).
+The observed statistic was the OLS slope of annual
+\(N_{\mathrm{eff}}\) against centered calendar year.
 
-### S3.2 Hierarchical beta variability
+The fixed-composition null preserved each observed island-total trajectory while
+holding latent colony composition constant. Expected colony counts were then
+subjected to Poisson error or Gamma–Poisson error with frozen 10% and 20%
+multiplicative CV sensitivities. Each error model used 100,000 realizations.
 
-Report within-island versus among-island variability and the count-error null.
+### Table S2. Palmer concentration results
 
-Boundary:
+| Island | First \(N_{\mathrm{eff}}\) | Last \(N_{\mathrm{eff}}\) | Fractional change | Observed slope yr⁻¹ | Poisson p | CV10 p | CV20 p |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| COR | 3.535 | 2.859 | −0.191 | −0.03098 | 0.01215 | 0.01941 | 0.03800 |
+| HUM | 4.625 | 2.285 | −0.506 | −0.08550 | 0.000010 | 0.000010 | 0.000010 |
+| LIT | 5.783 | 1.000 | −0.827 | −0.36808 | 0.000010 | 0.000010 | 0.000010 |
 
-- the observed hierarchy is descriptive context;
-- severe count-error sensitivity reproduces the contrast;
-- do not promote this to a separate ecological discovery.
+The joint three-island plus-one probability was 0.000010 under Poisson,
+Gamma–Poisson CV10 and Gamma–Poisson CV20. Therefore the concentration result
+survives the full frozen independent count-error family. The CV values are
+stress tests and are not estimates of actual observer error.
 
-### S3.3 Sea-ice and weather diagnostics
+Independent Torgersen mapping provides phenomenon-level spatial triangulation:
+23 historic active subcolonies were reduced to five active footprints by 2022.
+All historic south-aspect footprints were extinct, versus a south-minus-north
+extinction-fraction difference of 0.385. The historic area–extinction-year
+correlation was \(R=0.75\) (reported source p = 0.0009). Because the
+colony-code/polygon crosswalk is unresolved, these results validate the spatial
+phenomenon rather than individual census identifiers.
 
-Retain the frozen weather/sea-ice analyses only as contextual diagnostics.
+---
 
-Boundary:
+## S4. Palmer secondary demographic diagnostics
 
-- they do not identify the latent Antarctic-wide forcing;
-- they do not provide a causal mechanism for Palmer concentration;
-- they are not used to rescue either main hypothesis.
+### S4.1 Effective colony number and next-year growth
 
-### S3.4 Performance-linked redistribution, memory and independent Signy transfer test
+A frozen conditional analysis retained a positive standardized coefficient
+between effective colony number and next-year growth
+(\(\beta=0.1168\)). Structured circular-shift nulls showed that the observed
+coefficient was unusual (independent-island shift p = 0.000010; exact
+joint-shift p = 1/416 = 0.002404).
 
-Report the repaired fixed-specification Palmer lag profile:
+The held-out predictive result did **not** survive its primary year-block
+permutation. The observed leave-one-year-out MSE gain was 0.001029, whereas the
+one-sided permutation p-value was 0.2622. Thus the manuscript may describe a
+conditional association but not a validated out-of-year predictor.
 
-- lag 1: beta = 0.1004, mechanically coupled and descriptive only;
-- lag 2: beta = **0.0409**, one-sided p = **0.00327**;
-- lag 3: beta = **0.0511**, p = **0.00136**;
-- lag 4: beta = 0.0223, p = 0.121;
-- lag 5: beta = -0.0148, p = 0.770.
+### S4.2 Hierarchical variability
 
-Explicitly state that the Palmer lag-2/3 result is **fixed-specification
-validation, not fully preregistered confirmation**, because the chick-season
-provenance rule was repaired after the lag coefficients had been exposed.
+On the stable-roster islands, raw multiplicative temporal beta was
 
-Report performance-memory diagnostics:
+- within islands: 1.0737;
+- among islands: 1.0112;
+- total subcolony-to-archipelago: 1.0858.
 
-- lag-1 performance-state rho = **0.0639**, p = **0.0258**;
+Approximately 86.4% of the log-beta reduction occurred within islands in the
+raw decomposition. However, the hierarchy is measurement-error sensitive.
+Under Poisson and Gamma–Poisson CV10 simulations, the raw within-versus-among
+contrast was far more extreme than expected (p = 0.000010). Under the frozen
+Gamma–Poisson CV20 stress test, the raw log-beta contrast was compatible with
+the null (p = 0.4475). Detrended and annual-growth variants also failed to
+provide a measurement-error-robust rescue.
+
+Accordingly, hierarchical beta is descriptive context and is not a primary
+buffering result.
+
+### S4.3 Environmental diagnostics
+
+Sea-ice and weather analyses are retained only as contextual diagnostics. They
+do not identify a cause of Palmer concentration, and the latent Antarctic-wide
+species forcing is not equated with any specific environmental driver.
+
+---
+
+## S5. Antarctic-wide observation model and pre-outcome gates
+
+### S5.1 Observation-overlap audit
+
+The outcome-blind metadata audit identified 1,721 site × species × season
+groups, of which 273 had repeated records. There were 41 groups containing both
+direct and image-based records:
+
+- Adélie: 9;
+- chinstrap: 10;
+- gentoo: 22.
+
+There were 92 known-date direct–image pairs, including 23 exact-date pairs and
+53 pairs separated by no more than 14 days.
+
+The primary observation model was frozen as:
+
+- direct counts as the reference method;
+- one shared image-based mean offset;
+- accuracy class 1 versus pooled classes 2–5 for observation precision;
+- unknown-vantage records retained without their own method offset;
+- exclusion of unknown vantage and raw-ground-only fits as sensitivities.
+
+### S5.2 Synthetic observation recovery
+
+Using the real 2,100-record metadata layout and 200 synthetic replicates, the
+shared image offset and two accuracy scales were recoverable. The simulated
+image offset truth was log(1.15) = 0.13976 and the median recovered value was
+0.13867 (bias −0.00109). The correct offset sign was recovered in 100% of
+replicates.
+
+Accuracy-scale recovery was also close to the frozen truth:
+
+| Accuracy group | Truth log-SD | Median recovered log-SD | Relative bias |
+| --- | ---: | ---: | ---: |
+| 1 | 0.04879 | 0.04902 | +0.47% |
+| 2–5 | 0.22314 | 0.21846 | −2.10% |
+
+### S5.3 Predictor identifiability before outcomes
+
+Before demographic count magnitudes were opened, the candidate A × H design
+was checked for numerical and geographic support. In the regional candidate
+frames, the complete-predictor sample contained 40 Adélie, 33 chinstrap and 28
+gentoo units. Interaction VIF values were 2.26, 1.25 and 1.19, respectively;
+condition numbers were 3.72, 4.03 and 4.32. Every species had at least four
+units in each A/H sign quadrant.
+
+These checks established estimability only; they did not imply that an
+ecological effect existed.
+
+---
+
+## S6. Evolution of the Antarctic-wide estimator
+
+The final estimator was selected through pre-outcome recovery, not through
+fit to the real demographic effects.
+
+### Table S3. Pre-outcome estimator/gate history
+
+| Stage | Purpose | Frozen result | Consequence |
+| --- | --- | --- | --- |
+| Observation overlap | identify nuisance structure | shared image offset identifiable | direct reference + one image offset |
+| Predictor audit | ensure A × H estimability | full rank; low VIF | interaction retained as testable |
+| Latent schedule recovery | recover shared forcing/loadings on real seasons | regional pass for ADPE/CHPE; GEPE regional failure | GEPE initially fell back species-wide |
+| Observation recovery | recover offset/accuracy on real metadata | all frozen checks passed | observation layer retained |
+| Integrated V1 | combine process + observation | failed | estimator rejected; thresholds not relaxed |
+| Hierarchical V2 | fit trait effects inside loading model | species-wide recovery passed all 3 species | species-wide forcing retained |
+| Spatially adjusted V3 | protect traits from broad geography | all frozen recovery checks passed | final estimator |
+| Cross-species V4 | validate paper-level median estimand | passed | median \(\gamma_{AH}\) retained |
+| H-main V5 | validate nonzero H recovery | passed all 3 species | marginal-slope classification permitted |
+| Source robustness | exclude-unknown / raw-ground recovery | paper-level robustness passed | real-outcome gate satisfied |
+
+The important transition occurred at hierarchical V2. Regional integrated
+configurations failed the unchanged recovery criteria for Adélie and chinstrap,
+whereas species-wide configurations passed for all three species. This is why
+the final model uses a species-wide latent annual factor. It is an
+identifiability/model-resolution decision and is **not** evidence for biological
+synchrony at the full species-range scale.
+
+V3 retained geography separately as loading-adjustment strata:
+
+- Adélie: CCAMLR blocks (25, 15 and 1 unit);
+- chinstrap: APBP regions (18, 15 and 1 unit);
+- gentoo: APBP regions (21, 7 and 1 unit).
+
+In pre-outcome V3 recovery, median forcing correlations were 0.847, 0.869 and
+0.893 for Adélie, chinstrap and gentoo. A common crossover truth of
+\(\gamma_{AH}=-0.35\) was recovered with median estimates −0.356, −0.359 and
+−0.320 and negative-sign fractions 0.92, 1.00 and 0.99.
+
+Residual process-SD estimates frequently reached the frozen profiling floor in
+recovery and real fits. Residual process variance is therefore not interpreted
+ecologically anywhere in the manuscript.
+
+---
+
+## S7. Primary Antarctic-wide permutation inference
+
+The real 2 km richness-model interaction estimates were:
+
+| Species | \(\gamma_{AH}\) | Raw p | Holm p | Full point-estimate crossover |
+| --- | ---: | ---: | ---: | --- |
+| Adélie | −0.3036 | 0.2162 | 0.2162 | No |
+| Chinstrap | −1.1844 | 0.0661 | 0.1689 | Yes |
+| Gentoo | −0.3182 | 0.0563 | 0.1689 | Yes |
+
+The paper-level statistic was the median interaction across the three species,
+−0.3182. In 9,999 block-preserving permutations, 946 permuted statistics were
+at least as negative, yielding a plus-one one-sided p-value of 0.0947. The
+permutation distribution had median 0.0027, 5% quantile −0.4235 and 95%
+quantile 0.3664.
+
+All three point estimates are negative, but neither the paper-level test nor any
+Holm-adjusted species-specific test rejects its frozen null.
+
+---
+
+## S8. Prespecified secondary breeding-space analysis
+
+The A-only estimates were negative in all three species:
+
+| Species | \(\gamma_A\) | Raw one-sided p | Holm p |
+| --- | ---: | ---: | ---: |
+| Adélie | −0.2804 | 0.1426 | 0.4278 |
+| Chinstrap | −0.2005 | 0.4225 | 0.6134 |
+| Gentoo | −0.0706 | 0.3067 | 0.6134 |
+
+No species-specific test was supported after the frozen Holm correction.
+H-only estimates were descriptive only (Adélie +0.294, chinstrap +0.518,
+gentoo −0.006); no directional H-only inference was preregistered.
+
+---
+
+## S9. Observation-timing and source sensitivities
+
+### S9.1 Timing-matched image offsets
+
+The primary same-season image/direct multiplicative factor was 1.040.
+Timing-matched estimates were:
+
+| Calibration | Pairs | Image/direct factor | Cross-species median \(\gamma_{AH}\) |
+| --- | ---: | ---: | ---: |
+| Same season, primary | — | 1.040 | −0.318 |
+| Exact date | 23 | 1.069 | −0.326 |
+| Within 14 days | 53 | 1.058 | −0.323 |
+
+All three species retained negative interaction estimates under the two
+timing-matched sensitivities; chinstrap and gentoo retained the full
+point-estimate crossover classification.
+
+### S9.2 Observation-source recovery boundary
+
+Before real outcomes were opened, the paper-level cross-species interaction
+estimand remained recoverable after excluding unknown-vantage records. The
+partial raw-ground-only recovery also passed for its two outcome-blind testable
+species (chinstrap and gentoo). Adélie raw-ground support was coverage-limited
+and was frozen as nonblocking.
+
+The Adélie species-specific exclude-unknown sign-recovery rate did not satisfy a
+stricter species-level threshold in an earlier sensitivity. That limitation is
+not erased by the paper-level robustness gate and is why universal
+species-specific wording is prohibited.
+
+---
+
+## S10. Spatial-support and heterogeneity-metric sensitivities
+
+The primary 2 km richness analysis was not replaced by any sensitivity.
+
+| Variant | Cross-species median \(\gamma_{AH}\) | Negative species | Full crossover species |
+| --- | ---: | ---: | --- |
+| 1 km richness | −0.0577 | 2/3 | Gentoo |
+| 2 km richness, primary | −0.3182 | 3/3 | Chinstrap, Gentoo |
+| 5 km richness | +0.1068 | 0/3 | None |
+| 2 km Shannon | −0.1635 | 2/3 | Chinstrap, Gentoo |
+
+### S10.1 Joint multi-radius null
+
+The raw radius change was evaluated with a joint block-preserving permutation
+that moved each site's complete 1/2/5 km trait tuple together. Across 9,999
+permutations:
+
+| Diagnostic | Plus-one probability |
+| --- | ---: |
+| 2 km negative → 5 km positive sign switch | 0.2478 |
+| 5 km − 2 km contrast ≥ observed 0.425 | 0.0971 |
+| Joint sign switch + observed-size contrast | **0.0810** |
+| Total 1/2/5 km range ≥ observed | 0.2645 |
+| Order 2 km < 1 km < 5 km plus observed-size range | 0.0765 |
+
+The prespecified biological scale-dependence criterion required the joint
+probability to be at most 0.05. It was not met. Radius variation is therefore a
+robustness limitation, not an ecological scale-dependence discovery.
+
+---
+
+## S11. Retrospective detectable-effect analysis
+
+The realized 5% lower tail of the primary 9,999-permutation reference was about
+−0.424. The unchanged V3 model and real observation layout were then simulated
+with a common three-species interaction over a frozen effect grid.
+
+### Table S4. Detection probability for a common interaction
+
+| True \(\gamma_{AH}\) | Detection fraction | Wilson 95% interval |
+| ---: | ---: | --- |
+| −0.20 | 0.000 | 0.000–0.013 |
+| −0.25 | 0.0367 | 0.021–0.064 |
+| −0.30 | 0.0467 | 0.028–0.077 |
+| −0.35 | 0.1167 | 0.085–0.158 |
+| −0.40 | 0.3800 | 0.327–0.436 |
+| −0.45 | 0.5967 | 0.540–0.651 |
+| −0.50 | 0.8100 | 0.762–0.850 |
+| −0.55 | 0.9267 | 0.891–0.951 |
+| −0.60 | 0.9667 | 0.940–0.982 |
+
+The isotonic-interpolated retrospective thresholds were
+\(|\gamma_{AH}|=0.4977\) for 80% detection and 0.5386 for 90% detection.
+The observed absolute cross-species median (0.3182) is approximately 64% of
+MDE80.
+
+This is an operating characteristic, not an equivalence test or confidence
+bound. Moderate common effects around the observed magnitude remain poorly
+resolved, whereas a very large shared effect around 0.50–0.55 would usually
+have been detected.
+
+---
+
+## S12. Palmer reproductive-denominator semantics audit
+
+A post-outcome measurement-semantics audit was conducted to prevent a false
+mechanistic interpretation of Palmer concentration.
+
+The independent adult-pair and legacy chick-table pair fields matched exactly
+for only 37 records (4.7%). The median absolute difference was 11 pairs and the
+median difference relative to the independent adult count was 28.4%. Chicks
+exceeded twice the legacy chick-table pair denominator in 21.95% of usable
+rows, compared with 1.27% when the independent adult denominator was used.
+
+On a common 95-island-season / 727-colony-row frame, a pooled positive
+count-space association between colony size and chick allocation was present
+with either denominator:
+
+- independent adult denominator: \(\beta=0.0455\), multiplicative change
+  1.0465 per 1 SD;
+- legacy chick-table denominator: \(\beta=0.0433\), multiplicative change
+  1.0442 per 1 SD.
+
+However, island-specific effects differed in sign and the effect was not robust
+to every leave-one-island-out check or to the strongest frozen unstructured
+overdispersion sensitivity. A ratio regression using the legacy same-denominator
+quantity was nearly null, illustrating that the ratio and count-space models
+are different estimands and highly sensitive to denominator semantics.
+
+A zero-boundary audit showed that small-first disappearance was compatible with
+proportional zero-hitting rather than evidence for an Allee or predation
+mechanism. Pre-extinction chick success was also non-confirmatory
+(one-sided p = 0.0626; four events across three event-bearing risk sets).
+
+Therefore the integrated manuscript does **not** claim that larger groups
+universally rear more chicks per pair, that reproductive failure causes
+concentration, or that an Allee mechanism has been identified.
+
+---
+
+## S13. Palmer performance-linked redistribution and independent Signy transfer test
+
+This section reports the secondary dynamic-state analyses retained in manuscript
+v0.3. They sharpen the information-transfer interpretation but do not replace
+either core result.
+
+### S13.1 Palmer fixed-specification lag profile
+
+Relative colony reproductive performance was defined as chick output relative
+to a size-proportional within-island expectation and standardized within
+island-season. Under the repaired fixed specification, performance in season
+t predicted relative colony redistribution during later intervals as follows:
+
+| Lag | beta | one-sided permutation p | Interpretation |
+| ---: | ---: | ---: | --- |
+| 1 | 0.1004 | 0.000010 | descriptive; mechanically coupled to predictor-year adult census |
+| 2 | **0.0409** | **0.00327** | bias-resistant primary endpoint |
+| 3 | **0.0511** | **0.00136** | positive short-lag extension |
+| 4 | 0.0223 | 0.121 | unsupported |
+| 5 | -0.0148 | 0.770 | unsupported |
+
+The delayed-recruitment-echo contrast comparing lags 4–5 with lags 2–3 was
+negative and unsupported. The Palmer result is therefore short-lived rather
+than a 4–5 year recruitment echo.
+
+Provenance boundary: the chick-season key was repaired after Palmer lag
+coefficients had already been exposed. These coefficients are fixed-specification
+validation, **not** a fully preregistered confirmatory result.
+
+### S13.2 Performance-state memory
+
+Measured performance state had weak one- to two-year persistence:
+
+- lag-1 rho = **0.0639**, p = **0.0258**;
 - lag-2 rho = **0.0532**, p = **0.0485**;
-- lag-3 rho = 0.0479, p = 0.0586;
-- bridge coefficient for past performance after current measured performance,
-  current group size and persistent colony identity = **0.0296**,
-  p = **0.00726**.
+- lag-3 rho = 0.0479, p = 0.0586.
 
-Report the prospectively frozen P1–P3 mechanism follow-up:
+A bridge diagnostic tested whether past performance retained information about
+lag-2 redistribution after measured current performance, outcome-interval group
+size and persistent colony identity were included. The past-performance
+coefficient remained positive (**0.0296**, p = **0.00726**).
 
-- P1 poor-performance breeder share versus later island-total growth:
-  beta = **+0.0275** with the frozen meaningful-negative-effect decision
-  compatible with redistribution/replacement;
-- direct poor-loss/good-gain compensation accounting has median compensation
-  ratio 0 and does not show one-for-one transfer;
-- P2 island-level reproductive performance versus later island-total growth:
-  beta = **+0.0578**, but the meaningful-effect decision is inconclusive;
-- P3 lose-switch asymmetry:
-  delta = **−0.0126**, one-sided p = **0.579**, unsupported.
+This pattern is consistent with layered local dynamics in which persistent
+habitat/state effects coexist with short-lived demographic memory. It does not
+identify causal mediation, public-information use, prospecting or individual
+breeding dispersal.
 
-Then report the independently frozen Signy replication:
+### S13.3 Prospectively frozen Palmer P1–P3 mechanism follow-up
 
-- official BAS/NERC source DOI:
-  `10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d`;
-- frozen 1996/97–2019/20 standard-method window;
-- primary lag-2 beta = **0.0213**, p = **0.279**, not replicated;
-- atomic-label sensitivity beta = **0.0634**, p = **0.0603**;
-- comment-flag-exclusion sensitivity beta = **0.0727**, p = **0.0207**;
-- secondary Signy lose-switch delta = **0.0678**, p = **0.301**,
-  unsupported.
+Three new endpoints were frozen before their values were computed.
 
-Boundary:
+**P1 — poor-performance breeder share and later island-total growth.**
+The coefficient was +0.0275. The frozen meaningful-negative-effect decision was
+compatible with redistribution or replacement rather than a biologically
+meaningful island-total loss. However, direct poor-loss/good-gain accounting did
+not show simple one-for-one compensation; the median compensation ratio was 0.
 
-- do not call Palmer win-stay/lose-switch;
-- do not claim observed individual movement;
-- do not call Signy a positive independent replication;
-- the significant comment-filter sensitivity cannot replace the null frozen
-  Signy primary result;
-- the combined interpretation is local dynamic information with limited
-  demonstrated transferability, not a general Antarctic mechanism.
+**P2 — island-level reproductive performance and later island-total growth.**
+The coefficient was +0.0578, but the frozen meaningful-effect decision was
+inconclusive. The analysis therefore does not establish islands as closed
+redistribution units.
 
-## Supplementary Methods S4 — Paper 2 outcome-blind gate history
+**P3 — lose-switch asymmetry.**
+The primary hinge contrast was
+\(\Delta=\beta_{loss}-\beta_{win}=-0.0126\), with one-sided
+p = **0.579**. Leave-one-island-out and alternate-metric sensitivities did not
+support the prespecified positive asymmetry.
 
-Provide a compact audit trail showing why the final V3 estimator was chosen.
+The specific win-stay/lose-switch mechanism is therefore unsupported.
 
-Sequence:
+### S13.4 Independent frozen Signy replication
 
-1. observation-overlap audit;
-2. direct/image offset identifiability;
-3. accuracy 1 versus 2–5 precision grouping;
-4. breeding-option missingness repair;
-5. forcing-support gate;
-6. predictor identifiability gate;
-7. latent-factor schedule recovery;
-8. observation-layer recovery;
-9. integrated V1 failure;
-10. hierarchical V2 recovery;
-11. spatially adjusted V3 recovery;
-12. cross-species V4 generality recovery;
-13. H-main V5 recovery;
-14. paper-level source robustness;
-15. real-outcome unlock.
+The independent transfer test used the BAS/NERC dataset
+“Population size and breeding success of Adelie penguins on Signy Island from
+1978 to 2020” (Dunn et al. 2021; DOI
+`10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d`).
 
-For every failed estimator, report the frozen failure receipt rather than
-silently dropping it.
+The primary window was frozen to the CCAMLR-standard 1996/97–2019/20 period.
+Before any Signy effect was computed, the support gate confirmed 22 predictor
+seasons, nine literal colony labels and 153 candidate lag-2 rows. The final
+primary model retained 118 complete lag-2 rows across 17 predictor seasons.
 
-## Supplementary Results S5 — Observation model robustness
+| Signy analysis | beta / delta | one-sided p | Frozen decision |
+| --- | ---: | ---: | --- |
+| Primary lag-2 | **beta = 0.0213** | **0.279** | not replicated |
+| Atomic-label-only lag-2 | beta = 0.0634 | 0.0603 | unsupported sensitivity |
+| Comment-flag-exclusion lag-2 | beta = 0.0727 | 0.0207 | supported sensitivity only |
+| Primary lose-switch hinge | delta = 0.0678 | 0.301 | unsupported |
 
-Report:
+The positive comment-filter sensitivity cannot replace the null frozen primary
+replication. The Palmer lag-2 signal is therefore not established as a
+transferable Antarctic mechanism.
 
-- same-season shared image/direct offset;
-- exact-date 23-pair sensitivity;
-- <=14-day 53-pair sensitivity;
-- pooled accuracy-group SDs;
-- exclude-unknown and raw-ground support/recovery audits.
+### S13.5 Dynamic-transfer claim boundary
 
-Boundary:
+The combined Palmer–Signy evidence permits only the following statement:
 
-- timing sensitivities are descriptive robustness checks;
-- they never replace the primary same-season calibration.
+> relative reproductive state can carry short-lived local information about
+> redistribution at Palmer, but the corresponding frozen primary association
+> did not independently replicate at Signy.
 
-## Supplementary Results S6 — Paper 2 secondary and interpretation diagnostics
+Do not claim:
 
-### S6.1 A-only breeding-space hypothesis
+- a general win-stay/lose-switch mechanism;
+- observed movement of individual adults among colonies;
+- island-scale demographic closure;
+- public-information use or prospecting;
+- that the Signy comment-filter sensitivity rescues the null primary test.
 
-Report the three gamma_A estimates, raw one-sided permutation p-values and Holm
-adjustment.
+---
 
-Boundary: non-confirmatory; cannot rescue A×H.
+## S14. Reproducibility and analyses intentionally excluded from the manuscript
 
-### S6.2 Shannon sensitivity
+Every primary or secondary numerical claim above maps to a committed JSON
+receipt and frozen code path in the `mina` repository. Failed candidate
+estimators are retained in the development history rather than being silently
+discarded.
 
-Report 2 km Tier-2 Shannon fit.
+One later Palmer analysis remains outside this Supplement version:
 
-Boundary: sensitivity-only; richness remains primary.
+1. post-outcome size-ordered colony-code extinction hazard (PR #102).
 
-### S6.3 Radius sensitivity and joint multi-radius null
+The fixed-specification performance-linked lag analysis, memory audit,
+prospectively frozen P1–P3 mechanism follow-up and independent Signy replication
+are retained in S13 with their provenance and null-result boundaries explicit.
+They sharpen the transferability interpretation but do not alter the integrated
+manuscript's core inference.
 
-Report the 1/2/5 km point estimates and all frozen null probabilities:
+---
 
-- sign switch alone;
-- observed-size contrast;
-- joint sign switch + contrast;
-- total range;
-- ordered 2 < 1 < 5 plus range.
+## Additional reproducibility material
 
-Boundary: joint p = 0.0810; no biological scale-dependence claim.
+No additional Supplementary figure is required for the scientific claims in
+this version. The complete diagnostic outputs underlying the summarized
+secondary analyses are preserved as committed JSON receipts and reproducible
+workflow artifacts in the archived analysis repository. In particular, the
+repository retains:
 
-### S6.4 Retrospective detectable-effect analysis
+- full Palmer count-error null distributions;
+- N_eff association and permutation diagnostics;
+- hierarchical beta/count-error outputs;
+- the complete Paper 2 gate pass/fail history;
+- observation-overlap and timing-calibration outputs;
+- species-specific marginal-slope fits;
+- the complete 9,999-permutation radius-null distribution; and
+- the full retrospective detectable-effect grid;
+- Palmer lag-profile, performance-memory and P1–P3 mechanism receipts; and
+- the complete Signy support and replication receipts.
 
-Report the full -0.20 to -0.60 common-effect grid, Wilson intervals, isotonic
-interpolation, MDE80 and MDE90.
+This choice keeps the submitted Supporting Information focused on methods,
+numerical audit tables and inferential boundaries rather than duplicating
+development diagnostics already available in machine-readable form.
 
-Boundary:
+### Supplement terminal rule
 
-- retrospective operating characteristic only;
-- not equivalence;
-- not an upper confidence bound;
-- moderate effects near the observed magnitude remain unresolved.
-
-## Supplementary Results S7 — Palmer reproductive-denominator semantics audit
-
-This section exists to prevent a false mechanism claim.
-
-Report:
-
-- independent November adult-pair denominator versus legacy chick-table
-  denominator mismatch;
-- common-frame count-space association;
-- island-specific and leave-one-island-out heterogeneity;
-- strongest overdispersion sensitivity;
-- ratio-regression denominator dependence;
-- pre-extinction chick-success diagnostic.
-
-Claim boundary:
-
-> pooled chick allocation increases with colony size in count space, but the
-> effect is strongly island-dependent and does not establish a Palmer-wide
-> reproductive or Allee-like mechanism.
-
-Explicitly state:
-
-- small-first zero-hitting is mechanically expected under proportional
-  allocation;
-- pre-extinction reproductive decline is non-confirmatory;
-- do not claim that concentration occurs because larger groups universally
-  rear more chicks per pair.
-
-## Exploratory analyses not incorporated into v0.2
-
-The following open analysis remains outside the manuscript and Supplement until
-separately reviewed:
-
-- post-outcome size-ordered colony-code extinction hazard (#102).
-
-The Palmer performance-linked lag analysis, performance-memory audit,
-prospectively frozen P1–P3 follow-up and Signy independent replication are now
-retained in S3.4 with their provenance and null-result boundaries explicit.
-They do not alter the integrated manuscript's two core inferences.
-
-## Supplementary Figures
-
-Suggested layout:
-
-- Fig. S1: full Palmer island trajectories and synchrony matrix;
-- Fig. S2: raw N_eff trajectories and all count-error null variants;
-- Fig. S3: N_eff-growth mechanical/circular/year-block diagnostics;
-- Fig. S4: hierarchical beta and count-error sensitivity;
-- Fig. S5: Paper 2 gate flowchart;
-- Fig. S6: observation-offset overlap and timing sensitivity;
-- Fig. S7: species-specific marginal-slope geometry;
-- Fig. S8: Shannon sensitivity;
-- Fig. S9: complete multi-radius null distributions;
-- Fig. S10: full detectable-effect curve with Wilson intervals;
-- Fig. S11: reproductive-denominator audit;
-- Fig. S12: Palmer lag-1–5 performance-linked redistribution profile and
-  performance-memory diagnostics;
-- Fig. S13: Palmer versus Signy lag-2 coefficients with the frozen Signy
-  sensitivity results.
-
-## Supplementary Tables
-
-- Table S1: all frozen data sources and fingerprints;
-- Table S2: Palmer island-year census summary;
-- Table S3: concentration-null results by island/error model;
-- Table S4: Paper 2 unit eligibility by species;
-- Table S5: all pre-outcome recovery gates and pass/fail decisions;
-- Table S6: primary and secondary Paper 2 coefficients;
-- Table S7: observation-source sensitivities;
-- Table S8: radius/Shannon sensitivities;
-- Table S9: denominator-semantics audit;
-- Table S10: Palmer performance-memory and P1–P3 mechanism diagnostics;
-- Table S11: Signy support gate, primary replication and frozen sensitivities.
-
-## Terminal rule
-
-The Supplement exists to make the inferential history auditable, not to create
-additional positive conclusions. No Supplement analysis may be promoted in
-response to a null or weak main-text result without a new, explicitly
-post-outcome manuscript revision.
+This Supplement exists to make the inferential history auditable. No
+Supplementary analysis changes the main manuscript's frozen conclusions:
+Palmer concentration is strongly supported; the Antarctic-wide A × H rule is
+non-confirmatory; simple A-only buffering is unsupported; moderate common
+interactions remain unresolved; and the apparent cross-radius sign reversal is
+not treated as biological scale dependence.
