@@ -1,0 +1,24 @@
+name: ross-island-end-to-end-synthetic
+
+on:
+  push:
+    branches:
+      - validation/ross-island-resight-gate-v1
+    paths:
+      - "src/mina/ross_states.py"
+      - "src/mina/ross_choice.py"
+      - "tests/test_ross_pipeline_end_to_end.py"
+      - ".github/workflows/ross-island-end-to-end-synthetic.yml"
+  workflow_dispatch:
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run complete outcome-blind synthetic mechanism pipeline
+        run: pytest -q tests/test_ross_pipeline_end_to_end.py
