@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-colony-environment-data-audit-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_any_new_colony-environment join or mechanism fit",
+  "parent_results": [
+    "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+    "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json"
+  ],
+  "question": "Can public Palmer data support an externally defined colony-code environmental-state test that distinguishes persistent local environment from history-dependent demographic information?",
+  "required_join_unit": [
+    "island",
+    "Palmer LTER raw colony_code",
+    "breeding season/year"
+  ],
+  "gates": {
+    "dynamic_environment_gate_open": {
+      "requirements": [
+        "An explicit public source maps Palmer LTER island + colony_code to a polygon, centroid, or unambiguous mapped sub-colony identifier without manual visual guessing.",
+        "A public colony-specific environmental measurement or externally defined environmental state exists for multiple breeding seasons overlapping the 1991-2017 performance panel.",
+        "The temporal environmental state is measured independently of the penguin reproductive-performance outcome."
+      ],
+      "allowed_next_step": "Freeze a model adding observed colony-specific environmental state to the performance-memory/redistribution model before opening joined environmental values."
+    },
+    "static_x_weather_gate_open": {
+      "requirements": [
+        "An explicit public source maps Palmer LTER island + colony_code to a polygon, centroid, or unambiguous mapped sub-colony identifier without manual visual guessing.",
+        "Public static terrain or snow-retention attributes can be assigned from that geometry.",
+        "A long-term external annual weather series overlaps the performance panel."
+      ],
+      "allowed_next_step": "Freeze a static-terrain x annual-weather interaction model. Label this as a modeled environmental-risk proxy, not observed colony-year snow."
+    },
+    "partial_gate": {
+      "definition": "Relevant spatial, snow, terrain, or historical sub-colony data exist, but either the Palmer LTER colony_code crosswalk is not explicit/public or temporal colony-specific environmental coverage is insufficient."
+    },
+    "closed_gate": {
+      "definition": "No qualifying public spatial/environmental data can be linked even in principle to the Palmer colony panel."
+    }
+  },
+  "search_targets": [
+    "Cimino et al. 2025 Landscape Ecology article and supplementary material",
+    "Patterson et al. 2003 / associated Torgersen maps and archived spatial data",
+    "Palmer LTER ERDDAP/EDI metadata and spatial datasets",
+    "Duke Research Data Repository drone/orthomosaic package DOI 10.7924/r4sf2xs2w",
+    "Polar Geospatial Center-linked products where public metadata expose colony identifiers",
+    "repository files already present in mina"
+  ],
+  "crosswalk_acceptance": {
+    "accepted": [
+      "table with colony_code and coordinates/polygon ID",
+      "GIS attribute table containing the same raw colony_code values used by Palmer LTER",
+      "published explicit textual mapping of each relevant raw colony_code to mapped sub-colony ID"
+    ],
+    "rejected": [
+      "manual matching by figure position, color, apparent ordering, or polygon size",
+      "assuming historic sub-colony numbers equal LTER colony_code because counts or ranges look similar",
+      "nearest-neighbor assignment from colony centroids without an explicit source bridge",
+      "post hoc choosing only colonies whose mapping appears obvious"
+    ]
+  },
+  "temporal_environment_acceptance": {
+    "dynamic_observed": "At least 5 overlapping breeding seasons for >=3 mapped colony codes, with season-specific measured snow or another externally measured colony-local environmental state.",
+    "static_risk": "Static topography/terrain is allowed only for the static_x_weather gate and must be paired with a prespecified external annual weather series.",
+    "known_limitation": "The 2025 Palmer snow study reports spatial snow maps primarily for 2019 high-snow and 2020 low-snow conditions, outside the main 1991-2017 performance panel; these two maps alone do not open the dynamic_environment gate."
+  },
+  "decision_rule": {
+    "priority": "dynamic_environment_gate_open > static_x_weather_gate_open > partial_gate > closed_gate",
+    "fail_closed": true
+  },
+  "claim_boundaries": [
+    "Do not generate a colony_code spatial crosswalk by visual inference.",
+    "Do not call 2019/2020 snow maps a long-term colony-year environmental series.",
+    "Do not use penguin abundance or reproductive success to define environmental risk.",
+    "Do not claim a failed public-data audit proves environmental conditions are unimportant.",
+    "If only a Torgersen-specific explicit crosswalk is found, freeze any downstream test as a Torgersen external-validation analysis rather than generalizing it to all Palmer islands."
+  ]
+}
