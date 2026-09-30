@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import argparse
+import io
 import json
 import re
+import zipfile
 from pathlib import Path
 
 import pandas as pd
@@ -226,6 +228,54 @@ def audit_table(frame:pd.DataFrame)->dict:
     return result
 
 
+
+
+def read_official_zip(path:Path)->tuple[pd.DataFrame,dict]:
+    """Select the breeding-success CSV from the official RAMADDA zip tree."""
+    with zipfile.ZipFile(path) as z:
+        csvs=[n for n in z.namelist() if n.lower().endswith(".csv")]
+        if not csvs:
+            raise ValueError("official zip contains no CSV files")
+        candidates=[]
+        for name in csvs:
+            raw=z.read(name)
+            frame=None
+            last=None
+            for enc in ("utf-8-sig","utf-8","latin-1"):
+                try:
+                    frame=pd.read_csv(io.BytesIO(raw),encoding=enc)
+                    break
+                except Exception as exc:
+                    last=exc
+            if frame is None:
+                raise ValueError(f"cannot parse {name}: {last}")
+            headers=" ".join(_norm(x) for x in frame.columns)
+            score=(
+                4*("chick" in headers)
+                +4*(("nest" in headers) or ("pair" in headers))
+                +2*("season" in headers)
+                +len(frame)/10000
+            )
+            candidates.append((score,name,frame,len(raw)))
+        candidates.sort(key=lambda x:x[0],reverse=True)
+        score,name,frame,size=candidates[0]
+        manifest=[
+            {
+                "name":n,
+                "rows":int(len(df)),
+                "columns":[str(x) for x in df.columns],
+                "bytes":int(sz),
+                "selection_score":float(sc),
+            }
+            for sc,n,df,sz in candidates
+        ]
+        return frame,{
+            "selected_csv":name,
+            "selected_score":float(score),
+            "zip_members":z.namelist(),
+            "csv_manifest":manifest,
+        }
+
 def fetch_mirror()->pd.DataFrame:
     tables=pd.read_html(MIRROR_URL)
     if not tables:
@@ -244,15 +294,27 @@ def fetch_mirror()->pd.DataFrame:
 def main()->int:
     p=argparse.ArgumentParser()
     p.add_argument("--out-json",required=True,type=Path)
+    p.add_argument("--official-zip",type=Path)
     a=p.parse_args()
-    frame=fetch_mirror()
-    result=audit_table(frame)
-    result["source"]={
-        "role":"schema/support mirror only",
-        "url":MIRROR_URL,
-        "official_doi":"10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
-        "effect_execution_requires_official_or_byte_verified_source":True,
-    }
+    if a.official_zip is not None:
+        frame,zip_meta=read_official_zip(a.official_zip)
+        result=audit_table(frame)
+        result["source"]={
+            "role":"official NERC/BAS RAMADDA zip-tree support audit",
+            "official_doi":"10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+            "ramadda_entryid":"daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+            "zip_metadata":zip_meta,
+            "effect_execution_requires_official_or_byte_verified_source":False,
+        }
+    else:
+        frame=fetch_mirror()
+        result=audit_table(frame)
+        result["source"]={
+            "role":"schema/support mirror only",
+            "url":MIRROR_URL,
+            "official_doi":"10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+            "effect_execution_requires_official_or_byte_verified_source":True,
+        }
     a.out_json.parent.mkdir(parents=True,exist_ok=True)
     a.out_json.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     print(json.dumps(result,indent=2,sort_keys=True))
