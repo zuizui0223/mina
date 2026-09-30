@@ -8,6 +8,7 @@ on:
       - "src/mina/performance_memory.py"
       - "tests/test_performance_memory.py"
       - "contracts/PALMER_PERFORMANCE_MEMORY_V1.json"
+      - "contracts/PALMER_PERFORMANCE_MEMORY_IMPLEMENTATION_REPAIR_V1.json"
       - "src/mina/performance_redistribution_lags.py"
       - "scripts/fetch_lter_census.py"
       - "scripts/fetch_lter_chick_counts.py"
@@ -43,23 +44,23 @@ jobs:
           from pathlib import Path
           x=json.loads(Path("build/performance_memory.json").read_text())
           print("source_counts=",x["source_counts"])
-          for k,v in x["primary"]["memory"].items():
+          for k,v in x["P3_performance_memory"].items():
               print("memory",k,"n=",v["n_rows"],"rho=",v["coefficient"],"p=",v["one_sided_upper_p"])
-          print("bridge=",x["primary"]["bridge"])
+          print("bridge=",x["P4_bridge"])
           print("decision=",x["decision"])
           for name in ("exclude_litchfield","alternate_logratio_metric"):
               v=x["sensitivities"][name]
               print(
                   name,
-                  "rho1=",v["memory"]["1"]["coefficient"],
-                  "rho1_p=",v["memory"]["1"]["one_sided_upper_p"],
-                  "delta=",v["bridge"]["coefficient"],
+                  "rho1=",v["memory_lag1"]["coefficient"],
+                  "rho1_p=",v["memory_lag1"]["one_sided_upper_p"],
+                  "delta=",v["bridge"]["delta_past"],
                   "delta_p=",v["bridge"]["one_sided_upper_p"],
               )
-          v=x["sensitivities"]["minimum_prior_size_2"]["bridge"]
+          v=x["sensitivities"]["minimum_prior_size_2_bridge"]
           print(
               "minimum_prior_size_2",
-              "delta=",v["coefficient"],
+              "delta=",v["delta_past"],
               "delta_p=",v["one_sided_upper_p"],
           )
           print("loo=",json.dumps(x["sensitivities"]["leave_one_island_out_observed"],sort_keys=True))
