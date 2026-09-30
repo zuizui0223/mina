@@ -9,7 +9,23 @@ except ModuleNotFoundError as exc:
         "integrated v0.3 figure-data tests require pandas"
     ) from exc
 
-from scripts.build_integrated_figure_data_v0_3 import build
+import importlib.util
+
+
+def _load_build():
+    root = Path(__file__).resolve().parents[1]
+    path = root / "scripts" / "build_integrated_figure_data_v0_3.py"
+    spec = importlib.util.spec_from_file_location(
+        "mina_integrated_figure_data_v0_3", path
+    )
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.build
+
+
+build = _load_build()
 
 
 def test_v03_figure_data_matches_frozen_palmer_state_receipts(tmp_path):
