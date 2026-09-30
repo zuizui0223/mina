@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "repair_id": "mina-palmer-repro-date-sentinel-repair-v1",
+  "date": "2026-09-30",
+  "status": "source_semantic_repair_frozen_before_colony_performance_or_redistribution_coefficients",
+  "parent_contract": "mina-palmer-repro-performance-replication-v1",
+  "problem": "The archived reproductive-success date fields contain numeric 0, numeric 999, blank cells and NULL-like strings in addition to plausible day-of-season values. The frozen contract defined eligibility and success using observed versus nonobserved event dates but did not enumerate archive sentinel encodings.",
+  "evidence_opened_before_repair": {
+    "schema_only_before_original_contract": true,
+    "sample_values_opened_after_contract": true,
+    "performance_or_redistribution_coefficient_computed": false,
+    "observed_pattern": "Plausible event dates are positive day-of-season values; 0 and 999 occur in positions incompatible with literal event dates. Some rows with lay date 0 have later hatch/creche dates, so 0 cannot be treated as evidence of no egg."
+  },
+  "frozen_resolution": {
+    "observed_event_date": "A finite integer from 1 through 998 inclusive.",
+    "unobserved_or_not_recorded_date": [
+      "blank",
+      "NULL or null-like text",
+      "0",
+      "999"
+    ],
+    "primary_eligible_nest": "At least one Egg 1 Lay Date or Egg 2 Lay Date is an observed event date under the rule above.",
+    "primary_success": "At least one Chick 1 Creche Date or Chick 2 Creche Date is an observed event date under the rule above.",
+    "hatch_sensitivity_success": "At least one Chick 1 Hatch Date or Chick 2 Hatch Date is an observed event date under the rule above.",
+    "no_imputation": true,
+    "no_use_of_actual_date_magnitude": true
+  },
+  "rationale": "The primary endpoint uses only whether the relevant event date was recorded. Restricting event dates to 1-998 excludes archive sentinels without using any colony-level association with future growth.",
+  "unchanged": [
+    "minimum 5 eligible monitored nests per colony-season",
+    "minimum 3 colonies per island-season",
+    "binomial Pearson-residual performance definition",
+    "exact raw colony-code matching",
+    "lag-2 redistribution outcome",
+    "prior-size control and colony fixed effects",
+    "100000 within-island-season permutations",
+    "minimum-information gate and all decision rules"
+  ],
+  "claim_boundary": [
+    "Rows whose laying dates are unobserved are excluded from the primary denominator even if later hatch or creche events are recorded.",
+    "This conservative rule may reduce information but may not be relaxed after the information count is known.",
+    "No 0 or 999 value is interpreted as a biological event date."
+  ]
+}
