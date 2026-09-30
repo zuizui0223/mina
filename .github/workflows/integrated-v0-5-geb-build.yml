@@ -1,0 +1,47 @@
+name: integrated-v0-5-geb-build
+
+on:
+  push:
+    branches:
+      - manuscript/integrated-v0.5-geb
+    paths:
+      - "scripts/build_integrated_v0_5_geb.py"
+      - ".github/workflows/integrated-v0-5-geb-build.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build GEB manuscript
+        run: |
+          python scripts/build_integrated_v0_5_geb.py \
+            --source docs/MANUSCRIPT_INTEGRATED_V0_4.md \
+            --out build/MANUSCRIPT_INTEGRATED_V0_5_GEB.md
+      - name: Audit word counts
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          p=Path("build/MANUSCRIPT_INTEGRATED_V0_5_GEB.md")
+          x=p.read_text()
+          def words(s):
+              s=re.sub(r"\$[\s\S]*?\$", " ", s)
+              s=re.sub(r"[@#*\x60>|_\[\]\(\){}\\]", " ", s)
+              return len([z for z in re.split(r"\s+",s) if z])
+          abstract=x.split("## Abstract",1)[1].split("## Introduction",1)[0]
+          main=x.split("## Introduction",1)[1].split("## Data and code availability",1)[0]
+          print("abstract_words=",words(abstract))
+          print("main_words_intro_through_conclusion=",words(main))
+          print("total_rough_words=",words(x))
+          assert words(abstract) <= 300
+          assert words(main) <= 5200
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integrated-v0-5-geb-manuscript
+          path: build/MANUSCRIPT_INTEGRATED_V0_5_GEB.md
