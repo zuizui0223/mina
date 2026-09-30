@@ -1,0 +1,25 @@
+name: ross-island-state-engine
+
+on:
+  push:
+    branches:
+      - validation/ross-island-resight-gate-v1
+    paths:
+      - "contracts/ROSS_ISLAND_STATE_RECONSTRUCTION_V1.json"
+      - "contracts/ROSS_ISLAND_SEASON_ALIGNMENT_V1.json"
+      - "src/mina/ross_states.py"
+      - "tests/test_ross_states.py"
+      - ".github/workflows/ross-island-state-engine.yml"
+  workflow_dispatch:
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run outcome-blind Ross state pipeline tests
+        run: pytest -q tests/test_ross_states.py
