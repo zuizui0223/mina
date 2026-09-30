@@ -1,0 +1,37 @@
+name: jbi-submission-readiness-v0-4
+
+on:
+  push:
+    branches: [submission/jbi-readiness-v0.4]
+    paths:
+      - "scripts/audit_jbi_submission_readiness.py"
+      - "tests/test_jbi_submission_readiness.py"
+      - ".github/workflows/jbi-submission-readiness-v0-4.yml"
+      - "docs/MANUSCRIPT_INTEGRATED_JBI_V0_4.md"
+      - "docs/SUPPLEMENT_INTEGRATED_V0_2.md"
+      - "docs/TITLE_PAGE_JBI_INTEGRATED_V0_4_TEMPLATE.md"
+      - "submission/JBI_SUBMISSION_CHECKLIST_INTEGRATED_V0_4.md"
+  pull_request:
+    paths:
+      - "scripts/audit_jbi_submission_readiness.py"
+      - "tests/test_jbi_submission_readiness.py"
+      - ".github/workflows/jbi-submission-readiness-v0-4.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install pytest
+      - run: python -m pytest tests/test_jbi_submission_readiness.py -q
+      - run: |
+          python -m scripts.audit_jbi_submission_readiness \
+            --root . \
+            --out build/JBI_SUBMISSION_READINESS_V0_4.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jbi-submission-readiness-v0-4
+          path: build/JBI_SUBMISSION_READINESS_V0_4.json
