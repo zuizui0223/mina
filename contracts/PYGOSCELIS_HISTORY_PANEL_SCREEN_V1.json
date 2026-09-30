@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-pygoscelis-history-panel-screen-v1",
+  "date": "2026-09-30",
+  "status": "metadata_only_screen_frozen_before_candidate_outcome_values",
+  "purpose": "Build an outcome-independent external panel for testing whether short-lived reproductive-state information predicts later local demographic redistribution across Pygoscelis colony systems.",
+  "discovery_system": {
+    "excluded_from_external_generality_inference": "Palmer Station LTER",
+    "reason": "Palmer generated the hypothesis and has already been extensively analyzed."
+  },
+  "eligible_taxa": [
+    "Pygoscelis adeliae",
+    "Pygoscelis antarcticus",
+    "Pygoscelis papua"
+  ],
+  "search_scope": {
+    "repositories": [
+      "Dryad",
+      "Figshare",
+      "Zenodo",
+      "PANGAEA",
+      "US Antarctic Program Data Center",
+      "Environmental Data Initiative",
+      "Australian Antarctic Data Centre",
+      "UK Polar Data Centre",
+      "CCAMLR/CEMP public data products",
+      "institutional repositories linked from primary papers",
+      "public GitHub repositories linked from peer-reviewed studies"
+    ],
+    "query_families": [
+      "Pygoscelis colony breeding success population count data",
+      "Adelie penguin subcolony breeding pairs chicks dataset",
+      "chinstrap penguin colony breeding success time series data",
+      "gentoo penguin colony breeding success time series data",
+      "penguin colony productivity population monitoring dataset",
+      "Pygoscelis breeding pairs fledged chicks colony year",
+      "Adelie colony growth breeding success data repository"
+    ],
+    "screening_rule": "Record every plausible candidate returned by the fixed query families before inspecting response direction. Do not retain or drop a candidate based on observed performance-growth association."
+  },
+  "metadata_only_before_panel_lock": {
+    "allowed": [
+      "dataset title and DOI",
+      "species",
+      "site/region",
+      "year coverage",
+      "column names and descriptions",
+      "number of rows",
+      "number of local colony/subcolony units",
+      "documented sampling design",
+      "missingness summaries that do not expose outcome direction",
+      "whether stable local-unit identifiers exist",
+      "whether adult abundance and reproductive performance can be aligned by unit and breeding season"
+    ],
+    "prohibited": [
+      "correlations between reproductive performance and later growth",
+      "lag coefficients",
+      "plots pairing performance with future abundance",
+      "selecting subsets based on favorable effect direction"
+    ]
+  },
+  "dataset_eligibility": {
+    "local_unit": "Stable colony/subcolony/local breeding-group identifier used repeatedly across years. Whole-population annual totals alone are not eligible for the external redistribution panel.",
+    "abundance": "Numeric breeding-pair, occupied-nest, or breeding-adult count for the local unit in repeated breeding seasons.",
+    "performance": "Numeric reproductive-performance quantity at the same local unit and season, derivable without using future abundance. Allowed examples include chicks fledged, chicks reaching creche, chicks per breeding pair, or monitored-nest success.",
+    "temporal": {
+      "minimum_predictor_seasons_with_eligible_local_units": 8,
+      "adjacency": "Must permit at least some t, t+1 and t+2 annual alignments; no interpolation across missing years."
+    },
+    "spatial_replication": {
+      "minimum_local_units_per_predictor_season": 3,
+      "minimum_matched_denominator_separated_unit_years": 50
+    },
+    "provenance": "Raw or author-processed values must be publicly retrievable with a stable source and deterministic local-unit identity. Figure digitization is not eligible.",
+    "aggregation": "No new manual merging or splitting of local units. Inherit author-defined stable unit identities.",
+    "independence": "A dataset is counted as a distinct system only if it represents a distinct monitored breeding population/site or non-overlapping monitoring program. Multiple publications of the same underlying time series count once."
+  },
+  "screening_decisions": {
+    "ELIGIBLE": "All metadata criteria met and raw/processed table accessible.",
+    "ACCESS_BLOCKED": "Metadata criteria appear met but raw values cannot currently be retrieved.",
+    "INELIGIBLE_AGGREGATE_ONLY": "Only site/population totals are available with no repeated local units.",
+    "INELIGIBLE_SHORT_OR_SPARSE": "Fails frozen temporal/spatial information thresholds.",
+    "INELIGIBLE_NO_PERFORMANCE": "Repeated local abundance exists but no alignable reproductive-performance endpoint.",
+    "INELIGIBLE_NO_ABUNDANCE": "Performance exists but no repeated local adult abundance.",
+    "INELIGIBLE_UNSTABLE_UNIT": "Local unit identity cannot be linked deterministically through time."
+  },
+  "stage_A_output": {
+    "required": "A candidate ledger containing source, species, site, metadata evidence, decision and reason for every screened candidate.",
+    "panel_lock": "Outcome analysis may begin only after the complete candidate ledger for all fixed query families is committed.",
+    "no_minimum_dataset_rescue": "Do not relax eligibility thresholds if fewer systems qualify."
+  },
+  "frozen_analysis_for_each_eligible_system": {
+    "universal_primary_endpoint": {
+      "reason": "Use the same denominator-separated timing for every performance metric, even when a local performance measure does not share the adult-count denominator.",
+      "performance_state": "Within each site/region x predictor season, z-standardize local-unit reproductive performance across eligible units.",
+      "outcome": "relative_growth_i,t+1 = log1p(N_i,t+2) - log1p(N_i,t+1), demeaned within the corresponding site/region x outcome transition.",
+      "prior_size": "z(log1p(N_i,t+1)) within the outcome transition.",
+      "model": "relative_growth_i,t+1 ~ beta_system * performance_state_i,t + z_prior_size_i,t+1 + local_unit fixed effect",
+      "prediction": "beta_system > 0"
+    },
+    "null": {
+      "permutation": "Within each predictor site/region x season, permute performance states among all eligible local units while preserving future missingness, outcome, prior size and local-unit identity.",
+      "permutations": 100000,
+      "seed_rule": "20261010 plus deterministic integer index of the locked system ledger",
+      "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+      "alpha": 0.05
+    },
+    "secondary": [
+      "same-interval performance -> t to t+1 growth, descriptive only because some datasets share the adult-count denominator",
+      "performance -> t+2 to t+3 growth where information permits",
+      "leave-one-local-unit-out observed beta",
+      "source-defined island/sector sensitivity only if that grouping is present before outcome analysis"
+    ]
+  },
+  "cross_system_generality": {
+    "minimum_external_systems": 3,
+    "if_fewer_than_three": "Report system-specific results only; no cross-system generality test or universal claim.",
+    "combined_test_if_at_least_three": {
+      "method": "weighted signed Stouffer combination of each system's one-sided permutation p-value",
+      "system_z": "Phi^-1(1 - p_i); p_i > 0.5 contributes a negative z",
+      "weight": "sqrt(number of matched denominator-separated unit-years)",
+      "combined_z": "sum(w_i * z_i) / sqrt(sum(w_i^2))",
+      "combined_p": "1 - Phi(combined_z)",
+      "support_rule": "combined_p <= 0.05 AND at least two thirds of eligible systems have beta_system > 0"
+    },
+    "leave_one_system_out": "If >=4 systems qualify, report combined inference after removing each system; descriptive robustness only."
+  },
+  "interpretation": {
+    "supported": "Short-lived reproductive-state information predicts later local demographic redistribution across multiple independent Pygoscelis systems.",
+    "not_supported": "Do not generalize the Palmer history-dependent pattern beyond the systems that individually support it.",
+    "mechanism_boundary": "Even cross-system generality would not identify public information, retention, prospecting, predation or persistent environment as the causal carrier."
+  },
+  "anti_cherry_pick_rules": [
+    "Do not add new search terms after learning candidate effect directions.",
+    "Do not exclude a qualifying system because its coefficient is null or negative.",
+    "Do not lower year, row or local-unit thresholds to increase the number of positive systems.",
+    "Do not switch the primary lag by dataset.",
+    "Do not replace the universal denominator-separated endpoint with a more favorable same-year or one-interval result.",
+    "ACCESS_BLOCKED systems remain in the ledger and cannot be silently omitted from the generality discussion."
+  ]
+}
