@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-census-version-completeness-audit-v1",
+  "date": "2026-09-30",
+  "status": "source_integrity_audit_frozen_after_discrepancy_detection_before_any_v8_ecological_refit",
+  "role": "Upstream data-integrity gate. No new ecological model may be fit to the later census version until this audit is resolved.",
+  "known_before_freeze": [
+    "The repository has used Palmer LTER AdeliePenguinCensus DOI 10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e with pinned CSV SHA256 b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16.",
+    "That pinned extract contains 1,489 parsed colony-year rows and ends in 2017.",
+    "For Torgersen in 1993 the pinned extract sums to 2,868 breeding pairs.",
+    "Patterson historical tables contain colony numbers whose overlapping counts match the pinned extract, while several major Torgersen colony numbers (including 7-11 and 16) are absent from the pinned extract.",
+    "Cimino et al. 2025 cites a later Palmer census version, DOI 10.6073/pasta/805f6b97593c60cfdfd02266db9ab4b6, described as 1991-2021 ver. 8, and reports a 1993 Torgersen total of 7,255 breeding pairs.",
+    "These discrepancies have already been observed; this audit is not outcome-blind."
+  ],
+  "primary_question": "Is the pinned 89dd census extract equivalent to, a documented subset of, or incomplete relative to the later 805f ver.8 area-wide census?",
+  "sources_to_recover": {
+    "old": {
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "pinned_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+    },
+    "later": {
+      "doi": "10.6073/pasta/805f6b97593c60cfdfd02266db9ab4b6",
+      "description_from_2025_citation": "Adelie penguin area-wide breeding population census, 1991-2021 ver 8"
+    }
+  },
+  "audit_steps": [
+    "Recover public metadata and, if possible, raw bytes for the later ver.8 census without using ecological outcome results to select files.",
+    "Compare metadata: package/version, date coverage, field definitions, entity/file identity, revision notes, and stated scope.",
+    "Compare row keys on island + raw colony_code + census year.",
+    "For keys present in both, report exact count equality, disagreements, and duplicate structure.",
+    "Report keys present only in old and only in later versions by island, colony_code, and year.",
+    "Compare island-year totals for all overlapping years without fitting ecological models.",
+    "Explicitly audit Torgersen 1993 against the published 7,255-pair reference and historical colony tables.",
+    "Determine whether omissions in the old extract are systematic by colony_code and whether missing colonies contribute substantial abundance.",
+    "Do not compute concentration slopes, lag coefficients, synchrony, extinction hazard, or any other ecological outcome on ver.8 during this audit."
+  ],
+  "decision_classes": {
+    "equivalent": "The old pinned extract and ver.8 differ only by later years/metadata or immaterial transport formatting; all overlapping biological row keys and counts are equivalent.",
+    "documented_subset": "The old extract intentionally represents a documented subset with an explicit source definition that explains omitted colonies; prior results remain valid only for that subset and must be relabeled accordingly.",
+    "incomplete_relative_to_intended_area_wide": "The old extract omits biological rows/colonies from the intended area-wide census without an explicit subset definition; any prior analysis claiming whole-island totals, colony concentration, or complete colony panels requires frozen-specification rerun on ver.8 before ecological use.",
+    "unresolved": "Ver.8 raw data or sufficient metadata cannot be publicly recovered to distinguish the above classes."
+  },
+  "downstream_rules": {
+    "if_equivalent": "Resume the paused colony-environment audit with no Palmer population-result changes.",
+    "if_documented_subset": "Create a claim-boundary repair relabeling all affected Palmer results as subset analyses before any manuscript use; assess whether the subset answers each original question.",
+    "if_incomplete": "Freeze exact rerun contracts that clone the existing specifications before opening any rerun results on ver.8. Do not tune models, lags, exclusions, endpoints, or thresholds.",
+    "if_unresolved": "Do not silently treat the old extract as complete area-wide census; manuscript claims must state the unresolved source-version limitation."
+  },
+  "claim_boundaries": [
+    "Do not call prior Palmer ecological results invalid solely because a source discrepancy was detected.",
+    "Do not call the old extract a complete area-wide census unless equivalence or completeness is demonstrated.",
+    "Do not choose a census version because it yields stronger ecological results.",
+    "Do not refit ecological models during this source-integrity audit.",
+    "Do not manually add historical colony counts into either source.",
+    "Use raw colony_code strings unchanged when comparing versions."
+  ]
+}
