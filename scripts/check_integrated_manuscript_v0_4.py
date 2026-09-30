@@ -84,6 +84,14 @@ def check(root: Path) -> dict[str, object]:
         "0.0947" in manuscript
         and "directionally concordant but non-confirmatory" in lower
     )
+    checks["cross_scale_not_head_to_head"] = (
+        "not a head-to-head predictive model comparison" in lower
+        and "evidentiary rather than a comparison of effect sizes" in lower
+        and "different response definitions, spatial grains and species panels" in lower
+    )
+    checks["no_dynamic_outperformance_claim"] = (
+        "dynamic state outperforms static architecture" not in lower
+    )
     checks["repro_nonreplication_retained"] = (
         "mean chicks reaching crèche per monitored nest" in lower
         and "0.232" in manuscript
