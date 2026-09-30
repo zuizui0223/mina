@@ -3,7 +3,10 @@ import unittest
 import zipfile
 from pathlib import Path
 
-import pandas as pd
+try:
+    import pandas as pd
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest("Signy support tests require pandas") from exc
 
 from scripts.audit_signy_replication_support import (
     audit_table,
