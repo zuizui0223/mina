@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-arrival-memory-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_colony_season_arrival_metrics_or_performance_arrival_associations_are_computed",
+  "paper_role": "individual-behaviour-adjacent mechanism gate following the frozen lagged redistribution and performance-memory results",
+  "inherits": {
+    "performance_state": "contracts/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2.json",
+    "season_key": "contracts/PALMER_CHICK_SEASON_KEY_RESOLUTION_V1.json",
+    "prior_mechanism_result": "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json"
+  },
+  "known_before_freeze": [
+    "Palmer relative reproductive performance predicts within-island redistribution at lag 2 and lag 3 under the fixed-specification validation.",
+    "Relative reproductive performance has weak one- to two-year autocorrelation.",
+    "Past performance retains incremental information for lag-2 redistribution after contemporaneous performance, outcome-interval group size and colony fixed effects.",
+    "Historical Palmer methods state that breeding-adult arrival chronology on Humble Island was observed approximately every two days from early October to mid-November and that returning banded birds were searched for throughout the field season.",
+    "The public arrival table has fields corresponding to study season, date, island, colony and adult count."
+  ],
+  "exposure_boundary": {
+    "schema_and_example_rows_seen_before_freeze": true,
+    "example_rows_seen": "A public teaching page exposed several PAL9192 Humble colony counts from 1991-10-20 while confirming the table schema.",
+    "derived_arrival_metric_seen": false,
+    "performance_arrival_association_seen": false,
+    "consequence": "This is prospectively frozen with respect to the derived colony-season arrival outcomes and their association with prior reproductive performance, but not literally blind to every raw arrival value."
+  },
+  "source": {
+    "title": "Adelie penguin breeding population arrival chronology on Humble Island, 1991-2024",
+    "edi_package": "knb-lter-pal/92/8",
+    "historical_datazoo_dataset": 92,
+    "focal_island": "HUM",
+    "expected_columns": ["study_name", "date", "island", "colony_code", "adult_count"],
+    "historical_sampling_protocol": "breeding-adult population arrival observed approximately once every two days on Humble Island from early October through about 15 November, as ice and weather permitted",
+    "execution_rule": "Use the frozen EDI package revision 8 or a byte-identical public mirror. Record the exact entity identifier, URL and SHA256 before outcome computation. Fail closed if required columns or the package identity cannot be verified."
+  },
+  "season_and_join": {
+    "arrival_season": "Parse season_start_year from study identifier PALYYZZ using the same century and consecutive-year validation rules as PALMER_CHICK_SEASON_KEY_RESOLUTION_V1.",
+    "performance_predictor_season": "S_i,t from the chick-production season t.",
+    "arrival_outcome_season": "arrival chronology in the next breeding season t+1.",
+    "join_key": ["HUM", "raw colony_code"],
+    "no_colony_code_merging": true,
+    "no_imputation": true
+  },
+  "arrival_metric": {
+    "window": "Use observations from October 1 through November 15 inclusive in each study season.",
+    "eligibility": [
+      "Humble Island only.",
+      "At least 5 finite nonnegative adult-count observations in the arrival window.",
+      "At least 3 distinct observation dates.",
+      "Seasonal maximum adult count > 0.",
+      "The first and last eligible observation dates must be separated by at least 10 calendar days."
+    ],
+    "monotone_envelope": "Sort by date, collapse exact duplicate colony-date rows only if adult counts are identical, otherwise fail closed; define M(d) as the cumulative maximum adult count observed up to date d.",
+    "normalization": "Q(d) = M(d) / max_d M(d) within colony-season.",
+    "primary_t50": "First date at which Q(d) >= 0.50, linearly interpolated in calendar-day units between the immediately preceding and crossing observations when the preceding Q < 0.50.",
+    "secondary_t25_t75": "Compute analogously for thresholds 0.25 and 0.75.",
+    "within_season_relative_metric": "For each season, subtract the mean eligible-colony t50 from each colony t50. Negative values indicate earlier-than-average arrival on Humble that season.",
+    "reason": "Within-season centering removes year-common phenology shifts due to regional sea ice and weather; normalization removes absolute colony-size differences."
+  },
+  "P5_prior_performance_to_arrival": {
+    "question": "Does relatively high reproductive performance in colony i during season t predict earlier breeding-adult return to that same Humble colony in season t+1?",
+    "predictor": "S_i,t, exactly as frozen in PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2, restricted to Humble colonies.",
+    "response": "within-season centered t50_i,t+1",
+    "model": "relative_t50_i,t+1 = alpha * S_i,t + gamma * z_log_adult_pairs_i,t + colony_code fixed effect + error",
+    "prediction": "alpha < 0",
+    "prior_size": "z-standardize log1p adult breeding-pair census at colony i in season t within Humble-season before fitting.",
+    "inference": {
+      "null": "Conditional on season, observed prior performance scores are exchangeable among eligible Humble colonies with respect to next-season arrival timing.",
+      "permutation": "Permute S_i,t within predictor season t while holding arrival outcomes, prior size, colony fixed effects and missingness fixed.",
+      "permutations": 100000,
+      "seed": 20260970,
+      "p_value": "one-sided lower-tail Monte Carlo p with +1 correction",
+      "alpha": 0.05
+    },
+    "minimum_rows": 150,
+    "decision": "supported if fitted alpha < 0 and one-sided permutation p <= 0.05"
+  },
+  "P6_timing_specificity": {
+    "question": "If past performance changes return/settlement timing rather than merely scaling the whole arrival curve, is the association visible by the midpoint and not confined to a single arbitrary threshold?",
+    "sensitivities": {
+      "t25": "Repeat P5 with within-season centered t25; expected alpha < 0.",
+      "t75": "Repeat P5 with within-season centered t75; expected alpha < 0.",
+      "arrival_span": "Report t75 - t25 and test no directional hypothesis; this distinguishes timing shift from simple compression/expansion of the arrival period."
+    },
+    "coherence_rule": "Primary P5 is considered timing-coherent if alpha has the same negative sign for both t25 and t75. Their p-values are sensitivity descriptors and do not replace the primary t50 decision."
+  },
+  "mechanism_interpretation": {
+    "if_supported": "Prior reproductive performance predicts a pre-breeding demographic response before the current season's reproductive outcome is known. This strengthens a short-term retention/return/settlement interpretation relative to a purely post-breeding abundance artifact.",
+    "if_not_supported": "Do not use arrival timing as evidence that the lagged redistribution signal is carried by returning adults or prospectors.",
+    "cannot_distinguish": [
+      "the same adults returning earlier versus different adults settling there",
+      "adult retention versus breeding dispersal",
+      "experienced breeders versus prospecting nonbreeders",
+      "social information use versus an unmeasured persistent colony-specific cue"
+    ]
+  },
+  "sensitivities": {
+    "minimum_observations_7": "Require at least 7 arrival observations per colony-season.",
+    "leave_one_colony_out": "Report the observed P5 alpha after removing each Humble colony with at least 5 matched predictor-outcome seasons.",
+    "alternate_performance_metric": "Repeat P5 using the frozen logratio reproductive-performance metric.",
+    "current_performance_bridge": "Descriptive only: among rows with S_i,t+1 available, add S_i,t+1 to P5. Because current-season performance occurs after arrival, this is not a causal adjustment and cannot replace the primary model."
+  },
+  "claim_boundaries": [
+    "Do not call adult counts individual resight data.",
+    "Do not infer individual movement, immigration, prospecting, philopatry or public-information use from colony-level arrival counts.",
+    "Do not alter the arrival window, threshold, monotone-envelope rule, centering, controls or permutation scheme after derived arrival outcomes are opened.",
+    "Do not use t25 or t75 to rescue a failed t50 primary endpoint.",
+    "A supported result identifies pre-breeding timing as a carrier of temporal information, not the identity of the birds carrying it."
+  ]
+}
