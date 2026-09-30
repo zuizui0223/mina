@@ -1,0 +1,33 @@
+name: integrated-manuscript-v0-3
+
+on:
+  push:
+    branches:
+      - validation/ross-island-resight-gate-v1
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_V0_3.md"
+      - "contracts/INTEGRATED_PALMER_ANTARCTIC_MANUSCRIPT_V0_3.json"
+      - "scripts/check_integrated_manuscript_v0_3.py"
+      - "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json"
+      - "results/PALMER_REPRO_REDISTRIBUTION_RESULT_V1.json"
+      - "results/PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json"
+      - ".github/workflows/integrated-manuscript-v0-3.yml"
+  workflow_dispatch:
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Guard v0.3 claims and key receipt values
+        run: |
+          python scripts/check_integrated_manuscript_v0_3.py \
+            --repo-root . \
+            --out build/integrated_manuscript_v0_3_guard.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integrated-manuscript-v0-3-guard
+          path: build/integrated_manuscript_v0_3_guard.json
