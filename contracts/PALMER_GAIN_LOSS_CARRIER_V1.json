@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-gain-loss-carrier-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_gain_loss_outcomes_are_computed",
+  "inherits": {
+    "performance_state": "contracts/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2.json",
+    "lag2_panel": "same denominator-separated t performance -> t+1 to t+2 adult-count interval used in PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2",
+    "season_key": "contracts/PALMER_CHICK_SEASON_KEY_RESOLUTION_V1.json"
+  },
+  "known_before_freeze": [
+    "Past relative reproductive performance S_i,t positively predicts relative breeder-count growth during t+1 to t+2 under the fixed lag-2 specification.",
+    "Measured reproductive performance has weak one-year memory, and past S_i,t retains incremental information after S_i,t+1.",
+    "Colony counts cannot uniquely separate attendance, mature-bird movement and first recruitment.",
+    "External Ross Island work shows successful breeders can have higher subsequent survival/reproductive performance, making resident-quality persistence a serious alternative to social-information settlement."
+  ],
+  "question": "Is the Palmer lag-2 performance association carried mainly by avoidance of breeder loss, by positive net addition of breeding pairs, or by both?",
+  "biological_competing_mechanisms": {
+    "retention_quality": "High S_i,t marks colonies containing successful/high-quality resident breeders that are more likely to survive, attend and continue breeding; this should primarily reduce subsequent losses and does not require net entry.",
+    "entry_reentry": "High S_i,t is associated with later addition of breeding pairs not observed breeding at that colony at the start of the outcome interval; this may arise from first recruitment, return from a nonbreeding state, or immigration/prospecting.",
+    "important_boundary": "Positive net addition does not distinguish first recruitment, return from skipped breeding, or immigration and is not by itself evidence of public-information use."
+  },
+  "outcome_interval": {
+    "predictor_season": "t",
+    "outcome_start": "t+1",
+    "outcome_end": "t+2",
+    "shared_denominator_with_predictor": false,
+    "N0": "adult breeding-pair count at colony i in t+1",
+    "N1": "adult breeding-pair count at colony i in t+2"
+  },
+  "derived_responses": {
+    "log_growth": "g = log1p(N1) - log1p(N0)",
+    "gain": "Gplus = max(g, 0)",
+    "loss": "Gminus = max(-g, 0)",
+    "loss_avoidance": "Aminus = -Gminus, so a positive coefficient means high prior performance is associated with less later loss",
+    "net_new_pairs_lower_bound": "Lplus = max(N1 - N0, 0); whenever Lplus > 0, at least Lplus breeding pairs at t+2 were not part of the observed breeding-pair count at that colony at t+1, regardless of simultaneous exits"
+  },
+  "risk_set_adjustment": {
+    "within_island_transition": "For each island and t+1 -> t+2 transition, demean Gplus and Aminus across eligible colony codes.",
+    "prior_size_control": "z-standardize log1p(N0) within the same island-transition risk set.",
+    "persistent_place_control": "include island:colony_code fixed effects",
+    "reason": "This matches the lag-2 architecture while separating positive and negative demographic components."
+  },
+  "primary_models": {
+    "gain": "demeaned_Gplus ~ beta_gain * S_i,t + z_log_size_i,t+1 + island:colony_code fixed effect",
+    "loss_avoidance": "demeaned_Aminus ~ beta_avoid * S_i,t + z_log_size_i,t+1 + island:colony_code fixed effect"
+  },
+  "inference": {
+    "null": "Within each predictor island-season, colony assignment of S_i,t is exchangeable while outcome counts, missingness, prior size and colony identities remain fixed.",
+    "permutation": "Use the full eligible predictor island-season S_i,t group exactly as in the corrected performance-memory implementation; map each permutation onto the fixed lag-2 outcome panel by colony.",
+    "permutations": 100000,
+    "seed": 20260990,
+    "p_values": "one-sided upper-tail for beta_gain and beta_avoid",
+    "multiple_testing": "Holm-adjust the two primary p-values; mechanism support requires adjusted p <= 0.05 and coefficient > 0."
+  },
+  "logical_lower_bound_test": {
+    "statistic": "Among lag-2 rows with positive net change, report total and median Lplus and the fraction of all positive-growth rows with Lplus > 0 (algebraically 1 by definition).",
+    "performance_link": "Fit demeaned log1p(Lplus) with S_i,t + within-transition z_log_size + colony fixed effects, assigning log1p(0)=0 before demeaning.",
+    "role": "secondary support showing whether prior performance predicts a strict lower bound on entry/re-entry; does not identify its source.",
+    "inference": "same within-predictor-island-season permutation, one-sided p reported descriptively without replacing the two primary endpoints"
+  },
+  "decision_matrix": {
+    "retention_dominant_pattern": "beta_avoid supported after Holm; beta_gain not supported.",
+    "entry_dominant_pattern": "beta_gain supported after Holm; beta_avoid not supported.",
+    "mixed_pattern": "both beta_gain and beta_avoid supported after Holm.",
+    "undifferentiated": "neither supported after Holm.",
+    "retention_only_ruled_out": "true only if beta_gain is supported after Holm; this means some performance-linked advantage occurs through positive net breeder additions, not that retention contributes nothing."
+  },
+  "sensitivities": {
+    "exclude_litchfield": "Repeat both primary coefficients and raw p-values excluding LIT.",
+    "minimum_prior_size_2": "Repeat after requiring N0 >= 2 breeding pairs.",
+    "alternate_logratio_performance": "Repeat using the frozen logratio performance state.",
+    "leave_one_island_out": "Report observed beta_gain and beta_avoid after removing each island."
+  },
+  "claim_boundaries": [
+    "Do not call Lplus immigration; it is net addition from any pair not observed breeding at that colony at t+1, including returning nonbreeders and first recruits.",
+    "Do not infer public-information use from a supported gain component.",
+    "Do not infer resident individual quality from a supported loss-avoidance component.",
+    "Do not alter the lag, gain/loss decomposition, controls, alpha, multiplicity rule or permutation scheme after outcomes are opened.",
+    "This analysis can rule out a pure retention-only account if gain is supported, but it cannot identify which entry pathway supplies the added breeders."
+  ]
+}
