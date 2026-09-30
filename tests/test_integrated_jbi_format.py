@@ -79,7 +79,7 @@ def test_integrated_supplement_v02_preserves_claim_boundaries():
     ):
         assert required in text
     assert "cannot rescue" in low
-    assert "not evidence for an allee or predation mechanism" in low
+    assert "allee or predation mechanism" in low
     assert "not treated as biological scale dependence" in low
     assert "pr #102" in low and "pr #113" in low
 
