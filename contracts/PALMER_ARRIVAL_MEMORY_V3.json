@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "contract_id": "mina-palmer-arrival-memory-v3",
+  "date": "2026-09-30",
+  "status": "source_quality_repair_frozen_before_any_derived_arrival_metric_is_computed",
+  "supersedes": "mina-palmer-arrival-memory-v2",
+  "source_audit": "results/PALMER_ARRIVAL_SOURCE_AUDIT_RESULT_V1.json",
+  "repair_scope": {
+    "trigger": "The frozen fail-closed duplicate rule stopped the first real-data execution before any t25/t50/t75 metric or performance-arrival coefficient was computed.",
+    "finding": "All 28 discordant duplicate keys occur in PAL9293, HUM colony 2.1. In that season colony 2.2 is absent and 2.1 has 59 rows, whereas PAL9192 has 28 rows each for 2.1 and 2.2 and PAL9394 again contains both codes.",
+    "uncertainty": "The evidence is consistent with a full-season 2.1/2.2 code collision, but the available standardized source does not objectively identify which duplicated 2.1 row belongs to which logical colony.",
+    "repair": "Exclude study season PAL9293 from all derived arrival outcomes and all matched performance-arrival analyses.",
+    "why_conservative": "This discards the entire structurally ambiguous season and makes no attempt to average, select, reorder, or relabel discordant values.",
+    "exact_duplicates": "Outside the excluded season, exact same-key duplicate rows with identical Adults values remain collapsible under the original V1 rule.",
+    "analysis_definition_changed": false,
+    "arrival_thresholds_changed": false,
+    "arrival_window_changed": false,
+    "model_changed": false,
+    "permutation_scheme_changed": false,
+    "decision_rule_changed": false
+  },
+  "outcome_exposure_boundary": {
+    "derived_arrival_metrics_seen": false,
+    "performance_arrival_coefficients_seen": false,
+    "performance_arrival_p_values_seen": false,
+    "raw_duplicate_values_seen_for_source_audit": true,
+    "consequence": "The PAL9293 exclusion is a pre-outcome source-quality repair. It must be reported transparently, but it is not selected on the basis of the scientific endpoint."
+  },
+  "inherited_analysis": {
+    "from": "mina-palmer-arrival-memory-v1",
+    "source_transport_from": "mina-palmer-arrival-memory-v2",
+    "arrival_window": "October 1 through November 15 inclusive",
+    "minimum_observations": 5,
+    "minimum_distinct_dates": 3,
+    "minimum_date_span_days": 10,
+    "monotone_envelope": true,
+    "primary_threshold": 0.50,
+    "secondary_thresholds": [0.25, 0.75],
+    "primary_model": "relative_t50_i,t+1 = alpha * S_i,t + gamma * z_log_adult_pairs_i,t + colony_code fixed effect + error",
+    "prediction": "alpha < 0",
+    "permutations": 100000,
+    "seed": 20260970,
+    "alpha": 0.05,
+    "minimum_rows": 150
+  },
+  "primary_decision": "supported if alpha < 0 and one-sided within-season permutation p <= 0.05 and at least 150 matched rows remain after the PAL9293 source exclusion",
+  "sensitivities": {
+    "minimum_observations_7": "inherit unchanged",
+    "leave_one_colony_out": "inherit unchanged",
+    "alternate_performance_metric": "inherit unchanged",
+    "current_performance_bridge": "inherit unchanged and descriptive only"
+  },
+  "claim_boundaries": [
+    "Do not restore PAL9293 using an arbitrary average, minimum, maximum, row-order assignment, or guessed 2.2 relabeling.",
+    "Do not use a repaired PAL9293 sensitivity as primary evidence unless an independent source later resolves the colony identity.",
+    "All individual-level and public-information claim boundaries from V1 remain in force.",
+    "t25/t75 cannot rescue a failed t50 primary endpoint."
+  ]
+}
