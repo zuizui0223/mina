@@ -1,0 +1,60 @@
+name: signy-replication-support
+
+on:
+  push:
+    branches: [analysis/signy-replication-feasibility-v1]
+    paths:
+      - "scripts/audit_signy_replication_support.py"
+      - "tests/test_signy_replication_support.py"
+      - "contracts/SIGNY_WIN_STAY_LOSE_SWITCH_REPLICATION_V1.json"
+      - ".github/workflows/signy-replication-support.yml"
+  pull_request:
+    paths:
+      - "scripts/audit_signy_replication_support.py"
+      - "tests/test_signy_replication_support.py"
+      - "contracts/SIGNY_WIN_STAY_LOSE_SWITCH_REPLICATION_V1.json"
+      - ".github/workflows/signy-replication-support.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install pandas lxml html5lib beautifulsoup4
+      - run: python -m unittest tests.test_signy_replication_support -v
+      - name: Download official BAS/NERC RAMADDA entry tree
+        run: |
+          mkdir -p build
+          curl -L --fail --retry 4 --retry-delay 5 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/signy_official.zip
+          python - <<'PY'
+          import zipfile
+          p='build/signy_official.zip'
+          with zipfile.ZipFile(p) as z:
+              print("official zip members:")
+              for n in z.namelist():
+                  print(n)
+          PY
+      - name: Audit official schema/support only
+        run: |
+          python -m scripts.audit_signy_replication_support \
+            --official-zip build/signy_official.zip \
+            --out-json build/SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json
+      - name: Enforce no-effect gate
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("build/SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json"))
+          assert r["effect_computed"] is False
+          print("status=",r["status"])
+          print("gate=",r.get("gate"))
+          print("support=",r.get("nonmissing_support"))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signy-replication-support-v1
+          path: build/SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json

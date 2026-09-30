@@ -1,0 +1,76 @@
+name: signy-lag2-replication
+
+on:
+  push:
+    branches: [replication/signy-lag2-effect-v1]
+    paths:
+      - "src/mina/signy_replication.py"
+      - "tests/test_signy_replication.py"
+      - "contracts/SIGNY_WIN_STAY_LOSE_SWITCH_REPLICATION_V1.json"
+      - "results/SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json"
+      - ".github/workflows/signy-lag2-replication.yml"
+  pull_request:
+    paths:
+      - "src/mina/signy_replication.py"
+      - "tests/test_signy_replication.py"
+      - "contracts/SIGNY_WIN_STAY_LOSE_SWITCH_REPLICATION_V1.json"
+      - "results/SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json"
+      - ".github/workflows/signy-lag2-replication.yml"
+  workflow_dispatch:
+
+jobs:
+  replicate:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -e ".[dev]" pandas lxml html5lib beautifulsoup4
+      - name: Run synthetic estimator tests
+        run: python -m unittest tests.test_signy_replication -v
+      - name: Download frozen official Signy source
+        run: |
+          mkdir -p build
+          curl -L --fail --retry 4 --retry-delay 5 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/signy_official.zip
+      - name: Reconfirm frozen support before effect
+        run: |
+          python -m scripts.audit_signy_replication_support \
+            --official-zip build/signy_official.zip \
+            --out-json build/signy_support_receipt.json
+          python - <<'PY'
+          import json
+          x=json.load(open("build/signy_support_receipt.json"))
+          assert x["effect_computed"] is False
+          assert x["gate"]["passes"] is True
+          assert x["semantics"]["pairs_col"] == "TOTAL_NUMBER_OF_PAIRS"
+          assert x["source"]["zip_metadata"]["selected_csv_sha256"] == "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62"
+          PY
+      - name: Run frozen Signy replication
+        run: |
+          python -m mina.signy_replication \
+            --official-zip build/signy_official.zip \
+            --out build/SIGNY_PERFORMANCE_REDISTRIBUTION_REPLICATION_RESULT_V1.json \
+            --permutations 100000
+      - name: Print result without significance gating
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("build/SIGNY_PERFORMANCE_REDISTRIBUTION_REPLICATION_RESULT_V1.json"))
+          p=x["primary"]["primary_lag2"]
+          h=x["primary"]["secondary_hinge"]
+          print("lag2_beta=",p["beta"])
+          print("lag2_p=",p["one_sided_upper_p"])
+          print("lag2_supported=",p["supported"])
+          print("hinge_delta=",h["delta"])
+          print("hinge_p=",h["one_sided_upper_p"])
+          print("hinge_supported=",h["supported"])
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signy-performance-redistribution-replication-v1
+          path: |
+            build/signy_support_receipt.json
+            build/SIGNY_PERFORMANCE_REDISTRIBUTION_REPLICATION_RESULT_V1.json

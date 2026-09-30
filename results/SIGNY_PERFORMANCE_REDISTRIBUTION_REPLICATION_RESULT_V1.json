@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-signy-performance-redistribution-replication-result-v1",
+  "validated_date": "2026-09-30",
+  "execution": {
+    "workflow_run_id": 36659354120,
+    "artifact_id": 11073164765,
+    "artifact_digest": "sha256:994c91dfdae82ea1bc830afd44350ec22c40beb95a74d825f3589c15bde0868c",
+    "head_sha": "5e584ebcbe377288c2f52c6fb5736d47ee6bb984",
+    "conclusion": "success"
+  },
+  "source": {
+    "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62",
+    "rows": 310
+  },
+  "primary": {
+    "lag2_beta": 0.021337308190931506,
+    "n_rows": 118,
+    "n_predictor_seasons": 17,
+    "n_colonies": 9,
+    "permutations": 100000,
+    "one_sided_p": 0.2791772082279177,
+    "supported": false
+  },
+  "descriptive_lags": {
+    "lag1_beta": 0.07558384648632971,
+    "lag2_beta": 0.021337308190931506,
+    "lag3_beta": 0.016121416268824944
+  },
+  "mechanism_hinge": {
+    "beta_loss": 0.05669780319646426,
+    "beta_win": -0.011128525838471875,
+    "delta": 0.06782632903493613,
+    "one_sided_p": 0.3009069909300907,
+    "supported": false
+  },
+  "sensitivities": {
+    "atomic_label_only": {
+      "lag2_beta": 0.06336811762892111,
+      "lag2_p": 0.06029939700602994,
+      "direction_consistent": true,
+      "supported": false
+    },
+    "comment_flag_exclusion": {
+      "lag2_beta": 0.07269289151848089,
+      "lag2_p": 0.02073979260207398,
+      "direction_consistent": true,
+      "supported": true
+    }
+  },
+  "decision": {
+    "primary_lag2_replication_supported": false,
+    "secondary_lose_switch_hinge_supported": false,
+    "sensitivity_direction_consistent": true,
+    "transferability_established": false
+  },
+  "interpretation": [
+    "The Palmer lag-2 performance-linked redistribution association does not independently replicate at Signy under the frozen primary comparable design.",
+    "Both mandatory sensitivities retain a positive lag-2 direction, and excluding comment-flagged nonstandard seasons yields a nominally supported coefficient, but this sensitivity cannot replace the null primary replication.",
+    "The specific lose-switch hinge is unsupported at Signy, consistent with the lack of Palmer P3 support.",
+    "The combined Palmer-Signy evidence therefore supports short-lag performance-linked redistribution as a locally plausible dynamic process, not as a demonstrated transferable Antarctic mechanism."
+  ],
+  "claim_boundary": [
+    "Do not call Signy an independent replication of the Palmer lag-2 effect.",
+    "Do not promote the comment-filter sensitivity over the frozen primary analysis.",
+    "Do not claim win-stay/lose-switch in either Palmer or Signy.",
+    "Do not infer individual breeding dispersal, prospecting or cue use from colony-count data."
+  ]
+}
