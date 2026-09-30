@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-repro-performance-replication-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_repro_outcome_values_are_opened",
+  "role": "independent reproductive-performance replication of the history-dependent redistribution result",
+  "source_candidate": {
+    "repository": "PAL-LTER/pal-seabirds",
+    "commit": "523e74a064e2f1153704a32731631cbff4395e73",
+    "raw_source": "station/original/2020_fraser/REPRO.xls plus annual continuation files",
+    "formatted_dataset": "station/formatted/Adelie_Reproductive_Success",
+    "official_conversion_mapping": {
+      "SEASON": "studyName",
+      "ISL": "Island",
+      "LOC": "Colony",
+      "SITE": "Site Number",
+      "NEST": "Nest Number",
+      "E1LAY": "Egg 1 Lay Date",
+      "E2LAY": "Egg 2 Lay Date",
+      "E1LOS": "Egg 1 Loss Date",
+      "E2LOS": "Egg 2 Loss Date",
+      "C1HAT": "Chick 1 Hatch Date",
+      "C2HAT": "Chick 2 Hatch Date",
+      "C1LOS": "Chick 1 Loss Date",
+      "C2LOS": "Chick 2 Loss Date",
+      "C1CRE": "Chick 1 Creche Date",
+      "C2CRE": "Chick 2 Creche Date",
+      "NOTES": "Notes"
+    },
+    "outcome_values_opened_before_freeze": false
+  },
+  "question": "Does colony reproductive performance measured from independently monitored nests predict later within-island breeder redistribution in the same direction as the chick-count performance state?",
+  "nest_endpoint": {
+    "eligible_nest": "A unique studyName + Island + raw Colony + Site Number + Nest Number row with at least one nonmissing Egg 1 Lay Date or Egg 2 Lay Date.",
+    "primary_success": "1 if Chick 1 Creche Date or Chick 2 Creche Date is nonmissing, otherwise 0.",
+    "duplicate_rule": "Fail closed on duplicate eligible nest keys; do not average or select duplicate nest histories.",
+    "date_values_role": "Only missing versus nonmissing status is used for the primary endpoint; actual lay, hatch, loss or creche dates are not used."
+  },
+  "colony_performance_state": {
+    "minimum_eligible_nests_per_colony_season": 5,
+    "island_season_eligibility": "At least 3 colony codes with >=5 eligible monitored nests.",
+    "pooled_expectation": "Within each island-season, pooled nest-success probability p = total successful monitored nests / total eligible monitored nests.",
+    "pearson_residual": "(successful_nests_i - n_i * p) / sqrt(max(n_i * p * (1-p), 1e-12)).",
+    "standardization": "Within each eligible island-season, z-standardize colony Pearson residuals; call this R_i,t.",
+    "interpretation": "R_i,t is relative monitored-nest reproductive performance independent of the chick-count numerator/denominator used in the earlier performance definition."
+  },
+  "redistribution_outcome": {
+    "inheritance": "Exactly the lag-2 outcome definition used in PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2.",
+    "definition": "For performance season t, outcome is colony relative growth during t+1 -> t+2: log1p(N_i,t+2)-log1p(N_i,t+1), demeaned within island-transition.",
+    "prior_size_control": "Within each island-transition, z-standardize log1p(N_i,t+1).",
+    "colony_identity": "Use raw colony codes with exact matching only; no manual aggregation or crosswalk."
+  },
+  "primary_model": {
+    "formula": "relative_growth_i,t+1 = beta_repro * R_i,t + gamma * z_prior_size_i,t+1 + island:colony_code fixed effect + error.",
+    "prediction": "beta_repro > 0.",
+    "inference": {
+      "null": "Within each predictor island-season, R_i,t is exchangeable among eligible colonies with respect to the frozen future redistribution outcome.",
+      "permutation": "Permute R_i,t among all eligible colonies within predictor island-season while preserving future missingness, outcome values, prior size and colony identity.",
+      "permutations": 100000,
+      "seed": 20260990,
+      "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+      "alpha": 0.05
+    }
+  },
+  "minimum_information": {
+    "minimum_matched_colony_seasons": 30,
+    "minimum_unique_predictor_seasons": 8,
+    "minimum_colonies_per_included_island_season": 3,
+    "failure_rule": "If any minimum is not met, STOP without fitting beta_repro and do not relax thresholds."
+  },
+  "sensitivities": {
+    "minimum_10_nests": "Repeat the primary analysis requiring >=10 eligible monitored nests per colony-season.",
+    "hatch_success": "Replace primary creche success with 1 if Chick 1 Hatch Date or Chick 2 Hatch Date is nonmissing.",
+    "exclude_litchfield": "Repeat after excluding Litchfield Island.",
+    "leave_one_island_out": "Report observed beta_repro after excluding each island in turn when estimable."
+  },
+  "decision_rule": {
+    "independent_replication_supported": "Primary beta_repro > 0 and one-sided permutation p <= 0.05.",
+    "not_supported": "Otherwise do not claim independent monitored-nest replication.",
+    "insufficient": "If the frozen minimum-information gate fails, classify as not tested rather than negative."
+  },
+  "interpretation_if_supported": "A reproductive-performance signal measured from independent nest histories predicts later within-island redistribution, strengthening the claim that dynamic biological state rather than a specific chick-count construction carries temporal information.",
+  "claim_boundaries": [
+    "This test does not identify public-information use, immigration, retention, prospecting or breeding dispersal.",
+    "Nest monitoring locations may reflect nonrandom sampling and are not a census of every nest.",
+    "A positive result would replicate the state-performance association, not prove that reproductive success causally drives movement.",
+    "Do not change the creche endpoint, 5-nest threshold, lag, controls, alpha or permutation scheme after REPRO values are opened.",
+    "Do not rescue a failed information gate with manual colony aggregation or relaxed minimum sample sizes."
+  ]
+}
