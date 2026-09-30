@@ -6,8 +6,10 @@ from mina.ross_states import (
     annualize_resights,
     banded_breeder_performance,
     build_choice_rows,
+    canonical_detection_observations,
     cohort_start_year_from_season,
     first_breeding_choice_events,
+    source_eligible_first_breeding_events,
     match_band_inventory,
     season_start_year_from_date,
 )
@@ -165,7 +167,10 @@ def test_choice_rows_attach_prior_performance_natal_and_size() -> None:
     sizes = {
         2005: {"CROZ": 200000.0, "ROYD": 3000.0, "BIRD": 50000.0}
     }
-    rows, audit = build_choice_rows(events, perf, sizes)
+    effort = {
+        "150:2006": {"CROZ": -1.0, "ROYD": 0.0, "BIRD": 1.0}
+    }
+    rows, audit = build_choice_rows(events, perf, sizes, effort)
     assert audit["retained_events"] == 1
     assert len(rows) == 2
     by_colony = {r["candidate_colony"]: r for r in rows}
@@ -191,11 +196,72 @@ def test_missing_candidate_control_excludes_whole_event() -> None:
     perf = {
         2005: {"CROZ": 1.0, "ROYD": -1.0, "BIRD": 0.0}
     }
+    effort = {
+        "150:2006": {"CROZ": -1.0, "ROYD": 0.0, "BIRD": 1.0}
+    }
     rows, audit = build_choice_rows(
         events,
         perf,
         {2005: {"ROYD": 3000.0}},
+        effort,
     )
     assert rows == []
     assert audit["retained_events"] == 0
     assert audit["excluded_events"]["150:2006"] == "missing_candidate_colony_size"
+
+
+def test_canonical_detection_rows_preserve_individual_date_colony_observer() -> None:
+    rows = canonical_detection_observations(
+        [
+            {
+                "Band": 150,
+                "Date": "11/20/2005",
+                "Colony": "ROYD",
+                "Eggs": 0,
+                "Chicks": 0,
+                "Initials": "ABC",
+            }
+        ]
+    )
+    assert rows[0]["individual_id"] == "150"
+    assert rows[0]["date"].year == 2005
+    assert rows[0]["colony"] == "ROYD"
+    assert rows[0]["observer"] == "ABC"
+
+
+def test_source_gate_can_retain_single_candidate_before_choice_gate() -> None:
+    events = [
+        {
+            "event_id": "150:2006",
+            "individual_id": "150",
+            "first_breeding_season": 2006,
+            "performance_year": 2005,
+            "chosen_colony": "ROYD",
+            "candidate_colonies": ["ROYD"],
+            "natal_colony": "ROYD",
+            "cohort_start_year": 2000,
+            "age_at_first_breeding": 6,
+        }
+    ]
+    perf = {
+        2005: {"CROZ": 1.0, "ROYD": -1.0, "BIRD": 0.0}
+    }
+    sizes = {
+        2005: {"CROZ": 200000.0, "ROYD": 3000.0, "BIRD": 50000.0}
+    }
+    effort = {
+        "150:2006": {"CROZ": -1.0, "ROYD": 0.0, "BIRD": 1.0}
+    }
+    source, audit = source_eligible_first_breeding_events(
+        events, perf, sizes, effort
+    )
+    assert audit["retained_source_events"] == 1
+    assert len(source) == 1
+
+    choice_rows, choice_audit = build_choice_rows(
+        source, perf, sizes, effort
+    )
+    assert choice_rows == []
+    assert choice_audit["excluded_events"]["150:2006"] == (
+        "candidate_count_not_2_to_3"
+    )
