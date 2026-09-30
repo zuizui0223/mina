@@ -32,14 +32,17 @@ def _finite(value: str | None) -> bool:
         return False
 
 
-def load_humpop(path: str | Path) -> list[dict[str, object]]:
+def load_humpop(
+    path: str | Path,
+) -> tuple[list[dict[str, object]], dict[str, object]]:
     with Path(path).open("r", encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
     expected = ["studyName", "Date", "Island", "Colony", "Adults"]
     if not rows:
         raise ValueError("HUMPOP table contains no data rows")
-    out: list[dict[str, object]] = []
-    seen: set[tuple[int, str, str]] = set()
+
+    parsed: list[tuple[tuple[int, str, str], dict[str, object]]] = []
+    key_counts: dict[tuple[int, str, str], int] = defaultdict(int)
     for row in rows:
         if list(row) != expected:
             raise ValueError(f"unexpected HUMPOP columns: {list(row)!r}")
@@ -54,21 +57,27 @@ def load_humpop(path: str | Path) -> list[dict[str, object]]:
         observed = date.fromisoformat(str(row["Date"]).strip())
         colony = str(row["Colony"]).strip()
         key = (season, colony, observed.isoformat())
-        if key in seen:
-            raise ValueError(f"duplicate HUMPOP colony-date key: {key!r}")
-        seen.add(key)
-        out.append(
-            {
-                "season": season,
-                "date": observed,
-                "colony": colony,
-                "adults": adults,
-            }
-        )
-    if not out:
-        raise ValueError("no usable HUMPOP rows")
-    return out
+        record = {
+            "season": season,
+            "date": observed,
+            "colony": colony,
+            "adults": adults,
+        }
+        parsed.append((key, record))
+        key_counts[key] += 1
 
+    duplicate_keys = {key for key, count in key_counts.items() if count > 1}
+    out = [record for key, record in parsed if key not in duplicate_keys]
+    if not out:
+        raise ValueError("no usable HUMPOP rows after duplicate-key exclusion")
+    return out, {
+        "raw_numeric_humble_rows": len(parsed),
+        "duplicate_keys_excluded": len(duplicate_keys),
+        "rows_excluded_by_duplicate_rule": sum(
+            count for key, count in key_counts.items() if key in duplicate_keys
+        ),
+        "usable_rows_after_duplicate_rule": len(out),
+    }
 
 def arrival_endpoints(
     rows: list[dict[str, object]],
@@ -371,7 +380,7 @@ def analyze(
         chicks,
         allowed_islands=("HUM",),
     )
-    humpop = load_humpop(humpop_path)
+    humpop, humpop_audit = load_humpop(humpop_path)
 
     primary = run_endpoint(
         adults,
@@ -438,6 +447,7 @@ def analyze(
             "usable_chick_rows": len(chicks),
             "humble_performance_rows": len(performance),
             "humpop_rows": len(humpop),
+            "humpop_duplicate_audit": humpop_audit,
         },
         "primary_midpoint_50": primary,
         "sensitivities": {
