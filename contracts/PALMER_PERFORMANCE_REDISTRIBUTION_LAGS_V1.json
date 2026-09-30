@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-performance-redistribution-lags-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_lagged_performance_redistribution_outcomes_are_computed",
+  "paper_role": "mechanistic Palmer extension; not a rescue analysis for Paper 2",
+  "provenance_boundary": {
+    "same_datasets_previously_used": true,
+    "previously_known": [
+      "Palmer colonies have progressively concentrated into fewer effective breeding groups.",
+      "Larger breeding groups show higher chick output per pair under a frozen proportional-productivity null.",
+      "Matched pre-extinction chick performance is too sparse and non-confirmatory.",
+      "The new cross-lag redistribution coefficients defined here have not been computed before this contract."
+    ],
+    "claim": "This is a prospectively frozen new endpoint on previously inspected source data, not a fully outcome-blind preregistration."
+  },
+  "literature_boundary": {
+    "already_known": [
+      "Performance-based public information is established in colonial seabirds such as black-legged kittiwakes.",
+      "A 2024 Adelie penguin study at Pointe Geologie reported a strong association between colony breeding success and one-year-lagged growth that was interpreted as coherent with public-information use.",
+      "A 2025 Palmer-region study showed that snow, aspect and geomorphology are associated with sub-colony persistence and extinction."
+    ],
+    "therefore_not_novel": [
+      "Claiming the first evidence that penguins may use conspecific reproductive performance.",
+      "Claiming that one-year-lagged breeding success and colony growth are associated in Adelie penguins.",
+      "Claiming that physical breeding habitat is irrelevant."
+    ],
+    "target_novelty": "Test whether dynamic reproductive state predicts subsequent within-island redistribution at Palmer after removing shared island-year forcing, prior colony size and persistent colony identity, and determine whether the lag profile is immediate or shows a delayed recruitment echo."
+  },
+  "sources": {
+    "adult_census": {
+      "dataset": "Palmer LTER AdeliePenguinCensus",
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+    },
+    "chick_census": {
+      "dataset_id": "AdeliePenguinAdultandChickCounts",
+      "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+      "expected_sha256_from_prior_frozen_execution": "40485a328af51727e019c2cd99e4795c098499fef86a9d4b2af435a6de5373e0"
+    },
+    "focal_islands": ["CHR", "COR", "HUM", "LIT", "TOR"]
+  },
+  "season_and_join_rules": {
+    "adult_season": "calendar year of November breeding-pair census",
+    "chick_season": "for January chick census, season_start_year = calendar year(time) - 1",
+    "join_key": ["island", "colony_code", "season_start_year"],
+    "duplicate_policy": "Collapse exact duplicate chick rows; exclude ambiguous duplicate keys with discordant numeric values; never average discordant duplicates.",
+    "adult_size_source": "Use the independent November adult census breeding-pair count, not the breeding-pair denominator copied into the chick dataset.",
+    "no_imputation": true,
+    "no_colony_code_merging": true
+  },
+  "performance_state": {
+    "eligibility": "island-season with at least 3 matched colony codes, positive island total adult pairs, positive island total chicks, and finite nonnegative colony chick counts",
+    "expected_chicks": "E_i,t = total_chicks_island,t * adult_pairs_i,t / adult_pairs_island,t",
+    "pearson_residual": "(chicks_i,t - E_i,t) / sqrt(max(E_i,t * (1 - adult_pairs_i,t/adult_pairs_island,t), 1e-12))",
+    "standardization": "Within each eligible island-season, z-standardize the Pearson residual across matched colony codes; call this S_i,t.",
+    "interpretation": "S_i,t is relative reproductive performance conditional on contemporaneous group size and shared island-season conditions."
+  },
+  "redistribution_outcome": {
+    "colony_growth": "G_i,u = log1p(adult_pairs_i,u+1) - log1p(adult_pairs_i,u) for adjacent annual censuses only",
+    "relative_growth": "Within each island and transition u -> u+1, subtract the mean G across eligible colony codes; call this R_i,u.",
+    "prior_size_control": "Within each island-transition risk set, z-standardize log1p(adult_pairs_i,u).",
+    "reason": "R removes shared island-scale annual forcing; prior-size control limits regression-to-the-mean artifacts."
+  },
+  "model": {
+    "form": "R_i,u = beta_k * S_i,t + gamma * z_log_size_i,u + colony_code_fixed_effect + error, where u = t + k - 1",
+    "colony_fixed_effect": "island:colony_code indicator",
+    "lags": [1, 2, 3, 4, 5],
+    "estimation": "OLS on all complete matched rows for each lag separately",
+    "inference": "Within each predictor island-season, permute S_i,t among eligible colony codes, refit the complete model, and compute a one-sided upper-tail Monte Carlo p-value for beta_k.",
+    "permutations": 100000,
+    "seed_base": 20260930
+  },
+  "P1": {
+    "name": "performance-linked redistribution",
+    "direct_replication_endpoint": {
+      "lag_k": 1,
+      "prediction": "beta_1 > 0",
+      "role": "Replication/extension of an already published Adelie pattern; not the novel confirmatory gate.",
+      "mechanical_coupling_warning": "S_i,t and R_i,t both use adult_pairs_i,t. A positive beta_1 alone cannot support a new mechanism claim."
+    },
+    "primary_bias_resistant_endpoint": {
+      "lag_k": 2,
+      "prediction": "beta_2 > 0",
+      "rationale": "S_i,t predicts redistribution during t+1 -> t+2, so predictor construction and growth denominator do not share the same adult census.",
+      "decision": "supported if beta_2 > 0 and one-sided within-island-season permutation p <= 0.05"
+    },
+    "interpretation_if_supported": "Dynamic reproductive state carries information about subsequent within-island redistribution beyond shared annual forcing, prior size and persistent colony identity. This is compatible with performance-linked settlement or retention but is not individual-level proof of public-information use."
+  },
+  "P2": {
+    "name": "lag-profile mechanism diagnostic",
+    "predeclared_coefficients": ["beta_1", "beta_2", "beta_3", "beta_4", "beta_5"],
+    "immediate_social_information_compatible_pattern": "beta_1 positive, with the explicit mechanical-coupling caveat; stronger support if beta_2 is also positive.",
+    "delayed_recruitment_echo": {
+      "biological_basis": "Adelie first breeding is commonly around ages 4-5, and natal-site attachment is strong enough that local chick production can generate a later cohort signal.",
+      "contrast": "C_recruit = mean(beta_4, beta_5) - mean(beta_2, beta_3)",
+      "prediction": "C_recruit > 0",
+      "inference": "Use the same within-island-season permutation draw across all lags in each Monte Carlo replicate, recompute C_recruit, and use a one-sided upper-tail p-value.",
+      "decision": "supported if C_recruit > 0, p <= 0.05, and at least one of beta_4 or beta_5 is positive."
+    },
+    "interpretation": "A 4-5 year peak is a local cohort/natal-recruitment echo, not a unique signature of public information. It must not be described as delayed public-information use."
+  },
+  "secondary_sensitivities": {
+    "exclude_litchfield": "Repeat P1 lag-2 and P2 recruitment contrast after excluding Litchfield.",
+    "minimum_prior_size": "Repeat after requiring adult_pairs at the outcome interval start >= 2.",
+    "low_chick_effort": "Repeat after excluding predictor island-seasons with total chicks < 10.",
+    "success_metric": "Repeat with within-island-season standardized log((chicks+0.5)/(expected_chicks+0.5)) instead of Pearson residual.",
+    "leave_one_island_out": "Report beta_2 and C_recruit after removing each island in turn."
+  },
+  "decision_matrix": {
+    "beta1_only": "Known-type one-year association replicated, but no evidence that performance state persists beyond the shared-denominator transition.",
+    "beta2_supported": "Performance-linked state predicts later redistribution under the bias-resistant endpoint.",
+    "recruitment_echo_supported_only": "Pattern is more consistent with delayed local cohort recruitment than immediate public-information redistribution.",
+    "beta2_and_recruitment_echo_supported": "Both short-term state-dependent redistribution and delayed local recruitment may contribute.",
+    "neither_supported": "Do not promote public-information or cohort-echo explanations for Palmer concentration."
+  },
+  "claim_boundaries": [
+    "Do not claim first evidence of public-information use in Adelie penguins.",
+    "Do not claim that dynamic state replaces topography or snow; Palmer fine-scale landscape effects are independently documented.",
+    "Do not infer individual movement, prospecting behavior or causal cue use from colony counts alone.",
+    "Do not call the 4-5 year lag a public-information signature.",
+    "Do not tune lags, success metrics, exclusions or alpha after the lagged outcomes are opened.",
+    "Paper 2 macro-scale negative results remain negative; this Palmer analysis is a separate mechanistic extension, not a post hoc rescue."
+  ]
+}

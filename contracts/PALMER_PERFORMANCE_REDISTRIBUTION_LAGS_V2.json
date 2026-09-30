@@ -1,0 +1,131 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-palmer-performance-redistribution-lags-v2",
+  "date": "2026-09-30",
+  "status": "post_exposure_provenance_repair_frozen_before_permutation_inference",
+  "supersedes": "mina-palmer-performance-redistribution-lags-v1",
+  "repair_scope": {
+    "reason": "V1 incorrectly used calendar year(time)-1 as the chick-season key, conflicting with the earlier outcome-blind frozen PALMER_CHICK_SEASON_KEY_RESOLUTION_V1 contract.",
+    "objective_prior_rule": "The prior frozen season-key contract requires season_start_year parsed from study_name PALYYZZ, positive chick-dataset adult-pair eligibility, consecutive-season validation, and fail-closed duplicate handling.",
+    "analysis_endpoints_changed": false,
+    "lags_changed": false,
+    "performance_metric_changed": false,
+    "model_changed": false,
+    "decision_rules_changed": false,
+    "sensitivities_changed": false,
+    "only_changes": [
+      "Use study_name PALYYZZ rather than calendar date to assign chick season.",
+      "Require finite positive chick-dataset num_breeding_pairs, matching the earlier frozen key contract.",
+      "Fail closed on duplicate island + raw colony_code + study-derived season keys rather than resolving them post hoc."
+    ]
+  },
+  "exposure_boundary": {
+    "outcome_exposed_before_repair": true,
+    "observed_coefficients_seen_before_this_repair": true,
+    "permutation_p_values_seen_before_this_repair": false,
+    "consequence": "No result from V2 may be described as fully preregistered or outcome-blind. V2 is an auditable provenance repair followed by fixed-specification validation.",
+    "prohibited_language": [
+      "preregistered confirmatory test",
+      "outcome-blind validation",
+      "prospectively confirmed after V2"
+    ]
+  },
+  "inherited_provenance_contract": {
+    "contract_id": "mina-palmer-chick-season-key-resolution-v1",
+    "path": "contracts/PALMER_CHICK_SEASON_KEY_RESOLUTION_V1.json",
+    "status": "outcome_blind_frozen_before_num_chicks_access",
+    "season_start_year": "Parse YY from PALYYZZ; YY >= 90 maps to 19YY and YY < 90 maps to 20YY; validate ZZ is the following year modulo century.",
+    "time_role": "Observation-date metadata only.",
+    "duplicate_rule": "After five-island, finite positive chick-dataset adult-pair eligibility and study-derived season assignment, fail closed on duplicate island + raw colony_code + season.",
+    "known_calendar_date_inconsistencies": 2
+  },
+  "paper_role": "mechanistic Palmer extension; not a rescue analysis for Paper 2",
+  "sources": {
+    "adult_census": {
+      "dataset": "Palmer LTER AdeliePenguinCensus",
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+    },
+    "chick_census": {
+      "dataset_id": "AdeliePenguinAdultandChickCounts",
+      "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+      "sha256": "40485a328af51727e019c2cd99e4795c098499fef86a9d4b2af435a6de5373e0"
+    },
+    "focal_islands": ["CHR", "COR", "HUM", "LIT", "TOR"]
+  },
+  "season_and_join_rules": {
+    "adult_season": "calendar year of November breeding-pair census",
+    "chick_season": "study-derived PALYYZZ season_start_year under PALMER_CHICK_SEASON_KEY_RESOLUTION_V1",
+    "join_key": ["island", "raw colony_code", "season_start_year"],
+    "chick_row_eligibility": "five focal islands; finite num_breeding_pairs > 0; finite num_chicks >= 0; parseable and consecutive PALYYZZ study_name",
+    "duplicate_policy": "fail closed",
+    "adult_size_source": "independent November adult census breeding-pair count",
+    "no_imputation": true,
+    "no_colony_code_merging": true
+  },
+  "performance_state": {
+    "eligibility": "island-season with at least 3 matched colony codes, positive island total adult pairs, positive island total chicks, and finite nonnegative colony chick counts",
+    "expected_chicks": "E_i,t = total_chicks_island,t * adult_pairs_i,t / adult_pairs_island,t",
+    "pearson_residual": "(chicks_i,t - E_i,t) / sqrt(max(E_i,t * (1 - adult_pairs_i,t/adult_pairs_island,t), 1e-12))",
+    "standardization": "Within each eligible island-season, z-standardize the Pearson residual across matched colony codes; call this S_i,t.",
+    "interpretation": "Relative reproductive performance conditional on contemporaneous group size and shared island-season conditions."
+  },
+  "redistribution_outcome": {
+    "colony_growth": "G_i,u = log1p(adult_pairs_i,u+1) - log1p(adult_pairs_i,u) for adjacent annual censuses only",
+    "relative_growth": "Within each island and transition u -> u+1, subtract the mean G across eligible colony codes; call this R_i,u.",
+    "prior_size_control": "Within each island-transition risk set, z-standardize log1p(adult_pairs_i,u)."
+  },
+  "model": {
+    "form": "R_i,u = beta_k * S_i,t + gamma * z_log_size_i,u + island:colony_code fixed effect + error, where u = t + k - 1",
+    "lags": [1, 2, 3, 4, 5],
+    "estimation": "OLS separately for each lag on complete matched rows",
+    "inference": "Within predictor island-season, permute S_i,t among eligible colony codes and refit the same model.",
+    "permutations": 100000,
+    "seed_base": 20260930
+  },
+  "P1": {
+    "direct_replication_endpoint": {
+      "lag_k": 1,
+      "prediction": "beta_1 > 0",
+      "role": "Replication/extension only; mechanically coupled because S_i,t and the t->t+1 outcome share the t adult census."
+    },
+    "primary_bias_resistant_endpoint": {
+      "lag_k": 2,
+      "prediction": "beta_2 > 0",
+      "decision": "beta_2 > 0 and one-sided within-island-season permutation p <= 0.05",
+      "interpretation": "Fixed-specification evidence that relative reproductive state predicts later within-island redistribution without sharing the predictor-year adult count with the growth denominator."
+    }
+  },
+  "P2": {
+    "predeclared_coefficients": ["beta_1", "beta_2", "beta_3", "beta_4", "beta_5"],
+    "delayed_recruitment_echo": {
+      "contrast": "C_recruit = mean(beta_4, beta_5) - mean(beta_2, beta_3)",
+      "prediction": "C_recruit > 0",
+      "inference": "Use synchronized within-island-season permutations across all five lag models in each Monte Carlo replicate.",
+      "decision": "C_recruit > 0, one-sided p <= 0.05, and at least one of beta_4 or beta_5 > 0.",
+      "interpretation": "A positive delayed contrast would be compatible with a local cohort/natal-recruitment echo; it is not a unique public-information signature."
+    }
+  },
+  "secondary_sensitivities": {
+    "exclude_litchfield": "Repeat P1 lag-2 and P2 recruitment contrast excluding LIT.",
+    "minimum_prior_size": "Require adult_pairs at outcome interval start >= 2.",
+    "low_chick_effort": "Exclude predictor island-seasons with total chicks < 10.",
+    "success_metric": "Use within-island-season standardized log((chicks+0.5)/(expected_chicks+0.5)).",
+    "leave_one_island_out": "Report beta_2 and C_recruit after removing each island."
+  },
+  "decision_matrix": {
+    "beta1_only": "Known-type one-year association replicated; do not infer persistence beyond shared-denominator transition.",
+    "beta2_supported": "Dynamic performance state predicts later redistribution under the bias-resistant endpoint.",
+    "recruitment_echo_supported_only": "Lag profile is more compatible with delayed local cohort recruitment than an immediate-only pattern.",
+    "beta2_and_recruitment_echo_supported": "Both short-term state dependence and delayed recruitment may contribute.",
+    "neither_supported": "Do not promote public-information or cohort-echo explanations for Palmer concentration."
+  },
+  "literature_and_claim_boundaries": [
+    "Do not claim first evidence of public-information use in Adelie penguins.",
+    "Do not claim that dynamic state replaces topography, snow or geomorphology.",
+    "Do not infer individual movement, prospecting, settlement decisions or causal cue use from colony counts alone.",
+    "Do not call a 4-5 year lag a public-information signature.",
+    "Do not tune lags, metric, exclusions, alpha or model after this repair.",
+    "Paper 2 macro-scale negative results remain negative; this is a separate Palmer mechanistic extension."
+  ]
+}
