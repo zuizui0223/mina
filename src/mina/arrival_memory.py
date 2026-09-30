@@ -21,6 +21,7 @@ from .performance_redistribution_lags import (
 HUMBLE = ("HUM",)
 N_PERMUTATIONS = 100_000
 SEED = 20260970
+EXCLUDED_ARRIVAL_SEASONS = {1992}  # PAL9293 source-key collision; frozen V3 repair
 
 
 def _finite(value: str | None) -> bool:
@@ -100,6 +101,8 @@ def arrival_metrics(
     groups: dict[tuple[int, str], list[dict[str, object]]] = defaultdict(list)
     for row in rows:
         season = int(row["season"])
+        if season in EXCLUDED_ARRIVAL_SEASONS:
+            continue
         date = row["date"]
         assert isinstance(date, dt.date)
         if date < dt.date(season, 10, 1) or date > dt.date(season, 11, 15):
@@ -459,13 +462,14 @@ def analyze(
     decision = bool(primary["results"]["relative_t50"]["supported"])
     return {
         "schema_version": 2,
-        "analysis_id": "mina-palmer-arrival-memory-v2",
-        "contract_id": "mina-palmer-arrival-memory-v2",
+        "analysis_id": "mina-palmer-arrival-memory-v3",
+        "contract_id": "mina-palmer-arrival-memory-v3",
         "source_counts": {
             "adult_rows": len(adults),
             "usable_chick_rows": len(chicks),
             "arrival_rows": len(arrival),
             "eligible_arrival_colony_seasons_min5": len(metrics5),
+            "excluded_arrival_seasons": sorted(EXCLUDED_ARRIVAL_SEASONS),
         },
         "arrival_coverage": {
             "season_range": [
