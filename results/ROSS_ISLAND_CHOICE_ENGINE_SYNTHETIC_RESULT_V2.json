@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-ross-island-choice-engine-synthetic-result-v2",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-ross-island-choice-engine-v2",
+  "amendment": "mina-ross-island-detection-control-amendment-v1",
+  "execution": {
+    "workflow_run_id": 36737874820,
+    "workflow_conclusion": "success",
+    "head_sha": "251a0cf4100522120934a79007991f9d48121f31",
+    "tests_passed": 12,
+    "real_behavioral_rows_used": 0
+  },
+  "model_validated": {
+    "covariates": [
+      "performance_state",
+      "natal_colony_indicator",
+      "log1p_colony_size",
+      "z_log_resight_days",
+      "is_ROYD",
+      "is_BIRD"
+    ],
+    "reference_alternative": "CROZ",
+    "primary_coefficient": "beta_performance",
+    "permutation_count_for_real_analysis": 100000,
+    "performance_only_permutation": true
+  },
+  "validated_properties": [
+    "Strong synthetic performance preference is recovered after adding detection-effort and stable-colony controls.",
+    "Performance coefficient remains near zero under a synthetic no-performance-effect generator with detection and colony effects present.",
+    "Synthetic permutation inference detects a strong planted performance effect.",
+    "A single performance-year colony-label permutation is shared by every event in that year.",
+    "Permutation changes only performance and holds natal, size, effort, colony effects, candidate sets and chosen outcomes fixed.",
+    "ROYD and BIRD alternative indicators are derived deterministically from candidate colony.",
+    "Frozen information gate remains implemented.",
+    "Multiple chosen alternatives fail closed.",
+    "Single-option events fail closed.",
+    "Row performance inconsistent with the frozen year table fails closed.",
+    "Non-finite detection-effort covariate fails closed.",
+    "Any candidate set containing BIRD in first-breeding season 2014 or later fails closed."
+  ],
+  "decision": {
+    "choice_engine_v2_ready_before_real_data": true,
+    "choice_engine_v1_superseded_for_primary_analysis": true,
+    "raw_csv_loader_allowed_before_header_gate": false,
+    "movement_outcomes_opened": false
+  },
+  "claim_boundary": [
+    "Synthetic validation establishes implementation behavior, not ecological evidence.",
+    "The detection proxy does not turn the conditional-choice analysis into a full capture-recapture model.",
+    "No Ross first-breeding event count, destination distribution, coefficient or p-value has been observed."
+  ]
+}
