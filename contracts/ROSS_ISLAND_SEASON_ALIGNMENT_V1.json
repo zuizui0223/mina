@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-island-season-alignment-v1",
+  "date": "2026-10-01",
+  "status": "frozen_before_resight_behavioral_rows_are_opened",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "evidence": {
+    "public_readme_601444": "Date is documented as month/day/year.",
+    "published_methods": "Dugger et al. 2026 state that annual demographic data were collected during austral summers Nov-Jan and denote each austral summer by its starting year."
+  },
+  "date_to_breeding_season_start_year": {
+    "months_11_12": "season_start_year = calendar year",
+    "month_1": "season_start_year = calendar year - 1",
+    "other_months": "fail closed for the primary state reconstruction; do not infer a season from an undocumented off-window observation"
+  },
+  "banding_season_to_cohort": {
+    "format": "four digits YYZZ representing consecutive years, e.g. 9495",
+    "validation": "ZZ must equal YY+1 modulo 100",
+    "cohort_start_year": "YY>=90 maps to 19YY; YY<90 maps to 20YY",
+    "biological_age": "age in breeding season y = y - cohort_start_year"
+  },
+  "claim_boundary": [
+    "Do not use calendar observation year alone for January records.",
+    "Do not extend the primary parser to February-October after behavioral rows are opened; an off-window record requires a documented provenance audit.",
+    "This alignment rule changes no movement outcome and was frozen before behavioral-row access."
+  ]
+}
