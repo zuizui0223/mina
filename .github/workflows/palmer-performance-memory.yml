@@ -1,0 +1,67 @@
+name: palmer-performance-memory
+
+on:
+  push:
+    branches:
+      - analysis/palmer-performance-memory-v1
+    paths:
+      - "src/mina/performance_memory.py"
+      - "tests/test_performance_memory.py"
+      - "contracts/PALMER_PERFORMANCE_MEMORY_V1.json"
+      - "src/mina/performance_redistribution_lags.py"
+      - "scripts/fetch_lter_census.py"
+      - "scripts/fetch_lter_chick_counts.py"
+      - ".github/workflows/palmer-performance-memory.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen tests
+        run: pytest -q tests/test_performance_memory.py
+      - name: Fetch frozen Palmer sources
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+      - name: Run performance-memory diagnostic
+        run: |
+          python -m mina.performance_memory \
+            --adult-census build/adelie_census.csv \
+            --chicks build/adelie_chicks.csv \
+            --out build/performance_memory.json \
+            --permutations 100000
+      - name: Print receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/performance_memory.json").read_text())
+          print("source_counts=",x["source_counts"])
+          for k,v in x["primary"]["memory"].items():
+              print("memory",k,"n=",v["n_rows"],"rho=",v["coefficient"],"p=",v["one_sided_upper_p"])
+          print("bridge=",x["primary"]["bridge"])
+          print("decision=",x["decision"])
+          for name in ("exclude_litchfield","alternate_logratio_metric","minimum_prior_size_2"):
+              v=x["sensitivities"][name]
+              print(
+                  name,
+                  "rho1=",v["memory"]["1"]["coefficient"],
+                  "rho1_p=",v["memory"]["1"]["one_sided_upper_p"],
+                  "delta=",v["bridge"]["coefficient"],
+                  "delta_p=",v["bridge"]["one_sided_upper_p"],
+              )
+          print("loo=",json.dumps(x["sensitivities"]["leave_one_island_out_observed"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-performance-memory
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/performance_memory.json
