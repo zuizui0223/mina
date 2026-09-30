@@ -284,10 +284,15 @@ def banded_breeder_performance(
     return standardized, audit
 
 
-def first_breeding_choice_events(
+def first_breeding_source_events(
     annual_states: Iterable[Mapping[str, object]],
 ) -> list[dict[str, object]]:
-    """Construct eligible event skeletons before adding performance/size values."""
+    """Build known-age first-breeding event skeletons before candidate filtering.
+
+    This is the source-gate population. Candidate sets may contain 0-3 Ross
+    colonies here; the >=2 candidate rule is applied only at the choice-model
+    gate.
+    """
     by_band: dict[int, list[dict[str, object]]] = defaultdict(list)
     for row in annual_states:
         by_band[int(row["band"])].append(dict(row))
@@ -296,8 +301,7 @@ def first_breeding_choice_events(
     for band, records in sorted(by_band.items()):
         records.sort(key=lambda r: int(r["season"]))
         breeding = [
-            r for r in records
-            if r["state"] in {"BR", "AMBIG_BR"}
+            r for r in records if r["state"] in {"BR", "AMBIG_BR"}
         ]
         if not breeding:
             continue
@@ -314,23 +318,19 @@ def first_breeding_choice_events(
 
         y = int(first["season"])
         lookback = {y - 2, y - 1}
-        candidate = sorted(
-            {
-                colony
-                for r in records
-                if int(r["season"]) in lookback and r["state"] == "PB"
-                for colony in r["visited_ross_colonies"]
-            },
-            key=lambda c: ROSS_COLONIES.index(c),
-        )
-        if len(candidate) < 2:
-            continue
-        if chosen not in candidate:
-            continue
-
+        candidate_set = {
+            colony
+            for r in records
+            if int(r["season"]) in lookback and r["state"] == "PB"
+            for colony in r["visited_ross_colonies"]
+        }
+        candidate = [
+            c for c in ROSS_COLONIES if c in candidate_set
+        ]
         events.append(
             {
                 "event_id": f"{band}:{y}",
+                "individual_id": str(band),
                 "band": band,
                 "first_breeding_season": y,
                 "performance_year": y - 1,
@@ -344,43 +344,154 @@ def first_breeding_choice_events(
     return events
 
 
+def first_breeding_choice_events(
+    annual_states: Iterable[Mapping[str, object]],
+) -> list[dict[str, object]]:
+    """Return source events that satisfy the frozen multi-candidate rule."""
+    source = first_breeding_source_events(annual_states)
+    return [
+        event
+        for event in source
+        if 2 <= len(event["candidate_colonies"]) <= 3
+        and event["chosen_colony"] in event["candidate_colonies"]
+    ]
+
+
+def canonical_detection_observations(
+    observations: Iterable[Mapping[str, object]],
+) -> list[dict[str, object]]:
+    """Map README-defined canonical rows to the detection module schema."""
+    out: list[dict[str, object]] = []
+    for raw in observations:
+        band = _as_int(raw["Band"], "Band")
+        colony = str(raw["Colony"]).strip().upper()
+        if colony not in STUDY_COLONIES:
+            raise ValueError(f"unsupported colony code {colony!r}")
+        try:
+            observed = datetime.strptime(
+                str(raw["Date"]).strip(), "%m/%d/%Y"
+            ).date()
+        except ValueError as exc:
+            raise ValueError(
+                f"invalid documented Ross date: {raw['Date']!r}"
+            ) from exc
+        out.append(
+            {
+                "individual_id": str(band),
+                "date": observed,
+                "colony": colony,
+                "observer": str(raw.get("Initials", "")).strip(),
+            }
+        )
+    return out
+
+
+def source_eligible_first_breeding_events(
+    events: Iterable[Mapping[str, object]],
+    performance_by_year: Mapping[int, Mapping[str, float]],
+    colony_size_by_year: Mapping[int, Mapping[str, float]],
+    resight_day_proxy_by_event: Mapping[str, Mapping[str, float]],
+) -> tuple[list[dict[str, object]], dict[str, object]]:
+    """Apply predictor/control/detection rules before the multi-candidate gate."""
+    event_list = [dict(event) for event in events]
+    retained: list[dict[str, object]] = []
+    excluded: dict[str, str] = {}
+
+    for event in event_list:
+        event_id = str(event["event_id"])
+        y = int(event["first_breeding_season"])
+        pyear = int(event["performance_year"])
+        candidates = list(event["candidate_colonies"])
+        needed_colonies = set(candidates) | {str(event["chosen_colony"])}
+
+        performance = performance_by_year.get(pyear)
+        if performance is None or set(performance) != set(ROSS_COLONIES):
+            excluded[event_id] = "missing_complete_three_colony_performance"
+            continue
+
+        sizes = colony_size_by_year.get(pyear)
+        if sizes is None or any(c not in sizes for c in needed_colonies):
+            excluded[event_id] = "missing_required_colony_size"
+            continue
+
+        effort = resight_day_proxy_by_event.get(event_id)
+        if effort is None or set(effort) != set(ROSS_COLONIES):
+            excluded[event_id] = "missing_complete_three_colony_detection_proxy"
+            continue
+        if any(not np.isfinite(float(effort[c])) for c in ROSS_COLONIES):
+            excluded[event_id] = "nonfinite_detection_proxy"
+            continue
+
+        if y >= 2014 and "BIRD" in candidates:
+            excluded[event_id] = "bird_candidate_post_2013"
+            continue
+
+        retained.append(event)
+
+    return retained, {
+        "input_source_events": len(event_list),
+        "retained_source_events": len(retained),
+        "excluded_source_events": excluded,
+    }
+
+
 def build_choice_rows(
     events: Iterable[Mapping[str, object]],
     performance_by_year: Mapping[int, Mapping[str, float]],
     colony_size_by_year: Mapping[int, Mapping[str, float]],
+    resight_day_proxy_by_event: Mapping[str, Mapping[str, float]],
 ) -> tuple[list[dict[str, object]], dict[str, object]]:
-    """Attach frozen prior-year performance and size to candidate options."""
+    """Attach frozen V2 performance, size and detection controls to options."""
+    event_list = [dict(event) for event in events]
     rows: list[dict[str, object]] = []
     excluded: dict[str, str] = {}
-    for event in events:
+
+    for event in event_list:
         event_id = str(event["event_id"])
         pyear = int(event["performance_year"])
+        y = int(event["first_breeding_season"])
         candidates = list(event["candidate_colonies"])
-        performance = performance_by_year.get(pyear)
-        sizes = colony_size_by_year.get(pyear)
-        if performance is None:
-            excluded[event_id] = "missing_three_colony_performance_year"
+
+        if not 2 <= len(candidates) <= 3:
+            excluded[event_id] = "candidate_count_not_2_to_3"
             continue
-        if sizes is None:
-            excluded[event_id] = "missing_colony_size_year"
+        if event["chosen_colony"] not in candidates:
+            excluded[event_id] = "chosen_colony_not_in_candidate_set"
             continue
-        if any(c not in performance for c in candidates):
-            excluded[event_id] = "missing_candidate_performance"
-            continue
-        if any(c not in sizes for c in candidates):
-            excluded[event_id] = "missing_candidate_colony_size"
+        if y >= 2014 and "BIRD" in candidates:
+            excluded[event_id] = "bird_candidate_post_2013"
             continue
 
+        performance = performance_by_year.get(pyear)
+        sizes = colony_size_by_year.get(pyear)
+        effort = resight_day_proxy_by_event.get(event_id)
+        if performance is None or set(performance) != set(ROSS_COLONIES):
+            excluded[event_id] = "missing_complete_three_colony_performance"
+            continue
+        if sizes is None or any(c not in sizes for c in candidates):
+            excluded[event_id] = "missing_candidate_colony_size"
+            continue
+        if effort is None or set(effort) != set(ROSS_COLONIES):
+            excluded[event_id] = "missing_complete_three_colony_detection_proxy"
+            continue
+
+        event_rows: list[dict[str, object]] = []
+        valid = True
         for colony in candidates:
             size = float(sizes[colony])
+            effort_value = float(effort[colony])
             if not np.isfinite(size) or size < 0:
-                raise ValueError(
-                    f"invalid colony size for {event_id}/{colony}: {size}"
-                )
-            rows.append(
+                valid = False
+                excluded[event_id] = "invalid_candidate_colony_size"
+                break
+            if not np.isfinite(effort_value):
+                valid = False
+                excluded[event_id] = "nonfinite_detection_proxy"
+                break
+            event_rows.append(
                 {
                     "event_id": event_id,
-                    "first_breeding_season": int(event["first_breeding_season"]),
+                    "first_breeding_season": y,
                     "performance_year": pyear,
                     "candidate_colony": colony,
                     "chosen": int(colony == event["chosen_colony"]),
@@ -389,11 +500,14 @@ def build_choice_rows(
                         colony == event["natal_colony"]
                     ),
                     "log1p_colony_size": float(np.log1p(size)),
+                    "z_log_resight_days": effort_value,
                 }
             )
+        if valid:
+            rows.extend(event_rows)
 
     return rows, {
-        "input_events": len(list(events)) if not isinstance(events, list) else len(events),
+        "input_events": len(event_list),
         "retained_events": len({r["event_id"] for r in rows}),
         "retained_option_rows": len(rows),
         "excluded_events": excluded,
