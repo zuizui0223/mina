@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-island-state-reconstruction-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_resight_behavioral_rows_are_opened",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "sources_used_for_rules_only": {
+    "usap_resight_readme": "USAP-DC 601444 README",
+    "usap_banding_readme": "USAP-DC 601443 README",
+    "published_methods": "Dugger et al. 2026, Frontiers in Ecology and Evolution, doi:10.3389/fevo.2026.1868960"
+  },
+  "raw_schema_evidence": {
+    "individual_id": "Band",
+    "observation_date": "Date",
+    "observed_colony": "Colony: CROZ, ROYD, BIRD, BEAU",
+    "nest_reproductive_fields": ["Eggs", "Chicks", "Nest Position", "Flagged"],
+    "banding_inventory": "Low/High band-number ranges linked to Colony and Season",
+    "age_recovery": "Assign natal cohort and natal colony by locating Band within exactly one non-overlapping band-number interval from the banding inventory."
+  },
+  "annual_state_reconstruction": {
+    "season_definition": "Austral breeding season is indexed by the calendar year in which November-December observations begin; freeze exact date-to-season mapping after header/date-format audit but before reading behavioral values.",
+    "breeder_evidence_per_raw_row": "BR evidence exists if Eggs or Chicks has accepted code 1, 2, or 8, meaning at least one egg or chick was observed at the attended nest.",
+    "breeder_season": "An individual is BR in a season if any raw observation that season contains BR evidence at exactly one Ross Island colony.",
+    "first_breeding_season": "Earliest season classified BR.",
+    "prebreeder_season": "Before first_breeding_season, an age >=2 bird observed at a Ross Island colony with no BR evidence anywhere that season is PB.",
+    "nonbreeder_season": "After first_breeding_season, an observed season with no BR evidence is NB, following the published state definition.",
+    "unobservable": "Years before first observed return to any study colony are UN; nondetection after return is not assigned a reproductive state without the published encounter-history censoring rules.",
+    "multiple_resights_same_season": "Preserve all raw colony visits for prospecting-choice construction, while reproductive state is collapsed once per individual-season using the rules above.",
+    "ambiguous_multiple_breeding_colonies": "If BR evidence occurs at >1 Ross Island colony in the same season, exclude that first-breeding event from the primary choice analysis rather than selecting one colony.",
+    "breeding_colony": "For a BR season, colony containing BR evidence. If exactly one colony has BR evidence, that is the breeding colony.",
+    "cape_bird_censoring": "2014-2020 Cape Bird is unavailable for detection-based inference, consistent with the published methods; do not treat missing Bird observations as absence.",
+    "geolocator_censoring": "If geolocator-tagged bird IDs/years are recoverable from supplied metadata, apply the published 2016-2018 censoring; if they are not identifiable from the public data, document this limitation and do not invent exclusions."
+  },
+  "prospecting_history": {
+    "definition": "For each individual-season classified PB, candidate visited colonies are the distinct Ross Island colonies at which the individual was actually resighted in that season.",
+    "primary_lookback": "Two breeding seasons immediately preceding first_breeding_season.",
+    "candidate_set": "Union of distinct colonies actually visited as PB during that two-season lookback.",
+    "eligibility": [
+      "candidate_set contains at least two colonies",
+      "chosen first-breeding colony is contained in candidate_set",
+      "natal colony and cohort are uniquely recoverable from banding inventory",
+      "all candidate-colony performance predictors are available strictly before first breeding"
+    ],
+    "chosen_colony": "First breeding colony from the frozen BR rule.",
+    "natal_indicator": "1 when candidate colony equals natal colony, else 0"
+  },
+  "banding_inventory_rules": {
+    "match": "Band must fall within one and only one inclusive Low-High interval.",
+    "overlap": "Fail closed if intervals overlap for the same Band in a way that yields conflicting natal colony or season.",
+    "unmatched_band": "Exclude from known-age/natal-colony primary analysis.",
+    "season_to_age": "Age in breeding season = deterministic difference between breeding-season index and fledging cohort year derived from banding Season; exact arithmetic is frozen after the Season string format is audited from header/README only."
+  },
+  "claim_boundaries": [
+    "PB is an operational published reproductive state, not proof that a bird was actively gathering public information on every visit.",
+    "Observed visited colonies define the primary choice set; unvisited colonies are not assumed available.",
+    "A bird with no BR evidence is not called PB after it has bred previously; it is NB.",
+    "Nondetection is not a reproductive state.",
+    "Do not change state rules after behavioral rows are opened."
+  ]
+}
