@@ -1,0 +1,48 @@
+name: jbi-repro-metric-diagnostic
+
+on:
+  push:
+    branches:
+      - submission/jbi-v0.5-current
+    paths:
+      - "contracts/PALMER_REPRO_DETECTABILITY_DECOMPOSITION_V1.json"
+      - "src/mina/repro_metric_diagnostic.py"
+      - "scripts/fetch_lter_census.py"
+      - "scripts/fetch_lter_chick_counts.py"
+      - "scripts/fetch_pal_repro.py"
+      - ".github/workflows/jbi-repro-metric-diagnostic.yml"
+  workflow_dispatch:
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Fetch frozen Palmer sources
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+          python scripts/fetch_pal_repro.py build/repro.csv
+      - name: Run post-result interpretation diagnostic
+        run: |
+          python -m mina.repro_metric_diagnostic             --adult-census build/adelie_census.csv             --chicks build/adelie_chicks.csv             --repro build/repro.csv             --out build/repro_metric_diagnostic.json
+      - name: Print diagnostic receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/repro_metric_diagnostic.json").read_text())
+          print("common_panel=",x["common_panel"])
+          print("detectability=",json.dumps(x["detectability"],sort_keys=True))
+          print("bootstrap=",json.dumps(x["bootstrap_state_stability"],sort_keys=True))
+          print("decomposition=",json.dumps(x["decomposition"],sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jbi-repro-metric-diagnostic
+          path: build/repro_metric_diagnostic.json
