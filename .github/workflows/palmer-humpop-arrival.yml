@@ -46,7 +46,11 @@ jobs:
           print("source_counts=",x["source_counts"])
           p=x["primary_midpoint_50"]
           print("matching=",json.dumps(p["matching"],sort_keys=True))
-          print("primary=",json.dumps(p["test"],sort_keys=True))
+          print("primary_estimable=",p.get("estimable"))
+          if "test" in p:
+              print("primary=",json.dumps(p["test"],sort_keys=True))
+          else:
+              print("primary_failure_reasons=",json.dumps(p.get("failure_reasons"),sort_keys=True))
           for name,v in x["sensitivities"].items():
               if isinstance(v,dict) and "test" in v:
                   print(name,json.dumps(v["test"],sort_keys=True))
