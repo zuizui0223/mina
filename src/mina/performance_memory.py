@@ -1,4 +1,4 @@
-"""Mechanism diagnostic for persistence of Palmer colony performance state."""
+"""Performance-memory mechanism diagnostics for Palmer Adelie colonies."""
 from __future__ import annotations
 
 import argparse
@@ -10,16 +10,24 @@ import numpy as np
 
 from .performance_redistribution_lags import (
     ISLANDS,
-    SEED_BASE as LAG_SEED_BASE,
-    lag_panel,
     load_adult_rows,
     load_chick_rows,
     performance_rows,
+    lag_panel,
 )
 
 N_PERMUTATIONS = 100_000
 MEMORY_SEED_BASE = 20260950
 BRIDGE_SEED = 20260960
+
+
+def _colony_fixed_effects(rows: list[dict[str, object]]) -> np.ndarray:
+    colonies = sorted({f"{r['island']}:{r['colony']}" for r in rows})
+    cmap = {name: idx for idx, name in enumerate(colonies)}
+    fe = np.zeros((len(rows), len(colonies)), dtype=float)
+    for idx, row in enumerate(rows):
+        fe[idx, cmap[f"{row['island']}:{row['colony']}"]] = 1.0
+    return fe
 
 
 def memory_panel(
@@ -28,6 +36,8 @@ def memory_panel(
     *,
     allowed_islands: tuple[str, ...] = ISLANDS,
 ) -> list[dict[str, object]]:
+    if lag < 1:
+        raise ValueError("memory lag must be >= 1")
     lookup = {
         (str(r["island"]), str(r["colony"]), int(r["season"])): float(r["state"])
         for r in performance
@@ -38,16 +48,17 @@ def memory_panel(
         island = str(row["island"])
         if island not in allowed_islands:
             continue
-        future = (island, str(row["colony"]), int(row["season"]) + lag)
-        if future not in lookup:
+        season = int(row["season"])
+        future_key = (island, str(row["colony"]), season + lag)
+        if future_key not in lookup:
             continue
         out.append(
             {
                 "island": island,
                 "colony": str(row["colony"]),
-                "season": int(row["season"]),
-                "x": float(row["state"]),
-                "y": lookup[future],
+                "season": season,
+                "past": float(row["state"]),
+                "future": float(lookup[future_key]),
             }
         )
     return out
@@ -60,6 +71,11 @@ def bridge_panel(
     allowed_islands: tuple[str, ...] = ISLANDS,
     minimum_prior_size: float = 0.0,
 ) -> list[dict[str, object]]:
+    state_lookup = {
+        (str(r["island"]), str(r["colony"]), int(r["season"])): float(r["state"])
+        for r in performance
+        if str(r["island"]) in allowed_islands
+    }
     lag2 = lag_panel(
         adults,
         performance,
@@ -67,203 +83,245 @@ def bridge_panel(
         allowed_islands=allowed_islands,
         minimum_prior_size=minimum_prior_size,
     )
-    future = {
-        (str(r["island"]), str(r["colony"]), int(r["season"])): float(r["state"])
-        for r in performance
-        if str(r["island"]) in allowed_islands
-    }
     out: list[dict[str, object]] = []
     for row in lag2:
-        key = (
+        current_key = (
             str(row["island"]),
             str(row["colony"]),
             int(row["season"]) + 1,
         )
-        if key not in future:
+        if current_key not in state_lookup:
             continue
         out.append(
             {
-                "island": str(row["island"]),
-                "colony": str(row["colony"]),
-                "season": int(row["season"]),
-                "x": float(row["state"]),
-                "y": float(row["relative_growth"]),
-                "current_state": future[key],
-                "zsize": float(row["zsize"]),
+                **row,
+                "past": float(row["state"]),
+                "current": float(state_lookup[current_key]),
+                "outcome": float(row["relative_growth"]),
             }
         )
     return out
 
 
-def _prepare_model(
-    panel: list[dict[str, object]],
-    *,
-    extra_controls: tuple[str, ...] = (),
-) -> dict[str, object]:
-    colonies = sorted({f"{r['island']}:{r['colony']}" for r in panel})
-    cmap = {name: idx for idx, name in enumerate(colonies)}
-    n = len(panel)
-    fe = np.zeros((n, len(colonies)), dtype=float)
-    for idx, row in enumerate(panel):
-        fe[idx, cmap[f"{row['island']}:{row['colony']}"]] = 1.0
-
-    controls = fe
-    if extra_controls:
-        numerical = np.column_stack(
-            [
-                np.asarray([float(r[key]) for r in panel], dtype=float)
-                for key in extra_controls
-            ]
+def _performance_groups(
+    performance: list[dict[str, object]],
+) -> dict[tuple[str, int], tuple[list[str], np.ndarray]]:
+    groups: dict[tuple[str, int], list[dict[str, object]]] = defaultdict(list)
+    for row in performance:
+        groups[(str(row["island"]), int(row["season"]))].append(row)
+    out: dict[tuple[str, int], tuple[list[str], np.ndarray]] = {}
+    for key, local in groups.items():
+        local = sorted(local, key=lambda r: str(r["colony"]))
+        out[key] = (
+            [str(r["colony"]) for r in local],
+            np.asarray([float(r["state"]) for r in local], dtype=float),
         )
-        controls = np.column_stack([numerical, fe])
+    return out
 
-    x = np.asarray([float(r["x"]) for r in panel], dtype=float)
-    y = np.asarray([float(r["y"]) for r in panel], dtype=float)
-    inverse = np.linalg.pinv(controls.T @ controls)
-    y_residual = y - controls @ (inverse @ (controls.T @ y))
-    ztx = controls.T @ x
-    denominator = float(x @ x - ztx @ (inverse @ ztx))
+
+def _prepare_permutation_model(
+    panel: list[dict[str, object]],
+    performance: list[dict[str, object]],
+    *,
+    x_field: str,
+    y_field: str,
+    controls: np.ndarray,
+) -> dict[str, object]:
+    x = np.asarray([float(r[x_field]) for r in panel], dtype=float)
+    y = np.asarray([float(r[y_field]) for r in panel], dtype=float)
+    gram_inv = np.linalg.pinv(controls.T @ controls)
+    y_residual = y - controls @ (gram_inv @ (controls.T @ y))
+    ctx = controls.T @ x
+    denominator = float(x @ x - ctx @ (gram_inv @ ctx))
     if denominator <= 0:
-        raise ValueError("non-positive residual predictor variance")
+        raise ValueError("zero residual predictor variance")
     observed = float((x @ y_residual) / denominator)
 
-    groups: dict[tuple[str, int], list[int]] = defaultdict(list)
+    perf_groups = _performance_groups(performance)
+    by_panel: dict[tuple[str, int], list[int]] = defaultdict(list)
     for idx, row in enumerate(panel):
-        groups[(str(row["island"]), int(row["season"]))].append(idx)
+        by_panel[(str(row["island"]), int(row["season"]))].append(idx)
+
+    group_rows: dict[tuple[str, int], tuple[np.ndarray, np.ndarray]] = {}
+    for key, indices in by_panel.items():
+        if key not in perf_groups:
+            raise ValueError(f"panel predictor group absent from performance table: {key!r}")
+        colonies, _ = perf_groups[key]
+        positions = {name: idx for idx, name in enumerate(colonies)}
+        row_indices = np.asarray(indices, dtype=int)
+        source_positions = np.asarray(
+            [positions[str(panel[idx]["colony"])] for idx in indices],
+            dtype=int,
+        )
+        group_rows[key] = (row_indices, source_positions)
 
     return {
         "panel": panel,
         "controls": controls,
-        "inverse": inverse,
+        "gram_inv": gram_inv,
         "y_residual": y_residual,
         "observed": observed,
-        "groups": groups,
-        "x": x,
+        "performance_groups": perf_groups,
+        "group_rows": group_rows,
     }
 
 
-def permutation_test(
+def _permutation_test(
     model: dict[str, object],
     *,
     permutations: int,
     seed: int,
     batch_size: int = 1000,
 ) -> dict[str, object]:
-    panel = model["panel"]
-    controls = np.asarray(model["controls"], dtype=float)
-    inverse = np.asarray(model["inverse"], dtype=float)
-    y_residual = np.asarray(model["y_residual"], dtype=float)
-    original = np.asarray(model["x"], dtype=float)
-    groups = model["groups"]
-    observed = float(model["observed"])
-
     rng = np.random.default_rng(seed)
+    n = len(model["panel"])
+    controls = np.asarray(model["controls"], dtype=float)
+    gram_inv = np.asarray(model["gram_inv"], dtype=float)
+    y_residual = np.asarray(model["y_residual"], dtype=float)
+    groups = model["performance_groups"]
+    group_rows = model["group_rows"]
+
     null = np.empty(permutations, dtype=float)
     offset = 0
     while offset < permutations:
         batch = min(batch_size, permutations - offset)
-        x = np.empty((batch, len(panel)), dtype=float)
-        for indices in groups.values():
-            idx = np.asarray(indices, dtype=int)
-            values = original[idx]
-            order = np.argsort(rng.random((batch, len(idx))), axis=1)
-            x[:, idx] = values[order]
-        ztx = x @ controls
+        x = np.empty((batch, n), dtype=float)
+        for key in sorted(group_rows):
+            _, values = groups[key]
+            order = np.argsort(rng.random((batch, len(values))), axis=1)
+            assigned = values[order]
+            row_indices, source_positions = group_rows[key]
+            x[:, row_indices] = assigned[:, source_positions]
+
+        ctx = x @ controls
         numerator = x @ y_residual
         denominator = np.sum(x * x, axis=1) - np.einsum(
-            "bi,ij,bj->b", ztx, inverse, ztx, optimize=True
+            "bi,ij,bj->b", ctx, gram_inv, ctx, optimize=True
         )
         null[offset : offset + batch] = numerator / denominator
         offset += batch
 
-    p = float((1 + int(np.sum(null >= observed))) / (permutations + 1))
+    observed = float(model["observed"])
+    p_value = float(
+        (1 + int(np.sum(null >= observed))) / (permutations + 1)
+    )
     return {
-        "n_rows": len(panel),
+        "n_rows": n,
         "coefficient": observed,
         "null_mean": float(np.mean(null)),
         "null_q025": float(np.quantile(null, 0.025)),
         "null_q975": float(np.quantile(null, 0.975)),
-        "one_sided_upper_p": p,
-        "supported": bool(observed > 0 and p <= 0.05),
+        "one_sided_upper_p": p_value,
+        "supported": bool(observed > 0 and p_value <= 0.05),
     }
 
 
-def _primary_configuration(
-    adults: list[dict[str, object]],
-    chicks: list[dict[str, object]],
+def memory_test(
+    performance: list[dict[str, object]],
+    lag: int,
     *,
     allowed_islands: tuple[str, ...] = ISLANDS,
-    metric: str = "pearson",
+    permutations: int = N_PERMUTATIONS,
+    seed: int = MEMORY_SEED_BASE,
+) -> dict[str, object]:
+    panel = memory_panel(
+        performance, lag, allowed_islands=allowed_islands
+    )
+    model = _prepare_permutation_model(
+        panel,
+        performance,
+        x_field="past",
+        y_field="future",
+        controls=_colony_fixed_effects(panel),
+    )
+    result = _permutation_test(
+        model, permutations=permutations, seed=seed
+    )
+    result["lag"] = lag
+    return result
+
+
+def _bridge_controls(panel: list[dict[str, object]]) -> np.ndarray:
+    fe = _colony_fixed_effects(panel)
+    current = np.asarray([float(r["current"]) for r in panel], dtype=float)
+    zsize = np.asarray([float(r["zsize"]) for r in panel], dtype=float)
+    return np.column_stack([current, zsize, fe])
+
+
+def _current_coefficient(panel: list[dict[str, object]]) -> float:
+    fe = _colony_fixed_effects(panel)
+    past = np.asarray([float(r["past"]) for r in panel], dtype=float)
+    current = np.asarray([float(r["current"]) for r in panel], dtype=float)
+    zsize = np.asarray([float(r["zsize"]) for r in panel], dtype=float)
+    y = np.asarray([float(r["outcome"]) for r in panel], dtype=float)
+    x = np.column_stack([past, current, zsize, fe])
+    beta, _, _, _ = np.linalg.lstsq(x, y, rcond=None)
+    return float(beta[1])
+
+
+def bridge_test(
+    adults: list[dict[str, object]],
+    performance: list[dict[str, object]],
+    *,
+    allowed_islands: tuple[str, ...] = ISLANDS,
     minimum_prior_size: float = 0.0,
     permutations: int = N_PERMUTATIONS,
-    seed_offset: int = 0,
+    seed: int = BRIDGE_SEED,
 ) -> dict[str, object]:
-    performance = performance_rows(
-        adults,
-        chicks,
-        allowed_islands=allowed_islands,
-        metric=metric,
-    )
-    memory: dict[str, object] = {}
-    for lag in (1, 2, 3):
-        panel = memory_panel(
-            performance,
-            lag,
-            allowed_islands=allowed_islands,
-        )
-        memory[str(lag)] = permutation_test(
-            _prepare_model(panel),
-            permutations=permutations,
-            seed=MEMORY_SEED_BASE + seed_offset + lag - 1,
-        )
-
-    bridge = bridge_panel(
+    panel = bridge_panel(
         adults,
         performance,
         allowed_islands=allowed_islands,
         minimum_prior_size=minimum_prior_size,
     )
-    bridge_result = permutation_test(
-        _prepare_model(
-            bridge,
-            extra_controls=("current_state", "zsize"),
-        ),
-        permutations=permutations,
-        seed=BRIDGE_SEED + seed_offset,
+    model = _prepare_permutation_model(
+        panel,
+        performance,
+        x_field="past",
+        y_field="outcome",
+        controls=_bridge_controls(panel),
     )
-    return {
-        "performance_rows": len(performance),
-        "performance_island_seasons": len(
-            {(str(r["island"]), int(r["season"])) for r in performance}
-        ),
-        "memory": memory,
-        "bridge": bridge_result,
-    }
+    result = _permutation_test(
+        model, permutations=permutations, seed=seed
+    )
+    result["delta_past"] = result.pop("coefficient")
+    result["delta_current_descriptive"] = _current_coefficient(panel)
+    return result
 
 
-def _observed_leave_one_out(
+def _observed_memory(
+    performance: list[dict[str, object]],
+    *,
+    allowed_islands: tuple[str, ...],
+) -> float:
+    panel = memory_panel(performance, 1, allowed_islands=allowed_islands)
+    model = _prepare_permutation_model(
+        panel,
+        performance,
+        x_field="past",
+        y_field="future",
+        controls=_colony_fixed_effects(panel),
+    )
+    return float(model["observed"])
+
+
+def _observed_bridge(
     adults: list[dict[str, object]],
-    chicks: list[dict[str, object]],
-    excluded_island: str,
-) -> dict[str, object]:
-    allowed = tuple(x for x in ISLANDS if x != excluded_island)
-    performance = performance_rows(
-        adults, chicks, allowed_islands=allowed
+    performance: list[dict[str, object]],
+    *,
+    allowed_islands: tuple[str, ...],
+) -> float:
+    panel = bridge_panel(
+        adults, performance, allowed_islands=allowed_islands
     )
-    memory = memory_panel(performance, 1, allowed_islands=allowed)
-    rho1 = float(_prepare_model(memory)["observed"])
-    bridge = bridge_panel(adults, performance, allowed_islands=allowed)
-    delta = float(
-        _prepare_model(
-            bridge, extra_controls=("current_state", "zsize")
-        )["observed"]
+    model = _prepare_permutation_model(
+        panel,
+        performance,
+        x_field="past",
+        y_field="outcome",
+        controls=_bridge_controls(panel),
     )
-    return {
-        "memory_n": len(memory),
-        "rho_1": rho1,
-        "bridge_n": len(bridge),
-        "delta_past": delta,
-    }
+    return float(model["observed"])
 
 
 def analyze(
@@ -274,51 +332,92 @@ def analyze(
 ) -> dict[str, object]:
     adults = load_adult_rows(adult_path)
     chicks = load_chick_rows(chick_path)
+    primary_perf = performance_rows(adults, chicks)
 
-    primary = _primary_configuration(
-        adults, chicks, permutations=permutations
-    )
-    no_lit = _primary_configuration(
+    memory = {
+        str(lag): memory_test(
+            primary_perf,
+            lag,
+            permutations=permutations,
+            seed=MEMORY_SEED_BASE + lag - 1,
+        )
+        for lag in (1, 2, 3)
+    }
+    bridge = bridge_test(
         adults,
-        chicks,
-        allowed_islands=tuple(x for x in ISLANDS if x != "LIT"),
+        primary_perf,
         permutations=permutations,
-        seed_offset=100,
+        seed=BRIDGE_SEED,
     )
-    logratio = _primary_configuration(
-        adults,
-        chicks,
-        metric="logratio",
-        permutations=permutations,
-        seed_offset=200,
+
+    no_lit = tuple(x for x in ISLANDS if x != "LIT")
+    no_lit_perf = performance_rows(
+        adults, chicks, allowed_islands=no_lit
     )
-    performance_primary = performance_rows(adults, chicks)
-    prior_ge2_panel = bridge_panel(
-        adults,
-        performance_primary,
-        minimum_prior_size=2.0,
-    )
-    prior_ge2 = permutation_test(
-        _prepare_model(
-            prior_ge2_panel,
-            extra_controls=("current_state", "zsize"),
+    no_lit_result = {
+        "memory_lag1": memory_test(
+            no_lit_perf,
+            1,
+            allowed_islands=no_lit,
+            permutations=permutations,
+            seed=20260972,
         ),
-        permutations=permutations,
-        seed=20261001,
-    )
-    loo = {
-        island: _observed_leave_one_out(adults, chicks, island)
-        for island in ISLANDS
+        "bridge": bridge_test(
+            adults,
+            no_lit_perf,
+            allowed_islands=no_lit,
+            permutations=permutations,
+            seed=20260973,
+        ),
     }
 
-    rho1 = primary["memory"]["1"]
-    bridge = primary["bridge"]
-    if rho1["supported"] and bridge["supported"]:
+    logratio_perf = performance_rows(adults, chicks, metric="logratio")
+    logratio_result = {
+        "memory_lag1": memory_test(
+            logratio_perf,
+            1,
+            permutations=permutations,
+            seed=20260970,
+        ),
+        "bridge": bridge_test(
+            adults,
+            logratio_perf,
+            permutations=permutations,
+            seed=20260971,
+        ),
+    }
+
+    prior_ge2 = bridge_test(
+        adults,
+        primary_perf,
+        minimum_prior_size=2.0,
+        permutations=permutations,
+        seed=20260974,
+    )
+
+    leave_one_out: dict[str, object] = {}
+    for island in ISLANDS:
+        allowed = tuple(x for x in ISLANDS if x != island)
+        local_perf = performance_rows(
+            adults, chicks, allowed_islands=allowed
+        )
+        leave_one_out[island] = {
+            "rho_1": _observed_memory(
+                local_perf, allowed_islands=allowed
+            ),
+            "delta_past": _observed_bridge(
+                adults, local_perf, allowed_islands=allowed
+            ),
+        }
+
+    rho1_supported = bool(memory["1"]["supported"])
+    delta_supported = bool(bridge["supported"])
+    if rho1_supported and delta_supported:
         pattern = "mixed_pattern"
-    elif (not rho1["supported"]) and bridge["supported"]:
-        pattern = "biological_memory_compatible_pattern"
-    elif rho1["supported"] and (not bridge["supported"]):
+    elif rho1_supported:
         pattern = "persistent_state_pattern"
+    elif delta_supported:
+        pattern = "biological_memory_compatible_pattern"
     else:
         pattern = "neither"
 
@@ -329,25 +428,26 @@ def analyze(
         "source_counts": {
             "adult_rows": len(adults),
             "usable_chick_rows": len(chicks),
+            "performance_rows": len(primary_perf),
         },
-        "primary": primary,
+        "P3_performance_memory": memory,
+        "P4_bridge": bridge,
         "sensitivities": {
-            "exclude_litchfield": no_lit,
-            "alternate_logratio_metric": logratio,
-            "minimum_prior_size_2": {
-                "bridge": prior_ge2,
-            },
-            "leave_one_island_out_observed": loo,
+            "exclude_litchfield": no_lit_result,
+            "alternate_logratio_metric": logratio_result,
+            "minimum_prior_size_2_bridge": prior_ge2,
+            "leave_one_island_out_observed": leave_one_out,
         },
         "decision": {
+            "rho_1_supported": rho1_supported,
+            "delta_past_supported": delta_supported,
             "pattern": pattern,
-            "rho1_supported": bool(rho1["supported"]),
-            "bridge_delta_past_supported": bool(bridge["supported"]),
+            "individual_public_information_use_identified": False,
         },
         "interpretation_boundary": {
-            "causal_mediation_claim": False,
-            "individual_movement_or_public_information_proven": False,
-            "persistent_local_environment_excluded": False,
+            "bridge_is_causal_mediation": False,
+            "null_memory_would_rule_out_environment": False,
+            "colony_counts_identify_movement_process": False,
         },
     }
 
