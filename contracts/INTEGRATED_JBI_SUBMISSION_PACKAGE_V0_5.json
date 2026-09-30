@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "package_id": "mina-integrated-jbi-submission-v0.5",
+  "date": "2026-10-01",
+  "status": "scientific_text_journal_format_ready_pending_author_archive_embedded_figures_and_taxon_image",
+  "target_journal": "Journal of Biogeography",
+  "journal_requirements_verified_2026_10_01": {
+    "research_article_main_text_target_max_words": 6000,
+    "structured_abstract_max_words": 300,
+    "title_max_characters": 115,
+    "running_title_max_characters": 40,
+    "keywords": "6-10 alphabetized",
+    "review": "double anonymous",
+    "taxon_image_required": true,
+    "submission_format": "free format accepted"
+  },
+  "anonymous_review_files": {
+    "main_manuscript": "docs/MANUSCRIPT_INTEGRATED_JBI_V0_5.md",
+    "references_source": "docs/REFERENCES_V8.bib",
+    "supporting_information": "docs/SUPPLEMENT_INTEGRATED_V0_2.md",
+    "figure_captions_source": "docs/INTEGRATED_FIGURE_CAPTIONS_V0_3.md"
+  },
+  "identifying_files": {
+    "title_page": "docs/TITLE_PAGE_JBI_INTEGRATED_V0_5_TEMPLATE.md",
+    "cover_letter": "docs/COVER_LETTER_JBI_INTEGRATED_V0_5.md"
+  },
+  "scientific_source_of_truth": {
+    "integrated_manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_5.md",
+    "manuscript_contract": "contracts/INTEGRATED_PALMER_ANTARCTIC_MANUSCRIPT_V0_5.json",
+    "palmer_lag": "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+    "palmer_memory": "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json",
+    "repro": "results/PALMER_REPRO_REDISTRIBUTION_RESULT_V1.json",
+    "paper2_primary": "results/PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json",
+    "paper2_detectability": "results/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json",
+    "paper2_radius": "results/PAPER2_RADIUS_SIGN_SWITCH_NULL_RESULT_V1.json"
+  },
+  "automated_limits_at_creation": {
+    "title_characters": 106,
+    "abstract_words": 281,
+    "main_text_words": 5996
+  },
+  "readiness_checklist": "submission/JBI_SUBMISSION_CHECKLIST_INTEGRATED_V0_5.md",
+  "outstanding_author_controlled": [
+    "author names/order",
+    "affiliations",
+    "corresponding author",
+    "ORCIDs",
+    "funding and acknowledgements",
+    "conflict of interest",
+    "author contributions",
+    "JBI biosketch",
+    "all-author approval",
+    "originality confirmation",
+    "taxon image"
+  ],
+  "outstanding_reproducibility": [
+    "permanent archive DOI/URL",
+    "final submission tag/commit",
+    "licence check for redistributed derived outputs"
+  ],
+  "outstanding_formatting": [
+    "embed final Figures 1-4 in review manuscript",
+    "verify final figure legend lettering and map scale/projection",
+    "render final reference list from REFERENCES_V8.bib"
+  ],
+  "locked_boundaries": [
+    "Part II response is temporal demographic coupling, not colony occurrence, size, spacing or clustering.",
+    "Prior Antarctic geographic and environmental effects are explicitly acknowledged and not refuted.",
+    "Palmer state is not generic reproductive success.",
+    "Public-information use is not demonstrated.",
+    "Paper 2 p=0.0947 remains non-confirmatory.",
+    "Moderate common interactions near the observed magnitude remain unresolved.",
+    "Radius p=0.081 prohibits biological scale-dependence language.",
+    "Ross unpublished behavioral results remain outside the evidentiary manuscript."
+  ]
+}
