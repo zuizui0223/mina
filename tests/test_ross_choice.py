@@ -1,0 +1,158 @@
+from __future__ import annotations
+
+import math
+
+import numpy as np
+import pytest
+
+from mina.ross_choice import (
+    COLONIES,
+    _choice_design,
+    _performance_for_events,
+    fit_conditional_logit,
+    information_gate,
+    permutation_test,
+    prepare_choice_arrays,
+)
+
+
+def _softmax(x: np.ndarray) -> np.ndarray:
+    y = np.exp(x - np.max(x))
+    return y / np.sum(y)
+
+
+def _synthetic(
+    *,
+    seed: int,
+    beta_perf: float,
+    events_per_year: int = 20,
+    years: int = 12,
+):
+    rng = np.random.default_rng(seed)
+    rows = []
+    perf_by_year = {}
+    event_no = 0
+    size = {"CROZ": 11.0, "ROYD": 8.0, "BIRD": 10.0}
+
+    base = np.asarray([-1.0, 0.0, 1.0])
+    for yi, first_year in enumerate(range(2001, 2001 + years)):
+        pyear = first_year - 1
+        shifted = np.roll(base, yi % 3)
+        perf_by_year[pyear] = {
+            colony: float(shifted[idx])
+            for idx, colony in enumerate(COLONIES)
+        }
+        for _ in range(events_per_year):
+            event_no += 1
+            natal = COLONIES[int(rng.integers(0, 3))]
+            options = list(COLONIES)
+            utilities = np.asarray(
+                [
+                    beta_perf * perf_by_year[pyear][c]
+                    + 0.55 * (c == natal)
+                    + 0.04 * size[c]
+                    for c in options
+                ],
+                dtype=float,
+            )
+            chosen = int(rng.choice(3, p=_softmax(utilities)))
+            for oi, colony in enumerate(options):
+                rows.append(
+                    {
+                        "event_id": f"E{event_no:04d}",
+                        "first_breeding_season": first_year,
+                        "performance_year": pyear,
+                        "candidate_colony": colony,
+                        "chosen": int(oi == chosen),
+                        "performance_state": perf_by_year[pyear][colony],
+                        "natal_colony_indicator": int(colony == natal),
+                        "log1p_colony_size": size[colony],
+                    }
+                )
+    return rows, perf_by_year
+
+
+def test_positive_performance_preference_is_recovered() -> None:
+    rows, perf = _synthetic(seed=1, beta_perf=1.4)
+    arrays = prepare_choice_arrays(rows, perf)
+    fit = fit_conditional_logit(arrays)
+    assert fit["converged"]
+    assert fit["n_events"] == 240
+    assert fit["beta_performance"] > 0.8
+    assert fit["beta_natal"] > 0.1
+
+
+def test_null_performance_preference_is_near_zero() -> None:
+    rows, perf = _synthetic(seed=9, beta_perf=0.0, events_per_year=35)
+    arrays = prepare_choice_arrays(rows, perf)
+    fit = fit_conditional_logit(arrays)
+    assert fit["converged"]
+    assert abs(fit["beta_performance"]) < 0.25
+
+
+def test_permutation_test_detects_strong_synthetic_effect() -> None:
+    rows, perf = _synthetic(seed=21, beta_perf=2.0, events_per_year=18)
+    arrays = prepare_choice_arrays(rows, perf)
+    result = permutation_test(arrays, permutations=999, seed=20261001, batch_size=111)
+    assert result["estimable"]
+    assert result["observed"]["beta_performance"] > 1.0
+    assert result["one_sided_upper_p"] <= 0.01
+
+
+def test_one_year_uses_one_common_colony_label_permutation() -> None:
+    rows, perf = _synthetic(seed=2, beta_perf=0.0, events_per_year=2, years=1)
+    arrays = prepare_choice_arrays(rows, perf)
+    # Manually assign a new year-level colony performance vector.
+    perm = np.asarray([[[7.0, 8.0, 9.0]]])
+    mapped = _performance_for_events(arrays, perm)
+    for ei in range(len(arrays.event_ids)):
+        for oi in range(3):
+            if arrays.mask[ei, oi]:
+                ci = arrays.colony_index[ei, oi]
+                assert mapped[0, ei, oi] == pytest.approx(perm[0, 0, ci])
+
+
+def test_permutation_changes_only_performance_dimension() -> None:
+    rows, perf = _synthetic(seed=3, beta_perf=0.0, events_per_year=2, years=1)
+    arrays = prepare_choice_arrays(rows, perf)
+    original = _choice_design(arrays, arrays.base_performance[None, :, :])
+    permuted_perf = arrays.base_performance[:, [2, 0, 1]][None, :, :]
+    permuted = _choice_design(arrays, permuted_perf)
+    assert np.array_equal(original[..., 1:], permuted[..., 1:])
+    assert not np.array_equal(original[..., 0], permuted[..., 0])
+    assert arrays.chosen_index.tolist() == arrays.chosen_index.tolist()
+
+
+def test_information_gate_uses_frozen_thresholds() -> None:
+    rows, perf = _synthetic(seed=4, beta_perf=1.0, events_per_year=10, years=10)
+    arrays = prepare_choice_arrays(rows, perf)
+    gate = information_gate(arrays)
+    assert gate["eligible_first_breeding_events"] == 100
+    assert gate["unique_first_breeding_years"] == 10
+    assert gate["pass"]
+
+
+def test_rejects_multiple_chosen_options() -> None:
+    rows, perf = _synthetic(seed=5, beta_perf=0.0, events_per_year=1, years=1)
+    first = rows[0]["event_id"]
+    for row in rows:
+        if row["event_id"] == first:
+            row["chosen"] = 1
+    with pytest.raises(ValueError, match="exactly one chosen"):
+        prepare_choice_arrays(rows, perf)
+
+
+def test_rejects_single_option_event() -> None:
+    rows, perf = _synthetic(seed=6, beta_perf=0.0, events_per_year=1, years=1)
+    event = rows[0]["event_id"]
+    kept = [r for r in rows if r["event_id"] != event]
+    kept.append(next(r for r in rows if r["event_id"] == event))
+    with pytest.raises(ValueError, match="expected 2-3"):
+        prepare_choice_arrays(kept, perf)
+
+
+def test_row_performance_must_match_frozen_year_table() -> None:
+    rows, perf = _synthetic(seed=7, beta_perf=0.0, events_per_year=1, years=1)
+    rows[0]["performance_state"] += 0.25
+    with pytest.raises(ValueError, match="performance disagrees"):
+        prepare_choice_arrays(rows, perf)
