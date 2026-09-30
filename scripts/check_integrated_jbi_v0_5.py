@@ -67,11 +67,8 @@ def check(root: Path) -> dict[str, object]:
     keyword_line = next(
         (line for line in lines if line.startswith("**Keywords:**")), ""
     )
-    keywords = [
-        x.strip()
-        for x in keyword_line.split(":", 1)[1].split(";")
-        if x.strip()
-    ]
+    keyword_text = keyword_line.split(":", 1)[1].strip().strip("*").strip()
+    keywords = [x.strip() for x in keyword_text.split(",") if x.strip()]
     checks["keywords_6_to_10"] = 6 <= len(keywords) <= 10
     checks["keywords_alphabetized"] = keywords == sorted(
         keywords, key=lambda x: x.casefold()
