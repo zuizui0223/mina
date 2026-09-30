@@ -40,8 +40,21 @@ def figure1(palmer:Path,out:Path):
             (float(r["longitude"]),float(r["latitude"])),
             xytext=(4,3),textcoords="offset points",fontsize=7.5,
         )
+    mean_lat=float(np.mean([float(r["latitude"]) for r in focal_sites]))
+    ax.set_aspect(1.0/np.cos(np.deg2rad(mean_lat)))
+    xmin,xmax=ax.get_xlim();ymin,ymax=ax.get_ylim()
+    bar_km=2.0
+    km_per_degree_lon=111.32*np.cos(np.deg2rad(mean_lat))
+    bar_deg=bar_km/km_per_degree_lon
+    x0=xmin+0.06*(xmax-xmin)
+    y0=ymin+0.07*(ymax-ymin)
+    ax.plot([x0,x0+bar_deg],[y0,y0],linewidth=2)
+    ax.text(
+        x0+bar_deg/2,y0+0.012*(ymax-ymin),"2 km",
+        ha="center",va="bottom",fontsize=8,
+    )
     ax.set_xlabel("Longitude");ax.set_ylabel("Latitude")
-    ax.set_title("A  Palmer breeding-island system")
+    ax.set_title("(a) Palmer breeding-island system")
     ax.grid(alpha=.2)
 
     ax=axes[1]
@@ -54,7 +67,7 @@ def figure1(palmer:Path,out:Path):
         )
     ax.set_yscale("symlog",linthresh=1)
     ax.set_xlabel("Year");ax.set_ylabel("Breeding pairs (symlog)")
-    ax.set_title("B  Shared long-term decline, divergent endpoints")
+    ax.set_title("(b) Shared long-term decline, divergent endpoints")
     ax.legend(frameon=False,ncol=2,fontsize=8)
     fig.tight_layout()
     save(fig,out,"figure1_shared_decline")
@@ -78,7 +91,7 @@ def figure2(palmer:Path,out:Path):
     axes[0].axhline(1.0,linewidth=.8)
     axes[0].set_xlabel("Year")
     axes[0].set_ylabel("Effective colony number / first value")
-    axes[0].set_title("A  Within-island concentration during decline")
+    axes[0].set_title("(a) Within-island concentration during decline")
     axes[0].legend(frameon=False)
 
     y=np.arange(len(slopes))
@@ -92,7 +105,7 @@ def figure2(palmer:Path,out:Path):
     axes[1].axvline(0,linewidth=.8)
     axes[1].set_yticks(y,[r["island"] for r in slopes]);axes[1].invert_yaxis()
     axes[1].set_xlabel("N_eff slope per year")
-    axes[1].set_title("B  Concentration exceeds fixed-composition null")
+    axes[1].set_title("(b) Concentration exceeds fixed-composition null")
     axes[1].legend(frameon=False,fontsize=8)
     fig.tight_layout()
     save(fig,out,"figure2_palmer_concentration")
@@ -113,7 +126,7 @@ def figure3(data:Path,out:Path):
     axes[0].axvline(0,linewidth=.8)
     axes[0].set_yticks(y,labels);axes[0].invert_yaxis()
     axes[0].set_xlabel(r"$\gamma_{AH}$")
-    axes[0].set_title("A  Species-specific interaction")
+    axes[0].set_title("(a) Species-specific interaction")
     for i,r in enumerate(spp):
         axes[0].text(
             .98,i,
@@ -132,7 +145,7 @@ def figure3(data:Path,out:Path):
     axes[1].axvline(0,linewidth=.8)
     axes[1].set_yticks([])
     axes[1].set_xlabel(r"Cross-species median $\gamma_{AH}$")
-    axes[1].set_title("B  Frozen 9,999-permutation null")
+    axes[1].set_title("(b) Frozen 9,999-permutation null")
     axes[1].legend(frameon=False,fontsize=8,loc="upper left")
     axes[1].text(
         .02,.12,
@@ -158,7 +171,7 @@ def figure4(data:Path,out:Path):
     axes[0].axhline(0,linewidth=.8)
     axes[0].set_xticks(x,[f"{v:g} km" for v in x])
     axes[0].set_ylabel(r"Cross-species median $\gamma_{AH}$")
-    axes[0].set_title("A  Radius sensitivity")
+    axes[0].set_title("(a) Radius sensitivity")
     axes[0].text(
         .03,.06,"joint sign-switch + contrast null p=0.081",
         transform=axes[0].transAxes,fontsize=8,
@@ -181,7 +194,7 @@ def figure4(data:Path,out:Path):
     axes[1].set_ylim(-.02,1.02)
     axes[1].set_xlabel(r"True common $|\gamma_{AH}|$")
     axes[1].set_ylabel("Detection probability")
-    axes[1].set_title("B  Retrospective detectability")
+    axes[1].set_title("(b) Retrospective detectability")
     axes[1].text(
         .03,.06,"observed=0.318; MDE80=0.498; MDE90=0.539",
         transform=axes[1].transAxes,fontsize=8,
