@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-pygoscelis-history-panel-candidate-ledger-v1",
+  "date": "2026-09-30",
+  "contract_id": "mina-pygoscelis-history-panel-screen-v1",
+  "status": "PANEL_LEDGER_LOCKED",
+  "outcome_analysis_started_for_clean_candidates": false,
+  "search_scope_completed": {
+    "repositories": {
+      "Dryad": "fixed query families run; Penguin Watch candidate retained; no additional eligible local abundance+performance panel found",
+      "Figshare": "fixed query families run; no new clean candidate returned; previously known Pointe Geologie deposit retained separately",
+      "Zenodo": "fixed query families run; no eligible candidate returned",
+      "PANGAEA": "fixed query families run; no eligible candidate returned",
+      "USAP-DC": "Ross/Beaufort chick-count, banding and resight products screened",
+      "Environmental Data Initiative": "fixed external queries returned no non-Palmer eligible candidate",
+      "Australian Antarctic Data Centre": "Bechervaise/Windmill/weighbridge candidates screened",
+      "UK Polar Data Centre": "Signy, Bird Island, Port Lockroy and Maiviken candidates screened",
+      "CCAMLR/CEMP public products": "methods and monitoring references found; no additional independently downloadable local-unit panel beyond repository products already listed",
+      "institutional repositories": "PolarBytes/Signy and Port Lockroy public site inspected for access/schema only",
+      "public GitHub repositories linked from studies": "no additional clean eligible population panel identified under fixed query families"
+    },
+    "query_families_unchanged": true
+  },
+  "protocol_deviations": [
+    {
+      "note": "contracts/PYGOSCELIS_HISTORY_PANEL_PRELOCK_EXPOSURE_NOTE_V2.json",
+      "affected_systems": [
+        "Signy Island Adelie",
+        "Signy Island chinstrap"
+      ],
+      "consequence": "retained in ledger but excluded from confirmatory cross-system combination"
+    }
+  ],
+  "candidates": [
+    {
+      "system_id": "signy_chinstrap",
+      "species": "Pygoscelis antarcticus",
+      "site": "Signy Island, South Orkney Islands",
+      "source_title": "Population size and breeding success of chinstrap penguins on Signy Island from 1978 to 2020",
+      "doi": "10.5285/d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9",
+      "years": "1978/79-2020/21",
+      "documented_local_units": 11,
+      "abundance": "colony-level occupied/incubating/total breeding-pair counts",
+      "performance": "colony-level chick/fledgling counts",
+      "raw_access": "public PolarBytes mirror accessible; official BAS Ramadda inaccessible in current runtime",
+      "screening_decision": "ELIGIBLE",
+      "confirmatory_combination_eligible": false,
+      "exclusion_reason_from_confirmatory": "OUTCOME_EXPOSED_PRELOCK during access-path audit; no association computed"
+    },
+    {
+      "system_id": "signy_adelie",
+      "species": "Pygoscelis adeliae",
+      "site": "Signy Island, South Orkney Islands",
+      "source_title": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020",
+      "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+      "years": "1978/79-2020/21",
+      "documented_local_units": 9,
+      "abundance": "colony-level nest/pair counts",
+      "performance": "colony-level chick/fledgling counts with some historical pooled-fledgling notes",
+      "raw_access": "public PolarBytes mirror accessible; official BAS Ramadda inaccessible in current runtime",
+      "screening_decision": "ELIGIBLE",
+      "confirmatory_combination_eligible": false,
+      "exclusion_reason_from_confirmatory": "OUTCOME_EXPOSED_PRELOCK during access-path audit; no association computed"
+    },
+    {
+      "system_id": "signy_gentoo",
+      "species": "Pygoscelis papua",
+      "site": "Signy Island, South Orkney Islands",
+      "source_title": "Population size and breeding success of gentoo penguins on Signy Island from 1978 to 2020",
+      "doi": "10.5285/883c6b40-024e-41e8-9c3e-2668a44b5751",
+      "years": "1978/79-2020/21",
+      "underlying_documented_colonies": 10,
+      "public_table_unit": "season total; individual colony counts combined",
+      "screening_decision": "INELIGIBLE_AGGREGATE_ONLY",
+      "confirmatory_combination_eligible": false
+    },
+    {
+      "system_id": "bird_island_gentoo",
+      "species": "Pygoscelis papua",
+      "site": "Bird Island, South Georgia",
+      "source_title": "Breeding success of Gentoo penguins at Bird Island, South Georgia, from 1981 to 2025 - VERSION 2.0",
+      "doi": "10.5285/8fedb5a0-b98c-4457-9d86-aae9c6d3ed8e",
+      "years": "1981-2025",
+      "documented_local_units": [
+        "Johnson Beach",
+        "Square Pond",
+        "Lower Natural Arch",
+        "Upper Natural Arch",
+        "Lower Mountain Cwm",
+        "Upper Mountain Cwm"
+      ],
+      "abundance": "incubating nest counts by colony/subcolony",
+      "performance": "fledging-stage chick counts by the same colony/subcolony",
+      "metadata_eligibility": "meets temporal and local-unit requirements",
+      "raw_access": "official BAS Ramadda returns 401 Unauthorized in current runtime",
+      "screening_decision": "ACCESS_BLOCKED",
+      "confirmatory_combination_eligible": false,
+      "can_open_later_without_rescreen": true
+    },
+    {
+      "system_id": "port_lockroy_gentoo",
+      "species": "Pygoscelis papua",
+      "site": "Goudier Island / Port Lockroy",
+      "source_title": "Population numbers and breeding success of Gentoo penguins at Port Lockroy, Goudier Island, 1996-2020",
+      "doi": "10.5285/92e92c14-0ff2-4ce2-8305-83d5b3a4071d",
+      "years": "1996-2020",
+      "documented_local_units": "10 defined sub-colonies (6 visited + 4 control in study design)",
+      "abundance": "breeding pairs by defined sub-colony",
+      "performance": "hatched chicks and creche chicks by defined sub-colony",
+      "metadata_eligibility": "meets temporal and local-unit requirements",
+      "raw_access": "official BAS Ramadda returns 401 / public data application times out in current runtime",
+      "screening_decision": "ACCESS_BLOCKED",
+      "confirmatory_combination_eligible": false,
+      "can_open_later_without_rescreen": true
+    },
+    {
+      "system_id": "maiviken_gentoo",
+      "species": "Pygoscelis papua",
+      "site": "Maiviken, South Georgia",
+      "source_title": "Breeding success of Gentoo penguins at Maiviken, South Georgia, from 2009 to 2020",
+      "doi": "10.5285/1fd5bc8a-96b5-4f53-aa15-33e5330e7705",
+      "years": "2009-2020",
+      "documented_local_unit_structure": "metadata describes one Maiviken colony and does not document >=3 stable local units",
+      "screening_decision": "INELIGIBLE_SHORT_OR_SPARSE",
+      "confirmatory_combination_eligible": false
+    },
+    {
+      "system_id": "penguin_watch_gentoo_camera",
+      "species": "Pygoscelis papua",
+      "site": "Atlantic-sector camera network",
+      "source_title": "Large-scale assessment of intra- and inter-annual breeding success using a remote camera network",
+      "doi": "10.5068/D1MX0Z",
+      "performance": "nest-level breeding-success trajectories across many colonies",
+      "abundance": "no repeated local breeding-pair/occupied-nest abundance series documented as an alignable panel endpoint in the deposited study metadata",
+      "screening_decision": "INELIGIBLE_NO_ABUNDANCE",
+      "confirmatory_combination_eligible": false
+    },
+    {
+      "system_id": "bechervaise_adelie_breeding_success",
+      "species": "Pygoscelis adeliae",
+      "site": "Bechervaise Island, Mawson",
+      "source_title": "Adelie penguin breeding success for Bechervaise Island, Mawson",
+      "doi": "10.4225/15/59829c7ed97b1",
+      "years": "1990/91-2004/05",
+      "public_fields": [
+        "Year",
+        "Breeding success",
+        "Occupied nests"
+      ],
+      "public_unit": "whole-island annual summary",
+      "screening_decision": "INELIGIBLE_AGGREGATE_ONLY",
+      "confirmatory_combination_eligible": false
+    },
+    {
+      "system_id": "windmill_islands_adelie_repro",
+      "species": "Pygoscelis adeliae",
+      "site": "Windmill Islands (Odbert, Shirley, Blakeney, Whitney)",
+      "source_title": "Adelie reproductive success, Windmill Islands",
+      "years": "2011/12-2020/21",
+      "documented_local_units": 5,
+      "performance": "nest-level breeding success / survival to creche",
+      "abundance": "no repeated local adult breeding-pair abundance endpoint documented in the metadata",
+      "raw_access": "not yet publicly available",
+      "screening_decision": "INELIGIBLE_NO_ABUNDANCE",
+      "additional_access_note": "also access-restricted at screening date",
+      "confirmatory_combination_eligible": false
+    },
+    {
+      "system_id": "bechervaise_adelie_weighbridge",
+      "species": "Pygoscelis adeliae",
+      "site": "Bechervaise Island",
+      "source_title": "Data from the Bechervaise Island Adelie penguin weighbridge, 2006-2018",
+      "doi": "10.26179/1205-2s58",
+      "years": "2006-2018",
+      "data_type": "individual crossings, mass, tagged individual identity",
+      "screening_decision": "INELIGIBLE_NO_PERFORMANCE",
+      "confirmatory_combination_eligible": false,
+      "note": "potentially useful in a separate individual/process analysis but not the frozen abundance+performance panel"
+    },
+    {
+      "system_id": "ross_beaufort_adelie_chick_counts",
+      "species": "Pygoscelis adeliae",
+      "site": "Ross and Beaufort islands",
+      "source_title": "Adelie penguin chick counts 1997-2009",
+      "source_id": "USAP-DC 600007",
+      "years": "1997-2009",
+      "performance": "chick counts",
+      "abundance": "no matching repeated local adult abundance product identified by the fixed panel queries",
+      "screening_decision": "INELIGIBLE_NO_ABUNDANCE",
+      "confirmatory_combination_eligible": false
+    },
+    {
+      "system_id": "ross_beaufort_adelie_resight",
+      "species": "Pygoscelis adeliae",
+      "site": "Ross and Beaufort islands",
+      "source_title": "Adelie penguin resighting data 1997-2021",
+      "doi": "10.15784/601444",
+      "years": "1997-2021",
+      "data_type": "individual mark-resight",
+      "screening_decision": "INELIGIBLE_NO_PERFORMANCE",
+      "confirmatory_combination_eligible": false,
+      "note": "high-priority separate individual-movement mechanism candidate; not a colony performance+abundance panel"
+    },
+    {
+      "system_id": "ross_beaufort_adelie_banding",
+      "species": "Pygoscelis adeliae",
+      "site": "Ross and Beaufort islands",
+      "source_title": "Adelie penguin banding data 1994-2021",
+      "doi": "10.15784/601443",
+      "years": "1994-2021",
+      "data_type": "individual banding",
+      "screening_decision": "INELIGIBLE_NO_PERFORMANCE",
+      "confirmatory_combination_eligible": false,
+      "note": "potentially joins the resight data in a separate frozen movement analysis"
+    },
+    {
+      "system_id": "pointe_geologie_adelie_figshare",
+      "species": "Pygoscelis adeliae",
+      "site": "Pointe Geologie, Adelie Land",
+      "source_title": "Deposited data/code for Meheust et al. 2024",
+      "doi": "10.6084/m9.figshare.22341229",
+      "years": "1998-2021",
+      "documented_local_units": 83,
+      "abundance_and_performance": "breeding pairs and fledged chicks by author-defined colony",
+      "raw_access": "Figshare article/API/download endpoints inaccessible in current runtime",
+      "screening_decision": "ACCESS_BLOCKED",
+      "confirmatory_combination_eligible": false,
+      "additional_reason": "published effect direction was known before this external-panel screen; retained under its separately frozen direct-replication gate rather than counted as a blind panel system"
+    }
+  ],
+  "repository_searches_with_no_additional_candidate": [
+    "PANGAEA",
+    "Zenodo",
+    "Environmental Data Initiative outside Palmer",
+    "CCAMLR direct public products beyond already represented national monitoring datasets"
+  ],
+  "panel_summary": {
+    "total_candidates_recorded": 14,
+    "clean_confirmatory_accessible_systems": 0,
+    "clean_metadata_eligible_but_access_blocked_systems": 2,
+    "prelock_outcome_exposed_eligible_systems": 2,
+    "minimum_external_systems_for_combined_test": 3,
+    "cross_system_generality_test_status": "STOP_NOT_ENOUGH_CLEAN_ACCESSIBLE_SYSTEMS",
+    "combined_stouffer_test_allowed_now": false
+  },
+  "next_allowed_actions": [
+    "If Bird Island or Port Lockroy raw data become accessible, analyze them under the already frozen universal endpoint without rescreening or changing specification.",
+    "Do not count Signy Adelie or Signy chinstrap in the confirmatory combined test; they may be reported exploratorily because of pre-lock numerical exposure.",
+    "Pursue Ross/Beaufort individual resight data only under a separate frozen schema/mechanism contract.",
+    "Do not add new repositories/query families to obtain a third favorable system after this ledger lock."
+  ]
+}
