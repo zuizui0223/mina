@@ -47,7 +47,7 @@ jobs:
               print("memory",k,"n=",v["n_rows"],"rho=",v["coefficient"],"p=",v["one_sided_upper_p"])
           print("bridge=",x["primary"]["bridge"])
           print("decision=",x["decision"])
-          for name in ("exclude_litchfield","alternate_logratio_metric","minimum_prior_size_2"):
+          for name in ("exclude_litchfield","alternate_logratio_metric"):
               v=x["sensitivities"][name]
               print(
                   name,
@@ -56,6 +56,12 @@ jobs:
                   "delta=",v["bridge"]["coefficient"],
                   "delta_p=",v["bridge"]["one_sided_upper_p"],
               )
+          v=x["sensitivities"]["minimum_prior_size_2"]["bridge"]
+          print(
+              "minimum_prior_size_2",
+              "delta=",v["coefficient"],
+              "delta_p=",v["one_sided_upper_p"],
+          )
           print("loo=",json.dumps(x["sensitivities"]["leave_one_island_out_observed"],sort_keys=True))
           PY
       - uses: actions/upload-artifact@v4
