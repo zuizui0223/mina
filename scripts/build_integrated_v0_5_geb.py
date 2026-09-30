@@ -162,7 +162,7 @@ def main() -> int:
     text = args.source.read_text(encoding="utf-8")
     text = text.replace(
         "**Integrated manuscript draft v0.4 — literature-gap revision**",
-        "**Integrated manuscript draft v0.5 — GEB submission revision**",
+        "**Integrated manuscript draft v0.5 — GEB submission revision**\\n\\n**Running title:** Penguin colony history across scales",
         1,
     )
     text = replace_section(text, "## Abstract", "## Introduction", STRUCTURED_ABSTRACT)
