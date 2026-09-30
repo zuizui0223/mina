@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "result_id": "mina-ross-island-resight-schema-gate-result-v1",
   "validated_date": "2026-09-30",
   "gate_id": "mina-ross-island-resight-schema-gate-v1",
-  "status": "BLOCKED_RAW_DATA_ACCESS_AFTER_SCHEMA_PREPARATION",
+  "status": "BLOCKED_EXACT_HEADER_ACCESS_AFTER_SCIENTIFIC_SCHEMA_GO",
   "outcome_blind_status": {
     "behavioral_rows_read": 0,
     "settlement_outcomes_opened": false,
@@ -11,21 +11,24 @@
     "colony_performance_values_opened": false
   },
   "public_schema_audit": {
-    "focused_workflow_run_id": 36728875382,
-    "artifact_id": 11103338993,
-    "artifact_digest": "sha256:275f3044b8363fc4d0bf5d4e2e3605a4ee194026334b651d82e5400d6bcc213e",
+    "latest_workflow_run_id": 36731179601,
+    "latest_artifact_id": 11105421331,
+    "latest_artifact_digest": "sha256:bf9066e6598a4aca33576e0caed126e072c2de2c8ce4b562a00ba08bd28239ec",
     "api_key_present": false,
     "resight_readme_retrieved": true,
     "banding_readme_retrieved": true,
-    "chick_count_readme_retrieved": true,
-    "csv_header_retrieved": false
+    "chick_count_600007_readme_retrieved": true,
+    "csv_header_retrieved": false,
+    "behavioral_rows_read": 0
   },
   "resight_schema_supported_by_readme": {
     "stable_individual_id": "Band",
     "observation_date": "Date",
     "colony": "Colony with codes CROZ, ROYD, BIRD, BEAU",
-    "breeding_evidence_fields": ["Eggs", "Chicks"],
-    "other_fields": ["Sex", "Sexed How", "Band Gap", "Nest Position", "Subcolony", "Area", "Flagged", "Latitude", "Longitude", "Initials"],
+    "breeding_evidence_fields": [
+      "Eggs",
+      "Chicks"
+    ],
     "chick_codes": {
       "0": "no chicks",
       "1": "one chick",
@@ -39,23 +42,44 @@
       "2": "two eggs",
       "8": "at least one egg",
       "9": "unknown/did not check"
-    }
+    },
+    "repeated_nest_checks": "Nests of banded penguins were typically checked about every four days to determine fates.",
+    "other_documented_fields": [
+      "Sex",
+      "Sexed How",
+      "Band Gap",
+      "Nest Position",
+      "Subcolony",
+      "Area",
+      "Flagged",
+      "Latitude",
+      "Longitude",
+      "Initials"
+    ]
   },
   "banding_schema_supported_by_readme": {
-    "fields": ["Low", "High", "Colony", "Season"],
+    "fields": [
+      "Low",
+      "High",
+      "Colony",
+      "Season"
+    ],
     "natal_colony_recoverable": true,
     "cohort_recoverable": true,
-    "season_example": "9495 = 1994-1995 breeding season; bands applied in January of the higher-numbered year"
+    "season_example": "9495 = 1994-1995 breeding season; bands were attached in January of the higher-numbered year"
   },
-  "state_reconstruction": {
-    "contract": "contracts/ROSS_ISLAND_STATE_RECONSTRUCTION_V1.json",
-    "status": "frozen_before_behavioral_rows",
-    "published_state_semantics_reproducible_from_public_schema": true
+  "published_state_semantics": {
+    "source_doi": "10.3389/fevo.2026.1868960",
+    "rule": "Age>=2 birds observed at a colony before first breeding, without eggs/chicks at a nest, are pre-breeders; first observation guarding a nest with eggs or chicks defines breeder recruitment; later observed non-breeding seasons are non-breeder.",
+    "raw_reconstruction_possible_from_public_schema": true,
+    "contract": "contracts/ROSS_ISLAND_STATE_RECONSTRUCTION_V1.json"
   },
   "performance_predictor": {
-    "contract": "contracts/ROSS_ISLAND_BANDED_BREEDER_PERFORMANCE_V1.json",
-    "external_chick_count_600007_primary_status": "not suitable for primary three-colony predictor because README covers Royds and Crozier but not Bird",
+    "external_candidate": "USAP-DC 600007 chick counts",
+    "external_candidate_status": "not_suitable_for_three_colony_primary",
+    "reason": "README documents counts at Cape Royds and Cape Crozier only; Cape Bird is not covered.",
     "frozen_fallback": "prior-year banded-breeder chick-presence index",
+    "contract": "contracts/ROSS_ISLAND_BANDED_BREEDER_PERFORMANCE_V1.json",
     "fallback_status": "frozen_before_behavioral_rows"
   },
   "colony_size_control": {
@@ -63,29 +87,56 @@
     "result": "results/ROSS_ISLAND_COLONY_SIZE_CONTROL_RESULT_V1.json",
     "status": "viable",
     "pinned_mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
-    "common_complete_years_1997_2019": 21
+    "mapping": {
+      "ROYD": [
+        "ROYD"
+      ],
+      "BIRD": [
+        "BRDN",
+        "BRDM",
+        "BRDS"
+      ],
+      "CROZ": [
+        "CRZE",
+        "CRZW"
+      ]
+    },
+    "complete_common_years_1997_2019": 21,
+    "missing_three_colony_control_years": [
+      2000,
+      2008
+    ]
+  },
+  "scientific_gate_decision": {
+    "individual_id_available": true,
+    "colony_available": true,
+    "known_age_natal_colony_recoverable": true,
+    "reproductive_state_reconstructable": true,
+    "three_colony_prior_performance_definition_frozen": true,
+    "prior_colony_size_control_viable": true,
+    "schema_scientifically_sufficient_in_principle": true,
+    "preferred_primary_test": "prospecting-to-first-breeding settlement choice"
   },
   "raw_access": {
-    "usap_dc_dataset": "601444",
+    "usap_dc_resight_dataset": "601444",
     "file": "band_resighting_1997-2021.csv",
-    "documented_public_api_requirement": "USAP-DC file download API requires an API key; repository secret USAP_DC_API_KEY is currently absent.",
-    "old_nasa_cmr_collection": "B031_resight_1.0",
-    "old_direct_asset": "Point Blue AllData/resight",
-    "old_asset_currently_retrievable": false,
+    "documented_access_requirement": "USAP-DC file download API requires an API key; repository secret USAP_DC_API_KEY is currently absent.",
+    "exact_csv_header_verified": false,
+    "full_behavioral_download_allowed": false,
     "authentication_bypass_attempted": false
   },
   "decision": {
-    "schema_scientifically_sufficient_in_principle": true,
-    "exact_csv_header_verified": false,
+    "scientific_schema_gate": "GO_prebreeder_choice",
+    "execution_gate": "BLOCKED_exact_header_access",
     "movement_analysis_unlocked": false,
-    "next_required_gate": "Provide USAP_DC_API_KEY as a repository secret, rerun schema-only workflow to read only CSV headers, freeze exact parser/code-map receipt, then and only then permit full behavioral-row download.",
+    "next_required_action": "Add USAP_DC_API_KEY, rerun schema-only workflow, record exact headers and parser receipt, then permit full behavioral-row download without changing the frozen choice model.",
     "posthoc_model_changes_allowed": false
   },
   "claim_boundary": [
-    "No Ross Island movement or settlement result exists yet.",
-    "Do not infer a direction, effect size, event count, or significance from the README or published paper.",
-    "Do not substitute the two-colony 600007 chick-count source if the frozen three-colony performance gate later loses information.",
-    "Do not download behavioral rows before the exact CSV header is audited and the parser is frozen.",
-    "Do not bypass USAP-DC access controls."
+    "No Ross Island settlement direction, effect size, event count, or significance has been observed.",
+    "Do not download or analyze behavioral rows before the exact CSV header is audited and parser agreement is frozen.",
+    "Do not substitute the two-colony 600007 source for the frozen three-colony performance problem.",
+    "Do not bypass USAP-DC access controls.",
+    "A future positive result would support performance-linked settlement among actually prospected colonies, not prove the sensory or social cue."
   ]
 }
