@@ -1,0 +1,52 @@
+name: integrated-manuscript-v0-3
+
+on:
+  push:
+    branches: [integrated/manuscript-v0.3]
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_V0_3.md"
+      - "docs/SUPPLEMENT_INTEGRATED_V0_2.md"
+      - "contracts/INTEGRATED_PALMER_ANTARCTIC_MANUSCRIPT_V0_3.json"
+      - "contracts/INTEGRATED_SUPPLEMENT_V0_2.json"
+      - ".github/workflows/integrated-manuscript-v0-3.yml"
+  pull_request:
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_V0_3.md"
+      - "docs/SUPPLEMENT_INTEGRATED_V0_2.md"
+      - "contracts/INTEGRATED_PALMER_ANTARCTIC_MANUSCRIPT_V0_3.json"
+      - "contracts/INTEGRATED_SUPPLEMENT_V0_2.json"
+      - ".github/workflows/integrated-manuscript-v0-3.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Manuscript and supplement guard
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          m=Path("docs/MANUSCRIPT_INTEGRATED_V0_3.md").read_text()
+          s=Path("docs/SUPPLEMENT_INTEGRATED_V0_2.md").read_text()
+          all_text=m+"\n"+s
+          assert "PENDING" not in m
+          assert "marginally significant" not in all_text.lower()
+          assert "\x0c" not in all_text
+          assert "\t" not in all_text
+          # Frozen Palmer/Signy transfer numbers.
+          assert "0.0409" in m and "0.00327" in m
+          assert "0.0213" in m and "0.279" in m
+          assert "0.0603" in m and "0.0207" in m
+          # Primary Paper 2 boundaries must remain.
+          assert "0.0947" in m
+          assert "0.081" in m
+          assert "0.498" in m and "0.539" in m
+          # Prohibited rescue wording.
+          lower=m.lower()
+          assert "independent replication" not in lower or "did not replicate" in lower
+          assert "win-stay/lose-switch" not in lower or "did not identify a simple win-stay/lose-switch mechanism" in lower
+          print("Integrated manuscript v0.3 guard passed.")
+          PY
