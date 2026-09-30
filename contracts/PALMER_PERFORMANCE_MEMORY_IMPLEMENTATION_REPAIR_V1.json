@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "repair_id": "mina-palmer-performance-memory-implementation-repair-v1",
+  "date": "2026-09-30",
+  "status": "post_outcome_implementation_repair",
+  "contract_unchanged": "mina-palmer-performance-memory-v1",
+  "problem": "The first implementation permuted S_i,t only among complete-case rows retained in each future-outcome panel. The frozen contract instead states that predictor S_i,t is permuted among eligible colonies within the predictor island-season while future missingness and future values remain fixed.",
+  "objective_resolution": "Construct the permutation from the full eligible performance-state group at predictor island-season t, then read the permuted predictor values into the fixed complete-case outcome panel by colony position. This preserves the observed future-missingness pattern while allowing all eligible predictor colonies to participate in the frozen exchangeability null.",
+  "unchanged": [
+    "performance-state definition",
+    "season key",
+    "memory lags 1-3",
+    "bridge model and controls",
+    "observed coefficients",
+    "sensitivity definitions",
+    "alpha",
+    "permutation count",
+    "decision matrix"
+  ],
+  "affected_outputs": [
+    "permutation null distributions",
+    "Monte Carlo p-values",
+    "null quantiles"
+  ],
+  "audit_boundary": [
+    "The original contract predates both implementations and is not edited.",
+    "The earlier result receipt using the complete-case-only permutation must be superseded.",
+    "The repair is disclosed because the implementation correction occurred after the first result was observed."
+  ]
+}
