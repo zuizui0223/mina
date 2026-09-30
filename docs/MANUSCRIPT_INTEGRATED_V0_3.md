@@ -1,6 +1,6 @@
 # Local demographic history does not reduce to static island architecture in Antarctic penguins
 
-**Integrated manuscript draft v0.2**
+**Integrated manuscript draft v0.3**
 
 ## Abstract
 
