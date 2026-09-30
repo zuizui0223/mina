@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-integrated-figure-render-v0.3-result-v1",
+  "validated_date": "2026-10-01",
+  "manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_3.md",
+  "captions": "docs/INTEGRATED_FIGURE_CAPTIONS_V0_3.md",
+  "renderer": "scripts/render_integrated_figures_v0_3.py",
+  "execution": {
+    "workflow_run_id": 36745654894,
+    "workflow_conclusion": "success",
+    "head_sha": "d12fae07aac8dbe30d7f97b27cbe9fa640c4dd6d",
+    "artifact_id": 11111839131,
+    "artifact_digest": "sha256:4bf0e5fbbdb36810fefe159f1b4bea6e772daba7216027a7a0e4d9c6d44f5a4d"
+  },
+  "generated": [
+    {
+      "file": "figure2_palmer_dynamic_history_v0_3.pdf",
+      "bytes": 27849
+    },
+    {
+      "file": "figure2_palmer_dynamic_history_v0_3.png",
+      "bytes": 299986
+    },
+    {
+      "file": "figure3_antarctic_interaction_v0_3.pdf",
+      "bytes": 23850
+    },
+    {
+      "file": "figure3_antarctic_interaction_v0_3.png",
+      "bytes": 148759
+    },
+    {
+      "file": "figure4_scale_and_detectability_v0_3.pdf",
+      "bytes": 23839
+    },
+    {
+      "file": "figure4_scale_and_detectability_v0_3.png",
+      "bytes": 237430
+    }
+  ],
+  "workflow_checks": {
+    "frozen_figure_data_tests_passed": true,
+    "manuscript_claim_guard_passed": true,
+    "figure_data_build_passed": true,
+    "render_passed": true,
+    "six_output_file_size_gate_passed": true
+  },
+  "visual_audit": {
+    "figure2": "Three-panel narrative reads in the intended order: within-island concentration, short-lived lag profile, then independent REPRO/non-replication. Primary lag-2 and mechanically coupled lag-1 are visually distinct; post-hoc common-panel points are distinguishable from frozen REPRO endpoints.",
+    "figure3": "Species-specific negative interaction estimates and the cross-species observed median are visually separated from the frozen null summary; non-confirmatory p=0.0947 is explicit.",
+    "figure4": "Radius sign reversal is shown as spatial-support sensitivity, while the detectability panel makes the observed magnitude visibly smaller than MDE80/MDE90.",
+    "fatal_label_overlap": false,
+    "fatal_clipping": false,
+    "numeric_mismatch_detected": false
+  },
+  "decision": {
+    "figures_2_to_4_submission_render_ready": true,
+    "raw_data_reanalysis_required": false
+  }
+}
