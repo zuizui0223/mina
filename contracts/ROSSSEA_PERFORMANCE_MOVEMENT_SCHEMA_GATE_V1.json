@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "gate_id": "mina-rosssea-performance-movement-schema-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_resight_or_chick-count_values_are_opened",
+  "paper_role": "independent direct-mechanism extension after Palmer aggregate-history analyses",
+  "novelty_boundary": {
+    "already_published": [
+      "Dugger et al. 2010 and later Ross Sea work establish inter-colony movement and breeding philopatry in Adelie penguins.",
+      "The 2026 Frontiers 25-year mark-recapture analysis estimates age-, reproductive-state-, and colony-specific survival, recruitment, breeding propensity and inter-colony transition probabilities for Royds, Bird and Crozier.",
+      "That 2026 model includes age, reproductive state and colony effects on transitions but does not use previous-year colony reproductive performance as a time-varying transition covariate."
+    ],
+    "target_gap": "Does previous-year colony reproductive performance predict an individual bird's subsequent breeding-state/colony transition, beyond age, origin colony and reproductive state?",
+    "prohibited_novelty_claim": "Do not claim first measurement of Adelie dispersal, prospecting, breeding philopatry or colony transitions."
+  },
+  "candidate_sources": {
+    "resighting": {
+      "dataset_uid": "601444",
+      "doi": "10.15784/601444",
+      "title": "Adelie penguin resighting data 1997-2021 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science",
+      "repository": "USAP-DC",
+      "temporal_extent": ["1997-12-01", "2021-01-31"],
+      "file": "band_resighting_1997-2021.csv",
+      "file_size": "25.1 MB",
+      "md5": "aaae6ddad6d12081b5a68466794438a2",
+      "license": "CC BY 4.0"
+    },
+    "banding": {
+      "dataset_uid": "601443",
+      "doi": "10.15784/601443",
+      "title": "Adelie penguin banding data 1994-2021 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science"
+    },
+    "chick_counts": {
+      "dataset_uid": "600007",
+      "title": "Adelie penguin chick counts 1997-2009 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science",
+      "files": [
+        "B031_chickcount.tar.gz",
+        "chickcount_CapeCrozier.zip",
+        "chickcount_CapeRoyds.zip"
+      ],
+      "license": "CC BY-NC 4.0"
+    }
+  },
+  "stage_A_schema_only": {
+    "allowed_before_GO_decision": [
+      "file names",
+      "column names",
+      "documented field descriptions",
+      "data types",
+      "missing-value codes",
+      "row counts",
+      "temporal coverage",
+      "categorical level names without frequencies",
+      "whether individual IDs, colony IDs, reproductive status and dates are present",
+      "whether chick counts contain a breeding-pair/nest denominator or can be deterministically joined to a frozen denominator source"
+    ],
+    "prohibited_before_GO_decision": [
+      "transition frequencies",
+      "movement rates",
+      "colony-specific productivity values",
+      "correlations between productivity and movement",
+      "selection of years/colonies based on observed effects"
+    ]
+  },
+  "GO_requirements": {
+    "resight_schema": [
+      "stable individual band identifier",
+      "observation season/year",
+      "observation colony/location distinguishing at least Royds, Bird and Crozier or a documented subset",
+      "reproductive state or enough observation fields to classify breeder versus non-breeder without outcome-based recoding"
+    ],
+    "performance_schema": [
+      "year/season",
+      "colony",
+      "chick output",
+      "breeding-pair/nest denominator in the same source OR a pre-existing independently documented denominator that can be joined deterministically before movement outcomes are inspected"
+    ],
+    "minimum_overlap_before_outcome_analysis": [
+      "at least 8 breeding seasons with both performance and resighting coverage",
+      "at least 2 colonies with performance estimates in each included season",
+      "the exact colony names/codes must map deterministically; no manual value-based crosswalk"
+    ]
+  },
+  "if_GO_analysis_family": {
+    "performance_state": {
+      "primary_metric": "colony chicks per breeding pair in season t",
+      "standardization": "Within each season, center and scale across the eligible Ross Sea colonies; call this P_colony,t.",
+      "reason": "This is closer to the aggregate chick-production state that carried temporal information at Palmer than the binary monitored-nest endpoint that failed independent replication."
+    },
+    "primary_population": "Birds observed as breeders in colony c during season t, with a classifiable observed state in season t+1.",
+    "primary_conditional_outcome": {
+      "same_colony_breeder": 0,
+      "different_colony_breeder": 1,
+      "definition": "Among birds observed breeding in both t and t+1, whether breeding colony changes.",
+      "prediction": "Lower P_c,t predicts higher probability of breeding dispersal at t+1."
+    },
+    "secondary_observed_state_outcome": {
+      "same_colony_breeder": "reference",
+      "nonbreeder_at_tplus1": "separate category",
+      "different_colony_breeder": "separate category",
+      "role": "Distinguish breeding dispersal from temporary nonbreeding when reproductive status is available."
+    },
+    "prebreeder_settlement_secondary": {
+      "population": "Known-age prebreeders observed at one or more colonies before first breeding, if first-breeding colony can be identified.",
+      "question": "Is first breeding disproportionately directed toward colonies with higher recent P_colony,t, after accounting for natal colony and age?",
+      "role": "Prospecting/settlement test; secondary because candidate-set availability and detection must first pass a separate schema audit."
+    },
+    "controls": [
+      "age",
+      "origin colony",
+      "calendar season fixed effect",
+      "individual previous breeding experience when derivable before the transition"
+    ],
+    "inference": {
+      "primary_model": "conditional logistic/binomial model on birds observed breeding in consecutive seasons",
+      "primary_coefficient": "effect of origin-colony P_c,t on probability of different-colony breeding at t+1",
+      "expected_sign": "negative P increases movement; equivalently coefficient of P on movement probability < 0",
+      "permutation_null": "Permute P_colony,t among eligible colonies within season, preserving all bird histories, age, origin colony, observation/missingness structure and transition outcomes.",
+      "permutations": 100000,
+      "seed": 20261000,
+      "alpha": 0.05,
+      "p_value": "one-sided lower-tail for the productivity coefficient"
+    },
+    "minimum_information": {
+      "at_least_observed_breeder_transitions": 500,
+      "at_least_different_colony_breeding_transitions": 20,
+      "at_least_seasons_with_two_plus_performance_colonies": 8,
+      "failure_rule": "STOP without fitting the performance effect if any minimum is not met."
+    },
+    "sensitivity_if_GO": [
+      "Restrict to adults age >=5 if age is available.",
+      "Exclude giant-iceberg years 2001/02-2005/06 as a predeclared environmental-disruption sensitivity.",
+      "Repeat using colony productivity rank within season rather than z score.",
+      "Leave one colony out when at least two colonies remain and the minimum event count is satisfied."
+    ]
+  },
+  "detection_boundary": {
+    "primary_conditional_model": "The primary analysis is explicitly conditional on birds observed breeding in consecutive seasons; it estimates observed breeding dispersal among detected breeders, not unconditional population transition probability.",
+    "multistate_extension": "If the exact observation-effort schema is sufficient to reproduce the 2026 multi-state capture-recapture model without outcome-dependent choices, a separate contract may be frozen before fitting a performance-covariate multi-state extension.",
+    "nondetection": "Nondetection must never be coded as death, dispersal or nonbreeding."
+  },
+  "decision": {
+    "current": "SCHEMA_AND_ACCESS_PENDING",
+    "GO": "Freeze exact column mappings and data-cleaning semantics in a second contract before any performance-movement coefficient is computed.",
+    "STOP": "If schema, colony mapping, performance denominator or minimum temporal overlap fails, do not substitute another movement endpoint or performance metric post hoc."
+  },
+  "claim_boundaries": [
+    "A conditional detected-breeder analysis would not estimate unconditional dispersal probabilities.",
+    "A performance effect would support performance-linked movement, not prove that birds cognitively use public information.",
+    "No claim may be made that Palmer and Ross Sea share the same mechanism unless the external test passes its frozen rule.",
+    "Do not replace chicks-per-pair with another performance metric after movement outcomes are opened."
+  ]
+}
