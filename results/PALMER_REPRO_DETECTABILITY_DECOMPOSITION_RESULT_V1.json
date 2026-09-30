@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-repro-detectability-decomposition-result-v1",
+  "validated_date": "2026-10-01",
+  "diagnostic_id": "mina-palmer-repro-detectability-decomposition-v1",
+  "status": "post_result_interpretation_diagnostic",
+  "common_panel": {
+    "island": "HUM",
+    "rows": 61,
+    "predictor_seasons": 15,
+    "benchmark_colony_wide_state_beta": 0.10402777305744605
+  },
+  "detectability": {
+    "repro_mean_state_observed_beta": 0.029059834671428836,
+    "residual_sd": 0.23742132156790444,
+    "gaussian_reference_se": 0.03523967125804862,
+    "common_panel_permutation": {
+      "permutations": 100000,
+      "null_q05": -0.05660927,
+      "null_q95": 0.05942418,
+      "null_q975": 0.06833241,
+      "observed_beta_one_sided_p": 0.23668763312366875,
+      "benchmark_beta_tail_probability": 0.00014999850001499985
+    },
+    "simulation": {
+      "simulations_per_effect": 2000,
+      "permutations_per_simulation": 9999,
+      "seed_family": [
+        20261001,
+        20261002,
+        20261003
+      ],
+      "power": {
+        "0.03": 0.2155,
+        "0.06": 0.534,
+        "0.10402777305744605": 0.898,
+        "0.15": 0.9955
+      },
+      "interpretation": "Conditional on the observed common-panel design, controls, REPRO predictor geometry and residual variance, an effect as large as the same-panel colony-wide-state coefficient would usually be detected."
+    }
+  },
+  "bootstrap_state_stability": {
+    "replicates": 5000,
+    "defined_replicates": 4976,
+    "undefined_replicates": 24,
+    "defined_fraction": 0.9952,
+    "correlation_with_original_repro_state": {
+      "median": 0.7992780965754851,
+      "mean": 0.7935946070616615,
+      "q025": 0.65317942,
+      "q975": 0.89716961
+    },
+    "monitored_nests_per_common_colony_season": {
+      "median": 10,
+      "minimum": 5,
+      "maximum": 38
+    },
+    "interpretation": "Monitored-nest sampling introduces substantial but not catastrophic state uncertainty. This bootstrap correlation is a stability diagnostic, not a formal reliability coefficient."
+  },
+  "production_decomposition": {
+    "identity": "mean creched chicks per monitored nest = proportion of monitored nests with >=1 creched chick x mean creched chicks among successful monitored nests",
+    "success_frequency": {
+      "role": "prespecified sensitivity from the frozen REPRO analysis; cannot rescue the primary endpoint",
+      "beta": 0.06788778857921648,
+      "one_sided_upper_p": 0.040519594804051956
+    },
+    "successful_nest_brood_size": {
+      "role": "post-hoc descriptive decomposition",
+      "rows": 60,
+      "predictor_seasons": 15,
+      "beta": -0.03300027165431712,
+      "permutations": 100000,
+      "one_sided_upper_p": 0.7791222087779123,
+      "null_q05": -0.06490632,
+      "null_q95": 0.06799539,
+      "null_q975": 0.0778115
+    }
+  },
+  "decision": {
+    "limited_panel_size_alone_is_unlikely_to_explain_nonreplication": true,
+    "monitored_nest_sampling_noise_remains_plausible_contributor": true,
+    "metric_mismatch_remains_material": true,
+    "generic_reproductive_success_interpretation_allowed": false,
+    "primary_repro_result_rescued": false
+  },
+  "ecological_interpretation": "The independent REPRO non-replication is not well explained by panel size alone: under the same design, a standardized effect as large as the colony-wide-state association had about 90% simulated detection probability. Nest-level resampling shows non-negligible measurement uncertainty, but the REPRO state remains moderately stable under bootstrap resampling. Decomposition does not support a positive contribution from brood size among successful nests; the positive any-creche sensitivity remains descriptive because the frozen mean-production primary endpoint failed. The safest interpretation is that the late-season colony-wide state and monitored-nest productivity capture different ecological information, with sampling noise contributing but unlikely to be the whole explanation.",
+  "claim_boundary": [
+    "All detectability, bootstrap and brood-size results are post-result diagnostics.",
+    "Do not use the any-creche sensitivity to rescue the failed primary REPRO endpoint.",
+    "Do not infer a public-information cue, visual chick cue, settlement behavior, or causal mechanism.",
+    "Do not treat bootstrap state stability as formal measurement reliability.",
+    "Do not claim that monitored-nest sampling noise is absent."
+  ]
+}
