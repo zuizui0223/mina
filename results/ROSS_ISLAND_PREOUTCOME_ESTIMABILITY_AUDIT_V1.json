@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-preoutcome-estimability-audit-v1",
+  "validated_date": "2026-09-30",
+  "status": "ESTIMABILITY_UNCERTAIN_BUT_NOT_STRUCTURALLY_IMPOSSIBLE",
+  "behavioral_rows_read": 0,
+  "movement_outcomes_opened": false,
+  "source": {
+    "citation": "Dugger et al. 2026, Frontiers in Ecology and Evolution 14:1868960",
+    "doi": "10.3389/fevo.2026.1868960"
+  },
+  "published_scale": {
+    "banded_chicks_total": 40955,
+    "banded_crozier": 9463,
+    "banded_royds": 6663,
+    "banded_bird": 14829,
+    "resighted_at_least_once": 9811,
+    "resighted_fraction": 0.24,
+    "prebreeder_movement_range": "0-12% depending on age and colony",
+    "typical_prospecting_context": "Published discussion reports prospecting below 3% except Royds pre-breeders ages 5-7 prospecting at Bird, where estimates peak at 8-12%.",
+    "moving_recruitment": "Published recruitment into a different colony is <0.10%, emphasizing that prospecting and final settlement movement are distinct processes."
+  },
+  "model_based_scale_context": {
+    "published_recruited_by_age14_per_1000": {
+      "ROYD": 98,
+      "BIRD": 196,
+      "CROZ": 136
+    },
+    "rough_scale_if_applied_to_reported_banded_totals": {
+      "ROYD": 653,
+      "BIRD": 2906,
+      "CROZ": 1287,
+      "total": 4846
+    },
+    "warning": "These are not observed eligible event counts. They apply model-derived hypothetical-cohort recruitment fractions to reported banding totals solely to assess order of magnitude before outcome access."
+  },
+  "frozen_gate_scale": {
+    "source_eligible_first_breeding_events_required": 100,
+    "multi_candidate_choice_events_required": 50,
+    "source_gate_as_fraction_of_rough_recruit_scale": 0.0206,
+    "choice_gate_as_fraction_of_rough_recruit_scale": 0.0103,
+    "choice_gate_as_fraction_of_all_ever_resighted_birds": 0.0051
+  },
+  "constraints_that_reduce_real_eligibility": [
+    "Primary choice events require PB observations in the two seasons preceding first breeding.",
+    "Candidate set must contain at least two actually visited Ross colonies and include the first breeding colony.",
+    "Prior-year three-colony performance must pass the >=20 interpretable breeder threshold.",
+    "Prior-year colony size must be complete for every candidate.",
+    "Detection-control support must be complete.",
+    "BIRD-containing candidate sets are excluded for first-breeding seasons 2014 onward.",
+    "MAPPPD size-control missing years and other frozen censoring rules can remove additional events."
+  ],
+  "decision": {
+    "lower_frozen_thresholds_before_data_access": false,
+    "increase_frozen_thresholds_before_data_access": false,
+    "reason": "Published sample scale makes the two-stage gate plausible but provides no reliable count of events satisfying the much narrower observed-prospecting candidate-set rule.",
+    "if_source_gate_fails": "STOP without fitting the choice model.",
+    "if_source_gate_passes_but_choice_gate_fails": "STOP without fitting the choice model.",
+    "posthoc_two_colony_or_longer_lookback_rescue": false
+  },
+  "claim_boundary": [
+    "Do not present the rough 4,846 scale as an observed number of recruits.",
+    "Do not infer prospective power or a probability of passing the gate from published transition-rate point estimates alone.",
+    "Do not relax the two-season lookback, candidate-set definition, or 100/50 thresholds after real data are opened."
+  ]
+}
