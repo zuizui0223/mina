@@ -116,7 +116,7 @@ def figure3(data:Path,out:Path):
     axes[0].set_title("A  Species-specific interaction")
     for i,r in enumerate(spp):
         axes[0].text(
-            .98,i+0.16,
+            .98,i,
             f"raw p={float(r['raw_p_value']):.3f}; Holm={float(r['holm_p_value']):.3f}",
             transform=axes[0].get_yaxis_transform(),
             ha="right",va="center",fontsize=7,
