@@ -272,7 +272,7 @@ def fit_conditional_logit(
     }
 
 
-def information_gate(arrays: ChoiceArrays) -> dict[str, object]:
+def information_gate(\n    arrays: ChoiceArrays,\n    *,\n    source_eligible_first_breeding_events: int,\n) -> dict[str, object]:
     destinations = set()
     for ei in range(len(arrays.event_ids)):
         oi = int(arrays.chosen_index[ei])
@@ -300,7 +300,7 @@ def permutation_test(
     seed: int = SEED,
     batch_size: int = 500,
 ) -> dict[str, object]:
-    gate = information_gate(arrays)
+    gate = information_gate(\n        arrays,\n        source_eligible_first_breeding_events=(\n            source_eligible_first_breeding_events\n        ),\n    )
     if not gate["pass"]:
         return {
             "estimable": False,
