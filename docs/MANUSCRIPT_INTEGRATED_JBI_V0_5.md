@@ -18,7 +18,7 @@
 
 **Main conclusions:** Local demographic history can be measurable in dynamic colony state without becoming a confirmed rule in static landscape descriptors for temporal demographic coupling. This is not evidence that state replaces place: earlier Antarctic work establishes geographic and environmental effects on colony distribution, size and long-term trends.
 
-**Keywords:** Adélie penguin; Antarctic Peninsula; breeding islands; colony state; demographic coupling; island ecology; scale; spatial concentration
+**Keywords:** Adélie penguin, Antarctic Peninsula, breeding islands, colony state, demographic coupling, island ecology, scale, spatial concentration
 
 ## Introduction
 
