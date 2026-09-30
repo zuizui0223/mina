@@ -21,6 +21,11 @@ COMPONENTS = {
     "BIRD": ["BRDN", "BRDM", "BRDS"],
     "CROZ": ["CRZE", "CRZW"],
 }
+PARENT_NAMES = {
+    "ROYD": "Cape Royds",
+    "BIRD": "Cape Bird",
+    "CROZ": "Cape Crozier",
+}
 
 
 def _load(path: Path, expected: str) -> pd.DataFrame:
@@ -57,11 +62,20 @@ def audit(root: Path) -> dict[str, object]:
     site_by_id = dict(
         zip(sites["site_id"].astype(str), sites["site_name"].astype(str))
     )
+    parent_ids: dict[str, str] = {}
+    for colony, name in PARENT_NAMES.items():
+        matches = sites[sites["site_name"].astype(str) == name]
+        if len(matches) != 1:
+            raise ValueError(
+                f"expected one parent site for {colony}={name!r}, observed {len(matches)}"
+            )
+        parent_ids[colony] = str(matches.iloc[0]["site_id"])
+
     wanted_ids = {
         component
         for components in COMPONENTS.values()
         for component in components
-    }
+    } | set(parent_ids.values())
     missing_site_ids = sorted(wanted_ids - set(site_by_id))
     if missing_site_ids:
         raise ValueError(f"missing MAPPPD site ids: {missing_site_ids!r}")
@@ -102,7 +116,7 @@ def audit(root: Path) -> dict[str, object]:
             ),
         }
 
-    # A component-year is source-unambiguous only with exactly one finite record.
+    # A site-year is source-unambiguous only with exactly one finite record.
     unambiguous: dict[str, set[int]] = {}
     ambiguous: dict[str, list[int]] = {}
     for sid in sorted(wanted_ids):
@@ -126,12 +140,34 @@ def audit(root: Path) -> dict[str, object]:
             )
         colony_complete[colony] = sorted(years or [])
 
-    common = (
+    component_common = (
         set(colony_complete["ROYD"])
         & set(colony_complete["BIRD"])
         & set(colony_complete["CROZ"])
     )
-    mark_window = sorted(y for y in common if 1996 <= y <= 2012)
+    component_mark_window = sorted(
+        y for y in component_common if 1996 <= y <= 2012
+    )
+
+    parent_complete: dict[str, list[int]] = {}
+    parent_ambiguous: dict[str, list[int]] = {}
+    for colony, sid in parent_ids.items():
+        x = local[local["site_id"] == sid]
+        counts = x.groupby("year_numeric", dropna=True).size()
+        parent_complete[colony] = sorted(
+            int(year) for year, n in counts.items() if int(n) == 1
+        )
+        parent_ambiguous[colony] = sorted(
+            int(year) for year, n in counts.items() if int(n) > 1
+        )
+    parent_common = (
+        set(parent_complete["ROYD"])
+        & set(parent_complete["BIRD"])
+        & set(parent_complete["CROZ"])
+    )
+    parent_mark_window = sorted(
+        y for y in parent_common if 1996 <= y <= 2012
+    )
 
     return {
         "schema_version": 1,
@@ -140,13 +176,23 @@ def audit(root: Path) -> dict[str, object]:
         "movement_behavioral_rows_read": 0,
         "chick_count_magnitudes_exported": False,
         "species_id": str(species_id),
-        "components": component,
+        "site_coverage": component,
+        "parent_site_ids": parent_ids,
         "ambiguous_component_years": ambiguous,
-        "complete_years_by_colony": colony_complete,
-        "common_complete_years_all_three": sorted(common),
-        "common_complete_prior_performance_years_1996_2012": mark_window,
-        "n_common_prior_performance_years_1996_2012": len(mark_window),
-        "three_colony_coverage_gate": bool(len(mark_window) >= 8),
+        "component_complete_years_by_colony": colony_complete,
+        "component_common_complete_years_all_three": sorted(component_common),
+        "component_common_prior_performance_years_1996_2012": component_mark_window,
+        "n_component_common_prior_performance_years_1996_2012": len(component_mark_window),
+        "parent_ambiguous_years": parent_ambiguous,
+        "parent_complete_years_by_colony": parent_complete,
+        "parent_common_complete_years_all_three": sorted(parent_common),
+        "parent_common_prior_performance_years_1996_2012": parent_mark_window,
+        "n_parent_common_prior_performance_years_1996_2012": len(parent_mark_window),
+        "component_three_colony_coverage_gate": bool(len(component_mark_window) >= 8),
+        "parent_three_colony_coverage_gate": bool(len(parent_mark_window) >= 8),
+        "three_colony_coverage_gate": bool(
+            len(component_mark_window) >= 8 or len(parent_mark_window) >= 8
+        ),
     }
 
 
