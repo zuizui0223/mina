@@ -126,7 +126,13 @@ def test_null_performance_preference_is_near_zero_with_detection_controls() -> N
 def test_permutation_test_detects_strong_synthetic_effect_v2() -> None:
     rows, perf = _synthetic(seed=21, beta_perf=2.0, events_per_year=18)
     arrays = prepare_choice_arrays(rows, perf)
-    result = permutation_test(\n        arrays,\n        source_eligible_first_breeding_events=len(arrays.event_ids) + 25,\n        permutations=999,\n        seed=20261001,\n        batch_size=111,\n    )
+    result = permutation_test(
+        arrays,
+        source_eligible_first_breeding_events=len(arrays.event_ids) + 25,
+        permutations=999,
+        seed=20261001,
+        batch_size=111,
+    )
     assert result["estimable"]
     assert result["observed"]["beta_performance"] > 1.0
     assert result["one_sided_upper_p"] <= 0.01
@@ -182,7 +188,13 @@ def test_information_gate_uses_frozen_thresholds() -> None:
         seed=4, beta_perf=1.0, events_per_year=10, years=10
     )
     arrays = prepare_choice_arrays(rows, perf)
-    gate = information_gate(\n        arrays, source_eligible_first_breeding_events=120\n    )\n    assert gate["eligible_first_breeding_events"] == 120\n    assert gate["events_with_at_least_two_observed_candidate_colonies"] == 100\n    assert gate["unique_first_breeding_years"] == 10\n    assert gate["pass"]
+    gate = information_gate(
+        arrays, source_eligible_first_breeding_events=120
+    )
+    assert gate["eligible_first_breeding_events"] == 120
+    assert gate["events_with_at_least_two_observed_candidate_colonies"] == 100
+    assert gate["unique_first_breeding_years"] == 10
+    assert gate["pass"]
 
 
 def test_rejects_multiple_chosen_options() -> None:
