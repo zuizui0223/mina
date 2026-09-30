@@ -1,77 +1,123 @@
-# Palmer history-dependent redistribution synthesis v1
+# Palmer history-dependent redistribution synthesis v2
 
 ## Current ecological result
 
-The Palmer analyses now support a narrower and more defensible mechanism-level statement than either “place determines colony fate” or “penguins follow public information.”
+The Palmer analyses support a narrower result than either “place determines colony fate” or “penguins follow public information.”
 
-The aggregate pattern is:
+The evidence chain is now:
 
 1. Palmer Adélie breeders progressively concentrate into fewer effective colony-code breeding groups during regional decline.
-2. Larger groups have higher chick production per pair relative to a frozen proportional-productivity null.
-3. Immediate pre-extinction chick-performance deficits are directionally negative but too sparse to confirm reproductive failure as the extinction trigger.
-4. Relative colony reproductive performance predicts later within-island redistribution after island-transition mean growth, prior group size and persistent colony identity are removed.
-5. This signal is supported at the denominator-separated lag-2 endpoint and at lag 3, but fades at lags 4–5; the predeclared 4–5-year recruitment-echo contrast is negative.
-6. Measured reproductive-performance state has only weak one-year colony-specific memory and no confirmed two- or three-year memory under the repaired frozen null.
-7. Past performance nevertheless retains incremental information about subsequent redistribution after measured next-year performance, prior size and colony identity are included.
+2. Larger breeding groups show higher colony-wide chick production per pair relative to a frozen proportional-productivity null.
+3. Immediate pre-extinction chick-state deficits are directionally negative but too sparse to confirm reproductive collapse as the proximate trigger of durable colony-code loss.
+4. The frozen **late-season colony-wide state** predicts later within-island redistribution after shared island-transition growth, prior group size and persistent colony identity are removed.
+5. The association remains at the denominator-separated lag-2 endpoint and at lag 3, but fades at lags 4–5; the predeclared 4–5-year recruitment-echo contrast is negative.
+6. The measured colony state has weak one-year colony-specific memory but no confirmed two- or three-year memory under the repaired eligible-colony null.
+7. Past late-season state retains incremental information about subsequent redistribution after measured next-year state, prior size and colony identity are included.
+8. An independent nest-level REPRO endpoint **does not replicate the primary association**: mean chicks reaching creche per monitored nest has a small, non-confirmatory lag-1 coefficient and a slightly negative lag-2 coefficient.
+9. On the exact Humble REPRO validation subset, however, the original colony-wide chick state remains strongly associated with next-year redistribution. The failed REPRO test therefore reflects a biological mismatch between metrics rather than simple loss of the original signal in the validation panel.
+10. A colony-level HUMPOP breeder-arrival test passed its schema gate but failed the prospectively frozen minimum-information gate before any performance-arrival coefficient was fit.
 
-The defensible synthesis is therefore:
+The defensible Palmer synthesis is therefore:
 
-> **Adélie breeding distributions are history-dependent: recent biological performance contains short-lived information about subsequent redistribution that is not reducible to static colony identity, current group size, or the measured persistence of reproductive performance itself.**
+> **Adélie breeding distributions are history-dependent: a late-season colony-wide biological state carries short-lived information about subsequent within-island redistribution that is not reducible to static colony identity, current group size, or the measured persistence of that state itself.**
 
-This is not yet an individual movement mechanism.
+The state should not be relabeled as generic reproductive success. It may integrate chick survival, spatial aggregation, social conditions, latent habitat state and observation-process components.
 
 ## What the pattern does and does not distinguish
 
-A simple, spatially general “the same colonies remain environmentally good for several years” explanation is insufficient because measured performance autocorrelation fades quickly and is spatially heterogeneous, whereas the bridge coefficient remains positive under every single-island exclusion.
+A simple, spatially general “the same colonies remain environmentally good for several years” explanation is insufficient as a complete description because measured state autocorrelation fades quickly and is spatially heterogeneous, whereas the bridge coefficient remains positive under every single-island exclusion.
 
-However, persistent local environment is not ruled out. Reproductive performance is an imperfect proxy for any latent environmental state, and conditioning on measured next-year performance is not causal mediation. An unmeasured environmental process or measurement error can leave information in past performance.
+Persistent local environment is nevertheless **not ruled out**. The measured colony state is an imperfect proxy for any latent environmental process, and the bridge model conditions on a post-t variable and is not causal mediation. Measurement error or an unmeasured persistent state can leave information in past state.
 
-Likewise, the result is compatible with—but does not identify—adult retention, breeding dispersal, prospecting, or public-information use. Colony-level counts cannot reveal which individuals moved.
+Likewise, Palmer colony counts do not identify the carrier of the history. Adult retention, breeding dispersal, immigration, prospecting and public-information use remain hypotheses, not results.
 
-## Direct individual-level gate
+## Why the REPRO result changes the wording
 
-Palmer census metadata documents standardized searches for returning previously banded penguins on Humble Island: two observers search every colony every two days throughout the field season. The public fledgling-weight table also contains band_number, island and colony identifiers. Historical Palmer publications report later adult resighting of individually banded fledglings.
+The independent REPRO validation used monitored nest histories rather than the colony-wide chick census.
 
-As of 2026-09-30, no public table containing joinable longitudinal resight records (band_number × year × location/status) has been identified in the Palmer/Rutgers ERDDAP/catalog, EDI-indexed search, or the other public sources audited here.
+Frozen primary result:
+- mean chicks reaching creche per monitored nest: beta = 0.0296, one-sided permutation p = 0.232;
+- lag 2: beta = -0.0164, p = 0.629.
 
-Therefore direct movement inference is **DATA-DEPENDENCY BLOCKED**.
+A prespecified binary-any-creche sensitivity was positive, but the failed primary endpoint prevents using it as a rescue.
 
-The frozen gate is:
+The key diagnostic is that the original colony-wide chick state and REPRO mean nest success are only weakly aligned. On the same Humble common panel, the original state remains predictive while the nest-level mean does not, and adding nest-level success barely changes the original state coefficient.
 
-contracts/PALMER_INDIVIDUAL_MOVEMENT_DATA_GATE_V1.json
+Therefore:
 
-No manuscript version should infer the carrier of the temporal history until that gate is opened with a qualifying resight source.
+- **allowed:** late-season colony-wide state predicts later redistribution;
+- **not allowed:** local nest reproductive success generally predicts redistribution;
+- **not allowed:** the Palmer result independently proves public-information use.
 
-## Analysis to run if a resight source becomes available
+## Independent individual-level mechanism gate: Ross Island
 
-### Adult retention / breeding dispersal
+A suitable independent mark–resight system has now been identified rather than merely hypothesized.
 
-For a breeding adult observed in colony i in year t, test whether relative reproductive performance of colony i in t predicts same-colony return versus observed breeding dispersal in t+1.
+USAP-DC provides:
+- resight dataset 601444, DOI 10.15784/601444;
+- banding dataset 601443, DOI 10.15784/601443;
+- Royds/Bird/Crozier known-age histories used in the 2026 25-year multistate analysis.
 
-The preferred framework is a multistate capture-recapture model because nondetection must not be equated with dispersal or mortality.
+Public READMEs were retrieved while reading **zero behavioral rows**. They document:
+- stable individual identifier: `Band`;
+- observation date: `Date`;
+- observed colony: CROZ / ROYD / BIRD / BEAU;
+- nest reproductive fields: `Eggs`, `Chicks`;
+- band-number ranges linked to natal colony and fledging cohort.
 
-### Prebreeder settlement
+Published state semantics can therefore be reconstructed prospectively:
+- age >=2, observed before first breeding and without egg/chick breeding evidence = pre-breeder;
+- first season with egg/chick breeding evidence = first breeder;
+- later observed nonbreeding seasons = non-breeder.
 
-If prospecting histories and first-breeding locations exist, test whether first settlement is biased toward colonies with high recent reproductive performance, while accounting for natal-colony affinity, age, sex and availability.
+The primary Ross test is frozen as **prospecting-to-first-breeding settlement choice**, not adult breeding dispersal, because published breeder movement is extremely rare while pre-breeder inter-colony movement is materially more common.
 
-A delayed natal cohort correlation is not an adequate substitute: the previously frozen 4–5-year recruitment-echo prediction was not supported.
+Candidate set:
+- colonies actually visited as a pre-breeder in the two seasons before first breeding.
+
+Chosen option:
+- first breeding colony.
+
+Prior-year colony state:
+- frozen banded-breeder chick-presence index, because the independent USAP-DC 600007 chick-count source covers Royds and Crozier but not Bird.
+
+Controls:
+- natal-colony indicator;
+- prior-year MAPPPD breeding-pair size.
+
+MAPPPD size reconstruction is frozen and viable for 21 common years in 1997–2019.
+
+### Current Ross stop rule
+
+The scientific schema gate is **GO_prebreeder_choice**, but execution remains blocked before behavioral data access because the exact CSV header has not been verified.
+
+The USAP-DC file API requires an API key and repository secret `USAP_DC_API_KEY` is absent. A schema-only workflow and fail-closed access guard are already installed.
+
+No full resight download is authorized until:
+1. the API key is added;
+2. the workflow reads only the exact CSV header;
+3. parser/header agreement is frozen in a new receipt;
+4. the existing model, state coding, performance definition and minimum-information gate remain unchanged.
+
+No Ross settlement direction, event count, coefficient or p-value has been observed.
 
 ## Manuscript-level wording
 
-Strong enough:
+Strong enough now:
 
-> Recent colony performance carries temporal information about subsequent within-island redistribution, producing a history-dependent breeding landscape during population decline.
+> Recent late-season colony state carries temporal information about subsequent within-island redistribution, producing a history-dependent breeding landscape during population decline.
 
-Not allowed:
+Still not allowed:
 
 - Penguins were shown to use public information.
 - Better-performing colonies attracted identifiable immigrants.
 - Adults left poor colonies.
 - Prospectors selected successful colonies.
+- Generic reproductive success predicts redistribution.
 - Static landscape no longer matters.
 
-The clean conceptual link to Paper 2 is not “state beats place.” It is:
+The clean conceptual link to Paper 2 is:
 
 > **Static landscape architecture did not yield a transferable macroecological response rule, whereas within Palmer, dynamically updated colony state contains short-lived information about where breeders subsequently accumulate.**
 
-That distinction preserves both the negative Paper 2 result and the known role of snow, geomorphology and other physical breeding conditions.
+Ross Island is the prospective individual-level test of the carrier of that history, not supporting evidence until its still-locked outcome gate is opened.
