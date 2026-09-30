@@ -131,7 +131,7 @@ def test_permutation_source_group_can_exceed_complete_case_panel() -> None:
                 "island": "HUM",
                 "colony": colony,
                 "season": season,
-                "state": float(idx - 2.5),
+                "state": float(idx - 2.5 + 0.05 * (season - 2000)),
                 "n_nests": 5,
                 "success": float(idx),
             })
@@ -141,7 +141,7 @@ def test_permutation_source_group_can_exceed_complete_case_panel() -> None:
                 "island": "HUM",
                 "colony": colony,
                 "season": season,
-                "state": float(idx - 2.5),
+                "state": float(idx - 2.5 + 0.05 * (season - 2000)),
                 "n_nests": 5,
                 "success": float(idx),
                 "predictor_group": f"HUM:{season}",
