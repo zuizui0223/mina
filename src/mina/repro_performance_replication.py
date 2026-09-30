@@ -66,9 +66,8 @@ def load_repro(
             raise ValueError(f"unexpected REPRO columns: {reader.fieldnames!r}")
         rows = list(reader)
 
-    out: list[dict[str, object]] = []
-    seen: set[tuple[int, str, str, str, str]] = set()
-    duplicate_keys = 0
+    parsed: list[tuple[tuple[int, str, str, str, str], dict[str, object]]] = []
+    key_counts: dict[tuple[int, str, str, str, str], int] = defaultdict(int)
     ineligible_no_lay = 0
     for row in rows:
         island = str(row["Island"]).strip()
@@ -86,12 +85,6 @@ def load_repro(
             ineligible_no_lay += 1
             continue
 
-        key = (season, island, colony, site, nest)
-        if key in seen:
-            duplicate_keys += 1
-            raise ValueError(f"duplicate eligible REPRO nest key: {key!r}")
-        seen.add(key)
-
         if success_kind == "creche":
             success = _event_observed(row["Chick 1 Creche Date"]) or _event_observed(
                 row["Chick 2 Creche Date"]
@@ -103,25 +96,31 @@ def load_repro(
         else:
             raise ValueError(success_kind)
 
-        out.append(
-            {
-                "season": season,
-                "island": island,
-                "colony": colony,
-                "site": site,
-                "nest": nest,
-                "success": int(success),
-            }
-        )
+        key = (season, island, colony, site, nest)
+        record = {
+            "season": season,
+            "island": island,
+            "colony": colony,
+            "site": site,
+            "nest": nest,
+            "success": int(success),
+        }
+        parsed.append((key, record))
+        key_counts[key] += 1
 
+    duplicate_keys = {key for key, count in key_counts.items() if count > 1}
+    out = [record for key, record in parsed if key not in duplicate_keys]
     return out, {
         "raw_rows": len(rows),
+        "eligible_rows_before_duplicate_exclusion": len(parsed),
+        "duplicate_eligible_nest_keys_excluded": len(duplicate_keys),
+        "rows_excluded_by_duplicate_rule": sum(
+            count for key, count in key_counts.items() if key in duplicate_keys
+        ),
         "eligible_nest_rows": len(out),
         "ineligible_rows_without_observed_lay_date": ineligible_no_lay,
-        "duplicate_eligible_nest_keys": duplicate_keys,
         "success_kind": success_kind,
     }
-
 
 def colony_performance(
     nests: list[dict[str, object]],
