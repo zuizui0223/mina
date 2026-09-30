@@ -1,0 +1,116 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-palmer-performance-memory-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-performance-memory-v1",
+  "implementation_repair": "mina-palmer-performance-memory-implementation-repair-v1",
+  "provenance_note": "The frozen contract predates outcome access. The first implementation incorrectly permuted predictor performance only among complete-case outcome rows. The repaired implementation follows the frozen eligible-colony null: S_i,t is permuted among all eligible colonies in the predictor island-season, while the future-missingness pattern remains fixed. Observed coefficients are unchanged; permutation p-values and null quantiles are superseded by the values below.",
+  "source": {
+    "adult_census": {
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+      "rows": 1489
+    },
+    "chick_census": {
+      "doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+      "sha256": "40485a328af51727e019c2cd99e4795c098499fef86a9d4b2af435a6de5373e0",
+      "usable_rows": 805
+    },
+    "performance_rows": 768
+  },
+  "execution": {
+    "workflow_run_id": 36663077347,
+    "workflow_conclusion": "success",
+    "head_sha": "f49a5034b8d4a3a564e1258868ba09ee020f6e37",
+    "artifact_id": 11075470344,
+    "artifact_digest": "sha256:5b318c886a4ce28901a85a707db0908fb592acd225a866af44893c87267e67fa",
+    "analysis_output_sha256": "c3ea2f770510b8bb03f7885495049d5732674e3cf5af20626688e37df930bb35",
+    "permutations_per_test": 100000
+  },
+  "performance_memory": {
+    "lag_1": {
+      "n_rows": 701,
+      "rho": 0.06393421233477087,
+      "one_sided_upper_p": 0.037759622403775964,
+      "supported": true
+    },
+    "lag_2": {
+      "n_rows": 651,
+      "rho": 0.05323287570282831,
+      "one_sided_upper_p": 0.07637923620763792,
+      "supported": false
+    },
+    "lag_3": {
+      "n_rows": 600,
+      "rho": 0.0479305596017772,
+      "one_sided_upper_p": 0.1106288937110629,
+      "supported": false
+    }
+  },
+  "bridge_diagnostic": {
+    "model": "lag-2 relative redistribution ~ past performance S_t + current performance S_t+1 + outcome-interval prior size + colony fixed effect",
+    "n_rows": 695,
+    "delta_past": 0.02961089769818018,
+    "delta_current_descriptive": 0.0809370849710761,
+    "one_sided_upper_p": 0.0015399846001539984,
+    "supported": true,
+    "interpretation": "Past performance retains incremental information about t+1 to t+2 redistribution after measured t+1 performance, current group size and persistent colony identity are included."
+  },
+  "sensitivities": {
+    "exclude_litchfield": {
+      "rho_1": 0.09699109386719294,
+      "rho_1_p": 0.0054299457005429945,
+      "delta_past": 0.031398618961570285,
+      "delta_past_p": 0.001879981200187998
+    },
+    "alternate_logratio_metric": {
+      "rho_1": 0.061849417754135425,
+      "rho_1_p": 0.04001959980400196,
+      "delta_past": 0.04217791512010338,
+      "delta_past_p": 0.00000999990000099999
+    },
+    "minimum_prior_size_2": {
+      "delta_past": 0.03174171944465425,
+      "delta_past_p": 0.0007299927000729993
+    },
+    "leave_one_island_out_observed": {
+      "CHR": {
+        "rho_1": 0.06767042916487025,
+        "delta_past": 0.03920848888738605
+      },
+      "COR": {
+        "rho_1": 0.06812906102416326,
+        "delta_past": 0.021784455910770436
+      },
+      "HUM": {
+        "rho_1": 0.07546491377400953,
+        "delta_past": 0.026792447652453883
+      },
+      "LIT": {
+        "rho_1": 0.09699109386719294,
+        "delta_past": 0.031398618961570285
+      },
+      "TOR": {
+        "rho_1": 0.0018419652464003013,
+        "delta_past": 0.031163743278846644
+      }
+    }
+  },
+  "decision": {
+    "frozen_pattern": "mixed_pattern",
+    "measured_performance_state_persists_one_year": true,
+    "measured_performance_state_persists_two_years_confirmed": false,
+    "past_performance_adds_information_beyond_current_performance": true,
+    "persistent_state_alone_ruled_out": false,
+    "individual_public_information_proven": false
+  },
+  "ecological_interpretation": "Relative reproductive performance has a weak one-year colony-specific memory, but the measured autocorrelation is no longer supported at two or three years under the frozen eligible-colony permutation null. In contrast, past performance retains a robust positive association with later within-island redistribution after measured t+1 performance, outcome-interval group size and persistent colony identity are included. The one-year performance memory is spatially heterogeneous and nearly disappears when Torgersen is excluded, whereas the bridge coefficient remains positive under every single-island exclusion. Thus a simple, spatially general persistent-state explanation is insufficient, but unmeasured persistent environment and measurement error remain viable; the carrier of the residual history cannot be identified from colony counts.",
+  "claim_boundary": [
+    "Do not claim the persistent local environment has been ruled out.",
+    "Do not claim that the bridge coefficient proves a distinct biological-memory mechanism; imperfect measurement of S_t+1 or an unmeasured persistent state can leave incremental information in S_t.",
+    "Do not interpret the bridge model as causal mediation because S_t+1 is post-t.",
+    "Do not infer individual public-information use, prospecting, immigration, retention or breeding dispersal from colony counts alone.",
+    "The Torgersen leave-one-out pattern is a prespecified sensitivity showing spatial heterogeneity in performance autocorrelation, not proof that terrain or snow causes that autocorrelation.",
+    "The first complete-case-only permutation receipt is superseded by this repaired eligible-colony null."
+  ]
+}

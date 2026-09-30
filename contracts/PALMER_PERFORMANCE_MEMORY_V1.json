@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-performance-memory-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_performance_memory_or_bridge_outcomes_are_computed",
+  "inherits": {
+    "performance_definition": "contracts/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2.json",
+    "season_key": "contracts/PALMER_CHICK_SEASON_KEY_RESOLUTION_V1.json",
+    "source_data": "same pinned adult and chick census snapshots used in PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2"
+  },
+  "known_before_freeze": [
+    "Relative colony reproductive performance predicts later within-island redistribution at lag 2 under the repaired fixed specification.",
+    "The lag profile fades by years 4-5 and the preregistered delayed recruitment-echo contrast is negative.",
+    "Stable colony identity and outcome-interval prior size are already controlled in the lag model.",
+    "This contract is a new mechanism-discrimination analysis; the performance-memory and bridge coefficients have not been computed before freezing this file."
+  ],
+  "competing_explanations": {
+    "persistent_local_state": "A colony-specific environmental or habitat state persists across seasons, causing both high reproductive performance and later demographic growth.",
+    "biological_memory": "A transient reproductive-performance signal affects later settlement, retention, breeding dispersal, or another biological process even after the original reproductive state itself has decayed."
+  },
+  "literature_boundary": [
+    "Adult Adelie breeding dispersal can increase under environmental instability despite generally high breeding philopatry (Dugger et al. 2010, PNAS).",
+    "Landscape and snow conditions affect Palmer-area Adelie sub-colony persistence (Cimino et al. 2025, Landscape Ecology).",
+    "Therefore neither social redistribution nor persistent local environment may be assumed a priori."
+  ],
+  "performance_state": {
+    "symbol": "S_i,t",
+    "definition": "Exactly the within-island-season standardized Pearson residual from the proportional chick-production expectation frozen in PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_V2.",
+    "no_redefinition": true
+  },
+  "P3_performance_memory": {
+    "question": "Does relative colony reproductive performance itself persist across years after stable colony identity is removed?",
+    "lags": [1, 2, 3],
+    "model": "S_i,t+h = rho_h * S_i,t + island:colony_code fixed effect + error, fit separately for h=1,2,3.",
+    "eligibility": "Exact same island and raw colony_code must have eligible performance states at t and t+h.",
+    "primary_environmental_persistence_endpoint": {
+      "lag": 1,
+      "prediction": "rho_1 > 0",
+      "rationale": "The lag-2 redistribution outcome occurs during t+1 -> t+2; a persistent local-state explanation should leave detectable memory in reproductive performance at t+1."
+    },
+    "secondary": [
+      "rho_2 > 0 would support longer persistence compatible with the lag-3 redistribution association.",
+      "rho_3 is descriptive relative to the observed fading redistribution profile."
+    ],
+    "inference": {
+      "null": "Within each predictor island-season t, colony assignment of S_i,t is exchangeable conditional on the observed future performance panel and colony fixed effects.",
+      "permutation": "Permute predictor S_i,t among eligible colonies within island-season; preserve missingness, future S values and colony identities.",
+      "permutations": 100000,
+      "seed_base": 20260950,
+      "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+      "alpha": 0.05
+    }
+  },
+  "P4_bridge_diagnostic": {
+    "question": "Does S_i,t retain incremental information for redistribution during t+1 -> t+2 after contemporaneous S_i,t+1 is included?",
+    "panel": "Start from the exact lag-2 redistribution panel frozen in V2 and retain rows with an eligible S_i,t+1 value for the same island and colony.",
+    "model": "R_i,t+1 = delta_past * S_i,t + delta_current * S_i,t+1 + gamma * z_log_size_i,t+1 + island:colony_code fixed effect + error.",
+    "primary_statistic": "delta_past",
+    "prediction_under_biological_memory": "delta_past > 0",
+    "inference": {
+      "null": "Past performance carries no incremental colony-specific information once current performance, prior size and persistent colony identity are fixed.",
+      "permutation": "Permute S_i,t within its predictor island-season while holding S_i,t+1, the outcome and all controls fixed.",
+      "permutations": 100000,
+      "seed": 20260960,
+      "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+      "alpha": 0.05
+    },
+    "minimum_rows": 300,
+    "important_caveat": "S_i,t+1 is a post-t variable. This bridge model is a mechanism diagnostic, not a causal mediation analysis; conditioning on it can introduce post-treatment bias."
+  },
+  "decision_matrix": {
+    "persistent_state_pattern": "rho_1 > 0 with p <= 0.05 and delta_past is not supported. Persistent local environmental/state memory remains a sufficient explanation for the lag-2 association.",
+    "biological_memory_compatible_pattern": "rho_1 is not supported but delta_past > 0 with p <= 0.05. The observed lag-2 signal outlives measured reproductive-performance state, weakening a simple persistent-state explanation.",
+    "mixed_pattern": "rho_1 and delta_past are both supported. Both persistent local state and biological memory remain viable.",
+    "neither": "Neither endpoint is supported. Do not assign the lag-2 association to either mechanism."
+  },
+  "sensitivities": {
+    "alternate_performance_metric": "Repeat P3 rho_1 and P4 bridge using the frozen logratio performance metric from V2.",
+    "exclude_litchfield": "Repeat primary P3 and P4 excluding LIT.",
+    "minimum_prior_size_2": "Repeat P4 requiring outcome-interval start adult_pairs >= 2.",
+    "leave_one_island_out": "Report observed rho_1 and delta_past after excluding each island in turn."
+  },
+  "claim_boundaries": [
+    "Do not claim individual public-information use, prospecting, immigration or breeding dispersal from colony counts alone.",
+    "Do not interpret a null rho_1 as proof that time-varying colony-specific environmental conditions do not exist.",
+    "Do not interpret P4 as causal mediation because S_t+1 is post-t.",
+    "Do not tune performance definition, memory lag, bridge controls, exclusions, alpha or permutation scheme after outcomes are opened.",
+    "A biological-memory-compatible result identifies a temporal-information pattern, not the identity of the animals carrying that information."
+  ]
+}
