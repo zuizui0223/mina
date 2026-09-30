@@ -424,34 +424,26 @@ before any future inclusion.
 
 ---
 
-## Supplementary figure plan
+## Additional reproducibility material
 
-- **Figure S1:** Palmer island synchrony matrix and full trajectories.
-- **Figure S2:** raw \(N_{\mathrm{eff}}\) trajectories under all count-error
-  null variants.
-- **Figure S3:** effective-colony-number association, circular-shift and
-  year-block prediction diagnostics.
-- **Figure S4:** hierarchical beta decomposition and count-error sensitivity.
-- **Figure S5:** Paper 2 pre-outcome gate flowchart.
-- **Figure S6:** direct/image overlap and timing sensitivity.
-- **Figure S7:** species-specific marginal-slope geometry.
-- **Figure S8:** 2 km Shannon sensitivity.
-- **Figure S9:** full multi-radius null distributions.
-- **Figure S10:** full retrospective detectable-effect curve with Wilson
-  intervals.
-- **Figure S11:** reproductive-denominator semantics audit.
+No additional Supplementary figure is required for the scientific claims in
+this version. The complete diagnostic outputs underlying the summarized
+secondary analyses are preserved as committed JSON receipts and reproducible
+workflow artifacts in the archived analysis repository. In particular, the
+repository retains:
 
-## Supplementary table plan
+- full Palmer count-error null distributions;
+- N_eff association and permutation diagnostics;
+- hierarchical beta/count-error outputs;
+- the complete Paper 2 gate pass/fail history;
+- observation-overlap and timing-calibration outputs;
+- species-specific marginal-slope fits;
+- the complete 9,999-permutation radius-null distribution; and
+- the full retrospective detectable-effect grid.
 
-- **Table S1:** frozen data sources, fingerprints and analysis windows.
-- **Table S2:** Palmer concentration slopes and error-model p-values.
-- **Table S3:** pre-outcome Paper 2 gate history.
-- **Table S4:** detectable-effect grid.
-- **Table S5:** Paper 2 primary, secondary and observation-sensitivity
-  coefficients.
-- **Table S6:** radius/Shannon sensitivity values and joint-null probabilities.
-- **Table S7:** reproductive-denominator semantics and island-specific
-  sensitivity.
+This choice keeps the submitted Supporting Information focused on methods,
+numerical audit tables and inferential boundaries rather than duplicating
+development diagnostics already available in machine-readable form.
 
 ### Supplement terminal rule
 
