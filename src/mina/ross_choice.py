@@ -272,21 +272,33 @@ def fit_conditional_logit(
     }
 
 
-def information_gate(\n    arrays: ChoiceArrays,\n    *,\n    source_eligible_first_breeding_events: int,\n) -> dict[str, object]:
+def information_gate(
+    arrays: ChoiceArrays,
+    *,
+    source_eligible_first_breeding_events: int,
+) -> dict[str, object]:
     destinations = set()
     for ei in range(len(arrays.event_ids)):
         oi = int(arrays.chosen_index[ei])
         destinations.add(COLONIES[int(arrays.colony_index[ei, oi])])
-    n_events = len(arrays.event_ids)
+
+    choice_events = len(arrays.event_ids)
+    source_events = int(source_eligible_first_breeding_events)
+    if source_events < choice_events:
+        raise ValueError(
+            "source eligible first-breeding count cannot be smaller than "
+            "multi-candidate choice-event count"
+        )
+
     years = set(int(x) for x in arrays.first_breeding_seasons)
     return {
-        "eligible_first_breeding_events": n_events,
-        "events_with_at_least_two_observed_candidate_colonies": n_events,
+        "eligible_first_breeding_events": source_events,
+        "events_with_at_least_two_observed_candidate_colonies": choice_events,
         "unique_first_breeding_years": len(years),
         "destination_colonies": sorted(destinations),
         "pass": bool(
-            n_events >= 100
-            and n_events >= 50
+            source_events >= 100
+            and choice_events >= 50
             and len(years) >= 8
             and len(destinations) >= 2
         ),
@@ -296,11 +308,17 @@ def information_gate(\n    arrays: ChoiceArrays,\n    *,\n    source_eligible_fi
 def permutation_test(
     arrays: ChoiceArrays,
     *,
+    source_eligible_first_breeding_events: int,
     permutations: int = N_PERMUTATIONS,
     seed: int = SEED,
     batch_size: int = 500,
 ) -> dict[str, object]:
-    gate = information_gate(\n        arrays,\n        source_eligible_first_breeding_events=(\n            source_eligible_first_breeding_events\n        ),\n    )
+    gate = information_gate(
+        arrays,
+        source_eligible_first_breeding_events=(
+            source_eligible_first_breeding_events
+        ),
+    )
     if not gate["pass"]:
         return {
             "estimable": False,
