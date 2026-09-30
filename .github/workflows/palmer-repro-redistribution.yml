@@ -1,0 +1,66 @@
+name: palmer-repro-redistribution
+
+on:
+  push:
+    branches:
+      - validation/palmer-repro-redistribution-v1
+    paths:
+      - "scripts/fetch_pal_repro.py"
+      - "src/mina/repro_redistribution.py"
+      - "tests/test_repro_redistribution.py"
+      - "contracts/PALMER_REPRO_REDISTRIBUTION_V1.json"
+      - "contracts/PALMER_REPRO_CRECHE_SEMANTIC_REPAIR_V1.json"
+      - ".github/workflows/palmer-repro-redistribution.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen tests
+        run: pytest -q tests/test_repro_redistribution.py
+      - name: Fetch frozen Palmer sources
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+          python scripts/fetch_pal_repro.py build/repro.csv
+      - name: Run independent REPRO redistribution validation
+        run: |
+          python -m mina.repro_redistribution \
+            --adult-census build/adelie_census.csv \
+            --chicks build/adelie_chicks.csv \
+            --repro build/repro.csv \
+            --out build/repro_redistribution.json \
+            --permutations 100000
+      - name: Print receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/repro_redistribution.json").read_text())
+          print("source_counts=",json.dumps(x["source_counts"],sort_keys=True))
+          p=x["primary_lag1"]
+          print("primary_gate=",json.dumps(p["information_gate"],sort_keys=True))
+          print("primary_estimable=",p["estimable"])
+          if p["estimable"]:
+              print("primary_test=",json.dumps(p["test"],sort_keys=True))
+              s=x["secondary_lag2"]
+              print("secondary_lag2=",json.dumps(s.get("test") if s and s.get("estimable") else s,sort_keys=True))
+              for name,v in x["sensitivities"].items():
+                  print(name,json.dumps(v,sort_keys=True))
+              print("convergence=",json.dumps(x["convergent_validity"],sort_keys=True))
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-repro-redistribution
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/repro.csv
+            build/repro_redistribution.json
