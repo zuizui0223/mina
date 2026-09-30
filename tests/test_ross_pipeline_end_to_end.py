@@ -5,12 +5,15 @@ import math
 import numpy as np
 
 from mina.ross_choice import permutation_test, prepare_choice_arrays
+from mina.ross_detection import build_resight_day_proxy
 from mina.ross_states import (
     ROSS_COLONIES,
     annualize_resights,
     banded_breeder_performance,
     build_choice_rows,
-    first_breeding_choice_events,
+    canonical_detection_observations,
+    first_breeding_source_events,
+    source_eligible_first_breeding_events,
 )
 
 
@@ -128,11 +131,31 @@ def test_raw_schema_to_choice_model_end_to_end_synthetic() -> None:
     for year in range(2000, 2012):
         assert set(performance[year]) == set(ROSS_COLONIES)
 
-    events = first_breeding_choice_events(annual)
-    assert len(events) == 250
-    assert all(len(event["candidate_colonies"]) == 3 for event in events)
+    source_events = first_breeding_source_events(annual)
+    focal_source_events = [
+        event for event in source_events if int(event["band"]) >= 40000
+    ]
+    assert len(focal_source_events) == 250
+    assert all(
+        len(event["candidate_colonies"]) == 3
+        for event in focal_source_events
+    )
 
-    rows, row_audit = build_choice_rows(events, performance, sizes)
+    detection_observations = canonical_detection_observations(observations)
+    effort, dropped_effort = build_resight_day_proxy(
+        detection_observations, focal_source_events
+    )
+    assert dropped_effort == {}
+    assert len(effort) == 250
+
+    eligible_source, source_audit = source_eligible_first_breeding_events(
+        focal_source_events, performance, sizes, effort
+    )
+    assert source_audit["retained_source_events"] == 250
+
+    rows, row_audit = build_choice_rows(
+        eligible_source, performance, sizes, effort
+    )
     assert row_audit["retained_events"] == 250
     assert row_audit["retained_option_rows"] == 750
     assert row_audit["excluded_events"] == {}
@@ -140,6 +163,7 @@ def test_raw_schema_to_choice_model_end_to_end_synthetic() -> None:
     arrays = prepare_choice_arrays(rows, performance)
     result = permutation_test(
         arrays,
+        source_eligible_first_breeding_events=len(eligible_source),
         permutations=999,
         seed=20261001,
         batch_size=111,
