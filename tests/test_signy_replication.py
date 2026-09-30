@@ -1,7 +1,10 @@
 import math
 import unittest
 
-import pandas as pd
+try:
+    import pandas as pd
+except ModuleNotFoundError as exc:
+    raise unittest.SkipTest("Signy replication tests require pandas") from exc
 
 from mina.signy_replication import (
     build_signy_rows,
