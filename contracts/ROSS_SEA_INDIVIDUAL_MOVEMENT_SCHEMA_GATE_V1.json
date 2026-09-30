@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "gate_id": "mina-ross-sea-individual-movement-schema-gate-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_raw_individual_values_are_opened",
+  "role": "independent individual-level mechanism gate; separate from the locked Pygoscelis colony-history panel",
+  "sources_to_audit": [
+    {
+      "dataset": "Adelie penguin resighting data 1997-2021 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science",
+      "usap_dc_id": "601444",
+      "doi": "10.15784/601444"
+    },
+    {
+      "dataset": "Adelie penguin banding data 1994-2021 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science",
+      "usap_dc_id": "601443",
+      "doi": "10.15784/601443"
+    },
+    {
+      "dataset": "Adelie penguin chick counts 1997-2009 from the California Avian Data Center hosted by Point Reyes Bird Observatory Conservation Science",
+      "usap_dc_id": "600007",
+      "role": "candidate local reproductive-output source only; chick counts alone are not accepted as colony performance unless an alignable adult breeding-pair denominator is found"
+    }
+  ],
+  "known_from_metadata_before_freeze": [
+    "The Ross/Beaufort program explicitly studies geographic structure, colony growth, emigration and immigration.",
+    "Longitudinal resighting data span 1997-2021 and banding data span 1994-2021.",
+    "The resight dataset is classified as mark-recapture monitoring.",
+    "A separate chick-count dataset spans 1997-2009.",
+    "No eligible repeated local adult-abundance source has yet been identified by the frozen external-panel search."
+  ],
+  "schema_only_stage": {
+    "allowed": [
+      "file names, sizes, checksums and formats",
+      "column names and metadata descriptions",
+      "data types",
+      "documented missing-value codes",
+      "row counts",
+      "temporal coverage",
+      "documented colony/site/location code meanings",
+      "whether a stable individual identifier exists",
+      "whether observation year/date exists",
+      "whether natal/banding colony exists",
+      "whether resight colony/location exists",
+      "whether breeding status, age, sex, nest status or individual reproductive outcome fields exist",
+      "whether repeated local adult abundance and reproductive performance can be aligned from a public companion dataset"
+    ],
+    "prohibited": [
+      "inspection of individual resight histories",
+      "movement-rate calculation",
+      "same-colony return proportions",
+      "association of any prior success measure with movement",
+      "selection of years, individuals or colonies based on observed movement or reproductive outcomes"
+    ]
+  },
+  "gate_decisions": {
+    "GO_PERFORMANCE_LINKED_MOVEMENT": "Require stable individual ID; season/year; origin/prior colony; subsequent observed colony/location; and an independently interpretable local colony-performance state measured before movement. The performance state must use a documented reproductive denominator or a directly supplied reproductive-success metric, not raw chick count alone.",
+    "GO_MOVEMENT_ONLY_DATA_DEPENDENCY": "Individual ID and longitudinal colony/location are sufficient for movement inference, but no valid colony-performance predictor is available. Freeze the source as a future dependency; do not test the performance mechanism.",
+    "GO_OWN_SUCCESS_DISPERSAL_SEPARATE_HYPOTHESIS": "If individual-level own breeding success and subsequent location exist but no colony-level public-performance source exists, this may support a separate own-success dispersal hypothesis only after a new contract is frozen before values are opened.",
+    "STOP": "Stable individual linkage or longitudinal location/status cannot be established from public data."
+  },
+  "frozen_analysis_if_GO_PERFORMANCE_LINKED_MOVEMENT": {
+    "population": "Individuals observed as breeding adults at a known local colony in season t and belonging to a season t+1 observation occasion with explicit detection structure.",
+    "performance_predictor": "Within site/season relative colony reproductive performance measured in t using a frozen, source-defined success metric independent of subsequent movement.",
+    "primary_response": "multi-state transition from breeding colony at t to same colony versus another observed breeding colony at t+1, with nondetection treated as an observation process rather than dispersal or mortality",
+    "preferred_model": "multi-state capture-recapture / hidden-state model with colony state and detection probability; conditional-on-resighting logistic analysis is allowed only as a prespecified sensitivity",
+    "primary_prediction": "higher prior colony performance increases same-colony retention / decreases transition to another breeding colony",
+    "required_controls_if_available": [
+      "age or breeding experience",
+      "sex",
+      "year",
+      "individual random effect or repeated-history structure",
+      "origin/natal colony",
+      "search effort / detection process"
+    ],
+    "natal_settlement_secondary": {
+      "eligibility": "known-age birds with natal colony and first confirmed breeding colony",
+      "question": "Does first breeding settlement favor colonies with higher recent reproductive performance after accounting for natal affinity and availability?",
+      "boundary": "This is distinct from the previously rejected 4-5-year aggregate recruitment-echo prediction."
+    }
+  },
+  "minimum_information_if_GO": {
+    "movement_primary": "At least 100 individuals with >=2 breeding-season observations and at least 20 observed between-colony transitions; otherwise STOP movement-effect inference without lowering thresholds.",
+    "performance_alignment": "At least 8 predictor seasons and >=3 candidate local colonies per season with valid performance states.",
+    "no_threshold_rescue": true
+  },
+  "claim_boundaries": [
+    "Nondetection is never coded as death or dispersal without an explicit detection model.",
+    "Raw chick count alone is not accepted as colony reproductive performance because colony size can generate the count.",
+    "Do not infer public-information use merely from movement toward successful colonies; persistent habitat quality remains an alternative.",
+    "Do not inspect movement histories before the schema gate decision is committed.",
+    "Do not combine this individual-level lane with the colony-level cross-system Stouffer test."
+  ]
+}
