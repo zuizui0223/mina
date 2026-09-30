@@ -26,6 +26,25 @@ def _load(path: Path, expected: str) -> pd.DataFrame:
     return frame
 
 
+def _coverage(local: pd.DataFrame) -> dict[str, object]:
+    years = sorted(set(int(x) for x in local["year_numeric"].dropna()))
+    per_year = (
+        local.groupby("year_numeric", dropna=True)
+        .size()
+        .sort_index()
+        .to_dict()
+    )
+    return {
+        "n_nest_count_records": int(len(local)),
+        "year_min": min(years) if years else None,
+        "year_max": max(years) if years else None,
+        "distinct_years": len(years),
+        "records_per_year": {str(int(k)): int(v) for k, v in per_year.items()},
+        "accuracy_values": sorted(set(str(x) for x in local["accuracy"].dropna().unique())),
+        "vantage_values": sorted(set(str(x) for x in local["vantage"].dropna().unique())),
+    }
+
+
 def audit(root: Path, out_dir: Path) -> dict[str, object]:
     data = root / "data"
     sites = _load(data / "sites.rda", "sites")
@@ -55,41 +74,45 @@ def audit(root: Path, out_dir: Path) -> dict[str, object]:
     exact = candidates[candidates["site_name"].isin(TARGET_NAMES)].copy()
     exact.to_csv(out_dir / "exact_sites.csv", index=False)
 
-    focal = obs[
-        obs["site_id"].isin(exact["site_id"])
+    candidate_obs = obs[
+        obs["site_id"].isin(candidates["site_id"])
         & (obs["species_id"] == adelie.iloc[0]["species_id"])
     ].copy()
-    focal.to_csv(out_dir / "ross_adelie_obs.csv", index=False)
+    candidate_obs.to_csv(out_dir / "candidate_ross_adelie_obs.csv", index=False)
 
-    nests = focal[(focal["type"] == "nests") & focal["count"].notna()].copy()
-    nests["year_numeric"] = pd.to_numeric(nests["year"], errors="coerce")
+    candidate_nests = candidate_obs[
+        (candidate_obs["type"] == "nests") & candidate_obs["count"].notna()
+    ].copy()
+    candidate_nests["year_numeric"] = pd.to_numeric(
+        candidate_nests["year"], errors="coerce"
+    )
+    candidate_nests.to_csv(
+        out_dir / "candidate_ross_adelie_nest_counts.csv", index=False
+    )
+
+    focal = candidate_obs[candidate_obs["site_id"].isin(exact["site_id"])].copy()
+    focal.to_csv(out_dir / "ross_adelie_obs.csv", index=False)
+    nests = candidate_nests[
+        candidate_nests["site_id"].isin(exact["site_id"])
+    ].copy()
     nests.to_csv(out_dir / "ross_adelie_nest_counts.csv", index=False)
 
     coverage: dict[str, object] = {}
     for _, site in exact.iterrows():
         sid = site["site_id"]
-        name = str(site["site_name"])
         local = nests[nests["site_id"] == sid].copy()
-        years = sorted(set(int(x) for x in local["year_numeric"].dropna()))
-        per_year = (
-            local.groupby("year_numeric", dropna=True)
-            .size()
-            .sort_index()
-            .to_dict()
-        )
-        coverage[name] = {
+        coverage[str(site["site_name"])] = {
             "site_id": str(sid),
-            "n_nest_count_records": int(len(local)),
-            "year_min": min(years) if years else None,
-            "year_max": max(years) if years else None,
-            "distinct_years": len(years),
-            "records_per_year": {str(int(k)): int(v) for k, v in per_year.items()},
-            "accuracy_values": sorted(
-                set(str(x) for x in local["accuracy"].dropna().unique())
-            ),
-            "vantage_values": sorted(
-                set(str(x) for x in local["vantage"].dropna().unique())
-            ),
+            **_coverage(local),
+        }
+
+    component_coverage: dict[str, object] = {}
+    for _, site in candidates.iterrows():
+        sid = site["site_id"]
+        local = candidate_nests[candidate_nests["site_id"] == sid].copy()
+        component_coverage[str(site["site_name"])] = {
+            "site_id": str(sid),
+            **_coverage(local),
         }
 
     common_years = None
@@ -110,11 +133,15 @@ def audit(root: Path, out_dir: Path) -> dict[str, object]:
             ["site_id", "site_name"]
         ].astype(str).to_dict(orient="records"),
         "exact_site_count": int(len(exact)),
-        "exact_sites": exact[["site_id", "site_name"]].astype(str).to_dict(orient="records"),
+        "exact_sites": exact[
+            ["site_id", "site_name"]
+        ].astype(str).to_dict(orient="records"),
         "adelie_species_id": str(adelie.iloc[0]["species_id"]),
         "n_focal_observations": int(len(focal)),
         "n_focal_nest_counts": int(len(nests)),
+        "n_candidate_component_nest_counts": int(len(candidate_nests)),
         "coverage": coverage,
+        "candidate_component_coverage": component_coverage,
         "common_nest_count_years_all_three": sorted(common_years or []),
         "n_common_years_all_three": len(common_years or []),
         "exact_name_gate_pass": bool(len(exact) == len(TARGET_NAMES)),
