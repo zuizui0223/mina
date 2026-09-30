@@ -91,5 +91,26 @@ class OfficialZipTests(unittest.TestCase):
             self.assertIn("Total number of pairs",frame.columns)
 
 
+    def test_unquoted_comment_commas_are_repaired_only_at_final_field(self):
+        raw=(
+            "Species,Colony,Season,Date pair count,Total number of pairs,"
+            "Date chick count,Total number of chicks,Comments\n"
+            "Adelie,A2,1996-1997,15/12/1996,100,20/01/1997,50,"
+            "snow, meltwater, low area\n"
+        )
+        with tempfile.TemporaryDirectory() as td:
+            path=Path(td)/"signy.zip"
+            with zipfile.ZipFile(path,"w") as z:
+                z.writestr("signy_adelie_breeding_success.csv",raw)
+                z.writestr("GPS Adelie Colony.csv","Latitude,Longitude\n-60.7,-45.6\n")
+            frame,meta=read_official_zip(path)
+            self.assertEqual(frame.loc[0,"Total number of pairs"],"100")
+            self.assertEqual(frame.loc[0,"Total number of chicks"],"50")
+            self.assertEqual(frame.loc[0,"Comments"],"snow,meltwater,low area")
+            self.assertEqual(meta["selected_overflow_comment_rows_repaired"],1)
+            out=audit_table(frame)
+            self.assertEqual(out["status"],"support_audited")
+
+
 if __name__=="__main__":
     unittest.main()
