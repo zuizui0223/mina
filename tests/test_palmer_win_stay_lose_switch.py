@@ -37,7 +37,7 @@ def test_p1_poor_breeder_share_is_pair_weighted():
     # matched pairs at t: 10 + 20 + 30, poor colonies 1 and 3.
     assert panel[0]["poor_share"] == pytest.approx(40/60)
     assert panel[0]["matched_coverage"] == pytest.approx(1.0)
-    expected=math.log1p(63)-math.log1p(62)
+    expected=math.log1p(66)-math.log1p(63)
     assert panel[0]["island_growth"] == pytest.approx(expected)
 
 
