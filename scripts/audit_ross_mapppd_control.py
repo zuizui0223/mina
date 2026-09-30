@@ -93,10 +93,12 @@ def audit(root: Path, out_dir: Path) -> dict[str, object]:
         }
 
     common_years = None
-    for name in TARGET_NAMES:
-        local = nests[nests["site_id"] == exact.loc[exact["site_name"] == name, "site_id"].iloc[0]]
-        years = set(int(x) for x in local["year_numeric"].dropna())
-        common_years = years if common_years is None else common_years & years
+    if len(exact) == len(TARGET_NAMES):
+        for name in TARGET_NAMES:
+            sid = exact.loc[exact["site_name"] == name, "site_id"].iloc[0]
+            local = nests[nests["site_id"] == sid]
+            years = set(int(x) for x in local["year_numeric"].dropna())
+            common_years = years if common_years is None else common_years & years
 
     return {
         "schema_version": 1,
@@ -115,6 +117,7 @@ def audit(root: Path, out_dir: Path) -> dict[str, object]:
         "coverage": coverage,
         "common_nest_count_years_all_three": sorted(common_years or []),
         "n_common_years_all_three": len(common_years or []),
+        "exact_name_gate_pass": bool(len(exact) == len(TARGET_NAMES)),
     }
 
 
