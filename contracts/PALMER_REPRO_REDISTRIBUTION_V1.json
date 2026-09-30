@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-repro-redistribution-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_repro_outcome_values_are_opened",
+  "paper_role": "independent reproductive-performance validation of history-dependent colony redistribution",
+  "parent_results": [
+    "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+    "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json"
+  ],
+  "source_candidate": {
+    "repository": "PAL-LTER/pal-seabirds",
+    "repository_commit": "523e74a064e2f1153704a32731631cbff4395e73",
+    "dataset_block": "93 Adelie Penguin Reproductive Success",
+    "raw_source": "REPRO.xls and annual archive revisions",
+    "schema_known_from_official_conversion_code": [
+      "studyName",
+      "Island",
+      "Colony",
+      "Site Number",
+      "Nest Number",
+      "Egg 1 Lay Date",
+      "Egg 2 Lay Date",
+      "Egg 1 Loss Date",
+      "Egg 2 Loss Date",
+      "Chick 1 Hatch Date",
+      "Chick 2 Hatch Date",
+      "Chick 1 Loss Date",
+      "Chick 2 Loss Date",
+      "Chick 1 Creche Date",
+      "Chick 2 Creche Date",
+      "Notes"
+    ]
+  },
+  "motivation": {
+    "problem": "The earlier chick-production state uses a breeding-pair denominator that can overlap conceptually with colony abundance. REPRO provides nest-level reproductive histories whose primary success endpoint does not use the colony census as a denominator.",
+    "question": "Does independently measured nest reproductive success in season t predict where Adelie breeders accumulate by the next breeding census?"
+  },
+  "row_identity_and_fail_closed_rules": {
+    "season": "Parse studyName with the already frozen PALYYZZ season rule used for Palmer chick data.",
+    "nest_key": ["studyName", "Island", "raw Colony", "Site Number", "Nest Number"],
+    "duplicates": "If a nest key appears more than once, exclude every row belonging to that duplicated key; do not average or select records.",
+    "no_manual_colony_crosswalk": true,
+    "colony_match": "Exact archived Colony string match to the adult census after only whitespace stripping; no aggregation of colony codes."
+  },
+  "nest_success_endpoint": {
+    "unit": "monitored nest",
+    "creched_chicks": "Count 1 for each of Chick 1 Creche Date and Chick 2 Creche Date that contains a non-empty, non-missing recorded value; allowed range 0-2.",
+    "colony_season_success": "mean creched_chicks across eligible monitored nests within raw Island + Colony + season",
+    "minimum_monitored_nests_per_colony_season": 5,
+    "reason": "Reduce domination by very small monitored samples while retaining a directly interpretable chicks-to-creche-per-monitored-nest quantity.",
+    "no_use_of_adult_census_in_success_definition": true
+  },
+  "performance_state": {
+    "eligibility": "Within an island-season, require at least 3 colony codes with >=5 monitored nests and finite colony-season success.",
+    "standardization": "z-standardize colony_season_success across eligible colonies within each island-season; call this R_i,t.",
+    "sampling_weight": "Primary model is unweighted so each eligible colony-season is one unit. Report monitored-nest counts descriptively.",
+    "interpretation": "R_i,t is relative nest reproductive success independent of the adult-census abundance denominator."
+  },
+  "redistribution_outcome": {
+    "primary_lag": 1,
+    "growth": "G_i,t = log1p(adult_pairs_i,t+1) - log1p(adult_pairs_i,t) for adjacent annual censuses only.",
+    "relative_growth": "Within island and transition t -> t+1, subtract the mean G across eligible matched colony codes.",
+    "prior_size_control": "Within the matched island-transition set, z-standardize log1p(adult_pairs_i,t).",
+    "rationale": "Because R_i,t is nest-based and does not contain adult_pairs_i,t, lag 1 is the primary temporally aligned endpoint without the earlier shared-denominator concern."
+  },
+  "primary_model": {
+    "formula": "relative_growth_i,t = beta_1 * R_i,t + gamma * z_log_size_i,t + island:colony fixed effect + error",
+    "prediction": "beta_1 > 0",
+    "inference": {
+      "null": "Within each predictor island-season, colony labels of R_i,t are exchangeable with respect to next-year redistribution conditional on prior size and colony identity.",
+      "permutation": "Permute R_i,t among all eligible colonies within predictor island-season; preserve outcome, missingness and controls.",
+      "permutations": 100000,
+      "seed": 20260990,
+      "p_value": "one-sided upper-tail Monte Carlo p with +1 correction",
+      "alpha": 0.05
+    }
+  },
+  "secondary_lag2": {
+    "formula": "Same model but outcome is relative growth during t+1 -> t+2, with z_log_size measured at t+1.",
+    "prediction": "beta_2 > 0",
+    "role": "Temporal persistence check comparable to the earlier chick-production lag-2 result; not required for the primary decision."
+  },
+  "minimum_information_gate": {
+    "minimum_matched_colony_seasons_primary": 50,
+    "minimum_unique_predictor_island_seasons": 10,
+    "minimum_colonies_per_predictor_island_season": 3,
+    "failure": "If any minimum is not met, STOP without fitting the performance-growth coefficient or running permutation inference."
+  },
+  "sensitivities": {
+    "minimum_nests_10": "Repeat primary after requiring >=10 monitored nests per colony-season.",
+    "binary_any_creche": "Repeat using proportion of monitored nests with >=1 creched chick, standardized within island-season.",
+    "exclude_litchfield": "Repeat primary excluding LIT if LIT is represented.",
+    "minimum_prior_size_2": "Repeat primary requiring adult_pairs_i,t >= 2.",
+    "leave_one_island_out": "Report observed primary beta after excluding each represented island in turn.",
+    "leave_one_colony_out": "Report observed primary beta after excluding each colony when the minimum-information gate remains satisfied."
+  },
+  "convergent_validity_secondary": {
+    "question": "Does nest-level R_i,t align with the previously frozen chick-production performance state S_i,t where both exist?",
+    "statistic": "Pearson correlation after within-island-season centering is already built into both standardized states.",
+    "role": "Descriptive only; it does not change the primary decision."
+  },
+  "decision_rule": {
+    "support": "Primary beta_1 > 0 and one-sided permutation p <= 0.05.",
+    "failure": "Otherwise do not claim independent nest-level validation of performance-linked redistribution.",
+    "strong_replication": "Primary support plus positive beta_1 under minimum_nests_10 and binary_any_creche sensitivities."
+  },
+  "claim_boundaries": [
+    "A positive result would independently validate a performance-to-redistribution association, not prove public-information use or individual movement.",
+    "Do not change the creche endpoint, five-nest threshold, lag, controls, alpha, or permutation rule after REPRO outcome values are opened.",
+    "Do not infer predation, snow, or habitat quality from REPRO alone.",
+    "If the minimum-information gate fails, do not lower it or substitute another reproductive endpoint post hoc."
+  ]
+}
