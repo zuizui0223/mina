@@ -38,24 +38,19 @@ jobs:
             --arrival build/adelie_arrival.csv \
             --out build/arrival_memory.json \
             --permutations 100000
-      - name: Print receipt
+      - name: Print frozen estimability receipt
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           x=json.loads(Path("build/arrival_memory.json").read_text())
+          print("status=",x["status"])
           print("source_counts=",x["source_counts"])
-          print("coverage=",x["arrival_coverage"])
-          for key in ("relative_t25","relative_t50","relative_t75"):
-              v=x["primary"][key]
-              print("primary",key,"n=",v["n_rows"],"coef=",v["coefficient"],"p=",v["one_sided_p"],"supported=",v.get("supported"))
-          print("timing_coherent=",x["primary"]["timing_coherent"])
-          for name in ("minimum_observations_7","alternate_logratio_performance"):
-              v=x["sensitivities"][name]
-              print(name,"t50=",v["relative_t50"])
-          print("bridge=",x["sensitivities"]["current_performance_bridge"])
-          print("loo=",json.dumps(x["sensitivities"]["leave_one_colony_out_observed"],sort_keys=True))
+          print("estimability_gate=",x["estimability_gate"])
           print("decision=",x["decision"])
+          assert x["status"] == "not_estimable_under_frozen_design"
+          assert x["estimability_gate"]["derived_arrival_metrics_computed"] is False
+          assert x["estimability_gate"]["scientific_coefficients_computed"] is False
           PY
       - uses: actions/upload-artifact@v4
         with:
