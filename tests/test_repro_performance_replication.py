@@ -63,7 +63,12 @@ def test_colony_performance_drops_island_season_with_lt3_colonies() -> None:
 
 def test_minimum_nests_is_per_colony_season() -> None:
     nests = []
-    for colony, n in (("1.0", 4), ("2.0", 5), ("3.0", 5), ("4.0", 5)):
+    for colony, n, successes in (
+        ("1.0", 4, 2),
+        ("2.0", 5, 1),
+        ("3.0", 5, 2),
+        ("4.0", 5, 4),
+    ):
         for nest in range(n):
             nests.append(
                 {
@@ -72,7 +77,7 @@ def test_minimum_nests_is_per_colony_season() -> None:
                     "colony": colony,
                     "site": "1",
                     "nest": str(nest + 1),
-                    "success": nest % 2,
+                    "success": int(nest < successes),
                 }
             )
     rows, _ = colony_performance(nests, minimum_nests=5)
