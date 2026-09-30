@@ -18,6 +18,14 @@ def test_jbi_title_and_running_title_limits():
     assert len(match.group(1).strip()) < 40
 
 
+def test_jbi_main_text_stays_within_research_article_target():
+    text=_text()
+    # Conservative Markdown-token count; references are citation keys rather
+    # than a rendered bibliography in this source file.
+    words=re.findall(r"\S+",text)
+    assert len(words) <= 6000
+
+
 def test_jbi_structured_abstract_and_word_limit():
     text=_text()
     abstract=text.split("## Abstract",1)[1].split("**Keywords:**",1)[0]
