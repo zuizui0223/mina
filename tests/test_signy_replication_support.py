@@ -112,5 +112,22 @@ class OfficialZipTests(unittest.TestCase):
             self.assertEqual(out["status"],"support_audited")
 
 
+    def test_exact_total_pairs_header_beats_without_eggs_header(self):
+        frame=pd.DataFrame({
+            "SPECIES":["Adelie"],
+            "SEASON":["1996-1997"],
+            "COLONY":["A2"],
+            "DATE_PAIR_COUNT":["15/12/1996"],
+            "TOTAL_NUMBER_PAIRS_WITH_EGGS":[90],
+            "TOTAL_NUMBER_OF_PAIRS_WITHOUT_EGGS":[10],
+            "TOTAL_NUMBER_OF_PAIRS":[100],
+            "DATE_CHICK_COUNT":["20/01/1997"],
+            "TOTAL_NUMBER_OF_CHICKS":[50],
+            "COMMENTS":[""],
+        })
+        out=audit_table(frame)
+        self.assertEqual(out["semantics"]["pairs_col"],"TOTAL_NUMBER_OF_PAIRS")
+
+
 if __name__=="__main__":
     unittest.main()
