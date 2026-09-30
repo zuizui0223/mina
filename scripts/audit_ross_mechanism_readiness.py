@@ -96,8 +96,10 @@ def audit(root: Path) -> dict[str, object]:
             "swagger_documents_api_key_required"
         )
     )
+    public_audit = gate.get("public_schema_audit", {})
     checks["anonymous_header_rejected_as_non_csv"] = bool(
-        gate.get("public_schema_audit", {}).get("anonymous_header_non_csv")
+        public_audit.get("anonymous_response_rejected_as_html")
+        or public_audit.get("anonymous_header_non_csv")
     )
 
     required_preoutcome = [
