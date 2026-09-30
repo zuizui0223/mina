@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-arrival-estimability-gate-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-arrival-memory-v3",
+  "status": "not_estimable_under_frozen_design",
+  "audit_scope": "key/date structure only; no t25/t50/t75 metric and no performance-arrival coefficient or p-value inspected",
+  "frozen_minimum_matched_rows": 150,
+  "source_structure": {
+    "official_arrival_rows": 3173,
+    "arrival_colony_seasons_meeting_date_structure_after_PAL9293_exclusion": 69,
+    "Humble_predictor_structural_keys_with_chick_and_adult_records": 261,
+    "maximum_possible_matched_predictor_to_next_season_arrival_rows_before_numeric_performance_eligibility": 64
+  },
+  "possible_rows_by_predictor_season": {
+    "1994": 7,
+    "1995": 7,
+    "1997": 7,
+    "1999": 7,
+    "2000": 4,
+    "2001": 4,
+    "2002": 4,
+    "2005": 4,
+    "2006": 4,
+    "2007": 4,
+    "2008": 4,
+    "2009": 4,
+    "2011": 4
+  },
+  "decision": {
+    "frozen_minimum_can_be_met": false,
+    "primary_P5_estimable": false,
+    "primary_P5_outcome_must_remain_unopened": true,
+    "lower_minimum_rows_post_hoc": false
+  },
+  "interpretation": "The public Humble arrival chronology cannot satisfy the predeclared minimum sample-size gate. The maximum structurally possible matched panel is 64 rows, less than half of the frozen 150-row requirement. The arrival-memory hypothesis is therefore terminated as non-estimable rather than rescued by lowering the threshold after inspecting data availability.",
+  "invalid_or_superseded_execution": {
+    "queued_workflow_run_id": 36650660091,
+    "head_sha": "bb4129a6855528610ac90927420d8e01d41b68ef",
+    "rule": "Do not inspect or use scientific coefficients from this pre-gate workflow if it later executes; the structural estimability gate supersedes it."
+  },
+  "next_gate": "Search for genuine individual-level Palmer band/resight or other movement/return data. Do not repurpose the underpowered arrival panel by changing the frozen minimum-row rule."
+}
