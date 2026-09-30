@@ -1,0 +1,30 @@
+name: integrated-v0-3-claim-guard
+
+on:
+  push:
+    branches:
+      - validation/ross-island-resight-gate-v1
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_V0_3.md"
+      - "contracts/INTEGRATED_PALMER_ANTARCTIC_MANUSCRIPT_V0_3.json"
+      - "scripts/check_integrated_v03_claims.py"
+      - ".github/workflows/integrated-v0-3-claim-guard.yml"
+  workflow_dispatch:
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Guard integrated v0.3 claims
+        run: |
+          python scripts/check_integrated_v03_claims.py \
+            --manuscript docs/MANUSCRIPT_INTEGRATED_V0_3.md \
+            --out build/integrated_v03_claim_guard.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integrated-v0-3-claim-guard
+          path: build/integrated_v03_claim_guard.json
