@@ -21,6 +21,11 @@ BANDING_UID = "601443"
 BANDING_FILE = "band_inv_1994-2021.csv"
 CHICKCOUNT_UID = "600007"
 BASE = "https://www.usap-dc.org"
+SWAGGER_URL = f"{BASE}/api/v2.0/swagger.json"
+
+
+class NonCsvHeaderResponse(RuntimeError):
+    pass
 
 
 def fetch_text(url: str) -> str:
@@ -49,6 +54,8 @@ def fetch_header(
         headers["X-Auth-Token"] = token
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=90) as response:
+        content_type = response.headers.get("Content-Type", "")
+        final_url = response.geturl()
         # Read only through the first newline. Do not materialize any data row.
         buf = bytearray()
         while True:
@@ -60,7 +67,17 @@ def fetch_header(
             buf.extend(chunk)
             if len(buf) > 65535:
                 raise RuntimeError("CSV header exceeded 65535 bytes")
-    return bytes(buf).decode("utf-8-sig", "strict").rstrip("\r")
+    header = bytes(buf).decode("utf-8-sig", "strict").rstrip("\r")
+    if (
+        "text/html" in content_type.lower()
+        or header.lstrip().lower().startswith("<!doctype html")
+        or header.lstrip().lower().startswith("<html")
+    ):
+        raise NonCsvHeaderResponse(
+            f"non-CSV response content_type={content_type!r} "
+            f"final_url={final_url!r}"
+        )
+    return header
 
 
 def main() -> int:
@@ -81,6 +98,20 @@ def main() -> int:
     if not chickcount_readme.strip():
         raise RuntimeError("empty USAP-DC chick-count README")
 
+    swagger = json.loads(fetch_text(SWAGGER_URL))
+    datafile_doc = (
+        swagger.get("paths", {})
+        .get("/datafiles/{dataset_uid}/{file_name}", {})
+        .get("get", {})
+    )
+    datafile_description = str(datafile_doc.get("description", ""))
+    datafile_responses = datafile_doc.get("responses", {})
+    documented_api_key_required = bool(
+        "X-Auth-Token" in datafile_description
+        and "API key" in datafile_description
+        and "401" in datafile_responses
+    )
+
     token = os.environ.get("USAP_DC_API_KEY", "").strip()
     result: dict[str, object] = {
         "schema_version": 1,
@@ -97,6 +128,10 @@ def main() -> int:
         "chickcount_readme_retrieved": True,
         "chickcount_readme_text": chickcount_readme,
         "api_key_present": bool(token),
+        "swagger_url": SWAGGER_URL,
+        "swagger_datafile_endpoint_found": bool(datafile_doc),
+        "swagger_documents_api_key_required": documented_api_key_required,
+        "swagger_datafile_description": datafile_description,
         "anonymous_header_attempted": False,
         "anonymous_header_http_status": None,
         "authenticated_header_attempted": False,
@@ -122,6 +157,10 @@ def main() -> int:
     except urllib.error.HTTPError as exc:
         result["anonymous_header_http_status"] = exc.code
         result["anonymous_header_error"] = str(exc)
+    except NonCsvHeaderResponse as exc:
+        result["anonymous_header_http_status"] = 200
+        result["anonymous_header_non_csv"] = True
+        result["anonymous_header_error"] = str(exc)
 
     # Only if anonymous schema access fails and an explicit repository secret
     # is present, retry the same header-only request with the API token.
@@ -142,6 +181,16 @@ def main() -> int:
         except urllib.error.HTTPError as exc:
             result["status"] = f"HEADER_FETCH_HTTP_{exc.code}"
             result["header_error"] = str(exc)
+        except NonCsvHeaderResponse as exc:
+            result["status"] = "HEADER_FETCH_NON_CSV"
+            result["header_error"] = str(exc)
+
+    if result["resight_header"] is None and not token:
+        result["status"] = (
+            "README_ONLY_API_KEY_REQUIRED"
+            if documented_api_key_required
+            else "README_ONLY_HEADER_UNAVAILABLE"
+        )
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
@@ -151,6 +200,10 @@ def main() -> int:
     print("banding_readme_retrieved=", result["banding_readme_retrieved"])
     print("chickcount_readme_retrieved=", result["chickcount_readme_retrieved"])
     print("api_key_present=", result["api_key_present"])
+    print(
+        "swagger_documents_api_key_required=",
+        result["swagger_documents_api_key_required"],
+    )
     print("anonymous_header_attempted=", result["anonymous_header_attempted"])
     print(
         "anonymous_header_http_status=",
