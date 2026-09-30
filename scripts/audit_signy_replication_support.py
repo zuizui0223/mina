@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import io
 import json
 import re
@@ -304,27 +305,36 @@ def read_official_zip(path:Path)->tuple[pd.DataFrame,dict]:
                 +2*("season" in headers)
                 +len(frame)/10000
             )
+            raw_sha256=hashlib.sha256(raw).hexdigest()
             candidates.append(
-                (score,name,frame,len(raw),used_encoding,repaired_overflow,padded_short)
+                (
+                    score,name,frame,len(raw),used_encoding,
+                    repaired_overflow,padded_short,raw_sha256
+                )
             )
         candidates.sort(key=lambda x:x[0],reverse=True)
-        score,name,frame,size,encoding,repaired_overflow,padded_short=candidates[0]
+        (
+            score,name,frame,size,encoding,repaired_overflow,
+            padded_short,selected_sha256
+        )=candidates[0]
         manifest=[
             {
                 "name":n,
                 "rows":int(len(df)),
                 "columns":[str(x) for x in df.columns],
                 "bytes":int(sz),
+                "sha256":sha,
                 "encoding":enc,
                 "overflow_comment_rows_repaired":int(over),
                 "short_rows_padded":int(short),
                 "selection_score":float(sc),
             }
-            for sc,n,df,sz,enc,over,short in candidates
+            for sc,n,df,sz,enc,over,short,sha in candidates
         ]
         return frame,{
             "selected_csv":name,
             "selected_score":float(score),
+            "selected_csv_sha256":selected_sha256,
             "selected_encoding":encoding,
             "selected_overflow_comment_rows_repaired":int(repaired_overflow),
             "selected_short_rows_padded":int(padded_short),
