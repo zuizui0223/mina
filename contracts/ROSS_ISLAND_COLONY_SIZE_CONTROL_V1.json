@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-island-colony-size-control-v1",
+  "date": "2026-09-30",
+  "status": "frozen_before_individual_resight_rows_are_opened",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "object": "penguin_obs",
+    "species_id": "ADPE",
+    "count_type": "nests",
+    "interpretation": "breeding pairs"
+  },
+  "ross_colony_mapping": {
+    "ROYD": ["ROYD"],
+    "BIRD": ["BRDN", "BRDM", "BRDS"],
+    "CROZ": ["CRZE", "CRZW"]
+  },
+  "mapping_basis": "MAPPPD represents Cape Bird as North/Middle/South component sites and Cape Crozier as east/west component sites, while Royds is a single site. The parent Cape Crozier site CROZ has no nest-count observations and is not included in the sum.",
+  "year_alignment": {
+    "rule": "Use MAPPPD season/year directly as the austral breeding-season start year for the Ross mark-resight analysis.",
+    "evidence": "Relevant MAPPPD Ross nest-count observations are December records with season equal to year; e.g. 1996 counts have month=12, year=1996, season=1996.",
+    "choice_model": "For first breeding season y, colony-size control uses breeding-pair count from season y-1."
+  },
+  "annual_size_rule": {
+    "ROYD": "Require exactly one nonmissing ADPE nests count for ROYD in the year.",
+    "BIRD": "Require exactly one nonmissing ADPE nests count for each of BRDN, BRDM and BRDS in the year, then sum the three counts.",
+    "CROZ": "Require exactly one nonmissing ADPE nests count for each of CRZE and CRZW in the year, then sum the two counts.",
+    "duplicate_component_year": "Treat the colony-year as missing; do not average, prioritize by accuracy, or select a record.",
+    "missing_component_year": "Treat the colony-year as missing; do not impute.",
+    "transform_in_choice_model": "log1p(breeding_pairs)"
+  },
+  "coverage_audit": {
+    "mark_resight_relevant_window": [1997, 2019],
+    "ROYD_missing_years": [],
+    "BIRD_missing_years": [2000, 2008],
+    "CROZ_missing_years": [2000],
+    "all_three_complete_years": [
+      1997, 1998, 1999,
+      2001, 2002, 2003, 2004, 2005, 2006, 2007,
+      2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019
+    ],
+    "n_all_three_complete_years": 21,
+    "duplicate_records_in_1997_2019_component_sites": 0
+  },
+  "eligibility_effect": "A first-breeding event is eligible only when prior-year size exists for every colony in that individual's frozen candidate set. Missing size removes the event; it does not remove only the affected candidate.",
+  "claim_boundaries": [
+    "The MAPPPD control is a nuisance covariate for colony size, not the Ross Island performance predictor.",
+    "Do not use later-year colony size or same-season post-settlement counts.",
+    "Do not average duplicate counts or impute missing component sites.",
+    "Do not redefine Bird or Crozier aggregation after individual movement outcomes are opened."
+  ]
+}
