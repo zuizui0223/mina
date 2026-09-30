@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-humpop-arrival-schema-gate-result-v1",
+  "date": "2026-09-30",
+  "gate_id": "mina-palmer-humpop-arrival-schema-gate-v1",
+  "decision": "GO_colony_process_test",
+  "outcome_values_opened_before_decision": false,
+  "evidence": {
+    "official_repository": "PAL-LTER/pal-seabirds",
+    "repository_commit": "523e74a064e2f1153704a32731631cbff4395e73",
+    "conversion_script": "station/original/convert_station_fraser.py",
+    "source_block": "92 Adelie Penguin Population Arrival",
+    "raw_source": "2020_fraser/HUMPOP.xls",
+    "source_to_archive_mapping": {
+      "SEASON": "studyName",
+      "DATE": "Date",
+      "ISL": "Island",
+      "LOC": "Colony",
+      "TOTADULTS": "Adults"
+    },
+    "colony_crosswalk": "No manual crosswalk is required: both HUMPOP and the adult census convert the same raw LOC field directly to Colony.",
+    "repeated_dates": "Documented Palmer standard sampling describes Humble Island adult arrival chronology approximately every two days during early breeding season; the archive schema retains Date.",
+    "count_semantics": "TOTADULTS is archived as Adults."
+  },
+  "gate_requirements": {
+    "raw_colony_identifier": true,
+    "objective_link_to_existing_colony_frame": true,
+    "repeated_within_season_dates_documented": true,
+    "numeric_breeder_abundance_field": true
+  },
+  "next_action": "Execute the already frozen colony-level arrival-midpoint test in PALMER_HUMPOP_ARRIVAL_SCHEMA_GATE_V1 without changing endpoint, controls, permutation scheme or thresholds.",
+  "claim_boundary": [
+    "No arrival-count values were used to decide GO.",
+    "Colony-level arrival timing still cannot distinguish returning adults from immigrants or prospectors.",
+    "The individual band-resight data gate remains blocked."
+  ]
+}
