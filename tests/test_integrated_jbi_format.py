@@ -63,3 +63,36 @@ def test_all_jbi_citation_keys_exist_in_frozen_bibliography():
     keys=set(re.findall(r"@\w+\{([^,]+),",bib))
     assert cited
     assert cited <= keys, sorted(cited-keys)
+
+
+def test_integrated_supplement_v02_preserves_claim_boundaries():
+    text=Path("docs/SUPPLEMENT_INTEGRATED_V0_2.md").read_text(encoding="utf-8")
+    low=text.lower()
+    for required in (
+        "0.0947",
+        "0.0810",
+        "0.4977",
+        "0.5386",
+        "0.2622",
+        "0.4475",
+        "0.0626",
+    ):
+        assert required in text
+    assert "cannot rescue" in low
+    assert "not evidence for an allee or predation mechanism" in low
+    assert "not treated as biological scale dependence" in low
+    assert "pr #102" in low and "pr #113" in low
+
+
+def test_submission_manifest_points_to_full_supplement():
+    import json
+    manifest=json.loads(
+        Path("contracts/INTEGRATED_JBI_SUBMISSION_PACKAGE_V0_3.json")
+        .read_text(encoding="utf-8")
+    )
+    assert manifest["anonymous_review_files"]["supporting_information"] == (
+        "docs/SUPPLEMENT_INTEGRATED_V0_2.md"
+    )
+    assert manifest["scientific_source_of_truth"]["supplement_contract"] == (
+        "contracts/INTEGRATED_SUPPLEMENT_V0_2.json"
+    )
