@@ -3,7 +3,7 @@
   "contract_id": "mina-signy-win-stay-lose-switch-replication-v1",
   "date": "2026-09-30",
   "status": "metadata_only_frozen_before_signy_effect_computation",
-  "replication_role": "independent system replication of Palmer P3/lag mechanism; not used to redefine Palmer outcomes",
+  "replication_role": "independent system replication of the Palmer lag-2 performance-linked redistribution result; the lose-switch hinge is a secondary cross-system mechanism contrast because Palmer P3 did not support asymmetry",
   "source": {
     "dataset": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020",
     "authors": "Dunn et al. 2021",
@@ -51,7 +51,9 @@
     "prediction": "delta > 0 and beta_loss > 0",
     "inference": "Freedman-Lane residual permutation conditional on the linear S effect, within predictor season; same construction as Palmer P3.",
     "permutations": 100000,
-    "seed": 20261011
+    "seed": 20261011,
+    "role": "secondary cross-system contrast, not replication of a supported Palmer mechanism",
+    "palmer_status": "Palmer P3 lose-switch asymmetry was not supported (primary delta = -0.0126; one-sided p = 0.5791)."
   },
   "secondary": [
     "lag-1 and lag-3 coefficients are descriptive replication-profile endpoints; lag-1 retains denominator-overlap caution if present.",
@@ -69,11 +71,13 @@
     "Do not infer zero chicks/pairs from NA or operational comments.",
     "Do not split pooled colony identifiers using outcome patterns.",
     "Do not change the Palmer lag from 2 after Signy effect estimates are computed.",
-    "Do not claim individual breeding dispersal from colony counts."
+    "Do not claim individual breeding dispersal from colony counts.",
+    "Do not describe a positive Signy P3 result as replication of the Palmer lose-switch mechanism, because Palmer P3 was not supported.",
+    "Do not let the secondary P3 hinge result replace a null lag-2 primary replication."
   ],
   "interpretation": {
-    "supported_lag2_and_P3": "Independent system-level support for a short-lag, performance-linked redistribution rule consistent with lose-switch breeding dynamics.",
-    "lag2_only": "Independent replication of dynamic performance-linked redistribution, but not the asymmetric lose-switch mechanism.",
-    "neither": "The Palmer mechanism signal does not transfer to Signy under the frozen comparable design."
+    "lag2_supported_P3_supported": "Independent replication of short-lag performance-linked redistribution plus evidence that Signy, unlike Palmer, also shows the prespecified lose-switch asymmetry.",
+    "lag2_supported_P3_not_supported": "Independent replication of the Palmer-supported dynamic redistribution signal, with the same absence of evidence for a specific lose-switch asymmetry.",
+    "lag2_not_supported": "The Palmer short-lag redistribution signal does not transfer to Signy under the frozen comparable design; P3 cannot rescue a failed primary replication."
   }
 }
