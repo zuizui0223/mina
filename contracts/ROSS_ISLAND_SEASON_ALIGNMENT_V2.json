@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-ross-island-season-alignment-v2",
+  "date": "2026-10-01",
+  "status": "frozen_before_resight_behavioral_rows_are_opened",
+  "supersedes": "mina-ross-island-season-alignment-v1",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "amendment_alignment": "mina-ross-island-detection-control-amendment-v1",
+  "reason_for_version": "V1 used a stricter Nov-Jan window based on the published core field season. The already-frozen detection amendment prospectively defined the breeding-season parser as Oct-Dec -> same start year and Jan-Mar -> previous start year. No behavioral rows had been opened, so the state and detection parsers are harmonized now rather than allowing two season definitions.",
+  "date_to_breeding_season_start_year": {
+    "months_10_11_12": "season_start_year = calendar year",
+    "months_1_2_3": "season_start_year = calendar year - 1",
+    "months_4_5_6_7_8_9": "excluded/fail closed for primary breeding-season state and detection proxy"
+  },
+  "banding_season_to_cohort": {
+    "format": "four digits YYZZ representing consecutive austral years, e.g. 9495",
+    "validation": "ZZ must equal YY+1 modulo 100",
+    "cohort_start_year": "YY>=90 maps to 19YY; YY<90 maps to 20YY",
+    "biological_age": "age in breeding season y = y - cohort_start_year"
+  },
+  "unchanged": [
+    "January never maps to its calendar year; it maps to the preceding austral season start.",
+    "No behavioral outcome was inspected in choosing V2.",
+    "Off-window Apr-Sep observations are not assigned to primary breeding-season states."
+  ],
+  "claim_boundary": [
+    "Do not introduce a different state-season and detection-season mapping.",
+    "Do not expand Apr-Sep after behavioral outcomes are opened without an external metadata audit.",
+    "This is a pre-outcome harmonization, not an outcome-driven repair."
+  ]
+}
