@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-mark-resight-data-audit-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-palmer-mark-resight-data-audit-v1",
+  "decision": "partial_gate",
+  "direct_movement_gate_open": false,
+  "summary": "Public Palmer sources establish that Humble Island Adelie chicks were individually banded and that returning banded birds were systematically searched for, but no public table was located that links an individual band/tag ID to later breeding-season resight location and breeding status at colony/sub-colony scale.",
+  "positive_evidence": [
+    {
+      "source": "Palmer LTER AdeliePenguinCensus metadata",
+      "dataset_id": "AdeliePenguinCensus",
+      "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "evidence": "Methods state that two observers searched every colony on Humble Island every two days through the entire field season for returning previously banded penguins.",
+      "role": "Demonstrates that a standardized resight program existed; the published census table itself contains no individual band identifier."
+    },
+    {
+      "source": "Palmer LTER AdeliePenguinFledglingWeights",
+      "dataset_id": "AdeliePenguinFledglingWeights",
+      "doi": "10.6073/pasta/ca430bd4bc17da3ba84b980c15bd3f3e",
+      "coverage": "1991-present in metadata; ERDDAP time coverage currently 1992-02-05 through 2018-02-17",
+      "public_fields_relevant_to_audit": [
+        "study_name",
+        "time",
+        "island_name",
+        "colony_code",
+        "band_number",
+        "weight"
+      ],
+      "evidence": "band_number is documented as the ID number associated with a tag or band applied to an animal; colony_code is present.",
+      "limitation": "Rows are fledgling measurements/banding-source observations, not later resight histories; no later resight location/status variable is exposed."
+    },
+    {
+      "source": "Cimino et al. 2014 / cited Humble resighting study",
+      "evidence": "Published methods report a 1987-2004 Humble Island fledgling resighting study and compare resighted versus never-resighted chicks.",
+      "role": "Confirms that later return/resighting outcomes were historically analyzed.",
+      "limitation": "The accessible publication reports aggregate results rather than an individual-level resight table with colony/status."
+    },
+    {
+      "source": "Palmer/AMLR field reports",
+      "evidence": "Historical and recent field reports document presence/absence radio-transmitter studies on Humble Island and continued demographic banding/resighting work.",
+      "limitation": "No public raw multi-year breeding-site movement table satisfying the frozen minimum fields was located."
+    }
+  ],
+  "public_data_examined_but_ineligible": [
+    {
+      "source": "USAP-DC dataset 602035",
+      "doi": "10.15784/602035",
+      "title": "Adelie and gentoo penguin foraging data near Palmer Station, Antarctica",
+      "coverage": "2018/19-2024/25",
+      "content": "GPS and dive-depth tracking files",
+      "reason_ineligible": "Foraging tracks do not provide repeated multi-year breeding-site resight histories or colony/sub-colony breeding status needed to estimate breeding-site retention/dispersal."
+    },
+    {
+      "source": "AdeliePenguinFledglingWeights",
+      "reason_ineligible": "Provides source individual band IDs but not the later resight-event table."
+    }
+  ],
+  "repositories_and_surfaces_searched": [
+    "Palmer LTER ERDDAP / public data pages",
+    "Environmental Data Initiative-indexed Palmer sources",
+    "USAP Data Center dataset/project search",
+    "Palmer/AMLR field reports and indexed publications",
+    "paper-linked public repository/search surfaces"
+  ],
+  "missing_minimum_fields_for_direct_gate": [
+    "later observation season/date tied to band_number",
+    "later observed colony/sub-colony tied to band_number",
+    "breeding/resight status sufficient to distinguish breeding presence from incidental presence"
+  ],
+  "interpretation": "The individual-movement lane cannot be executed reproducibly from the public records located in this audit. The evidence supports a partial gate: public band-source data and explicit documentation of standardized resighting exist, making an underlying resight archive plausible, but the public bridge from band ID to later breeding-site observations is missing.",
+  "next_action": "Do not reconstruct individual movement indirectly from colony counts, fledgling records, or foraging tracks. Continue mechanism discrimination with public colony-level time-varying habitat/state data unless a public resight table is independently located later.",
+  "claim_boundary": [
+    "Do not state that Palmer resight records do not exist; only that a qualifying public table was not located.",
+    "Do not infer retention, breeding dispersal, prospecting, immigration, or public-information use from fledgling band records alone.",
+    "Do not use short-term foraging GPS tracks as a substitute for multi-year breeding-site movement.",
+    "Do not merge or probabilistically link band IDs to later observations without an explicit source crosswalk."
+  ]
+}
