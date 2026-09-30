@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-ross-island-exact-header-proposed-receipt-v1",
+  "validated_date": "2026-09-30",
+  "status": "BLOCKED_NO_EXACT_HEADERS",
+  "source_audit": "results/ROSS_ISLAND_PUBLIC_README_SCHEMA_RECEIPT_V1.json",
+  "behavioral_rows_read": 0,
+  "resight_header": null,
+  "banding_header": null,
+  "resight_required": ["Band", "Chicks", "Colony", "Date", "Eggs"],
+  "banding_required": ["Colony", "High", "Low", "Season"],
+  "missing_resight_required": ["Band", "Chicks", "Colony", "Date", "Eggs"],
+  "missing_banding_required": ["Colony", "High", "Low", "Season"],
+  "header_parser_ready": false,
+  "movement_analysis_unlock_candidate": false,
+  "manual_freeze_required_before_full_download": true,
+  "next_step": "Add USAP_DC_API_KEY, rerun schema-only workflow to retrieve only the first CSV lines, then replace this blocked proposed receipt with a reviewed exact-header/parser receipt before any full behavioral download."
+}
