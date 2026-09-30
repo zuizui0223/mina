@@ -102,7 +102,7 @@ def main() -> int:
     args.out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
 
     print("status=", result["status"])
-    print("readme_retrieved=", result["readme_retrieved"])
+    print("readme_retrieved=", result["readme_retrieved"])\n    print("banding_readme_retrieved=", result["banding_readme_retrieved"])
     print("api_key_present=", result["api_key_present"])
     print("behavioral_rows_read=0")
     if result["resight_header"]:
