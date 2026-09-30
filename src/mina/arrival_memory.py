@@ -22,6 +22,8 @@ HUMBLE = ("HUM",)
 N_PERMUTATIONS = 100_000
 SEED = 20260970
 EXCLUDED_ARRIVAL_SEASONS = {1992}  # PAL9293 source-key collision; frozen V3 repair
+FROZEN_MINIMUM_MATCHED_ROWS = 150
+FROZEN_MAX_STRUCTURAL_MATCHED_ROWS = 64
 
 
 def _finite(value: str | None) -> bool:
@@ -439,6 +441,32 @@ def analyze(
     adults = load_adult_rows(adult_path)
     chicks = load_chick_rows(chick_path)
     arrival = load_arrival_rows(arrival_path)
+
+    # Frozen estimability gate. Do not derive t25/t50/t75 or scientific
+    # coefficients when the predeclared sample-size requirement is impossible.
+    if FROZEN_MAX_STRUCTURAL_MATCHED_ROWS < FROZEN_MINIMUM_MATCHED_ROWS:
+        return {
+            "schema_version": 3,
+            "analysis_id": "mina-palmer-arrival-memory-v3",
+            "contract_id": "mina-palmer-arrival-memory-v3",
+            "status": "not_estimable_under_frozen_design",
+            "source_counts": {
+                "adult_rows": len(adults),
+                "usable_chick_rows": len(chicks),
+                "arrival_rows": len(arrival),
+            },
+            "estimability_gate": {
+                "frozen_minimum_rows": FROZEN_MINIMUM_MATCHED_ROWS,
+                "maximum_structurally_possible_rows": FROZEN_MAX_STRUCTURAL_MATCHED_ROWS,
+                "passed": False,
+                "derived_arrival_metrics_computed": False,
+                "scientific_coefficients_computed": False,
+            },
+            "decision": {
+                "primary_P5_estimable": False,
+                "lower_minimum_rows_post_hoc": False,
+            },
+        }
 
     primary = _run_configuration(
         adults, chicks, arrival, permutations=permutations
