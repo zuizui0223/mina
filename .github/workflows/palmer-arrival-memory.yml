@@ -1,0 +1,67 @@
+name: palmer-arrival-memory
+
+on:
+  push:
+    branches:
+      - analysis/palmer-arrival-memory-v1
+    paths:
+      - "src/mina/arrival_memory.py"
+      - "tests/test_arrival_memory.py"
+      - "contracts/PALMER_ARRIVAL_MEMORY_V2.json"
+      - "scripts/fetch_palmer_arrival.py"
+      - "scripts/fetch_lter_census.py"
+      - "scripts/fetch_lter_chick_counts.py"
+      - ".github/workflows/palmer-arrival-memory.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run frozen tests
+        run: pytest -q tests/test_arrival_memory.py
+      - name: Fetch pinned source data
+        run: |
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/fetch_lter_chick_counts.py build/adelie_chicks.csv
+          python scripts/fetch_palmer_arrival.py build/adelie_arrival.csv
+      - name: Run frozen arrival-memory analysis
+        run: |
+          python -m mina.arrival_memory \
+            --adult-census build/adelie_census.csv \
+            --chicks build/adelie_chicks.csv \
+            --arrival build/adelie_arrival.csv \
+            --out build/arrival_memory.json \
+            --permutations 100000
+      - name: Print receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/arrival_memory.json").read_text())
+          print("source_counts=",x["source_counts"])
+          print("coverage=",x["arrival_coverage"])
+          for key in ("relative_t25","relative_t50","relative_t75"):
+              v=x["primary"][key]
+              print("primary",key,"n=",v["n_rows"],"coef=",v["coefficient"],"p=",v["one_sided_p"],"supported=",v.get("supported"))
+          print("timing_coherent=",x["primary"]["timing_coherent"])
+          for name in ("minimum_observations_7","alternate_logratio_performance"):
+              v=x["sensitivities"][name]
+              print(name,"t50=",v["relative_t50"])
+          print("bridge=",x["sensitivities"]["current_performance_bridge"])
+          print("loo=",json.dumps(x["sensitivities"]["leave_one_colony_out_observed"],sort_keys=True))
+          print("decision=",x["decision"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-arrival-memory
+          path: |
+            build/adelie_census.csv
+            build/adelie_chicks.csv
+            build/adelie_arrival.csv
+            build/arrival_memory.json
