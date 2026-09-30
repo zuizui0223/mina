@@ -1,0 +1,41 @@
+{
+  "schema_version": 2,
+  "note_id": "mina-pygoscelis-history-panel-prelock-exposure-note-v2",
+  "date": "2026-09-30",
+  "parent_contract": "mina-pygoscelis-history-panel-screen-v1",
+  "status": "documented_screening_protocol_deviation",
+  "affected_candidates": [
+    {
+      "system": "Signy Island Adelie penguins",
+      "source": "PolarBytes mirror of BAS dataset DOI 10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+      "exposure": "Opening the public access mirror returned numerical colony/year count rows rather than metadata alone."
+    },
+    {
+      "system": "Signy Island chinstrap penguins",
+      "source": "PolarBytes mirror of BAS dataset DOI 10.5285/d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9",
+      "exposure": "A metadata/access find operation returned numerical table rows as part of the page content."
+    }
+  ],
+  "not_exposed": [
+    "No performance-growth correlations were computed.",
+    "No lag coefficients were computed.",
+    "No effect direction was calculated or used for candidate selection.",
+    "No candidate was retained or dropped based on an observed association."
+  ],
+  "timing": {
+    "both_candidates_discovered_by_frozen_query_before_exposure": true,
+    "candidate_eligibility_ledger_locked_before_exposure": false
+  },
+  "resolution": {
+    "ledger_status_for_both": "OUTCOME_EXPOSED_PRELOCK",
+    "retain_in_candidate_ledger": true,
+    "eligible_for_confirmatory_cross_system_combination": false,
+    "allowed_future_use": "descriptive or exploratory external analysis only after the candidate ledger is locked",
+    "reason": "The original metadata-only screen was breached even though no association was calculated."
+  },
+  "unchanged_rules": [
+    "No thresholds, lags, controls, repositories or query families are changed.",
+    "Other candidates remain governed by the original metadata-only contract.",
+    "No qualifying null or negative system may be excluded because of effect direction."
+  ]
+}
