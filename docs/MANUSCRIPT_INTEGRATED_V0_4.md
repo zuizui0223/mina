@@ -1,4 +1,4 @@
-# Local demographic history does not reduce to static island architecture in Antarctic penguins
+# Dynamic colony history reveals limits of static island architecture for predicting Antarctic penguin demography
 
 **Integrated manuscript draft v0.4 — literature-gap revision**
 
