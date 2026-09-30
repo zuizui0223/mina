@@ -32,19 +32,22 @@ def fetch_text(url: str) -> str:
         return response.read().decode("utf-8-sig", "replace")
 
 
-def fetch_header(dataset_uid: str, file_name: str, token: str) -> str:
+def fetch_header(
+    dataset_uid: str,
+    file_name: str,
+    token: str | None = None,
+) -> str:
     url = (
         f"{BASE}/api/v2.0/datafiles/{dataset_uid}/"
         + urllib.parse.quote(file_name, safe="")
     )
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "mina-island-reassembly/ross-schema-gate-v1",
-            "X-Auth-Token": token,
-            "Range": "bytes=0-65535",
-        },
-    )
+    headers = {
+        "User-Agent": "mina-island-reassembly/ross-schema-gate-v1",
+        "Range": "bytes=0-65535",
+    }
+    if token:
+        headers["X-Auth-Token"] = token
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=90) as response:
         # Read only through the first newline. Do not materialize any data row.
         buf = bytearray()
@@ -94,21 +97,48 @@ def main() -> int:
         "chickcount_readme_retrieved": True,
         "chickcount_readme_text": chickcount_readme,
         "api_key_present": bool(token),
+        "anonymous_header_attempted": False,
+        "anonymous_header_http_status": None,
+        "authenticated_header_attempted": False,
         "resight_header": None,
         "banding_header": None,
         "behavioral_rows_read": 0,
         "status": "README_ONLY",
     }
 
-    if token:
+    # First use the documented public API endpoint without credentials. This
+    # is not an authentication bypass: it simply tests whether public datasets
+    # expose schema/header access anonymously. Read stops at the first newline.
+    try:
+        result["anonymous_header_attempted"] = True
+        result["resight_header"] = fetch_header(
+            DATASET_UID, RESIGHT_FILE, None
+        )
+        result["banding_header"] = fetch_header(
+            BANDING_UID, BANDING_FILE, None
+        )
+        result["anonymous_header_http_status"] = 200
+        result["status"] = "README_AND_HEADERS_ANONYMOUS"
+    except urllib.error.HTTPError as exc:
+        result["anonymous_header_http_status"] = exc.code
+        result["anonymous_header_error"] = str(exc)
+
+    # Only if anonymous schema access fails and an explicit repository secret
+    # is present, retry the same header-only request with the API token.
+    if (
+        result["resight_header"] is None
+        and result["banding_header"] is None
+        and token
+    ):
         try:
+            result["authenticated_header_attempted"] = True
             result["resight_header"] = fetch_header(
                 DATASET_UID, RESIGHT_FILE, token
             )
             result["banding_header"] = fetch_header(
                 BANDING_UID, BANDING_FILE, token
             )
-            result["status"] = "README_AND_HEADERS"
+            result["status"] = "README_AND_HEADERS_AUTHENTICATED"
         except urllib.error.HTTPError as exc:
             result["status"] = f"HEADER_FETCH_HTTP_{exc.code}"
             result["header_error"] = str(exc)
@@ -121,6 +151,15 @@ def main() -> int:
     print("banding_readme_retrieved=", result["banding_readme_retrieved"])
     print("chickcount_readme_retrieved=", result["chickcount_readme_retrieved"])
     print("api_key_present=", result["api_key_present"])
+    print("anonymous_header_attempted=", result["anonymous_header_attempted"])
+    print(
+        "anonymous_header_http_status=",
+        result["anonymous_header_http_status"],
+    )
+    print(
+        "authenticated_header_attempted=",
+        result["authenticated_header_attempted"],
+    )
     print("behavioral_rows_read=0")
     if result["resight_header"]:
         print("resight_header=", result["resight_header"])
