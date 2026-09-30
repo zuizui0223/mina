@@ -78,6 +78,11 @@ def main() -> int:
     if not chickcount_readme.strip():
         raise RuntimeError("empty USAP-DC chick-count README")
 
+    performance_readme_url = f"{BASE}/readme/{PERFORMANCE_UID}"
+    performance_readme = fetch_text(performance_readme_url)
+    if not performance_readme.strip():
+        raise RuntimeError("empty USAP-DC chick-count README")
+
     token = os.environ.get("USAP_DC_API_KEY", "").strip()
     result: dict[str, object] = {
         "schema_version": 1,
@@ -90,6 +95,10 @@ def main() -> int:
         "banding_readme_url": banding_readme_url,
         "banding_readme_retrieved": True,
         "banding_readme_text": banding_readme,
+        "performance_dataset_uid": PERFORMANCE_UID,
+        "performance_readme_url": performance_readme_url,
+        "performance_readme_retrieved": True,
+        "performance_readme_text": performance_readme,
         "chickcount_readme_url": chickcount_readme_url,
         "chickcount_readme_retrieved": True,
         "chickcount_readme_text": chickcount_readme,
@@ -119,6 +128,7 @@ def main() -> int:
     print("status=", result["status"])
     print("readme_retrieved=", result["readme_retrieved"])
     print("banding_readme_retrieved=", result["banding_readme_retrieved"])
+    print("performance_readme_retrieved=", result["performance_readme_retrieved"])
     print("chickcount_readme_retrieved=", result["chickcount_readme_retrieved"])
     print("api_key_present=", result["api_key_present"])
     print("behavioral_rows_read=0")
