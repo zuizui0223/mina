@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-repro-same-panel-metric-diagnostic-result-v1",
+  "validated_date": "2026-09-30",
+  "diagnostic_id": "mina-palmer-repro-same-panel-metric-diagnostic-v1",
+  "status": "post_hoc_descriptive_diagnostic",
+  "common_panel": {
+    "island": "HUM",
+    "n_colony_seasons": 61,
+    "predictor_seasons": 15,
+    "missing_from_repro_primary_panel": [
+      {"season": 1996, "colony": "1.1"},
+      {"season": 2004, "colony": "3.0"}
+    ]
+  },
+  "single_predictor_coefficients": {
+    "colony_wide_chick_state": 0.10402777305744605,
+    "mean_creched_chicks_per_nest": 0.029059834671428798,
+    "proportion_nests_any_creche": 0.06678325627898167
+  },
+  "posthoc_common_panel_permutation": {
+    "role": "descriptive calibration only; not confirmatory",
+    "permutations": 100000,
+    "colony_wide_chick_state": {
+      "beta": 0.1040277730574459,
+      "one_sided_upper_p": 0.00006999930000699993,
+      "null_95_interval": [-0.03474843, 0.0690671]
+    },
+    "mean_creched_chicks_per_nest": {
+      "beta": 0.029059834671428735,
+      "one_sided_upper_p": 0.23731762682373175,
+      "null_95_interval": [-0.06634527, 0.06842115]
+    },
+    "proportion_nests_any_creche": {
+      "beta": 0.06678325627898166,
+      "one_sided_upper_p": 0.04049959500404996,
+      "null_95_interval": [-0.06258718, 0.07395429]
+    }
+  },
+  "joint_models": {
+    "chick_state_plus_mean_nest_success": {
+      "chick_state_coefficient": 0.10231855720158338,
+      "mean_nest_success_coefficient": 0.024019680703184762
+    },
+    "chick_state_plus_binary_nest_success": {
+      "chick_state_coefficient": 0.10193453670713715,
+      "binary_nest_success_coefficient": 0.06424557844113449
+    },
+    "mean_plus_binary_nest_success": {
+      "mean_nest_success_coefficient": -0.048451453583889234,
+      "binary_nest_success_coefficient": 0.10591930917950887
+    }
+  },
+  "state_alignment": {
+    "n_matched": 61,
+    "pearson_r_chick_state_vs_mean_nest_success": 0.13161449316495238,
+    "pearson_r_chick_state_vs_binary_any_creche": 0.08342711854217527,
+    "interpretation": "The colony-wide chick-production state and monitored-nest success metrics are weakly aligned and should not be treated as interchangeable measures of one latent reproductive-success variable."
+  },
+  "nest_sampling_context": {
+    "eligible_repro_colony_seasons": 78,
+    "median_monitored_nests": 10,
+    "fraction_with_exactly_5_nests": 0.34615384615384615,
+    "fraction_with_at_least_10_nests": 0.6538461538461539
+  },
+  "decision": {
+    "validation_panel_itself_erases_original_chick_signal": false,
+    "metric_mismatch_is_material": true,
+    "generic_reproductive_success_label_allowed_for_chick_state": false
+  },
+  "ecological_interpretation": "The original colony-wide chick-production state remains strongly associated with next-year redistribution even inside the exact narrow Humble panel used for the failed REPRO validation, and its coefficient is essentially unchanged after measured nest-level success is added. The failure of the REPRO primary endpoint therefore cannot be explained simply by the validation panel lacking the original signal. Instead, the colony-wide chick census and monitored-nest reproductive histories capture different biological state. The former should be described conservatively as a late-season colony-wide state rather than generic reproductive success.",
+  "claim_boundary": [
+    "The common-panel permutation p-values are post hoc diagnostics and are not independent confirmatory evidence.",
+    "The binary-any-creche result cannot rescue the failed frozen REPRO primary endpoint.",
+    "Do not claim that late-season colony state is specifically a public-information cue without individual behavioral data.",
+    "Do not equate colony-wide creche-stage chick abundance with natal-nest productivity."
+  ]
+}
