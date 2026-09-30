@@ -1,0 +1,90 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-ross-island-choice-engine-v2",
+  "date": "2026-09-30",
+  "status": "implementation_frozen_before_behavioral_rows_are_opened",
+  "supersedes": "mina-ross-island-choice-engine-v1",
+  "amendment": "mina-ross-island-detection-control-amendment-v1",
+  "reason_for_version": "Add prospectively frozen detection controls after external methods audit showed colony-dependent resighting and intermittent Cape Bird effort after 2013. No Ross behavioral rows had been opened.",
+  "unchanged_from_v1": [
+    "individual first-breeding event as choice stratum",
+    "candidate set of 2-3 actually visited Ross colonies",
+    "prior-year performance predictor",
+    "natal-colony indicator",
+    "prior-year log1p colony size",
+    "100000 within-performance-year three-colony performance-label permutations",
+    "seed 20261001",
+    "one-sided upper-tail test",
+    "minimum 100 eligible events",
+    "minimum 50 multi-candidate events",
+    "minimum 8 first-breeding years",
+    "at least two destination colonies"
+  ],
+  "canonical_choice_table": {
+    "one_row_per": "individual first-breeding event x candidate colony",
+    "required_fields": [
+      "event_id",
+      "first_breeding_season",
+      "performance_year",
+      "candidate_colony",
+      "chosen",
+      "performance_state",
+      "natal_colony_indicator",
+      "log1p_colony_size",
+      "z_log_resight_days"
+    ],
+    "derived_fields": [
+      "is_ROYD",
+      "is_BIRD"
+    ],
+    "chosen_rule": "Exactly one chosen=1 row per event.",
+    "candidate_count": "At least 2 and at most 3 Ross Island colonies per event.",
+    "performance_year": "first_breeding_season - 1"
+  },
+  "primary_model": {
+    "family": "conditional multinomial logit with individual first-breeding event as stratum",
+    "linear_predictor": "beta_perf * performance_state + beta_natal * natal_colony_indicator + beta_size * log1p_colony_size + beta_effort * z_log_resight_days + beta_royd * is_ROYD + beta_bird * is_BIRD",
+    "reference_colony_for_alternative_effects": "CROZ",
+    "intercept": "none; event-specific intercept conditions out",
+    "estimator": "Newton-Raphson maximum conditional likelihood using analytic gradient and information matrix",
+    "convergence": {
+      "max_iterations": 50,
+      "coefficient_tolerance": 1e-10,
+      "gradient_tolerance": 1e-9,
+      "singular_information": "Use Moore-Penrose pseudoinverse; do not remove a covariate based on outcome. Flag non-convergence."
+    },
+    "primary_coefficient": "beta_perf"
+  },
+  "eligibility_before_information_gate": [
+    "Apply all state/candidate/performance/size rules frozen in the parent contracts.",
+    "Exclude any event with first_breeding_season >= 2014 and BIRD in the candidate set.",
+    "Require finite z_log_resight_days for every candidate option.",
+    "Require the underlying detection-control builder to have verified at least one non-focal resight date at all three Ross colonies in the outcome season."
+  ],
+  "permutation": {
+    "count": 100000,
+    "seed": 20261001,
+    "unit": "performance_year",
+    "rule": "For each replicate and performance year, uniformly permute performance labels among CROZ, ROYD and BIRD. Hold chosen outcome, candidate set, natal indicator, colony size, detection proxy and colony alternative effects fixed.",
+    "refit": "Refit the complete six-coefficient conditional choice model for every replicate.",
+    "p_value": "(1 + null beta_perf >= observed beta_perf count) / (B + 1)",
+    "direction": "upper tail"
+  },
+  "synthetic_tests_required": [
+    "recover positive performance preference with detection and colony effects present",
+    "recover near-zero performance coefficient under a synthetic no-performance-effect generator",
+    "permutation changes only performance labels",
+    "effort and colony alternative effects remain invariant under permutation",
+    "same performance-year colony permutation is shared by all events in that year",
+    "reject events with zero/multiple chosen alternatives",
+    "reject candidate sets outside 2-3 options",
+    "reject missing/nonfinite effort covariate",
+    "derive is_ROYD and is_BIRD deterministically from candidate_colony",
+    "frozen information gate remains implemented"
+  ],
+  "loader_boundary": [
+    "No real resight CSV loader may construct canonical choice rows until the exact-header gate is manually frozen and unlocked.",
+    "The future real-data builder must implement ROSS_ISLAND_DETECTION_CONTROL_AMENDMENT_V1 before passing rows to this engine.",
+    "The parser may not alter the model, covariates, permutation, minimum-information thresholds or Bird post-2013 exclusion after movement outcomes are opened."
+  ]
+}
