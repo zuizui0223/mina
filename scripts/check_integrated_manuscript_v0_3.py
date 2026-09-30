@@ -101,7 +101,10 @@ def check(root: Path) -> dict[str, object]:
         and repro["decision"]["independent_nest_validation_supported"] is False
     )
     checks["paper2_receipt_nonconfirmatory"] = (
-        paper2["decision"]["cross_species_primary_supported"] is False
+        paper2["decision"]["frozen_primary_permutation_test_rejects_at_0_05"]
+        is False
+        and paper2["decision"]["result_class"]
+        == "directionally_concordant_but_not_confirmatory"
     )
 
     failed = [name for name, ok in checks.items() if not ok]
