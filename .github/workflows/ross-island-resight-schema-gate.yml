@@ -1,0 +1,42 @@
+name: ross-island-resight-schema-gate
+
+on:
+  push:
+    branches:
+      - validation/ross-island-resight-gate-v1
+    paths:
+      - "contracts/ROSS_ISLAND_RESIGHT_SCHEMA_GATE_V1.json"
+      - "scripts/audit_ross_resight_schema.py"
+      - ".github/workflows/ross-island-resight-schema-gate.yml"
+  workflow_dispatch:
+
+jobs:
+  audit-schema:
+    runs-on: ubuntu-latest
+    env:
+      USAP_DC_API_KEY: ${{ secrets.USAP_DC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Audit public README and schema only
+        run: |
+          python scripts/audit_ross_resight_schema.py \
+            --out build/ross_resight_schema_audit.json
+      - name: Enforce outcome-blind audit
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/ross_resight_schema_audit.json").read_text())
+          assert x["behavioral_rows_read"] == 0
+          print("status=",x["status"])
+          print("api_key_present=",x["api_key_present"])
+          print("resight_header=",x["resight_header"])
+          print("banding_header=",x["banding_header"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ross-island-resight-schema-audit
+          path: build/ross_resight_schema_audit.json
