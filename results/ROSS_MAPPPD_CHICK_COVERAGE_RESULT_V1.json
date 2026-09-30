@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-mapppd-chick-coverage-result-v1",
+  "validated_date": "2026-09-30",
+  "audit_id": "mina-ross-mapppd-chick-coverage-v1",
+  "status": "FAIL_THREE_COLONY_INDEPENDENT_CHICK_STATE_COVERAGE",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "species_id": "ADPE",
+    "observation_type": "chicks"
+  },
+  "execution": {
+    "workflow_run_id": 36735005485,
+    "workflow_conclusion": "success",
+    "head_sha": "ab4ec7ae69c87dce1a13a50cd02c16e6801a324a",
+    "artifact_id": 11106407513,
+    "artifact_digest": "sha256:9e3fe715da2b4a23bc37af70db1fee81cb79b15906c658f084d4bbd0be4127c2",
+    "movement_behavioral_rows_read": 0,
+    "chick_count_magnitudes_exported": false
+  },
+  "routes_audited": {
+    "component_route": {
+      "ROYD": ["ROYD"],
+      "BIRD": ["BRDN", "BRDM", "BRDS"],
+      "CROZ": ["CRZE", "CRZW"],
+      "common_prior_performance_years_1996_2012": 0,
+      "gate": false
+    },
+    "parent_site_route": {
+      "ROYD": "Cape Royds",
+      "BIRD": "Cape Bird",
+      "CROZ": "Cape Crozier",
+      "missing_parent_site": "Cape Bird",
+      "common_prior_performance_years_1996_2012": 0,
+      "gate": false
+    }
+  },
+  "decision": {
+    "three_colony_independent_mapppd_chick_state_viable": false,
+    "use_two_colony_rescue": false,
+    "frozen_three_colony_fallback_remains": "prior-year banded-breeder chick-presence index under ROSS_ISLAND_BANDED_BREEDER_PERFORMANCE_V1"
+  },
+  "interpretation": "The pinned MAPPPD snapshot cannot supply a source-unambiguous annual chick-count state for all three Ross mark-resight colonies during the predeclared 1996-2012 prior-performance window. Component sites have no qualifying chick-count records, and the parent-site route is structurally incomplete because Cape Bird has no parent site in MAPPPD. Therefore external chick counts cannot replace the frozen banded-breeder performance fallback without shrinking the problem post hoc.",
+  "claim_boundary": [
+    "This is a coverage failure, not evidence that chick abundance is biologically irrelevant.",
+    "No chick-count magnitudes or individual movement outcomes were inspected in making this decision.",
+    "Do not switch to a Royds-Crozier two-colony model as a rescue.",
+    "Do not use MAPPPD chick counts to redefine the primary Ross performance predictor."
+  ]
+}
