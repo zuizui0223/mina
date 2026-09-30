@@ -64,7 +64,7 @@ def prepare_choice_arrays(
     colony_index = np.full((n, 3), -1, dtype=int)
     mask = np.zeros((n, 3), dtype=bool)
     chosen_index = np.empty(n, dtype=int)
-    static = np.zeros((n, 3, 2), dtype=float)
+    static = np.zeros((n, 3, 5), dtype=float)
     first_season = np.empty(n, dtype=int)
     performance_year = np.empty(n, dtype=int)
     perf_year_index = np.empty(n, dtype=int)
@@ -98,6 +98,11 @@ def prepare_choice_arrays(
             )
         if pyear not in year_lookup:
             raise ValueError(f"missing complete performance year {pyear}")
+        if season >= 2014 and "BIRD" in option_colonies:
+            raise ValueError(
+                f"event {event_id} includes BIRD in first-breeding season "
+                f"{season} >= 2014; frozen detection rule requires exclusion"
+            )
 
         first_season[ei] = season
         performance_year[ei] = pyear
@@ -116,6 +121,9 @@ def prepare_choice_arrays(
             mask[ei, oi] = True
             static[ei, oi, 0] = float(row["natal_colony_indicator"])
             static[ei, oi, 1] = float(row["log1p_colony_size"])
+            static[ei, oi, 2] = float(row["z_log_resight_days"])
+            static[ei, oi, 3] = float(colony == "ROYD")
+            static[ei, oi, 4] = float(colony == "BIRD")
             if int(row["chosen"]) == 1:
                 chosen_pos = oi
 
@@ -255,6 +263,9 @@ def fit_conditional_logit(
         "beta_performance": float(beta[0, 0]),
         "beta_natal": float(beta[0, 1]),
         "beta_log_size": float(beta[0, 2]),
+        "beta_effort": float(beta[0, 3]),
+        "beta_royd": float(beta[0, 4]),
+        "beta_bird": float(beta[0, 5]),
         "converged": bool(converged[0]),
         "n_events": len(arrays.event_ids),
         "n_option_rows": int(np.sum(arrays.mask)),
