@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-integrated-v0.5-geb-preflight-result-v1",
+  "validated_date": "2026-10-01",
+  "contract_id": "mina-integrated-v0.5-geb-submission-v1",
+  "branch": "manuscript/integrated-v0.5-geb",
+  "manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_5_GEB.md",
+  "builder": "scripts/build_integrated_v0_5_geb.py",
+  "cover_interest_paragraph": "docs/GEB_COVER_LETTER_INTEREST_PARAGRAPH_V0_5.md",
+  "validation_mode": "connector_direct_preflight_pending_actions_redundant_validation",
+  "builder_reproducibility": {
+    "source_manuscript": "docs/MANUSCRIPT_INTEGRATED_V0_4.md",
+    "exact_regeneration_match": true,
+    "generated_characters": 29411,
+    "committed_characters": 29411
+  },
+  "counts": {
+    "structured_abstract_words_strict_counter": 269,
+    "main_words_introduction_through_conclusion": 3585,
+    "running_title_characters": 36,
+    "keywords": 9,
+    "cover_letter_interest_paragraph_words": 210,
+    "bibliography_entries": 30
+  },
+  "geb_format_checks": {
+    "structured_abstract_le_300": true,
+    "required_abstract_headings_in_order": true,
+    "main_text_within_practical_5200_ceiling": true,
+    "running_title_under_40_characters": true,
+    "keywords_between_6_and_10": true,
+    "keywords_alphabetical": true,
+    "cover_interest_paragraph_under_250_words": true
+  },
+  "scientific_boundary_checks": {
+    "palmer_lag2_fixed_specification_boundary_retained": true,
+    "independent_repro_nonreplication_retained": true,
+    "paper2_nonconfirmatory_decision_retained": true,
+    "radius_scale_dependence_not_claimed": true,
+    "cross_scale_synthesis_not_head_to_head": true,
+    "public_information_not_claimed_as_demonstrated_mechanism": true,
+    "state_does_not_replace_place_boundary_retained": true,
+    "ross_unpublished_behavioral_results_absent": true,
+    "near_significance_language_absent": true
+  },
+  "scientific_results_changed_from_v0_4": false,
+  "figure_data_changed_from_v0_4": false,
+  "decision": {
+    "geb_submission_text_preflight_pass": true,
+    "actions_validation_pending_only_as_redundant_reproducibility_check": true,
+    "remaining_author_controlled_items": [
+      "separate identifying title page",
+      "acknowledgements",
+      "author contributions",
+      "conflict-of-interest statement confirmation",
+      "optional suggested reviewers/editors"
+    ]
+  }
+}
