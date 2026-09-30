@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-resight-schema-gate-result-v1",
+  "validated_date": "2026-09-30",
+  "gate_id": "mina-ross-island-resight-schema-gate-v1",
+  "status": "BLOCKED_RAW_DATA_ACCESS_AFTER_SCHEMA_PREPARATION",
+  "outcome_blind_status": {
+    "behavioral_rows_read": 0,
+    "settlement_outcomes_opened": false,
+    "transition_frequencies_opened": false,
+    "colony_performance_values_opened": false
+  },
+  "public_schema_audit": {
+    "focused_workflow_run_id": 36728875382,
+    "artifact_id": 11103338993,
+    "artifact_digest": "sha256:275f3044b8363fc4d0bf5d4e2e3605a4ee194026334b651d82e5400d6bcc213e",
+    "api_key_present": false,
+    "resight_readme_retrieved": true,
+    "banding_readme_retrieved": true,
+    "chick_count_readme_retrieved": true,
+    "csv_header_retrieved": false
+  },
+  "resight_schema_supported_by_readme": {
+    "stable_individual_id": "Band",
+    "observation_date": "Date",
+    "colony": "Colony with codes CROZ, ROYD, BIRD, BEAU",
+    "breeding_evidence_fields": ["Eggs", "Chicks"],
+    "other_fields": ["Sex", "Sexed How", "Band Gap", "Nest Position", "Subcolony", "Area", "Flagged", "Latitude", "Longitude", "Initials"],
+    "chick_codes": {
+      "0": "no chicks",
+      "1": "one chick",
+      "2": "two chicks",
+      "8": "at least one chick",
+      "9": "unknown/did not check"
+    },
+    "egg_codes": {
+      "0": "no eggs",
+      "1": "one egg",
+      "2": "two eggs",
+      "8": "at least one egg",
+      "9": "unknown/did not check"
+    }
+  },
+  "banding_schema_supported_by_readme": {
+    "fields": ["Low", "High", "Colony", "Season"],
+    "natal_colony_recoverable": true,
+    "cohort_recoverable": true,
+    "season_example": "9495 = 1994-1995 breeding season; bands applied in January of the higher-numbered year"
+  },
+  "state_reconstruction": {
+    "contract": "contracts/ROSS_ISLAND_STATE_RECONSTRUCTION_V1.json",
+    "status": "frozen_before_behavioral_rows",
+    "published_state_semantics_reproducible_from_public_schema": true
+  },
+  "performance_predictor": {
+    "contract": "contracts/ROSS_ISLAND_BANDED_BREEDER_PERFORMANCE_V1.json",
+    "external_chick_count_600007_primary_status": "not suitable for primary three-colony predictor because README covers Royds and Crozier but not Bird",
+    "frozen_fallback": "prior-year banded-breeder chick-presence index",
+    "fallback_status": "frozen_before_behavioral_rows"
+  },
+  "colony_size_control": {
+    "contract": "contracts/ROSS_ISLAND_COLONY_SIZE_CONTROL_V1.json",
+    "result": "results/ROSS_ISLAND_COLONY_SIZE_CONTROL_RESULT_V1.json",
+    "status": "viable",
+    "pinned_mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "common_complete_years_1997_2019": 21
+  },
+  "raw_access": {
+    "usap_dc_dataset": "601444",
+    "file": "band_resighting_1997-2021.csv",
+    "documented_public_api_requirement": "USAP-DC file download API requires an API key; repository secret USAP_DC_API_KEY is currently absent.",
+    "old_nasa_cmr_collection": "B031_resight_1.0",
+    "old_direct_asset": "Point Blue AllData/resight",
+    "old_asset_currently_retrievable": false,
+    "authentication_bypass_attempted": false
+  },
+  "decision": {
+    "schema_scientifically_sufficient_in_principle": true,
+    "exact_csv_header_verified": false,
+    "movement_analysis_unlocked": false,
+    "next_required_gate": "Provide USAP_DC_API_KEY as a repository secret, rerun schema-only workflow to read only CSV headers, freeze exact parser/code-map receipt, then and only then permit full behavioral-row download.",
+    "posthoc_model_changes_allowed": false
+  },
+  "claim_boundary": [
+    "No Ross Island movement or settlement result exists yet.",
+    "Do not infer a direction, effect size, event count, or significance from the README or published paper.",
+    "Do not substitute the two-colony 600007 chick-count source if the frozen three-colony performance gate later loses information.",
+    "Do not download behavioral rows before the exact CSV header is audited and the parser is frozen.",
+    "Do not bypass USAP-DC access controls."
+  ]
+}
