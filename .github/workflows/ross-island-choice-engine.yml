@@ -10,6 +10,8 @@ on:
       - "contracts/ROSS_ISLAND_DETECTION_CONTROL_AMENDMENT_V1.json"
       - "src/mina/ross_choice.py"
       - "tests/test_ross_choice.py"
+      - "src/mina/ross_detection.py"
+      - "tests/test_ross_detection.py"
       - ".github/workflows/ross-island-choice-engine.yml"
   workflow_dispatch:
 
@@ -23,4 +25,4 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev]"
       - name: Run outcome-blind synthetic choice-engine tests
-        run: pytest -q tests/test_ross_choice.py
+        run: pytest -q tests/test_ross_choice.py tests/test_ross_detection.py
