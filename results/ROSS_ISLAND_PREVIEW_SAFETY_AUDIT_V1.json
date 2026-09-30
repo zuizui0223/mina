@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-preview-safety-audit-v1",
+  "validated_date": "2026-09-30",
+  "status": "PREVIEW_PROHIBITED_FOR_OUTCOME_BLIND_HEADER_GATE",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "source": {
+    "repository": "usap-dc-dev/usap-dc-website",
+    "branch": "master",
+    "commit": "68dbb2c5f5d91b2c7bcd8d477c7dd3158e4b7e6c",
+    "repository_pushed_at": "2026-07-06T20:36:29Z",
+    "files_audited": [
+      "templates/landing_page.html",
+      "usap.py"
+    ]
+  },
+  "frontend_behavior": {
+    "preview_button_rule": "For previewable files, the landing page replaces /dataset with /preview/dataset in the file URL.",
+    "preview_is_separate_from_download_captcha": true
+  },
+  "server_behavior": {
+    "route": "/preview/<path:filename>",
+    "csv_handling": "The server reads the CSV header and then accumulates data rows, rendering the header plus rows[0:100].",
+    "max_preview_data_rows": 100,
+    "header_only": false
+  },
+  "decision": {
+    "use_preview_for_exact_header_gate": false,
+    "reason": "Opening the preview would expose up to 100 behavioral resight rows and would violate the frozen outcome-blind rule.",
+    "allowed_exact_header_route": "Use the authenticated USAP-DC datafile API with the schema-only client that reads bytes only through the first newline and then closes the response.",
+    "authentication_bypass_allowed": false
+  },
+  "claim_boundary": [
+    "Do not use the website Preview button or /preview/dataset route for dataset 601444 before the movement analysis is unlocked.",
+    "Do not copy header information from a preview response because the same request also exposes behavioral rows.",
+    "The absence of a repository API key remains a legitimate blocking condition, not a reason to relax outcome blindness."
+  ]
+}
