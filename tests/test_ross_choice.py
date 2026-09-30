@@ -126,9 +126,7 @@ def test_null_performance_preference_is_near_zero_with_detection_controls() -> N
 def test_permutation_test_detects_strong_synthetic_effect_v2() -> None:
     rows, perf = _synthetic(seed=21, beta_perf=2.0, events_per_year=18)
     arrays = prepare_choice_arrays(rows, perf)
-    result = permutation_test(
-        arrays, permutations=999, seed=20261001, batch_size=111
-    )
+    result = permutation_test(\n        arrays,\n        source_eligible_first_breeding_events=len(arrays.event_ids) + 25,\n        permutations=999,\n        seed=20261001,\n        batch_size=111,\n    )
     assert result["estimable"]
     assert result["observed"]["beta_performance"] > 1.0
     assert result["one_sided_upper_p"] <= 0.01
@@ -184,10 +182,7 @@ def test_information_gate_uses_frozen_thresholds() -> None:
         seed=4, beta_perf=1.0, events_per_year=10, years=10
     )
     arrays = prepare_choice_arrays(rows, perf)
-    gate = information_gate(arrays)
-    assert gate["eligible_first_breeding_events"] == 100
-    assert gate["unique_first_breeding_years"] == 10
-    assert gate["pass"]
+    gate = information_gate(\n        arrays, source_eligible_first_breeding_events=120\n    )\n    assert gate["eligible_first_breeding_events"] == 120\n    assert gate["events_with_at_least_two_observed_candidate_colonies"] == 100\n    assert gate["unique_first_breeding_years"] == 10\n    assert gate["pass"]
 
 
 def test_rejects_multiple_chosen_options() -> None:
@@ -241,3 +236,42 @@ def test_bird_candidate_is_rejected_from_2014_onward() -> None:
     )
     with pytest.raises(ValueError, match="includes BIRD"):
         prepare_choice_arrays(rows, perf)
+
+
+def test_two_stage_information_gate_keeps_100_and_50_distinct() -> None:
+    rows, perf = _synthetic(
+        seed=41, beta_perf=0.0, events_per_year=6, years=10
+    )
+    arrays = prepare_choice_arrays(rows, perf)
+    assert len(arrays.event_ids) == 60
+
+    gate = information_gate(
+        arrays, source_eligible_first_breeding_events=100
+    )
+    assert gate["pass"]
+
+    source_fail = information_gate(
+        arrays, source_eligible_first_breeding_events=99
+    )
+    assert not source_fail["pass"]
+
+    rows49, perf49 = _synthetic(
+        seed=42, beta_perf=0.0, events_per_year=7, years=7
+    )
+    arrays49 = prepare_choice_arrays(rows49, perf49)
+    assert len(arrays49.event_ids) == 49
+    choice_fail = information_gate(
+        arrays49, source_eligible_first_breeding_events=120
+    )
+    assert not choice_fail["pass"]
+
+
+def test_source_gate_count_cannot_be_smaller_than_choice_count() -> None:
+    rows, perf = _synthetic(
+        seed=43, beta_perf=0.0, events_per_year=6, years=10
+    )
+    arrays = prepare_choice_arrays(rows, perf)
+    with pytest.raises(ValueError, match="cannot be smaller"):
+        information_gate(
+            arrays, source_eligible_first_breeding_events=50
+        )
