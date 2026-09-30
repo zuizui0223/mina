@@ -1,4 +1,4 @@
-# Local demographic reorganization does not scale into a transferable island-resilience rule in Antarctic penguins
+# Local demographic reorganization does not imply a transferable island-resilience rule in Antarctic penguins
 
 **Integrated manuscript draft v0.2**
 
