@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-public-readme-schema-receipt-v1",
+  "validated_date": "2026-09-30",
+  "status": "PUBLIC_README_SCHEMA_VERIFIED_BEFORE_BEHAVIORAL_ROWS",
+  "parent_gate": "mina-ross-island-resight-schema-gate-v1",
+  "execution": {
+    "workflow_run_id": 36731179601,
+    "artifact_id": 11105421331,
+    "artifact_digest": "sha256:bf9066e6598a4aca33576e0caed126e072c2de2c8ce4b562a00ba08bd28239ec",
+    "behavioral_rows_read": 0,
+    "api_key_present": false,
+    "exact_csv_header_retrieved": false
+  },
+  "resight_dataset_601444": {
+    "doi": "10.15784/601444",
+    "public_readme_retrieved": true,
+    "documented_fields": {
+      "Band": "numeric individual band identifier",
+      "Band Seen": "Y/N",
+      "Eggs": "0,1,2,8,9",
+      "Chicks": "0,1,2,8,9",
+      "Sex": "M/F/U",
+      "Sexed How": "field codes",
+      "Band Gap": "0,1,2,3,9",
+      "Nest Position": "numeric",
+      "Subcolony": "alphanumeric",
+      "Chick Size 1": "categorical",
+      "Chick Size 2": "categorical",
+      "Notes": "text",
+      "Area": "categorical",
+      "Colony": "CROZ, ROYD, BIRD, BEAU",
+      "Flagged": "Y/N",
+      "Date": "month/day/year",
+      "Latitude": "numeric",
+      "Longitude": "numeric",
+      "Initials": "observer initials"
+    },
+    "egg_codes": {
+      "0": "no eggs",
+      "1": "one egg",
+      "2": "two eggs",
+      "8": "at least one egg",
+      "9": "unknown/did not check"
+    },
+    "chick_codes": {
+      "0": "no chicks",
+      "1": "one chick",
+      "2": "two chicks",
+      "8": "at least one chick",
+      "9": "unknown/did not check"
+    },
+    "sampling_note": "Observers read band numbers with binoculars; nests of banded penguins were marked when first observed with eggs/chicks and were typically checked about every four days to determine fate."
+  },
+  "banding_dataset_601443": {
+    "doi": "10.15784/601443",
+    "public_readme_retrieved": true,
+    "documented_fields": {
+      "Low": "low band number in an attached sequence",
+      "High": "high band number in an attached sequence",
+      "Colony": "colony where bands were attached",
+      "Season": "four-digit austral breeding-season code"
+    },
+    "season_semantics": "9495 means the 1994-1995 breeding season; bands were attached in January of the higher-numbered year.",
+    "natal_colony_and_cohort_recoverable_in_principle": true
+  },
+  "chick_count_dataset_600007": {
+    "public_readme_retrieved": true,
+    "coverage": "Counts of Adelie penguin chicks at Capes Royds and Crozier, 1996-2009.",
+    "cape_bird_covered": false,
+    "three_colony_primary_predictor_viable": false
+  },
+  "decision": {
+    "scientific_state_reconstruction_schema_sufficient": true,
+    "exact_file_header_gate_satisfied": false,
+    "full_behavioral_download_allowed": false
+  },
+  "claim_boundary": [
+    "This receipt verifies documentation only, not actual CSV column order or behavioral values.",
+    "Do not infer event counts, movement directions, or effect sizes from README metadata.",
+    "Full behavioral access remains blocked until exact headers are retrieved and frozen."
+  ]
+}
