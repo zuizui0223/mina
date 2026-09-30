@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-colony-size-control-result-v1",
+  "validated_date": "2026-09-30",
+  "contract_id": "mina-ross-island-colony-size-control-v1",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502"
+  },
+  "execution": {
+    "focused_workflow_run_id": 36730239436,
+    "artifact_id": 11104711554,
+    "artifact_digest": "sha256:19ec885a1c2c6ee8bb01cda522e9adf6f61acf68455219afb38990a60f820f76",
+    "conclusion": "success"
+  },
+  "component_sites": {
+    "ROYD": {"site_name": "Cape Royds", "distinct_years": 42, "coverage": [1980, 2024]},
+    "BRDN": {"site_name": "Cape Bird North", "distinct_years": 41, "coverage": [1982, 2024]},
+    "BRDM": {"site_name": "Cape Bird Middle", "distinct_years": 40, "coverage": [1983, 2024]},
+    "BRDS": {"site_name": "Cape Bird South", "distinct_years": 41, "coverage": [1983, 2024]},
+    "CRZE": {"site_name": "Cape Crozier (east)", "distinct_years": 39, "coverage": [1985, 2024]},
+    "CRZW": {"site_name": "Cape Crozier (west)", "distinct_years": 38, "coverage": [1985, 2024]}
+  },
+  "relevant_window_1997_2019": {
+    "ROYD_complete_years": 23,
+    "BIRD_complete_years": 21,
+    "CROZ_complete_years": 22,
+    "BIRD_missing_years": [2000, 2008],
+    "CROZ_missing_years": [2000],
+    "common_complete_years": [
+      1997, 1998, 1999,
+      2001, 2002, 2003, 2004, 2005, 2006, 2007,
+      2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019
+    ],
+    "n_common_complete_years": 21,
+    "duplicate_component_years": 0
+  },
+  "decision": {
+    "colony_size_control_viable": true,
+    "manual_record_selection_required": false,
+    "imputation_required": false
+  },
+  "interpretation": "The pinned MAPPPD snapshot provides an objective prior-year breeding-pair size control for Royds, Bird and Crozier for 21 common seasons in the 1997-2019 mark-resight window. Years 2000 and 2008 are excluded where required by component-site missingness."
+}
