@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-ross-island-execution-readiness-result-v1",
+  "validated_date": "2026-10-01",
+  "audit_id": "mina-ross-island-execution-readiness-v1",
+  "execution": {
+    "workflow_run_id": 36742395538,
+    "workflow_conclusion": "success",
+    "head_sha": "8366914d487f9a390e68d4b7cc88505b41455b8a",
+    "artifact_id": 11110549101,
+    "artifact_digest": "sha256:4804ed6d4164407d1b47e7665fd805bc6708635a7907db0f765efbd0f4321f5a"
+  },
+  "outcome_blind_status": {
+    "behavioral_rows_read": 0,
+    "settlement_outcomes_opened": false,
+    "exact_csv_header_verified": false,
+    "movement_analysis_unlocked": false
+  },
+  "checks": {
+    "anonymous_html_not_accepted": true,
+    "behavioral_rows_still_zero": true,
+    "choice_v2_synthetic_ready": true,
+    "colony_size_control_viable": true,
+    "detection_builder_ready": true,
+    "end_to_end_synthetic_ready": true,
+    "exact_header_not_verified": true,
+    "external_three_colony_performance_unavailable": true,
+    "header_receipt_blocked": true,
+    "movement_analysis_locked": true,
+    "no_imputation_needed_for_size_control": true,
+    "official_api_key_block_recorded": true,
+    "predeclared_performance_fallback_retained": true,
+    "settlement_outcomes_unopened": true,
+    "state_engine_ready": true,
+    "two_colony_rescue_forbidden": true
+  },
+  "failed_checks": [],
+  "decision": {
+    "all_checks_pass": true,
+    "scientific_pipeline_status": "READY_PARSER_INDEPENDENT",
+    "real_data_status": "LOCKED_PENDING_EXACT_HEADERS",
+    "only_external_dependency": "USAP_DC_API_KEY -> schema-only exact-header audit -> manual parser receipt freeze"
+  },
+  "interpretation": "All parser-independent scientific machinery is frozen and synthetic-validated while the real behavioral-data gate remains explicitly locked. This is the intended pre-outcome state: readiness and non-access are both enforced by CI."
+}
