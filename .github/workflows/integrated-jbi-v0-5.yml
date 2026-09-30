@@ -1,0 +1,34 @@
+name: integrated-jbi-v0-5
+
+on:
+  push:
+    branches:
+      - submission/jbi-v0.5-current
+    paths:
+      - "docs/MANUSCRIPT_INTEGRATED_JBI_V0_5.md"
+      - "docs/REFERENCES_V8.bib"
+      - "docs/TITLE_PAGE_JBI_INTEGRATED_V0_5_TEMPLATE.md"
+      - "docs/COVER_LETTER_JBI_INTEGRATED_V0_5.md"
+      - "submission/JBI_SUBMISSION_CHECKLIST_INTEGRATED_V0_5.md"
+      - "contracts/INTEGRATED_JBI_SUBMISSION_PACKAGE_V0_5.json"
+      - "scripts/check_integrated_jbi_v0_5.py"
+      - ".github/workflows/integrated-jbi-v0-5.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate current JBI v0.5 package
+        run: |
+          python scripts/check_integrated_jbi_v0_5.py \
+            --repo-root . \
+            --out build/integrated_jbi_v0_5_validation.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integrated-jbi-v0-5-validation
+          path: build/integrated_jbi_v0_5_validation.json
