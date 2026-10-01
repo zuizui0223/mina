@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-gentoo-colonization-network-gate0-result-v1",
+  "validated_date": "2026-10-01",
+  "contract_id": "mina-gentoo-colonization-network-gate0-v1",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "source_rows_total": 5487,
+    "ccamlr_48_1_sites": 408
+  },
+  "audit": {
+    "gepe_nest_rows": 1228,
+    "gepe_nest_site_season_cells": 877,
+    "sites_with_known_gepe_nest_status": 116,
+    "sites_with_any_explicit_negative": 10,
+    "left_censored_already_positive_sites": 110,
+    "at_risk_sites": 5,
+    "at_risk_site_ids": ["BISC","GALE","ORNE","TXRX","VERN"],
+    "persistent_colonization_events": 2,
+    "same_site_season_positive_negative_conflicts": 0,
+    "median_observation_gap_seasons": 1.0,
+    "maximum_observation_gap_seasons": 129,
+    "events_without_prior_source": []
+  },
+  "events": [
+    {
+      "site_id": "ORNE",
+      "site_name": "Orne Islands",
+      "event_season": 1999,
+      "prior_explicit_negative_seasons": 5,
+      "n_known_gentoo_nest_seasons": 16,
+      "has_prior_established_source_with_coordinates": true
+    },
+    {
+      "site_id": "TXRX",
+      "site_name": "Tuxen Rocks",
+      "event_season": 2006,
+      "prior_explicit_negative_seasons": 2,
+      "n_known_gentoo_nest_seasons": 9,
+      "has_prior_established_source_with_coordinates": true
+    }
+  ],
+  "gate_thresholds": {
+    "minimum_persistent_colonization_events": 8,
+    "minimum_at_risk_sites": 20,
+    "maximum_events_with_no_prior_source": 0
+  },
+  "decision": {
+    "gate_passed": false,
+    "distance_effect_may_be_frozen_next": false,
+    "no_geometry_or_distance_effect_computed": true,
+    "terminal": true
+  },
+  "interpretation": [
+    "The public APBP/MAPPPD observation history does not contain enough explicit Gentoo breeding absences to support a clean first-colonization hazard analysis under the frozen rules.",
+    "Only two persistent establishment events are recoverable despite 1228 Gentoo nest-observation rows, because most established sites are left-censored and only ten sites contain any explicit negative Gentoo nest record.",
+    "Missing species records must not be reclassified as absences to manufacture additional colonization events."
+  ],
+  "terminal_rule": "Do not relax the explicit-absence, persistence, geographic-domain, at-risk-site or event-count requirements. The colonization-distance hypothesis is closed for this data source."
+}
