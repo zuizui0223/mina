@@ -330,7 +330,7 @@ All three 2 km interaction estimates were negative, but the preregistered paper-
 
 ### Radius variation is a robustness problem, not a new ecological finding
 
-The interaction changed markedly across 1, 2 and 5 km, but the joint null assigned probability 0.081 to the observed 2-to-5 km sign switch plus contrast. We therefore treat radius as sensitivity rather than biological scale dependence. The result still demonstrates that habitat heterogeneity is not scale-free and that conclusions about static architecture depend on spatial support.
+The interaction changed markedly across 1, 2 and 5 km, but the joint null assigned probability 0.081 to the observed 2-to-5 km sign switch plus contrast. We therefore treat radius as sensitivity rather than biological scale dependence. The changing estimates show that the numerical landscape summary and its fitted association depend on spatial support; they do not identify a biologically preferred scale.
 
 ### A hierarchy of ecological information
 
