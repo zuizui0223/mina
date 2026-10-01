@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-pygoscelis-local-replacement-gate0-v1",
+  "date": "2026-10-01",
+  "status": "frozen_before_matched-multispecies-coverage-audit",
+  "paper_lane": "Antarctic penguin community reassembly",
+  "ecological_question": "Do regional climate-winner/loser trends among Pygoscelis penguins arise through local species replacement within shared breeding sites, or mainly through spatial sorting among sites?",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "dataset": "penguin_obs",
+    "observation_type": "nests"
+  },
+  "geographic_domain": {
+    "primary": "CCAMLR subarea 48.1",
+    "reason": "The Antarctic Peninsula/South Shetland region where the established regional contrast is Gentoo increase/range expansion versus widespread Adélie and Chinstrap decline."
+  },
+  "species_pairs": {
+    "primary": ["ADPE","GEPE"],
+    "secondary": ["CHPE","GEPE"],
+    "context": ["ADPE","CHPE"]
+  },
+  "matched-season-rule": {
+    "unit": "site x season",
+    "eligibility": "Both species in the pair must each have at least one finite nest-count record at the same site and same APBP season.",
+    "missing_rule": "Missing species records are never converted to zero.",
+    "within_site_species_season_value": "median of log1p(count) across all finite nest-count records for that site x species x season; this rule is fixed before count trends are computed.",
+    "reason": "Exact season matching prevents different temporal sampling windows from creating an apparent cross-species replacement signal."
+  },
+  "site-pair-trajectory-rule": {
+    "minimum_shared_seasons": 5,
+    "minimum_span_years": 10,
+    "same_shared_seasons_for_both_species": true
+  },
+  "gate0_outputs_only": [
+    "number of eligible site trajectories for each frozen species pair",
+    "distribution of shared-season counts and time spans",
+    "site identities and regions",
+    "no species slopes, trend signs, correlations or count magnitudes beyond metadata needed for eligibility"
+  ],
+  "gate0_pass_rule": {
+    "primary_minimum_sites": 12,
+    "secondary_minimum_sites": 12,
+    "decision": "Primary effect estimation proceeds only if ADPE-GEPE has >=12 eligible sites. CHPE-GEPE is inferential secondary only if it independently has >=12. Context ADPE-CHPE has no blocking threshold.",
+    "terminal": "Do not lower 5 shared seasons, 10-year span, 12-site threshold, or geographic domain after seeing coverage."
+  },
+  "effect_design_if_primary_gate_passes": {
+    "site_level_trend": "OLS slope of median log1p nest count versus centered season, fit separately by species using the exact same matched seasons within each site.",
+    "primary_statistic": "Spearman correlation across sites between ADPE slope and GEPE slope.",
+    "replacement_prediction": "negative correlation",
+    "primary_inference": "exact permutation if n! is computationally tractable, otherwise 100000 permutations with seed 20261001, shuffling GEPE site slopes among sites while preserving the paired species slope vectors and site set.",
+    "mandatory_effect_size": "observed Spearman rho plus bootstrap 95% interval over sites; permutation p-value is directional and secondary to effect magnitude.",
+    "replacement_strength_secondary": "For sites where ADPE slope < 0 and GEPE slope > 0, report the fraction for which GEPE absolute nest gain offsets at least 25% of ADPE absolute nest loss over the shared observed interval; this is descriptive only and cannot rescue a failed primary correlation."
+  },
+  "interpretation_rules": [
+    "A negative correlation supports coordinated local replacement but not direct competition.",
+    "A null/positive correlation, if sufficiently precise, supports regional spatial sorting rather than simple one-for-one local replacement.",
+    "Do not infer climate causality from the cross-species trend pairing alone.",
+    "Do not use proportions or community shares as the primary response because their negative covariance is partly compositional by construction.",
+    "Do not select sites based on observed trend direction."
+  ],
+  "provenance_note": "MAPPPD count magnitudes have been opened in prior mina analyses, so this is a newly frozen ecological synthesis test, not a claim of pristine preregistration. The specific matched-site cross-species trend statistic has not been computed before this contract."
+}
