@@ -4,6 +4,8 @@
 
 This Supporting Information is a provenance- and robustness-oriented companion to the anonymous main manuscript. It does not introduce a new primary endpoint or promote any sensitivity analysis above its frozen inferential role.
 
+At the v0.5 manuscript freeze, every preplanned validation route is closed. HUMPOP passed its schema gate but stopped at the prespecified information gate (69 matched colony-seasons across 18 predictor seasons; minimum 100), so it is not an unopened pending test. External replication routes ended because sufficient analyzable data were unavailable; published Pointe Géologie evidence remains triangulation rather than a new fitted validation. No frozen threshold may be lowered and no post hoc rescue analysis may change an evidence class.
+
 ## Appendix S1. Analysis hierarchy, freezing status and claim boundaries
 
 | Analysis | Primary role | Freezing / provenance status | Paper-level interpretation |
