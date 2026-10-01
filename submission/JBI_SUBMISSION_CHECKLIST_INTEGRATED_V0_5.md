@@ -59,7 +59,7 @@
 
 - [ ] Create permanent archival release of exact submission code/results.
 - [ ] Insert archive DOI/URL in Data Accessibility Statement.
-- [ ] Verify licences for redistributed derived outputs.
+- [x] External-source licence/redistribution audit complete; raw third-party source bytes are excluded under `contracts/INTEGRATED_JBI_ARCHIVE_POLICY_V0_5.json`.
 - [x] Freeze scientific-content snapshot: `archive/jbi-v0.5-scientific-freeze-2026-10-01` with scientific-content commit `c34dcc62befff92f83eba3ec9254429b4333e024`.
 - [ ] Create final submission tag after author-controlled metadata and archive DOI are added.
 - [x] Scientific-result numeric provenance audit complete: Abstract/Results values are mapped by block to committed receipts in `contracts/INTEGRATED_JBI_NUMERIC_PROVENANCE_V0_5.json`.
