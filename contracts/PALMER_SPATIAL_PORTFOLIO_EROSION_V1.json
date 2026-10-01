@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-palmer-spatial-portfolio-erosion-v1",
+  "date": "2026-10-01",
+  "status": "frozen_before_specific_interaction_computation",
+  "paper_lane": "integrated Palmer-Antarctic ecological synthesis",
+  "scope_note": "The Palmer census has been extensively explored previously. This is therefore a newly frozen mechanistic follow-up, not a claim of pristine preregistration. The specific regional-forcing × N_eff interaction defined here has not been computed before this contract.",
+  "hypothesis": "Loss of within-island breeding-patch diversity increases an island population's coupling to shared regional demographic forcing.",
+  "biological_prediction": "For the same regional forcing, focal-island annual growth should respond more strongly when effective colony number is low. With N_eff coded so larger values mean more spatially distributed breeding, the regional_forcing × N_eff coefficient is predicted to be negative.",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "years": [1991, 2017]
+  },
+  "eligibility": {
+    "focal_islands": ["COR", "HUM", "LIT"],
+    "reason": "These are the three islands with unchanged census colony-code rosters in the frozen Palmer concentration analysis.",
+    "regional_forcing_pool": ["CHR", "COR", "HUM", "TOR"],
+    "regional_forcing_rule": "For each focal island-year transition, calculate the arithmetic mean annual log1p growth of all available persistent-pool islands after excluding the focal island if it belongs to the pool.",
+    "focal_transition_rule": "Start-year island abundance must be positive and both start and end census years must exist. Litchfield contributes only transitions whose start-year abundance is positive."
+  },
+  "variables": {
+    "focal_growth": "log1p(N_i,t+1) - log1p(N_i,t)",
+    "effective_colony_number": "1 / sum_j p_ij,t^2, computed from colony-code breeding-pair shares at start year t",
+    "regional_forcing": "leave-focal-out mean focal-year log1p growth over the persistent regional pool",
+    "current_abundance": "log1p focal-island breeding-pair abundance at start year t",
+    "year": "start year"
+  },
+  "standardization": {
+    "effective_colony_number": "log1p transform then z-score within focal island over eligible transitions",
+    "current_abundance": "z-score within focal island over eligible transitions",
+    "regional_forcing": "global z-score over eligible focal-island transitions",
+    "year": "global z-score over eligible focal-island transitions"
+  },
+  "primary_model": "focal_growth ~ focal_island_fixed_effects + z_year + z_current_abundance + z_regional_forcing + z_log1p_N_eff + z_regional_forcing:z_log1p_N_eff",
+  "primary_statistic": "coefficient on z_regional_forcing:z_log1p_N_eff",
+  "alternative": "coefficient < 0",
+  "inference": {
+    "null": "Within each focal island independently, circularly shift the complete eligible z_log1p_N_eff sequence while leaving focal growth, forcing, abundance, year, island identity and all other variables fixed.",
+    "enumeration": "Use every non-duplicated combination of island-specific circular shifts, including the identity alignment. No Monte Carlo sampling if the full product is computationally feasible.",
+    "p_value": "number of null coefficients <= observed coefficient divided by total exact shift combinations",
+    "support_rule": "Observed interaction must be negative and exact one-sided p <= 0.05."
+  },
+  "prespecified_sensitivities": [
+    {
+      "name": "persistent-focal-only",
+      "rule": "Repeat the same model and exact circular-shift inference using only COR and HUM, excluding locally extinct LIT."
+    },
+    {
+      "name": "count-error-coupling",
+      "rule": "Only if the primary interaction is supported, simulate the already-frozen Poisson, Gamma-Poisson CV10% and Gamma-Poisson CV20% count-error families under time-invariant within-island composition, preserving observed island-total trajectories, and quantify whether shared current-census error can generate an interaction as negative as observed. This sensitivity cannot rescue a failed primary result."
+    }
+  ],
+  "terminal_rules": [
+    "Do not change focal islands, forcing pool, lag, interaction sign, transform, covariates, or standardization after computing the primary coefficient.",
+    "Do not substitute a rolling-window synchrony metric, alternate concentration index, thresholded colony count, or tuned temporal subset if the primary test fails.",
+    "Do not claim individual dispersal, prospecting, public-information use, or a causal habitat mechanism from this analysis.",
+    "If supported, interpret the result as state-dependent demographic coupling consistent with erosion of a spatial portfolio, not proof of the mechanism generating that state."
+  ]
+}
