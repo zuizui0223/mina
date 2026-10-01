@@ -27,6 +27,9 @@ def check(root: Path) -> dict[str, object]:
     freeze = _load(
         root / "contracts/INTEGRATED_JBI_ANALYSIS_FREEZE_V0_5.json"
     )
+    numeric_provenance = _load(
+        root / "contracts/INTEGRATED_JBI_NUMERIC_PROVENANCE_V0_5.json"
+    )
 
     lines = manuscript.splitlines()
     title = lines[0].removeprefix("# ").strip()
@@ -173,6 +176,18 @@ def check(root: Path) -> dict[str, object]:
         and freeze["new_analysis_after_freeze_allowed"] is False
         and freeze["target_branch"] == "submission/jbi-v0.5-current"
         and package["target_branch"] == "submission/jbi-v0.5-current"
+    )
+    provenance_receipts = {
+        receipt
+        for block in numeric_provenance["blocks"]
+        for receipt in block["receipts"]
+    }
+    checks["numeric_provenance_receipts_present"] = (
+        numeric_provenance["scientific_results_changed"] is False
+        and len(numeric_provenance["blocks"]) >= 10
+        and all((root / receipt).is_file() for receipt in provenance_receipts)
+        and package["scientific_source_of_truth"]["numeric_provenance"]
+        == "contracts/INTEGRATED_JBI_NUMERIC_PROVENANCE_V0_5.json"
     )
 
     lag = _load(
