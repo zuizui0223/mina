@@ -2,7 +2,7 @@
 
 ## Figure 1. Shared regional decline provides the background for local demographic history
 
-**(a)** Locations of the five long-term Adélie penguin (*Pygoscelis adeliae*) breeding-island populations near Palmer Station in the Palmer Archipelago, western Antarctic Peninsula. Geographic longitude and latitude are displayed with a local equirectangular aspect correction centred on the mean Palmer latitude; the bar represents 2 km. **(b)** Annual breeding-pair abundance for Christine (CHR), Cormorant (COR), Humble (HUM), Litchfield (LIT) and Torgersen (TOR) islands from 1991–2017. The synchronized standardized log-abundance panel has a dominant common long-term component (principal component 1, PC1 = 96.4% of variation), while local endpoints differ in persistence, severe decline and extinction.
+**(a)** Locations of the five long-term Adélie penguin (*Pygoscelis adeliae*) breeding-island populations near Palmer Station in the Palmer Archipelago, western Antarctic Peninsula. Signed geographic longitude and latitude are displayed with a local equirectangular aspect correction centred on the mean Palmer latitude; the bar represents 2 km. **(b)** Annual breeding-pair abundance for Christine (CHR), Cormorant (COR), Humble (HUM), Litchfield (LIT) and Torgersen (TOR) islands from 1991–2017. The synchronized standardized log-abundance panel has a dominant common long-term component (principal component 1, PC1 = 96.4% of variation), while local endpoints differ in persistence, severe decline and extinction.
 
 ## Figure 2. Palmer Adélie decline contains spatial concentration and short-lived colony-state history
 
@@ -10,7 +10,7 @@ Results for Adélie penguins (*Pygoscelis adeliae*) in the Palmer Archipelago, w
 
 ## Figure 3. Static island-architecture interaction is directionally concordant but non-confirmatory across Antarctic Pygoscelis populations
 
-Antarctic-wide analysis of Adélie (*Pygoscelis adeliae*), chinstrap (*P. antarcticus*) and gentoo (*P. papua*) penguin breeding sites. **(a)** Species-specific area × habitat-heterogeneity loading effects, (gamma_{AH}), from the frozen 2 km model; labels show raw one-sided permutation probabilities. **(b)** Frozen 9,999-permutation distribution of the preregistered cross-species median (gamma_{AH}). The observed median is −0.318 and the one-sided probability is 0.0947. The display therefore shows concordant point-estimate direction without confirmatory cross-species support.
+Antarctic-wide analysis of Adélie (*Pygoscelis adeliae*), chinstrap (*P. antarcticus*) and gentoo (*P. papua*) penguin breeding sites. **(a)** Species-specific area × habitat-heterogeneity loading effects, (gamma_{AH}), from the frozen 2 km model; labels show raw one-sided permutation probabilities. **(b)** Quantile summary of the frozen 9,999-permutation null for the preregistered cross-species median (gamma_{AH}); the thin horizontal interval spans the 1st–99th percentiles and the thick interval the 5th–95th percentiles. The diamond marks the null median and the star the observed median (−0.318; one-sided p = 0.0947). The display therefore shows concordant point-estimate direction without confirmatory cross-species support.
 
 ## Figure 4. Antarctic architecture effects depend on spatial support and are weakly detectable near the observed magnitude
 
