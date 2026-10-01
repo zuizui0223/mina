@@ -83,8 +83,8 @@ def render_figure1(palmer_data: Path, out_dir: Path) -> list[str]:
         va="bottom",
         fontsize=8,
     )
-    ax.set_xlabel("Longitude (°E)")
-    ax.set_ylabel("Latitude (°S)")
+    ax.set_xlabel("Longitude (°)")
+    ax.set_ylabel("Latitude (°)")
     ax.set_title("(a) Palmer breeding-island system")
     ax.grid(alpha=0.2)
 
