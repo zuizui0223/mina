@@ -16,7 +16,7 @@
 
 **Results:** Palmer decline involved concentration into fewer breeding components. Late-season state predicted redistribution at lag 2 (β = 0.0409, one-sided *p* = 0.00327) and lag 3, but not a predeclared 4–5-year recruitment echo. Mean chicks reaching crèche per monitored nest did not replicate the association (β = 0.0296, *p* = 0.232). A predeclared breeder-arrival test stopped at its frozen information gate: 69 matched colony-seasons across 18 predictor seasons did not meet the required 100, so no arrival coefficient was estimated. Antarctic area × heterogeneity interactions were negative in all three species but non-confirmatory across species (median γ_AH = −0.318, *p* = 0.0947); a simpler area effect was also unsupported.
 
-**Main conclusions:** Palmer provides fixed-specification evidence for short-lived information in dynamic colony state, but not for a specific individual mechanism. Static landscape descriptors did not yield a confirmed Antarctic-wide rule for temporal coupling. This is not evidence that state replaces place.
+**Main conclusions:** Palmer provides fixed-specification evidence for short-lived information in dynamic colony state, but not for a specific individual mechanism. Static landscape descriptors did not yield a confirmed Antarctic-wide rule for temporal coupling. This does not imply that dynamic state is more important than physical place.
 
 **Keywords:** Adélie penguin, Antarctic Peninsula, breeding islands, colony state, demographic coupling, island ecology, scale, spatial concentration
 
@@ -354,7 +354,7 @@ Together, these constraints point to a more specific research program than furth
 
 Antarctic penguin breeding landscapes contain ecological information at more than one timescale. At Palmer, a shared regional decline was accompanied by within-island concentration, and a late-season colony-wide state carried short-lived information about subsequent redistribution beyond prior abundance and persistent colony identity. That state did not generalize to an independent measure of mean nest reproductive success and therefore should not be treated as a generic productivity signal. Across Antarctica, static breeding-space and habitat-complex metrics did not yield a confirmed, scale-invariant rule for demographic coupling to shared forcing.
 
-The resulting lesson is not that state replaces place. It is that **local demographic history is only partly represented by static island architecture**. Physical landscape, dynamic biological state and individual behaviour occupy different levels of the causal hierarchy, and information at one level need not transfer cleanly to another.
+The resulting lesson is that **local demographic history is only partly represented by static island architecture**, not that dynamic state supersedes physical place. Physical landscape, dynamic biological state and individual behaviour occupy different levels of the causal hierarchy, and information at one level need not transfer cleanly to another.
 
 ## Data Accessibility Statement
 
