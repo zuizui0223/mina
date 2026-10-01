@@ -1,0 +1,46 @@
+name: Gentoo colonization Gate 0
+
+on:
+  push:
+    branches: [analysis/gentoo-colonization-network-v1]
+    paths:
+      - "contracts/GENTOO_COLONIZATION_NETWORK_GATE0_V1.json"
+      - "scripts/audit_gentoo_colonization_gate0.py"
+      - ".github/workflows/gentoo-colonization-gate0.yml"
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+      - name: Fetch pinned mapppdr data
+        shell: bash
+        run: |
+          git clone -q https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          cd build/mapppdr
+          git checkout -q 88c73a507e0921b2541c218c71eaf16721bc6502
+          cd ../..
+          mkdir -p build/gentoo_gate0
+          Rscript - <<'RS'
+          e <- new.env()
+          load("build/mapppdr/data/penguin_obs.rda", envir=e)
+          load("build/mapppdr/data/sites.rda", envir=e)
+          write.csv(e$penguin_obs, "build/gentoo_gate0/penguin_obs.csv", row.names=FALSE, na="")
+          write.csv(e$sites, "build/gentoo_gate0/sites.csv", row.names=FALSE, na="")
+          cat("penguin_obs rows", nrow(e$penguin_obs), "\n")
+          cat("sites rows", nrow(e$sites), "\n")
+          RS
+      - name: Run frozen Gate 0
+        run: |
+          python scripts/audit_gentoo_colonization_gate0.py \
+            --obs build/gentoo_gate0/penguin_obs.csv \
+            --sites build/gentoo_gate0/sites.csv \
+            --out build/gentoo_gate0/GENTOO_COLONIZATION_NETWORK_GATE0_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gentoo-colonization-gate0
+          path: build/gentoo_gate0
+          if-no-files-found: error
