@@ -79,7 +79,7 @@ jobs:
             --fig-dir build/jbi_figures \
             --out build/jbi_review/MANUSCRIPT_INTEGRATED_JBI_V0_5_REVIEW.md
           pandoc build/jbi_review/MANUSCRIPT_INTEGRATED_JBI_V0_5_REVIEW.md \
-            --from markdown \
+            --from markdown+tex_math_dollars \
             --to docx \
             --citeproc \
             --bibliography docs/REFERENCES_V8.bib \
@@ -105,7 +105,32 @@ jobs:
           creator = re.search(r"<dc:creator>(.*?)</dc:creator>", core)
           if creator and creator.group(1).strip():
               raise SystemExit("anonymous review DOCX has non-empty creator metadata")
-          print(f"embedded_media={len(media)}; anonymous_core_metadata=true")
+
+          # Scientific citations and equations must be rendered, not left as
+          # Markdown/LaTeX text runs in the Word document.
+          visible_text = " ".join(re.findall(r"<w:t[^>]*>(.*?)</w:t>", document))
+          forbidden = (
+              "[@",
+              r"\frac",
+              r"\log",
+              r"\mathrm",
+              r"\rho",
+              r"\gamma",
+              r"\lambda",
+              r"\sqrt",
+              r"\sum",
+              "gamma_{",
+              "N_{",
+              "C_recruit",
+              "δ_past",
+          )
+          leftovers = [token for token in forbidden if token in visible_text]
+          if leftovers:
+              raise SystemExit(f"unrendered citation/math tokens in DOCX: {leftovers}")
+          print(
+              f"embedded_media={len(media)}; anonymous_core_metadata=true; "
+              "citations_and_math_rendered=true"
+          )
           PY
       - uses: actions/upload-artifact@v4
         with:
