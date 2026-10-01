@@ -24,7 +24,7 @@ jobs:
             -A "Mozilla/5.0 mina-research-audit" \
             -D build/ross_discovery/dryad_headers.txt \
             -o build/ross_discovery/BreedingSuccess.csv \
-            https://datadryad.org/api/v2/files/532106/download
+            https://datadryad.org/stash/downloads/file_stream/532106
           echo "curl_exit=$?" >> build/ross_discovery/report.txt
           echo "dryad_bytes=$(wc -c < build/ross_discovery/BreedingSuccess.csv)" >> build/ross_discovery/report.txt
           head -3 build/ross_discovery/BreedingSuccess.csv >> build/ross_discovery/report.txt
