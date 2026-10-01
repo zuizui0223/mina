@@ -1,0 +1,78 @@
+name: signy-concentration
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_signy_concentration_support.py"
+      - "contracts/SIGNY_BREEDING_PATCH_CONCENTRATION_V1.json"
+      - "src/mina/signy_concentration.py"
+      - "tests/test_signy_concentration.py"
+      - ".github/workflows/signy-concentration.yml"
+  workflow_dispatch:
+
+jobs:
+  replicate:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -e ".[dev]" pandas lxml html5lib beautifulsoup4
+      - name: Run frozen estimator tests
+        run: python -m unittest tests.test_signy_concentration -v
+      - name: Download frozen official Signy source
+        run: |
+          mkdir -p build
+          curl -L --fail --retry 4 --retry-delay 5 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/signy_official.zip
+      - name: Reconfirm corrected outcome-blind roster gate
+        run: |
+          python -m scripts.audit_signy_concentration_support \
+            --official-zip build/signy_official.zip \
+            --out build/SIGNY_CONCENTRATION_SUPPORT_AUDIT_V2.json
+          python - <<'PY'
+          import json
+          x=json.load(open("build/SIGNY_CONCENTRATION_SUPPORT_AUDIT_V2.json"))
+          expected=[
+              1996,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,
+              2008,2009,2011,2012,2013,2014,2015,2016,2017,2018,2019,
+          ]
+          assert x["effect_computed"] is False
+          assert x["numeric_pair_magnitudes_recorded_or_summarized"] is False
+          assert x["numeric_parseability_only"] is True
+          assert x["support_gate"]["passes"] is True
+          assert x["structural_candidates"] == ["A1+A60","A2","A3","A4","A64"]
+          assert x["complete_candidate_seasons"] == expected
+          PY
+      - name: Run frozen Signy concentration replication
+        run: |
+          python -m mina.signy_concentration \
+            --official-zip build/signy_official.zip \
+            --out build/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json \
+            --simulations 100000 \
+            --seed 20261001 \
+            --batch-size 2000
+      - name: Print frozen result without rescue branching
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("build/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"))
+          print("primary_seasons=",x["primary_seasons"])
+          print("decline=",json.dumps(x["decline_eligibility"],sort_keys=True))
+          print("observed=",json.dumps({
+              "first_neff":x["observed"]["first_neff"],
+              "last_neff":x["observed"]["last_neff"],
+              "fractional_change":x["observed"]["fractional_change_first_to_last"],
+              "neff_slope":x["observed"]["neff_slope_per_year"],
+          },sort_keys=True))
+          for name,m in x["error_models"].items():
+              print(name,"p=",m["one_sided_probability_le_observed"])
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signy-breeding-patch-concentration-v1
+          path: |
+            build/SIGNY_CONCENTRATION_SUPPORT_AUDIT_V2.json
+            build/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json
