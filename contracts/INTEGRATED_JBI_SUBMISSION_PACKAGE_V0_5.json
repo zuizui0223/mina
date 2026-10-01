@@ -36,7 +36,8 @@
     "repro_detectability_decomposition": "results/PALMER_REPRO_DETECTABILITY_DECOMPOSITION_RESULT_V1.json",
     "humpop": "results/PALMER_HUMPOP_ARRIVAL_RESULT_V1.json",
     "analysis_freeze": "contracts/INTEGRATED_JBI_ANALYSIS_FREEZE_V0_5.json",
-    "numeric_provenance": "contracts/INTEGRATED_JBI_NUMERIC_PROVENANCE_V0_5.json"
+    "numeric_provenance": "contracts/INTEGRATED_JBI_NUMERIC_PROVENANCE_V0_5.json",
+    "archive_policy": "contracts/INTEGRATED_JBI_ARCHIVE_POLICY_V0_5.json"
   },
   "automated_limits_at_creation": {
     "title_characters": 106,
@@ -59,7 +60,6 @@
   ],
   "outstanding_reproducibility": [
     "permanent archive DOI/URL",
-    "licence check for redistributed derived outputs",
     "final submission tag after author-controlled metadata and archive DOI are added"
   ],
   "outstanding_formatting": [
@@ -90,5 +90,8 @@
     "branch": "archive/jbi-v0.5-scientific-freeze-2026-10-01",
     "commit": "c34dcc62befff92f83eba3ec9254429b4333e024",
     "scope": "scientific text and claims through the final bounded radius-sensitivity wording; later commits may add submission metadata only"
-  }
+  },
+  "completed_reproducibility_audits": [
+    "External-source licence/redistribution boundary audited: source raw bytes excluded; AEI, REMA and APBP licences recorded; Palmer LTER governed by its Data Access Policy; PAL-LTER/pal-seabirds raw/formatted files excluded because no repository LICENSE was found."
+  ]
 }
