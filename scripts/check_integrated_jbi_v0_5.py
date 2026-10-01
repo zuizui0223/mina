@@ -98,7 +98,7 @@ def check(root: Path) -> dict[str, object]:
             if match:
                 cited_keys.add(match.group(1))
     bib_keys = re.findall(
-        r"@\w+\s*\{\s*([^,\s]+)\s*,"
+        r"@\w+\s*\{\s*([^,\s]+)\s*,",
         references_text,
     )
     duplicate_bib_keys = sorted(
