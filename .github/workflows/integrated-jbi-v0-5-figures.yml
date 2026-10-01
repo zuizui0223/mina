@@ -9,6 +9,9 @@ on:
       - "scripts/build_integrated_figure_data_v0_3.py"
       - "scripts/render_integrated_figures_v0_3.py"
       - "scripts/render_integrated_figures_jbi_v0_5.py"
+      - "scripts/build_jbi_review_markdown_v0_5.py"
+      - "docs/MANUSCRIPT_INTEGRATED_JBI_V0_5.md"
+      - "docs/REFERENCES_V8.bib"
       - "docs/INTEGRATED_FIGURE_CAPTIONS_JBI_V0_5.md"
       - "contracts/INTEGRATED_JBI_FIGURE_PACKAGE_V0_5.json"
       - ".github/workflows/integrated-jbi-v0-5-figures.yml"
@@ -26,8 +29,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install rendering dependencies
-        run: python -m pip install -e ".[dev,figures]" pandas pyreadr
+      - name: Install rendering and submission dependencies
+        run: |
+          python -m pip install -e ".[dev,figures]" pandas pyreadr
+          sudo apt-get update -qq
+          sudo apt-get install -y pandoc
       - name: Fetch frozen Palmer census
         run: python scripts/fetch_lter_census.py build/adelie_census.csv
       - name: Fetch pinned MAPPPD source
@@ -64,6 +70,43 @@ jobs:
           done
           test -s build/jbi_figure1_data/figure1_manifest.json
           test -s build/integrated_figure_data/figure_data_manifest.json
+      - name: Assemble anonymous JBI review manuscript
+        run: |
+          mkdir -p build/jbi_review
+          python scripts/build_jbi_review_markdown_v0_5.py \
+            --manuscript docs/MANUSCRIPT_INTEGRATED_JBI_V0_5.md \
+            --captions docs/INTEGRATED_FIGURE_CAPTIONS_JBI_V0_5.md \
+            --fig-dir build/jbi_figures \
+            --out build/jbi_review/MANUSCRIPT_INTEGRATED_JBI_V0_5_REVIEW.md
+          pandoc build/jbi_review/MANUSCRIPT_INTEGRATED_JBI_V0_5_REVIEW.md \
+            --from markdown \
+            --to docx \
+            --citeproc \
+            --bibliography docs/REFERENCES_V8.bib \
+            --metadata reference-section-title=References \
+            --metadata author= \
+            --resource-path=. \
+            --output build/jbi_review/MANUSCRIPT_INTEGRATED_JBI_V0_5_REVIEW.docx
+          test -s build/jbi_review/MANUSCRIPT_INTEGRATED_JBI_V0_5_REVIEW.docx
+          python - <<'PY'
+          import re
+          import zipfile
+          from pathlib import Path
+
+          path = Path("build/jbi_review/MANUSCRIPT_INTEGRATED_JBI_V0_5_REVIEW.docx")
+          with zipfile.ZipFile(path) as zf:
+              media = [name for name in zf.namelist() if name.startswith("word/media/")]
+              if len(media) < 4:
+                  raise SystemExit(f"expected at least 4 embedded images, found {len(media)}")
+              document = zf.read("word/document.xml").decode("utf-8")
+              core = zf.read("docProps/core.xml").decode("utf-8")
+          if "References" not in document:
+              raise SystemExit("rendered References section not found")
+          creator = re.search(r"<dc:creator>(.*?)</dc:creator>", core)
+          if creator and creator.group(1).strip():
+              raise SystemExit("anonymous review DOCX has non-empty creator metadata")
+          print(f"embedded_media={len(media)}; anonymous_core_metadata=true")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: integrated-jbi-v0-5-figures
@@ -72,3 +115,4 @@ jobs:
             build/jbi_figure1_data/figure1_manifest.json
             build/integrated_figure_data/figure_data_manifest.json
             docs/INTEGRATED_FIGURE_CAPTIONS_JBI_V0_5.md
+            build/jbi_review
