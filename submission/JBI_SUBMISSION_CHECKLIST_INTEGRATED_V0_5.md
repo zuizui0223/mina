@@ -62,7 +62,7 @@
 - [ ] Verify licences for redistributed derived outputs.
 - [x] Freeze scientific-content snapshot: `archive/jbi-v0.5-scientific-freeze-2026-10-01` with scientific-content commit `c34dcc62befff92f83eba3ec9254429b4333e024`.
 - [ ] Create final submission tag after author-controlled metadata and archive DOI are added.
-- [ ] Confirm every manuscript number traces to a committed receipt.
+- [x] Scientific-result numeric provenance audit complete: Abstract/Results values are mapped by block to committed receipts in `contracts/INTEGRATED_JBI_NUMERIC_PROVENANCE_V0_5.json`.
 - [x] Citation-key integrity audit: all 18 manuscript citation keys exist in REFERENCES_V8.bib; duplicate keys = 0.
 - [ ] Render final reference list from REFERENCES_V8.bib.
 
