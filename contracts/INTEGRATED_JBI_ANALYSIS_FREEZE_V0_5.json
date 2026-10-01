@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-integrated-jbi-analysis-freeze-v0.5",
+  "date": "2026-10-01",
+  "status": "all_preplanned_validation_routes_closed",
+  "target_journal": "Journal of Biogeography",
+  "target_branch": "submission/jbi-v0.5-final-claim-freeze",
+  "scientific_results_changed": false,
+  "new_analysis_after_freeze_allowed": false,
+  "allowed_post_freeze_work": [
+    "editorial compression or wording changes that preserve evidence classes",
+    "formatting and figure embedding",
+    "reference rendering",
+    "archive, licence and reproducibility packaging",
+    "test or CI repairs that do not alter scientific estimates"
+  ],
+  "validation_routes": {
+    "palmer_colony_state": {
+      "status": "fixed_specification_validation_after_provenance_repair",
+      "primary_lag2_beta": 0.0409,
+      "primary_lag2_one_sided_p": 0.00327,
+      "confirmatory_label_allowed": false
+    },
+    "palmer_repro": {
+      "status": "non_confirmatory",
+      "primary_beta": 0.0296,
+      "primary_p": 0.232,
+      "rescue_by_post_result_diagnostics_allowed": false
+    },
+    "palmer_humpop_arrival": {
+      "status": "STOP_insufficient_information",
+      "matched_colony_seasons": 69,
+      "predictor_seasons": 18,
+      "required_minimum_rows": 100,
+      "coefficient_fit": false,
+      "permutation_test_run": false,
+      "posthoc_threshold_lowering_allowed": false
+    },
+    "external_replication": {
+      "status": "closed_for_data_availability_or_information_limits",
+      "pointe_geologie_role": "published_triangulation_only"
+    },
+    "antarctic_static_architecture": {
+      "status": "non_confirmatory",
+      "cross_species_median_gamma_AH": -0.318,
+      "paper_level_p": 0.0947,
+      "equivalence_claim_allowed": false
+    },
+    "ross_island_individual_movement": {
+      "status": "reserved_for_next_paper",
+      "present_manuscript_evidence": false
+    }
+  },
+  "terminal_rules": [
+    "No unresolved preregistered validation test remains in the present manuscript.",
+    "Do not lower HUMPOP's 100-row minimum after seeing the information count.",
+    "Do not add post hoc decomposition or power analyses to rescue the Palmer mechanism claim.",
+    "Do not reinterpret REPRO non-replication as a positive validation.",
+    "Do not reinterpret the Antarctic-wide non-rejection as equivalence or as evidence that geography is unimportant.",
+    "Ross individual movement belongs to a separate prospective paper."
+  ]
+}

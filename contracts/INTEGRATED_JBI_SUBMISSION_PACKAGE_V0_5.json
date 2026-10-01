@@ -2,7 +2,7 @@
   "schema_version": 1,
   "package_id": "mina-integrated-jbi-submission-v0.5",
   "date": "2026-10-01",
-  "status": "scientific_text_journal_format_ready_pending_author_archive_embedded_figures_and_taxon_image",
+  "status": "scientific_text_claim_frozen_pending_author_archive_embedded_figures_and_taxon_image",
   "target_journal": "Journal of Biogeography",
   "journal_requirements_verified_2026_10_01": {
     "research_article_main_text_target_max_words": 6000,
@@ -17,8 +17,8 @@
   "anonymous_review_files": {
     "main_manuscript": "docs/MANUSCRIPT_INTEGRATED_JBI_V0_5.md",
     "references_source": "docs/REFERENCES_V8.bib",
-    "supporting_information": "docs/SUPPLEMENT_INTEGRATED_V0_2.md",
-    "figure_captions_source": "docs/INTEGRATED_FIGURE_CAPTIONS_V0_3.md"
+    "supporting_information": "docs/SUPPORTING_INFORMATION_JBI_INTEGRATED_V0_5.md",
+    "figure_captions_source": "docs/INTEGRATED_FIGURE_CAPTIONS_JBI_V0_5.md"
   },
   "identifying_files": {
     "title_page": "docs/TITLE_PAGE_JBI_INTEGRATED_V0_5_TEMPLATE.md",
@@ -33,12 +33,14 @@
     "paper2_primary": "results/PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json",
     "paper2_detectability": "results/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json",
     "paper2_radius": "results/PAPER2_RADIUS_SIGN_SWITCH_NULL_RESULT_V1.json",
-    "repro_detectability_decomposition": "results/PALMER_REPRO_DETECTABILITY_DECOMPOSITION_RESULT_V1.json"
+    "repro_detectability_decomposition": "results/PALMER_REPRO_DETECTABILITY_DECOMPOSITION_RESULT_V1.json",
+    "humpop": "results/PALMER_HUMPOP_ARRIVAL_RESULT_V1.json",
+    "analysis_freeze": "contracts/INTEGRATED_JBI_ANALYSIS_FREEZE_V0_5.json"
   },
   "automated_limits_at_creation": {
     "title_characters": 106,
-    "abstract_words": 281,
-    "main_text_words": 5934
+    "abstract_words": 271,
+    "main_text_words": 5919
   },
   "readiness_checklist": "submission/JBI_SUBMISSION_CHECKLIST_INTEGRATED_V0_5.md",
   "outstanding_author_controlled": [
@@ -73,9 +75,12 @@
     "Moderate common interactions near the observed magnitude remain unresolved.",
     "Radius p=0.081 prohibits biological scale-dependence language.",
     "Ross unpublished behavioral results remain outside the evidentiary manuscript.",
-    "REPRO design detectability and production decomposition are post-result interpretation diagnostics only and cannot rescue the failed mean-nest-success primary endpoint."
+    "REPRO design detectability and production decomposition are post-result interpretation diagnostics only and cannot rescue the failed mean-nest-success primary endpoint.",
+    "HUMPOP stopped at the frozen information gate: 69 matched colony-seasons across 18 predictor seasons versus a required 100; no coefficient or permutation test was run.",
+    "All preplanned validation routes are closed; no preregistered mechanism-validation test remains pending.",
+    "No post hoc threshold lowering or rescue analysis may change the frozen evidence class."
   ],
   "positioning_contract": "contracts/INTEGRATED_JBI_POSITIONING_V0_5.json",
-  "target_branch": "submission/jbi-v0.5-current",
+  "target_branch": "submission/jbi-v0.5-final-claim-freeze",
   "parallel_geb_development": false
 }

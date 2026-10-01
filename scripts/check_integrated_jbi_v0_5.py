@@ -24,6 +24,9 @@ def check(root: Path) -> dict[str, object]:
     package = _load(
         root / "contracts/INTEGRATED_JBI_SUBMISSION_PACKAGE_V0_5.json"
     )
+    freeze = _load(
+        root / "contracts/INTEGRATED_JBI_ANALYSIS_FREEZE_V0_5.json"
+    )
 
     lines = manuscript.splitlines()
     title = lines[0].removeprefix("# ").strip()
@@ -139,8 +142,16 @@ def check(root: Path) -> dict[str, object]:
     checks["package_points_to_current_main"] = (
         package["anonymous_review_files"]["main_manuscript"]
         == "docs/MANUSCRIPT_INTEGRATED_JBI_V0_5.md"
+        and package["anonymous_review_files"]["supporting_information"]
+        == "docs/SUPPORTING_INFORMATION_JBI_INTEGRATED_V0_5.md"
+        and package["anonymous_review_files"]["figure_captions_source"]
+        == "docs/INTEGRATED_FIGURE_CAPTIONS_JBI_V0_5.md"
         and package["scientific_source_of_truth"]["integrated_manuscript"]
         == "docs/MANUSCRIPT_INTEGRATED_V0_5.md"
+    )
+    checks["analysis_freeze_closed"] = (
+        freeze["status"] == "all_preplanned_validation_routes_closed"
+        and freeze["new_analysis_after_freeze_allowed"] is False
     )
 
     lag = _load(
@@ -148,6 +159,7 @@ def check(root: Path) -> dict[str, object]:
     )
     repro = _load(root / "results/PALMER_REPRO_REDISTRIBUTION_RESULT_V1.json")
     paper2 = _load(root / "results/PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json")
+    humpop = _load(root / "results/PALMER_HUMPOP_ARRIVAL_RESULT_V1.json")
     lag2 = lag["primary_lag_profile"]["lag_2"]
     checks["frozen_lag2"] = (
         abs(float(lag2["beta"]) - 0.040890746633273245) < 1e-15
@@ -165,6 +177,23 @@ def check(root: Path) -> dict[str, object]:
     checks["frozen_paper2_nonconfirmatory"] = (
         paper2["decision"]["frozen_primary_permutation_test_rejects_at_0_05"]
         is False
+    )
+    hgate = humpop["primary_information_gate"]
+    hdecision = humpop["decision"]
+    checks["humpop_information_gate_closed"] = (
+        humpop["status"] == "STOP_insufficient_information"
+        and hgate["n_panel_rows_after_minimum_three_colonies_per_predictor_season"] == 69
+        and hgate["n_predictor_seasons"] == 18
+        and hgate["required_minimum_panel_rows"] == 100
+        and hdecision["primary_model_fit"] is False
+        and hdecision["permutation_test_run"] is False
+        and hdecision["performance_arrival_association_estimated"] is False
+        and hdecision["posthoc_threshold_rescue_allowed"] is False
+    )
+    checks["humpop_boundary_in_main_text"] = (
+        "69 matched colony-seasons across 18 predictor seasons" in lower
+        and "required 100" in lower
+        and "no arrival coefficient" in lower
     )
 
     failed = [name for name, ok in checks.items() if not ok]
