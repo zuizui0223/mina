@@ -89,13 +89,13 @@ def check(root: Path) -> dict[str, object]:
 
     references_text = (root / "docs/REFERENCES_V8.bib").read_text(encoding="utf-8")
     cited_keys: set[str] = set()
-    for group in re.findall(r"\\[@([^\\]]+)\\]", manuscript):
+    for group in re.findall(r"\[@([^\]]+)\]", manuscript):
         for part in group.split(";"):
-            match = re.match(r"\\s*@?([A-Za-z0-9_:.+\\-]+)", part)
+            match = re.match(r"\s*@?([A-Za-z0-9_:.+\-]+)", part)
             if match:
                 cited_keys.add(match.group(1))
     bib_keys = re.findall(
-        r"@\\w+\\s*\\{\\s*([^,\\s]+)\\s*,",
+        r"@\w+\s*\{\s*([^,\s]+)\s*,"
         references_text,
     )
     duplicate_bib_keys = sorted(
