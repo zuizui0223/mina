@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-individual-failure-switch-dryad-v1",
+  "date": "2026-10-01",
+  "status": "frozen_before_failure_switch_effect_computation",
+  "supersedes_for_execution": "mina-ross-individual-failure-switch-v1",
+  "supersession_reason": "Before any failure-switch association was computed, a smaller self-contained public Dryad file was identified that directly contains every required field. This avoids dependence on the USAP raw-resight archive and does not change the biological question, exposure, response, sidedness or primary population.",
+  "question": "Among established Adélie penguin breeders observed breeding in consecutive seasons, does reproductive failure increase the probability of breeding at a different colony the following season?",
+  "source": {
+    "dataset": "Age-related reproductive performance of the Adelie Penguin",
+    "repository": "Dryad",
+    "doi": "10.5061/dryad.s7h44j15w",
+    "file": "BreedingSuccess.csv",
+    "file_stream_id": 532106,
+    "coverage": "1997-2013",
+    "documented_columns": ["ID","colony","season","success","breeder","age","afr","afrc","expt","expl","alr"],
+    "documented_success": "1 = chick successfully fledged; 0 = nest failed",
+    "documented_colonies": ["Bird","Crozier","Royds"],
+    "id_rule": "Use recoded IDs only within this file; never link them to other archives."
+  },
+  "eligibility": {
+    "transition_unit": "ID-season t to same ID-season t+1",
+    "primary": [
+      "breeder_t == 1",
+      "breeder_t+1 == 1",
+      "season_t+1 == season_t + 1",
+      "colony_t and colony_t+1 nonmissing",
+      "success_t is 0 or 1",
+      "expt_t >= 1, so t is not the individual's first breeding attempt"
+    ],
+    "sensitivity": "Repeat with expt_t >= 0, thereby including first breeding attempts."
+  },
+  "exposure": "failure_t = 1 - success_t",
+  "response": "switch_t1 = 1[colony_t+1 != colony_t]",
+  "primary_strata": "source colony at t x season t",
+  "primary_statistic": {
+    "name": "Mantel-Haenszel score for positive association between failure_t and switch_t1 conditional on source-colony x season strata",
+    "direction": "failure increases switching",
+    "implementation": "Compute the conditional score U = sum_s (a_s - E[a_s | fixed margins]) over strata, where a_s is failed-and-switched count. Standardized Z may be reported descriptively; permutation inference is primary."
+  },
+  "primary_inference": {
+    "permutation": "Within each source-colony x season stratum, permute failure_t labels among eligible transitions, preserving the number of failures and every switch outcome in that stratum.",
+    "B": 100000,
+    "seed": 20261001,
+    "p_value": "(1 + count(U_perm >= U_obs))/(B+1)",
+    "support_rule": "U_obs > 0 and one-sided p <= 0.05"
+  },
+  "effect_size": {
+    "primary": "Mantel-Haenszel common odds ratio with a 0.5 continuity correction only for reporting if sparse cells make the uncorrected ratio undefined",
+    "secondary": "failure and success switching risks pooled only as descriptive context, never as the inferential test"
+  },
+  "mandatory_diagnostics": [
+    "number of rows and unique IDs in source",
+    "duplicate ID-season audit",
+    "eligible primary transitions and unique individuals",
+    "total switches and switch fraction",
+    "number of informative source-colony x season strata",
+    "failure/success counts",
+    "leave-one-source-colony-out effect direction",
+    "first-breeding-inclusive sensitivity"
+  ],
+  "terminal_rules": [
+    "If fewer than 10 switching events occur in the primary established-breeder panel, classify the primary as information-limited regardless of p-value and do not promote the sensitivity.",
+    "Do not change the lag, move definition, failure coding, source-colony x season strata, established-breeder cutoff or sidedness after opening the association.",
+    "Do not condition on or search iceberg-year subsets, ages, sexes or destination colonies to rescue the result.",
+    "A supported result is performance-conditioned inter-colony breeding dispersal; it is not proof of public-information use or of the Palmer mechanism.",
+    "A null result rejects this specific inter-colony pathway but not within-colony reallocation, breeding participation, survival or unmonitored emigration."
+  ],
+  "publication_note": "Dryad requests that users notify Grant Ballard before in-depth analysis because of data complexity and overlap with ongoing work. That request does not condition reproducible execution of this public-data test, but should be respected before manuscript submission."
+}
