@@ -86,6 +86,25 @@ def check(root: Path) -> dict[str, object]:
             "## Data Accessibility Statement",
         )
     )
+
+    references_text = (root / "docs/REFERENCES_V8.bib").read_text(encoding="utf-8")
+    cited_keys: set[str] = set()
+    for group in re.findall(r"\\[@([^\\]]+)\\]", manuscript):
+        for part in group.split(";"):
+            match = re.match(r"\\s*@?([A-Za-z0-9_:.+\\-]+)", part)
+            if match:
+                cited_keys.add(match.group(1))
+    bib_keys = re.findall(
+        r"@\\w+\\s*\\{\\s*([^,\\s]+)\\s*,",
+        references_text,
+    )
+    duplicate_bib_keys = sorted(
+        {key for key in bib_keys if bib_keys.count(key) > 1}
+    )
+    missing_cited_keys = sorted(cited_keys - set(bib_keys))
+    checks["reference_key_integrity"] = (
+        not missing_cited_keys and not duplicate_bib_keys
+    )
     checks["double_anonymous_main"] = (
         "## Acknowledgements" not in manuscript
         and "## Author contributions" not in manuscript
@@ -204,6 +223,12 @@ def check(root: Path) -> dict[str, object]:
         "audit_id": "mina-integrated-jbi-v0.5-validation-v1",
         "counts": counts,
         "keywords": keywords,
+        "reference_audit": {
+            "cited_key_count": len(cited_keys),
+            "bib_entry_count": len(bib_keys),
+            "missing_cited_keys": missing_cited_keys,
+            "duplicate_bib_keys": duplicate_bib_keys,
+        },
         "checks": checks,
         "failed_checks": failed,
         "all_checks_pass": not failed,
