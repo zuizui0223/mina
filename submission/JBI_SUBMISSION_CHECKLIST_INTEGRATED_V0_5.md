@@ -5,11 +5,11 @@
 - [x] Research Article framing is biogeographical and hypothesis-driven.
 - [x] Anonymous main manuscript separated from identifying title page.
 - [x] Structured abstract uses Aim / Location / Taxon / Methods / Results / Main conclusions.
-- [x] Structured abstract <=300 words (current automated count: 281).
+- [x] Structured abstract <=300 words (current automated count: 271).
 - [x] Title <=115 characters including spaces (current: 106).
 - [x] Running title <40 characters.
 - [x] 6–10 keywords, alphabetized.
-- [x] Main text approximately <=6,000 words (current automated count: 5,878).
+- [x] Main text approximately <=6,000 words (current automated count: 5,919).
 - [x] Main headers follow Introduction / Materials and Methods / Results / Discussion.
 - [x] Data Accessibility Statement present.
 - [x] Double-anonymous language used in the main manuscript.
@@ -20,7 +20,9 @@
 - [x] Palmer predictor is “late-season colony-wide state,” not generic reproductive success.
 - [x] Palmer lag-2 remains fixed-specification validation after provenance repair.
 - [x] REPRO mean nest success non-replication is retained.\n- [x] Post-result REPRO detectability/decomposition is interpretation-only: benchmark β=0.104 detectability ≈89.8%, bootstrap state stability median r≈0.799, successful-nest brood size β≈−0.033 (post-hoc p≈0.779); none rescues the failed primary endpoint.
-- [x] HUMPOP is reported as stopped for insufficient frozen information, not as a null effect.
+- [x] HUMPOP is reported as stopped for insufficient frozen information (69 matched colony-seasons across 18 predictor seasons < required 100), not as a null effect.
+- [x] Every preplanned validation route is closed; no preregistered mechanism test remains pending.
+- [x] Analysis is frozen: no post hoc threshold lowering or rescue analysis may change an evidence class.
 - [x] Public-information use is not claimed.
 - [x] Ainley 1995 and Santora 2020 precedents for Antarctic penguin geography are explicit.
 - [x] Lyver 2014 synchrony and Iles 2020 multiscale sea-ice demography are explicit.
@@ -61,7 +63,7 @@
 
 ## Final editorial boundary
 
-The manuscript may conclude that dynamic local history passed its within-system information test while static architecture did not pass its own Antarctic-wide temporal-coupling transferability test.
+The manuscript may conclude that Palmer yielded a fixed-specification local state association with an explicit provenance caveat, while static architecture did not pass its predeclared Antarctic-wide temporal-coupling transferability criterion.
 
 It must **not** conclude that:
 - state outperforms place;
