@@ -36,7 +36,7 @@
 
 - [x] Scientific figure data unchanged from integrated v0.3/v0.4.
 - [ ] Embed Figures 1–4 in the anonymous review manuscript.
-- [ ] Verify final figure legends use JBI-ready lettering and map scale/projection wording.
+- [x] Verify final figure legends use JBI-ready lettering and map scale/projection wording (visual audit completed; signed coordinate labels corrected and Figure 3 null intervals defined explicitly).
 - [ ] Upload Supporting Information separately.
 - [ ] Supply required taxon image for journal promotion.
 
@@ -59,7 +59,7 @@
 - [ ] Insert archive DOI/URL in Data Accessibility Statement.
 - [ ] Verify licences for redistributed derived outputs.
 - [ ] Freeze final git tag / commit SHA.
-- [ ] Confirm every manuscript number traces to a committed receipt.
+- [ ] Confirm every manuscript number traces to a committed receipt.\n- [x] Citation-key integrity audit: all 18 manuscript citation keys exist in REFERENCES_V8.bib; duplicate keys = 0.\n- [ ] Render final reference list from REFERENCES_V8.bib.
 
 ## Final editorial boundary
 
