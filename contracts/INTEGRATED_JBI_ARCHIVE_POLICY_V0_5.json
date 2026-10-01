@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-integrated-jbi-archive-policy-v0.5",
+  "date": "2026-10-01",
+  "target_journal": "Journal of Biogeography",
+  "status": "external_raw_data_excluded_derived_outputs_and_reproducibility_metadata_allowed",
+  "purpose": "Define the submission archive boundary without changing scientific results or redistributing third-party raw data.",
+  "archive_include": [
+    "analysis source code authored in mina",
+    "contracts and frozen analysis specifications",
+    "committed result receipts and numeric provenance ledger",
+    "anonymous manuscript, Supporting Information, reference source and submission build scripts",
+    "JBI figures and figure-data manifests generated from frozen analyses",
+    "checksums, source DOIs, source repository commits and provenance metadata needed to reacquire external inputs"
+  ],
+  "archive_exclude": [
+    "Palmer LTER raw census/chick files obtained from EDI/Palmer LTER",
+    "raw or formatted HUMPOP/REPRO files from PAL-LTER/pal-seabirds",
+    "raw Antarctic Penguin Biogeography Project / mapppdr database tables",
+    "Antarctic Ecosystem Inventory raster/VAT source files",
+    "REMA raster source files",
+    "any commercial satellite imagery or other third-party source bytes not authored by the mina project"
+  ],
+  "external_sources": {
+    "palmer_lter": {
+      "census_doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+      "chick_doi": "10.6073/pasta/9bf4588c02d6caa12a68133134ed4489",
+      "terms": "LTER Network Data Access Policy; citation and source attribution required. Raw source bytes are excluded from the mina archive.",
+      "policy_url": "https://lternet.edu/data-access-policy/"
+    },
+    "pal_lter_seabirds_github": {
+      "repository": "PAL-LTER/pal-seabirds",
+      "pinned_commit": "523e74a064e2f1153704a32731631cbff4395e73",
+      "license_file_found": false,
+      "archive_rule": "Do not redistribute repository raw/formatted data files in the mina archive. Record commit and derived analysis receipts only."
+    },
+    "apbp_mapppdr": {
+      "repository": "CCheCastaldo/mapppdr",
+      "pinned_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+      "database_license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "software_license": "GNU General Public License v3.0",
+      "archive_rule": "Do not bundle the source database; retain citation, commit, checksums/derived receipts and regenerated non-source summaries."
+    },
+    "antarctic_ecosystem_inventory": {
+      "dataset": "Antarctic Ecosystem Inventory: Spatial data for Ice-free lands v1.0",
+      "doi": "10.5281/zenodo.11629115",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "archive_rule": "Source raster/VAT are not bundled. Archive derived site-level traits/receipts only where they contain no source raster cells."
+    },
+    "rema": {
+      "dataset": "Reference Elevation Model of Antarctica (REMA) Mosaic Version 2",
+      "citation_doi": "10.7910/DVN/EBW8UC",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0) for public REMA products",
+      "archive_rule": "REMA raster bytes are not bundled; retain source version/URL and derived site-level summaries only."
+    }
+  },
+  "derived_output_rule": "Derived scalar/site-level summaries, model estimates, permutation receipts and figures may be archived with source attribution because they are analysis outputs rather than redistributed source datasets. The archive should not permit reconstruction of restricted/non-redistributed raw source files from included material.",
+  "repository_license_boundary": "This contract does not assign a new license to the mina repository or manuscript. Any license for the authors' own code/archive remains an author-controlled release decision.",
+  "doi_release_rule": "Create the permanent public archive DOI only after author-controlled metadata and the final archive contents have been reviewed. The scientific freeze commit remains independent of the later archival packaging commit.",
+  "scientific_results_changed": false
+}
