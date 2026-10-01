@@ -1,0 +1,77 @@
+name: signy-chinstrap-concentration
+
+on:
+  pull_request:
+    paths:
+      - "contracts/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_V1.json"
+      - "src/mina/signy_chinstrap_concentration.py"
+      - "tests/test_signy_chinstrap_concentration.py"
+      - ".github/workflows/signy-chinstrap-concentration.yml"
+  workflow_dispatch:
+
+jobs:
+  replicate:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -e ".[dev]" pandas lxml html5lib beautifulsoup4
+      - name: Run frozen estimator tests
+        run: python -m unittest tests.test_signy_chinstrap_concentration -v
+      - name: Download official Signy chinstrap source
+        run: |
+          mkdir -p build
+          curl -L --fail --retry 4 --retry-delay 5 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' \
+            -o build/signy_chinstrap_official.zip
+      - name: Reconfirm frozen outcome-blind support
+        run: |
+          python -m scripts.audit_signy_chinstrap_concentration_support \
+            --official-zip build/signy_chinstrap_official.zip \
+            --out build/SIGNY_CHINSTRAP_CONCENTRATION_SUPPORT_AUDIT_V1.json
+          python - <<'PY'
+          import json
+          x=json.load(open("build/SIGNY_CHINSTRAP_CONCENTRATION_SUPPORT_AUDIT_V1.json"))
+          expected_years=[
+              1996,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,
+              2008,2009,2011,2012,2013,2014,2015,2016,2017,2018,2019,
+          ]
+          expected_roster=["C15","C16","C17","C18","C46","C47","C79","C80","C81"]
+          assert x["effect_computed"] is False
+          assert x["numeric_pair_magnitudes_recorded_or_summarized"] is False
+          assert x["support_gate"]["passes"] is True
+          assert x["structural_candidates"] == expected_roster
+          assert x["complete_candidate_seasons"] == expected_years
+          assert x["source"]["selected_csv_sha256"] == "e50e98719ba5eedc6f5e617e0c7aa404ebfba15bc22a51e93e78cd4443bf787b"
+          PY
+      - name: Run frozen cross-species concentration test
+        run: |
+          python -m mina.signy_chinstrap_concentration \
+            --official-zip build/signy_chinstrap_official.zip \
+            --out build/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json \
+            --simulations 100000 \
+            --seed 20261001 \
+            --batch-size 2000
+      - name: Print result without rescue branching
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("build/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"))
+          print("decline=",json.dumps(x["decline_eligibility"],sort_keys=True))
+          print("observed=",json.dumps({
+              "first":x["observed"]["first_effective_breeding_patch_number"],
+              "last":x["observed"]["last_effective_breeding_patch_number"],
+              "fractional_change":x["observed"]["fractional_change_first_to_last"],
+              "slope":x["observed"]["effective_breeding_patch_slope_per_year"],
+          },sort_keys=True))
+          for name,m in x["error_models"].items():
+              print(name,"p=",m["one_sided_probability_le_observed"])
+          print("decision=",json.dumps(x["decision"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signy-chinstrap-breeding-patch-concentration-v1
+          path: |
+            build/SIGNY_CHINSTRAP_CONCENTRATION_SUPPORT_AUDIT_V1.json
+            build/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json
