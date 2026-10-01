@@ -33,6 +33,13 @@ def numeric_available(value: object) -> bool:
 
 def audit_frame(frame: pd.DataFrame) -> dict[str,object]:
     sem=infer_semantics(frame)
+    # The shared helper's value-pattern recognizer was written for Adelie A-labels.
+    # For this independent source, prefer the explicit schema header before using
+    # any value-pattern inference; this is outcome-blind metadata, not a response.
+    if sem.get("colony_col") is None and "COLONY" in frame.columns:
+        sem["colony_col"]="COLONY"
+    if sem.get("pairs_col") is None and "TOTAL_NUMBER_OF_PAIRS" in frame.columns:
+        sem["pairs_col"]="TOTAL_NUMBER_OF_PAIRS"
     if sem.get("colony_col") is None or sem.get("pairs_col") is None:
         return {
             "schema_version":1,
