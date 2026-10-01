@@ -26,19 +26,24 @@ jobs:
           curl -L --fail --retry 4 --retry-delay 5 \
             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
             -o build/signy_official.zip
-      - name: Reconfirm outcome-blind roster gate
+      - name: Reconfirm corrected outcome-blind roster gate
         run: |
           python -m scripts.audit_signy_concentration_support \
             --official-zip build/signy_official.zip \
-            --out build/SIGNY_CONCENTRATION_SUPPORT_AUDIT_V1.json
+            --out build/SIGNY_CONCENTRATION_SUPPORT_AUDIT_V2.json
           python - <<'PY'
           import json
-          x=json.load(open("build/SIGNY_CONCENTRATION_SUPPORT_AUDIT_V1.json"))
+          x=json.load(open("build/SIGNY_CONCENTRATION_SUPPORT_AUDIT_V2.json"))
+          expected=[
+              1996,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,
+              2008,2009,2011,2012,2013,2014,2015,2016,2017,2018,2019,
+          ]
           assert x["effect_computed"] is False
-          assert x["numeric_pair_magnitudes_read"] is False
+          assert x["numeric_pair_magnitudes_recorded_or_summarized"] is False
+          assert x["numeric_parseability_only"] is True
           assert x["support_gate"]["passes"] is True
           assert x["structural_candidates"] == ["A1+A60","A2","A3","A4","A64"]
-          assert x["complete_candidate_seasons"] == list(range(1996,2020))
+          assert x["complete_candidate_seasons"] == expected
           PY
       - name: Run frozen Signy concentration replication
         run: |
@@ -53,6 +58,7 @@ jobs:
           python - <<'PY'
           import json
           x=json.load(open("build/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"))
+          print("primary_seasons=",x["primary_seasons"])
           print("decline=",json.dumps(x["decline_eligibility"],sort_keys=True))
           print("observed=",json.dumps({
               "first_neff":x["observed"]["first_neff"],
@@ -68,5 +74,5 @@ jobs:
         with:
           name: signy-breeding-patch-concentration-v1
           path: |
-            build/SIGNY_CONCENTRATION_SUPPORT_AUDIT_V1.json
+            build/SIGNY_CONCENTRATION_SUPPORT_AUDIT_V2.json
             build/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json
