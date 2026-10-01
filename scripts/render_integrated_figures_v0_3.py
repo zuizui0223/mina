@@ -82,10 +82,10 @@ def render_figure2(data_dir: Path, out_dir: Path) -> list[str]:
     for _, row in lag.iterrows():
         ax.text(
             row["lag_years"],
-            row["beta"] + (0.008 if row["beta"] >= 0 else -0.012),
+            row["beta"] + 0.006,
             f"p={row['one_sided_p']:.3g}",
             ha="center",
-            va="bottom" if row["beta"] >= 0 else "top",
+            va="bottom",
             fontsize=7.5,
         )
     ax.set_xticks([1, 2, 3, 4, 5])
@@ -115,10 +115,12 @@ def render_figure2(data_dir: Path, out_dir: Path) -> list[str]:
         if pd.notna(row["null_q025"]) and pd.notna(row["null_q975"]):
             ax.plot([row["null_q025"], row["null_q975"]], [yi, yi], linewidth=1.2)
         if pd.notna(row["one_sided_p"]):
+            right_edge = float(row["beta"]) > 0.08
             ax.text(
-                row["beta"] + 0.008,
+                row["beta"] + (-0.008 if right_edge else 0.008),
                 yi,
                 f"p={row['one_sided_p']:.3g}",
+                ha="right" if right_edge else "left",
                 va="center",
                 fontsize=7.5,
             )
@@ -166,8 +168,18 @@ def render_figure3(data_dir: Path, out_dir: Path) -> list[str]:
 
     ax = axes[1]
     ax.axvline(0.0, linewidth=1.0)
-    ax.plot([null["null_q01"], null["null_q99"]], [0, 0], linewidth=1.0)
-    ax.plot([null["null_q05"], null["null_q95"]], [0, 0], linewidth=5.0)
+    ax.plot(
+        [null["null_q01"], null["null_q99"]],
+        [0, 0],
+        linewidth=1.0,
+        label="Null 1–99% interval",
+    )
+    ax.plot(
+        [null["null_q05"], null["null_q95"]],
+        [0, 0],
+        linewidth=5.0,
+        label="Null 5–95% interval",
+    )
     ax.scatter([null["null_median"]], [0], marker="D", s=55, label="Null median")
     ax.scatter(
         [null["observed_median_gamma_ah"]],
