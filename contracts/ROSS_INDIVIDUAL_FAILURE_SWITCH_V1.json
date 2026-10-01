@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ross-individual-failure-switch-v1",
+  "date": "2026-10-01",
+  "status": "frozen_before_individual_failure_switch_effect_computation",
+  "paper_lane": "Palmer-to-Ross ecological mechanism triangulation",
+  "question": "Among established Adélie penguin breeders observed breeding in consecutive seasons, does reproductive failure increase the probability of breeding at a different colony in the following season?",
+  "motivation": [
+    "Palmer colony-level data show a short-lived lag-2/3 association between relative reproductive performance and later redistribution, but colony counts cannot identify individual movement.",
+    "The Ross Sea mark-resight archive contains individual breeding histories across Royds, Bird and Crozier and records reproductive outcome.",
+    "A direct individual test can therefore distinguish whether one biologically plausible component of the Palmer aggregate signal—performance-conditioned breeding dispersal—exists in an independent Adélie system."
+  ],
+  "sources": {
+    "primary_archive": {
+      "dataset": "Adelie penguin resighting data 1997-2021",
+      "repository": "US Antarctic Program Data Center",
+      "doi": "10.15784/601444",
+      "file": "band_resighting_1997-2021.csv",
+      "license": "CC BY 4.0"
+    },
+    "supporting_publication": {
+      "doi": "10.3389/fevo.2026.1868960",
+      "note": "The published 25-year multistate analysis models age, reproductive state and colony movements but does not use previous reproductive success as the focal movement predictor."
+    }
+  },
+  "data_gate": {
+    "required_fields": [
+      "stable individual identifier",
+      "breeding season or year",
+      "colony/site",
+      "breeding status sufficient to identify breeders",
+      "reproductive outcome or breeding success"
+    ],
+    "rule": "If these fields cannot be reconstructed reproducibly from the public archive and documentation, stop without substituting a weaker proxy."
+  },
+  "eligibility": {
+    "transition_unit": "individual-season t to the immediately following season t+1",
+    "requirements": [
+      "individual is classified as breeder in season t",
+      "individual is classified as breeder in season t+1",
+      "source and destination colonies are observed and belong to the monitored Ross Island set used by the archive",
+      "reproductive outcome in t is observed",
+      "seasons are consecutive"
+    ],
+    "primary_population": "established breeders only: individual must have bred in at least one season before t",
+    "first_breeder_sensitivity": "repeat including first observed breeding attempts; this sensitivity cannot replace the primary established-breeder result"
+  },
+  "exposure": {
+    "name": "failure_t",
+    "definition": "1 if the season-t reproductive attempt produced zero surviving/fledged/creched young under the archive's documented reproductive-outcome coding; 0 if the attempt was successful",
+    "rule": "Use the archive's documented binary or count outcome without redefining success after inspecting movement."
+  },
+  "response": {
+    "name": "switch_t1",
+    "definition": "1 if breeding colony at t+1 differs from breeding colony at t; otherwise 0",
+    "scope": "inter-colony breeding dispersal only; within-colony nest/subcolony relocation is not inferred"
+  },
+  "primary_estimand": {
+    "effect": "common failure-associated increase in next-season colony switching among established breeders",
+    "direction": "failure increases switching",
+    "statistic": "Mantel-Haenszel common odds ratio for switch comparing failed versus successful breeders, stratified by source colony and season t",
+    "alternative": "OR_MH > 1"
+  },
+  "primary_inference": {
+    "method": "one-sided conditional permutation",
+    "permutation_unit": "within source-colony × season-t strata, permute reproductive-failure labels across eligible individuals while preserving the number of failures in every stratum",
+    "permutations": 100000,
+    "seed": 20261001,
+    "test_statistic": "log Mantel-Haenszel common odds ratio; if sparse zero cells make the odds ratio undefined, use the corresponding Mantel-Haenszel score statistic without changing strata or sidedness",
+    "p_value": "(1 + number of permuted statistics >= observed)/(B+1)",
+    "support_rule": "observed association in the predicted direction and one-sided p <= 0.05"
+  },
+  "mandatory_reporting": [
+    "number of unique individuals",
+    "number of eligible established-breeder transitions",
+    "number and fraction of switching transitions",
+    "counts of failures and successes",
+    "source-colony × season stratum coverage",
+    "observed effect estimate and one-sided permutation p-value",
+    "first-breeder-inclusive sensitivity",
+    "leave-one-source-colony-out descriptive effect estimates"
+  ],
+  "terminal_rules": [
+    "Do not change the response to nonbreeding, disappearance or resighting probability if movement is too rare.",
+    "Do not pool nonconsecutive seasons as if they were one-year breeding dispersal.",
+    "Do not search alternate failure thresholds, destination definitions, age cutoffs or environmental subsets to rescue a null result.",
+    "Do not infer individual public-information use; a supported result establishes performance-conditioned breeding dispersal, not the cue used.",
+    "Do not treat a null result as evidence that the Palmer colony-level lag is artifactual; it would reject only this specific individual movement pathway.",
+    "Do not link recoded or anonymized IDs to other archives unless the source explicitly provides a crosswalk."
+  ],
+  "interpretive_bridge_if_supported": "A supported individual result would provide an independent mechanism-level analogue for the Palmer aggregate pattern: reproductive performance can influence later breeding-space allocation in Adélie penguins, while the spatial scale and exact lag may differ among systems.",
+  "interpretive_bridge_if_not_supported": "A null individual result would narrow the Palmer aggregate signal away from inter-colony lose-switch dispersal and toward retention, breeding participation, within-colony redistribution, immigration/emigration beyond monitored colonies or persistent local-state pathways."
+}
