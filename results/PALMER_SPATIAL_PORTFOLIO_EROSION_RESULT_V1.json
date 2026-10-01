@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-palmer-spatial-portfolio-erosion-result-v1",
+  "validated_date": "2026-10-01",
+  "contract_id": "mina-palmer-spatial-portfolio-erosion-v1",
+  "source": {
+    "dataset": "Palmer LTER AdeliePenguinCensus",
+    "doi": "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+    "sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "primary": {
+    "focal_islands": ["COR","HUM","LIT"],
+    "regional_forcing_pool": ["CHR","COR","HUM","TOR"],
+    "n_rows": 68,
+    "rows_by_island": {"COR": 26, "HUM": 26, "LIT": 16},
+    "standardization": "population-SD z scores (ddof=0), with N_eff and current abundance standardized within focal island and regional forcing/year over the eligible panel",
+    "interaction_beta": 0.010143680647447159,
+    "predicted_direction": "negative",
+    "exact_circular_shift_combinations": 10816,
+    "null_coefficients_le_observed": 6300,
+    "one_sided_p_negative": 0.5824704142011834,
+    "null_quantiles": {
+      "q025": -0.06593122,
+      "q05": -0.05826884,
+      "median": 0.00137600,
+      "q95": 0.05934810,
+      "q975": 0.06708300
+    },
+    "supported": false
+  },
+  "persistent_focal_sensitivity": {
+    "focal_islands": ["COR","HUM"],
+    "n_rows": 52,
+    "interaction_beta": 0.006348157530983381,
+    "exact_circular_shift_combinations": 676,
+    "null_coefficients_le_observed": 363,
+    "one_sided_p_negative": 0.5369822485207101,
+    "supported": false
+  },
+  "decision": {
+    "spatial_portfolio_erosion_via_stronger_regional_coupling_supported": false,
+    "observed_primary_direction_matches_prediction": false,
+    "count_error_sensitivity_run": false,
+    "terminal": true
+  },
+  "interpretation": [
+    "The simple prediction that loss of within-island breeding-patch diversity makes focal islands more tightly coupled to contemporaneous shared regional growth is not supported.",
+    "The fitted interaction is slightly positive rather than negative and lies near the center of the exact island-wise circular-shift null.",
+    "Excluding locally extinct Litchfield does not change the conclusion.",
+    "Palmer concentration therefore should not be reframed as demonstrated erosion of a spatial portfolio that progressively increases regional forcing sensitivity."
+  ],
+  "claim_boundary": [
+    "Do not rescue this hypothesis with rolling synchrony windows, alternate concentration indices, tuned temporal subsets or different forcing pools.",
+    "This result does not negate the robust concentration phenomenon or the separate N_eff conditional association with next-year growth.",
+    "It rejects only the prespecified coupling pathway tested here."
+  ]
+}
