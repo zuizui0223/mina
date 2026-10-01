@@ -152,6 +152,8 @@ def check(root: Path) -> dict[str, object]:
     checks["analysis_freeze_closed"] = (
         freeze["status"] == "all_preplanned_validation_routes_closed"
         and freeze["new_analysis_after_freeze_allowed"] is False
+        and freeze["target_branch"] == "submission/jbi-v0.5-current"
+        and package["target_branch"] == "submission/jbi-v0.5-current"
     )
 
     lag = _load(
