@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-gentoo-colonization-network-gate0-v1",
+  "date": "2026-10-01",
+  "status": "frozen_before_continental_colonization_event_inventory",
+  "paper_lane": "Antarctic penguin island-biogeography alternative",
+  "ecological_question": "Is recent Gentoo Penguin range expansion constrained by the spatial breeding-colony network, rather than realized wherever regional climate becomes permissive?",
+  "candidate_primary_hypothesis": "Among repeatedly monitored breeding sites in CCAMLR Subarea 48.1, the hazard of first persistent Gentoo breeding colonization decreases with distance to the nearest Gentoo breeding site already established in the previous season, after latitude and observation history are controlled.",
+  "novelty_boundary": "Previous work has shown that recently founded WAP Gentoo colonies require prolonged immigration, but this gate asks whether the spatial geometry of the pre-existing breeding network predicts where new breeding colonies appear. No distance-to-source effect is computed at Gate 0.",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "datasets": ["penguin_obs","sites"],
+    "database_role": "APBP/MAPPPD public count and presence-absence records"
+  },
+  "geographic_domain": {
+    "primary": "CCAMLR subarea 48.1",
+    "reason": "Standard independently defined Antarctic Peninsula/South Shetland management unit containing the modern Gentoo expansion front; no data-derived geographic boundary.",
+    "no_posthoc_subregion_selection": true
+  },
+  "breeding_observation_definition": {
+    "species": "GEPE",
+    "type": "nests",
+    "positive": "presence == 1 or finite count > 0",
+    "explicit_negative": "presence == 0 with type == nests; missing GEPE row is never treated as absence",
+    "season": "APBP season field"
+  },
+  "candidate_colonization_event_rule": {
+    "prior_absence": "at least two distinct seasons with explicit-negative Gentoo nest observations before the first positive season",
+    "first_positive": "earliest positive Gentoo nest season after the required explicit-negative history",
+    "persistence": "at least one additional positive Gentoo nest observation within the next three observed Gentoo nest seasons at that site",
+    "event_year": "first_positive season",
+    "transient_positive": "a first positive not satisfying persistence is not a colonization event",
+    "one_event_per_site": true
+  },
+  "candidate_at_risk_site_rule": {
+    "minimum_gentoo_nest_observation_seasons": 4,
+    "must_have_explicit_negative": true,
+    "sites_already_positive_at_first_observation": "left-censored and excluded from first-colonization hazard analysis but retained as potential source colonies"
+  },
+  "source_network_rule_for_later_gate": {
+    "established_source_at_t": "any CCAMLR 48.1 site with a positive Gentoo nest record in a season < t",
+    "distance": "great-circle distance from candidate site to nearest established source",
+    "self_exclusion": true,
+    "no_future_information": true
+  },
+  "gate0_outputs_only": [
+    "number of GEPE nest observation rows and sites in CCAMLR 48.1",
+    "number of sites with explicit negative records",
+    "number of sites satisfying the at-risk monitoring rule",
+    "number and identities of candidate persistent colonization events under the frozen rule",
+    "season distribution and observation-gap summaries",
+    "number of left-censored already-positive sites",
+    "whether every candidate event has at least one prior established source with coordinates"
+  ],
+  "gate0_pass_rule": {
+    "minimum_persistent_colonization_events": 8,
+    "minimum_at_risk_sites": 20,
+    "maximum_events_with_no_prior_source": 0,
+    "decision": "Only if all thresholds pass may a separate effect-estimation contract be frozen. If the gate fails, do not relax absence, persistence, event-count, region or monitoring thresholds."
+  },
+  "prohibited_at_gate0": [
+    "computing colonization-event distance to source",
+    "comparing island versus mainland status",
+    "testing latitude, habitat, area, distance or climate associations",
+    "changing the event rule after learning which sites colonized",
+    "treating missing species records as zero"
+  ],
+  "terminal_note": "This gate is an estimability audit, not an ecological result. It exists specifically to prevent a new result-driven branch if the public database cannot support a clean colonization analysis."
+}
