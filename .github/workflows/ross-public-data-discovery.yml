@@ -24,36 +24,52 @@ jobs:
             -D build/ross_discovery/dryad_headers.txt \
             -o build/ross_discovery/BreedingSuccess.csv \
             https://datadryad.org/downloads/file_stream/532106
-          code=$?
-          echo "curl_exit=$code" >> build/ross_discovery/report.txt
-          if [ -f build/ross_discovery/BreedingSuccess.csv ]; then
-            bytes=$(wc -c < build/ross_discovery/BreedingSuccess.csv)
-            echo "dryad_bytes=$bytes" >> build/ross_discovery/report.txt
-            head -3 build/ross_discovery/BreedingSuccess.csv >> build/ross_discovery/report.txt
-          fi
+          echo "curl_exit=$?" >> build/ross_discovery/report.txt
+          echo "dryad_bytes=$(wc -c < build/ross_discovery/BreedingSuccess.csv)" >> build/ross_discovery/report.txt
+          head -3 build/ross_discovery/BreedingSuccess.csv >> build/ross_discovery/report.txt
+
+          echo "=== Dryad REST metadata ===" >> build/ross_discovery/report.txt
+          curl -sS -L -H "Accept: application/json" \
+            -D build/ross_discovery/dryad_api_headers.txt \
+            -o build/ross_discovery/dryad_file_metadata.json \
+            https://datadryad.org/api/v2/files/532106
+          echo "dryad_api_exit=$?" >> build/ross_discovery/report.txt
+          echo "dryad_api_bytes=$(wc -c < build/ross_discovery/dryad_file_metadata.json)" >> build/ross_discovery/report.txt
+          cat build/ross_discovery/dryad_file_metadata.json >> build/ross_discovery/report.txt
+
+          echo "=== Dryad REST dataset/version metadata ===" >> build/ross_discovery/report.txt
+          curl -sS -L -H "Accept: application/json" \
+            -o build/ross_discovery/dryad_versions.json \
+            "https://datadryad.org/api/v2/datasets/doi%3A10.5061%2Fdryad.s7h44j15w/versions"
+          cat build/ross_discovery/dryad_versions.json >> build/ross_discovery/report.txt
+
+          echo "=== Point Blue website index ===" >> build/ross_discovery/report.txt
+          curl -sS -L --connect-timeout 20 --max-time 180 \
+            -o build/ross_discovery/pointblue_index.html \
+            "https://deju-penguinscience.s3-website.us-east-2.amazonaws.com/index.html?path=AllData%2F"
+          echo "pointblue_index_exit=$?" >> build/ross_discovery/report.txt
+          echo "pointblue_index_bytes=$(wc -c < build/ross_discovery/pointblue_index.html)" >> build/ross_discovery/report.txt
+          grep -Eo '<script[^>]+src="[^"]+"' build/ross_discovery/pointblue_index.html \
+            > build/ross_discovery/pointblue_scripts.txt
+          cat build/ross_discovery/pointblue_scripts.txt >> build/ross_discovery/report.txt
 
           echo "=== Point Blue public S3 inventory ===" >> build/ross_discovery/report.txt
-          if command -v aws >/dev/null 2>&1; then
-            aws s3 ls s3://deju-penguinscience/ --recursive --no-sign-request \
-              > build/ross_discovery/s3_listing.txt 2> build/ross_discovery/s3_error.txt
-            echo "aws_exit=$?" >> build/ross_discovery/report.txt
-            grep -Ei "resight|breed|band|demog|adult|success" build/ross_discovery/s3_listing.txt \
-              | head -200 > build/ross_discovery/s3_relevant.txt
-            cat build/ross_discovery/s3_relevant.txt >> build/ross_discovery/report.txt
-          else
-            echo "aws cli missing" >> build/ross_discovery/report.txt
-          fi
+          aws s3 ls s3://deju-penguinscience/ --recursive --no-sign-request \
+            > build/ross_discovery/s3_listing.txt 2> build/ross_discovery/s3_error.txt
+          echo "aws_exit=$?" >> build/ross_discovery/report.txt
+          grep -Ei "resight|breed|band|demog|adult|success" build/ross_discovery/s3_listing.txt \
+            | head -200 > build/ross_discovery/s3_relevant.txt
+          cat build/ross_discovery/s3_relevant.txt >> build/ross_discovery/report.txt
 
           echo "=== USAP anonymous API ===" >> build/ross_discovery/report.txt
-          curl -L --retry 1 --connect-timeout 20 --max-time 120 \
+          curl -sS -L --connect-timeout 20 --max-time 120 \
             -D build/ross_discovery/usap_headers.txt \
             -o build/ross_discovery/usap_candidate.csv \
             https://www.usap-dc.org/api/v2.0/datafiles/601444/band_resighting_1997-2021.csv
           echo "usap_curl_exit=$?" >> build/ross_discovery/report.txt
-          if [ -f build/ross_discovery/usap_candidate.csv ]; then
-            echo "usap_bytes=$(wc -c < build/ross_discovery/usap_candidate.csv)" >> build/ross_discovery/report.txt
-            head -5 build/ross_discovery/usap_candidate.csv >> build/ross_discovery/report.txt
-          fi
+          echo "usap_bytes=$(wc -c < build/ross_discovery/usap_candidate.csv)" >> build/ross_discovery/report.txt
+          grep -Ei "api|auth|token|login|download|error" build/ross_discovery/usap_candidate.csv \
+            | head -40 >> build/ross_discovery/report.txt
 
           cat build/ross_discovery/report.txt
       - uses: actions/upload-artifact@v4
