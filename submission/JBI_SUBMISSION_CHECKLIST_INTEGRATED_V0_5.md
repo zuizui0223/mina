@@ -13,13 +13,15 @@
 - [x] Main headers follow Introduction / Materials and Methods / Results / Discussion.
 - [x] Data Accessibility Statement present.
 - [x] Double-anonymous language used in the main manuscript.
-- [x] Current scientific source is integrated v0.5, not the obsolete Signy-centred JBI package.\n- [x] JBI is the sole active submission target; the GEB v0.5 branch is archival only unless JBI declines the manuscript.
+- [x] Current scientific source is integrated v0.5, not the obsolete Signy-centred JBI package.
+- [x] JBI is the sole active submission target; the GEB v0.5 branch is archival only unless JBI declines the manuscript.
 
 ## Scientific positioning locked
 
 - [x] Palmer predictor is “late-season colony-wide state,” not generic reproductive success.
 - [x] Palmer lag-2 remains fixed-specification validation after provenance repair.
-- [x] REPRO mean nest success non-replication is retained.\n- [x] Post-result REPRO detectability/decomposition is interpretation-only: benchmark β=0.104 detectability ≈89.8%, bootstrap state stability median r≈0.799, successful-nest brood size β≈−0.033 (post-hoc p≈0.779); none rescues the failed primary endpoint.
+- [x] REPRO mean nest success non-replication is retained.
+- [x] Post-result REPRO detectability/decomposition is interpretation-only: benchmark β=0.104 detectability ≈89.8%, bootstrap state stability median r≈0.799, successful-nest brood size β≈−0.033 (post-hoc p≈0.779); none rescues the failed primary endpoint.
 - [x] HUMPOP is reported as stopped for insufficient frozen information (69 matched colony-seasons across 18 predictor seasons < required 100), not as a null effect.
 - [x] Every preplanned validation route is closed; no preregistered mechanism test remains pending.
 - [x] Analysis is frozen: no post hoc threshold lowering or rescue analysis may change an evidence class.
@@ -59,7 +61,9 @@
 - [ ] Insert archive DOI/URL in Data Accessibility Statement.
 - [ ] Verify licences for redistributed derived outputs.
 - [ ] Freeze final git tag / commit SHA.
-- [ ] Confirm every manuscript number traces to a committed receipt.\n- [x] Citation-key integrity audit: all 18 manuscript citation keys exist in REFERENCES_V8.bib; duplicate keys = 0.\n- [ ] Render final reference list from REFERENCES_V8.bib.
+- [ ] Confirm every manuscript number traces to a committed receipt.
+- [x] Citation-key integrity audit: all 18 manuscript citation keys exist in REFERENCES_V8.bib; duplicate keys = 0.
+- [ ] Render final reference list from REFERENCES_V8.bib.
 
 ## Final editorial boundary
 
