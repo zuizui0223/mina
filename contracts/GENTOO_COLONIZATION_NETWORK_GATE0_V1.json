@@ -23,14 +23,15 @@
     "type": "nests",
     "positive": "presence == 1 or finite count > 0",
     "explicit_negative": "presence == 0 with type == nests; missing GEPE row is never treated as absence",
-    "season": "APBP season field"
+    "season": "APBP season field",
+    "same_site_season_conflict_rule": "Aggregate all GEPE nest records within site x season. Any positive record makes the season positive. A season is explicit-negative only if no positive record exists and at least one record has presence == 0. All other seasons are unknown."
   },
   "candidate_colonization_event_rule": {
     "prior_absence": "at least two distinct seasons with explicit-negative Gentoo nest observations before the first positive season",
-    "first_positive": "earliest positive Gentoo nest season after the required explicit-negative history",
-    "persistence": "at least one additional positive Gentoo nest observation within the next three observed Gentoo nest seasons at that site",
-    "event_year": "first_positive season",
-    "transient_positive": "a first positive not satisfying persistence is not a colonization event",
+    "establishment_positive": "earliest positive Gentoo nest season after the required explicit-negative history that satisfies the persistence rule; earlier nonpersistent positives are recorded as transient detections and do not permanently censor the site",
+    "persistence": "at least one additional positive Gentoo nest observation within the next three later observed Gentoo nest seasons at that site",
+    "event_year": "establishment_positive season",
+    "transient_positive": "positive detections that fail persistence remain descriptive transient detections; they are not colonization events",
     "one_event_per_site": true
   },
   "candidate_at_risk_site_rule": {
