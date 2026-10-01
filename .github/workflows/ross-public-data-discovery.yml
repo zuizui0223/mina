@@ -1,0 +1,63 @@
+name: Ross public-data discovery
+
+on:
+  push:
+    branches: [analysis/ross-failure-switch-v1]
+    paths:
+      - ".github/workflows/ross-public-data-discovery.yml"
+      - "contracts/ROSS_INDIVIDUAL_FAILURE_SWITCH_DRYAD_V1.json"
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Discover public Ross data routes
+        shell: bash
+        run: |
+          set +e
+          mkdir -p build/ross_discovery
+
+          echo "=== Dryad direct file ===" | tee build/ross_discovery/report.txt
+          curl -L --retry 2 --connect-timeout 20 --max-time 120 \
+            -A "Mozilla/5.0 mina-research-audit" \
+            -D build/ross_discovery/dryad_headers.txt \
+            -o build/ross_discovery/BreedingSuccess.csv \
+            https://datadryad.org/downloads/file_stream/532106
+          code=$?
+          echo "curl_exit=$code" >> build/ross_discovery/report.txt
+          if [ -f build/ross_discovery/BreedingSuccess.csv ]; then
+            bytes=$(wc -c < build/ross_discovery/BreedingSuccess.csv)
+            echo "dryad_bytes=$bytes" >> build/ross_discovery/report.txt
+            head -3 build/ross_discovery/BreedingSuccess.csv >> build/ross_discovery/report.txt
+          fi
+
+          echo "=== Point Blue public S3 inventory ===" >> build/ross_discovery/report.txt
+          if command -v aws >/dev/null 2>&1; then
+            aws s3 ls s3://deju-penguinscience/ --recursive --no-sign-request \
+              > build/ross_discovery/s3_listing.txt 2> build/ross_discovery/s3_error.txt
+            echo "aws_exit=$?" >> build/ross_discovery/report.txt
+            grep -Ei "resight|breed|band|demog|adult|success" build/ross_discovery/s3_listing.txt \
+              | head -200 > build/ross_discovery/s3_relevant.txt
+            cat build/ross_discovery/s3_relevant.txt >> build/ross_discovery/report.txt
+          else
+            echo "aws cli missing" >> build/ross_discovery/report.txt
+          fi
+
+          echo "=== USAP anonymous API ===" >> build/ross_discovery/report.txt
+          curl -L --retry 1 --connect-timeout 20 --max-time 120 \
+            -D build/ross_discovery/usap_headers.txt \
+            -o build/ross_discovery/usap_candidate.csv \
+            https://www.usap-dc.org/api/v2.0/datafiles/601444/band_resighting_1997-2021.csv
+          echo "usap_curl_exit=$?" >> build/ross_discovery/report.txt
+          if [ -f build/ross_discovery/usap_candidate.csv ]; then
+            echo "usap_bytes=$(wc -c < build/ross_discovery/usap_candidate.csv)" >> build/ross_discovery/report.txt
+            head -5 build/ross_discovery/usap_candidate.csv >> build/ross_discovery/report.txt
+          fi
+
+          cat build/ross_discovery/report.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ross-public-data-discovery
+          path: build/ross_discovery
+          if-no-files-found: error
