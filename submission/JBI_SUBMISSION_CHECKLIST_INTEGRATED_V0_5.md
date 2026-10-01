@@ -5,11 +5,11 @@
 - [x] Research Article framing is biogeographical and hypothesis-driven.
 - [x] Anonymous main manuscript separated from identifying title page.
 - [x] Structured abstract uses Aim / Location / Taxon / Methods / Results / Main conclusions.
-- [x] Structured abstract <=300 words (current automated count: 271).
+- [x] Structured abstract <=300 words (current automated count: 279).
 - [x] Title <=115 characters including spaces (current: 106).
 - [x] Running title <40 characters.
 - [x] 6–10 keywords, alphabetized.
-- [x] Main text approximately <=6,000 words (current automated count: 5,919).
+- [x] Main text approximately <=6,000 words (current automated count: 5,903).
 - [x] Main headers follow Introduction / Materials and Methods / Results / Discussion.
 - [x] Data Accessibility Statement present.
 - [x] Double-anonymous language used in the main manuscript.
