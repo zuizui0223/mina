@@ -13,7 +13,15 @@ import pandas as pd
 from scripts.audit_signy_replication_support import read_official_zip, season_start
 
 EXPECTED_CSV_SHA256 = "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62"
-YEARS = np.arange(1996, 2020, dtype=int)
+YEARS = np.asarray(
+    [
+        1996, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+        2008, 2009, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
+    ],
+    dtype=int,
+)
+YEAR_SET = set(int(x) for x in YEARS)
+EXCLUDED_INCOMPLETE_YEARS = (1997, 2010)
 PRIMARY_ROSTER = ("A1+A60", "A2", "A3", "A4", "A64")
 ERROR_MODELS = (
     ("poisson", 0.0),
@@ -55,7 +63,7 @@ def stable_roster_matrix(frame: pd.DataFrame) -> np.ndarray:
     seen_any: set[tuple[int, str]] = set()
     for _, row in frame.iterrows():
         year = season_start(row["SEASON"])
-        if year is None or year not in set(YEARS.tolist()):
+        if year is None or int(year) not in YEAR_SET:
             continue
         label = canonical_label(row["COLONY"])
         if label not in PRIMARY_ROSTER:
@@ -74,11 +82,10 @@ def stable_roster_matrix(frame: pd.DataFrame) -> np.ndarray:
     if missing_keys:
         raise ValueError(f"incomplete frozen Signy roster: {missing_keys[:12]}")
 
-    matrix = np.asarray(
+    return np.asarray(
         [[grouped[(int(y), c)] for y in YEARS] for c in PRIMARY_ROSTER],
         dtype=float,
     )
-    return matrix
 
 
 def effective_number(matrix: np.ndarray) -> np.ndarray:
@@ -103,6 +110,8 @@ def slope(values: np.ndarray, years: np.ndarray = YEARS) -> np.ndarray | float:
     x = np.asarray(years, dtype=float)
     centered = x - float(np.mean(x))
     denom = float(np.sum(centered**2))
+    if denom <= 0:
+        raise ValueError("zero time variance")
     if arr.ndim == 1:
         if arr.size != x.size:
             raise ValueError("time axis mismatch")
@@ -217,18 +226,22 @@ def analyze_frame(
     )
 
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "analysis_id": "mina-signy-breeding-patch-concentration-v1",
         "contract_id": "mina-signy-breeding-patch-concentration-v1",
-        "status": "independent_system_replication",
-        "window": [int(YEARS[0]), int(YEARS[-1])],
+        "status": "independent_system_replication_predeclared_after_palmer_discovery",
+        "outer_window": [1996, 2019],
+        "primary_seasons": [int(x) for x in YEARS],
+        "excluded_incomplete_seasons": list(EXCLUDED_INCOMPLETE_YEARS),
         "primary_roster": list(PRIMARY_ROSTER),
-        "canonicalization": "A1/A60/A1 + A60 -> A1+A60; sum if multiple source rows occur in a season",
+        "canonicalization": "A1/A60/A1 + A60 -> A1+A60; sum constituent rows only in frozen complete seasons",
         "simulations_per_error_model": int(simulations),
         "seed": int(seed),
         "batch_size": int(batch_size),
         "decline_eligibility": {
             "stable_roster_total_slope_per_year": total_slope,
+            "first_primary_season": int(YEARS[0]),
+            "last_primary_season": int(YEARS[-1]),
             "first_total": float(totals[0]),
             "last_total": float(totals[-1]),
             "passes": decline_gate,
@@ -243,7 +256,7 @@ def analyze_frame(
             "neff_slope_per_year": neff_slope,
         },
         "null_composition": {
-            "description": "time-invariant cumulative shares on the frozen five-unit roster",
+            "description": "time-invariant cumulative shares on the frozen five-unit, 22-season panel",
             "pooled_shares": {
                 c: float(v) for c, v in zip(PRIMARY_ROSTER, shares)
             },
@@ -256,7 +269,7 @@ def analyze_frame(
             "The endpoint is breeding-patch redistribution, not individual movement.",
             "Canonical colony labels are observational units, not GIS polygons.",
             "No snow, predation, habitat, public-information or dispersal mechanism is identified.",
-            "No alternate roster/window/metric/CV may rescue a failed primary replication."
+            "No alternate roster/season set/metric/CV may rescue a failed primary replication."
         ],
     }
 
