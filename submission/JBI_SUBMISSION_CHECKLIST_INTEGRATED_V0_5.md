@@ -60,7 +60,7 @@
 - [ ] Create permanent archival release of exact submission code/results.
 - [ ] Insert archive DOI/URL in Data Accessibility Statement.
 - [ ] Verify licences for redistributed derived outputs.
-- [x] Freeze scientific-content snapshot: `archive/jbi-v0.5-scientific-freeze-2026-10-01` at `03cb3598c5497cb3b855620b98cfc352b826bb03`.
+- [x] Freeze scientific-content snapshot: `archive/jbi-v0.5-scientific-freeze-2026-10-01` with scientific-content commit `c34dcc62befff92f83eba3ec9254429b4333e024`.
 - [ ] Create final submission tag after author-controlled metadata and archive DOI are added.
 - [ ] Confirm every manuscript number traces to a committed receipt.
 - [x] Citation-key integrity audit: all 18 manuscript citation keys exist in REFERENCES_V8.bib; duplicate keys = 0.
