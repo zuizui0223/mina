@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "ledger_id": "mina-integrated-jbi-numeric-provenance-v0.5",
+  "date": "2026-10-01",
+  "manuscript": "docs/MANUSCRIPT_INTEGRATED_JBI_V0_5.md",
+  "scope": "Scientific sample-size, effect-size, probability, sensitivity and detectable-effect numbers reported in the Abstract and Results. Citation years, equation constants and purely typographic numbering are outside this ledger.",
+  "scientific_results_changed": false,
+  "blocks": [
+    {
+      "id": "palmer_panel_and_shared_decline",
+      "manuscript_values": [
+        "1991–2017",
+        "27 complete island-year observations",
+        "96.4%"
+      ],
+      "receipts": [
+        "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "synchronized_panel.n_years",
+        "common_long_term_component.pc1_variance_fraction"
+      ]
+    },
+    {
+      "id": "palmer_concentration",
+      "manuscript_values": [
+        "3.54 to 2.86",
+        "4.62 to 2.28",
+        "5.78 to 1.00",
+        "19%",
+        "51%",
+        "83%",
+        "20% multiplicative-CV",
+        "p = 0.038",
+        "p = 0.000010",
+        "100,000 simulations"
+      ],
+      "receipts": [
+        "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "observed.COR.first_neff",
+        "observed.COR.last_neff",
+        "observed.COR.fractional_change",
+        "observed.HUM.first_neff",
+        "observed.HUM.last_neff",
+        "observed.HUM.fractional_change",
+        "observed.LIT.first_neff",
+        "observed.LIT.last_neff",
+        "observed.LIT.fractional_change",
+        "cv20.COR_p",
+        "cv20.HUM_p",
+        "cv20.LIT_p",
+        "cv20.joint_three_island_p",
+        "execution.simulations_per_error_model"
+      ]
+    },
+    {
+      "id": "palmer_colony_state_lag_profile",
+      "manuscript_values": [
+        "β1 = 0.1004",
+        "β2 = 0.0409",
+        "p = 0.00327",
+        "β3 = 0.0511",
+        "p = 0.00136",
+        "β4 = 0.0223",
+        "p = 0.121",
+        "β5 = −0.0148",
+        "p = 0.770",
+        "C_recruit = −0.0422",
+        "p = 0.988"
+      ],
+      "receipts": [
+        "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json"
+      ],
+      "source_fields": [
+        "primary_lag_profile.lag_1",
+        "primary_lag_profile.lag_2",
+        "primary_lag_profile.lag_3",
+        "primary_lag_profile.lag_4",
+        "primary_lag_profile.lag_5",
+        "delayed_recruitment_echo"
+      ]
+    },
+    {
+      "id": "palmer_state_memory_and_bridge",
+      "manuscript_values": [
+        "rho1 = 0.0639",
+        "p = 0.0378",
+        "rho2 p = 0.0764",
+        "rho3 p = 0.111",
+        "delta_past = 0.0296",
+        "p = 0.00154"
+      ],
+      "receipts": [
+        "results/PALMER_PERFORMANCE_MEMORY_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "performance_memory",
+        "bridge_diagnostic"
+      ]
+    },
+    {
+      "id": "palmer_repro_primary",
+      "manuscript_values": [
+        "β = 0.0296",
+        "p = 0.232",
+        "β = −0.0164",
+        "p = 0.629"
+      ],
+      "receipts": [
+        "results/PALMER_REPRO_REDISTRIBUTION_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "primary_lag1",
+        "secondary_lag2"
+      ]
+    },
+    {
+      "id": "palmer_repro_common_panel",
+      "manuscript_values": [
+        "61 colony-seasons",
+        "β = 0.1040",
+        "β = 0.0291",
+        "r = 0.132"
+      ],
+      "receipts": [
+        "results/PALMER_REPRO_SAME_PANEL_METRIC_DIAGNOSTIC_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "common_panel.n_colony_seasons",
+        "single_predictor_coefficients",
+        "state_alignment"
+      ]
+    },
+    {
+      "id": "palmer_repro_detectability",
+      "manuscript_values": [
+        "89.8%",
+        "r = 0.799",
+        "β = −0.0330",
+        "p = 0.779"
+      ],
+      "receipts": [
+        "results/PALMER_REPRO_DETECTABILITY_DECOMPOSITION_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "detectability.simulation.power",
+        "bootstrap_state_stability",
+        "production_decomposition.successful_nest_brood_size"
+      ]
+    },
+    {
+      "id": "palmer_humpop_stop",
+      "manuscript_values": [
+        "69 matched colony-seasons",
+        "18 predictor seasons",
+        "required 100"
+      ],
+      "receipts": [
+        "results/PALMER_HUMPOP_ARRIVAL_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "primary_information_gate",
+        "decision"
+      ]
+    },
+    {
+      "id": "antarctic_analysis_frame",
+      "manuscript_values": [
+        "Gate 0 = 152",
+        "1980–2025",
+        "107 bridged units",
+        "2,100 nest-count records",
+        "41 Adélie",
+        "34 chinstrap",
+        "29 gentoo",
+        "104 predictor-complete units"
+      ],
+      "receipts": [
+        "results/PAPER2_TEMPORAL_OVERLAP_AUDIT_RESULT_V1.json",
+        "results/PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json",
+        "results/PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "source.candidate_site_species_units",
+        "selected_primary_window",
+        "bridged_site_species_units",
+        "provenance.frozen_records",
+        "primary.ADPE.n_units",
+        "primary.CHPE.n_units",
+        "primary.GEPE.n_units"
+      ]
+    },
+    {
+      "id": "antarctic_primary_interaction",
+      "manuscript_values": [
+        "Adélie −0.304",
+        "chinstrap −1.184",
+        "gentoo −0.318",
+        "median −0.318",
+        "p = 0.0947",
+        "species p = 0.2162, 0.0661, 0.0563",
+        "chinstrap slopes +1.901 and −0.467",
+        "gentoo slopes +0.427 and −0.209",
+        "Adélie high-area slope +0.045"
+      ],
+      "receipts": [
+        "results/PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json",
+        "results/PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "primary",
+        "primary_cross_species",
+        "species"
+      ]
+    },
+    {
+      "id": "antarctic_area_only",
+      "manuscript_values": [
+        "gamma_A −0.280, −0.200, −0.071",
+        "raw p = 0.1426, 0.4225, 0.3067",
+        "Holm p = 0.4278, 0.6134, 0.6134"
+      ],
+      "receipts": [
+        "results/PAPER2_A_BUFFERING_SECONDARY_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "species"
+      ]
+    },
+    {
+      "id": "antarctic_observation_calibration",
+      "manuscript_values": [
+        "1.040",
+        "1.069",
+        "1.058",
+        "−0.326",
+        "−0.323",
+        "14 days"
+      ],
+      "receipts": [
+        "results/PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json",
+        "results/PAPER2_OBSERVATION_TIMING_SENSITIVITY_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "observation_calibration",
+        "primary_reference",
+        "exact_date",
+        "within_14_days"
+      ]
+    },
+    {
+      "id": "antarctic_spatial_support",
+      "manuscript_values": [
+        "1 km −0.058",
+        "2 km −0.318",
+        "5 km +0.107",
+        "Shannon −0.163"
+      ],
+      "receipts": [
+        "results/PAPER2_SCALE_TRAIT_SENSITIVITY_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "primary_reference",
+        "variants"
+      ]
+    },
+    {
+      "id": "antarctic_radius_null",
+      "manuscript_values": [
+        "24.78%",
+        "contrast 0.425",
+        "p = 0.0971",
+        "809",
+        "p = 0.0810",
+        "26.45%"
+      ],
+      "receipts": [
+        "results/PAPER2_RADIUS_SIGN_SWITCH_NULL_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "observed",
+        "null_probabilities"
+      ]
+    },
+    {
+      "id": "antarctic_detectability",
+      "manuscript_values": [
+        "null 5% tail −0.424",
+        "300 replicates",
+        "4.7%",
+        "11.7%",
+        "38.0%",
+        "59.7%",
+        "81.0%",
+        "92.7%",
+        "96.7%",
+        "MDE80 0.498",
+        "MDE90 0.539",
+        "64%"
+      ],
+      "receipts": [
+        "results/PAPER2_DETECTABLE_EFFECT_RESULT_V1.json"
+      ],
+      "source_fields": [
+        "frozen_permutation_reference",
+        "effects",
+        "thresholds",
+        "observed_reference"
+      ]
+    }
+  ],
+  "boundary": [
+    "This ledger traces reported scientific numbers to committed result receipts; it does not promote post-result diagnostics to primary evidence.",
+    "Rounded manuscript values are display representations of higher-precision receipt values.",
+    "The ledger does not change any model, endpoint, p-value, evidence class or figure data."
+  ]
+}
