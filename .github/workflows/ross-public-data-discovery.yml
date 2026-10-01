@@ -20,10 +20,11 @@ jobs:
 
           echo "=== Dryad direct file ===" | tee build/ross_discovery/report.txt
           curl -L --retry 2 --connect-timeout 20 --max-time 120 \
+            -H "Accept: application/octet-stream" \
             -A "Mozilla/5.0 mina-research-audit" \
             -D build/ross_discovery/dryad_headers.txt \
             -o build/ross_discovery/BreedingSuccess.csv \
-            https://datadryad.org/downloads/file_stream/532106
+            https://datadryad.org/api/v2/files/532106/download
           echo "curl_exit=$?" >> build/ross_discovery/report.txt
           echo "dryad_bytes=$(wc -c < build/ross_discovery/BreedingSuccess.csv)" >> build/ross_discovery/report.txt
           head -3 build/ross_discovery/BreedingSuccess.csv >> build/ross_discovery/report.txt
