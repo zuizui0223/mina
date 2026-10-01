@@ -1,0 +1,83 @@
+name: Ross Dryad archive recovery
+
+on:
+  push:
+    branches: [analysis/ross-failure-switch-v1]
+    paths:
+      - ".github/workflows/ross-dryad-archive-recovery.yml"
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe archival copies
+        shell: bash
+        run: |
+          set +e
+          mkdir -p build/ross_archive
+          expected=dbe58bd219ea752b2300017c783fef6073a4e3a548d0a0817e9e1f3512dde5cb
+          : > build/ross_archive/report.txt
+
+          for original in             "https://datadryad.org/stash/downloads/file_stream/532106"             "https://datadryad.org/downloads/file_stream/532106"             "http://datadryad.org/stash/downloads/file_stream/532106"             "http://datadryad.org/downloads/file_stream/532106"
+          do
+            enc=$(python -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "$original")
+            echo "=== WAYBACK $original ===" >> build/ross_archive/report.txt
+            curl -sS -L --max-time 60               "https://web.archive.org/cdx/search/cdx?url=$enc&output=json&fl=timestamp,original,statuscode,mimetype,digest,length&filter=statuscode:200&collapse=digest"               -o build/ross_archive/cdx.json
+            cat build/ross_archive/cdx.json >> build/ross_archive/report.txt
+            python - "$original" <<'PY'
+          import json,sys,subprocess,pathlib,hashlib
+          p=pathlib.Path("build/ross_archive/cdx.json")
+          try:
+              x=json.loads(p.read_text())
+          except Exception:
+              raise SystemExit
+          if not isinstance(x,list) or len(x)<2:
+              raise SystemExit
+          for row in x[1:]:
+              ts,orig=row[0],row[1]
+              u=f"https://web.archive.org/web/{ts}id_/{orig}"
+              out=pathlib.Path("build/ross_archive/wayback_candidate")
+              subprocess.run(["curl","-sS","-L","--max-time","120","-o",str(out),u])
+              if out.exists():
+                  b=out.read_bytes()
+                  h=hashlib.sha256(b).hexdigest()
+                  print("candidate",ts,len(b),h)
+                  with pathlib.Path("build/ross_archive/report.txt").open("a") as f:
+                      f.write(f"candidate {ts} {len(b)} {h}\n")
+                  if h=="dbe58bd219ea752b2300017c783fef6073a4e3a548d0a0817e9e1f3512dde5cb":
+                      out.rename("build/ross_archive/BreedingSuccess.csv")
+                      raise SystemExit
+          PY
+            if [ -f build/ross_archive/BreedingSuccess.csv ]; then break; fi
+          done
+
+          if [ ! -f build/ross_archive/BreedingSuccess.csv ]; then
+            echo "=== JINA mirror attempt ===" >> build/ross_archive/report.txt
+            for u in               "https://r.jina.ai/https://datadryad.org/stash/downloads/file_stream/532106"               "https://r.jina.ai/http://datadryad.org/stash/downloads/file_stream/532106"
+            do
+              curl -sS -L --max-time 120 -o build/ross_archive/jina_candidate "$u"
+              bytes=$(wc -c < build/ross_archive/jina_candidate)
+              sha=$(sha256sum build/ross_archive/jina_candidate | awk '{print $1}')
+              echo "jina $u $bytes $sha" >> build/ross_archive/report.txt
+              if [ "$sha" = "$expected" ]; then
+                mv build/ross_archive/jina_candidate build/ross_archive/BreedingSuccess.csv
+                break
+              fi
+            done
+          fi
+
+          if [ -f build/ross_archive/BreedingSuccess.csv ]; then
+            echo "RECOVERED exact public archive" >> build/ross_archive/report.txt
+            wc -l build/ross_archive/BreedingSuccess.csv >> build/ross_archive/report.txt
+            head -3 build/ross_archive/BreedingSuccess.csv >> build/ross_archive/report.txt
+          else
+            echo "NO_EXACT_ARCHIVAL_COPY_FOUND" >> build/ross_archive/report.txt
+          fi
+          cat build/ross_archive/report.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ross-dryad-archive-recovery
+          path: build/ross_archive
+          if-no-files-found: error
