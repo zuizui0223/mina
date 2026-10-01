@@ -1,0 +1,44 @@
+name: signy-chinstrap-concentration-support
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_signy_chinstrap_concentration_support.py"
+      - ".github/workflows/signy-chinstrap-concentration-support.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -e ".[dev]" pandas lxml html5lib beautifulsoup4
+      - name: Download official Signy chinstrap source
+        run: |
+          mkdir -p build
+          curl -L --fail --retry 4 --retry-delay 5 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' \
+            -o build/signy_chinstrap_official.zip
+      - name: Run outcome-blind support audit
+        run: |
+          python -m scripts.audit_signy_chinstrap_concentration_support \
+            --official-zip build/signy_chinstrap_official.zip \
+            --out build/SIGNY_CHINSTRAP_CONCENTRATION_SUPPORT_AUDIT_V1.json
+          python - <<'PY'
+          import json
+          x=json.load(open("build/SIGNY_CHINSTRAP_CONCENTRATION_SUPPORT_AUDIT_V1.json"))
+          assert x["effect_computed"] is False
+          assert x["numeric_pair_magnitudes_recorded_or_summarized"] is False
+          assert x["numeric_parseability_only"] is True
+          print("source=",x["source"])
+          print("gate=",x["support_gate"])
+          print("labels=",x["literal_colony_labels"])
+          print("candidates=",x["structural_candidates"])
+          print("complete_seasons=",x["complete_candidate_seasons"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signy-chinstrap-concentration-support-v1
+          path: build/SIGNY_CHINSTRAP_CONCENTRATION_SUPPORT_AUDIT_V1.json
