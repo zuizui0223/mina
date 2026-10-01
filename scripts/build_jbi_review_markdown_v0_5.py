@@ -25,6 +25,23 @@ MARKERS = {
     "[**Figure 4 near here**]": [4],
 }
 
+SUBMISSION_NOTATION_REPLACEMENTS = {
+    r"(C_{\mathrm{recruit}}>0)": r"\(C_{\mathrm{recruit}}>0\)",
+    r"(t\rightarrow t+1)": r"\(t\rightarrow t+1\)",
+    r"(t+1\rightarrow t+2)": r"\(t+1\rightarrow t+2\)",
+    r"(\rho_1 = 0.0639)": r"\(\rho_1 = 0.0639\)",
+    r"((\rho_2) *p* = 0.0764; (\rho_3) *p* = 0.111)": (
+        r"(\(\rho_2\), *p* = 0.0764; \(\rho_3\), *p* = 0.111)"
+    ),
+    r"(gamma_{AH}=-0.304)": r"\(\gamma_{AH}=-0.304\)",
+    r"(gamma_{AH}=-1.184)": r"\(\gamma_{AH}=-1.184\)",
+    r"(gamma_{AH}=-0.318)": r"\(\gamma_{AH}=-0.318\)",
+    r"(gamma_A=-0.280)": r"\(\gamma_A=-0.280\)",
+    r"(gamma_A=-0.200)": r"\(\gamma_A=-0.200\)",
+    r"(gamma_A=-0.071)": r"\(\gamma_A=-0.071\)",
+    r"**|gamma_AH| = 0.498**": r"**|γ_AH| = 0.498**",
+}
+
 
 def parse_captions(text: str) -> dict[int, str]:
     """Return complete Markdown captions keyed by figure number."""
@@ -69,6 +86,11 @@ def build(manuscript: Path, captions_path: Path, fig_dir: Path, out: Path) -> No
     leftovers = [marker for marker in MARKERS if marker in text]
     if leftovers:
         raise ValueError(f"unreplaced figure markers: {leftovers}")
+
+    # Submission-format cleanup only: convert a small set of legacy inline
+    # LaTeX-like strings to Pandoc math without changing values or claims.
+    for source, target in SUBMISSION_NOTATION_REPLACEMENTS.items():
+        text = text.replace(source, target)
 
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(text.rstrip() + "\n", encoding="utf-8")
