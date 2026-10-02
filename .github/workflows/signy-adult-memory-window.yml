@@ -1,0 +1,47 @@
+name: signy-adult-memory-window
+
+on:
+  push:
+    branches: [analysis/signy-adult-memory-window-v1]
+    paths:
+      - "contracts/SIGNY_ADULT_MEMORY_WINDOW_V1.json"
+      - "src/mina/signy_adult_memory.py"
+      - ".github/workflows/signy-adult-memory-window.yml"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -e ".[dev]" pandas lxml html5lib beautifulsoup4
+      - name: Download frozen official Signy source
+        run: |
+          mkdir -p build
+          curl -L --fail --retry 4 --retry-delay 5 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/signy_official.zip
+      - name: Run frozen temporal-window challenge
+        run: |
+          python -m mina.signy_adult_memory \
+            --official-zip build/signy_official.zip \
+            --out build/SIGNY_ADULT_MEMORY_WINDOW_RESULT_V1.json \
+            --permutations 100000
+      - name: Print primary result
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("build/SIGNY_ADULT_MEMORY_WINDOW_RESULT_V1.json"))
+          p=x["primary"]
+          print("lags=", {k:v["beta"] for k,v in p["lags"].items()})
+          print("contrast=", p["adult_memory_contrast"]["observed"])
+          print("p=", p["adult_memory_contrast"]["one_sided_upper_p"])
+          print("supported=", p["adult_memory_contrast"]["supported"])
+          print("decision=", json.dumps(x["decision"], sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signy-adult-memory-window-v1
+          path: build/SIGNY_ADULT_MEMORY_WINDOW_RESULT_V1.json
