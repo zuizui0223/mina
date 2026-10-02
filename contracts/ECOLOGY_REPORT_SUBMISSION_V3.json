@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "contract_id": "mina-ecology-report-submission-v3",
+  "date": "2026-10-02",
+  "status": "submission_content_refrozen_after_novelty_positioning_audit",
+  "target_journal": "Ecology",
+  "submission_type": "Report",
+  "manuscript": "submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md",
+  "cover_letter": "submission/COVER_LETTER_ECOLOGY_REPORT_V3.md",
+  "readiness": "submission/SUBMISSION_READINESS_ECOLOGY_REPORT_V3.md",
+  "copy_fields": "submission/ECOLOGY_SUBMISSION_COPY_FIELDS_V2.md",
+  "literature_positioning": "docs/LITERATURE_POSITIONING_REPLICATED_CONCENTRATION_V2.md",
+  "main_figure_captions": "submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md",
+  "supplement": "submission/SUPPLEMENT_ECOLOGY_REPORT_V0_4.md",
+  "primary_evidence_order": [
+    "Palmer Adelie discovery",
+    "prospectively frozen Signy Adelie external replication",
+    "prospectively frozen Signy chinstrap cross-species replication"
+  ],
+  "novelty_statement": "The analysis tests directional redistribution among breeding components after conditioning on the exact observed abundance trajectory, beyond the mechanical abundance-occupancy coupling expected under fixed relative composition.",
+  "general_principle": "Abundance decline constrains but does not determine the spatial trajectory of a structured population.",
+  "state_decomposition": {
+    "N_t": "total abundance trajectory",
+    "p_t": "relative spatial composition among monitored components",
+    "proportional_thinning_null": "N(t) observed; p(t) fixed",
+    "supported_departure": "directional change in p(t) beyond finite-count and frozen observation-error effects"
+  },
+  "submission_metrics": {
+    "title_characters": 80,
+    "abstract_words": 151,
+    "rough_manuscript_words_before_full_references": 2077,
+    "main_figures": 2,
+    "supplementary_figures": 1,
+    "tables": 0
+  },
+  "freeze_rules": [
+    "No new ecological endpoint may be added before initial submission.",
+    "No new concentration metric, threshold, time window, error model or rescue analysis may be added.",
+    "Literature framing may distinguish the result from established abundance-occupancy relationships but may not claim priority without direct evidence.",
+    "N_eff must not be described as genetic Ne or genetic Nb.",
+    "Palmer colony codes remain monitored census units unless provider documentation establishes stronger continuity."
+  ]
+}
