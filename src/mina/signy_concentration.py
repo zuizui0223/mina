@@ -19,7 +19,7 @@ ERROR_MODELS = (
     ("gamma_poisson_cv10", 0.10),
     ("gamma_poisson_cv20", 0.20),
 )
-PRIMARY_YEARS = tuple(range(1998, 2011))
+PRIMARY_YEARS = tuple(range(1998, 2010))
 PRIMARY_ROSTER = (
     "A1 + A60",
     "A2",
@@ -211,8 +211,8 @@ def analyze(path: Path, *, simulations: int = SIMULATIONS) -> dict[str, object]:
 
     return {
         "schema_version": 1,
-        "analysis_id": "mina-signy-concentration-replication-v1",
-        "contract_id": "mina-signy-concentration-replication-v1",
+        "analysis_id": "mina-signy-concentration-replication-v2",
+        "contract_id": "mina-signy-concentration-replication-v2",
         "source": {
             "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
             "selected_csv": source["selected_csv"],
@@ -221,7 +221,7 @@ def analyze(path: Path, *, simulations: int = SIMULATIONS) -> dict[str, object]:
             "source_meta": source_meta,
         },
         "primary": {
-            "years": [1998, 2010],
+            "years": [1998, 2009],
             "n_years": len(PRIMARY_YEARS),
             "roster": list(roster),
             "n_colonies": len(roster),
@@ -244,7 +244,7 @@ def analyze(path: Path, *, simulations: int = SIMULATIONS) -> dict[str, object]:
         "interpretation_boundary": [
             "A supported result replicates within-island concentration beyond proportional thinning plus the frozen stylized count-error family.",
             "It does not identify movement, habitat causation, Allee effects, predation, or public-information use.",
-            "The later epoch cannot rescue a failed 1998-2010 primary result.",
+            "The later epoch cannot rescue a failed 1998-2009 primary result.",
         ],
         "simulations_per_error_model": int(simulations),
         "seed": SEED,
