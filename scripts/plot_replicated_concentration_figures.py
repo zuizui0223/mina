@@ -84,14 +84,14 @@ def figure2(data_dir: Path, out_dir: Path) -> None:
     axes[0].set_xlabel("Change in effective breeding components (%)")
     axes[0].set_title("Biological magnitude")
     for yi, value in zip(y, frac):
-        axes[0].text(value - 1.5, yi, f"{value:.0f}%", va="center", ha="right")
+        axes[0].text(value / 2.0, yi, f"{value:.0f}%", va="center", ha="center", color="white")
 
     axes[1].barh(y, sig)
     axes[1].axvline(-math.log10(0.05), lw=1.0, ls="--")
     axes[1].set_xlabel("−log10(CV20 null p)")
     axes[1].set_title("Severe count-error null")
     for yi, s, p, beta in zip(y, sig, pvals, slopes):
-        ptxt = f"{p:.5f}" if p >= 1e-5 else "<1e−5"
+        ptxt = f"{p:.1e}".replace("e-0", "e−").replace("e-", "e−")
         axes[1].text(s + 0.06, yi, f"p={ptxt}\nβ={beta:.3f}/yr", va="center", fontsize=8.5)
 
     fig.suptitle("Breeding-space contraction is repeated across all five population units", y=0.99)
@@ -120,14 +120,19 @@ def figure3(data_dir: Path, out_dir: Path) -> None:
         ])
         same = str(r["initial_dominant"]) == str(r["final_dominant"])
 
+        def clean_unit(value: str) -> str:
+            text = str(value)
+            return text[:-2] if text.endswith(".0") else text
+
         if same:
             ax.plot(x, init, marker="o", lw=2.2)
-            ax.text(0.02, init[0] + 2, str(r["initial_dominant"]), fontsize=8)
+            ax.text(0.02, init[0] + 2, clean_unit(r["initial_dominant"]), fontsize=8)
         else:
             ax.plot(x, init, marker="o", lw=1.8, label="Initial dominant")
             ax.plot(x, final, marker="s", lw=1.8, ls="--", label="Final dominant")
-            ax.text(0.02, init[0] + 2, f"initial: {r['initial_dominant']}", fontsize=8)
-            ax.text(0.52, final[1] + 2, f"final: {r['final_dominant']}", fontsize=8)
+            ax.text(0.02, init[0] + 2, f"initial: {clean_unit(r['initial_dominant'])}", fontsize=8)
+            final_label_y = final[1] - 8 if final[1] > 90 else final[1] + 2
+            ax.text(0.52, final_label_y, f"final: {clean_unit(r['final_dominant'])}", fontsize=8)
 
         ax.set_xlim(-0.08, 1.08)
         ax.set_ylim(0, 105)
