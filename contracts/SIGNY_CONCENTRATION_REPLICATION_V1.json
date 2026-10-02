@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-signy-concentration-replication-v1",
+  "date": "2026-10-02",
+  "status": "frozen_before_signy_neff_slope_computation",
+  "paper_lane": "integrated Palmer-Signy ecological synthesis",
+  "replication_role": "Independent system replication of the strongest Palmer result: progressive within-island concentration of breeding pairs beyond proportional thinning plus frozen count-error models.",
+  "provenance_boundary": {
+    "signy_raw_pair_counts_previously_used_for_other_analyses": true,
+    "signy_neff_time_series_seen": false,
+    "signy_neff_slope_seen": false,
+    "consequence": "This is a prospectively frozen analysis of a new Signy endpoint, but not a pristine untouched dataset."
+  },
+  "source": {
+    "dataset": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020",
+    "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62"
+  },
+  "primary_epoch": {
+    "start_season": 1998,
+    "end_season": 2010,
+    "rationale": [
+      "CCAMLR-standardized monitoring began before this window.",
+      "The 1997 season is structurally incomplete because sea ice delayed station opening.",
+      "From 1998 the published source uses the pooled literal label A1 + A60.",
+      "A39 enters the monitored roster in 2011, so 2010 is the last season before that roster expansion."
+    ],
+    "expected_literal_roster": ["A1 + A60", "A2", "A3", "A4", "A41", "A62", "A63", "A64"],
+    "gate": "Every primary season must contain a finite nonnegative breeding-pair count for exactly the expected literal roster; otherwise primary replication is not estimable and stops without changing the epoch."
+  },
+  "metric": {
+    "effective_colony_number": "N_eff(t) = 1 / sum_j p_j(t)^2, where p_j(t) is colony j's share of total breeding pairs in season t.",
+    "primary_statistic": "OLS slope of N_eff against season_start_year over 1998-2010.",
+    "prediction": "slope < 0"
+  },
+  "null": {
+    "composition": "Time-invariant cumulative colony shares estimated over the complete 1998-2010 primary epoch.",
+    "year_totals": "Preserve the observed Signy total breeding-pair trajectory as the latent yearly total.",
+    "count_error_models": [
+      {"name": "poisson", "multiplicative_cv": 0.0},
+      {"name": "gamma_poisson_cv10", "multiplicative_cv": 0.10},
+      {"name": "gamma_poisson_cv20", "multiplicative_cv": 0.20}
+    ],
+    "positive_total_conditioning": "For any observed-positive season, redraw simulated colony counts if the simulated island total is zero.",
+    "simulations_per_model": 100000,
+    "seed": 20261030
+  },
+  "decision": {
+    "per_model_p": "(1 + number of simulated slopes <= observed slope)/(B+1)",
+    "replication_supported": "Observed slope must be negative and one-sided p <= 0.05 under all three frozen count-error models."
+  },
+  "prespecified_secondary": {
+    "later_epoch": {
+      "seasons": [2011, 2019],
+      "role": "Descriptive/sensitivity epoch after A39 enters the monitored roster.",
+      "rule": "Report the same N_eff slope only if that epoch has a fixed complete literal roster; it cannot rescue a failed 1998-2010 primary result."
+    }
+  },
+  "terminal_rules": [
+    "Do not split the published A1 + A60 pooled label.",
+    "Do not drop low-count or zero-count colonies from the fixed roster.",
+    "Do not tune the start/end year after observing N_eff.",
+    "Do not substitute active-colony count, Shannon diversity, Gini, thresholded colony count, or another concentration metric if the primary test fails.",
+    "Do not introduce alternative count-error CV values without independent observer-error calibration.",
+    "If supported, claim replicated within-island breeding-space concentration during decline, not individual dispersal, habitat causation, Allee effects, or public-information use."
+  ]
+}

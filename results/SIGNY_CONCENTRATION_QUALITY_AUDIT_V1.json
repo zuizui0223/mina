@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "audit_id": "mina-signy-concentration-quality-audit-v1",
+  "date": "2026-10-02",
+  "result": "pass_for_breeding_pair_endpoint",
+  "primary_epoch": [1998, 2009],
+  "issue_checked": "The shared Signy parsing metadata flags season 2008 because a source comment matches the pre-existing replication regex.",
+  "finding": "The 2008 source comment states that logistical constraints prevented fledgling counts at the optimum time and that chick/fledgling-derived quantities are unreliable for that season. It does not state that breeding-pair counts are unreliable.",
+  "endpoint_relevance": "The concentration replication uses TOTAL_NUMBER_OF_PAIRS only; no chick or fledgling quantity enters N_eff, the slope, or the fixed-composition null.",
+  "additional_source_context": [
+    "The source records ecological nest abandonment and snow/meltwater impacts in the late-2000s decline period.",
+    "These comments describe biological conditions and do not define a measurement-based reason to exclude the corresponding breeding-pair season from the already-frozen primary epoch."
+  ],
+  "decision": "Retain the frozen 1998-2009 primary concentration result unchanged. Do not create a post-outcome season-exclusion sensitivity.",
+  "boundary": [
+    "This audit does not assert that all Signy measurements are error-free.",
+    "It only distinguishes the comment-flag reason from the breeding-pair endpoint used in the concentration test.",
+    "No year is removed after observing the concentration result."
+  ]
+}
