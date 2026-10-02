@@ -12,7 +12,7 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Inches, Pt
+from docx.shared import Inches, Pt, RGBColor
 
 from mina.ecosphere_submission_metadata import (
     affiliation_lines,
@@ -243,12 +243,17 @@ def _remove_line_numbering(sect_pr) -> None:
         sect_pr.remove(node)
 
 
-def _add_line_numbering(sect_pr) -> None:
+def _add_line_numbering(
+    sect_pr,
+    *,
+    start: str = "1",
+    restart: str = "newSection",
+) -> None:
     _remove_line_numbering(sect_pr)
     node = OxmlElement("w:lnNumType")
     node.set(qn("w:countBy"), "1")
-    node.set(qn("w:start"), "0")
-    node.set(qn("w:restart"), "continuous")
+    node.set(qn("w:start"), start)
+    node.set(qn("w:restart"), restart)
     node.set(qn("w:distance"), "360")
     sect_pr.append(node)
 
@@ -295,7 +300,7 @@ def _split_title_section(doc: Document) -> None:
 
     # Ecology requires continuous line numbering after the title page.
     _remove_line_numbering(title_sect_pr)
-    _add_line_numbering(body_sect_pr)
+    _add_line_numbering(body_sect_pr, start="1", restart="newSection")
 
     type_node = title_sect_pr.find(qn("w:type"))
     if type_node is None:
@@ -323,6 +328,7 @@ def _apply_format(doc: Document, title: str) -> None:
         if style.type == 1:
             style.font.name = "Times New Roman"
             style.font.size = Pt(12)
+            style.font.color.rgb = RGBColor(0, 0, 0)
             style.element.rPr.rFonts.set(qn("w:eastAsia"), "Times New Roman")
 
     def format_paragraph(paragraph, spacing: float) -> None:
@@ -340,6 +346,8 @@ def _apply_format(doc: Document, title: str) -> None:
     for paragraph in doc.paragraphs:
         if paragraph.text.strip() == "Abstract":
             body_started = True
+        if not body_started:
+            _suppress_line_number(paragraph)
         format_paragraph(paragraph, 2.0 if body_started else 1.0)
 
     for table in doc.tables:
@@ -354,7 +362,11 @@ def _apply_format(doc: Document, title: str) -> None:
         if i == 0:
             _remove_line_numbering(section._sectPr)
         else:
-            _add_line_numbering(section._sectPr)
+            _add_line_numbering(
+                section._sectPr,
+                start="1",
+                restart="newSection",
+            )
 
     props = doc.core_properties
     props.title = title
