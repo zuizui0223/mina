@@ -1,0 +1,71 @@
+{
+  "analysis_id": "mina-signy-adult-memory-window-v1",
+  "claim_boundary": [
+    "Exploratory external challenge: Signy lag2 and lag3 were already known before this contract.",
+    "Do not infer individual movement, public-information use, prospecting or causal cue use.",
+    "Do not promote a sensitivity over a failed primary contrast."
+  ],
+  "contract_id": "mina-signy-adult-memory-window-v1",
+  "decision": {
+    "atomic_direction_consistent": true,
+    "comment_filtered_direction_consistent": true,
+    "confirmatory_independent_replication": false,
+    "primary_short_window_over_recruitment_window_supported": false
+  },
+  "interpretation": "Signy does not support the Palmer-generated short 2-3 year over 4-5 year temporal shape.",
+  "primary": {
+    "adult_memory_contrast": {
+      "definition": "mean(beta2,beta3)-mean(beta4,beta5)",
+      "null_mean": -0.00010611564302751499,
+      "null_q025": -0.08395285747425685,
+      "null_q975": 0.08375989774586395,
+      "observed": 0.002404927164176965,
+      "one_sided_upper_p": 0.47727522724772753,
+      "supported": false
+    },
+    "lags": {
+      "lag_2": {"beta": 0.021337308190931666, "n_rows": 118, "null_q025": -0.07259742026422002, "null_q975": 0.06410956784584677},
+      "lag_3": {"beta": 0.016121416268825017, "n_rows": 119, "null_q025": -0.06722725825323297, "null_q975": 0.07229511012682811},
+      "lag_4": {"beta": -0.01215977258102327, "n_rows": 111, "null_q025": -0.07525973270309802, "null_q975": 0.0767205058344237},
+      "lag_5": {"beta": 0.044808642712426024, "n_rows": 102, "null_q025": -0.08817986759967018, "null_q975": 0.0795423211776968}
+    },
+    "performance_rows": 149,
+    "performance_seasons": 22,
+    "permutations": 100000,
+    "seed": 20261020
+  },
+  "sensitivities": {
+    "atomic_label_only": {
+      "adult_memory_contrast": {
+        "observed": 0.04687171780586821,
+        "one_sided_upper_p": 0.17235827641723583,
+        "supported": false
+      },
+      "lags": {
+        "lag_2_beta": 0.06336811762892113,
+        "lag_3_beta": 0.024413095177099633,
+        "lag_4_beta": -0.056491777458800845,
+        "lag_5_beta": 0.05052955465308518
+      }
+    },
+    "comment_flag_exclusion": {
+      "adult_memory_contrast": {
+        "observed": 0.005691696664608781,
+        "one_sided_upper_p": 0.44393556064439355,
+        "supported": false
+      },
+      "lags": {
+        "lag_2_beta": 0.07269289151848099,
+        "lag_3_beta": 0.016369970966657328,
+        "lag_4_beta": 0.007846882003433009,
+        "lag_5_beta": 0.06983258715248775
+      }
+    }
+  },
+  "source": {
+    "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "rows": 310,
+    "selected_csv": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020./signy_adelie_breeding_success.csv",
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62"
+  }
+}
