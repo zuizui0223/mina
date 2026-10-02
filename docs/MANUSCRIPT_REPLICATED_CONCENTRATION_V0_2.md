@@ -4,7 +4,7 @@
 
 ## Abstract
 
-Population decline is usually measured as loss of abundance, but colonial breeders can also change how the remaining population is distributed among breeding components. We asked whether declining penguin populations thin proportionally across established breeding units or instead contract onto a smaller effective set of units. In the Palmer Archipelago, West Antarctic Peninsula, effective colony number, $N_{eff}=1/\\sum_j p_j^2$, declined by 19%, 51% and 83% in three Adélie penguin (*Pygoscelis adeliae*) island populations with unchanged census-unit rosters. Fixed-composition nulls preserved each observed population-total trajectory while holding relative breeding composition constant and adding Poisson or Gamma–Poisson count error; all three observed concentration trends remained more negative than expected under every frozen error model. We then tested the same endpoint prospectively in independent Signy Island records, South Orkney Islands. In a frozen 22-season Adélie panel, breeding pairs declined from 2,342 to 1,217 while $N_{eff}$ declined from 3.08 to 1.94 (−37.2%; slope −0.044 yr⁻¹); no 20%-CV null replicate among 100,000 was as negative (plus-one $p=0.000010$). A separately frozen cross-species test in chinstrap penguins (*P. antarcticus*) also supported concentration: breeding pairs declined from 1,642 to 581 and $N_{eff}$ from 4.44 to 2.19 (−50.6%; slope −0.072 yr⁻¹); the 20%-CV test gave $p=0.000020$. Post-hoc descriptive decomposition showed that the shared population-level outcome arose through different internal routes: the initially dominant breeding unit disappeared in all three Palmer populations, whereas the initially dominant Signy unit remained dominant and increased its share in both species. Independent Torgersen mapping similarly documents loss of historical subcolony footprints while retained footprints can fragment internally. Thus breeding-space contraction recurs across two *Pygoscelis* species and two Antarctic systems, but the identity of the breeding components that retain dominance is system-specific.
+Population decline is usually measured as loss of abundance, but colonial breeders can also change how the remaining population is distributed among breeding components. We asked whether declining penguin populations thin proportionally across established breeding units or instead contract onto a smaller effective set of units. In the Palmer Archipelago, West Antarctic Peninsula, effective colony number, N_eff = 1 / Σ p_j², declined by 19%, 51% and 83% in three Adélie penguin (*Pygoscelis adeliae*) island populations with unchanged census-unit rosters. Fixed-composition nulls preserved each observed population-total trajectory while holding relative breeding composition constant and adding Poisson or Gamma–Poisson count error; all three observed concentration trends remained more negative than expected under every frozen error model. We then tested the same endpoint prospectively in independent Signy Island records, South Orkney Islands. In a frozen 22-season Adélie panel, breeding pairs declined from 2,342 to 1,217 while N_eff declined from 3.08 to 1.94 (−37.2%; slope −0.044 yr⁻¹); no 20%-CV null replicate among 100,000 was as negative (plus-one p = 0.000010). A separately frozen cross-species test in chinstrap penguins (*P. antarcticus*) also supported concentration: breeding pairs declined from 1,642 to 581 and N_eff from 4.44 to 2.19 (−50.6%; slope −0.072 yr⁻¹); the 20%-CV test gave p = 0.000020. Post-hoc descriptive decomposition showed that the shared population-level outcome arose through different internal routes: the initially dominant breeding unit disappeared in all three Palmer populations, whereas the initially dominant Signy unit remained dominant and increased its share in both species. Independent Torgersen mapping similarly documents loss of historical subcolony footprints while retained footprints can fragment internally. Thus breeding-space contraction recurs across two *Pygoscelis* species and two Antarctic systems, but the identity of the breeding components that retain dominance is system-specific.
 
 **Keywords:** Adélie penguin; chinstrap penguin; colonial breeding; population decline; spatial reorganization; breeding-space contraction; subcolonies; Antarctica
 
@@ -28,17 +28,15 @@ Our primary question is whether **population decline repeatedly reduces the effe
 
 We used the public Palmer Station Antarctica Long Term Ecological Research Adélie breeding-pair census (DOI: 10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e). The synchronized island panel spans 1991–2017. Because changes in the set of census units can themselves create apparent changes in diversity or concentration, the primary within-island analysis was restricted to Cormorant, Humble and Litchfield, the three islands with unchanged reported colony-code rosters. Litchfield contributed through its final positive island census in 2006.
 
-For each island-year, breeding pairs were summed over colony-code units. If $n_j$ is the breeding-pair count in component $j$, $N=\\sum_j n_j$, and $p_j=n_j/N$, effective colony number was
+For each island-year, breeding pairs were summed over colony-code units. If n_j is the breeding-pair count in component $j$, N = Σ n_j, and p_j = n_j/N, effective colony number was
 
-$
-N_{eff}=\\frac{1}{\\sum_j p_j^2}.
-$
+N_eff = 1 / Σ p_j².
 
-The observed statistic was the ordinary-least-squares slope of $N_{eff}$ against calendar year. Negative slopes indicate increasing concentration.
+The observed statistic was the ordinary-least-squares slope of N_eff against calendar year. Negative slopes indicate increasing concentration.
 
 ### Signy Adélie independent replication
 
-The first external test used the NERC EDS UK Polar Data Centre data set *Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020* (DOI: 10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d). Before any Signy $N_{eff}$ value, abundance slope or concentration result was inspected, an outcome-blind support audit identified five canonical breeding units with numeric pair counts in 22 complete standardized seasons from 1996–2019; 1997 and 2010 were excluded because the relevant counts were not numerically complete.
+The first external test used the NERC EDS UK Polar Data Centre data set *Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020* (DOI: 10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d). Before any Signy N_eff value, abundance slope or concentration result was inspected, an outcome-blind support audit identified five canonical breeding units with numeric pair counts in 22 complete standardized seasons from 1996–2019; 1997 and 2010 were excluded because the relevant counts were not numerically complete.
 
 The frozen units were A1+A60, A2, A3, A4 and A64. Literal A1, A60, A1 + A60 and A1+A60 labels were harmonized into the single canonical A1+A60 unit because the source changed from separate to pooled reporting. Constituent rows were summed only within seasons that passed the frozen completeness rule. No alternative roster or season set could be introduced after effect inspection.
 
@@ -56,11 +54,9 @@ For every population, we estimated one time-invariant vector of breeding-compone
 
 Counts were generated under three prespecified observation models: Poisson sampling, Gamma–Poisson sampling with 10% multiplicative CV and Gamma–Poisson sampling with 20% multiplicative CV. The 20% model is deliberately severe and is not presented as an empirical estimate of observer error. Positive observed population-years were conditioned on a nonzero simulated total.
 
-For each error model we generated 100,000 realizations and calculated the $N_{eff}$ slope. One-sided probabilities used the plus-one estimator,
+For each error model we generated 100,000 realizations and calculated the N_eff slope. One-sided probabilities used the plus-one estimator,
 
-$
-p=\\frac{1+\\#(\\hat\\beta_{null}\\leq \\hat\\beta_{obs})}{100001}.
-$
+p = (1 + number of null slopes ≤ the observed slope) / 100001.
 
 Support required a negative observed slope and (p\leq0.05) under all three frozen error models. No alternative concentration statistic, pair-count threshold, error CV, roster or time window could rescue a failed test.
 
@@ -68,7 +64,7 @@ Support required a negative observed slope and (p\leq0.05) under all three froze
 
 After all five concentration results were known, we froze a non-inferential descriptive decomposition. For each population we recorded (i) the identity and share of the largest breeding unit in the first eligible season and its share in the final season; (ii) the final dominant unit and its initial rank; and (iii) each unit's first-season share and OLS slope of log1p breeding-pair count against actual year. Within each population we report the Spearman rank correlation between initial share and the component-level log1p-count slope as a descriptive coefficient only, without a p-value or confidence interval.
 
-This step tests no new hypothesis and cannot change the primary concentration classification. Its role is to prevent an unwarranted inference that falling $N_{eff}$ necessarily means that the largest initial colony units are preferentially retained.
+This step tests no new hypothesis and cannot change the primary concentration classification. Its role is to prevent an unwarranted inference that falling N_eff necessarily means that the largest initial colony units are preferentially retained.
 
 ### Physical spatial triangulation
 
@@ -80,21 +76,21 @@ We used the published Torgersen Island reconstruction of Cimino et al. [@cimino2
 
 Effective colony number fell on all three eligible Palmer islands. Cormorant declined from 3.535 to 2.859 (−19.1%; slope −0.03098 yr⁻¹); Humble from 4.625 to 2.285 (−50.6%; slope −0.08550 yr⁻¹); and Litchfield from 5.783 to 1.000 by its final positive census (−82.7%; slope −0.36808 yr⁻¹).
 
-The trends remained unusual under the complete fixed error family. Under Gamma–Poisson CV20%, one-sided probabilities were $p=0.0380$ for Cormorant and $p=0.000010$ for both Humble and Litchfield; no simulation produced all three slopes simultaneously as negative as observed (joint $p=0.000010$). Thus the decline could not be reduced to a fixed breeding composition becoming noisier as abundance fell.
+The trends remained unusual under the complete fixed error family. Under Gamma–Poisson CV20%, one-sided probabilities were p = 0.0380 for Cormorant and p = 0.000010 for both Humble and Litchfield; no simulation produced all three slopes simultaneously as negative as observed (joint p = 0.000010). Thus the decline could not be reduced to a fixed breeding composition becoming noisier as abundance fell.
 
 ### Signy Adélie independently replicated breeding-space contraction
 
 In the prospectively frozen 22-season Signy Adélie panel, stable-roster breeding pairs declined from 2,342 in 1996 to 1,217 in 2019. Effective colony number declined from 3.081 to 1.936, a 37.2% reduction, with a slope of −0.04396 yr⁻¹.
 
-The fixed-composition null was centred near zero slope. None of 100,000 Poisson, CV10% or CV20% realizations was at least as negative as observed; plus-one $p=0.000010$ under each error model. Under CV20%, the 95% null interval was approximately −0.0176 to 0.0174 yr⁻¹, far inside the observed −0.044 slope.
+The fixed-composition null was centred near zero slope. None of 100,000 Poisson, CV10% or CV20% realizations was at least as negative as observed; plus-one p = 0.000010 under each error model. Under CV20%, the 95% null interval was approximately −0.0176 to 0.0174 yr⁻¹, far inside the observed −0.044 slope.
 
-The later strict literal-roster robustness analysis reached the same conclusion over 1998–2009: breeding pairs declined from 2,688 to 901 and $N_{eff}$ from 3.61 to 2.54 (−29.7%), with $p=0.000130$ even under CV20%. Thus the external replication was not dependent on the longer-panel canonicalization rule.
+The later strict literal-roster robustness analysis reached the same conclusion over 1998–2009: breeding pairs declined from 2,688 to 901 and N_eff from 3.61 to 2.54 (−29.7%), with p = 0.000130 even under CV20%. Thus the external replication was not dependent on the longer-panel canonicalization rule.
 
 ### Signy chinstrap penguins provided a prospective cross-species replication
 
 The nine-unit chinstrap panel also passed its decline gate: breeding pairs declined from 1,642 in 1996 to 581 in 2019 (−64.6%). Effective breeding-patch number fell from 4.438 to 2.191 (−50.6%), with a slope of −0.07179 yr⁻¹.
 
-The cross-species prediction was supported under all frozen nulls. No Poisson or CV10% replicate among 100,000 was as negative as observed (plus-one $p=0.000010$ for each). Under CV20%, one of 100,000 null slopes was at least as negative, giving $p=0.000020$. Breeding-space contraction therefore transferred not only across regions but from Adélie to chinstrap penguins.
+The cross-species prediction was supported under all frozen nulls. No Poisson or CV10% replicate among 100,000 was as negative as observed (plus-one p = 0.000010 for each). Under CV20%, one of 100,000 null slopes was at least as negative, giving p = 0.000020. Breeding-space contraction therefore transferred not only across regions but from Adélie to chinstrap penguins.
 
 ### The same population-level contraction arose through different internal routes
 
@@ -118,7 +114,7 @@ The central result is now broader than a Palmer-specific Adélie pattern. Five d
 
 Earlier studies had already established population decline, colony loss and spatial fragmentation in these systems [@dunn2016; @mcdowall2019; @cimino2025]. The added result here is distributional: **decline does not simply scale down a fixed breeding map**. The relative allocation of breeding effort among monitored components changes systematically enough to exceed the proportional-thinning expectation.
 
-This distinction matters because abundance and spatial organization are not interchangeable state variables. Two populations with the same number of pairs can distribute reproduction across very different numbers of colony components. A reduction in $N_{eff}$ therefore represents a second axis of population contraction: fewer effective places are carrying an increasing fraction of the remaining reproduction.
+This distinction matters because abundance and spatial organization are not interchangeable state variables. Two populations with the same number of pairs can distribute reproduction across very different numbers of colony components. A reduction in N_eff therefore represents a second axis of population contraction: fewer effective places are carrying an increasing fraction of the remaining reproduction.
 
 ### Convergent contraction emerged through divergent internal routes
 
@@ -156,7 +152,7 @@ Component-resolved monitoring can therefore detect loss of spatial organization 
 
 The primary synthesis contains five population units, but three Palmer populations share one regional environment and the two Signy species share one island. The cross-species result is therefore a meaningful extension, not a claim that all penguins or all colonies contract this way. Gentoo penguins provide an especially valuable future contrast because many Antarctic populations have increased rather than declined, but available Signy public data aggregate the relevant breeding distribution differently and were not opened as a post-result rescue comparison here.
 
-Monitoring units are also not standardized habitat polygons. Palmer colony codes have no public one-to-one GIS crosswalk, Signy Adélie requires a frozen canonical A1+A60 unit, and component sizes differ physically. $N_{eff}$ should therefore be read as the effective number of monitored breeding components rather than effective occupied area.
+Monitoring units are also not standardized habitat polygons. Palmer colony codes have no public one-to-one GIS crosswalk, Signy Adélie requires a frozen canonical A1+A60 unit, and component sizes differ physically. N_eff should therefore be read as the effective number of monitored breeding components rather than effective occupied area.
 
 Finally, the count-error distributions are stylized sensitivities rather than empirically calibrated error models. Their purpose is to show that abundance-dependent stochasticity under fixed composition does not readily generate the observed trends. Replicate observer counts or spatially explicit detection models would tighten that boundary.
 
