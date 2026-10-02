@@ -14,7 +14,9 @@
   "secondary_descriptors": [
     "endpoint elasticity = log(E_last/E_first) / log(N_last/N_first)",
     "within-population Spearman correlation between abundance and E",
-    "abundance fraction at first season E falls to <=75% and <=50% of initial E, if reached"
+    "abundance fraction at first season E falls to <=75% and <=50% of initial E, if reached",
+    "first-difference diagnostic: within each population regress delta log(E) on delta log(N); this tests short-term co-movement and is not part of the universal-rule decision",
+    "leave-one-population-out common elasticity sensitivity"
   ],
   "interpretation_rules": [
     "No p-value or threshold discovered here may alter the frozen Ecology Report.",
