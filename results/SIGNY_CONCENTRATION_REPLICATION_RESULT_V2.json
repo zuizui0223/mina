@@ -1,0 +1,86 @@
+{
+  "analysis_id": "mina-signy-concentration-replication-v2",
+  "contract_id": "mina-signy-concentration-replication-v2",
+  "decision": {
+    "primary_slope_negative": true,
+    "replication_supported_under_all_frozen_error_models": true
+  },
+  "error_models": {
+    "gamma_poisson_cv10": {
+      "multiplicative_cv": 0.1,
+      "null_mean": -9.963975405294655e-05,
+      "null_q025": -0.03261276914159466,
+      "null_q975": 0.03264757644359903,
+      "observed_slope": -0.11147936999923953,
+      "one_sided_probability_le_observed": 9.99990000099999e-06,
+      "simulated_slopes_le_observed": 0
+    },
+    "gamma_poisson_cv20": {
+      "multiplicative_cv": 0.2,
+      "null_mean": -0.00014289967310943463,
+      "null_q025": -0.058539159125418266,
+      "null_q975": 0.05831380583862573,
+      "observed_slope": -0.11147936999923953,
+      "one_sided_probability_le_observed": 0.00012999870001299986,
+      "simulated_slopes_le_observed": 12
+    },
+    "poisson": {
+      "multiplicative_cv": 0.0,
+      "null_mean": -9.895594691117457e-05,
+      "null_q025": -0.015118209847338148,
+      "null_q975": 0.01504132291031746,
+      "observed_slope": -0.11147936999923953,
+      "one_sided_probability_le_observed": 9.99990000099999e-06,
+      "simulated_slopes_le_observed": 0
+    }
+  },
+  "interpretation_boundary": [
+    "A supported result replicates within-island concentration beyond proportional thinning plus the frozen stylized count-error family.",
+    "It does not identify movement, habitat causation, Allee effects, predation, or public-information use.",
+    "The later epoch cannot rescue a failed 1998-2009 primary result."
+  ],
+  "primary": {
+    "first_neff": 3.609914025684377,
+    "first_total_pairs": 2688.0,
+    "fractional_neff_change": -0.2965720896481414,
+    "last_neff": 2.539314279637027,
+    "last_total_pairs": 901.0,
+    "n_colonies": 8,
+    "n_years": 12,
+    "neff_slope_per_year": -0.11147936999923953,
+    "pooled_shares": {
+      "A1 + A60": 0.496711664935964,
+      "A2": 0.24056767047421254,
+      "A3": 0.09731493843643377,
+      "A4": 0.08074964149730506,
+      "A41": 0.046234485486821936,
+      "A62": 0.010977599762646492,
+      "A63": 0.003164713445087277,
+      "A64": 0.02427928596152895
+    },
+    "roster": [
+      "A1 + A60",
+      "A2",
+      "A3",
+      "A4",
+      "A41",
+      "A62",
+      "A63",
+      "A64"
+    ],
+    "years": [1998, 2009]
+  },
+  "schema_version": 1,
+  "secondary_later_epoch": {
+    "reason": "later epoch literal roster is not fixed",
+    "status": "not_estimable"
+  },
+  "seed": 20261030,
+  "simulations_per_error_model": 100000,
+  "source": {
+    "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "rows": 310,
+    "selected_csv": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020./signy_adelie_breeding_success.csv",
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62"
+  }
+}
