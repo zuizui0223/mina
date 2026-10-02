@@ -246,7 +246,7 @@ def _remove_line_numbering(sect_pr) -> None:
 def _add_line_numbering(
     sect_pr,
     *,
-    start: str = "1",
+    start: str = "0",
     restart: str = "newSection",
 ) -> None:
     _remove_line_numbering(sect_pr)
@@ -300,7 +300,7 @@ def _split_title_section(doc: Document) -> None:
 
     # Ecology requires continuous line numbering after the title page.
     _remove_line_numbering(title_sect_pr)
-    _add_line_numbering(body_sect_pr, start="1", restart="newSection")
+    _add_line_numbering(body_sect_pr, start="0", restart="newSection")
 
     type_node = title_sect_pr.find(qn("w:type"))
     if type_node is None:
