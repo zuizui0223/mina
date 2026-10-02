@@ -2,7 +2,7 @@
 
 ## The novelty in one sentence
 
-> **The manuscript tests whether spatial redistribution during population decline exceeds the contraction expected mechanically from the observed abundance trajectory itself.**
+> **The manuscript tests whether spatial redistribution during population decline exceeds the contraction expected from a fixed-composition count-error model anchored to the observed annual totals.**
 
 This is narrower and stronger than claiming that declining populations lose occupied sites.
 
@@ -66,7 +66,7 @@ More formally, a spatially structured population has at least two separable stat
 - total abundance, N(t);
 - relative spatial composition, p(t).
 
-Proportional thinning changes N(t) while holding p(t) constant. The empirical result is repeated directional change in p(t) after conditioning on N(t).
+Proportional thinning changes N(t) while holding p(t) constant. The empirical result is repeated directional change in spatial composition relative to a null in which latent N(t) follows the observed annual totals while p(t) is fixed.
 
 This decomposition is transferable to other systems with repeated spatial breeding or aggregation units: seabird subcolonies, roosts, leks, spawning reaches, breeding ponds, haul-outs or other structured population components.
 
