@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-contraction-scaling-rules-exploration-summary-v1",
+  "status": "posthoc_candidate_rules_not_for_frozen_ecology_submission",
+  "source_workflow": {
+    "run_id": 37000039809,
+    "artifact_id": 11223511401,
+    "artifact_digest": "sha256:f1784a2075457f82ef4657dfef086eaba92b0adee24ca09eca389ec0349acdd3"
+  },
+  "candidate_rule": {
+    "label": "sublinear long-term breeding-space contraction / spatial inertia",
+    "form": "E proportional to N^kappa along long-term population trajectories",
+    "population_kappa": {
+      "Cormorant Adelie": 0.06940794578879735,
+      "Humble Adelie": 0.20329660073019787,
+      "Litchfield Adelie": 0.4651905584821034,
+      "Signy Adelie": 0.289159355815106,
+      "Signy chinstrap": 0.3656980307143262
+    },
+    "all_five_between_zero_and_one": true,
+    "common_fixed_effect_kappa": 0.25010241782515236,
+    "common_within_r2": 0.5849309593523975,
+    "leave_one_population_out_common_kappa_range": [
+      0.13914236179330836,
+      0.35370857442618103
+    ]
+  },
+  "falsified_or_unsupported_rules": {
+    "universal_quarter_power_constant": "unsupported; the common estimate is near 0.25 but LOO values span 0.139-0.354 and population kappas span 0.069-0.465",
+    "universal_threshold_collapse": "unsupported; single power law had lowest equal-weight whole-population LOO RMSE versus quadratic and 50/25/10% hinges",
+    "instantaneous_annual_response_law": "unsupported; first-difference common R2=0.071",
+    "simple_predictor_of_kappa": "unsupported; initial E, component count, initial evenness, and decline depth all had worse LOO RMSE than intercept-only"
+  },
+  "model_shape": {
+    "best_model": "single power law",
+    "loo_rmse": {
+      "single_power_law": 0.3366162300192455,
+      "hinge_50": 0.3568634713702396,
+      "hinge_10": 0.36619596418974815,
+      "hinge_25": 0.36812441912425786,
+      "quadratic": 0.38975350349226145
+    },
+    "acceleration_supported": false
+  },
+  "timescale": {
+    "level_common_r2": 0.5849309593523975,
+    "first_difference_common_slope": 0.12019962014476063,
+    "first_difference_common_r2": 0.07059042045319597,
+    "interpretation": "candidate long-term state/trajectory relation rather than year-to-year response law"
+  },
+  "kappa_predictors": {
+    "intercept_only_loo_rmse": 0.16950802774021542,
+    "predictor_loo_rmse": {
+      "initial_neff": 0.18245945191782378,
+      "initial_evenness": 0.18354078449411781,
+      "decline_depth": 0.26549142762283195,
+      "component_count": 0.27799237853849906
+    },
+    "promising_predictors": []
+  },
+  "interpretation_boundary": [
+    "Exploratory only; cannot modify the frozen Ecology Report.",
+    "Five population units are nested within two monitoring systems.",
+    "Kappa is a trajectory descriptor, not a causal demographic parameter.",
+    "Spatial inertia is a candidate interpretation to test in independent component-resolved colonies."
+  ]
+}
