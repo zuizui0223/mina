@@ -15,7 +15,7 @@ Breeding-space contraction recurs across declining Adélie and chinstrap penguin
 
 ## Abstract
 
-Declining populations often lose occupied sites as abundance falls, but that coupling does not show whether spatial organization changes beyond the mechanical consequences of having fewer individuals. We tested a stricter hypothesis in colonial penguins: after preserving each observed abundance trajectory, does breeding effort redistribute toward fewer effective monitored components? In three Adélie penguin (*Pygoscelis adeliae*) populations near Palmer Station, effective breeding-component number declined by 19–83% more rapidly than expected under fixed relative composition with Poisson or Gamma–Poisson count error. We then froze the same endpoint before effect computation at Signy Island. Signy Adélie declined from 3.08 to 1.94 effective components (−37%), and a separately frozen chinstrap penguin (*P. antarcticus*) test declined from 4.44 to 2.19 (−51%); both exceeded the most severe 20%-CV null (p ≤ 0.00002). Thus abundance decline constrained, but did not determine, the spatial trajectory of reproduction: breeding-space contraction recurred across two Antarctic systems and two *Pygoscelis* species.
+Declining populations often lose occupied sites as abundance falls, but that coupling does not show whether spatial organization changes beyond the mechanical consequences of having fewer individuals. We tested a stricter hypothesis in colonial penguins: after using each observed abundance trajectory as the latent annual-total trajectory, does breeding effort redistribute toward fewer effective monitored components? In three Adélie penguin (*Pygoscelis adeliae*) populations near Palmer Station, effective breeding-component number declined by 19–83% more rapidly than expected under fixed relative composition with Poisson or Gamma–Poisson count error. We then froze the same endpoint before effect computation at Signy Island. Signy Adélie declined from 3.08 to 1.94 effective components (−37%), and a separately frozen chinstrap penguin (*P. antarcticus*) test declined from 4.44 to 2.19 (−51%); both exceeded the most severe 20%-CV null (p ≤ 0.00002). Thus abundance decline constrained, but did not determine, the spatial trajectory of reproduction: breeding-space contraction recurred across two Antarctic systems and two *Pygoscelis* species.
 
 **Abstract word count:** 151
 
@@ -27,7 +27,7 @@ abundance–occupancy; Adélie penguin; Antarctica; chinstrap penguin; colonial 
 
 ## One-sentence novelty statement
 
-The manuscript isolates directional redistribution among breeding components after conditioning on the exact observed abundance trajectory, rather than reporting the already-known tendency for occupancy to fall as abundance declines.
+The manuscript isolates directional redistribution among breeding components after conditioning on the observed abundance trajectory as the latent annual-total trajectory, rather than reporting the already-known tendency for occupancy to fall as abundance declines.
 
 ## General principle
 
