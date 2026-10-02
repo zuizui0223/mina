@@ -83,7 +83,9 @@ jobs:
           first=doc.sections[0]._sectPr.find(qn("w:lnNumType"))
           second=doc.sections[1]._sectPr.find(qn("w:lnNumType"))
           assert first is None, "title page must not carry line numbers"
-          assert second is not None, "body must carry continuous line numbers"
+          assert second is not None, "body must carry line numbers"
+          assert second.get(qn("w:start")) == "1"
+          assert second.get(qn("w:restart")) == "newSection"
           text="\n".join(p.text for p in doc.paragraphs)
           assert "Example Author" in text
           assert "[AUTHOR" not in text
