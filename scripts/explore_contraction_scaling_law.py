@@ -86,7 +86,9 @@ def analyze(path: Path) -> dict[str, object]:
         years=g["year"].to_numpy(dtype=int)
         annual=_ols(np.log(n),np.log(e))
         endpoint=float(np.log(e[-1]/e[0])/np.log(n[-1]/n[0])) if n[-1]!=n[0] else math.nan
-        nr=pd.Series(n).rank(method="average").to_numpy(dtype=float)\n        er=pd.Series(e).rank(method="average").to_numpy(dtype=float)\n        rho=float(np.corrcoef(nr,er)[0,1])
+        nr=pd.Series(n).rank(method="average").to_numpy(dtype=float)
+        er=pd.Series(e).rank(method="average").to_numpy(dtype=float)
+        rho=float(np.corrcoef(nr,er)[0,1])
 
         dn=np.diff(np.log(n))
         de=np.diff(np.log(e))
