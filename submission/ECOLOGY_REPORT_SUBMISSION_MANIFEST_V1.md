@@ -13,7 +13,7 @@ for provenance and must not be uploaded as parallel manuscripts.
 ## Scientific manuscript
 
 - `submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md`
-- approximate pre-reference word count: **2,229**
+- approximate pre-reference word count: **2,445**
 - abstract: **155 words**
 - main figures: **2**
 - supplementary figures: **1**

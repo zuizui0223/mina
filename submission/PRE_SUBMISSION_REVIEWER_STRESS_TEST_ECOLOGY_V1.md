@@ -112,6 +112,16 @@ This audit asks whether the current manuscript's central inference survives the 
 
 **Status:** Addressed in Introduction, Discussion, cover letter and literature-positioning audit.
 
+## Objection 14 — “Proportional thinning is a straw-man biological expectation”
+
+**Risk:** High if the null is presented as what field ecologists literally expect every subcolony to do.
+
+**Response:** The manuscript now treats proportional thinning as an **operational monitoring baseline**, not a claim that habitat, predation and local demography should be identical among subcolonies. CEMP is built around standardized repeated monitoring at selected sites and colonies, and broad penguin databases harmonize site-level abundance estimates across ground and remote-sensing methods. The practical question is therefore whether an aggregate abundance trajectory is sufficient to retain the spatial state of decline. The result shows that it is not in the studied populations: component composition changes beyond the fixed-composition baseline.
+
+**Boundary:** The paper does not claim that CEMP, MAPPPD or site-level monitoring explicitly assumes proportional thinning. It argues only that aggregation necessarily discards internal compositional information.
+
+**Status:** Addressed in Discussion and cover letter.
+
 ## Editorial assessment after stress test
 
 The strongest defensible novelty statement is:
