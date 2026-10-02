@@ -7,8 +7,10 @@ on:
     paths:
       - "contracts/CONTRACTION_SCALING_LAW_EXPLORATION_V1.json"
       - "contracts/CONTRACTION_SCALING_SHAPE_EXPLORATION_V1.json"
+      - "contracts/KAPPA_PREDICTOR_EXPLORATION_V1.json"
       - "scripts/explore_contraction_scaling_law.py"
       - "scripts/explore_contraction_scaling_shape.py"
+      - "scripts/explore_kappa_predictors.py"
       - "scripts/build_replicated_concentration_figure_data.py"
       - ".github/workflows/contraction-scaling-law-exploration.yml"
   workflow_dispatch:
@@ -39,6 +41,14 @@ jobs:
           python scripts/explore_contraction_scaling_shape.py \
             --trajectories build/figure_data/figure1_trajectories.csv \
             --out build/scaling/CONTRACTION_SCALING_SHAPE_EXPLORATION_RESULT_V1.json
+      - name: Run frozen stage-three kappa predictors
+        run: |
+          python scripts/explore_kappa_predictors.py \
+            --stage1 build/scaling/CONTRACTION_SCALING_LAW_EXPLORATION_RESULT_V1.json \
+            --palmer-census build/raw/adelie_census.csv \
+            --signy-adelie-receipt results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json \
+            --signy-chinstrap-receipt results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json \
+            --out build/scaling/KAPPA_PREDICTOR_EXPLORATION_RESULT_V1.json
       - uses: actions/upload-artifact@v4
         with:
           name: contraction-scaling-law-exploration-v1
