@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-signy-adult-memory-window-v1",
+  "date": "2026-10-02",
+  "status": "frozen_before_signy_lag4_lag5_computation",
+  "paper_lane": "integrated Palmer-Signy ecological synthesis",
+  "provenance_boundary": {
+    "palmer_lag_profile_seen": true,
+    "signy_lag1_to_lag3_seen": true,
+    "signy_lag4_lag5_seen": false,
+    "consequence": "This is an exploratory external challenge to a Palmer-generated temporal-shape hypothesis, not a pristine independent preregistration."
+  },
+  "biological_hypothesis": "Performance-linked colony redistribution is concentrated in a short 2-3 year adult demographic-memory window rather than a 4-5 year natal-recruitment window.",
+  "external_biological_anchor": {
+    "rationale": "Adelie recruitment into the breeding population begins around age 3 and is concentrated around ages 4-5 in long-term known-age studies; 4-5 year lags are therefore the biologically expected window for a natal-cohort recruitment echo.",
+    "role": "Fixes the lag-window interpretation before Signy lag4-lag5 are computed."
+  },
+  "source": {
+    "dataset": "BAS/NERC Signy Adelie breeding-success series",
+    "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62",
+    "rows": 310
+  },
+  "analysis": {
+    "estimator": "Reuse exactly the frozen Signy performance-redistribution construction, covariates, colony fixed effects, eligibility and within-season permutation scheme from SIGNY_WIN_STAY_LOSE_SWITCH_REPLICATION_V1.",
+    "lags": [2,3,4,5],
+    "new_quantities": ["beta_4","beta_5"],
+    "contrast": "C_adult = mean(beta_2,beta_3) - mean(beta_4,beta_5)",
+    "alternative": "C_adult > 0",
+    "inference": "Use synchronized within-predictor-season permutations across lag 2-5 models so each permutation yields one C_adult.",
+    "permutations": 100000,
+    "support_rule": "C_adult > 0 and one-sided permutation p <= 0.05."
+  },
+  "mandatory_sensitivities": [
+    "atomic-label-only colony parsing",
+    "comment-flag exclusion"
+  ],
+  "decision_language": {
+    "supported": "Signy independently shows the same qualitative short-window-over-recruitment-window temporal shape, strengthening a short-lived demographic-memory interpretation while not establishing individual movement or cue use.",
+    "unsupported": "Do not generalize the Palmer 2-3 year temporal shape beyond Palmer; retain it as a local fixed-specification pattern."
+  },
+  "terminal_rules": [
+    "Do not alter lag windows after observing beta_4 or beta_5.",
+    "Do not replace the primary Signy dataset with a favorable sensitivity.",
+    "Do not call this a confirmatory independent replication because Signy beta_2 and beta_3 were known before freezing this contract.",
+    "Do not infer individual breeding dispersal, prospecting, public-information use or causal cue use from colony-level data.",
+    "Do not reinterpret a 4-5 year effect as adult memory if the frozen contrast fails."
+  ]
+}
