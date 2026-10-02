@@ -45,7 +45,7 @@ Not new and not claimed:
 ## Current manuscript package
 
 - manuscript: submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md
-- rough manuscript word count: ~2,171 before full references
+- rough manuscript word count: ~2,229 before full references
 - abstract: 155 words
 - title: 80 characters
 - keywords: 8
