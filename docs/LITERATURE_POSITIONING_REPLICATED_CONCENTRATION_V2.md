@@ -22,19 +22,25 @@ Range-contraction studies show that the same loss of abundance can produce diffe
 
 The present study moves this distinction one hierarchical level down, from a species range to the internal breeding structure of individual populations.
 
-### 3. Penguin colony decline and disappearance
+### 3. Density-dependent effective area occupied
+
+Thorson et al. (2016) contrasted proportional-density and basin models across 92 marine-fish species in six regions. Their effective-area framework explicitly tests whether occupied area changes with abundance, so the broad idea that abundance decline can be accompanied by distributional contraction is not novel here.
+
+The present study differs in spatial grain and inferential design: it concerns the **relative composition among repeated breeding components inside colonial populations**, uses an inverse-Simpson effective-component endpoint rather than continuous effective area, explicitly simulates finite-count and count-error effects under fixed composition, and follows an exploratory discovery with prospectively frozen geographic and cross-species replications.
+
+### 4. Penguin colony decline and disappearance
 
 Long-term penguin studies already document population decline, colony loss and abandonment. Dunn et al. (2016) established major Signy declines; later Antarctic studies document widespread chinstrap colony decreases.
 
 These studies provide the demographic background but do not condition on the realized abundance trajectory to ask whether relative breeding composition changes beyond proportional thinning.
 
-### 4. Fine-scale fragmentation during decline
+### 5. Fine-scale fragmentation during decline
 
 McDowall & Lynch (2019) predict that Adélie decline can fragment nest aggregations through self-organization, fidelity and edge-biased predation.
 
 That work concerns fine-scale spatial patterning. The present endpoint is coarser: redistribution of breeding effort among monitored breeding components.
 
-### 5. Physical subcolony loss at Palmer
+### 6. Physical subcolony loss at Palmer
 
 Cimino et al. (2025) reconstructed habitat-structured disappearance of historical Torgersen subcolony footprints and fragmentation within some retained footprints.
 
@@ -46,7 +52,7 @@ This is physical spatial triangulation, not a one-to-one validation of Palmer ce
 2. **A discovery-to-replication sequence.** Three Palmer Adélie populations define the phenomenon; the same endpoint was then frozen prospectively in independent Signy data.
 3. **Geographic replication.** Signy Adélie supports the endpoint outside Palmer.
 4. **Cross-species replication.** A separately frozen chinstrap test supports the same endpoint.
-5. **A general decomposition of decline.** For spatially structured populations, total abundance and relative spatial composition are distinct state variables. Change in abundance constrains but does not determine change in composition.
+5. **A discrete within-population implementation of an established spatial principle.** For colonial populations, total abundance and relative composition among breeding components are treated as separate state descriptions, and departure from proportional thinning is tested directly.
 6. **A scale-dependent synthesis.** Coarse breeding-component contraction can coexist with fine-scale fragmentation inside retained components.
 
 ## What is surprising
@@ -59,7 +65,7 @@ A second, supplementary surprise is that contraction need not imply retention of
 
 ## General principle
 
-> **Population decline is not necessarily spatially neutral.**
+> **For a structured population, abundance change does not uniquely specify change in internal spatial composition.**
 
 More formally, a spatially structured population has at least two separable state descriptions:
 
@@ -68,7 +74,7 @@ More formally, a spatially structured population has at least two separable stat
 
 Proportional thinning changes N(t) while holding p(t) constant. The empirical result is repeated directional change in spatial composition relative to a null in which latent N(t) follows the observed annual totals while p(t) is fixed.
 
-This decomposition is transferable to other systems with repeated spatial breeding or aggregation units: seabird subcolonies, roosts, leks, spawning reaches, breeding ponds, haul-outs or other structured population components.
+The broad abundance–space principle is established; what is transferable from this study is the **component-composition test**. The same design can be applied to systems with repeated spatial breeding or aggregation units: seabird subcolonies, roosts, leks, spawning reaches, breeding ponds, haul-outs or other structured population components.
 
 ## Important terminology boundary
 
@@ -94,4 +100,4 @@ The inverse-Simpson effective breeding-component number used here is a Hill-numb
 
 ## Editorial pitch
 
-This is a short population/spatial-ecology paper. Its novelty is not a new diversity index or another decline estimate. It isolates **excess internal spatial contraction conditional on realized population decline**, then shows that endpoint again under prospectively frozen tests in another Antarctic system and another penguin species.
+This is a short population/spatial-ecology paper. Its novelty is not the general existence of abundance–area coupling, a new diversity index, or another penguin decline estimate. It is the **fixed-composition, count-error conditional test of internal breeding-component concentration**, followed by prospectively frozen geographic and cross-species replications.

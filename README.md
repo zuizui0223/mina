@@ -6,15 +6,37 @@ macroecology.
 
 ## Research program
 
-### Paper 1 / v1 — Palmer discovery system
+### Paper 1 — replicated breeding-space contraction
 
-Paper 1 is scientifically frozen at **v1**. Its manuscript implementation is
-the concentration-led Ecosphere v0.8 package. The central result is that
-regional Adélie decline was accompanied by progressive within-island
-concentration of breeders beyond proportional thinning and the frozen
-independent count-error family.
+The current submission line is an **Ecology Report**:
 
-Canonical manifest: `docs/PAPER1_V1.md`.
+**Breeding-space contraction recurs across declining Adélie and chinstrap penguins**
+
+The paper asks whether declining colonial populations merely thin in fixed
+proportion across monitored breeding components, or whether relative breeding
+composition changes beyond the finite-count and observation-error consequences
+of lower abundance.
+
+Evidence is ordered as:
+
+1. **Palmer Adélie discovery:** three stable-roster island populations;
+2. **Signy Adélie prospective geographic replication:** frozen before the
+   concentration effect was computed;
+3. **Signy chinstrap prospective cross-species replication:** separately frozen
+   before effect computation.
+
+Across the five population units, effective monitored breeding-component number
+declines by **19–83%**. The two prospectively frozen Signy tests remain extreme
+under the most severe prespecified 20% multiplicative-CV sensitivity
+(Adélie **p = 0.000010**; chinstrap **p = 0.000020**).
+
+The broad abundance–space principle is not claimed as new. The paper's novelty
+is the **within-colony fixed-composition count-error test of excess breeding-
+component concentration**, followed by prospective geographic and cross-species
+replication.
+
+Canonical submission manifest:
+`submission/ECOLOGY_REPORT_SUBMISSION_MANIFEST_V1.md`.
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
@@ -84,57 +106,42 @@ Canonical files:
 
 ## Current ecological claim
 
-Five neighboring Adélie penguin island populations share an exceptionally
-strong long-term decline, but the decline also has an **internal spatial-demographic
-architecture**.
+For a spatially structured breeding population, total abundance and relative
+spatial composition are distinct state descriptions.
 
-Across the complete 1991–2017 five-island Palmer LTER panel:
+The null model uses each observed annual population total as the **latent
+expected annual total**, fixes one time-invariant vector of breeding-component
+shares, and then simulates counts under the frozen Poisson / Gamma–Poisson
+observation-error family. It therefore includes both the finite-count tendency
+for small components to disappear as abundance declines and independent count
+noise.
 
-- PC1 explains **96.4%** of standardized log-abundance variation;
-- median pairwise annual-growth correlation is **0.373**;
-- year uniquely accounts for **53.5%** of total log-abundance variance;
-- island identity accounts for **33.0%**;
-- Litchfield reaches local extinction while neighboring islands persist at
-  low abundance through 2017.
+The observed decline in effective breeding-component number is more negative
+than that null in all five studied population units:
 
-The strongest new ecological result is within islands. In the three islands
-with unchanged colony-code rosters, effective colony number declines
-progressively during population loss:
+- Palmer Cormorant Adélie: **3.54 → 2.86** (**−19%**), CV20 p = **0.038**;
+- Palmer Humble Adélie: **4.62 → 2.28** (**−51%**), CV20 p = **0.000010**;
+- Palmer Litchfield Adélie: **5.78 → 1.00** (**−83%**), CV20 p = **0.000010**;
+- Signy Adélie: **3.08 → 1.94** (**−37%**), CV20 p = **0.000010**;
+- Signy chinstrap: **4.44 → 2.19** (**−51%**), CV20 p = **0.000020**.
 
-- Cormorant: **3.54 → 2.86** (**−19.1%**), slope **−0.0310 yr⁻¹**;
-- Humble: **4.62 → 2.28** (**−50.6%**), slope **−0.0855 yr⁻¹**;
-- Litchfield: **5.78 → 1.00** by its final positive census in 2006
-  (**−82.7%**), slope **−0.3681 yr⁻¹**.
+Palmer is explicitly the **discovery system**. Its public colony codes are
+treated as monitored census components, not verified fixed GIS polygons. The
+confirmatory weight rests on the two prospectively frozen Signy tests.
 
-A fixed-composition null retains the exact observed island-total trajectory and
-adds independent Poisson, Gamma–Poisson CV10%, or Gamma–Poisson CV20% count
-error. Even under the severe uncalibrated CV20% sensitivity, the observed
-concentration slopes remain unusual (Cormorant **p = 0.0380**; Humble and
-Litchfield **p = 0.000010** each), and zero of 100,000 simulations reproduce
-slopes simultaneously as negative on all three islands (plus-one joint
-**p = 0.000010**). The decline is therefore not adequately described as
-simple proportional thinning of a fixed breeding distribution plus independent
-count noise: breeders become concentrated among a smaller effective set of
-colony-code breeding components.
+The endpoint is inverse-Simpson effective component number, a Hill-number
+measure of relative concentration. It can fall while every monitored component
+remains occupied. It is therefore **not** occupied-site richness, physical
+breeding area, genetic effective population size (Ne), or genetic effective
+number of breeders (Nb).
 
-Effective colony number also remains positively associated with next-year
-growth after island, current abundance, secular time and the preceding two
-growth intervals are controlled (**+0.1126**; structured-null p = **0.00102**,
-exact joint p = **0.0120**). Its incremental held-out MSE gain is only
-**+0.000444**, so it is retained as a weak conditional state association, not a
-supported predictor, mechanism, or early-warning indicator.
-
-Independent Torgersen mapping documents physical contraction from **23**
-historic active subcolonies to **five** active footprints by 2022 and
-habitat-structured extinction. This is phenomenon-level spatial convergence,
-not colony-ID-level validation: public LTER colony codes have not been
-crosswalked one-to-one to the GIS polygons.
-
-The Wang–Loreau beta hierarchy remains secondary context. Observed raw beta is
-**1.0737** from colony-code components to islands and **1.0112** from islands
-to the aggregate, but an uncalibrated CV20% fully synchronous count-error null
-can reproduce that difference. It is therefore not used as proof of biological
-spatial insurance.
+The closest general literature includes positive abundance–occupancy
+relationships, geographic range contraction, and marine-fish
+proportional-density versus basin models. Accordingly, mina does **not** claim
+that abundance and spatial extent are newly separable. The transferable result
+is narrower: a discrete breeding-component composition can depart systematically
+from proportional thinning, and that departure can be tested conditional on
+the observed abundance trajectory.
 
 ## Ecological framing
 
@@ -148,51 +155,46 @@ Direct biotic interactions are not assumed absent. They are treated as
 localized and testable rather than as the default explanation for whole-island
 trajectories.
 
-## Submission status after breeding-concentration analysis
+## Submission status
 
-The current scientific draft is **Ecosphere-oriented v0.8**. The central
-positive result is progressive within-island concentration during Adélie
-decline. The v0.7 measurement-error audit remains important because it prevents
-the observed beta hierarchy from being overinterpreted as biological
-buffering.
+The canonical submission is **Ecology Report v0.5**.
 
-The scientific claim stack is now:
+Current package:
 
-1. shared regional decline with divergent island fate;
-2. progressive concentration of breeders among a smaller effective set of
-   colony-code components, robust to the full frozen count-error family;
-3. a separate weak N_eff–next-year-growth conditional association;
-4. independent Torgersen spatial contraction as phenomenon-level
-   triangulation;
-5. a measurement-sensitive beta hierarchy retained only as context.
+- manuscript: `submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md`
+- cover letter: `submission/COVER_LETTER_ECOLOGY_REPORT_V3.md`
+- main captions: `submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md`
+- supplementary caption: `submission/SUPPLEMENT_ECOLOGY_REPORT_V0_4.md`
+- copy fields: `submission/ECOLOGY_SUBMISSION_COPY_FIELDS_V2.md`
+- readiness audit: `submission/SUBMISSION_READINESS_ECOLOGY_REPORT_V3.md`
+- reviewer stress test:
+  `submission/PRE_SUBMISSION_REVIEWER_STRESS_TEST_ECOLOGY_V1.md`
+- scientific freeze: `contracts/ECOLOGY_REPORT_SUBMISSION_V3.json`
 
-Submission metadata remain author-controlled. v0.7 and earlier manuscripts are
-provenance only.
+The old Ecosphere, JBI and integrated manuscripts are **provenance only** and
+must not be treated as parallel submissions. The integrated JBI line is formally
+superseded.
 
 ## Development state
 
-Core same-census endpoint development is **closed at v0.8**. The terminal rule
-forbids alternate concentration indices, intermediate count-error CV values,
-tuned time windows, colony-roster reconciliation, transformed rescue
-endpoints, additional topology metrics, or new same-census climate searches.
+The Ecology Report scientific content is **frozen**. Before initial submission,
+do not add:
 
-New biological interpretation must come from external evidence:
+- new ecological endpoints;
+- alternative concentration metrics;
+- tuned thresholds or time windows;
+- additional error models selected after outcome inspection;
+- extra species as post-result rescue analyses;
+- new mechanism claims.
 
-- colony-code / GIS-polygon crosswalks;
-- replicate-observer count-error calibration;
-- direct habitat attributes of retained and lost breeding components;
-- independent replication in another monitored Adélie system.
+Allowed work is limited to reference completion, copyediting, journal
+formatting, author metadata, archival metadata, figure QA, and clarification
+from the Palmer data providers about colony-code continuity.
 
-See:
-
-- `docs/MANUSCRIPT_ECOSPHERE_V0_8.md`
-- `docs/MANUSCRIPT_SPINE_V7.md`
-- `docs/FIGURE_CAPTIONS_V7.md`
-- `docs/REFERENCES_V6.bib`
-- `results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
-- `results/PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json`
-- `results/PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json`
-- `docs/MANUSCRIPT_ECOSPHERE_V0_7.md` (provenance)
+The remaining submission blockers are author-controlled metadata: author order,
+affiliations, corresponding author, funding/acknowledgments, CRediT roles,
+conflict-of-interest statement, complete AI-tool inventory, overlap statement,
+and ORCIDs if requested.
 
 ## Reproduce
 
