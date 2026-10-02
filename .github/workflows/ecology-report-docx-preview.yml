@@ -1,0 +1,104 @@
+name: ecology-report-docx-preview
+
+on:
+  push:
+    branches:
+      - submission/ecology-report-docx-v1
+    paths:
+      - "scripts/build_ecology_submission_docx.py"
+      - "submission/ECOLOGY_METADATA_TEMPLATE.json"
+      - "src/mina/ecosphere_submission_metadata.py"
+      - "submission/MANUSCRIPT_ECOLOGY_REPORT_V0_4.md"
+      - "submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md"
+      - "docs/REFERENCES_V6.bib"
+      - ".github/workflows/ecology-report-docx-preview.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev,submission]"
+      - name: Install pandoc
+        run: |
+          if ! command -v pandoc >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y pandoc
+          fi
+          pandoc --version | head -1
+      - name: Audit public metadata template
+        run: |
+          python -m mina.ecosphere_submission_metadata             --metadata submission/ECOLOGY_METADATA_TEMPLATE.json             --out build/ecology_metadata_template_audit.json
+          cat build/ecology_metadata_template_audit.json
+      - name: Build placeholder Word preview
+        run: |
+          python scripts/build_ecology_submission_docx.py             --manuscript submission/MANUSCRIPT_ECOLOGY_REPORT_V0_4.md             --bibliography docs/REFERENCES_V6.bib             --captions submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md             --out build/Ecology_Report_v0_4_SUBMISSION_PREVIEW.docx
+      - name: Build synthetic author-complete Word path
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data={
+              "authors":[
+                  {
+                      "name":"Example Author",
+                      "affiliation_ids":["1"],
+                      "corresponding":True,
+                      "email":"author@example.org"
+                  }
+              ],
+              "affiliations":{
+                  "1":"Example Department, Example University, City, Country"
+              },
+              "present_addresses":[],
+              "funding_acknowledgments":"Synthetic CI funding text",
+              "additional_acknowledgments":"",
+              "author_contributions":"Example Author: Conceptualization, Formal analysis, Software, Visualization, Writing – original draft, Writing – review & editing.",
+              "conflict_of_interest":"Synthetic CI conflict-of-interest statement.",
+              "ai_tool_inventory_confirmed":True,
+              "additional_ai_tools":[],
+              "dual_publication_statement":"Synthetic CI overlap statement.",
+              "review_code_url":"https://github.com/zuizui0223/mina",
+              "permanent_archive_doi":None
+          }
+          Path("build/synthetic_ecology_metadata.json").write_text(
+              json.dumps(data,indent=2)+"\n",encoding="utf-8"
+          )
+          PY
+          python -m mina.ecosphere_submission_metadata             --metadata build/synthetic_ecology_metadata.json             --require-complete
+          python scripts/build_ecology_submission_docx.py             --manuscript submission/MANUSCRIPT_ECOLOGY_REPORT_V0_4.md             --bibliography docs/REFERENCES_V6.bib             --captions submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md             --metadata build/synthetic_ecology_metadata.json             --require-complete-metadata             --out build/Ecology_Report_v0_4_SYNTHETIC_COMPLETE.docx
+      - name: Structural DOCX audit
+        run: |
+          python - <<'PY'
+          from docx import Document
+          from docx.oxml.ns import qn
+
+          path="build/Ecology_Report_v0_4_SYNTHETIC_COMPLETE.docx"
+          doc=Document(path)
+          assert len(doc.sections) >= 2
+          first=doc.sections[0]._sectPr.find(qn("w:lnNumType"))
+          second=doc.sections[1]._sectPr.find(qn("w:lnNumType"))
+          assert first is None, "title page must not carry line numbers"
+          assert second is not None, "body must carry continuous line numbers"
+          text="\n".join(p.text for p in doc.paragraphs)
+          assert "Example Author" in text
+          assert "[AUTHOR" not in text
+          assert "Conflict of Interest Statement" in text
+          assert "Figure 1." in text
+          assert "Figure 2." in text
+          assert "Figure S1." not in text
+          print("sections=",len(doc.sections))
+          print("paragraphs=",len(doc.paragraphs))
+          print("structural_audit=PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecology-report-v0-4-docx-preview
+          path: |
+            build/Ecology_Report_v0_4_SUBMISSION_PREVIEW.docx
+            build/Ecology_Report_v0_4_SYNTHETIC_COMPLETE.docx
+            build/ecology_metadata_template_audit.json
