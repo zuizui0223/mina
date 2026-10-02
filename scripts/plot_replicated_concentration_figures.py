@@ -165,9 +165,9 @@ def figure3(data_dir: Path, out_dir: Path) -> None:
         transform=axes[5].transAxes,
         fontsize=11,
     )
-    fig.suptitle("Convergent contraction arises through divergent internal routes", y=0.99)
+    fig.suptitle("Post-hoc nominal census-unit trajectories", y=0.99)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
-    _save(fig, out_dir, "figure3_dominance_routes")
+    _save(fig, out_dir, "figureS1_nominal_dominance_routes")
     plt.close(fig)
 
 
