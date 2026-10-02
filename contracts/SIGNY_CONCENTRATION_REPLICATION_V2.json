@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-signy-concentration-replication-v2",
+  "date": "2026-10-02",
+  "status": "availability_repair_frozen_before_any_signy_neff_computation",
+  "supersedes": "mina-signy-concentration-replication-v1",
+  "repair_scope": {
+    "observed_neff_seen_before_repair": false,
+    "observed_neff_slope_seen_before_repair": false,
+    "null_simulation_seen_before_repair": false,
+    "failure_observed": "The V1 execution stopped at the season-availability gate because official Signy data contain no 2010 breeding-pair season.",
+    "only_change": "Primary end season changes from 2010 to 2009, yielding the maximal contiguous post-1997 pre-A39 interval available in the official source.",
+    "unchanged": [
+      "start season 1998",
+      "literal colony roster",
+      "N_eff metric",
+      "slope statistic",
+      "directional prediction",
+      "fixed-composition null",
+      "Poisson/CV10/CV20 error models",
+      "simulation count",
+      "seed",
+      "support rule",
+      "all claim boundaries"
+    ]
+  },
+  "replication_role": "Independent system replication of Palmer progressive within-island breeding concentration.",
+  "source": {
+    "dataset": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020",
+    "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62"
+  },
+  "primary_epoch": {
+    "start_season": 1998,
+    "end_season": 2009,
+    "selection_rule": "Maximal contiguous official-data interval beginning after the incomplete 1997 season and ending before the first structurally missing season (2010) and before A39 roster expansion (2011).",
+    "expected_literal_roster": ["A1 + A60", "A2", "A3", "A4", "A41", "A62", "A63", "A64"],
+    "gate": "Every season 1998-2009 must contain a finite nonnegative breeding-pair count for exactly the expected literal roster; otherwise stop without further repair."
+  },
+  "metric": {
+    "effective_colony_number": "N_eff(t)=1/sum_j p_j(t)^2",
+    "primary_statistic": "OLS slope of N_eff against season_start_year",
+    "prediction": "slope < 0"
+  },
+  "null": {
+    "composition": "Time-invariant cumulative colony shares over 1998-2009.",
+    "year_totals": "Observed yearly total breeding-pair trajectory.",
+    "count_error_models": [
+      {"name": "poisson", "multiplicative_cv": 0.0},
+      {"name": "gamma_poisson_cv10", "multiplicative_cv": 0.10},
+      {"name": "gamma_poisson_cv20", "multiplicative_cv": 0.20}
+    ],
+    "positive_total_conditioning": "Redraw zero-total simulations for observed-positive seasons.",
+    "simulations_per_model": 100000,
+    "seed": 20261030
+  },
+  "decision": {
+    "per_model_p": "(1 + simulated slopes <= observed slope)/(B+1)",
+    "replication_supported": "Observed slope < 0 and p <= 0.05 under all three frozen error models."
+  },
+  "terminal_rules": [
+    "No further start/end-year repair is permitted.",
+    "Do not split A1 + A60.",
+    "Do not drop low-count or zero-count colonies.",
+    "Do not substitute another concentration index or threshold.",
+    "Do not add error CV values without independent calibration.",
+    "Supported replication concerns breeding-space concentration only, not movement or causal habitat mechanism."
+  ]
+}
