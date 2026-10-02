@@ -342,7 +342,7 @@ def main() -> int:
                 "system": system,
                 "species": species,
                 "population": population,
-                "route": "dominance turnover" if item["dominant_identity_turnover"] else "core retention",
+                "route": "dominant code changes" if item["dominant_identity_turnover"] else "initial unit remains dominant",
                 "initial_dominant": str(item["initial_dominant"]),
                 "initial_dom_share_first": float(item["initial_dominant_share_first"]),
                 "initial_dom_share_last": float(item["initial_dominant_share_last"]),
