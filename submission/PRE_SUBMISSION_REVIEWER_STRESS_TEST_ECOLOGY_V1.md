@@ -104,11 +104,19 @@ This audit asks whether the current manuscript's central inference survives the 
 
 **Status:** Addressed.
 
+## Objection 13 — “This is already the marine-fish basin model”
+
+**Risk:** High if the manuscript claims that abundance and spatial contraction are newly separable.
+
+**Response:** The manuscript now cites Thorson et al. (2016), which explicitly contrasts proportional-density and basin models using effective area occupied. The broad abundance–space principle is therefore treated as established. The present novelty is narrower: discrete monitored breeding components within colonial populations, a Hill-number compositional endpoint, an explicit fixed-composition finite-count/count-error null anchored to annual totals, and prospectively frozen geographic and cross-species replication.
+
+**Status:** Addressed in Introduction, Discussion, cover letter and literature-positioning audit.
+
 ## Editorial assessment after stress test
 
 The strongest defensible novelty statement is:
 
-> **Decline in total abundance and directional change in relative spatial composition are separable population-state changes; the latter recurred beyond a fixed-composition count-error null in prospectively frozen geographic and cross-species replications.**
+> **Directional change in internal breeding-component composition recurred beyond a fixed-composition count-error null anchored to observed annual totals, including prospectively frozen geographic and cross-species replications.**
 
 The strongest surprise is:
 
@@ -116,6 +124,6 @@ The strongest surprise is:
 
 The strongest general principle is:
 
-> **Abundance decline constrains but does not determine the spatial trajectory of a structured population.**
+> **The broad abundance–space principle is established; this study shows a replicated within-colony compositional departure from proportional thinning.**
 
 No additional ecological analysis is required for these claims before initial submission.
