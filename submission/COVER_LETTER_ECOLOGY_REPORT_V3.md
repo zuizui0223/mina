@@ -14,7 +14,7 @@ The contribution is therefore not that penguin colonies can decline or disappear
 
 We believe this fits *Ecology*’s Report format because it makes one concise ecological statement, distinguishes that statement from a well-known background relationship, and supports it with a discovery system followed by prospectively frozen replication in a second Antarctic system and a cross-species replication within that system. The result also has a direct monitoring implication: standardized site- or colony-level abundance series remain essential, but aggregate totals cannot recover changes in the relative composition of local breeding components once those component counts have been discarded. We deliberately do not identify a universal behavioural mechanism, infer individual movement, or equate census codes with physical polygons.
 
-The manuscript is approximately 2,200 words before the full reference list, has a 155-word abstract, and contains two main figures plus one supplementary descriptive figure. All primary source data are public, and frozen analysis contracts, provenance records, result receipts and reproducible figure scripts are available in the accompanying public repository.
+The manuscript is approximately 2,450 words before the full reference list, has a 155-word abstract, and contains two main figures plus one supplementary descriptive figure. All primary source data are public, and frozen analysis contracts, provenance records, result receipts and reproducible figure scripts are available in the accompanying public repository.
 
 Thank you for considering the manuscript.
 
