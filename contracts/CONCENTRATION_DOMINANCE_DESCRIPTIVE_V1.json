@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-concentration-dominance-descriptive-v1",
+  "date": "2026-10-02",
+  "status": "posthoc_descriptive_outputs_frozen_before_signy_component_values_opened",
+  "purpose": "Describe how supported declines in effective breeding-component number were produced internally, without creating a new inferential endpoint.",
+  "populations": [
+    "Palmer Cormorant Adelie",
+    "Palmer Humble Adelie",
+    "Palmer Litchfield Adelie",
+    "Signy Adelie prospective 22-season panel",
+    "Signy chinstrap prospective 22-season panel"
+  ],
+  "outputs": {
+    "initial_dominant": [
+      "identity of the breeding component with the largest share in the first eligible season",
+      "its first-season share",
+      "its last-season share and count"
+    ],
+    "final_dominant": [
+      "identity of the breeding component with the largest share in the last eligible season",
+      "its last-season share",
+      "its first-season share and initial rank"
+    ],
+    "component_trajectories": [
+      "first-season share",
+      "last-season share",
+      "OLS slope of log1p breeding-pair count against actual year"
+    ],
+    "descriptive_association": "Spearman rank correlation between first-season share and component log1p-count slope within each population; report rho only, no p-value or confidence interval."
+  },
+  "interpretation_rules": [
+    "N_eff decline alone does not imply that initially large components persist.",
+    "Use 'large-group refuge' language only if the descriptive trajectories actually show initially large groups declining more slowly.",
+    "Use 'dominance turnover' language only when the identity of the largest component changes between the first and last eligible seasons.",
+    "No descriptive pattern may replace, rescue, or modify the frozen concentration inference.",
+    "Do not pool the five populations into a new significance test."
+  ],
+  "frozen_panels": {
+    "palmer": {
+      "COR": "1991-2017 positive-total years, unchanged seven-code roster",
+      "HUM": "1991-2017 positive-total years, unchanged nine-code roster",
+      "LIT": "1991 through final positive census in 2006, unchanged nine-code roster"
+    },
+    "signy_adelie": {
+      "years": [1996,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2011,2012,2013,2014,2015,2016,2017,2018,2019],
+      "units": ["A1+A60","A2","A3","A4","A64"],
+      "canonicalization": "A1, A60, A1 + A60 and A1+A60 are summed into A1+A60"
+    },
+    "signy_chinstrap": {
+      "years": [1996,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2011,2012,2013,2014,2015,2016,2017,2018,2019],
+      "units": ["C15","C16","C17","C18","C46","C47","C79","C80","C81"]
+    }
+  }
+}
