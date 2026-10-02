@@ -1,0 +1,94 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-signy-breeding-patch-concentration-v1",
+  "date": "2026-10-01",
+  "status": "re_frozen_after_outcome_blind_support_parser_correction_before_effect_computation",
+  "hypothesis_origin": {
+    "source_system": "Palmer Station Adélie breeding-patch concentration result",
+    "source_result": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+    "source_status": "post_hoc ecological discovery",
+    "replication_role": "prospectively frozen independent-system replication of the same concentration endpoint; Signy had previously been used for a different breeding-success/lag-2 analysis, but no Signy N_eff value, N_eff slope, concentration null, or concentration decision was inspected before this contract was re-frozen"
+  },
+  "ecological_question": "During long-term Adélie decline, does the breeding population contract non-proportionally among persistent colony components, so that the effective number of breeding patches decreases faster than expected from declining abundance and independent counting error alone?",
+  "source": {
+    "dataset": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020",
+    "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62",
+    "support_audit": "signy-concentration-support-v2 GitHub Actions artifact from PR 148",
+    "support_audit_boundary": "season/label/numeric-parseability only; breeding-pair magnitudes were not recorded or summarized and no N_eff value, slope, abundance trend, or concentration statistic was computed"
+  },
+  "pre_effect_correction_history": {
+    "initial_issue": "The first support audit used pandas non-nullness, so string NA/non-numeric fields could be counted as observed.",
+    "stop_point": "The first effect execution terminated while constructing the stable-roster matrix at the first non-numeric field; it did not compute an annual N_eff, an abundance slope, an N_eff slope, a null distribution, or a p-value.",
+    "correction": "The support audit was tightened to numeric parseability and requires every source row contributing to a pooled canonical unit to be numeric; missing constituents are never interpreted as zero.",
+    "corrected_support_result": "Five canonical units remain eligible, with 22 complete seasons; 1997 and 2010 are excluded solely by the corrected outcome-blind support rule."
+  },
+  "primary_window": {
+    "outer_start_season": 1996,
+    "outer_end_season": 2019,
+    "rationale": "Signy metadata states standardized CCAMLR methods from 1996 onward.",
+    "primary_complete_seasons": [
+      1996, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+      2008, 2009, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019
+    ],
+    "excluded_incomplete_seasons": [1997, 2010],
+    "season_exclusion_rule": "A season is primary only when every source row contributing to all five frozen canonical units has a numerically parseable TOTAL_NUMBER_OF_PAIRS field."
+  },
+  "canonicalization": {
+    "rule": "Map literal A1, A60, A1 + A60 and A1+A60 to canonical unit A1+A60 in every season; when multiple source rows map to the canonical unit in a complete primary season, sum their breeding-pair counts.",
+    "rationale": "The official source later pools A1 and A60; harmonizing the observational unit across time prevents a label-definition change from manufacturing a concentration trend."
+  },
+  "primary_roster": {
+    "canonical_units": ["A1+A60", "A2", "A3", "A4", "A64"],
+    "selection_rule": "Frozen from the corrected outcome-blind support audit: each unit spans both the first and last thirds of 1996-2019 and is numerically complete as a canonical unit in at least 12 seasons.",
+    "support_fact": "All five canonical units are complete together in the 22 frozen primary seasons.",
+    "excluded_from_primary": ["A39", "A41", "A62", "A63"],
+    "reason_for_exclusion": "They do not satisfy the frozen structural full-window support rule and cannot be added after effect inspection."
+  },
+  "decline_eligibility_gate": {
+    "quantity": "OLS slope of the summed breeding-pair count across the five frozen canonical units against the actual centered season values in the 22 frozen primary seasons",
+    "requirement": "slope < 0",
+    "failure_rule": "If the stable-roster total does not decline over the frozen primary seasons, classify the replication question as ecologically inapplicable and do not interpret the concentration endpoint as a decline response."
+  },
+  "metric": {
+    "name": "effective_colony_number",
+    "formula": "N_eff = (sum_j n_j)^2 / sum_j n_j^2 = 1 / sum_j p_j^2",
+    "observed_statistic": "OLS slope of annual N_eff against the actual centered season values across the 22 frozen primary seasons.",
+    "prediction": "N_eff slope < 0"
+  },
+  "fixed_composition_null": {
+    "latent_composition": "time-invariant pooled canonical-unit shares estimated from cumulative breeding-pair counts over the 22 frozen primary seasons and five frozen units",
+    "annual_total": "observed stable-roster annual total retained as the latent annual total for each frozen primary season",
+    "interpretation": "No biological redistribution among the five persistent colony components; apparent N_eff change can arise only from changing total abundance and independent observation error.",
+    "comparison": "One-sided probability that a fixed-composition/error-only replicate has an N_eff slope <= the observed Signy slope."
+  },
+  "error_models": [
+    {"name": "poisson", "multiplicative_cv": 0.0},
+    {"name": "gamma_poisson_cv10", "multiplicative_cv": 0.1},
+    {"name": "gamma_poisson_cv20", "multiplicative_cv": 0.2}
+  ],
+  "simulation": {
+    "replicates_per_error_model": 100000,
+    "seed": 20261001,
+    "batch_size": 2000,
+    "condition_positive_observed_seasons_on_nonzero_simulated_total": true
+  },
+  "primary_decision": {
+    "support_rule": "Decline eligibility gate passes, observed N_eff slope is negative, and one-sided p <= 0.05 under all three frozen error models.",
+    "failure_rule": "Any failed error-model tail test makes the independent concentration replication unsupported; no alternate roster, season set, metric, CV, or tail may rescue it."
+  },
+  "secondary_descriptive_outputs": [
+    "first and last primary-season N_eff",
+    "fractional first-to-last N_eff change",
+    "stable-roster total abundance first/last values and OLS slope",
+    "pooled latent shares",
+    "all 22 annual N_eff values for plotting"
+  ],
+  "interpretation_boundary": [
+    "Support would establish cross-system replication of non-proportional breeding-patch contraction, not individual breeding dispersal.",
+    "The five units are published colony labels/canonicalized observational units, not GIS polygons.",
+    "Do not claim snow, predation, habitat quality, public information, prospecting or social attraction as the causal mechanism.",
+    "Do not use the already-opened Signy breeding-success redistribution result to alter this endpoint, roster or season set.",
+    "Do not introduce post-result sensitivities as confirmatory rescue tests."
+  ]
+}

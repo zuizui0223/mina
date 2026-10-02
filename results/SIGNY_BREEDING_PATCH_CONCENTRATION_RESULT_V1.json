@@ -1,0 +1,131 @@
+{
+  "analysis_id": "mina-signy-breeding-patch-concentration-v1",
+  "batch_size": 2000,
+  "canonicalization": "A1/A60/A1 + A60 -> A1+A60; sum constituent rows only in frozen complete seasons",
+  "contract_id": "mina-signy-breeding-patch-concentration-v1",
+  "decision": {
+    "independent_concentration_replication_supported": true
+  },
+  "decline_eligibility": {
+    "first_primary_season": 1996,
+    "first_total": 2342.0,
+    "last_primary_season": 2019,
+    "last_total": 1217.0,
+    "passes": true,
+    "stable_roster_total_slope_per_year": -34.75667093018128
+  },
+  "error_models": {
+    "gamma_poisson_cv10": {
+      "multiplicative_cv": 0.1,
+      "null_slope_summary": {
+        "mean": 2.429801928968416e-06,
+        "median": 1.2958020998505144e-05,
+        "q_0_025": -0.009801453565936969,
+        "q_0_05": -0.008223767117244542,
+        "q_0_95": 0.008149321976969865,
+        "q_0_975": 0.009714365938183965,
+        "sd": 0.004984993166799931
+      },
+      "observed_slope": -0.043959641754209924,
+      "one_sided_probability_le_observed": 9.99990000099999e-06,
+      "simulated_slopes_le_observed": 0
+    },
+    "gamma_poisson_cv20": {
+      "multiplicative_cv": 0.2,
+      "null_slope_summary": {
+        "mean": -2.3853770254875544e-05,
+        "median": -1.721592129762615e-05,
+        "q_0_025": -0.017556576694643763,
+        "q_0_05": -0.014792496807952105,
+        "q_0_95": 0.014626989992055871,
+        "q_0_975": 0.01744602972550151,
+        "sd": 0.008945906552904885
+      },
+      "observed_slope": -0.043959641754209924,
+      "one_sided_probability_le_observed": 9.99990000099999e-06,
+      "simulated_slopes_le_observed": 0
+    },
+    "poisson": {
+      "multiplicative_cv": 0.0,
+      "null_slope_summary": {
+        "mean": -1.8820038198244643e-05,
+        "median": -2.9590628467030017e-05,
+        "q_0_025": -0.004219572017562615,
+        "q_0_05": -0.0035500630803622936,
+        "q_0_95": 0.003529049498096382,
+        "q_0_975": 0.004210528248962384,
+        "sd": 0.0021569798812665453
+      },
+      "observed_slope": -0.043959641754209924,
+      "one_sided_probability_le_observed": 9.99990000099999e-06,
+      "simulated_slopes_le_observed": 0
+    }
+  },
+  "excluded_incomplete_seasons": [1997, 2010],
+  "interpretation_boundary": [
+    "The endpoint is breeding-patch redistribution, not individual movement.",
+    "Canonical colony labels are observational units, not GIS polygons.",
+    "No snow, predation, habitat, public-information or dispersal mechanism is identified.",
+    "No alternate roster/season set/metric/CV may rescue a failed primary replication."
+  ],
+  "null_composition": {
+    "description": "time-invariant cumulative shares on the frozen five-unit, 22-season panel",
+    "pooled_shares": {
+      "A1+A60": 0.558679414400956,
+      "A2": 0.24051389303854198,
+      "A3": 0.10116522258739169,
+      "A4": 0.08069913355243502,
+      "A64": 0.01894233642067523
+    }
+  },
+  "observed": {
+    "annual_neff": {
+      "1996": 3.080744685750746,
+      "1998": 2.929431084365116,
+      "1999": 2.8438437652641126,
+      "2000": 2.787038678591176,
+      "2001": 3.12361836159612,
+      "2002": 2.7952285234621437,
+      "2003": 2.793518864526434,
+      "2004": 2.6702489367178597,
+      "2005": 2.582982819085971,
+      "2006": 2.6370547871226986,
+      "2007": 2.5712722060007898,
+      "2008": 2.445285912368591,
+      "2009": 2.5336886753500245,
+      "2011": 2.5556564590129227,
+      "2012": 2.0849477413708684,
+      "2013": 2.188847357626981,
+      "2014": 2.485225873362215,
+      "2015": 2.3342846269595023,
+      "2016": 2.267980009527326,
+      "2017": 2.153393535555029,
+      "2018": 2.055444388961418,
+      "2019": 1.936162758624296
+    },
+    "first_neff": 3.080744685750746,
+    "fractional_change_first_to_last": -0.3715276804405254,
+    "last_neff": 1.936162758624296,
+    "neff_slope_per_year": -0.043959641754209924
+  },
+  "outer_window": [1996, 2019],
+  "primary_roster": ["A1+A60","A2","A3","A4","A64"],
+  "primary_seasons": [1996,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2011,2012,2013,2014,2015,2016,2017,2018,2019],
+  "schema_version": 2,
+  "seed": 20261001,
+  "simulations_per_error_model": 100000,
+  "source": {
+    "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+    "rows": 310,
+    "selected_csv": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020./signy_adelie_breeding_success.csv",
+    "selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62"
+  },
+  "status": "independent_system_replication_predeclared_after_palmer_discovery",
+  "execution_provenance": {
+    "workflow_run_id": 36849448730,
+    "artifact_id": 11154614094,
+    "artifact_digest": "sha256:5a12c0345f82c0083e1620c2f1d5d585c80b4f7641e23a18f00d9f81ac6439fa",
+    "head_branch": "prospective/signy-concentration-v1",
+    "head_sha": "c5df0b32d8dca0c3b52d5f5bf66076e7ddf960bd"
+  }
+}

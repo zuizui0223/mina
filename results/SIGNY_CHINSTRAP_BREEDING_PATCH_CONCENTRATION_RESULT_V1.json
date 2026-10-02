@@ -1,0 +1,129 @@
+{
+  "analysis_id": "mina-signy-chinstrap-breeding-patch-concentration-v1",
+  "batch_size": 2000,
+  "contract_id": "mina-signy-chinstrap-breeding-patch-concentration-v1",
+  "decision": {
+    "cross_species_concentration_replication_supported": true
+  },
+  "decline_eligibility": {
+    "first_total": 1642.0,
+    "last_total": 581.0,
+    "passes": true,
+    "stable_roster_total_slope_per_year": -52.75450976932916
+  },
+  "error_models": {
+    "gamma_poisson_cv10": {
+      "multiplicative_cv": 0.1,
+      "null_slope_summary": {
+        "mean": -7.879422964380436e-05,
+        "median": -9.07999529521322e-05,
+        "q_0_025": -0.01833489391910101,
+        "q_0_05": -0.015506949679027398,
+        "q_0_95": 0.015371626385745053,
+        "q_0_975": 0.018350225176854744,
+        "sd": 0.009366536456292316
+      },
+      "observed_slope": -0.07178900076458285,
+      "one_sided_probability_le_observed": 9.99990000099999e-06,
+      "simulated_slopes_le_observed": 0
+    },
+    "gamma_poisson_cv20": {
+      "multiplicative_cv": 0.2,
+      "null_slope_summary": {
+        "mean": -0.0001725395027937987,
+        "median": -0.0002122863427753418,
+        "q_0_025": -0.03312034326574596,
+        "q_0_05": -0.027569603987338032,
+        "q_0_95": 0.027422331237949224,
+        "q_0_975": 0.03281289454418295,
+        "sd": 0.016740637779072764
+      },
+      "observed_slope": -0.07178900076458285,
+      "one_sided_probability_le_observed": 1.999980000199998e-05,
+      "simulated_slopes_le_observed": 1
+    },
+    "poisson": {
+      "multiplicative_cv": 0.0,
+      "null_slope_summary": {
+        "mean": -8.444119551561557e-05,
+        "median": -8.765723301072113e-05,
+        "q_0_025": -0.009438690003167143,
+        "q_0_05": -0.007913139123209173,
+        "q_0_95": 0.0078053771538791105,
+        "q_0_975": 0.009367149623971931,
+        "sd": 0.004782083592950764
+      },
+      "observed_slope": -0.07178900076458285,
+      "one_sided_probability_le_observed": 9.99990000099999e-06,
+      "simulated_slopes_le_observed": 0
+    }
+  },
+  "excluded_incomplete_seasons": [1997, 2010],
+  "interpretation_boundary": [
+    "Effective breeding-patch number is a Hill-number distribution metric, not genetic Ne or Nb.",
+    "The endpoint does not identify individual dispersal or a causal environmental mechanism.",
+    "No alternate roster, season set, pooling, metric, CV or tail may rescue a failed result."
+  ],
+  "null_composition": {
+    "pooled_shares": {
+      "C15": 0.04596587172475858,
+      "C16": 0.05752656536637707,
+      "C17": 0.010418469419542418,
+      "C18": 0.004049704060087917,
+      "C46": 0.062164687965110245,
+      "C47": 0.117718320584265,
+      "C79": 0.10792288255858226,
+      "C80": 0.49475615243501436,
+      "C81": 0.09947734588626216
+    }
+  },
+  "observed": {
+    "annual_effective_breeding_patch_number": {
+      "1996": 4.437881665882074,
+      "1998": 4.141063895729348,
+      "1999": 4.470212722470642,
+      "2000": 3.814564014375523,
+      "2001": 3.567783402684461,
+      "2002": 3.5957386146079395,
+      "2003": 3.3997721699965573,
+      "2004": 3.5456590999380166,
+      "2005": 3.518653168197421,
+      "2006": 3.1362217343874157,
+      "2007": 3.3347371878721046,
+      "2008": 3.2211099020674645,
+      "2009": 3.0832428952451028,
+      "2011": 3.3657392140050693,
+      "2012": 3.442563230753218,
+      "2013": 3.202158901500119,
+      "2014": 2.9951555894754507,
+      "2015": 3.0126129656388527,
+      "2016": 2.748036709883328,
+      "2017": 2.5473270479365158,
+      "2018": 2.8253902798232695,
+      "2019": 2.1910297601661637
+    },
+    "effective_breeding_patch_slope_per_year": -0.07178900076458285,
+    "first_effective_breeding_patch_number": 4.437881665882074,
+    "fractional_change_first_to_last": -0.5062892782809985,
+    "last_effective_breeding_patch_number": 2.1910297601661637
+  },
+  "primary_roster": ["C15","C16","C17","C18","C46","C47","C79","C80","C81"],
+  "primary_seasons": [1996,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2011,2012,2013,2014,2015,2016,2017,2018,2019],
+  "schema_version": 1,
+  "seed": 20261001,
+  "simulations_per_error_model": 100000,
+  "source": {
+    "doi": "10.5285/d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9",
+    "rows": 466,
+    "selected_csv": "Population size and breeding success of chinstrap penguins on Signy Island from 1978 to 2020./signy_chinstrap_breeding_success.csv",
+    "selected_csv_sha256": "e50e98719ba5eedc6f5e617e0c7aa404ebfba15bc22a51e93e78cd4443bf787b"
+  },
+  "status": "prospectively_frozen_cross_species_replication",
+  "execution_provenance": {
+    "workflow_run_id": 36849448768,
+    "artifact_id": 11154807954,
+    "artifact_digest": "sha256:835fc0a2664fa2bbc63f2a2bde8ee9b082b1a0c2c5c005cc83e481a7529a9468",
+    "head_branch": "prospective/signy-concentration-v1",
+    "head_sha": "c5df0b32d8dca0c3b52d5f5bf66076e7ddf960bd"
+  }
+}
