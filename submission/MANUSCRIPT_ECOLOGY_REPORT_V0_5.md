@@ -12,7 +12,7 @@ Declining populations often lose occupied sites as abundance falls, but that cou
 
 Population decline has a spatial form as well as a magnitude. Positive intraspecific abundance–occupancy relationships are among the most general patterns in ecology: populations that lose individuals often also lose occupied sites [@gaston2000]. But that relationship combines two processes. Some occupancy loss is a mechanical consequence of lower abundance, because low-count sites are increasingly likely to reach zero. Additional loss can arise if the relative spatial distribution of individuals itself changes. At geographic scales, equal losses of individuals can therefore produce different range contractions depending on where decline is concentrated [@rodriguez2002].
 
-Colonial breeders provide a nested, within-population version of this distinction. Individuals are distributed among nests, aggregations, subcolonies and larger breeding sites. A declining colony could thin approximately in proportion across these components, preserving their relative representation, or breeding effort could become concentrated into a smaller effective subset. These alternatives imply different spatial states even when total abundance is identical.
+Colonial breeders provide a nested, within-population version of this distinction. Individuals are distributed among nests, aggregations, subcolonies and larger breeding sites. A declining colony could thin approximately in proportion across these components, preserving their relative representation, or breeding effort could become concentrated into a smaller effective subset. We use **breeding-space contraction** operationally for this loss of effective representation across monitored breeding components; it does not imply that the physical area of a colony was measured. These alternatives imply different spatial states even when total abundance is identical.
 
 Penguins offer a useful system in which to ask this question. Within breeding sites, local geometry and habitat are biologically important: Adélie reproductive performance varies with subcolony-scale habitat and configuration [@schmidt2021], mechanistic theory predicts that declining abundance can fragment nest aggregations [@mcdowall2019], and long-term mapping at Torgersen Island has documented loss of historical Adélie subcolonies associated with snow and terrain [@cimino2025].
 
@@ -32,7 +32,7 @@ For each population-year, if n_j is the number of breeding pairs in component j 
 
 N_eff = 1 / Σ p_j².
 
-N_eff is expressed in equally represented component units: it declines when a larger fraction of breeders is carried by fewer monitored components. It is not genetic effective population size and does not measure physical land area.
+N_eff is expressed in equally represented component units: it declines when a larger fraction of breeders is carried by fewer monitored components. Because it depends on relative shares, N_eff can decline even while every monitored component remains occupied; it is therefore a concentration metric rather than occupied-site richness. It is not genetic effective population size, genetic effective number of breeders, or physical land area.
 
 The observed statistic was the ordinary-least-squares slope of annual N_eff against year.
 
