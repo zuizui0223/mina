@@ -23,6 +23,7 @@ def _save(fig, out_dir: Path, stem: str) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_dir / f"{stem}.png", dpi=300, bbox_inches="tight")
     fig.savefig(out_dir / f"{stem}.svg", bbox_inches="tight")
+    fig.savefig(out_dir / f"{stem}.pdf", bbox_inches="tight")
 
 
 def figure1(data_dir: Path, out_dir: Path) -> None:
