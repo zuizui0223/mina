@@ -27,5 +27,6 @@
     "A better nonlinear shape is descriptive, not evidence of a causal tipping point.",
     "Weak detrended or first-difference coupling would imply a long-term trajectory rule rather than an annual response law.",
     "No named universal exponent will be claimed from five nested population units."
-  ]
+  ],
+  "model_fitting_weight": "Within each training fold, give each population equal total weight (each row weight = 1/n_seasons_in_that_population) so longer Palmer series do not dominate the fitted shape."
 }
