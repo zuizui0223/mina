@@ -40,7 +40,7 @@ def figure1(data_dir: Path, out_dir: Path) -> None:
         abundance = np.asarray([float(r["abundance_index_first100"]) for r in local])
         neff = np.asarray([float(r["neff_index_first100"]) for r in local])
         ax.plot(years, abundance, marker="o", ms=3.5, lw=1.5, label="Breeding pairs")
-        ax.plot(years, neff, marker="s", ms=3.5, lw=1.5, ls="--", label="Effective components")
+        ax.plot(years, neff, marker="s", ms=3.5, lw=1.5, ls="--", label="Effective monitored components")
         ax.axhline(100, lw=0.8, ls=":", alpha=0.5)
         ax.set_title(pop)
         ax.set_xlabel("Year")
@@ -59,7 +59,7 @@ def figure1(data_dir: Path, out_dir: Path) -> None:
         transform=axes[5].transAxes,
         fontsize=11,
     )
-    fig.suptitle("Population decline is accompanied by loss of effective breeding components", y=0.99)
+    fig.suptitle("Population decline is accompanied by loss of effective monitored breeding components", y=0.99)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
     _save(fig, out_dir, "figure1_replicated_trajectories")
     plt.close(fig)
@@ -82,7 +82,7 @@ def figure2(data_dir: Path, out_dir: Path) -> None:
     axes[0].axvline(0, lw=0.8)
     axes[0].set_yticks(y, ORDER)
     axes[0].invert_yaxis()
-    axes[0].set_xlabel("Change in effective breeding components (%)")
+    axes[0].set_xlabel("Change in effective monitored breeding components (%)")
     axes[0].set_title("Biological magnitude")
     for yi, value in zip(y, frac):
         axes[0].text(value / 2.0, yi, f"{value:.0f}%", va="center", ha="center", color="white")
@@ -159,15 +159,15 @@ def figure3(data_dir: Path, out_dir: Path) -> None:
     axes[5].text(
         0.5,
         0.25,
-        "Palmer: dominant identity turns over\nSigny: initial core remains dominant",
+        "Palmer: dominant code changes\nSigny: initial unit remains dominant",
         ha="center",
         va="center",
         transform=axes[5].transAxes,
         fontsize=11,
     )
-    fig.suptitle("Convergent contraction arises through divergent internal routes", y=0.99)
+    fig.suptitle("Post-hoc nominal census-unit trajectories", y=0.99)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
-    _save(fig, out_dir, "figure3_dominance_routes")
+    _save(fig, out_dir, "figureS1_nominal_dominance_routes")
     plt.close(fig)
 
 

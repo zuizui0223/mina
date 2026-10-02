@@ -2,11 +2,14 @@ name: replicated-concentration-figures
 
 on:
   push:
-    branches: [manuscript/replicated-concentration-figures-v1, submission/ecology-report-v1]
+    branches: [manuscript/replicated-concentration-figures-v1, submission/ecology-report-v1, submission/ecology-report-docx-v1]
     paths:
       - "scripts/build_replicated_concentration_figure_data.py"
       - "scripts/plot_replicated_concentration_figures.py"
       - "docs/MANUSCRIPT_REPLICATED_CONCENTRATION_V0_2.md"
+      - "submission/MANUSCRIPT_ECOLOGY_REPORT_V0_4.md"
+      - "submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md"
+      - "submission/SUPPLEMENT_ECOLOGY_REPORT_V0_4.md"
       - ".github/workflows/replicated-concentration-figures.yml"
   workflow_dispatch:
 
