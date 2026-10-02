@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-replicated-concentration-manuscript-v0.1",
+  "date": "2026-10-02",
+  "status": "scientific_spine_frozen",
+  "manuscript": "docs/MANUSCRIPT_REPLICATED_CONCENTRATION_V0_1.md",
+  "spine": "docs/MANUSCRIPT_SPINE_REPLICATED_CONCENTRATION_V1.md",
+  "title": "Breeding-space contraction accompanies Adélie penguin population decline across two Antarctic systems",
+  "core_claim": "Adelie population decline in the eligible long-term series is accompanied by non-proportional concentration of breeding effort among fewer effective monitored colony components, replicated from three Palmer islands to a separately frozen Signy endpoint.",
+  "primary_evidence": {
+    "palmer": {
+      "populations": ["Cormorant", "Humble", "Litchfield"],
+      "fractional_neff_change": [-0.19113899359974384, -0.5059971291433084, -0.8270791752527236],
+      "cv20_p": [0.037999620003799965, 0.00000999990000099999, 0.00000999990000099999],
+      "joint_cv20_p": 0.00000999990000099999
+    },
+    "signy": {
+      "epoch": [1998, 2009],
+      "n_years": 12,
+      "n_colony_units": 8,
+      "total_pairs_first_last": [2688, 901],
+      "neff_first_last": [3.609914025684377, 2.539314279637027],
+      "fractional_neff_change": -0.2965720896481414,
+      "slope": -0.11147936999923953,
+      "p_poisson": 0.00000999990000099999,
+      "p_cv10": 0.00000999990000099999,
+      "p_cv20": 0.00012999870001299986
+    },
+    "torgersen_triangulation": {
+      "historic_active_footprints": 23,
+      "active_footprints_2022": 5,
+      "role": "physical phenomenon-level triangulation; no census-code to polygon equivalence"
+    }
+  },
+  "novelty_boundary": [
+    "Do not claim discovery of the Signy population decline or first observation of colony disappearance; those are previously published.",
+    "The new contribution is explicit rejection of proportional thinning for the relative breeding distribution and external replication of that endpoint.",
+    "Do not claim a first-ever study unless a separate systematic literature audit supports that wording."
+  ],
+  "mechanism_boundary": [
+    "No individual movement, public-information use, breeding dispersal or prospecting is identified.",
+    "No causal habitat mechanism is identified.",
+    "No Allee effect is inferred from small-first disappearance.",
+    "Coarse component concentration can coexist with fine-scale fragmentation."
+  ],
+  "excluded_from_main_paper": [
+    "Antarctic-wide area x habitat-complex Paper 2 result",
+    "radius sign-switch diagnostics",
+    "Palmer phenotype reassembly",
+    "performance-linked lag-2 redistribution",
+    "win-stay/lose-switch",
+    "N_eff next-year predictive claim",
+    "beta hierarchy as a headline inference"
+  ],
+  "stop_rule": "No new ecological endpoint, concentration index, threshold, lag, tuned window, or rescue analysis may be added to this manuscript. Remaining work is figures, reproducibility, literature positioning, prose revision and journal formatting."
+}
