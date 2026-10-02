@@ -25,7 +25,7 @@ jobs:
           curl -L --fail --retry 4 --retry-delay 5             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree'             -o build/signy_chinstrap.zip
       - name: Run descriptive decomposition
         run: |
-          python scripts/describe_concentration_dominance.py             --palmer-census build/adelie_census.csv             --signy-adelie-zip build/signy_adelie.zip             --signy-chinstrap-zip build/signy_chinstrap.zip             --out build/CONCENTRATION_DOMINANCE_DESCRIPTIVE_RESULT_V1.json
+          python -m scripts.describe_concentration_dominance             --palmer-census build/adelie_census.csv             --signy-adelie-zip build/signy_adelie.zip             --signy-chinstrap-zip build/signy_chinstrap.zip             --out build/CONCENTRATION_DOMINANCE_DESCRIPTIVE_RESULT_V1.json
       - name: Print compact summary
         run: |
           python - <<'PY'
