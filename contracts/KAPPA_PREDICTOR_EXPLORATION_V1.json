@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-kappa-predictor-exploration-v1",
+  "date": "2026-10-02",
+  "status": "stage3_posthoc_not_for_frozen_submission",
+  "response": "population-specific annual log-log elasticity kappa from Stage 1",
+  "candidate_predictors_frozen_before_computation": [
+    "initial effective breeding-component number E0",
+    "number of monitored components J",
+    "initial component evenness E0/J",
+    "decline depth -log(N_last/N_first)"
+  ],
+  "analysis": [
+    "Report Spearman rank correlation between kappa and each predictor.",
+    "For each predictor fit kappa = a + b*x using four populations and predict the fifth; report leave-one-population-out RMSE.",
+    "Compare each predictor's LOO RMSE with an intercept-only training-mean baseline."
+  ],
+  "interpretation_rules": [
+    "n=5 population units nested within two systems; no p-values or significance claims.",
+    "Call a predictor promising only if its LOO RMSE is lower than the intercept-only baseline.",
+    "Do not use any Stage 3 result to modify the frozen Ecology Report.",
+    "A promising predictor is a hypothesis for independent testing, not a mechanism."
+  ]
+}
