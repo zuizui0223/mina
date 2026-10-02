@@ -6,7 +6,7 @@ Declining populations often lose occupied sites as abundance falls. That positiv
 
 We address this with a proportional-thinning null that uses every observed annual population total as the latent expected total while holding expected relative shares among monitored breeding components constant. This null therefore already contains the mechanical tendency for low-count components to disappear as abundance falls. A stronger decline in effective breeding-component number identifies directional redistribution beyond that mechanical consequence.
 
-In three Adélie penguin populations near Palmer Station, effective breeding-component number declined by 19–83% more rapidly than expected under the fixed-composition null and frozen count-error sensitivities. Palmer is explicitly treated as the discovery system and its colony codes conservatively as monitored census components rather than verified fixed GIS polygons.
+In three Adélie penguin populations near Palmer Station, effective breeding-component number declined by 19–83%, more rapidly than expected under the fixed-composition null and frozen count-error sensitivities. Palmer is explicitly treated as the discovery system and its colony codes conservatively as monitored census components rather than verified fixed GIS polygons.
 
 The confirmatory evidence comes from Signy Island. Before computing the relevant effects, we froze the same endpoint in an independent Adélie panel and then in a separate chinstrap penguin panel. Both prospective tests supported breeding-space contraction under the full prespecified error family, including a 20% multiplicative-CV sensitivity (Adélie p = 0.000010; chinstrap p = 0.000020).
 
