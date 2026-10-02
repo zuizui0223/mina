@@ -28,7 +28,7 @@ Our primary question is whether **population decline repeatedly reduces the effe
 
 We used the public Palmer Station Antarctica Long Term Ecological Research Adélie breeding-pair census (DOI: 10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e). The synchronized island panel spans 1991–2017. Because changes in the set of census units can themselves create apparent changes in diversity or concentration, the primary within-island analysis was restricted to Cormorant, Humble and Litchfield, the three islands with unchanged reported colony-code rosters. Litchfield contributed through its final positive island census in 2006.
 
-For each island-year, breeding pairs were summed over colony-code units. If n_j is the breeding-pair count in component $j$, N = Σ n_j, and p_j = n_j/N, effective colony number was
+For each island-year, breeding pairs were summed over colony-code units. If n_j is the breeding-pair count in component j, N = Σ n_j, and p_j = n_j/N, effective colony number was
 
 N_eff = 1 / Σ p_j².
 
@@ -58,7 +58,7 @@ For each error model we generated 100,000 realizations and calculated the N_eff 
 
 p = (1 + number of null slopes ≤ the observed slope) / 100001.
 
-Support required a negative observed slope and (p\leq0.05) under all three frozen error models. No alternative concentration statistic, pair-count threshold, error CV, roster or time window could rescue a failed test.
+Support required a negative observed slope and p ≤ 0.05 under all three frozen error models. No alternative concentration statistic, pair-count threshold, error CV, roster or time window could rescue a failed test.
 
 ### Post-hoc description of internal pathways
 
