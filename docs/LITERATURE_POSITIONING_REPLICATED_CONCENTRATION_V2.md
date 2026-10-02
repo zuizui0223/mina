@@ -14,7 +14,7 @@ Positive intraspecific abundance–occupancy relationships are a broad ecologica
 
 That pattern alone does **not** establish directional spatial reorganization. If a fixed set of sites/components retains constant expected shares, lower total abundance will still make low-count components more likely to reach zero.
 
-The present null explicitly includes that effect by preserving every observed annual population total while fixing latent relative component shares.
+The present null explicitly includes that effect by using every observed annual population total as the latent expected total while fixing latent relative component shares.
 
 ### 2. Geographic range contraction
 
@@ -42,7 +42,7 @@ This is physical spatial triangulation, not a one-to-one validation of Palmer ce
 
 ## What the paper adds
 
-1. **A conditional null rather than a raw correlation.** Annual abundance N(t) is preserved; expected spatial composition p is fixed. The test asks whether p(t) changes directionally beyond the finite-count consequences of N(t).
+1. **A conditional null rather than a raw correlation.** Observed annual totals define the latent N(t) trajectory; expected spatial composition p is fixed; simulated counts vary under the frozen observation-error model. The test asks whether p(t) changes directionally beyond the finite-count consequences of N(t).
 2. **A discovery-to-replication sequence.** Three Palmer Adélie populations define the phenomenon; the same endpoint was then frozen prospectively in independent Signy data.
 3. **Geographic replication.** Signy Adélie supports the endpoint outside Palmer.
 4. **Cross-species replication.** A separately frozen chinstrap test supports the same endpoint.
