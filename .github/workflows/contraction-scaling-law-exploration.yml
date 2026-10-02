@@ -34,6 +34,11 @@ jobs:
       - name: Run frozen exploratory rule family
         run: |
           python scripts/explore_contraction_scaling_law.py             --trajectories build/figure_data/figure1_trajectories.csv             --out build/scaling/CONTRACTION_SCALING_LAW_EXPLORATION_RESULT_V1.json
+      - name: Run frozen stage-two shape family
+        run: |
+          python scripts/explore_contraction_scaling_shape.py \
+            --trajectories build/figure_data/figure1_trajectories.csv \
+            --out build/scaling/CONTRACTION_SCALING_SHAPE_EXPLORATION_RESULT_V1.json
       - uses: actions/upload-artifact@v4
         with:
           name: contraction-scaling-law-exploration-v1
