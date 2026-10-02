@@ -54,6 +54,10 @@ After the five primary concentration outcomes were known, we froze a descriptive
 
 We used published Torgersen spatial reconstruction [@cimino2025] only as physical triangulation. Palmer colony codes have not been crosswalked one-to-one to those mapped polygons, so the external mapping is not treated as validation of individual census-unit identities.
 
+### Computational assistance and reproducibility
+
+OpenAI ChatGPT (GPT-5.6 Sol) assisted with code drafting and review, literature searching, statistical sensitivity-analysis scripting and editorial drafting. All analyses were executed from version-controlled code; numerical outputs were checked against frozen result receipts and public source-data checksums; cited literature was independently verified; and the authors remain responsible for all analyses, interpretations and text.
+
 ## Results
 
 ### Three Palmer populations contracted beyond proportional thinning
