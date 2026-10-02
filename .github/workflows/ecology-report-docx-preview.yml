@@ -8,7 +8,7 @@ on:
       - "scripts/build_ecology_submission_docx.py"
       - "submission/ECOLOGY_METADATA_TEMPLATE.json"
       - "src/mina/ecosphere_submission_metadata.py"
-      - "submission/MANUSCRIPT_ECOLOGY_REPORT_V0_4.md"
+      - "submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md"
       - "submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md"
       - "docs/REFERENCES_V6.bib"
       - ".github/workflows/ecology-report-docx-preview.yml"
@@ -36,7 +36,7 @@ jobs:
           cat build/ecology_metadata_template_audit.json
       - name: Build placeholder Word preview
         run: |
-          python scripts/build_ecology_submission_docx.py             --manuscript submission/MANUSCRIPT_ECOLOGY_REPORT_V0_4.md             --bibliography docs/REFERENCES_V6.bib             --captions submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md             --out build/Ecology_Report_v0_4_SUBMISSION_PREVIEW.docx
+          python scripts/build_ecology_submission_docx.py             --manuscript submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md             --bibliography docs/REFERENCES_V6.bib             --captions submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md             --out build/Ecology_Report_v0_5_SUBMISSION_PREVIEW.docx
       - name: Build synthetic author-complete Word path
         run: |
           python - <<'PY'
@@ -70,14 +70,14 @@ jobs:
           )
           PY
           python -m mina.ecosphere_submission_metadata             --metadata build/synthetic_ecology_metadata.json             --require-complete
-          python scripts/build_ecology_submission_docx.py             --manuscript submission/MANUSCRIPT_ECOLOGY_REPORT_V0_4.md             --bibliography docs/REFERENCES_V6.bib             --captions submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md             --metadata build/synthetic_ecology_metadata.json             --require-complete-metadata             --out build/Ecology_Report_v0_4_SYNTHETIC_COMPLETE.docx
+          python scripts/build_ecology_submission_docx.py             --manuscript submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md             --bibliography docs/REFERENCES_V6.bib             --captions submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_V0_4.md             --metadata build/synthetic_ecology_metadata.json             --require-complete-metadata             --out build/Ecology_Report_v0_5_SYNTHETIC_COMPLETE.docx
       - name: Structural DOCX audit
         run: |
           python - <<'PY'
           from docx import Document
           from docx.oxml.ns import qn
 
-          path="build/Ecology_Report_v0_4_SYNTHETIC_COMPLETE.docx"
+          path="build/Ecology_Report_v0_5_SYNTHETIC_COMPLETE.docx"
           doc=Document(path)
           assert len(doc.sections) >= 2
           first=doc.sections[0]._sectPr.find(qn("w:lnNumType"))
@@ -100,6 +100,6 @@ jobs:
         with:
           name: ecology-report-v0-4-docx-preview
           path: |
-            build/Ecology_Report_v0_4_SUBMISSION_PREVIEW.docx
-            build/Ecology_Report_v0_4_SYNTHETIC_COMPLETE.docx
+            build/Ecology_Report_v0_5_SUBMISSION_PREVIEW.docx
+            build/Ecology_Report_v0_5_SYNTHETIC_COMPLETE.docx
             build/ecology_metadata_template_audit.json
