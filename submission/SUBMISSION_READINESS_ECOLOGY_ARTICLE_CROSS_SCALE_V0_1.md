@@ -38,3 +38,23 @@ Only author-controlled submission metadata and permanent archiving remain unreso
 ## Canonical freeze
 
 See `contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json`.
+
+
+## Word Main Document QA
+
+The placeholder Ecology Article Main Document was generated successfully from the canonical builder and rendered with the DOCX QA pipeline.
+
+- rendered pages: **24**
+- Ecology Article limit: **30 pages**
+- all 24 pages visually inspected
+- title page correctly labeled **Article**
+- line numbering starts after the title page and continues through References and figure captions
+- display and inline manuscript equations render correctly
+- References render without clipping
+- only Figures 1–3 are captioned in the Main Document
+- Figure S1 caption is held outside the Main Document with the Supporting Information
+- no clipping, overlap or missing glyphs detected
+
+Provenance is frozen in `submission/ECOLOGY_ARTICLE_CROSS_SCALE_DOCX_QA_RECEIPT_V0_1.json`.
+
+This QA applies to the placeholder preview. Once private author metadata are confirmed, the author-complete DOCX must be regenerated through the same builder and receive one final render check before upload.
