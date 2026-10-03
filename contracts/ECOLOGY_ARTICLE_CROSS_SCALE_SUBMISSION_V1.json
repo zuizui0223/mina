@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ecology-article-cross-scale-submission-v1",
+  "date": "2026-10-03",
+  "status": "journal_specific_packaging_frozen_scientific_analysis_closed",
+  "target_journal": "Ecology",
+  "submission_type": "Article",
+  "manuscript": "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
+  "cover_letter": "submission/COVER_LETTER_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
+  "copy_fields": "submission/ECOLOGY_ARTICLE_CROSS_SCALE_COPY_FIELDS_V0_1.md",
+  "title_page_template": "submission/TITLE_PAGE_ECOLOGY_ARTICLE_CROSS_SCALE_TEMPLATE.md",
+  "main_figure_captions": "submission/FIGURE_CAPTIONS_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
+  "supporting_information": "submission/SUPPLEMENT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
+  "references": "docs/REFERENCES_V6.bib",
+  "source_claim_contract": "contracts/CROSS_SCALE_CONCENTRATION_MANUSCRIPT_V0_1.json",
+  "source_review_audit": "docs/CROSS_SCALE_CONCENTRATION_REVIEWER_AUDIT_V0_1.md",
+  "journal_fit": {
+    "author_guidelines_revision": "September 2026",
+    "article_page_limit": 30,
+    "article_abstract_word_limit": 350,
+    "title_character_limit": 120,
+    "rationale": "The cross-scale manuscript has distinct linked inferential components (discovery, prospective replication, regional scale transfer), matching Ecology's Article description more naturally than the concise single-topic Report format."
+  },
+  "submission_metrics": {
+    "title_characters": 77,
+    "abstract_words": 256,
+    "rough_main_manuscript_words_before_full_references": 4400,
+    "main_figures": 3,
+    "supplementary_figures": 1,
+    "main_tables": 0
+  },
+  "primary_evidence_order": [
+    "Palmer Adelie discovery",
+    "prospectively frozen Signy Adelie external replication",
+    "prospectively frozen Signy chinstrap cross-species replication",
+    "bounded MAPPPD regional scale-transfer extension"
+  ],
+  "claim_boundary": "Cross-scale directional recurrence within Antarctic Pygoscelis; no universal kappa, seabird-wide law, family-wide regional rejection, regional hysteresis, or single mechanism.",
+  "supersedes_for_submission": [
+    "contracts/ECOLOGY_REPORT_SUBMISSION_V3.json",
+    "submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md"
+  ],
+  "freeze_rules": [
+    "No new ecological endpoint or same-data rescue analysis may be added before initial submission.",
+    "No post-result multiplicity rule may be introduced for the four regional declining panels.",
+    "MAPPPD is a scale-transfer test, not an additional independent geographic replication of Palmer.",
+    "Local and regional p-values and effect sizes must not be pooled.",
+    "The local approximately 0.25 kappa estimate must not be described as a universal scaling exponent.",
+    "N_eff/E must not be described as genetic Ne or Nb.",
+    "Author-controlled metadata remain private until confirmed."
+  ]
+}
