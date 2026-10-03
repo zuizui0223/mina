@@ -1,0 +1,121 @@
+name: ecology-article-cross-scale-si-preview
+
+on:
+  push:
+    branches: [analysis/mapppd-regional-concentration-v1]
+    paths:
+      - "scripts/build_ecology_cross_scale_si.py"
+      - "submission/SUPPLEMENT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
+      - "submission/SUPPLEMENTARY_FIGURE_CAPTION_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
+      - "submission/ECOLOGY_METADATA_TEMPLATE.json"
+      - "src/mina/ecosphere_submission_metadata.py"
+      - ".github/workflows/ecology-article-cross-scale-si-preview.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev,submission]"
+      - name: Install document tools
+        run: |
+          if ! command -v pandoc >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y pandoc libreoffice-writer
+          fi
+          pandoc --version | head -1
+          libreoffice --version | head -1
+
+      - name: Reuse frozen supplementary figure
+        run: |
+          mkdir -p build/figures build/si
+          gh run download 37106154408             -n cross-scale-concentration-figures-v1             -D build/figures
+          test -s build/figures/figures/figureS1_nominal_dominance_routes.png
+          cp build/figures/figures/figureS1_nominal_dominance_routes.png build/si/Figure_S1.png
+
+      - name: Build placeholder Appendix S1
+        run: |
+          python scripts/build_ecology_cross_scale_si.py             --source submission/SUPPLEMENT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md             --caption submission/SUPPLEMENTARY_FIGURE_CAPTION_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md             --figure build/si/Figure_S1.png             --out-docx build/si/Appendix_S1_PREVIEW.docx
+          libreoffice --headless --convert-to pdf --outdir build/si build/si/Appendix_S1_PREVIEW.docx
+          test -s build/si/Appendix_S1_PREVIEW.pdf
+
+      - name: Build synthetic author-complete Appendix S1
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data={
+              "authors":[
+                  {
+                      "name":"Example Author",
+                      "affiliation_ids":["1"],
+                      "corresponding":True,
+                      "email":"author@example.org"
+                  }
+              ],
+              "affiliations":{"1":"Example Department, Example University, City, Country"},
+              "present_addresses":[],
+              "funding_acknowledgments":"Synthetic CI funding text",
+              "additional_acknowledgments":"",
+              "author_contributions":"Example Author: Conceptualization, Formal analysis, Software, Visualization, Writing – original draft, Writing – review & editing.",
+              "conflict_of_interest":"Synthetic CI conflict-of-interest statement.",
+              "ai_tool_inventory_confirmed":True,
+              "additional_ai_tools":[],
+              "dual_publication_statement":"Synthetic CI overlap statement.",
+              "review_code_url":"https://github.com/zuizui0223/mina",
+              "permanent_archive_doi":None
+          }
+          Path("build/si/synthetic_metadata.json").write_text(
+              json.dumps(data,indent=2)+"\n",encoding="utf-8"
+          )
+          PY
+          python scripts/build_ecology_cross_scale_si.py             --source submission/SUPPLEMENT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md             --caption submission/SUPPLEMENTARY_FIGURE_CAPTION_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md             --figure build/si/Figure_S1.png             --metadata build/si/synthetic_metadata.json             --require-complete-metadata             --out-docx build/si/Appendix_S1_SYNTHETIC_COMPLETE.docx
+          libreoffice --headless --convert-to pdf --outdir build/si build/si/Appendix_S1_SYNTHETIC_COMPLETE.docx
+          test -s build/si/Appendix_S1_SYNTHETIC_COMPLETE.pdf
+
+      - name: Structural Appendix audit
+        run: |
+          python - <<'PY'
+          from docx import Document
+          p="build/si/Appendix_S1_SYNTHETIC_COMPLETE.docx"
+          doc=Document(p)
+          text="\n".join(x.text for x in doc.paragraphs)
+          for token in [
+              "Appendix S1",
+              "Example Author",
+              "Breeding-space contraction recurs across spatial scales in Antarctic penguins",
+              "Ecology",
+              "Table S1",
+              "Equation S1",
+              "Table S2",
+              "Table S3",
+              "Table S4",
+              "Table S5",
+              "Figure S1",
+          ]:
+              assert token in text, token
+          assert "[SAME AUTHOR LIST AS MAIN MANUSCRIPT]" not in text
+          assert len(doc.tables) == 5
+          print("paragraphs=",len(doc.paragraphs))
+          print("tables=",len(doc.tables))
+          print("appendix_structural_audit=PASS")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecology-article-cross-scale-appendix-s1-v0-1
+          path: |
+            build/si/Appendix_S1_PREVIEW.docx
+            build/si/Appendix_S1_PREVIEW.pdf
+            build/si/Appendix_S1_SYNTHETIC_COMPLETE.docx
+            build/si/Appendix_S1_SYNTHETIC_COMPLETE.pdf
+            build/si/Figure_S1.png
