@@ -1,10 +1,18 @@
-# Supporting Information — Ecology Article cross-scale concentration v0.1
+# Appendix S1
 
-This supplement accompanies `docs/MANUSCRIPT_CROSS_SCALE_CONCENTRATION_V0_1.md` and records the inferential provenance and complete bounded result tables used in the manuscript. It introduces no new ecological endpoint.
+**Authors:** [SAME AUTHOR LIST AS MAIN MANUSCRIPT]
 
-## S1. Evidence provenance
+**Manuscript title:** Breeding-space contraction recurs across spatial scales in Antarctic penguins
+
+**Journal:** Ecology
+
+This appendix records the inferential provenance and complete bounded result tables supporting the manuscript. It introduces no new ecological endpoint.
+
+## Section S1: Evidence provenance
 
 The manuscript combines analyses with different inferential status.
+
+**Table S1. Evidence layers and inferential roles.**
 
 | Evidence layer | Status | Role in manuscript |
 |---|---|---|
@@ -18,9 +26,11 @@ The manuscript combines analyses with different inferential status.
 
 No p-values are pooled across these evidence layers.
 
-## S2. Effective breeding-component number
+## Section S2: Effective breeding-component number
 
 For every panel,
+
+**Equation S1. Effective breeding-component number.**
 
 \[
 E_t = \frac{1}{\sum_j p_{jt}^2},
@@ -38,11 +48,13 @@ Component meanings differ among data sets:
 
 The manuscript therefore uses “effective monitored breeding components” unless a data-set-specific term is required.
 
-## S3. Palmer fixed-composition inference
+## Section S3: Palmer fixed-composition inference
 
 The primary Palmer analysis is restricted to Cormorant, Humble and Litchfield, the three synchronized Adélie island populations with unchanged reported colony-code rosters.
 
 Observed first-to-last change in E:
+
+**Table S2. Palmer fixed-composition concentration results.**
 
 | Population | First E | Last E | Change | Slope / year | CV20 p |
 |---|---:|---:|---:|---:|---:|
@@ -54,7 +66,7 @@ The null fixes one time-invariant cumulative component-share vector within each 
 
 No simulated replicate among 100,000 was simultaneously as negative as all three observed slopes under CV20 (plus-one joint p = 0.000010).
 
-## S4. Prospectively frozen Signy replications
+## Section S4: Prospectively frozen Signy replications
 
 ### S4.1 Adélie
 
@@ -78,9 +90,11 @@ C15, C16, C17, C18, C46, C47, C79, C80, C81.
 
 Stable-roster breeding pairs declined from 1,642 to 581. E declined from 4.438 to 2.191 (−50.6%), with slope −0.07179 yr−1. Under CV20, one of 100,000 simulated slopes was at least as negative as observed, giving plus-one p = 0.000020.
 
-## S5. Closed five-trajectory scaling exploration
+## Section S5: Closed five-trajectory scaling exploration
 
 The five local population trajectories gave annual log–log abundance–E elasticities:
+
+**Table S3. Post-hoc local abundance–E elasticities.**
 
 | Population | κ |
 |---|---:|
@@ -102,7 +116,7 @@ This value is not used as a universal prediction. The same bounded search showed
 
 The search is closed.
 
-## S6. MAPPPD regional support gate
+## Section S6: MAPPPD regional support gate
 
 Source: pinned CCheCastaldo/mapppdr commit `88c73a507e0921b2541c218c71eaf16721bc6502`.
 
@@ -118,7 +132,9 @@ The deterministic pruning rule removes the site with the fewest observed seasons
 
 Thirteen candidate species × region groups were present; seven were eligible.
 
-## S7. Complete regional panel results
+## Section S7: Complete regional panel results
+
+**Table S4. Complete eligible MAPPPD regional network results.**
 
 | Species | Region | Direction | Sites | Seasons | First N | Last N | First E | Last E | raw κ | obs-error Δκ | p | Supported |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
@@ -136,9 +152,11 @@ Local and regional inference also use different scale-appropriate statistics: th
 
 The Central-west Antarctic Peninsula retained rosters include BISC (Biscoe Point), which is part of the broader Palmer-area APBP context but is not one of the three primary Palmer concentration populations (Cormorant, Humble and Litchfield). The MAPPPD regional analysis is therefore treated as a scale-transfer test, not as an additional independent geographic replication of Palmer. Signy supplies the independent geographic replication.
 
-## S8. Increasing regional networks
+## Section S8: Increasing regional networks
 
 All three eligible increasing networks ended with lower E than in their first retained complete season:
+
+**Table S5. Descriptive endpoints for increasing regional networks.**
 
 | Network | Abundance change | E change |
 |---|---:|---:|
@@ -148,7 +166,7 @@ All three eligible increasing networks ended with lower E than in their first re
 
 These observations are qualitatively compatible with spatial structure changing more slowly than abundance, but no regional ratchet or hysteresis endpoint was frozen before these outcomes were inspected. They therefore remain descriptive.
 
-## S9. Component-level route boundary
+## Section S9: Component-level route boundary
 
 A post-hoc descriptive decomposition shows that the same decrease in E can arise through contrasting component histories.
 
@@ -161,7 +179,7 @@ At Signy, the initially dominant unit remained dominant and increased its share:
 
 This contrast rules out a universal interpretation in which concentration necessarily means persistence of the historically largest component.
 
-## S10. Claim boundary and stop rule
+## Section S10: Claim boundary and stop rule
 
 Supported scope:
 
