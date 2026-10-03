@@ -13,7 +13,3 @@ Annual breeding-pair abundance and effective breeding-component number for the f
 ## Figure 3. Numerical recovery does not necessarily reconstruct the regional breeding-site distribution
 
 First-to-last percentage change in adjusted regional abundance against first-to-last percentage change in effective breeding-site number for all seven eligible MAPPPD species × region networks. Circles are declining networks and triangles are increasing networks. All three increasing networks end with lower effective breeding-site number than in their first retained complete season, despite higher abundance. This panel is descriptive context only: no regional ratchet or hysteresis test was frozen before the increasing-network outcomes were inspected.
-
-## Figure S1. The same concentration endpoint arose through different nominal component-level routes
-
-Post-hoc descriptive trajectories of the initially dominant and ultimately dominant monitored breeding units in the five within-system populations. At Palmer, the component that was largest initially had zero breeding pairs by the final eligible census in all three populations and dominance shifted to another component. At Signy, the initially dominant component remained dominant and increased its share in both Adélie and chinstrap penguins. These summaries carry no inferential p-values and do not alter the concentration classifications.
