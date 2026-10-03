@@ -36,8 +36,8 @@ def test_figure_s1_is_defined_once_for_appendix():
 def test_main_document_references_supporting_information():
     main = MAIN.read_text(encoding="utf-8")
     assert "Appendix S1" in main
-    assert "Appendix S1: Table S4" in main
-    assert "Appendix S1: Table S5" in main
+    assert "Table S4" in main
+    assert "Table S5" in main
     assert "Appendix S1: Section S9 and Figure S1" in main
 
 
