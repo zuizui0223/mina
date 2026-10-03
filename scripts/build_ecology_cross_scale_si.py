@@ -99,11 +99,16 @@ def build(
     require_complete: bool = False,
 ) -> None:
     source = source_path.read_text(encoding="utf-8")
-    caption_lines = caption_path.read_text(encoding="utf-8").splitlines()
-    caption = "\n".join(
-        line for line in caption_lines
+    caption_lines = [
+        line for line in caption_path.read_text(encoding="utf-8").splitlines()
         if not line.startswith("# Supplementary figure caption")
-    ).strip()
+    ]
+    while caption_lines and not caption_lines[0].strip():
+        caption_lines.pop(0)
+    if not caption_lines or not caption_lines[0].startswith("## Figure S1."):
+        raise ValueError("supplementary caption must begin with '## Figure S1.'")
+    caption_heading = caption_lines.pop(0).removeprefix("## ").strip()
+    caption_body = " ".join(line.strip() for line in caption_lines if line.strip())
 
     metadata = None
     if metadata_path is not None:
@@ -136,15 +141,14 @@ def build(
 
         # Figure S1 is part of Appendix S1 and must not be uploaded separately.
         doc.add_page_break()
-        heading = doc.add_paragraph()
-        heading.style = doc.styles["Heading 2"]
-        heading.add_run("Figure S1")
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.add_run().add_picture(str(figure_path), width=Inches(6.5))
         cap = doc.add_paragraph()
         cap.paragraph_format.line_spacing = 2.0
-        cap.add_run(caption)
+        lead = cap.add_run(caption_heading + " ")
+        lead.bold = True
+        cap.add_run(caption_body)
 
         props = doc.core_properties
         props.title = "Appendix S1 - Breeding-space contraction recurs across spatial scales in Antarctic penguins"
