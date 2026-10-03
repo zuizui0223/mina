@@ -94,7 +94,7 @@ A second sensitivity added independent normal observation error on the \(\log(1+
 
 A network was classified as individually supported only when \(\Delta\kappa>0\) and the one-sided Monte Carlo probability was \(\le0.05\) under both the fixed-composition and observation-error nulls.
 
-The regional contract prohibited alternate geographic radii, hand-built clusters, alternate completeness thresholds, alternate abundance transformations, lags, hinges or trait searches in response to the result.
+The regional contract prohibited alternate geographic radii, hand-built clusters, alternate completeness thresholds, alternate abundance transformations, lags, hinges or trait searches in response to the result. Complete evidence provenance and the full eligible regional panel table are provided in Appendix S1: Sections S1 and S7 and Table S4.
 
 Because the local and regional records differ in temporal design, the regional extension was not treated as a second estimate of the local time-slope statistic. Local inference asks whether effective component number declines through time more strongly than expected under fixed composition and count error; regional inference asks whether effective component number covaries positively with abundance after panel-specific fixed-composition calibration. The shared estimand is therefore **directional redistribution beyond fixed composition**, not equality of test statistics or effect sizes. We do not pool local and regional p-values or estimate a common cross-scale \(\kappa\).
 
@@ -106,7 +106,7 @@ All analyses were executed from version-controlled code, and numerical outputs w
 
 After the five within-system concentration results were known, a bounded non-inferential decomposition recorded whether the initially dominant component remained dominant and how its share changed. These summaries have no p-values and cannot alter the primary concentration classifications.
 
-The three increasing MAPPPD regional networks are likewise used only as descriptive context. No formal regional ratchet or hysteresis test was frozen before their outcomes were computed.
+The three increasing MAPPPD regional networks are likewise used only as descriptive context. No formal regional ratchet or hysteresis test was frozen before their outcomes were computed. Their complete endpoint summary is provided in Appendix S1: Table S5, and component-route context is provided in Appendix S1: Section S9 and Figure S1.
 
 ## Results
 
