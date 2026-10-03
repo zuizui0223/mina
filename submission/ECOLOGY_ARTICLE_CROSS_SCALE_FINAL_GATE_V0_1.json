@@ -10,16 +10,17 @@
     "claim_boundary": "PASS",
     "literature_citation_keys": "PASS",
     "reproducibility_receipts": "PASS",
-    "repository_ci": "PASS",
-    "main_document_generation": "PASS",
-    "main_document_visual_qa": "PASS_24_OF_24_PAGES",
-    "main_figure_visual_qa": "PASS_3_OF_3",
-    "generated_manuscript_page_limit": "PASS_27_OF_30",
+    "repository_ci": "PENDING_CURRENT_HEAD_FOCUSED_CHECK",
+    "main_document_generation": "PENDING_REGEN_AFTER_APPENDIX_REFERENCES",
+    "main_document_visual_qa": "PENDING_REQA_AFTER_APPENDIX_REFERENCES",
+    "main_figure_visual_qa": "PENDING_ECOLOGY_PUBLICATION_SIZE_RERENDER",
+    "generated_manuscript_page_limit": "PENDING_AFTER_PUBLICATION_SIZE_FIGURES",
     "canonical_package_uniqueness": "PASS",
     "author_controlled_metadata": "BLOCKED_PENDING_HUMAN_CONFIRMATION",
-    "final_upload_readiness": "BLOCKED_ONLY_BY_AUTHOR_METADATA",
+    "final_upload_readiness": "BLOCKED_BY_PACKAGING_QA_AND_AUTHOR_METADATA",
     "ai_disclosure": "PASS_METHODS_ACKNOWLEDGMENTS_AND_SUBMISSION_COPY",
-    "data_provider_acknowledgments": "PASS"
+    "data_provider_acknowledgments": "PASS",
+    "supporting_information_pdf": "PENDING_BUILD_AND_VISUAL_QA"
   },
   "canonical_artifacts": {
     "placeholder_docx": {
@@ -53,6 +54,6 @@
   "optional_post_initial_submission_field": [
     "permanent archive DOI"
   ],
-  "next_action": "Fill an untracked private copy of submission/ECOLOGY_METADATA_TEMPLATE.json with confirmed author-controlled metadata, regenerate the author-complete DOCX with --require-complete-metadata, and perform one final render QA before upload. A permanent archive DOI may be added later and is not an initial-submission blocker.",
+  "next_action": "Complete current-head focused tests, regenerate and visually QA the Main Document after Appendix S1 references, render the <=18 cm publication-sized figures and pass the size audit, build/QA Appendix S1 as a single PDF, then fill confirmed private author metadata and regenerate the author-complete files.",
   "stop_rule": "No new ecological analysis is authorized by this final packaging gate."
 }
