@@ -66,7 +66,7 @@ This search was explicitly closed after evaluating a finite set of scaling, thre
 
 For the broader spatial test we used the pinned CCheCastaldo/mapppdr snapshot at commit 88c73a507e0921b2541c218c71eaf16721bc6502. The snapshot contains long-term nest-count observations for Adélie, chinstrap and gentoo penguins across Antarctica. Previous outcome-blind audits identified 152 candidate site × species units with at least five nest-count years spanning at least 10 years across 122 distinct sites and 10 APBP regions. Observation methods were heterogeneous, including ground, aerial, photographic and remote-imagery records.
 
-We did not create a new observation-selection rule for the concentration analysis. Instead, we reused the frozen Paper 2 1980–2025 bridged cohort and observation-calibration code. This cohort retains site × species series meeting the earlier coverage rule and uses same-season repeated observations to estimate a direct-versus-image observation offset and accuracy-dependent variances. In the regional analysis, repeated same-season observations were method-corrected on the \(\log(1+\mathrm{count})\) scale and precision-collapsed before calculating site-level states.
+We did not create a new observation-selection rule for the concentration analysis. Instead, we reused the frozen Paper 2 1980–2025 bridged cohort and observation-calibration code. This cohort retains site × species series meeting the earlier coverage rule and uses same-season repeated observations to estimate a direct-versus-image observation offset and accuracy-dependent variances. In the regional analysis, repeated same-season observations were method-corrected on the \(\log(1+n)\) scale and precision-collapsed before calculating site-level states.
 
 The regional parent unit was **species × published APBP region** and the components were site IDs. These parent units are monitored geographic networks, not assumed closed demographic populations.
 
@@ -90,11 +90,7 @@ Positive \(\kappa_{obs}\) means that lower abundance is associated with fewer ef
 
 The fixed-composition null pooled adjusted site counts across retained complete seasons to estimate time-invariant site shares \(q_j\). At each empirical total \(N_t\), site counts were drawn from a multinomial distribution with probabilities \(q_j\), thereby preserving the observed abundance trajectory while allowing the finite-count loss of low-share sites.
 
-A second sensitivity added independent normal observation error on the \(\log(1+n)\) scale using the previously frozen variance assigned to each collapsed site-season observation. Both nulls used 20,000 simulations and seed 20261003. The focal calibrated effect was
-
-\[
-\Delta\kappa = \kappa_{obs}-\mathrm{median}(\kappa_{null}).
-\]
+A second sensitivity added independent normal observation error on the \(\log(1+n)\) scale using the previously frozen variance assigned to each collapsed site-season observation. Both nulls used 20,000 simulations and seed 20261003. The focal calibrated effect, \(\Delta\kappa\), was the observed \(\kappa\) minus the median of the simulated null \(\kappa\) distribution.
 
 A network was classified as individually supported only when \(\Delta\kappa>0\) and the one-sided Monte Carlo probability was \(\le0.05\) under both the fixed-composition and observation-error nulls.
 
