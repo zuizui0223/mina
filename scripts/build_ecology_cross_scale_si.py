@@ -165,7 +165,7 @@ def build(
         if len(doc.tables) >= 5:
             _set_table_widths(
                 doc.tables[3],
-                [0.90, 0.55, 0.75, 0.45, 0.55, 0.55, 0.80, 0.45, 0.65],
+                [1.10, 0.55, 0.75, 0.45, 0.55, 0.55, 0.80, 0.45, 0.70],
             )
             _set_table_widths(
                 doc.tables[4],
