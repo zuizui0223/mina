@@ -30,8 +30,8 @@ jobs:
         run: |
           mkdir -p build/raw build/figure_data build/scaling
           python scripts/fetch_lter_census.py build/raw/adelie_census.csv
-          curl -L --fail --retry 4 --retry-delay 5             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree'             -o build/raw/signy_adelie.zip
-          curl -L --fail --retry 4 --retry-delay 5             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree'             -o build/raw/signy_chinstrap.zip
+          curl -L --fail --retry 10 --retry-delay 10 --retry-all-errors             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree'             -o build/raw/signy_adelie.zip
+          curl -L --fail --retry 10 --retry-delay 10 --retry-all-errors             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree'             -o build/raw/signy_chinstrap.zip
       - name: Rebuild source-checked trajectories
         run: |
           python -m scripts.build_replicated_concentration_figure_data             --palmer-census build/raw/adelie_census.csv             --signy-adelie-zip build/raw/signy_adelie.zip             --signy-chinstrap-zip build/raw/signy_chinstrap.zip             --palmer-receipt results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json             --signy-adelie-receipt results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json             --signy-chinstrap-receipt results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json             --dominance-receipt results/CONCENTRATION_DOMINANCE_DESCRIPTIVE_SUMMARY_V1.json             --out-dir build/figure_data
