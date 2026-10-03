@@ -100,6 +100,8 @@ A network was classified as individually supported only when \(\Delta\kappa>0\) 
 
 The regional contract prohibited alternate geographic radii, hand-built clusters, alternate completeness thresholds, alternate abundance transformations, lags, hinges or trait searches in response to the result.
 
+Because the local and regional records differ in temporal design, the regional extension was not treated as a second estimate of the local time-slope statistic. Local inference asks whether effective component number declines through time more strongly than expected under fixed composition and count error; regional inference asks whether effective component number covaries positively with abundance after panel-specific fixed-composition calibration. The shared estimand is therefore **directional redistribution beyond fixed composition**, not equality of test statistics or effect sizes. We do not pool local and regional p-values or estimate a common cross-scale \(\kappa\).
+
 ### Descriptive internal pathways
 
 After the five within-system concentration results were known, a bounded non-inferential decomposition recorded whether the initially dominant component remained dominant and how its share changed. These summaries have no p-values and cannot alter the primary concentration classifications.
@@ -134,7 +136,7 @@ Adélie penguins in the Central-west Antarctic Peninsula retained three sites ac
 
 Chinstrap penguins in the Central-west Antarctic Peninsula retained three sites across 10 seasons and had \(\kappa_{obs}=0.022\), \(\Delta\kappa=+0.017\), and p = 0.432. South Shetland chinstrap retained six sites across eight seasons and had \(\kappa_{obs}=0.445\), \(\Delta\kappa=+0.434\), and p = 0.0152.
 
-Thus two of four declining networks were individually supported under both regional nulls, but the direction was positive in all four. Their median observation-error-calibrated effect was +0.094. The exact 4/4 positive sign count has a nominal one-sided sign probability of 0.0625, but species × region panels within the same region are not independent geographic replicates, so we treat that probability as descriptive only.
+Thus two of four declining networks were individually supported under both regional nulls, but the direction was positive in all four. Their median observation-error-calibrated effect was +0.094. These are panel-level support calls defined by the frozen regional contract, not a family-wide rejection across four panels; no multiplicity-adjusted regional generality test was prespecified. The exact 4/4 positive sign count has a nominal one-sided sign probability of 0.0625, but species × region panels within the same region are not independent geographic replicates, so we treat that probability as descriptive only.
 
 The geographic split was clear: both South Shetland networks survived the observation-error sensitivity, whereas the Central-west Antarctic Peninsula networks pointed in the same direction but did not.
 
@@ -210,7 +212,7 @@ The regional extension is broader than the original two-system result but remain
 
 We therefore do not claim a general seabird or colonial-breeder rule. Nor do we treat published APBP regions as closed demographic populations. The regional analysis concerns redistribution within fixed sets of repeatedly monitored breeding sites.
 
-The correct macroecological advance is more specific: an abundance-conditioned concentration signal first detected within breeding systems remains visible when the spatial unit is changed from local breeding components to regional site networks. That cross-scale persistence is stronger evidence for a transferable ecological direction than the original five trajectories alone, but further taxonomic generality requires genuinely independent component-resolved data outside *Pygoscelis*.
+The correct macroecological advance is more specific: an abundance-conditioned concentration signal first detected within breeding systems remains visible when the spatial unit is changed from local breeding components to regional site networks. Because the local and regional tests use different scale-appropriate statistics, this is an ordinal cross-scale inference about direction, not a meta-analysis of a common effect size. That cross-scale persistence is stronger evidence for a transferable ecological direction than the original five trajectories alone, but further taxonomic generality requires genuinely independent component-resolved data outside *Pygoscelis*.
 
 ### Monitoring implications
 
