@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-ecology-report-cross-scale-submission-v1",
   "date": "2026-10-03",
-  "status": "journal_targeted_packaging_no_new_ecological_endpoints",
+  "status": "alternate_compact_package_not_canonical_for_initial_submission",
   "target_journal": "Ecology",
   "submission_type": "Report",
   "guideline_snapshot": {
@@ -67,5 +67,8 @@
     "submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md",
     "submission/COVER_LETTER_ECOLOGY_REPORT_V3.md"
   ],
-  "stop_rule": "No new same-data ecological endpoint, threshold, region definition, lag, scaling family, multiplicity rule, trait screen or mechanism search may be introduced during Ecology packaging. Only formatting, reference verification, author-controlled metadata and reproducibility archiving may change."
+  "stop_rule": "No new same-data ecological endpoint, threshold, region definition, lag, scaling family, multiplicity rule, trait screen or mechanism search may be introduced during Ecology packaging. Only formatting, reference verification, author-controlled metadata and reproducibility archiving may change.",
+  "canonical_initial_submission": "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json",
+  "activation_rule": "Do not upload this Report package unless the authors explicitly choose to replace the canonical Article package or Ecology requests a Report recast. Before activation, render and verify the complete Report package against the 20-page limit.",
+  "superseded_for_initial_submission_by": "contracts/ECOLOGY_CROSS_SCALE_CANONICAL_TARGET_V1.json"
 }
