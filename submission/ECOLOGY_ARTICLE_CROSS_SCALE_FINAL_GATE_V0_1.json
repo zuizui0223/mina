@@ -17,13 +17,16 @@
     "generated_manuscript_page_limit": "PASS_27_OF_30",
     "canonical_package_uniqueness": "PASS",
     "author_controlled_metadata": "BLOCKED_PENDING_HUMAN_CONFIRMATION",
-    "final_upload_readiness": "BLOCKED_ONLY_BY_AUTHOR_METADATA"
+    "final_upload_readiness": "BLOCKED_ONLY_BY_AUTHOR_METADATA",
+    "ai_disclosure": "PASS_METHODS_ACKNOWLEDGMENTS_AND_SUBMISSION_COPY",
+    "data_provider_acknowledgments": "PASS"
   },
   "canonical_artifacts": {
     "placeholder_docx": {
-      "workflow_run_id": 37109978809,
-      "artifact_id": 11269905500,
-      "digest": "sha256:93db2193f3414911304b8b5998570dc7feed68d22deafa6fc1a6a2e60a82cb13",
+      "workflow_run_id": 37117211288,
+      "artifact_id": 11271907803,
+      "digest": "sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b",
+      "head_sha": "7af330c02422678d8d3c95c7cbaf165368f4a6c0",
       "pages": 24
     },
     "main_figures": {
@@ -50,6 +53,6 @@
   "optional_post_initial_submission_field": [
     "permanent archive DOI"
   ],
-  "next_action": "Fill an untracked private copy of submission/ECOLOGY_METADATA_TEMPLATE.json with confirmed author-controlled metadata, regenerate the author-complete DOCX with --require-complete-metadata, then perform one final 24-page-or-equivalent render QA before upload.",
+  "next_action": "Fill an untracked private copy of submission/ECOLOGY_METADATA_TEMPLATE.json with confirmed author-controlled metadata, regenerate the author-complete DOCX with --require-complete-metadata, and perform one final render QA before upload. A permanent archive DOI may be added later and is not an initial-submission blocker.",
   "stop_rule": "No new ecological analysis is authorized by this final packaging gate."
 }
