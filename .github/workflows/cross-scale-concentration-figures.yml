@@ -6,7 +6,6 @@ on:
     paths:
       - "docs/MANUSCRIPT_CROSS_SCALE_CONCENTRATION_V0_1.md"
       - "results/MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2.json"
-      - "scripts/build_replicated_concentration_figure_data.py"
       - "scripts/plot_cross_scale_concentration_figures.py"
       - ".github/workflows/cross-scale-concentration-figures.yml"
   workflow_dispatch:
@@ -14,22 +13,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: python -m pip install -e ".[dev]" pandas matplotlib lxml html5lib beautifulsoup4
+      - run: python -m pip install -e ".[dev]" matplotlib
 
-      - name: Download frozen public sources
+      - name: Reuse frozen Palmer-Signy figure data
         run: |
-          mkdir -p build/raw build/figure_data build/figures
-          python scripts/fetch_lter_census.py build/raw/adelie_census.csv
-          curl -L --fail --retry 4 --retry-delay 5             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree'             -o build/raw/signy_adelie.zip
-          curl -L --fail --retry 4 --retry-delay 5             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree'             -o build/raw/signy_chinstrap.zip
-
-      - name: Build source-checked local figure data
-        run: |
-          python -m scripts.build_replicated_concentration_figure_data             --palmer-census build/raw/adelie_census.csv             --signy-adelie-zip build/raw/signy_adelie.zip             --signy-chinstrap-zip build/raw/signy_chinstrap.zip             --palmer-receipt results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json             --signy-adelie-receipt results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json             --signy-chinstrap-receipt results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json             --dominance-receipt results/CONCENTRATION_DOMINANCE_DESCRIPTIVE_SUMMARY_V1.json             --out-dir build/figure_data
+          mkdir -p build/reused build/figure_data build/figures
+          gh run download 36953934301             -n replicated-concentration-figures-v1             -D build/reused
+          test -s build/reused/figure_data/FIGURE_DATA_RECEIPT_V1.json
+          test -s build/reused/figure_data/figure1_trajectories.csv
+          test -s build/reused/figure_data/figure2_summary.csv
+          test -s build/reused/figure_data/figure3_dominance_routes.csv
+          cp build/reused/figure_data/* build/figure_data/
 
       - name: Render cross-scale figures
         run: |
