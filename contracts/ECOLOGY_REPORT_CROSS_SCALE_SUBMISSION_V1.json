@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ecology-report-cross-scale-submission-v1",
+  "date": "2026-10-03",
+  "status": "journal_targeted_packaging_no_new_ecological_endpoints",
+  "target_journal": "Ecology",
+  "submission_type": "Report",
+  "guideline_snapshot": {
+    "checked_date": "2026-10-03",
+    "report_page_limit": 20,
+    "report_abstract_word_limit": 200,
+    "title_character_limit": 120,
+    "keywords_min": 6,
+    "keywords_max": 12,
+    "report_positioning": "concise scientific statement on a single simple topic; expected to present work that substantially advances a field or overturns existing ideas",
+    "ai_disclosure_required_when_llm_used_beyond_spelling_grammar": true,
+    "open_research_statement_on_title_page_required": true
+  },
+  "active_files": {
+    "main_manuscript": "submission/MANUSCRIPT_ECOLOGY_REPORT_CROSS_SCALE_V1.md",
+    "title_page_template": "submission/TITLE_PAGE_ECOLOGY_REPORT_CROSS_SCALE_TEMPLATE_V1.md",
+    "cover_letter": "submission/COVER_LETTER_ECOLOGY_REPORT_CROSS_SCALE_V1.md",
+    "appendix_s1": "submission/APPENDIX_S1_ECOLOGY_REPORT_CROSS_SCALE_V1.md",
+    "figure_captions": "submission/FIGURE_CAPTIONS_ECOLOGY_REPORT_CROSS_SCALE_V1.md"
+  },
+  "journal_fit": {
+    "primary_reason": "The active manuscript makes one abundance-conditioned ecological statement and supports it through discovery, prospective replication and bounded scale transfer.",
+    "why_not_GEB_first": "Current evidence remains taxonomically restricted to Pygoscelis; GEB explicitly requires conclusions relevant beyond local areas or specific taxa and generally does not publish studies focused on specific taxa in local areas.",
+    "why_not_JBI_first": "The active claim concerns population spatial organization and abundance-conditioned redistribution more directly than a geographic mechanism shaping biodiversity or distributions.",
+    "why_not_Oikos_first": "The manuscript identifies a replicated ecological pattern but does not resolve a common mechanism; Oikos would require stronger conceptual or mechanistic elevation."
+  },
+  "submission_metrics": {
+    "title_characters": 77,
+    "abstract_words": 168,
+    "approx_main_words_including_headings_backmatter": 2256,
+    "main_figures": 2,
+    "appendix_figures": 2,
+    "main_tables": 0
+  },
+  "evidence_order": [
+    "Palmer Adelie discovery",
+    "prospectively frozen Signy Adelie independent geographic replication",
+    "prospectively frozen Signy chinstrap cross-species replication",
+    "bounded MAPPPD regional scale-transfer analysis"
+  ],
+  "main_claim": "After conditioning on the observed abundance trajectory, declining Antarctic Pygoscelis populations repeatedly become concentrated into fewer effective monitored breeding components, and the same direction remains visible when components are redefined one spatial level higher.",
+  "main_text_excludes": [
+    "universal kappa around 0.25",
+    "formal hysteresis or ratchet claim",
+    "increasing-regional-network endpoint details",
+    "component-dominance correlations",
+    "static island-trait Paper 2 results"
+  ],
+  "prohibited_claims": [
+    "universal seabird or colonial-breeder law",
+    "Antarctic-wide universal regional concentration law",
+    "universal quarter-power exponent",
+    "family-wise regional significance from the four panel p-values",
+    "four independent regional geographic replications",
+    "MAPPPD as an independent Palmer geographic replication",
+    "formal regional hysteresis",
+    "closed-population interpretation of APBP regions",
+    "causal attribution to habitat, site fidelity, recruitment, movement or predation"
+  ],
+  "supersedes_for_initial_submission": [
+    "contracts/ECOLOGY_REPORT_SUBMISSION_V3.json",
+    "submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md",
+    "submission/COVER_LETTER_ECOLOGY_REPORT_V3.md"
+  ],
+  "stop_rule": "No new same-data ecological endpoint, threshold, region definition, lag, scaling family, multiplicity rule, trait screen or mechanism search may be introduced during Ecology packaging. Only formatting, reference verification, author-controlled metadata and reproducibility archiving may change."
+}
