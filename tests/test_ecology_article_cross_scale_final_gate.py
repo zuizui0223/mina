@@ -40,3 +40,13 @@ def test_final_gate_points_to_canonical_article():
     assert gate["canonical_contract"] == "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
     assert article["status"] == "canonical_initial_submission_packaging_scientific_analysis_closed"
     assert resolution["canonical_initial_submission"]["submission_type"] == "Article"
+
+
+def test_final_gate_points_to_current_docx_artifact():
+    gate = load(GATE)
+    docx = gate["canonical_artifacts"]["placeholder_docx"]
+    assert docx["workflow_run_id"] == 37117211288
+    assert docx["artifact_id"] == 11271907803
+    assert docx["digest"] == "sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b"
+    assert gate["statuses"]["ai_disclosure"] == "PASS_METHODS_ACKNOWLEDGMENTS_AND_SUBMISSION_COPY"
+    assert gate["statuses"]["data_provider_acknowledgments"] == "PASS"
