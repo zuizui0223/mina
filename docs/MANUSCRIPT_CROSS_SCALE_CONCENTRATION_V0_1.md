@@ -208,7 +208,7 @@ This suggests that “spatial contraction” should always name its observationa
 
 ### Limits to macroecological generalization
 
-The regional extension is broader than the original two-system result but remains taxonomically narrow. Only Adélie and chinstrap penguins contribute declining regional networks; eligible gentoo regional networks were increasing. The two individually supported regional declines are both in the South Shetland Islands, so they are not independent geographic replications. MAPPPD coverage is also geographically uneven and methodologically heterogeneous.
+The regional extension is broader than the original two-system result but remains taxonomically narrow. Only Adélie and chinstrap penguins contribute declining regional networks; eligible gentoo regional networks were increasing. The two individually supported regional declines are both in the South Shetland Islands, so they are not independent geographic replications. MAPPPD coverage is also geographically uneven and methodologically heterogeneous. The Central-west Antarctic Peninsula regional rosters include Biscoe Point, a site in the broader Palmer-area APBP context, although the primary Palmer concentration populations are Cormorant, Humble and Litchfield. The MAPPPD analysis is therefore a **scale-transfer test with different component definitions**, not an additional independent geographic replication of Palmer; the independent geographic replication is Signy.
 
 We therefore do not claim a general seabird or colonial-breeder rule. Nor do we treat published APBP regions as closed demographic populations. The regional analysis concerns redistribution within fixed sets of repeatedly monitored breeding sites.
 
