@@ -3,6 +3,9 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
+import pytest
+pytest.importorskip("pandas")
+
 from scripts.gate_smp_master_site_support_v1 import analyze
 
 
