@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-component-panel-eligibility-v1",
+  "date": "2026-10-03",
+  "status": "outcome_blind_structure_gate_before_smp_count_analysis",
+  "purpose": "Determine whether SMP contains enough stable component-resolved colony panels for an independent macroecological test of breeding-space contraction.",
+  "forbidden_before_gate_closure": [
+    "summarizing SMP count magnitudes",
+    "computing abundance trends",
+    "computing N_eff or any concentration metric",
+    "selecting species or sites because their abundance or concentration results look favorable",
+    "changing panel thresholds after opening count outcomes"
+  ],
+  "hierarchy": {
+    "system": "master site",
+    "candidate_component_priority": [
+      "persistent explicit plot/subsite identifier",
+      "persistent child site identifier beneath a master site"
+    ],
+    "whole_colony_total": "not a component if it aggregates the candidate components",
+    "merged_record": "exclude unless a provider-supplied outcome-blind crosswalk reconstructs the same component support"
+  },
+  "metadata_requirements": [
+    "species",
+    "year_or_season",
+    "master_site_id",
+    "site_id_or_code",
+    "plot_or_subsite_id_if_present",
+    "whole_vs_partial_vs_plot_vs_merged_flag",
+    "method_code",
+    "count_unit",
+    "estimate_or_accuracy_flag",
+    "site_definition_or_change_history"
+  ],
+  "panel_support_gate": {
+    "minimum_components": 3,
+    "minimum_complete_component_years": 8,
+    "minimum_calendar_span_years": 10,
+    "eligible_year_definition": "all frozen components have one interpretable count in the same biological unit in that year",
+    "roster_rule": "component roster must be frozen from identifiers and support metadata only, before count magnitudes are summarized",
+    "unit_rule": "all retained records within a panel must be harmonizable to one biological count unit without using outcome values",
+    "identity_rule": "split, merge, rename or boundary changes must be absent or resolvable from provider metadata before effect inspection"
+  },
+  "primary_macro_eligibility": {
+    "minimum_eligible_species": 5,
+    "minimum_eligible_master_sites": 15,
+    "minimum_independent_species_site_panels": 20,
+    "decision": "If all three minima are met, SMP is eligible as a macroecological validation dataset. Otherwise do not promote it as the main macro validation source."
+  },
+  "secondary_use_if_primary_gate_fails": [
+    "coarser master-site abundance context",
+    "candidate systems for future targeted data requests",
+    "nonconfirmatory descriptive comparison"
+  ],
+  "next_step": "Request a bulk SMP extract containing persistent identifiers, hierarchy, unit/method metadata, count qualifiers, and split/merge/change history; run the support audit before reading count magnitudes."
+}
