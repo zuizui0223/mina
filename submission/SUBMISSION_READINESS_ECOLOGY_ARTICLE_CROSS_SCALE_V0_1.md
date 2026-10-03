@@ -42,9 +42,11 @@ See `contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json`.
 
 ## Word Main Document QA
 
-The placeholder Ecology Article Main Document was generated successfully from the canonical builder and rendered with the DOCX QA pipeline.
+The placeholder Ecology Article Main Document was generated successfully from the canonical builder and rendered with the DOCX QA pipeline. Ecology counts separately uploaded figure pages toward the page limit, so the 24-page Main Document plus three one-page main figures gives an expected 27-page generated manuscript.
 
-- rendered pages: **24**
+- rendered Main Document pages: **24**
+- separately uploaded main-figure pages: **3**
+- expected generated manuscript pages: **27**
 - Ecology Article limit: **30 pages**
 - all 24 pages visually inspected
 - title page correctly labeled **Article**
