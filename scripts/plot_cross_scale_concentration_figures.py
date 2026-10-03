@@ -120,10 +120,17 @@ def figure2_scale_transfer(
         size = 52 if ok else 40
         axes[1].scatter([delta], [yi], marker=marker, s=size, color="C0")
         axes[1].plot([0.0, delta], [yi, yi], lw=1.0, color="C0")
+        if delta > 0.35:
+            x_text = delta - 0.018
+            ha = "right"
+        else:
+            x_text = delta + 0.012
+            ha = "left"
         axes[1].text(
-            delta + 0.012,
+            x_text,
             yi,
             f"Δκ={delta:+.3f}, p={_p_text(p)}",
+            ha=ha,
             va="center",
             fontsize=6.5,
         )
