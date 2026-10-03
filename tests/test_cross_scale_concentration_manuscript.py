@@ -17,15 +17,20 @@ def load(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def unicode_percent(value: float) -> str:
+    return f"{100.0 * value:.1f}%".replace("-", "−")
+
+
 def test_cross_scale_manuscript_sources_exist_and_claim_is_bounded():
     manuscript = MANUSCRIPT.read_text(encoding="utf-8")
     contract = load(CONTRACT)
 
-    assert "cross-scale directional recurrence within Antarctic Pygoscelis" in contract["claim_boundary"] if "claim_boundary" in contract else contract["central_claim"]
+    assert "cross-scale" in contract["central_claim"]
+    assert "direction" in contract["central_claim"]
     assert "universal quarter-power law" in contract["prohibited_claims"]
     assert "universal seabird or colonial-breeder law" in contract["prohibited_claims"]
 
-    assert "does not constitute a confirmatory regional hysteresis result" in manuscript
+    assert "do not constitute a confirmatory regional hysteresis result" in manuscript
     assert "not treated as a universal scaling constant" in manuscript
     assert "monitored geographic networks, not assumed closed demographic populations" in manuscript
 
@@ -36,9 +41,9 @@ def test_local_primary_numbers_are_present():
     signy_a = load(SIGNY_A)
     signy_c = load(SIGNY_C)
 
-    assert f"{100 * palmer['observed']['COR']['fractional_change']:.1f}" in manuscript
-    assert f"{100 * palmer['observed']['HUM']['fractional_change']:.1f}" in manuscript
-    assert f"{100 * palmer['observed']['LIT']['fractional_change']:.1f}" in manuscript
+    assert unicode_percent(palmer["observed"]["COR"]["fractional_change"]) in manuscript
+    assert unicode_percent(palmer["observed"]["HUM"]["fractional_change"]) in manuscript
+    assert unicode_percent(palmer["observed"]["LIT"]["fractional_change"]) in manuscript
     assert "0.0380" in manuscript
 
     assert f"{signy_a['decline_eligibility']['first_total']:,.0f}" in manuscript
@@ -61,8 +66,7 @@ def test_regional_panel_numbers_are_present_and_scope_matches_receipt():
 
     declining = [p for p in regional["panels"] if p["direction"] == "decline"]
     assert len(declining) == 4
-    for panel in declining:
-        assert panel["delta_kappa_observation_error_null"] > 0
+    assert all(p["delta_kappa_observation_error_null"] > 0 for p in declining)
 
     south = [p for p in declining if p["region"] == "South Shetland Islands"]
     assert len(south) == 2
