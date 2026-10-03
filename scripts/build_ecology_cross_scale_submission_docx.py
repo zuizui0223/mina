@@ -173,7 +173,7 @@ def _combined_markdown(
 
     title_page = f"""Ecology
 
-Report
+Article
 
 # {title}
 
