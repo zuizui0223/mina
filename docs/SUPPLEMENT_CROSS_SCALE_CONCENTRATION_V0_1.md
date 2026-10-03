@@ -130,7 +130,9 @@ Thirteen candidate species × region groups were present; seven were eligible.
 | Gentoo | Central-west Antarctic Peninsula | increase | 7 | 5 | 19,084 | 23,253 | 4.933 | 4.128 | −0.238 | −0.228 | 0.984 | no |
 | Gentoo | South Shetland Islands | increase | 5 | 7 | 11,910 | 19,544 | 3.902 | 3.859 | 0.024 | +0.020 | 0.427 | no |
 
-The four declining networks all have positive observation-error-calibrated Δκ. Two are individually supported. The nominal one-sided probability of four positive signs out of four is 0.0625, but the panels are not independent geographic replicates because two species occur within each of the two declining regions. This sign probability is therefore descriptive only.
+The four declining networks all have positive observation-error-calibrated Δκ. Two are individually supported under the panel-level support rule frozen before regional outcomes were computed. These four panel tests are not treated as a prespecified family-wise generality test, and no multiplicity-adjusted regional rejection criterion was frozen. The nominal one-sided probability of four positive signs out of four is 0.0625, but the panels are not independent geographic replicates because two species occur within each of the two declining regions. This sign probability is therefore descriptive only.
+
+Local and regional inference also use different scale-appropriate statistics: the within-system primary tests use the temporal slope of E, whereas the regional extension uses the abundance–E elasticity κ and its panel-specific null calibration. They share the effective-component state and fixed-composition logic, but are not pooled as estimates of a common effect size or p-value.
 
 ## S8. Increasing regional networks
 
