@@ -1,45 +1,68 @@
 # Journal positioning — cross-scale breeding-space concentration v1
 
 **Date checked:** 2026-10-03  
-**Decision:** first-shot target = *Ecology*, manuscript type = Report.
+**Canonical first-shot target:** *Ecology* — **Article**  
+**Compact alternate retained:** *Ecology* — Report
 
-## Why Ecology Report
+## Resolution
 
-The active manuscript now makes one scientific statement:
+Two scientifically consistent Ecology packages exist, but they are not co-canonical.
 
-> after conditioning on the observed abundance trajectory, declining colonial populations can become disproportionately concentrated into fewer effective monitored breeding components, and that direction can persist when the spatial component is moved one level upward.
+The active evidence hierarchy contains three linked but inferentially distinct components:
 
-This is no longer the older multi-part island-demography manuscript. The static island-trait analysis, environmental mechanism searches, candidate quarter-power scaling and regional recovery asymmetry are not coequal main-text claims.
+1. Palmer Adélie discovery;
+2. prospectively frozen Signy geographic and cross-species replication;
+3. bounded MAPPPD regional scale transfer.
 
-The current *Ecology* author guidelines define Reports as concise papers presenting new and exciting work that substantially advances a field or overturns existing ideas, with a 20-page manuscript limit and 200-word abstract. The cross-scale manuscript is deliberately shaped to fit that format: 168-word abstract, approximately 2,250 words before a full formatted reference list, two main figures, and no main-text table.
+The September 2026 *Ecology* author guidelines describe Articles as original research papers that tell a more complicated story with distinct components, whereas Reports are the suggested format for a concise scientific statement on a single simple topic. The Article format therefore matches the current inferential architecture more directly.
 
-The journal’s broader scope also favors studies that lead to generalizations potentially applicable beyond the focal species or ecosystem. The generalization here is not “penguins behave this way”; it is the abundance-conditioned decomposition of numerical loss from change in relative spatial composition.
+The canonical initial submission is consequently the **Article** package. The Report files are retained only as a compact alternate that can be activated by an explicit author decision or an editorial request. They must not be uploaded in parallel.
+
+## Why Ecology Article
+
+The Article preserves the most important distinctions without forcing them into Supporting Information:
+
+- Palmer is a discovery system, not prospective evidence.
+- Signy supplies the independent geographic replication.
+- Signy chinstrap adds cross-species replication.
+- MAPPPD is a scale-transfer test, not an additional independent Palmer geography.
+- Local and regional analyses use different scale-appropriate statistics and are not pooled.
+- Regional panel p-values are panel-level support, not a family-wide regional rejection test.
+- The local approximately 0.25 kappa estimate is descriptive and non-universal.
+- Increasing regional networks are descriptive slow-state context, not a hysteresis test.
+
+The verified placeholder Article Main Document is 24 pages before the separately uploaded figure pages. With three one-page main figures, the expected initial submission package is 27 pages, below the 30-page Article limit. Supporting Information does not count toward that limit.
+
+## Why the Report package is retained
+
+The Report version is scientifically useful because it compresses the same central statement to roughly 2,250 words, a 168-word abstract and two main figures. It can be used if an editor explicitly prefers the shorter format.
+
+It is not the canonical first shot for two reasons.
+
+First, the current paper no longer consists only of the original five within-system trajectories; the regional scale-transfer analysis adds a distinct inferential level. Compressing that structure increases the risk that discovery, replication and scale transfer look more interchangeable than they are.
+
+Second, *Ecology* describes Reports as concise papers that should substantially advance a field or overturn existing ideas. The present paper has a strong general ecological contribution, but the Article format allows that contribution to be argued without making the novelty rhetoric carry more weight than the current taxonomic breadth warrants.
+
+Before any Report activation, its complete Main Document plus its two separate main-figure pages must be rendered and verified against the 20-page Report limit.
 
 ## Why Global Ecology and Biogeography is not the first shot
 
-The current GEB scope explicitly emphasizes broad-scale general patterns with conclusions relevant beyond specific taxa or local areas, and notes that the journal generally does not publish studies focused on specific taxa in local areas.
+The declining evidence remains restricted to *Pygoscelis*, and robust regional panel support is geographically concentrated. The current study therefore should not be rhetorically expanded into a multi-taxon macroecological law merely to fit a broader-scale journal.
 
-Although MAPPPD provides a regional scale-transfer test, the declining evidence remains restricted to Adélie and chinstrap penguins and robust regional panel support is geographically concentrated. The current paper would have to rhetorically outrun its evidence to present itself as a GEB-style macroecological generality test.
+## Journal of Biogeography as a fallback
 
-Do not inflate taxonomic generality merely to fit GEB.
+*Journal of Biogeography* remains a plausible fallback because the manuscript explicitly examines transfer across nested spatial levels. However, the strongest contribution is an ecological decomposition of decline into abundance loss and relative spatial reorganization rather than a geographic driver of biodiversity or distribution. *Ecology* remains the cleaner first framing.
 
-## Why Journal of Biogeography is a plausible fallback, not first shot
+## Transfer sequence
 
-JBI explicitly welcomes work at the biology–geography intersection from local to global scales and asks authors to articulate theoretical foundations and conceptual advances. The spatial hierarchy and regional network component fit that scope.
+1. **Ecology — Article** (canonical initial submission).
+2. **Ecology — Report** only if explicitly requested or deliberately selected as a compact recast.
+3. **Journal of Biogeography — Original Article** if editorial feedback indicates that the spatial-hierarchy framing is the stronger home.
+4. **Oikos — Research Article** only if reframed around spatial-state hierarchy without overstating mechanism.
+5. **Ecosphere — Article** as broad-scope fallback.
 
-However, the strongest active contribution is not a geographic driver of distribution or biodiversity. It is an ecological decomposition of decline into abundance loss and relative spatial reorganization. *Ecology* is therefore the cleaner first framing.
+No new analysis is authorized between journal transfers. Only journal-specific framing, formatting and author-controlled metadata may change.
 
-## Why Oikos is not the first shot
+## Canonicality record
 
-Oikos prioritizes innovative empirical and theoretical work advancing ecological mechanisms, processes and patterns. The manuscript has a replicated pattern and conceptual distinction, but the aggregate census data do not identify a shared mechanism. The active manuscript deliberately treats habitat, site fidelity, recruitment, movement and predation as unresolved.
-
-Oikos remains plausible only if the conceptual treatment of state variables and spatial hierarchy becomes the dominant contribution without overstating mechanism.
-
-## Submission order
-
-1. **Ecology — Report**
-2. **Journal of Biogeography — Original Article**, if the first decision indicates that the cross-scale spatial framing is stronger than the general ecological framing.
-3. **Oikos — Research Article**, only if reframed around spatial-state hierarchy rather than mechanism.
-4. **Ecosphere — Article** as a broad-scope fallback without changing scientific claims.
-
-No new analysis is authorized between journal transfers. Only journal-specific framing and formatting may change.
+See `contracts/ECOLOGY_CROSS_SCALE_CANONICAL_TARGET_V1.json`.
