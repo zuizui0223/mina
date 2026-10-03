@@ -1,12 +1,18 @@
 from __future__ import annotations
 
 import csv
+import importlib.util
 from pathlib import Path
 
 import pytest
 pytest.importorskip("pandas")
 
-from scripts.gate_smp_master_site_support_v1 import analyze
+SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "gate_smp_master_site_support_v1.py"
+spec = importlib.util.spec_from_file_location("gate_smp_master_site_support_v1", SCRIPT)
+module = importlib.util.module_from_spec(spec)
+assert spec and spec.loader
+spec.loader.exec_module(module)
+analyze = module.analyze
 
 
 def _write(path: Path, rows: list[dict[str, object]]) -> None:
