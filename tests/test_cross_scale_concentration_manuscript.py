@@ -33,6 +33,8 @@ def test_cross_scale_manuscript_sources_exist_and_claim_is_bounded():
     assert "do not constitute a confirmatory regional hysteresis result" in manuscript
     assert "not treated as a universal scaling constant" in manuscript
     assert "monitored geographic networks, not assumed closed demographic populations" in manuscript
+    assert "We do not pool local and regional p-values" in manuscript
+    assert "no multiplicity-adjusted regional generality test was prespecified" in manuscript
 
 
 def test_local_primary_numbers_are_present():
