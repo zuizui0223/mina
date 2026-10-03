@@ -26,7 +26,7 @@ jobs:
           test "$(git -C build/mapppdr rev-parse HEAD)" = "88c73a507e0921b2541c218c71eaf16721bc6502"
       - name: Run bounded regional concentration test
         run: |
-          python scripts/test_mapppd_regional_concentration.py \
+          python -m scripts.test_mapppd_regional_concentration \
             --mapppdr-dir build/mapppdr \
             --out-json build/MAPPPD_REGIONAL_CONCENTRATION_RESULT_V1.json
       - uses: actions/upload-artifact@v4
