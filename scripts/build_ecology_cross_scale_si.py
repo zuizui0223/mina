@@ -45,6 +45,21 @@ def _prepare_markdown(
     return source.replace(AUTHOR_PLACEHOLDER, authors)
 
 
+def _set_table_widths(table, widths: list[float]) -> None:
+    """Apply conservative fixed widths for portrait-page appendix tables."""
+    table.autofit = False
+    for row in table.rows:
+        for idx, (cell, width) in enumerate(zip(row.cells, widths)):
+            cell.width = Inches(width)
+            tc_pr = cell._tc.get_or_add_tcPr()
+            tc_w = tc_pr.find(qn("w:tcW"))
+            if tc_w is None:
+                tc_w = OxmlElement("w:tcW")
+                tc_pr.append(tc_w)
+            tc_w.set(qn("w:w"), str(int(width * 1440)))
+            tc_w.set(qn("w:type"), "dxa")
+
+
 def _format_docx(doc: Document) -> None:
     for section in doc.sections:
         section.page_width = Inches(8.5)
@@ -138,6 +153,24 @@ def build(
 
         doc = Document(raw)
         _format_docx(doc)
+
+        # Keep the wide regional inference table together on a fresh page.
+        for paragraph in doc.paragraphs:
+            if paragraph.text.strip().startswith("Table S4."):
+                paragraph.paragraph_format.page_break_before = True
+                paragraph.paragraph_format.keep_with_next = True
+                break
+
+        # Five appendix tables are emitted in order S1-S5.
+        if len(doc.tables) >= 5:
+            _set_table_widths(
+                doc.tables[3],
+                [0.90, 0.55, 0.75, 0.45, 0.55, 0.55, 0.80, 0.45, 0.65],
+            )
+            _set_table_widths(
+                doc.tables[4],
+                [1.00, 0.65, 0.95, 0.95, 0.90, 0.90],
+            )
 
         # Figure S1 is part of Appendix S1 and must not be uploaded separately.
         doc.add_page_break()
