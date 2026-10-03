@@ -75,7 +75,7 @@ def figure2_scale_transfer(
     y = np.arange(len(local))
 
     bars = axes[0].barh(y, values, color="C0")
-    axes[0].axvline(0.0, lw=0.9, color="0.25")
+    axes[0].axvline(0.0, lw=1.0, color="0.25")
     axes[0].set_xlim(min(values) * 1.08, 0.0)
     axes[0].set_yticks(y, names)
     axes[0].invert_yaxis()
@@ -113,7 +113,7 @@ def figure2_scale_transfer(
     supported = np.asarray([bool(p["supported"]) for p in declining])
     y2 = np.arange(len(declining))
 
-    axes[1].axvline(0.0, lw=0.9, color="0.25")
+    axes[1].axvline(0.0, lw=1.0, color="0.25")
     axes[1].set_xlim(-0.02, max(deltas) + 0.18)
     for yi, delta, p, ok in zip(y2, deltas, pvals_reg, supported):
         marker = "o" if ok else "s"
@@ -160,8 +160,8 @@ def figure3_regional_endpoints(
     panels = receipt["panels"]
 
     fig, ax = plt.subplots(figsize=(7.0, 5.0))
-    ax.axvline(0.0, lw=0.9, color="0.25")
-    ax.axhline(0.0, lw=0.9, color="0.25")
+    ax.axvline(0.0, lw=1.0, color="0.25")
+    ax.axhline(0.0, lw=1.0, color="0.25")
 
     for panel in panels:
         dn = 100.0 * (
