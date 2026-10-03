@@ -30,7 +30,8 @@ Approximate manuscript metrics:
 - cover letter: `submission/COVER_LETTER_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md`
 - copy fields: `submission/ECOLOGY_ARTICLE_CROSS_SCALE_COPY_FIELDS_V0_1.md`
 - title-page template: `submission/TITLE_PAGE_ECOLOGY_ARTICLE_CROSS_SCALE_TEMPLATE.md`
-- private metadata template: `submission/ECOLOGY_METADATA_TEMPLATE.json`\n- Word-layout QA receipt: `submission/ECOLOGY_ARTICLE_CROSS_SCALE_DOCX_QA_RECEIPT_V0_1.json`
+- private metadata template: `submission/ECOLOGY_METADATA_TEMPLATE.json`
+- Word-layout QA receipt: `submission/ECOLOGY_ARTICLE_CROSS_SCALE_DOCX_QA_RECEIPT_V0_1.json`
 
 ## Main figures
 
@@ -79,3 +80,15 @@ The canonical placeholder Main Document renders to **24 pages** and has passed c
 ## Canonical target resolution
 
 Initial submission is **Ecology — Article**. The compact Ecology Report package is retained as an alternate only and must not be uploaded in parallel. See `contracts/ECOLOGY_CROSS_SCALE_CANONICAL_TARGET_V1.json`.
+
+
+## Artifact provenance
+
+- canonical placeholder DOCX workflow run: `37109978809`
+- canonical placeholder DOCX artifact: `11269905500`
+- DOCX artifact digest: `sha256:93db2193f3414911304b8b5998570dc7feed68d22deafa6fc1a6a2e60a82cb13`
+- canonical main-figure workflow run: `37106154408`
+- canonical main-figure artifact: `11267687698`
+- figure artifact digest: `sha256:c00314e70b631d024d407429a0947f1f7e6e749a1945fcd58833e1fea1585f19`
+
+The canonical placeholder Main Document and all three main figures have passed visual QA. Regenerate the DOCX only when confirmed private author metadata are inserted.
