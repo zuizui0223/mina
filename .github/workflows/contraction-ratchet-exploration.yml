@@ -1,0 +1,53 @@
+name: contraction-ratchet-exploration
+
+on:
+  push:
+    branches:
+      - explore/contraction-scaling-law-v1
+    paths:
+      - "contracts/CONTRACTION_RATCHET_EXPLORATION_V1.json"
+      - "scripts/explore_contraction_ratchet.py"
+      - ".github/workflows/contraction-ratchet-exploration.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - name: Download pinned source-checked trajectory artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl -L --fail             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/11223511401/zip"             -o build-artifact.zip
+          mkdir -p build/input build/ratchet
+          unzip -o build-artifact.zip -d build/input
+          test -f build/input/figure_data/figure1_trajectories.csv
+          echo "18d21463cedab412ad7a65616ce0098d21784fcfac207cf74eec5f7725dc7faf  build/input/figure_data/figure1_trajectories.csv" | sha256sum -c -
+      - name: Run final frozen ratchet family
+        run: |
+          python scripts/explore_contraction_ratchet.py             --trajectories build/input/figure_data/figure1_trajectories.csv             --out build/ratchet/CONTRACTION_RATCHET_EXPLORATION_RESULT_V1.json
+      - name: Audit final stop rule
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path("contracts/CONTRACTION_RATCHET_EXPLORATION_V1.json").read_text())
+          r=json.loads(Path("build/ratchet/CONTRACTION_RATCHET_EXPLORATION_RESULT_V1.json").read_text())
+          assert c["status"].startswith("stage5_posthoc_final")
+          assert r["status"]=="stage5_posthoc_final_rule_search_not_for_frozen_submission"
+          assert set(r["leave_one_population_out"])=={"symmetric","asymmetric"}
+          print("stage5_ratchet_audit=PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: contraction-ratchet-exploration-v1
+          path: build/ratchet/*

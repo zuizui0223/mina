@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-contraction-memory-exploration-v1",
+  "date": "2026-10-03",
+  "status": "stage4_posthoc_triggered_by_weak_first_differences_not_for_frozen_submission",
+  "trigger": "Stage 1 found moderate long-term log-log coupling but weak first-difference coupling; Stage 2 found no common threshold acceleration.",
+  "question": "Does effective breeding-component contraction track current abundance, a short trailing abundance average, or the deepest abundance bottleneck experienced so far?",
+  "normalized_response": "y_t = -log(E_t / E_first)",
+  "candidate_predictors_frozen_before_computation": {
+    "current": "x_t = -log(N_t / N_first)",
+    "trailing3": "x_t = -log(GM of current and previous two observed N values / N_first); use available prior observations for the first two seasons",
+    "running_min": "x_t = -log(min_{s<=t} N_s / N_first)",
+    "calendar_time": "x_t = (year - first_year) / (last_year - first_year)"
+  },
+  "model": "For each candidate fit y = k*x through the origin with equal total weight per population.",
+  "comparison": "Leave one entire population trajectory out; fit on four, predict the fifth; compare equal-weight mean held-out population RMSE.",
+  "memory_rule": "Call historical-bottleneck memory a candidate only if running_min has lower equal-weight LOO RMSE than both current and trailing3.",
+  "interpretation_rules": [
+    "Exploratory only; cannot alter the frozen Ecology Report.",
+    "A running-minimum win suggests path dependence or structural persistence, not individual-level memory or causal hysteresis.",
+    "No lag length beyond the frozen trailing3 model may be searched.",
+    "Calendar time is a secular-trend benchmark, not an ecological mechanism.",
+    "Five population units are nested within two monitoring systems."
+  ]
+}

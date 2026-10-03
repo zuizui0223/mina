@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-contraction-scaling-law-exploration-v1",
+  "date": "2026-10-02",
+  "status": "posthoc_exploratory_not_for_frozen_ecology_submission",
+  "source_family": "the same five population trajectories used in the frozen Ecology Report",
+  "purpose": "Search for simple quantitative regularities linking abundance decline to effective breeding-component contraction without reopening the frozen submission.",
+  "frozen_before_computation": {
+    "candidate_rule_1": "Within each population, fit log(E_t) = alpha + kappa * log(N_t). Report kappa and R2.",
+    "candidate_rule_2": "Fit a population-fixed-effect common elasticity using within-population demeaned log(E) and log(N). Report kappa_common and R2_within.",
+    "candidate_rule_3": "Fit separate fixed-effect elasticities for Palmer and Signy using the same within-population demeaning. Report kappa_Palmer and kappa_Signy.",
+    "candidate_rule_4": "For each population, at the first season with abundance <= 50%, 25%, and 10% of its first eligible-season abundance, report retained E as percent of first-season E. Thresholds that are never crossed remain missing."
+  },
+  "secondary_descriptors": [
+    "endpoint elasticity = log(E_last/E_first) / log(N_last/N_first)",
+    "within-population Spearman correlation between abundance and E",
+    "abundance fraction at first season E falls to <=75% and <=50% of initial E, if reached",
+    "first-difference diagnostic: within each population regress delta log(E) on delta log(N); this tests short-term co-movement and is not part of the universal-rule decision",
+    "leave-one-population-out common elasticity sensitivity"
+  ],
+  "interpretation_rules": [
+    "No p-value or threshold discovered here may alter the frozen Ecology Report.",
+    "A candidate 'sublinear contraction' rule requires all five annual log-log slopes to be >0 and <1; otherwise it is not called universal.",
+    "A common quarter-power or other named exponent will not be claimed unless confidence intervals from a future independent dataset support it; this exploration reports only the observed estimate.",
+    "Palmer versus Signy differences are descriptive because there are only two monitoring systems.",
+    "Threshold summaries are descriptive and not evidence for a causal tipping point."
+  ]
+}

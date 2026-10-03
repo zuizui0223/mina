@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-contraction-scaling-shape-exploration-v1",
+  "date": "2026-10-02",
+  "status": "stage2_posthoc_triggered_by_stage1_not_for_frozen_submission",
+  "stage1_result": "Stage 1 found all five level elasticities between 0 and 1, common fixed-effect kappa about 0.25, but weak first-difference coupling.",
+  "questions": [
+    "Is the long-term contraction relation approximately a single sublinear power law, or does contraction accelerate at deep abundance loss?",
+    "Does abundance explain effective-component variation after linear time trends are removed, or is the apparent rule mainly a shared long-term trend?"
+  ],
+  "normalized_coordinates": {
+    "x": "-log(N_t / N_first)",
+    "y": "-log(E_t / E_first)"
+  },
+  "candidate_shape_models_frozen_before_stage2_computation": [
+    "M1: y = k*x through the origin",
+    "M2: y = k1*x + k2*x^2 through the origin",
+    "M3_50: y = k1*x + d*max(0, x-log(2))",
+    "M3_25: y = k1*x + d*max(0, x-log(4))",
+    "M3_10: y = k1*x + d*max(0, x-log(10))"
+  ],
+  "model_comparison": "Leave one entire population trajectory out; fit on the other four; compute prediction RMSE on the held-out population. Compare mean population-level RMSE, giving each population equal weight.",
+  "acceleration_rule": "Call acceleration a candidate only if M2 or one frozen hinge has lower equal-weight LOO RMSE than M1 and the fitted late/deep slope is greater than the early slope.",
+  "detrended_diagnostic": "Within each population separately remove linear calendar-year trends from log(N) and log(E), then estimate the common within-population slope and R2 between the residuals.",
+  "interpretation_boundaries": [
+    "All Stage 2 analyses are post-hoc and cannot alter the frozen Ecology Report.",
+    "A better nonlinear shape is descriptive, not evidence of a causal tipping point.",
+    "Weak detrended or first-difference coupling would imply a long-term trajectory rule rather than an annual response law.",
+    "No named universal exponent will be claimed from five nested population units."
+  ],
+  "model_fitting_weight": "Within each training fold, give each population equal total weight (each row weight = 1/n_seasons_in_that_population) so longer Palmer series do not dominate the fitted shape."
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-contraction-scaling-law-synthesis-v1",
+  "status": "bounded_posthoc_exploration_closed",
+  "ecology_submission_affected": false,
+  "stage1": {
+    "workflow_run_id": 37000039809,
+    "artifact_id": 11223511401,
+    "artifact_digest": "sha256:f1784a2075457f82ef4657dfef086eaba92b0adee24ca09eca389ec0349acdd3",
+    "trajectory_csv_sha256": "18d21463cedab412ad7a65616ce0098d21784fcfac207cf74eec5f7725dc7faf",
+    "all_five_kappa_between_0_and_1": true,
+    "population_kappa": {
+      "Cormorant": 0.06940794578879735,
+      "Humble": 0.20329660073019787,
+      "Litchfield": 0.4651905584821034,
+      "Signy Adelie": 0.289159355815106,
+      "Signy chinstrap": 0.3656980307143262
+    },
+    "common_fixed_effect_kappa": 0.25010241782515236,
+    "common_level_r2": 0.5849309593523975,
+    "loo_common_kappa_range": [0.13914236179330836, 0.35370857442618103],
+    "palmer_kappa": 0.24565354693715652,
+    "signy_kappa": 0.33884612738248865,
+    "first_difference_common_kappa": 0.12019962014476063,
+    "first_difference_r2": 0.07059042045319597
+  },
+  "stage2": {
+    "best_model": "single_log_linear_power_law",
+    "equal_weight_loo_rmse": {
+      "M1": 0.3366162300192455,
+      "M3_50": 0.3568634713702396,
+      "M3_10": 0.36619596418974815,
+      "M3_25": 0.36812441912425786,
+      "M2": 0.38975350349226145
+    },
+    "candidate_acceleration_rule_supported": false
+  },
+  "stage3": {
+    "intercept_only_loo_rmse": 0.16950802774021542,
+    "promising_predictors": [],
+    "predictor_loo_rmse": {
+      "initial_neff": 0.18245945191782378,
+      "initial_evenness": 0.18354078449411781,
+      "decline_depth": 0.26549142762283195,
+      "component_count": 0.27799237853849906
+    }
+  },
+  "stage4": {
+    "workflow_run_id": 37080794693,
+    "artifact_id": 11258960553,
+    "artifact_digest": "sha256:47dd31d3e1041a897c53d1b0204b127738b8bc64e169cc2b6f753b63dbd14e0c",
+    "historical_bottleneck_memory_candidate_supported": true,
+    "equal_weight_loo_rmse": {
+      "calendar_time": 0.259937955164438,
+      "running_min": 0.3204344722346183,
+      "current": 0.3366162300192454,
+      "trailing3": 0.35460943336849854
+    }
+  },
+  "stage5": {
+    "workflow_run_id": 37081005242,
+    "artifact_id": 11259100781,
+    "artifact_digest": "sha256:3360ac743186edc3ac079661bb68da6905e17944637dd62e580d36dceff9cf38",
+    "candidate_ratchet_rule_supported": false,
+    "k_down": 0.22048899348321363,
+    "k_up": -0.05475713048750957,
+    "asymmetric_loo_rmse": 0.11319343070941099,
+    "symmetric_loo_rmse": 0.11797409485234937,
+    "decline_sign_concordance": 0.6266666666666667,
+    "rebound_sign_concordance": 0.25806451612903225
+  },
+  "closed_search": true,
+  "next_valid_step": "Independent test in additional component-resolved colonial populations."
+}

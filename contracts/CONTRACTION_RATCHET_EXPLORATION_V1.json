@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-contraction-ratchet-exploration-v1",
+  "date": "2026-10-03",
+  "status": "stage5_posthoc_final_rule_search_not_for_frozen_submission",
+  "trigger": "Stage 4 found running-minimum abundance modestly outperformed current abundance, while calendar time performed best overall.",
+  "question": "Is short-term breeding-space response asymmetric, with stronger contraction during abundance losses than expansion during abundance rebounds?",
+  "transition_definition": {
+    "dN": "delta log breeding-pair abundance between consecutive observed seasons within population",
+    "dE": "delta log effective breeding-component number between the same seasons",
+    "decline_transition": "dN < 0",
+    "rebound_transition": "dN > 0",
+    "zero_dN": "exclude from slope fitting but report count"
+  },
+  "candidate_models_frozen_before_computation": {
+    "symmetric": "dE = k*dN through origin",
+    "asymmetric": "dE = k_down*dN for dN<0 and k_up*dN for dN>0, both through origin"
+  },
+  "weighting": "Each population contributes equal total weight within each model; each transition weight is inverse transition count for its population.",
+  "comparison": "Leave one entire population out; fit on four and predict all transitions of the held-out population. Compare equal-weight mean population RMSE.",
+  "candidate_ratchet_rule": "Supported descriptively only if asymmetric LOO RMSE < symmetric LOO RMSE, fitted k_down > 0, fitted k_up >= 0, and k_down > k_up.",
+  "secondary_descriptors": [
+    "decline sign-concordance fraction: P(dE<0 | dN<0)",
+    "rebound sign-concordance fraction: P(dE>0 | dN>0)",
+    "transition counts by population and direction"
+  ],
+  "interpretation_rules": [
+    "This is the final bounded post-hoc rule search in this branch.",
+    "No p-values or significance claims.",
+    "A supported ratchet is a trajectory asymmetry hypothesis, not evidence of irreversible colony loss or individual memory.",
+    "A failed rule ends the current quantitative-rule search; no alternate lags, thresholds or nonlinear transition models are opened.",
+    "Nothing in Stage 5 can modify the frozen Ecology Report."
+  ]
+}
