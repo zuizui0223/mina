@@ -407,7 +407,7 @@ def build(
             [
                 "pandoc",
                 str(md),
-                "--from=markdown+raw_attribute",
+                "--from=markdown+raw_attribute+tex_math_single_backslash+tex_math_dollars",
                 "--to=docx",
                 "--citeproc",
                 f"--bibliography={bibliography_path}",
