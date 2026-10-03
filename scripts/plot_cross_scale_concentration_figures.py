@@ -76,7 +76,7 @@ def figure2_scale_transfer(
 
     bars = axes[0].barh(y, values, color="C0")
     axes[0].axvline(0.0, lw=1.0, color="0.25")
-    axes[0].set_xlim(min(values) * 1.08, 0.0)
+    axes[0].set_xlim(min(values) * 1.08, 20.0)
     axes[0].set_yticks(y, names)
     axes[0].invert_yaxis()
     axes[0].set_xlabel(
@@ -87,13 +87,13 @@ def figure2_scale_transfer(
 
     for bar, value, p in zip(bars, values, pvals):
         axes[0].text(
-            value / 2.0,
+            2.0,
             bar.get_y() + bar.get_height() / 2.0,
-            f"{value:.0f}%  p={_p_text(p)}",
-            ha="center",
+            f"{value:.0f}%, p={_p_text(p)}",
+            ha="left",
             va="center",
             fontsize=6.5,
-            color="white",
+            color="black",
         )
 
     short_region = {
@@ -114,7 +114,7 @@ def figure2_scale_transfer(
     y2 = np.arange(len(declining))
 
     axes[1].axvline(0.0, lw=1.0, color="0.25")
-    axes[1].set_xlim(-0.02, max(deltas) + 0.18)
+    axes[1].set_xlim(-0.02, max(deltas) + 0.28)
     for yi, delta, p, ok in zip(y2, deltas, pvals_reg, supported):
         marker = "o" if ok else "s"
         size = 52 if ok else 40
@@ -143,13 +143,14 @@ def figure2_scale_transfer(
         fontsize=9.5,
     )
     fig.text(
-        0.73,
-        0.015,
-        "Circles: supported under both regional nulls; squares: same direction, not individually supported.",
+        0.72,
+        0.024,
+        "Circles = supported under both regional nulls\nSquares = same direction, not individually supported",
         ha="center",
+        va="bottom",
         fontsize=6.2,
     )
-    fig.tight_layout(rect=(0.0, 0.065, 1.0, 0.96))
+    fig.tight_layout(rect=(0.0, 0.09, 1.0, 0.96))
     _save(fig, out_dir, "figure2_cross_scale_transfer")
     plt.close(fig)
 
