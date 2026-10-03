@@ -220,7 +220,7 @@ def analyze(path: Path, *, assume_whole_colony_extract: bool = False) -> dict[st
         if outcome is None:
             continue
         roster, common_years = outcome
-        span = max(common_years) - min(common_years)
+        span = max(common_years) - min(common_years) + 1
         if span < MIN_SPAN:
             continue
 
