@@ -118,7 +118,7 @@ Signy independently reproduced the outcome. In the prospectively frozen Adélie 
 
 The separately frozen chinstrap test also passed. Breeding pairs declined from 1,642 to 581 and \(E\) declined from 4.438 to 2.191 (−50.6%). Under the severe 20%-CV null, one of 100,000 simulations was at least as negative as observed (plus-one p = 0.000020).
 
-Thus the within-system result transferred from the Palmer discovery system to an independent Antarctic region and from Adélie to chinstrap penguins.
+Thus the within-system result transferred from the Palmer discovery system to an independent Antarctic region and from Adélie to chinstrap penguins. The five normalized abundance and effective-component trajectories are shown in Figure 1.
 
 ### The local scaling direction was consistent but not a universal exponent
 
@@ -138,7 +138,7 @@ Chinstrap penguins in the Central-west Antarctic Peninsula retained three sites 
 
 Thus two of four declining networks were individually supported under both regional nulls, but the direction was positive in all four. Their median observation-error-calibrated effect was +0.094. These are panel-level support calls defined by the frozen regional contract, not a family-wide rejection across four panels; no multiplicity-adjusted regional generality test was prespecified. The exact 4/4 positive sign count has a nominal one-sided sign probability of 0.0625, but species × region panels within the same region are not independent geographic replicates, so we treat that probability as descriptive only.
 
-The geographic split was clear: both South Shetland networks survived the observation-error sensitivity, whereas the Central-west Antarctic Peninsula networks pointed in the same direction but did not.
+The geographic split was clear: both South Shetland networks survived the observation-error sensitivity, whereas the Central-west Antarctic Peninsula networks pointed in the same direction but did not. Figure 2 places the five within-system contraction outcomes beside the four declining regional scale-transfer effects.
 
 ### Direction transferred more consistently than magnitude
 
@@ -150,7 +150,7 @@ The existing data therefore support a shared **sign** of abundance-linked breedi
 
 Three eligible regional networks increased in abundance. Adélie penguins in Victoria Land increased from approximately 387,917 to 516,140 adjusted breeding pairs (+33.1%), while \(E\) declined from 4.85 to 3.56 (−26.6%). Gentoo penguins in the Central-west Antarctic Peninsula increased from approximately 19,084 to 23,253 (+21.8%), while \(E\) declined from 4.93 to 4.13 (−16.3%). South Shetland gentoo increased from approximately 11,910 to 19,544 (+64.1%), while \(E\) changed little but still ended lower, from 3.90 to 3.86 (−1.1%).
 
-These patterns are qualitatively consistent with the earlier slow-state description, in which annual abundance rebounds seldom coincided with immediate recovery of effective component number. They do not constitute a confirmatory regional hysteresis result because no such test was frozen for the increasing MAPPPD panels.
+These patterns are qualitatively consistent with the earlier slow-state description, in which annual abundance rebounds seldom coincided with immediate recovery of effective component number (Figure 3; Appendix S1: Table S5). They do not constitute a confirmatory regional hysteresis result because no such test was frozen for the increasing MAPPPD panels.
 
 ### The internal route to concentration was not conserved
 
@@ -160,7 +160,7 @@ At Palmer, the breeding component that was largest initially had zero breeding p
 
 At Signy, the opposite occurred. The initially dominant Adélie component remained dominant and increased from 47.5% to 69.4% of the retained population. The initially dominant chinstrap component likewise remained dominant and increased from 40.0% to 65.6%.
 
-The replicated endpoint therefore does not require preferential survival of the historically largest breeding unit. What transfers is concentration of breeding effort, not the identity or rank of the component that carries the remnant population.
+The replicated endpoint therefore does not require preferential survival of the historically largest breeding unit. What transfers is concentration of breeding effort, not the identity or rank of the component that carries the remnant population. The contrasting nominal component trajectories are shown in Appendix S1: Figure S1.
 
 ## Discussion
 
