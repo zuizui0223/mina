@@ -85,6 +85,9 @@ def figure1(data_dir: Path, out_dir: Path) -> None:
         fontsize=7.5,
     )
 
+    fig.text(
+        0.01, 0.99, "Figure 1", ha="left", va="top", fontsize=9, fontweight="bold"
+    )
     fig.suptitle(
         "Population decline is accompanied by loss of effective monitored breeding components",
         y=0.99,
