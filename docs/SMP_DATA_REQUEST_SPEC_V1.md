@@ -2,9 +2,9 @@
 
 ## Purpose
 
-Request a non-sensitive research extract sufficient to determine whether the Seabird Monitoring Programme can support a multi-species analysis of spatial redistribution within breeding populations.
+Request a non-sensitive research extract sufficient to determine whether the Seabird Monitoring Programme can support a multi-species analysis of spatial redistribution within repeated breeding-site networks.
 
-The scientific question is whether, during population change, breeding abundance changes only in total or also changes in its relative distribution among repeatedly monitored components.
+The scientific question is whether, during abundance change, breeding effort changes only in total or also changes in its relative distribution among repeatedly monitored spatial components. Master Sites will be treated as geographic monitoring networks, not assumed demographic populations.
 
 ## Requested records
 
