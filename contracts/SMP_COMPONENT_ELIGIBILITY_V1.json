@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-component-eligibility-v1",
+  "date": "2026-10-03",
+  "status": "outcome_blind_structural_audit_before_any_smp_count_magnitude_analysis",
+  "source": {
+    "programme": "Seabird Monitoring Programme (SMP), Britain and Ireland",
+    "public_portal": "https://app.bto.org/seabirds/public/data.jsp",
+    "official_handbook": "https://www.bto.org/sites/default/files/seabird-monitoring-handbook.pdf",
+    "application_guide": "https://app.bto.org/static/seabirds/app_guide.pdf"
+  },
+  "scientific_role": "Prospective external test of breeding-component contraction outside penguins if structural eligibility is sufficient.",
+  "outcome_blinding": {
+    "forbidden_before_gate_freeze": [
+      "Count magnitude",
+      "annual total abundance",
+      "N_eff",
+      "abundance slope",
+      "contraction slope",
+      "kappa",
+      "any abundance or concentration effect size"
+    ],
+    "permitted_columns": [
+      "species",
+      "date/year",
+      "county/area",
+      "master site identity",
+      "site/subsite identity",
+      "plot identity",
+      "method",
+      "unit",
+      "accuracy/estimate class",
+      "comments/merge flags"
+    ]
+  },
+  "hierarchy": {
+    "parent_population_unit": "master site x species",
+    "candidate_component": "lowest repeatedly identifiable spatial census unit nested within the master site, preferring explicit plot; otherwise persistent child site/subsite counted as a whole colony",
+    "whole_parent_aggregate_rule": "A parent-level aggregate record must never be summed together with its child components.",
+    "merged_record_rule": "Records flagged as totals after merging sites/components are excluded from component panels unless an explicit stable crosswalk proves a one-to-one component definition through time."
+  },
+  "compatibility_rules": [
+    "Colony-count records only; breeding-success records are excluded.",
+    "A primary panel uses one census unit within species (e.g. AON, AOS or IND) and does not mix units through time.",
+    "A primary panel uses one method family through time; method changes require an explicit documented equivalence rule frozen before count magnitudes are opened.",
+    "Estimated/hidden-estimate records are retained only if their status is explicitly represented in a later observation model; otherwise primary eligibility uses direct/accurate counts and estimate-containing panels are robustness-only.",
+    "Component labels and spatial definitions must be longitudinally interpretable. Renames/merges/splits require a documented crosswalk created without inspecting count magnitudes."
+  ],
+  "primary_structural_gate": {
+    "minimum_components_J": 3,
+    "minimum_complete_seasons": 10,
+    "minimum_calendar_span_years": 12,
+    "complete_season_definition": "all frozen components in the panel have an eligible colony-count record in that season",
+    "minimum_candidate_panels_to_continue_macro_route": 20,
+    "minimum_species_to_continue_macro_route": 5,
+    "minimum_master_sites_to_continue_macro_route": 15
+  },
+  "coverage_audit_outputs_allowed": [
+    "number of candidate panels",
+    "number of species",
+    "number of master sites",
+    "component count J per panel",
+    "eligible years and calendar span per panel",
+    "method/unit categories",
+    "missingness pattern",
+    "rename/merge/split flags",
+    "estimate-status frequencies"
+  ],
+  "coverage_audit_outputs_forbidden": [
+    "count totals",
+    "count means/medians/ranges",
+    "population trends",
+    "decline/increase classification",
+    "N_eff or any concentration metric",
+    "kappa or any scaling statistic"
+  ],
+  "decision": {
+    "pass": "All three macro-route minima are met: >=20 candidate panels, >=5 species and >=15 master sites.",
+    "marginal": "At least 8 panels but the full macro-route minima are not met; SMP may support a focused multispecies validation but not the planned macroecological synthesis.",
+    "fail": "<8 structurally eligible panels or longitudinal component identity cannot be defended."
+  },
+  "post_gate_if_pass": [
+    "Freeze the count-processing and observation-error model.",
+    "Freeze decline/increase eligibility rules without inspecting SMP effect sizes.",
+    "Freeze null-calibrated contraction metric and trait hypotheses.",
+    "Only then open count magnitudes."
+  ],
+  "interpretation_boundary": [
+    "This audit evaluates data structure only, not whether the penguin-derived rule is supported.",
+    "Public SMP guidance explicitly values consistent plot names and repeatable site boundaries, but each empirical panel still requires a longitudinal identity audit.",
+    "No result from the existing penguin trajectories may be used to tune SMP eligibility after this contract."
+  ]
+}
