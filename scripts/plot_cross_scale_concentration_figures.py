@@ -114,7 +114,7 @@ def figure2_scale_transfer(
     y2 = np.arange(len(declining))
 
     axes[1].axvline(0.0, lw=1.0, color="0.25")
-    axes[1].set_xlim(-0.02, max(deltas) + 0.28)
+    axes[1].set_xlim(-0.02, max(deltas) + 0.36)
     for yi, delta, p, ok in zip(y2, deltas, pvals_reg, supported):
         marker = "o" if ok else "s"
         size = 52 if ok else 40
