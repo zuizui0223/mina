@@ -2,16 +2,16 @@
   "schema_version": 1,
   "receipt_id": "mina-ecology-article-cross-scale-docx-qa-v0-1",
   "date": "2026-10-03",
-  "status": "canonical_placeholder_submission_preview_fully_verified",
+  "status": "canonical_placeholder_submission_preview_fully_verified_after_ai_and_data_acknowledgment_update",
   "journal": "Ecology",
   "submission_type": "Article",
   "source_manuscript": "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
   "builder": "scripts/build_ecology_cross_scale_submission_docx.py",
   "workflow": {
-    "run_id": 37109978809,
-    "head_sha": "3e008f401a7ccfa5fb6930c4d89a12a720ef072d",
-    "artifact_id": 11269905500,
-    "artifact_digest": "sha256:93db2193f3414911304b8b5998570dc7feed68d22deafa6fc1a6a2e60a82cb13",
+    "run_id": 37117211288,
+    "head_sha": "7af330c02422678d8d3c95c7cbaf165368f4a6c0",
+    "artifact_id": 11271907803,
+    "artifact_digest": "sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b",
     "conclusion": "success"
   },
   "rendered_preview": {
@@ -23,8 +23,8 @@
     "main_figure_captions_in_main_document": 3,
     "supplementary_caption_excluded_from_main_document": true,
     "references_rendered": true,
-    "visual_qa": "all_24_pages_inspected_from_current_canonical_docx",
-    "qa_method": "canonical DOCX render to page PNGs with full-page visual inspection; byte-identical unchanged pages were verified against the immediately preceding fully inspected render",
+    "visual_qa": "PASS_24_OF_24_CURRENT_PAGES",
+    "qa_method": "Current canonical DOCX rendered to 24 page images. Pages affected by the final Methods AI disclosure and data-provider acknowledgment were re-inspected after regeneration; all current pages are covered by full-page visual QA.",
     "expected_total_submission_pages_with_three_separate_main_figures": 27,
     "within_30_page_limit_after_separate_figures": true,
     "page_count_note": "The 24-page Main Document contains title page, abstract/text, references and figure captions. Ecology counts separately uploaded figure pages toward the manuscript limit; three one-page main figures yield an expected 27-page generated manuscript, excluding Supporting Information.",
@@ -46,7 +46,10 @@
     "Supplementary Figure S1 caption separated from the Main Document",
     "Pandoc math parsing enabled so manuscript equations render as Word equations",
     "Figure-caption formulas replaced with robust plain-text notation",
-    "Regional null notation simplified to avoid typographic spacing artifacts"
+    "Regional null notation simplified to avoid typographic spacing artifacts",
+    "AI-use disclosure added to the applicable Methods section as well as Acknowledgments",
+    "Palmer LTER, BAS/NERC UK Polar Data Centre, and APBP contributors acknowledged in the generated Main Document",
+    "Ecology figure captions contain no equations"
   ],
   "unresolved_author_controlled_fields": [
     "author list and order",
@@ -58,8 +61,10 @@
     "conflict-of-interest statement",
     "complete AI-tool inventory",
     "overlap/dual-publication statement",
-    "ORCID IDs if requested",
-    "permanent archive DOI"
+    "ORCID IDs if requested"
   ],
-  "boundary": "This receipt verifies the canonical placeholder Ecology Article package. The author-complete DOCX must be regenerated with confirmed private metadata through the same builder and receive a final render check before upload."
+  "boundary": "This receipt verifies the current canonical placeholder Ecology Article package after AI-disclosure and data-acknowledgment updates. Initial upload remains blocked only by confirmed author-controlled metadata. The author-complete DOCX must be regenerated through the same builder and receive one final render check before upload.",
+  "optional_post_initial_submission_fields": [
+    "permanent archive DOI"
+  ]
 }
