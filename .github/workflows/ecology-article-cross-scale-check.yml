@@ -21,6 +21,8 @@ on:
       - "tests/test_ecology_article_cross_scale_submission.py"
       - "tests/test_ecology_cross_scale_canonical_target.py"
       - "tests/test_ecology_article_cross_scale_final_gate.py"
+      - "tests/test_ecology_article_cross_scale_si.py"
+      - "scripts/build_ecology_cross_scale_si.py"
       - ".github/workflows/ecology-article-cross-scale-check.yml"
   workflow_dispatch:
 
@@ -35,4 +37,5 @@ jobs:
       - run: python -m pip install -e ".[dev]"
       - name: Run focused submission tests
         run: |
-          pytest -q             tests/test_ecology_article_cross_scale_submission.py             tests/test_ecology_cross_scale_canonical_target.py             tests/test_ecology_article_cross_scale_final_gate.py
+          pytest -q             tests/test_ecology_article_cross_scale_submission.py             tests/test_ecology_cross_scale_canonical_target.py             tests/test_ecology_article_cross_scale_final_gate.py \
+            tests/test_ecology_article_cross_scale_si.py
