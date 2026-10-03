@@ -2,7 +2,7 @@
 
 ## Scientific status
 
-**Closed. No new ecological endpoint should be added before initial submission.**
+**Scientific analysis is closed. Packaging QA is temporarily reopened for the publication-sized figures, current-head Main Document, and Appendix S1 PDF. No new ecological endpoint may be added.**
 
 The active manuscript is now organized as an Ecology **Article**, not a Report. The change is editorial rather than scientific: the cross-scale extension adds a distinct regional inferential component, while the results and claim boundaries remain those already frozen.
 
@@ -42,7 +42,7 @@ The active manuscript is now organized as an Ecology **Article**, not a Report. 
 
 ## Remaining blockers
 
-Only author-controlled submission metadata remain as initial-submission blockers. Permanent archiving can be completed later and is not required to open the initial submission.
+Current packaging blockers are: (1) current-head Main Document re-QA after Appendix references, (2) publication-sized figure rerender and size/visual QA, (3) Appendix S1 single-PDF build/QA, and (4) author-controlled metadata. Permanent archiving can be completed later and is not required to open the initial submission.
 
 ## Canonical freeze
 
@@ -78,3 +78,8 @@ This QA applies to the placeholder preview. Once private author metadata are con
 - digest: `sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b`
 - rendered Main Document: **24 pages**
 - expected generated manuscript with three separate main-figure pages: **27/30 pages**
+
+
+## Packaging QA reopened
+
+The earlier 24-page Main Document and figure artifacts remain valid provenance, but they are no longer the final upload artifacts because subsequent compliance work added Appendix S1 references and changed figure dimensions to the Ecology publication-size limit. Final-gate status is therefore temporarily PENDING until the replacement DOCX, figures and Appendix S1 PDF pass QA.
