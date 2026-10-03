@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-component-macroecology-feasibility-v1",
+  "date": "2026-10-03",
+  "status": "outcome_blind_conditional_go",
+  "purpose": "Determine whether SMP can support an independent, multi-species test of breeding-component concentration without inspecting concentration outcomes before panel eligibility is frozen.",
+  "primary_spatial_hierarchy": {
+    "population": "master_site x species",
+    "components": "child site IDs",
+    "secondary_optional": "site x species with named plots as components if longitudinal plot continuity metadata are supplied"
+  },
+  "eligibility_is_metadata_only": true,
+  "required_fields": [
+    "master_site_id",
+    "master_site_name",
+    "site_id",
+    "site_name",
+    "year_or_date",
+    "species",
+    "count",
+    "count_unit",
+    "survey_method",
+    "accuracy_or_estimate_flag",
+    "explicit_nil_return",
+    "verification_status",
+    "merged_or_reconstructed_total_flag",
+    "site_identity_history_or_crosswalk"
+  ],
+  "provisional_panel_gate_frozen_before_receiving_counts": {
+    "minimum_components_per_population": 3,
+    "minimum_complete_seasons": 8,
+    "minimum_calendar_span_years": 10,
+    "component_roster": "Use only child sites with stable identity/crosswalk across the retained interval.",
+    "complete_season_definition": "Every retained child site has an explicit count or explicit nil return in that season.",
+    "missing_rule": "No record or unknown coverage is missing, never zero.",
+    "unit_rule": "All retained component records within a population panel must use the same biological count unit or an externally documented equivalent.",
+    "method_rule": "Exclude method transitions lacking documented comparability.",
+    "merge_rule": "Never combine merged master/site totals with their constituent component records."
+  },
+  "feasibility_success": "At least 10 master_site x species panels from at least 5 seabird species pass the metadata-only gate, with at least two distinct taxonomic/ecological guilds represented.",
+  "feasibility_strong_success": "At least 25 eligible panels from at least 10 species pass the metadata-only gate.",
+  "feasibility_failure": "Fewer than 10 eligible panels, or component identity cannot be reconstructed without outcome-informed manual decisions.",
+  "outcome_blind_stop_rule": [
+    "Do not calculate N_eff, kappa, concentration slopes, abundance trends, or any outcome-dependent statistic before the eligibility roster is frozen.",
+    "Coverage, identifiers, units, methods, dates, explicit zero flags and boundary/crosswalk metadata may be inspected.",
+    "If the feasibility gate fails, retain the frozen Ecology Report as the primary paper and do not rescue SMP eligibility by lowering thresholds after seeing counts."
+  ]
+}
