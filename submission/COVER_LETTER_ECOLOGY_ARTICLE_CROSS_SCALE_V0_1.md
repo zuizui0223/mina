@@ -14,7 +14,7 @@ The contribution is therefore not the established observation that abundance and
 
 We believe the Article format is appropriate because the manuscript now combines distinct but linked inferential components—within-system discovery, prospective replication, and a regional scale-transfer analysis—while retaining one ecological question. We deliberately do not claim a universal scaling exponent, a seabird-wide law, regional hysteresis, individual movement, or a single habitat or behavioral mechanism.
 
-The manuscript is approximately 4,400 words before the full reference list, has a 256-word abstract, and contains three main figures plus one supplementary descriptive figure. All primary data sources are public. Frozen analysis contracts, source checksums, result receipts, reviewer-facing claim boundaries, and reproducible figure workflows are available in the accompanying public repository.
+The manuscript is approximately 4,600 words before the full reference list, has a 256-word abstract, and contains three main figures plus one supplementary descriptive figure. All primary data sources are public. Frozen analysis contracts, source checksums, result receipts, reviewer-facing claim boundaries, and reproducible figure workflows are available in the accompanying public repository.
 
 Thank you for considering the manuscript.
 
