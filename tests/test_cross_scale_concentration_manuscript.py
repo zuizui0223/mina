@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 
@@ -11,6 +12,7 @@ REGIONAL = ROOT / "results" / "MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2.json"
 PALMER = ROOT / "results" / "PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
 SIGNY_A = ROOT / "results" / "SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
 SIGNY_C = ROOT / "results" / "SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+BIB = ROOT / "docs" / "REFERENCES_V6.bib"
 
 
 def load(path: Path):
@@ -94,3 +96,12 @@ def test_no_superseded_static_trait_story_is_reintroduced():
     ]
     for phrase in forbidden:
         assert phrase not in manuscript
+
+
+def test_all_manuscript_citation_keys_exist_in_references_v6():
+    manuscript = MANUSCRIPT.read_text(encoding="utf-8")
+    bib = BIB.read_text(encoding="utf-8")
+    cited = set(re.findall(r"@([A-Za-z0-9_:-]+)", manuscript))
+    available = set(re.findall(r"@[A-Za-z]+\{([^,]+),", bib))
+    missing = sorted(cited - available)
+    assert not missing, f"missing bibliography keys: {missing}"
