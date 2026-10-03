@@ -39,9 +39,9 @@ def _read_json(path: Path) -> dict:
 
 def _save(fig, out_dir: Path, stem: str) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out_dir / f"{stem}.png", dpi=300, bbox_inches="tight")
-    fig.savefig(out_dir / f"{stem}.svg", bbox_inches="tight")
-    fig.savefig(out_dir / f"{stem}.pdf", bbox_inches="tight")
+    fig.savefig(out_dir / f"{stem}.png", dpi=300)
+    fig.savefig(out_dir / f"{stem}.svg")
+    fig.savefig(out_dir / f"{stem}.pdf")
 
 
 def _p_text(value: float) -> str:
@@ -59,7 +59,7 @@ def figure2_scale_transfer(local_data_dir: Path, regional_receipt: Path, out_dir
     declining = [p for p in regional["panels"] if p["direction"] == "decline"]
     declining.sort(key=lambda p: (p["region"], p["species"]))
 
-    fig, axes = plt.subplots(1, 2, figsize=(12.8, 5.4))
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 4.6))
 
     # Panel A: local replicated endpoint.
     names = [r["population"] for r in local]
@@ -71,8 +71,8 @@ def figure2_scale_transfer(local_data_dir: Path, regional_receipt: Path, out_dir
     axes[0].set_xlim(min(values) * 1.08, 0.0)
     axes[0].set_yticks(y, names)
     axes[0].invert_yaxis()
-    axes[0].set_xlabel("First-to-last change in effective components (%)")
-    axes[0].set_title("A. Within breeding systems")
+    axes[0].set_xlabel("First-to-last change in effective components (%)", fontsize=8)
+    axes[0].set_title("A. Within breeding systems", fontsize=7.5)
     for bar, value, p in zip(bars, values, pvals):
         axes[0].text(
             value / 2.0,
@@ -85,8 +85,12 @@ def figure2_scale_transfer(local_data_dir: Path, regional_receipt: Path, out_dir
         )
 
     # Panel B: regional scale-transfer result.
+    short_region = {
+        "Central-west Antarctic Peninsula": "CW Peninsula",
+        "South Shetland Islands": "S. Shetland Is.",
+    }
     labels = [
-        f"{SPECIES_LABEL[p['species']]} — {p['region']}"
+        f"{SPECIES_LABEL[p['species']]} — {short_region[p['region']]}"
         for p in declining
     ]
     deltas = np.asarray([float(p["delta_kappa_observation_error_null"]) for p in declining])
@@ -109,8 +113,8 @@ def figure2_scale_transfer(local_data_dir: Path, regional_receipt: Path, out_dir
         )
     axes[1].set_yticks(y2, labels)
     axes[1].invert_yaxis()
-    axes[1].set_xlabel("Observation-error-calibrated Δκ")
-    axes[1].set_title("B. Regional monitored site networks")
+    axes[1].set_xlabel("Observation-error-calibrated Δκ", fontsize=8)
+    axes[1].set_title("B. Regional monitored site networks", fontsize=8.5)
 
     fig.suptitle(
         "Breeding-space concentration recurs when the spatial component is moved one level up",
@@ -123,7 +127,7 @@ def figure2_scale_transfer(local_data_dir: Path, regional_receipt: Path, out_dir
         ha="center",
         fontsize=8.5,
     )
-    fig.tight_layout(rect=(0.0, 0.055, 1.0, 0.98))
+    axes[0].tick_params(labelsize=7)\n    axes[1].tick_params(labelsize=7)\n    fig.tight_layout(rect=(0.0, 0.07, 1.0, 0.96))
     _save(fig, out_dir, "figure2_cross_scale_transfer")
     plt.close(fig)
 
@@ -133,7 +137,7 @@ def figure3_regional_endpoints(regional_receipt: Path, out_dir: Path) -> None:
     receipt = _read_json(regional_receipt)
     panels = receipt["panels"]
 
-    fig, ax = plt.subplots(figsize=(8.4, 6.2))
+    fig, ax = plt.subplots(figsize=(7.0, 5.0))
     ax.axvline(0.0, lw=0.9, color="0.25")
     ax.axhline(0.0, lw=0.9, color="0.25")
 
@@ -143,7 +147,7 @@ def figure3_regional_endpoints(regional_receipt: Path, out_dir: Path) -> None:
         decline = panel["direction"] == "decline"
         marker = "o" if decline else "^"
         color = "C0" if decline else "C1"
-        ax.scatter([dn], [de], marker=marker, s=70, color=color)
+        ax.scatter([dn], [de], marker=marker, s=55, color=color)
         short_region = (
             "CWAP"
             if panel["region"] == "Central-west Antarctic Peninsula"
@@ -159,13 +163,13 @@ def figure3_regional_endpoints(regional_receipt: Path, out_dir: Path) -> None:
             offset = (6, 5)
         ax.annotate(label, (dn, de), xytext=offset, textcoords="offset points", fontsize=8.5)
 
-    ax.scatter([], [], marker="o", s=70, color="C0", label="Declining network")
-    ax.scatter([], [], marker="^", s=70, color="C1", label="Increasing network")
-    ax.legend(frameon=False, loc="lower right")
+    ax.scatter([], [], marker="o", s=55, color="C0", label="Declining network")
+    ax.scatter([], [], marker="^", s=55, color="C1", label="Increasing network")
+    ax.legend(frameon=False, loc="lower right", fontsize=7.5)
 
-    ax.set_xlabel("First-to-last abundance change (%)")
-    ax.set_ylabel("First-to-last effective-site change (%)")
-    ax.set_title("Regional endpoint changes: abundance recovery need not rebuild site distribution")
+    ax.set_xlabel("First-to-last abundance change (%)", fontsize=8)
+    ax.set_ylabel("First-to-last effective-site change (%)", fontsize=8)
+    ax.set_title("Regional endpoint changes: abundance recovery need not rebuild site distribution", fontsize=9)
     fig.text(
         0.5,
         0.015,
@@ -173,7 +177,7 @@ def figure3_regional_endpoints(regional_receipt: Path, out_dir: Path) -> None:
         ha="center",
         fontsize=8.5,
     )
-    fig.tight_layout(rect=(0.0, 0.05, 1.0, 1.0))
+    ax.tick_params(labelsize=7.5)\n    fig.tight_layout(rect=(0.0, 0.06, 1.0, 1.0))
     _save(fig, out_dir, "figure3_regional_endpoint_context")
     plt.close(fig)
 
