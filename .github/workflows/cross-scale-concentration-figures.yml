@@ -8,6 +8,7 @@ on:
       - "results/MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2.json"
       - "scripts/plot_cross_scale_concentration_figures.py"
       - "scripts/plot_replicated_concentration_figures.py"
+      - "data/figure_data/replicated_concentration_v1/**"
       - ".github/workflows/cross-scale-concentration-figures.yml"
   workflow_dispatch:
 
@@ -15,25 +16,21 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     permissions:
-      actions: read
       contents: read
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - run: python -m pip install -e ".[dev]" matplotlib pypdf
 
-      - name: Reuse frozen Palmer-Signy figure data
+      - name: Use repository-pinned source-checked figure data
         run: |
-          mkdir -p build/reused build/figure_data build/figures
-          gh run download 36953934301             -n replicated-concentration-figures-v1             -D build/reused
-          test -s build/reused/figure_data/FIGURE_DATA_RECEIPT_V1.json
-          test -s build/reused/figure_data/figure1_trajectories.csv
-          test -s build/reused/figure_data/figure2_summary.csv
-          test -s build/reused/figure_data/figure3_dominance_routes.csv
-          cp build/reused/figure_data/* build/figure_data/
+          mkdir -p build/figure_data build/figures
+          test -s data/figure_data/replicated_concentration_v1/FIGURE_DATA_RECEIPT_V1.json
+          test -s data/figure_data/replicated_concentration_v1/figure1_trajectories.csv
+          test -s data/figure_data/replicated_concentration_v1/figure2_summary.csv
+          test -s data/figure_data/replicated_concentration_v1/figure3_dominance_routes.csv
+          cp data/figure_data/replicated_concentration_v1/* build/figure_data/
 
       - name: Render cross-scale figures
         run: |
