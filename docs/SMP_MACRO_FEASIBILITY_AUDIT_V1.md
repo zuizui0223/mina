@@ -112,12 +112,16 @@ A usable macro panel requires a reliable way to exclude overlapping parent/merge
 
 The macroecology extension proceeds only if the requested SMP extract yields at least:
 
-- **10 structurally eligible species × MasterSite panels**,
-- from **at least 5 seabird species**,
+- **at least 20 structurally eligible species × MasterSite panels**,
+- from **at least 8 seabird species**,
+- distributed across **at least 15 independent MasterSites**,
+- with **at least 4 species represented in two or more eligible parent units**,
 - with each panel containing **at least 3 mutually exclusive SiteID components**,
-- **at least 10 complete or explicitly zero-coded seasons**,
+- each retained component observed in at least **8 seasons**,
+- at least **8 parent seasons with three or more observed components**,
 - a span of **at least 12 calendar years**,
-- and one comparable abundance unit/method family throughout the retained panel.
+- no more than **40% component-season missingness** in the retained panel,
+- and one comparable abundance unit/method family throughout the retained stable-identity window.
 
 These are support criteria only. They are evaluated before computing concentration, kappa, decline depth, or any focal effect.
 
@@ -151,3 +155,14 @@ Also ask whether Plot identifiers and plot-boundary history can be included in a
 ## Freeze boundary
 
 No SMP concentration metric, decline effect, kappa, species ranking, trait association, threshold, or direction of effect may be computed until the structural eligibility audit has run on the requested extract and emitted a frozen eligible-panel list.
+
+
+## Additional evidence from the 2024 Northern Ireland SMP report
+
+A current BTO regional report tabulates cumulative counts by **Master Site** and explicitly reports the number of **sub-sites surveyed** each year as an indicator of relative survey effort. It also distinguishes true no-data years from counts and excludes sample-plot counts from site totals to avoid duplication.
+
+This independently confirms that MasterSite-to-sub-site coverage is a real operational dimension of SMP monitoring, not merely a database naming convention. It also reinforces two frozen rules:
+
+- coverage variation must be modeled as missingness/effort rather than interpreted as biological redistribution;
+- aggregate parent totals and overlapping sample-plot records must never be mixed with mutually exclusive SiteID components.
+
