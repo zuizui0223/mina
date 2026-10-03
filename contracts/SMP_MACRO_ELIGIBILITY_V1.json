@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-macro-eligibility-v1",
+  "date": "2026-10-03",
+  "status": "outcome_blind_support_gate_before_smp_effects",
+  "source": {
+    "program": "BTO/JNCC Seabird Monitoring Programme",
+    "outer_year_window": [1986, 2024],
+    "primary_record_family": "Whole Colony Count extract",
+    "primary_hierarchy": {
+      "system": "species x MasterSite",
+      "component": "SiteID"
+    },
+    "secondary_hierarchy_if_available": {
+      "system": "species x SiteID",
+      "component": "Plot",
+      "status": "separate future gate; not assumed usable"
+    }
+  },
+  "record_semantics": {
+    "missing_row": "missing_survey_not_zero",
+    "explicit_zero_or_nil_return": "zero_abundance",
+    "aggregate_or_merged_parent_record": "exclude_from_component_composition_if_it_overlaps_child_components",
+    "estimated_count": "retain only if Accuracy/Estimate metadata are present; uncertainty model to be frozen later before focal effects",
+    "count_unit": "must be identical within a retained panel",
+    "method": "must belong to one frozen compatible method family within a retained panel"
+  },
+  "panel_support_gate": {
+    "minimum_components": 3,
+    "minimum_complete_or_explicit_zero_seasons": 10,
+    "minimum_calendar_span_years": 12,
+    "stable_component_identity_required": true,
+    "mutually_exclusive_components_required": true,
+    "parent_child_double_counting_prohibited": true,
+    "single_abundance_unit_required": true,
+    "method_compatibility_required": true
+  },
+  "macro_program_gate": {
+    "minimum_eligible_panels": 10,
+    "minimum_species": 5,
+    "decision": "Proceed to prospective macro effect contract only if both minima are met before computing focal concentration outcomes."
+  },
+  "prohibited_before_gate": [
+    "compute observed kappa",
+    "compute null-calibrated kappa",
+    "select species based on decline magnitude",
+    "select MasterSites based on concentration direction",
+    "tune minimum years or component count after seeing focal outcomes",
+    "search collapse thresholds",
+    "fit trait-kappa associations",
+    "rank species or systems by focal outcome"
+  ],
+  "required_audit_outputs": [
+    "all species x MasterSite candidate panels",
+    "component roster by panel",
+    "year-by-component observation matrix encoded as observed / explicit-zero / missing",
+    "unit and method consistency flags",
+    "aggregate-overlap flags",
+    "site-identity continuity flags",
+    "eligible panel list frozen before focal effects"
+  ],
+  "fallback": "If fewer than 10 panels or fewer than 5 species pass, do not rescue by relaxing thresholds; keep the frozen penguin Ecology Report as the primary manuscript and close this SMP macro route."
+}
