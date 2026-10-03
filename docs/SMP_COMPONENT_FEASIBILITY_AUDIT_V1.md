@@ -57,7 +57,15 @@ However, the 2009 `Plot=4` count (1585 AON) matches the published total across s
 
 This means the safest primary spatial grain is currently **Master site → child Site**, not individual Plot.
 
-### 7. The public portal is not enough for a full macro audit
+### 7. Independent programme documentation confirms Master site → Site structure and real coverage variation
+
+The Northern Ireland SMP site register explicitly assigns definitive spatial boundaries to sites and groups multiple sites into broader **Master Sites**. This is exactly the hierarchy needed for a Master-site × species population with child Sites as components.
+
+The same report also shows that the number of surveyed child sites within a Master Site varies among years. Missing coverage is therefore a real sampling process and cannot be treated as zero abundance.
+
+Rathlin provides a particularly strong continuity example: systematic seabird censuses have used the same demarcated sections since 1999, with finer sub-sections introduced in 2011. This shows that long-lived component-resolved spatial series exist within the wider SMP ecosystem, although a crosswalk is still needed before mixing pre/post-subsection periods.
+
+### 8. The public portal is not enough for a full macro audit
 
 The browser can show and request downloads for filtered data, but large or bespoke extracts are directed to the BTO Data Request system / SMP organiser.
 
@@ -69,7 +77,7 @@ The Data Access and Use Policy allows research use, requires acknowledgement of 
 
 SMP is structurally suitable in principle because it preserves nested spatial units, distinguishes explicit zero from missing, and treats boundary continuity as a design requirement.
 
-The unresolved issue is whether a research extract can provide stable child-site identifiers and site-history metadata consistently enough across decades to reconstruct Master-site × species panels without silent merges, splits or redefinitions.
+The unresolved issue is no longer whether the hierarchy exists: it clearly does. The remaining issue is whether a research extract can provide stable child-site identifiers and site-history metadata consistently enough across decades to reconstruct enough Master-site × species panels without silent merges, splits, coverage changes or redefinitions.
 
 ## Primary spatial grain
 
