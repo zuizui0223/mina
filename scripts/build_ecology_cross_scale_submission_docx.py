@@ -58,6 +58,13 @@ AI_ACK = (
     "remain responsible for all analyses, interpretations and text."
 )
 
+DATA_ACK = (
+    "We acknowledge the Palmer Station Antarctica Long Term Ecological Research "
+    "program, the British Antarctic Survey and NERC UK Polar Data Centre, and "
+    "the Antarctic Penguin Biogeography Project contributors for maintaining "
+    "and publicly releasing the long-term monitoring data used in this study."
+)
+
 
 def _extract_title(text: str) -> str:
     first = text.splitlines()[0] if text.splitlines() else ""
@@ -198,6 +205,7 @@ Article
 
     acknowledgments = " ".join(
         x for x in (
+            _sentence(DATA_ACK),
             _sentence(blocks["funding"]),
             _sentence(blocks["additional_ack"]),
             _sentence(AI_ACK + blocks["ai_suffix"]),
