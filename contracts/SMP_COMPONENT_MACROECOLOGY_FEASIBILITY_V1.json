@@ -5,7 +5,7 @@
   "status": "outcome_blind_conditional_go",
   "purpose": "Determine whether SMP can support an independent, multi-species test of breeding-component concentration without inspecting concentration outcomes before panel eligibility is frozen.",
   "primary_spatial_hierarchy": {
-    "population": "master_site x species",
+    "analysis_unit": "master_site x species (administrative/geographic monitoring network; not assumed to be one demographic population)",
     "components": "child site IDs",
     "secondary_optional": "site x species with named plots as components if longitudinal plot continuity metadata are supplied"
   },
@@ -27,7 +27,7 @@
     "site_identity_history_or_crosswalk"
   ],
   "provisional_panel_gate_frozen_before_receiving_counts": {
-    "minimum_components_per_population": 3,
+    "minimum_components_per_analysis_unit": 3,
     "minimum_complete_seasons": 8,
     "minimum_calendar_span_years": 10,
     "component_roster": "Use only child sites with stable identity/crosswalk across the retained interval.",
@@ -37,8 +37,8 @@
     "method_rule": "Exclude method transitions lacking documented comparability.",
     "merge_rule": "Never combine merged master/site totals with their constituent component records."
   },
-  "feasibility_success": "At least 10 master_site x species panels from at least 5 seabird species pass the metadata-only gate, with at least two distinct taxonomic/ecological guilds represented.",
-  "feasibility_strong_success": "At least 25 eligible panels from at least 10 species pass the metadata-only gate.",
+  "feasibility_success": "At least 10 master_site x species analysis networks from at least 5 seabird species pass the metadata-only gate, with at least two distinct taxonomic/ecological guilds represented.",
+  "feasibility_strong_success": "At least 25 eligible analysis networks from at least 10 species pass the metadata-only gate.",
   "feasibility_failure": "Fewer than 10 eligible panels, or component identity cannot be reconstructed without outcome-informed manual decisions.",
   "outcome_blind_stop_rule": [
     "Do not calculate N_eff, kappa, concentration slopes, abundance trends, or any outcome-dependent statistic before the eligibility roster is frozen.",
