@@ -20,7 +20,7 @@ Approximate manuscript metrics:
 
 - title: 77 characters including spaces
 - abstract: 256 words
-- main text before full reference list: ~4,400 words
+- main text before full reference list: ~4,600 words
 - main figures: 3
 - supplementary figures: 1
 - main tables: 0
