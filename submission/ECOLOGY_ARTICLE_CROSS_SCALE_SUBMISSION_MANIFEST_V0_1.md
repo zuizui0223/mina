@@ -30,7 +30,7 @@ Approximate manuscript metrics:
 - cover letter: `submission/COVER_LETTER_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md`
 - copy fields: `submission/ECOLOGY_ARTICLE_CROSS_SCALE_COPY_FIELDS_V0_1.md`
 - title-page template: `submission/TITLE_PAGE_ECOLOGY_ARTICLE_CROSS_SCALE_TEMPLATE.md`
-- private metadata template: `submission/ECOLOGY_METADATA_TEMPLATE.json`
+- private metadata template: `submission/ECOLOGY_METADATA_TEMPLATE.json`\n- Word-layout QA receipt: `submission/ECOLOGY_ARTICLE_CROSS_SCALE_DOCX_QA_RECEIPT_V0_1.json`
 
 ## Main figures
 
@@ -69,3 +69,8 @@ Initial submission still requires private confirmation of:
 - ORCID IDs if requested
 
 Scientific analysis is closed. These metadata blockers do not authorize new ecological analyses.
+
+
+## Word preview status
+
+The canonical placeholder Main Document renders to **24 pages**, within the 30-page Ecology Article limit, and has passed complete page-by-page visual QA. The preview is not author-complete and must not be uploaded until private author metadata are filled.
