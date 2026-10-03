@@ -134,6 +134,8 @@ The four declining networks all have positive observation-error-calibrated Δκ.
 
 Local and regional inference also use different scale-appropriate statistics: the within-system primary tests use the temporal slope of E, whereas the regional extension uses the abundance–E elasticity κ and its panel-specific null calibration. They share the effective-component state and fixed-composition logic, but are not pooled as estimates of a common effect size or p-value.
 
+The Central-west Antarctic Peninsula retained rosters include BISC (Biscoe Point), which is part of the broader Palmer-area APBP context but is not one of the three primary Palmer concentration populations (Cormorant, Humble and Litchfield). The MAPPPD regional analysis is therefore treated as a scale-transfer test, not as an additional independent geographic replication of Palmer. Signy supplies the independent geographic replication.
+
 ## S8. Increasing regional networks
 
 All three eligible increasing networks ended with lower E than in their first retained complete season:
