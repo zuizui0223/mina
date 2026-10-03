@@ -59,7 +59,7 @@ This means the safest primary spatial grain is currently **Master site → child
 
 ### 7. Independent programme documentation confirms Master site → Site structure and real coverage variation
 
-The Northern Ireland SMP site register explicitly assigns definitive spatial boundaries to sites and groups multiple sites into broader **Master Sites**. This is exactly the hierarchy needed for a Master-site × species population with child Sites as components.
+The Northern Ireland SMP site register explicitly assigns definitive spatial boundaries to sites and groups multiple sites into broader **Master Sites**. This is exactly the hierarchy needed for a Master-site × species **analysis network** with child Sites as components. A Master Site is an administrative/geographic grouping and is not assumed to be a single biological population.
 
 The same report also shows that the number of surveyed child sites within a Master Site varies among years. Missing coverage is therefore a real sampling process and cannot be treated as zero abundance.
 
@@ -77,12 +77,12 @@ The Data Access and Use Policy allows research use, requires acknowledgement of 
 
 SMP is structurally suitable in principle because it preserves nested spatial units, distinguishes explicit zero from missing, and treats boundary continuity as a design requirement.
 
-The unresolved issue is no longer whether the hierarchy exists: it clearly does. The remaining issue is whether a research extract can provide stable child-site identifiers and site-history metadata consistently enough across decades to reconstruct enough Master-site × species panels without silent merges, splits, coverage changes or redefinitions.
+The unresolved issue is no longer whether the hierarchy exists: it clearly does. The remaining issue is whether a research extract can provide stable child-site identifiers and site-history metadata consistently enough across decades to reconstruct enough Master-site × species analysis networks without silent merges, splits, coverage changes or redefinitions.
 
 ## Primary spatial grain
 
 ### Primary
-**Master site × species population**, with **child Site IDs** as breeding components.
+**Master site × species analysis network**, with **child Site IDs** as breeding components.
 
 Why:
 - child sites are visible in the public database;
@@ -91,7 +91,7 @@ Why:
 - this grain is likely more consistently retained than historical plot records.
 
 ### Secondary, only if supplied with continuity metadata
-**Site × species population**, with named **Plots** as components.
+**Site × species analysis unit**, with named **Plots** as components.
 
 This is potentially valuable for within-colony replication but is not required for the macro analysis.
 
