@@ -136,7 +136,7 @@ Thirteen candidate species × region groups were present; seven were eligible.
 
 **Table S4. Complete eligible MAPPPD regional network inference.**
 
-| Species | Region | Direction | Sites | Seasons | raw κ | obs-error Δκ | p | Supported |
+| Species | Region | Trend | Sites | Seasons | raw κ | obs-error Δκ | p | Pass |
 |---|---|---|---:|---:|---:|---:|---:|---|
 | Adélie | CWAP | decline | 3 | 5 | 0.080 | +0.073 | 0.108 | no |
 | Adélie | SSI | decline | 4 | 7 | 0.088 | +0.115 | 0.0148 | yes |
@@ -146,7 +146,7 @@ Thirteen candidate species × region groups were present; seven were eligible.
 | Gentoo | CWAP | increase | 7 | 5 | −0.238 | −0.228 | 0.984 | no |
 | Gentoo | SSI | increase | 5 | 7 | 0.024 | +0.020 | 0.427 | no |
 
-CWAP = Central-west Antarctic Peninsula; SSI = South Shetland Islands.
+CWAP = Central-west Antarctic Peninsula; SSI = South Shetland Islands. Pass = individually supported under both frozen regional nulls.
 
 **Table S5. First and last retained endpoints for the seven eligible MAPPPD networks.**
 
