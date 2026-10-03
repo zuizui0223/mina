@@ -1,0 +1,101 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-smp-component-eligibility-v2",
+  "date": "2026-10-03",
+  "status": "outcome_blind_structural_audit_refined_before_bulk_count_magnitudes_opened",
+  "source": {
+    "programme": "Seabird Monitoring Programme (SMP), Britain and Ireland",
+    "public_portal": "https://app.bto.org/seabirds/public/data.jsp",
+    "official_handbook": "https://www.bto.org/sites/default/files/seabird-monitoring-handbook.pdf",
+    "application_guide": "https://app.bto.org/static/seabirds/app_guide.pdf"
+  },
+  "scientific_role": "Prospective external test of breeding-component contraction outside penguins if structural eligibility is sufficient.",
+  "outcome_blinding": {
+    "forbidden_before_gate_freeze": [
+      "Count magnitude",
+      "annual total abundance",
+      "N_eff",
+      "abundance slope",
+      "contraction slope",
+      "kappa",
+      "any abundance or concentration effect size"
+    ],
+    "permitted_columns": [
+      "species",
+      "date/year",
+      "county/area",
+      "master site identity",
+      "site/subsite identity",
+      "plot identity",
+      "method",
+      "unit",
+      "accuracy/estimate class",
+      "comments/merge flags"
+    ]
+  },
+  "hierarchy": {
+    "parent_population_unit": "SMP MasterSite x species",
+    "primary_component": "SMP SiteCode counted as Whole Colony. SMP Sites are defined long-term monitoring sections with unique codes and are intended to preserve constancy/comparability across survey years.",
+    "secondary_component_route": "Explicit SMP PlotName nested within one SMP Site may be audited separately if plot-level colony-count data are supplied. It cannot be mixed with the primary MasterSite > Site analysis.",
+    "parent_aggregate_rule": "A MasterSite aggregate must never be included as a component together with its constituent SMP Sites.",
+    "partial_count_rule": "Primary Site components require Whole Colony counts for that SMP Site. Partial counts or within-site plot counts are excluded from the primary MasterSite > Site composition.",
+    "merged_record_rule": "Records flagged as totals after merging sites/components are excluded unless the exported record resolves to one persistent SMP SiteCode without double counting."
+  },
+  "compatibility_rules": [
+    "Colony-count records only; breeding-success records are excluded.",
+    "Primary macro route is MasterSite > SMP Site using Whole Colony counts only.",
+    "A primary panel uses one census unit within species (e.g. AON, AOS, AOT or IND) and does not mix units through time.",
+    "A primary panel uses one method family through time; method changes require an explicit documented equivalence rule frozen before count magnitudes are opened.",
+    "Estimated/hidden-estimate records are retained only if their status is explicitly represented in a later observation model; otherwise primary eligibility uses ACC records and estimate-containing panels are robustness-only.",
+    "SMP SiteCode, not display name, is the component identity wherever available.",
+    "MasterSite membership changes, SiteCode split/merge events, and parent reassignment are structural flags and cannot be repaired using count magnitudes."
+  ],
+  "primary_structural_gate": {
+    "minimum_components_J": 3,
+    "minimum_complete_seasons": 10,
+    "minimum_calendar_span_years": 12,
+    "complete_season_definition": "all frozen components in the panel have an eligible colony-count record in that season",
+    "minimum_candidate_panels_to_continue_macro_route": 20,
+    "minimum_species_to_continue_macro_route": 5,
+    "minimum_master_sites_to_continue_macro_route": 15
+  },
+  "coverage_audit_outputs_allowed": [
+    "number of candidate panels",
+    "number of species",
+    "number of master sites",
+    "component count J per panel",
+    "eligible years and calendar span per panel",
+    "method/unit categories",
+    "missingness pattern",
+    "rename/merge/split flags",
+    "estimate-status frequencies"
+  ],
+  "coverage_audit_outputs_forbidden": [
+    "count totals",
+    "count means/medians/ranges",
+    "population trends",
+    "decline/increase classification",
+    "N_eff or any concentration metric",
+    "kappa or any scaling statistic"
+  ],
+  "decision": {
+    "pass": "All three macro-route minima are met: >=20 candidate panels, >=5 species and >=15 master sites.",
+    "marginal": "At least 8 panels but the full macro-route minima are not met; SMP may support a focused multispecies validation but not the planned macroecological synthesis.",
+    "fail": "<8 structurally eligible panels or longitudinal component identity cannot be defended."
+  },
+  "post_gate_if_pass": [
+    "Freeze the count-processing and observation-error model.",
+    "Freeze decline/increase eligibility rules without inspecting SMP effect sizes.",
+    "Freeze null-calibrated contraction metric and trait hypotheses.",
+    "Only then open count magnitudes."
+  ],
+  "interpretation_boundary": [
+    "This audit evaluates data structure only, not whether the penguin-derived rule is supported.",
+    "Public SMP guidance explicitly values consistent plot names and repeatable site boundaries, but each empirical panel still requires a longitudinal identity audit.",
+    "No result from the existing penguin trajectories may be used to tune SMP eligibility after this contract."
+  ],
+  "external_structural_support": {
+    "NatureScot_2025": "Defines SMP Master site as grouping monitoring sites; defines SMP Site as a long-term monitoring section established for constancy/comparability across years, with a unique numeric code; export fields include SMP_SiteCode, SMP_SiteName, SMP_MasterSite, SMP_PlotName, Method, Count_unit, Accuracy.",
+    "Searle_et_al_2022": "Uses SMP Sites nested within Master Sites and aggregates Sites to Master Sites only in years with complete child-site coverage to represent biological populations."
+  }
+}
