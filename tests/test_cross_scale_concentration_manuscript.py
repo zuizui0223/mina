@@ -25,8 +25,8 @@ def test_cross_scale_manuscript_sources_exist_and_claim_is_bounded():
     manuscript = MANUSCRIPT.read_text(encoding="utf-8")
     contract = load(CONTRACT)
 
-    assert "cross-scale" in contract["central_claim"]
-    assert "direction" in contract["central_claim"]
+    assert "regional monitored site networks" in contract["central_claim"]
+    assert "effect magnitude" in contract["central_claim"]
     assert "universal quarter-power law" in contract["prohibited_claims"]
     assert "universal seabird or colonial-breeder law" in contract["prohibited_claims"]
 
