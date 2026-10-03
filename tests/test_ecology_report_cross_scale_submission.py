@@ -93,4 +93,5 @@ def test_cover_letter_matches_active_claim_and_report_metrics():
     assert "abstract is 168 words" in letter
     assert "two main figures" in letter
     assert "MAPPPD tests whether the **direction** survives a change in spatial level" in letter
-    assert contract["status"] == "journal_targeted_packaging_no_new_ecological_endpoints"
+    assert contract["status"] == "alternate_compact_package_not_canonical_for_initial_submission"
+    assert contract["canonical_initial_submission"] == "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
