@@ -1,0 +1,38 @@
+name: smp-component-eligibility-audit
+
+on:
+  push:
+    branches:
+      - prospective/smp-component-eligibility-v1
+    paths:
+      - "contracts/SMP_COMPONENT_ELIGIBILITY_V2.json"
+      - "scripts/audit_smp_component_eligibility.py"
+      - "tests/test_smp_component_eligibility.py"
+      - "pyproject.toml"
+      - ".github/workflows/smp-component-eligibility-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run SMP outcome-blind gate tests
+        run: pytest -q tests/test_smp_component_eligibility.py
+      - name: Verify contract remains outcome blind
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("contracts/SMP_COMPONENT_ELIGIBILITY_V2.json")
+          x=json.loads(p.read_text())
+          assert "outcome_blind" in x["status"]
+          forbidden=set(x["outcome_blinding"]["forbidden_before_gate_freeze"])
+          assert "Count magnitude" in forbidden
+          assert "kappa" in forbidden
+          print("smp_structural_gate=PASS")
+          PY
