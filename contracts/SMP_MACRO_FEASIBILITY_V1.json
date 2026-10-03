@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-macro-feasibility-v1",
+  "date": "2026-10-03",
+  "status": "outcome_blind_structure_gate",
+  "purpose": "Determine whether SMP contains enough stable multi-component abundance panels for a prospective macroecological test of breeding-space contraction.",
+  "primary_hierarchy": {
+    "parent_unit": "species x MasterSite",
+    "component_unit": "SiteID",
+    "rationale": "The large SMP abundance extract is organized around SiteID, Site and MasterSite; repeated named plots are retained only as a stricter secondary scale."
+  },
+  "secondary_hierarchy": {
+    "parent_unit": "species x SiteID",
+    "component_unit": "persistent non-Whole-Colony Plot ID",
+    "status": "use only if a separate plot-level extract contains stable longitudinal identifiers and boundary-history metadata"
+  },
+  "outcome_blinding": {
+    "prohibited_before_gate": [
+      "population abundance trend direction",
+      "N_eff trajectories",
+      "raw or calibrated kappa",
+      "concentration statistics",
+      "species trait associations with concentration"
+    ],
+    "permitted": [
+      "row counts",
+      "years represented",
+      "MasterSite, SiteID and Plot identities",
+      "count unit",
+      "method",
+      "missingness",
+      "explicit zero or nil-return status",
+      "estimate qualifier",
+      "merge/split/boundary metadata",
+      "species names",
+      "parent-child hierarchy"
+    ]
+  },
+  "row_exclusions_before_eligibility": [
+    "breeding-success rather than abundance records",
+    "records lacking usable species, season, parent ID or component ID",
+    "aggregate or merged-site totals overlapping child SiteID counts",
+    "records with incompatible abundance units inside a candidate panel unless an externally documented deterministic conversion exists",
+    "known SiteID splits, merges, replacements or boundary changes without a versioned crosswalk",
+    "duplicate component x season records that cannot be resolved from provenance",
+    "missing survey rows interpreted as zero; only explicit zero or nil returns may be zero"
+  ],
+  "panel_gate": {
+    "minimum_components": 3,
+    "minimum_observed_seasons_per_component": 8,
+    "minimum_parent_seasons_with_at_least_3_components": 8,
+    "minimum_calendar_span_years": 12,
+    "maximum_fraction_missing_component_seasons": 0.40,
+    "require_same_component_identity_set_for_primary_window": true,
+    "allow_nonconsecutive_years": true,
+    "outer_window": [1986, 2024],
+    "window_selection": "Choose the longest qualifying stable-identity window using coverage metadata only. No abundance magnitude may enter window selection."
+  },
+  "macro_gate": {
+    "minimum_eligible_parent_units": 20,
+    "minimum_species": 8,
+    "minimum_independent_master_sites": 15,
+    "minimum_species_with_at_least_2_parent_units": 4,
+    "decision": "Only if all minima pass may SMP abundance magnitudes be opened for the prospective macro test."
+  },
+  "future_primary_predictions_if_gate_passes": [
+    "Null-calibrated concentration during decline is positive on average across eligible units.",
+    "A smooth relationship predicts held-out systems at least as well as frozen collapse hinges at 50%, 25% or 10% abundance remaining.",
+    "The magnitude of null-calibrated concentration varies among species and systems and will be tested against a predeclared finite trait set."
+  ],
+  "required_request_fields": [
+    "Species",
+    "Country",
+    "County",
+    "MasterSite identifier and name",
+    "SiteID",
+    "Site name",
+    "season/date/year",
+    "Method",
+    "Unit",
+    "Count",
+    "Accuracy",
+    "Estimate or count qualifier",
+    "Comments",
+    "explicit zero or nil-return field if distinct from Count=0",
+    "site status/retirement/merge fields",
+    "Site-to-MasterSite crosswalk",
+    "SiteID replacement/merge/split history",
+    "recorder/provider provenance needed for acknowledgement"
+  ],
+  "requested_secondary_fields_if_available": [
+    "Plot ID/name",
+    "plot-to-SiteID crosswalk",
+    "plot creation/retirement history",
+    "plot boundary-change history"
+  ],
+  "notes": [
+    "Raw kappa is not the cross-system response because finite component number, sampling schedule and zero-boundary mechanics vary among panels.",
+    "The future response must be calibrated against a panel-specific proportional-thinning observation model.",
+    "No result from the five penguin discovery trajectories may be used to tune SMP eligibility after this contract.",
+    "If the macro gate fails, the frozen Ecology Report proceeds and the SMP extension closes without outcome fishing."
+  ]
+}
