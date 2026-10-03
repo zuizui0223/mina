@@ -1,0 +1,35 @@
+name: mapppd-regional-concentration-v1
+
+on:
+  push:
+    branches: [analysis/mapppd-regional-concentration-v1]
+    paths:
+      - "contracts/MAPPPD_REGIONAL_CONCENTRATION_V1.json"
+      - "scripts/test_mapppd_regional_concentration.py"
+      - ".github/workflows/mapppd-regional-concentration-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install numpy pandas pyreadr
+      - name: Fetch pinned MAPPPD snapshot
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          test "$(git -C build/mapppdr rev-parse HEAD)" = "88c73a507e0921b2541c218c71eaf16721bc6502"
+      - name: Run bounded regional concentration test
+        run: |
+          python scripts/test_mapppd_regional_concentration.py \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/MAPPPD_REGIONAL_CONCENTRATION_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mapppd-regional-concentration-v1
+          path: build/MAPPPD_REGIONAL_CONCENTRATION_RESULT_V1.json
