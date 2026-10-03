@@ -44,6 +44,11 @@ def _save(fig, out_dir: Path, stem: str) -> None:
     fig.savefig(out_dir / f"{stem}.pdf", bbox_inches="tight")
 
 
+def _p_text(value: float) -> str:
+    text = f"{value:.3g}"
+    return text.replace("e-0", "e−").replace("e-", "e−")
+
+
 def figure2_scale_transfer(local_data_dir: Path, regional_receipt: Path, out_dir: Path) -> None:
     """Put the strongest local and regional evidence on a common visual page."""
     local_rows = _rows(local_data_dir / "figure2_summary.csv")
@@ -54,27 +59,29 @@ def figure2_scale_transfer(local_data_dir: Path, regional_receipt: Path, out_dir
     declining = [p for p in regional["panels"] if p["direction"] == "decline"]
     declining.sort(key=lambda p: (p["region"], p["species"]))
 
-    fig, axes = plt.subplots(1, 2, figsize=(12.5, 5.3))
+    fig, axes = plt.subplots(1, 2, figsize=(12.8, 5.4))
 
     # Panel A: local replicated endpoint.
     names = [r["population"] for r in local]
     values = np.asarray([100.0 * float(r["fractional_neff_change"]) for r in local])
     pvals = np.asarray([float(r["cv20_p"]) for r in local])
     y = np.arange(len(local))
-    axes[0].barh(y, values)
-    axes[0].axvline(0.0, lw=0.9)
+    bars = axes[0].barh(y, values, color="C0")
+    axes[0].axvline(0.0, lw=0.9, color="0.25")
+    axes[0].set_xlim(min(values) * 1.08, 0.0)
     axes[0].set_yticks(y, names)
     axes[0].invert_yaxis()
     axes[0].set_xlabel("First-to-last change in effective components (%)")
     axes[0].set_title("A. Within breeding systems")
-    for yi, value, p in zip(y, values, pvals):
+    for bar, value, p in zip(bars, values, pvals):
         axes[0].text(
-            value - 1.5,
-            yi,
-            f"{value:.0f}%   p={p:.3g}",
-            ha="right",
+            value / 2.0,
+            bar.get_y() + bar.get_height() / 2.0,
+            f"{value:.0f}%   p={_p_text(p)}",
+            ha="center",
             va="center",
             fontsize=8.5,
+            color="white",
         )
 
     # Panel B: regional scale-transfer result.
@@ -86,16 +93,17 @@ def figure2_scale_transfer(local_data_dir: Path, regional_receipt: Path, out_dir
     pvals_reg = np.asarray([float(p["p_observation_error_null"]) for p in declining])
     supported = np.asarray([bool(p["supported"]) for p in declining])
     y2 = np.arange(len(declining))
-    axes[1].axvline(0.0, lw=0.9)
+    axes[1].axvline(0.0, lw=0.9, color="0.25")
+    axes[1].set_xlim(-0.02, max(deltas) + 0.16)
     for yi, delta, p, ok in zip(y2, deltas, pvals_reg, supported):
         marker = "o" if ok else "s"
-        size = 70 if ok else 48
-        axes[1].scatter([delta], [yi], marker=marker, s=size)
-        axes[1].plot([0.0, delta], [yi, yi], lw=1.1)
+        size = 72 if ok else 52
+        axes[1].scatter([delta], [yi], marker=marker, s=size, color="C0")
+        axes[1].plot([0.0, delta], [yi, yi], lw=1.1, color="C0")
         axes[1].text(
             delta + 0.012,
             yi,
-            f"Δκ={delta:+.3f}, p={p:.3g}",
+            f"Δκ={delta:+.3f}, p={_p_text(p)}",
             va="center",
             fontsize=8.5,
         )
@@ -103,20 +111,19 @@ def figure2_scale_transfer(local_data_dir: Path, regional_receipt: Path, out_dir
     axes[1].invert_yaxis()
     axes[1].set_xlabel("Observation-error-calibrated Δκ")
     axes[1].set_title("B. Regional monitored site networks")
-    axes[1].text(
-        0.02,
-        -0.18,
-        "Circles: individually supported under both frozen regional nulls; squares: same direction, not individually supported.",
-        transform=axes[1].transAxes,
-        fontsize=8.5,
-        va="top",
-    )
 
     fig.suptitle(
         "Breeding-space concentration recurs when the spatial component is moved one level up",
-        y=1.02,
+        y=1.01,
     )
-    fig.tight_layout()
+    fig.text(
+        0.75,
+        0.015,
+        "Regional panel: circles = individually supported under both frozen nulls; squares = same direction, not individually supported.",
+        ha="center",
+        fontsize=8.5,
+    )
+    fig.tight_layout(rect=(0.0, 0.055, 1.0, 0.98))
     _save(fig, out_dir, "figure2_cross_scale_transfer")
     plt.close(fig)
 
@@ -127,14 +134,16 @@ def figure3_regional_endpoints(regional_receipt: Path, out_dir: Path) -> None:
     panels = receipt["panels"]
 
     fig, ax = plt.subplots(figsize=(8.4, 6.2))
-    ax.axvline(0.0, lw=0.9)
-    ax.axhline(0.0, lw=0.9)
+    ax.axvline(0.0, lw=0.9, color="0.25")
+    ax.axhline(0.0, lw=0.9, color="0.25")
 
     for panel in panels:
         dn = 100.0 * (float(panel["last_total"]) / float(panel["first_total"]) - 1.0)
         de = 100.0 * (float(panel["last_E"]) / float(panel["first_E"]) - 1.0)
-        marker = "o" if panel["direction"] == "decline" else "^"
-        ax.scatter([dn], [de], marker=marker, s=65)
+        decline = panel["direction"] == "decline"
+        marker = "o" if decline else "^"
+        color = "C0" if decline else "C1"
+        ax.scatter([dn], [de], marker=marker, s=70, color=color)
         short_region = (
             "CWAP"
             if panel["region"] == "Central-west Antarctic Peninsula"
@@ -143,20 +152,28 @@ def figure3_regional_endpoints(regional_receipt: Path, out_dir: Path) -> None:
             else "Victoria"
         )
         label = f"{SPECIES_LABEL[panel['species']]} {short_region}"
-        ax.annotate(label, (dn, de), xytext=(5, 5), textcoords="offset points", fontsize=8.5)
+        offset = (6, 6)
+        if panel["species"] == "CHPE" and panel["region"] == "South Shetland Islands":
+            offset = (6, 10)
+        if panel["species"] == "GEPE" and panel["region"] == "South Shetland Islands":
+            offset = (6, 5)
+        ax.annotate(label, (dn, de), xytext=offset, textcoords="offset points", fontsize=8.5)
+
+    ax.scatter([], [], marker="o", s=70, color="C0", label="Declining network")
+    ax.scatter([], [], marker="^", s=70, color="C1", label="Increasing network")
+    ax.legend(frameon=False, loc="lower right")
 
     ax.set_xlabel("First-to-last abundance change (%)")
     ax.set_ylabel("First-to-last effective-site change (%)")
     ax.set_title("Regional endpoint changes: abundance recovery need not rebuild site distribution")
-    ax.text(
-        0.02,
-        0.02,
-        "Circles: declining networks; triangles: increasing networks.\nDescriptive endpoints only; no regional hysteresis test was frozen.",
-        transform=ax.transAxes,
+    fig.text(
+        0.5,
+        0.015,
+        "Descriptive endpoints only; no regional ratchet or hysteresis test was frozen.",
+        ha="center",
         fontsize=8.5,
-        va="bottom",
     )
-    fig.tight_layout()
+    fig.tight_layout(rect=(0.0, 0.05, 1.0, 1.0))
     _save(fig, out_dir, "figure3_regional_endpoint_context")
     plt.close(fig)
 
