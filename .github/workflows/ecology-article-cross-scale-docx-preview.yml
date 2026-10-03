@@ -93,7 +93,7 @@ jobs:
           assert "[AUTHOR" not in text
           assert "Regional breeding-site networks retained the same concentration direction" in text
           assert "Figure 1." in text and "Figure 2." in text and "Figure 3." in text
-          assert "Figure S1." not in text
+          assert "Figure S1. The same concentration endpoint arose through different nominal component-level routes" not in text
           assert "Conflict of Interest Statement" in text
           print("sections=",len(doc.sections))
           print("paragraphs=",len(doc.paragraphs))
