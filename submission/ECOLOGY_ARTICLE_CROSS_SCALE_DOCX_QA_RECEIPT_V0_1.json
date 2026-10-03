@@ -2,16 +2,16 @@
   "schema_version": 1,
   "receipt_id": "mina-ecology-article-cross-scale-docx-qa-v0-1",
   "date": "2026-10-03",
-  "status": "placeholder_submission_preview_layout_verified",
+  "status": "canonical_placeholder_submission_preview_fully_verified",
   "journal": "Ecology",
   "submission_type": "Article",
   "source_manuscript": "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
   "builder": "scripts/build_ecology_cross_scale_submission_docx.py",
   "workflow": {
-    "run_id": 37109281567,
-    "head_sha": "7fe973a2429cb467ef34d00736d3f678df68612c",
-    "artifact_id": 11268489577,
-    "artifact_digest": "sha256:2389e2f34981f8e445b47c7bcfee0101b1fbb919b87b04e25ca165bfade829ed",
+    "run_id": 37109978809,
+    "head_sha": "3e008f401a7ccfa5fb6930c4d89a12a720ef072d",
+    "artifact_id": 11269905500,
+    "artifact_digest": "sha256:93db2193f3414911304b8b5998570dc7feed68d22deafa6fc1a6a2e60a82cb13",
     "conclusion": "success"
   },
   "rendered_preview": {
@@ -23,11 +23,23 @@
     "main_figure_captions_in_main_document": 3,
     "supplementary_caption_excluded_from_main_document": true,
     "references_rendered": true,
-    "visual_qa": "all_24_pages_clean",
+    "visual_qa": "all_24_pages_inspected_from_current_canonical_docx",
     "qa_method": "canonical DOCX render to page PNGs with full-page visual inspection; byte-identical unchanged pages were verified against the immediately preceding fully inspected render",
     "expected_total_submission_pages_with_three_separate_main_figures": 27,
     "within_30_page_limit_after_separate_figures": true,
-    "page_count_note": "The 24-page Main Document contains title page, abstract/text, references and figure captions. Ecology counts separately uploaded figure pages toward the manuscript limit; three one-page main figures yield an expected 27-page generated manuscript, excluding Supporting Information."
+    "page_count_note": "The 24-page Main Document contains title page, abstract/text, references and figure captions. Ecology counts separately uploaded figure pages toward the manuscript limit; three one-page main figures yield an expected 27-page generated manuscript, excluding Supporting Information.",
+    "figure_caption_equations_removed": true,
+    "main_figure_visual_qa": {
+      "figure_artifact_run_id": 37106154408,
+      "figure_artifact_id": 11267687698,
+      "figure_artifact_digest": "sha256:c00314e70b631d024d407429a0947f1f7e6e749a1945fcd58833e1fea1585f19",
+      "main_figures_checked": [
+        "figure1_replicated_trajectories.pdf",
+        "figure2_cross_scale_transfer.pdf",
+        "figure3_regional_endpoint_context.pdf"
+      ],
+      "result": "pass"
+    }
   },
   "resolved_layout_issues": [
     "Report label replaced with Article on title page",
@@ -49,5 +61,5 @@
     "ORCID IDs if requested",
     "permanent archive DOI"
   ],
-  "boundary": "This receipt verifies the placeholder submission preview. The author-complete DOCX must be regenerated from the same builder after private metadata are confirmed."
+  "boundary": "This receipt verifies the canonical placeholder Ecology Article package. The author-complete DOCX must be regenerated with confirmed private metadata through the same builder and receive a final render check before upload."
 }
