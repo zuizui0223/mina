@@ -21,9 +21,9 @@ def _rows(path: Path) -> list[dict[str, str]]:
 
 def _save(fig, out_dir: Path, stem: str) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out_dir / f"{stem}.png", dpi=300, bbox_inches="tight")
-    fig.savefig(out_dir / f"{stem}.svg", bbox_inches="tight")
-    fig.savefig(out_dir / f"{stem}.pdf", bbox_inches="tight")
+    fig.savefig(out_dir / f"{stem}.png", dpi=300)
+    fig.savefig(out_dir / f"{stem}.svg")
+    fig.savefig(out_dir / f"{stem}.pdf")
 
 
 def figure1(data_dir: Path, out_dir: Path) -> None:
@@ -32,7 +32,7 @@ def figure1(data_dir: Path, out_dir: Path) -> None:
     for row in rows:
         by_pop[row["population"]].append(row)
 
-    fig, axes = plt.subplots(2, 3, figsize=(12.0, 7.0), sharey=True)
+    fig, axes = plt.subplots(2, 3, figsize=(7.0, 4.9), sharey=True)
     axes = axes.ravel()
     for ax, pop in zip(axes[:5], ORDER):
         local = sorted(by_pop[pop], key=lambda r: int(r["year"]))
@@ -42,14 +42,14 @@ def figure1(data_dir: Path, out_dir: Path) -> None:
         ax.plot(years, abundance, marker="o", ms=3.5, lw=1.5, label="Breeding pairs")
         ax.plot(years, neff, marker="s", ms=3.5, lw=1.5, ls="--", label="Effective monitored components")
         ax.axhline(100, lw=0.8, ls=":", alpha=0.5)
-        ax.set_title(pop)
-        ax.set_xlabel("Year")
-        ax.grid(alpha=0.15)
-    axes[0].set_ylabel("Index (first eligible season = 100)")
-    axes[3].set_ylabel("Index (first eligible season = 100)")
+        ax.set_title(pop, fontsize=8.5)
+        ax.set_xlabel("Year", fontsize=8)
+        ax.grid(alpha=0.15)\n        ax.tick_params(labelsize=7)
+    axes[0].set_ylabel("Index (first eligible season = 100)", fontsize=8)
+    axes[3].set_ylabel("Index (first eligible season = 100)", fontsize=8)
     axes[5].axis("off")
     handles, labels = axes[0].get_legend_handles_labels()
-    axes[5].legend(handles, labels, loc="center", frameon=False)
+    axes[5].legend(handles, labels, loc="center", frameon=False, fontsize=7)
     axes[5].text(
         0.5,
         0.30,
@@ -57,9 +57,9 @@ def figure1(data_dir: Path, out_dir: Path) -> None:
         ha="center",
         va="center",
         transform=axes[5].transAxes,
-        fontsize=11,
+        fontsize=8,
     )
-    fig.suptitle("Population decline is accompanied by loss of effective monitored breeding components", y=0.99)
+    fig.suptitle("Population decline is accompanied by loss of effective monitored breeding components", y=0.99, fontsize=10)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
     _save(fig, out_dir, "figure1_replicated_trajectories")
     plt.close(fig)
@@ -105,7 +105,7 @@ def figure3(data_dir: Path, out_dir: Path) -> None:
     rows = _rows(data_dir / "figure3_dominance_routes.csv")
     lookup = {r["population"]: r for r in rows}
 
-    fig, axes = plt.subplots(2, 3, figsize=(12.0, 7.0), sharex=True, sharey=True)
+    fig, axes = plt.subplots(2, 3, figsize=(7.0, 4.9), sharex=True, sharey=True)
     axes = axes.ravel()
 
     for ax, pop in zip(axes[:5], ORDER):
@@ -150,12 +150,12 @@ def figure3(data_dir: Path, out_dir: Path) -> None:
             fontsize=9,
         )
 
-    axes[0].set_ylabel("Share of breeding pairs (%)")
-    axes[3].set_ylabel("Share of breeding pairs (%)")
+    axes[0].set_ylabel("Share of breeding pairs (%)", fontsize=8)
+    axes[3].set_ylabel("Share of breeding pairs (%)", fontsize=8)
     axes[5].axis("off")
     handles, labels = axes[0].get_legend_handles_labels()
     if handles:
-        axes[5].legend(handles, labels, loc="center", frameon=False)
+        axes[5].legend(handles, labels, loc="center", frameon=False, fontsize=7)
     axes[5].text(
         0.5,
         0.25,
@@ -163,9 +163,9 @@ def figure3(data_dir: Path, out_dir: Path) -> None:
         ha="center",
         va="center",
         transform=axes[5].transAxes,
-        fontsize=11,
+        fontsize=8,
     )
-    fig.suptitle("Post-hoc nominal census-unit trajectories", y=0.99)
+    fig.suptitle("Post-hoc nominal census-unit trajectories", y=0.99, fontsize=10)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
     _save(fig, out_dir, "figureS1_nominal_dominance_routes")
     plt.close(fig)
