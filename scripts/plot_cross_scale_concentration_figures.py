@@ -134,6 +134,9 @@ def figure2_scale_transfer(
     axes[1].set_title("B. Regional monitored site networks", fontsize=8.5)
     axes[1].tick_params(labelsize=7)
 
+    fig.text(
+        0.01, 0.99, "Figure 2", ha="left", va="top", fontsize=9, fontweight="bold"
+    )
     fig.suptitle(
         "Breeding-space concentration recurs across spatial levels",
         y=0.995,
@@ -200,6 +203,9 @@ def figure3_regional_endpoints(
 
     ax.set_xlabel("First-to-last abundance change (%)", fontsize=8)
     ax.set_ylabel("First-to-last effective-site change (%)", fontsize=8)
+    fig.text(
+        0.01, 0.99, "Figure 3", ha="left", va="top", fontsize=9, fontweight="bold"
+    )
     ax.set_title(
         "Abundance recovery need not rebuild regional site distribution",
         fontsize=9,
