@@ -63,7 +63,7 @@ def figure1(data_dir: Path, out_dir: Path) -> None:
             ls="--",
             label="Effective monitored components",
         )
-        ax.axhline(100, lw=0.7, ls=":", alpha=0.5)
+        ax.axhline(100, lw=1.0, ls=":", alpha=0.5)
         ax.set_title(pop, fontsize=8.2)
         ax.set_xlabel("Year", fontsize=7.5)
         ax.grid(alpha=0.15)
@@ -112,7 +112,7 @@ def figure2(data_dir: Path, out_dir: Path) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 4.6), sharey=True)
 
     axes[0].barh(y, frac)
-    axes[0].axvline(0, lw=0.8)
+    axes[0].axvline(0, lw=1.0)
     axes[0].set_yticks(y, ORDER)
     axes[0].invert_yaxis()
     axes[0].set_xlabel(
