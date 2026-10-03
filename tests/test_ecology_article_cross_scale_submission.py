@@ -10,6 +10,7 @@ MANUSCRIPT = ROOT / "submission" / "MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.
 COVER = ROOT / "submission" / "COVER_LETTER_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
 COPY = ROOT / "submission" / "ECOLOGY_ARTICLE_CROSS_SCALE_COPY_FIELDS_V0_1.md"
 CAPTIONS = ROOT / "submission" / "FIGURE_CAPTIONS_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
+SUPP_CAPTION = ROOT / "submission" / "SUPPLEMENTARY_FIGURE_CAPTION_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
 CONTRACT = ROOT / "contracts" / "ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
 
 
@@ -48,7 +49,9 @@ def test_submission_package_has_three_main_figure_captions():
     assert "## Figure 1." in text
     assert "## Figure 2." in text
     assert "## Figure 3." in text
-    assert "## Figure S1." in text
+    assert "## Figure S1." not in text
+    supp = SUPP_CAPTION.read_text(encoding="utf-8")
+    assert "## Figure S1." in supp
 
 
 def test_cover_letter_matches_article_and_claim_boundary():
