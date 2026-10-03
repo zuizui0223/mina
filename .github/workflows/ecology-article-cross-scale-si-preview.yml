@@ -25,6 +25,22 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev,submission]"
+      - name: Verify pinned figure-data hashes
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path("data/figure_data/replicated_concentration_v1")
+          receipt=json.loads((root/"FIGURE_DATA_RECEIPT_V1.json").read_text(encoding="utf-8"))
+          expected=receipt["normalized_utf8_sha256"]
+          for name,want in expected.items():
+              text=(root/name).read_text(encoding="utf-8")
+              got=hashlib.sha256(text.encode("utf-8")).hexdigest()
+              print(name, got)
+              assert got == want, (name, got, want)
+          print("figure_data_hash_audit=PASS")
+          PY
+
       - name: Install document tools
         run: |
           if ! command -v pandoc >/dev/null 2>&1; then
