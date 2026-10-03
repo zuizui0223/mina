@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-master-site-eligibility-v1",
+  "date": "2026-10-03",
+  "status": "outcome_blind_support_gate_before_bulk_smp_counts",
+  "purpose": "Determine whether SMP MasterSite > child Site panels are numerous and complete enough for prospective macroecological testing before inspecting abundance outcomes.",
+  "source": {
+    "programme": "BTO/JNCC Seabird Monitoring Programme",
+    "requested_data_type": "raw colony-count extract",
+    "years": [
+      1986,
+      2024
+    ],
+    "required_fields": [
+      "Species",
+      "Country",
+      "County",
+      "SiteID",
+      "Site",
+      "MasterSite",
+      "StartGrid",
+      "EndGrid",
+      "Site category",
+      "Site type",
+      "Site habitat",
+      "Start date",
+      "End date",
+      "Method",
+      "Unit",
+      "Count",
+      "Accuracy",
+      "Estimate",
+      "Comments",
+      "Plot or equivalent site-vs-plot indicator if available in current export"
+    ]
+  },
+  "exposed_pilot_exclusions": [
+    {
+      "species": "Black-legged Kittiwake",
+      "master_site": "Flamborough and Filey Coast SPA",
+      "reason": "Count magnitudes were viewed during structural audit."
+    }
+  ],
+  "primary_record_filter": {
+    "spatial_level": "Site-level Whole Colony Count only; exclude non-whole Plot Colony Counts",
+    "estimate_policy": "exclude estimated or hidden-estimate records",
+    "merged_total_policy": "exclude rows explicitly identified as merged totals",
+    "missing_policy": "absence of a record is missing, never zero",
+    "zero_policy": "recorded zero/nil return is an observed ecological zero",
+    "unit_policy": "one common Unit within each species x MasterSite panel; no unit conversion",
+    "method_policy": "each retained Site may have at most one non-missing Method code across the primary panel",
+    "duplicate_policy": "byte-identical duplicates may collapse; otherwise multiple competing Site x year counts make that Site-year unavailable"
+  },
+  "child_site_preeligibility": {
+    "minimum_observed_years_per_site": 10
+  },
+  "fixed_roster_algorithm": [
+    "Within each species x MasterSite x Unit, start with all child SiteIDs having >=10 eligible observed years.",
+    "If fewer than 3 SiteIDs remain, fail the panel.",
+    "Calculate complete years: years in which every currently retained SiteID has an eligible observed count.",
+    "If complete years >=10, stop and retain the full current roster.",
+    "Otherwise remove the SiteID with the fewest eligible observed years and repeat.",
+    "If tied, remove the lexicographically greatest SiteID.",
+    "If roster size falls below 3 before reaching 10 complete years, fail the panel."
+  ],
+  "panel_support_rule": {
+    "minimum_retained_sites": 3,
+    "minimum_complete_years": 10,
+    "minimum_calendar_span_years": 10
+  },
+  "support_outputs_allowed_before_outcomes": [
+    "number of eligible species x MasterSite panels",
+    "species identities",
+    "MasterSite identities/codes",
+    "retained SiteID rosters",
+    "count unit and stable method metadata",
+    "number and calendar span of complete years",
+    "missingness summaries",
+    "site-habitat/category metadata"
+  ],
+  "forbidden_before_support_freeze": [
+    "count magnitudes",
+    "population-total slopes or endpoint changes",
+    "N_eff or any concentration metric",
+    "kappa or null-calibrated kappa",
+    "decline/increase classification",
+    "trait associations with outcomes",
+    "threshold or ratchet tests"
+  ],
+  "decision_gate": {
+    "go_macro_if": "At least 20 eligible species x MasterSite panels across at least 5 species and at least 3 broad geographic regions survive the support rule.",
+    "fallback_if_failed": "Do not rescue by lowering thresholds after seeing counts. Keep the frozen Ecology Report as the primary paper and treat SMP as unavailable for this macro route."
+  }
+}
