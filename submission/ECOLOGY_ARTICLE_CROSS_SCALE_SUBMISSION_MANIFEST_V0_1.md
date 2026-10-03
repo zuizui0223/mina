@@ -12,7 +12,8 @@ This package supersedes the earlier Ecology Report submission line for initial s
 
 - main manuscript: `submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md`
 - supporting information: `submission/SUPPLEMENT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md`
-- figure captions: `submission/FIGURE_CAPTIONS_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md`
+- main figure captions: `submission/FIGURE_CAPTIONS_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md`
+- supplementary figure caption: `submission/SUPPLEMENTARY_FIGURE_CAPTION_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md`
 - references: `docs/REFERENCES_V6.bib`
 
 Approximate manuscript metrics:
