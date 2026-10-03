@@ -1,0 +1,28 @@
+name: smp-master-site-support-gate-test
+
+on:
+  push:
+    branches:
+      - prospective/smp-master-site-gate-v1
+    paths:
+      - "scripts/gate_smp_master_site_support_v1.py"
+      - "tests/test_smp_master_site_support_gate.py"
+      - "contracts/SMP_MASTER_SITE_ELIGIBILITY_V1.json"
+      - ".github/workflows/smp-master-site-support-gate-test.yml"
+  pull_request:
+    paths:
+      - "scripts/gate_smp_master_site_support_v1.py"
+      - "tests/test_smp_master_site_support_gate.py"
+      - "contracts/SMP_MASTER_SITE_ELIGIBILITY_V1.json"
+      - ".github/workflows/smp-master-site-support-gate-test.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pytest pandas openpyxl
+      - run: pytest -q tests/test_smp_master_site_support_gate.py
