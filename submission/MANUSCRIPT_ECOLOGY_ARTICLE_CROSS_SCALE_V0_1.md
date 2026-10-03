@@ -98,6 +98,10 @@ The regional contract prohibited alternate geographic radii, hand-built clusters
 
 Because the local and regional records differ in temporal design, the regional extension was not treated as a second estimate of the local time-slope statistic. Local inference asks whether effective component number declines through time more strongly than expected under fixed composition and count error; regional inference asks whether effective component number covaries positively with abundance after panel-specific fixed-composition calibration. The shared estimand is therefore **directional redistribution beyond fixed composition**, not equality of test statistics or effect sizes. We do not pool local and regional p-values or estimate a common cross-scale \(\kappa\).
 
+### Reproducibility and computational assistance
+
+All analyses were executed from version-controlled code, and numerical outputs were checked against frozen result receipts and source-data checksums. OpenAI ChatGPT (GPT-5.6 Sol) was used during analysis and manuscript development to assist with code drafting and review, literature searching, statistical sensitivity-analysis scripting, and editorial drafting. It was not treated as an author or an independent source of scientific authority. All generated code, citations, numerical outputs, interpretations, and manuscript text were checked by the authors, who retain responsibility for the work.
+
 ### Descriptive internal pathways
 
 After the five within-system concentration results were known, a bounded non-inferential decomposition recorded whether the initially dominant component remained dominant and how its share changed. These summaries have no p-values and cannot alter the primary concentration classifications.
