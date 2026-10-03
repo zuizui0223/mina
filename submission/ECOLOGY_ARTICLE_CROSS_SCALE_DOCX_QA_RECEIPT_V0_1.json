@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-ecology-article-cross-scale-docx-qa-v0-1",
+  "date": "2026-10-03",
+  "status": "placeholder_submission_preview_layout_verified",
+  "journal": "Ecology",
+  "submission_type": "Article",
+  "source_manuscript": "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
+  "builder": "scripts/build_ecology_cross_scale_submission_docx.py",
+  "workflow": {
+    "run_id": 37109281567,
+    "head_sha": "7fe973a2429cb467ef34d00736d3f678df68612c",
+    "artifact_id": 11268489577,
+    "artifact_digest": "sha256:2389e2f34981f8e445b47c7bcfee0101b1fbb919b87b04e25ca165bfade829ed",
+    "conclusion": "success"
+  },
+  "rendered_preview": {
+    "page_count": 24,
+    "ecology_article_page_limit": 30,
+    "within_page_limit": true,
+    "line_numbers_after_title_page": true,
+    "equations_rendered_as_word_math": true,
+    "main_figure_captions_in_main_document": 3,
+    "supplementary_caption_excluded_from_main_document": true,
+    "references_rendered": true,
+    "visual_qa": "all_24_pages_clean",
+    "qa_method": "canonical DOCX render to page PNGs with full-page visual inspection; byte-identical unchanged pages were verified against the immediately preceding fully inspected render"
+  },
+  "resolved_layout_issues": [
+    "Report label replaced with Article on title page",
+    "Supplementary Figure S1 caption separated from the Main Document",
+    "Pandoc math parsing enabled so manuscript equations render as Word equations",
+    "Figure-caption formulas replaced with robust plain-text notation",
+    "Regional null notation simplified to avoid typographic spacing artifacts"
+  ],
+  "unresolved_author_controlled_fields": [
+    "author list and order",
+    "affiliations and present addresses",
+    "corresponding author and email",
+    "funding and grant identifiers",
+    "additional acknowledgments",
+    "CRediT author contributions",
+    "conflict-of-interest statement",
+    "complete AI-tool inventory",
+    "overlap/dual-publication statement",
+    "ORCID IDs if requested",
+    "permanent archive DOI"
+  ],
+  "boundary": "This receipt verifies the placeholder submission preview. The author-complete DOCX must be regenerated from the same builder after private metadata are confirmed."
+}
