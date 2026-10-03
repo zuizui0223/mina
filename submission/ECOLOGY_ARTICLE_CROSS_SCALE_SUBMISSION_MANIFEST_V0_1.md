@@ -73,4 +73,9 @@ Scientific analysis is closed. These metadata blockers do not authorize new ecol
 
 ## Word preview status
 
-The canonical placeholder Main Document renders to **24 pages**, within the 30-page Ecology Article limit, and has passed complete page-by-page visual QA. The preview is not author-complete and must not be uploaded until private author metadata are filled.
+The canonical placeholder Main Document renders to **24 pages** and has passed complete page-by-page visual QA. With three separately uploaded one-page main figures, the expected generated manuscript is **27 pages**, within the 30-page Ecology Article limit. The preview is not author-complete and must not be uploaded until private author metadata are filled.
+
+
+## Canonical target resolution
+
+Initial submission is **Ecology — Article**. The compact Ecology Report package is retained as an alternate only and must not be uploaded in parallel. See `contracts/ECOLOGY_CROSS_SCALE_CANONICAL_TARGET_V1.json`.
