@@ -66,3 +66,12 @@ def test_open_research_not_duplicated_in_manuscript_body():
     text = MANUSCRIPT.read_text(encoding="utf-8")
     assert "## Data availability" not in text
     assert "## References" in text
+
+
+def test_ai_disclosure_is_present_in_methods_and_acknowledgments():
+    text = MANUSCRIPT.read_text(encoding="utf-8")
+    assert "### Reproducibility and computational assistance" in text
+    methods = text.split("### Reproducibility and computational assistance", 1)[1].split("### Descriptive internal pathways", 1)[0]
+    assert "OpenAI ChatGPT (GPT-5.6 Sol)" in methods
+    copy = COPY.read_text(encoding="utf-8")
+    assert "OpenAI ChatGPT (GPT-5.6 Sol)" in copy
