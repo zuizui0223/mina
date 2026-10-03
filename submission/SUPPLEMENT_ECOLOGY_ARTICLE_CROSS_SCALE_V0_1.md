@@ -134,17 +134,31 @@ Thirteen candidate species × region groups were present; seven were eligible.
 
 ## Section S7: Complete regional panel results
 
-**Table S4. Complete eligible MAPPPD regional network results.**
+**Table S4. Complete eligible MAPPPD regional network inference.**
 
-| Species | Region | Direction | Sites | Seasons | First N | Last N | First E | Last E | raw κ | obs-error Δκ | p | Supported |
-|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| Adélie | Central-west Antarctic Peninsula | decline | 3 | 5 | 2,279 | 559 | 1.967 | 1.733 | 0.080 | +0.073 | 0.108 | no |
-| Adélie | South Shetland Islands | decline | 4 | 7 | 29,710 | 8,576 | 3.040 | 2.726 | 0.088 | +0.115 | 0.0148 | yes |
-| Adélie | Victoria Land | increase | 11 | 5 | 387,917 | 516,140 | 4.848 | 3.559 | −0.358 | −0.355 | 0.766 | no |
-| Chinstrap | Central-west Antarctic Peninsula | decline | 3 | 10 | 764 | 488 | 2.057 | 1.997 | 0.022 | +0.017 | 0.432 | no |
-| Chinstrap | South Shetland Islands | decline | 6 | 8 | 10,539 | 3,611 | 2.469 | 1.552 | 0.445 | +0.434 | 0.0152 | yes |
-| Gentoo | Central-west Antarctic Peninsula | increase | 7 | 5 | 19,084 | 23,253 | 4.933 | 4.128 | −0.238 | −0.228 | 0.984 | no |
-| Gentoo | South Shetland Islands | increase | 5 | 7 | 11,910 | 19,544 | 3.902 | 3.859 | 0.024 | +0.020 | 0.427 | no |
+| Species | Region | Direction | Sites | Seasons | raw κ | obs-error Δκ | p | Supported |
+|---|---|---|---:|---:|---:|---:|---:|---|
+| Adélie | CWAP | decline | 3 | 5 | 0.080 | +0.073 | 0.108 | no |
+| Adélie | SSI | decline | 4 | 7 | 0.088 | +0.115 | 0.0148 | yes |
+| Adélie | Victoria | increase | 11 | 5 | −0.358 | −0.355 | 0.766 | no |
+| Chinstrap | CWAP | decline | 3 | 10 | 0.022 | +0.017 | 0.432 | no |
+| Chinstrap | SSI | decline | 6 | 8 | 0.445 | +0.434 | 0.0152 | yes |
+| Gentoo | CWAP | increase | 7 | 5 | −0.238 | −0.228 | 0.984 | no |
+| Gentoo | SSI | increase | 5 | 7 | 0.024 | +0.020 | 0.427 | no |
+
+CWAP = Central-west Antarctic Peninsula; SSI = South Shetland Islands.
+
+**Table S5. First and last retained endpoints for the seven eligible MAPPPD networks.**
+
+| Species | Region | First N | Last N | First E | Last E |
+|---|---|---:|---:|---:|---:|
+| Adélie | CWAP | 2,279 | 559 | 1.967 | 1.733 |
+| Adélie | SSI | 29,710 | 8,576 | 3.040 | 2.726 |
+| Adélie | Victoria | 387,917 | 516,140 | 4.848 | 3.559 |
+| Chinstrap | CWAP | 764 | 488 | 2.057 | 1.997 |
+| Chinstrap | SSI | 10,539 | 3,611 | 2.469 | 1.552 |
+| Gentoo | CWAP | 19,084 | 23,253 | 4.933 | 4.128 |
+| Gentoo | SSI | 11,910 | 19,544 | 3.902 | 3.859 |
 
 The four declining networks all have positive observation-error-calibrated Δκ. Two are individually supported under the panel-level support rule frozen before regional outcomes were computed. These four panel tests are not treated as a prespecified family-wise generality test, and no multiplicity-adjusted regional rejection criterion was frozen. The nominal one-sided probability of four positive signs out of four is 0.0625, but the panels are not independent geographic replicates because two species occur within each of the two declining regions. This sign probability is therefore descriptive only.
 
@@ -154,15 +168,7 @@ The Central-west Antarctic Peninsula retained rosters include BISC (Biscoe Point
 
 ## Section S8: Increasing regional networks
 
-All three eligible increasing networks ended with lower E than in their first retained complete season:
-
-**Table S5. Descriptive endpoints for increasing regional networks.**
-
-| Network | Abundance change | E change |
-|---|---:|---:|
-| Adélie — Victoria Land | +33.1% | −26.6% |
-| Gentoo — Central-west Antarctic Peninsula | +21.8% | −16.3% |
-| Gentoo — South Shetland Islands | +64.1% | −1.1% |
+All three eligible increasing networks ended with lower E than in their first retained complete season (Table S5): Adélie — Victoria Land, abundance +33.1% and E −26.6%; Gentoo — Central-west Antarctic Peninsula, abundance +21.8% and E −16.3%; and Gentoo — South Shetland Islands, abundance +64.1% and E −1.1%.
 
 These observations are qualitatively compatible with spatial structure changing more slowly than abundance, but no regional ratchet or hysteresis endpoint was frozen before these outcomes were inspected. They therefore remain descriptive.
 
