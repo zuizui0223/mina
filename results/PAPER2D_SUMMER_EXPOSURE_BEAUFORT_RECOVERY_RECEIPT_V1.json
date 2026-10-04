@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2d-summer-exposure-beaufort-recovery-receipt-v1",
+  "validated_date": "2026-10-04",
+  "contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_SUMMER_EXPOSURE_RECOVERY_V1.json",
+  "execution": {
+    "workflow_run_id": 37190107881,
+    "artifact_id": 11297579656,
+    "artifact_digest": "sha256:9d23d45d84a01a5dfccc63aeae2423f0c0a66eee23dc80c7d621df52d174df3f",
+    "head_sha": "b070f793492c9625a93f7ccde8ed3aa44a3d819a",
+    "conclusion": "success"
+  },
+  "positive_control": {
+    "site_id": "BEAU",
+    "early_epoch": [
+      1984,
+      1992
+    ],
+    "late_epoch": [
+      2009,
+      2017
+    ],
+    "paired_observable_cells": 4137,
+    "paired_observable_area_ha": 372.33,
+    "primary_threshold": 0.5,
+    "early_persistent_exposed_fraction": 0.04230118443316413,
+    "late_persistent_exposed_fraction": 0.09789702683103699,
+    "delta_late_minus_early": 0.05559584239787286,
+    "sensitivity_threshold_0_67_delta": 0.032632342277012324,
+    "any_exposed_delta": 0.5076142131979696
+  },
+  "decision": {
+    "positive_control_passed": true,
+    "full_roster_A_available_measurement_authorized": true,
+    "demographic_magnitudes_opened": false
+  },
+  "boundary": [
+    "This validates direction of the frozen summer-exposure measurement at an external positive-control site; it is not a demographic result.",
+    "The metric remains persistent summer exposure inside fixed AEI support, not literal occupied nesting area.",
+    "No threshold or scene selection was altered after observing the control direction."
+  ]
+}
