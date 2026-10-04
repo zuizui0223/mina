@@ -56,18 +56,18 @@ The effect of terrestrial opportunity change depends on marine accessibility dur
 
 Conceptually:
 
-[
-D_i = \\beta_A Delta A_i + \\beta_M Delta M_i
-      + \\beta_{AM}(Delta A_i \\times Delta M_i) + ldots
-]
+\[
+D_i = \beta_A \Delta A_i + \beta_M \Delta M_i
+      + \beta_{AM}(\Delta A_i \times \Delta M_i) + \ldots
+\]
 
-where (Delta M_i) is a predeclared marine-access change metric.
+where \(\Delta M_i\) is a predeclared marine-access change metric.
 
 Interpretation:
 
-- (\\beta_A>0): terrestrial opportunity tracking;
-- (\\beta_{AM}>0): newly available land is used preferentially where the marine matrix also remains/becomes accessible;
-- (Delta A_i>0) with negative (D_i): direct evidence of physical-habitat expansion without biological expansion.
+- \(\beta_A>0\): terrestrial opportunity tracking;
+- \(\beta_{AM}>0\): newly available land is used preferentially where the marine matrix also remains/becomes accessible;
+- \(\Delta A_i>0\) with negative \(D_i\): direct evidence of physical-habitat expansion without biological expansion.
 
 H2 is opened only if the marine metric passes its own outcome-blind support and identifiability gate.
 
@@ -77,12 +77,12 @@ The all-site analysis must remove shared temporal change before asking whether s
 
 Preferred model family after support is frozen:
 
-[
-log(1+n_{ist}) =
-alpha_i + lambda_{g(i),t}
-+ \\beta_{A,s},h_i,\\tau_t
-+ epsilon_{ist},
-]
+\[
+\log(1+n_{ist}) =
+\alpha_i + \lambda_{g(i),t}
++ \beta_{A,s} h_i \tau_t
++ \epsilon_{ist},
+\]
 
 where:
 
@@ -101,9 +101,9 @@ The exact likelihood, observation-error propagation and inferential calibration 
 
 Where a species × region has a fixed site roster and enough complete seasons, run a secondary direct compositional test using regional site shares:
 
-[
-p_{it} = n_{it}/sum_j n_{jt}.
-]
+\[
+p_{it} = \frac{n_{it}}{\sum_j n_{jt}}.
+\]
 
 Ask whether sites with larger (Delta A_i) gain share from early to late complete seasons.
 
