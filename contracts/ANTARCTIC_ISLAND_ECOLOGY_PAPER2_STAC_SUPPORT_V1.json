@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-island-ecology-paper2-stac-support-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_remote_sensing_metadata_audit",
+  "parent_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_SUPPORT_AUDIT_V1.json",
+  "purpose": "Audit whether the frozen long-term Pygoscelis site roster has sufficient historical and recent optical imagery to estimate terrestrial breeding-opportunity change, without reading demographic magnitudes or outcomes.",
+  "site_roster": {
+    "source": "PAPER2_FORCING_SUPPORT_UNITS_V1.csv from workflow run 36517700369 / artifact 11012045716",
+    "expected_site_species_units": 107,
+    "expected_distinct_sites": 88,
+    "allowed_fields": [
+      "site_id",
+      "species_id",
+      "region",
+      "first_observed_season",
+      "last_observed_season",
+      "n_observed_seasons"
+    ],
+    "coordinate_source": "ANTARCTIC_PENGUIN_BREEDING_OPTIONS_ATLAS_V1.csv from workflow run 36489980162 / artifact 11000822448",
+    "prohibited_fields": [
+      "count magnitude",
+      "population trend",
+      "effective breeding-component number",
+      "concentration effect",
+      "any abundance-derived class"
+    ]
+  },
+  "stac": {
+    "endpoint": "https://earth-search.aws.element84.com/v1",
+    "landsat_collection": "landsat-c2-l2",
+    "sentinel_collection": "sentinel-2-l2a",
+    "authority_note": "Earth Search is used as the discovery API; Landsat Collection 2 is a USGS archive and Sentinel-2 is an ESA/Copernicus archive."
+  },
+  "season_filter": {
+    "months": [11, 12, 1, 2, 3],
+    "rationale": "Prefer austral spring-summer imagery when seasonal snow and darkness are less likely to prevent exposed-ground classification."
+  },
+  "epochs": {
+    "early_landsat": ["1984-01-01", "1993-12-31"],
+    "middle_landsat": ["1994-01-01", "2003-12-31"],
+    "late_landsat": ["2016-01-01", "2025-12-31"],
+    "late_sentinel": ["2016-01-01", "2025-12-31"]
+  },
+  "metadata_support_rules": {
+    "primary_longitudinal": {
+      "required_epochs": ["early_landsat", "late_landsat"],
+      "per_epoch_min_scenes_scene_cloud_le_80": 3,
+      "per_epoch_min_distinct_years_scene_cloud_le_80": 2
+    },
+    "strong_longitudinal": {
+      "required_epochs": ["early_landsat", "late_landsat"],
+      "per_epoch_min_scenes_scene_cloud_le_50": 5,
+      "per_epoch_min_distinct_years_scene_cloud_le_50": 3
+    },
+    "sentinel_validation": {
+      "epoch": "late_sentinel",
+      "min_scenes_scene_cloud_le_80": 3,
+      "min_distinct_years_scene_cloud_le_80": 2
+    }
+  },
+  "important_limit": "Scene-level cloud cover is only a discovery/support screen. A site cannot enter an ecological outcome model until local pixel-level QA for cloud, shadow, snow/ice and coastline classification is separately frozen and passed.",
+  "outputs": [
+    "site-level STAC support table",
+    "support counts by region and species-presence set",
+    "list of sites failing early, late, or validation support",
+    "no population or concentration association"
+  ],
+  "stop_rule": "Do not change imagery epochs, seasonal months, cloud thresholds, or scene/year minimums after demographic outcomes are joined. Outcome data remain locked after this audit regardless of whether support is broad or narrow."
+}
