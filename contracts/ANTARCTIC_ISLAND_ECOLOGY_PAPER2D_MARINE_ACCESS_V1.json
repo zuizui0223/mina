@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2d-marine-access-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_secondary_modifier",
+  "purpose": "Freeze one marine-matrix accessibility metric before demographic outcomes are joined.",
+  "source": {
+    "dataset": "NOAA/NSIDC Sea Ice Index",
+    "id": "G02135",
+    "version": 4,
+    "doi": "10.7265/a98x-0f50",
+    "product": "Antarctic monthly sea-ice concentration GeoTIFF",
+    "resolution_km": 25,
+    "crs": "EPSG:3412"
+  },
+  "metric": {
+    "name": "breeding-season open-water access distance",
+    "months": [
+      11,
+      12,
+      1
+    ],
+    "open_water_threshold_percent": 15,
+    "monthly_value": "Distance in km from the breeding site to the nearest valid ocean grid-cell center with sea-ice concentration below 15 percent.",
+    "epoch_value": "Median monthly distance over all November-January fields inside the site's already-frozen early or late terrestrial epoch.",
+    "change": "late minus early distance",
+    "standardized_favorable_change": "M = -(late_distance - early_distance), so larger M means closer open water."
+  },
+  "support_gate": {
+    "required_month_fraction_per_epoch": 0.9,
+    "minimum_complete_years_per_epoch": 3,
+    "maximum_search_distance_km": 1000,
+    "h2_opens_if": "At least 80 percent of terrestrial-metric eligible sites have both epoch values, with at least two species and two regions represented."
+  },
+  "inferential_role": {
+    "primary_h1_unchanged": true,
+    "h2_model": "relative_reallocation ~ land_change + marine_access_change + land_change:marine_access_change + frozen regional/species structure",
+    "focal_h2_term": "land_change:marine_access_change",
+    "no_broad_covariate_search": true
+  },
+  "boundaries": [
+    "This is regional access through the marine matrix, not a route-level crack/lead metric.",
+    "Closer open water does not directly measure prey availability.",
+    "No alternative sea-ice threshold is selected using demographic outcomes."
+  ]
+}
