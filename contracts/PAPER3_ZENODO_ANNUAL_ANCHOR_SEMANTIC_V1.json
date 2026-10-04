@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper3-zenodo-annual-anchor-semantic-v1",
+  "date": "2026-10-04",
+  "status": "secondary_semantic_route_frozen_before_interannual_displacement",
+  "parent_failed_endpoint_test": "contracts/PAPER3_ZENODO_ROUTE_POINT_SEMANTIC_V1.json",
+  "rationale": [
+    "The endpoint-matching hypothesis failed before any interannual displacement was calculated.",
+    "The publication states that fast-ice-edge distances were measured from the colony location in the first image of each season.",
+    "The published route DBF stores pointLon/pointLat in addition to the route polyline, so the appropriate semantic test is whether that point behaves as a single season-level anchor rather than whether the polyline vertex order begins at it."
+  ],
+  "validation": {
+    "required_colonies": [
+      "Astrid",
+      "Mertz",
+      "SANAE"
+    ],
+    "required_seasons_per_colony": 10,
+    "required_total_colony_seasons": 30,
+    "coordinate_fields": [
+      "point_lon",
+      "point_lat"
+    ],
+    "coordinate_constancy_rule": "Within each colony-season, all finite point_lon/point_lat values must be identical after rounding to 8 decimal places.",
+    "required_constancy_fraction": 1,
+    "date_parse_required": 1,
+    "finite_coordinate_required": 1
+  },
+  "interpretation_if_passed": "Treat the unique point_lon/point_lat pair per colony-season as the published first-image annual colony anchor for the interannual aliasing analysis.",
+  "prohibited": [
+    "use of interannual displacement to decide semantic validity",
+    "choice of radii from anchor distances",
+    "dropping seasons with large movement",
+    "environmental or demographic outcome use"
+  ],
+  "next_gate_if_passed": "Run contracts/PAPER3_ZENODO_INTERANNUAL_ALIASING_V1.json unchanged."
+}
