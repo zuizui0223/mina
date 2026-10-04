@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install pandas pystac-client
+      - run: python -m pip install pandas requests
       - name: Unit tests
         run: python -m unittest tests.test_antarctic_island_ecology_optical_catalog -v
       - name: Download frozen outcome-blind source artifacts
