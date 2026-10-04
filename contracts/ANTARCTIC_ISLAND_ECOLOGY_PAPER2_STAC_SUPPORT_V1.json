@@ -27,10 +27,31 @@
     ]
   },
   "stac": {
-    "endpoint": "https://earth-search.aws.element84.com/v1",
-    "landsat_collection": "landsat-c2-l2",
-    "sentinel_collection": "sentinel-2-l2a",
-    "authority_note": "Earth Search is used as the discovery API; Landsat Collection 2 is a USGS archive and Sentinel-2 is an ESA/Copernicus archive."
+    "landsat_catalogs": [
+      {
+        "name": "usgs_landsatlook",
+        "endpoint": "https://landsatlook.usgs.gov/stac-server",
+        "collection": "landsat-c2l2-sr"
+      },
+      {
+        "name": "earth_search",
+        "endpoint": "https://earth-search.aws.element84.com/v1",
+        "collection": "landsat-c2-l2"
+      }
+    ],
+    "sentinel_catalogs": [
+      {
+        "name": "planetary_computer",
+        "endpoint": "https://planetarycomputer.microsoft.com/api/stac/v1",
+        "collection": "sentinel-2-l2a"
+      },
+      {
+        "name": "earth_search",
+        "endpoint": "https://earth-search.aws.element84.com/v1",
+        "collection": "sentinel-2-l2a"
+      }
+    ],
+    "provider_rule": "Use the first catalog that returns a valid STAC response for a site-epoch query; fallback is technical only and does not alter epochs, thresholds, or site eligibility."
   },
   "season_filter": {
     "months": [11, 12, 1, 2, 3],
@@ -64,6 +85,7 @@
     "site-level STAC support table",
     "support counts by region and species-presence set",
     "list of sites failing early, late, or validation support",
+    "catalog provider used for each site-epoch query",
     "no population or concentration association"
   ],
   "stop_rule": "Do not change imagery epochs, seasonal months, cloud thresholds, or scene/year minimums after demographic outcomes are joined. Outcome data remain locked after this audit regardless of whether support is broad or narrow."
