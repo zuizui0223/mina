@@ -47,7 +47,7 @@ jobs:
           test -f build/recovery/PAPER2D_DYNAMIC_OUTCOME_RECOVERY_RESULT_V1.json
       - name: Run frozen real dynamic association
         run: |
-          python scripts/run_paper2d_dynamic_outcome.py \
+          python -m scripts.run_paper2d_dynamic_outcome \
             --unlock-contract contracts/PAPER2D_DYNAMIC_OUTCOME_EXECUTION_V1.json \
             --recovery-json build/recovery/PAPER2D_DYNAMIC_OUTCOME_RECOVERY_RESULT_V1.json \
             --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
