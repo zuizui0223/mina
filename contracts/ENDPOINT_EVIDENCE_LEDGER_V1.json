@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "ledger_id": "mina-main-66-endpoint-evidence-ledger-v1",
+  "source": {
+    "repository": "zuizui0223/mina",
+    "ref": "main",
+    "commit": "7764523c5f1e536b86084de8583cdd6262ee8fa7",
+    "directory": "results",
+    "result_file_count": 66
+  },
+  "tiers": {
+    "E1": "confirmatory ecological evidence: prospectively frozen independent or cross-species replication",
+    "E2": "robust but exploratory/discovery/descriptive ecological evidence",
+    "E3": "scope-limiting negative/falsification/non-replication",
+    "E4": "ecological question stopped because required data were unavailable",
+    "A0": "auxiliary audit/recovery/provenance/method support; not independent ecological evidence"
+  },
+  "counts": {
+    "A0": 31,
+    "E2": 17,
+    "E3": 14,
+    "E4": 1,
+    "E1": 3
+  },
+  "rows": [
+    {
+      "n": 1,
+      "file": "AEI_VAT_SCHEMA_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "audit",
+      "summary": "AEI/VAT schema integrity audit only; no ecological outcome."
+    },
+    {
+      "n": 2,
+      "file": "ANTARCTIC_BREEDING_OPTIONS_ATLAS_GATE1_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_gate",
+      "summary": "2-km breeding-option atlas coverage/variation gate passed; demographic outcomes remained closed."
+    },
+    {
+      "n": 3,
+      "file": "ANTARCTIC_BREEDING_OPTIONS_HIERARCHY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_gate",
+      "summary": "Habitat-complex richness frozen as primary heterogeneity trait; no demographic outcome opened."
+    },
+    {
+      "n": 4,
+      "file": "ANTARCTIC_TERRAIN_ATLAS_GATE1D_A_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_gate",
+      "summary": "Terrain coverage passed and relief selected over redundant elevation SD; no outcome opened."
+    },
+    {
+      "n": 5,
+      "file": "CONCENTRATION_DOMINANCE_DESCRIPTIVE_SUMMARY_V1.json",
+      "tier": "E2",
+      "layer": "within_system_spatial",
+      "role": "posthoc_description",
+      "summary": "Same contraction endpoint arose via Palmer dominance turnover and Signy core retention; descriptive only."
+    },
+    {
+      "n": 6,
+      "file": "CONTRACTION_SCALING_LAW_SYNTHESIS_V1.json",
+      "tier": "E2",
+      "layer": "within_system_spatial",
+      "role": "bounded_posthoc",
+      "summary": "Five local trajectories all had positive abundance–E scaling; common descriptive kappa about 0.25; search closed."
+    },
+    {
+      "n": 7,
+      "file": "CONTRACTION_SCALING_RULES_EXPLORATION_SUMMARY_V1.json",
+      "tier": "E2",
+      "layer": "within_system_spatial",
+      "role": "bounded_posthoc",
+      "summary": "No universal threshold, instantaneous law, predictor of kappa, or universal quarter-power constant; bounded exploratory synthesis."
+    },
+    {
+      "n": 8,
+      "file": "EXPLORATORY_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "species_phenotype",
+      "role": "exploratory",
+      "summary": "Apparent island phenotype largely reflects species composition; within Adelie island signal is weak and non-transferable across years."
+    },
+    {
+      "n": 9,
+      "file": "MAPPPD_MACRO_GEOGRAPHY_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "audit",
+      "summary": "Macro sample broad but geographically uneven; species and geography partly confounded; no outcomes modeled."
+    },
+    {
+      "n": 10,
+      "file": "MAPPPD_MACRO_INVENTORY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "data_scope",
+      "role": "inventory_gate",
+      "summary": "Pygoscelis macro trend lane viable; emperor/king/macaroni not viable in same lane; no outcome opened."
+    },
+    {
+      "n": 11,
+      "file": "MAPPPD_OBSERVATION_METHOD_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "audit",
+      "summary": "Observation-method heterogeneity audit; methodological support only."
+    },
+    {
+      "n": 12,
+      "file": "PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "within_system_spatial",
+      "role": "discovery",
+      "summary": "Palmer discovery: all three stable-roster islands concentrate beyond proportional thinning under the full frozen count-error family."
+    },
+    {
+      "n": 13,
+      "file": "PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "mechanism_trace",
+      "role": "exploratory_association",
+      "summary": "N_eff carried a small positive next-year growth association beyond abundance/time; later permutation removed the predictive claim but not the conditional association.",
+      "superseded_by": "PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json"
+    },
+    {
+      "n": 14,
+      "file": "PALMER_EXTERNAL_SPATIAL_TRIANGULATION_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "within_system_spatial",
+      "role": "external_triangulation",
+      "summary": "Independent Torgersen mapping shows non-random spatial attrition consistent with local contraction; identifier crosswalk and causality remain unresolved."
+    },
+    {
+      "n": 15,
+      "file": "PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "within_system_spatial",
+      "role": "exploratory_hierarchy",
+      "summary": "Observed temporal variability is reduced mainly within islands rather than among islands; full error robustness is limited by later CV20 null.",
+      "bounded_by": "PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json"
+    },
+    {
+      "n": 16,
+      "file": "PALMER_HIERARCHY_COMPONENT_COUNT_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "within_system_spatial",
+      "role": "posthoc_audit",
+      "summary": "Component-count diagnostic argues hierarchy is not only a unit-count artifact; not confirmatory."
+    },
+    {
+      "n": 17,
+      "file": "PALMER_HIERARCHY_COUNT_ERROR_NULL_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "within_system_spatial",
+      "role": "scope_limit",
+      "summary": "Raw hierarchy is unusual under Poisson/CV10 but compatible with CV20; centered signals cannot rescue full robustness."
+    },
+    {
+      "n": 18,
+      "file": "PALMER_LARGE_BREEDING_GROUP_THRESHOLD_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "mechanism_trace",
+      "role": "falsification",
+      "summary": "Externally fixed >50-pair group metrics improve prediction error but coefficients have the wrong sign; directional hypothesis rejected."
+    },
+    {
+      "n": 19,
+      "file": "PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "regional_direction",
+      "role": "exploratory_context",
+      "summary": "Five neighboring Adelie islands share a dominant multi-decadal decline component while annual synchrony and local endpoints remain heterogeneous."
+    },
+    {
+      "n": 20,
+      "file": "PALMER_MANUSCRIPT_FIGURE_PACKAGE_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "reproducibility",
+      "role": "packaging_audit",
+      "summary": "Reproducible figure package receipt; no ecological evidence."
+    },
+    {
+      "n": 21,
+      "file": "PALMER_MARK_RESIGHT_DATA_AUDIT_RESULT_V1.json",
+      "tier": "E4",
+      "layer": "individual_process_boundary",
+      "role": "data_stopped",
+      "summary": "Public sources lack the band-to-later-breeding-site resight bridge needed for retention/dispersal inference; direct individual-movement lane closed."
+    },
+    {
+      "n": 22,
+      "file": "PALMER_NEFF_CIRCULAR_COUPLING_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "mechanism_trace",
+      "role": "robustness",
+      "summary": "N_eff coefficient remains unusual under serial-structure-preserving coupled count-error nulls; no predictive claim restored."
+    },
+    {
+      "n": 23,
+      "file": "PALMER_NEFF_CIRCULAR_SHIFT_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "mechanism_trace",
+      "role": "robustness",
+      "summary": "N_eff coefficient survives independent and joint circular-shift structured nulls; held-out prediction remains unsupported."
+    },
+    {
+      "n": 24,
+      "file": "PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "mechanism_trace",
+      "role": "robustness",
+      "summary": "Conditional N_eff association persists after one- and two-year demographic momentum controls; incremental predictive gain remains tiny."
+    },
+    {
+      "n": 25,
+      "file": "PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "mechanism_trace",
+      "role": "robustness",
+      "summary": "Shared census-error mechanics do not generate an observed-scale positive N_eff coefficient under frozen sensitivities; association only."
+    },
+    {
+      "n": 26,
+      "file": "PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "mechanism_trace",
+      "role": "scope_limit",
+      "summary": "Held-out N_eff predictive gain is null-compatible (p=0.262); full-data coefficient remains unusual, so prediction is demoted to conditional association."
+    },
+    {
+      "n": 27,
+      "file": "PALMER_NETWORK_STAGE2_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "regional_direction",
+      "role": "exploratory_context",
+      "summary": "Adelie decline recurs across local islands and endpoints differ (extinction/replacement/persistence); multi-island composition reassembly itself is not estimable."
+    },
+    {
+      "n": 28,
+      "file": "PALMER_PERFORMANCE_MEMORY_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "mechanism_trace",
+      "role": "exploratory_mechanism",
+      "summary": "Reproductive performance shows weak short memory and past performance adds information beyond current state; persistent habitat and biological memory remain entangled."
+    },
+    {
+      "n": 29,
+      "file": "PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+      "tier": "E2",
+      "layer": "mechanism_trace",
+      "role": "postexposure_validation",
+      "summary": "Lag-2/3 performance-linked redistribution is positive under fixed specification, but provenance repair followed exposure; delayed 4–5-year recruitment echo is rejected."
+    },
+    {
+      "n": 30,
+      "file": "PALMER_PHENOTYPE_REASSEMBLY_RESULT_V1.json",
+      "tier": "E2",
+      "layer": "species_phenotype",
+      "role": "bounded_exploration",
+      "summary": "Species sorting explains much island differentiation; within Adelie fixed island morphology is weak and cross-year island identity nearly disappears."
+    },
+    {
+      "n": 31,
+      "file": "PALMER_REPRODUCTIVE_DENOMINATOR_AUDIT_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "mechanism_trace",
+      "role": "scope_limit",
+      "summary": "Positive colony-size/chick count pattern is island-dependent and denominator semantics are unstable; no Palmer-wide Allee-like or pre-extinction reproductive collapse mechanism."
+    },
+    {
+      "n": 32,
+      "file": "PALMER_SEAICE_HABITAT_MECHANISM_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "regional_direction",
+      "role": "prospective_falsification",
+      "summary": "Predeclared positive annual sea-ice-duration mechanism and habitat moderation are not supported."
+    },
+    {
+      "n": 33,
+      "file": "PALMER_SEAICE_TIMESCALE_SEPARATION_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "regional_direction",
+      "role": "prospective_falsification",
+      "summary": "Predeclared 3/5/7-year low-frequency sea-ice-duration rescue fails; common decline is not recovered by smoothing the same index."
+    },
+    {
+      "n": 34,
+      "file": "PALMER_WEATHER_X_HABITAT_MECHANISM_RESULT_V2.json",
+      "tier": "E3",
+      "layer": "regional_direction",
+      "role": "prospective_falsification",
+      "summary": "October snowfall-by-snow-prone-habitat interaction is opposite the predicted sign and worsens held-out prediction."
+    },
+    {
+      "n": 35,
+      "file": "PALMER_WIN_STAY_LOSE_SWITCH_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "mechanism_trace",
+      "role": "mechanism_falsification",
+      "summary": "Specific win-stay/lose-switch mechanism is not supported; only a broader within-island redistribution class remains compatible."
+    },
+    {
+      "n": 36,
+      "file": "PAPER2_A_BUFFERING_SECONDARY_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "static_place",
+      "role": "scope_limit",
+      "summary": "Simple breeding-space amount buffering is not supported after preregistered species-specific permutation/Holm inference."
+    },
+    {
+      "n": 37,
+      "file": "PAPER2_BREEDING_SEASON_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_audit",
+      "summary": "Season chosen over calendar year before outcome modeling; no count magnitudes opened."
+    },
+    {
+      "n": 38,
+      "file": "PAPER2_CROSS_SPECIES_GENERALITY_V4_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "recovery_audit",
+      "summary": "Synthetic recovery shows cross-species median estimand can be recovered; no real outcomes opened."
+    },
+    {
+      "n": 39,
+      "file": "PAPER2_DETECTABLE_EFFECT_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "static_place",
+      "role": "scope_limit",
+      "summary": "Non-confirmatory macro result is informative against very large common effects (~|0.5|+), but not against effects around |0.3|; not an equivalence test."
+    },
+    {
+      "n": 40,
+      "file": "PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "descriptive_component",
+      "summary": "First real V3 point estimates are negative across species but were explicitly non-inferential pending permutation; primary inference lives in V3 permutation result."
+    },
+    {
+      "n": 41,
+      "file": "PAPER2_FORCING_SCALE_SENSITIVITY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_audit",
+      "summary": "Forcing-scale sensitivity and fallback rules frozen before demographic outcomes."
+    },
+    {
+      "n": 42,
+      "file": "PAPER2_FORCING_SUPPORT_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_audit",
+      "summary": "Forcing support and coverage audited before counts; no ecological outcome."
+    },
+    {
+      "n": 43,
+      "file": "PAPER2_H_MAIN_RECOVERY_V5_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "recovery_audit",
+      "summary": "Synthetic recovery shows H main effect estimable; no real outcomes opened."
+    },
+    {
+      "n": 44,
+      "file": "PAPER2_INTEGRATED_HIERARCHICAL_RECOVERY_RESULT_V2.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "recovery_audit",
+      "summary": "Hierarchical estimator recoverable species-wide, not at all regional scales; pre-outcome method gate."
+    },
+    {
+      "n": 45,
+      "file": "PAPER2_INTEGRATED_RECOVERY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "failed_method_gate",
+      "summary": "Initial integrated estimator failed pre-outcome recovery and counts stayed locked; triggered redesign rather than ecological interpretation."
+    },
+    {
+      "n": 46,
+      "file": "PAPER2_INTEGRATED_SENSITIVITY_SUPPORT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_audit",
+      "summary": "Outcome-blind source-sensitivity coverage audit; ground-only Adelie lane coverage-limited."
+    },
+    {
+      "n": 47,
+      "file": "PAPER2_LATENT_FACTOR_RECOVERY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "recovery_audit",
+      "summary": "Latent-factor recovery selected species/region scales before real outcomes; observation layer not yet validated."
+    },
+    {
+      "n": 48,
+      "file": "PAPER2_OBSERVATION_OVERLAP_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_audit",
+      "summary": "Direct/image overlap and accuracy precision structure audited before count magnitudes."
+    },
+    {
+      "n": 49,
+      "file": "PAPER2_OBSERVATION_RECOVERY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "recovery_audit",
+      "summary": "Synthetic observation nuisance layer recoverable; not ecological evidence."
+    },
+    {
+      "n": 50,
+      "file": "PAPER2_OBSERVATION_TIMING_SENSITIVITY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "sensitivity_support",
+      "summary": "Exact-date and <=14-day calibration leave focal direction essentially unchanged; does not alter non-confirmatory primary inference."
+    },
+    {
+      "n": 51,
+      "file": "PAPER2_PREDICTOR_IDENTIFIABILITY_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_audit",
+      "summary": "A×H design is structurally identifiable with frozen group adjustment; no outcome claim."
+    },
+    {
+      "n": 52,
+      "file": "PAPER2_RADIUS_SIGN_SWITCH_NULL_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "static_place",
+      "role": "scope_limit",
+      "summary": "2-km negative to 5-km positive sign switch is not unusual under the frozen null; ecological scale-dependence language is not allowed."
+    },
+    {
+      "n": 53,
+      "file": "PAPER2_SCALE_TRAIT_SENSITIVITY_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "static_place",
+      "role": "scope_limit",
+      "summary": "A×H interaction is not invariant across radius or heterogeneity metric; cannot be a general island-architecture law."
+    },
+    {
+      "n": 54,
+      "file": "PAPER2_SPATIAL_ADJUSTED_V3_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "recovery_audit",
+      "summary": "Species-wide forcing plus spatial loading adjustment passes synthetic recovery; real outcomes still locked at that gate."
+    },
+    {
+      "n": 55,
+      "file": "PAPER2_TEMPORAL_OVERLAP_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_audit",
+      "summary": "1980–2025 common window and complete-case support frozen before demographic values."
+    },
+    {
+      "n": 56,
+      "file": "PAPER2_V2_SENSITIVITY_SUPPORT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "preoutcome_audit",
+      "summary": "V2 source-sensitivity testability audit; no real outcomes opened."
+    },
+    {
+      "n": 57,
+      "file": "PAPER2_V2_SOURCE_SENSITIVITY_RECOVERY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "failed_method_gate",
+      "summary": "V2 source-sensitivity recovery missed one frozen threshold; counts remained locked and estimator was not rescued."
+    },
+    {
+      "n": 58,
+      "file": "PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "static_place",
+      "role": "confirmatory_null",
+      "summary": "Primary cross-species A×H permutation test is non-significant (p=0.0947); no species survives Holm adjustment, so only a suggestive tendency remains."
+    },
+    {
+      "n": 59,
+      "file": "PAPER2_V3_SOURCE_SENSITIVITY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "failed_method_gate",
+      "summary": "V3 source robustness misses Adelie exclude-unknown recovery threshold; no threshold relaxation."
+    },
+    {
+      "n": 60,
+      "file": "PAPER2_V4_SOURCE_GENERALITY_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "static_place",
+      "role": "recovery_audit",
+      "summary": "Paper-level source-robustness estimand recoverable after exclusion sensitivity; methodological support, not ecological outcome."
+    },
+    {
+      "n": 61,
+      "file": "SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "tier": "E1",
+      "layer": "within_system_spatial",
+      "role": "prospective_replication",
+      "summary": "Independent Signy Adelie replication was predeclared after Palmer discovery and supports concentration beyond proportional thinning."
+    },
+    {
+      "n": 62,
+      "file": "SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "tier": "E1",
+      "layer": "within_system_spatial",
+      "role": "prospective_cross_species_replication",
+      "summary": "Separately frozen Signy chinstrap test supports the same concentration endpoint across species."
+    },
+    {
+      "n": 63,
+      "file": "SIGNY_CONCENTRATION_QUALITY_AUDIT_V1.json",
+      "tier": "A0",
+      "layer": "within_system_spatial",
+      "role": "postresult_quality_audit",
+      "summary": "Quality audit retains frozen primary concentration result and forbids post-outcome season-exclusion rescue."
+    },
+    {
+      "n": 64,
+      "file": "SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json",
+      "tier": "E1",
+      "layer": "within_system_spatial",
+      "role": "prospective_replication_same_dataset",
+      "summary": "Strict-roster 1998–2009 Signy Adelie replication is supported under all frozen error models; same dataset/claim line as the other Signy Adelie result, not an independent third geography."
+    },
+    {
+      "n": 65,
+      "file": "SIGNY_PERFORMANCE_REDISTRIBUTION_REPLICATION_RESULT_V1.json",
+      "tier": "E3",
+      "layer": "mechanism_trace",
+      "role": "failed_independent_replication",
+      "summary": "Palmer lag-2 performance-linked redistribution does not replicate under the frozen Signy primary design; mechanism is locally plausible, not transferable."
+    },
+    {
+      "n": 66,
+      "file": "SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json",
+      "tier": "A0",
+      "layer": "mechanism_trace",
+      "role": "preoutcome_support_audit",
+      "summary": "Signy lag-2 replication support gate passed before effect computation; no effect in this audit."
+    }
+  ],
+  "claim_rule": "Main claims must be anchored in E1. E2 may motivate or triangulate E1. E3 must accompany nearby claims that it constrains. E4 defines unresolved data needs. A0 documents validity but is not counted as ecological replication.",
+  "independence_note": "The three E1 result files do not equal three independent geographic replications: the two Signy Adelie files are the same dataset/claim line. The independent confirmatory lines are Signy Adelie geographic replication and Signy chinstrap cross-species replication.",
+  "out_of_ledger_note": "Exactly the 66 files in main/results at the frozen main commit. Later branch-only results and stopped routes documented only outside results/ are intentionally excluded."
+}
