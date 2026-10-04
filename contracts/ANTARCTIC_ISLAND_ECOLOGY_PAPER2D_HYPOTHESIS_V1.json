@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-island-ecology-paper2d-hypothesis-v1",
+  "date": "2026-10-04",
+  "status": "prospective_hypothesis_frozen_before_optical_support_and_new_demographic_outcomes",
+  "parent_program": "docs/ANTARCTIC_ISLAND_ECOLOGY_PROGRAM_V1.md",
+  "design_note": "docs/PAPER2D_DYNAMIC_BREEDING_OPPORTUNITY_SPINE_V1.md",
+  "distinction_from_closed_static_lane": {
+    "old_question": "Do fixed breeding-site attributes predict demographic response across Antarctic Pygoscelis?",
+    "new_question": "Does temporal change in accessible breeding opportunity predict temporal redistribution of breeding effort?",
+    "rule": "The dynamic lane cannot be described as a rescue or sensitivity analysis of the closed static-place results."
+  },
+  "primary_hypothesis": {
+    "id": "H1_OPPORTUNITY_TRACKING",
+    "statement": "Within a conspecific regional temporal context, breeding sites that gain more accessible ice-free breeding opportunity will show more positive relative demographic change.",
+    "expected_direction": "positive",
+    "forbidden_substitute": "Do not replace relative reallocation with a post-hoc raw site abundance association if the regional adjustment is unsupported."
+  },
+  "antarctic_specific_modifier": {
+    "id": "H2_LAND_SEA_COUPLING",
+    "statement": "The demographic value of newly available terrestrial breeding opportunity depends on marine accessibility during breeding.",
+    "status": "secondary_and_conditional_on_outcome_blind_marine_support",
+    "no_fishing_rule": "One marine-access metric or a predeclared compact index must be frozen before demographic outcomes are joined; do not search a broad environmental covariate set."
+  },
+  "primary_ecological_unit": {
+    "unit": "breeding-site node within a species x regional temporal network",
+    "repeated_species_at_same_site": "not independent physical habitat replicates; model or resampling must account for shared site identity",
+    "region_boundary": "APBP/forcing-support grouping is a monitoring/temporal adjustment unit, not a claimed closed population"
+  },
+  "terrestrial_exposure": {
+    "conceptual_definition": "change in accessible ice-free breeding opportunity inside the frozen site-centered spatial support",
+    "primary_scale": "2 km site-centered support inherited from the outcome-blind breeding-options atlas unless pixel QA shows that this support cannot be measured consistently",
+    "raw_rock_area_prohibited_as_final_label": true,
+    "baseline_area_role": "nuisance/context term if required by the later frozen model, not a renewed static-place hypothesis",
+    "metric_selection_rule": "Pixel/classification and topographic-access rules are frozen using remote-sensing QA, published biological criteria and external controls only; penguin count outcomes cannot choose the metric."
+  },
+  "response_concept": {
+    "primary": "site demographic change relative to the shared conspecific regional temporal state",
+    "preferred_parameterization": "site habitat-change rate x centered time interaction after site intercepts and support-selected species/regional time effects",
+    "secondary": "direct change in site share within fixed-roster regional networks with sufficient complete seasons",
+    "not_primary": [
+      "raw site trend without regional temporal adjustment",
+      "binary persistence selected after seeing habitat change",
+      "within-site subcolony contraction, because MAPPPD site totals do not measure subcolony footprints"
+    ]
+  },
+  "external_validation": {
+    "beaufort_positive_control": "The habitat pipeline must recover positive terrestrial-opportunity change at Beaufort Island over the closest supported historical-to-2010 comparison before multi-site habitat-change values are used.",
+    "demographic_independence": "Published Beaufort demographic response is not used for classifier tuning and is not counted as a new mina demographic test."
+  },
+  "continuation_gate_without_demographic_magnitudes": {
+    "minimum_eligible_site_species_units": 30,
+    "minimum_distinct_sites": 20,
+    "minimum_species": 2,
+    "regional_replication": "at least two regional groups with >=5 eligible physical sites",
+    "external_validation_required_if_supported": true,
+    "failure_action": "stop dynamic terrestrial lane without lowering thresholds; move to mobile-substrate emperor lane"
+  },
+  "outcomes_that_would_be_interesting": {
+    "tracking": "Positive relative reallocation toward sites gaining terrestrial opportunity.",
+    "land_sea_decoupling": "Terrestrial opportunity expands at many sites without corresponding relative demographic gain; a predeclared marine-access modifier explains part of the mismatch.",
+    "species_contingency": "Species-specific opportunity-tracking coefficients differ in sign or magnitude.",
+    "dynamic_null": "Measured change in accessible breeding opportunity does not explain relative reallocation even after adequate remote-sensing support."
+  },
+  "claim_boundaries": [
+    "Do not infer individual dispersal from site redistribution.",
+    "Do not call APBP regions closed demographic populations.",
+    "Do not interpret exposed substrate as occupied nesting habitat.",
+    "Do not claim full land-sea coupling from a land-only result.",
+    "Do not alter Paper 1 endpoints or count the dynamic test as additional Paper 1 confirmation."
+  ]
+}
