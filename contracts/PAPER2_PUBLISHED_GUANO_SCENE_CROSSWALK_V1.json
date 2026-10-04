@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-published-guano-scene-crosswalk-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_published_reference_scene_crosswalk",
+  "purpose": "Determine whether the published PANGAEA Adelie colony pixels can be linked back to modern USGS Landsat Collection-2 Level-1 Landsat-7 source scenes before any classifier performance or penguin demographic outcome is evaluated.",
+  "published_reference": {
+    "doi": "10.1594/PANGAEA.804588",
+    "download": "https://doi.org/10.1594/PANGAEA.804588",
+    "accept": "text/tab-separated-values",
+    "expected_classified_pixels": 9143,
+    "expected_unique_source_scenes_approx": 195
+  },
+  "source_file_parser": {
+    "path_characters_1_indexed": "4-6",
+    "row_characters_1_indexed": "7-9",
+    "year_characters_1_indexed": "10-13",
+    "julian_day_characters_1_indexed": "14-16",
+    "authority": "PANGAEA dataset description"
+  },
+  "landsat": {
+    "stac_endpoint": "https://landsatlook.usgs.gov/stac-server",
+    "collection": "landsat-c2l1",
+    "platform": "LANDSAT_7"
+  },
+  "crosswalk_rule": {
+    "query_date": "exact source-file acquisition date",
+    "query_geometry": "representative published pixel coordinate from each source file",
+    "match_priority": [
+      "LANDSAT_7 item with matching WRS path, WRS row and acquisition date",
+      "LANDSAT_7 item on exact date whose item identifier contains the parsed path/row token"
+    ]
+  },
+  "pass_gate": {
+    "minimum_fraction_unique_source_scenes_crosswalked": 0.95,
+    "minimum_fraction_published_pixels_represented": 0.95
+  },
+  "prohibited": [
+    "penguin count magnitude",
+    "population trend",
+    "Paper 1 concentration outcome",
+    "classifier threshold retuning",
+    "dropping source scenes because their published d-values are inconvenient"
+  ],
+  "next_gate_if_passed": "Freeze a deterministic source-scene/pixel subsample and reproduce published d-values from Collection-2 Level-1 TOA reflectance.",
+  "stop_rule": "Do not loosen crosswalk thresholds after classifier discrepancies or demographic outcomes are observed."
+}
