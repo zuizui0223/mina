@@ -1,0 +1,67 @@
+name: antarctic-island-ecology-paper2d-pixel-qa
+
+on:
+  push:
+    branches: [research/antarctic-island-ecology-v1]
+    paths:
+      - "scripts/audit_antarctic_island_ecology_pixel_qa.py"
+      - "tests/test_antarctic_island_ecology_pixel_qa.py"
+      - "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_V1.json"
+      - ".github/workflows/antarctic-island-ecology-paper2d-pixel-qa.yml"
+  pull_request:
+    paths:
+      - "scripts/audit_antarctic_island_ecology_pixel_qa.py"
+      - "tests/test_antarctic_island_ecology_pixel_qa.py"
+      - "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_V1.json"
+      - ".github/workflows/antarctic-island-ecology-paper2d-pixel-qa.yml"
+  workflow_dispatch:
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install geospatial dependencies
+        run: python -m pip install pandas numpy requests rasterio pyproj planetary-computer
+      - name: Unit tests
+        run: python -m unittest tests.test_antarctic_island_ecology_pixel_qa -v
+      - name: Download frozen outcome-blind source artifacts
+        run: |
+          mkdir -p build/optical build/options build/aei
+          gh run download 37186601157 -n antarctic-island-ecology-paper2-optical-catalog-v1 -D build/optical
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+          test -f build/optical/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_OPTICAL_CATALOG_UNITS_V1.csv
+          test -f build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv
+      - name: Download frozen Antarctic Ecosystem Inventory raster
+        run: |
+          curl -L --fail --retry 5 --retry-delay 5 \
+            'https://zenodo.org/records/11629115/files/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif?download=1' \
+            -o build/aei/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif
+          echo 'cde880d73f7f18b44aecf5690aa2dc92  build/aei/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif' | md5sum -c -
+      - name: Run outcome-blind local pixel QA pilot
+        run: |
+          python scripts/audit_antarctic_island_ecology_pixel_qa.py \
+            --optical-csv build/optical/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_OPTICAL_CATALOG_UNITS_V1.csv \
+            --options-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --aei-raster build/aei/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif \
+            --out-json build/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_PILOT_RESULT_V1.json \
+            --out-sites-csv build/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_PILOT_SITES_V1.csv \
+            --out-scenes-csv build/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_PILOT_SCENES_V1.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: antarctic-island-ecology-paper2d-pixel-qa-v1
+          path: |
+            build/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_PILOT_RESULT_V1.json
+            build/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_PILOT_SITES_V1.csv
+            build/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_PILOT_SCENES_V1.csv
+          if-no-files-found: warn
