@@ -1,0 +1,53 @@
+name: paper2-adelie-etmplus-same-sensor-support
+
+on:
+  push:
+    branches: [research/antarctic-island-ecology-v1]
+    paths:
+      - "contracts/PAPER2_ADELIE_ETMPLUS_SAME_SENSOR_SUPPORT_V1.json"
+      - "scripts/audit_adelie_etmplus_same_sensor_support.py"
+      - "tests/test_adelie_etmplus_same_sensor_support.py"
+      - ".github/workflows/paper2-adelie-etmplus-same-sensor-support.yml"
+  pull_request:
+    paths:
+      - "contracts/PAPER2_ADELIE_ETMPLUS_SAME_SENSOR_SUPPORT_V1.json"
+      - "scripts/audit_adelie_etmplus_same_sensor_support.py"
+      - "tests/test_adelie_etmplus_same_sensor_support.py"
+      - ".github/workflows/paper2-adelie-etmplus-same-sensor-support.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas requests
+      - run: python -m unittest tests.test_adelie_etmplus_same_sensor_support -v
+      - name: Download frozen outcome-blind roster
+        run: |
+          mkdir -p build/forcing build/options build/out
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 36520281872 -n antarctic-breeding-options-hierarchy-v1 -D build/options
+          test -f build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv
+          test -f build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv
+      - name: Audit same-sensor ETM+ support
+        run: |
+          python scripts/audit_adelie_etmplus_same_sensor_support.py \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --atlas-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv \
+            --contract contracts/PAPER2_ADELIE_ETMPLUS_SAME_SENSOR_SUPPORT_V1.json \
+            --out-csv build/out/PAPER2_ADELIE_ETMPLUS_SAME_SENSOR_SUPPORT_V1.csv \
+            --out-json build/out/PAPER2_ADELIE_ETMPLUS_SAME_SENSOR_SUPPORT_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-adelie-etmplus-same-sensor-support-v1
+          path: build/out/*
