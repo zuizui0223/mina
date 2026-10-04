@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-evidence-ledger-66-endpoints-v1",
+  "date": "2026-10-04",
+  "source_snapshot": {
+    "branch": "main",
+    "sha": "7764523c5f1e536b86084de8583cdd6262ee8fa7",
+    "population_rule": "all .json files directly under results/",
+    "expected_endpoint_files": 66
+  },
+  "classification": {
+    "A": "confirmatory replication; positive ecological claim may receive independent confirmation weight",
+    "B": "bounded robust/exploratory; discovery, robustness, triangulation or closed post-hoc description",
+    "C": "scope-limiting negative; falsification, failed prediction, failed transfer, or quantitative bound",
+    "D": "data/identifiability gate; ecological outcome not opened or not estimable",
+    "E": "technical/quality/provenance; no independent ecological vote"
+  },
+  "expected_class_counts": {
+    "A": 2,
+    "B": 21,
+    "C": 14,
+    "D": 21,
+    "E": 8
+  },
+  "confirmatory_positive_files": [
+    "SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+    "SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+  ],
+  "discovery_file": "PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+  "anti_double_counting": [
+    "Signy concentration V2 is nested robustness, not a third replication.",
+    "N_eff growth robustness files form one evidence family and are not independent votes.",
+    "Paper2 synthetic recovery/support audits are estimability evidence, not biological outcome evidence.",
+    "Technical and quality audits never increase ecological replication counts."
+  ],
+  "manuscript_claim_rule": "Headline positive claims must be supported by class A; class B can supply discovery/robustness/context, class C supplies boundaries, and classes D/E carry no positive ecological vote."
+}
