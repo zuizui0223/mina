@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-paper3-zenodo-interannual-aliasing-receipt-v2",
+  "validated_date": "2026-10-04",
+  "source": {
+    "semantic_contract": "contracts/PAPER3_ZENODO_SEASON_REFERENCE_SEMANTIC_V2.json",
+    "aliasing_contract": "contracts/PAPER3_ZENODO_INTERANNUAL_ALIASING_V2.json",
+    "zenodo_doi": "10.5281/zenodo.17380979",
+    "publication": "Macdonald et al. 2026, Antarctic Science"
+  },
+  "execution": {
+    "workflow_run_id": 37210804729,
+    "artifact_id": 11306562224,
+    "artifact_digest": "sha256:daa05c830ae7b844f9c291f33c85cf53eb9e7015eda730d1b75a6a86651f89c0",
+    "conclusion": "success",
+    "output_bug_repaired": "A JSON key collision that mapped 10 km to the string key '1' was detected after the first V2 artifact. Distance calculations were unchanged; key formatting was corrected and guarded by regression tests before this receipt."
+  },
+  "semantic_gate": {
+    "features": 71,
+    "colony_seasons": 30,
+    "colonies": 3,
+    "seasons_per_colony": {
+      "Astrid": 10,
+      "Mertz": 10,
+      "SANAE": 10
+    },
+    "date_parse_fraction": 1,
+    "invariant_seasons": 30,
+    "invariant_fraction": 1,
+    "max_within_season_reference_distance_m": 0,
+    "passed": true
+  },
+  "interannual_result": {
+    "annual_anchors": 30,
+    "consecutive_transitions": 27,
+    "aliasing_curve": {
+      "1": {
+        "false_turnover_n": 24,
+        "transition_n": 27,
+        "false_turnover_fraction": 0.8888888888888888
+      },
+      "2": {
+        "false_turnover_n": 16,
+        "transition_n": 27,
+        "false_turnover_fraction": 0.5925925925925926
+      },
+      "5": {
+        "false_turnover_n": 8,
+        "transition_n": 27,
+        "false_turnover_fraction": 0.2962962962962963
+      },
+      "10": {
+        "false_turnover_n": 4,
+        "transition_n": 27,
+        "false_turnover_fraction": 0.14814814814814814
+      },
+      "0.5": {
+        "false_turnover_n": 26,
+        "transition_n": 27,
+        "false_turnover_fraction": 0.9629629629629629
+      }
+    },
+    "identity_preserving_radii_km": {
+      "q50": 2.2995480394201464,
+      "q90": 11.32469254500466,
+      "q95": 14.517938991470851
+    },
+    "maximum_transition": {
+      "colony_id": "Mertz",
+      "from_season": "2022-2023",
+      "to_season": "2023-2024",
+      "displacement_km": 63.2080783515073
+    },
+    "by_colony": {
+      "Astrid": {
+        "transitions": 9,
+        "q50_km": 1.7594941454237003,
+        "q90_km": 2.134444251858354,
+        "q95_km": 2.2702190896452024,
+        "max_km": 2.4059939274320516,
+        "false_turnover_fraction_0_5km": 0.8888888888888888,
+        "false_turnover_fraction_1km": 0.7777777777777778,
+        "false_turnover_fraction_2km": 0.2222222222222222,
+        "false_turnover_fraction_5km": 0,
+        "false_turnover_fraction_10km": 0
+      },
+      "Mertz": {
+        "transitions": 9,
+        "q50_km": 3.9054394852463643,
+        "q90_km": 22.00841845618575,
+        "q95_km": 42.6082484038465,
+        "max_km": 63.2080783515073,
+        "false_turnover_fraction_0_5km": 1,
+        "false_turnover_fraction_1km": 0.8888888888888888,
+        "false_turnover_fraction_2km": 0.6666666666666666,
+        "false_turnover_fraction_5km": 0.3333333333333333,
+        "false_turnover_fraction_10km": 0.3333333333333333
+      },
+      "SANAE": {
+        "transitions": 9,
+        "q50_km": 5.149169390995574,
+        "q90_km": 9.885697180888418,
+        "q95_km": 12.803839980990096,
+        "max_km": 15.721982781091782,
+        "false_turnover_fraction_0_5km": 1,
+        "false_turnover_fraction_1km": 1,
+        "false_turnover_fraction_2km": 0.8888888888888888,
+        "false_turnover_fraction_5km": 0.5555555555555556,
+        "false_turnover_fraction_10km": 0.1111111111111111
+      }
+    }
+  },
+  "decision": {
+    "interannual_coordinate_aliasing_demonstrated": true,
+    "fixed_node_identity_is_scale_dependent": true,
+    "causal_mechanism_identified": false
+  },
+  "boundary": [
+    "Named-colony identity is source-provided and is not proof of demographic closure or identical individual birds.",
+    "False turnover is disagreement between fixed-coordinate node identity and source-provided colony identity.",
+    "The analysis is descriptive across three named colonies; no continent-wide frequency law or p-value is claimed.",
+    "No radius was selected after viewing displacement."
+  ]
+}
