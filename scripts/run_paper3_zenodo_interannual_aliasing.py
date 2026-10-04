@@ -79,8 +79,8 @@ def main():
     p.add_argument("--out-transitions-csv",required=True,type=Path)
     a=p.parse_args()
     sem=json.loads(a.semantic_json.read_text())
-    if not sem.get("decision",{}).get("semantic_gate_passed"):
-        raise SystemExit("semantic gate not passed")
+    if not sem.get("decision",{}).get("annual_anchor_semantic_gate_passed"):
+        raise SystemExit("annual-anchor semantic gate not passed")
     c=json.loads(a.contract.read_text())
     pts=pd.read_csv(a.points_csv)
     anchors=build_anchors(pts)
