@@ -1,0 +1,28 @@
+name: paper3-mobile-node-aliasing-unit
+
+on:
+  push:
+    branches: [research/emperor-mobile-islands-v1]
+    paths:
+      - "contracts/PAPER3_MOBILE_NODE_ALIASING_METRIC_V1.json"
+      - "scripts/compute_emperor_mobile_node_aliasing.py"
+      - "tests/test_emperor_mobile_node_aliasing.py"
+      - ".github/workflows/paper3-mobile-node-aliasing-unit.yml"
+  pull_request:
+    paths:
+      - "contracts/PAPER3_MOBILE_NODE_ALIASING_METRIC_V1.json"
+      - "scripts/compute_emperor_mobile_node_aliasing.py"
+      - "tests/test_emperor_mobile_node_aliasing.py"
+      - ".github/workflows/paper3-mobile-node-aliasing-unit.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy pyproj
+      - run: python -m unittest tests.test_emperor_mobile_node_aliasing -v
