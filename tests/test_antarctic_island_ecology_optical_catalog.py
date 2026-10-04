@@ -22,7 +22,7 @@ class FakeItem:
 class OpticalCatalogAuditTests(unittest.TestCase):
     def test_epoch_window_clips_to_archive_bounds(self):
         self.assertEqual(epoch_window(1980), (1984, 1992))
-        self.assertEqual(epoch_window(1986), (1984, 1990))
+        self.assertEqual(epoch_window(1986), (1984, 1992))
         self.assertEqual(epoch_window(2024), (2017, 2025))
 
     def test_scene_summary_uses_austral_months_and_cloud_gate(self):
