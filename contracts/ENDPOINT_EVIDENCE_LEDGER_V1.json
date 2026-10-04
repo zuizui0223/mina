@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-endpoint-evidence-ledger-v1",
+  "frozen_main_sha": "7764523c5f1e536b86084de8583cdd6262ee8fa7",
+  "inventory_rule": "all JSON files directly under results/ at frozen main SHA",
+  "expected_result_receipts": 66,
+  "tiers": {
+    "C1": {
+      "label": "confirmatory_independent_replication",
+      "count": 2,
+      "claim_rule": "may anchor positive generality claim"
+    },
+    "C2": {
+      "label": "robust_but_exploratory",
+      "count": 20,
+      "claim_rule": "supports interpretation but cannot by itself establish generality"
+    },
+    "C3": {
+      "label": "scope_limiting_negative",
+      "count": 14,
+      "claim_rule": "defines unsupported mechanisms/effect ranges"
+    },
+    "C4": {
+      "label": "data_or_gate_stop",
+      "count": 1,
+      "claim_rule": "defines information boundary; no effect inference"
+    },
+    "D0": {
+      "label": "design_or_quality_audit",
+      "count": 29,
+      "claim_rule": "not an ecological vote"
+    }
+  },
+  "c1_receipts": [
+    "results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+    "results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+  ],
+  "primary_positive_family": "breeding-space concentration beyond proportional thinning",
+  "primary_discovery_receipt": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+  "deduplication_rules": [
+    "Multiple diagnostics of the same endpoint are one evidence family, not independent replications.",
+    "Synthetic recovery, schema, coverage, identifiability and observation audits are D0 and never counted as ecological support.",
+    "Interim point-estimate receipts are superseded by their frozen inferential receipt.",
+    "The strict-epoch and canonical Signy Adelie concentration receipts are one external population evidence family.",
+    "Paper 2 design/recovery receipts collapse to one real-outcome ecological inference family."
+  ],
+  "final_claim_boundary": {
+    "supported": [
+      "prospectively replicated breeding-space concentration in Signy Adelie and chinstrap after Palmer discovery",
+      "strong shared long-term Palmer decline as regional context",
+      "robust but nonpredictive conditional N_eff association as secondary mechanism trace"
+    ],
+    "not_supported": [
+      "universal kappa scaling law",
+      "common collapse threshold",
+      "universal large-colony refuge",
+      "win-stay/lose-switch mechanism",
+      "Palmer-wide Allee reproductive mechanism",
+      "confirmed common static island-architecture rule",
+      "identified individual breeding-movement process"
+    ]
+  },
+  "program_level_routes_not_counted": "Routes without a final results/*.json receipt at the frozen main SHA belong in a separate not-executed/no-final-receipt appendix and must not alter the 66 count."
+}
