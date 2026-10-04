@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper3-sar-2024-within-season-validation-receipt-v1",
+  "validated_date": "2026-10-04",
+  "source": {
+    "repository": "mla150/SAR-Emperor",
+    "commit": "dfce78ba83f7878a2697c5e12fdd15d0acd75519",
+    "file": "sar_huddles_20250502.csv",
+    "role": "independent within-season validation using the previously frozen mobile-node metric"
+  },
+  "execution": {
+    "workflow_run_id": 37209596783,
+    "artifact_id": 11305129244,
+    "artifact_digest": "sha256:a9564780e46a7e4cb6962c4977c8f6996d15ffe3b6807386f4eeec345456fd4b",
+    "conclusion": "success"
+  },
+  "support": {
+    "colonies": 6,
+    "colony_date_states": 54,
+    "post_anchor_dates": 48,
+    "mapped_huddles": 596
+  },
+  "result": {
+    "aliasing_curve": {
+      "1": {
+        "false_absence_n": 0,
+        "post_anchor_dates": 48,
+        "false_absence_fraction": 0
+      },
+      "2": {
+        "false_absence_n": 0,
+        "post_anchor_dates": 48,
+        "false_absence_fraction": 0
+      },
+      "5": {
+        "false_absence_n": 0,
+        "post_anchor_dates": 48,
+        "false_absence_fraction": 0
+      },
+      "10": {
+        "false_absence_n": 0,
+        "post_anchor_dates": 48,
+        "false_absence_fraction": 0
+      },
+      "0.5": {
+        "false_absence_n": 1,
+        "post_anchor_dates": 48,
+        "false_absence_fraction": 0.020833333333333332
+      }
+    },
+    "identity_preserving_radii_km": {
+      "q50": 0.14290567392188297,
+      "q90": 0.350179761086041,
+      "q95": 0.38922629778055196
+    }
+  },
+  "decision": {
+    "within_season_fixed_node_aliasing_low_beyond_1km": true,
+    "interannual_inference_from_this_source": false
+  },
+  "boundary": [
+    "This source covers one 2024 winter season and cannot estimate interannual false turnover.",
+    "Named colony identity is source-provided and is not demographic closure.",
+    "No abundance, breeding success, sea-ice, or environmental predictor enters the calculation."
+  ]
+}
