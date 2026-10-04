@@ -26,13 +26,18 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: python -m pip install pandas numpy pyshp pyproj remotezip
-      - run: python -m unittest tests.test_emperor_zenodo_route_points tests.test_paper3_zenodo_interannual_aliasing -v
+      - run: python -m unittest tests.test_paper3_zenodo_annual_anchor tests.test_paper3_zenodo_interannual_aliasing -v
       - name: Download frozen route-point artifact
         run: |
           mkdir -p build/semantic build/out
