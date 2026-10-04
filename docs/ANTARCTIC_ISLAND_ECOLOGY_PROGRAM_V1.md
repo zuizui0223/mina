@@ -4,6 +4,42 @@
 **Branch:** `research/antarctic-island-ecology-v1`  
 **Rule:** this document does not reopen or modify the frozen Paper 1 inferential endpoints.
 
+
+## Paper 3 empirical status — 2026-10-04
+
+The mobile-node lane is now empirically supported.
+
+### Long-term interannual node identity
+
+Using source-provided season reference locations for Astrid, Mertz and SANAE across 2014/15–2023/24:
+
+- 30 annual colony anchors;
+- 27 consecutive-season transitions;
+- fixed-node false-turnover fraction = 96.3% at 0.5 km, 88.9% at 1 km, 59.3% at 2 km, 29.6% at 5 km and 14.8% at 10 km;
+- median consecutive displacement = 2.30 km;
+- q95 = 14.52 km.
+
+### Independent within-season validation
+
+A separate 2024 six-colony SAR dataset gives:
+
+- 596 mapped huddles;
+- 48 post-anchor colony-dates;
+- false absence = 2.1% at 0.5 km and 0% at 1 km or larger;
+- within-season minimum-group-distance q95 = 0.389 km.
+
+The two datasets are independent and should not be treated as a paired timescale experiment. Together they establish a bounded but striking state distinction:
+
+> **geographic site identity can be stable within a breeding season while failing as a persistent identifier across breeding seasons.**
+
+Paper 3 therefore adds a third Antarctic island-ecology axis to the program:
+
+1. Paper 1 — breeder allocation contracts within persistent nodes;
+2. Paper 2 — changing capacity of persistent nodes does not generally predict relative use;
+3. Paper 3 — the occupied node itself can relocate while source-provided colony identity persists.
+
+The strongest synthesis is that **population identity, geographic node identity and breeder allocation are distinct ecological state variables**.
+
 ## Program question
 
 > **How do island populations lose, gain, and relocate breeding space when the matrix that separates breeding sites is also the habitat that feeds them?**
