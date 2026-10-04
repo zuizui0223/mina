@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-adelie-guano-reference-overlap-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_reference_overlap_audit",
+  "purpose": "Determine how many frozen long-term Adelie sites can be independently validated against the published Schwaller et al. Landsat-7 guano-pixel reference before any new guano classifier or demographic outcome is opened.",
+  "candidate_sites": {
+    "source": "PAPER2_FORCING_SUPPORT_UNITS_V1.csv",
+    "species_id": "ADPE",
+    "expected_site_species_units": 44,
+    "coordinate_source": "ANTARCTIC_PENGUIN_BREEDING_OPTIONS_ATLAS_V1.csv"
+  },
+  "reference": {
+    "dataset": "Schwaller, Southwell & Emmerson 2013 classified Adelie penguin colonies from Landsat data",
+    "doi": "10.1594/PANGAEA.804588",
+    "license": "CC-BY-3.0",
+    "content": "classified Landsat-7 ETM+ colony pixels with colony ID, source scene, classification d-value, row/column, latitude/longitude and spectral bands"
+  },
+  "distance_audit_km": [2, 5, 10],
+  "primary_match_radius_km": 5,
+  "feasibility_gate": {
+    "minimum_matched_candidate_sites": 10,
+    "minimum_regions_represented": 2,
+    "meaning": "enough independent published reference overlap to justify a frozen classifier-recovery exercise; not evidence that a new classifier already works"
+  },
+  "outputs": [
+    "candidate-site to nearest published reference-colony distance",
+    "published reference colony pixel count and nominal 30 m footprint area",
+    "match counts at 2/5/10 km",
+    "regions represented among <=5 km matches"
+  ],
+  "prohibited": [
+    "MAPPPD count magnitudes",
+    "population trend",
+    "Paper 1 concentration outcome",
+    "tuning the match radius after demographic outcomes"
+  ],
+  "stop_rule": "If the reference-overlap gate fails, do not lower the 5 km radius after looking at demographic outcomes; use a different independent recovery source or stop the Landsat-guano classifier route."
+}
