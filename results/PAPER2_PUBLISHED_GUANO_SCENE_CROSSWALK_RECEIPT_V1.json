@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-published-guano-scene-crosswalk-receipt-v1",
+  "validated_date": "2026-10-04",
+  "contract": "contracts/PAPER2_PUBLISHED_GUANO_SCENE_CROSSWALK_V1.json",
+  "execution": {
+    "workflow_run_id": 37191518314,
+    "artifact_id": 11299132937,
+    "artifact_digest": "sha256:00ef2bd93f8458a917fcad1b759afcbcca79bcb82e6ab1c30d7c35f063b7a667",
+    "conclusion": "success"
+  },
+  "published_reference": {
+    "pixels": 9143,
+    "unique_source_scenes_with_classified_pixels": 47
+  },
+  "crosswalk": {
+    "source_scenes_crosswalked": 45,
+    "source_scene_fraction": 0.9574468085106383,
+    "published_pixels_represented": 7847,
+    "published_pixel_fraction": 0.8582522148091436,
+    "query_errors": 0,
+    "failed_source_files": [
+      "LE71051062001333EDC00",
+      "LE71241082001018SGS00"
+    ]
+  },
+  "decision": {
+    "frozen_95pct_scene_gate_passed": true,
+    "frozen_95pct_pixel_gate_passed": false,
+    "overall_crosswalk_gate_passed": false,
+    "published_d_value_recovery_authorized": false,
+    "next_action": "diagnose the two unmatched source identities without lowering the frozen coverage gate"
+  },
+  "boundary": [
+    "This is a source-scene identity result, not classifier accuracy.",
+    "The two failed source files are not dropped because their pixel mass is inconvenient.",
+    "No published d-value or penguin demographic outcome was used for scene selection."
+  ]
+}
