@@ -24,12 +24,32 @@ COLONY_HINTS = {
 }
 
 
+def _date_like_value(value) -> bool:
+    if value is None or pd.isna(value):
+        return False
+    if isinstance(value, pd.Timestamp) or value.__class__.__name__ in {"datetime", "date"}:
+        return True
+    text = str(value).strip()
+    if not text:
+        return False
+    patterns = (
+        r"^\\d{4}[-/]\\d{1,2}[-/]\\d{1,2}",
+        r"^\\d{1,2}[-/]\\d{1,2}[-/]\\d{2,4}",
+        r"^\\d{1,2}[- ](?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[- ]\\d{2,4}",
+        r"^(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[ -]\\d{1,2}[, -]+\\d{4}",
+    )
+    return any(re.search(p, text, flags=re.I) for p in patterns)
+
+
 def parse_date_series(s: pd.Series) -> dict:
-    d = pd.to_datetime(s, errors="coerce")
+    mask = s.map(_date_like_value)
+    candidate = s[mask]
+    d = pd.to_datetime(candidate, errors="coerce")
     good = d.dropna()
     return {
+        "candidate_n": int(mask.sum()),
         "parsed_n": int(good.size),
-        "parsed_fraction": float(good.size / len(s)) if len(s) else 0.0,
+        "parsed_fraction": float(good.size / int(mask.sum())) if int(mask.sum()) else 0.0,
         "distinct_dates": int(good.dt.date.nunique()) if good.size else 0,
         "min_date": good.min().date().isoformat() if good.size else None,
         "max_date": good.max().date().isoformat() if good.size else None,
@@ -45,45 +65,63 @@ def audit_catalog(name: str, data: bytes) -> dict:
     year_min = None
     year_max = None
     total_rows = 0
-    all_cols = set()
+    label_tokens = set()
+
     for sheet_name in xls.sheet_names:
-        df = pd.read_excel(io.BytesIO(data), sheet_name=sheet_name)
-        total_rows += len(df)
-        cols = [str(c) for c in df.columns]
-        all_cols.update(cols)
+        raw = pd.read_excel(io.BytesIO(data), sheet_name=sheet_name, header=None)
+        total_rows += len(raw)
+
         candidates = []
-        for c in cols:
-            if DATE_HINT.search(c):
-                info = parse_date_series(df[c])
-                candidates.append({"field": c, **info})
-        candidates.sort(key=lambda z: (z["parsed_fraction"], z["distinct_dates"]), reverse=True)
-        if candidates:
-            top = candidates[0]
-            if best_date is None or (top["parsed_fraction"], top["distinct_dates"]) > (
-                best_date["parsed_fraction"], best_date["distinct_dates"]
+        for col_idx in raw.columns:
+            info = parse_date_series(raw[col_idx])
+            if info["parsed_n"] >= 2:
+                candidates.append({"column_index": int(col_idx), **info})
+        candidates.sort(
+            key=lambda z: (z["distinct_dates"], z["parsed_n"], z["parsed_fraction"]),
+            reverse=True,
+        )
+
+        for value in raw.iloc[: min(12, len(raw))].to_numpy().ravel():
+            if value is None or pd.isna(value):
+                continue
+            text = str(value).strip()
+            if text:
+                label_tokens.add(text)
+
+        top = candidates[0] if candidates else None
+        if top is not None:
+            if best_date is None or (
+                top["distinct_dates"], top["parsed_n"], top["parsed_fraction"]
+            ) > (
+                best_date["distinct_dates"], best_date["parsed_n"], best_date["parsed_fraction"]
             ):
-                best_date = top
+                best_date = {"sheet": sheet_name, **top}
             if top["min_year"] is not None:
                 year_min = top["min_year"] if year_min is None else min(year_min, top["min_year"])
                 year_max = top["max_year"] if year_max is None else max(year_max, top["max_year"])
+
         sheets.append({
             "sheet": sheet_name,
-            "rows": int(len(df)),
-            "columns": cols,
+            "rows": int(len(raw)),
+            "raw_columns": int(raw.shape[1]),
             "date_candidates": candidates,
         })
-    low_cols = [c.lower() for c in all_cols]
+
+    low_labels = [x.lower() for x in label_tokens]
     return {
         "colony": name,
         "sheet_names": xls.sheet_names,
         "total_rows": int(total_rows),
-        "columns_union": sorted(all_cols),
+        "header_tokens_sample": sorted(label_tokens)[:100],
         "best_date_field": best_date,
         "year_min": year_min,
         "year_max": year_max,
         "year_span": (year_max - year_min) if year_min is not None and year_max is not None else None,
-        "has_guano_field": any("guano" in c for c in low_cols),
-        "has_surface_field": any(any(k in c for k in ("surface","fast ice","ice shelf","iceberg")) for c in low_cols),
+        "has_guano_field": any("guano" in c for c in low_labels),
+        "has_surface_field": any(
+            any(k in c for k in ("surface", "fast ice", "ice shelf", "iceberg"))
+            for c in low_labels
+        ),
         "sheets": sheets,
     }
 
