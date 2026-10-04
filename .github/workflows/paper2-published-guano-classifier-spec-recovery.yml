@@ -25,7 +25,9 @@ jobs:
       - name: Download published PLOS Table S2
         run: |
           mkdir -p build
-          curl -fL             -H "Accept: application/vnd.openxmlformats-officedocument.wordprocessingml.document"             https://doi.org/10.1371/journal.pone.0113301.s003             -o build/LYNCH_SCHWALLER_2014_TABLE_S2.docx
+          curl -fL --retry 3 --retry-all-errors \
+            "https://journals.plos.org/plosone/article/file?type=supplementary&id=info:doi/10.1371/journal.pone.0113301.s003" \
+            -o build/LYNCH_SCHWALLER_2014_TABLE_S2.docx
           test -s build/LYNCH_SCHWALLER_2014_TABLE_S2.docx
           file build/LYNCH_SCHWALLER_2014_TABLE_S2.docx
       - name: Extract published classifier specification
