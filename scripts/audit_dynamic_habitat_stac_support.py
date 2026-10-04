@@ -85,6 +85,32 @@ def _search_items(
     raise RuntimeError(f"STAC pagination exceeded {max_pages} pages for {collection} {lon},{lat}")
 
 
+def _search_with_fallback(
+    session: requests.Session,
+    catalogs: list[dict],
+    lon: float,
+    lat: float,
+    start: str,
+    end: str,
+) -> tuple[list[dict], str]:
+    errors = []
+    for catalog in catalogs:
+        try:
+            items = _search_items(
+                session,
+                str(catalog["endpoint"]),
+                str(catalog["collection"]),
+                lon,
+                lat,
+                start,
+                end,
+            )
+            return items, str(catalog["name"])
+        except Exception as exc:
+            errors.append(f'{catalog.get("name")}: {type(exc).__name__}: {exc}')
+    raise RuntimeError("all STAC catalogs failed: " + " | ".join(errors))
+
+
 def summarize_items(items: Iterable[dict], allowed_months: set[int]) -> dict:
     rows = []
     platforms = set()
