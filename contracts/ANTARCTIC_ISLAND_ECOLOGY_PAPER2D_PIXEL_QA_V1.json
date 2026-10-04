@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-island-ecology-paper2d-pixel-qa-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_pixel_qa_frozen_before_pixel_results",
+  "parent_support_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_SUPPORT_AUDIT_V1.json",
+  "parent_hypothesis_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_HYPOTHESIS_V1.json",
+  "optical_catalog_receipt": "results/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_OPTICAL_CATALOG_RECEIPT_V1.json",
+  "source_roster": {
+    "catalog_passing_site_species_units": 106,
+    "catalog_passing_exclusion": [
+      "CHPE|HANN"
+    ],
+    "static_aei_support_exclusions": [
+      "ADPE|FRAE",
+      "ADPE|FRAW",
+      "ADPE|WPEC"
+    ],
+    "combined_pixel_qa_candidate_units": 103,
+    "combined_distinct_sites": 84,
+    "species_units": {
+      "ADPE": 41,
+      "CHPE": 33,
+      "GEPE": 29
+    },
+    "rule": "No demographic magnitude, trend direction, E, kappa, or concentration result enters this roster."
+  },
+  "aei_mask": {
+    "dataset": "Antarctic Ecosystem Inventory: Spatial data for Ice-free lands v1.0",
+    "doi": "10.5281/zenodo.11629115",
+    "raster_file": "AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif",
+    "raster_md5": "cde880d73f7f18b44aecf5690aa2dc92",
+    "spatial_support_m": 2000,
+    "role": "fixed potential-rock / mapped ice-free support for local observation QA; not a time-varying habitat outcome",
+    "caveat": "Using the AEI mask means the first dynamic metric is change in summer exposure/visibility of independently mapped ice-free substrate, not total deglaciated land outside that mapped support."
+  },
+  "landsat_qa": {
+    "collection": "landsat-c2-l2",
+    "asset": "qa_pixel",
+    "source": "USGS Collection 2 QA_PIXEL carried through to Level-2",
+    "invalid_bits": {
+      "fill": 0,
+      "dilated_cloud": 1,
+      "cloud": 3,
+      "cloud_shadow": 4
+    },
+    "diagnostic_bits": {
+      "snow_ice": 5,
+      "water": 7
+    },
+    "clear_bit_rule": "Do not rely on QA_PIXEL bit 6 alone; compute valid pixels explicitly from fill/cloud/shadow bits.",
+    "scene_selection": "Within each frozen early/late epoch, among austral-month scenes with scene cloud <=80%, choose at most five distinct years; within each year choose the lowest scene-cloud item; if >5 years remain, choose years nearest evenly spaced quantiles across the epoch.",
+    "purpose": "Measure local observation support over mapped ice-free substrate before opening any spectral habitat-change classifier."
+  },
+  "pilot": {
+    "rationale": "Stress-test the full remote COG -> local AEI mask -> QA_PIXEL pipeline across geography and scene-support conditions before running all 84 sites.",
+    "selection_rule": [
+      "Use only combined pixel-QA candidate sites.",
+      "For each of Central-west Antarctic Peninsula, South Shetland Islands and Victoria Land, select three physical sites spanning low, median and high early-scene support, ties by site_id.",
+      "For each smaller represented region, select one median-support physical site, ties by site_id.",
+      "Add Beaufort Island (BEAU) as the external positive-control site even if already selected."
+    ],
+    "frozen_site_ids": [
+      "ORNE",
+      "PALA",
+      "LOUB",
+      "PENG",
+      "BART",
+      "UCHA",
+      "ANNE",
+      "DOWN",
+      "ROYD",
+      "FISH",
+      "PEPO",
+      "PGEO",
+      "STNK",
+      "BEAU"
+    ],
+    "n_sites": 14
+  },
+  "pixel_support_metrics": {
+    "per_scene": [
+      "fraction of reprojected AEI support observed without fill/dilated-cloud/cloud/cloud-shadow flags",
+      "snow/ice fraction among locally valid AEI-support pixels",
+      "water-flag fraction among locally valid AEI-support pixels"
+    ],
+    "per_epoch": [
+      "number of selected distinct-year scenes",
+      "median locally valid AEI-support fraction",
+      "minimum and maximum locally valid AEI-support fraction",
+      "number of scenes with locally valid fraction >=0.50"
+    ]
+  },
+  "pilot_pass_rule": {
+    "per_epoch": "at least 3 selected distinct-year scenes and at least 2 scenes with >=0.50 locally valid AEI-support fraction",
+    "site": "both early and late epochs pass",
+    "program": "at least 11 of 14 pilot sites pass, Beaufort passes both epochs, and failures are not all concentrated in one of the three major regions",
+    "failure_action": "Do not relax the pixel-validity threshold. Diagnose sensor/QA incompatibility outcome-blindly; if unresolved, stop the Landsat dynamic-land lane."
+  },
+  "next_stage_if_passed": {
+    "action": "run identical local QA over all 84 candidate physical sites, then freeze a habitat-change classifier",
+    "demographic_outcomes": "remain locked",
+    "classifier_rule": "NDSI-only classification is not accepted as the sole primary method because Antarctic shade/cloud misclassification is documented; classifier validation must use independent spatial controls and Beaufort direction."
+  },
+  "claim_boundary": [
+    "Passing pixel QA means sufficient local observations exist; it is not evidence of habitat expansion.",
+    "QA snow flags are diagnostic at this stage and are not yet the final accessible-habitat metric.",
+    "The AEI mask is a fixed support layer, not occupied nesting area."
+  ]
+}
