@@ -26,7 +26,16 @@ UPPER_YEAR = 2025
 
 
 def epoch_window(anchor: int) -> tuple[int, int]:
-    return max(LOWER_YEAR, anchor - WINDOW_RADIUS), min(UPPER_YEAR, anchor + WINDOW_RADIUS)
+    """Return a fixed-width 9-year window, shifted inward at archive edges."""
+    width = 2 * WINDOW_RADIUS
+    start, end = anchor - WINDOW_RADIUS, anchor + WINDOW_RADIUS
+    if start < LOWER_YEAR:
+        start = LOWER_YEAR
+        end = min(UPPER_YEAR, start + width)
+    if end > UPPER_YEAR:
+        end = UPPER_YEAR
+        start = max(LOWER_YEAR, end - width)
+    return int(start), int(end)
 
 
 def _cloud(item) -> float:
