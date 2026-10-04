@@ -241,7 +241,11 @@ def audit(contract: dict) -> dict:
             except Exception as exc:
                 csw_errors.append(f"parse: {type(exc).__name__}: {exc}")
     dc_urls, dc_error = datacite_urls(session, contract["primary_tracking_source"]["doi"])
-    explicit_urls = list(contract["primary_tracking_source"].get("ramadda_tree_zip_urls", []))\n    landing = contract["primary_tracking_source"].get("landing_url")\n    if landing:\n        explicit_urls.append(landing)\n    all_discovery_urls = list(dict.fromkeys(explicit_urls + csw_urls + dc_urls))
+    explicit_urls = list(contract["primary_tracking_source"].get("ramadda_tree_zip_urls", []))
+    landing = contract["primary_tracking_source"].get("landing_url")
+    if landing:
+        explicit_urls.append(landing)
+    all_discovery_urls = list(dict.fromkeys(explicit_urls + csw_urls + dc_urls))
     csw_ok = bool(csw_payloads)
     csw_error = "; ".join(csw_errors) if csw_errors else None
 
