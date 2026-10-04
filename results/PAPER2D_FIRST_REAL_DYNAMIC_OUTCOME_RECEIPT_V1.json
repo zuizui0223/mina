@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2d-first-real-dynamic-outcome-receipt-v1",
+  "validated_date": "2026-10-04",
+  "source": {
+    "model_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_DYNAMIC_OUTCOME_V1.json",
+    "execution_contract": "contracts/PAPER2D_DYNAMIC_OUTCOME_EXECUTION_V1.json",
+    "recovery_receipt": "results/PAPER2D_DYNAMIC_OUTCOME_RECOVERY_RECEIPT_V1.json",
+    "A_available_receipt": "results/PAPER2D_SUMMER_EXPOSURE_FULL_RECEIPT_V1.json"
+  },
+  "execution": {
+    "workflow_run_id": 37203585234,
+    "artifact_id": 11304270133,
+    "artifact_digest": "sha256:b4f9730cdc15843f1a9a545c881c458451bb03bb01441a7e0cd1b558bd52ae29",
+    "head_sha": "d5fd940fa460a41b12b1d3cc0017062416b74d8e",
+    "conclusion": "success"
+  },
+  "design": {
+    "analysis_units": 85,
+    "analysis_rows": 1293,
+    "species_units": {
+      "ADPE": 30,
+      "CHPE": 31,
+      "GEPE": 24
+    }
+  },
+  "primary_p50": {
+    "ADPE": {
+      "beta": 0.07128526440401173,
+      "cluster_site_se": 0.019114594613239902,
+      "permutation_p": 0.0624,
+      "holm_p": 0.1872,
+      "precision_weighted_beta": 0.07756743545000372
+    },
+    "CHPE": {
+      "beta": -0.02584310645397579,
+      "cluster_site_se": 0.09856360547589013,
+      "permutation_p": 0.5627,
+      "holm_p": 0.869,
+      "precision_weighted_beta": -0.020838060441848324
+    },
+    "GEPE": {
+      "beta": 0.008531181821781466,
+      "cluster_site_se": 0.05427953138201267,
+      "permutation_p": 0.4345,
+      "holm_p": 0.869,
+      "precision_weighted_beta": 0.01402827299060633
+    },
+    "cross_species": {
+      "positive_species": 2,
+      "all_positive": false,
+      "median_beta": 0.008531181821781466
+    }
+  },
+  "measurement_sensitivity_p67": {
+    "ADPE": {
+      "beta": 0.03500475075408349,
+      "permutation_p": 0.1683,
+      "holm_p": 0.5049,
+      "precision_weighted_beta": 0.03782323149168718
+    },
+    "CHPE": {
+      "beta": 0.05835965257503746,
+      "permutation_p": 0.4048,
+      "holm_p": 0.8096,
+      "precision_weighted_beta": 0.09027265534008783
+    },
+    "GEPE": {
+      "beta": -0.0009127756734344654,
+      "permutation_p": 0.4619,
+      "holm_p": 0.8096,
+      "precision_weighted_beta": -0.009060396086467387
+    }
+  },
+  "decision": {
+    "H1_general_opportunity_tracking_supported": false,
+    "no_species_passes_holm": false,
+    "no_species_passes_holm_detail": "No species-specific one-sided permutation test remains significant after the prespecified Holm correction.",
+    "adelie_directional_signal_bounded": true,
+    "adelie_detail": "ADPE is positive under p50 and precision weighting, but unadjusted p=0.0624, Holm p=0.1872, and the p67 measurement sensitivity weakens to p=0.1683.",
+    "H1_closed": true,
+    "H2_marine_modifier_authorized": true,
+    "broad_environmental_search_authorized": false
+  },
+  "interpretation": [
+    "Across the frozen three-species design, sites gaining more persistent summer-exposed terrestrial opportunity did not show a confirmed general tendency to gain relative breeding use.",
+    "The Adelie estimate is directionally positive but does not meet the prespecified confirmatory criterion and is weaker under the p67 measurement sensitivity.",
+    "Changing terrestrial opportunity is therefore not sufficient, by itself, to explain relative redistribution at the tested spatial and temporal scale.",
+    "The predeclared single marine-access modifier may now be evaluated as H2; no broad environmental search is opened."
+  ],
+  "boundary": [
+    "This is relative breeding-use change, not literal occupied guano footprint.",
+    "Do not reinterpret the Adelie p=0.0624 as a positive confirmatory result.",
+    "Do not change the p50 exposure definition, roster, regional groups, or time support.",
+    "H2 is secondary and may use only the previously frozen NSIDC open-water access metric."
+  ]
+}
