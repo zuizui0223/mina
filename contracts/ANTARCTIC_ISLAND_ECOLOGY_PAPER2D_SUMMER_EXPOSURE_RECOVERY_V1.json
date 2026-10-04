@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-island-ecology-paper2d-summer-exposure-recovery-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_measurement_recovery_frozen_before_exposure_outcomes",
+  "parent_metric_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_SUMMER_EXPOSURE_METRIC_V1.json",
+  "parent_full_pixel_qa": "results/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_FULL_PIXEL_QA_RECEIPT_V1.json",
+  "purpose": "Require the frozen persistent-summer-exposure metric to recover the externally known positive terrestrial-opportunity direction at Beaufort Island before computing the metric across the full eligible Antarctic site roster.",
+  "positive_control": {
+    "site_id": "BEAU",
+    "site_name": "Beaufort Island",
+    "role": "external positive-direction measurement control",
+    "expected_direction": "late_minus_early_persistent_exposed_fraction > 0",
+    "reason": "Published deglaciation at Beaufort Island increased terrestrial nesting opportunity; demographic response is not used to tune or score this measurement.",
+    "demographic_values_allowed": false
+  },
+  "measurement": {
+    "input_scenes": "Use exactly the early and late Landsat item_ids already selected by the frozen full pixel-QA workflow.",
+    "grid": "EPSG:3031, 30 m fixed local grid, circular 2 km radius.",
+    "spatial_support": "Current frozen Antarctic Ecosystem Inventory ice-free-support mask projected by nearest neighbour; only cells with >=2 valid observations in both epochs enter the paired denominator.",
+    "invalid_qa_pixel_bits": [0, 1, 3, 4],
+    "snow_ice_bit": 5,
+    "water_bit": 7,
+    "primary_persistent_exposure_threshold": 0.5,
+    "sensitivity_thresholds": [0.67],
+    "any_exposed_diagnostic": true
+  },
+  "decision": {
+    "pass": "Primary late-minus-early persistent-exposed fraction is strictly positive and all required scenes/grids are processed without technical error.",
+    "fail": "Zero/negative primary change or technical inability to compute the frozen metric.",
+    "if_pass": "Authorize full-roster outcome-blind A_available measurement using the identical code and thresholds.",
+    "if_fail": "Do not inspect demographic magnitudes and do not tune the exposure threshold. Stop this primary QA_PIXEL-only A_available route or freeze a separately justified measurement replacement using external evidence only."
+  },
+  "prohibited": [
+    "changing scene selection after viewing Beaufort direction",
+    "changing the 0.50 primary threshold after viewing Beaufort direction",
+    "using MAPPPD count magnitude or trend",
+    "using Paper 1 concentration outcomes",
+    "counting Beaufort demographic response as a mina outcome"
+  ]
+}
