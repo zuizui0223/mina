@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper3-mobile-node-aliasing-metric-v1",
+  "date": "2026-10-04",
+  "status": "metric_frozen_before_primary_tracking_coordinates",
+  "parent_support_contract": "contracts/PAPER3_MOBILE_NODE_IDENTITY_SUPPORT_V1.json",
+  "purpose": "Freeze coordinate-to-node-aliasing estimands before the Macdonald tracking shapefiles are available to mina.",
+  "standardized_input": {
+    "required_fields": [
+      "colony_id",
+      "season",
+      "obs_date",
+      "longitude",
+      "latitude"
+    ],
+    "optional_fields": [
+      "group_id",
+      "source_file"
+    ],
+    "colony_id": "Named biological colony identity supplied by the source dataset.",
+    "season": "Breeding-season label supplied or deterministically recovered from source files; no demographic inference.",
+    "obs_date": "Observation date.",
+    "multiple_rows_per_date": "Distinct mapped colony groups/subgroups; if group_id is absent, every geometry point on the date is treated as one mapped group."
+  },
+  "geometry": {
+    "analysis_crs": "EPSG:3031",
+    "date_centroid": "Arithmetic centroid of all mapped group points on a colony-date after projection.",
+    "seasonal_anchor": "Date centroid on the earliest observation date of each colony-season.",
+    "interannual_displacement": "Euclidean distance between seasonal anchors in successive observed seasons for the same named colony.",
+    "within_season_detection_distance": "Minimum Euclidean distance from the seasonal anchor to any mapped group on a later observation date."
+  },
+  "radius_diagnostics_km": [
+    0.5,
+    1,
+    2,
+    5,
+    10
+  ],
+  "estimands": {
+    "interannual_false_turnover": "For each radius r, fraction of successive-season named-colony anchor transitions with displacement > r.",
+    "within_season_false_absence": "For each radius r, fraction of post-anchor observation dates for which every mapped group lies > r from the seasonal anchor.",
+    "identity_preserving_radii": "Empirical q50, q90 and q95 of interannual anchor displacement and within-season minimum-group distance.",
+    "no_primary_radius": "No single radius is selected as biologically true; the aliasing curve is the primary representation."
+  },
+  "exclusions": {
+    "first_date_from_within_season_denominator": true,
+    "missing_successive_season_transition": "Do not interpolate across a missing season for the primary consecutive-season transition count; report gaps separately.",
+    "multiple_groups": "A node remains detected on a date if at least one mapped group is within radius r."
+  },
+  "inference": {
+    "status": "descriptive",
+    "reason": "Three intensively tracked colonies are not independent support for a continent-wide frequency law.",
+    "no_p_values": true,
+    "bootstrap": "Not primary; uncertainty may later be described by colony-level leave-one-colony-out summaries."
+  },
+  "boundaries": [
+    "Named-colony identity is not demographic closure.",
+    "False turnover means disagreement between fixed-coordinate and source-provided named identity, not proof that individual birds are the same.",
+    "Do not alter radius set after observing tracks.",
+    "Do not replace minimum-group detection with date centroid because that would count a split colony as absent when one group remains inside the node.",
+    "Do not infer causes of movement in this analysis."
+  ]
+}
