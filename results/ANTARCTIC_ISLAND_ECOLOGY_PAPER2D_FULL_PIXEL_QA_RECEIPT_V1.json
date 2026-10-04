@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-antarctic-island-ecology-paper2d-full-pixel-qa-receipt-v1",
+  "validated_date": "2026-10-04",
+  "source": {
+    "contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_FULL_PIXEL_QA_V1.json",
+    "optical_catalog_receipt": "results/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_OPTICAL_CATALOG_RECEIPT_V1.json"
+  },
+  "execution": {
+    "workflow_run_id": 37189507445,
+    "artifact_id": 11298910073,
+    "artifact_digest": "sha256:ea94c20b2a38a3fc4c88a722f5ed1b0aac7ef0285e83ad0963e1de9b759e49f1",
+    "head_sha": "1f17376593f5a522006e59da8f9df7b26f363fd2",
+    "conclusion": "success",
+    "scene_read_errors": 0,
+    "site_level_technical_errors": 0
+  },
+  "candidate": {
+    "physical_sites": 84,
+    "site_species_units": 103
+  },
+  "result": {
+    "passing_physical_sites": 77,
+    "passing_site_species_units": 94,
+    "failed_physical_sites": [
+      "BISC",
+      "CUVE",
+      "HUMB",
+      "ORNE",
+      "PGEO",
+      "ROYD",
+      "SHIR"
+    ],
+    "passing_physical_sites_by_region": {
+      "Central-west Antarctic Peninsula": 33,
+      "South Shetland Islands": 16,
+      "Victoria Land": 24,
+      "Southwest Antarctic Peninsula": 2,
+      "Elephant Island": 1,
+      "Northeast Antarctic Peninsula": 1
+    },
+    "species": {
+      "ADPE": {
+        "candidate_units": 41,
+        "eligible_units": 37,
+        "eligible_fraction": 0.9024390243902439
+      },
+      "CHPE": {
+        "candidate_units": 33,
+        "eligible_units": 32,
+        "eligible_fraction": 0.9696969696969697
+      },
+      "GEPE": {
+        "candidate_units": 29,
+        "eligible_units": 25,
+        "eligible_fraction": 0.8620689655172413
+      }
+    }
+  },
+  "continuation_gate": {
+    "minimum_eligible_site_species_units": 30,
+    "minimum_distinct_sites": 20,
+    "minimum_species": 2,
+    "minimum_regions_with_at_least_5_sites": 2,
+    "regional_groups_with_at_least_5_passing_sites": [
+      "Central-west Antarctic Peninsula",
+      "South Shetland Islands",
+      "Victoria Land"
+    ],
+    "passed": true,
+    "habitat_change_classifier_authorized": true,
+    "demographic_magnitudes_opened": false
+  },
+  "interpretation": [
+    "Local clear-pixel support is sufficient for a broad longitudinal remote-sensing test; the imagery-support bottleneck is passed.",
+    "The frozen thresholds exclude seven physical sites without rescue or retuning.",
+    "The next active gate is measurement validity: recover/validate the available-area and occupied-guano classifiers before any demographic join."
+  ],
+  "boundary": [
+    "Pixel-QA support is not habitat change.",
+    "No population magnitude, trend, effective-component number, kappa, or concentration outcome was used.",
+    "Passing sites are not automatically valid guano-footprint measurements."
+  ]
+}
