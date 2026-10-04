@@ -69,6 +69,19 @@
         "rock-vs-snow/ice classification stability",
         "manual QA of a blinded subset before full extraction"
       ]
+    },
+    "external_method_validation": {
+      "positive_control": {
+        "site_id": "BEAU",
+        "published_reference": "LaRue et al. 2013, PLoS ONE 8:e60568, doi:10.1371/journal.pone.0060568",
+        "published_result": "Available nesting habitat on Beaufort Island increased by about 20% during 1983-2010 (71% since 1958), with ice/snow retreat opening nesting space.",
+        "frozen_validation_target": "The independently implemented terrestrial-change pipeline must recover positive breeding-opportunity change at Beaufort over the closest supported historical-to-2010 comparison before multi-site habitat outcomes are considered trustworthy.",
+        "boundary": "This validates the remote-sensing direction only. It is not counted as a new mina demographic result and cannot be used to tune the multi-site ecological model."
+      },
+      "secondary_validation_candidate": {
+        "source": "Cook, Fox & Thomson Antarctic Peninsula coastal-change data, 1843-2008, doi:10.5285/07727663-9B94-4069-A486-67E4D82177D3",
+        "role": "Where candidate penguin sites lie near mapped glacier termini, use published retreat direction as an independent spatial QA; do not require coverage for all sites."
+      }
     }
   },
   "marine_support": {
