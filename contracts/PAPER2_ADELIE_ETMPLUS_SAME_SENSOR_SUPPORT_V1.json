@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-adelie-etmplus-same-sensor-support-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_same_sensor_metadata_audit",
+  "parent_response_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_RESPONSE_MEASUREMENT_V1.json",
+  "purpose": "Test whether the frozen Adelie roster supports a same-sensor Landsat-7 ETM+ occupied-footprint comparison, avoiding ETM+ to OLI classifier transfer as the primary route.",
+  "candidate_roster": {
+    "source": "PAPER2_FORCING_SUPPORT_UNITS_V1.csv",
+    "species_id": "ADPE",
+    "expected_sites": 44,
+    "coordinates": "ANTARCTIC_PENGUIN_BREEDING_OPTIONS_ATLAS_V1.csv",
+    "prohibited": [
+      "count magnitude",
+      "population trend",
+      "Paper 1 concentration outcome",
+      "effective breeding-component number",
+      "any demographic class"
+    ]
+  },
+  "landsat": {
+    "stac_endpoint": "https://landsatlook.usgs.gov/stac-server",
+    "collection": "landsat-c2l1",
+    "platform": "LANDSAT_7",
+    "product_role": "Level-1 ETM+ imagery from which TOA reflectance compatible with the recovered published classifier can be derived"
+  },
+  "epochs": {
+    "early_slc_on": {
+      "start": "1999-01-01",
+      "end": "2003-05-30",
+      "rationale": "Published ETM+ classifier era before the 31 May 2003 SLC failure."
+    },
+    "late_slc_off": {
+      "start": "2016-01-01",
+      "end": "2021-12-31",
+      "rationale": "Same ETM+ sensor before Landsat 7 left the nominal WRS-2 orbit in April 2022; SLC-off gaps must be handled as missing pixels rather than filled from demographic-favorable scenes."
+    }
+  },
+  "season_months": [11, 12, 1, 2, 3],
+  "support_rules": {
+    "primary": {
+      "per_epoch_min_scenes_cloud_le_80": 3,
+      "per_epoch_min_distinct_years_cloud_le_80": 2
+    },
+    "strong": {
+      "per_epoch_min_scenes_cloud_le_50": 5,
+      "per_epoch_min_distinct_years_cloud_le_50": 3
+    }
+  },
+  "slc_off_rule": {
+    "catalog_stage": "Do not treat SLC-off as a failure at scene-metadata stage.",
+    "pixel_stage": "Require a separately frozen paired-pixel support rule using multiple late ETM+ acquisitions; scan gaps are missing data, not negative guano classifications.",
+    "no_gap_fill_from_other_sensor": true
+  },
+  "decision": {
+    "primary_route_if_supported": "Validate the published ETM+ classifier numerically, then estimate early versus late occupied-footprint change using ETM+ only.",
+    "fallback_if_unsupported": "Return to a separately validated ETM+ to OLI spectral bridge; do not switch after seeing demographic outcomes."
+  },
+  "stop_rule": "Do not change epochs, platform, seasonal months, cloud thresholds, or minimum scene/year counts after demographic outcomes are joined."
+}
