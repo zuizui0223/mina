@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-antarctic-island-ecology-paper2d-pixel-qa-pilot-receipt-v1",
+  "validated_date": "2026-10-04",
+  "source": {
+    "optical_catalog_receipt": "results/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_OPTICAL_CATALOG_RECEIPT_V1.json",
+    "pixel_qa_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_V1.json",
+    "optical_catalog_workflow_run_id": 37186601157,
+    "optical_catalog_artifact_id": 11296884594
+  },
+  "execution": {
+    "workflow_run_id": 37187251868,
+    "artifact_id": 11297356326,
+    "artifact_digest": "sha256:fe0c3aafcb9e17f224a94f70dbaa3abc8d7a38bf5fbb377a0ad3fd71a6f091cb",
+    "head_sha": "73306059cd05c93b8dbbe6345541a4254043131b",
+    "conclusion": "success",
+    "read_errors": 0
+  },
+  "pilot": {
+    "n_sites": 14,
+    "passing_sites": 11,
+    "failed_sites": {
+      "ORNE": "early epoch failed local-pixel support",
+      "PGEO": "early epoch failed local-pixel support",
+      "ROYD": "early epoch failed local-pixel support"
+    },
+    "beaufort_positive_control_pixel_support_passed": true,
+    "major_region_pass_counts": {
+      "Central-west Antarctic Peninsula": "2/3",
+      "South Shetland Islands": "3/3",
+      "Victoria Land": "2/3 non-control selected sites"
+    }
+  },
+  "frozen_rule": {
+    "radius_m": 2000,
+    "scene_cloud_max_percent": 80,
+    "selected_distinct_year_scenes_per_epoch_max": 5,
+    "minimum_selected_distinct_year_scenes_per_epoch": 3,
+    "local_valid_fraction_threshold": 0.5,
+    "minimum_good_scenes_per_epoch": 2,
+    "site_pass": "both early and late epochs pass"
+  },
+  "decision": {
+    "pilot_passed": true,
+    "full_84_site_pixel_qa_authorized": true,
+    "demographic_magnitudes_opened": false,
+    "habitat_change_classifier_opened": false
+  },
+  "boundary": [
+    "This receipt establishes local observation support, not habitat expansion or contraction.",
+    "The three failed pilot sites remain evidence about measurement support and do not justify threshold relaxation.",
+    "Beaufort passing here is only a pixel-support result; positive habitat-change direction still requires a separately validated classifier."
+  ]
+}
