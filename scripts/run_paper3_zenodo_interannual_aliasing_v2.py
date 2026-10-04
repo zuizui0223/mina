@@ -78,7 +78,7 @@ def summarize(anchors:pd.DataFrame,trans:pd.DataFrame,radii):
             "max_displacement_km":float(g["displacement_km"].max())
         }
         for r in radii:
-            key=str(r).rstrip("0").rstrip(".")
+            key=format(float(r), "g")
             item[f"false_turnover_fraction_{key}km"]=float((g["displacement_km"]>float(r)).mean())
         by.append(item)
     maxrow=None
