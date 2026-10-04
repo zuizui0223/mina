@@ -1,0 +1,50 @@
+name: paper2d-marine-distance-measurement
+
+on:
+  push:
+    branches: [research/antarctic-island-ecology-v1]
+    paths:
+      - "contracts/PAPER2D_MARINE_DISTANCE_MEASUREMENT_V1.json"
+      - "scripts/compute_paper2d_marine_distance.py"
+      - "tests/test_paper2d_marine_distance.py"
+      - ".github/workflows/paper2d-marine-distance-measurement.yml"
+  pull_request:
+    paths:
+      - "contracts/PAPER2D_MARINE_DISTANCE_MEASUREMENT_V1.json"
+      - "scripts/compute_paper2d_marine_distance.py"
+      - "tests/test_paper2d_marine_distance.py"
+      - ".github/workflows/paper2d-marine-distance-measurement.yml"
+  workflow_dispatch:
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy scipy requests rasterio pyproj
+      - run: python -m unittest tests.test_paper2d_marine_distance -v
+      - name: Download frozen terrestrial measurement
+        run: |
+          mkdir -p build/exposure build/out
+          gh run download 37190770020 -n paper2d-summer-exposure-full-v1 -D build/exposure
+          test -f build/exposure/PAPER2D_SUMMER_EXPOSURE_FULL_SITES_V1.csv
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Compute frozen marine-access metric
+        run: |
+          python scripts/compute_paper2d_marine_distance.py \
+            --sites-csv build/exposure/PAPER2D_SUMMER_EXPOSURE_FULL_SITES_V1.csv \
+            --contract contracts/PAPER2D_MARINE_DISTANCE_MEASUREMENT_V1.json \
+            --out-json build/out/PAPER2D_MARINE_DISTANCE_MEASUREMENT_RESULT_V1.json \
+            --out-sites-csv build/out/PAPER2D_MARINE_DISTANCE_SITES_V1.csv \
+            --out-files-csv build/out/PAPER2D_MARINE_DISTANCE_FILES_V1.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2d-marine-distance-measurement-v1
+          path: build/out/*
+          if-no-files-found: warn
