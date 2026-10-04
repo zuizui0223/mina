@@ -33,10 +33,10 @@ def _date_like_value(value) -> bool:
     if not text:
         return False
     patterns = (
-        r"^\\d{4}[-/]\\d{1,2}[-/]\\d{1,2}",
-        r"^\\d{1,2}[-/]\\d{1,2}[-/]\\d{2,4}",
-        r"^\\d{1,2}[- ](?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[- ]\\d{2,4}",
-        r"^(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[ -]\\d{1,2}[, -]+\\d{4}",
+        r"^\d{4}[-/]\d{1,2}[-/]\d{1,2}",
+        r"^\d{1,2}[-/]\d{1,2}[-/]\d{2,4}",
+        r"^\d{1,2}[- ](?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[- ]\d{2,4}",
+        r"^(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[ -]\d{1,2}[, -]+\d{4}",
     )
     return any(re.search(p, text, flags=re.I) for p in patterns)
 
