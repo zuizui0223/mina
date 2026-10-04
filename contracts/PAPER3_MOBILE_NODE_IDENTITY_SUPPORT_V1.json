@@ -24,13 +24,18 @@
       2023,
       2024
     ],
-    "publication": "Macdonald et al. 2026, Communications Earth & Environment"
+    "publication": "Macdonald et al. 2026, Communications Earth & Environment",
+    "ramadda_tree_zip_urls": [
+      "https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=e1e00e5d-fc4c-4948-9e00-8d02e8b359d9&output=zip.tree",
+      "http://ramadda.data.bas.ac.uk/repository/entry/show?entryid=e1e00e5d-fc4c-4948-9e00-8d02e8b359d9&output=zip.tree"
+    ]
   },
   "global_snapshot_source": {
     "title": "Emperor penguin colony locations derived from satellite remote sensing across Antarctica, 2023",
     "doi": "10.5285/fb0547e4-d2c1-4580-8c98-182f1da7d9ae",
     "direct_kmz": "https://ramadda.data.bas.ac.uk/repository/entry/get/emperor_colony_locations2023.kmz?entryid=synth%3Afb0547e4-d2c1-4580-8c98-182f1da7d9ae%3AL2VtcGVyb3JfY29sb255X2xvY2F0aW9uczIwMjMua216",
-    "publication_quality_note": "Dataset reports coordinates correct to within approximately 2 km at digitisation and explicitly notes colony movement."
+    "publication_quality_note": "Dataset reports coordinates correct to within approximately 2 km at digitisation and explicitly notes colony movement.",
+    "role": "context_only_not_required_for_primary_aliasing"
   },
   "support_requirements": {
     "primary_tracking": {
@@ -43,8 +48,10 @@
     },
     "global_snapshot": {
       "minimum_parseable_placemarks": 50,
-      "coordinate_required": true
-    }
+      "coordinate_required": true,
+      "required_for_primary_aliasing": false
+    },
+    "primary_tracking_is_sufficient_to_authorize_schema_audit": true
   },
   "prohibited_during_audit": [
     "penguin abundance",
