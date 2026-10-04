@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper3-mobile-node-schema-audit-v1",
+  "date": "2026-10-04",
+  "status": "schema_only_before_movement_outcomes",
+  "parent_support_contract": "contracts/PAPER3_MOBILE_NODE_IDENTITY_SUPPORT_V1.json",
+  "purpose": "Inspect the public Macdonald et al. emperor-penguin tracking archive structure, shapefile schemas, CRS, geometry type and date-field parseability before any movement displacement or node-aliasing outcome is computed.",
+  "archive": {
+    "preferred_urls": [
+      "https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=e1e00e5d-fc4c-4948-9e00-8d02e8b359d9&output=zip.tree",
+      "http://ramadda.data.bas.ac.uk/repository/entry/show?entryid=e1e00e5d-fc4c-4948-9e00-8d02e8b359d9&output=zip.tree"
+    ],
+    "expected_distribution_size_mb": 1.1
+  },
+  "expected": {
+    "colonies": {
+      "Atka": {
+        "years": [
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ]
+      },
+      "Coulman": {
+        "years": [
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ]
+      },
+      "Washington": {
+        "years": [
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ]
+      }
+    },
+    "geometry_family": "point",
+    "crs": "EPSG:4326",
+    "source_metadata_fields_expected_semantically": [
+      "observation date/time",
+      "satellite/platform",
+      "image path or image identifier"
+    ]
+  },
+  "audit_allowed": [
+    "archive member names",
+    "shapefile geometry type",
+    "projection WKT/EPSG interpretation",
+    "DBF field names and field types",
+    "feature count",
+    "distinct parseable observation-date count",
+    "minimum and maximum observation date",
+    "whether multiple records occur on the same date"
+  ],
+  "prohibited": [
+    "distance between coordinates",
+    "annual anchor coordinates",
+    "within-season movement",
+    "interannual displacement",
+    "false-turnover or false-absence rates",
+    "choice of spatial radius from coordinates",
+    "abundance, breeding success or environmental covariates"
+  ],
+  "pass_gate": {
+    "minimum_named_colonies": 3,
+    "minimum_seasons_per_colony": 7,
+    "minimum_dates_in_at_least_n_seasons": 3,
+    "seasons_meeting_minimum_dates_per_colony": 6,
+    "point_geometry_required": true,
+    "parseable_date_required": true
+  },
+  "next_gate_if_passed": "Freeze exact colony/year filename parser, date-field parser, coordinate extraction and group-row handling, then execute the already-frozen aliasing metric.",
+  "stop_rule": "Do not repair missing seasons by digitising publication figures or choosing alternate date fields after movement outcomes are seen."
+}
