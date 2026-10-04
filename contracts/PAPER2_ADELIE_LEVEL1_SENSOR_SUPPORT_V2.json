@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-adelie-level1-sensor-support-v2",
+  "date": "2026-10-04",
+  "status": "outcome_blind_sensor_aligned_metadata_audit",
+  "supersedes_for_primary_occupied_footprint": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_STAC_SUPPORT_V1.json",
+  "purpose": "Audit whether the frozen long-term Adelie roster supports a longitudinal occupied-footprint comparison at sensor/product states compatible with the published Landsat-7 guano classifiers.",
+  "candidate_roster": {
+    "source": "PAPER2_FORCING_SUPPORT_UNITS_V1.csv",
+    "species_id": "ADPE",
+    "expected_sites": 44,
+    "coordinates": "ANTARCTIC_PENGUIN_BREEDING_OPTIONS_ATLAS_V1.csv",
+    "prohibited": [
+      "count magnitude",
+      "population trend",
+      "Paper 1 concentration outcome",
+      "any demographic class"
+    ]
+  },
+  "landsat": {
+    "stac_endpoint": "https://landsatlook.usgs.gov/stac-server",
+    "collection": "landsat-c2l1",
+    "product_role": "Level-1 imagery from which top-of-atmosphere reflectance compatible with published ETM+ classifiers can be derived"
+  },
+  "epochs": {
+    "reference_etmplus": {
+      "start": "1999-01-01",
+      "end": "2003-05-30",
+      "allowed_platforms": ["LANDSAT_7"],
+      "rationale": "Align with the published 1999-2003 Landsat-7 ETM+ classifier era and stop before the 31 May 2003 SLC failure."
+    },
+    "recent_oli": {
+      "start": "2016-01-01",
+      "end": "2025-12-31",
+      "allowed_platforms": ["LANDSAT_8", "LANDSAT_9"],
+      "rationale": "Recent OLI/OLI-2 comparison era; values must be transformed into the frozen ETM+ spectral space before applying an ETM+-trained classifier."
+    }
+  },
+  "season_months": [11, 12, 1, 2, 3],
+  "support_rules": {
+    "primary": {
+      "per_epoch_min_scenes_cloud_le_80": 3,
+      "per_epoch_min_distinct_years_cloud_le_80": 2
+    },
+    "strong": {
+      "per_epoch_min_scenes_cloud_le_50": 5,
+      "per_epoch_min_distinct_years_cloud_le_50": 3
+    }
+  },
+  "interpretation": [
+    "Passing this audit establishes image metadata support only.",
+    "It does not establish usable local pixels, guano classifier validity, or sensor harmonization.",
+    "The recent OLI/OLI-2 epoch cannot be classified with ETM+ coefficients until the sensor bridge passes a separate recovery gate."
+  ],
+  "stop_rule": "Do not change the epochs, platforms, seasonal months, cloud thresholds, or minimum scene/year counts after demographic outcomes are joined."
+}
