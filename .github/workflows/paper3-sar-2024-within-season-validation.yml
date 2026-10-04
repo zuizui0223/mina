@@ -35,7 +35,7 @@ jobs:
       - name: Run frozen within-season aliasing validation
         run: |
           mkdir -p build/out
-          python scripts/run_paper3_sar_2024_validation.py \
+          python -m scripts.run_paper3_sar_2024_validation \
             --raw-csv build/SAR-Emperor/sar_huddles_20250502.csv \
             --out-json build/out/PAPER3_SAR_2024_WITHIN_SEASON_VALIDATION_RESULT_V1.json \
             --out-standardized-csv build/out/PAPER3_SAR_2024_STANDARDIZED_V1.csv \
