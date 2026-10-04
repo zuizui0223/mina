@@ -14,6 +14,22 @@
 **Counts:** E1 **3**, E2 **17**, E3 **14**, E4 **1**, A0 **31**.  
 E1の3ファイルのうちSigny Adélie 2件は同じデータ/主張線なので、独立した確証線は **Signy Adélie（地理的再現）** と **Signy chinstrap（別種再現）** の2本。
 
+## 証拠行列
+
+66 filesのうち **35件が生態学的 outcome record (E1–E4)**、**31件がA0補助監査**である。したがって「66 endpoint = 66 independent tests」とは数えない。
+
+| 階層 | E1 確証 | E2 探索 | E3 否定 | E4 停止 | A0 監査 | 台帳から読めること |
+|---|---:|---:|---:|---:|---:|---|
+| 地域・方向 | 0 | 2 | 3 | 0 | 0 | 共通の長期方向は見えるが、単純なsea-ice/snow年次機構は残らない |
+| 静的な場所 | 0 | 0 | 5 | 0 | 26 | outcomeを開いた生態学的結果はすべて一般性を限定する側 |
+| 種・表現型 | 0 | 2 | 0 | 0 | 0 | species sortingと時間再構成は示唆されるが確証線ではない |
+| 島内/系内の配置 | **3** | 6 | 1 | 0 | 2 | **唯一E1が存在する階層** |
+| 機構の痕跡 | 0 | 7 | 5 | 0 | 1 | 関連は残るが、prediction・閾値・win-stay/lose-switch・独立再現で削られる |
+| 個体過程の境界 | 0 | 0 | 0 | **1** | 0 | mark-resight bridge不足で移動・保持・prospectingへ降りられない |
+| データ範囲 / 再現性 | 0 | 0 | 0 | 0 | 2 | coverageと再現性の台座であり ecological replication ではない |
+
+**構造上の結論:** E1は `within_system_spatial` にのみ現れる。静的な場所の ecological outcome は E3 しかなく、地域層は E2 context + E3 falsification、機構層は E2/E3 の混在に留まる。
+
 ## 66件の台帳
 
 | # | Result | 段階 | 階層 | 役割 | 現在許される読み方 |
