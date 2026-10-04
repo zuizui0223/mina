@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-island-ecology-paper2-support-audit-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_support_audit_only",
+  "purpose": "Determine whether a longitudinal Antarctic test of terrestrial breeding-opportunity change versus penguin breeding-space change is technically identifiable before any demographic outcome is opened.",
+  "parent_program": "docs/ANTARCTIC_ISLAND_ECOLOGY_PROGRAM_V1.md",
+  "paper1_boundary": "Do not modify, retune, or reopen the closed cross-scale concentration submission endpoints.",
+  "source_roster": {
+    "primary": "Reuse site identities, species labels, coordinates, record years, and observation-method metadata from the already-pinned MAPPPD snapshot used by the regional concentration branch.",
+    "pinned_mapppd_repository": "CCheCastaldo/mapppdr",
+    "pinned_mapppd_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "allowed_demographic_fields": [
+      "site_id",
+      "species",
+      "site coordinates",
+      "region labels",
+      "years with at least one candidate nest-count observation",
+      "observation method / accuracy metadata"
+    ],
+    "prohibited_demographic_fields_during_audit": [
+      "count magnitude",
+      "method-corrected count magnitude",
+      "population trend",
+      "effective component number",
+      "abundance-E elasticity",
+      "concentration p-values",
+      "any label derived from whether abundance increased or declined"
+    ]
+  },
+  "terrestrial_support": {
+    "goal": "Assess whether change in accessible ice-free breeding opportunity can be measured at each site without using demographic outcomes.",
+    "candidate_sources": [
+      "Landsat archive for historical optical imagery",
+      "Sentinel-2 for recent optical imagery and validation",
+      "SCAR Antarctic Digital Database 2026 coastline / rock-outcrop geometry for QA only",
+      "REMA for topographic accessibility"
+    ],
+    "warning": "Do not estimate habitat change by naively differencing successive SCAR ADD releases because source dates vary among features.",
+    "required_audit_fields": [
+      "earliest usable optical epoch",
+      "latest usable optical epoch",
+      "epoch separation in years",
+      "valid-pixel or cloud/shadow support",
+      "coastline / rock classification confidence",
+      "terrain accessibility support",
+      "reason for exclusion if unmeasurable"
+    ]
+  },
+  "marine_support": {
+    "goal": "Audit availability only; do not select predictors by correlation with demographic outcomes.",
+    "candidate_domains": [
+      "sea-ice duration / concentration",
+      "distance or access cost to open water during breeding",
+      "persistent polynya context",
+      "bathymetry / shelf or submarine-canyon context",
+      "remote-sensing productivity when temporal support is sufficient"
+    ],
+    "required_audit_fields": [
+      "temporal coverage",
+      "spatial resolution",
+      "missingness",
+      "whether source overlaps terrestrial-change interval"
+    ]
+  },
+  "staged_design": [
+    "Stage A: build support table with prohibited demographic fields physically absent from the audit object.",
+    "Stage B: inspect only support and predictor-measurement quality; define deterministic eligibility and accessible-habitat metric.",
+    "Stage C: freeze the eligible roster, terrestrial metric, marine covariate set, model family, nulls, and stop rule in a separate outcome contract.",
+    "Stage D: only then join demographic magnitudes and breeding-space outcomes."
+  ],
+  "target_support_table_columns": [
+    "site_id",
+    "species",
+    "latitude",
+    "longitude",
+    "region",
+    "n_record_years",
+    "record_year_min",
+    "record_year_max",
+    "observation_method_classes",
+    "early_imagery_start",
+    "early_imagery_end",
+    "late_imagery_start",
+    "late_imagery_end",
+    "epoch_separation_years",
+    "early_valid_coverage",
+    "late_valid_coverage",
+    "rock_ice_classification_qc",
+    "terrain_access_qc",
+    "marine_covariate_support",
+    "eligible_support_only",
+    "exclusion_reason"
+  ],
+  "no_outcome_rule": "This audit can conclude that Paper 2 is feasible or infeasible, but cannot report any association between habitat change and abundance, concentration, persistence, colonization, or extinction.",
+  "branch_stop_rule": "If support is insufficient, stop Paper 2 without lowering thresholds after seeing demographic outcomes; proceed to the separately defined dynamic-substrate Paper 3 route."
+}
