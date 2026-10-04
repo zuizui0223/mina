@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper3-sar-2024-within-season-validation-v1",
+  "date": "2026-10-04",
+  "status": "external_validation_using_previously_frozen_aliasing_metric",
+  "purpose": "Apply the Paper 3 within-season fixed-node aliasing metric, frozen before this source was introduced, to an independent 2024 SAR huddle dataset spanning six emperor-penguin colonies.",
+  "source": {
+    "repository": "mla150/SAR-Emperor",
+    "commit": "dfce78ba83f7878a2697c5e12fdd15d0acd75519",
+    "file": "sar_huddles_20250502.csv",
+    "documentation": "README.md",
+    "scope": "Winter 2024 Umbra SAR observations at Atka Bay, Coulman Island, Cape Roget, Cape Washington, Franklin Island, and Cape Crozier."
+  },
+  "relationship_to_primary_paper3": {
+    "role": "independent within-season validation while the Macdonald et al. 2017-2024 PDC archive is temporarily unavailable",
+    "not_a_substitute_for": "interannual aliasing across 2017-2024",
+    "inherited_metric_contract": "contracts/PAPER3_MOBILE_NODE_ALIASING_METRIC_V1.json",
+    "inherited_radii_km": [
+      0.5,
+      1,
+      2,
+      5,
+      10
+    ],
+    "rule": "No radius, centroid rule, or false-absence definition is changed after inspecting this SAR source."
+  },
+  "standardization": {
+    "colony_id": "source colony field unchanged",
+    "season": 2024,
+    "obs_date": "UTC acquisition date parsed from the leading YYYY-MM-DD portion of source image name",
+    "group_location": "xcoord/ycoord WGS84 centroid for each manually delineated huddle",
+    "include_row": "b_pres == yes and finite xcoord/ycoord",
+    "multiple_groups": "Every huddle centroid on a date is retained as one mapped group.",
+    "anchor": "Earliest date with one or more finite detected huddle centroids for each colony.",
+    "false_absence": "On a later observation date, the fixed node is absent at radius r only if every mapped huddle centroid is farther than r from the frozen anchor centroid."
+  },
+  "estimands": {
+    "primary": "Within-season false-absence fraction at 0.5, 1, 2, 5 and 10 km.",
+    "secondary": [
+      "q50/q90/q95 of minimum huddle distance from the seasonal anchor on post-anchor dates",
+      "by-colony false-absence curves",
+      "number of mapped dates and huddles per colony"
+    ],
+    "inference": "descriptive; no p-values"
+  },
+  "boundaries": [
+    "This source covers one winter season and cannot estimate interannual false turnover.",
+    "Named colony identity is supplied by the source and does not imply demographic closure.",
+    "Huddle movement is not individual dispersal.",
+    "No abundance, breeding success, sea-ice, or environmental predictor enters the validation.",
+    "The Macdonald 2017-2024 primary route remains locked until its public PDC files are reproducibly available."
+  ]
+}
