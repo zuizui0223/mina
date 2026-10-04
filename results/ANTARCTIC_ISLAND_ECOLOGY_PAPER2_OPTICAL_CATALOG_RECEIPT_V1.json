@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-antarctic-island-ecology-paper2-optical-catalog-receipt-v1",
+  "validated_date": "2026-10-04",
+  "source": {
+    "support_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_SUPPORT_AUDIT_V1.json",
+    "hypothesis_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_HYPOTHESIS_V1.json",
+    "forcing_support_workflow_run_id": 36517700369,
+    "breeding_options_workflow_run_id": 36520281872,
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502"
+  },
+  "execution": {
+    "workflow_run_id": 37186601157,
+    "head_sha": "55765d2004e2324f59c7c28cf5ebbe0d499a717e",
+    "artifact_id": 11296884594,
+    "artifact_digest": "sha256:253649242c1a0aae3c3fc74437e1e5228c96eefc1d1ee988fb2bfe0ad2fa1a13",
+    "conclusion": "success",
+    "unique_catalog_queries": 279,
+    "query_errors": 0,
+    "catalog_truncation": false
+  },
+  "frozen_cohort": {
+    "site_species_units": 107,
+    "distinct_physical_sites": 88,
+    "species_units": {
+      "ADPE": {
+        "eligible": 44,
+        "total": 44
+      },
+      "CHPE": {
+        "eligible": 33,
+        "total": 34
+      },
+      "GEPE": {
+        "eligible": 29,
+        "total": 29
+      }
+    }
+  },
+  "catalog_gate": {
+    "passing_units": 106,
+    "passing_fraction": 0.9906542056074766,
+    "regional_support": {
+      "Central-west Antarctic Peninsula": {
+        "eligible": 45,
+        "total": 45
+      },
+      "South Shetland Islands": {
+        "eligible": 27,
+        "total": 28
+      },
+      "Victoria Land": {
+        "eligible": 27,
+        "total": 27
+      },
+      "Elephant Island": {
+        "eligible": 2,
+        "total": 2
+      },
+      "Southwest Antarctic Peninsula": {
+        "eligible": 2,
+        "total": 2
+      },
+      "Northeast Antarctic Peninsula": {
+        "eligible": 1,
+        "total": 1
+      },
+      "South Orkney Islands": {
+        "eligible": 1,
+        "total": 1
+      },
+      "Adelie Land": {
+        "eligible": 1,
+        "total": 1
+      }
+    },
+    "only_failing_unit": {
+      "unit_id": "CHPE|HANN",
+      "site_id": "HANN",
+      "region": "South Shetland Islands",
+      "first_observed_season": 1994,
+      "last_observed_season": 2013,
+      "early_window": [
+        1990,
+        1998
+      ],
+      "early_landsat_scenes_cloud_le80": 6,
+      "early_landsat_scenes_cloud_le50": 4,
+      "early_distinct_years": 1,
+      "reason": "The early epoch has enough scenes but they are concentrated in one year; the frozen gate requires at least two distinct years."
+    }
+  },
+  "support_diagnostics": {
+    "early_landsat_cloud_le80": {
+      "min": 5,
+      "median": 21,
+      "mean": 19.8130841121,
+      "max": 40
+    },
+    "early_landsat_cloud_le50": {
+      "min": 3,
+      "median": 12,
+      "mean": 10.8971962617,
+      "max": 25
+    },
+    "early_landsat_distinct_years": {
+      "min": 1,
+      "median": 6,
+      "mean": 5.214953271,
+      "max": 7
+    },
+    "late_landsat_cloud_le80": {
+      "min": 5,
+      "median": 192,
+      "mean": 233.785046729,
+      "max": 659
+    },
+    "late_landsat_cloud_le50": {
+      "min": 3,
+      "median": 83,
+      "mean": 130.5887850467,
+      "max": 482
+    },
+    "late_landsat_distinct_years": {
+      "min": 2,
+      "median": 9,
+      "mean": 8.9345794393,
+      "max": 9
+    },
+    "epoch_midpoint_separation_years": {
+      "min": 19,
+      "median": 33,
+      "mean": 30.8504672897,
+      "max": 33
+    }
+  },
+  "decision": {
+    "scene_catalog_support_gate_passed": true,
+    "prospective_sample_gate_already_satisfied_at_catalog_level": true,
+    "next_stage_authorized": "outcome-blind local-pixel QA and habitat-change classifier validation",
+    "demographic_magnitudes_remain_locked": true,
+    "interpretation": "Optical archive availability is not the limiting factor for the dynamic terrestrial-opportunity lane. Measurement validity at local pixels is now the active gate."
+  },
+  "boundary": [
+    "This receipt establishes image availability, not habitat change.",
+    "Scene-level cloud cover is not local clear-pixel availability.",
+    "No abundance magnitude, trend sign, effective component number, or concentration outcome was used.",
+    "CHPE|HANN remains excluded from the Level-2 catalog-supported roster unless a separately frozen Level-1/TOA rescue is justified without demographic outcomes."
+  ]
+}
