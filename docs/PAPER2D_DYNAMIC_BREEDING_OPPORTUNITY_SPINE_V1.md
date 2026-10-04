@@ -16,14 +16,14 @@ This is a change-to-change question. It must not be interpreted as a rescue of t
 
 The ecological unit is a breeding-site node embedded in a regional network.
 
-For each site (i):
+For each site \(i\):
 
-- (A_{i,early}): accessible ice-free breeding opportunity in an early optical epoch;
-- (A_{i,late}): accessible ice-free breeding opportunity in a late optical epoch;
-- (Delta A_i): change in accessible breeding opportunity;
-- (D_i): demographic change **relative to the shared regional/species temporal state**, not raw site change alone.
+- \(A_{i,early}\): accessible ice-free breeding opportunity in an early optical epoch;
+- \(A_{i,late}\): accessible ice-free breeding opportunity in a late optical epoch;
+- \(\Delta A_i\): change in accessible breeding opportunity;
+- \(D_i\): demographic change **relative to the shared regional/species temporal state**, not raw site change alone.
 
-The key quantity is therefore whether sites with larger positive (Delta A_i) gain relative demographic weight within their regional network.
+The key quantity is therefore whether sites with larger positive \(\Delta A_i\) gain relative demographic weight within their regional network.
 
 This distinguishes three processes:
 
@@ -86,12 +86,12 @@ Preferred model family after support is frozen:
 
 where:
 
-- (n_{ist}) is the observation-calibrated nest-count state;
-- (alpha_i) is a site intercept;
-- (lambda_{g(i),t}) is the previously support-selected species × regional forcing state;
-- (h_i) is the rate of accessible-land change between the frozen optical epochs;
-- (\\tau_t) is centered/scaled time;
-- (\\beta_{A,s}) measures whether sites with greater habitat expansion gain relative to their regional conspecific background.
+- \(n_{ist}\) is the observation-calibrated nest-count state;
+- \(\alpha_i\) is a site intercept;
+- \(\lambda_{g(i),t}\) is the previously support-selected species × regional forcing state;
+- \(h_i\) is the rate of accessible-land change between the frozen optical epochs;
+- \(\tau_t\) is centered/scaled time;
+- \(\beta_{A,s}\) measures whether sites with greater habitat expansion gain relative to their regional conspecific background.
 
 This parameterization uses unsynchronized records without pretending that every site was counted in every year.
 
