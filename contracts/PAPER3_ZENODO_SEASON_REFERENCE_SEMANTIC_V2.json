@@ -46,5 +46,13 @@
     "abundance, breeding success or environmental covariates"
   ],
   "next_gate_if_passed": "Execute the already frozen 0.5/1/2/5/10-km interannual aliasing curve using one invariant source point per colony-season.",
-  "audit_trail": "Retain the failed V1 endpoint-origin semantic result; do not rewrite it as a pass."
+  "audit_trail": "Retain the failed V1 endpoint-origin semantic result; do not rewrite it as a pass.",
+  "source_frozen_artifact": {
+    "workflow_run_id": 37209896612,
+    "artifact_id": 11306012509,
+    "artifact_name": "paper3-emperor-zenodo-route-semantic-v1",
+    "artifact_digest": "sha256:25072ae7c32d31b846e6a89c4bda08669fe66d879c2fd49860c6788b82dd0266",
+    "required_csv": "PAPER3_ZENODO_ROUTE_COLONY_POINTS_V1.csv",
+    "role": "Reuse the already downloaded source feature table from the failed V1 endpoint-origin semantic audit; V2 changes only the semantic test, not source coordinates."
+  }
 }
