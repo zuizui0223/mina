@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-published-guano-classifier-spec-recovery-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_literature_method_recovery",
+  "purpose": "Recover the published Antarctic Peninsula Landsat-7 guano classifier specification from Lynch & Schwaller (2014) Supporting Table S2 before any new-image ecological outcome is computed.",
+  "source": {
+    "article": "Lynch HJ, Schwaller MR (2014), PLOS ONE 9:e113301",
+    "doi": "10.1371/journal.pone.0113301",
+    "supplement": "Table S2",
+    "supplement_doi": "10.1371/journal.pone.0113301.s003",
+    "reported_role": "transition matrix and decision rules for the Antarctic Peninsula Landsat-7 ETM+ classifier"
+  },
+  "published_context": {
+    "training_colony_pixels": 473,
+    "training_noncolony_pixels": 10688,
+    "reflective_bands": ["ETM+1","ETM+2","ETM+3","ETM+4","ETM+5","ETM+7"],
+    "peninsula_scenes": 62,
+    "source_era": "1999-2003",
+    "excluded_regions_due_to_clouds": ["South Shetland Islands","South Orkney Islands"]
+  },
+  "allowed_actions": [
+    "download the published supplement",
+    "extract plain text and tables without altering values",
+    "record the published transition matrix",
+    "record the published threshold/decision rule",
+    "record any radiometric-product assumptions"
+  ],
+  "prohibited_actions": [
+    "fit new classifier parameters",
+    "optimize thresholds on MAPPPD trends",
+    "use Paper 1 concentration outcomes",
+    "change the published coefficients to improve current imagery performance"
+  ],
+  "next_gate": "A separate sensor-harmonization recovery test must show whether the published Landsat-7 specification can be applied to Landsat Collection 2 or whether a prespecified radiometric bridge is required.",
+  "stop_rule": "Failure to reproduce the published method is a measurement-method stop, not permission to tune a new classifier using demographic outcomes."
+}
