@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2d-marine-access-support-receipt-v1",
+  "validated_date": "2026-10-04",
+  "source_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_MARINE_ACCESS_V1.json",
+  "execution": {
+    "workflow_run_id": 37188384028,
+    "artifact_id": 11297758288,
+    "artifact_digest": "sha256:808e832b498b9408456840fb4de3ad2f8c86e831e834ebba8650a04ae731ffb4",
+    "conclusion": "success"
+  },
+  "dataset": {
+    "id": "G02135",
+    "version": 4,
+    "doi": "10.7265/a98x-0f50",
+    "product": "Antarctic monthly sea-ice concentration GeoTIFF"
+  },
+  "archive_support": {
+    "unique_year_month_files_required": 105,
+    "available": 103,
+    "missing": [
+      {
+        "year": 1987,
+        "month": 12
+      },
+      {
+        "year": 1988,
+        "month": 1
+      }
+    ]
+  },
+  "cohort_support": {
+    "candidate_site_species_units": 107,
+    "supported_site_species_units": 107,
+    "supported_fraction": 1,
+    "species": {
+      "ADPE": 44,
+      "CHPE": 34,
+      "GEPE": 29
+    },
+    "represented_regions": 8
+  },
+  "decision": {
+    "archive_support_gate_passed": true,
+    "marine_distance_computation_authorized_after_terrestrial_measurement_gate": true,
+    "demographic_magnitudes_opened": false,
+    "marine_values_computed": false
+  },
+  "boundary": [
+    "Missing archive months remain missing and are not imputed.",
+    "This support result is not evidence for a marine ecological effect.",
+    "H2 remains secondary to the terrestrial opportunity-tracking hypothesis."
+  ]
+}
