@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2d-marine-distance-measurement-v1",
+  "date": "2026-10-04",
+  "status": "frozen_after_H1_before_H2_values",
+  "parent_marine_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_MARINE_ACCESS_V1.json",
+  "parent_H1_receipt": "results/PAPER2D_FIRST_REAL_DYNAMIC_OUTCOME_RECEIPT_V1.json",
+  "purpose": "Compute the single predeclared marine-access change metric after H1 is closed and before any H2 association is fitted.",
+  "source": {
+    "dataset": "NOAA/NSIDC Sea Ice Index",
+    "id": "G02135",
+    "version": 4,
+    "doi": "10.7265/a98x-0f50",
+    "product": "Antarctic monthly sea-ice concentration GeoTIFF",
+    "crs": "EPSG:3412",
+    "resolution_km": 25,
+    "base_url": "https://noaadata.apps.nsidc.org/NOAA/G02135/south/monthly/geotiff"
+  },
+  "encoding": {
+    "concentration_raw_range": [
+      0,
+      1000
+    ],
+    "raw_scale": "divide by 10 to obtain percent concentration",
+    "open_water_raw_rule": "raw < 150, corresponding to <15% sea-ice concentration",
+    "invalid_codes": [
+      2510,
+      2530,
+      2540,
+      2550
+    ],
+    "note": "Monthly Sea Ice Index applies the 15% cutoff; values below 15% are treated as open water in the predeclared metric."
+  },
+  "roster": {
+    "source": "PAPER2D_SUMMER_EXPOSURE_FULL_SITES_V1.csv",
+    "expected_physical_sites": 77,
+    "windows": "Reuse each site's frozen early_window_start/end and late_window_start/end exactly.",
+    "prohibited": [
+      "count magnitude",
+      "relative breeding-use outcome",
+      "species beta",
+      "H1 residuals",
+      "Paper 1 concentration outcome"
+    ]
+  },
+  "metric": {
+    "months": [
+      11,
+      12,
+      1
+    ],
+    "monthly_value": "Projected Euclidean distance in km from the breeding-site coordinate to the nearest valid ocean grid-cell center with raw concentration <150.",
+    "maximum_search_distance_km": 1000,
+    "epoch_value": "Median of all available monthly distances in the site's frozen epoch.",
+    "change": "late_distance_km - early_distance_km",
+    "favorable_change": "M = early_distance_km - late_distance_km, so positive values mean open water became closer."
+  },
+  "support_rule": {
+    "required_month_fraction_per_epoch": 0.9,
+    "minimum_complete_years_per_epoch": 3,
+    "site_pass": "both early and late epochs pass",
+    "continuation_gate": {
+      "minimum_passing_fraction_of_77_sites": 0.8,
+      "minimum_regions": 2
+    }
+  },
+  "no_fishing_rule": "No alternate ice threshold, month set, distance transform, or summary statistic may be selected after H2 is opened.",
+  "next_gate": "Freeze and simulate the exact H2 land x marine two-way fixed-effect estimator on the final supported roster."
+}
