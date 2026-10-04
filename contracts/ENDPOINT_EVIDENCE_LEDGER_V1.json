@@ -556,5 +556,63 @@
   ],
   "claim_rule": "Main claims must be anchored in E1. E2 may motivate or triangulate E1. E3 must accompany nearby claims that it constrains. E4 defines unresolved data needs. A0 documents validity but is not counted as ecological replication.",
   "independence_note": "The three E1 result files do not equal three independent geographic replications: the two Signy Adelie files are the same dataset/claim line. The independent confirmatory lines are Signy Adelie geographic replication and Signy chinstrap cross-species replication.",
-  "out_of_ledger_note": "Exactly the 66 files in main/results at the frozen main commit. Later branch-only results and stopped routes documented only outside results/ are intentionally excluded."
+  "out_of_ledger_note": "Exactly the 66 files in main/results at the frozen main commit. Later branch-only results and stopped routes documented only outside results/ are intentionally excluded.",
+  "ecological_outcome_file_count": 35,
+  "auxiliary_file_count": 31,
+  "non_independent_evidence_families": [
+    {
+      "family_id": "signy_adelie_concentration",
+      "files": [
+        "SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+        "SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json",
+        "SIGNY_CONCENTRATION_QUALITY_AUDIT_V1.json"
+      ],
+      "interpretation": "One Signy Adelie replication line with multiple frozen/quality views; not multiple independent geographies."
+    },
+    {
+      "family_id": "palmer_neff_growth_association",
+      "files": [
+        "PALMER_COLONY_NETWORK_EROSION_RESULT_V1.json",
+        "PALMER_NEFF_CIRCULAR_COUPLING_RESULT_V1.json",
+        "PALMER_NEFF_CIRCULAR_SHIFT_RESULT_V1.json",
+        "PALMER_NEFF_DEMOGRAPHIC_MOMENTUM_RESULT_V1.json",
+        "PALMER_NEFF_MECHANICAL_COUPLING_RESULT_V1.json",
+        "PALMER_NEFF_YEAR_BLOCK_PERMUTATION_RESULT_V1.json"
+      ],
+      "interpretation": "One Palmer conditional-association family; robustness tests preserve the coefficient while the held-out predictive claim fails."
+    },
+    {
+      "family_id": "paper2_static_place_architecture",
+      "files": [
+        "PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json",
+        "PAPER2_V3_PERMUTATION_INFERENCE_RESULT_V1.json",
+        "PAPER2_DETECTABLE_EFFECT_RESULT_V1.json",
+        "PAPER2_RADIUS_SIGN_SWITCH_NULL_RESULT_V1.json",
+        "PAPER2_SCALE_TRAIT_SENSITIVITY_RESULT_V1.json",
+        "PAPER2_A_BUFFERING_SECONDARY_RESULT_V1.json",
+        "PAPER2_OBSERVATION_TIMING_SENSITIVITY_RESULT_V1.json"
+      ],
+      "interpretation": "One Antarctic-wide static-place hypothesis family; the primary inference is non-confirmatory and sensitivities narrow generality."
+    },
+    {
+      "family_id": "performance_redistribution_mechanism",
+      "files": [
+        "PALMER_PERFORMANCE_MEMORY_RESULT_V1.json",
+        "PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+        "PALMER_WIN_STAY_LOSE_SWITCH_RESULT_V1.json",
+        "SIGNY_PERFORMANCE_REDISTRIBUTION_REPLICATION_RESULT_V1.json",
+        "SIGNY_REPLICATION_SUPPORT_AUDIT_RESULT_V1.json"
+      ],
+      "interpretation": "One mechanism-discrimination family; Palmer short-lag association is exploratory and Signy primary replication fails."
+    },
+    {
+      "family_id": "regional_environment_mechanisms",
+      "files": [
+        "PALMER_SEAICE_HABITAT_MECHANISM_RESULT_V1.json",
+        "PALMER_SEAICE_TIMESCALE_SEPARATION_RESULT_V1.json",
+        "PALMER_WEATHER_X_HABITAT_MECHANISM_RESULT_V2.json"
+      ],
+      "interpretation": "Finite prospective mechanism family; all three simple environmental formulations fail their directional/validation rules."
+    }
+  ]
 }
