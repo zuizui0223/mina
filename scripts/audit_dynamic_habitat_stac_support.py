@@ -51,7 +51,7 @@ def _search_items(
         "collections": [collection],
         "intersects": {"type": "Point", "coordinates": [float(lon), float(lat)]},
         "datetime": f"{start}T00:00:00Z/{end}T23:59:59Z",
-        "limit": 1000,
+        "limit": 100,
     }
     items: list[dict] = []
     method = "POST"
@@ -159,9 +159,8 @@ def audit(forcing_csv: Path, atlas_csv: Path, contract_path: Path) -> tuple[pd.D
     expected_sites = int(contract["site_roster"]["expected_distinct_sites"])
     roster = build_site_roster(forcing_csv, atlas_csv, expected_units, expected_sites)
 
-    endpoint = contract["stac"]["endpoint"]
-    lcol = contract["stac"]["landsat_collection"]
-    scol = contract["stac"]["sentinel_collection"]
+    landsat_catalogs = list(contract["stac"]["landsat_catalogs"])
+    sentinel_catalogs = list(contract["stac"]["sentinel_catalogs"])
     months = set(map(int, contract["season_filter"]["months"]))
     epochs = contract["epochs"]
 
@@ -177,12 +176,18 @@ def audit(forcing_csv: Path, atlas_csv: Path, contract_path: Path) -> tuple[pd.D
         epoch_summaries = {}
         for name in ("early_landsat", "middle_landsat", "late_landsat"):
             start, end = epochs[name]
-            items = _search_items(session, endpoint, lcol, row.longitude, row.latitude, start, end)
+            items, provider = _search_with_fallback(
+                session, landsat_catalogs, row.longitude, row.latitude, start, end
+            )
             epoch_summaries[name] = summarize_items(items, months)
+            epoch_summaries[name]["catalog_provider"] = provider
             time.sleep(0.05)
         start, end = epochs["late_sentinel"]
-        items = _search_items(session, endpoint, scol, row.longitude, row.latitude, start, end)
+        items, provider = _search_with_fallback(
+            session, sentinel_catalogs, row.longitude, row.latitude, start, end
+        )
         epoch_summaries["late_sentinel"] = summarize_items(items, months)
+        epoch_summaries["late_sentinel"]["catalog_provider"] = provider
         time.sleep(0.05)
 
         early = epoch_summaries["early_landsat"]
