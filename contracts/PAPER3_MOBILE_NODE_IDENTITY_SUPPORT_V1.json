@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper3-mobile-node-identity-support-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_data_support_audit",
+  "purpose": "Determine whether public emperor-penguin colony-location data support a reproducible test of fixed-coordinate node aliasing without using abundance or environmental outcomes.",
+  "primary_tracking_source": {
+    "title": "Year-round estimates of penguin colony locations at the Atka Bay, Coulman Island, and Cape Washington colonies, 2017-2024",
+    "doi": "10.5285/e1e00e5d-fc4c-4948-9e00-8d02e8b359d9",
+    "bas_record_id": "GB/NERC/BAS/PDC/02155",
+    "landing_url": "https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/02155",
+    "expected_colonies": [
+      "Atka Bay",
+      "Coulman Island",
+      "Cape Washington"
+    ],
+    "expected_years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "publication": "Macdonald et al. 2026, Communications Earth & Environment"
+  },
+  "global_snapshot_source": {
+    "title": "Emperor penguin colony locations derived from satellite remote sensing across Antarctica, 2023",
+    "doi": "10.5285/fb0547e4-d2c1-4580-8c98-182f1da7d9ae",
+    "direct_kmz": "https://ramadda.data.bas.ac.uk/repository/entry/get/emperor_colony_locations2023.kmz?entryid=synth%3Afb0547e4-d2c1-4580-8c98-182f1da7d9ae%3AL2VtcGVyb3JfY29sb255X2xvY2F0aW9uczIwMjMua216",
+    "publication_quality_note": "Dataset reports coordinates correct to within approximately 2 km at digitisation and explicitly notes colony movement."
+  },
+  "support_requirements": {
+    "primary_tracking": {
+      "minimum_named_colonies": 3,
+      "minimum_seasons_per_colony": 7,
+      "minimum_dates_in_at_least_n_seasons": 3,
+      "seasons_meeting_minimum_dates_per_colony": 6,
+      "geometry_required": true,
+      "observation_date_required": true
+    },
+    "global_snapshot": {
+      "minimum_parseable_placemarks": 50,
+      "coordinate_required": true
+    }
+  },
+  "prohibited_during_audit": [
+    "penguin abundance",
+    "breeding success",
+    "sea-ice covariates",
+    "movement-distance outcome summaries",
+    "selection of spatial radii after inspecting displacement",
+    "manual digitisation from paper figures"
+  ],
+  "post_support_scale_set_km": [
+    0.5,
+    1,
+    2,
+    5,
+    10
+  ],
+  "next_gate_if_passed": "Freeze exact parser, annual-anchor rule, within-season false-absence rule, interannual false-turnover rule and uncertainty handling before opening movement summaries.",
+  "failure_action": "Stop quantitative Paper 3 tracking lane without replacing machine-readable coordinates by figure digitisation."
+}
