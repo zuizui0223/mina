@@ -1,0 +1,49 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-paper3-zenodo-interannual-aliasing-v2",
+  "date": "2026-10-04",
+  "status": "frozen_before_interannual_displacement_outcomes",
+  "supersedes": "contracts/PAPER3_ZENODO_INTERANNUAL_ALIASING_V1.json",
+  "amendment_reason": "The V1 execution contract depended on the failed route-endpoint semantic assumption. V2 keeps the same radii and estimands but consumes the independently validated source-supplied season reference coordinates from semantic V2.",
+  "parent_semantic_contract": "contracts/PAPER3_ZENODO_SEASON_REFERENCE_SEMANTIC_V2.json",
+  "inherited_metric_contract": "contracts/PAPER3_MOBILE_NODE_ALIASING_METRIC_V1.json",
+  "input_rule": {
+    "source": "PAPER3_ZENODO_SEASON_REFERENCE_POINTS_V2.csv",
+    "require_semantic_gate_passed": true,
+    "expected_colonies": [
+      "Astrid",
+      "Mertz",
+      "SANAE"
+    ],
+    "expected_seasons_per_colony": 10,
+    "annual_anchor": "The single source-supplied invariant pointLon/pointLat coordinate for each colony-season."
+  },
+  "radii_km": [
+    0.5,
+    1,
+    2,
+    5,
+    10
+  ],
+  "estimands": {
+    "primary": "For each radius r, fraction of consecutive-season named-colony anchor transitions whose displacement exceeds r.",
+    "by_colony": "Same fixed-node false-turnover curve separately for Astrid, Mertz and SANAE.",
+    "identity_preserving_radii": "q50, q90 and q95 of consecutive-season anchor displacement.",
+    "long_jump_context": "Report maximum consecutive transition and its colony/seasons descriptively; no post-hoc threshold."
+  },
+  "support_gate": {
+    "colonies": 3,
+    "minimum_seasons_per_colony": 10,
+    "minimum_consecutive_transitions_total": 27
+  },
+  "inference": "descriptive; no p-values",
+  "relation_to_sar_validation": "The independent 2024 SAR source estimates within-season aliasing only and is not pooled into the interannual denominator.",
+  "boundaries": [
+    "Named-colony identity is source-provided and is not proof of demographic closure or identical individuals.",
+    "False turnover is disagreement between fixed-coordinate node identity and source-provided colony identity.",
+    "Do not change radii after viewing displacement.",
+    "Do not infer causes of relocation.",
+    "No abundance, breeding success or environmental covariates enter this analysis."
+  ],
+  "stop_rule": "Execute once after semantic V2 passes; do not search additional radii or omit large transitions."
+}
