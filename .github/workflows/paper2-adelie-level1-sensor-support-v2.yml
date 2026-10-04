@@ -1,0 +1,46 @@
+name: paper2-adelie-level1-sensor-support-v2
+
+on:
+  push:
+    branches: [research/antarctic-island-ecology-v1]
+    paths:
+      - "contracts/PAPER2_ADELIE_LEVEL1_SENSOR_SUPPORT_V2.json"
+      - "scripts/audit_adelie_level1_sensor_support_v2.py"
+      - ".github/workflows/paper2-adelie-level1-sensor-support-v2.yml"
+  pull_request:
+    paths:
+      - "contracts/PAPER2_ADELIE_LEVEL1_SENSOR_SUPPORT_V2.json"
+      - "scripts/audit_adelie_level1_sensor_support_v2.py"
+      - ".github/workflows/paper2-adelie-level1-sensor-support-v2.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas requests
+      - name: Download frozen outcome-blind site artifacts
+        run: |
+          mkdir -p build/forcing build/options build/zips
+          curl -fL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json"             https://api.github.com/repos/zuizui0223/mina/actions/artifacts/11012045716/zip -o build/zips/forcing.zip
+          curl -fL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json"             https://api.github.com/repos/zuizui0223/mina/actions/artifacts/11000822448/zip -o build/zips/options.zip
+          unzip -q build/zips/forcing.zip -d build/forcing
+          unzip -q build/zips/options.zip -d build/options
+      - name: Audit ETM+ reference and OLI recent Level-1 support
+        run: |
+          python scripts/audit_adelie_level1_sensor_support_v2.py             --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv             --atlas-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_ATLAS_V1.csv             --contract contracts/PAPER2_ADELIE_LEVEL1_SENSOR_SUPPORT_V2.json             --out-csv build/PAPER2_ADELIE_LEVEL1_SENSOR_SUPPORT_V2.csv             --out-json build/PAPER2_ADELIE_LEVEL1_SENSOR_SUPPORT_RESULT_V2.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-adelie-level1-sensor-support-v2
+          path: |
+            build/PAPER2_ADELIE_LEVEL1_SENSOR_SUPPORT_V2.csv
+            build/PAPER2_ADELIE_LEVEL1_SENSOR_SUPPORT_RESULT_V2.json
