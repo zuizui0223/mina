@@ -3,17 +3,17 @@
   "contract_id": "mina-paper3-zenodo-interannual-aliasing-v1",
   "date": "2026-10-04",
   "status": "frozen_before_interannual_displacement_outcomes",
-  "parent_semantic_contract": "contracts/PAPER3_ZENODO_ROUTE_POINT_SEMANTIC_V1.json",
+  "parent_semantic_contract": "contracts/PAPER3_ZENODO_ANNUAL_ANCHOR_SEMANTIC_V1.json",
   "inherited_metric_contract": "contracts/PAPER3_MOBILE_NODE_ALIASING_METRIC_V1.json",
   "purpose": "Quantify how often fixed-coordinate site definitions would infer turnover between successive breeding seasons despite continuous source-provided named-colony identity.",
   "input_rule": {
-    "source": "PAPER3_ZENODO_ROUTE_COLONY_POINTS_V1.csv",
-    "require_semantic_gate_passed": true,
-    "include": "Rows with origin_match=true and parseable date for Astrid, Mertz or SANAE.",
+    "source": "PAPER3_ZENODO_ANNUAL_ANCHORS_V1.csv produced only after the annual-anchor semantic gate passes",
+    "require_annual_anchor_semantic_gate_passed": true,
+    "include": "All 30 frozen annual anchors for Astrid, Mertz and SANAE; no origin_match filter from the failed route-endpoint semantic test",
     "expected_seasons_per_colony": 10
   },
   "annual_anchor": {
-    "rule": "Within each colony-season, select the earliest observation date; if multiple published route-origin points occur on that date, project them to EPSG:3031 and use their arithmetic centroid.",
+    "rule": "Use the unique season-level point_lon/point_lat pair validated by PAPER3_ZENODO_ANNUAL_ANCHOR_SEMANTIC_V1; earliest_route_date is retained as provenance only.",
     "no_interpolation": true,
     "consecutive_transition": "Only adjacent season labels differing by exactly one breeding season enter the primary denominator."
   },
@@ -37,5 +37,6 @@
     "Do not change radii after viewing displacement.",
     "The independent 2024 SAR source evaluates within-season aliasing and is not pooled into the interannual denominator."
   ],
-  "stop_rule": "After this curve is computed, do not search additional radii or selectively omit large transitions."
+  "stop_rule": "After this curve is computed, do not search additional radii or selectively omit large transitions.",
+  "provenance_repair_note": "The earlier route-endpoint semantic test failed and is not used for selection. This contract is wired to the separately frozen season-level coordinate-constancy semantic gate; radii and estimands are unchanged."
 }
