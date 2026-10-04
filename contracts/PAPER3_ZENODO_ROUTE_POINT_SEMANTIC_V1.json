@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper3-zenodo-route-point-semantic-v1",
+  "date": "2026-10-04",
+  "status": "semantic_validation_before_interannual_displacement",
+  "parent_source": "contracts/PAPER3_ZENODO_LONGTERM_SUPPORT_V1.json",
+  "purpose": "Validate that pointLon/pointLat in the published fast-ice-distance route shapefiles represent the route origin at the mapped emperor colony, before using those attributes as colony-node coordinates.",
+  "source": {
+    "route_zip": "https://zenodo.org/records/17380979/files/UploadDistanceToFastIce.zip?download=1",
+    "expected_colonies": [
+      "Astrid",
+      "Mertz",
+      "SANAE"
+    ],
+    "expected_seasons_per_colony": 10,
+    "expected_total_complete_shapefiles": 30
+  },
+  "semantic_test": {
+    "coordinate_fields": [
+      "pointLon",
+      "pointLat"
+    ],
+    "date_field": "Date",
+    "route_geometry": "POLYLINE",
+    "primary_origin_tolerance_m": 100,
+    "required_origin_match_fraction": 0.95,
+    "required_date_parse_fraction": 0.95,
+    "origin_definition": "The attribute point coordinate must lie within 100 m of the first route vertex and be no farther from the first than the last route vertex.",
+    "rationale": "The published dataset states that shapefiles are measurements of travelable distance from the colonies to the fast-ice edge; this audit verifies the machine-readable orientation rather than assuming it."
+  },
+  "support_after_semantic_pass": {
+    "lane": "interannual mobile-node identity only",
+    "annual_anchor": "pointLon/pointLat on the earliest parseable Date in each colony-season",
+    "minimum_colonies": 3,
+    "minimum_seasons_per_colony": 8,
+    "within_season_false_absence_status": "not estimable as the primary Zenodo lane because seasonal route-measurement frequency is too sparse; retain for the PDC 2017-2024 tracking dataset after service recovery"
+  },
+  "prohibited": [
+    "interannual displacement before semantic pass",
+    "radius-specific false turnover before semantic pass",
+    "selection of route features by movement magnitude",
+    "abundance, breeding success or environmental covariates"
+  ],
+  "next_gate_if_passed": "Execute the already frozen 0.5/1/2/5/10-km radius curve using earliest-date annual anchors only; report the within-season estimand as unavailable in this lane."
+}
