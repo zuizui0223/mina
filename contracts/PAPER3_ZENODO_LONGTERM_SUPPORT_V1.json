@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper3-zenodo-longterm-support-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_alternative_public_data_support",
+  "purpose": "Audit the public Zenodo 1984-2024 Astrid/Mertz/SANAE emperor-penguin dataset as an independent machine-readable route for Paper 3 while the UK Polar Data Centre tracking archive is unavailable.",
+  "source": {
+    "record_doi": "10.5281/zenodo.17380979",
+    "record_url": "https://zenodo.org/records/17380979",
+    "catalog_files": {
+      "Astrid": "https://zenodo.org/records/17380979/files/AstridDataUpload.xlsx?download=1",
+      "Mertz": "https://zenodo.org/records/17380979/files/MertzDataUpload.xlsx?download=1",
+      "SANAE": "https://zenodo.org/records/17380979/files/SanaeDataUpload2.xlsx?download=1"
+    },
+    "route_zip": "https://zenodo.org/records/17380979/files/UploadDistanceToFastIce.zip?download=1",
+    "publication": "Macdonald et al. 2026, Antarctic Science, doi:10.1017/S0954102025100515"
+  },
+  "download_strategy": {
+    "xlsx": "download complete small files",
+    "route_zip": "HTTP Range / remote ZIP access; do not download the 2.4 GB archive wholesale",
+    "allowed_members": "Only .shp, .dbf, .shx, .prj, .cpg and small text metadata needed for schema inspection."
+  },
+  "schema_audit": {
+    "catalog_allowed": [
+      "sheet names",
+      "row counts",
+      "column names",
+      "date parseability",
+      "minimum/maximum dates",
+      "presence of guano/surface-type observation fields"
+    ],
+    "route_allowed": [
+      "archive member names",
+      "shapefile component completeness",
+      "geometry family",
+      "CRS",
+      "feature counts",
+      "DBF field names/types",
+      "filename date/colony parseability"
+    ],
+    "prohibited": [
+      "coordinate distances",
+      "movement displacement",
+      "false turnover",
+      "false absence",
+      "abundance",
+      "breeding success",
+      "sea-ice covariates",
+      "radius selection from coordinates"
+    ]
+  },
+  "continuation_gate": {
+    "minimum_catalog_colonies": 3,
+    "minimum_catalog_year_span": 20,
+    "minimum_route_shapefiles": 20,
+    "minimum_route_colonies": 3,
+    "machine_readable_route_geometry_required": true
+  },
+  "interpretation_boundary": [
+    "Distance-to-fast-ice route shapefiles are not automatically equivalent to colony-location tracks.",
+    "Using route start coordinates as colony positions requires a separate frozen semantic validation against the publication/method definition.",
+    "The Zenodo route is an independent data lane, not a post-outcome rescue of the unavailable PDC server."
+  ],
+  "next_gate_if_passed": "Freeze a semantic test of whether each route geometry start point corresponds to the mapped colony position on that observation date; only then may route-derived colony coordinates enter the aliasing metric."
+}
