@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-adelie-etmplus-same-sensor-support-receipt-v1",
+  "validated_date": "2026-10-04",
+  "contract": "contracts/PAPER2_ADELIE_ETMPLUS_SAME_SENSOR_SUPPORT_V1.json",
+  "execution": {
+    "workflow_run_id": 37191207944,
+    "artifact_id": 11299341199,
+    "artifact_digest": "sha256:83a8b4cc94b0791e97540761244e1e6667aef7260eaaf7670d7204fa90fcfa20",
+    "conclusion": "success"
+  },
+  "candidate_sites": 44,
+  "early_slc_on": {
+    "sites_with_any_summer_scene": 44
+  },
+  "late_slc_off": {
+    "sites_with_any_summer_scene": 0
+  },
+  "result": {
+    "primary_support_sites": 0,
+    "strong_support_sites": 0,
+    "same_sensor_route_feasible": false
+  },
+  "decision": {
+    "same_sensor_ETMplus_primary_route_closed": true,
+    "fallback_route": "separately validated ETM+ to OLI sensor bridge",
+    "demographic_magnitudes_opened": false
+  },
+  "boundary": [
+    "This closes only the frozen 2016-2021 same-sensor ETM+ route.",
+    "It is not evidence that late Adélie occupied footprint cannot be measured with OLI.",
+    "No epoch or support threshold is relaxed after the result."
+  ]
+}
