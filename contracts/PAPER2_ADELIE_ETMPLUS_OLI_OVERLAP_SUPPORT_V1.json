@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-adelie-etmplus-oli-overlap-support-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_cross_sensor_overlap_audit",
+  "purpose": "Determine whether the frozen long-term Adelie sites contain paired Landsat-7 ETM+ and Landsat-8 OLI Level-1 acquisitions suitable for an Antarctic-specific spectral bridge validation.",
+  "candidate_roster": {
+    "source": "PAPER2_FORCING_SUPPORT_UNITS_V1.csv",
+    "species_id": "ADPE",
+    "expected_sites": 44,
+    "coordinates": "ANTARCTIC_PENGUIN_BREEDING_OPTIONS_HIERARCHY_V1.csv"
+  },
+  "landsat": {
+    "stac_endpoint": "https://landsatlook.usgs.gov/stac-server",
+    "collection": "landsat-c2l1",
+    "etmplus_platform": "LANDSAT_7",
+    "oli_platform": "LANDSAT_8"
+  },
+  "window": ["2013-04-01", "2015-12-31"],
+  "season_months": [11, 12, 1, 2, 3],
+  "scene_cloud_max_percent": 80,
+  "pairing": {
+    "maximum_absolute_day_difference": 8,
+    "minimum_pairs_per_site": 2,
+    "pair_assignment": "deterministic greedy nearest-date pairing; each scene used at most once"
+  },
+  "continuation_gate": {
+    "minimum_sites_with_pairs": 10,
+    "minimum_regions_with_pairs": 2,
+    "minimum_total_scene_pairs": 25
+  },
+  "interpretation": [
+    "This is metadata support only; it does not validate a sensor bridge.",
+    "SLC-off ETM+ pixels are handled at the later pixel-level bridge gate.",
+    "A passing site need not enter the final ecological sample; this roster is only for measurement validation."
+  ],
+  "prohibited": [
+    "penguin count magnitude",
+    "population trend",
+    "Paper 1 concentration outcome",
+    "choosing sites based on the eventual ETM+-OLI spectral discrepancy"
+  ],
+  "stop_rule": "Do not widen the date window, pairing tolerance, cloud threshold, or minimum pair counts after demographic outcomes or bridge discrepancies are observed."
+}
