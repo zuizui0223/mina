@@ -9,8 +9,9 @@ from pathlib import Path
 import pandas as pd
 import rasterio
 
-from scripts.audit_antarctic_island_ecology_pixel_qa import (
-    AEI_MD5,
+try:
+    from scripts.audit_antarctic_island_ecology_pixel_qa import (
+        AEI_MD5,
     MIN_GOOD_SCENES,
     MIN_SELECTED_SCENES,
     PILOT_SITE_IDS,
@@ -19,8 +20,23 @@ from scripts.audit_antarctic_island_ecology_pixel_qa import (
     md5,
     query_features,
     select_scenes,
-    summarize_epoch,
-)
+        summarize_epoch,
+    )
+except ModuleNotFoundError:
+    # When executed as `python scripts/<file>.py`, the scripts directory itself
+    # is sys.path[0], so import the sibling module directly.
+    from audit_antarctic_island_ecology_pixel_qa import (
+        AEI_MD5,
+        MIN_GOOD_SCENES,
+        MIN_SELECTED_SCENES,
+        PILOT_SITE_IDS,
+        aei_support,
+        inspect_scene,
+        md5,
+        query_features,
+        select_scenes,
+        summarize_epoch,
+    )
 
 
 def candidate_sites(optical: pd.DataFrame, options: pd.DataFrame) -> pd.DataFrame:
