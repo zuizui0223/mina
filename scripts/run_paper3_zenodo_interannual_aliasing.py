@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Interannual fixed-node aliasing for the Zenodo emperor-penguin route-origin series."""
+"""Interannual fixed-node aliasing from semantically validated Zenodo annual anchors."""
 from __future__ import annotations
 import argparse, json
 from pathlib import Path
@@ -13,30 +13,33 @@ def season_start(s:str)->int:
     return int(str(s).split("-")[0])
 
 def build_anchors(df:pd.DataFrame)->pd.DataFrame:
+    req={"colony","season","point_lon","point_lat","earliest_route_date"}
+    missing=req-set(df.columns)
+    if missing:
+        raise ValueError(f"missing annual-anchor fields: {sorted(missing)}")
     x=df.copy()
-    x=x[x["origin_match"].astype(str).str.lower().isin(["true","1"])].copy()
-    x=x[x["date"].notna()].copy()
-    x["date"]=pd.to_datetime(x["date"])
-    xx=[]; yy=[]
-    for lon,lat in zip(x["point_lon"],x["point_lat"]):
-        a,b=TR.transform(float(lon),float(lat)); xx.append(a); yy.append(b)
-    x["x3031"]=xx; x["y3031"]=yy
+    x["point_lon"]=pd.to_numeric(x["point_lon"],errors="raise")
+    x["point_lat"]=pd.to_numeric(x["point_lat"],errors="raise")
+    x["earliest_route_date"]=pd.to_datetime(x["earliest_route_date"],errors="raise")
     rows=[]
-    for (colony,season),g in x.groupby(["colony","season"]):
-        d0=g["date"].min()
-        h=g[g["date"].eq(d0)]
+    for _,r in x.iterrows():
+        xx,yy=TR.transform(float(r["point_lon"]),float(r["point_lat"]))
         rows.append({
-          "colony_id":str(colony),"season":str(season),"season_start":season_start(season),
-          "anchor_date":d0.date().isoformat(),"n_points_anchor_date":int(len(h)),
-          "x3031":float(h["x3031"].mean()),"y3031":float(h["y3031"].mean())
+          "colony_id":str(r["colony"]),
+          "season":str(r["season"]),
+          "season_start":season_start(r["season"]),
+          "anchor_date":r["earliest_route_date"].date().isoformat(),
+          "x3031":float(xx),"y3031":float(yy)
         })
-    return pd.DataFrame(rows).sort_values(["colony_id","season_start"]).reset_index(drop=True)
+    out=pd.DataFrame(rows).sort_values(["colony_id","season_start"]).reset_index(drop=True)
+    if out.duplicated(["colony_id","season"]).any():
+        raise ValueError("annual-anchor input contains duplicate colony-season rows")
+    return out
 
 def transitions(anchors:pd.DataFrame)->pd.DataFrame:
     rows=[]
     for colony,g in anchors.groupby("colony_id"):
-        g=g.sort_values("season_start")
-        vals=list(g.to_dict("records"))
+        vals=list(g.sort_values("season_start").to_dict("records"))
         for a,b in zip(vals[:-1],vals[1:]):
             if int(b["season_start"])-int(a["season_start"])!=1:
                 continue
@@ -49,11 +52,13 @@ def transitions(anchors:pd.DataFrame)->pd.DataFrame:
     return pd.DataFrame(rows)
 
 def summarize(t:pd.DataFrame,radii):
+    if len(t)==0:
+        raise ValueError("no consecutive interannual transitions")
     curve={}
     for r in radii:
         mask=t["displacement_km"]>float(r)
         curve[str(r)]={"false_turnover_n":int(mask.sum()),"transition_n":int(len(t)),
-                       "false_turnover_fraction":float(mask.mean()) if len(t) else None}
+                       "false_turnover_fraction":float(mask.mean())}
     by=[]
     for colony,g in t.groupby("colony_id"):
         item={"colony_id":colony,"transitions":int(len(g)),
@@ -66,13 +71,12 @@ def summarize(t:pd.DataFrame,radii):
         by.append(item)
     qs={f"q{int(q*100)}":float(t["displacement_km"].quantile(q)) for q in (.5,.9,.95)}
     imax=t["displacement_km"].idxmax()
-    maxrow=t.loc[imax].to_dict() if len(t) else None
-    return curve,by,qs,maxrow
+    return curve,by,qs,t.loc[imax].to_dict()
 
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--semantic-json",required=True,type=Path)
-    p.add_argument("--points-csv",required=True,type=Path)
+    p.add_argument("--annual-anchors-csv",required=True,type=Path)
     p.add_argument("--contract",required=True,type=Path)
     p.add_argument("--out-json",required=True,type=Path)
     p.add_argument("--out-anchors-csv",required=True,type=Path)
@@ -82,11 +86,10 @@ def main():
     if not sem.get("decision",{}).get("annual_anchor_semantic_gate_passed"):
         raise SystemExit("annual-anchor semantic gate not passed")
     c=json.loads(a.contract.read_text())
-    pts=pd.read_csv(a.points_csv)
-    anchors=build_anchors(pts)
+    anchors=build_anchors(pd.read_csv(a.annual_anchors_csv))
     expected=int(c["input_rule"]["expected_seasons_per_colony"])
     support=anchors.groupby("colony_id")["season"].nunique().to_dict()
-    if set(support)!={"Astrid","Mertz","SANAE"} or any(int(v)<expected for v in support.values()):
+    if set(support)!={"Astrid","Mertz","SANAE"} or any(int(v)!=expected for v in support.values()):
         raise SystemExit(f"anchor support drift: {support}")
     t=transitions(anchors)
     curve,by,qs,maxrow=summarize(t,c["radii_km"])
@@ -96,6 +99,10 @@ def main():
                  "seasons_by_colony":{k:int(v) for k,v in support.items()}},
       "aliasing_curve":curve,"by_colony":by,"identity_preserving_radii_km":qs,
       "maximum_transition":maxrow,
+      "semantic_provenance":{
+        "annual_anchor_contract":"mina-paper3-zenodo-annual-anchor-semantic-v1",
+        "failed_route_endpoint_origin_match_used_for_selection":False
+      },
       "boundary":c["boundaries"]
     }
     a.out_json.parent.mkdir(parents=True,exist_ok=True)
