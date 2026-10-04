@@ -20,6 +20,23 @@ The central rule is: **only class A can independently confirm a positive biologi
 | **D — Data / identifiability gate** | Outcome was not opened, not recoverable, or the required data were unavailable | 21 | Records unanswered questions and prevents post-hoc substitution |
 | **E — Technical / quality / provenance** | Schema, timing, quality or reproducibility audit without independent ecological content | 8 | Supports trustworthiness but adds no biological vote |
 
+## Evidence strength by ecological layer
+
+| Ecological layer | A confirmatory | B bounded/robust | C limiting negative | D data/gate | E audit | Total |
+|---|---:|---:|---:|---:|---:|---:|
+| Regional direction | 0 | 2 | 3 | 0 | 0 | 5 |
+| Static place / transferable trait | 0 | 2 | 5 | 16 | 5 | 28 |
+| Species / phenotype | 0 | 2 | 0 | 0 | 0 | 2 |
+| Within-system breeding configuration | **2** | 8 | 1 | 0 | 1 | 12 |
+| Mechanistic trace | 0 | 7 | 5 | 0 | 0 | 12 |
+| Data limit | 0 | 0 | 0 | 5 | 0 | 5 |
+| Technical / provenance | 0 | 0 | 0 | 0 | 2 | 2 |
+| **Total** | **2** | **21** | **14** | **21** | **8** | **66** |
+
+The concentration of class-A evidence in one row is the key result of the ledger. It does **not** mean that within-system configuration was tested only twice; it means that after discovery, robustness checks, null tests and failed mechanism transfers are prevented from being counted as independent votes, the only positive ecological endpoint that reaches prospective replication is breeding-space concentration.
+
+The large number of static-place files should not be mistaken for strong evidence for static traits. Most are outcome-blind support/recoverability gates (D) or audits (E), and the real-data inferential endpoints are negative or scope-limiting (C).
+
 ## Publication-facing synthesis
 
 The 66-file history reduces to a much smaller evidence structure:
