@@ -1,0 +1,64 @@
+name: paper3-zenodo-interannual-aliasing
+
+on:
+  push:
+    branches: [research/emperor-mobile-islands-v1]
+    paths:
+      - "contracts/PAPER3_ZENODO_ROUTE_POINT_SEMANTIC_V1.json"
+      - "contracts/PAPER3_ZENODO_INTERANNUAL_ALIASING_V1.json"
+      - "scripts/validate_emperor_zenodo_route_points.py"
+      - "scripts/run_paper3_zenodo_interannual_aliasing.py"
+      - "tests/test_emperor_zenodo_route_points.py"
+      - "tests/test_paper3_zenodo_interannual_aliasing.py"
+      - ".github/workflows/paper3-zenodo-interannual-aliasing.yml"
+  pull_request:
+    paths:
+      - "contracts/PAPER3_ZENODO_ROUTE_POINT_SEMANTIC_V1.json"
+      - "contracts/PAPER3_ZENODO_INTERANNUAL_ALIASING_V1.json"
+      - "scripts/validate_emperor_zenodo_route_points.py"
+      - "scripts/run_paper3_zenodo_interannual_aliasing.py"
+      - "tests/test_emperor_zenodo_route_points.py"
+      - "tests/test_paper3_zenodo_interannual_aliasing.py"
+      - ".github/workflows/paper3-zenodo-interannual-aliasing.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy pyshp pyproj remotezip
+      - run: python -m unittest tests.test_emperor_zenodo_route_points tests.test_paper3_zenodo_interannual_aliasing -v
+      - name: Validate frozen route-origin semantics
+        run: |
+          mkdir -p build/out
+          python scripts/validate_emperor_zenodo_route_points.py \
+            --contract contracts/PAPER3_ZENODO_ROUTE_POINT_SEMANTIC_V1.json \
+            --out-json build/out/PAPER3_ZENODO_ROUTE_POINT_SEMANTIC_RESULT_V1.json \
+            --out-csv build/out/PAPER3_ZENODO_ROUTE_COLONY_POINTS_V1.csv
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/out/PAPER3_ZENODO_ROUTE_POINT_SEMANTIC_RESULT_V1.json").read_text())
+          assert x["decision"]["semantic_gate_passed"] is True
+          assert x["decision"]["movement_outcomes_opened"] is False
+          PY
+      - name: Run frozen interannual fixed-node aliasing
+        run: |
+          python scripts/run_paper3_zenodo_interannual_aliasing.py \
+            --semantic-json build/out/PAPER3_ZENODO_ROUTE_POINT_SEMANTIC_RESULT_V1.json \
+            --points-csv build/out/PAPER3_ZENODO_ROUTE_COLONY_POINTS_V1.csv \
+            --contract contracts/PAPER3_ZENODO_INTERANNUAL_ALIASING_V1.json \
+            --out-json build/out/PAPER3_ZENODO_INTERANNUAL_ALIASING_RESULT_V1.json \
+            --out-anchors-csv build/out/PAPER3_ZENODO_ANNUAL_ANCHORS_V1.csv \
+            --out-transitions-csv build/out/PAPER3_ZENODO_INTERANNUAL_TRANSITIONS_V1.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper3-zenodo-interannual-aliasing-v1
+          path: build/out/*
+          if-no-files-found: warn
