@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2d-dynamic-outcome-execution-v1",
+  "date": "2026-10-04",
+  "status": "UNLOCKED_FOR_FROZEN_DYNAMIC_EXECUTION",
+  "parent_model": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_DYNAMIC_OUTCOME_V1.json",
+  "recovery_receipt": "results/PAPER2D_DYNAMIC_OUTCOME_RECOVERY_RECEIPT_V1.json",
+  "unlock_condition": "Synthetic recovery passed for the exact frozen 85-unit two-way fixed-effect design.",
+  "execution_rule": "Run the frozen dynamic association exactly once before any outcome-dependent change to exposure, roster, regions, time support, model, permutation scheme or sensitivity set.",
+  "primary": {
+    "exposure": "rate_p50_per_year",
+    "species": ["ADPE", "CHPE", "GEPE"],
+    "model": "site FE + species-specific region x season FE + standardized exposure-change-rate x decade",
+    "permutations": 9999,
+    "seed": 20261004,
+    "alternative": "positive",
+    "multiplicity": "Holm across the three species tests"
+  },
+  "mandatory_sensitivities": [
+    "repeat exposure with rate_p67_per_year using the same roster and model",
+    "precision-weighted refit using frozen collapsed observation variance"
+  ],
+  "forbidden": [
+    "change site eligibility after seeing beta",
+    "change APBP regional groups after seeing beta",
+    "change p50 to p67 as primary based on result",
+    "open broad marine covariate search",
+    "replace relative-use response with a different outcome after seeing result"
+  ]
+}
