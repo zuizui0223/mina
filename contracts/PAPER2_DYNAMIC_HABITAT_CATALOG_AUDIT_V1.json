@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-dynamic-habitat-catalog-audit-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_catalog_availability_audit",
+  "parent_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_SUPPORT_AUDIT_V1.json",
+  "purpose": "Test whether the frozen 88-site Paper 2 support roster has repeat optical-image coverage sufficient to estimate longitudinal change in accessible ice-free breeding opportunity, without inspecting demographic magnitudes or trends.",
+  "frozen_input_artifacts": {
+    "forcing_support_workflow_run_id": 36517700369,
+    "forcing_support_artifact_name": "paper2-forcing-support-audit-v1",
+    "breeding_options_workflow_run_id": 36520281872,
+    "breeding_options_artifact_name": "antarctic-breeding-options-hierarchy-v1",
+    "expected_site_species_units": 107,
+    "expected_distinct_sites": 88
+  },
+  "catalog": {
+    "endpoint": "https://earth-search.aws.element84.com/v1",
+    "search_endpoint": "https://earth-search.aws.element84.com/v1/search",
+    "landsat_collection": "landsat-c2-l2",
+    "sentinel2_collection": "sentinel-2-l2a"
+  },
+  "windows": {
+    "early_landsat": ["1984-01-01", "1994-12-31"],
+    "late_landsat": ["2018-01-01", "2025-12-31"],
+    "sentinel2_validation": ["2018-01-01", "2025-12-31"]
+  },
+  "season_filter": {
+    "months": [10, 11, 12, 1, 2, 3],
+    "definition": "Austral optical season. December belongs to the following austral-season label, as do July-November; January-June retain their calendar-year label.",
+    "rationale": "Restrict availability to spring-summer optical observations rather than counting dark-season acquisitions."
+  },
+  "site_gate": {
+    "minimum_distinct_acquisition_dates_per_window": 3,
+    "minimum_austral_seasons_per_window": 2,
+    "primary_dynamic_habitat_eligible": "early_landsat gate AND late_landsat gate",
+    "sentinel_validation_eligible": "sentinel2_validation gate",
+    "cloud_cover_role": "Recorded descriptively only at this stage; no cloud threshold is used for inclusion. Pixel-level cloud, snow, shadow and valid-area QA is a later frozen gate."
+  },
+  "program_feasibility_gate": {
+    "minimum_primary_sites": 30,
+    "minimum_primary_regions": 3,
+    "minimum_primary_sites_representing_each_species": 10,
+    "species": ["ADPE", "CHPE", "GEPE"],
+    "minimum_primary_sites_with_sentinel_validation": 20,
+    "minimum_validation_regions": 2,
+    "interpretation": "These thresholds are a feasibility gate for a multi-site longitudinal test, not an ecological significance threshold."
+  },
+  "surface_reflectance_caveat": {
+    "rule": "Catalog availability does not imply scientifically valid surface reflectance at Antarctic sites.",
+    "required_next_gate": "Inspect solar geometry and pixel-level QA before any habitat-change metric is computed.",
+    "high_latitude_flag": "Record whether abs(latitude) > 65 degrees for every site.",
+    "reason": "USGS documents larger surface-reflectance uncertainty at high latitude, non-production above 76 degrees solar zenith, and additional issues over snow, low sun angle and small coastal land targets."
+  },
+  "prohibited_during_audit": [
+    "penguin count magnitude",
+    "population trend",
+    "effective breeding-component number",
+    "abundance-E elasticity",
+    "concentration support labels",
+    "any demographic outcome-derived site selection"
+  ],
+  "outputs": [
+    "PAPER2_DYNAMIC_HABITAT_SUPPORT_SEED_V1.csv",
+    "PAPER2_DYNAMIC_HABITAT_CATALOG_AUDIT_V1.csv",
+    "PAPER2_DYNAMIC_HABITAT_CATALOG_AUDIT_RESULT_V1.json"
+  ],
+  "stop_rule": "Do not relax date windows, minimum acquisition counts, minimum season counts, or feasibility thresholds after demographic outcomes are joined. If catalog support fails, either stop the dynamic-habitat Paper 2 lane or define a new processing-level/source audit before opening outcomes."
+}
