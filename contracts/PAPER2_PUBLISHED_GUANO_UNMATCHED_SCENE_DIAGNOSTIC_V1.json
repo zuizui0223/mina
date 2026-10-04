@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-published-guano-unmatched-scene-diagnostic-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_archival_identity_diagnostic",
+  "parent_crosswalk_receipt": "results/PAPER2_PUBLISHED_GUANO_SCENE_CROSSWALK_RECEIPT_V1.json",
+  "purpose": "Diagnose the two historical Landsat-7 source identifiers that failed the frozen Collection-2 crosswalk, without changing the 95% crosswalk gate.",
+  "source_files": [
+    "LE71051062001333EDC00",
+    "LE71241082001018SGS00"
+  ],
+  "published_reference": {
+    "doi": "10.1594/PANGAEA.804588",
+    "download": "https://doi.org/10.1594/PANGAEA.804588",
+    "accept": "text/tab-separated-values"
+  },
+  "landsat": {
+    "stac_endpoint": "https://landsatlook.usgs.gov/stac-server",
+    "collection": "landsat-c2l1",
+    "platform": "LANDSAT_7"
+  },
+  "diagnostic": {
+    "sample_points_per_source_file_max": 7,
+    "point_selection": "deterministic evenly spaced rows after sorting by latitude then longitude",
+    "query": "exact acquisition date at each published pixel coordinate",
+    "report": "all Landsat-7 candidate item IDs and WRS path/row values returned at sampled points"
+  },
+  "rules": [
+    "Do not alter the frozen crosswalk pass thresholds.",
+    "Do not relabel a source file as another WRS row unless the published pixel coordinates consistently intersect that alternate Collection-2 item.",
+    "Do not use published d-value magnitude or any penguin demographic outcome in the identity diagnosis."
+  ]
+}
