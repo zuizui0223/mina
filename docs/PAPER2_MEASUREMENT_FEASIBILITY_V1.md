@@ -77,14 +77,47 @@ If observed beyond frozen measurement uncertainty, this would demonstrate that t
 
 It would not, by itself, identify the mechanism causing that decoupling.
 
+## Optical archive support result
+
+The first outcome-blind STAC audit closed successfully.
+
+Across the 88 distinct long-term sites:
+
+- **88/88** pass the primary historical-versus-recent Landsat metadata support rule;
+- **84/88** pass the stronger Landsat support rule;
+- **88/88** have sufficient recent Sentinel-2 metadata support.
+
+Within the 44-site Adélie subset:
+
+- **44/44** pass the primary rule;
+- **42/44** pass the strong rule;
+- **44/44** pass the Sentinel validation rule.
+
+Thus archive availability is not the limiting step for the direct-space route.
+
+### Why v1 is not the final measurement roster
+
+The v1 audit was deliberately broad (1984–1993 versus 2016–2025) and queried Landsat Level-2 metadata. Method recovery subsequently established that the published Adélie guano classifiers were developed on Landsat-7 ETM+ **top-of-atmosphere reflectance**, with the Antarctic Peninsula implementation using imagery from 1999–2003.
+
+Therefore v1 is retained as successful archive-availability evidence, not as the final occupied-footprint design.
+
+The final support lane must use:
+
+- Adélie only;
+- Landsat Collection 2 Level-1;
+- an ETM+ reference epoch aligned with the published 1999–2003 classifier;
+- a recent OLI/OLI-2 epoch;
+- an explicit ETM+ ↔ OLI sensor-harmonization gate before longitudinal footprint change is calculated.
+
 ## Next gates
 
-1. finish the 88-site STAC metadata audit;
-2. restrict the first occupied-footprint implementation to Adélie;
-3. run local pixel-level QA for early and late Landsat epochs;
-4. build a classifier-recovery benchmark on the 22 published-reference matches;
-5. freeze a minimum detectable footprint-change threshold;
-6. use Torgersen as an independent western-Antarctic sanity check;
-7. only then measure longitudinal available and occupied area.
+1. recover the published Antarctic Peninsula classifier coefficients and decision rule;
+2. audit the 44 Adélie sites at the correct Level-1 ETM+/OLI sensor epochs;
+3. freeze and validate the ETM+ ↔ OLI radiometric bridge;
+4. run local pixel-level QA;
+5. build classifier-recovery benchmarks on the published reference sites;
+6. freeze a minimum detectable footprint-change and censoring threshold;
+7. use Torgersen as an independent western-Antarctic sanity check;
+8. only then measure longitudinal available and occupied area.
 
 No population trend or Paper 1 concentration endpoint is authorized for classifier tuning or site selection.
