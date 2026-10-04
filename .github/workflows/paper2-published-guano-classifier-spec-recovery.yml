@@ -1,0 +1,39 @@
+name: paper2-published-guano-classifier-spec-recovery
+
+on:
+  push:
+    branches: [research/antarctic-island-ecology-v1]
+    paths:
+      - "contracts/PAPER2_PUBLISHED_GUANO_CLASSIFIER_SPEC_RECOVERY_V1.json"
+      - "scripts/extract_published_guano_classifier_spec.py"
+      - ".github/workflows/paper2-published-guano-classifier-spec-recovery.yml"
+  pull_request:
+    paths:
+      - "contracts/PAPER2_PUBLISHED_GUANO_CLASSIFIER_SPEC_RECOVERY_V1.json"
+      - "scripts/extract_published_guano_classifier_spec.py"
+      - ".github/workflows/paper2-published-guano-classifier-spec-recovery.yml"
+  workflow_dispatch:
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download published PLOS Table S2
+        run: |
+          mkdir -p build
+          curl -fL             -H "Accept: application/vnd.openxmlformats-officedocument.wordprocessingml.document"             https://doi.org/10.1371/journal.pone.0113301.s003             -o build/LYNCH_SCHWALLER_2014_TABLE_S2.docx
+          test -s build/LYNCH_SCHWALLER_2014_TABLE_S2.docx
+          file build/LYNCH_SCHWALLER_2014_TABLE_S2.docx
+      - name: Extract published classifier specification
+        run: |
+          python scripts/extract_published_guano_classifier_spec.py             --docx build/LYNCH_SCHWALLER_2014_TABLE_S2.docx             --contract contracts/PAPER2_PUBLISHED_GUANO_CLASSIFIER_SPEC_RECOVERY_V1.json             --out-text build/PAPER2_PUBLISHED_GUANO_CLASSIFIER_SPEC_V1.txt             --out-json build/PAPER2_PUBLISHED_GUANO_CLASSIFIER_SPEC_RECOVERY_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper2-published-guano-classifier-spec-v1
+          path: |
+            build/PAPER2_PUBLISHED_GUANO_CLASSIFIER_SPEC_V1.txt
+            build/PAPER2_PUBLISHED_GUANO_CLASSIFIER_SPEC_RECOVERY_RESULT_V1.json
