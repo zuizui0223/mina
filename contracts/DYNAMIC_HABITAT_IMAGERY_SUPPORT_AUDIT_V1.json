@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-dynamic-habitat-imagery-support-audit-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_imagery_availability_audit",
+  "purpose": "Determine which frozen Antarctic Pygoscelis breeding sites have enough repeated optical imagery to estimate long-term change in accessible ice-free breeding opportunity before any demographic magnitude or concentration outcome is joined.",
+  "seed_table": "data/PAPER2_DYNAMIC_HABITAT_SUPPORT_SEED_V1.csv",
+  "seed_population": {
+    "distinct_sites": 88,
+    "source": "Collapsed from the previously frozen 107 MAPPPD bridged site x species units using only site identity, geography, record years, method metadata, and the already-built static ice-free atlas.",
+    "demographic_outcomes_opened": false
+  },
+  "stac": {
+    "endpoint": "https://earth-search.aws.element84.com/v1",
+    "primary_collection": "landsat-c2-l2",
+    "validation_collection": "sentinel-2-l2a",
+    "rationale": "Use Landsat at both temporal endpoints to avoid defining habitat change from a cross-sensor early-versus-late contrast. Sentinel-2 is reserved for recent-epoch classification validation."
+  },
+  "windows": {
+    "landsat_early": [
+      "1984-01-01",
+      "1994-12-31"
+    ],
+    "landsat_late": [
+      "2018-01-01",
+      "2025-12-31"
+    ],
+    "sentinel2_validation": [
+      "2018-01-01",
+      "2025-12-31"
+    ],
+    "austral_summer_months": [
+      11,
+      12,
+      1,
+      2,
+      3
+    ]
+  },
+  "support_metrics": [
+    "number of STAC items intersecting the site point",
+    "number of distinct austral-summer acquisition dates",
+    "number of distinct austral-summer calendar years",
+    "summer acquisition-date counts below eo:cloud_cover thresholds of 20%, 40%, and 60% when metadata are present",
+    "whether the catalog query reached the configured max-item ceiling"
+  ],
+  "scene_support_gate": {
+    "landsat_early": {
+      "minimum_summer_dates": 3,
+      "minimum_summer_years": 2
+    },
+    "landsat_late": {
+      "minimum_summer_dates": 3,
+      "minimum_summer_years": 2
+    },
+    "sentinel2_validation": {
+      "minimum_summer_dates": 3,
+      "minimum_summer_years": 2
+    },
+    "rule": "All three windows must satisfy the date/year support thresholds and no query may be truncated.",
+    "interpretation": "This is only a catalog-availability gate. It does not establish usable snow-free, cloud-free, shadow-free pixels around the colony."
+  },
+  "next_pixel_gate": {
+    "opened_only_after_catalog_audit": true,
+    "planned_checks": [
+      "QA_PIXEL / sensor-native quality flags within a frozen local buffer",
+      "valid-pixel fraction after cloud, shadow, and saturation masking",
+      "snow/ice versus exposed-ground separability",
+      "minimum number of independent usable acquisition dates in each Landsat epoch",
+      "Sentinel-2 agreement for the recent Landsat classification"
+    ],
+    "prohibited_adaptive_actions": [
+      "widening the early or late windows in response to demographic outcomes",
+      "changing support thresholds after population trends are inspected",
+      "dropping sites because their demographic response is inconvenient"
+    ]
+  },
+  "prohibited_fields": [
+    "count magnitude",
+    "population trend",
+    "effective breeding-component number",
+    "abundance-E elasticity",
+    "decline/increase label",
+    "extinction/persistence outcome",
+    "concentration p-value"
+  ],
+  "stop_rule": "If too few sites pass catalog and pixel-quality support, close the longitudinal land-opportunity Paper 2 route without lowering thresholds after outcomes are viewed; retain Paper 3 dynamic-substrate route as the next program branch."
+}
