@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2d-land-sea-h2-v1",
+  "date": "2026-10-04",
+  "status": "frozen_before_marine_values_and_H2_outcome",
+  "parent_H1_receipt": "results/PAPER2D_FIRST_REAL_DYNAMIC_OUTCOME_RECEIPT_V1.json",
+  "land_measurement": "results/PAPER2D_SUMMER_EXPOSURE_FULL_RECEIPT_V1.json",
+  "marine_measurement_contract": "contracts/PAPER2D_MARINE_DISTANCE_MEASUREMENT_V1.json",
+  "purpose": "Test the predeclared Antarctic-specific hypothesis that newly available terrestrial breeding opportunity is translated into relative breeding use more strongly where breeding-season open water becomes more accessible.",
+  "roster": {
+    "base": "The frozen 85-unit H1 roster.",
+    "marine_intersection": "Retain only H1 units whose physical site passes the frozen marine-distance measurement gate.",
+    "minimum_retained_fraction_of_H1_units": 0.8,
+    "network_rule": "A species x APBP-region network must retain at least 5 units; networks falling below this threshold are removed without reference to H2 outcome.",
+    "minimum_species": 2,
+    "minimum_networks": 3
+  },
+  "exposures": {
+    "land": {
+      "primary": "rate_p50_per_year",
+      "sensitivity": "rate_p67_per_year",
+      "standardization": "z-score within species on the final H2 unit roster"
+    },
+    "marine": {
+      "field": "marine_favorable_change_km",
+      "definition": "early median open-water distance minus late median open-water distance; positive means open water became closer",
+      "standardization": "z-score within species on the final H2 unit roster"
+    },
+    "interaction": "z_land * z_marine"
+  },
+  "model": {
+    "formula": "y_i,t = alpha_i + delta_region,t + beta_A*z_land_i*tau_t + beta_M*z_marine_i*tau_t + beta_AM*(z_land_i*z_marine_i)*tau_t + error_i,t",
+    "alpha_i": "site fixed effect",
+    "delta_region_t": "species-specific APBP-region x season fixed effect",
+    "tau_t": "(season - mean included season for that species)/10; one unit equals one decade",
+    "focal_term": "beta_AM",
+    "expected_direction": "beta_AM > 0",
+    "interpretation": "Positive beta_AM means the relative-use advantage associated with terrestrial opportunity gain is stronger where open water also becomes closer.",
+    "weighting": "primary unweighted collapsed-state regression; precision-weighted refit mandatory sensitivity",
+    "standard_errors": "cluster-robust by physical site within species"
+  },
+  "inference": {
+    "species_tests": "Prespecified one-sided tests beta_AM > 0 for each retained species.",
+    "permutation": {
+      "B": 9999,
+      "seed": 20261004,
+      "scheme": "Within each species x retained APBP region, permute the complete site-level marine favorable-change value among site time series while keeping land change, counts, observation schedule, site identity and region-season states fixed.",
+      "rationale": "Tests whether the observed site pairing of marine change with land change and demographic trajectory carries an interaction beyond the fixed land exposure.",
+      "p_value": "(1 + number permuted beta_AM >= observed beta_AM)/(B+1)"
+    },
+    "multiplicity": "Holm-adjust focal species-specific interaction p-values.",
+    "secondary_terms": "beta_A and beta_M are reported descriptively; no additional confirmatory p-values.",
+    "cross_species": "Report signs and median beta_AM descriptively; no pooled p-value."
+  },
+  "mandatory_sensitivities": [
+    "Repeat complete H2 model using rate_p67_per_year for land exposure.",
+    "Precision-weighted refit with the frozen collapsed observation variances."
+  ],
+  "recovery_gate": {
+    "rule": "Before real H2 execution, simulate the exact retained observation schedule and measured land/marine covariates with beta_AM = 0, 0.15 and 0.30 and verify unbiased recovery.",
+    "outcome_values": "Synthetic only; do not read real count magnitudes during recovery."
+  },
+  "boundaries": [
+    "H2 is secondary because H1 general terrestrial-opportunity tracking was not confirmed.",
+    "A positive interaction does not measure prey abundance.",
+    "Do not substitute another sea-ice threshold, month set, marine metric or nonlinear interaction after seeing H2.",
+    "Do not reinterpret a positive H2 as confirmation of the failed three-species H1 main effect.",
+    "Relative breeding use is not literal occupied guano footprint."
+  ],
+  "stop_rule": "After H2 is computed, no same-data environmental covariate search is opened."
+}
