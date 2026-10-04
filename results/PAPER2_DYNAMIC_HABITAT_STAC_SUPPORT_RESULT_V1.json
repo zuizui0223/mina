@@ -1,0 +1,42 @@
+{
+  "all_primary_support": true,
+  "boundary": [
+    "This receipt uses remote-sensing metadata only and contains no demographic outcome.",
+    "Scene-level cloud cover is not local pixel quality.",
+    "Catalog searches are capped at 500 items per site-epoch; counts from truncated searches are lower bounds, but passing support remains valid because thresholds are monotone.",
+    "No habitat-change estimate is computed at this stage.",
+    "Pixel-level cloud, snow/ice, coastline and terrain QA remains mandatory before any outcome join.",
+    "This v1 audit used Landsat Level-2 metadata and broad 1984-1993 versus 2016-2025 epochs; it is retained as archive-availability evidence rather than the final guano-footprint measurement design."
+  ],
+  "by_region": [
+    {"n_sites":1,"primary_support_sites":1,"region":"Adelie Land","sentinel_validation_sites":1,"strong_support_sites":0},
+    {"n_sites":37,"primary_support_sites":37,"region":"Central-west Antarctic Peninsula","sentinel_validation_sites":37,"strong_support_sites":37},
+    {"n_sites":1,"primary_support_sites":1,"region":"Elephant Island","sentinel_validation_sites":1,"strong_support_sites":0},
+    {"n_sites":1,"primary_support_sites":1,"region":"Northeast Antarctic Peninsula","sentinel_validation_sites":1,"strong_support_sites":1},
+    {"n_sites":1,"primary_support_sites":1,"region":"South Orkney Islands","sentinel_validation_sites":1,"strong_support_sites":0},
+    {"n_sites":18,"primary_support_sites":18,"region":"South Shetland Islands","sentinel_validation_sites":18,"strong_support_sites":17},
+    {"n_sites":2,"primary_support_sites":2,"region":"Southwest Antarctic Peninsula","sentinel_validation_sites":2,"strong_support_sites":2},
+    {"n_sites":27,"primary_support_sites":27,"region":"Victoria Land","sentinel_validation_sites":27,"strong_support_sites":27}
+  ],
+  "contract_id": "mina-antarctic-island-ecology-paper2-stac-support-v1",
+  "failed_primary_sites": [],
+  "failed_sentinel_validation_sites": [],
+  "failed_strong_sites": ["PGEO","SHIR","STNK","WPEC"],
+  "n_sites": 88,
+  "primary_support_sites": 88,
+  "strong_support_sites": 84,
+  "sentinel_validation_sites": 88,
+  "adelie_subset": {
+    "sites": 44,
+    "primary_support_sites": 44,
+    "strong_support_sites": 42,
+    "sentinel_validation_sites": 44
+  },
+  "result_id": "mina-antarctic-island-ecology-paper2-stac-support-result-v1",
+  "schema_version": 1,
+  "execution": {
+    "workflow_run_id": 37187017746,
+    "artifact_id": 11297561292,
+    "artifact_digest": "sha256:dcb489f41ca12c5813f63c73b754240768074d78756790a5b1d3d76e0705a1f2"
+  }
+}
