@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-paper2-breeding-footprint-censoring-v1",
+  "date": "2026-10-04",
+  "status": "measurement_error_rule_frozen_before_longitudinal_footprint_outcomes",
+  "purpose": "Prevent Landsat non-detection or sub-pixel boundary error from being interpreted as literal biological absence when testing change in realized Adelie breeding footprint.",
+  "response": "A_occupied = Landsat-retrieved active breeding/guano footprint area",
+  "known_measurement_limits": [
+    "Landsat 30 m pixels impose coarse boundary resolution.",
+    "Published Landsat-7 detection probability decreases strongly for small Adelie colonies, especially on the Antarctic Peninsula.",
+    "Cloud, deep terrain shadow, band saturation, mixed Pygoscelis colonies, flying-bird guano, snow algae and iron-tinted substrate can create omission or commission errors."
+  ],
+  "primary_principle": "A zero retrieved guano pixel count is a sensor non-detection, not automatically a biological zero.",
+  "required_recovery_outputs_before_longitudinal_inference": [
+    "site/region-specific or pooled false-positive rate under the frozen classifier",
+    "footprint-area recovery error against independent reference polygons/pixels",
+    "minimum detectable footprint-change threshold",
+    "non-detection upper bound or censoring threshold for A_occupied",
+    "sensor-bridge error for ETM+ versus OLI/OLI-2"
+  ],
+  "longitudinal_state_classes": {
+    "resolved_contraction": "early footprint lower uncertainty bound is greater than late footprint upper uncertainty bound",
+    "resolved_expansion": "late footprint lower uncertainty bound is greater than early footprint upper uncertainty bound",
+    "unresolved_change": "uncertainty intervals overlap",
+    "late_nondetection": "late footprint is treated as left-censored at the frozen detection bound, not set to biological zero",
+    "early_nondetection": "site cannot contribute a signed contraction estimate unless the late interval permits a separately frozen expansion conclusion"
+  },
+  "land_space_decoupling_call": {
+    "required": [
+      "Delta A_available is resolved positive under its own measurement uncertainty",
+      "Delta A_occupied is resolved negative under the footprint uncertainty/censoring rule"
+    ],
+    "not_allowed": [
+      "calling decoupling from abundance decline alone",
+      "calling colony extinction from Landsat non-detection alone",
+      "using MAPPPD count magnitude to resolve ambiguous footprint classifications"
+    ]
+  },
+  "aggregation": {
+    "site_level": "retain resolved contraction/expansion/unresolved labels and continuous interval estimates",
+    "regional_level": "propagate measurement uncertainty; do not replace unresolved sites with zero change"
+  },
+  "peninsula_boundary": "Because published Landsat detection thresholds are poorer on the Antarctic Peninsula than continental East Antarctica, measurement recovery must report region-specific performance when support permits.",
+  "stop_rule": "If the frozen remote-sensing pipeline cannot distinguish footprint change from its own measurement error for a useful number of sites, the direct-space Paper 2 route stops rather than treating non-detection as extinction or substituting abundance."
+}
