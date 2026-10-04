@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2-published-guano-classifier-spec-recovery-receipt-v1",
+  "validated_date": "2026-10-04",
+  "source": {
+    "paper": "Lynch & Schwaller 2014, PLOS ONE 9:e113301",
+    "supplement_doi": "10.1371/journal.pone.0113301.s003",
+    "radiometry": "Landsat-7 ETM+ top-of-atmosphere reflectance",
+    "reflective_bands": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      7
+    ]
+  },
+  "execution": {
+    "workflow_run_id": 37190383759,
+    "artifact_id": 11298596890,
+    "artifact_digest": "sha256:a83c1b3076666e2fd6bb807d7a785fe228e5f4e9f98a1f3fee61a004ecf4e9bf",
+    "head_sha": "53f663da414a7c7dcfb330ad2c820ee614991e4b",
+    "conclusion": "success"
+  },
+  "recovered_specification": {
+    "classifier_rule": "Compute V=[phi1,...,phi5,1], A=V^T*T^-1, d=sqrt(sum(A[1:5]^2)); published colony class is 0 <= d <= 1.",
+    "transition_matrix_shape": [
+      6,
+      6
+    ],
+    "transition_matrix": [
+      [
+        0.030515508,
+        0.0055868545,
+        0.10589161,
+        -0.017384585,
+        -0.0019109183,
+        0.81610609
+      ],
+      [
+        0.072376601,
+        0.037022008,
+        0.044094722,
+        0.024166647,
+        0.011383459,
+        0.90759515
+      ],
+      [
+        0.11551865,
+        0.061577496,
+        -0.042806491,
+        -0.0088966133,
+        -0.011873039,
+        0.90552486
+      ],
+      [
+        0.10955417,
+        -0.076527096,
+        -0.019619026,
+        -0.0055267772,
+        0.012877894,
+        1.0822658
+      ],
+      [
+        0.031201115,
+        -0.050623167,
+        0.021522689,
+        0.013288178,
+        -0.025795647,
+        1.3335928
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    "extraction": "Office Math matrix cells (OMML m:m/m:mr/m:e), preserving cell boundaries without inferred splitting."
+  },
+  "decision": {
+    "numeric_classifier_spec_recovered": true,
+    "direct_cross_sensor_application_authorized": false,
+    "next_gate": "Reproduce published ETM+ classifier numerically against the published PANGAEA spectral/reference table, then separately validate any TM/OLI transfer."
+  },
+  "boundary": [
+    "The recovered coefficients are for Landsat-7 ETM+ TOA reflectance, not Collection-2 surface reflectance.",
+    "USGS radiometric cross-calibration does not remove spectral bandpass differences among TM, ETM+ and OLI.",
+    "No penguin demographic outcome was used."
+  ]
+}
