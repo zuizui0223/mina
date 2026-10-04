@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-island-ecology-paper2d-summer-exposure-metric-v1",
+  "date": "2026-10-04",
+  "status": "measurement_definition_frozen_before_full_pixel_qa_and_exposure_results",
+  "parent_hypothesis": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_HYPOTHESIS_V1.json",
+  "parent_full_pixel_qa": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_FULL_PIXEL_QA_V1.json",
+  "measurement_name": "persistent summer-exposed breeding-opportunity fraction",
+  "conceptual_boundary": {
+    "measures": "The fraction of a fixed, independently mapped ice-free-support area that is repeatedly observable as non-snow/ice, non-water surface during austral-summer Landsat acquisitions in each frozen epoch.",
+    "does_not_measure": [
+      "literal occupied nest area",
+      "total physical island area",
+      "all deglaciated terrain outside the fixed Antarctic Ecosystem Inventory support",
+      "individual dispersal",
+      "demographic response"
+    ],
+    "preferred_manuscript_term": "summer-exposed breeding opportunity",
+    "prohibited_primary_label": "new rock area unless independently validated as deglaciated rock"
+  },
+  "spatial_grid": {
+    "crs": "EPSG:3031",
+    "resolution_m": 30,
+    "radius_m": 2000,
+    "support": "nearest-neighbour projection of the frozen Antarctic Ecosystem Inventory ice-free support to a fixed local 30 m grid",
+    "paired_support_rule": "A grid cell enters site-level early-versus-late change only if it has at least the minimum valid observations in both epochs."
+  },
+  "scene_selection": "Reuse exactly the full pixel-QA scene selection: austral months, scene cloud <=80%, one lowest-cloud scene per year, at most five evenly spaced years per epoch.",
+  "per_scene_mask": {
+    "source": "Landsat Collection 2 QA_PIXEL",
+    "invalid_bits": {
+      "fill": 0,
+      "dilated_cloud": 1,
+      "cloud": 3,
+      "cloud_shadow": 4
+    },
+    "snow_ice_bit": 5,
+    "water_bit": 7,
+    "note": "Do not rely on QA_PIXEL clear bit 6 alone."
+  },
+  "per_pixel_epoch_state": {
+    "minimum_valid_observations": 2,
+    "exposed_observation": "valid AND snow_ice_bit=0 AND water_bit=0",
+    "exposure_frequency": "number of exposed observations / number of valid observations",
+    "persistent_exposed_primary": "exposure_frequency >= 0.50",
+    "sensitivities_frozen_now": [
+      "continuous exposure_frequency without thresholding",
+      "persistent exposed threshold >=0.67",
+      "any-exposed threshold >0 only as a high-sensitivity diagnostic"
+    ],
+    "no_threshold_search": "No additional exposure-frequency cutoff may be selected from demographic outcomes."
+  },
+  "site_epoch_metric": {
+    "primary": "persistent-exposed area divided by paired observable AEI-support area",
+    "secondary_area": "persistent-exposed area in hectares on the paired support",
+    "change": "late minus early persistent-exposed fraction",
+    "rate": "change divided by frozen early-late epoch midpoint separation in years",
+    "positive_direction": "more summer-exposed breeding opportunity in the late epoch"
+  },
+  "validation": {
+    "beaufort": {
+      "role": "external positive-direction control",
+      "requirement": "If Beaufort passes full pixel QA, the metric must indicate positive exposure change over the closest supported historical-to-2010/early-2010s comparison before demographic outcomes are joined.",
+      "demographic_data_used_for_tuning": false
+    },
+    "sentinel2": {
+      "role": "recent-epoch diagnostic only",
+      "principle": "Compare recent Landsat exposure state with Sentinel-2 L2A snow/ice / bare-surface information where catalog support exists.",
+      "gate_status": "diagnostic, not used to tune a demographic-favorable threshold"
+    },
+    "spectral_sensitivity": {
+      "role": "measurement sensitivity",
+      "note": "NDSI alone cannot be the primary classifier because Antarctic shade and clouds are known failure modes. A spectral sensitivity may be added only as a prespecified measurement check and cannot replace the QA-derived primary metric after demographic outcomes are seen."
+    }
+  },
+  "continuation_to_demographic_model": {
+    "requires": [
+      "full pixel-QA continuation gate passes",
+      "exposure metric computed without technical failure for the frozen eligible roster",
+      "Beaufort positive-direction validation passes if Beaufort remains measurable"
+    ],
+    "then": "freeze exact demographic likelihood, observation-error propagation, regional temporal adjustment, and inferential calibration before rejoining count magnitudes"
+  }
+}
