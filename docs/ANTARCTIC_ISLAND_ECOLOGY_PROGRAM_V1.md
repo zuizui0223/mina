@@ -4,6 +4,19 @@
 **Branch:** `research/antarctic-island-ecology-v1`  
 **Rule:** this document does not reopen or modify the frozen Paper 1 inferential endpoints.
 
+
+## Current empirical status — 2026-10-04
+
+Paper 2 H1 is now closed.
+
+- Persistent summer-exposed terrestrial opportunity was measurable at 77 physical sites and changed substantially through time.
+- The frozen three-species H1 test did **not** support a transferable rule that sites gaining more terrestrial opportunity gain relative breeding use.
+- Adélie showed a bounded positive tendency only; it did not pass the prespecified permutation/multiplicity criterion and weakened under the frozen p67 sensitivity.
+- The frozen marine H2 route failed its 80% measurement-support continuation gate before any interaction outcome was computed.
+- No same-data environmental rescue is authorized.
+
+The program therefore advances to Paper 3: compare spatial response modes when breeding nodes are geographically persistent versus mobile/ephemeral.
+
 ## Program question
 
 > **How do island populations lose, gain, and relocate breeding space when the matrix that separates breeding sites is also the habitat that feeds them?**
