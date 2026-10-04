@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2d-summer-exposure-full-receipt-v1",
+  "validated_date": "2026-10-04",
+  "source": {
+    "metric_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_SUMMER_EXPOSURE_METRIC_V1.json",
+    "pixel_qa_receipt": "results/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_FULL_PIXEL_QA_RECEIPT_V1.json",
+    "beaufort_recovery_receipt": "results/PAPER2D_SUMMER_EXPOSURE_BEAUFORT_RECOVERY_RECEIPT_V1.json"
+  },
+  "execution": {
+    "workflow_run_id": 37190770020,
+    "artifact_id": 11298778191,
+    "artifact_digest": "sha256:34b7f319216b908a286853c4554fe22c9f23e6df043004adba89d2b72df00acb",
+    "conclusion": "success"
+  },
+  "measurement": "persistent summer-exposed fraction within paired observable current-AEI support",
+  "result": {
+    "sites": 77,
+    "technical_errors": 0,
+    "median_delta_p50": 0.030460366908965,
+    "q25_delta_p50": 0.0,
+    "q75_delta_p50": 0.157190635451505,
+    "positive_delta_p50_sites": 57,
+    "negative_delta_p50_sites": 16,
+    "zero_delta_p50_sites": 4,
+    "median_rate_p50_per_year": 0.0009825924809343,
+    "by_region": {
+      "Central-west Antarctic Peninsula": {"sites": 33, "positive": 24, "negative": 5, "zero": 4, "median_delta_p50": 0.0302114803625377},
+      "South Shetland Islands": {"sites": 16, "positive": 16, "negative": 0, "zero": 0, "median_delta_p50": 0.274977881757025},
+      "Victoria Land": {"sites": 24, "positive": 13, "negative": 11, "zero": 0, "median_delta_p50": 0.0046179600774009},
+      "Southwest Antarctic Peninsula": {"sites": 2, "positive": 2, "negative": 0, "zero": 0, "median_delta_p50": 0.01832627329316065},
+      "Elephant Island": {"sites": 1, "positive": 1, "negative": 0, "zero": 0, "median_delta_p50": 0.4065934065934066},
+      "Northeast Antarctic Peninsula": {"sites": 1, "positive": 1, "negative": 0, "zero": 0, "median_delta_p50": 0.8458913847028717}
+    }
+  },
+  "adelie_outcome_blind_subset": {
+    "sites": 37,
+    "positive_delta_p50_sites": 25,
+    "negative_delta_p50_sites": 12,
+    "zero_delta_p50_sites": 0,
+    "median_delta_p50": 0.015026,
+    "p50_p67_sign_agreement_sites": 28,
+    "p50_p67_sign_agreement_fraction": 0.7567567567567568,
+    "p50_p67_correlation": 0.8322199811623512,
+    "robust_same_direction_classification": {
+      "increase": 22,
+      "decrease": 6,
+      "threshold_sensitive": 9
+    }
+  },
+  "decision": {
+    "A_available_full_measurement_passed": true,
+    "beaufort_recovery_reproduced": true,
+    "demographic_magnitudes_opened": false,
+    "next_gate": "A_occupied measurement recovery"
+  },
+  "boundary": [
+    "These are terrestrial exposure measurements, not penguin demographic outcomes.",
+    "Positive delta means more persistent summer exposure inside fixed current AEI support; it does not by itself prove newly deglaciated nestable rock.",
+    "Primary inference should keep delta continuous; p=0.67 remains a frozen measurement sensitivity rather than a post-hoc alternative threshold."
+  ]
+}
