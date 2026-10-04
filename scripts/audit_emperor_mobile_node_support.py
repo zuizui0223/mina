@@ -31,15 +31,16 @@ class LinkParser(HTMLParser):
             self.links.append(d["href"])
 
 
-def get_csw_xml(session: requests.Session, record_id: str) -> bytes:
+def get_csw_xml(session: requests.Session, record_id: str, iso: bool = True) -> bytes:
     params = {
         "service": "CSW",
         "version": "2.0.2",
         "request": "GetRecordById",
         "elementsetname": "full",
-        "outputSchema": "http://www.isotc211.org/2005/gmd",
         "id": record_id,
     }
+    if iso:
+        params["outputSchema"] = "http://www.isotc211.org/2005/gmd"
     r = session.get(CSW, params=params, timeout=60)
     r.raise_for_status()
     return r.content
@@ -52,8 +53,35 @@ def extract_urls_from_xml(xml: bytes) -> list[str]:
         text = (el.text or "").strip()
         if text.startswith("http://") or text.startswith("https://"):
             urls.append(text)
-    # preserve order and uniqueness
+        for value in el.attrib.values():
+            value = str(value).strip()
+            if value.startswith("http://") or value.startswith("https://"):
+                urls.append(value)
+    # Some ISO profiles place URLs in free text; regex is a final public-metadata fallback.
+    decoded = xml.decode("utf-8", errors="ignore")
+    urls.extend(re.findall(r'https?://[^<>"\\s]+', decoded))
     return list(dict.fromkeys(urls))
+
+
+def datacite_urls(session: requests.Session, doi: str) -> tuple[list[str], str | None]:
+    try:
+        r = session.get(f"https://api.datacite.org/dois/{doi}", timeout=60)
+        r.raise_for_status()
+        obj = r.json()
+    except Exception as exc:
+        return [], f"{type(exc).__name__}: {exc}"
+    found = []
+    def walk(x):
+        if isinstance(x, dict):
+            for v in x.values():
+                walk(v)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v)
+        elif isinstance(x, str) and (x.startswith("http://") or x.startswith("https://")):
+            found.append(x)
+    walk(obj)
+    return list(dict.fromkeys(found)), None
 
 
 def download_small(session: requests.Session, url: str, max_bytes: int = 150_000_000):
@@ -193,18 +221,31 @@ def audit(contract: dict) -> dict:
     session.headers.update({"User-Agent": UA})
 
     record_id = contract["primary_tracking_source"]["bas_record_id"]
-    try:
-        xml = get_csw_xml(session, record_id)
-        csw_urls = extract_urls_from_xml(xml)
-        csw_ok = True
-        csw_error = None
-    except Exception as exc:
-        xml = b""
-        csw_urls = []
-        csw_ok = False
-        csw_error = f"{type(exc).__name__}: {exc}"
+    csw_payloads = []
+    csw_errors = []
+    for iso in (True, False):
+        try:
+            xml = get_csw_xml(session, record_id, iso=iso)
+            csw_payloads.append({"schema": "iso19139" if iso else "dublin_core", "bytes": len(xml)})
+            if iso:
+                xml_iso = xml
+            else:
+                xml_dc = xml
+        except Exception as exc:
+            csw_errors.append(f"{'iso' if iso else 'dc'}: {type(exc).__name__}: {exc}")
+    csw_urls = []
+    for xml in [locals().get("xml_iso", b""), locals().get("xml_dc", b"")]:
+        if xml:
+            try:
+                csw_urls.extend(extract_urls_from_xml(xml))
+            except Exception as exc:
+                csw_errors.append(f"parse: {type(exc).__name__}: {exc}")
+    dc_urls, dc_error = datacite_urls(session, contract["primary_tracking_source"]["doi"])
+    all_discovery_urls = list(dict.fromkeys(csw_urls + dc_urls))
+    csw_ok = bool(csw_payloads)
+    csw_error = "; ".join(csw_errors) if csw_errors else None
 
-    tracking = discover_tracking_archive(session, csw_urls) if csw_ok else {
+    tracking = discover_tracking_archive(session, all_discovery_urls) if all_discovery_urls else {
         "found": False, "url": None, "shapefiles": [], "archive_names": [], "attempts": []
     }
 
@@ -231,8 +272,15 @@ def audit(contract: dict) -> dict:
             "record_id": record_id,
             "available": csw_ok,
             "error": csw_error,
+            "payloads": csw_payloads,
             "urls_found": csw_urls,
         },
+        "datacite": {
+            "available": dc_error is None,
+            "error": dc_error,
+            "urls_found": dc_urls,
+        },
+        "combined_discovery_urls": all_discovery_urls,
         "primary_tracking_archive": tracking,
         "global_2023_snapshot": kmz_info,
         "decision": {
