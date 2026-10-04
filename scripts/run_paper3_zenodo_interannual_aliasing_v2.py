@@ -63,7 +63,7 @@ def summarize(anchors:pd.DataFrame,trans:pd.DataFrame,radii):
     curve={}
     for r in radii:
         m=consec["displacement_km"]>float(r)
-        key=str(r).rstrip("0").rstrip(".")
+        key=format(float(r), "g")
         curve[key]={
             "false_turnover_n":int(m.sum()),
             "transition_n":int(len(consec)),
