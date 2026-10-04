@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-island-ecology-paper2d-full-pixel-qa-v1",
+  "date": "2026-10-04",
+  "status": "outcome_blind_full_pixel_qa_frozen_after_pilot_pass_before_full_site_results",
+  "parent_pixel_qa_contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_V1.json",
+  "parent_pilot_receipt": "results/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_PIXEL_QA_PILOT_RECEIPT_V1.json",
+  "source_roster": {
+    "catalog_supported_units": 106,
+    "catalog_failed_units": [
+      "CHPE|HANN"
+    ],
+    "static_aei_zero_support_units": [
+      "ADPE|FRAE",
+      "ADPE|FRAW",
+      "ADPE|WPEC"
+    ],
+    "full_pixel_candidate_units": 103,
+    "full_pixel_candidate_physical_sites": 84,
+    "representative_unit_rule": "For each physical site, among catalog-passing units with positive frozen AEI support, choose the unit with the lowest early Landsat scene count; break ties by unit_id. Pixel support is then inherited by every candidate species unit at that physical site."
+  },
+  "per_site_rule": {
+    "radius_m": 2000,
+    "scene_cloud_max_percent": 80,
+    "max_distinct_year_scenes_per_epoch": 5,
+    "scene_year_selection": "one lowest-scene-cloud acquisition per year, then up to five years nearest evenly spaced quantiles across the frozen site-specific epoch",
+    "invalid_qa_pixel_bits": [
+      0,
+      1,
+      3,
+      4
+    ],
+    "diagnostic_bits": {
+      "snow_ice": 5,
+      "water": 7
+    },
+    "local_valid_fraction_threshold": 0.5,
+    "minimum_selected_distinct_year_scenes_per_epoch": 3,
+    "minimum_good_scenes_per_epoch": 2,
+    "site_pass": "both early and late Landsat epochs pass exactly the same rule used in the 14-site pilot"
+  },
+  "technical_execution": {
+    "shards": 6,
+    "shard_assignment": "sorted physical site_id index modulo 6",
+    "rule": "Sharding is computational only and cannot change site eligibility, scene selection, thresholds, or epochs.",
+    "technical_query_or_read_failures": "report separately; do not reclassify as ecological support failure"
+  },
+  "continuation_gate_after_full_qa": {
+    "minimum_eligible_site_species_units": 30,
+    "minimum_distinct_sites": 20,
+    "minimum_species": 2,
+    "regional_replication": "at least two regions with >=5 eligible physical sites",
+    "demographic_magnitudes_remain_locked": true,
+    "next_if_passed": "freeze and validate habitat-change classifier, including Beaufort positive-direction control, before joining demographic magnitudes",
+    "failure_action": "stop dynamic terrestrial lane without relaxing thresholds and move to emperor dynamic-substrate lane"
+  },
+  "prohibited_changes": [
+    "lowering the 0.50 local-valid threshold",
+    "reducing the 3-scene or 2-good-scene epoch requirements",
+    "adding rescue scenes after seeing population outcomes",
+    "changing site-specific optical epochs using demographic values",
+    "excluding sites based on abundance trend, concentration, persistence, or extinction"
+  ]
+}
