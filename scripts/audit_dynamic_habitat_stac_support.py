@@ -45,7 +45,7 @@ def _search_items(
     end: str,
     timeout: int = 60,
     max_pages: int = 20,
-) -> list[dict]:
+) -> tuple[list[dict], bool]:
     url = endpoint.rstrip("/") + "/search"
     payload = {
         "collections": [collection],
@@ -57,6 +57,7 @@ def _search_items(
     method = "POST"
     next_url = url
     next_payload = payload
+    max_items = 500
     for page in range(max_pages):
         for attempt in range(5):
             try:
@@ -72,17 +73,19 @@ def _search_items(
                     raise
                 time.sleep(2 ** attempt)
         items.extend(body.get("features", []))
+        if len(items) >= max_items:
+            return items[:max_items], False
         nxt = None
         for link in body.get("links", []):
             if link.get("rel") == "next" and link.get("href"):
                 nxt = link
                 break
         if not nxt:
-            return items
+            return items, True
         next_url = nxt["href"]
         method = str(nxt.get("method", "GET")).upper()
         next_payload = nxt.get("body") if method == "POST" else None
-    raise RuntimeError(f"STAC pagination exceeded {max_pages} pages for {collection} {lon},{lat}")
+    return items, False
 
 
 def _search_with_fallback(
@@ -92,11 +95,11 @@ def _search_with_fallback(
     lat: float,
     start: str,
     end: str,
-) -> tuple[list[dict], str]:
+) -> tuple[list[dict], str, bool]:
     errors = []
     for catalog in catalogs:
         try:
-            items = _search_items(
+            items, complete = _search_items(
                 session,
                 str(catalog["endpoint"]),
                 str(catalog["collection"]),
@@ -105,7 +108,7 @@ def _search_with_fallback(
                 start,
                 end,
             )
-            return items, str(catalog["name"])
+            return items, str(catalog["name"]), complete
         except Exception as exc:
             errors.append(f'{catalog.get("name")}: {type(exc).__name__}: {exc}')
     raise RuntimeError("all STAC catalogs failed: " + " | ".join(errors))
@@ -202,18 +205,20 @@ def audit(forcing_csv: Path, atlas_csv: Path, contract_path: Path) -> tuple[pd.D
         epoch_summaries = {}
         for name in ("early_landsat", "middle_landsat", "late_landsat"):
             start, end = epochs[name]
-            items, provider = _search_with_fallback(
+            items, provider, complete = _search_with_fallback(
                 session, landsat_catalogs, row.longitude, row.latitude, start, end
             )
             epoch_summaries[name] = summarize_items(items, months)
             epoch_summaries[name]["catalog_provider"] = provider
+            epoch_summaries[name]["catalog_complete"] = bool(complete)
             time.sleep(0.05)
         start, end = epochs["late_sentinel"]
-        items, provider = _search_with_fallback(
+        items, provider, complete = _search_with_fallback(
             session, sentinel_catalogs, row.longitude, row.latitude, start, end
         )
         epoch_summaries["late_sentinel"] = summarize_items(items, months)
         epoch_summaries["late_sentinel"]["catalog_provider"] = provider
+        epoch_summaries["late_sentinel"]["catalog_complete"] = bool(complete)
         time.sleep(0.05)
 
         early = epoch_summaries["early_landsat"]
@@ -286,6 +291,7 @@ def audit(forcing_csv: Path, atlas_csv: Path, contract_path: Path) -> tuple[pd.D
         "boundary": [
             "This receipt uses remote-sensing metadata only and contains no demographic outcome.",
             "Scene-level cloud cover is not local pixel quality.",
+            "Catalog searches are capped at 500 items per site-epoch; counts from truncated searches are lower bounds, but passing support remains valid because thresholds are monotone.",
             "No habitat-change estimate is computed at this stage.",
             "Pixel-level cloud, snow/ice, coastline and terrain QA remains mandatory before any outcome join."
         ],
