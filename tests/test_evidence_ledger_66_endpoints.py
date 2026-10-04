@@ -83,6 +83,6 @@ def test_only_within_configuration_contains_class_a_evidence():
 
 def test_ledger_doc_states_anti_double_counting_rule():
     text = DOC.read_text(encoding="utf-8")
-    assert "only positive **class-A replication units**" in text
+    assert "only two positive **class-A replication units**" in text
     assert "must not be counted as another independent replication" in text
     assert "No manuscript sentence should convert the number of files into an apparent replication count." in text
