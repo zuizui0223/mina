@@ -60,7 +60,7 @@ jobs:
         run: |
           python -m scripts.run_paper3_zenodo_interannual_aliasing \
             --semantic-json build/out/PAPER3_ZENODO_ANNUAL_ANCHOR_SEMANTIC_RESULT_V1.json \
-            --points-csv build/semantic/PAPER3_ZENODO_ROUTE_COLONY_POINTS_V1.csv \
+            --annual-anchors-csv build/out/PAPER3_ZENODO_ANNUAL_ANCHORS_V1.csv \
             --contract contracts/PAPER3_ZENODO_INTERANNUAL_ALIASING_V1.json \
             --out-json build/out/PAPER3_ZENODO_INTERANNUAL_ALIASING_RESULT_V1.json \
             --out-anchors-csv build/out/PAPER3_ZENODO_INTERANNUAL_ANCHORS_V1.csv \
