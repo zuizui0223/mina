@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-paper3-zenodo-season-reference-semantic-v2",
+  "date": "2026-10-04",
+  "status": "semantic_validation_before_interannual_displacement",
+  "supersedes": "contracts/PAPER3_ZENODO_ROUTE_POINT_SEMANTIC_V1.json",
+  "reason_for_supersession": "V1 incorrectly assumed the source pointLon/pointLat fields should coincide with a route endpoint. The publication instead states that the fast-ice distance was measured from the colony location in the first image of each season, while route geometry represents the estimated travel path to the ice edge. V2 tests the season-reference semantics directly without using interannual displacement.",
+  "source": {
+    "route_zip": "https://zenodo.org/records/17380979/files/UploadDistanceToFastIce.zip?download=1",
+    "expected_colonies": [
+      "Astrid",
+      "Mertz",
+      "SANAE"
+    ],
+    "expected_seasons_per_colony": 10,
+    "expected_total_complete_shapefiles": 30
+  },
+  "publication_definition": {
+    "article": "Macdonald et al. 2026, Antarctic Science, doi:10.1017/S0954102025100515",
+    "method": "Distance to the fast-ice edge was measured from the location of the colony in the first image of the season.",
+    "figure7": "Distance is measured to the estimated maximum fast-ice edge from the earliest location of the colony that season.",
+    "dataset": "Zenodo doi:10.5281/zenodo.17380979 states that the shapefiles are routes used for distance-to-fast-ice-edge measurements."
+  },
+  "semantic_test": {
+    "coordinate_fields": [
+      "pointLon",
+      "pointLat"
+    ],
+    "date_field": "Date",
+    "required_date_parse_fraction": 0.95,
+    "within_colony_season_coordinate_tolerance_m": 10,
+    "required_seasons_with_invariant_reference_fraction": 1,
+    "minimum_seasons_per_colony": 8,
+    "interpretation_if_passed": "pointLon/pointLat are treated as the source-supplied season reference coordinate used for the route-distance measurement, and therefore as the annual colony anchor for the interannual identity diagnostic."
+  },
+  "deliberately_not_required": [
+    "point coordinate equals first polyline vertex",
+    "point coordinate equals last polyline vertex",
+    "polyline orientation",
+    "any interannual distance threshold"
+  ],
+  "prohibited": [
+    "interannual displacement before semantic pass",
+    "radius-specific turnover before semantic pass",
+    "selection of seasons based on movement magnitude",
+    "abundance, breeding success or environmental covariates"
+  ],
+  "next_gate_if_passed": "Execute the already frozen 0.5/1/2/5/10-km interannual aliasing curve using one invariant source point per colony-season.",
+  "audit_trail": "Retain the failed V1 endpoint-origin semantic result; do not rewrite it as a pass."
+}
