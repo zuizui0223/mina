@@ -74,3 +74,25 @@ def test_individual_process_boundary_is_data_stopped():
     assert len(e4) == 1
     assert e4[0]["file"] == "PALMER_MARK_RESIGHT_DATA_AUDIT_RESULT_V1.json"
     assert e4[0]["layer"] == "individual_process_boundary"
+
+
+def test_ecological_and_auxiliary_counts_are_separate():
+    ledger = load()
+    assert ledger["ecological_outcome_file_count"] == 35
+    assert ledger["auxiliary_file_count"] == 31
+
+
+def test_non_independent_families_are_explicit():
+    ledger = load()
+    families = {
+        item["family_id"]: item
+        for item in ledger["non_independent_evidence_families"]
+    }
+    assert "signy_adelie_concentration" in families
+    assert set(families["signy_adelie_concentration"]["files"]) == {
+        "SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+        "SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json",
+        "SIGNY_CONCENTRATION_QUALITY_AUDIT_V1.json",
+    }
+    assert len(families["palmer_neff_growth_association"]["files"]) == 6
+    assert len(families["paper2_static_place_architecture"]["files"]) == 7
