@@ -1,0 +1,91 @@
+name: cross-scale-concentration-figures
+
+on:
+  push:
+    branches: [analysis/mapppd-regional-concentration-v1]
+    paths:
+      - "docs/MANUSCRIPT_CROSS_SCALE_CONCENTRATION_V0_1.md"
+      - "results/MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2.json"
+      - "scripts/plot_cross_scale_concentration_figures.py"
+      - "scripts/plot_replicated_concentration_figures.py"
+      - "data/figure_data/replicated_concentration_v1/**"
+      - ".github/workflows/cross-scale-concentration-figures.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -e ".[dev]" matplotlib pypdf
+
+      - name: Verify pinned figure-data hashes
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path("data/figure_data/replicated_concentration_v1")
+          receipt=json.loads((root/"FIGURE_DATA_RECEIPT_V1.json").read_text(encoding="utf-8"))
+          expected=receipt["normalized_utf8_sha256"]
+          for name,want in expected.items():
+              text=(root/name).read_text(encoding="utf-8")
+              got=hashlib.sha256(text.encode("utf-8")).hexdigest()
+              print(name, got)
+              assert got == want, (name, got, want)
+          print("figure_data_hash_audit=PASS")
+          PY
+
+      - name: Use repository-pinned source-checked figure data
+        run: |
+          mkdir -p build/figure_data build/figures
+          test -s data/figure_data/replicated_concentration_v1/FIGURE_DATA_RECEIPT_V1.json
+          test -s data/figure_data/replicated_concentration_v1/figure1_trajectories.csv
+          test -s data/figure_data/replicated_concentration_v1/figure2_summary.csv
+          test -s data/figure_data/replicated_concentration_v1/figure3_dominance_routes.csv
+          cp data/figure_data/replicated_concentration_v1/* build/figure_data/
+
+      - name: Render cross-scale figures
+        run: |
+          python -m scripts.plot_cross_scale_concentration_figures             --local-data-dir build/figure_data             --regional-receipt results/MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2.json             --out-dir build/figures
+          test -s build/figures/figure1_replicated_trajectories.pdf
+          test -s build/figures/figure2_cross_scale_transfer.pdf
+          test -s build/figures/figure3_regional_endpoint_context.pdf
+          test -s build/figures/figureS1_nominal_dominance_routes.pdf
+
+      - name: Audit Ecology publication dimensions
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from pypdf import PdfReader
+
+          max_width_cm = 18.0
+          max_height_cm = 22.0
+          names = [
+              "figure1_replicated_trajectories.pdf",
+              "figure2_cross_scale_transfer.pdf",
+              "figure3_regional_endpoint_context.pdf",
+              "figureS1_nominal_dominance_routes.pdf",
+          ]
+          for name in names:
+              path = Path("build/figures") / name
+              reader = PdfReader(str(path))
+              assert len(reader.pages) == 1, (name, len(reader.pages))
+              box = reader.pages[0].mediabox
+              width_cm = float(box.width) / 72.0 * 2.54
+              height_cm = float(box.height) / 72.0 * 2.54
+              print(f"{name}: {width_cm:.2f} x {height_cm:.2f} cm")
+              assert width_cm <= max_width_cm + 0.01, (name, width_cm)
+              assert height_cm <= max_height_cm + 0.01, (name, height_cm)
+          print("ecology_figure_size_audit=PASS")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cross-scale-concentration-figures-v1
+          path: |
+            build/figure_data/*
+            build/figures/*
