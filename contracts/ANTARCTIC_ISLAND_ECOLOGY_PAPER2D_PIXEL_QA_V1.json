@@ -76,7 +76,8 @@
       "STNK",
       "BEAU"
     ],
-    "n_sites": 14
+    "n_sites": 14,
+    "representative_unit_rule": "For a physical site represented by multiple species, use the catalog-passing unit with the lowest early Landsat scene count; break ties by lexicographically smallest unit_id. This rule was fixed without demographic magnitudes."
   },
   "pixel_support_metrics": {
     "per_scene": [
@@ -94,7 +95,7 @@
   "pilot_pass_rule": {
     "per_epoch": "at least 3 selected distinct-year scenes and at least 2 scenes with >=0.50 locally valid AEI-support fraction",
     "site": "both early and late epochs pass",
-    "program": "at least 11 of 14 pilot sites pass, Beaufort passes both epochs, and failures are not all concentrated in one of the three major regions",
+    "program": "At least 11 of 14 pilot sites pass; Beaufort passes both epochs; and each of Central-west Antarctic Peninsula, South Shetland Islands and Victoria Land retains at least 2 of its 3 non-control selected sites.",
     "failure_action": "Do not relax the pixel-validity threshold. Diagnose sensor/QA incompatibility outcome-blindly; if unresolved, stop the Landsat dynamic-land lane."
   },
   "next_stage_if_passed": {
