@@ -57,16 +57,16 @@ The effect of terrestrial opportunity change depends on marine accessibility dur
 Conceptually:
 
 [
-D_i = eta_A Delta A_i + eta_M Delta M_i
-      + eta_{AM}(Delta A_i 	imes Delta M_i) + ldots
+D_i = \\beta_A Delta A_i + \\beta_M Delta M_i
+      + \\beta_{AM}(Delta A_i \\times Delta M_i) + ldots
 ]
 
 where (Delta M_i) is a predeclared marine-access change metric.
 
 Interpretation:
 
-- (eta_A>0): terrestrial opportunity tracking;
-- (eta_{AM}>0): newly available land is used preferentially where the marine matrix also remains/becomes accessible;
+- (\\beta_A>0): terrestrial opportunity tracking;
+- (\\beta_{AM}>0): newly available land is used preferentially where the marine matrix also remains/becomes accessible;
 - (Delta A_i>0) with negative (D_i): direct evidence of physical-habitat expansion without biological expansion.
 
 H2 is opened only if the marine metric passes its own outcome-blind support and identifiability gate.
@@ -80,7 +80,7 @@ Preferred model family after support is frozen:
 [
 log(1+n_{ist}) =
 alpha_i + lambda_{g(i),t}
-+ eta_{A,s},h_i,	au_t
++ \\beta_{A,s},h_i,\\tau_t
 + epsilon_{ist},
 ]
 
@@ -90,8 +90,8 @@ where:
 - (alpha_i) is a site intercept;
 - (lambda_{g(i),t}) is the previously support-selected species × regional forcing state;
 - (h_i) is the rate of accessible-land change between the frozen optical epochs;
-- (	au_t) is centered/scaled time;
-- (eta_{A,s}) measures whether sites with greater habitat expansion gain relative to their regional conspecific background.
+- (\\tau_t) is centered/scaled time;
+- (\\beta_{A,s}) measures whether sites with greater habitat expansion gain relative to their regional conspecific background.
 
 This parameterization uses unsynchronized records without pretending that every site was counted in every year.
 
@@ -161,7 +161,7 @@ If these conditions fail, no thresholds are relaxed after inspecting counts. The
 Many sites show (Delta A>0) but negative relative demographic change, and marine accessibility explains the discrepancy better than land opportunity alone.
 
 ### Species contingency
-Adélie, chinstrap and gentoo differ in (eta_A), showing that identical physical expansion is translated differently by ecological strategy.
+Adélie, chinstrap and gentoo differ in (\\beta_A), showing that identical physical expansion is translated differently by ecological strategy.
 
 ### No dynamic terrestrial signal
 Even measured change in accessible land fails to explain relative reallocation. This would sharply separate physical breeding capacity from the process driving the Antarctic population redistribution seen in Paper 1.
