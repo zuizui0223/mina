@@ -34,19 +34,16 @@ jobs:
         run: python -m unittest tests.test_dynamic_habitat_stac_support -v
       - name: Download frozen outcome-blind source artifacts
         run: |
-          mkdir -p build/forcing build/options
-          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
-          gh run download 36489980162 -n antarctic-breeding-options-atlas-v1 -D build/options
+          mkdir -p build/forcing build/options build/zips
+          curl -fL             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             https://api.github.com/repos/zuizui0223/mina/actions/artifacts/11012045716/zip             -o build/zips/forcing.zip
+          curl -fL             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             https://api.github.com/repos/zuizui0223/mina/actions/artifacts/11000822448/zip             -o build/zips/options.zip
+          unzip -q build/zips/forcing.zip -d build/forcing
+          unzip -q build/zips/options.zip -d build/options
           test -f build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv
           test -f build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_ATLAS_V1.csv
       - name: Audit optical-imagery metadata support
         run: |
-          python scripts/audit_dynamic_habitat_stac_support.py \
-            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
-            --atlas-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_ATLAS_V1.csv \
-            --contract contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_STAC_SUPPORT_V1.json \
-            --out-csv build/PAPER2_DYNAMIC_HABITAT_STAC_SUPPORT_V1.csv \
-            --out-json build/PAPER2_DYNAMIC_HABITAT_STAC_SUPPORT_RESULT_V1.json
+          python scripts/audit_dynamic_habitat_stac_support.py             --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv             --atlas-csv build/options/ANTARCTIC_PENGUIN_BREEDING_OPTIONS_ATLAS_V1.csv             --contract contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2_STAC_SUPPORT_V1.json             --out-csv build/PAPER2_DYNAMIC_HABITAT_STAC_SUPPORT_V1.csv             --out-json build/PAPER2_DYNAMIC_HABITAT_STAC_SUPPORT_RESULT_V1.json
       - uses: actions/upload-artifact@v4
         with:
           name: antarctic-island-ecology-paper2-stac-support-v1
