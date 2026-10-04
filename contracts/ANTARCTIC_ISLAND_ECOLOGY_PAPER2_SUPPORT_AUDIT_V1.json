@@ -3,22 +3,20 @@
   "contract_id": "mina-antarctic-island-ecology-paper2-support-audit-v1",
   "date": "2026-10-04",
   "status": "outcome_blind_support_audit_only",
-  "purpose": "Determine whether a longitudinal Antarctic test of terrestrial breeding-opportunity change versus penguin breeding-space change is technically identifiable before any new demographic outcome is opened.",
+  "purpose": "Determine whether a longitudinal Antarctic test of terrestrial breeding-opportunity change versus penguin breeding-space change is technically identifiable before any demographic outcome is opened.",
   "parent_program": "docs/ANTARCTIC_ISLAND_ECOLOGY_PROGRAM_V1.md",
   "paper1_boundary": "Do not modify, retune, or reopen the closed cross-scale concentration submission endpoints.",
   "source_roster": {
-    "primary": "Reuse the already-frozen Paper 2 temporal-support cohort: 107 Pygoscelis site x species units spanning 1980-2025, joined only to outcome-blind site coordinates and static atlas metadata.",
-    "forcing_support_workflow_run_id": 36517700369,
-    "breeding_options_workflow_run_id": 36520281872,
+    "primary": "Reuse site identities, species labels, coordinates, record years, and observation-method metadata from the already-pinned MAPPPD snapshot used by the regional concentration branch.",
     "pinned_mapppd_repository": "CCheCastaldo/mapppdr",
     "pinned_mapppd_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "frozen_support_artifact_workflow_run": 36517700369,
     "allowed_demographic_fields": [
       "site_id",
       "species",
       "site coordinates",
       "region labels",
-      "first and last seasons with a candidate nest-count observation",
-      "number/list of seasons with a candidate nest-count observation",
+      "years with at least one candidate nest-count observation",
       "observation method / accuracy metadata"
     ],
     "prohibited_demographic_fields_during_audit": [
@@ -31,58 +29,45 @@
       "any label derived from whether abundance increased or declined"
     ]
   },
+  "optical_metadata_gate": {
+    "stac_endpoint": "https://planetarycomputer.microsoft.com/api/stac/v1",
+    "primary_dynamic_sensor_logic": "Landsat-to-Landsat. Sentinel-2 is validation only and does not define the historical change estimate.",
+    "windows": {
+      "landsat_early": ["1984-01-01", "1994-12-31"],
+      "landsat_late": ["2018-01-01", "2025-12-31"],
+      "sentinel2_validation": ["2018-01-01", "2025-12-31"]
+    },
+    "collections": {
+      "landsat": "landsat-c2-l2",
+      "sentinel2": "sentinel-2-l2a"
+    },
+    "austral_summer_months": [11, 12, 1, 2, 3],
+    "minimum_distinct_dates_per_window": 5,
+    "minimum_distinct_years_per_window": 3,
+    "eligibility": "A site passes metadata support only if early Landsat, late Landsat, and Sentinel-2 validation windows each pass the fixed date/year thresholds.",
+    "cloud_rule": "Scene-level eo:cloud_cover is descriptive only; do not filter eligibility by scene-wide cloud percentage.",
+    "high_latitude_caveat": "Landsat Collection 2 surface-reflectance availability/quality can be limited at high latitude, low sun angle, or snow-covered scenes. Failure of the L2 metadata gate triggers an outcome-blind processing-level review; it does not authorize lowering support thresholds after demographic outcomes are viewed."
+  },
+  "pixel_quality_gate_next": {
+    "not_yet_opened": true,
+    "must_assess": [
+      "valid target-area pixels",
+      "cloud and shadow",
+      "snow/ice ambiguity",
+      "solar illumination",
+      "co-registration",
+      "rock versus ice classification stability across sensors"
+    ],
+    "rule": "Do not estimate habitat change until pixel-level QA and the accessible-habitat classifier are separately frozen."
+  },
   "terrestrial_support": {
-    "goal": "Assess whether change in accessible ice-free breeding opportunity can be measured over each demographic record without using demographic magnitudes.",
     "candidate_sources": [
-      "Landsat Collection 2 archive for historical and recent optical support",
-      "Sentinel-2 L2A for recent validation where it overlaps the demographic record",
+      "Landsat archive for historical and modern primary change estimation",
+      "Sentinel-2 for recent classification validation",
       "SCAR Antarctic Digital Database 2026 coastline / rock-outcrop geometry for QA only",
       "REMA for topographic accessibility"
     ],
-    "warning": "Do not estimate habitat change by naively differencing successive SCAR ADD releases because source dates vary among features. Landsat Level-2 surface reflectance is also not treated as definitive absence of imagery at high latitudes; the catalog audit is a support screen, not the final pixel-level eligibility decision.",
-    "catalog_gate": {
-      "api": "Microsoft Planetary Computer public STAC API",
-      "landsat_collection": "landsat-c2-l2",
-      "sentinel_collection": "sentinel-2-l2a",
-      "early_window": "first observed season +/- 4 years, clipped to 1984-2025",
-      "late_window": "last observed season +/- 4 years, clipped to 1984-2025",
-      "austral_months": [
-        11,
-        12,
-        1,
-        2,
-        3
-      ],
-      "scene_cloud_primary_max_percent": 80,
-      "scene_cloud_diagnostic_max_percent": 50,
-      "minimum_primary_scenes_per_epoch": 3,
-      "minimum_distinct_years_per_epoch": 2,
-      "minimum_epoch_midpoint_separation_years": 8,
-      "interpretation": "Passing means catalog support exists for a later local-pixel QA. Failing this Level-2 catalog gate does not by itself prove that no usable Level-1/TOA imagery exists."
-    },
-    "pixel_qa_stage": {
-      "status": "locked_until_catalog_gate_runs",
-      "required_checks": [
-        "local clear-pixel fraction inside the frozen site buffer",
-        "snow/ice/cloud/shadow mask performance",
-        "cross-sensor co-registration",
-        "rock-vs-snow/ice classification stability",
-        "manual QA of a blinded subset before full extraction"
-      ]
-    },
-    "external_method_validation": {
-      "positive_control": {
-        "site_id": "BEAU",
-        "published_reference": "LaRue et al. 2013, PLoS ONE 8:e60568, doi:10.1371/journal.pone.0060568",
-        "published_result": "Available nesting habitat on Beaufort Island increased by about 20% during 1983-2010 (71% since 1958), with ice/snow retreat opening nesting space.",
-        "frozen_validation_target": "The independently implemented terrestrial-change pipeline must recover positive breeding-opportunity change at Beaufort over the closest supported historical-to-2010 comparison before multi-site habitat outcomes are considered trustworthy.",
-        "boundary": "This validates the remote-sensing direction only. It is not counted as a new mina demographic result and cannot be used to tune the multi-site ecological model."
-      },
-      "secondary_validation_candidate": {
-        "source": "Cook, Fox & Thomson Antarctic Peninsula coastal-change data, 1843-2008, doi:10.5285/07727663-9B94-4069-A486-67E4D82177D3",
-        "role": "Where candidate penguin sites lie near mapped glacier termini, use published retreat direction as an independent spatial QA; do not require coverage for all sites."
-      }
-    }
+    "warning": "Do not estimate habitat change by naively differencing successive SCAR ADD releases because source dates vary among features."
   },
   "marine_support": {
     "goal": "Audit availability only; do not select predictors by correlation with demographic outcomes.",
@@ -92,21 +77,16 @@
       "persistent polynya context",
       "bathymetry / shelf or submarine-canyon context",
       "remote-sensing productivity when temporal support is sufficient"
-    ],
-    "required_audit_fields": [
-      "temporal coverage",
-      "spatial resolution",
-      "missingness",
-      "whether source overlaps terrestrial-change interval"
     ]
   },
   "staged_design": [
-    "Stage A1: run the scene-catalog inventory with prohibited demographic fields physically absent from the audit object.",
-    "Stage A2: if catalog support is adequate, freeze and run local pixel-level QA without joining count magnitudes.",
-    "Stage B: define deterministic terrestrial eligibility and an accessible-habitat change metric; audit marine covariate support.",
-    "Stage C: freeze the eligible roster, terrestrial metric, marine covariate set, model family, nulls, and stop rule in a separate outcome contract.",
+    "Stage A: build support table with prohibited demographic fields physically absent from the audit object.",
+    "Stage B1: audit optical-scene metadata using the frozen Landsat/Sentinel windows.",
+    "Stage B2: freeze and run pixel-level imagery QA without demographic outcomes.",
+    "Stage B3: freeze accessible ice-free breeding-opportunity classifier and validation rules.",
+    "Stage C: freeze eligible roster, terrestrial metric, marine covariate set, model family, nulls, and stop rule in a separate outcome contract.",
     "Stage D: only then join demographic magnitudes and breeding-space outcomes."
   ],
-  "no_outcome_rule": "This audit can conclude that the new Paper 2 is technically feasible or infeasible, but cannot report any association between habitat change and abundance, concentration, persistence, colonization, or extinction.",
+  "no_outcome_rule": "This audit can conclude that Paper 2 is feasible or infeasible, but cannot report any association between habitat change and abundance, concentration, persistence, colonization, or extinction.",
   "branch_stop_rule": "If support is insufficient, stop Paper 2 without lowering thresholds after seeing demographic outcomes; proceed to the separately defined dynamic-substrate Paper 3 route."
 }
