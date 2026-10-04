@@ -339,7 +339,7 @@ def main() -> int:
         "measurement_sensitivity_p67": p67,
         "provenance": {
             "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
-            "real_dynamic_association_opened": true,
+            "real_dynamic_association_opened": True,
             "model_contract": contract["contract_id"],
             "execution_contract": unlock["contract_id"],
         },
