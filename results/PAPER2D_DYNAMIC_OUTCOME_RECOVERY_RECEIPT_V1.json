@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2d-dynamic-outcome-recovery-receipt-v1",
+  "validated_date": "2026-10-04",
+  "contract": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_DYNAMIC_OUTCOME_V1.json",
+  "execution": {
+    "workflow_run_id": 37198822009,
+    "artifact_id": 11302586010,
+    "artifact_digest": "sha256:d3ce8a23dbaa4b050f7cac3ec37a821fc38b5833b629abe8a36a6591c3c8e2b5",
+    "conclusion": "success"
+  },
+  "design": {
+    "units": 85,
+    "site_season_rows": 1293,
+    "species": {
+      "ADPE": {"units": 30, "rows": 551, "region_seasons": 66},
+      "CHPE": {"units": 31, "rows": 397, "region_seasons": 65},
+      "GEPE": {"units": 24, "rows": 345, "region_seasons": 58}
+    }
+  },
+  "recovery": {
+    "beta_0_bias": {"ADPE": 0.000544, "CHPE": -0.001077, "GEPE": 0.003192},
+    "beta_0_15_mean_hat": {"ADPE": 0.148977, "CHPE": 0.150635, "GEPE": 0.149276},
+    "beta_0_30_mean_hat": {"ADPE": 0.299460, "CHPE": 0.298853, "GEPE": 0.300618},
+    "beta_0_30_positive_fraction": {"ADPE": 1.0, "CHPE": 1.0, "GEPE": 1.0}
+  },
+  "decision": {
+    "estimator_recovery_passed": true,
+    "real_dynamic_association_authorized": true
+  },
+  "boundary": [
+    "Synthetic recovery only; the recovery run did not read count magnitudes.",
+    "Authorization applies only to the frozen dynamic association model and mandatory sensitivities."
+  ]
+}
