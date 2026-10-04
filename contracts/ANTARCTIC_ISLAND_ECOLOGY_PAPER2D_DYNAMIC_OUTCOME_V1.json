@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-island-ecology-paper2d-dynamic-outcome-v1",
+  "date": "2026-10-04",
+  "status": "dynamic_association_model_frozen_after_A_available_measurement_before_dynamic_outcome_join",
+  "parent_hypothesis": "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_HYPOTHESIS_V1.json",
+  "A_available_receipt": "results/PAPER2D_SUMMER_EXPOSURE_FULL_RECEIPT_V1.json",
+  "purpose": "Test whether Pygoscelis breeding sites that gained more summer-exposed terrestrial opportunity gained relative demographic weight within contemporaneous conspecific regional networks.",
+  "historical_outcome_exposure_note": "MAPPPD count magnitudes were previously opened in a separate closed static-place lane. The present dynamic exposure-outcome association has not been used to choose the exposure metric, pixel thresholds, eligible sites, regions, species, or this model specification.",
+  "primary_exposure": {
+    "field": "rate_p50_per_year",
+    "definition": "late-minus-early persistent-summer-exposed fraction divided by frozen epoch midpoint separation",
+    "transform": "standardize to mean 0 and SD 1 within species across the frozen primary units",
+    "measurement_sensitivity": "repeat the complete analysis with rate_p67_per_year; do not replace p50 based on result",
+    "no_binary_cut": true
+  },
+  "primary_roster": {
+    "source_rule": "Intersect the 94 site x species units passing frozen full pixel QA with species x APBP-region groups containing at least five retained units and satisfying the inherited forcing-support criteria.",
+    "units": 85,
+    "networks": [
+      {"species_id": "ADPE", "region": "South Shetland Islands", "units": 6},
+      {"species_id": "ADPE", "region": "Victoria Land", "units": 24},
+      {"species_id": "CHPE", "region": "Central-west Antarctic Peninsula", "units": 17},
+      {"species_id": "CHPE", "region": "South Shetland Islands", "units": 14},
+      {"species_id": "GEPE", "region": "Central-west Antarctic Peninsula", "units": 18},
+      {"species_id": "GEPE", "region": "South Shetland Islands", "units": 6}
+    ],
+    "network_support_rule": {
+      "minimum_units": 5,
+      "minimum_seasons_with_observations_from_at_least_3_units": 15,
+      "minimum_seasons_with_temporal_coverage_from_at_least_half_units": 10,
+      "minimum_units_spanning_first_and_last_thirds": 3
+    },
+    "small_groups_excluded_without_outcome_inspection": true
+  },
+  "response_pipeline": {
+    "source": "Pinned MAPPPD commit 88c73a507e0921b2541c218c71eaf16721bc6502",
+    "time_field": "season",
+    "window": [1980, 2025],
+    "observation_calibration": "Reuse the frozen Paper 2 image-minus-direct log1p offset, accuracy-group variances and same-season inverse-variance collapse exactly as defined in contracts/PAPER2_REAL_OUTCOME_EXECUTION_V1.json.",
+    "analysis_rows": "One method-corrected collapsed log1p breeding-pair state per site x species x season.",
+    "minimum_contemporaneous_support": "Retain a species x region x season only when at least three frozen primary sites have an observed collapsed state in that season."
+  },
+  "model": {
+    "species_specific_formula": "y_i,t = alpha_i + delta_region,t + beta_s * z(h_i) * tau_t + error_i,t",
+    "alpha_i": "site fixed effect",
+    "delta_region_t": "species-specific APBP-region x season fixed effect",
+    "tau_t": "(season - mean included season for that species) / 10; one unit equals one decade",
+    "beta_s": "change in relative log1p breeding state per decade for a +1 SD difference in terrestrial-opportunity change rate",
+    "expected_H1_direction": "beta_s > 0",
+    "weighting": "primary unweighted collapsed-state regression; frozen precision-weighted refit is a mandatory sensitivity, not a replacement",
+    "standard_errors": "cluster-robust by physical site within species"
+  },
+  "inference": {
+    "species_tests": "Three prespecified one-sided tests beta_s > 0 for ADPE, CHPE and GEPE.",
+    "permutation": {
+      "B": 9999,
+      "seed": 20261004,
+      "scheme": "Within each species x frozen APBP region, permute the complete site-level exposure value among site time series; keep counts, observation structure, site identity and region-year states fixed.",
+      "p_value": "(1 + number permuted beta_s >= observed beta_s)/(B+1)",
+      "multiplicity": "Holm-adjust the three species-specific p-values."
+    },
+    "cross_species_summary": "Report the three beta estimates, their signs and median beta descriptively. Do not assign a pooled paper-level p-value because physical sites can be shared among species."
+  },
+  "secondary_H2": {
+    "status": "locked until H1 is computed and the marine metric itself is frozen",
+    "allowed": "One predeclared NSIDC sea-ice-access modifier only.",
+    "forbidden": "No broad environmental screen and no post-H1 search for a favorable marine covariate."
+  },
+  "A_occupied_route": {
+    "status": "demoted_from_primary_pending_independent_measurement_recovery",
+    "reason": [
+      "The same-sensor late ETM+ route has zero support at all 44 long-term Adelie sites because post-2013 Landsat-7 Antarctic acquisition was not systematic.",
+      "The frozen Antarctic ETM+-OLI near-date overlap audit yielded zero scene pairs.",
+      "The 2026 Cape Hallett Landsat-8 validation demonstrates feasibility but also high 30-m commission/omission error and does not publish a complete transferable numeric classifier specification."
+    ],
+    "rule": "Do not delay or redefine the H1 A_available-to-relative-use test in order to rescue A_occupied. A_occupied can return only through a separately validated measurement contract."
+  },
+  "interpretation": {
+    "positive": "Within a species and regional temporal background, sites gaining terrestrial breeding opportunity gain relative breeding use through time.",
+    "null": "Changing terrestrial opportunity is not sufficient to explain relative redistribution at the tested spatial and temporal scale.",
+    "negative": "Sites gaining more terrestrial opportunity lose relative breeding use, a strong land-use decoupling pattern requiring separate mechanistic interpretation."
+  },
+  "claim_boundaries": [
+    "Relative breeding use is not literal occupied footprint.",
+    "Do not infer individual dispersal.",
+    "Do not call APBP regions closed populations.",
+    "Do not interpret a null beta as evidence that nesting habitat never matters locally.",
+    "Do not reopen the closed static area-heterogeneity hypothesis.",
+    "Do not tune exposure thresholds, regional rosters or time windows after this dynamic association is computed."
+  ],
+  "next_gate": "Pre-outcome recovery simulation of the exact two-way fixed-effect estimator on the frozen observation schedule."
+}
