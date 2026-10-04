@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-antarctic-island-ecology-paper2-response-measurement-v1",
+  "date": "2026-10-04",
+  "status": "measurement_route_frozen_before_stac_support_outcomes",
+  "parent_program": "docs/ANTARCTIC_ISLAND_ECOLOGY_PROGRAM_V1.md",
+  "purpose": "Define the biological response for Paper 2 without substituting site-level abundance for breeding-space occupancy.",
+  "primary_taxon": "Adelie penguin (Pygoscelis adeliae; ADPE)",
+  "why_species_specific": [
+    "Landsat-based retrieval of Adelie colony location and guano spatial extent has been validated at continental scale.",
+    "Published work links remotely sensed guano area to breeding abundance.",
+    "The method is not assumed to have equal error for chinstrap or gentoo colonies.",
+    "Species restriction is based on measurement validity, not demographic outcome direction."
+  ],
+  "primary_state_variables": {
+    "available_breeding_opportunity": {
+      "symbol": "A_available",
+      "definition": "Accessible ice-free terrestrial area near the frozen breeding-site anchor, after a separately frozen terrain/accessibility mask.",
+      "not_equivalent_to": [
+        "total island area",
+        "current colony area",
+        "raw rock area without accessibility filtering"
+      ]
+    },
+    "occupied_breeding_footprint": {
+      "symbol": "A_occupied",
+      "definition": "Area classified as active penguin-colony/guano footprint from optical imagery using one harmonized Landsat-based pipeline.",
+      "primary_role": "direct realized breeding-space measure",
+      "not_equivalent_to": [
+        "breeding-pair count",
+        "effective component number from Paper 1",
+        "all historically disturbed ground"
+      ]
+    }
+  },
+  "central_test": {
+    "question": "Can accessible terrestrial breeding opportunity expand while realized Adelie breeding footprint contracts?",
+    "high_value_pattern": "Delta A_available > 0 and Delta A_occupied < 0",
+    "interpretation": "land-space decoupling; physical breeding opportunity alone does not determine realized breeding-space expansion"
+  },
+  "secondary_tests_after_measurement_freeze": [
+    "Does change in A_occupied track demographic abundance change measured independently by MAPPPD?",
+    "After conditioning on A_available change, is remaining A_occupied change associated with a small predeclared marine-foraging covariate set?",
+    "Does the frequency or magnitude of land-space decoupling vary among Antarctic regions?"
+  ],
+  "remote_sensing_rules": {
+    "primary_sensor_family": "Landsat Collection 2 optical surface reflectance at 30 m for both early and late epochs",
+    "sentinel2_role": "recent-epoch validation and boundary checking, not the primary change estimator",
+    "same_pipeline_across_epochs": true,
+    "absolute_area_warning": "Medium-resolution guano classification can have substantial boundary error; inference should emphasize changes exceeding frozen measurement uncertainty rather than fine-scale absolute footprint differences."
+  },
+  "required_next_gates": [
+    "STAC metadata support audit",
+    "local pixel-level cloud/shadow/snow/ice support audit",
+    "guano-classification recovery test against published or independently mapped Adelie colony footprints",
+    "ice-free opportunity classification recovery test",
+    "freeze minimum detectable footprint-change threshold",
+    "only then estimate longitudinal A_available and A_occupied changes"
+  ],
+  "demographic_lock": "No MAPPPD count magnitude, trend, concentration class, or Paper 1 outcome may be used to tune imagery selection, classifier parameters, site eligibility, or change thresholds.",
+  "cross_species_boundary": "Chinstrap and gentoo may enter only through separately validated measurement routes; they are not automatically pooled with Adelie.",
+  "paper1_boundary": "Paper 2 does not redefine Paper 1 E. It introduces a new physical realized-space measure, A_occupied, linked conceptually but not numerically to effective breeding-component number.",
+  "stop_rule": "If historical Landsat cannot recover Adelie guano footprint change above a frozen error threshold across a sufficiently broad site sample, stop this route rather than replacing A_occupied post hoc with abundance."
+}
