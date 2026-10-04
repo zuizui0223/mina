@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-paper2d-marine-distance-measurement-receipt-v1",
+  "validated_date": "2026-10-04",
+  "contract": "contracts/PAPER2D_MARINE_DISTANCE_MEASUREMENT_V1.json",
+  "execution": {
+    "workflow_run_id": 37203924864,
+    "artifact_id": 11303493239,
+    "artifact_digest": "sha256:6487dd90117420f2a87629d609c3b5ac76db84a7349ba518f2703a77bc40b9df",
+    "conclusion": "success"
+  },
+  "archive": {
+    "files_required": 99,
+    "files_available": 97,
+    "missing": [
+      {
+        "year": 1987,
+        "month": 12
+      },
+      {
+        "year": 1988,
+        "month": 1
+      }
+    ]
+  },
+  "sites": {
+    "candidate": 77,
+    "passing": 58,
+    "passing_fraction": 0.7532467532467533,
+    "regions_represented": 6,
+    "passing_by_region": {
+      "Central-west Antarctic Peninsula": 33,
+      "South Shetland Islands": 16,
+      "Victoria Land": 5,
+      "Southwest Antarctic Peninsula": 2,
+      "Elephant Island": 1,
+      "Northeast Antarctic Peninsula": 1
+    }
+  },
+  "metric": {
+    "median_early_distance_km": 12.312588199076915,
+    "median_late_distance_km": 11.749964943611273,
+    "median_favorable_change_km": 0
+  },
+  "decision": {
+    "frozen_measurement_gate_passed": false,
+    "reason": "58/77 = 75.3% passing sites, below the predeclared 80% continuation threshold.",
+    "H2_recovery_authorized": false,
+    "H2_real_outcome_authorized": false,
+    "threshold_relaxation_authorized": false,
+    "broad_marine_search_authorized": false
+  },
+  "interpretation": [
+    "The predeclared 25-km open-water-distance metric does not have sufficient support across the frozen terrestrial roster for the planned H2 interaction test.",
+    "Coverage failure is concentrated especially in Victoria Land and cannot be repaired by lowering the frozen support rule after H1 is known.",
+    "The result is a measurement-support no-go, not evidence that marine accessibility is ecologically unimportant."
+  ],
+  "boundary": [
+    "Do not lower the 80% gate.",
+    "Do not replace the 15% threshold, November-January month set, 1000-km search cap, or median epoch summary after this result.",
+    "Do not open alternative marine covariate screens on the same data.",
+    "Paper 2 should retain marine mechanism as unresolved."
+  ]
+}
