@@ -1,0 +1,55 @@
+name: paper2d-dynamic-outcome-recovery
+
+on:
+  push:
+    branches: [research/antarctic-island-ecology-v1]
+    paths:
+      - "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_DYNAMIC_OUTCOME_V1.json"
+      - "scripts/simulate_paper2d_dynamic_outcome_recovery.py"
+      - "tests/test_paper2d_dynamic_outcome_recovery.py"
+      - ".github/workflows/paper2d-dynamic-outcome-recovery.yml"
+  pull_request:
+    paths:
+      - "contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_DYNAMIC_OUTCOME_V1.json"
+      - "scripts/simulate_paper2d_dynamic_outcome_recovery.py"
+      - "tests/test_paper2d_dynamic_outcome_recovery.py"
+      - ".github/workflows/paper2d-dynamic-outcome-recovery.yml"
+  workflow_dispatch:
+
+jobs:
+  recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - run: python -m unittest tests.test_paper2d_dynamic_outcome_recovery -v
+      - name: Download frozen outcome-blind support and A_available artifacts
+        run: |
+          mkdir -p build/forcing build/exposure build/out
+          gh run download 36517700369 -n paper2-forcing-support-audit-v1 -D build/forcing
+          gh run download 37190770020 -n paper2d-summer-exposure-full-v1 -D build/exposure
+          test -f build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv
+          test -f build/exposure/PAPER2D_SUMMER_EXPOSURE_FULL_SITES_V1.csv
+      - name: Run synthetic recovery
+        run: |
+          python scripts/simulate_paper2d_dynamic_outcome_recovery.py \
+            --forcing-csv build/forcing/PAPER2_FORCING_SUPPORT_UNITS_V1.csv \
+            --exposure-csv build/exposure/PAPER2D_SUMMER_EXPOSURE_FULL_SITES_V1.csv \
+            --contract contracts/ANTARCTIC_ISLAND_ECOLOGY_PAPER2D_DYNAMIC_OUTCOME_V1.json \
+            --out-json build/out/PAPER2D_DYNAMIC_OUTCOME_RECOVERY_RESULT_V1.json \
+            --reps 500 --seed 20261004
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2d-dynamic-outcome-recovery-v1
+          path: build/out/*
+          if-no-files-found: warn
