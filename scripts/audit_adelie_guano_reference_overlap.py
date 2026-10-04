@@ -47,7 +47,7 @@ def build_reference(tab: Path) -> pd.DataFrame:
     df = read_pangaea_table(tab)
     latc = choose_column(df, ["Latitude"])
     lonc = choose_column(df, ["Longitude"])
-    idc = choose_column(df, ["ID", "Identification", "colony_ID"])
+    idc = choose_column(df, ["ID (of colony)", "ID", "Identification", "colony_ID"])
     df[latc] = pd.to_numeric(df[latc], errors="coerce")
     df[lonc] = pd.to_numeric(df[lonc], errors="coerce")
     df = df.dropna(subset=[latc, lonc])
