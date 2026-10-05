@@ -120,6 +120,16 @@ def run(support_json:Path,resolution_csv:Path)->dict:
         q=dict(p)
         q["retained_site_ids"]=sorted(kept)
         q["n_sites"]=len(kept)
+        if isinstance(q.get("retained_site_names"), dict):
+            q["retained_site_names"] = {
+                k: v for k, v in q["retained_site_names"].items()
+                if str(k) in set(kept)
+            }
+        if isinstance(q.get("stable_method_by_site"), dict):
+            q["stable_method_by_site"] = {
+                k: v for k, v in q["stable_method_by_site"].items()
+                if str(k) in set(kept)
+            }
         q["identity_gate_removed_site_ids"]=sorted(set(original)-set(kept))
         q["identity_gate_resolved"]=True
         panels.append(q)
