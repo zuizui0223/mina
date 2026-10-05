@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-spatial-recovery-hysteresis-support-v1",
+  "date": "2026-10-05",
+  "status": "frozen_before_bulk_smp_count_magnitudes",
+  "purpose": "Identify completed abandonment-to-recolonization cycles in stable SMP breeding SiteIDs using only explicit zero/positive count states, before any abundance magnitude is used.",
+  "parent_structural_contract": "contracts/SMP_TREND_SYMMETRY_SUPPORT_V1.json",
+  "hierarchy": {
+    "system": "species x MasterSite",
+    "component": "retained SiteID"
+  },
+  "state_definition": {
+    "occupied": "direct observed whole-colony count > 0",
+    "vacant": "direct observed whole-colony count == 0 exactly",
+    "missing": "missing/unparseable/unvisited; never treated as zero"
+  },
+  "vacancy_spell": {
+    "abandonment": "occupied in complete calendar year t and explicit zero in t+1",
+    "recolonization": "after one or more consecutive explicit-zero complete years, first later complete calendar year with count > 0",
+    "completeness": "every retained SiteID must be observed in every year used by the spell under the frozen panel roster",
+    "no_gap_rule": "every year from abandonment transition through recolonization transition must be calendar-consecutive and complete; do not bridge an unobserved year",
+    "multiple_spells": "allowed; all qualifying completed spells retained",
+    "first_colonization": "not part of the primary test because no within-site abandonment threshold exists to pair against it"
+  },
+  "allowed_outputs_before_magnitudes": [
+    "species",
+    "MasterSite",
+    "SiteID",
+    "abandonment years",
+    "recolonization years",
+    "vacancy duration",
+    "number of completed spells by site/panel/species"
+  ],
+  "prohibited_outputs": [
+    "count magnitudes",
+    "panel abundance totals",
+    "abandonment abundance",
+    "recolonization abundance",
+    "effective component number",
+    "kappa",
+    "gamma",
+    "hysteresis width H"
+  ],
+  "identifiability_gate": {
+    "minimum_completed_spells": 30,
+    "minimum_distinct_siteids_with_spells": 20,
+    "minimum_mastersites_with_spells": 10,
+    "minimum_species_with_spells": 5,
+    "minimum_species_with_at_least_3_spells": 4,
+    "minimum_species_with_spells_in_at_least_2_mastersites": 3,
+    "requirement": "all conditions must pass"
+  },
+  "decision": {
+    "if_passed": "Freeze the exact completed-spell roster and authorize one magnitude-opening hysteresis execution.",
+    "if_failed": "Stop the hysteresis route. Do not lower cycle-count, species, SiteID, MasterSite or gap thresholds."
+  }
+}
