@@ -1,61 +1,76 @@
 # SMP spatial-recovery hysteresis execution runbook v1
 
 **Date:** 2026-10-05  
-**Branch:** research/smp-spatial-recovery-hysteresis-v1  
-**Purpose:** Execute the preregistered spatial-recovery hysteresis test without collapsing blind stages.
+**Branch:** \`research/smp-spatial-recovery-hysteresis-v1\`  
+**Status:** canonical execution runbook before SMP effect magnitudes are opened.
 
-## Inputs
+## Goal
 
-### Provider data extract
+Execute one prospective test of whether the same breeding sites show asymmetric population states at spatial loss and later recovery.
 
-A raw SMP Colony Count / Whole Colony Count file, ideally covering 1986–2024.
+The primary measured quantities are annual **transition-state proxies**, not exact continuous-time thresholds.
 
-The file must contain the fields required by the frozen structural scripts, including Species, SiteID, Site, MasterSite, Unit, Count, Accuracy, year/date, and the relevant Plot, Method, Estimate and Comments fields where available.
-
-### Provider/site-history resolution
-
-Fill:
-
-submission/SMP_SITE_IDENTITY_RESOLUTION_TEMPLATE.csv
-
-Required columns:
-
-- species
-- MasterSite
-- SiteID
-- master_site_key
-- master_site_identity_confirmed
-- stable_identity
-- mutually_exclusive_child
-- overlaps_parent_or_sibling
-- boundary_change_during_panel
-- retired_or_replaced
-- canonical_unit
-- notes
-
-Every SiteID in the candidate structural roster must be resolved before Stage B.
-
-### Zero-semantics confirmation
-
-Copy and complete:
-
-submission/SMP_ZERO_SEMANTICS_CONFIRMATION_TEMPLATE.json
-
-Required:
-
-- row_with_direct_count_zero_is_surveyed_nil = true
-- absent_site_year_row_is_not_zero = true
-- estimated_or_imputed_zero_excluded_from_primary = true
-- non-empty confirmation_source
-- compatible_start_year
-- compatible_end_year
-- non-empty compatible_record_family_or_era
-
-Do not infer these values from ecological patterns.
+No later stage is authorized if an earlier stage fails.
 
 ---
 
-# Stage A1 — candidate structure only
+# Required provider inputs
+
+## 1. Raw SMP extract
+
+A Colony Count / Whole Colony Count extract for the provider-confirmed compatible period, ideally within 1986–2024.
+
+Required fields include:
+
+- Species;
+- SiteID;
+- Site;
+- MasterSite;
+- Unit;
+- Count;
+- Accuracy;
+- year/date;
+- Plot/spatial-level indicator where available;
+- Method;
+- Estimate;
+- Comments.
+
+## 2. Site-history / physical-identity resolution
+
+Fill the provider/site-history table used by:
+
+\`scripts/finalize_smp_spatial_recovery_structure_v1.py\`.
+
+For every candidate SiteID resolve:
+
+- provider-confirmed \`master_site_key\`;
+- MasterSite physical identity;
+- stable SiteID identity;
+- mutually exclusive child status;
+- overlap with parent/sibling;
+- boundary change;
+- retirement/replacement;
+- canonical Unit if multiple Units remain.
+
+Do not infer any of these from occupancy or abundance trajectories.
+
+## 3. Zero-semantics confirmation
+
+Complete a private copy of the frozen zero-semantics template using official SMP documentation or provider correspondence.
+
+All must be confirmed:
+
+- direct observed Count = 0 is a surveyed nil return;
+- absent SiteID × year is not biological zero;
+- estimated/imputed zeroes can be excluded;
+- compatible start/end years;
+- compatible record family/era.
+
+If this cannot be established prospectively, stop.
+
+---
+
+# Stage A0 — count-blind candidate structure
 
 Run:
 
@@ -65,34 +80,24 @@ python scripts/gate_smp_spatial_recovery_hysteresis_structure_v1.py \
   --out build/SMP_SPATIAL_RECOVERY_CANDIDATE_STRUCTURE_V1.json
 ~~~
 
-Add --assume-whole-colony-extract only if the provider explicitly confirms that the supplied file contains only whole-colony/site-level records and no Plot/spatial-level field is present.
+Use \`--assume-whole-colony-extract\` only with explicit provider confirmation.
 
-## Pass condition
+## Required support
 
-The JSON must contain:
+- >=10 candidate species × MasterSite panels;
+- >=10 distinct MasterSites;
+- >=5 species;
+- each retained panel >=3 SiteIDs;
+- >=10 complete years;
+- >=12-year span.
 
-decision.structural_gate_passed = true
+No occupancy state or abundance magnitude may be exposed.
 
-Minimum support:
-
-- 10 candidate panels
-- 10 distinct MasterSites
-- 5 species
-- each panel >=3 retained SiteIDs
-- >=10 complete years
-- >=12-year span
-
-## If failed
-
-Stop.
-
-Do not lower thresholds, open positive/zero states, inspect abundance trends, or choose a different hierarchy after seeing count magnitudes.
+If fail: **STOP**.
 
 ---
 
-# Stage A2 — provider identity resolution
-
-Before any occupancy-state scan, fill the provider/site-history CSV using only provider metadata/crosswalk/history.
+# Stage A1 — provider identity resolution
 
 Run:
 
@@ -103,47 +108,32 @@ python scripts/finalize_smp_spatial_recovery_structure_v1.py \
   --out build/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json
 ~~~
 
-## Pass condition
+Required:
 
-decision.structural_gate_passed = true
+- \`analysis_id = mina-smp-spatial-recovery-structure-v1\`;
+- \`decision.structural_gate_passed = true\`;
+- one provider-resolved physical \`master_site_key\` per retained panel;
+- every retained SiteID passes all identity/mutual-exclusivity rules.
 
-Every retained panel must first resolve to exactly one provider-confirmed physical master_site_key. Every retained SiteID must then satisfy:
+The inherited complete-year set may shrink but cannot be extended because of SiteID removal.
 
-- stable identity
-- mutually exclusive child
-- no overlap with parent/sibling
-- no boundary change during retained panel
-- not retired/replaced
-
-If multiple count Units survive for one species × MasterSite, a provider-defined canonical_unit is required before state opening.
-
-## If failed
-
-Stop.
-
-Do not infer physical continuity from count trajectories or occupancy patterns.
+If fail: **STOP**.
 
 ---
 
-# Stage A3 — freeze zero semantics
+# Stage A2 — freeze zero semantics
 
-Complete:
+Freeze the provider-confirmed zero-semantics JSON.
 
-submission/SMP_ZERO_SEMANTICS_CONFIRMATION_TEMPLATE.json
+If zero semantics are valid only for a narrower time interval, subsequent stages are restricted to inherited Stage-A complete years inside that interval.
 
-Save the provider-confirmed file separately, for example:
+The interval can shorten but never extend the candidate observation window.
 
-private/SMP_ZERO_SEMANTICS_CONFIRMATION.json
-
-Do not replace the repository template with private provider correspondence.
-
-The compatible time range can be narrower than 1986–2024.
-
-If semantics differ among data eras or record families, use only the provider-confirmed compatible scope.
+If confirmation fails: **STOP**.
 
 ---
 
-# Stage B — occupancy-state support only
+# Stage B — state-only loss/recovery histories
 
 Run:
 
@@ -155,9 +145,15 @@ python scripts/gate_smp_spatial_recovery_hysteresis_support_v1.py \
   --out build/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json
 ~~~
 
-This stage may read Count only to classify each usable direct record as positive or explicit zero. It must not retain or output count magnitude.
+At this stage Count is reduced only to:
 
-## Spell definition
+- occupied = direct observed count \(>0\);
+- vacant = provider-confirmed direct count \(=0\);
+- missing/unusable.
+
+Missing is never zero.
+
+## Completed spell
 
 A completed spell is:
 
@@ -165,50 +161,44 @@ A completed spell is:
 1\rightarrow0\rightarrow\cdots\rightarrow0\rightarrow1
 \]
 
-with no missing calendar year between abandonment and recolonization.
+with every year from loss through recovery calendar-consecutive and state-complete.
 
 First colonization is excluded.
 
 ## Structured-null support
 
-Every spell is assigned to its maximal calendar-consecutive state-complete block.
+Each spell is assigned to the maximal calendar-consecutive state-complete block containing it.
 
-Only spells in blocks of at least 6 consecutive years enter Stage C.
+Only spells in blocks of at least 6 years enter Stage C.
 
-## Pass condition
+## Required Stage-B support
 
-decision.hysteresis_magnitude_execution_authorized = true
+After all identity, zero-semantics, state-completeness and phase-block filters:
 
-Minimum Stage-B support:
+- >=30 completed spells;
+- >=20 distinct SiteIDs;
+- >=10 distinct provider-resolved physical MasterSites;
+- >=5 species;
+- >=4 species with >=3 spells;
+- >=3 species with spells in >=2 physical MasterSites.
 
-- 30 phase-eligible completed spells
-- 20 distinct SiteIDs
-- 10 distinct provider-resolved physical MasterSites
-- 5 species
-- 4 species with >=3 spells
-- 3 species represented by spells in >=2 MasterSites
+If fail: **STOP BEFORE MAGNITUDE OPENING**.
 
-## Audit before Stage C
+## Freeze receipt before Stage C
 
 Before proceeding:
 
-1. archive this exact Stage-B JSON;
-2. compute and record its SHA256;
-3. verify that completed_spells contains no count magnitudes;
-4. verify provider-zero semantics provenance is copied into the receipt;
-5. do not change the spell roster after this point.
-
-## If failed
-
-Stop.
-
-Do not treat missing as zero, use a low-count vacancy threshold, bridge missing years, include first colonization, or lower support thresholds.
+1. archive the exact Stage-B JSON;
+2. calculate SHA256;
+3. verify no count magnitudes or \(H\) values appear;
+4. preserve provider zero-semantics provenance;
+5. never change the frozen spell roster afterward.
 
 ---
 
 # Stage C — one magnitude-opening execution
 
-Only after Stage B passes and its artifact is frozen:
+Run exactly once:
 
 ~~~bash
 python scripts/run_smp_spatial_recovery_hysteresis_v1.py \
@@ -219,47 +209,53 @@ python scripts/run_smp_spatial_recovery_hysteresis_v1.py \
   --out-spells-csv build/SMP_SPATIAL_RECOVERY_HYSTERESIS_SPELLS_V1.csv
 ~~~
 
-This is the first stage authorized to use count magnitudes for the ecological endpoint.
-
-## Observed estimand
-
 For focal SiteID \(j\),
 
 \[
-N_{-j,t}=\sum_{k\ne j}n_{k,t}.
+N_{-j,t}=\sum_{k\neq j}n_{k,t}.
 \]
 
-At abandonment:
+For the two annual censuses bracketing spatial loss,
 
 \[
 A_e=
-\frac{\log(1+N_{-j,t})+\log(1+N_{-j,t+1})}{2}.
+\frac{
+\log(1+N_{-j,t})+
+\log(1+N_{-j,t+1})
+}{2}.
 \]
 
-At recolonization:
+For the two annual censuses bracketing later recovery,
 
 \[
 A_c=
-\frac{\log(1+N_{-j,u})+\log(1+N_{-j,u+1})}{2}.
+\frac{
+\log(1+N_{-j,u})+
+\log(1+N_{-j,u+1})
+}{2}.
 \]
 
-Then:
+Then
 
 \[
 H=A_c-A_e.
 \]
 
-Average:
+\(A_e\) and \(A_c\) are annual transition-state proxies. They are **not** direct observations of the within-year demographic threshold.
 
-1. spells within SiteID;
+Aggregate in this frozen order:
+
+1. repeated spells within SiteID;
 2. SiteIDs within provider-resolved physical MasterSite;
 3. physical MasterSites within species;
-4. species equally.
+4. species with equal weight.
 
 Primary observed statistic:
 
 \[
-T_{\mathrm{obs}}.
+T_{\mathrm{obs}}
+=
+\mathrm{mean}(\text{species mean }H).
 \]
 
 ---
@@ -275,31 +271,46 @@ T_{\mathrm{obs}}>0
 and one-sided species sign-flip
 
 \[
-p\le0.05.
+p_{\mathrm{sign}}\le0.05.
 \]
 
-If <=20 species, enumerate all sign configurations exactly.
+If <=20 species, enumerate all sign configurations exactly. Otherwise use 100,000 frozen sign flips.
+
+This gate alone cannot establish spatial-recovery asymmetry.
 
 ---
 
-# Confirmatory gate 2 — structured temporal phase null
+# Confirmatory gate 2 — structured common-phase null
 
-For each provider-resolved physical MasterSite × identical contiguous complete-year block:
+Purpose: test whether positive \(H\) is explained by fixed loss/recovery dates aligning with a trending or autocorrelated surrounding-population trajectory.
 
-- retain the full multivariate count trajectories;
-- retain all frozen event-year positions;
-- circularly shift the whole MasterSite/block by one common phase;
-- apply the same shift across all eligible species, SiteIDs and spells sharing that block;
-- preserve within-species cross-site covariance, spell dependence, and aligned cross-species temporal covariance.
+For each provider-resolved physical MasterSite × identical contiguous state-complete block:
 
-Use 9,999 frozen resamples with seed 20261005.
+1. retain the full multivariate SiteID count trajectory;
+2. retain all frozen spell event-year positions;
+3. draw one common circular shift for the whole physical MasterSite/block;
+4. apply that same phase to all eligible species, SiteIDs and spells sharing the block;
+5. recompute \(H\);
+6. aggregate through the same spell → SiteID → MasterSite → species hierarchy.
+
+Use:
+
+- 9,999 resamples;
+- seed 20261005.
+
+This preserves within-block marginal time series and cross-site covariance, and where blocks align it preserves shared cross-species local temporal structure.
+
+The circular seam is accepted prospectively and is not tuned after results.
 
 Required:
 
 \[
 \Delta_{\mathrm{phase}}
 =
-T_{\mathrm{obs}}-\mathrm{median}(T_{\mathrm{phase}})>0
+T_{\mathrm{obs}}
+-
+\mathrm{median}(T_{\mathrm{phase,null}})
+>0
 \]
 
 and
@@ -312,61 +323,87 @@ p_{\mathrm{phase}}\le0.05.
 
 # Final decision
 
-## Supported only if both gates pass
+## All four criteria pass
 
-Allowed conclusion:
+Required simultaneously:
 
-> **Spatial recovery occurred at a higher surrounding population state than spatial loss at the same breeding sites, beyond generic temporal alignment with the observed population trajectories.**
+1. \(T_{\mathrm{obs}}>0\);
+2. \(p_{\mathrm{sign}}\le0.05\);
+3. \(\Delta_{\mathrm{phase}}>0\);
+4. \(p_{\mathrm{phase}}\le0.05\).
 
-Program-level interpretation:
+Allowed precise conclusion:
 
-> **Population recovery did not simply retrace the spatial pathway of collapse.**
+> **Later recovery of the same breeding sites was associated with higher surrounding population states than their earlier loss, beyond structured temporal alignment with the observed MasterSite abundance trajectories.**
+
+Allowed program-level interpretation:
+
+> **Population recovery did not simply retrace spatial collapse.**
+
+Do not report exact continuous-time recolonization/extinction thresholds.
 
 ## Sign-flip passes, phase null fails
 
 Conclusion:
 
-> apparent asymmetry is compatible with temporal alignment/drift.
+> the apparent loss–recovery state asymmetry is compatible with temporal alignment on the observed population trajectories.
 
 No hysteresis claim.
 
-## Support gate fails or Stage C is unresolved
+## Sign-flip fails / effect unresolved / support gate fails
 
-The independent generalization fails or remains unavailable.
+The independent generalization is not supported.
 
-Submit/retain the Antarctic penguin result as a bounded standalone finding.
+The Antarctic penguin paper remains a bounded standalone result.
+
+No rescue analysis.
 
 ---
 
-# Claims that remain prohibited even after a positive result
+# Mechanism boundary
 
-Do not claim:
+Even with full support, do not claim that:
 
-- Allee effects were uniquely identified;
+- Allee effects caused the pattern;
 - conspecific attraction caused the pattern;
 - public information was demonstrated;
-- all habitat confounding was removed;
-- first colonization equals recolonization;
-- a universal threshold across species.
+- all habitat confounding was removed.
+
+Same-site pairing removes fixed place identity.
+
+The common-phase null controls structured temporal alignment with the observed abundance trajectories.
+
+Neither removes time-varying habitat deterioration, predators, disturbance, management or demographic composition.
 
 Preferred wording:
 
-- spatial-recovery asymmetry
-- transition-state asymmetry
-- empirical loss–recovery threshold proxy
-- history-dependent spatial recovery
+- spatial-recovery asymmetry;
+- loss–recovery transition-state asymmetry;
+- history-dependent spatial recovery;
+- empirical loss–recovery state proxy.
 
 ---
 
-# Frozen literature boundary
+# Immutable after Stage C opens
 
-Already established before this test:
+Do not change:
 
-- Bled et al. 2011: persistence, first colonization and recolonization can differ in kittiwakes.
-- Schippers et al. 2011: Allee effects can slow seabird recolonization in metapopulation models.
-- Bennett et al. 2022: buffer effects can structure colonial seabird occupancy across growth, decline and recovery.
-- Burger et al. 2019: dynamic island-biogeography theory can generate hysteresis.
+- SiteID identity rules;
+- zero semantics;
+- inherited complete-year rule;
+- state-complete-year rule;
+- vacancy-spell definition;
+- minimum 6-year phase block;
+- 30-spell / 20-SiteID / 10-MasterSite / 5-species support thresholds;
+- leave-one-SiteID-out parent abundance;
+- \(\log(1+N)\);
+- annual transition midpoint;
+- aggregation hierarchy;
+- equal-species weighting;
+- sign-flip rule;
+- common circular phase-null family;
+- 9,999 phase resamples;
+- species/SiteID exclusions;
+- vacancy-duration filters.
 
-Candidate novelty is therefore not the existence of these concepts.
-
-It is the prospective multi-species **same-site paired measurement of abandonment versus later recolonization population states**, with a structured temporal-alignment null, linked to an independently discovered Antarctic penguin spatial-recovery anomaly.
+Any mechanism or moderator test requires independent data.
