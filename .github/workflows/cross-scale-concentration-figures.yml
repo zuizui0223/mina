@@ -10,6 +10,15 @@ on:
       - "scripts/plot_replicated_concentration_figures.py"
       - "data/figure_data/replicated_concentration_v1/**"
       - ".github/workflows/cross-scale-concentration-figures.yml"
+  pull_request:
+    paths:
+      - "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
+      - "submission/FIGURE_CAPTIONS_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
+      - "results/MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2.json"
+      - "scripts/plot_cross_scale_concentration_figures.py"
+      - "scripts/plot_replicated_concentration_figures.py"
+      - "data/figure_data/replicated_concentration_v1/**"
+      - ".github/workflows/cross-scale-concentration-figures.yml"
   workflow_dispatch:
 
 jobs:
