@@ -1,0 +1,47 @@
+name: smp-spatial-recovery-hysteresis-v2-recovery
+
+on:
+  push:
+    branches: [research/smp-spatial-recovery-hysteresis-v2]
+    paths:
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V2.json"
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_EFFECT_V2.json"
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_V2.json"
+      - "scripts/finalize_smp_spatial_recovery_hysteresis_support_v2.py"
+      - "scripts/run_smp_spatial_recovery_hysteresis_v2.py"
+      - "scripts/audit_smp_spatial_recovery_hysteresis_recovery_v2.py"
+      - "tests/test_smp_spatial_recovery_hysteresis_v2.py"
+      - ".github/workflows/smp-spatial-recovery-hysteresis-v2-recovery.yml"
+  pull_request:
+    paths:
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V2.json"
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_EFFECT_V2.json"
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_V2.json"
+      - "scripts/finalize_smp_spatial_recovery_hysteresis_support_v2.py"
+      - "scripts/run_smp_spatial_recovery_hysteresis_v2.py"
+      - "scripts/audit_smp_spatial_recovery_hysteresis_recovery_v2.py"
+      - "tests/test_smp_spatial_recovery_hysteresis_v2.py"
+      - ".github/workflows/smp-spatial-recovery-hysteresis-v2-recovery.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - run: python -m unittest tests.test_smp_spatial_recovery_hysteresis_v2 -v
+      - name: Run V2 predata synthetic recovery audit
+        run: |
+          mkdir -p build
+          python -m scripts.audit_smp_spatial_recovery_hysteresis_recovery_v2             --out-json build/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V2.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smp-spatial-recovery-hysteresis-recovery-audit-v2
+          path: build/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V2.json
+          if-no-files-found: warn
