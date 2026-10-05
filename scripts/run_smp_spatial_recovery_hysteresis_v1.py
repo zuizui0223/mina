@@ -76,7 +76,8 @@ def prepare_count_frame(
     x["_unit"] = x[unit_col].map(lambda z: str(z).strip())
     x["_method"] = x[method_col].map(lambda z: str(z).strip()) if method_col else ""
     x["year"] = x["_year"].astype(int)
-    x["_count"] = pd.to_numeric(x[count_col], errors="coerce")
+    numeric_text = x[count_col].astype(str).str.strip().str.replace(",", "", regex=False)
+    x["_count"] = pd.to_numeric(numeric_text, errors="coerce")
 
     x = x[~x["_species"].isin(SENSITIVE)].copy()
     pilot = x["_species"].str.contains("kittiwake", regex=False) & (
