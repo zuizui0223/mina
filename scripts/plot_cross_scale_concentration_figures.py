@@ -21,7 +21,7 @@ LOCAL_ORDER = [
     "Signy chinstrap",
 ]
 
-SPECIES_LABEL = {
+# 2026-10-05 revision: increasing networks are a main interpretation boundary.\nSPECIES_LABEL = {
     "ADPE": "Adelie",
     "CHPE": "Chinstrap",
     "GEPE": "Gentoo",
