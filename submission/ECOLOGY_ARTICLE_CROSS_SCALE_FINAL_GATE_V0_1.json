@@ -10,36 +10,41 @@
     "claim_boundary": "PASS_REVISED_FOR_INCREASING_NETWORKS",
     "literature_citation_keys": "PASS",
     "reproducibility_receipts": "PASS",
-    "repository_ci": "PENDING_CURRENT_HEAD_FOCUSED_CHECK",
-    "main_document_generation": "REQUIRED_REGEN_AFTER_2026_10_05_SCIENTIFIC_REVISION",
-    "main_document_visual_qa": "REQUIRED_REQA_AFTER_2026_10_05_SCIENTIFIC_REVISION",
-    "main_figure_visual_qa": "REQUIRED_REDESIGN_OR_CONFIRMATION_FOR_REVISED_REGIONAL_STORY",
-    "generated_manuscript_page_limit": "PENDING_REGENERATED_PACKAGE",
+    "repository_ci": "PASS_CURRENT_HEAD_FOCUSED_CHECK",
+    "main_document_generation": "PASS_REVISED_DOCX_STRUCTURAL_QA",
+    "main_document_visual_qa": "PENDING_FINAL_VISUAL_QA_REVISED_DOCX",
+    "main_figure_visual_qa": "PASS_SIZE_AUDIT_PENDING_FINAL_VISUAL_QA",
+    "generated_manuscript_page_limit": "PENDING_FINAL_RENDER_PAGE_COUNT",
     "canonical_package_uniqueness": "PASS",
     "author_controlled_metadata": "BLOCKED_PENDING_HUMAN_CONFIRMATION",
-    "final_upload_readiness": "BLOCKED_OLD_ARTIFACTS_SUPERSEDED_PLUS_AUTHOR_METADATA",
+    "final_upload_readiness": "BLOCKED_BY_FINAL_VISUAL_QA_AND_AUTHOR_METADATA",
     "ai_disclosure": "PASS_METHODS_ACKNOWLEDGMENTS_AND_SUBMISSION_COPY",
     "data_provider_acknowledgments": "PASS",
-    "supporting_information_pdf": "PENDING_BUILD_AND_VISUAL_QA"
+    "supporting_information_pdf": "PASS_BUILD_PENDING_FINAL_VISUAL_QA"
   },
   "canonical_artifacts": {
     "placeholder_docx": {
-      "workflow_run_id": 37117211288,
-      "artifact_id": 11271907803,
-      "digest": "sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b",
-      "head_sha": "7af330c02422678d8d3c95c7cbaf165368f4a6c0",
-      "pages": 24,
-      "status": "SUPERSEDED_DO_NOT_UPLOAD"
+      "workflow_run_id": 37271645516,
+      "artifact_id": 11328750641,
+      "digest": "sha256:261b32a8ed3c7aa199ab47861e970bb6165256056ba5acb576390c5236e857d6",
+      "head_sha": "0028c1d67db29d85ae7163bea8870ab4b72cd460",
+      "status": "CURRENT_REVISED_PREVIEW_PENDING_VISUAL_QA"
     },
     "main_figures": {
-      "workflow_run_id": 37106154408,
-      "artifact_id": 11267687698,
-      "digest": "sha256:c00314e70b631d024d407429a0947f1f7e6e749a1945fcd58833e1fea1585f19",
+      "workflow_run_id": 37271645669,
+      "artifact_id": 11328134584,
+      "digest": "sha256:b11e37a4a1ffc7a209abcc9ea201785546184b93a9a90dae5537c2ca33f6fd8f",
       "count": 3,
-      "status": "SUPERSEDED_PENDING_REVISED_STORY_FIGURE_QA"
+      "status": "CURRENT_REVISED_FIGURES_SIZE_QA_PASS_PENDING_VISUAL_QA"
     },
     "expected_generated_manuscript_pages": 27,
-    "ecology_article_page_limit": 30
+    "ecology_article_page_limit": 30,
+    "appendix_s1": {
+      "workflow_run_id": 37271645474,
+      "artifact_id": 11327474999,
+      "digest": "sha256:5c0152464b1475a1e4060058d7a6226f2052e189d1861f049263c61512866eb0",
+      "status": "CURRENT_APPENDIX_BUILD_PASS_PENDING_VISUAL_QA"
+    }
   },
   "unresolved_human_fields": [
     "final author list and order",
@@ -56,6 +61,6 @@
   "optional_post_initial_submission_field": [
     "permanent archive DOI"
   ],
-  "next_action": "Regenerate the Ecology Article manuscript from the revised 2026-10-05 scientific text, ensure the increasing regional networks are visible in the main regional figure/story, rerender and visually QA the DOCX/figures/Appendix, recheck page limit, then complete author-controlled metadata.",
+  "next_action": "Perform final visual QA of the rebuilt revised DOCX, three main figures and Appendix S1; record the rendered page count; then complete author-controlled metadata and regenerate the author-complete files through the same builders.",
   "stop_rule": "No new MAPPPD ecological endpoint is authorized. Packaging work must reflect the revised interpretation; SMP symmetry testing remains a separate prospective project."
 }
