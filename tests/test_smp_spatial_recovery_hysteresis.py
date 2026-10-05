@@ -170,6 +170,7 @@ class HysteresisTests(unittest.TestCase):
         spells = [{
             "species": "sp1",
             "master_site": "M1",
+            "master_site_key": "M1",
             "unit": "AON",
             "site_id": "s1",
             "state_complete_years": [2001, 2002, 2003, 2004],
@@ -204,6 +205,7 @@ class HysteresisTests(unittest.TestCase):
         spells = [{
             "species": "sp1",
             "master_site": "M1",
+            "master_site_key": "M1",
             "unit": "AON",
             "site_id": "s1",
             "state_complete_years": [2000, 2001, 2002],
@@ -215,6 +217,7 @@ class HysteresisTests(unittest.TestCase):
         spells_bad = [{
             "species": "sp1",
             "master_site": "M1",
+            "master_site_key": "M1",
             "unit": "AON",
             "site_id": "s1",
             "state_complete_years": [2001, 2002, 2003],
@@ -267,6 +270,7 @@ class HysteresisTests(unittest.TestCase):
             sp = {
                 "species": species,
                 "master_site": master,
+                "master_site_key": master,
                 "unit": unit,
                 "site_id": "focal",
                 "abandon_from": 2000,
@@ -281,6 +285,7 @@ class HysteresisTests(unittest.TestCase):
             observed_rows.append({
                 "species": species,
                 "master_site": master,
+                "master_site_key": master,
                 "site_id": "focal",
                 "H": spell_effect(mat, "focal", sp)["H"],
             })
