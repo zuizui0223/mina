@@ -183,7 +183,7 @@ Minimum Stage-B support:
 
 - 30 phase-eligible completed spells
 - 20 distinct SiteIDs
-- 10 MasterSites
+- 10 distinct provider-resolved physical MasterSites
 - 5 species
 - 4 species with >=3 spells
 - 3 species represented by spells in >=2 MasterSites
@@ -252,8 +252,8 @@ H=A_c-A_e.
 Average:
 
 1. spells within SiteID;
-2. SiteIDs within MasterSite;
-3. MasterSites within species;
+2. SiteIDs within provider-resolved physical MasterSite;
+3. physical MasterSites within species;
 4. species equally.
 
 Primary observed statistic:
