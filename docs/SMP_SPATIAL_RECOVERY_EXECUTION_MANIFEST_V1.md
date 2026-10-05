@@ -75,8 +75,9 @@ Freeze:
 
 - state-complete years;
 - completed 1→0→…→0→1 spells;
-- contiguous phase blocks;
-- exact spell roster.
+- contiguous state-complete blocks;
+- one non-circular common-offset set per physical MasterSite × block;
+- exact Stage-C-eligible spell roster.
 
 Run replication gate.
 
@@ -107,7 +108,7 @@ Calculate:
 - H = A_c - A_e;
 - fixed hierarchical aggregation;
 - species sign-flip;
-- structured common-phase null.
+- structured non-circular common-offset null.
 
 ### Step 7 — decision
 
@@ -115,8 +116,8 @@ Confirmatory support requires all:
 
 - T_obs > 0;
 - species sign-flip one-sided p <= 0.05;
-- Delta_phase > 0;
-- phase-null upper-tail p <= 0.05.
+- Delta_linear > 0;
+- linear-shift-null upper-tail p <= 0.05.
 
 If any fail:
 
