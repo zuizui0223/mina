@@ -1,68 +1,121 @@
-# MAPPPD regional breeding-site concentration synthesis v1
+# MAPPPD regional breeding-site concentration synthesis v2
 
-**Status:** bounded existing-data extension. This analysis does not reopen the frozen Ecology Report and does not use SMP data.
+**Status:** reinterpretation of the already-frozen regional result. No new regional outcome test is opened.
 
 ## Question
 
-Does the breeding-space contraction pattern discovered within penguin breeding systems also appear one spatial level higher, among repeatedly monitored breeding sites inside published APBP regions?
+What does the frozen MAPPPD regional result actually add to the replicated within-system concentration result?
 
 The parent unit is **species × APBP region** and the components are fixed monitored site_id values. These are geographic monitoring networks, not assumed closed demographic populations.
 
 ## Frozen implementation
 
-The analysis reuses the pinned MAPPPD snapshot at commit 88c73a507e0921b2541c218c71eaf16721bc6502 and the already frozen Paper 2 observation cohort/calibration. Repeated same-season counts are corrected for the previously estimated image-vs-direct offset and precision-collapsed using the frozen accuracy model.
+The regional analysis remains exactly as executed.
 
-Eligibility is based on coverage only: at least three retained sites, five complete seasons, and a ten-year calendar span. A deterministic pruning rule removes the sparsest site until the first qualifying fixed roster is reached. Count magnitude does not enter roster selection.
+For each eligible network:
 
-For each eligible network, E = 1/sum(p_j^2), and log(E_t) = alpha + kappa_obs log(N_t).
+\[
+E=1/\sum_j p_j^2
+\]
 
-The fixed-composition null preserves the observed total trajectory while drawing site counts from time-invariant pooled shares. A second null adds the frozen observation-error structure on the log1p scale. The focal effect is delta-kappa = kappa_obs - median(kappa_null).
+and
+
+\[
+\log E_t = \alpha + \kappa_{obs}\log N_t.
+\]
+
+The fixed-composition null preserves the observed total trajectory while drawing site counts from time-invariant pooled shares. A second null adds the frozen observation-error structure. The focal calibrated effect is \(\Delta\kappa=\kappa_{obs}-\mathrm{median}(\kappa_{null})\).
+
+No result below changes that contract.
 
 ## Structural support
 
-Thirteen species × region groups were present in the frozen cohort. Seven passed the fixed-roster support gate, spanning all three Pygoscelis species and three APBP regions:
+Thirteen species × region groups were present in the frozen cohort. Seven passed the fixed-roster support gate, spanning all three Pygoscelis species and three APBP regions.
 
-- Adelie: Central-west Antarctic Peninsula, South Shetland Islands, Victoria Land
-- chinstrap: Central-west Antarctic Peninsula, South Shetland Islands
-- gentoo: Central-west Antarctic Peninsula, South Shetland Islands
-
-Four of the seven eligible networks were declining over their retained complete seasons.
+Four networks declined and three increased.
 
 ## Declining networks
 
-| Species | Region | Sites | Seasons | raw kappa | observation-error calibrated delta kappa | p | Robust panel support |
+| Species | Region | Sites | Seasons | raw kappa | calibrated delta kappa | p | Robust panel support |
 |---|---|---:|---:|---:|---:|---:|---|
-| Adelie | Central-west Antarctic Peninsula | 3 | 5 | 0.080 | +0.073 | 0.108 | no |
-| Adelie | South Shetland Islands | 4 | 7 | 0.088 | +0.115 | 0.0148 | yes |
+| Adélie | Central-west Antarctic Peninsula | 3 | 5 | 0.080 | +0.073 | 0.108 | no |
+| Adélie | South Shetland Islands | 4 | 7 | 0.088 | +0.115 | 0.0148 | yes |
 | Chinstrap | Central-west Antarctic Peninsula | 3 | 10 | 0.022 | +0.017 | 0.432 | no |
 | Chinstrap | South Shetland Islands | 6 | 8 | 0.445 | +0.434 | 0.0152 | yes |
 
-All four declining networks have positive null-calibrated kappa. The median observation-error-calibrated effect is **+0.094**. The exact sign count is 4/4 (nominal one-sided sign p = 0.0625), but species × region panels inside the same region are not independent geographic replicates, so that p-value is descriptive rather than a macroecological generality test.
+All four declining networks have positive null-calibrated abundance–concentration effects. The median calibrated effect is +0.094. The 4/4 sign count is descriptive only because panels within regions are not independent.
 
-The important split is geographic: both South Shetland panels survive the observation-error null, while both Central-west Antarctic Peninsula panels point in the same direction but do not.
+This supports a recurring **abundance-linked concentration direction among the declining regional subset**.
 
-## Increasing networks: descriptive context only
+## Increasing networks are not merely context
 
-Three eligible networks increased in abundance: Adelie in Victoria Land and gentoo in Central-west Antarctic Peninsula and South Shetland Islands. Their observation-error-calibrated delta-kappa values were **-0.355, -0.228, and +0.020**, respectively.
+| Species | Region | Sites | Seasons | first total | last total | first E | last E | raw kappa | calibrated delta kappa |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Adélie | Victoria Land | 11 | 5 | 387,917 | 516,140 | 4.85 | 3.56 | -0.358 | -0.355 |
+| Gentoo | Central-west Antarctic Peninsula | 7 | 5 | 19,084 | 23,253 | 4.93 | 4.13 | -0.238 | -0.228 |
+| Gentoo | South Shetland Islands | 5 | 7 | 11,910 | 19,544 | 3.90 | 3.86 | +0.024 | +0.020 |
 
-Notably, effective breeding-site number was lower at the final than the first retained season in all three increasing networks. This is qualitatively consistent with the pre-existing slow-state / weak-recovery hypothesis from the five-population contraction analysis, but the regional contract did not freeze a formal ratchet test for these panels. It is therefore descriptive corroboration, not new confirmatory evidence for hysteresis.
+All three increasing networks end with lower E.
 
-## What the existing data now support
+In two panels, abundance rises while E falls substantially, so the abundance–space elasticity is negative. That is the opposite kappa direction from the declining panels even though the temporal endpoint is still greater concentration.
 
-The result strengthens the claim from a purely within-island phenomenon to a **cross-scale Antarctic Pygoscelis pattern**.
+This matters because it separates:
 
-At the local scale, the existing Palmer and Signy analyses show concentration beyond proportional thinning in five populations across two species and two monitoring systems. At the regional scale, every estimable declining MAPPPD network shifts in the same concentration direction after panel-specific null calibration, and two species in the South Shetland network remain individually supported after the frozen observation-error sensitivity.
+1. **abundance-linked concentration** — positive kappa within a declining trajectory;
+2. **temporal concentration** — E falling through time, which can occur even when abundance rises.
 
-The strongest defensible synthesis is:
+The frozen regional contract formally tests the first quantity, not the second.
 
-> **Population loss in Antarctic Pygoscelis is repeatedly accompanied by redistribution of breeding effort toward fewer effective breeding components beyond proportional thinning, and the same direction can persist from within-island breeding structure to networks of breeding sites. The strength of that regional-scale response is geographically heterogeneous.**
+## Revised interpretation
+
+The MAPPPD result should no longer be summarized as simple cross-scale confirmation that decline causes concentration.
+
+The stronger evidence hierarchy is:
+
+### Confirmed within breeding systems
+
+Five declining Palmer/Signy trajectories show concentration beyond proportional thinning/count error.
+
+### Regional declining subset
+
+All four declining networks have the same positive calibrated abundance–concentration direction; two South Shetland panels are individually supported.
+
+### Regional trend boundary
+
+All three increasing networks also end with lower E, and two do so despite substantial abundance growth.
+
+Therefore:
+
+> **regional concentration is not uniquely associated with decline in the eligible MAPPPD panels.**
+
+This is a scope boundary, not a new confirmatory law.
+
+## Relation to the slow-state / ratchet exploration
+
+The prior bounded local exploration found that E recovered during only 8/31 abundance rebounds, but the prespecified ratchet criterion failed because rebound kappa was negative.
+
+The increasing regional networks are descriptively compatible with weak reversibility or slow spatial recovery, but no regional ratchet or decline-versus-increase test was frozen before these outcomes were known.
+
+Do not claim hysteresis.
+
+The correct future hypothesis is:
+
+> **Is breeding-space concentration directionally persistent across population growth and decline, such that numerical increase fails to reverse earlier spatial concentration?**
+
+That question now requires a genuinely independent data source or a prospectively frozen macroecological test.
 
 ## Boundary
 
-This is not a general seabird macroecological law. Taxonomic breadth remains Pygoscelis, only two species contribute declining regional networks, and the two robust regional results come from the same geographic region. MAPPPD sampling is sparse and geographically uneven, and the retained fixed-site networks describe repeatedly monitored components rather than complete regional occupancy.
+The seven regional panels contain only 3–11 sites and 5–10 complete seasons. Panels within the same APBP region are not independent.
 
-The correct upgrade is therefore **cross-scale generality within Antarctic Pygoscelis**, not universal colonial-breeder generality.
+No formal time-slope test, trend-asymmetry statistic, hysteresis test or decline-versus-increase comparison was preregistered for the MAPPPD panels.
+
+The increasing panels therefore constrain interpretation but do not establish a trend-independent regional law.
+
+## Strongest defensible synthesis
+
+> **Non-proportional concentration during decline is strongly replicated within Antarctic Pygoscelis breeding systems. At the broader regional scale, the abundance-linked decline direction recurs within declining networks, but effective breeding-site number also decreases in all three increasing networks. Breeding-space organization is therefore not a simple transform of population trend, and decline-specific causation should not be inferred from the regional extension.**
 
 ## Stop rule
 
-No alternate regional definitions, distance radii, hand-built clusters, completeness thresholds, lags, collapse hinges, or trait searches are opened in response to these results.
+No new time-trend statistic, alternate region definition, radius, lag, threshold, or mechanism search is opened on these same seven panels.
