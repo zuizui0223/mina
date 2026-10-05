@@ -171,11 +171,11 @@ def run(support_json:Path,resolution_csv:Path)->dict:
         panels.append(q)
 
     species=sorted({p["species"] for p in panels})
-    masters=sorted({p["master_site"] for p in panels})
+    physical_masters=sorted({p["master_site_key"] for p in panels})
     passed=bool(
         len(panels)>=MIN_PANELS
         and len(species)>=MIN_SPECIES
-        and len(masters)>=MIN_MASTERS
+        and len(physical_masters)>=MIN_MASTERS
     )
 
     return {
@@ -184,7 +184,8 @@ def run(support_json:Path,resolution_csv:Path)->dict:
         "status":"identity_resolved_count_blind_structure",
         "eligible_panel_count":len(panels),
         "eligible_species_count":len(species),
-        "distinct_master_site_count":len(masters),
+        "distinct_master_site_count":len(physical_masters),
+        "distinct_master_site_keys":physical_masters,
         "dedicated_hysteresis_thresholds":{
             "minimum_panels":MIN_PANELS,
             "minimum_species":MIN_SPECIES,
