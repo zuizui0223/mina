@@ -36,7 +36,7 @@ For this project, three metadata issues are especially important:
 
 If plot-level records exist separately, they are not required for the primary analysis unless their identifiers and boundaries are stable and documented through time.
 
-The analysis is prospectively staged. Panel and SiteID eligibility will be frozen from identifiers, sampling support and metadata before count magnitudes are opened. The next gate will use only positive/explicit-zero/missing states to identify completed, calendar-consecutive abandonment-to-recolonization spells. Only if that support gate passes will abundance magnitudes be used for the paired threshold test.
+The analysis is prospectively staged. Panel and SiteID eligibility will be frozen from identifiers, sampling support and provider/site-history metadata before occupancy states or count magnitudes are opened. Provider confirmation of zero semantics is required before any Count=0 row can be treated as vacancy. The next gate will use only positive/explicit-zero/missing states to identify completed, calendar-consecutive abandonment-to-recolonization spells and their frozen contiguous complete-year blocks. Only if that support gate passes will abundance magnitudes be used for the paired threshold test and the predeclared common-phase temporal-alignment null.
 
 I will follow the SMP Data Access and Use Policy and required acknowledgement wording in any publication using the data.
 
