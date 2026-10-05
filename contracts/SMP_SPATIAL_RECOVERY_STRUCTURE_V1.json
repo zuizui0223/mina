@@ -3,7 +3,7 @@
   "contract_id": "mina-smp-spatial-recovery-structure-v1",
   "date": "2026-10-05",
   "status": "identity_gate_before_zero_positive_state_scan",
-  "inherited_support": "scripts/gate_smp_spatial_recovery_hysteresis_structure_v1.py",
+  "inherited_support": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_STRUCTURE_V1.json",
   "purpose": "Resolve physical SiteID continuity and mutual exclusivity before explicit-zero occupancy histories are inspected for spatial-recovery hysteresis.",
   "required_provider_or_metadata_resolution": {
     "required_fields": [
@@ -35,13 +35,18 @@
     "minimum_complete_years": 10,
     "minimum_calendar_span_years": 12,
     "roster_repair": "After removing identity-ineligible SiteIDs, retain the exact inherited count-blind complete-year set from Stage A. Do not extend the time series into additional years merely because removing a SiteID would make them complete.",
-    "program_thresholds": "Use the dedicated hysteresis structure thresholds: >=10 eligible panels, >=10 distinct MasterSites, >=5 species. No geographic-region or multi-panel-per-species criterion is imposed at Stage A; replication requirements are enforced at the completed-spell Stage B gate.",
+    "program_thresholds": {
+      "minimum_identity_resolved_panels": 10,
+      "minimum_distinct_master_sites": 10,
+      "minimum_species": 5,
+      "rationale": "These are the minima needed for the downstream completed-spell gate to remain potentially identifiable. Geographic-region and multi-panel-species thresholds from the superseded trend-symmetry design are not part of the hysteresis hypothesis."
+    },
     "one_biological_panel_per_species_masterSite": true,
     "multiple_unit_rule": "If more than one structurally eligible Count Unit remains for the same species x MasterSite, exclude that species x MasterSite unless the provider identifies a canonical primary Unit before zero/positive states or magnitudes are opened. No unit conversion or outcome-based unit choice.",
     "rationale_for_no_year_extension": "This conservative rule prevents the identity-resolution step from creating a new observation window and keeps all later occupancy-state cycles inside the originally frozen support years."
   },
   "decision": {
-    "if_site_history_unavailable": "Do not open the hysteresis occupancy-state test. The hypothesis requires stable physical SiteID identity.",
-    "if_passed": "Freeze the identity-resolved hysteresis panel roster under the dedicated 10-panel / 10-MasterSite / 5-species support rule and authorize provider-confirmed explicit-zero/positive Stage B."
+    "if_site_history_unavailable": "Do not open positive/zero states. Stable physical SiteID identity is required.",
+    "if_passed": "Freeze the identity-resolved roster and proceed only after provider zero-semantics confirmation."
   }
 }
