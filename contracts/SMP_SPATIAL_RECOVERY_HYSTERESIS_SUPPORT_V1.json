@@ -38,7 +38,6 @@
     "vacancy duration",
     "number of completed spells by site/panel/species",
     "transition_gap_years",
-    "number/list of eligible pseudo start years for the trajectory-drift null",
     "contiguous complete-year block start/end/length for each completed spell"
   ],
   "prohibited_outputs": [
@@ -52,30 +51,22 @@
     "hysteresis width H"
   ],
   "identifiability_gate": {
-    "minimum_completed_spells": 30,
+    "minimum_phase_eligible_completed_spells": 30,
     "minimum_distinct_siteids_with_spells": 20,
     "minimum_mastersites_with_spells": 10,
     "minimum_species_with_spells": 5,
     "minimum_species_with_at_least_3_spells": 4,
     "minimum_species_with_spells_in_at_least_2_mastersites": 3,
-    "requirement": "all prior conditions must pass after excluding spells whose containing complete-year block has <6 calendar-consecutive years",
-    "minimum_null_eligible_completed_spells": 30,
-    "minimum_phase_block_years_per_spell": 6
+    "minimum_phase_block_years_per_spell": 6,
+    "requirement": "all conditions must pass after excluding completed spells whose containing frozen complete-year block has <6 calendar-consecutive years"
   },
   "decision": {
-    "if_passed": "After the identity-resolved structure and zero-semantics confirmation both pass, freeze the exact phase-null-eligible completed-spell roster and authorize one magnitude-opening hysteresis execution.",
+    "if_passed": "After identity-resolved structure and provider/official zero-semantics confirmation both pass, freeze the exact phase-null-eligible completed-spell roster and authorize one magnitude-opening hysteresis execution.",
     "if_failed": "Stop the hysteresis route. Do not infer zero semantics, lower identity/cycle/phase thresholds, or bridge missing years."
   },
   "identity_requirement": "Input roster must be the output of the frozen SiteID identity gate; unresolved, merged, split, overlapping, boundary-changed, retired or replaced SiteIDs are ineligible.",
-  "trajectory_drift_null_support": {
-    "purpose": "Before count magnitudes open, enumerate all pseudo placements of each completed spell on the same panel year grid that preserve the exact transition-gap years.",
-    "pseudo_start_rule": "A pseudo start year s is eligible only if s, s+1, s+d, and s+d+1 are all frozen complete years, where d is the observed transition_gap_years.",
-    "minimum_pseudo_placements_per_spell": 3,
-    "use": "Only spells with at least 3 eligible pseudo placements enter the magnitude-opening gate.",
-    "magnitude_blinding": "Pseudo placements use year identities only; no abundance magnitude enters this support filter."
-  },
   "zero_semantics_contract": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json",
-  "zero_semantics_requirement": "Stage B is unauthorized until provider/official documentation confirms that direct Count=0 rows are surveyed nil returns, absent rows are not zero, and estimated/imputed zeroes are excluded.",
+  "zero_semantics_requirement": "Stage B is unauthorized until a confirmation JSON records row_with_direct_count_zero_is_surveyed_nil=true, absent_site_year_row_is_not_zero=true, estimated_or_imputed_zero_excluded_from_primary=true, and a non-empty confirmation_source.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
   "provider_semantics_gate": {
     "required_before_state_scan": true,
