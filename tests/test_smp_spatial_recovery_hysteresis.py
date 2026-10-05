@@ -245,6 +245,55 @@ class HysteresisTests(unittest.TestCase):
         shifted=shifted_spell_H(mat,"focal",sp,0)
         self.assertAlmostEqual(observed,shifted)
 
+
+    def test_phase_null_shares_one_block_across_species_at_same_master(self):
+        years = list(range(2000, 2006))
+        cache = {}
+        spells = []
+        observed_rows = []
+        for species in ["sp1", "sp2"]:
+            master = "SharedMaster"
+            unit = "AON"
+            mat = pd.DataFrame(
+                {
+                    "focal": [5, 0, 0, 4, 5, 6],
+                    "other1": [10, 12, 18, 25, 28, 30],
+                    "other2": [8, 9, 12, 16, 18, 20],
+                },
+                index=years,
+            )
+            key = (species, master.casefold(), unit)
+            cache[key] = mat
+            sp = {
+                "species": species,
+                "master_site": master,
+                "unit": unit,
+                "site_id": "focal",
+                "abandon_from": 2000,
+                "abandon_to": 2001,
+                "recolonize_from": 2002,
+                "recolonize_to": 2003,
+                "phase_block_start": 2000,
+                "phase_block_end": 2005,
+                "phase_block_years": years,
+            }
+            spells.append(sp)
+            observed_rows.append({
+                "species": species,
+                "master_site": master,
+                "site_id": "focal",
+                "H": spell_effect(mat, "focal", sp)["H"],
+            })
+
+        out = structured_phase_null(
+            pd.DataFrame(observed_rows),
+            spells,
+            cache,
+            B=50,
+            seed=7,
+        )
+        self.assertEqual(out["distinct_phase_blocks"], 1)
+
     def test_structured_phase_null_returns_frozen_summary(self):
         years=list(range(2000,2006))
         cache={}
