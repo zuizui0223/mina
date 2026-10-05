@@ -40,12 +40,13 @@
       "purpose": "Test whether positive H exceeds what can arise solely because fixed abandonment/recolonization dates align with a trending or autocorrelated surrounding-population trajectory.",
       "conditioning": [
         "exact frozen completed-spell roster",
-        "exact SiteID, MasterSite and species identities",
+        "exact SiteID and species identities",
         "exact event-year pattern and vacancy duration",
         "observed multivariate count trajectory within each species x MasterSite",
-        "maximal contiguous complete-year block containing each spell"
+        "maximal contiguous complete-year block containing each spell",
+        "shared physical MasterSite phase across species when the frozen contiguous block is identical"
       ],
-      "randomization": "For each species x MasterSite x contiguous complete-year block, draw one common circular shift and apply it to the entire block-level count matrix. Use the same shift for every focal SiteID/spell in that block, preserving cross-site covariance and dependence among spells. Keep the frozen event-year positions fixed.",
+      "randomization": "For each physical MasterSite x identical contiguous complete-year block, draw one common circular shift. Apply that same shift to every species, SiteID and spell sharing that MasterSite/block. Species with different frozen block boundaries are shifted separately. This preserves within-species cross-site covariance and, where blocks align, cross-species temporal covariance from shared local conditions. Keep frozen event-year positions fixed.",
       "resamples": 9999,
       "seed": 20261005,
       "p_value": "plus-one upper-tail probability that shifted species-balanced T >= T_obs",
@@ -70,7 +71,8 @@
     "Do not change the completed-spell roster after count magnitudes are opened.",
     "The structured phase null calibrates generic temporal alignment with observed parent-abundance trajectories and annual sampling but is not a complete reversible habitat-selection model.",
     "Circular shifting creates a block seam; this is accepted as part of the frozen structured null and is not tuned after outcomes.",
-    "Use 'transition-state asymmetry' or 'empirical threshold proxy' in precise reporting; annual census data do not observe the exact continuous-time abandonment/recolonization threshold."
+    "Use 'transition-state asymmetry' or 'empirical threshold proxy' in precise reporting; annual census data do not observe the exact continuous-time abandonment/recolonization threshold.",
+    "When multiple species share a MasterSite and identical phase block, the structured null uses one common phase shift to avoid treating shared local environmental trajectories as independent species evidence."
   ],
   "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
