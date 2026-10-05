@@ -4,8 +4,9 @@
 Uses only positive/explicit-zero/missing count states on the already-frozen
 structural panel roster. Count magnitudes are never retained or emitted.
 
-The gate also freezes, using year identities only, an elapsed-time-matched
-trajectory-drift null support set for every completed vacancy spell.
+Each completed vacancy spell is assigned to the maximal calendar-consecutive
+complete-year block containing the spell. Only spells in blocks of >=6 years
+are eligible for the frozen common circular phase null used at Stage C.
 """
 from __future__ import annotations
 
@@ -35,7 +36,7 @@ MIN_MASTERS = 10
 MIN_SPECIES = 5
 MIN_SPECIES_3SPELLS = 4
 MIN_SPECIES_2MASTERS = 3
-MIN_PSEUDO_PLACEMENTS = 3
+MIN_PHASE_BLOCK_YEARS = 6
 
 
 def _state_frame(path: Path, *, assume_whole_colony_extract: bool = False) -> pd.DataFrame:
@@ -128,7 +129,6 @@ def completed_spells_for_site(years: list[int], states: list[str]) -> list[dict]
                     "recolonize_from": int(z),
                     "recolonize_to": int(recol),
                     "vacancy_years": int(recol - y1),
-                    "transition_gap_years": int(z - y),
                 }
             )
             i = ordered.index(recol) + 1
@@ -137,16 +137,26 @@ def completed_spells_for_site(years: list[int], states: list[str]) -> list[dict]
     return spells
 
 
-def pseudo_start_years(complete_years: list[int], transition_gap_years: int) -> list[int]:
-    """Freeze all elapsed-time-matched pseudo placements using year identities only."""
-    years = sorted({int(y) for y in complete_years})
-    yset = set(years)
-    d = int(transition_gap_years)
-    return [
-        int(s)
-        for s in years
-        if {s, s + 1, s + d, s + d + 1}.issubset(yset)
-    ]
+def consecutive_blocks(years: list[int]) -> list[list[int]]:
+    vals = sorted({int(y) for y in years})
+    if not vals:
+        return []
+    blocks = [[vals[0]]]
+    for y in vals[1:]:
+        if y == blocks[-1][-1] + 1:
+            blocks[-1].append(y)
+        else:
+            blocks.append([y])
+    return blocks
+
+
+def containing_block(complete_years: list[int], spell: dict) -> list[int]:
+    lo = int(spell["abandon_from"])
+    hi = int(spell["recolonize_to"])
+    for block in consecutive_blocks(complete_years):
+        if lo >= block[0] and hi <= block[-1]:
+            return block
+    raise ValueError("completed spell not contained in a complete-year block")
 
 
 def run(
@@ -191,7 +201,7 @@ def run(
                 sg["state"].astype(str).tolist(),
             )
             for k, sp in enumerate(spells, 1):
-                starts = pseudo_start_years(years, int(sp["transition_gap_years"]))
+                block = containing_block(years, sp)
                 rec = {
                     "spell_id": f"{species}|{master}|{unit}|{site}|{k}",
                     "species": species,
@@ -199,12 +209,14 @@ def run(
                     "unit": unit,
                     "site_id": site,
                     **sp,
-                    "pseudo_start_years": starts,
-                    "n_pseudo_placements": int(len(starts)),
-                    "null_eligible": bool(len(starts) >= MIN_PSEUDO_PLACEMENTS),
+                    "phase_block_start": int(block[0]),
+                    "phase_block_end": int(block[-1]),
+                    "phase_block_years": [int(v) for v in block],
+                    "phase_block_length": int(len(block)),
+                    "phase_null_eligible": bool(len(block) >= MIN_PHASE_BLOCK_YEARS),
                 }
                 raw_spells.append(rec)
-                if rec["null_eligible"]:
+                if rec["phase_null_eligible"]:
                     eligible_spells.append(rec)
 
     frame = pd.DataFrame(eligible_spells)
@@ -238,11 +250,11 @@ def run(
     return {
         "schema_version": 1,
         "analysis_id": "mina-smp-spatial-recovery-hysteresis-support-v1",
-        "status": "state_only_completed_vacancy_spells_with_frozen_drift_null_support",
-        "raw_completed_spell_count_before_null_support": int(len(raw_spells)),
+        "status": "state_only_completed_vacancy_spells_with_frozen_phase_blocks",
+        "raw_completed_spell_count_before_phase_support": int(len(raw_spells)),
         "completed_spells": eligible_spells,
         "support": {
-            "null_eligible_completed_spells": n_spells,
+            "phase_eligible_completed_spells": n_spells,
             "distinct_siteids_with_spells": n_sites,
             "mastersites_with_spells": n_masters,
             "species_with_spells": n_species,
@@ -250,8 +262,8 @@ def run(
             "species_with_spells_in_at_least_2_mastersites": species_2masters,
         },
         "thresholds": {
-            "minimum_pseudo_placements_per_spell": MIN_PSEUDO_PLACEMENTS,
-            "minimum_null_eligible_completed_spells": MIN_SPELLS,
+            "minimum_phase_block_years_per_spell": MIN_PHASE_BLOCK_YEARS,
+            "minimum_phase_eligible_completed_spells": MIN_SPELLS,
             "minimum_distinct_siteids_with_spells": MIN_SITES,
             "minimum_mastersites_with_spells": MIN_MASTERS,
             "minimum_species_with_spells": MIN_SPECIES,
@@ -261,7 +273,7 @@ def run(
         "decision": {
             "hysteresis_magnitude_execution_authorized": passed,
             "if_failed": (
-                "Stop; do not lower support thresholds, pseudo-placement support, "
+                "Stop; do not lower support thresholds, phase-block support, "
                 "or bridge missing years."
             ),
         },
@@ -271,7 +283,7 @@ def run(
             "abandonment abundance",
             "recolonization abundance",
             "hysteresis width H",
-            "trajectory-drift-null H values",
+            "phase-null H values",
             "E",
             "kappa",
             "gamma",
