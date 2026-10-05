@@ -1,0 +1,39 @@
+name: smp-spatial-recovery-hysteresis-recovery-audit
+
+on:
+  push:
+    branches: [research/smp-spatial-recovery-hysteresis-v1]
+    paths:
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_V1.json"
+      - "scripts/audit_smp_spatial_recovery_hysteresis_recovery_v1.py"
+      - ".github/workflows/smp-spatial-recovery-hysteresis-recovery-audit.yml"
+      - "scripts/run_smp_spatial_recovery_hysteresis_v1.py"
+  pull_request:
+    paths:
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_V1.json"
+      - "scripts/audit_smp_spatial_recovery_hysteresis_recovery_v1.py"
+      - ".github/workflows/smp-spatial-recovery-hysteresis-recovery-audit.yml"
+      - "scripts/run_smp_spatial_recovery_hysteresis_v1.py"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - name: Run predata recovery audit
+        run: |
+          mkdir -p build
+          python scripts/audit_smp_spatial_recovery_hysteresis_recovery_v1.py \
+            --out-json build/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smp-spatial-recovery-hysteresis-recovery-audit-v1
+          path: build/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V1.json
+          if-no-files-found: warn
