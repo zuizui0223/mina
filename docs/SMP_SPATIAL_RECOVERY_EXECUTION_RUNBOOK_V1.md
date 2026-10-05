@@ -105,7 +105,7 @@ Also freeze:
 
 If any condition cannot be confirmed: **STOP**.
 
-If semantics apply only to a narrower era, Stage B uses only inherited Stage-A complete years inside that documented interval. Panels falling below 10 complete years or a 12-year span are excluded before state scanning. Do not infer zero semantics from patterns in the counts.
+If semantics apply only to a narrower era, Stage B starts from inherited Stage-A complete years inside that interval. It then keeps only years with usable direct positive/explicit-zero state for every retained SiteID. Missing/unparseable records remove the year and are never zero. Panels falling below 10 state-complete years or a 12-year span are excluded before spell scanning. Do not infer zero semantics from ecological patterns.
 
 ---
 
