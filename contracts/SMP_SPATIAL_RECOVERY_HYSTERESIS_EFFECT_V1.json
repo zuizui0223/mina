@@ -28,7 +28,7 @@
     "step4": "primary T = unweighted mean of species means"
   },
   "primary_inference": {
-    "observed_statistic": "T_obs = unweighted mean of species mean H after spell -> SiteID -> MasterSite -> species aggregation",
+    "observed_statistic": "T_obs = unweighted mean of species mean H after spell -> SiteID -> provider-resolved physical MasterSite -> species aggregation",
     "species_sign_flip": {
       "null": "species-level H means are symmetric around zero",
       "test": "one-sided sign-flip randomization of species means",
@@ -43,35 +43,17 @@
         "exact SiteID and species identities",
         "exact event-year pattern and vacancy duration",
         "observed multivariate count trajectory within each species x MasterSite",
-        "maximal contiguous complete-year block containing each spell",
-        "shared provider-resolved physical master_site_key phase across species when the frozen contiguous block is identical"
+        "maximal contiguous state-complete year block containing each spell",
+        "shared provider-resolved physical master_site_key phase across species when the frozen block is identical"
       ],
-      "randomization": "For each provider-resolved physical master_site_key x identical contiguous complete-year block, draw one common circular shift. Apply that same shift to every species, SiteID and spell sharing that MasterSite/block. Species with different frozen block boundaries are shifted separately. This preserves within-species cross-site covariance and, where blocks align, cross-species temporal covariance from shared local conditions. Keep frozen event-year positions fixed.",
+      "randomization": "For each provider-resolved physical master_site_key x identical contiguous block, draw one common circular year shift. Apply that same shift to every species, SiteID and spell sharing that MasterSite/block while keeping frozen event-year positions fixed.",
       "resamples": 9999,
       "seed": 20261005,
       "p_value": "plus-one upper-tail probability that shifted species-balanced T >= T_obs",
       "delta": "Delta_phase = T_obs - median(T_phase_null)",
-      "interpretation": "A structured temporal-alignment null. It is not a fitted mechanistic occupancy model and does not remove time-varying habitat quality."
+      "interpretation": "Structured temporal-alignment null; not a fitted mechanistic occupancy model and does not remove time-varying habitat quality."
     },
-    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, Delta_T > 0, and panel-wide trajectory-drift-null upper-tail p <= 0.05.",
-    "trajectory_drift_null": {
-      "purpose": "Control generic temporal change in surrounding abundance while preserving within-panel synchronization of multiple abandonment/recolonization spells.",
-      "simulations": 20000,
-      "seed": 20261005,
-      "panel_resampling": "For each species x MasterSite panel, uniformly sample one Stage-B-frozen eligible common calendar-year shift delta and apply that same delta to every spell in the panel.",
-      "preserves": [
-        "SiteID identities",
-        "species x MasterSite membership",
-        "number of spells per SiteID",
-        "relative timing among spells in the same panel",
-        "each spell's exact abandonment-to-recolonization transition gap",
-        "the observed leave-one-SiteID-out abundance trajectory"
-      ],
-      "pseudo_H": "Calculate each shifted spell with the identical transition-midpoint H formula.",
-      "aggregation": "Use the identical spell -> SiteID -> MasterSite -> species -> equal-species hierarchy as T_obs.",
-      "p_value": "plus-one upper-tail P(T_null >= T_obs)",
-      "delta": "Delta_T = T_obs - median(T_null)"
-    }
+    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, Delta_phase > 0, and structured-phase-null upper-tail p <= 0.05."
   },
   "secondary_uncertainty": {
     "bootstrap_resamples": 9999,
@@ -93,9 +75,9 @@
     "When multiple species share a MasterSite and identical phase block, the structured null uses one common phase shift to avoid treating shared local environmental trajectories as independent species evidence.",
     "Physical phase blocks are keyed by provider-resolved master_site_key, not by display-name string alone.",
     "MasterSite aggregation and phase blocking use provider-resolved physical master_site_key; display labels are retained only for presentation.",
-    "The panel-wide trajectory-drift null preserves shared timing among spells within a MasterSite but remains a temporal null, not a full reversible occupancy process model."
+    "The structured common-phase null preserves synchronized local timing within provider-resolved MasterSite/block groups but remains a temporal null, not a complete reversible occupancy process model."
   ],
-  "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
+  "stop_rule": "One execution only after identity, zero-semantics and phase-block support gates pass. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
   "zero_semantics_contract": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json"
 }
