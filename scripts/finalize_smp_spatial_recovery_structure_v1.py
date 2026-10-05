@@ -36,8 +36,10 @@ def as_bool(x)->bool:
 
 def run(support_json:Path,resolution_csv:Path)->dict:
     support=json.loads(support_json.read_text(encoding="utf-8"))
+    if support.get("analysis_id") != "mina-smp-spatial-recovery-hysteresis-structure-v1":
+        raise ValueError("identity finalizer requires the dedicated count-blind hysteresis structure output")
     if not support.get("decision",{}).get("structural_gate_passed"):
-        raise ValueError("count-blind structural support gate did not pass")
+        raise ValueError("dedicated count-blind hysteresis structure gate did not pass")
 
     res=pd.read_csv(resolution_csv,dtype=str).fillna("")
     missing=REQUIRED-set(res.columns)
