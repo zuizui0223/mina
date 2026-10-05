@@ -3,8 +3,8 @@
 
 Primary support requires both:
 1. positive species-balanced hysteresis under a species sign-flip test;
-2. observed hysteresis exceeding a structured common-phase null that preserves
-   each MasterSite block's multivariate abundance trajectory.
+2. observed hysteresis exceeding a structured non-circular common-offset null
+   that preserves each MasterSite block's multivariate abundance trajectory.
 """
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ from scripts.gate_smp_master_site_support_v1 import (
 SEED = 20261005
 BOOT_B = 9999
 RANDOM_SIGN_B = 100000
-PHASE_B = 9999
+LINEAR_SHIFT_B = 9999
 
 
 def prepare_count_frame(
@@ -307,29 +307,23 @@ def build_panel_cache(
     return cache
 
 
-def _shift_year(year: int, block_years: list[int], shift: int) -> int:
-    block = [int(v) for v in block_years]
-    index = {y: i for i, y in enumerate(block)}
-    if int(year) not in index:
-        raise ValueError(f"event year {year} outside frozen phase block")
-    return int(block[(index[int(year)] + int(shift)) % len(block)])
-
-
-def shifted_spell_H(
+def shifted_spell_H_linear(
     matrix: pd.DataFrame,
     site: str,
     spell: dict,
-    shift: int,
+    offset: int,
 ) -> float:
-    block = [int(v) for v in spell["phase_block_years"]]
-    if len(block) < 6:
-        raise ValueError("phase-null spell has block shorter than frozen 6-year minimum")
+    """Apply one frozen non-circular common year offset to all spell events."""
     years = [
-        _shift_year(int(spell["abandon_from"]), block, shift),
-        _shift_year(int(spell["abandon_to"]), block, shift),
-        _shift_year(int(spell["recolonize_from"]), block, shift),
-        _shift_year(int(spell["recolonize_to"]), block, shift),
+        int(spell["abandon_from"]) + int(offset),
+        int(spell["abandon_to"]) + int(offset),
+        int(spell["recolonize_from"]) + int(offset),
+        int(spell["recolonize_to"]) + int(offset),
     ]
+    block_start = int(spell["shift_block_start"])
+    block_end = int(spell["shift_block_end"])
+    if min(years) < block_start or max(years) > block_end:
+        raise ValueError("linear-shift event moved outside frozen contiguous block")
     return H_from_years(matrix, site, *years)
 
 
@@ -366,95 +360,92 @@ def hierarchical_spell_weights(spells: list[dict]) -> np.ndarray:
     return weights
 
 
-def structured_phase_null(
+def structured_linear_shift_null(
     observed_rows: pd.DataFrame,
     spells: list[dict],
     cache: dict,
     *,
-    B: int = PHASE_B,
+    B: int = LINEAR_SHIFT_B,
     seed: int = SEED,
 ) -> dict:
-    """Structured common-phase null with precomputed spell-by-phase H values.
-
-    This is algebraically the same frozen null as the original implementation.
-    It preserves the original RNG draw order (resample-major, block-minor) but
-    avoids rebuilding a pandas hierarchy inside every resample.
-    """
+    """Non-circular common-offset null preserving local synchronized timing."""
     rng = np.random.default_rng(int(seed))
     T_obs = hierarchical_means(observed_rows)["T"]
 
-    block_specs = {}
+    group_offsets = {}
     for sp in spells:
         master_key = str(sp.get("master_site_key", "")).strip()
         if not master_key:
             raise ValueError("frozen spell missing provider-resolved master_site_key")
         key = (
             master_key,
-            int(sp["phase_block_start"]),
-            int(sp["phase_block_end"]),
+            int(sp["shift_block_start"]),
+            int(sp["shift_block_end"]),
         )
-        years = tuple(int(v) for v in sp["phase_block_years"])
-        if key in block_specs and block_specs[key] != years:
+        offsets = tuple(int(v) for v in sp.get("common_offset_values", []))
+        if len(offsets) < 3:
+            raise ValueError("Stage-C spell lacks >=3 frozen common linear offsets")
+        if 0 not in offsets:
+            raise ValueError("observed zero offset absent from frozen common offsets")
+        if key in group_offsets and group_offsets[key] != offsets:
             raise ValueError(
-                "inconsistent frozen phase block metadata across species "
+                "inconsistent common-offset support across species/SiteIDs "
                 f"sharing MasterSite/block: {key}"
             )
-        block_specs[key] = years
+        group_offsets[key] = offsets
 
-    block_keys = list(block_specs)
-    block_index = {key: j for j, key in enumerate(block_keys)}
+    group_keys = list(group_offsets)
+    group_index = {key: j for j, key in enumerate(group_keys)}
 
-    # Preserve the original random-number order exactly:
-    # for each resample, draw one shift for each block in insertion order.
-    shifts = np.empty((int(B), len(block_keys)), dtype=np.int64)
+    offset_index = np.empty((int(B), len(group_keys)), dtype=np.int64)
     for r in range(int(B)):
-        for j, key in enumerate(block_keys):
-            shifts[r, j] = int(rng.integers(0, len(block_specs[key])))
+        for j, key in enumerate(group_keys):
+            offset_index[r, j] = int(rng.integers(0, len(group_offsets[key])))
 
     weights = hierarchical_spell_weights(spells)
     T_null = np.zeros(int(B), float)
 
-    # Precompute every possible H for each spell once, then index by the
-    # already-frozen common block phase. Multiple species sharing a physical
-    # MasterSite/block therefore still receive exactly the same shift.
     for i, sp in enumerate(spells):
         panel_key = (
             str(sp["species"]),
             _norm(sp["master_site"]),
             str(sp["unit"]),
         )
-        block_key = (
+        group_key = (
             str(sp["master_site_key"]),
-            int(sp["phase_block_start"]),
-            int(sp["phase_block_end"]),
+            int(sp["shift_block_start"]),
+            int(sp["shift_block_end"]),
         )
-        block_len = len(block_specs[block_key])
-        h_by_shift = np.asarray(
+        offsets = group_offsets[group_key]
+        h_by_offset = np.asarray(
             [
-                shifted_spell_H(
+                shifted_spell_H_linear(
                     cache[panel_key],
                     str(sp["site_id"]),
                     sp,
-                    shift,
+                    offset,
                 )
-                for shift in range(block_len)
+                for offset in offsets
             ],
             float,
         )
-        T_null += weights[i] * h_by_shift[shifts[:, block_index[block_key]]]
+        T_null += (
+            weights[i]
+            * h_by_offset[offset_index[:, group_index[group_key]]]
+        )
 
     median = float(np.median(T_null))
     p = float((1 + np.sum(T_null >= T_obs)) / (len(T_null) + 1))
     return {
         "resamples": int(B),
         "seed": int(seed),
-        "distinct_phase_blocks": int(len(block_specs)),
+        "distinct_linear_shift_groups": int(len(group_offsets)),
         "median_T": median,
         "q025": float(np.quantile(T_null, 0.025)),
         "q975": float(np.quantile(T_null, 0.975)),
-        "delta_phase_observed_minus_median": float(T_obs - median),
+        "delta_linear_observed_minus_median": float(T_obs - median),
         "upper_tail_p": p,
-        "implementation": "precomputed_spell_phase_table_exact_rng_order",
+        "implementation": "precomputed_non_circular_common_offset_table",
     }
 
 def run(
@@ -501,14 +492,14 @@ def run(
     vals = hier["species"]["species_mean_H"].to_numpy(float)
     sign = sign_flip_test(vals)
     ci = species_bootstrap(vals)
-    phase = structured_phase_null(frame, spells, cache)
+    linear = structured_linear_shift_null(frame, spells, cache)
 
     T = float(hier["T"])
     supported = bool(
         T > 0
         and sign["one_sided_p"] <= 0.05
-        and phase["delta_phase_observed_minus_median"] > 0
-        and phase["upper_tail_p"] <= 0.05
+        and linear["delta_linear_observed_minus_median"] > 0
+        and linear["upper_tail_p"] <= 0.05
     )
 
     result = {
@@ -522,7 +513,7 @@ def run(
             "species_positive_H": int(np.sum(vals > 0)),
             "species_sign_flip": sign,
             "species_bootstrap_95": ci,
-            "structured_phase_null": phase,
+            "structured_linear_shift_null": linear,
             "supported": supported,
             "site_means": hier["site"].to_dict(orient="records"),
             "master_means": hier["master"].to_dict(orient="records"),
@@ -530,12 +521,12 @@ def run(
         },
         "decision": {
             "spatial_recovery_hysteresis_supported": supported,
-            "requires_species_sign_flip_and_structured_phase_null": True,
+            "requires_species_sign_flip_and_structured_linear_shift_null": True,
         },
         "boundary": [
             "A supported result demonstrates asymmetric spatial recovery at retained SiteIDs, not a unique social mechanism.",
             "The focal SiteID is excluded from surrounding population abundance at observed and shifted transitions.",
-            "The structured phase null preserves each block's multivariate abundance trajectory and cross-site covariance while breaking alignment with frozen event dates.",
+            "The structured linear-shift null preserves each block's multivariate abundance trajectory and cross-site covariance while moving frozen event dates only within block boundaries.",
             "Stable site pairing does not remove time-varying habitat, predator, disturbance, or management confounding.",
             "No first-colonization events enter the primary paired test.",
         ],
