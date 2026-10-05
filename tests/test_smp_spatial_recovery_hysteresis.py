@@ -26,6 +26,29 @@ from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
 
 class HysteresisTests(unittest.TestCase):
 
+    def test_contracts_use_only_structured_common_phase_null(self):
+        root = Path(__file__).resolve().parents[1]
+        support = json.loads(
+            (root / "contracts" / "SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json")
+            .read_text(encoding="utf-8")
+        )
+        effect = json.loads(
+            (root / "contracts" / "SMP_SPATIAL_RECOVERY_HYSTERESIS_EFFECT_V1.json")
+            .read_text(encoding="utf-8")
+        )
+        self.assertNotIn("panel_wide_trajectory_drift_null_support", support)
+        self.assertNotIn("trajectory_drift_null", effect["primary_inference"])
+        self.assertIn("structured_phase_null", effect["primary_inference"])
+        self.assertIn("Delta_phase", effect["primary_inference"]["support"])
+
+    def test_five_species_is_minimum_for_exact_alpha_point_zero_five(self):
+        four = sign_flip_test(np.array([1, 1, 1, 1], float))
+        five = sign_flip_test(np.array([1, 1, 1, 1, 1], float))
+        self.assertAlmostEqual(four["one_sided_p"], 1 / 16)
+        self.assertGreater(four["one_sided_p"], 0.05)
+        self.assertAlmostEqual(five["one_sided_p"], 1 / 32)
+        self.assertLessEqual(five["one_sided_p"], 0.05)
+
     def test_zero_semantics_confirmation_is_required(self):
         with tempfile.TemporaryDirectory() as td:
             p=Path(td)/"zero.json"
