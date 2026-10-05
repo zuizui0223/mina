@@ -54,6 +54,30 @@ jobs:
             echo "Downloaded object is not a ZIP package." >&2
             echo "First response headers:" >&2
             sed -n '1,30p' build/eidc/headers.txt >&2
+            echo "Sanitized HTML routing diagnostics:" >&2
+            python - <<'PY' >&2
+from pathlib import Path
+import re
+p=Path("build/eidc/package.bin")
+txt=p.read_text(errors="replace")
+for label, pat in [
+    ("title", r"<title[^>]*>(.*?)</title>"),
+    ("form_action", r"<form[^>]+action=[\"']([^\"']+)"),
+]:
+    vals=[]
+    for m in re.finditer(pat, txt, flags=re.I|re.S):
+        v=re.sub(r"\\s+", " ", m.group(1)).strip()
+        if v not in vals:
+            vals.append(v)
+    print(label, vals[:10])
+urls=[]
+for m in re.finditer(r"https?://[^\"'<> ]+", txt):
+    u=m.group(0)
+    if any(k in u.lower() for k in ("ceh.ac.uk","eidc","login","auth","download")):
+        if u not in urls:
+            urls.append(u)
+print("routing_urls", urls[:30])
+PY
             exit 22
           fi
 
