@@ -93,6 +93,11 @@ def _state_frame(path: Path, *, assume_whole_colony_extract: bool=False) -> pd.D
 
 
 def completed_spells_for_site(years:list[int], states:list[str]) -> list[dict]:
+    """Return every completed calendar-consecutive positive->zero...->positive spell.
+
+    The recolonization year is allowed to begin a new spell immediately in the
+    following year, so sequences like 1,0,1,0,1 produce two spells.
+    """
     by={int(y):str(s) for y,s in zip(years,states)}
     ordered=sorted(by)
     spells=[]
@@ -100,36 +105,46 @@ def completed_spells_for_site(years:list[int], states:list[str]) -> list[dict]:
     while i < len(ordered)-1:
         y=ordered[i]
         y1=ordered[i+1]
-        if y1 != y+1:
-            i += 1
-            continue
-        if by[y]!="observed_positive" or by[y1]!="explicit_zero":
+        if (
+            y1 != y+1
+            or by[y]!="observed_positive"
+            or by[y1]!="explicit_zero"
+        ):
             i += 1
             continue
 
         abandon_from=y
         abandon_to=y1
-        z=abandon_to
-        while True:
-            nxt=z+1
-            if nxt not in by:
+        j=i+1
+
+        # Extend the explicit-zero run only across consecutive calendar years.
+        while j+1 < len(ordered):
+            cur=ordered[j]
+            nxt=ordered[j+1]
+            if nxt != cur+1:
                 break
             if by[nxt]=="explicit_zero":
-                z=nxt
+                j += 1
                 continue
             if by[nxt]=="observed_positive":
                 spells.append({
                     "abandon_from":int(abandon_from),
                     "abandon_to":int(abandon_to),
-                    "recolonize_from":int(z),
+                    "recolonize_from":int(cur),
                     "recolonize_to":int(nxt),
                     "vacancy_years":int(nxt-abandon_to),
                 })
-                i=ordered.index(nxt)
+                # Reconsider the recolonization year as a possible new
+                # occupied->zero spell start.
+                i=j+1
                 break
             break
         else:
-            pass
+            i += 1
+            continue
+
+        if spells and spells[-1]["recolonize_to"]==ordered[i]:
+            continue
         i += 1
     return spells
 
@@ -137,7 +152,12 @@ def completed_spells_for_site(years:list[int], states:list[str]) -> list[dict]:
 def run(input_path:Path,support_json:Path,*,assume_whole_colony_extract:bool=False)->dict:
     support=json.loads(support_json.read_text(encoding="utf-8"))
     if not support.get("decision",{}).get("structural_gate_passed"):
-        raise ValueError("structural support gate did not pass")
+        raise ValueError("identity-resolved structural gate did not pass")
+    if not support.get("decision",{}).get("zero_positive_state_scan_authorized"):
+        raise ValueError("identity gate did not authorize zero/positive state scan")
+    for panel in support.get("eligible_panels", []):
+        if not panel.get("identity_gate_resolved"):
+            raise ValueError("unresolved physical SiteID identity in hysteresis roster")
 
     x=_state_frame(input_path,assume_whole_colony_extract=assume_whole_colony_extract)
     all_spells=[]
