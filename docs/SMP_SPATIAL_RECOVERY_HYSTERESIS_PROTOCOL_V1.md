@@ -32,9 +32,11 @@ The estimand is the **loss–recovery asymmetry itself**, not any single social 
 
 ## Stage A — stable hierarchy
 
-Reuse the frozen species × MasterSite / SiteID structural gate.
+Use the dedicated hysteresis structural gate (`SMP_SPATIAL_RECOVERY_HYSTERESIS_STRUCTURE_V1`). It reuses the count-blind MasterSite/SiteID panel construction but does **not** inherit the superseded trend-symmetry program thresholds.
 
-No count magnitude is used to select panels.
+A panel requires at least 3 retained SiteIDs, 10 complete years and a 12-year calendar span. Before occupancy states are opened, the program must contain at least 10 structurally eligible panels, 10 distinct MasterSites and 5 species.
+
+No count magnitude or positive/zero state is used to select panels.
 
 ## Stage B — occupancy-state cycles only
 
