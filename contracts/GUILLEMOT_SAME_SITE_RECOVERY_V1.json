@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-guillemot-same-site-recovery-v1",
+  "date": "2026-10-05",
+  "status": "preregistered_before_raw_eidc_data_opening",
+  "source": {
+    "dataset_doi": "10.5285/33b42f0a-12a5-47fe-aaaf-25f4ee5e13a5",
+    "paper_doi": "10.1111/1365-2656.13674",
+    "public_metadata_used_before_freeze": [
+      "1981-2018 study period",
+      "five long-term sub-colonies",
+      "site IDs assigned at first occupation and mapped for consistent monitoring",
+      "sub-colony boundaries remained constant",
+      "published sequence includes increase, decline and recovery"
+    ],
+    "raw_data_values_opened_before_freeze": false
+  },
+  "question": "Do previously used common-guillemot breeding sites require a higher surrounding sub-colony population state for later reoccupation than the state associated with their earlier transition to vacancy?",
+  "hypothesis": "H = A_reoccupation - A_vacancy > 0",
+  "standardized_input_contract": {
+    "required_fields": ["subcolony", "site_id", "year", "occupied", "subcolony_size"],
+    "occupied_definition": "1 if the breeding site was occupied for breeding in that year; 0 only if the source data or supporting documentation establishes that the site was monitored/eligible and not occupied; missing otherwise",
+    "subcolony_size_definition": "number of occupied breeding sites in the focal sub-colony and year, using the source definition",
+    "adapter_rule": "Raw-column names may be mapped to these semantic fields after freeze. No ecological filter, threshold, vacancy definition, year selection or outcome-dependent recoding may be introduced by the adapter.",
+    "missingness_stop_rule": "If an absent site-year row cannot be distinguished from a monitored unoccupied site-year, the primary test is not identifiable and must stop."
+  },
+  "eligibility": {
+    "first_colonization_excluded": true,
+    "site_history_starts_at_first_observed_occupation": true,
+    "calendar_consecutive_transitions_required": true,
+    "missing_years_break_spells": true,
+    "site_must_remain_in_same_subcolony": true,
+    "completed_spell": "1 -> 0 ... 0 -> 1 with at least one full vacant year and all intervening site states observed",
+    "repeated_completed_spells_per_site_allowed": true
+  },
+  "estimand": {
+    "surrounding_state": "N_minus_j(t) = subcolony_size(t) - occupied_j(t)",
+    "transition_transform": "log1p(N_minus_j)",
+    "vacancy_transition_state": "A_v = mean(log1p(N_minus_j[t]), log1p(N_minus_j[t+1])) for 1->0",
+    "reoccupation_transition_state": "A_r = mean(log1p(N_minus_j[u]), log1p(N_minus_j[u+1])) for later 0->1",
+    "spell_effect": "H = A_r - A_v",
+    "aggregation": ["mean H across repeated spells within site_id", "mean site effects within subcolony", "equal-weight mean across the five subcolonies"],
+    "primary_statistic": "T_obs = mean of five subcolony mean H values"
+  },
+  "support_gate": {
+    "minimum_total_completed_spells": 30,
+    "minimum_distinct_sites_with_spells": 20,
+    "required_subcolonies_with_spells": 5,
+    "minimum_spells_per_subcolony": 3,
+    "minimum_common_non_circular_offsets_per_shift_group": 3
+  },
+  "confirmatory_inference": {
+    "condition_1": "T_obs > 0",
+    "condition_2": "exact one-sided sign-flip across the five subcolony contributions, p <= 0.05",
+    "condition_3": "Delta_shift = T_obs - median(T_shift_null) > 0",
+    "condition_4": "structured non-circular common-offset upper-tail p <= 0.05",
+    "shift_null": {
+      "replicates": 9999,
+      "seed": 20261005,
+      "grouping": "subcolony x identical calendar-consecutive state-complete block",
+      "rule": "draw one non-circular integer offset from the precomputed common-offset intersection and apply it to every spell in that group; preserve observed surrounding-state trajectories; no wrapping"
+    },
+    "support_requires_all_conditions": true
+  },
+  "secondary_sensitivity": {
+    "name": "two_year_vacancy",
+    "definition": "repeat the frozen estimand using only spells with at least two consecutive vacant years",
+    "role": "interpretive sensitivity only; cannot rescue a failed primary test"
+  },
+  "interpretation": {
+    "allowed_if_supported": "Previously used breeding sites were reoccupied at higher surrounding sub-colony population states than those associated with their earlier transition to vacancy, beyond generic temporal alignment with the observed sub-colony trajectory.",
+    "allowed_program_level": "Numerical recovery need not retrace prior breeding-site loss.",
+    "forbidden": [
+      "individual birds required a higher threshold to return",
+      "Allee effects caused the pattern",
+      "social attraction caused the pattern",
+      "site quality is irrelevant",
+      "multi-species seabird-wide hysteresis was demonstrated",
+      "annual vacancy is equivalent to permanent abandonment"
+    ]
+  },
+  "stop_rule": "After raw outcome values are opened, do not change the support thresholds, vacancy definition, aggregation, transform, null, sign-flip unit, missingness rule, or add phase-specific/subcolony-specific rescue analyses."
+}
