@@ -2,6 +2,8 @@
 
 Dear Seabird Monitoring Programme team,
 
+I am contacting you via the current SMP/BTO data-request route for a research extract; the SMP public guidance indicates that larger data requests can be handled through the BTO Data Request system or the SMP organiser.
+
 I am assessing whether the SMP database can support a comparative study of whether local breeding-site loss and recovery are spatially reversible across colonial seabirds.
 
 The specific test compares **the same repeated SiteID** at two moments: when it changes from occupied to an explicit zero count, and when that same SiteID is later recolonized. The hypothesis is that recolonization may require a higher surrounding MasterSite population state than the state at which the SiteID was abandoned.
@@ -27,6 +29,8 @@ If available, could the extract include:
 - verification status
 - explicit nil-return / zero information, if encoded separately from Count = 0
 - Plot / spatial-level indicator distinguishing whole-colony Site records from partial/study plots
+
+I note that the current SMP guidance describes zero/nil returns as essential for distinguishing true absence from an unsurveyed site. Because the requested extract spans historical record eras, I would nevertheless be grateful if you could confirm the scope/era for which that interpretation is valid in the supplied data.
 
 For this project, three metadata issues are especially important:
 
