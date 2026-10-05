@@ -27,69 +27,35 @@ jobs:
 
       - run: python -m pip install pandas
 
-      - name: Download public EIDC package
+      - name: Download canonical public EIDC ZIP
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/eidc build/extracted
-          url="https://data-package.ceh.ac.uk/data/${DATASET_UUID}"
-          echo "Downloading EIDC package for frozen DOI dataset."
+          url="https://data-package.ceh.ac.uk/data/${DATASET_UUID}.zip"
+          echo "Downloading canonical EIDC UUID.zip package."
           curl --fail --location --retry 3 --retry-all-errors \
             --silent --show-error \
-            --cookie-jar build/eidc/cookies.txt \
             --dump-header build/eidc/headers.txt \
-            --output build/eidc/package.bin \
+            --output build/eidc/package.zip \
             "$url"
-          sha256sum build/eidc/package.bin > build/eidc/package.sha256
-          file build/eidc/package.bin | tee build/eidc/filetype.txt
-          stat --printf='%s\\n' build/eidc/package.bin > build/eidc/size_bytes.txt
+          sha256sum build/eidc/package.zip > build/eidc/package.sha256
+          file build/eidc/package.zip | tee build/eidc/filetype.txt
+          stat --printf='%s\n' build/eidc/package.zip > build/eidc/size_bytes.txt
+          unzip -t build/eidc/package.zip >/dev/null
+          unzip -q build/eidc/package.zip -d build/extracted
 
-      - name: Extract package without printing biological values
+      - name: Locate focal occupancy file
         shell: bash
         run: |
           set -euo pipefail
-          pkg="build/eidc/package.bin"
-          if ! unzip -t "$pkg" >/dev/null 2>&1; then
-            echo "Initial endpoint returned an HTML download landing page." >&2
-            route="$(python -c 'from pathlib import Path; import re; txt=Path("build/eidc/package.bin").read_text(errors="replace"); m=re.search(r"href=[\\\"\\x27]([^\\\"\\x27]+)",txt,flags=re.I); print(m.group(1) if m else "")')"
-            if [[ -z "$route" ]]; then
-              echo "No download href found in EIDC landing page." >&2
-              exit 22
-            fi
-            case "$route" in
-              http://*|https://*) direct="$route" ;;
-              /*) direct="https://data-package.ceh.ac.uk$route" ;;
-              *) direct="https://data-package.ceh.ac.uk/$route" ;;
-            esac
-            echo "Following EIDC landing-page download route: $route" >&2
-            python -c 'from pathlib import Path; import re; txt=Path("build/eidc/package.bin").read_text(errors="replace"); print("anchor_tags", [repr(m.group(0)) for m in re.finditer(r"<a\\b[^>]{0,1000}>", txt, flags=re.I)][:20])' >&2
-            curl --fail --location --retry 3 --retry-all-errors \
-              --silent --show-error \
-              --cookie build/eidc/cookies.txt \
-              --cookie-jar build/eidc/cookies.txt \
-              --referer "https://data-package.ceh.ac.uk/data/${DATASET_UUID}" \
-              --dump-header build/eidc/direct_headers.txt \
-              --output build/eidc/package.direct.bin \
-              "$direct"
-            sha256sum build/eidc/package.direct.bin > build/eidc/direct.sha256
-            file build/eidc/package.direct.bin | tee build/eidc/direct_filetype.txt
-            pkg="build/eidc/package.direct.bin"
-          fi
-          if unzip -t "$pkg" >/dev/null 2>&1; then
-            unzip -q "$pkg" -d build/extracted
-          else
-            echo "Resolved EIDC download object is still not a ZIP package." >&2
-            if [[ -f build/eidc/direct_headers.txt ]]; then sed -n '1,30p' build/eidc/direct_headers.txt >&2; fi
-            exit 24
-          fi
-
           focal="$(find build/extracted -type f -name "$FOCAL_FILE" -print -quit)"
           if [[ -z "$focal" ]]; then
             echo "Expected focal CSV not found. Package filenames only:" >&2
-            find build/extracted -type f -printf '%f\\n' | sort >&2
+            find build/extracted -type f -printf '%f\n' | sort >&2
             exit 23
           fi
-          printf '%s\\n' "$focal" > build/eidc/focal_path.txt
+          printf '%s\n' "$focal" > build/eidc/focal_path.txt
 
       - name: Run state-only Stage B
         shell: bash
@@ -142,7 +108,7 @@ jobs:
               "schema_version":1,
               "receipt_id":"mina-guillemot-eidc-acquisition-stageb-v1",
               "dataset_uuid":"33b42f0a-12a5-47fe-aaaf-25f4ee5e13a5",
-              "source_endpoint":"https://data-package.ceh.ac.uk/data/33b42f0a-12a5-47fe-aaaf-25f4ee5e13a5",
+              "source_endpoint":"https://data-package.ceh.ac.uk/data/33b42f0a-12a5-47fe-aaaf-25f4ee5e13a5.zip",
               "expected_focal_file":"JAE_Bennett_CommonGuillemot_sitequality_occupancy.csv",
               "package_sha256_line":text("build/eidc/package.sha256"),
               "package_size_bytes":text("build/eidc/size_bytes.txt"),
@@ -153,7 +119,7 @@ jobs:
           }
           Path("build").mkdir(exist_ok=True)
           Path("build/GUILLEMOT_EIDC_ACQUISITION_STAGEB_RECEIPT_V1.json").write_text(
-              json.dumps(receipt, indent=2, sort_keys=True)+"\\n"
+              json.dumps(receipt, indent=2, sort_keys=True)+"\n"
           )
           PY
 
