@@ -23,8 +23,8 @@
   },
   "aggregation": {
     "step1": "average H across multiple completed spells within SiteID",
-    "step2": "average SiteID means within species x MasterSite",
-    "step3": "average MasterSite means within species",
+    "step2": "average SiteID means within species x provider-resolved physical master_site_key",
+    "step3": "average physical MasterSite means within species",
     "step4": "primary T = unweighted mean of species means"
   },
   "primary_inference": {
@@ -73,7 +73,8 @@
     "Circular shifting creates a block seam; this is accepted as part of the frozen structured null and is not tuned after outcomes.",
     "Use 'transition-state asymmetry' or 'empirical threshold proxy' in precise reporting; annual census data do not observe the exact continuous-time abandonment/recolonization threshold.",
     "When multiple species share a MasterSite and identical phase block, the structured null uses one common phase shift to avoid treating shared local environmental trajectories as independent species evidence.",
-    "Physical phase blocks are keyed by provider-resolved master_site_key, not by display-name string alone."
+    "Physical phase blocks are keyed by provider-resolved master_site_key, not by display-name string alone.",
+    "MasterSite aggregation and phase blocking use provider-resolved physical master_site_key; display labels are retained only for presentation."
   ],
   "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
