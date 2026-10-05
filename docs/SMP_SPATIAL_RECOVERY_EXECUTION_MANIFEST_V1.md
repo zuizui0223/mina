@@ -133,7 +133,7 @@ If any fail:
 
 ### Step 8 — manuscript routing
 
-If both gates pass:
+If all confirmatory gates pass:
 - activate `docs/REGISTERED_INTEGRATED_MANUSCRIPT_SPINE_HYSTERESIS_V1.md`.
 
 Otherwise:
