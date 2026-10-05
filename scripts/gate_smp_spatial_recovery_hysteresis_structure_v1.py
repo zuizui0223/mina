@@ -58,8 +58,10 @@ def run(path: Path, *, assume_whole_colony_extract: bool = False) -> dict:
         "eligible_panels": panels,
         "decision": {
             "structural_gate_passed": passed,
-            "state_only_hysteresis_gate_authorized": passed,
-            "if_failed": "Stop before opening positive/zero states; do not lower thresholds.",
+            "identity_resolution_authorized": passed,
+            "state_only_hysteresis_gate_authorized": False,
+            "if_passed": "Proceed only to provider/site-history identity resolution; positive/zero states remain locked.",
+            "if_failed": "Stop before SiteID identity resolution or positive/zero states; do not lower thresholds.",
         },
         "forbidden_outputs_confirmed_absent": [
             "count magnitudes",
