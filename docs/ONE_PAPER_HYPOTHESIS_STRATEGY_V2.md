@@ -19,7 +19,7 @@ The directional prediction is
 H>0.
 \]
 
-A confirmatory result additionally requires the observed species-balanced \(H\) to exceed an elapsed-time-matched trajectory-drift null.
+A confirmatory result additionally requires the observed species-balanced \(H\) to exceed an structured common-phase null.
 
 ## Discovery half — Antarctic penguins
 
@@ -59,7 +59,7 @@ Freeze completed, calendar-consecutive spells:
 
 Require sufficient replication before magnitude opening.
 
-Also freeze all same-panel pseudo placements that preserve each spell's exact elapsed time.
+Also freeze the maximal calendar-consecutive complete-year block containing each spell; only blocks of at least 6 years enter Stage C.
 
 ### Stage C — threshold asymmetry
 
@@ -134,7 +134,7 @@ Prediction:
 H\approx0
 \]
 
-after same-site pairing and elapsed-time drift control.
+after same-site pairing and structured temporal-alignment control.
 
 ### History-dependent spatial recovery
 
@@ -146,7 +146,7 @@ Prediction:
 H>0
 \]
 
-beyond elapsed-time drift.
+beyond the structured phase null.
 
 Potential mechanisms include social attraction, site fidelity, public information, or other biological memory, but these are not identified by the primary test.
 
@@ -182,7 +182,7 @@ Action:
 - report SMP only as unavailable for the planned independent test;
 - do not lower support thresholds.
 
-### \(H>0\) sign-flip passes, trajectory-drift null fails
+### \(H>0\) sign-flip passes, structured phase null fails
 
 Interpretation:
 
@@ -226,7 +226,7 @@ Even a supported result does not prove an Allee mechanism.
 
 Same-site pairing removes fixed place quality.
 
-The elapsed-time null controls generic abundance drift over the same time gap.
+The structured phase null controls generic temporal alignment with the observed multivariate abundance trajectory.
 
 Neither removes:
 
