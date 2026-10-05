@@ -4,23 +4,23 @@
 
 ## Bottom line
 
-The manuscript is strongest when treated as a **three-step evidence hierarchy**:
+The manuscript is strongest when treated as a **two-level evidence hierarchy plus a regional boundary condition**:
 
-1. Palmer discovers within-system concentration.
-2. Signy prospectively replicates it across geography and species.
-3. MAPPPD tests whether the **direction** persists when components are redefined one spatial level higher.
+1. Palmer discovers non-proportional concentration during decline.
+2. Signy prospectively replicates that result across geography and species.
+3. MAPPPD asks how the pattern behaves when components are redefined one spatial level higher.
 
-The third step is a scale-transfer test, not a third independent geographic replication and not a meta-analysis of the same effect statistic.
+The regional result is not a simple second-scale replication of a decline-specific mechanism. Among declining networks the positive abundance-conditioned direction recurs, but all three increasing networks also end with lower effective breeding-site number. MAPPPD therefore constrains the interpretation: regional concentration is not unique to declining abundance trajectories.
 
 ## Major issue 1 — Are local and regional analyses actually the same test?
 
-**Potential reviewer criticism:** Palmer/Signy use the temporal slope of effective component number, whereas MAPPPD uses the log–log abundance–E elasticity κ. Calling this “replication across scale” could imply a common statistic that does not exist.
+**Potential reviewer criticism:** Palmer/Signy use the temporal slope of effective component number, whereas MAPPPD uses the log–log abundance–E elasticity κ. Increasing MAPPPD networks additionally show that a falling E can correspond to negative κ when abundance rises.
 
-**Resolution:** Manuscript language now explicitly defines the shared target as **directional redistribution beyond fixed composition**. Local and regional p-values are not pooled and no common cross-scale κ is estimated.
+**Resolution:** The manuscript no longer treats κ as a scale-independent concentration direction. Palmer/Signy establish concentration during decline. In MAPPPD, the positive abundance-conditioned κ direction recurs only within the declining subset, while the increasing networks show that regional E can also fall under positive abundance trends.
 
-**Allowed language:** “the same concentration direction persists across spatial levels”, “cross-scale directional recurrence”.
+**Allowed language:** “abundance-linked concentration recurs within the declining regional subset”; “regional concentration is not unique to decline”.
 
-**Do not use:** “the same test replicated at both scales”, “common cross-scale effect size”.
+**Do not use:** “the same concentration direction persists across all spatial levels”, “common cross-scale κ”, “regional concentration is caused by decline”.
 
 ## Major issue 2 — Is MAPPPD an independent geographic replication?
 
@@ -66,11 +66,11 @@ The third step is a scale-transfer test, not a third independent geographic repl
 
 ## Major issue 8 — Is κ≈0.25 a universal law?
 
-**Potential criticism:** The local five-trajectory common κ≈0.25 may invite quarter-power rhetoric.
+**Potential criticism:** The local five-trajectory common κ≈0.25 may invite quarter-power rhetoric, and the regional increase panels show that κ can reverse sign while E still declines.
 
-**Resolution:** The regional values do not cluster near 0.25. The active manuscript explicitly demotes the exponent and argues that **sign transfers more consistently than magnitude**.
+**Resolution:** κ is now treated as a trajectory-specific abundance–space coupling parameter. It is not the general concentration state variable. The increasing panels make the earlier “sign transfers more consistently than magnitude” formulation untenable outside the declining subset.
 
-**Do not use:** “quarter-power law”, “universal scaling exponent”.
+**Do not use:** “quarter-power law”, “universal scaling exponent”, “κ sign is the transferable concentration property”.
 
 ## Major issue 9 — Does concentration mean the largest colony survives?
 
@@ -78,15 +78,17 @@ The third step is a scale-transfer test, not a third independent geographic repl
 
 **Resolution:** The post-hoc route decomposition directly blocks this interpretation. All three Palmer initial dominants disappear; both Signy initial dominants persist and strengthen. The endpoint recurs despite opposite component-level routes.
 
-## Major issue 10 — Does increasing abundance prove hysteresis?
+## Major issue 10 — Are the increasing networks merely descriptive context?
 
-**Potential criticism:** All three increasing MAPPPD networks finish with lower E, which may tempt an irreversible-ratchet claim.
+**Potential criticism:** Treating all three increasing networks as an appendix-level aside hides a result that directly changes the decline-specific interpretation.
 
-**Resolution:** The manuscript labels these panels descriptive only. The local formal ratchet criterion failed and no regional hysteresis endpoint was frozen.
+**Resolution:** The manuscript now reports the increasing networks in the main Results, Abstract and Discussion. They are a **major interpretive boundary**: all three end with lower E, and two show substantial E loss during abundance growth. This is enough to rule out a simple decline-only regional narrative.
 
-**Allowed language:** “qualitatively consistent with a slower spatial state”.
+It is still not a confirmatory ratchet result. The panels are sparse, dependent within region, and no decline-versus-increase asymmetry or time-slope test was frozen.
 
-**Do not use:** “hysteresis demonstrated”, “irreversible spatial loss”.
+**Allowed language:** “regional concentration was not restricted to declining networks”; “numerical increase did not necessarily restore effective site number”; “generates an independent symmetry/ratchet hypothesis”.
+
+**Do not use:** “hysteresis demonstrated”, “trend-independent law”, “irreversible spatial loss”.
 
 ## Major issue 11 — Are monitored components interchangeable spatial units?
 
@@ -113,7 +115,7 @@ The following would require genuinely new data and should not be pursued by furt
 
 ## Submission-level claim
 
-> In Antarctic *Pygoscelis*, decline repeatedly redistributes breeding effort toward fewer effective monitored breeding components beyond proportional thinning; the same direction remains visible when the component definition is moved from within breeding systems to regional networks of breeding sites, while effect magnitude and local routes remain contingent.
+> In Antarctic *Pygoscelis*, non-proportional concentration is strongly replicated during decline within breeding systems, while regional networks can also become more concentrated as abundance increases; breeding-space organization is therefore not a simple transform of population trend.
 
 ## Stop rule
 
