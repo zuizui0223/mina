@@ -114,12 +114,19 @@ class SmpTrendSymmetryGateTests(unittest.TestCase):
             out = run_balance(data, support)
             self.assertEqual(out["trend_support"]["increasing_panels"], 6)
             self.assertEqual(out["trend_support"]["declining_panels"], 6)
+            self.assertEqual(
+                out["trend_support"]["species_with_within_species_trend_variation_count"],
+                6,
+            )
+            self.assertTrue(out["decision"]["symmetry_identifiability_gate_passed"])
 
-            # Stage B output is panel trend only: no annual totals or composition.
+            # Stage B output is panel trend/support only: no annual totals or composition.
             allowed_trend_keys = {
                 "panel_id", "species", "master_site", "unit",
                 "n_components", "n_complete_years", "first_year",
-                "last_year", "b_log1pN_per_year", "trend_label",
+                "last_year", "n_positive_total_years",
+                "positive_total_span_years", "composition_eligible",
+                "b_log1pN_per_year", "trend_label",
             }
             for row in out["panel_trends"]:
                 self.assertEqual(set(row), allowed_trend_keys)
