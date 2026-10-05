@@ -27,19 +27,32 @@
     "step4": "primary T = unweighted mean of species means"
   },
   "primary_inference": {
-    "null": "species-level H means are symmetric around zero under a reversible mapping",
-    "test": "one-sided sign-flip randomization of species means",
-    "exact_if_species_leq": 20,
-    "random_sign_flips_if_more_species": 100000,
-    "seed": 20261005,
-    "support": "Primary spatial-recovery hysteresis is supported only if T>0, the one-sided species sign-flip p <=0.05, and the structured trajectory-phase null upper-tail p <=0.05."
+    "observed_statistic": "T_obs = unweighted mean of species mean H after spell -> SiteID -> MasterSite -> species aggregation",
+    "sign_flip": {
+      "null": "species-level H means are symmetric around zero",
+      "test": "one-sided sign-flip randomization of species means",
+      "exact_if_species_leq": 20,
+      "random_sign_flips_if_more_species": 100000,
+      "seed": 20261005
+    },
+    "trajectory_drift_null": {
+      "purpose": "Rule out positive H caused only by the fact that recolonization occurs later on a changing parent-abundance trajectory.",
+      "simulations": 20000,
+      "seed": 20261005,
+      "per_spell": "Uniformly sample one frozen pseudo start year from that spell's precomputed eligible pseudo placements. Preserve SiteID, panel, exact transition-gap years, and the observed leave-one-SiteID-out parent abundance trajectory.",
+      "pseudo_H": "Compute the same difference between later and earlier transition-midpoint log1p parent states at the pseudo placement.",
+      "aggregation": "Use the exact same spell -> SiteID -> MasterSite -> species -> equal-species hierarchy as T_obs.",
+      "p_value": "plus-one upper-tail P(T_null >= T_obs)",
+      "delta": "Delta_T = T_obs - median(T_null)"
+    },
+    "support": "Require T_obs > 0, sign-flip one-sided p <= 0.05, Delta_T > 0, and trajectory-drift-null upper-tail p <= 0.05."
   },
   "secondary_uncertainty": {
     "bootstrap_resamples": 9999,
     "seed": 20261005,
     "unit": "species",
     "interval": "percentile 95% interval for T",
-    "reporting": "report species means, MasterSite means, SiteID means and all spell-level H values"
+    "reporting": "report species means, MasterSite means, SiteID means, all spell-level H values, and the full trajectory-drift-null summary"
   },
   "boundaries": [
     "A positive H is evidence of history-dependent spatial recovery, not proof of an Allee mechanism.",
@@ -47,9 +60,10 @@
     "Do not call the result social hysteresis unless independent social-cue or fitness-density evidence is added.",
     "Do not use first colonization events in the primary threshold comparison.",
     "Do not change the completed-spell roster after count magnitudes are opened.",
-    "The structured trajectory-phase null calibrates generic temporal alignment but does not remove time-varying habitat quality."
+    "The structured trajectory-phase null calibrates generic temporal alignment but does not remove time-varying habitat quality.",
+    "The trajectory-drift null controls generic change in surrounding abundance over the same elapsed time but is not a complete mechanistic model of reversible habitat selection."
   ],
-  "stop_rule": "One execution only after the identity and state-only support gates pass. No alternative abundance transform, lag, transition midpoint, site subset, minimum vacancy duration, species subset, weighting rule, or null family may be added after H is opened.",
+  "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, pseudo-placement rule, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
   "trajectory_phase_null": {
     "purpose": "Calibrate whether positive H could arise from generic alignment with the observed long-term parent-abundance trajectory, annual sampling, or overshoot rather than asymmetric recovery.",
