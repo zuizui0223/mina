@@ -69,7 +69,7 @@ and species-balanced mean \(T\).
 Two inferential checks are mandatory:
 
 1. species-level one-sided sign-flip;
-2. structured trajectory-phase circular-shift null.
+2. structured non-circular common-offset null.
 
 ### Outcome 1 — spatial-recovery hysteresis supported
 
@@ -86,7 +86,7 @@ p_{\mathrm{sign}}\le0.05,
 and
 
 \[
-p_{\mathrm{phase}}\le0.05.
+p_{\mathrm{linear}}\le0.05.
 \]
 
 Paper-level conclusion allowed:
@@ -109,7 +109,7 @@ Alternative:
 
 Do not title the paper around Allee effects or social habitat selection.
 
-### Outcome 2 — sign-flip passes, trajectory-phase null fails
+### Outcome 2 — sign-flip passes, structured linear-shift null fails
 
 Interpretation:
 
@@ -164,7 +164,7 @@ A positive result does **not** uniquely identify:
 - site fidelity;
 - social facilitation.
 
-Same-site pairing removes fixed place quality. The trajectory-phase null calibrates generic timing. Time-varying habitat, predators, disturbance or management can still contribute.
+Same-site pairing removes fixed place quality. The structured non-circular common-offset null calibrates generic temporal alignment while preserving each physical MasterSite block's observed multivariate abundance trajectory. Time-varying habitat, predators, disturbance or management can still contribute.
 
 The general claim is therefore **history-dependent spatial recovery**, not a unique behavioral mechanism.
 
