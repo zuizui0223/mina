@@ -74,8 +74,9 @@ Scientific endpoints are closed, but the manuscript interpretation was revised o
 
 ## Word preview status
 
-The previously generated 24-page placeholder Main Document is retained as provenance only and is **superseded by the 2026-10-05 scientific-text revision**. It must not be uploaded. A new DOCX and revised/confirmed main figures must be regenerated and visually QA'd before submission.
+The revised one-paper DOCX has been rebuilt successfully and passed structural Word audit. The revised main figures have passed the Ecology dimension audit, and Appendix S1 has been rebuilt successfully.
 
+Final human visual QA and the rendered page-count check remain pending. These artifacts must not be uploaded until that QA is recorded.
 
 ## Canonical target resolution
 
@@ -84,15 +85,19 @@ Initial submission is **Ecology — Article**. The compact Ecology Report packag
 
 ## Artifact provenance
 
-- canonical placeholder DOCX workflow run: `37117211288`
-- canonical placeholder DOCX artifact: `11271907803`
-- DOCX artifact digest: `sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b`
-- canonical main-figure workflow run: `37106154408`
-- canonical main-figure artifact: `11267687698`
-- figure artifact digest: `sha256:c00314e70b631d024d407429a0947f1f7e6e749a1945fcd58833e1fea1585f19`
+Current revised artifacts:
 
-The listed DOCX and figure artifacts document the prior manuscript state only. They are **not current upload artifacts** after the regional trend-boundary revision. Regeneration and new visual QA are required before author metadata are the only remaining blocker.
+- DOCX workflow run: `37271645516`
+- DOCX artifact: `11328750641`
+- DOCX digest: `sha256:261b32a8ed3c7aa199ab47861e970bb6165256056ba5acb576390c5236e857d6`
+- figure workflow run: `37271645669`
+- figure artifact: `11328134584`
+- figure digest: `sha256:b11e37a4a1ffc7a209abcc9ea201785546184b93a9a90dae5537c2ca33f6fd8f`
+- Appendix S1 workflow run: `37271645474`
+- Appendix artifact: `11327474999`
+- Appendix digest: `sha256:5c0152464b1475a1e4060058d7a6226f2052e189d1861f049263c61512866eb0`
 
+The older 24-page DOCX and pre-revision figures remain provenance only.
 
 ## AI disclosure status
 
@@ -100,4 +105,4 @@ OpenAI ChatGPT use is disclosed in the applicable Methods section, in Acknowledg
 
 ## Initial-upload blocker
 
-The scientific endpoints are complete, but the upload package is no longer current after the 2026-10-05 interpretive revision. **Initial upload is blocked by required regeneration/QA of the revised manuscript and figures, plus author-controlled metadata.**
+Scientific endpoints are closed and the revised package has been regenerated. **Initial upload is blocked by final human visual QA / page-count verification and author-controlled metadata.**
