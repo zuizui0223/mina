@@ -13,7 +13,9 @@ from scripts.gate_smp_spatial_recovery_hysteresis_support_v1 import (
     validate_zero_semantics,
 )
 from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
+    build_panel_cache,
     hierarchical_means,
+    prepare_count_frame,
     shifted_spell_H,
     sign_flip_test,
     spell_effect,
@@ -140,6 +142,85 @@ class HysteresisTests(unittest.TestCase):
         out=sign_flip_test(np.array([1,1,1,1,1,1],float))
         self.assertEqual(out["mode"],"exact")
         self.assertAlmostEqual(out["one_sided_p"],1/64)
+
+
+    def test_stage_c_cache_uses_only_stage_b_frozen_years(self):
+        x = pd.DataFrame([
+            {
+                "_species": "sp1",
+                "_master": "M1",
+                "_master_norm": "m1",
+                "_unit": "AON",
+                "_site_id": site,
+                "year": year,
+                "_count": float(10 + year - 2000 + j),
+            }
+            for year in range(2000, 2006)
+            for j, site in enumerate(["s1", "s2", "s3"])
+        ])
+        structural = {
+            "eligible_panels": [{
+                "species": "sp1",
+                "master_site": "M1",
+                "unit": "AON",
+                "retained_site_ids": ["s1", "s2", "s3"],
+                "complete_years": list(range(2000, 2006)),
+            }]
+        }
+        spells = [{
+            "species": "sp1",
+            "master_site": "M1",
+            "unit": "AON",
+            "site_id": "s1",
+            "state_complete_years": [2001, 2002, 2003, 2004],
+        }]
+        cache = build_panel_cache(x, structural, spells)
+        mat = cache[("sp1", "m1", "AON")]
+        self.assertEqual(list(mat.index), [2001, 2002, 2003, 2004])
+
+    def test_stage_c_cache_rejects_missing_count_only_inside_frozen_support(self):
+        x = pd.DataFrame([
+            {
+                "_species": "sp1",
+                "_master": "M1",
+                "_master_norm": "m1",
+                "_unit": "AON",
+                "_site_id": site,
+                "year": year,
+                "_count": (float("nan") if (year == 2003 and site == "s2") else 10.0),
+            }
+            for year in range(2000, 2006)
+            for site in ["s1", "s2", "s3"]
+        ])
+        structural = {
+            "eligible_panels": [{
+                "species": "sp1",
+                "master_site": "M1",
+                "unit": "AON",
+                "retained_site_ids": ["s1", "s2", "s3"],
+                "complete_years": list(range(2000, 2006)),
+            }]
+        }
+        spells = [{
+            "species": "sp1",
+            "master_site": "M1",
+            "unit": "AON",
+            "site_id": "s1",
+            "state_complete_years": [2000, 2001, 2002],
+        }]
+        # The invalid 2003 count is outside Stage-B-frozen support and must not fail.
+        cache = build_panel_cache(x, structural, spells)
+        self.assertEqual(list(cache[("sp1", "m1", "AON")].index), [2000, 2001, 2002])
+
+        spells_bad = [{
+            "species": "sp1",
+            "master_site": "M1",
+            "unit": "AON",
+            "site_id": "s1",
+            "state_complete_years": [2001, 2002, 2003],
+        }]
+        with self.assertRaises(ValueError):
+            build_panel_cache(x, structural, spells_bad)
 
     def test_zero_phase_shift_equals_observed_spell_effect(self):
         years=list(range(2000,2006))
