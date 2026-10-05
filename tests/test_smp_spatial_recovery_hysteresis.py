@@ -321,6 +321,7 @@ class HysteresisTests(unittest.TestCase):
             sp={
                 "species":species,
                 "master_site":master,
+                "master_site_key":master,
                 "unit":unit,
                 "site_id":"focal",
                 "abandon_from":2000,
