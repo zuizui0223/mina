@@ -31,6 +31,31 @@ class SpatialRecoveryDocContractTests(unittest.TestCase):
         self.assertNotIn("common circular phase-null", text)
         self.assertNotIn("draw one common circular shift", text)
 
+    def test_provider_template_matches_zero_semantics_contract(self):
+        contract = json.loads(
+            (ROOT / "contracts" / "SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json")
+            .read_text(encoding="utf-8")
+        )
+        template = json.loads(
+            (ROOT / "submission" / "SMP_ZERO_SEMANTICS_PROVIDER_CONFIRMATION_TEMPLATE_V1.json")
+            .read_text(encoding="utf-8")
+        )
+        required = set(contract["required_confirmation_fields"])
+        supplied = set(template["provider_confirmation_required"]) - {"notes"}
+        self.assertEqual(required, supplied)
+        self.assertEqual(
+            template["status"],
+            "template_only_not_provider_confirmation",
+        )
+
+    def test_provider_evidence_ledger_preserves_unresolved_missing_row_semantics(self):
+        text = (
+            ROOT / "docs" / "SMP_PROVIDER_EVIDENCE_LEDGER_V1.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("Missing-row semantics", text)
+        self.assertIn("requiring provider confirmation", text)
+        self.assertIn("absence of a SiteID × species × year row", text)
+
     def test_execution_manifest_points_to_registered_spine(self):
         text = (
             ROOT / "docs" / "SMP_SPATIAL_RECOVERY_EXECUTION_MANIFEST_V1.md"
