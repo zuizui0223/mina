@@ -210,6 +210,7 @@ Spatial-recovery hysteresis is supported only if **all five** conditions hold:
 
 - \(T_{obs}>0\);
 - \(p_{sign}\le0.05\);
+- \(p_{master}\le0.05\);
 - \(\Delta_{linear}>0\);
 - \(p_{linear}\le0.05\).
 
@@ -227,7 +228,7 @@ Not allowed:
 
 > Allee effects or conspecific attraction caused the asymmetry.
 
-Same-site pairing controls fixed place identity/quality. The common-offset null controls generic temporal alignment without circular wrap. Neither removes time-varying habitat, predators, disturbance, management, or demographic composition.
+Same-site pairing controls fixed place identity/quality. The species sign-flip requires taxonomic replication, the physical-MasterSite sign-flip requires geographic replication, and the common-offset null controls generic temporal alignment without circular wrap. Neither removes time-varying habitat, predators, disturbance, management, or demographic composition.
 
 ## Stop rule
 
