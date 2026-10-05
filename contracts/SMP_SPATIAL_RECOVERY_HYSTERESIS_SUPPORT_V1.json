@@ -61,7 +61,8 @@
     "minimum_species_with_at_least_3_spells": 4,
     "minimum_species_with_spells_in_at_least_2_mastersites": 3,
     "minimum_phase_block_years_per_spell": 6,
-    "requirement": "all conditions must pass after excluding completed spells whose containing frozen complete-year block has <6 calendar-consecutive years"
+    "requirement": "all conditions must pass after excluding completed spells whose containing frozen complete-year block has <6 calendar-consecutive years",
+    "master_site_count_definition": "distinct provider-resolved physical master_site_key values, not species x MasterSite panels or display-name strings"
   },
   "decision": {
     "if_passed": "After identity-resolved structure and provider/official zero-semantics confirmation both pass, freeze the exact phase-null-eligible completed-spell roster and authorize one magnitude-opening hysteresis execution.",
