@@ -11,6 +11,7 @@ import pandas as pd
 
 from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
     hierarchical_means,
+    physical_master_site_sign_flip_test,
     sign_flip_test,
     spell_effect,
     structured_linear_shift_null,
@@ -121,6 +122,7 @@ def evaluate_dataset(seed: int, scenario: str) -> dict:
     hier = hierarchical_means(observed)
     vals = hier["species"]["species_mean_H"].to_numpy(float)
     sign = sign_flip_test(vals)
+    master_sign = physical_master_site_sign_flip_test(observed, spells, seed=seed)
     linear = structured_linear_shift_null(
         observed,
         spells,
@@ -132,12 +134,14 @@ def evaluate_dataset(seed: int, scenario: str) -> dict:
     supported = bool(
         T > 0
         and sign["one_sided_p"] <= 0.05
+        and master_sign["one_sided_p"] <= 0.05
         and linear["delta_linear_observed_minus_median"] > 0
         and linear["upper_tail_p"] <= 0.05
     )
     return {
         "T": T,
         "sign_p": float(sign["one_sided_p"]),
+        "master_sign_p": float(master_sign["one_sided_p"]),
         "linear_p": float(linear["upper_tail_p"]),
         "delta_linear": float(linear["delta_linear_observed_minus_median"]),
         "supported": supported,
@@ -163,6 +167,7 @@ def run() -> dict:
             "support_rate": support_rate,
             "median_T": float(np.median([r["T"] for r in rows])),
             "median_sign_p": float(np.median([r["sign_p"] for r in rows])),
+            "median_master_sign_p": float(np.median([r["master_sign_p"] for r in rows])),
             "median_linear_p": float(np.median([r["linear_p"] for r in rows])),
             "median_delta_linear": float(np.median([r["delta_linear"] for r in rows])),
         }
