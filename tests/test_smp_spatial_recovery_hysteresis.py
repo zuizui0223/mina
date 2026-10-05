@@ -382,5 +382,130 @@ class HysteresisTests(unittest.TestCase):
         self.assertIn("delta_phase_observed_minus_median",out)
 
 
+    def test_dual_gate_rejects_positive_H_caused_only_by_monotonic_parent_trend(self):
+        # Five species are enough for the exact sign-flip test to reach p<=0.05
+        # when every H is positive. Parent abundance rises smoothly through time,
+        # so positive H is caused only by the event occurring later on that trend.
+        years = list(range(2000, 2010))
+        cache = {}
+        spells = []
+        observed_rows = []
+        for s in range(5):
+            species = f"sp{s}"
+            master = f"TrendMaster{s}"
+            unit = "AON"
+
+            # log1p(parent abundance) rises linearly, making the observed
+            # abandonment->recolonization contrast positive at every phase
+            # away from the circular seam.
+            parent = np.expm1(np.linspace(2.0, 4.0, len(years)))
+            mat = pd.DataFrame(
+                {
+                    "focal": [5, 0, 0, 4, 5, 5, 5, 5, 5, 5],
+                    "other": parent,
+                },
+                index=years,
+            )
+            key = (species, master.casefold(), unit)
+            cache[key] = mat
+            sp = {
+                "species": species,
+                "master_site": master,
+                "master_site_key": master,
+                "unit": unit,
+                "site_id": "focal",
+                "abandon_from": 2000,
+                "abandon_to": 2001,
+                "recolonize_from": 2002,
+                "recolonize_to": 2003,
+                "phase_block_start": 2000,
+                "phase_block_end": 2009,
+                "phase_block_years": years,
+            }
+            spells.append(sp)
+            observed_rows.append(
+                {
+                    "species": species,
+                    "master_site": master,
+                    "master_site_key": master,
+                    "site_id": "focal",
+                    "H": spell_effect(mat, "focal", sp)["H"],
+                }
+            )
+
+        observed = pd.DataFrame(observed_rows)
+        h = hierarchical_means(observed)
+        sign = sign_flip_test(h["species"]["species_mean_H"].to_numpy(float))
+        phase = structured_phase_null(observed, spells, cache, B=4000, seed=123)
+
+        # The naive directional test would call this positive.
+        self.assertGreater(h["T"], 0)
+        self.assertLessEqual(sign["one_sided_p"], 0.05)
+
+        # But the frozen temporal null recognizes that this is just generic drift.
+        self.assertGreater(phase["upper_tail_p"], 0.05)
+
+    def test_dual_gate_detects_event_aligned_threshold_asymmetry(self):
+        # Construct five independent MasterSites in which surrounding abundance
+        # is unusually high specifically at the frozen recolonization transition.
+        # Circularly shifting the event phase should destroy that alignment.
+        years = list(range(2000, 2008))
+        cache = {}
+        spells = []
+        observed_rows = []
+
+        for s in range(5):
+            species = f"sp{s}"
+            master = f"PulseMaster{s}"
+            unit = "AON"
+
+            # Parent total is flat except for a pulse at one recolonization-side
+            # census. This makes the frozen event phase uniquely informative.
+            parent = [10, 10, 10, 100, 10, 10, 10, 10]
+            mat = pd.DataFrame(
+                {
+                    "focal": [5, 0, 0, 4, 5, 5, 5, 5],
+                    "other": parent,
+                },
+                index=years,
+            )
+            key = (species, master.casefold(), unit)
+            cache[key] = mat
+            sp = {
+                "species": species,
+                "master_site": master,
+                "master_site_key": master,
+                "unit": unit,
+                "site_id": "focal",
+                "abandon_from": 2000,
+                "abandon_to": 2001,
+                "recolonize_from": 2002,
+                "recolonize_to": 2003,
+                "phase_block_start": 2000,
+                "phase_block_end": 2007,
+                "phase_block_years": years,
+            }
+            spells.append(sp)
+            observed_rows.append(
+                {
+                    "species": species,
+                    "master_site": master,
+                    "master_site_key": master,
+                    "site_id": "focal",
+                    "H": spell_effect(mat, "focal", sp)["H"],
+                }
+            )
+
+        observed = pd.DataFrame(observed_rows)
+        h = hierarchical_means(observed)
+        sign = sign_flip_test(h["species"]["species_mean_H"].to_numpy(float))
+        phase = structured_phase_null(observed, spells, cache, B=4000, seed=456)
+
+        self.assertGreater(h["T"], 0)
+        self.assertLessEqual(sign["one_sided_p"], 0.05)
+        self.assertGreater(phase["delta_phase_observed_minus_median"], 0)
+        self.assertLessEqual(phase["upper_tail_p"], 0.05)
+
+
 if __name__=="__main__":
     unittest.main()
