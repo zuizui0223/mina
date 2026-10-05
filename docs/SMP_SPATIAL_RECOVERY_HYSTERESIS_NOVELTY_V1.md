@@ -39,7 +39,7 @@ Therefore the project must not claim novelty for simply comparing occupancy acro
 
 The candidate contribution is narrower:
 
-> **For the same repeatedly monitored breeding SiteID, directly pair the surrounding population state at abandonment with the state at later recolonization, then test prospectively across multiple seabird species whether recovery crosses a systematically higher threshold than collapse after controlling generic abundance drift over the same elapsed time.**
+> **For the same repeatedly monitored breeding SiteID, directly pair the surrounding population state at abandonment with the state at later recolonization, then test prospectively across multiple seabird species whether recovery crosses a systematically higher threshold than collapse after controlling structured temporal alignment with the same observed MasterSite abundance trajectories.**
 
 This is a direct empirical test of whether the recovery path retraces the collapse path at the same places.
 
