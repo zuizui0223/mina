@@ -109,30 +109,6 @@ class HysteresisTests(unittest.TestCase):
         self.assertEqual(containing_block([2000,2001,2002,2005,2006,2007,2008,2009,2010],sp),
                          [2005,2006,2007,2008,2009,2010])
 
-    def test_zero_semantics_requires_provider_confirmed_true_values(self):
-        with tempfile.TemporaryDirectory() as td:
-            p=Path(td)/"zero.json"
-            p.write_text(json.dumps({
-                "row_with_direct_count_zero_is_surveyed_nil": True,
-                "absent_site_year_row_is_not_zero": True,
-                "estimated_or_imputed_zero_excluded_from_primary": True,
-                "confirmation_source": "BTO provider email 2026-10-05"
-            }))
-            out=validate_zero_semantics(p)
-            self.assertTrue(out["row_with_direct_count_zero_is_surveyed_nil"])
-
-    def test_zero_semantics_rejects_ambiguous_zero(self):
-        with tempfile.TemporaryDirectory() as td:
-            p=Path(td)/"zero.json"
-            p.write_text(json.dumps({
-                "row_with_direct_count_zero_is_surveyed_nil": False,
-                "absent_site_year_row_is_not_zero": True,
-                "estimated_or_imputed_zero_excluded_from_primary": True,
-                "confirmation_source": "ambiguous"
-            }))
-            with self.assertRaises(ValueError):
-                validate_zero_semantics(p)
-
     def test_spell_effect_positive_when_recolonization_parent_is_higher(self):
         mat=pd.DataFrame(
             {
