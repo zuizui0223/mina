@@ -66,10 +66,11 @@ H=A_{\mathrm{recolonize}}-A_{\mathrm{abandon}}
 
 and species-balanced mean \(T\).
 
-Two inferential checks are mandatory:
+Three inferential checks are mandatory:
 
 1. species-level one-sided sign-flip;
-2. structured non-circular common-offset null.
+2. physical-MasterSite one-sided sign-flip;
+3. structured non-circular common-offset null.
 
 ### Outcome 1 — spatial-recovery hysteresis supported
 
@@ -115,7 +116,18 @@ Alternative:
 
 Do not title the paper around Allee effects or social habitat selection.
 
-### Outcome 2 — sign-flip passes, structured linear-shift null fails
+### Outcome 2 — either replication sign-flip fails
+
+If the species sign-flip or physical-MasterSite sign-flip fails:
+
+> the direction is not sufficiently replicated across both taxonomic and geographic units.
+
+Action:
+
+- no general multi-species hysteresis claim;
+- no species or locality subgroup rescue.
+
+### Outcome 3 — both replication sign-flips pass, structured linear-shift null fails
 
 Interpretation:
 
@@ -127,7 +139,7 @@ Action:
 - do not add another null;
 - current penguin manuscript remains the paper.
 
-### Outcome 3 — positive T but sign-flip fails
+### Outcome 4 — positive T but another confirmatory condition fails
 
 Interpretation:
 
@@ -138,7 +150,7 @@ Action:
 - no general hysteresis claim;
 - species/subgroup rescue analyses prohibited.
 
-### Outcome 4 — T approximately zero / unresolved
+### Outcome 5 — T approximately zero / unresolved
 
 Interpretation:
 
@@ -149,7 +161,7 @@ Action:
 - the MAPPPD increasing-network result remains a bounded Antarctic observation;
 - current penguin manuscript remains standalone.
 
-### Outcome 5 — T < 0
+### Outcome 6 — T < 0
 
 Interpretation:
 
@@ -170,7 +182,7 @@ A positive result does **not** uniquely identify:
 - site fidelity;
 - social facilitation.
 
-Same-site pairing removes fixed place quality. The structured non-circular common-offset null calibrates generic temporal alignment while preserving each physical MasterSite block's observed multivariate abundance trajectory. Time-varying habitat, predators, disturbance or management can still contribute.
+Same-site pairing removes fixed place quality. Separate species and physical-MasterSite sign-flips require taxonomic and geographic replication. The structured non-circular common-offset null calibrates generic temporal alignment while preserving each physical MasterSite block's observed multivariate abundance trajectory. Time-varying habitat, predators, disturbance or management can still contribute.
 
 The general claim is therefore **history-dependent spatial recovery**, not a unique behavioral mechanism.
 
