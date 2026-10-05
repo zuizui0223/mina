@@ -136,3 +136,18 @@ The penguin and SMP datasets are not pooled for inference.
 If a literature search completed before SMP magnitude opening identifies an existing empirical study that already performs an equivalent multi-species same-patch paired abandonment/recolonization population-threshold test, revise the novelty claim before opening outcomes.
 
 Do not alter the estimand after results merely to recover novelty.
+
+
+## Annual-census measurement boundary
+
+The primary \(A_e\) and \(A_c\) values are means of the two annual censuses bracketing each observed occupancy transition.
+
+They are therefore **transition-state proxies**, not directly observed continuous-time thresholds.
+
+The manuscript may use “empirical loss–recovery threshold proxy” only with this qualification. Precise Results and Abstract language should prefer:
+
+- transition-state asymmetry;
+- loss–recovery state asymmetry;
+- surrounding population state associated with abandonment/recolonization.
+
+Do not claim exact threshold values or within-year crossing points.
