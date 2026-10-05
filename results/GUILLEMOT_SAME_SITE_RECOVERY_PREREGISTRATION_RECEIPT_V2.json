@@ -1,0 +1,91 @@
+{
+  "schema_version": 2,
+  "receipt_id": "mina-guillemot-same-site-recovery-preregistration-v2",
+  "date": "2026-10-05",
+  "status": "FINAL_CANONICAL_PRE_RAW_OUTCOME_RECEIPT",
+  "supersedes": "results/GUILLEMOT_SAME_SITE_RECOVERY_PREREGISTRATION_RECEIPT_V1.json",
+  "supersession_reason": "Scientific hypothesis and inferential rules are unchanged. V2 additionally pins the metadata-resolved raw adapter, state-only Stage-B support gate, immutable Stage-B freeze, and guarded Stage-C launcher before any raw EIDC biological outcome values were opened.",
+  "frozen_design_head_sha": "ac9c1a944c5df03d61a2b3572520ab8291b7564c",
+  "raw_data_values_opened_before_freeze": false,
+  "source_dataset_doi": "10.5285/33b42f0a-12a5-47fe-aaaf-25f4ee5e13a5",
+  "source_file_expected": "JAE_Bennett_CommonGuillemot_sitequality_occupancy.csv",
+  "canonical_files": [
+    {
+      "path": "contracts/GUILLEMOT_SAME_SITE_RECOVERY_V1.json",
+      "git_blob_sha": "6278609caa1a9595dccb4e08f0737b794bed79ed"
+    },
+    {
+      "path": "docs/GUILLEMOT_SAME_SITE_RECOVERY_PREREGISTRATION_V1.md",
+      "git_blob_sha": "cade84f4b0adbf3a75852c35b40b0652a19dbc08"
+    },
+    {
+      "path": "docs/GUILLEMOT_SOURCE_SEMANTICS_AUDIT_V1.md",
+      "git_blob_sha": "56f90b97e1b78738bcb60f811a3344b1163c32e9"
+    },
+    {
+      "path": "scripts/prepare_guillemot_same_site_input_v1.py",
+      "git_blob_sha": "395036f359051bbe58d980c4af0d1033fbaf49a1"
+    },
+    {
+      "path": "scripts/gate_guillemot_same_site_support_v1.py",
+      "git_blob_sha": "0f2eafb318515037dd4df1cc66c41576a25656a2"
+    },
+    {
+      "path": "scripts/freeze_guillemot_same_site_stageb_v1.py",
+      "git_blob_sha": "f843ecf8b6384f976354355ec0d784e0ca1c801f"
+    },
+    {
+      "path": "scripts/run_guillemot_same_site_recovery_v1.py",
+      "git_blob_sha": "fe28175ec034ae1e83c14f602c3584b6976466d8"
+    },
+    {
+      "path": "scripts/guarded_run_guillemot_same_site_recovery_v1.py",
+      "git_blob_sha": "e708468812675dff98498a191b358e7fb16e51f9"
+    },
+    {
+      "path": "tests/test_prepare_guillemot_same_site_input_v1.py",
+      "git_blob_sha": "892e7fdb14c82a0eac5b3eaa74986f3f8acc34b2"
+    },
+    {
+      "path": "tests/test_guillemot_same_site_recovery_v1.py",
+      "git_blob_sha": "5877fe19d9c8df18226170cba624ac1db3cd58ae"
+    },
+    {
+      "path": "tests/test_guillemot_operational_guard_v1.py",
+      "git_blob_sha": "fc8b411bc15f75fc0082401bc01dcd7d4e7ae43b"
+    }
+  ],
+  "blind_execution_sequence": [
+    "hash raw EIDC occupancy CSV",
+    "run state-only Stage B reading only Subcolony, Site.number, Year and Occupancy.status",
+    "if Stage-B support fails, stop before reading Subcolony.size",
+    "if Stage-B support passes, archive the exact spell roster and common offsets",
+    "create immutable Stage-B freeze receipt against this V2 preregistration",
+    "only then run guarded Stage C, which verifies hashes/roster before reading Subcolony.size",
+    "compute the primary and prespecified >=2-year-vacancy sensitivity exactly once"
+  ],
+  "support_gate": {
+    "minimum_total_completed_spells": 30,
+    "minimum_distinct_sites_with_spells": 20,
+    "required_subcolonies_with_spells": 5,
+    "minimum_spells_per_subcolony": 3,
+    "minimum_common_non_circular_offsets_per_shift_group": 3
+  },
+  "confirmatory_conditions": [
+    "T_obs > 0",
+    "exact five-subcolony one-sided sign-flip p <= 0.05",
+    "Delta_shift > 0",
+    "structured non-circular common-offset upper-tail p <= 0.05"
+  ],
+  "claim_boundary": {
+    "event": "annual breeding-site vacancy and later reoccupation",
+    "not_claimed": [
+      "permanent abandonment",
+      "individual return threshold",
+      "causal Allee effect",
+      "causal social attraction",
+      "multi-species seabird-wide hysteresis"
+    ]
+  },
+  "post_freeze_rule": "After raw biological outcomes are opened, only demonstrable implementation bugs independent of biological outcomes may be repaired with an explicit audit trail. No site-state semantics, completed-spell definition, support threshold, transform, aggregation, sign-flip unit, null, sensitivity definition or interpretation rule may change."
+}
