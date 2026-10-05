@@ -30,7 +30,10 @@ from scripts.gate_smp_master_site_support_v1 import (
 MIN_INCREASING = 6
 MIN_DECLINING = 6
 MIN_SPECIES_EACH = 3
-MIN_MASTERS_EACH = 5\nMIN_POSITIVE_YEARS = 8\nMIN_POSITIVE_SPAN = 10\nMIN_SPECIES_WITH_TREND_VARIATION = 4
+MIN_MASTERS_EACH = 5
+MIN_POSITIVE_YEARS = 8
+MIN_POSITIVE_SPAN = 10
+MIN_SPECIES_WITH_TREND_VARIATION = 4
 
 
 def _prepare_raw(path: Path, *, assume_whole_colony_extract: bool) -> pd.DataFrame:
