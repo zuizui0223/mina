@@ -181,14 +181,42 @@ def validate_zero_semantics(path: Path) -> dict:
     for key in required_true:
         if z.get(key) is not True:
             raise ValueError(f"zero-semantics confirmation failed: {key} must be true")
+
     source = str(z.get("confirmation_source", "")).strip()
     if not source:
         raise ValueError("zero-semantics confirmation_source must be non-empty")
+
+    family = str(z.get("compatible_record_family_or_era", "")).strip()
+    if not family:
+        raise ValueError(
+            "zero-semantics compatible_record_family_or_era must be non-empty"
+        )
+
+    try:
+        start = int(z["compatible_start_year"])
+        end = int(z["compatible_end_year"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError(
+            "zero-semantics compatible_start_year/end_year must be integers"
+        ) from exc
+
+    if not (1986 <= start <= 2024):
+        raise ValueError(f"compatible_start_year outside frozen range: {start}")
+    if not (1986 <= end <= 2024):
+        raise ValueError(f"compatible_end_year outside frozen range: {end}")
+    if end < start:
+        raise ValueError(
+            f"compatible_end_year {end} precedes compatible_start_year {start}"
+        )
+
     return {
         "row_with_direct_count_zero_is_surveyed_nil": True,
         "absent_site_year_row_is_not_zero": True,
         "estimated_or_imputed_zero_excluded_from_primary": True,
         "confirmation_source": source,
+        "compatible_start_year": start,
+        "compatible_end_year": end,
+        "compatible_record_family_or_era": family,
     }
 
 
