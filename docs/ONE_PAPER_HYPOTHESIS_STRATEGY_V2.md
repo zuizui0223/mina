@@ -146,7 +146,7 @@ Prediction:
 H>0
 \]
 
-beyond the structured phase null.
+beyond the frozen structured common-phase null.
 
 Potential mechanisms include social attraction, site fidelity, public information, or other biological memory, but these are not identified by the primary test.
 
