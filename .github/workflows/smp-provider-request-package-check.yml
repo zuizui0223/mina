@@ -1,0 +1,31 @@
+name: smp-provider-request-package-check
+
+on:
+  push:
+    branches: [research/smp-spatial-recovery-hysteresis-v1]
+    paths:
+      - "submission/SMP_BTO_DATA_REQUEST_FORM_READY_V1.md"
+      - "submission/SMP_DATA_REQUEST_CONTENT_V1.md"
+      - "submission/SMP_MACRO_DATA_REQUEST_DRAFT.md"
+      - "docs/SMP_PROVIDER_ACCESS_VERIFICATION_SUPPLEMENT_V1.md"
+      - "tests/test_smp_provider_request_package.py"
+      - ".github/workflows/smp-provider-request-package-check.yml"
+  pull_request:
+    paths:
+      - "submission/SMP_BTO_DATA_REQUEST_FORM_READY_V1.md"
+      - "submission/SMP_DATA_REQUEST_CONTENT_V1.md"
+      - "submission/SMP_MACRO_DATA_REQUEST_DRAFT.md"
+      - "docs/SMP_PROVIDER_ACCESS_VERIFICATION_SUPPLEMENT_V1.md"
+      - "tests/test_smp_provider_request_package.py"
+      - ".github/workflows/smp-provider-request-package-check.yml"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m unittest tests.test_smp_provider_request_package -v
