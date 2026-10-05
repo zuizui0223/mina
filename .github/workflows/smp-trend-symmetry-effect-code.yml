@@ -6,12 +6,14 @@ on:
     paths:
       - "contracts/SMP_TREND_SYMMETRY_EFFECT_V1.json"
       - "scripts/run_smp_trend_symmetry_effect_v1.py"
+      - "scripts/gate_smp_trend_balance_v1.py"
       - "tests/test_smp_trend_symmetry_effect.py"
       - ".github/workflows/smp-trend-symmetry-effect-code.yml"
   pull_request:
     paths:
       - "contracts/SMP_TREND_SYMMETRY_EFFECT_V1.json"
       - "scripts/run_smp_trend_symmetry_effect_v1.py"
+      - "scripts/gate_smp_trend_balance_v1.py"
       - "tests/test_smp_trend_symmetry_effect.py"
       - ".github/workflows/smp-trend-symmetry-effect-code.yml"
   workflow_dispatch:
