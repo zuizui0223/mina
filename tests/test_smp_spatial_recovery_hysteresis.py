@@ -21,13 +21,13 @@ from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
     shifted_spell_H,
     sign_flip_test,
     spell_effect,
-    structured_phase_null,
+    structured_linear_shift_null,
 )
 
 
 class HysteresisTests(unittest.TestCase):
 
-    def test_contracts_use_only_structured_common_phase_null(self):
+    def test_contracts_use_only_structured_common_offset_null(self):
         root = Path(__file__).resolve().parents[1]
         support = json.loads(
             (root / "contracts" / "SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json")
@@ -39,8 +39,8 @@ class HysteresisTests(unittest.TestCase):
         )
         self.assertNotIn("panel_wide_trajectory_drift_null_support", support)
         self.assertNotIn("trajectory_drift_null", effect["primary_inference"])
-        self.assertIn("structured_phase_null", effect["primary_inference"])
-        self.assertIn("Delta_phase", effect["primary_inference"]["support"])
+        self.assertIn("structured_linear_shift_null", effect["primary_inference"])
+        self.assertIn("Delta_linear", effect["primary_inference"]["support"])
 
     def test_five_species_is_minimum_for_exact_alpha_point_zero_five(self):
         four = sign_flip_test(np.array([1, 1, 1, 1], float))
@@ -286,7 +286,7 @@ class HysteresisTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build_panel_cache(x, structural, spells_bad)
 
-    def test_zero_phase_shift_equals_observed_spell_effect(self):
+    def test_zero_linear_offset_equals_observed_spell_effect(self):
         years=list(range(2000,2006))
         mat=pd.DataFrame(
             {
@@ -301,16 +301,17 @@ class HysteresisTests(unittest.TestCase):
             "abandon_to":2001,
             "recolonize_from":2002,
             "recolonize_to":2003,
-            "phase_block_start":2000,
-            "phase_block_end":2005,
-            "phase_block_years":years,
+            "shift_block_start":2000,
+            "shift_block_end":2005,
+            "shift_block_years":years,
+            "common_offset_values":[0,1,2],
         }
         observed=spell_effect(mat,"focal",sp)["H"]
-        shifted=shifted_spell_H(mat,"focal",sp,0)
+        shifted=shifted_spell_H_linear(mat,"focal",sp,0)
         self.assertAlmostEqual(observed,shifted)
 
 
-    def test_phase_null_shares_one_block_across_species_at_same_master(self):
+    def test_linear_null_shares_one_offset_group_across_species_at_same_master(self):
         years = list(range(2000, 2006))
         cache = {}
         spells = []
@@ -338,9 +339,10 @@ class HysteresisTests(unittest.TestCase):
                 "abandon_to": 2001,
                 "recolonize_from": 2002,
                 "recolonize_to": 2003,
-                "phase_block_start": 2000,
-                "phase_block_end": 2005,
-                "phase_block_years": years,
+                "shift_block_start": 2000,
+                "shift_block_end": 2005,
+                "shift_block_years": years,
+                "common_offset_values": [0,1,2],
             }
             spells.append(sp)
             observed_rows.append({
@@ -351,16 +353,16 @@ class HysteresisTests(unittest.TestCase):
                 "H": spell_effect(mat, "focal", sp)["H"],
             })
 
-        out = structured_phase_null(
+        out = structured_linear_shift_null(
             pd.DataFrame(observed_rows),
             spells,
             cache,
             B=50,
             seed=7,
         )
-        self.assertEqual(out["distinct_phase_blocks"], 1)
+        self.assertEqual(out["distinct_linear_shift_groups"], 1)
 
-    def test_structured_phase_null_returns_frozen_summary(self):
+    def test_structured_linear_shift_null_returns_frozen_summary(self):
         years=list(range(2000,2006))
         cache={}
         spells=[]
@@ -389,9 +391,9 @@ class HysteresisTests(unittest.TestCase):
                 "abandon_to":2001,
                 "recolonize_from":2002,
                 "recolonize_to":2003,
-                "phase_block_start":2000,
-                "phase_block_end":2005,
-                "phase_block_years":years,
+                "shift_block_start":2000,
+                "shift_block_end":2005,
+                "shift_block_years":years,
             }
             spells.append(sp)
             H=spell_effect(mat,"focal",sp)["H"]
@@ -402,11 +404,11 @@ class HysteresisTests(unittest.TestCase):
                 "site_id":"focal",
                 "H":H,
             })
-        out=structured_phase_null(pd.DataFrame(observed_rows),spells,cache,B=200,seed=42)
+        out=structured_linear_shift_null(pd.DataFrame(observed_rows),spells,cache,B=200,seed=42)
         self.assertEqual(out["resamples"],200)
-        self.assertEqual(out["distinct_phase_blocks"],5)
+        self.assertEqual(out["distinct_linear_shift_groups"],5)
         self.assertIn("upper_tail_p",out)
-        self.assertIn("delta_phase_observed_minus_median",out)
+        self.assertIn("delta_linear_observed_minus_median",out)
 
 
     def test_dual_gate_rejects_positive_H_caused_only_by_monotonic_parent_trend(self):
@@ -424,7 +426,7 @@ class HysteresisTests(unittest.TestCase):
 
             # log1p(parent abundance) rises linearly, making the observed
             # abandonment->recolonization contrast positive at every phase
-            # away from the circular seam.
+            # under a smooth monotonic trend.
             parent = np.expm1(np.linspace(2.0, 4.0, len(years)))
             mat = pd.DataFrame(
                 {
@@ -445,9 +447,10 @@ class HysteresisTests(unittest.TestCase):
                 "abandon_to": 2001,
                 "recolonize_from": 2002,
                 "recolonize_to": 2003,
-                "phase_block_start": 2000,
-                "phase_block_end": 2009,
-                "phase_block_years": years,
+                "shift_block_start": 2000,
+                "shift_block_end": 2009,
+                "shift_block_years": years,
+                "common_offset_values": [0,1,2,3,4,5,6],
             }
             spells.append(sp)
             observed_rows.append(
@@ -463,19 +466,19 @@ class HysteresisTests(unittest.TestCase):
         observed = pd.DataFrame(observed_rows)
         h = hierarchical_means(observed)
         sign = sign_flip_test(h["species"]["species_mean_H"].to_numpy(float))
-        phase = structured_phase_null(observed, spells, cache, B=4000, seed=123)
+        linear = structured_linear_shift_null(observed, spells, cache, B=4000, seed=123)
 
         # The naive directional test would call this positive.
         self.assertGreater(h["T"], 0)
         self.assertLessEqual(sign["one_sided_p"], 0.05)
 
         # But the frozen temporal null recognizes that this is just generic drift.
-        self.assertGreater(phase["upper_tail_p"], 0.05)
+        self.assertGreater(linear["upper_tail_p"], 0.05)
 
     def test_dual_gate_detects_event_aligned_threshold_asymmetry(self):
         # Construct five independent MasterSites in which surrounding abundance
         # is unusually high specifically at the frozen recolonization transition.
-        # Circularly shifting the event phase should destroy that alignment.
+        # Non-circularly shifting the event window should destroy that alignment.
         years = list(range(2000, 2008))
         cache = {}
         spells = []
@@ -487,7 +490,7 @@ class HysteresisTests(unittest.TestCase):
             unit = "AON"
 
             # Parent total is flat except for a pulse at one recolonization-side
-            # census. This makes the frozen event phase uniquely informative.
+            # census. This makes the frozen event alignment uniquely informative.
             parent = [10, 10, 10, 100, 10, 10, 10, 10]
             mat = pd.DataFrame(
                 {
@@ -508,9 +511,10 @@ class HysteresisTests(unittest.TestCase):
                 "abandon_to": 2001,
                 "recolonize_from": 2002,
                 "recolonize_to": 2003,
-                "phase_block_start": 2000,
-                "phase_block_end": 2007,
-                "phase_block_years": years,
+                "shift_block_start": 2000,
+                "shift_block_end": 2007,
+                "shift_block_years": years,
+                "common_offset_values": [0,1,2,3,4],
             }
             spells.append(sp)
             observed_rows.append(
@@ -526,12 +530,39 @@ class HysteresisTests(unittest.TestCase):
         observed = pd.DataFrame(observed_rows)
         h = hierarchical_means(observed)
         sign = sign_flip_test(h["species"]["species_mean_H"].to_numpy(float))
-        phase = structured_phase_null(observed, spells, cache, B=4000, seed=456)
+        linear = structured_linear_shift_null(observed, spells, cache, B=4000, seed=456)
 
         self.assertGreater(h["T"], 0)
         self.assertLessEqual(sign["one_sided_p"], 0.05)
-        self.assertGreater(phase["delta_phase_observed_minus_median"], 0)
-        self.assertLessEqual(phase["upper_tail_p"], 0.05)
+        self.assertGreater(linear["delta_linear_observed_minus_median"], 0)
+        self.assertLessEqual(linear["upper_tail_p"], 0.05)
+
+
+    def test_linear_shift_never_wraps_across_block_boundary(self):
+        years = list(range(2000, 2006))
+        mat = pd.DataFrame(
+            {
+                "focal": [5,0,0,4,5,6],
+                "other": [10,20,30,40,50,60],
+            },
+            index=years,
+        )
+        sp = {
+            "abandon_from": 2000,
+            "abandon_to": 2001,
+            "recolonize_from": 2002,
+            "recolonize_to": 2003,
+            "shift_block_start": 2000,
+            "shift_block_end": 2005,
+            "shift_block_years": years,
+            "common_offset_values": [0,1,2],
+        }
+        self.assertIsInstance(
+            shifted_spell_H_linear(mat, "focal", sp, 2),
+            float,
+        )
+        with self.assertRaises(ValueError):
+            shifted_spell_H_linear(mat, "focal", sp, 3)
 
 
 if __name__=="__main__":
