@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "receipt_id": "mina-smp-spatial-recovery-hysteresis-preregistration-receipt-v2",
+  "frozen_date": "2026-10-05",
+  "branch": "research/smp-spatial-recovery-hysteresis-v2",
+  "frozen_design_head_sha": "19af919d53e043165ea706a16e0d0bc72fd76450",
+  "pull_request": 176,
+  "status": "DESIGN_FROZEN_AFTER_V2_SYNTHETIC_RECOVERY_PASS_BEFORE_SMP_HYSTERESIS_OUTCOMES",
+  "v1_predata_failure": {
+    "closure_receipt": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_V1_CLOSURE_RECEIPT.json",
+    "reason": "V1 circular phase null falsely supported 40/40 monotonic-drift synthetic datasets.",
+    "biological_outcomes_opened": false
+  },
+  "v2_recovery_audit": {
+    "workflow_name": "smp-spatial-recovery-hysteresis-v2-recovery",
+    "workflow_run_id": 37294790639,
+    "artifact_id": 11337544869,
+    "artifact_digest": "sha256:216e80f8b7f5a68229a671860bc89029ad59e1293204a6353919c4fad8fae5d1",
+    "conclusion": "success",
+    "stationary_false_positive_rate": 0.03333333333333333,
+    "monotonic_drift_false_positive_rate": 0,
+    "reversible_threshold_false_positive_rate": 0,
+    "moderate_hysteresis_recovery_rate": 0,
+    "strong_hysteresis_recovery_rate": 1
+  },
+  "canonical_files": [
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_STRUCTURE_V1.json",
+      "git_blob_sha": "c12b8516c74d298a1134ef43acced24a407ec5e5"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
+      "git_blob_sha": "da74e364d648415e4632adc7bee8506c0b09a89b"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json",
+      "git_blob_sha": "0c227b2421fb4d2da7157aa7be391764850a7639"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json",
+      "git_blob_sha": "5cfa36eecd5e7ecc6f8d6b636dde0e0e50db3c85"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V2.json",
+      "git_blob_sha": "e179aa8905a453c7f07411ce75bab1617db977d1"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_EFFECT_V2.json",
+      "git_blob_sha": "5ec509ddc628f3a568f969325f2610689a59f88e"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_V2.json",
+      "git_blob_sha": "eb68b93699ff148aab67548d6fae4ab674f21572"
+    },
+    {
+      "path": "scripts/finalize_smp_spatial_recovery_hysteresis_support_v2.py",
+      "git_blob_sha": "5252eae317924a28a4beaf0198d8572cbbd9da7c"
+    },
+    {
+      "path": "scripts/run_smp_spatial_recovery_hysteresis_v2.py",
+      "git_blob_sha": "14de966b443d811d87d6826db4a12618886abf91"
+    },
+    {
+      "path": "scripts/audit_smp_spatial_recovery_hysteresis_recovery_v2.py",
+      "git_blob_sha": "66134ce4d4b6144402cdb44320e586a2748bed2a"
+    },
+    {
+      "path": "tests/test_smp_spatial_recovery_hysteresis_v2.py",
+      "git_blob_sha": "55dae887bc622f42d6bf272a441898784a559235"
+    },
+    {
+      "path": ".github/workflows/smp-spatial-recovery-hysteresis-v2-recovery.yml",
+      "git_blob_sha": "f2532a3b2539b85a7885593bf407db9776114a09"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_PROTOCOL_V2.md",
+      "git_blob_sha": "cdc813fe19a42eaa623ff86208e24ebe5f5c5b4e"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_RUNBOOK_V2.md",
+      "git_blob_sha": "d76bc330a68c55bf2f0fec65a91ed1863eeceec1"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_V2_DECISION_TABLE.md",
+      "git_blob_sha": "4c1fd2c7b40cd64aeeb9f18c92d39d56de41d388"
+    },
+    {
+      "path": "docs/REGISTERED_INTEGRATED_MANUSCRIPT_SPINE_HYSTERESIS_V2.md",
+      "git_blob_sha": "e3a1e900413ca23f1caa745f7234201304aafeca"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_NOVELTY_V1.md",
+      "git_blob_sha": "4c328031503957410ed14f263d06c2a82c264312"
+    },
+    {
+      "path": "submission/SMP_DATA_REQUEST_CONTENT_V1.md",
+      "git_blob_sha": "230f113cc123cb9de6d4ce300dd29c27b557b676"
+    },
+    {
+      "path": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_V1_CLOSURE_RECEIPT.json",
+      "git_blob_sha": "748f0dabbcaf207ffdba50af726c6b11b8868f5d"
+    },
+    {
+      "path": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V2.json",
+      "git_blob_sha": "fcf5be27b9b7ae04411abde9e551716e8789a048"
+    }
+  ],
+  "frozen_hypothesis": "Later recolonization of the same breeding SiteIDs occurs at higher leave-one-SiteID-out surrounding population states than earlier abandonment, beyond non-circular temporal placement on the observed physical MasterSite abundance trajectories.",
+  "confirmatory_requirements": [
+    "Count-blind candidate structure passes.",
+    "Provider physical SiteID/MasterSite identity gate passes.",
+    "Provider zero-semantics gate passes.",
+    "Provider-confirmed state-only completed-spell scan passes.",
+    "V2 non-circular common-shift support gate passes.",
+    "T_obs > 0.",
+    "Species sign-flip one-sided p <= 0.05.",
+    "Delta_shift > 0.",
+    "V2 common-shift null upper-tail p <= 0.05."
+  ],
+  "power_boundary": "At the minimum synthetic replication scale, V2 recovered the strong calibration signal in 60/60 datasets but the moderate calibration signal in 0/60. This conservatism is frozen and must not be repaired by weakening gates after real outcomes are known.",
+  "measurement_boundary": "Ae and Ac are annual transition-state proxies from censuses bracketing observed loss/recovery transitions, not exact continuous-time demographic thresholds.",
+  "mechanism_boundary": "Support establishes history-dependent spatial recovery at the measured SiteID scale, not uniquely Allee effects, conspecific attraction, public information, site fidelity, or any single mechanism.",
+  "freeze_rule": "After this frozen design SHA, no ecological definition, support threshold, SiteID rule, zero semantics, vacancy-spell rule, transformation, hierarchy, weighting, common-shift group, allowed-shift rule, null family, simulation count, or interpretation gate may be changed in response to SMP support/effect outcomes. Provider-populated identity and zero-semantics metadata are allowed only through the already-defined gates."
+}
