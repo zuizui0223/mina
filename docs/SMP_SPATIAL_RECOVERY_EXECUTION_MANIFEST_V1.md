@@ -126,13 +126,13 @@ If any fail:
 - no region split;
 - no alternative zero definition;
 - no first-colonization rescue;
-- no alternative phase/null model;
+- no alternative common-offset/null model;
 - no mechanism screen.
 
 ### Step 8 — manuscript routing
 
 If both gates pass:
-- activate docs/INTEGRATED_COLLAPSE_RECOVERY_MANUSCRIPT_SPINE_V1.md.
+- activate `docs/REGISTERED_INTEGRATED_MANUSCRIPT_SPINE_HYSTERESIS_V1.md`.
 
 Otherwise:
 - retain current penguin Ecology manuscript as standalone;
