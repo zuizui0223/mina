@@ -4,7 +4,7 @@
 
 **Journal:** Ecology  
 **Article type:** Article  
-**Title:** Breeding-space contraction recurs across spatial scales in Antarctic penguins
+**Title:** Breeding-space concentration recurs across spatial scales in Antarctic penguins
 
 This package supersedes the earlier Ecology Report submission line for initial submission. Older Report, Ecosphere, JBI and integrated manuscript files remain only as provenance.
 
@@ -18,8 +18,8 @@ This package supersedes the earlier Ecology Report submission line for initial s
 
 Approximate manuscript metrics:
 
-- title: 77 characters including spaces
-- abstract: 256 words
+- title: 79 characters including spaces
+- abstract: 257 words
 - main text before full reference list: ~4,600 words
 - main figures: 3
 - supplementary figures: 1
@@ -69,12 +69,12 @@ Initial submission still requires private confirmation of:
 - overlap/dual-publication statement
 - ORCID IDs if requested
 
-Scientific analysis is closed. These metadata blockers do not authorize new ecological analyses.
+Scientific endpoints are closed, but the manuscript interpretation was revised on 2026-10-05 to promote the increasing MAPPPD networks as a main boundary condition. These metadata blockers do not authorize new ecological analyses.
 
 
 ## Word preview status
 
-The canonical placeholder Main Document renders to **24 pages** and has passed complete page-by-page visual QA. With three separately uploaded one-page main figures, the expected generated manuscript is **27 pages**, within the 30-page Ecology Article limit. The preview is not author-complete and must not be uploaded until private author metadata are filled.
+The previously generated 24-page placeholder Main Document is retained as provenance only and is **superseded by the 2026-10-05 scientific-text revision**. It must not be uploaded. A new DOCX and revised/confirmed main figures must be regenerated and visually QA'd before submission.
 
 
 ## Canonical target resolution
@@ -91,7 +91,7 @@ Initial submission is **Ecology — Article**. The compact Ecology Report packag
 - canonical main-figure artifact: `11267687698`
 - figure artifact digest: `sha256:c00314e70b631d024d407429a0947f1f7e6e749a1945fcd58833e1fea1585f19`
 
-The canonical placeholder Main Document and all three main figures have passed visual QA. Regenerate the DOCX only when confirmed private author metadata are inserted.
+The listed DOCX and figure artifacts document the prior manuscript state only. They are **not current upload artifacts** after the regional trend-boundary revision. Regeneration and new visual QA are required before author metadata are the only remaining blocker.
 
 
 ## AI disclosure status
@@ -100,4 +100,4 @@ OpenAI ChatGPT use is disclosed in the applicable Methods section, in Acknowledg
 
 ## Initial-upload blocker
 
-The canonical scientific and formatting package is complete. **Initial upload is blocked only by author-controlled metadata**. A permanent archive DOI is desirable for the final Open Research Statement but is not treated as an initial-submission blocker.
+The scientific endpoints are complete, but the upload package is no longer current after the 2026-10-05 interpretive revision. **Initial upload is blocked by required regeneration/QA of the revised manuscript and figures, plus author-controlled metadata.**
