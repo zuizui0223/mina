@@ -1,7 +1,8 @@
 # BTO SMP academic data-request content v2
 
 **Status:** draft content only; not submitted.  
-**Purpose:** obtain a raw structural extract for a prospectively frozen test of spatial recovery hysteresis.
+**Purpose:** obtain a raw structural extract for a prospectively frozen test of spatial recovery hysteresis.  
+**Current access route checked 2026-10-05:** BTO/JNCC state that large SMP requests should use the BTO Data Request route or contact the SMP organiser at smp@bto.org.
 
 ## Project type
 
@@ -83,6 +84,8 @@ We need the most disaggregated repeated Site-level records available, including 
 - verification / review status if available
 - explicit nil-return / zero information, if encoded separately from Count = 0
 - any field identifying merged-site totals, parent/aggregate sites, or historical site-boundary changes
+
+The current BTO SMP guidance explicitly states that zero/nil returns are important because they distinguish true absence from a species simply not being surveyed. For the requested bulk extract, we still need the applicable record-era semantics confirmed rather than assuming that every historical record family encodes zero identically.
 
 For this project, it is particularly important to distinguish:
 
