@@ -112,7 +112,7 @@ Primary prediction:
 H>0
 \]
 
-and observed species-balanced \(H\) must exceed the elapsed-time trajectory-drift null.
+and observed species-balanced \(H\) must exceed the frozen structured non-circular common-offset null.
 
 ## Results sequence if and only if SMP confirms
 
@@ -139,7 +139,7 @@ Report SMP structural and state-only gates:
 - eligible panels;
 - species;
 - MasterSites;
-- completed null-eligible vacancy spells;
+- completed common-offset-eligible vacancy spells;
 - SiteIDs;
 - vacancy durations.
 
@@ -167,20 +167,20 @@ species sign-flip:
 p=[\text{insert frozen result only}]
 \]
 
-### Result 5 — elapsed-time matched null
+### Result 5 — structured non-circular common-offset null
 
 Report:
 
 \[
-\mathrm{median}(T_{\mathrm{null}})=[\ ]
+\mathrm{median}(T_{\mathrm{linear,null}})=[\ ]
 \]
 
 \[
-\Delta T=[\ ]
+\Delta_{\mathrm{linear}}=[\ ]
 \]
 
 \[
-p_{\mathrm{drift}}=[\ ].
+p_{\mathrm{linear}}=[\ ].
 \]
 
 No environmental rescue analyses.
@@ -253,7 +253,7 @@ SMP paired threshold result:
 species-level \(H\) with SiteID/MasterSite hierarchy in background.
 
 ### Figure 4
-Observed \(T_{\mathrm{obs}}\) against elapsed-time trajectory-drift null.
+Observed \(T_{\mathrm{obs}}\) against the structured non-circular common-offset null.
 
 ## Stop rule
 
