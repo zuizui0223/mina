@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-smp-spatial-recovery-hysteresis-effect-v1",
   "date": "2026-10-05",
-  "status": "locked_until_identity_state_and_phase_block_support_gates_pass",
+  "status": "locked_until_identity_state_and_common_offset_support_gates_pass",
   "parent_support": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json",
   "hypothesis": "A breeding SiteID that has been abandoned requires a higher surrounding population state to be recolonized than the surrounding population state at which it was abandoned.",
   "competing_predictions": {
@@ -36,31 +36,31 @@
       "random_sign_flips_if_more_species": 100000,
       "seed": 20261005
     },
-    "structured_phase_null": {
-      "purpose": "Test whether positive H exceeds what can arise solely because fixed abandonment/recolonization dates align with a trending or autocorrelated surrounding-population trajectory.",
+    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, Delta_linear > 0, and structured-linear-shift-null upper-tail p <= 0.05.",
+    "structured_linear_shift_null": {
+      "purpose": "Test whether positive H exceeds what can arise solely because abandonment/recolonization dates occupy particular positions on trending or autocorrelated surrounding-population trajectories, without circular wrap.",
       "conditioning": [
         "exact frozen completed-spell roster",
         "exact SiteID and species identities",
         "exact event-year pattern and vacancy duration",
         "observed multivariate count trajectory within each species x MasterSite",
         "maximal contiguous state-complete year block containing each spell",
-        "shared provider-resolved physical master_site_key phase across species when the frozen block is identical"
+        "one frozen non-circular common-offset set for every provider-resolved physical MasterSite x identical block"
       ],
-      "randomization": "For each provider-resolved physical master_site_key x identical contiguous state-complete block, draw one common circular year shift. Apply that same shift to every species, SiteID and spell sharing that MasterSite/block while keeping frozen event-year positions fixed.",
+      "randomization": "For each provider-resolved physical master_site_key x identical block, draw one offset uniformly from the Stage-B-frozen common offset set. Apply that same offset to every species, SiteID and spell sharing the group. No event may wrap across a block boundary.",
       "resamples": 9999,
       "seed": 20261005,
       "p_value": "plus-one upper-tail probability that shifted species-balanced T >= T_obs",
-      "delta": "Delta_phase = T_obs - median(T_phase_null)",
-      "interpretation": "Structured temporal-alignment null; not a fitted mechanistic occupancy model and does not remove time-varying habitat quality."
-    },
-    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, Delta_phase > 0, and structured-phase-null upper-tail p <= 0.05."
+      "delta": "Delta_linear = T_obs - median(T_linear_null)",
+      "interpretation": "Structured non-circular temporal-alignment null; not a fitted mechanistic occupancy model and does not remove time-varying habitat quality."
+    }
   },
   "secondary_uncertainty": {
     "bootstrap_resamples": 9999,
     "seed": 20261005,
     "unit": "species",
     "interval": "percentile 95% interval for T",
-    "reporting": "report species means, MasterSite means, SiteID means, all spell-level H values, and the structured phase-null summary"
+    "reporting": "report species means, MasterSite means, SiteID means, all spell-level H values, and the structured linear-shift-null summary"
   },
   "boundaries": [
     "Stage C is unauthorized unless the SiteID identity gate and provider-confirmed zero-semantics gate both passed before occupancy-state scanning.",
@@ -69,16 +69,12 @@
     "Do not call the result social hysteresis unless independent social-cue or fitness-density evidence is added.",
     "Do not use first colonization events in the primary threshold comparison.",
     "Do not change the completed-spell roster after count magnitudes are opened.",
-    "The structured phase null calibrates generic temporal alignment with observed parent-abundance trajectories and annual sampling but is not a complete reversible habitat-selection model.",
-    "Circular shifting creates a block seam; this is accepted as part of the frozen structured null and is not tuned after outcomes.",
     "Use 'transition-state asymmetry' or 'empirical threshold proxy' in precise reporting; annual census data do not observe the exact continuous-time abandonment/recolonization threshold.",
-    "When multiple species share a MasterSite and identical phase block, the structured null uses one common phase shift to avoid treating shared local environmental trajectories as independent species evidence.",
-    "Physical phase blocks are keyed by provider-resolved master_site_key, not by display-name string alone.",
-    "MasterSite aggregation and phase blocking use provider-resolved physical master_site_key; display labels are retained only for presentation.",
-    "The structured common-phase null preserves synchronized local timing within provider-resolved MasterSite/block groups but remains a temporal null, not a complete reversible occupancy process model.",
-    "The structured common-phase null preserves synchronized local timing within provider-resolved MasterSite/block groups but remains a temporal null, not a complete reversible occupancy process model."
+    "The non-circular common-offset null was adopted before SMP outcomes because the frozen synthetic recovery audit showed that the earlier circular null falsely supported 40/40 monotonic-drift datasets.",
+    "When multiple species share a physical MasterSite and identical state-complete block, one common offset is used to preserve shared local temporal covariance.",
+    "The structured common-offset null remains a temporal alignment null, not a complete reversible occupancy-process model."
   ],
-  "stop_rule": "One execution only after identity, zero-semantics and phase-block support gates pass. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
+  "stop_rule": "One execution only after identity, zero-semantics and common-offset support gates pass. No alternative abundance transform, lag, transition midpoint, block rule, offset scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
   "zero_semantics_contract": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json"
 }
