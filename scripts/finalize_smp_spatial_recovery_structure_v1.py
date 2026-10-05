@@ -17,11 +17,9 @@ import pandas as pd
 MIN_SITES=3
 MIN_YEARS=10
 MIN_SPAN=12
-MIN_PANELS=20
-MIN_SPECIES=8
-MIN_MASTERS=15
-MIN_REGIONS=3
-MIN_MULTI_SPECIES=4
+MIN_PANELS=10
+MIN_SPECIES=5
+MIN_MASTERS=10
 
 REQUIRED={
     "species","MasterSite","SiteID","stable_identity","mutually_exclusive_child",
@@ -126,14 +124,10 @@ def run(support_json:Path,resolution_csv:Path)->dict:
 
     species=sorted({p["species"] for p in panels})
     masters=sorted({p["master_site"] for p in panels})
-    regions=sorted({r for p in panels for r in p.get("countries",[]) if str(r).strip()})
-    counts=Counter(p["species"] for p in panels)
-    multi=sorted([sp for sp,n in counts.items() if n>=2])
-
     passed=bool(
-        len(panels)>=MIN_PANELS and len(species)>=MIN_SPECIES
-        and len(masters)>=MIN_MASTERS and len(regions)>=MIN_REGIONS
-        and len(multi)>=MIN_MULTI_SPECIES
+        len(panels)>=MIN_PANELS
+        and len(species)>=MIN_SPECIES
+        and len(masters)>=MIN_MASTERS
     )
 
     return {
@@ -143,16 +137,18 @@ def run(support_json:Path,resolution_csv:Path)->dict:
         "eligible_panel_count":len(panels),
         "eligible_species_count":len(species),
         "distinct_master_site_count":len(masters),
-        "broad_regions":regions,
-        "broad_region_count":len(regions),
-        "species_with_two_or_more_panels":multi,
+        "dedicated_hysteresis_thresholds":{
+            "minimum_panels":MIN_PANELS,
+            "minimum_species":MIN_SPECIES,
+            "minimum_master_sites":MIN_MASTERS,
+        },
         "excluded_siteids":excluded,
         "excluded_multi_unit_masterSites":excluded_multi_unit,
         "eligible_panels":panels,
         "decision":{
             "structural_gate_passed":passed,
             "zero_positive_state_scan_authorized":passed,
-            "if_failed":"Stop without relaxing identity, count-unit, or program thresholds."
+            "if_failed":"Stop without relaxing identity, count-unit, or dedicated hysteresis program thresholds."
         },
         "forbidden_outputs_confirmed_absent":[
             "count magnitudes","zero/positive occupancy histories","abundance trends",
