@@ -24,7 +24,7 @@ def test_exactly_one_canonical_initial_ecology_package():
     assert resolution["canonical_initial_submission"]["submission_type"] == "Article"
     assert resolution["canonical_initial_submission"]["contract"] == "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
 
-    assert article["status"] == "canonical_target_retained_scientific_text_revised_packaging_must_regenerate"
+    assert article["status"] == "canonical_revised_package_built_visual_qa_pending"
     assert report["status"] == "alternate_compact_package_not_canonical_for_initial_submission"
     assert report["canonical_initial_submission"] == "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
 
