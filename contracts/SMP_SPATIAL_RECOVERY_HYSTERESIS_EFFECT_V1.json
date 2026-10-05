@@ -36,7 +36,7 @@
       "random_sign_flips_if_more_species": 100000,
       "seed": 20261005
     },
-    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, Delta_linear > 0, and structured-linear-shift-null upper-tail p <= 0.05.",
+    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, physical-MasterSite sign-flip one-sided p <= 0.05, Delta_linear > 0, and structured-linear-shift-null upper-tail p <= 0.05.",
     "structured_linear_shift_null": {
       "purpose": "Test whether positive H exceeds what can arise solely because abandonment/recolonization dates occupy particular positions on trending or autocorrelated surrounding-population trajectories, without circular wrap.",
       "conditioning": [
@@ -53,6 +53,14 @@
       "p_value": "plus-one upper-tail probability that shifted species-balanced T >= T_obs",
       "delta": "Delta_linear = T_obs - median(T_linear_null)",
       "interpretation": "Structured non-circular temporal-alignment null; not a fitted mechanistic occupancy model and does not remove time-varying habitat quality."
+    },
+    "physical_master_site_sign_flip": {
+      "purpose": "Guard against treating multiple species at the same physical MasterSite as independent geographic replication.",
+      "statistic": "Use the frozen hierarchical spell weights implied by spell -> SiteID -> physical MasterSite -> species -> equal-species aggregation. Sum weighted H contributions within each provider-resolved physical master_site_key, then sign-flip whole physical-MasterSite contributions.",
+      "exact_if_master_sites_leq": 20,
+      "random_sign_flips_if_more_master_sites": 100000,
+      "seed": 20261005,
+      "p_value": "one-sided upper-tail probability for T_obs under physical-MasterSite cluster sign flips"
     }
   },
   "secondary_uncertainty": {
@@ -72,7 +80,8 @@
     "Use 'transition-state asymmetry' or 'empirical threshold proxy' in precise reporting; annual census data do not observe the exact continuous-time abandonment/recolonization threshold.",
     "The non-circular common-offset null was adopted before SMP outcomes because the frozen synthetic recovery audit showed that the earlier circular null falsely supported 40/40 monotonic-drift datasets.",
     "When multiple species share a physical MasterSite and identical state-complete block, one common offset is used to preserve shared local temporal covariance.",
-    "The structured common-offset null remains a temporal alignment null, not a complete reversible occupancy-process model."
+    "The structured common-offset null remains a temporal alignment null, not a complete reversible occupancy-process model.",
+    "Confirmatory support requires replication across both taxonomic species clusters and provider-resolved physical MasterSite clusters; neither dimension alone may establish the general claim."
   ],
   "stop_rule": "One execution only after identity, zero-semantics and common-offset support gates pass. No alternative abundance transform, lag, transition midpoint, block rule, offset scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
