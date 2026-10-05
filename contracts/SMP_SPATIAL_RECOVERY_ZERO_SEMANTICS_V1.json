@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-spatial-recovery-zero-semantics-v1",
+  "date": "2026-10-05",
+  "status": "provider_confirmation_required_before_state_scan",
+  "purpose": "Prevent missing/unvisited records or placeholder zeroes from being interpreted as biological vacancy in the SMP hysteresis test.",
+  "required_confirmation_fields": {
+    "row_with_direct_count_zero_is_surveyed_nil": "must be true",
+    "absent_site_year_row_is_not_zero": "must be true",
+    "estimated_or_imputed_zero_excluded_from_primary": "must be true",
+    "confirmation_source": "provider documentation, provider email/statement, or official SMP data dictionary"
+  },
+  "runtime_rule": "Stage B zero/positive state extraction is unauthorized until a confirmation JSON records all three booleans as true and identifies the source.",
+  "boundaries": [
+    "If zero semantics differ among data eras or record families, restrict prospectively to the documented compatible era/family before occupancy states are inspected.",
+    "Do not infer zero semantics from the ecological pattern."
+  ]
+}
