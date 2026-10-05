@@ -159,6 +159,42 @@ class HysteresisStructureContractTests(unittest.TestCase):
                 self.assertNotIn("count", spell)
                 self.assertNotIn("pseudo_start_years", spell)
 
+
+    def test_ambiguous_master_identity_excludes_only_that_panel(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            data = self._synthetic_extract(root)
+            raw = run_structure(data)
+            raw_path = root / "raw.json"
+            raw_path.write_text(json.dumps(raw), encoding="utf-8")
+
+            identity_path = self._identity_csv(root, raw)
+            ids = pd.read_csv(identity_path)
+
+            # Make one candidate species x MasterSite map to two physical keys.
+            target_species = raw["eligible_panels"][0]["species"]
+            target_master = raw["eligible_panels"][0]["master_site"]
+            mask = (
+                ids["species"].astype(str).eq(str(target_species))
+                & ids["MasterSite"].astype(str).eq(str(target_master))
+            )
+            idx = ids.index[mask].tolist()
+            self.assertGreaterEqual(len(idx), 2)
+            ids.loc[idx[0], "master_site_key"] = "physical-A"
+            ids.loc[idx[1:], "master_site_key"] = "physical-B"
+            ids.to_csv(identity_path, index=False)
+
+            out = finalize_identity(raw_path, identity_path)
+            self.assertEqual(out["eligible_panel_count"], 9)
+            self.assertEqual(len(out["excluded_master_identity_panels"]), 1)
+            self.assertEqual(
+                out["excluded_master_identity_panels"][0]["master_site"],
+                target_master,
+            )
+            # Program minimum is 10 panels, so the overall gate now fails
+            # without salvaging or splitting the ambiguous candidate.
+            self.assertFalse(out["decision"]["structural_gate_passed"])
+
     def test_stage_b_rejects_raw_structure_before_identity_finalize(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
