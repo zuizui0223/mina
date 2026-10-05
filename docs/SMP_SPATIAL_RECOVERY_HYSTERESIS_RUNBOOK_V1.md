@@ -23,6 +23,8 @@ Required columns:
 - species
 - MasterSite
 - SiteID
+- master_site_key
+- master_site_identity_confirmed
 - stable_identity
 - mutually_exclusive_child
 - overlaps_parent_or_sibling
@@ -105,7 +107,7 @@ python scripts/finalize_smp_spatial_recovery_structure_v1.py \
 
 decision.structural_gate_passed = true
 
-Every retained SiteID must satisfy:
+Every retained panel must first resolve to exactly one provider-confirmed physical master_site_key. Every retained SiteID must then satisfy:
 
 - stable identity
 - mutually exclusive child
