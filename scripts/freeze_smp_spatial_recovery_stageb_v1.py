@@ -18,6 +18,7 @@ CANDIDATE_ID = "mina-smp-spatial-recovery-hysteresis-structure-v1"
 RESOLVED_ID = "mina-smp-spatial-recovery-structure-v1"
 STAGEB_ID = "mina-smp-spatial-recovery-hysteresis-support-v1"
 PREREG_ID = "mina-smp-spatial-recovery-hysteresis-preregistration-receipt-v3"
+CUSTODY_ID = "mina-smp-raw-custody-v1"
 
 
 def sha256_file(path: Path) -> str:
@@ -80,6 +81,7 @@ def verify_canonical_blobs(repo_root: Path, prereg: dict) -> list[dict]:
 
 def run(
     raw_path: Path,
+    custody_json: Path,
     candidate_json: Path,
     identity_csv: Path,
     resolved_json: Path,
@@ -88,11 +90,19 @@ def run(
     prereg_json: Path,
     repo_root: Path,
 ) -> dict:
+    custody = load_json(custody_json)
     candidate = load_json(candidate_json)
     resolved = load_json(resolved_json)
     zero = load_json(zero_json)
     stageb = load_json(stageb_json)
     prereg = load_json(prereg_json)
+
+    if custody.get("receipt_id") != CUSTODY_ID:
+        raise ValueError("not a valid raw-custody receipt")
+    if custody.get("status") != "RAW_EXTRACT_CUSTODY_RECORDED_CONTENT_NOT_PARSED":
+        raise ValueError("raw-custody receipt status invalid")
+    if custody.get("content_parsed") is not False or custody.get("content_inspected") is not False:
+        raise ValueError("raw-custody receipt does not preserve content blind")
 
     if prereg.get("receipt_id") != PREREG_ID:
         raise ValueError("not the canonical V3 preregistration receipt")
@@ -107,6 +117,12 @@ def run(
         raise ValueError("candidate A0 gate did not pass")
 
     raw_sha = sha256_file(raw_path)
+    if str(custody.get("sha256", "")).strip() != raw_sha:
+        raise ValueError("raw extract SHA does not match custody receipt")
+    if int(custody.get("byte_size", -1)) != int(raw_path.stat().st_size):
+        raise ValueError("raw extract byte size does not match custody receipt")
+    if str(custody.get("local_filename", "")).strip() != raw_path.name:
+        raise ValueError("raw extract filename does not match custody receipt")
     frozen_raw_sha = str(candidate.get("source", {}).get("sha256", "")).strip()
     if not frozen_raw_sha or raw_sha != frozen_raw_sha:
         raise ValueError("raw extract SHA does not match A0 structural receipt")
@@ -158,6 +174,7 @@ def run(
 
     files = {
         "raw_extract": raw_path,
+        "raw_custody": custody_json,
         "candidate_structure": candidate_json,
         "identity_resolution": identity_csv,
         "resolved_structure": resolved_json,
@@ -183,7 +200,16 @@ def run(
             for name, path in files.items()
         },
         "raw_extract_sha256": raw_sha,
+        "custody": {
+            "receipt_id": custody["receipt_id"],
+            "received_at": custody["received_at"],
+            "provider_filename": custody["provider_filename"],
+            "local_filename": custody["local_filename"],
+            "byte_size": int(custody["byte_size"]),
+            "sha256": custody["sha256"],
+        },
         "gate_summary": {
+            "raw_custody_verified": True,
             "candidate_A0_passed": True,
             "identity_A1_passed": True,
             "zero_semantics_A2_passed": True,
@@ -213,6 +239,7 @@ def run(
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--raw", required=True, type=Path)
+    p.add_argument("--custody-json", required=True, type=Path)
     p.add_argument("--candidate-json", required=True, type=Path)
     p.add_argument("--identity-csv", required=True, type=Path)
     p.add_argument("--resolved-json", required=True, type=Path)
@@ -225,6 +252,7 @@ def main() -> int:
 
     result = run(
         a.raw,
+        a.custody_json,
         a.candidate_json,
         a.identity_csv,
         a.resolved_json,
