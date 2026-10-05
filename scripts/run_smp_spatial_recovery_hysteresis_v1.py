@@ -16,14 +16,104 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from scripts.gate_smp_trend_balance_v1 import _prepare_raw
-from scripts.gate_smp_master_site_support_v1 import _norm
+from scripts.gate_smp_master_site_support_v1 import (
+    EXPOSED_MASTER,
+    SENSITIVE,
+    _direct_record_mask,
+    _find_column,
+    _load,
+    _norm,
+    _not_merged_mask,
+    _whole_colony_mask,
+    _year_from_date,
+)
 
 
 SEED = 20261005
 BOOT_B = 9999
 RANDOM_SIGN_B = 100000
 PHASE_B = 9999
+
+
+def prepare_count_frame(
+    path: Path,
+    *,
+    assume_whole_colony_extract: bool = False,
+) -> pd.DataFrame:
+    """Apply the frozen SMP direct-count filters without any trend calculation."""
+    df = _load(path)
+
+    species_col = _find_column(df, ["Species"])
+    site_id_col = _find_column(df, ["SiteID", "Site ID", "Site code"])
+    master_col = _find_column(df, ["MasterSite", "Master Site"])
+    method_col = _find_column(df, ["Method"], required=False)
+    unit_col = _find_column(df, ["Unit"])
+    accuracy_col = _find_column(df, ["Accuracy"])
+    estimate_col = _find_column(df, ["Estimate", "Estimate type"], required=False)
+    comments_col = _find_column(df, ["Comments", "Comment"], required=False)
+    plot_col = _find_column(df, ["Plot", "Plot site name", "Spatial level"], required=False)
+    count_col = _find_column(df, ["Count"])
+    year_col = _find_column(df, ["Year"], required=False)
+    date_col = _find_column(df, ["Start date", "Date", "StartDate"], required=year_col is None)
+
+    year = (
+        df[year_col].map(_year_from_date)
+        if year_col is not None
+        else df[date_col].map(_year_from_date)
+    )
+    x = df.assign(_year=year)
+    x = x[x["_year"].between(1986, 2024, inclusive="both")].copy()
+
+    direct = _direct_record_mask(x, accuracy_col, estimate_col)
+    whole = _whole_colony_mask(x, plot_col, assume_whole_colony_extract)
+    not_merged = _not_merged_mask(x, comments_col)
+    x = x[direct & whole & not_merged].copy()
+
+    x["_species"] = x[species_col].map(_norm)
+    x["_master"] = x[master_col].map(lambda z: str(z).strip())
+    x["_master_norm"] = x[master_col].map(_norm)
+    x["_site_id"] = x[site_id_col].map(lambda z: str(z).strip())
+    x["_unit"] = x[unit_col].map(lambda z: str(z).strip())
+    x["_method"] = x[method_col].map(lambda z: str(z).strip()) if method_col else ""
+    x["year"] = x["_year"].astype(int)
+    x["_count"] = pd.to_numeric(x[count_col], errors="coerce")
+
+    x = x[~x["_species"].isin(SENSITIVE)].copy()
+    pilot = x["_species"].str.contains("kittiwake", regex=False) & (
+        x["_master_norm"] == EXPOSED_MASTER
+    )
+    x = x[~pilot].copy()
+
+    if x["_count"].isna().any():
+        raise ValueError("Non-numeric or missing direct Count in Stage-C input")
+    if (x["_count"] < 0).any():
+        raise ValueError("Negative Count values are not allowed")
+
+    key = ["_species", "_master", "_unit", "_site_id", "year"]
+    dup_n = x.groupby(key, dropna=False).size().rename("_n").reset_index()
+    unique_keys = dup_n[dup_n["_n"] == 1][key]
+    x = x.merge(unique_keys, on=key, how="inner")
+
+    if method_col:
+        method_n = (
+            x[x["_method"].map(_norm) != ""]
+            .groupby(["_species", "_master", "_unit", "_site_id"])["_method"]
+            .nunique()
+            .rename("_method_n")
+            .reset_index()
+        )
+        x = x.merge(
+            method_n,
+            on=["_species", "_master", "_unit", "_site_id"],
+            how="left",
+        )
+        x["_method_n"] = x["_method_n"].fillna(0)
+        x = x[x["_method_n"] <= 1].copy()
+
+    return x[
+        ["_species", "_master", "_master_norm", "_unit", "_site_id", "year", "_count"]
+    ].copy()
+
 
 
 def transition_midpoint(parent_excl_a: float, parent_excl_b: float) -> float:
@@ -310,7 +400,7 @@ def run(
         raise ValueError("state-only hysteresis support gate did not pass")
 
     spells = list(cycles["completed_spells"])
-    x = _prepare_raw(
+    x = prepare_count_frame(
         input_path,
         assume_whole_colony_extract=assume_whole_colony_extract,
     )
