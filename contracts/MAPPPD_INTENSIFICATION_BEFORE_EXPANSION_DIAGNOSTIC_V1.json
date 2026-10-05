@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-mapppd-intensification-before-expansion-diagnostic-v1",
+  "date": "2026-10-05",
+  "status": "posthoc_diagnostic_hypothesis_generation_only",
+  "purpose": "Diagnose whether positive abundance transitions in the already-frozen MAPPPD regional panels are realized primarily as gains at sites occupied in the previous complete season or as gains from exact zero to positive at previously empty retained sites.",
+  "source": {
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "inherited_panel_definition": "scripts/test_mapppd_regional_concentration.py",
+    "inherited_observation_calibration": "frozen Paper 2 image/direct and accuracy calibration",
+    "eligible_panel_roster": "exact seven species x APBP-region networks from MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2"
+  },
+  "transition_definition": {
+    "included": "consecutive retained complete-season pairs within each frozen panel for which adjusted panel total increases",
+    "no_gap_bridging": true,
+    "site_occupied_at_t": "adjusted_count_jt > 0 exactly",
+    "site_empty_at_t": "adjusted_count_jt == 0 exactly",
+    "site_gain": "max(adjusted_count_j,t+1 - adjusted_count_j,t, 0)",
+    "gross_existing_gain": "sum site_gain over sites occupied at t",
+    "gross_expansion_gain": "sum site_gain over sites empty at t and positive at t+1",
+    "gross_gain_total": "gross_existing_gain + gross_expansion_gain",
+    "expansion_fraction": "gross_expansion_gain / gross_gain_total when gross_gain_total > 0",
+    "intensification_fraction": "gross_existing_gain / gross_gain_total when gross_gain_total > 0"
+  },
+  "required_outputs": [
+    "number of positive-total transitions",
+    "number with at least one exact-zero retained site at t",
+    "number with at least one zero-to-positive transition",
+    "gross existing-site gain",
+    "gross zero-to-positive expansion gain",
+    "expansion/intensification fractions",
+    "same summaries by frozen panel"
+  ],
+  "forbidden": [
+    "new occupancy threshold other than exact adjusted zero",
+    "null model or p-value",
+    "posthoc site-quality scoring",
+    "changing retained rosters or complete seasons",
+    "calling the diagnostic a confirmatory test of social attraction",
+    "using the result to alter the already-closed MAPPPD concentration inference"
+  ],
+  "interpretation": {
+    "if_existing_dominates": "Generates the prospective intensification-before-expansion hypothesis for an independent dataset.",
+    "if_zero_to_positive_dominates": "Do not pursue an intensification-first hypothesis as the main independent test.",
+    "if_exact_zeros_are_too_rare": "The MAPPPD regional panel is not informative about colonization; do not invent a low-count threshold."
+  },
+  "stop_rule": "One descriptive execution only. No threshold, null, lag, site subset or alternative definition may be added after output inspection."
+}
