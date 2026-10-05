@@ -62,6 +62,7 @@ jobs:
               *) direct="https://data-package.ceh.ac.uk/$route" ;;
             esac
             echo "Following EIDC landing-page download route: $route" >&2
+            python -c 'from pathlib import Path; import re; txt=Path("build/eidc/package.bin").read_text(errors="replace"); print("anchor_tags", [repr(m.group(0)) for m in re.finditer(r"<a\\b[^>]{0,1000}>", txt, flags=re.I)][:20])' >&2
             curl --fail --location --retry 3 --retry-all-errors \
               --silent --show-error \
               --cookie build/eidc/cookies.txt \
