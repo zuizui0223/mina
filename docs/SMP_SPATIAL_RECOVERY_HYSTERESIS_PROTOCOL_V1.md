@@ -18,68 +18,55 @@ Primary directional prediction:
 H>0.
 \]
 
-A positive paired difference alone is not sufficient. Confirmation additionally requires that the species-level signal survives a frozen structured phase null that preserves the observed multivariate parent-population trajectories.
+A positive paired difference alone is not sufficient for confirmation. The species-balanced observed statistic must also exceed a structured common-phase null that preserves each MasterSite block's multivariate abundance trajectory.
 
-## Why this is the island-ecology test
+## Why this is the discriminating island-ecology test
 
-The Antarctic penguin results show two facts:
+The Antarctic penguin results show replicated concentration during decline and, at regional scale, lower effective breeding-site number even in increasing networks. Those results suggest weak spatial reversibility but do not directly compare loss and later recovery of the same place.
 
-1. decline can concentrate breeding effort beyond proportional thinning;
-2. numerical increase at regional scale does not necessarily restore effective breeding-site number.
+A simple reversible site-quality or basin picture predicts that, for a stable physical SiteID, abandonment and later recolonization should occur at approximately the same surrounding population state, apart from stochasticity and observation timing.
 
-Those observations suggest weak spatial reversibility but do not directly compare loss and recovery of the same place.
+History-dependent processes can break that symmetry. Once a breeding site is empty, loss of an established aggregation, site fidelity, conspecific information or other biological memory may raise the surrounding population state required for recolonization.
 
-The SMP test does.
+The estimand is the **loss–recovery asymmetry itself**, not any particular social mechanism.
 
-A reversible site-quality/basin view predicts that, for a stable physical SiteID, abandonment and recolonization should occur at approximately the same surrounding population state, apart from stochasticity and sampling.
+## Stage A — stable physical hierarchy
 
-History-dependent processes can break that symmetry. Once a breeding site is empty, loss of an established aggregation, site fidelity, conspecific information or other biological memory can raise the population state required for recolonization.
+Begin with the count-blind species × MasterSite / SiteID structural gate.
 
-The estimand is the **loss–recovery asymmetry itself**, not a particular social mechanism.
-
-## Stage A1 — count-blind structural support
-
-Use the frozen species × MasterSite / SiteID support gate.
-
-No count magnitude may be used to select species, MasterSites, SiteIDs, count units, years or thresholds.
-
-## Stage A2 — physical SiteID identity
-
-Before any positive/zero occupancy history is inspected, resolve SiteID continuity from provider metadata.
-
-A focal SiteID is retained only if all are true over the retained interval:
+Before any occupancy state is examined, apply a provider/site-history identity gate. A SiteID enters the hysteresis test only if provider metadata support all of the following over the frozen retained interval:
 
 - stable physical identity;
-- mutually exclusive child Site within the MasterSite;
-- no overlap with parent or sibling records;
+- mutually exclusive child Site within its MasterSite;
+- no overlap with parent or sibling Site records;
 - no boundary change;
-- not retired/replaced.
+- not retired or replaced.
 
-If multiple count Units are structurally eligible for one species × MasterSite, the provider must identify a canonical Unit before occupancy states are opened; otherwise exclude that panel.
+After identity-ineligible SiteIDs are removed, retain the **exact Stage-A complete-year set**. Do not extend the time window merely because site removal would make additional years complete.
 
-If physical identity cannot be resolved, stop this hypothesis.
+If multiple structurally eligible count Units remain for one species × MasterSite, the panel is excluded unless the provider identifies a canonical Unit before occupancy states are opened.
 
-## Stage A3 — zero semantics
+## Provider zero-semantics gate
 
-Before scanning vacancy events, freeze provider/documentation confirmation that:
+Stage B is unauthorized until BTO/SMP documentation or provider correspondence confirms:
 
-- a direct row with Count = 0 is a surveyed nil return;
-- an absent SiteID × year record is not biological zero;
-- estimated/imputed zero records are excluded from the primary test.
+1. a direct observed Count = 0 row is a surveyed nil return;
+2. absence of a SiteID × year row is not biological zero;
+3. estimated or imputed zeroes can be excluded from the primary analysis.
 
-If these semantics differ by era or record family, restrict the compatible era/family **before** occupancy states are inspected.
+The confirmation is stored in a frozen JSON with a non-empty source citation/description.
+
+If any of these conditions cannot be confirmed, stop the hysteresis route rather than infer zero semantics from the data.
 
 ## Stage B — occupancy-state cycles only
 
-After A1–A3 pass, convert retained direct counts to:
+For the identity-resolved frozen roster, reduce every eligible direct count to:
 
-- occupied: direct observed count \(>0\);
-- vacant: provider-confirmed direct observed count \(=0\);
-- missing/unusable.
+- **occupied:** count \(>0\);
+- **vacant:** provider-confirmed explicit count \(=0\);
+- **missing/unusable:** never interpreted as vacancy.
 
-Missing is never zero.
-
-A completed vacancy spell is:
+A completed vacancy spell is
 
 \[
 1\rightarrow0\rightarrow\cdots\rightarrow0\rightarrow1
@@ -87,47 +74,55 @@ A completed vacancy spell is:
 
 with every year from abandonment through recolonization calendar-consecutive and complete.
 
-First colonization is excluded because it has no prior within-site abandonment threshold.
+First colonization is excluded because it has no paired prior abandonment threshold.
 
 ### Phase-block support
 
-Each completed spell is assigned to the maximal calendar-consecutive complete-year block containing the entire spell.
+Each completed spell is assigned to the maximal calendar-consecutive block of frozen complete years containing the entire spell.
 
-Only spells in blocks of at least **6 years** can enter Stage C. This gives at least six distinct circular phase alignments under the structured null.
+Only spells in blocks of at least **6 years** are eligible for Stage C. This threshold is frozen before magnitude opening.
 
-### Program support thresholds
+### Program support gate
 
 After the phase-block filter, require at least:
 
 - 30 completed spells;
-- 20 distinct physical SiteIDs;
+- 20 distinct SiteIDs;
 - 10 MasterSites;
 - 5 species;
 - 4 species with at least 3 spells;
-- 3 species represented by spells in at least 2 MasterSites.
+- 3 species with spells in at least 2 MasterSites.
 
 If any condition fails, stop before abundance magnitudes are opened.
 
 ## Stage C — paired threshold estimand
 
-For focal SiteID \(j\), exclude the focal site from the surrounding parent abundance:
+For focal SiteID \(j\), define surrounding population state from the same frozen MasterSite while excluding the focal SiteID:
 
 \[
-N_{-j,t}=\sum_{k\neq j} n_{k,t}.
+N_{-j,t}=\sum_{k\neq j}n_{k,t}.
 \]
+
+Excluding the focal SiteID prevents its own disappearance or return from mechanically generating the predictor.
 
 For abandonment \(t\rightarrow t+1\),
 
 \[
 A_e=
-\frac{\log(1+N_{-j,t})+\log(1+N_{-j,t+1})}{2}.
+\frac{
+\log(1+N_{-j,t})+
+\log(1+N_{-j,t+1})
+}{2}.
 \]
 
 For later recolonization \(u\rightarrow u+1\),
 
 \[
 A_c=
-\frac{\log(1+N_{-j,u})+\log(1+N_{-j,u+1})}{2}.
+\frac{
+\log(1+N_{-j,u})+
+\log(1+N_{-j,u+1})
+}{2}.
 \]
 
 Then
@@ -136,13 +131,13 @@ Then
 H=A_c-A_e.
 \]
 
-The same SiteID is therefore its own control for fixed place identity and stable site quality.
+The same SiteID is therefore its own control for fixed site identity and stable site quality.
 
 ## Replication hierarchy
 
 Average in this fixed order:
 
-1. repeated completed spells within SiteID;
+1. repeated spells within SiteID;
 2. SiteIDs within MasterSite;
 3. MasterSites within species;
 4. species with equal weight.
@@ -150,53 +145,56 @@ Average in this fixed order:
 The primary observed statistic is
 
 \[
-T_{\mathrm{obs}}=
-\mathrm{mean}\left(H_{\mathrm{species}}\right).
+T_{\mathrm{obs}}
+=
+\mathrm{mean}(\text{species mean }H).
 \]
+
+This prevents species with many monitored sites from dominating macroecological inference.
 
 ## Primary inference 1 — species sign-flip
 
-Species are the macroecological replication units.
-
 Test whether species-level mean \(H\) values are centered above zero.
 
-- if species \(\leq20\): enumerate all sign assignments exactly;
-- otherwise: 100,000 sign flips;
-- seed: 20261005.
+If there are at most 20 species, enumerate every sign assignment exactly. Otherwise use 100,000 frozen random sign flips with seed 20261005.
 
-A positive sign-flip result alone is not sufficient.
+This test alone is insufficient for confirmation.
 
 ## Primary inference 2 — structured common-phase null
 
-Positive \(H\) could appear merely because abandonment occurs earlier and recolonization later on a trending or autocorrelated parent-population trajectory.
+A positive \(H\) could arise because abandonment dates happen to occur earlier than recolonization dates on a trending or autocorrelated MasterSite abundance trajectory.
 
-The structured null preserves the observed population histories.
+The structured null preserves that temporal structure.
 
-For each of 9,999 resamples:
+For each species × MasterSite × frozen contiguous phase block:
 
-1. retain the exact frozen vacancy-spell roster and event-year positions;
-2. retain the exact multivariate count trajectory within every species × MasterSite;
-3. retain the maximal contiguous complete-year block assigned at Stage B;
-4. draw **one common circular year shift** for each species × MasterSite × block;
-5. apply that same shift to the entire block-level count matrix, preserving cross-SiteID covariance and the dependence among multiple spells in that block;
-6. calculate leave-one-SiteID-out \(H\) at the frozen event positions;
-7. aggregate through the identical spell → SiteID → MasterSite → species hierarchy.
+1. retain the complete multivariate SiteID count matrix;
+2. retain every frozen vacancy spell and its observed event-year positions;
+3. draw one circular year shift for the entire block;
+4. apply the **same shift to all SiteIDs and all spells in that block**;
+5. compute \(H\) at the shifted abundance phases while keeping the event-year pattern fixed;
+6. aggregate through the identical spell → SiteID → MasterSite → species hierarchy.
 
-Report:
+Use 9,999 resamples with seed 20261005.
+
+Because the whole block is shifted together, the null preserves each site's marginal abundance series, cross-site covariance within the block, dependence among multiple spells in the same MasterSite, and the observed long-term/autocorrelated shape of the abundance trajectory.
+
+The circular seam is accepted as part of the frozen null and is not tuned after outcomes.
+
+Report
 
 \[
 \Delta_{\mathrm{phase}}
 =
-T_{\mathrm{obs}}-\mathrm{median}(T_{\mathrm{phase}})
+T_{\mathrm{obs}}-
+\mathrm{median}(T_{\mathrm{phase,null}})
 \]
 
 and the plus-one upper-tail probability
 
 \[
-P(T_{\mathrm{phase}}\geq T_{\mathrm{obs}}).
+P(T_{\mathrm{phase,null}}\ge T_{\mathrm{obs}}).
 \]
-
-This is a structured **temporal-alignment null**. It is not a mechanistic reversible-occupancy model.
 
 ## Confirmatory rule
 
@@ -207,7 +205,7 @@ T_{\mathrm{obs}}>0,
 \]
 
 \[
-p_{\mathrm{signflip}}\leq0.05,
+p_{\mathrm{signflip}}\le0.05,
 \]
 
 \[
@@ -217,46 +215,44 @@ p_{\mathrm{signflip}}\leq0.05,
 and
 
 \[
-p_{\mathrm{phase}}\leq0.05.
+p_{\mathrm{phase}}\le0.05.
 \]
 
-No single criterion can rescue failure of another.
+No criterion can rescue failure of another.
 
 ## Interpretation
 
-### All criteria pass
+### Confirmatory support
 
 Allowed:
 
-> **Spatial recovery occurred at a higher surrounding population state than spatial loss at the same breeding sites, beyond generic temporal alignment with the observed parent-population trajectories.**
+> **Spatial recovery occurred at a higher surrounding population state than spatial loss at the same breeding sites, beyond generic temporal alignment with the observed MasterSite abundance trajectories.**
 
-> **Population recovery did not simply retrace the spatial pathway of decline.**
+> **Population recovery did not simply retrace the spatial pathway of collapse.**
 
 Not allowed:
 
 > conspecific attraction caused the hysteresis.
 
-### \(H>0\), but phase null not rejected
+### Positive H, phase null not rejected
 
 Interpretation:
 
-> the apparent loss–recovery difference is compatible with generic temporal structure in surrounding abundance.
+> the apparent abandonment–recolonization asymmetry is compatible with temporal alignment on the observed abundance trajectories.
 
-Do not claim hysteresis.
+Do not claim spatial hysteresis.
 
-### \(H\leq0\) or species sign-flip unsupported
+### H unresolved or negative
 
 The independent test does not support the predicted recovery barrier.
 
-Do not rescue the hypothesis by changing vacancy thresholds, transforms, spells, species or time windows.
+Do not rescue the hypothesis by redefining vacancy, excluding species, changing abundance transforms, or altering the null.
 
 ## Relation to island biogeography
 
-The hypothesis concerns the symmetry of extinction and recolonization thresholds of the **same breeding islands**.
+The hypothesis concerns the symmetry of extinction and recolonization thresholds at the **same breeding islands**.
 
-A reversible mapping treats occupancy mainly as a function of current place and current regional population state.
-
-A hysteretic mapping additionally depends on history:
+A reversible mapping treats occupancy as a function of current place and current surrounding population state. A history-dependent mapping additionally depends on whether the site is already occupied:
 
 \[
 P(O_{t+1}=1\mid N,\mathrm{site},O_t)
@@ -264,49 +260,32 @@ P(O_{t+1}=1\mid N,\mathrm{site},O_t)
 P(O_{t+1}=1\mid N,\mathrm{site}).
 \]
 
-In this formulation, occupancy history becomes a state variable of the island.
-
-## Novelty boundary
-
-The manuscript must not claim novelty for:
-
-- Allee effects;
-- conspecific attraction;
-- first colonization versus recolonization;
-- history dependence in dynamic island theory;
-- seabird site fidelity.
-
-Those are established.
-
-The candidate new contribution is narrower:
-
-> **a prospectively frozen, multi-species, same-site empirical test of whether abandonment and later recolonization occur at different surrounding-population thresholds, motivated by an independently discovered spatial-recovery anomaly in Antarctic penguins.**
-
-Black-legged kittiwake work has already separated persistence, first colonization and recolonization and related them to local density and breeding success. Dynamic island-biogeography theory has also explicitly predicted history dependence and hysteresis. The present test therefore targets the paired threshold asymmetry itself.
+A supported positive H would therefore show that the same physical breeding site has different demographic thresholds for spatial loss and spatial recovery.
 
 ## Mechanism boundary
 
-A supported result can be consistent with social feedback, site fidelity, conspecific attraction, public information or other biological memory.
+A supported result can be consistent with social positive feedback, conspecific attraction, site fidelity, public information, or other biological memory.
 
-It can also arise from time-varying habitat deterioration, predator change, disturbance or management.
+It can also arise from time-varying habitat deterioration, predation, disturbance or management.
 
-SiteID pairing removes fixed site quality. The structured phase null controls generic alignment with the observed temporal population trajectory. Neither identifies a unique mechanism.
+Same-Site pairing removes fixed site quality. The structured phase null removes generic temporal alignment with the observed surrounding abundance trajectory. Neither identifies a unique causal mechanism.
 
 ## Stop rule
 
-After abundance magnitudes are opened, do not change:
+After magnitude opening, do not change:
 
-- physical SiteID eligibility;
-- zero semantics;
 - vacancy-spell definition;
-- six-year phase-block minimum;
+- explicit-zero rule;
+- identity-resolution rule;
+- frozen complete-year set;
+- minimum 6-year phase block;
 - transition midpoint;
 - \(\log(1+N)\) transform;
 - leave-one-SiteID-out parent state;
 - circular-shift scheme;
-- null family or resample count;
+- number of phase resamples;
 - hierarchy or weighting;
 - species/SiteID subset;
-- vacancy-duration rule.
+- vacancy-duration threshold.
 
 Any mechanism test requires new independent information.
