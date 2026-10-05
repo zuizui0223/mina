@@ -69,7 +69,7 @@ We need the most disaggregated repeated Site-level records available, including 
 - Country and County
 - SiteID
 - Site
-- MasterSite and MasterSite identifier
+- MasterSite and a stable unique MasterSite identifier/key
 - Plot / Site-level indicator
 - StartGrid and EndGrid
 - Site category, Site type and Site habitat
@@ -90,7 +90,7 @@ The current BTO SMP guidance explicitly states that zero/nil returns are importa
 For this project, it is particularly important to distinguish:
 
 1. **explicit zero / nil returns** from years in which a SiteID was not surveyed;
-2. persistent SiteIDs from SiteIDs that were renamed, merged, split, retired, replaced, or had boundaries redefined;
+2. a stable physical MasterSite identifier/key from display-name labels, and persistent SiteIDs from SiteIDs that were renamed, merged, split, retired, replaced, or had boundaries redefined;
 3. mutually exclusive child Sites within a MasterSite from aggregate MasterSite or merged-site totals.
 
 If available, could you also provide or describe any SiteID/MasterSite crosswalk or change-log that records historical merges, splits, replacements, renames, or boundary changes?
