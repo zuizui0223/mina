@@ -22,6 +22,34 @@ from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
 
 
 class HysteresisTests(unittest.TestCase):
+
+    def test_zero_semantics_confirmation_is_required(self):
+        with tempfile.TemporaryDirectory() as td:
+            p=Path(td)/"zero.json"
+            p.write_text(json.dumps({
+                "row_with_direct_count_zero_is_surveyed_nil": True,
+                "absent_site_year_row_is_not_zero": True,
+                "estimated_or_imputed_zero_excluded_from_primary": True,
+                "confirmation_source": "BTO provider email 2026-10-05",
+            }),encoding="utf-8")
+            out=validate_zero_semantics(p)
+            self.assertTrue(out["row_with_direct_count_zero_is_surveyed_nil"])
+            self.assertTrue(out["absent_site_year_row_is_not_zero"])
+            self.assertTrue(out["estimated_or_imputed_zero_excluded_from_primary"])
+            self.assertTrue(out["confirmation_source"])
+
+    def test_zero_semantics_rejects_unconfirmed_zero(self):
+        with tempfile.TemporaryDirectory() as td:
+            p=Path(td)/"zero.json"
+            p.write_text(json.dumps({
+                "row_with_direct_count_zero_is_surveyed_nil": False,
+                "absent_site_year_row_is_not_zero": True,
+                "estimated_or_imputed_zero_excluded_from_primary": True,
+                "confirmation_source": "unconfirmed",
+            }),encoding="utf-8")
+            with self.assertRaises(ValueError):
+                validate_zero_semantics(p)
+
     def test_completed_spell_requires_consecutive_zero_run(self):
         years=[2000,2001,2002,2003,2004]
         states=["observed_positive","explicit_zero","explicit_zero","observed_positive","observed_positive"]
