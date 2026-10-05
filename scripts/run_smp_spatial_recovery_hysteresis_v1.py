@@ -292,8 +292,20 @@ def run(
 ) -> tuple[dict, pd.DataFrame]:
     structural = json.loads(structural_json.read_text(encoding="utf-8"))
     cycles = json.loads(cycle_json.read_text(encoding="utf-8"))
+    if structural.get("analysis_id") != "mina-smp-spatial-recovery-structure-v1":
+        raise ValueError("Stage C requires the identity-resolved spatial-recovery structure output")
     if not structural.get("decision", {}).get("structural_gate_passed"):
-        raise ValueError("structural gate did not pass")
+        raise ValueError("identity-resolved structural gate did not pass")
+    zero = cycles.get("zero_semantics_confirmation", {})
+    required_zero = (
+        "row_with_direct_count_zero_is_surveyed_nil",
+        "absent_site_year_row_is_not_zero",
+        "estimated_or_imputed_zero_excluded_from_primary",
+    )
+    if not all(zero.get(k) is True for k in required_zero):
+        raise ValueError("Stage C requires provider-confirmed zero semantics from Stage B")
+    if not str(zero.get("confirmation_source", "")).strip():
+        raise ValueError("Stage C zero-semantics confirmation_source is missing")
     if not cycles.get("decision", {}).get("hysteresis_magnitude_execution_authorized"):
         raise ValueError("state-only hysteresis support gate did not pass")
 
