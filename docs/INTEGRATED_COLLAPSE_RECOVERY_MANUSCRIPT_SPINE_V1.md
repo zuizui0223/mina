@@ -52,7 +52,7 @@ Stage C opens abundance once and calculates paired transition-state asymmetry.
 Confirmatory support requires both:
 
 1. positive species-balanced \(H\) under the species sign-flip test;
-2. observed \(H\) exceeding the structured common-phase temporal null.
+2. observed \(H\) exceeding the structured non-circular common-offset temporal null.
 
 ## If supported: central result
 
@@ -125,7 +125,7 @@ Show paired \(A_e\) and \(A_c\), species-balanced \(H\), species results.
 
 ### R5 — Structured temporal-null test
 
-Show that observed \(H\) exceeds common-phase shifts of the same local abundance histories.
+Show that observed \(H\) exceeds non-circular common-offset shifts of the same local abundance histories.
 
 No environmental moderator search follows.
 
@@ -142,7 +142,7 @@ same site, abandonment threshold, recolonization threshold.
 Each SiteID spell as \(A_e \to A_c\), aggregated by species.
 
 ### Figure 4 — Null-calibrated macro result
-Observed species-balanced \(T\) against structured phase-null distribution.
+Observed species-balanced \(T\) against structured common-offset null distribution.
 
 ## Discussion structure
 
