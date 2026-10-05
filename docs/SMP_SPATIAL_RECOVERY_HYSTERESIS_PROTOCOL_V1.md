@@ -54,9 +54,9 @@ Stage B is unauthorized until BTO/SMP documentation or provider correspondence c
 2. absence of a SiteID × year row is not biological zero;
 3. estimated or imputed zeroes can be excluded from the primary analysis.
 
-The confirmation is stored in a frozen JSON with a non-empty source citation/description.
+The confirmation is stored in a frozen JSON with a non-empty source citation/description, a compatible start year, a compatible end year, and a description of the record family/era for which those semantics are valid.
 
-If any of these conditions cannot be confirmed, stop the hysteresis route rather than infer zero semantics from the data.
+If any of these conditions cannot be confirmed, stop the hysteresis route rather than infer zero semantics from the data. If the confirmed zero semantics cover only part of 1986–2024, Stage B uses only the inherited complete years inside that documented interval. The interval may shorten a panel but can never add years.
 
 ## Stage B — occupancy-state cycles only
 
@@ -84,7 +84,7 @@ Only spells in blocks of at least **6 years** are eligible for Stage C. This thr
 
 ### Program support gate
 
-After the phase-block filter, require at least:
+Before vacancy scanning, any panel reduced by the provider-confirmed zero-semantics interval must still retain at least 10 inherited complete years spanning at least 12 calendar years. After that scope restriction and the phase-block filter, require at least:
 
 - 30 completed spells;
 - 20 distinct SiteIDs;
