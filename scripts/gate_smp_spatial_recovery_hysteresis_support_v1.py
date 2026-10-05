@@ -131,7 +131,7 @@ def completed_spells_for_site(years: list[int], states: list[str]) -> list[dict]
                     "vacancy_years": int(recol - y1),
                 }
             )
-            i = ordered.index(recol) + 1
+            i = ordered.index(recol)
         else:
             i += 1
     return spells
