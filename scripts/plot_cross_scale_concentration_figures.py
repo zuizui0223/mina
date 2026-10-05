@@ -55,7 +55,7 @@ def figure2_scale_transfer(
     regional_receipt: Path,
     out_dir: Path,
 ) -> None:
-    """Show within-system replication and regional scale transfer at <=18 cm width."""
+    """Show strong local decline replication and the declining regional subset."""
     local_rows = _rows(local_data_dir / "figure2_summary.csv")
     local_lookup = {r["population"]: r for r in local_rows}
     local = [local_lookup[p] for p in LOCAL_ORDER]
@@ -138,21 +138,21 @@ def figure2_scale_transfer(
     axes[1].set_yticks(y2, labels)
     axes[1].invert_yaxis()
     axes[1].set_xlabel("Observation-error-calibrated Δκ", fontsize=7.5)
-    axes[1].set_title("B. Regional monitored site networks", fontsize=8.5)
+    axes[1].set_title("B. Declining regional networks", fontsize=8.5)
     axes[1].tick_params(labelsize=7)
 
     fig.text(
         0.01, 0.99, "Figure 2", ha="left", va="top", fontsize=9, fontweight="bold"
     )
     fig.suptitle(
-        "Breeding-space concentration recurs across spatial levels",
+        "Decline-associated concentration: strong locally, directional regionally",
         y=0.995,
         fontsize=9.5,
     )
     fig.text(
         0.72,
         0.024,
-        "Circles = supported under both regional nulls\nSquares = same direction, not individually supported",
+        "Regional panel: declining networks only\nCircles = supported; squares = directional, not individually supported",
         ha="center",
         va="bottom",
         fontsize=6.2,
@@ -166,7 +166,7 @@ def figure3_regional_endpoints(
     regional_receipt: Path,
     out_dir: Path,
 ) -> None:
-    """Render descriptive regional endpoints at <=18 cm width."""
+    """Show the regional trend-direction boundary using all seven eligible networks."""
     receipt = _read_json(regional_receipt)
     panels = receipt["panels"]
 
@@ -215,14 +215,14 @@ def figure3_regional_endpoints(
         0.01, 0.99, "Figure 3", ha="left", va="top", fontsize=9, fontweight="bold"
     )
     ax.set_title(
-        "Abundance recovery need not rebuild regional site distribution",
+        "Regional concentration is not restricted to declining networks",
         fontsize=9,
     )
     ax.tick_params(labelsize=7.5)
     fig.text(
         0.5,
         0.015,
-        "Descriptive endpoints only; no regional hysteresis test was frozen.",
+        "All eligible regional networks shown; no decline-vs-increase asymmetry test was frozen.",
         ha="center",
         fontsize=6.8,
     )
