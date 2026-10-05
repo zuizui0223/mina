@@ -2,9 +2,9 @@
   "schema_version": 1,
   "contract_id": "mina-smp-spatial-recovery-hysteresis-support-v1",
   "date": "2026-10-05",
-  "status": "frozen_before_bulk_smp_count_magnitudes",
-  "purpose": "Identify completed abandonment-to-recolonization cycles in stable SMP breeding SiteIDs using only explicit zero/positive count states, before any abundance magnitude is used.",
-  "parent_structural_contract": "contracts/SMP_TREND_SYMMETRY_SUPPORT_V1.json",
+  "status": "frozen_after_site_identity_gate_before_zero_positive_state_scan",
+  "purpose": "Identify completed abandonment-to-recolonization cycles in identity-resolved, mutually exclusive SMP breeding SiteIDs using only explicit zero/positive count states, before any abundance magnitude is opened.",
+  "parent_structural_contract": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
   "hierarchy": {
     "system": "species x MasterSite",
     "component": "retained SiteID"
@@ -51,7 +51,8 @@
     "requirement": "all conditions must pass"
   },
   "decision": {
-    "if_passed": "Freeze the exact completed-spell roster and authorize one magnitude-opening hysteresis execution.",
-    "if_failed": "Stop the hysteresis route. Do not lower cycle-count, species, SiteID, MasterSite or gap thresholds."
-  }
+    "if_passed": "Freeze the exact identity-resolved completed-spell roster and authorize one magnitude-opening hysteresis execution.",
+    "if_failed": "Stop the hysteresis route. Do not lower cycle-count, species, SiteID, MasterSite, identity, or gap thresholds."
+  },
+  "identity_requirement": "Input roster must be the output of the frozen SiteID identity gate; unresolved, merged, split, overlapping, boundary-changed, retired or replaced SiteIDs are ineligible."
 }
