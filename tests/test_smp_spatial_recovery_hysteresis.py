@@ -40,7 +40,9 @@ class HysteresisTests(unittest.TestCase):
         )
         self.assertNotIn("panel_wide_trajectory_drift_null_support", support)
         self.assertNotIn("trajectory_drift_null", effect["primary_inference"])
+        self.assertIn("physical_master_site_sign_flip", effect["primary_inference"])
         self.assertIn("structured_linear_shift_null", effect["primary_inference"])
+        self.assertIn("p <= 0.05", effect["primary_inference"]["physical_master_site_sign_flip"]["p_value"])
         self.assertIn("Delta_linear", effect["primary_inference"]["support"])
 
     def test_five_species_is_minimum_for_exact_alpha_point_zero_five(self):
@@ -527,11 +529,13 @@ class HysteresisTests(unittest.TestCase):
         observed = pd.DataFrame(observed_rows)
         h = hierarchical_means(observed)
         sign = sign_flip_test(h["species"]["species_mean_H"].to_numpy(float))
+        master_sign = physical_master_site_sign_flip_test(observed, spells, seed=123)
         linear = structured_linear_shift_null(observed, spells, cache, B=4000, seed=123)
 
-        # The naive directional test would call this positive.
+        # The taxonomic and geographic directional tests would both call this positive.
         self.assertGreater(h["T"], 0)
         self.assertLessEqual(sign["one_sided_p"], 0.05)
+        self.assertLessEqual(master_sign["one_sided_p"], 0.05)
 
         # But the frozen temporal null recognizes that this is just generic drift.
         self.assertGreater(linear["upper_tail_p"], 0.05)
@@ -591,10 +595,12 @@ class HysteresisTests(unittest.TestCase):
         observed = pd.DataFrame(observed_rows)
         h = hierarchical_means(observed)
         sign = sign_flip_test(h["species"]["species_mean_H"].to_numpy(float))
+        master_sign = physical_master_site_sign_flip_test(observed, spells, seed=456)
         linear = structured_linear_shift_null(observed, spells, cache, B=4000, seed=456)
 
         self.assertGreater(h["T"], 0)
         self.assertLessEqual(sign["one_sided_p"], 0.05)
+        self.assertLessEqual(master_sign["one_sided_p"], 0.05)
         self.assertGreater(linear["delta_linear_observed_minus_median"], 0)
         self.assertLessEqual(linear["upper_tail_p"], 0.05)
 
