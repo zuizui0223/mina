@@ -29,7 +29,7 @@ jobs:
       - name: Run predata recovery audit
         run: |
           mkdir -p build
-          python scripts/audit_smp_spatial_recovery_hysteresis_recovery_v1.py \
+          python -m scripts.audit_smp_spatial_recovery_hysteresis_recovery_v1 \
             --out-json build/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V1.json
       - uses: actions/upload-artifact@v4
         if: always()
