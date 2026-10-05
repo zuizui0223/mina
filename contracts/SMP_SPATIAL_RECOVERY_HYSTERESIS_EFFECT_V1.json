@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-smp-spatial-recovery-hysteresis-effect-v1",
   "date": "2026-10-05",
-  "status": "locked_until_identity_state_and_common_offset_support_gates_pass",
+  "status": "PREDATA_FROZEN_AFTER_PASSING_SYNTHETIC_RECOVERY_AUDIT",
   "parent_support": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json",
   "hypothesis": "A breeding SiteID that has been abandoned requires a higher surrounding population state to be recolonized than the surrounding population state at which it was abandoned.",
   "competing_predictions": {
@@ -85,5 +85,18 @@
   ],
   "stop_rule": "One execution only after identity, zero-semantics and common-offset support gates pass. No alternative abundance transform, lag, transition midpoint, block rule, offset scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
-  "zero_semantics_contract": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json"
+  "zero_semantics_contract": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json",
+  "predata_recovery_audit": {
+    "contract": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_V1.json",
+    "receipt": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V2.json",
+    "workflow_run_id": 37297940212,
+    "artifact_id": 11340322480,
+    "artifact_digest": "sha256:dd4ee0844cf7581495343bc4fca46120d9fa34e9634a369286c3e6917cd63436",
+    "result": "PASS",
+    "stationary_false_positive_rate": 0,
+    "monotonic_drift_false_positive_rate": 0,
+    "moderate_signal_recovery_rate": 1,
+    "strong_signal_recovery_rate": 1
+  },
+  "freeze_after_recovery_audit": "No inferential threshold, cluster unit, null family, event definition, abundance transform, weighting rule, or support gate may change before SMP effect outcomes. Only implementation bugs demonstrably independent of biological outcomes may be repaired with an explicit audit trail."
 }
