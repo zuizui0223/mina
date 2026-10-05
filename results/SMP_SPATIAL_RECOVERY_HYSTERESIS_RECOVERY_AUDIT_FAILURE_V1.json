@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-smp-spatial-recovery-hysteresis-recovery-audit-failure-v1",
+  "date": "2026-10-05",
+  "workflow_run_id": 37293496605,
+  "artifact_id": 11337656178,
+  "status": "FAILED_PREOUTCOME_DESIGN_AUDIT_CIRCULAR_PHASE_NULL_INVALID",
+  "design_state": "No SMP bulk outcome data received or opened.",
+  "scenarios": {
+    "reversible_stationary": {
+      "support_rate": 0,
+      "median_T": -0.000334170816649948,
+      "median_phase_p": 0.496
+    },
+    "monotonic_drift": {
+      "support_rate": 1,
+      "median_T": 0.4871819480824857,
+      "median_phase_p": 0.004
+    },
+    "aligned_signal_moderate": {
+      "support_rate": 1,
+      "median_T": 0.48826882525268467,
+      "median_phase_p": 0.001
+    },
+    "aligned_signal_strong": {
+      "support_rate": 1,
+      "median_T": 0.9879275000290976,
+      "median_phase_p": 0.001
+    }
+  },
+  "diagnosis": "The common circular phase null creates an artificial seam. Under a monotonic parent-abundance trajectory, circular wrap produces implausible negative shifted H values, making the unwrapped observed positive H appear extreme even when there is no event-aligned threshold effect.",
+  "decision": {
+    "circular_phase_null_rejected": true,
+    "real_smp_magnitude_opening_authorized": false,
+    "replacement_rule": "Develop and pretest a non-circular common-offset temporal null that preserves physical MasterSite/block synchrony and never wraps events across block boundaries.",
+    "confirmatory_alpha_rules_unchanged": true,
+    "recovery_audit_thresholds_unchanged": true
+  },
+  "boundary": "This design repair occurs before SMP outcomes. No real-data result motivated the null change."
+}
