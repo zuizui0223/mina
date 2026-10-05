@@ -61,6 +61,7 @@
     "reporting": "report species means, MasterSite means, SiteID means, all spell-level H values, and the structured phase-null summary"
   },
   "boundaries": [
+    "Stage C is unauthorized unless the SiteID identity gate and provider-confirmed zero-semantics gate both passed before occupancy-state scanning.",
     "A supported positive H is evidence that spatial recovery does not simply retrace spatial loss at the measured SiteID scale; it is not proof of an Allee mechanism.",
     "Site pairing controls stable SiteID quality but not time-varying habitat degradation, predator change, disturbance or unmeasured management.",
     "Do not call the result social hysteresis unless independent social-cue or fitness-density evidence is added.",
@@ -70,5 +71,6 @@
     "Circular shifting creates a block seam; this is accepted as part of the frozen structured null and is not tuned after outcomes."
   ],
   "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
-  "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json"
+  "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
+  "zero_semantics_contract": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json"
 }
