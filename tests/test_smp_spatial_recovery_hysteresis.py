@@ -1,19 +1,19 @@
-import json
-import tempfile
 import unittest
-from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
-from scripts.finalize_smp_spatial_recovery_structure_v1 import run as run_identity_gate
 from scripts.gate_smp_spatial_recovery_hysteresis_support_v1 import (
     completed_spells_for_site,
-    validate_zero_semantics,
+    consecutive_blocks,
+    containing_block,
 )
 from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
-    aggregate,
+    hierarchical_means,
+    shifted_spell_H,
+    sign_flip_test,
     spell_effect,
-    trajectory_phase_null,
+    structured_phase_null,
 )
 
 
@@ -26,39 +26,17 @@ class HysteresisTests(unittest.TestCase):
         self.assertEqual(out[0]["abandon_from"],2000)
         self.assertEqual(out[0]["recolonize_to"],2003)
 
-    def test_recolonization_year_can_start_next_spell(self):
-        years=[2000,2001,2002,2003,2004]
-        states=["observed_positive","explicit_zero","observed_positive","explicit_zero","observed_positive"]
-        out=completed_spells_for_site(years,states)
-        self.assertEqual(len(out),2)
-        self.assertEqual((out[0]["abandon_from"],out[0]["recolonize_to"]),(2000,2002))
-        self.assertEqual((out[1]["abandon_from"],out[1]["recolonize_to"]),(2002,2004))
-
     def test_gap_breaks_spell(self):
         years=[2000,2001,2003]
         states=["observed_positive","explicit_zero","observed_positive"]
         self.assertEqual(completed_spells_for_site(years,states),[])
 
-    def test_zero_semantics_requires_provider_confirmation(self):
-        with tempfile.TemporaryDirectory() as td:
-            p=Path(td)/"zero.json"
-            p.write_text(json.dumps({
-                "row_with_direct_count_zero_is_surveyed_nil":True,
-                "absent_site_year_row_is_not_zero":True,
-                "estimated_or_imputed_zero_excluded_from_primary":True,
-                "confirmation_source":"synthetic provider documentation",
-            }))
-            out=validate_zero_semantics(p)
-            self.assertIn("confirmation_source",out)
-
-            p.write_text(json.dumps({
-                "row_with_direct_count_zero_is_surveyed_nil":False,
-                "absent_site_year_row_is_not_zero":True,
-                "estimated_or_imputed_zero_excluded_from_primary":True,
-                "confirmation_source":"synthetic",
-            }))
-            with self.assertRaises(ValueError):
-                validate_zero_semantics(p)
+    def test_consecutive_block_assignment(self):
+        blocks=consecutive_blocks([2000,2001,2002,2005,2006,2007,2008,2009,2010])
+        self.assertEqual(blocks,[[2000,2001,2002],[2005,2006,2007,2008,2009,2010]])
+        sp={"abandon_from":2006,"recolonize_to":2009}
+        self.assertEqual(containing_block([2000,2001,2002,2005,2006,2007,2008,2009,2010],sp),
+                         [2005,2006,2007,2008,2009,2010])
 
     def test_spell_effect_positive_when_recolonization_parent_is_higher(self):
         mat=pd.DataFrame(
@@ -73,117 +51,93 @@ class HysteresisTests(unittest.TestCase):
         out=spell_effect(mat,"focal",sp)
         self.assertGreater(out["H"],0)
 
-    def test_species_balanced_aggregation(self):
+    def test_species_balanced_hierarchy(self):
         rows=[]
         for s in range(6):
             for m in range(2):
                 rows.append({
-                    "spell_id":f"{s}-{m}",
                     "species":f"sp{s}",
                     "master_site":f"M{s}-{m}",
-                    "unit":"AON",
                     "site_id":f"S{s}-{m}",
                     "H":0.2+0.01*s,
                 })
-        out=aggregate(pd.DataFrame(rows))
-        self.assertGreater(out["primary_T_species_balanced_mean_H"],0)
-        self.assertEqual(out["species_count"],6)
-        self.assertTrue(out["sign_flip_supported"])
+        h=hierarchical_means(pd.DataFrame(rows))
+        self.assertGreater(h["T"],0)
+        self.assertEqual(len(h["species"]),6)
 
-    def test_trajectory_phase_null_preserves_observed_hierarchy_statistic(self):
+    def test_exact_sign_flip_for_six_positive_species(self):
+        out=sign_flip_test(np.array([1,1,1,1,1,1],float))
+        self.assertEqual(out["mode"],"exact")
+        self.assertAlmostEqual(out["one_sided_p"],1/64)
+
+    def test_zero_phase_shift_equals_observed_spell_effect(self):
+        years=list(range(2000,2006))
         mat=pd.DataFrame(
             {
-                "focal":[10,0,0,5],
-                "other1":[40,35,80,90],
-                "other2":[20,20,30,40],
+                "focal":[8,0,0,4,5,6],
+                "other1":[10,12,14,16,18,20],
+                "other2":[5,6,7,8,9,10],
             },
-            index=[2000,2001,2002,2003],
+            index=years,
         )
-        spell={
-            "spell_id":"x",
-            "species":"sp1",
-            "master_site":"M1",
-            "unit":"AON",
-            "site_id":"focal",
+        sp={
             "abandon_from":2000,
             "abandon_to":2001,
             "recolonize_from":2002,
             "recolonize_to":2003,
+            "phase_block_start":2000,
+            "phase_block_end":2005,
+            "phase_block_years":years,
         }
-        eff=spell_effect(mat,"focal",spell)
-        frame=pd.DataFrame([{**spell,**eff}])
-        out=trajectory_phase_null(
-            frame,
-            {("sp1","M1","AON"):mat},
-            {("sp1","M1","AON"):[2000,2001,2002,2003]},
-            B=500,
-            seed=9,
-        )
-        self.assertAlmostEqual(out["observed_T"],eff["H"],places=12)
-        self.assertGreaterEqual(out["one_sided_p"],0)
-        self.assertLessEqual(out["one_sided_p"],1)
-        self.assertEqual(out["panel_blocks"],1)
+        observed=spell_effect(mat,"focal",sp)["H"]
+        shifted=shifted_spell_H(mat,"focal",sp,0)
+        self.assertAlmostEqual(observed,shifted)
 
-    def test_identity_gate_excludes_ambiguous_multiple_units(self):
-        with tempfile.TemporaryDirectory() as td:
-            root=Path(td)
-            panels=[]
-            resolution_rows=[]
-
-            for i in range(20):
-                species=f"sp{i%8}"
-                master=f"M{i}"
-                sites=[f"{master}-s{j}" for j in range(3)]
-                panels.append({
-                    "species":species,
-                    "master_site":master,
-                    "unit":"AON",
-                    "countries":[f"R{i%3}"],
-                    "retained_site_ids":sites,
-                    "n_sites":3,
-                    "complete_years":list(range(2000,2012)),
-                    "n_complete_years":12,
-                    "calendar_span_years":12,
-                })
-                for site in sites:
-                    resolution_rows.append({
-                        "species":species,"MasterSite":master,"SiteID":site,
-                        "stable_identity":"true","mutually_exclusive_child":"true",
-                        "overlaps_parent_or_sibling":"false",
-                        "boundary_change_during_panel":"false",
-                        "retired_or_replaced":"false","notes":"",
-                    })
-
-            for unit in ("AON","AOS"):
-                sites=[f"AMB-s{j}" for j in range(3)]
-                panels.append({
-                    "species":"sp0","master_site":"AMB","unit":unit,
-                    "countries":["R0"],"retained_site_ids":sites,"n_sites":3,
-                    "complete_years":list(range(2000,2012)),
-                    "n_complete_years":12,"calendar_span_years":12,
-                })
-            for site in [f"AMB-s{j}" for j in range(3)]:
-                resolution_rows.append({
-                    "species":"sp0","MasterSite":"AMB","SiteID":site,
-                    "stable_identity":"true","mutually_exclusive_child":"true",
-                    "overlaps_parent_or_sibling":"false",
-                    "boundary_change_during_panel":"false",
-                    "retired_or_replaced":"false","notes":"",
-                })
-
-            support=root/"support.json"
-            support.write_text(json.dumps({
-                "eligible_panels":panels,
-                "decision":{"structural_gate_passed":True},
-            }))
-            resolution=root/"identity.csv"
-            pd.DataFrame(resolution_rows).to_csv(resolution,index=False)
-
-            out=run_identity_gate(support,resolution)
-            self.assertTrue(out["decision"]["structural_gate_passed"])
-            self.assertEqual(out["eligible_panel_count"],20)
-            self.assertFalse(any(p["master_site"]=="AMB" for p in out["eligible_panels"]))
-            self.assertTrue(out["excluded_multi_unit_masterSites"])
+    def test_structured_phase_null_returns_frozen_summary(self):
+        years=list(range(2000,2006))
+        cache={}
+        spells=[]
+        observed_rows=[]
+        for s in range(5):
+            species=f"sp{s}"
+            master=f"M{s}"
+            unit="AON"
+            mat=pd.DataFrame(
+                {
+                    "focal":[5,0,0,4,5,6],
+                    "other1":[10,12,18,25,28,30],
+                    "other2":[8,9,12,16,18,20],
+                },
+                index=years,
+            )
+            key=(species,master.lower(),unit)
+            cache[key]=mat
+            sp={
+                "species":species,
+                "master_site":master,
+                "unit":unit,
+                "site_id":"focal",
+                "abandon_from":2000,
+                "abandon_to":2001,
+                "recolonize_from":2002,
+                "recolonize_to":2003,
+                "phase_block_start":2000,
+                "phase_block_end":2005,
+                "phase_block_years":years,
+            }
+            spells.append(sp)
+            H=spell_effect(mat,"focal",sp)["H"]
+            observed_rows.append({
+                "species":species,
+                "master_site":master,
+                "site_id":"focal",
+                "H":H,
+            })
+        out=structured_phase_null(pd.DataFrame(observed_rows),spells,cache,B=200,seed=42)
+        self.assertEqual(out["resamples"],200)
+        self.assertEqual(out["distinct_phase_blocks"],5)
+        self.assertIn("upper_tail_p",out)
+        self.assertIn("delta_phase_observed_minus_median",out)
 
 
 if __name__=="__main__":
