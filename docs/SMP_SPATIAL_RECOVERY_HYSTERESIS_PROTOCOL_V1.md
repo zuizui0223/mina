@@ -179,7 +179,7 @@ Require:
 
 ## Why circular shifts are prohibited
 
-A pre-outcome synthetic audit showed that the earlier circular common-phase null falsely supported **40/40 monotonic-drift datasets** because the circular seam manufactured extreme negative shifted contrasts.
+A pre-outcome synthetic audit showed that the earlier circular null falsely supported **40/40 monotonic-drift datasets** because the circular seam manufactured extreme negative shifted contrasts.
 
 That failed design is preserved in:
 `results/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_FAILURE_V1.json`.
