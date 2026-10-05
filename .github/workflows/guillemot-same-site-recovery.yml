@@ -8,9 +8,13 @@ on:
       - "docs/GUILLEMOT_SAME_SITE_RECOVERY_PREREGISTRATION_V1.md"
       - "docs/GUILLEMOT_SOURCE_SEMANTICS_AUDIT_V1.md"
       - "scripts/prepare_guillemot_same_site_input_v1.py"
+      - "scripts/gate_guillemot_same_site_support_v1.py"
+      - "scripts/freeze_guillemot_same_site_stageb_v1.py"
       - "scripts/run_guillemot_same_site_recovery_v1.py"
+      - "scripts/guarded_run_guillemot_same_site_recovery_v1.py"
       - "tests/test_prepare_guillemot_same_site_input_v1.py"
       - "tests/test_guillemot_same_site_recovery_v1.py"
+      - "tests/test_guillemot_operational_guard_v1.py"
       - ".github/workflows/guillemot-same-site-recovery.yml"
   pull_request:
     paths:
@@ -18,9 +22,13 @@ on:
       - "docs/GUILLEMOT_SAME_SITE_RECOVERY_PREREGISTRATION_V1.md"
       - "docs/GUILLEMOT_SOURCE_SEMANTICS_AUDIT_V1.md"
       - "scripts/prepare_guillemot_same_site_input_v1.py"
+      - "scripts/gate_guillemot_same_site_support_v1.py"
+      - "scripts/freeze_guillemot_same_site_stageb_v1.py"
       - "scripts/run_guillemot_same_site_recovery_v1.py"
+      - "scripts/guarded_run_guillemot_same_site_recovery_v1.py"
       - "tests/test_prepare_guillemot_same_site_input_v1.py"
       - "tests/test_guillemot_same_site_recovery_v1.py"
+      - "tests/test_guillemot_operational_guard_v1.py"
       - ".github/workflows/guillemot-same-site-recovery.yml"
   workflow_dispatch:
 
@@ -33,5 +41,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install numpy pandas
-      - run: python -m py_compile scripts/prepare_guillemot_same_site_input_v1.py scripts/run_guillemot_same_site_recovery_v1.py
-      - run: python -m unittest tests.test_prepare_guillemot_same_site_input_v1 tests.test_guillemot_same_site_recovery_v1 -v
+      - run: |
+          python -m py_compile             scripts/prepare_guillemot_same_site_input_v1.py             scripts/gate_guillemot_same_site_support_v1.py             scripts/freeze_guillemot_same_site_stageb_v1.py             scripts/run_guillemot_same_site_recovery_v1.py             scripts/guarded_run_guillemot_same_site_recovery_v1.py
+      - run: |
+          python -m unittest             tests.test_prepare_guillemot_same_site_input_v1             tests.test_guillemot_same_site_recovery_v1             tests.test_guillemot_operational_guard_v1 -v
