@@ -176,12 +176,15 @@ def spell_effect(matrix: pd.DataFrame, site: str, spell: dict) -> dict:
 
 def hierarchical_means(frame: pd.DataFrame) -> dict:
     site = (
-        frame.groupby(["species", "master_site", "site_id"], as_index=False)["H"]
+        frame.groupby(
+            ["species", "master_site_key", "site_id"],
+            as_index=False,
+        )["H"]
         .mean()
         .rename(columns={"H": "site_mean_H"})
     )
     master = (
-        site.groupby(["species", "master_site"], as_index=False)["site_mean_H"]
+        site.groupby(["species", "master_site_key"], as_index=False)["site_mean_H"]
         .mean()
         .rename(columns={"site_mean_H": "master_mean_H"})
     )
@@ -389,7 +392,7 @@ def structured_phase_null(
             sim_rows.append(
                 {
                     "species": str(sp["species"]),
-                    "master_site": str(sp["master_site"]),
+                    "master_site_key": str(sp["master_site_key"]),
                     "site_id": str(sp["site_id"]),
                     "H": float(H),
                 }
