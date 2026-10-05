@@ -6,7 +6,7 @@
 
 **Manuscript type:** Article
 
-**Title:** Breeding-space contraction recurs across spatial scales in Antarctic penguins
+**Title:** Breeding-space concentration recurs across spatial scales in Antarctic penguins
 
 **Authors:**  
 [AUTHOR 1]^1^, [AUTHOR 2]^2^, [...]
