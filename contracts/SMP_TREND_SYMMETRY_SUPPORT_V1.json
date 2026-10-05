@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-trend-symmetry-support-v1",
+  "date": "2026-10-05",
+  "status": "outcome_blind_structural_gate_before_total_or_component_counts",
+  "purpose": "Freeze the structural eligibility route for an independent SMP test of whether excess breeding-space concentration is specific to population decline or also occurs during population increase.",
+  "inherited_contracts": [
+    "contracts/SMP_MASTER_SITE_ELIGIBILITY_V1.json",
+    "contracts/SMP_MACRO_ELIGIBILITY_V1.json"
+  ],
+  "source": {
+    "program": "BTO/JNCC Seabird Monitoring Programme",
+    "outer_year_window": [
+      1986,
+      2024
+    ],
+    "hierarchy": {
+      "parent": "species x MasterSite",
+      "component": "SiteID"
+    }
+  },
+  "composite_support_rule": {
+    "rationale": "Where prior SMP support documents differ, use the intersection/stricter condition rather than relaxing an earlier criterion.",
+    "panel": {
+      "minimum_retained_components": 3,
+      "minimum_complete_years": 10,
+      "minimum_calendar_span_years": 12,
+      "stable_component_identity_required": true,
+      "mutually_exclusive_components_required": true,
+      "one_count_unit_per_panel": true,
+      "method_compatibility_required": true,
+      "missing_row_is_not_zero": true,
+      "parent_child_double_counting_prohibited": true
+    },
+    "program": {
+      "minimum_eligible_panels": 20,
+      "minimum_species": 8,
+      "minimum_distinct_master_sites": 15,
+      "minimum_broad_regions": 3,
+      "minimum_species_with_two_or_more_panels": 4
+    }
+  },
+  "exposed_pilot_exclusions": [
+    {
+      "species": "Black-legged Kittiwake",
+      "master_site": "Flamborough and Filey Coast SPA",
+      "reason": "Count magnitudes were viewed during the earlier public structural audit."
+    }
+  ],
+  "stage_A_allowed": [
+    "identifiers",
+    "species names",
+    "MasterSite names/codes",
+    "SiteID rosters",
+    "observation years and missingness",
+    "count Unit",
+    "Method",
+    "Accuracy/Estimate flags",
+    "site history / merge / split metadata",
+    "geographic metadata"
+  ],
+  "stage_A_prohibited": [
+    "count magnitude",
+    "panel total abundance",
+    "abundance trend sign or slope",
+    "E or any concentration metric",
+    "kappa",
+    "gamma",
+    "delta_gamma",
+    "species ranking by ecological outcome"
+  ],
+  "decision": {
+    "if_passed": "Freeze the eligible panel roster and proceed to the total-abundance-only trend-balance gate.",
+    "if_failed": "Stop the SMP trend-symmetry route without relaxing structural thresholds."
+  }
+}
