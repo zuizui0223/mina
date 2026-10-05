@@ -347,14 +347,11 @@ def run(
         int(frame[["species", "master_site", "site_id"]].drop_duplicates().shape[0])
         if n_spells else 0
     )
-    n_masters = (
-        int(frame[["species", "master_site"]].drop_duplicates().shape[0])
-        if n_spells else 0
-    )
+    n_masters = int(frame["master_site_key"].nunique()) if n_spells else 0
     n_species = int(frame["species"].nunique()) if n_spells else 0
     sp_counts = Counter(frame["species"]) if n_spells else Counter()
     sp_masters = (
-        frame.groupby("species")["master_site"].nunique().to_dict()
+        frame.groupby("species")["master_site_key"].nunique().to_dict()
         if n_spells else {}
     )
     species_3 = sorted([sp for sp, n in sp_counts.items() if n >= 3])
