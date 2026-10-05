@@ -32,7 +32,8 @@
     "minimum_species_represented_in_declining": 3,
     "minimum_master_sites_in_increasing": 5,
     "minimum_master_sites_in_declining": 5,
-    "requirement": "all six conditions must pass"
+    "requirement": "All prior trend-balance conditions plus >=4 species having at least two Stage-C-eligible panels with nonzero within-species b_i variance must pass.",
+    "minimum_species_with_within_species_trend_variation": 4
   },
   "outputs_allowed_before_concentration": [
     "panel_id",
@@ -42,7 +43,11 @@
     "first/last year",
     "b_i",
     "trend label",
-    "counts of panels/species/MasterSites by trend class"
+    "counts of panels/species/MasterSites by trend class",
+    "number of positive-total complete years",
+    "positive-total calendar span",
+    "Stage-C composition eligibility",
+    "number of species with within-species abundance-trend variation"
   ],
   "prohibited": [
     "component proportions",
@@ -56,5 +61,13 @@
   "decision": {
     "if_passed": "Authorize one execution of the already-frozen trend-symmetry concentration contract.",
     "if_failed": "Do not test increasing-versus-declining concentration symmetry. The SMP extract may still support a narrower abundance-space study only under a separately justified future contract, not as a rescue of this hypothesis."
+  },
+  "composition_support_before_stage_C": {
+    "zero_total_year_rule": "Annual panel totals N_it=0 remain in the abundance-trend slope b_i but cannot define component proportions or E.",
+    "positive_total_year_rule": "Stage C uses only complete years with N_it>0 for E and gamma.",
+    "minimum_positive_total_years": 8,
+    "minimum_positive_total_calendar_span_years": 10,
+    "panel_composition_eligible": "Both positive-total requirements must pass before the panel can enter Stage C.",
+    "rationale": "Mirrors the local penguin treatment of terminal zero-abundance years while preventing post-outcome year selection."
   }
 }
