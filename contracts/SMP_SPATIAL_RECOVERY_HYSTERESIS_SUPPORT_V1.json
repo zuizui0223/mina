@@ -27,7 +27,9 @@
       "minimum_block_years": 6,
       "reason": "Provides at least six distinct common circular phase alignments for the structured null; this threshold is frozen before SMP magnitude outcomes.",
       "eligibility": "Only spells in blocks with >=6 complete consecutive years enter the magnitude stage."
-    }
+    },
+    "state_complete_year_rule": "Within the provider-confirmed zero-semantics interval, start from inherited Stage-A complete years and retain only years with one usable direct positive/explicit-zero state for every retained SiteID. Missing/unparseable records remove the year; they are never converted to zero.",
+    "state_complete_minimum": "Before spell scanning a panel must retain >=10 state-complete years spanning >=12 calendar years."
   },
   "allowed_outputs_before_magnitudes": [
     "species",
@@ -38,7 +40,8 @@
     "vacancy duration",
     "number of completed spells by site/panel/species",
     "transition_gap_years",
-    "contiguous complete-year block start/end/length for each completed spell"
+    "contiguous complete-year block start/end/length for each completed spell",
+    "state-complete year identities/count/span for each panel/spell"
   ],
   "prohibited_outputs": [
     "count magnitudes",
