@@ -80,6 +80,9 @@ class HysteresisStructureContractTests(unittest.TestCase):
             "absent_site_year_row_is_not_zero": True,
             "estimated_or_imputed_zero_excluded_from_primary": True,
             "confirmation_source": "synthetic provider confirmation",
+            "compatible_start_year": 2000,
+            "compatible_end_year": 2011,
+            "compatible_record_family_or_era": "synthetic direct Whole Colony Counts",
         }), encoding="utf-8")
         return p
 
@@ -181,6 +184,9 @@ class HysteresisStructureContractTests(unittest.TestCase):
                 "absent_site_year_row_is_not_zero": True,
                 "estimated_or_imputed_zero_excluded_from_primary": True,
                 "confirmation_source": "not confirmed",
+                "compatible_start_year": 2000,
+                "compatible_end_year": 2011,
+                "compatible_record_family_or_era": "synthetic direct Whole Colony Counts",
             }), encoding="utf-8")
             with self.assertRaises(ValueError):
                 run_state_support(data, identity_path, zero)
