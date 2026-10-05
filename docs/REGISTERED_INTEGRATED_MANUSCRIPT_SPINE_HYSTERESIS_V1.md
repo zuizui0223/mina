@@ -88,7 +88,7 @@ A direct test requires:
 - observed abandonment;
 - later recolonization of the same place;
 - an external population-state measure excluding the focal place;
-- control for generic abundance drift over the elapsed vacancy period.
+- control for generic temporal alignment with the observed multivariate abundance trajectory.
 
 ### Paragraph 5 — Antarctic penguins provide the discovery
 
@@ -217,7 +217,7 @@ A population can return in number before it returns to previously used breeding 
 
 ## Strongest allowed conclusion if supported
 
-> **Across colonial seabirds, breeding sites were recolonized at higher surrounding population states than those at which the same sites were abandoned, beyond temporal abundance drift over equivalent intervals. Population recovery therefore did not simply retrace the spatial pathway of collapse.**
+> **Across colonial seabirds, breeding sites were recolonized at higher surrounding population states than those at which the same sites were abandoned, beyond structured temporal alignment with the observed MasterSite abundance trajectories. Population recovery therefore did not simply retrace the spatial pathway of collapse.**
 
 ## Forbidden conclusion
 
