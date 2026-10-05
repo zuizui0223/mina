@@ -61,6 +61,8 @@ class HysteresisStructureContractTests(unittest.TestCase):
                     "species": panel["species"],
                     "MasterSite": panel["master_site"],
                     "SiteID": site,
+                    "master_site_key": panel["master_site"],
+                    "master_site_identity_confirmed": True,
                     "stable_identity": True,
                     "mutually_exclusive_child": True,
                     "overlaps_parent_or_sibling": False,
@@ -116,6 +118,8 @@ class HysteresisStructureContractTests(unittest.TestCase):
                 identity["status"],
                 "identity_resolved_count_blind_structure",
             )
+            for panel in identity["eligible_panels"]:
+                self.assertTrue(panel["master_site_key"])
             self.assertTrue(identity["decision"]["structural_gate_passed"])
             self.assertEqual(identity["eligible_panel_count"], 10)
             self.assertEqual(identity["eligible_species_count"], 5)
