@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-smp-spatial-recovery-hysteresis-v1-predata-closure",
+  "date": "2026-10-05",
+  "status": "CLOSED_BEFORE_SMP_OUTCOME_OPENING",
+  "frozen_design_sha": "0f9e0cd7b139d5ae6fb4cd28b659915728d80ee2",
+  "preregistration_receipt": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_PREREGISTRATION_RECEIPT_V1.json",
+  "failed_recovery_audit": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_FAILURE_V1.json",
+  "recovery_audit": {
+    "workflow_run_id": 37293496605,
+    "artifact_id": 11337656178,
+    "conclusion": "failure",
+    "reversible_stationary_false_positive_rate": 0,
+    "monotonic_drift_false_positive_rate": 1,
+    "aligned_signal_moderate_recovery_rate": 1,
+    "aligned_signal_strong_recovery_rate": 1
+  },
+  "reason": "The frozen circular temporal null falsely supported 40/40 synthetic monotonic-drift datasets with no event-aligned hysteresis signal because circular wrap created an artificial seam.",
+  "biological_outcomes_opened": false,
+  "decision": [
+    "Do not execute the closed V1 circular-null design on SMP count magnitudes.",
+    "Do not relax the prespecified drift failure mode.",
+    "Retain the failed design and audit as provenance.",
+    "Replacement designs are permitted only before any SMP hysteresis support/effect outcome is opened."
+  ]
+}
