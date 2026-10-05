@@ -27,9 +27,9 @@ def test_ecology_article_limits_and_labels():
     abstract = _abstract(text)
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
-    assert len(title) == 77
+    assert len(title) == contract["submission_metrics"]["title_characters"]
     assert len(title) <= 120
-    assert len(abstract.split()) == 256
+    assert len(abstract.split()) == contract["submission_metrics"]["abstract_words"]
     assert len(abstract.split()) <= 350
     assert contract["submission_type"] == "Article"
     assert "**Ecology Article candidate" in text
@@ -59,7 +59,7 @@ def test_cover_letter_matches_article_and_claim_boundary():
     text = COVER.read_text(encoding="utf-8")
     assert "for publication as an **Article** in *Ecology*" in text
     assert "Report format" not in text
-    assert "MAPPPD provides the cross-scale transfer test" in text
+    assert "MAPPPD does not provide a simple second-scale replication" in text
     assert "do not claim a universal scaling exponent" in text
 
 

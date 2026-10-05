@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-smp-spatial-recovery-hysteresis-recovery-audit-result-v2",
+  "date": "2026-10-05",
+  "status": "PASS_FROZEN_PREDATA_SYNTHETIC_RECOVERY_AUDIT",
+  "workflow": {
+    "run_id": 37297940212,
+    "artifact_id": 11340322480,
+    "artifact_digest": "sha256:dd4ee0844cf7581495343bc4fca46120d9fa34e9634a369286c3e6917cd63436",
+    "head_sha": "c9024ad66bbba2f4375e0a4debf35602470fff17",
+    "conclusion": "success"
+  },
+  "synthetic_design": {
+    "species": 5,
+    "physical_master_sites": 10,
+    "spells": 30,
+    "years_per_shift_block": 10,
+    "common_offsets": [
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "datasets_per_scenario": 40,
+    "linear_shift_null_resamples_per_dataset": 999,
+    "seed": 20261005
+  },
+  "scenarios": {
+    "reversible_stationary": {
+      "support_rate": 0,
+      "median_T": -0.000334170816649948,
+      "median_species_sign_p": 0.515625,
+      "median_physical_master_sign_p": 0.5048828125,
+      "median_delta_linear": 0.001316354573010598,
+      "median_linear_p": 0.488
+    },
+    "monotonic_drift": {
+      "support_rate": 0,
+      "median_T": 0.4871819480824857,
+      "median_species_sign_p": 0.03125,
+      "median_physical_master_sign_p": 0.0009765625,
+      "median_delta_linear": -0.005782326264461013,
+      "median_linear_p": 0.5845
+    },
+    "aligned_signal_moderate": {
+      "support_rate": 1,
+      "median_T": 0.48826882525268467,
+      "median_species_sign_p": 0.03125,
+      "median_physical_master_sign_p": 0.0009765625,
+      "median_delta_linear": 0.4874567102569994,
+      "median_linear_p": 0.001
+    },
+    "aligned_signal_strong": {
+      "support_rate": 1,
+      "median_T": 0.9879275000290976,
+      "median_species_sign_p": 0.03125,
+      "median_physical_master_sign_p": 0.0009765625,
+      "median_delta_linear": 0.9893684612731353,
+      "median_linear_p": 0.001
+    }
+  },
+  "decision": {
+    "recovery_audit_passed": true,
+    "stationary_false_positive_rate": 0,
+    "monotonic_drift_false_positive_rate": 0,
+    "moderate_signal_recovery_rate": 1,
+    "strong_signal_recovery_rate": 1
+  },
+  "interpretation": [
+    "The species and geographic sign-flip gates alone are deliberately insufficient: monotonic drift produces positive H and passes both directional replication gates in the synthetic design.",
+    "The structured non-circular common-offset null rejects that monotonic-drift artifact while retaining full recovery of moderate and strong event-aligned signals in this frozen synthetic audit.",
+    "This audit calibrates estimator behavior only and is not a biological effect-size prior."
+  ],
+  "freeze_rule": "No additional null family, sign-flip unit, support threshold, effect transform, or rescue calibration is introduced before SMP outcomes. Future changes require a documented implementation bug independent of biological outcomes."
+}

@@ -1,7 +1,8 @@
-# BTO SMP academic data-request content v1
+# BTO SMP academic data-request content v2
 
 **Status:** draft content only; not submitted.  
-**Purpose:** obtain a raw structural extract for an outcome-blind support gate before any macroecological response analysis.
+**Purpose:** obtain a raw structural extract for a prospectively frozen test of spatial recovery hysteresis.  
+**Current access route checked 2026-10-05:** BTO/JNCC state that large SMP requests should use the BTO Data Request route or contact the SMP organiser at smp@bto.org.
 
 ## Project type
 
@@ -9,19 +10,50 @@ Academic (non-commercial)
 
 ## Title of project / question
 
-Spatial redistribution of breeding seabirds during population increase and decline
+Spatial recovery after local breeding-site abandonment in colonial seabirds
 
 ## Details of research
 
-We are testing whether long-term population change is accompanied by systematic changes in how breeding birds are distributed among repeated spatial monitoring units, and whether spatial concentration behaves differently during population increase and decline.
+We are testing whether local breeding-site loss and recovery are spatially reversible in colonial seabirds.
 
-Initial Antarctic penguin analyses generated a prospective hypothesis that breeding-space organization may change partly independently of the sign of population trend: concentration can accompany decline, but numerical increase need not necessarily restore a previous spatial distribution. The SMP provides an independent system in which this symmetry can be tested across multiple seabird species.
+The focal hypothesis is that, for the **same repeated breeding SiteID**, later recolonization may require a higher surrounding population state than the population state at which that SiteID was abandoned. In other words, population recovery may not simply retrace the spatial pathway of population decline.
 
-Before testing any ecological outcome in the SMP data, we will run an outcome-blind structural audit using only sampling structure, identifiers and missingness. Count magnitudes will not be used to select species, MasterSites, SiteIDs, years or thresholds. The design treats mutually exclusive child Sites within a MasterSite as repeated spatial components and distinguishes recorded zeroes from missing observations.
+The study was motivated by independent Antarctic penguin analyses in which breeding distributions became concentrated during decline and regional effective breeding-site number was not necessarily restored during numerical increase. Those penguin results are hypothesis-generating only and will not be pooled with the SMP test.
 
-If the structural gate passes, we will next inspect only total MasterSite-level abundance trajectories to confirm that enough increasing and declining panels are represented. Component-level spatial concentration will remain unopened until that balance gate is passed. The concentration estimand and inferential rules have been frozen in advance of receiving the bulk extract.
+The SMP analysis is staged prospectively.
 
-Planned outputs are a peer-reviewed macroecological study and fully reproducible analysis code. The Antarctic results remain a hypothesis-generating source and are not pooled with the SMP test.
+### Stage A — structure only
+
+We will first use only identifiers, sampling years, missingness, method/unit metadata, and provider-supplied SiteID history to freeze stable species × MasterSite panels and mutually exclusive retained SiteIDs. Count magnitudes will not be used to select panels, SiteIDs, species, years or thresholds.
+
+### Stage B — occupancy state only
+
+For the frozen roster, counts will be reduced to:
+- positive;
+- explicit zero;
+- missing/unusable.
+
+Missing records will never be treated as zero.
+
+We will identify only completed, calendar-consecutive vacancy spells of the form:
+
+positive -> zero -> ... -> zero -> positive.
+
+The exact SiteIDs and years entering the threshold comparison will therefore be frozen before abundance magnitudes are opened.
+
+### Stage C — paired threshold test
+
+Only if the predeclared support gate passes will count magnitudes be opened.
+
+For each frozen vacancy spell, we will compare the surrounding MasterSite population state at:
+- the occupied -> zero transition; and
+- the later zero -> occupied transition.
+
+The focal SiteID itself will be excluded from the surrounding population total.
+
+A same-SiteID paired design is used so that fixed site identity/quality is controlled directly. A second frozen structured null will circularly shift each complete MasterSite block as a whole, preserving its multivariate SiteID abundance trajectory and cross-site covariance while breaking alignment between abundance phase and the frozen abandonment/recolonization dates.
+
+Planned outputs are a peer-reviewed ecological study and fully reproducible analysis code.
 
 ## Details of proposed collaboration
 
@@ -29,16 +61,16 @@ Planned outputs are a peer-reviewed macroecological study and fully reproducible
 
 ## Details of data required
 
-Please provide the raw Seabird Monitoring Programme **Colony Count** extract for 1986–2024 for non-sensitive species across Britain and Ireland, preferably in CSV, TSV or Excel format.
+Please provide the raw Seabird Monitoring Programme **Colony Count / Whole Colony Count** extract for 1986–2024 for non-sensitive species across Britain and Ireland, preferably in CSV, TSV or Excel format.
 
-We need the most disaggregated Site-level records available, including where possible:
+We need the most disaggregated repeated Site-level records available, including where possible:
 
 - Species
 - Country and County
 - SiteID
 - Site
-- MasterSite and MasterSite identifier
-- Plot / Site-level indicator (to distinguish Whole Colony Counts from Plot Colony Counts)
+- MasterSite and a stable unique MasterSite identifier/key
+- Plot / Site-level indicator
 - StartGrid and EndGrid
 - Site category, Site type and Site habitat
 - Start date and End date
@@ -50,11 +82,18 @@ We need the most disaggregated Site-level records available, including where pos
 - Estimate / estimate type
 - Comments
 - verification / review status if available
-- any field identifying merged-site totals, nil returns, or historical site-boundary changes
+- explicit nil-return / zero information, if encoded separately from Count = 0
+- any field identifying merged-site totals, parent/aggregate sites, or historical site-boundary changes
 
-The initial support gate will use identifiers, metadata and missingness only. After the eligible species × MasterSite roster is frozen, a second gate will use only summed annual MasterSite totals to verify that both increasing and declining trajectories are adequately represented. Component-level proportions and concentration metrics will remain unopened until both gates pass. We intend to use only observed raw counts in the primary analysis, not imputed annual values.
+The current BTO SMP guidance explicitly states that zero/nil returns are important because they distinguish true absence from a species simply not being surveyed. For the requested bulk extract, we still need the applicable record-era semantics confirmed rather than assuming that every historical record family encodes zero identically.
 
-Please also advise whether current bulk exports preserve Plot identifiers and whether any SiteID or MasterSite crosswalk/change-log exists for historical merges, splits or boundary changes.
+For this project, it is particularly important to distinguish:
+
+1. **explicit zero / nil returns** from years in which a SiteID was not surveyed;
+2. a stable physical MasterSite identifier/key from display-name labels, and persistent SiteIDs from SiteIDs that were renamed, merged, split, retired, replaced, or had boundaries redefined;
+3. mutually exclusive child Sites within a MasterSite from aggregate MasterSite or merged-site totals.
+
+If available, could you also provide or describe any SiteID/MasterSite crosswalk or change-log that records historical merges, splits, replacements, renames, or boundary changes?
 
 ## Data format
 
@@ -62,6 +101,16 @@ Electronic, preferably CSV/TSV; Excel is also acceptable.
 
 ## Additional information
 
-During a public structural audit we inspected Kittiwake records for Flamborough and Filey Coast SPA to confirm the MasterSite > Site hierarchy. That species × MasterSite combination will be excluded from any prospective confirmatory analysis because count magnitudes were already visible.
+During an earlier public structural audit, Kittiwake records for Flamborough and Filey Coast SPA were inspected to confirm the MasterSite > Site hierarchy. That species × MasterSite combination is excluded from prospective confirmatory analyses because count magnitudes were already visible.
 
-The planned outcome-blind eligibility gate requires at least three retained child Sites and at least ten complete observed years spanning at least twelve calendar years, together with a macro-scale support requirement across multiple species and MasterSites. These thresholds were frozen before receipt of the bulk extract and will not be relaxed after abundance or concentration outcomes are inspected.
+The structural, SiteID-identity, zero-semantics, vacancy-spell, paired-effect, and common-phase null rules were frozen before receipt of the requested bulk extract. If the data do not contain enough stable completed abandonment-to-recolonization cycles, the hypothesis test will stop rather than lower the support thresholds after seeing count magnitudes.
+
+
+## Frozen analysis templates
+
+Provider responses will be transcribed before occupancy-state analysis into:
+
+- `submission/SMP_SPATIAL_RECOVERY_IDENTITY_RESOLUTION_TEMPLATE.csv`
+- `submission/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_CONFIRMATION_TEMPLATE.json`
+
+No positive/zero spell scan is authorized until these metadata gates are complete.

@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-smp-spatial-recovery-operational-readiness-v1",
+  "date": "2026-10-05",
+  "branch": "research/smp-spatial-recovery-hysteresis-v1",
+  "pull_request": 177,
+  "current_head_sha": "e9c3b7631dfc8069f3a6b0c5fb2b260f111e200e",
+  "scientific_freeze": {
+    "preregistration": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_PREREGISTRATION_RECEIPT_V3.json",
+    "frozen_design_head_sha": "09f2cc8376effd1c9561bfa59f83bcac6c9ef1d6",
+    "status": "UNCHANGED",
+    "biological_outcomes_opened": false
+  },
+  "validation": {
+    "scientific_code": {
+      "workflow": "smp-spatial-recovery-hysteresis-code",
+      "run_id": 37303747184,
+      "conclusion": "success"
+    },
+    "synthetic_recovery_audit": {
+      "workflow": "smp-spatial-recovery-hysteresis-recovery-audit",
+      "run_id": 37303747461,
+      "conclusion": "success",
+      "artifact_id": 11342841539,
+      "artifact_digest": "sha256:79ecf89deddb36613840d12f9c63c3a8347af3225d60baea9c83849bf62c50f4",
+      "expected_behavior": [
+        "stationary reversible synthetic data do not support hysteresis",
+        "monotonic-drift synthetic data do not support hysteresis",
+        "moderate event-aligned signal is recovered",
+        "strong event-aligned signal is recovered"
+      ]
+    },
+    "operational_guard": {
+      "workflow": "smp-spatial-recovery-operational-guard",
+      "run_id": 37303747030,
+      "conclusion": "success",
+      "additions_after_scientific_freeze": [
+        "content-blind raw-file custody receipt",
+        "Stage-B input hash freeze",
+        "guarded Stage-C launcher refusing mutated inputs"
+      ]
+    },
+    "provider_request_package": {
+      "workflow": "smp-provider-request-package-check",
+      "run_id": 37303747573,
+      "conclusion": "success"
+    }
+  },
+  "provider_request": {
+    "ready_copy": "submission/SMP_BTO_DATA_REQUEST_FORM_READY_V1.md",
+    "official_route": "BTO survey Data Request Form",
+    "bespoke_contact": "smp@bto.org",
+    "status": "READY_FOR_HUMAN_SUBMISSION",
+    "unresolved_human_fields": [
+      "requester name",
+      "institution/address",
+      "telephone/email",
+      "funding source",
+      "supervisor/collaborator details",
+      "deadline for receipt"
+    ]
+  },
+  "execution_on_data_receipt": [
+    "Do not open the extract in a spreadsheet or notebook.",
+    "Create SMP_RAW_CUSTODY_V1.json with scripts/record_smp_raw_custody_v1.py.",
+    "Run A0 count-blind structure.",
+    "Resolve A1 physical MasterSite/SiteID identity from provider metadata.",
+    "Freeze A2 provider-confirmed zero semantics.",
+    "Run Stage B state-only vacancy histories and common-offset support.",
+    "Create immutable Stage-B freeze receipt including custody hash.",
+    "Run Stage C once through the guarded launcher only."
+  ],
+  "status": "PREDATA_IMPLEMENTATION_COMPLETE_READY_FOR_PROVIDER_REQUEST",
+  "stop_rule": "No additional ecological endpoint, threshold, null, weighting rule, mechanism screen, or synthetic calibration is added before SMP data receipt. Only provider-supplied identity/zero-semantics information and demonstrable implementation-bug repairs are permitted."
+}

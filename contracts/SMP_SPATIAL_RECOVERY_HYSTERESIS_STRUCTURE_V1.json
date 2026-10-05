@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-spatial-recovery-hysteresis-structure-v1",
+  "date": "2026-10-05",
+  "status": "count_blind_candidate_structure_before_provider_identity_resolution",
+  "purpose": "Freeze a sufficiently broad count-blind candidate species x MasterSite / SiteID roster for spatial-recovery hysteresis before provider SiteID continuity and mutual-exclusivity resolution.",
+  "inherited_panel_logic": "scripts/gate_smp_master_site_support_v1.py",
+  "panel_rule": {
+    "minimum_retained_components": 3,
+    "minimum_complete_years": 10,
+    "minimum_calendar_span_years": 12,
+    "stable_component_identity_required": true,
+    "mutually_exclusive_components_required": true,
+    "one_count_unit_per_panel": true,
+    "method_compatibility_required": true,
+    "missing_row_is_not_zero": true,
+    "parent_child_double_counting_prohibited": true
+  },
+  "program_feasibility_before_state_opening": {
+    "minimum_structurally_eligible_panels": 10,
+    "minimum_distinct_master_sites": 10,
+    "minimum_species": 5,
+    "rationale": "These are only the mathematical minima needed for the downstream Stage-B replication gate to remain possible; Stage B, not Stage A, determines hysteresis identifiability."
+  },
+  "exposed_pilot_exclusions": [
+    {
+      "species": "Black-legged Kittiwake",
+      "master_site": "Flamborough and Filey Coast SPA",
+      "reason": "Count magnitudes were visible during the public hierarchy audit."
+    }
+  ],
+  "allowed": [
+    "identifiers",
+    "species",
+    "MasterSite",
+    "SiteID roster",
+    "years and missingness",
+    "Unit",
+    "Method",
+    "Accuracy/Estimate flags",
+    "site-history metadata",
+    "geographic metadata"
+  ],
+  "prohibited": [
+    "count magnitudes",
+    "positive/zero occupancy states",
+    "vacancy spells",
+    "panel abundance",
+    "H",
+    "E",
+    "kappa",
+    "gamma"
+  ],
+  "decision": {
+    "if_passed": "Pass the count-blind candidate roster to the provider identity-resolution gate in contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json. Do not open occupancy states yet.",
+    "if_failed": "Stop before SiteID occupancy states are opened; do not import the superseded trend-symmetry program thresholds."
+  }
+}

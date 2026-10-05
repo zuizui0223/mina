@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-spatial-recovery-hysteresis-effect-v1",
+  "date": "2026-10-05",
+  "status": "PREDATA_FROZEN_AFTER_PASSING_SYNTHETIC_RECOVERY_AUDIT",
+  "parent_support": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json",
+  "hypothesis": "A breeding SiteID that has been abandoned requires a higher surrounding population state to be recolonized than the surrounding population state at which it was abandoned.",
+  "competing_predictions": {
+    "reversible_static_site_quality": "H approximately 0 for the same SiteID because occupancy maps reversibly onto population size after stable site quality is paired out.",
+    "history_dependent_or_social_feedback": "H > 0 because an empty site loses the state/social advantages of occupancy and recolonization requires greater surrounding population pressure."
+  },
+  "abundance_definition": {
+    "parent_state": "leave-one-SiteID-out total abundance within the frozen species x MasterSite panel",
+    "reason": "excluding the focal SiteID prevents its own transition from mechanically entering the predictor",
+    "transition_state": "mean of log1p leave-one-site-out totals in the two years bracketing the transition"
+  },
+  "spell_estimand": {
+    "abandon_state": "A_e = 0.5 * [log1p(N_-j,t) + log1p(N_-j,t+1)] for occupied->zero",
+    "recolonize_state": "A_c = 0.5 * [log1p(N_-j,u) + log1p(N_-j,u+1)] for zero->occupied",
+    "hysteresis_width": "H = A_c - A_e",
+    "interpretation": "H>0 means spatial recovery requires a higher surrounding population state than spatial loss at the same SiteID",
+    "measurement_boundary": "A_e and A_c are annual transition-state proxies derived from the two censuses bracketing each occupancy transition; they are not exact continuous-time demographic thresholds."
+  },
+  "aggregation": {
+    "step1": "average H across multiple completed spells within SiteID",
+    "step2": "average SiteID means within species x provider-resolved physical master_site_key",
+    "step3": "average physical MasterSite means within species",
+    "step4": "primary T = unweighted mean of species means"
+  },
+  "primary_inference": {
+    "observed_statistic": "T_obs = unweighted mean of species mean H after spell -> SiteID -> provider-resolved physical MasterSite -> species aggregation",
+    "species_sign_flip": {
+      "null": "species-level H means are symmetric around zero",
+      "test": "one-sided sign-flip randomization of species means",
+      "exact_if_species_leq": 20,
+      "random_sign_flips_if_more_species": 100000,
+      "seed": 20261005
+    },
+    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, physical-MasterSite sign-flip one-sided p <= 0.05, Delta_linear > 0, and structured-linear-shift-null upper-tail p <= 0.05.",
+    "structured_linear_shift_null": {
+      "purpose": "Test whether positive H exceeds what can arise solely because abandonment/recolonization dates occupy particular positions on trending or autocorrelated surrounding-population trajectories, without circular wrap.",
+      "conditioning": [
+        "exact frozen completed-spell roster",
+        "exact SiteID and species identities",
+        "exact event-year pattern and vacancy duration",
+        "observed multivariate count trajectory within each species x MasterSite",
+        "maximal contiguous state-complete year block containing each spell",
+        "one frozen non-circular common-offset set for every provider-resolved physical MasterSite x identical block"
+      ],
+      "randomization": "For each provider-resolved physical master_site_key x identical block, draw one offset uniformly from the Stage-B-frozen common offset set. Apply that same offset to every species, SiteID and spell sharing the group. No event may wrap across a block boundary.",
+      "resamples": 9999,
+      "seed": 20261005,
+      "p_value": "plus-one upper-tail probability that shifted species-balanced T >= T_obs",
+      "delta": "Delta_linear = T_obs - median(T_linear_null)",
+      "interpretation": "Structured non-circular temporal-alignment null; not a fitted mechanistic occupancy model and does not remove time-varying habitat quality."
+    },
+    "physical_master_site_sign_flip": {
+      "purpose": "Guard against treating multiple species at the same physical MasterSite as independent geographic replication.",
+      "statistic": "Use the frozen hierarchical spell weights implied by spell -> SiteID -> physical MasterSite -> species -> equal-species aggregation. Sum weighted H contributions within each provider-resolved physical master_site_key, then sign-flip whole physical-MasterSite contributions.",
+      "exact_if_master_sites_leq": 20,
+      "random_sign_flips_if_more_master_sites": 100000,
+      "seed": 20261005,
+      "p_value": "one-sided upper-tail probability for T_obs under physical-MasterSite cluster sign flips"
+    }
+  },
+  "secondary_uncertainty": {
+    "bootstrap_resamples": 9999,
+    "seed": 20261005,
+    "unit": "species",
+    "interval": "percentile 95% interval for T",
+    "reporting": "report species means, MasterSite means, SiteID means, all spell-level H values, and the structured linear-shift-null summary"
+  },
+  "boundaries": [
+    "Stage C is unauthorized unless the SiteID identity gate and provider-confirmed zero-semantics gate both passed before occupancy-state scanning.",
+    "A supported positive H is evidence that spatial recovery does not simply retrace spatial loss at the measured SiteID scale; it is not proof of an Allee mechanism.",
+    "Site pairing controls stable SiteID quality but not time-varying habitat degradation, predator change, disturbance or unmeasured management.",
+    "Do not call the result social hysteresis unless independent social-cue or fitness-density evidence is added.",
+    "Do not use first colonization events in the primary threshold comparison.",
+    "Do not change the completed-spell roster after count magnitudes are opened.",
+    "Use 'transition-state asymmetry' or 'empirical threshold proxy' in precise reporting; annual census data do not observe the exact continuous-time abandonment/recolonization threshold.",
+    "The non-circular common-offset null was adopted before SMP outcomes because the frozen synthetic recovery audit showed that the earlier circular null falsely supported 40/40 monotonic-drift datasets.",
+    "When multiple species share a physical MasterSite and identical state-complete block, one common offset is used to preserve shared local temporal covariance.",
+    "The structured common-offset null remains a temporal alignment null, not a complete reversible occupancy-process model.",
+    "Confirmatory support requires replication across both taxonomic species clusters and provider-resolved physical MasterSite clusters; neither dimension alone may establish the general claim."
+  ],
+  "stop_rule": "One execution only after identity, zero-semantics and common-offset support gates pass. No alternative abundance transform, lag, transition midpoint, block rule, offset scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
+  "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
+  "zero_semantics_contract": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json",
+  "predata_recovery_audit": {
+    "contract": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_V1.json",
+    "receipt": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V2.json",
+    "workflow_run_id": 37297940212,
+    "artifact_id": 11340322480,
+    "artifact_digest": "sha256:dd4ee0844cf7581495343bc4fca46120d9fa34e9634a369286c3e6917cd63436",
+    "result": "PASS",
+    "stationary_false_positive_rate": 0,
+    "monotonic_drift_false_positive_rate": 0,
+    "moderate_signal_recovery_rate": 1,
+    "strong_signal_recovery_rate": 1
+  },
+  "freeze_after_recovery_audit": "No inferential threshold, cluster unit, null family, event definition, abundance transform, weighting rule, or support gate may change before SMP effect outcomes. Only implementation bugs demonstrably independent of biological outcomes may be repaired with an explicit audit trail."
+}

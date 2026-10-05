@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-spatial-recovery-hysteresis-support-v1",
+  "date": "2026-10-05",
+  "status": "locked_until_identity_resolved_structure_and_provider_zero_semantics_are_frozen",
+  "purpose": "Identify completed abandonment-to-recolonization cycles in identity-resolved stable SMP breeding SiteIDs using only provider-confirmed explicit zero/positive states, before any abundance magnitude is used.",
+  "parent_structural_contract": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
+  "hierarchy": {
+    "system": "species x MasterSite",
+    "component": "retained SiteID"
+  },
+  "state_definition": {
+    "occupied": "direct observed whole-colony count > 0",
+    "vacant": "direct observed count == 0 exactly, only after provider confirmation that such rows are surveyed nil returns",
+    "missing": "absent/unparseable/unvisited; never treated as zero"
+  },
+  "vacancy_spell": {
+    "abandonment": "occupied in complete calendar year t and explicit zero in t+1",
+    "recolonization": "after one or more consecutive explicit-zero complete years, first later complete calendar year with count > 0",
+    "completeness": "every retained SiteID must be observed in every year used by the spell under the frozen panel roster",
+    "no_gap_rule": "every year from abandonment transition through recolonization transition must be calendar-consecutive and complete; do not bridge an unobserved year",
+    "multiple_spells": "allowed; all qualifying completed spells retained",
+    "first_colonization": "not part of the primary test because no within-site abandonment threshold exists to pair against it",
+    "transition_gap_years": "recolonize_from - abandon_from; because both transitions are consecutive-year transitions, this equals the separation between their transition midpoints.",
+    "state_complete_year_rule": "Within the provider-confirmed zero-semantics interval, start from inherited Stage-A complete years and retain only years with one usable direct positive/explicit-zero state for every retained SiteID. Missing/unparseable records remove the year; they are never converted to zero.",
+    "state_complete_minimum": "Before spell scanning a panel must retain >=10 state-complete years spanning >=12 calendar years.",
+    "linear_shift_null_support": {
+      "contiguous_block": "Each completed spell is assigned to the maximal calendar-consecutive state-complete block containing the spell.",
+      "group": "provider-resolved physical master_site_key x identical contiguous block",
+      "common_offset_rule": "For each group, freeze the intersection of integer year offsets that keeps every abandonment/recolonization event of every group spell inside the block with no wrap.",
+      "minimum_common_offsets": 3,
+      "eligibility": "All spells in a group are Stage-C eligible only if the group has >=3 common non-circular offsets, including observed offset 0.",
+      "reason": "Controls generic temporal abundance drift without creating the artificial circular seam detected by the preoutcome synthetic recovery audit."
+    }
+  },
+  "allowed_outputs_before_magnitudes": [
+    "species",
+    "MasterSite",
+    "SiteID",
+    "abandonment years",
+    "recolonization years",
+    "vacancy duration",
+    "number of completed spells by site/panel/species",
+    "transition_gap_years",
+    "contiguous complete-year block start/end/length for each completed spell",
+    "state-complete year identities/count/span for each panel/spell",
+    "contiguous state-complete block start/end/length for each completed spell",
+    "frozen common non-circular offset values/count for each physical MasterSite x block"
+  ],
+  "prohibited_outputs": [
+    "count magnitudes",
+    "panel abundance totals",
+    "abandonment abundance",
+    "recolonization abundance",
+    "effective component number",
+    "kappa",
+    "gamma",
+    "hysteresis width H"
+  ],
+  "identifiability_gate": {
+    "minimum_distinct_siteids_with_spells": 20,
+    "minimum_mastersites_with_spells": 10,
+    "minimum_species_with_spells": 5,
+    "minimum_species_with_at_least_3_spells": 4,
+    "minimum_species_with_spells_in_at_least_2_mastersites": 3,
+    "master_site_count_definition": "distinct provider-resolved physical master_site_key values, not species x MasterSite panels or display-name strings",
+    "minimum_species_rationale": "The confirmatory exact species-level sign-flip test cannot attain one-sided p<=0.05 with four species (minimum 1/16=0.0625); five species permit 1/32=0.03125.",
+    "requirement": "All replication conditions must pass after restricting to provider-confirmed explicit-zero spells in physical MasterSite x block groups with >=3 frozen non-circular common offsets.",
+    "minimum_linear_shift_eligible_completed_spells": 30,
+    "minimum_common_offsets_per_master_block": 3
+  },
+  "decision": {
+    "if_passed": "After identity resolution and provider/official zero-semantics confirmation, freeze the exact common-offset-eligible spell roster and authorize one magnitude-opening hysteresis execution.",
+    "if_failed": "Stop the hysteresis route. Do not infer zero semantics, lower identity/cycle/common-offset thresholds, wrap events across block boundaries, or bridge missing years."
+  },
+  "identity_requirement": "Input roster must be the output of the frozen SiteID identity gate; unresolved, merged, split, overlapping, boundary-changed, retired or replaced SiteIDs are ineligible.",
+  "zero_semantics_contract": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json",
+  "zero_semantics_requirement": "Stage B is unauthorized until the provider-confirmation JSON has all three semantic booleans true, non-empty confirmation_source, integer compatible_start_year/end_year within 1986-2024, end>=start, and a non-empty compatible_record_family_or_era.",
+  "provider_semantics_gate": {
+    "required_before_state_scan": true,
+    "confirmation_json_fields": [
+      "row_with_direct_count_zero_is_surveyed_nil",
+      "absent_site_year_row_is_not_zero",
+      "estimated_or_imputed_zero_excluded_from_primary",
+      "confirmation_source",
+      "compatible_start_year",
+      "compatible_end_year",
+      "compatible_record_family_or_era"
+    ],
+    "all_boolean_fields_must_be_true": true,
+    "confirmation_source_must_be_nonempty": true
+  },
+  "candidate_structure_contract": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_STRUCTURE_V1.json"
+}

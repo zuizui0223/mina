@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-smp-spatial-recovery-hysteresis-preregistration-receipt-v1",
+  "frozen_date": "2026-10-05",
+  "branch": "research/smp-spatial-recovery-hysteresis-v1",
+  "frozen_design_head_sha": "0f9e0cd7b139d5ae6fb4cd28b659915728d80ee2",
+  "pull_request": 175,
+  "status": "DESIGN_FROZEN_BEFORE_SMP_HYSTERESIS_SUPPORT_OR_EFFECT_OUTCOME",
+  "ci_validation": {
+    "workflow_name": "smp-spatial-recovery-hysteresis-code",
+    "workflow_run_id": 37290077050,
+    "conclusion": "success",
+    "note": "Focused unit/integration code validation only; no SMP hysteresis support/effect outcome artifact was produced."
+  },
+  "canonical_files": [
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_STRUCTURE_V1.json",
+      "git_blob_sha": "c12b8516c74d298a1134ef43acced24a407ec5e5"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
+      "git_blob_sha": "da74e364d648415e4632adc7bee8506c0b09a89b"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json",
+      "git_blob_sha": "0c227b2421fb4d2da7157aa7be391764850a7639"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json",
+      "git_blob_sha": "30d73e4c838af7f10a7e1e238b5696048e43176d"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_EFFECT_V1.json",
+      "git_blob_sha": "e896d5ff2e08b1eaf5c344e67df76243f1555244"
+    },
+    {
+      "path": "scripts/gate_smp_spatial_recovery_hysteresis_structure_v1.py",
+      "git_blob_sha": "d0f1031638a20539179d0616b5d5905188edc73d"
+    },
+    {
+      "path": "scripts/finalize_smp_spatial_recovery_structure_v1.py",
+      "git_blob_sha": "eb5bfbab206410ceafebd1771454f4677d6d813b"
+    },
+    {
+      "path": "scripts/gate_smp_spatial_recovery_hysteresis_support_v1.py",
+      "git_blob_sha": "40e688422e8cf147fbad057b61fc3927e8496c57"
+    },
+    {
+      "path": "scripts/run_smp_spatial_recovery_hysteresis_v1.py",
+      "git_blob_sha": "c9f4e51cf2e5e83da4f73fd04c8720fede014b9e"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_PROTOCOL_V1.md",
+      "git_blob_sha": "a8a5b0a23953bc346bb622cdf99f5267cb5f60ad"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_RUNBOOK_V1.md",
+      "git_blob_sha": "99f0d03de695f6a8f0861871e11c8c4dca25e9db"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_NOVELTY_V1.md",
+      "git_blob_sha": "4c328031503957410ed14f263d06c2a82c264312"
+    },
+    {
+      "path": "docs/REGISTERED_INTEGRATED_MANUSCRIPT_SPINE_HYSTERESIS_V1.md",
+      "git_blob_sha": "9205544727b7c303c5c0c299afe4cbd27395806a"
+    },
+    {
+      "path": "submission/SMP_DATA_REQUEST_CONTENT_V1.md",
+      "git_blob_sha": "ba545a2727c1c27b984f88179a0408eea9a8152f"
+    }
+  ],
+  "frozen_hypothesis": "Later recovery of the same breeding SiteIDs is associated with higher surrounding population states than their earlier loss, beyond structured temporal alignment with observed MasterSite abundance trajectories.",
+  "confirmatory_requirements": [
+    "Stage A0 count-blind candidate structure passes",
+    "provider physical SiteID/MasterSite identity gate passes",
+    "provider zero-semantics gate passes",
+    "Stage B state-only completed-spell support gate passes",
+    "T_obs > 0",
+    "species sign-flip one-sided p <= 0.05",
+    "Delta_phase > 0",
+    "structured common-phase-null upper-tail p <= 0.05"
+  ],
+  "measurement_boundary": "Ae and Ac are annual transition-state proxies from censuses bracketing observed loss/recovery transitions; they are not exact continuous-time thresholds.",
+  "mechanism_boundary": "A supported result would establish history-dependent spatial recovery at the measured SiteID scale, not uniquely identify Allee effects, conspecific attraction, public information, or any single mechanism.",
+  "freeze_rule": "After this frozen design SHA, no ecological definition, support threshold, SiteID rule, zero semantics, state-spell rule, transformation, hierarchy, weighting, null family, resample count, or interpretation gate may be changed in response to SMP hysteresis support/effect outcomes. Provider-populated identity/zero-semantics metadata are allowed only through the already-defined fields and gates."
+}
