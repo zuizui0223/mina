@@ -159,15 +159,40 @@ def containing_block(complete_years: list[int], spell: dict) -> list[int]:
     raise ValueError("completed spell not contained in a complete-year block")
 
 
+def validate_zero_semantics(path: Path) -> dict:
+    z = json.loads(path.read_text(encoding="utf-8"))
+    required_true = (
+        "row_with_direct_count_zero_is_surveyed_nil",
+        "absent_site_year_row_is_not_zero",
+        "estimated_or_imputed_zero_excluded_from_primary",
+    )
+    for key in required_true:
+        if z.get(key) is not True:
+            raise ValueError(f"zero-semantics confirmation failed: {key} must be true")
+    source = str(z.get("confirmation_source", "")).strip()
+    if not source:
+        raise ValueError("zero-semantics confirmation_source must be non-empty")
+    return {
+        "row_with_direct_count_zero_is_surveyed_nil": True,
+        "absent_site_year_row_is_not_zero": True,
+        "estimated_or_imputed_zero_excluded_from_primary": True,
+        "confirmation_source": source,
+    }
+
+
 def run(
     input_path: Path,
     support_json: Path,
+    zero_semantics_json: Path,
     *,
     assume_whole_colony_extract: bool = False,
 ) -> dict:
     support = json.loads(support_json.read_text(encoding="utf-8"))
+    if support.get("analysis_id") != "mina-smp-spatial-recovery-structure-v1":
+        raise ValueError("Stage B requires the identity-resolved spatial-recovery structure output")
     if not support.get("decision", {}).get("structural_gate_passed"):
-        raise ValueError("structural support gate did not pass")
+        raise ValueError("identity-resolved structural support gate did not pass")
+    zero_semantics = validate_zero_semantics(zero_semantics_json)
 
     x = _state_frame(input_path, assume_whole_colony_extract=assume_whole_colony_extract)
     raw_spells = []
@@ -250,7 +275,8 @@ def run(
     return {
         "schema_version": 1,
         "analysis_id": "mina-smp-spatial-recovery-hysteresis-support-v1",
-        "status": "state_only_completed_vacancy_spells_with_frozen_phase_blocks",
+        "status": "provider_confirmed_state_only_completed_vacancy_spells_with_frozen_phase_blocks",
+        "zero_semantics_confirmation": zero_semantics,
         "raw_completed_spell_count_before_phase_support": int(len(raw_spells)),
         "completed_spells": eligible_spells,
         "support": {
@@ -295,12 +321,14 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--input", required=True, type=Path)
     p.add_argument("--support-json", required=True, type=Path)
+    p.add_argument("--zero-semantics-json", required=True, type=Path)
     p.add_argument("--out", required=True, type=Path)
     p.add_argument("--assume-whole-colony-extract", action="store_true")
     a = p.parse_args()
     result = run(
         a.input,
         a.support_json,
+        a.zero_semantics_json,
         assume_whole_colony_extract=a.assume_whole_colony_extract,
     )
     a.out.parent.mkdir(parents=True, exist_ok=True)
