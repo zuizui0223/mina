@@ -2,8 +2,8 @@
   "schema_version": 1,
   "contract_id": "mina-smp-spatial-recovery-hysteresis-structure-v1",
   "date": "2026-10-05",
-  "status": "outcome_blind_structure_only",
-  "purpose": "Freeze stable species x MasterSite / SiteID panels for the SMP spatial-recovery hysteresis test without importing program-level thresholds from the superseded trend-symmetry design.",
+  "status": "count_blind_candidate_structure_before_provider_identity_resolution",
+  "purpose": "Freeze a sufficiently broad count-blind candidate species x MasterSite / SiteID roster for spatial-recovery hysteresis before provider SiteID continuity and mutual-exclusivity resolution.",
   "inherited_panel_logic": "scripts/gate_smp_master_site_support_v1.py",
   "panel_rule": {
     "minimum_retained_components": 3,
@@ -52,7 +52,7 @@
     "gamma"
   ],
   "decision": {
-    "if_passed": "Freeze the panel roster and open only categorical positive/explicit-zero/missing states in the Stage-B hysteresis support gate.",
-    "if_failed": "Stop; do not lower panel or program minima after seeing occupancy states."
+    "if_passed": "Pass the count-blind candidate roster to the provider identity-resolution gate in contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json. Do not open occupancy states yet.",
+    "if_failed": "Stop before SiteID occupancy states are opened; do not import the superseded trend-symmetry program thresholds."
   }
 }
