@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-mapppd-intensification-before-expansion-diagnostic-receipt-v1",
+  "date": "2026-10-05",
+  "workflow_run_id": 37274956243,
+  "artifact_id": 11329827371,
+  "artifact_digest": "sha256:a983637d4fc39b7b56ca436eede7a77b5d113ac22bbba86ed0ef80a9b724423f",
+  "status": "CLOSED_NOT_IDENTIFIABLE_FOR_COLONIZATION_INTERPRETATION",
+  "result": {
+    "all_positive_growth_transitions": 11,
+    "all_existing_gain": 21962.694218449404,
+    "all_zero_to_positive_gain": 8,
+    "all_expansion_fraction": 0.0003641214028313306,
+    "increasing_panel_positive_growth_transitions": 5,
+    "increasing_panel_transitions_with_exact_zero_site_at_t": 0,
+    "increasing_panel_transitions_with_zero_to_positive_site": 0,
+    "increasing_panel_existing_gain": 14001.614977023897,
+    "increasing_panel_zero_to_positive_gain": 0
+  },
+  "interpretation": [
+    "Positive abundance transitions in the three first-to-last increasing MAPPPD panels occurred entirely within already occupied retained sites.",
+    "However, none of those five positive transitions had an exact-zero retained site at the transition start.",
+    "Therefore the diagnostic cannot distinguish intensification preference from simple lack of empty monitored opportunities inside the frozen retained roster.",
+    "The result must not be used as evidence for a colonization barrier, social attraction, or intensification-before-expansion rule."
+  ],
+  "decision": {
+    "intensification_before_expansion_supported": false,
+    "colonization_comparison_identified": false,
+    "next_hypothesis": "paired abandonment-versus-recolonization threshold asymmetry in an independent dataset"
+  },
+  "stop_rule": "No low-count vacancy threshold, expanded roster, null model or alternative colonization definition is opened as a rescue."
+}
