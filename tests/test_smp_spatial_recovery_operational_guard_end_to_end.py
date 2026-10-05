@@ -10,6 +10,7 @@ from scripts.freeze_smp_spatial_recovery_stageb_v1 import run as freeze_stageb
 from scripts.gate_smp_spatial_recovery_hysteresis_structure_v1 import run as run_structure
 from scripts.gate_smp_spatial_recovery_hysteresis_support_v1 import run as run_state
 from scripts.guarded_run_smp_spatial_recovery_stagec_v1 import run_guarded
+from scripts.record_smp_raw_custody_v1 import run as record_custody
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -60,6 +61,17 @@ class SmpOperationalGuardEndToEndTests(unittest.TestCase):
 
             raw = root / "smp.csv"
             pd.DataFrame(rows).to_csv(raw, index=False)
+
+            # Step 0: custody without content parsing.
+            custody = record_custody(
+                raw,
+                received_at="2026-10-05T20:30:00+09:00",
+                provider_filename="synthetic_provider_export.csv",
+                source_channel="synthetic test fixture",
+            )
+            self.assertFalse(custody["content_parsed"])
+            custody_json = root / "custody.json"
+            custody_json.write_text(json.dumps(custody), encoding="utf-8")
 
             # A0
             candidate = run_structure(raw)
@@ -115,6 +127,7 @@ class SmpOperationalGuardEndToEndTests(unittest.TestCase):
             # Immutable pre-magnitude freeze.
             freeze = freeze_stageb(
                 raw,
+                custody_json,
                 candidate_json,
                 identity_csv,
                 resolved_json,
@@ -124,6 +137,11 @@ class SmpOperationalGuardEndToEndTests(unittest.TestCase):
                 ROOT,
             )
             self.assertTrue(freeze["decision"]["stage_C_authorized"])
+            self.assertTrue(freeze["gate_summary"]["raw_custody_verified"])
+            self.assertEqual(
+                freeze["custody"]["sha256"],
+                custody["sha256"],
+            )
             freeze_json = root / "freeze.json"
             freeze_json.write_text(json.dumps(freeze), encoding="utf-8")
 
@@ -140,6 +158,24 @@ class SmpOperationalGuardEndToEndTests(unittest.TestCase):
                 result["operational_provenance"]["raw_extract_sha256"],
                 freeze["raw_extract_sha256"],
             )
+
+            # Custody mismatch must block the freeze step itself.
+            bad_custody = dict(custody)
+            bad_custody["byte_size"] = int(custody["byte_size"]) + 1
+            bad_custody_json = root / "bad_custody.json"
+            bad_custody_json.write_text(json.dumps(bad_custody), encoding="utf-8")
+            with self.assertRaises(ValueError):
+                freeze_stageb(
+                    raw,
+                    bad_custody_json,
+                    candidate_json,
+                    identity_csv,
+                    resolved_json,
+                    zero_json,
+                    stageb_json,
+                    PREREG,
+                    ROOT,
+                )
 
             # Mutation after freeze must block Stage C.
             stageb_json.write_text(
