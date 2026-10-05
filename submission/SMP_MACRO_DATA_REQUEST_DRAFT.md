@@ -41,3 +41,6 @@ The analysis is prospectively staged. Panel and SiteID eligibility will be froze
 I will follow the SMP Data Access and Use Policy and required acknowledgement wording in any publication using the data.
 
 Many thanks for your help.
+
+
+The provider metadata will be frozen into an identity-resolution table and a zero-semantics confirmation record before any abandonment/recolonization sequence is extracted.
