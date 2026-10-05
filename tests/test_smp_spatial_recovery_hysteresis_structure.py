@@ -137,7 +137,7 @@ class HysteresisStructureContractTests(unittest.TestCase):
                 state["decision"]["hysteresis_magnitude_execution_authorized"]
             )
             self.assertEqual(
-                state["support"]["phase_eligible_completed_spells"],
+                state["support"]["linear_shift_eligible_completed_spells"],
                 30,
             )
             self.assertEqual(
@@ -147,15 +147,18 @@ class HysteresisStructureContractTests(unittest.TestCase):
             self.assertEqual(state["support"]["mastersites_with_spells"], 10)
             self.assertEqual(state["support"]["species_with_spells"], 5)
 
-            # Stage B emits timing/phase support, not count magnitudes or H.
+            # Stage B emits timing/common-offset support, not count magnitudes or H.
             blob = json.dumps(state).lower()
             self.assertNotIn('"h":', blob)
             self.assertNotIn("abandon_state", blob)
             self.assertNotIn("recolonize_state", blob)
             for spell in state["completed_spells"]:
-                self.assertGreaterEqual(spell["phase_block_length"], 6)
-                self.assertEqual(spell["phase_block_start"], 2000)
-                self.assertEqual(spell["phase_block_end"], 2011)
+                self.assertGreaterEqual(spell["shift_block_length"], 6)
+                self.assertEqual(spell["shift_block_start"], 2000)
+                self.assertEqual(spell["shift_block_end"], 2011)
+                self.assertGreaterEqual(spell["n_common_offsets"], 3)
+                self.assertIn(0, spell["common_offset_values"])
+                self.assertTrue(spell["linear_shift_null_eligible"])
                 self.assertNotIn("count", spell)
                 self.assertNotIn("pseudo_start_years", spell)
 
