@@ -10,11 +10,11 @@
     "master_sites_per_species": 2,
     "focal_siteids_per_master": 3,
     "spells": 30,
-    "years_per_phase_block": 10,
     "event_pattern": "abandonment 2001->2002; recolonization 2004->2005 within every 2000-2009 block",
-    "phase_null_resamples_per_dataset": 999,
     "datasets_per_scenario": 40,
-    "seed": 20261005
+    "seed": 20261005,
+    "years_per_shift_block": 10,
+    "linear_shift_null_resamples_per_dataset": 999
   },
   "scenarios": {
     "reversible_stationary": {
@@ -23,7 +23,7 @@
     },
     "monotonic_drift": {
       "description": "Smoothly increasing log-scale parent trajectory with no event-aligned pulse.",
-      "expected": "H may be positive and sign-flip may pass, but structured phase null should prevent frequent confirmatory support."
+      "expected": "H may be positive and sign-flip may pass, but the non-circular common-offset null should prevent frequent confirmatory support."
     },
     "aligned_signal_moderate": {
       "description": "Stationary/noisy parent trajectory plus +0.5 log1p pulse on the recolonization-side transition census.",
@@ -42,6 +42,7 @@
   "boundary": [
     "This is a code/design recovery audit, not a formal power calculation for unknown SMP effect sizes.",
     "The pulse magnitudes are synthetic calibration values and must not be interpreted as biological priors.",
-    "Failure triggers code/design review before SMP magnitude opening; it does not authorize tuning on real SMP outcomes."
+    "Failure triggers code/design review before SMP magnitude opening; it does not authorize tuning on real SMP outcomes.",
+    "The earlier circular-null implementation failed this audit because monotonic drift was supported in 40/40 datasets; see results/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_FAILURE_V1.json."
   ]
 }
