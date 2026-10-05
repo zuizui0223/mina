@@ -240,11 +240,21 @@ def run(
             & x["year"].isin(years)
         ].copy()
 
-        expected = len(roster) * len(years)
-        if len(g) != expected:
-            raise ValueError(
-                f"state support drift: {species}|{master}|{unit}: {len(g)} != {expected}"
-            )
+        observed_by_year = {
+            int(y): set(v["_site_id"].astype(str))
+            for y, v in g.groupby("year", sort=True)
+        }
+        state_complete_years = [
+            int(y)
+            for y in years
+            if observed_by_year.get(int(y), set()) == roster
+        ]
+        if len(state_complete_years) < 10:
+            continue
+        if max(state_complete_years) - min(state_complete_years) + 1 < 12:
+            continue
+
+        g = g[g["year"].isin(state_complete_years)].copy()
 
         for site in sorted(roster):
             sg = g[g["_site_id"].eq(site)].sort_values("year")
@@ -253,7 +263,7 @@ def run(
                 sg["state"].astype(str).tolist(),
             )
             for k, sp in enumerate(spells, 1):
-                block = containing_block(years, sp)
+                block = containing_block(state_complete_years, sp)
                 rec = {
                     "spell_id": f"{species}|{master}|{unit}|{site}|{k}",
                     "species": species,
@@ -261,6 +271,9 @@ def run(
                     "unit": unit,
                     "site_id": site,
                     **sp,
+                    "state_complete_years": [int(v) for v in state_complete_years],
+                    "n_state_complete_years": int(len(state_complete_years)),
+                    "state_complete_span_years": int(max(state_complete_years) - min(state_complete_years) + 1),
                     "phase_block_start": int(block[0]),
                     "phase_block_end": int(block[-1]),
                     "phase_block_years": [int(v) for v in block],
@@ -308,7 +321,7 @@ def run(
             "compatible_start_year": int(zero_semantics["compatible_start_year"]),
             "compatible_end_year": int(zero_semantics["compatible_end_year"]),
             "compatible_record_family_or_era": str(zero_semantics["compatible_record_family_or_era"]),
-            "panel_year_rule": "Use only inherited Stage-A complete years inside the provider-confirmed zero-semantics interval; never add years."
+            "panel_year_rule": "Start from inherited Stage-A complete years inside the provider-confirmed zero-semantics interval, then retain only years with usable direct positive/explicit-zero state for every retained SiteID. Never add years and never convert missingness to zero."
         },
         "raw_completed_spell_count_before_phase_support": int(len(raw_spells)),
         "completed_spells": eligible_spells,
