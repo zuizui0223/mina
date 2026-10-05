@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from collections import Counter
 from pathlib import Path
 
@@ -53,7 +54,7 @@ def strict_direct_count_state(value) -> str:
         x = float(text)
     except ValueError:
         return "missing_or_unparseable"
-    if not pd.notna(x) or x < 0:
+    if not math.isfinite(x) or x < 0:
         return "missing_or_unparseable"
     return "explicit_zero" if x == 0 else "observed_positive"
 
@@ -113,10 +114,12 @@ def _state_frame(
     x = x[~pilot].copy()
 
     key = ["_species", "_master", "_unit", "_site_id", "year"]
-    usable = x[x["state"].isin(["observed_positive", "explicit_zero"])].copy()
-    dup = usable.groupby(key, dropna=False).size().rename("_n").reset_index()
+    # Match Stage A/C: any competing direct rows make that SiteID-year
+    # unavailable, regardless of whether one row happens to parse numerically.
+    dup = x.groupby(key, dropna=False).size().rename("_n").reset_index()
     unique = dup[dup["_n"] == 1][key]
     x = x.merge(unique, on=key, how="inner")
+    x = x[x["state"].isin(["observed_positive", "explicit_zero"])].copy()
 
     if method_col:
         method_n = (
