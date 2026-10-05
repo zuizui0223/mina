@@ -1,0 +1,170 @@
+{
+  "schema_version": 3,
+  "receipt_id": "mina-smp-spatial-recovery-hysteresis-preregistration-receipt-v3",
+  "frozen_date": "2026-10-05",
+  "branch": "research/smp-spatial-recovery-hysteresis-v1",
+  "pull_request": 177,
+  "frozen_design_head_sha": "09f2cc8376effd1c9561bfa59f83bcac6c9ef1d6",
+  "status": "FINAL_PREDATA_DESIGN_FROZEN_AFTER_SYNTHETIC_RECOVERY_AUDIT_BEFORE_SMP_HYSTERESIS_OUTCOMES",
+  "lineage": {
+    "v1": {
+      "status": "closed_preoutcome",
+      "receipt": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_PREREGISTRATION_RECEIPT_V1.json",
+      "closure": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_V1_CLOSURE_RECEIPT.json",
+      "reason": "circular temporal null falsely supported 40/40 monotonic-drift synthetic datasets"
+    },
+    "v2_branch": {
+      "branch": "research/smp-spatial-recovery-hysteresis-v2",
+      "pull_request": 176,
+      "status": "superseded_preoutcome",
+      "reason": "Later final design added explicit physical-MasterSite geographic replication, structured common offsets by physical MasterSite x block, full raw-like end-to-end validation, and a stronger synthetic recovery audit. No SMP biological outcome was opened under V2."
+    },
+    "v3": {
+      "status": "canonical_final_predata_design",
+      "pull_request": 177
+    }
+  },
+  "synthetic_recovery_audit": {
+    "receipt": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V2.json",
+    "workflow_run_id": 37298706805,
+    "artifact_id": 11340233763,
+    "artifact_digest": "sha256:1a3dc746b1a7e8ab541a9ad7935694c6ad23b78df775da9bb870ce06c40485c3",
+    "conclusion": "success",
+    "scenarios": {
+      "reversible_stationary_support_rate": 0,
+      "monotonic_drift_support_rate": 0,
+      "aligned_signal_moderate_recovery_rate": 1,
+      "aligned_signal_strong_recovery_rate": 1
+    },
+    "boundary": "Synthetic audit calibrates estimator behavior only and is not a biological effect-size prior."
+  },
+  "code_validation": {
+    "workflow_name": "smp-spatial-recovery-hysteresis-code",
+    "workflow_run_id": 37298706842,
+    "conclusion": "success",
+    "head_sha": "09f2cc8376effd1c9561bfa59f83bcac6c9ef1d6",
+    "note": "Focused unit, document-contract and full raw-like end-to-end validation; no SMP hysteresis support/effect outcome was produced."
+  },
+  "frozen_hypothesis": "Later recovery of the same breeding SiteIDs occurs at higher leave-one-SiteID-out surrounding population states than earlier abandonment, beyond structured non-circular temporal placement on the observed physical-MasterSite abundance trajectories.",
+  "confirmatory_requirements": [
+    "Count-blind structural gate passes.",
+    "Provider-resolved physical MasterSite and SiteID identity gate passes.",
+    "Provider-confirmed zero-semantics gate passes.",
+    "State-only completed vacancy-spell support gate passes after structured common-offset support filtering.",
+    "T_obs > 0.",
+    "Species sign-flip one-sided p <= 0.05.",
+    "Physical-MasterSite sign-flip one-sided p <= 0.05.",
+    "Delta_linear = T_obs - median(T_linear_null) > 0.",
+    "Structured non-circular common-offset null upper-tail p <= 0.05."
+  ],
+  "measurement_boundary": "A_e and A_c are annual transition-state proxies from censuses bracketing observed occupancy transitions; they are not exact continuous-time demographic thresholds.",
+  "mechanism_boundary": "Confirmatory support establishes history-dependent spatial recovery at the measured SiteID scale, not uniquely Allee effects, conspecific attraction, public information, site fidelity, or any single mechanism.",
+  "novelty_boundary": "The candidate contribution is a prospective multi-species same-site paired test of whether abandonment and later recolonization occur at different surrounding population states, requiring both taxonomic and geographic replication and structured temporal calibration. Recolonization, buffer effects, Allee-delayed recolonization theory, social information and island-biogeographic hysteresis are not claimed as new concepts.",
+  "canonical_files": [
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_STRUCTURE_V1.json",
+      "git_blob_sha": "c12b8516c74d298a1134ef43acced24a407ec5e5"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
+      "git_blob_sha": "da74e364d648415e4632adc7bee8506c0b09a89b"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json",
+      "git_blob_sha": "0c227b2421fb4d2da7157aa7be391764850a7639"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json",
+      "git_blob_sha": "c7f40081f0e618626902c620bfaa7f31528e7436"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_EFFECT_V1.json",
+      "git_blob_sha": "8156a1ea1fb2c79f9dc3df6c3eab25da7b5c3ce5"
+    },
+    {
+      "path": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_V1.json",
+      "git_blob_sha": "274ce487d46adb003d0fb2b59a16df90b03641db"
+    },
+    {
+      "path": "scripts/gate_smp_spatial_recovery_hysteresis_structure_v1.py",
+      "git_blob_sha": "d0f1031638a20539179d0616b5d5905188edc73d"
+    },
+    {
+      "path": "scripts/finalize_smp_spatial_recovery_structure_v1.py",
+      "git_blob_sha": "eb5bfbab206410ceafebd1771454f4677d6d813b"
+    },
+    {
+      "path": "scripts/gate_smp_spatial_recovery_hysteresis_support_v1.py",
+      "git_blob_sha": "cf5e73d010a8369e98bf72080382fe7c926cd00e"
+    },
+    {
+      "path": "scripts/run_smp_spatial_recovery_hysteresis_v1.py",
+      "git_blob_sha": "5be1ed0bf0d3aa69fd47003728ee8084f426ee4e"
+    },
+    {
+      "path": "scripts/audit_smp_spatial_recovery_hysteresis_recovery_v1.py",
+      "git_blob_sha": "dc2a63ec8c28b5031310d92161ed969e262ae4ba"
+    },
+    {
+      "path": "tests/test_smp_spatial_recovery_hysteresis.py",
+      "git_blob_sha": "45e30480d8d93f09045b2b07af10fa21963f7479"
+    },
+    {
+      "path": "tests/test_smp_spatial_recovery_hysteresis_structure.py",
+      "git_blob_sha": "e82549fc7654a387489c091ad66aa86351b7b17d"
+    },
+    {
+      "path": "tests/test_smp_spatial_recovery_docs_contract.py",
+      "git_blob_sha": "0a88f0dcd4b0bdd7ac4638b88e782b1ca47dded6"
+    },
+    {
+      "path": "tests/test_smp_spatial_recovery_end_to_end.py",
+      "git_blob_sha": "7b893a70b1b9ae2f6551ad46878a87390c41f18d"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_PROTOCOL_V1.md",
+      "git_blob_sha": "cefdf1b68aceaf0388fa9e9fc8d9880c5b36d44e"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_RUNBOOK_V1.md",
+      "git_blob_sha": "f65374780479152712f1b3d938227db8b658fbb4"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_EXECUTION_MANIFEST_V1.md",
+      "git_blob_sha": "79781586dfcc470e0483f6d0bffcea36ea40631f"
+    },
+    {
+      "path": "docs/ONE_PAPER_SPATIAL_RECOVERY_DECISION_TABLE_V1.md",
+      "git_blob_sha": "e50ea261a17a509c55aa86cc06b62614b447ca22"
+    },
+    {
+      "path": "docs/REGISTERED_INTEGRATED_MANUSCRIPT_SPINE_HYSTERESIS_V1.md",
+      "git_blob_sha": "35781b766d8f1a053b53edbb8ba4d49bc46a083f"
+    },
+    {
+      "path": "docs/SMP_SPATIAL_RECOVERY_HYSTERESIS_LITERATURE_POSITION_V1.md",
+      "git_blob_sha": "0a8b2e5996bf6514439cc4728f396ef23248a189"
+    },
+    {
+      "path": "docs/SMP_PROVIDER_EVIDENCE_LEDGER_V1.md",
+      "git_blob_sha": "6fc5ea1b1ed521666ba38319014f24d4eb1e4ae9"
+    },
+    {
+      "path": "submission/SMP_DATA_REQUEST_CONTENT_V1.md",
+      "git_blob_sha": "ba545a2727c1c27b984f88179a0408eea9a8152f"
+    },
+    {
+      "path": "submission/SMP_ZERO_SEMANTICS_PROVIDER_CONFIRMATION_TEMPLATE_V1.json",
+      "git_blob_sha": "84cb0b899708e90aef6bb2f1b3b58e3e7f16f36f"
+    },
+    {
+      "path": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_FAILURE_V1.json",
+      "git_blob_sha": "648555b94e7d2432b760a7719aa6476930faac80"
+    },
+    {
+      "path": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_RECOVERY_AUDIT_RESULT_V2.json",
+      "git_blob_sha": "1a6c4dc756494733ed8be412ddf402b17024e392"
+    }
+  ],
+  "freeze_rule": "After frozen_design_head_sha, no ecological definition, support threshold, physical identity rule, zero semantics, vacancy-spell rule, transformation, hierarchy, weighting, taxonomic/geographic replication unit, common-offset grouping, null family, resample count, inferential threshold, or interpretation gate may change in response to SMP support/effect outcomes. Provider-populated identity/zero-semantics fields are allowed only through the already-defined gates. Only demonstrable implementation bugs independent of biological outcomes may be repaired with an explicit audit trail."
+}
