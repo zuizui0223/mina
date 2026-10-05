@@ -10,6 +10,7 @@ from scripts.gate_smp_spatial_recovery_hysteresis_support_v1 import (
     completed_spells_for_site,
     consecutive_blocks,
     containing_block,
+    strict_direct_count_state,
     validate_zero_semantics,
 )
 from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
@@ -73,6 +74,15 @@ class HysteresisTests(unittest.TestCase):
             }),encoding="utf-8")
             with self.assertRaises(ValueError):
                 validate_zero_semantics(p)
+
+
+    def test_strict_direct_count_state_does_not_invent_zero(self):
+        self.assertEqual(strict_direct_count_state("0"), "explicit_zero")
+        self.assertEqual(strict_direct_count_state("0.0"), "explicit_zero")
+        self.assertEqual(strict_direct_count_state("1,234"), "observed_positive")
+        self.assertEqual(strict_direct_count_state("0-5"), "missing_or_unparseable")
+        self.assertEqual(strict_direct_count_state("<5"), "missing_or_unparseable")
+        self.assertEqual(strict_direct_count_state(""), "missing_or_unparseable")
 
     def test_completed_spell_requires_consecutive_zero_run(self):
         years=[2000,2001,2002,2003,2004]
