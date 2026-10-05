@@ -7,6 +7,7 @@ on:
       - "scripts/freeze_smp_spatial_recovery_stageb_v1.py"
       - "scripts/guarded_run_smp_spatial_recovery_stagec_v1.py"
       - "tests/test_smp_spatial_recovery_operational_guard.py"
+      - "tests/test_smp_spatial_recovery_operational_guard_end_to_end.py"
       - ".github/workflows/smp-spatial-recovery-operational-guard.yml"
   pull_request:
     paths:
@@ -25,4 +26,4 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install pandas numpy openpyxl
-      - run: python -m unittest tests.test_smp_spatial_recovery_operational_guard -v
+      - run: python -m unittest tests.test_smp_spatial_recovery_operational_guard tests.test_smp_spatial_recovery_operational_guard_end_to_end -v
