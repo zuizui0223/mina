@@ -17,6 +17,7 @@ If available, could the extract include:
 - SiteID
 - Site
 - MasterSite
+- stable unique MasterSite identifier/key, if available
 - StartGrid / EndGrid
 - Site category / Site type / Site habitat
 - survey date or year
