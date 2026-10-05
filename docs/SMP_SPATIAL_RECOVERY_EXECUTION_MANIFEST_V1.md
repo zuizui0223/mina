@@ -108,6 +108,7 @@ Calculate:
 - H = A_c - A_e;
 - fixed hierarchical aggregation;
 - species sign-flip;
+- physical-MasterSite sign-flip;
 - structured non-circular common-offset null.
 
 ### Step 7 — decision
@@ -116,6 +117,7 @@ Confirmatory support requires all:
 
 - T_obs > 0;
 - species sign-flip one-sided p <= 0.05;
+- physical-MasterSite sign-flip one-sided p <= 0.05;
 - Delta_linear > 0;
 - linear-shift-null upper-tail p <= 0.05.
 
