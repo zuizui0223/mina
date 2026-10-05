@@ -1,31 +1,36 @@
-# Manuscript spine v1 — cross-scale breeding-space contraction
+# Manuscript spine v1 — cross-scale breeding-space concentration
 
 **Status:** synthesis of already-frozen Palmer, Signy, contraction-scaling, and MAPPPD regional results. No new outcome search is authorized by this document.
 
 ## Working title
 
-**Population decline concentrates breeding across nested spatial scales in Antarctic penguins**
+**Breeding-space concentration recurs across spatial scales in Antarctic penguins**
 
 Alternative:
 
-**Breeding-space contraction recurs from colonies to regional site networks in Antarctic Pygoscelis**
+**Breeding-space organization changes partly independently of abundance trend in Antarctic Pygoscelis**
 
 ## Central question
 
-When colonial penguin abundance declines, is reproduction merely thinned in fixed proportion across breeding space, or is it redistributed toward fewer effective breeding components — and does that direction persist when the definition of a breeding component is moved one level up the spatial hierarchy?
+When penguin abundance changes, is reproduction merely redistributed in fixed proportion across breeding space, or does effective breeding-component structure change independently — and is concentration specific to decline?
 
 ## Central claim
 
-The strongest defensible claim is **cross-scale directional generality within Antarctic Pygoscelis**.
+The evidence has two levels and should not be collapsed into one causal statement.
 
-Declining populations repeatedly redistribute breeding effort toward fewer effective monitored components beyond proportional thinning. This result is strong within breeding systems and remains directionally consistent in the independent MAPPPD regional-site extension, but the magnitude of contraction and the component-level route are heterogeneous.
+1. **Within breeding systems:** five declining trajectories across Palmer and Signy show non-proportional concentration beyond fixed-composition/count-error expectations. This is the strongest result.
+2. **At the regional network scale:** the abundance-conditioned concentration direction recurs within the four declining networks, but concentration itself is **not unique to decline** because all three increasing networks also end with lower effective breeding-site number.
+
+The regional extension is therefore a boundary condition on a decline-specific interpretation, not a simple second-scale replication of a decline mechanism.
 
 Do **not** claim:
-- a universal seabird or colonial-breeder law;
+- that decline universally causes regional concentration;
+- a trend-independent regional concentration law;
+- formal hysteresis or a ratchet from the increasing panels;
 - a universal quarter-power exponent;
 - a single refuge mechanism;
 - that APBP regions are closed demographic populations;
-- formal hysteresis or irreversible loss from the regional increasing panels.
+- a universal seabird or colonial-breeder law.
 
 ## Evidence hierarchy
 
@@ -39,13 +44,13 @@ Five declining population trajectories across two monitoring systems and two Pyg
 - Signy Adélie: -37.2%; prospectively frozen external replication, p = 0.000010 under the severe error model.
 - Signy chinstrap: -50.6%; prospectively frozen cross-species replication, p = 0.000020.
 
-The fixed-composition null conditions on the observed population-total trajectory, so the result is not the mechanical disappearance of small components as abundance falls.
+The fixed-composition null conditions on the observed population-total trajectory. The result is therefore not merely the mechanical disappearance of low-count components as abundance falls.
 
-### 2. Regional monitored breeding-site networks: scale-transfer test
+### 2. Regional monitored breeding-site networks: abundance-conditioned decline subset
 
-The bounded MAPPPD extension was frozen before regional concentration outcomes were computed. Parent units are species x published APBP region; components are fixed monitored site IDs.
+The bounded MAPPPD extension was frozen before regional concentration outcomes were computed. Parent units are species × published APBP region; components are fixed monitored site IDs.
 
-Thirteen candidate species x region groups were present in the frozen cohort and seven were structurally estimable. Four of the seven were declining:
+Thirteen candidate species × region groups were present in the frozen cohort and seven were structurally estimable. Four of the seven were declining:
 
 | Species | Region | Sites | Complete seasons | raw kappa | observation-error calibrated delta-kappa | p | robust |
 |---|---|---:|---:|---:|---:|---:|---|
@@ -54,44 +59,55 @@ Thirteen candidate species x region groups were present in the frozen cohort and
 | Chinstrap | Central-west Antarctic Peninsula | 3 | 10 | 0.022 | +0.017 | 0.432 | no |
 | Chinstrap | South Shetland Islands | 6 | 8 | 0.445 | +0.434 | 0.0152 | yes |
 
-All four declining regional networks have positive null-calibrated concentration effects; two remain individually supported after the frozen observation-error sensitivity. The exact 4/4 sign count has descriptive one-sided p = 0.0625, but the four panels are not independent geographic replicates.
+All four declining regional networks have positive null-calibrated abundance–concentration effects; two remain individually supported after the frozen observation-error sensitivity. The exact 4/4 sign count has descriptive one-sided p = 0.0625, but the four panels are not independent geographic replicates.
 
-Therefore the regional result upgrades the paper from **within-island recurrence** to **cross-scale directional recurrence**, not to an Antarctic-wide universal law.
+This supports **abundance-linked concentration within the declining subset**, not a universal regional concentration rule.
 
-## Direction transfers more clearly than magnitude
+### 3. Increasing regional networks: the key boundary condition
 
-The bounded five-population scaling exploration gave raw annual log-log kappa values of:
+All three increasing regional networks ended with lower effective breeding-site number than at their first retained complete season:
 
-- 0.069, 0.203, 0.465, 0.289, 0.366;
-- median = 0.289;
-- fixed-effect common estimate = 0.250.
+- Adélie, Victoria Land: abundance +33%, E -27%, calibrated delta-kappa -0.355.
+- Gentoo, Central-west Antarctic Peninsula: abundance +22%, E -16%, calibrated delta-kappa -0.228.
+- Gentoo, South Shetland Islands: abundance +64%, E -1%, calibrated delta-kappa +0.020.
 
-The four declining MAPPPD regional networks give:
+The first two are especially informative because abundance rises while E falls, so the abundance–E elasticity reverses sign.
 
-- 0.080, 0.088, 0.022, 0.445;
-- median = 0.084;
-- range = 0.022–0.445.
+These panels were not covered by a frozen asymmetry or time-trend test. They therefore do **not** establish a trend-independent concentration law or hysteresis. They do establish a boundary on interpretation:
 
-Thus the **sign** of abundance-linked contraction transfers more cleanly than a common exponent. The data do not support treating kappa ≈ 0.25 as a universal scaling constant.
+> regional concentration cannot be explained as a phenomenon that occurs only when abundance declines.
 
-This comparison is descriptive because the quarter-power-like value was discovered post hoc in the five local trajectories and was not a frozen MAPPPD regional target.
+## Kappa is not a general concentration parameter
 
-## Spatial structure behaves like a slow state, but do not call it hysteresis
+The five declining Palmer/Signy trajectories have positive raw annual log-log kappa values:
+0.069, 0.203, 0.465, 0.289 and 0.366.
+
+The four declining regional networks likewise have positive kappa:
+0.080, 0.088, 0.022 and 0.445.
+
+But two increasing regional networks combine increasing abundance with decreasing E and therefore have negative kappa.
+
+Thus kappa is a trajectory-specific abundance–space coupling parameter, not a universal measure of concentration independent of abundance direction.
+
+The quarter-power-like local descriptive estimate is not a general law.
+
+## Slow state / weak reversibility is now the better generated hypothesis
 
 The closed local scaling exploration found:
 
 - level common kappa = 0.250, R2 = 0.585;
 - first-difference common kappa = 0.120, R2 = 0.071;
 - calendar time predicted contraction better than current abundance;
-- the prespecified ratchet criterion failed because rebound kappa was negative, although effective-component recovery accompanied only 8/31 abundance rebounds.
+- effective-component recovery accompanied only 8/31 abundance rebounds;
+- the prespecified ratchet criterion nevertheless failed because rebound kappa was negative.
 
-The regional data are qualitatively consistent with the same slow-state picture. All three eligible increasing regional networks ended with lower effective site number than at their first retained complete season:
+The increasing regional panels point in the same descriptive direction: numerical growth did not restore effective site number.
 
-- Adélie, Victoria Land: abundance +33%, E -27%;
-- Gentoo, Central-west Antarctic Peninsula: abundance +22%, E -16%;
-- Gentoo, South Shetland Islands: abundance +64%, E -1%.
+Therefore the stronger future hypothesis is no longer simply “decline causes concentration.” It is:
 
-These regional observations were not covered by a frozen ratchet test. Use them only as descriptive corroboration that abundance recovery need not imply spatial re-expansion.
+> **breeding-space concentration may be a slow or weakly reversible spatial state whose trajectory is only partly coupled to current abundance.**
+
+This hypothesis requires an independent test with both declining and increasing systems.
 
 ## Mechanism is not universal
 
@@ -100,42 +116,29 @@ Palmer and Signy reach the same concentration endpoint through opposite componen
 - Palmer: the initially dominant component disappears in all three populations and dominance turns over.
 - Signy: the initially dominant component persists and increases its share in both species.
 
-Therefore the transferable phenomenon is contraction of effective breeding-space organization, not preferential survival of the historically largest colony.
-
-## Relation to prior work
-
-The broad abundance–space idea is not new.
-
-- Rodríguez (2002) showed that abundance decline and geographic range contraction depend on where losses occur within a species range.
-- Thorson et al. (2016) estimated abundance–effective-area relationships across 92 marine fish species and found that occupied area generally changes more slowly than abundance.
-- McDowall et al. (2019) showed mechanistically that declining Adélie abundance can generate spatial fragmentation and hysteretic colony dynamics.
-- African penguin work has decomposed population decline among geographic colonies and shown large changes in regional contributions over time.
-
-The present contribution is narrower and different: it conditions on the observed abundance trajectory, asks whether **relative allocation among repeated breeding components changes beyond proportional thinning**, and applies the same effective-component logic across nested monitored spatial levels.
-
-A targeted literature search has not identified an obvious prior study combining those three elements in colonial breeders, but novelty should be phrased as a contribution rather than an absolute first-ever claim.
+Therefore the transferable phenomenon in the strong local evidence is concentration of effective breeding-space organization, not preferential survival of the historically largest colony.
 
 ## Paper structure
 
-### Figure 1 — Nested spatial question
-Schematic and maps:
-individual breeding groups -> island breeding system -> regional network of breeding sites.
-
-### Figure 2 — Strong within-system replication
+### Figure 1 — Strong within-system replication
 Five Palmer/Signy trajectories with observed effective component number and fixed-composition null envelopes.
 
-### Figure 3 — Regional scale transfer
-Four declining MAPPPD networks, showing raw kappa and observation-error calibrated delta-kappa; distinguish robust South Shetland results from directional Central-west Antarctic Peninsula results.
+### Figure 2 — Regional scale boundary
+All seven eligible regional networks, not only the four declining panels.
+Show abundance direction, first-to-last E change, raw kappa and calibrated delta-kappa.
 
-### Figure 4 — What does and does not transfer
-Panel A: local versus regional raw kappa distributions (descriptive; no universal exponent).
-Panel B: Palmer dominance turnover versus Signy core retention.
-Panel C: increasing regional networks as descriptive slow-state context.
+### Figure 3 — Decline subset versus increasing subset
+Panel A: four declining networks and their calibrated abundance-linked effects.
+Panel B: three increasing networks, emphasizing that final E is lower in all three.
+Panel C: local rebound descriptives (8/31 E recoveries during abundance rebounds), clearly labeled post-hoc.
+
+### Figure 4 — Mechanistic non-universality
+Palmer dominance turnover versus Signy core retention.
 
 ## One-sentence conclusion
 
-**In Antarctic Pygoscelis, population decline repeatedly concentrates reproduction into fewer effective breeding components beyond proportional thinning, and that direction persists from within breeding systems to regional networks of monitored breeding sites even though effect magnitude and the identity of the components that persist are not universal.**
+**In Antarctic Pygoscelis, non-proportional breeding-space concentration is strongly replicated during decline within breeding systems, but regional networks can also become more concentrated while abundance increases, showing that breeding-space organization is not a simple transform of population trend.**
 
 ## Stop rule
 
-No additional geographic radii, hand-built regional clusters, completeness thresholds, lags, nonlinear scaling families, trait screens, or mechanism searches are opened on these same data. Further generalization requires a genuinely independent taxonomic data source.
+No additional regional definitions, radii, completeness thresholds, time-trend tests, lags, nonlinear scaling families, or mechanism screens are opened on the same MAPPPD panels. The next valid step is an independent, prospectively frozen comparison of concentration under increasing versus declining population trajectories.
