@@ -30,7 +30,7 @@ from scripts.gate_smp_master_site_support_v1 import (
 MIN_INCREASING = 6
 MIN_DECLINING = 6
 MIN_SPECIES_EACH = 3
-MIN_MASTERS_EACH = 5
+MIN_MASTERS_EACH = 5\nMIN_POSITIVE_YEARS = 8\nMIN_POSITIVE_SPAN = 10\nMIN_SPECIES_WITH_TREND_VARIATION = 4
 
 
 def _prepare_raw(path: Path, *, assume_whole_colony_extract: bool) -> pd.DataFrame:
@@ -134,6 +134,15 @@ def _panel_trend(x: pd.DataFrame, panel: dict) -> dict:
     b = float(np.sum(xc * (logn - logn.mean())) / denom)
 
     label = "increasing" if b > 0 else ("declining" if b < 0 else "zero")
+    positive_years = [int(y) for y, n in totals.items() if float(n) > 0]
+    positive_span = (
+        max(positive_years) - min(positive_years) + 1
+        if positive_years else 0
+    )
+    composition_eligible = bool(
+        len(positive_years) >= MIN_POSITIVE_YEARS
+        and positive_span >= MIN_POSITIVE_SPAN
+    )
     return {
         "panel_id": f"{species}|{master}|{unit}",
         "species": species,
@@ -143,6 +152,9 @@ def _panel_trend(x: pd.DataFrame, panel: dict) -> dict:
         "n_complete_years": int(len(years)),
         "first_year": int(min(years)),
         "last_year": int(max(years)),
+        "n_positive_total_years": int(len(positive_years)),
+        "positive_total_span_years": int(positive_span),
+        "composition_eligible": composition_eligible,
         "b_log1pN_per_year": b,
         "trend_label": label,
     }
@@ -165,13 +177,20 @@ def run(
     rows = [_panel_trend(x, p) for p in support["eligible_panels"]]
     frame = pd.DataFrame(rows)
 
-    inc = frame[frame["trend_label"].eq("increasing")]
-    dec = frame[frame["trend_label"].eq("declining")]
+    stage_c = frame[frame["composition_eligible"].astype(bool)].copy()
+    inc = stage_c[stage_c["trend_label"].eq("increasing")]
+    dec = stage_c[stage_c["trend_label"].eq("declining")]
 
     inc_species = int(inc["species"].nunique())
     dec_species = int(dec["species"].nunique())
     inc_masters = int(inc["master_site"].nunique())
     dec_masters = int(dec["master_site"].nunique())
+
+    trend_var_species = []
+    for species, g in stage_c.groupby("species"):
+        vals = g["b_log1pN_per_year"].astype(float)
+        if len(vals) >= 2 and float(vals.max() - vals.min()) > 0:
+            trend_var_species.append(str(species))
 
     passed = bool(
         len(inc) >= MIN_INCREASING
@@ -180,6 +199,7 @@ def run(
         and dec_species >= MIN_SPECIES_EACH
         and inc_masters >= MIN_MASTERS_EACH
         and dec_masters >= MIN_MASTERS_EACH
+        and len(trend_var_species) >= MIN_SPECIES_WITH_TREND_VARIATION
     )
 
     return {
@@ -189,19 +209,26 @@ def run(
         "source_support_analysis_id": support["analysis_id"],
         "panel_trends": rows,
         "trend_support": {
+            "structurally_eligible_panels": int(len(frame)),
+            "stage_c_composition_eligible_panels": int(len(stage_c)),
             "increasing_panels": int(len(inc)),
             "declining_panels": int(len(dec)),
-            "zero_panels": int((frame["trend_label"] == "zero").sum()),
+            "zero_panels": int((stage_c["trend_label"] == "zero").sum()),
             "increasing_species": inc_species,
             "declining_species": dec_species,
             "increasing_master_sites": inc_masters,
             "declining_master_sites": dec_masters,
+            "species_with_within_species_trend_variation": trend_var_species,
+            "species_with_within_species_trend_variation_count": int(len(trend_var_species)),
         },
         "frozen_thresholds": {
             "minimum_increasing_panels": MIN_INCREASING,
             "minimum_declining_panels": MIN_DECLINING,
             "minimum_species_each_direction": MIN_SPECIES_EACH,
             "minimum_master_sites_each_direction": MIN_MASTERS_EACH,
+            "minimum_positive_total_years_for_stage_c": MIN_POSITIVE_YEARS,
+            "minimum_positive_total_calendar_span_years": MIN_POSITIVE_SPAN,
+            "minimum_species_with_within_species_trend_variation": MIN_SPECIES_WITH_TREND_VARIATION,
         },
         "decision": {
             "symmetry_identifiability_gate_passed": passed,
@@ -210,6 +237,7 @@ def run(
         },
         "forbidden_outputs_confirmed_absent": [
             "annual panel total abundance values",
+            "positive-total year identities",
             "SiteID-level count magnitudes",
             "component proportions",
             "effective component number E",
