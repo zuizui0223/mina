@@ -10,9 +10,9 @@ The active manuscript is now organized as an Ecology **Article**, not a Report. 
 
 - Article page limit: 30 pages.
 - Article abstract limit: 350 words.
-- Current abstract: 256 words.
+- Current abstract: 257 words.
 - Ecology title limit: 120 characters.
-- Current title: 77 characters.
+- Current title: 79 characters.
 - Keywords: 8, within the required 6–12 range and alphabetized.
 - Main-document body will be double-spaced, 12-point Times New Roman, Letter size with 1-inch margins.
 - Line numbering begins after the title page and continues through References.
@@ -36,9 +36,11 @@ The active manuscript is now organized as an Ecology **Article**, not a Report. 
 - Signy chinstrap remains the prospective cross-species replication.
 - MAPPPD remains a scale-transfer test rather than an additional independent geography.
 - Local and regional statistics are not pooled.
-- Regional 4/4 sign concordance is descriptive.
+- Regional 4/4 sign concordance among declining panels is descriptive.
 - The two regional p<0.05 panel calls are not presented as a family-wide generality test.
-- Universal kappa, hysteresis and mechanism claims remain prohibited.
+- All three increasing regional panels ending with lower E are treated as a major interpretive boundary, not as a preregistered ratchet test.
+- The manuscript no longer claims that regional concentration is decline-specific.
+- Universal kappa, trend-independent concentration, hysteresis and mechanism claims remain prohibited.
 
 ## Remaining blockers
 
