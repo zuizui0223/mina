@@ -1,0 +1,28 @@
+name: smp-trend-symmetry-effect-code
+
+on:
+  push:
+    branches: [research/smp-trend-symmetry-v1]
+    paths:
+      - "contracts/SMP_TREND_SYMMETRY_EFFECT_V1.json"
+      - "scripts/run_smp_trend_symmetry_effect_v1.py"
+      - "tests/test_smp_trend_symmetry_effect.py"
+      - ".github/workflows/smp-trend-symmetry-effect-code.yml"
+  pull_request:
+    paths:
+      - "contracts/SMP_TREND_SYMMETRY_EFFECT_V1.json"
+      - "scripts/run_smp_trend_symmetry_effect_v1.py"
+      - "tests/test_smp_trend_symmetry_effect.py"
+      - ".github/workflows/smp-trend-symmetry-effect-code.yml"
+  workflow_dispatch:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy openpyxl
+      - run: python -m unittest tests.test_smp_trend_symmetry_effect -v
