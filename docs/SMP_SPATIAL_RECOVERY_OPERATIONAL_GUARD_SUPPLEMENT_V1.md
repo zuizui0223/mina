@@ -14,6 +14,23 @@ replication unit, or inferential condition.
 
 ## Required operational sequence
 
+### 0. Record raw-file custody without parsing contents
+
+Immediately on receipt, before opening the CSV/Excel file in a spreadsheet or notebook:
+
+```bash
+python scripts/record_smp_raw_custody_v1.py \
+  --raw <SMP_RAW_EXTRACT> \
+  --received-at <ISO8601_TIMESTAMP_WITH_OFFSET> \
+  --provider-filename <ORIGINAL_PROVIDER_FILENAME> \
+  --source-channel <TRANSFER_CHANNEL> \
+  --out build/SMP_RAW_CUSTODY_V1.json
+```
+
+This utility reads bytes only to calculate SHA-256. It does not parse rows, columns, species, counts or zero frequencies.
+
+Preserve the provider-delivered file unchanged after this receipt is created.
+
 ### 1. Run A0, A1, A2 and Stage B exactly as specified in the canonical runbook
 
 Canonical scientific runbook:
@@ -29,6 +46,7 @@ Run:
 ```bash
 python scripts/freeze_smp_spatial_recovery_stageb_v1.py \
   --raw <SMP_RAW_EXTRACT> \
+  --custody-json build/SMP_RAW_CUSTODY_V1.json \
   --candidate-json <A0_CANDIDATE_STRUCTURE_JSON> \
   --identity-csv <PROVIDER_IDENTITY_RESOLUTION_CSV> \
   --resolved-json <A1_RESOLVED_STRUCTURE_JSON> \
@@ -41,6 +59,8 @@ python scripts/freeze_smp_spatial_recovery_stageb_v1.py \
 
 This step verifies:
 
+- the raw extract SHA-256, byte size and local filename match the content-blind custody receipt;
+- the custody receipt explicitly records that contents were not parsed or inspected;
 - the raw extract SHA-256 matches the A0 receipt;
 - A0 passed;
 - A1 physical-identity resolution passed;
@@ -58,6 +78,7 @@ If any check fails, **STOP**.
 The freeze receipt hashes:
 
 - raw extract;
+- raw-custody receipt;
 - A0 candidate structure;
 - provider identity-resolution table;
 - A1 resolved structure;
