@@ -87,6 +87,12 @@ p_{\mathrm{sign}}\le0.05,
 and
 
 \[
+p_{\mathrm{master}}\le0.05,
+\]
+
+and
+
+\[
 \Delta_{\mathrm{linear}}>0,
 \]
 
