@@ -95,8 +95,8 @@ def _state_frame(path: Path, *, assume_whole_colony_extract: bool=False) -> pd.D
 def completed_spells_for_site(years:list[int], states:list[str]) -> list[dict]:
     """Return every completed calendar-consecutive positive->zero...->positive spell.
 
-    The recolonization year is allowed to begin a new spell immediately in the
-    following year, so sequences like 1,0,1,0,1 produce two spells.
+    The recolonization year is reconsidered as a possible start of the next
+    spell, so 1,0,1,0,1 yields two completed spells.
     """
     by={int(y):str(s) for y,s in zip(years,states)}
     ordered=sorted(by)
@@ -116,8 +116,8 @@ def completed_spells_for_site(years:list[int], states:list[str]) -> list[dict]:
         abandon_from=y
         abandon_to=y1
         j=i+1
+        found=False
 
-        # Extend the explicit-zero run only across consecutive calendar years.
         while j+1 < len(ordered):
             cur=ordered[j]
             nxt=ordered[j+1]
@@ -134,16 +134,13 @@ def completed_spells_for_site(years:list[int], states:list[str]) -> list[dict]:
                     "recolonize_to":int(nxt),
                     "vacancy_years":int(nxt-abandon_to),
                 })
-                # Reconsider the recolonization year as a possible new
-                # occupied->zero spell start.
+                # Reconsider recolonization year on the next outer iteration.
                 i=j+1
+                found=True
                 break
             break
-        else:
-            i += 1
-            continue
 
-        if spells and spells[-1]["recolonize_to"]==ordered[i]:
+        if found:
             continue
         i += 1
     return spells
