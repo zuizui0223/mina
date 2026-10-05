@@ -1,0 +1,32 @@
+name: smp-spatial-recovery-hysteresis-code
+
+on:
+  push:
+    branches: [research/smp-spatial-recovery-hysteresis-v1]
+    paths:
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json"
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_EFFECT_V1.json"
+      - "scripts/gate_smp_spatial_recovery_hysteresis_support_v1.py"
+      - "scripts/run_smp_spatial_recovery_hysteresis_v1.py"
+      - "tests/test_smp_spatial_recovery_hysteresis.py"
+      - ".github/workflows/smp-spatial-recovery-hysteresis-code.yml"
+  pull_request:
+    paths:
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json"
+      - "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_EFFECT_V1.json"
+      - "scripts/gate_smp_spatial_recovery_hysteresis_support_v1.py"
+      - "scripts/run_smp_spatial_recovery_hysteresis_v1.py"
+      - "tests/test_smp_spatial_recovery_hysteresis.py"
+      - ".github/workflows/smp-spatial-recovery-hysteresis-code.yml"
+  workflow_dispatch:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy openpyxl
+      - run: python -m unittest tests.test_smp_spatial_recovery_hysteresis -v
