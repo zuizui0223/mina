@@ -101,3 +101,13 @@ Electronic, preferably CSV/TSV; Excel is also acceptable.
 During an earlier public structural audit, Kittiwake records for Flamborough and Filey Coast SPA were inspected to confirm the MasterSite > Site hierarchy. That species × MasterSite combination is excluded from prospective confirmatory analyses because count magnitudes were already visible.
 
 The structural, vacancy-spell, support, paired-effect, and elapsed-time-matched null rules were frozen before receipt of the requested bulk extract. If the data do not contain enough stable completed abandonment-to-recolonization cycles, the hypothesis test will stop rather than lower the support thresholds after seeing count magnitudes.
+
+
+## Frozen analysis templates
+
+Provider responses will be transcribed before occupancy-state analysis into:
+
+- `submission/SMP_SPATIAL_RECOVERY_IDENTITY_RESOLUTION_TEMPLATE.csv`
+- `submission/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_CONFIRMATION_TEMPLATE.json`
+
+No positive/zero spell scan is authorized until these metadata gates are complete.
