@@ -80,6 +80,23 @@ class HysteresisTests(unittest.TestCase):
         self.assertEqual(out[0]["abandon_from"],2000)
         self.assertEqual(out[0]["recolonize_to"],2003)
 
+
+    def test_immediate_reabandonment_yields_two_spells(self):
+        years=[2000,2001,2002,2003,2004]
+        states=[
+            "observed_positive",
+            "explicit_zero",
+            "observed_positive",
+            "explicit_zero",
+            "observed_positive",
+        ]
+        out=completed_spells_for_site(years,states)
+        self.assertEqual(len(out),2)
+        self.assertEqual(out[0]["abandon_from"],2000)
+        self.assertEqual(out[0]["recolonize_to"],2002)
+        self.assertEqual(out[1]["abandon_from"],2002)
+        self.assertEqual(out[1]["recolonize_to"],2004)
+
     def test_gap_breaks_spell(self):
         years=[2000,2001,2003]
         states=["observed_positive","explicit_zero","observed_positive"]
