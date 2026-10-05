@@ -84,11 +84,9 @@ def prepare_count_frame(
     )
     x = x[~pilot].copy()
 
-    if x["_count"].isna().any():
-        raise ValueError("Non-numeric or missing direct Count in Stage-C input")
-    if (x["_count"] < 0).any():
-        raise ValueError("Negative Count values are not allowed")
-
+    # Do not fail on unrelated rows here. Stage C is restricted downstream to
+    # the exact Stage-B-frozen panels, SiteIDs and state-complete years. Missing
+    # or invalid counts are fatal only if they occur inside that frozen support.
     key = ["_species", "_master", "_unit", "_site_id", "year"]
     dup_n = x.groupby(key, dropna=False).size().rename("_n").reset_index()
     unique_keys = dup_n[dup_n["_n"] == 1][key]
@@ -240,21 +238,45 @@ def build_panel_cache(
     structural: dict,
     spells: list[dict],
 ) -> dict:
+    """Build matrices on exactly the Stage-B-frozen state-complete support.
+
+    Stage C must not reintroduce years that Stage B removed because of
+    provider zero-semantics scope or unusable/missing state records.
+    """
     panel_map = {
         (str(p["species"]), _norm(p["master_site"]), str(p["unit"])): p
         for p in structural["eligible_panels"]
     }
-    needed = {
-        (str(sp["species"]), _norm(sp["master_site"]), str(sp["unit"]))
-        for sp in spells
-    }
+
+    frozen = {}
+    for sp in spells:
+        key = (
+            str(sp["species"]),
+            _norm(sp["master_site"]),
+            str(sp["unit"]),
+        )
+        years = tuple(int(v) for v in sp["state_complete_years"])
+        if key in frozen and frozen[key] != years:
+            raise ValueError(
+                f"inconsistent Stage-B state-complete year support for {key}"
+            )
+        frozen[key] = years
+
     cache = {}
-    for key in sorted(needed):
+    for key in sorted(frozen):
         if key not in panel_map:
             raise ValueError(f"cycle panel not in frozen roster: {key}")
+
         panel = panel_map[key]
         roster = [str(v) for v in panel["retained_site_ids"]]
-        years = [int(v) for v in panel["complete_years"]]
+        inherited_years = {int(v) for v in panel["complete_years"]}
+        years = list(frozen[key])
+
+        if not set(years).issubset(inherited_years):
+            raise ValueError(
+                f"Stage-B years extend beyond identity-resolved Stage-A support: {key}"
+            )
+
         g = x[
             x["_species"].eq(key[0])
             & x["_master_norm"].eq(key[1])
@@ -262,12 +284,21 @@ def build_panel_cache(
             & x["_site_id"].isin(roster)
             & x["year"].isin(years)
         ].copy()
+
         mat = (
             g.pivot(index="year", columns="_site_id", values="_count")
             .reindex(index=years, columns=roster)
         )
         if mat.isna().any().any():
-            raise ValueError(f"count matrix drift: {key}")
+            raise ValueError(
+                f"missing/non-numeric Count inside frozen Stage-B support: {key}"
+            )
+        values = mat.to_numpy(dtype=float)
+        if not np.isfinite(values).all():
+            raise ValueError(f"non-finite Count inside frozen Stage-B support: {key}")
+        if (values < 0).any():
+            raise ValueError(f"negative Count inside frozen Stage-B support: {key}")
+
         cache[key] = mat.astype(float)
     return cache
 
