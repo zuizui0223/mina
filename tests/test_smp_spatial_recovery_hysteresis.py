@@ -31,6 +31,9 @@ class HysteresisTests(unittest.TestCase):
                 "absent_site_year_row_is_not_zero": True,
                 "estimated_or_imputed_zero_excluded_from_primary": True,
                 "confirmation_source": "BTO provider email 2026-10-05",
+                "compatible_start_year": 1986,
+                "compatible_end_year": 2024,
+                "compatible_record_family_or_era": "direct Whole Colony Counts",
             }),encoding="utf-8")
             out=validate_zero_semantics(p)
             self.assertTrue(out["row_with_direct_count_zero_is_surveyed_nil"])
@@ -46,6 +49,25 @@ class HysteresisTests(unittest.TestCase):
                 "absent_site_year_row_is_not_zero": True,
                 "estimated_or_imputed_zero_excluded_from_primary": True,
                 "confirmation_source": "unconfirmed",
+                "compatible_start_year": 1986,
+                "compatible_end_year": 2024,
+                "compatible_record_family_or_era": "direct Whole Colony Counts",
+            }),encoding="utf-8")
+            with self.assertRaises(ValueError):
+                validate_zero_semantics(p)
+
+
+    def test_zero_semantics_rejects_missing_scope(self):
+        with tempfile.TemporaryDirectory() as td:
+            p=Path(td)/"zero.json"
+            p.write_text(json.dumps({
+                "row_with_direct_count_zero_is_surveyed_nil": True,
+                "absent_site_year_row_is_not_zero": True,
+                "estimated_or_imputed_zero_excluded_from_primary": True,
+                "confirmation_source": "provider statement",
+                "compatible_start_year": None,
+                "compatible_end_year": None,
+                "compatible_record_family_or_era": "",
             }),encoding="utf-8")
             with self.assertRaises(ValueError):
                 validate_zero_semantics(p)
