@@ -18,7 +18,7 @@ from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
     hierarchical_means,
     hierarchical_spell_weights,
     prepare_count_frame,
-    shifted_spell_H,
+    shifted_spell_H_linear,
     sign_flip_test,
     spell_effect,
     structured_linear_shift_null,
@@ -394,6 +394,7 @@ class HysteresisTests(unittest.TestCase):
                 "shift_block_start":2000,
                 "shift_block_end":2005,
                 "shift_block_years":years,
+                "common_offset_values":[0,1,2],
             }
             spells.append(sp)
             H=spell_effect(mat,"focal",sp)["H"]
