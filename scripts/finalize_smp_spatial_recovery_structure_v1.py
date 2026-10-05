@@ -22,8 +22,9 @@ MIN_SPECIES=5
 MIN_MASTERS=10
 
 REQUIRED={
-    "species","MasterSite","SiteID","stable_identity","mutually_exclusive_child",
-    "overlaps_parent_or_sibling","boundary_change_during_panel","retired_or_replaced","notes"
+    "species","MasterSite","SiteID","master_site_key","master_site_identity_confirmed",
+    "stable_identity","mutually_exclusive_child","overlaps_parent_or_sibling",
+    "boundary_change_during_panel","retired_or_replaced","notes"
 }
 
 
@@ -49,6 +50,24 @@ def run(support_json:Path,resolution_csv:Path)->dict:
     keycols=["species","MasterSite","SiteID"]
     if res.duplicated(keycols).any():
         raise ValueError("duplicate SiteID identity-resolution keys")
+
+    # Resolve one physical MasterSite key per candidate species x MasterSite
+    # before occupancy states open. If the candidate label conflates multiple
+    # physical MasterSites, fail/exclude rather than splitting post outcome.
+    master_key_by_panel={}
+    for (species, master), g in res.groupby(["species","MasterSite"], sort=False):
+        confirmations=[as_bool(v) for v in g["master_site_identity_confirmed"]]
+        if not all(confirmations):
+            raise ValueError(
+                f"MasterSite identity not confirmed for {(species, master)}"
+            )
+        vals=sorted({str(v).strip() for v in g["master_site_key"] if str(v).strip()})
+        if len(vals)!=1:
+            raise ValueError(
+                f"candidate {(species, master)} must map to exactly one physical "
+                f"master_site_key; got {vals}"
+            )
+        master_key_by_panel[(str(species),str(master))]=vals[0]
 
     canonical_unit={}
     if "canonical_unit" in res.columns:
@@ -118,6 +137,9 @@ def run(support_json:Path,resolution_csv:Path)->dict:
             continue
 
         q=dict(p)
+        if sm_key not in master_key_by_panel:
+            raise ValueError(f"missing physical MasterSite key for {sm_key}")
+        q["master_site_key"]=master_key_by_panel[sm_key]
         q["retained_site_ids"]=sorted(kept)
         q["n_sites"]=len(kept)
         if isinstance(q.get("retained_site_names"), dict):
