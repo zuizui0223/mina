@@ -10,11 +10,11 @@
 
 Alternative:
 
-**Extinction and recolonization occur at different population thresholds in colonial breeding systems**
+**Population recovery does not retrace spatial collapse in colonial breeding systems**
 
 ## One hypothesis
 
-> **The spatial pathway of population recovery is hysteretic: a breeding site that has been abandoned requires a higher surrounding population state to be recolonized than the state at which it was lost.**
+> **The spatial pathway of population recovery is asymmetric: the same breeding sites are recovered at systematically higher surrounding population states than those associated with their loss.**
 
 For the same SiteID:
 
@@ -80,7 +80,7 @@ Therefore neither social site choice nor recolonization as a separate process is
 
 ### Paragraph 4 — missing empirical test
 
-What remains poorly tested is whether **the same breeding places have different population thresholds for spatial loss and spatial recovery**.
+What remains poorly tested is whether **the same breeding places show a reproducible loss–recovery asymmetry in the surrounding population states associated with their annual occupancy transitions**.
 
 A direct test requires:
 
@@ -145,7 +145,7 @@ Report SMP structural and state-only gates:
 
 No magnitude selection.
 
-### Result 4 — same-site loss and recovery thresholds
+### Result 4 — same-site loss and recovery transition states
 
 Report:
 
@@ -189,7 +189,7 @@ No environmental rescue analyses.
 
 ### 1. Recovery is not the reverse movie of collapse
 
-The principal result is an empirical asymmetry in population thresholds at the same breeding places.
+The principal result is an empirical asymmetry in the annual transition-state proxies associated with loss and later recovery of the same breeding places.
 
 ### 2. The result connects population dynamics to island history
 
@@ -217,7 +217,7 @@ A population can return in number before it returns to previously used breeding 
 
 ## Strongest allowed conclusion if supported
 
-> **Across colonial seabirds, breeding sites were recolonized at higher surrounding population states than those at which the same sites were abandoned, beyond structured temporal alignment with the observed MasterSite abundance trajectories. Population recovery therefore did not simply retrace the spatial pathway of collapse.**
+> **Across colonial seabirds, later recovery of the same breeding sites was associated with higher surrounding population states than their earlier loss, beyond structured temporal alignment with the observed MasterSite abundance trajectories. Population recovery therefore did not simply retrace the spatial pathway of collapse.**
 
 ## Forbidden conclusion
 
