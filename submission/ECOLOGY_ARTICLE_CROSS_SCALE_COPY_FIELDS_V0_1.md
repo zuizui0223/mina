@@ -9,15 +9,15 @@
 
 ## Title
 
-Breeding-space contraction recurs across spatial scales in Antarctic penguins
+Breeding-space concentration recurs across spatial scales in Antarctic penguins
 
-**Character count including spaces:** 77
+**Character count including spaces:** 79
 
 ## Abstract
 
-Population decline has a spatial form as well as a magnitude, but loss of occupied breeding space can arise mechanically when fewer individuals are distributed among fixed sites. We asked a stricter question in Antarctic colonial penguins: does breeding effort become concentrated into fewer effective monitored components than expected from proportional thinning, and does that direction persist across spatial levels? We quantified effective breeding-component number as E = 1 / Σp_j², where p_j is the share of breeding pairs in component j, and compared observed changes with fixed-composition nulls conditioned on the observed abundance trajectory. Within breeding systems, three Adélie penguin (*Pygoscelis adeliae*) populations near Palmer Station declined in effective component number by 19–83%; all exceeded frozen count-error null expectations. Prospectively frozen external tests at Signy Island independently supported the same outcome in Adélie penguins (−37%) and chinstrap penguins (*P. antarcticus*; −51%). We then moved one level up the spatial hierarchy using the already-pinned Antarctic Penguin Biogeography Project archive, treating monitored breeding sites within published regions as components. Seven species × region networks were structurally estimable; four were declining. All four had positive observation-error-calibrated abundance–concentration effects, although only the South Shetland Adélie and chinstrap networks were individually supported (p = 0.0148 and 0.0152). The direction of contraction therefore transferred more consistently than its magnitude. Component-level routes also differed: Palmer populations lost their initially dominant components, whereas Signy populations retained and strengthened them. Population loss in Antarctic *Pygoscelis* is thus repeatedly accompanied by non-proportional breeding-space concentration across spatial levels, while the strength and internal route of contraction remain geographically contingent.
+Population change has a spatial form as well as a magnitude, but concentration into fewer breeding components can arise mechanically when abundance changes. We asked whether breeding effort in Antarctic colonial penguins becomes concentrated beyond fixed-composition expectations and whether that concentration is specific to population decline. We quantified effective breeding-component number as E = 1 / Σp_j², where p_j is the share of breeding pairs in component j, and compared observed changes with nulls conditioned on the empirical abundance trajectory. Within breeding systems, three Adélie penguin (*Pygoscelis adeliae*) populations near Palmer Station declined in E by 19–83%; all exceeded frozen count-error null expectations. Prospectively frozen external tests at Signy Island independently supported the same outcome in Adélie penguins (−37%) and chinstrap penguins (*P. antarcticus*; −51%). We then moved one level up the spatial hierarchy using the pinned Antarctic Penguin Biogeography Project archive. Seven species × region networks were structurally estimable. Among four declining networks, all had positive observation-error-calibrated abundance–concentration effects, although only South Shetland Adélie and chinstrap networks were individually supported (p = 0.0148 and 0.0152). Crucially, all three increasing regional networks also ended with lower E; in Victoria Land Adélie and Central-west Antarctic Peninsula gentoo, E declined while abundance increased, yielding negative abundance–concentration elasticities. Thus the strong within-system evidence establishes non-proportional concentration during decline, but the regional extension does not support interpreting concentration as decline-specific. Instead, it suggests that breeding-space organization can change partly independently of abundance trend. Because the increasing regional panels were sparse and no trend-asymmetry test was frozen, this does not establish hysteresis or a ratchet.
 
-**Abstract word count:** 256
+**Abstract word count:** 257
 
 ## Keywords
 
@@ -27,7 +27,7 @@ abundance–occupancy; Antarctica; colonial breeding; effective number; penguins
 
 ## One-sentence novelty statement
 
-After conditioning on observed abundance trajectories, relative reproductive allocation repeatedly concentrates beyond proportional thinning and retains the same direction when breeding components are redefined one spatial level higher.
+After conditioning on abundance trajectories, breeding-space concentration is strongly replicated during decline within breeding systems, while increasing regional networks show that concentration at broader scales is not uniquely tied to negative population trend.
 
 ## Open Research Statement
 
