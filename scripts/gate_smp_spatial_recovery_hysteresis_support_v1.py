@@ -17,7 +17,6 @@ from pathlib import Path
 
 import pandas as pd
 
-from scripts.audit_smp_macro_support import _count_state
 from scripts.gate_smp_master_site_support_v1 import (
     EXPOSED_MASTER,
     SENSITIVE,
@@ -37,6 +36,27 @@ MIN_SPECIES = 5
 MIN_SPECIES_3SPELLS = 4
 MIN_SPECIES_2MASTERS = 3
 MIN_PHASE_BLOCK_YEARS = 6
+
+
+def strict_direct_count_state(value) -> str:
+    """Classify only fully numeric direct counts.
+
+    Commas are permitted as thousands separators. Range/inequality/free-text
+    strings are unusable and can never manufacture an explicit zero.
+    """
+    if pd.isna(value):
+        return "missing_or_unparseable"
+    text = str(value).strip().replace(",", "")
+    if not text:
+        return "missing_or_unparseable"
+    try:
+        x = float(text)
+    except ValueError:
+        return "missing_or_unparseable"
+    if not pd.notna(x) or x < 0:
+        return "missing_or_unparseable"
+    return "explicit_zero" if x == 0 else "observed_positive"
+
 
 
 def _state_frame(
@@ -86,7 +106,7 @@ def _state_frame(
     x["_unit"] = x[unit_col].map(lambda z: str(z).strip())
     x["_method"] = x[method_col].map(lambda z: str(z).strip()) if method_col else ""
     x["year"] = x["_year"].astype(int)
-    x["state"] = x[count_col].map(lambda z: _count_state(str(z)))
+    x["state"] = x[count_col].map(strict_direct_count_state)
 
     x = x[~x["_species"].isin(SENSITIVE)].copy()
     pilot = x["_species"].str.contains("kittiwake", regex=False) & (x["_master_norm"] == EXPOSED_MASTER)
