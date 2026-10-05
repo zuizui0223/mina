@@ -62,8 +62,8 @@
     "minimum_species_with_spells_in_at_least_2_mastersites": 3,
     "minimum_phase_block_years_per_spell": 6,
     "master_site_count_definition": "distinct provider-resolved physical master_site_key values, not species x MasterSite panels or display-name strings",
-    "requirement": "All replication conditions must pass after restricting to provider-confirmed explicit-zero spells contained in >=6-year maximal contiguous state-complete blocks.",
-    "minimum_species_rationale": "The confirmatory species-level sign-flip test cannot attain one-sided p<=0.05 with only four species: its minimum exact p is 1/16=0.0625. Five species permit a minimum exact p of 1/32=0.03125."
+    "minimum_species_rationale": "The confirmatory exact species-level sign-flip test cannot attain one-sided p<=0.05 with four species (minimum 1/16=0.0625); five species permit 1/32=0.03125.",
+    "requirement": "All replication conditions must pass after restricting to provider-confirmed explicit-zero spells contained in >=6-year maximal contiguous state-complete blocks."
   },
   "decision": {
     "if_passed": "After identity-resolved structure and provider/official zero-semantics confirmation both pass, freeze the exact phase-null-eligible completed-spell roster and authorize one magnitude-opening hysteresis execution.",
