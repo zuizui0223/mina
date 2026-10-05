@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-spatial-recovery-structure-v1",
+  "date": "2026-10-05",
+  "status": "identity_gate_before_zero_positive_state_scan",
+  "inherited_support": "contracts/SMP_TREND_SYMMETRY_SUPPORT_V1.json",
+  "purpose": "Resolve physical SiteID continuity and mutual exclusivity before explicit-zero occupancy histories are inspected for spatial-recovery hysteresis.",
+  "required_provider_or_metadata_resolution": {
+    "required_fields": [
+      "species",
+      "MasterSite",
+      "SiteID",
+      "stable_identity",
+      "mutually_exclusive_child",
+      "overlaps_parent_or_sibling",
+      "boundary_change_during_panel",
+      "retired_or_replaced",
+      "notes"
+    ],
+    "allowed_evidence": [
+      "BTO/SMP provider-supplied SiteID/MasterSite crosswalk or change log",
+      "provider metadata documenting merges/splits/renames/boundary changes",
+      "provider confirmation that an ID is a stable Whole Colony child Site over the retained interval"
+    ],
+    "prohibited": [
+      "count magnitudes",
+      "occupancy outcomes",
+      "E or concentration metrics",
+      "choosing continuity based on whether a SiteID helps the hypothesis"
+    ]
+  },
+  "retained_site_rule": "A SiteID may enter the hysteresis state scan only if stable_identity=true, mutually_exclusive_child=true, overlaps_parent_or_sibling=false, boundary_change_during_panel=false, and retired_or_replaced=false over the retained complete-year interval.",
+  "panel_rule": {
+    "minimum_retained_components_after_identity_gate": 3,
+    "minimum_complete_years": 10,
+    "minimum_calendar_span_years": 12,
+    "roster_repair": "After removing identity-ineligible SiteIDs, recompute the deterministic complete-year intersection once using the inherited missingness-only rule. Do not re-add or substitute SiteIDs based on zero/positive states.",
+    "program_thresholds": "inherit the stricter program thresholds from SMP_TREND_SYMMETRY_SUPPORT_V1"
+  },
+  "decision": {
+    "if_site_history_unavailable": "Do not open the hysteresis occupancy-state test. The hypothesis requires stable physical SiteID identity.",
+    "if_passed": "Freeze the identity-resolved panel roster and authorize explicit-zero/positive Stage B."
+  }
+}
