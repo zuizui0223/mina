@@ -16,6 +16,7 @@ from scripts.gate_smp_spatial_recovery_hysteresis_support_v1 import (
 from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
     build_panel_cache,
     hierarchical_means,
+    hierarchical_spell_weights,
     prepare_count_frame,
     shifted_spell_H,
     sign_flip_test,
@@ -171,6 +172,32 @@ class HysteresisTests(unittest.TestCase):
         h=hierarchical_means(pd.DataFrame(rows))
         self.assertGreater(h["T"],0)
         self.assertEqual(len(h["species"]),6)
+
+
+
+    def test_hierarchical_spell_weights_reproduce_nested_mean(self):
+        spells = [
+            {"species":"sp1","master_site_key":"M1","site_id":"A"},
+            {"species":"sp1","master_site_key":"M1","site_id":"A"},
+            {"species":"sp1","master_site_key":"M1","site_id":"B"},
+            {"species":"sp1","master_site_key":"M2","site_id":"C"},
+            {"species":"sp2","master_site_key":"M3","site_id":"D"},
+            {"species":"sp2","master_site_key":"M3","site_id":"E"},
+        ]
+        H = np.array([1.0,3.0,5.0,7.0,11.0,13.0])
+        rows = pd.DataFrame([
+            {
+                "species": sp["species"],
+                "master_site_key": sp["master_site_key"],
+                "site_id": sp["site_id"],
+                "H": float(h),
+            }
+            for sp, h in zip(spells, H)
+        ])
+        nested = hierarchical_means(rows)["T"]
+        weights = hierarchical_spell_weights(spells)
+        self.assertAlmostEqual(float(np.sum(weights * H)), nested)
+        self.assertAlmostEqual(float(weights.sum()), 1.0)
 
     def test_exact_sign_flip_for_six_positive_species(self):
         out=sign_flip_test(np.array([1,1,1,1,1,1],float))
