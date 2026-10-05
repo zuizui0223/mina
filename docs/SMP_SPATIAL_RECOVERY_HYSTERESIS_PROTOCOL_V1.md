@@ -165,9 +165,9 @@ Sign-flip those whole physical-MasterSite contributions:
 
 Require:
 
-[
-p_{mathrm{master}}le0.05.
-]
+\[
+p_{\mathrm{master}}\le0.05.
+\]
 
 This is an intersection requirement with the species sign-flip. Taxonomic replication cannot substitute for geographic replication, and vice versa.
 
