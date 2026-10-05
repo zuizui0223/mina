@@ -35,7 +35,9 @@
     "minimum_complete_years": 10,
     "minimum_calendar_span_years": 12,
     "roster_repair": "After removing identity-ineligible SiteIDs, recompute the deterministic complete-year intersection once using the inherited missingness-only rule. Do not re-add or substitute SiteIDs based on zero/positive states.",
-    "program_thresholds": "inherit the stricter program thresholds from SMP_TREND_SYMMETRY_SUPPORT_V1"
+    "program_thresholds": "inherit the stricter program thresholds from SMP_TREND_SYMMETRY_SUPPORT_V1",
+    "one_biological_panel_per_species_masterSite": true,
+    "multiple_unit_rule": "If more than one structurally eligible Count Unit remains for the same species x MasterSite, exclude that species x MasterSite unless the provider identifies a canonical primary Unit before zero/positive states or magnitudes are opened. No unit conversion or outcome-based unit choice."
   },
   "decision": {
     "if_site_history_unavailable": "Do not open the hysteresis occupancy-state test. The hypothesis requires stable physical SiteID identity.",
