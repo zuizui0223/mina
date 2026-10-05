@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-guillemot-same-site-recovery-preregistration-v1",
+  "date": "2026-10-05",
+  "status": "FROZEN_BEFORE_RAW_EIDC_OUTCOME_OPENING",
+  "frozen_design_head_sha": "7a035f9a194f4368472fb94c740a8edfa18ef2b6",
+  "raw_data_values_opened_before_freeze": false,
+  "source_dataset_doi": "10.5285/33b42f0a-12a5-47fe-aaaf-25f4ee5e13a5",
+  "canonical_files": [
+    {
+      "path": "contracts/GUILLEMOT_SAME_SITE_RECOVERY_V1.json",
+      "git_blob_sha": "6278609caa1a9595dccb4e08f0737b794bed79ed"
+    },
+    {
+      "path": "docs/GUILLEMOT_SAME_SITE_RECOVERY_PREREGISTRATION_V1.md",
+      "git_blob_sha": "cade84f4b0adbf3a75852c35b40b0652a19dbc08"
+    },
+    {
+      "path": "scripts/run_guillemot_same_site_recovery_v1.py",
+      "git_blob_sha": "fe28175ec034ae1e83c14f602c3584b6976466d8"
+    },
+    {
+      "path": "tests/test_guillemot_same_site_recovery_v1.py",
+      "git_blob_sha": "5877fe19d9c8df18226170cba624ac1db3cd58ae"
+    },
+    {
+      "path": ".github/workflows/guillemot-same-site-recovery.yml",
+      "git_blob_sha": "65032b39014f7476619bae382e8af967e881ab88"
+    }
+  ],
+  "primary_hypothesis": "Previously used breeding sites are reoccupied at higher surrounding sub-colony population states than those associated with their earlier transition to vacancy.",
+  "confirmatory_conditions": [
+    "T_obs > 0",
+    "exact five-subcolony one-sided sign-flip p <= 0.05",
+    "Delta_shift > 0",
+    "structured non-circular common-offset upper-tail p <= 0.05"
+  ],
+  "post_freeze_rule": "Only demonstrable implementation or raw-column adapter bugs independent of biological outcomes may be repaired. No ecological definition, threshold, aggregation, transform, null, sign-flip unit, missingness rule or interpretation rule may change after raw outcome opening."
+}
