@@ -36,6 +36,7 @@ jobs:
           echo "Downloading EIDC package for frozen DOI dataset."
           curl --fail --location --retry 3 --retry-all-errors \
             --silent --show-error \
+            --cookie-jar build/eidc/cookies.txt \
             --dump-header build/eidc/headers.txt \
             --output build/eidc/package.bin \
             "$url"
@@ -63,6 +64,9 @@ jobs:
             echo "Following EIDC landing-page download route: $route" >&2
             curl --fail --location --retry 3 --retry-all-errors \
               --silent --show-error \
+              --cookie build/eidc/cookies.txt \
+              --cookie-jar build/eidc/cookies.txt \
+              --referer "$url" \
               --dump-header build/eidc/direct_headers.txt \
               --output build/eidc/package.direct.bin \
               "$direct"
