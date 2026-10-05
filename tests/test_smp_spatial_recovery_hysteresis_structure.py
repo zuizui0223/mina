@@ -160,6 +160,8 @@ class HysteresisStructureContractTests(unittest.TestCase):
                 self.assertIn(0, spell["common_offset_values"])
                 self.assertTrue(spell["linear_shift_null_eligible"])
                 self.assertNotIn("count", spell)
+                self.assertGreaterEqual(spell["n_common_offsets"], 3)
+                self.assertIn(0, spell["common_offset_values"])
                 self.assertNotIn("pseudo_start_years", spell)
 
 
