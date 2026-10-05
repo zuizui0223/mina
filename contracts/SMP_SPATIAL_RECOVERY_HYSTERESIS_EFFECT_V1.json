@@ -53,7 +53,25 @@
       "delta": "Delta_phase = T_obs - median(T_phase_null)",
       "interpretation": "A structured temporal-alignment null. It is not a fitted mechanistic occupancy model and does not remove time-varying habitat quality."
     },
-    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, Delta_phase > 0, and structured-phase-null upper-tail p <= 0.05."
+    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, Delta_T > 0, and panel-wide trajectory-drift-null upper-tail p <= 0.05.",
+    "trajectory_drift_null": {
+      "purpose": "Control generic temporal change in surrounding abundance while preserving within-panel synchronization of multiple abandonment/recolonization spells.",
+      "simulations": 20000,
+      "seed": 20261005,
+      "panel_resampling": "For each species x MasterSite panel, uniformly sample one Stage-B-frozen eligible common calendar-year shift delta and apply that same delta to every spell in the panel.",
+      "preserves": [
+        "SiteID identities",
+        "species x MasterSite membership",
+        "number of spells per SiteID",
+        "relative timing among spells in the same panel",
+        "each spell's exact abandonment-to-recolonization transition gap",
+        "the observed leave-one-SiteID-out abundance trajectory"
+      ],
+      "pseudo_H": "Calculate each shifted spell with the identical transition-midpoint H formula.",
+      "aggregation": "Use the identical spell -> SiteID -> MasterSite -> species -> equal-species hierarchy as T_obs.",
+      "p_value": "plus-one upper-tail P(T_null >= T_obs)",
+      "delta": "Delta_T = T_obs - median(T_null)"
+    }
   },
   "secondary_uncertainty": {
     "bootstrap_resamples": 9999,
@@ -74,7 +92,8 @@
     "Use 'transition-state asymmetry' or 'empirical threshold proxy' in precise reporting; annual census data do not observe the exact continuous-time abandonment/recolonization threshold.",
     "When multiple species share a MasterSite and identical phase block, the structured null uses one common phase shift to avoid treating shared local environmental trajectories as independent species evidence.",
     "Physical phase blocks are keyed by provider-resolved master_site_key, not by display-name string alone.",
-    "MasterSite aggregation and phase blocking use provider-resolved physical master_site_key; display labels are retained only for presentation."
+    "MasterSite aggregation and phase blocking use provider-resolved physical master_site_key; display labels are retained only for presentation.",
+    "The panel-wide trajectory-drift null preserves shared timing among spells within a MasterSite but remains a temporal null, not a full reversible occupancy process model."
   ],
   "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
