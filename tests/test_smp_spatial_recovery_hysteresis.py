@@ -17,6 +17,7 @@ from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
     build_panel_cache,
     hierarchical_means,
     hierarchical_spell_weights,
+    physical_master_site_sign_flip_test,
     prepare_count_frame,
     shifted_spell_H_linear,
     sign_flip_test,
@@ -198,6 +199,65 @@ class HysteresisTests(unittest.TestCase):
         weights = hierarchical_spell_weights(spells)
         self.assertAlmostEqual(float(np.sum(weights * H)), nested)
         self.assertAlmostEqual(float(weights.sum()), 1.0)
+
+    def test_physical_master_site_sign_flip_clusters_colocated_species(self):
+        # Two species share one physical MasterSite. They must contribute one
+        # geographic sign, not two independent location signs.
+        spells = [
+            {
+                "species": "sp1", "master_site_key": "Shared",
+                "master_site": "Shared display", "site_id": "A",
+            },
+            {
+                "species": "sp2", "master_site_key": "Shared",
+                "master_site": "Shared display", "site_id": "B",
+            },
+            {
+                "species": "sp1", "master_site_key": "Other1",
+                "master_site": "Other1", "site_id": "C",
+            },
+            {
+                "species": "sp2", "master_site_key": "Other2",
+                "master_site": "Other2", "site_id": "D",
+            },
+        ]
+        observed = pd.DataFrame([
+            {
+                "species": sp["species"],
+                "master_site_key": sp["master_site_key"],
+                "site_id": sp["site_id"],
+                "H": 1.0,
+            }
+            for sp in spells
+        ])
+        out = physical_master_site_sign_flip_test(observed, spells)
+        self.assertEqual(out["physical_master_site_count"], 3)
+        self.assertEqual(out["replicates_or_exact_states"], 8)
+        self.assertEqual(len(out["contributions"]), 3)
+
+    def test_geographic_sign_flip_reproduces_primary_T(self):
+        spells = []
+        rows = []
+        for s in range(5):
+            for m in range(2):
+                sp = {
+                    "species": f"sp{s}",
+                    "master_site_key": f"M{s}-{m}",
+                    "master_site": f"M{s}-{m}",
+                    "site_id": f"S{s}-{m}",
+                }
+                spells.append(sp)
+                rows.append({
+                    "species": sp["species"],
+                    "master_site_key": sp["master_site_key"],
+                    "site_id": sp["site_id"],
+                    "H": 0.2 + 0.01 * s,
+                })
+        observed = pd.DataFrame(rows)
+        T = hierarchical_means(observed)["T"]
+        out = physical_master_site_sign_flip_test(observed, spells)
+        self.assertAlmostEqual(out["observed_T_from_master_contributions"], T)
+        self.assertLessEqual(out["one_sided_p"], 0.05)
 
     def test_exact_sign_flip_for_six_positive_species(self):
         out=sign_flip_test(np.array([1,1,1,1,1,1],float))
