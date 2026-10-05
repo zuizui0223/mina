@@ -9,15 +9,19 @@ Academic (non-commercial)
 
 ## Title of project / question
 
-Spatial redistribution of breeding seabirds during population change
+Spatial redistribution of breeding seabirds during population increase and decline
 
 ## Details of research
 
-We are testing whether changes in breeding abundance are accompanied by systematic changes in how breeding birds are distributed among repeated spatial monitoring units. Initial work in two Antarctic penguin monitoring systems generated a prospective hypothesis that declining colonial populations may become concentrated among fewer breeding components beyond the finite-count consequences of lower abundance.
+We are testing whether long-term population change is accompanied by systematic changes in how breeding birds are distributed among repeated spatial monitoring units, and whether spatial concentration behaves differently during population increase and decline.
 
-Before testing this hypothesis in UK and Irish seabirds, we will run an outcome-blind data-support audit using only sampling structure, identifiers and missingness. We will not inspect abundance magnitudes during this gate. The proposed SMP design treats child Sites within a MasterSite as repeated spatial components, using only raw observed Site-level colony counts and distinguishing recorded zeroes from missing observations.
+Initial Antarctic penguin analyses generated a prospective hypothesis that breeding-space organization may change partly independently of the sign of population trend: concentration can accompany decline, but numerical increase need not necessarily restore a previous spatial distribution. The SMP provides an independent system in which this symmetry can be tested across multiple seabird species.
 
-If enough long-term multi-Site panels are available, ecological predictions and analysis rules will be frozen before abundance outcomes are opened. Planned outputs are a peer-reviewed macroecological study and fully reproducible analysis code. The frozen Antarctic paper remains separate unless the independent support gate demonstrates that a broader test is feasible.
+Before testing any ecological outcome in the SMP data, we will run an outcome-blind structural audit using only sampling structure, identifiers and missingness. Count magnitudes will not be used to select species, MasterSites, SiteIDs, years or thresholds. The design treats mutually exclusive child Sites within a MasterSite as repeated spatial components and distinguishes recorded zeroes from missing observations.
+
+If the structural gate passes, we will next inspect only total MasterSite-level abundance trajectories to confirm that enough increasing and declining panels are represented. Component-level spatial concentration will remain unopened until that balance gate is passed. The concentration estimand and inferential rules have been frozen in advance of receiving the bulk extract.
+
+Planned outputs are a peer-reviewed macroecological study and fully reproducible analysis code. The Antarctic results remain a hypothesis-generating source and are not pooled with the SMP test.
 
 ## Details of proposed collaboration
 
@@ -48,7 +52,7 @@ We need the most disaggregated Site-level records available, including where pos
 - verification / review status if available
 - any field identifying merged-site totals, nil returns, or historical site-boundary changes
 
-The initial support gate will use identifiers, metadata and missingness only. Counts will remain unopened until eligible species × MasterSite panels are frozen. We intend to use only observed raw counts in the primary analysis, not imputed annual values.
+The initial support gate will use identifiers, metadata and missingness only. After the eligible species × MasterSite roster is frozen, a second gate will use only summed annual MasterSite totals to verify that both increasing and declining trajectories are adequately represented. Component-level proportions and concentration metrics will remain unopened until both gates pass. We intend to use only observed raw counts in the primary analysis, not imputed annual values.
 
 Please also advise whether current bulk exports preserve Plot identifiers and whether any SiteID or MasterSite crosswalk/change-log exists for historical merges, splits or boundary changes.
 
@@ -60,4 +64,4 @@ Electronic, preferably CSV/TSV; Excel is also acceptable.
 
 During a public structural audit we inspected Kittiwake records for Flamborough and Filey Coast SPA to confirm the MasterSite > Site hierarchy. That species × MasterSite combination will be excluded from any prospective confirmatory analysis because count magnitudes were already visible.
 
-The planned outcome-blind eligibility gate requires at least three retained child Sites and at least ten complete observed years spanning at least ten calendar years. These thresholds were frozen before receipt of the bulk extract and will not be relaxed after abundance outcomes are inspected.
+The planned outcome-blind eligibility gate requires at least three retained child Sites and at least ten complete observed years spanning at least twelve calendar years, together with a macro-scale support requirement across multiple species and MasterSites. These thresholds were frozen before receipt of the bulk extract and will not be relaxed after abundance or concentration outcomes are inspected.
