@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-smp-spatial-recovery-hysteresis-support-v1",
   "date": "2026-10-05",
-  "status": "frozen_after_site_identity_gate_before_zero_positive_state_scan",
+  "status": "frozen_before_bulk_smp_count_magnitudes_and_phase_null",
   "purpose": "Identify completed abandonment-to-recolonization cycles in identity-resolved, mutually exclusive SMP breeding SiteIDs using only explicit zero/positive count states, before any abundance magnitude is opened.",
   "parent_structural_contract": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
   "hierarchy": {
@@ -21,7 +21,13 @@
     "no_gap_rule": "every year from abandonment transition through recolonization transition must be calendar-consecutive and complete; do not bridge an unobserved year",
     "multiple_spells": "allowed; all qualifying completed spells retained",
     "first_colonization": "not part of the primary test because no within-site abandonment threshold exists to pair against it",
-    "transition_gap_years": "recolonize_from - abandon_from; because both transitions are consecutive-year transitions, this equals the separation between their transition midpoints."
+    "transition_gap_years": "recolonize_from - abandon_from; because both transitions are consecutive-year transitions, this equals the separation between their transition midpoints.",
+    "phase_null_support": {
+      "contiguous_block": "Each completed spell is assigned to the maximal calendar-consecutive complete-year block of its frozen species x MasterSite panel that contains the entire spell.",
+      "minimum_block_years": 6,
+      "reason": "Provides at least six distinct common circular phase alignments for the structured null; this threshold is frozen before SMP magnitude outcomes.",
+      "eligibility": "Only spells in blocks with >=6 complete consecutive years enter the magnitude stage."
+    }
   },
   "allowed_outputs_before_magnitudes": [
     "species",
@@ -32,7 +38,8 @@
     "vacancy duration",
     "number of completed spells by site/panel/species",
     "transition_gap_years",
-    "number/list of eligible pseudo start years for the trajectory-drift null"
+    "number/list of eligible pseudo start years for the trajectory-drift null",
+    "contiguous complete-year block start/end/length for each completed spell"
   ],
   "prohibited_outputs": [
     "count magnitudes",
@@ -51,12 +58,13 @@
     "minimum_species_with_spells": 5,
     "minimum_species_with_at_least_3_spells": 4,
     "minimum_species_with_spells_in_at_least_2_mastersites": 3,
-    "requirement": "All prior conditions must pass after restricting to spells with >=3 same-panel elapsed-time-matched pseudo placements.",
-    "minimum_null_eligible_completed_spells": 30
+    "requirement": "all prior conditions must pass after excluding spells whose containing complete-year block has <6 calendar-consecutive years",
+    "minimum_null_eligible_completed_spells": 30,
+    "minimum_phase_block_years_per_spell": 6
   },
   "decision": {
-    "if_passed": "Freeze the exact identity-resolved completed-spell roster and authorize one magnitude-opening hysteresis execution.",
-    "if_failed": "Stop the hysteresis route. Do not lower cycle-count, species, SiteID, MasterSite, identity, or gap thresholds."
+    "if_passed": "Freeze the exact phase-null-eligible completed-spell roster and contiguous block identities; authorize one magnitude-opening hysteresis execution.",
+    "if_failed": "Stop the hysteresis route. Do not lower cycle-count, species, SiteID, MasterSite, gap, or phase-block thresholds."
   },
   "identity_requirement": "Input roster must be the output of the frozen SiteID identity gate; unresolved, merged, split, overlapping, boundary-changed, retired or replaced SiteIDs are ineligible.",
   "trajectory_drift_null_support": {
