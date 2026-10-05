@@ -52,22 +52,33 @@ def run(support_json:Path,resolution_csv:Path)->dict:
         raise ValueError("duplicate SiteID identity-resolution keys")
 
     # Resolve one physical MasterSite key per candidate species x MasterSite
-    # before occupancy states open. If the candidate label conflates multiple
-    # physical MasterSites, fail/exclude rather than splitting post outcome.
+    # before occupancy states open. Ambiguous candidates are excluded as whole
+    # panels; they are never split into post-hoc physical units.
     master_key_by_panel={}
+    excluded_master_identity=[]
     for (species, master), g in res.groupby(["species","MasterSite"], sort=False):
+        sm_key=(str(species),str(master))
         confirmations=[as_bool(v) for v in g["master_site_identity_confirmed"]]
-        if not all(confirmations):
-            raise ValueError(
-                f"MasterSite identity not confirmed for {(species, master)}"
-            )
         vals=sorted({str(v).strip() for v in g["master_site_key"] if str(v).strip()})
+        if not all(confirmations):
+            master_key_by_panel[sm_key]=None
+            excluded_master_identity.append({
+                "species":sm_key[0],
+                "master_site":sm_key[1],
+                "candidate_master_site_keys":vals,
+                "reason":"provider did not confirm one physical MasterSite identity",
+            })
+            continue
         if len(vals)!=1:
-            raise ValueError(
-                f"candidate {(species, master)} must map to exactly one physical "
-                f"master_site_key; got {vals}"
-            )
-        master_key_by_panel[(str(species),str(master))]=vals[0]
+            master_key_by_panel[sm_key]=None
+            excluded_master_identity.append({
+                "species":sm_key[0],
+                "master_site":sm_key[1],
+                "candidate_master_site_keys":vals,
+                "reason":"candidate label maps to zero or multiple physical MasterSite keys",
+            })
+            continue
+        master_key_by_panel[sm_key]=vals[0]
 
     canonical_unit={}
     if "canonical_unit" in res.columns:
@@ -102,6 +113,9 @@ def run(support_json:Path,resolution_csv:Path)->dict:
         species=str(p["species"]); master=str(p["master_site"]); unit=str(p["unit"])
         sm_key=(species,master)
         units=sorted(support_units.get(sm_key,set()))
+        if master_key_by_panel.get(sm_key) is None:
+            continue
+
         if len(units)>1:
             chosen=canonical_unit.get(sm_key)
             if chosen is None:
@@ -177,6 +191,7 @@ def run(support_json:Path,resolution_csv:Path)->dict:
             "minimum_master_sites":MIN_MASTERS,
         },
         "excluded_siteids":excluded,
+        "excluded_master_identity_panels":excluded_master_identity,
         "excluded_multi_unit_masterSites":excluded_multi_unit,
         "eligible_panels":panels,
         "decision":{
