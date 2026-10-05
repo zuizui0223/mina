@@ -48,15 +48,34 @@ jobs:
         run: |
           set -euo pipefail
           pkg="build/eidc/package.bin"
+          if ! unzip -t "$pkg" >/dev/null 2>&1; then
+            echo "Initial endpoint returned an HTML download landing page." >&2
+            route="$(python -c 'from pathlib import Path; import re; txt=Path("build/eidc/package.bin").read_text(errors="replace"); m=re.search(r"href=[\\\"\\x27]([^\\\"\\x27]+)",txt,flags=re.I); print(m.group(1) if m else "")')"
+            if [[ -z "$route" ]]; then
+              echo "No download href found in EIDC landing page." >&2
+              exit 22
+            fi
+            case "$route" in
+              http://*|https://*) direct="$route" ;;
+              /*) direct="https://data-package.ceh.ac.uk$route" ;;
+              *) direct="https://data-package.ceh.ac.uk/$route" ;;
+            esac
+            echo "Following EIDC landing-page download route: $route" >&2
+            curl --fail --location --retry 3 --retry-all-errors \
+              --silent --show-error \
+              --dump-header build/eidc/direct_headers.txt \
+              --output build/eidc/package.direct.bin \
+              "$direct"
+            sha256sum build/eidc/package.direct.bin > build/eidc/direct.sha256
+            file build/eidc/package.direct.bin | tee build/eidc/direct_filetype.txt
+            pkg="build/eidc/package.direct.bin"
+          fi
           if unzip -t "$pkg" >/dev/null 2>&1; then
             unzip -q "$pkg" -d build/extracted
           else
-            echo "Downloaded object is not a ZIP package." >&2
-            echo "First response headers:" >&2
-            sed -n '1,30p' build/eidc/headers.txt >&2
-            echo "Sanitized HTML routing diagnostics:" >&2
-            python -c 'from pathlib import Path; import re, html; txt=Path("build/eidc/package.bin").read_text(errors="replace"); print("title", [re.sub(r"\\s+"," ",m.group(1)).strip() for m in re.finditer(r"<title[^>]*>(.*?)</title>",txt,flags=re.I|re.S)][:10]); print("form_action", [m.group(1) for m in re.finditer(r"<form[^>]+action=[\\\"\\x27]([^\\\"\\x27]+)",txt,flags=re.I|re.S)][:10]); print("hrefs", list(dict.fromkeys(m.group(1) for m in re.finditer(r"href=[\\\"\\x27]([^\\\"\\x27]+)",txt,flags=re.I)))[:40]); print("script_src", list(dict.fromkeys(m.group(1) for m in re.finditer(r"<script[^>]+src=[\\\"\\x27]([^\\\"\\x27]+)",txt,flags=re.I)))[:20]); plain=html.unescape(re.sub(r"<[^>]+>"," ",txt)); plain=re.sub(r"\\s+"," ",plain); hits=[]; [hits.append(plain[max(0,m.start()-80):min(len(plain),m.end()+160)]) for m in re.finditer(r"login|log in|sign in|account|licen[cs]e|download|email|accept|consent",plain,flags=re.I) if plain[max(0,m.start()-80):min(len(plain),m.end()+160)] not in hits]; print("routing_text",hits[:20])' >&2
-            exit 22
+            echo "Resolved EIDC download object is still not a ZIP package." >&2
+            if [[ -f build/eidc/direct_headers.txt ]]; then sed -n '1,30p' build/eidc/direct_headers.txt >&2; fi
+            exit 24
           fi
 
           focal="$(find build/extracted -type f -name "$FOCAL_FILE" -print -quit)"
