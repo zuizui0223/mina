@@ -42,7 +42,7 @@ class HysteresisTests(unittest.TestCase):
         self.assertNotIn("trajectory_drift_null", effect["primary_inference"])
         self.assertIn("physical_master_site_sign_flip", effect["primary_inference"])
         self.assertIn("structured_linear_shift_null", effect["primary_inference"])
-        self.assertIn("p <= 0.05", effect["primary_inference"]["physical_master_site_sign_flip"]["p_value"])
+        self.assertIn("physical-MasterSite sign-flip one-sided p <= 0.05", effect["primary_inference"]["support"])
         self.assertIn("Delta_linear", effect["primary_inference"]["support"])
 
     def test_five_species_is_minimum_for_exact_alpha_point_zero_five(self):
