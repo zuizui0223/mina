@@ -23,11 +23,25 @@ Burger et al. (2019, *Frontiers of Biogeography*, doi:10.21425/F5FBG44383) devel
 
 Therefore the present project must **not** claim to discover the concept of island-biogeographic hysteresis.
 
+### Allee-driven recolonization barriers are already predicted
+
+Schippers et al. (2011, *Ecological Modelling*, doi:10.1016/j.ecolmodel.2011.05.022) used a spatially explicit seabird metapopulation model to show that Allee effects can lengthen recolonization times and reduce effective recolonization distance.
+
+Therefore the project must not claim novelty for predicting that coloniality or Allee effects can slow recolonization.
+
+### Reversible buffer effects across growth, decline and recovery are already empirically tested
+
+Bennett et al. (2022, *Journal of Animal Ecology*, doi:10.1111/1365-2656.13674) tested site-dependent regulation in common guillemots across population increase, decline and recovery, linking site occupancy to site quality and population size.
+
+Therefore the project must not claim novelty for simply comparing occupancy across positive and negative population phases.
+
 ## Candidate empirical novelty
 
 The candidate contribution is narrower:
 
-> **For the same repeatedly monitored breeding SiteID, directly compare the surrounding population state at abandonment with the surrounding population state at later recolonization, and test prospectively across multiple seabird species whether recolonization requires a systematically higher population state.**
+> **For the same repeatedly monitored breeding SiteID, directly pair the surrounding population state at abandonment with the state at later recolonization, then test prospectively across multiple seabird species whether recovery crosses a systematically higher threshold than collapse after controlling generic abundance drift over the same elapsed time.**
+
+This is a direct empirical test of whether the recovery path retraces the collapse path at the same places.
 
 The primary paired quantity is:
 
