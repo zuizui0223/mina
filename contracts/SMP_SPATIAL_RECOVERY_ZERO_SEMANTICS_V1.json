@@ -8,11 +8,16 @@
     "row_with_direct_count_zero_is_surveyed_nil": "must be true",
     "absent_site_year_row_is_not_zero": "must be true",
     "estimated_or_imputed_zero_excluded_from_primary": "must be true",
-    "confirmation_source": "provider documentation, provider email/statement, or official SMP data dictionary"
+    "confirmation_source": "provider documentation, provider email/statement, or official SMP data dictionary",
+    "compatible_start_year": "required integer within 1986-2024",
+    "compatible_end_year": "required integer within 1986-2024 and >= compatible_start_year",
+    "compatible_record_family_or_era": "required non-empty description of the record family/era to which the zero semantics apply"
   },
-  "runtime_rule": "Stage B zero/positive state extraction is unauthorized until a confirmation JSON records all three booleans as true and identifies the source.",
+  "runtime_rule": "Stage B is unauthorized until all three semantic booleans are true, confirmation_source is non-empty, and a compatible start/end year plus record-family/era description are frozen. State extraction is restricted to that documented scope before Count values are converted to positive/zero state.",
   "boundaries": [
     "If zero semantics differ among data eras or record families, restrict prospectively to the documented compatible era/family before occupancy states are inspected.",
-    "Do not infer zero semantics from the ecological pattern."
+    "Do not infer zero semantics from the ecological pattern.",
+    "If the compatible zero-semantics interval is narrower than 1986-2024, Stage B uses only inherited complete years inside that interval; it may shorten but never extend a Stage-A panel.",
+    "After the provider-scope restriction, panels with <10 inherited complete years or <12-year span are dropped before vacancy spells are scanned."
   ]
 }
