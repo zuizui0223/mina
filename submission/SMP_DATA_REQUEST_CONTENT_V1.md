@@ -1,7 +1,7 @@
 # BTO SMP academic data-request content v2
 
 **Status:** draft content only; not submitted.  
-**Purpose:** obtain a record-level extract that can support a preregistered test of spatial recovery after local breeding-site abandonment.
+**Purpose:** obtain a raw structural extract for a prospectively frozen test of spatial recovery hysteresis.
 
 ## Project type
 
@@ -9,114 +9,95 @@ Academic (non-commercial)
 
 ## Title of project / question
 
-Spatial recovery after local seabird colony loss: are abandonment and recolonization thresholds symmetric?
+Spatial recovery after local breeding-site abandonment in colonial seabirds
 
 ## Details of research
 
-I am testing a specific island-ecology hypothesis in colonial seabirds:
+We are testing whether local breeding-site loss and recovery are spatially reversible in colonial seabirds.
 
-> when a breeding Site has been abandoned, does that same Site require a higher surrounding population state to be recolonized than the population state at which it was lost?
+The focal hypothesis is that, for the **same repeated breeding SiteID**, later recolonization may require a higher surrounding population state than the population state at which that SiteID was abandoned. In other words, population recovery may not simply retrace the spatial pathway of population decline.
 
-The hypothesis was generated independently from long-term Antarctic penguin analyses, where breeding distributions became concentrated during decline and did not necessarily re-expand during numerical increase. The SMP would provide an independent multi-species test based on repeated abandonment and later recolonization of the **same physical SiteID**.
+The study was motivated by independent Antarctic penguin analyses in which breeding distributions became concentrated during decline and regional effective breeding-site number was not necessarily restored during numerical increase. Those penguin results are hypothesis-generating only and will not be pooled with the SMP test.
 
-The analysis is deliberately staged.
+The SMP analysis is staged prospectively.
 
-### Stage A — structure and SiteID history only
+### Stage A — structure only
 
-Before using count magnitudes, I will identify candidate species × MasterSite panels using only:
-
-- SiteID and MasterSite hierarchy;
-- observation years and missingness;
-- count unit and method;
-- Whole Colony versus plot/partial/merged status;
-- SiteID history, including renames, merges, splits, replacements and boundary changes.
-
-A SiteID can enter the focal test only if its physical identity is stable across the retained interval and it is a mutually exclusive child Site within its MasterSite.
+We will first use only identifiers, sampling years, missingness, method/unit metadata, and provider-supplied SiteID history to freeze stable species × MasterSite panels and mutually exclusive retained SiteIDs. Count magnitudes will not be used to select panels, SiteIDs, species, years or thresholds.
 
 ### Stage B — occupancy state only
 
-After the physical SiteID roster is frozen, count values will be reduced only to:
-
+For the frozen roster, counts will be reduced to:
 - positive;
 - explicit zero;
 - missing/unusable.
 
-A missing SiteID × year record will never be interpreted as zero.
+Missing records will never be treated as zero.
 
-Completed vacancy spells will be defined prospectively as calendar-consecutive sequences of the form:
+We will identify only completed, calendar-consecutive vacancy spells of the form:
 
-occupied -> explicit zero -> ... -> explicit zero -> occupied.
+positive -> zero -> ... -> zero -> positive.
 
-No abundance magnitudes will be used to choose these spells.
+The exact SiteIDs and years entering the threshold comparison will therefore be frozen before abundance magnitudes are opened.
 
-### Stage C — paired population threshold
+### Stage C — paired threshold test
 
-Only after the exact completed-spell roster is frozen will abundance magnitudes be opened.
+Only if the predeclared support gate passes will count magnitudes be opened.
 
-For each focal SiteID, the surrounding population is defined as the MasterSite total **excluding that focal SiteID**, preventing the Site's own loss/reappearance from mechanically generating the predictor.
+For each frozen vacancy spell, we will compare the surrounding MasterSite population state at:
+- the occupied -> zero transition; and
+- the later zero -> occupied transition.
 
-The preregistered comparison asks whether the surrounding population state at recolonization is higher than at abandonment.
+The focal SiteID itself will be excluded from the surrounding population total.
+
+A same-SiteID paired design is used so that fixed site identity/quality is controlled directly. A second frozen null will preserve the observed surrounding-population trajectory and the exact elapsed time between abandonment and recolonization, to distinguish threshold asymmetry from generic temporal population change.
+
+Planned outputs are a peer-reviewed ecological study and fully reproducible analysis code.
+
+## Details of proposed collaboration
+
+[AUTHOR TO COMPLETE: list supervisors/collaborators, or state that no formal external collaboration is currently proposed.]
 
 ## Details of data required
 
-Please provide the raw Seabird Monitoring Programme **Whole Colony / Colony Count** extract for 1986–2024 for non-sensitive species across Britain and Ireland, preferably in CSV, TSV or Excel format.
+Please provide the raw Seabird Monitoring Programme **Colony Count / Whole Colony Count** extract for 1986–2024 for non-sensitive species across Britain and Ireland, preferably in CSV, TSV or Excel format.
 
-For every record, if available, please include:
+We need the most disaggregated repeated Site-level records available, including where possible:
 
 - Species
 - Country and County
 - SiteID
-- Site name
+- Site
 - MasterSite and MasterSite identifier
-- Plot / spatial-level indicator
+- Plot / Site-level indicator
 - StartGrid and EndGrid
-- Site category / Site type / Site habitat
-- survey date or year
+- Site category, Site type and Site habitat
+- Start date and End date
+- survey time fields if available
 - Method
 - Unit
 - Count
 - Accuracy
 - Estimate / estimate type
 - Comments
-- verification / review status
-- any explicit nil-return / zero flag
-- any surveyed/not-surveyed flag
-- any parent/aggregate/merged-site flag
+- verification / review status if available
+- explicit nil-return / zero information, if encoded separately from Count = 0
+- any field identifying merged-site totals, parent/aggregate sites, or historical site-boundary changes
 
-### Site-history metadata are essential
+For this project, it is particularly important to distinguish:
 
-Because the focal test pairs abandonment and later recolonization at the **same physical breeding Site**, I would also be grateful for any provider-supplied crosswalk, change log or metadata that can identify:
+1. **explicit zero / nil returns** from years in which a SiteID was not surveyed;
+2. persistent SiteIDs from SiteIDs that were renamed, merged, split, retired, replaced, or had boundaries redefined;
+3. mutually exclusive child Sites within a MasterSite from aggregate MasterSite or merged-site totals.
 
-- SiteID renames;
-- retired/replacement SiteIDs;
-- merged or split Sites;
-- changes in mapped/site boundaries;
-- parent Sites that overlap child Sites;
-- child Sites that overlap one another;
-- dates when any of those changes took effect.
-
-If a stable physical SiteID history cannot be resolved, that Site will be excluded before occupancy states or count magnitudes are analysed.
-
-### Zero versus missing is also essential
-
-Please confirm, if possible:
-
-1. whether a row with `Count = 0` represents an explicit surveyed nil return;
-2. whether absence of a SiteID × year row means not surveyed / no submitted record rather than zero abundance;
-3. whether explicit nil returns are encoded separately in any field.
-
-The primary analysis will use only direct observed counts. Imputed or estimated annual counts will not be substituted for missing observations.
+If available, could you also provide or describe any SiteID/MasterSite crosswalk or change-log that records historical merges, splits, replacements, renames, or boundary changes?
 
 ## Data format
 
 Electronic, preferably CSV/TSV; Excel is also acceptable.
 
-A separate SiteID/MasterSite history table is entirely acceptable if that information is not embedded in the count extract.
-
 ## Additional information
 
-During an earlier public structural audit, Kittiwake records for Flamborough and Filey Coast SPA were inspected to verify the MasterSite > Site hierarchy. That species × MasterSite combination is prospectively excluded from confirmatory analysis because count magnitudes were already visible.
+During an earlier public structural audit, Kittiwake records for Flamborough and Filey Coast SPA were inspected to confirm the MasterSite > Site hierarchy. That species × MasterSite combination is excluded from prospective confirmatory analyses because count magnitudes were already visible.
 
-The support thresholds, vacancy-spell definition, SiteID identity requirements and paired threshold estimand were frozen before receipt of the bulk extract and will not be relaxed after ecological outcomes are inspected.
-
-I will follow the SMP Data Access and Use Policy and required acknowledgement wording in any publication using these data.
+The structural, vacancy-spell, support, paired-effect, and elapsed-time-matched null rules were frozen before receipt of the requested bulk extract. If the data do not contain enough stable completed abandonment-to-recolonization cycles, the hypothesis test will stop rather than lower the support thresholds after seeing count magnitudes.
