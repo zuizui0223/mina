@@ -282,13 +282,13 @@ If <=20 species, enumerate all sign configurations exactly.
 
 # Confirmatory gate 2 — structured temporal phase null
 
-For each species × MasterSite × contiguous complete-year block:
+For each physical MasterSite × identical contiguous complete-year block:
 
-- retain the full multivariate count trajectory;
+- retain the full multivariate count trajectories;
 - retain all frozen event-year positions;
-- circularly shift the whole block by one common phase;
-- apply the same shift to all SiteIDs/spells in that block;
-- preserve cross-site covariance and dependence among spells.
+- circularly shift the whole MasterSite/block by one common phase;
+- apply the same shift across all eligible species, SiteIDs and spells sharing that block;
+- preserve within-species cross-site covariance, spell dependence, and aligned cross-species temporal covariance.
 
 Use 9,999 frozen resamples with seed 20261005.
 
