@@ -84,7 +84,7 @@ Only spells in blocks of at least **6 years** are eligible for Stage C. This thr
 
 ### Program support gate
 
-Before vacancy scanning, any panel reduced by the provider-confirmed zero-semantics interval must still retain at least 10 inherited complete years spanning at least 12 calendar years. After that scope restriction and the phase-block filter, require at least:
+Within the provider-confirmed interval, begin from inherited Stage-A complete years and retain only years in which every retained SiteID has one usable direct positive/explicit-zero state. Missing/unparseable records remove that year; they are never converted to zero. A panel must still retain at least 10 such state-complete years spanning at least 12 calendar years. After that scope restriction and the phase-block filter, require at least:
 
 - 30 completed spells;
 - 20 distinct SiteIDs;
@@ -131,7 +131,7 @@ Then
 H=A_c-A_e.
 \]
 
-The same SiteID is therefore its own control for fixed site identity and stable site quality.
+The same SiteID is therefore its own control for fixed site identity and stable site quality. Because SMP is sampled annually, \(A_e\) and \(A_c\) are frozen **transition-state proxies** from the two censuses bracketing each transition, not exact continuous-time demographic thresholds.
 
 ## Replication hierarchy
 
