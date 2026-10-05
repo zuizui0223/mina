@@ -19,7 +19,7 @@ The directional prediction is
 H>0.
 \]
 
-A confirmatory result additionally requires the observed species-balanced \(H\) to exceed an structured common-phase null.
+A confirmatory result additionally requires the observed species-balanced \(H\) to exceed a structured common-phase null.
 
 ## Discovery half — Antarctic penguins
 
