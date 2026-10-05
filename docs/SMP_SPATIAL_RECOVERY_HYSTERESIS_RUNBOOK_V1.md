@@ -282,7 +282,7 @@ If <=20 species, enumerate all sign configurations exactly.
 
 # Confirmatory gate 2 — structured temporal phase null
 
-For each physical MasterSite × identical contiguous complete-year block:
+For each provider-resolved physical MasterSite × identical contiguous complete-year block:
 
 - retain the full multivariate count trajectories;
 - retain all frozen event-year positions;
