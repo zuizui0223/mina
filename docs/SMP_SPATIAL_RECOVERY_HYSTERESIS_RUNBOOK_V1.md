@@ -296,9 +296,9 @@ Sign-flip each whole physical-MasterSite contribution:
 
 Require:
 
-[
-p_{mathrm{master}}le0.05.
-]
+\[
+p_{\mathrm{master}}\le0.05.
+\]
 
 This preserves the primary (T_{mathrm{obs}}); it does not replace it with an equal-MasterSite estimand.
 
