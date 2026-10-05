@@ -50,6 +50,20 @@ def run(support_json:Path,resolution_csv:Path)->dict:
     if res.duplicated(keycols).any():
         raise ValueError("duplicate SiteID identity-resolution keys")
 
+    canonical_unit={}
+    if "canonical_unit" in res.columns:
+        for (species, master), g in res.groupby(["species","MasterSite"], sort=False):
+            vals=sorted({str(v).strip() for v in g["canonical_unit"] if str(v).strip()})
+            if len(vals)>1:
+                raise ValueError(f"conflicting canonical_unit values for {(species, master)}: {vals}")
+            if vals:
+                canonical_unit[(str(species),str(master))]=vals[0]
+
+    support_units={}
+    for p in support["eligible_panels"]:
+        key=(str(p["species"]),str(p["master_site"]))
+        support_units.setdefault(key,set()).add(str(p["unit"]))
+
     lookup={}
     for r in res.itertuples(index=False):
         key=(str(r.species),str(r.MasterSite),str(r.SiteID))
@@ -64,8 +78,23 @@ def run(support_json:Path,resolution_csv:Path)->dict:
 
     panels=[]
     excluded=[]
+    excluded_multi_unit=[]
     for p in support["eligible_panels"]:
-        species=str(p["species"]); master=str(p["master_site"])
+        species=str(p["species"]); master=str(p["master_site"]); unit=str(p["unit"])
+        sm_key=(species,master)
+        units=sorted(support_units.get(sm_key,set()))
+        if len(units)>1:
+            chosen=canonical_unit.get(sm_key)
+            if chosen is None:
+                excluded_multi_unit.append({
+                    "species":species,"master_site":master,
+                    "eligible_units":units,
+                    "reason":"multiple structurally eligible count Units and no provider canonical_unit"
+                })
+                continue
+            if unit!=chosen:
+                continue
+
         original=[str(x) for x in p["retained_site_ids"]]
         kept=[]
         for site in original:
@@ -118,11 +147,12 @@ def run(support_json:Path,resolution_csv:Path)->dict:
         "broad_region_count":len(regions),
         "species_with_two_or_more_panels":multi,
         "excluded_siteids":excluded,
+        "excluded_multi_unit_masterSites":excluded_multi_unit,
         "eligible_panels":panels,
         "decision":{
             "structural_gate_passed":passed,
             "zero_positive_state_scan_authorized":passed,
-            "if_failed":"Stop without relaxing identity or program thresholds."
+            "if_failed":"Stop without relaxing identity, count-unit, or program thresholds."
         },
         "forbidden_outputs_confirmed_absent":[
             "count magnitudes","zero/positive occupancy histories","abundance trends",
