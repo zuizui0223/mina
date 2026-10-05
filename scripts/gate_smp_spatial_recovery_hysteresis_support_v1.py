@@ -246,6 +246,11 @@ def run(
     for panel in support["eligible_panels"]:
         species = str(panel["species"])
         master = str(panel["master_site"])
+        master_key = str(panel.get("master_site_key", "")).strip()
+        if not master_key:
+            raise ValueError(
+                f"identity-resolved panel missing master_site_key: {(species, master)}"
+            )
         unit = str(panel["unit"])
         roster = {str(v) for v in panel["retained_site_ids"]}
         years = [
@@ -296,6 +301,7 @@ def run(
                     "spell_id": f"{species}|{master}|{unit}|{site}|{k}",
                     "species": species,
                     "master_site": master,
+                    "master_site_key": master_key,
                     "unit": unit,
                     "site_id": site,
                     **sp,
