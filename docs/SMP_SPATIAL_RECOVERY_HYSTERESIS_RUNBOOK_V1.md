@@ -357,12 +357,13 @@ That failed design is preserved as provenance. It must not be reinstated after o
 
 # Final decision
 
-Spatial-recovery asymmetry is supported only if **all four** conditions hold:
+Spatial-recovery asymmetry is supported only if **all five** conditions hold:
 
 1. \(T_{\mathrm{obs}}>0\);
 2. \(p_{\mathrm{sign}}\le0.05\);
-3. \(\Delta_{\mathrm{linear}}>0\);
-4. \(p_{\mathrm{linear}}\le0.05\).
+3. \(p_{\mathrm{master}}\le0.05\);
+4. \(\Delta_{\mathrm{linear}}>0\);
+5. \(p_{\mathrm{linear}}\le0.05\).
 
 Allowed precise conclusion:
 
@@ -374,7 +375,13 @@ Allowed program-level interpretation:
 
 Do not call \(A_e\) and \(A_c\) exact continuous-time thresholds.
 
-## If sign-flip passes but common-offset null fails
+## If either replication sign-flip fails
+
+The direction is not sufficiently replicated across both taxonomic and geographic units.
+
+No subgroup rescue.
+
+## If both replication sign-flips pass but common-offset null fails
 
 Conclusion:
 
