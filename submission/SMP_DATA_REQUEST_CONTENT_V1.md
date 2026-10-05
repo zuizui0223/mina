@@ -50,7 +50,7 @@ For each frozen vacancy spell, we will compare the surrounding MasterSite popula
 
 The focal SiteID itself will be excluded from the surrounding population total.
 
-A same-SiteID paired design is used so that fixed site identity/quality is controlled directly. A second frozen null will preserve the observed surrounding-population trajectory and the exact elapsed time between abandonment and recolonization, to distinguish threshold asymmetry from generic temporal population change.
+A same-SiteID paired design is used so that fixed site identity/quality is controlled directly. A second frozen structured null will circularly shift each complete MasterSite block as a whole, preserving its multivariate SiteID abundance trajectory and cross-site covariance while breaking alignment between abundance phase and the frozen abandonment/recolonization dates.
 
 Planned outputs are a peer-reviewed ecological study and fully reproducible analysis code.
 
@@ -100,7 +100,7 @@ Electronic, preferably CSV/TSV; Excel is also acceptable.
 
 During an earlier public structural audit, Kittiwake records for Flamborough and Filey Coast SPA were inspected to confirm the MasterSite > Site hierarchy. That species × MasterSite combination is excluded from prospective confirmatory analyses because count magnitudes were already visible.
 
-The structural, vacancy-spell, support, paired-effect, and elapsed-time-matched null rules were frozen before receipt of the requested bulk extract. If the data do not contain enough stable completed abandonment-to-recolonization cycles, the hypothesis test will stop rather than lower the support thresholds after seeing count magnitudes.
+The structural, SiteID-identity, zero-semantics, vacancy-spell, paired-effect, and common-phase null rules were frozen before receipt of the requested bulk extract. If the data do not contain enough stable completed abandonment-to-recolonization cycles, the hypothesis test will stop rather than lower the support thresholds after seeing count magnitudes.
 
 
 ## Frozen analysis templates
