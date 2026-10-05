@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
   "gate_id": "mina-ecology-article-cross-scale-final-gate-v0-1",
-  "date": "2026-10-03",
+  "date": "2026-10-05",
   "canonical_target": "Ecology — Article",
   "canonical_resolution": "contracts/ECOLOGY_CROSS_SCALE_CANONICAL_TARGET_V1.json",
   "canonical_contract": "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json",
   "statuses": {
-    "scientific_analysis": "PASS_CLOSED",
-    "claim_boundary": "PASS",
+    "scientific_analysis": "PASS_ENDPOINTS_CLOSED_INTERPRETATION_REVISED",
+    "claim_boundary": "PASS_REVISED_FOR_INCREASING_NETWORKS",
     "literature_citation_keys": "PASS",
     "reproducibility_receipts": "PASS",
     "repository_ci": "PENDING_CURRENT_HEAD_FOCUSED_CHECK",
-    "main_document_generation": "PENDING_REGEN_AFTER_APPENDIX_REFERENCES",
-    "main_document_visual_qa": "PENDING_REQA_AFTER_APPENDIX_REFERENCES",
-    "main_figure_visual_qa": "PENDING_ECOLOGY_PUBLICATION_SIZE_RERENDER",
-    "generated_manuscript_page_limit": "PENDING_AFTER_PUBLICATION_SIZE_FIGURES",
+    "main_document_generation": "REQUIRED_REGEN_AFTER_2026_10_05_SCIENTIFIC_REVISION",
+    "main_document_visual_qa": "REQUIRED_REQA_AFTER_2026_10_05_SCIENTIFIC_REVISION",
+    "main_figure_visual_qa": "REQUIRED_REDESIGN_OR_CONFIRMATION_FOR_REVISED_REGIONAL_STORY",
+    "generated_manuscript_page_limit": "PENDING_REGENERATED_PACKAGE",
     "canonical_package_uniqueness": "PASS",
     "author_controlled_metadata": "BLOCKED_PENDING_HUMAN_CONFIRMATION",
-    "final_upload_readiness": "BLOCKED_BY_PACKAGING_QA_AND_AUTHOR_METADATA",
+    "final_upload_readiness": "BLOCKED_OLD_ARTIFACTS_SUPERSEDED_PLUS_AUTHOR_METADATA",
     "ai_disclosure": "PASS_METHODS_ACKNOWLEDGMENTS_AND_SUBMISSION_COPY",
     "data_provider_acknowledgments": "PASS",
     "supporting_information_pdf": "PENDING_BUILD_AND_VISUAL_QA"
@@ -28,13 +28,15 @@
       "artifact_id": 11271907803,
       "digest": "sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b",
       "head_sha": "7af330c02422678d8d3c95c7cbaf165368f4a6c0",
-      "pages": 24
+      "pages": 24,
+      "status": "SUPERSEDED_DO_NOT_UPLOAD"
     },
     "main_figures": {
       "workflow_run_id": 37106154408,
       "artifact_id": 11267687698,
       "digest": "sha256:c00314e70b631d024d407429a0947f1f7e6e749a1945fcd58833e1fea1585f19",
-      "count": 3
+      "count": 3,
+      "status": "SUPERSEDED_PENDING_REVISED_STORY_FIGURE_QA"
     },
     "expected_generated_manuscript_pages": 27,
     "ecology_article_page_limit": 30
@@ -54,6 +56,6 @@
   "optional_post_initial_submission_field": [
     "permanent archive DOI"
   ],
-  "next_action": "Complete current-head focused tests, regenerate and visually QA the Main Document after Appendix S1 references, render the <=18 cm publication-sized figures and pass the size audit, build/QA Appendix S1 as a single PDF, then fill confirmed private author metadata and regenerate the author-complete files.",
-  "stop_rule": "No new ecological analysis is authorized by this final packaging gate."
+  "next_action": "Regenerate the Ecology Article manuscript from the revised 2026-10-05 scientific text, ensure the increasing regional networks are visible in the main regional figure/story, rerender and visually QA the DOCX/figures/Appendix, recheck page limit, then complete author-controlled metadata.",
+  "stop_rule": "No new MAPPPD ecological endpoint is authorized. Packaging work must reflect the revised interpretation; SMP symmetry testing remains a separate prospective project."
 }
