@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-05  
 **Status:** written before any SMP hysteresis support or effect outcome is opened.  
-**Rule:** this spine may be activated only if the frozen SMP support gate and both confirmatory effect gates pass.
+**Rule:** this spine may be activated only if the frozen SMP support gate and all three confirmatory inference gates pass.
 
 ## Working title
 
@@ -164,7 +164,13 @@ T_{\mathrm{obs}}=[\text{insert frozen result only}]
 species sign-flip:
 
 \[
-p=[\text{insert frozen result only}]
+p_{\mathrm{species}}=[\text{insert frozen result only}]
+\]
+
+physical-MasterSite sign-flip:
+
+\[
+p_{\mathrm{master}}=[\text{insert frozen result only}]
 \]
 
 ### Result 5 — structured non-circular common-offset null
