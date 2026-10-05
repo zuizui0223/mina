@@ -2,8 +2,9 @@
 """Frozen Stage-C paired abandonment/recolonization hysteresis test.
 
 Primary support requires both:
-1. positive species-balanced observed hysteresis under a species sign-flip test;
-2. observed hysteresis exceeding an elapsed-time-matched trajectory-drift null.
+1. positive species-balanced hysteresis under a species sign-flip test;
+2. observed hysteresis exceeding a structured common-phase null that preserves
+   each MasterSite block's multivariate abundance trajectory.
 """
 from __future__ import annotations
 
@@ -22,7 +23,7 @@ from scripts.gate_smp_master_site_support_v1 import _norm
 SEED = 20261005
 BOOT_B = 9999
 RANDOM_SIGN_B = 100000
-DRIFT_B = 20000
+PHASE_B = 9999
 
 
 def transition_midpoint(parent_excl_a: float, parent_excl_b: float) -> float:
@@ -37,41 +38,50 @@ def parent_excluding_site(matrix: pd.DataFrame, site: str, year: int) -> float:
     return value
 
 
-def H_at_start(matrix: pd.DataFrame, site: str, start: int, gap: int) -> float:
-    a0, a1 = int(start), int(start) + 1
-    c0, c1 = int(start) + int(gap), int(start) + int(gap) + 1
-    for year in (a0, a1, c0, c1):
-        if year not in matrix.index:
-            raise ValueError(f"pseudo/observed transition year {year} missing")
+def H_from_years(
+    matrix: pd.DataFrame,
+    site: str,
+    abandon_from: int,
+    abandon_to: int,
+    recolonize_from: int,
+    recolonize_to: int,
+) -> float:
     ae = transition_midpoint(
-        parent_excluding_site(matrix, site, a0),
-        parent_excluding_site(matrix, site, a1),
+        parent_excluding_site(matrix, site, abandon_from),
+        parent_excluding_site(matrix, site, abandon_to),
     )
     ac = transition_midpoint(
-        parent_excluding_site(matrix, site, c0),
-        parent_excluding_site(matrix, site, c1),
+        parent_excluding_site(matrix, site, recolonize_from),
+        parent_excluding_site(matrix, site, recolonize_to),
     )
     return float(ac - ae)
 
 
 def spell_effect(matrix: pd.DataFrame, site: str, spell: dict) -> dict:
-    start = int(spell["abandon_from"])
-    gap = int(spell["transition_gap_years"])
-    observed_H = H_at_start(matrix, site, start, gap)
+    years = [
+        int(spell["abandon_from"]),
+        int(spell["abandon_to"]),
+        int(spell["recolonize_from"]),
+        int(spell["recolonize_to"]),
+    ]
+    for year in years:
+        if year not in matrix.index:
+            raise ValueError(f"spell year {year} missing from matrix")
+    if site not in matrix.columns:
+        raise ValueError(f"spell site {site} missing from matrix")
+
     ae = transition_midpoint(
-        parent_excluding_site(matrix, site, int(spell["abandon_from"])),
-        parent_excluding_site(matrix, site, int(spell["abandon_to"])),
+        parent_excluding_site(matrix, site, years[0]),
+        parent_excluding_site(matrix, site, years[1]),
     )
     ac = transition_midpoint(
-        parent_excluding_site(matrix, site, int(spell["recolonize_from"])),
-        parent_excluding_site(matrix, site, int(spell["recolonize_to"])),
+        parent_excluding_site(matrix, site, years[2]),
+        parent_excluding_site(matrix, site, years[3]),
     )
-    if not np.isclose(observed_H, ac - ae):
-        raise AssertionError("observed H mismatch")
     return {
         "abandon_state": float(ae),
         "recolonize_state": float(ac),
-        "H": float(observed_H),
+        "H": float(ac - ae),
     }
 
 
@@ -172,30 +182,82 @@ def build_panel_cache(
     return cache
 
 
-def trajectory_drift_null(
+def _shift_year(year: int, block_years: list[int], shift: int) -> int:
+    block = [int(v) for v in block_years]
+    index = {y: i for i, y in enumerate(block)}
+    if int(year) not in index:
+        raise ValueError(f"event year {year} outside frozen phase block")
+    return int(block[(index[int(year)] + int(shift)) % len(block)])
+
+
+def shifted_spell_H(
+    matrix: pd.DataFrame,
+    site: str,
+    spell: dict,
+    shift: int,
+) -> float:
+    block = [int(v) for v in spell["phase_block_years"]]
+    if len(block) < 6:
+        raise ValueError("phase-null spell has block shorter than frozen 6-year minimum")
+    years = [
+        _shift_year(int(spell["abandon_from"]), block, shift),
+        _shift_year(int(spell["abandon_to"]), block, shift),
+        _shift_year(int(spell["recolonize_from"]), block, shift),
+        _shift_year(int(spell["recolonize_to"]), block, shift),
+    ]
+    return H_from_years(matrix, site, *years)
+
+
+def structured_phase_null(
     observed_rows: pd.DataFrame,
     spells: list[dict],
     cache: dict,
     *,
-    B: int = DRIFT_B,
+    B: int = PHASE_B,
     seed: int = SEED,
 ) -> dict:
     rng = np.random.default_rng(int(seed))
-    T_null = np.empty(int(B), float)
+    T_obs = hierarchical_means(observed_rows)["T"]
 
+    block_specs = {}
+    for sp in spells:
+        key = (
+            str(sp["species"]),
+            _norm(sp["master_site"]),
+            str(sp["unit"]),
+            int(sp["phase_block_start"]),
+            int(sp["phase_block_end"]),
+        )
+        years = tuple(int(v) for v in sp["phase_block_years"])
+        if key in block_specs and block_specs[key] != years:
+            raise ValueError("inconsistent frozen phase block metadata")
+        block_specs[key] = years
+
+    T_null = np.empty(int(B), float)
     for r in range(int(B)):
+        shifts = {
+            key: int(rng.integers(0, len(years)))
+            for key, years in block_specs.items()
+        }
         sim_rows = []
         for sp in spells:
-            starts = [int(v) for v in sp["pseudo_start_years"]]
-            if len(starts) < 3:
-                raise ValueError("spell entered Stage C without >=3 frozen pseudo placements")
-            start = int(rng.choice(starts))
-            key = (str(sp["species"]), _norm(sp["master_site"]), str(sp["unit"]))
-            H = H_at_start(
-                cache[key],
+            panel_key = (
+                str(sp["species"]),
+                _norm(sp["master_site"]),
+                str(sp["unit"]),
+            )
+            block_key = (
+                panel_key[0],
+                panel_key[1],
+                panel_key[2],
+                int(sp["phase_block_start"]),
+                int(sp["phase_block_end"]),
+            )
+            H = shifted_spell_H(
+                cache[panel_key],
                 str(sp["site_id"]),
-                start,
-                int(sp["transition_gap_years"]),
+                sp,
+                shifts[block_key],
             )
             sim_rows.append(
                 {
@@ -207,16 +269,16 @@ def trajectory_drift_null(
             )
         T_null[r] = hierarchical_means(pd.DataFrame(sim_rows))["T"]
 
-    T_obs = hierarchical_means(observed_rows)["T"]
     median = float(np.median(T_null))
     p = float((1 + np.sum(T_null >= T_obs)) / (len(T_null) + 1))
     return {
-        "simulations": int(B),
+        "resamples": int(B),
         "seed": int(seed),
+        "distinct_phase_blocks": int(len(block_specs)),
         "median_T": median,
         "q025": float(np.quantile(T_null, 0.025)),
         "q975": float(np.quantile(T_null, 0.975)),
-        "delta_T_observed_minus_median": float(T_obs - median),
+        "delta_phase_observed_minus_median": float(T_obs - median),
         "upper_tail_p": p,
     }
 
@@ -253,14 +315,14 @@ def run(
     vals = hier["species"]["species_mean_H"].to_numpy(float)
     sign = sign_flip_test(vals)
     ci = species_bootstrap(vals)
-    drift = trajectory_drift_null(frame, spells, cache)
+    phase = structured_phase_null(frame, spells, cache)
 
     T = float(hier["T"])
     supported = bool(
         T > 0
         and sign["one_sided_p"] <= 0.05
-        and drift["delta_T_observed_minus_median"] > 0
-        and drift["upper_tail_p"] <= 0.05
+        and phase["delta_phase_observed_minus_median"] > 0
+        and phase["upper_tail_p"] <= 0.05
     )
 
     result = {
@@ -272,9 +334,9 @@ def run(
             "primary_T_species_balanced_mean_H": T,
             "species_count": int(len(vals)),
             "species_positive_H": int(np.sum(vals > 0)),
-            "sign_flip": sign,
+            "species_sign_flip": sign,
             "species_bootstrap_95": ci,
-            "trajectory_drift_null": drift,
+            "structured_phase_null": phase,
             "supported": supported,
             "site_means": hier["site"].to_dict(orient="records"),
             "master_means": hier["master"].to_dict(orient="records"),
@@ -282,12 +344,12 @@ def run(
         },
         "decision": {
             "spatial_recovery_hysteresis_supported": supported,
-            "requires_both_sign_flip_and_trajectory_drift_null": True,
+            "requires_species_sign_flip_and_structured_phase_null": True,
         },
         "boundary": [
-            "A supported result demonstrates history-dependent spatial recovery at retained SiteIDs, not a unique social mechanism.",
-            "The focal SiteID is excluded from parent abundance at all observed and pseudo transitions.",
-            "The elapsed-time-matched null controls generic parent-abundance drift over the observed vacancy duration.",
+            "A supported result demonstrates asymmetric spatial recovery at retained SiteIDs, not a unique social mechanism.",
+            "The focal SiteID is excluded from surrounding population abundance at observed and shifted transitions.",
+            "The structured phase null preserves each block's multivariate abundance trajectory and cross-site covariance while breaking alignment with frozen event dates.",
             "Stable site pairing does not remove time-varying habitat, predator, disturbance, or management confounding.",
             "No first-colonization events enter the primary paired test.",
         ],
