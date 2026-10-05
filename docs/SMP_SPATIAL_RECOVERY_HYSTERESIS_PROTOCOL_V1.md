@@ -153,7 +153,25 @@ Require:
 
 Five species is the minimum capable of exact one-sided p<=0.05.
 
-## Confirmatory gate 2 — structured non-circular common-offset null
+## Confirmatory gate 2 — physical-MasterSite sign-flip
+
+Species are the taxonomic replication unit, but several species can share the same physical breeding locality. To prevent one local environmental shock from being counted as independent geographic replication in multiple species, retain the primary hierarchical spell weights and sum their weighted (H) contributions within each provider-resolved physical `master_site_key`.
+
+Sign-flip those whole physical-MasterSite contributions:
+
+- exact enumeration for <=20 physical MasterSites;
+- otherwise 100,000 sign flips;
+- one-sided alpha = 0.05.
+
+Require:
+
+[
+p_{mathrm{master}}le0.05.
+]
+
+This is an intersection requirement with the species sign-flip. Taxonomic replication cannot substitute for geographic replication, and vice versa.
+
+## Confirmatory gate 3 — structured non-circular common-offset null
 
 A positive \(H\) can arise merely because recolonization occurs later along a changing parent-population trajectory.
 
@@ -188,7 +206,7 @@ No SMP outcome data were involved in this repair.
 
 ## Confirmatory rule
 
-Spatial-recovery hysteresis is supported only if **all four** conditions hold:
+Spatial-recovery hysteresis is supported only if **all five** conditions hold:
 
 - \(T_{obs}>0\);
 - \(p_{sign}\le0.05\);
