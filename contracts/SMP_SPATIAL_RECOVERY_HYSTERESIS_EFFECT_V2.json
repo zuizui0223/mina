@@ -1,0 +1,49 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-smp-spatial-recovery-hysteresis-effect-v2",
+  "date": "2026-10-05",
+  "status": "locked_until_v2_recovery_audit_passes_and_state_support_passes",
+  "supersedes": "mina-smp-spatial-recovery-hysteresis-effect-v1",
+  "hypothesis": "For the same breeding SiteIDs, later recolonization occurs at a higher surrounding population state than earlier abandonment, beyond generic temporal structure in the observed parent trajectories.",
+  "observed_estimand": {
+    "focal_state": "leave-one-SiteID-out parent abundance",
+    "transform": "log1p",
+    "transition_state": "mean of the two annual censuses bracketing the transition",
+    "H": "A_recolonize - A_abandon"
+  },
+  "hierarchy": [
+    "mean repeated spells within species x physical MasterSite x SiteID",
+    "mean SiteIDs within species x physical MasterSite",
+    "mean physical MasterSites within species",
+    "unweighted mean species means = T_obs"
+  ],
+  "primary_gate_1": {
+    "test": "one-sided sign-flip of species-level mean H",
+    "exact_if_species_leq": 20,
+    "monte_carlo_if_more_species": 100000,
+    "seed": 20261005,
+    "support": "T_obs > 0 and p_sign <= 0.05"
+  },
+  "primary_gate_2": {
+    "name": "noncircular_common_shift_null",
+    "simulations": 20000,
+    "seed": 20261005,
+    "rule": "For each shift group, draw one integer shift uniformly from its Stage-B-frozen eligible_common_shifts and apply that same shift to every spell in the group. No wrap. Keep the observed multivariate abundance matrices fixed.",
+    "aggregation": "identical to T_obs",
+    "outputs": [
+      "median_T_null",
+      "q025",
+      "q975",
+      "Delta_shift=T_obs-median_T_null",
+      "upper_tail_p"
+    ],
+    "support": "Delta_shift > 0 and upper_tail_p <= 0.05"
+  },
+  "confirmatory_support": "Both primary gates must pass. Neither can rescue failure of the other.",
+  "boundaries": [
+    "Support establishes event-aligned, history-dependent spatial recovery at the measured SiteID scale, not a unique Allee/social mechanism.",
+    "The common-shift null controls generic phase/trajectory effects without circular wrap but is not a complete generative occupancy model.",
+    "Same-site pairing controls fixed site identity; time-varying habitat remains possible."
+  ],
+  "stop_rule": "After SMP magnitude opening, do not change H, transform, hierarchy, shift groups, eligible shifts, null family, simulation count, taxon subset, or support thresholds."
+}
