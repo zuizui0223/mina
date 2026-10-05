@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "template_id": "mina-smp-provider-confirmation-template-v1",
+  "date": "2026-10-05",
+  "status": "template_only_not_provider_confirmation",
+  "public_evidence": {
+    "explicit_zero_nil_returns_documented": {
+      "status": "supported_by_official_BTO_guidance",
+      "source": "https://www.bto.org/get-involved/volunteer/projects/seabird-monitoring-programme/taking-part",
+      "note": "BTO states zero counts distinguish local absence from non-survey and local disappearance is recorded as a nil return."
+    },
+    "whole_colony_extract_schema_documented": {
+      "status": "supported_by_official_SMP_data_request_guidance",
+      "source": "https://www.bto.org/sites/default/files/smp_data_request_guide_aug22.pdf"
+    }
+  },
+  "provider_confirmation_required": {
+    "row_with_direct_count_zero_is_surveyed_nil": null,
+    "absent_site_year_row_is_not_zero": null,
+    "estimated_or_imputed_zero_excluded_from_primary": null,
+    "confirmation_source": "",
+    "compatible_start_year": null,
+    "compatible_end_year": null,
+    "compatible_record_family_or_era": "",
+    "notes": ""
+  },
+  "instruction": "Populate only from BTO/SMP provider correspondence or official documentation applicable to the delivered extract. Do not infer missing-row semantics from the data pattern."
+}
