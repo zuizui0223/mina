@@ -86,6 +86,12 @@ p_{\mathrm{sign}}\le0.05,
 and
 
 \[
+\Delta_{\mathrm{linear}}>0,
+\]
+
+and
+
+\[
 p_{\mathrm{linear}}\le0.05.
 \]
 
