@@ -2,7 +2,7 @@
 
 **Authors:** [SAME AUTHOR LIST AS MAIN MANUSCRIPT]
 
-**Manuscript title:** Breeding-space contraction recurs across spatial scales in Antarctic penguins
+**Manuscript title:** Breeding-space concentration recurs across spatial scales in Antarctic penguins
 
 **Journal:** Ecology
 
@@ -20,9 +20,9 @@ The manuscript combines analyses with different inferential status.
 | Signy Adélie concentration | prospectively frozen after Palmer discovery | independent geographic replication |
 | Signy chinstrap concentration | separately prospectively frozen | cross-species replication |
 | Five-trajectory abundance–E scaling | bounded post-hoc exploration, now closed | describes timescale and candidate scaling only |
-| MAPPPD regional concentration | bounded existing-data extension; regional contract frozen before regional concentration outcomes | tests whether the direction transfers one spatial level upward |
+| MAPPPD regional concentration | bounded existing-data extension; regional contract frozen before regional concentration outcomes | declining subset tests abundance-linked recurrence; increasing subset constrains a decline-specific interpretation |
 | Dominance-route decomposition | post-hoc descriptive | constrains mechanism; no p-values |
-| Increasing MAPPPD networks | descriptive context | evaluates qualitative consistency with a slow-state interpretation; not a hysteresis test |
+| Increasing MAPPPD networks | descriptive outcome with no frozen trend-asymmetry test | main interpretive boundary showing that lower E is not restricted to declining abundance trajectories |
 
 No p-values are pooled across these evidence layers.
 
@@ -170,7 +170,7 @@ The Central-west Antarctic Peninsula retained rosters include BISC (Biscoe Point
 
 All three eligible increasing networks ended with lower E than in their first retained complete season (Table S5): Adélie — Victoria Land, abundance +33.1% and E −26.6%; Gentoo — Central-west Antarctic Peninsula, abundance +21.8% and E −16.3%; and Gentoo — South Shetland Islands, abundance +64.1% and E −1.1%.
 
-These observations are qualitatively compatible with spatial structure changing more slowly than abundance, but no regional ratchet or hysteresis endpoint was frozen before these outcomes were inspected. They therefore remain descriptive.
+These observations are a main interpretive boundary on the regional decline-specific narrative: lower regional E is not restricted to declining abundance trajectories in the eligible panels. Their inferential status remains descriptive because no regional time-slope, decline-versus-increase asymmetry, ratchet or hysteresis endpoint was frozen before these outcomes were inspected.
 
 ## Section S9: Component-level route boundary
 
@@ -189,7 +189,7 @@ This contrast rules out a universal interpretation in which concentration necess
 
 Supported scope:
 
-> Cross-scale directional recurrence of abundance-conditioned breeding-space concentration within Antarctic Pygoscelis.
+> Replicated non-proportional concentration during decline within Palmer/Signy breeding systems, with a regional boundary showing that effective breeding-site concentration is not restricted to declining abundance trajectories.
 
 Not supported:
 
