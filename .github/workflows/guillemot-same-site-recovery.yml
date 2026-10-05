@@ -1,0 +1,31 @@
+name: guillemot-same-site-recovery
+
+on:
+  push:
+    branches: [research/guillemot-same-site-recovery-v1]
+    paths:
+      - "contracts/GUILLEMOT_SAME_SITE_RECOVERY_V1.json"
+      - "docs/GUILLEMOT_SAME_SITE_RECOVERY_PREREGISTRATION_V1.md"
+      - "scripts/run_guillemot_same_site_recovery_v1.py"
+      - "tests/test_guillemot_same_site_recovery_v1.py"
+      - ".github/workflows/guillemot-same-site-recovery.yml"
+  pull_request:
+    paths:
+      - "contracts/GUILLEMOT_SAME_SITE_RECOVERY_V1.json"
+      - "docs/GUILLEMOT_SAME_SITE_RECOVERY_PREREGISTRATION_V1.md"
+      - "scripts/run_guillemot_same_site_recovery_v1.py"
+      - "tests/test_guillemot_same_site_recovery_v1.py"
+      - ".github/workflows/guillemot-same-site-recovery.yml"
+  workflow_dispatch:
+
+jobs:
+  frozen-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas
+      - run: python -m py_compile scripts/run_guillemot_same_site_recovery_v1.py
+      - run: python -m unittest tests.test_guillemot_same_site_recovery_v1 -v
