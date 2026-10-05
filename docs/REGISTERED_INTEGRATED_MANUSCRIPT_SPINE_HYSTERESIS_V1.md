@@ -231,7 +231,7 @@ Do not write:
 
 ## Failure route
 
-If the Stage-B support gate fails or either confirmatory Stage-C gate fails:
+If the Stage-B support gate fails or any confirmatory Stage-C gate fails:
 
 - this integrated manuscript spine is not activated;
 - no wording above is retrofitted onto the penguin paper;
