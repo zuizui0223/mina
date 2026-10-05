@@ -46,7 +46,7 @@
         "maximal contiguous state-complete year block containing each spell",
         "shared provider-resolved physical master_site_key phase across species when the frozen block is identical"
       ],
-      "randomization": "For each provider-resolved physical master_site_key x identical contiguous block, draw one common circular year shift. Apply that same shift to every species, SiteID and spell sharing that MasterSite/block while keeping frozen event-year positions fixed.",
+      "randomization": "For each provider-resolved physical master_site_key x identical contiguous state-complete block, draw one common circular year shift. Apply that same shift to every species, SiteID and spell sharing that MasterSite/block while keeping frozen event-year positions fixed.",
       "resamples": 9999,
       "seed": 20261005,
       "p_value": "plus-one upper-tail probability that shifted species-balanced T >= T_obs",
@@ -75,6 +75,7 @@
     "When multiple species share a MasterSite and identical phase block, the structured null uses one common phase shift to avoid treating shared local environmental trajectories as independent species evidence.",
     "Physical phase blocks are keyed by provider-resolved master_site_key, not by display-name string alone.",
     "MasterSite aggregation and phase blocking use provider-resolved physical master_site_key; display labels are retained only for presentation.",
+    "The structured common-phase null preserves synchronized local timing within provider-resolved MasterSite/block groups but remains a temporal null, not a complete reversible occupancy process model.",
     "The structured common-phase null preserves synchronized local timing within provider-resolved MasterSite/block groups but remains a temporal null, not a complete reversible occupancy process model."
   ],
   "stop_rule": "One execution only after identity, zero-semantics and phase-block support gates pass. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
