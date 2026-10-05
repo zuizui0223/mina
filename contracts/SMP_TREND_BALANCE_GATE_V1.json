@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-smp-trend-balance-gate-v1",
+  "date": "2026-10-05",
+  "status": "frozen_before_smp_total_abundance_trends",
+  "parent_support": "contracts/SMP_TREND_SYMMETRY_SUPPORT_V1.json",
+  "purpose": "Determine whether the frozen structurally eligible SMP roster contains enough positive and negative population trajectories to identify trend symmetry before any component-composition or concentration outcome is opened.",
+  "input": {
+    "panels": "exact frozen roster emitted by the structural support gate",
+    "allowed_counts": "component counts may be summed internally only to produce annual panel totals; component shares and E remain uncomputed/unexposed"
+  },
+  "annual_total": {
+    "symbol": "N_it",
+    "definition": "sum of eligible mutually exclusive retained SiteID counts in complete panel-year t",
+    "transformation": "log1p(N_it)"
+  },
+  "trend": {
+    "symbol": "b_i",
+    "model": "OLS slope log1p(N_it) ~ centered calendar year",
+    "primary_use": "continuous",
+    "descriptive_label": {
+      "increasing": "b_i > 0",
+      "declining": "b_i < 0",
+      "zero": "b_i == 0"
+    },
+    "no_minimum_effect_cutoff": true
+  },
+  "symmetry_identifiability_gate": {
+    "minimum_increasing_panels": 6,
+    "minimum_declining_panels": 6,
+    "minimum_species_represented_in_increasing": 3,
+    "minimum_species_represented_in_declining": 3,
+    "minimum_master_sites_in_increasing": 5,
+    "minimum_master_sites_in_declining": 5,
+    "requirement": "all six conditions must pass"
+  },
+  "outputs_allowed_before_concentration": [
+    "panel_id",
+    "species",
+    "MasterSite",
+    "number of complete years",
+    "first/last year",
+    "b_i",
+    "trend label",
+    "counts of panels/species/MasterSites by trend class"
+  ],
+  "prohibited": [
+    "component proportions",
+    "E",
+    "gamma_obs",
+    "gamma_null",
+    "delta_gamma",
+    "kappa",
+    "any trend-specific concentration summary"
+  ],
+  "decision": {
+    "if_passed": "Authorize one execution of the already-frozen trend-symmetry concentration contract.",
+    "if_failed": "Do not test increasing-versus-declining concentration symmetry. The SMP extract may still support a narrower abundance-space study only under a separately justified future contract, not as a rescue of this hypothesis."
+  }
+}
