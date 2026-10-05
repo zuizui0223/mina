@@ -22,14 +22,16 @@
     "multiple_spells": "allowed; all qualifying completed spells retained",
     "first_colonization": "not part of the primary test because no within-site abandonment threshold exists to pair against it",
     "transition_gap_years": "recolonize_from - abandon_from; because both transitions are consecutive-year transitions, this equals the separation between their transition midpoints.",
-    "phase_null_support": {
-      "contiguous_block": "Each completed spell is assigned to the maximal calendar-consecutive complete-year block of its frozen species x MasterSite panel that contains the entire spell.",
-      "minimum_block_years": 6,
-      "reason": "Provides at least six distinct circular phase alignments for the structured common-phase null; threshold frozen before SMP magnitude outcomes.",
-      "eligibility": "Only spells contained in a maximal calendar-consecutive state-complete block of >=6 years enter Stage C."
-    },
     "state_complete_year_rule": "Within the provider-confirmed zero-semantics interval, start from inherited Stage-A complete years and retain only years with one usable direct positive/explicit-zero state for every retained SiteID. Missing/unparseable records remove the year; they are never converted to zero.",
-    "state_complete_minimum": "Before spell scanning a panel must retain >=10 state-complete years spanning >=12 calendar years."
+    "state_complete_minimum": "Before spell scanning a panel must retain >=10 state-complete years spanning >=12 calendar years.",
+    "linear_shift_null_support": {
+      "contiguous_block": "Each completed spell is assigned to the maximal calendar-consecutive state-complete block containing the spell.",
+      "group": "provider-resolved physical master_site_key x identical contiguous block",
+      "common_offset_rule": "For each group, freeze the intersection of integer year offsets that keeps every abandonment/recolonization event of every group spell inside the block with no wrap.",
+      "minimum_common_offsets": 3,
+      "eligibility": "All spells in a group are Stage-C eligible only if the group has >=3 common non-circular offsets, including observed offset 0.",
+      "reason": "Controls generic temporal abundance drift without creating the artificial circular seam detected by the preoutcome synthetic recovery audit."
+    }
   },
   "allowed_outputs_before_magnitudes": [
     "species",
@@ -41,7 +43,9 @@
     "number of completed spells by site/panel/species",
     "transition_gap_years",
     "contiguous complete-year block start/end/length for each completed spell",
-    "state-complete year identities/count/span for each panel/spell"
+    "state-complete year identities/count/span for each panel/spell",
+    "contiguous state-complete block start/end/length for each completed spell",
+    "frozen common non-circular offset values/count for each physical MasterSite x block"
   ],
   "prohibited_outputs": [
     "count magnitudes",
@@ -54,20 +58,20 @@
     "hysteresis width H"
   ],
   "identifiability_gate": {
-    "minimum_phase_eligible_completed_spells": 30,
     "minimum_distinct_siteids_with_spells": 20,
     "minimum_mastersites_with_spells": 10,
     "minimum_species_with_spells": 5,
     "minimum_species_with_at_least_3_spells": 4,
     "minimum_species_with_spells_in_at_least_2_mastersites": 3,
-    "minimum_phase_block_years_per_spell": 6,
     "master_site_count_definition": "distinct provider-resolved physical master_site_key values, not species x MasterSite panels or display-name strings",
     "minimum_species_rationale": "The confirmatory exact species-level sign-flip test cannot attain one-sided p<=0.05 with four species (minimum 1/16=0.0625); five species permit 1/32=0.03125.",
-    "requirement": "All replication conditions must pass after restricting to provider-confirmed explicit-zero spells contained in >=6-year maximal contiguous state-complete blocks."
+    "requirement": "All replication conditions must pass after restricting to provider-confirmed explicit-zero spells in physical MasterSite x block groups with >=3 frozen non-circular common offsets.",
+    "minimum_linear_shift_eligible_completed_spells": 30,
+    "minimum_common_offsets_per_master_block": 3
   },
   "decision": {
-    "if_passed": "After identity-resolved structure and provider/official zero-semantics confirmation both pass, freeze the exact phase-null-eligible completed-spell roster and authorize one magnitude-opening hysteresis execution.",
-    "if_failed": "Stop the hysteresis route. Do not infer zero semantics, lower identity/cycle/phase thresholds, or bridge missing years."
+    "if_passed": "After identity resolution and provider/official zero-semantics confirmation, freeze the exact common-offset-eligible spell roster and authorize one magnitude-opening hysteresis execution.",
+    "if_failed": "Stop the hysteresis route. Do not infer zero semantics, lower identity/cycle/common-offset thresholds, wrap events across block boundaries, or bridge missing years."
   },
   "identity_requirement": "Input roster must be the output of the frozen SiteID identity gate; unresolved, merged, split, overlapping, boundary-changed, retired or replaced SiteIDs are ineligible.",
   "zero_semantics_contract": "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json",
