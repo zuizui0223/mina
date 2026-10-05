@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "receipt_id": "mina-smp-provider-request-package-readiness-v1",
+  "date": "2026-10-05",
+  "status": "READY_FOR_HUMAN_SUBMISSION_NOT_YET_SENT",
+  "canonical_scientific_preregistration": "results/SMP_SPATIAL_RECOVERY_HYSTERESIS_PREREGISTRATION_RECEIPT_V3.json",
+  "official_access_evidence": {
+    "public_data_page": "https://app.bto.org/seabirds/public/data.jsp",
+    "smp_participation_guidance": "https://www.bto.org/get-involved/volunteer/projects/seabird-monitoring-programme/taking-part",
+    "data_access_policy": "https://www.bto.org/sites/default/files/seabird_monitoring_programme_data_access_and_use_policy.pdf",
+    "contact": "smp@bto.org"
+  },
+  "verified_public_facts": [
+    "BTO/SMP currently provides whole-colony counts through the public database and by data request.",
+    "The public SMP data page directs large requests to a Data Request form and provides smp@bto.org as the programme contact.",
+    "Current BTO SMP guidance states that zero counts distinguish true absence from a species simply not being surveyed and describes local disappearance as a nil return."
+  ],
+  "unresolved_provider_specific_hard_stops": [
+    "Exact semantics of direct Count=0 rows in the delivered bulk extract.",
+    "Exact semantics of absent SiteID x species x year rows in the delivered extract.",
+    "How estimated/imputed zeroes are encoded and excluded.",
+    "Compatible record family / era for those zero semantics.",
+    "Physical SiteID merge/split/rename/boundary history.",
+    "Provider-resolved physical MasterSite identity and parent/child overlap."
+  ],
+  "human_fields_required_before_submission": [
+    "name",
+    "institution",
+    "address",
+    "telephone",
+    "email",
+    "source of funding",
+    "supervisor/collaborator details",
+    "deadline for receipt",
+    "final collaboration wording"
+  ],
+  "decision": {
+    "request_copy_ready": true,
+    "external_request_sent": false,
+    "stage_B_authorized": false
+  },
+  "boundary": "Operational readiness only. Public documentation does not replace provider-specific identity and zero-semantics confirmation and does not authorize Stage B."
+}
