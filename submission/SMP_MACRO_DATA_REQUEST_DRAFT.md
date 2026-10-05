@@ -2,11 +2,11 @@
 
 Dear Seabird Monitoring Programme team,
 
-I am assessing whether the SMP database can support a comparative study of **local breeding-site abandonment and later recolonization** across colonial seabirds.
+I am assessing whether the SMP database can support a comparative study of whether local breeding-site loss and recovery are spatially reversible across colonial seabirds.
 
-The focal question is whether population recovery simply retraces spatial collapse. Specifically, for a breeding Site that becomes empty and is later reoccupied, I plan to compare the surrounding MasterSite population state at abandonment with the state at later recolonization.
+The specific test compares **the same repeated SiteID** at two moments: when it changes from occupied to an explicit zero count, and when that same SiteID is later recolonized. The hypothesis is that recolonization may require a higher surrounding MasterSite population state than the state at which the SiteID was abandoned.
 
-Before analysing any ecological outcome, I will freeze the spatial hierarchy and physical SiteID identities. I am therefore requesting a record-level **Whole Colony / Colony Count** extract covering **1986–2024** for non-sensitive species that can be released for research use.
+Before analysing any count magnitude, I would first run a structural and occupancy-state audit. I am therefore requesting a record-level **Whole Colony / Colony Count** extract covering **1986–2024** for non-sensitive species that can be released for research use.
 
 If available, could the extract include:
 
@@ -24,37 +24,20 @@ If available, could the extract include:
 - Accuracy
 - Estimate / estimate type
 - Comments
-- explicit nil-return / zero field, if available
-- surveyed / not-surveyed field, if available
-- parent / aggregate / merged-site field, if available
+- verification status
+- explicit nil-return / zero information, if encoded separately from Count = 0
+- Plot / spatial-level indicator distinguishing whole-colony Site records from partial/study plots
 
-For this project, two metadata issues are especially important.
+For this project, three metadata issues are especially important:
 
-## 1. Site identity through time
+1. **Zero versus missing.** Could you confirm whether an absent SiteID × year record means “not surveyed” rather than zero abundance, and whether explicit nil returns are identifiable?
+2. **Site identity through time.** Is there a crosswalk or history for SiteIDs that were renamed, merged, split, retired, replaced, or had their boundaries changed?
+3. **Mutual exclusivity.** Can parent/aggregate Site or MasterSite totals be distinguished from the component SiteIDs they summarize, so that overlapping records are not double-counted?
 
-Could you provide any SiteID / MasterSite change log or crosswalk that documents:
+If plot-level records exist separately, they are not required for the primary analysis unless their identifiers and boundaries are stable and documented through time.
 
-- renamed or retired SiteIDs;
-- replacement SiteIDs;
-- merged or split Sites;
-- Site boundary changes;
-- parent Sites overlapping child Sites;
-- overlapping child Sites.
+The analysis is prospectively staged. Panel and SiteID eligibility will be frozen from identifiers, sampling support and metadata before count magnitudes are opened. The next gate will use only positive/explicit-zero/missing states to identify completed, calendar-consecutive abandonment-to-recolonization spells. Only if that support gate passes will abundance magnitudes be used for the paired threshold test.
 
-The focal abandonment-to-recolonization comparison requires the same physical Site to be identifiable across time. Any Site whose physical identity cannot be resolved prospectively will be excluded.
-
-## 2. Explicit zero versus missing
-
-Could you also confirm:
-
-- whether a submitted row with Count = 0 is an explicit surveyed nil return;
-- whether an absent SiteID × year row means unvisited / missing rather than zero;
-- whether nil returns or survey completion are represented by a separate field.
-
-Missing years will not be treated as absences, and vacancy spells will not bridge an unobserved year.
-
-The analysis is preregistered in stages: identifiers and Site history first, then only positive/zero occupancy states, and only after the exact abandonment/recolonization spell roster is frozen will count magnitudes be used.
-
-I will follow the SMP Data Access and Use Policy and the required acknowledgement wording in any publication.
+I will follow the SMP Data Access and Use Policy and required acknowledgement wording in any publication using the data.
 
 Many thanks for your help.
