@@ -58,7 +58,7 @@ The test is stronger than a cross-sectional occupancy model because:
 2. the focal SiteID is removed from the surrounding population abundance;
 3. abandonment/recolonization spells are frozen before abundance magnitude is opened;
 4. species are the macroecological replication level;
-5. a common-phase null preserves each MasterSite block's observed multivariate abundance trajectory while breaking alignment with the frozen events.
+5. a structured non-circular common-offset null preserves each physical MasterSite block's observed multivariate abundance trajectory and shared local temporal covariance while breaking alignment with the frozen events without wrapping across block boundaries.
 
 ## Allowed novelty statement if supported
 
