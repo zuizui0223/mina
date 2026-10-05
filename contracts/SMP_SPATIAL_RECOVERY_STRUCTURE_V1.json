@@ -10,6 +10,8 @@
       "species",
       "MasterSite",
       "SiteID",
+      "master_site_identity_confirmed",
+      "master_site_key",
       "stable_identity",
       "mutually_exclusive_child",
       "overlaps_parent_or_sibling",
@@ -20,13 +22,15 @@
     "allowed_evidence": [
       "BTO/SMP provider-supplied SiteID/MasterSite crosswalk or change log",
       "provider metadata documenting merges/splits/renames/boundary changes",
-      "provider confirmation that an ID is a stable Whole Colony child Site over the retained interval"
+      "provider confirmation that an ID is a stable Whole Colony child Site over the retained interval",
+      "provider-supplied unique MasterSite identifier, or provider confirmation that the frozen MasterSite label maps to one physical MasterSite"
     ],
     "prohibited": [
       "count magnitudes",
       "occupancy outcomes",
       "E or concentration metrics",
-      "choosing continuity based on whether a SiteID helps the hypothesis"
+      "choosing continuity based on whether a SiteID helps the hypothesis",
+      "splitting an ambiguous same-name MasterSite into multiple physical MasterSites after occupancy or magnitude outcomes are opened"
     ]
   },
   "retained_site_rule": "A SiteID may enter the hysteresis state scan only if stable_identity=true, mutually_exclusive_child=true, overlaps_parent_or_sibling=false, boundary_change_during_panel=false, and retired_or_replaced=false over the retained complete-year interval.",
@@ -43,7 +47,8 @@
     },
     "one_biological_panel_per_species_masterSite": true,
     "multiple_unit_rule": "If more than one structurally eligible Count Unit remains for the same species x MasterSite, exclude that species x MasterSite unless the provider identifies a canonical primary Unit before zero/positive states or magnitudes are opened. No unit conversion or outcome-based unit choice.",
-    "rationale_for_no_year_extension": "This conservative rule prevents the identity-resolution step from creating a new observation window and keeps all later occupancy-state cycles inside the originally frozen support years."
+    "rationale_for_no_year_extension": "This conservative rule prevents the identity-resolution step from creating a new observation window and keeps all later occupancy-state cycles inside the originally frozen support years.",
+    "master_site_identity_rule": "Every retained panel must have exactly one non-empty provider-resolved master_site_key and master_site_identity_confirmed=true. If a candidate species x MasterSite label maps to multiple physical MasterSite keys, exclude the candidate panel rather than splitting it after outcome inspection."
   },
   "decision": {
     "if_site_history_unavailable": "Do not open positive/zero states. Stable physical SiteID identity is required.",
