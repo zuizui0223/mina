@@ -22,11 +22,14 @@ class SpatialRecoveryDocContractTests(unittest.TestCase):
             ROOT / "docs" / "SMP_SPATIAL_RECOVERY_HYSTERESIS_LITERATURE_POSITION_V1.md",
             ROOT / "docs" / "REGISTERED_INTEGRATED_MANUSCRIPT_SPINE_HYSTERESIS_V1.md",
             ROOT / "docs" / "SMP_SPATIAL_RECOVERY_HYSTERESIS_PROTOCOL_V1.md",
+            ROOT / "docs" / "SMP_SPATIAL_RECOVERY_HYSTERESIS_RUNBOOK_V1.md",
         ]
         text = "\n".join(p.read_text(encoding="utf-8") for p in paths).casefold()
         self.assertNotIn("trajectory-phase circular-shift", text)
         self.assertNotIn("common-phase null", text)
         self.assertNotIn("elapsed-time trajectory-drift null", text)
+        self.assertNotIn("common circular phase-null", text)
+        self.assertNotIn("draw one common circular shift", text)
 
     def test_execution_manifest_points_to_registered_spine(self):
         text = (
