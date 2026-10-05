@@ -278,7 +278,33 @@ This gate alone is insufficient.
 
 ---
 
-# Confirmatory gate 2 — structured non-circular common-offset null
+# Confirmatory gate 2 — physical-MasterSite sign-flip
+
+The same physical breeding locality can contribute multiple species. Geographic replication is therefore tested separately from taxonomic replication.
+
+Using the frozen spell weights implied by:
+
+spell → SiteID → physical MasterSite → species → equal-species mean,
+
+sum the weighted (H) contribution of all spells within each provider-resolved physical `master_site_key`.
+
+Sign-flip each whole physical-MasterSite contribution:
+
+- exact enumeration for <=20 physical MasterSites;
+- otherwise 100,000 sign flips;
+- seed 20261005.
+
+Require:
+
+[
+p_{mathrm{master}}le0.05.
+]
+
+This preserves the primary (T_{mathrm{obs}}); it does not replace it with an equal-MasterSite estimand.
+
+---
+
+# Confirmatory gate 3 — structured non-circular common-offset null
 
 Purpose: test whether positive \(H\) is explained only by the frozen event dates occupying particular locations on trending/autocorrelated local abundance trajectories.
 
@@ -377,7 +403,7 @@ Even with full support, do not claim that:
 
 Same-site pairing controls fixed place identity.
 
-The structured non-circular common-offset null controls generic local temporal alignment while preserving shared local temporal covariance.
+The species sign-flip requires taxonomic replication, the physical-MasterSite sign-flip requires geographic replication, and the structured non-circular common-offset null controls generic local temporal alignment while preserving shared local temporal covariance.
 
 Neither removes time-varying habitat deterioration, predators, disturbance, management, or demographic composition.
 
@@ -407,7 +433,8 @@ Do not change:
 - annual transition midpoint;
 - aggregation hierarchy;
 - equal-species weighting;
-- sign-flip rule;
+- species sign-flip rule;
+- physical-MasterSite sign-flip rule;
 - structured non-circular common-offset null;
 - 9,999 null resamples;
 - species/SiteID exclusions;
