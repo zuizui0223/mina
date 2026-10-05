@@ -39,7 +39,13 @@ MIN_SPECIES_2MASTERS = 3
 MIN_PHASE_BLOCK_YEARS = 6
 
 
-def _state_frame(path: Path, *, assume_whole_colony_extract: bool = False) -> pd.DataFrame:
+def _state_frame(
+    path: Path,
+    *,
+    compatible_start_year: int,
+    compatible_end_year: int,
+    assume_whole_colony_extract: bool = False,
+) -> pd.DataFrame:
     df = _load(path)
     species_col = _find_column(df, ["Species"])
     site_id_col = _find_column(df, ["SiteID", "Site ID", "Site code"])
@@ -60,7 +66,13 @@ def _state_frame(path: Path, *, assume_whole_colony_extract: bool = False) -> pd
         else df[date_col].map(_year_from_date)
     )
     x = df.assign(_year=year)
-    x = x[x["_year"].between(1986, 2024, inclusive="both")].copy()
+    x = x[
+        x["_year"].between(
+            int(compatible_start_year),
+            int(compatible_end_year),
+            inclusive="both",
+        )
+    ].copy()
 
     direct = _direct_record_mask(x, accuracy_col, estimate_col)
     whole = _whole_colony_mask(x, plot_col, assume_whole_colony_extract)
@@ -194,7 +206,12 @@ def run(
         raise ValueError("identity-resolved structural support gate did not pass")
     zero_semantics = validate_zero_semantics(zero_semantics_json)
 
-    x = _state_frame(input_path, assume_whole_colony_extract=assume_whole_colony_extract)
+    x = _state_frame(
+        input_path,
+        compatible_start_year=int(zero_semantics["compatible_start_year"]),
+        compatible_end_year=int(zero_semantics["compatible_end_year"]),
+        assume_whole_colony_extract=assume_whole_colony_extract,
+    )
     raw_spells = []
     eligible_spells = []
 
@@ -203,7 +220,17 @@ def run(
         master = str(panel["master_site"])
         unit = str(panel["unit"])
         roster = {str(v) for v in panel["retained_site_ids"]}
-        years = [int(v) for v in panel["complete_years"]]
+        years = [
+            int(v)
+            for v in panel["complete_years"]
+            if int(zero_semantics["compatible_start_year"])
+            <= int(v)
+            <= int(zero_semantics["compatible_end_year"])
+        ]
+        if len(years) < 10:
+            continue
+        if max(years) - min(years) + 1 < 12:
+            continue
 
         g = x[
             x["_species"].eq(species)
@@ -277,6 +304,12 @@ def run(
         "analysis_id": "mina-smp-spatial-recovery-hysteresis-support-v1",
         "status": "provider_confirmed_state_only_completed_vacancy_spells_with_frozen_phase_blocks",
         "zero_semantics_confirmation": zero_semantics,
+        "state_scan_scope": {
+            "compatible_start_year": int(zero_semantics["compatible_start_year"]),
+            "compatible_end_year": int(zero_semantics["compatible_end_year"]),
+            "compatible_record_family_or_era": str(zero_semantics["compatible_record_family_or_era"]),
+            "panel_year_rule": "Use only inherited Stage-A complete years inside the provider-confirmed zero-semantics interval; never add years."
+        },
         "raw_completed_spell_count_before_phase_support": int(len(raw_spells)),
         "completed_spells": eligible_spells,
         "support": {
