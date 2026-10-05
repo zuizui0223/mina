@@ -88,7 +88,7 @@ Within the provider-confirmed interval, begin from inherited Stage-A complete ye
 
 - 30 completed spells;
 - 20 distinct SiteIDs;
-- 10 MasterSites;
+- 10 distinct provider-resolved physical MasterSites;
 - 5 species;
 - 4 species with at least 3 spells;
 - 3 species with spells in at least 2 MasterSites.
@@ -138,8 +138,8 @@ The same SiteID is therefore its own control for fixed site identity and stable 
 Average in this fixed order:
 
 1. repeated spells within SiteID;
-2. SiteIDs within MasterSite;
-3. MasterSites within species;
+2. SiteIDs within provider-resolved physical MasterSite;
+3. physical MasterSites within species;
 4. species with equal weight.
 
 The primary observed statistic is
