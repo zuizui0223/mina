@@ -5,8 +5,10 @@ Uses only positive/explicit-zero/missing count states on the already-frozen
 structural panel roster. Count magnitudes are never retained or emitted.
 
 Each completed vacancy spell is assigned to the maximal calendar-consecutive
-complete-year block containing the spell. Only spells in blocks of >=6 years
-are eligible for the frozen common circular phase null used at Stage C.
+complete-year block containing the spell. Before magnitudes open, spells sharing
+one physical MasterSite and identical block freeze a common set of integer year
+offsets that keep every event inside the block. The Stage-C temporal null uses
+only these non-circular common offsets; events never wrap across block edges.
 """
 from __future__ import annotations
 
@@ -36,7 +38,7 @@ MIN_MASTERS = 10
 MIN_SPECIES = 5
 MIN_SPECIES_3SPELLS = 4
 MIN_SPECIES_2MASTERS = 3
-MIN_PHASE_BLOCK_YEARS = 6
+MIN_COMMON_OFFSETS = 3
 
 
 def strict_direct_count_state(value) -> str:
@@ -264,7 +266,6 @@ def run(
         assume_whole_colony_extract=assume_whole_colony_extract,
     )
     raw_spells = []
-    eligible_spells = []
 
     for panel in support["eligible_panels"]:
         species = str(panel["species"])
@@ -331,15 +332,68 @@ def run(
                     "state_complete_years": [int(v) for v in state_complete_years],
                     "n_state_complete_years": int(len(state_complete_years)),
                     "state_complete_span_years": int(max(state_complete_years) - min(state_complete_years) + 1),
-                    "phase_block_start": int(block[0]),
-                    "phase_block_end": int(block[-1]),
-                    "phase_block_years": [int(v) for v in block],
-                    "phase_block_length": int(len(block)),
-                    "phase_null_eligible": bool(len(block) >= MIN_PHASE_BLOCK_YEARS),
+                    "shift_block_start": int(block[0]),
+                    "shift_block_end": int(block[-1]),
+                    "shift_block_years": [int(v) for v in block],
+                    "shift_block_length": int(len(block)),
                 }
                 raw_spells.append(rec)
-                if rec["phase_null_eligible"]:
-                    eligible_spells.append(rec)
+
+    # Freeze one non-circular common offset set for every physical
+    # MasterSite x identical contiguous block. Relative event timing among all
+    # species/SiteIDs sharing that local block is therefore preserved.
+    groups = {}
+    for i, sp in enumerate(raw_spells):
+        key = (
+            str(sp["master_site_key"]),
+            int(sp["shift_block_start"]),
+            int(sp["shift_block_end"]),
+        )
+        groups.setdefault(key, []).append(i)
+
+    eligible_spells = []
+    group_support = []
+    for key, indices in groups.items():
+        block_start, block_end = int(key[1]), int(key[2])
+        lower = None
+        upper = None
+        for i in indices:
+            sp = raw_spells[i]
+            event_years = [
+                int(sp["abandon_from"]),
+                int(sp["abandon_to"]),
+                int(sp["recolonize_from"]),
+                int(sp["recolonize_to"]),
+            ]
+            lo = block_start - min(event_years)
+            hi = block_end - max(event_years)
+            lower = lo if lower is None else max(lower, lo)
+            upper = hi if upper is None else min(upper, hi)
+
+        offsets = (
+            list(range(int(lower), int(upper) + 1))
+            if lower is not None and upper is not None and lower <= upper
+            else []
+        )
+        if 0 not in offsets:
+            raise AssertionError(f"observed alignment missing from common offsets: {key}")
+        ok = len(offsets) >= MIN_COMMON_OFFSETS
+        group_support.append({
+            "master_site_key": str(key[0]),
+            "shift_block_start": block_start,
+            "shift_block_end": block_end,
+            "common_offsets": [int(v) for v in offsets],
+            "n_common_offsets": int(len(offsets)),
+            "linear_shift_null_eligible": bool(ok),
+            "spell_count": int(len(indices)),
+        })
+        for i in indices:
+            sp = dict(raw_spells[i])
+            sp["common_offset_values"] = [int(v) for v in offsets]
+            sp["n_common_offsets"] = int(len(offsets))
+            sp["linear_shift_null_eligible"] = bool(ok)
+            if ok:
+                eligible_spells.append(sp)
 
     frame = pd.DataFrame(eligible_spells)
     n_spells = int(len(frame))
@@ -369,7 +423,7 @@ def run(
     return {
         "schema_version": 1,
         "analysis_id": "mina-smp-spatial-recovery-hysteresis-support-v1",
-        "status": "provider_confirmed_state_only_completed_vacancy_spells_with_frozen_phase_blocks",
+        "status": "provider_confirmed_state_only_completed_vacancy_spells_with_frozen_common_linear_offsets",
         "zero_semantics_confirmation": zero_semantics,
         "state_scan_scope": {
             "compatible_start_year": int(zero_semantics["compatible_start_year"]),
@@ -377,10 +431,11 @@ def run(
             "compatible_record_family_or_era": str(zero_semantics["compatible_record_family_or_era"]),
             "panel_year_rule": "Start from inherited Stage-A complete years inside the provider-confirmed zero-semantics interval, then retain only years with usable direct positive/explicit-zero state for every retained SiteID. Never add years and never convert missingness to zero."
         },
-        "raw_completed_spell_count_before_phase_support": int(len(raw_spells)),
+        "raw_completed_spell_count_before_linear_shift_support": int(len(raw_spells)),
+        "linear_shift_group_support": group_support,
         "completed_spells": eligible_spells,
         "support": {
-            "phase_eligible_completed_spells": n_spells,
+            "linear_shift_eligible_completed_spells": n_spells,
             "distinct_siteids_with_spells": n_sites,
             "mastersites_with_spells": n_masters,
             "species_with_spells": n_species,
@@ -388,8 +443,8 @@ def run(
             "species_with_spells_in_at_least_2_mastersites": species_2masters,
         },
         "thresholds": {
-            "minimum_phase_block_years_per_spell": MIN_PHASE_BLOCK_YEARS,
-            "minimum_phase_eligible_completed_spells": MIN_SPELLS,
+            "minimum_common_offsets_per_master_block": MIN_COMMON_OFFSETS,
+            "minimum_linear_shift_eligible_completed_spells": MIN_SPELLS,
             "minimum_distinct_siteids_with_spells": MIN_SITES,
             "minimum_mastersites_with_spells": MIN_MASTERS,
             "minimum_species_with_spells": MIN_SPECIES,
@@ -399,7 +454,7 @@ def run(
         "decision": {
             "hysteresis_magnitude_execution_authorized": passed,
             "if_failed": (
-                "Stop; do not lower support thresholds, phase-block support, "
+                "Stop; do not lower support thresholds, common-offset support, "
                 "or bridge missing years."
             ),
         },
@@ -409,7 +464,7 @@ def run(
             "abandonment abundance",
             "recolonization abundance",
             "hysteresis width H",
-            "phase-null H values",
+            "linear-shift-null H values",
             "E",
             "kappa",
             "gamma",
