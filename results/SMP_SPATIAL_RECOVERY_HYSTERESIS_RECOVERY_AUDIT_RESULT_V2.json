@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-smp-spatial-recovery-hysteresis-recovery-audit-v2",
+  "date": "2026-10-05",
+  "workflow_run_id": 37294790639,
+  "artifact_id": 11337544869,
+  "artifact_digest": "sha256:216e80f8b7f5a68229a671860bc89029ad59e1293204a6353919c4fad8fae5d1",
+  "head_sha": "e70a45b2589eed5c9ad97b115053207a7ad80ea5",
+  "conclusion": "success",
+  "synthetic_design": {
+    "species": 5,
+    "physical_master_sites": 10,
+    "spells": 30,
+    "years": [
+      2000,
+      2015
+    ],
+    "datasets_per_scenario": 60,
+    "shift_null_resamples_per_dataset": 1999,
+    "seed": 20261005
+  },
+  "scenarios": {
+    "stationary_exogenous_events": {
+      "support_rate": 0.03333333333333333,
+      "median_T": 0.004127878200595524,
+      "median_sign_p": 0.375,
+      "median_shift_p": 0.352,
+      "median_delta_shift": 0.0035153911743692296
+    },
+    "monotonic_drift_exogenous_events": {
+      "support_rate": 0,
+      "median_T": 0.5186462946804291,
+      "median_sign_p": 0.03125,
+      "median_shift_p": 0.65925,
+      "median_delta_shift": -0.003980116437756698
+    },
+    "reversible_threshold_cycle": {
+      "support_rate": 0,
+      "median_T": 0.002606727742171433,
+      "median_sign_p": 0.484375,
+      "median_shift_p": 0.48875,
+      "median_delta_shift": 0.006075587850799315
+    },
+    "hysteresis_threshold_moderate": {
+      "support_rate": 0,
+      "median_T": 0.2631680132568168,
+      "median_sign_p": 0.03125,
+      "median_shift_p": 0.1475,
+      "median_delta_shift": 0.2595195207590621
+    },
+    "hysteresis_threshold_strong": {
+      "support_rate": 1,
+      "median_T": 0.5263142227704365,
+      "median_sign_p": 0.03125,
+      "median_shift_p": 0.01325,
+      "median_delta_shift": 0.5223503906110074
+    }
+  },
+  "decision": {
+    "recovery_audit_passed": true,
+    "v2_can_be_frozen": true,
+    "minimum_replication_power_boundary": "At the minimum synthetic replication scale, the V2 design is deliberately conservative: the moderate calibration signal was not confirmatorily recovered, whereas the strong signal was recovered in 60/60 datasets."
+  },
+  "boundary": [
+    "No SMP biological outcome was used.",
+    "Synthetic signal sizes are calibration scenarios, not biological priors or minimally important effects.",
+    "Do not relax the two-gate confirmatory rule to recover moderate effects."
+  ]
+}
