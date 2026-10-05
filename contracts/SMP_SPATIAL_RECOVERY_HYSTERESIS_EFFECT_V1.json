@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-smp-spatial-recovery-hysteresis-effect-v1",
   "date": "2026-10-05",
-  "status": "locked_until_state_only_support_gate_passes",
+  "status": "locked_until_identity_and_state_only_support_gates_pass",
   "parent_support": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json",
   "hypothesis": "A breeding SiteID that has been abandoned requires a higher surrounding population state to be recolonized than the surrounding population state at which it was abandoned.",
   "competing_predictions": {
@@ -32,7 +32,7 @@
     "exact_if_species_leq": 20,
     "random_sign_flips_if_more_species": 100000,
     "seed": 20261005,
-    "support": "T>0 and one-sided sign-flip p <= 0.05"
+    "support": "Primary spatial-recovery hysteresis is supported only if T>0, the one-sided species sign-flip p <=0.05, and the structured trajectory-phase null upper-tail p <=0.05."
   },
   "secondary_uncertainty": {
     "bootstrap_resamples": 9999,
@@ -46,7 +46,24 @@
     "Site pairing controls stable SiteID quality but not time-varying habitat degradation, predator change, disturbance or unmeasured management.",
     "Do not call the result social hysteresis unless independent social-cue or fitness-density evidence is added.",
     "Do not use first colonization events in the primary threshold comparison.",
-    "Do not change the completed-spell roster after count magnitudes are opened."
+    "Do not change the completed-spell roster after count magnitudes are opened.",
+    "The structured trajectory-phase null calibrates generic temporal alignment but does not remove time-varying habitat quality."
   ],
-  "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened."
+  "stop_rule": "One execution only after the identity and state-only support gates pass. No alternative abundance transform, lag, transition midpoint, site subset, minimum vacancy duration, species subset, weighting rule, or null family may be added after H is opened.",
+  "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
+  "trajectory_phase_null": {
+    "purpose": "Calibrate whether positive H could arise from generic alignment with the observed long-term parent-abundance trajectory, annual sampling, or overshoot rather than asymmetric recovery.",
+    "conditioning": [
+      "exact frozen completed-spell roster and transition years",
+      "exact vacancy duration",
+      "exact identity-resolved SiteID roster",
+      "observed multivariate count trajectory within each species x MasterSite",
+      "contiguous complete-year block containing each spell"
+    ],
+    "randomization": "Within each species x MasterSite contiguous complete-year block, apply one common circular year shift to the entire count matrix. Use the same shift for every focal SiteID/spell in that block, preserving cross-site covariance. Keep spell transition years fixed.",
+    "resamples": 9999,
+    "seed": 20261005,
+    "p_value": "plus-one upper-tail probability that shifted species-balanced T >= observed T",
+    "interpretation": "This is a structured alignment null, not a fitted mechanistic occupancy model."
+  }
 }
