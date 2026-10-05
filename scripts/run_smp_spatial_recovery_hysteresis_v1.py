@@ -360,6 +360,81 @@ def hierarchical_spell_weights(spells: list[dict]) -> np.ndarray:
     return weights
 
 
+def physical_master_site_sign_flip_test(
+    observed_rows: pd.DataFrame,
+    spells: list[dict],
+    *,
+    seed: int = SEED,
+) -> dict:
+    """Sign-flip fixed contributions of provider-resolved physical MasterSites.
+
+    The primary T uses equal-species hierarchical weighting. We therefore do
+    not redefine T as an equal-MasterSite mean. Instead, we compute the exact
+    spell weights implied by the frozen hierarchy, sum weighted H within each
+    physical master_site_key, and sign-flip those whole geographic
+    contributions. Multiple species at the same physical MasterSite therefore
+    share one sign.
+    """
+    if len(observed_rows) != len(spells):
+        raise ValueError("observed-row/spell length mismatch")
+
+    weights = hierarchical_spell_weights(spells)
+    h = observed_rows["H"].to_numpy(float)
+    T_obs = float(np.sum(weights * h))
+    nested = float(hierarchical_means(observed_rows)["T"])
+    if not np.isclose(T_obs, nested):
+        raise AssertionError(
+            f"weighted spell contributions do not reproduce primary T: {T_obs} != {nested}"
+        )
+
+    contributions = {}
+    for i, sp in enumerate(spells):
+        key = str(sp.get("master_site_key", "")).strip()
+        if not key:
+            raise ValueError("spell missing provider-resolved master_site_key")
+        contributions[key] = contributions.get(key, 0.0) + float(weights[i] * h[i])
+
+    keys = sorted(contributions)
+    vals = np.asarray([contributions[k] for k in keys], float)
+    m = len(vals)
+    if m == 0:
+        raise ValueError("no physical MasterSite contributions")
+
+    if m <= 20:
+        stats = np.asarray(
+            [
+                float(np.sum(vals * np.asarray(signs, float)))
+                for signs in itertools.product((-1.0, 1.0), repeat=m)
+            ],
+            float,
+        )
+        p = float(np.sum(stats >= T_obs) / len(stats))
+        mode = "exact"
+        n = int(len(stats))
+    else:
+        rng = np.random.default_rng(int(seed) + 31)
+        stats = np.empty(RANDOM_SIGN_B, float)
+        for r in range(RANDOM_SIGN_B):
+            signs = rng.choice(np.array([-1.0, 1.0]), size=m, replace=True)
+            stats[r] = float(np.sum(vals * signs))
+        p = float((1 + np.sum(stats >= T_obs)) / (RANDOM_SIGN_B + 1))
+        mode = "monte_carlo"
+        n = RANDOM_SIGN_B
+
+    return {
+        "mode": mode,
+        "physical_master_site_count": int(m),
+        "positive_contribution_master_sites": int(np.sum(vals > 0)),
+        "replicates_or_exact_states": int(n),
+        "one_sided_p": p,
+        "observed_T_from_master_contributions": T_obs,
+        "contributions": [
+            {"master_site_key": k, "weighted_T_contribution": float(contributions[k])}
+            for k in keys
+        ],
+    }
+
+
 def structured_linear_shift_null(
     observed_rows: pd.DataFrame,
     spells: list[dict],
@@ -491,6 +566,7 @@ def run(
     hier = hierarchical_means(frame)
     vals = hier["species"]["species_mean_H"].to_numpy(float)
     sign = sign_flip_test(vals)
+    master_sign = physical_master_site_sign_flip_test(frame, spells)
     ci = species_bootstrap(vals)
     linear = structured_linear_shift_null(frame, spells, cache)
 
@@ -498,6 +574,7 @@ def run(
     supported = bool(
         T > 0
         and sign["one_sided_p"] <= 0.05
+        and master_sign["one_sided_p"] <= 0.05
         and linear["delta_linear_observed_minus_median"] > 0
         and linear["upper_tail_p"] <= 0.05
     )
@@ -512,6 +589,7 @@ def run(
             "species_count": int(len(vals)),
             "species_positive_H": int(np.sum(vals > 0)),
             "species_sign_flip": sign,
+            "physical_master_site_sign_flip": master_sign,
             "species_bootstrap_95": ci,
             "structured_linear_shift_null": linear,
             "supported": supported,
@@ -521,11 +599,12 @@ def run(
         },
         "decision": {
             "spatial_recovery_hysteresis_supported": supported,
-            "requires_species_sign_flip_and_structured_linear_shift_null": True,
+            "requires_species_and_physical_master_sign_flips_and_structured_linear_shift_null": True,
         },
         "boundary": [
             "A supported result demonstrates asymmetric spatial recovery at retained SiteIDs, not a unique social mechanism.",
             "The focal SiteID is excluded from surrounding population abundance at observed and shifted transitions.",
+            "The species sign-flip tests taxonomic replication; the physical-MasterSite sign-flip tests geographic replication without counting co-located species as independent places.",
             "The structured linear-shift null preserves each block's multivariate abundance trajectory and cross-site covariance while moving frozen event dates only within block boundaries.",
             "Stable site pairing does not remove time-varying habitat, predator, disturbance, or management confounding.",
             "No first-colonization events enter the primary paired test.",
