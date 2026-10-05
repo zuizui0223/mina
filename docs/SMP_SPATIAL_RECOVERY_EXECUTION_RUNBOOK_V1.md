@@ -95,11 +95,17 @@ All must be true:
 - absent SiteID × year is not zero;
 - estimated/imputed zeroes are excluded.
 
+Also freeze:
+
+- compatible start year;
+- compatible end year;
+- non-empty record-family/era description.
+
 `confirmation_source` must be non-empty.
 
 If any condition cannot be confirmed: **STOP**.
 
-Do not infer zero semantics from patterns in the counts.
+If semantics apply only to a narrower era, Stage B uses only inherited Stage-A complete years inside that documented interval. Panels falling below 10 complete years or a 12-year span are excluded before state scanning. Do not infer zero semantics from patterns in the counts.
 
 ---
 
