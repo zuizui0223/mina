@@ -10,7 +10,7 @@
     "N_it": "annual total breeding abundance in frozen species x MasterSite panel i",
     "E_it": "inverse-Simpson effective number of retained SiteID components, 1/sum_j(p_ijt^2)",
     "b_i": "OLS slope of log1p(N_it) on centered year",
-    "gamma_obs_i": "OLS slope of log(E_it) on centered year"
+    "gamma_obs_i": "OLS slope of log(E_it) on centered year using only frozen complete years with N_it>0"
   },
   "fixed_composition_null": {
     "B": 20000,
@@ -19,7 +19,8 @@
     "preserve": [
       "exact empirical annual panel totals N_it",
       "frozen retained component roster",
-      "complete-year schedule"
+      "complete-year schedule",
+      "the frozen positive-total year set used for E and gamma"
     ],
     "simulate": "For integer count units, draw multinomial(N_it, q_i). If the retained SMP unit is not integer-valued, stop and freeze a unit-specific null before computing concentration outcomes rather than silently rounding.",
     "observation_error": "Primary null uses raw observed counts only. Estimated/hidden-estimate records are excluded by the structural contract. No post-outcome error model is added."
@@ -35,26 +36,34 @@
     "direction_invariant": true
   },
   "primary_macro_model": {
-    "formula": "delta_gamma_i = alpha + beta * z(b_i) + species_random_intercept + error_i",
-    "weighting": "equal panel weight primary",
-    "uncertainty": "parametric hierarchical model plus species-cluster bootstrap with 9999 resamples as mandatory robustness",
-    "focal_parameters": {
-      "alpha": "mean excess concentration at mean standardized abundance trend",
-      "beta": "coupling between abundance trend and excess temporal concentration"
+    "overall_species_balanced_mean": "For each species, average delta_gamma_i across its eligible panels; alpha_species is the unweighted mean of those species means.",
+    "abundance_coupling": "Standardize b_i across all Stage-C panels, residualize both z(b_i) and delta_gamma_i by species mean, then estimate beta_within = sum(x_res*y_res)/sum(x_res^2).",
+    "weighting": "Equal panel weight within species for species means; equal species weight for alpha_species. beta_within is a species-fixed-effect slope.",
+    "bootstrap": {
+      "B": 9999,
+      "seed": 20261005,
+      "unit": "species cluster",
+      "scheme": "Resample species with replacement and retain all panels of each selected species; duplicate sampled species contribute with multiplicity.",
+      "interval": "2.5th and 97.5th percentile bootstrap interval"
     },
-    "expected_decline_coupling_direction": "beta > 0 because more negative b should correspond to more negative delta_gamma if decline drives concentration"
+    "confirmatory_support": {
+      "overall_concentration": "Supported only if the 95% species-bootstrap upper bound for alpha_species is <0.",
+      "decline_coupling": "Supported only if the 95% species-bootstrap lower bound for beta_within is >0.",
+      "no_independence_by_nonsignificance": "A beta interval containing zero is unresolved and cannot be called trend-independence."
+    },
+    "minimum_identifiability": "beta_within is reported confirmatorily only if >=4 species have at least two eligible panels with nonzero within-species b_i variance."
   },
   "secondary_trend_class_contrast": {
-    "increasing_mean": "mu_plus = mean/model-estimated delta_gamma among b_i > 0 panels",
-    "declining_mean": "mu_minus = mean/model-estimated delta_gamma among b_i < 0 panels",
-    "inference": "prespecified secondary contrast; no post-hoc trend threshold",
+    "increasing_mean": "Within each species represented among increasing panels, average delta_gamma across its increasing panels; mu_plus is the unweighted mean of those species means.",
+    "declining_mean": "Within each species represented among declining panels, average delta_gamma across its declining panels; mu_minus is the unweighted mean of those species means.",
+    "uncertainty": "Use the same 9999-resample species-cluster bootstrap and percentile 95% intervals separately for mu_plus and mu_minus.",
     "outcome_patterns": {
-      "reversible_tracking": "mu_minus < 0 and mu_plus > 0 with uncertainty excluding zero in their respective directions",
-      "decline_specific": "mu_minus < 0 while mu_plus is not supported as negative",
-      "directional_persistence": "both mu_minus < 0 and mu_plus < 0 with one-sided support in both groups",
+      "reversible_tracking": "mu_minus 95% upper bound <0 AND mu_plus 95% lower bound >0",
+      "directional_persistence": "mu_minus 95% upper bound <0 AND mu_plus 95% upper bound <0",
+      "decline_supported_increase_unresolved": "mu_minus 95% upper bound <0 while the increasing class satisfies neither supported-positive nor supported-negative criterion",
       "unresolved": "any other pattern"
     },
-    "terminology": "If both groups are negative, call this directionally persistent or ratchet-compatible concentration, not hysteresis."
+    "terminology": "Directional persistence may be called ratchet-compatible, not hysteresis. An unresolved increasing class is not evidence of decline-specificity."
   },
   "reporting": {
     "always_report": [
