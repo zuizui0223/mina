@@ -25,8 +25,8 @@
     "phase_null_support": {
       "contiguous_block": "Each completed spell is assigned to the maximal calendar-consecutive complete-year block of its frozen species x MasterSite panel that contains the entire spell.",
       "minimum_block_years": 6,
-      "reason": "Provides at least six distinct common circular phase alignments for the structured null; this threshold is frozen before SMP magnitude outcomes.",
-      "eligibility": "Only spells in blocks with >=6 complete consecutive years enter the magnitude stage."
+      "reason": "Provides at least six distinct circular phase alignments for the structured common-phase null; threshold frozen before SMP magnitude outcomes.",
+      "eligibility": "Only spells contained in a maximal calendar-consecutive state-complete block of >=6 years enter Stage C."
     },
     "state_complete_year_rule": "Within the provider-confirmed zero-semantics interval, start from inherited Stage-A complete years and retain only years with one usable direct positive/explicit-zero state for every retained SiteID. Missing/unparseable records remove the year; they are never converted to zero.",
     "state_complete_minimum": "Before spell scanning a panel must retain >=10 state-complete years spanning >=12 calendar years."
@@ -41,9 +41,7 @@
     "number of completed spells by site/panel/species",
     "transition_gap_years",
     "contiguous complete-year block start/end/length for each completed spell",
-    "state-complete year identities/count/span for each panel/spell",
-    "transition_gap_years",
-    "panel-wide eligible common shift offsets for the trajectory-drift null"
+    "state-complete year identities/count/span for each panel/spell"
   ],
   "prohibited_outputs": [
     "count magnitudes",
@@ -63,11 +61,8 @@
     "minimum_species_with_at_least_3_spells": 4,
     "minimum_species_with_spells_in_at_least_2_mastersites": 3,
     "minimum_phase_block_years_per_spell": 6,
-    "requirement": "All prior replication conditions must pass after excluding panels with fewer than 3 eligible panel-wide common shifts.",
     "master_site_count_definition": "distinct provider-resolved physical master_site_key values, not species x MasterSite panels or display-name strings",
-    "minimum_null_eligible_completed_spells": 30,
-    "minimum_null_eligible_panels": 10,
-    "minimum_common_panel_shifts": 3
+    "requirement": "All replication conditions must pass after restricting to provider-confirmed explicit-zero spells contained in >=6-year maximal contiguous state-complete blocks."
   },
   "decision": {
     "if_passed": "After identity-resolved structure and provider/official zero-semantics confirmation both pass, freeze the exact phase-null-eligible completed-spell roster and authorize one magnitude-opening hysteresis execution.",
@@ -90,13 +85,5 @@
     "all_boolean_fields_must_be_true": true,
     "confirmation_source_must_be_nonempty": true
   },
-  "candidate_structure_contract": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_STRUCTURE_V1.json",
-  "panel_wide_trajectory_drift_null_support": {
-    "purpose": "Freeze a panel-level elapsed-time null that preserves synchronization among all completed vacancy spells in the same species x MasterSite panel.",
-    "shift_rule": "For each panel, apply one common integer calendar-year shift delta to every observed abandonment and recolonization transition in that panel. A delta is eligible only if all shifted transition years for every retained spell remain frozen complete years.",
-    "observed_shift": "delta=0 is retained as an eligible placement when valid.",
-    "minimum_common_shifts_per_panel": 3,
-    "support_filter": "All spells from panels with fewer than 3 eligible common shifts are excluded before count magnitudes are opened.",
-    "magnitude_blinding": "Eligible common shifts are determined only from frozen complete-year identities and Stage-B spell timing."
-  }
+  "candidate_structure_contract": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_STRUCTURE_V1.json"
 }
