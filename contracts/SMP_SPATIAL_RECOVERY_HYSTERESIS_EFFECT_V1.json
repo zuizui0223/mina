@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "mina-smp-spatial-recovery-hysteresis-effect-v1",
   "date": "2026-10-05",
-  "status": "locked_until_identity_and_state_only_support_gates_pass",
+  "status": "locked_until_identity_state_and_phase_block_support_gates_pass",
   "parent_support": "contracts/SMP_SPATIAL_RECOVERY_HYSTERESIS_SUPPORT_V1.json",
   "hypothesis": "A breeding SiteID that has been abandoned requires a higher surrounding population state to be recolonized than the surrounding population state at which it was abandoned.",
   "competing_predictions": {
@@ -28,56 +28,47 @@
   },
   "primary_inference": {
     "observed_statistic": "T_obs = unweighted mean of species mean H after spell -> SiteID -> MasterSite -> species aggregation",
-    "sign_flip": {
+    "species_sign_flip": {
       "null": "species-level H means are symmetric around zero",
       "test": "one-sided sign-flip randomization of species means",
       "exact_if_species_leq": 20,
       "random_sign_flips_if_more_species": 100000,
       "seed": 20261005
     },
-    "trajectory_drift_null": {
-      "purpose": "Rule out positive H caused only by the fact that recolonization occurs later on a changing parent-abundance trajectory.",
-      "simulations": 20000,
+    "structured_phase_null": {
+      "purpose": "Test whether positive H exceeds what can arise solely because fixed abandonment/recolonization dates align with a trending or autocorrelated surrounding-population trajectory.",
+      "conditioning": [
+        "exact frozen completed-spell roster",
+        "exact SiteID, MasterSite and species identities",
+        "exact event-year pattern and vacancy duration",
+        "observed multivariate count trajectory within each species x MasterSite",
+        "maximal contiguous complete-year block containing each spell"
+      ],
+      "randomization": "For each species x MasterSite x contiguous complete-year block, draw one common circular shift and apply it to the entire block-level count matrix. Use the same shift for every focal SiteID/spell in that block, preserving cross-site covariance and dependence among spells. Keep the frozen event-year positions fixed.",
+      "resamples": 9999,
       "seed": 20261005,
-      "per_spell": "Uniformly sample one frozen pseudo start year from that spell's precomputed eligible pseudo placements. Preserve SiteID, panel, exact transition-gap years, and the observed leave-one-SiteID-out parent abundance trajectory.",
-      "pseudo_H": "Compute the same difference between later and earlier transition-midpoint log1p parent states at the pseudo placement.",
-      "aggregation": "Use the exact same spell -> SiteID -> MasterSite -> species -> equal-species hierarchy as T_obs.",
-      "p_value": "plus-one upper-tail P(T_null >= T_obs)",
-      "delta": "Delta_T = T_obs - median(T_null)"
+      "p_value": "plus-one upper-tail probability that shifted species-balanced T >= T_obs",
+      "delta": "Delta_phase = T_obs - median(T_phase_null)",
+      "interpretation": "A structured temporal-alignment null. It is not a fitted mechanistic occupancy model and does not remove time-varying habitat quality."
     },
-    "support": "Require T_obs > 0, sign-flip one-sided p <= 0.05, Delta_T > 0, and trajectory-drift-null upper-tail p <= 0.05."
+    "support": "Require T_obs > 0, species sign-flip one-sided p <= 0.05, Delta_phase > 0, and structured-phase-null upper-tail p <= 0.05."
   },
   "secondary_uncertainty": {
     "bootstrap_resamples": 9999,
     "seed": 20261005,
     "unit": "species",
     "interval": "percentile 95% interval for T",
-    "reporting": "report species means, MasterSite means, SiteID means, all spell-level H values, and the full trajectory-drift-null summary"
+    "reporting": "report species means, MasterSite means, SiteID means, all spell-level H values, and the structured phase-null summary"
   },
   "boundaries": [
-    "A positive H is evidence of history-dependent spatial recovery, not proof of an Allee mechanism.",
+    "A supported positive H is evidence that spatial recovery does not simply retrace spatial loss at the measured SiteID scale; it is not proof of an Allee mechanism.",
     "Site pairing controls stable SiteID quality but not time-varying habitat degradation, predator change, disturbance or unmeasured management.",
     "Do not call the result social hysteresis unless independent social-cue or fitness-density evidence is added.",
     "Do not use first colonization events in the primary threshold comparison.",
     "Do not change the completed-spell roster after count magnitudes are opened.",
-    "The structured trajectory-phase null calibrates generic temporal alignment but does not remove time-varying habitat quality.",
-    "The trajectory-drift null controls generic change in surrounding abundance over the same elapsed time but is not a complete mechanistic model of reversible habitat selection."
+    "The structured phase null calibrates generic temporal alignment with observed parent-abundance trajectories and annual sampling but is not a complete reversible habitat-selection model.",
+    "Circular shifting creates a block seam; this is accepted as part of the frozen structured null and is not tuned after outcomes."
   ],
-  "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, pseudo-placement rule, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
-  "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
-  "trajectory_phase_null": {
-    "purpose": "Calibrate whether positive H could arise from generic alignment with the observed long-term parent-abundance trajectory, annual sampling, or overshoot rather than asymmetric recovery.",
-    "conditioning": [
-      "exact frozen completed-spell roster and transition years",
-      "exact vacancy duration",
-      "exact identity-resolved SiteID roster",
-      "observed multivariate count trajectory within each species x MasterSite",
-      "contiguous complete-year block containing each spell"
-    ],
-    "randomization": "Within each species x MasterSite contiguous complete-year block, apply one common circular year shift to the entire count matrix. Use the same shift for every focal SiteID/spell in that block, preserving cross-site covariance. Keep spell transition years fixed.",
-    "resamples": 9999,
-    "seed": 20261005,
-    "p_value": "plus-one upper-tail probability that shifted species-balanced T >= observed T",
-    "interpretation": "This is a structured alignment null, not a fitted mechanistic occupancy model."
-  }
+  "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
+  "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json"
 }
