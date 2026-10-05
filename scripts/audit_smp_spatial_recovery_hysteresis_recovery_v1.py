@@ -13,7 +13,7 @@ from scripts.run_smp_spatial_recovery_hysteresis_v1 import (
     hierarchical_means,
     sign_flip_test,
     spell_effect,
-    structured_phase_null,
+    structured_linear_shift_null,
 )
 
 
@@ -27,12 +27,15 @@ EVENT = {
     "abandon_to": 2002,
     "recolonize_from": 2004,
     "recolonize_to": 2005,
-    "phase_block_start": 2000,
-    "phase_block_end": 2009,
-    "phase_block_years": YEARS,
+    "shift_block_start": 2000,
+    "shift_block_end": 2009,
+    "shift_block_years": YEARS,
+    "common_offset_values": [-1, 0, 1, 2, 3, 4],
+    "n_common_offsets": 6,
+    "linear_shift_null_eligible": True,
 }
 DATASETS = 40
-PHASE_B = 999
+LINEAR_B = 999
 
 
 def ar1_noise(rng: np.random.Generator, n: int, phi: float = 0.55, sd: float = 0.08):
@@ -118,25 +121,25 @@ def evaluate_dataset(seed: int, scenario: str) -> dict:
     hier = hierarchical_means(observed)
     vals = hier["species"]["species_mean_H"].to_numpy(float)
     sign = sign_flip_test(vals)
-    phase = structured_phase_null(
+    linear = structured_linear_shift_null(
         observed,
         spells,
         cache,
-        B=PHASE_B,
+        B=LINEAR_B,
         seed=seed + 1000003,
     )
     T = float(hier["T"])
     supported = bool(
         T > 0
         and sign["one_sided_p"] <= 0.05
-        and phase["delta_phase_observed_minus_median"] > 0
-        and phase["upper_tail_p"] <= 0.05
+        and linear["delta_linear_observed_minus_median"] > 0
+        and linear["upper_tail_p"] <= 0.05
     )
     return {
         "T": T,
         "sign_p": float(sign["one_sided_p"]),
-        "phase_p": float(phase["upper_tail_p"]),
-        "delta_phase": float(phase["delta_phase_observed_minus_median"]),
+        "linear_p": float(linear["upper_tail_p"]),
+        "delta_linear": float(linear["delta_linear_observed_minus_median"]),
         "supported": supported,
     }
 
@@ -160,8 +163,8 @@ def run() -> dict:
             "support_rate": support_rate,
             "median_T": float(np.median([r["T"] for r in rows])),
             "median_sign_p": float(np.median([r["sign_p"] for r in rows])),
-            "median_phase_p": float(np.median([r["phase_p"] for r in rows])),
-            "median_delta_phase": float(np.median([r["delta_phase"] for r in rows])),
+            "median_linear_p": float(np.median([r["linear_p"] for r in rows])),
+            "median_delta_linear": float(np.median([r["delta_linear"] for r in rows])),
         }
 
     passed = bool(
@@ -176,9 +179,10 @@ def run() -> dict:
             "species": N_SPECIES,
             "physical_master_sites": N_SPECIES * MASTERS_PER_SPECIES,
             "spells": N_SPECIES * MASTERS_PER_SPECIES * SITES_PER_MASTER,
-            "years_per_phase_block": len(YEARS),
+            "years_per_shift_block": len(YEARS),
+            "common_offsets": [-1, 0, 1, 2, 3, 4],
             "datasets_per_scenario": DATASETS,
-            "phase_null_resamples_per_dataset": PHASE_B,
+            "linear_shift_null_resamples_per_dataset": LINEAR_B,
             "seed": SEED,
         },
         "scenarios": out,
