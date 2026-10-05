@@ -141,6 +141,7 @@ class HysteresisTests(unittest.TestCase):
                 rows.append({
                     "species":f"sp{s}",
                     "master_site":f"M{s}-{m}",
+                    "master_site_key":f"M{s}-{m}",
                     "site_id":f"S{s}-{m}",
                     "H":0.2+0.01*s,
                 })
@@ -347,6 +348,7 @@ class HysteresisTests(unittest.TestCase):
             observed_rows.append({
                 "species":species,
                 "master_site":master,
+                "master_site_key":master,
                 "site_id":"focal",
                 "H":H,
             })
