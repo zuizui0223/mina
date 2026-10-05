@@ -1,0 +1,142 @@
+name: guillemot-eidc-stageb
+
+on:
+  push:
+    branches: [research/smp-spatial-recovery-hysteresis-v1, research/guillemot-same-site-recovery-v1]
+    paths:
+      - ".github/workflows/guillemot-eidc-stageb.yml"
+      - "scripts/gate_guillemot_same_site_support_v1.py"
+      - "results/GUILLEMOT_SAME_SITE_RECOVERY_PREREGISTRATION_RECEIPT_V2.json"
+  workflow_dispatch:
+
+jobs:
+  blind-stageb:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    env:
+      DATASET_UUID: "33b42f0a-12a5-47fe-aaaf-25f4ee5e13a5"
+      FOCAL_FILE: "JAE_Bennett_CommonGuillemot_sitequality_occupancy.csv"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install pandas
+
+      - name: Download public EIDC package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/eidc build/extracted
+          url="https://data-package.ceh.ac.uk/data/${DATASET_UUID}"
+          echo "Downloading EIDC package for frozen DOI dataset."
+          curl --fail --location --retry 3 --retry-all-errors \
+            --silent --show-error \
+            --dump-header build/eidc/headers.txt \
+            --output build/eidc/package.bin \
+            "$url"
+          sha256sum build/eidc/package.bin > build/eidc/package.sha256
+          file build/eidc/package.bin | tee build/eidc/filetype.txt
+          stat --printf='%s\\n' build/eidc/package.bin > build/eidc/size_bytes.txt
+
+      - name: Extract package without printing biological values
+        shell: bash
+        run: |
+          set -euo pipefail
+          pkg="build/eidc/package.bin"
+          if unzip -t "$pkg" >/dev/null 2>&1; then
+            unzip -q "$pkg" -d build/extracted
+          else
+            echo "Downloaded object is not a ZIP package." >&2
+            echo "First response headers:" >&2
+            sed -n '1,30p' build/eidc/headers.txt >&2
+            exit 22
+          fi
+
+          focal="$(find build/extracted -type f -name "$FOCAL_FILE" -print -quit)"
+          if [[ -z "$focal" ]]; then
+            echo "Expected focal CSV not found. Package filenames only:" >&2
+            find build/extracted -type f -printf '%f\\n' | sort >&2
+            exit 23
+          fi
+          printf '%s\\n' "$focal" > build/eidc/focal_path.txt
+
+      - name: Run state-only Stage B
+        shell: bash
+        run: |
+          set -euo pipefail
+          focal="$(cat build/eidc/focal_path.txt)"
+          mkdir -p build/stageb
+          python scripts/gate_guillemot_same_site_support_v1.py \
+            --input "$focal" \
+            --out build/stageb/GUILLEMOT_SAME_SITE_SUPPORT_V1.json
+
+      - name: Verify magnitude blindness
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p=Path("build/stageb/GUILLEMOT_SAME_SITE_SUPPORT_V1.json")
+          r=json.loads(p.read_text())
+          assert r["source"]["magnitude_fields_read"] == []
+          b=r["magnitude_boundary"]
+          assert all(v is False for v in b.values())
+          for s in r["completed_spells"]:
+              forbidden={
+                  "H","A_v","A_r","T_obs","subcolony_size","N_minus_j",
+                  "vacancy_state","reoccupation_state"
+              }
+              assert not (forbidden & set(s))
+          print(json.dumps({
+              "status": r["status"],
+              "support": r["support"],
+              "magnitude_boundary": r["magnitude_boundary"],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Create acquisition receipt
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          def text(path):
+              p=Path(path)
+              return p.read_text(errors="replace").strip() if p.exists() else None
+
+          receipt={
+              "schema_version":1,
+              "receipt_id":"mina-guillemot-eidc-acquisition-stageb-v1",
+              "dataset_uuid":"33b42f0a-12a5-47fe-aaaf-25f4ee5e13a5",
+              "source_endpoint":"https://data-package.ceh.ac.uk/data/33b42f0a-12a5-47fe-aaaf-25f4ee5e13a5",
+              "expected_focal_file":"JAE_Bennett_CommonGuillemot_sitequality_occupancy.csv",
+              "package_sha256_line":text("build/eidc/package.sha256"),
+              "package_size_bytes":text("build/eidc/size_bytes.txt"),
+              "package_filetype":text("build/eidc/filetype.txt"),
+              "stageb_result_present":Path("build/stageb/GUILLEMOT_SAME_SITE_SUPPORT_V1.json").exists(),
+              "raw_data_uploaded_as_artifact":False,
+              "population_magnitude_uploaded_as_artifact":False
+          }
+          Path("build").mkdir(exist_ok=True)
+          Path("build/GUILLEMOT_EIDC_ACQUISITION_STAGEB_RECEIPT_V1.json").write_text(
+              json.dumps(receipt, indent=2, sort_keys=True)+"\\n"
+          )
+          PY
+
+      - name: Upload blind receipts only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guillemot-eidc-stageb-v1
+          path: |
+            build/GUILLEMOT_EIDC_ACQUISITION_STAGEB_RECEIPT_V1.json
+            build/stageb/GUILLEMOT_SAME_SITE_SUPPORT_V1.json
+          if-no-files-found: warn
