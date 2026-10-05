@@ -18,7 +18,8 @@
     "abandon_state": "A_e = 0.5 * [log1p(N_-j,t) + log1p(N_-j,t+1)] for occupied->zero",
     "recolonize_state": "A_c = 0.5 * [log1p(N_-j,u) + log1p(N_-j,u+1)] for zero->occupied",
     "hysteresis_width": "H = A_c - A_e",
-    "interpretation": "H>0 means spatial recovery requires a higher surrounding population state than spatial loss at the same SiteID"
+    "interpretation": "H>0 means spatial recovery requires a higher surrounding population state than spatial loss at the same SiteID",
+    "measurement_boundary": "A_e and A_c are annual transition-state proxies derived from the two censuses bracketing each occupancy transition; they are not exact continuous-time demographic thresholds."
   },
   "aggregation": {
     "step1": "average H across multiple completed spells within SiteID",
@@ -68,7 +69,8 @@
     "Do not use first colonization events in the primary threshold comparison.",
     "Do not change the completed-spell roster after count magnitudes are opened.",
     "The structured phase null calibrates generic temporal alignment with observed parent-abundance trajectories and annual sampling but is not a complete reversible habitat-selection model.",
-    "Circular shifting creates a block seam; this is accepted as part of the frozen structured null and is not tuned after outcomes."
+    "Circular shifting creates a block seam; this is accepted as part of the frozen structured null and is not tuned after outcomes.",
+    "Use 'transition-state asymmetry' or 'empirical threshold proxy' in precise reporting; annual census data do not observe the exact continuous-time abandonment/recolonization threshold."
   ],
   "stop_rule": "One execution only after the support gate passes. No alternative abundance transform, lag, transition midpoint, phase-block rule, circular-shift scheme, null family, site subset, minimum vacancy duration, species subset or weighting rule may be added after H is opened.",
   "parent_structure": "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
