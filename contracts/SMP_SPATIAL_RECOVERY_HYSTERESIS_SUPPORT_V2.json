@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "contract_id": "mina-smp-spatial-recovery-hysteresis-support-v2",
+  "date": "2026-10-05",
+  "status": "predata_v2_after_v1_synthetic_failure",
+  "supersedes": "mina-smp-spatial-recovery-hysteresis-support-v1",
+  "inherits": [
+    "contracts/SMP_SPATIAL_RECOVERY_STRUCTURE_V1.json",
+    "contracts/SMP_SPATIAL_RECOVERY_ZERO_SEMANTICS_V1.json"
+  ],
+  "purpose": "Retain the V1 provider-confirmed state-only completed vacancy spells, but replace the failed circular phase-null support with a non-circular common-shift null that preserves event geometry within physical MasterSite blocks.",
+  "input": "Stage-B V1 state-only support JSON; no abundance magnitude is used.",
+  "shift_group": {
+    "id": "master_site_key x phase_block_start x phase_block_end",
+    "rule": "All spells sharing a physical MasterSite and the same frozen consecutive phase block move together under one integer-year shift.",
+    "noncircular": true,
+    "no_wrap": true,
+    "relative_event_geometry_preserved": true,
+    "cross_species_within_master_block_preserved": true
+  },
+  "eligible_common_shifts": {
+    "definition": "Integer k values for which every event year of every spell in the shift group remains inside the same frozen phase_block_years after adding k.",
+    "observed_alignment_included": "k=0 is retained when eligible.",
+    "minimum_distinct_shifts_per_group": 3,
+    "rationale": "Avoid circular wrap and prevent independent SiteID shifts from manufacturing pseudo-replication."
+  },
+  "replication_gate": {
+    "minimum_shift_eligible_completed_spells": 30,
+    "minimum_distinct_siteids_with_spells": 20,
+    "minimum_physical_mastersites_with_spells": 10,
+    "minimum_species_with_spells": 5,
+    "minimum_species_with_at_least_3_spells": 4,
+    "minimum_species_with_spells_in_at_least_2_mastersites": 3,
+    "rule": "All conditions must pass after removing entire shift groups with fewer than 3 common non-circular shifts."
+  },
+  "prohibited": [
+    "count magnitudes",
+    "abandonment/recolonization abundance",
+    "H",
+    "choosing a shift range from abundance outcomes",
+    "circular wrap",
+    "independent shifting of SiteIDs within a shared physical MasterSite block"
+  ],
+  "decision": {
+    "if_passed": "Freeze V2 shift groups/spells and authorize only the V2 effect implementation after the V2 synthetic recovery audit passes.",
+    "if_failed": "Stop; do not lower shift-support or replication thresholds."
+  }
+}
