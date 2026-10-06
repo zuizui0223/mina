@@ -1,0 +1,73 @@
+name: East Antarctica expansion source gate v1
+
+on:
+  pull_request:
+    paths:
+      - 'docs/EAST_ANTARCTICA_EXPANSION_INTENSIFICATION_DESIGN_V1.md'
+      - 'scripts/audit_east_antarctica_expansion_sources.py'
+      - 'scripts/resolve_aadc_eds_assets.py'
+      - 'scripts/audit_east_antarctica_expansion_schema.py'
+      - 'scripts/extract_east_antarctica_metadata_sheets.py'
+      - 'docs/EAST_ANTARCTICA_TRANSITION_SUPPORT_GATE_V1.md'
+      - 'scripts/gate_east_antarctica_adelie_transitions.py'
+      - '.github/workflows/east-antarctica-expansion-source-gate-v1.yml'
+  workflow_dispatch:
+
+jobs:
+  source-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Outcome-blind source discovery
+        run: |
+          mkdir -p build/aadc2025 build/aadc2016
+          python scripts/audit_east_antarctica_expansion_sources.py \
+            --out build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
+      - name: Resolve and download schema-inspectable AADC assets
+        run: |
+          python scripts/resolve_aadc_eds_assets.py \
+            --metadata-id AAS_4518_Seabird_Breeding_Occupancy \
+            --download-dir build/aadc2025 \
+            --out build/AADC_2025_ASSET_META.json
+          python scripts/resolve_aadc_eds_assets.py \
+            --metadata-id AAS_4088_Adelie_Occupancy \
+            --download-dir build/aadc2016 \
+            --out build/AADC_2016_ASSET_META.json
+      - name: Download abundance supplement
+        run: |
+          curl -L --fail --retry 6 --retry-delay 5 \
+            'https://journals.plos.org/plosone/article/file?type=supplementary&id=info:doi/10.1371/journal.pone.0139877.s001' \
+            -o build/plos_s1.xls
+      - name: Audit schemas without biological values
+        run: |
+          pip install openpyxl xlrd
+          python scripts/audit_east_antarctica_expansion_schema.py \
+            --occupancy-2025-dir build/aadc2025 \
+            --occupancy-2016-dir build/aadc2016 \
+            --plos-s1 build/plos_s1.xls \
+            --out build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V2.json
+          python scripts/extract_east_antarctica_metadata_sheets.py \
+            --source-dir build/aadc2025 \
+            --out build/EAST_ANTARCTICA_OCCUPANCY_DOCUMENTATION_V1.json
+      - name: Count transition support only
+        run: |
+          OCC=$(find build/aadc2025 -type f -name '*occupancy_penguin.xlsx' | head -n 1)
+          GEO=$(find build/aadc2025 -type f -name '*geog_sites_all.xlsx' | head -n 1)
+          test -n "$OCC" && test -n "$GEO"
+          python scripts/gate_east_antarctica_adelie_transitions.py \
+            --occupancy "$OCC" \
+            --geog-sites "$GEO" \
+            --out build/EAST_ANTARCTICA_TRANSITION_SUPPORT_GATE_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: east-antarctica-expansion-source-gate-v1
+          path: |
+            build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
+            build/AADC_2025_ASSET_META.json
+            build/AADC_2016_ASSET_META.json
+            build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V2.json
+            build/EAST_ANTARCTICA_OCCUPANCY_DOCUMENTATION_V1.json
+            build/EAST_ANTARCTICA_TRANSITION_SUPPORT_GATE_V1.json
