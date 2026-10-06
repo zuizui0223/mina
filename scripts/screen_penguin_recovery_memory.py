@@ -148,6 +148,11 @@ def summarize(events, censored):
         "later_state_match_spells": int(sum(
             bool(e.get("later_zero_state_at_or_above_loss")) for e in all_spells
         )),
+        "later_positive_background_state_match_spells": int(sum(
+            bool(e.get("later_zero_state_at_or_above_loss"))
+            and float(e.get("a_loss", 0.0)) > 0.0
+            for e in all_spells
+        )),
     }
     followup = {}
     for horizon in (2, 3, 5, 10):
