@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "source": "external/ross_island_v2_frozen_counts.csv",
+  "anchors": [1999, 2001, 2002, 2012],
+  "aggregate": {
+    "pre_shock_N_1999": 207411,
+    "shock_N_2001": 94798,
+    "rebound_N_2002": 203996,
+    "late_N_2012": 351119,
+    "shock_loss_1999_2001": 112613,
+    "rebound_gain_2001_2002": 109198,
+    "fraction_aggregate_loss_restored_by_2002": 0.9696749043183291,
+    "N_2002_over_N_1999": 0.983535106624046
+  },
+  "three_colony": {
+    "loss_1999_2001": {
+      "Royds": 2253,
+      "Bird": 21033,
+      "Crozier": 89327
+    },
+    "gain_2001_2002": {
+      "Royds": 872,
+      "Bird": 14361,
+      "Crozier": 93965
+    },
+    "fraction_loss_restored": {
+      "Royds": 0.3870395028850422,
+      "Bird": 0.6827841962630152,
+      "Crozier": 1.0519215914561106
+    },
+    "composition_preserving_expected_2002": {
+      "Royds": 3560.3970859790466,
+      "Bird": 46570.38729864858,
+      "Crozier": 153865.21561537238
+    },
+    "observed_minus_expected_2002": {
+      "Royds": -1321.3970859790466,
+      "Bird": -5892.38729864858,
+      "Crozier": 7213.784384627623
+    },
+    "E_1999": 1.609467706666291,
+    "E_2001": 1.7286221365129768,
+    "E_2002": 1.507430677390489,
+    "E_2012": 1.5428221816996246,
+    "E_2002_over_E_1999": 0.9366020027284968,
+    "TV_1999_2002": 0.035362381539969526
+  },
+  "six_component": {
+    "fraction_loss_restored": {
+      "Cape Royds": 0.3870395028850422,
+      "Cape Bird South": 0.10786267995570321,
+      "Cape Bird Middle": 0.34889926617745165,
+      "Cape Bird North": 0.8889406751448166,
+      "Cape Crozier West": 1.097711179814501,
+      "Cape Crozier East": 0.6487762045878608
+    },
+    "composition_preserving_expected_2002": {
+      "Cape Royds": 3560.3970859790466,
+      "Cape Bird South": 11471.953483662872,
+      "Cape Bird Middle": 3278.122510377945,
+      "Cape Bird North": 31820.31130460776,
+      "Cape Crozier West": 137091.0243718993,
+      "Cape Crozier East": 16774.191243473106
+    },
+    "observed_minus_expected_2002": {
+      "Cape Royds": -1321.3970859790466,
+      "Cape Bird South": -3835.953483662872,
+      "Cape Bird Middle": -921.1225103779452,
+      "Cape Bird North": -1135.3113046077597,
+      "Cape Crozier West": 10132.975628100714,
+      "Cape Crozier East": -2919.1912434731057
+    },
+    "E_1999": 2.0557530380209097,
+    "E_2001": 2.2919284746729964,
+    "E_2002": 1.819023375736499,
+    "E_2012": 1.9702250757190085,
+    "E_2002_over_E_1999": 0.8848452815556521,
+    "TV_1999_2002": 0.049672423126437396
+  },
+  "decision": {
+    "aggregate_nearly_restored_by_2002": true,
+    "all_three_colonies_exactly_restored": false,
+    "spatial_composition_restored": false,
+    "crozier_overshot_pre_shock": true,
+    "royds_below_pre_shock": true,
+    "bird_below_pre_shock": true
+  }
+}
