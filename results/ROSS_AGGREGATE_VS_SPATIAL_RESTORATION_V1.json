@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
   "source": "external/ross_island_v2_frozen_counts.csv",
-  "anchors": [1999, 2001, 2002, 2012],
+  "anchors": [
+    1999,
+    2001,
+    2002,
+    2012
+  ],
   "aggregate": {
     "pre_shock_N_1999": 207411,
     "shock_N_2001": 94798,
@@ -84,5 +89,21 @@
     "crozier_overshot_pre_shock": true,
     "royds_below_pre_shock": true,
     "bird_below_pre_shock": true
+  },
+  "inverse_path_allocation_mismatch": {
+    "baseline": "Allocate the observed 2001->2002 aggregate rebound across the six components in exact proportion to each component's 1999->2001 shock loss.",
+    "aggregate_restoration_fraction": 0.9696749043183291,
+    "amount_reallocated_to_match_exact_inverse_pairs": 10270.557875200906,
+    "fraction_of_observed_rebound_requiring_reallocation": 0.09405445040386184,
+    "loss_gain_cosine_similarity": 0.9969470572957101,
+    "interpretation": "The rebound vector is strongly aligned with the loss vector because Crozier West dominates both, but about 9.4% of rebound abundance would need to be redistributed among components to produce an exact proportional reverse path.",
+    "component_gain_minus_exact_inverse": {
+      "Cape Royds": -1312.6775594291958,
+      "Cape Bird South": -3891.0821929972562,
+      "Cape Bird Middle": -930.5426815731753,
+      "Cape Bird North": -1212.5473879569854,
+      "Cape Crozier West": 10270.557875200902,
+      "Cape Crozier East": -2923.708053244296
+    }
   }
 }
