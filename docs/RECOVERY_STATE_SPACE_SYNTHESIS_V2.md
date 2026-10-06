@@ -1,4 +1,4 @@
-# Recovery state space v2: abundance, redundancy, and dominance identity
+# Breeding-recovery state space v2: abundance, redundancy, and dominance identity
 
 **Status:** post-result conceptual synthesis. V2 extends the two-axis N/E framework after external Heard Island triangulation.
 
@@ -30,7 +30,7 @@ Therefore N and E alone do not uniquely describe spatial recovery.
 
 At minimum, characterize a colonial metapopulation by:
 
-### 1. Total abundance
+### 1. Total breeding abundance
 
     N = sum_i n_i.
 
@@ -131,7 +131,7 @@ Spatial metapopulation recovery theory already shows that aggregate abundance ca
 
 The Ross/Heard cases identify an additional dimension.
 
-Even when occupancy is unchanged and every monitored node grows, the abundance distribution among those nodes can:
+Even when occupancy is unchanged and every monitored breeding count increases, the abundance distribution among those nodes can:
 - become more concentrated;
 - change dominant identity;
 - move non-monotonically through time.
@@ -194,7 +194,7 @@ This is distinct from a static area -> carrying capacity -> species-richness fra
 ## Current empirical support
 
 Frozen focal result:
-- Ross numerical recovery erodes spatial redundancy with no local decline.
+- Ross breeding-pair recovery fails to restore spatial redundancy, with no endpoint decline in any monitored breeding count.
 
 Independent post-result triangulation:
 - Heard king-penguin recovery shows the same endpoint sign combination under a different species and island, but through dominance reversal.
@@ -206,7 +206,7 @@ Contrasting case:
 
 Supported:
 
-> numerical recovery can be spatially non-monotonic and can reduce abundance-weighted redundancy even when every monitored breeding unit increases.
+> numerical recovery of breeding abundance can be spatially non-monotonic and can reduce abundance-weighted redundancy even when every monitored breeding-unit count increases.
 
 Supported by Ross + Heard triangulation:
 
