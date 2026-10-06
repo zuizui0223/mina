@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "result_id": "east-antarctica-recovery-spatial-redundancy-support-v1",
+  "date": "2026-10-06",
+  "contract": "contracts/EAST_ANTARCTICA_RECOVERY_SPATIAL_REDUNDANCY_V1.md",
+  "source": {
+    "paper_doi": "10.1371/journal.pone.0139877",
+    "supporting_file": "S1 File: Additional details of population count data",
+    "artifact_id": 11401559756,
+    "artifact_digest": "sha256:7ff13717b7c98cdfc963313072f12f6793460e54a213c8066ac525fd70a3b97e"
+  },
+  "observed_support": {
+    "site_roster_coordinates": true,
+    "region_membership": true,
+    "regional_growth_rates": true,
+    "regional_multidecadal_time_series_for_72_site_subset": true,
+    "site_level_historical_standardized_abundance": false,
+    "site_level_recent_standardized_abundance": false
+  },
+  "decision": {
+    "primary_E_endpoint_computable_from_S1": false,
+    "effect_test_opened": false,
+    "status": "SUPPORT_FAIL_UNDER_SPECIFIED_SOURCE"
+  },
+  "reason": "The frozen primary endpoint requires paired standardized historical and recent abundance at each of 99 sites. S1 contains the site roster/coordinates, regional growth summaries, and regional time series, but not the 99 paired site-level abundance estimates. No substitute endpoint is introduced after opening S1.",
+  "allowed_next_step": "A separate pre-effect contract may specify a different public source containing site-level abundance before those values are inspected."
+}
