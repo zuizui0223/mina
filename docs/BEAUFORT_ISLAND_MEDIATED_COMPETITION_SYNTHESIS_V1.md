@@ -1,130 +1,121 @@
-# Beaufort Island: competition release is converted into within-island growth before inter-island export
+# Beaufort Island: capacity release coincides with within-island spreading and reduced inter-island export
 
-**Status:** descriptive synthesis for the independent Ross Sea follow-up.
+**Status:** corrected descriptive synthesis for the independent Ross Sea follow-up. The earlier "intensification before expansion" interpretation is withdrawn because it did not compare gains with proportional growth.
 
-## A direct island-mediated natural experiment
-
-Beaufort Island provides unusually strong evidence that island breeding capacity can change the spatial expression of Adélie penguin population regulation.
+## A direct capacity-change case
 
 LaRue et al. (2013) reported that usable nesting habitat at the main Beaufort colony increased **71%** from 1958 to 2010 as ice retreated, while population size increased **84%**.
 
-Critically, Beaufort-born penguins were observed moving to nearby Ross Island colonies. That inter-island emigration/visitation rose to about **3% in 2005**, then decreased as additional Beaufort nesting habitat became available.
+Banded/resighted Beaufort-born penguins were also observed at nearby Ross Island colonies. Inter-island emigration/visitation rose to about **3% in 2005** and then declined as additional Beaufort nesting habitat became available.
 
-The geographic distance among islands did not change. Local breeding capacity did.
+The geographic distance between Beaufort and Ross Island did not change; local breeding capacity did.
 
-Therefore:
+The defensible case-level statement is therefore:
 
-> **island capacity changed inter-island movement.**
+> changing local breeding capacity at Beaufort was associated with altered inter-island movement.
 
-This is stronger than a simple area/isolation correlation because the same island changed through time.
+This is a natural experiment in one island system, not proof of a universal island-boundary mechanism.
 
-## The public census resolves the within-island response
+## The within-island census moves in the opposite spatial direction
 
-The Ross Sea aerial-census workbook contains:
-- `Beaufort Island` — the established main colony;
-- `Beaufort Island New` — the newly founded disjunct subcolony described by LaRue et al.
+The public Ross Sea aerial-census workbook contains:
 
-The published paper states that this new northeast-coast subcolony was founded in 2004 and increased from **460 pairs** to **957 pairs** by 2010. The public census reproduces those values.
+- `Beaufort Island` — established main colony;
+- `Beaufort Island New` — the disjunct subcolony reported as founded in 2004.
 
-### 2004 -> 2010
+### 2004 to 2010
 
 | Component | 2004 pairs | 2010 pairs | change |
 |---|---:|---:|---:|
-| Established main colony | 47,725 | 63,760 | +16,035 |
-| New subcolony | 460 | 957 | +497 |
+| Established main colony | 47,725 | 63,760 | +16,035 (+33.6%) |
+| New subcolony | 460 | 957 | +497 (+108.0%) |
 | **Beaufort Island total** | **48,185** | **64,717** | **+16,532 (+34.3%)** |
 
-Although the newly founded subcolony more than doubled (**+108%**), it remained a small fraction of the island population:
+The raw statement that 97.0% of net gain occurred in the main colony is true but biologically misleading: the main colony already held 99.05% of breeders in 2004.
 
-- 2004: **0.95%** of Beaufort breeders;
-- 2010: **1.48%**.
+## Proportional-growth baseline
 
-Of the net island-level gain between 2004 and 2010:
+The new subcolony started with 0.9547% of Beaufort breeders.
 
-- **97.0%** occurred in the already-established main colony;
-- **3.0%** occurred in the new subcolony.
+Under proportional allocation of the island's 16,532-pair gain, its expected gain is only **157.82 pairs**.
 
-Thus the island-level sequence is:
+Observed gain is **497 pairs**, or **3.15 times** the proportional expectation.
 
-```
-habitat release
-      ↓
-strong intensification of established colony
-      ↓
-small same-island expansion into a new subcolony
-      ↓
-reduced export to another island
-```
+Its share therefore rose:
 
-This is an empirical example of **intensification before expansion**.
+- 2004: **0.95%**
+- 2010: **1.48%**
+
+and the effective number of the two Beaufort breeding units rose:
+
+- 2004: **E = 1.0193**
+- 2010: **E = 1.0300**
+
+So Beaufort became slightly less concentrated as it grew.
+
+## The biologically interesting conjunction
+
+The same broad period contains two spatial signals:
+
+    WITHIN BEAUFORT
+    smaller/new breeding unit gains share
+    -> slight spatial spreading
+
+    ACROSS ISLANDS
+    Beaufort-to-Ross-Island movement declines
+    -> reduced inter-island export
+
+These are not contradictory.
+
+A capacity increase can retain more breeders on the island while those breeders spread among breeding patches **within** the island.
+
+This suggests a revised mechanism:
+
+> capacity can change the spatial level at which redistribution is expressed.
 
 ## Why this matters for island ecology
 
-The key island effect is not simply that Beaufort is separated by water.
+The island is not merely a fixed point or an area value. Usable breeding capacity can change through glacier retreat and other environmental processes.
 
-The island provides a finite, environmentally mutable breeding-capacity envelope.
+If more suitable space becomes available, population response need not be "stay and intensify." It can be:
 
-When that envelope expands:
-- density-dependent pressure is relaxed;
-- more recruits can remain;
-- same-island breeding space is used;
-- movement across the island boundary becomes less attractive.
+- stay on the same island;
+- expand or redistribute among sites on that island;
+- reduce movement to another island.
 
-When local capacity is constrained, the opposite pressure can push breeders toward Ross Island.
+The candidate island effect is therefore a **hierarchical spatial gate**, not a demographic capacitor that necessarily fills one node before expansion.
 
-Thus an island can act as a **demographic capacitor**: it stores population growth locally until competition/capacity changes make movement across a boundary worthwhile.
+## Nested hierarchy
 
-## A nested hierarchy, not a pure island-only model
+    subcolony
+      -> colony
+      -> same island
+      -> another island
 
-Ross Island itself contains three major Adélie colonies:
-- Cape Royds;
-- Cape Bird;
-- Cape Crozier;
+Beaufort provides evidence that within-island and between-island redistribution can move in opposite directions at the same time.
 
-with Bird and Crozier each containing multiple aerial-census components.
+## Connection to decline
 
-Therefore the spatial game has nested levels:
+Palmer/Signy decline shows a different demographic arithmetic:
 
-```
-subcolony
- -> colony
- -> same island
- -> another island
-```
+- concentration is generated by unequal local losses;
+- surviving units become relatively dominant even while themselves declining;
+- there is little evidence that breeders actively aggregate into growing refuges.
 
-The Beaufort evidence shows that crossing the final boundary is biologically meaningful, but it does not imply that all redistribution is controlled solely by island identity.
+The resulting asymmetry is:
 
-## Connection to competition
+    DECLINE
+    unequal losses -> contraction / concentration
 
-The mechanism can be written as a competition–capacity switch:
+    RECOVERY WITH AVAILABLE CAPACITY
+    gains -> possible within-island deconcentration
+          -> inter-island export can simultaneously fall
 
-```
-low residual capacity
- -> high intraspecific crowding / founding pressure
- -> more incentive to disperse
+This is a stronger biological asymmetry than "collapse concentrates and recovery first intensifies."
 
-high residual capacity
- -> competition release
- -> retain recruits locally
- -> intensification
-```
+## Boundaries
 
-This makes **intraspecific competition** the driver and **island capacity** the spatial device that converts that driver into either local growth or inter-island redistribution.
-
-## Relation to Palmer/Signy decline
-
-The decline systems show the reverse demographic flow:
-- concentration is generated overwhelmingly by unequal local losses, not by mass movement into a refuge;
-- surviving components become relatively dominant while themselves declining.
-
-A coherent asymmetric cycle is therefore:
-
-```
-DECLINE:
-local filtering -> unequal attrition -> site loss -> spare capacity in survivors
-
-RECOVERY:
-survivor intensification -> same-island expansion -> inter-island movement only if capacity pressure warrants it
-```
-
-This offers a concrete island mechanism for why spatial recovery need not retrace spatial collapse.
+- The Beaufort aerial-count decomposition does not identify individual movement.
+- The inter-island movement evidence comes from the independent band/resighting study.
+- The case does not establish a universal ordering of subcolony, colony and island transitions.
+- It does not establish that all islands regulate dispersal in the same way.
