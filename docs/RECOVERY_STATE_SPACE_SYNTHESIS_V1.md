@@ -1,6 +1,6 @@
 # Recovery state space: abundance and spatial redundancy are separate axes
 
-**Status:** conceptual synthesis after the frozen Ross V2 result, Beaufort proportional correction, mechanism V2 audit, and literature positioning.
+**Status:** superseded by `RECOVERY_STATE_SPACE_SYNTHESIS_V2.md`. V1 used N and E as the main recovery coordinates; the Heard Island external triangulation shows that dominant-node identity/turnover is a necessary third descriptor.
 
 ## Core idea
 
