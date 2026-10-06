@@ -1,6 +1,6 @@
 # PR189 novelty audit after the recovery result
 
-**Status:** post-result literature positioning. This document separates prior knowledge from the contribution supported by PR189.
+**Status:** superseded by `PR189_RECOVERY_NOVELTY_AUDIT_V2.md` after independent Heard Island triangulation.
 
 ## What is not new
 
