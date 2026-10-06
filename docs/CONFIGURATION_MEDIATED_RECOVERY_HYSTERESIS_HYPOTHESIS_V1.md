@@ -1,6 +1,6 @@
 # Configuration-mediated recovery hysteresis in colonial seabirds — generated hypothesis v1
 
-**Status:** post-result generated mechanism hypothesis. This is not a confirmatory result of PR189. It is a synthesis motivated by the frozen Ross result, the Ross matched-abundance branch audit, Heard Island triangulation, and prior colonial-seabird theory.
+**Status:** superseded by `CONFIGURATION_MEDIATED_RECOVERY_HYSTERESIS_HYPOTHESIS_V2.md`. V1 gave configuration-mediated memory too much prominence for the immediate Ross rebound before fully auditing the known colony-specific iceberg/access geometry.
 
 ## Biological question
 
