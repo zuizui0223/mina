@@ -90,10 +90,31 @@ No colony is removed after effect opening.
 
 Consequently:
 - primary N, E, shares, TV and additive proportional residuals use all 50 colonies;
-- the full-roster G_D identity is recorded as **not defined**;
-- no positive-baseline subset is promoted as a replacement primary analysis.
+- the individual local multiplier G_i remains undefined for Ledda Bay;
+- no pseudo-count or positive-baseline subset is introduced.
 
-This is a contract implementation limitation, not a biological failure.
+However, the same finite identity has an algebraically equivalent **zero-safe full-roster form**:
+
+    E = N^2 / sum_i n_i^2
+
+and therefore:
+
+    E2018/E2009
+      = (G_bar / G_D*)^2
+
+with:
+
+    G_D* = sqrt(sum_i n_i2018^2 / sum_i n_i2009^2).
+
+For all 50 colonies:
+
+    G_bar = 0.876216
+    G_D*  = 0.938166
+    (G_bar/G_D*)^2 = 0.872296,
+
+exactly matching the observed E ratio.
+
+Thus the local-ratio reporting limitation does **not** require dropping the zero-baseline colony or abandoning the full-roster decomposition.
 
 ## Predeclared regional sensitivity
 
