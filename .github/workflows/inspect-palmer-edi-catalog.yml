@@ -73,6 +73,38 @@ jobs:
             echo "--- 87.$rev ---"
             cat "build/catalog/query_87_$rev.xml"
           done
+      - name: Resolve historical census revisions directly
+        run: |
+          for rev in 8 9 10; do
+            echo "=== cite 87.$rev ==="
+            curl -A 'Mozilla/5.0' -L --fail --retry 5 --retry-delay 3 \
+              -H 'Accept: application/json' \
+              "https://cite.edirepository.org/cite/knb-lter-pal.87.$rev" \
+              -o "build/catalog/cite_87_$rev.json" || true
+            cat "build/catalog/cite_87_$rev.json" 2>/dev/null || true
+            echo
+            echo "=== portal 87.$rev ==="
+            curl -A 'Mozilla/5.0' -L --fail --retry 5 --retry-delay 3 \
+              "https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-pal.87.$rev" \
+              -o "build/catalog/portal_87_$rev.html" || true
+            grep -Ein '805f6b|55dc856|doi|data|entity|download|87\.' "build/catalog/portal_87_$rev.html" \
+              | head -300 || true
+          done
+
+          base='https://pallter.marine.rutgers.edu/catalog/edi/edi-search.php'
+          for rev in 8 9 10; do
+            curl -A 'Mozilla/5.0' -L --fail --retry 5 --retry-delay 3 \
+              --get \
+              --data-urlencode 'fl=title,pubdate,doi,packageid,author' \
+              --data-urlencode 'defType=edismax' \
+              --data-urlencode 'fq=scope:knb-lter-pal' \
+              --data-urlencode "q=packageid:\"knb-lter-pal.87.$rev\"" \
+              --data-urlencode 'rows=20' \
+              --data-urlencode 'start=0' \
+              "$base" -o "build/catalog/query_exact_87_$rev.xml"
+            echo "=== exact query 87.$rev ==="
+            cat "build/catalog/query_exact_87_$rev.xml"
+          done
       - uses: actions/upload-artifact@v4
         with:
           name: inspect-palmer-edi-catalog
