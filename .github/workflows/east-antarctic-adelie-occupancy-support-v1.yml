@@ -25,6 +25,12 @@ jobs:
             -o build/aadc_adelie_occupancy_download
           file build/aadc_adelie_occupancy_download
           ls -lh build/aadc_adelie_occupancy_download
+          if file build/aadc_adelie_occupancy_download | grep -q 'HTML'; then
+            echo '--- AADC download relay HTML ---'
+            cat build/aadc_adelie_occupancy_download
+            echo '--- links ---'
+            grep -Eo 'https?://[^"<> ]+|href="[^"]+"' build/aadc_adelie_occupancy_download || true
+          fi
       - name: Run outcome-blind structural audit
         run: |
           python scripts/audit_east_antarctic_adelie_occupancy_support.py \
