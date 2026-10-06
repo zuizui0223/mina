@@ -1,6 +1,6 @@
 # PR189 novelty audit v5 — strict literature boundary
 
-**Status:** post-result positioning after comparison with metapopulation recovery and community-recovery literature.
+**Status:** superseded by `PR189_RECOVERY_NOVELTY_AUDIT_V6.md` after the prospective global Emperor decline-allocation result.
 
 ## What is already well established
 
