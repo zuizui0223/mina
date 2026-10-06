@@ -42,7 +42,7 @@ We use the generic term **effective breeding-component number** because the phys
 
 ### Palmer discovery system
 
-The Palmer analysis used the public Palmer Station Antarctica Long Term Ecological Research Adélie breeding-pair table archived at DOI: 10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e (EDI revision knb-lter-pal.87.7), spanning 1991–2017. Source-provenance checks show that its colony-code rows correspond to the historical fixed sample-colony monitoring panel rather than an exhaustive enumeration of all physical subcolonies on each island: in 1993 the frozen table contains 54 positive monitored colony codes, closely matching contemporary program documentation of 54 sample colonies. We therefore treat yearly sums as **summed monitored-component abundance**, not island-wide population totals. Primary concentration inference was restricted to Cormorant, Humble and Litchfield because those island-based monitoring networks retained unchanged reported colony-code rosters over their eligible intervals. Litchfield contributed through its final positive monitored-panel census.
+The Palmer analysis used the public Palmer Station Antarctica Long Term Ecological Research Adélie breeding-pair table archived at DOI: 10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e (EDI revision knb-lter-pal.87.7), spanning 1991–2017. Source-provenance checks show that its colony-code rows correspond to the historical fixed sample-colony monitoring panel rather than an exhaustive enumeration of all physical subcolonies on each island: in 1993 the frozen table contains 54 positive monitored colony codes, closely matching contemporary program documentation of 54 sample colonies [@fraser1994amlr]. We therefore treat yearly sums as **summed monitored-component abundance**, not island-wide population totals. Primary concentration inference was restricted to Cormorant, Humble and Litchfield because those island-based monitoring networks retained unchanged reported colony-code rosters over their eligible intervals. Litchfield contributed through its final positive monitored-panel census.
 
 For each island-year we calculated \(E\). The observed concentration statistic was the OLS slope of \(E\) against calendar year. We estimated one time-invariant component-share vector from cumulative counts within each island and imposed the observed summed monitored-component abundance trajectory on that fixed composition. Counts were then simulated under Poisson, Gamma–Poisson 10% multiplicative-CV and Gamma–Poisson 20% multiplicative-CV observation models. Each frozen model used 100,000 simulations. Support required a negative observed \(E\) slope and a one-sided Monte Carlo probability \(\le 0.05\) under every frozen error model.
 
@@ -160,9 +160,9 @@ The increasing networks therefore serve as a boundary on the decline-specific in
 
 ### The internal route to concentration was not conserved
 
-The five supported within-system populations reached concentration through different component-level trajectories.
+The five supported within-system monitoring trajectories reached concentration through different component-level trajectories.
 
-At Palmer, the breeding component that was largest initially had zero breeding pairs by the final eligible census in all three populations. Dominance shifted to a different component on Cormorant, Humble and Litchfield.
+At Palmer, the monitored colony-code component that was largest initially had zero breeding pairs by the final eligible census in all three sample-colony monitoring networks. Dominance shifted to a different component on Cormorant, Humble and Litchfield.
 
 At Signy, the opposite occurred. The initially dominant Adélie component remained dominant and increased from 47.5% to 69.4% of the retained population. The initially dominant chinstrap component likewise remained dominant and increased from 40.0% to 65.6%.
 
@@ -232,7 +232,7 @@ The increasing regional panels are especially important for interpretation but n
 
 The Central-west Antarctic Peninsula regional rosters also include Biscoe Point in the broader Palmer-area APBP context, although the primary Palmer concentration populations are Cormorant, Humble and Litchfield. The MAPPPD analysis is therefore a scale-transfer comparison with different component definitions, not an additional independent geographic replication of Palmer; Signy supplies the independent geographic replication.
 
-We do not claim a general seabird or colonial-breeder law, nor do we treat published APBP regions as closed demographic populations. The strongest current inference has two levels: replicated non-proportional concentration **during decline** within breeding systems, and a broader regional indication that effective breeding-site concentration can occur under both declining and increasing abundance trajectories. Testing whether that second pattern reflects a genuine trend-independent concentration process or a weakly reversible spatial ratchet requires independent component-resolved systems with both positive and negative population trends.
+We do not claim a general seabird or colonial-breeder law, nor do we treat published APBP regions as closed demographic populations. The strongest current inference has two levels: replicated non-proportional concentration **during decline** within monitored breeding systems, and a broader regional indication that effective breeding-site concentration can occur under both declining and increasing abundance trajectories. Testing whether that second pattern reflects a genuine trend-independent concentration process or a weakly reversible spatial ratchet requires independent component-resolved systems with both positive and negative population trends.
 
 ### Monitoring implications
 
@@ -246,7 +246,7 @@ Population decline in Antarctic *Pygoscelis* repeatedly involved more than numer
 
 The broader MAPPPD extension changes how that result should be interpreted across scales. Among four declining regional networks, the abundance-conditioned concentration direction was positive in all four and individually supported in two South Shetland networks. But all three increasing regional networks also ended with lower effective breeding-site number, including Victoria Land Adélie and Central-west Antarctic Peninsula gentoo populations in which abundance increased while \(E\) declined.
 
-The strongest current inference is therefore not that decline universally causes spatial contraction. It is that **non-proportional concentration is strongly replicated during decline within breeding systems, while at the regional scale breeding-component organization can become more concentrated under either sign of abundance change**. This makes monitored breeding-component organization a distinct spatial state rather than a simple transform of abundance. Whether that state is genuinely trend-independent, weakly reversible or ratchet-like remains an independent test for future component-resolved data.
+The strongest current inference is therefore not that decline universally causes spatial contraction. It is that **non-proportional concentration is strongly replicated during decline within monitored breeding systems, while at the regional scale breeding-component organization can become more concentrated under either sign of abundance change**. This makes monitored breeding-component organization a distinct spatial state rather than a simple transform of abundance. Whether that state is genuinely trend-independent, weakly reversible or ratchet-like remains an independent test for future component-resolved data.
 
 ## References
 
