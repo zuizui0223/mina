@@ -117,8 +117,15 @@
     ]
   },
   "exact_decomposition": {
-    "full_roster_multiplicative_G_identity_defined": false,
-    "reason": "At least one fixed-roster colony has N_median=0 in 2009, so G_i=N2018/N2009 is undefined. The colony is retained in the primary N/E/composition analysis; no post-effect exclusion is made."
+    "local_multiplier_G_i_fully_defined": false,
+    "zero_baseline_site": "LEDD",
+    "local_multiplier_boundary": "G_i=N2018/N2009 is undefined for Ledda Bay because its 2009 posterior median is zero; no pseudo-count or post-effect exclusion is used.",
+    "zero_safe_full_roster_identity_defined": true,
+    "zero_safe_formula": "G_D_star = sqrt(sum_i n_i2018^2 / sum_i n_i2009^2); E2018/E2009 = (G_bar/G_D_star)^2",
+    "G_bar": 0.8762164479249217,
+    "G_D_star": 0.9381656797180099,
+    "identity_E_ratio": 0.8722956762307179,
+    "observed_E_ratio": 0.8722956762307176
   },
   "regional_sensitivity": {
     "Amundsen Sea": {
