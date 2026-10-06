@@ -1,6 +1,6 @@
 # Ross Island iceberg shock–rebound decomposition v1
 
-**Status:** post-result decomposition. This does not alter the frozen Ross V2 periods or decisions. It corrects the biological interpretation of the 2001 recovery baseline.
+**Status:** superseded by `docs/ROSS_ICEBERG_SHOCK_REBOUND_AUDIT_V1.md`. Retained only as an audit trail.
 
 ## Why this audit is necessary
 
