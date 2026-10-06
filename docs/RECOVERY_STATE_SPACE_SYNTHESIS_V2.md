@@ -1,6 +1,6 @@
 # Breeding-recovery state space v2: abundance, redundancy, and dominance identity
 
-**Status:** post-result conceptual synthesis. V2 extends the two-axis N/E framework after external Heard Island triangulation.
+**Status:** superseded by `RECOVERY_STATE_SPACE_SYNTHESIS_V3.md`. V2 treated Ross 2001-2012 as a single recovery trajectory; V3 incorporates the 2001 iceberg-shock baseline and separates shock, immediate rebound, and longer recovery.
 
 ## Why V2 is needed
 
