@@ -85,16 +85,23 @@ def test_all_main_figures_are_cited_in_order():
     assert "Appendix S1: Figure S1" in text
 
 
-def test_cited_article_references_have_complete_dois():
+def test_cited_references_have_complete_type_appropriate_metadata():
     text = MANUSCRIPT.read_text(encoding="utf-8")
     bib = BIB.read_text(encoding="utf-8")
     cited = set(re.findall(r"@([A-Za-z0-9_:-]+)", text))
     for key in sorted(cited):
         m = re.search(
-            rf"@article\{{{re.escape(key)},([\s\S]*?)\n\}}",
+            rf"@([A-Za-z]+)\{{{re.escape(key)},([\s\S]*?)\n\}}",
             bib,
         )
-        assert m, f"cited reference is not a complete article entry: {key}"
-        body = m.group(1)
-        for field in ("author", "title", "journal", "year", "volume", "pages", "doi"):
+        assert m, f"cited reference missing from bibliography: {key}"
+        entry_type = m.group(1).lower()
+        body = m.group(2)
+        if entry_type == "article":
+            fields = ("author", "title", "journal", "year", "volume", "pages", "doi")
+        elif entry_type == "techreport":
+            fields = ("author", "title", "institution", "year", "url")
+        else:
+            fields = ("author", "title", "year")
+        for field in fields:
             assert re.search(rf"\n\s*{field}\s*=", body, flags=re.I), (key, field)
