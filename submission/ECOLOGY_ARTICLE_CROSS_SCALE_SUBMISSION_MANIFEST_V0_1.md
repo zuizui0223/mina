@@ -4,7 +4,7 @@
 
 **Journal:** Ecology  
 **Article type:** Article  
-**Title:** Breeding-space concentration recurs across spatial scales in Antarctic penguins
+**Title:** Breeding-component concentration recurs across spatial scales in Antarctic penguins
 
 This package supersedes the earlier Ecology Report submission line for initial submission. Older Report, Ecosphere, JBI and integrated manuscript files remain only as provenance.
 
@@ -18,8 +18,8 @@ This package supersedes the earlier Ecology Report submission line for initial s
 
 Approximate manuscript metrics:
 
-- title: 79 characters including spaces
-- abstract: 257 words
+- title: 83 characters including spaces
+- abstract: 259 words
 - main text before full reference list: ~4,600 words
 - main figures: 3
 - supplementary figures: 1
@@ -47,7 +47,8 @@ Reproducible figure workflow:
 
 ## Scientific provenance
 
-- Palmer discovery: `results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
+- Palmer discovery in fixed sample-colony monitoring networks: `results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
+- Palmer source-provenance correction: `docs/PALMER_SAMPLE_COLONY_PROVENANCE_AUDIT_V1.md`
 - Signy Adélie prospective replication: `results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
 - Signy chinstrap prospective replication: `results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
 - regional scale transfer: `results/MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2.json`
@@ -69,12 +70,12 @@ Initial submission still requires private confirmation of:
 - overlap/dual-publication statement
 - ORCID IDs if requested
 
-Scientific endpoints are closed, but the manuscript interpretation was revised on 2026-10-05 to promote the increasing MAPPPD networks as a main boundary condition. These metadata blockers do not authorize new ecological analyses.
+Scientific endpoints are closed. On 2026-10-06 a source-provenance audit corrected the Palmer observational scope from exhaustive island population totals to summed counts in fixed sample-colony monitoring networks; no endpoint, roster, null family, p-value or effect size changed. These metadata blockers do not authorize new ecological analyses.
 
 
 ## Word and visual QA status
 
-The revised one-paper Main Document has been rendered and visually checked page by page. It contains **29 pages** and shows no clipping, overlap, broken equations or missing text. The three main figures have also passed final visual QA. Appendix S1 was rebuilt after removing an unintended blank page and now renders cleanly in **9 pages**.
+The prior one-paper Main Document and Appendix passed visual QA before the Palmer source-provenance wording correction. Those artifacts are now provenance-only. A corrected Main Document and Appendix must be regenerated and visually checked before upload; page counts below remain historical until that rebuild is complete.
 
 With the three main figures counted as one page each, the complete Ecology Article is **32 pages**. This is two pages above the standard 30-page Article length. The cover letter now contains the two numbered justifications required by Ecology for an Article above 30 pages and below 50 pages: broad ecological contribution and the value/necessity of the additional length.
 
@@ -87,7 +88,7 @@ Initial submission is **Ecology — Article**. The compact Ecology Report packag
 
 ## Artifact provenance
 
-Current revised artifacts:
+Superseded pre-correction artifacts:
 
 - DOCX workflow run: `37391673031`
 - DOCX artifact: `11381845511`
@@ -109,6 +110,6 @@ OpenAI ChatGPT use is disclosed in the applicable Methods section, in Acknowledg
 
 ## Initial-upload blocker
 
-Scientific endpoints are closed, final visual QA is complete, and the actual page count is recorded. **The only remaining blocker is author-controlled metadata**, followed by regeneration of the author-complete Main Document and Appendix S1 and inspection of the ScholarOne proof.
+Scientific endpoints are closed, but the corrected Palmer sampling-unit wording requires regeneration and visual/page-count QA. **Current blockers are corrected-package QA plus author-controlled metadata**, followed by regeneration of the author-complete Main Document and Appendix S1 and inspection of the ScholarOne proof.
 
 SMP PR #177 and guillemot PR #178 are independent follow-up projects and are not conditions for this submission.
