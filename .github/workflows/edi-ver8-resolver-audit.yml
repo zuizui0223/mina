@@ -26,6 +26,15 @@ jobs:
             echo
             echo '=== PASTA DOI HASH SEARCH ==='
             curl -sS --fail 'https://pasta.lternet.edu/package/search/eml?query=805f6b97593c60cfdfd02266db9ab4b6' || true
+            echo
+            echo '=== PACKAGE METADATA ==='
+            curl -sS -L --fail 'https://pasta.lternet.edu/package/metadata/eml/knb-lter-pal/87/8' || true
+            echo
+            echo '=== PACKAGE DATA ENTITY LIST ==='
+            curl -sS -L --fail 'https://pasta.lternet.edu/package/data/eml/knb-lter-pal/87/8' || true
+            echo
+            echo '=== PACKAGE REPORT ==='
+            curl -sS -L --fail 'https://pasta.lternet.edu/package/report/eml/knb-lter-pal/87/8' || true
           } | tee build/EDI_VER8_RESOLVER_AUDIT.txt
       - uses: actions/upload-artifact@v4
         with:
