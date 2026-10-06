@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-penguin-recovery-memory-screen-summary-v1",
+  "status": "exploratory_support_screen_inadequate_for_hysteresis_inference",
+  "date": "2026-10-06",
+  "execution": {
+    "workflow_run_id": 37398765490,
+    "artifact_id": 11383767514,
+    "artifact_digest": "sha256:481ff8d2c42e2ffd6fa348ab1133a3354a7c2bab809d19e4f7c99d5421e2abda",
+    "head_sha": "47776fa8e69a8f1dd5a0abe96c7fdbdebb6fcff7"
+  },
+  "summary": {
+    "loss_spells_total": 22,
+    "distinct_components_with_loss": 21,
+    "completed_reoccupation_spells": 1,
+    "right_censored_spells": 21,
+    "ever_reoccupied_component_fraction": 0.047619047619047616,
+    "return_within_2_years": "0/21",
+    "return_within_3_years": "0/19",
+    "return_within_5_years": "0/18",
+    "return_within_10_years": "0/17",
+    "positive_background_state_matched_nonreturn_spells": 1
+  },
+  "only_completed_spell": {
+    "population": "ADPE_PALMER_HUM",
+    "unit": "1.1",
+    "loss_first_zero_year": 1998,
+    "return_first_positive_year": 2014,
+    "return_delay_years": 16,
+    "H": -1.8584862094375065,
+    "state_ratio_exp_H": 0.15590846458345603
+  },
+  "state_matched_example": {
+    "population": "ADPE_SIGNY",
+    "unit": "A64",
+    "loss_first_zero_year": 2017,
+    "returned_by_2019": false,
+    "a_loss": 6.952010655164319,
+    "max_later_zero_state": 7.176254532017144,
+    "later_state_ratio_vs_loss": 1.2513761638985657
+  },
+  "adequacy_gate": {
+    "required_completed_spells": 10,
+    "required_distinct_components": 5,
+    "required_population_trajectories": 3,
+    "observed_completed_spells": 1,
+    "observed_distinct_completed_components": 1,
+    "observed_population_trajectories": 1,
+    "passes": false
+  },
+  "interpretation": [
+    "Exact-zero breeding-component loss is usually persistent within the available Palmer and Signy follow-up windows.",
+    "The data do not support the proposed H>0 return-threshold hypothesis: the only completed return has H<0.",
+    "Because almost all loss spells occur during continuing decline, persistent vacancy alone cannot establish causal hysteresis.",
+    "Only one informative positive-background case revisits or exceeds the loss-state background while remaining empty, so a same-state recovery comparison is not identified in this data family."
+  ],
+  "next_valid_step": "Use an independent penguin system that contains genuine decline-to-recovery trajectories with component-resolved occupancy and enough exact empty-to-reoccupied transitions; do not introduce low-count pseudo-absence thresholds to rescue the present data."
+}

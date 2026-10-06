@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-penguin-recovery-memory-screen-result-v1",
+  "date": "2026-10-06",
+  "status": "exploratory_already_exposed_data_no_inferential_p_values",
+  "source_workflow": {
+    "run_id": 37398648881,
+    "artifact_id": 11383992291,
+    "artifact_digest": "sha256:8ffb79207abe9146637a7afc84d7547140b9c7e782936e0f24bc0dc5fa5bdf78",
+    "head_sha": "1e48dab7516648521524fe228e25e2a6a3910390"
+  },
+  "summary": {
+    "exact_zero_loss_spells": 22,
+    "distinct_components_with_loss": 21,
+    "completed_reoccupations": 1,
+    "right_censored_without_return": 21,
+    "ever_reoccupied_component_fraction": 0.047619047619047616,
+    "return_within_2y": {"eligible": 21, "returns": 0},
+    "return_within_3y": {"eligible": 19, "returns": 0},
+    "return_within_5y": {"eligible": 18, "returns": 0},
+    "return_within_10y": {"eligible": 17, "returns": 0},
+    "only_completed_event": {
+      "population": "ADPE_PALMER_HUM",
+      "unit": "1.1",
+      "loss_first_zero_year": 1998,
+      "return_first_positive_year": 2014,
+      "return_delay_years": 16,
+      "H": -1.8584862094375065,
+      "state_ratio_exp_H": 0.15590846458345603
+    },
+    "adequacy_gate_passes": false
+  },
+  "decision": {
+    "higher_surrounding_state_return_threshold_supported": false,
+    "short_to_medium_term_reoccupation_is_descriptively_rare": true,
+    "formal_hysteresis_inference_allowed": false
+  },
+  "interpretation": [
+    "Across the five already-exposed component-resolved penguin trajectories, exact-zero breeding-component loss is followed by very little observed reoccupation.",
+    "No completed reoccupation occurs within 2, 3, 5, or 10 years among loss spells with the relevant follow-up.",
+    "The only completed reoccupation occurs 16 years after loss and at a substantially lower surrounding-population state than at loss, so it does not support the generated H>0 threshold prediction.",
+    "The screen therefore motivates an independent occupancy/recovery dataset rather than a rescued threshold analysis on Palmer/Signy."
+  ],
+  "boundary": [
+    "No low-count pseudo-absence threshold may be introduced.",
+    "No formal p-value is attached to the reoccupation fraction.",
+    "No causal social-attraction, dispersal, or hysteresis mechanism is identified.",
+    "This result does not modify or delay the submission manuscript."
+  ]
+}
