@@ -1,6 +1,6 @@
 # Ross Island recovery mechanism audit v1
 
-**Status:** post-result mechanism audit. This document does not convert any post-result mechanism into confirmatory evidence for the Ross V2 effect test.
+**Status:** superseded by `ROSS_RECOVERY_DEMOGRAPHIC_MECHANISM_AUDIT_V2.md`. V1 is retained to preserve the audit trail. V1 overstated the match between age-specific recruitment probability and realized cohort recruitment; see V2.
 
 ## Observed recovery pattern to explain
 
