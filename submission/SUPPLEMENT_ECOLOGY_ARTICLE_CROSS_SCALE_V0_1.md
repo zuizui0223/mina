@@ -2,7 +2,7 @@
 
 **Authors:** [SAME AUTHOR LIST AS MAIN MANUSCRIPT]
 
-**Manuscript title:** Breeding-space concentration recurs across spatial scales in Antarctic penguins
+**Manuscript title:** Breeding-component concentration recurs across spatial scales in Antarctic penguins
 
 **Journal:** Ecology
 
@@ -42,7 +42,7 @@ The metric is the inverse-Simpson effective number of monitored breeding compone
 
 Component meanings differ among data sets:
 
-- Palmer: stable colony-code census units within island breeding systems.
+- Palmer: stable colony-code units from the historical fixed sample-colony monitoring panel within each focal island.
 - Signy: frozen monitored breeding colonies or canonical monitoring units.
 - MAPPPD: repeatedly monitored breeding sites within published APBP regions.
 
@@ -50,7 +50,7 @@ The manuscript therefore uses “effective monitored breeding components” unle
 
 ## Section S3: Palmer fixed-composition inference
 
-The primary Palmer analysis is restricted to Cormorant, Humble and Litchfield, the three synchronized Adélie island populations with unchanged reported colony-code rosters.
+The primary Palmer analysis is restricted to Cormorant, Humble and Litchfield, the three synchronized island-based Adélie sample-colony monitoring networks with unchanged reported colony-code rosters.
 
 Observed first-to-last change in E:
 
@@ -62,7 +62,7 @@ Observed first-to-last change in E:
 | Humble | 4.625 | 2.285 | −50.6% | −0.08550 | 0.000010 |
 | Litchfield | 5.783 | 1.000 | −82.7% | −0.36808 | 0.000010 |
 
-The null fixes one time-invariant cumulative component-share vector within each island, imposes each empirical island-total abundance trajectory, and adds Poisson or Gamma–Poisson count error. The severe 20%-CV sensitivity is deliberately stylized and is not an empirical estimate of observer error.
+The null fixes one time-invariant cumulative component-share vector within each focal monitoring network, imposes its empirical summed monitored-component abundance trajectory, and adds Poisson or Gamma–Poisson count error. The severe 20%-CV sensitivity is deliberately stylized and is not an empirical estimate of observer error.
 
 No simulated replicate among 100,000 was simultaneously as negative as all three observed slopes under CV20 (plus-one joint p = 0.000010).
 
@@ -92,7 +92,7 @@ Stable-roster breeding pairs declined from 1,642 to 581. E declined from 4.438 t
 
 ## Section S5: Closed five-trajectory scaling exploration
 
-The five local population trajectories gave annual log–log abundance–E elasticities:
+The five local monitored breeding-system trajectories gave annual log–log abundance–E elasticities:
 
 **Table S3. Post-hoc local abundance–E elasticities.**
 
@@ -112,7 +112,7 @@ This value is not used as a universal prediction. The same bounded search showed
 - first differences: κ = 0.120, R2 = 0.071;
 - no frozen 50%, 25% or 10% abundance hinge improved held-out prediction over a single log-linear relation;
 - the formal transition-ratchet criterion failed;
-- no tested predictor among initial E, component count, initial evenness or decline depth improved leave-one-population-out prediction of population-specific κ over an intercept-only baseline.
+- no tested predictor among initial E, component count, initial evenness or decline depth improved leave-one-population-out prediction of trajectory-specific κ over an intercept-only baseline.
 
 The search is closed.
 
@@ -176,7 +176,7 @@ These observations are a main interpretive boundary on the regional decline-spec
 
 A post-hoc descriptive decomposition shows that the same decrease in E can arise through contrasting component histories.
 
-At Palmer, the initially dominant colony-code unit had zero breeding pairs by the final eligible census in all three populations, and another component became dominant.
+At Palmer, the initially dominant monitored colony-code unit had zero breeding pairs by the final eligible census in all three sample-colony networks, and another component became dominant.
 
 At Signy, the initially dominant unit remained dominant and increased its share:
 
@@ -189,7 +189,7 @@ This contrast rules out a universal interpretation in which concentration necess
 
 Supported scope:
 
-> Replicated non-proportional concentration during decline within Palmer/Signy breeding systems, with a regional boundary showing that effective breeding-site concentration is not restricted to declining abundance trajectories.
+> Replicated non-proportional concentration during decline within Palmer/Signy monitored breeding systems, with a regional boundary showing that effective breeding-site concentration is not restricted to declining abundance trajectories.
 
 Not supported:
 
@@ -201,4 +201,4 @@ Not supported:
 - interpretation of APBP regions as closed demographic populations;
 - causal attribution to habitat, snow, site fidelity, recruitment, movement or predation.
 
-No further regional definitions, geographic radii, hand-built clusters, completeness thresholds, lags, nonlinear scaling families, trait screens or same-data mechanism searches are opened by this manuscript. Further generality requires an independent taxonomic data source.
+No further regional definitions, geographic radii, hand-built clusters, completeness thresholds, lags, nonlinear scaling families, trait screens or same-data mechanism searches are opened by this manuscript. The Palmer result is explicitly limited to the frozen sample-colony monitoring panel; it is not an exhaustive island-population census. Further generality requires an independent taxonomic data source.
