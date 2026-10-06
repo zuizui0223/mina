@@ -25,6 +25,11 @@ jobs:
             -o build/torgersen_supp.docx
           file build/torgersen_supp.docx
           test -s build/torgersen_supp.docx
+      - name: Extract embedded supplement images
+        run: |
+          mkdir -p build/media
+          unzip -j -o build/torgersen_supp.docx 'word/media/*' -d build/media
+          find build/media -maxdepth 1 -type f -print0 | xargs -0 file
       - name: Extract supplement structure
         run: |
           python scripts/extract_torgersen_supplement.py \
@@ -38,3 +43,4 @@ jobs:
           path: |
             build/TORGERSEN_SUPPLEMENT_EXTRACT_V1.json
             build/TORGERSEN_SUPPLEMENT_EXTRACT_V1.txt
+            build/media
