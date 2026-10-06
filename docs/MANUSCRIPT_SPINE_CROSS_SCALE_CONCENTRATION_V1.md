@@ -1,18 +1,18 @@
-# Manuscript spine v1 — cross-scale breeding-space concentration
+# Manuscript spine v1 — cross-scale breeding-component concentration
 
 **Status:** synthesis of already-frozen Palmer, Signy, contraction-scaling, and MAPPPD regional results. No new outcome search is authorized by this document.
 
 ## Working title
 
-**Breeding-space concentration recurs across spatial scales in Antarctic penguins**
+**Breeding-component concentration recurs across spatial scales in Antarctic penguins**
 
 Alternative:
 
-**Breeding-space organization changes partly independently of abundance trend in Antarctic Pygoscelis**
+**Breeding-component organization changes partly independently of abundance trend in Antarctic Pygoscelis**
 
 ## Central question
 
-When penguin abundance changes, is reproduction merely redistributed in fixed proportion across breeding space, or does effective breeding-component structure change independently — and is concentration specific to decline?
+When monitored penguin abundance changes, is reproduction merely redistributed in fixed proportion across monitored breeding components, or does effective breeding-component structure change independently — and is concentration specific to decline?
 
 ## Central claim
 
@@ -36,15 +36,15 @@ Do **not** claim:
 
 ### 1. Within breeding systems: strongest evidence
 
-Five declining population trajectories across two monitoring systems and two Pygoscelis species show concentration.
+Five declining monitored breeding-system trajectories across two monitoring systems and two Pygoscelis species show concentration.
 
 - Palmer Adélie, Cormorant: effective component number -19.1%; frozen severe count-error p = 0.038.
 - Palmer Adélie, Humble: -50.6%; p = 0.000010.
-- Palmer Adélie, Litchfield: -82.7% before local extinction; p = 0.000010.
+- Palmer Adélie, Litchfield: -82.7% before all retained monitored components reached zero; p = 0.000010.
 - Signy Adélie: -37.2%; prospectively frozen external replication, p = 0.000010 under the severe error model.
 - Signy chinstrap: -50.6%; prospectively frozen cross-species replication, p = 0.000020.
 
-The fixed-composition null conditions on the observed population-total trajectory. The result is therefore not merely the mechanical disappearance of low-count components as abundance falls.
+The Palmer fixed-composition null conditions on the observed summed monitored-component abundance trajectory; the Palmer colony-code panel is a fixed sample-colony monitoring network, not an exhaustive island-population census. The result is therefore not merely the mechanical disappearance of low-count components as abundance falls.
 
 ### 2. Regional monitored breeding-site networks: abundance-conditioned decline subset
 
@@ -105,7 +105,7 @@ The increasing regional panels point in the same descriptive direction: numerica
 
 Therefore the stronger future hypothesis is no longer simply “decline causes concentration.” It is:
 
-> **breeding-space concentration may be a slow or weakly reversible spatial state whose trajectory is only partly coupled to current abundance.**
+> **breeding-component concentration may be a slow or weakly reversible monitored spatial state whose trajectory is only partly coupled to current abundance.**
 
 This hypothesis requires an independent test with both declining and increasing systems.
 
@@ -113,10 +113,10 @@ This hypothesis requires an independent test with both declining and increasing 
 
 Palmer and Signy reach the same concentration endpoint through opposite component-level routes.
 
-- Palmer: the initially dominant component disappears in all three populations and dominance turns over.
+- Palmer: the initially dominant monitored colony-code component reaches zero in all three sample-colony networks and dominance turns over.
 - Signy: the initially dominant component persists and increases its share in both species.
 
-Therefore the transferable phenomenon in the strong local evidence is concentration of effective breeding-space organization, not preferential survival of the historically largest colony.
+Therefore the transferable phenomenon in the strong local evidence is concentration of effective breeding-component organization, not preferential survival of the historically largest monitored unit.
 
 ## Paper structure
 
@@ -137,7 +137,7 @@ Palmer dominance turnover versus Signy core retention.
 
 ## One-sentence conclusion
 
-**In Antarctic Pygoscelis, non-proportional breeding-space concentration is strongly replicated during decline within breeding systems, but regional networks can also become more concentrated while abundance increases, showing that breeding-space organization is not a simple transform of population trend.**
+**In Antarctic Pygoscelis, non-proportional breeding-component concentration is strongly replicated during decline within monitored breeding systems, but regional networks can also become more concentrated while abundance increases, showing that breeding-component organization is not a simple transform of abundance trend.**
 
 ## Stop rule
 
