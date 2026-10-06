@@ -1,0 +1,60 @@
+name: Fetch Palmer census v8 entity
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/fetch-palmer-census-v8-entity.yml"
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch v8 data entity directly
+        run: |
+          mkdir -p build/v8
+          for host in pasta.lternet.edu pasta-d.lternet.edu; do
+            url="https://$host/package/data/eml/knb-lter-pal/87/8/c64b0c7ef7fd2ff4404dd22c204239de"
+            echo "=== $url ==="
+            curl -A 'Mozilla/5.0' -L -D "build/v8/$host.headers" \
+              --retry 5 --retry-delay 2 \
+              "$url" -o "build/v8/$host.body" || true
+            tail -20 "build/v8/$host.headers" || true
+            file "build/v8/$host.body" || true
+            head -10 "build/v8/$host.body" || true
+          done
+      - name: Summarize any CSV-like entity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import csv, json
+          outs={}
+          for p in Path('build/v8').glob('*.body'):
+              raw=p.read_bytes()
+              try: txt=raw.decode('utf-8-sig')
+              except Exception: continue
+              lines=txt.splitlines()
+              if not lines: continue
+              if ',' not in lines[0]: continue
+              rows=list(csv.DictReader(lines))
+              outs[p.name]={
+                  'header': list(rows[0].keys()) if rows else [],
+                  'n_rows': len(rows),
+                  'first_rows': rows[:3],
+              }
+              if rows and {'island_name','num_breeding_pairs'}.issubset(rows[0]):
+                  for y in (1991,1992,1993,2021):
+                      rr=[r for r in rows if str(r.get('island_name','')).strip()=='TOR' and str(r.get('time','')).startswith(str(y))]
+                      vals=[]
+                      for r in rr:
+                          try: vals.append(float(r['num_breeding_pairs']))
+                          except: pass
+                      outs[p.name][f'TOR_{y}']={'rows':len(rr),'sum_pairs':sum(vals),'values':vals}
+          Path('build/v8/summary.json').write_text(json.dumps(outs,indent=2))
+          print(json.dumps(outs,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-census-v8-entity
+          path: build/v8
