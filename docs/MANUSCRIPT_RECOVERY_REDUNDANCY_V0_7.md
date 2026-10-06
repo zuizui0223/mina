@@ -1,6 +1,6 @@
 # Manuscript spine v0.7 — Aggregate abundance and spatial allocation are distinct, not sign-locked
 
-**Status:** revised after quantifying Ross inverse-path mismatch and auditing metapopulation/synchrony literature. Supersedes v0.6.
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_8.md` after adding the source-specific historical count-uncertainty boundary.
 
 ## Working title
 
