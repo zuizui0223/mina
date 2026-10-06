@@ -16,7 +16,7 @@ jobs:
         run: |
           mkdir -p build
           curl -L --fail --retry 5 \
-            'https://datadryad.org/stash/downloads/file_stream/718187' \
+            'https://datadryad.org/downloads/file_stream/463646' \
             -o build/Afr_penguin.csv
           file build/Afr_penguin.csv
           ls -lh build/Afr_penguin.csv
