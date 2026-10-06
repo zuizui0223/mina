@@ -1,6 +1,6 @@
 # Comparative synthesis: breeding-abundance recovery is not the reverse of spatial collapse
 
-**Status:** post-result synthesis integrating frozen decline results, frozen Ross recovery, corrected Beaufort interpretation, and post-result Heard Island triangulation.
+**Status:** superseded for Ross interpretation by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_2.md` and `ROSS_ICEBERG_SHOCK_REBOUND_AUDIT_V1.md`. The cross-system comparisons remain descriptive, but Ross 2001 is now explicitly treated as a mega-iceberg breeding-participation trough.
 
 ## Central question
 
