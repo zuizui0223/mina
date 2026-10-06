@@ -1,6 +1,6 @@
 # PR189 novelty audit v7 — calibrated final ceiling
 
-**Status:** strict positioning after Ross inverse-path effect sizing, Bird and Emperor prospective results, and literature audit of metapopulation recovery, spatial synchrony and aggregate/compositional variability.
+**Status:** superseded by `PR189_RECOVERY_NOVELTY_AUDIT_V8.md` after the Ross inverse-path mismatch was calibrated against other complete local down→up episodes in the same series.
 
 ## Broad concepts already established
 
