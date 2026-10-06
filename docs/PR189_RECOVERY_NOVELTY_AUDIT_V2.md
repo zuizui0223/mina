@@ -1,6 +1,6 @@
 # PR189 novelty audit v2 — after Heard Island triangulation
 
-**Status:** post-result literature positioning.
+**Status:** superseded by `PR189_RECOVERY_NOVELTY_AUDIT_V3.md`. V2 predates the shock-aware reinterpretation of the frozen 2001 recovery baseline.
 
 ## Prior knowledge that must not be claimed as new
 
