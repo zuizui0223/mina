@@ -132,3 +132,58 @@ If prior configuration predicts subsequent reproductive success or recovery afte
 Use this as a Discussion-level signature that motivates a prospective test.
 
 Do not present it as a primary Results pillar or as proof that Ross Island has a colony-scale Allee threshold.
+
+
+## Descriptive scale check against within-branch variation
+
+Because the cross-branch result could simply reflect ordinary year-to-year composition variability, compare it with pairs of years **within the same branch** that are matched at least as closely in total breeding abundance.
+
+Use:
+
+    |log(N_a / N_b)| <= 0.014
+
+which is approximately the looser of the two cross-branch N matches.
+
+### Within decline branch
+
+Seven decline-year pairs satisfy this N-matching tolerance.
+
+Across those pairs:
+
+    maximum |ΔE3| = 0.0769
+    maximum |ΔE6| = 0.1912
+    maximum three-colony total-variation distance = 0.0270.
+
+### Within recovery branch
+
+Four recovery-year pairs satisfy the same tolerance.
+
+Across those pairs:
+
+    maximum |ΔE3| = 0.0714
+    maximum |ΔE6| = 0.1498
+    maximum three-colony total-variation distance = 0.0264.
+
+### Cross-branch pairs
+
+1997 vs 2002:
+
+    |ΔE3| = 0.1187
+    |ΔE6| = 0.3516
+    TV3 = 0.0407.
+
+1985 vs 2004:
+
+    |ΔE3| = 0.2122
+    |ΔE6| = 0.4251
+    TV3 = 0.0775.
+
+Both cross-branch pairs therefore exceed the maximum same-branch matched-N difference in E3, E6 and three-colony total-variation distance.
+
+This is a descriptive scale comparison, not a significance test. The year pairs are not independent and the tolerance was added post-result.
+
+The useful conclusion is narrower:
+
+> the observed branch separation is larger than the composition differences seen among the available same-branch years with similarly matched total breeding abundance.
+
+This strengthens the **branch-dependence signature**, while leaving its cause unresolved.
