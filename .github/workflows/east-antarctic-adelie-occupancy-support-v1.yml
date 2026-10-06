@@ -28,8 +28,13 @@ jobs:
           if file build/aadc_adelie_occupancy_download | grep -q 'HTML'; then
             echo '--- AADC download relay HTML ---'
             cat build/aadc_adelie_occupancy_download
-            echo '--- links ---'
-            grep -Eo 'https?://[^"<> ]+|href="[^"]+"' build/aadc_adelie_occupancy_download || true
+            asset=$(grep -Eo 'src="/assets/[^"]+\.js"' build/aadc_adelie_occupancy_download | head -1 | cut -d'"' -f2)
+            echo "frontend_asset=$asset"
+            curl -L --fail "https://data.aad.gov.au$asset" -o build/aadc_frontend.js
+            echo '--- candidate API strings ---'
+            grep -Eo '.{0,120}(eds/api|/api/dataset|dataset/|object/download).{0,180}' build/aadc_frontend.js | head -80 || true
+            echo '--- numeric download references ---'
+            grep -Eo '.{0,120}(4345|metadataId|metadata_id|recordId|record_id).{0,180}' build/aadc_frontend.js | head -80 || true
           fi
       - name: Run outcome-blind structural audit
         run: |
