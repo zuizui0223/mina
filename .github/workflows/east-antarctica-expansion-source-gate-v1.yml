@@ -1,0 +1,27 @@
+name: East Antarctica expansion source gate v1
+
+on:
+  pull_request:
+    paths:
+      - 'docs/EAST_ANTARCTICA_EXPANSION_INTENSIFICATION_DESIGN_V1.md'
+      - 'scripts/audit_east_antarctica_expansion_sources.py'
+      - '.github/workflows/east-antarctica-expansion-source-gate-v1.yml'
+  workflow_dispatch:
+
+jobs:
+  source-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Outcome-blind source discovery
+        run: |
+          mkdir -p build
+          python scripts/audit_east_antarctica_expansion_sources.py \
+            --out build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: east-antarctica-expansion-source-gate-v1
+          path: build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
