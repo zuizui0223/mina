@@ -1,5 +1,7 @@
 # Manuscript spine v0.1 — Recovery is not the reverse of collapse
 
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_2.md` after the Ross mega-iceberg shock/rebound audit.
+
 ## Working title
 
 **Numerical recovery of breeding colonies need not restore spatial redundancy**
