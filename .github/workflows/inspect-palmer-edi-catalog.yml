@@ -1,0 +1,43 @@
+name: Inspect Palmer EDI catalog backend
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/inspect-palmer-edi-catalog.yml"
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch Palmer EDI catalog HTML and local scripts
+        run: |
+          mkdir -p build/catalog
+          base='https://pallter.marine.rutgers.edu/catalog/edi/'
+          curl -A 'Mozilla/5.0' -L --fail --retry 8 --retry-delay 5 --retry-all-errors \
+            "${base}index.php" -o build/catalog/index.html
+          echo '--- scripts/styles/endpoints in HTML ---'
+          grep -Eo '(src|href)="[^"]+"' build/catalog/index.html | sort -u
+          grep -Eo 'src="[^"]+\.js[^"]*"' build/catalog/index.html \
+            | sed -E 's/^src="//;s/"$//' > build/catalog/scripts.txt || true
+          n=0
+          while IFS= read -r src; do
+            [ -z "$src" ] && continue
+            n=$((n+1))
+            case "$src" in
+              http*) url="$src" ;;
+              /*) url="https://pallter.marine.rutgers.edu$src" ;;
+              *) url="${base}$src" ;;
+            esac
+            out="build/catalog/script_$n.js"
+            echo "FETCH $url"
+            curl -A 'Mozilla/5.0' -L --fail --retry 5 --retry-delay 3 "$url" -o "$out" || true
+          done < build/catalog/scripts.txt
+          echo '--- backend-like strings ---'
+          grep -RniE 'ajax|fetch\(|\.php|api/|json|dataset|package|doi|edi|query|endpoint' build/catalog/*.js build/catalog/index.html \
+            | head -1000 || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inspect-palmer-edi-catalog
+          path: build/catalog
