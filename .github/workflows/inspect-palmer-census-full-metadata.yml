@@ -1,0 +1,35 @@
+name: Inspect Palmer census full metadata
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/inspect-palmer-census-full-metadata.yml"
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query full Solr fields
+        run: |
+          mkdir -p build
+          base='https://pallter.marine.rutgers.edu/catalog/edi/edi-search.php'
+          curl -A 'Mozilla/5.0' -L --fail --retry 8 --retry-delay 4 --retry-all-errors \
+            --get \
+            --data-urlencode 'fl=*' \
+            --data-urlencode 'defType=edismax' \
+            --data-urlencode 'fq=scope:knb-lter-pal' \
+            --data-urlencode 'q=packageid:"knb-lter-pal.87.10"' \
+            --data-urlencode 'rows=5' \
+            --data-urlencode 'start=0' \
+            "$base" -o build/full.xml
+          cat build/full.xml
+          echo '--- fields ---'
+          grep -Eo '<[A-Za-z0-9_:-]+>' build/full.xml | sort -u
+          echo '--- entity/data-like lines ---'
+          grep -Ein 'entity|data|url|object|resource|checksum|identifier|package|doi|file|csv' build/full.xml || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inspect-palmer-census-full-metadata
+          path: build/full.xml
