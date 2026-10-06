@@ -57,6 +57,12 @@ def completed_zero_spells(population: str, units, years, matrix):
                 first_zero_i = i
                 k = i
                 status = None
+                nminus = totals - x
+                a_loss = 0.5 * (
+                    math.log1p(float(nminus[loss_pos_i])) +
+                    math.log1p(float(nminus[first_zero_i]))
+                )
+                later_zero_states = []
                 while True:
                     if k + 1 >= len(years):
                         status = "right_censored"
@@ -64,14 +70,11 @@ def completed_zero_spells(population: str, units, years, matrix):
                     if years[k + 1] - years[k] != 1:
                         status = "gap_censored"
                         break
+                    if x[k + 1] == 0:
+                        later_zero_states.append(math.log1p(float(nminus[k + 1])))
                     if x[k + 1] > 0:
                         last_zero_i = k
                         return_i = k + 1
-                        nminus = totals - x
-                        a_loss = 0.5 * (
-                            math.log1p(float(nminus[loss_pos_i])) +
-                            math.log1p(float(nminus[first_zero_i]))
-                        )
                         a_return = 0.5 * (
                             math.log1p(float(nminus[last_zero_i])) +
                             math.log1p(float(nminus[return_i]))
@@ -89,6 +92,14 @@ def completed_zero_spells(population: str, units, years, matrix):
                             "a_return": float(a_return),
                             "H": float(h),
                             "state_ratio_exp_H": float(math.exp(h)),
+                            "return_delay_years": int(years[return_i] - years[first_zero_i]),
+                            "panel_last_year": int(years[-1]),
+                            "max_later_zero_state": (
+                                float(max(later_zero_states)) if later_zero_states else None
+                            ),
+                            "later_zero_state_at_or_above_loss": bool(
+                                later_zero_states and max(later_zero_states) >= a_loss
+                            ),
                         })
                         i = return_i
                         status = "completed"
@@ -101,6 +112,14 @@ def completed_zero_spells(population: str, units, years, matrix):
                         "loss_last_positive_year": int(years[loss_pos_i]),
                         "loss_first_zero_year": int(years[first_zero_i]),
                         "status": status,
+                        "a_loss": float(a_loss),
+                        "panel_last_year": int(years[-1]),
+                        "max_later_zero_state": (
+                            float(max(later_zero_states)) if later_zero_states else None
+                        ),
+                        "later_zero_state_at_or_above_loss": bool(
+                            later_zero_states and max(later_zero_states) >= a_loss
+                        ),
                     })
                     i = max(i + 1, k + 1)
                     continue
@@ -110,6 +129,8 @@ def completed_zero_spells(population: str, units, years, matrix):
 
 def summarize(events, censored):
     completed_units = sorted({(e["population"], e["unit"]) for e in events})
+    all_spells = list(events) + list(censored)
+    loss_units = sorted({(e["population"], e["unit"]) for e in all_spells})
     completed_pops = sorted({e["population"] for e in events})
     hs = np.asarray([e["H"] for e in events], dtype=float)
     out = {
@@ -120,7 +141,32 @@ def summarize(events, censored):
         "distinct_components_completed": int(len(completed_units)),
         "population_trajectories_completed": int(len(completed_pops)),
         "completed_populations": completed_pops,
+        "distinct_components_with_loss": int(len(loss_units)),
+        "ever_reoccupied_component_fraction": (
+            float(len(completed_units) / len(loss_units)) if loss_units else None
+        ),
+        "later_state_match_spells": int(sum(
+            bool(e.get("later_zero_state_at_or_above_loss")) for e in all_spells
+        )),
     }
+    followup = {}
+    for horizon in (2, 3, 5, 10):
+        eligible = [
+            e for e in all_spells
+            if int(e["panel_last_year"]) - int(e["loss_first_zero_year"]) >= horizon
+        ]
+        returned = [
+            e for e in eligible
+            if e in events and int(e["return_delay_years"]) <= horizon
+        ]
+        followup[str(horizon)] = {
+            "eligible_loss_spells": int(len(eligible)),
+            "returned_within_horizon": int(len(returned)),
+            "return_fraction": (
+                float(len(returned) / len(eligible)) if eligible else None
+            ),
+        }
+    out["return_within_years"] = followup
     if len(hs):
         med = float(np.median(hs))
         out.update({
