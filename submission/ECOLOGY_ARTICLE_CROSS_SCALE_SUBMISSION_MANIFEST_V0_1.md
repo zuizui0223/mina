@@ -72,11 +72,13 @@ Initial submission still requires private confirmation of:
 Scientific endpoints are closed, but the manuscript interpretation was revised on 2026-10-05 to promote the increasing MAPPPD networks as a main boundary condition. These metadata blockers do not authorize new ecological analyses.
 
 
-## Word preview status
+## Word and visual QA status
 
-The revised one-paper DOCX has been rebuilt successfully and passed structural Word audit. The revised main figures have passed the Ecology dimension audit, and Appendix S1 has been rebuilt successfully.
+The revised one-paper Main Document has been rendered and visually checked page by page. It contains **29 pages** and shows no clipping, overlap, broken equations or missing text. The three main figures have also passed final visual QA. Appendix S1 was rebuilt after removing an unintended blank page and now renders cleanly in **9 pages**.
 
-Final human visual QA and the rendered page-count check remain pending. These artifacts must not be uploaded until that QA is recorded.
+With the three main figures counted as one page each, the complete Ecology Article is **32 pages**. This is two pages above the standard 30-page Article length. The cover letter now contains the two numbered justifications required by Ecology for an Article above 30 pages and below 50 pages: broad ecological contribution and the value/necessity of the additional length.
+
+The preview artifacts still contain author placeholders and therefore must not be uploaded as the final submission files.
 
 ## Canonical target resolution
 
@@ -87,17 +89,19 @@ Initial submission is **Ecology — Article**. The compact Ecology Report packag
 
 Current revised artifacts:
 
-- DOCX workflow run: `37271645516`
-- DOCX artifact: `11328750641`
-- DOCX digest: `sha256:261b32a8ed3c7aa199ab47861e970bb6165256056ba5acb576390c5236e857d6`
-- figure workflow run: `37271645669`
-- figure artifact: `11328134584`
-- figure digest: `sha256:b11e37a4a1ffc7a209abcc9ea201785546184b93a9a90dae5537c2ca33f6fd8f`
-- Appendix S1 workflow run: `37271645474`
-- Appendix artifact: `11327474999`
-- Appendix digest: `sha256:5c0152464b1475a1e4060058d7a6226f2052e189d1861f049263c61512866eb0`
+- DOCX workflow run: `37391673031`
+- DOCX artifact: `11381845511`
+- DOCX digest: `sha256:5a679d1fbc69d3cb81f226d2b84e1d10834f64e7e40a706f2b403bebb549dd42`
+- rendered Main Document: **29 pages**
+- figure workflow run: `37391673074`
+- figure artifact: `11381685529`
+- figure digest: `sha256:d0801b4a25440a782f8f04101a4707f6976653f2bc62635f238450206cb42451`
+- Appendix S1 workflow run: `37391672322`
+- Appendix artifact: `11381457683`
+- Appendix digest: `sha256:6451ec8aaa0590a37cbc281cf06438e7f3e279ab4f7634db981fab64890596ca`
+- rendered Appendix S1: **9 pages**
 
-The older 24-page DOCX and pre-revision figures remain provenance only.
+Older DOCX, figure and Appendix artifacts remain provenance only.
 
 ## AI disclosure status
 
@@ -105,4 +109,6 @@ OpenAI ChatGPT use is disclosed in the applicable Methods section, in Acknowledg
 
 ## Initial-upload blocker
 
-Scientific endpoints are closed and the revised package has been regenerated. **Initial upload is blocked by final human visual QA / page-count verification and author-controlled metadata.**
+Scientific endpoints are closed, final visual QA is complete, and the actual page count is recorded. **The only remaining blocker is author-controlled metadata**, followed by regeneration of the author-complete Main Document and Appendix S1 and inspection of the ScholarOne proof.
+
+SMP PR #177 and guillemot PR #178 are independent follow-up projects and are not conditions for this submission.
