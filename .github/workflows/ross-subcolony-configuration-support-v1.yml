@@ -12,13 +12,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download published Schmidt 2021 processed subcolony tables
+      - name: Retrieve published Schmidt 2021 processed subcolony tables
         run: |
           set -euo pipefail
           mkdir -p build
           BASE='https://deju-penguinscience.s3-us-east-2.amazonaws.com/AllData/Schmidt_etal_2021_SciRep'
-          curl -L --fail --retry 8 --retry-delay 3             "$BASE/croz_selected_meas_ct_all_v19.csv"             -o build/croz_selected_meas_ct_all_v19.csv
-          curl -L --fail --retry 8 --retry-delay 3             "$BASE/royds_selected_meas_ct_all_v12.csv"             -o build/royds_selected_meas_ct_all_v12.csv
+          fetch_one () {
+            local name="$1"
+            local out="build/$name"
+            local ok=0
+            for prefix in               ''               'data'               'final_data'               'data/final_data'
+            do
+              if [ -n "$prefix" ]; then
+                url="$BASE/$prefix/$name"
+              else
+                url="$BASE/$name"
+              fi
+              echo "trying $url"
+              if curl -L --fail --retry 3 --retry-delay 2 "$url" -o "$out.tmp"; then
+                if [ -s "$out.tmp" ]; then
+                  mv "$out.tmp" "$out"
+                  ok=1
+                  break
+                fi
+              fi
+              rm -f "$out.tmp"
+            done
+            if [ "$ok" -ne 1 ]; then
+              echo "failed to retrieve $name from frozen public source candidates" >&2
+              exit 1
+            fi
+          }
+          fetch_one croz_selected_meas_ct_all_v19.csv
+          fetch_one royds_selected_meas_ct_all_v12.csv
           file build/*.csv
           wc -l build/*.csv
       - uses: actions/upload-artifact@v4
