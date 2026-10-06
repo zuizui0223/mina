@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-penguin-network-loss-feedback-result-v1",
+  "date": "2026-10-06",
+  "status": "exploratory_already_exposed_no_inferential_p_values",
+  "source_workflow": {
+    "run_id": 37407047081,
+    "artifact_id": 11387324178,
+    "artifact_digest": "sha256:fd817a53c894f534b174d71c0fcb5c0d778ef76426f4c2c4a18dd3b629aff3ba",
+    "head_sha": "d428e521f67345b997d14ca97a8c52877e216fb5"
+  },
+  "all_five": {
+    "transitions": 632,
+    "loss_events": 22,
+    "network_integrity_coefficient_Mintegrity": -0.0730209844577194,
+    "network_integrity_coefficient_Mboth": -0.10351551060825279,
+    "M0_log_loss": 0.10907524019047483,
+    "Mintegrity_log_loss": 0.11169079484738481,
+    "Mboth_log_loss": 0.1138547135034889,
+    "Mintegrity_improvement_vs_M0": -0.002615554656909977,
+    "Mboth_improvement_vs_M0": -0.004779473313014065,
+    "local_size_coefficient_M0": -1.989640703384408,
+    "generated_prediction_supported": false
+  },
+  "palmer_only": {
+    "transitions": 371,
+    "loss_events": 20,
+    "network_integrity_coefficient_Mintegrity": -0.005936357803339235,
+    "network_integrity_coefficient_Mboth": -0.5342903873166394,
+    "M0_log_loss": 0.12767700578664706,
+    "Mintegrity_log_loss": 0.13156566645868542,
+    "Mmass_log_loss": 0.1243373012908393,
+    "Mboth_log_loss": 0.12701674773119637,
+    "Mintegrity_improvement_vs_M0": -0.0038886606720383576,
+    "Mmass_improvement_vs_M0": 0.0033397044958077687,
+    "Mboth_improvement_vs_M0": 0.0006602580554506965,
+    "local_size_coefficient_M0": -2.403001631609712,
+    "generated_prediction_supported": false
+  },
+  "decision": {
+    "simple_network_integrity_loss_feedback_supported": false,
+    "focal_local_size_is_strongest_screened_loss_predictor": true,
+    "cascade_interpretation_should_not_be_promoted": true
+  },
+  "boundary": [
+    "No inferential p-values are attached.",
+    "The screen does not rule out spatially local neighbour effects because census component labels lack a resolved physical adjacency graph.",
+    "Surrounding breeder mass and network integrity are aggregate within-population states, not realised rescue or social connectivity.",
+    "Exact-zero loss may reflect breeding absence rather than permanent habitat extinction."
+  ]
+}
