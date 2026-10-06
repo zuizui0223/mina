@@ -1,6 +1,6 @@
 # Manuscript spine v0.9 — Near-complete rebound leaves a calibrated spatial mismatch
 
-**Status:** preferred manuscript spine after Bird mechanism audit, Port Lockroy support failure, and Ross bounded-count sensitivity. Supersedes v0.8.
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_10.md` after calibration against other complete local down→up episodes showed that the 9.41% inverse-path mismatch is moderate rather than exceptional.
 
 ## Working title
 
