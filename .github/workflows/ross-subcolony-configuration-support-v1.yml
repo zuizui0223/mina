@@ -1,0 +1,27 @@
+name: Ross subcolony configuration support v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/ROSS_SUBCOLONY_CONFIGURATION_NEXT_YEAR_GROWTH_V1.md"
+      - ".github/workflows/ross-subcolony-configuration-support-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download published Schmidt 2021 processed subcolony tables
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          BASE='https://deju-penguinscience.s3-us-east-2.amazonaws.com/AllData/Schmidt_etal_2021_SciRep'
+          curl -L --fail --retry 8 --retry-delay 3             "$BASE/croz_selected_meas_ct_all_v19.csv"             -o build/croz_selected_meas_ct_all_v19.csv
+          curl -L --fail --retry 8 --retry-delay 3             "$BASE/royds_selected_meas_ct_all_v12.csv"             -o build/royds_selected_meas_ct_all_v12.csv
+          file build/*.csv
+          wc -l build/*.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ross-subcolony-configuration-support-v1
+          path: build/*.csv
