@@ -68,6 +68,21 @@ In the three exposed increasing MAPPPD regional networks:
 
 These are descriptive exposed panels, not a colonisation test. They show that population growth can be absorbed very unevenly among already occupied sites.
 
+
+### Simple network-cascade and rich-get-richer stories are not supported
+
+Two additional exposed-data screens narrow the mechanism.
+
+First, the whole-network loss-feedback screen used 632 occupied component-year transitions with 22 exact-zero losses. Focal local size was the strongest screened predictor of next-year loss (standardized coefficient about -1.99 across all five trajectories; -2.40 in Palmer-only). Adding the fraction of other breeding components still occupied did not improve leave-one-population-out prediction: log loss worsened from 0.1091 to 0.1117 across all five trajectories and from 0.1277 to 0.1316 in Palmer-only.
+
+Thus the data do not support a simple process in which losing one breeding component globally erodes network integrity and thereby accelerates the next loss.
+
+Second, in the three increasing MAPPPD networks, change in regional share was not consistently related to initial share. Descriptive Spearman correlations were -0.064, -0.143 and +0.100. A universal positive-frequency "largest colony gets proportionally larger" rule is therefore also unsupported.
+
+Static mapped ice-free area and nearest-site distance were likewise non-transferable across the three networks. The sharpest local example is Victoria Land: Cape Crozier West gained +0.114 regional share while Cape Crozier East, only ~1.51 km away and with more mapped ice-free area within 2 km (771 versus 614 ha), lost -0.0355 share.
+
+These null/heterogeneous results move the mechanism away from whole-network cascade or colony size alone and toward **site-specific residual capacity and local trajectory**.
+
 ## Published biological constraints
 
 ### Breeding-space limitation is real
@@ -97,7 +112,7 @@ This is direct evidence that terrestrial breeding-space capacity can alter inter
 
 ## Capacity-mediated spatial-memory hypothesis
 
-The combined pattern suggests a thresholded redistribution game.
+The combined pattern suggests a thresholded redistribution game in which **local patch state** is more important than a coarse whole-network occupancy count.
 
 For an occupied breeding site i:
 
@@ -150,7 +165,7 @@ The resulting prediction is not simply "isolated islands are colonised less ofte
 
 > **island boundaries raise the threshold at which population growth switches from intensification of established colonies to spatial expansion.**
 
-Isolation, accessible ice-free area, local habitat capacity and the state of neighbouring colonies should jointly determine that threshold.
+Isolation, accessible ice-free area, local habitat capacity and nearby colony state may jointly determine that threshold, but the current Palmer/Signy screen provides no support for a coarse whole-network cascade. Any social/rescue effect now needs to be local and spatially explicit rather than inferred from the number of occupied components.
 
 ## Strong falsifiable predictions
 
