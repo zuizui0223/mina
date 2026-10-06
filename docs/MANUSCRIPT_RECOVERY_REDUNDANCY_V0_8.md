@@ -1,6 +1,6 @@
 # Manuscript spine v0.8 — Near-complete numerical rebound leaves a spatial mismatch
 
-**Status:** preferred manuscript spine after calibrating the Ross inverse-path effect size and auditing historical count uncertainty. Supersedes v0.7.
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_9.md` after Bird mechanism-denominator audit, Port Lockroy support failure, and Ross bounded-count sensitivity.
 
 ## Working title
 
