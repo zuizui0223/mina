@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "result_id": "bird-island-gentoo-six-unit-recovery-allocation-v1",
+  "date": "2026-10-06",
+  "status": "prospective_external_endpoint_opened_after_support_and_endpoint_freeze",
+  "contract": "contracts/BIRD_ISLAND_GENTOO_SIX_UNIT_RECOVERY_ALLOCATION_V1.md",
+  "support_receipt": "results/BIRD_ISLAND_GENTOO_SIX_UNIT_SUPPORT_V1.json",
+  "source": {
+    "doi": "10.5285/8fedb5a0-b98c-4457-9d86-aae9c6d3ed8e",
+    "artifact_id": 11412301564,
+    "artifact_digest": "sha256:ef6d3ccc111e3ed19e1fe09b87b47f47c52e1e27192a9227ab88f7057785532f"
+  },
+  "frozen_endpoints": {
+    "start_season_start_year": 1981,
+    "end_season_start_year": 2024
+  },
+  "counts": {
+    "Johnson": {"1981":1503,"2024":1595},
+    "Square Pond": {"1981":224,"2024":911},
+    "Upper Natural Arch": {"1981":243,"2024":234},
+    "Lower Natural Arch": {"1981":694,"2024":1041},
+    "Upper Mountain Cwm": {"1981":199,"2024":132},
+    "Lower Mountain Cwm": {"1981":468,"2024":557}
+  },
+  "aggregate": {
+    "N0": 3331,
+    "N1": 4470,
+    "N_fraction_change": 0.34193935755028515,
+    "recovery_gate_pass": true,
+    "E0": 3.569431831159452,
+    "E1": 4.128237359237167,
+    "E_fraction_change": 0.1565530746937387,
+    "delta_logE": 0.14544409415144965,
+    "TV": 0.16109612299079154,
+    "dominant_start": "Johnson",
+    "dominant_end": "Johnson"
+  },
+  "exact_decomposition": {
+    "G_bar": 1.3419393575502852,
+    "G_D": 1.2478147261778567,
+    "identity_E1_over_E0": 1.1565530746937387
+  },
+  "unit_changes": {
+    "Johnson": {"absolute":92,"factor":1.0612109115103128,"proportional_residual":-421.93485439807887},
+    "Square Pond": {"absolute":687,"factor":4.066964285714286,"proportional_residual":610.4055839087362},
+    "Upper Natural Arch": {"absolute":-9,"factor":0.9629629629629629,"proportional_residual":-92.0912638847193},
+    "Lower Natural Arch": {"absolute":347,"factor":1.5,"proportional_residual":109.69408586010206},
+    "Upper Mountain Cwm": {"absolute":-67,"factor":0.6633165829145728,"proportional_residual":-135.0459321525068},
+    "Lower Mountain Cwm": {"absolute":89,"factor":1.1901709401709402,"proportional_residual":-71.0276193335335}
+  },
+  "decision": {
+    "recovery_gate_pass": true,
+    "primary_E_direction": "up",
+    "outcome_class": "B_spreading_equalizing_recovery",
+    "universal_positive_recovery": false,
+    "mixed_recovery": true,
+    "dominance_turnover": false,
+    "supports_universal_recovery_concentration": false,
+    "external_counterexample_to_universal_recovery_concentration": true
+  },
+  "interpretation": "In this prospective external six-unit Gentoo system, long-interval breeding abundance increased while effective breeding-unit number also increased. Growth was strongly redistributed toward the initially small Square Pond unit. Recovery therefore need not reconcentrate; the spatial direction of recovery is conditional/path dependent."
+}
