@@ -1,6 +1,6 @@
 # Manuscript spine v0.3 — Aggregate recovery does not imply spatial restoration
 
-**Status:** revised after the aggregate-versus-spatial restoration and disturbance-geometry audits. Supersedes v0.2 for interpretation.
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_4.md` after the prospective Bird Island Gentoo result established that positive aggregate recovery can also increase spatial redundancy.
 
 ## Working title
 
