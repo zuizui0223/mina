@@ -1,0 +1,77 @@
+name: East Antarctic potential habitat support v1
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/EAST_ANTARCTIC_ADELIE_POTENTIAL_HABITAT_SUPPORT_V1.md'
+      - '.github/workflows/east-antarctic-potential-habitat-support-v1.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - name: Resolve official AADC dataset manifest
+        run: |
+          mkdir -p build
+          curl -L --fail --retry 8 --retry-delay 10 --retry-all-errors \
+            'https://data.aad.gov.au/eds/api/metadata/AAS_4088_Adelie_Potential_Habitats?format=json' \
+            -o build/potential_metadata.json
+          python - <<'PY'
+          import json, requests
+          from pathlib import Path
+          meta=json.loads(Path("build/potential_metadata.json").read_text())
+          uuids=[]
+          def walk(x):
+              if isinstance(x,dict):
+                  for k,v in x.items():
+                      if str(k).lower()=="uuid" and isinstance(v,str):
+                          uuids.append(v)
+                      else: walk(v)
+              elif isinstance(x,list):
+                  for v in x: walk(v)
+          walk(meta)
+          uuids=list(dict.fromkeys(uuids))
+          if not uuids:
+              raise SystemExit("No UUID resolved")
+          manifests=[]
+          for u in uuids:
+              url=f"https://data.aad.gov.au/eds/api/dataset/{u}/objects?recursive=true"
+              r=requests.get(url,timeout=120); r.raise_for_status()
+              x=r.json()
+              if isinstance(x,dict):
+                  for key in ("objects","items","data"):
+                      if isinstance(x.get(key),list):
+                          x=x[key]; break
+              if not isinstance(x,list):
+                  raise SystemExit("Unexpected manifest shape")
+              for obj in x:
+                  if isinstance(obj,dict):
+                      manifests.append({
+                          "dataset_uuid":u,
+                          "name":str(obj.get("name") or obj.get("key") or obj.get("prefix") or ""),
+                          "size":obj.get("size"),
+                      })
+          out={
+              "schema_version":1,
+              "analysis_id":"mina-east-antarctic-potential-habitat-support-v1",
+              "effect_computed":False,
+              "metadata_id":"AAS_4088_Adelie_Potential_Habitats",
+              "doi":"10.4225/15/5758F4EC91665",
+              "dataset_uuids":uuids,
+              "manifest":manifests,
+          }
+          Path("build/EAST_ANTARCTIC_ADELIE_POTENTIAL_HABITAT_MANIFEST_V1.json").write_text(
+              json.dumps(out,indent=2,sort_keys=True)+"\n"
+          )
+          print(json.dumps(out,indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: east-antarctic-potential-habitat-support-v1
+          path: build/EAST_ANTARCTIC_ADELIE_POTENTIAL_HABITAT_MANIFEST_V1.json
