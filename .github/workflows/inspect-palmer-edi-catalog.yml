@@ -37,6 +37,28 @@ jobs:
           echo '--- backend-like strings ---'
           grep -RniE 'ajax|fetch\(|\.php|api/|json|dataset|package|doi|edi|query|endpoint' build/catalog/*.js build/catalog/index.html \
             | head -1000 || true
+      - name: Query Palmer proxy for Cimino census v8
+        run: |
+          base='https://pallter.marine.rutgers.edu/catalog/edi/edi-search.php'
+          common='fl=title,pubdate,doi,packageid,author&defType=edismax&fq=scope:knb-lter-pal&rows=100&start=0'
+          curl -A 'Mozilla/5.0' -L --fail --retry 8 --retry-delay 5 --retry-all-errors \
+            "${base}?${common}&q=805f6b97593c60cfdfd02266db9ab4b6" \
+            -o build/catalog/query_doi.xml
+          curl -A 'Mozilla/5.0' -L --fail --retry 8 --retry-delay 5 --retry-all-errors \
+            --get \
+            --data-urlencode 'fl=title,pubdate,doi,packageid,author' \
+            --data-urlencode 'defType=edismax' \
+            --data-urlencode 'fq=scope:knb-lter-pal' \
+            --data-urlencode 'q=Adelie penguin area-wide breeding population census' \
+            --data-urlencode 'rows=100' \
+            --data-urlencode 'start=0' \
+            "$base" -o build/catalog/query_title.xml
+          echo '--- DOI query ---'
+          cat build/catalog/query_doi.xml
+          echo '--- title query ---'
+          cat build/catalog/query_title.xml
+          echo '--- package IDs / DOIs ---'
+          grep -Eo '<packageid>[^<]+|<doi>[^<]+|<title>[^<]+' build/catalog/query_*.xml || true
       - uses: actions/upload-artifact@v4
         with:
           name: inspect-palmer-edi-catalog
