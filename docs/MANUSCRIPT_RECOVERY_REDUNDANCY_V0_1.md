@@ -274,3 +274,65 @@ It is an independent recovering colonial metapopulation with:
 - preferably a dynamic capacity or vital-rate covariate.
 
 The prospective prediction should be about the **distribution of local growth**, not simply total recovery.
+
+
+## Generated mechanism for Discussion — configuration-mediated recovery hysteresis
+
+This mechanism is **post-result and not confirmatory**.
+
+Prior work already establishes:
+- Allee-type positive density dependence in colonial seabirds;
+- slow recolonization under strong Allee effects;
+- Adélie "frozen herd" hysteresis caused by nest-site fidelity, fragmentation and edge-biased predation;
+- slow post-iceberg recovery and elevated edge exposure at Cape Royds;
+- sustained immigration during establishment of new Gentoo colonies.
+
+Therefore do not claim that this paper discovers Allee effects or hysteresis.
+
+The generated cross-scale hypothesis is narrower:
+
+> local spatial memory and positive density dependence may bias where regional breeding recovery is expressed, so nodes that retain favorable configuration or sufficient social density absorb more of the recovery while fragmented nodes lag.
+
+The post-result Ross matched-abundance comparison is consistent with this.
+
+At ~204k breeding pairs:
+- decline 1997: E3 = 1.626;
+- recovery 2002: E3 = 1.507.
+
+At ~222k breeding pairs:
+- decline 1985: E3 = 1.625;
+- recovery 2004: E3 = 1.413.
+
+Thus similar total breeding abundance occurred in different spatial states.
+
+Call this a **branch-dependence / hysteresis signature**, not proof of endogenous hysteresis. Environmental conditions, especially the B15A/C16 iceberg disturbance, differ strongly between branches.
+
+### Mechanistic model for Discussion
+
+Conceptually distinguish:
+
+    B_i = breeding-pair abundance
+    Z_i = spatial/social configuration
+    K_i = usable breeding capacity
+    I_i = immigration
+    R_t = regional forcing.
+
+A local breeding-count change can depend on:
+
+    regional forcing
+    + persistent local quality
+    + positive density/configuration effects
+    - crowding near usable capacity
+    + movement.
+
+If Z changes more slowly than B, decline and recovery need not follow the same spatial path.
+
+### Prospective prediction
+
+The decisive next test is not another count-only correlation.
+
+At matched current breeding abundance and environment, prior fragmentation/configuration should predict subsequent breeding success or recovery.
+
+In particular, lower perimeter-to-area ratio, lower edge exposure, and more compact breeding configuration should predict stronger recovery after controlling current B.
+
+This is the prospective test that can separate configuration-mediated memory from simple colony-size dependence.
