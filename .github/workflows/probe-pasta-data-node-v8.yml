@@ -1,0 +1,37 @@
+name: Probe PASTA data node for census v8
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/probe-pasta-data-node-v8.yml"
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe v8 resources
+        run: |
+          mkdir -p build/pasta_d
+          for path in \
+            'package/eml/knb-lter-pal/87/8' \
+            'package/name/eml/knb-lter-pal/87/8' \
+            'package/data/size/eml/knb-lter-pal/87/8' \
+            'package/metadata/eml/knb-lter-pal/87/8' \
+            'package/data/eml/knb-lter-pal/87/8'
+          do
+            out=$(echo "$path" | tr '/' '_')
+            echo "=== https://pasta-d.lternet.edu/$path ==="
+            curl -A 'Mozilla/5.0' -L -D "build/pasta_d/$out.headers" \
+              --retry 4 --retry-delay 2 \
+              "https://pasta-d.lternet.edu/$path" \
+              -o "build/pasta_d/$out.body" || true
+            tail -20 "build/pasta_d/$out.headers" || true
+            file "build/pasta_d/$out.body" || true
+            head -120 "build/pasta_d/$out.body" || true
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: probe-pasta-data-node-v8
+          path: build/pasta_d
