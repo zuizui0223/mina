@@ -1,6 +1,6 @@
 # Manuscript spine v0.6 — Aggregate abundance and spatial allocation are distinct
 
-**Status:** revised after the prospective 50-colony emperor decline-allocation result. Supersedes v0.5.
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_7.md` after calibration of the Ross inverse-path mismatch and stricter synchrony/metacommunity literature positioning.
 
 ## Working title
 
