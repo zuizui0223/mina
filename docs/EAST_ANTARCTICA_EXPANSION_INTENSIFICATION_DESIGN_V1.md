@@ -41,17 +41,20 @@ Thus the ecological endpoint is **expansion versus intensification**, conditiona
 
 ## Why East Antarctica
 
-This route uses three independent source families:
+This route uses three source families:
 
-1. **Direct breeding-site occupancy**
+1. **Primary occupancy/search-effort database**
+   - Southwell & Emmerson 2025, *Mapping knowledge of seabird breeding occupancy across East Antarctica*
+   - DOI: 10.26179/5n29-r073
+   - 1910–2020 site × breeding-season search-effort records with explicit present, absent, and occupancy-nonreporting states.
+   - It uses the Southwell et al. 2021 spatial reference system whose basic unit is a discrete island or continental rock outcrop.
+   - The analysis will filter to **Adélie penguin only** before any ecological endpoint is computed.
+
+2. **Legacy direct Adélie occupancy database / validation source**
    - Southwell et al. 2016, *Site occupancy by breeding Adélie penguins in East Antarctica*
    - DOI: 10.4225/15/57590498D301C
-   - presence/absence observations by geographic breeding site and split-year breeding season, approximately 1950s–2012.
-
-2. **Potential breeding habitat / spatial reference**
-   - Southwell et al. 2016, *Sites of potential habitat for breeding Adélie penguins in East Antarctica*
-   - DOI: 10.4225/15/5758F4EC91665
-   - geographic sites of ice-free coastal land, including islands and continental outcrops, with stable spatial identifiers.
+   - direct/historical presence–absence observations, approximately 1950s–2012.
+   - Used to identify the most defensible direct-observation subset and to audit changes in database semantics, not as an extra independent replicate.
 
 3. **Population abundance**
    - Southwell et al. 2015, PLOS ONE 10:e0139877
@@ -82,8 +85,8 @@ Stage A must **not**:
 
 Required source support:
 1. occupancy data have a stable breeding-site identifier, season/year, and explicit occupancy state;
-2. potential-habitat data have a stable site identifier and coordinates;
-3. the occupancy identifier can be linked exactly to the spatial reference or by an outcome-blind mapping supplied by the source;
+2. the occupancy database has a stable site identifier that maps to the published spatial reference and either contains coordinates or provides an exact source-supplied bridge to them;
+3. direct absence can be distinguished from inferred/non-reporting states before ecological event counting;
 4. abundance data contain site or regional identities plus at least two comparable abundance estimates;
 5. there is a pre-outcome way to map abundance units to occupancy spatial groups/regions.
 
