@@ -14,7 +14,7 @@ def test_appendix_s1_header_and_item_naming():
     text = SI.read_text(encoding="utf-8")
     assert text.startswith("# Appendix S1")
     assert "**Authors:** [SAME AUTHOR LIST AS MAIN MANUSCRIPT]" in text
-    assert "**Manuscript title:** Breeding-space concentration recurs across spatial scales in Antarctic penguins" in text
+    assert "**Manuscript title:** Breeding-component concentration recurs across spatial scales in Antarctic penguins" in text
     assert "**Journal:** Ecology" in text
 
     for i in range(1, 11):
