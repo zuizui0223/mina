@@ -2,7 +2,7 @@
   "schema_version": 1,
   "receipt_id": "mina-ecology-article-cross-scale-docx-qa-v0-1",
   "date": "2026-10-06",
-  "status": "CURRENT_REVISED_PACKAGE_VISUAL_QA_PASS_AUTHOR_METADATA_PENDING",
+  "status": "SOURCE_PROVENANCE_CORRECTION_REBUILD_PENDING",
   "journal": "Ecology",
   "submission_type": "Article",
   "source_manuscript": "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
@@ -12,9 +12,9 @@
     "head_sha": "8855d01dd01d6daf5fb6e7ed7c7dd0c35a45ba0c",
     "artifact_id": 11381845511,
     "artifact_digest": "sha256:5a679d1fbc69d3cb81f226d2b84e1d10834f64e7e40a706f2b403bebb549dd42",
-    "conclusion": "success",
-    "structural_docx_audit": "PASS",
-    "final_visual_qa": "PASS"
+    "conclusion": "superseded",
+    "structural_docx_audit": "SUPERSEDED_PENDING_REBUILD",
+    "final_visual_qa": "SUPERSEDED_PENDING_REBUILD"
   },
   "current_figures": {
     "run_id": 37391673074,
@@ -27,8 +27,8 @@
     "run_id": 37391672322,
     "artifact_id": 11381457683,
     "artifact_digest": "sha256:6451ec8aaa0590a37cbc281cf06438e7f3e279ab4f7634db981fab64890596ca",
-    "build_and_structural_audit": "PASS",
-    "final_visual_qa": "PASS",
+    "build_and_structural_audit": "SUPERSEDED_PENDING_REBUILD",
+    "final_visual_qa": "SUPERSEDED_PENDING_REBUILD",
     "rendered_pages": 9,
     "blank_page_removed": true
   },
@@ -39,10 +39,10 @@
     "ecology_standard_article_page_limit": 30,
     "pages_over_standard_limit": 2,
     "overlength_cover_letter_justification": "PASS_TWO_NUMBERED_JUSTIFICATIONS",
-    "final_visual_qa": "PASS_ALL_29_MAIN_DOCUMENT_PAGES",
-    "page_limit_status": "PASS_ELIGIBLE_OVER_30_PAGE_ARTICLE_ROUTE",
+    "final_visual_qa": "SUPERSEDED_PENDING_NEW_RENDER",
+    "page_limit_status": "PENDING_NEW_RENDER_PAGE_COUNT",
     "current_for_submission": false,
-    "reason_not_current_for_submission": "Author-controlled metadata placeholders remain; regenerate author-complete files before upload."
+    "reason_not_current_for_submission": "Palmer source-provenance wording was corrected after this render; corrected Main Document and Appendix must be regenerated and rechecked. Author-controlled metadata also remain unresolved."
   },
   "superseded_prior_artifact": {
     "workflow_run_id": 37117211288,
@@ -63,7 +63,7 @@
     "overlap/dual-publication statement",
     "ORCID IDs if requested"
   ],
-  "boundary": "Scientific and visual/layout QA are complete. Initial upload is now blocked only by author-controlled metadata, followed by regeneration and final proof check of the author-complete files.",
+  "boundary": "Numerical ecological endpoints are unchanged. Prior visual/layout QA is superseded only because Palmer observational-unit wording was corrected from island-population totals to fixed sample-colony monitoring networks. Corrected files require fresh QA before upload.",
   "optional_post_initial_submission_fields": [
     "permanent archive DOI"
   ]
