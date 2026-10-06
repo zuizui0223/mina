@@ -5,6 +5,7 @@ on:
     paths:
       - 'docs/EAST_ANTARCTICA_EXPANSION_INTENSIFICATION_DESIGN_V1.md'
       - 'scripts/audit_east_antarctica_expansion_sources.py'
+      - 'scripts/resolve_aadc_eds_assets.py'
       - 'scripts/audit_east_antarctica_expansion_schema.py'
       - '.github/workflows/east-antarctica-expansion-source-gate-v1.yml'
   workflow_dispatch:
@@ -17,48 +18,39 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: 'release'
       - name: Outcome-blind source discovery
         run: |
-          mkdir -p build
+          mkdir -p build/aadc2025 build/aadc2016
           python scripts/audit_east_antarctica_expansion_sources.py \
             --out build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
-      - name: Resolve AADC EDS assets via official bowerbird client
+      - name: Resolve and download schema-inspectable AADC assets
         run: |
-          Rscript -e 'options(repos=c(SCAR="https://scar.r-universe.dev",CRAN="https://cloud.r-project.org")); install.packages("bowerbird")'
-          Rscript - <<'RS'
-          library(bowerbird)
-          m25 <- bb_aadc_datasource_meta("AAS_4518_Seabird_Breeding_Occupancy")
-          m16 <- bb_aadc_datasource_meta("AAS_4088_Adelie_Occupancy")
-          write.csv(m25, "build/AADC_2025_ASSET_META.csv", row.names=FALSE)
-          write.csv(m16, "build/AADC_2016_ASSET_META.csv", row.names=FALSE)
-          RS
-      - name: Download source files after link discovery
+          python scripts/resolve_aadc_eds_assets.py \
+            --metadata-id AAS_4518_Seabird_Breeding_Occupancy \
+            --download-dir build/aadc2025 \
+            --out build/AADC_2025_ASSET_META.json
+          python scripts/resolve_aadc_eds_assets.py \
+            --metadata-id AAS_4088_Adelie_Occupancy \
+            --download-dir build/aadc2016 \
+            --out build/AADC_2016_ASSET_META.json
+      - name: Download abundance supplement
         run: |
-          curl -L --fail --retry 6 --retry-delay 5 \
-            'https://data.aad.gov.au/eds/5959/download' \
-            -o build/occupancy_2025
-          curl -L --fail --retry 6 --retry-delay 5 \
-            'https://data.aad.gov.au/eds/4345/download' \
-            -o build/occupancy_2016
           curl -L --fail --retry 6 --retry-delay 5 \
             'https://journals.plos.org/plosone/article/file?type=supplementary&id=info:doi/10.1371/journal.pone.0139877.s001' \
-            -o build/plos_s1
+            -o build/plos_s1.xls
       - name: Audit schemas without biological values
         run: |
-          pip install openpyxl
+          pip install openpyxl xlrd
           python scripts/audit_east_antarctica_expansion_schema.py \
-            --occupancy-2025 build/occupancy_2025 \
-            --occupancy-2016 build/occupancy_2016 \
-            --plos-s1 build/plos_s1 \
-            --out build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V1.json
+            --occupancy-2025-dir build/aadc2025 \
+            --occupancy-2016-dir build/aadc2016 \
+            --plos-s1 build/plos_s1.xls \
+            --out build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V2.json
       - uses: actions/upload-artifact@v4
         with:
           name: east-antarctica-expansion-source-gate-v1
           path: |
             build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
-            build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V1.json
-            build/AADC_2025_ASSET_META.csv
-            build/AADC_2016_ASSET_META.csv
+            build/AADC_2025_ASSET_META.json
+            build/AADC_2016_ASSET_META.json
+            build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V2.json
