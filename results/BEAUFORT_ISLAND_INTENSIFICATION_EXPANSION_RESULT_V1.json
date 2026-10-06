@@ -1,8 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "result_id": "mina-beaufort-island-intensification-expansion-v1",
+  "correction_version": 2,
   "date": "2026-10-06",
-  "status": "post_hypothesis_descriptive_public_data_plus_independent_movement_evidence",
+  "status": "corrected_post_hypothesis_descriptive_public_data_plus_independent_movement_evidence",
+  "correction_reason": "The original interpretation used fraction of absolute net gain without comparison to the starting-composition proportional-growth baseline.",
   "source": {
     "ross_sea_aerial_census_doi": "10.7931/kf06-x745",
     "published_natural_experiment": "LaRue et al. 2013, PLOS ONE, doi:10.1371/journal.pone.0060568"
@@ -15,11 +17,20 @@
     "new_subcolony_pairs_2010": 957,
     "island_total_pairs_2010": 64717,
     "island_total_growth_fraction": 0.3430943239597386,
+    "main_colony_growth_fraction": 0.3359874279727606,
     "new_subcolony_growth_fraction": 1.0804347826086957,
     "new_subcolony_share_2004": 0.00954653937947494,
     "new_subcolony_share_2010": 0.014787459245638703,
     "fraction_net_island_growth_in_main_colony": 0.9699370917009437,
-    "fraction_net_island_growth_in_new_subcolony": 0.030062908299056376
+    "fraction_net_island_growth_in_new_subcolony": 0.030062908299056376,
+    "proportional_expected_new_subcolony_gain": 157.82338902147973,
+    "observed_new_subcolony_gain": 497,
+    "observed_to_proportional_expected_new_gain_ratio": 3.149089644326155,
+    "proportional_expected_new_subcolony_2010": 617.8233890214798,
+    "new_subcolony_endpoint_proportional_residual": 339.1766109785202,
+    "effective_unit_number_2004": 1.0192753177234224,
+    "effective_unit_number_2010": 1.03001205938848,
+    "endpoint_delta_logE_over_delta_logN": 0.0355235783890834
   },
   "published_capacity_change": {
     "main_colony_usable_habitat_change_1958_2010": 0.71,
@@ -28,15 +39,20 @@
     "banded_bird_interisland_emigration_pattern": "Beaufort-to-Ross-Island emigration/visitation peaked near 3% in 2005 then declined as Beaufort habitat availability increased"
   },
   "decision": {
-    "within_island_intensification_precedes_or_dominates_early_expansion": true,
-    "island_capacity_can_modify_interisland_movement": true,
-    "island_boundary_is_mechanistic_not_merely_descriptive": true,
+    "raw_gain_fraction_is_valid_evidence_for_intensification": false,
+    "within_island_intensification_precedes_or_dominates_early_expansion": false,
+    "within_island_expansion_exceeds_proportional_growth_baseline": true,
+    "within_island_effective_number_increased": true,
+    "beaufort_case_is_consistent_with_capacity_affecting_interisland_movement": true,
+    "general_island_boundary_mechanism_established": false,
     "universal_island_only_control_claimed": false
   },
+  "revised_interpretation": "During Beaufort growth, the smaller/new within-island breeding unit gained share and grew disproportionately relative to fixed starting composition, while independent band/resighting evidence indicates reduced Beaufort-to-Ross-Island export after local nesting habitat increased. The case is consistent with capacity changing the spatial scale of redistribution, not with intensification-before-expansion.",
   "boundary": [
     "The aerial-count decomposition is descriptive and does not identify individual movement.",
     "The movement inference comes from independent band/resighting evidence in LaRue et al. 2013.",
-    "The Beaufort natural experiment does not establish a universal threshold across penguin colonies.",
-    "Ross Island itself contains multiple colonies, so the demographic hierarchy is nested rather than purely island-level."
+    "The Beaufort natural experiment is one case and does not establish a universal island threshold.",
+    "A high fraction of absolute gain in a large starting colony is not evidence for preferential intensification without a proportional baseline.",
+    "Ross Island contains nested colony and subcolony census units, so inference must be scale-specific."
   ]
 }
