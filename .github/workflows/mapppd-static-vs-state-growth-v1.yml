@@ -7,7 +7,7 @@ on:
       - "contracts/MAPPPD_STATIC_VS_STATE_GROWTH_V1.md"
       - "data/MAPPPD_INCREASING_SITE_STATIC_TRAITS_V1.csv"
       - "scripts/describe_mapppd_static_vs_state_growth.py"
-      - "results/MAPPPD_INTENSIFICATION_DESCRIPTIVE_RESULT_V1.json"
+      - "data/MAPPPD_INCREASING_SITE_CHANGES_V1.csv"
       - ".github/workflows/mapppd-static-vs-state-growth-v1.yml"
   pull_request:
     paths:
@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir -p build
           python scripts/describe_mapppd_static_vs_state_growth.py \
-            --intensification-json results/MAPPPD_INTENSIFICATION_DESCRIPTIVE_RESULT_V1.json \
+            --site-changes-csv data/MAPPPD_INCREASING_SITE_CHANGES_V1.csv \
             --traits-csv data/MAPPPD_INCREASING_SITE_STATIC_TRAITS_V1.csv \
             --out-json build/MAPPPD_STATIC_VS_STATE_GROWTH_RESULT_V1.json
       - uses: actions/upload-artifact@v4
