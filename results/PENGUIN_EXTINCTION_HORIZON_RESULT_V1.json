@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-penguin-extinction-horizon-result-v1",
+  "date": "2026-10-06",
+  "status": "exploratory_already_exposed_no_p_values",
+  "source_workflow": {
+    "run_id": 37422869987,
+    "artifact_id": 11393592718,
+    "artifact_digest": "sha256:14c7d474bdb7c8a1bd9b81918054121c06f3d11afe457c09a81e1a87120f996a",
+    "head_sha": "dea74975ca2efeebe3ac92f2356e356466db9d90"
+  },
+  "horizons": {
+    "1": {
+      "n": 632,
+      "loss_records": 22,
+      "size_beta": -1.9896407033844077,
+      "held_population_log_loss": 0.10907524019047483,
+      "top1_event_year_hit": 0.9333333333333333,
+      "top2_event_year_hit": 0.9333333333333333,
+      "median_loss_percentile": 1.0,
+      "recent_growth_beta_same_rows": 0.04887865910818367,
+      "recent_growth_log_loss_improvement_same_rows": -0.016929657488074
+    },
+    "3": {
+      "n": 566,
+      "loss_records": 62,
+      "size_beta": -1.902384138125474,
+      "held_population_log_loss": 0.27543561488584767,
+      "top1_event_year_hit": 0.9714285714285714,
+      "top2_event_year_hit": 1.0,
+      "median_loss_percentile": 1.0,
+      "recent_growth_beta_same_rows": -0.06266192744996392,
+      "recent_growth_log_loss_improvement_same_rows": -0.005399916707577168
+    },
+    "5": {
+      "n": 496,
+      "loss_records": 96,
+      "size_beta": -1.6804972257278985,
+      "held_population_log_loss": 0.4461241538342835,
+      "top1_event_year_hit": 0.9583333333333334,
+      "top2_event_year_hit": 1.0,
+      "median_loss_percentile": 0.875,
+      "recent_growth_beta_same_rows": -0.17147448213568575,
+      "recent_growth_log_loss_improvement_same_rows": 0.00050844632399899
+    }
+  },
+  "decision": {
+    "current_low_abundance_state_persists_as_strong_ordering_signal_to_5_years": true,
+    "recent_one_year_growth_adds_material_transferable_forecast_value": false,
+    "environmental_mechanism_should_target_entry_into_low_abundance_state": true
+  },
+  "boundary": [
+    "Top-1 hit fractions are not directly comparable as difficulty measures across horizons because longer horizons can contain multiple future losses.",
+    "Absolute log loss also changes with event prevalence across horizons.",
+    "Multi-year outcomes overlap and are forecasting records, not independent inferential replicates.",
+    "Exact census-unit zero is not necessarily physical habitat extinction."
+  ]
+}
