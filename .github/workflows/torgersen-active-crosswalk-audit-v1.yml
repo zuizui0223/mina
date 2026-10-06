@@ -1,0 +1,30 @@
+name: Torgersen active crosswalk audit v1
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_torgersen_active_crosswalk.py"
+      - ".github/workflows/torgersen-active-crosswalk-audit-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch LTER census
+        run: |
+          mkdir -p build
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+      - name: Match 1993 physical-subcolony counts
+        run: |
+          python scripts/audit_torgersen_active_crosswalk.py \
+            --census build/adelie_census.csv \
+            --out build/TORGERSEN_ACTIVE_CROSSWALK_AUDIT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: torgersen-active-crosswalk-audit-v1
+          path: build/TORGERSEN_ACTIVE_CROSSWALK_AUDIT_V1.json
