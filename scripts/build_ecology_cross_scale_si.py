@@ -173,8 +173,9 @@ def build(
             )
 
         # Figure S1 is part of Appendix S1 and must not be uploaded separately.
-        doc.add_page_break()
+        # Start it on a new page without inserting a standalone blank paragraph/page.
         p = doc.add_paragraph()
+        p.paragraph_format.page_break_before = True
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.add_run().add_picture(str(figure_path), width=Inches(6.5))
         cap = doc.add_paragraph()
@@ -184,7 +185,7 @@ def build(
         cap.add_run(caption_body)
 
         props = doc.core_properties
-        props.title = "Appendix S1 - Breeding-space contraction recurs across spatial scales in Antarctic penguins"
+        props.title = "Appendix S1 - Breeding-space concentration recurs across spatial scales in Antarctic penguins"
         props.subject = "Ecology Supporting Information"
         props.author = ""
         props.last_modified_by = ""
