@@ -10,9 +10,9 @@ The active manuscript is now organized as an Ecology **Article**, not a Report. 
 
 - Article page limit: 30 pages.
 - Article abstract limit: 350 words.
-- Current abstract: 257 words.
+- Current abstract: 259 words.
 - Ecology title limit: 120 characters.
-- Current title: 79 characters.
+- Current title: 83 characters.
 - Keywords: 8, within the required 6–12 range and alphabetized.
 - Main-document body will be double-spaced, 12-point Times New Roman, Letter size with 1-inch margins.
 - Line numbering begins after the title page and continues through References.
@@ -31,7 +31,7 @@ The active manuscript is now organized as an Ecology **Article**, not a Report. 
 
 ## Scientific checks
 
-- Palmer remains explicitly the discovery system.
+- Palmer remains explicitly the discovery system, with inference limited to three fixed sample-colony monitoring networks; summed monitored-component abundance is not described as exhaustive island-population abundance.
 - Signy Adélie remains the independent geographic replication.
 - Signy chinstrap remains the prospective cross-species replication.
 - MAPPPD remains a scale-transfer test rather than an additional independent geography.
@@ -44,7 +44,7 @@ The active manuscript is now organized as an Ecology **Article**, not a Report. 
 
 ## Remaining blockers
 
-Current packaging blockers are: (1) current-head Main Document re-QA after Appendix references, (2) publication-sized figure rerender and size/visual QA, (3) Appendix S1 single-PDF build/QA, and (4) author-controlled metadata. Permanent archiving can be completed later and is not required to open the initial submission.
+Current packaging blockers are: (1) corrected Main Document regeneration and visual/page-count QA after the Palmer source-provenance correction, (2) corrected Appendix S1 build/QA, and (3) author-controlled metadata. Main-figure numerical content is unchanged. Permanent archiving can be completed later and is not required to open the initial submission.
 
 ## Canonical freeze
 
@@ -53,7 +53,7 @@ See `contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json`.
 
 ## Word Main Document QA
 
-The placeholder Ecology Article Main Document was generated successfully from the canonical builder and rendered with the DOCX QA pipeline after the final AI-disclosure and data-provider-acknowledgment updates. Ecology counts separately uploaded figure pages toward the page limit, so the 24-page Main Document plus three one-page main figures gives an expected 27-page generated manuscript.
+The previously rendered placeholder Ecology Article Main Document passed QA before the Palmer source-provenance wording correction and is now superseded for upload. Ecology counts separately uploaded figure pages toward the page limit, so the 24-page Main Document plus three one-page main figures gives an expected 27-page generated manuscript.
 
 - rendered Main Document pages: **24**
 - separately uploaded main-figure pages: **3**
@@ -70,10 +70,10 @@ The placeholder Ecology Article Main Document was generated successfully from th
 
 Provenance is frozen in `submission/ECOLOGY_ARTICLE_CROSS_SCALE_DOCX_QA_RECEIPT_V0_1.json`.
 
-This QA applies to the placeholder preview. Once private author metadata are confirmed, the author-complete DOCX must be regenerated through the same builder and receive one final render check before upload.
+This prior QA remains provenance only. A corrected placeholder preview must first pass a fresh render check; once private author metadata are confirmed, the author-complete DOCX must be regenerated through the same builder and checked again before upload.
 
 
-## Current canonical Word artifact
+## Superseded pre-correction Word artifact
 
 - workflow run: `37117211288`
 - artifact: `11271907803`
