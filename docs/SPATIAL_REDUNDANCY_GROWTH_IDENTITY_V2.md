@@ -1,6 +1,6 @@
 # Spatial redundancy growth identity v2 — path-aware interpretation
 
-**Status:** corrected post-result mathematical synthesis. V2 supersedes V1's ecological interpretation while retaining the same algebra.
+**Status:** superseded by `SPATIAL_REDUNDANCY_GROWTH_IDENTITY_V3.md`. The algebra is unchanged; V3 replaces the single 2001-2012 Ross example with the biologically resolved shock/rebound/later-recovery sequence.
 
 ## 1. State variable
 
