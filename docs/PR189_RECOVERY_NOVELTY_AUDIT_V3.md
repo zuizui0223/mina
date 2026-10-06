@@ -1,6 +1,6 @@
 # PR189 novelty audit v3 — shock-aware positioning
 
-**Status:** post-result literature positioning.
+**Status:** superseded by `PR189_RECOVERY_NOVELTY_AUDIT_V4.md` after the prospective Bird Island Gentoo recovery-allocation result.
 
 ## Not new
 
