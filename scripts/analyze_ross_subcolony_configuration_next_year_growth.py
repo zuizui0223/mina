@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
-"""Prospective Ross subcolony configuration -> next-year growth test."""
+"""Prospective Ross subcolony configuration -> next-year growth test.
+
+Depends only on the project-declared numpy runtime plus the Python standard
+library. Reproduces:
+  results/ROSS_SUBCOLONY_CONFIGURATION_NEXT_YEAR_GROWTH_V1.json
+"""
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import math
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
 
 CROZ_ORDER = [
     "203","304","405","506","607","708","809","910",
@@ -19,120 +24,187 @@ B_PERM = 9999
 SEED = 20261006
 
 
-def build_eligible(df: pd.DataFrame, colony: str, seasons: list[str]) -> pd.DataFrame:
-    df = df.copy()
-    df["season"] = df["season"].astype(str)
-    df["subcol"] = df["subcol"].astype(str)
-    rows = {(r.season, r.subcol): r for r in df.itertuples(index=False)}
-    out = []
+def read_rows(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="", encoding="utf-8") as fh:
+        return list(csv.DictReader(fh))
+
+
+def as_float(value: str | None) -> float | None:
+    if value is None:
+        return None
+    s = str(value).strip()
+    if not s or s.upper() == "NA":
+        return None
+    try:
+        x = float(s)
+    except ValueError:
+        return None
+    return x if math.isfinite(x) else None
+
+
+def build_eligible(
+    rows: list[dict[str, str]],
+    colony: str,
+    seasons: list[str],
+) -> list[dict[str, float | str]]:
+    index = {
+        (str(r["season"]), str(r["subcol"])): r
+        for r in rows
+    }
+    by_season: dict[str, set[str]] = {}
+    for r in rows:
+        by_season.setdefault(str(r["season"]), set()).add(str(r["subcol"]))
+
+    out: list[dict[str, float | str]] = []
     for s0, s1 in zip(seasons[:-1], seasons[1:]):
-        subs = sorted(
-            set(df.loc[df.season == s0, "subcol"])
-            & set(df.loc[df.season == s1, "subcol"])
-        )
-        for sub in subs:
-            a, b = rows[(s0, sub)], rows[(s1, sub)]
-            vals = [a.active_ct, b.active_ct, a.pa_ratio, a.area]
-            if any(pd.isna(x) for x in vals):
+        for sub in sorted(by_season.get(s0, set()) & by_season.get(s1, set())):
+            a = index[(s0, sub)]
+            b = index[(s1, sub)]
+            B = as_float(a.get("active_ct"))
+            B1 = as_float(b.get("active_ct"))
+            pa = as_float(a.get("pa_ratio"))
+            area = as_float(a.get("area"))
+            if None in (B, B1, pa, area):
                 continue
-            if not (a.active_ct > 0 and b.active_ct > 0 and a.area > 0 and a.pa_ratio > 0):
+            assert B is not None and B1 is not None and pa is not None and area is not None
+            if not (B > 0 and B1 > 0 and pa > 0 and area > 0):
                 continue
             out.append({
                 "colony": colony,
                 "year": s0,
                 "subcol": sub,
-                "B": float(a.active_ct),
-                "B1": float(b.active_ct),
-                "pa": float(a.pa_ratio),
-                "area": float(a.area),
+                "B": B,
+                "B1": B1,
+                "pa": pa,
+                "area": area,
             })
-    return pd.DataFrame(out)
-
-
-def demean(v: np.ndarray, group: np.ndarray) -> np.ndarray:
-    out = v.astype(float).copy()
-    for g in np.unique(group):
-        m = group == g
-        out[m] -= out[m].mean()
     return out
 
 
-def fit_panel(panel: pd.DataFrame) -> np.ndarray:
-    group = (panel["colony"] + "|" + panel["year"]).to_numpy()
-    y = demean(np.log(panel["B1"].to_numpy() / panel["B"].to_numpy()), group)
-    b = demean(np.log(panel["B"].to_numpy()), group)
-    p = demean(panel["P"].to_numpy(), group)
-    a = demean(panel["A"].to_numpy(), group)
+def add_geometry_z(panel: list[dict]) -> dict[str, list[dict[str, float | str]]]:
+    geometry: dict[str, dict[str, tuple[float, float]]] = {}
+    for r in panel:
+        col, sub = str(r["colony"]), str(r["subcol"])
+        geometry.setdefault(col, {})
+        pair = (float(r["pa"]), float(r["area"]))
+        if sub in geometry[col] and geometry[col][sub] != pair:
+            raise ValueError(f"non-static geometry for {col}:{sub}")
+        geometry[col][sub] = pair
+
+    geom_lists: dict[str, list[dict[str, float | str]]] = {}
+    zmap: dict[tuple[str, str], tuple[float, float]] = {}
+    for col, items in geometry.items():
+        subs = sorted(items)
+        log_pa = np.asarray([math.log(items[s][0]) for s in subs], dtype=float)
+        log_area = np.asarray([math.log(items[s][1]) for s in subs], dtype=float)
+        P = (log_pa - log_pa.mean()) / log_pa.std(ddof=1)
+        A = (log_area - log_area.mean()) / log_area.std(ddof=1)
+        geom_lists[col] = []
+        for sub, p, a in zip(subs, P, A):
+            zmap[(col, sub)] = (float(p), float(a))
+            geom_lists[col].append({"subcol": sub, "P": float(p), "A": float(a)})
+
+    for r in panel:
+        r["P"], r["A"] = zmap[(str(r["colony"]), str(r["subcol"]))]
+
+    return geom_lists
+
+
+def group_codes(panel: list[dict]) -> tuple[np.ndarray, list[np.ndarray]]:
+    labels = np.asarray([f'{r["colony"]}|{r["year"]}' for r in panel], dtype=object)
+    _, codes = np.unique(labels, return_inverse=True)
+    members = [np.where(codes == i)[0] for i in range(codes.max() + 1)]
+    return codes, members
+
+
+def demean(v: np.ndarray, members: list[np.ndarray]) -> np.ndarray:
+    out = v.astype(float).copy()
+    for idx in members:
+        out[idx] -= out[idx].mean()
+    return out
+
+
+def fit_panel(panel: list[dict]) -> np.ndarray:
+    _, members = group_codes(panel)
+    y = demean(
+        np.asarray([math.log(float(r["B1"]) / float(r["B"])) for r in panel]),
+        members,
+    )
+    b = demean(np.asarray([math.log(float(r["B"])) for r in panel]), members)
+    p = demean(np.asarray([float(r["P"]) for r in panel]), members)
+    a = demean(np.asarray([float(r["A"]) for r in panel]), members)
     X = np.column_stack([b, p, a])
     beta, *_ = np.linalg.lstsq(X, y, rcond=None)
     return beta
 
 
-def main():
+def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--crozier", type=Path, required=True)
     ap.add_argument("--royds", type=Path, required=True)
     ap.add_argument("--out", type=Path)
     args = ap.parse_args()
 
-    c = build_eligible(pd.read_csv(args.crozier), "croz", CROZ_ORDER)
-    r = build_eligible(pd.read_csv(args.royds), "royds", ROYDS_ORDER)
-    panel = pd.concat([c, r], ignore_index=True)
-
-    geom = panel[["colony","subcol","pa","area"]].drop_duplicates()
-    geom["log_pa"] = np.log(geom["pa"])
-    geom["log_area"] = np.log(geom["area"])
-    geom["P"] = geom.groupby("colony")["log_pa"].transform(
-        lambda x: (x - x.mean()) / x.std(ddof=1)
+    panel = (
+        build_eligible(read_rows(args.crozier), "croz", CROZ_ORDER)
+        + build_eligible(read_rows(args.royds), "royds", ROYDS_ORDER)
     )
-    geom["A"] = geom.groupby("colony")["log_area"].transform(
-        lambda x: (x - x.mean()) / x.std(ddof=1)
-    )
-    panel = panel.merge(geom[["colony","subcol","P","A"]], on=["colony","subcol"])
+    geom_lists = add_geometry_z(panel)
 
-    beta = fit_panel(panel)
-    gamma, beta_p, beta_a = map(float, beta)
+    gamma, beta_p, beta_a = map(float, fit_panel(panel))
+
+    row_col = np.asarray([str(r["colony"]) for r in panel], dtype=object)
+    row_sub = np.asarray([str(r["subcol"]) for r in panel], dtype=object)
+    row_idx: dict[str, dict[str, int]] = {
+        col: {str(x["subcol"]): i for i, x in enumerate(items)}
+        for col, items in geom_lists.items()
+    }
 
     rng = np.random.default_rng(SEED)
-    perm = np.empty(B_PERM)
+    perm = np.empty(B_PERM, dtype=float)
     for k in range(B_PERM):
-        pieces = []
-        for colony in ("croz", "royds"):
-            g = geom[geom["colony"] == colony][["subcol","P","A"]].sort_values("subcol")
-            order = rng.permutation(len(g))
-            mapping = {
-                sub: (float(p), float(a))
-                for sub, p, a in zip(g["subcol"], g["P"].to_numpy()[order], g["A"].to_numpy()[order])
-            }
-            x = panel[panel["colony"] == colony].copy()
-            x[["P","A"]] = [mapping[s] for s in x["subcol"]]
-            pieces.append(x)
-        perm[k] = fit_panel(pd.concat(pieces, ignore_index=True))[1]
+        x = [dict(r) for r in panel]
+        for col in ("croz", "royds"):
+            items = geom_lists[col]
+            order = rng.permutation(len(items))
+            P = np.asarray([float(z["P"]) for z in items])[order]
+            A = np.asarray([float(z["A"]) for z in items])[order]
+            for j, r in enumerate(x):
+                if r["colony"] != col:
+                    continue
+                i = row_idx[col][str(row_sub[j])]
+                r["P"], r["A"] = float(P[i]), float(A[i])
+        perm[k] = float(fit_panel(x)[1])
 
     extreme = int(np.sum(perm <= beta_p))
     p = (1 + extreme) / (B_PERM + 1)
 
     loo = []
-    for colony, subcol in geom[["colony","subcol"]].itertuples(index=False):
-        x = panel[~((panel["colony"] == colony) & (panel["subcol"] == subcol))]
-        loo.append(float(fit_panel(x)[1]))
+    for col, items in geom_lists.items():
+        for item in items:
+            sub = str(item["subcol"])
+            x = [
+                r for r in panel
+                if not (r["colony"] == col and r["subcol"] == sub)
+            ]
+            loo.append(float(fit_panel(x)[1]))
 
     colony_specific = {}
-    for colony in ("croz","royds"):
-        x = panel[panel["colony"] == colony]
+    for col in ("croz", "royds"):
+        x = [r for r in panel if r["colony"] == col]
         b = fit_panel(x)
-        colony_specific[colony] = {
-            "n_rows": int(len(x)),
-            "n_subcolonies": int(x["subcol"].nunique()),
-            "n_transitions": int(x["year"].nunique()),
+        colony_specific[col] = {
+            "n_rows": len(x),
+            "n_subcolonies": len({str(r["subcol"]) for r in x}),
+            "n_transitions": len({str(r["year"]) for r in x}),
             "gamma_log_current_abundance": float(b[0]),
             "beta_P": float(b[1]),
             "beta_A": float(b[2]),
         }
 
     result = {
-        "n_rows": int(len(panel)),
-        "n_subcolonies": int(geom.shape[0]),
+        "n_rows": len(panel),
+        "n_subcolonies": sum(len(v) for v in geom_lists.values()),
         "gamma_log_current_abundance": gamma,
         "beta_P": beta_p,
         "beta_A": beta_a,
@@ -140,15 +212,16 @@ def main():
         "permutation": {
             "B": B_PERM,
             "seed": SEED,
+            "rng": "numpy default_rng PCG64",
             "extreme_count": extreme,
             "p": p,
-            "q05": float(np.quantile(perm,0.05)),
-            "median": float(np.quantile(perm,0.50)),
-            "q95": float(np.quantile(perm,0.95)),
+            "q05": float(np.quantile(perm, 0.05)),
+            "median": float(np.quantile(perm, 0.50)),
+            "q95": float(np.quantile(perm, 0.95)),
         },
         "loo": {
             "n": len(loo),
-            "n_negative": int(sum(x < 0 for x in loo)),
+            "n_negative": int(sum(v < 0 for v in loo)),
             "min": min(loo),
             "median": float(np.median(loo)),
             "max": max(loo),
