@@ -1,6 +1,6 @@
 # Manuscript spine v0.5 — Numerical and spatial recovery are distinct
 
-**Status:** revised after literature audit of the Bird Island time series. Supersedes v0.4. Ross is the disturbance–rebound recovery experiment; Bird Island is a prospective positive-net-change spatial-allocation test, not a preidentified recovery phase.
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_6.md` after the prospective 50-colony Emperor decline-allocation result.
 
 ## Working title
 
