@@ -1,6 +1,6 @@
 # Spatial redundancy as dominance-weighted demographic arithmetic
 
-**Status:** post-result mathematical synthesis. This identity is algebraic; it is not claimed as a new theorem. Its purpose is to state exactly what the Ross/Palmer/Beaufort effective-number result means biologically.
+**Status:** superseded by `SPATIAL_REDUNDANCY_GROWTH_IDENTITY_V2.md`. The algebra is correct, but V1 overinterpreted the finite-interval identity as requiring amplification of initially dominant nodes; the Heard Island dominance-reversal example shows that long intervals can end with E lower after a formerly subordinate node overtakes the initial dominant.
 
 ## State variable
 
