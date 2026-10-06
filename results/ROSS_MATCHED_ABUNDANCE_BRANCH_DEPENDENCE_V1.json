@@ -5,10 +5,25 @@
   "status": "post_result_exploratory_not_confirmatory",
   "support_rule": {
     "decline_years": "1985-1999",
-    "recovery_years": [2001,2002,2003,2004,2005,2006,2007,2009,2010,2011,2012],
+    "recovery_years": [
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2009,
+      2010,
+      2011,
+      2012
+    ],
     "decline_N_min": 145268,
     "decline_N_max": 242644,
-    "eligible_recovery_years_inside_decline_N_support": [2002,2004],
+    "eligible_recovery_years_inside_decline_N_support": [
+      2002,
+      2004
+    ],
     "matching": "nearest decline year by absolute log N difference"
   },
   "pairs": [
@@ -44,5 +59,38 @@
     "branch_dependence_signature_present": true,
     "causal_hysteresis_established": false
   },
-  "boundary": "Environmental state differs between branches; this pattern motivates but does not identify endogenous configuration memory."
+  "boundary": "Environmental state differs between branches; this pattern motivates but does not identify endogenous configuration memory.",
+  "within_branch_scale_check": {
+    "status": "post_result_descriptive_not_inferential",
+    "max_logN_difference": 0.014,
+    "decline_pairs_n": 7,
+    "recovery_pairs_n": 4,
+    "within_decline_max_abs_E3_difference": 0.07688312700454136,
+    "within_decline_max_abs_E6_difference": 0.19120671974026981,
+    "within_decline_max_TV3": 0.026988672796082677,
+    "within_recovery_max_abs_E3_difference": 0.07143817626797855,
+    "within_recovery_max_abs_E6_difference": 0.14979925537095462,
+    "within_recovery_max_TV3": 0.026404444480888432,
+    "cross_branch": [
+      {
+        "years": [
+          1997,
+          2002
+        ],
+        "abs_E3_difference": 0.11867881777132094,
+        "abs_E6_difference": 0.35158729895855934,
+        "TV3": 0.040749811286496344
+      },
+      {
+        "years": [
+          1985,
+          2004
+        ],
+        "abs_E3_difference": 0.2121945206335687,
+        "abs_E6_difference": 0.4250536232714204,
+        "TV3": 0.07750443829865025
+      }
+    ],
+    "interpretation": "Both cross-branch matched-N pairs exceed the observed same-branch matched-N maxima in E3, E6, and three-colony TV distance; this strengthens the descriptive branch-dependence signature but is not a causal or inferential hysteresis test."
+  }
 }
