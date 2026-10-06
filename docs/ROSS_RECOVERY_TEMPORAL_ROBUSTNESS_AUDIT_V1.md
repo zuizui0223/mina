@@ -1,6 +1,6 @@
 # Ross recovery temporal robustness audit v1
 
-**Status:** post-result robustness audit. This does not alter the frozen V2 decision; it limits the interpretation of the observed E decline.
+**Status:** superseded by `ROSS_RECOVERY_TEMPORAL_ROBUSTNESS_AUDIT_V2.md`. V1 correctly identified the early 2001-2002 pulse but treated 2001 as an ordinary recovery baseline; V2 adds the externally documented iceberg-shock context and pre-shock 1999 comparison.
 
 ## Frozen result
 
