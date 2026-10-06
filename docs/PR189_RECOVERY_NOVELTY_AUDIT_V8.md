@@ -1,6 +1,6 @@
 # PR189 novelty audit v8 — calibrated after within-Ross background comparison
 
-**Status:** preferred novelty ceiling for the state/allocation paper while independent mechanism tests remain unresolved.
+**Status:** superseded by `PR189_RECOVERY_NOVELTY_AUDIT_V9.md` after the Signy and Ross-subcolony clean mechanism routes both failed.
 
 ## What the new calibration changes
 
