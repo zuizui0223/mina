@@ -5,6 +5,7 @@ on:
     paths:
       - 'docs/EAST_ANTARCTICA_EXPANSION_INTENSIFICATION_DESIGN_V1.md'
       - 'scripts/audit_east_antarctica_expansion_sources.py'
+      - 'scripts/audit_east_antarctica_expansion_schema.py'
       - '.github/workflows/east-antarctica-expansion-source-gate-v1.yml'
   workflow_dispatch:
 
@@ -21,7 +22,28 @@ jobs:
           mkdir -p build
           python scripts/audit_east_antarctica_expansion_sources.py \
             --out build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
+      - name: Download source files after link discovery
+        run: |
+          curl -L --fail --retry 6 --retry-delay 5 \
+            'https://data.aad.gov.au/eds/5959/download' \
+            -o build/occupancy_2025
+          curl -L --fail --retry 6 --retry-delay 5 \
+            'https://data.aad.gov.au/eds/4345/download' \
+            -o build/occupancy_2016
+          curl -L --fail --retry 6 --retry-delay 5 \
+            'https://journals.plos.org/plosone/article/file?type=supplementary&id=info:doi/10.1371/journal.pone.0139877.s001' \
+            -o build/plos_s1
+      - name: Audit schemas without biological values
+        run: |
+          pip install openpyxl
+          python scripts/audit_east_antarctica_expansion_schema.py \
+            --occupancy-2025 build/occupancy_2025 \
+            --occupancy-2016 build/occupancy_2016 \
+            --plos-s1 build/plos_s1 \
+            --out build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V1.json
       - uses: actions/upload-artifact@v4
         with:
           name: east-antarctica-expansion-source-gate-v1
-          path: build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
+          path: |
+            build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
+            build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V1.json
