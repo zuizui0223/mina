@@ -140,6 +140,54 @@ def audit_table(path: Path, frame: pd.DataFrame) -> dict:
         out["sites_with_distinct_times_ge3"] = int((site_seasons >= 3).sum())
         out["sites_with_distinct_times_ge5"] = int((site_seasons >= 5).sum())
         out["duplicate_site_time_rows"] = int(x.duplicated([sc, tc]).sum())
+
+        # Temporal-pair support only: use year/time metadata, never Occurrence.
+        def _year(v):
+            txt=str(v).strip()
+            m=re.search(r"(19|20)\\d{2}",txt)
+            if m:
+                return int(m.group(0))
+            try:
+                z=float(v)
+                return int(z) if 1900 <= z <= 2100 else None
+            except Exception:
+                return None
+
+        xy=x.copy()
+        xy["_year"]=xy[tc].map(_year)
+        xy=xy.dropna(subset=["_year"]).drop_duplicates([sc,"_year"])
+        gap_counts={"1":0,"2":0,"3_to_5":0,"gt5":0}
+        sites_with_gap1=set()
+        for site,g in xy.groupby(sc):
+            ys=sorted(int(v) for v in g["_year"].unique())
+            for a,b in zip(ys,ys[1:]):
+                gap=b-a
+                if gap==1:
+                    gap_counts["1"]+=1
+                    sites_with_gap1.add(str(site))
+                elif gap==2:
+                    gap_counts["2"]+=1
+                elif 3 <= gap <= 5:
+                    gap_counts["3_to_5"]+=1
+                elif gap>5:
+                    gap_counts["gt5"]+=1
+        out["successive_observation_gap_counts"]=gap_counts
+        out["sites_with_at_least_one_gap1_pair"]=int(len(sites_with_gap1))
+
+        # Cross-sectional survey support by subgroup×year/season.
+        if "Sub_Group" in frame.columns:
+            z=frame[["Sub_Group",sc,tc]].dropna().copy()
+            z["_year"]=z[tc].map(_year)
+            z=z.dropna(subset=["_year"]).drop_duplicates(["Sub_Group",sc,"_year"])
+            panel=z.groupby(["Sub_Group","_year"])[sc].nunique()
+            subgroup_year_counts=panel.to_numpy(dtype=int)
+            out["subgroup_time_panels"]=int(len(panel))
+            out["subgroup_time_panels_ge10_sites"]=int((subgroup_year_counts>=10).sum())
+            out["subgroup_time_panels_ge20_sites"]=int((subgroup_year_counts>=20).sum())
+            out["subgroup_time_panels_ge50_sites"]=int((subgroup_year_counts>=50).sum())
+            per_subgroup=z.groupby("Sub_Group")["_year"].nunique()
+            out["subgroups_with_ge2_time_values"]=int((per_subgroup>=2).sum())
+            out["subgroups_with_ge3_time_values"]=int((per_subgroup>=3).sum())
     return out
 
 
