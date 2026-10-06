@@ -27,9 +27,9 @@ def test_ecology_article_limits_and_labels():
     abstract = _abstract(text)
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
-    assert len(title) == 79
+    assert len(title) == 83
     assert len(title) <= 120
-    assert len(abstract.split()) == 257
+    assert len(abstract.split()) == 259
     assert len(abstract.split()) <= 350
     assert contract["submission_type"] == "Article"
     assert "**Ecology Article candidate" in text
