@@ -18,17 +18,35 @@ jobs:
             -D build/headers.txt \
             'https://doi.org/10.6073/pasta/805f6b97593c60cfdfd02266db9ab4b6' \
             -o build/landing
-          echo '--- final file type ---'
           file build/landing
-          echo '--- headers ---'
-          cat build/headers.txt
-          echo '--- first 300 lines ---'
-          sed -n '1,300p' build/landing
-          echo '--- candidate URLs ---'
-          grep -Eo 'https?://[^"<> ]+' build/landing | sort -u | grep -E 'pasta|lternet|package|data|csv|txt' || true
+          sed -n '1,200p' build/landing
+      - name: Resolve DOI through PASTA API and fetch data entities
+        run: |
+          curl -A 'mina/1.0' -L --fail --retry 8 --retry-delay 5 --retry-all-errors \
+            'https://pasta.lternet.edu/package/doi/doi:10.6073/pasta/805f6b97593c60cfdfd02266db9ab4b6' \
+            -o build/resource_map.txt
+          echo '--- resource map ---'
+          cat build/resource_map.txt
+          grep '/package/data/eml/' build/resource_map.txt > build/data_urls.txt || true
+          echo '--- data URLs ---'
+          cat build/data_urls.txt || true
+          n=0
+          while IFS= read -r url; do
+            [ -z "$url" ] && continue
+            n=$((n+1))
+            out="build/entity_$n"
+            curl -A 'mina/1.0' -L --fail --retry 8 --retry-delay 5 --retry-all-errors "$url" -o "$out"
+            echo "--- entity $n: $url ---"
+            file "$out"
+            wc -c "$out"
+            sed -n '1,40p' "$out" || true
+          done < build/data_urls.txt
       - uses: actions/upload-artifact@v4
         with:
           name: inspect-cimino-edi-census-v8
           path: |
             build/headers.txt
             build/landing
+            build/resource_map.txt
+            build/data_urls.txt
+            build/entity_*
