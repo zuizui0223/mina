@@ -16,20 +16,17 @@ def load(path: Path):
 def test_science_closed_and_current_package_rebuilt():
     gate = load(GATE)
     s = gate["statuses"]
-    assert s["scientific_analysis"] == "PASS_ENDPOINTS_CLOSED_INTERPRETATION_REVISED"
-    assert s["claim_boundary"] == "PASS_REVISED_FOR_INCREASING_NETWORKS"
-    assert s["repository_ci"] == "PASS_CURRENT_HEAD_FOCUSED_CHECK"
-    assert s["main_document_generation"] == "PASS_REVISED_DOCX_STRUCTURAL_QA"
-    assert s["main_document_visual_qa"] == "PASS_ALL_29_RENDERED_PAGES"
+    assert s["scientific_analysis"] == "PASS_ENDPOINTS_CLOSED_SOURCE_PROVENANCE_WORDING_CORRECTED"
+    assert s["claim_boundary"] == "PASS_REVISED_FOR_SAMPLE_COLONY_SCOPE_AND_INCREASING_NETWORKS"
+    assert s["repository_ci"] == "PENDING_AFTER_SOURCE_PROVENANCE_CORRECTION"
+    assert s["main_document_generation"] == "PENDING_REGENERATION_AFTER_SOURCE_PROVENANCE_CORRECTION"
+    assert s["main_document_visual_qa"] == "PENDING_NEW_RENDER"
     assert s["main_figure_visual_qa"] == "PASS_ALL_THREE_MAIN_FIGURES"
-    assert s["supporting_information_pdf"] == "PASS_BUILD_AND_VISUAL_QA_9_PAGES"
-    assert (
-        s["generated_manuscript_page_limit"]
-        == "PASS_32_PAGES_VIA_ECOLOGY_OVER_30_PAGE_JUSTIFICATION_ROUTE"
-    )
+    assert s["supporting_information_pdf"] == "PENDING_REGENERATION_AND_VISUAL_QA"
+    assert s["generated_manuscript_page_limit"] == "PENDING_NEW_RENDER_PAGE_COUNT"
     assert (
         s["final_upload_readiness"]
-        == "BLOCKED_ONLY_BY_AUTHOR_METADATA_AND_AUTHOR_COMPLETE_REGENERATION"
+        == "BLOCKED_BY_AUTHOR_METADATA_AND_POST_CORRECTION_REGENERATION_QA"
     )
 
 
@@ -44,6 +41,7 @@ def test_current_artifact_provenance_is_well_formed():
     assert docx["artifact_id"] == 11381845511
     assert docx["rendered_pages"] == 29
     assert str(docx["digest"]).startswith("sha256:")
+    assert "SUPERSEDED" in docx["status"]
 
     assert figs["workflow_run_id"] == 37391673074
     assert figs["artifact_id"] == 11381685529
@@ -54,6 +52,7 @@ def test_current_artifact_provenance_is_well_formed():
     assert si["artifact_id"] == 11381457683
     assert si["rendered_pages"] == 9
     assert str(si["digest"]).startswith("sha256:")
+    assert "SUPERSEDED" in si["status"]
 
     assert artifacts["rendered_main_document_pages"] == 29
     assert artifacts["separate_main_figure_pages"] == 3
@@ -71,9 +70,6 @@ def test_final_gate_points_to_current_ecology_article():
         gate["canonical_contract"]
         == "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
     )
-    assert (
-        article["status"]
-        == "canonical_package_visual_qa_pass_author_metadata_pending"
-    )
+    assert article["status"] == "canonical_package_source_provenance_corrected_rebuild_pending"
     assert resolution["canonical_initial_submission"]["submission_type"] == "Article"
     assert gate["unresolved_human_fields"]
