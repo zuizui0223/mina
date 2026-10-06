@@ -4,7 +4,7 @@
 
 **Journal:** Ecology  
 **Article type:** Article  
-**Title:** Breeding-space concentration recurs across spatial scales in Antarctic penguins
+**Title:** Breeding-component concentration recurs across spatial scales in Antarctic penguins
 
 This package supersedes the earlier Ecology Report submission line for initial submission. Older Report, Ecosphere, JBI and integrated manuscript files remain only as provenance.
 
@@ -18,8 +18,8 @@ This package supersedes the earlier Ecology Report submission line for initial s
 
 Approximate manuscript metrics:
 
-- title: 79 characters including spaces
-- abstract: 257 words
+- title: 83 characters including spaces
+- abstract: 259 words
 - main text before full reference list: ~4,600 words
 - main figures: 3
 - supplementary figures: 1
@@ -47,7 +47,8 @@ Reproducible figure workflow:
 
 ## Scientific provenance
 
-- Palmer discovery: `results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
+- Palmer discovery in fixed sample-colony monitoring networks: `results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
+- Palmer source-provenance correction: `docs/PALMER_SAMPLE_COLONY_PROVENANCE_AUDIT_V1.md`
 - Signy Adélie prospective replication: `results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
 - Signy chinstrap prospective replication: `results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`
 - regional scale transfer: `results/MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2.json`
@@ -69,13 +70,16 @@ Initial submission still requires private confirmation of:
 - overlap/dual-publication statement
 - ORCID IDs if requested
 
-Scientific endpoints are closed, but the manuscript interpretation was revised on 2026-10-05 to promote the increasing MAPPPD networks as a main boundary condition. These metadata blockers do not authorize new ecological analyses.
+Scientific endpoints are closed. On 2026-10-06 a source-provenance audit corrected the Palmer observational scope from exhaustive island population totals to summed counts in fixed sample-colony monitoring networks; no endpoint, roster, null family, p-value or effect size changed. These metadata blockers do not authorize new ecological analyses.
 
 
-## Word preview status
+## Word and visual QA status
 
-The previously generated 24-page placeholder Main Document is retained as provenance only and is **superseded by the 2026-10-05 scientific-text revision**. It must not be uploaded. A new DOCX and revised/confirmed main figures must be regenerated and visually QA'd before submission.
+The prior one-paper Main Document and Appendix passed visual QA before the Palmer source-provenance wording correction. Those artifacts are now provenance-only. A corrected Main Document and Appendix must be regenerated and visually checked before upload; page counts below remain historical until that rebuild is complete.
 
+With the three main figures counted as one page each, the complete Ecology Article is **32 pages**. This is two pages above the standard 30-page Article length. The cover letter now contains the two numbered justifications required by Ecology for an Article above 30 pages and below 50 pages: broad ecological contribution and the value/necessity of the additional length.
+
+The preview artifacts still contain author placeholders and therefore must not be uploaded as the final submission files.
 
 ## Canonical target resolution
 
@@ -84,15 +88,21 @@ Initial submission is **Ecology — Article**. The compact Ecology Report packag
 
 ## Artifact provenance
 
-- canonical placeholder DOCX workflow run: `37117211288`
-- canonical placeholder DOCX artifact: `11271907803`
-- DOCX artifact digest: `sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b`
-- canonical main-figure workflow run: `37106154408`
-- canonical main-figure artifact: `11267687698`
-- figure artifact digest: `sha256:c00314e70b631d024d407429a0947f1f7e6e749a1945fcd58833e1fea1585f19`
+Superseded pre-correction artifacts:
 
-The listed DOCX and figure artifacts document the prior manuscript state only. They are **not current upload artifacts** after the regional trend-boundary revision. Regeneration and new visual QA are required before author metadata are the only remaining blocker.
+- DOCX workflow run: `37391673031`
+- DOCX artifact: `11381845511`
+- DOCX digest: `sha256:5a679d1fbc69d3cb81f226d2b84e1d10834f64e7e40a706f2b403bebb549dd42`
+- rendered Main Document: **29 pages**
+- figure workflow run: `37391673074`
+- figure artifact: `11381685529`
+- figure digest: `sha256:d0801b4a25440a782f8f04101a4707f6976653f2bc62635f238450206cb42451`
+- Appendix S1 workflow run: `37391672322`
+- Appendix artifact: `11381457683`
+- Appendix digest: `sha256:6451ec8aaa0590a37cbc281cf06438e7f3e279ab4f7634db981fab64890596ca`
+- rendered Appendix S1: **9 pages**
 
+Older DOCX, figure and Appendix artifacts remain provenance only.
 
 ## AI disclosure status
 
@@ -100,4 +110,6 @@ OpenAI ChatGPT use is disclosed in the applicable Methods section, in Acknowledg
 
 ## Initial-upload blocker
 
-The scientific endpoints are complete, but the upload package is no longer current after the 2026-10-05 interpretive revision. **Initial upload is blocked by required regeneration/QA of the revised manuscript and figures, plus author-controlled metadata.**
+Scientific endpoints are closed, but the corrected Palmer sampling-unit wording requires regeneration and visual/page-count QA. **Current blockers are corrected-package QA plus author-controlled metadata**, followed by regeneration of the author-complete Main Document and Appendix S1 and inspection of the ScholarOne proof.
+
+SMP PR #177 and guillemot PR #178 are independent follow-up projects and are not conditions for this submission.

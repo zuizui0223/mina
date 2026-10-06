@@ -2,11 +2,18 @@ name: ecology-article-cross-scale-docx-preview
 
 on:
   push:
-    branches: [analysis/mapppd-regional-concentration-v1]
+    branches: [analysis/mapppd-regional-concentration-v1, revision/paper1-regional-trend-boundary-v1, submission/one-paper-penguin-spatial-state-v1]
     paths:
       - "scripts/build_ecology_cross_scale_submission_docx.py"
       - "submission/ECOLOGY_METADATA_TEMPLATE.json"
       - "src/mina/ecosphere_submission_metadata.py"
+      - "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
+      - "submission/FIGURE_CAPTIONS_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
+      - "docs/REFERENCES_V6.bib"
+      - ".github/workflows/ecology-article-cross-scale-docx-preview.yml"
+  pull_request:
+    paths:
+      - "scripts/build_ecology_cross_scale_submission_docx.py"
       - "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
       - "submission/FIGURE_CAPTIONS_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
       - "docs/REFERENCES_V6.bib"
@@ -91,7 +98,7 @@ jobs:
           assert "Article" in text
           assert "Example Author" in text
           assert "[AUTHOR" not in text
-          assert "Regional breeding-site networks retained the same concentration direction" in text
+          assert "Regional concentration was not unique to declining networks" in text
           assert "Figure 1." in text and "Figure 2." in text and "Figure 3." in text
           assert "Figure S1. The same concentration endpoint arose through different nominal component-level routes" not in text
           assert "Conflict of Interest Statement" in text

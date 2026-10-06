@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 GATE = ROOT / "submission" / "ECOLOGY_ARTICLE_CROSS_SCALE_FINAL_GATE_V0_1.json"
 ARTICLE = ROOT / "contracts" / "ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
@@ -14,72 +13,63 @@ def load(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def test_scientific_and_canonical_gate_never_reopens():
+def test_science_closed_and_current_package_rebuilt():
     gate = load(GATE)
-    statuses = gate["statuses"]
-    assert statuses["scientific_analysis"] == "PASS_CLOSED"
-    assert statuses["claim_boundary"] == "PASS"
-    assert statuses["reproducibility_receipts"] == "PASS"
-    assert statuses["canonical_package_uniqueness"] == "PASS"
-    assert statuses["ai_disclosure"] == "PASS_METHODS_ACKNOWLEDGMENTS_AND_SUBMISSION_COPY"
-    assert statuses["data_provider_acknowledgments"] == "PASS"
-
-
-def test_packaging_gate_state_is_internally_consistent():
-    gate = load(GATE)
-    statuses = gate["statuses"]
-
-    allowed_doc = {
-        "PASS_24_OF_24_PAGES",
-        "PENDING_REQA_AFTER_APPENDIX_REFERENCES",
-    }
-    allowed_fig = {
-        "PASS_3_OF_3",
-        "PENDING_ECOLOGY_PUBLICATION_SIZE_RERENDER",
-    }
-    allowed_pages = {
-        "PASS_27_OF_30",
-        "PENDING_AFTER_PUBLICATION_SIZE_FIGURES",
-    }
-    allowed_si = {
-        "PASS",
-        "PENDING_BUILD_AND_VISUAL_QA",
-    }
-
-    assert statuses["main_document_visual_qa"] in allowed_doc
-    assert statuses["main_figure_visual_qa"] in allowed_fig
-    assert statuses["generated_manuscript_page_limit"] in allowed_pages
-    assert statuses.get("supporting_information_pdf", "PENDING_BUILD_AND_VISUAL_QA") in allowed_si
-
-    all_packaging_pass = (
-        statuses["main_document_visual_qa"] == "PASS_24_OF_24_PAGES"
-        and statuses["main_figure_visual_qa"] == "PASS_3_OF_3"
-        and statuses["generated_manuscript_page_limit"] == "PASS_27_OF_30"
-        and statuses.get("supporting_information_pdf") == "PASS"
+    s = gate["statuses"]
+    assert s["scientific_analysis"] == "PASS_ENDPOINTS_CLOSED_SOURCE_PROVENANCE_WORDING_CORRECTED"
+    assert s["claim_boundary"] == "PASS_REVISED_FOR_SAMPLE_COLONY_SCOPE_AND_INCREASING_NETWORKS"
+    assert s["repository_ci"] == "PENDING_AFTER_SOURCE_PROVENANCE_CORRECTION"
+    assert s["main_document_generation"] == "PENDING_REGENERATION_AFTER_SOURCE_PROVENANCE_CORRECTION"
+    assert s["main_document_visual_qa"] == "PENDING_NEW_RENDER"
+    assert s["main_figure_visual_qa"] == "PASS_ALL_THREE_MAIN_FIGURES"
+    assert s["supporting_information_pdf"] == "PENDING_REGENERATION_AND_VISUAL_QA"
+    assert s["generated_manuscript_page_limit"] == "PENDING_NEW_RENDER_PAGE_COUNT"
+    assert (
+        s["final_upload_readiness"]
+        == "BLOCKED_BY_AUTHOR_METADATA_AND_POST_CORRECTION_REGENERATION_QA"
     )
 
-    if all_packaging_pass:
-        assert statuses["final_upload_readiness"] == "BLOCKED_ONLY_BY_AUTHOR_METADATA"
-    else:
-        assert statuses["final_upload_readiness"] == "BLOCKED_BY_PACKAGING_QA_AND_AUTHOR_METADATA"
 
-    assert gate["unresolved_human_fields"]
-    assert gate["optional_post_initial_submission_field"] == ["permanent archive DOI"]
+def test_current_artifact_provenance_is_well_formed():
+    gate = load(GATE)
+    artifacts = gate["canonical_artifacts"]
+    docx = artifacts["placeholder_docx"]
+    figs = artifacts["main_figures"]
+    si = artifacts["appendix_s1"]
+
+    assert docx["workflow_run_id"] == 37391673031
+    assert docx["artifact_id"] == 11381845511
+    assert docx["rendered_pages"] == 29
+    assert str(docx["digest"]).startswith("sha256:")
+    assert "SUPERSEDED" in docx["status"]
+
+    assert figs["workflow_run_id"] == 37391673074
+    assert figs["artifact_id"] == 11381685529
+    assert figs["count"] == 3
+    assert str(figs["digest"]).startswith("sha256:")
+
+    assert si["workflow_run_id"] == 37391672322
+    assert si["artifact_id"] == 11381457683
+    assert si["rendered_pages"] == 9
+    assert str(si["digest"]).startswith("sha256:")
+    assert "SUPERSEDED" in si["status"]
+
+    assert artifacts["rendered_main_document_pages"] == 29
+    assert artifacts["separate_main_figure_pages"] == 3
+    assert artifacts["complete_article_pages"] == 32
+    assert artifacts["ecology_standard_article_page_limit"] == 30
+    assert artifacts["overlength_justification_present"] is True
 
 
-def test_final_gate_points_to_canonical_article():
+def test_final_gate_points_to_current_ecology_article():
     gate = load(GATE)
     article = load(ARTICLE)
     resolution = load(RESOLUTION)
-    assert gate["canonical_contract"] == "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
-    assert article["status"] == "canonical_initial_submission_packaging_scientific_analysis_closed"
+
+    assert (
+        gate["canonical_contract"]
+        == "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
+    )
+    assert article["status"] == "canonical_package_source_provenance_corrected_rebuild_pending"
     assert resolution["canonical_initial_submission"]["submission_type"] == "Article"
-
-
-def test_docx_artifact_record_is_well_formed_when_present():
-    gate = load(GATE)
-    docx = gate["canonical_artifacts"]["placeholder_docx"]
-    assert isinstance(docx["workflow_run_id"], int)
-    assert isinstance(docx["artifact_id"], int)
-    assert str(docx["digest"]).startswith("sha256:")
-    assert docx["pages"] >= 1
+    assert gate["unresolved_human_fields"]

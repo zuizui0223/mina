@@ -27,9 +27,9 @@ def test_ecology_article_limits_and_labels():
     abstract = _abstract(text)
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
-    assert len(title) == 77
+    assert len(title) == 83
     assert len(title) <= 120
-    assert len(abstract.split()) == 256
+    assert len(abstract.split()) == 259
     assert len(abstract.split()) <= 350
     assert contract["submission_type"] == "Article"
     assert "**Ecology Article candidate" in text
@@ -59,8 +59,8 @@ def test_cover_letter_matches_article_and_claim_boundary():
     text = COVER.read_text(encoding="utf-8")
     assert "for publication as an **Article** in *Ecology*" in text
     assert "Report format" not in text
-    assert "MAPPPD provides the cross-scale transfer test" in text
-    assert "do not claim a universal scaling exponent" in text
+    assert "not uniquely associated with decline" in text
+    assert "we do not claim hysteresis or a trend-independent law" in text
 
 
 def test_open_research_not_duplicated_in_manuscript_body():
@@ -85,16 +85,23 @@ def test_all_main_figures_are_cited_in_order():
     assert "Appendix S1: Figure S1" in text
 
 
-def test_cited_article_references_have_complete_dois():
+def test_cited_references_have_complete_type_appropriate_metadata():
     text = MANUSCRIPT.read_text(encoding="utf-8")
     bib = BIB.read_text(encoding="utf-8")
     cited = set(re.findall(r"@([A-Za-z0-9_:-]+)", text))
     for key in sorted(cited):
         m = re.search(
-            rf"@article\{{{re.escape(key)},([\s\S]*?)\n\}}",
+            rf"@([A-Za-z]+)\{{{re.escape(key)},([\s\S]*?)\n\}}",
             bib,
         )
-        assert m, f"cited reference is not a complete article entry: {key}"
-        body = m.group(1)
-        for field in ("author", "title", "journal", "year", "volume", "pages", "doi"):
+        assert m, f"cited reference missing from bibliography: {key}"
+        entry_type = m.group(1).lower()
+        body = m.group(2)
+        if entry_type == "article":
+            fields = ("author", "title", "journal", "year", "volume", "pages", "doi")
+        elif entry_type == "techreport":
+            fields = ("author", "title", "institution", "year", "url")
+        else:
+            fields = ("author", "title", "year")
+        for field in fields:
             assert re.search(rf"\n\s*{field}\s*=", body, flags=re.I), (key, field)

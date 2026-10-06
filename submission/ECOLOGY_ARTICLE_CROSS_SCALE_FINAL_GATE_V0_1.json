@@ -1,45 +1,56 @@
 {
   "schema_version": 1,
   "gate_id": "mina-ecology-article-cross-scale-final-gate-v0-1",
-  "date": "2026-10-05",
+  "date": "2026-10-06",
   "canonical_target": "Ecology — Article",
   "canonical_resolution": "contracts/ECOLOGY_CROSS_SCALE_CANONICAL_TARGET_V1.json",
   "canonical_contract": "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json",
   "statuses": {
-    "scientific_analysis": "PASS_ENDPOINTS_CLOSED_INTERPRETATION_REVISED",
-    "claim_boundary": "PASS_REVISED_FOR_INCREASING_NETWORKS",
+    "scientific_analysis": "PASS_ENDPOINTS_CLOSED_SOURCE_PROVENANCE_WORDING_CORRECTED",
+    "claim_boundary": "PASS_REVISED_FOR_SAMPLE_COLONY_SCOPE_AND_INCREASING_NETWORKS",
     "literature_citation_keys": "PASS",
     "reproducibility_receipts": "PASS",
-    "repository_ci": "PENDING_CURRENT_HEAD_FOCUSED_CHECK",
-    "main_document_generation": "REQUIRED_REGEN_AFTER_2026_10_05_SCIENTIFIC_REVISION",
-    "main_document_visual_qa": "REQUIRED_REQA_AFTER_2026_10_05_SCIENTIFIC_REVISION",
-    "main_figure_visual_qa": "REQUIRED_REDESIGN_OR_CONFIRMATION_FOR_REVISED_REGIONAL_STORY",
-    "generated_manuscript_page_limit": "PENDING_REGENERATED_PACKAGE",
+    "repository_ci": "PENDING_AFTER_SOURCE_PROVENANCE_CORRECTION",
+    "main_document_generation": "PENDING_REGENERATION_AFTER_SOURCE_PROVENANCE_CORRECTION",
+    "main_document_visual_qa": "PENDING_NEW_RENDER",
+    "main_figure_visual_qa": "PASS_ALL_THREE_MAIN_FIGURES",
+    "generated_manuscript_page_limit": "PENDING_NEW_RENDER_PAGE_COUNT",
     "canonical_package_uniqueness": "PASS",
     "author_controlled_metadata": "BLOCKED_PENDING_HUMAN_CONFIRMATION",
-    "final_upload_readiness": "BLOCKED_OLD_ARTIFACTS_SUPERSEDED_PLUS_AUTHOR_METADATA",
+    "final_upload_readiness": "BLOCKED_BY_AUTHOR_METADATA_AND_POST_CORRECTION_REGENERATION_QA",
     "ai_disclosure": "PASS_METHODS_ACKNOWLEDGMENTS_AND_SUBMISSION_COPY",
     "data_provider_acknowledgments": "PASS",
-    "supporting_information_pdf": "PENDING_BUILD_AND_VISUAL_QA"
+    "supporting_information_pdf": "PENDING_REGENERATION_AND_VISUAL_QA"
   },
   "canonical_artifacts": {
     "placeholder_docx": {
-      "workflow_run_id": 37117211288,
-      "artifact_id": 11271907803,
-      "digest": "sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b",
-      "head_sha": "7af330c02422678d8d3c95c7cbaf165368f4a6c0",
-      "pages": 24,
-      "status": "SUPERSEDED_DO_NOT_UPLOAD"
+      "workflow_run_id": 37391673031,
+      "artifact_id": 11381845511,
+      "digest": "sha256:5a679d1fbc69d3cb81f226d2b84e1d10834f64e7e40a706f2b403bebb549dd42",
+      "head_sha": "8855d01dd01d6daf5fb6e7ed7c7dd0c35a45ba0c",
+      "rendered_pages": 29,
+      "status": "SUPERSEDED_BY_SOURCE_PROVENANCE_CORRECTION_PENDING_REBUILD"
     },
     "main_figures": {
-      "workflow_run_id": 37106154408,
-      "artifact_id": 11267687698,
-      "digest": "sha256:c00314e70b631d024d407429a0947f1f7e6e749a1945fcd58833e1fea1585f19",
+      "workflow_run_id": 37391673074,
+      "artifact_id": 11381685529,
+      "digest": "sha256:d0801b4a25440a782f8f04101a4707f6976653f2bc62635f238450206cb42451",
       "count": 3,
-      "status": "SUPERSEDED_PENDING_REVISED_STORY_FIGURE_QA"
+      "status": "VISUAL_QA_PASS"
     },
-    "expected_generated_manuscript_pages": 27,
-    "ecology_article_page_limit": 30
+    "ecology_article_page_limit": 30,
+    "appendix_s1": {
+      "workflow_run_id": 37391672322,
+      "artifact_id": 11381457683,
+      "digest": "sha256:6451ec8aaa0590a37cbc281cf06438e7f3e279ab4f7634db981fab64890596ca",
+      "rendered_pages": 9,
+      "status": "SUPERSEDED_BY_SOURCE_PROVENANCE_CORRECTION_PENDING_REBUILD"
+    },
+    "rendered_main_document_pages": 29,
+    "separate_main_figure_pages": 3,
+    "complete_article_pages": 32,
+    "ecology_standard_article_page_limit": 30,
+    "overlength_justification_present": true
   },
   "unresolved_human_fields": [
     "final author list and order",
@@ -56,6 +67,6 @@
   "optional_post_initial_submission_field": [
     "permanent archive DOI"
   ],
-  "next_action": "Regenerate the Ecology Article manuscript from the revised 2026-10-05 scientific text, ensure the increasing regional networks are visible in the main regional figure/story, rerender and visually QA the DOCX/figures/Appendix, recheck page limit, then complete author-controlled metadata.",
-  "stop_rule": "No new MAPPPD ecological endpoint is authorized. Packaging work must reflect the revised interpretation; SMP symmetry testing remains a separate prospective project."
+  "next_action": "Regenerate the corrected Main Document and Appendix S1, rerun structural/visual/page-count QA, then obtain final author-controlled metadata and regenerate author-complete files. No ecological endpoint changes are authorized.",
+  "stop_rule": "No numerical endpoint, null family, p-value, roster, or regional definition is changed by the Palmer source-provenance correction. Palmer inference is limited to the frozen sample-colony monitoring panel. SMP PR #177 and guillemot PR #178 remain independent follow-up projects."
 }

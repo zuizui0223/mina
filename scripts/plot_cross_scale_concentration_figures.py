@@ -122,7 +122,7 @@ def figure2_scale_transfer(
         axes[1].scatter([delta], [yi], marker=marker, s=size, color="C0")
         axes[1].plot([0.0, delta], [yi, yi], lw=1.0, color="C0")
         if delta > 0.35:
-            x_text = delta - 0.018
+            x_text = axes[1].get_xlim()[1] - 0.015
             ha = "right"
         else:
             x_text = delta + 0.012

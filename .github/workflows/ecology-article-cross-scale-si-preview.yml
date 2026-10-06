@@ -2,7 +2,7 @@ name: ecology-article-cross-scale-si-preview
 
 on:
   push:
-    branches: [analysis/mapppd-regional-concentration-v1]
+    branches: [analysis/mapppd-regional-concentration-v1, revision/paper1-regional-trend-boundary-v1, submission/one-paper-penguin-spatial-state-v1]
     paths:
       - "scripts/build_ecology_cross_scale_si.py"
       - "submission/SUPPLEMENT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
@@ -11,6 +11,11 @@ on:
       - "src/mina/ecosphere_submission_metadata.py"
       - "scripts/plot_replicated_concentration_figures.py"
       - "data/figure_data/replicated_concentration_v1/**"
+      - ".github/workflows/ecology-article-cross-scale-si-preview.yml"
+  pull_request:
+    paths:
+      - "submission/SUPPLEMENT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
+      - "submission/SUPPLEMENTARY_FIGURE_CAPTION_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md"
       - ".github/workflows/ecology-article-cross-scale-si-preview.yml"
   workflow_dispatch:
 
@@ -110,7 +115,7 @@ jobs:
           for token in [
               "Appendix S1",
               "Example Author",
-              "Breeding-space contraction recurs across spatial scales in Antarctic penguins",
+              "Breeding-component concentration recurs across spatial scales in Antarctic penguins",
               "Ecology",
               "Table S1",
               "Equation S1",

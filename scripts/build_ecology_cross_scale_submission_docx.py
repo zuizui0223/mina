@@ -33,7 +33,8 @@ KEYWORDS = (
 
 OPEN_RESEARCH = (
     "The Palmer Station Antarctica Long Term Ecological Research Adélie "
-    "penguin census is publicly available at DOI "
+    "sample-colony monitoring table used here (EDI revision knb-lter-pal.87.7) "
+    "is publicly represented by DOI "
     "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e. The Signy Island "
     "Adélie penguin data are publicly available at DOI "
     "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d, and the Signy Island "

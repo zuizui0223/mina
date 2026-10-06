@@ -1,59 +1,56 @@
 {
   "schema_version": 1,
   "receipt_id": "mina-ecology-article-cross-scale-docx-qa-v0-1",
-  "date": "2026-10-05",
-  "status": "SUPERSEDED_BY_2026_10_05_SCIENTIFIC_TEXT_REVISION_DO_NOT_USE_FOR_UPLOAD",
+  "date": "2026-10-06",
+  "status": "SOURCE_PROVENANCE_CORRECTION_REBUILD_PENDING",
   "journal": "Ecology",
   "submission_type": "Article",
   "source_manuscript": "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
   "builder": "scripts/build_ecology_cross_scale_submission_docx.py",
-  "workflow": {
-    "run_id": 37117211288,
-    "head_sha": "7af330c02422678d8d3c95c7cbaf165368f4a6c0",
-    "artifact_id": 11271907803,
-    "artifact_digest": "sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b",
-    "conclusion": "success",
-    "provenance_role": "prior_manuscript_state_only"
+  "current_workflow": {
+    "run_id": 37391673031,
+    "head_sha": "8855d01dd01d6daf5fb6e7ed7c7dd0c35a45ba0c",
+    "artifact_id": 11381845511,
+    "artifact_digest": "sha256:5a679d1fbc69d3cb81f226d2b84e1d10834f64e7e40a706f2b403bebb549dd42",
+    "conclusion": "superseded",
+    "structural_docx_audit": "SUPERSEDED_PENDING_REBUILD",
+    "final_visual_qa": "SUPERSEDED_PENDING_REBUILD"
+  },
+  "current_figures": {
+    "run_id": 37391673074,
+    "artifact_id": 11381685529,
+    "artifact_digest": "sha256:d0801b4a25440a782f8f04101a4707f6976653f2bc62635f238450206cb42451",
+    "ecology_dimension_audit": "PASS",
+    "final_visual_qa": "PASS"
+  },
+  "current_appendix": {
+    "run_id": 37391672322,
+    "artifact_id": 11381457683,
+    "artifact_digest": "sha256:6451ec8aaa0590a37cbc281cf06438e7f3e279ab4f7634db981fab64890596ca",
+    "build_and_structural_audit": "SUPERSEDED_PENDING_REBUILD",
+    "final_visual_qa": "SUPERSEDED_PENDING_REBUILD",
+    "rendered_pages": 9,
+    "blank_page_removed": true
   },
   "rendered_preview": {
-    "page_count": 24,
-    "ecology_article_page_limit": 30,
-    "within_page_limit": true,
-    "line_numbers_after_title_page": true,
-    "equations_rendered_as_word_math": true,
-    "main_figure_captions_in_main_document": 3,
-    "supplementary_caption_excluded_from_main_document": true,
-    "references_rendered": true,
-    "visual_qa": "PASS_24_OF_24_CURRENT_PAGES",
-    "qa_method": "Current canonical DOCX rendered to 24 page images. Pages affected by the final Methods AI disclosure and data-provider acknowledgment were re-inspected after regeneration; all current pages are covered by full-page visual QA.",
-    "expected_total_submission_pages_with_three_separate_main_figures": 27,
-    "within_30_page_limit_after_separate_figures": true,
-    "page_count_note": "The 24-page Main Document contains title page, abstract/text, references and figure captions. Ecology counts separately uploaded figure pages toward the manuscript limit; three one-page main figures yield an expected 27-page generated manuscript, excluding Supporting Information.",
-    "figure_caption_equations_removed": true,
-    "main_figure_visual_qa": {
-      "figure_artifact_run_id": 37106154408,
-      "figure_artifact_id": 11267687698,
-      "figure_artifact_digest": "sha256:c00314e70b631d024d407429a0947f1f7e6e749a1945fcd58833e1fea1585f19",
-      "main_figures_checked": [
-        "figure1_replicated_trajectories.pdf",
-        "figure2_cross_scale_transfer.pdf",
-        "figure3_regional_endpoint_context.pdf"
-      ],
-      "result": "pass"
-    },
+    "page_count": 29,
+    "separate_main_figure_pages": 3,
+    "complete_article_page_count": 32,
+    "ecology_standard_article_page_limit": 30,
+    "pages_over_standard_limit": 2,
+    "overlength_cover_letter_justification": "PASS_TWO_NUMBERED_JUSTIFICATIONS",
+    "final_visual_qa": "SUPERSEDED_PENDING_NEW_RENDER",
+    "page_limit_status": "PENDING_NEW_RENDER_PAGE_COUNT",
     "current_for_submission": false,
-    "supersession_reason": "Title, Abstract, regional Results/Discussion and Conclusion were revised to incorporate concentration in increasing MAPPPD networks as a central interpretation boundary."
+    "reason_not_current_for_submission": "Palmer source-provenance wording was corrected after this render; corrected Main Document and Appendix must be regenerated and rechecked. Author-controlled metadata also remain unresolved."
   },
-  "resolved_layout_issues": [
-    "Report label replaced with Article on title page",
-    "Supplementary Figure S1 caption separated from the Main Document",
-    "Pandoc math parsing enabled so manuscript equations render as Word equations",
-    "Figure-caption formulas replaced with robust plain-text notation",
-    "Regional null notation simplified to avoid typographic spacing artifacts",
-    "AI-use disclosure added to the applicable Methods section as well as Acknowledgments",
-    "Palmer LTER, BAS/NERC UK Polar Data Centre, and APBP contributors acknowledged in the generated Main Document",
-    "Ecology figure captions contain no equations"
-  ],
+  "superseded_prior_artifact": {
+    "workflow_run_id": 37117211288,
+    "artifact_id": 11271907803,
+    "digest": "sha256:310d1eb394dda79cb4d3d0552edd40f70f68f97a4598fbd41ffae6552833364b",
+    "prior_pages": 24,
+    "reason": "Superseded by the 2026-10-05 regional trend-boundary and one-paper theory revision."
+  },
   "unresolved_author_controlled_fields": [
     "author list and order",
     "affiliations and present addresses",
@@ -66,7 +63,7 @@
     "overlap/dual-publication statement",
     "ORCID IDs if requested"
   ],
-  "boundary": "This receipt remains provenance for the pre-revision Ecology Article preview only. It does not verify the current manuscript text and must not be used to authorize upload. Regenerate through the same builder and repeat complete visual QA after the revised regional story and figures are finalized.",
+  "boundary": "Numerical ecological endpoints are unchanged. Prior visual/layout QA is superseded only because Palmer observational-unit wording was corrected from island-population totals to fixed sample-colony monitoring networks. Corrected files require fresh QA before upload.",
   "optional_post_initial_submission_fields": [
     "permanent archive DOI"
   ]

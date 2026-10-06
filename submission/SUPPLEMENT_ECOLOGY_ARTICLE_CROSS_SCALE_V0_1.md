@@ -2,7 +2,7 @@
 
 **Authors:** [SAME AUTHOR LIST AS MAIN MANUSCRIPT]
 
-**Manuscript title:** Breeding-space contraction recurs across spatial scales in Antarctic penguins
+**Manuscript title:** Breeding-component concentration recurs across spatial scales in Antarctic penguins
 
 **Journal:** Ecology
 
@@ -20,9 +20,9 @@ The manuscript combines analyses with different inferential status.
 | Signy Adélie concentration | prospectively frozen after Palmer discovery | independent geographic replication |
 | Signy chinstrap concentration | separately prospectively frozen | cross-species replication |
 | Five-trajectory abundance–E scaling | bounded post-hoc exploration, now closed | describes timescale and candidate scaling only |
-| MAPPPD regional concentration | bounded existing-data extension; regional contract frozen before regional concentration outcomes | tests whether the direction transfers one spatial level upward |
+| MAPPPD regional concentration | bounded existing-data extension; regional contract frozen before regional concentration outcomes | declining subset tests abundance-linked recurrence; increasing subset constrains a decline-specific interpretation |
 | Dominance-route decomposition | post-hoc descriptive | constrains mechanism; no p-values |
-| Increasing MAPPPD networks | descriptive context | evaluates qualitative consistency with a slow-state interpretation; not a hysteresis test |
+| Increasing MAPPPD networks | descriptive outcome with no frozen trend-asymmetry test | main interpretive boundary showing that lower E is not restricted to declining abundance trajectories |
 
 No p-values are pooled across these evidence layers.
 
@@ -42,7 +42,7 @@ The metric is the inverse-Simpson effective number of monitored breeding compone
 
 Component meanings differ among data sets:
 
-- Palmer: stable colony-code census units within island breeding systems.
+- Palmer: stable colony-code units from the historical fixed sample-colony monitoring panel within each focal island.
 - Signy: frozen monitored breeding colonies or canonical monitoring units.
 - MAPPPD: repeatedly monitored breeding sites within published APBP regions.
 
@@ -50,7 +50,7 @@ The manuscript therefore uses “effective monitored breeding components” unle
 
 ## Section S3: Palmer fixed-composition inference
 
-The primary Palmer analysis is restricted to Cormorant, Humble and Litchfield, the three synchronized Adélie island populations with unchanged reported colony-code rosters.
+The primary Palmer analysis is restricted to Cormorant, Humble and Litchfield, the three synchronized island-based Adélie sample-colony monitoring networks with unchanged reported colony-code rosters.
 
 Observed first-to-last change in E:
 
@@ -62,7 +62,7 @@ Observed first-to-last change in E:
 | Humble | 4.625 | 2.285 | −50.6% | −0.08550 | 0.000010 |
 | Litchfield | 5.783 | 1.000 | −82.7% | −0.36808 | 0.000010 |
 
-The null fixes one time-invariant cumulative component-share vector within each island, imposes each empirical island-total abundance trajectory, and adds Poisson or Gamma–Poisson count error. The severe 20%-CV sensitivity is deliberately stylized and is not an empirical estimate of observer error.
+The null fixes one time-invariant cumulative component-share vector within each focal monitoring network, imposes its empirical summed monitored-component abundance trajectory, and adds Poisson or Gamma–Poisson count error. The severe 20%-CV sensitivity is deliberately stylized and is not an empirical estimate of observer error.
 
 No simulated replicate among 100,000 was simultaneously as negative as all three observed slopes under CV20 (plus-one joint p = 0.000010).
 
@@ -92,7 +92,7 @@ Stable-roster breeding pairs declined from 1,642 to 581. E declined from 4.438 t
 
 ## Section S5: Closed five-trajectory scaling exploration
 
-The five local population trajectories gave annual log–log abundance–E elasticities:
+The five local monitored breeding-system trajectories gave annual log–log abundance–E elasticities:
 
 **Table S3. Post-hoc local abundance–E elasticities.**
 
@@ -112,7 +112,7 @@ This value is not used as a universal prediction. The same bounded search showed
 - first differences: κ = 0.120, R2 = 0.071;
 - no frozen 50%, 25% or 10% abundance hinge improved held-out prediction over a single log-linear relation;
 - the formal transition-ratchet criterion failed;
-- no tested predictor among initial E, component count, initial evenness or decline depth improved leave-one-population-out prediction of population-specific κ over an intercept-only baseline.
+- no tested predictor among initial E, component count, initial evenness or decline depth improved leave-one-population-out prediction of trajectory-specific κ over an intercept-only baseline.
 
 The search is closed.
 
@@ -170,13 +170,13 @@ The Central-west Antarctic Peninsula retained rosters include BISC (Biscoe Point
 
 All three eligible increasing networks ended with lower E than in their first retained complete season (Table S5): Adélie — Victoria Land, abundance +33.1% and E −26.6%; Gentoo — Central-west Antarctic Peninsula, abundance +21.8% and E −16.3%; and Gentoo — South Shetland Islands, abundance +64.1% and E −1.1%.
 
-These observations are qualitatively compatible with spatial structure changing more slowly than abundance, but no regional ratchet or hysteresis endpoint was frozen before these outcomes were inspected. They therefore remain descriptive.
+These observations are a main interpretive boundary on the regional decline-specific narrative: lower regional E is not restricted to declining abundance trajectories in the eligible panels. Their inferential status remains descriptive because no regional time-slope, decline-versus-increase asymmetry, ratchet or hysteresis endpoint was frozen before these outcomes were inspected.
 
 ## Section S9: Component-level route boundary
 
 A post-hoc descriptive decomposition shows that the same decrease in E can arise through contrasting component histories.
 
-At Palmer, the initially dominant colony-code unit had zero breeding pairs by the final eligible census in all three populations, and another component became dominant.
+At Palmer, the initially dominant monitored colony-code unit had zero breeding pairs by the final eligible census in all three sample-colony networks, and another component became dominant.
 
 At Signy, the initially dominant unit remained dominant and increased its share:
 
@@ -189,7 +189,7 @@ This contrast rules out a universal interpretation in which concentration necess
 
 Supported scope:
 
-> Cross-scale directional recurrence of abundance-conditioned breeding-space concentration within Antarctic Pygoscelis.
+> Replicated non-proportional concentration during decline within Palmer/Signy monitored breeding systems, with a regional boundary showing that effective breeding-site concentration is not restricted to declining abundance trajectories.
 
 Not supported:
 
