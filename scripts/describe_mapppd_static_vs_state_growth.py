@@ -29,17 +29,17 @@ def desc_rank(values, descending=True):
 
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument("--intensification-json",required=True,type=Path)
+    ap.add_argument("--site-changes-csv",required=True,type=Path)
     ap.add_argument("--traits-csv",required=True,type=Path)
     ap.add_argument("--out-json",required=True,type=Path)
     a=ap.parse_args()
 
-    exposed=json.loads(a.intensification_json.read_text(encoding="utf-8"))
+    changes=pd.read_csv(a.site_changes_csv)
     traits=pd.read_csv(a.traits_csv)
     panels=[]
 
-    for p in exposed["panels"]:
-        df=pd.DataFrame(p["sites"]).merge(traits,on="site_id",how="left",validate="one_to_one")
+    for (species_id, region), local in changes.groupby(["species_id","region"],sort=True):
+        df=local.merge(traits,on="site_id",how="left",validate="one_to_one")
         if df["mapped_ice_free_area_ha_2000m"].isna().any():
             raise ValueError("missing frozen static trait")
 
@@ -88,8 +88,8 @@ def main():
             })
 
         panels.append({
-            "species_id":p["species_id"],
-            "region":p["region"],
+            "species_id":str(species_id),
+            "region":str(region),
             "n_sites":int(len(df)),
             "rho_delta_share_vs_initial_share":rho_state,
             "rho_delta_share_vs_log1p_ice_free_area":rho_area,
