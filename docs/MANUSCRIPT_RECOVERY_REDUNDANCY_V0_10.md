@@ -1,6 +1,6 @@
 # Manuscript spine v0.10 — Near-complete rebound is not exact spatial reversal
 
-**Status:** preferred state/allocation manuscript spine after calibrating the Ross mismatch against other down→up episodes. Mechanism routes remain separate and prospective.
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_11.md` after the prospective Signy Chinstrap ratio-free mechanism test failed.
 
 ## Working title
 
