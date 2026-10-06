@@ -11,8 +11,9 @@ from pathlib import Path
 from urllib.parse import urljoin
 
 PAGES = {
-    "occupancy": "https://data.aad.gov.au/metadata/records/AAS_4088_Adelie_Occupancy",
-    "potential_habitat": "https://data.aad.gov.au/metadata/records/AAS_4088_Adelie_Potential_Habitats",
+    "occupancy_2025": "https://data.aad.gov.au/metadata/records/AAS_4518_Seabird_Breeding_Occupancy",
+    "occupancy_2016": "https://data.aad.gov.au/metadata/records/AAS_4088_Adelie_Occupancy",
+    "spatial_reference_legacy_alias": "https://data.aad.gov.au/metadata/records/AAS_4088_Adelie_Potential_Habitats",
     "plos_article": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0139877",
 }
 PLOS_S1 = "https://journals.plos.org/plosone/article/file?type=supplementary&id=info:doi/10.1371/journal.pone.0139877.s001"
@@ -72,8 +73,9 @@ def main() -> int:
             "download_accessible":len(s1_raw)>0,
         },
         "gate":{
-            "occupancy_direct_link_found":bool(all_links["occupancy"]),
-            "potential_habitat_direct_link_found":bool(all_links["potential_habitat"]),
+            "occupancy_2025_direct_link_found":bool(all_links["occupancy_2025"]),
+            "occupancy_2016_direct_link_found":bool(all_links["occupancy_2016"]),
+            "legacy_spatial_alias_direct_link_found":bool(all_links["spatial_reference_legacy_alias"]),
             "plos_s1_accessible":len(s1_raw)>0,
         },
         "effect_computed":False,
