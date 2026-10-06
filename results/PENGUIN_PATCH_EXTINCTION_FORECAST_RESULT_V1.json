@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-penguin-patch-extinction-forecast-result-v1",
+  "date": "2026-10-06",
+  "status": "exploratory_already_exposed_no_inferential_p_values",
+  "source_workflow": {
+    "run_id": 37407586894,
+    "artifact_id": 11387649555,
+    "artifact_digest": "sha256:1ca42f1b50642a3ac7c89ae7537dae5db7b5c8df44cb21d7c9e1b2bd4bfb4248",
+    "head_sha": "1d7a7db73dc6ddc6522dc21d54e940d5d224e266"
+  },
+  "all_five": {
+    "eligible_transitions": 579,
+    "loss_events": 22,
+    "Msize": {
+      "z_local_size_beta": -1.9985220394211387,
+      "log_loss": 0.11596451705870096,
+      "top1_event_year_hit_fraction": 0.9333333333333333,
+      "top2_event_year_hit_fraction": 0.9333333333333333,
+      "median_loss_percentile": 1.0,
+      "event_years": 15
+    },
+    "Mtrend": {
+      "z_local_size_beta": -2.033244101692992,
+      "z_recent_growth_beta": 0.04887865910818367,
+      "log_loss": 0.13289417454677496,
+      "log_loss_improvement_vs_Msize": -0.016929657488074,
+      "top1_event_year_hit_fraction": 0.8666666666666667
+    },
+    "Mshare": {
+      "z_local_share_beta": -0.2100163897730416,
+      "log_loss": 0.1344140011506247,
+      "log_loss_improvement_vs_Msize": -0.01844948409192375,
+      "top1_event_year_hit_fraction": 0.9333333333333333
+    },
+    "Mstate": {
+      "z_recent_growth_beta": 0.03240988251643051,
+      "z_local_share_beta": -0.20140435146490757,
+      "log_loss": 0.15237734631620092,
+      "log_loss_improvement_vs_Msize": -0.03641282925749996,
+      "top1_event_year_hit_fraction": 0.8666666666666667
+    },
+    "generated_recent_decline_prediction_supported": false
+  },
+  "palmer_only": {
+    "eligible_transitions": 346,
+    "loss_events": 20,
+    "Msize_z_local_size_beta": -2.371770347592457,
+    "Msize_log_loss": 0.13641963828568957,
+    "Msize_top1_event_year_hit_fraction": 0.9230769230769231,
+    "Mtrend_z_recent_growth_beta": 0.16138755031013644,
+    "Mtrend_log_loss": 0.16374429369206375,
+    "Mtrend_top1_event_year_hit_fraction": 0.8461538461538461,
+    "generated_recent_decline_prediction_supported": false
+  },
+  "decision": {
+    "current_local_size_is_strong_short_horizon_ordering_state": true,
+    "recent_local_decline_adds_transferable_prediction": false,
+    "local_share_adds_transferable_prediction": false,
+    "next_loss_ranking_is_highly_size_ordered_in_this_dataset": true
+  },
+  "boundary": [
+    "This is an exploratory analysis on already-exposed census data; no confirmatory p-values are attached.",
+    "Small current count mechanically raises the chance of reaching an exact zero under demographic decline, so predictive strength is not by itself a novel causal mechanism.",
+    "Operational colony-code zero is not equivalent to physical habitat destruction.",
+    "The analysis does not identify what environmental or demographic process caused a component to become small."
+  ]
+}
