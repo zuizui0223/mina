@@ -1,0 +1,26 @@
+name: African penguin decline support v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/AFRICAN_PENGUIN_DECLINE_SPATIAL_REDUNDANCY_V1.md"
+      - ".github/workflows/african-penguin-decline-support-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Dryad African penguin colony counts
+        run: |
+          mkdir -p build
+          curl -L --fail --retry 5 \
+            'https://datadryad.org/stash/downloads/file_stream/718187' \
+            -o build/Afr_penguin.csv
+          file build/Afr_penguin.csv
+          ls -lh build/Afr_penguin.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: african-penguin-decline-support-v1
+          path: build/Afr_penguin.csv
