@@ -1,6 +1,6 @@
 # PR189 novelty audit v6 — after prospective Emperor test
 
-**Status:** strict positioning after Ross, Bird Island and global Emperor results.
+**Status:** superseded by `PR189_RECOVERY_NOVELTY_AUDIT_V7.md` after calibrating the Ross effect size and distinguishing sign-unlocked dynamics from statistical independence.
 
 ## Established background
 
