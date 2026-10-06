@@ -1,10 +1,10 @@
-# Manuscript spine v0.1 — Recovery is not the reverse of collapse
+# Manuscript spine v0.2 — Recovery need not retrace spatial collapse
 
 **Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_2.md` after the Ross mega-iceberg shock/rebound audit.
 
 ## Working title
 
-**Numerical recovery of breeding colonies need not restore spatial redundancy**
+**Breeding recovery need not retrace spatial collapse**
 
 Alternatives:
 
@@ -14,7 +14,7 @@ Alternatives:
 
 ## One-sentence result
 
-Across colonial penguin systems, spatial concentration in breeding abundance arose during decline through differential attrition and during numerical recovery of breeding-pair counts through differential amplification; a second recovering species showed that concentration can also follow a complete reversal of colony dominance, demonstrating that aggregate abundance, occupancy, spatial redundancy and dominant-node identity are distinct recovery dimensions.
+Across colonial penguin systems, spatial change in breeding abundance followed path-dependent demographic routes: decline concentrated through differential attrition, an externally forced Ross Island breeding shock temporarily increased evenness before an asymmetric rebound re-concentrated the system, and an independent recovering king-penguin system passed through near-evenness before reversing colony dominance. Aggregate breeding abundance therefore does not specify the spatial recovery path.
 
 ## Biological question
 
@@ -51,30 +51,41 @@ Three biological colony nodes:
 - Bird
 - Crozier.
 
-2001-2012 frozen endpoints:
+The frozen V2 period was 2001-2012 and predicted increasing E during numerical recovery. That directional prediction failed:
 
-    N +270%
-    all 3 colonies increase
-    all 6 census components increase
-    E3 -10.7%
-    E6 -14.0%.
+    2001 -> 2012 breeding-territory N: +270%
+    E3: -10.7%
+    E6: -14.0%.
 
-Most of the composition shift occurred in an early 2001-2002 pulse:
+However, post-result natural-history audit shows that 2001 was not an ordinary recovery baseline. It was the initial B-15A/C-16 mega-iceberg disturbance season, when many adults failed or abandoned breeding attempts.
 
-    breeding-pair N +115%
+The biologically informative sequence is therefore:
+
+    PRE-SHOCK 1999 -> SHOCK 2001
+    breeding N -54.3%
+    all 6 components decline
+    E3 +7.4%
+    E6 +11.5%
+    -> shock-induced equalization
+
+    SHOCK 2001 -> REBOUND 2002
+    breeding N +115.2%
+    all 6 components increase
     E3 -12.8%
     E6 -20.6%
-    Crozier share 70.8% -> 79.0%.
+    Crozier share 70.8% -> 79.0%
+    -> asymmetric breeding rebound / re-concentration
 
-After 2002, E fluctuated without a clear monotonic trend. The frozen whole-phase log(E3) slope was negative but descriptively weak (p=0.246), and a post-result 2002-start sensitivity was essentially flat.
+    2002 -> 2012
+    breeding N +72.1%
+    all 6 components increase
+    E3 +2.3%
+    E6 +8.3%
+    -> partial spatial re-expansion / stabilization.
 
-Interpretation:
+The aerial series measures occupied nesting territories / breeding abundance around incubation, not total adult population size. The 2001-2002 pulse therefore cannot be interpreted as one-year adult population growth.
 
-    early differential amplification followed by persistence of a concentrated composition.
-
-The preregistered recovery-deconcentration prediction failed, but the result must not be described as steady phase-long erosion.
-
-That failure is the main result, not something to rescue.
+The frozen V2 failure remains part of the audit trail. The corrected biological result is that the breeding rebound did **not retrace the disturbance path in reverse**.
 
 ### External species/island triangulation — Heard Island king penguins
 
@@ -166,18 +177,20 @@ Conceptual N-E plane with arrows:
 
 Do not imply these four cases exhaust all possibilities.
 
-### Figure 2 — Ross frozen test
+### Figure 2 — Ross shock and rebound
 
 Panels:
 
-A. N through time, 1985-1999 and 2001-2012.
-B. E3 through time.
-C. E6 through time.
-D. 2001 versus 2012 colony shares / proportional residuals.
+A. breeding-territory abundance through time with 1999, 2001, 2002 and 2012 highlighted.
+B. E3 and E6 through the same period.
+C. colony shares for 1999 -> 2001 -> 2002 -> 2012.
+D. proportional residuals for the 2001 -> 2002 rebound.
 
 Main visual message:
 
-    all colony breeding-pair counts increased, but Crozier gained share.
+    the iceberg shock temporarily equalized breeding distribution;
+    rebound was disproportionately concentrated at Crozier;
+    later recovery partially re-expanded redundancy.
 
 ### Figure 3 — Demographic arithmetic
 
@@ -205,12 +218,13 @@ Use as mechanism-generating contrast, not as confirmatory support for a universa
 
 ## Results order
 
-1. Differential attrition produces concentration during decline.
-2. Frozen Ross prediction fails: recovery also concentrates.
-3. Ross concentration is differential amplification despite universal local growth.
-4. The effect is present at both three-colony and six-component scales during recovery.
-5. Heard triangulation shows non-monotonic recovery and dominance reversal.
-6. Beaufort shows recovery can instead deconcentrate under habitat release.
+1. Differential attrition produces concentration during Palmer/Signy decline.
+2. Frozen Ross recovery-deconcentration prediction fails.
+3. The Ross effect is localized to a disturbance/rebound transition: iceberg shock equalizes; immediate breeding rebound re-concentrates.
+4. From 2002 to 2012 redundancy partially re-expands, ruling out a monotonic concentration law.
+5. Similar total breeding abundance occurs on different pre- and post-shock spatial branches, providing a post-result hysteresis signature.
+6. Heard triangulation shows non-monotonic recovery and dominance reversal in another penguin species.
+7. Beaufort shows that capacity release can instead accompany within-island spreading.
 
 ## Discussion opening
 
@@ -218,7 +232,7 @@ Do not open with penguin natural history.
 
 Open with:
 
-> Recovery is often evaluated from breeding-pair abundance, but spatial recovery need not reverse spatial collapse. In our focal system, breeding-pair counts increased 3.7-fold across the frozen interval and every monitored breeding unit had a higher endpoint count; an early post-disturbance pulse shifted breeding abundance disproportionately toward the dominant colony, and the system did not show the predicted spatial deconcentration.
+> Recovery is often treated as the reverse of decline, but a shared disturbance and its rebound need not trace the same spatial path. On Ross Island, an iceberg-driven breeding shock reduced every monitored breeding component while temporarily increasing evenness; the following breeding rebound increased every component but disproportionately restored abundance at the dominant Cape Crozier colony, rapidly reversing that equalization.
 
 Then immediately contrast:
 
@@ -235,7 +249,7 @@ Do not claim:
 
 Claim:
 
-> strong recovery in breeding-pair abundance can generate or maintain spatial concentration without any local decline in breeding-pair counts, and the same concentration metric can arise from opposite local count arithmetic.
+> the spatial response to a shared breeding disturbance can be asymmetric: the shock can equalize abundance among breeding nodes while the rebound re-concentrates it, even when every local breeding count rises during the rebound.
 
 With Heard:
 
@@ -338,3 +352,28 @@ At matched current breeding abundance and environment, prior fragmentation/confi
 In particular, lower perimeter-to-area ratio, lower edge exposure, and more compact breeding configuration should predict stronger recovery after controlling current B.
 
 This is the prospective test that can separate configuration-mediated memory from simple colony-size dependence.
+
+
+## Ross measurement and disturbance boundary
+
+The Ross aerial series counts adults occupying nesting territories / breeding-pair abundance near incubation. It is not a census of all adults.
+
+The source study documents stable aerial-photographic methods across the 1999-2002 transition and independently identifies 2001/02 as a mega-iceberg disturbance season with widespread breeding failure/abandonment.
+
+Therefore:
+- use "breeding abundance", "breeding-territory abundance", or "breeding-pair count";
+- do not call 2001-2002 a one-year population doubling;
+- treat the Ross sequence as disturbance -> breeding rebound, not simple demographic growth.
+
+## Revised mechanism hierarchy
+
+Established prior mechanism:
+- local Adélie subcolony configuration can exhibit Allee-like positive feedback and hysteresis through nest-site fidelity, fragmentation and edge predation.
+
+Generated cross-scale mechanism:
+- local configuration memory may bias how a region-wide breeding rebound is allocated among colonies.
+
+This generated mechanism is frozen separately in:
+`contracts/CONFIGURATION_MEMORY_ALLOCATION_HYPOTHESIS_V1.md`.
+
+The manuscript may use it as a Discussion hypothesis, not as an inferred cause of the Ross count pattern.
