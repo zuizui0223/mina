@@ -1,0 +1,22 @@
+name: Palmer 1993 island-label audit
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_palmer_1993_island_labels.py"
+      - ".github/workflows/palmer-1993-island-label-audit.yml"
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: |
+          mkdir -p build
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          python scripts/audit_palmer_1993_island_labels.py --census build/adelie_census.csv --out build/PALMER_1993_ISLAND_LABEL_AUDIT.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: palmer-1993-island-label-audit
+          path: build/PALMER_1993_ISLAND_LABEL_AUDIT.json
