@@ -1,6 +1,6 @@
 # PR189 novelty audit v4 — after prospective Bird Island result
 
-**Status:** post-result literature positioning updated after the prospective Bird Island Gentoo endpoint was opened.
+**Status:** superseded by `PR189_RECOVERY_NOVELTY_AUDIT_V5.md` after a stricter comparison with metapopulation and community-composition recovery literature.
 
 ## What changed
 
