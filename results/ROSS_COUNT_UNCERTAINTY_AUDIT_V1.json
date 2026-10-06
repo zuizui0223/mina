@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-count-uncertainty-audit-v1",
+  "date": "2026-10-06",
+  "status": "post_result_measurement_boundary",
+  "anchors_same_broad_count_workflow": true,
+  "source_specific_component_count_standard_errors_available": false,
+  "source_specific_repeated_observer_variance_available": false,
+  "formal_CI_for_inverse_path_mismatch_available": false,
+  "inverse_path_effect": {
+    "cosine_similarity": 0.9969470572957101,
+    "half_L1_reallocation_pairs": 10270.557875200906,
+    "reallocation_fraction_of_rebound": 0.09405445040386184
+  },
+  "residual_fraction_of_observed_2002_count_abs": {
+    "Cape Royds": 0.5862784999683769,
+    "Cape Bird South": 0.5095668276859461,
+    "Cape Bird Middle": 0.3947987618044876,
+    "Cape Bird North": 0.039513605017009145,
+    "Cape Crozier West": 0.06976144195055858,
+    "Cape Crozier East": 0.21102187347486837
+  },
+  "decision": {
+    "measurement_method_break_explains_2001_2002": false,
+    "effect_size_descriptively_defined": true,
+    "effect_size_statistically_separated_from_count_error": false
+  },
+  "boundary": "Do not claim the 9.41% inverse-path mismatch exceeds census uncertainty until source-specific replicate or detection-error information is available."
+}
