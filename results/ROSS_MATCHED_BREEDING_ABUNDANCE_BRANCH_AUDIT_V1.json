@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-matched-breeding-abundance-branch-audit-v1",
+  "date": "2026-10-06",
+  "status": "post_result_exploratory_not_confirmatory",
+  "pairs": [
+    {
+      "decline_year": 1997,
+      "recovery_year": 2002,
+      "decline_N": 204837,
+      "recovery_N": 203996,
+      "relative_N_difference": -0.0041057035594155,
+      "decline_E3": 1.626108777377748,
+      "recovery_E3": 1.507430677390489,
+      "recovery_vs_decline_E3_fraction": -0.0729832881023252,
+      "decline_E6": 2.170611142057758,
+      "recovery_E6": 1.819023375736499,
+      "recovery_vs_decline_E6_fraction": -0.1619762139094578,
+      "decline_crozier_share": 0.7488686126041681,
+      "recovery_crozier_share": 0.7896184238906645
+    },
+    {
+      "decline_year": 1985,
+      "recovery_year": 2004,
+      "decline_N": 224414,
+      "recovery_N": 221301,
+      "relative_N_difference": -0.0138716835848031,
+      "decline_E3": 1.625192664901886,
+      "recovery_E3": 1.4129981442683173,
+      "recovery_vs_decline_E3_fraction": -0.1305657631960695,
+      "decline_E6": 2.2902405593410786,
+      "recovery_E6": 1.8651869360696578,
+      "recovery_vs_decline_E6_fraction": -0.1855934397536442,
+      "decline_crozier_share": 0.747128075788498,
+      "recovery_crozier_share": 0.8246325140871483
+    }
+  ],
+  "additional_near_matches": [
+    {
+      "decline_year": 1987,
+      "recovery_year": 2005,
+      "relative_N_difference": 0.0493439013529495,
+      "recovery_vs_decline_E3_fraction": -0.036920234909899,
+      "recovery_vs_decline_E6_fraction": -0.158234403648551
+    },
+    {
+      "decline_year": 1987,
+      "recovery_year": 2007,
+      "relative_N_difference": 0.035421765388804,
+      "recovery_vs_decline_E3_fraction": -0.076227736166731,
+      "recovery_vs_decline_E6_fraction": -0.219266877151873
+    }
+  ],
+  "decision": {
+    "same_N_same_E_path_independence_supported": false,
+    "branch_dependence_visible": true,
+    "causal_endogenous_hysteresis_established": false
+  },
+  "interpretation": "At closely matched total breeding-pair abundance, the recovery branch is substantially more concentrated than the decline branch. This is consistent with spatial hysteresis or environmental state dependence, but the post-result comparison cannot separate those mechanisms."
+}
