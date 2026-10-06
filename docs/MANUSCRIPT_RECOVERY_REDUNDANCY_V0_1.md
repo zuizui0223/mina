@@ -2,7 +2,7 @@
 
 ## Working title
 
-**Population recovery can erode spatial redundancy without local decline**
+**Population recovery can concentrate without local decline**
 
 Alternatives:
 
@@ -49,7 +49,7 @@ Three biological colony nodes:
 - Bird
 - Crozier.
 
-2001-2012:
+2001-2012 frozen endpoints:
 
     N +270%
     all 3 colonies increase
@@ -57,11 +57,20 @@ Three biological colony nodes:
     E3 -10.7%
     E6 -14.0%.
 
+Most of the composition shift occurred in an early 2001-2002 pulse:
+
+    N +115%
+    E3 -12.8%
+    E6 -20.6%
+    Crozier share 70.8% -> 79.0%.
+
+After 2002, E fluctuated without a clear monotonic trend. The frozen whole-phase log(E3) slope was negative but descriptively weak (p=0.246), and a post-result 2002-start sensitivity was essentially flat.
+
 Interpretation:
 
-    differential amplification.
+    early differential amplification followed by persistence of a concentrated composition.
 
-The preregistered recovery-deconcentration prediction failed.
+The preregistered recovery-deconcentration prediction failed, but the result must not be described as steady phase-long erosion.
 
 That failure is the main result, not something to rescue.
 
@@ -207,7 +216,7 @@ Do not open with penguin natural history.
 
 Open with:
 
-> Population recovery is often evaluated as the reversal of numerical decline, but spatial recovery need not reverse spatial collapse. In our focal recovery system, abundance increased 3.7-fold and every monitored breeding unit grew, yet abundance-weighted spatial redundancy declined.
+> Population recovery is often evaluated as the reversal of numerical decline, but spatial recovery need not reverse spatial collapse. In our focal recovery system, abundance increased 3.7-fold and every monitored breeding unit grew; an early recovery pulse shifted abundance disproportionately toward the dominant colony, and the system did not show the predicted spatial deconcentration.
 
 Then immediately contrast:
 
@@ -224,7 +233,7 @@ Do not claim:
 
 Claim:
 
-> strong numerical recovery can lose spatial redundancy without any local decline, and the same spatial concentration metric can arise from opposite demographic processes.
+> strong numerical recovery can generate or maintain spatial concentration without any local decline, and the same concentration metric can arise from opposite demographic processes.
 
 With Heard:
 
