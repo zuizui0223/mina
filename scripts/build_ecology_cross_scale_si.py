@@ -185,7 +185,7 @@ def build(
         cap.add_run(caption_body)
 
         props = doc.core_properties
-        props.title = "Appendix S1 - Breeding-space concentration recurs across spatial scales in Antarctic penguins"
+        props.title = "Appendix S1 - Breeding-component concentration recurs across spatial scales in Antarctic penguins"
         props.subject = "Ecology Supporting Information"
         props.author = ""
         props.last_modified_by = ""
