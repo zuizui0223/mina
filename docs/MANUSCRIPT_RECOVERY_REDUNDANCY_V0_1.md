@@ -2,21 +2,21 @@
 
 ## Working title
 
-**Population recovery can concentrate without local decline**
+**Numerical recovery of breeding colonies need not restore spatial redundancy**
 
 Alternatives:
 
 - **Opposite demographic processes converge on spatial concentration in colonial penguins**
-- **Population recovery is not the spatial reverse of collapse**
+- **Breeding-population recovery is not the spatial reverse of collapse**
 - **Unequal losses and unequal gains produce the same spatial concentration**
 
 ## One-sentence result
 
-Across colonial penguin systems, spatial concentration arose during decline through differential attrition and during strong numerical recovery through differential amplification; a second recovering species showed that concentration can also follow a complete reversal of colony dominance, demonstrating that aggregate abundance, occupancy, spatial redundancy and dominant-node identity are distinct recovery dimensions.
+Across colonial penguin systems, spatial concentration in breeding abundance arose during decline through differential attrition and during numerical recovery of breeding-pair counts through differential amplification; a second recovering species showed that concentration can also follow a complete reversal of colony dominance, demonstrating that aggregate abundance, occupancy, spatial redundancy and dominant-node identity are distinct recovery dimensions.
 
 ## Biological question
 
-When a colonial population declines and later recovers, does its spatial organization retrace the same pathway in reverse?
+When breeding abundance in a colonial population declines and later recovers, does its spatial organization retrace the same pathway in reverse?
 
 The null intuition is simple:
 
@@ -59,7 +59,7 @@ Three biological colony nodes:
 
 Most of the composition shift occurred in an early 2001-2002 pulse:
 
-    N +115%
+    breeding-pair N +115%
     E3 -12.8%
     E6 -20.6%
     Crozier share 70.8% -> 79.0%.
@@ -115,7 +115,7 @@ For E = 1/sum(p_i^2),
 
     d log(E)/dt = 2(r_bar - r_D).
 
-This makes concentration a statement about the spatial allocation of local growth, not about whether the total population is increasing or decreasing.
+This makes concentration a statement about the spatial allocation of change in measured breeding abundance, not about whether total adult population size is increasing or decreasing.
 
 For finite intervals:
 
@@ -175,7 +175,7 @@ D. 2001 versus 2012 colony shares / proportional residuals.
 
 Main visual message:
 
-    all colonies grew, but Crozier gained share.
+    all colony breeding-pair counts increased, but Crozier gained share.
 
 ### Figure 3 — Demographic arithmetic
 
@@ -216,7 +216,7 @@ Do not open with penguin natural history.
 
 Open with:
 
-> Population recovery is often evaluated as the reversal of numerical decline, but spatial recovery need not reverse spatial collapse. In our focal recovery system, abundance increased 3.7-fold and every monitored breeding unit grew; an early recovery pulse shifted abundance disproportionately toward the dominant colony, and the system did not show the predicted spatial deconcentration.
+> Recovery is often evaluated from breeding-pair abundance, but spatial recovery need not reverse spatial collapse. In our focal system, breeding-pair counts increased 3.7-fold across the frozen interval and every monitored breeding unit had a higher endpoint count; an early post-disturbance pulse shifted breeding abundance disproportionately toward the dominant colony, and the system did not show the predicted spatial deconcentration.
 
 Then immediately contrast:
 
@@ -233,7 +233,7 @@ Do not claim:
 
 Claim:
 
-> strong numerical recovery can generate or maintain spatial concentration without any local decline, and the same concentration metric can arise from opposite demographic processes.
+> strong recovery in breeding-pair abundance can generate or maintain spatial concentration without any local decline in breeding-pair counts, and the same concentration metric can arise from opposite local count arithmetic.
 
 With Heard:
 
