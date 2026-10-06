@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-mapppd-intensification-descriptive-result-v1",
+  "date": "2026-10-06",
+  "status": "post_outcome_descriptive_only",
+  "source_workflow": {
+    "run_id": 37405647386,
+    "artifact_id": 11387281537,
+    "artifact_digest": "sha256:d55522bc4fff2667a1f64f7869d0921da75d71aebb28cbd451b5666c3082c459",
+    "head_sha": "4b571e60dc0ac507375ab3ec54a5e211017ca0f1"
+  },
+  "panels": [
+    {
+      "species": "ADPE",
+      "region": "Victoria Land",
+      "population_change_fraction": 0.3305439850428773,
+      "sites_increased": 8,
+      "sites_decreased": 3,
+      "initial_dominant": "CRZW",
+      "initial_dominant_share_first": 0.37209293863113474,
+      "initial_dominant_share_last": 0.48627697911419365,
+      "initial_dominant_delta_count": 106645.99999999991,
+      "initial_dominant_fraction_of_net_growth": 0.8317197814336711,
+      "initial_top_half_fraction_of_gross_positive_gain": 0.9536380394534847
+    },
+    {
+      "species": "GEPE",
+      "region": "Central-west Antarctic Peninsula",
+      "population_change_fraction": 0.21849428154711314,
+      "sites_increased": 4,
+      "sites_decreased": 3,
+      "initial_dominant": "CUVE",
+      "initial_dominant_share_first": 0.3389291355362128,
+      "initial_dominant_share_last": 0.3998859238635839,
+      "initial_dominant_delta_count": 2830.667525260751,
+      "initial_dominant_fraction_of_net_growth": 0.6788716615943324,
+      "initial_top_half_fraction_of_gross_positive_gain": 0.9577017450248597
+    },
+    {
+      "species": "GEPE",
+      "region": "South Shetland Islands",
+      "population_change_fraction": 0.6409150637658381,
+      "sites_increased": 4,
+      "sites_decreased": 1,
+      "initial_dominant": "ARDL",
+      "initial_dominant_share_first": 0.3754693084916513,
+      "initial_dominant_share_last": 0.33074089234547677,
+      "initial_dominant_delta_count": 1991.9999999999945,
+      "initial_dominant_fraction_of_net_growth": 0.260952524627354,
+      "initial_top_half_fraction_of_gross_positive_gain": 0.8935740436813532
+    }
+  ],
+  "decision": {
+    "strong_intensification_in_first_two_increasing_panels": true,
+    "all_three_growth_panels_dominated_by_initial_top_half_gross_gains": true,
+    "colonisation_of_empty_sites_tested": false
+  },
+  "boundary": [
+    "This decomposition is post-outcome and descriptive.",
+    "All sites were already in the retained monitored rosters; no empty-site colonisation is observed or tested.",
+    "Count changes cannot distinguish movement, recruitment, survival or immigration.",
+    "No inferential p-values or alternate panel definitions are introduced."
+  ]
+}
