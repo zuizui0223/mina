@@ -27,7 +27,7 @@ jobs:
             --out build/EAST_ANTARCTICA_EXPANSION_SOURCE_GATE_V1.json
       - name: Resolve AADC EDS assets via official bowerbird client
         run: |
-          Rscript -e 'install.packages("bowerbird", repos="https://cloud.r-project.org")'
+          Rscript -e 'options(repos=c(SCAR="https://scar.r-universe.dev",CRAN="https://cloud.r-project.org")); install.packages("bowerbird")'
           Rscript - <<'RS'
           library(bowerbird)
           m25 <- bb_aadc_datasource_meta("AAS_4518_Seabird_Breeding_Occupancy")
