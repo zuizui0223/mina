@@ -7,6 +7,7 @@ on:
       - 'scripts/audit_east_antarctica_expansion_sources.py'
       - 'scripts/resolve_aadc_eds_assets.py'
       - 'scripts/audit_east_antarctica_expansion_schema.py'
+      - 'scripts/extract_east_antarctica_metadata_sheets.py'
       - '.github/workflows/east-antarctica-expansion-source-gate-v1.yml'
   workflow_dispatch:
 
@@ -46,6 +47,9 @@ jobs:
             --occupancy-2016-dir build/aadc2016 \
             --plos-s1 build/plos_s1.xls \
             --out build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V2.json
+          python scripts/extract_east_antarctica_metadata_sheets.py \
+            --source-dir build/aadc2025 \
+            --out build/EAST_ANTARCTICA_OCCUPANCY_DOCUMENTATION_V1.json
       - uses: actions/upload-artifact@v4
         with:
           name: east-antarctica-expansion-source-gate-v1
@@ -54,3 +58,4 @@ jobs:
             build/AADC_2025_ASSET_META.json
             build/AADC_2016_ASSET_META.json
             build/EAST_ANTARCTICA_EXPANSION_SCHEMA_GATE_V2.json
+            build/EAST_ANTARCTICA_OCCUPANCY_DOCUMENTATION_V1.json
