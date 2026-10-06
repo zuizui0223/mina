@@ -1,0 +1,51 @@
+name: Inspect DataONE and full Palmer census metadata
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/inspect-census-v8-dataone.yml"
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe DataONE package replication
+        run: |
+          mkdir -p build/dataone
+          for u in \
+            'https://cn.dataone.org/cn/v2/meta/knb-lter-pal.87.8' \
+            'https://cn.dataone.org/cn/v2/object/knb-lter-pal.87.8' \
+            'https://cn.dataone.org/cn/v2/meta/knb-lter-pal.87.10' \
+            'https://cn.dataone.org/cn/v2/object/knb-lter-pal.87.10'
+          do
+            name=$(echo "$u" | sed 's#https://##;s#[/?&=]#_#g')
+            echo "=== $u ==="
+            curl -A 'Mozilla/5.0' -L -D "build/dataone/$name.headers" \
+              --retry 3 --retry-delay 2 "$u" -o "build/dataone/$name.body" || true
+            tail -20 "build/dataone/$name.headers" || true
+            file "build/dataone/$name.body" || true
+            head -80 "build/dataone/$name.body" || true
+          done
+      - name: Query Palmer proxy with all Solr fields
+        run: |
+          base='https://pallter.marine.rutgers.edu/catalog/edi/edi-search.php'
+          curl -A 'Mozilla/5.0' -L --fail --retry 5 --retry-delay 3 \
+            --get \
+            --data-urlencode 'fl=*' \
+            --data-urlencode 'defType=edismax' \
+            --data-urlencode 'fq=scope:knb-lter-pal' \
+            --data-urlencode 'q=packageid:"knb-lter-pal.87.10"' \
+            --data-urlencode 'rows=20' \
+            --data-urlencode 'start=0' \
+            "$base" -o build/dataone/palmer_87_10_full.xml
+          echo '=== Palmer full fields 87.10 ==='
+          cat build/dataone/palmer_87_10_full.xml
+          echo '=== likely entity/data fields ==='
+          grep -Ein 'entity|data|url|object|resource|checksum|identifier|package|doi' \
+            build/dataone/palmer_87_10_full.xml | head -500 || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inspect-census-v8-dataone
+          path: build/dataone

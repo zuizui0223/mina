@@ -1,0 +1,46 @@
+name: Torgersen supplement extraction v1
+
+on:
+  pull_request:
+    paths:
+      - "scripts/extract_torgersen_supplement.py"
+      - ".github/workflows/torgersen-supplement-extraction-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install python-docx
+      - name: Download Springer supplement
+        run: |
+          mkdir -p build
+          curl -A 'Mozilla/5.0' -L --fail --retry 10 --retry-delay 10 --retry-all-errors \
+            -e 'https://link.springer.com/article/10.1007/s10980-025-02088-y' \
+            'https://media.springernature.com/original/springer-static/esm/art%3A10.1007%2Fs10980-025-02088-y/MediaObjects/10980_2025_2088_MOESM1_ESM.docx' \
+            -o build/torgersen_supp.docx
+          file build/torgersen_supp.docx
+          test -s build/torgersen_supp.docx
+      - name: Extract embedded supplement images
+        run: |
+          mkdir -p build/media
+          unzip -j -o build/torgersen_supp.docx 'word/media/*' -d build/media
+          find build/media -maxdepth 1 -type f -print0 | xargs -0 file
+      - name: Extract supplement structure
+        run: |
+          python scripts/extract_torgersen_supplement.py \
+            --docx build/torgersen_supp.docx \
+            --out-json build/TORGERSEN_SUPPLEMENT_EXTRACT_V1.json \
+            --out-text build/TORGERSEN_SUPPLEMENT_EXTRACT_V1.txt
+          sed -n '1,500p' build/TORGERSEN_SUPPLEMENT_EXTRACT_V1.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: torgersen-supplement-extraction-v1
+          path: |
+            build/TORGERSEN_SUPPLEMENT_EXTRACT_V1.json
+            build/TORGERSEN_SUPPLEMENT_EXTRACT_V1.txt
+            build/media

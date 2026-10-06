@@ -1,0 +1,35 @@
+name: Inspect Cimino EDI census v8
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/inspect-cimino-edi-census-v8.yml"
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve DOI and inspect landing page
+        run: |
+          mkdir -p build
+          curl -A 'Mozilla/5.0' -L --fail --retry 8 --retry-delay 5 --retry-all-errors \
+            -D build/headers.txt \
+            'https://doi.org/10.6073/pasta/805f6b97593c60cfdfd02266db9ab4b6' \
+            -o build/landing
+          file build/landing
+          echo '--- package-like identifiers ---'
+          grep -Eo '[A-Za-z0-9_-]+\.[0-9]+\.[0-9]+' build/landing | sort -u || true
+          echo '--- package/context lines ---'
+          grep -Ein 'package.?id|packageid|knb-lter|revision|scope|805f6b|Adelie penguin|1991.?2021|ver 8|dataEntity|entityId' build/landing | head -300 || true
+          echo '--- hrefs around data/package ---'
+          grep -Eo 'href="[^"]+"|https?://[^"<> ]+' build/landing | grep -Ei 'package|data|pasta|eml|csv|download' | sort -u | head -300 || true
+          echo '--- landing tail ---'
+          tail -300 build/landing
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inspect-cimino-edi-census-v8
+          path: |
+            build/headers.txt
+            build/landing

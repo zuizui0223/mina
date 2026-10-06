@@ -1,0 +1,39 @@
+name: Query DataONE index for Palmer census v8
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/query-dataone-palmer-v8.yml"
+  workflow_dispatch:
+
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query DataONE Solr
+        run: |
+          mkdir -p build/dataone_query
+          base='https://cn.dataone.org/cn/v2/query/solr/'
+          for q in \
+            'title:"Adelie penguin area-wide breeding population census"' \
+            'text:"805f6b97593c60cfdfd02266db9ab4b6"' \
+            'identifier:"knb-lter-pal.87.8"' \
+            'seriesId:"knb-lter-pal.87"'
+          do
+            out=$(echo "$q" | tr -cd 'A-Za-z0-9_' | head -c 80)
+            echo "=== $q ==="
+            curl -A 'Mozilla/5.0' -L --fail --retry 5 --retry-delay 2 \
+              --get \
+              --data-urlencode "q=$q" \
+              --data-urlencode 'fl=id,identifier,seriesId,title,formatId,resourceMap,documents,dateUploaded,datePublished,origin,isPublic' \
+              --data-urlencode 'rows=100' \
+              --data-urlencode 'wt=json' \
+              "$base" -o "build/dataone_query/$out.json" || true
+            cat "build/dataone_query/$out.json" || true
+            echo
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: query-dataone-palmer-v8
+          path: build/dataone_query

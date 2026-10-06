@@ -1,0 +1,42 @@
+name: EDI ver8 resolver audit
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/edi-ver8-resolver-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve DOI and search PASTA
+        run: |
+          mkdir -p build
+          {
+            echo '=== DOI HEADERS ==='
+            curl -sS -L -I 'https://doi.org/10.6073/pasta/805f6b97593c60cfdfd02266db9ab4b6' || true
+            echo
+            echo '=== DOI FINAL URL ==='
+            curl -sS -L -o /dev/null -w '%{url_effective}\n' 'https://doi.org/10.6073/pasta/805f6b97593c60cfdfd02266db9ab4b6' || true
+            echo
+            echo '=== PASTA TITLE SEARCH ==='
+            curl -sS --fail 'https://pasta.lternet.edu/package/search/eml?query=Adelie%20penguin%20area-wide%20breeding%20population%20census' || true
+            echo
+            echo '=== PASTA DOI HASH SEARCH ==='
+            curl -sS --fail 'https://pasta.lternet.edu/package/search/eml?query=805f6b97593c60cfdfd02266db9ab4b6' || true
+            echo
+            echo '=== PACKAGE METADATA ==='
+            curl -sS -L --fail 'https://pasta.lternet.edu/package/metadata/eml/knb-lter-pal/87/8' || true
+            echo
+            echo '=== PACKAGE DATA ENTITY LIST ==='
+            curl -sS -L --fail 'https://pasta.lternet.edu/package/data/eml/knb-lter-pal/87/8' || true
+            echo
+            echo '=== PACKAGE REPORT ==='
+            curl -sS -L --fail 'https://pasta.lternet.edu/package/report/eml/knb-lter-pal/87/8' || true
+          } | tee build/EDI_VER8_RESOLVER_AUDIT.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: edi-ver8-resolver-audit
+          path: build/EDI_VER8_RESOLVER_AUDIT.txt
