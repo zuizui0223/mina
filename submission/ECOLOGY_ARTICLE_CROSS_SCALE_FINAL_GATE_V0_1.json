@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "gate_id": "mina-ecology-article-cross-scale-final-gate-v0-1",
+  "date": "2026-10-06",
+  "canonical_target": "Ecology — Article",
+  "canonical_resolution": "contracts/ECOLOGY_CROSS_SCALE_CANONICAL_TARGET_V1.json",
+  "canonical_contract": "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json",
+  "statuses": {
+    "scientific_analysis": "PASS_ENDPOINTS_CLOSED_INTERPRETATION_REVISED",
+    "claim_boundary": "PASS_REVISED_FOR_INCREASING_NETWORKS",
+    "literature_citation_keys": "PASS",
+    "reproducibility_receipts": "PASS",
+    "repository_ci": "PASS_CURRENT_HEAD_FOCUSED_CHECK",
+    "main_document_generation": "PASS_REVISED_DOCX_STRUCTURAL_QA",
+    "main_document_visual_qa": "PASS_ALL_29_RENDERED_PAGES",
+    "main_figure_visual_qa": "PASS_ALL_THREE_MAIN_FIGURES",
+    "generated_manuscript_page_limit": "PASS_32_PAGES_VIA_ECOLOGY_OVER_30_PAGE_JUSTIFICATION_ROUTE",
+    "canonical_package_uniqueness": "PASS",
+    "author_controlled_metadata": "BLOCKED_PENDING_HUMAN_CONFIRMATION",
+    "final_upload_readiness": "BLOCKED_ONLY_BY_AUTHOR_METADATA_AND_AUTHOR_COMPLETE_REGENERATION",
+    "ai_disclosure": "PASS_METHODS_ACKNOWLEDGMENTS_AND_SUBMISSION_COPY",
+    "data_provider_acknowledgments": "PASS",
+    "supporting_information_pdf": "PASS_BUILD_AND_VISUAL_QA_9_PAGES"
+  },
+  "canonical_artifacts": {
+    "placeholder_docx": {
+      "workflow_run_id": 37391673031,
+      "artifact_id": 11381845511,
+      "digest": "sha256:5a679d1fbc69d3cb81f226d2b84e1d10834f64e7e40a706f2b403bebb549dd42",
+      "head_sha": "8855d01dd01d6daf5fb6e7ed7c7dd0c35a45ba0c",
+      "rendered_pages": 29,
+      "status": "VISUAL_QA_PASS_AUTHOR_PLACEHOLDERS_REMAIN"
+    },
+    "main_figures": {
+      "workflow_run_id": 37391673074,
+      "artifact_id": 11381685529,
+      "digest": "sha256:d0801b4a25440a782f8f04101a4707f6976653f2bc62635f238450206cb42451",
+      "count": 3,
+      "status": "VISUAL_QA_PASS"
+    },
+    "ecology_article_page_limit": 30,
+    "appendix_s1": {
+      "workflow_run_id": 37391672322,
+      "artifact_id": 11381457683,
+      "digest": "sha256:6451ec8aaa0590a37cbc281cf06438e7f3e279ab4f7634db981fab64890596ca",
+      "rendered_pages": 9,
+      "status": "BUILD_AND_VISUAL_QA_PASS_AUTHOR_PLACEHOLDER_REMAINS"
+    },
+    "rendered_main_document_pages": 29,
+    "separate_main_figure_pages": 3,
+    "complete_article_pages": 32,
+    "ecology_standard_article_page_limit": 30,
+    "overlength_justification_present": true
+  },
+  "unresolved_human_fields": [
+    "final author list and order",
+    "affiliations and present addresses",
+    "one corresponding author and email",
+    "funding and grant wording",
+    "additional acknowledgments",
+    "CRediT author contributions",
+    "conflict-of-interest statement",
+    "complete AI-tool inventory confirmation",
+    "overlap/dual-publication statement",
+    "ORCID IDs if requested"
+  ],
+  "optional_post_initial_submission_field": [
+    "permanent archive DOI"
+  ],
+  "next_action": "Obtain the final author-controlled metadata privately; regenerate the author-complete Main Document and Appendix S1 through the canonical builders; inspect the resulting ScholarOne proof; submit. No further ecological analysis is authorized or required.",
+  "stop_rule": "No new penguin endpoint is authorized before initial submission. SMP PR #177 and guillemot PR #178 are independent follow-up projects and must not delay or reframe this paper."
+}

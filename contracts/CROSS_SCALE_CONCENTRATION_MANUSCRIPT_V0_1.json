@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-cross-scale-concentration-manuscript-v0-1",
+  "date": "2026-10-05",
+  "status": "manuscript_synthesis_revised_for_regional_trend_boundary_no_new_endpoint",
+  "manuscript": "docs/MANUSCRIPT_CROSS_SCALE_CONCENTRATION_V0_1.md",
+  "spine": "docs/MANUSCRIPT_SPINE_CROSS_SCALE_CONCENTRATION_V1.md",
+  "working_title": "Breeding-space concentration recurs across spatial scales in Antarctic penguins",
+  "central_claim": "Non-proportional concentration is strongly replicated during decline within Palmer/Signy breeding systems. At the MAPPPD regional scale, abundance-linked concentration recurs within the declining subset, but all three increasing networks also end with lower effective breeding-site number; regional concentration is therefore not uniquely tied to negative population trend.",
+  "evidence_order": [
+    {
+      "role": "discovery",
+      "source": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "scope": "three Palmer Adelie island populations"
+    },
+    {
+      "role": "prospective_external_replication",
+      "source": "results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "scope": "Signy Adelie"
+    },
+    {
+      "role": "prospective_cross_species_replication",
+      "source": "results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "scope": "Signy chinstrap"
+    },
+    {
+      "role": "bounded_cross_scale_extension",
+      "source": "results/MAPPPD_REGIONAL_CONCENTRATION_RECEIPT_V2.json",
+      "scope": "species x published APBP region monitored site networks"
+    },
+    {
+      "role": "bounded_posthoc_scaling_description",
+      "source": "results/CONTRACTION_SCALING_LAW_SYNTHESIS_V1.json",
+      "scope": "five Palmer and Signy trajectories"
+    }
+  ],
+  "primary_narrative": [
+    "within-system concentration exceeds proportional thinning in five declining Palmer/Signy trajectories",
+    "the Signy results provide prospective geographic and cross-species replication of concentration during decline",
+    "all four declining MAPPPD regional networks have positive calibrated abundance-linked concentration effects, with two individually supported",
+    "all three increasing MAPPPD regional networks also end with lower E, including two with increasing N and decreasing E",
+    "regional concentration therefore constrains rather than simply extends a decline-specific interpretation",
+    "Palmer and Signy show different component-level routes to the same local concentration endpoint"
+  ],
+  "secondary_descriptive_context": [
+    "the local abundance-E relationship is stronger over long trajectories than first differences",
+    "effective component number recovered in only 8/31 local annual abundance rebounds",
+    "the frozen local ratchet criterion failed and no regional trend-asymmetry test was prespecified"
+  ],
+  "prohibited_claims": [
+    "universal quarter-power law",
+    "universal seabird or colonial-breeder law",
+    "Antarctic-wide regional concentration law",
+    "formal regional hysteresis or irreversible ratchet",
+    "preferential survival of initially largest components as a universal mechanism",
+    "closed demographic population interpretation of APBP regions",
+    "equal-area interpretation of monitored components",
+    "causal attribution to snow, site fidelity, dispersal, recruitment or predation",
+    "regional concentration is specific to population decline",
+    "trend-independent concentration law from the seven MAPPPD panels",
+    "negative kappa is evidence against concentration in increasing systems"
+  ],
+  "supersession": {
+    "docs/MANUSCRIPT_REPLICATED_CONCENTRATION_V0_2.md": "retained as provenance; cross-scale v0.1 is the active expanded manuscript",
+    "docs/MANUSCRIPT_INTEGRATED_JBI_V0_4.md": "remains superseded; static island-trait null results are not part of the active concentration paper",
+    "submission/MANUSCRIPT_ECOLOGY_REPORT_V0_5.md": "retained as earlier submission-line provenance"
+  },
+  "stop_rule": "No further geographic clustering, completeness thresholds, scaling families, lags, trait screens, or same-data mechanism searches are authorized to strengthen the cross-scale claim. New generality requires an independent taxonomic data source."
+}

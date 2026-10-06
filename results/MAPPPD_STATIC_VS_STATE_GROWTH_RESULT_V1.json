@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-mapppd-static-vs-state-growth-result-v1",
+  "date": "2026-10-06",
+  "status": "post_outcome_descriptive_only_no_p_values",
+  "source_workflow": {
+    "run_id": 37406377570,
+    "artifact_id": 11386762627,
+    "artifact_digest": "sha256:8c9a0571d6dffc5f00be4a53c40c2708e6b2f780d78e3ce51ca810781fd5c03c",
+    "head_sha": "175133bb898901e77be354f7cb1ee72271147d3a"
+  },
+  "panels": [
+    {
+      "species_id": "ADPE",
+      "region": "Victoria Land",
+      "n_sites": 11,
+      "rho_delta_share_vs_initial_share": -0.06363636363636364,
+      "rho_delta_share_vs_log1p_ice_free_area": 0.06363636363636364,
+      "rho_delta_share_vs_nearest_site_connectivity": 0.06881023532039754,
+      "rho_delta_share_vs_initial_pairs_per_mapped_ha": -0.13636363636363638,
+      "final_dominant_site": "CRZW",
+      "final_dominant_initial_share_rank": 1,
+      "final_dominant_ice_free_area_rank": 4,
+      "final_dominant_connectivity_rank_nearest": 1,
+      "contrast": "CRZW gained 0.1142 regional share while adjacent CRZE, ~1.51 km away, lost 0.0355 share; CRZE had more mapped ice-free area (771 vs 614 ha)."
+    },
+    {
+      "species_id": "GEPE",
+      "region": "Central-west Antarctic Peninsula",
+      "n_sites": 7,
+      "rho_delta_share_vs_initial_share": -0.14285714285714288,
+      "rho_delta_share_vs_log1p_ice_free_area": 0.5357142857142858,
+      "rho_delta_share_vs_nearest_site_connectivity": -0.3091420111676559,
+      "rho_delta_share_vs_initial_pairs_per_mapped_ha": -0.3214285714285715,
+      "final_dominant_site": "CUVE",
+      "final_dominant_initial_share_rank": 1,
+      "final_dominant_ice_free_area_rank": 5,
+      "final_dominant_connectivity_rank_nearest": 3
+    },
+    {
+      "species_id": "GEPE",
+      "region": "South Shetland Islands",
+      "n_sites": 5,
+      "rho_delta_share_vs_initial_share": 0.09999999999999999,
+      "rho_delta_share_vs_log1p_ice_free_area": 0.7999999999999999,
+      "rho_delta_share_vs_nearest_site_connectivity": 0.20519567041703082,
+      "rho_delta_share_vs_initial_pairs_per_mapped_ha": -0.19999999999999998,
+      "final_dominant_site": "ARDL",
+      "final_dominant_initial_share_rank": 1,
+      "final_dominant_ice_free_area_rank": 3,
+      "final_dominant_connectivity_rank_nearest": 1
+    }
+  ],
+  "decision": {
+    "universal_rich_get_richer_share_rule_supported": false,
+    "universal_static_area_rule_supported": false,
+    "universal_nearest_neighbor_connectivity_rule_supported": false,
+    "single_simple_site_predictor_is_not_evident": true
+  },
+  "boundary": [
+    "No inferential p-values are computed.",
+    "Mapped ice-free area within 2 km is not occupied or unoccupied nesting capacity.",
+    "Nearest retained-site distance is not realised dispersal connectivity.",
+    "Small network sizes make between-predictor comparisons descriptive only.",
+    "No individual movement or colonisation mechanism is identified."
+  ]
+}
