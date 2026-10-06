@@ -17,6 +17,18 @@ def norm(x: object) -> str:
     return re.sub(r"[^a-z0-9]+", " ", str(x).strip().lower()).strip()
 
 
+def _header_role_score(values) -> int:
+    """Score a prospective header row using schema words only."""
+    cells=[norm(v) for v in values if not pd.isna(v) and str(v).strip()]
+    roles=0
+    roles += int(any("site" in x and any(k in x for k in ("code","id","breeding","geographic")) for x in cells))
+    roles += int(any("season" in x or x == "year" for x in cells))
+    roles += int(any("occupancy" in x or x in {"presence absence","present absent"} for x in cells))
+    roles += int(any("latitude" in x or x == "lat" for x in cells))
+    roles += int(any("longitude" in x or x in {"lon","long"} for x in cells))
+    return roles*100 + len(cells)
+
+
 def read_table(path: Path) -> pd.DataFrame | None:
     suffix = path.suffix.lower()
     try:
@@ -28,6 +40,27 @@ def read_table(path: Path) -> pd.DataFrame | None:
                     continue
             return None
         if suffix in {".xlsx", ".xls"}:
+            book=pd.ExcelFile(path)
+            candidates=[]
+            for sheet in book.sheet_names:
+                preview=pd.read_excel(path,sheet_name=sheet,header=None,nrows=50)
+                best_row=0
+                best_score=-1
+                for idx in range(len(preview)):
+                    score=_header_role_score(preview.iloc[idx].tolist())
+                    if score>best_score:
+                        best_score=score
+                        best_row=idx
+                # Require at least one structural role before preferring a sheet.
+                role_count=best_score//100
+                if role_count>0:
+                    frame=pd.read_excel(path,sheet_name=sheet,header=best_row)
+                    frame.attrs["sheet_name"]=str(sheet)
+                    frame.attrs["header_row_zero_based"]=int(best_row)
+                    candidates.append((role_count,best_score,len(frame),frame))
+            if candidates:
+                candidates.sort(key=lambda z:(z[0],z[1],z[2]),reverse=True)
+                return candidates[0][3]
             return pd.read_excel(path)
     except Exception:
         return None
@@ -39,11 +72,11 @@ def role_columns(columns: list[str]) -> dict[str, list[str]]:
     for c in columns:
         n = norm(c)
         if (
-            n in {"site", "site id", "site code", "breeding site", "breeding site id", "geographic site"}
+            n in {"site", "site id", "site code", "breeding site", "breeding site id", "breeding site code", "geographic site", "geographic site id", "geographic site code"}
             or ("site" in n and ("id" in n or "code" in n))
         ):
             roles["site"].append(c)
-        if any(k in n for k in ("season", "year", "date")):
+        if any(k in n for k in ("season", "year", "date")) or "breeding season" in n:
             roles["season"].append(c)
         if any(k in n for k in ("occupancy", "occupied", "presence", "status", "breeding present")):
             roles["occupancy"].append(c)
@@ -69,6 +102,8 @@ def audit_table(path: Path, frame: pd.DataFrame) -> dict:
         "file": path.name,
         "rows": int(len(frame)),
         "columns": cols,
+        "sheet_name": frame.attrs.get("sheet_name"),
+        "inferred_header_row_zero_based": frame.attrs.get("header_row_zero_based"),
         "roles": roles,
         "nonmissing_counts": {},
     }
