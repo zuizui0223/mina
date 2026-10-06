@@ -1,0 +1,37 @@
+name: East Antarctic Adelie occupancy support v1
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/EAST_ANTARCTIC_ADELIE_OCCUPANCY_SUPPORT_V1.md'
+      - 'scripts/audit_east_antarctic_adelie_occupancy_support.py'
+      - '.github/workflows/east-antarctic-adelie-occupancy-support-v1.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas openpyxl xlrd
+      - name: Download public AADC package
+        run: |
+          mkdir -p build
+          curl -A 'Mozilla/5.0' -L --fail --retry 8 --retry-delay 10 --retry-all-errors \
+            'https://data.aad.gov.au/eds/4345/download' \
+            -o build/aadc_adelie_occupancy_download
+          file build/aadc_adelie_occupancy_download
+          ls -lh build/aadc_adelie_occupancy_download
+      - name: Run outcome-blind structural audit
+        run: |
+          python scripts/audit_east_antarctic_adelie_occupancy_support.py \
+            --package build/aadc_adelie_occupancy_download \
+            --out build/EAST_ANTARCTIC_ADELIE_OCCUPANCY_SUPPORT_RESULT_V1.json
+          cat build/EAST_ANTARCTIC_ADELIE_OCCUPANCY_SUPPORT_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: east-antarctic-adelie-occupancy-support-v1
+          path: build/EAST_ANTARCTIC_ADELIE_OCCUPANCY_SUPPORT_RESULT_V1.json
