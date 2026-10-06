@@ -262,3 +262,30 @@ Not safe:
 - literal fecundity effect per pair;
 - universal Gentoo mechanism;
 - direct support for the Ross iceberg mechanism.
+
+
+## Individual-level context for the one-year response
+
+Bird Island Gentoo mark/return work predating this analysis reports large annual variation in the proportion of breeders that return to breed the following year.
+
+Williams & Rodwell (1992) reported Gentoo return-to-breed rates ranging roughly 20–79% across years. In the especially poor 1987 season, reduced return reflected both:
+
+- adult mortality;
+- adults that were still alive but did not breed.
+
+About one quarter of Gentoo birds that bred in the preceding year were reported alive but non-breeding in that poor season.
+
+Gentoo penguins also show substantial site fidelity in the broader literature.
+
+Therefore a one-year change in a monitored breeding unit's nest share can arise through:
+
+- breeding participation / skipping;
+- survival;
+- local retention;
+- movement among nearby breeding units;
+
+and should not be equated with dispersal.
+
+This context strengthens the interpretation boundary:
+
+> the Bird signal predicts **where breeding activity is expressed next season**, not where individual penguins physically move.
