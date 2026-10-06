@@ -42,7 +42,10 @@ def xlsx_schema(raw: bytes, name: str) -> dict:
     return {"name":name,"kind":"xlsx","sheets":sheets}
 
 def xls_schema(raw: bytes, name: str) -> dict:
-    book=xlrd.open_workbook(file_contents=raw,on_demand=True)
+    try:
+        book=xlrd.open_workbook(file_contents=raw,on_demand=True)
+    except Exception as exc:
+        return {"name":name,"kind":"xls","readable":False,"reason":str(exc)}
     sheets=[]
     for sname in book.sheet_names():
         ws=book.sheet_by_name(sname)
