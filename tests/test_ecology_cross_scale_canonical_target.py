@@ -28,10 +28,7 @@ def test_exactly_one_canonical_initial_ecology_package():
         == "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json"
     )
 
-    assert (
-        article["status"]
-        == "canonical_package_visual_qa_pass_author_metadata_pending"
-    )
+    assert article["status"] == "canonical_package_source_provenance_corrected_rebuild_pending"
     assert (
         report["status"]
         == "alternate_compact_package_not_canonical_for_initial_submission"
@@ -50,18 +47,18 @@ def test_article_uses_valid_over_30_page_route():
     cover = COVER.read_text(encoding="utf-8")
 
     assert resolution["canonical_initial_submission"]["rationale"]
-    assert metrics["rendered_main_document_pages"] == 29
+    assert metrics["rendered_main_document_pages"] is None
     assert metrics["main_figures"] == 3
-    assert metrics["rendered_total_pages_including_main_figures"] == 32
+    assert metrics["rendered_total_pages_including_main_figures"] is None
     assert metrics["ecology_standard_article_page_limit"] == 30
-    assert metrics["pages_over_standard_limit"] == 2
+    assert metrics["pages_over_standard_limit"] is None
     assert metrics["overlength_cover_letter_justification_added"] is True
 
-    assert policy["rendered_complete_article_pages"] == 32
+    assert policy["rendered_complete_article_pages"] is None
     assert policy["standard_article_page_limit"] == 30
     assert policy["under_50_page_extended_article_ceiling"] is True
     assert policy["required_two_part_cover_letter_justification_present"] is True
-    assert policy["status"] == "ELIGIBLE_FOR_OVER_30_PAGE_ARTICLE_ROUTE"
+    assert policy["status"] == "PENDING_POST_CORRECTION_RENDER"
 
     assert "**1. Contribution to the broad field of ecology.**" in cover
     assert "**2. Value provided by the additional length.**" in cover
