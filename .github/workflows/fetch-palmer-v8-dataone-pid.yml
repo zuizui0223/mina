@@ -35,6 +35,18 @@ jobs:
             file "build/dataone_v8/$kind.body" || true
             head -20 "build/dataone_v8/$kind.body" || true
           done
+      - name: Resolve public entity through DataONE
+        run: |
+          enc=$(cat build/dataone_v8/encoded.txt)
+          url="https://cn.dataone.org/cn/v2/resolve/$enc"
+          echo "=== $url ==="
+          curl -A 'Mozilla/5.0' -L --fail --retry 8 --retry-delay 2 \
+            -D build/dataone_v8/resolve.headers \
+            "$url" -o build/dataone_v8/resolve.body
+          tail -50 build/dataone_v8/resolve.headers
+          file build/dataone_v8/resolve.body
+          wc -c build/dataone_v8/resolve.body
+          head -10 build/dataone_v8/resolve.body
       - name: Query exact entity PID in DataONE Solr
         run: |
           pid=$(cat build/dataone_v8/pid.txt)
@@ -52,7 +64,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import csv,json
-          p=Path('build/dataone_v8/object.body')
+          p=Path('build/dataone_v8/resolve.body')
           out={}
           if p.exists():
               raw=p.read_bytes()
