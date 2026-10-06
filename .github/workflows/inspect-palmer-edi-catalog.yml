@@ -59,6 +59,20 @@ jobs:
           cat build/catalog/query_title.xml
           echo '--- package IDs / DOIs ---'
           grep -Eo '<packageid>[^<]+|<doi>[^<]+|<title>[^<]+' build/catalog/query_*.xml || true
+
+          for rev in 8 9 10; do
+            curl -A 'Mozilla/5.0' -L --fail --retry 8 --retry-delay 5 --retry-all-errors \
+              --get \
+              --data-urlencode 'fl=title,pubdate,doi,packageid,author' \
+              --data-urlencode 'defType=edismax' \
+              --data-urlencode 'fq=scope:knb-lter-pal' \
+              --data-urlencode "q=knb-lter-pal.87.$rev" \
+              --data-urlencode 'rows=20' \
+              --data-urlencode 'start=0' \
+              "$base" -o "build/catalog/query_87_$rev.xml"
+            echo "--- 87.$rev ---"
+            cat "build/catalog/query_87_$rev.xml"
+          done
       - uses: actions/upload-artifact@v4
         with:
           name: inspect-palmer-edi-catalog
