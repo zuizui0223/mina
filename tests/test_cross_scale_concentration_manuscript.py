@@ -26,11 +26,15 @@ def unicode_percent(value: float) -> str:
 def test_cross_scale_manuscript_sources_exist_and_claim_is_bounded():
     manuscript = MANUSCRIPT.read_text(encoding="utf-8")
     contract = load(CONTRACT)
+    claim = contract["central_claim"]
 
-    assert "regional monitored site networks" in contract["central_claim"]
-    assert "effect magnitude" in contract["central_claim"]
+    assert "Palmer/Signy breeding systems" in claim
+    assert "MAPPPD regional scale" in claim
+    assert "increasing networks" in claim
+    assert "not uniquely tied to negative population trend" in claim
     assert "universal quarter-power law" in contract["prohibited_claims"]
     assert "universal seabird or colonial-breeder law" in contract["prohibited_claims"]
+    assert "formal regional hysteresis or irreversible ratchet" in contract["prohibited_claims"]
 
     assert "do not constitute a confirmatory regional hysteresis result" in manuscript
     assert "not treated as a universal scaling constant" in manuscript
