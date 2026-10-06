@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "result_id": "bird-island-gentoo-success-to-allocation-support-v1",
+  "date": "2026-10-06",
+  "contract": "contracts/BIRD_ISLAND_GENTOO_SUCCESS_TO_ALLOCATION_V1.md",
+  "source": {
+    "doi": "10.5285/8fedb5a0-b98c-4457-9d86-aae9c6d3ed8e",
+    "artifact_id": 11412301564,
+    "artifact_digest": "sha256:ef6d3ccc111e3ed19e1fe09b87b47f47c52e1e27192a9227ab88f7057785532f",
+    "csv": "gentoo_bi_breeding_success_2025.csv"
+  },
+  "fixed_units": [
+    "Johnson",
+    "Square Pond",
+    "Upper Natural Arch",
+    "Lower Natural Arch",
+    "Upper Mountain Cwm",
+    "Lower Mountain Cwm"
+  ],
+  "support": {
+    "max_rows_per_fixed_unit_per_season": 1,
+    "season_start_year_min": 1981,
+    "season_start_year_max": 2024,
+    "n_seasons represented": 44,
+    "eligible_start_years": [
+      1984, 1986, 1987, 1988, 1989,
+      1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
+      2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
+      2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
+      2020, 2021, 2022, 2023
+    ],
+    "n_eligible_start_years": 38,
+    "n_primary_unit_year_rows": 228,
+    "ineligible_reasons": {
+      "1981": "chick counts incomplete across fixed units and 1982 fixed nest roster incomplete",
+      "1982": "fixed six-unit nest roster incomplete",
+      "1983": "chick counts incomplete across fixed units",
+      "1985": "chick counts incomplete across fixed units",
+      "1990": "chick counts incomplete across fixed units",
+      "2024": "no immediately following 2025 six-unit nest endpoint in the supplied file"
+    },
+    "zero_nest_denominator_in_eligible_start_years": false
+  },
+  "effect_opening": {
+    "chick_count_magnitudes_summarized": false,
+    "chicks_per_nest_computed": false,
+    "share_change_response_computed_for_mechanism_test": false,
+    "beta_computed": false
+  },
+  "decision": {
+    "minimum_15_year_support_pass": true,
+    "support_pass": true,
+    "eligible_years_frozen": true,
+    "status": "SUPPORT_PASS_READY_FOR_FROZEN_EFFECT"
+  }
+}
