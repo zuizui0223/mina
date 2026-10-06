@@ -185,3 +185,43 @@ Not supported:
 - all local differences were caused by social configuration.
 
 The known iceberg/access geometry provides an important exogenous mechanism for the early asymmetry.
+
+
+## How different is the rebound from an exact inverse path?
+
+The broad loss and rebound vectors are actually strongly aligned because Cape Crozier West dominates both:
+
+    cosine(loss, rebound) = 0.99695.
+
+Therefore the result should **not** be described as a wholesale relocation of the breeding network.
+
+A more interpretable exact-inverse baseline is:
+
+1. retain the observed aggregate rebound of 109,198;
+2. allocate that rebound across the six components in proportion to each component's 1999->2001 shock loss.
+
+Under this baseline, the observed rebound differs by:
+
+    10,270.6 breeding pairs
+
+in half-L1 allocation distance.
+
+That equals:
+
+    9.41%
+
+of the entire observed rebound.
+
+All of the balancing positive excess is at Cape Crozier West:
+
+    +10,270.6
+
+relative to exact proportional reversal.
+
+The other five components are below their inverse-path allocations.
+
+Thus the correct effect-size statement is:
+
+> **The rebound recovered almost the full aggregate loss and broadly followed the spatial footprint of the shock, but roughly one tenth of rebound abundance was redistributed relative to an exact inverse path, disproportionately toward Cape Crozier West.**
+
+This is a moderate but highly structured spatial mismatch, not a complete reorganization.
