@@ -1,6 +1,6 @@
 # Ross Island V2 result: recovery amplified spatial dominance
 
-**Status:** effect opened only after the proportional-baseline correction and V2 contract were committed. The V2 recovery prediction failed.
+**Status:** superseded by `ROSS_ISLAND_V2_RESULT_SYNTHESIS_V2.md`. The frozen V2 decision remains valid, but this V1 synthesis treated 2001 as an ordinary recovery baseline before the iceberg-disturbance context and 1999 pre-shock comparison were integrated.
 
 ## Confirmatory decision
 
