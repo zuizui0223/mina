@@ -86,7 +86,7 @@ def role_columns(columns: list[str]) -> dict[str, list[str]]:
             roles["lat"].append(c)
         if n in {"longitude", "lon", "long", "centroid longitude"} or "longitude" in n or re.search(r"(^| )lon( |$)", n):
             roles["lon"].append(c)
-        if any(k in n for k in ("method", "source", "observer", "reference", "survey")):
+        if any(k in n for k in ("method", "source", "observer", "reference", "survey")) or n == "reliability":
             roles["method"].append(c)
     return roles
 
@@ -113,6 +113,11 @@ def audit_table(path: Path, frame: pd.DataFrame) -> dict:
         out["nonmissing_counts"][role] = {
             c: int(frame[c].notna().sum()) for c in cs if c in frame.columns
         }
+    # Observation-quality categories are support metadata, not occupancy outcomes.
+    out["method_metadata_values"] = {
+        c: sorted(frame[c].dropna().astype(str).str.strip().unique().tolist())
+        for c in roles["method"] if c in frame.columns
+    }
 
     # Support summaries use only identifiers/time metadata, never occupancy values.
     if roles["site"]:
