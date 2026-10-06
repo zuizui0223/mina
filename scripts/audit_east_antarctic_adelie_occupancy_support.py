@@ -23,9 +23,9 @@ def _header_role_score(values) -> int:
     roles=0
     roles += int(any("site" in x and any(k in x for k in ("code","id","breeding","geographic")) for x in cells))
     roles += int(any("season" in x or x == "year" for x in cells))
-    roles += int(any("occupancy" in x or x in {"presence absence","present absent"} for x in cells))
-    roles += int(any("latitude" in x or x == "lat" for x in cells))
-    roles += int(any("longitude" in x or x in {"lon","long"} for x in cells))
+    roles += int(any("occupancy" in x or x in {"presence absence","present absent","occurrence"} for x in cells))
+    roles += int(any("latitude" in x or x == "lat" or re.search(r"(^| )lat( |$)", x) for x in cells))
+    roles += int(any("longitude" in x or x in {"lon","long"} or re.search(r"(^| )lon( |$)", x) for x in cells))
     return roles*100 + len(cells)
 
 
@@ -80,11 +80,11 @@ def role_columns(columns: list[str]) -> dict[str, list[str]]:
             roles["site"].append(c)
         if any(k in n for k in ("season", "year", "date")) or "breeding season" in n:
             roles["season"].append(c)
-        if any(k in n for k in ("occupancy", "occupied", "presence", "status", "breeding present")):
+        if any(k in n for k in ("occupancy", "occupied", "presence", "status", "breeding present")) or n == "occurrence":
             roles["occupancy"].append(c)
-        if n in {"latitude", "lat", "centroid latitude"} or "latitude" in n:
+        if n in {"latitude", "lat", "centroid latitude"} or "latitude" in n or re.search(r"(^| )lat( |$)", n):
             roles["lat"].append(c)
-        if n in {"longitude", "lon", "long", "centroid longitude"} or "longitude" in n:
+        if n in {"longitude", "lon", "long", "centroid longitude"} or "longitude" in n or re.search(r"(^| )lon( |$)", n):
             roles["lon"].append(c)
         if any(k in n for k in ("method", "source", "observer", "reference", "survey")):
             roles["method"].append(c)
@@ -229,12 +229,12 @@ def main() -> int:
     )
 
     out = {
-        "schema_version": 1,
+        "schema_version": 2,
         "analysis_id": "mina-east-antarctic-adelie-occupancy-support-v1",
         "status": "outcome_blind_support_audit",
         "source": {
             "doi": "10.4225/15/57590498D301C",
-            "download_endpoint": "https://data.aad.gov.au/eds/4345/download",
+            "eds_metadata_api": "https://data.aad.gov.au/eds/api/metadata/AAS_4088_Adelie_Occupancy?format=json",
             "package_type": package_type,
             "package_members": members,
         },
