@@ -201,4 +201,4 @@ Not supported:
 - interpretation of APBP regions as closed demographic populations;
 - causal attribution to habitat, snow, site fidelity, recruitment, movement or predation.
 
-No further regional definitions, geographic radii, hand-built clusters, completeness thresholds, lags, nonlinear scaling families, trait screens or same-data mechanism searches are opened by this manuscript. The Palmer result is explicitly limited to the frozen sample-colony monitoring panel; it is not an exhaustive island-population census. Further generality requires an independent taxonomic data source.
+No further regional definitions, geographic radii, hand-built clusters, completeness thresholds, lags, nonlinear scaling families, trait screens or same-data mechanism searches are opened by this manuscript. Further generality requires an independent taxonomic data source.
