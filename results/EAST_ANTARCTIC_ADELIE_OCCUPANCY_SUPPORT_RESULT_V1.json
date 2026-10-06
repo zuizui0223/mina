@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-east-antarctic-adelie-occupancy-support-result-v1",
+  "date": "2026-10-06",
+  "status": "outcome_blind_support_passed",
+  "source": {
+    "doi": "10.4225/15/57590498D301C",
+    "dataset_uuid": "4B3AAAF3-B3BF-4212-BB79-773ECD75ADEE"
+  },
+  "execution": {
+    "workflow_run_id": 37402290718,
+    "artifact_id": 11386375178,
+    "artifact_digest": "sha256:940059aac41f131c2d00f1c17fc13f3bcd757efac1b72b6b6c311b5d49712dab",
+    "head_sha": "9ab5f644f8f9b9a700d819956d1b72f6dc835aba"
+  },
+  "occupancy_table_support": {
+    "rows": 9165,
+    "geographic_sites": 3593,
+    "distinct_time_values": 60,
+    "sites_with_distinct_times_ge2": 2832,
+    "sites_with_distinct_times_ge3": 1330,
+    "sites_with_distinct_times_ge5": 98,
+    "duplicate_geographic_site_time_rows": 128,
+    "fields": [
+      "Sub_Group",
+      "Geog_Site_ID",
+      "Geog_Site_Name_SCAR_Gazeteer",
+      "Breed_Site_ID",
+      "Breed_Site_Name_Lit",
+      "Day",
+      "Day_Uncertainty",
+      "Month",
+      "Year",
+      "Season",
+      "Occurrence",
+      "Reliability"
+    ]
+  },
+  "breeding_site_table_support": {
+    "rows": 250,
+    "fields_include": [
+      "Geog_Site_ID",
+      "Breed_Site_ID",
+      "Breed_Site_Lat_Dec",
+      "Breed_Site_Lon_Dec"
+    ],
+    "coordinate_rows": 250
+  },
+  "support_gate": {
+    "stable_site_field": true,
+    "time_field": true,
+    "occupancy_field": true,
+    "coordinate_table_available": true,
+    "sites_with_repeated_observations_ge20": true,
+    "distinct_time_values_ge5": true,
+    "passes": true
+  },
+  "effect_computed": false,
+  "occupancy_value_counts_computed": false,
+  "decision": "The direct-observation database has sufficient repeated site-by-season structure for a prospectively frozen occupancy-transition analysis. Outcome values remain unopened by this support receipt.",
+  "next_gate": "Freeze observation-reliability handling, duplicate site-season handling, transition definitions, and spatial-connectivity support before summarizing Occurrence values."
+}

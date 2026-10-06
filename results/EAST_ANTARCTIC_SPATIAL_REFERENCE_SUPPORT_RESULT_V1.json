@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-east-antarctic-spatial-reference-support-result-v1",
+  "date": "2026-10-06",
+  "status": "outcome_blind_support_passed",
+  "source": {
+    "metadata_id": "AAS_4088_Spatial_reference_system_coastal_east_Antarctica",
+    "doi": "10.26179/53YK-8Z83",
+    "dataset_uuid": "3F139A80-800D-46BD-A7C0-D29734DAE090"
+  },
+  "execution": {
+    "workflow_run_id": 37402726002,
+    "artifact_id": 11386440411,
+    "artifact_digest": "sha256:11c4570e11110758f7d19786a712e2ce14b6ac5fef971f0e4ad4b12970d700fb"
+  },
+  "geographic_site_table": {
+    "rows": 4884,
+    "unique_geographic_sites": 4884,
+    "fields": [
+      "Sub_Group",
+      "Geog_Site_ID",
+      "Geog_Site_Name_SCAR_Gazeteer",
+      "SCAR_Gazeteer_Place_ID",
+      "SCAR_Gazeteer_Nation",
+      "Geog_Site_Latitude",
+      "Geog_Site_Longitude",
+      "Geog_Site_Area",
+      "Geog_Site_Commentary"
+    ]
+  },
+  "potential_habitat_spatial_layer_present": true,
+  "potential_habitat_layer": "Potential habitat/shapefile/islands_and_continental_rock_by_subgroup8.shp",
+  "support_gate_passes": true,
+  "effect_computed": false,
+  "decision": "A deterministic Geog_Site_ID-based spatial frame with coordinates and area is available for the direct occupancy observations; the official package also contains the potential-habitat spatial layer."
+}

@@ -1,0 +1,120 @@
+name: East Antarctic spatial reference support v1
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/EAST_ANTARCTIC_SPATIAL_REFERENCE_SUPPORT_V1.md'
+      - '.github/workflows/east-antarctic-spatial-reference-support-v1.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests pandas openpyxl xlrd
+      - name: Resolve and audit AADC spatial reference package
+        run: |
+          mkdir -p build
+          python - <<'PY'
+          import json, re, requests
+          from pathlib import Path
+          import pandas as pd
+          from urllib.parse import quote
+
+          mid="AAS_4088_Spatial_reference_system_coastal_east_Antarctica"
+          meta=requests.get(
+              f"https://data.aad.gov.au/eds/api/metadata/{mid}?format=json",
+              timeout=120
+          )
+          meta.raise_for_status()
+          x=meta.json()
+          uuids=[]
+          def walk(v):
+              if isinstance(v,dict):
+                  for k,z in v.items():
+                      if str(k).lower()=="uuid" and isinstance(z,str): uuids.append(z)
+                      else: walk(z)
+              elif isinstance(v,list):
+                  for z in v: walk(z)
+          walk(x)
+          uuids=list(dict.fromkeys(uuids))
+          if not uuids:
+              raise SystemExit("No EDS UUID for spatial reference dataset")
+          manifest=[]
+          downloaded=[]
+          for u in uuids:
+              r=requests.get(
+                  f"https://data.aad.gov.au/eds/api/dataset/{u}/objects?recursive=true",
+                  timeout=120
+              ); r.raise_for_status()
+              objs=r.json()
+              if isinstance(objs,dict):
+                  for key in ("objects","items","data"):
+                      if isinstance(objs.get(key),list):
+                          objs=objs[key]; break
+              for o in objs:
+                  if not isinstance(o,dict): continue
+                  name=str(o.get("name") or o.get("key") or o.get("prefix") or "")
+                  manifest.append({"uuid":u,"name":name,"size":o.get("size")})
+                  if name.lower().endswith((".xlsx",".xls",".csv")):
+                      rr=requests.get(
+                          f"https://data.aad.gov.au/eds/api/dataset/{u}/object/download?prefix={quote(name,safe='')}",
+                          timeout=180
+                      ); rr.raise_for_status()
+                      p=Path("build")/Path(name).name
+                      p.write_bytes(rr.content)
+                      downloaded.append(p)
+
+          tables=[]
+          for p in downloaded:
+              if p.suffix.lower()==".csv":
+                  frames=[("csv",pd.read_csv(p))]
+              else:
+                  book=pd.ExcelFile(p)
+                  frames=[]
+                  for sh in book.sheet_names:
+                      if "readme" in sh.lower(): continue
+                      try: frames.append((sh,pd.read_excel(p,sheet_name=sh)))
+                      except Exception: pass
+              for sh,df in frames:
+                  cols=[str(c) for c in df.columns]
+                  norm=lambda z: re.sub(r"[^a-z0-9]+"," ",str(z).lower()).strip()
+                  site=[c for c in cols if ("site" in norm(c) and ("id" in norm(c) or "code" in norm(c)))]
+                  lat=[c for c in cols if ("latitude" in norm(c) or re.search(r"(^| )lat( |$)",norm(c)))]
+                  lon=[c for c in cols if ("longitude" in norm(c) or re.search(r"(^| )lon( |$)",norm(c)))]
+                  tables.append({
+                      "file":p.name,"sheet":sh,"rows":int(len(df)),"columns":cols,
+                      "site_fields":site,"lat_fields":lat,"lon_fields":lon,
+                      "unique_sites":(
+                          int(df[site[0]].dropna().astype(str).str.strip().nunique())
+                          if site else None
+                      )
+                  })
+          eligible=[t for t in tables if t["site_fields"] and t["lat_fields"] and t["lon_fields"]]
+          gate=bool(any((t.get("unique_sites") or 0)>=20 for t in eligible))
+          out={
+              "schema_version":1,
+              "analysis_id":"mina-east-antarctic-spatial-reference-support-v1",
+              "effect_computed":False,
+              "metadata_id":mid,
+              "doi":"10.26179/53YK-8Z83",
+              "dataset_uuids":uuids,
+              "manifest":manifest,
+              "tables":tables,
+              "eligible_coordinate_tables":eligible,
+              "support_gate_passes":gate,
+          }
+          Path("build/EAST_ANTARCTIC_SPATIAL_REFERENCE_SUPPORT_RESULT_V1.json").write_text(
+              json.dumps(out,indent=2,sort_keys=True)+"\n"
+          )
+          print(json.dumps(out,indent=2,sort_keys=True))
+          if not gate: raise SystemExit("spatial-reference support gate failed")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: east-antarctic-spatial-reference-support-v1
+          path: build/EAST_ANTARCTIC_SPATIAL_REFERENCE_SUPPORT_RESULT_V1.json

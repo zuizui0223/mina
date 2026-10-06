@@ -1,0 +1,104 @@
+name: East Antarctic Adelie occupancy support v1
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/EAST_ANTARCTIC_ADELIE_OCCUPANCY_SUPPORT_V1.md'
+      - 'contracts/PENGUIN_EXPANSION_INTENSIFICATION_HYPOTHESIS_V1.md'
+      - 'scripts/audit_east_antarctic_adelie_occupancy_support.py'
+      - '.github/workflows/east-antarctic-adelie-occupancy-support-v1.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas openpyxl xlrd requests
+      - name: Resolve official AADC EDS dataset and download tabular objects
+        run: |
+          mkdir -p build/aadc_tables
+          curl -L --fail --retry 8 --retry-delay 10 --retry-all-errors \
+            'https://data.aad.gov.au/eds/api/metadata/AAS_4088_Adelie_Occupancy?format=json' \
+            -o build/aadc_metadata.json
+          python - <<'PY'
+          import json, re, requests
+          from pathlib import Path
+          from urllib.parse import quote
+
+          root=Path("build")
+          meta=json.loads((root/"aadc_metadata.json").read_text())
+          rows=meta if isinstance(meta,list) else [meta]
+          uuids=[]
+          for row in rows:
+              if isinstance(row,dict) and row.get("uuid"):
+                  uuids.append(str(row["uuid"]))
+          if not uuids:
+              # Robustly search nested API output without inspecting biological outcomes.
+              def walk(x):
+                  if isinstance(x,dict):
+                      for k,v in x.items():
+                          if str(k).lower()=="uuid" and isinstance(v,str):
+                              uuids.append(v)
+                          else:
+                              walk(v)
+                  elif isinstance(x,list):
+                      for v in x: walk(v)
+              walk(meta)
+          uuids=list(dict.fromkeys(uuids))
+          if not uuids:
+              raise SystemExit("No AADC dataset UUID resolved")
+          print("resolved_dataset_uuids", uuids)
+
+          manifest_summary=[]
+          for u in uuids:
+              murl=f"https://data.aad.gov.au/eds/api/dataset/{u}/objects?recursive=true"
+              r=requests.get(murl,timeout=120)
+              r.raise_for_status()
+              objects=r.json()
+              if isinstance(objects,dict):
+                  # Accept wrappers such as {"objects": [...]}
+                  for key in ("objects","data","items"):
+                      if isinstance(objects.get(key),list):
+                          objects=objects[key]; break
+              if not isinstance(objects,list):
+                  raise SystemExit(f"Unexpected manifest shape for {u}: {type(objects)}")
+              for obj in objects:
+                  if not isinstance(obj,dict): continue
+                  name=str(obj.get("name") or obj.get("key") or obj.get("prefix") or "")
+                  size=obj.get("size")
+                  manifest_summary.append({"uuid":u,"name":name,"size":size})
+                  low=name.lower()
+                  if not low.endswith((".csv",".xlsx",".xls")):
+                      continue
+                  url=f"https://data.aad.gov.au/eds/api/dataset/{u}/object/download?prefix={quote(name,safe='')}"
+                  rr=requests.get(url,timeout=180)
+                  rr.raise_for_status()
+                  out=root/"aadc_tables"/Path(name).name
+                  out.write_bytes(rr.content)
+                  print("downloaded_table", name, len(rr.content))
+          (root/"aadc_manifest_summary.json").write_text(
+              json.dumps(manifest_summary,indent=2,sort_keys=True)+"\n"
+          )
+          print("manifest_objects", len(manifest_summary))
+          print("manifest_names", [x["name"] for x in manifest_summary])
+          tables=list((root/"aadc_tables").iterdir())
+          if not tables:
+              raise SystemExit("No tabular objects found in official AADC manifest")
+          PY
+          (cd build/aadc_tables && zip -q ../aadc_adelie_occupancy_tables.zip ./*)
+      - name: Run outcome-blind structural audit
+        run: |
+          python scripts/audit_east_antarctic_adelie_occupancy_support.py \
+            --package build/aadc_adelie_occupancy_tables.zip \
+            --out build/EAST_ANTARCTIC_ADELIE_OCCUPANCY_SUPPORT_RESULT_V1.json
+          cat build/EAST_ANTARCTIC_ADELIE_OCCUPANCY_SUPPORT_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: east-antarctic-adelie-occupancy-support-v1
+          path: |
+            build/EAST_ANTARCTIC_ADELIE_OCCUPANCY_SUPPORT_RESULT_V1.json
+            build/aadc_manifest_summary.json
