@@ -20,6 +20,26 @@ Therefore PR189 should **not** claim that it is the first study to distinguish a
 
 The reciprocal Simpson index is a standard Hill effective-number metric. PR189 uses it as an abundance-weighted measure of spatial redundancy; the metric itself is not novel.
 
+## A 2026 Ross study already explains colony-specific demographic divergence
+
+Dugger et al. (2026) explicitly set out to identify demographic mechanisms behind the divergent Ross Island colony trajectories.
+
+Their 25-year mark-recapture analysis reports:
+- the lowest age-related recruitment at Royds;
+- recruitment at Crozier almost twice as high, with Bird intermediate;
+- breeder movement between colonies below 0.20%;
+- the highest breeding propensity at Crozier and lowest at Bird;
+- pre-breeder apparent survival highest at Bird, not Crozier.
+
+They also describe Bird and Crozier as having more than doubled over the study period while Royds declined and then slowly recovered/stabilized.
+
+Therefore PR189 should **not** claim:
+- first discovery of divergent Ross colony growth;
+- first demographic explanation of Crozier versus Royds/Bird trajectories;
+- first evidence that recruitment differs among Ross colonies.
+
+The mark-recapture study is instead unusually useful independent support for interpreting the census allocation pattern.
+
 ## What PR189 adds
 
 The Ross result is different from a hidden collapse.
@@ -39,7 +59,7 @@ This is **differential amplification**.
 
 The decline-side evidence supplies the mirror process: concentration can also arise through **differential attrition**, where local units lose abundance unequally.
 
-The contribution is therefore not merely another example of spatial structure mattering. It is the empirical separation of two opposite demographic routes to the same spatial state.
+The contribution is therefore not the discovery of Ross colony heterogeneity. It is the **cross-phase spatial-state decomposition**: the empirical separation of two opposite demographic routes to the same concentration state, plus the explicit demonstration that strong numerical recovery can lose abundance-weighted spatial redundancy even when every monitored unit grows.
 
 ## Exact general statement
 
@@ -136,3 +156,12 @@ The strongest defensible novelty is **conceptual-empirical**, not taxonomic and 
 > A strong numerical recovery can reduce spatial redundancy through differential amplification even when every monitored breeding unit increases; the same concentration metric can be generated during decline by differential attrition, so spatial concentration does not identify the sign or mechanism of population change.
 
 The broader two-mode quality-versus-capacity mechanism remains a generated hypothesis until tested outside Ross/Beaufort.
+
+
+## Additional mechanism already anticipated in the literature
+
+Schmidt et al. (2021) found higher and less variable reproductive success at Crozier than Royds and proposed a positive feedback in colonial nesting geometry: as colonies grow, perimeter-to-area ratio can decline, reducing edge exposure and potentially increasing average subcolony quality.
+
+This means a self-reinforcing advantage of large colonies is biologically plausible and partly anticipated. PR189 should not present positive feedback from colony size/geometry as newly discovered.
+
+What remains distinctive is the **state-space consequence** of such local feedback: it can turn aggregate recovery into a loss of spatial redundancy rather than a restoration of it.
