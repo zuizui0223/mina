@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-island-matched-abundance-branch-dependence-v1",
+  "date": "2026-10-06",
+  "status": "post_result_exploratory_not_confirmatory",
+  "support_rule": {
+    "decline_years": "1985-1999",
+    "recovery_years": [2001,2002,2003,2004,2005,2006,2007,2009,2010,2011,2012],
+    "decline_N_min": 145268,
+    "decline_N_max": 242644,
+    "eligible_recovery_years_inside_decline_N_support": [2002,2004],
+    "matching": "nearest decline year by absolute log N difference"
+  },
+  "pairs": [
+    {
+      "decline_year": 1997,
+      "recovery_year": 2002,
+      "decline_N": 204837,
+      "recovery_N": 203996,
+      "N_fraction_difference": -0.00410570355941553,
+      "decline_E3": 1.62610949516181,
+      "recovery_E3": 1.507430677390489,
+      "E3_fraction_difference": -0.07298328810232524,
+      "decline_E6": 2.1706106746950584,
+      "recovery_E6": 1.819023375736499,
+      "E6_fraction_difference": -0.16197621390945782
+    },
+    {
+      "decline_year": 1985,
+      "recovery_year": 2004,
+      "decline_N": 224414,
+      "recovery_N": 221301,
+      "N_fraction_difference": -0.013871683584803063,
+      "decline_E3": 1.6251926649018862,
+      "recovery_E3": 1.4129981442683175,
+      "E3_fraction_difference": -0.13056576319606938,
+      "decline_E6": 2.290240559341078,
+      "recovery_E6": 1.8651869360696578,
+      "E6_fraction_difference": -0.18559343975364406
+    }
+  ],
+  "decision": {
+    "same_N_maps_to_unique_E": false,
+    "branch_dependence_signature_present": true,
+    "causal_hysteresis_established": false
+  },
+  "boundary": "Environmental state differs between branches; this pattern motivates but does not identify endogenous configuration memory."
+}
