@@ -1,6 +1,6 @@
 # Spatial redundancy growth identity v3 — sign changes across disturbance and recovery
 
-**Status:** post-result mathematical synthesis. The identities are algebraic and are not claimed as new mathematics.
+**Status:** superseded by `SPATIAL_REDUNDANCY_GROWTH_IDENTITY_V4.md`. V3 assumes positive baseline abundance when expressing the finite identity through local multipliers; the prospective emperor-penguin test contains a zero-baseline colony and motivates the algebraically equivalent zero-safe form.
 
 ## Identity
 
