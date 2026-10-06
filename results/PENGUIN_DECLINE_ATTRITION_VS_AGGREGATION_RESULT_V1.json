@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-penguin-decline-attrition-vs-aggregation-result-v1",
+  "date": "2026-10-06",
+  "status": "post_outcome_descriptive_only_no_p_values",
+  "source_workflow": {
+    "run_id": 37421957222,
+    "artifact_id": 11393257570,
+    "artifact_digest": "sha256:6b0619d57607ad653c08524064fe450abdcf09560205c5daa89bd0e6d18e5bc1",
+    "head_sha": "b7742260825eaf036d3301ee62a032b569cefe1b"
+  },
+  "pooled": {
+    "components_first_to_last": 39,
+    "components_net_positive_first_to_last": 0,
+    "components_share_up_while_count_down": 11,
+    "joint_N_down_E_down_transitions": 47,
+    "joint_with_any_component_gain": 14,
+    "fraction_joint_with_any_component_gain": 0.2978723404255319,
+    "summed_gross_gain_joint": 153.0,
+    "summed_gross_loss_joint": 7034.0,
+    "weighted_gain_loss_ratio_joint": 0.021751492749502416
+  },
+  "population_weighted_gain_loss_ratios": {
+    "ADPE_PALMER_COR": 0.04208416833667335,
+    "ADPE_PALMER_HUM": 0.022099447513812154,
+    "ADPE_PALMER_LIT": 0.06430155210643015,
+    "ADPE_SIGNY": 0.0004986287708800798,
+    "CHPE_SIGNY": 0.06934931506849315
+  },
+  "final_dominant_absolute_changes": {
+    "ADPE_PALMER_COR": {"first": 79.0, "last": 10.0, "share_first": 0.11600587371512482, "share_last": 0.43478260869565216},
+    "ADPE_PALMER_HUM": {"first": 289.0, "last": 40.0, "share_first": 0.2663594470046083, "share_last": 0.5882352941176471},
+    "ADPE_PALMER_LIT": {"first": 109.0, "last": 4.0, "share_first": 0.2193158953722334, "share_last": 1.0},
+    "ADPE_SIGNY": {"first": 1112.0, "last": 845.0, "share_first": 0.4748076923076923, "share_last": 0.6943303204601479},
+    "CHPE_SIGNY": {"first": 657.0, "last": 381.0, "share_first": 0.400121802679659, "share_last": 0.6557659208261618}
+  },
+  "decision": {
+    "active_aggregation_required_to_explain_decline_concentration": false,
+    "differential_attrition_is_sufficient_descriptive_process": true,
+    "movement_is_not_identified": true
+  },
+  "boundary": [
+    "No inferential p-values are attached.",
+    "Absolute gains do not identify individual movement.",
+    "Absolute losses do not distinguish mortality, emigration, recruitment failure, or breeding non-participation.",
+    "The five populations are nested in two monitoring systems."
+  ]
+}
