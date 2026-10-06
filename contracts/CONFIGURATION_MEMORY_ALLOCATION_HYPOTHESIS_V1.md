@@ -1,6 +1,6 @@
 # Configuration-memory allocation hypothesis v1
 
-**Status:** post-result generated mechanism hypothesis. Not confirmatory for PR189.
+**Status:** superseded by `contracts/COLONIAL_HYSTERESIS_RECOVERY_HYPOTHESIS_V1.md`. Retained only as an audit trail.
 
 ## Prior-work boundary
 
