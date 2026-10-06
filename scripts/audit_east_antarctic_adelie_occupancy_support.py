@@ -43,6 +43,8 @@ def read_table(path: Path) -> pd.DataFrame | None:
             book=pd.ExcelFile(path)
             candidates=[]
             for sheet in book.sheet_names:
+                if "readme" in norm(sheet) or "read me" in norm(sheet):
+                    continue
                 preview=pd.read_excel(path,sheet_name=sheet,header=None,nrows=50)
                 best_row=0
                 best_score=-1
