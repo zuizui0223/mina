@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-inverse-path-background-scale-audit-v1",
+  "date": "2026-10-06",
+  "status": "post_result_contextual_calibration",
+  "background_successive_TV_excluding_focal_shock_rebound": {
+    "n": 23,
+    "q05": 0.0058385902180734745,
+    "median": 0.03175008246374304,
+    "q95": 0.060265225173651946,
+    "max": 0.08209919640444743
+  },
+  "focal": {
+    "TV_1999_2001": 0.05089184976736118,
+    "TV_2001_2002": 0.09753113922667692,
+    "TV_1999_2002": 0.04967242312643739,
+    "TV_1999_2002_percentile_vs_background": 0.8695652173913043,
+    "inverse_path_mismatch_fraction": 0.09405445040386184,
+    "aggregate_loss_restored_fraction": 0.9696749043183291,
+    "cosine": 0.9969470572957101
+  },
+  "universal_down_then_up_sequences": [
+    {
+      "years":[1989,1990,1991],
+      "loss":35834,
+      "rebound":12466,
+      "rebound_loss_ratio":0.3478818998716303,
+      "mismatch_fraction":0.09121488240054025,
+      "cosine":0.994109576636787
+    },
+    {
+      "years":[1999,2001,2002],
+      "loss":112613,
+      "rebound":109198,
+      "rebound_loss_ratio":0.9696749043183291,
+      "mismatch_fraction":0.09405445040386184,
+      "cosine":0.9969470572957101
+    },
+    {
+      "years":[2002,2003,2004],
+      "loss":78374,
+      "rebound":95679,
+      "rebound_loss_ratio":1.2208002653941359,
+      "mismatch_fraction":0.10630081332802095,
+      "cosine":0.9839126605037914
+    }
+  ],
+  "decision": {
+    "focal_mismatch_is_largest_of_comparable_down_up_sequences": false,
+    "focal_mismatch_is_exceptional_in_magnitude": false,
+    "focal_rebound_successive_TV_is_largest_observed_transition": true,
+    "proper_novelty": "near-complete aggregate restoration in a documented natural disturbance context, not an exceptional mismatch magnitude"
+  }
+}
