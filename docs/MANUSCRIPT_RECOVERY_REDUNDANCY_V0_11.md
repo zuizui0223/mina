@@ -1,6 +1,6 @@
 # Manuscript spine v0.11 — Near-complete rebound is not exact spatial reversal
 
-**Status:** preferred state/allocation manuscript spine after the prospective Signy Chinstrap ratio-free mechanism test failed. Mechanism is explicitly unresolved. Supersedes v0.10.
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_12.md` after the prospective Ross subcolony configuration test also failed.
 
 ## Working title
 
