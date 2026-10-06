@@ -1,6 +1,6 @@
 # Manuscript spine v0.4 — Aggregate recovery does not determine spatial recovery
 
-**Status:** revised after the prospective Bird Island Gentoo recovery-allocation result. Supersedes v0.3 for paper-level interpretation.
+**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_5.md`; Bird Island is retained as a prospective positive-net-change allocation test, not described as a preidentified recovery phase.
 
 ## Working title
 
