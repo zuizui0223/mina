@@ -1,6 +1,6 @@
 # Manuscript spine v0.2 — Recovery need not retrace spatial collapse
 
-**Status:** superseded by `MANUSCRIPT_RECOVERY_REDUNDANCY_V0_2.md` after the Ross mega-iceberg shock/rebound audit.
+**Status:** superseded by `docs/MANUSCRIPT_RECOVERY_REDUNDANCY_V0_2.md`. Retained only as an audit trail.
 
 ## Working title
 
