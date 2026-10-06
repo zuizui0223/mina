@@ -1,0 +1,39 @@
+name: Torgersen extinction-order source gate v1
+
+on:
+  pull_request:
+    paths:
+      - 'docs/TORGERSEN_EXTINCTION_ORDER_DESIGN_V1.md'
+      - 'docs/TORGERSEN_EXTINCTION_ORDER_SOURCE_GATE_V1.md'
+      - 'scripts/audit_torgersen_supplement_structure.py'
+      - '.github/workflows/torgersen-extinction-order-source-gate-v1.yml'
+  workflow_dispatch:
+
+jobs:
+  source-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install python-docx
+      - name: Download public source files
+        run: |
+          mkdir -p build
+          curl -L --fail --retry 6 --retry-delay 5 \
+            'https://media.springernature.com/original/springer-static/esm/art%3A10.1007%2Fs10980-025-02088-y/MediaObjects/10980_2025_2088_MOESM1_ESM.docx' \
+            -o build/torgersen_supplement.docx
+          curl -L --fail --retry 6 --retry-delay 5 \
+            'https://research.repository.duke.edu/downloads/1z40kt742?locale=en' \
+            -o build/site_guide.txt
+      - name: Structural audit only
+        run: |
+          python scripts/audit_torgersen_supplement_structure.py \
+            --supplement build/torgersen_supplement.docx \
+            --site-guide build/site_guide.txt \
+            --out build/TORGERSEN_SOURCE_GATE_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: torgersen-extinction-order-source-gate-v1
+          path: build/TORGERSEN_SOURCE_GATE_V1.json

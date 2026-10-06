@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "result_id": "torgersen-extinction-order-source-gate-result-v1",
+  "date": "2026-10-06",
+  "status": "source_gate_failed_no_dynamic_effect_opened",
+  "execution": {
+    "workflow_run_id": 37402176413,
+    "artifact_id": 11385816935,
+    "artifact_digest": "sha256:f63be68505c7f82e0756a7b685646c38beee17e84d22315c564429656428e457",
+    "head_sha": "20e222ecd15d25b0500fbd2eb578c517af0a6584"
+  },
+  "supplement_structure": {
+    "bytes": 16338260,
+    "tables": 8,
+    "media_objects": 16,
+    "embedded_objects": 0,
+    "subcolony_demographic_table_present": false,
+    "figure_S13_contains_subcolony_time_series": true
+  },
+  "public_bridge_requirements": {
+    "stable_historic_subcolony_id": "not_available_in_machine_readable_supplement_table",
+    "extinction_year_by_same_id": "not_available_in_machine_readable_supplement_table",
+    "historic_area_and_aspect_by_same_id": "published graphically/summary but no complete machine-readable bridge located",
+    "historic_polygon_or_centroid_by_same_id": "not located in public supplement or described Duke derived products",
+    "exact_geometry_extinction_bridge": false
+  },
+  "decision": {
+    "stage_A_bridge_passes": false,
+    "dynamic_isolation_model_authorized": false
+  },
+  "interpretation": [
+    "The published paper clearly supports habitat-structured extinction order, but the row-level spatial bridge needed to test a new dynamic neighbor-loss cascade is not publicly exposed in machine-readable form.",
+    "Figure S13 contains sub-colony count trajectories graphically, but hand digitization is prohibited by the frozen design.",
+    "No inter-subcolony distance, dynamic connectivity, extinction-hazard coefficient, or p-value was computed."
+  ],
+  "stop_rule": "Do not digitize Figure 5 or Figure S13, infer polygon identities visually, or reopen the unresolved Palmer census-code to GIS-polygon crosswalk."
+}
