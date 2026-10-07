@@ -56,7 +56,7 @@ Ross Island Adélie 1999→2001→2002:
 
 > **Near-complete aggregate recovery was produced by differential local recovery: abundance returned largely where it had been lost, but the previous spatial composition was not completely restored at either natural spatial grain.**
 
-The magnitude of state restoration is scale dependent. The qualitative path-versus-state discrepancy is robust to aggregation from six components to three colonies.
+The magnitude of state restoration is scale dependent. The qualitative path-versus-state discrepancy is robust to aggregation from six components to three colonies. Aggregation hides 28.8% of the six-component endpoint TV difference, while 71.2% remains at the Royds–Bird–Crozier scale.
 
 ## Supporting evidence
 
