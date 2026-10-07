@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-path-state-spatial-grain-audit-v1",
+  "date": "2026-10-07",
+  "status": "post_result_descriptive_spatial_grain_robustness",
+  "focal_episode": [
+    1999,
+    2001,
+    2002
+  ],
+  "six_component": {
+    "n_units": 6,
+    "aggregate_restoration": 0.9696749043183291,
+    "path_cosine": 0.9969470572957101,
+    "inverse_path_fidelity": 0.9059455495961382,
+    "baseline_trough_TV": 0.05089184976736118,
+    "baseline_rebound_TV": 0.04967242312643739,
+    "state_restoration_fraction": 0.0239611381095024,
+    "expected_inverse_baseline_TV": 0.0007171796194534938,
+    "E_baseline": 2.05575303802091,
+    "E_trough": 2.2919284746729964,
+    "E_rebound": 1.8190233757364993
+  },
+  "three_colony": {
+    "units": [
+      "Cape Royds",
+      "Cape Bird",
+      "Cape Crozier"
+    ],
+    "n_units": 3,
+    "counts": {
+      "1999": [
+        3620,
+        47350,
+        156441
+      ],
+      "2001": [
+        1367,
+        26317,
+        67114
+      ],
+      "2002": [
+        2239,
+        40678,
+        161079
+      ]
+    },
+    "aggregate_restoration": 0.9696749043183291,
+    "local_restoration": {
+      "Cape Royds": 0.3870395028850422,
+      "Cape Bird": 0.6827841962630152,
+      "Cape Crozier": 1.0519215914561106
+    },
+    "path_cosine": 0.9967174343571386,
+    "inverse_path_fidelity": 0.9327199232407497,
+    "baseline_trough_TV": 0.04932065347514694,
+    "baseline_rebound_TV": 0.035362381539969526,
+    "state_restoration_fraction": 0.2830106852134694,
+    "expected_inverse_baseline_TV": 0.0006950379609346746,
+    "E_baseline": 1.6094677066662906,
+    "E_trough": 1.7286221365129772,
+    "E_rebound": 1.5074306773904889
+  },
+  "decision": {
+    "qualitative_path_vs_state_discordance_survives_coarsening": true,
+    "magnitude_of_state_restoration_is_spatial_grain_dependent": true,
+    "six_component_2_4_percent_should_not_be_presented_as_scale_invariant": true,
+    "exact_inverse_counterfactual_remains_near_baseline_at_both_grains": true
+  },
+  "interpretation": "At both six-component and three-colony grains, aggregate and path recovery are high while endpoint composition remains materially farther from baseline than the exact-inverse counterfactual. Coarsening increases apparent state restoration, so state-recovery magnitude is scale dependent even though the qualitative path-versus-state distinction is robust."
+}
