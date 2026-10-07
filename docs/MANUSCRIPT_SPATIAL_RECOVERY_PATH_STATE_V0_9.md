@@ -121,7 +121,7 @@ C=\frac{L\cdot R}{\lVert L\rVert\lVert R\rVert}.
 We also defined the exact inverse-path rebound expected if the observed aggregate rebound were distributed in proportion to the preceding local losses:
 
 \[
-R_i^{*}
+R_i^{\mathrm{inv}}
 =
 \left(\sum_jR_j\right)
 \frac{L_i}{\sum_jL_j}.
@@ -130,7 +130,7 @@ R_i^{*}
 The half-\(L_1\) mismatch is
 
 \[
-M=\frac{1}{2}\sum_i|R_i-R_i^{*}|.
+M=\frac{1}{2}\sum_i|R_i-R_i^{\mathrm{inv}}|.
 \]
 
 We report \(M/\sum_iR_i\) as the fraction of rebound reallocated relative to exact proportional reversal, and \(1-M/\sum_iR_i\) as inverse-path fidelity.
@@ -156,10 +156,10 @@ S_{\mathrm{TV}}=1-\frac{D_{02}}{D_{01}}.
 We also calculated the endpoint expected under exact proportional inverse reversal:
 
 \[
-n_{i,2}^{*}=n_{i,1}+R_i^{*}.
+n_{i,2}^{\mathrm{inv}}=n_{i,1}+R_i^{\mathrm{inv}}.
 \]
 
-Because the focal aggregate rebound restored 96.97% of the loss, this counterfactual is expected to lie very close to the pre-disturbance state. Comparing observed \(\mathbf p_2\) with \(\mathbf p_2^{*}\) therefore measures the state consequence of the structured inverse-path residual.
+Because the focal aggregate rebound restored 96.97% of the loss, this counterfactual is expected to lie very close to the pre-disturbance state. Comparing observed \(\mathbf p_2\) with \(\mathbf p_2^{\mathrm{inv}}\) therefore measures the state consequence of the structured inverse-path residual.
 
 ### Spatial-grain robustness
 
