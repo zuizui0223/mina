@@ -6,9 +6,9 @@ on:
     paths:
       - "scripts/build_spatial_recovery_ecology_docx.py"
       - "scripts/build_spatial_recovery_path_state_figures.py"
-      - "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md"
+      - "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md"
       - "docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib"
-      - "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md"
+      - "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md"
       - "submission/ECOLOGY_METADATA_TEMPLATE.json"
       - "src/mina/ecosphere_submission_metadata.py"
       - ".github/workflows/spatial-recovery-ecology-docx-preview.yml"
@@ -42,11 +42,11 @@ jobs:
       - name: Build placeholder Word preview
         run: |
           python scripts/build_spatial_recovery_ecology_docx.py \
-            --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md \
+            --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md \
             --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib \
-            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md \
+            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md \
             --figure-dir build/spatial_recovery_path_state_figures \
-            --out build/Spatial_Recovery_Ecology_v0_8_SUBMISSION_PREVIEW.docx
+            --out build/Spatial_Recovery_Ecology_v0_9_SUBMISSION_PREVIEW.docx
       - name: Build synthetic author-complete path
         run: |
           python - <<'PY'
@@ -83,20 +83,20 @@ jobs:
             --metadata build/synthetic_ecology_metadata.json \
             --require-complete
           python scripts/build_spatial_recovery_ecology_docx.py \
-            --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md \
+            --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md \
             --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib \
-            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md \
+            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md \
             --figure-dir build/spatial_recovery_path_state_figures \
             --metadata build/synthetic_ecology_metadata.json \
             --require-complete-metadata \
-            --out build/Spatial_Recovery_Ecology_v0_8_SYNTHETIC_COMPLETE.docx
+            --out build/Spatial_Recovery_Ecology_v0_9_SYNTHETIC_COMPLETE.docx
       - name: Structural DOCX audit
         run: |
           python - <<'PY'
           from docx import Document
           from docx.oxml.ns import qn
 
-          path="build/Spatial_Recovery_Ecology_v0_8_SYNTHETIC_COMPLETE.docx"
+          path="build/Spatial_Recovery_Ecology_v0_9_SYNTHETIC_COMPLETE.docx"
           doc=Document(path)
           assert len(doc.sections) >= 3
           first=doc.sections[0]._sectPr.find(qn("w:lnNumType"))
@@ -110,18 +110,20 @@ jobs:
           assert "[AUTHOR" not in text
           assert "Population recovery can retrace local losses while spatial structure remains altered" in text
           assert "Figure captions" in text
-          for label in ("Figure 1","Figure 2","Figure 3","Figure 4"):
+          for label in ("Figure 1","Figure 2"):
               assert label in text
+          assert "Figure 3" not in text
+          assert "Figure 4" not in text
           print("sections=",len(doc.sections))
           print("paragraphs=",len(doc.paragraphs))
           print("inline_shapes=",len(doc.inline_shapes))
-          assert len(doc.inline_shapes) == 4
+          assert len(doc.inline_shapes) == 2
           print("structural_audit=PASS")
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: spatial-recovery-ecology-v0-8-docx-preview
+          name: spatial-recovery-ecology-v0-9-docx-preview
           path: |
-            build/Spatial_Recovery_Ecology_v0_8_SUBMISSION_PREVIEW.docx
-            build/Spatial_Recovery_Ecology_v0_8_SYNTHETIC_COMPLETE.docx
+            build/Spatial_Recovery_Ecology_v0_9_SUBMISSION_PREVIEW.docx
+            build/Spatial_Recovery_Ecology_v0_9_SYNTHETIC_COMPLETE.docx
             build/ecology_metadata_template_audit.json
