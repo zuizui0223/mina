@@ -244,7 +244,7 @@ The residual was strongly structured. Cape Crozier West had a positive excess of
 
 This is the same local-recovery heterogeneity expressed in allocation space. The loss-weighted mean absolute deviation of \(q_i\) from aggregate restoration was 0.1824; divided by \(2A\), it gives the observed 9.41% inverse-path mismatch exactly.
 
-### Path reversal did not restore spatial state
+### Path reversal left spatial state incompletely restored
 
 Despite near-complete aggregate recovery and high inverse-path fidelity, the 2002 composition did not move meaningfully closer to the 1999 composition.
 
@@ -310,7 +310,7 @@ Local restoration at the three-colony grain remained unequal: Royds restored 38.
 
 Thus coarsening reduced apparent state reorganization but did not eliminate it. Aggregation hid 28.8% of the six-component 1999→2002 TV difference, but **71.2% of the fine-grain endpoint difference remained at the Royds–Bird–Crozier scale**. At both biologically natural grains, exact proportional reversal would have returned composition almost exactly to baseline, whereas the observed endpoint remained materially farther away.
 
-### High path fidelity without state restoration recurred in Ross
+### High path fidelity coexisted with weak or negative state restoration in Ross
 
 The two other complete Ross down→up episodes showed the same distinction.
 
@@ -320,7 +320,7 @@ For 2002→2003→2004, inverse-path fidelity was 89.4%, while the endpoint was 
 
 Across all three episodes, inverse-path fidelity remained between 89% and 91%, yet \(S_{\mathrm{TV}}\) was +2.4%, −29.2%, and −53.4%.
 
-These triplets are not independent replicates, but they show that the focal distinction is not produced by one unusual mismatch value: in the Ross series, high path fidelity and state restoration were consistently different properties.
+These triplets are not independent replicates, but they show that the focal distinction is not produced by one unusual mismatch value: at the six-component grain, high path fidelity repeatedly coexisted with weak or negative state restoration.
 
 ### Persistent decline reweighted breeding structure at Palmer and Signy
 
@@ -352,7 +352,7 @@ By total abundance, recovery was nearly complete: 96.97% of the disturbance loss
 
 By path, recovery was also highly reversible: local gains strongly aligned with local losses, with 90.59% inverse-path fidelity.
 
-By state, however, recovery was weak: only 2.4% of the compositional displacement from baseline was erased, and the rebound generated the largest adjacent compositional shift in the Ross series.
+By state, however, recovery was incomplete at both biologically natural grains. At six-component resolution, only 2.4% of the compositional displacement from baseline was erased; after aggregation to Royds, Bird, and Crozier, 28.3% was erased. The six-component rebound also generated the largest adjacent compositional shift in the Ross series.
 
 The ecological lesson is simple:
 
@@ -428,7 +428,7 @@ First, **did local recovery occur where local losses occurred?** This is a path 
 
 Second, **did relative spatial composition return?** This is a state question.
 
-The Ross result shows that the answer can be yes to the first while restoration of the second remains incomplete, with its apparent magnitude depending on spatial grain.
+The Ross result shows that the answer can be yes to the first while restoration of the second remains incomplete at both natural grains, with its apparent magnitude depending on spatial grain.
 
 That matters for conservation because dominance structure changes exposure to local hazards. A population with the same total abundance but a larger fraction concentrated in one breeding component has less spatial redundancy than its former state. Conversely, a dramatic local loss followed by proportional rebound may restore both abundance and structure even if the temporary census decline was severe.
 
