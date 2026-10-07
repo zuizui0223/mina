@@ -1,13 +1,15 @@
 # Spatial recovery Ecology Article — canonical submission manifest v1
 
 **Date:** 2026-10-07  
-**Status:** SCIENTIFIC PACKAGE FROZEN CANDIDATE; human metadata pending
+**Status:** SCIENCE FROZEN; v0.9 PRODUCTION DERIVATIVE ACTIVE; human metadata pending
 
 ## Scientific manuscript
 
-- Main manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
+- Frozen scientific manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
+- Initial-submission production manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
 - Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib`
-- Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md`
+- Main figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md`
+- Supporting Information: `submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md`
 - Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
 
 ## Scientific audits
@@ -18,6 +20,10 @@
 - Local recovery decomposition: `docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md`
 - Novelty boundary: `docs/SPATIAL_RECOVERY_PATH_STATE_NOVELTY_BOUNDARY_V2.md`
 - Reviewer stress test: `docs/SPATIAL_RECOVERY_PATH_STATE_REVIEWER_STRESS_TEST_V2.md`
+
+## Production derivation
+
+- Freeze-compliant v0.9 derivation: `submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_DERIVATION_V1.md`
 
 ## Submission documents
 
