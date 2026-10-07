@@ -7,7 +7,7 @@
 
 While the integrated spatial-structure manuscript is active, the penguin research program has **one canonical submission candidate**:
 
-    docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_3.md
+    docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_4.md
 
 The following previously complete packages remain frozen scientific provenance but are **not independent active submission lanes**:
 
@@ -80,12 +80,13 @@ If it is later abandoned, reopening either narrower package requires an explicit
 
 ## Canonical current package
 
-- Manuscript: `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_3.md`
-- Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_3.bib`
+- Manuscript: `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_4.md`
+- Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_4.bib`
 - Process classification: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
 - Claim ledger: `results/SPATIAL_MEMORY_CLAIM_EVIDENCE_LEDGER_V1.json`
 - Evidence table: `docs/TABLE1_SPATIAL_MEMORY_EVIDENCE_V0_1.md`
 - Reviewer stress test: `docs/SPATIAL_MEMORY_INTEGRATED_REVIEWER_STRESS_TEST_V1.md`
+- Novelty boundary: `docs/SPATIAL_MEMORY_NOVELTY_BOUNDARY_V1.md`
 - Figure builder: `scripts/build_spatial_memory_integrated_figures.py`
 - Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_MEMORY_INTEGRATED_V0_1.md`
 - Scientific readiness: `submission/SPATIAL_MEMORY_INTEGRATED_READINESS_V1.md`
