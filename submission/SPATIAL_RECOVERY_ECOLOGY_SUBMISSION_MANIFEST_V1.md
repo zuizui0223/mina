@@ -10,6 +10,7 @@
 - Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib`
 - Main figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md`
 - Supporting Information: `submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md`
+- Supporting Information DOCX builder: `scripts/build_spatial_recovery_supplement_docx.py`
 - Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
 
 ## Scientific audits
@@ -72,6 +73,7 @@ Before actual submission, supply or confirm:
 ## Submission QA
 
 - Automated manuscript QA: `submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V1.md`
+- v0.9 freeze-compliant production QA: `submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_QA_V2.json`
 
 ## Scientific freeze
 
