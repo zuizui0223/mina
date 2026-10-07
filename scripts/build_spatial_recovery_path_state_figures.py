@@ -80,8 +80,8 @@ def fig1_three_recoveries(root: Path, outdir: Path):
         ax.set_xticks([])
         ax.set_ylim(-10, 110)
         ax.set_title(title, fontsize=11)
-        ax.text(0.5, 0.91, subtitle, ha="center", va="top",
-                transform=ax.transAxes, fontsize=8.5, wrap=True)
+        ax.text(0.5, -0.06, subtitle, ha="center", va="top",
+                transform=ax.transAxes, fontsize=8.2, wrap=True)
         ax.text(0, value + (4 if value >= 0 else -4), f"{value:.1f}%",
                 ha="center", va="bottom" if value >= 0 else "top",
                 fontsize=15, fontweight="bold")
@@ -95,7 +95,10 @@ def fig1_three_recoveries(root: Path, outdir: Path):
         fontsize=12,
         y=1.02,
     )
-    save(fig, outdir, "figure1_three_recovery_dimensions")
+    fig.subplots_adjust(bottom=0.18)
+    fig.savefig(outdir / "figure1_three_recovery_dimensions.png", dpi=300, bbox_inches="tight")
+    fig.savefig(outdir / "figure1_three_recovery_dimensions.pdf", bbox_inches="tight")
+    plt.close(fig)
 
 
 def fig2_ross_path_and_state(root: Path, outdir: Path):
@@ -194,10 +197,11 @@ def fig3_ross_episode_calibration(root: Path, outdir: Path):
     ax.axhline(0, linewidth=0.8)
     ax.set_xticks(range(len(labels)), labels, rotation=20, ha="right")
     ax.set_ylabel("Baseline compositional displacement erased (%)")
+    ax.set_ylim(-60, 8)
     ax.set_title("B  State restoration did not")
     for i, v in enumerate(state):
-        ax.text(i, v + (2 if v >= 0 else -2), f"{v:.1f}%",
-                ha="center", va="bottom" if v >= 0 else "top", fontsize=8.5)
+        ax.text(i, v + 2, f"{v:.1f}%",
+                ha="center", va="bottom", fontsize=8.5)
 
     for ax in axes:
         ax.spines["top"].set_visible(False)
@@ -226,9 +230,10 @@ def fig4_process_contrasts(root: Path, outdir: Path):
     ax.axhline(0, linewidth=0.8)
     ax.set_xticks(range(len(labels)), labels, rotation=20, ha="right")
     ax.set_ylabel("Change in effective breeding-unit number (%)")
+    ax.set_ylim(-90, 5)
     ax.set_title("A  Persistent decline: unequal attrition")
     for i, z in enumerate(changes):
-        ax.text(i, 100*z - 2.5, f"{100*z:.0f}%", ha="center", va="top", fontsize=8.5)
+        ax.text(i, 100*z + 2.5, f"{100*z:.0f}%", ha="center", va="bottom", fontsize=8.5)
 
     ax = axes[1]
     gains = [
