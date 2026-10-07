@@ -4,11 +4,11 @@
 
 ## Current canonical files
 
-- Manuscript: `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_2.md`
+- Manuscript: `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_3.md`
 - Claim ledger: `results/SPATIAL_MEMORY_CLAIM_EVIDENCE_LEDGER_V1.json`
 - Process-class contract: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
 - Reviewer stress test: `docs/SPATIAL_MEMORY_INTEGRATED_REVIEWER_STRESS_TEST_V1.md`
-- Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_2.bib`
+- Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_3.bib`
 - Figure builder: `scripts/build_spatial_memory_integrated_figures.py`
 - Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_MEMORY_INTEGRATED_V0_1.md`
 
@@ -28,9 +28,11 @@ Only levels 1 and 2 are manuscript conclusions. Level 3 is explicitly a hypothes
 
 ## Conceptual scaffold
 
-[
-n_{i,t}=\min\{K_{i,t}, S_{i,t}q_{i,t}\}.
-]
+\[
+n_{i,t} \propto S_{i,t}q_{i,t},
+\qquad
+n_{i,t} \le K_{i,t}.
+\]
 
 - (S): latent site-affiliated demographic pool;
 - (q): breeding expression / participation;
@@ -80,6 +82,7 @@ Role: falsify a simple abundance-direction rule only.
 Do not claim novelty for:
 
 - ecological memory;
+- unobservable breeding states, temporary emigration, or breeding propensity;
 - spatial resilience;
 - metapopulation recovery regimes;
 - site fidelity;
@@ -139,8 +142,16 @@ Canonical table:
 
 The table makes the non-exchangeability of the process-specific estimands explicit and prevents the manuscript from visually implying a three-class omnibus comparison.
 
+## Submission architecture
+
+The program now has one active submission lane:
+
+    submission/PENGUIN_MANUSCRIPT_CONSOLIDATION_V1.md
+
+Palmer Paper 1 v1 and the standalone Ross Ecology Report remain frozen scientific provenance but are not concurrent submission candidates.
+
 ## Current action
 
-Revise the manuscript only for coherence, prior-art positioning, and compression.
+Revise the integrated manuscript only for coherence, prior-art positioning, and compression.
 
 No new ecological endpoint is required.
