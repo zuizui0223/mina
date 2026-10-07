@@ -58,48 +58,74 @@ def save(fig, outdir: Path, stem: str):
 
 def fig1_three_recoveries(root: Path, outdir: Path):
     audit = read_json(root / "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json")
+    grain = read_json(root / "results/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.json")
     f = audit["focal_episode"]
 
     amount = 100 * f["aggregate"]["aggregate_loss_restored_fraction"]
-    path = 100 * f["path_recovery"]["inverse_path_fidelity"]
-    state = 100 * f["composition_state"]["state_distance_restored_fraction"]
+    path6 = 100 * grain["six_component"]["inverse_path_fidelity"]
+    path3 = 100 * grain["three_colony"]["inverse_path_fidelity"]
+    state6 = 100 * grain["six_component"]["state_restoration_fraction"]
+    state3 = 100 * grain["three_colony"]["state_restoration_fraction"]
 
-    fig, axes = plt.subplots(1, 3, figsize=(10.4, 3.8))
-    vals = [amount, path, state]
-    titles = ["Amount recovery", "Path reversal", "State restoration"]
-    subtitles = [
-        "How much lost abundance returned?",
-        "How much rebound followed prior local loss?",
-        "How much compositional displacement was erased?",
-    ]
+    fig, axes = plt.subplots(1, 3, figsize=(10.6, 3.9))
 
-    for ax, value, title, subtitle in zip(axes, vals, titles, subtitles):
-        ax.bar([0], [value], width=0.55)
-        ax.axhline(0, linewidth=0.8)
-        ax.set_xlim(-0.6, 0.6)
-        ax.set_xticks([])
-        ax.set_ylim(-10, 110)
-        ax.set_title(title, fontsize=11)
-        ax.text(0.5, -0.06, subtitle, ha="center", va="top",
-                transform=ax.transAxes, fontsize=8.2, wrap=True)
-        ax.text(0, value + (4 if value >= 0 else -4), f"{value:.1f}%",
-                ha="center", va="bottom" if value >= 0 else "top",
-                fontsize=15, fontweight="bold")
+    # Amount: invariant to spatial aggregation.
+    ax = axes[0]
+    ax.bar([0], [amount], width=0.55)
+    ax.axhline(0, linewidth=0.8)
+    ax.set_xlim(-0.65, 0.65)
+    ax.set_xticks([])
+    ax.set_ylim(-10, 110)
+    ax.set_title("Amount recovery", fontsize=11)
+    ax.text(0, amount + 4, f"{amount:.1f}%", ha="center", va="bottom",
+            fontsize=15, fontweight="bold")
+    ax.text(0.5, -0.06, "How much lost abundance returned?",
+            ha="center", va="top", transform=ax.transAxes, fontsize=8.2)
+
+    # Path: high at both natural grains.
+    ax = axes[1]
+    x = [0, 1]
+    vals = [path6, path3]
+    ax.bar(x, vals, width=0.62)
+    ax.axhline(0, linewidth=0.8)
+    ax.set_xticks(x, ["6 comp.", "3 colonies"])
+    ax.set_ylim(-10, 110)
+    ax.set_title("Path reversal", fontsize=11)
+    for i, v in enumerate(vals):
+        ax.text(i, v + 3, f"{v:.1f}%", ha="center", va="bottom",
+                fontsize=12, fontweight="bold")
+    ax.text(0.5, -0.13, "How much rebound followed prior local loss?",
+            ha="center", va="top", transform=ax.transAxes, fontsize=8.2)
+
+    # State: incomplete and grain dependent.
+    ax = axes[2]
+    vals = [state6, state3]
+    ax.bar(x, vals, width=0.62)
+    ax.axhline(0, linewidth=0.8)
+    ax.set_xticks(x, ["6 comp.", "3 colonies"])
+    ax.set_ylim(-10, 110)
+    ax.set_title("State restoration", fontsize=11)
+    for i, v in enumerate(vals):
+        ax.text(i, v + 3, f"{v:.1f}%", ha="center", va="bottom",
+                fontsize=12, fontweight="bold")
+    ax.text(0.5, -0.13, "How much baseline compositional displacement was erased?",
+            ha="center", va="top", transform=ax.transAxes, fontsize=8.2)
+
+    axes[0].set_ylabel("Recovery score (%)")
+    for ax in axes:
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
         ax.spines["bottom"].set_visible(False)
 
-    axes[0].set_ylabel("Recovery score (%)")
     fig.suptitle(
-        "One Ross rebound, three different answers to “did the population recover?”",
+        "One Ross rebound: amount and path recovered strongly, spatial state did not",
         fontsize=12,
         y=1.02,
     )
-    fig.subplots_adjust(bottom=0.18)
+    fig.subplots_adjust(bottom=0.20)
     fig.savefig(outdir / "figure1_three_recovery_dimensions.png", dpi=300, bbox_inches="tight")
     fig.savefig(outdir / "figure1_three_recovery_dimensions.pdf", bbox_inches="tight")
     plt.close(fig)
-
 
 def fig2_ross_path_and_state(root: Path, outdir: Path):
     audit = read_json(root / "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json")
