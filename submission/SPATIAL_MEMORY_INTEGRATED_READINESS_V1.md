@@ -9,6 +9,7 @@
 - Process-class contract: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
 - Reviewer stress test: `docs/SPATIAL_MEMORY_INTEGRATED_REVIEWER_STRESS_TEST_V1.md`
 - Novelty boundary: `docs/SPATIAL_MEMORY_NOVELTY_BOUNDARY_V1.md`
+- Common counterfactual: `docs/PROPORTIONAL_SPATIAL_COUNTERFACTUALS_V1.md`
 - Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_4.bib`
 - Figure builder: `scripts/build_spatial_memory_integrated_figures.py`
 - Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_MEMORY_INTEGRATED_V0_1.md`
@@ -143,7 +144,19 @@ Canonical table:
 
     docs/TABLE1_SPATIAL_MEMORY_EVIDENCE_V0_1.md
 
-The table makes the non-exchangeability of the process-specific estimands explicit and prevents the manuscript from visually implying a three-class omnibus comparison.
+The table makes the non-exchangeability of the process-specific estimands explicit and prevents the manuscript from visually implying a three-class omnibus comparison. The process-specific tests are instead unified by the proportional spatial counterfactual: aggregate change with no additional reallocation.
+
+## Target journal
+
+Primary target: **Ecology — Article**.
+
+Canonical target plan:
+
+    submission/SPATIAL_MEMORY_ECOLOGY_ARTICLE_PLAN_V1.md
+
+Backup only after a completed Ecology decision: **Journal of Animal Ecology — Research Article**.
+
+The integrated manuscript is too multi-component for the narrower Ecology Report framing and should not be forced back into the 20-page Report format.
 
 ## Submission architecture
 
