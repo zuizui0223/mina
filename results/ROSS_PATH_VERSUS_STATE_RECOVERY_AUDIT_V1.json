@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-path-versus-state-recovery-audit-v1",
+  "date": "2026-10-07",
+  "status": "post_result_descriptive_reinterpretation",
+  "focal_episode": {
+    "years": [
+      1999,
+      2001,
+      2002
+    ],
+    "aggregate": {
+      "N": [
+        207411,
+        94798,
+        203996
+      ],
+      "loss_fraction": -0.5429461311116575,
+      "aggregate_loss_restored_fraction": 0.9696749043183291
+    },
+    "path_recovery": {
+      "loss_rebound_cosine": 0.9969470572957101,
+      "inverse_path_mismatch_fraction": 0.09405445040386184,
+      "inverse_path_fidelity": 0.9059455495961382
+    },
+    "composition_state": {
+      "baseline_trough_TV": 0.05089184976736118,
+      "baseline_rebound_TV": 0.04967242312643739,
+      "state_distance_restored_fraction": 0.0239611381095024,
+      "trough_rebound_TV": 0.09753113922667692,
+      "trough_rebound_TV_rank_among_25_complete_transitions": 1,
+      "trough_rebound_TV_percentile": 1,
+      "transition_TV_median": 0.032186218512497644,
+      "transition_TV_q75": 0.0444445393152121
+    },
+    "effective_number_state": {
+      "E3": [
+        1.6094677066662906,
+        1.7286221365129772,
+        1.5074306773904889
+      ],
+      "E6": [
+        2.05575303802091,
+        2.2919284746729964,
+        1.8190233757364993
+      ],
+      "E3_baseline_distance_restored_fraction": 0.08294865848025879,
+      "E6_baseline_distance_restored_fraction": -0.12497408808347488
+    },
+    "dominant_share": {
+      "crozier_west_1999": 0.6720280023721018,
+      "crozier_west_2001": 0.6241692862718623,
+      "crozier_west_2002": 0.7217004254985392
+    }
+  },
+  "other_complete_down_up_episodes": [
+    {
+      "years": [
+        1989,
+        1990,
+        1991
+      ],
+      "aggregate_restoration": 0.3478818998716303,
+      "inverse_path_fidelity": 0.9087851175994598,
+      "loss_rebound_cosine": 0.994109576636787,
+      "baseline_trough_TV": 0.009260851038154466,
+      "baseline_rebound_TV": 0.011968086738105885,
+      "state_distance_restored_fraction": -0.29233120031816484
+    },
+    {
+      "years": [
+        2002,
+        2003,
+        2004
+      ],
+      "aggregate_restoration": 1.2208002653941359,
+      "inverse_path_fidelity": 0.893699186671979,
+      "loss_rebound_cosine": 0.9839126605037913,
+      "baseline_trough_TV": 0.02905552379407283,
+      "baseline_rebound_TV": 0.04456253927726545,
+      "state_distance_restored_fraction": -0.5337028371299217
+    }
+  ],
+  "decision": {
+    "high_inverse_path_fidelity_implies_state_restoration": false,
+    "focal_rebound_restored_pre_shock_composition": false,
+    "focal_rebound_was_largest_compositional_transition_in_series": true,
+    "prior_spatial_memory_state_restoration_framing_withdrawn": true,
+    "supported_interpretation": "Local gains occurred largely where local losses had occurred, but differential rebound reweighted the breeding network; path reversibility and state restoration are distinct."
+  },
+  "boundary": [
+    "All state-restoration calculations are post-result descriptive audits.",
+    "The 25 transition rank is descriptive and not an inferential null distribution.",
+    "The three down-up episodes are not independent replicates.",
+    "High cosine similarity is strongly influenced by the scale of large breeding components, although prior five-component audits show the path-overlap signal is not solely Cape Crozier West.",
+    "No individual identity or latent spatial state is inferred."
+  ]
+}
