@@ -79,8 +79,6 @@ def fig1_three_recoveries(root: Path, outdir: Path):
     ax.set_title("Amount recovery", fontsize=11)
     ax.text(0, amount + 4, f"{amount:.1f}%", ha="center", va="bottom",
             fontsize=15, fontweight="bold")
-    ax.text(0.5, -0.06, "How much lost abundance returned?",
-            ha="center", va="top", transform=ax.transAxes, fontsize=8.2)
 
     # Path: high at both natural grains.
     ax = axes[1]
@@ -94,8 +92,6 @@ def fig1_three_recoveries(root: Path, outdir: Path):
     for i, v in enumerate(vals):
         ax.text(i, v + 3, f"{v:.1f}%", ha="center", va="bottom",
                 fontsize=12, fontweight="bold")
-    ax.text(0.5, -0.13, "How much rebound followed prior local loss?",
-            ha="center", va="top", transform=ax.transAxes, fontsize=8.2)
 
     # State: incomplete and grain dependent.
     ax = axes[2]
@@ -108,8 +104,6 @@ def fig1_three_recoveries(root: Path, outdir: Path):
     for i, v in enumerate(vals):
         ax.text(i, v + 3, f"{v:.1f}%", ha="center", va="bottom",
                 fontsize=12, fontweight="bold")
-    ax.text(0.5, -0.13, "How much baseline compositional displacement was erased?",
-            ha="center", va="top", transform=ax.transAxes, fontsize=8.2)
 
     axes[0].set_ylabel("Recovery score (%)")
     for ax in axes:
@@ -122,7 +116,7 @@ def fig1_three_recoveries(root: Path, outdir: Path):
         fontsize=12,
         y=1.02,
     )
-    fig.subplots_adjust(bottom=0.20)
+    fig.subplots_adjust(bottom=0.10)
     fig.savefig(outdir / "figure1_three_recovery_dimensions.png", dpi=300, bbox_inches="tight")
     fig.savefig(outdir / "figure1_three_recovery_dimensions.pdf", bbox_inches="tight")
     plt.close(fig)
@@ -148,13 +142,6 @@ def fig2_ross_path_and_state(root: Path, outdir: Path):
     ax.set_ylabel("Prior local loss restored (%)")
     ax.set_ylim(0, 122)
     ax.set_title("A  Local restoration varied tenfold")
-    ax.text(
-        0.02, 0.63,
-        f"Median local restoration = {100*local['median']:.1f}%\n"
-        "Crozier W supplied 80.6% of rebound",
-        transform=ax.transAxes, va="top", fontsize=8.5,
-        bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor="none", alpha=0.92),
-    )
     ax.text(
         0.98, aggregate / 122 + 0.015,
         f"Aggregate {aggregate:.1f}%",
