@@ -48,18 +48,19 @@ def fig1_ross_path(root: Path, outdir: Path):
     E = [effective_number(counts[y].values()) for y in years]
 
     fig, axes = plt.subplots(1, 2, figsize=(8.2, 3.5))
+    x = list(range(len(years)))
 
-    axes[0].plot(years, N, marker="o")
+    axes[0].plot(x, N, marker="o")
     axes[0].set_xlabel("Year")
     axes[0].set_ylabel("Breeding pairs")
     axes[0].set_title("Aggregate breeding abundance")
-    axes[0].set_xticks(years)
+    axes[0].set_xticks(x, [str(y) for y in years])
 
-    axes[1].plot(years, E, marker="o")
+    axes[1].plot(x, E, marker="o")
     axes[1].set_xlabel("Year")
     axes[1].set_ylabel("Effective breeding-unit number")
     axes[1].set_title("Spatial allocation")
-    axes[1].set_xticks(years)
+    axes[1].set_xticks(x, [str(y) for y in years])
 
     for ax in axes:
         ax.spines["top"].set_visible(False)
@@ -74,37 +75,57 @@ def fig1_ross_path(root: Path, outdir: Path):
 def fig2_inverse_path(root: Path, outdir: Path):
     r = read_json(root / "results/ROSS_INVERSE_PATH_MISMATCH_V1.json")["six_component"]
     units = [x.replace("Cape ", "") for x in r["units"]]
+    short = ["Royds", "Bird S", "Bird M", "Bird N", "Crozier W", "Crozier E"]
     observed = r["rebound_gain"]
     expected = r["scaled_inverse_path_expected_rebound"]
+    residual = r["observed_minus_scaled_inverse_path"]
 
-    x = list(range(len(units)))
-    width = 0.38
+    fig, axes = plt.subplots(1, 2, figsize=(8.4, 3.8))
 
-    fig, ax = plt.subplots(figsize=(8.0, 4.0))
-    ax.bar([v - width / 2 for v in x], expected, width=width, label="Exact inverse path")
-    ax.bar([v + width / 2 for v in x], observed, width=width, label="Observed rebound")
+    # Panel A: broad spatial reversibility. Log axes keep the small components visible.
+    ax = axes[0]
+    lo = min(min(expected), min(observed)) * 0.75
+    hi = max(max(expected), max(observed)) * 1.25
+    ax.plot([lo, hi], [lo, hi], linewidth=1.0, linestyle="--")
+    for label, x, y in zip(short, expected, observed):
+        ax.scatter([x], [y], s=42)
+        ax.annotate(label, (x, y), xytext=(4, 4), textcoords="offset points", fontsize=8)
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlim(lo, hi)
+    ax.set_ylim(lo, hi)
+    ax.set_xlabel("Exact inverse-path rebound")
+    ax.set_ylabel("Observed rebound")
+    ax.set_title("Most rebound tracks the loss")
+
+    # Panel B: where the remaining allocation mismatch sits.
+    ax = axes[1]
+    x = list(range(len(short)))
+    ax.bar(x, residual)
+    ax.axhline(0, linewidth=0.8)
     ax.set_xticks(x)
-    ax.set_xticklabels(units, rotation=35, ha="right")
-    ax.set_ylabel("Breeding-pair rebound")
-    ax.legend(frameon=False)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-
+    ax.set_xticklabels(short, rotation=35, ha="right")
+    ax.set_ylabel("Observed - inverse path")
+    ax.set_title("Residual allocation mismatch")
     ax.text(
         0.02,
-        0.97,
-        "Aggregate loss restored = 96.97%\n"
-        "Allocation mismatch = 9.41%\n"
-        "Cosine(loss, rebound) = 0.997",
+        0.98,
+        "Loss restored = 96.97%\n"
+        "Mismatch = 9.41% of rebound\n"
+        "Cosine = 0.997",
         transform=ax.transAxes,
         va="top",
+        fontsize=9,
     )
+
+    for ax in axes:
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
 
     fig.tight_layout()
     fig.savefig(outdir / "figure2_inverse_path_rebound.png", dpi=300)
     fig.savefig(outdir / "figure2_inverse_path_rebound.pdf")
     plt.close(fig)
-
 
 def fig3_external_sign_tests(root: Path, outdir: Path):
     bird = read_json(root / "results/BIRD_ISLAND_GENTOO_SIX_UNIT_RECOVERY_ALLOCATION_V1.json")
