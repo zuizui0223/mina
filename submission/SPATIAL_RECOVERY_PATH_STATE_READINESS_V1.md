@@ -85,9 +85,21 @@ The manuscript must cite this prior art and present the contribution as an empir
 
 Primary target remains **Ecology — Article**.
 
+Canonical submission plan:
+
+    submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V2.md
+
 Backup after an Ecology decision only: **Journal of Animal Ecology — Research Article**.
 
+## Reviewer stress test
+
+Canonical:
+
+    docs/SPATIAL_RECOVERY_PATH_STATE_REVIEWER_STRESS_TEST_V2.md
+
 ## Figures
+
+**CI: PASS. Visual QA: COMPLETE.**
 
 Canonical builder:
 
