@@ -102,36 +102,35 @@ def fig1_three_recoveries(root: Path, outdir: Path):
 
 
 def fig2_ross_path_and_state(root: Path, outdir: Path):
-    inv = read_json(root / "results/ROSS_INVERSE_PATH_MISMATCH_V1.json")["six_component"]
     audit = read_json(root / "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json")
     counts = read_ross(root / "external/ross_island_v2_frozen_counts.csv")
 
+    local = audit["focal_episode"]["local_restoration"]
+    comp = local["components"]
     labels = ["Royds", "Bird S", "Bird M", "Bird N", "Crozier W", "Crozier E"]
-    expected = inv["scaled_inverse_path_expected_rebound"]
-    observed = inv["rebound_gain"]
+    ratios = [100 * d["restoration_ratio"] for d in comp]
+    aggregate = 100 * local["aggregate_restoration_loss_weighted_mean"]
 
-    fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.0))
+    fig, axes = plt.subplots(1, 2, figsize=(9.5, 4.2))
 
     ax = axes[0]
-    lo = min(min(expected), min(observed)) * 0.72
-    hi = max(max(expected), max(observed)) * 1.28
-    ax.plot([lo, hi], [lo, hi], linestyle="--", linewidth=1.0)
-    for label, x, y in zip(labels, expected, observed):
-        ax.scatter([x], [y], s=42)
-        ax.annotate(label, (x, y), xytext=(4, 4), textcoords="offset points", fontsize=8)
-    ax.set_xscale("log")
-    ax.set_yscale("log")
-    ax.set_xlim(lo, hi)
-    ax.set_ylim(lo, hi)
-    ax.set_xlabel("Rebound under exact inverse path")
-    ax.set_ylabel("Observed rebound")
-    ax.set_title("A  Rebound largely followed prior loss")
+    x = list(range(len(labels)))
+    ax.bar(x, ratios)
+    ax.axhline(aggregate, linestyle="--", linewidth=1.0)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, rotation=35, ha="right")
+    ax.set_ylabel("Prior local loss restored (%)")
+    ax.set_ylim(0, 122)
+    ax.set_title("A  Local restoration varied tenfold")
     ax.text(
-        0.03, 0.97,
-        "Cosine = 0.997\n"
-        "Inverse-path fidelity = 90.59%",
-        transform=ax.transAxes, va="top", fontsize=9,
+        0.02, 0.96,
+        f"Aggregate = loss-weighted mean = {aggregate:.1f}%\n"
+        f"Median local restoration = {100*local['median']:.1f}%\n"
+        "Crozier W supplied 80.6% of rebound",
+        transform=ax.transAxes, va="top", fontsize=8.6,
     )
+    for i, v in enumerate(ratios):
+        ax.text(i, v + 2.5, f"{v:.0f}%", ha="center", va="bottom", fontsize=8)
 
     ax = axes[1]
     years = [1999, 2001, 2002]
@@ -149,7 +148,7 @@ def fig2_ross_path_and_state(root: Path, outdir: Path):
 
     ax.set_xticks(x, [str(y) for y in years])
     ax.set_ylabel("Share of breeding abundance (%)")
-    ax.set_title("B  Composition crossed past the baseline state")
+    ax.set_title("B  Differential recovery reweighted composition")
     ax.legend(fontsize=7, frameon=False, bbox_to_anchor=(1.02, 1), loc="upper left")
     ax.text(
         0.02, 0.02,
@@ -163,8 +162,7 @@ def fig2_ross_path_and_state(root: Path, outdir: Path):
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
 
-    save(fig, outdir, "figure2_path_reversal_state_reweighting")
-
+    save(fig, outdir, "figure2_local_recovery_state_reweighting")
 
 def fig3_ross_episode_calibration(root: Path, outdir: Path):
     audit = read_json(root / "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json")
