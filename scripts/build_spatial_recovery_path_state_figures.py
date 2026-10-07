@@ -123,11 +123,16 @@ def fig2_ross_path_and_state(root: Path, outdir: Path):
     ax.set_ylim(0, 122)
     ax.set_title("A  Local restoration varied tenfold")
     ax.text(
-        0.02, 0.96,
-        f"Aggregate = loss-weighted mean = {aggregate:.1f}%\n"
+        0.02, 0.63,
         f"Median local restoration = {100*local['median']:.1f}%\n"
         "Crozier W supplied 80.6% of rebound",
-        transform=ax.transAxes, va="top", fontsize=8.6,
+        transform=ax.transAxes, va="top", fontsize=8.5,
+        bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor="none", alpha=0.92),
+    )
+    ax.text(
+        0.98, aggregate / 122 + 0.015,
+        f"Aggregate {aggregate:.1f}%",
+        transform=ax.transAxes, ha="right", va="bottom", fontsize=8.5,
     )
     for i, v in enumerate(ratios):
         ax.text(i, v + 2.5, f"{v:.0f}%", ha="center", va="bottom", fontsize=8)
@@ -156,6 +161,7 @@ def fig2_ross_path_and_state(root: Path, outdir: Path):
         "1999→2002 TV = 4.97%\n"
         "2001→2002 TV = 9.75%",
         transform=ax.transAxes, va="bottom", fontsize=8.5,
+        bbox=dict(boxstyle="round,pad=0.22", facecolor="white", edgecolor="none", alpha=0.90),
     )
 
     for ax in axes:
