@@ -118,3 +118,28 @@ Do not rescue the withdrawn state-restoration framing with alternative compositi
 TV and effective-number summaries already agree that state restoration is weak or absent.
 
 Any future spatial-memory claim requires independent individual-level or latent-state evidence, not further re-expression of these aggregate counts.
+
+
+## Why the 9.41% mismatch matters for state recovery
+
+The earlier interpretation called the 9.41% inverse-path mismatch "moderate." That description is misleading if the response of interest is final spatial state.
+
+Given the observed 96.97% aggregate restoration, an exact proportional inverse path would have produced a 2002 endpoint with:
+
+- TV distance from the 1999 composition = **0.0717%**;
+- E6 = **2.0589**, essentially identical to the 1999 baseline E6 = **2.0558**.
+
+The observed 2002 endpoint instead had:
+
+- TV distance from baseline = **4.967%**;
+- E6 = **1.8190**.
+
+Thus the observed state distance was about **69×** the distance expected under exact inverse reversal.
+
+The structured allocation residual is therefore not biologically negligible. It is precisely what converts nearly complete aggregate and path recovery into state non-restoration.
+
+Most of the positive residual was concentrated at Cape Crozier West (+10,270.6 pairs relative to exact inverse allocation), while the other five components fell below their inverse-path allocations.
+
+The corrected interpretation is:
+
+> **a relatively small fraction of rebound reallocation can have a large effect on normalized spatial state when the residual is strongly structured.**
