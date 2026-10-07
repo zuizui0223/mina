@@ -26,7 +26,7 @@ Islands make this distinction particularly visible. Colonial seabirds obtain mos
 
 Adélie penguins provide three process-anchored contrasts. On Ross Island, giant icebergs altered sea-ice and colony access and caused widespread breeding disruption around the 2001 census trough [@lyver2014; @dugger2014]. Long-term mark–recapture work independently shows that established breeders move among Ross Island colonies very rarely, while breeder-to-nonbreeder transitions are common [@dugger2026]. Palmer and Signy provide persistent-decline systems in which we can ask whether spatial composition was merely thinned or changed disproportionately [@cimino2025; @dunn2016]. Beaufort Island provides a capacity-change case in which usable nesting habitat expanded and movement toward nearby Ross Island colonies changed as local habitat became available [@larue2013].
 
-We therefore test a hierarchy of claims. Existing theory already establishes that aggregate recovery can coexist with structural non-recovery; we use the boundary cases only to confirm that simple abundance-direction rules fail here as well. The focal empirical question is the converse: whether a severe observed breeding collapse can be followed by recovery of nearly the same multi-node allocation. We then contrast that temporary-disturbance case with persistent attrition and capacity change. The cases are not exchangeable replicates of one effect size, and the process classes were formalized after their spatial outcomes were known. Our goal is therefore not to claim a universal three-process law, but to establish a narrower distinction: **loss of an observed breeding distribution and loss of the spatial organization that can later be re-expressed are not necessarily the same biological event.**
+We therefore test a hierarchy of claims using a common proportional-counterfactual logic. Existing theory already establishes that aggregate recovery can coexist with structural non-recovery; we use the boundary cases only to confirm that simple abundance-direction rules fail here as well. The focal empirical question is the converse: whether a severe observed breeding collapse can be followed by recovery of nearly the same multi-node allocation. We then contrast that temporary-disturbance case with persistent attrition and capacity change by asking, in each system, whether local change follows the spatially neutral proportional expectation. The cases are not exchangeable replicates of one effect size, and the process classes were formalized after their spatial outcomes were known. Our goal is therefore not to claim a universal three-process law, but to establish a narrower distinction: **loss of an observed breeding distribution and loss of the spatial organization that can later be re-expressed are not necessarily the same biological event.**
 
 ## Materials and Methods
 
@@ -45,6 +45,50 @@ We distinguished three primary classes.
 **Breeding-capacity change.** Assignment required independent evidence that usable nesting habitat or breeding capacity changed and that this change plausibly altered settlement opportunities or movement.
 
 Cases lacking sufficient source-side evidence for one of these classes were retained only as boundary cases. We did not use effective breeding-unit number, dominance, inverse-path mismatch, or any other spatial outcome to assign process class.
+
+### Common proportional counterfactual
+
+The process-specific analyses use different response metrics but share one counterfactual principle: **what spatial pattern would be expected if the observed aggregate change occurred without additional reallocation among breeding units?**
+
+For a single transition from state 0 to state 1, the fixed-composition expectation is
+
+\[
+n_{i,1}^{*}=G\,n_{i,0},
+\qquad
+G=\frac{N_1}{N_0}.
+\]
+
+Under this null, every breeding unit changes by the same multiplicative factor and relative composition is preserved:
+
+\[
+p_{i,1}^{*}=p_{i,0}.
+\]
+
+This is the proportional-thinning null for decline and the proportional-growth null for expansion. Palmer and Signy implement this idea with their frozen trajectory/count-error procedures; the Beaufort endpoint comparison uses the same fixed-starting-composition logic.
+
+A rebound after an identified preceding loss requires a path-specific version of the same principle. Let
+
+\[
+L_i=n_{i,0}-n_{i,1}
+\]
+
+be the prior local loss and \(R=\sum_i(n_{i,2}-n_{i,1})\) the observed aggregate rebound. Exact proportional reversal allocates the rebound according to the spatial footprint of loss,
+
+\[
+R_i^{*}=R\frac{L_i}{\sum_j L_j}.
+\]
+
+Equivalently,
+
+\[
+n_{i,2}^{*}=n_{i,1}+r(n_{i,0}-n_{i,1}),
+\qquad
+r=\frac{R}{\sum_j L_j}.
+\]
+
+When \(r=1\), the counterfactual returns exactly to the pre-disturbance vector. When \(0<r<1\), it lies on the straight path between trough and baseline.
+
+These proportional counterfactuals are not claimed as novel mathematics. Their role is to provide a common biological baseline: aggregate change alone, without extra spatial reallocation. The system-specific analyses then ask how observed change departs from that baseline.
 
 ### Expressed breeding abundance and latent spatial organization
 
@@ -274,9 +318,17 @@ The boundary cases prevent a return to another simple rule. Bird Island Gentoo a
 
 Thus "decline concentrates" and "recovery spreads" are both too simple. Aggregate direction is a summary of net change, not a description of how local breeding units contributed to that change.
 
+### The synthesis is unified by a counterfactual, not a common effect size
+
+The three process-anchored contrasts do not share one response statistic, but they do share a counterfactual: aggregate change with no additional spatial reallocation.
+
+For Palmer and Signy, the spatially neutral expectation is proportional thinning of the starting composition. For Beaufort, it is proportional growth of the starting composition. For Ross, where the biological question is recovery from a known preceding shock, it is proportional reversal of the loss vector. In each case the observed local pattern is compared with the spatial allocation expected if aggregate change alone determined local change.
+
+This is why a single omnibus effect size is neither necessary nor desirable. The common inferential object is the **proportional spatial counterfactual**, while the biologically appropriate deviation measure differs with the process and data structure.
+
 ### What the present synthesis does—and does not—test
 
-The three process-anchored contrasts do not share one estimand. Ross has a baseline–trough–rebound inverse-path design. Palmer and Signy test persistent concentration against proportional thinning. Beaufort combines a capacity-release census contrast with independent movement evidence. Treating them as exchangeable replicates would create a cleaner statistic but a weaker biological study.
+The three process-anchored contrasts still do not share one estimand. Ross has a baseline–trough–rebound inverse-path design. Palmer and Signy test persistent concentration across decline trajectories. Beaufort combines a capacity-release endpoint contrast with independent movement evidence. Treating their deviations from proportional expectation as exchangeable replicates would create a cleaner statistic but a weaker biological study.
 
 The strongest empirical conclusion is therefore comparative, not causal: **source-identified kinds of population change are associated with distinct spatial signatures in the available cases.** The stronger hypothesis is that later spatial recovery depends on whether change primarily suppresses breeding expression, erodes the site-affiliated demographic pool, or changes breeding capacity.
 
