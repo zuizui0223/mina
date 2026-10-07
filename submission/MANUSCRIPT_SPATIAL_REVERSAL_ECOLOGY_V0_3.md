@@ -1,5 +1,7 @@
 # Breeding rebound largely retraces spatial loss after a mega-iceberg disturbance
 
+**Status:** superseded by `MANUSCRIPT_SPATIAL_REVERSAL_ECOLOGY_V0_4.md` for ESA AI-disclosure compliance.
+
 **Ecology candidate v0.3 — PR189 spatial-reversibility paper**
 
 ## Abstract
