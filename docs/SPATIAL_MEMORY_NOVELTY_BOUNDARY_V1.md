@@ -14,9 +14,24 @@ The manuscript must not claim novelty for:
 - animals returning to familiar areas after acute disturbance;
 - breeding dispersal changing after colony disturbance or restoration;
 - site fidelity affecting colony use or colony-size distributions;
-- unequal local demographic rates changing aggregate spatial composition.
+- unequal local demographic rates changing aggregate spatial composition;
+- the general result that abundance or function can recover while composition or patch occupancy remains altered.
 
 Relevant prior art includes Johnstone et al. (2016), Zelnik et al. (2019), Wilson et al. (2023), Souchay et al. (2014), Kreling et al. (2021), Brown et al. (2017), Spendelow et al. (2016), and Safine et al. (2020).
+
+## Relation to recovery prior art
+
+Community and metapopulation recovery already establish a one-way warning:
+
+> **aggregate recovery can hide structural non-recovery.**
+
+Hillebrand et al. (2020) showed that abundance and biomass commonly recover more completely than multivariate community composition after pulse disturbances. Wilson et al. (2023) explicitly described metapopulation "hidden collapses" in which total abundance recovers despite persistent local patch collapse.
+
+The Ross result is useful as the converse interpretive case:
+
+> **aggregate collapse can overstate structural loss when a previous spatial allocation remains recoverable.**
+
+This converse framing is descriptive and does not imply that latent structure was directly observed during the 2001 trough.
 
 ## Distinct empirical contribution
 
@@ -50,7 +65,7 @@ Therefore the paper's comparative contribution is:
 
 ## Strongest novelty sentence
 
-> **What disappears from a breeding census is not always what disappears from the breeding network.**
+> **What disappears from a breeding census is not always what disappears from the breeding network—and what returns in total abundance is not always what returns in spatial structure.**
 
 ## Forbidden novelty inflation
 
