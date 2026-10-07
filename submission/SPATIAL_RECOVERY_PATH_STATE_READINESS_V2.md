@@ -5,7 +5,7 @@
 
 ## Canonical scientific package
 
-- Frozen scientific manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
+- Frozen scientific manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
 - Initial-submission production manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
 - Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib`
 - Claim ledger: `results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V4.json`
@@ -141,3 +141,12 @@ Allowed work:
 - submission-document production;
 - metadata completion;
 - archive packaging.
+
+
+## Production preview
+
+- Ecology Word preview builder: `scripts/build_spatial_recovery_ecology_docx.py`
+- Main figures: 2
+- Supporting figures: S1-S2
+- Synthetic author-complete rendered length: **30 pages**
+- Production QA: `submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V2.md`
