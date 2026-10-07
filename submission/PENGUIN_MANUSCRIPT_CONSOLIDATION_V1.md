@@ -83,7 +83,7 @@ If it is later abandoned, reopening either narrower package requires an explicit
 - Manuscript: `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_4.md`
 - Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_4.bib`
 - Process classification: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
-- Claim ledger: `results/SPATIAL_MEMORY_CLAIM_EVIDENCE_LEDGER_V1.json`
+- Claim ledger: `results/SPATIAL_MEMORY_CLAIM_EVIDENCE_LEDGER_V2.json`
 - Evidence table: `docs/TABLE1_SPATIAL_MEMORY_EVIDENCE_V0_1.md`
 - Reviewer stress test: `docs/SPATIAL_MEMORY_INTEGRATED_REVIEWER_STRESS_TEST_V1.md`
 - Novelty boundary: `docs/SPATIAL_MEMORY_NOVELTY_BOUNDARY_V1.md`
