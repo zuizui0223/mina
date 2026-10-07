@@ -61,8 +61,6 @@ AI_ACK = (
 FIGURES = [
     ("Figure 1", "figure1_three_recovery_dimensions.png"),
     ("Figure 2", "figure2_local_recovery_state_reweighting.png"),
-    ("Figure 3", "figure3_ross_path_state_calibration.png"),
-    ("Figure 4", "figure4_process_contrasts.png"),
 ]
 
 
