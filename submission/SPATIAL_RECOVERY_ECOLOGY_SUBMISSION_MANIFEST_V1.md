@@ -8,7 +8,7 @@
 - Frozen scientific manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
 - Initial-submission production manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
 - Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib`
-- Main figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md`
+- Main figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md`
 - Supporting Information: `submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md`
 - Supporting Information DOCX builder: `scripts/build_spatial_recovery_supplement_docx.py`
 - Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
