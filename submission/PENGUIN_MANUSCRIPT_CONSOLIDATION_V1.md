@@ -93,11 +93,13 @@ The prior v0.4 spatial-memory framing was superseded after the Ross path-versus-
 - Process classification: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
 - Claim ledger: `results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V1.json`
 - Evidence table: `docs/TABLE1_SPATIAL_MEMORY_EVIDENCE_V0_1.md`
-- Reviewer stress test: `docs/SPATIAL_MEMORY_INTEGRATED_REVIEWER_STRESS_TEST_V1.md`
+- Reviewer stress test: `docs/SPATIAL_RECOVERY_PATH_STATE_REVIEWER_STRESS_TEST_V2.md`
 - Novelty boundary: `docs/SPATIAL_RECOVERY_PATH_STATE_NOVELTY_BOUNDARY_V2.md`
 - Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
 - Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md`
 - Scientific readiness: `submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V1.md`
+- Submission plan: `submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V2.md`
+- Cover letter: `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_2.md`
 
 ## Paper-count consequence
 
