@@ -106,6 +106,12 @@ Do not submit:
 
 These remain scientific provenance only.
 
+## Submission QA
+
+Canonical automated QA receipt:
+
+`submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V1.md`
+
 ## Stop rule
 
 No further ecological endpoint search before submission.
