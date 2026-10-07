@@ -12,13 +12,14 @@ The previous spatial-memory v0.4 framing is superseded:
 
 Canonical manuscript:
 
-    docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_6.md
+    docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_7.md
 
 ## Exact local-recovery decomposition
 
 Canonical interpretation note:
 
-    docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md
+    docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md`
+- Spatial-grain audit: `docs/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.md
 
 Aggregate restoration is exactly the loss-weighted mean local restoration ratio. In the focal Ross episode, local restoration ranged from 10.8% to 109.8%, with a median of 51.8%. Cape Crozier West supplied 80.6% of rebound; excluding it, the other five components restored 65.3% of combined loss.
 
@@ -97,15 +98,15 @@ Primary target remains **Ecology — Article**.
 
 Canonical submission plan:
 
-    submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V3.md
+    submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V4.md
 
 Editorial triage:
 
-    submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V1.md
+    submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V2.md
 
 Cover letter:
 
-    submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_3.md
+    submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_4.md
 
 Backup after an Ecology decision only: **Journal of Animal Ecology — Research Article**.
 
