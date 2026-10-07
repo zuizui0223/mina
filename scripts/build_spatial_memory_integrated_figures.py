@@ -79,12 +79,21 @@ def fig1_concept(root: Path, outdir: Path):
             transform=ax.transAxes,
         )
 
+    fig.text(
+        0.5, -0.01,
+        "Common counterfactual: aggregate change with proportional spatial allocation and no additional reorganization",
+        ha="center", va="top", fontsize=10,
+        bbox=dict(boxstyle="round,pad=0.35", fill=False),
+    )
     fig.suptitle(
         "Observed breeding abundance is an expressed state; different processes alter S, q, or K",
         y=1.02,
         fontsize=12,
     )
-    save(fig, outdir, "figure1_expressed_latent_capacity_model")
+    fig.subplots_adjust(bottom=0.14)
+    fig.savefig(outdir / "figure1_expressed_latent_capacity_model.png", dpi=300, bbox_inches="tight")
+    fig.savefig(outdir / "figure1_expressed_latent_capacity_model.pdf", bbox_inches="tight")
+    plt.close(fig)
 
 
 def fig2_ross(root: Path, outdir: Path):
