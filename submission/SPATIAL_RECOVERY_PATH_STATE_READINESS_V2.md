@@ -5,7 +5,7 @@
 
 ## Canonical scientific package
 
-- Frozen scientific manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
+- Frozen scientific manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
 - Initial-submission production manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
 - Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib`
 - Claim ledger: `results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V4.json`
