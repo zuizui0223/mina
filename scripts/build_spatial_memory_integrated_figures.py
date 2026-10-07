@@ -25,9 +25,9 @@ def save(fig, outdir: Path, stem: str):
 def fig1_concept(root: Path, outdir: Path):
     fig, axes = plt.subplots(1, 3, figsize=(11.2, 4.0))
     titles = [
-        "A  Temporary breeding-state / access shock",
-        "B  Persistent demographic attrition",
-        "C  Breeding-capacity change",
+        "A  Temporary breeding-state\n/ access shock",
+        "B  Persistent demographic\nattrition",
+        "C  Breeding-capacity\nchange",
     ]
     top = [
         "S mostly retained\nq changes strongly\nK broadly retained",
@@ -43,7 +43,7 @@ def fig1_concept(root: Path, outdir: Path):
 
     for ax, title, t, b, system in zip(axes, titles, top, bottom, systems):
         ax.axis("off")
-        ax.set_title(title, fontsize=11, loc="left")
+        ax.set_title(title, fontsize=10.5, loc="left", pad=8)
         ax.text(
             0.5, 0.82, t,
             ha="center", va="center", fontsize=10,
