@@ -1,7 +1,7 @@
 # Integrated spatial-memory manuscript — reviewer stress test v1
 
 **Date:** 2026-10-07  
-**Manuscript tested:** `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_2.md`  
+**Manuscript tested:** `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_4.md`  
 **Decision:** viable integrated Ecology/JAE-level manuscript framing; not yet a Nature-level causal test.
 
 ## Executive assessment
@@ -228,3 +228,24 @@ The narrower synthesis contribution is:
 > **individual-level hidden breeding states can scale up to a recoverable population-level spatial allocation, so collapse of the observed breeding vector need not equal destruction of the spatial template that can regenerate it.**
 
 Ross supplies the aggregate spatial-recovery observation; the mark–recapture literature supplies the biologically plausible hidden-state mechanism. These evidence layers remain distinct.
+
+
+## Recovery-literature stress test
+
+A further prior-art audit lowers another claim from novelty to background.
+
+Community recovery studies show that abundance or function can recover before multivariate composition, and Wilson et al. (2023) explicitly describe metapopulation "hidden collapses" in which aggregate abundance recovers while local patches remain collapsed.
+
+Therefore:
+
+> **aggregate recovery does not imply structural recovery**
+
+is not a novel claim of this manuscript.
+
+The useful converse question is:
+
+> **can severe aggregate breeding-census collapse conceal a spatial allocation that remains recoverable?**
+
+Ross provides a quantified case: -54.3% breeding abundance followed by 96.97% aggregate restoration and near-inverse recovery of the six-node loss vector.
+
+This converse framing should remain the focal novelty. The mismatch magnitude itself is ordinary within Ross and should not be inflated.
