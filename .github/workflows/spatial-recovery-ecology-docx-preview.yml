@@ -9,7 +9,7 @@ on:
       - "scripts/build_spatial_recovery_path_state_figures.py"
       - "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md"
       - "docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib"
-      - "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md"
+      - "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md"
       - "submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md"
       - "submission/ECOLOGY_METADATA_TEMPLATE.json"
       - "src/mina/ecosphere_submission_metadata.py"
@@ -46,7 +46,7 @@ jobs:
           python scripts/build_spatial_recovery_ecology_docx.py \
             --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md \
             --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib \
-            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md \
+            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md \
             --figure-dir build/spatial_recovery_path_state_figures \
             --out build/Spatial_Recovery_Ecology_v0_9_SUBMISSION_PREVIEW.docx
       - name: Build Supporting Information preview
@@ -93,7 +93,7 @@ jobs:
           python scripts/build_spatial_recovery_ecology_docx.py \
             --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md \
             --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib \
-            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md \
+            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md \
             --figure-dir build/spatial_recovery_path_state_figures \
             --metadata build/synthetic_ecology_metadata.json \
             --require-complete-metadata \
@@ -140,7 +140,7 @@ jobs:
           )
           PY
           python -m mina.ecosphere_submission_metadata             --metadata build/stress_ecology_metadata.json             --require-complete
-          python scripts/build_spatial_recovery_ecology_docx.py             --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md             --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib             --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md             --figure-dir build/spatial_recovery_path_state_figures             --metadata build/stress_ecology_metadata.json             --require-complete-metadata             --out build/Spatial_Recovery_Ecology_v0_9_METADATA_STRESS.docx
+          python scripts/build_spatial_recovery_ecology_docx.py             --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md             --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib             --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md             --figure-dir build/spatial_recovery_path_state_figures             --metadata build/stress_ecology_metadata.json             --require-complete-metadata             --out build/Spatial_Recovery_Ecology_v0_9_METADATA_STRESS.docx
       - name: Structural DOCX audit
         run: |
           python - <<'PY'
