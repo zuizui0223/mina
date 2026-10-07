@@ -5,7 +5,8 @@
 
 ## Canonical scientific package
 
-- Manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
+- Frozen scientific manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
+- Initial-submission production manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
 - Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib`
 - Claim ledger: `results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V4.json`
 - Focal path/state audit: `results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json`
@@ -15,7 +16,9 @@
 - Reviewer stress test: `docs/SPATIAL_RECOVERY_PATH_STATE_REVIEWER_STRESS_TEST_V2.md`
 - Evidence table: `docs/TABLE1_SPATIAL_RECOVERY_PATH_STATE_V1.md`
 - Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
-- Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md`
+- Main figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md`
+- Supporting Information: `submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md`
+- Production derivation record: `submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_DERIVATION_V1.md`
 
 ## Focal result
 
@@ -71,7 +74,9 @@ These are biological contrasts, not replications of the focal Ross natural exper
 
 ## Figures
 
-**CI: PASS. Visual QA: COMPLETE.**
+**Frozen scientific figure QA: PASS.**
+
+For initial submission, Figures 1-2 remain in the main manuscript and frozen Figures 3-4 are supplied as Supporting Information Figures S1-S2. No figure data or annotations were changed.
 
 1. Amount / path / state recovery, with path and state shown at both six-component and three-colony grains.
 2. Six-component local restoration heterogeneity and composition reweighting.
