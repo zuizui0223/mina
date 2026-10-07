@@ -97,7 +97,15 @@ Primary target remains **Ecology — Article**.
 
 Canonical submission plan:
 
-    submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V2.md
+    submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V3.md
+
+Editorial triage:
+
+    submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V1.md
+
+Cover letter:
+
+    submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_3.md
 
 Backup after an Ecology decision only: **Journal of Animal Ecology — Research Article**.
 
