@@ -308,7 +308,7 @@ After aggregation to Royds, Bird, and Crozier:
 
 Local restoration at the three-colony grain remained unequal: Royds restored 38.7% of prior loss, Bird 68.3%, and Crozier 105.2%.
 
-Thus coarsening reduced apparent state reorganization but did not eliminate it. At both biologically natural grains, exact proportional reversal would have returned composition almost exactly to baseline, whereas the observed endpoint remained materially farther away.
+Thus coarsening reduced apparent state reorganization but did not eliminate it. Aggregation hid 28.8% of the six-component 1999→2002 TV difference, but **71.2% of the fine-grain endpoint difference remained at the Royds–Bird–Crozier scale**. At both biologically natural grains, exact proportional reversal would have returned composition almost exactly to baseline, whereas the observed endpoint remained materially farther away.
 
 ### High path fidelity without state restoration recurred in Ross
 
@@ -384,7 +384,7 @@ Spatial population state depends on the grain at which breeding units are define
 
 Accordingly, the numerical state-restoration score increased from 2.4% at six-component resolution to 28.3% after aggregation to three colonies. The fine-grain value should therefore not be interpreted as a scale-invariant property of Ross Island.
 
-The important result survives the change of grain. Aggregate restoration remains 96.97%, path fidelity remains above 90%, and exact inverse recovery predicts an endpoint almost indistinguishable from baseline at both scales. Yet the observed endpoint remains 4.97% TV from baseline at six components and 3.54% at three colonies.
+The important result survives the change of grain. Aggregate restoration remains 96.97%, path fidelity remains above 90%, and exact inverse recovery predicts an endpoint almost indistinguishable from baseline at both scales. Moreover, 71.2% of the fine-grain baseline→rebound TV difference remains after aggregation to the three named colonies, so the endpoint discrepancy is not primarily a subcolony-partition artifact. Yet the observed endpoint remains 4.97% TV from baseline at six components and 3.54% at three colonies.
 
 Thus the claim is not that “state recovery equals 2.4%.” It is:
 
