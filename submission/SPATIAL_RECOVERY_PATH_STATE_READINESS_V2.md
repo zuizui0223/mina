@@ -16,7 +16,7 @@
 - Reviewer stress test: `docs/SPATIAL_RECOVERY_PATH_STATE_REVIEWER_STRESS_TEST_V2.md`
 - Evidence table: `docs/TABLE1_SPATIAL_RECOVERY_PATH_STATE_V1.md`
 - Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
-- Main figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md`
+- Main figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md`
 - Supporting Information: `submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md`
 - Production derivation record: `submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_DERIVATION_V1.md`
 
