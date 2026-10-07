@@ -30,8 +30,8 @@ def fig1_concept(root: Path, outdir: Path):
         "C  Breeding-capacity\nchange",
     ]
     top = [
-        "S mostly retained\nq changes strongly\nK broadly retained",
-        "S changes unequally\namong breeding units\nq and K may also vary",
+        "q can be strongly suppressed\nwhile S and K remain available",
+        "S can change unequally\namong breeding units",
         "K changes\nnew/expanded breeding space\nchanges feasible allocation",
     ]
     bottom = [
@@ -86,7 +86,7 @@ def fig1_concept(root: Path, outdir: Path):
         bbox=dict(boxstyle="round,pad=0.35", fill=False),
     )
     fig.suptitle(
-        "Observed breeding abundance is an expressed state; different processes alter S, q, or K",
+        "Conceptual process hypotheses for expressed breeding abundance (S, q, K not separately estimated)",
         y=1.02,
         fontsize=12,
     )
