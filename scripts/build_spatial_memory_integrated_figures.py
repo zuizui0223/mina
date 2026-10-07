@@ -58,7 +58,7 @@ def fig1_concept(root: Path, outdir: Path):
         )
         ax.text(
             0.5, 0.47,
-            r"$n_{i,t}=\min\{K_{i,t},\,S_{i,t}q_{i,t}\}$",
+            r"$n_{i,t}\propto S_{i,t}q_{i,t},\quad n_{i,t}\leq K_{i,t}$",
             ha="center", va="center", fontsize=12,
             transform=ax.transAxes,
         )
