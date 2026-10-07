@@ -67,5 +67,12 @@
     "six_component_2_4_percent_should_not_be_presented_as_scale_invariant": true,
     "exact_inverse_counterfactual_remains_near_baseline_at_both_grains": true
   },
-  "interpretation": "At both six-component and three-colony grains, aggregate and path recovery are high while endpoint composition remains materially farther from baseline than the exact-inverse counterfactual. Coarsening increases apparent state restoration, so state-recovery magnitude is scale dependent even though the qualitative path-versus-state distinction is robust."
+  "interpretation": "At both six-component and three-colony grains, aggregate and path recovery are high while endpoint composition remains materially farther from baseline than the exact-inverse counterfactual. Coarsening increases apparent state restoration, so state-recovery magnitude is scale dependent even though the qualitative path-versus-state distinction is robust.",
+  "cross_grain_endpoint_difference": {
+    "six_component_baseline_rebound_TV": 0.04967242312643739,
+    "three_colony_baseline_rebound_TV": 0.035362381539969526,
+    "absolute_TV_hidden_by_coarsening": 0.014310041586467863,
+    "fraction_of_fine_grain_difference_hidden_by_coarsening": 0.2880882527120277,
+    "fraction_of_fine_grain_difference_remaining_at_colony_scale": 0.7119117472879724
+  }
 }
