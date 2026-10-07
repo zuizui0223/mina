@@ -186,7 +186,7 @@ reported as a fraction of total rebound. These are descriptive effect sizes beca
 
 The Palmer analysis used annual breeding-pair censuses from five Adélie breeding islands near Palmer Station for 1991–2017. The concentration test was restricted to Cormorant, Humble, and Litchfield, whose reported colony-code rosters remained unchanged through the analysis period. For each island, the observed slope of effective colony number through time was compared with a fixed-composition proportional-thinning null that retained the observed island-total trajectory. Independent Poisson and Gamma-Poisson count-error families were applied exactly as frozen in the original analysis.
 
-The independent Signy replication used the 1998 and 2009 Adélie censuses for eight stable named breeding units. The same conceptual null was used: if total decline simply scaled a fixed within-island allocation, the observed fall in (E) should be reproducible by proportional thinning plus the predeclared count-error family.
+The independent Signy replication used the 1998 and 2009 Adélie censuses for eight stable named breeding units. The same conceptual null was used: if total decline simply scaled a fixed within-island allocation, the observed fall in $E$ should be reproducible by proportional thinning plus the predeclared count-error family.
 
 The present manuscript does not pool Palmer and Signy p-values or treat their census units as physically equivalent. Their common role is narrower: each asks whether persistent decline preserved a fixed relative allocation of breeding abundance.
 
@@ -232,7 +232,7 @@ The three process-anchored cases are not exchangeable estimates of one common re
 
 ## Results
 
-### An acute breeding disturbance largely re-expressed the previous Ross Island spatial template
+### Ross recovery stayed close to the proportional inverse path
 
 Ross Island breeding abundance fell from 207,411 pairs in 1999 to 94,798 in 2001, a loss of 112,613 pairs or 54.3%. All six monitored components declined.
 
@@ -244,17 +244,17 @@ The magnitude of the 9.41% mismatch was not exceptional within the Ross series: 
 
 Independent demographic evidence makes a memory-preserving interpretation plausible but not identified. In the 1996–2020 Ross mark-recapture study, movement among colonies was highest for pre-breeders and below 0.20% for established breeders, whereas transitions from breeding to non-breeding states were common [@dugger2026]. The census result itself, however, does not identify individual birds.
 
-### Persistent decline concentrated breeding abundance at Palmer and Signy
+### Palmer and Signy declines departed from proportional thinning
 
 At Palmer, the five island populations shared a strongly coherent long-term decline, but within-island spatial change exceeded proportional thinning on the three stable-roster islands.
 
-Effective colony number changed from 3.54 to 2.86 on Cormorant (-19.1%), from 4.62 to 2.28 on Humble (-50.6%), and from 5.78 to 1.00 on Litchfield before local extinction (-82.7%). Under the frozen 20% multiplicative-CV Gamma-Poisson sensitivity, the observed negative concentration slope remained unusual on Cormorant ((p=0.0380)) and was not reached in 100,000 simulations on either Humble or Litchfield (plus-one (p=0.000010) each); no simulation produced slopes as negative on all three islands simultaneously.
+Effective colony number changed from 3.54 to 2.86 on Cormorant (-19.1%), from 4.62 to 2.28 on Humble (-50.6%), and from 5.78 to 1.00 on Litchfield before local extinction (-82.7%). Under the frozen 20% multiplicative-CV Gamma-Poisson sensitivity, the observed negative concentration slope remained unusual on Cormorant (*p* = 0.0380) and was not reached in 100,000 simulations on either Humble or Litchfield (plus-one *p* = 0.000010 each); no simulation produced slopes as negative on all three islands simultaneously.
 
-Signy independently reproduced the same qualitative departure from proportional thinning. Between 1998 and 2009, total Adélie breeding pairs declined from 2,688 to 901 while effective breeding-unit number fell from 3.610 to 2.539 (-29.7%). The observed slope was more negative than the frozen Poisson and 10% multiplicative-CV null distributions (plus-one (p=0.000010) for each) and remained supported under the 20% multiplicative-CV sensitivity ((p=0.000130)).
+Signy independently reproduced the same qualitative departure from proportional thinning. Between 1998 and 2009, total Adélie breeding pairs declined from 2,688 to 901 while effective breeding-unit number fell from 3.610 to 2.539 (-29.7%). The observed slope was more negative than the frozen Poisson and 10% multiplicative-CV null distributions (plus-one *p* = 0.000010 for each) and remained supported under the 20% multiplicative-CV sensitivity (*p* = 0.000130).
 
 Thus persistent decline in both systems altered relative breeding composition rather than simply scaling down a fixed allocation. The data identify unequal local attrition; they do not identify which combination of survival, recruitment, movement, breeding propensity, or reproductive success generated it.
 
-### Increasing breeding capacity redirected growth within and between islands at Beaufort
+### Beaufort growth departed from proportional expansion after capacity release
 
 At Beaufort, usable nesting habitat at the main colony increased strongly as ice retreated, and independent band/resighting data showed that visitation or emigration of Beaufort-born birds to Ross Island colonies peaked near 3% in 2005 and then declined as local habitat became more available [@larue2013].
 
@@ -264,15 +264,15 @@ Because the new unit contained only 0.95% of Beaufort breeders in 2004, proporti
 
 The conjunction is spatially important: during the same broad capacity-release period, a small/new within-island unit gained disproportionate share while movement toward other islands declined. The result is consistent with local breeding capacity changing the spatial scale at which redistribution was expressed.
 
-### Aggregate abundance direction did not specify spatial direction
+### Aggregate sign did not predict the direction of spatial reallocation
 
 The boundary cases rejected a simple rule in which growth necessarily spreads breeders or decline necessarily concentrates them.
 
-At Bird Island, Gentoo breeding abundance increased from 3,331 pairs in 1981 to 4,470 in 2024 (+34.2%) while effective six-unit number also increased from 3.569 to 4.128 (+15.7%). Yet the complete annual record was strongly non-monotonic: among 42 adjacent transitions, 12 had both (N) and (E) increase, nine had (N) increase while (E) decreased, eight had (N) decrease while (E) increased, and 13 had both decrease.
+At Bird Island, Gentoo breeding abundance increased from 3,331 pairs in 1981 to 4,470 in 2024 (+34.2%) while effective six-unit number also increased from 3.569 to 4.128 (+15.7%). Yet the complete annual record was strongly non-monotonic: among 42 adjacent transitions, 12 had both $N$ and $E$ increase, nine had $N$ increase while $E$ decreased, eight had $N$ decrease while $E$ increased, and 13 had both decrease.
 
 At Heard Island, total King penguin abundance increased in every observed interval from 1963 to 1988 and both monitored sectors increased at every interval, yet effective unit number was non-monotonic and sector dominance reversed.
 
-At the global emperor-penguin scale, the frozen 50-colony posterior-median index declined by 12.4% from 2009 to 2018 and effective colony number declined by 12.8%, but 20 of 50 colonies increased. Across the eight predeclared ice regions, all four combinations of (N)-increase/decrease and (E)-increase/decrease occurred.
+At the global emperor-penguin scale, the frozen 50-colony posterior-median index declined by 12.4% from 2009 to 2018 and effective colony number declined by 12.8%, but 20 of 50 colonies increased. Across the eight predeclared ice regions, all four combinations of $N$-increase/decrease and $E$-increase/decrease occurred.
 
 Thus the sign of aggregate breeding change did not uniquely specify the direction of spatial reallocation.
 
