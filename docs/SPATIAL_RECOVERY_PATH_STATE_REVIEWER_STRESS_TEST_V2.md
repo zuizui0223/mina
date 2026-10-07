@@ -163,3 +163,42 @@ Do not return to spatial-memory restoration.
 Do not search for a favorable alternative metric.
 
 Proceed to submission packaging after final figure QA and copyedit.
+
+
+## Major attack 11: “Near-complete aggregate recovery is just dominated by the largest colony.”
+
+**Substantially correct and biologically informative.**
+
+Aggregate restoration is exactly the loss-weighted mean local restoration ratio.
+
+For the focal episode:
+- Crozier West supplied 71.2% of loss and 80.6% of rebound;
+- Crozier West local restoration = 109.8%;
+- median local restoration across six components = 51.8%;
+- unweighted mean = 58.0%;
+- excluding Crozier West, the other five components restored 65.3% of combined loss.
+
+Therefore the manuscript should not imply network-wide near-complete local recovery.
+
+The stronger interpretation is:
+
+> **near-complete aggregate recovery was produced by differential local recovery weighted toward the dominant component.**
+
+This turns the dominance objection into part of the biological result rather than a nuisance to be hidden.
+
+## Major attack 12: “Differential local recovery is obvious and already predicted by metapopulation theory.”
+
+**Correct.**
+
+Uneven local disturbance, variable local demography, and source-patch context are established determinants of metapopulation recovery (e.g. Wilson et al. 2023; Mutz et al. 2017).
+
+Do not claim differential recovery as a new mechanism.
+
+The empirical contribution is the conjunction:
+1. severe documented disturbance;
+2. 96.97% aggregate rebound;
+3. local restoration only 10.8–109.8%;
+4. 90.59% inverse-path fidelity;
+5. essentially no restoration of baseline composition.
+
+The paper shows how an expected process—heterogeneous local recovery—can make aggregate and path recovery give a misleading impression of state restoration in a real monitored population.
