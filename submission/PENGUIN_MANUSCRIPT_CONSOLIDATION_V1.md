@@ -104,6 +104,16 @@ The prior v0.4 spatial-memory framing was superseded after the Ross path-versus-
 - Editorial triage: `submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V3.md`
 - Cover letter: `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_5.md`
 
+## Scientific freeze
+
+The active integrated manuscript is frozen for initial-submission production at:
+
+`submission/SPATIAL_RECOVERY_ECOLOGY_SCIENTIFIC_FREEZE_V1.md`
+
+Scientific head:
+
+`3e8882742ca2affc6717d373fd9b6d903b01f4c1`
+
 ## Paper-count consequence
 
 For submission planning, the Palmer concentration, Ross spatial reversal, Signy replication, and Beaufort contrast are now treated as **components of one manuscript**, not four publishable units.
