@@ -24,7 +24,7 @@ Initial-submission production manuscript:
 
 Main figure captions:
 
-    docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md
+    docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md
 
 Supporting Information:
 
@@ -61,3 +61,8 @@ This is a production/formatting derivative permitted by the scientific freeze.
 It does not constitute a scientific unfreeze.
 
 Any future change to scientific claims, endpoints, metrics, effect sizes, or figure data still requires an explicit unfreeze record.
+
+
+## Caption compression
+
+To create page-count safety margin without altering frozen science, main Figure 1-2 captions were copyedited from v0.2 to v0.3. The v0.3 captions preserve every main numerical result and grain boundary used to interpret the figures while removing explanatory repetition already present in the manuscript. No figure data, scientific annotation, endpoint, effect size, or inferential status changed.
