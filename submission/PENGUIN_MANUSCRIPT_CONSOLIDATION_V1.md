@@ -98,7 +98,7 @@ The prior v0.4 spatial-memory framing was superseded after the Ross path-versus-
 - Reviewer stress test: `docs/SPATIAL_RECOVERY_PATH_STATE_REVIEWER_STRESS_TEST_V2.md`
 - Novelty boundary: `docs/SPATIAL_RECOVERY_PATH_STATE_NOVELTY_BOUNDARY_V2.md`
 - Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
-- Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md`
+- Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md`
 - Scientific readiness: `submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V2.md`
 - Submission plan: `submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V5.md`
 - Editorial triage: `submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V3.md`
