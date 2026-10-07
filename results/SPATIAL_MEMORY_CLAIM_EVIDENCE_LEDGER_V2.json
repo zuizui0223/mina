@@ -1,0 +1,93 @@
+{
+  "schema_version": 2,
+  "result_id": "spatial-memory-claim-evidence-ledger-v2",
+  "date": "2026-10-07",
+  "status": "post_result_integration_ledger_no_new_effect_search",
+  "manuscript": "docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_4.md",
+  "classification_contract": "contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md",
+  "counterfactual_framework": "docs/PROPORTIONAL_SPATIAL_COUNTERFACTUALS_V1.md",
+  "novelty_boundary": "docs/SPATIAL_MEMORY_NOVELTY_BOUNDARY_V1.md",
+  "claim_hierarchy": [
+    {
+      "level": 1,
+      "role": "established_background_boundary_check",
+      "claim": "Aggregate abundance and spatial structure need not recover together, and abundance direction does not uniquely determine spatial direction.",
+      "novelty_status": "prior_art_not_primary_novelty",
+      "evidence": [
+        "results/BIRD_ISLAND_GENTOO_SIX_UNIT_RECOVERY_ALLOCATION_V1.json",
+        "results/BIRD_ISLAND_GENTOO_SIX_UNIT_TEMPORAL_AUDIT_V1.json",
+        "results/EMPEROR_GLOBAL_DECLINE_SPATIAL_REDUNDANCY_V1.json",
+        "results/HEARD_ISLAND_KING_RECOVERY_TRIANGULATION_V1.json"
+      ],
+      "boundary": "Used to reject sign-locking in the focal taxon; not presented as a novel general principle."
+    },
+    {
+      "level": 2,
+      "role": "focal_empirical_result",
+      "claim": "A severe Ross breeding-census collapse was followed by near-complete aggregate rebound that closely retraced the proportional inverse path of the preceding loss.",
+      "novelty_status": "primary_empirical_contribution",
+      "evidence": [
+        "results/ROSS_INVERSE_PATH_MISMATCH_V1.json",
+        "results/ROSS_INVERSE_PATH_MISMATCH_CONTEXT_V1.json",
+        "results/ROSS_ICEBERG_SHOCK_REBOUND_AUDIT_V1.json",
+        "docs/ROSS_BREEDING_ABUNDANCE_MEASUREMENT_AUDIT_V1.md"
+      ],
+      "key_numbers": {
+        "breeding_abundance_loss_fraction": -0.5429461311116575,
+        "aggregate_loss_restored_fraction": 0.9696749043183291,
+        "loss_rebound_cosine": 0.9969470572957101,
+        "inverse_path_mismatch_fraction": 0.09405445040386184
+      },
+      "boundary": "Spatial decomposition is post-result; counts do not identify individual returning birds; 9.41% mismatch is ordinary within Ross."
+    },
+    {
+      "level": 3,
+      "role": "process_contrast_attrition",
+      "claim": "Persistent Adélie decline at Palmer and Signy departed from proportional thinning and concentrated breeding abundance among fewer effective units.",
+      "novelty_status": "replicated_empirical_process_contrast",
+      "evidence": [
+        "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+        "results/SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json"
+      ],
+      "boundary": "Identifies unequal attrition relative to fixed composition, not a single causal vital rate."
+    },
+    {
+      "level": 3,
+      "role": "process_contrast_capacity",
+      "claim": "Beaufort growth after capacity release departed from proportional expansion, while independent evidence showed reduced export toward Ross Island.",
+      "novelty_status": "case_level_process_contrast",
+      "evidence": [
+        "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json",
+        "docs/BEAUFORT_ISLAND_MEDIATED_COMPETITION_SYNTHESIS_V1.md"
+      ],
+      "key_numbers": {
+        "new_unit_observed_to_proportional_gain_ratio": 3.149089644326155,
+        "new_unit_share_2004": 0.00954653937947494,
+        "new_unit_share_2010": 0.014787459245638703
+      },
+      "boundary": "Census and movement evidence are independent streams; no individual-level mediation is inferred."
+    },
+    {
+      "level": 4,
+      "role": "prospective_hypothesis",
+      "claim": "The biological route of change may influence whether a previous multi-node breeding allocation remains recoverable, through effects on breeding expression, the site-affiliated demographic pool, or breeding capacity.",
+      "novelty_status": "hypothesis_not_confirmed_law",
+      "evidence": [
+        "Ross focal result",
+        "Palmer/Signy attrition contrast",
+        "Beaufort capacity contrast",
+        "independent site-fidelity and breeding-state literature"
+      ],
+      "boundary": "Only one clean temporary-shock baseline–trough–rebound system is available; process classes were formalized after outcomes were known."
+    }
+  ],
+  "common_inferential_principle": "Compare observed local change with the proportional spatial allocation expected if aggregate change occurred without additional reorganization.",
+  "forbidden_promotions": [
+    "aggregate-versus-spatial recovery decoupling is newly discovered here",
+    "process class significantly predicts one pooled spatial-reversibility effect size",
+    "short disturbances are reversible and long disturbances are irreversible",
+    "the same Ross individuals returned to the same breeding units",
+    "site fidelity caused the Ross inverse-path recovery",
+    "the current synthesis prospectively confirms a universal process-dependent spatial-memory law"
+  ]
+}
