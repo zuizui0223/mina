@@ -1,5 +1,7 @@
 # PR189 spatial-reversal paper — Ecology Report submission readiness v2
 
+**Status:** superseded by `SUBMISSION_READINESS_SPATIAL_REVERSAL_V3.md`.
+
 ## Target format
 
 **Journal:** Ecology  
