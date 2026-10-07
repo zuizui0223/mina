@@ -5,7 +5,7 @@
 
 ## Scientific manuscript
 
-- Frozen scientific manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
+- Frozen scientific manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
 - Initial-submission production manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
 - Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib`
 - Main figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md`
@@ -72,7 +72,9 @@ Before actual submission, supply or confirm:
 
 ## Submission QA
 
-- Automated manuscript QA: `submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V1.md`
+- Automated manuscript QA: `submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V2.md`
+- Rendered synthetic-complete Word preview: **30 pages**, including title page, References, captions, and two main figures.
+- Former Figures 3-4 are Supporting Information Figures S1-S2 and do not count toward the main-manuscript page limit.
 - v0.9 freeze-compliant production QA: `submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_QA_V2.json`
 
 ## Scientific freeze
