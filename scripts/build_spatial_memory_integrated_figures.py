@@ -162,12 +162,13 @@ def fig3_attrition(root: Path, outdir: Path):
     ax.set_title("Persistent decline concentrated breeders beyond proportional thinning")
     for i, z in enumerate(changes):
         ax.text(i, 100*z - 2.5, f"{100*z:.0f}%", ha="center", va="top", fontsize=9)
+    ax.set_ylim(-92, 6)
     ax.text(
-        0.02, 0.03,
+        0.02, 0.96,
         "Palmer: three stable-roster islands, 1991–2017\n"
         "Signy: independent 1998–2009 replication\n"
         "Bars are descriptive endpoint changes; inference uses each frozen null.",
-        transform=ax.transAxes, va="bottom", fontsize=8.5,
+        transform=ax.transAxes, va="top", fontsize=8.5,
     )
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -200,11 +201,12 @@ def fig4_beaufort(root: Path, outdir: Path):
     for i, z in enumerate(gains):
         ax.text(i, z + 8, f"{z:.0f}", ha="center", va="bottom", fontsize=9)
     ax.text(
-        0.02, 0.97,
+        0.03, 0.52,
         f"Observed / expected = {b['observed_to_proportional_expected_new_gain_ratio']:.2f}×\n"
-        "Independent band/resighting evidence:\n"
+        "Independent movement evidence:\n"
         "Beaufort→Ross visitation declined after 2005",
         transform=ax.transAxes, va="top", fontsize=8.5,
+        bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor="none", alpha=0.92),
     )
 
     for ax in axes:
