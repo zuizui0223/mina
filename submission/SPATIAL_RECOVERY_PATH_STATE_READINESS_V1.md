@@ -12,7 +12,17 @@ The previous spatial-memory v0.4 framing is superseded:
 
 Canonical manuscript:
 
-    docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_5.md
+    docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_6.md
+
+## Exact local-recovery decomposition
+
+Canonical interpretation note:
+
+    docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md
+
+Aggregate restoration is exactly the loss-weighted mean local restoration ratio. In the focal Ross episode, local restoration ranged from 10.8% to 109.8%, with a median of 51.8%. Cape Crozier West supplied 80.6% of rebound; excluding it, the other five components restored 65.3% of combined loss.
+
+This makes the focal result independent of reliance on cosine similarity.
 
 ## Central result
 
