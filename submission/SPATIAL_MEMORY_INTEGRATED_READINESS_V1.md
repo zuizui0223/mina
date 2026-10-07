@@ -117,8 +117,30 @@ Current framing is suitable for consideration as an Ecology full Article or Jour
 
 The evidence is not currently sufficient for a Nature / Nature Ecology & Evolution claim of a general law.
 
+## Figure QA
+
+**Complete.**
+
+The integrated five-figure workflow passed CI after the final label-layout correction.
+
+- Figure 1: expressed / latent / capacity conceptual scaffold;
+- Figure 2: Ross inverse-path rebound;
+- Figure 3: Palmer + Signy persistent attrition;
+- Figure 4: Beaufort capacity release;
+- Figure 5: anti-sign-locking boundary cases.
+
+The final attrition figure was simplified after visual inspection to remove explanatory text that competed with the bars. Captions now carry the inferential-status details.
+
+## Main evidence table
+
+Canonical table:
+
+    docs/TABLE1_SPATIAL_MEMORY_EVIDENCE_V0_1.md
+
+The table makes the non-exchangeability of the process-specific estimands explicit and prevents the manuscript from visually implying a three-class omnibus comparison.
+
 ## Current action
 
-Finish figure visual QA and then revise the manuscript only for coherence, prior-art positioning, and compression.
+Revise the manuscript only for coherence, prior-art positioning, and compression.
 
 No new ecological endpoint is required.
