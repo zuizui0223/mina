@@ -4,7 +4,7 @@
 **Date:** 2026-10-07  
 **Status:** synthesis of already-opened endpoints; no new effect search.  
 **Classification contract:** `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`  
-**Claim ledger:** `results/SPATIAL_MEMORY_CLAIM_EVIDENCE_LEDGER_V1.json`
+**Claim ledger:** `results/SPATIAL_MEMORY_CLAIM_EVIDENCE_LEDGER_V2.json`
 
 ## Abstract
 
@@ -210,25 +210,28 @@ These cases were not assigned to one of the three process classes because the fu
 
 ### Inferential hierarchy
 
-We separate three levels of claim.
+We separate four levels.
 
-1. **Direct cross-system result:** aggregate abundance direction does not uniquely determine spatial direction.
-2. **Process-specific empirical signatures:** the source-identified Ross, Palmer/Signy, and Beaufort cases show different forms of spatial change.
-3. **Recoverable-spatial-organization hypothesis:** the biological route of change may influence whether an old multi-node breeding allocation remains recoverable.
+1. **Established background / boundary check:** aggregate abundance and spatial structure can recover differently; the Bird, Emperor, and Heard cases confirm that simple abundance-direction rules fail in these penguin systems.
+2. **Focal empirical result:** the severe Ross breeding-census collapse was followed by near-complete aggregate rebound that stayed close to the proportional inverse path back toward the pre-disturbance multi-node allocation.
+3. **Process contrasts:** Palmer/Signy persistent declines departed from proportional thinning, whereas Beaufort growth after capacity release departed from proportional expansion.
+4. **Recoverable-spatial-organization hypothesis:** the biological route of population change may influence whether a previous multi-node breeding allocation remains recoverable.
 
-Only levels 1 and 2 are empirical conclusions of the present synthesis. Level 3 is a mechanistic hypothesis motivated by those results and independent natural-history evidence.
+Levels 2 and 3 are the empirical contribution of the present synthesis. Level 1 is important context but not claimed as novel. Level 4 is a mechanistic hypothesis for prospective testing.
 
 ## Evidence map
 
-The three process-anchored cases are not exchangeable estimates of one common response. Ross has a three-state inverse-path design, Palmer and Signy test persistent concentration against proportional thinning, and Beaufort combines a capacity-release census contrast with independent movement evidence. Table 1 preserves those different estimands rather than forcing them into a common omnibus score.
+The process-anchored cases are unified by a proportional spatial counterfactual rather than by a common effect size.
 
-| Evidence role | System | Process | Main spatial result | Inferential boundary |
-|---|---|---|---|---|
-| Memory-preserving natural experiment | Ross Island Adélie, 1999→2001→2002 | Acute breeding-state/access disturbance | 96.97% of aggregate loss restored; cosine 0.99695; inverse-path mismatch 9.41% | Post-result spatial decomposition; no individual identity |
-| Replicated attrition signature | Palmer Adélie, 1991→2017 | Persistent demographic attrition | Effective breeding-component number declined 19.1%, 50.6%, 82.7% beyond frozen proportional-thinning nulls | Census codes not mapped polygons; vital-rate mechanism unidentified |
-| Independent attrition replication | Signy Adélie, 1998→2009 | Persistent demographic attrition | N 2,688→901; E −29.7%; frozen replication supported | No separate survival/recruitment/movement decomposition |
-| Capacity-change contrast | Beaufort Adélie, 2004→2010 | Increased nesting capacity | Small/new unit gain 3.15× proportional expectation; share 0.95%→1.48%; independent inter-island export declined | Census and movement are independent evidence streams, not mediation |
-| Boundary evidence | Bird Gentoo; global emperor; Heard King | Not assigned to A/B/C | Aggregate direction and spatial direction occupy multiple combinations | Used only against sign-locking; not process-class replicates |
+| Evidence role | System | Process | Proportional counterfactual | Main spatial result | Inferential boundary |
+|---|---|---|---|---|---|
+| Focal acute-disturbance case | Ross Island Adélie, 1999→2001→2002 | Breeding-state/access disturbance | Rebound allocated in proportion to preceding local loss | 96.97% of aggregate loss restored; cosine 0.99695; inverse-path mismatch 9.41% | Post-result spatial decomposition; no individual identity |
+| Attrition discovery | Palmer Adélie, 1991→2017 | Persistent demographic attrition | Equal multiplicative thinning of starting composition | Effective breeding-component number declined 19.1%, 50.6%, 82.7% beyond frozen nulls | Census codes not mapped polygons; vital-rate mechanism unidentified |
+| Attrition replication | Signy Adélie, 1998→2009 | Persistent demographic attrition | Equal multiplicative thinning of starting composition | \(N\) 2,688→901; \(E\) −29.7%; frozen replication supported | No separate survival/recruitment/movement decomposition |
+| Capacity-change contrast | Beaufort Adélie, 2004→2010 | Increased nesting capacity | Island growth allocated in proportion to 2004 composition | Small/new unit gain 3.15× proportional expectation; share 0.95%→1.48%; independent inter-island export declined | Census and movement are independent evidence streams, not mediation |
+| Boundary evidence | Bird Gentoo; global emperor; Heard King | Not assigned to process class | Not used as process-specific counterfactual test | Aggregate and spatial directions occupy multiple combinations | Used only against sign-locking |
+
+The heterogeneous estimands remain explicit. No omnibus process-class effect is calculated.
 
 ## Results
 
