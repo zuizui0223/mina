@@ -212,3 +212,19 @@ The next useful work is:
 2. add prior-art references so “memory” is not sold as a new term;
 3. design Figure 1 around (S\times q) under capacity (K);
 4. keep the prospective independent shock replication as the explicit route to a higher-impact paper.
+
+
+## Additional prior-art audit: hidden breeding states
+
+A further literature audit confirms that the individual-level distinction between “alive but not expressed in the breeding census” and “absent/dead” is established prior art.
+
+- Multi-event / robust-design capture–recapture models explicitly estimate breeding propensity with nonbreeders treated as unavailable or unobservable states (Souchay et al. 2014).
+- Breeding-site fidelity and temporary emigration can both be high in the same population (Safine et al. 2020).
+
+Therefore the manuscript must **not** claim novelty for latent breeding states, temporary emigration, or the existence of high fidelity despite intermittent breeding.
+
+The narrower synthesis contribution is:
+
+> **individual-level hidden breeding states can scale up to a recoverable population-level spatial allocation, so collapse of the observed breeding vector need not equal destruction of the spatial template that can regenerate it.**
+
+Ross supplies the aggregate spatial-recovery observation; the mark–recapture literature supplies the biologically plausible hidden-state mechanism. These evidence layers remain distinct.
