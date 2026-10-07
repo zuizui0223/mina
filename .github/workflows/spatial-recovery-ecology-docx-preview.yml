@@ -98,6 +98,49 @@ jobs:
             --metadata build/synthetic_ecology_metadata.json \
             --require-complete-metadata \
             --out build/Spatial_Recovery_Ecology_v0_9_SYNTHETIC_COMPLETE.docx
+      - name: Build metadata-length stress path
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          authors=[]
+          for i in range(1,9):
+              authors.append({
+                  "name":f"Example Author {i}",
+                  "affiliation_ids":[str((i-1)%4+1)],
+                  "corresponding":i==1,
+                  "email":"author@example.org" if i==1 else None
+              })
+          data={
+              "authors":authors,
+              "affiliations":{
+                  "1":"Department of Ecology and Evolutionary Biology, Example University One, Long City Name, Country",
+                  "2":"Institute for Polar and Marine Research, Example University Two, Long City Name, Country",
+                  "3":"Department of Wildlife Population Science, Example University Three, Long City Name, Country",
+                  "4":"Centre for Spatial Ecology and Conservation, Example University Four, Long City Name, Country"
+              },
+              "present_addresses":[
+                  {"author":"Example Author 8","address":"Present Department, Another Long Institution, City, Country"}
+              ],
+              "funding_acknowledgments":"This deliberately long synthetic funding statement stress-tests layout with multiple funders, institutional support statements, grant identifiers, field logistics acknowledgments, and research infrastructure support.",
+              "additional_acknowledgments":"We thank multiple field teams, data stewards, logistics personnel, repository curators, and collaborators for long-term support of the monitoring programs used in this manuscript.",
+              "author_contributions":"; ".join([
+                  f"Example Author {i}: Conceptualization, Investigation, Methodology, Writing - review & editing"
+                  for i in range(1,9)
+              ]) + ".",
+              "conflict_of_interest":"The authors declare no conflicts of interest. This deliberately longer synthetic statement is included only to stress-test submission layout.",
+              "ai_tool_inventory_confirmed":True,
+              "additional_ai_tools":[],
+              "dual_publication_statement":"No overlapping manuscript is submitted or under review elsewhere.",
+              "review_code_url":"https://github.com/zuizui0223/mina",
+              "permanent_archive_doi":None
+          }
+          Path("build/stress_ecology_metadata.json").write_text(
+              json.dumps(data,indent=2)+"\n",encoding="utf-8"
+          )
+          PY
+          python -m mina.ecosphere_submission_metadata             --metadata build/stress_ecology_metadata.json             --require-complete
+          python scripts/build_spatial_recovery_ecology_docx.py             --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md             --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib             --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md             --figure-dir build/spatial_recovery_path_state_figures             --metadata build/stress_ecology_metadata.json             --require-complete-metadata             --out build/Spatial_Recovery_Ecology_v0_9_METADATA_STRESS.docx
       - name: Structural DOCX audit
         run: |
           python - <<'PY'
