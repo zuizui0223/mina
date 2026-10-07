@@ -241,4 +241,4 @@ OpenAI ChatGPT (GPT-5.6 Sol) assisted with code drafting and review, literature 
 
 ## References
 
-Bibliography file: `submission/REFERENCES_SPATIAL_REVERSAL_V1.bib`.
+Bibliography file: `submission/REFERENCES_SPATIAL_REVERSAL_V2.bib`.
