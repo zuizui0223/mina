@@ -61,6 +61,68 @@
       "E6_baseline": 2.05575303802091,
       "E6_observed": 1.8190233757364993,
       "interpretation": "Given the observed 96.97% aggregate rebound, exact proportional reversal would have returned the six-component composition almost exactly to baseline. The observed structured 9.41% rebound-allocation mismatch therefore accounts for essentially all of the endpoint compositional non-restoration."
+    },
+    "local_restoration": {
+      "aggregate_restoration_loss_weighted_mean": 0.9696749043183291,
+      "unweighted_mean": 0.5798715847608958,
+      "median": 0.5179078537364515,
+      "loss_weighted_mean_absolute_deviation": 0.18240448039215568,
+      "restoration_range": [
+        0.10786267995570321,
+        1.097711179814501
+      ],
+      "components": [
+        {
+          "unit": "Cape Royds",
+          "loss": 2253,
+          "rebound": 872,
+          "loss_share": 0.02000657117739515,
+          "rebound_share": 0.007985494239821242,
+          "restoration_ratio": 0.3870395028850422
+        },
+        {
+          "unit": "Cape Bird South",
+          "loss": 4515,
+          "rebound": 487,
+          "loss_share": 0.040093062079866446,
+          "rebound_share": 0.004459788640817597,
+          "restoration_ratio": 0.10786267995570321
+        },
+        {
+          "unit": "Cape Bird Middle",
+          "loss": 1499,
+          "rebound": 523,
+          "loss_share": 0.013311074209904718,
+          "rebound_share": 0.004789465008516639,
+          "restoration_ratio": 0.34889926617745165
+        },
+        {
+          "unit": "Cape Bird North",
+          "loss": 15019,
+          "rebound": 13351,
+          "loss_share": 0.13336826121318143,
+          "rebound_share": 0.12226414403194198,
+          "restoration_ratio": 0.8889406751448166
+        },
+        {
+          "unit": "Cape Crozier West",
+          "loss": 80216,
+          "rebound": 88054,
+          "loss_share": 0.712315629634234,
+          "rebound_share": 0.806370080038096,
+          "restoration_ratio": 1.097711179814501
+        },
+        {
+          "unit": "Cape Crozier East",
+          "loss": 9111,
+          "rebound": 5911,
+          "loss_share": 0.0809054016854182,
+          "rebound_share": 0.054131028040806606,
+          "restoration_ratio": 0.6487762045878608
+        }
+      ],
+      "restoration_excluding_crozier_west": 0.6526530234280952,
+      "exact_mismatch_identity": "M/sum(R) = [sum_i L_i |q_i-A| / sum_i L_i] / (2A)"
     }
   },
   "other_complete_down_up_episodes": [
@@ -97,7 +159,9 @@
     "focal_rebound_was_largest_compositional_transition_in_series": true,
     "prior_spatial_memory_state_restoration_framing_withdrawn": true,
     "supported_interpretation": "Local gains occurred largely where local losses had occurred, but differential rebound reweighted the breeding network; path reversibility and state restoration are distinct.",
-    "structured_inverse_path_mismatch_is_state_consequential": true
+    "structured_inverse_path_mismatch_is_state_consequential": true,
+    "near_complete_aggregate_recovery_represents_uniform_local_restoration": false,
+    "differential_local_recovery_drives_state_reweighting": true
   },
   "boundary": [
     "All state-restoration calculations are post-result descriptive audits.",
