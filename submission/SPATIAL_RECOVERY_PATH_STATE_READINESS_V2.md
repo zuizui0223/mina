@@ -112,6 +112,18 @@ Canonical automated QA receipt:
 
 `submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V1.md`
 
+## Scientific freeze
+
+Canonical freeze record:
+
+`submission/SPATIAL_RECOVERY_ECOLOGY_SCIENTIFIC_FREEZE_V1.md`
+
+Frozen scientific head:
+
+`3e8882742ca2affc6717d373fd9b6d903b01f4c1`
+
+Scientific content is frozen for initial-submission production.
+
 ## Stop rule
 
 No further ecological endpoint search before submission.
