@@ -63,6 +63,10 @@ Before actual submission, supply or confirm:
 10. archive DOI / permanent code-data snapshot;
 11. final overlap/preprint statement.
 
+## Submission QA
+
+- Automated manuscript QA: `submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V1.md`
+
 ## Scientific stop rule
 
 Do not add new ecological endpoints, taxa, lags, metrics, or favorable spatial grains before initial submission.
