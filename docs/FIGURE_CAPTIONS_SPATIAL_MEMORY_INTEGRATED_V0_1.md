@@ -2,7 +2,7 @@
 
 ## Figure 1. Expressed breeding abundance and latent spatial structure
 
-Conceptual decomposition of observed breeding abundance among units. For unit (i) at time (t), observed breeding abundance is represented schematically as (n_{i,t}=\min\{K_{i,t},S_{i,t}q_{i,t}\}), where (S) is the latent site-affiliated demographic pool, (q) is breeding expression or participation, and (K) is available breeding capacity. A temporary breeding-state/access shock acts mainly through (q), persistent demographic attrition changes (S), and capacity change alters (K). The decomposition is an interpretation scaffold and is not fitted to the census data.
+Conceptual decomposition of observed breeding abundance among units. For unit (i) at time (t), we use only the schematic constraints (n_{i,t} ∝ S_{i,t}q_{i,t}) and (n_{i,t} ≤ K_{i,t}), where (S) is the latent site-affiliated demographic pool, (q) is breeding expression or participation, and (K) is available breeding capacity. A temporary breeding-state/access shock acts mainly through (q), persistent demographic attrition changes (S), and capacity change alters (K). The decomposition is an interpretation scaffold and is not fitted to the census data.
 
 ## Figure 2. Ross Island breeding rebound largely retraced the spatial footprint of loss
 
