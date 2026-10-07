@@ -1,6 +1,10 @@
 # Ecology editorial triage — spatial recovery v0.8
 
-**Date:** 2026-10-07  
+**Date:** 2026-10-07
+
+**Frozen scientific source:** `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`  
+**Production derivative:** `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`  
+**Production change boundary:** figure callouts and main-versus-supporting placement only; no scientific unfreeze.  
 **Manuscript:** `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
 
 ## Title + Abstract + Figure 1
