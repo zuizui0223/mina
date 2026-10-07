@@ -99,8 +99,9 @@ The prior v0.4 spatial-memory framing was superseded after the Ross path-versus-
 - Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
 - Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md`
 - Scientific readiness: `submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V1.md`
-- Submission plan: `submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V2.md`
-- Cover letter: `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_2.md`
+- Submission plan: `submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V3.md`
+- Editorial triage: `submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V1.md`
+- Cover letter: `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_3.md`
 
 ## Paper-count consequence
 
