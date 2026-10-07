@@ -465,6 +465,6 @@ For spatial populations, recovery therefore has at least three distinct dimensio
 - The other Ross down→up episodes are descriptive calibration and are not independent replicates.
 - The Palmer concentration analysis and Signy replication retain their original frozen nulls.
 - The Beaufort proportional-growth correction remains post-result and combines census and independent movement evidence without claiming mediation.
-- No new ecological endpoint, covariate, lag, or species was opened for v0.7.
+- No new ecological endpoint, covariate, lag, or species was opened for v0.8.
 - We do not claim a new mathematical recovery framework; trajectory-versus-state distinctions are prior art.
 - We do not infer individual identity from aggregate colony counts.
