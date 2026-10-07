@@ -7,7 +7,7 @@
 
 While the integrated spatial-structure manuscript is active, the penguin research program has **one canonical submission candidate**:
 
-    docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_5.md
+    docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_6.md
 
 The following previously complete packages remain frozen scientific provenance but are **not independent active submission lanes**:
 
@@ -88,10 +88,11 @@ The prior v0.4 spatial-memory framing was superseded after the Ross path-versus-
 
 ## Canonical current package
 
-- Manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_5.md`
-- Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_5.bib`
+- Manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_6.md`
+- Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_6.bib`
 - Process classification: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
-- Claim ledger: `results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V1.json`
+- Claim ledger: `results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V2.json`
+- Local recovery decomposition: `docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md`
 - Evidence table: `docs/TABLE1_SPATIAL_MEMORY_EVIDENCE_V0_1.md`
 - Reviewer stress test: `docs/SPATIAL_RECOVERY_PATH_STATE_REVIEWER_STRESS_TEST_V2.md`
 - Novelty boundary: `docs/SPATIAL_RECOVERY_PATH_STATE_NOVELTY_BOUNDARY_V2.md`
