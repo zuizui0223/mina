@@ -5,10 +5,12 @@ on:
   pull_request:
     paths:
       - "scripts/build_spatial_recovery_ecology_docx.py"
+      - "scripts/build_spatial_recovery_supplement_docx.py"
       - "scripts/build_spatial_recovery_path_state_figures.py"
       - "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md"
       - "docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib"
       - "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md"
+      - "submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md"
       - "submission/ECOLOGY_METADATA_TEMPLATE.json"
       - "src/mina/ecosphere_submission_metadata.py"
       - ".github/workflows/spatial-recovery-ecology-docx-preview.yml"
@@ -47,6 +49,12 @@ jobs:
             --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md \
             --figure-dir build/spatial_recovery_path_state_figures \
             --out build/Spatial_Recovery_Ecology_v0_9_SUBMISSION_PREVIEW.docx
+      - name: Build Supporting Information preview
+        run: |
+          python scripts/build_spatial_recovery_supplement_docx.py \
+            --supplement submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md \
+            --figure-dir build/spatial_recovery_path_state_figures \
+            --out build/Spatial_Recovery_Ecology_v0_9_SUPPORTING_INFORMATION.docx
       - name: Build synthetic author-complete path
         run: |
           python - <<'PY'
@@ -118,6 +126,12 @@ jobs:
           print("paragraphs=",len(doc.paragraphs))
           print("inline_shapes=",len(doc.inline_shapes))
           assert len(doc.inline_shapes) == 2
+          supp=Document("build/Spatial_Recovery_Ecology_v0_9_SUPPORTING_INFORMATION.docx")
+          supp_text="\\n".join(p.text for p in supp.paragraphs)
+          assert "Figure S1." in supp_text
+          assert "Figure S2." in supp_text
+          assert len(supp.inline_shapes) == 2
+          print("supplement_structural_audit=PASS")
           print("structural_audit=PASS")
           PY
       - uses: actions/upload-artifact@v4
@@ -126,4 +140,5 @@ jobs:
           path: |
             build/Spatial_Recovery_Ecology_v0_9_SUBMISSION_PREVIEW.docx
             build/Spatial_Recovery_Ecology_v0_9_SYNTHETIC_COMPLETE.docx
+            build/Spatial_Recovery_Ecology_v0_9_SUPPORTING_INFORMATION.docx
             build/ecology_metadata_template_audit.json
