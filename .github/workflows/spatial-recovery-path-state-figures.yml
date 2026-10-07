@@ -1,0 +1,31 @@
+name: spatial-recovery-path-state-figures
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/build_spatial_recovery_path_state_figures.py"
+      - "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json"
+      - "results/ROSS_INVERSE_PATH_MISMATCH_V1.json"
+      - "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+      - "results/SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json"
+      - "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json"
+      - "external/ross_island_v2_frozen_counts.csv"
+      - ".github/workflows/spatial-recovery-path-state-figures.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install figure dependencies
+        run: pip install -e ".[figures]"
+      - name: Build path-versus-state figures
+        run: python scripts/build_spatial_recovery_path_state_figures.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spatial-recovery-path-state-figures
+          path: build/spatial_recovery_path_state_figures/*
