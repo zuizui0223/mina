@@ -78,6 +78,12 @@ These are biological contrasts, not replications of the focal Ross natural exper
 3. Within-Ross down→up calibration.
 4. Palmer/Signy unequal attrition and Beaufort unequal expansion.
 
+## Production templates
+
+- Title-page template: `submission/TITLE_PAGE_SPATIAL_RECOVERY_ECOLOGY_V1.md`
+- Submission copy fields: `submission/ECOLOGY_SPATIAL_RECOVERY_COPY_FIELDS_V1.md`
+- Open Research statement: `submission/OPEN_RESEARCH_STATEMENT_SPATIAL_RECOVERY_V1.md`
+
 ## Canonical submission package
 
 - Primary target plan: `submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V5.md`
