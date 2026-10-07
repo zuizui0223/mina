@@ -7,7 +7,7 @@
 
 While the integrated spatial-structure manuscript is active, the penguin research program has **one canonical submission candidate**:
 
-    docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_4.md
+    docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_5.md
 
 The following previously complete packages remain frozen scientific provenance but are **not independent active submission lanes**:
 
@@ -78,18 +78,26 @@ If it is later abandoned, reopening either narrower package requires an explicit
 3. restores exactly one narrower active lane;
 4. leaves the other lane on hold.
 
+## Scientific reinterpretation
+
+The prior v0.4 spatial-memory framing was superseded after the Ross path-versus-state audit showed that high inverse-path fidelity did not restore baseline composition:
+
+    results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json
+    docs/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.md
+    submission/SPATIAL_MEMORY_V0_4_REINTERPRETATION_HOLD_V1.md
+
 ## Canonical current package
 
-- Manuscript: `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_4.md`
-- Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_4.bib`
+- Manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_5.md`
+- Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_5.bib`
 - Process classification: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
-- Claim ledger: `results/SPATIAL_MEMORY_CLAIM_EVIDENCE_LEDGER_V2.json`
+- Claim ledger: `results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V1.json`
 - Evidence table: `docs/TABLE1_SPATIAL_MEMORY_EVIDENCE_V0_1.md`
 - Reviewer stress test: `docs/SPATIAL_MEMORY_INTEGRATED_REVIEWER_STRESS_TEST_V1.md`
-- Novelty boundary: `docs/SPATIAL_MEMORY_NOVELTY_BOUNDARY_V1.md`
-- Figure builder: `scripts/build_spatial_memory_integrated_figures.py`
-- Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_MEMORY_INTEGRATED_V0_1.md`
-- Scientific readiness: `submission/SPATIAL_MEMORY_INTEGRATED_READINESS_V1.md`
+- Novelty boundary: `docs/SPATIAL_RECOVERY_PATH_STATE_NOVELTY_BOUNDARY_V2.md`
+- Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
+- Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md`
+- Scientific readiness: `submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V1.md`
 
 ## Paper-count consequence
 
