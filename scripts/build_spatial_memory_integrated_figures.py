@@ -163,13 +163,6 @@ def fig3_attrition(root: Path, outdir: Path):
     for i, z in enumerate(changes):
         ax.text(i, 100*z - 2.5, f"{100*z:.0f}%", ha="center", va="top", fontsize=9)
     ax.set_ylim(-92, 6)
-    ax.text(
-        0.02, 0.96,
-        "Palmer: three stable-roster islands, 1991–2017\n"
-        "Signy: independent 1998–2009 replication\n"
-        "Bars are descriptive endpoint changes; inference uses each frozen null.",
-        transform=ax.transAxes, va="top", fontsize=8.5,
-    )
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     save(fig, outdir, "figure3_persistent_attrition")
