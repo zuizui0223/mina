@@ -51,7 +51,7 @@ PNG review copies are generated with the same stems.
 - mismatch context: `docs/ROSS_INVERSE_PATH_MISMATCH_CONTEXT_V1.md`
 - dominance reviewer audit: `docs/ROSS_SPATIAL_REVERSIBILITY_DOMINANCE_AUDIT_V1.md`
 - reviewer stress test: `submission/PRE_SUBMISSION_REVIEWER_STRESS_TEST_SPATIAL_REVERSAL_V2.md`
-- readiness: `submission/SUBMISSION_READINESS_SPATIAL_REVERSAL_V4.md`
+- readiness: `submission/SUBMISSION_READINESS_SPATIAL_REVERSAL_V5.md`
 
 ## Primary result receipts
 
