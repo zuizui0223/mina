@@ -4,7 +4,7 @@
 **Date:** 2026-10-07  
 **Status:** reinterpretation after path-versus-state audit; no new endpoint search.  
 **Primary audit:** \`results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json\`  
-**Claim ledger:** \`results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V1.json\`
+**Claim ledger:** \`results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V4.json\`
 
 ## Abstract
 
