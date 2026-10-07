@@ -1,6 +1,6 @@
 # Near-complete breeding rebound is not exact spatial reversal
 
-**Ecology candidate v0.1 — PR189 state/allocation paper**
+**Status:** superseded by `MANUSCRIPT_SPATIAL_REVERSAL_ECOLOGY_V0_2.md`; v0.1 overemphasized failure of exact identity rather than the observed high spatial reversibility.
 
 ## Abstract
 
