@@ -4,11 +4,12 @@
 
 ## Current canonical files
 
-- Manuscript: `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_3.md`
+- Manuscript: `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_4.md`
 - Claim ledger: `results/SPATIAL_MEMORY_CLAIM_EVIDENCE_LEDGER_V1.json`
 - Process-class contract: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
 - Reviewer stress test: `docs/SPATIAL_MEMORY_INTEGRATED_REVIEWER_STRESS_TEST_V1.md`
-- Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_3.bib`
+- Novelty boundary: `docs/SPATIAL_MEMORY_NOVELTY_BOUNDARY_V1.md`
+- Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_4.bib`
 - Figure builder: `scripts/build_spatial_memory_integrated_figures.py`
 - Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_MEMORY_INTEGRATED_V0_1.md`
 
@@ -90,7 +91,9 @@ Do not claim novelty for:
 
 The narrower contribution is:
 
-> **loss of observed breeding structure and loss of the underlying recoverable spatial organization are not the same biological event.**
+> **aggregate recovery can hide structural loss, but the converse also matters: severe breeding-census collapse can overstate structural loss when a previous multi-node allocation remains recoverable.**
+
+The Ross result is the focal empirical case for that converse; Palmer/Signy and Beaufort define contrasting ways in which the demographic pool or breeding landscape can actually be rewritten.
 
 ## Main scientific ceiling
 
