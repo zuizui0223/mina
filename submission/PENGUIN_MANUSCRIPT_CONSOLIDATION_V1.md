@@ -7,7 +7,7 @@
 
 While the integrated spatial-structure manuscript is active, the penguin research program has **one canonical submission candidate**:
 
-    docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_7.md
+    docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md
 
 The following previously complete packages remain frozen scientific provenance but are **not independent active submission lanes**:
 
@@ -88,10 +88,10 @@ The prior v0.4 spatial-memory framing was superseded after the Ross path-versus-
 
 ## Canonical current package
 
-- Manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_7.md`
-- Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_7.bib`
+- Manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
+- Bibliography: `docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib`
 - Process classification: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
-- Claim ledger: `results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V3.json`
+- Claim ledger: `results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V4.json`
 - Local recovery decomposition: `docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md`
 - Spatial-grain audit: `docs/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.md`
 - Evidence table: `docs/TABLE1_SPATIAL_MEMORY_EVIDENCE_V0_1.md`
@@ -99,10 +99,10 @@ The prior v0.4 spatial-memory framing was superseded after the Ross path-versus-
 - Novelty boundary: `docs/SPATIAL_RECOVERY_PATH_STATE_NOVELTY_BOUNDARY_V2.md`
 - Figure builder: `scripts/build_spatial_recovery_path_state_figures.py`
 - Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md`
-- Scientific readiness: `submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V1.md`
-- Submission plan: `submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V4.md`
-- Editorial triage: `submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V2.md`
-- Cover letter: `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_4.md`
+- Scientific readiness: `submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V2.md`
+- Submission plan: `submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V5.md`
+- Editorial triage: `submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V3.md`
+- Cover letter: `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_5.md`
 
 ## Paper-count consequence
 
