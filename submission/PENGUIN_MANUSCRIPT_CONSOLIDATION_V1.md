@@ -57,16 +57,16 @@ It does **not** need to inherit every secondary Paper 1 result. In particular, w
 
 ### Additional integrated evidence
 - Signy independent concentration replication;
-- Beaufort capacity-release case;
-- Bird / Emperor prospective anti-sign-locking boundaries;
-- Heard literature triangulation.
+- Beaufort capacity-release case.
+
+Bird / Emperor / Heard analyses remain repository provenance but are not required by the current v0.9 submission manuscript.
 
 ## Single-submission rule
 
 Do not submit:
 - Palmer Ecosphere v0.8;
 - standalone Ross Ecology Report;
-- integrated spatial-memory manuscript
+- integrated path/state manuscript
 
 as simultaneous or overlapping manuscripts.
 
@@ -105,6 +105,9 @@ The prior v0.4 spatial-memory framing was superseded after the Ross path-versus-
 - Cover letter: `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_5.md`
 
 ## Scientific freeze
+
+Frozen scientific source: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`  
+Freeze-compliant production manuscript: `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
 
 The active integrated manuscript is frozen for initial-submission production at:
 
