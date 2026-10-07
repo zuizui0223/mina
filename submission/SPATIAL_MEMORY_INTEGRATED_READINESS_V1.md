@@ -1,0 +1,124 @@
+# Integrated spatial-memory manuscript — scientific readiness v1
+
+**Date:** 2026-10-07
+
+## Current canonical files
+
+- Manuscript: `docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_2.md`
+- Claim ledger: `results/SPATIAL_MEMORY_CLAIM_EVIDENCE_LEDGER_V1.json`
+- Process-class contract: `contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md`
+- Reviewer stress test: `docs/SPATIAL_MEMORY_INTEGRATED_REVIEWER_STRESS_TEST_V1.md`
+- Bibliography: `docs/REFERENCES_SPATIAL_MEMORY_INTEGRATED_V0_2.bib`
+- Figure builder: `scripts/build_spatial_memory_integrated_figures.py`
+- Figure captions: `docs/FIGURE_CAPTIONS_SPATIAL_MEMORY_INTEGRATED_V0_1.md`
+
+## Scientific status
+
+**Integrated framing: viable.**
+
+The standalone Ross Ecology Report remains on hold.
+
+The integrated manuscript has a defensible three-level claim structure:
+
+1. **Direct:** aggregate abundance direction does not uniquely determine spatial reallocation.
+2. **Empirical synthesis:** source-identified kinds of change show different spatial signatures in the available cases.
+3. **Hypothesis:** observed breeding structure has an expressed component and a latent site-affiliated component; whether the old distribution can reappear depends on whether change acted mainly on breeding expression, the site-affiliated demographic pool, or breeding capacity.
+
+Only levels 1 and 2 are manuscript conclusions. Level 3 is explicitly a hypothesis.
+
+## Conceptual scaffold
+
+[
+n_{i,t}=\min\{K_{i,t}, S_{i,t}q_{i,t}\}.
+]
+
+- (S): latent site-affiliated demographic pool;
+- (q): breeding expression / participation;
+- (K): breeding capacity.
+
+This is not fitted as a latent-state model.
+
+## Evidence architecture
+
+### Temporary breeding-state/access disturbance
+
+Ross 1999→2001→2002.
+
+- breeding abundance -54.3%;
+- 96.97% of aggregate loss restored;
+- loss/rebound cosine 0.99695;
+- inverse-path mismatch 9.41%;
+- independent later mark-recapture: breeder inter-colony movement <0.20%, breeder-to-nonbreeder transitions common.
+
+Interpretation ceiling: strong inverse-path recovery is compatible with retained site affiliation.
+
+### Persistent attrition
+
+Palmer + independent Signy replication.
+
+- concentration exceeds proportional thinning under each frozen null;
+- empirical term should remain **persistent demographic attrition**, not directly measured vital-rate turnover.
+
+### Capacity change
+
+Beaufort.
+
+- small/new unit gain = 3.15× proportional expectation;
+- share increased 0.95%→1.48%;
+- independent band/resighting study: Beaufort→Ross movement declined after local habitat became more available.
+
+Interpretation ceiling: case-level conjunction, not mediation.
+
+### Boundary evidence
+
+Bird, Emperor, Heard.
+
+Role: falsify a simple abundance-direction rule only.
+
+## Prior-art boundary
+
+Do not claim novelty for:
+
+- ecological memory;
+- spatial resilience;
+- metapopulation recovery regimes;
+- site fidelity;
+- the fact that uneven local dynamics alter aggregate recovery.
+
+The narrower contribution is:
+
+> **loss of observed breeding structure and loss of the underlying recoverable spatial organization are not the same biological event.**
+
+## Main scientific ceiling
+
+The only major missing piece for a general causal law is an independent temporary-shock system with:
+
+1. process class fixed before spatial outcome access;
+2. pre-disturbance, trough, and rebound spatial counts;
+3. preferably individual fidelity or state-transition information.
+
+This evidence is **not required** to submit the present integrated empirical synthesis.
+
+It **is required** before claiming a prospectively confirmed general law of process-dependent spatial memory.
+
+## Stop rule
+
+Do not search the current opened archives for another favorable shock example.
+
+Do not add species merely to balance class counts.
+
+Do not construct a common A/B/C omnibus score.
+
+A future independent replication must be opened as a new prospective lane, not as rescue of this manuscript.
+
+## Journal ceiling
+
+Current framing is suitable for consideration as an Ecology full Article or Journal of Animal Ecology article, depending whether the final Introduction emphasizes spatial recovery or behavioural-demographic state.
+
+The evidence is not currently sufficient for a Nature / Nature Ecology & Evolution claim of a general law.
+
+## Current action
+
+Finish figure visual QA and then revise the manuscript only for coherence, prior-art positioning, and compression.
+
+No new ecological endpoint is required.
