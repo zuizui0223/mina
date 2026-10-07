@@ -1,8 +1,8 @@
 # Spatial recovery path-versus-state manuscript — figure captions v0.1
 
-## Figure 1. One disturbance-rebound episode gives three different answers to whether the population recovered
+## Figure 1. One disturbance-rebound episode gives different answers to whether the population recovered
 
-The 1999→2001→2002 Ross Island Adélie episode evaluated along three dimensions. Amount recovery is the fraction of aggregate shock loss restored by the rebound (96.97%). Path reversal is inverse-path fidelity, one minus the half-L1 mismatch between observed rebound allocation and rebound allocated in proportion to preceding local losses (90.59%). State restoration is the fraction of baseline→trough total-variation compositional distance erased by the endpoint (2.4%). These quantities answer different ecological questions and are not expected to coincide mathematically.
+The 1999→2001→2002 Ross Island Adélie episode evaluated along three dimensions. Amount recovery is the fraction of aggregate shock loss restored by the rebound (96.97%) and is invariant to spatial aggregation. Path reversal remained high at both six-component (90.59%) and three-colony (93.27%) grains. State restoration, measured as the fraction of baseline→trough total-variation compositional distance erased by the endpoint, was incomplete and grain dependent: 2.4% at six-component resolution and 28.3% after aggregation to Royds, Bird, and Crozier. The qualitative path-versus-state discrepancy therefore survives coarsening, while the numerical magnitude of state restoration is explicitly scale dependent.
 
 ## Figure 2. Near-complete aggregate recovery masked strongly unequal local restoration
 
