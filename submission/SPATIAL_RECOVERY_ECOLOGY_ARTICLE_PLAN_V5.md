@@ -1,6 +1,10 @@
 # Spatial recovery v0.8 — Ecology Article editorial plan v5
 
-**Date:** 2026-10-07  
+**Date:** 2026-10-07
+
+**Frozen scientific source:** `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`  
+**Production derivative:** `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`  
+**Production change boundary:** figure callouts and main-versus-supporting placement only; no scientific unfreeze.  
 **Primary target:** *Ecology* — Article  
 **Backup:** *Journal of Animal Ecology* — Research Article
 
@@ -70,6 +74,6 @@ Sell:
 
 ## Submission architecture
 
-One active manuscript only:
+One active submission manuscript only:
 
-`docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md`
+`docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
