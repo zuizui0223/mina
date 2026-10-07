@@ -67,6 +67,12 @@ Before actual submission, supply or confirm:
 
 - Automated manuscript QA: `submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V1.md`
 
+## Scientific freeze
+
+- Freeze record: `submission/SPATIAL_RECOVERY_ECOLOGY_SCIENTIFIC_FREEZE_V1.md`
+- Frozen scientific head: `3e8882742ca2affc6717d373fd9b6d903b01f4c1`
+- CI / synthesis / figure workflows: **success**
+
 ## Scientific stop rule
 
 Do not add new ecological endpoints, taxa, lags, metrics, or favorable spatial grains before initial submission.
