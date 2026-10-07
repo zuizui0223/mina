@@ -4,9 +4,9 @@
 
 The 1999→2001→2002 Ross Island Adélie episode evaluated along three dimensions. Amount recovery is the fraction of aggregate shock loss restored by the rebound (96.97%). Path reversal is inverse-path fidelity, one minus the half-L1 mismatch between observed rebound allocation and rebound allocated in proportion to preceding local losses (90.59%). State restoration is the fraction of baseline→trough total-variation compositional distance erased by the endpoint (2.4%). These quantities answer different ecological questions and are not expected to coincide mathematically.
 
-## Figure 2. Local rebound retraced loss but reweighted the Ross breeding composition
+## Figure 2. Near-complete aggregate recovery masked strongly unequal local restoration
 
-(A) Observed 2001→2002 rebound versus the exact inverse-path rebound expected if the observed aggregate gain were allocated in proportion to each component's 1999→2001 loss. Points close to the one-to-one line generate the high path fidelity. (B) Relative breeding composition in 1999, 2001, and 2002. Although absolute gains largely followed absolute losses, the rebound shifted composition strongly toward Cape Crozier West. The 2001→2002 total-variation change (9.75%) was the largest of 25 complete adjacent transitions in the frozen Ross series.
+(A) Fraction of each breeding component's 1999→2001 loss restored by the 2001→2002 rebound. Local restoration ranged from 10.8% at Bird South to 109.8% at Crozier West. The dashed line is aggregate restoration (96.97%), which is exactly the loss-weighted mean local restoration ratio; the median local component restored 51.8% of its prior loss. Cape Crozier West supplied 80.6% of all rebound abundance. (B) Relative breeding composition in 1999, 2001, and 2002. Differential local restoration shifted composition past the pre-disturbance state toward greater Crozier West dominance. The 2001→2002 total-variation change (9.75%) was the largest of 25 complete adjacent transitions in the frozen Ross series.
 
 ## Figure 3. High inverse-path fidelity did not imply state restoration in the complete Ross down→up episodes
 
