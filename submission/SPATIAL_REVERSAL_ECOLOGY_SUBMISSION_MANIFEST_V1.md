@@ -12,7 +12,7 @@ Do **not** upload the separate `MANUSCRIPT_ECOLOGY_REPORT_*` breeding-space-cont
 
 ## Main manuscript
 
-- `submission/MANUSCRIPT_SPATIAL_REVERSAL_ECOLOGY_V0_3.md`
+- `submission/MANUSCRIPT_SPATIAL_REVERSAL_ECOLOGY_V0_4.md`
 
 ## Cover letter
 
@@ -51,7 +51,7 @@ PNG review copies are generated with the same stems.
 - mismatch context: `docs/ROSS_INVERSE_PATH_MISMATCH_CONTEXT_V1.md`
 - dominance reviewer audit: `docs/ROSS_SPATIAL_REVERSIBILITY_DOMINANCE_AUDIT_V1.md`
 - reviewer stress test: `submission/PRE_SUBMISSION_REVIEWER_STRESS_TEST_SPATIAL_REVERSAL_V2.md`
-- readiness: `submission/SUBMISSION_READINESS_SPATIAL_REVERSAL_V3.md`
+- readiness: `submission/SUBMISSION_READINESS_SPATIAL_REVERSAL_V4.md`
 
 ## Primary result receipts
 
@@ -59,6 +59,12 @@ PNG review copies are generated with the same stems.
 - Bird Island sign test: `results/BIRD_ISLAND_GENTOO_SIX_UNIT_RECOVERY_ALLOCATION_V1.json`
 - Bird temporal audit: `results/BIRD_ISLAND_GENTOO_SIX_UNIT_TEMPORAL_AUDIT_V1.json`
 - Emperor global decline: `results/EMPEROR_GLOBAL_DECLINE_SPATIAL_REDUNDANCY_V1.json`
+
+## Open Research statement
+
+- `submission/OPEN_RESEARCH_STATEMENT_SPATIAL_REVERSAL_DRAFT_V1.md`
+
+Choose the intended permanent archive (Dryad or Zenodo) before final submission-form entry.
 
 ## Human-controlled blockers before upload
 
