@@ -21,6 +21,10 @@
 
 ## Submission documents
 
+- Title-page template: `submission/TITLE_PAGE_SPATIAL_RECOVERY_ECOLOGY_V1.md`
+- Submission copy fields: `submission/ECOLOGY_SPATIAL_RECOVERY_COPY_FIELDS_V1.md`
+- Open Research statement: `submission/OPEN_RESEARCH_STATEMENT_SPATIAL_RECOVERY_V1.md`
+
 - Scientific readiness: `submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V2.md`
 - Ecology Article plan: `submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V5.md`
 - Editorial triage: `submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V3.md`
