@@ -138,6 +138,7 @@ def audit(source):
         "scope":"ORIGINAL_AUTHOR_IMAGE_INTERPRETATIONS_NOT_INDEPENDENT_ICE_OR_CAUSAL_TEST",
         "raw_image_rows_2009_2018":len(rows),
         "bpresent_original_counts":{"yes":502,"no":20,"NA":77},
+        "literal_No_count":len(no_cases),
         "no_annotation_state_counts":dict(sorted(groups.items())),
         "no_passing_basic_original_fit_filter":sum(
             c["passes_basic_original_model_date_area_remove_filter"]
