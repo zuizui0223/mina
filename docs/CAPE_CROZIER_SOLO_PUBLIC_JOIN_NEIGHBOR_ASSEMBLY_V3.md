@@ -45,6 +45,27 @@ Dedicated source-pinned tests, receipt and CI:
 
 The new neighbor screen is **separate from the source join's already-passed CI**; source raw values were previously inspected and it remains *exploratory*, regardless of subsequent workflow success.
 
+## V4 — time-order falsification before any social-causality story
+
+The official author observations were already exposed, and the earliest-observed dates of eggs and neighbors were cross-tabulated for the **9** early-neighbor nests (positive `n_neighbors` by 2021-12-01, source-pinned 2021/22 files):
+
+| Order of first *observed* egg vs first positive neighbor count | Nest sites |
+|---|---:|
+| Egg detected on an **earlier** date than neighbor | **5** |
+| Egg and neighbor first detected on the **same** check date | **2** |
+| Neighbor detected before **first observed** egg | **2** |
+
+This cannot establish a prospective 'neighbors cause pioneering nests to be founded' mechanism: in 5/9 the pioneer was already documented laying before its first positive neighbor observation, and in 2/9 the events are indistinguishable on a calendar day. The remaining two records only show that the *observation of* a neighbor preceded the *first egg sighting*—the actual egg may have been laid before being seen. Moreover, a nest's first neighbor-positive check need not be a known neighbor **arrival** date; it is interval censored between field visits. Observations are typically every four to seven days. [Cox et al. 2024](https://doi.org/10.1007/s00300-024-03246-9) explicitly discuss founder-site pioneering and subsequent recruitment as a possibility; the broad claim is already prior art.
+
+Observation-frequency confounding at the same cutoff is not obviously catastrophic but exists: the nine early-neighbor nests had a mean **3.00 distinct observed days** by December 1, compared with **2.63** days among the 27 nests where neighbors were not detected. Reporting these visit differences cannot on its own correct the bias.
+
+**Distinguish two hypotheses, never treat them as one:**
+
+1. **Social initiation / pioneer attractiveness:** conspecific presence or prior pioneer reproductive signals cause future breeders to initiate nests. Requires individual first arrival, first egg, and prospecting dates for focal and neighbors; **NOT IDENTIFIED**. Existing ordering weakens the simple explanation that observed neighbors preceded pioneer laying.
+2. **Social buffering after laying:** additional neighbors reduce skua attacks / risky trips to crèches after eggs have been laid. The 5/9 versus 6/27 crèche detection pattern remains **compatible** with this but also with favorable territory, site persistence, parental quality, local predation heterogeneity, and greater visibility. A direct skua-attack or tracked chick-fate measure is not present; **NOT IDENTIFIED**.
+
+The time-order check is a deliberately **post-exposure source audit**, not a pre-registered causal test. Its new receipt uses the same dated original 2021 checks and exact source hash, and does not fit a p-value, treatment effect or Allee threshold. Avoid any 'penguins learned to prefer breeding at new islands' extrapolation from one within-colony Cape Crozier cohort.
+
 ## Scientific direction after this audit
 
 There *is* an exact nest-level dataset. But the main colony-formation and fitness patterns have already been published, and it supplies neither independent predator counts, an externally dated breeding-habitat perturbation, nor marked breeder identities. The strongest as-yet unproven hypothesis is **whether early social assembly directly improves an isolated chick's survival across the brood-to-crèche transition, instead of being a consequence of favorable territories or early breeder success**.
