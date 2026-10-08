@@ -1,0 +1,52 @@
+{
+  "contract_version": "1.0",
+  "frozen_at": "2026-10-08",
+  "phase": "INDEPENDENT_PHYSICAL_EXPOSURE_PILOT_PRE_RESULT",
+  "dataset": {
+    "citation": "Fraser and Massom (2020), Circum-Antarctic landfast sea ice 2000-2018 v2.2, doi:10.26179/5d267d1ceb60c",
+    "download_template": "https://public.services.aad.gov.au/datasets/science/AAS_4116_Fraser_fastice_circumantarctic/fastice_v2_2/FastIce_70_{year}.nc",
+    "first_year_to_access": 2011,
+    "later_predeclared_comparators": {
+      "author_fastice_present_birds_not_seen": [2014],
+      "author_fastice_absent": [2009, 2012],
+      "author_birds_seen": [2010, 2013]
+    },
+    "year_file_is_march_to_february_not_calendar_year": true
+  },
+  "fixed_geo_reference": {
+    "name": "Ledda Bay historic published centroid, NOT nest polygon",
+    "latitude_deg": -74.272,
+    "longitude_deg": -131.243,
+    "centroid_source": "Fretwell et al. 2021 https://doi.org/10.1002/rse2.176",
+    "coordinate_reference": "WGS84",
+    "projected_grid": "polar stereographic with true scale 70 degrees south (NSIDC PS70)",
+    "roi_radii_km": [1, 3, 5]
+  },
+  "original_image": {
+    "date": "2011-09-23",
+    "site_id": "LEDD",
+    "source_author_comment": "fast ice available",
+    "original_bpresent": "no",
+    "quality": 3,
+    "passes_basic_original_fit": true,
+    "image_interpreter_is_not_independent_of_original_bird_label": true
+  },
+  "validation_first": [
+    "Download the v2.2 annual original NetCDF by its documented path; log SHA256 and file size",
+    "Check x/y monotonic 1D projected coordinates, 1km-scale spacing, time metadata and temporal coverage",
+    "Only accept documented physical category codes 0..6 and separately tally 4 interior, 5 manual edge, 6 auto edge",
+    "Record all 2011-2012 maps within all fixed local radii and the maps bracketing September 23, 2011",
+    "Never move centroid or optimize radius based on prior penguin annotations or favorable map results"
+  ],
+  "predeclared_limits": [
+    "The physical product is independent of the LaRue satellite-image annotator, not necessarily independent of imagery or systematic satellite confounders",
+    "Map timestamp may represent a 15-day composite whose boundaries cross image date; do not claim strict prior exposure until bounds are checked",
+    "A 1km pixel near the published rounded colony centroid is not a verified nest footprint",
+    "Pixels coded 0 combine sea/ocean/pack and can also be a fill code; do not treat 0 as proven open-water habitat",
+    "Seasonal ice at one coastal site is NOT proven accessible, reliable across incubation or fledging, or vacant for a season",
+    "Do not infer social inhibition, density dependence, Allee effects, breeding success, immigrant sources, rescue, or a general ecological law",
+    "If source downloads/schema validation fail, report HOLD rather than replacing data product"
+  ],
+  "publication_claim_permitted": "Independent ice-context audit of a published single-site negative image; not evidence of new penguin ecological causation",
+  "pr189_frozen_science_untouched": true
+}
