@@ -38,6 +38,11 @@ def test_apparent_turnover_not_evidence_of_recolonization():
     assert len(D["apparent_zero_to_positive_events"]) == 9
     assert len(D["apparent_positive_to_zero_events"]) == 10
     assert D["mean_transition_is_confirmed_emigration_recolonization"] is False
+    assert D["candidate_zero_to_positive_episodes_not_meeting_independent_refuge_gate"] == 9
+    assert D["candidate_zero_to_positive_episodes_with_qualified_independent_site_ice_survey_breeding_history"] == 0
+    assert D["independently_verified_refuge_colonization_episodes_identified_from_this_posterior_table"] == 0
+    assert "NOT biological evidence" in D["reason_no_events_qualify"]
+
     assert D["model_occupancy_z_s_t_iid_shared_p_no_lag_or_detection"]
 
 
