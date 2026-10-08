@@ -31,7 +31,7 @@
     "Explicitly do not infer causality from egg observed after first neighbor because egg detection may lag laying",
     "If egg was documented before neighbor, neighbor detection cannot have caused that original egg to appear"
   ],
-  "preexposed_preliminary_original_data_pattern": "Among 9 early-neighbor nests, 5 already have an egg detected before first positive neighbor, 2 same day, 2 later; this is source audit not new independent hypothesis test.",
+  "preexposed_preliminary_original_data_pattern": "CORRECTED exact Dec1 source censoring: among 9 neighbor-positive nests, first egg detected before neighbor 5, same observation date 2, later 1, no egg detected by cutoff 1; incubation observed on or before neighbor in 7. A previously communicated 5/2/2 omitted the right-censored egg case.",
   "forbidden": [
     "Do not call same-day nesting record a strictly prior cause",
     "Do not use unknown egg status 8/9 as known zero",
@@ -41,5 +41,7 @@
     "Do not fit p-values on outcome-exposed hypotheses or modify frozen PR189"
   ],
   "PR189_unchanged": true,
-  "new_causal_result": false
+  "new_causal_result": false,
+  "source_outcome_exposed": true,
+  "correction_reason": "Initial manual categorization let solo24's post-2021-12-01 egg check count in a December 1 risk set. Source-faithful restriction must censor that first egg sighting."
 }
