@@ -56,7 +56,20 @@ def audit(rows):
         except (ValueError,TypeError):
             image_date=None
         coord_valid=(la is not None and lo is not None and abs(la)<=90 and abs(lo)<=180)
+        # In an Antarctic site-specific source, blank/zero geographic
+        # placeholders may otherwise resemble a real Greenwich/Equator scene.
+        raw_la,raw_lo=la,lo
+        reason=None
+        if coord_valid and (la==0 or lo==0):
+            coord_valid=False
+            reason="ZERO_SENTINEL_OR_AMBIGUOUS_COORDINATE"
+        if coord_valid:
+            near=min(geodistance(la,lo,*value) for value in REFS.values())
+            if near>200:
+                coord_valid=False
+                reason="SOURCE_SCENE_CENTER_OVER_200KM_FROM_BOTH_PREPRINTED_LEDD_REFERENCES"
         if not coord_valid:
+            if reason is None:reason="MISSING_OR_INVALID_WGS84_IMAGE_CENTER"
             la=lo=None
         dists={key:geodistance(la,lo,*value) if coord_valid else None
                for key,value in REFS.items()}
@@ -65,6 +78,10 @@ def audit(rows):
             "bpresent_original":r.get("bpresent"),
             "image_scene_centroid_lat":la,
             "image_scene_centroid_lon":lo,
+            "raw_img_lat_parsed":raw_la,
+            "raw_img_lon_parsed":raw_lo,
+            "coordinate_within_predeclared_spatial_quality_gate":coord_valid,
+            "coordinate_hold_reason":reason,
             "original_satellite_catalog_id":str(r.get("catalog_id","") or "")[:100],
             "distance_scene_center_to_reference_km":dists,
             "scene_center_not_guano_or_bird_location":True,
