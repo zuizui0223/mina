@@ -35,25 +35,30 @@
     }
   },
   "predefined_spatial_neighborhoods": {
-    "primary_km": 100,
-    "sensitivity_km": [
+    "primary_local_screen_km": 100,
+    "local_sensitivity_km": [
       40,
       80,
       160
     ],
-    "negative_control_km": [
-      200,
-      400
+    "regional_dispersal_scales_km": [
+      250,
+      500,
+      1000
     ],
-    "reason": "Literature-informed correction before opening candidate 2022-2024 outcomes: the already-published Halley Bay→Dawson-Lambton reassignment crossed >40 km (55km as quoted in 2019; 85km in 2025; 62.1km great-circle from 2019 coordinates). A 40km primary radius mechanically excludes this positive-control event; use broad 100km eligibility and full continuous distance/path/access whenever data allow. Because this choice uses known prior art, do NOT use Halley as an independent holdout confirmation.",
+    "regional_distance_is_biological_negative_control": false,
+    "previous_distance_negative_control_200_400km_retracted": true,
+    "known_mean_dispersal_km_in_genetic_demographic_prior_art": 414,
+    "local_distance_is_not_full_emigration_range": true,
+    "reason": "Literature-informed, pre-new-2022-outcome correction. Garnier et al 2025 fitted a short relative-to-foraging but substantial mean reproductive dispersal distance of ~414km. Thus a 100km candidate radius is only a local choice stratum and 200-400km cannot be presumed an unreachable negative control. 2019 Halley→Dawson source reports 55km, 2025 reports 85km, geodesic ~62.1km.",
     "candidate_types": [
-      "already occupied destination breeding colony: positive-control class, NOT previously unused refuge",
-      "repeatedly surveyed and unoccupied potential breeding patch with 2010–2018 high ice persistence and independently verified physical availability before the post-2022 move",
-      "unknown survey history/pseudoabsence: NOT eligible as known empty biological refuge"
+      "already occupied breeding colony: potential receiving-colony choice",
+      "prior surveyed and repeatedly empty but independently physically available breeding platform: true vacant-refuge choice",
+      "unsurveyed or pseudoabsence habitat: unclassified, cannot claim a known empty refuge"
     ],
-    "distance_definition": "WGS84 great-circle for screen; actual sea/ice route and cliff passability as independent covariates if mapped; named-study kilometers not equated with geodesic",
-    "do_not_use_circular_exposure": "Current colony position or guano signal must not define historic suitability or passability",
-    "literature_informed_not_preregistered_blind": true
+    "model_development_status": "local and regional screens are literature-informed but not independently confirmed; the historic Halley case is an exposed development example",
+    "distinguish_travel_distance_and_emigration": "Remote at-sea movements of thousands of km are not successful reproductive dispersal; 414km is an inferred model parameter, not individually measured settlement distances.",
+    "do_not_use_circular_exposure": "Current guano/observed colony location cannot define ice accessibility or pre-choice candidate presence."
   },
   "eligible_unit": "Named fixed colony network and austral breeding season, with unique source id, linked repeated imagery, and independently measured local access BEFORE location changes",
   "primary_ecological_outcome": "Documented use of previously unoccupied stable alternative AND continued verified breeding-season occupancy in next observed season (without equating this with individual fitness).",
@@ -82,7 +87,10 @@
     "No future-data fit before header-only and source access results.",
     "Do not score Halley→Dawson as a formerly vacant site: Dawson supported 1,280 counted breeding-pair equivalents in 2015; it is an established-colony receiving option.",
     "Do not claim displaced individuals bred successfully merely because 2016/17 receiving-colony attendance increased; late-season unusual dispersed groups and uncertain reproduction.",
-    "All 100km neighborhood/known Halley positive-control comparisons are literature-informed model-development cases, not prospective independent confirmation."
+    "All 100km neighborhood/known Halley positive-control comparisons are literature-informed model-development cases, not prospective independent confirmation.",
+    "Do not describe 200–400 km as an unreachable negative control: prior reproductive dispersal mean ~414 km.",
+    "Do not infer that a model with fixed known colony nodes estimated choice probabilities for newly available, genuinely empty nesting habitats.",
+    "Do not call 15.7% modeled average emigration an observed per-marked-individual movement rate; the paper notes median colony-year emigration probability/median emigration is zero."
   ],
   "known_published_summary": {
     "affected_2022_sites": 19,
@@ -131,5 +139,27 @@
     "breeding_evidence_2016_17": "dispersed crowds; many may have been nonbreeders",
     "breeding_evidence_2018": "dense aggregations and guano staining consistent with prolonged colony occupancy; not individual recruitment accounting",
     "preexposed_novelty_limit": "Halley→Dawson source relocation and the ~11-fold receiver census gain are established since Fretwell & Trathan 2019 and cannot be claimed as new."
+  },
+  "genetic_demographic_prior_art": {
+    "citation": "Garnier et al 2025 Ecology and Evolution doi:10.1002/ece3.71367",
+    "mean_inferred_reproductive_dispersal_km": 414,
+    "mean_modeled_colony_emigration_rate_per_year": 0.157,
+    "median_emigration_rate_across_colony_years": 0,
+    "best_supported_behaviour": "semi-informed dispersal: environment-informed emigration, RANDOM establishment among EXISTING modeled colony nodes",
+    "DIC_according_to_published_models": {
+      "random": 684,
+      "semi_informed": -41,
+      "informed": 676
+    },
+    "covariates_in_prior_emigration_analysis": [
+      "zooplankton biomass",
+      "distance to fast ice edge",
+      "colony size"
+    ],
+    "source_code_repo": "https://github.com/garnieji/EP_demographic_genetic",
+    "model_example_fixed_colony_nodes": 54,
+    "source_code_model_node_note": "EP_project_informed.m sets ncol=54, reads COL_EP.xlsx C2:C55, uses K=2*BE from 2009 counts, and lets dispersers choose among modeled nodes via a connection matrix. Paper text describes 66 modeled colonies in its framework; exact code-to-paper lineage must be reconciled rather than claiming a proven contradiction.",
+    "old_hypothesis_de_novo_colonization_supported_by_model": false,
+    "important_limit": "No establishment probabilities at independently verified empty nesting platforms can be inferred from fixed-known-colony node model. Semi-informed model comparison does not identify social attraction or test colonization of vacant habitat."
   }
 }
