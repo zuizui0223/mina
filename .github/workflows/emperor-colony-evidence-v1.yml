@@ -12,7 +12,10 @@ on:
       - 'scripts/audit_emperor_2024_new_sites_against_66_catalogue.py'
       - 'results/EMPEROR_66_CATALOGUE_NEWLY_REPORTED_SITES_GEODESIC_V1.json'
       - 'tests/test_emperor_66_catalogue_new_site_geodesic.py'
-      - 'tests/test_emperor_2008_2018_codebook_empty_site_guard.py'
+      - 'tests/test_emperor_2008_2018_codebook_empty_site_guard.py tests/test_emperor_larue_global_posterior_occupancy.py'
+      - 'scripts/audit_larue_2024_global_posterior_occupancy_v1.py'
+      - 'results/EMPEROR_LARUE_2024_50_BY_10_POSTERIOR_ZERO_AUDIT_V1.json'
+      - 'tests/test_emperor_larue_global_posterior_occupancy.py'
       - 'results/EMPEROR_2008_2018_SATELLITE_OCCUPANCY_CODEBOOK_GATE_V1.json'
       - 'docs/EMPEROR_DISCOVERY_VS_TRUE_FOUNDATION_AUDIT_V3.md'
       - '.github/workflows/emperor-colony-evidence-v1.yml'
@@ -69,4 +72,32 @@ jobs:
           PY
           else
             echo 'HOLD_SOURCE_FETCH: pinned public author catalogue unavailable to Actions; no new empirical result is inferred'
+          fi
+
+      - name: Reproduce published 50 x 10 posterior-state audit if source accessible
+        env:
+          LARUE50_SOURCE: https://raw.githubusercontent.com/davidiles/EMPE_Global/13f71112da43c1fd082273677757b41c550457ed/analysis/output/model_results/3_Colony_Level/colony_summary.csv
+        run: |
+          if curl -fLsS --max-time 45 --retry 2 "$LARUE50_SOURCE" -o /tmp/larue_50_2009_2018.csv; then
+            python scripts/audit_larue_2024_global_posterior_occupancy_v1.py --input /tmp/larue_50_2009_2018.csv --out /tmp/larue_posterior_audit.json
+            python - <<'PY'
+          import json,math
+          actual=json.load(open('/tmp/larue_posterior_audit.json'))
+          frozen=json.load(open('results/EMPEROR_LARUE_2024_50_BY_10_POSTERIOR_ZERO_AUDIT_V1.json'))
+          for field in ('site_count','posterior_site_years',
+                        'posterior_mean_exact_zero_site_years',
+                        'lower_95_bound_zero_site_years',
+                        'nonzero_mean_but_lower_95_zero_site_years',
+                        'upper_95_bound_zero_site_years',
+                        'distinct_sites_with_a_zero_posterior_mean',
+                        'apparent_mean_zero_to_positive_transitions',
+                        'apparent_mean_positive_to_zero_transitions'):
+              assert actual[field] == frozen[field],field
+          for field in ('halley_model_2016_posterior_mean','halley_model_2016_posterior_lower_95'):
+              assert math.isclose(actual[field],frozen[field],rel_tol=1e-12),field
+          assert actual['mean_transition_is_confirmed_emigration_recolonization'] is False
+          print('AUTHORS_POSTERIOR_50x10_REPRODUCTION_PASS__NO_REAL_FOUNDING_INFERENCE')
+          PY
+          else
+            echo 'HOLD_SOURCE_FETCH: author CSV unavailable; frozen source-grounded receipt untested in this Actions run'
           fi
