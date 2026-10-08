@@ -45,11 +45,15 @@ jobs:
           import json
           z=json.load(open('/tmp/ledda_scene_centroids_v1.json'))
           assert z['focus_2014']['author_img_date']=='2014-10-13'
+          assert z['status']=='STATIC_SITE_COORDINATES_REPEATED_IN_IMAGE_FIELDS_NOT_SCENE_GEOREFERENCE'
+          assert z['n_img_coordinates_identical_to_published_static_site']==10
+          assert z['n_distinct_valid_img_coordinate_pairs']==1
+          assert z['independent_per_image_scene_footprint_georeference_verified'] is False
           assert str(z['focus_2014']['bpresent_original']).lower()=='no'
           assert not z['2014_scene_extent_verified']
           assert not z['2014_Zhang_polygon_verified']
           assert not z['new_breeding_event_or_migration_claim']
-          print('ORIGINAL_IMAGE_CENTROID_AUDIT_PASSED_NOT_NESTING_POLYGONS')
+          print('SOURCE_IMG_COORDINATES_IDENTICAL_TO_STATIC_SITE_10_OF_10__NOT_SCENE_CENTROIDS')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
