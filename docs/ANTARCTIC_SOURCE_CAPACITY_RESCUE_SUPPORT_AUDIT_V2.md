@@ -56,6 +56,14 @@ Absolute `F_settler = R_eligible × p_first_breeding_at_receiver` is a DIFFERENT
 
 **Illustrative algebra only (NOT an estimate of actual emigrants):** if the source eligible cohort had increased by exactly the *breeding-pair count* ratio 63,760/52,335=1.2183, then absolute exports would fall only if the true destination-settlement probability ratio were **below 0.8208**, i.e., a decline exceeding **17.92%**. Because source cohort and main-colony count are not equivalent, 0.8208 is a pedagogic threshold, not an inferred ecological threshold.
 
+## Published Figure 5 numerator/denominator consistency check
+
+In the published LaRue et al. (2013) Figure 5 the **modeled number of potentially living Beaufort-origin banded individuals** is displayed together with the fraction of those individuals subsequently seen visiting Royds/Bird/Crozier. This permits a *rough graphical reconstruction of the marked-cohort Ross visitor numerator*, rather than treating a falling visit percentage as proof of a falling visitor count. A visual check suggests that the percentage decrease is not solely an explosive growth in the plotted at-risk denominator. **No precise series has been digitized, and no new numerical result or significance test is asserted.**
+
+But even a real reduction in the **absolute number of Beaufort-origin *marked visitors observed* at Ross** does **not** identify a reduction in the true island-wide flux of successful first-time breeders. The marked-at-risk denominator is a modeled historical banding sample, not all live young Beaufort birds; origins, ages, unsearched destinations, resighting effort and breeding evidence are not comparable in the required population-level sense. Accordingly this audit does **not** discard the evidence for decreased Ross visits—it rejects the escalation from *visits* to *settled immigrant rescue*.
+
+Published source: LaRue et al. 2013, Figure 5, https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0060568
+
 ## Recipient support result — **hard STOP for P3 reoccupation in this panel**
 
 Frozen Ross 1985–2012 six-component aerial count CSV from PR #189, independently assembled from Lyver et al. 2014:
