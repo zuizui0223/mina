@@ -64,6 +64,25 @@ But even a real reduction in the **absolute number of Beaufort-origin *marked vi
 
 Published source: LaRue et al. 2013, Figure 5, https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0060568
 
+## Historical first-colonisation audit — original source versus treaty management plans
+
+**New source check (2026-10-08):** the 2013 LaRue article calls a disjunct Beaufort north-coast subcolony first observed in **2004** "newly-founded" and gives **460 breeding pairs**, then **957** in 2010. This is not sufficient to establish that local colonisation first occurred in 2004. Official Antarctic Treaty **2003 Measure 2 ASPA 105 management-plan annex** already describes **January 1995: 2 pairs, 3 chicks and ~10–15 non-breeders at the west end of the ice-free northern beach**. The 2010 Measure 4 and 2015 Measure 5 ASPA 105 plans reiterate the 1995 origin and provide matching growth landmarks: **525 pairs in 2005/06**, **677 in 2008/09**, **989 in 2013/14**. These records substantially challenge the *interpretation of 2004 as the first northern-island colonisation*.
+
+**Geospatial and continuity caution:** 2013 describes a colony on the *northeast* coast, while plans describe the *west end of the northern beach* / *northwest* coast (~76°55'S 166°52'E). Similar cohort numbers and one north-shore subcolony in the later plans suggest the same trajectory, but no map-to-map footprint identity or complete 1995–2004 annual history was checked. **Do not declare unequivocally that the 1995 and 2004 observations are the same precise patch or that occupancy was continuous.** The new exact-site crosswalk / dates gate below is required before using "1995 founding, uninterrupted expansion" as a biological result.
+
+The 2003 plan calls the 1995 colony **possibly transitory**, which makes a true **loss→reoccupation** in the unobserved interval a competing possibility rather than something to assume away.
+
+The 2010 and 2015 ASPA plans also explicitly document **Ross-island-banded birds seen at the new Beaufort north-shore subcolony** (Ross → Beaufort observed visitation): this means the metapopulation is not empirically supported as one-direction Beaufort → Ross export only. Again these are sightings, not population-level estimates of successful first breeding or immigration.
+
+Sources:
+- Antarctic Treaty ASPA No. 105, Measure 2 (2003) original annex: https://documents.ats.aq/recatt/att155_e.pdf
+- Antarctic Treaty Measure 4 (2010): https://www.ats.aq/devAS/Meetings/Measure?id=454&lang=e
+- ASPA No. 105 official 2015 management plan, pp. 1, 4: https://www.env.go.jp/nature/nankyoku/kankyohogo/database/jyouyaku/aspa/aspa_pdf_en/Measure5_ASPA105.pdf
+- LaRue et al. 2013 original Results: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0060568
+
+**Revised source support requirement:** build a georeferenced north-shore 1995/2004/2005/2008/2010/2013 identity-and-coverage table *without treating a missing annual record as zero*. Separate first establishment, persistence, and recolonisation hypotheses. Incorporate both migration directions into origin–destination model; a single `BEAU` code cannot differentiate main and north shore.
+
+
 ## Recipient support result — **hard STOP for P3 reoccupation in this panel**
 
 Frozen Ross 1985–2012 six-component aerial count CSV from PR #189, independently assembled from Lyver et al. 2014:
