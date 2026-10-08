@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Actual author original image CENTERS, not penguin nesting coordinates.
+"""Audit LaRue original img_lat/img_long as source *fields*, not scene centers.
 
-Pinned LaRue et al. 2024 original 2009-2018 satellite workbook only.
-The image centroid and WGS84 referenced colony coordinates are different
-measurement supports; scene center cannot establish polygon or nest location.
+Pinned LaRue et al. (2024) 2009–2018 satellite workbook only.
+Coordinates in apparently image-specific fields may actually be the constant
+historical colony lookup point. A fixed value across 10 yearly observations
+cannot independently geolocate dated images, nest footprints or live birds.
 """
 from __future__ import annotations
 import argparse
@@ -90,8 +91,25 @@ def audit(rows):
     item=next(r for r in result if r["year"]==2014)
     if item["author_img_date"]!="2014-10-13" or str(item["bpresent_original"]).lower()!="no":
         raise ValueError("2014 historically frozen source image changed")
+    # IMG latitude/longitude field names do not establish a per-image
+    # georeferenced footprint. Test source values against the independently
+    # published static site coordinate BEFORE interpreting a change.
+    identity=[r["coordinate_within_predeclared_spatial_quality_gate"] and
+              r["image_scene_centroid_lat"]==REFS["LaRue_static_colony"][0] and
+              r["image_scene_centroid_lon"]==REFS["LaRue_static_colony"][1]
+              for r in result]
+    all_same=all(identity)
+    unique_valid=sorted({(r["image_scene_centroid_lat"],r["image_scene_centroid_lon"])
+                         for r in result if r["coordinate_within_predeclared_spatial_quality_gate"]})
     return {
-        "status":"AUTHOR_IMAGE_SCENE_CENTROIDS_CROSSWALKED_NOT_NESTING_POLYGONS",
+        "status":("STATIC_SITE_COORDINATES_REPEATED_IN_IMAGE_FIELDS_NOT_SCENE_GEOREFERENCE"
+                  if all_same else "IMAGE_LOCATION_FIELD_SEMANTICS_UNVERIFIED"),
+        "n_img_coordinates_identical_to_published_static_site":sum(identity),
+        "n_Ledda_image_records":len(result),
+        "n_distinct_valid_img_coordinate_pairs":len(unique_valid),
+        "all_ten_image_fields_equal_static_published_site":all_same,
+        "independent_per_image_scene_footprint_georeference_verified":False,
+        "independent_per_image_colony_or_bird_movement_position_verified":False,
         "source_blob_sha":SOURCE_SHA,
         "reference_coords":{k:list(v) for k,v in REFS.items()},
         "source_years":[r["year"] for r in result],
@@ -115,7 +133,7 @@ def main():
         raise ValueError("SOURCE_HASH_MISMATCH")
     result=audit(sheet_records(data))
     args.out.write_text(json.dumps(result,indent=2)+"\n",encoding="utf8")
-    print("2014_SCENE_COORDINATES",result["focus_2014"]["image_scene_centroid_lat"],
+    print("2014_SOURCE_IMG_LOCATION_FIELDS",result["focus_2014"]["image_scene_centroid_lat"],
           result["focus_2014"]["image_scene_centroid_lon"])
     print("2014_SCENE_DISTANCE_TO_REF",
           json.dumps(result["focus_2014"]["distance_scene_center_to_reference_km"]))
@@ -123,7 +141,8 @@ def main():
         print("SCENE_YEAR",r["year"],r["author_img_date"],
               r["image_scene_centroid_lat"],r["image_scene_centroid_lon"],
               json.dumps(r["distance_scene_center_to_reference_km"]))
-    print("SCENE_CENTER_IS_NOT_NEST_OR_SATELLITE_FOOTPRINT")
+    print("ALL_IMAGE_FIELDS_MATCH_STATIC_SITE",result["all_ten_image_fields_equal_static_published_site"])
+    print("IMAGE_LOCATION_FIELDS_NOT_PROVEN_SCENE_CENTERS_OR_NEST_FOOTPRINTS")
 
 
 if __name__=="__main__":
