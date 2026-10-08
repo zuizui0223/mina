@@ -1,0 +1,57 @@
+name: Ledda external fast-ice readiness
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'scripts/audit_fraser_fastice_http_range_readiness_v1.py'
+      - 'tests/test_fraser_fastice_http_range_readiness_v1.py'
+      - 'contracts/EMPEROR_LEDDA_FRASER_FASTICE_INDEPENDENT_SOURCE_V1.json'
+      - '.github/workflows/emperor-ledda-external-fastice-readiness.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_fraser_fastice_http_range_readiness_v1.py'
+      - 'tests/test_fraser_fastice_http_range_readiness_v1.py'
+      - 'contracts/EMPEROR_LEDDA_FRASER_FASTICE_INDEPENDENT_SOURCE_V1.json'
+      - '.github/workflows/emperor-ledda-external-fastice-readiness.yml'
+jobs:
+  external-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Frozen source test (synthetic, no remote outcomes)
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_fraser_fastice_http_range_readiness_v1.py
+      - name: Bounded annual HEAD + 32-byte HTTP Range source verification only
+        run: |
+          python scripts/audit_fraser_fastice_http_range_readiness_v1.py --out /tmp/ledda_fastice_range_receipt.json
+      - name: Confirm scientific outcomes sealed and report capability
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/ledda_fastice_range_receipt.json'))
+          assert d['physical_class_values_read'] == 0
+          assert d['biological_response_rows_read'] == 0
+          assert d['effect_fitted'] is False
+          assert d['total_downloaded_body_bytes'] <= 6*32
+          assert len(d['checks']) == 6
+          print('RAW_SOURCE_VERIFICATION_ONLY')
+          for item in d['checks']:
+              print(item['year'],item['head_status'],item['byte_range_status'])
+          print('READY_EXTERNAL_NC_RANDOM_RANGE',d['all_six_files_remote_random_read_capable'])
+          print('NEXT_DECISION',d['decision'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledba-frase-fastice-source-metadata-v1
+          path: /tmp/ledda_fastice_range_receipt.json
+          retention-days: 14
+          if-no-files-found: ignore
