@@ -25,6 +25,16 @@ During the **11 nominal 15-day windows May→last preimage** around the LaRue / 
 
 2014 September 13–27 and September 28–October 12 both show **0 class4/28** near LaRue versus **30/30** near Fretwell. Thus the qualitative discrepancy is not confined to only the one immediately preceding 15-day bin. The earlier bin is NOT necessarily a real-time prospective measurement because Fraser/Massom retrospective manual edge validation can consult the immediately following period when cloud cover prevents direct classification.
 
+### Strongest stage-near comparator: 2010 October 8 versus 2014 October 13
+
+These image dates differ by only **five calendar days** in the austral spring, making this the cleanest available stage-near *descriptive* contrast, although years, source history, observation quality, colony position and demography are still uncontrolled.
+
+- 2010 source satellite: penguins `yes`. At the Fretwell printed coordinates, last nominally preimage composite had class4 **30/30**, and the seasonal longest any-class4 run was **4** approximately 15-day periods; LaRue site also had **27/28** class4.
+- 2014 source satellite: penguins `no`. At the **same fixed Fretwell coordinates**, last preimage composite class4 was **30/30**, but seasonal longest run was **2** periods; at LaRue's alternative coordinate it was **0/28**.
+- Therefore contemporaneous *mapped* fast ice at the Fretwell reference point cannot alone determine the raw bird-image detection code. An earlier ice-gap mechanism remains compatible, but so do site misregistration, relocation within the bay, prior breeding failure, stage/detection effects and other ecology. The contrast is one colony, two already-selected years, with no replicated true-site controls; no p-value or causal identification is licensed.
+
+**This comparison is a logical counterexample to a deterministic binary ice-at-reference-point ≡ bird-detection rule, not evidence proving temporal access drives colony settlement.**
+
 ### Critical negative control
 
 The original 2013-11-30 `bpresent=yes` observation has 0 class4 in both 3-km neighborhoods in the last completed preceding composite and no class4 in either site in the last four intervals; this is a **stage/footprint/measurement counterexample to treating 'bird yes' and 'fixed-centroid class4 present on matching nominal ice bin' as identical labels**. Raw bird detection alone does not verify completed breeding in that physical patch. October and November observations are not biologically exchangeable.
