@@ -1,0 +1,65 @@
+name: Ledda historical annotation ice crosswalk 2009-2013
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'contracts/EMPEROR_LEDDA_2009_2010_2012_2013_AUTHOR_STATE_ICE_CALIBRATION_V1.json'
+      - 'scripts/audit_ledda_historic_annotations_independent_ice_v1.py'
+      - 'tests/test_ledda_historic_annotations_independent_ice_v1.py'
+      - '.github/workflows/emperor-ledda-historic-annotation-ice-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/EMPEROR_LEDDA_2009_2010_2012_2013_AUTHOR_STATE_ICE_CALIBRATION_V1.json'
+      - 'scripts/audit_ledda_historic_annotations_independent_ice_v1.py'
+      - 'tests/test_ledda_historic_annotations_independent_ice_v1.py'
+      - '.github/workflows/emperor-ledda-historic-annotation-ice-v1.yml'
+jobs:
+  historical-physical-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test frozen source image dates and no-future rule
+        run: |
+          python -m pip install pytest numpy pyproj h5py
+          python -m pytest -q tests/test_ledda_historic_annotations_independent_ice_v1.py
+      - name: Extract independently classified prior ice without any new biological outcomes
+        run: |
+          python scripts/audit_ledda_historic_annotations_independent_ice_v1.py --out /tmp/ledda_historical_ice_crosswalk.json
+      - name: Verify source and stage gates; explicitly print any source HOLD
+        run: |
+          python - <<'PY'
+          import json
+          z=json.load(open('/tmp/ledda_historical_ice_crosswalk.json'))
+          assert z["years"]==[2009,2010,2012,2013]
+          assert z["new_penguin_response_values_read"]==0
+          assert not z["confirmed_nesting_footprint_available"]
+          assert not z["social_inhibition_or_recolonization_fitted"]
+          assert not z["PR189_science_modified"]
+          assert z["total_http_body_bytes"]<=4*20*1024*1024
+          print("PHYSICAL_CROSSWALK",z["decision"])
+          if not z["all_years_read"]:
+              print("HOLD_SOURCE_FAILED: physical source incomplete, no ecological analysis licensed")
+          else:
+              for rec in z["year_results"]:
+                  for name in ("LaRue_original","Fretwell_alternative"):
+                      s=rec["preimage_physical_by_site_and_radius"][name]["3"]
+                      print("YEAR",rec["year"],"CENTER",name,
+                            "LAST_3KM",s["last_fully_preimage"]["class4_pixels"],"/",
+                            s["last_fully_preimage"]["valid_pixels"],
+                            "ANY",s["n_composites_with_any_class4"],"/",
+                            s["n_preimage_15day_composites"])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledda-2009-2010-2012-2013-source-independent-ice-context
+          path: /tmp/ledda_historical_ice_crosswalk.json
+          retention-days: 30
+          if-no-files-found: ignore
