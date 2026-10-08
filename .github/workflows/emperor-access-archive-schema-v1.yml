@@ -9,6 +9,7 @@ on:
       - 'scripts/audit_emperor_public_archive_headers.py'
       - 'tests/test_emperor_public_archive_headers.py'
       - 'contracts/EMPEROR_ACCESS_PUBLIC_ARCHIVE_SCHEMA_GATE_V1.json'
+      - 'contracts/EMPEROR_ACCESS_PUBLIC_ARCHIVE_SCHEMA_GATE_V2.json'
       - '.github/workflows/emperor-access-archive-schema-v1.yml'
 jobs:
   source-schema:
@@ -36,6 +37,11 @@ jobs:
           assert d['outcome_rows_read'] == 0
           assert d['effect_fitted'] is False
           assert len(d['files']) == 3
+          if d['record_metadata']['status'] != 'MANIFEST_VERIFIED':
+              print('SOURCE_BLOCKED: pinned Zenodo v3 record manifest not available')
+          for slot, file in d['files'].items():
+              if file['status'] != 'VERIFIED':
+                  print('SOURCE_OR_HEADER_NOT_VERIFIED:', slot, file['status'])
           print('STRICT_OUTCOME_BLIND_AUDIT_PASS')
           print('verified',sum(v['status']=='VERIFIED' for v in d['files'].values()),'of',len(d['files']))
           PY
