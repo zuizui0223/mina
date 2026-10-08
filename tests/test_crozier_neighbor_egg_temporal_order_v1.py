@@ -60,3 +60,16 @@ def test_noncausal_frozen_safety():
     assert z["source_result_from_same_already_exposed_cohort"]
     assert z["frozen_PR189_unmodified"]
     assert not z["new_confirmatory_causal_result"]
+
+
+def test_egg_after_cutoff_must_stay_right_censored_not_counted_as_after_neighbor():
+    checks, outcomes, gps = sources()
+    # Original early-neighbor nest 2: its first egg is now documented only
+    # after the Dec 1 event-time audit cutoff, not prior to egg laying.
+    checks[4]["date"]="12/6/2021"
+    z=m.ordered_source_audit(checks,outcomes,gps,strict=False)
+    bins=z["first_detected_egg_relative_to_first_positive_neighbor"]
+    assert bins["EGG_DETECTED_BEFORE_NEIGHBOR"]==1
+    assert bins["SAME_OBSERVATION_DAY"]==1
+    assert bins["NO_CONFIRMED_EGG_BY_CUTOFF"]==1
+    assert "NEIGHBOR_DETECTED_BEFORE_FIRST_EGG_SIGHTING" not in bins
