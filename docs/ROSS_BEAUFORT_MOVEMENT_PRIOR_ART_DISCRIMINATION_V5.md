@@ -39,6 +39,12 @@ Dugger et al. (2010) subsequently fitted a multistate model to Ross **adult bree
 
 **It is invalid to compare 5/2681 with LaRue's ~3% as if they were opposing contemporaneous directional transition probabilities**. Doing so would create a spurious “reversal of migration direction” story even if both numbers were measured perfectly.
 
+## Quantitative identification bottleneck in the habitat exposure
+
+The LaRue et al. (2013) main-colony habitat/breeding-pair relationship used **n=3 overlapping image/count dates**, from which a positive area–count association was reported. This is **not three independent island-capacity shocks**; the mapped guano-envelope minus snow is also partly an outcome of penguin occupation. For the contemporaneous 2005→2010 comparison the measured main-colony area grew only **1.12%** while its nest counts grew **21.83%**; the earlier multi-decade ~71% habitat change cannot be assigned wholly to that period. The **northern beach** settlement-choice habitat was not independently measured within those main-colony polygons. Accordingly, neither three paired exposure dates nor the 2005 onward visit-rate series provides a defensible temporal mediation fit of `K_north -> first breeding destination`.
+
+An **access-only rival** has stronger already-published observational support than the proposed new capacity effect because the 2010 multistate movement models compared distinct iceberg-present versus iceberg-absent years with explicitly estimated Ross colony resighting rates. Nevertheless, even those fitted *Ross-to-Ross breeder* movements are **not** direct identification of the Beaufort north-beach founding mechanism.
+
 ## The strongest rival causal explanations, now with stronger evidence hierarchy
 
 **H_A, path-access forcing.** Variation in iceberg and sea-ice geometry shifts foraging/migration connectivity and intercolony visit/settlement probabilities, even at constant usable nesting area. **Published observational support exists** for stage-specific change at Ross; not a new claim.
