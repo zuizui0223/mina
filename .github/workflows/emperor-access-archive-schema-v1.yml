@@ -8,6 +8,9 @@ on:
     paths:
       - 'scripts/audit_emperor_public_archive_headers.py'
       - 'tests/test_emperor_public_archive_headers.py'
+      - 'scripts/audit_emperor_archive_row_layout_v3.py'
+      - 'tests/test_emperor_archive_row_layout_v3.py'
+      - 'contracts/EMPEROR_ACCESS_PUBLIC_ARCHIVE_LAYOUT_V3.json'
       - 'contracts/EMPEROR_ACCESS_PUBLIC_ARCHIVE_SCHEMA_GATE_V1.json'
       - 'contracts/EMPEROR_ACCESS_PUBLIC_ARCHIVE_SCHEMA_GATE_V2.json'
       - '.github/workflows/emperor-access-archive-schema-v1.yml'
@@ -25,7 +28,7 @@ jobs:
       - name: Synthetic parser integrity / no-outcome-leak tests
         run: |
           python -m pip install pytest
-          python -m pytest -q tests/test_emperor_public_archive_headers.py
+          python -m pytest -q tests/test_emperor_public_archive_headers.py tests/test_emperor_archive_row_layout_v3.py
       - name: Verify public Zenodo workbooks and header candidates ONLY
         run: |
           python scripts/audit_emperor_public_archive_headers.py --out /tmp/emperor_schema_receipt.json
@@ -45,6 +48,28 @@ jobs:
           print('STRICT_OUTCOME_BLIND_AUDIT_PASS')
           print('verified',sum(v['status']=='VERIFIED' for v in d['files'].values()),'of',len(d['files']))
           PY
+      - name: Read only structural positions and type counts from top 12 rows
+        run: |
+          python scripts/audit_emperor_archive_row_layout_v3.py --out /tmp/emperor_layout_v3.json
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/emperor_layout_v3.json'))
+          assert d['decoded_cell_values'] == 0
+          assert d['decoded_outcome_rows'] == 0
+          if not d['all_three_downloads_verified']:
+              print('HOLD_SOURCE: public source metadata or download not available')
+          elif d['all_fifty_one_sheet_layouts_sketchable']:
+              print('PUBLIC_51_SHEET_STRUCTURAL_LAYOUT_PASS_WITHOUT_BIOLOGICAL_OUTCOMES')
+          else:
+              print('HOLD_STRUCTURE: downloaded files did not resolve expected 51 sheets')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emperor-public-archive-row-layout-v3-receipt
+          path: /tmp/emperor_layout_v3.json
+          if-no-files-found: ignore
+          retention-days: 14
       - uses: actions/upload-artifact@v4
         if: always()
         with:
