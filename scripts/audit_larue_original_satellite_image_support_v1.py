@@ -127,10 +127,30 @@ def summarize(rows: list[dict], posterior: dict) -> dict:
             unique.add((e["site_id"],yr))
             b=Counter(str(r.get("bpresent","")).strip() for r in matching)
             areazero=sum(str(r.get("area_m2","")).strip() in ("0","0.0","0.00") for r in matching)
+            dates=[]
+            for r in matching:
+                month=str(r.get("img_month","")).strip()
+                day=str(r.get("img_day","")).strip()
+                pixel=str(r.get("area_m2","")).strip()
+                date=(f"{yr}-{month.zfill(2)}-{day.zfill(2)}"
+                      if month not in ("","NA","0") and day not in ("","NA","0") else None)
+                real_pixel = pixel not in ("","NA")
+                nov_or_later = (month.isdigit() and int(month)>=11)
+                out_of_window = (month.isdigit() and not (9<=int(month)<=11))
+                eligible_based_on_date_and_area_only = (
+                    date is not None and real_pixel and not out_of_window and
+                    not (nov_or_later and pixel in ("0","0.0","0.00")))
+                dates.append({
+                    "date":date,"bpresent":str(r.get("bpresent","")).strip(),
+                    "area_m2":pixel,"img_qualit":str(r.get("img_qualit","")).strip(),
+                    "date_and_area_pass_published_window":eligible_based_on_date_and_area_only,
+                    "uncertain_other_original_removal_flags":True
+                })
             years.append({
                 "year":yr,"raw_images_with_site_year":len(matching),
                 "original_bpresent_categories":dict(sorted(b.items())),
                 "zero_pixel_area_images":areazero,
+                "raw_image_dates_and_codes":dates,
                 "verified_independent_fast_ice_present_before_move":False,
                 "verified_whole_site_negative_breeding_survey":False,
             })
@@ -153,6 +173,29 @@ def summarize(rows: list[dict], posterior: dict) -> dict:
         "zero_year_events_with_bpresent_No":sum(
             any(str(k).lower()=="no" and v>0 for k,v in
                 e["raw_satellite_image_support"][0]["original_bpresent_categories"].items())
+            for e in report),
+        "zero_year_events_with_bpresent_yes":sum(
+            any(str(k).lower()=="yes" and v>0 for k,v in
+                e["raw_satellite_image_support"][0]["original_bpresent_categories"].items())
+            for e in report),
+        "positive_year_events_with_bpresent_yes":sum(
+            any(str(k).lower()=="yes" and v>0 for k,v in
+                e["raw_satellite_image_support"][1]["original_bpresent_categories"].items())
+            for e in report),
+        "positive_year_events_with_bpresent_no":sum(
+            any(str(k).lower()=="no" and v>0 for k,v in
+                e["raw_satellite_image_support"][1]["original_bpresent_categories"].items())
+            for e in report),
+        "positive_year_events_with_bpresent_NA":sum(
+            any(str(k).upper()=="NA" and v>0 for k,v in
+                e["raw_satellite_image_support"][1]["original_bpresent_categories"].items())
+            for e in report),
+        "raw_bpresent_no_to_yes_event_count":sum(
+            any(k.lower()=="no" and v>0 for k,v in e["raw_satellite_image_support"][0]["original_bpresent_categories"].items())
+            and any(k.lower()=="yes" and v>0 for k,v in e["raw_satellite_image_support"][1]["original_bpresent_categories"].items())
+            for e in report),
+        "positive_year_without_valid_image_according_to_date_and_area_filter":sum(
+            not any(d["date_and_area_pass_published_window"] for d in e["raw_satellite_image_support"][1]["raw_image_dates_and_codes"])
             for e in report),
         "zero_year_events_with_independent_verified_physically_available_absent_colony":0,
         "all_refuge_colonization_criteria_met":False,
