@@ -147,3 +147,27 @@ Primary sources: https://doi.org/10.1017/S0954102019000099 ; https://doi.org/10.
 - 2023 circumpolar positions: https://doi.org/10.5285/fb0547e4-d2c1-4580-8c98-182f1da7d9ae
 - Fretwell 2026 relocations: https://doi.org/10.1038/s42003-026-10961-y
 - Macdonald 2026 long-term calving response: https://doi.org/10.1017/S0954102025100515
+
+## 2026-10-08 V4: four reported sites against 66 actual listed options, plus an observation-state veto
+
+The question is now constrained by **two new empirical source checks**, both retrospective:
+
+**1. A real geographical roster calculation.** Crosswalk the 4 emperor nesting locations reported in Fretwell (2024) onto a **fixed public list of 66 emperor colonies** (Garnier 2025-associated `bilgecansen/Emperor_dispersal`, pinned commit `8254f7014dd749e5497165ab854b7f76b276e791`, exact `data/empe_sitesNewNB.csv`). Distances are great-circle (not marine travel), from each report's published WGS84 coordinates to the nearest row **in that list**:
+
+| Newly reported site | Nearest *listed* established-catalogue location | WGS84 geodesic |
+|---|---|---:|
+| Lazarev North | Lazarev (old site) | **54.24 km** |
+| Verleger Point | Cruzen Island | **124.72 km** |
+| Vanhoeffen | Karelin Bay | **63.23 km** |
+| Gipps Ice Rise | Dolleman | **215.34 km** |
+
+**2/4** are farther than the literature-informed 100km local candidate radius from **every location on the 66-row list**; all four are below **414km**, which is *the inferred mean dispersal distance, not a hard movement limit*. This is an **actual public catalogue × published-site proximity computation**. It does **not** show true first foundation, usable accessible vacant habitat, migration, or that the nearest *listed* old colony was biologically occupied in the target year (Lazarev old is specifically a discontinued site). This list is an author-distributed **candidate catalogue**, not proof of a single synchronous 66-node fitted probability model, and the 2016/2018 new-site positives need not have existed in earlier fitting eras.
+
+Files: `scripts/audit_emperor_2024_new_sites_against_66_catalogue.py` (checks pinned remote Git blob SHA) and `results/EMPEROR_66_CATALOGUE_NEWLY_REPORTED_SITES_GEODESIC_V1.json`. Tests reject altered source SHA and false first-colonization claims.
+
+**2. A critical original observation-codebook identifiability trap.** The publicly released LaRue et al. (2024, *Proc R Soc B*, DOI `10.1098/rspb.2023.2067`) source `empe_satellite_2023-05-25.xlsx` monitors **50 known colonies in 2009–2018**. **Their `bpresent=No` means either a valid image had no birds *OR THE FAST ICE WAS ABSENT***; `bpresent=NA` means no usable image/inconclusive status; and an empty `catalog_id` can mean older Fretwell (2012) imagery rather than no image. The area of penguin pixels is not successful breeding. Source: [Dryad DOI `10.5061/dryad.m63xsj48v`](https://datadryad.org/dataset/doi%3A10.5061/dryad.m63xsj48v), README and [public authors' analysis code](https://github.com/davidiles/EMPE_Global/tree/13f71112da43c1fd082273677757b41c550457ed). This is an **author-codebook source fact**, not a new re-analysis of bird response rows.
+
+Consequently, fitting 'unoccupied suitable platform' directly from `bpresent=No` would confound **physical nesting opportunity loss** with **socially/behaviorally unoccupied but available habitat**. It would create the very false biological conclusion this project aims to avoid. To use this 50-site source, first independently classify fast-ice availability, image quality, appropriate season and repeated actual negative surveys. Never treat all 50 known colony locations as known unused *alternative* refuges.
+
+**Biological conclusion from V4:** recorded positions in 2024 demonstrate historical use across gaps of approximately 54–215km to listed nodes, but do **not** distinguish *new-node establishment* versus *survey discovery/relocation*; source `No` observations also do **not** distinguish vacant sites from missing ice. Under the existing data streams the social-choice alternative remains **unidentified**. A different matched before/after source with **independently surveyed vacant but physically available ice** is needed for a genuine ecological causal test. No new 2022+ dataset was opened, no inferential outcome was fitted, and PR #189 remains scientifically frozen.
+
