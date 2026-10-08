@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "status": "EXPLORATORY_SECONDARY_COMPARISON_AFTER_BOTH_SOURCES_INSPECTED",
+  "scientific_purpose": "Bound whether a 14.692km disagreement between two historic Ledda published labels resembles spatial separation between author-referenced colony site and actual georeferenced huddle observations in a different Antarctic cohort.",
+  "source_static": {
+    "owner_repo": "davidiles/EMPE_Global",
+    "commit": "13f71112da43c1fd082273677757b41c550457ed",
+    "path": "data/colony_attributes.csv",
+    "git_blob_sha": "b27e18d5746a03279661748cbb427fa76183cd67"
+  },
+  "source_dynamic": {
+    "owner_repo": "mla150/SAR-Emperor",
+    "path": "empe_sar_summary_20250801.csv",
+    "git_blob_sha": "c1b18f7d79acd40263228abb19a8ebbd4ad2e48a",
+    "public_literature": "LaRue et al 2026 Remote Sensing in Ecology and Conservation doi:10.1002/rse2.70083",
+    "biological_year": 2024,
+    "phenology": "SAR huddle centroids throughout Antarctic autumn and winter, date-specific"
+  },
+  "exact_colony_roster": [
+    {"sar":"Atka Bay","static":"Atka"},
+    {"sar":"Cape Crozier","static":"Cape Crozier"},
+    {"sar":"Cape Roget","static":"Cape Roget"},
+    {"sar":"Cape Washington","static":"Cape Washington"},
+    {"sar":"Coulman Island","static":"Coulman Island"},
+    {"sar":"Franklin Island","static":"Franklin Island"}
+  ],
+  "frozen_image_eligibility": "areasum > 0, both geodetic huddle-centroid coordinates finite and inside WGS84 bounds, named colony in fixed roster; never use image area0 records as biological absent sites",
+  "geometry": {
+    "distance":"great-circle haversine Earth mean radius 6371.0088 km",
+    "thresholds_km":[1,2,3,5],
+    "site_label_rule":"compare author-published static source site centroid to each SAR-derived huddle mean centroid without optimizing anchor",
+    "Ledda_reference_centroid_disagreement_km":14.692,
+    "exclude_LEDD_from_SAR_temporal_dataset":true
+  },
+  "limitations": [
+    "Source SAR colonies were deliberately monitored at known sites, so 0/54 beyond 3km would NOT prove all emperor movements stay inside 3km",
+    "Winter 2024 single-year huddle positions at six different colonies cannot prove Ledda moved or did not move ~14.7km in 2009-2014",
+    "Source author static positions are approximations and SAR tracking centroid is a detected group average, not a boundary of the full colony or every possible subgroup",
+    "The dynamic SAR source and the earlier 2024 model roster are related via LaRue authorship, not an entirely independent set of observers",
+    "Published 2026 high-resolution SAR study has already established these colonies' seasonal behaviour, phenology and movements; do not claim movement discovery",
+    "No wildlife movement causal mechanism, reproduction, true founding, neighbour rescue or novel island rule identified"
+  ],
+  "analysis_claim_allowed": "descriptive cross-dataset geospatial support comparator for 2024 winter at six selected colonies only",
+  "frozen_science_PR189_untouched":true
+}
