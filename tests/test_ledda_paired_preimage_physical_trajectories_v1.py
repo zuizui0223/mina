@@ -40,6 +40,8 @@ def test_trajectories_are_paired_same_time_and_not_a_causal_effect():
     assert d["original_site"]["last_preimage_class4_detected"] is False
     assert d["alternative_site"]["last_preimage_class4_detected"] is True
     assert d["temporal_any_ice_jaccard"] == pytest.approx(2/6)
+    assert d["one_extra_15day_ahead_auxiliary_guard_composite"]["time_index"] == t[-2]
+    assert d["one_extra_15day_ahead_auxiliary_guard_composite"]["alternative_any_class4"] is False
     assert not d["causal_penguin_conclusion_available"]
 
 
