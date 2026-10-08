@@ -66,6 +66,33 @@ The crucial empirical discovery target is therefore now narrower: **independentl
 
 Source inventory and status: `results/EMPEROR_VACANT_REFUGE_EXISTING_DATA_SUPPORT_AUDIT_V1.json`.
 
+## 2026-10-08 design correction — documented **occupied-colony** rescue vs hypothetical **unused-refuge** rescue
+
+A major flaw in the original 40-km primary distance screen was found from **existing prior art**. A famous fast-ice catastrophe already generated a substantial regional redistribution that crosses **more than 40 km**, and the destination was **not vacant**.
+
+**Fretwell & Trathan (2019)** (*Antarctic Science*, doi:10.1017/S0954102019000099): Halley Bay's breeding ice failed during 2016–2018 while the pre-existing **Dawson–Lambton** colony showed the following satellite-estimated birds/pairs:
+
+| Season | Published Dawson–Lambton satellite-derived pair estimate |
+|---|---:|
+| 2015 | 1,280 |
+| 2016 | 5,315 |
+| 2017 | 11,117 |
+| 2018 | 14,612 |
+
+That is **+13,332 compared with 2015 (11.4156× the baseline)**, a previously **published** redistribution pattern. The 2019 study explicitly notes that many 2016–2017 Dawson birds were dispersed and likely **not breeding**, whereas the 2018 colony showed large tight groups and intense guano staining consistent with sustained occupancy. None of these aggregate counts identifies the precise natal origin of individual immigrants, individual lifetime breeding, offspring survival or recruit production. The authors inferred a link to Halley's catastrophe; this causal interpretation is **prior art**, not the new result of PR #195. The satellite counts mix stage and attendance uncertainty.
+
+**Distance audit:** Fretwell & Trathan 2019 state **55 km**; Fretwell et al. 2025 state **85 km**. WGS84 great-circle from Fretwell & Trathan 2019 published site coordinates (Halley 75°33′S, 27°32′W; Dawson 76°04′S, 26°40′W) is **62.12 km**. These are not interchangeable spatial/route definitions, and the origin at a moving ice shelf can itself move. This inconsistency requires explicit distance provenance in spatial analysis. **All three estimates exceed the old 40-km primary radius.**
+
+**Frozen design amendment BEFORE opening site-level 2022–2024 outcomes:**
+- Primary candidate neighborhood = **100 km** straight-line eligibility, sensitivities **40, 80, 160 km**. Distant comparator = **200–400 km**. These are literature-informed scales, *not blind confirmatory choices*. Use physical travel/passability paths rather than straight-line kilometers if externally measured.
+- Distinguish **occupied receiving colony** (Dawson 2015; demonstrated potential to absorb displaced adults) from **previously vacant option** (requires independently surveyed prior zero and verified availability). The original "vacant refuge" theory must not score Dawson as successful previously-unoccupied colonization.
+- At each receiver separate **arrival/colony attendance** → **documented current breeding** → **successful offspring** → **next-year persistence**. These cannot be silently conflated.
+- Halley is an **in-sample prior-art positive control** for the *existence of receiving-colony concentration*, not a prospective confirmation of a new capacity/competition/fidelity model.
+
+**Interpretation for mechanism:** there are at least two biologically different forms of 'rescue'. One is redistribution into a **known, socially occupied colony**, potentially yielding rapid adult spatial recovery without immediate chick production; the other is de novo use of a **previously vacant but environmentally suitable** breeding alternative. The social-attraction-versus-new-site-choice contrast might matter, but the Halley case alone does not identify an Allee/social mechanism. Prior breeding success of the receiver and local ice stability must be independently documented, and comparative origin data are currently absent.
+
+Primary sources: https://doi.org/10.1017/S0954102019000099 ; https://doi.org/10.1038/s43247-025-02345-7
+
 ## Before looking at any 2022–2024 site-specific displacement values
 
 1. Freeze a cohort-ID crosswalk that resolves relocated, renamed, rediscovered or newly recognized colony records without using biological outcome sizes. **Historical 66 vs subsequent 70 known colonies cannot be treated as identical rosters.**
