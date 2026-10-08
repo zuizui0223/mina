@@ -8,8 +8,8 @@ DOC=ROOT/"contracts/ISLAND_REPRODUCTIVE_OPPORTUNITY_VS_SUCCESS_SOURCE_GATE_V2.js
 
 def test_all_source_gates_are_explicit_hold():
     d=json.loads(DOC.read_text())
-    assert d["decision"]=="HOLD_NEST_HABITAT_FITNESS_JOIN_AND_IDENTIFICATION"
-    assert len(d["candidate_independent_data_join"])==6
+    assert d["decision"]=="HOLD_NO_INDEPENDENT_PHYSICAL_HABITAT_TREATMENT_OR_NOVELITY_DESPITE_ONE_NEST_ID_JOIN"
+    assert len(d["candidate_independent_data_join"])==7
     for z in d["candidate_independent_data_join"]:
         assert z["eligibility"].startswith("HOLD_"),z["source_id"]
         assert z.get("source_id")
@@ -26,6 +26,8 @@ def test_no_wrong_grain_join_or_misleading_fitness():
     assert sources["NOAA_Hinke_nest_camera_1977_2017"]["per_nest_coordinates"]=="NOT_ADVERTISED_BY_PUBLISHED_REPRO_ENTITY"
     assert sources["AADC_Windmill_2011_2021_behaviour"]["eligibility"]=="HOLD_ACCESS_AND_ALREADY_TESTED_MECHANISM"
     assert sources["BAS_Signy_1978_2020"]["eligibility"]=="HOLD_SOURCE_ACCESS_AND_DEMOGRAPHIC_ORIGIN"
+    assert sources["CAPE_CROZIER_COX2024_2021_22_SOLO_NESTS"]["reproductive_outcome_at_same_nest_id"]=="YES_EXACT_SOURCE_KEY"
+    assert sources["CAPE_CROZIER_COX2024_2021_22_SOLO_NESTS"]["external_habitat_shock_pre_choice"]=="NO"
     assert any("whole-island chick totals" in x for x in d["forbidden_shortcuts"])
 
 
