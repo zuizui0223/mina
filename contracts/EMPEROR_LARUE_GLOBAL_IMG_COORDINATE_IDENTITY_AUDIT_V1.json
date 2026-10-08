@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "date": "2026-10-08",
+  "scope": "ALL_AUTHOR_SOURCE_IMAGE_LOCATION_FIELDS_2009_2018",
+  "research_status": "EXPLORATORY_POST_LEDDA_FIELD_REUSE_DISCOVERY",
+  "source": {
+    "observation_repo": "davidiles/EMPE_Global",
+    "commit": "13f71112da43c1fd082273677757b41c550457ed",
+    "satellite_workbook": "data/empe_satellite_2023-05-25.xlsx",
+    "satellite_blob_sha": "a964360e2cc9bc6303199e0971a4e7d40f793752",
+    "static_colony_table": "data/colony_attributes.csv",
+    "static_colony_blob_sha": "b27e18d5746a03279661748cbb427fa76183cd67"
+  },
+  "predeclared_scope": {
+    "years_inclusive": [2009, 2018],
+    "expected_observation_records": 599,
+    "site_id_join": "site_id exact, one static colony row per key",
+    "location_fields": ["img_lat", "img_long"],
+    "reference_fields": ["lat", "lon"],
+    "report_unmatched_sites": true,
+    "report_missing_and_0_sentinels_separately": true,
+    "coordinate_identity_tolerance_degrees": 0.000000001,
+    "zero_original_lat_lon_is_not_auto_equated_with_colony_present": true,
+    "do_not_interpret_nonconstant_values_as_verified_scene_centers_without_external_image_footprints": true
+  },
+  "aggregate_readouts": [
+    "n_sites and observations with finite coordinate pairs",
+    "n rows with img_lat/long pair exactly equal static lat/lon",
+    "n sites where all valid rows exactly equal static coordinate pair",
+    "n sites with >1 distinct raw image coordinate pair",
+    "n sites with coordinate mismatch and nearest/farthest displacement",
+    "site-level summary without reporting unneeded high resolution images",
+    "Ledda must retain ten original image rows 2009–2018"
+  ],
+  "science_conclusions_not_authorized": [
+    "a static image georeference is the true scene footprint",
+    "no colony moved over time",
+    "a zero satellite row means no breeding site was available",
+    "any penguin immigration, colonization, spatial rescue, social attraction or viable-vacant nest site",
+    "new environmental cause of penguin breeding decline"
+  ],
+  "frozen_ecology_submission_PR189_modified": false
+}

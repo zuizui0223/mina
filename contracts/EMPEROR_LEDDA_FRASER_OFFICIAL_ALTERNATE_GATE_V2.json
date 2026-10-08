@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "date": "2026-10-08",
+  "scope": "AFTER_V1_DOWNLOAD_SOURCE_REFUSAL__NO_NEW_BIOLOGICAL_OUTCOMES_OPENED",
+  "v1_attempt": {
+    "workflow_run_id": 37751479942,
+    "job_id": 113225504164,
+    "source": "https://public.services.aad.gov.au/datasets/science/AAS_4116_Fraser_fastice_circumantarctic/fastice_v2_2/FastIce_70_{year}.nc",
+    "years": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014
+    ],
+    "all_years_head_status": "HOLD_HEAD_UNAVAILABLE",
+    "reported_error": "URLError [Errno 111] Connection refused",
+    "netcdf_file_content_bytes_read": 0,
+    "independent_fastice_cells_read": 0,
+    "interpretation": "Transport endpoint inaccessible from GitHub Actions; NOT evidence that physical fast ice is absent or dataset not published."
+  },
+  "official_alternate": {
+    "primary_metadata_id": "AAS_4116_Fraser_fastice_circumantarctic",
+    "dataset_uuid": "f88a75e3-257f-4904-99ef-764e5cf9a064",
+    "dataset_browser": "https://data.aad.gov.au/dataset/f88a75e3-257f-4904-99ef-764e5cf9a064",
+    "listing_url": "https://data.aad.gov.au/eds/api/dataset/f88a75e3-257f-4904-99ef-764e5cf9a064/objects?recursive=true",
+    "file_get_url_template": "https://data.aad.gov.au/eds/api/dataset/f88a75e3-257f-4904-99ef-764e5cf9a064/object/download?prefix=fastice_v2_2/FastIce_70_{year}.nc",
+    "software_reference": "https://github.com/ropensci/bowerbird/blob/0e32a74188f60fb52d731288c4abe3f3449b4e54/R/aadc.R",
+    "controlled_years": [
+      2011,
+      2014
+    ],
+    "reason": "The AADC official S3/Electronic Data Service API is a distinct possible route to the SAME v2.2 archived files, not an alternate dataset chosen based on outcomes.",
+    "method": "Metadata object listing (max 150KB), HTTP HEAD, HTTP bytes=0-31 only if endpoint returns HTTP 206. No full NetCDF downloads or biological values."
+  },
+  "frozen_ledda_ice_note_contrasts": {
+    "available_ice_birds_undetected_dates": [
+      "2011-09-23",
+      "2014-10-13"
+    ],
+    "unavailable_ice_contrast_dates": [
+      "2009-10-27",
+      "2012-10-22"
+    ],
+    "future_same_site_radius_km": [
+      1,
+      3,
+      5
+    ],
+    "require_same_apparent_colony_platform_identity": true,
+    "no_across_year_effect_test_if_current_gates_fail": true
+  },
+  "if_access_restricted": "HOLD; do not attempt to bypass authentication or use guessed unauthenticated endpoints.",
+  "if_available_requires_account": "Provide the normal official data access instructions, not secret key retrieval.",
+  "nominal_workflow_status": "NOT_EXECUTED_YET",
+  "fresh_independent_ice_values_read": 0,
+  "prior_50x10_results_untouched": true,
+  "pr189_unchanged": true,
+  "pr192_pr194_unchanged": true
+}

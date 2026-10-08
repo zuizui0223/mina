@@ -1,0 +1,55 @@
+name: Ledda two published centroids source audit
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'contracts/EMPEROR_LEDDA_TWO_CENTROID_SENSITIVITY_PRE_ICE_V1.json'
+      - 'scripts/audit_ledda_two_published_centroids_v1.py'
+      - 'tests/test_ledda_two_published_centroids_v1.py'
+      - '.github/workflows/emperor-ledda-centroid-source-audit-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/EMPEROR_LEDDA_TWO_CENTROID_SENSITIVITY_PRE_ICE_V1.json'
+      - 'scripts/audit_ledda_two_published_centroids_v1.py'
+      - 'tests/test_ledda_two_published_centroids_v1.py'
+      - '.github/workflows/emperor-ledda-centroid-source-audit-v1.yml'
+jobs:
+  centroid-source-crosswalk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate no-outcome spatial guard
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_ledda_two_published_centroids_v1.py
+      - name: Crosswalk immutable author colony table vs independent published site
+        env:
+          PINNED_SITE_TABLE: https://raw.githubusercontent.com/davidiles/EMPE_Global/13f71112da43c1fd082273677757b41c550457ed/data/colony_attributes.csv
+        run: |
+          set -e
+          curl -fLsS --max-time 40 --retry 2 "$PINNED_SITE_TABLE" -o /tmp/larue_colony_attributes_pinned.csv
+          python scripts/audit_ledda_two_published_centroids_v1.py --author-csv /tmp/larue_colony_attributes_pinned.csv --out /tmp/ledda_published_centroids_v1.json
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/ledda_published_centroids_v1.json'))
+          assert 14 < d["center_distance_km"] < 16
+          assert d["both_5km_buffers_cannot_cover_same_physical_patch"]
+          assert d["external_ice_pixel_values_read"] == 0
+          assert d["new_penguin_responses_read"] == 0
+          assert not d["new_causal_claim"]
+          print("AUTHOR_SOURCE_PUBLISHED_CENTROID_DISCORDANCE_PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledda-two-published-centroid-audit
+          path: /tmp/ledda_published_centroids_v1.json
+          retention-days: 14
+          if-no-files-found: ignore

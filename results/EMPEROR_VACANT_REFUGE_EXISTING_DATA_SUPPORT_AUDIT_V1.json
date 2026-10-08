@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "status": "SOURCE_INVENTORY_IDENTIFIABILITY_AUDIT_ONLY_NOT_A_REAL_BIOLOGICAL_TEST",
+  "baseline": {
+    "source": "https://doi.org/10.5061/dryad.tmpg4f547",
+    "source_method": "Labrousse et al Science Advances 2023; 2026 Dryad README",
+    "emperor_colony_locations_used_in_presence_buffer_3km": 55,
+    "support": "README Script 2a explicit original 55 emperor colony locations",
+    "pre_2019_fastice_summary_window": "2010-2018 inclusive (nine years) for selected environmental summary layers",
+    "raw_fastice_time_series": "2000-2018 (432 contiguous biweekly 1km maps, 66,694 grid cells in time-series file)",
+    "presence_absence_validation": "Absence labels in published environmental case-control analysis do not themselves establish repeated survey-confirmed biological zeros for each candidate patch",
+    "variable_examples": [
+      "Fast_ice_persistence",
+      "Fast_ice_trend",
+      "Timing_of_fast_ice_min",
+      "Timing_of_fast_ice_max",
+      "Volatility",
+      "Slope",
+      "Bathymetry",
+      "Distance_to_ADPE"
+    ]
+  },
+  "responses": {
+    "ice_loss_2022": {
+      "published_affected": 19,
+      "published_report_denominator": 66,
+      "effect_type": "breeding_failure_or_early_fastice_breakup_not_confirmed_adult_colony_extinction"
+    },
+    "ice_loss_2023": {
+      "published_affected": 14,
+      "published_report_denominator": 66,
+      "effect_type": "breeding_failure_or_early_fastice_breakup_not_confirmed_adult_colony_extinction"
+    },
+    "PDC_2022": {
+      "doi": "10.5285/a777e89c-ffcc-4ff4-981c-8f37e5ca84c2",
+      "region": "central and eastern Bellingshausen Sea",
+      "geolocated_named_sites": 5,
+      "complete_pan_antarctic_roster": false
+    },
+    "PDC_2023": {
+      "doi": "10.5285/fb0547e4-d2c1-4580-8c98-182f1da7d9ae",
+      "region": "circumpolar",
+      "nominal_location_accuracy_km": 2,
+      "dataset_progress_field": "Planned",
+      "verified_final_download_and_coverage": false
+    }
+  },
+  "misleading_divisions_prohibited": {
+    "historical_55_vs_2022_denominator_66": "different rosters, not eleven biological colonizations",
+    "early_ice_breakup_19_plus_14": "not 33 independent adult extinctions or two equivalent sample populations",
+    "historical_absence_labeled_pixels": "not proof candidate was repeatedly searched and biologically unoccupied",
+    "candidate_ice_pixel_count_66694": "not 66,694 independent penguin colonies or natal movement events",
+    "island_crossing": "moving sea-ice colonies not physical landmass migration",
+    "geometry_covariate": "pre-2019 fast ice persistence not current 2022 route passability"
+  },
+  "ecological_estimand_support": {
+    "past_raster_file_named": true,
+    "site_id_crosswalk_55_to_2023": false,
+    "candidate_true_prior_absence_verified": false,
+    "dated_contemporary_2022_fastice_option_verified": false,
+    "post_shock_same_colony_repeated_detection_2023_2024": false,
+    "verified_cross_destination_breeding": false,
+    "independent_relocation_events_at_least_10": false,
+    "causal_comparison_eligible": false
+  },
+  "prior_art_including_2026": {
+    "competition_spacing_and_empty_refuges_hypothesized_by": "Labrousse et al 2023 doi:10.1126/sciadv.adg8340",
+    "within_colony_ice_habitat_dispersal_climate_extremes": "2025/2026 Remote Sensing of Environment article S0034425725003888 analyzed 10 colonies in 2013-2023; prior art, not source of new relocation discovery"
+  },
+  "decision": "HOLD_SOURCE_IDENTITY_AND_TRUE_EMPTY_OPTION_BEFORE_OUTCOMES; NO NEW ECOLOGICAL EFFECT",
+  "outcomes_read": 0,
+  "new_effects_fitted": 0,
+  "previous_PRs_untouched": [
+    189,
+    192,
+    194
+  ]
+}
