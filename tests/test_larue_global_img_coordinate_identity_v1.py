@@ -55,11 +55,15 @@ def test_source_missing_ambiguous_0_class_separate():
     assert z["original_image_coord_field_classes"]["VALID_RANGE_BUT_ZERO_AMBIGUOUS_IMAGE_COORD"]==1
 
 
-def test_duplicate_static_site_and_unknown_image_key_fail():
+def test_duplicate_static_site_fails_but_unmatched_source_record_is_preserved():
     a,b=synthetic()
     with pytest.raises(ValueError):
         m.audit(a,b+b[:1])
     a,b=synthetic()
-    a[0]["site_id"]="NONEXISTENT"
-    with pytest.raises(ValueError):
-        m.audit(a,b)
+    a[10]["site_id"]="BURT"
+    out=m.audit(a,b)
+    assert out["source_observations"]==599
+    assert out["n_images_unmatched_static_lookup"]==1
+    assert out["sites_in_image_source_but_not_static_lookup"]=={"BURT":1}
+    assert out["original_image_coord_field_classes"]["SITE_NOT_IN_STATIC_LOOKUP"]==1
+    assert not out["actual_bird_or_guano_polygons_proven_by_these_fields"]
