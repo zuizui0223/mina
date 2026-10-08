@@ -7,6 +7,7 @@ on:
       - 'contracts/EMPEROR_LEDDA_SIX_YEAR_PHYSICAL_USE_SYNTHESIS_V1.json'
       - 'scripts/synthesize_ledda_six_year_dual_centroid_ice_v1.py'
       - 'tests/test_ledda_six_year_dual_centroid_ice_v1.py'
+      - 'scripts/audit_ledda_six_year_radius_sensitivity_v1.py'
       - '.github/workflows/emperor-ledda-six-year-synthesis-v1.yml'
   pull_request:
     paths:
@@ -41,6 +42,12 @@ jobs:
             --paired /tmp/ledda_paired_ice_seasonal.json \
             --historical /tmp/ledda_historical_ice_crosswalk.json \
             --out /tmp/ledda_6year_ice_and_image_codes.json
+      - name: Run fixed 1 3 5km source radius robustness
+        run: |
+          python scripts/audit_ledda_six_year_radius_sensitivity_v1.py \
+            --paired /tmp/ledda_paired_ice_seasonal.json \
+            --historical /tmp/ledda_historical_ice_crosswalk.json \
+            --out /tmp/ledda_six_year_radius_sensitivity.json
       - name: Check robust numbers and predeclared NO-INFERENCE limits
         run: |
           python - <<'PY'
@@ -55,12 +62,20 @@ jobs:
           assert not v['causal_effect_estimated']
           assert not v['new_breeding_success_data_opened']
           assert not v['actual_2014_nesting_polygon_identified']
+          s=json.load(open('/tmp/ledda_six_year_radius_sensitivity.json'))
+          assert s['years']==[2009,2010,2011,2012,2013,2014]
+          assert s['radii_km']==[1,3,5]
+          assert s['2014_disagreement_by_radius']['3']
+          assert not s['causal_social_or_ice_effect_inferred']
+          assert s['new_penguin_records_opened']==0
           print('SIX_YEAR_PHYSICAL_DESCRIPTION_TEST_PASSED_NO_CAUSAL_BREEDING_CLAIMS')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ledda-independent-six-year-spatial-temporal-ice-v1
-          path: /tmp/ledda_6year_ice_and_image_codes.json
+          path: |
+            /tmp/ledda_6year_ice_and_image_codes.json
+            /tmp/ledda_six_year_radius_sensitivity.json
           if-no-files-found: ignore
           retention-days: 30
