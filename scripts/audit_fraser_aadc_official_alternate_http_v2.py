@@ -119,6 +119,12 @@ def range_check(year: int, *, opener=urllib.request.urlopen) -> dict:
                 return report  # NEVER read full-body HTTP 200
             payload = res.read(READ_LIMIT + 1)
         report["bytes_read"] = len(payload)
+        if payload.startswith(b"\x89HDF\r\n\x1a\n"):
+            report["format_signature"] = "NETCDF4_HDF5"
+        elif payload[:3] == b"CDF":
+            report["format_signature"] = "NETCDF3_CLASSIC_OR_64BIT"
+        else:
+            report["format_signature"] = "UNRECOGNIZED"
         report["range_status"] = (
             "NETCDF_HEADER_CONFIRMED"
             if len(payload) == 32 and check_magic(payload)
