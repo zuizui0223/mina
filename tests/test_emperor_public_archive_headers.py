@@ -48,11 +48,12 @@ def test_extracts_only_header_row(tmp_path):
     d=a.inspect_headers_only(path)
     assert d["sheet_count"] == 1
     sheet=d["sheets"][0]
-    assert sheet["status"] == "HEADER_CANDIDATE"
-    assert sheet["header_candidates"][0]["header"] == [
+    assert sheet["status"] == "HEADER_CANDIDATE_ROW_1"
+    assert sheet["headers"] == [
         "Image Date","Sea Ice","Ice Shelf"
     ]
     assert "TEST_OUTCOME_NOT_TO_BE_LEAKED" not in json.dumps(d)
+    assert d["outcome_rows_decoded"] == 0
 
 
 def test_urls_pin_v3_and_names_and_checksums():
@@ -74,3 +75,60 @@ def test_no_network_gate_does_not_claim_source_data(tmp_path):
 def test_date_rows_not_mislabelled_as_header():
     assert not a._safe_header_candidate(["2018-11-10", "x", "x"])
     assert a._safe_header_candidate(["Image date", "sea ice", "ice shelf"])
+
+
+def test_old_v1_sanae_name_requires_same_md5_before_access():
+    prior_version = {
+        "file_names_and_hashes": {
+            "SanaeDataUpload2.xlsx": {
+                "size": 52700,
+                "checksum": "md5:13d916e08387d94ae448e129aa8aa442",
+            }
+        }
+    }
+    item = a.resolve_manifest_name("SanaeDataUpload.xlsx", prior_version)
+    assert item["status"] == "SOURCE_IDENTITY_VERIFIED"
+    assert item["name"] == "SanaeDataUpload2.xlsx"
+    altered = {
+        "file_names_and_hashes": {
+            "SanaeDataUpload2.xlsx": {"size": 52700, "checksum": "md5:" + "0"*32}
+        }
+    }
+    item2 = a.resolve_manifest_name("SanaeDataUpload.xlsx", altered)
+    assert item2["status"] == "PINNED_CHECKSUM_DISAGREES_WITH_PUBLISHED_MANIFEST"
+
+
+def test_absent_or_ambiguous_v3_file_fails_closed():
+    none = a.resolve_manifest_name("SanaeDataUpload.xlsx", {"file_names_and_hashes": {}})
+    assert none["status"] == "NAME_MISSING_OR_AMBIGUOUS_IN_PINNED_RECORD"
+    both = a.resolve_manifest_name("SanaeDataUpload.xlsx", {
+        "file_names_and_hashes": {
+            "SanaeDataUpload.xlsx": {"size": 20000, "checksum": "md5:" + a.FILES["SanaeDataUpload.xlsx"]},
+            "SanaeDataUpload2.xlsx": {"size": 20000, "checksum": "md5:13d916e08387d94ae448e129aa8aa442"},
+        }
+    })
+    assert both["status"] == "NAME_MISSING_OR_AMBIGUOUS_IN_PINNED_RECORD"
+
+
+def test_even_header_like_text_in_row2_must_remain_unread(tmp_path):
+    path = tmp_path / "fake.xlsx"
+    make_fake(path)
+    # The synthetic workbook's second row contains a true date and a secret
+    # text; neither appears in the JSON receipt.
+    output = json.dumps(a.inspect_headers_only(path))
+    assert "2019-11-30" not in output
+    assert "TEST_OUTCOME_NOT_TO_BE_LEAKED" not in output
+
+
+def test_manifest_error_stops_without_download(monkeypatch, tmp_path):
+    monkeypatch.setattr(a, "metadata_for_pinned_record",
+                        lambda: {"status": "RECORD_METADATA_BLOCKED"})
+    monkeypatch.setattr(a, "download_public",
+                        lambda *_: (_ for _ in ()).throw(AssertionError("download happened")))
+    result = a.run(tmp_path)
+    assert result["all_three_verified"] is False
+    assert result["outcome_rows_read"] == 0
+    assert all(
+        obj["status"] == "RECORD_METADATA_BLOCKED_NO_DOWNLOAD"
+        for obj in result["files"].values()
+    )
