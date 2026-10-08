@@ -34,7 +34,7 @@ def git_blob(data: bytes) -> str:
 def read_published_csv(data: bytes, *, enforce_pin=True):
     if enforce_pin and git_blob(data) != SOURCE_BLOB:
         raise ValueError("PINNED_PUBLISHED_AUTHOR_MODEL_CSV_BLOB_MISMATCH")
-    source=csv.DictReader(io.StringIO(data.decode("utf8-sig")))
+    source=csv.DictReader(io.StringIO(data.decode("utf-8-sig")))
     expected={"year","site_id","N_mean"}
     if not expected.issubset(source.fieldnames or ()):
         raise ValueError("source schema missing")
@@ -78,7 +78,7 @@ def audit(model: dict, nine: list[dict]):
     for event in nine:
         s,y,z=(event["site_id"],event["posterior_zero_year"],
                event["posterior_positive_year"])
-        if (s,y,z) in recorded or z!=y+1 or model[s,y]!=0 or model[s,z]<=0:
+        if (s,y,z) in recorded or z!=y+1 or (s,y) not in model or (s,z) not in model or model[s,y]!=0 or model[s,z]<=0:
             raise ValueError("transition raw image receipts inconsistent with pinned model")
         recorded.add((s,y,z))
         has_raw_no_yes=(event["prior_original_bpresent"].lower()=="no" and
