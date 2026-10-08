@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "status": "FIXED_BEFORE_READING_2021_ADÉLIE_NORTH_OUTCOMES",
+  "source": "Antarctic Treaty Measure 6 (2021) Revised Management Plan ASPA No 105",
+  "source_landing_page": "https://www.ats.aq/devAS/Meetings/Measure/715",
+  "source_full_report": "https://documents.ats.aq/ATCM43/fr/ATCM43_fr002_e.pdf",
+  "exposed_baseline": {
+    "north_2013_14_pairs": 989,
+    "south_2013_14_pairs": 70468,
+    "north_2005_06_pairs": 525,
+    "north_2008_09_pairs": 677,
+    "note": "Already opened via 2015 ASPA105; not a holdout."
+  },
+  "prespecified_source_selection": "2021 ASPA105 official Annex, Adélie Pygoscelis adeliae north-beach subcolony only, exclude emperor fast-ice colonies and skua chick counts",
+  "primary_new_outcome": "Chronologically latest explicitly dated post-2013/14 *north-beach* Adélie breeding-pair count in the 2021 plan, if any; report actual start-year and observation coverage. Do not replace missing with zero.",
+  "secondary_if_aligned": "If the same source reports the *south main Cadwalader Beach* breeding-pair count in exactly the same season, compute north proportion of north+south pairs and difference from 2013/14 fraction. If seasons differ, STOP this calculation.",
+  "decision_rules": {
+    "if_no_post2013_north_count": "NO_NEW_OUTCOME_SUPPORT; do not claim persistence or collapse",
+    "if_north_count_positive_and_gt_989": "POST_2013_NORTH_ABSOLUTE_GROWTH_DESCRIPTIVE",
+    "if_north_count_positive_and_lt_989": "POST_2013_NORTH_ABSOLUTE_DECLINE_DESCRIPTIVE",
+    "if_north_count_eq_989": "POST_2013_NORTH_EQUAL_COUNT_DESCRIPTIVE",
+    "if_explicit_surveyed_zero": "POST_2013_NORTH_SURVEYED_ABSENCE_IF_ID_STABLE",
+    "if_missing_effort_or_unmatched_location": "HOLD_IDENTITY_OR_EFFORT",
+    "alpha_or_p_values": "NONE single archive descriptive",
+    "causal_capacity_retention_inference": "NOT LICENSED",
+    "previously_frozen_pr189_changes": "FORBIDDEN",
+    "PR192_source_rescue_claims": "UNCHANGED"
+  },
+  "prior_art": "Earlier plan dates and cohort support already exposed; this source is neither independent network nor an unknown treatment.",
+  "no_new_2021_north_counts_read_at_freeze": true
+}
