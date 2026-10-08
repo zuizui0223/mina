@@ -20,15 +20,17 @@ def test_documented_prior_breeders_cross_island_sightings():
     assert adult["n_prior_ross_breeders"] == 2681
     assert adult["documented_later_seen_beaufort"] == 5
     assert [row[2] for row in adult["data"]] == [3, 1, 1]
-    assert adult["first_time_beaufort_breeders"] is False
+    assert adult["first_lifetime_breeding_at_beaufort"] is False
 
 
 def test_table3_resight_does_not_prove_north_shore_reproduction():
     adult = R["previous_breeding_adults"]
     assert adult["beaufort_north_versus_south_resolved"] is False
-    assert adult["destination_breeding_status"] == (
-        "not_identifiable_from_table3_resighting"
-    )
+    assert "Methods" in adult["destination_breeding_status"]
+    assert adult["previously_bred_ross_and_subsequently_bred_beaufort_referred_to_in_methods"] is True
+    assert adult["exact_five_table3_individuals_each_proven_breeding_at_beaufort"] is False
+    assert adult["beaufort_breeding_location_within_north_or_south_identified"] is False
+    assert R["inference_gates"]["Ross_to_Beaufort_experienced_breeder_breeding_dispersion_published"] == "YES_METHODS_DESCRIBE_BREEDING_BEYOND_ROSS"
     assert adult["original_breeding_status"] == "bred_at_origin_ross_at_least_once"
 
 
