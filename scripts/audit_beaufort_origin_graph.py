@@ -36,7 +36,7 @@ VISITATION_EDGES = [
         "source_citations": ["larue_2013", "aspa_2015"]
     },
     {
-        "source": "BEAU_SOUTH", "destination": "BEAU_NORTH",
+        "source": "BEAU_BANDED_SOURCE_SITE_UNVERIFIED", "destination": "BEAU_NORTH",
         "observation": "Several Beaufort-banded penguins seen at LaRue north-coast site",
         "source_mark_status": "reported_beaufort_banded; main_colony_banding_predominated",
         "evidence_stage": "seen_at_destination", "first_breeding_confirmed": False,
