@@ -19,6 +19,11 @@ def synthetic_rows():
 def test_2014_source_scene_center_cannot_be_reinterpreted_as_nest():
     d=m.audit(synthetic_rows())
     assert d["source_years"]==list(range(2009,2019))
+    assert d["status"]=="STATIC_SITE_COORDINATES_REPEATED_IN_IMAGE_FIELDS_NOT_SCENE_GEOREFERENCE"
+    assert d["n_img_coordinates_identical_to_published_static_site"]==10
+    assert d["n_distinct_valid_img_coordinate_pairs"]==1
+    assert not d["independent_per_image_scene_footprint_georeference_verified"]
+    assert not d["independent_per_image_colony_or_bird_movement_position_verified"]
     assert d["focus_2014"]["author_img_date"]=="2014-10-13"
     assert d["focus_2014"]["distance_scene_center_to_reference_km"]["LaRue_static_colony"]==0
     assert 14<d["focus_2014"]["distance_scene_center_to_reference_km"]["Fretwell_2021_colony"]<16
@@ -59,3 +64,11 @@ def test_zero_placeholder_and_far_coordinate_are_not_real_image_centers():
     z=m.audit(rows)["focus_2014"]
     assert z["image_scene_centroid_lon"] is None
     assert z["coordinate_hold_reason"]=="SOURCE_SCENE_CENTER_OVER_200KM_FROM_BOTH_PREPRINTED_LEDD_REFERENCES"
+
+def test_nonconstant_image_fields_still_do_not_prove_scene_centers():
+    rows=synthetic_rows()
+    rows[3]["img_lat"]="-74.23"
+    result=m.audit(rows)
+    assert result["status"]=="IMAGE_LOCATION_FIELD_SEMANTICS_UNVERIFIED"
+    assert result["n_distinct_valid_img_coordinate_pairs"]==2
+    assert not result["independent_per_image_scene_footprint_georeference_verified"]
