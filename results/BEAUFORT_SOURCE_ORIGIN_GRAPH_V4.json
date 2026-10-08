@@ -1,0 +1,117 @@
+{
+  "schema_version": 4,
+  "audit_id": "beaufort-breeding-source-identifiability-v4",
+  "date": "2026-10-08",
+  "status": "REVIEWED_PUBLISHED_AGGREGATES_AND_ARCHIVAL_SIGHTINGS_ONLY",
+  "source_refs": {
+    "management_2003": "https://documents.ats.aq/recatt/att155_e.pdf",
+    "management_2015": "https://www.env.go.jp/nature/nankyoku/kankyohogo/database/jyouyaku/aspa/aspa_pdf_en/Measure5_ASPA105.pdf",
+    "larue_2013": "https://doi.org/10.1371/journal.pone.0060568",
+    "lyver_2014": "https://doi.org/10.1371/journal.pone.0091188",
+    "munilla_2016": "https://doi.org/10.1371/journal.pone.0147222",
+    "herman_lynch_2022": "https://doi.org/10.1093/ornithapp/duac014"
+  },
+  "distinct_site_objects": [
+    {
+      "id": "BEAU_MAIN_SW",
+      "name": "Cadwalader Beach south-west",
+      "mark_site": "routine 400 chick bands later collected here",
+      "habitat_measure": "guano envelope less snow; measured 1958,1983,1993,2005,2010"
+    },
+    {
+      "id": "BEAU_NORTH_NW",
+      "name": "Official 1995 north beach / north-west coast",
+      "location": "approximately 76deg55 S 166deg52 E",
+      "first_observed": "1995 January: two pairs, three chicks, 10-15 nonbreeders",
+      "subfossil_penguin_layers": true,
+      "icefree_beach_at_1995": true
+    },
+    {
+      "id": "BEAU_NE_LARUE_2004",
+      "name": "LaRue 2004 northeast disjunct Adélie subcolony",
+      "pairs_2004": 460,
+      "pairs_2010": 957,
+      "same_polygon_as_nw_north_beach_verified": false
+    },
+    {
+      "id": "ROSS",
+      "name": "Cape Royds, Bird and Crozier",
+      "breeding_receiver_reoccupation_in_1985_2012_frozen_panel": 0
+    }
+  ],
+  "observed_north_trend_against_main": {
+    "north_first_observed_breeding_season_start": 1994,
+    "south_colony_declining_period_start": 1981,
+    "south_colony_declining_period_end": 2000,
+    "south_colony_1994_density_at_founder_event_verified": false,
+    "fission_due_to_parent_saturation_proven": false,
+    "north_2005_06_pairs": 525,
+    "south_2005_pairs": 52335,
+    "north_2005_fraction_of_both_counts": 0.009931895573212259,
+    "north_2013_14_pairs": 989,
+    "south_2013_14_pairs": 70468,
+    "north_2013_fraction_of_both_counts": 0.013840491484389213
+  },
+  "sightings": [
+    {
+      "tag": "beaufort_near_fledging_chicks_banded_main",
+      "destination": "Ross Island breeding colonies",
+      "observed": "visited",
+      "confirmed_first_breeding_destination": false,
+      "source": "LaRue 2013"
+    },
+    {
+      "tag": "beaufort_banded_exact_site_unresolved",
+      "destination": "LaRue northeast site",
+      "observed": "seen",
+      "confirmed_first_breeding_destination": false,
+      "source": "LaRue 2013"
+    },
+    {
+      "tag": "Cape Royds",
+      "tagged_at": "Ross Island",
+      "destination": "Official northwest northern Beaufort beach",
+      "observed": "seen",
+      "proven_natal_origin": false,
+      "confirmed_first_breeding_destination": false,
+      "source": "ASPA 105 2015"
+    },
+    {
+      "tag": "Cape Bird",
+      "tagged_at": "Ross Island",
+      "destination": "Official northwest northern Beaufort beach",
+      "observed": "seen",
+      "proven_natal_origin": false,
+      "confirmed_first_breeding_destination": false,
+      "source": "ASPA 105 2015"
+    },
+    {
+      "tag": "Cape Crozier",
+      "tagged_at": "Ross Island",
+      "destination": "Official northwest northern Beaufort beach",
+      "observed": "seen",
+      "proven_natal_origin": false,
+      "confirmed_first_breeding_destination": false,
+      "source": "ASPA 105 2015"
+    }
+  ],
+  "causal_gates": {
+    "south_natal_to_north_first_breeding": "HOLD_NO_INDIVIDUAL_BREEDING_OR_NATAL_MATCH",
+    "ross_natal_to_north_first_breeding": "HOLD_NO_INDIVIDUAL_BREEDING_OR_NATAL_MATCH",
+    "north_newly_suitable_habitat_at_colonization": "HOLD_NO_INDEPENDENT_YEAR_SPECIFIC_NORTH_GROUND_SERIES",
+    "north_prior_absence": "HOLD_NO_PRE1995_NEGATIVE_SURVEY_EFFORT",
+    "fission_under_source_saturation": "HOLD_NO_FOUNDER_YEAR_LOCAL_DENSITY_AND_SETTLEMENT",
+    "within_island_option_reduces_abs_interisland_breeder_flux": "HOLD_NO_SETTLEMENT_AND_COHORT_DENOMINATOR",
+    "beaufort_cause_receiver_reoccupation": "STRUCTURAL_FAIL_FROZEN_ROSS_RECEIVER_78_78_POSITIVE"
+  },
+  "scientific_boundary": {
+    "newly_observed_natal_origin_breeder_transitions": 0,
+    "zero_observed_means_true_zero": false,
+    "new_USAPDC_individual_rows_accessed": 0,
+    "multi_source_founding_idea_prior_art": true,
+    "age_structured_colony_immigration_idea_prior_art": true,
+    "local_north_capacity_change_causes_network_rewiring_supported": false,
+    "pr_189_manuscript_unchanged": true,
+    "pr_142_header_lock_unchanged": true
+  }
+}

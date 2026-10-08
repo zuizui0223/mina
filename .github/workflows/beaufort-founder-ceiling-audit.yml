@@ -1,0 +1,81 @@
+name: Beaufort founder ceiling audit
+on:
+  push:
+    branches:
+      - research/antarctic-island-source-retention-gate-v1
+  pull_request:
+    paths:
+      - 'scripts/audit_beaufort_founder_ceiling.py'
+      - 'scripts/audit_beaufort_origin_graph.py'
+      - 'scripts/audit_edmonson_mainland_counterexample.py'
+      - 'scripts/audit_source_rescue_structural_support.py'
+      - 'tests/test_beaufort_founder_ceiling.py'
+      - 'tests/test_beaufort_origin_graph.py'
+      - 'tests/test_edmonson_mainland_counterexample.py'
+      - 'tests/test_ross_beaufort_stage_prior_art.py'
+      - 'tests/test_antarctic_physical_access_gate_v6.py'
+      - 'tests/test_cape_barne_site_history_grain.py'
+      - 'results/ANTARCTIC_PHYSICAL_ACCESS_GATE_SUPPORT_V6.json'
+      - 'results/CAPE_BARNE_SITE_TURNOVER_GRAIN_AUDIT_V7.json'
+      - 'tests/test_source_rescue_structural_support.py'
+      - '.github/workflows/beaufort-founder-ceiling-audit.yml'
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Focused unit tests (no resight outcomes)
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_beaufort_founder_ceiling.py tests/test_source_rescue_structural_support.py tests/test_beaufort_origin_graph.py tests/test_edmonson_mainland_counterexample.py tests/test_ross_beaufort_stage_prior_art.py tests/test_antarctic_physical_access_gate_v6.py tests/test_cape_barne_site_history_grain.py
+      - name: Season-aligned founder ceiling and critical sensitivity
+        run: |
+          python scripts/audit_beaufort_founder_ceiling.py --out /tmp/beaufort_founder_ceiling.json
+          python - <<'PY'
+          import json
+          a=json.load(open('/tmp/beaufort_founder_ceiling.json'))
+          assert a['age3_model']['pairs_2005_06'] == 285.5
+          assert a['age3_model']['observed_2005_06'] == 525
+          assert a['age3_model']['pairs_2006_07_extra_season'] == 418
+          assert a['sensitivity']['ceil_unseen_whole_adults_required_under_perfect_case'] == 18
+          assert a['decisions']['actual_external_immigration_necessary'] == 'NOT_IDENTIFIED'
+          PY
+      - name: Audit published origin labels without opening individual rows
+        run: |
+          python scripts/audit_beaufort_origin_graph.py --out /tmp/beaufort_origin_graph.json
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/beaufort_origin_graph.json'))
+          assert all(e['first_breeding_confirmed'] is False for e in r['evidence_edges_are_visits_not_breeding'])
+          assert all(c['decision']=='HOLD_MISSING_REQUIRED_EVIDENCE' for c in r['candidate_claims'].values())
+          assert r['newly_opened_individual_resight_rows'] == 0
+          PY
+      - name: Validate mainland comparator and published percent denominator
+        run: |
+          python scripts/audit_edmonson_mainland_counterexample.py --out /tmp/edmonson_mainland.json
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/edmonson_mainland.json'))
+          assert r['total_absolute_change'] == -41
+          assert r['published_hill_percent_mismatch']
+          assert r['published_hill_percent_matches_final_denominator']
+          assert r['inferences']['cross_island_emigration_effect']=='NOT_IDENTIFIED'
+          PY
+      - name: Audit previously frozen Ross census, not individual encounters
+        env:
+          FROZEN_ROSS_RAW: https://raw.githubusercontent.com/zuizui0223/mina/0aa685f64999c450036787505fcb7df08673c8ec/external/ross_island_v2_frozen_counts.csv
+        run: |
+          curl -fL --retry 3 "$FROZEN_ROSS_RAW" -o /tmp/ross_island_v2_frozen_counts.csv
+          python scripts/audit_source_rescue_structural_support.py --ross-csv /tmp/ross_island_v2_frozen_counts.csv --out /tmp/ross_receiver_gate.json
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/ross_receiver_gate.json'))
+          assert r['ross']['observed_years'] == 26
+          assert r['ross']['colony_zero_to_positive_observed_transitions'] == 0
+          assert r['ross']['six_component_zero_to_positive_observed_transitions'] == 0
+          PY

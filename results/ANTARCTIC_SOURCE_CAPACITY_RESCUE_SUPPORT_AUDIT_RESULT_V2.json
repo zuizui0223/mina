@@ -1,0 +1,152 @@
+{
+  "schema_version": 2,
+  "result_id": "mina-antarctic-source-capacity-rescue-support-audit-v2",
+  "date": "2026-10-08",
+  "status": "EXISTING_PUBLICATION_AND_FROZEN_OUTCOME_STRUCTURAL_GATE_ONLY__NO_NEW_INFERENCE",
+  "sources": [
+    {
+      "type": "published_table_and_methods",
+      "citation": "LaRue et al. (2013), PLOS ONE 8:e60568, DOI 10.1371/journal.pone.0060568",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0060568"
+    },
+    {
+      "type": "frozen_previously_exposed_ross_counts",
+      "repository": "zuizui0223/mina",
+      "ref": "analysis/ross-sea-expansion-intensification-support-v1",
+      "path": "external/ross_island_v2_frozen_counts.csv"
+    },
+    {
+      "type": "prior_art_recipient_immigration",
+      "citation": "Herman & Lynch 2022, DOI 10.1093/ornithapp/duac014",
+      "url": "https://academic.oup.com/condor/article/124/3/duac014/6568418"
+    },
+    {
+      "type": "prospective_separate_resight_lock",
+      "url": "https://github.com/zuizui0223/mina/pull/142"
+    }
+  ],
+  "published_beaufort_main_colony_only": {
+    "years": {
+      "1958": {
+        "published_area_m2": 75670.3,
+        "breeding_pairs": null
+      },
+      "1983": {
+        "published_area_m2": 107571.2,
+        "breeding_pairs": 34588
+      },
+      "1993": {
+        "published_area_m2": 104637.3,
+        "breeding_pairs": null
+      },
+      "2005": {
+        "published_area_m2": 127603.4,
+        "breeding_pairs": 52335
+      },
+      "2010": {
+        "published_area_m2": 129029.5,
+        "breeding_pairs": 63760
+      }
+    },
+    "observed_area_1983_2005_fraction_change": 0.18622270644930983,
+    "observed_area_2005_2010_m2_change": 1426.1,
+    "observed_area_2005_2010_fraction_change": 0.011176034494378762,
+    "breeding_pairs_2005_2010_fraction_change": 0.21830514951753122,
+    "observed_main_density_2005_pairs_per_m2": 0.41013797437999305,
+    "observed_main_density_2010_pairs_per_m2": 0.49415056246827277,
+    "observed_main_density_fraction_change": 0.20483981814968932,
+    "index_definition": "current-year guano-stain maximum extent minus snow-and-ice area inside existing colony envelope; not independent physical nesting capacity",
+    "new_beaufort_north_shore_colony_not_in_main_table": true,
+    "dated_independent_annual_capacity_measure_available": false
+  },
+  "published_beaufort_banded_bird_index": {
+    "index": "Beaufort-chick-banded birds seen on Ross Island / modeled number of Beaufort-banded individuals potentially alive; includes visitors, not only first breeders",
+    "banding_years": "1999-2010 except 2005 and 2008; ~400 Beaufort chicks in other years",
+    "beaufort_native_detection_modeled": false,
+    "ross_colony_search_every_2_to_7_days": true,
+    "visit_prob_identifies_settlement_prob": false,
+    "annual_absolute_breeding_export_identified": false,
+    "figure5_numerator_denominator_audit": {
+      "published_fig5_shows_ratio_and_estimated_marked_cohort_denominator": true,
+      "observed_marked_ross_visitor_count_roughly_inferable_from_plot": true,
+      "precise_digitization_completed": false,
+      "declining_fraction_only_denominator_artifact_is_not_the_only_possible_explanation": true,
+      "visitor_counts_identify_successful_first_breeding_settlers": false,
+      "cohort_marked_counts_identify_island_wide_absolute_settler_flux": false,
+      "source_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0060568",
+      "interpretation": "Keep published observed marked-cohort visits distinct from true population-scaled successful cross-island immigration."
+    }
+  },
+  "previously_frozen_ross_receiver_count_support": {
+    "panel": "1985-2012 retained aerial counts from PR189",
+    "distinct_years": 26,
+    "colony_labels": [
+      "Cape Royds",
+      "Cape Bird",
+      "Cape Crozier"
+    ],
+    "observed_colony_years": 78,
+    "positive_colony_years": 78,
+    "explicit_colony_zero_years": 0,
+    "colony_zero_to_positive_events": 0,
+    "six_component_years": 156,
+    "six_component_positive_years": 156,
+    "min_colony_pairs": {
+      "Cape Royds": 1367,
+      "Cape Bird": 22816,
+      "Cape Crozier": 67114
+    },
+    "note": "No reoccupation outcome in this monitored spatial roster; other unmonitored physical patches cannot be classified"
+  },
+  "conditional_export_arithmetic_illustration": {
+    "explicit_assumption_not_verified": "annual eligible source recruits 2010/2005 grow exactly as main-colony breeding pairs",
+    "assumed_eligible_cohort_ratio": 1.2183051495175312,
+    "true_settlement_probability_ratio_required_for_absolute_export_decline_less_than": 0.8208124215809285,
+    "required_percent_fall": 17.91875784190715,
+    "warning": "not an empirical emigration threshold; cohort output and visitation-to-settlement unknown"
+  },
+  "prior_art_boundary": {
+    "source_habitat_vs_ross_visit_rate_published": true,
+    "positive_immigration_needed_for_gentoo_colony_foundings_previously_published": true,
+    "current_study_new_causal_immigration_claim": false
+  },
+  "decisions": {
+    "P1_causal_capacity_to_true_first_breeding_destination": "HOLD_INDEPENDENT_CAPACITY_AND_DETECTION_NOT_ESTABLISHED",
+    "P2_absolute_export": "HOLD_BREEDER_SETTLEMENT_AND_ELIGIBLE_COHORT_NOT_ESTABLISHED",
+    "P3_ross_receiver_reoccupation": "FAIL_NO_OUTCOME_EVENTS_IN_FROZEN_3_OR_6_NODE_PANEL",
+    "P3_independent_receiver_network": "HOLD_NO_MATCHED_KNOWN_ORIGIN_REOCCUPATION_PANEL",
+    "continue_existing_pr142_lock": true,
+    "update_frozen_pr189": false,
+    "primary_claim_allowed": "descriptive Beaufort habitat and Ross visit-rate cochange in existing literature; no new causal rescue effect",
+    "north_shore_colonization_date": "HOLD_PREDATES_2004_BUT_PRECISE_PATCH_ID_AND_CONTINUITY_NOT_RESOLVED",
+    "donor_receiver_direction": "BIDIRECTIONAL_OBSERVED_VISITATION_DO_NOT_IMPOSE_ONE_DIRECTION_GRAPH"
+  },
+  "new_resight_rows_opened": 0,
+  "new_causal_models_fitted": 0,
+  "new_empirical_p_values": 0,
+  "positive_new_ecological_effect_claimed": false,
+  "historical_north_shore_settlement_identity_audit": {
+    "oldest_explicit_breeding_observation_year": 1995,
+    "oldest_explicit_breeding_observation": {
+      "pairs": 2,
+      "chicks": 3,
+      "nonbreeders_min": 10,
+      "nonbreeders_max": 15
+    },
+    "reference": "Antarctic Treaty Measure 2 (2003) Annex, ASPA No. 105; independently reprinted in Measures 4 (2010) and 5 (2015)",
+    "source_2003": "https://documents.ats.aq/recatt/att155_e.pdf",
+    "source_2015": "https://www.env.go.jp/nature/nankyoku/kankyohogo/database/jyouyaku/aspa/aspa_pdf_en/Measure5_ASPA105.pdf",
+    "larue_2004_north_site_reported_pairs": 460,
+    "management_plan_2005_06_north_site_pairs": 525,
+    "management_plan_2008_09_north_site_pairs": 677,
+    "management_plan_2013_14_north_site_pairs": 989,
+    "site_direction_discrepancy": "LaRue 2013 calls the small site northeast coast; management plan describes west end of northern beach/northwest coast",
+    "mapped_site_identity_verified": false,
+    "continuous_1995_to_2004_occupancy_verified": false,
+    "1995_survey_classification": "possibly transitory, per 2003 treaty management plan",
+    "first_colonization_2004_verified": false,
+    "ross_origin_bands_observed_visiting_beaufort_north": true,
+    "breeding_settlement_of_ross_origin_bands_estimated": false,
+    "interpretation": "The 2004 'newly founded' label is insufficient as an independently dated colonisation event; do not assume 1995→2004 continuous same-site occupancy or exclude reoccupation. Both travel directions are documented as sightings."
+  }
+}
