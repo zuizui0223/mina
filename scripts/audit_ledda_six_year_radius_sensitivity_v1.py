@@ -28,8 +28,8 @@ def readout(paired,historical):
         for r in RADII:
             z=x["trajectory_by_radius"][r]["last_completed_preimage_composite"]
             d[r]={
-                "LaRue_original":[z["original_class4_cells"],z["original_n_cells"]],
-                "Fretwell_alternative":[z["alternative_class4_cells"],z["alternative_n_cells"]]
+                "LaRue_original":[z["original_LaRue_class4_cells"],z["original_LaRue_n_cells"]],
+                "Fretwell_alternative":[z["alternative_Fretwell_class4_cells"],z["alternative_Fretwell_n_cells"]]
             }
         by_year[year]=d
     for x in historical["year_results"]:
