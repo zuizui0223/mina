@@ -1,0 +1,42 @@
+name: Island settlement versus reproductive fitness source identifiability
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ISLAND_REPRODUCTIVE_OPPORTUNITY_VS_SUCCESS_SOURCE_GATE_V2.json'
+      - 'docs/ISLAND_BREEDING_OPPORTUNITY_SETTLEMENT_SUCCESS_IDENTIFIABILITY_GATE_V2.md'
+      - 'tests/test_island_reproductive_opportunity_source_gate_v2.py'
+      - '.github/workflows/island-reproductive-source-gate-v2.yml'
+  pull_request:
+    paths:
+      - 'contracts/ISLAND_REPRODUCTIVE_OPPORTUNITY_VS_SUCCESS_SOURCE_GATE_V2.json'
+      - 'docs/ISLAND_BREEDING_OPPORTUNITY_SETTLEMENT_SUCCESS_IDENTIFIABILITY_GATE_V2.md'
+      - 'tests/test_island_reproductive_opportunity_source_gate_v2.py'
+      - '.github/workflows/island-reproductive-source-gate-v2.yml'
+jobs:
+  no-false-join:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check frozen source, novelty and causal-stop boundaries
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_island_reproductive_opportunity_source_gate_v2.py
+      - name: Emit structural gate decision only
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('contracts/ISLAND_REPRODUCTIVE_OPPORTUNITY_VS_SUCCESS_SOURCE_GATE_V2.json'))
+          assert d["decision"]=="HOLD_NEST_HABITAT_FITNESS_JOIN_AND_IDENTIFICATION"
+          assert d["actual_new_biological_outcome_rows_read"] == 0
+          assert d["causal_model_fitted"] is False
+          print('SOURCE_GATE_V2: no join of unrelated nests, whole-island outcomes or image coordinates')
+          print('CANDIDATE_SOURCE_FAMILIES:',len(d["candidate_independent_data_join"]))
+          print('DECISION:',d["decision"])
+          PY
