@@ -122,6 +122,16 @@ def audit(rows: list[dict], expected_sites: int=50) -> dict:
         "sites_with_zero_posterior_years": sorted(site_with_zeros, key=lambda x: x["site_id"]),
         "apparent_mean_zero_to_positive_transitions": len(up),
         "apparent_mean_positive_to_zero_transitions": len(down),
+        "candidate_zero_to_positive_episodes_not_meeting_independent_refuge_gate": len(up),
+        "candidate_zero_to_positive_episodes_with_qualified_independent_site_ice_survey_breeding_history": 0,
+        "independently_verified_refuge_colonization_episodes_identified_from_this_posterior_table": 0,
+        "reason_no_events_qualify": (
+            "The published posterior-summary CSV contains no independent "
+            "site-year physically usable fast-ice proof, full-season "
+            "surveyed-negative history, newly confirmed breeding, or "
+            "individual origin. Lack of sufficient evidence is NOT "
+            "biological evidence that no founding ever occurred."
+        ),
         "apparent_zero_to_positive_events": sorted(up, key=lambda x: (x["site_id"], x["zero_year"])),
         "apparent_positive_to_zero_events": sorted(down, key=lambda x: (x["site_id"], x["positive_year"])),
         "halley_model_2016_posterior_mean": sel("HALY", 2016)["mean"],
