@@ -108,3 +108,20 @@ Focused tests:
 `python -m pytest -q tests/test_beaufort_founder_ceiling.py tests/test_source_rescue_structural_support.py`.
 
 Result outputs are deterministic and based only on published numbers and explicitly labelled assumptions.
+
+## 6. **Exposure-site mismatch:** measured south-colony area cannot substitute for the north founding-site option
+
+LaRue et al. (2013) explicitly specify their habitat-cover analysis on the **main southwestern colony** (Cadwalader Beach). The 1958, 1983, 1993, 2005 and 2010 mapped usable-area series is current-year **main-colony guano envelope minus snow/ice cover**. It is not an independently dated series of new habitat on the Beaufort **northern beach**. The 2015 ASPA105 plan explicitly describes the 1995 north-shore settlement at an already *ice-free* portion of the northern beach.
+
+The measured southern mean nesting density **increased** over 2005→2010, even though the published Beaufort-to-Ross *marked visitor rate* declined. That cochange makes **contemporaneous release of average crowding at the established main colony** a poor stand-alone explanation. It does not exclude local new breeding options: simultaneously increasing main-colony density and subcolony growth are compatible if previously available north-beach nest sites attract recruits independently of mean core density.
+
+A discriminating future study must treat:
+- `K_main_south(t)`: outcome-independent bare/suitable nesting substrate on the southern main-colony geomorphic footprint;
+- `K_north(t)`: independent northern beach newly usable/available nest options and verified occupancy history;
+- `N_main(t)`: main-colony breeder number;
+- `p_main_to_north(t)`, `p_main_to_Ross(t)`, `p_Ross_to_north(t)`: **confirmed first-breeding transitions**, not visit counts.
+
+**Specific falsifiable opportunity-substitution claim:** increase in independently measured `K_north` changes within-island versus across-island **first-breeding settlement probabilities** even when `K_main_south`, source cohort size, access and marine forcing are held fixed. An effect of `K_main_south` alone, without independently measured north-site suitability, cannot establish this claim.
+
+**Status:** no longitudinal independent `K_north(t)` or individual origin-specific first-breeding destinations have yet passed the frozen data structure gate. The simultaneous crowding/within-island expansion facts are published observations, not a fitted proof of opportunity substitution.
+
