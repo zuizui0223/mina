@@ -90,7 +90,7 @@ def ordered_source_audit(observations,outcomes,locations,strict=True):
         "mean_distinct_pre_cutoff_observation_days_with_early_neighbor":sum(exposure_obs)/len(exposure),
         "mean_distinct_pre_cutoff_observation_days_no_detected_neighbor":sum(unexposed_obs)/len(unexposed),
         "nest_source_intervals":row_details,
-        "2014_novel_causal_result":False,
+        "new_confirmatory_causal_result":False,
         "neighbor_arrival_date_observed_without_interval_censoring":False,
         "first_egg_sighting_equivalent_to_egg_laying_date":False,
         "status_not_a_social_settlement_effect":True,
