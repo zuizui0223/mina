@@ -38,6 +38,13 @@ def test_published_geodesic_result_is_only_roster_support():
     assert RESULT["fixed_catalogue_not_proven_historically_synchronous"]
 
 
+def test_same_nominal_66_does_not_imply_same_live_colony_roster():
+    assert RESULT["public_2024_known_colony_total_after_fretwell_four"] == 66
+    assert RESULT["model_linked_catalogue_has_same_number_of_rows"] == 66
+    assert RESULT["four_published_2024_site_locations_are_identical_to_any_66_catalogue_coordinates"] is False
+    assert RESULT["equality_of_total_counts_proves_same_site_membership"] is False
+
+
 def test_site_specific_names_and_approximate_nearest_distances():
     expected = {
         "LAZAREV_NORTH": ("Lazarev", 54.244),
