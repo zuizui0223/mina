@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-island-iceberg-shock-rebound-audit-v1",
+  "date": "2026-10-06",
+  "status": "post_result_ecological_reinterpretation",
+  "response_variable": "occupied nesting territories / breeding-pair participation near 1 December; not total adult abundance",
+  "survey_method": {
+    "ross_island_platform": "annual helicopter aerial photography",
+    "flight_altitude_ft": "2000-2500",
+    "survey_window": "25 November to 8 December, as close as possible to 1 December",
+    "pre_2006_camera": "Pentax 645 medium-format black-and-white film",
+    "2001_2002_method_discontinuity_identified": false
+  },
+  "states": {
+    "1999": {"N":207411,"E3":1.6094677066662906,"E6":2.0557530380209097,"Royds":3620,"Bird":47350,"Crozier":156441},
+    "2001": {"N":94798,"E3":1.728622136512977,"E6":2.2919284746729964,"Royds":1367,"Bird":26317,"Crozier":67114},
+    "2002": {"N":203996,"E3":1.507430677390489,"E6":1.819023375736499,"Royds":2239,"Bird":40678,"Crozier":161079},
+    "2012": {"N":351119,"E3":1.5428221816996248,"E6":1.970225075719009,"Royds":3083,"Bird":75696,"Crozier":272340}
+  },
+  "transitions": {
+    "1999_2001_shock": {
+      "N_fraction": -0.5429461311116575,
+      "E3_fraction": 0.07403343934964224,
+      "E6_fraction": 0.11488512106466575,
+      "all_six_components_declined": true,
+      "classification": "shock_driven_equalization"
+    },
+    "2001_2002_rebound": {
+      "N_fraction": 1.1519019388594698,
+      "E3_fraction": -0.1279582474679407,
+      "E6_fraction": -0.20633501619371852,
+      "all_three_colonies_increased": true,
+      "all_six_components_increased": true,
+      "Crozier_factor": 2.400080460112644,
+      "Crozier_West_factor": 2.4881527801250636,
+      "classification": "unequal_breeding_rebound_reconcentration"
+    },
+    "2002_2012_later": {
+      "N_fraction": 0.7212053177513285,
+      "E3_fraction": 0.023478031089563478,
+      "E6_fraction": 0.08312246120602507,
+      "classification": "continued_numerical_growth_without_progressive_concentration"
+    },
+    "1999_2012_pre_shock_to_late": {
+      "N_fraction": 0.6928658557164278,
+      "E3_fraction": -0.041408426332895765,
+      "E6_fraction": -0.041604200854903906,
+      "Royds_fraction": -0.14834254143646413,
+      "Bird_fraction": 0.598648363252376,
+      "Crozier_fraction": 0.7408479874201777,
+      "classification": "aggregate_above_pre_shock_but_unequal_local_recovery"
+    }
+  },
+  "interpretation": "The 2001 recovery baseline is a mega-iceberg-associated breeding-participation trough. The largest spatial change is a shock-driven equalization followed by a Crozier-weighted breeding rebound and reconcentration, not steady erosion of spatial redundancy."
+}

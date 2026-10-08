@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-inverse-path-mismatch-context-v1",
+  "date": "2026-10-06",
+  "status": "post_result_descriptive_context",
+  "universal_down_then_up_triplets": [
+    {
+      "years": [1989, 1990, 1991],
+      "loss": 35834,
+      "rebound": 12466,
+      "rebound_over_loss": 0.3478818998716303,
+      "inverse_path_mismatch_fraction": 0.09121488240054025,
+      "cosine": 0.994109576636787
+    },
+    {
+      "years": [1999, 2001, 2002],
+      "loss": 112613,
+      "rebound": 109198,
+      "rebound_over_loss": 0.9696749043183291,
+      "inverse_path_mismatch_fraction": 0.09405445040386184,
+      "cosine": 0.9969470572957102
+    },
+    {
+      "years": [2002, 2003, 2004],
+      "loss": 78374,
+      "rebound": 95679,
+      "rebound_over_loss": 1.2208002653941359,
+      "inverse_path_mismatch_fraction": 0.10630081332802095,
+      "cosine": 0.9839126605037914
+    }
+  ],
+  "decision": {
+    "focal_mismatch_exceptionally_large_relative_to_available_triplets": false,
+    "focal_episode_distinguished_by_near_complete_aggregate_restoration": true,
+    "focal_episode_distinguished_by_documented_external_disturbance": true
+  },
+  "interpretation": "The focal Ross mismatch is comparable in magnitude to other universal down-up episodes. Its value is the documented shock and near-complete aggregate rebound, not an unusually large compositional mismatch."
+}

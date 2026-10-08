@@ -1,0 +1,187 @@
+name: spatial-recovery-ecology-docx-preview
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/build_spatial_recovery_ecology_docx.py"
+      - "scripts/build_spatial_recovery_supplement_docx.py"
+      - "scripts/build_spatial_recovery_path_state_figures.py"
+      - "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md"
+      - "docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib"
+      - "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md"
+      - "submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md"
+      - "submission/ECOLOGY_METADATA_TEMPLATE.json"
+      - "src/mina/ecosphere_submission_metadata.py"
+      - ".github/workflows/spatial-recovery-ecology-docx-preview.yml"
+      - "pyproject.toml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev,figures,submission]"
+      - name: Install pandoc
+        run: |
+          if ! command -v pandoc >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y pandoc
+          fi
+          pandoc --version | head -1
+      - name: Build canonical figures
+        run: |
+          python scripts/build_spatial_recovery_path_state_figures.py \
+            --outdir build/spatial_recovery_path_state_figures
+      - name: Audit metadata template
+        run: |
+          python -m mina.ecosphere_submission_metadata \
+            --metadata submission/ECOLOGY_METADATA_TEMPLATE.json \
+            --out build/ecology_metadata_template_audit.json
+      - name: Build placeholder Word preview
+        run: |
+          python scripts/build_spatial_recovery_ecology_docx.py \
+            --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md \
+            --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib \
+            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md \
+            --figure-dir build/spatial_recovery_path_state_figures \
+            --out build/Spatial_Recovery_Ecology_v0_9_SUBMISSION_PREVIEW.docx
+      - name: Build Supporting Information preview
+        run: |
+          python scripts/build_spatial_recovery_supplement_docx.py \
+            --supplement submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md \
+            --figure-dir build/spatial_recovery_path_state_figures \
+            --out build/Spatial_Recovery_Ecology_v0_9_SUPPORTING_INFORMATION.docx
+      - name: Build synthetic author-complete path
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data={
+              "authors":[
+                  {
+                      "name":"Example Author",
+                      "affiliation_ids":["1"],
+                      "corresponding":True,
+                      "email":"author@example.org"
+                  }
+              ],
+              "affiliations":{
+                  "1":"Example Department, Example University, City, Country"
+              },
+              "present_addresses":[],
+              "funding_acknowledgments":"Synthetic CI funding text",
+              "additional_acknowledgments":"",
+              "author_contributions":"Example Author: Conceptualization, Formal analysis, Software, Visualization, Writing - original draft, Writing - review & editing.",
+              "conflict_of_interest":"Synthetic CI conflict-of-interest statement.",
+              "ai_tool_inventory_confirmed":True,
+              "additional_ai_tools":[],
+              "dual_publication_statement":"Synthetic CI overlap statement.",
+              "review_code_url":"https://github.com/zuizui0223/mina",
+              "permanent_archive_doi":None
+          }
+          Path("build/synthetic_ecology_metadata.json").write_text(
+              json.dumps(data,indent=2)+"\n",encoding="utf-8"
+          )
+          PY
+          python -m mina.ecosphere_submission_metadata \
+            --metadata build/synthetic_ecology_metadata.json \
+            --require-complete
+          python scripts/build_spatial_recovery_ecology_docx.py \
+            --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md \
+            --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib \
+            --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md \
+            --figure-dir build/spatial_recovery_path_state_figures \
+            --metadata build/synthetic_ecology_metadata.json \
+            --require-complete-metadata \
+            --out build/Spatial_Recovery_Ecology_v0_9_SYNTHETIC_COMPLETE.docx
+      - name: Build metadata-length stress path
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          authors=[]
+          for i in range(1,9):
+              authors.append({
+                  "name":f"Example Author {i}",
+                  "affiliation_ids":[str((i-1)%4+1)],
+                  "corresponding":i==1,
+                  "email":"author@example.org" if i==1 else None
+              })
+          data={
+              "authors":authors,
+              "affiliations":{
+                  "1":"Department of Ecology and Evolutionary Biology, Example University One, Long City Name, Country",
+                  "2":"Institute for Polar and Marine Research, Example University Two, Long City Name, Country",
+                  "3":"Department of Wildlife Population Science, Example University Three, Long City Name, Country",
+                  "4":"Centre for Spatial Ecology and Conservation, Example University Four, Long City Name, Country"
+              },
+              "present_addresses":[
+                  "Example Author 8: Present Department, Another Long Institution, City, Country"
+              ],
+              "funding_acknowledgments":"This deliberately long synthetic funding statement stress-tests layout with multiple funders, institutional support statements, grant identifiers, field logistics acknowledgments, and research infrastructure support.",
+              "additional_acknowledgments":"We thank multiple field teams, data stewards, logistics personnel, repository curators, and collaborators for long-term support of the monitoring programs used in this manuscript.",
+              "author_contributions":"; ".join([
+                  f"Example Author {i}: Conceptualization, Investigation, Methodology, Writing - review & editing"
+                  for i in range(1,9)
+              ]) + ".",
+              "conflict_of_interest":"The authors declare no conflicts of interest. This deliberately longer synthetic statement is included only to stress-test submission layout.",
+              "ai_tool_inventory_confirmed":True,
+              "additional_ai_tools":[],
+              "dual_publication_statement":"No overlapping manuscript is submitted or under review elsewhere.",
+              "review_code_url":"https://github.com/zuizui0223/mina",
+              "permanent_archive_doi":None
+          }
+          Path("build/stress_ecology_metadata.json").write_text(
+              json.dumps(data,indent=2)+"\n",encoding="utf-8"
+          )
+          PY
+          python -m mina.ecosphere_submission_metadata             --metadata build/stress_ecology_metadata.json             --require-complete
+          python scripts/build_spatial_recovery_ecology_docx.py             --manuscript docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md             --bibliography docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib             --captions docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md             --figure-dir build/spatial_recovery_path_state_figures             --metadata build/stress_ecology_metadata.json             --require-complete-metadata             --out build/Spatial_Recovery_Ecology_v0_9_METADATA_STRESS.docx
+      - name: Structural DOCX audit
+        run: |
+          python - <<'PY'
+          from docx import Document
+          from docx.oxml.ns import qn
+
+          path="build/Spatial_Recovery_Ecology_v0_9_SYNTHETIC_COMPLETE.docx"
+          doc=Document(path)
+          assert len(doc.sections) >= 3
+          first=doc.sections[0]._sectPr.find(qn("w:lnNumType"))
+          second=doc.sections[1]._sectPr.find(qn("w:lnNumType"))
+          last=doc.sections[-1]._sectPr.find(qn("w:lnNumType"))
+          assert first is None, "title page must not carry line numbers"
+          assert second is not None, "manuscript body must carry line numbers"
+          assert last is None, "figure pages must not carry line numbers"
+          text="\n".join(p.text for p in doc.paragraphs)
+          assert "Example Author" in text
+          assert "[AUTHOR" not in text
+          assert "Population recovery can retrace local losses while spatial structure remains altered" in text
+          assert "Figure captions" in text
+          for label in ("Figure 1","Figure 2"):
+              assert label in text
+          assert "Figure 3" not in text
+          assert "Figure 4" not in text
+          print("sections=",len(doc.sections))
+          print("paragraphs=",len(doc.paragraphs))
+          print("inline_shapes=",len(doc.inline_shapes))
+          assert len(doc.inline_shapes) == 2
+          supp=Document("build/Spatial_Recovery_Ecology_v0_9_SUPPORTING_INFORMATION.docx")
+          supp_text="\\n".join(p.text for p in supp.paragraphs)
+          assert "Figure S1." in supp_text
+          assert "Figure S2." in supp_text
+          assert len(supp.inline_shapes) == 2
+          print("supplement_structural_audit=PASS")
+          print("structural_audit=PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spatial-recovery-ecology-v0-9-docx-preview
+          path: |
+            build/Spatial_Recovery_Ecology_v0_9_SUBMISSION_PREVIEW.docx
+            build/Spatial_Recovery_Ecology_v0_9_SYNTHETIC_COMPLETE.docx
+            build/Spatial_Recovery_Ecology_v0_9_SUPPORTING_INFORMATION.docx
+            build/ecology_metadata_template_audit.json

@@ -1,0 +1,150 @@
+name: Signy Chinstrap PolarBytes fallback v1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "contracts/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_V1.md"
+      - "contracts/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_SUPPORT_AMENDMENT_V1.md"
+      - ".github/workflows/signy-chinstrap-polarbytes-fallback-v1.yml"
+
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve public PolarBytes mirror and run support-only audit
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          python - <<'PY'
+          import json
+          import pandas as pd
+          import requests
+          from pathlib import Path
+
+          url = "https://polarbytes.umk.edu.my/chinstrap"
+          html = requests.get(url, timeout=60)
+          html.raise_for_status()
+          Path("build/chinstrap.html").write_bytes(html.content)
+
+          tables = pd.read_html(html.text)
+          matches = []
+          for df in tables:
+              cols = [str(c).strip() for c in df.columns]
+              if (
+                  "Species" in cols
+                  and "Colony" in cols
+                  and "Season" in cols
+                  and "Total number of pairs" in cols
+                  and "Date fledgling count" in cols
+                  and "Total number of fledglings" in cols
+              ):
+                  matches.append(df)
+          if len(matches) != 1:
+              raise SystemExit(f"expected exactly one Chinstrap table, found {len(matches)}")
+          df = matches[0].copy()
+          if len(df) != 466:
+              raise SystemExit(f"expected 466 rows, found {len(df)}")
+          if set(df["Species"].dropna().astype(str)) != {"Chinstrap penguin"}:
+              raise SystemExit("unexpected species labels")
+
+          core = ["C15","C18","C46","C47","C79","C80","C81"]
+          df["Colony"] = df["Colony"].astype(str)
+          df["Season"] = df["Season"].astype(str)
+          df["pair_count"] = pd.to_numeric(df["Total number of pairs"], errors="coerce")
+          df["fledge_date"] = df["Date fledgling count"].astype(str)
+
+          def start_year(s):
+              try:
+                  return int(str(s).split("-")[0])
+              except Exception:
+                  return None
+
+          df["start_year"] = df["Season"].map(start_year)
+          d = df[df["start_year"].notna() & (df["start_year"] >= 1996)].copy()
+
+          # Verify no duplicate fixed-colony rows within a season.
+          counts = d[d["Colony"].isin(core)].groupby(["Season","Colony"]).size()
+          if (counts > 1).any():
+              raise SystemExit("duplicate fixed-colony rows require manual audit")
+
+          by = {(r["Season"],r["Colony"]): r for _,r in d[d["Colony"].isin(core)].iterrows()}
+          seasons = sorted(set(d["Season"]), key=lambda s: start_year(s) if start_year(s) is not None else 9999)
+
+          eligible = []
+          ineligible = {}
+          for s in seasons:
+              y = start_year(s)
+              if y is None:
+                  continue
+              s1 = f"{y+1}-{y+2}"
+              reasons = []
+              for col in core:
+                  r = by.get((s,col))
+                  rn = by.get((s1,col))
+                  if r is None:
+                      reasons.append(f"{col}:missing_start_row")
+                      continue
+                  if rn is None:
+                      reasons.append(f"{col}:missing_next_row")
+                  b0 = r["pair_count"]
+                  if pd.isna(b0) or b0 <= 0:
+                      reasons.append(f"{col}:start_pair_not_positive")
+                  if rn is not None:
+                      b1 = rn["pair_count"]
+                      if pd.isna(b1) or b1 <= 0:
+                          reasons.append(f"{col}:next_pair_not_positive")
+                  fd = str(r["fledge_date"]).strip()
+                  if fd in {"", "nan", "NaN", "0000-00-00"}:
+                      reasons.append(f"{col}:late_output_structurally_missing")
+              if reasons:
+                  ineligible[s] = sorted(set(reasons))
+              else:
+                  eligible.append(s)
+
+          receipt = {
+              "schema_version": 1,
+              "result_id": "signy-chinstrap-output-to-allocation-support-v1",
+              "date": "2026-10-06",
+              "contract": "contracts/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_V1.md",
+              "amendment": "contracts/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_SUPPORT_AMENDMENT_V1.md",
+              "source": {"mirror": url, "rows": int(len(df))},
+              "fixed_core_roster": core,
+              "support": {
+                  "n_fixed_colonies": len(core),
+                  "eligible_start_seasons": eligible,
+                  "n_eligible_start_seasons": len(eligible),
+                  "n_primary_rows_if_opened": len(eligible)*len(core),
+                  "minimum_12_seasons_pass": len(eligible) >= 12,
+                  "ineligible_seasons": ineligible
+              },
+              "effect_opening": {
+                  "fledgling_magnitudes_summarized": False,
+                  "size_adjusted_output_computed": False,
+                  "share_response_computed": False,
+                  "beta_computed": False
+              },
+              "decision": {
+                  "support_pass": len(eligible) >= 12,
+                  "status": "SUPPORT_PASS_READY_FOR_FROZEN_EFFECT" if len(eligible) >= 12 else "SUPPORT_FAIL"
+              }
+          }
+
+          df.to_csv("build/signy_chinstrap_polarbytes.csv", index=False)
+          Path("build/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_SUPPORT_V1.json").write_text(
+              json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
+          )
+          print("rows",len(df))
+          print("fixed_core_roster",core)
+          print("eligible_start_seasons",eligible)
+          print("n_eligible_start_seasons",len(eligible))
+          print("support_pass",len(eligible)>=12)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signy-chinstrap-polarbytes-fallback-v1
+          path: |
+            build/signy_chinstrap_polarbytes.csv
+            build/chinstrap.html
+            build/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_SUPPORT_V1.json

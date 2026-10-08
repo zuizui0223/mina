@@ -1,0 +1,24 @@
+name: East Antarctica Southwell S1 package v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/EAST_ANTARCTICA_RECOVERY_SPATIAL_REDUNDANCY_V1.md"
+      - ".github/workflows/east-antarctica-s1-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Southwell et al. 2015 S1 population data
+        run: |
+          mkdir -p build
+          curl -A 'Mozilla/5.0' -L --fail --retry 10 --retry-delay 5 --retry-all-errors             'https://journals.plos.org/plosone/article/file?id=10.1371%2Fjournal.pone.0139877.s001&type=supplementary'             -o build/southwell_2015_s1.doc
+          file build/southwell_2015_s1.doc
+          ls -lh build/southwell_2015_s1.doc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: east-antarctica-southwell-s1-v1
+          path: build/southwell_2015_s1.doc

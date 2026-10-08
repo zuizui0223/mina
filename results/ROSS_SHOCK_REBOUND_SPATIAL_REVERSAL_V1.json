@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-shock-rebound-spatial-reversal-v1",
+  "date": "2026-10-06",
+  "status": "post_result_exact_reversal_decomposition",
+  "states": {
+    "1999_pre_shock": {"N":207411,"E3":1.6094677066662906,"E6":2.0557530380209097},
+    "2001_trough": {"N":94798,"E3":1.728622136512977,"E6":2.2919284746729964},
+    "2002_rebound": {"N":203996,"E3":1.507430677390489,"E6":1.819023375736499}
+  },
+  "aggregate_rebound": {
+    "N2002_over_N1999": 0.983535106624046,
+    "abundance_gap_fraction": -0.016464893375954
+  },
+  "spatial_reversal": {
+    "E3_2002_over_1999": 0.9366020027284971,
+    "E6_2002_over_1999": 0.8848452815556521,
+    "TV3_1999_2002": 0.035362381539969526,
+    "TV6_1999_2002": 0.04967242312643739
+  },
+  "three_colony_restoration_factors_2002_over_1999": {
+    "Royds":0.6185082872928177,
+    "Bird":0.8590918690601901,
+    "Crozier":1.029646959556638
+  },
+  "six_component_restoration_factors_2002_over_1999": {
+    "Cape Royds":0.6185082872928177,
+    "Cape Bird South":0.6546639231824417,
+    "Cape Bird Middle":0.7071707170717072,
+    "Cape Bird North":0.9484437301023089,
+    "Cape Crozier West":1.056232333232893,
+    "Cape Crozier East":0.8123717384931105
+  },
+  "decision": {
+    "aggregate_breeding_abundance_nearly_restored": true,
+    "exact_spatial_composition_restored": false,
+    "E3_restored": false,
+    "E6_restored": false,
+    "all_six_components_restored_to_pre_shock_or_above": false,
+    "only_component_above_pre_shock": "Cape Crozier West"
+  },
+  "interpretation": "The 2002 breeding total returned to 98.35% of the last complete pre-shock total, but local restoration was highly unequal and effective breeding-unit number remained below the pre-shock state. Aggregate rebound therefore did not spatially reverse the disturbance/rebound trajectory."
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-breeding-abundance-measurement-audit-v1",
+  "date": "2026-10-06",
+  "status": "post_result_interpretation_audit",
+  "response_definition": "occupied nesting territories / breeding pairs near incubation",
+  "not_directly_measured": "total adult population size",
+  "survey_protocol": {
+    "ross_island_platform": "annual helicopter high-angle oblique aerial photography",
+    "target_date": "approximately 1 December",
+    "reported_date_window": "25 November to 8 December",
+    "pre_2006_camera": "Pentax 645 medium-format black-and-white film",
+    "digital_camera_transition": 2006,
+    "semi_automated_counting_transition": 2010,
+    "method_discontinuity_2001_to_2002": false
+  },
+  "biological_components_that_can_affect_counts": [
+    "survival",
+    "recruitment",
+    "immigration_emigration",
+    "breeding_propensity",
+    "colony_arrival_access",
+    "early_breeding_failure_or_abandonment"
+  ],
+  "2001_context": {
+    "common_low_point_reported_by_source_paper": true,
+    "coincided_with_B15A_C16_icebergs": true,
+    "early_breeding_failure_or_abandonment_reported": true,
+    "interpret_as_total_population_doubling": false
+  },
+  "wording_rule": {
+    "preferred": [
+      "breeding-pair abundance",
+      "breeding abundance",
+      "breeding-distribution concentration",
+      "recovery of breeding abundance"
+    ],
+    "avoid_unqualified": [
+      "total population doubled",
+      "all local populations grew",
+      "recruitment caused the pulse"
+    ]
+  }
+}

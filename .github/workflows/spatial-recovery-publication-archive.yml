@@ -1,0 +1,111 @@
+name: spatial-recovery-publication-archive
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "submission/SPATIAL_RECOVERY_PUBLICATION_ARCHIVE_MANIFEST_V1.md"
+      - ".github/workflows/spatial-recovery-publication-archive.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build deterministic publication archive
+        run: |
+          set -euo pipefail
+          mkdir -p build/archive/root
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import shutil
+          from pathlib import Path
+
+          root=Path(".")
+          out=Path("build/archive/root")
+          files=[
+              "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md",
+              "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md",
+              "docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib",
+              "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md",
+              "submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md",
+              "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json",
+              "docs/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.md",
+              "results/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.json",
+              "docs/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.md",
+              "results/ROSS_INVERSE_PATH_MISMATCH_V1.json",
+              "results/ROSS_INVERSE_PATH_MISMATCH_CONTEXT_V1.json",
+              "results/ROSS_ICEBERG_SHOCK_REBOUND_AUDIT_V1.json",
+              "docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md",
+              "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+              "results/SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json",
+              "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json",
+              "docs/BEAUFORT_ISLAND_MEDIATED_COMPETITION_SYNTHESIS_V1.md",
+              "results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V4.json",
+              "docs/SPATIAL_RECOVERY_PATH_STATE_NOVELTY_BOUNDARY_V2.md",
+              "docs/SPATIAL_RECOVERY_PATH_STATE_REVIEWER_STRESS_TEST_V2.md",
+              "submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V2.md",
+              "submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_MANIFEST_V1.md",
+              "submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_DERIVATION_V1.md",
+              "submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_QA_V2.json",
+              "submission/SPATIAL_MEMORY_V0_4_REINTERPRETATION_HOLD_V1.md",
+              "submission/PENGUIN_MANUSCRIPT_CONSOLIDATION_V1.md",
+              "scripts/analyze_ross_aggregate_vs_spatial_restoration.py",
+              "scripts/analyze_ross_inverse_path_mismatch.py",
+              "scripts/analyze_ross_inverse_path_bounded_count_sensitivity.py",
+              "scripts/analyze_ross_shock_rebound.py",
+              "scripts/build_spatial_recovery_path_state_figures.py",
+              "scripts/build_spatial_recovery_ecology_docx.py",
+              "scripts/build_spatial_recovery_si_docx.py",
+              "external/ross_island_v2_frozen_counts.csv",
+              "pyproject.toml",
+          ]
+          records=[]
+          for rel in sorted(files):
+              src=root/rel
+              if not src.exists():
+                  raise FileNotFoundError(rel)
+              dst=out/rel
+              dst.parent.mkdir(parents=True,exist_ok=True)
+              shutil.copy2(src,dst)
+              data=src.read_bytes()
+              records.append({
+                  "path":rel,
+                  "size":len(data),
+                  "sha256":hashlib.sha256(data).hexdigest(),
+              })
+
+          metadata={
+              "schema_version":1,
+              "repository":"zuizui0223/mina",
+              "commit":os.environ["GITHUB_SHA"],
+              "files":records,
+              "excluded_third_party_raw_data":[
+                  "Palmer Station raw data: cite original DOI",
+                  "Signy raw data: cite original DOI",
+                  "Ross source workbook: cite original DOI; frozen derived focal counts included",
+              ],
+          }
+          (out/"ARCHIVE_FILE_MANIFEST.json").write_text(
+              json.dumps(metadata,indent=2)+"\n",encoding="utf-8"
+          )
+          PY
+          (
+            cd build/archive/root
+            find . -type f -print0 | sort -z | xargs -0 sha256sum > ARCHIVE_SHA256SUMS.txt
+            find . -type f ! -name ARCHIVE_SHA256SUMS.txt -print0 | sort -z | \
+              tar --null -T - --mtime='UTC 2026-10-07' --owner=0 --group=0 --numeric-owner \
+              -czf ../spatial-recovery-ecology-initial-submission-v1.tar.gz
+          )
+          sha256sum build/archive/spatial-recovery-ecology-initial-submission-v1.tar.gz | \
+            tee build/archive/BUNDLE_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spatial-recovery-publication-archive
+          path: |
+            build/archive/spatial-recovery-ecology-initial-submission-v1.tar.gz
+            build/archive/BUNDLE_SHA256.txt
+            build/archive/root/ARCHIVE_FILE_MANIFEST.json
+            build/archive/root/ARCHIVE_SHA256SUMS.txt

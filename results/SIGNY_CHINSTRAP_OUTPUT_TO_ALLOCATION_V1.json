@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "result_id": "signy-chinstrap-output-to-allocation-v1",
+  "date": "2026-10-06",
+  "status": "prospective_mechanism_effect_opened_after_contract_support_amendment_and_support_receipt",
+  "contract": "contracts/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_V1.md",
+  "support_amendment": "contracts/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_SUPPORT_AMENDMENT_V1.md",
+  "support_receipt": "results/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_SUPPORT_V1.json",
+  "source": {
+    "repository": "azira104/PolarRegion",
+    "ref": "09fd3f36b76ad98f4b6a736a37d8e5606c0003da",
+    "path": "static/data/pr_animal/pr_animal_chinstrappenguin.csv",
+    "blob_sha": "4905f58b691bbf8c1a536d626f62928710553b19"
+  },
+  "fixed_core_roster": ["C15","C18","C46","C47","C79","C80","C81"],
+  "eligible_start_seasons": [
+    "1998-1999","1999-2000","2000-2001","2001-2002","2002-2003",
+    "2003-2004","2004-2005","2005-2006","2006-2007","2007-2008",
+    "2008-2009","2011-2012","2012-2013","2013-2014","2014-2015"
+  ],
+  "n_eligible_start_seasons": 15,
+  "n_rows": 105,
+  "step1_size_adjusted_output": {
+    "gamma_log_current_pairs": 0.32342940246610397,
+    "predictor_definition": "Q_it is residual from log(1+late fledglings) ~ colony FE + start-season FE + gamma*log(current breeding pairs)"
+  },
+  "primary": {
+    "response": "log next-season breeding share",
+    "current_state_covariate": "log current breeding share",
+    "beta_Q": -0.022476270267637974,
+    "rho_current_log_share": 0.6852761034107281,
+    "standardized_beta_Q": -0.06368213456297571,
+    "directional_prediction": "beta_Q > 0",
+    "permutation_B": 9999,
+    "seed": 20261006,
+    "rng": "mulberry32 with Fisher-Yates year-vector permutation",
+    "permutation_exceedances_ge_observed": 6836,
+    "permutation_p": 0.6837,
+    "permutation_q05": -0.07510568976451089,
+    "permutation_median": -0.000468366985848803,
+    "permutation_q95": 0.0718460637990832
+  },
+  "leave_one_colony_out_beta": {
+    "C15": -0.043934311224475955,
+    "C18": 0.013514340232191077,
+    "C46": -0.027161604127900838,
+    "C47": -0.02542145191991673,
+    "C79": -0.026071513924514803,
+    "C80": -0.023548864993633647,
+    "C81": -0.012384186761259363
+  },
+  "backward_control": {
+    "n_rows": 91,
+    "n_start_seasons": 13,
+    "beta_Q": 0.09691523226553496,
+    "rho_current_log_share": 0.32785177791792675,
+    "interpretation": "Secondary diagnostic only; the positive backward association does not rescue the failed forward prediction."
+  },
+  "decision": {
+    "beta_positive": false,
+    "permutation_p_le_0_05": false,
+    "primary_support_pass": false,
+    "status": "TERMINAL_FAIL"
+  },
+  "interpretation": "In the fixed seven-colony Signy Chinstrap network, size-adjusted late fledgling output does not positively predict next-season breeding-share allocation under the preregistered one-season model. The prospectively specified independent ratio-free mechanism route therefore fails and is not rescued by alternate lags, colony subsets, earlier chick endpoints, or alternative productivity metrics."
+}

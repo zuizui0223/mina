@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "result_id": "colonial-breeding-aggregate-spatial-decoupling-ledger-v1",
+  "date": "2026-10-06",
+  "claim": "The direction of aggregate breeding-abundance change does not uniquely specify the direction of spatial reallocation among breeding nodes.",
+  "evidence": [
+    {
+      "system": "Ross Island Adelie",
+      "role": "focal_natural_disturbance_rebound",
+      "audit_status": "Ross V2 frozen before counts; 1999-2001-2002 interpretation post-result but externally anchored to documented iceberg disturbance",
+      "key_result": {
+        "aggregate_loss_1999_2001": 112613,
+        "aggregate_gain_2001_2002": 109198,
+        "fraction_aggregate_loss_restored": 0.9696749043183291,
+        "N2002_over_N1999": 0.983535106624046,
+        "E3_2002_over_E3_1999": 0.9366020027284968,
+        "E6_2002_over_E6_1999": 0.8848452815556521,
+        "local_restoration_fraction_min": 0.10786267995570321,
+        "local_restoration_fraction_max": 1.097711179814501
+      },
+      "interpretation": "Near-complete aggregate rebound without restoration of the pre-disturbance local-abundance vector."
+    },
+    {
+      "system": "Bird Island Gentoo",
+      "role": "prospective_external_positive_net_change_allocation_test",
+      "audit_status": "six-unit roster and earliest/latest complete endpoints frozen before magnitudes",
+      "key_result": {
+        "N0": 3331,
+        "N1": 4470,
+        "N_fraction_change": 0.34193935755028515,
+        "E0": 3.569431831159452,
+        "E1": 4.128237359237167,
+        "E_fraction_change": 0.1565530746937387,
+        "temporal_transition_quadrants": {
+          "N_up_E_up": 12,
+          "N_up_E_down": 9,
+          "N_down_E_up": 8,
+          "N_down_E_down": 13
+        }
+      },
+      "interpretation": "Positive long-interval aggregate change can coincide with increased spatial redundancy; all four annual sign combinations occur descriptively."
+    },
+    {
+      "system": "Global Emperor penguin",
+      "role": "prospective_external_decline_allocation_test",
+      "audit_status": "2009/2018, 50-colony roster and regional sensitivity frozen before endpoint magnitudes",
+      "key_result": {
+        "N_ratio": 0.8762164479249217,
+        "E_ratio": 0.8722956762307176,
+        "n_colonies_down": 30,
+        "n_colonies_up": 20,
+        "gross_gain_loss_ratio": 0.550764165775168,
+        "regional_sign_combinations": [
+          "N_down_E_down",
+          "N_down_E_up",
+          "N_up_E_down",
+          "N_up_E_up"
+        ]
+      },
+      "interpretation": "Global point-estimate decline concentrates, but prespecified regions occupy all four aggregate/spatial sign quadrants."
+    }
+  ],
+  "secondary_context": [
+    {
+      "system": "Palmer/Signy Adelie",
+      "role": "decline_discovery",
+      "interpretation": "Loss-driven concentration via differential attrition."
+    },
+    {
+      "system": "Heard Island King",
+      "role": "post_result_literature_triangulation",
+      "interpretation": "Continuous local increases with non-monotonic redundancy and dominance reversal."
+    },
+    {
+      "system": "Beaufort Adelie",
+      "role": "mechanistic_contrast",
+      "interpretation": "Capacity release accompanied disproportionate growth of a small/new unit and slight within-island spreading."
+    }
+  ],
+  "boundaries": [
+    "Bird 1981-2024 is not a preidentified disturbance-recovery phase; it is a prospective positive-net-change allocation test.",
+    "Emperor results use posterior-median colony abundance indices; no joint posterior probability for E is claimed.",
+    "Emperor full-roster multiplicative G decomposition is undefined because one 2009 colony posterior median is zero; the colony remains in primary N/E analysis.",
+    "The algebraic common/contrast decomposition is not claimed as novel mathematics.",
+    "No universal directional recovery rule is claimed."
+  ]
+}
