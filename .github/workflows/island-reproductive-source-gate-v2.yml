@@ -33,10 +33,11 @@ jobs:
           python - <<'PY'
           import json
           d=json.load(open('contracts/ISLAND_REPRODUCTIVE_OPPORTUNITY_VS_SUCCESS_SOURCE_GATE_V2.json'))
-          assert d["decision"]=="HOLD_NEST_HABITAT_FITNESS_JOIN_AND_IDENTIFICATION"
+          assert d["decision"]=="HOLD_NO_INDEPENDENT_PHYSICAL_HABITAT_TREATMENT_OR_NOVELITY_DESPITE_ONE_NEST_ID_JOIN"
           assert d["actual_new_biological_outcome_rows_read"] == 0
           assert d["causal_model_fitted"] is False
           print('SOURCE_GATE_V2: no join of unrelated nests, whole-island outcomes or image coordinates')
           print('CANDIDATE_SOURCE_FAMILIES:',len(d["candidate_independent_data_join"]))
+          assert len(d["candidate_independent_data_join"])==7
           print('DECISION:',d["decision"])
           PY
