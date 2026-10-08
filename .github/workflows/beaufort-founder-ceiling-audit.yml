@@ -12,6 +12,7 @@ on:
       - 'tests/test_beaufort_founder_ceiling.py'
       - 'tests/test_beaufort_origin_graph.py'
       - 'tests/test_edmonson_mainland_counterexample.py'
+      - 'tests/test_ross_beaufort_stage_prior_art.py'
       - 'tests/test_source_rescue_structural_support.py'
       - '.github/workflows/beaufort-founder-ceiling-audit.yml'
 jobs:
@@ -27,7 +28,7 @@ jobs:
       - name: Focused unit tests (no resight outcomes)
         run: |
           python -m pip install pytest
-          python -m pytest -q tests/test_beaufort_founder_ceiling.py tests/test_source_rescue_structural_support.py tests/test_beaufort_origin_graph.py tests/test_edmonson_mainland_counterexample.py
+          python -m pytest -q tests/test_beaufort_founder_ceiling.py tests/test_source_rescue_structural_support.py tests/test_beaufort_origin_graph.py tests/test_edmonson_mainland_counterexample.py tests/test_ross_beaufort_stage_prior_art.py
       - name: Season-aligned founder ceiling and critical sensitivity
         run: |
           python scripts/audit_beaufort_founder_ceiling.py --out /tmp/beaufort_founder_ceiling.json
