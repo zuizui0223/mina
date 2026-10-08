@@ -93,6 +93,12 @@ def trajectory_readout(year, rows):
         "original_site":trajectory_side("original"),
         "alternative_site":trajectory_side("alternative"),
         "last_completed_preimage_composite":rows[-1],
+        "one_extra_15day_ahead_auxiliary_guard_composite":rows[-2],
+        "one_extra_15day_ahead_auxiliary_guard_note":(
+            "Earlier composite whose immediate following nominal composite has also "
+            "completed before the dated penguin image; cannot rule out all retrospective "
+            "manual source decisions or longer-lived classification artifacts."
+        ),
         "seasonal_timeline":rows,
         "causal_penguin_conclusion_available":False,
     }
