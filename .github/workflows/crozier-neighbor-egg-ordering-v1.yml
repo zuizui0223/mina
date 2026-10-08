@@ -54,7 +54,10 @@ jobs:
           v=r['first_detected_egg_relative_to_first_positive_neighbor']
           assert v['EGG_DETECTED_BEFORE_NEIGHBOR']==5
           assert v['SAME_OBSERVATION_DAY']==2
-          assert v['NEIGHBOR_DETECTED_BEFORE_FIRST_EGG_SIGHTING']==2
+          assert v['NEIGHBOR_DETECTED_BEFORE_FIRST_EGG_SIGHTING']==1
+          assert v['NO_CONFIRMED_EGG_BY_CUTOFF']==1
+          assert r['n_with_incubation_detected_by_or_before_first_neighbor']==7
+          assert sum(v.values())==9
           assert r['status_not_a_social_settlement_effect']
           assert not r['first_egg_sighting_equivalent_to_egg_laying_date']
           assert not r['neighbor_arrival_date_observed_without_interval_censoring']
