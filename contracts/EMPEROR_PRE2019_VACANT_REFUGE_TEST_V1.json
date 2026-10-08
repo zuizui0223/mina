@@ -8,7 +8,8 @@
     "Labrousse et al. 2023 already reported nonsignificant occupied vs unoccupied habitat contrasts and proposed intraspecific competition and empty potential refuge sites.",
     "Fretwell et al. 2023/2024 already documented 2022 and 2023 widespread breeding failures.",
     "Macdonald et al. 2026 already described three long-term calving responses.",
-    "Fretwell et al. 2026 already documented relocation of five emperor colonies, not transferable as an original finding."
+    "Fretwell et al. 2026 already documented relocation of five emperor colonies, not transferable as an original finding.",
+    "Remote Sensing of Environment S0034425725003888 already analyzed short-range displacement of ten emperor colonies under storms/blizzards/low sea ice, 2013-2023."
   ],
   "sources": {
     "pre_exposure": {
@@ -67,6 +68,8 @@
     "H_competition": "A positive selection of unoccupied stable patches could be competition release but cannot identify intra-specific competition without prior competitor pressure measured independently."
   },
   "hard_stops": [
+    "Historical model pseudoabsence cannot be treated as a surveyed vacant refuge: only independent sufficient-effort nonoccupancy qualifies for a novel 0→occupied biological test.",
+    "Dryad 55 baseline colony locations must first be crosswalked to independently verified stable IDs in the later 66-colony failure inventory; mismatched catalogue count is not ecological colonization.",
     "No complete, detection-qualified 2022/2023 site×year colony identity crosswalk, especially for sites added to roster after 2018.",
     "No independently observed contemporary 2022 alternative ice-area and route accessibility before purported relocation.",
     "No actual movement or successive breeding evidence for most disturbed colonies; no pooling of child failure with adult colony disappearance.",
@@ -93,5 +96,16 @@
     "frozen_PR189_unchanged": true,
     "beaufort_PR192_unchanged": true,
     "header_only_PR194_unchanged": true
+  },
+  "baseline_inventory_reconciliation": {
+    "Dryad_2023_study_presence_colony_locations_in_3km_buffers": 55,
+    "raw_MODIS_fastice_2000_2018_halfmonthly_timestamps": 432,
+    "nine_year_fastice_persistence_and_trend_summary": "2010–2018",
+    "2022_2023_affected_denominator": 66,
+    "dryad_model_absence_pixels_verified_repeated_biological_zeros": false,
+    "PDC_2022_Bellingshausen_geolocated_sites": 5,
+    "PDC_2023_circumpolar_nominal_accuracy_km": 2,
+    "PDC_2023_metadata_progress": "Planned",
+    "source": "https://doi.org/10.5061/dryad.tmpg4f547 (README), https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01756 and /01815"
   }
 }
