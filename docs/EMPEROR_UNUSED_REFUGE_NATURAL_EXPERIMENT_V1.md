@@ -22,6 +22,34 @@ This is falsifiable. Having unused habitat and observing displacement is not eno
 
 The temporal separation helps prevent retrospective choosing of a 'suitable' landing site solely because penguins eventually appeared there. It is not randomization and does not itself establish causality.
 
+## 2026-10-08 literature-backed boundary: leaving is not the same as choosing a vacant refuge
+
+**Garnier et al. (2025), Ecology and Evolution, doi:10.1002/ece3.71367**, already coupled penguin genetic markers and demographic metapopulation dynamics, and strongly favored *semi-informed dispersal* over both random and fully informed dispersal. Published DICs: **−41 semi-informed**, **684 random**, **676 fully informed**. In the best model penguins **leave deteriorating colonies according to habitat/growth state**, but **choose randomly among other represented breeding colonies** within the dispersal kernel. Published inferred mean successful dispersal distance ~**414 km** (not an actual tag-tracked natal dispersal distribution) and mean modeled emigration 15.7%/colony/year, although many colony-years have median emigration zero. This is powerful prior art; the novelty of environmental triggers for departure and semi-informed dispersal is already taken.
+
+**Read the public author's code, not just the abstract.** In `garnieji/EP_demographic_genetic` pinned main SHA `bae0db2aedf6d18870287110797b9d8d1818ccc0`, `EP_project_informed.m` builds a **fixed list of colony nodes** (the available example reads 54 rows from `COL_EP.xlsx`), initializes carrying capacity `K=2*BE` from baseline census, and dispersal destinations from a connectivity matrix among those listed colonies. This is a valid conditional *among-known-colony* dispersal framework. The paper refers to a 66-colony study network, so **54-code versus 66-paper scope must be reconciled** before treating that one code file as the precise final version. Either way, **a previously empty but physically available nest-site option is not a calibrated destination category in the cited fixed-colony formulation**.
+
+Therefore the new, biological (not methodological) question is **not** "is emigration informed?" but:
+
+> **After habitat catastrophe, are penguins preferentially absorbed into *already occupied* breeding colonies, or do they establish breeding at physically available but previously unused nearby sites, when both are accessible?**
+
+The Halley→Dawson event is an already-published example of the **occupied receiver** pathway, while the "unused refuge" category demands a genuine repeat-surveyed zero and contemporary habitat/route verification. A model that chooses among known colonies **cannot by itself tell us that unused vacant sites are unattractive or that social information caused their exclusion**; those are ecological alternatives requiring explicit observations.
+
+This also fixes a real spatial-screen error. Since inferred reproductive dispersal can average ~414 km, a **100-km primary screen is local-option screening only**, **not a census of all potential emigrant destinations**. The old 200–400 km "negative control" is retracted: it lies within the inferred movement scale. Use pre-specified 250/500/1000-km strata as regional sensitivity, never assume negligible movement or use them as biologically impossible controls.
+
+Competing mechanism predictions:
+- **Established-colony attraction:** documented first breeding or repeated successful occupancy after shock occurs disproportionately in **already occupied** receiving sites, conditional on genuine candidate availability, physical access and existing population size.
+- **De novo refuge uptake:** previously verified empty sites gain **documented breeders** after shock, with repeat occupancy when ice permits, beyond the source's effect on emigrant output.
+- **Pure exposure/access filtering:** apparent preference for established sites disappears when independent *event-year* access/ice retention/survey effort and travel geometry are compared; social preference would remain unproven.
+- **Observation artifact:** new groups were previously present but undetected, or source/receiver polygons changed; site status is not known.
+
+A successful test would change island/metapopulation ecology by separating the **departure decision** from the **creation of a new reproductive network node**. It would not claim the Garnier result was wrong; it tests a destination class that his historical inference did not resolve.
+
+Sources:
+- Published full text: https://doi.org/10.1002/ece3.71367
+- Audited public code: https://github.com/garnieji/EP_demographic_genetic/blob/bae0db2aedf6d18870287110797b9d8d1818ccc0/EP_project_informed.m
+- Prior Halley positive control: https://doi.org/10.1017/S0954102019000099
+
+
 ## Three processes to distinguish, not conflate
 
 | Ecological process | Observable expectation | Strong rival |
@@ -97,7 +125,7 @@ Primary sources: https://doi.org/10.1017/S0954102019000099 ; https://doi.org/10.
 
 1. Freeze a cohort-ID crosswalk that resolves relocated, renamed, rediscovered or newly recognized colony records without using biological outcome sizes. **Historical 66 vs subsequent 70 known colonies cannot be treated as identical rosters.**
 2. Freeze study units as physical colony-zone × breeding season, with repeated imagery and independently reported missingness/coverage.
-3. Map pre-2019 historical stability for all candidate alternative pixels independent of 2022 or 2023 occupancy. Include habitat-choice candidate rings **40 km primary**, **20/80 km sensitivities**; 100–200 km is a predeclared negative-control distance class, not implicitly unreachable in all conditions.
+3. Map pre-2019 historical stability for candidate alternatives independently of later occupancy. Separate local choice (<100 km), 40/80/160 km sensitivity, and regional 250/500/1000 km source-receiver strata. Do not equate far distances with no dispersal.
 4. Independently certify that each potential alternative existed *before the observed 2022/2023 relocation*, was reachable in the relevant breeding phase, and was not occupied in the prior detection-qualified period. The 2010–2018 grid itself **is not enough**.
 5. Match by breakup dates, regional wind/forcing, latitude, old-colony size and satellite survey opportunity. Exclude any site that cannot be distinguished from a moving subdivision of the original group.
 6. Analyze realized uptake **and qualified subsequent persistence** separately. A positive zero→occupied event cannot be deduced from missing 2021 imagery.
