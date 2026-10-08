@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 from collections import defaultdict,Counter
 import csv
+from io import StringIO
 from datetime import datetime
 import hashlib
 import json
@@ -29,8 +30,14 @@ def csv_author(path, expected_blob):
     digest=hashlib.sha1(b"blob "+str(len(b)).encode()+b"\0"+b).hexdigest()
     if digest != expected_blob:
         raise ValueError(f"Original source blob mismatch: {path}")
-    with Path(path).open(encoding="utf-8-sig",newline="") as handle:
-        return list(csv.DictReader(handle))
+    # The author's 2021 observation comments contain literal Windows-1252
+    # bytes (e.g. 0x85 for ellipsis). Do not silently corrupt them with
+    # replacement characters; preserve the original byte SHA first.
+    try:
+        text=b.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        text=b.decode("cp1252")
+    return list(csv.DictReader(StringIO(text,newline="")))
 
 
 def num(value):
