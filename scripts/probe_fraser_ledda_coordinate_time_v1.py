@@ -61,8 +61,17 @@ def examine_axis_only(f, *, site_lon=SITE_LON,site_lat=SITE_LAT):
         raise ValueError("Unexpected independently frozen HDF5 dimensions")
     if not np.all(np.isfinite(x)) or not np.all(np.isfinite(y)):
         raise ValueError("Nonfinite axes")
-    if not all(np.diff(x)>0) or not all(np.diff(y)>0):
-        raise ValueError("Nonmonotonic axes")
+    # NetCDF polar grids may store y north-to-south in DESCENDING order.
+    # Strictly monotonic in EITHER direction is required; the sign is not
+    # chosen using physical ice or penguin observation outcomes.
+    dx = np.diff(x)
+    dy = np.diff(y)
+    x_up = bool(np.all(dx>0))
+    x_down = bool(np.all(dx<0))
+    y_up = bool(np.all(dy>0))
+    y_down = bool(np.all(dy<0))
+    if not (x_up or x_down) or not (y_up or y_down):
+        raise ValueError("Neither increasing nor decreasing regular axes")
     cases=[]
     for projection in PROJECTIONS:
         X,Y=Transformer.from_crs("EPSG:4326",projection,always_xy=True).transform(site_lon,site_lat)
@@ -86,8 +95,8 @@ def examine_axis_only(f, *, site_lon=SITE_LON,site_lat=SITE_LAT):
     cases.sort(key=lambda z:z["geodetic_residual_km"])
     choice=cases[0]
     return {
-        "x": {"min":float(x[0]),"max":float(x[-1]),"step_m_median":float(np.median(np.diff(x)))},
-        "y": {"min":float(y[0]),"max":float(y[-1]),"step_m_median":float(np.median(np.diff(y)))},
+        "x": {"first":float(x[0]),"last":float(x[-1]),"direction":"increasing" if x_up else "decreasing","signed_step_m_median":float(np.median(dx))},
+        "y": {"first":float(y[0]),"last":float(y[-1]),"direction":"increasing" if y_up else "decreasing","signed_step_m_median":float(np.median(dy))},
         "time_values":time.tolist(),
         "date_alt_values":date_alt.tolist(),
         "time_attrs":get_public_metadata(f["time"],("units","calendar","long_name","description")),
