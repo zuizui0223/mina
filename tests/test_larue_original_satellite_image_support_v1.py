@@ -90,3 +90,44 @@ def test_historical_nine_event_summary_stays_noncausal():
     assert report["all_refuge_colonization_criteria_met"] is False
     assert not report["absence_vs_no_ice_separated_using_bpresent_alone"]
     assert report["new_causal_effect_estimated"] is False
+
+def test_frozen_original_599_images_and_nine_transitions():
+    d=json.loads((
+        ROOT/"results/EMPEROR_LARUE_RAW_SATELLITE_TRANSITION_SUPPORT_V1.json"
+    ).read_text(encoding="utf8"))
+    assert d["raw_image_rows_2009_2018"] == 599
+    assert d["raw_bpresent_values_in_2009_2018"] == {
+        "yes":502,"no":20,"NA":77
+    }
+    assert d["n_prev_year_original_no"] == 8
+    assert d["n_prev_year_original_yes"] == 1
+    assert d["n_next_year_original_yes"] == 7
+    assert d["n_next_year_original_no"] == 1
+    assert d["n_next_year_original_NA"] == 1
+    assert d["n_raw_no_to_yes_pairs"] == 6
+    assert d["n_next_year_outside_original_date_and_area_window"] == 3
+    assert d["n_raw_no_to_yes_qualifying_date_area_only"] == 5
+    assert d["n_independently_verified_prior_fast_ice_present_and_birds_survey_absent"] == 0
+    assert not d["causal_option_social_attraction_test_completed"]
+    assert len(d["nine_posterior_transition_image_matches"]) == 9
+
+
+def test_posterior_means_and_raw_bpresent_are_not_same_measure():
+    d=json.loads((
+        ROOT/"results/EMPEROR_LARUE_RAW_SATELLITE_TRANSITION_SUPPORT_V1.json"
+    ).read_text(encoding="utf8"))
+    events=d["nine_posterior_transition_image_matches"]
+    laza=next(e for e in events if e["site_id"]=="LAZA")
+    assert laza["prior_original_bpresent"]=="yes"
+    assert laza["prior_raw_area_m2_zero"]
+    amun=next(e for e in events
+              if e["site_id"]=="AMUN" and e["posterior_zero_year"]==2012)
+    assert amun["next_original_bpresent"]=="NA"
+    ledd=next(e for e in events
+              if e["site_id"]=="LEDD" and e["posterior_zero_year"]==2014)
+    assert ledd["next_original_bpresent"]=="no"
+    assert not ledd["next_date_and_pixel_filter_valid"]
+    rupe=next(e for e in events if e["site_id"]=="RUPE")
+    assert rupe["next_original_bpresent"]=="yes"
+    assert rupe["next_image_date"]=="2017-12-11"
+    assert not rupe["next_date_and_pixel_filter_valid"]
