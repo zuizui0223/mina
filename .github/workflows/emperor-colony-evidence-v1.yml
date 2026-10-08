@@ -114,12 +114,25 @@ jobs:
             python - <<'PY'
           import json
           o=json.load(open('/tmp/larue_satellite_9_events.json'))
+          frozen=json.load(open('results/EMPEROR_LARUE_RAW_SATELLITE_TRANSITION_SUPPORT_V1.json'))
           assert o["already_exposed_model_posterior_0_to_positive_events"] == 9
+          assert o["raw_rows_2009_2018"] == frozen["raw_image_rows_2009_2018"] == 599
+          assert o["raw_bpresent_value_counts"] == frozen["raw_bpresent_values_in_2009_2018"]
+          assert o["zero_year_events_with_bpresent_No"] == frozen["n_prev_year_original_no"] == 8
+          assert o["zero_year_events_with_bpresent_yes"] == frozen["n_prev_year_original_yes"] == 1
+          assert o["positive_year_events_with_bpresent_yes"] == frozen["n_next_year_original_yes"] == 7
+          assert o["positive_year_events_with_bpresent_no"] == frozen["n_next_year_original_no"] == 1
+          assert o["positive_year_events_with_bpresent_NA"] == frozen["n_next_year_original_NA"] == 1
+          assert o["raw_bpresent_no_to_yes_event_count"] == frozen["n_raw_no_to_yes_pairs"] == 6
+          assert o["positive_year_without_valid_image_according_to_date_and_area_filter"] == frozen["n_next_year_outside_original_date_and_area_window"] == 3
           assert o["zero_year_events_with_independent_verified_physically_available_absent_colony"] == 0
           assert not o["new_causal_effect_estimated"]
           print("POSTERIOR_SWITCH_IMAGE_SUPPORT:",o["zero_year_events_with_at_least_one_source_image"],"of 9")
           print("ZERO_YEAR_NO_CODES:",o["zero_year_events_with_bpresent_No"],"of 9; No includes no fast ice")
-          print("RAW_BIOLOGICAL_IMAGES:",o["raw_rows_2009_2018"])
+          print("RAW_AUTHOR_IMAGES:",o["raw_rows_2009_2018"])
+          print("NEXT_RAW_YES_NO_NA:",o["positive_year_events_with_bpresent_yes"],o["positive_year_events_with_bpresent_no"],o["positive_year_events_with_bpresent_NA"])
+          print("RAW_NO_TO_YES:",o["raw_bpresent_no_to_yes_event_count"])
+          print("NEXT_IMAGE_OUTSIDE_AUTHOR_WINDOW:",o["positive_year_without_valid_image_according_to_date_and_area_filter"])
           print("NO_REAL_RECOLONIZATION_ESTABLISHED")
           PY
             rm -f /tmp/larue_published_original_satellite.xlsx
