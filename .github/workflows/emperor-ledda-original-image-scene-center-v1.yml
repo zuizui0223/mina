@@ -1,0 +1,60 @@
+name: Ledda original image scene center against published colony points
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'contracts/EMPEROR_LEDDA_SOURCE_IMAGE_CENTER_VS_COLONY_COORD_GATE_V1.json'
+      - 'scripts/audit_ledda_source_scene_centroid_vs_site_v1.py'
+      - 'tests/test_ledda_source_scene_centroid_vs_site_v1.py'
+      - '.github/workflows/emperor-ledda-original-image-scene-center-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/EMPEROR_LEDDA_SOURCE_IMAGE_CENTER_VS_COLONY_COORD_GATE_V1.json'
+      - 'scripts/audit_ledda_source_scene_centroid_vs_site_v1.py'
+      - 'tests/test_ledda_source_scene_centroid_vs_site_v1.py'
+      - '.github/workflows/emperor-ledda-original-image-scene-center-v1.yml'
+jobs:
+  image-center:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check pinned author source date and no inferences
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_ledda_source_scene_centroid_vs_site_v1.py
+      - name: Fetch primary original author satellite image observations
+        env:
+          ORIGINAL: https://raw.githubusercontent.com/davidiles/EMPE_Global/13f71112da43c1fd082273677757b41c550457ed/data/empe_satellite_2023-05-25.xlsx
+        run: |
+          curl -fLsS --max-time 40 --retry 2 "$ORIGINAL" -o /tmp/larue_original_satellite.xlsx
+      - name: Reproduce source image scene centers
+        run: |
+          python scripts/audit_ledda_source_scene_centroid_vs_site_v1.py \
+            --input /tmp/larue_original_satellite.xlsx \
+            --out /tmp/ledda_scene_centroids_v1.json
+      - name: Disallow scene centers from establishing breeding footprints
+        run: |
+          python - <<'PY'
+          import json
+          z=json.load(open('/tmp/ledda_scene_centroids_v1.json'))
+          assert z['focus_2014']['author_img_date']=='2014-10-13'
+          assert str(z['focus_2014']['bpresent_original']).lower()=='no'
+          assert not z['2014_scene_extent_verified']
+          assert not z['2014_Zhang_polygon_verified']
+          assert not z['new_breeding_event_or_migration_claim']
+          print('ORIGINAL_IMAGE_CENTROID_AUDIT_PASSED_NOT_NESTING_POLYGONS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledda-author-2014-original-satellite-scene-centroid
+          path: /tmp/ledda_scene_centroids_v1.json
+          retention-days: 14
+          if-no-files-found: ignore
