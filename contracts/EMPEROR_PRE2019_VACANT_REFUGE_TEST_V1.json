@@ -35,21 +35,25 @@
     }
   },
   "predefined_spatial_neighborhoods": {
-    "primary_km": 40,
+    "primary_km": 100,
     "sensitivity_km": [
-      20,
-      80
+      40,
+      80,
+      160
     ],
-    "reason": "Observed post-disturbance emperor relocations on the order of tens of km make local alternatives biologically plausible; threshold is a DESIGN choice not estimated from outcome.",
     "negative_control_km": [
-      100,
-      200
+      200,
+      400
     ],
+    "reason": "Literature-informed correction before opening candidate 2022-2024 outcomes: the already-published Halley Bay→Dawson-Lambton reassignment crossed >40 km (55km as quoted in 2019; 85km in 2025; 62.1km great-circle from 2019 coordinates). A 40km primary radius mechanically excludes this positive-control event; use broad 100km eligibility and full continuous distance/path/access whenever data allow. Because this choice uses known prior art, do NOT use Halley as an independent holdout confirmation.",
     "candidate_types": [
-      "historically high fast-ice persistence and unoccupied at 2010–2018 observation scale",
-      "mapped fast-ice option with independently verified 2022 contemporary availability"
+      "already occupied destination breeding colony: positive-control class, NOT previously unused refuge",
+      "repeatedly surveyed and unoccupied potential breeding patch with 2010–2018 high ice persistence and independently verified physical availability before the post-2022 move",
+      "unknown survey history/pseudoabsence: NOT eligible as known empty biological refuge"
     ],
-    "do_not_use_circular_exposure": "Current colony location or guano signal must not define habitat suitability or path passability."
+    "distance_definition": "WGS84 great-circle for screen; actual sea/ice route and cliff passability as independent covariates if mapped; named-study kilometers not equated with geodesic",
+    "do_not_use_circular_exposure": "Current colony position or guano signal must not define historic suitability or passability",
+    "literature_informed_not_preregistered_blind": true
   },
   "eligible_unit": "Named fixed colony network and austral breeding season, with unique source id, linked repeated imagery, and independently measured local access BEFORE location changes",
   "primary_ecological_outcome": "Documented use of previously unoccupied stable alternative AND continued verified breeding-season occupancy in next observed season (without equating this with individual fitness).",
@@ -75,7 +79,10 @@
     "No actual movement or successive breeding evidence for most disturbed colonies; no pooling of child failure with adult colony disappearance.",
     "Fewer than 10 independently identifiable relocation/persistence episodes with verified options: no confirmatory mechanism effect; descriptive only.",
     "No matched regional forcing/exposure: no competition or option causality claim.",
-    "No future-data fit before header-only and source access results."
+    "No future-data fit before header-only and source access results.",
+    "Do not score Halley→Dawson as a formerly vacant site: Dawson supported 1,280 counted breeding-pair equivalents in 2015; it is an established-colony receiving option.",
+    "Do not claim displaced individuals bred successfully merely because 2016/17 receiving-colony attendance increased; late-season unusual dispersed groups and uncertain reproduction.",
+    "All 100km neighborhood/known Halley positive-control comparisons are literature-informed model-development cases, not prospective independent confirmation."
   ],
   "known_published_summary": {
     "affected_2022_sites": 19,
@@ -107,5 +114,22 @@
     "PDC_2023_circumpolar_nominal_accuracy_km": 2,
     "PDC_2023_metadata_progress": "Planned",
     "source": "https://doi.org/10.5061/dryad.tmpg4f547 (README), https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01756 and /01815"
+  },
+  "prepublished_positive_control": {
+    "published_pair_series_Dawson_Lambton": {
+      "2015": 1280,
+      "2016": 5315,
+      "2017": 11117,
+      "2018": 14612
+    },
+    "published_2019_reported_distance_km": 55,
+    "published_2025_reported_distance_km": 85,
+    "WGS84_2019_study_geodesic_km_approx": 62.12,
+    "site_class": "ALREADY_OCCUPIED_2015; emphatically NOT a formerly empty refuge",
+    "published_author_inferred_immigration_from_Halley": true,
+    "individual_origin_confirmed_by_marked_bird_tracking": false,
+    "breeding_evidence_2016_17": "dispersed crowds; many may have been nonbreeders",
+    "breeding_evidence_2018": "dense aggregations and guano staining consistent with prolonged colony occupancy; not individual recruitment accounting",
+    "preexposed_novelty_limit": "Halley→Dawson source relocation and the ~11-fold receiver census gain are established since Fretwell & Trathan 2019 and cannot be claimed as new."
   }
 }
