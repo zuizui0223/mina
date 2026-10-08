@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "audit_type": "POST_OUTCOME_DESCRIPTIVE_SIX_YEAR_SYNTHESIS_NO_NEW_HYPOTHESIS_TEST",
+  "source_workflows": [
+    "https://github.com/zuizui0223/mina/actions/runs/37767893115",
+    "https://github.com/zuizui0223/mina/actions/runs/37767893148",
+    "https://github.com/zuizui0223/mina/actions/runs/37766643039"
+  ],
+  "frozen_reanalysis_scope": {
+    "site": "LEDD",
+    "year_set": [2009, 2010, 2011, 2012, 2013, 2014],
+    "coordinate_pairs": [[-74.228, -130.784], [-74.272, -131.243]],
+    "spatial_radius_km": 3,
+    "source_physical_category": 4,
+    "time": "May to last nominally complete 15-day composite prior to each original author image; retrospective ice maps can use neighboring periods",
+    "no_new_bird_image_rows": true
+  },
+  "hard_surrogate_not_to_be_used_as_breeding_habitat": {
+    "definition": "Every observed May-to-image 15day raster at exact fixed centroid classified class4 on >=1 pixel",
+    "reason_to_check": "False-negative check against independent original bp=yes before treating persistence surrogate as viability",
+    "do_not_optimize_time_windows_or_threshold": true,
+    "not_equivalent_to_ice_breeding_platform": true
+  },
+  "allowed_descriptive_outputs": [
+    "Six row/year original presence and ice-only side by side table",
+    "fixed pair 3km class4 fractions, any-class4 periods, longest run and trailing zeros",
+    "2014 nested support: original <= alternate ice presence in all 11 preimage bins",
+    "one-composite-earlier physical sensitivity with retrospective source chronology caveat",
+    "counterexamples to naive observed bird code = physical ice class or hard May-to-image continuously fast ice",
+    "note 2013 November 30 late-stage positive cannot be stage-matched to 2014 October no",
+    "no Fisher p-values, no inferred social Allee, no estimate of successful breeding, migration or rescue"
+  ],
+  "scientific_status_rules": {
+    "absence_of_physical_class4_at_centroid": "NOT loss of all ice, nests, chicks or potential sites elsewhere within bay",
+    "positive_class4_for_2_bins": "NOT viable all-season breeding habitat",
+    "2010_yes_and_noncontinuous_class4": "Cannot use uninterrupted class4 at fixed point as a necessary condition for raw bird detection",
+    "2014_Fretwell_last_class4": "Local environment relative to alternative coordinate, not proven alternative occupied / available breeding patch",
+    "observed_vacant_site_effect": "HOLD",
+    "revised_island_biogeography_law": "HOLD"
+  },
+  "journal_submission_PR189_unchanged": true,
+  "other_research_PR192_194_unchanged": true
+}
