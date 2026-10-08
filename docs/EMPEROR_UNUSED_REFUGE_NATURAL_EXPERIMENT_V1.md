@@ -52,6 +52,20 @@ The first two processes are distinguishable in a repeated **colony-site** panel.
 
 **Contemporaneous access requirement:** the fact an unoccupied ice pixel persisted historically (2010–2018) **does not prove it was still a stable or reachable platform during the 2022 catastrophe**. Independently dated pre-switch 2022 fast-ice images and breakup chronology are a mandatory source, not a sensitivity option. No localization of the bird can substitute for this access measure; that would be circular.
 
+## Source metadata reconciliation — why a tempting 66-site test is NOT ready
+
+The published Dryad **README**, not just the file names, gives additional hard limits:
+
+- Labrousse et al. constructed **3-km presence buffers around 55 emperor colony locations**, not a frozen census of all the 66 colonies later used in the 2022–2023 disruption summaries. A change from 55 catalogued locations to 66/70 known colonies is a **change in discovery/catalogue coverage**, not 11/15 documented new biological colonizations. Link records by exact site identity before cross-period comparisons.
+- Their underlying MODIS fast-ice series has **432 half-monthly time steps from 2000–2018**, while their published summary metrics (persistence, volatility, seasonal extrema, trend) and 9-year environmental layers use **2010–2018**. Do **not** combine the 18-year raw ice series with 9-year summary products as if they have identical historical windows.
+- The published 'absence habitats' are environmental comparison/control locations, **not explicit records of biologically surveyed zero colonies at all proposed refuge patches**. A physically stable model-absence pixel must pass a separate multi-year actual non-occupation detection gate before its "new colonization" can be claimed.
+- The 2022 UK PDC source spatially covers **five Bellingshausen sites** (not 66); the 2023 location source is circumpolar, publicly described as accurate to around **2 km**, and its metadata still says **Planned**. This makes a 2022–2023 66-site join **unverified**, not an available panel.
+- Additional prior art: a 2025/2026 *Remote Sensing of Environment* study (PII S0034425725003888) already measured short-range colony habitat displacement under climate extremes for ten emperor colonies through 2023. **Do not present storm-related within-colony movement as the new ecological process.**
+
+The crucial empirical discovery target is therefore now narrower: **independently surveyed vacant habitat that physically survives the extreme event, and is newly occupied with verified breeding in subsequent years**. Neither the Dryad "absence" label nor a failure count supplies that response. At this stage even the eligibility gate for the candidate is **HOLD**, not a positive result.
+
+Source inventory and status: `results/EMPEROR_VACANT_REFUGE_EXISTING_DATA_SUPPORT_AUDIT_V1.json`.
+
 ## Before looking at any 2022–2024 site-specific displacement values
 
 1. Freeze a cohort-ID crosswalk that resolves relocated, renamed, rediscovered or newly recognized colony records without using biological outcome sizes. **Historical 66 vs subsequent 70 known colonies cannot be treated as identical rosters.**
