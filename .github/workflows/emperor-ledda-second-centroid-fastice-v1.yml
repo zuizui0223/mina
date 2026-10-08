@@ -1,0 +1,62 @@
+name: Ledda secondary published centroid ice sensitivity
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'contracts/EMPEROR_LEDDA_TWO_CENTROID_SENSITIVITY_PRE_ICE_V1.json'
+      - 'scripts/extract_ledda_fretwell_secondary_centroid_fastice_v1.py'
+      - 'tests/test_ledda_fretwell_secondary_centroid_fastice_v1.py'
+      - '.github/workflows/emperor-ledda-second-centroid-fastice-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/EMPEROR_LEDDA_TWO_CENTROID_SENSITIVITY_PRE_ICE_V1.json'
+      - 'scripts/extract_ledda_fretwell_secondary_centroid_fastice_v1.py'
+      - 'tests/test_ledda_fretwell_secondary_centroid_fastice_v1.py'
+      - '.github/workflows/emperor-ledda-second-centroid-fastice-v1.yml'
+jobs:
+  second-centroid:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify precommitted coordinate source and stop rules
+        run: |
+          python -m pip install pytest numpy pyproj h5py
+          python -m pytest -q tests/test_ledda_fretwell_secondary_centroid_fastice_v1.py
+      - name: Read ONLY predeclared frozen 2011 and 2014 alternate-centroid ice pixels
+        run: |
+          python scripts/extract_ledda_fretwell_secondary_centroid_fastice_v1.py --out /tmp/ledda_second_centroid_ice.json
+      - name: Enforce no migration, breeding or social-causality claim
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/ledda_second_centroid_ice.json'))
+          assert r['source_years']==[2011,2014]
+          assert not r['inferred_social_interaction_or_colony_migration']
+          assert not r['full_breeding_viability_confirmed']
+          assert not r['primary_protocol_changed']
+          assert not r['PR189_science_modified']
+          assert r['new_penguin_response_rows_read']==0
+          assert r['total_network_bytes'] <= 2*20*1024*1024
+          print('SECONDARY_STATUS',r['status'])
+          for z in r['year_results']:
+              print('YEAR',z['year'],z['status'],'BYTES',z['http_body_bytes'])
+              if z['status']=='ALTERNATIVE_PUBLISHED_CENTROID_ICE_PIXEL_CONTEXT_READ':
+                  a=next(a for a in z['composite_records'] if a['primary_preimage'])
+                  print('ALT_PREIMAGE_3KM',a['radius_summaries_km']['3'])
+              else:
+                  print('HOLD',z.get('error_type'),z.get('error_message'))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledda-secondary-published-centroid-ice-v1
+          path: /tmp/ledda_second_centroid_ice.json
+          retention-days: 14
+          if-no-files-found: ignore
