@@ -21,6 +21,9 @@ on:
       - 'results/EMPEROR_LARUE_PUBLISHED_REAPPEARANCE_GROSS_GAIN_ALLOCATION_V1.json'
       - 'tests/test_emperor_larue_reappearance_mass_allocation_v1.py'
       - 'tests/test_emperor_larue_five_ice_scene_targets_v1.py'
+      - 'scripts/audit_larue_2024_annotation_ice_bird_state_v1.py'
+      - 'results/EMPEROR_LARUE_AUTHOR_NO_IMAGE_ICE_BIRD_ANNOTATIONS_V1.json'
+      - 'tests/test_emperor_author_fastice_birds_annotations_v1.py'
       - 'results/EMPEROR_LARUE_FIVE_PRE_SHOCK_ICE_SCENE_TARGETS_V1.json'
       - 'results/EMPEROR_LARUE_2024_50_BY_10_POSTERIOR_ZERO_AUDIT_V1.json'
       - 'tests/test_emperor_larue_global_posterior_occupancy.py'
@@ -40,7 +43,7 @@ jobs:
       - name: Install pytest
         run: python -m pip install pytest
       - name: Test published site-year evidence and zero definitions
-        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py tests/test_emperor_2008_2018_codebook_empty_site_guard.py tests/test_emperor_larue_global_posterior_occupancy.py tests/test_emperor_larue_reappearance_mass_allocation_v1.py tests/test_emperor_larue_five_ice_scene_targets_v1.py
+        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py tests/test_emperor_2008_2018_codebook_empty_site_guard.py tests/test_emperor_larue_global_posterior_occupancy.py tests/test_emperor_larue_reappearance_mass_allocation_v1.py tests/test_emperor_larue_five_ice_scene_targets_v1.py tests/test_emperor_author_fastice_birds_annotations_v1.py
       - name: Reproduce locked primary publication tally
         run: |
           python scripts/audit_emperor_discovery_vs_formation_v1.py --out /tmp/emperor2024crosswalk.json
@@ -176,6 +179,34 @@ jobs:
 
           else
             echo 'HOLD_RAW_PUBLISHED_XLSX_DOWNLOAD_UNAVAILABLE; no new biological evidence claimed'
+          fi
+      - name: Audit all literal No image states with author notes, ice vs bird nondetection
+        run: |
+          if [ -s /tmp/larue_published_original_satellite.xlsx ]; then
+            python scripts/audit_larue_2024_annotation_ice_bird_state_v1.py --xlsx /tmp/larue_published_original_satellite.xlsx --out /tmp/larue20_annotated_ice_states.json
+            python - <<'PY'
+          import json
+          actual=json.load(open('/tmp/larue20_annotated_ice_states.json'))
+          frozen=json.load(open('results/EMPEROR_LARUE_AUTHOR_NO_IMAGE_ICE_BIRD_ANNOTATIONS_V1.json'))
+          assert actual['raw_image_rows_2009_2018']==frozen['original_2009_2018_usable_and_unusable_image_records']==599
+          assert actual['literal_No_count']==frozen['literal_no_rows']==20
+          assert actual['no_annotation_state_counts']==frozen['literal_no_annotation_categories']
+          assert actual['no_passing_basic_original_fit_filter']==frozen['literal_no_rows_eligible_basic_original_date_area_filters']==15
+          assert len(actual['yes_with_exactly_zero_penguin_area_m2'])==len(frozen['literal_yes_rows_zero_penguin_area'])==3
+          assert len(actual['no_with_positive_area_m2'])==len(frozen['literal_no_rows_nonzero_penguin_area'])==1
+          assert actual['LEDD_no_fast_ice_years']==frozen['Ledda_explicit_no_fast_ice_years']==[2009,2012,2016]
+          assert actual['LEDD_available_ice_birds_not_seen_years']==frozen['Ledda_explicit_fast_ice_present_and_no_birds_years']==[2011,2014,2015]
+          assert actual['LEDD_available_ice_no_birds_in_basic_fit_window_years']==frozen['Ledda_fast_ice_present_no_birds_in_original_basic_fit_years']==[2011,2014]
+          assert actual['LEDD_next_image_yes_after_author_ice_annotation']['AUTHOR_NOTES_ICE_ABSENT_OR_ALREADY_BROKEN']==3
+          assert actual['LEDD_next_image_yes_after_author_ice_annotation']['AUTHOR_NOTES_FAST_ICE_PRESENT_BIRDS_UNDETECTED']==0
+          assert actual['LEDD_next_image_yes_where_both_scenes_pass_basic_fit']['AUTHOR_NOTES_ICE_ABSENT_OR_ALREADY_BROKEN']==2
+          assert actual['LEDD_next_image_yes_where_both_scenes_pass_basic_fit']['AUTHOR_NOTES_FAST_ICE_PRESENT_BIRDS_UNDETECTED']==0
+          assert actual['source_image_no_code_identifies_true_biological_vacancy'] is False
+          assert actual['causal_effect_estimated'] is False
+          print('PINNED_RAW_ANNOTATION_AUDIT_PASS:',actual['no_annotation_state_counts'])
+          PY
+          else
+            echo 'HOLD_NO_PINNED_SOURCE_XLSX: no physical-ice inference inferred'
           fi
       - uses: actions/upload-artifact@v4
         if: always()
