@@ -40,7 +40,7 @@ class FakeH5:
         PX,PY=Transformer.from_crs("EPSG:4326","EPSG:3412",always_xy=True).transform(lon,lat)
         self.vars={
             "x":Dimension(np.linspace(PX-2812000,PX+2812000,5625)),
-            "y":Dimension(np.linspace(PY-2350000,PY+2349000,4700)),
+            "y":Dimension(np.linspace(PY+2349000,PY-2350000,4700)),
             "time":Dimension(np.arange(24,dtype=np.int16),{"units":"days since 2011-03-01","calendar":"standard"}),
             "date_alt":Dimension(np.arange(24,dtype=np.int32),{"description":"Synthetic 24 composites"}),
             "latitude":Geospatial("latitude","3412"),
@@ -55,6 +55,8 @@ class FakeH5:
 def test_coordinates_choose_predefined_projection_without_ice_values():
     d=M.examine_axis_only(FakeH5())
     assert d["coordinate_verified"]
+    assert d["y"]["direction"]=="decreasing"
+    assert d["y"]["signed_step_m_median"] < 0
     assert d["coordinate_candidate"]["EPSG"] in M.PROJECTIONS
     assert d["coordinate_candidate"]["geodetic_residual_km"]<0.001
     assert d["physical_ice_class_values_read"]==0
