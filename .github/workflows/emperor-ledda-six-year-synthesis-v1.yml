@@ -1,0 +1,66 @@
+name: Ledda six-year physical versus bird observation synthesis
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'contracts/EMPEROR_LEDDA_SIX_YEAR_PHYSICAL_USE_SYNTHESIS_V1.json'
+      - 'scripts/synthesize_ledda_six_year_dual_centroid_ice_v1.py'
+      - 'tests/test_ledda_six_year_dual_centroid_ice_v1.py'
+      - '.github/workflows/emperor-ledda-six-year-synthesis-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/EMPEROR_LEDDA_SIX_YEAR_PHYSICAL_USE_SYNTHESIS_V1.json'
+      - 'scripts/synthesize_ledda_six_year_dual_centroid_ice_v1.py'
+      - 'tests/test_ledda_six_year_dual_centroid_ice_v1.py'
+      - '.github/workflows/emperor-ledda-six-year-synthesis-v1.yml'
+jobs:
+  synthesis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install readers and test six-year source guard
+        run: |
+          python -m pip install pytest numpy pyproj h5py
+          python -m pytest -q tests/test_ledda_six_year_dual_centroid_ice_v1.py
+      - name: Rebuild paired-center source-class physical trajectories from frozen annual rasters
+        run: |
+          python scripts/audit_ledda_paired_preimage_physical_trajectories_v1.py --out /tmp/ledda_paired_ice_seasonal.json
+      - name: Rebuild other four historical years from frozen physical raster source
+        run: |
+          python scripts/audit_ledda_historic_annotations_independent_ice_v1.py --out /tmp/ledda_historical_ice_crosswalk.json
+      - name: Combine independent source records without penguin causality
+        run: |
+          python scripts/synthesize_ledda_six_year_dual_centroid_ice_v1.py \
+            --paired /tmp/ledda_paired_ice_seasonal.json \
+            --historical /tmp/ledda_historical_ice_crosswalk.json \
+            --out /tmp/ledda_6year_ice_and_image_codes.json
+      - name: Check robust numbers and predeclared NO-INFERENCE limits
+        run: |
+          python - <<'PY'
+          import json
+          v=json.load(open('/tmp/ledda_6year_ice_and_image_codes.json'))
+          assert v['years']==[2009,2010,2011,2012,2013,2014]
+          assert v['status']=='COMPLETE_DESCRIPTIVE_TWO_CENTROID_SIX_YEAR_ICE_CROSSWALK'
+          assert v['physical_source_checks']['2014_last_both_centers_disagree_on_class4']
+          assert v['physical_source_checks']['2014_lag_one_additional_interval_still_class4_discordant']
+          assert v['physical_source_checks']['2014_3km_class4_secondary_dominance_without_complementarity']
+          assert v['physical_source_checks']['strict_all_preimage_intervals_class4_at_either_point_for_any_raw_yes_year'] is False
+          assert not v['causal_effect_estimated']
+          assert not v['new_breeding_success_data_opened']
+          assert not v['actual_2014_nesting_polygon_identified']
+          print('SIX_YEAR_PHYSICAL_DESCRIPTION_TEST_PASSED_NO_CAUSAL_BREEDING_CLAIMS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledda-independent-six-year-spatial-temporal-ice-v1
+          path: /tmp/ledda_6year_ice_and_image_codes.json
+          if-no-files-found: ignore
+          retention-days: 30
