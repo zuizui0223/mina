@@ -295,6 +295,8 @@ def run(out_dir: Path, *, no_network=False) -> dict:
             path.unlink(missing_ok=True)
     report["all_three_verified"] = all(
         x.get("status") == "VERIFIED" and
+        x.get("sheet_count", 0) >= 1 and
+        x.get("header_status") != "ERROR" and
         all(y.get("status") == "HEADER_CANDIDATE_ROW_1"
             for y in x.get("sheets", []))
         for x in report["files"].values()
