@@ -59,4 +59,4 @@ def test_noncausal_frozen_safety():
     z=m.ordered_source_audit(*sources(),strict=False)
     assert z["source_result_from_same_already_exposed_cohort"]
     assert z["frozen_PR189_unmodified"]
-    assert not z["2014_novel_causal_result"]
+    assert not z["new_confirmatory_causal_result"]
