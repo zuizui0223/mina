@@ -1,0 +1,83 @@
+{
+  "schema_version": 3,
+  "date": "2026-10-08",
+  "audit_id": "emperor-zenodo-17390368-manifest-verified-row1-limits-v3",
+  "status": "SOURCE_BYTES_VERIFIED_3_OF_3__HEADER_ELIGIBILITY_FAIL_49_OF_51",
+  "source_record": "https://zenodo.org/records/17390368",
+  "source_audit_run": "https://github.com/zuizui0223/mina/actions/runs/37727980055",
+  "source_workflow_job_id": 113150387453,
+  "workflow_overall_conclusion": "success",
+  "manifest_status": "MANIFEST_VERIFIED",
+  "n_colonies": 3,
+  "n_workbooks": 3,
+  "n_workbooks_downloaded_MD5_verified": 3,
+  "n_sheets_total": 51,
+  "row1_header_eligible_sheets_total": 2,
+  "row1_not_header_sheets_total": 49,
+  "entire_publication_workbook_schema_eligible": false,
+  "files": [
+    {
+      "file": "AstridDataUpload.xlsx",
+      "status": "VERIFIED",
+      "bytes": 31049,
+      "md5": "f41f5106df1f3b5bb91bad43ae96e30d",
+      "sheets": 17,
+      "row1_header_eligible": 0,
+      "other_sheets_header_unknown": 17
+    },
+    {
+      "file": "MertzDataUpload.xlsx",
+      "status": "VERIFIED",
+      "bytes": 32417,
+      "md5": "6fee82cd5b9b12d5b10638eb0cbbb49b",
+      "sheets": 17,
+      "row1_header_eligible": 0,
+      "other_sheets_header_unknown": 17
+    },
+    {
+      "file": "SanaeDataUpload.xlsx",
+      "status": "VERIFIED",
+      "bytes": 52643,
+      "md5": "de960629596e5aa86d3a7d68d742a5f4",
+      "sheets": 17,
+      "row1_header_eligible": 2,
+      "other_sheets_header_unknown": 15,
+      "eligible_sheet_headers": [
+        {
+          "sheet": "2020_21",
+          "headers": [
+            "Original site only",
+            "Date",
+            "Visible on sea ice",
+            "Visible on rift ice",
+            "Visible on shelf ice",
+            "Not visible"
+          ]
+        },
+        {
+          "sheet": "2023_24",
+          "headers": [
+            "Original site only",
+            "Date",
+            "Visible on sea ice",
+            "Visible on rift ice",
+            "Visible on ice shelf",
+            "Not visible",
+            "Comment"
+          ]
+        }
+      ]
+    }
+  ],
+  "evidence_type": "Remote imagery visit/date and group visible platform categories on certain sheets. No linked individual origin, first breeding or egg/chick outcomes shown in the discovered headers.",
+  "safety_status": {
+    "outcome_rows_decoded": 0,
+    "data_download_does_not_mean_result_estimated": true,
+    "n_sheets_with_candidate_header_at_first_row": 2,
+    "source_identity_and_md5_verified": true,
+    "full_colony_year_schema_verified": false,
+    "physical_ice_passability_independently_measured": false,
+    "social_empty_habitat_establishment_test_licensed": false
+  },
+  "next_preoutcome_step": "Frozen V3 structural audit scans XML row positions/cell typing of top 12 rows only; no shared strings/numeric values. Then freeze actual header location before broader source analysis; do not infer breeder recruitment from platform category alone."
+}
