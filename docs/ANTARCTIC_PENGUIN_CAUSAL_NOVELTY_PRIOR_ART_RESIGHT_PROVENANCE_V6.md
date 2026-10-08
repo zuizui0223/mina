@@ -25,3 +25,16 @@ It processes bytes as opaque input only, calculating byte count, MD5, SHA256 and
 ## Scientific decision
 
 No current source demonstrates novel causal island colonization, chick protection or recruitment debt. Simple social aggregation, young-penguin wandering and shock-driven missing cohorts are already reported. To claim a new mechanism would require independently timed exogenous habitat/social-cue/predation perturbations, tracked individual origins, first settlements and outcomes under appropriate controls. No inference is licensed from a source checksum. Frozen Ecology PR189 remains unchanged.
+
+## Verified 2026-10-08 source integrity outcome
+
+[Actual source-only GitHub Actions run #37794660804](https://github.com/zuizui0223/mina/actions/runs/37794660804) **completed successfully as a source validation workflow**, with scientifically negative identity result:
+
+- Public pointblue 2023 author-candidate: **25,121,923 bytes** and **Git blob SHA matches** the author repository pin.
+- Compared to USAP-DC 601444 documented official MD5 `aaae6ddad6d12081b5a68466794438a2`: **MD5 DOES NOT MATCH**.
+- Source verdict: **HOLD_PUBLIC_COPY_NOT_BYTE_IDENTICAL_TO_OFFICIAL**.
+- The code opened **no CSV header, no bird ID, no behavioral data rows**. PR142 remains **locked**; **do not silently use this author mirror as the official USAP-DC source**.
+- The mismatch establishes binary nonidentity, not why the datasets differ. They might be different versions, filters, encodings or even distinct data exports; none is demonstrated from hashes alone. An account-specific USAP-DC download/API request remains the necessary path to the exact official file.
+
+This source check closes the public mirror shortcut. It does not unfreeze preregistered hypotheses or create a new island ecological result.
+
