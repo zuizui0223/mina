@@ -29,7 +29,7 @@ def test_table3_resight_does_not_prove_north_shore_reproduction():
     assert adult["destination_breeding_status"] == (
         "not_identifiable_from_table3_resighting"
     )
-    assert "prior_breeding" in adult["original_breeding_status"]
+    assert adult["original_breeding_status"] == "bred_at_origin_ross_at_least_once"
 
 
 def test_different_age_cohorts_are_not_bilateral_dispersal_probabilities():
