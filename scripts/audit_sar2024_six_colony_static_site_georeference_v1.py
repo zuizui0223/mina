@@ -138,7 +138,9 @@ def calculate(original_site_rows:list[dict], sar_scene_rows:list[dict])->dict:
             str(radius):sum(d>radius for d in distances) for radius in THRESHOLDS_KM
         },
         "ledda_cross_publication_disagreement_km":LEDDA_TWO_PUBLISHED_CENTROID_DISTANCE_KM,
-        "ledda_cross_publication_distance_divided_by_largest_2024_sample_distance":LEDDA_TWO_PUBLISHED_CENTROID_DISTANCE_KM/max(distances),
+        "ledda_cross_publication_distance_divided_by_largest_2024_sample_distance":(
+            LEDDA_TWO_PUBLISHED_CENTROID_DISTANCE_KM/max(distances) if max(distances)>0 else None
+        ),
         "never_equate_cross_publication_distance_to_true_ledda_movement":True,
         "SAR_2024_source_sites_selected_nonrandomly":True,
         "not_an_independent_general_penguin_dispersal_test":True,
