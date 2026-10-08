@@ -16,6 +16,8 @@ Across the 599 period-specific rows:
 
 These are **image-observation records**, not 599 distinct colony-years or count-confirmed breeding attempts. `no` mixes no penguins with **no breeding fast ice** according to the original author codebook. `NA` can reflect no usable image.
 
+**Prior-art check on the ecological phenomenon:** LaRue et al. (2024) explicitly listed temporary colony "vanish and reappear" episodes as one of the population processes their model sought to accommodate (Dryad README, "Model overview", point 2). Thus documenting apparent annual disappearances is **not a new biological phenomenon**. Our audit instead narrows exactly which of those *model transitions* were observed by original imagery and which can be used for a **different** physically-available-yet-unoccupied refuge hypothesis. No social-fidelity or competition mechanism is inferred.
+
 ## Match each of the nine already-opened posterior mean 0→positive switches
 
 Published model summaries, [50 sites × 2009–2018](https://github.com/davidiles/EMPE_Global/blob/13f71112da43c1fd082273677757b41c550457ed/analysis/output/model_results/3_Colony_Level/colony_summary.csv), include exactly nine transitions `N_mean(t)=0; N_mean(t+1)>0`. Directly matching their original image records:
