@@ -1,0 +1,68 @@
+name: Crozier first neighbor versus first egg temporal ordering
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/CROZIER_NEIGHBOR_VS_EGG_DATE_ORDERING_QC_V1.json'
+      - 'scripts/audit_crozier_neighbor_egg_temporal_order_v1.py'
+      - 'tests/test_crozier_neighbor_egg_temporal_order_v1.py'
+      - '.github/workflows/crozier-neighbor-egg-ordering-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/CROZIER_NEIGHBOR_VS_EGG_DATE_ORDERING_QC_V1.json'
+      - 'scripts/audit_crozier_neighbor_egg_temporal_order_v1.py'
+      - 'tests/test_crozier_neighbor_egg_temporal_order_v1.py'
+      - '.github/workflows/crozier-neighbor-egg-ordering-v1.yml'
+jobs:
+  time-order:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify observation-date and causality stop tests
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_crozier_neighbor_egg_temporal_order_v1.py
+      - name: Fetch pinned public author observations and nest results
+        env:
+          ROOT: https://raw.githubusercontent.com/pointblue/solo_nests/04517cedac18950408abd4d0b510f4aae3447f05/data
+        run: |
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solonest_obs_data_entry_2122.csv" -o /tmp/crozier_order_source_checks.csv
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solo_outcomes.csv" -o /tmp/crozier_order_source_outcomes.csv
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solonest_initial_locations.csv" -o /tmp/crozier_order_source_locations.csv
+      - name: Reproduce observed eggs, incubation and neighbor event order
+        run: |
+          python scripts/audit_crozier_neighbor_egg_temporal_order_v1.py \
+            --checks /tmp/crozier_order_source_checks.csv \
+            --outcomes /tmp/crozier_order_source_outcomes.csv \
+            --locations /tmp/crozier_order_source_locations.csv \
+            --out /tmp/crozier_neighbor_egg_ordering_receipt.json
+      - name: Assert source integrity and no false social settlement causality
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/crozier_neighbor_egg_ordering_receipt.json'))
+          assert r['n_original_breeders']==36
+          assert r['n_neighbor_positive_before_cutoff']==9
+          assert r['n_neighbor_never_detected_before_cutoff']==27
+          v=r['first_detected_egg_relative_to_first_positive_neighbor']
+          assert v['EGG_DETECTED_BEFORE_NEIGHBOR']==5
+          assert v['SAME_OBSERVATION_DAY']==2
+          assert v['NEIGHBOR_DETECTED_BEFORE_FIRST_EGG_SIGHTING']==2
+          assert r['status_not_a_social_settlement_effect']
+          assert not r['first_egg_sighting_equivalent_to_egg_laying_date']
+          assert not r['neighbor_arrival_date_observed_without_interval_censoring']
+          print('CROZIER_SOURCE_TEMPORAL_ORDER_PASS_NOT_CAUSAL_SETTLEMENT')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: crozier-neighbor-first-egg-date-v1
+          path: /tmp/crozier_neighbor_egg_ordering_receipt.json
+          retention-days: 30
