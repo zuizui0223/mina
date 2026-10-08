@@ -1,0 +1,59 @@
+{
+  "contract_id": "ornithogenic_snowmelt_nest_hydrology_support_v1",
+  "date": "2026-10-08",
+  "phase": "public_source_metadata_only",
+  "scientific_status": "untested_hypothesis",
+  "frozen_ecology_pr": 189,
+  "primary_question": "Does penguin-driven algal snow darkening generate a connected downstream nesting hazard conditional on weather and reproductive stage?",
+  "not_novel": [
+    "guano fertilizes snow algae",
+    "snow algae darkens snow and may promote melt",
+    "runoff and snowmelt can harm penguin nests",
+    "penguins build guano-influenced nesting substrate",
+    "island topography shapes snow and breeding"
+  ],
+  "candidate_source_pairs": [
+    {
+      "pair": "Gray_2020_2017_2019_to_BAS_Signy_2011_2022",
+      "status": "FAIL_geographic_footprint",
+      "reason": "published Gray atlas ~62.3 to 68.1 degrees S; Signy cameras ~60.7 degrees S",
+      "next": "do_not_join"
+    },
+    {
+      "pair": "Broadwell_Signy_2024_to_BAS_Signy_2011_2022",
+      "status": "FAIL_temporal_overlap",
+      "reason": "2024 field algal sampling occurs after Signy 2011-2022 cameras",
+      "next": "do_not_join"
+    },
+    {
+      "pair": "Ryan_Khan_2024_2025_to_Youngflesh_2012_2018",
+      "status": "FAIL_temporal_overlap",
+      "reason": "nutrient sampling and gentoo nest camera seasons do not overlap",
+      "next": "treat_as_prior_art_not_linked_data"
+    },
+    {
+      "pair": "Gray_2020_2017_2019_to_Youngflesh_2012_2018",
+      "status": "OPEN_exact_sites_and_dates_unverified",
+      "reason": "calendar possibility at 2017/18 only; actual site-level bloom and hydrology not established",
+      "next": "metadata_only_site_coordinates_footprints_acquisition_dates"
+    }
+  ],
+  "gates": [
+    "same_site_and_breeding_season",
+    "algal_greening_before_hydrological_change_before_breeding_outcome",
+    "DEM_verified_upgradient_connected_vs_matched_unconnected_nests",
+    "spectral_or_biochemical_distinction_algae_vs_guano_stains",
+    "nest_stage_camera_observation_and_weather_effort_support",
+    "independent_replication_before_generality",
+    "freeze_primary_test_before_opening_outcomes"
+  ],
+  "stop_if": [
+    "only_Peninsula_wide_geographic_overlap",
+    "only_algae_after_chick_fledging",
+    "no_outcome_independent_upstream_hydrology",
+    "algae_undistinguished_from_guano",
+    "no_matched_nest_stage_data"
+  ],
+  "allowed_next_action": "compare_public_metadata_spatiotemporal_support_without_opening_nest_failures",
+  "disallowed_action": "claim_causal_penguin_bioalbedo_feedback_now"
+}
