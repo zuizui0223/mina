@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "date": "2026-10-08",
+  "phase": "COORDINATE_AND_TIME_METADATA_ONLY_NO_ICE_CLASS_VALUES",
+  "relationship": {
+    "source_pr": 195,
+    "locked_prs": [
+      189,
+      192,
+      194
+    ]
+  },
+  "physical_source": "Fraser and Massom 2020 fast-ice v2.2 doi:10.26179/5d267d1ceb60c",
+  "official_aadc_uuid": "f88a75e3-257f-4904-99ef-764e5cf9a064",
+  "frozen_site": {
+    "id": "LEDD",
+    "latitude": -74.228,
+    "longitude": -130.784,
+    "source": "LaRue et al 2024 author-published rounded colony centroid, not actual nest polygon"
+  },
+  "years": [
+    2011,
+    2014
+  ],
+  "predeclared_ice_available_but_no_birds_author_image_dates": {
+    "2011": "2011-09-23",
+    "2014": "2014-10-13"
+  },
+  "available_hdf5_schema": {
+    "ice_variable": "Fast_Ice_Time_series",
+    "shape": [
+      24,
+      4700,
+      5625
+    ],
+    "dtype": "int8",
+    "chunk_shape": [
+      4,
+      784,
+      938
+    ],
+    "x": "x",
+    "y": "y",
+    "time": "time",
+    "alternate_dates": "date_alt",
+    "latitude": "latitude",
+    "longitude": "longitude",
+    "confirmed_by_action_job": 113229064825
+  },
+  "georeferencing": {
+    "candidate_projection_EPSGs": [
+      "EPSG:3412",
+      "EPSG:3031"
+    ],
+    "selection": "nearest projected x/y point with minimum independently stored latitude/longitude geodesic error to published colony centroid, provided residual ≤3km. DO NOT select based on observed fast-ice class.",
+    "north_south_and_axis_validation": "Always verify actual 2D latitude/longitude at coordinate before any ice cell reading; project definitions are candidate metadata not proof.",
+    "max_distance_from_author_centroid_km": 3,
+    "do_not_use_dynamic_guano_position": true
+  },
+  "time_selection": {
+    "read_time_and_date_alt_and_attrs_only": true,
+    "parse_CF_time_units_from_archived_file": true,
+    "preobservation_rule": "last composite date not after original image; next composite sensitivity requires separate contract",
+    "do_not_assume_first_bin_March1": true
+  },
+  "physical_cell_read_permission_in_this_gate": false,
+  "prohibited": [
+    "full 430MB download",
+    "inspection of ice-class arrays",
+    "reopening post2022 responses",
+    "social attraction conclusion from guano non-detection"
+  ],
+  "preobservation_physical_values_opened": 0,
+  "expected_metadata_body_budget_per_year_bytes": 20971520
+}
