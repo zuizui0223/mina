@@ -41,6 +41,25 @@ Fretwell et al. (2025) explicitly documented that their 2016–2018 modeled regi
 
 Published 2025 source: https://doi.org/10.1038/s43247-025-02345-7, Methods occupancy model and Discussion paragraphs concerning 2016–2018 model comparisons. The 2025 analysis also states its occupancy model could not estimate detectability or previous-state dependence because years with absence were scarce.
 
+## Primary observation protocol cross-check — dates and zeros can generate incompatible "reappearances"
+
+The **actual source script**, not an inferred criticism, `davidiles/EMPE_Global` pinned commit `13f71112da43c1fd082273677757b41c550457ed`, `analysis/script1_PrepareData.R`, defines satellite survey window September–November and then removes late-season apparent absences with the filter:
+
+`!(yday >= nov1_yday & area_m2 == 0)`
+
+That is: **at/after November 1, a satellite image classified as having zero penguin area is excluded**. This is an author-chosen safeguard against late-season departures after breeding, not necessarily a mistake for estimating population abundance. But it changes which observations can substantiate **actual colony-site disappearance**. Another study counting those spring-time zero images as immediate observed absences has a *different observation estimand*. Fretwell et al. (2025) explicitly discuss this difference at Halley Bay; do not infer a latent population die-off from the contrast.
+
+Combining the original codebook with the public posterior table:
+- **15/500** posterior point means are exactly zero;
+- **9** zero→positive next-year point transitions (and 10 positive→zero);
+- **0/9** satisfy the PR #195 independently documented **stable-ice + repeated negative whole-site survey + confirmed new breeding** gate. This says **zero verifiable events in this *source***, NOT zero real Antarctic founding events.
+
+A third prior-art limit: Bielinis et al. (2026), *Remote Sensing in Ecology and Conservation*, DOI `10.1002/rse2.70064`, detected historical guano evidence **predating the earliest published colony record at 18/66 known emperor colony sites**, using Keyhole/Landsat/Sentinel-2 imagery since the 1960s. Thus the general problem **first discovered in an inventory ≠ first colonized in nature** was itself already demonstrated at continental scale; the four-site 2024 reappearance audit is a reproduction and eligibility check, not novel ecological history.
+
+The genuinely untested functional alternative—existing occupied receiver versus verified vacant and *physically available* nesting refuge—still requires independent negative image histories, contemporary fast-ice access and breeding, which the LaRue posterior output does not provide.
+
+Primary sources: [LaRue data processing script](https://github.com/davidiles/EMPE_Global/blob/13f71112da43c1fd082273677757b41c550457ed/analysis/script1_PrepareData.R), [model code](https://github.com/davidiles/EMPE_Global/blob/13f71112da43c1fd082273677757b41c550457ed/analysis/EMPE_model_empirical.jags), [Fretwell 2025](https://doi.org/10.1038/s43247-025-02345-7), [Bielinis 2026](https://doi.org/10.1002/rse2.70064).
+
 ## What would qualify as genuine ecological 'recolonization of an available option'?
 
 **Minimal observational sequence for site i**:
