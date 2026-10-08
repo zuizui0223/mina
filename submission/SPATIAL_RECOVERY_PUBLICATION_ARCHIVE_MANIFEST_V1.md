@@ -28,7 +28,7 @@ Production derivation:
 - docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md
 - docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md
 - docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib
-- docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_2.md
+- docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md
 - submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md
 
 ### Focal result receipts and interpretation audits
@@ -69,7 +69,7 @@ Production derivation:
 - scripts/analyze_ross_shock_rebound.py
 - scripts/build_spatial_recovery_path_state_figures.py
 - scripts/build_spatial_recovery_ecology_docx.py
-- scripts/build_spatial_recovery_si_docx.py
+- scripts/build_spatial_recovery_supplement_docx.py
 - pyproject.toml
 
 Include any direct dependencies imported by those scripts from src/mina if required for a standalone rerun.

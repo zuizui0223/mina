@@ -115,7 +115,7 @@ These remain scientific provenance only.
 
 Canonical automated QA receipt:
 
-`submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V1.md`
+`submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_QA_V2.md`
 
 ## Scientific freeze
 
