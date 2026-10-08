@@ -55,6 +55,8 @@ jobs:
           assert g['n_sites_with_strict_focal_occupancy']==0
           assert g['n_stated_empty_focal_site_near_neighbor']==1
           assert r['groups']['original_2021_breeders']['n_original_sites']==37
+          assert r['groups']['original_2021_breeders']['n_sites_with_strict_focal_occupancy']==18
+          assert r['groups']['original_2021_breeders']['n_neighbor_positive_without_strict_focal_occupancy']==2
           assert r['out_of_window_or_unparseable_records']['DATE_OUTSIDE_2022_2023_SEASON']==27
           assert not r['new_colony_founder_origin_identified']
           assert not r['adjacent_nest_success_or_marked_breeder_identified']
