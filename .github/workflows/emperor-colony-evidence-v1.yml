@@ -17,6 +17,9 @@ on:
       - 'scripts/audit_larue_original_satellite_image_support_v1.py'
       - 'contracts/EMPEROR_LARUE_RAW_SATELLITE_SUPPORT_V1.json'
       - 'scripts/audit_larue_2024_global_posterior_occupancy_v1.py'
+      - 'scripts/audit_larue_2024_reappearance_mass_allocation_v1.py'
+      - 'results/EMPEROR_LARUE_PUBLISHED_REAPPEARANCE_GROSS_GAIN_ALLOCATION_V1.json'
+      - 'tests/test_emperor_larue_reappearance_mass_allocation_v1.py'
       - 'results/EMPEROR_LARUE_2024_50_BY_10_POSTERIOR_ZERO_AUDIT_V1.json'
       - 'tests/test_emperor_larue_global_posterior_occupancy.py'
       - 'results/EMPEROR_2008_2018_SATELLITE_OCCUPANCY_CODEBOOK_GATE_V1.json'
@@ -35,7 +38,7 @@ jobs:
       - name: Install pytest
         run: python -m pip install pytest
       - name: Test published site-year evidence and zero definitions
-        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py tests/test_emperor_2008_2018_codebook_empty_site_guard.py tests/test_emperor_larue_global_posterior_occupancy.py
+        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py tests/test_emperor_2008_2018_codebook_empty_site_guard.py tests/test_emperor_larue_global_posterior_occupancy.py tests/test_emperor_larue_reappearance_mass_allocation_v1.py
       - name: Reproduce locked primary publication tally
         run: |
           python scripts/audit_emperor_discovery_vs_formation_v1.py --out /tmp/emperor2024crosswalk.json
@@ -103,6 +106,38 @@ jobs:
           PY
           else
             echo 'HOLD_SOURCE_FETCH: author CSV unavailable; frozen source-grounded receipt untested in this Actions run'
+          fi
+
+      - name: Reproduce published gross population-index allocation to apparent nine reappearances
+        run: |
+          if [ -s /tmp/larue_50_2009_2018.csv ]; then
+            python scripts/audit_larue_2024_reappearance_mass_allocation_v1.py --input /tmp/larue_50_2009_2018.csv --out /tmp/emperor_reappearance_allocation.json
+            python - <<'PY'
+          import json,math
+          actual=json.load(open('/tmp/emperor_reappearance_allocation.json'))
+          frozen=json.load(open('results/EMPEROR_LARUE_PUBLISHED_REAPPEARANCE_GROSS_GAIN_ALLOCATION_V1.json'))
+          for key in (
+              'authors_colony_years',
+              'number_sites',
+              'apparent_model_zero_to_positive_episodes',
+              'sum_gross_positive_posterior_mean_change_across_nine_year_transitions',
+              'sum_gross_negative_posterior_mean_change_across_nine_year_transitions',
+              'sum_of_model_zero_to_positive_allocated_mean_abundance',
+              'share_of_model_gross_positive_change_all_zero_to_positive',
+          ):
+              a,b=actual[key],frozen[key]
+              assert math.isclose(a,b,rel_tol=1e-10) if isinstance(a,float) else a==b,key
+          for cat in frozen['image_evidence_categories']:
+              a,b=actual['image_evidence_categories'][cat],frozen['image_evidence_categories'][cat]
+              assert a['n']==b['n']
+              assert math.isclose(a['positive_mass'],b['positive_mass'],rel_tol=1e-10)
+          assert not actual['biological_causal_effect_fitted']
+          assert actual['verified_prior_physically_available_but_empty_refuge_events']==0
+          print('SOURCE_REPRODUCTION_PASS__MODEL_ALLOCATION_NOT_EMIGRANTS')
+          print('model apparent zero-reappearance share of gross positive changes:',actual['share_of_model_gross_positive_change_all_zero_to_positive'])
+          PY
+          else
+            echo 'HOLD_SOURCE_FETCH: underlying published 50-colony source missing; do not claim independent CI reproduction'
           fi
 
       - name: Inspect already published original satellite image rows for nine posterior switches
