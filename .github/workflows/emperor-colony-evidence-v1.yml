@@ -9,6 +9,9 @@ on:
       - 'scripts/audit_emperor_discovery_vs_formation_v1.py'
       - 'results/EMPEROR_DISCOVERY_VS_FORMATION_AUDIT_V1.json'
       - 'tests/test_emperor_discovery_vs_formation_v1.py'
+      - 'scripts/audit_emperor_2024_new_sites_against_66_catalogue.py'
+      - 'results/EMPEROR_66_CATALOGUE_NEWLY_REPORTED_SITES_GEODESIC_V1.json'
+      - 'tests/test_emperor_66_catalogue_new_site_geodesic.py'
       - 'docs/EMPEROR_DISCOVERY_VS_TRUE_FOUNDATION_AUDIT_V3.md'
       - '.github/workflows/emperor-colony-evidence-v1.yml'
 jobs:
@@ -24,7 +27,7 @@ jobs:
       - name: Install pytest
         run: python -m pip install pytest
       - name: Test published site-year evidence and zero definitions
-        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py
+        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py
       - name: Reproduce locked primary publication tally
         run: |
           python scripts/audit_emperor_discovery_vs_formation_v1.py --out /tmp/emperor2024crosswalk.json
@@ -41,3 +44,27 @@ jobs:
           assert frozen['new_ecological_causal_result_claimed'] is False
           print('PUB_HISTORY_CROSSWALK_PASSED: four prior positives, three five-year detected, zero observed pre-founding repeated negatives')
           PY
+
+      - name: Verify pinned public 66-colony catalogue geometry if accessible
+        env:
+          SOURCE_RAW: https://raw.githubusercontent.com/bilgecansen/Emperor_dispersal/8254f7014dd749e5497165ab854b7f76b276e791/data/empe_sitesNewNB.csv
+        run: |
+          if curl -fLsS --max-time 45 --retry 2 "$SOURCE_RAW" -o /tmp/emperor_66_colonies.csv; then
+            python scripts/audit_emperor_2024_new_sites_against_66_catalogue.py --catalogue-csv /tmp/emperor_66_colonies.csv --out /tmp/emperor_nearest_source_audit.json
+            python - <<'PY'
+          import json, math
+          actual=json.load(open('/tmp/emperor_nearest_source_audit.json'))
+          frozen=json.load(open('results/EMPEROR_66_CATALOGUE_NEWLY_REPORTED_SITES_GEODESIC_V1.json'))
+          assert actual['roster_size']==frozen['roster_size']==66
+          assert actual['reported_site_count']==frozen['reported_site_count']==4
+          assert actual['sites_beyond_100km_nearest_catalogue']==frozen['sites_beyond_100km_nearest_catalogue']==2
+          assert actual['sites_within_414km_nearest_catalogue']==frozen['sites_within_414km_nearest_catalogue']==4
+          for p,q in zip(actual['new_reported_sites'],frozen['new_reported_sites']):
+              assert p['reported_site_id']==q['reported_site_id']
+              assert p['nearest_published_catalogue_site']['existing_catalogue_id']==q['nearest_published_catalogue_site']['existing_catalogue_id']
+              assert math.isclose(p['nearest_published_catalogue_site']['geodesic_km'],q['nearest_published_catalogue_site']['geodesic_km'],abs_tol=1e-6)
+          print('PUBLIC_AUTHOR_66x4_GEODESIC_REPRODUCTION_PASS')
+          PY
+          else
+            echo 'HOLD_SOURCE_FETCH: pinned public author catalogue unavailable to Actions; no new empirical result is inferred'
+          fi
