@@ -172,10 +172,18 @@ jobs:
           print("NEXT_IMAGE_OUTSIDE_AUTHOR_WINDOW:",o["positive_year_without_valid_image_according_to_date_and_area_filter"])
           print("NO_REAL_RECOLONIZATION_ESTABLISHED")
           PY
-            rm -f /tmp/larue_published_original_satellite.xlsx
+            echo 'Pinned author original XLSX retained only for archival source verification artifact (public data; not new outcomes).'
+
           else
             echo 'HOLD_RAW_PUBLISHED_XLSX_DOWNLOAD_UNAVAILABLE; no new biological evidence claimed'
           fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-larue-2024-original-satellite-xlsx
+          path: /tmp/larue_published_original_satellite.xlsx
+          if-no-files-found: ignore
+          retention-days: 1
       - uses: actions/upload-artifact@v4
         if: always()
         with:
