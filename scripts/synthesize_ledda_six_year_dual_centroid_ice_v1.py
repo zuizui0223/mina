@@ -75,8 +75,8 @@ def from_paired(item):
     sites={}
     for center, short in (("LaRue_original","original"),("Fretwell_alternative","alternative")):
         field="original" if short=="original" else "alternative"
-        cells=last[field+"_class4_cells"]
-        denom=last[field+"_n_cells"]
+        cells=last[("original_LaRue" if field=="original" else "alternative_Fretwell")+"_class4_cells"]
+        denom=last[("original_LaRue" if field=="original" else "alternative_Fretwell")+"_n_cells"]
         fraction=_finite_fraction(cells,denom)
         series=z[short+"_site"]
         sites[center]={
@@ -88,8 +88,8 @@ def from_paired(item):
             "longest_contiguous_intervals_any_class4":series["longest_consecutive_class4_composites"],
             "trailing_no_class4_intervals":series["trailing_consecutive_no_class4_composites"],
             "last_preimage_interval_start":str(last["composite_start_yyyymmdd"]),
-            "pre_previous_class4_pixels":lag[field+"_class4_cells"],
-            "pre_previous_grid_cells":lag[field+"_n_cells"]
+            "pre_previous_class4_pixels":lag[("original_LaRue" if field=="original" else "alternative_Fretwell")+"_class4_cells"],
+            "pre_previous_grid_cells":lag[("original_LaRue" if field=="original" else "alternative_Fretwell")+"_n_cells"]
         }
     joint=z["temporal_state_counts"]
     n=sum(joint.values())
