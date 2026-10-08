@@ -13,6 +13,12 @@ from urllib.parse import urljoin,urlparse
 from urllib.request import Request,urlopen
 
 OFFICIAL="https://www.geodoi.ac.cn/WebEn/doi.aspx?Id=1540"
+OFFICIAL_ALTERNATES=(
+    OFFICIAL,
+    "https://www.geodoi.ac.cn/doi.aspx?Id=1540",
+    "https://geodoi.ac.cn/doi.aspx?Id=1540",
+    "https://geodoi.ac.cn/geodoi.aspx?Id=1540",
+)
 TARGET_NAME="PanAnta.PenguinColony.rar"
 MAX_HTML_BYTES=350000
 
@@ -83,22 +89,36 @@ def run():
         "biological_feature_records_read":0,
         "causal_mechanism_fitted":False
     }
-    try:
-        req=Request(OFFICIAL,headers={"User-Agent":"mina-2014-external-geolocation-audit/1.0",
-                                     "Accept":"text/html"})
-        with urlopen(req,timeout=15) as res:
-            http_status=res.status
-            html_bytes=res.read(MAX_HTML_BYTES+1)
-            content_type=res.headers.get("Content-Type","")
-        if http_status!=200 or len(html_bytes)>MAX_HTML_BYTES or "html" not in content_type.lower():
-            raise ValueError("Official landing page unexpected status, content type or size")
-        doc=html_bytes.decode("utf-8","replace")
-        report.update(inspect_page(doc))
-        report["HTML_bytes_read"]=len(html_bytes)
-        report["site_HTTP_status"]=http_status
-    except Exception as e:
-        report["error_type"]=type(e).__name__
-        report["error_message"]=str(e)[:240]
+    tries=[]
+    for page_url in OFFICIAL_ALTERNATES:
+        try:
+            req=Request(page_url,headers={
+                "User-Agent":"mina-2014-external-geolocation-audit/1.0",
+                "Accept":"text/html"})
+            with urlopen(req,timeout=12) as res:
+                http_status=res.status
+                html_bytes=res.read(MAX_HTML_BYTES+1)
+                content_type=res.headers.get("Content-Type","")
+                final_url=res.geturl()
+            if (http_status!=200 or len(html_bytes)>MAX_HTML_BYTES
+                    or "html" not in content_type.lower()):
+                raise ValueError("Unexpected status, type or page byte-size")
+            parsed=urlparse(final_url)
+            if parsed.scheme!="https" or parsed.hostname not in ("www.geodoi.ac.cn","geodoi.ac.cn"):
+                raise ValueError("Nonofficial redirect, blocked")
+            doc=html_bytes.decode("utf-8","replace")
+            report.update(inspect_page(doc,page_url=final_url))
+            report["official_page_reached"]=final_url
+            report["HTML_bytes_read"]=len(html_bytes)
+            report["site_HTTP_status"]=http_status
+            tries.append({"url":page_url,"status":"OFFICIAL_HTML_READ"})
+            break
+        except Exception as e:
+            tries.append({"url":page_url,"status":"HOLD_OFFICIAL_PAGE",
+                          "error_type":type(e).__name__,
+                          "error_message":str(e)[:150]})
+    report["official_mirror_attempts"]=tries
+
     return report
 
 
