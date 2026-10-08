@@ -80,8 +80,8 @@ def trajectory_readout(year, rows):
             "transitions_any_to_none_or_none_to_any":sum(x!=y for x,y in zip(booleans,booleans[1:])),
             "longest_consecutive_class4_composites":max(
                 (len(v) for v in _runs(booleans,True)),default=0),
-            "trailing_consecutive_no_class4_composites":next(
-                (len(v) for v in _runs(list(reversed(booleans)),False)),0),
+            "trailing_consecutive_no_class4_composites":sum(
+                1 for b in _prefix_until_true(reversed(booleans))),
             "last_preimage_class4_detected":booleans[-1]
         }
     union=totals["both_class4_any"]+totals["only_original_class4_any"]+totals["only_alternative_class4_any"]
@@ -96,6 +96,13 @@ def trajectory_readout(year, rows):
         "seasonal_timeline":rows,
         "causal_penguin_conclusion_available":False,
     }
+
+
+def _prefix_until_true(items):
+    for v in items:
+        if v:
+            break
+        yield v
 
 
 def _runs(items,value):
