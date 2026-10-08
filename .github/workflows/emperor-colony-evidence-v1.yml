@@ -20,6 +20,8 @@ on:
       - 'scripts/audit_larue_2024_reappearance_mass_allocation_v1.py'
       - 'results/EMPEROR_LARUE_PUBLISHED_REAPPEARANCE_GROSS_GAIN_ALLOCATION_V1.json'
       - 'tests/test_emperor_larue_reappearance_mass_allocation_v1.py'
+      - 'tests/test_emperor_larue_five_ice_scene_targets_v1.py'
+      - 'results/EMPEROR_LARUE_FIVE_PRE_SHOCK_ICE_SCENE_TARGETS_V1.json'
       - 'results/EMPEROR_LARUE_2024_50_BY_10_POSTERIOR_ZERO_AUDIT_V1.json'
       - 'tests/test_emperor_larue_global_posterior_occupancy.py'
       - 'results/EMPEROR_2008_2018_SATELLITE_OCCUPANCY_CODEBOOK_GATE_V1.json'
@@ -38,7 +40,7 @@ jobs:
       - name: Install pytest
         run: python -m pip install pytest
       - name: Test published site-year evidence and zero definitions
-        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py tests/test_emperor_2008_2018_codebook_empty_site_guard.py tests/test_emperor_larue_global_posterior_occupancy.py tests/test_emperor_larue_reappearance_mass_allocation_v1.py
+        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py tests/test_emperor_2008_2018_codebook_empty_site_guard.py tests/test_emperor_larue_global_posterior_occupancy.py tests/test_emperor_larue_reappearance_mass_allocation_v1.py tests/test_emperor_larue_five_ice_scene_targets_v1.py
       - name: Reproduce locked primary publication tally
         run: |
           python scripts/audit_emperor_discovery_vs_formation_v1.py --out /tmp/emperor2024crosswalk.json
