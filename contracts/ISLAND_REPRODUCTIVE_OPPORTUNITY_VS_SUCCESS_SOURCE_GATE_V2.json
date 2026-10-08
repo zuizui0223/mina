@@ -37,6 +37,26 @@
       "claim": "habitat change redistributes nests within a colony after exceptional waves",
       "source": "Kim et al 2026 doi:10.1002/jgo2.70001 (Edmonson mainland, 2019 event)",
       "already_published": true
+    },
+    {
+      "claim": "Some small penguin breeding groups attract new first breeders despite low breeding success; founder and site fidelity are age dependent",
+      "source": "Penney 1968 doi:10.1029/AR012p0083, with two rapidly growing small colonies of relatively low success; Penney 1970 doi:10.1016/0003-3472(70)90048-5",
+      "already_published": true
+    },
+    {
+      "claim": "Age-specific immigrant/prebreeder prospecting vs near-zero established breeder movement is quantitatively estimated within Ross Island colonies",
+      "source": "Dugger et al 2026 doi:10.3389/fevo.2026.1868960; 1996–2020 Royds/Bird/Crozier multi-state mark–recapture, pre-breeder movement 0–12% vs breeders <0.20%",
+      "already_published": true
+    },
+    {
+      "claim": "Severe iceberg perturbation created missing birth cohorts and multiyear recovery debt at Cape Royds",
+      "source": "Dugger et al 2026 doi:10.3389/fevo.2026.1868960 Discussion; references Dugger et al 2014 doi:10.3389/fevo.2014.00068 and Ainley et al 2024 doi:10.1017/S0954102024000051",
+      "already_published": true
+    },
+    {
+      "claim": "Four emergent subcolonies at formerly solitary Cape Crozier sites, including two at sites without initially active solitary breeders",
+      "source": "Cox et al 2024 doi:10.1007/s00300-024-03246-9 Discussion, explicit prior art matching the mina 2022 3-of-13 nonbreeder-site nearby nest reanalysis",
+      "already_published": true
     }
   ],
   "candidate_independent_data_join": [
@@ -123,5 +143,7 @@
   "causal_model_fitted": false,
   "new_positive_island_ecology_mechanism_established": false,
   "decision": "HOLD_NO_INDEPENDENT_PHYSICAL_HABITAT_TREATMENT_OR_NOVELITY_DESPITE_ONE_NEST_ID_JOIN",
-  "new_source_identified": "Cox et al 2024 Cape Crozier is an exact nest-level geography-fitness-followup join, but prior paper already tested central ecological outcomes and there is no independent habitat intervention"
+  "new_source_identified": "Cox et al 2024 Cape Crozier is an exact nest-level geography-fitness-followup join, but prior paper already tested central ecological outcomes and there is no independent habitat intervention",
+  "revised_scientific_novelty_limit": "Classical low-success attractive small colonies (Penney 1968), age-differential philopatry (Penney 1970; Dugger 2026), missing shock cohorts (Dugger 2026), and new subcolonies near nonbreeding solitary nests (Cox 2024) were already published. No new ecological causal mechanism in current PR193.",
+  "preferred_next_data_access": "USAP-DC 601444 DOI 10.15784/601444 exposes a 25.1MB band_resighting_1997-2021.csv but download has reCAPTCHA; structural schema-only access via existing public source pointblue/solo_nests/data/allresight_reference_copy.csv, if permitted, requires source identity checksum and individual-study deidentification gates. Never claim free unrestricted access."
 }
