@@ -2,6 +2,14 @@
 
 **2026-10-08 — published-data evidence audit for PR #192.** Independent prior literature is *not* an untouched test. No USAP-DC rows opened; no new confirmatory ecology endpoint; frozen Ecology PR #189 and prospecting protocol PR #142 unchanged.
 
+## 2026-10-08 primary-methods correction: Beaufort breeding evidence exists
+
+**Do not overcorrect the prior-art boundary.** Dugger et al. (2010), **Materials and Methods** (original PDF p.4, under "Materials and Methods"), explicitly describe **breeding birds observed at Beaufort Island who had previously been observed breeding elsewhere**. They coded those known emigrants as a loss on capture in the Ross-colony multistate model, since Beaufort had little resighting effort. This is documentary evidence that **cross-island breeding dispersal among already experienced Ross breeders is known prior art**, and not all Ross→Beaufort observations should be described as *visits only*.
+
+**But Table 3 has a narrower caption**: it totals five **later Beaufort resightings** of previously observed Ross breeders (3 Royds, 1 Bird, 1 Crozier). The PDF does not provide an individual identifier/status linkage from that table to the particular *breeding* Beaufort observations described in Methods. Therefore it is unjustified either to label **all five as confirmed new Beaufort breeders** or to claim **no successful Ross→Beaufort breeding dispersal had ever been observed**. No original northern/northwestern Beaufort-site destination and no annual recruitment/export rate are identified. These are **experienced breeders**, never first-time reproductive recruits.
+
+Primary source: https://penguinscience.com/reprints/Dugger_Ainley_2010_survival.pdf (Table 3 and p.4 Methods). This correction strengthens existing dispersal prior art and reduces, rather than increases, an independent novelty claim.
+
 ## What has become observationally stronger
 
 Dugger et al. (2010, PNAS, doi:10.1073/pnas.1000623107) analyzed 2,681 individual **previously observed breeders** on Ross Island during 1996–2007, incorporating observation/detection models for the three Ross study colonies. Their published **Table 3** directly lists the former breeding location and later **Beaufort resighting**:
@@ -13,7 +21,7 @@ Dugger et al. (2010, PNAS, doi:10.1073/pnas.1000623107) analyzed 2,681 individua
 | Cape Crozier | 1,236 | **1** |
 | **Total** | **2,681** | **5** |
 
-The publication itself says that 3/475 formerly breeding Royds birds emigrated to Beaufort versus ~0.1% at each of Bird and Crozier, and warns the true movement numbers may be higher because Beaufort was searched **infrequently**. These are *minimum documented cross-island adult movement observations*, not an unbiased population-level emigration rate. The table's outcome is **subsequently resighted at another location**, *not first breeding on Beaufort*, and it does not distinguish **Beaufort north shore vs Cadwalader southwest**. In this analysis adults were included after they had bred at least once at their original Ross colony; they cannot be repurposed as a cohort of first-time breeders from Ross on Beaufort.
+The publication itself says that 3/475 formerly breeding Royds birds emigrated to Beaufort versus ~0.1% at each of Bird and Crozier, and warns the true movement numbers may be higher because Beaufort was searched **infrequently**. These are *minimum documented cross-island adult movement observations*, not an unbiased population-level emigration rate. Table 3 specifically reports **subsequently resighted**, without a per-individual Beaufort breeding-status crosswalk. Separately, the paper's **Methods explicitly document prior Ross breeders subsequently observed breeding at Beaufort**, although no link confirms all five tabulated emigrants' exact reproductive status. Neither source distinguishes **Beaufort north shore versus Cadwalader southwest**. In this analysis adults were included after they had bred at least once at their original Ross colony; they cannot be repurposed as a cohort of first-time breeders from Ross on Beaufort.
 
 > **An asymmetric, real prior-breeder Ross → Beaufort movement pathway exists in the literature**. It was already established in 2010, not a discovery from the present audit.
 
@@ -33,7 +41,7 @@ Dugger et al. (2010) subsequently fitted a multistate model to Ross **adult bree
 
 | Directional evidence | Source marks/stage | Event recorded | Denominator | Main limit |
 |---|---|---|---|---|
-| Ross → Beaufort (Dugger 2010) | previously observed Ross **breeders** | later detected Beaufort, n=5 | 2,681 former Ross breeders *across 1996–2007* | Beaufort effort sparse; no north-beach destination or first Beaufort breeding |
+| Ross → Beaufort (Dugger 2010) | previously observed Ross **breeders** | later detected Beaufort, n=5; *Methods also describe Beaufort breeders previously breeding elsewhere* | 2,681 former Ross breeders *across 1996–2007* | Beaufort effort sparse; Table 3 individuals' destination status not separately linked; no north-beach destination |
 | Beaufort → Ross (LaRue 2013) | Beaufort **chick-banded cohorts** | annual visiting any Ross colony | estimated still-alive Beaufort marked cohort by age and year | visits not first breeding; depends on borrowed survival & observing windows |
 | Ross Bird → Ross Crozier (Shepherd 2005) | young Bird-banded birds | visits among observed prebreeders before/after iceberg | within-year n of re-encountered Bird banded birds | conditional on who was seen; stage differs |
 
