@@ -1,0 +1,43 @@
+name: Emperor discovery versus colonization evidence
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+  pull_request:
+    paths:
+      - 'external/EMPEROR_FRETWELL_2024_SITE_DETECTION_EVIDENCE_V1.json'
+      - 'scripts/audit_emperor_discovery_vs_formation_v1.py'
+      - 'results/EMPEROR_DISCOVERY_VS_FORMATION_AUDIT_V1.json'
+      - 'tests/test_emperor_discovery_vs_formation_v1.py'
+      - 'docs/EMPEROR_DISCOVERY_VS_TRUE_FOUNDATION_AUDIT_V3.md'
+      - '.github/workflows/emperor-colony-evidence-v1.yml'
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Test published site-year evidence and zero definitions
+        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py
+      - name: Reproduce locked primary publication tally
+        run: |
+          python scripts/audit_emperor_discovery_vs_formation_v1.py --out /tmp/emperor2024crosswalk.json
+          python - <<'PY'
+          import json
+          result=json.load(open('/tmp/emperor2024crosswalk.json'))
+          frozen=json.load(open('results/EMPEROR_DISCOVERY_VS_FORMATION_AUDIT_V1.json'))
+          assert result['newly_reported_sites'] == frozen['four_reported_sites'] == 4
+          assert result['sites_with_verified_positive_image_before_publication'] == frozen['existing_satellite_detection_predates_2024_in'] == 4
+          assert result['sites_with_at_least_one_positive_image_each_year_2018_to_2022'] == frozen['sites_with_documented_presence_each_year_2018_through_2022'] == 3
+          assert result['published_positive_site_years_all_sites'] == frozen['total_published_positive_site_years_at_fixed_roster'] == 16
+          assert result['sites_with_verified_repeated_pre_founding_absences'] == frozen['sites_with_verified_repeated_precolonization_surveyed_absence'] == 0
+          assert result['2026_causal_effect_test_run'] is False
+          assert frozen['new_ecological_causal_result_claimed'] is False
+          print('PUB_HISTORY_CROSSWALK_PASSED: four prior positives, three five-year detected, zero observed pre-founding repeated negatives')
+          PY
