@@ -11,7 +11,7 @@ R=json.loads((
 def test_no_does_not_mean_suitable_but_vacant():
     c=R["critical_primary_readme_definitions"]
     assert "OR no fast ice" in c["bpresent_No"]
-    assert "not a known available vacant refuge" in R["state_logic"]["negative_composite"]
+    assert "cannot be a known available vacant refuge" in R["state_logic"]["negative_composite"]
     assert R["causal_nonidentifiability"]["physically_no_breeding_platform_vs_social_unoccupied_platform_from_bpresent_No_alone"] is False
 
 
