@@ -192,11 +192,11 @@ jobs:
           assert actual['literal_No_count']==frozen['literal_no_rows']==20
           assert actual['no_annotation_state_counts']==frozen['literal_no_annotation_categories']
           assert actual['no_passing_basic_original_fit_filter']==frozen['literal_no_rows_eligible_basic_original_date_area_filters']==15
-          assert len(actual['yes_with_exactly_zero_penguin_area_m2'])==len(frozen['literal_yes_rows_zero_penguin_area'])==3
-          assert len(actual['no_with_positive_area_m2'])==len(frozen['literal_no_rows_nonzero_penguin_area'])==1
+          assert len(actual['yes_with_zero_area'])==len(frozen['literal_yes_rows_zero_penguin_area'])==3
+          assert len(actual['no_with_positive_area'])==len(frozen['literal_no_rows_nonzero_penguin_area'])==1
           assert actual['LEDD_no_fast_ice_years']==frozen['Ledda_explicit_no_fast_ice_years']==[2009,2012,2016]
           assert actual['LEDD_available_ice_birds_not_seen_years']==frozen['Ledda_explicit_fast_ice_present_and_no_birds_years']==[2011,2014,2015]
-          assert actual['LEDD_available_ice_no_birds_in_basic_fit_window_years']==frozen['Ledda_fast_ice_present_no_birds_in_original_basic_fit_years']==[2011,2014]
+          assert actual['LEDD_fast_ice_available_birds_not_seen_inside_author_basic_fit_years']==frozen['Ledda_fast_ice_present_no_birds_in_original_basic_fit_years']==[2011,2014]
           assert actual['LEDD_next_image_yes_after_author_ice_annotation']['AUTHOR_NOTES_ICE_ABSENT_OR_ALREADY_BROKEN']==3
           assert actual['LEDD_next_image_yes_after_author_ice_annotation']['AUTHOR_NOTES_FAST_ICE_PRESENT_BIRDS_UNDETECTED']==0
           assert actual['LEDD_next_image_yes_where_both_scenes_pass_basic_fit']['AUTHOR_NOTES_ICE_ABSENT_OR_ALREADY_BROKEN']==2
