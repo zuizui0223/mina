@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-08",
+  "status": "SOURCE_SCHEMA_AND_OUTCOME_IDENTIFIABILITY_GATE_ONLY",
+  "biological_question": "Do formerly unoccupied, historically stable nearby breeding-platform alternatives actually become used and persist after an unprecedented early-fast-ice-breakout disturbance? Distinguish habitat availability from realized colonization/rescue, dispersal limitation, and natal-site fidelity.",
+  "study_domain": "Emperor penguin fast-ice breeding colonies, NOT strict terrestrial/offshore island sources, and no inferred individual migration.",
+  "prior_art_vetoes": [
+    "Labrousse et al. 2023 already reported nonsignificant occupied vs unoccupied habitat contrasts and proposed intraspecific competition and empty potential refuge sites.",
+    "Fretwell et al. 2023/2024 already documented 2022 and 2023 widespread breeding failures.",
+    "Macdonald et al. 2026 already described three long-term calving responses.",
+    "Fretwell et al. 2026 already documented relocation of five emperor colonies, not transferable as an original finding."
+  ],
+  "sources": {
+    "pre_exposure": {
+      "doi": "10.5061/dryad.tmpg4f547",
+      "repo_url": "https://datadryad.org/dataset/doi%3A10.5061/dryad.tmpg4f547",
+      "underlying_ice_maps": "2010–2018 (prior to 2022 shock), with 1km landfast-ice persistence and seasonal metrics",
+      "candidate_files": [
+        "persistence_p4_v2.2.img",
+        "volatility_1m_p4_v2.2_nobug.img",
+        "maxtiming_p4_v2.2.img",
+        "mintiming_p4_v2.2.img",
+        "Antarctic_Cx_11_class.nc",
+        "colonies.xlsx"
+      ],
+      "exposure_caveat": "A 2010–2018 historically stable candidate cell is NOT necessarily physical fast ice in 2022. Independently confirm contemporary passability BEFORE relocation."
+    },
+    "post_exposure": {
+      "observed_2022_failure_only": "Fretwell et al 2023 and 2024 literature; 19/66 2022 and 14/66 2023 affected counts are already published and DO NOT equal colony disappearance.",
+      "region_2022_geolocations": "https://doi.org/10.5285/a777e89c-ffcc-4ff4-981c-8f37e5ca84c2",
+      "all_2023_geolocations": "https://doi.org/10.5285/fb0547e4-d2c1-4580-8c98-182f1da7d9ae",
+      "additional_2024_2026": "Not verified as a comparable exhaustive panel",
+      "data_coverage_caveat": "2022 region-specific record and 2023 circumpolar record are NOT matched annual panels by default; 2023 position accuracy ~2km, and its metadata progress says Planned."
+    }
+  },
+  "predefined_spatial_neighborhoods": {
+    "primary_km": 40,
+    "sensitivity_km": [
+      20,
+      80
+    ],
+    "reason": "Observed post-disturbance emperor relocations on the order of tens of km make local alternatives biologically plausible; threshold is a DESIGN choice not estimated from outcome.",
+    "negative_control_km": [
+      100,
+      200
+    ],
+    "candidate_types": [
+      "historically high fast-ice persistence and unoccupied at 2010–2018 observation scale",
+      "mapped fast-ice option with independently verified 2022 contemporary availability"
+    ],
+    "do_not_use_circular_exposure": "Current colony location or guano signal must not define habitat suitability or path passability."
+  },
+  "eligible_unit": "Named fixed colony network and austral breeding season, with unique source id, linked repeated imagery, and independently measured local access BEFORE location changes",
+  "primary_ecological_outcome": "Documented use of previously unoccupied stable alternative AND continued verified breeding-season occupancy in next observed season (without equating this with individual fitness).",
+  "secondary_outcomes": [
+    "return to original colony site",
+    "independently documented relocation with distance",
+    "breeding failure stage",
+    "confirmed colony disappearance with verified repeated negative surveys"
+  ],
+  "natal_dispersal_not_measured": true,
+  "key_nulls": {
+    "H_option": "Historically stable nearby unoccupied alternatives genuinely buffer relocation and subsequent site persistence when contemporaneously available.",
+    "H_fidelity": "Even when alternatives remain available, most disturbed colonies return to natal/historical colony position; no detectable opportunity effect.",
+    "H_exposure": "Local severity, timing of breakout, open-water access and current ice availability explain the spatial response, not historical available area.",
+    "H_detection": "Lack of visible guano/colony is missed survey, fog, sensor or within-season shift; not biological disappearance.",
+    "H_competition": "A positive selection of unoccupied stable patches could be competition release but cannot identify intra-specific competition without prior competitor pressure measured independently."
+  },
+  "hard_stops": [
+    "No complete, detection-qualified 2022/2023 site×year colony identity crosswalk, especially for sites added to roster after 2018.",
+    "No independently observed contemporary 2022 alternative ice-area and route accessibility before purported relocation.",
+    "No actual movement or successive breeding evidence for most disturbed colonies; no pooling of child failure with adult colony disappearance.",
+    "Fewer than 10 independently identifiable relocation/persistence episodes with verified options: no confirmatory mechanism effect; descriptive only.",
+    "No matched regional forcing/exposure: no competition or option causality claim.",
+    "No future-data fit before header-only and source access results."
+  ],
+  "known_published_summary": {
+    "affected_2022_sites": 19,
+    "affected_2023_sites": 14,
+    "denominator_reported_at_time": 66,
+    "note": "Aggregate prior art, NOT prospective response; do not use as site-level labels or 33 independent extinctions."
+  },
+  "current_actual_source_data_status": {
+    "dryad_binary_files_loaded": false,
+    "BAS_colony_geolocations_loaded": false,
+    "site_year_outcome_values_opened": 0,
+    "site_id_crosswalk_verified": false,
+    "contemporary_option_access_loaded": false,
+    "source_gate_passed": false
+  },
+  "not_claiming_preregistered_finding": true,
+  "related_repo_science": {
+    "frozen_PR189_unchanged": true,
+    "beaufort_PR192_unchanged": true,
+    "header_only_PR194_unchanged": true
+  }
+}
