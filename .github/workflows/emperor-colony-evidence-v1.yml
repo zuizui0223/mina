@@ -12,6 +12,8 @@ on:
       - 'scripts/audit_emperor_2024_new_sites_against_66_catalogue.py'
       - 'results/EMPEROR_66_CATALOGUE_NEWLY_REPORTED_SITES_GEODESIC_V1.json'
       - 'tests/test_emperor_66_catalogue_new_site_geodesic.py'
+      - 'tests/test_emperor_2008_2018_codebook_empty_site_guard.py'
+      - 'results/EMPEROR_2008_2018_SATELLITE_OCCUPANCY_CODEBOOK_GATE_V1.json'
       - 'docs/EMPEROR_DISCOVERY_VS_TRUE_FOUNDATION_AUDIT_V3.md'
       - '.github/workflows/emperor-colony-evidence-v1.yml'
 jobs:
@@ -27,7 +29,7 @@ jobs:
       - name: Install pytest
         run: python -m pip install pytest
       - name: Test published site-year evidence and zero definitions
-        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py
+        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py tests/test_emperor_2008_2018_codebook_empty_site_guard.py
       - name: Reproduce locked primary publication tally
         run: |
           python scripts/audit_emperor_discovery_vs_formation_v1.py --out /tmp/emperor2024crosswalk.json
