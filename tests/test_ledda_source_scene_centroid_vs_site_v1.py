@@ -43,3 +43,19 @@ def test_unapproved_year_or_mutated_2014_bird_code_stops():
     rows[0]["img_year"]="2008"
     with pytest.raises(ValueError):
         m.audit(rows)
+
+def test_zero_placeholder_and_far_coordinate_are_not_real_image_centers():
+    rows=synthetic_rows()
+    rows[5]["img_lat"]="0"
+    rows[5]["img_long"]="0"
+    z=m.audit(rows)["focus_2014"]
+    assert z["image_scene_centroid_lat"] is None
+    assert z["raw_img_lat_parsed"] == 0
+    assert z["coordinate_hold_reason"]=="ZERO_SENTINEL_OR_AMBIGUOUS_COORDINATE"
+
+    rows=synthetic_rows()
+    rows[5]["img_lat"]="-25"
+    rows[5]["img_long"]="130"
+    z=m.audit(rows)["focus_2014"]
+    assert z["image_scene_centroid_lon"] is None
+    assert z["coordinate_hold_reason"]=="SOURCE_SCENE_CENTER_OVER_200KM_FROM_BOTH_PREPRINTED_LEDD_REFERENCES"
