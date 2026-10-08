@@ -37,13 +37,13 @@ def _historical(y,left,right):
 
 def _paired(y,p_last,s_last,p_run,s_run,p_num,s_num,n):
     def x(last,denom):
-        return {"original_class4_cells":p_last,"original_n_cells":28,
-                "alternative_class4_cells":s_last,"alternative_n_cells":30,
+        return {"original_LaRue_class4_cells":p_last,"original_LaRue_n_cells":28,
+                "alternative_Fretwell_class4_cells":s_last,"alternative_Fretwell_n_cells":30,
                 "composite_start_yyyymmdd":20140829}
     last=x(p_last,s_last)
-    lag={"original_class4_cells":0,"original_n_cells":28,
-         "alternative_class4_cells":30 if y==2014 else 0,
-         "alternative_n_cells":30}
+    lag={"original_LaRue_class4_cells":0,"original_LaRue_n_cells":28,
+         "alternative_Fretwell_class4_cells":30 if y==2014 else 0,
+         "alternative_Fretwell_n_cells":30}
     return {
         "year":y,
         "original":{"status":"EXPLORATORY_INDEPENDENT_FASTICE_GRID_EXTRACTED"},
