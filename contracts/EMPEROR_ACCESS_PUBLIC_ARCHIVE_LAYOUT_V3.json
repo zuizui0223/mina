@@ -1,0 +1,73 @@
+{
+  "schema_version": 3,
+  "date": "2026-10-08",
+  "name": "Three emperor colony workbook row-layout amendment following failed row1-only header detection",
+  "revision_timing": "After inspecting ONLY file manifest, file hashes, sheet names and row-1 candidate headers in CI run 37727980055; BEFORE inspecting any row2+ cell contents",
+  "supersedes_for_structure_only": "contracts/EMPEROR_ACCESS_PUBLIC_ARCHIVE_SCHEMA_GATE_V2.json",
+  "authoritative_current_source": {
+    "record": "https://zenodo.org/records/17390368",
+    "record_id": 17390368,
+    "manifest_confirmed": true,
+    "files": [
+      {
+        "file": "AstridDataUpload.xlsx",
+        "bytes": 31049,
+        "md5": "f41f5106df1f3b5bb91bad43ae96e30d",
+        "n_sheets": 17,
+        "row1_header_confirmed": 0
+      },
+      {
+        "file": "MertzDataUpload.xlsx",
+        "bytes": 32417,
+        "md5": "6fee82cd5b9b12d5b10638eb0cbbb49b",
+        "n_sheets": 17,
+        "row1_header_confirmed": 0
+      },
+      {
+        "file": "SanaeDataUpload.xlsx",
+        "bytes": 52643,
+        "md5": "de960629596e5aa86d3a7d68d742a5f4",
+        "n_sheets": 17,
+        "row1_header_confirmed": 2
+      }
+    ]
+  },
+  "provenance": {
+    "PR": 194,
+    "workflow_run_id": 37727980055,
+    "job_id": 113150387453,
+    "source_log": "https://github.com/zuizui0223/mina/actions/runs/37727980055",
+    "all_three_workbooks_downloaded_and_md5_verified": true,
+    "all_three_usable_sheet_headers_identified": false
+  },
+  "allowed_next_read_envelope": {
+    "sheet_names": "already exposed 51 sheet names",
+    "max_xml_sheet_rows_per_sheet": 12,
+    "allowed_values": [
+      "row index number",
+      "number of XML cell elements",
+      "count of cells marked shared-string/inlineStr/formula/numeric",
+      "max column letter inferred from cell addresses"
+    ],
+    "forbidden_values": [
+      "shared string dictionary contents",
+      "inline string text contents",
+      "raw numeric cell values",
+      "date values",
+      "bird/ice presence-absence indicators",
+      "colony-group positions",
+      "any fitted ecological effect"
+    ],
+    "read_shared_strings_xml": false,
+    "report_format": "row positions and cell-type counts only; candidate_header_row_by_types is NOT a verified header",
+    "explicit_exposure_note": "XML parser must ignore the text of all cell value elements even when it traverses their tags; no model outcomes are to be inspected."
+  },
+  "next_gate": "Only after layout receipt is frozen, predeclare which specific row to decode for a fixed list of expected column labels or authorize broader source analysis; never reclassify no or missing as biological absence",
+  "scientific_status": "SOURCE_MANIFEST_PASSED_HEADER_STRUCTURE_UNVERIFIED_NO_NEW_ECOLOGICAL_INFERENCE",
+  "conflicting_prior_frozen_science": {
+    "PR189_untouched": true,
+    "PR142_unchanged": true,
+    "PR192_unchanged": true,
+    "PR195_vacant_refuge_causal_test_not_opened": true
+  }
+}

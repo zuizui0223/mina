@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "phase": "OUTCOME_BLIND_HEADER_AND_SOURCE_AVAILABILITY_ONLY",
+  "relation": {
+    "related_pr": 192,
+    "paper_scientific_freeze_pr": 189,
+    "resight_locked_pr": 142,
+    "protected": true
+  },
+  "rationale": "Independent publicly released emperor-colony imagery observation histories can distinguish changing platform occupancy from simple published guano presence; first verify dataset structure before examining responses. Sea ice/shelf platforms are not physical rocky islands or inter-island natal settlement.",
+  "named_source": "Macdonald et al. Observations Astrid, SANAE and Mertz emperor penguin colonies 1984-2024, Zenodo v3 10.5281/zenodo.17390368",
+  "source_repo": "https://zenodo.org/records/17390368",
+  "files": [
+    {
+      "name": "AstridDataUpload.xlsx",
+      "expected_md5": "f41f5106df1f3b5bb91bad43ae96e30d"
+    },
+    {
+      "name": "MertzDataUpload.xlsx",
+      "expected_md5": "6fee82cd5b9b12d5b10638eb0cbbb49b"
+    },
+    {
+      "name": "SanaeDataUpload.xlsx",
+      "expected_md5": "de960629596e5aa86d3a7d68d742a5f4"
+    }
+  ],
+  "prior_art": [
+    "Macdonald et al 2026 Antarctic Science observed relocations and sea-ice trends 1984-2024",
+    "Macdonald et al 2026 Communications Earth & Environment tracked 3 different colonies from 2017-2024",
+    "Zitterbart et al 2014 Atka snow ramp and wind",
+    "Richter et al 2018 Atka colony motion and wind"
+  ],
+  "source_gate": {
+    "stage": "only verify URLs, HTTP status, MD5, file formats, sheet names, first-sheet header text and known column-name eligibility; no outcome rows or tallies",
+    "first_only_header_limit": 6
+  },
+  "proposed_later_estimands_if_preoutcome_eligible": {
+    "unit": "colony × austral breeding year with sufficient dated remotely sensed observations",
+    "response": "first observed within-season platform transition, with explicit observational uncertainty and gap correction",
+    "exposure": "independently timed wind/ice conditions and passability geometries observed BEFORE the transition",
+    "primary_competing": "wind directional forcing versus physical platform-entry passability; independent ice stability and observation process",
+    "prohibitions": [
+      "cannot infer entry passability from the transition itself",
+      "observed guano not necessarily live animals",
+      "do not claim natal-dispersal or settlement across physical islands",
+      "cannot use inferred ice platform as independent physical habitat predictor"
+    ],
+    "novelty_warning": "platform switches and wind are already published; no original discovery without independent predictor and held-out contrast"
+  },
+  "preoutcome_hard_stop": [
+    "no accessible verified XLSX",
+    "no unambiguous dated observation or platform headers",
+    "no independent platform passability layer",
+    "only a single event with no independent comparator",
+    "insufficient group tracking and image coverage",
+    "source DOI tracks cannot be retrieved and Zenodo histories lack the needed independent exposure"
+  ],
+  "future_effect_values_opened_at_contract_creation": 0,
+  "explicit_no_end_to_end_fit_authorized": true,
+  "source_status": "URL_VERIFICATION_TO_BE_EXECUTED"
+}

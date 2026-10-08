@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "date": "2026-10-08",
+  "status": "BEFORE_ANY_NEW_BIOLOGICAL_OUTCOME_OPENED",
+  "supersedes_header_method_only": "contracts/EMPEROR_ACCESS_PUBLIC_ARCHIVE_SCHEMA_GATE_V1.json",
+  "reason": "Old v1 public record 17380979 names SANAE workbook SanaeDataUpload2.xlsx with MD5 13d916e08387d94ae448e129aa8aa442, while the intended v3 record 17390368 was previously presumed to use SanaeDataUpload.xlsx with MD5 de960629596e5aa86d3a7d68d742a5f4. Published v3 manifest has not yet been independently retrieved. Prevent a false source absence, metadata confusion, and accidental reading of response data from full sharedStrings.xml.",
+  "source_id_pinned": "https://zenodo.org/records/17390368",
+  "earlier_version_metadata_only": {
+    "url": "https://zenodo.org/records/17380979",
+    "SANAE_filename": "SanaeDataUpload2.xlsx",
+    "md5": "13d916e08387d94ae448e129aa8aa442",
+    "source_used_for_discovery_only": true,
+    "record_contents_not_opened": true
+  },
+  "approved_slots": {
+    "Astrid": {
+      "approved": [
+        "AstridDataUpload.xlsx"
+      ],
+      "frozen_md5": [
+        "f41f5106df1f3b5bb91bad43ae96e30d"
+      ]
+    },
+    "Mertz": {
+      "approved": [
+        "MertzDataUpload.xlsx"
+      ],
+      "frozen_md5": [
+        "6fee82cd5b9b12d5b10638eb0cbbb49b"
+      ]
+    },
+    "SANAE": {
+      "approved": [
+        "SanaeDataUpload.xlsx",
+        "SanaeDataUpload2.xlsx"
+      ],
+      "frozen_md5_by_filename": {
+        "SanaeDataUpload.xlsx": "de960629596e5aa86d3a7d68d742a5f4",
+        "SanaeDataUpload2.xlsx": "13d916e08387d94ae448e129aa8aa442"
+      },
+      "if_pinned_version_md5_differs": "HOLD; record new version-specific checksum in independently reviewed amendment before any biological outcome access"
+    }
+  },
+  "source_metadata_gate": {
+    "fetch_api_record": "https://zenodo.org/api/records/17390368",
+    "require_id_equals_17390368": true,
+    "require_exactly_one_matching_filename_per_slot": true,
+    "require_record_manifest_md5_equals_frozen_candidate_md5": true,
+    "require_each_workbook_small_positive_bytes": true,
+    "do_not_fetch_2_4_gb_image_zip": true
+  },
+  "strict_header_eligibility": {
+    "allowed_sheet_rows_to_decode": [
+      1
+    ],
+    "if_real_header_begins_below_row_1": "HOLD; amend reading envelope BEFORE touching data rows",
+    "only_materialize_shared_string_items_referenced_by_row_1": true,
+    "other_data_rows_read": 0,
+    "stop_if_worksheet_absent_or_sheet_header_not_verified": true,
+    "no_novel_phenotype_claim_from_workbook_headers": true
+  },
+  "research_preservation": {
+    "PR189_frozen_submission_unchanged": true,
+    "PR142_USAPDC_protocol_unchanged": true,
+    "PR192_Beaufort_capacity_rescue_claim_unchanged": true,
+    "no_colony_track_rows_opened": true,
+    "no_penguin_season_year_effects_computed": true,
+    "no_original_wind_or_ice_route_effect_claimed": true
+  },
+  "known_constraint": "Publication already analyzed ice-shelf use, ice breakup and three-colony relocation; these are prior art. Independent physical snow-ramp entry passability or fully matched wind needed before considering novel causal effects."
+}
