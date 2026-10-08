@@ -12,7 +12,10 @@ on:
       - 'scripts/audit_emperor_2024_new_sites_against_66_catalogue.py'
       - 'results/EMPEROR_66_CATALOGUE_NEWLY_REPORTED_SITES_GEODESIC_V1.json'
       - 'tests/test_emperor_66_catalogue_new_site_geodesic.py'
-      - 'tests/test_emperor_2008_2018_codebook_empty_site_guard.py'
+      - 'tests/test_emperor_2008_2018_codebook_empty_site_guard.py tests/test_larue_original_satellite_image_support_v1.py'
+      - 'tests/test_larue_original_satellite_image_support_v1.py'
+      - 'scripts/audit_larue_original_satellite_image_support_v1.py'
+      - 'contracts/EMPEROR_LARUE_RAW_SATELLITE_SUPPORT_V1.json'
       - 'scripts/audit_larue_2024_global_posterior_occupancy_v1.py'
       - 'results/EMPEROR_LARUE_2024_50_BY_10_POSTERIOR_ZERO_AUDIT_V1.json'
       - 'tests/test_emperor_larue_global_posterior_occupancy.py'
@@ -101,3 +104,32 @@ jobs:
           else
             echo 'HOLD_SOURCE_FETCH: author CSV unavailable; frozen source-grounded receipt untested in this Actions run'
           fi
+
+      - name: Inspect already published original satellite image rows for nine posterior switches
+        env:
+          XLSX_RAW: https://raw.githubusercontent.com/davidiles/EMPE_Global/13f71112da43c1fd082273677757b41c550457ed/data/empe_satellite_2023-05-25.xlsx
+        run: |
+          if curl -fLsS --max-time 45 --retry 2 "$XLSX_RAW" -o /tmp/larue_published_original_satellite.xlsx; then
+            python scripts/audit_larue_original_satellite_image_support_v1.py --xlsx /tmp/larue_published_original_satellite.xlsx --out /tmp/larue_satellite_9_events.json
+            python - <<'PY'
+          import json
+          o=json.load(open('/tmp/larue_satellite_9_events.json'))
+          assert o["already_exposed_model_posterior_0_to_positive_events"] == 9
+          assert o["zero_year_events_with_independent_verified_physically_available_absent_colony"] == 0
+          assert not o["new_causal_effect_estimated"]
+          print("POSTERIOR_SWITCH_IMAGE_SUPPORT:",o["zero_year_events_with_at_least_one_source_image"],"of 9")
+          print("ZERO_YEAR_NO_CODES:",o["zero_year_events_with_bpresent_No"],"of 9; No includes no fast ice")
+          print("RAW_BIOLOGICAL_IMAGES:",o["raw_rows_2009_2018"])
+          print("NO_REAL_RECOLONIZATION_ESTABLISHED")
+          PY
+            rm -f /tmp/larue_published_original_satellite.xlsx
+          else
+            echo 'HOLD_RAW_PUBLISHED_XLSX_DOWNLOAD_UNAVAILABLE; no new biological evidence claimed'
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emperor-2009-2018-raw-image-source-support
+          path: /tmp/larue_satellite_9_events.json
+          if-no-files-found: ignore
+          retention-days: 14
