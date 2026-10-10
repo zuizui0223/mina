@@ -43,7 +43,8 @@ jobs:
           assert d['phase_tag_season_counts']=={
             'PRE_COLONY_FIRST_EGG':2,
             'AFTER_FIRST_COLONY_EGG_PRE_FIRST_HATCH':1,
-            'POST_FIRST_COLONY_HATCH':2
+            'POST_FIRST_COLONY_HATCH':2,
+            'AMBIGUOUS_EGG_OR_HATCH_BOUNDARY_DAY':0
           }
           assert d['prelay_observed_documented_egg_fraction']==0.5
           assert d['all_phase_naive_documented_postgate_egg_fraction']==0.4
