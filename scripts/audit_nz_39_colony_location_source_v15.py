@@ -31,9 +31,11 @@ def resource_metadata(raw):
     if not census.approved(u):
         raise ValueError("File not on official HTTPS CKAN host")
     md5=str(r.get("hash","")).lower()
-    if not re.fullmatch("[a-f0-9]{32}",md5):
-        raise ValueError("No unambiguous original resource MD5; stop before parsing")
-    return {"official_url":u,"md5":md5,"size":r.get("size"),"filename":r.get("name","")}
+    if md5 and not re.fullmatch("[a-f0-9]{32}",md5):
+        raise ValueError("Provided CKAN hash is ambiguous or not MD5; stop")
+    return {"official_url":u,"md5":md5 or None,
+            "md5_status":"OFFICIAL_PUBLISHED_MD5" if md5 else "OFFICIAL_PUBLISHER_MD5_NOT_PROVIDED",
+            "size":r.get("size"),"filename":r.get("name","")}
 
 def clean_name(value):
     return re.sub(r"\s+"," ",str(value or "").lower().strip())
@@ -82,12 +84,15 @@ def run():
         meta=resource_metadata(census.fetch_bounded(API+"?"+urlencode({"id":LOC_ID}),census.MAX_SOURCE_METADATA))
         raw=census.fetch_bounded(meta["official_url"])
         h=hashlib.md5(raw).hexdigest()
-        if h!=meta["md5"]:
-            raise ValueError("Downloaded colony site location XLSX MD5 differs from published official checksum")
-        out["official_location_md5_verified"]=h
-        out["location_source_metadata"]={"filename":meta["filename"],"bytes":len(raw),"official_MD5":meta["md5"]}
+        if meta["md5"] and h!=meta["md5"]:
+            raise ValueError("Downloaded colony location file MD5 differs from publisher checksum")
+        out["official_location_md5_verified"]=h if meta["md5"] else None
+        out["source_sha256_observed_no_publisher_hash"]=hashlib.sha256(raw).hexdigest()
+        out["location_source_metadata"]={"filename":meta["filename"],"bytes":len(raw),
+            "official_MD5":meta["md5"],"md5_status":meta["md5_status"]}
         out["original_location_sheet_shape"]=summarize_original_table(raw)
-        out["status"]="OFFICIAL_LOCATION_XLSX_AUTHENTICATED_LAYOUT_ONLY"
+        out["status"]=("OFFICIAL_LOCATION_XLSX_MD5_VERIFIED_LAYOUT_ONLY" if meta["md5"]
+                else "OFFICIAL_LOCATION_XLSX_PUBLISHER_HASH_ABSENT_LAYOUT_ONLY")
         src=census.run()
         if src.get("status")!="SOURCE_XLSX_VALIDATED_AND_STRUCTURAL_COVERAGE_REPORTED":
             out["source_census_status"]=src.get("status")
@@ -97,7 +102,8 @@ def run():
         # Metadata layout independent; do not falsely join from substring,
         # row number or marine geographical proximity.
         out["census_2026_roster"] = names
-        out["status"]="LOCATION_AND_CENSUS_BOTH_CHECKSUM_VERIFIED_BUT_NAME_CROSSWALK_NOT_YET_VALIDATED"
+        out["status"]=("LOCATION_AND_CENSUS_BOTH_CHECKSUM_VERIFIED_BUT_NAME_CROSSWALK_NOT_YET_VALIDATED"
+               if meta["md5"] else "LOCATION_OFFICIAL_URL_SHA256_RECORDED_PUBLISHER_MD5_ABSENT_CENSUS_CHECKSUM_VERIFIED_NAME_JOIN_PENDING")
     except Exception as exc:
         out["status"]="HOLD_OFFICIAL_LOCATION_DOWNLOAD_OR_LAYOUT"
         out["reason_type"]=type(exc).__name__
