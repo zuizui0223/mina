@@ -77,8 +77,9 @@ def source_free_event_gate(events):
         "n_tag_at_nest_but_NO_DIRECT_EGG":len(nest_scanned_without_direct_egg),
         "n_unobserved_nest_status_given_tag_gate":len(unknown_at_nest),
         "individual_tag_keys_in_positive_group":sorted("_".join(x) for x in positives),
-        "lower_bound_fraction_with_observed_post_gate_egg":len(positives)/n,
-        "upper_bound_fraction_with_unobserved_or_observed_post_gate_egg":1.0,
+        "lower_bound_fraction_with_observed_first_documented_egg_post_gate":len(positives)/n,
+        "upper_bound_fraction_with_first_documented_egg_post_gate_if_unknown_resolved":(n-len(eggs_before_first_gate))/n,
+        "first_documented_egg_before_gate_EXCLUDED_FROM_POSSIBLE_FIRST_POST_GATE":len(eggs_before_first_gate),
         "no_true_population_arrival_rate_identified":True,
         "first_logged_gate_pass_not_first_island_arrival":True,
         "past_reproductive_history_of_mock_tags_known":False,
@@ -120,5 +121,6 @@ def main():
     print("SYNTHETIC_CONFIRMED_DIRECT_EGG_AFTER_GATE",z["n_same_tag_direct_egg_AFTER_first_observed_gate_in"])
     print("SYNTHETIC_NO_NEST_EGG_STATUS_AFTER_GATE",z["n_unobserved_nest_status_given_tag_gate"])
     print("SOURCE_2019_ALREADY_LINKED_ID_AND_BREEDER_STATUS",True)
+    print("SYNTHETIC_FIRST_DOCUMENTED_EGG_FRACTION_BOUNDS",z["lower_bound_fraction_with_observed_first_documented_egg_post_gate"],z["upper_bound_fraction_with_first_documented_egg_post_gate_if_unknown_resolved"])
     print("ACTUAL_FIRST_BREEDING_PROBABILITY", "NOT_IDENTIFIED")
 if __name__=="__main__":main()
