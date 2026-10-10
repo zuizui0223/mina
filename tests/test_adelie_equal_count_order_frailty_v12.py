@@ -55,3 +55,18 @@ def test_synthetic_experiment_has_no_individual_penguin_or_new_biological_result
     assert r["quality_by_year_interaction_induces_order_dependence_without_any_carryover"]
     assert r["observed_breeding_success_conditional_on_an_attempt_not_survival_or_participation"]
     assert r["Ecology_PR189_unmodified"]
+
+def test_even_first_order_markov_heterogeneity_fakes_second_order_prediction():
+    z=m.analyze()["heterogeneous_first_order_transition"]
+    a=z["history_101"]
+    b=z["history_011"]
+    assert z["two_histories_same_success_count_and_current_state"]
+    assert a["posterior_persistent_first_order_type"]==pytest.approx(1/26)
+    assert b["posterior_persistent_first_order_type"]==pytest.approx(9/34)
+    assert a["next_success_probability"]==pytest.approx(0.5153846153846153)
+    assert b["next_success_probability"]==pytest.approx(0.6058823529411765)
+    assert z["apparent_next_success_difference_011_minus_101"]==pytest.approx(.09049773755656121)
+    assert a["true_direct_second_lag_coefficient"]==0
+    assert b["true_direct_second_lag_coefficient"]==0
+    assert z["within_each_individual_only_first_order_breeding_state_matters"]
+    assert z["actual_penguin_outcomes_read"]==0
