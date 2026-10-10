@@ -125,6 +125,9 @@ def main():
     p.out.write_text(json.dumps(r,indent=2)+"\n")
     print("DRYAD_STATE_MEMORY_SOURCE_GATE",r["status"])
     print("SOURCE_COLUMN_SCHEMA",r.get("source_header",[]))
+    print("FETCH_ERROR_CLASS",r.get("error_type","NONE"))
+    # Report just a bounded HTTP/error type, never an author record or redirect token.
+    print("FETCH_ERROR_SHORT",r.get("error_message","")[:90])
     print("READ_ANIMAL_OUTCOMES",r["reproductive_outcome_rows_read"])
     print("FITTED_SECOND_ORDER_MEMORY_EFFECT",False)
 
