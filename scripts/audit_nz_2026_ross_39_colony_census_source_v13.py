@@ -142,6 +142,9 @@ def evaluate_xlsx(raw):
     names=[]
     value_types=Counter()
     byyear={v:Counter() for v in years.values()}
+    recorded_colonies_by_year={v:set() for v in years.values()}
+    per_colony_coverage={}
+    focal_counts={}
     for row in allrows[hdr_index+1:]:
         name=str(row.get(col_key,"")).strip()
         if not name:continue
@@ -151,6 +154,8 @@ def evaluate_xlsx(raw):
             value_types["aggregate_summary_rows_excluded"]+=1
             continue
         names.append(name)
+        recorded_years=[]
+        raw_numeric_counts={}
         for col,year in years.items():
             v=str(row.get(col,"")).strip()
             if not v:
@@ -165,10 +170,29 @@ def evaluate_xlsx(raw):
                 else:
                     if not math.isfinite(n) or n<0 or n!=int(n):
                         byyear[year]["OTHER_NONNEG_INTEGER_REVIEW"]+=1
+                        value_types["OTHER_NONNEG_INTEGER_REVIEW"]+=1
                     elif n==0:
                         byyear[year]["EXPLICIT_ZERO_SOURCE"]+=1
+                        value_types["EXPLICIT_ZERO_SOURCE"]+=1
+                        recorded_years.append(year)
+                        raw_numeric_counts[str(year)]=0
+                        recorded_colonies_by_year[year].add(name)
                     else:
                         byyear[year]["POSITIVE_NUMERIC_COUNT"]+=1
+                        value_types["POSITIVE_NUMERIC_COUNT"]+=1
+                        recorded_years.append(year)
+                        raw_numeric_counts[str(year)]=int(n)
+                        recorded_colonies_by_year[year].add(name)
+        sorted_years=sorted(recorded_years)
+        per_colony_coverage[name]={
+            "numeric_survey_years":len(sorted_years),
+            "first_recorded_year":sorted_years[0] if sorted_years else None,
+            "last_recorded_year":sorted_years[-1] if sorted_years else None,
+            "consecutive_year_pairs":sum(a+1==b for a,b in zip(sorted_years,sorted_years[1:])),
+            "valid_2024_count":raw_numeric_counts.get("2024"),
+        }
+        if any(token in name.lower() for token in ("royds","crozier","cape bird")):
+            focal_counts[name]=raw_numeric_counts
     if len(set(names))!=len(names):
         raise ValueError("Colony source names are not unique")
     # No hard-coded assumption that full table includes only 39 rows;
@@ -187,6 +211,13 @@ def evaluate_xlsx(raw):
         "colony_name_roster":names,
         "source_years":sorted(years.values()),
         "value_classes":dict(value_types),
+        "total_source_cells_expected":len(names)*len(years),
+        "total_reported_numeric_count_cells":value_types["EXPLICIT_ZERO_SOURCE"]+value_types["POSITIVE_NUMERIC_COUNT"],
+        "total_unresolved_source_text_cells":value_types["TEXT_UNRESOLVED"],
+        "numeric_survey_coverage_by_colony":per_colony_coverage,
+        "focal_Royds_Crozier_CapeBird_source_counts":focal_counts,
+        "consecutive_year_coverage_by_year":{str(yr):len(recorded_colonies_by_year[yr]&recorded_colonies_by_year.get(yr-1,set())) for yr in sorted(recorded_colonies_by_year)},
+        "n_colonies_with_any_1981_to_2024_consecutive_year_pair":sum(v["consecutive_year_pairs"]>0 for v in per_colony_coverage.values()),
         "surveyed_positive_zero_missing_by_year":{
             str(yr):dict(byyear[yr]) for yr in sorted(byyear)},
         "source_count_zeros_not_conflated_with_missing":True,
@@ -233,6 +264,9 @@ def main():
     print("CAPE_BARNE_PRESENT",z.get("contains_cape_barne_literal","UNKNOWN"))
     print("YEAR_COUNT",len(z.get("source_years",[])))
     print("SOURCE_CLASSES",json.dumps(z.get("value_classes",{}),sort_keys=True))
+    print("PAIRWISE_CONSECUTIVE_SITE_YEARS",sum(x["consecutive_year_pairs"] for x in z.get("numeric_survey_coverage_by_colony",{}).values()))
+    print("YEAR_COVERAGE_1999_TO_2008",json.dumps({k:v for k,v in z.get("surveyed_positive_zero_missing_by_year",{}).items() if 1999<=int(k)<=2008},sort_keys=True))
+    print("FOCAL_SOURCE_COUNTS",json.dumps(z.get("focal_Royds_Crozier_CapeBird_source_counts",{}),sort_keys=True))
     print("ERROR_IF_HELD",z.get("error_type",""),z.get("error_message",""))
     print("NO_PENGUIN_DEMOGRAPHIC_CAUSAL_EFFECT_FITTED")
 if __name__=="__main__":main()
