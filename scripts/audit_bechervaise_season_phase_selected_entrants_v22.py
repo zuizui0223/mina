@@ -20,6 +20,11 @@ def timepoint(value):
         raise ValueError("Require full source time with date and seconds") from exc
 
 def phase(t,first_egg,first_hatch):
+    # Historical nest data often date egg/hatch checks by CALENDAR DAY,
+    # not actual event second. Never sort a gate timestamp within that same
+    # date using an invented midnight event time.
+    if t.date() in (first_egg.date(),first_hatch.date()):
+        return "AMBIGUOUS_EGG_OR_HATCH_BOUNDARY_DAY"
     if t<first_egg:return "PRE_COLONY_FIRST_EGG"
     if t<first_hatch:return "AFTER_FIRST_COLONY_EGG_PRE_FIRST_HATCH"
     return "POST_FIRST_COLONY_HATCH"
@@ -76,7 +81,7 @@ def audit(events, seasonal_boundaries):
     for row in rows:
         groups[row["phase_of_FIRST_OBSERVED_gate_crossing"]].append(row)
     classes=("PRE_COLONY_FIRST_EGG","AFTER_FIRST_COLONY_EGG_PRE_FIRST_HATCH",
-             "POST_FIRST_COLONY_HATCH")
+             "POST_FIRST_COLONY_HATCH","AMBIGUOUS_EGG_OR_HATCH_BOUNDARY_DAY")
     n_pre=len(groups[classes[0]])
     pre_confirmed=sum(x["directly_confirmed_own_egg_after_first_pass"]
                       for x in groups[classes[0]])
@@ -98,6 +103,7 @@ def audit(events, seasonal_boundaries):
         "after_hatch_possible_late_egg_not_mathematically_impossible":True,
         "published_nonbreeder_gate_visits_mostly_after_hatch_Emmerson2019":True,
         "equal_season_first_colony_egg_not_individual_latest_laying_date":True,
+        "same_calendar_day_gate_vs_egg_or_hatch_censored_not_exactly_ordered":True,
         "no_unobserved_eggs_turned_into_false_negatives":True,
         "no_attempt_to_infer_future_year_natal_recruitment":True,
         "source_publisher_and_methods_bechervaise_original_data_rows_read":0,
