@@ -1,0 +1,60 @@
+name: Bechervaise nonbreeder gate timing vs egg risk-set V22
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/BECHERVAISE_ARRIVAL_PHASE_VS_FIRST_EGG_RISKSET_V22.json'
+      - 'scripts/audit_bechervaise_season_phase_selected_entrants_v22.py'
+      - 'tests/test_bechervaise_season_phase_selected_entrants_v22.py'
+      - '.github/workflows/bechervaise-nonbreeder-stage-riskset-v22.yml'
+  pull_request:
+    paths:
+      - 'contracts/BECHERVAISE_ARRIVAL_PHASE_VS_FIRST_EGG_RISKSET_V22.json'
+      - 'scripts/audit_bechervaise_season_phase_selected_entrants_v22.py'
+      - 'tests/test_bechervaise_season_phase_selected_entrants_v22.py'
+      - '.github/workflows/bechervaise-nonbreeder-stage-riskset-v22.yml'
+jobs:
+  source-timing-negative-control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test egg timing categories and no missed eggs as failure
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_bechervaise_season_phase_selected_entrants_v22.py
+      - name: Run only synthetic seasonal entry timing and stage classification
+        run: |
+          python scripts/audit_bechervaise_season_phase_selected_entrants_v22.py \
+            --out /tmp/bechervaise_nonbreeder_gate_time_riskset_v22.json
+      - name: Assert genuine prospecting first egg hypothesis untested
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/bechervaise_nonbreeder_gate_time_riskset_v22.json'))
+          assert d['n_synthetic_tag_seasons_with_gate_in']==5
+          assert d['n_synthetic_gate_in_events']==6
+          assert d['phase_tag_season_counts']=={
+            'PRE_COLONY_FIRST_EGG':2,
+            'AFTER_FIRST_COLONY_EGG_PRE_FIRST_HATCH':1,
+            'POST_FIRST_COLONY_HATCH':2
+          }
+          assert d['prelay_observed_documented_egg_fraction']==0.5
+          assert d['all_phase_naive_documented_postgate_egg_fraction']==0.4
+          assert not d['true_same_tag_first_breeding_transition_identified']
+          assert d['source_publisher_and_methods_bechervaise_original_data_rows_read']==0
+          assert not d['new_island_ecology_causal_effect_fitted']
+          assert d['frozen_Ecology_PR189_unchanged']
+          print('TIMING_RISKSET_PASS_NO_PENGUIN_CAUSAL_FIRST_BREEDING')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bechervaise-nonbreeder-stage-timing-and-selection-qa-v22
+          path: /tmp/bechervaise_nonbreeder_gate_time_riskset_v22.json
+          retention-days: 21
