@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "scientific_stage": "SOURCE_ONLY_NO_ORIGINAL_PENGUIN_TAGS_OR_OUTCOMES_READ",
+  "id": "BECHERVAISE_RFID_GATE_TO_SAME_ID_NEST_ARRIVAL_V20",
+  "scientific_question": "Can actual marked adult entry through a Béchervaise Island gate, with time/direction and stable tag-ID, be joined within the SAME natal recipient island, individual and season to an independently recorded first nesting attempt and successful crèche?",
+  "sources": [
+    {
+      "id": "AAS_4086_Weighbridge",
+      "doi": "10.26179/1205-2s58",
+      "publisher_metadata": "https://data.aad.gov.au/metadata/records/AAS_4086_Weighbridge",
+      "NASA_CMR_STAC": "https://github.com/opengeos/NASA-CMR-STAC/blob/bcefdd27837ec23ea6d495b255419379721371cd/datasets/AAS_4086_Weighbridge_1.json",
+      "fields_advertised": [
+        "individual_rfid_tag_if_tagged",
+        "date_time_of_gate_crossing",
+        "entry_or_exit_direction",
+        "dynamic_weight"
+      ],
+      "time_range": [
+        2006,
+        2018
+      ],
+      "archival_status": "PUBLIC_METADATA_AND_UNPROCESSED_OBSERVATIONS; ORIGINAL DATA FILE DOWNLOAD LINK NOT VERIFIED",
+      "official_technical_guide_download": "https://data.aad.gov.au/eds/5228/download",
+      "technical_guide_is_animal_crossing_data": false
+    },
+    {
+      "id": "AAS_4518_MacRobertson_Land_Adelie_Penguins",
+      "doi": "10.26179/s2qa-s344",
+      "publisher_metadata": "https://researchdata.edu.au/population-counts-resights-1991-2019/3651220",
+      "official_archive_download": "https://data.aad.gov.au/eds/5516/download",
+      "fields_advertised_in_resight_XLS": [
+        "yearly_source_file",
+        "observed_resighting_date",
+        "individual_tag_number"
+      ],
+      "resights_noted_as": "tag reader scanning at nests over Béchervaise Island; number of scanned nonbreeders NOT described as complete census",
+      "resight_file_example": "2003_04 resights.xls",
+      "ecological_aggregate_variables": [
+        "chick_success_per_occupied_nest",
+        "five_previous_years_chick_productivity",
+        "date_adjusted_fledging_mass",
+        "seasonal_regional_ice_cover",
+        "age_of_first_nesting"
+      ],
+      "archival_status": "PUBLIC_METADATA_AND_FILE_LIST; ORIGINAL CSV/XLS SHEET CONTENT_UNVERIFIED"
+    }
+  ],
+  "cross_source_possible_overlap": [
+    2006,
+    2018
+  ],
+  "physical_geography": {
+    "gate_risk_frame": "one fenced group of breeding subcolonies on Béchervaise Island with marked/unmarked tags and direction/weight; DOES NOT sample every adult visiting entire island",
+    "historical_other_islands": "Welch, Verner, Petersen/Peterson and Klung island hand-tag searches mentioned by obsolete indicator; their raw ID-year crosswalk not established in latest weighbridge-resight source",
+    "original_nest_geometry": "2002/03 colony K L Q physical nest layer exists DOI 10.4225/15/595350e32bffc, but nest number/tag color not proven same as penguin RFID individual",
+    "region": "Mac. Robertson Land East Antarctica, DIFFERENT from Ross Island Cape Royds and Crozier"
+  },
+  "peer_review_vetoes": [
+    "Emmerson & Southwell 2022 Global Change Biology 10.1111/gcb.16437 already reports 154000 breeding-bird drop associated with near-shore sea ice and inverse density-dependent fledgling survival/cohort size; do NOT relabel as new mechanistic discovery",
+    "Bechervaise automated radio tags 1990/91 as method and original data; first-nesting age and re-sights included in published models",
+    "Tracking all at-sea foraging paths is not required if fixed gate detects visitors, but tag presence near one subcolony is NOT independent all-colony arrival count"
+  ],
+  "source_protocol": [
+    "Download/inspect public publisher metadata and original official file URLs only. Never infer weighbridge raw data URL from a technical guide endpoint.",
+    "Official AADC HTTPS only; no insecure HTTP downgrades or substituted mirror. Reject JS app HTML, login forms or guessed file_ids as source data.",
+    "Never read original tag ID records until original technical guide confirms field coding, tag ID normalization, and deployment coverage.",
+    "Do not link tag numbers across distinct publications unless data custodian confirms code systems were stable and identical; tag reuse, quality codes, implausible timestamps and duplicated crossings must be QC'd.",
+    "Track at-risk admissions separately from transits, feeding returns and already established breeders; multiple crossings from one penguin are NOT multiple arrivals or independent individuals.",
+    "Breeding resight at a nest is a verified breeder only with independently measured egg or chick, not automatically every tag read.",
+    "Failure to resight an entrant on an observed nest is UNKNOWN / detection-limited, NOT confirmed no egg or death.",
+    "Original marked-colony gate covers specific subcolonies on ONE island; other islands need their own effort and ID-preserving visits before making an inter-island claim.",
+    "No additional field biological effect fits, no p-values, no changes to Ecology PR189, locked PR142 or emperor PR195."
+  ],
+  "estimand_if_joint_sources_confirmed": "Among observed tagged individual gate entrants who were not established breeding earlier that season, proportion with own same-season independently confirmed first egg; adjust for missed gate scans and nest searches. Later additionally crèche success and origin.",
+  "minimal_joint_join_fields": [
+    "PIT_tag_original_with_stable_encoding",
+    "austral_breeding_season",
+    "date_of_first_true_entrance_or_visit",
+    "nest_observation_date",
+    "egg_or_nest_active_state_by_same_ID",
+    "nest_observer_effort"
+  ],
+  "currently_identified": {
+    "original_weighbridge_file_download_verified": false,
+    "original_resights_file_download_verified": false,
+    "stable_animal_ID_join_verified": false,
+    "all_candidate_nonbreeders_at_risk_sampled": false,
+    "live_birth_or_chick_outcome_matched": false,
+    "novel_causal_adaptive_memory_mechanism_found": false
+  },
+  "decision": "HOLD_SOURCE_DATA_TECHNICAL_PROCESSING_AND_TAG_ID_EXACT_CROSSWALK",
+  "animal_observation_rows_read": 0,
+  "cause_model_fitted": false,
+  "Ecology_PR189_frozen": true,
+  "USAP_PR142_frozen": true,
+  "emperor_PR195_unchanged": true
+}
