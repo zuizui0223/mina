@@ -63,6 +63,51 @@ def scenario(hi,lo,label):
         "real_outcome_to_outcome_causal_memory":0,
     }
 
+def first_order_likelihood(seq,initial_success,p_after_success,p_after_failure):
+    """FIRST ORDER only: each next state depends on immediately prior state
+    and fixed individual transition type, never second-lag state."""
+    if not (0<initial_success<1 and 0<p_after_success<1 and 0<p_after_failure<1):
+        raise ValueError("Transition probabilities must be proper")
+    if len(seq)<2 or any(y not in (0,1) for y in seq):
+        raise ValueError("Need fully observed binary breeding attempts")
+    value=initial_success if seq[0] else (1-initial_success)
+    for prev,next_state in zip(seq[:-1],seq[1:]):
+        q=p_after_success if prev else p_after_failure
+        value*=q if next_state else (1-q)
+    return value
+
+def heterogeneous_first_order_null():
+    """A latent MIXTURE of strictly first-order types creates apparent
+    second-lag predictability when histories carry information about the
+    individual-specific first-order Markov transition matrix."""
+    types={
+        "persistent": {"initial_success":.5,"p_after_success":.9,"p_after_failure":.1},
+        "flat": {"initial_success":.5,"p_after_success":.5,"p_after_failure":.5},
+    }
+    report={}
+    for label,hist in (("101",HISTORY_A),("011",HISTORY_B)):
+        la=first_order_likelihood(hist,**types["persistent"])
+        lb=first_order_likelihood(hist,**types["flat"])
+        post=la/(la+lb)
+        nextval=post*types["persistent"]["p_after_success"]+(1-post)*types["flat"]["p_after_success"]
+        report[label]={
+            "history":list(hist),
+            "posterior_persistent_first_order_type":post,
+            "next_success_probability":nextval,
+            "true_direct_second_lag_coefficient":0
+        }
+    return {
+        "source_free_null_model":"HETEROGENEOUS_FIRST_ORDER_MARKOV_WITH_ZERO_DIRECT_SECOND_LAG",
+        "type_transition_parameters":types,
+        "two_histories_same_success_count_and_current_state":True,
+        "history_101":report["101"],
+        "history_011":report["011"],
+        "apparent_next_success_difference_011_minus_101":(
+            report["011"]["next_success_probability"]-report["101"]["next_success_probability"]),
+        "within_each_individual_only_first_order_breeding_state_matters":True,
+        "actual_penguin_outcomes_read":0
+    }
+
 def analyze():
     fixed=scenario([.8]*4,[.2]*4,"STATIC_BIRD_QUALITY_IID_BERNOULLI")
     # Type-specific intercept plus same year shock at each occasion.
@@ -76,6 +121,8 @@ def analyze():
         [.75,.45,.65,.75],[.45,.75,.65,.25],
         "FIXED_QUALITY_TYPE_BY_YEAR_INTERACTION_BUT_NO_CAUSAL_REPRODUCTIVE_MEMORY"
     )
+    markov=heterogeneous_first_order_null()
+    assert abs(markov["apparent_next_success_difference_011_minus_101"]-0.09049773755656121)<1e-12
     for s in (fixed,additive,interaction):
         if s["real_outcome_to_outcome_causal_memory"]!=0:
             raise ValueError("The mathematical controls must have zero state carry-over")
@@ -91,6 +138,8 @@ def analyze():
         "quality_iid":fixed,
         "quality_additive_year":additive,
         "quality_interacting_year":interaction,
+        "heterogeneous_first_order_transition":markov,
+        "first_order_heterogeneity_also_mimics_second_order_memory":True,
         "fixed_iid_order_permutations_exchangeable_given_count":True,
         "additive_logit_year_intercept_quality_order_posterior_invariant_given_count":True,
         "quality_by_year_interaction_induces_order_dependence_without_any_carryover":True,
@@ -116,6 +165,10 @@ def main():
               "NEXT_101",round(z["next_success_given_101"],9),
               "NEXT_011",round(z["next_success_given_011"],9),
               "DIFF",round(z["apparent_order_difference"],9))
+    z=r["heterogeneous_first_order_transition"]
+    print("NULL_HETEROGENEOUS_MARKOV_NEXT_101",round(z["history_101"]["next_success_probability"],9),
+          "NEXT_011",round(z["history_011"]["next_success_probability"],9),
+          "DIFF_011_MINUS_101",round(z["apparent_next_success_difference_011_minus_101"],9))
     print("ACTUAL_PENGUIN_HISTORY_ROWS_READ",r["individual_penguin_source_data_rows_read"])
     print("CAUSAL_MEMORY_FOUND",False)
 
