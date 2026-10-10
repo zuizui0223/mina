@@ -49,5 +49,47 @@
   "source_validation_workflow_only": true,
   "new_biological_effects_fitted": 0,
   "frozen_pr189_untouched": true,
-  "pr142_source_authentication_unmodified": true
+  "pr142_source_authentication_unmodified": true,
+  "source_gate_result_before_colony_values_exposed": {
+    "source_md5_verified": true,
+    "source_colonies": 39,
+    "source_year_columns": 44,
+    "source_blank_cells": 1192,
+    "source_nonblank_cells": 524,
+    "cape_barne_in_roster": false,
+    "workflow": "https://github.com/zuizui0223/mina/actions/runs/38014817117"
+  },
+  "fixed_next_source_readouts_before_new_values": {
+    "focal_names": [
+      "Cape Royds",
+      "Cape Crozier",
+      "Cape Bird"
+    ],
+    "historical_comparison_periods": [
+      "1996-2000",
+      "2001-2005",
+      "2006-2010",
+      "2011-2015",
+      "2016-2020",
+      "2021-2024"
+    ],
+    "site_coverage": [
+      "first_recorded_year",
+      "last_recorded_year",
+      "number_of_nonmissing_annual_surveys",
+      "number_of_consecutive_pairwise_survey_years"
+    ],
+    "year_coverage": [
+      "number_of_surveyed_colonies",
+      "number_explicit_zero",
+      "number_unresolved_non_numeric"
+    ],
+    "data_quality": [
+      "rows_without_strict_39_site_membership",
+      "recorded zero distinct from missing",
+      "any source codebook ambiguity"
+    ],
+    "interpretation": "Sampling support and raw pair counts only. Do not infer actual immigration, individual survival, reproductive success, causal recovery or Cape Barne zero counts.",
+    "heldout_status": "No new confirmatory fitted model can be constructed until the numeric source coverage is established."
+  }
 }
