@@ -29,7 +29,9 @@ class OnlyOfficialHTTPSRedirects(HTTPRedirectHandler):
     def redirect_request(self,req,fp,code,msg,headers,newurl):
         parsed=urlparse(newurl)
         if parsed.scheme!="https" or parsed.hostname not in ALLOWED_HOSTS:
-            raise ValueError("Unofficial or non-HTTPS AADC redirect blocked")
+            # Report origin only, not query parameters or any token-bearing URI.
+            raise ValueError("Unofficial or non-HTTPS AADC redirect blocked: "+
+                             parsed.scheme+"://"+str(parsed.hostname or ""))
         return super().redirect_request(req,fp,code,msg,headers,newurl)
 
 def _official(uri):
