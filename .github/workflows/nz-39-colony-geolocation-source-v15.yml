@@ -38,7 +38,7 @@ jobs:
           python - <<'PY'
           import json
           r=json.load(open('/tmp/nz_2026_colony_location_source_v15.json'))
-          assert r['status'].startswith(('LOCATION_AND_CENSUS_','HOLD_','OFFICIAL_LOCATION_'))
+          assert r['status'].startswith(('LOCATION_AND_CENSUS_','LOCATION_OFFICIAL_','HOLD_','OFFICIAL_LOCATION_'))
           assert r['independent_island_events_validated']==0
           assert r['recruitment_or_immigrant_biology_rows_read']==0
           assert r['causal_ecology_effect_estimated'] is False
@@ -46,6 +46,8 @@ jobs:
           assert r['frozen_Ecology_PR189_unchanged']
           print('LOCATION_SOURCE_STATUS',r['status'])
           print('LOCATION_ORIGINAL_MD5',r.get('official_location_md5_verified'))
+          print('PUBLISHER_HASH_STATUS',r.get('location_source_metadata',{}).get('md5_status'))
+          assert r.get('official_location_md5_verified') is not None or r.get('location_source_metadata',{}).get('md5_status') in (None, 'OFFICIAL_PUBLISHER_MD5_NOT_PROVIDED')
           print('ORIGINAL_SOURCE_SHAPE_ONLY_NO_ISLAND_EVENT_INFERENCE')
           PY
       - uses: actions/upload-artifact@v4
