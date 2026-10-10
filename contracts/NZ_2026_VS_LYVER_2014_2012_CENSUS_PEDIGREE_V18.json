@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "stage": "POST_PUBLICATION_SOURCE_OVERLAP_AUDIT_NOT_NEW_ECOLOGICAL_OUTCOMES",
+  "source_2026": {
+    "doi": "10.7931/kf06-x745",
+    "official_md5": "195a9027a0d18012812b09fb345ac60e",
+    "year_to_compare": 2012,
+    "source_subsites": "Cape Bird Middle/North/South; Cape Crozier East/West; Cape Royds"
+  },
+  "historic_publication": {
+    "title": "Lyver et al 2014 Trends in the Breeding Population of Adelie Penguins in the Ross Sea, 1981–2012",
+    "doi": "10.1371/journal.pone.0091188",
+    "published_2012_aggregation": {
+      "Cape Royds": 3083,
+      "Cape Bird": 75696,
+      "Cape Crozier": 272340
+    },
+    "source": "publication Table 1 2012 count column (parentheses); the published original data may be reproduced exactly in the 2026 compiled source"
+  },
+  "test": {
+    "Ross Bird aggregation": "sum 2012 counts for Bird North, Middle, South only; all three original source cells must be numeric",
+    "Ross Crozier aggregation": "sum 2012 original source Crozier East + West; both real numeric cells required",
+    "Royds": "direct 2012 original source Cape Royds numeric cell",
+    "match": "exact count match to 2014 published original 2012 aggregates; do not claim all rows independent",
+    "scientific_scope": "source pedigree/independence gate, not hypothesis test of iceberg recolonization or dispersal",
+    "negative_case": "if any mismatch, hold; do not silently correct source records or invent authors' source data"
+  },
+  "prior_art_veto": [
+    "Lyver 2014 already reported 2012 Ross Island counts",
+    "LaRue 2013 Beaufort habitat expansion/emigration",
+    "Dugger 2010 measured iceberg-era breeder dispersal"
+  ],
+  "outcomes_already_exposed": true,
+  "no_model_pvalue_or_new_ecological_effect": true,
+  "frozen_ecology_pr189_untouched": true,
+  "frozen_usap_pr142_untouched": true
+}
