@@ -35,8 +35,8 @@ def test_exact_site_keys_keep_geographical_parent_descriptors():
     assert z["only_in_location_not_census"]==["Site Orphan"]
     assert z["only_in_census_not_location"]==[]
     assert z["parent_geographic_descriptor_membership"]["Ross Island"]==["Cape Bird Middle"]
-    assert z["status"].startswith("PARTIAL_")
-    assert not z["exact_name_crosswalk_complete"]
+    assert z["status"].startswith("EXACT_")
+    assert z["exact_name_crosswalk_complete"]
     assert z["all_39_census_site_numeric_coverage_by_selected_year"]=={"1999":1,"2001":2,"2005":3,"2024":3}
     assert z["matched_2024_parent_geographic_descriptors"]==["Ross Island","Southern Ross Sea"]
     assert z["2024_geographic_outgroup_for_Ross_with_numeric_census_exists"]
@@ -62,3 +62,16 @@ def test_contract_no_fabricated_39_separate_islands():
     assert c["source_missing_value_not_zero"]
     assert c["Ecology_PR189_unchanged"]
     assert c["USAP_PR142_unchanged"]
+
+def test_census_only_unmatched_name_returns_partial_source_not_fuzzy_island():
+    loc={"beaufort island":{"site":"Beaufort Island","parent_geographic_descriptor":"Southern Ross Sea","lat":-77,"lon":167}}
+    census={
+        "beaufort island":{"name":"Beaufort Island","values":{1999:1,2001:2,2005:3,2024:4}},
+        "beaufort island new":{"name":"Beaufort Island New","values":{1999:1,2001:2,2005:3,2024:4}}
+    }
+    z=m.compare(loc,census)
+    assert z["status"].startswith("PARTIAL_")
+    assert not z["exact_name_crosswalk_complete"]
+    assert z["only_in_census_not_location"]==["Beaufort Island New"]
+    assert z["literal_name_matched_sites"]==1
+    assert z["all_39_census_site_numeric_coverage_by_selected_year"]["2024"]==2
