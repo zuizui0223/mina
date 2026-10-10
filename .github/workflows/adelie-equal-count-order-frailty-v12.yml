@@ -1,0 +1,56 @@
+name: Equal-count reproductive history order vs hidden individual quality
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ADELIE_SEQUENCE_ORDER_VS_QUALITY_YEAR_INTERACTION_GATE_V12.json'
+      - 'scripts/audit_adelie_equal_count_order_frailty_v12.py'
+      - 'tests/test_adelie_equal_count_order_frailty_v12.py'
+      - '.github/workflows/adelie-equal-count-order-frailty-v12.yml'
+  pull_request:
+    paths:
+      - 'contracts/ADELIE_SEQUENCE_ORDER_VS_QUALITY_YEAR_INTERACTION_GATE_V12.json'
+      - 'scripts/audit_adelie_equal_count_order_frailty_v12.py'
+      - 'tests/test_adelie_equal_count_order_frailty_v12.py'
+      - '.github/workflows/adelie-equal-count-order-frailty-v12.yml'
+jobs:
+  no-false-memory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test equal-success-count memory nulls without penguin records
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_adelie_equal_count_order_frailty_v12.py
+      - name: Reproduce order-invariant simple frailty and false signal with year interactions
+        run: |
+          python scripts/audit_adelie_equal_count_order_frailty_v12.py \
+            --out /tmp/adelie_history_order_vs_quality_year_exact_v12.json
+      - name: Enforce no animal source or new causal penguin inference
+        run: |
+          python - <<'PY'
+          import json
+          z=json.load(open('/tmp/adelie_history_order_vs_quality_year_exact_v12.json'))
+          assert z['shared_history_length']==3
+          assert z['shared_history_successes']==2
+          assert abs(z['quality_iid']['apparent_order_difference'])<1e-12
+          assert abs(z['quality_additive_year']['apparent_order_difference'])<1e-12
+          assert abs(z['quality_interacting_year']['apparent_order_difference']-2/7)<1e-12
+          assert z['quality_interacting_year']['real_outcome_to_outcome_causal_memory']==0
+          assert z['individual_penguin_source_data_rows_read']==0
+          assert z['new_Crozier_cohort_outcomes_fitted']==0
+          assert z['Ecology_PR189_unmodified']
+          print('EQUAL_COUNT_FRAILTY_NULLS_PASS_CAUSAL_HISTORY_UNIDENTIFIED')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exact-history-order-quality-year-negative-controls-v12
+          path: /tmp/adelie_history_order_vs_quality_year_exact_v12.json
+          retention-days: 30
