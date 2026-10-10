@@ -35,6 +35,11 @@ def test_exact_site_keys_keep_geographical_parent_descriptors():
     assert z["only_in_location_not_census"]==["Site Orphan"]
     assert z["only_in_census_not_location"]==[]
     assert z["parent_geographic_descriptor_membership"]["Ross Island"]==["Cape Bird Middle"]
+    assert z["status"].startswith("PARTIAL_")
+    assert not z["exact_name_crosswalk_complete"]
+    assert z["all_39_census_site_numeric_coverage_by_selected_year"]=={"1999":1,"2001":2,"2005":3,"2024":3}
+    assert z["matched_2024_parent_geographic_descriptors"]==["Ross Island","Southern Ross Sea"]
+    assert z["2024_geographic_outgroup_for_Ross_with_numeric_census_exists"]
     assert z["n_site_pairs_with_valid_both_years"]=={
       "1999_2024":1,"2001_2024":2,"2005_2024":3
     }
