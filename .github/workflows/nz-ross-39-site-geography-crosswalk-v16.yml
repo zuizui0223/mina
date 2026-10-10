@@ -1,0 +1,62 @@
+name: Ross Sea 2026 matched colony geography and survey support
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ROSS_NZ_COLONY_GEO_CROSSWALK_AND_PARENT_UNIT_V16.json'
+      - 'scripts/audit_nz_2026_ross_geographic_parent_support_v16.py'
+      - 'tests/test_nz_2026_ross_geographic_parent_support_v16.py'
+      - '.github/workflows/nz-ross-39-site-geography-crosswalk-v16.yml'
+  pull_request:
+    paths:
+      - 'contracts/ROSS_NZ_COLONY_GEO_CROSSWALK_AND_PARENT_UNIT_V16.json'
+      - 'scripts/audit_nz_2026_ross_geographic_parent_support_v16.py'
+      - 'tests/test_nz_2026_ross_geographic_parent_support_v16.py'
+      - '.github/workflows/nz-ross-39-site-geography-crosswalk-v16.yml'
+jobs:
+  original-source-geographic-units:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test literal site IDs, source DMS and duplicate coordinate guards
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_nz_2026_ross_geographic_parent_support_v16.py
+      - name: Fetch two separate official NZ 2026 source workbooks with recorded checksums
+        run: |
+          python scripts/audit_nz_2026_ross_geographic_parent_support_v16.py \
+            --out /tmp/nz2026_39site_geo_source_v16.json
+      - name: Prohibit site counts as independent islands and geographic movement inferences
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/nz2026_39site_geo_source_v16.json'))
+          assert x['no_immigration_recruitment_fitness_or_causal_effect_fitted']
+          assert x['source_date_gaps_remain_missing_not_zero']
+          assert x['PR189_unmodified']
+          assert x['status'].startswith(('EXACT_AUTHOR_2026_','HOLD_'))
+          if x['status'].startswith('EXACT_'):
+              assert x['original_census_publisher_MD5_verified']
+              assert x['published_2026_count_sites']==39
+              assert x['official_location_rows']==40
+              assert len(x['parent_geographic_descriptor_membership'])>=2
+              assert x['geographic_descriptor_archipelago_or_peninsula_not_equated_to_island']
+              assert x['true_geographic_independent_island_count_confirmed'] is None
+          print('SITE_GEO_CROSSWALK',x['status'])
+          print('SOURCE_SITES_MAPPED',x.get('literal_name_matched_sites'))
+          print('NO_INTER_ISLAND_COLONIST_CAUSAL_INFERENCE')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: NZ-2026-39-census-vs-40-publisher-geo-site-source
+          path: /tmp/nz2026_39site_geo_source_v16.json
+          retention-days: 30
+          if-no-files-found: ignore
