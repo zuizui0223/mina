@@ -23,7 +23,7 @@ ATTENDANCE_CODES={"0":"NO_ADULT_VISIBLE_AT_SELECTED_NEST",
                   "5":"CONFIRMED_NEST_FAILURE_TERMINAL_EVENT_NOT_ADULT_COUNT"}
 
 def classify_attendance_maxn(value):
-    s=str(value or "").strip()
+    s="" if value is None else str(value).strip()
     if s in ATTENDANCE_CODES:return ATTENDANCE_CODES[s]
     if not s:return "UNKNOWN_OR_MISSING_ATTENDANCE"
     return "HOLD_UNDOCUMENTED_CODE"
