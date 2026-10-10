@@ -43,6 +43,9 @@ jobs:
           assert d['same_named_site_count']==6
           assert d['source_explicit_zeros']==2
           assert d['source_missing_entries']==1192
+          assert d['source_2020_n_valid_colony_counts']==0
+          assert d['ross_royds_2024_share_relative_to_1999']<0.60
+          assert d['Crozier_West_fraction_of_total_net_1999_2024_gain']>0.80
           assert d['single_Ross_Island_six_subsites_not_six_independent_islands']
           assert d['regional_pair_growth_not_individual_migration']
           assert not d['georeferenced_2024_Cape_Barne_census_observation']
