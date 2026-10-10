@@ -41,12 +41,16 @@ jobs:
           assert x['no_immigration_recruitment_fitness_or_causal_effect_fitted']
           assert x['source_date_gaps_remain_missing_not_zero']
           assert x['PR189_unmodified']
-          assert x['status'].startswith(('EXACT_AUTHOR_2026_','HOLD_'))
-          if x['status'].startswith('EXACT_'):
+          assert x['status'].startswith(('EXACT_AUTHOR_2026_','PARTIAL_','HOLD_'))
+          if x['status'].startswith(('EXACT_','PARTIAL_')):
               assert x['original_census_publisher_MD5_verified']
               assert x['published_2026_count_sites']==39
               assert x['official_location_rows']==40
               assert len(x['parent_geographic_descriptor_membership'])>=2
+              assert x['all_39_census_site_numeric_coverage_by_selected_year']['2024']<=39
+              assert x['source_date_gaps_remain_missing_not_zero']
+              assert x['literal_name_matched_sites']<=39
+              assert len(x['all_39_census_site_names_with_numeric_records_by_year']['2024'])==x['all_39_census_site_numeric_coverage_by_selected_year']['2024']
               assert x['geographic_descriptor_archipelago_or_peninsula_not_equated_to_island']
               assert x['true_geographic_independent_island_count_confirmed'] is None
           print('SITE_GEO_CROSSWALK',x['status'])
