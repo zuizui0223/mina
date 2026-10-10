@@ -117,11 +117,25 @@ def compare(loc,census):
         {"coordinate_approx":list(pos),"site_labels":sorted(sites)}
         for pos,sites in coord.items() if len(sites)>1
     ]
+    all_census_numeric_counts_by_year={
+        str(year):sum(census[k]["values"][year] is not None for k in census)
+        for year in YEARS
+    }
+    all_census_numeric_site_names_by_year={
+        str(year):sorted(census[k]["name"] for k in census
+                         if census[k]["values"][year] is not None)
+        for year in YEARS
+    }
+    matched_2024_sites=[k for k in matched if census[k]["values"][2024] is not None]
+    matched_2024_parent_descriptors=sorted(set(
+        loc[k]["parent_geographic_descriptor"] for k in matched_2024_sites))
     paircounts={f"{a}_{b}":sum(
        census[k]["values"][a] is not None and census[k]["values"][b] is not None
        for k in matched) for a,b in [(1999,2024),(2001,2024),(2005,2024)]}
     return {
-        "status":"EXACT_AUTHOR_2026_LOCATION_COUNTS_CROSSWALK_GEOGRAPHY_NOT_CAUSAL",
+        "status":("EXACT_AUTHOR_2026_LOCATION_COUNTS_CROSSWALK_GEOGRAPHY_NOT_CAUSAL"
+                  if len(census_only)==0 else
+                  "PARTIAL_LITERAL_SOURCE_NAME_CROSSWALK_NO_GUESSED_SYNONYMS"),
         "published_2026_count_sites":len(census),
         "official_location_rows":len(loc),
         "literal_name_matched_sites":len(matched),
@@ -136,6 +150,12 @@ def compare(loc,census):
            p:{str(yr):vals for yr,vals in sorted(y.items())}
            for p,y in sorted(year_by_parent.items())},
         "n_site_pairs_with_valid_both_years":paircounts,
+        "all_39_census_site_numeric_coverage_by_selected_year":all_census_numeric_counts_by_year,
+        "all_39_census_site_names_with_numeric_records_by_year":all_census_numeric_site_names_by_year,
+        "matched_2024_parent_geographic_descriptors":matched_2024_parent_descriptors,
+        "2024_geographic_outgroup_for_Ross_with_numeric_census_exists":any(
+            x!="Ross Island" for x in matched_2024_parent_descriptors),
+        "exact_name_crosswalk_complete":len(census_only)==0 and len(matched)==len(census),
         "true_geographic_independent_island_count_confirmed":None,
         "geographic_descriptor_archipelago_or_peninsula_not_equated_to_island":True,
         "source_coordinate_identity_not_site_boundary_or_colony_migration":True,
@@ -183,6 +203,10 @@ def main():
     print("PARENT_DESCRIPTOR_MEMBERSHIP",json.dumps({k:len(v) for k,v in z.get("parent_geographic_descriptor_membership",{}).items()},ensure_ascii=False))
     print("SOURCE_COORDINATE_COLLISIONS",json.dumps(z.get("distinct_site_labels_with_identical_source_representative_DMS",[]),ensure_ascii=False))
     print("MATCHED_PERIOD_SITE_SUPPORT",z.get("n_site_pairs_with_valid_both_years"))
+    print("ALL_39_YEAR_COVERAGE",z.get("all_39_census_site_numeric_coverage_by_selected_year"))
+    print("ALL_39_YEAR_SITES",json.dumps(z.get("all_39_census_site_names_with_numeric_records_by_year",{}),ensure_ascii=False))
+    print("MATCHED_2024_SOURCE_PARENT",z.get("matched_2024_parent_geographic_descriptors"))
+    print("2024_NON_ROSS_GEO_OUTGROUP",z.get("2024_geographic_outgroup_for_Ross_with_numeric_census_exists"))
     print("SOURCE_ERROR",z.get("error_type",""),z.get("error_message",""))
     print("ISLAND_IMMIGRATION_CAUSAL_RESULT",False)
 if __name__=="__main__":main()
