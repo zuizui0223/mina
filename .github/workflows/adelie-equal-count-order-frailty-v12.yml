@@ -44,6 +44,9 @@ jobs:
           assert abs(z['quality_additive_year']['apparent_order_difference'])<1e-12
           assert abs(z['quality_interacting_year']['apparent_order_difference']-2/7)<1e-12
           assert z['quality_interacting_year']['real_outcome_to_outcome_causal_memory']==0
+          assert abs(z['heterogeneous_first_order_transition']['apparent_next_success_difference_011_minus_101']-0.09049773755656121)<1e-12
+          assert z['heterogeneous_first_order_transition']['history_101']['true_direct_second_lag_coefficient']==0
+          assert z['first_order_heterogeneity_also_mimics_second_order_memory']
           assert z['individual_penguin_source_data_rows_read']==0
           assert z['new_Crozier_cohort_outcomes_fitted']==0
           assert z['Ecology_PR189_unmodified']
