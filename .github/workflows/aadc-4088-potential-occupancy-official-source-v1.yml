@@ -1,0 +1,57 @@
+name: East Antarctica AADC potential site vs occupancy official source gate
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/AADC_4088_POTENTIAL_SITES_VS_OCCUPANCY_SOURCE_GATE_V1.json'
+      - 'scripts/probe_aadc_4088_potential_vs_occupancy_source_v1.py'
+      - 'tests/test_aadc_4088_potential_vs_occupancy_source_v1.py'
+      - '.github/workflows/aadc-4088-potential-occupancy-official-source-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_4088_POTENTIAL_SITES_VS_OCCUPANCY_SOURCE_GATE_V1.json'
+      - 'scripts/probe_aadc_4088_potential_vs_occupancy_source_v1.py'
+      - 'tests/test_aadc_4088_potential_vs_occupancy_source_v1.py'
+      - '.github/workflows/aadc-4088-potential-occupancy-official-source-v1.yml'
+jobs:
+  source-manifest-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify official source host/size and non-biological guards
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_aadc_4088_potential_vs_occupancy_source_v1.py
+      - name: Inspect AADC official archive headers and metadata only
+        run: |
+          python scripts/probe_aadc_4088_potential_vs_occupancy_source_v1.py \
+            --out /tmp/aadc_4088_source_archive_shape.json
+      - name: Preserve causal and spatial-grain stop decision
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/aadc_4088_source_archive_shape.json'))
+          assert x['source_rows_read']==0
+          assert not x['cross_site_occupancy_join_verified']
+          assert not x['subcolony_or_nest_success_data_joined']
+          assert not x['new_causal_island_biogeography_test_completed']
+          assert x['potential_sites_are_islands_or_rock_outcrops_not_individual_nests']
+          assert x['frozen_Ecology_PR189_untouched']
+          for name,item in x['source_records'].items():
+              print('SOURCE',name,'STATUS',item['status'])
+          print('AADC_STRUCTURE_ONLY_SUCCESS_NOT_A_NEW_PENGUIN_CAUSAL_RESULT')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: east-antarctic-potential-island-vs-occupancy-source-manifests
+          path: /tmp/aadc_4088_source_archive_shape.json
+          retention-days: 30
+          if-no-files-found: ignore
