@@ -1,0 +1,56 @@
+name: NZ 2026 original 2012 Ross counts versus Lyver 2014 source lineage
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/NZ_2026_VS_LYVER_2014_2012_CENSUS_PEDIGREE_V18.json'
+      - 'scripts/audit_nz_2026_vs_lyver_2014_census_pedigree_v18.py'
+      - 'tests/test_nz_2026_vs_lyver_2014_census_pedigree_v18.py'
+      - '.github/workflows/nz2026-vs-lyver2014-census-source-lineage-v18.yml'
+  pull_request:
+    paths:
+      - 'contracts/NZ_2026_VS_LYVER_2014_2012_CENSUS_PEDIGREE_V18.json'
+      - 'scripts/audit_nz_2026_vs_lyver_2014_census_pedigree_v18.py'
+      - 'tests/test_nz_2026_vs_lyver_2014_census_pedigree_v18.py'
+      - '.github/workflows/nz2026-vs-lyver2014-census-source-lineage-v18.yml'
+jobs:
+  old-vs-new-source-lineage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test exact publication source lineage and no independent survey inference
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_nz_2026_vs_lyver_2014_census_pedigree_v18.py
+      - name: Fetch publisher-authenticated NZ original 2026 Ross pair census and compare 2012 columns
+        run: |
+          python scripts/audit_nz_2026_vs_lyver_2014_census_pedigree_v18.py \
+            --out /tmp/nz_2026_vs_lyver_2014_same_2012_counts_v18.json
+      - name: Never relabel already published observations as independent evidence
+        run: |
+          python - <<'PY'
+          import json
+          z=json.load(open('/tmp/nz_2026_vs_lyver_2014_same_2012_counts_v18.json'))
+          assert z['no_new_causal_penguin_island_ecology_result']
+          assert z['PR189_science_frozen']
+          if z['status']=="SAME_PUBLISHED_2012_CENSUS_AGGREGATES_REPRODUCED":
+              assert z['exact_three_aggregate_match']
+              assert z['n_2014_independent_aggregate_colony_counts_compared']==3
+              assert z['independent_archive_not_independent_census_observations']
+              assert not z['2026_independent_2012_new_measurement_claim_supported']
+          print('NZ_CENSUS_2012_SOURCE_PEDIGREE_STATUS',z['status'])
+          print('NO_INDEPENDENT_2012_PENGUIN_SURVEY_REPLICATION_CLAIM')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Ross-NZ-2026-vs-Lyver-2014-exact-2012-breeding-pair-count-lineage
+          path: /tmp/nz_2026_vs_lyver_2014_same_2012_counts_v18.json
+          retention-days: 30

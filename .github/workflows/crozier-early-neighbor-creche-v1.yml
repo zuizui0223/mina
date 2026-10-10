@@ -1,0 +1,66 @@
+name: Cape Crozier early neighbor and creche exploratory source screen
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/CAPE_CROZIER_EARLY_NEIGHBOR_CRECHE_EXPLORATORY_V1.json'
+      - 'scripts/screen_crozier_early_neighbor_creche_v1.py'
+      - 'tests/test_crozier_early_neighbor_creche_v1.py'
+      - '.github/workflows/crozier-early-neighbor-creche-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/CAPE_CROZIER_EARLY_NEIGHBOR_CRECHE_EXPLORATORY_V1.json'
+      - 'scripts/screen_crozier_early_neighbor_creche_v1.py'
+      - 'tests/test_crozier_early_neighbor_creche_v1.py'
+      - '.github/workflows/crozier-early-neighbor-creche-v1.yml'
+jobs:
+  descriptive-source-lag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check no future outcome leakage via synthetic fixtures
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_crozier_early_neighbor_creche_v1.py
+      - name: Fetch source-locked 2023 release 2021 nest checks and GPS
+        env:
+          ROOT: https://raw.githubusercontent.com/pointblue/solo_nests/04517cedac18950408abd4d0b510f4aae3447f05/data
+        run: |
+          set -e
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solonest_obs_data_entry_2122.csv" -o /tmp/crozier_2021_checks.csv
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solo_outcomes.csv" -o /tmp/crozier_2021_outcomes.csv
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solonest_initial_locations.csv" -o /tmp/crozier_2021_sites.csv
+      - name: Compute cutoff-safe exploratory social neighbor associations
+        run: |
+          python scripts/screen_crozier_early_neighbor_creche_v1.py \
+            --checks /tmp/crozier_2021_checks.csv \
+            --outcomes /tmp/crozier_2021_outcomes.csv \
+            --locations /tmp/crozier_2021_sites.csv \
+            --out /tmp/crozier_early_neighbor_creche_source_receipt.json
+      - name: Reject causal or new-paper claims
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/crozier_early_neighbor_creche_source_receipt.json'))
+          assert d['source_total_nests']==50
+          assert d['n_original_breeder_nests_in_analysis']==36
+          assert d['direct_creche_2021_nests_included']==11
+          assert set(d['cutoff_comparisons'])=={'2021-11-24','2021-12-01','2021-12-15','2021-12-22'}
+          assert d['no_causal_social_rescue_or_predation_result']
+          assert d['not_a_confirmatory_preregistered_test'] and d['no_pvalue']
+          assert d['PR189_frozen']
+          print('DATED_SOURCE_LAG_EXPLORATORY_ONLY_NO_CAUSAL_TEST_PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cape-crozier-2021-early-neighbor-confirmed-creche-exploratory
+          path: /tmp/crozier_early_neighbor_creche_source_receipt.json
+          retention-days: 30

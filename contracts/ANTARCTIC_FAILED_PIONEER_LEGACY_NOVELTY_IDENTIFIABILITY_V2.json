@@ -1,0 +1,88 @@
+{
+  "schema_version":2,
+  "date":"2026-10-10",
+  "hypothesis_id":"ANTARCTIC_FAILED_PIONEER_LEGACY_V2",
+  "research_stage":"PRIOR_ART_AND_OBSERVATIONAL_SUPPORT_AUDIT_NO_NEW_CAUSAL_OUTCOMES",
+  "direct_precursor":"contracts/ANTARCTIC_FAILED_PIONEER_SPATIAL_LEGACY_CAUSAL_GATE_V1.json",
+  "novelty_falsifiers":[
+    {
+      "claim":"Nonbreeding individuals can reoccupy breeding areas and provide defense or temporary incubation/guarding assistance",
+      "status":"PRIOR_ART",
+      "source":"Tamiya and Aoyanagi 1982 DOI 10.3312/jyio1952.14.35"
+    },
+    {
+      "claim":"Existing breeding subcolonies can occupy mounds and ridges formed by historical pebble nest and guano accumulation",
+      "status":"PRIOR_ART",
+      "source":"Schmidt et al 2021 Scientific Reports DOI 10.1038/s41598-021-94861-7"
+    },
+    {
+      "claim":"Artificially constructed suitable mounds can be followed by breeding recolonization after station cleanup",
+      "status":"PRIOR_ART",
+      "source":"Kim et al 2023 Diversity DOI 10.3390/d15010051"
+    },
+    {
+      "claim":"Conspecific reproductive outcomes can supply public information for breeding site selection",
+      "status":"PRIOR_ART",
+      "source":"Danchin Boulinier and Massot 1998 Ecology 79 2415-2428"
+    },
+    {
+      "claim":"Prior unsuccessful local pioneer nests and then nearby group formation occur in source literature",
+      "status":"ALREADY_OBSERVATION_REPORTED",
+      "source":"Penney 1968; Cox et al 2024 DOI 10.1007/s00300-024-03246-9"
+    }
+  ],
+  "three_competing_mechanisms":{
+    "H1_failed_attempt_patch_engineering":"A genuinely failed egg-laying attempt increases next-season NEW adjacent breeding over ecologically matched NEVER-USED patches by leaving persistent physical substrate, with no local chick recruitment.",
+    "H2_success_only_information":"Only patches with at least one independently confirmed successful crèche/fledge in prior season increase next-season first-settlement, consistent with settlement decisions informed by reproductive success.",
+    "H3_static_site_quality":"After matching pre-choice rocks, snow, dry substrate, aspect, historical group density, predator pressure and census effort, past local outcome classes have no distinct predictive value."
+  },
+  "minimum_discriminating_risk_set":{
+    "replicated_colony_years_min":2,
+    "matched_habitat_patches_preselected_without_2022_outcomes":true,
+    "stratum_never_used":"must be independently surveyed empty but physically usable before 2021; blank site list cannot be assumed empty",
+    "stratum_verified_failed_attempt":"at least one witnessed egg or hatch and independently documented failure, not simply no crèche observed",
+    "stratum_verified_success":"confirmed chick at crèche or fledging with documented effort",
+    "prior_cue_measurement":"record pebble mound topography, substrate, guano, visual social cues in an exposure window before new colonizers arrive",
+    "subsequent_settlement":"independently identified first breeding attempts in the same fixed 3-10m patch ring",
+    "source_origins":"marked individuals or independent first breeding status needed to distinguish recruitment, prebreeder prospectors and site fidelity",
+    "causal_exposure":"independently timed natural changes or ethical permitted interventions required before any causal label"
+  },
+  "Cox2024_available_original_release":{
+    "repo":"pointblue/solo_nests",
+    "commit":"04517cedac18950408abd4d0b510f4aae3447f05",
+    "original_location_source":"data/solonest_initial_locations.csv",
+    "original_outcome_source":"data/solo_outcomes.csv",
+    "original_location_blob":"9e2dbe1426e47d6cf2dfc84110e8204c7ba92329",
+    "original_outcome_blob":"a21648a25b12f42759ca5d5bd011ec32c36d3dfc",
+    "original_monitored_nest_sites":50,
+    "original_2021_breeders_including_poorly_sampled":37,
+    "original_2021_nonbreeders":13,
+    "original_2021_sites_never_selected_for_penguin_nesting":0,
+    "presence_of_matched_usable_never_used_patch_risk_set":"ABSENT_FROM_SOURCE_ROSTER",
+    "raw_cr_confirm_zero_not_verified_individual_fledge_failure":true,
+    "2022_nest_site_identity_vs_neighborhood_different":true,
+    "unmarked_original_solitary_parent_identity":true
+  },
+  "observational_identifiability":{
+    "positivity_for_never_used_patches":false,
+    "verified_failed_attempts_from_raw_cr_confirmation_alone":false,
+    "independent_contemporaneous_physical_legacy_exposure":false,
+    "counterfactual_H1_minus_H3_identified":false,
+    "H1_success_not_required_claim":false,
+    "generalized_island_biogeography_causal_law":false
+  },
+  "forbidden":[
+    "Do not interpret a nonbreeding territory as a verified failed nesting attempt",
+    "Do not treat cr_confirm=0 as certain biological nest failure",
+    "Do not compare only old GPS-labeled nests as if unsampled nearby open ground were surveyed negative",
+    "Do not relabel experimental artificial nesting mounds and public-information site selection as unknown 2026 mechanisms",
+    "Do not infer arrival times from observer sighting dates or origin of unbanded adjacent nesters",
+    "Do not treat a synthetic positivity diagnostic as a field estimate",
+    "Do not use 25MB unverified Ross mark-resight mirror to bypass frozen PR142 source identity",
+    "Do not alter scientific freeze PR189"
+  ],
+  "result_status":"HOLD_MISSING_NEVER_USED_PATCHES_FAILURE_FATE_AND_EXOGENOUS_EXPOSURE",
+  "outcome_rows_fitted":0,
+  "new_penguin_causal_effect":false,
+  "PR189_untouched":true
+}

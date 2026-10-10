@@ -1,0 +1,50 @@
+name: Exact noncausal reproductive history from persistent penguin quality
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'scripts/prove_reproductive_frailty_second_order_aliasing_v11.py'
+      - 'tests/test_reproductive_frailty_second_order_aliasing_v11.py'
+      - '.github/workflows/adelie-higher-order-frailty-negative-control-v11.yml'
+  pull_request:
+    paths:
+      - 'scripts/prove_reproductive_frailty_second_order_aliasing_v11.py'
+      - 'tests/test_reproductive_frailty_second_order_aliasing_v11.py'
+      - '.github/workflows/adelie-higher-order-frailty-negative-control-v11.yml'
+jobs:
+  math-control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test exact analytic quality-mixture counterexample
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_reproductive_frailty_second_order_aliasing_v11.py
+      - name: Calculate theoretical second-lag aliasing without penguin outcomes
+        run: |
+          python scripts/prove_reproductive_frailty_second_order_aliasing_v11.py \
+            --out /tmp/second_order_apparent_memory_but_fixed_quality.json
+      - name: Reject interpreting prediction as causal memory or island-wide evidence
+        run: |
+          python - <<'PY'
+          import json
+          z=json.load(open('/tmp/second_order_apparent_memory_but_fixed_quality.json'))
+          assert abs(z['apparent_old_success_bonus_given_current_success']-9/34)<1e-12
+          assert abs(z['apparent_old_success_bonus_given_current_failure']-9/34)<1e-12
+          assert z['individual_specific_state_memory_parameter']==0
+          assert z['actual_penguin_individual_records_read']==0
+          assert z['new_biological_causal_effect_estimated'] is False
+          print('FRAILTY_COUNTEREXAMPLE_PASS_NO_PENGUIN_CAUSAL_MEMORY_RESULT')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adelie-frailty-spurious-higher-order-memory-math-v11
+          path: /tmp/second_order_apparent_memory_but_fixed_quality.json
+          retention-days: 21

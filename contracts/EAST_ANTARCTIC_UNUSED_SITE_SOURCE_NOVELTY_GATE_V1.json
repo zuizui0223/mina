@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "status": "EXTERNAL_SOURCE_STRUCTURE_BEFORE_NEW_OUTCOME",
+  "purpose": "Can an independently mapped East Antarctic site-scale never-used habitat risk set support a NEW colonization mechanism after ruling out prior art, without falsely joining Cape Crozier 2021 nest patches?",
+  "originals": [
+    {
+      "id": "AADC_2016_COASTAL_POTENTIAL_SITES",
+      "doi": "10.26179/53YK-8Z83",
+      "url": "https://data.aad.gov.au/eds/4344/download",
+      "approx_lon_E": [
+        37,
+        160
+      ],
+      "unit": "individual ice-free island or coastal rocky outcrop, coastal site polygon/reference",
+      "source": "Southwell et al 2021"
+    },
+    {
+      "id": "AADC_2016_ADELIE_OCCUPANCY",
+      "doi": "10.4225/15/57590498D301C",
+      "url": "https://data.aad.gov.au/eds/4345/download",
+      "approx_lon_E": [
+        37,
+        160
+      ],
+      "years": [
+        1950,
+        2012
+      ],
+      "unit": "site x split-year breeding season, source observational presence/absence",
+      "source": "Southwell et al 2017"
+    },
+    {
+      "id": "AADC_2025_EIGHT_SPECIES_OCCUPANCY",
+      "doi": "10.26179/5n29-r073",
+      "url": "https://data.aad.gov.au/eds/5959/download",
+      "approx_lon_E": [
+        30,
+        150
+      ],
+      "years": [
+        1910,
+        2020
+      ],
+      "unit": "site x species x breeding season SEARCH EVENT, explicit presence/absence/nonreporting and absence confidence",
+      "source": "Southwell et al 2025"
+    }
+  ],
+  "cross_domain_exclusions": [
+    "Cape Crozier ~169.2 E is OUTSIDE the published source longitudinal footprint, so East Antarctic never-used site rows do NOT provide comparable unused patches around the Cox 2021/22 50 nests",
+    "2016/2025 source unit is geographically distinct rocky island/outcrop, not an individual 3-10m nest/guano patch. No nesting-fate or founder identity join",
+    "potentially suitable land is not a demonstration of weather/snow, marine access or site-specific breeding feasibility in a given season",
+    "zero current presence reports and no documented search MUST NOT be conflated with true site absence",
+    "2025 publication already investigated surveyed/unsurveyed site classes and 2017 already rejected 16/16 apparent satellite turnover events"
+  ],
+  "prior_art": {
+    "Southwell et al 2017": "doi:10.1642/AUK-16-125.1; all 16 evaluated apparent East Antarctic colonization/extinction events false",
+    "Southwell et al 2025": "doi:10.1111/ddi.70066; 248 occupied Adelie sites and 1633 conservative /3762 optimistic absent sites, 36.1% vs77.0% search effort",
+    "Cox et al 2024": "doi:10.1007/s00300-024-03246-9; 50 Cape Crozier exact nest locations, not source-compatible with AADC East Antarctic control sites"
+  },
+  "source_trial": {
+    "method": "HEAD and bounded GET, official origin only, up to 3 known URLs; inspect verified archive magic/member names or response headers, no biological event rows opened",
+    "max_initial_bytes": 65536,
+    "timeout_seconds": 12,
+    "source_links_verified_on_AADC_researchdata_landing": true
+  },
+  "data_access_not_deduction_of_habitat_occupancy": true,
+  "positive_new_causal_mechanism": false,
+  "PR189_unmodified": true,
+  "PR142_unlocked": false
+}

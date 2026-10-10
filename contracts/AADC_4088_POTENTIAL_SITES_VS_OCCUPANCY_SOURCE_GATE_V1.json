@@ -1,0 +1,63 @@
+{
+  "schema_version":1,
+  "date":"2026-10-10",
+  "contract_id":"AADC_EAST_ANTARCTICA_POTENTIAL_HABITAT_RISK_SET_SOURCE_V1",
+  "scientific_status":"PRE_OFFICIAL_FILE_DOWNLOAD_SOURCE_GATE_ONLY_NO_OCCUPANCY_OR_OUTCOME_READ",
+  "system":"East Antarctica 37-160E Adelie penguin geographic breeding sites",
+  "source_metadata":[
+    {
+      "role":"all potentially suitable coastal geographic island/outcrop sites",
+      "title":"Sites of potential habitat for breeding Adelie penguins in East Antarctica",
+      "doi":"10.4225/15/5758F4EC91665",
+      "record":"AAS_4088_Adelie_Potential_Habitats",
+      "official_download":"https://data.aad.gov.au/aadc/portal/download_file.cfm?file_id=4598",
+      "author_metadata_route":"NASA EOSDIS STAC AU_AADC AAS_4088_Adelie_Potential_Habitats_1 mirrored in opengeos/NASA-CMR-STAC",
+      "metadata_site_scale":"ice-free outcrop or island within coast eligibility, NOT individual 3-10m nesting patches"
+    },
+    {
+      "role":"breeding presence/absence historical breeding season observations",
+      "title":"Site occupancy by breeding Adelie penguins in East Antarctica",
+      "doi":"10.4225/15/57590498D301C",
+      "record":"AAS_4088_Adelie_Occupancy",
+      "official_download":"https://data.aad.gov.au/eds/4345/download",
+      "metadata_site_scale":"geographic island or outcrop; historical presence/absence and sites with breeding recorded"
+    }
+  ],
+  "scientific_prior_art_vetoes":[
+    {
+      "finding":"East Antarctic field validation showed zero of 16 proposed satellite-detected colonization/extinction events were real",
+      "source":"Southwell et al 2017 Ornithology 134 39-50 doi:10.1642/AUK-16-125.1",
+      "already_tested":true
+    },
+    {
+      "finding":"Site occupancy in east Antarctic landscape depends on region and slope using 50x50m plots; habitat effects already tested",
+      "source":"Southwell et al 2020 Density dependence forces divergent population growth rates and alters occupancy patterns doi:10.1002/ece3.6037",
+      "already_tested":true
+    }
+  ],
+  "strict_source_level_gates":[
+    "Read only official published file endpoints discovered via NASA STAC and AADC metadata; never derive or guess alternative numeric file_id",
+    "All redirects must stay within published AADC HTTPS host or explicitly recorded official host; reject login, JS HTML application shell as biological data",
+    "Limit to 12MiB input bytes per file; larger files HOLD before download, not truncate/parse as full",
+    "Only report HTTP status, content-type, content-length, sha256, ZIP member metadata or text first header, not bird statuses or records yet",
+    "No interpreting an island labeled potential habitat as an independently verified usable 3-10m nesting site",
+    "No treating lack of breeding in a year as a negative without explicit same-year adequate-survey effort and date",
+    "No using a site that was never listed as an independently surveyed absence",
+    "No introducing cross-year future outcomes into earlier risk-set feature selection",
+    "No linking historical east Antarctic island sites to 2021 Cape Crozier nest IDs (different spatial regions and sampling grains)"
+  ],
+  "positive_source_eligibility_if_both_downloads_valid":{
+    "same_stable_geographic_site_key":true,
+    "presence_absence_and_survey_date_columns_verified":true,
+    "historical_season_effort_metadata_verified":true,
+    "potential_site_list_contains sites never recorded with penguins":true,
+    "later_first_occurrences_more_than_previously_documented":true
+  },
+  "stop_result_if_files_unavailable":"HOLD_AADC_ORIGINAL_FILE_ACCESS",
+  "stop_result_if_valid_csv_but_wrong_grain":"HOLD_3_TO_10M_LEGACY_AND_FLEDGING_CAUSAL_HYPOTHESIS",
+  "status":"SOURCE_STRUCTURAL_INVENTORY_NOT_CAUSAL_TEST",
+  "outcome_records_opened":0,
+  "causal_model_fitted":false,
+  "ecology_PR189_untouched":true,
+  "resight_PR142_frozen":true
+}

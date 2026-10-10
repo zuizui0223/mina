@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "id": "BECHERVAISE_PROSPECTING_TIME_PHASE_ENTRY_RISKSET_V22",
+  "status": "PRE_IMPLEMENTATION_SYNTHETIC_PHASE_DESIGN_NO_ACTUAL_TAG_DATA",
+  "question": "Is a bird observed visiting prior to the prospective breeding/first egg period, rather than after chick hatch, and can its first-ever egg attempt be observed in a same-tag nest dataset at t+1? What is the proper denominator when late nonbreeder visits are frequent?",
+  "source_time_prior_art": [
+    {
+      "reference": "Emmerson Walsh Southwell 2019 Ecology and Evolution",
+      "doi": "10.1002/ece3.5067",
+      "observation": "Most nonbreeder weighbridge crossings occurred after chicks hatched, and only relatively few early crossings; up to 150 breeders and 50 nonbreeders per 5-day bin. Two islandwide on-nest tag scans on 23–29 Nov and 11–18 Dec detected >98% of tightly incubating birds, not all nonbreeders.",
+      "already_published": true
+    },
+    {
+      "reference": "Acker et al 2022 Journal of Animal Ecology (kittiwakes)",
+      "doi": "10.1111/1365-2656.13676",
+      "observation": "Site-quality attraction and competition influence breeding propensity and status-specific immigration/skip/prebreeder rates. Hypothesis is not novel as a general theory.",
+      "already_published": true
+    },
+    {
+      "reference": "Emmerson Southwell 2022 Global Change Biology",
+      "doi": "10.1111/gcb.16437",
+      "observation": "Sea-ice-driven reproductive collapse and size-dependent chick post-fledging survival already published.",
+      "already_published": true
+    }
+  ],
+  "safety_rules": [
+    "Only within-INDIVIDUAL season/site phase compare first gate detection (not true arrival) with locally measured earliest egg-laying date and first hatch date, both different uncertain measurements",
+    "No universal breeding-season calendar day threshold borrowed from Ross/King George; source Béchervaise site/season and study-specific dates required",
+    "Nonbreeding visitors detected AFTER first hatch do not belong to a PRE-egg at-risk gate-entrant denominator; they may prospect for NEXT season but only if tracked next year",
+    "An after-hatch adult could theoretically attempt unusually late breeding, so exclusion from prespecified conventional early first-egg cohort is an analytic definition not a proof impossible laying",
+    "Repeated passes = one tag-season observation unit; known previous breeders who skip year separated from known-age never breeders",
+    "Visible on-nest tag alone != independently egg-confirmed; direct egg date before gate invalidates gate→egg interpretation",
+    "An undetected on-nest bird is UNKNOWN after source-specific scan effort; >98% tightly incubating scan detection is NOT sensitivity for nest attendance or all visitors",
+    "Unknown tag IDs, missing dates, gate direction and ambiguous egg dates must not be converted into successes/failures",
+    "The 2019 original same-ID status analysis is prior art; late nonbreeder timing itself is published, not new",
+    "Acker 2022 competition-for-good-patches explanation is prior art even if recreated in penguins; external causal replication needed for island theory"
+  ],
+  "source_status": {
+    "original_gate_event_data_retrieved": false,
+    "original_census_nest_dates_retrieved": false,
+    "individual_tag_match_to_first_egg_verified": false,
+    "official_eds_email_access_completed": false
+  },
+  "new_estimands_only_if_sources_exist": {
+    "same_season": "P(same adult verified egg after documented EARLY gate pass | first detected pre-egg gate pass, prior attempt status known, adult-at-risk and detection modeled)",
+    "following_season": "P(first confirmed egg in season t+1 | known-age tagged juvenile at colony in season t without prior breeding, with separate early and late t visit timings, and subsequent year site search effort documented)",
+    "late_prospecting": "descriptive fraction of tagged never-breeders first seen post-hatch who return pre-egg in t+1; this is NOT a causal attractiveness effect"
+  },
+  "source_bird_records_read": 0,
+  "causal_penguin_process_discovered": false,
+  "PR189_science_frozen": true,
+  "PR142_source_locked": true,
+  "PR195_unchanged": true
+}

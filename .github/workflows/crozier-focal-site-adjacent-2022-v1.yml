@@ -1,0 +1,74 @@
+name: Crozier 2022 focal nest versus adjacent site activity
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/CROZIER_FOCAL_SITE_VS_NEIGHBORHOOD_RECRUITMENT_V1.json'
+      - 'scripts/audit_crozier_focal_vs_adjacent_nesting_v1.py'
+      - 'tests/test_crozier_focal_vs_adjacent_nesting_v1.py'
+      - '.github/workflows/crozier-focal-site-adjacent-2022-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/CROZIER_FOCAL_SITE_VS_NEIGHBORHOOD_RECRUITMENT_V1.json'
+      - 'scripts/audit_crozier_focal_vs_adjacent_nesting_v1.py'
+      - 'tests/test_crozier_focal_vs_adjacent_nesting_v1.py'
+      - '.github/workflows/crozier-focal-site-adjacent-2022-v1.yml'
+jobs:
+  source-units:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test source occupation versus adjacent nest units
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_crozier_focal_vs_adjacent_nesting_v1.py
+      - name: Fetch release pinned Cox author source
+        env:
+          ROOT: https://raw.githubusercontent.com/pointblue/solo_nests/04517cedac18950408abd4d0b510f4aae3447f05/data
+        run: |
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solo_outcomes.csv" -o /tmp/crozier_source_outcomes.csv
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solonest_initial_locations.csv" -o /tmp/crozier_source_gps.csv
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solonest_obs_data_entry_2223.csv" -o /tmp/crozier_source_2022check.csv
+      - name: Audit focal reoccupancy separately from nearby new nests
+        run: |
+          python scripts/audit_crozier_focal_vs_adjacent_nesting_v1.py \
+            --outcomes /tmp/crozier_source_outcomes.csv \
+            --sites /tmp/crozier_source_gps.csv \
+            --followup /tmp/crozier_source_2022check.csv \
+            --out /tmp/crozier_2022_focal_neighbor_report.json
+      - name: No social causal or new colony claim
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/crozier_2022_focal_neighbor_report.json'))
+          assert r['original_nest_sites']==50
+          g=r['groups']['original_2021_nonbreeders']
+          assert g['n_original_sites']==13
+          assert g['n_sites_with_positive_nearby_nest_count']==3
+          assert g['n_sites_with_strict_focal_occupancy']==0
+          assert g['n_stated_empty_focal_site_near_neighbor']==1
+          assert r['groups']['original_2021_breeders']['n_original_sites']==37
+          assert r['groups']['original_2021_breeders']['n_sites_with_strict_focal_occupancy']==18
+          assert r['groups']['original_2021_breeders']['n_neighbor_positive_without_strict_focal_occupancy']==2
+          assert r['out_of_window_or_unparseable_records']['DATE_OUTSIDE_2022_2023_SEASON']==27
+          assert not r['new_colony_founder_origin_identified']
+          assert not r['adjacent_nest_success_or_marked_breeder_identified']
+          assert not r['original_focal_2022_absence_proven_in_ambiguous_INC_question_sites']
+          assert r['no_causal_site_legacy_or_social_inhibition_fitted']
+          assert r['PR189_frozen']
+          print('ORIGINAL_NEST_VS_NEIGHBORHOOD_UNIT_QA_PASS_NO_RECRUITMENT_CAUSAL_RESULT')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: crozier-solo-2022-focal-vs-neighbor-unit-audit
+          path: /tmp/crozier_2022_focal_neighbor_report.json
+          if-no-files-found: ignore
+          retention-days: 30

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "status": "PRE_FULL_LOCATION_CROSSWALK_AND_GROUP_YEAR_OUTCOMES",
+  "source": {
+    "dataset_doi": "10.7931/kf06-x745",
+    "location_resource_id": "f82c5e1d-f04d-446d-9338-e9d0603360f8",
+    "official_census_MD5": "195a9027a0d18012812b09fb345ac60e",
+    "location_publisher_md5": "NOT_PROVIDED",
+    "location_retrieval": "https://github.com/zuizui0223/mina/actions/runs/38035757744",
+    "observed_locations_sheet_rows": 40,
+    "census_rows": 39,
+    "location_columns": [
+      "site name",
+      "parent geography descriptor",
+      "DMS latitude",
+      "DMS longitude"
+    ],
+    "known_coordinate_collision": [
+      "Beaufort Island",
+      "Beaufort Island North"
+    ]
+  },
+  "next_audit_planned_before_all_location_values_open": [
+    "Exact normalized site name join 39 historical pair count site names to 40 location table names, fail wrong/fuzzy matches; report matched 39/39 if true",
+    "Report location orphan(s) not in 39 census, missing census sites not in location and all duplicates",
+    "Geographic descriptor categories and counts; Ross Island named sites grouped; do not treat region/archipelago descriptors as independent islands",
+    "Parse published DMS text with hemisphere letter and minute; reject unsupported coordinate formats and latitude/longitude ranges",
+    "Flag pairs of distinct sites with identical rounded source coordinates; NOT measured zero distance or migration",
+    "Per descriptor count of sites with actual numeric source censuses in years 1999,2001,2005,2024",
+    "Count two-period matched site-year evidence 1999↔2024 and 2005↔2024 separately without deriving movement or causality",
+    "Report candidate independent geographic parent descriptors beyond Ross, but not infer true island independence without shoreline/island layer or actual site grouping",
+    "Keep source URLs, MD5 status and SHA256 provenance; do not call location coordinates authenticated by absent publisher MD5"
+  ],
+  "no_new_model_fit": true,
+  "no_movement_or_recruitment_inference": true,
+  "source_missing_value_not_zero": true,
+  "Ecology_PR189_unchanged": true,
+  "USAP_PR142_unchanged": true,
+  "outcome_rows_newly_opened_in_contract": 0
+}

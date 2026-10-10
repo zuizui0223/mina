@@ -1,0 +1,56 @@
+name: Dryad long-term Adélie breeding state memory source schema gate
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ADELIE_MULTIGENERATION_REPRODUCTIVE_STATE_MEMORY_SOURCE_GATE_V11.json'
+      - 'scripts/probe_dryad_breeding_success_memory_schema_v11.py'
+      - 'tests/test_dryad_breeding_success_memory_schema_v11.py'
+      - '.github/workflows/dryad-longitudinal-state-memory-source-v11.yml'
+  pull_request:
+    paths:
+      - 'contracts/ADELIE_MULTIGENERATION_REPRODUCTIVE_STATE_MEMORY_SOURCE_GATE_V11.json'
+      - 'scripts/probe_dryad_breeding_success_memory_schema_v11.py'
+      - 'tests/test_dryad_breeding_success_memory_schema_v11.py'
+      - '.github/workflows/dryad-longitudinal-state-memory-source-v11.yml'
+jobs:
+  source-schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test official Dryad source-firstline and no animal record privacy rules
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_dryad_breeding_success_memory_schema_v11.py
+      - name: Reach officially published Kappes Dryad file source only, read first header
+        run: |
+          python scripts/probe_dryad_breeding_success_memory_schema_v11.py \
+            --out /tmp/dryad_reproductive_state_memory_source_only_v11.json
+      - name: Deny new causal or second order biological result
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/dryad_reproductive_state_memory_source_only_v11.json'))
+          assert r['reproductive_outcome_rows_read']==0
+          assert r['individual_ids_read']==0
+          assert r['downloaded_data_bytes_to_disk']==0
+          assert r['no_fit']
+          assert r['not_same_ids_as_other_original_author_sources']
+          assert r['paper_not_yet_claimed_as_new_higher_order_memory']
+          print('DRYAD_PROBE_STATUS',r['status'])
+          if r['status'].startswith('HOLD'):
+              print('HOLD_NO_UNVERIFIED_LIVE_BREEDING_HISTORY_ANALYSIS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dryad-adelie-reproductive-state-long-memory-source-only
+          path: /tmp/dryad_reproductive_state_memory_source_only_v11.json
+          retention-days: 21

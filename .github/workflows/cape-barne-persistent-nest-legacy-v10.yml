@@ -1,0 +1,56 @@
+name: Cape Barne old nest remnants vs recolonization source gate
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/CAPE_BARNE_PERSISTENT_NEST_LEGACY_RECOLONIZATION_V10.json'
+      - 'scripts/audit_cape_barne_legacy_vs_reoccupation_v10.py'
+      - 'tests/test_cape_barne_legacy_vs_reoccupation_v10.py'
+      - '.github/workflows/cape-barne-persistent-nest-legacy-v10.yml'
+  pull_request:
+    paths:
+      - 'contracts/CAPE_BARNE_PERSISTENT_NEST_LEGACY_RECOLONIZATION_V10.json'
+      - 'scripts/audit_cape_barne_legacy_vs_reoccupation_v10.py'
+      - 'tests/test_cape_barne_legacy_vs_reoccupation_v10.py'
+      - '.github/workflows/cape-barne-persistent-nest-legacy-v10.yml'
+jobs:
+  historic-source-stop:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test historical evidence classification and gap-year stop
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_cape_barne_legacy_vs_reoccupation_v10.py
+      - name: Produce historical source report from frozen published evidence only
+        run: |
+          python scripts/audit_cape_barne_legacy_vs_reoccupation_v10.py \
+            --contract contracts/CAPE_BARNE_PERSISTENT_NEST_LEGACY_RECOLONIZATION_V10.json \
+            --out /tmp/cape_barne_legacy_reoccupation_v10.json
+      - name: Enforce no full census, chick success or failed-pioneer causal claims
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/cape_barne_legacy_reoccupation_v10.json'))
+          assert d["published_evidence_entries"]==6
+          assert d["published_contemporary_occupied_nests_in_1988_89"]==5
+          assert d["dec2024_physical_pebble_and_guano_remains"]
+          assert d["dec2024_source_reports_site_still_abandoned"]
+          assert d["historical_specific_year_zeros_inferred_from_unmonitored_periods"]==0
+          assert d["no_unverified_annual_absence_imputation"]
+          assert d["no_observed_genuinely_failed_pioneer_vs_never_used_patch_comparison"]
+          assert d["fitted_effect_size_or_pvalue"] is False
+          assert d["PR189_frozen_unchanged"]
+          print("CAPEBARNE_HISTORICAL_SOURCE_GATE_PASS_NOT_CAUSAL_DISCOVERY")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cape-barne-historic-remnants-not-guaranteed-recolonization-v10
+          path: /tmp/cape_barne_legacy_reoccupation_v10.json
+          retention-days: 30

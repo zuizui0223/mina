@@ -1,0 +1,65 @@
+name: Ross public resight author copy vs USAP official checksum
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ROSS_PUBLIC_RESIGHT_MIRROR_MD5_SOURCE_IDENTITY_V1.json'
+      - 'scripts/verify_ross_public_resight_mirror_md5_v1.py'
+      - 'tests/test_ross_public_resight_mirror_md5_v1.py'
+      - '.github/workflows/ross-public-resight-byte-identity-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/ROSS_PUBLIC_RESIGHT_MIRROR_MD5_SOURCE_IDENTITY_V1.json'
+      - 'scripts/verify_ross_public_resight_mirror_md5_v1.py'
+      - 'tests/test_ross_public_resight_mirror_md5_v1.py'
+      - '.github/workflows/ross-public-resight-byte-identity-v1.yml'
+jobs:
+  source-identity-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Ensure no behavioral header or source data can be parsed
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_ross_public_resight_mirror_md5_v1.py
+      - name: Fetch exact public author release raw bytes with size cap
+        env:
+          URL: https://raw.githubusercontent.com/pointblue/solo_nests/04517cedac18950408abd4d0b510f4aae3447f05/data/allresight_reference_copy.csv
+        run: |
+          set -e
+          curl -fLsS --retry 2 --max-time 90 --max-filesize 27000000 "$URL" -o /tmp/ross_resight_public_author_copy.bin
+          test "$(wc -c < /tmp/ross_resight_public_author_copy.bin)" -eq 25121923
+      - name: Compare raw file digests to public official checksum, no rows
+        run: |
+          python scripts/verify_ross_public_resight_mirror_md5_v1.py \
+            --source /tmp/ross_resight_public_author_copy.bin \
+            --out /tmp/ross_public_vs_official_checksum_receipt.json
+      - name: Assert research lock is unchanged
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/ross_public_vs_official_checksum_receipt.json'))
+          assert r["size_bytes"]==25121923
+          assert r["source_blob_matches_pin"] is True
+          assert r["headers_read"]==0
+          assert r["behavioral_rows_read"]==0
+          assert r["individual_ID_values_extracted"]==0
+          assert r["state_decoding_or_source_processing_unlocked"] is False
+          assert r["PR142_original_frozen_gate_modified"] is False
+          assert r["PR189_frozen_science_modified"] is False
+          print('SOURCE_DIGEST_ONLY',r["status"])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ross-usap601444-vs-public-pointblue-author-copy-md5-only
+          path: /tmp/ross_public_vs_official_checksum_receipt.json
+          retention-days: 30
+          if-no-files-found: ignore
