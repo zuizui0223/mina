@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "id": "ROSS_SEA_NZ_2026_AERIAL_CENSUS_INDEPENDENT_SOURCE_GATE_V13",
+  "status": "PRE_READ_SOURCE_AND_SURVEY_EFFORT_GATE_NOT_CAUSAL_TEST",
+  "source": {
+    "name": "Adélie penguin census data",
+    "doi": "10.7931/kf06-x745",
+    "official_dataset": "https://datastore.landcareresearch.co.nz/dataset/adelie-penguin-census-data",
+    "official_resource": "https://datastore.landcareresearch.co.nz/dataset/adelie-penguin-census-data/resource/5fd490e5-92c4-4f2c-a82e-c66db2320eb1",
+    "ckan_official_resource_id": "5fd490e5-92c4-4f2c-a82e-c66db2320eb1",
+    "ckan_official_api": "https://datastore.landcareresearch.co.nz/api/3/action/resource_show",
+    "metadata_md5": "195a9027a0d18012812b09fb345ac60e",
+    "license": "CC-BY-NC 4.0",
+    "original_metadata_total_records": 40,
+    "expected_colonies_from_description": 39,
+    "metadata_coverage_from": "1981",
+    "metadata_coverage_to": "2024",
+    "source_update_date": "2026-02-23",
+    "published_resource_size_approx_bytes": 12493
+  },
+  "primary_question": "Can independent Ross Sea colonies provide observed annual count context for Ross Island rebound and Cape Barne's documented historic non-reoccupation without interpreting pair count changes as identified dispersal, chick survival or individual higher-order memory?",
+  "strict_source_quality_gates": [
+    "Use official CKAN public resource_show to retrieve the exact resource file URL, not guessed download paths.",
+    "Strict official HTTPS host allowlist; stop if host/protocol redirects to third-party or downgrade.",
+    "Validate published resource MD5, image/app HTML rejected, ZIP/XLSX structure checked before reading data.",
+    "Never treat total summary row as an extra 40th independent penguin colony.",
+    "Preserve 2020 mixed text cell types, NA, blanks, no survey and original zero as distinct until documented source codebook.",
+    "No interpolate missing annual colony counts, no silent missing-to-zero conversion.",
+    "Do not conclude Cape Barne absent solely because omitted from 39-colony survey roster.",
+    "Do not confuse Cape Crozier/Royds/Bird subcolonies on Ross Island with independent islands.",
+    "Do not treat breeding-pair change as movement, recruitment, source-sink or adult demographic history.",
+    "Respect CC-BY-NC source licence and do not redistribute entire third-party xlsx in mina.",
+    "Record only content checksum, worksheet dimensions, candidate survey year columns, per-year reported numeric counts and missing source cell counts for first audit; no ecological outcome or statistical effect fit.",
+    "Before a new ecological model, freeze a temporal split, age/recruitment confounding, spatial site units, and a genuinely unexposed comparison."
+  ],
+  "known_recent_prior_art": [
+    "Ross Sea and Ross Island penguin population synchronization already widely studied; observational co-growth not novel.",
+    "Ainley et al 2024 Cape Royds slow recovery, local access and Ross Gyre effects known.",
+    "Dugger et al 2026 Ross Island prebreeder and established breeder movement already modeled."
+  ],
+  "scientific_claims_not_licensed": [
+    "Novel social memory",
+    "Causal source colony supply",
+    "Cape Barne absent in years without direct surveys",
+    "Newly established rescue or island recolonization",
+    "A verified second-order individual reproductive transition"
+  ],
+  "source_validation_workflow_only": true,
+  "new_biological_effects_fitted": 0,
+  "frozen_pr189_untouched": true,
+  "pr142_source_authentication_unmodified": true
+}
