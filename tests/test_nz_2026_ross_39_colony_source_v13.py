@@ -64,6 +64,14 @@ def test_2026_missing_years_not_interpreted_as_zero(monkeypatch):
     assert a["surveyed_positive_zero_missing_by_year"]["2024"]["POSITIVE_NUMERIC_COUNT"]==1
     assert a["surveyed_positive_zero_missing_by_year"]["2024"]["MISSING_BLANK"]==1
     assert a["surveyed_positive_zero_missing_by_year"]["2020"]["TEXT_UNRESOLVED"]==1
+    assert a["total_source_cells_expected"]==3*44
+    assert a["total_reported_numeric_count_cells"]==4
+    assert a["total_unresolved_source_text_cells"]==1
+    assert sum(a["value_classes"].get(x,0) for x in ("MISSING_BLANK","TEXT_UNRESOLVED","EXPLICIT_ZERO_SOURCE","POSITIVE_NUMERIC_COUNT","OTHER_NONNEG_INTEGER_REVIEW"))==132
+    assert a["numeric_survey_coverage_by_colony"]["Cape Royds"]["valid_2024_count"]==250
+    assert a["numeric_survey_coverage_by_colony"]["Cape Barne"]["valid_2024_count"]==0
+    assert a["numeric_survey_coverage_by_colony"]["Cape Crozier"]["valid_2024_count"] is None
+    assert a["n_colonies_with_any_1981_to_2024_consecutive_year_pair"]==0
     assert a["source_count_zeros_not_conflated_with_missing"]
     assert a["Cape_Barne_missing_from_roster_if_absent_not_proof_of_2024_extinction"]
     assert a["no_new_ecological_model_fitted"]
