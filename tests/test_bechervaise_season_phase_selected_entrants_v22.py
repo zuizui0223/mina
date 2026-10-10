@@ -15,7 +15,8 @@ def test_first_pre_egg_vs_after_hatch_gate_cohorts_are_different_risk_sets():
     assert a["phase_tag_season_counts"]=={
         "PRE_COLONY_FIRST_EGG":2,
         "AFTER_FIRST_COLONY_EGG_PRE_FIRST_HATCH":1,
-        "POST_FIRST_COLONY_HATCH":2
+        "POST_FIRST_COLONY_HATCH":2,
+        "AMBIGUOUS_EGG_OR_HATCH_BOUNDARY_DAY":0
     }
     assert a["pre_first_colony_egg_candidates"]==2
     assert a["pre_first_colony_egg_same_tag_direct_own_egg_AFTER_pass"]==1
@@ -72,3 +73,15 @@ def test_contract_retains_prior_art_causality_source_stop():
     assert not z["true_same_tag_first_breeding_transition_identified"]
     assert z["source_publisher_and_methods_bechervaise_original_data_rows_read"]==0
     assert z["frozen_Ecology_PR189_unchanged"]
+
+def test_same_day_gate_cannot_be_strictly_ordered_against_calendar_only_first_egg():
+    assert m.phase(
+        m.timepoint("2008-11-10T12:59:00"),
+        m.timepoint("2008-11-10T00:00:00"),
+        m.timepoint("2008-12-15T00:00:00")
+    )=="AMBIGUOUS_EGG_OR_HATCH_BOUNDARY_DAY"
+    assert m.phase(
+        m.timepoint("2008-12-15T09:59:00"),
+        m.timepoint("2008-11-10T00:00:00"),
+        m.timepoint("2008-12-15T00:00:00")
+    )=="AMBIGUOUS_EGG_OR_HATCH_BOUNDARY_DAY"
