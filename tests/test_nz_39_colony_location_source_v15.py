@@ -26,8 +26,8 @@ def test_no_unverified_resource_or_third_party_file():
         m.resource_metadata(json.dumps(z).encode())
     with pytest.raises(ValueError,match="HTTPS"):
         m.resource_metadata(sample_record(url="https://github.com/foo.xlsx"))
-    with pytest.raises(ValueError,match="MD5"):
-        m.resource_metadata(sample_record(md5=""))
+    with pytest.raises(ValueError,match="hash"):
+        m.resource_metadata(sample_record(md5="not-a-real-checksum"))
 
 def test_only_normalize_literal_site_keys_no_geographical_substitutions():
     assert m.clean_name(" Cape  Royds ")=="cape royds"
@@ -40,3 +40,8 @@ def test_v15_initial_scope_blocks_arbitrary_island_independence():
     assert d["original_location_rows_read"]==0
     assert not d["causal_recruitment_or_pioneer_success_effect_estimated"]
     assert d["locked_Ecology_PR189_unchanged"]
+
+def test_official_location_metadata_without_md5_is_not_claimed_verified():
+    r=m.resource_metadata(sample_record(md5=""))
+    assert r["md5"] is None
+    assert r["md5_status"]=="OFFICIAL_PUBLISHER_MD5_NOT_PROVIDED"
