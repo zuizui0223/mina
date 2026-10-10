@@ -16,8 +16,9 @@ def test_gate_passes_are_not_unique_entrants_and_nest_tags_not_eggs():
     assert z["n_same_tag_direct_egg_before_or_at_first_gate_in"]==1
     assert z["n_tag_at_nest_but_NO_DIRECT_EGG"]==1
     assert z["n_unobserved_nest_status_given_tag_gate"]==1
-    assert z["lower_bound_fraction_with_observed_post_gate_egg"]==0.25
-    assert z["upper_bound_fraction_with_unobserved_or_observed_post_gate_egg"]==1
+    assert z["lower_bound_fraction_with_observed_first_documented_egg_post_gate"]==0.25
+    assert z["upper_bound_fraction_with_first_documented_egg_post_gate_if_unknown_resolved"]==0.75
+    assert z["first_documented_egg_before_gate_EXCLUDED_FROM_POSSIBLE_FIRST_POST_GATE"]==1
     assert z["past_reproductive_history_of_mock_tags_known"] is False
     assert z["true_first_breeding_transition_identified"] is False
 
