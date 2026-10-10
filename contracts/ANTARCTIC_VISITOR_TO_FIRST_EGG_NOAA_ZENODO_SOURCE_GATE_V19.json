@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "id": "ANTARCTIC_ARRIVAL_VS_BREEDING_NOAA_ZENODO_OBSERVATION_GATE_V19",
+  "study_goal": "Separately identify visits to a recipient breeding area, initiation of an egg/nest after that visit, and subsequent chick success within the SAME marked adults, location and season, not from selected nests or at-sea positions alone.",
+  "sources": [
+    {
+      "id": "NOAA_NCEI_0171619",
+      "official": "https://www.fisheries.noaa.gov/inport/item/52182",
+      "doi": "10.7289/V5Z036F7",
+      "ncei_accession": "0171619",
+      "date_scope": "1977–2017 parent archival set; focal camera network ~2015–2017",
+      "reported_grains": [
+        "year",
+        "rookery",
+        "colony",
+        "camera",
+        "species_code",
+        "focal_nest",
+        "observation_date",
+        "max_adult_attendance_or_terminal_status"
+      ],
+      "focal_selection_condition": "Nests selected when at least TWO adults were visible at an EMPTY nest bowl prior to egg-laying (Hinke et al 2018 Methods Ecol Evol doi 10.1111/2041-210X.13015)",
+      "attendance_codebook": {
+        "0": "no adult observed at PRESELECTED focal nest on observation date, NOT breeding-site zero population",
+        "1": "one adult attended focal nest",
+        "2": "two adults attended focal nest",
+        "4": "creche observed, TERMINAL STATUS NOT four adults",
+        "5": "confirmed nest failure, TERMINAL STATUS NOT five adults"
+      },
+      "observation_not_collected": "all adults visiting colony before nest initiation, unselected nonbreeders or marked first attempts at each arrival"
+    },
+    {
+      "id": "ZENODO_NONBREEDER_KING_GEORGE",
+      "official": "https://zenodo.org/records/5036339",
+      "doi": "10.5281/zenodo.5036339",
+      "date_scope": "2016/17 austral breeding season",
+      "observed_n_nonbreeder_adults": 30,
+      "sites": [
+        "Carlini Station, King George Island",
+        "Henryk Arktowski Station, King George Island"
+      ],
+      "unit": "individual PTT Argos at-sea dated longitude/latitude, quality, underwater proportion",
+      "author_md5": "d4ca95fd92096e58ffbffff84250d669",
+      "observation_not_collected": "marked colony-return event, exact nest-first-egg event, directly observed subsequent reproductive success"
+    },
+    {
+      "id": "NOAA_2022_TELEMETRY_BREEDERS",
+      "official": "https://www.fisheries.noaa.gov/inport/item/66613",
+      "doi": "10.25921/vdt2-vr91",
+      "time": "1996–2013 King George Island Copacabana colony",
+      "grains": "adult Argos telemetry locations during previously labelled incubation/brood/creche or overwinter deployments",
+      "selection_condition": "already breeding-stage tagged, not a source of individual nonbreeding-to-egg transitions"
+    }
+  ],
+  "peer_review_prior_art": [
+    "Hinke et al 2018 already fitted nest attendance switches and extracted clutch initiation/creche as a method and its 2015/16 application",
+    "Lowther et al 2022 tracked 30 nonbreeding adults and already studied their foraging ranges vs breeders in western Antarctic Peninsula",
+    "Southwell and Emmerson 2015 and 2015 PLOS One showed abundance/detection errors from colonially attending nonbreeders",
+    "Ross Island Dugger et al 2026 already reported first recruitment by age and breeder movement"
+  ],
+  "identifiability_conditions": {
+    "target_estimand": "P(egg initiation by same marked bird before end of season | that individual attended candidate recipient site at date d)",
+    "data_requirement_same_id_site_season": "MUST_MATCH_BOTH_ENTRANT_AND_EGG_OBSERVATION",
+    "data_requirement_sampling_denominator": "All or detection-adjusted at-risk prospective adult arrivals including those not paired and those that never nest",
+    "data_requirement_stage_eggs": "Observed egg date at identified individual; not a nesting pair/nest camera only",
+    "data_requirement_origin": "natal/previous colony and age of visitor before arrival",
+    "data_requirement_detection": "effort correction for zero sightings/unknown days at non-selected area",
+    "NOAA_camera_attendance_with_parent_source_meets_denominator": false,
+    "Zenodo_at_sea_nonbreeder_tracks_meet_egg_join": false,
+    "NOAA_breeder_telemetry_with_known_stage_is_prearrival_sample": false,
+    "cross_source_same_individual_ID_verified": false,
+    "scientific_result": "HOLD_NO_INDIVIDUAL_ARRIVAL_TO_FIRST_EGG_JOINT_OBSERVATION"
+  },
+  "no_data_id_fabrication": true,
+  "no_penguin_movement_or_recruitment_causal_effect": true,
+  "Ecology_PR189_untouched": true,
+  "USAP_PR142_untouched": true,
+  "emperor_PR195_untouched": true
+}
