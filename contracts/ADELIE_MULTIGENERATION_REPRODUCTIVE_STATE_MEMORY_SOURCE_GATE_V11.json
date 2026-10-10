@@ -1,0 +1,73 @@
+{
+  "schema_version":1,
+  "date":"2026-10-10",
+  "question_id":"ROSS_PENGUIN_MULTIYEAR_BREEDING_STATE_MEMORY_FEASIBILITY_V11",
+  "research_phase":"FROZEN_PRE_NEW_INDIVIDUAL_RECORDS_SOURCE_AND_NOVELTY_GATE",
+  "main_question":"Among same-aged living birds in the same current reproductive state and colony-year, does a longer PREVIOUS success/failure/nonbreeding sequence predict future attempt/fledging beyond current state, individual quality, prior participation, observation effort and calendar effects?",
+  "source_metadata":{
+    "dataset":"Kappes et al 2020 Dryad 10.5061/dryad.s7h44j15w",
+    "source_link":"https://datadryad.org/dataset/doi:10.5061/dryad.s7h44j15w",
+    "verified_published_file_download_url":"https://datadryad.org/downloads/file_stream/532106",
+    "file":"BreedingSuccess.csv",
+    "approx_size_bytes":335821,
+    "original_analysis_years_inclusive":[1997,2013],
+    "colonies":["Bird","Crozier","Royds"],
+    "file_columns_advertised":["ID","colony","season","success","breeder","age","afr","afrc","expt","expl","alr"],
+    "ID_recoded_within_paper":true,
+    "ID_cross_link_to_other_data_forbidden":true,
+    "author_explicit_request":"Contact Grant Ballard / Point Blue team before undertaking further detailed longitudinal analyses because of source corrections, interpretation complexity and possible concurrent projects",
+    "contact_recorded_not_sent":false,
+    "records_inspected_before_contract":0
+  },
+  "prior_art_that_blocks_simple_claims":[
+    {
+      "paper":"Lescroel et al 2009 J Anim Ecol DOI 10.1111/j.1365-2656.2009.01542.x",
+      "already_shown":"Successful, failed and deferred breeders differ in next-year state transition and survival; source MCMR WBWA test chi2 24.22 df12 p0.02 indicates lack of simple model fit, NOT an established memory mechanism"
+    },
+    {
+      "paper":"Dugger et al 2010 PNAS DOI 10.1073/pnas.1000623107",
+      "already_shown":"Icebergs increased breeder dispersal, Royds->Bird >3% versus usual <1%; environmental plasticity of adult fidelity is not novel"
+    },
+    {
+      "paper":"Kappes et al 2021 J Anim Ecol DOI 10.1111/1365-2656.13422",
+      "already_shown":"Age of first reproduction, improved experience, selective appearance/disappearance, heterogeneous reproductive success; the Dryad 2020 data are the original paper dataset"
+    },
+    {
+      "paper":"Dugger et al 2026 Front Ecol Evol DOI 10.3389/fevo.2026.1868960",
+      "already_shown":"25-year marked three-colony multistate transition/detection, age-specific prebreeder and adult movement, local recruitment and sabbaticals (20-30%)"
+    },
+    {
+      "paper":"Flynn et al 2026 Ecological Modelling DOI 10.1016/j.ecolmodel.2026.111488",
+      "already_shown":"Age-structured local breeding propensity and environment constrained eight Peninsula populations; occupancy cycles not a new mechanism"
+    }
+  ],
+  "source_eligibility_gates":[
+    "Before reading individual behavioral records check only file-format, source URL and CSV HEADER; collect no animal IDs and no model results during this first probe",
+    "official HTTPS datadryad.org only; all redirects must remain HTTPS and *.datadryad.org",
+    "stop on HTML/Cloudflare, missing file or over 2MiB",
+    "compare actual HEADER with Dryad's published columns, never manufacture unavailable detection or exact death information",
+    "do not merge recoded IDs with 2026/2010/2009/2013 USAP-DC or another paper's data",
+    "source authors ask to be contacted before new longitudinal reanalysis; treat new scientific outcome fitting as HOLD pending consultation/provenance check",
+    "breeder=0 means NOT OBSERVED participating, not proof alive and skipped breeding",
+    "success=0 when breeder=1 is nest failure; for breeder=0 success may be unknown/not applicable and must never be coded as failed reproduction",
+    "yearly records with no ID-row are UNKNOWN not a nonbreeder, and resighting/detection probabilities vary by age/state/colony",
+    "require at least 3 consecutive yearly observed occasions with same within-dataset recoded ID, documented alive/at-risk to define second-order history",
+    "freeze biologically sensible lag history and year-heldout validation before reading future reproductive outcomes",
+    "separate individual persistent quality, selective survival, age, calendar-year marine conditions and attendance detection from state dependence",
+    "if no independent prospective/experimental variation in prior failure or shock exists do not infer a causal memory or recovery mechanism"
+  ],
+  "competing_predictions_if_access_and_permission_verified":{
+    "H0_latent_individual_quality_plus_first_order":"Once age, current state, stable individual quality and year are controlled, the second previous state and cumulative failures add no measurable out-of-year predictive information",
+    "H1_longer_history_state_dependence":"Within same age/current state, earlier failed sequences improve out-of-year predictions of next true attendance/breeding propensity or fledging after accounting for missing and detection",
+    "H2_environment_and_selection":"Apparent memory vanishes once reproductive opportunity, death/absence missingness, year-specific forcing and selective persistence are considered",
+    "H3_observer_artifact":"A memory signature disappears when original years 2002+ with earlier census coverage, observed alive and stable effort are used"
+  },
+  "next_analysis_requires_new_contract_after_source_gate":true,
+  "status":"HOLD_SOURCE_SCHEMA_ACCESS_AND_AUTHOR_CONSULTATION_NO_NEW_OUTCOMES",
+  "original_animal_rows_read":0,
+  "models_fitted":0,
+  "p_values_computed":0,
+  "causal_mechanism_discovered":false,
+  "PR189_frozen":true,
+  "PR142_frozen":true
+}
