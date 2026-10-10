@@ -1,0 +1,61 @@
+name: Ross 2001 to 2005 actual matched off-island source coverage
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ROSS_2001_2005_MATCHED_OFFISLAND_SOURCE_SUPPORT_V17.json'
+      - 'scripts/audit_ross_2001_2005_matched_offisland_source_v17.py'
+      - 'tests/test_ross_2001_2005_matched_offisland_source_v17.py'
+      - '.github/workflows/ross-2001-2005-matched-offisland-v17.yml'
+  pull_request:
+    paths:
+      - 'contracts/ROSS_2001_2005_MATCHED_OFFISLAND_SOURCE_SUPPORT_V17.json'
+      - 'scripts/audit_ross_2001_2005_matched_offisland_source_v17.py'
+      - 'tests/test_ross_2001_2005_matched_offisland_source_v17.py'
+      - '.github/workflows/ross-2001-2005-matched-offisland-v17.yml'
+jobs:
+  matched-geographical-risk-set:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate no fuzzy locality or fabricated matching source controls
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_ross_2001_2005_matched_offisland_source_v17.py
+      - name: Retrieve published NZ 2026 two original XLSX files and identify 2001 2005 matched sites
+        run: |
+          python scripts/audit_ross_2001_2005_matched_offisland_source_v17.py \
+            --out /tmp/ross_2001_2005_matched_offisland_support_v17.json
+      - name: Preserve source and no inter-island movement interpretation
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/ross_2001_2005_matched_offisland_support_v17.json'))
+          assert r['status'].startswith(('SOURCE_PAIRED_2001_2005_','HOLD_'))
+          assert r['no_causal_new_island_biogeography_result']
+          assert r['Ecology_PR189_frozen']
+          if r['status'].startswith('SOURCE_'):
+              assert r['source_original_count_MD5_verified']
+              assert r['source_census_count_sites']==39
+              assert r['source_years_compared']==[2001,2005]
+              assert r['previous_year_off_ross_1999_control_available_from_same_2026_table'] is False
+              assert r['2024_off_ross_control_available_from_same_2026_table'] is False
+              assert r['no_statistical_p_values_computed']
+              assert r['source_site_name_geography_unknown_not_imputed']
+          print('ROSS_2001_2005_PAIRED_SOURCE_STATUS',r['status'])
+          print('SOURCE_OFF_ROSS_MATCHED_N',r.get('off_ross_actual_matched_numeric_sites'))
+          print('NOT_A_CAUSAL_ICEBERG_ISLAND_COLONIZATION_TEST')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ross-2001-2005-paired-island-source-support-v17
+          path: /tmp/ross_2001_2005_matched_offisland_support_v17.json
+          retention-days: 30
