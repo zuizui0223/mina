@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-11",
+  "gate_id": "BECHERVAISE_INDIVIDUAL_EVENT_GRAIN_V23",
+  "scientific_stage": "PUBLIC_SOURCE_SCHEMA_ONLY_NO_ANIMAL_RECORDS",
+  "main_question": "Can tagged gate attendance predict next-year nest scan, first-ever verified egg, or old-micro-patch site choice? Distinguish these as separate estimands.",
+  "source_families": {
+    "AAS_4086_gate": {
+      "doi": "10.26179/1205-2s58",
+      "years": "2006–2018",
+      "published_fields": [
+        "RFID tag",
+        "crossing date/time",
+        "direction",
+        "weight"
+      ],
+      "sampling_unit": "shared gateway used by several subcolonies on one Béchervaise Island",
+      "actual_original_records_verified": false
+    },
+    "AAS_4518_nest_resight": {
+      "doi": "10.26179/s2qa-s344",
+      "years": "1991–2019",
+      "published_fields": [
+        "RFID tag at nest",
+        "date of nest scan",
+        "age first return/first nesting derived fields"
+      ],
+      "field_limits": [
+        "same gate tag code not confirmed",
+        "direct first-own-egg date not confirmed at individual level",
+        "nest micro-patch position of prior gate visitor absent"
+      ],
+      "actual_original_records_verified": false
+    }
+  },
+  "prior_art_vetoes": [
+    "Emmerson, Walsh and Southwell 2019 doi:10.1002/ece3.5067 already coupled same-season individual gate records to on-nest breeder or nonbreeder and directly watched eggs in a subset.",
+    "Emmerson and Southwell 2022 GCB doi:10.1111/gcb.16437 and AAS_4518 dataset already analyzed recruitment including derived Age first.nesting.all.6.years; generic first breeding age is not new.",
+    "Penney 1970 doi:10.1016/0003-3472(70)90048-5 already reports 58% of first-breeding young had previously visited vicinity of future nest.",
+    "Acker et al 2022 doi:10.1111/1365-2656.13676 already tests competition for high-quality colony sites on breeding propensity."
+  ],
+  "source_classification": {
+    "gate_first_pass": "FIRST DETECTED PASS at shared gate, not true first colony arrival or a visited nest location",
+    "tag_on_nest": "OBSERVED NEST ATTENDANCE, not confirmed own egg",
+    "tag_not_found_at_nest": "UNKNOWN state with scanner detection failure/absence/confounding, not confirmed nonbreeding",
+    "known_first_egg": "requires independently linked direct egg + individual natal and prior reproduction history",
+    "micro_patch_prospecting": "NOT LOCATED by a common gate entrance serving more than one breeding subcolony",
+    "island_dispersal": "NOT SAMPLED across distinct islands by the same two main source datasets"
+  },
+  "available_evidence": {
+    "gate_file_bytes": false,
+    "nest_resight_file_bytes": false,
+    "same_tag_encoding_verified": false,
+    "reader_operating_effort_and_tag_at_risk_denominator": false,
+    "direct_t_plus_1_same_tag_nest_observation": false,
+    "direct_own_first_egg_per_tag": false,
+    "known_lifetime_prior_breeding_history": false,
+    "previous_year_visited_nest_micro_patch_coordinates": false,
+    "second_island_same_tag_entrance_and_nest_record": false,
+    "independent_exogenous_cue_or_access_event": false
+  },
+  "estimands": [
+    {
+      "id": "E1_FUTURE_ON_NEST_SCAN",
+      "required": [
+        "gate_file_bytes",
+        "nest_resight_file_bytes",
+        "same_tag_encoding_verified",
+        "reader_operating_effort_and_tag_at_risk_denominator",
+        "direct_t_plus_1_same_tag_nest_observation"
+      ],
+      "scope": "conditional next-year apparent attendance on nest among individually gate-detected and observed birds, not a true first-breeding probability",
+      "possible_in_principle_if_raw_data_obtained": true
+    },
+    {
+      "id": "E2_FUTURE_FIRST_OWN_EGG",
+      "required": [
+        "gate_file_bytes",
+        "nest_resight_file_bytes",
+        "same_tag_encoding_verified",
+        "reader_operating_effort_and_tag_at_risk_denominator",
+        "direct_own_first_egg_per_tag",
+        "known_lifetime_prior_breeding_history"
+      ],
+      "scope": "conditional first-ever egg attempt after prior gate visit; not automatic evidence of inter-island recruitment",
+      "possible_in_principle_if_raw_data_obtained": "UNKNOWN_REQUIRES_EXTRA_EGG_AND_NATAL_FIELD"
+    },
+    {
+      "id": "E3_FIDELITY_TO_SPECIFIC_PREVIOUSLY_VISITED_NEST_PATCH",
+      "required": [
+        "previous_year_visited_nest_micro_patch_coordinates",
+        "direct_own_first_egg_per_tag",
+        "same_tag_encoding_verified"
+      ],
+      "scope": "does the same marked penguin use an actual particular earlier visited nest neighborhood?",
+      "possible_in_principle_if_raw_data_obtained": false,
+      "structural_reason": "the published weighbridge measures the path for several subcolonies, not the specific nest patch that bird inspected"
+    },
+    {
+      "id": "E4_CAUSAL_INTERISLAND_COLONIST_SUPPLY_EFFECT",
+      "required": [
+        "gate_file_bytes",
+        "nest_resight_file_bytes",
+        "direct_own_first_egg_per_tag",
+        "second_island_same_tag_entrance_and_nest_record",
+        "independent_exogenous_cue_or_access_event"
+      ],
+      "scope": "inter-island causal recipient settlement or recruitment from earlier prospecting",
+      "possible_in_principle_if_raw_data_obtained": false
+    }
+  ],
+  "decision": "HOLD_NO_ORIGINAL_LINK; PATCH_FIDELITY_STRUCTURALLY_UNMEASURED_IN_SHARED_GATE",
+  "animal_tag_rows_accessed": 0,
+  "new_field_model_fitted": false,
+  "PR189_frozen": true,
+  "PR142_frozen": true,
+  "PR195_frozen": true
+}
