@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-12",
+  "id": "BECHERVAISE_PUBLIC_5849_SECOND_DOWNLOAD_AND_STAGES_V24",
+  "scientific_stage": "PUBLISHED_LINK_DISCOVERY_AND_SOURCE_BYTES_ONLY_NO_TAG_VALUES",
+  "public_primary_source": {
+    "AADC_record": "https://data.aad.gov.au/metadata/records/AAS_4086_Weighbridge",
+    "doi": "10.26179/1205-2s58",
+    "advised_years": "2006–2018",
+    "individually_tagged_crossing_fields": [
+      "timestamp",
+      "direction",
+      "RFID",
+      "mass"
+    ],
+    "source_location_sampling": "ONE shared weighbridge for several Béchervaise Island subcolonies"
+  },
+  "publisher_advertised_download_urls": [
+    {
+      "kind": "AAS_4086_technical_guide",
+      "url": "https://data.aad.gov.au/eds/5228/download",
+      "source_link_role": "technical guide only, NOT original bird passages",
+      "previous_source_result": "HTML_JS_SHELL"
+    },
+    {
+      "kind": "AAS_4086_additional_publisher_link_candidate_crossing_data",
+      "url": "https://data.aad.gov.au/eds/5849/download",
+      "source_link_role": "second direct AADC link in publisher's same weighbridge metadata, not in NASA summary; label/content and original year partition still unverified",
+      "previous_source_result": "NEWLY_DISCOVERED_AUTHOR_LINK"
+    },
+    {
+      "kind": "AAS_4518_nest_resight_package",
+      "url": "https://data.aad.gov.au/eds/5516/download",
+      "source_link_role": "separate same-island 1991–2019 annual tag-on-nest archive",
+      "previous_source_result": "HTML_JS_SHELL"
+    }
+  ],
+  "source_checks_to_run": [
+    "Verify original AADC metadata page actually references 5228 and 5849, preserving link order and anchor labels if server provides them, with limited page bytes.",
+    "Probe only exact three publisher URLs over HTTPS and AADC official host; refuse offhost and HTTP redirects; no guessed file IDs or email submission.",
+    "Use first 24576 bytes / content type to distinguish original application shell HTML from PDF technical documentation, ZIP, RAR and text; no animal identifiers parsed.",
+    "Do not infer published raw gate crossing fields/years from 5849 before genuine file manifest / technical guide obtained.",
+    "Even if real file accessible, do not merge unprocessed RFID with nest resight tags before source codebook and custodian verification; 2019 already linked earlier years.",
+    "Preserve currently known V23 endpoint differences E1 visit→nest scan, E2 visit→first verified egg, E3 same micro-patch previous visit (not observed), E4 inter-island rescue (not sampled)."
+  ],
+  "existing_2026_Ross_prior_art": {
+    "reference": "Dugger et al 2026 Frontiers in Ecology and Evolution doi:10.3389/fevo.2026.1868960",
+    "source": "1996–2020 known-age marked Ross Island birds at capes Royds/Bird/Crozier",
+    "prior_prospecting": "Royds→Bird pre-breeder prospecting 8–12% at age 5–7, peak of a specific prebreeder-still-prebreeder state transfer",
+    "prior_crosscolony_first_recruitment": "Movement with transition from pre-breeder to breeder at new colony generally <0.10% in their multi-state model; not the conditional fraction of those who visited",
+    "prior_adult_dispersal": "established breeder colony movements <0.20%",
+    "prior_breeder_sabbatical": "20–30% depending on age; conditional persistence transitions already estimated",
+    "scientific_rule": "Do not sell colony visit vs own new-colony breeding as a never-described biological process; a NEW CAUSE of conditional conversion would be needed."
+  },
+  "current_identifiability": {
+    "publisher_second_link_verified_in_public_metadata": true,
+    "download_5849_original_raw_data_verified": false,
+    "tag_records_read": 0,
+    "same_year_site_ID_join_independently_reproduced": false,
+    "new_postarrival_egg_treatment_estimated": false,
+    "new_interisland_causal_ecology_result": false
+  },
+  "current_decision": "V24_SOURCE_LINK_REAL_BUT_CROSSING_FILE_FORMAT_AND_TAG_TO_EGG_HOLD",
+  "pr189_frozen": true,
+  "pr142_frozen": true,
+  "pr195_frozen": true
+}
