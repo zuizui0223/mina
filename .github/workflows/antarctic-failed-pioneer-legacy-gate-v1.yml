@@ -1,0 +1,40 @@
+name: Failed pioneer legacy prospective novelty/identifiability gate
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ANTARCTIC_FAILED_PIONEER_SPATIAL_LEGACY_CAUSAL_GATE_V1.json'
+      - 'tests/test_antarctic_failed_pioneer_spatial_legacy_gate_v1.py'
+      - '.github/workflows/antarctic-failed-pioneer-legacy-gate-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_FAILED_PIONEER_SPATIAL_LEGACY_CAUSAL_GATE_V1.json'
+      - 'tests/test_antarctic_failed_pioneer_spatial_legacy_gate_v1.py'
+      - '.github/workflows/antarctic-failed-pioneer-legacy-gate-v1.yml'
+jobs:
+  source-and-design-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify three competing mechanisms and no unlicensed experiments
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_antarctic_failed_pioneer_spatial_legacy_gate_v1.py
+      - name: Validate that no observational result is promoted to new causality
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("contracts/ANTARCTIC_FAILED_PIONEER_SPATIAL_LEGACY_CAUSAL_GATE_V1.json"))
+          assert r["decision"]=="PROSPECTIVE_DESIGN_ONLY_HOLD_CAUSAL_DATA"
+          assert len(r["alternative_hypotheses"])==3
+          assert r["research_stage"]=="PROSPECTIVE_CAUSAL_DESIGN_ONLY_NO_NEW_TARGET_OUTCOMES"
+          assert "PR142" in " ".join(r["forbidden"])
+          assert "PR189" in " ".join(r["forbidden"])
+          print("FAILED_PIONEER_LEGACY_THREE_RIVAL_PREDICTIONS_LOCKED_NO_CAUSAL_RESULTS")
+          PY

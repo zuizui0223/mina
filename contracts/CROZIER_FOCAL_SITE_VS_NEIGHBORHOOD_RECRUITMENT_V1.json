@@ -1,0 +1,39 @@
+{
+  "version":1,
+  "date":"2026-10-08",
+  "purpose":"POST_PUBLICATION_NEIGHBORHOOD_VS_FOCAL_REOCCUPANCY_UNITS",
+  "source_original_release_commit":"04517cedac18950408abd4d0b510f4aae3447f05",
+  "study":"Cox et al 2024 doi:10.1007/s00300-024-03246-9",
+  "frozen_source_tables":{
+    "2021_original_site_breeding":"data/solo_outcomes.csv",
+    "2021_original_GPS":"data/solonest_initial_locations.csv",
+    "2022_2023_site_checks":"data/solonest_obs_data_entry_2223.csv"
+  },
+  "frozen_original_unit": "50 solitary nest site identities from 2021",
+  "frozen_date_window": "2022-10-01 through 2023-03-31 inclusive; reject 27 source labelled Dec2023 dates as incompatible with Aug2023 release",
+  "classification":{
+    "2021_original_breeder":"breeder=1",
+    "2021_original_nonbreeder":"breeder=0",
+    "neighbor_nesting_proximity":"an observation with finite numeric n_neighbors >0, not evidence of focal occupancy",
+    "focal_strict_occupancy":"observed nest status outside explicitly empty/unknown/questionable source statuses; INC? does not establish occupancy",
+    "direct_site_not_reoccupied":"not confirmed by available focal nest statuses; does not mean site globally empty or absence",
+    "neighbor_eggs_and_fledging":"unverified; n_neighbors is a nearby-nest count, not confirmed new successful penguin pairs"
+  },
+  "observed_source_specific_3_cases":["solo10","solo19","solo36"],
+  "expected_exact_original_site_ids":50,
+  "prior_published_overlaps":[
+    "Cox et al 2024 already reports four nascent subcolonies around prior solitary nests",
+    "Cox et al 2024 already reports none of their 2022 reoccupied solitary nests came from 2021 original nonbreeding nest sites",
+    "A repository comment claiming nonbreeders attracted more neighbors may be exploratory and its 2022 coding is not a new published causal test"
+  ],
+  "forbidden":[
+    "Treat a 2022 adjacent neighbor as the original unbanded solitary parent",
+    "Promote INC? to confirmed active focal nest",
+    "Equate local neighborhood appearance with founder migration, successful egg production, or island colonization",
+    "Silently reinterpret 27 December2023 coded visits as 2022",
+    "Use a 50-site single-colony observational audit to establish new island biogeography law",
+    "Calculate post-hoc significance as confirmatory inference"
+  ],
+  "status":"EXPLORATORY_GRAIN_CONTRAST_NO_CAUSAL_SOCIAL_LEGACY",
+  "PR189_changed":false
+}

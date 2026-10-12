@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "date": "2026-10-10",
+  "status": "POST_OUTCOME_EXPLORATORY_EXTERNAL_CENSUS_CONTRAST_NOT_NEW_CAUSAL_TEST",
+  "data_source": {
+    "doi": "10.7931/kf06-x745",
+    "resource_id": "5fd490e5-92c4-4f2c-a82e-c66db2320eb1",
+    "file_md5": "195a9027a0d18012812b09fb345ac60e",
+    "license": "CC-BY-NC 4.0",
+    "validation_workflow": "https://github.com/zuizui0223/mina/actions/runs/38014975839"
+  },
+  "fixed_observation_units": [
+    "Cape Bird Middle",
+    "Cape Bird North",
+    "Cape Bird South",
+    "Cape Crozier East",
+    "Cape Crozier West",
+    "Cape Royds"
+  ],
+  "years": [
+    1999,
+    2001,
+    2024
+  ],
+  "year_meanings": {
+    "1999": "historical reference before large iceberg-era disruption",
+    "2001": "during iceberg-era change, not same exact intervention onset at all six sites",
+    "2024": "latest available single breeding-pair aerial census reference"
+  },
+  "metric": "Author published count of breeding pairs in same six named site units; NOT adult survival, fledging success or tracked dispersal.",
+  "descriptive_analyses": [
+    "sum exactly six paired site counts for each of 1999, 2001, 2024; only if all six recorded in each year",
+    "individual site changes 1999→2001 and 1999→2024, with clear 2001 shock-severity difference",
+    "2024 counterfactual count under fixed 1999 spatial shares and observed total; compare actual to expectation as pure proportional-growth benchmark",
+    "1999 size-similar Royds versus Cape Bird Middle difference with initial-shock-severity warning",
+    "share of total 1999→2024 net gain contributed by individual named sites"
+  ],
+  "prior_art_vetoes": [
+    "Regional and Ross Island colony abundance changes already studied (Ainley 2024; Dugger 2026; earlier Ross isotope/census literature).",
+    "A descriptive contrast within one Ross Island is not independent island-biogeographic replication.",
+    "Proportional-growth benchmark does not identify migration/social settlement effect.",
+    "Published 2026 NZ aerial counts may share observational provenance with earlier datasets; separate archive does not prove independent counts."
+  ],
+  "falsification_conditions": [
+    "If any of the six names/year source cell missing or nonnumeric, report HOLD_NO_EXACT_PAIRED_SITE_CENSUS; do not fabricate zeros.",
+    "If 2024 source contains Royds 0, do not infer biological absence without the survey method, quality and site definition.",
+    "Do not interpret changes in breeding pair counts as natal dispersal, adult movement or phenological effects.",
+    "Do not claim missed Cape Barne represents an extinct patch.",
+    "No model fitted, no p values, no causal inference, no amendments to scientific manuscript PR189."
+  ],
+  "after_outcome_exposure": true,
+  "source_site_count": 39,
+  "source_year_count": 44,
+  "source_explicit_zeros": 2,
+  "source_positive_counts": 522,
+  "source_blank_cells": 1192,
+  "census_2020_source_column_blank_for_all_sites": "TO_VERIFY_FROM_ORIGINAL_ANNUAL_COUNTERS",
+  "no_new_causal_ecology_conclusion": true,
+  "pr189_unchanged": true
+}

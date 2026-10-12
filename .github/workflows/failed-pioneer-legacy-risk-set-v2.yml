@@ -1,0 +1,67 @@
+name: Failed pioneer legacy observable risk set and novelty gate
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ANTARCTIC_FAILED_PIONEER_LEGACY_NOVELTY_IDENTIFIABILITY_V2.json'
+      - 'scripts/audit_failed_pioneer_legacy_risk_set_v2.py'
+      - 'tests/test_failed_pioneer_legacy_risk_set_v2.py'
+      - '.github/workflows/failed-pioneer-legacy-risk-set-v2.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_FAILED_PIONEER_LEGACY_NOVELTY_IDENTIFIABILITY_V2.json'
+      - 'scripts/audit_failed_pioneer_legacy_risk_set_v2.py'
+      - 'tests/test_failed_pioneer_legacy_risk_set_v2.py'
+      - '.github/workflows/failed-pioneer-legacy-risk-set-v2.yml'
+jobs:
+  source-positivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test no fabricated never-used control sites
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_failed_pioneer_legacy_risk_set_v2.py
+      - name: Fetch two frozen original 2021 author source files only
+        env:
+          ROOT: https://raw.githubusercontent.com/pointblue/solo_nests/04517cedac18950408abd4d0b510f4aae3447f05/data
+        run: |
+          set -e
+          curl -fLsS --retry 2 --max-time 30 "$ROOT/solonest_initial_locations.csv" -o /tmp/cox50_locations.csv
+          curl -fLsS --retry 2 --max-time 30 "$ROOT/solo_outcomes.csv" -o /tmp/cox50_outcomes.csv
+      - name: Audit only source support and verified failed attempts
+        run: |
+          python scripts/audit_failed_pioneer_legacy_risk_set_v2.py \
+            --locations /tmp/cox50_locations.csv \
+            --outcomes /tmp/cox50_outcomes.csv \
+            --out /tmp/failed_pioneer_legacy_source_riskset_v2.json
+      - name: Freeze actual source failure/positivity statement
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/failed_pioneer_legacy_source_riskset_v2.json'))
+          assert r['source_original_nest_site_count']==50
+          assert r['source_breeder_codes']=={'0':13,'1':37}
+          assert r['source_nest_location_outcome_identical_ids']==50
+          assert r['independently_sampled_physically_available_never_used_patches']==0
+          assert r['matched_failed_vs_never_used_risk_set_constructible'] is False
+          assert r['H1_failed_pioneer_vs_H3_static_habitat_identifiable'] is False
+          assert r['causal_effect_or_new_novel_mechanism_fitted'] is False
+          assert r['no_2022_or_later_penguin_outcome_rows_opened'] is True
+          assert r['frozen_Ecology_PR189_changed'] is False
+          print('FAILED_PIONEER_SOURCE_SUPPORT_HOLD_NO_CONTROL_PATCHES')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: failed-pioneer-source-risk-set-and-novelty-v2
+          path: /tmp/failed_pioneer_legacy_source_riskset_v2.json
+          retention-days: 30
+          if-no-files-found: ignore

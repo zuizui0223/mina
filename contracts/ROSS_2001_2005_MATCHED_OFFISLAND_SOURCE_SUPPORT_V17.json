@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "type": "FROZEN_BEFORE_2001_2005_PAIRED_COUNTS_OPENED",
+  "original_source": {
+    "doi": "10.7931/kf06-x745",
+    "census_resource_id": "5fd490e5-92c4-4f2c-a82e-c66db2320eb1",
+    "census_md5": "195a9027a0d18012812b09fb345ac60e",
+    "geography_resource_id": "f82c5e1d-f04d-446d-9338-e9d0603360f8",
+    "geography_publisher_md5": "NOT_PROVIDED",
+    "source_geography_join_ci": "https://github.com/zuizui0223/mina/actions/runs/38036057389"
+  },
+  "question": "Of 39 site-level records, how many are actually surveyed in both 2001 and 2005, and is there any geographically validated off–Ross-Island sample for interpreting Royds' distinct iceberg-era trajectory?",
+  "fixed_study_period": [
+    "2001",
+    "2005"
+  ],
+  "source_year_support_from_previous_gate": {
+    "2001_numeric_sites": 14,
+    "2005_numeric_sites": 18,
+    "2024_numeric_sites": 6
+  },
+  "comparison_grains": [
+    "source named colony site",
+    "publisher geographic parent descriptor with islands/regions explicitly not considered independent island units"
+  ],
+  "planned_direct_evidence": [
+    "Require source 2001 and 2005 both genuine nonblank numeric values in same literal census site row; no missing-to-zero or interpolation",
+    "Separate 2001/2005 matched cohort with exact source geographic name (V16 33/39) from sites with no linked official geography",
+    "List source parent descriptor but do not equate peninsulas, archipelagos, regional labels with individual geographic islands",
+    "Compute 2001 and 2005 reported counts and direction of change only for actually paired records; no causal migration/individual survival",
+    "Report matched Ross Island source units vs all geography-identified off-Ross sites, and source-counts with unknown geographic mapping",
+    "Report pooled change only as exploratory descriptive and not as causal control; sampling and provenance might overlap earlier Lyver 2014 Ross studies",
+    "Refuse a pseudo-DID using 1999 because 1999 sources cover ONLY Ross Island, and do not fabricate 2024 off–Ross counts"
+  ],
+  "prior_art_veto": [
+    "Dugger et al 2010 PNAS 10.1073/pnas.1000623107 shows iceberg-era adult dispersal up to 3.5% versus usual below 1%",
+    "LaRue et al 2013 PLOS ONE doi:10.1371/journal.pone.0060548 already shows Beaufort glacier retreat and reduced post-2005 visits to Ross Island",
+    "Lyver et al 2014 PLOS ONE 10.1371/journal.pone.0091188 already analyses Ross Sea 1981–2012 population dynamics and regional synchrony",
+    "Original NZ 2026 census may overlap same survey counts, not an independent iceberg-era natural experiment."
+  ],
+  "success_for_novel_causal_test_requires": [
+    "independent externally dated physical ice access per site and season",
+    "confirmed source/recipient marked birds and actual prospecting or egg attempt",
+    "at least two event/region replicated contemporaneous and predisturbance site-year comparisons",
+    "effort-aligned detection and chicks rather than pair-only census"
+  ],
+  "status": "PRE_OBSERVATION_PAIRED_2001_2005_SUPPORT_AUDIT_NOT_CLAIMING_NOVEL_MECHANISM",
+  "no_new_biological_causal_effect": true,
+  "pr189_frozen": true,
+  "pr142_frozen": true,
+  "pr195_untouched": true
+}

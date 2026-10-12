@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "type": "REPRODUCIBLE_POST_HOC_SENSITIVITY_DESCRIPTIVE_NOT_PREREGISTERED",
+  "source_commit": "pointblue/solo_nests@04517cedac18950408abd4d0b510f4aae3447f05",
+  "raw_data_and_outcome_previously_exposed": true,
+  "event_time": "2021-12-01 23:59 local date",
+  "scope": "36 observed original 2021 Cape Crozier solitary breeding sites, excluding solo27, with source-specific exact GPS join",
+  "raw_exposure": "any observer-recorded n_neighbors>0 through 2021-12-01",
+  "raw_outcome": "at least one directly confirmed chick in creche; non-confirmation is NOT confirmed death",
+  "fixed_descriptive_checks": [
+    "early visitor-days per site by initial exposure group",
+    "original nest rocksize >=15cm vs <15cm strata, source raw per-stratum count not causal adjusted effect",
+    "only original field area codes with both early-neighbor and no-neighbor sites, exclude unique-only codes from a separate descriptive overlap table without changing main 36-site denominator",
+    "exclude only sites with an explicit source GONE by December1, report original 36-site comparison first",
+    "stage chronology of earliest egg and earliest positive neighbor remains 5 earlier,2 same,1 later,1 no first egg before cutoff",
+    "calculate minimum number of additional unconfirmed crèche events among the 27 non-neighbor nests needed for that observed fraction to reach >= 5/9, holding directly confirmed positive count and 36-site denominator fixed",
+    "do not manufacture p-values, confidence intervals, intervention, predation or reproductive recruitment observations"
+  ],
+  "scientific_stop": [
+    "not a random neighbor arrival process",
+    "no independent predator or true chick survival tracking beyond original coded source",
+    "observed negative confirmed is not proof of biological failure",
+    "baseline area/rock strata may have observation-protocol and parental quality confounders",
+    "site area codes are geographic coarse labels not randomized clusters and within-area subsamples are tiny",
+    "no model tuning or new outcome opening after seeing grouped results"
+  ],
+  "PR189_changed":false,
+  "new_causal_effect_identified":false
+}

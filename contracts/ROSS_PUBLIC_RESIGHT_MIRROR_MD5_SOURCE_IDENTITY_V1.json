@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "stage": "PRE_SOURCE_IDENTITY_VERIFICATION_NO_BEHAVIORAL_ROWS_OR_HEADERS_READ",
+  "scientific_goal": "Test if the publicly accessible original-author GitHub 25,121,923-byte resighting file is byte-identical to USAP-DC dataset 601444, which blocks frozen PR142 individual prospecting state tests pending exact official source.",
+  "source_canonical": {
+    "data_portal": "https://www.usap-dc.org/view/dataset/601444",
+    "doi": "10.15784/601444",
+    "display_file": "band_resighting_1997-2021.csv",
+    "data_portal_metadata_md5": "aaae6ddad6d12081b5a68466794438a2",
+    "stated_size": "25.1 MB"
+  },
+  "source_public_candidate": {
+    "github_repo": "pointblue/solo_nests",
+    "source_release_commit": "04517cedac18950408abd4d0b510f4aae3447f05",
+    "path": "data/allresight_reference_copy.csv",
+    "git_blob_sha": "7dd043fb276ff8687a53f04f73719243c23268ec",
+    "exact_bytes_from_Github_listing": 25121923
+  },
+  "allowed": {
+    "complete_raw_file_download_if_source_pinned_and_public": true,
+    "only_calculate_raw byte length, md5, sha256 and git blob sha": true,
+    "NEVER_read_csv_header_or_behavioural_row": true,
+    "never_include_raw_bytes_or_part_of_file_in_GitHub_artifacts": true,
+    "only_return_HOLD_NOT_SAME_SOURCE_or_MATCH_OFFICIAL_MD5": true
+  },
+  "prohibited": [
+    "Do not use a partial source or filename similarity to unlock PR142",
+    "Do not extract CSV column header or band IDs or individual outcomes",
+    "Do not change frozen PR142 choice model, events, detection gate, permutations or alpha",
+    "Do not claim a public file is official without hash equality",
+    "Do not merge changes into frozen Ecology PR189",
+    "Do not contact USAP-DC API with invented credential"
+  ],
+  "decision_before_verification": "HOLD_RESIGHT_PUBLIC_COPY_UNVERIFIED",
+  "post_checksum_verification": {
+    "run_url": "https://github.com/zuizui0223/mina/actions/runs/37794660804",
+    "run_id": 37794660804,
+    "workflow_conclusion": "success",
+    "identity_status": "HOLD_PUBLIC_COPY_NOT_BYTE_IDENTICAL_TO_OFFICIAL",
+    "author_github_blob_match": true,
+    "byte_length_match": true,
+    "canonical_official_md5_match": false,
+    "headers_read": 0,
+    "behavioral_rows_read": 0,
+    "PR142_frozen_unlock_allowed": false,
+    "reason": "GitHub public original-author copy is internally verified but fails the independently published USAP-DC dataset 601444 MD5. Cannot be represented as byte-identical official 601444."
+  },
+  "analysis_status": "HOLD_NOT_SAME_SOURCE_PR142_OFFICIAL_API_ACCESS_STILL_NEEDED"
+}

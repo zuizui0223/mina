@@ -1,0 +1,56 @@
+name: East Antarctic official unused habitat source reachability
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/EAST_ANTARCTIC_UNUSED_SITE_SOURCE_NOVELTY_GATE_V1.json'
+      - 'scripts/probe_east_antarctic_unused_site_official_sources_v1.py'
+      - 'tests/test_east_antarctic_unused_site_official_sources_v1.py'
+      - '.github/workflows/east-antarctic-unused-sites-source-availability-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/EAST_ANTARCTIC_UNUSED_SITE_SOURCE_NOVELTY_GATE_V1.json'
+      - 'scripts/probe_east_antarctic_unused_site_official_sources_v1.py'
+      - 'tests/test_east_antarctic_unused_site_official_sources_v1.py'
+      - '.github/workflows/east-antarctic-unused-sites-source-availability-v1.yml'
+jobs:
+  schema-availability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test official source and nonbiological request boundaries
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_east_antarctic_unused_site_official_sources_v1.py
+      - name: Probe only official source headers and bounded 32-byte prefix
+        run: |
+          python scripts/probe_east_antarctic_unused_site_official_sources_v1.py \
+            --out /tmp/unused_east_antarctic_aadc_source_status.json
+      - name: Verify no Cox nest to East Antarctic false control join
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/unused_east_antarctic_aadc_source_status.json'))
+          assert len(r['source_records'])==3
+          assert r['source_occupancy_outcome_rows_read']==0
+          assert r['Cape_Crozier169E_overlaps_East_Antarctic_sites'] is False
+          assert r['East_Antarctic_potential_habitat_is_exact_nest_3_10m_risk_set'] is False
+          assert r['original_site_geometries_materialized'] is False
+          assert r['cause_of_failed_pioneer_colonization_identified'] is False
+          assert r['PR189_modified'] is False
+          print('SOURCE_ONLY_AADC_REACHABILITY_QA_PASS_CAUSAL_HOLD')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: east-antarctica-aadc-unused-sites-source-status-v1
+          path: /tmp/unused_east_antarctic_aadc_source_status.json
+          if-no-files-found: ignore
+          retention-days: 30

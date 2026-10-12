@@ -1,0 +1,57 @@
+name: NOAA nest-selection versus Zenodo nonbreeder arrival source gate
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ANTARCTIC_VISITOR_TO_FIRST_EGG_NOAA_ZENODO_SOURCE_GATE_V19.json'
+      - 'scripts/audit_noaa_zenodo_visitor_to_first_egg_source_v19.py'
+      - 'tests/test_noaa_zenodo_visitor_to_first_egg_source_v19.py'
+      - '.github/workflows/noaa-zenodo-visitor-to-first-egg-v19.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_VISITOR_TO_FIRST_EGG_NOAA_ZENODO_SOURCE_GATE_V19.json'
+      - 'scripts/audit_noaa_zenodo_visitor_to_first_egg_source_v19.py'
+      - 'tests/test_noaa_zenodo_visitor_to_first_egg_source_v19.py'
+      - '.github/workflows/noaa-zenodo-visitor-to-first-egg-v19.yml'
+jobs:
+  source-eligibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit test observed denominator and NOAA terminal code guardrails
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_noaa_zenodo_visitor_to_first_egg_source_v19.py
+      - name: Probe only official Zenodo source metadata checksum not bird telemetry
+        run: |
+          python scripts/audit_noaa_zenodo_visitor_to_first_egg_source_v19.py \
+            --out /tmp/noaa_zenodo_arrival_first_egg_source_v19.json
+      - name: No false arrival or rescue inference and no re-fitted bird data
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/noaa_zenodo_arrival_first_egg_source_v19.json'))
+          assert r['status']=='HOLD_NO_POPULATION_AT_RISK_ENTRANT_TO_OWN_EGG_JOIN'
+          assert r['NOAA_cam_source_bird_records_loaded']==0
+          assert r['Zenodo_tracking_source_bird_records_loaded']==0
+          assert r['observed_penguin_eggs_matched_across_sources']==0
+          assert not r['proposed_visitor_to_breeding_probability_denominator_available']
+          assert r['identifiability_flags']['NOAA_numeric_4_5_are_terminal_outcome_not_four_or_five_adults']
+          assert r['identifiability_flags']['Zenodo_nonbreeders_not_followed_to_individual_first_egg']
+          assert r['Ecology_PR189_scientific_freeze_preserved']
+          print('SOURCE_METADATA',r['source_access_Zenodo_metadata'])
+          print('HOLD_SELECTED_NEST_CAMERA_AND_AT_SEA_NONBREEDER_NO_JOINT_ID')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: NOAA-Zenodo-penguin-arrival-vs-own-first-egg-observability-v19
+          path: /tmp/noaa_zenodo_arrival_first_egg_source_v19.json
+          retention-days: 21

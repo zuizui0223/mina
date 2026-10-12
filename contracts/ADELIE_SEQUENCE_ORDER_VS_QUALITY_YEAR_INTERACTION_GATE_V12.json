@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "question": "At the same focal year, current reproductive success and prior total successes, does the ORDER of earlier successes/failures add genuinely independent next-year predictive information beyond fixed bird quality, age/year effects and detection?",
+  "status": "EXACT_NULL_IDENTIFIABILITY_THEORY_ONLY_NO_PENGUIN_OUTCOMES",
+  "source_context": {
+    "paper": "Kappes et al 2021 doi:10.1111/1365-2656.13422",
+    "already_fit": "1997–2013, 3089 known-age birds, 9603 breeding observations; individual identity, year and colony effects, age first breeding, selective appearance/disappearance and experience already analyzed",
+    "do_not_claim_novelty": "Adding an individual random intercept and year effects is prior art, not the proposed contribution",
+    "official_individual_source": "Dryad doi:10.5061/dryad.s7h44j15w",
+    "source_access": "HOLD_HTTP_403",
+    "author_advice": "Contact study team before deep novel individual-sequence reanalysis; IDs recoded and may not be linked with other author papers",
+    "individual_outcomes_read_for_this_contract": 0
+  },
+  "temporal_patterns": {
+    "sequence_A": [
+      1,
+      0,
+      1
+    ],
+    "sequence_B": [
+      0,
+      1,
+      1
+    ],
+    "equal_properties": [
+      "number of 2021-type prior attempts = 3",
+      "total successes = 2",
+      "current/last outcome = 1",
+      "future prediction is for a next observed event"
+    ],
+    "older_state_at_t_minus_1_differs": true,
+    "never_substitute_missing_survey_or_skipped_breeding_with_0": true
+  },
+  "preexposed_mathematical_null_models": {
+    "N0_FIXED_QUALITY_IID": "Latent high/low lifetime success propensities, independent conditional on lifelong type; same number of successes and attempts imply exactly same next prediction regardless of order",
+    "N1_FIXED_QUALITY_PLUS_SHARED_YEAR_SHOCK": "logit p_(i,t) = alpha_quality_i + beta_year_t; with same set of attempted years and number of successes, posterior latent alpha is identical across order permutations even when year probabilities change, but historical sequence frequencies differ",
+    "N2_QUALITY_BY_YEAR_INTERACTION_NO_MEMORY": "Different lifetime phenotypes respond differently to the same year; same-count order can change inferred latent type and future prediction WITHOUT any outcome-to-outcome causal carryover",
+    "N3_TRUE_LAGGED_PROCESS": "A direct older-outcome effect could also generate order-dependent future forecasts; N2 and N3 remain observationally indistinguishable without extra assumptions/data",
+    "N4_HETEROGENEOUS_FIRST_ORDER_MARKOV": "Birds have different permanent first-order transition matrices P(next success | previous one success/failure, fixed quality type). Observed historical order reveals the matrix type, and future outcome differs even with equal historical success counts and same current state. No direct second-order memory parameter exists."
+  },
+  "test_constraints": [
+    "All calculations purely synthetic exact probabilities, no animal records",
+    "For iid frailty and shared additive logits, same history count must yield identical posterior and future predictions to numerical precision",
+    "For a nonadditive stable-type-by-year response, synthetic order difference must arise although each year is independent conditional on type, thus disproving general identifiability",
+    "Evaluate true old-state effect only as a competing synthetic model, never as observed penguin biology",
+    "New biological outcome reading or fitting remains explicitly HOLD until original author source, quality history and detection treatment validated",
+    "Prospective empirical design would require confirmed at-risk attempt seasons (not zeros for unobserved or skipping), same age/year/colony, enough identical-count histories with different order, and year-held-out predictive validation plus posterior predictive null simulations",
+    "Any effect in one Ross Island colony or three clustered Ross Island colonies is NOT an inter-island replicated mechanism",
+    "Allow heterogeneous FIRST-ORDER breeder transition matrices as null: apparent second-order effects can survive exact history-count/current-state matching without second-order state dependence."
+  ],
+  "prior_art": "Individual heterogeneity, age, first-recruitment and selective disappearance included by Kappes et al 2021; older multistate effects and GOF reported Lescroel et al 2009. Exchangeability/conditional models standard statistics, not original theory",
+  "next_source_gate": "HOLD_DRYAD_403_AUTHOR_CONSULTATION",
+  "actual_penguin_outcomes_read": 0,
+  "biological_mechanism_discovered": false,
+  "PR189_untouched": true,
+  "PR142_untouched": true,
+  "synthetic_exact_receipts": [
+    {
+      "model": "static_iid_quality",
+      "next_given_101": 0.68,
+      "next_given_011": 0.68,
+      "second_lag_direct_causal_parameter": 0
+    },
+    {
+      "model": "shared_year_additive_logit",
+      "next_given_101": 0.712163821,
+      "next_given_011": 0.712163821,
+      "second_lag_direct_causal_parameter": 0
+    },
+    {
+      "model": "type_by_calendar_year_interaction",
+      "next_given_101": 0.6428571428571429,
+      "next_given_011": 0.35714285714285715,
+      "second_lag_direct_causal_parameter": 0
+    },
+    {
+      "model": "heterogeneous_first_order_markov",
+      "next_given_101": 0.5153846153846153,
+      "next_given_011": 0.6058823529411765,
+      "second_lag_direct_causal_parameter": 0
+    }
+  ]
+}

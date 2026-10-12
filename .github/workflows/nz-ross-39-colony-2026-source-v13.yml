@@ -1,0 +1,60 @@
+name: NZ 2026 Ross Sea 39-colony aerial census independent source
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ROSS_NZ_2026_39_COLONY_SOURCE_GATE_V13.json'
+      - 'scripts/audit_nz_2026_ross_39_colony_census_source_v13.py'
+      - 'tests/test_nz_2026_ross_39_colony_source_v13.py'
+      - '.github/workflows/nz-ross-39-colony-2026-source-v13.yml'
+  pull_request:
+    paths:
+      - 'contracts/ROSS_NZ_2026_39_COLONY_SOURCE_GATE_V13.json'
+      - 'scripts/audit_nz_2026_ross_39_colony_census_source_v13.py'
+      - 'tests/test_nz_2026_ross_39_colony_source_v13.py'
+      - '.github/workflows/nz-ross-39-colony-2026-source-v13.yml'
+jobs:
+  independent-external-data-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate official CKAN resource/ZIP source, zero and NA guards
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_nz_2026_ross_39_colony_source_v13.py
+      - name: Fetch one official 2026 XLSX and audit site-year sampling support
+        run: |
+          python scripts/audit_nz_2026_ross_39_colony_census_source_v13.py \
+            --out /tmp/ross_39_colony_2026_census_source_coverage.json
+      - name: Verify no imputed absences or inferred demographic rescue
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/ross_39_colony_2026_census_source_coverage.json'))
+          assert d['PR189_science_unmodified']
+          assert d['new_causal_immigration_effect'] is False
+          assert d['status'].startswith(('HOLD_','SOURCE_XLSX_VALIDATED'))
+          if d['status']=='SOURCE_XLSX_VALIDATED_AND_STRUCTURAL_COVERAGE_REPORTED':
+              assert d['source_count_zeros_not_conflated_with_missing']
+              assert d['source_count_not_individual_survival_or_dispersion']
+              assert d['no_new_ecological_model_fitted']
+              assert d['verified_md5']=='195a9027a0d18012812b09fb345ac60e'
+              assert d['source_years'][0]==1981 and d['source_years'][-1]==2024
+          print('NZ_SOURCE_STATUS',d['status'])
+          print('NZ_SURVEYED_COLONY_ROSTER_N',d.get('n_named_nonaggregate_source_rows'))
+          print('NZ_NO_MISSING_TO_ZERO_OR_CAUSAL_MOVEMENT_INFERENCE')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nz-2026-ross-sea-39-colony-survey-coverage-source-v13
+          path: /tmp/ross_39_colony_2026_census_source_coverage.json
+          retention-days: 30
+          if-no-files-found: ignore

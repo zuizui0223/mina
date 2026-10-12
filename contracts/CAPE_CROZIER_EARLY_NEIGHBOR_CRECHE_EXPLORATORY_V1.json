@@ -1,0 +1,37 @@
+{
+  "status": "POST_OUTCOME_EXPLORATORY_ONLY",
+  "date": "2026-10-08",
+  "source_release_commit": "04517cedac18950408abd4d0b510f4aae3447f05",
+  "sources": {
+    "2021_serial_nest_checks": "data/solonest_obs_data_entry_2122.csv",
+    "2021_original_site_GPS": "data/solonest_initial_locations.csv",
+    "2021_direct_creche_outcome": "data/solo_outcomes.csv"
+  },
+  "already_exposed_prior_publication": "Cox et al 2024 10.1007/s00300-024-03246-9, direct nest success and 2022 reoccupancy, 4 nascent subcolonies already described",
+  "not_a_preregistration": true,
+  "screen_question": "Within solitary nest territories, does gain of a neighbor recorded in November (before median late December hatch) co-occur with more directly CONFIRMED chicks entering creches? Does this pattern survive earlier/later exposure cutoff description?",
+  "fixed_cutoffs_2021": ["2021-11-24","2021-12-01","2021-12-15","2021-12-22"],
+  "primary_exploratory_cutoff": "2021-12-01",
+  "eligible": "Only 2021 nests whose original breeder=1, excluding solo27 (author's stated inadequate observations); expect 36",
+  "neighbor_definition": "Any original raw n_neighbors >0 on dated 2021 observation at or before cutoff; finite numeric 0 is absence; do not infer actual conspecific arrival date from first positive",
+  "outcome": "cr_confirm >0 means directly confirmed at least one chick entering creche; 0/NA means NOT DIRECTLY CONFIRMED, not certain death",
+  "covariates_for_balance_only": ["dist_nearest_subcol_nest_m","rocksize_cm","area"],
+  "checks": [
+    "exact source 50 GPS positions and 50 unique outcome IDs",
+    "only before median hatch cutoff dates",
+    "no row after cutoff may influence exposure",
+    "exposure groups minimum n reported with each date, no arbitrary significance gate",
+    "report balance at baseline and site/area clustering; no p value or inferred causality",
+    "detect observer and eggs already present at first neighbor appearance as a reverse-causation warning"
+  ],
+  "mechanisms_unresolved": [
+    "social protection via new near neighbors",
+    "selective persistence of successful early breeders attracts neighbors",
+    "local microtopography/skua predator risk and surveillance affect both neighbors and chick observation",
+    "egg/nest attendance encourages settlement prior to chick success",
+    "site grouping and reuse may be identity-confounded"
+  ],
+  "claim_not_licensed": "neighbors caused chick survival or founded new colony, evolution of Allee threshold, independent first-recruitment or island-scale causal regularity",
+  "no_new_novel_paper_claim": true,
+  "PR189_frozen": true
+}
