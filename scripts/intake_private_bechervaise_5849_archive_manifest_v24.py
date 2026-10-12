@@ -15,7 +15,6 @@ import argparse
 from collections import Counter
 import hashlib
 import json
-import os
 from pathlib import Path, PurePosixPath
 import re
 from zipfile import ZipFile, BadZipFile
@@ -97,7 +96,7 @@ def archive_summary(path:Path):
                 "year_tokens_from_member_names_only":dict(sorted(year_counts.items())),
                 "zip_member_path_traversal_count":zip_invalid_traversal,
                 "zip_encrypted_members":encrypted_members,
-                "zip_manifest_not proof_of_valid_RFID_data":True
+                "zip_manifest_not_proof_of_valid_RFID_data":True
             })
     except BadZipFile:
         # Do not run OCR, unzip or decode unknown user-managed originals.
