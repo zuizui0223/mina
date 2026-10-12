@@ -25,8 +25,8 @@
     {
       "kind": "AAS_4086_additional_publisher_link_candidate_crossing_data",
       "url": "https://data.aad.gov.au/eds/5849/download",
-      "source_link_role": "second direct AADC link in publisher's same weighbridge metadata, not in NASA summary; label/content and original year partition still unverified",
-      "previous_source_result": "NEWLY_DISCOVERED_AUTHOR_LINK"
+      "source_link_role": "Publisher labels 5849 Download the dataset on AAS_4086; source binary has not been retrieved.",
+      "previous_source_result": "LABEL_VERIFIED_IN_CI_38220014105_BUT_HTML_INTERSTITIAL"
     },
     {
       "kind": "AAS_4518_nest_resight_package",
@@ -60,8 +60,20 @@
     "new_postarrival_egg_treatment_estimated": false,
     "new_interisland_causal_ecology_result": false
   },
-  "current_decision": "V24_SOURCE_LINK_REAL_BUT_CROSSING_FILE_FORMAT_AND_TAG_TO_EGG_HOLD",
+  "current_decision": "OFFICIAL_AADC_5849_DATASET_LINK_VERIFIED__BINARY_ACCESS_HOLD",
   "pr189_frozen": true,
   "pr142_frozen": true,
-  "pr195_frozen": true
+  "pr195_frozen": true,
+  "publisher_anchor_labels_independently_verified": {
+    "run_url": "https://github.com/zuizui0223/mina/actions/runs/38220014105",
+    "source_page": "https://data.aad.gov.au/metadata/records/AAS_4086_Weighbridge",
+    "anchor_5228": "Download a copy of the technical guide",
+    "anchor_5849": "Download the dataset.",
+    "http_response_for_5228": "206 HTML JavaScript application shell",
+    "http_response_for_5849": "206 HTML JavaScript application shell",
+    "http_response_for_5516": "206 HTML JavaScript application shell",
+    "original_source_download_page_identified": true,
+    "original_data_binary_retrieved": false,
+    "original_tag_record_count_read": 0
+  }
 }
