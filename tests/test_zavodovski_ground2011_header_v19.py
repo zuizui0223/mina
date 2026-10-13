@@ -19,6 +19,8 @@ def test_lat_lon_source_is_only_potential_not_success():
     assert r["candidate_georeference_columns"]["latitude_longitude"] is True
     assert r["original_count_values_parsed"]==0
 
-def test_duplicate_names_stop():
-    with pytest.raises(ValueError,match="repeated"):
-        m.schema_gate(["latitude","LATITUDE"])
+def test_duplicate_names_are_preserved_without_joining():
+    q=m.schema_gate(["latitude","LATITUDE"])
+    assert q["status"] == "HOLD_AMBIGUOUS_FIRST_CSV_HEADER"
+    assert q["spatial_join_eligible"] is False
+    assert q["original_columns"] == ["latitude","LATITUDE"]
