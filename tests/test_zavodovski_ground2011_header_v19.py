@@ -24,3 +24,19 @@ def test_duplicate_names_are_preserved_without_joining():
     assert q["status"] == "HOLD_AMBIGUOUS_FIRST_CSV_HEADER"
     assert q["spatial_join_eligible"] is False
     assert q["original_columns"] == ["latitude","LATITUDE"]
+
+
+def test_metadata_preamble_is_skipped_without_reading_the_first_biological_row():
+    import io
+    raw=io.BytesIO(b"# id: 10.5285/fake\r\n# license: public\r\n\r\nsubcolony,latitude,longitude,nests\r\nA01,-56.3,-27.6,135\r\n")
+    line, metadata=m.first_noncomment_header(raw.readline)
+    assert line == b"subcolony,latitude,longitude,nests\r\n"
+    assert metadata["preamble_line_count"] == 3
+    assert raw.readline() == b"A01,-56.3,-27.6,135\r\n"
+
+
+def test_bounded_preamble_fails_closed():
+    import io
+    stream=io.BytesIO((b"# source metadata\n"*41)+b"x,y\n100,200\n")
+    with pytest.raises(ValueError,match="preamble too long"):
+        m.first_noncomment_header(stream.readline)
