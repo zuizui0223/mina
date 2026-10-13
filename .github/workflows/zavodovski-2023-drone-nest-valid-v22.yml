@@ -1,0 +1,40 @@
+name: Zavodovski 2023 species-specific UAV nest georeference and historical T V22
+on:
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'contracts/ZAVODOVSKI_2023_DRONE_NEST_POINT_VALIDATION_V22.md'
+      - 'scripts/validate_zavodovski_2023_drone_nest_site_v22.py'
+      - 'tests/test_zavodovski_2023_drone_nest_site_v22.py'
+      - '.github/workflows/zavodovski-2023-drone-nest-valid-v22.yml'
+  pull_request:
+    paths:
+      - 'contracts/ZAVODOVSKI_2023_DRONE_NEST_POINT_VALIDATION_V22.md'
+      - 'scripts/validate_zavodovski_2023_drone_nest_site_v22.py'
+      - 'tests/test_zavodovski_2023_drone_nest_site_v22.py'
+      - '.github/workflows/zavodovski-2023-drone-nest-valid-v22.yml'
+  workflow_dispatch:
+jobs:
+  original-2023-drone-nest-point-validation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source-backed GIS read dependencies
+        run: python -m pip install pytest requests shapely pyshp pyproj
+      - name: Check year label, map CRS, declared survey mask and independent nest counting
+        run: python -m pytest -q tests/test_zavodovski_2023_drone_nest_site_v22.py
+      - name: Verify and overlay true 2023 per-species nest points with pinned V18 CHPE consensus site
+        run: |
+          python scripts/validate_zavodovski_2023_drone_nest_site_v22.py \
+            --out /tmp/zavodovski_2023_drone_nests_v22.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-2023-independent-species-nests-v22
+          path: /tmp/zavodovski_2023_drone_nests_v22.json
