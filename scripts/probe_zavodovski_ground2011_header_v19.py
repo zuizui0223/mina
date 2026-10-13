@@ -48,7 +48,13 @@ def schema_gate(names):
         "latitude_longitude": bool(set(norm)&latitude and set(norm)&longitude),
         "projected_xy": bool(set(norm)&east and set(norm)&north),
     }
-    site_cols = [v for v in norm if re.search(r"(?:^|_)(?:subcolony|site|colony|patch|plot|location)(?:_|$)", v) or v.endswith("_id")]
+    # Do not confuse derived "sub_colony_area_m2" with a stable site ID!
+    known = {"subcolony_id", "sub_colony_id", "colony_id", "site_id",
+             "plot_id", "patch_id", "location_id", "station_id",
+             "subcolony_code", "sub_colony_code", "colony_code",
+             "site_code", "plot_code", "patch_code"}
+    site_cols = [v for v in norm if v in known or
+                 (v.endswith("_id") and not v.startswith("image_"))]
     has_location = any(coord_pairs.values())
     return {
         "original_columns": names,
