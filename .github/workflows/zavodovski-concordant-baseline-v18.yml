@@ -1,0 +1,40 @@
+name: Zavodovski V18 concordant historical C-to-M mapped changes
+on:
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'contracts/ZAVODOVSKI_CONCORDANT_BASELINE_V18.md'
+      - 'scripts/zavodovski_jointly_corroborated_transition_v18.py'
+      - 'tests/test_zavodovski_concordant_v18.py'
+      - '.github/workflows/zavodovski-concordant-baseline-v18.yml'
+  pull_request:
+    paths:
+      - 'contracts/ZAVODOVSKI_CONCORDANT_BASELINE_V18.md'
+      - 'scripts/zavodovski_jointly_corroborated_transition_v18.py'
+      - 'tests/test_zavodovski_concordant_v18.py'
+      - '.github/workflows/zavodovski-concordant-baseline-v18.yml'
+  workflow_dispatch:
+jobs:
+  strict-concordance:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install narrowly-scoped GIS packages
+        run: python -m pip install pytest requests shapely pyshp pyproj
+      - name: Test original-code partition, zero-margin identity and strict exclusions
+        run: python -m pytest -q tests/test_zavodovski_concordant_v18.py
+      - name: Download authentic original GIS features and compute only exploratory co-location
+        run: |
+          python scripts/zavodovski_jointly_corroborated_transition_v18.py \
+            --out /tmp/zavodovski_concordant_v18.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-concordant-2011-baseline-v18
+          path: /tmp/zavodovski_concordant_v18.json
