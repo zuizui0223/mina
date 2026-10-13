@@ -55,7 +55,7 @@ def clean_support(direct, historic):
     return support, cloud
 
 
-def evaluate(direct, historic):
+def evaluate(direct, historic, expected_v10_E=0.669617):
     support, cloud = clean_support(direct, historic)
     c0, m0 = (direct[2011,k].intersection(support) for k in ("chinstrap", "macaroni"))
     c1, m1 = (direct[2016,k].intersection(support) for k in ("chinstrap", "macaroni"))
@@ -65,7 +65,7 @@ def evaluate(direct, historic):
     x = checked(gain.intersection(loss), "C loss and M gain")
     if gain.is_empty or loss.is_empty or x.is_empty:
         raise ValueError("GEOMETRY_STOP no informative baseline transition")
-    if abs(ratio(x.area, gain.area) - 0.669617) > 0.003:
+    if abs(ratio(x.area, gain.area) - expected_v10_E) > 0.003:
         raise ValueError("REPRODUCIBILITY_STOP direct 2011-2016 E unexpectedly differs from V10")
 
     # Historical categories are spatially exclusive here, despite historic
