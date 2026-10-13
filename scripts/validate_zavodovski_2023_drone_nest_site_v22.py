@@ -18,7 +18,7 @@ from urllib.parse import quote
 import requests
 import shapefile
 from pyproj import CRS
-from shapely.geometry import Point
+from shapely.geometry import Point, shape
 from shapely.ops import unary_union
 from shapely.prepared import prep
 
@@ -28,6 +28,7 @@ from reproduce_zavodovski_direct_image_overlap_v10 import (
 )
 from compare_zavodovski_lynch2011_digitizations_v13 import fetch_lynch
 from mixed_zavodovski_2011_historical_overlap_v15 import original_three_categories
+from audit_zavodovski_2023_polygon_empty_source_v22a import inspect_polygon_shape_records
 from validate_zavodovski_2020_uav_nests_v21 import (
     source_baseline_layers, FIXED_T_AREAS, LAND_FOLDER, COAST_BASENAME, HOST
 )
@@ -71,6 +72,50 @@ def retrieve_2023(session, folder):
             hashes[name]=hashlib.sha256(data).hexdigest()
         paths[base]=folder/(base+".shp")
     return paths,hashes
+
+
+def authorized_empty_shape(record):
+    """Only an original type-5 polygon with literally no part/point may be ignored."""
+    return (record.shapeType == shapefile.POLYGON
+            and not record.points
+            and not getattr(record,"parts",[]))
+
+
+def read_2023_maca_polygon_narrowly(path):
+    """Skip ONLY the single published 2023 maca empty POLYGON placeholder.
+
+    No coordinate repair, geometry simplification, silent omission or
+    species reclassification is permitted for any other original record.
+    """
+    source_layout=inspect_polygon_shape_records(path)
+    if (source_layout["source_shape_type"]!=5
+        or source_layout["original_record_count"]!=170
+        or source_layout["original_nonnull_zero_vertex_record_count"]!=1
+        or source_layout["original_zero_vertex_record_count"]!=1
+        or source_layout["original_nonempty_shape_records"]!=169):
+        raise ValueError("SOURCE_STOP maca 2023 empty source record contract changed")
+    validate_crs(path)
+    records=shapefile.Reader(str(path))
+    kept=[]
+    skipped=0
+    for s in records.iterShapes():
+        if authorized_empty_shape(s):
+            skipped+=1
+            continue
+        if not s.points or not getattr(s,"parts",[]):
+            raise ValueError("GEOMETRY_STOP unexplained nonempty/nonpolygon shape problem")
+        geo=shape(s.__geo_interface__)
+        if geo.is_empty or not geo.is_valid or geo.geom_type not in ("Polygon","MultiPolygon"):
+            raise ValueError("GEOMETRY_STOP invalid NONEMPTY original maca polygon")
+        kept.append(geo)
+    if skipped!=1 or len(kept)!=169:
+        raise ValueError("SOURCE_STOP original maca 2023 record count not reproduced")
+    result=unary_union(kept)
+    if result.is_empty or not result.is_valid:
+        raise ValueError("GEOMETRY_STOP union of original maca source records invalid")
+    return result,{"original_shape_records":170,"original_nonempty_polygons":169,
+                   "empty_placeholder_skipped_without_repair":1,
+                   "source_maca_polygon_geometry_repaired":False}
 
 
 def validate_crs(path):
@@ -232,9 +277,15 @@ def main():
             hist,_=original_three_categories(orig_path)
             cores,control,direct,other,support=source_baseline_layers(base_paths,hist)
             drone_poly={}
+            source_empty_record_audit={}
             for name in POLY_SOURCES:
-                geom,count=read_geometry(drone_paths[name])
+                if name=="macaroni_colony_boundaries_2023":
+                    geom,empty_audit=read_2023_maca_polygon_narrowly(drone_paths[name])
+                    source_empty_record_audit[name]=empty_audit
+                else:
+                    geom,count=read_geometry(drone_paths[name])
                 drone_poly[name]=geom
+            result["source_empty_record_audit"]=source_empty_record_audit
             nests,qa={},{}
             for name in NEST_SOURCES:
                 specie="Macaroni" if name.startswith("macaroni") else "Chinstrap"
