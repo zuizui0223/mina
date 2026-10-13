@@ -1,0 +1,33 @@
+name: Zavodovski historical 2011 redigitization DBF header V12
+on:
+  pull_request:
+    paths:
+      - 'scripts/audit_zavodovski_lynch2011_dbf_header_v12.py'
+      - 'tests/test_zavodovski_lynch2011_dbf_header_v12.py'
+      - '.github/workflows/zavodovski-lynch2011-dbf-header-v12.yml'
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'scripts/audit_zavodovski_lynch2011_dbf_header_v12.py'
+      - 'tests/test_zavodovski_lynch2011_dbf_header_v12.py'
+      - '.github/workflows/zavodovski-lynch2011-dbf-header-v12.yml'
+  workflow_dispatch:
+jobs:
+  schema-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest requests
+      - run: python -m pytest -q tests/test_zavodovski_lynch2011_dbf_header_v12.py
+      - run: python scripts/audit_zavodovski_lynch2011_dbf_header_v12.py --out /tmp/lynch2011_dbf_header_v12.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-lynch2011-header-v12
+          path: /tmp/lynch2011_dbf_header_v12.json
