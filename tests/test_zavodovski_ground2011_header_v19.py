@@ -40,3 +40,9 @@ def test_bounded_preamble_fails_closed():
     stream=io.BytesIO((b"# source metadata\n"*41)+b"x,y\n100,200\n")
     with pytest.raises(ValueError,match="preamble too long"):
         m.first_noncomment_header(stream.readline)
+
+
+def test_area_column_does_not_count_as_independent_site_identifier():
+    r=m.schema_gate(["number_occupied_nests","sub-colony_area (m2)","density (nests/m2)"])
+    assert r["status"] == "HOLD_NO_COORDINATE_COLUMNS_IN_THIS_CSV"
+    assert r["candidate_site_ID_columns_no_verified_polygon_crosswalk"] == []
