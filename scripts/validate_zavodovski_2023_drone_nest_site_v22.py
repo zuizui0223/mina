@@ -28,7 +28,6 @@ from reproduce_zavodovski_direct_image_overlap_v10 import (
 )
 from compare_zavodovski_lynch2011_digitizations_v13 import fetch_lynch
 from mixed_zavodovski_2011_historical_overlap_v15 import original_three_categories
-from audit_zavodovski_2023_polygon_empty_source_v22a import inspect_polygon_shape_records
 from validate_zavodovski_2020_uav_nests_v21 import (
     source_baseline_layers, FIXED_T_AREAS, LAND_FOLDER, COAST_BASENAME, HOST
 )
@@ -87,6 +86,8 @@ def read_2023_maca_polygon_narrowly(path):
     No coordinate repair, geometry simplification, silent omission or
     species reclassification is permitted for any other original record.
     """
+    # Local import avoids source-scanner ↔ V22 circular import during test collection.
+    from audit_zavodovski_2023_polygon_empty_source_v22a import inspect_polygon_shape_records
     source_layout=inspect_polygon_shape_records(path)
     if (source_layout["source_shape_type"]!=5
         or source_layout["original_record_count"]!=170
