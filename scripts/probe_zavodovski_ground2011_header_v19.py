@@ -62,6 +62,28 @@ def schema_gate(names):
     }
 
 
+def first_noncomment_header(readline):
+    """Read bounded publisher preamble plus ONE CSV header, never any data row."""
+    preamble = bytearray()
+    comment_count = 0
+    for _ in range(41):
+        line = readline(1025)
+        if not line or len(line) > 1024 or b"\n" not in line:
+            raise ValueError("SOURCE_STOP truncated or oversized preamble/header")
+        if line.strip() == b"" or line.lstrip(b" \xef\xbb\xbf").startswith(b"#"):
+            if comment_count >= 40 or len(preamble) + len(line) > 4096:
+                raise ValueError("SOURCE_STOP source comment preamble too long")
+            preamble.extend(line)
+            comment_count += 1
+            continue
+        if line.lstrip().lower().startswith(b"<html"):
+            raise ValueError("SOURCE_STOP received HTML rather than CSV")
+        return line, {"preamble_line_count": comment_count,
+                      "preamble_sha256": hashlib.sha256(preamble).hexdigest(),
+                      "preamble_bytes_read": len(preamble)}
+    raise ValueError("SOURCE_STOP no CSV header within allowed comment envelope")
+
+
 def first_line_only():
     with requests.get(source_url(), timeout=(20,40), stream=True,
                       headers={"User-Agent": "mina-source-header-only/1.0"}) as response:
@@ -69,14 +91,11 @@ def first_line_only():
         final = urlparse(response.url)
         if final.scheme != "https" or final.hostname not in {HOST,"194.66.5.50"}:
             raise ValueError("SOURCE_STOP nonofficial redirect")
-        first = response.raw.readline(2049)
-        if len(first)>2048 or b"\n" not in first:
-            raise ValueError("SOURCE_STOP CSV header too long or no line boundary")
-        if first.lstrip().lower().startswith(b"<html"):
-            raise ValueError("SOURCE_STOP source is HTML")
+        first, preamble_meta = first_noncomment_header(response.raw.readline)
         header = first.decode("utf-8-sig").strip("\r\n")
         cols = next(csv.reader(io.StringIO(header)))
         result = schema_gate(cols)
+        result.update(preamble_meta)
         result["publisher_source_uri"] = source_url()
         result["source_doi"] = "10.5285/96febb5d-1821-4f49-9b5f-32e489ae3839"
         result["response_content_length_declared_bytes"] = response.headers.get("content-length")
