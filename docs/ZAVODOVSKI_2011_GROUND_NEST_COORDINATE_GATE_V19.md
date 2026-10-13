@@ -26,6 +26,6 @@ Scientific status: independent ground-source **feasibility audit**, not a new bi
 
 The completed original-header-only Action #38411545688 showed that the first source line is **not a data header**. It is the publisher metadata comment `# id: 10.5285/96febb5d-1821-4f49-9b5f-32e489ae3839`; 52 header bytes, declared 5,215 source bytes. Therefore the original STOP was the correct outcome of treating line 1 as tabular.
 
-Before a second access, permit scanning **at most 40 strictly comment-prefixed (`#`) lines** before the first noncomment line (bounded 4,096 header/preamble bytes total). Read and emit **only the first noncomment CSV line**, which must consist of unique nonnumeric column labels, together with count and SHA256 of the preamble, not preamble values. Never read any subsequent biological rows. Stop on missing/non-tabular header, byte/line limits or altered official source ID.
+Before a second access, permit scanning **at most 40 comment-prefixed (`#`) or entirely blank lines** before the first noncomment line (bounded 4,096 header/preamble bytes total). Read and emit **only the first noncomment CSV line**, which must consist of unique nonnumeric column labels, together with count and SHA256 of the preamble, not preamble values. Never read any subsequent biological rows. Stop on missing/non-tabular header, byte/line limits or altered official source ID.
 
 This is a source-structure read-envelope change, NOT adjustment to ecological endpoints or post-hoc interpretation of counts.
