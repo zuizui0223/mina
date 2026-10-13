@@ -1,0 +1,24 @@
+"""Synthetic CSV schema inputs only; original nest counts remain unread."""
+import importlib.util
+from pathlib import Path
+import pytest
+pytest.importorskip("requests")
+src=Path(__file__).resolve().parents[1]/"scripts"/"probe_zavodovski_ground2011_header_v19.py"
+s=importlib.util.spec_from_file_location("ground_header",src)
+m=importlib.util.module_from_spec(s)
+s.loader.exec_module(m)
+
+def test_no_coordinate_source_is_hold_even_with_site_id():
+    r=m.schema_gate(["SubColony_ID","Nest_Count","Colony_Area","Density"])
+    assert r["status"]=="HOLD_NO_COORDINATE_COLUMNS_IN_THIS_CSV"
+    assert r["original_biological_rows_parsed"]==0
+
+def test_lat_lon_source_is_only_potential_not_success():
+    r=m.schema_gate(["plot","decimal latitude","decimal longitude","nest count"])
+    assert r["status"].startswith("POTENTIAL_COORDINATE_HEADER")
+    assert r["candidate_georeference_columns"]["latitude_longitude"] is True
+    assert r["original_count_values_parsed"]==0
+
+def test_duplicate_names_stop():
+    with pytest.raises(ValueError,match="repeated"):
+        m.schema_gate(["latitude","LATITUDE"])
