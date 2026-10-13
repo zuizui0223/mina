@@ -3,6 +3,7 @@ import importlib.util
 from pathlib import Path
 from urllib.parse import quote
 import pytest
+pytest.importorskip('requests')
 
 ROOT = Path(__file__).resolve().parents[1]
 p = ROOT / "scripts" / "reproduce_zavodovski_direct_image_overlap_v10.py"
