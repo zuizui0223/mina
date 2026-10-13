@@ -2,6 +2,7 @@
 import importlib.util
 from pathlib import Path
 import pytest
+pytest.importorskip('shapely')
 from shapely.geometry import box
 
 path = Path(__file__).resolve().parents[1] / 'scripts/zavodovski_exchange_v1.py'
