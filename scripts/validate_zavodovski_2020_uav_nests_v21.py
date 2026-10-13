@@ -18,6 +18,7 @@ import requests
 from pyproj import Transformer
 from shapely.geometry import Point
 from shapely.ops import unary_union
+from shapely.prepared import prep
 
 from reproduce_zavodovski_direct_image_overlap_v10 import (
     audit_dictionary, download_layers, read_geometry, canonical_file_url,
@@ -158,7 +159,8 @@ def source_baseline_layers(paths, historic):
 
 
 def count_locations(points, target):
-    selected=[p for p in points if p.within(target)]
+    prepared = prep(target)
+    selected=[p for p in points if prepared.contains(p)]
     return {
         "original_point_rows_with_center_inside":len(selected),
         "unique_exact_projected_coordinate_points":len({(p.x,p.y) for p in selected}),
@@ -177,11 +179,13 @@ def summarize(points_by_class, qc_by_class, cores, control, direct, all_mapped, 
             "species_nest_points":{},
             "coordinate_plausibility":{},
             "scientific_condition":"Only positive source nest-coordinate corroboration; no surveyed-zero, settlement propensity or causal mechanism."}
+    prepared_land = prep(land.buffer(150))
+    prepared_colonies = prep(all_mapped.buffer(100))
     for cat,pts in points_by_class.items():
-        in_island=[p for p in pts if p.distance(land)<=150]
+        in_island=[p for p in pts if prepared_land.covers(p)]
         if cat=="Macaroni" and len(in_island)/len(pts)<0.90:
             raise ValueError("GEOREFERENCE_STOP less than 90% original maca points on/near 2023 coastline")
-        near_mapped=sum(p.distance(all_mapped)<=100 for p in pts)
+        near_mapped=sum(prepared_colonies.covers(p) for p in pts)
         result["coordinate_plausibility"][cat]={
             "point_rows_within_150m_of_2023_coastline_land":len(in_island),
             "fraction_within_150m_of_2023_land":round(len(in_island)/len(pts),6),
