@@ -1,0 +1,31 @@
+name: Zavodovski prospective polygon exchange synthetic QA
+on:
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+  pull_request:
+    paths:
+      - 'contracts/ZAVODOVSKI_SITE_EXCHANGE_V1.json'
+      - 'docs/ZAVODOVSKI_CROSS_SPECIES_SITE_TURNOVER_V1.md'
+      - 'scripts/zavodovski_exchange_v1.py'
+      - 'tests/test_zavodovski_exchange_v1.py'
+      - '.github/workflows/zavodovski-site-exchange-v1.yml'
+jobs:
+  synthetic-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest shapely
+      - run: python -m pytest -q tests/test_zavodovski_exchange_v1.py
+      - name: Assert source outcome remains unopened on this workflow
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('contracts/ZAVODOVSKI_SITE_EXCHANGE_V1.json'))
+          assert d['original_polygon_rows_opened_at_freeze']==0
+          assert d['biological_result'] is None
+          PY

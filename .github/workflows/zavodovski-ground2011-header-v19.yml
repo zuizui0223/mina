@@ -1,0 +1,35 @@
+name: Zavodovski independent 2011 ground-count header gate V19
+on:
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'scripts/probe_zavodovski_ground2011_header_v19.py'
+      - 'tests/test_zavodovski_ground2011_header_v19.py'
+      - '.github/workflows/zavodovski-ground2011-header-v19.yml'
+  pull_request:
+    paths:
+      - 'scripts/probe_zavodovski_ground2011_header_v19.py'
+      - 'tests/test_zavodovski_ground2011_header_v19.py'
+      - '.github/workflows/zavodovski-ground2011-header-v19.yml'
+  workflow_dispatch:
+jobs:
+  original-header-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest requests
+      - name: Synthetic header schema checks
+        run: python -m pytest -q tests/test_zavodovski_ground2011_header_v19.py
+      - name: Fetch original source first CSV header line ONLY; no counts/densities parsed
+        run: python scripts/probe_zavodovski_ground2011_header_v19.py --out /tmp/zavodovski_ground_2011_header_v19.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-2011-ground-header-v19
+          path: /tmp/zavodovski_ground_2011_header_v19.json

@@ -1,0 +1,67 @@
+{
+  "status": "POTENTIAL_SOURCE_HEADERS_READ_NO_BIOLOGICAL_ROWS",
+  "source_doi": "10.5285/28222725-c53d-40f4-9350-49c368899f0b",
+  "files": [
+    {
+      "status": "PASS_POTENTIAL_COORDINATE_HEADER_CRS_UNVERIFIED",
+      "columns": [
+        "nest_number",
+        "lat",
+        "lon"
+      ],
+      "normalized": [
+        "nest_number",
+        "lat",
+        "lon"
+      ],
+      "latitude_longitude_columns": true,
+      "projected_xy_columns": false,
+      "candidate_record_ids": [],
+      "verified_crs": false,
+      "nest_location_rows_read": 0,
+      "note": "Coordinate headers establish only candidate syntax, not valid dated points, crs or 2020-only provenance.",
+      "publisher_comment_preamble_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publisher_comment_bytes_read": 0,
+      "first_data_header_bytes_read": 21,
+      "first_data_header_sha256": "3b30fd164db6d6af4e148b8646098825f597494fa99dfec133d47f0d3f68d081",
+      "source_filename": "ZAVO_2020_Macaroni_coordinates.csv",
+      "declared_content_length_bytes": "19476",
+      "original_nest_location_rows_read": 0,
+      "original_data_values_read": false
+    },
+    {
+      "status": "PASS_POTENTIAL_COORDINATE_HEADER_CRS_UNVERIFIED",
+      "columns": [
+        "nest_number",
+        "lat",
+        "lon"
+      ],
+      "normalized": [
+        "nest_number",
+        "lat",
+        "lon"
+      ],
+      "latitude_longitude_columns": true,
+      "projected_xy_columns": false,
+      "candidate_record_ids": [],
+      "verified_crs": false,
+      "nest_location_rows_read": 0,
+      "note": "Coordinate headers establish only candidate syntax, not valid dated points, crs or 2020-only provenance.",
+      "publisher_comment_preamble_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publisher_comment_bytes_read": 0,
+      "first_data_header_bytes_read": 21,
+      "first_data_header_sha256": "3b30fd164db6d6af4e148b8646098825f597494fa99dfec133d47f0d3f68d081",
+      "source_filename": "ZAVO_2020_Mixed_species_coordinates.csv",
+      "declared_content_length_bytes": "559088",
+      "original_nest_location_rows_read": 0,
+      "original_data_values_read": false
+    }
+  ],
+  "prohibited_year_misclassification": "ZAVO_2022_Chinstrap_coordinates.csv must never represent a 2020 contemporaneous chinstrap observation",
+  "original_nest_location_rows_read": 0,
+  "source_stage": "HEADER_ONLY",
+  "biological_effect_computed": false,
+  "ci_run_id": 38420734860,
+  "ci_job_id": 115377041746,
+  "hold_reason": "Original CSV lat/lon header does not alone prove coordinate CRS/dates or actual surveyed extent"
+}

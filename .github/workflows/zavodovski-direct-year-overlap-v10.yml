@@ -1,0 +1,40 @@
+name: Zavodovski original-year GIS source and overlap audit V10
+on:
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'sources/bas_zavodovski_layer_descriptions_v1.csv'
+      - 'scripts/reproduce_zavodovski_direct_image_overlap_v10.py'
+      - 'tests/test_reproduce_zavodovski_direct_image_overlap_v10.py'
+      - '.github/workflows/zavodovski-direct-year-overlap-v10.yml'
+  pull_request:
+    paths:
+      - 'sources/bas_zavodovski_layer_descriptions_v1.csv'
+      - 'scripts/reproduce_zavodovski_direct_image_overlap_v10.py'
+      - 'tests/test_reproduce_zavodovski_direct_image_overlap_v10.py'
+      - '.github/workflows/zavodovski-direct-year-overlap-v10.yml'
+  workflow_dispatch:
+jobs:
+  source-gated-overlay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated GIS dependencies
+        run: python -m pip install pytest requests shapely pyshp pyproj
+      - name: Validate original source roster and fail-closed controls
+        run: python -m pytest -q tests/test_reproduce_zavodovski_direct_image_overlap_v10.py tests/test_zavodovski_exchange_v1.py
+      - name: Download verified source polygon and mask components, then compute only strict descriptive overlap
+        run: |
+          python scripts/reproduce_zavodovski_direct_image_overlap_v10.py \
+            --out /tmp/zavodovski_direct_year_overlap_v10.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-original-year-overlap-v10-receipt
+          path: /tmp/zavodovski_direct_year_overlap_v10.json
