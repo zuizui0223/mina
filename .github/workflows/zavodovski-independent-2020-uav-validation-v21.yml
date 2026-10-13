@@ -1,0 +1,40 @@
+name: Zavodovski original 2020 UAV maca nests external positive-only validation V21
+on:
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'contracts/ZAVODOVSKI_2020_UAV_MAC_POSITIVE_VALIDATION_V21.md'
+      - 'scripts/validate_zavodovski_2020_uav_nests_v21.py'
+      - 'tests/test_zavodovski_2020_uav_nests_v21.py'
+      - '.github/workflows/zavodovski-independent-2020-uav-validation-v21.yml'
+  pull_request:
+    paths:
+      - 'contracts/ZAVODOVSKI_2020_UAV_MAC_POSITIVE_VALIDATION_V21.md'
+      - 'scripts/validate_zavodovski_2020_uav_nests_v21.py'
+      - 'tests/test_zavodovski_2020_uav_nests_v21.py'
+      - '.github/workflows/zavodovski-independent-2020-uav-validation-v21.yml'
+  workflow_dispatch:
+jobs:
+  independent-positive-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated public-GIS read libraries
+        run: python -m pip install pytest requests shapely pyshp pyproj
+      - name: Test point transformation, duplicate retention, species-year gates, geographical validity
+        run: python -m pytest -q tests/test_zavodovski_2020_uav_nests_v21.py
+      - name: Verify 2020 Macau and mixed nests against frozen V18 consensus patch
+        run: |
+          python scripts/validate_zavodovski_2020_uav_nests_v21.py \
+            --out /tmp/zavodovski_independent_2020_uav_v21.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-independent-2020-maca-nests-v21
+          path: /tmp/zavodovski_independent_2020_uav_v21.json
