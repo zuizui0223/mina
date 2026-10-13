@@ -102,3 +102,15 @@ def test_species_location_qc_stops_false_source_registration():
     pts={"Macaroni":[Point(10.5,1)],"Chinstrap":[Point(2.5,2)]}
     with pytest.raises(ValueError,match="below preread 90%"):
         v.analyze_counts(pts,{},cores,surveys,direct,hist)
+
+
+def test_exactly_one_empty_type5_placeholder_is_permitted_but_not_null_record():
+    from types import SimpleNamespace
+    assert v.authorized_empty_shape(SimpleNamespace(shapeType=shapefile.POLYGON,
+                                                      points=[],parts=[])) is True
+    assert v.authorized_empty_shape(SimpleNamespace(shapeType=shapefile.NULL,
+                                                      points=[],parts=[])) is False
+    assert v.authorized_empty_shape(SimpleNamespace(shapeType=shapefile.POLYGON,
+                                                      points=[(0,0)],parts=[])) is False
+    assert v.authorized_empty_shape(SimpleNamespace(shapeType=shapefile.POLYGON,
+                                                      points=[],parts=[0])) is False
