@@ -21,3 +21,11 @@ BAS archive GB/NERC/BAS/PDC/02263, Ratcliffe, Lynch, Black, White & Hart 2026: `
 Darwin Plus DPLUS186 project final report (https://darwinplus.org.uk/documents/DPLUS186/27933/DPLUS186%20FR%20-%20edited.pdf, p.4–6) reports independent TerraSAR-X/PAZ imaging every 4–7 days in 2023/24 and 2024/25, later continued near 11-day intervals (Richter et al. EGU 2024 DOI 10.5194/egusphere-egu24-22189). This is *not* a published 2011–2016 site-level species-coded tracking series and currently cannot identify within-interval order for the frozen map comparison. Do not imply the original SAR images are publicly downloadable; no public original site/season product link confirmed here.
 
 Scientific status: independent ground-source **feasibility audit**, not a new biological effect, and independent from Ecology PR189.
+
+## Stage 1a source-format amendment (before any additional line read)
+
+The completed original-header-only Action #38411545688 showed that the first source line is **not a data header**. It is the publisher metadata comment `# id: 10.5285/96febb5d-1821-4f49-9b5f-32e489ae3839`; 52 header bytes, declared 5,215 source bytes. Therefore the original STOP was the correct outcome of treating line 1 as tabular.
+
+Before a second access, permit scanning **at most 40 strictly comment-prefixed (`#`) lines** before the first noncomment line (bounded 4,096 header/preamble bytes total). Read and emit **only the first noncomment CSV line**, which must consist of unique nonnumeric column labels, together with count and SHA256 of the preamble, not preamble values. Never read any subsequent biological rows. Stop on missing/non-tabular header, byte/line limits or altered official source ID.
+
+This is a source-structure read-envelope change, NOT adjustment to ecological endpoints or post-hoc interpretation of counts.
