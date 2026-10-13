@@ -28,8 +28,18 @@ def source_url():
 
 def schema_gate(names):
     norm = [re.sub(r"[^a-z0-9]+", "_", name.strip().lower()).strip("_") for name in names]
-    if len(norm) < 2 or len(norm) != len(set(norm)):
-        raise ValueError("SCHEMA_STOP empty or repeated column names")
+    # Real-world CSV exports may have repeated or blank column headings.
+    # Preserve the header as evidence, but do not pretend it is joinable.
+    if len(norm) < 2 or any(not name for name in norm) or len(norm) != len(set(norm)):
+        return {
+            "status": "HOLD_AMBIGUOUS_FIRST_CSV_HEADER",
+            "original_columns": names,
+            "normalized_columns": norm,
+            "original_biological_rows_parsed": 0,
+            "original_count_values_parsed": 0,
+            "spatial_join_eligible": False,
+            "explanation": "Blank, duplicate or non-tabular initial header; no positional join allowed.",
+        }
     latitude = {"latitude", "lat", "gps_latitude", "gps_lat", "decimal_latitude"}
     longitude = {"longitude", "long", "lon", "gps_longitude", "gps_lon", "decimal_longitude"}
     east = {"easting", "utm_easting", "utm_e", "x", "x_utm", "coordinate_x"}
