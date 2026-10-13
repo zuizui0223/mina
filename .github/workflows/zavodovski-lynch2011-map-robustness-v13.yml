@@ -1,0 +1,35 @@
+name: Zavodovski original Lynch vs curated 2011 spatial maps V13
+on:
+  pull_request:
+    paths:
+      - 'scripts/compare_zavodovski_lynch2011_digitizations_v13.py'
+      - 'tests/test_zavodovski_lynch2011_digitizations_v13.py'
+      - '.github/workflows/zavodovski-lynch2011-map-robustness-v13.yml'
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'scripts/compare_zavodovski_lynch2011_digitizations_v13.py'
+      - 'tests/test_zavodovski_lynch2011_digitizations_v13.py'
+      - '.github/workflows/zavodovski-lynch2011-map-robustness-v13.yml'
+  workflow_dispatch:
+jobs:
+  cross-map-validation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest requests shapely pyshp pyproj
+      - run: python -m pytest -q tests/test_zavodovski_lynch2011_digitizations_v13.py
+      - run: |
+          python scripts/compare_zavodovski_lynch2011_digitizations_v13.py \
+            --out /tmp/zavodovski_historical_2011_map_v13.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-historical-2011-map-v13
+          path: /tmp/zavodovski_historical_2011_map_v13.json
