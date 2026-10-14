@@ -45,6 +45,7 @@ BUILDER = "scripts/build_spatial_recovery_ecology_docx.py"
 RECORDED_QA = "submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_QA_V2.json"
 HANDOFF = "submission/ECOLOGY_INITIAL_SUBMISSION_HANDOFF_20261014.md"
 AI_REVIEW = "submission/ECOLOGY_AI_DISCLOSURE_AUTHOR_REVIEW_20261014.md"
+SOURCE_BIB_ADDENDUM = "submission/ECOLOGY_SOURCE_DATASET_BIB_ADDENDUM_20261014.bib"
 PUBLIC_BLANK = "submission/ECOLOGY_INITIAL_SUBMISSION_METADATA_TEMPLATE_20261014.json"
 TITLE = "Population recovery can retrace local losses while spatial structure remains altered"
 
@@ -60,7 +61,7 @@ AUTHOR_SIGNOFF = (
 )
 MANUSCRIPT_REQUIRED = (
     MANUSCRIPT, BIBLIOGRAPHY, CAPTIONS, SUPPLEMENT, BUILDER, RECORDED_QA,
-    HANDOFF, AI_REVIEW, PUBLIC_BLANK,
+    HANDOFF, AI_REVIEW, SOURCE_BIB_ADDENDUM, PUBLIC_BLANK,
 )
 EXPECTED_DATASET_DOIS = (
     "10.7931/kf06-x745",
@@ -127,6 +128,20 @@ def source_and_production_checks(root: Path) -> dict[str, Any]:
         methods, flags=re.I
     ))
     ai_ack_builder = "AI_ACK" in builder and "OpenAI ChatGPT" in builder
+    addendum = (root/SOURCE_BIB_ADDENDUM).read_text(encoding="utf-8")
+    formal_dataset_entries_present = all(
+        doi in addendum and key in addendum for doi, key in zip(
+            EXPECTED_DATASET_DOIS,
+            ("rossSeaAerialData2026", "palmerLterPenguinCensus2020", "signyAdelieMonitoring2021"),
+        )
+    )
+    production_dataset_citations_linked = formal_dataset_entries_present and all(
+        token in builder for token in (
+            "cite_public_sources_in_production_methods",
+            "ECOLOGY_SOURCE_DATASET_BIB_ADDENDUM_20261014.bib",
+            "ecology_production_sources_and_refs.bib",
+        )
+    )
     verified_author_insertion = all(
         marker in builder for marker in (
             "methods_disclosure_derivative",
@@ -142,7 +157,7 @@ def source_and_production_checks(root: Path) -> dict[str, Any]:
         and qa.get("checks", {}).get("missing_bibliography_keys") == 0
         and "Figure 1" in caps and "Figure 2" in caps
         and "Figure S1" in supp and "Figure S2" in supp
-        and ai_ack_builder and verified_author_insertion
+        and ai_ack_builder and verified_author_insertion and production_dataset_citations_linked
     )
     return {
         "pass": bool(ok),
@@ -160,6 +175,8 @@ def source_and_production_checks(root: Path) -> dict[str, Any]:
         "supporting_figure_count": 2,
         "AI_acknowledgment_template_present": ai_ack_builder,
         "author_approved_AI_Methods_and_ack_insertion_wired": verified_author_insertion,
+        "production_original_dataset_citations_are_formally_bibliographic": production_dataset_citations_linked,
+        "original_frozen_bibliography_unchanged_by_production_addendum": True,
         "AI_disclosure_in_frozen_methods": ai_in_frozen_methods,
         "production_Methods_AI_disclosure_requires_author_review": not ai_in_frozen_methods,
         "source_dataset_DOIs_in_open_research_document": {
