@@ -2,10 +2,13 @@
 import copy
 import json
 from pathlib import Path
+import sys
 
 import pytest
 
-from scripts.audit_ecology_submission_handoff_v1 import (
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+from audit_ecology_submission_handoff_v1 import (
     FROZEN_BLOBS,
     PUBLIC_BLANK,
     TITLE,
@@ -16,8 +19,6 @@ from scripts.audit_ecology_submission_handoff_v1 import (
     source_and_production_checks,
     word_count,
 )
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def _fake_author_only_test_fixture():
