@@ -140,8 +140,12 @@ def build(supplement_path: Path, figure_dir: Path, out_path: Path) -> None:
 
     boundary = section_map.get("Inferential boundary")
     if boundary:
-        doc.add_page_break()
+        # No unnecessary dedicated page for this short inferential caveat:
+        # keep it with Fig. S2 on page 2 if it fits without reducing font,
+        # margins, or omitting any scientific text or images.
         p = doc.add_paragraph()
+        p.paragraph_format.space_before = Pt(12)
+        p.paragraph_format.keep_with_next = True
         r = p.add_run("Inferential boundary")
         r.bold = True
         _format_paragraph(p)
