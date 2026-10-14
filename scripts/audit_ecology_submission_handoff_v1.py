@@ -15,6 +15,9 @@ from pathlib import Path
 from typing import Any
 
 from mina.ecosphere_submission_metadata import load_metadata, validate_metadata
+from mina.ecology_ai_submission_disclosure import (
+    require_author_publication_signoff,
+)
 
 FROZEN_BLOBS = {
     "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md":
@@ -124,6 +127,13 @@ def source_and_production_checks(root: Path) -> dict[str, Any]:
         methods, flags=re.I
     ))
     ai_ack_builder = "AI_ACK" in builder and "OpenAI ChatGPT" in builder
+    verified_author_insertion = all(
+        marker in builder for marker in (
+            "methods_disclosure_derivative",
+            "review_acknowledgment",
+            "require_author_publication_input",
+        )
+    )
     mock_pages = 30
     ok = (
         title == TITLE and word_count(abstract) <= 350 and not absent
@@ -132,7 +142,7 @@ def source_and_production_checks(root: Path) -> dict[str, Any]:
         and qa.get("checks", {}).get("missing_bibliography_keys") == 0
         and "Figure 1" in caps and "Figure 2" in caps
         and "Figure S1" in supp and "Figure S2" in supp
-        and ai_ack_builder
+        and ai_ack_builder and verified_author_insertion
     )
     return {
         "pass": bool(ok),
@@ -149,6 +159,7 @@ def source_and_production_checks(root: Path) -> dict[str, Any]:
         "main_figure_count": 2,
         "supporting_figure_count": 2,
         "AI_acknowledgment_template_present": ai_ack_builder,
+        "author_approved_AI_Methods_and_ack_insertion_wired": verified_author_insertion,
         "AI_disclosure_in_frozen_methods": ai_in_frozen_methods,
         "production_Methods_AI_disclosure_requires_author_review": not ai_in_frozen_methods,
         "source_dataset_DOIs_in_open_research_document": {
@@ -168,11 +179,18 @@ def metadata_checks(data: dict[str, Any]) -> dict[str, Any]:
     ack = str(data.get("ai_acknowledgments_disclosure_final_text") or "").strip()
     has_ai = bool(re.search(r"\b(?:AI|OpenAI|ChatGPT)\b", methods, re.I)
                   and re.search(r"\b(?:AI|OpenAI|ChatGPT)\b", ack, re.I))
+    strict_publisher_input_and_signoff_valid = True
+    try:
+        require_author_publication_signoff(data)
+    except ValueError:
+        strict_publisher_input_and_signoff_valid = False
     pending = sorted(
         set(basic["unresolved_fields"]) |
         {key for key, verified in confirmations.items() if not verified} |
         ({"intended_permanent_repository"} if not repo_plan else set()) |
-        ({"ai_methods_and_ack_final_text"} if not has_ai else set())
+        ({"ai_methods_and_ack_final_text"} if not has_ai else set()) |
+        ({"author_approved_production_metadata_or_signoffs"}
+         if not strict_publisher_input_and_signoff_valid else set())
     )
     return {
         "ready_for_submission_metadata": not pending,
