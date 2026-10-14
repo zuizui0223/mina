@@ -5,6 +5,9 @@ on:
   pull_request:
     paths:
       - "scripts/build_spatial_recovery_ecology_docx.py"
+      - "src/mina/ecology_ai_submission_disclosure.py"
+      - "src/mina/ecology_submission_source_citations.py"
+      - "submission/ECOLOGY_SOURCE_DATASET_BIB_ADDENDUM_20261014.bib"
       - "scripts/build_spatial_recovery_supplement_docx.py"
       - "scripts/build_spatial_recovery_path_state_figures.py"
       - "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md"
@@ -81,7 +84,11 @@ jobs:
               "additional_ai_tools":[],
               "dual_publication_statement":"Synthetic CI overlap statement.",
               "review_code_url":"https://github.com/zuizui0223/mina",
-              "permanent_archive_doi":None
+              "permanent_archive_doi":None,
+              "intended_permanent_repository":"Zenodo (synthetic CI example; not an actual deposit)",
+              "ai_methods_disclosure_final_text":"OpenAI ChatGPT assisted in analytical code development and literature work for this SYNTHETIC CI production check; authors must verify real tool inventory before submission.",
+              "ai_acknowledgments_disclosure_final_text":"OpenAI ChatGPT assisted in a SYNTHETIC CI example. No real author confirmation or model-version inventory is claimed."
+
           }
           Path("build/synthetic_ecology_metadata.json").write_text(
               json.dumps(data,indent=2)+"\n",encoding="utf-8"
@@ -133,7 +140,11 @@ jobs:
               "additional_ai_tools":[],
               "dual_publication_statement":"No overlapping manuscript is submitted or under review elsewhere.",
               "review_code_url":"https://github.com/zuizui0223/mina",
-              "permanent_archive_doi":None
+              "permanent_archive_doi":None,
+              "intended_permanent_repository":"Zenodo (synthetic CI example; not an actual deposit)",
+              "ai_methods_disclosure_final_text":"OpenAI ChatGPT assisted in analytical code development and literature work for this SYNTHETIC CI production check; authors must verify real tool inventory before submission.",
+              "ai_acknowledgments_disclosure_final_text":"OpenAI ChatGPT assisted in a SYNTHETIC CI example. No real author confirmation or model-version inventory is claimed."
+
           }
           Path("build/stress_ecology_metadata.json").write_text(
               json.dumps(data,indent=2)+"\n",encoding="utf-8"
@@ -161,6 +172,9 @@ jobs:
           assert "[AUTHOR" not in text
           assert "Population recovery can retrace local losses while spatial structure remains altered" in text
           assert "Figure captions" in text
+          assert "The original monitoring datasets underlying the spatial census comparisons" in text
+          assert "OpenAI ChatGPT assisted" in text
+          assert "GPT-5.6 Sol" not in text
           for label in ("Figure 1","Figure 2"):
               assert label in text
           assert "Figure 3" not in text
