@@ -68,3 +68,27 @@ def review_acknowledgment(metadata: dict[str, Any] | None,
             raise ValueError("AI Acknowledgments text has placeholders")
         return approved
     return historical_preview_ack
+
+
+SUBMISSION_SIGNOFF_KEYS = (
+    "all_authors_approved_final_version",
+    "corresponding_author_authorized_submission",
+    "methods_acknowledgments_and_form_AI_consistent",
+    "publisher_open_research_and_public_code_checked",
+    "data_rights_and_attribution_checked",
+    "dual_publication_and_conflicts_confirmed",
+    "final_author_complete_docx_render_checked",
+    "journal_article_length_or_cover_justification_confirmed",
+)
+
+
+def require_author_publication_signoff(metadata: dict[str, Any]) -> None:
+    """Author-controlled FINAL production gate, stricter than generic metadata."""
+    approved_ai_disclosure(metadata)
+    repo = str(metadata.get("intended_permanent_repository") or "").strip()
+    if not repo or PLACEHOLDER_RE.search(repo):
+        raise ValueError("named intended permanent archive not author-confirmed")
+    signoff = metadata.get("initial_submission_human_signoff") or {}
+    missing = [key for key in SUBMISSION_SIGNOFF_KEYS if signoff.get(key) is not True]
+    if missing:
+        raise ValueError("unconfirmed final publication signoffs: " + ", ".join(missing))
