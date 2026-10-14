@@ -76,6 +76,8 @@ def test_current_submission_abstract_sources_and_mock_qa():
     assert v["previous_mock_author_complete_pages"] == 30
     assert v["real_author_complete_docx_rechecked"] is False
     assert v["AI_acknowledgment_template_present"] is True
+    assert v["author_approved_AI_Methods_and_ack_insertion_wired"] is True
+    assert v["production_original_dataset_citations_are_formally_bibliographic"] is True
     assert v["AI_disclosure_in_frozen_methods"] is False
     assert all(v["source_dataset_DOIs_in_open_research_document"].values())
 
