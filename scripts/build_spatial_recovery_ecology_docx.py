@@ -20,6 +20,11 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
+from mina.ecology_submission_source_citations import (
+    cite_public_sources_in_production_methods,
+    REQUIRED_DATA_CITATION_KEYS,
+)
+
 from mina.ecology_ai_submission_disclosure import (
     methods_disclosure_derivative,
     require_author_publication_input,
@@ -188,7 +193,10 @@ def _combined_markdown(
     metadata: dict[str, object] | None,
 ) -> str:
     title = _extract_title(manuscript)
-    body = methods_disclosure_derivative(_strip_manuscript_source(manuscript), metadata)
+    body = cite_public_sources_in_production_methods(
+        methods_disclosure_derivative(_strip_manuscript_source(manuscript), metadata),
+        production=metadata is not None,
+    )
     caption_body = _strip_caption_heading(captions)
     blocks = _metadata_blocks(metadata)
     open_research = _open_research(metadata)
@@ -449,6 +457,25 @@ def build(
         split = tmp / "split.docx"
         md.write_text(source, encoding="utf-8")
 
+        # Extend only the author-named PRODUCTION reference list: the frozen
+        # scientific bibliography remains unchanged and reproducible.
+        effective_bibliography = bibliography_path
+        if metadata is not None:
+            addendum = Path(__file__).resolve().parents[1] / (
+                "submission/ECOLOGY_SOURCE_DATASET_BIB_ADDENDUM_20261014.bib"
+            )
+            if not addendum.is_file():
+                raise FileNotFoundError("Ecology dataset DOI bibliography addendum missing")
+            extra = addendum.read_text(encoding="utf-8")
+            for citation in REQUIRED_DATA_CITATION_KEYS:
+                if not any(f"{{{citation}," in entry for entry in extra.split("@")):
+                    raise ValueError(f"Missing dataset bibliography entry: {citation}")
+            effective_bibliography = tmp / "ecology_production_sources_and_refs.bib"
+            effective_bibliography.write_text(
+                bibliography_path.read_text(encoding="utf-8") + "\n\n" + extra,
+                encoding="utf-8",
+            )
+
         subprocess.run(
             [
                 "pandoc",
@@ -456,7 +483,7 @@ def build(
                 "--from=markdown+raw_attribute+tex_math_single_backslash",
                 "--to=docx",
                 "--citeproc",
-                f"--bibliography={bibliography_path}",
+                f"--bibliography={effective_bibliography}",
                 "-o",
                 str(raw),
             ],
