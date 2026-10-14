@@ -1,0 +1,43 @@
+name: Ecology v0.9 frozen-science submission preflight
+on:
+  push:
+    branches:
+      - analysis/ross-sea-expansion-intensification-support-v1
+    paths:
+      - 'scripts/audit_ecology_submission_handoff_v1.py'
+      - 'tests/test_ecology_submission_handoff_v1.py'
+      - 'submission/ECOLOGY_INITIAL_SUBMISSION_METADATA_TEMPLATE_20261014.json'
+      - 'submission/ECOLOGY_INITIAL_SUBMISSION_HANDOFF_20261014.md'
+      - 'submission/ECOLOGY_AI_DISCLOSURE_AUTHOR_REVIEW_20261014.md'
+      - 'submission/ECOLOGY_SPATIAL_RECOVERY_FREEZE_BLOB_VERIFICATION_20261014.md'
+      - '.github/workflows/ecology-submission-preflight-v1.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_ecology_submission_handoff_v1.py'
+      - 'tests/test_ecology_submission_handoff_v1.py'
+      - 'submission/ECOLOGY_INITIAL_SUBMISSION_METADATA_TEMPLATE_20261014.json'
+      - 'submission/ECOLOGY_INITIAL_SUBMISSION_HANDOFF_20261014.md'
+      - 'submission/ECOLOGY_AI_DISCLOSURE_AUTHOR_REVIEW_20261014.md'
+      - 'submission/ECOLOGY_SPATIAL_RECOVERY_FREEZE_BLOB_VERIFICATION_20261014.md'
+      - '.github/workflows/ecology-submission-preflight-v1.yml'
+  workflow_dispatch:
+jobs:
+  production-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test framework and package
+        run: python -m pip install -e ".[dev]"
+      - name: Verify frozen SHA, archive source references and metadata blockers
+        run: python -m pytest -q tests/test_ecology_submission_handoff_v1.py
+      - name: Write NON-SUBMISSION release-gate receipt; expected pending author sign-off
+        run: python scripts/audit_ecology_submission_handoff_v1.py --out /tmp/ecology_v09_handoff_preflight.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecology-v09-preflight-NOT-SUBMITTED
+          path: /tmp/ecology_v09_handoff_preflight.json
