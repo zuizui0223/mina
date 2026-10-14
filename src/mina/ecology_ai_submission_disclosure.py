@@ -82,12 +82,17 @@ SUBMISSION_SIGNOFF_KEYS = (
 )
 
 
-def require_author_publication_signoff(metadata: dict[str, Any]) -> None:
-    """Author-controlled FINAL production gate, stricter than generic metadata."""
+def require_author_publication_input(metadata: dict[str, Any]) -> None:
+    """Before assembling a named production DOCX, no final proof claims required."""
     approved_ai_disclosure(metadata)
     repo = str(metadata.get("intended_permanent_repository") or "").strip()
     if not repo or PLACEHOLDER_RE.search(repo):
         raise ValueError("named intended permanent archive not author-confirmed")
+
+
+def require_author_publication_signoff(metadata: dict[str, Any]) -> None:
+    """Only after the completed named DOCX has been rendered and inspected."""
+    require_author_publication_input(metadata)
     signoff = metadata.get("initial_submission_human_signoff") or {}
     missing = [key for key in SUBMISSION_SIGNOFF_KEYS if signoff.get(key) is not True]
     if missing:
