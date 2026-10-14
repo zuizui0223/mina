@@ -1,5 +1,16 @@
 # Ecology integrated path/state v0.9 — final production handoff receipt
 
+## 2026-10-14 follow-up: direct file-level visual QA and tighter Supporting Information layout
+
+After the original 30-page Word mock render, the authenticated GitHub Actions Word artifact was downloaded and rendered to page PNGs/PDF outside CI. The manuscript was visually checked across its 30 pages: no obvious clipping, missing figures, unrendered equation glyphs or truncated references were observed; the original two 300-dpi figure assets were present. Main Figures 1 and 2 remain separate on pages 29 and 30. The figure-caption continuation occupies part of page 28, so the 30-page **real-author** page budget remains tight.
+
+A small **production-only** change to `scripts/build_spatial_recovery_supplement_docx.py` removed an unnecessary forced page break before the two-sentence "Inferential boundary" paragraph. **No scientific claim, caption wording or figure changed.** The paragraph now appears immediately after Figure S2 on page 2. Authenticated [SI/Word preview rerun #38563299801](https://github.com/zuizui0223/mina/actions/runs/38563299801) **SUCCESS**; the actual PDFs (LibreOffice/PDFInfo) measured **30 pages main and 2 pages Supporting Information**, including synthetic author-stress main (30 pages). Base [CI #38563299905](https://github.com/zuizui0223/mina/actions/runs/38563299905) and [publication freeze/preflight #38563299716](https://github.com/zuizui0223/mina/actions/runs/38563299716) also **SUCCESS**.
+
+Final author-submitted Word/PDF has NOT been created or approved. The current text, figure labels, and page counts describe synthetic author metadata only. Before actual submission, regenerate from private, approved real author information and visually check every final page and ScholarOne combined proof. This note supersedes the prior *SI three pages* count; it does not supersede any scientific freeze or author-consent requirements.
+
+---
+
+
 **Date:** 2026-10-14 (Asia/Tokyo).  
 **Disposition:** **READY FOR HUMAN AUTHOR INFORMATION / CONSENT, NOT SUBMITTED.**  
 **Target:** *Ecology* (Ecological Society of America), Article.  
