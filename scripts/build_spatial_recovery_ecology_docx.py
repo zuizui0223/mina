@@ -20,6 +20,12 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
+from mina.ecology_ai_submission_disclosure import (
+    methods_disclosure_derivative,
+    require_author_publication_input,
+    review_acknowledgment,
+)
+
 from mina.ecosphere_submission_metadata import (
     affiliation_lines,
     ai_disclosure_suffix,
@@ -119,6 +125,11 @@ def _open_research(metadata: dict[str, object] | None) -> str:
         "https://github.com/zuizui0223/mina",
         review_url or "https://github.com/zuizui0223/mina",
     )
+    # Initial-submission permanent archive DOI is optional for this Article,
+    # but ESA requires a truthful future repository choice in Open Research.
+    intended = str(metadata.get("intended_permanent_repository") or "").strip()
+    if intended and not doi:
+        text = text.replace("in a permanent repository", f"in {intended}")
     if doi:
         old = (
             "If accepted, the exact publication release of code and derived "
@@ -145,6 +156,7 @@ def _metadata_blocks(metadata: dict[str, object] | None) -> dict[str, str]:
             "contributions": "[AUTHOR CONTRIBUTIONS - REQUIRED; confirm CRediT roles with every author.]",
             "coi": "[CONFLICT-OF-INTEREST STATEMENT - REQUIRED; confirm with every author.]",
             "ai_suffix": "",
+            "ai_ack": AI_ACK,
         }
     return {
         "authors": author_line(metadata),
@@ -155,7 +167,11 @@ def _metadata_blocks(metadata: dict[str, object] | None) -> dict[str, str]:
         "additional_ack": str(metadata.get("additional_acknowledgments") or "").strip(),
         "contributions": str(metadata.get("author_contributions") or "").strip(),
         "coi": str(metadata.get("conflict_of_interest") or "").strip(),
-        "ai_suffix": ai_disclosure_suffix(metadata),
+        "ai_ack": review_acknowledgment(metadata, AI_ACK),
+        "ai_suffix": (
+            "" if str(metadata.get("ai_acknowledgments_disclosure_final_text") or "").strip()
+            else ai_disclosure_suffix(metadata)
+        ),
     }
 
 
@@ -172,7 +188,7 @@ def _combined_markdown(
     metadata: dict[str, object] | None,
 ) -> str:
     title = _extract_title(manuscript)
-    body = _strip_manuscript_source(manuscript)
+    body = methods_disclosure_derivative(_strip_manuscript_source(manuscript), metadata)
     caption_body = _strip_caption_heading(captions)
     blocks = _metadata_blocks(metadata)
     open_research = _open_research(metadata)
@@ -212,7 +228,7 @@ Article
         x for x in (
             _sentence(blocks["funding"]),
             _sentence(blocks["additional_ack"]),
-            _sentence(AI_ACK + blocks["ai_suffix"]),
+            _sentence(blocks["ai_ack"] + blocks["ai_suffix"]),
         )
         if x
     )
@@ -421,6 +437,7 @@ def build(
         metadata = load_metadata(metadata_path)
         if require_complete:
             require_complete_metadata(metadata)
+            require_author_publication_input(metadata)
 
     title = _extract_title(manuscript)
     source = _combined_markdown(manuscript, captions, metadata)
