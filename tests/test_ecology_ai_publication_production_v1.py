@@ -111,3 +111,6 @@ def test_real_production_docx_builder_routes_methods_and_acknowledgment_when_lib
     assert "The original analysis methods." in assembled
     assert "Original results." in assembled
     assert "archived in Zenodo (FAKE EXAMPLE)" in assembled
+    assert "[@rossSeaAerialData2026]" in assembled
+    assert "[@palmerLterPenguinCensus2020]" in assembled
+    assert "[@signyAdelieMonitoring2021]" in assembled
