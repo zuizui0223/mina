@@ -154,6 +154,34 @@ jobs:
               if rel not in discovered:
                   raise ValueError("Current canonical Article source missing: "+rel)
           print("Including",len(files),"publication data/code files (Palmer/Signy imports closed)")
+          release_readme=(
+              "ECOLOGY v0.9: ANALYSIS CODE/DATA REVIEW STAGING, NOT SUBMITTED OR DOI DEPOSITED\n\n"
+              "The canonical publication manuscript is docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md\n"
+              "Frozen science head: 3e8882742ca2affc6717d373fd9b6d903b01f4c1\n"
+              "The bundle includes all eight frozen scientific Git blobs; source and formal\n"
+              "bibliographic records; original Palmer/Signy null model Python source code\n"
+              "with transitively imported local modules; the 2011/2016 Ross numerical\n"
+              "decomposition source and all four published figure recipes.\n\n"
+              "To rerun Ross with Python 3.12 and matplotlib:\n"
+              "  pip install -e '.[figures]' pandas\n"
+              "  mkdir -p build\n"
+              "  python scripts/analyze_ross_inverse_path_mismatch.py --out build/ross_inverse.json\n"
+              "  python scripts/build_spatial_recovery_path_state_figures.py --repo-root . --outdir build/figs\n\n"
+              "Original Palmer null source is src/mina/breeding_patch_concentration.py\n"
+              "  python -m mina.breeding_patch_concentration --census ORIGINAL_PALMER.csv --out build/palmer.json --simulations 100000 --seed 20260928\n"
+              "Original Signy null source is src/mina/signy_concentration.py\n"
+              "  python -m mina.signy_concentration --official-zip ORIGINAL_SIGNY.zip --out build/signy.json --simulations 100000\n"
+              "DO NOT substitute dummy, other-year or current-edition input records.\n"
+              "Palmer/Signy raw files were NOT included or refitted in this CI, and\n"
+              "must be obtained from original DOI repositories and source-provenance\n"
+              "receipts before original outcome-level Monte Carlo is rerun.\n\n"
+              "Third-party source data rights/redistribution must be verified.\n"
+              "This is NOT a permanent archive, a published version of record,\n"
+              "a source-data licence, author-approved submission or journal submission.\n"
+          )
+          (out/"README_NOT_FOR_SUBMISSION.txt").write_text(
+              release_readme, encoding="utf-8"
+          )
           records=[]
           for rel in sorted(files):
               src=root/rel
@@ -170,7 +198,7 @@ jobs:
               })
 
           metadata={
-              "schema_version":1,
+              "schema_version":2,
               "repository":"zuizui0223/mina",
               "commit":os.environ["GITHUB_SHA"],
               "publication_stage":"NOT_SUBMITTED_NOT_AUTHOR_APPROVED_NO_DOI",
@@ -203,16 +231,16 @@ jobs:
             find . -type f -print0 | sort -z | xargs -0 sha256sum > ARCHIVE_SHA256SUMS.txt
             find . -type f ! -name ARCHIVE_SHA256SUMS.txt -print0 | sort -z | \
               tar --null -T - --mtime='UTC 2026-10-07' --owner=0 --group=0 --numeric-owner \
-              -czf ../spatial-recovery-ecology-initial-submission-v1.tar.gz
+              -czf ../Ecology_v09_CODE_RESULTS_REVIEW_STAGING_NOT_DEPOSITED.tar.gz
           )
-          sha256sum build/archive/spatial-recovery-ecology-initial-submission-v1.tar.gz | \
+          sha256sum build/archive/Ecology_v09_CODE_RESULTS_REVIEW_STAGING_NOT_DEPOSITED.tar.gz | \
             tee build/archive/BUNDLE_SHA256.txt
       - name: Independently extract archive and import original model code; regenerate all four publication figures
         run: |
           set -euo pipefail
           python -m pip install -e ".[figures]" pandas
           mkdir -p /tmp/ecology_v09_archived_code
-          tar -xzf build/archive/spatial-recovery-ecology-initial-submission-v1.tar.gz \
+          tar -xzf build/archive/Ecology_v09_CODE_RESULTS_REVIEW_STAGING_NOT_DEPOSITED.tar.gz \
             -C /tmp/ecology_v09_archived_code
           cd /tmp/ecology_v09_archived_code
           python - <<'PY'
@@ -244,7 +272,7 @@ jobs:
         with:
           name: spatial-recovery-publication-archive-v2-staging
           path: |
-            build/archive/spatial-recovery-ecology-initial-submission-v1.tar.gz
+            build/archive/Ecology_v09_CODE_RESULTS_REVIEW_STAGING_NOT_DEPOSITED.tar.gz
             build/archive/BUNDLE_SHA256.txt
             build/archive/root/ARCHIVE_FILE_MANIFEST.json
             build/archive/root/ARCHIVE_SHA256SUMS.txt
