@@ -1,5 +1,18 @@
 # Ecology integrated path/state v0.9 — final production handoff receipt
 
+## 2026-10-15: reduced science-only review capsule independently executed
+
+[Original-data-to-figures workflow #38703651530](https://github.com/zuizui0223/mina/actions/runs/38703651530) completed SUCCESS. The `scripts/build_ecology_v09_reviewer_capsule_v1.py` fixed allowlist isolated 23 publication-relevant scientific files (26 ZIP members including README, requirement pins and SHA manifest) from a much larger historical repository without any real author metadata or other island PRs. All eight scientific frozen Git blob SHA-1 values were verified before packaging. The complete inner reviewer capsule ZIP is 63,192 bytes, SHA256 `0f4fcf96d41961c51ba607ef706b123b2e1386704577a668cdc1cce0834383e7`.
+
+**Independent extraction test**: Within a new directory extracted from the built ZIP, the original Ross scripts recomputed **aggregate restoration 0.969675 and inverse path mismatch 0.094054** to numerical tolerance. The original figure builder generated all four main/SI figure PNGs and four corresponding PDFs from the frozen counts and results receipts. Four figures regenerated, no new ecological effect fitted. See [Actions reviewer-only capsule artifact #11956828405](https://github.com/zuizui0223/mina/actions/runs/38703651530/artifacts/11956828405).
+
+**Crucial scope boundary**: This is a *compact reviewer entry point*, **not** an accepted permanent archiving DOI or a full standalone re-execution of Palmer/Signy 100,000-draw source-data-to-p-value Monte Carlo. For final ESA acceptance, the separately documented full analysis code and legally distributable source/derived data must be made reproducible in a permanent repository. A temporary GitHub Actions artifact can expire and is not an immutable archive; the publicly inspectable original code is in the frozen `mina` branch. Do not overstate completion or cite the capsule as the definitive code/data version of record.
+
+Human author metadata, all-coauthor signoff, actual final Word/PDF proof, AI inventory, licences and external permanent repository remain pending. No journal manuscript sent.
+
+---
+
+
 ## 2026-10-14 follow-up: direct file-level visual QA and tighter Supporting Information layout
 
 After the original 30-page Word mock render, the authenticated GitHub Actions Word artifact was downloaded and rendered to page PNGs/PDF outside CI. The manuscript was visually checked across its 30 pages: no obvious clipping, missing figures, unrendered equation glyphs or truncated references were observed; the original two 300-dpi figure assets were present. Main Figures 1 and 2 remain separate on pages 29 and 30. The figure-caption continuation occupies part of page 28, so the 30-page **real-author** page budget remains tight.
