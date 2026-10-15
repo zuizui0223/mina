@@ -1,5 +1,18 @@
 # Ecology integrated path/state v0.9 — final production handoff receipt
 
+## 2026-10-15 — ESA-compliant code-review scope and corrected publication archive
+
+The first compact review capsule was intentionally limited to frozen Ross reproduction and manuscript figures, but the original 2026-10-07 `spatial-recovery-publication-archive` workflow was **stale**: it referenced v0.2 figure captions and the superseded SI Word builder and did not include the actual Palmer/Signy statistical model source-module dependency tree. ESA's published [Open Research Policy](https://esa.org/publications/data-policy/) requires novel source code for peer review in an external repository and sufficiently complete source/data archives for final publication.
+
+The publication-archive workflow is now `spatial-recovery-publication-archive-v2-staging` (same workflow filename, new internal publication contract). Successful [run #38741761900](https://github.com/zuizui0223/mina/actions/runs/38741761900) generated **58 allowlisted source/code records plus a NOT-FOR-SUBMISSION README and archive manifest** (60 tar entries). It checks all **8 immutable scientific source Git blob SHA-1 values**, includes the correct `FIGURE_CAPTIONS..._V0_3.md` and `build_spatial_recovery_supplement_docx.py`, the bibliography addendum and OpenAI disclosure modules, and recursively bundles the local Python import closure for **original Palmer concentration and Signy replication null models**. An independent extraction successfully imported those historical model modules and regenerated **all 4 main/SI figure PNG+PDF pairs**, rather than merely checking ZIP content.
+
+**Authenticated staging archive SHA256:** `0d581ca5bb6ddce2c9cb0c581168a60267d5699d3993d4c1a8604e27442e4728`, name `Ecology_v09_CODE_RESULTS_REVIEW_STAGING_NOT_DEPOSITED.tar.gz`; [temporary Actions ZIP artifact #11976203413](https://github.com/zuizui0223/mina/actions/runs/38741761900/artifacts/11976203413). Historic Palmer/Signy 100,000-draw null models were **not rerun from externally hosted original raw records** in this staging validation. The *source code* is archived; final original/derived data provenance and licensing still require author-approved archiving decisions. This is not a Dryad/Zenodo deposit, an immutable DOI, a publisher version of record, or an approved submission.
+
+Do NOT mark complete before actual author names/order, author-wide approval, corresponding-author authority, AI tool inventory/Methods/Acknowledgments/ScholarOne disclosure agreement, source license, selection of the permanent repository, final real-author Word/PDF and upload checks. The frozen manuscript v0.8/v0.9 scientific claims were not edited in this production-only change.
+
+---
+
+
 ## 2026-10-15: reduced science-only review capsule independently executed
 
 [Original-data-to-figures workflow #38703651530](https://github.com/zuizui0223/mina/actions/runs/38703651530) completed SUCCESS. The `scripts/build_ecology_v09_reviewer_capsule_v1.py` fixed allowlist isolated 23 publication-relevant scientific files (26 ZIP members including README, requirement pins and SHA manifest) from a much larger historical repository without any real author metadata or other island PRs. All eight scientific frozen Git blob SHA-1 values were verified before packaging. The complete inner reviewer capsule ZIP is 63,192 bytes, SHA256 `0f4fcf96d41961c51ba607ef706b123b2e1386704577a668cdc1cce0834383e7`.
