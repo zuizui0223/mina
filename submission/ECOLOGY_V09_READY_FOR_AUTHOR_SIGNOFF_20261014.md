@@ -1,5 +1,16 @@
 # Ecology integrated path/state v0.9 — final production handoff receipt
 
+## 2026-10-16 — final island-scale framing and cover letter v0.6 (editorial only)
+
+**No scientific unfreeze.** To avoid claiming an island colonization mechanism that was not measured, the canonical cover letter was revised to `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_6.md` (older v0.5 is retained as provenance). The 1999, 2001 and 2002 Ross data confirm **all six breeding components stayed occupied throughout**, so the focal result concerns unequal compositional recovery of existing local breeding units, **not extinction and recolonization**, or identified inter-island movement. The cover letter keeps the frozen numerical result (96.97% aggregate loss restored, 90.59% six-unit path fidelity, 2.4% six-unit state restoration, corresponding 93.27%/28.3% at three-colony grain), and explains that Palmer, Signy and Beaufort are complementary nonreplicated processes. The old statement of reduced "export" from Beaufort was replaced with the defensible fact of changes in published band resightings.
+
+**Scholarly novelty boundary:** The differentiation of population total, spatial trajectory and relative state is already ecological prior art. The current contribution is a particular quantified natural experiment, not proof of a new MacArthur–Wilson island mechanism or of inherited colony occupancy memory. Strong colony fidelity and available-but-unoccupied breeding habitat were modeled by Matthiopoulos et al. (2005, DOI `10.1111/j.1365-2656.2005.00970.x`), and Antarctic penguin colony geography was already assessed by Santora et al. (2020, DOI `10.1111/geb.13144`). The causal hypothesis involving exogenous nesting-space release, individual breeding pause and former-site reoccupation remains outside this initial submission.
+
+**Reviewer/ethics gate:** the new cover letter contains **visible placeholders** for the corresponding author and an overlap/all-author approval statement, because these are NOT independently confirmed. It must never be sent with placeholders. `submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_MANIFEST_V1.md` now points to the updated letter and clarifies that an actual archival DOI is **not required at initial Article submission**, although DOI-backed data/code archiving is required by acceptance. The public preflight validates numerical consistency with the original Ross result records and keeps the submission blocked pending author-approved final documents.
+
+---
+
+
 ## 2026-10-15 — ESA-compliant code-review scope and corrected publication archive
 
 The first compact review capsule was intentionally limited to frozen Ross reproduction and manuscript figures, but the original 2026-10-07 `spatial-recovery-publication-archive` workflow was **stale**: it referenced v0.2 figure captions and the superseded SI Word builder and did not include the actual Palmer/Signy statistical model source-module dependency tree. ESA's published [Open Research Policy](https://esa.org/publications/data-policy/) requires novel source code for peer review in an external repository and sufficiently complete source/data archives for final publication.
