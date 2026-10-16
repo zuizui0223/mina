@@ -67,7 +67,7 @@ Before actual submission, supply or confirm:
 7. CRediT author contributions;
 8. conflict-of-interest statement;
 9. AI-use disclosure consistent with journal policy;
-10. archive DOI / permanent code-data snapshot;
+10. public review-code access and a named intended permanent repository (an archive DOI is not required for initial Ecology Article submission; deposit before accepted publication);
 11. final overlap/preprint statement.
 
 ## Submission QA
