@@ -35,7 +35,7 @@
 - Scientific readiness: `submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V2.md`
 - Ecology Article plan: `submission/SPATIAL_RECOVERY_ECOLOGY_ARTICLE_PLAN_V5.md`
 - Editorial triage: `submission/SPATIAL_RECOVERY_ECOLOGY_EDITORIAL_TRIAGE_V3.md`
-- Cover letter: `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_5.md`
+- Cover letter: `submission/COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_6.md`
 - Program consolidation decision: `submission/PENGUIN_MANUSCRIPT_CONSOLIDATION_V1.md`
 
 ## Primary target
