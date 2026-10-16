@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "result_id": "port-lockroy-gentoo-output-to-allocation-support-v1",
+  "date": "2026-10-06",
+  "contract": "contracts/PORT_LOCKROY_GENTOO_OUTPUT_TO_ALLOCATION_V1.md",
+  "source": {
+    "doi": "10.5285/92e92c14-0ff2-4ce2-8305-83d5b3a4071d",
+    "workflow_run_id": 37473298962,
+    "artifact_id": 11419495039,
+    "artifact_digest": "sha256:a6add45affe0c65d4cac9593d78f556791f43c9beb1e69dbbe93fd65612f3fae",
+    "csv": "gentoo_data.csv"
+  },
+  "structure": {
+    "seasons": 24,
+    "season_min": "1996-1997",
+    "season_max": "2019-2020",
+    "provider_defined_subcolonies": 10,
+    "subcolonies": [
+      "Anemometer Tower",
+      "Base",
+      "Boatshed",
+      "Control 1",
+      "Control 2",
+      "Control 3",
+      "Control 4",
+      "Mast",
+      "Nissen",
+      "Screen"
+    ],
+    "pair_field": "TOTAL_NO_PAIRS",
+    "midseason_chick_field": "NO_CHICKS",
+    "late_fledgling_field": "NO_FLEDGLINGS",
+    "subcolonies_with_any_late_fledgling_value": [
+      "Boatshed",
+      "Mast"
+    ],
+    "late_fledgling_nonmissing_rows": 24,
+    "all_roster_seasons_with_pairs_and_midseason_chicks": 17,
+    "all_roster_seasons_with_pairs_and_late_fledgling_counts": 0
+  },
+  "metadata_interpretation": {
+    "NO_CHICKS": "sub-colony chick count after hatching ends / mid breeding season",
+    "NO_FLEDGLINGS": "later pre-fledging/fledgling count, not structurally available for the full sub-colony roster"
+  },
+  "effect_opening": {
+    "primary_Q_computed": false,
+    "next_year_allocation_beta_computed": false,
+    "permutation_test_run": false
+  },
+  "decision": {
+    "minimum_fixed_subcolonies_pass": true,
+    "late_creche_endpoint_available_for_fixed_roster": false,
+    "minimum_12_eligible_transitions_pass": false,
+    "status": "SUPPORT_FAIL_FROZEN_LATE_CHICK_ENDPOINT_UNAVAILABLE"
+  },
+  "boundary": "The frozen contract requires a sub-colony late/creche chick endpoint and forbids switching to the earlier NO_CHICKS field after support inspection. No Port Lockroy mechanism effect is opened."
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-subcolony-configuration-next-year-growth-support-v1",
+  "date": "2026-10-07",
+  "contract": "contracts/ROSS_SUBCOLONY_CONFIGURATION_NEXT_YEAR_GROWTH_V1.md",
+  "source": {
+    "publication": "Schmidt et al. 2021 Scientific Reports",
+    "analysis_repository": "pointblue/adpe_subcol_success",
+    "workflow_artifact_id": 11427636296,
+    "workflow_artifact_digest": "sha256:5c6450bd2330946823f7a245ffe98fe8d6d4bae2a05d0ed6011677ba7a9d30d8",
+    "files": [
+      "croz_selected_meas_ct_all_v19.csv",
+      "royds_selected_meas_ct_all_v12.csv"
+    ]
+  },
+  "support": {
+    "crozier": {
+      "n_seasons": 16,
+      "n_consecutive_transitions": 15,
+      "n_total_eligible_transition_rows": 426,
+      "n_distinct_eligible_subcolonies": 92,
+      "duplicate_season_subcolony_rows": 0,
+      "pa_ratio_static_within_subcolony": true,
+      "area_static_within_subcolony": true
+    },
+    "royds": {
+      "n_seasons": 4,
+      "n_consecutive_transitions": 3,
+      "n_total_eligible_transition_rows": 65,
+      "n_distinct_eligible_subcolonies": 22,
+      "duplicate_season_subcolony_rows": 0,
+      "pa_ratio_static_within_subcolony": true,
+      "area_static_within_subcolony": true
+    },
+    "total_eligible_transition_rows": 491,
+    "total_distinct_eligible_subcolonies": 114,
+    "minimum_2_transitions_pass": true,
+    "minimum_50_rows_pass": true,
+    "minimum_10_subcolonies_per_colony_pass": true
+  },
+  "effect_opening": {
+    "active_count_magnitudes_summarized_for_test": false,
+    "pa_ratio_magnitudes_summarized_for_test": false,
+    "growth_response_computed": false,
+    "beta_P_computed": false,
+    "permutation_p_computed": false
+  },
+  "decision": {
+    "support_pass": true,
+    "status": "SUPPORT_PASS_READY_FOR_FROZEN_EFFECT"
+  }
+}

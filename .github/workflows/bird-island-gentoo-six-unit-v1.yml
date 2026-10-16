@@ -1,0 +1,27 @@
+name: Bird Island gentoo six-unit support package v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/BIRD_ISLAND_GENTOO_SIX_UNIT_RECOVERY_ALLOCATION_V1.md"
+      - ".github/workflows/bird-island-gentoo-six-unit-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download public BAS Bird Island gentoo dataset
+        run: |
+          mkdir -p build/bird_island_gentoo
+          curl -A 'Mozilla/5.0' -L --fail --retry 10 --retry-delay 5 --retry-all-errors \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8fedb5a0-b98c-4457-9d86-aae9c6d3ed8e&output=zip.tree' \
+            -o build/bird_island_gentoo/bird_island_gentoo.zip
+          file build/bird_island_gentoo/bird_island_gentoo.zip
+          ls -lh build/bird_island_gentoo/bird_island_gentoo.zip
+          unzip -l build/bird_island_gentoo/bird_island_gentoo.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bird-island-gentoo-six-unit-v1
+          path: build/bird_island_gentoo/bird_island_gentoo.zip

@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-iceberg-shock-rebound-decomposition-v1",
+  "date": "2026-10-06",
+  "status": "superseded_by_results/ROSS_ICEBERG_SHOCK_REBOUND_AUDIT_V1.json",
+  "measurement": "aerial nesting-territory / breeding-pair abundance index, not total adult population",
+  "anchors": {
+    "1999": {
+      "N": 207411,
+      "E3": 1.6094677066662906,
+      "E6": 2.0557530380209097,
+      "Royds": 3620,
+      "Bird": 47350,
+      "Crozier": 156441
+    },
+    "2001": {
+      "N": 94798,
+      "E3": 1.728622136512977,
+      "E6": 2.2919284746729964,
+      "Royds": 1367,
+      "Bird": 26317,
+      "Crozier": 67114
+    },
+    "2002": {
+      "N": 203996,
+      "E3": 1.507430677390489,
+      "E6": 1.819023375736499,
+      "Royds": 2239,
+      "Bird": 40678,
+      "Crozier": 161079
+    },
+    "2012": {
+      "N": 351119,
+      "E3": 1.5428221816996248,
+      "E6": 1.970225075719009,
+      "Royds": 3083,
+      "Bird": 75696,
+      "Crozier": 272340
+    }
+  },
+  "intervals": {
+    "shock_1999_2001": {
+      "N_fraction": -0.5429461311116575,
+      "E3_fraction": 0.07403343934964224,
+      "E6_fraction": 0.11488512106466575,
+      "all_six_components_declined": true,
+      "three_colony_factors": {
+        "Royds": 0.3776243093922652,
+        "Bird": 0.5557972544878564,
+        "Crozier": 0.42900518406300137
+      },
+      "classification": "shock_induced_equalization"
+    },
+    "rebound_2001_2002": {
+      "N_fraction": 1.1519019388594698,
+      "E3_fraction": -0.1279582474679407,
+      "E6_fraction": -0.20633501619371852,
+      "all_six_components_increased": true,
+      "three_colony_factors": {
+        "Royds": 1.6378931967812729,
+        "Bird": 1.5456928981266862,
+        "Crozier": 2.400080460112644
+      },
+      "three_colony_proportional_residuals": {
+        "Royds": -702.649950420895,
+        "Bird": -15953.603324964664,
+        "Crozier": 16656.253275385534
+      },
+      "classification": "asymmetric_breeding_rebound_reconcentration"
+    },
+    "longer_recovery_2002_2012": {
+      "N_fraction": 0.7212053177513285,
+      "E3_fraction": 0.023478031089563478,
+      "E6_fraction": 0.08312246120602507,
+      "all_six_components_increased": true,
+      "three_colony_factors": {
+        "Royds": 1.3769539973202323,
+        "Bird": 1.8608584492846256,
+        "Crozier": 1.6907231855176652
+      },
+      "classification": "partial_spatial_reexpansion"
+    },
+    "preshock_to_endpoint_1999_2012": {
+      "N_fraction": 0.6928658557164278,
+      "E3_fraction": -0.041408426332895765,
+      "E6_fraction": -0.041604200854903906,
+      "three_colony_factors": {
+        "Royds": 0.8516574585635359,
+        "Bird": 1.598648363252376,
+        "Crozier": 1.7408479874201777
+      },
+      "classification": "abundance_above_preshock_with_modestly_lower_redundancy"
+    }
+  },
+  "interpretation": "The 2001 baseline is an iceberg-disturbance trough in breeding-territory occupancy. The frozen recovery contrast remains valid as a prespecified test, but its biological interpretation is shock-induced equalization followed by asymmetric breeding rebound, not steady recovery concentration.",
+  "superseded_reason": "Duplicate post-result decomposition; canonical shock/rebound record includes the same core states plus survey-method and measurement-boundary audit."
+}

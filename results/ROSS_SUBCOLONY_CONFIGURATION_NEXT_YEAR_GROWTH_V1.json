@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-subcolony-configuration-next-year-growth-v1",
+  "date": "2026-10-07",
+  "status": "prospective_mechanism_effect_opened_after_support_freeze",
+  "contract": "contracts/ROSS_SUBCOLONY_CONFIGURATION_NEXT_YEAR_GROWTH_V1.md",
+  "support_receipt": "results/ROSS_SUBCOLONY_CONFIGURATION_NEXT_YEAR_GROWTH_SUPPORT_V1.json",
+  "source": {
+    "publication": "Schmidt et al. 2021 Scientific Reports",
+    "workflow_artifact_id": 11427636296,
+    "workflow_artifact_digest": "sha256:5c6450bd2330946823f7a245ffe98fe8d6d4bae2a05d0ed6011677ba7a9d30d8",
+    "files": [
+      "croz_selected_meas_ct_all_v19.csv",
+      "royds_selected_meas_ct_all_v12.csv"
+    ]
+  },
+  "support": {
+    "n_transition_rows": 491,
+    "n_distinct_subcolonies": 114,
+    "crozier": {
+      "n_rows": 426,
+      "n_subcolonies": 92,
+      "n_transitions": 15
+    },
+    "royds": {
+      "n_rows": 65,
+      "n_subcolonies": 22,
+      "n_transitions": 3
+    }
+  },
+  "primary_model": {
+    "response": "log(active_ct_tplus1 / active_ct_t)",
+    "fixed_effect": "colony x start-season",
+    "current_abundance_covariate": "log(active_ct_t)",
+    "focal_predictor": "within-colony z(log perimeter-to-area ratio)",
+    "area_covariate": "within-colony z(log subcolony area)",
+    "gamma_log_current_abundance": -0.30882479405736335,
+    "beta_P": -0.019593937080112422,
+    "beta_A": 0.35393964246644183,
+    "growth_multiplier_per_plus1SD_P": 0.9805967764641033
+  },
+  "permutation": {
+    "B": 9999,
+    "seed": 20261006,
+    "rng": "numpy default_rng PCG64",
+    "object": "complete (P,A) geometry tuple permuted among distinct subcolony IDs within colony",
+    "direction": "beta_P_perm <= beta_P_observed",
+    "extreme_count": 1513,
+    "p": 0.1514,
+    "q05": -0.03074846,
+    "median": 0.00010405,
+    "q95": 0.03246194
+  },
+  "leave_one_subcolony_out": {
+    "n_omissions": 114,
+    "n_negative_beta_P": 114,
+    "min_beta_P": -0.028868095782606518,
+    "median_beta_P": -0.019576353529408203,
+    "max_beta_P": -0.013431636191555185
+  },
+  "colony_specific_descriptive": {
+    "crozier": {
+      "n_rows": 426,
+      "n_subcolonies": 92,
+      "n_transitions": 15,
+      "gamma_log_current_abundance": -0.35219934911905515,
+      "beta_P": -0.028754041890959814,
+      "beta_A": 0.4024496972249479
+    },
+    "royds": {
+      "n_rows": 65,
+      "n_subcolonies": 22,
+      "n_transitions": 3,
+      "gamma_log_current_abundance": -0.2350753388684613,
+      "beta_P": 0.01256994443080564,
+      "beta_A": 0.29140294989438503
+    }
+  },
+  "decision": {
+    "beta_P_negative": true,
+    "permutation_p_le_0_05": false,
+    "primary_support_pass": false,
+    "status": "TERMINAL_FAIL"
+  },
+  "interpretation": "The full frozen panel estimates the predicted negative perimeter-to-area association, and all leave-one-subcolony-out coefficients remain negative, but the geometry-assignment permutation test is not significant (p=0.1514). Crozier is negative whereas Royds is positive descriptively. The prespecified configuration predictor therefore does not provide confirmatory prospective evidence for next-season local breeding growth and is not rescued by alternative geometry metrics or subcolony subsets."
+}

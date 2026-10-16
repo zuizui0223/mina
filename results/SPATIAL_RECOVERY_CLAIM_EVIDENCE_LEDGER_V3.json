@@ -1,0 +1,85 @@
+{
+  "schema_version": 3,
+  "result_id": "spatial-recovery-claim-evidence-ledger-v3",
+  "date": "2026-10-07",
+  "status": "post_result_integrated_reinterpretation_with_spatial_grain_audit",
+  "manuscript": "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_7.md",
+  "focal_audit": "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json",
+  "spatial_grain_audit": "results/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.json",
+  "local_recovery_decomposition": "docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md",
+  "claim_hierarchy": [
+    {
+      "level": 1,
+      "role": "focal_empirical_result",
+      "claim": "Near-complete Ross aggregate recovery was produced by strongly unequal local restoration and did not completely restore pre-disturbance spatial composition at either six-component or three-colony grain.",
+      "key_numbers": {
+        "aggregate_restoration": 0.9696749043183291,
+        "local_restoration_range": [
+          0.10786267995570321,
+          1.097711179814501
+        ],
+        "local_restoration_median": 0.5179078537364515,
+        "crozier_west_rebound_share": 0.806370080038096,
+        "six_component_path_fidelity": 0.9059455495961382,
+        "three_colony_path_fidelity": 0.9327199232407497,
+        "six_component_state_restoration": 0.0239611381095024,
+        "three_colony_state_restoration": 0.2830106852134694,
+        "six_component_baseline_rebound_TV": 0.04967242312643739,
+        "three_colony_baseline_rebound_TV": 0.035362381539969526,
+        "six_component_exact_inverse_baseline_TV": 0.0007171796194534938,
+        "three_colony_exact_inverse_baseline_TV": 0.0006950379609346746,
+        "fraction_fine_grain_endpoint_difference_remaining_at_colony_scale": 0.7119117472879724
+      },
+      "evidence": [
+        "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json",
+        "results/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.json",
+        "docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md"
+      ],
+      "boundary": "State-restoration magnitude is spatial-grain dependent; the qualitative path-versus-state discrepancy is robust."
+    },
+    {
+      "level": 2,
+      "role": "within_system_calibration",
+      "claim": "High inverse-path fidelity co-occurred with weak or negative state restoration in all three complete Ross down-up episodes at six-component grain.",
+      "evidence": [
+        "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json"
+      ],
+      "boundary": "The three episodes are not independent replicates."
+    },
+    {
+      "level": 3,
+      "role": "process_contrast_attrition",
+      "claim": "Persistent decline at Palmer and Signy reweighted breeding structure beyond proportional thinning.",
+      "evidence": [
+        "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+        "results/SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json"
+      ],
+      "boundary": "Specific vital-rate mechanisms are not identified."
+    },
+    {
+      "level": 3,
+      "role": "process_contrast_capacity",
+      "claim": "Beaufort growth after capacity release reweighted breeding structure beyond proportional expansion while independent inter-island export declined.",
+      "evidence": [
+        "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json",
+        "docs/BEAUFORT_ISLAND_MEDIATED_COMPETITION_SYNTHESIS_V1.md"
+      ],
+      "boundary": "Census and movement evidence are independent streams, not mediation."
+    },
+    {
+      "level": 4,
+      "role": "general_hypothesis",
+      "claim": "Unequal local recovery can produce apparently complete aggregate recovery while changing spatial dominance and redundancy; apparent state restoration depends on observation grain.",
+      "novelty_status": "hypothesis_for_prospective_testing",
+      "boundary": "No universal scale-free state-restoration index is claimed."
+    }
+  ],
+  "main_sentence": "Near-complete aggregate recovery was produced by differential local recovery: the population recovered where it had declined, but not in the same proportions, and the degree of apparent state restoration depended on spatial grain.",
+  "withdrawn_claims": [
+    "Ross restored or re-expressed the pre-shock spatial state",
+    "high inverse-path fidelity implies state restoration",
+    "state restoration equals 2.4% as a scale-invariant property",
+    "near-complete aggregate recovery means most breeding components nearly recovered",
+    "the focal result demonstrates latent spatial memory"
+  ]
+}

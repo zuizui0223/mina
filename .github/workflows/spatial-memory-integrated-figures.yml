@@ -1,0 +1,31 @@
+name: spatial-memory-integrated-figures
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/build_spatial_memory_integrated_figures.py"
+      - "results/ROSS_INVERSE_PATH_MISMATCH_V1.json"
+      - "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+      - "results/SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json"
+      - "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json"
+      - "results/BIRD_ISLAND_GENTOO_SIX_UNIT_RECOVERY_ALLOCATION_V1.json"
+      - "results/EMPEROR_GLOBAL_DECLINE_SPATIAL_REDUNDANCY_V1.json"
+      - ".github/workflows/spatial-memory-integrated-figures.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install figure dependencies
+        run: pip install -e ".[figures]"
+      - name: Build integrated manuscript figures
+        run: python scripts/build_spatial_memory_integrated_figures.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spatial-memory-integrated-figures
+          path: build/spatial_memory_integrated_figures/*

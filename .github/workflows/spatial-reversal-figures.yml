@@ -1,0 +1,29 @@
+name: spatial-reversal-figures
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/build_spatial_reversal_figures.py"
+      - "external/ross_island_v2_frozen_counts.csv"
+      - "results/ROSS_INVERSE_PATH_MISMATCH_V1.json"
+      - "results/BIRD_ISLAND_GENTOO_SIX_UNIT_RECOVERY_ALLOCATION_V1.json"
+      - "results/EMPEROR_GLOBAL_DECLINE_SPATIAL_REDUNDANCY_V1.json"
+      - ".github/workflows/spatial-reversal-figures.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install figure dependencies
+        run: pip install -e ".[figures]"
+      - name: Build PR189 main figures
+        run: python scripts/build_spatial_reversal_figures.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spatial-reversal-main-figures
+          path: build/spatial_reversal_figures/*

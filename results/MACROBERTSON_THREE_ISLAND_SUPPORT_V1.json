@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "result_id": "macrobertson-three-island-support-v1",
+  "date": "2026-10-06",
+  "contract": "contracts/MACROBERTSON_THREE_ISLAND_RECOVERY_ALLOCATION_V1.md",
+  "source": {
+    "doi": "10.26179/5c9bf6704cf70",
+    "legacy_download_url": "https://data.aad.gov.au/eds/1103/download",
+    "workflow_artifact_id": 11410553433,
+    "workflow_artifact_digest": "sha256:eb15cf5a74cc797c2069cf74f0bbfd1827610a8015168cdd458fdd959bc43c42"
+  },
+  "metadata_support": {
+    "three_islands_named": ["Bechervaise Island","Verner Island","Petersen Island"],
+    "post_1990_91_measurement": "occupied nests near 2 December during incubation",
+    "fields_documented": ["Year","Bechervaise Island Counts","Verner Island Counts","Petersen Island Counts","Date","Season","occ nests"],
+    "time_period": "1971-10-01 to 2005-02-01"
+  },
+  "retrieval": {
+    "workflow_http_request_completed": true,
+    "artifact_is_excel_workbook": false,
+    "artifact_detected_type": "HTML document",
+    "artifact_content": "current AADC JavaScript application shell rather than count workbook",
+    "current_portal_requires_email_for_dataset delivery": true
+  },
+  "decision": {
+    "structural_endpoint_support_audited": false,
+    "count_magnitudes_opened": false,
+    "recovery_gate_evaluated": false,
+    "E_endpoint_computed": false,
+    "status": "DATA_ACCESS_BLOCKED_NOT_BIOLOGICAL_FAIL"
+  },
+  "boundary": "Do not reconstruct the three-island endpoint from Bechervaise-only published tables or search for favorable substitute years. Resume only from an authenticated/public file-level AADC delivery that preserves the frozen contract."
+}

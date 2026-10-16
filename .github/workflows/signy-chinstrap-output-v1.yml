@@ -1,0 +1,27 @@
+name: Signy Chinstrap ratio-free mechanism support v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/SIGNY_CHINSTRAP_OUTPUT_TO_ALLOCATION_V1.md"
+      - ".github/workflows/signy-chinstrap-output-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download public BAS Signy Chinstrap dataset
+        run: |
+          mkdir -p build/signy_chinstrap
+          curl -A 'Mozilla/5.0' -L --fail --retry 10 --retry-delay 5 --retry-all-errors \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' \
+            -o build/signy_chinstrap/signy_chinstrap.zip
+          file build/signy_chinstrap/signy_chinstrap.zip
+          ls -lh build/signy_chinstrap/signy_chinstrap.zip
+          unzip -l build/signy_chinstrap/signy_chinstrap.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signy-chinstrap-output-v1
+          path: build/signy_chinstrap/signy_chinstrap.zip

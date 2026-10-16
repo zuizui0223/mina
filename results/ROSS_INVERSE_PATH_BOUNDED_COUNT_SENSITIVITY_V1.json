@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-inverse-path-bounded-count-sensitivity-v1",
+  "date": "2026-10-06",
+  "status": "post_result_deterministic_sensitivity_not_error_model",
+  "anchors": [1999, 2001, 2002],
+  "components": [
+    "Cape Royds",
+    "Cape Bird South",
+    "Cape Bird Middle",
+    "Cape Bird North",
+    "Cape Crozier West",
+    "Cape Crozier East"
+  ],
+  "fixed_observed_rebound_scale": {
+    "k": 0.9696749043183291,
+    "minimum_common_symmetric_relative_tolerance": 0.22668807681956138,
+    "binding_component": "Cape Royds",
+    "component_minimum_tolerances": {
+      "Cape Royds": 0.22668807681956138,
+      "Cape Bird South": 0.20305095776394314,
+      "Cape Bird Middle": 0.16485705469301656,
+      "Cape Bird North": 0.01937516829476843,
+      "Cape Crozier West": 0.03614135519838514,
+      "Cape Crozier East": 0.09544087996668943
+    }
+  },
+  "free_rebound_scale": {
+    "optimal_k": 0.6513538960897088,
+    "minimum_common_symmetric_relative_tolerance": 0.1384340419914957,
+    "binding_components": [
+      "Cape Bird South",
+      "Cape Crozier West"
+    ]
+  },
+  "boundary": "These are deterministic feasibility thresholds under a simple symmetric multiplicative perturbation envelope. They are not estimates, confidence intervals, or assumptions about the true Ross aerial-count error distribution."
+}

@@ -1,0 +1,25 @@
+name: Port Lockroy gentoo ratio-free mechanism support v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/PORT_LOCKROY_GENTOO_OUTPUT_TO_ALLOCATION_V1.md"
+      - ".github/workflows/port-lockroy-gentoo-output-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download public BAS Port Lockroy Gentoo dataset
+        run: |
+          mkdir -p build/port_lockroy_gentoo
+          curl -A 'Mozilla/5.0' -L --fail --retry 10 --retry-delay 5 --retry-all-errors             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=92e92c14-0ff2-4ce2-8305-83d5b3a4071d&output=zip.tree'             -o build/port_lockroy_gentoo/port_lockroy_gentoo.zip
+          file build/port_lockroy_gentoo/port_lockroy_gentoo.zip
+          ls -lh build/port_lockroy_gentoo/port_lockroy_gentoo.zip
+          unzip -l build/port_lockroy_gentoo/port_lockroy_gentoo.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: port-lockroy-gentoo-output-v1
+          path: build/port_lockroy_gentoo/port_lockroy_gentoo.zip

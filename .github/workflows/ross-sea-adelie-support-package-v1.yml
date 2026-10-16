@@ -1,0 +1,37 @@
+name: Ross Sea Adelie support package v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/ROSS_SEA_EXPANSION_INTENSIFICATION_SUPPORT_V1.md"
+      - ".github/workflows/ross-sea-adelie-support-package-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download public Ross Sea aerial census workbook
+        run: |
+          mkdir -p build
+          curl -A 'Mozilla/5.0' -L --fail --retry 10 --retry-delay 5 --retry-all-errors \
+            'https://datastore.landcareresearch.co.nz/dataset/fb407798-f399-4875-81a0-51976b4c759c/resource/5fd490e5-92c4-4f2c-a82e-c66db2320eb1/download/ross-sea-adelie-penguin-census-record_1981-2024.xlsx' \
+            -o build/ross_sea_adelie_1981_2024.xlsx
+          file build/ross_sea_adelie_1981_2024.xlsx
+          ls -lh build/ross_sea_adelie_1981_2024.xlsx
+          curl -A 'Mozilla/5.0' -L --fail --retry 10 --retry-delay 5 --retry-all-errors \
+            'https://datastore.landcareresearch.co.nz/dataset/fb407798-f399-4875-81a0-51976b4c759c/resource/f82c5e1d-f04d-446d-9338-e9d0603360f8/download/colonylocations.xlsx' \
+            -o build/ross_sea_colony_locations.xlsx
+          curl -A 'Mozilla/5.0' -L --fail --retry 10 --retry-delay 5 --retry-all-errors \
+            'https://datastore.landcareresearch.co.nz/dataset/fb407798-f399-4875-81a0-51976b4c759c/resource/e081bd92-4e27-44eb-8d5b-065906e97cc2/download/metadata_aerialsurveydata.pdf' \
+            -o build/ross_sea_aerial_metadata.pdf
+          file build/ross_sea_colony_locations.xlsx build/ross_sea_aerial_metadata.pdf
+          ls -lh build/ross_sea_colony_locations.xlsx build/ross_sea_aerial_metadata.pdf
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ross-sea-adelie-support-package-v1
+          path: |
+            build/ross_sea_adelie_1981_2024.xlsx
+            build/ross_sea_colony_locations.xlsx
+            build/ross_sea_aerial_metadata.pdf

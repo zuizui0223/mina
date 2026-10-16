@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "contract": "contracts/ROSS_ISLAND_DECLINE_RECOVERY_SPATIAL_ASYMMETRY_V2.md",
+  "source_doi": "10.7931/kf06-x745",
+  "source_artifact_digest": "sha256:b391599312053cb77580ff9832e0a24da44e986ad0aa7710215df110bf9db3d5",
+  "effect_opened_after_v2_freeze": true,
+  "decline": {
+    "years": [1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999],
+    "n_years": 15,
+    "slope_logN_per_year": -0.01672889920812209,
+    "slope_logE3_per_year": -0.0020358078129362623,
+    "slope_logE6_per_year": -0.007197809356152902,
+    "kappa3_secondary": 0.08463697852549115,
+    "kappa6_secondary": 0.1446004016735324,
+    "start": {
+      "year": 1985,
+      "N": 224414,
+      "E3": 1.625192664901886,
+      "E6": 2.2902405593410786,
+      "colonies": {"Royds":3214,"Bird":53534,"Crozier":167666}
+    },
+    "end": {
+      "year": 1999,
+      "N": 207411,
+      "E3": 1.609467706666291,
+      "E6": 2.0557530380209097,
+      "colonies": {"Royds":3620,"Bird":47350,"Crozier":156441}
+    },
+    "endpoint_change_fraction": {
+      "N": -0.0757662177938988,
+      "E3": -0.009675750189620969,
+      "E6": -0.10238554214917617
+    },
+    "colony_absolute_changes": {"Royds":406,"Bird":-6184,"Crozier":-11225},
+    "colony_proportional_residuals": {
+      "Royds": 649.5126239895908,
+      "Bird": -2127.9312966214275,
+      "Crozier": 1478.418672631844
+    },
+    "gross_endpoint_gain": 406,
+    "gross_endpoint_loss": 17409
+  },
+  "recovery": {
+    "years": [2001,2002,2003,2004,2005,2006,2007,2009,2010,2011,2012],
+    "n_years": 11,
+    "slope_logN_per_year": 0.10040756330337532,
+    "slope_logE3_per_year": -0.005488637299230898,
+    "slope_logE6_per_year": -0.0058916518488920395,
+    "kappa3_secondary": -0.06837555385533808,
+    "kappa6_secondary": -0.07514200520778727,
+    "start": {
+      "year": 2001,
+      "N": 94798,
+      "E3": 1.7286221365129768,
+      "E6": 2.2919284746729964,
+      "colonies": {"Royds":1367,"Bird":26317,"Crozier":67114}
+    },
+    "end": {
+      "year": 2012,
+      "N": 351119,
+      "E3": 1.5428221816996246,
+      "E6": 1.9702250757190085,
+      "colonies": {"Royds":3083,"Bird":75696,"Crozier":272340}
+    },
+    "endpoint_change_fraction": {
+      "N": 2.703865060444313,
+      "E3": -0.10748442409059555,
+      "E6": -0.14036362936670055
+    },
+    "colony_absolute_changes": {"Royds":1716,"Bird":49379,"Crozier":205226},
+    "six_component_absolute_changes": {
+      "Cape Royds":1716,
+      "Cape Bird South":12934,
+      "Cape Bird Middle":3078,
+      "Cape Bird North":33367,
+      "Cape Crozier West":183023,
+      "Cape Crozier East":22203
+    },
+    "colony_proportional_residuals": {
+      "Royds": -1980.1835376273757,
+      "Bird": -21778.616795712995,
+      "Crozier": 23758.800333340332
+    },
+    "gross_endpoint_gain": 256321,
+    "gross_endpoint_loss": 0
+  },
+  "decision": {
+    "decline_abundance_gate_pass": true,
+    "recovery_abundance_gate_pass": true,
+    "P1_decline_E3_direction_pass": true,
+    "P2_recovery_E3_deconcentration_pass": false,
+    "strong_v2_support": false,
+    "recovery_all_three_colonies_increased": true,
+    "recovery_all_six_components_increased": true,
+    "v2_recovery_prediction_failed": true
+  },
+  "interpretation": {
+    "confirmatory": "The V2 recovery-deconcentration prediction failed. Numerical recovery was accompanied by lower effective colony number at both the three-colony and six-component scales.",
+    "mass_balance": "Recovery concentration arose by differential amplification: every frozen colony and every frozen census component increased in absolute abundance, but Cape Crozier, especially Cape Crozier West, gained disproportionately.",
+    "audit_rule": "The prerevision V1 intensification-like prediction is not reinstated as confirmatory after seeing the V2 result."
+  }
+}

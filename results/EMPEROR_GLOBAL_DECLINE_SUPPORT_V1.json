@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "result_id": "emperor-global-decline-spatial-redundancy-support-v1",
+  "date": "2026-10-06",
+  "contract": "contracts/EMPEROR_GLOBAL_DECLINE_SPATIAL_REDUNDANCY_V1.md",
+  "source": {
+    "repository": "davidiles/EMPE_Global",
+    "path": "analysis/output/model_results/3_Colony_Level/colony_summary.csv"
+  },
+  "structure": {
+    "year_min": 2009,
+    "year_max": 2018,
+    "n_years": 10,
+    "n_sites_total": 50,
+    "primary_column": "N_median",
+    "endpoint_2009_rows": 50,
+    "endpoint_2009_sites": 50,
+    "endpoint_2009_medians_present": 50,
+    "endpoint_2018_rows": 50,
+    "endpoint_2018_sites": 50,
+    "endpoint_2018_medians_present": 50,
+    "n_ice_regions": 8
+  },
+  "decision": {
+    "paired_roster_support_pass": true,
+    "paired_roster_n": 50,
+    "effect_opened": false,
+    "status": "SUPPORT_PASS_READY_FOR_FROZEN_EFFECT"
+  },
+  "audit_note": "A single first data row was inadvertently displayed while confirming the header after contract freeze; it was not used to alter any design choice. No endpoint totals, shares, E, local changes or regional effects were summarized before this support receipt."
+}

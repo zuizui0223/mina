@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "result_id": "spatial-recovery-claim-evidence-ledger-v1",
+  "date": "2026-10-07",
+  "status": "post_result_integrated_reinterpretation",
+  "manuscript": "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_5.md",
+  "focal_audit": "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json",
+  "claim_hierarchy": [
+    {
+      "level": 1,
+      "role": "focal_empirical_result",
+      "claim": "Near-complete aggregate and path recovery did not restore the pre-disturbance spatial composition in the focal Ross natural experiment.",
+      "key_numbers": {
+        "aggregate_loss_restored_fraction": 0.9696749043183291,
+        "inverse_path_fidelity": 0.9059455495961382,
+        "state_distance_restored_fraction": 0.0239611381095024,
+        "baseline_TV_expected_under_exact_inverse_path": 0.0007171796194534938,
+        "baseline_TV_observed": 0.04967242312643739,
+        "observed_to_expected_baseline_TV_ratio": 69.26078774388604
+      },
+      "evidence": [
+        "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json",
+        "results/ROSS_INVERSE_PATH_MISMATCH_V1.json",
+        "results/ROSS_ICEBERG_SHOCK_REBOUND_AUDIT_V1.json"
+      ],
+      "boundary": "Path-versus-state audit is post-result; no individual identity is inferred."
+    },
+    {
+      "level": 2,
+      "role": "within_system_calibration",
+      "claim": "All three complete Ross down-up episodes had high inverse-path fidelity but weak or negative state restoration.",
+      "key_numbers": {
+        "inverse_path_fidelity_range": [
+          0.893699186671979,
+          0.9087851175994598
+        ],
+        "state_restoration_fractions": [
+          -0.29233120031816484,
+          0.0239611381095024,
+          -0.5337028371299217
+        ]
+      },
+      "evidence": [
+        "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json"
+      ],
+      "boundary": "The three episodes are not independent replicates."
+    },
+    {
+      "level": 3,
+      "role": "process_contrast_attrition",
+      "claim": "Persistent decline at Palmer and Signy reweighted breeding structure beyond proportional thinning.",
+      "evidence": [
+        "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+        "results/SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json"
+      ],
+      "boundary": "Unequal attrition is identified at the census level; specific vital-rate mechanisms are not."
+    },
+    {
+      "level": 3,
+      "role": "process_contrast_capacity",
+      "claim": "Beaufort growth after nesting-capacity release reweighted within-island structure beyond proportional expansion while independent inter-island export declined.",
+      "evidence": [
+        "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json",
+        "docs/BEAUFORT_ISLAND_MEDIATED_COMPETITION_SYNTHESIS_V1.md"
+      ],
+      "boundary": "Within-island census and movement evidence are independent streams, not mediation."
+    },
+    {
+      "level": 4,
+      "role": "general_hypothesis",
+      "claim": "Structured deviations from proportional local recovery can reorganize spatial state even when aggregate recovery and local path reversal are high.",
+      "novelty_status": "hypothesis_for_prospective_testing",
+      "boundary": "Trajectory-versus-state distinctions are prior art; the contribution is the empirical population-level natural experiment and process contrasts."
+    }
+  ],
+  "withdrawn_claims": [
+    "Ross restored or re-expressed the pre-shock spatial state",
+    "high inverse-path fidelity is evidence of state restoration",
+    "the focal Ross result demonstrates latent spatial memory",
+    "the 9.41% inverse-path mismatch is biologically minor because it is numerically small"
+  ],
+  "main_sentence": "The population recovered where it had declined, but not in the same proportions."
+}
