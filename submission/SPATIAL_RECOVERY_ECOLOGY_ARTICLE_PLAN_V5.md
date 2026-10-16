@@ -77,3 +77,43 @@ Sell:
 One active submission manuscript only:
 
 `docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md`
+
+
+## 2026-10-16 island-biogeography gap — editorial addendum, NOT a scientific unfreeze
+
+This section is a post-result editorial and future-study note. It does NOT change the frozen scientific manuscript, define a new focal effect or preregister another test. The canonical Ecology Article remains docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md, and its original scientific interpretation and 30-page production preview are unchanged.
+
+### Separate what the current paper establishes from the next causal question
+
+**CURRENT article question:** Does strong recovery of an island's total breeding abundance and approximate reversal of where decline occurred imply restoration of the former distribution among named breeding units?
+
+**CURRENT answer:** No, in the Ross natural experiment. Aggregate recovery of the 1999→2001 loss was 96.97%, but local restoration was 10.8–109.8%, with Cape Crozier West supplying 80.6% of rebound. Six-component inverse-path fidelity was 90.59%; only 2.4% of the earlier relative-composition displacement was erased. At three-colony grain these values were 93.27% and 28.3%, respectively. Palmer/Signy declines showed nonproportional concentration, and Beaufort's growing smaller/new unit gained 3.15 times the fixed-composition expectation. Those are different process **contrasts**, not causal replications of Ross.
+
+**FUTURE island-specific question:** Holding island-wide abundance and independently measured suitable nesting habitat constant, does the *past occupancy of a specific breeding patch* change its probability of reactivation, and does availability of such patches affect the probability of remaining on an island rather than moving to another? This joint question concerns island boundaries as limits on breeding-site expression in marine foragers. It is NOT identified from the existing aggregate counts.
+
+### Do not recycle existing mechanisms as novel
+
+- Spatial structure/heterogeneous local dynamics as determinants of metapopulation recovery: Wilson et al. 2023, Ecological Applications, DOI 10.1002/eap.2898.
+- Strong colonial site fidelity leaving physically available patches unoccupied and inducing stepwise founding: Matthiopoulos, Harwood & Thomas 2005, Journal of Animal Ecology, DOI 10.1111/j.1365-2656.2005.00970.x.
+- Colony size, conspecific spatial configuration, marine foraging range, polynyas and canyons shaping Antarctic penguin distributions: Santora, LaRue & Ainley 2020, Global Ecology and Biogeography, DOI 10.1111/geb.13144.
+- Physical nesting-habitat release at Beaufort Island together with reduced sightings of Beaufort-marked penguins at Ross Island: LaRue et al. 2013, PLOS ONE, DOI 10.1371/journal.pone.0060568.
+
+Consequently, neither "island patches matter", "available space need not be used", "site fidelity slows colonization", nor "habitat release changes movement" is an original general-theory result of the current paper. Likewise, the existing Beaufort resights cannot automatically be equated with successful between-island breeding dispersal.
+
+### The nontrivial prospective test: three competing explanations
+
+| Hypothesis | A discriminating conditional prediction | Independent evidence needed |
+| --- | --- | --- |
+| **Habitat/resource allocation (baseline)** | Once objectively available nesting substrate, local access, foraging cost, conspecific neighborhood, island-wide breeder supply and survey detection are controlled, past patch occupancy does **not** independently predict verified reoccupation. | Stable site IDs/geometry; measured ice-free area and nest substrate; repeated true occupancy with effort and spatial coverage |
+| **Temporary breeding-state suppression** | Known living adults with established nest-site affiliations skip or interrupt breeding during the shock but subsequently resume at original sites after access returns; new founder recruitment is not required to explain the immediate rebound. | Repeated tagged-adult histories and on-nest confirmation; survival, nonbreeder and reader-effort observation models |
+| **Social/fidelity-mediated site reactivation and capacity-linked island retention** | With comparable current suitability and breeding supply, historically occupied sites and sites with surviving affiliated breeders recover at different rates from never-occupied suitable sites. Exogenous capacity release modifies verified local retention versus between-island redistribution, conditional on exposure and individual detection. | Several independent habitat-change events and matched islands; independently established suitable-but-vacant patches; tagged birds observed at more than one island |
+
+For a patch j let K(j,t) denote *independently measured* suitable breeding capacity, Y(j,t) whether breeding actually occurs, and B(j,t) the detected breeding count. The prospective colonization endpoint is P[Y(j,t+1)=1 | Y(j,t)=0, K(j,t)>0] with explicit detection/effort modelling. An apparent B=0 cannot be called a true vacant patch without independent surveyed-absence support. The expected difference between site reactivation and new colonization must be estimated at matched quality, not mechanically inferred from geographic maps.
+
+A particularly discriminating future prediction is **occupancy hysteresis**: at matched current land accessibility and island population, establishment after a patch becomes vacant may require a different threshold or time lag than persistence before its abandonment. This is a testable implication of previously developed site-fidelity theory, not a novel mechanism in itself. Observing a lag alone would not establish social memory: persistent habitat quality, foraging costs, density, age structure and missing birds can produce it. Distinguish alternatives using cohort-tagged individuals, nesting outcomes, island-wide search effort and temporally replicated habitat change.
+
+### Defensible island-biogeography message for the current Article
+
+> Island-wide breeding abundance is not a sufficient state variable for colonial populations. Ross recovered nearly all lost breeders yet failed to restore the preceding distribution of reproduction among its nesting components; other penguin islands showed unequal loss or expansion. These observations locate a **nested within-island scale** that island-total monitoring can hide. They motivate testing whether physical nesting capacity and individually maintained site associations jointly determine reactivation and redistribution across island boundaries, but do not demonstrate this causal mechanism.
+
+Keep the manuscript's claim empirical and narrow. Do **not** claim a new MacArthur–Wilson law, a verified causal island boundary effect, an estimated social memory parameter, or "short-term reversible / long-term irreversible". The boundary-specific causal study is for AFTER the frozen Ecology Article has been submitted and independent data exist. No additional ecological endpoint search is authorized by this editorial addendum.
