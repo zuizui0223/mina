@@ -47,7 +47,7 @@ def test_cover_letter_is_not_a_false_human_submission_confirmation():
     assert "COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_6.md" in manifest
     assert "COVER_LETTER_SPATIAL_RECOVERY_ECOLOGY_V0_5.md" not in manifest
     assert "post-result" in letter
-    assert "not a new resilience-theory claim" in letter
+    assert "without a confirmatory significance claim or a new resilience-theory claim" in letter
     assert "not under review elsewhere" in letter or "not published, submitted or under review elsewhere" in letter
     assert "[After author confirmation:" in letter
     assert "[Approved corresponding author's full publication name]" in letter
