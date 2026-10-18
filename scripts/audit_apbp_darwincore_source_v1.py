@@ -28,10 +28,16 @@ EXPECTED_ROW_COUNTS = {
 }
 MAX_DOWNLOAD = 15_000_000
 MAX_UNCOMPRESSED = 50_000_000
-TAXA = {
-    "Pygoscelis adeliae", "Pygoscelis antarcticus", "Pygoscelis papua",
-    "Eudyptes chrysolophus", "Aptenodytes patagonicus", "Aptenodytes forsteri",
+TAXON_CANONICAL = {
+    "Pygoscelis adeliae": "Pygoscelis adeliae",
+    "Pygoscelis antarctica": "Pygoscelis antarcticus",  # documented source synonym
+    "Pygoscelis antarcticus": "Pygoscelis antarcticus",
+    "Pygoscelis papua": "Pygoscelis papua",
+    "Eudyptes chrysolophus": "Eudyptes chrysolophus",
+    "Aptenodytes patagonicus": "Aptenodytes patagonicus",
+    "Aptenodytes forsteri": "Aptenodytes forsteri",
 }
+TAXA = set(TAXON_CANONICAL.values())
 DWC_URI = "http://rs.tdwg.org/dwc/terms/"
 
 
@@ -205,8 +211,8 @@ def audited_schema(raw,expected_counts=EXPECTED_ROW_COUNTS):
         for _,key,obj in records["Occurrence"]:
             s=obj.get("scientificName","").strip() or obj.get("acceptedNameUsage","").strip()
             species_labels[s or "UNKNOWN"]+=1
-            if s in TAXA:
-                counts_per_species[s]+=1
+            if s in TAXON_CANONICAL:
+                counts_per_species[TAXON_CANONICAL[s]]+=1
         measures=Counter()
         measure_units=Counter()
         emof=obj if False else None
