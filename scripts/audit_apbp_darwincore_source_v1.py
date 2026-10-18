@@ -146,7 +146,7 @@ def event_year(text):
     return int(m.group(1)) if m else None
 
 
-def audited_schema(raw):
+def audited_schema(raw,expected_counts=EXPECTED_ROW_COUNTS):
     with safe_zip(raw) as z:
         tables=metadata(z)
         records={}
@@ -174,9 +174,9 @@ def audited_schema(raw):
                     if key: event_keys.add(key)
         if not event_keys or duplicate_events:
             raise ValueError("SOURCE_STOP duplicate or missing original DwC Event primary keys")
-        if any(len(records[k])!=v for k,v in EXPECTED_ROW_COUNTS.items()):
+        if any(len(records[k])!=v for k,v in expected_counts.items()):
             raise ValueError("SOURCE_VERSION_STOP pinned v2.3 publisher row counts changed: "+
-                             str({k:len(records[k]) for k in EXPECTED_ROW_COUNTS}))
+                             str({k:len(records[k]) for k in expected_counts}))
         orphan={}
         for kind in ("Occurrence","ExtendedMeasurementOrFact"):
             orphan[kind]=sum(1 for _,key,values in records[kind] if key not in event_keys)
