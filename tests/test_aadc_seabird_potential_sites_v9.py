@@ -45,9 +45,17 @@ def test_genuine_spreadsheet_workbook_metadata_only_no_sheet_cell_values():
     assert "999999" not in str(result)
 
 
-def test_raw_html_redirect_not_an_original_download():
-    with pytest.raises(ValueError,match="HTML"):
-        m.payload_structure(b"<!doctype html><body>Please log in</body>","original")
+def test_original_aadc_html_is_source_access_diagnostic_never_csv_or_rows():
+    html=(b'<!doctype html><html><head><title>Original AADC download files</title></head>'
+          b'<body><a href="/eds/5959/file/occupancy.csv">CSV</a>'
+          b'<a href="https://evil.example/steal.zip">External bad link</a></body></html>')
+    r=m.payload_structure(html,"original")
+    assert r["format"]=="AADC_HTML_DOWNLOAD_OR_AUTHENTICATION_LANDING"
+    assert r["diagnosis_only_not_a_data_source"] is True
+    assert r["source_link_targets_official_only"]==[
+        "https://data.aad.gov.au/eds/5959/file/occupancy.csv"
+    ]
+    assert r["original_breeding_occurrences_read"]==0
 
 
 def test_zip_path_traversal_is_source_stop():
