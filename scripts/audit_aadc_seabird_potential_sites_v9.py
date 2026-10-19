@@ -110,9 +110,9 @@ def landing_metadata(blob,source_name):
         if target.scheme!="https" or not (target.hostname=="data.aad.gov.au" or
                 str(target.hostname).endswith(".aad.gov.au")):
             continue
-        if any(token in target.path.lower() for token in (
+        if (any(token in target.path.lower() for token in (
                 "/eds/","/download","/files/","/file/","/dataset/")) or
-                target.path.lower().endswith((".zip",".xlsx",".xls",".csv",".tar.gz")):
+                target.path.lower().endswith((".zip",".xlsx",".xls",".csv",".tar.gz"))):
             if url not in links:links.append(url)
     return {
         "format":"AADC_HTML_DOWNLOAD_OR_AUTHENTICATION_LANDING",
