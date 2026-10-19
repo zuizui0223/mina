@@ -38,3 +38,14 @@ Freeze *Ecology* PR189, previous V6 negative and V8 nonrobust results. No petrel
 Southwell et al. 2017, *The Auk*, "Recent Studies Overestimate Colonization and Extinction Events for Adélie Penguin Breeding Colonies" (DOI to verify in canonical publisher), had **already** challenged apparent colony turnover from historical occupancy records. Southwell et al. 2025 *Diversity and Distributions*, DOI `10.1111/ddi.70066`, directly assessed knowledge, ignorance, presence/absence certainty and known species richness from this same 33,297-record source. These are **explicit prior art**, not V9 discoveries. The prospective distinct question must be a *trait-by-physical-island-feature interaction* with correct detection/absence classes; otherwise do not make another paper.
 
 AADC citation page states it is an expected professional norm for intended research users to contact source originators to discuss use. This is not required to retrieve a released CC BY file and assess schema; any later collaboration or publication using this corpus should honor that guidance. No unapproved email is sent from this workflow.
+
+
+## Original AADC public API route discovery (2026-10-19; no biological response rows read)
+
+The old AADC source download endpoints /eds/4344/download and /eds/5959/download each returned the same 1,211-byte generic HTML app shell. Source SHA256: 2ab5f351f2661581059ffe0135f26c1bdc6508797914face5b3f4d16d4963f1c. The official browser JavaScript asset is https://data.aad.gov.au/assets/index-CvupLLiR.js (2,051,237 bytes; SHA256 db1a6c3857f08f6d39cba5344ee51832917e61fe978b98252a923eb6d012b7aa). Static text inspection of this publisher-distributed script, without executing it, revealed these original public AADC API endpoints:
+
+- GET https://data.aad.gov.au/eds/api/dataset?size=10000 (original browser source list)
+- GET /eds/api/dataset/{uuid} (one public dataset metadata)
+- GET /eds/api/dataset/{uuid}/objects?recursive=true&removeBasePath=true (original public data object file listing)
+
+New source-stage access must verify original eds_id values 4344/5959 and dataset DOI/title before using UUIDs. Use publisher HTTPS only; do not request authentication, personal access keys, or a guessed private S3 link. The next operation reads only public dataset inventory metadata and original file names/schema, NOT seabird presence/absence records. Source remains a scientific HOLD if the public API is not accessible or the DOI/source mapping cannot be verified. This route correction was specified before reading any AADC response values or fitting site-island-breeding ecological effects. Frozen negative V6/V8 and APBP V10 descriptive results remain untouched.
