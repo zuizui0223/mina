@@ -1,0 +1,43 @@
+name: Antarctic penguin NSIDC G02202 v6 marine climate source V5
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/NSIDC_G02202_V6_SITE_MARINE_EXPOSURE_V5.md'
+      - 'scripts/derive_nsidc_seaice_siteyear_v5.py'
+      - 'tests/test_nsidc_seaice_siteyear_v5.py'
+      - '.github/workflows/antarctic-penguin-seaice-v5.yml'
+  pull_request:
+    paths:
+      - 'contracts/NSIDC_G02202_V6_SITE_MARINE_EXPOSURE_V5.md'
+      - 'scripts/derive_nsidc_seaice_siteyear_v5.py'
+      - 'tests/test_nsidc_seaice_siteyear_v5.py'
+      - '.github/workflows/antarctic-penguin-seaice-v5.yml'
+  workflow_dispatch:
+jobs:
+  independent-marine-observation-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install NOAA NetCDF climate tools
+        run: python -m pip install pytest requests numpy pyproj netCDF4
+      - name: Validate frozen 25km offshore radius, masked ocean SIC and CF coordinate semantics
+        run: python -m pytest -q tests/test_nsidc_seaice_siteyear_v5.py
+      - name: Download authentic NOAA G02202 V6 117MB monthly 1978-2026 and extract APBP site-specific marine predictors
+        run: |
+          python scripts/derive_nsidc_seaice_siteyear_v5.py \
+            --out-json /tmp/APBP_NOAA_SIC_ORIGINAL_QA_V5.json \
+            --out-csv /tmp/APBP_NOAA_1979_2022_SITEYEAR_OCEAN_SIC_V5.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apbp-NSIDC-G02202-v6-original-ocean-climate-siteyear-NO-ABUNDANCE
+          path: |
+            /tmp/APBP_NOAA_SIC_ORIGINAL_QA_V5.json
+            /tmp/APBP_NOAA_1979_2022_SITEYEAR_OCEAN_SIC_V5.csv
