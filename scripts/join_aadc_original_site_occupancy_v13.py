@@ -143,7 +143,12 @@ def sheet_source(raw: bytes, sheet_name: str):
             wb.release_resources()
     else:
         raise ValueError("SOURCE_STOP original author spreadsheet not Excel")
-    if not header or len(header)!=len(set(h for h in header if h)):
+    # The 2021 AADC geography XLSX has an author-populated A:I header,
+    # but the source worksheet's declared extent reaches column AK.
+    # Blank trailing heading cells are valid; ONLY duplicate NONBLANK
+    # column names cause ambiguity. Never invent labels for blank cells.
+    populated=[name for name in header if name]
+    if not populated or len(populated)!=len(set(populated)):
         raise ValueError("SCHEMA_STOP duplicate original nonblank headings")
     return header,rows
 
