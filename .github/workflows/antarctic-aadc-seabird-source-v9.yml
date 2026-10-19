@@ -1,0 +1,40 @@
+name: Antarctic V9 AADC potential ice-free site and seabird survey source schema
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/AADC_ALL_POTENTIAL_SITES_OCCUPANCY_V9.md'
+      - 'scripts/audit_aadc_seabird_potential_sites_v9.py'
+      - 'tests/test_aadc_seabird_potential_sites_v9.py'
+      - '.github/workflows/antarctic-aadc-seabird-source-v9.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_ALL_POTENTIAL_SITES_OCCUPANCY_V9.md'
+      - 'scripts/audit_aadc_seabird_potential_sites_v9.py'
+      - 'tests/test_aadc_seabird_potential_sites_v9.py'
+      - '.github/workflows/antarctic-aadc-seabird-source-v9.yml'
+  workflow_dispatch:
+jobs:
+  original-source-metadata:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source-only dependencies
+        run: python -m pip install pytest requests
+      - name: Test original source safety and schema-only AADC workbook/zip readers
+        run: python -m pytest -q tests/test_aadc_seabird_potential_sites_v9.py
+      - name: Fetch original official AADC coastal site and multi-species survey sources
+        run: |
+          python scripts/audit_aadc_seabird_potential_sites_v9.py \
+            --out-json /tmp/AADC_POTENTIAL_ICEFREE_AND_BREEDING_OCCUPANCY_SOURCE_V9.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-AADC-seabird-potential-sites-source-schema-no-effects
+          path: /tmp/AADC_POTENTIAL_ICEFREE_AND_BREEDING_OCCUPANCY_SOURCE_V9.json
