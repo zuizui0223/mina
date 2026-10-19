@@ -53,13 +53,14 @@ def test_unscaled_or_out_of_range_values_are_hard_stop():
 def test_climatology_threshold_is_frozen_at_20_years():
     band="25_75km"
     seasons={
-        1981+y:{band:(0.2+0.01*y,8,8)} for y in range(30)
+        1981+y:{band:(0.2+0.01*y,8,8),"75_150km":(0.5,12,12)}
+        for y in range(30)
     }
     out=v.climatology({"fake":seasons})["fake"][band]
     assert out[1]==30
     assert abs(out[0]-0.345)<1e-10
     # Climate baselines with insufficient years must not be zero-filled.
-    sample={1981+y:{band:(0.2,8,8)} for y in range(19)}
+    sample={1981+y:{band:(0.2,8,8),"75_150km":(0.5,12,12)} for y in range(19)}
     missing=v.climatology({"fake":sample})["fake"][band]
     assert missing==(None,19)
 
