@@ -167,3 +167,44 @@ def test_missing_source_sites_are_not_pretended_to_have_zero_habitat():
     combined=v.attach_habitats(pair,eco)
     assert combined.loc[combined.site_id.eq("S2"),"tier1_entropy_5km"].isna().all()
     assert combined.loc[combined.site_id.eq("S2"),"valid_pixels_5km"].eq(0).all()
+
+
+def test_publisher_derived_penguin_colony_tier2_is_never_used_as_habitat_predictor(tmp_path):
+    dbf=tmp_path/"response_leak.dbf"
+    w=shapefile.Writer(dbf=str(dbf),shp=None,shx=None)
+    w.field("Value","N",size=12)
+    w.field("ID_Tier1","C",size=15)
+    w.field("ID_Tier2","C",size=24)
+    w.field("Name_Tier2","C",size=40)
+    w.field("Name_Tier3","C",size=45)
+    for i in range(1,182):
+        if i==1:
+            w.record(i,"E1","E1B8","Penguin colonies","MAPPPD-defined penguin colonies")
+        else:
+            w.record(i,"E"+str((i-2)%9+1),"E1B1","Mild coastal lowlands","Independent abiotic classes")
+    w.close()
+    lookup=v.tier1_lookup(dbf)
+    assert 1 not in lookup
+    assert len(lookup)==180
+    assert len(set(lookup.values()))==9
+    assert lookup[2]=="E1"
+
+
+def test_non_E1_terrestrial_abiotic_tier1_codes_are_not_automatically_deleted(tmp_path):
+    dbf=tmp_path/"geophysical.dbf"
+    w=shapefile.Writer(dbf=str(dbf),shp=None,shx=None)
+    w.field("Value","N",size=12)
+    w.field("ID_Tier1","C",size=15)
+    w.field("ID_Tier2","C",size=24)
+    w.field("Name_Tier2","C",size=40)
+    w.field("Name_Tier3","C",size=45)
+    labels=["E1","E2","E3","E4","E5","G1","G2","L","E7"]
+    for i in range(1,181):
+        lab=labels[(i-1)%9]
+        w.record(i,lab,lab+"B0","Abiotic source type","Nonpenguin classified physical habitat")
+    w.close()
+    mapping=v.tier1_lookup(dbf)
+    assert len(mapping)==180
+    assert mapping[6]=="G1"
+    assert mapping[7]=="G2"
+    assert mapping[8]=="L"
