@@ -29,10 +29,33 @@ jobs:
         run: python -m pip install pytest requests
       - name: Test original source safety and schema-only AADC workbook/zip readers
         run: python -m pytest -q tests/test_aadc_seabird_potential_sites_v9.py
-      - name: Fetch original official AADC coastal site and multi-species survey sources
+      - name: Evaluate AADC exact source status; official SPA HTML is an expected SCIENTIFIC HOLD, not occupancy data
         run: |
+          set +e
           python scripts/audit_aadc_seabird_potential_sites_v9.py \
             --out-json /tmp/AADC_POTENTIAL_ICEFREE_AND_BREEDING_OCCUPANCY_SOURCE_V9.json
+          code=$?
+          set -e
+          V9_EXIT_CODE=$code python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path('/tmp/AADC_POTENTIAL_ICEFREE_AND_BREEDING_OCCUPANCY_SOURCE_V9.json')
+          r=json.loads(p.read_text())
+          code=int(os.environ['V9_EXIT_CODE'])
+          if r['status']=='AADC_ORIGINAL_POTENTIAL_SITES_AND_SURVEY_SCHEMA_VERIFIED':
+              assert code==0
+              print('SOURCE-ONLY PASS: authentic machine-readable AADC asset schemas checked.')
+          else:
+              assert r['status']=='HOLD_AADC_SOURCE_ACCESS_OR_SCHEMA'
+              assert code==2
+              assert len(r['records'])==2
+              for key,item in r['records'].items():
+                  assert item.get('format')=='AADC_HTML_DOWNLOAD_OR_AUTHENTICATION_LANDING', (key,item)
+                  assert item.get('original_breeding_occurrences_read')==0
+              print('EXPECTED SCIENTIFIC HOLD: both official direct-download URLs returned')
+              print('generic AADC HTML application shells, NOT public colony/absence rows.')
+              print('No original breeding occupancy outcomes were downloaded or fitted.')
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
