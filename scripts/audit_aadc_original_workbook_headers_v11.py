@@ -50,7 +50,9 @@ def trusted_response_get(session,url,cap,expected_json=False):
         response.raise_for_status()
         resolved=urlparse(response.url)
         if resolved.scheme!="https" or not (
-            resolved.hostname==HOST or resolved.hostname.endswith(".amazonaws.com")
+            resolved.hostname==HOST
+            or resolved.hostname.endswith(".data.aad.gov.au")
+            or resolved.hostname.endswith(".amazonaws.com")
         ):
             raise ValueError("SOURCE_STOP unexpected original publisher redirect: "+str(resolved.hostname))
         out=bytearray()
