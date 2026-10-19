@@ -30,3 +30,11 @@
 
 ## Original-source and privacy output
 Store public original Zenodo raster MD5/SHA256, DBF MD5/SHA256, projection and Tier1 category count, exactly 62 original co-observed site support QA, original eligible sample count, region/site CV, and uncertainty warnings; do not put all original site raw bird-count rows under public repo results—only an Actions artifact and a concise results JSON. The original frozen Ecology PR189 and completed unsupported V6 remain unchanged.
+
+## Original map category correction before ecological effects were observed
+
+The first authentic Zenodo TIFF/VAT download passed original publisher hashes but the strict Tier1 parser stopped because its initial assumption that every Tier1 code starts with `E` was false. Original 100m Tier1 values also label *volcanic and lake* environments as `G1`, `G2` and `L`; these are legitimate Antarctic physical habitat classes, **not errors**.
+
+A more serious source issue was then discovered by reading the published VAT: the Tier2 category **`E1B8 Penguin colonies`** comes from the same source-family as the biological response (MAPPPD). To prevent ecological label leakage, **all raster values whose Tier2 ID includes E1B8, whose Tier2 name includes “penguin”, or whose Tier3 original name includes “penguin” are excluded from habitat entropy and mapped environmental coverage predictors**. Only the remaining Tier1 coded environmental raster cells are used, including volcanic and lake types. Thus the environmental proportion is now explicitly *the fraction of retained non-rookery-labelled mapped 100m ecosystem cells*, **not** a validated measurement of all ice-free land area. No model coefficient or outcome data had been opened before this source-provenance correction; original hypothesis, response, spatial holdout, and decision gates unchanged.
+
+Caveat: even Tier1 codes may be influenced by spatial classification methods; excluding rookery-derived pixels greatly reduces direct circularity but does not magically produce fully independent experimental vegetation/snow substrate measurements. If fewer than 40 site-pair rows survive after exclusion, fail closed rather than include contaminated cells to get larger N.
