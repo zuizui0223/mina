@@ -5,7 +5,7 @@
 ## Exact original source
 
 - `NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 6`, DOI **10.7265/b18j-z797**, Antarctic stereographic raster EPSG:3412 at **25 km**.
-- Public HTTPS monthly aggregated original NetCDF file `https://noaadata.apps.nsidc.org/NOAA/G02202_V6/south/aggregate/sic_pss25_197811-202606_v06r00.nc`, official publisher index reports **116,765,633 bytes** (verified 2026-10-19). Download this exact file once, record original bytes and SHA256. Do not mix versions, hemispheres, variable types, daily/weekly or satellite algorithms.
+- Public HTTPS monthly aggregated original NetCDF file `https://noaadata.apps.nsidc.org/NOAA/G02202_V6/south/aggregate/sic_pss25_197811-202609_v06r00.nc`, official publisher index reports **117,472,635 bytes** (verified 2026-10-19). Download this exact file once, record original bytes and SHA256. Do not mix versions, hemispheres, variable types, daily/weekly or satellite algorithms.
 - Schema expected: `cdr_seaice_conc_monthly`, `time`, projected `x` and `y` or legacy `xgrid`/`ygrid` with spacing ~25km, `projection` CF mapping; original CF units **fraction (0–1)** after packed netCDF automatic scale and fill handling. Land-masked and missing ocean pixels cannot be interpreted as zero open water.
 
 ## Exposure selection frozen before inspection
@@ -27,3 +27,7 @@ For a future APBP nest-count matchup, `Event.eventDate` with an exact YYYY-MM-DD
 This stage uses **all original 719 locationIDs independent of counts**. It generates NO climate→abundance correlation, beta, p-value, habitat interaction or claim that offshore SIC is causal krill abundance. Monthly 25km SIC cannot resolve landfast ice or immediate colony access; emperor penguin breeding failures and coastal fast ice need a different higher-resolution environmental indicator.
 
 If G02202 aggregates are unavailable, payload too large, temporal coordinate/CF mapping invalid, fields contain unhandled coastal flags, or non-unit 0–1 data are returned, **STOP** and do not substitute a convenient year or a different ice product after seeing APBP counts. The source variable is frozen. Final model remains prospective until this climate-matching QA and island habitat/classification limitations are resolved.
+
+## 2026-10-19 provenance-only correction before marine values were read
+
+The originally archived directory listing named `197811-202606` (116,765,633 bytes), but direct original NOAA download returned **HTTP 404**. A new *live* official NOAA HTTPS index was inspected; its single current monthly aggregate is `sic_pss25_197811-202609_v06r00.nc` (117,472,635 bytes). Only the upstream **end-of-aggregate filename/month and corresponding byte-size provenance** changed; the predeclared analysis interval remains 1979–2022, exposure months Oct–Nov, near/far annuli, climatology 1981–2010 and all exclusion rules unchanged. No sea ice concentration values or penguin effects had been read before this correction. Do not silently adopt later monthly aggregate files or change source-version family after outcomes become available.
