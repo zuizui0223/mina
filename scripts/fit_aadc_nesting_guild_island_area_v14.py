@@ -110,7 +110,11 @@ def frame_data(surveys:pd.DataFrame,geog:pd.DataFrame):
         if row.occurrence.nunique()>1:
             conflict+=1
     unique=group_sizes[group_sizes==1].reset_index()[key]
-    df=df.merge(unique,on=key,how="inner",validate="one_to_one")
+    # The LEFT source deliberately still includes duplicate original rows;
+    # the right-side singleton keys are unique and exclude their entire group.
+    df=df.merge(unique,on=key,how="inner",validate="many_to_one")
+    if df.duplicated(key).any():
+        raise ValueError("SOURCE_STOP original source duplicate survey survived exclusion")
     status=df.occurrence.isin(("P","A"))
     direct=df.loc[status].copy()
     category=pd.to_numeric(direct.occurrence_cert_cat,errors="coerce")
