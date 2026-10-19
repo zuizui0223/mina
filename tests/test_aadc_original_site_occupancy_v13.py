@@ -138,3 +138,27 @@ def test_sheet_role_and_publisher_historic_counts_are_explicit():
     assert v.SOURCE_SPECS["penguin_original_search"][-1]==11089
     assert v.SOURCE_SPECS["flying_seabird_original_search"][-1]==22018
     assert v.SOURCE_SPECS["survey_certainty_rules"][-1]==216
+
+
+def test_sparse_publisher_first_row_allows_blank_unlabelled_columns_only():
+    wb=openpyxl.Workbook()
+    wb.active.title="2_Geographic sites"
+    sh=wb.active
+    sh.append(["Geog_Site_ID","Geog_Site_Area",None,None])
+    sh.append(["SITE004",2.3,"unlabelled original author source comment",None])
+    buff=io.BytesIO()
+    wb.save(buff)
+    headers,rows=v.sheet_source(buff.getvalue(),"2_Geographic sites")
+    assert len(headers)>=2
+    assert rows[0]["Geog_Site_ID"]=="SITE004"
+    assert rows[0]["Geog_Site_Area"]==2.3
+
+def test_repeated_nonblank_header_still_fails_closed():
+    wb=openpyxl.Workbook()
+    wb.active.title="2_Geographic sites"
+    wb.active.append(["Geog_Site_ID","Geog_Site_ID",None])
+    wb.active.append(["SITE004","OVERRIDE",None])
+    buf=io.BytesIO()
+    wb.save(buf)
+    with pytest.raises(ValueError,match="duplicate original nonblank"):
+        v.sheet_source(buf.getvalue(),"2_Geographic sites")
