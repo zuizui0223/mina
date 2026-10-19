@@ -68,7 +68,7 @@ def test_original_record_overlap_is_republication_not_an_independent_colony():
     raw=fake_original()
     result,_=m.audit(raw,{"ACUN"},{("ACUN","Pygoscelis adeliae",2021,120)},{})
     assert result["original_APBP_v2_3_exact_nest_count_source_overlaps"]==1
-    assert result["n_distinct_primary_site_species_with_new_2022_2024_records"]==3
+    assert result["n_distinct_primary_site_species_with_new_2022_2024_records"]==2  # BETA is an ambiguous duplicate survey
 
 
 def test_source_rows_with_wrong_header_are_not_implicitly_another_database():
