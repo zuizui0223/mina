@@ -38,3 +38,9 @@ Observation response `Y=1` original P, `Y=0` original directly reported A. Leave
 ## Data, effects and negative claim safeguard
 
 Commit full numerical and source sample eligibility receipt including original input hashes and CV site/block partition. Save derived no-private-content survey inclusion table only as Actions artifact. Do NOT merge this separate macro result into frozen Ecology PR189; do NOT present Southwell et al. 2025's published certainty mapping as our own. If B2 fails the spatial/generalization gates, stop here—no moving distance radii or redefining species guilds afterward.
+
+## Source-only clarification and explicit overlap gate (before fitting V14 effects)
+
+Actual original V13 coverage showed some published geographic features labelled `continent` are coastal outcrops and can be occupied by Adélie penguins. The original paper's warning about **inland inaccessible continental rocks** must NOT be applied to all `continent`-coded geographic sites. The main V14 comparison is restricted to the seven flying birds **because guilds are replicated by multiple species**, not because Adélies are absent from all continent-coded sites.
+
+The physical-overlap gate left qualitative above is fixed now: each of OPEN, LEDGE, CREVICE needs **at least 8 distinct original site IDs** with direct P/A reports for `island` **and** for `continent`, and 25th–75th percentile raw `log10(area)` intervals across the two classes must have strictly positive overlap for each guild. The original source total reported-area distributions by this interaction have **not** been modelled before freezing this threshold. A missing guild×land sample or no physical-area IQR overlap means the 3-way island-specific interpretation is `NOT_IDENTIFIABLE`, not a zero biological effect. This gate does not change core B0–B2 models or create an optional sign-rescue subset.
