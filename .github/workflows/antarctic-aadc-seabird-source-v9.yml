@@ -56,6 +56,35 @@ jobs:
               print('generic AADC HTML application shells, NOT public colony/absence rows.')
               print('No original breeding occupancy outcomes were downloaded or fitted.')
           PY
+      - name: Diagnose exact public AADC JavaScript app route ONCE without opening seabird data
+        run: |
+          python - <<'PY'
+          import hashlib,re,requests
+          url="https://data.aad.gov.au/assets/index-CvupLLiR.js"
+          try:
+              with requests.get(url,timeout=(15,30),stream=True,
+                                headers={"User-Agent":"mina-AADC-public-web-API-diagnosis"}) as response:
+                  response.raise_for_status()
+                  if response.url!=url:
+                      raise ValueError("Unexpected JS publisher redirect")
+                  data=bytearray()
+                  for chunk in response.iter_content(32768):
+                      data.extend(chunk)
+                      if len(data)>9000000:
+                          raise ValueError("Publisher JS too large for bounded static route audit")
+              source=data.decode("utf-8",errors="replace")
+              result={"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()}
+              for pattern in ("/eds/api/", "/api/dataset/", "/eds/", "object/download", "dataset/", "download"):
+                  hits=list(re.finditer(re.escape(pattern),source,re.I))
+                  result[pattern]={"total":len(hits),
+                                   "first_contexts":[
+                                      source[max(0,x.start()-60):min(len(source),x.end()+120)]
+                                      for x in hits[:4]]}
+              print("OFFICIAL_STATIC_PUBLIC_APP_ROUTE_DIAGNOSTIC",result)
+              print("NO original AADC site/occupancy records were accessed.")
+          except Exception as e:
+              print("OFFICIAL_APP_ROUTE_UNAVAILABLE",type(e).__name__,str(e)[:250])
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
