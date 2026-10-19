@@ -84,12 +84,18 @@ class PublisherAnchors(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.hrefs=[]
+        self.scripts=[]
+        self.base_href=None
         self.title=""
         self._title=False
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs)
         if tag=="a" and attrs.get("href"):
             self.hrefs.append(attrs["href"])
+        if tag=="script" and attrs.get("src"):
+            self.scripts.append(attrs["src"])
+        if tag=="base" and attrs.get("href"):
+            self.base_href=attrs["href"]
         if tag=="title":
             self._title=True
     def handle_endtag(self,tag):
@@ -117,6 +123,9 @@ def landing_metadata(blob,source_name):
     return {
         "format":"AADC_HTML_DOWNLOAD_OR_AUTHENTICATION_LANDING",
         "page_title":parsed.title.strip()[:180],
+        "site_shell_script_paths":[urljoin(host,x) for x in parsed.scripts[:16]
+            if urlparse(urljoin(host,x)).hostname in ("data.aad.gov.au", "www.data.aad.gov.au")],
+        "site_shell_base_href":parsed.base_href,
         "source_link_targets_official_only":links[:60],
         "n_official_download_like_links":len(links),
         "page_may_need_authentication":any(word in text.lower() for word in
