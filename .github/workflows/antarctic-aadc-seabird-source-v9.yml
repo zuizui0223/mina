@@ -85,6 +85,67 @@ jobs:
           except Exception as e:
               print("OFFICIAL_APP_ROUTE_UNAVAILABLE",type(e).__name__,str(e)[:250])
           PY
+      - name: Check official public AADC REST index and resolved file manifests WITHOUT occupancy rows
+        run: |
+          python - <<'PY'
+          import json,re,requests,urllib.parse
+          host="data.aad.gov.au"
+          url="https://"+host+"/eds/api/dataset?size=10000"
+          def fetch_public(u,cap=30000000):
+              with requests.get(u,timeout=(20,65),stream=True,
+                                headers={"User-Agent":"mina-AADC-public-scientific-dataset-discovery/1.0",
+                                         "Accept":"application/json"}) as r:
+                  r.raise_for_status()
+                  p=urllib.parse.urlparse(r.url)
+                  if p.scheme!="https" or p.hostname!=host:
+                      raise ValueError("SOURCE_STOP nonpublisher API redirect")
+                  raw=bytearray()
+                  for chunk in r.iter_content(32768):
+                      raw.extend(chunk)
+                      if len(raw)>cap:
+                          raise ValueError("SOURCE_STOP oversize public metadata response")
+              return json.loads(raw)
+          try:
+              obj=fetch_public(url)
+              records=obj if isinstance(obj,list) else (
+                  obj.get("datasets",obj.get("items",obj.get("data",[]))))
+              if not isinstance(records,list):
+                  raise ValueError("SOURCE_STOP public AADC dataset listing not a list")
+              print("AADC_SOURCE_API_PUBLIC_INDEX",len(records),
+                    "first_public_row_keys",list(records[0])[:30] if records else [])
+              for wanted in ("4344","5959"):
+                  matched=[row for row in records
+                           if str(row.get("eds_id",""))==wanted]
+                  print("AADC_SOURCE_EDS_ID",wanted,"matched",len(matched))
+                  for one in matched:
+                      uid=str(one.get("uuid",""))
+                      if not re.fullmatch(
+                          r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",uid
+                      ):
+                          raise ValueError("SOURCE_STOP invalid uuid for "+wanted)
+                      print("AADC_VERIFIED_PUBLIC_DATASET_ID",wanted,
+                            {k:str(one.get(k,""))[:170] for k in
+                             ("uuid","eds_id","title","name","doi","metadata_id")})
+                      endpoint=("https://"+host+"/eds/api/dataset/"+
+                                uid+"/objects?recursive=true&removeBasePath=true")
+                      objects=fetch_public(endpoint,cap=2500000)
+                      vals=objects if isinstance(objects,list) else (
+                          objects.get("objects",objects.get("items",objects.get("data",[]))))
+                      print("AADC_PUBLIC_OBJECT_LIST",wanted,
+                            "count",len(vals) if isinstance(vals,list) else None,
+                            "first_structure_keys",list(vals[0])[:20] if vals else [])
+                      if isinstance(vals,list):
+                          for row in vals[:40]:
+                              if isinstance(row,dict):
+                                  print("AADC_PUBLIC_OBJECT_NAME",wanted,
+                                        str(row.get("key",row.get("name",
+                                            row.get("prefix",""))))[:240])
+              print("NO AADC BIOLOGICAL RESPONSE ROWS OPENED BY REST INDEX DIAGNOSIS")
+          except Exception as error:
+              print("AADC_PUBLIC_API_DISCOVERY_HOLD",type(error).__name__,
+                    str(error)[:400])
+              print("No occupancy ecology effects or source zeros inferred")
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
