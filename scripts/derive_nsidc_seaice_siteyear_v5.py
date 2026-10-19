@@ -220,7 +220,7 @@ def climatology(data):
         climatology[site]={}
         for band in (f"{a//1000}_{b//1000}km" for a,b in RADII):
             baseline=[years[y][band][0] for y in BASELINE_YEARS
-                      if years[y][band][0] is not None]
+                      if y in years and band in years[y] and years[y][band][0] is not None]
             climatology[site][band]=(
                 float(np.mean(baseline)) if len(baseline)>=MIN_CLIMATOLOGY_YEARS else None,
                 len(baseline))
