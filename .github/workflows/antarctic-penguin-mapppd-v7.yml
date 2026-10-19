@@ -1,0 +1,52 @@
+name: Antarctic penguin MAPPPD v4.4 2022–25 independent census expansion V7
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/MAPPPD_V44_BULK_EXPANSION_V7.md'
+      - 'scripts/audit_mapppd_live_bulk_v7.py'
+      - 'tests/test_mapppd_v44_bulk_v7.py'
+      - '.github/workflows/antarctic-penguin-mapppd-v7.yml'
+  pull_request:
+    paths:
+      - 'contracts/MAPPPD_V44_BULK_EXPANSION_V7.md'
+      - 'scripts/audit_mapppd_live_bulk_v7.py'
+      - 'tests/test_mapppd_v44_bulk_v7.py'
+      - '.github/workflows/antarctic-penguin-mapppd-v7.yml'
+  workflow_dispatch:
+jobs:
+  independent-curator-current-census:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    timeout-minutes: 11
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest requests
+      - name: Test current-vs-old census site IDs, explicit season_starting and nest type exclusions
+        run: python -m pytest -q tests/test_mapppd_v44_bulk_v7.py
+      - name: Download original APBP v2.3 joined measurements as independent historical reference
+        uses: actions/download-artifact@v4
+        with:
+          name: apbp-original-six-penguin-records-joined-SCHEMA-NO-EFFECT
+          repository: zuizui0223/mina
+          run-id: 39091772742
+          github-token: ${{ github.token }}
+          path: /tmp/data
+      - name: Fetch public live MAPPPD 2024/25 bulk CSV from curator and quantify genuinely new measured nests
+        run: |
+          python scripts/audit_mapppd_live_bulk_v7.py \
+            --old-csv /tmp/data/APBP_ALL_ORIGINAL_MEASUREMENTS_V2.csv \
+            --out-json /tmp/MAPPPD_V44_SOURCE_EXPANSION_QA_V7.json \
+            --out-csv /tmp/MAPPPD_V44_PUBLIC_DERIVED_COVERAGE_V7.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mapppd-current-2024-25-source-coverage-NO-ECOLOGICAL-EFFECT
+          path: |
+            /tmp/MAPPPD_V44_SOURCE_EXPANSION_QA_V7.json
+            /tmp/MAPPPD_V44_PUBLIC_DERIVED_COVERAGE_V7.csv
