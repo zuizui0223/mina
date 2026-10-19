@@ -10,6 +10,8 @@ import csv
 import hashlib
 import io
 import json
+from html.parser import HTMLParser
+from urllib.parse import urljoin
 from pathlib import Path
 from urllib.parse import urlparse
 import zipfile
@@ -77,6 +79,54 @@ def workbook_structure(blob):
                 "source_record_rows_opened":0}
 
 
+class PublisherAnchors(HTMLParser):
+    """Collect *only* original official download link targets; never render HTML."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.hrefs=[]
+        self.title=""
+        self._title=False
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if tag=="a" and attrs.get("href"):
+            self.hrefs.append(attrs["href"])
+        if tag=="title":
+            self._title=True
+    def handle_endtag(self,tag):
+        if tag=="title":self._title=False
+    def handle_data(self,data):
+        if self._title:self.title+=data[:180]
+
+
+def landing_metadata(blob,source_name):
+    text=blob[:1000000].decode("utf-8",errors="replace")
+    parsed=PublisherAnchors()
+    parsed.feed(text)
+    host="https://data.aad.gov.au"
+    links=[]
+    for raw in parsed.hrefs:
+        url=urljoin(host,raw)
+        target=urlparse(url)
+        if target.scheme!="https" or not (target.hostname=="data.aad.gov.au" or
+                str(target.hostname).endswith(".aad.gov.au")):
+            continue
+        if any(token in target.path.lower() for token in (
+                "/eds/","/download","/files/","/file/","/dataset/")) or
+                target.path.lower().endswith((".zip",".xlsx",".xls",".csv",".tar.gz")):
+            if url not in links:links.append(url)
+    return {
+        "format":"AADC_HTML_DOWNLOAD_OR_AUTHENTICATION_LANDING",
+        "page_title":parsed.title.strip()[:180],
+        "source_link_targets_official_only":links[:60],
+        "n_official_download_like_links":len(links),
+        "page_may_need_authentication":any(word in text.lower() for word in
+            ["login","sign in","password","authenticate"]),
+        "original_breeding_occurrences_read":0,
+        "ecological_effects_fitted":0,
+        "diagnosis_only_not_a_data_source":True,
+    }
+
+
 def payload_structure(blob, source_name):
     if blob.startswith((b"PK\x03\x04",b"PK\x05\x06")):
         with zipfile.ZipFile(io.BytesIO(blob)) as z:
@@ -114,7 +164,7 @@ def payload_structure(blob, source_name):
                     "original_archived_member_schema":members[:MAX_ITEMS],
                     "biological_record_rows_opened":0}
     if blob[:100].lstrip().lower().startswith((b"<html",b"<!doctype")):
-        raise ValueError("SOURCE_STOP AADC supplied HTML not data archive")
+        return landing_metadata(blob,source_name)
     if blob.startswith(b"%PDF"):
         return {"format":"pdf","note":"PDF is not a machine-readable site/event table; further raw structured source required",
                 "original_record_rows_opened":0}
@@ -144,6 +194,8 @@ def main():
             try:
                 provenance=download_source(src,dest)
                 details=payload_structure(dest.read_bytes(),key)
+                if details["format"]=="AADC_HTML_DOWNLOAD_OR_AUTHENTICATION_LANDING":
+                    ok=False
                 result["records"][key]={**provenance,**details}
             except Exception as e:
                 ok=False
