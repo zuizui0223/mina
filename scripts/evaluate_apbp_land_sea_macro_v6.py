@@ -150,7 +150,7 @@ def prepare(pop, med, hi, ice):
         "unique_season_rows_after_geo_marine_QA":len(eligible),
         "valid_consecutive_site_species_pairs":len(pairs),
         "distinct_source_site_ids":int(pairs.site_id_original.nunique()),
-        "distinct_source_land_polygon_features":int(pairs.high_original_feature_id.nunique()),
+        "distinct_source_land_polygon_features":int(pairs.high_original_feature_id_curr.nunique()),
         "spatial_250km_blocks":int(pairs.block250k.nunique()),
         "pairs_in_biggest_spatial_block":int(pairs.block250k.value_counts().max()),
         "pairs_by_species":pairs.scientificName_accepted.value_counts().to_dict(),
