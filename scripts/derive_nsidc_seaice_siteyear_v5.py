@@ -23,7 +23,9 @@ from netCDF4 import Dataset, num2date
 from pyproj import Transformer
 import requests
 
-from link_apbp_to_add_island_rock_v3 import event_sites,fetch_original
+from audit_apbp_darwincore_source_v1 import (
+    audited_schema,fetch_original,metadata,rows_for,safe_zip,
+)
 
 URL=(
     "https://noaadata.apps.nsidc.org/NOAA/G02202_V6/south/aggregate/"
@@ -62,6 +64,44 @@ def download_nsidc(target):
     return {"source_file_sha256":digest.hexdigest(),
             "source_file_bytes":n,"publisher_index_reported_bytes":EXPECTED_PUBLIC_BYTES,
             "version":"NOAA/NSIDC G02202 V6 Southern hemisphere"}
+
+
+
+def original_apbp_source_sites():
+    """Use original Event core, without importing rock/coastline GIS libraries."""
+    from collections import defaultdict
+    import io
+    raw=fetch_original()
+    assert hashlib.sha256(raw).hexdigest() == (
+        "afa947f39d9ad7382266d5be64c70f9fe4e84ffb6e2838c1369e043caae09abf"
+    ), "SOURCE_VERSION_STOP APBP original source drift"
+    audited_schema(raw)
+    with safe_zip(raw) as zz:
+        table=next(t for t in metadata(zz) if t["rowtype"]=="Event")
+        events=list(rows_for(zz,table))
+    sites=defaultdict(list)
+    for core_id,_,row in events:
+        site=row.get("locationID","").strip()
+        if not site:
+            continue
+        try:
+            lat=float(row["decimalLatitude"])
+            lon=float(row["decimalLongitude"])
+        except (TypeError,ValueError,KeyError) as exc:
+            raise ValueError("SOURCE_STOP missing original APBP site latitude/longitude") from exc
+        if not (-90<=lat<=-60 and -180<=lon<=180):
+            raise ValueError("SOURCE_STOP APBP coordinate outside Antarctic coverage")
+        sites[site].append({"lon":lon,"lat":lat})
+    if len(sites)!=719:
+        raise ValueError("SOURCE_VERSION_STOP original APBP locationID count drift")
+    # Within-location source coordinates must not be conflated if they disagree.
+    def approx_distance(a,b):
+        return 111195*math.hypot(a["lat"]-b["lat"],
+                                  math.cos(math.radians(a["lat"]))*(a["lon"]-b["lon"]))
+    if any(approx_distance(evs[0],e)>1000
+           for evs in sites.values() for e in evs[1:]):
+        raise ValueError("POINT_STOP site source coordinates drift over 1km")
+    return sites
 
 
 def netcdf_schema(source):
@@ -253,7 +293,7 @@ def main():
     output.parent.mkdir(parents=True,exist_ok=True)
     result={"status":"HOLD_NSIDC_SOURCE_OR_PROJECTION","fitted_climate_abundance_models":0}
     try:
-        sites=event_sites(fetch_original())
+        sites=original_apbp_source_sites()
         if len(sites)!=719:
             raise ValueError("SOURCE_VERSION_STOP unexpected APBP source location count")
         with tempfile.TemporaryDirectory(prefix="noaa-cdr-v6-apbp-") as tmp:
