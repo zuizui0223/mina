@@ -104,9 +104,9 @@ def tier1_lookup(dbf):
         tier2name=str(r.get("Name_Tier2","")).strip()
         tier3name=str(r.get("Name_Tier3","")).strip()
         is_penguin_source_derived=(
-            bool(re.search(r"\\bE1B8\\b", tier2))
-            or bool(re.search(r"\\bpenguin\\b", tier2name, flags=re.I))
-            or bool(re.search(r"\\bpenguin\\b", tier3name, flags=re.I))
+            bool(re.search(r"\bE1B8\b", tier2))
+            or bool(re.search(r"\bpenguin\b", tier2name, flags=re.I))
+            or bool(re.search(r"\bpenguin\b", tier3name, flags=re.I))
         )
         if is_penguin_source_derived:
             continue
