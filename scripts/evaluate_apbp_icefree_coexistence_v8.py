@@ -91,10 +91,28 @@ def tier1_lookup(dbf):
         r=dict(zip(names,item))
         key=int(r["Value"])
         cat=str(r["ID_Tier1"]).strip()
+        # The publisher's Nine Tier1 environment units ALSO include
+        # geophysical active/dormant volcanoes and lakes (G1,G2,L);
+        # it is incorrect to require codes to start with "E".
+        #
+        # CRITICAL RESPONSE-LEAKAGE GATE: the source Tier2 includes
+        # an explicit "Penguin colonies" unit E1B8 constructed from
+        # MAPPPD records. Its underlying pixels must NEVER be used
+        # to predict the very same MAPPPD/APBP penguin observations.
+        tier2=str(r.get("ID_Tier2","")).strip()
+        tier2name=str(r.get("Name_Tier2","")).strip()
+        tier3name=str(r.get("Name_Tier3","")).strip()
+        is_penguin_source_derived=(
+            "E1B8" in tier2
+            or "penguin" in tier2name.casefold()
+            or "penguin" in tier3name.casefold()
+        )
+        if is_penguin_source_derived:
+            continue
+        if not cat:
+            raise ValueError("SCHEMA_STOP non-penguin source unit without Tier1 code")
         if key in out and out[key]!=cat:
-            raise ValueError("SCHEMA_STOP value maps ambiguously to multiple abiotic classes")
-        if not cat.startswith("E"):
-            raise ValueError("SCHEMA_STOP source class is not abiotic tier 1")
+            raise ValueError("SCHEMA_STOP value maps ambiguously to multiple Tier1 classes")
         out[key]=cat
     if len(set(out.values()))!=9 or len(out)<150:
         raise ValueError("SCHEMA_STOP source Tier1 classes unexpected count")
@@ -242,6 +260,8 @@ def extract_habitats(path,sites,tier):
             "raster_original_shape":[raster.height,raster.width],
             "raster_nodata":str(raster.nodata),
             "source_Tier1_labels":sorted(set(tier.values())),
+            "response_leakage_guard":"All original Tier2 E1B8 penguin colonies and Tier3 penguin class pixels excluded from environmental raster sampling",
+            "icefree_fraction_caveat":"Fraction of retained non-penguin-classified mapped Tier1 cells, NOT historical ice-free nest capacity",
         }
     return out,qa
 
@@ -342,17 +362,6 @@ def cv_results(frame,variant=False):
         "omit_largest_block_Tier1_entropy_coefficient":ent_nobig,
         "entropy_coef_sign_stable_no_largest":ent_full*ent_nobig>0,
     }
-
-
-def analyze(source,geo,habitat):
-    sitepairs,sourceqa=source_pairs(source,geo)
-    coords=sitepairs.groupby("site_id").agg(
-        source_latitude=("source_latitude","median"),
-        source_longitude=("source_longitude","median"),
-    )
-    habitat,habitatqa=extract_habitats(habitat,coords.apply(
-        lambda x:(float(x.source_latitude),float(x.source_longitude)),axis=1).to_dict(),tier=None)
-    return None
 
 
 def main():
