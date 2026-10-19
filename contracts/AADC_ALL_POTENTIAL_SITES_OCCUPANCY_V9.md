@@ -32,3 +32,9 @@ Eight original land-breeding species: `Pygoscelis adeliae`, `Thalassoica antarct
 A strong island-biogeography claim requires: (i) **contemporaneous high-certainty search effort at both occupied and unoccupied geographic sites**, (ii) independently measured island-size/isolation/geomorphology/ecosystem class from natural land polygons, (iii) species traits or functional guilds fixed outside outcome selection, and (iv) spatial-region and publisher-source holdouts. If these ingredients are missing, first report sample-support and stop. Previously published uncertainty mapping is prior art; original novelty must come from **new cross-taxonomic interaction tests** not performed by Southwell et al. 2025.
 
 Freeze *Ecology* PR189, previous V6 negative and V8 nonrobust results. No petrel/skua island-size effect has been measured or is inferred here.
+
+## Added prior-art boundary before original V9 outcome rows
+
+Southwell et al. 2017, *The Auk*, "Recent Studies Overestimate Colonization and Extinction Events for Adélie Penguin Breeding Colonies" (DOI to verify in canonical publisher), had **already** challenged apparent colony turnover from historical occupancy records. Southwell et al. 2025 *Diversity and Distributions*, DOI `10.1111/ddi.70066`, directly assessed knowledge, ignorance, presence/absence certainty and known species richness from this same 33,297-record source. These are **explicit prior art**, not V9 discoveries. The prospective distinct question must be a *trait-by-physical-island-feature interaction* with correct detection/absence classes; otherwise do not make another paper.
+
+AADC citation page states it is an expected professional norm for intended research users to contact source originators to discuss use. This is not required to retrieve a released CC BY file and assess schema; any later collaboration or publication using this corpus should honor that guidance. No unapproved email is sent from this workflow.
