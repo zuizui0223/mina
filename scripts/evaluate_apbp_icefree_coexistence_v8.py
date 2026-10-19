@@ -12,6 +12,7 @@ from itertools import combinations
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 import tempfile
 
@@ -103,9 +104,9 @@ def tier1_lookup(dbf):
         tier2name=str(r.get("Name_Tier2","")).strip()
         tier3name=str(r.get("Name_Tier3","")).strip()
         is_penguin_source_derived=(
-            "E1B8" in tier2
-            or "penguin" in tier2name.casefold()
-            or "penguin" in tier3name.casefold()
+            bool(re.search(r"\\bE1B8\\b", tier2))
+            or bool(re.search(r"\\bpenguin\\b", tier2name, flags=re.I))
+            or bool(re.search(r"\\bpenguin\\b", tier3name, flags=re.I))
         )
         if is_penguin_source_derived:
             continue
