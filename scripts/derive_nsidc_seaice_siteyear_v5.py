@@ -29,11 +29,11 @@ from audit_apbp_darwincore_source_v1 import (
 
 URL=(
     "https://noaadata.apps.nsidc.org/NOAA/G02202_V6/south/aggregate/"
-    "sic_pss25_197811-202606_v06r00.nc"
+    "sic_pss25_197811-202609_v06r00.nc"
 )
 DOI="10.7265/b18j-z797"
 MAX_BYTES=140_000_000
-EXPECTED_PUBLIC_BYTES=116_765_633
+EXPECTED_PUBLIC_BYTES=117_472_635
 YEARS=tuple(range(1979,2023))
 BASELINE_YEARS=tuple(range(1981,2011))
 RADII=((25000,75000),(75000,150000))
