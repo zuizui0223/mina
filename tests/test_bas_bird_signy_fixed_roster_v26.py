@@ -46,8 +46,8 @@ def test_robustness_stop_and_source_date_diagnostic_not_effect_filter():
     baseline=v.frozen_baseline_roster(w)
     datecheck=v.stage_date_diagnostics(b,s,list(w),baseline)
     assert datecheck["no_source_dates_used_as_outcome_selection"]
-    assert datecheck["original_date_comparability_by_period"]["earlier"]["parsed"]>0
-    assert datecheck["original_date_comparability_by_period"]["modern"]["parsed"]>0
+    assert datecheck["original_date_comparability_by_period"]["earlier"]["parseable_years_with_count_dates"]>0
+    assert datecheck["original_date_comparability_by_period"]["modern"]["parseable_years_with_count_dates"]>0
     growth={year:{"bird":float(year%3),"signy":float(year%4)} for year in range(1998,2019)}
     model=v.describe(growth)
     assert model["status"]=="HOLD_INSUFFICIENT_FIXED_ROSTER_NUMERIC_SUPPORT"
