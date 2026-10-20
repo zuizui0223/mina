@@ -40,6 +40,21 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V20 real exploratory outcome (2026-10-20):** Using exact original
+NOAA/BAS source bytes, **14 positive same-year Gentoo within-site annual
+changes across three physical islands** were analyzed without pooling
+incomparable census/pair count levels. Nearby NOAA King George–Livingston
+log-growth correlation r=+0.635, while NOAA-to-BAS Signy r=+0.124 and
+−0.028. Within-rookery NOAA Gentoo–chinstrap growth also correlated
+(r=+0.626 Copacabana and +0.714 Cape Shirreff). Only **4/14**
+annual change windows had all three islands growing or shrinking in
+the same direction. Geographic proximity and survey-provider effects
+are *confounded*; this is NOT independent evidence of climate, prey,
+competition, or island-capacity mechanisms. Do not state a new Antarctic
+island law or select time ranges after inspecting results.
+- [V20 empirical result, hard alternatives, source-hashed reproduction](docs/NOAA_BAS_GENTOO_GROWTH_SYNCHRONY_V20_RESULT.md)
+- [V20 saved actual numeric receipt](results/NOAA_BAS_GENTOO_GROWTH_SYNCHRONY_V20.json)
+
 **V18–V19 NEW source-backed panel:** Official NOAA 0185113 provides
 38 austral-season years and five census columns from monitored
 Copacabana (King George Island) and Cape Shirreff (Livingston Island).
