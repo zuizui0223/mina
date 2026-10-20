@@ -82,16 +82,20 @@ def structural(rows):
     if not rows or not REQUIRED.issubset(set(rows[0])):
         raise ValueError("SCHEMA_STOP incomplete original source")
     candidate=defaultdict(list)
-    site_regions={}
+    site_regions=defaultdict(set)
     for r in rows:
         m=eligible_metadata(r)
         if m is None:
             continue
         site,region,sp,season,day=m
-        if site in site_regions and site_regions[site]!=region:
-            raise ValueError("SOURCE_STOP one Site_ID in multiple source regions")
-        site_regions[site]=region
+        site_regions[site].add(region)
         candidate[(site,season,day,sp)].append(m)
+    # Post-source-SCHEMA amendment, before viewing any Count magnitudes:
+    # ambiguous reused or recoded Site_ID values cannot be placed into
+    # one geographic region, so exclude ALL rows of the entire site ID.
+    ambiguous={site for site,regions in site_regions.items() if len(regions)>1}
+    ambiguous_rows=sum(len(v) for k,v in candidate.items() if k[0] in ambiguous)
+    candidate={k:v for k,v in candidate.items() if k[0] not in ambiguous}
     duplicate={k:v for k,v in candidate.items() if len(v)>1}
     retained=[items[0] for items in candidate.values() if len(items)==1]
     by_event=defaultdict(set)
@@ -127,7 +131,9 @@ def structural(rows):
     return {
         "status":"V16_AUTHENTIC_ASI_MULTISPECIES_SOURCE_SUPPORT_NO_BIOLOGY",
         "source_original_rows":len(rows),
-        "source_sites_after_structural_filter":len(site_regions),
+        "source_sites_after_structural_filter":len(site_regions)-len(ambiguous),
+        "conflicting_region_source_site_IDs_excluded":len(ambiguous),
+        "metadata_rows_at_region_conflicting_site_IDs_removed":ambiguous_rows,
         "eligible_strict_ASI_exact_day_nest_rows":len(retained),
         "excluded_duplicate_source_groups":len(duplicate),
         "excluded_duplicate_source_rows":sum(len(v) for v in duplicate.values()),

@@ -18,3 +18,7 @@ Eligibility:
 Prespecified primary support gate: at least 60 site/day multiple-penguin nest census units, 20 original sites and 4 source regions. Penguin/flying cross-guild gate: at least 25 site/day units, 10 sites and 3 regions. With neither gate supported, STOP and do not tune thresholds. Even with support, biological modelling needs a separately frozen question, provenance non-duplication against MAPPPD, an independent environmental covariate and geographic holdouts.
 
 The 2013 data paper and Lynch et al. 2012 already published population trends and spatial change. Report a *source feasibility result*, not a newly discovered ecological relationship. Islands must be classified from independently grounded geography; a four-letter site is not itself a physical island.
+
+## Outcome-blind post-source-schema amendment: duplicate regional Site_ID
+
+The first original MD5-verified execution failed because some eligible source Site_ID values have different declared Region codes. Before consulting any original Count magnitude or ecological species relation, the parser has been amended to count such conflicting original site IDs and exclude ALL census rows belonging to each conflicted ID, rather than choosing a convenient region. Record excluded ID and row totals. This conservative source-structure repair cannot increase support and does not relax frozen thresholds.

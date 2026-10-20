@@ -39,3 +39,12 @@ def test_original_md5_fails_closed():
         a.fetch_original(lambda u:(u,b"unverified artificial original"))
     with pytest.raises(ValueError,match="redirect"):
         a.fetch_original(lambda u:("https://example.org/some.csv",b"x"))
+
+def test_disagreeing_region_codes_on_one_source_site_are_all_dropped():
+    v1=row()
+    v2={**row("CHPE"),"Region":"NW"}
+    result=a.structural([v1,v2])
+    assert result["conflicting_region_source_site_IDs_excluded"]==1
+    assert result["metadata_rows_at_region_conflicting_site_IDs_removed"]==2
+    assert result["eligible_strict_ASI_exact_day_nest_rows"]==0
+    assert result["numeric_original_Count_cells_opened"]==0
