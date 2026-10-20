@@ -40,6 +40,20 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**2026-10-20 V15 biotic-interaction feasibility is also CLOSED.** Original AADC
+Adélie×south-polar-skua co-searches gave **1,061 same-site/season pairs
+across 96 island geographic sites**, but only **8 pairs / 8 sites in one
+region** had matching exact reported survey date; the fixed comparator
+Adélie×snow-petrel had **701 pairs across 89 sites**, but one co-dated pair.
+Matching source obs_number fields are not a validated shared visit/observer
+identifier across independently compiled source books. Thus this is
+**a sample-support STOP, not a fitted species-interaction effect**. The prior
+Southwell paper created multiple species×sites×season records from heterogeneous
+source references. No new Antarctic predator-resource mechanism follows.
+
+- [V15 original co-survey support and decision](docs/AADC_PENGUIN_SKUA_COSEARCH_V15_RESULT_AND_DECISION.md)
+- [V15 source-only numerical receipt](results/AADC_PENGUIN_SKUA_COSEARCH_SUPPORT_V15.json)
+
 **Current result, 2026-10-20: the original-data V14 macroanalysis is complete
 and reproduced, with no supported guild × island-area result.** Source access
 is resolved. The previous statement that demographic outcomes were still
