@@ -40,6 +40,17 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**2026-10-20 V21 new original island–main-island comparator:** BAS historical Bird Island
+Gentoo original colony file: **252** rows, SHA256 b1abc3c3...;
+BAS Maiviken on the South Georgia *main island*: **12** source rows,
+SHA256 8eef8ba0.... These were downloaded and verified in Actions;
+the updated 2026 Bird Island v2 exists but its original file was NOT
+opened. The original colony/date/count schema supports a frozen
+V22 same-year incubating nest comparison, conditional on adequate
+season and colony coverage. This is NOT continental mainland Antarctica.
+- [V21 actual source QA and decision](docs/BAS_BIRD_MAIVIKEN_V21_SOURCE_RESULT.md)
+- [V21 source receipt](results/BAS_SOUTH_GEORGIA_GENTOO_V21_SOURCE_QA.json)
+
 **V20 real exploratory outcome (2026-10-20):** Using exact original
 NOAA/BAS source bytes, **14 positive same-year Gentoo within-site annual
 changes across three physical islands** were analyzed without pooling
