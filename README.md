@@ -40,6 +40,16 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V22 actual local island-boundary ecology:** Seven stable Bird Island Gentoo
+colony census components and the Maiviken monitoring site on the
+South Georgia main island yield **r=+0.562** among 10 annual nest-count
+growth windows, with **7/10 same-direction changes** (2009–2018).
+This is genuine original-publisher data from two independent island landmasses
+under one broad BAS monitoring institution, not a climatic causal estimate.
+Within Bird Island 21 dependent colony-pair growth r values have median +0.611.
+- [V22 source-backed result and interpretation](docs/BAS_BIRD_MAIVIKEN_GENTOO_V22_RESULT.md)
+- [V22 exact numeric receipt](results/BAS_BIRD_MAIVIKEN_GENTOO_NEST_GROWTH_V22.json)
+
 **2026-10-20 V21 new original island–main-island comparator:** BAS historical Bird Island
 Gentoo original colony file: **252** rows, SHA256 b1abc3c3...;
 BAS Maiviken on the South Georgia *main island*: **12** source rows,
