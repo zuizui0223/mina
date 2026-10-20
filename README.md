@@ -40,6 +40,23 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**2026-10-21 V27 genuine pan-regional database-based synchrony result:**
+Unlike earlier land/ice-constrained V6, V27 uses the upstream original
+SCAR–AntOBIS APBP Pygoscelis nest censuses directly. Exact same-month,
+same-method, consecutive-season visits yielded **394 measured changes**
+at original source sites. The frozen macroscopic source-support gate passed:
+**22** evaluable species×year spatial concordance strata from **19 years,
+50 source sites, 8 polar 250km blocks**, Adélie (17) and Gentoo (5).
+Mean within-block minus between-block growth-sign concordance was
+**+0.10852**, but only **10/22** strata showed a positive difference,
+below the fixed two-thirds consistency rule. **Pan-regional directional
+support failed**, not a biological null. A post-result Adélie versus
+Gentoo description differs but is underpowered/unconfirmed and is NOT
+a novel species-specific mechanism. Neither source sites nor grid
+blocks equal physical islands.
+- [V27 original APBP macro result](docs/APBP_PANREGIONAL_SYNCHRONY_V27_RESULT.md)
+- [V27 full source and numeric receipt](results/APBP_PANREGIONAL_SYNCHRONY_V27.json)
+
 **V26 FIXED-BIRD-COLONY ROBUSTNESS:** Replacing V25's varying 5–7 Bird Island
 colony mean with the EXACT FIVE baseline 1982/83 observed colony names
 for all 33 original annual growth windows preserves the period pattern:
