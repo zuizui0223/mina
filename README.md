@@ -40,6 +40,19 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V25 extends remote-island Gentoo synchrony across long monitoring history:**
+BAS Bird Island–Signy annual nesting changes, using the same fixed seven
+Bird colony IDs, show r=**+0.166 across 33 valid original consecutive-year
+windows (1982–2018 start years)**. The correlation changes markedly with
+period: **before 1997 r=+0.547 (14 windows)**, **from 1997 r=−0.144
+(19 windows)**, versus the V23 short 2011–2018 r=−0.334 (8 windows).
+The full-history leave-one-year-out r ranges **−0.048 to +0.244**, and
+Signy monitoring conformed to CEMP from 1996/97. Thus the V23 near/far
+gradient is **temporally nonstationary**, not an established immutable
+distance law or proven climate transition.
+- [V25 original historical biological result](docs/BAS_BIRD_SIGNY_LONG_HISTORY_V25_RESULT.md)
+- [V25 long-term SHA-verified numerical receipt](results/BAS_BIRD_SIGNY_LONG_HISTORY_V25.json)
+
 **V24 NOAA independent SST check closed by original nonfinite field:**
 The fixed July–September prebreeding ERSSTv6 original regional 2° SST subset
 contains one nonfinite original value at the **Signy region grid cell in

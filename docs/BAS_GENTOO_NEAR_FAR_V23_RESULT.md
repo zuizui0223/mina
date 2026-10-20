@@ -33,3 +33,8 @@ The narrow predeclared descriptive question is answered **YES** for these origin
 The [V23 machine-readable result](../results/BAS_GENTOO_NEAR_VS_FAR_V23.json) records original SHA256 for Bird Island **b1abc3c3adacee3f277d481217aabe4206c7b592a81f1f0eb1a0ec20a64450d3**, Maiviken **8eef8ba06b0f1e666041be38415cfcc70d16cdb07e72ca6db805d8b70631dc85**, and Signy **53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b**. Original V22 source cohort/hash and exact full r check passed. One malformed old Signy season remains excluded, no missing report is recoded zero, no significance test or retrospective threshold re-optimization was done. The frozen Ecology PR189 and failed V14–V17 gates remain unchanged.
 
 **Scientific disposition: DESCRIPTIVE_WITHIN_BAS_NEAR_GREATER_THAN_FAR_CAUSAL_HOLD.**
+
+
+## Subsequent V25 historical-range caveat (2026-10-21)
+
+A later, separately frozen long-horizon original BAS check **reproduced the exact V23 short-epoch Bird–Signy r=−0.3342**, but across 33 eligible original 1982–2018 annual windows obtained r=**+0.1656** overall, r=**+0.5466** before 1997 and r=**−0.1441** from 1997 onward. Thus V23's strong near-versus-far gradient is a genuine **short historical-window description**, not a temporally stationary island-distance relationship. The 1996/97 Signy CCAMLR observation standardization is a potential confound; no climate or other causal change is inferred. [V25 historical source result](BAS_BIRD_SIGNY_LONG_HISTORY_V25_RESULT.md).
