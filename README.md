@@ -40,6 +40,19 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**2026-10-21 V23 ORIGINAL BAS GENTOO NEAR/FAR PATTERN:** On the same 8
+annual-change start years (2011–2018), BAS-sourced Bird Island and Maiviken
+South Georgia monitoring show positive growth alignment **r=+0.514**;
+distant BAS Signy with Bird Island **r=−0.334** and Maiviken **r=−0.668**.
+The fixed near-minus-mean-far contrast is **+1.015** (leave-one-window-out
++0.709 to +1.296). This is a real descriptive result at **3 physical landmasses**,
+with nested Bird colonies, different source stage measures, and just 8
+adjacent-year windows—not a distance, sea-ice or predator causal effect.
+The positive V22 near coefficient had already been observed when V23
+was frozen, so the comparison is explicitly exploratory.
+- [V23 numeric original result](results/BAS_GENTOO_NEAR_VS_FAR_V23.json)
+- [V23 source-based interpretation and next hypothesis](docs/BAS_GENTOO_NEAR_FAR_V23_RESULT.md)
+
 **V22 actual local island-boundary ecology:** Seven stable Bird Island Gentoo
 colony census components and the Maiviken monitoring site on the
 South Georgia main island yield **r=+0.562** among 10 annual nest-count
