@@ -62,3 +62,12 @@ def test_sign_concordance_cannot_turn_fake_missing_to_zero():
     assert v.raw_count("10") == 10
     assert v.raw_count("-1") is None
     assert v.raw_count("text") is None
+
+def test_date_diagnostic_does_not_open_count_values():
+    b,m=create(range(2009,2018))
+    b[0]["Date nests counted"]="not-a-date"
+    _,_,qa=v.source_metadata_only(b,m)
+    diag=qa["original_source_calendar_lexical_diagnostics"]
+    assert diag["no_biological_count_fields_inspected"]
+    assert "SECRET" not in str(diag)
+    assert diag["maiviken_season_labels_parseable"]==len(m)

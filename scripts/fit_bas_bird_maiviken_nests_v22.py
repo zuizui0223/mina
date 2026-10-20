@@ -67,6 +67,25 @@ def phase(day):
 
 def source_metadata_only(bird,maiviken):
     """Never inspect any numeric Number column before passing this stage."""
+    # Source-only raw time-field diagnostics, including the source's actual
+    # calendar lexical format. No bird, nest or chick Count field is read.
+    original_bird_dates=[str(x.get("Date nests counted","")).strip() for x in bird
+                         if str(x.get("Date nests counted","")).strip()]
+    original_main_dates=[str(x.get("Date of nest count","")).strip() for x in maiviken
+                         if str(x.get("Date of nest count","")).strip()]
+    original_main_seasons=[str(x.get("Season","")).strip() for x in maiviken]
+    source_date_diagnostics={
+        "bird_first_calendar_labels":original_bird_dates[:6],
+        "bird_last_calendar_labels":original_bird_dates[-6:],
+        "bird_calendar_labels_parseable_all_years":sum(parse_count_day(x) is not None
+                                                        for x in original_bird_dates),
+        "maiviken_first_season_day_labels":list(zip(original_main_seasons,original_main_dates))[:8],
+        "maiviken_calendar_labels_parseable":sum(parse_count_day(x) is not None
+                                                   for x in original_main_dates),
+        "maiviken_season_labels_parseable":sum(season_year(x) is not None
+                                                for x in original_main_seasons),
+        "no_biological_count_fields_inspected":True,
+    }
     bird_rows=defaultdict(list)
     unknown_species=0
     for r in bird:
@@ -130,6 +149,7 @@ def source_metadata_only(bird,maiviken):
         "windows_start_years":[y for y,_ in windows],
         "shared_bird_colonies_per_window":{str(y):len(names) for y,names in windows},
         "original_count_magnitudes_read":0,
+        "original_source_calendar_lexical_diagnostics":source_date_diagnostics,
     }
     return candidate,windows,qa
 

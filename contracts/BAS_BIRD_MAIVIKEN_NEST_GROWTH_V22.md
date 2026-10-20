@@ -26,3 +26,7 @@ V21 publisher header/schema audit finished before choosing this analysis. Both a
 10. Original V20 NOAA nearby r=0.635 is an outside-programme **descriptive comparator**, not a calibrated null because physical years, sites and census methods differ. The correct next mechanistic step would independently model temperature/wind/sea-ice/access *before* nest counts with more island-mainland matched pairs.
 
 Outputs: SHA-pinned result JSON plus source-stage QA, no raw data mirrored to Git. Frozen Ecology PR189 remains unchanged. No false extrapolation to 'mainland Antarctica' from South Georgia main island.
+
+## Source-date parser diagnostic amendment before opening count magnitudes
+
+The original V22 strict run downloaded both SHA-verified sources but matched zero metadata years because no site date or main-island original time label parsed. Treat this as a **date format/schema issue**, not scientific evidence of insufficient ecological samples. Log ONLY bounded literal publisher date/season labels and parse counts before any nesting count values. Do not alter frozen cohort years, 30-day timing, colony count or any ecological interpretation threshold. The mismatch must be diagnosed before source eligibility can be interpreted.
