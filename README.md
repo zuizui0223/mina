@@ -40,6 +40,22 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V26 FIXED-BIRD-COLONY ROBUSTNESS:** Replacing V25's varying 5–7 Bird Island
+colony mean with the EXACT FIVE baseline 1982/83 observed colony names
+for all 33 original annual growth windows preserves the period pattern:
+early (<1997) Bird–Signy r=**+0.576** (14 windows), modern (>=1997)
+r=**−0.141** (19), full historical r=+0.191. Under leave-one-window
+removal the earlier r stays positive (+0.104 to +0.697) and modern r
+stays negative (−0.206 to −0.047), as a descriptive sensitivity only.
+Hence additions to the Bird colony monitoring roster do not alone create
+the V25 pattern. BUT original nest/pair count-date median seasonal gap
+is **12.5 days early vs 29.0 days late**; survey-stage/CCAMLR protocol
+confounding remains, and there are only TWO physical islands.
+No temporal ecological change point, shared prey mechanism or island law
+was causally identified.
+- [V26 source-backed fixed-component result](docs/BAS_BIRD_SIGNY_FIXED_ROSTER_V26_RESULT.md)
+- [V26 exact numerical receipt](results/BAS_BIRD_SIGNY_FIXED_ROSTER_V26.json)
+
 **V25 extends remote-island Gentoo synchrony across long monitoring history:**
 BAS Bird Island–Signy annual nesting changes, using the same fixed seven
 Bird colony IDs, show r=**+0.166 across 33 valid original consecutive-year
