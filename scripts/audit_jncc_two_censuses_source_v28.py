@@ -121,7 +121,7 @@ def inspect_source(raw):
                     if cell.attrib.get("t","") not in ("s","inlineStr","str","e","b") and val is not None and val.text not in (None,""):
                         numbers[col]+=1
                     if rows<=12 and txt.strip():
-                        texts.append({"column":col,"source_text":txt[:160]})
+                        texts.append({"column":col,"source_text":txt[:3000] if name=="Coversheet" else txt[:160]})
                 if rows<=12:
                     toprows.append({"original_row_number":row.attrib.get("r"),
                                     "source_text_cells":texts[:35]})
