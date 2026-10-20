@@ -112,7 +112,7 @@ def winters_from_netcdf(raw):
             data=np.ma.transpose(a,order)
             if data.shape!=(len(times),len(lat),len(lon)):
                 raise ValueError("SOURCE_STOP original SST axes and data mismatch")
-            points={};annual={}; missing={}; grid_spacing={
+            points={};annual={}; missing={}; source_value_failures={}; grid_spacing={
                 "lat_deg":float(np.median(np.abs(np.diff(lat)))),
                 "lon_deg":float(np.median(np.abs(np.diff(lon))))
             }
@@ -120,15 +120,23 @@ def winters_from_netcdf(raw):
                 i,j,geo=ocean_grid_cell(lat,lon,slat,slon)
                 points[site]=geo
                 byyear=defaultdict(dict)
+                # Source-diagnostic only: distinguish actual original masks from
+                # invalid numerical values without changing any accepted SST.
+                invalid_reason=defaultdict(dict)
                 for k,t in enumerate(times):
                     year,month=int(t.year),int(t.month)
                     if year not in YEARS or month not in WINTER_MONTHS:
                         continue
                     cell=data[k,i,j]
                     if np.ma.is_masked(cell):
+                        invalid_reason[year][month]="ORIGINAL_NETCDF_MASK"
                         continue
                     value=float(cell)
-                    if not math.isfinite(value) or not -3<=value<=35:
+                    if not math.isfinite(value):
+                        invalid_reason[year][month]="NONFINITE_SOURCE_VALUE"
+                        continue
+                    if not -3<=value<=35:
+                        invalid_reason[year][month]="OUTSIDE_FROZEN_PHYSICAL_RANGE"
                         continue
                     if month in byyear[year]:
                         raise ValueError("SOURCE_STOP source NOAA repeats month in selected original cell")
@@ -136,6 +144,10 @@ def winters_from_netcdf(raw):
                 incomplete={year:sorted(set(WINTER_MONTHS)-set(byyear[year])) for year in YEARS
                             if len(byyear[year])!=3}
                 missing[site]=incomplete
+                source_value_failures[site]={
+                    str(y):{str(m):reason for m,reason in months.items()}
+                    for y,months in invalid_reason.items() if months
+                }
                 annual[site]={year:float(np.mean([byyear[year][m] for m in WINTER_MONTHS]))
                               for year in YEARS if len(byyear[year])==3}
             return annual,{
@@ -144,6 +156,7 @@ def winters_from_netcdf(raw):
                 "original_gridded_cell_centers":points,
                 "original_grid_spacing":grid_spacing,
                 "unobserved_winter_months":missing,
+                "source_missing_value_reasons_by_site_year_month":source_value_failures,
                 "valid_winter_year_counts":{site:len(x) for site,x in annual.items()},
                 "historical_NetCDF_time_axis_entries":len(times),
                 "prebreeding_fixed_original_months":list(WINTER_MONTHS),

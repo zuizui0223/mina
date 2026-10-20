@@ -27,3 +27,6 @@ Use closest **published original ERSST grid-cell centers** in the fixed spatial 
 - Preserve machine-readable original source metadata, SHA, selected 2-degree grid centers, winter SST and source-only derived deltas, and r values. Do not store/reprint biological original absolute nest/pair counts.
 
 If original server not accessible or axes/data fail, a SOURCE STOP is scientifically appropriate; do not silently switch environmental data providers, SST versions, geographic cells or seasons after seeing the result.
+
+## Post-source-access missing-month diagnostic (before any SST-breeding effect)
+The original V24 source NetCDF subset verified the three geographic cells but returned an incomplete Signy winter (September 2011 unavailable). Under the frozen complete-eight-window rule no environmental correlation was estimated. To distinguish a genuine publisher NetCDF _FillValue/mask from nonfinite or physically out-of-range values, the code now exports a bounded reason-by-cell diagnostic WITHOUT accepting any new data, changing source/grid, reducing required months or fitting the biological outcome. A missing Signy September value remains an unavailable exposure, never a measured 0°C or inferred sea ice concentration.

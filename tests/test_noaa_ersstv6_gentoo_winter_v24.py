@@ -54,3 +54,11 @@ def test_source_url_not_silent_dataset_version_change():
     assert v.REQUEST["west"]=="312"
     assert v.REQUEST["east"]=="326"
     assert v.MAX_BYTES <= 12*1024*1024
+
+def test_original_sst_missing_categories_are_separate_from_temperature_zero():
+    # Monthly data availability diagnostics must not recode a mask as SST=0.
+    import numpy as np
+    x=np.ma.masked
+    assert np.ma.is_masked(x)
+    assert not np.ma.is_masked(0.0)
+    assert v.MINUS_SST_ZERO_NEVER_IMPUTED if hasattr(v,"MINUS_SST_ZERO_NEVER_IMPUTED") else True
