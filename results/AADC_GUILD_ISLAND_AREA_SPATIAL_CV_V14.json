@@ -1,0 +1,437 @@
+{
+  "status": "V14_EXPLORATORY_SURVEY_CONDITIONAL_SITE_NESTING_GUILD_TEST",
+  "study": "Eight Antarctic land nesting seabirds, primary seven flying taxa",
+  "source_DOI": "10.26179/5n29-r073",
+  "original_2025_geographic_site_dataset_rows": 7785,
+  "source_frozen_before_effects": "contracts/AADC_EAST_ANTARCTIC_NESTING_GUILD_AREA_V14.md",
+  "source_qa": {
+    "raw_eight_flying_species_search_rows": 22018,
+    "original_season_1980_2020_rows": 13723,
+    "original_same_site_species_season_duplicate_groups": 26,
+    "original_observation_rows_in_duplicate_groups": 57,
+    "original_source_status_conflict_groups_dropped": 4,
+    "original_P_or_direct_A_after_duplicate_drops": 7069,
+    "status_or_certainty_mismatch_removed": 7,
+    "original_geography_missing_or_invalid_removed": 71,
+    "strict_direct_P_A_site_species_season_rows_before_block_gate": 6991,
+    "eligible_region_site_species_season_rows": 6956,
+    "eligible_original_geographic_site_IDs": 368,
+    "eligible_site_species_histories": 1581,
+    "eligible_spatial_blocks_ge5_unique_sites": 8,
+    "eligible_region_original_site_counts": {
+      "8_2": 132,
+      "6_-9": 6,
+      "5_7": 19,
+      "8_4": 70,
+      "9_1": 37,
+      "9_-4": 34,
+      "5_-9": 11,
+      "6_-8": 59
+    },
+    "eligible_source_species_counts": {
+      "SK": 1297,
+      "CP": 1007,
+      "SF": 1007,
+      "AP": 1004,
+      "SGP": 998,
+      "SP": 945,
+      "WSP": 698
+    },
+    "eligible_direct_P_A_statuses": {
+      "A": 4968,
+      "P": 1988
+    },
+    "eligible_island_vs_continent_report_counts": {
+      "island": 6443,
+      "continent": 513
+    },
+    "eligible_island_vs_continent_site_counts": {
+      "continent": 73,
+      "island": 295
+    },
+    "source_sites_across_island_and_mainland": {
+      "continent": 84,
+      "island": 297
+    },
+    "source_excluded_nonreporting_not_zero": true,
+    "rare_yearly_original_source_events_not_independent_islands": true,
+    "original_area_unit": "source geog_site_area; log10 units, source not reinterpreted as new land availability"
+  },
+  "guild_definition": {
+    "SGP": "OPEN",
+    "SK": "OPEN",
+    "AP": "LEDGE",
+    "CP": "LEDGE",
+    "SF": "LEDGE",
+    "SP": "CREVICE",
+    "WSP": "CREVICE"
+  },
+  "original_abstract_count_status": "Y=1 direct P, Y=0 direct A; NR strictly discarded",
+  "positive_or_negative_not_all_surveyed_potential_sites": true,
+  "novel_island_causal_mechanism_demonstrated": false,
+  "fixed_guild_by_land_area_IQR_overlap_gate": {
+    "OPEN": {
+      "site_classes": {
+        "island": {
+          "distinct_original_geographic_sites": 222,
+          "q25_log10_raw_site_area": 3.1936887425789666,
+          "q75_log10_raw_site_area": 5.172172516996094
+        },
+        "continent": {
+          "distinct_original_geographic_sites": 57,
+          "q25_log10_raw_site_area": 4.161158292206182,
+          "q75_log10_raw_site_area": 5.79816083867769
+        }
+      },
+      "raw_area_IQR_overlap": 1.0110142247899114,
+      "guild_land_comparison_identifiable": true
+    },
+    "LEDGE": {
+      "site_classes": {
+        "island": {
+          "distinct_original_geographic_sites": 220,
+          "q25_log10_raw_site_area": 3.151486963149064,
+          "q75_log10_raw_site_area": 5.07137822483408
+        },
+        "continent": {
+          "distinct_original_geographic_sites": 57,
+          "q25_log10_raw_site_area": 4.161158292206182,
+          "q75_log10_raw_site_area": 5.746455151764321
+        }
+      },
+      "raw_area_IQR_overlap": 0.9102199326278981,
+      "guild_land_comparison_identifiable": true
+    },
+    "CREVICE": {
+      "site_classes": {
+        "island": {
+          "distinct_original_geographic_sites": 177,
+          "q25_log10_raw_site_area": 4.294422133112984,
+          "q75_log10_raw_site_area": 5.400472365387175
+        },
+        "continent": {
+          "distinct_original_geographic_sites": 37,
+          "q25_log10_raw_site_area": 5.645137231487637,
+          "q75_log10_raw_site_area": 6.625806565666082
+        }
+      },
+      "raw_area_IQR_overlap": -0.2446648661004618,
+      "guild_land_comparison_identifiable": false
+    }
+  },
+  "primary_regional_holdout_comparison": {
+    "all_eligible_geographic_block_ids": [
+      "5_-9",
+      "5_7",
+      "6_-8",
+      "6_-9",
+      "8_2",
+      "8_4",
+      "9_-4",
+      "9_1"
+    ],
+    "n_spatial_blocks": 8,
+    "original_sites_per_block": {
+      "5_-9": 11,
+      "5_7": 19,
+      "6_-8": 59,
+      "6_-9": 6,
+      "8_2": 132,
+      "8_4": 70,
+      "9_-4": 34,
+      "9_1": 37
+    },
+    "original_rows_per_block": {
+      "5_-9": 77,
+      "5_7": 124,
+      "6_-8": 5313,
+      "6_-9": 34,
+      "8_2": 712,
+      "8_4": 335,
+      "9_-4": 204,
+      "9_1": 157
+    },
+    "site_species_histories_per_block": {
+      "5_-9": 72,
+      "5_7": 124,
+      "6_-8": 404,
+      "6_-9": 34,
+      "8_2": 603,
+      "8_4": 118,
+      "9_-4": 135,
+      "9_1": 91
+    },
+    "largest_heldout_block": "8_2",
+    "largest_block_definition": "unique_sites_then_original_rows",
+    "macro_equal_geographic_block_Brier": {
+      "B0_survey_species_geography": 0.31037780247244945,
+      "B1_site_area_island": 0.35624482168174587,
+      "B2_nesting_mode_area_island": 0.3590335529153514
+    },
+    "weighted_observation_Brier": {
+      "B0_survey_species_geography": 0.2628639058182426,
+      "B1_site_area_island": 0.2776883147911157,
+      "B2_nesting_mode_area_island": 0.27837391241986287
+    },
+    "weighted_observation_Brier_definition": "global_site_species_history_weighted_mean",
+    "original_row_Brier": {
+      "B0_survey_species_geography": 0.287383136930235,
+      "B1_site_area_island": 0.25993565738633173,
+      "B2_nesting_mode_area_island": 0.2633711844120945
+    },
+    "site_species_weighted_Brier_by_block": {
+      "B0_survey_species_geography": {
+        "5_-9": 0.3847559194841557,
+        "5_7": 0.6514303791209578,
+        "6_-8": 0.34287929144623425,
+        "6_-9": 0.26079009580021995,
+        "8_2": 0.12725387465219823,
+        "8_4": 0.0855780902221445,
+        "9_-4": 0.3528449963164436,
+        "9_1": 0.27748977273724146
+      },
+      "B1_site_area_island": {
+        "5_-9": 0.37481069075026574,
+        "5_7": 0.871475784583889,
+        "6_-8": 0.28356421491739153,
+        "6_-9": 0.24491208065477413,
+        "8_2": 0.11459616859449187,
+        "8_4": 0.2892576027427141,
+        "9_-4": 0.3809748515267085,
+        "9_1": 0.29036717968373177
+      },
+      "B2_nesting_mode_area_island": {
+        "5_-9": 0.38106068133764254,
+        "5_7": 0.8683629659880171,
+        "6_-8": 0.28935238162444893,
+        "6_-9": 0.23863891582825367,
+        "8_2": 0.10804657640210641,
+        "8_4": 0.29932028585205345,
+        "9_-4": 0.3852393636161815,
+        "9_1": 0.30224725267410746
+      }
+    },
+    "original_row_Brier_by_block": {
+      "B0_survey_species_geography": {
+        "5_-9": 0.41490308675854665,
+        "5_7": 0.6514303791209578,
+        "6_-8": 0.30975329515068195,
+        "6_-9": 0.26079009580021995,
+        "8_2": 0.1382515012639834,
+        "8_4": 0.0916840492699576,
+        "9_-4": 0.26897106147606276,
+        "9_1": 0.30386467169438447
+      },
+      "B1_site_area_island": {
+        "5_-9": 0.40138156213734233,
+        "5_7": 0.871475784583889,
+        "6_-8": 0.26462502858847886,
+        "6_-9": 0.24491208065477413,
+        "8_2": 0.12556656541045974,
+        "8_4": 0.20682585120074218,
+        "9_-4": 0.29537219627995526,
+        "9_1": 0.2287725146999286
+      },
+      "B2_nesting_mode_area_island": {
+        "5_-9": 0.40768632817424316,
+        "5_7": 0.8683629659880171,
+        "6_-8": 0.27009263977085246,
+        "6_-9": 0.23863891582825367,
+        "8_2": 0.11213931559352003,
+        "8_4": 0.20097171875067263,
+        "9_-4": 0.2977370728752546,
+        "9_1": 0.2669942938043628
+      }
+    },
+    "B1_minus_B2_macro_Brier_improvement": -0.0027887312336055126,
+    "B0_minus_B1_macro_Brier_improvement": -0.04586701920929642,
+    "B2_guild_land_gain_by_block": {
+      "5_-9": -0.006249990587376797,
+      "5_7": 0.003112818595871869,
+      "6_-8": -0.005788166707057396,
+      "6_-9": 0.006273164826520461,
+      "8_2": 0.006549592192385462,
+      "8_4": -0.010062683109339332,
+      "9_-4": -0.004264512089472983,
+      "9_1": -0.01188007299037569
+    },
+    "n_geographic_blocks_where_guild_improves": 3,
+    "largest_source_block_guild_improves": true,
+    "full_model_crevice_x_island_x_area_coefficient": 0.0028375248285789677,
+    "without_largest_block_crevice_x_island_x_area_coefficient": 0.14880669091386264,
+    "crevice_triple_coefficient_sign_stable": true,
+    "raw_model_original_input_standardisation_training_fold_only": true,
+    "novel_causal_island_biogeography_effect": false
+  },
+  "prespecified_area_overlap_gate_pass": false,
+  "all_predefined_descriptive_guild_conditions_supported": false,
+  "scientific_decision": "NOT_SUPPORTED_OR_UNIDENTIFIABLE",
+  "expert_validated_only": {
+    "status": "HOLD_SUBSET_REGIONAL_SAMPLE_SUPPORT",
+    "eligible_rows": 6322,
+    "eligible_blocks": 7,
+    "eligible_sites": 237
+  },
+  "ground_vantage_only": {
+    "status": "SENSITIVITY_EVALUATED",
+    "all_eligible_geographic_block_ids": [
+      "5_-9",
+      "5_7",
+      "6_-8",
+      "6_-9",
+      "8_2",
+      "8_4",
+      "9_-4",
+      "9_1"
+    ],
+    "n_spatial_blocks": 8,
+    "original_sites_per_block": {
+      "5_-9": 9,
+      "5_7": 19,
+      "6_-8": 59,
+      "6_-9": 5,
+      "8_2": 132,
+      "8_4": 70,
+      "9_-4": 34,
+      "9_1": 37
+    },
+    "original_rows_per_block": {
+      "5_-9": 63,
+      "5_7": 124,
+      "6_-8": 5313,
+      "6_-9": 27,
+      "8_2": 712,
+      "8_4": 335,
+      "9_-4": 204,
+      "9_1": 157
+    },
+    "site_species_histories_per_block": {
+      "5_-9": 58,
+      "5_7": 124,
+      "6_-8": 404,
+      "6_-9": 27,
+      "8_2": 603,
+      "8_4": 118,
+      "9_-4": 135,
+      "9_1": 91
+    },
+    "largest_heldout_block": "8_2",
+    "largest_block_definition": "unique_sites_then_original_rows",
+    "macro_equal_geographic_block_Brier": {
+      "B0_survey_species_geography": 0.3332862893670041,
+      "B1_site_area_island": 0.3765074777268766,
+      "B2_nesting_mode_area_island": 0.3794482727091918
+    },
+    "weighted_observation_Brier": {
+      "B0_survey_species_geography": 0.2742695424946727,
+      "B1_site_area_island": 0.2859769454168704,
+      "B2_nesting_mode_area_island": 0.2876513900277087
+    },
+    "weighted_observation_Brier_definition": "global_site_species_history_weighted_mean",
+    "original_row_Brier": {
+      "B0_survey_species_geography": 0.3018472904800163,
+      "B1_site_area_island": 0.26523204492080926,
+      "B2_nesting_mode_area_island": 0.270644485263957
+    },
+    "site_species_weighted_Brier_by_block": {
+      "B0_survey_species_geography": {
+        "5_-9": 0.47190075170134,
+        "5_7": 0.6549790861313449,
+        "6_-8": 0.3686801993518168,
+        "6_-9": 0.3217815774037066,
+        "8_2": 0.12977588135558465,
+        "8_4": 0.09114365365791344,
+        "9_-4": 0.3517607102321775,
+        "9_1": 0.2762684551021492
+      },
+      "B1_site_area_island": {
+        "5_-9": 0.4569864986194474,
+        "5_7": 0.8723672187231437,
+        "6_-8": 0.29459446890521185,
+        "6_-9": 0.29750249122372124,
+        "8_2": 0.1177430274016874,
+        "8_4": 0.3005577862602294,
+        "9_-4": 0.38071881168241867,
+        "9_1": 0.2915895189991529
+      },
+      "B2_nesting_mode_area_island": {
+        "5_-9": 0.4634542259434661,
+        "5_7": 0.8705929518424869,
+        "6_-8": 0.3035935323013236,
+        "6_-9": 0.28468464155689116,
+        "8_2": 0.11104001523105125,
+        "8_4": 0.3129736402866716,
+        "9_-4": 0.38532984817169563,
+        "9_1": 0.30391732633994806
+      }
+    },
+    "original_row_Brier_by_block": {
+      "B0_survey_species_geography": {
+        "5_-9": 0.5014174940424231,
+        "5_7": 0.6549790861313449,
+        "6_-8": 0.3270082046999552,
+        "6_-9": 0.3217815774037066,
+        "8_2": 0.14085920182694794,
+        "8_4": 0.09593740037419952,
+        "9_-4": 0.2678142111707006,
+        "9_1": 0.3016348828549378
+      },
+      "B1_site_area_island": {
+        "5_-9": 0.48229853257585015,
+        "5_7": 0.8723672187231437,
+        "6_-8": 0.2698254052827512,
+        "6_-9": 0.29750249122372124,
+        "8_2": 0.12920284133210178,
+        "8_4": 0.21172898310739194,
+        "9_-4": 0.29522701792531314,
+        "9_1": 0.22970063245458403
+      },
+      "B2_nesting_mode_area_island": {
+        "5_-9": 0.48866490478672336,
+        "5_7": 0.8705929518424869,
+        "6_-8": 0.2778932547533112,
+        "6_-9": 0.28468464155689116,
+        "8_2": 0.11493724687029745,
+        "8_4": 0.20714717401157973,
+        "9_-4": 0.2977674634685033,
+        "9_1": 0.2679780690192704
+      }
+    },
+    "B1_minus_B2_macro_Brier_improvement": -0.002940794982315198,
+    "B0_minus_B1_macro_Brier_improvement": -0.04322118835987249,
+    "B2_guild_land_gain_by_block": {
+      "5_-9": -0.0064677273240186794,
+      "5_7": 0.0017742668806568496,
+      "6_-8": -0.008999063396111728,
+      "6_-9": 0.012817849666830083,
+      "8_2": 0.006703012170636152,
+      "8_4": -0.012415854026442186,
+      "9_-4": -0.004611036489276965,
+      "9_1": -0.012327807340795138
+    },
+    "n_geographic_blocks_where_guild_improves": 3,
+    "largest_source_block_guild_improves": true,
+    "full_model_crevice_x_island_x_area_coefficient": -0.0061144449698893105,
+    "without_largest_block_crevice_x_island_x_area_coefficient": 0.15453112816801431,
+    "crevice_triple_coefficient_sign_stable": false,
+    "raw_model_original_input_standardisation_training_fold_only": true,
+    "novel_causal_island_biogeography_effect": false
+  },
+  "interpretation_limits": [
+    "Original source authors already published survey uncertainty, known occupancy and 2025 richness maps",
+    "The dependent data are only explicitly P/A reports conditional on searched geographic sites",
+    "Original nonreporting NR, including medium-certainty unreporting, is NOT a biological zero",
+    "Island is source terrestrial island feature and continent means exposed continental rock, not all Antarctica",
+    "Area is static mapped GIS feature size, not measured future available nesting capacity",
+    "Species nesting guild is a coarse mode rather than observed substrate at each individual nest",
+    "Survey nonrandomness, nesting detectability, source expert validation and seasonal changes remain confounding",
+    "Repeated original source sites or seasons never represent independent Antarctic islands",
+    "Out-of-region prediction cannot show competition, causal island isolation or colony formation"
+  ],
+  "original_source_derived_csv_sha256": {
+    "geography": "48c716c38c41a054eefc20c03de3c21d75047049e6e277d471d9b9135aab7da5",
+    "surveys": "dba39d79f6309f90e23e896415177ea75086aaf2ecb5523256e48895e95dfc5c"
+  },
+  "eligible_survey_rows_SHA256": "9343c9c7a491178a9ceda489f77a389d2c2fb907c15782eac3ba52ff799df4b5",
+  "source_original_derived_sample_only_in_Actions_artifact": true
+}

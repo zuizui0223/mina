@@ -143,3 +143,40 @@ def test_source_checksum_fails_closed(tmp_path):
     p.write_text("site,value\nabc,23\n")
     with pytest.raises(ValueError,match="SHA drift"):
         v.checked_csv(p,v.ORIGINAL_SITE_SHA)
+
+
+def test_cv_reports_distinct_row_history_and_block_denominators():
+    """A long repeatedly visited history must not masquerade as more sites."""
+    source,geography=hypothetical_tables()
+    surveys=[]
+    sites=[]
+    for copy,longitude_shift in enumerate((0.,10.,20.,30.)):
+        survey=source.copy()
+        geo=geography.copy()
+        survey["geog_site_id"]=str(copy)+"_"+survey.geog_site_id
+        geo["geog_site_id"]=str(copy)+"_"+geo.geog_site_id
+        geo["longitude"]+=longitude_shift
+        surveys.append(survey)
+        sites.append(geo)
+    survey=pd.concat(surveys,ignore_index=True)
+    repeated=survey.loc[(survey.species_code=="SK") &
+                        survey.geog_site_id.str.startswith("0_")].copy()
+    repeated["season"]="200910"
+    sample,_=v.frame_data(pd.concat([survey,repeated],ignore_index=True),
+                          pd.concat(sites,ignore_index=True))
+    result=v.spatial_cv(sample)
+    rows=result["original_rows_per_block"]
+    histories=result["site_species_histories_per_block"]
+    for name in v.MODELS:
+        block=result["site_species_weighted_Brier_by_block"][name]
+        raw=result["original_row_Brier_by_block"][name]
+        assert result["macro_equal_geographic_block_Brier"][name]==pytest.approx(
+            sum(block.values())/len(block))
+        assert result["original_row_Brier"][name]==pytest.approx(
+            sum(raw[key]*rows[key] for key in rows)/sum(rows.values()))
+        assert result["weighted_observation_Brier"][name]==pytest.approx(
+            sum(block[key]*histories[key] for key in histories)/sum(histories.values()))
+    assert any(abs(result["original_row_Brier"][name]-
+                   result["weighted_observation_Brier"][name])>1e-6
+               for name in v.MODELS)
+    assert result["largest_block_definition"]=="unique_sites_then_original_rows"

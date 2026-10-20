@@ -199,6 +199,8 @@ def frame_data(surveys:pd.DataFrame,geog:pd.DataFrame):
         "eligible_source_species_counts":sample.species_code.value_counts().to_dict(),
         "eligible_direct_P_A_statuses":sample.occurrence.value_counts().to_dict(),
         "eligible_island_vs_continent_report_counts":sample.geog_site_feature.value_counts().to_dict(),
+        "eligible_island_vs_continent_site_counts":sample.groupby(
+            "geog_site_feature").geog_site_id.nunique().to_dict(),
         "source_sites_across_island_and_mainland":direct.groupby(
             "geog_site_feature").geog_site_id.nunique().to_dict(),
         "source_excluded_nonreporting_not_zero":True,
@@ -302,6 +304,18 @@ def spatial_cv(data):
                  for k,result in results.items()}
     micro_scores={k:weighted_brier(y,result["prediction"],w)
                   for k,result in results.items()}
+    # Reporting only: retain the original history-weighted score and expose
+    # the contracted raw-row average with its different denominator.
+    original_row_scores={
+        k:float(np.mean((y-result["prediction"])**2))
+        for k,result in results.items()
+    }
+    original_row_block_scores={
+        k:{block:float(np.mean((y[groups==block]-
+                                result["prediction"][groups==block])**2))
+           for block in blocks}
+        for k,result in results.items()
+    }
     block_improv={
         block:results["B1_site_area_island"]["by_block"][block]
               -results["B2_nesting_mode_area_island"]["by_block"][block]
@@ -317,9 +331,18 @@ def spatial_cv(data):
         "all_eligible_geographic_block_ids":blocks,
         "n_spatial_blocks":len(blocks),
         "original_sites_per_block":block_counts.astype(int).to_dict(),
+        "original_rows_per_block":data.groupby("block250km").size().astype(int).to_dict(),
+        "site_species_histories_per_block":data.drop_duplicates(
+            ["geog_site_id","species_code"]).groupby("block250km").size().astype(int).to_dict(),
         "largest_heldout_block":largest,
+        "largest_block_definition":"unique_sites_then_original_rows",
         "macro_equal_geographic_block_Brier":mean_scores,
         "weighted_observation_Brier":micro_scores,
+        "weighted_observation_Brier_definition":"global_site_species_history_weighted_mean",
+        "original_row_Brier":original_row_scores,
+        "site_species_weighted_Brier_by_block":{
+            k:result["by_block"] for k,result in results.items()},
+        "original_row_Brier_by_block":original_row_block_scores,
         "B1_minus_B2_macro_Brier_improvement":
             mean_scores["B1_site_area_island"]-mean_scores["B2_nesting_mode_area_island"],
         "B0_minus_B1_macro_Brier_improvement":

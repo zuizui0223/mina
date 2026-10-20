@@ -40,35 +40,43 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
-The next lane asks how breeding-site architecture filters penguin population
-fate across Antarctica. APBP/MAPPPD supplies demographic site anchors; mina
-will construct a new **Antarctic Penguin Breeding-Island Atlas** from
-independent spatial layers (SCAR ADD coastline, Antarctic Ecosystem Inventory,
-REMA and related frozen sources).
+**Current result, 2026-10-20: the original-data V14 macroanalysis is complete
+and reproduced, with no supported guild × island-area result.** Source access
+is resolved. The previous statement that demographic outcomes were still
+unopened is superseded by the executed V6, V8 and V14 analyses.
 
-The conceptual focus is on **externally subsidized breeding islands**:
-penguins obtain food primarily from the marine environment while reproduction
-is constrained by terrestrial or sea-ice breeding substrate. This lets the
-program distinguish regional marine forcing from local breeding-patch
-filtering.
+The new AADC source join contains **7,785 geographic sites and 33,107 original
+eight-species search records**. V14 compares the seven flying seabird species:
+**6,956 direct P/A records, 368 sites (295 islands + 73 continental outcrops),
+1,581 site/species histories, and 8 held-out 250 km blocks**. Nonreporting is
+never coded as absence; repeat seasons do not count as additional islands.
 
-The Paper 2 lane has **passed Gate 0**. The pinned MAPPPD snapshot contains
-729 sites, 5,487 observations and 4,032 nest-count records. The predeclared
-candidate trend gate retains **152 Pygoscelis site × species units** (Adélie
-57, chinstrap 46, gentoo 49); a stricter gate retains 92. Emperor, macaroni
-and king do not have enough repeated nest-count series for the same primary
-trend model.
+Primary equal-region Brier scores (lower is better) are **0.310378** for the
+survey/species/geography baseline, **0.356245** with area and land class,
+and **0.359034** with nesting-guild interactions. Only **3/8** regions improve
+with guild terms, below the frozen **6/8** requirement. CREVICE island and
+continental area IQRs do not overlap. Thus predictive support failed and the
+island-specific three-way interpretation fails the frozen overlap rule;
+this is not a demonstrated zero ecological effect.
 
-Gate 1 has now built the first outcome-blind Antarctic Penguin
-Breeding-Island Atlas layer. At the frozen 2 km scale, **118/122 candidate
-sites (96.7%)** have mapped ice-free ecosystem habitat. The derived traits
-span substantial variation (ice-free area 0–928 ha; ecosystem richness 0–9),
-so this is now a real user-constructed spatial dataset rather than a plan.
+All five original workbooks were retrieved and verified again; V13 input CSVs,
+included rows and all **115** original numerical result fields reproduce
+exactly. Reporting now distinguishes ordinary-row, history-weighted and
+equal-region scores. **27 focused V11–V14 tests pass.**
 
-The next stage augments the same frozen sites with terrain and melt/climate
-traits. Demographic outcomes remain unopened until the atlas is frozen.
+The broader programme still asks how marine resources and terrestrial or
+sea-ice breeding substrate jointly structure Antarctic breeding populations.
+The first V6 land/sea model and V8 habitat-mosaic test also failed their
+frozen support criteria. V14 is closed without changing guilds, weights or
+spatial thresholds to seek a positive result. The frozen Ecology manuscript
+is separate; no positive Antarctic-wide mechanism is claimed.
 
-Program documents:
+Canonical current state and full numerical evidence:
+- [V14 result, interpretation and next state](docs/AADC_GUILD_ISLAND_AREA_V14_RESULT_AND_DECISION.md)
+- [V14 numerical result](results/AADC_GUILD_ISLAND_AREA_SPATIAL_CV_V14.json)
+- [Exact source/model reproduction](results/AADC_V14_REPRODUCTION_20261020.json)
+
+Earlier programme design and atlas provenance:
 - `contracts/MINA_RESEARCH_PROGRAM_V1.json`
 - `docs/ANTARCTIC_BREEDING_ISLAND_MACROECOLOGY_V1.md`
 
