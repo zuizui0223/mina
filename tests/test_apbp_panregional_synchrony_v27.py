@@ -21,7 +21,7 @@ def test_calendar_and_season():
 def test_same_month_and_method_or_drop():
     sp="Pygoscelis adeliae"
     a=[row("A",sp,2010,12),row("A",sp,2011,12),
-       row("B",sp,2010,12),row("B",sp,2011,1),
+       row("B",sp,2010,12),row("B",sp,2012,1),
        row("C",sp,2010,12,method="ship"),row("C",sp,2011,12,method="ground")]
     g,r=v.metadata(a)
     assert r["strict_same_month_same_protocol_adjacent_site_changes"]==1
