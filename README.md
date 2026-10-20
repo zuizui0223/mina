@@ -40,6 +40,17 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V17 cross-guild within-site annual change STOP:** Of 137 uniquely co-dated
+site/species-pair/season observations in the ASI source, 25 qualifying
+consecutive-year comparisons passed the 21-day census-stage constraint. They
+came from only **11 original site IDs in two ASI regions (CW 14, SH 11)**,
+not the predeclared minimum three. Blue-eyed shag accounts for 23/25
+cross-guild comparisons. No original Count magnitudes or biological
+correlations were opened or fitted; further test requires genuinely
+independent island-level stage-resolved monitoring.
+- [V17 result and decision](docs/ASI_CROSSGUILD_TEMPORAL_V17_RESULT_AND_DECISION.md)
+- [V17 numeric support](results/ASI_CROSSGUILD_SAME_SITE_YEAR_GROWTH_V17.json)
+
 **V16 new, source-authenticated ASI cross-guild panel:** The distinct 2013
 Antarctic Site Inventory Ecological Archives original CSV has 1,124 census
 rows. A strictly same-site/date, ASI-source, nest-only and accuracy-filtered

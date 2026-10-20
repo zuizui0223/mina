@@ -1,0 +1,41 @@
+{
+  "status": "V17_TEMPORAL_SUPPORT_CHECKED",
+  "original_publisher_md5": "00871bd47b6ec30cda68d1506120bfb3",
+  "original_sha256": "e01ee9bfbd8337bcaca7c71aea0b00162f9015cf4954d3ad76eed536cad37634",
+  "source_url": "https://esapubs.org/archive/ecol/E094/243/Antarctic_Site_Inventory_census_data_1994_2012.csv",
+  "predeclared_support_gate_pass": false,
+  "structure": {
+    "original_source_rows": 1124,
+    "region_ambiguous_source_sites_excluded": 2,
+    "one_pair_season_co_survey_units": 137,
+    "pair_season_multiple_original_days_removed": 4,
+    "consecutive_season_pairings_but_date_off_by_more_than_21d": 1,
+    "eligible_consecutive_same_site_species_pairs": 25,
+    "eligible_distinct_original_sites": 11,
+    "eligible_original_regions": 2,
+    "site_pair_transitions_by_region": {
+      "SH": 11,
+      "CW": 14
+    },
+    "flying_partner_transitions": {
+      "BESH": 23,
+      "SOGP": 2
+    },
+    "penguin_partner_transitions": {
+      "GEPE": 10,
+      "CHPE": 10,
+      "MCPE": 3,
+      "ADPE": 2
+    }
+  },
+  "model_gate": {
+    "min_transitions": 20,
+    "min_site_IDs": 10,
+    "min_regions": 3,
+    "max_survey_day_difference": 21
+  },
+  "actual_island_boundary_independently_verified": false,
+  "independent_MAPPPD_population_replication": false,
+  "ecological_effect_fitted": false,
+  "scientific_decision": "STOP_NO_GENERALIZABLE_CROSSGUILD_ANNUAL_SUPPORT"
+}
