@@ -1,0 +1,87 @@
+{
+  "status": "V24_ORIGINAL_ERSSTV6_SOURCE_TEST_COMPLETED",
+  "predeclared_frozen_contract": "contracts/NOAA_ERSSTV6_GENTOO_WINTER_V24.md",
+  "source_receipt": {
+    "source_original_url": "https://psl.noaa.gov/thredds/ncss/grid/Datasets/noaa.ersst.v6/sst.mnmean.nc",
+    "request_params": {
+      "var": "sst",
+      "north": "-52",
+      "south": "-62",
+      "west": "312",
+      "east": "326",
+      "time_start": "2009-01-01T00:00:00Z",
+      "time_end": "2019-12-31T00:00:00Z",
+      "accept": "netcdf4"
+    },
+    "final_url": "https://psl.noaa.gov/thredds/ncss/grid/Datasets/noaa.ersst.v6/sst.mnmean.nc?var=sst&north=-52&south=-62&west=312&east=326&time_start=2009-01-01T00%3A00%3A00Z&time_end=2019-12-31T00%3A00%3A00Z&accept=netcdf4",
+    "mime": "application/x-netcdf",
+    "sha256": "f1cce1d84c1f08e13f8e5267771c0340c86519a7fb839f6143d7d3c6c9722b12",
+    "bytes": 56798,
+    "format_verified_netcdf": true
+  },
+  "source_geometry": {
+    "source_variable": "sst",
+    "source_units": "degc",
+    "original_gridded_cell_centers": {
+      "bird": {
+        "lat": -54,
+        "lon_0_360": 322,
+        "source_lat_offset": 0,
+        "source_lon_offset": 0.05000000000001137
+      },
+      "maiviken": {
+        "lat": -54,
+        "lon_0_360": 324,
+        "source_lat_offset": 0.24600000000000222,
+        "source_lon_offset": 0.5099999999999909
+      },
+      "signy": {
+        "lat": -60,
+        "lon_0_360": 314,
+        "source_lat_offset": 0.716700000000003,
+        "source_lon_offset": -0.39999999999997726
+      }
+    },
+    "original_grid_spacing": {
+      "lat_deg": 2,
+      "lon_deg": 2
+    },
+    "unobserved_winter_months": {
+      "bird": {},
+      "maiviken": {},
+      "signy": {
+        "2011": [
+          9
+        ]
+      }
+    },
+    "source_missing_value_reasons_by_site_year_month": {
+      "bird": {},
+      "maiviken": {},
+      "signy": {
+        "2011": {
+          "9": "NONFINITE_SOURCE_VALUE"
+        }
+      }
+    },
+    "valid_winter_year_counts": {
+      "bird": 9,
+      "maiviken": 9,
+      "signy": 8
+    },
+    "historical_NetCDF_time_axis_entries": 133,
+    "prebreeding_fixed_original_months": [
+      7,
+      8,
+      9
+    ],
+    "no_cell_search_after_environment_values": true
+  },
+  "original_V23_near_minus_far_r_reproduced": 1.0154800142899,
+  "environmental_comparison": {
+    "status": "STOP_INCOMPLETE_ORIGINAL_ERSST_WINTER_DATA",
+    "effect_computed": false
+  },
+  "ecological_effect_fitted": false,
+  "scientific_decision": "STOP_INCOMPLETE_ORIGINAL_ERSST_WINTER_DATA"
+}

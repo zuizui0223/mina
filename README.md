@@ -40,6 +40,17 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V24 NOAA independent SST check closed by original nonfinite field:**
+The fixed July–September prebreeding ERSSTv6 original regional 2° SST subset
+contains one nonfinite original value at the **Signy region grid cell in
+September 2011**. Bird and Maiviken each had 9/9 required winters,
+Signy 8/9. The predefined full eight-window marine environmental
+correlation could not be fit without imputation and was **STOPPED**.
+V23 original three-BAS near/far Gentoo growth gradient remains supported
+as an **exploratory description**, with no marine/sea-ice/wind cause.
+- [V24 actual NOAA SST source STOP and interpretation](docs/NOAA_ERSSTV6_GENTOO_WINTER_V24_RESULT.md)
+- [V24 source geometry, hashes, missing-data receipt](results/NOAA_ERSSTV6_BAS_GENTOO_WINTER_V24.json)
+
 **2026-10-21 V23 ORIGINAL BAS GENTOO NEAR/FAR PATTERN:** On the same 8
 annual-change start years (2011–2018), BAS-sourced Bird Island and Maiviken
 South Georgia monitoring show positive growth alignment **r=+0.514**;
