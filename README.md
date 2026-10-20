@@ -40,6 +40,20 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V18–V19 NEW source-backed panel:** Official NOAA 0185113 provides
+38 austral-season years and five census columns from monitored
+Copacabana (King George Island) and Cape Shirreff (Livingston Island).
+An independently source-hashed BAS Signy gentoo stage-resolved CSV has
+43 original records. All three island sources have **16 original
+austral seasons** with numeric-lexical census/pair fields and **14
+consecutive-year windows**. This passes the frozen structural years gate,
+but NOAA original species census numbers are **NOT yet shown
+equivalent to BAS breeding pairs**, and only 3 physical islands exist.
+No biological count effect or island mechanism has been fitted.
+- [V18/V19 new publisher-original source panel and decision](docs/NOAA_BAS_THREE_ISLAND_SOURCE_SUPPORT_V18_V19.md)
+- [V18 original source hashes and headings](results/NOAA_BAS_ISLAND_STAGE_SOURCE_QA_V18.json)
+- [V19 exact comparable-year support](results/NOAA_BAS_THREE_ISLAND_SEASON_SUPPORT_V19.json)
+
 **V17 cross-guild within-site annual change STOP:** Of 137 uniquely co-dated
 site/species-pair/season observations in the ASI source, 25 qualifying
 consecutive-year comparisons passed the 21-day census-stage constraint. They

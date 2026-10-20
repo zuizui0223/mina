@@ -1,0 +1,108 @@
+{
+  "status": "V18_SOURCE_STAGE_CHECKED_NO_BIOLOGY",
+  "scientific_decision": "PASS_ORIGINAL_TWO_ARCHIVES_NOT_EQUIVALENT_METRICS_NO_MODEL",
+  "noaa_DOI": "10.25921/58yq-7g68",
+  "bas_gentoo_DOI": "10.5285/883c6b40-024e-41e8-9c3e-2668a44b5751",
+  "biological_count_magnitudes_opened": 0,
+  "biological_effect_models_fit": 0,
+  "noaabas_count_unit_equality_assumed": false,
+  "source_records_are_not_independent_islands": true,
+  "noaa": {
+    "download_status": "ORIGINAL_SOURCE_RETRIEVED",
+    "source_receipt": {
+      "final_url": "https://www.ncei.noaa.gov/data/oceans/archive/arc0132/0185113/1.1/data/0-data/Annual%20Penguin%20Census%201977-2015%20v1_0.xlsx",
+      "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "bytes": 9861,
+      "sha256": "a57370f82adf82b53da11ce5d85dada1ae3f3750ef246312b59d0f168763eef4"
+    },
+    "structure": {
+      "publisher_workbook_sheets": [
+        "census data"
+      ],
+      "original_sheets_structure": [
+        {
+          "name": "census data",
+          "declared_max_row": 39,
+          "declared_max_column": 6,
+          "source_top_header_text_candidates": [
+            {
+              "row": 1,
+              "text_headers": [
+                "YEAR",
+                "Copa_Adelie",
+                "Copa_Gentoo",
+                "Copa_Chinstrap",
+                "CapeShirreff_Chinstrap",
+                "CapeShirreff_Gentoo"
+              ]
+            }
+          ],
+          "publisher_five_series_headers_found": 5,
+          "source_header_row": 1,
+          "original_nonblank_by_publisher_series": {
+            "Copa_Adelie": 32,
+            "Copa_Gentoo": 34,
+            "Copa_Chinstrap": 22,
+            "CapeShirreff_Chinstrap": 18,
+            "CapeShirreff_Gentoo": 18
+          },
+          "nonblank_austral_year_labels": 38,
+          "original_reported_columns": [
+            "YEAR",
+            "Copa_Adelie",
+            "Copa_Gentoo",
+            "Copa_Chinstrap",
+            "CapeShirreff_Chinstrap",
+            "CapeShirreff_Gentoo"
+          ]
+        }
+      ],
+      "any_sheet_contains_all_publisher_five_series": true
+    }
+  },
+  "bas_gentoo": {
+    "download_status": "ORIGINAL_SOURCE_RETRIEVED",
+    "source_receipt": {
+      "final_url": "https://ramadda.data.bas.ac.uk/repository/entry/get/signy_gentoo_breeding_success.csv?entryid=synth%3A883c6b40-024e-41e8-9c3e-2668a44b5751%3AL3NpZ255X2dlbnRvb19icmVlZGluZ19zdWNjZXNzLmNzdg%3D%3D",
+      "mime": "text/csv",
+      "bytes": 4851,
+      "sha256": "53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b"
+    },
+    "structure": {
+      "original_declared_headers": [
+        "SPECIES",
+        "SEASON",
+        "DATE_PAIR_COUNT",
+        "TOTAL_NUMBER_PAIRS_WITH_EGGS",
+        "TOTAL_NUMBER_OF_PAIRS_WITHOUT_EGGS",
+        "TOTAL_NUMBER_OF_PAIRS",
+        "DATE_CHICK_COUNT",
+        "TOTAL_NUMBER_OF_CHICKS",
+        "TOTAL_NUMBER_OF_EGGS",
+        "TOTAL_NUMBER_OF_NESTS_WITHOUT_EGGS",
+        "DATE_FLEDGLING_COUNT",
+        "TOTAL_NUMBER_OF_FLEDGLINGS",
+        "COMMENTS",
+        ""
+      ],
+      "original_data_rows": 43,
+      "per_column_nonblank_cells": {
+        "SPECIES": 43,
+        "SEASON": 43,
+        "DATE_PAIR_COUNT": 43,
+        "TOTAL_NUMBER_PAIRS_WITH_EGGS": 43,
+        "TOTAL_NUMBER_OF_PAIRS_WITHOUT_EGGS": 43,
+        "TOTAL_NUMBER_OF_PAIRS": 43,
+        "DATE_CHICK_COUNT": 43,
+        "TOTAL_NUMBER_OF_CHICKS": 43,
+        "TOTAL_NUMBER_OF_EGGS": 43,
+        "TOTAL_NUMBER_OF_NESTS_WITHOUT_EGGS": 43,
+        "DATE_FLEDGLING_COUNT": 43,
+        "TOTAL_NUMBER_OF_FLEDGLINGS": 43,
+        "COMMENTS": 43,
+        "": 1
+      },
+      "numeric_stage_value_cells_opened": 0
+    }
+  }
+}
