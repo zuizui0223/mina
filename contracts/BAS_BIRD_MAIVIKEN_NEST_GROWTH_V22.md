@@ -30,3 +30,7 @@ Outputs: SHA-pinned result JSON plus source-stage QA, no raw data mirrored to Gi
 ## Source-date parser diagnostic amendment before opening count magnitudes
 
 The original V22 strict run downloaded both SHA-verified sources but matched zero metadata years because no site date or main-island original time label parsed. Treat this as a **date format/schema issue**, not scientific evidence of insufficient ecological samples. Log ONLY bounded literal publisher date/season labels and parse counts before any nesting count values. Do not alter frozen cohort years, 30-day timing, colony count or any ecological interpretation threshold. The mismatch must be diagnosed before source eligibility can be interpreted.
+
+### Original date-format correction — not model tuning
+
+The metadata-only test revealed original BAS field dates use literal DD-Mon-YY strings, e.g. 20-Oct-19 (Bird Island) and 11-Nov-08 (Maiviken), including Bird Island 1981 records. Before opening any original nesting count magnitudes, enable exactly the Python date format %d-%b-%y in the otherwise unchanged source calendar parser; the 1981–2019 range is not ambiguous with Python's fixed 1969–2068 parsing pivot. Retain 2009–2019 fixed seasons, 30-day stage match, colony and regional criteria. The earlier zero support was a parser bug, NOT a biological finding.

@@ -37,7 +37,7 @@ def rows_csv(raw):
 
 def parse_count_day(val):
     val=str(val or "").strip()
-    for fmt in ("%d/%m/%Y","%Y-%m-%d","%d %b %Y","%d %B %Y","%Y/%m/%d"):
+    for fmt in ("%d/%m/%Y","%Y-%m-%d","%d %b %Y","%d %B %Y","%Y/%m/%d","%d-%b-%y"):
         try:
             return datetime.strptime(val,fmt).date()
         except ValueError:

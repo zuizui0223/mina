@@ -71,3 +71,9 @@ def test_date_diagnostic_does_not_open_count_values():
     assert diag["no_biological_count_fields_inspected"]
     assert "SECRET" not in str(diag)
     assert diag["maiviken_season_labels_parseable"]==len(m)
+
+def test_exact_original_publisher_english_abbrev_two_digit_dates():
+    assert v.parse_count_day("20-Oct-19").isoformat()=="2019-10-20"
+    assert v.parse_count_day("11-Nov-08").isoformat()=="2008-11-11"
+    assert v.parse_count_day("27-Nov-81").isoformat()=="1981-11-27"
+    assert v.parse_count_day("not-date") is None
