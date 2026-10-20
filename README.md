@@ -40,6 +40,18 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V16 new, source-authenticated ASI cross-guild panel:** The distinct 2013
+Antarctic Site Inventory Ecological Archives original CSV has 1,124 census
+rows. A strictly same-site/date, ASI-source, nest-only and accuracy-filtered
+join yields **99 penguin × flying-seabird same-day census events across
+37 source site IDs and three regions**. Source Region collisions (two
+original Site_ID labels, 12 rows) were conservatively dropped. Two-penguin
+same-day comparisons have 53 events across three regions and FAIL their
+prospectively frozen gate. This is source feasibility, **not** a fitted
+cross-guild ecological mechanism or independently surveyed physical islands.
+- [V16 original source result and decision](docs/ASI_ORIGINAL_COSURVEY_V16_RESULT_AND_DECISION.md)
+- [V16 machine-readable source support](results/ASI_ORIGINAL_SAME_DAY_NEST_COSURVEY_V16.json)
+
 **2026-10-20 V15 biotic-interaction feasibility is also CLOSED.** Original AADC
 Adélie×south-polar-skua co-searches gave **1,061 same-site/season pairs
 across 96 island geographic sites**, but only **8 pairs / 8 sites in one
