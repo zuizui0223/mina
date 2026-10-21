@@ -95,7 +95,7 @@ def original_count_type(raw):
     else:
         source="TEXT"
         s=str(raw).strip().replace(",","")
-        if not re.fullmatch(r"[+-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:[eE][+-]?\\d+)?",s):
+        if not re.fullmatch(r"[+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?",s):
             return "TEXT_NONNUMERIC"
         try:n=float(s)
         except ValueError:return "TEXT_NONNUMERIC"
