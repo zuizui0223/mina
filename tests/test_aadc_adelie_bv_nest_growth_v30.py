@@ -46,3 +46,22 @@ def test_primary_effect_is_not_displaced_bird_migration_or_climate():
     assert result["individual_penguin_exchange_or_recruitment_inferred"] is False
     assert result["marine_climate_ice_effect_estimated"] is False
     assert result["source_original_absolute_occupied_nest_counts_omitted"] is True
+
+def test_source_excel_numeric_diagnostic_distinguishes_fractional_and_missing():
+    assert m.original_count_type(4)=="EXCEL_NUMERIC_NONNEGATIVE_INTEGER"
+    assert m.original_count_type(4.5)=="EXCEL_NUMERIC_FRACTIONAL"
+    assert m.original_count_type(-99)=="EXCEL_NUMERIC_NEGATIVE"
+    assert m.original_count_type("4.75")=="TEXT_FRACTIONAL"
+    assert m.original_count_type("NA")=="TEXT_NONNUMERIC"
+    assert m.original_count_type(None)=="MISSING_CELL"
+    assert m.count_int(4.5) is None
+    assert m.count_int(4)==4
+
+def test_source_cell_quality_receipt_contains_no_count_magnitudes():
+    src=synthetic_sheet()
+    unique,years,windows,qa=m.source_dates_and_field_support(src)
+    res=m.real_growth(unique,years,windows)
+    cells=res["source_publisher_cell_quality_by_year_island"]
+    assert set(cells)=={str(year) for year in m.FROZEN_YEARS}
+    assert all(v.endswith("NONNEGATIVE_INTEGER") for row in cells.values() for v in row.values())
+    assert "1000" not in str(cells)

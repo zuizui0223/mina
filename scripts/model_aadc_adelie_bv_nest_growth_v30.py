@@ -83,6 +83,34 @@ def count_int(raw):
         x=float(text)
     return int(x) if math.isfinite(x) and 0<=x<1e8 and x.is_integer() else None
 
+def original_count_type(raw):
+    """Classify publisher Excel cell *quality*, never export the count magnitude."""
+    if raw is None or (isinstance(raw,str) and not raw.strip()):
+        return "MISSING_CELL"
+    if isinstance(raw,bool):
+        return "BOOLEAN_NOT_COUNT"
+    if isinstance(raw,(int,float)):
+        n=float(raw)
+        source="EXCEL_NUMERIC"
+    else:
+        source="TEXT"
+        s=str(raw).strip().replace(",","")
+        if not re.fullmatch(r"[+-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:[eE][+-]?\\d+)?",s):
+            return "TEXT_NONNUMERIC"
+        try:n=float(s)
+        except ValueError:return "TEXT_NONNUMERIC"
+    if not math.isfinite(n):
+        return source+"_NONFINITE"
+    if n<0:
+        return source+"_NEGATIVE"
+    if n>=1e8:
+        return source+"_OUTSIDE_FROZEN_RANGE"
+    if not n.is_integer():
+        return source+"_FRACTIONAL"
+    if source=="TEXT" and count_int(raw) is None:
+        return "TEXT_INTEGER_NONCANONICAL"
+    return source+"_NONNEGATIVE_INTEGER"
+
 def pearson(xs,ys):
     if len(xs)!=len(ys) or len(xs)<3:return None
     xbar=mean(xs);ybar=mean(ys)
@@ -93,8 +121,13 @@ def pearson(xs,ys):
 def real_growth(rows,years,windows):
     counts={}
     errors=Counter()
+    original_cell_classes={}
     for year in years:
         row=rows[year]
+        original_cell_classes[str(year)]={
+            PAIR[0]:original_count_type(row[1]),
+            PAIR[1]:original_count_type(row[2])
+        }
         x=count_int(row[1]);y=count_int(row[2])
         if x is None or y is None:
             errors["invalid_numeric_original_occ_nests_year"]+=1
@@ -105,6 +138,10 @@ def real_growth(rows,years,windows):
         "source_numeric_valid_pair_years":len(counts),
         "source_numeric_consecutive_windows":len(complete),
         "source_numeric_inclusion_errors":dict(errors),
+        "source_publisher_cell_quality_by_year_island":original_cell_classes,
+        "source_publisher_cell_quality_counts":dict(Counter(
+            status for row in original_cell_classes.values() for status in row.values())),
+        "numeric_cell_quality_diagnostic_does_not_display_counts":True,
         "original_numeric_years":sorted(counts),
         "original_adjacent_window_starts":complete
     }
