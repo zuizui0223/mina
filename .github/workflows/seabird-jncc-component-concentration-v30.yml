@@ -1,0 +1,40 @@
+name: Seabird V30 JNCC original 17-species two-census composition beyond thinning
+on:
+  push:
+    branches: [research/seabird-island-generality-v1]
+    paths:
+      - 'contracts/JNCC_COMPONENT_CONCENTRATION_V30.md'
+      - 'scripts/model_jncc_component_concentration_v30.py'
+      - 'tests/test_jncc_component_concentration_v30.py'
+      - '.github/workflows/seabird-jncc-component-concentration-v30.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_COMPONENT_CONCENTRATION_V30.md'
+      - 'scripts/model_jncc_component_concentration_v30.py'
+      - 'tests/test_jncc_component_concentration_v30.py'
+      - '.github/workflows/seabird-jncc-component-concentration-v30.yml'
+  workflow_dispatch:
+jobs:
+  original_JNCC_composition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install publisher source and tests
+        run: python -m pip install pytest requests
+      - name: Test exact finite-count proportional benchmark and biological count guards
+        run: python -m pytest -q tests/test_jncc_component_concentration_v30.py
+      - name: Verify original publisher JNCC SHA256, V29 metadata roster and fit only fixed numeric supported panels
+        run: |
+          python scripts/model_jncc_component_concentration_v30.py \
+            --out /tmp/JNCC_COMPONENT_CONCENTRATION_TWO_CENSUSES_V30.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-JNCC-17species-two-census-composition-v30
+          path: /tmp/JNCC_COMPONENT_CONCENTRATION_TWO_CENSUSES_V30.json
