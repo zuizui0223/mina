@@ -119,14 +119,20 @@ def geometric_components(source_polygons):
         geoms=list(combined.geoms)
     else:
         geoms=[g for g in combined.geoms if g.geom_type=="Polygon"]
+    # A Natural Earth original shapefile SHAPE may contain multiple disconnected
+    # world islands beyond the UK envelope. Preserve full physical polygon AREA,
+    # but filter the merged components themselves to the frozen source ROI.
+    unfiltered_world_components=len(geoms)
+    regional=[g for g in geoms if g.intersects(box(*LAND_ENVELOPE))]
     transform_fn=Transformer.from_crs("EPSG:4326","EPSG:3035",always_xy=True).transform
-    shapes=[transform(transform_fn,g) for g in geoms]
+    shapes=[transform(transform_fn,g) for g in regional]
     kms=[s.area/1e6 for s in shapes]
     good=[(g,a) for g,a in zip(shapes,kms) if a>=0 and math.isfinite(a)]
     if len(good)<10:raise ValueError("SOURCE_STOP not enough independent island geom")
     shapes=[pair[0] for pair in good];kms=[pair[1] for pair in good]
     return shapes,kms,{
         "original_source_fragment_count":len(source_polygons),
+        "connected_components_in_original_whole_source_geometries_before_region_filter":unfiltered_world_components,
         "merged_connected_physical_landmasses_in_regional_envelope":len(shapes),
         "landmass_area_rule":"equal-area EPSG3035 on globally connected Natural Earth 10m polygons",
         "landmass_class_counts":dict(Counter(land_type(km) for km in kms))

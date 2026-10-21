@@ -40,3 +40,14 @@ def test_physical_coast_never_classifies_master_name():
     assert g.SMALL_MAX_KM2==1000
     assert g.LARGE_MIN_KM2==50000
     assert g.MIN_SMALL_PANELS==20
+
+def test_remote_island_inside_global_multipolygon_not_counted_inside_UK_envelope():
+    from shapely.geometry import box
+    # Worldwide original Natural Earth pieces contain many disconnected islands;
+    # their area must not be clipped, but overseas whole islands must be dropped.
+    pieces=[box(-5,53,-4,54),box(-4,53,-3,54)]
+    pieces.extend(box(-12+.5*i,51,-11.97+.5*i,51.03) for i in range(10))
+    pieces.append(box(130,40,130.2,40.2))  # out of UK/Irish survey ROI
+    sh,areas,meta=g.geometric_components(pieces)
+    assert meta["merged_connected_physical_landmasses_in_regional_envelope"]==11
+    assert meta["connected_components_in_original_whole_source_geometries_before_region_filter"]==12
