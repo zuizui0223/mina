@@ -40,6 +40,31 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V30–V31 East Antarctic original 2-island result (2026-10-21):**
+Original AADC Béchervaise and Verner 1996–2003 Adélie occupied-nest
+time series contain documented published fractional numeric census indices.
+The earlier V30 integer-only gate STOPPED honestly (only 2/10 common source
+years were exact integers). Independent published original field methodology
+confirms observer-averaged Béchervaise nest counts; V31 explicitly froze
+FLOATING publisher reported occupied-nest **indices**, preserving original
+year/island/stage identities without rounding. On all **8 adjacent annual
+windows**, original mean-within-source log1p index growth correlation is
+**r=+0.754** (LOO +0.516 to +0.863); same direction **5/8** windows,
+physical island units **n=2**. This is a genuine positive observational
+local-island response, NOT evidence of inter-island migration, sea-ice,
+resource effects or Antarctic-wide causality.
+
+Three separate publisher monitoring networks (NOAA King George/Livingston
+Gentoo +0.635, BAS Bird Island/Maiviken Gentoo +0.562, AADC
+Béchervaise/Verner Adélie +0.754) have positive nearby-island
+growth associations; these are selectively assembled, in different eras
+and measurement units, so **not** an inferential meta-analysis or island
+distance law. Broader APBP V27 consistency failed 10/22 direction strata;
+V26 shows interregional synchrony changes over time.
+- [V30/V31 original true-island comparison and critical methodology](docs/AADC_BV_OCCUPIED_NEST_V30_V31_RESULT.md)
+- [V30 strict-integer source QA and STOP](results/AADC_BV_INTEGER_NEST_SUPPORT_V30.json)
+- [V31 author-numeric nest-index result](results/AADC_BV_OCCUPIED_NEST_INDEX_GROWTH_V31.json)
+
 **New AADC V28–V29 TRUE PHYSICAL ISLAND data:** Publisher-original XLSX
 for Béchervaise, Verner and Petersen Adélie occupied nests was verified by
 SHA256. Post-1990 directly monitored incubation-stage original source has
