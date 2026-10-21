@@ -40,6 +40,18 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**New AADC V28–V29 TRUE PHYSICAL ISLAND data:** Publisher-original XLSX
+for Béchervaise, Verner and Petersen Adélie occupied nests was verified by
+SHA256. Post-1990 directly monitored incubation-stage original source has
+10 matched Béchervaise–Verner seasons and 8 consecutive annual comparisons,
+passing the preregistered source gate. All three islands share only 5 source
+seasons and 1 adjacent-year comparison: full three-island synchrony is NOT
+estimable from that record. Nearby-source season coverage is real, but
+not a panregional test. A separate original 1991–2019 Béchervaise demographic
+and weather/nearshore ice table was verified, but measures only one region.
+- [AADC original source and year support](docs/AADC_THREE_ISLAND_SOURCE_V28_V29_RESULT.md)
+- [V29 source year counts](results/AADC_THREE_ISLAND_SEASONS_V29.json)
+
 **2026-10-21 V27 genuine pan-regional database-based synchrony result:**
 Unlike earlier land/ice-constrained V6, V27 uses the upstream original
 SCAR–AntOBIS APBP Pygoscelis nest censuses directly. Exact same-month,
