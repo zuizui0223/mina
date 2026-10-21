@@ -14,9 +14,10 @@ def test_source_polygon_area_classification():
 
 def test_adjoining_same_landmass_fragments_are_unioned_before_area():
     pieces=[box(-5,53,-4,54),box(-4,53,-3,54),box(-7,57,-6.9,57.1)]
+    pieces.extend(box(-12+.5*i,51,-11.97+.5*i,51.03) for i in range(10))
     shapes,areas,metadata=g.geometric_components(pieces)
-    assert len(shapes)==2
-    assert metadata["original_source_fragment_count"]==3
+    assert len(shapes)==12
+    assert metadata["original_source_fragment_count"]==13
     assert max(areas)>2*min(areas)
 
 def test_point_distance_assign_requires_strict_unique_landmass():
