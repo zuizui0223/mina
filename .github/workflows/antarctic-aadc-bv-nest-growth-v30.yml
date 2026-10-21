@@ -1,0 +1,38 @@
+name: Antarctic V30 original Béchervaise–Verner separate-island nest growth
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/AADC_BV_ISLAND_NEST_GROWTH_V30.md'
+      - 'scripts/model_aadc_adelie_bv_nest_growth_v30.py'
+      - 'tests/test_aadc_adelie_bv_nest_growth_v30.py'
+      - '.github/workflows/antarctic-aadc-bv-nest-growth-v30.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_BV_ISLAND_NEST_GROWTH_V30.md'
+      - 'scripts/model_aadc_adelie_bv_nest_growth_v30.py'
+      - 'tests/test_aadc_adelie_bv_nest_growth_v30.py'
+      - '.github/workflows/antarctic-aadc-bv-nest-growth-v30.yml'
+  workflow_dispatch:
+jobs:
+  source_authenticated_two_real_east_Antarctic_islands:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install AADC source dependencies
+        run: python -m pip install requests openpyxl xlrd pytest
+      - name: Assert source date/occupied-nest, explicit-zero and fixed-year guards
+        run: python -m pytest -q tests/test_aadc_adelie_bv_nest_growth_v30.py
+      - name: Fetch original source and compare Béchervaise/Verner annual occupied nest counts
+        run: python scripts/model_aadc_adelie_bv_nest_growth_v30.py --json /tmp/AADC_ORIGINAL_ADÉLIE_TWO_ISLAND_GROWTH_V30.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-aadc-two-EastAntarctic-islands-Adelie-nests-V30
+          path: /tmp/AADC_ORIGINAL_ADÉLIE_TWO_ISLAND_GROWTH_V30.json
