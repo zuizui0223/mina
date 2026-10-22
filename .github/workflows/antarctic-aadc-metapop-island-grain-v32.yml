@@ -1,0 +1,40 @@
+name: Antarctic V32 authentic AADC 2009-2019 population-island-grain source audit
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/AADC_REGIONAL_BOOTSTRAP_ISLAND_GRAIN_V32.md'
+      - 'scripts/audit_aadc_regional_bootstrap_grain_v32.py'
+      - 'tests/test_aadc_regional_bootstrap_grain_v32.py'
+      - '.github/workflows/antarctic-aadc-metapop-island-grain-v32.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_REGIONAL_BOOTSTRAP_ISLAND_GRAIN_V32.md'
+      - 'scripts/audit_aadc_regional_bootstrap_grain_v32.py'
+      - 'tests/test_aadc_regional_bootstrap_grain_v32.py'
+      - '.github/workflows/antarctic-aadc-metapop-island-grain-v32.yml'
+  workflow_dispatch:
+jobs:
+  source_verified_real_island_identity_or_bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source readers and synthetic tests
+        run: python -m pip install pytest requests openpyxl
+      - name: Prove bootstrap draws are not islands and numeric data are not opened
+        run: python -m pytest -q tests/test_aadc_regional_bootstrap_grain_v32.py
+      - name: Verify official source API original XLSX and geographic identifier headers
+        run: |
+          python scripts/audit_aadc_regional_bootstrap_grain_v32.py \
+            --json /tmp/AADC_2009_2019_REGIONAL_SPATIAL_GRAIN_V32.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-2009-2019-regional-bootstrap-island-grain-v32
+          path: /tmp/AADC_2009_2019_REGIONAL_SPATIAL_GRAIN_V32.json
