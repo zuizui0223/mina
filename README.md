@@ -40,6 +40,21 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V35 new Ross Sea verified landmass support:** Original
+39-colony NZ aerial census geocoded to independent source SCAR 2026 coastline
+polygon features (original GIS SHA verified). Source-nearest land matches
+resolve FOUR physical source-named islands with >=5 strictly consecutive
+same-colony annual comparisons: Ross, Coulman, Beaufort, Inexpressible.
+There are **13** same-calendar annual starts with >=2 separate candidate
+land-polygons, including 7 starts with >=3; only source-count
+availability, no biological effects. Ross 4 GIS-resolved subcolonies
+are not four islands; original minute-level source coordinates leave
+17 near-unique matches provisional, 8 exact, 8 unresolved. This is
+enough to separately freeze true island-group census-change analysis,
+not a climate or movement mechanism.
+- [V35 original coastline polygon & cohort result](docs/NZ_ROSS_SEA_SCAR_ISLAND_GEO_V35_RESULT.md)
+- [V35 actual geographic IDs, unmatched sites and years](results/NZ_ROSS_SEA_SCAR_ISLAND_GEO_V35.json)
+
 **V34 2026 Ross Sea source colony-to-named-island geography:** 33 of
 39 original Adélie census colony names exactly match author location IDs.
 Eight *singular* named island candidates exist; in particular
