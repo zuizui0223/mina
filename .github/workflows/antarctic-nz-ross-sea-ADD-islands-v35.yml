@@ -1,0 +1,40 @@
+name: Antarctic V35 original SCAR polygon Ross Sea census physical island verification
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/NZ_ROSS_SEA_GIS_PHYSICAL_ISLANDS_V35.md'
+      - 'scripts/audit_nz_ross_sea_add_island_geometry_v35.py'
+      - 'tests/test_nz_ross_sea_add_island_geometry_v35.py'
+      - '.github/workflows/antarctic-nz-ross-sea-ADD-islands-v35.yml'
+  pull_request:
+    paths:
+      - 'contracts/NZ_ROSS_SEA_GIS_PHYSICAL_ISLANDS_V35.md'
+      - 'scripts/audit_nz_ross_sea_add_island_geometry_v35.py'
+      - 'tests/test_nz_ross_sea_add_island_geometry_v35.py'
+      - '.github/workflows/antarctic-nz-ross-sea-ADD-islands-v35.yml'
+  workflow_dispatch:
+jobs:
+  original_NZ_colony_SCAR_landpolygon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 24
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source and geospatial tools
+        run: python -m pip install pytest requests shapely pyshp pyproj
+      - name: Check independent polygon membership without population outcomes
+        run: python -m pytest -q tests/test_nz_ross_sea_add_island_geometry_v35.py
+      - name: Download original SCAR coast and NZ colony coordinates; preserve true island ID and date support
+        run: |
+          python scripts/audit_nz_ross_sea_add_island_geometry_v35.py \
+            --json /tmp/NZ_ROSS_SEA_2026_SCAR_SEPARATE_ISLAND_GIS_V35.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-NZ-2026-RossSea-SCAR-island-polygon-metadata-v35
+          path: /tmp/NZ_ROSS_SEA_2026_SCAR_SEPARATE_ISLAND_GIS_V35.json
