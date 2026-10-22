@@ -40,6 +40,20 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V34 2026 Ross Sea source colony-to-named-island geography:** 33 of
+39 original Adélie census colony names exactly match author location IDs.
+Eight *singular* named island candidates exist; in particular
+Ross Island has 6 nested colony census series and Coulman Island 4.
+Four original source-named island groups have >=5 same-colony annual
+comparison windows, and **14** annual starts contain >=2 concurrent
+named-island observations. Strict >=2 colony series in each of 2
+named islands occurs in only **4** years (predefined >=6 requirement
+FAIL); no within-vs-between COLONY effect is allowed. No raw original
+census count values used; source place names still need separate coastline
+boundary and method verification.
+- [V34 exact publisher geographic ID/coverage audit](docs/NZ_ROSS_SEA_ISLAND_CROSSWALK_V34_RESULT.md)
+- [V34 source named island and year support JSON](results/NZ_ROSS_SEA_2026_ISLAND_CROSSWALK_V34.json)
+
 **New 2026 source V33 — Ross Sea 39-colony original aerial census:**
 DOI 10.7931/kf06-x745, original February 2026 census XLSX verified against
 publisher MD5 and SHA. 39 original colony identifiers × 44 years (1981–2024);
