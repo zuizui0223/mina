@@ -40,6 +40,18 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**New 2026 source V33 — Ross Sea 39-colony original aerial census:**
+DOI 10.7931/kf06-x745, original February 2026 census XLSX verified against
+publisher MD5 and SHA. 39 original colony identifiers × 44 years (1981–2024);
+27 colony series have >=5 source observations, 41 source years >=5 monitored
+colonies, and 305 same-colony strictly consecutive-year observation
+opportunities. Original 2020 observations are **missing surveys**, not zero
+breeding pairs. Some monitored colonies are nested on Ross Island; 39
+colonies are NOT 39 independent islands. Location XLSX and method PDF
+were also publisher-verified. No animal count magnitudes/effects opened.
+- [V33 actual 2026 original data and QA](docs/NZ_ROSS_SEA_ORIGINAL_CENSUS_V33_RESULT.md)
+- [V33 source + year coverage receipt](results/NZ_ROSS_SEA_39_COLONY_SOURCE_QA_V33.json)
+
 **2026-10-22 V32 regional bootstrap ≠ replicated islands:** Original AADC
 western Mac. Robertson Land 2009/10 and 2019/20 XLSX SHA-verified.
 Its 1001-row census-estimate sheet lists replicate and regional
