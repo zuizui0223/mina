@@ -6,10 +6,10 @@ import audit_nz_ross_sea_island_groups_v34 as a
 import audit_nz_ross_sea_census_source_v33 as base
 
 def census():
-    m={0:{0:"Colony",**{i+1:1981+i for i in range(15)}}}
+    m={0:{0:"Colony",**{i+1:1981+i for i in range(44)}}}
     for i,name in enumerate(("Cape Bird North","Cape Bird Middle","Cape Anne",
                               "Coulman Island North","Cape Adare","Foyn Island")):
-        m[i+1]={0:name,**{j:100+i+j for j in range(1,16)}}
+        m[i+1]={0:name,**{j:100+i+j for j in range(1,45) if (1981+j-1)!=2020}}
     return m
 
 def locations():
@@ -34,7 +34,7 @@ def test_source_name_exact_crosswalk_and_different_island_units():
     assert x["exact_colony_location_ID_matches"]==6
     assert x["n_distinct_explicit_named_source_island_candidate_groups"]==3
     assert x["n_named_islands_with_ge5_original_adjacent_growth_windows"]==3
-    assert x["n_years_with_ge2_named_islands"]==14
+    assert x["n_years_with_ge2_named_islands"]==41
     assert x["source_named_island_panel_gate"]
     assert x["stricter_multi_colony_island_comparison_gate"]
     assert x["original_count_magnitudes_opened"]==0
