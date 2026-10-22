@@ -40,6 +40,16 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**2026-10-22 V32 regional bootstrap ≠ replicated islands:** Original AADC
+western Mac. Robertson Land 2009/10 and 2019/20 XLSX SHA-verified.
+Its 1001-row census-estimate sheet lists replicate and regional
+O.N.bootstrap.estimates fields, but no verified colony/island IDs.
+1000 bootstrap realizations are uncertain versions of source estimates,
+NOT 1000 independent islands. This archive cannot directly expand
+V31's 2-island Adélie annual comparison into a 1000-island macro law.
+- [V32 source-audited spatial grain and stop](docs/AADC_METAPOP_ISLAND_GRAIN_V32_RESULT.md)
+- [V32 original SHA/header receipt](results/AADC_METAPOP_2009_2019_SOURCE_GRAIN_V32.json)
+
 **V30–V31 East Antarctic original 2-island result (2026-10-21):**
 Original AADC Béchervaise and Verner 1996–2003 Adélie occupied-nest
 time series contain documented published fractional numeric census indices.
