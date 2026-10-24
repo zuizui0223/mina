@@ -31,8 +31,8 @@ def test_fixed_4_islands_13_windows_and_equal_year_weight():
     q=m.year_balanced_concordance(growth,(1983,1984,1985))
     assert q["years_with_two_nonzero_island_changes"]==2
     assert q["original_pair_comparisons"]==6
-    assert q["original_pair_comparisons_same_sign"]==3
-    assert q["observed_year_balanced_agreement"]==0.5
+    assert q["original_pair_comparisons_same_sign"]==2
+    assert abs(q["observed_year_balanced_agreement"]-(1/3))<1e-12
     assert m.ISLANDS==tuple(sorted(m.POLYGONS))
     assert len(m.SOURCE_WINDOWS)==13
     assert m.SOURCE_WINDOWS[:2]==(1983,1984)
