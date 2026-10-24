@@ -26,7 +26,7 @@ Original within-colony annual log(1+reported occupied nest count) changes were c
 
 The observed 61.5% is within the descriptive shuffled reference range. The shuffling preserves island-specific sign prevalence and original observed-year availability, but **not temporal autocorrelation**, so it does not provide a defensible population-level ecological p-value. **Do not claim a statistically unusual shared island synchrony law.**
 
-The signed observational response is *mixed*: five calendar starts (1985, 1987, 1988, 1989, 1990, 2004, 2005) have unanimous same-direction among available islands, whereas 1983, 1984 and 1992 have opposite paired directions. Other years have partial agreement. That is descriptive temporal heterogeneity, not identified climate regime changes.
+The signed observational response is *mixed*: seven calendar starts (1985, 1987, 1988, 1989, 1990, 2004, 2005) have unanimous same-direction among available islands, whereas 1983, 1984 and 1992 have opposite paired directions. Other years have partial agreement. That is descriptive temporal heterogeneity, not identified climate regime changes.
 
 ## All six fixed original island pair comparisons
 
