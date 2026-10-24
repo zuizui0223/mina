@@ -1,0 +1,40 @@
+name: Antarctic V38 original MAPPPD v5 public site georeference against SCAR highres
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/NZ_ROSS_SEA_MAPPPD_V5_GEOSOURCE_V38.md'
+      - 'scripts/audit_mapppd_v5_ross_geo_v38.py'
+      - 'tests/test_mapppd_v5_ross_geo_v38.py'
+      - '.github/workflows/antarctic-mapppd-v5-ross-georeference-v38.yml'
+  pull_request:
+    paths:
+      - 'contracts/NZ_ROSS_SEA_MAPPPD_V5_GEOSOURCE_V38.md'
+      - 'scripts/audit_mapppd_v5_ross_geo_v38.py'
+      - 'tests/test_mapppd_v5_ross_geo_v38.py'
+      - '.github/workflows/antarctic-mapppd-v5-ross-georeference-v38.yml'
+  workflow_dispatch:
+jobs:
+  independent_publisher_geographic_sites:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source geometry and synthetic tests
+        run: python -m pip install pytest requests pyshp shapely pyproj
+      - name: Test frozen cross-provider source site names and v5 metadata
+        run: python -m pytest -q tests/test_mapppd_v5_ross_geo_v38.py
+      - name: Retrieve official MAPPPD v5 site location API and original 2026 73MB SCAR land geometry
+        run: |
+          python scripts/audit_mapppd_v5_ross_geo_v38.py \
+            --json /tmp/NZ_ROSS_SEA_MAPPPD_V5_OFFICIAL_SITE_GIS_V38.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: official-MAPPPD-v5-ross-colony-site-location-crosswalk-v38
+          path: /tmp/NZ_ROSS_SEA_MAPPPD_V5_OFFICIAL_SITE_GIS_V38.json
