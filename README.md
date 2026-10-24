@@ -40,6 +40,21 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V38 NEW MAPPPD v5 original published locality API (21 Oct 2026):** 10
+pre-fixed V35 Ross Sea colonies match source MAPPPD v5 site IDs (7 exact
+names and 3 abbreviated Coulman names). Independent published WGS84
+site *centers* vs original 17,269-polygon highres SCAR source leave
+**2 islands with >=5 consecutive source years and 5 shared distinct
+island windows** under exact source names/center-contained land.
+Beaufort API georeference is offshore but within 2 km; Coulman site
+abbreviations are not independent identity proof. Full hypothetical
+250m/1000m disk containment gives 0 supported multi-island windows.
+Data supplier/source location DOES NOT independently establish field GPS
+accuracy; V36 geographic robust inference stays HOLD. Original V36
+animal outcomes not re-fitted or reselected.
+- [V38 second-source site location and SCAR result](docs/NZ_ROSS_SEA_MAPPPD_V5_GEO_SOURCE_V38_RESULT.md)
+- [V38 original JSON location/metadata crosswalk](results/NZ_ROSS_SEA_MAPPPD_V5_GEO_SOURCE_QA_V38.json)
+
 **2026-10-24 V38 independent APBP geography also FAILS as GPS repair:**
 The original 2023 APBP/AntOBIS Darwin Core v2.3 4,055 Event rows/719
 locationIDs were source-SHA verified. Only **21/33** NZ original Ross Sea
