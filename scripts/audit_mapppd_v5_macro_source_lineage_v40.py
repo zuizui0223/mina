@@ -11,7 +11,8 @@ import audit_nz_ross_sea_census_source_v33 as nz
 SOURCE={
  "release":"https://www.penguinmap.com/api/v1/release/?format=json",
  "sites":"https://www.penguinmap.com/api/v1/sites/?format=csv",
- "observations":"https://www.penguinmap.com/api/v1/observations/?format=csv"}
+ "observations_p1":"https://www.penguinmap.com/api/v1/observations/?format=csv&page_size=5000&page=1",
+ "observations_p2":"https://www.penguinmap.com/api/v1/observations/?format=csv&page_size=5000&page=2"}
 VERSION="5.0"
 DATE="2026-10-21"
 N_SITE=729
@@ -188,7 +189,13 @@ def main():
         if not str(release.get("license","")).startswith("CC BY 4.0"):
             raise ValueError("SOURCE_STOP original licence changed")
         sites=index_sites(csvrows(downloads["sites"][0],SITE_COLUMNS))
-        cnt=csvrows(downloads["observations"][0],OBS_COLUMNS)
+        first=csvrows(downloads["observations_p1"][0],OBS_COLUMNS)
+        second=csvrows(downloads["observations_p2"][0],OBS_COLUMNS)
+        if len(first)!=5000 or len(second)!=(N_OBS-5000):
+            raise ValueError("SOURCE_STOP v5 original two-page count mismatch: "+str(len(first))+" + "+str(len(second)))
+        if int(first[-1]["id"])+1!=int(second[0]["id"]):
+            raise ValueError("SOURCE_STOP v5 original pagination ID discontinuity")
+        cnt=first+second
         coverage,quality,good=support(cnt,sites)
         with requests.Session() as session:
             nzfiles,nzmeta=nz.ckandownloads(session)

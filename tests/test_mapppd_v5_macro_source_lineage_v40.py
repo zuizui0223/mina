@@ -35,3 +35,8 @@ def test_missing_not_zero_and_literal_source_year():
     assert not m.numeric_present("-99")
     assert m.valid_year("2001")==2001 and m.valid_year("unknown") is None
     assert m.MIN_PAIRS==50 and m.MIN_SITES==20 and m.MIN_REGIONS==4
+
+def test_source_MAPPD5_observation_pagination_exact_two_pages():
+    assert "page_size=5000&page=1" in m.SOURCE["observations_p1"]
+    assert "page_size=5000&page=2" in m.SOURCE["observations_p2"]
+    assert m.N_OBS==5487
