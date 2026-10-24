@@ -1,0 +1,40 @@
+name: Antarctic V36 true Ross Sea physical-island original Adélie breeding growth
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/NZ_ROSS_SEA_GIS_ISLAND_GROWTH_V36.md'
+      - 'scripts/model_nz_ross_sea_gis_island_growth_v36.py'
+      - 'tests/test_nz_ross_sea_gis_island_growth_v36.py'
+      - '.github/workflows/antarctic-nz-ross-sea-island-growth-v36.yml'
+  pull_request:
+    paths:
+      - 'contracts/NZ_ROSS_SEA_GIS_ISLAND_GROWTH_V36.md'
+      - 'scripts/model_nz_ross_sea_gis_island_growth_v36.py'
+      - 'tests/test_nz_ross_sea_gis_island_growth_v36.py'
+      - '.github/workflows/antarctic-nz-ross-sea-island-growth-v36.yml'
+  workflow_dispatch:
+jobs:
+  original_NZ_ross_sea_real_island_census_growth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public-source and synthetic test requirements
+        run: python -m pip install pytest requests
+      - name: Test fixed four-island original site/year gates, missingness and sign diagnostics
+        run: python -m pytest -q tests/test_nz_ross_sea_gis_island_growth_v36.py
+      - name: Download exact 2026 publisher census and measure only original V35 GIS-island year-coherence
+        run: |
+          python scripts/model_nz_ross_sea_gis_island_growth_v36.py \
+            --json /tmp/NZ_ROSS_SEA_GIS_PHYSICAL_ISLAND_GROWTH_V36.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-nz-ross-sea-2026-four-SCAR-landmasses-gentoo-NO-adelie-v36
+          path: /tmp/NZ_ROSS_SEA_GIS_PHYSICAL_ISLAND_GROWTH_V36.json
