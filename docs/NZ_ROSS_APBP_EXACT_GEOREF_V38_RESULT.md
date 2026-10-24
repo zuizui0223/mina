@@ -21,3 +21,11 @@ Next independent geography evidence can separate *official named island identity
 - [V38 source-locked outcome-blind contract](../contracts/ROSS_APBP_EXACT_GEOREFERENCE_SOURCE_V38.md)
 - [Exact all-33-site APBP source match, uncertainty, spatial disagreement result](../results/NZ_ROSS_APBP_EXACT_GEOREF_QA_V38.json)
 - [V37 official high-res coastline position uncertainty](NZ_ROSS_SEA_HIGHRES_PRECISION_V37_RESULT.md)
+
+## 2026-10-24 methodological correction — APBP polygon extent is not a GPS error estimate
+
+The prior V38 language treated APBP Darwin Core coordinateUncertaintyInMeters as an original field-GPS POSITIONAL ACCURACY or measured localization error. This was **incorrect**. The APBP v2.3 original dataset description explicitly defines the Adélie measure as the **average distance from the vertices of a polygon known to contain the colony to the colony site's reported centre coordinates**, rather than a GPS error distribution. Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10848690/ (the data dictionary for coordinateUncertaintyInMeters); original DOI 10.48361/zftxkr.
+
+Therefore the earlier 14 names with values above the frozen 250 m cutoff **cannot be counted as 14 GPS-imprecise coordinates on that basis**. They are 14 original source COLONY-FOOTPRINT size/uncertainty metrics above an ad hoc 250 m sampling threshold, and that threshold cannot certify or reject independent field-position accuracy. The other seven exact-name original APBP source centres disagree with the coarse NZ source centre by more than 3 km; these are genuine SOURCE CENTRE discrepancies, but may reflect different colony geometries, not necessarily erroneous nest GPS.
+
+V38 original numeric receipt, source hash, 21 exact original names, source-site annual roster and original hard source gate remain **unchanged for reproducibility**. The V38 result is reinterpreted narrowly as **NO INDEPENDENTLY VALIDATED HIGH-PRECISION GPS SOURCE** (not evidence of 14 inaccurate field GPS sites). This repair was made without looking at any original NZ/MAPPPD nesting count effects, choosing different original site IDs, or refitting V36. V39 independently validates four named landmasses, not colony georeference accuracy.

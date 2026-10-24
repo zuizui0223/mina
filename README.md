@@ -40,6 +40,15 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V38 METHOD CORRECTION (2026-10-24):** APBP source
+coordinateUncertaintyInMeters for Adélie colonies is calculated from
+mean colony-polygon-vertex-to-centre distance, NOT a reported GPS
+measurement-error radius. V38's 14 >250m records therefore cannot
+establish 14 imprecise field GPS points; the independent-GPS precision
+claim remains HOLD, while SCAR V39 confirms four categorical island
+names. Frozen old V38 test/receipt is preserved.
+- [V38 repaired original coordinate-metric interpretation](docs/NZ_ROSS_APBP_EXACT_GEOREF_V38_RESULT.md)
+
 **V39 SCAR categorical LANDMASS IDENTITY resolved (post-V37/38):**
 Four publisher-original named island groups **Ross / Beaufort / Coulman /
 Inexpressible** are independently classified "Island (5)" in the official

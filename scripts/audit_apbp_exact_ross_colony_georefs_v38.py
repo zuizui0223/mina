@@ -20,6 +20,10 @@ SOURCE_NZ_CENSUS_SHA="23a95d9e693dd095e085534f2c215b79880a72fe9cfb5a59337501192d
 SOURCE_NZ_LOCATION_SHA="d744e7493f85564f1b634f390a5e4a976b2d5359a6f93cdd9ef345639661b6a6"
 V35=Path(__file__).resolve().parents[1]/"results"/"NZ_ROSS_SEA_SCAR_ISLAND_GEO_V35.json"
 FROZEN_UNITS=("Beaufort Island","Coulman Island","Inexpressible Island","Ross Island")
+# Historical V38 cutoff retained only for exact rerun. The APBP field is
+# mean original polygon-vertex-to-colony-centre distance (footprint extent),
+# NOT independently calibrated GPS coordinate error; >250m does NOT prove
+# poorly surveyed geolocation. See V38_RESULT methodological correction.
 MAX_SOURCE_UNCERT_M=250.
 MAX_REPEATED_SITE_DRIFT_M=250.
 MAX_COARSE_POINT_DIFFERENCE_M=3000.
