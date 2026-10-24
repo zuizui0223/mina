@@ -40,6 +40,21 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**2026-10-24 V38 independent APBP geography also FAILS as GPS repair:**
+The original 2023 APBP/AntOBIS Darwin Core v2.3 4,055 Event rows/719
+locationIDs were source-SHA verified. Only **21/33** NZ original Ross Sea
+colony names had an exact APBP locality name/site ID; **14/21** have
+publisher-stated source coordinate uncertainty >250 m, and the other
+**7/21** diverge by >3 km from the original NZ author colony location.
+Therefore ZERO source sites satisfy the pre-frozen precision+identity
+criteria, and zero independent original GIS-island annual comparison
+windows are recovered. We did not substitute these published positions
+for the original uncertain coordinates and did not open nesting outcomes.
+APBP may republish the same NZ colony-year records: NOT independent
+ecological replication.
+- [V38 exact original APBP georeference QA](docs/NZ_ROSS_APBP_EXACT_GEOREF_V38_RESULT.md)
+- [V38 all original source positions and precision](results/NZ_ROSS_APBP_EXACT_GEOREF_QA_V38.json)
+
 **2026-10-24 V37 independent SCAR HIGH RESOLUTION geometry STOP:**
 Original highres ADD v7.12 Shapefile ZIP 72,864,027 bytes source SHA256
 66d82fa69f86eb8dbe8b04f01505cb2129feafec608455459ee4ed19d1dc38d4
