@@ -40,6 +40,21 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**2026-10-24 V37 independent SCAR HIGH RESOLUTION geometry STOP:**
+Original highres ADD v7.12 Shapefile ZIP 72,864,027 bytes source SHA256
+66d82fa69f86eb8dbe8b04f01505cb2129feafec608455459ee4ed19d1dc38d4
+contains 17,269 valid source LAND polygons. But published NZ Ross Sea Adélie
+colony coordinates are rounded to arcminutes, not new GPS from this map:
+only **2 islands / 5 source comparison years** if source point centers
+must be on land. Requiring entire original ±0.5' OR ±1' plausible position
+rectangle inside one land polygon yields only **1 island / ZERO shared
+comparison years** (Cape Royds on Ross). Geography is therefore NOT
+independently robust despite a finer map. This does NOT refute actual
+nesting on Beaufort/Coulman/Inexpressible, nor alter the V36 61.5%
+source-named island result. Original population outcome cells stayed closed.
+- [V37 source highres original GIS + positional uncertainty decision](docs/NZ_ROSS_SEA_HIGHRES_PRECISION_V37_RESULT.md)
+- [V37 publisher SHA and audited source positions](results/NZ_ROSS_SEA_HIGHRES_PRECISION_V37.json)
+
 **2026-10-24 V36 ORIGINAL NEW ECOLOGICAL RESULT — heterogeneity among
 SCAR land-polygon matched Ross Sea Adélie breeding units.** NZ publisher
 2026 39-colony aerial census was restricted to four named independent
