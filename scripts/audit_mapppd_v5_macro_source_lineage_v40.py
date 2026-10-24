@@ -80,7 +80,7 @@ def index_sites(rows,require_n=True):
     return sites
 
 def support(rows,sites,require_n=True):
-    if require_n and len(rows)!=N_OBS:raise ValueError("SOURCE_STOP original 5487 observations changed")
+    if require_n and len(rows)!=N_OBS:raise ValueError("SOURCE_STOP original observation CSV row count differs from homepage 5487: observed="+str(len(rows))+" expected="+str(N_OBS))
     seen=set();groups=defaultdict(list);sources=Counter();stage=Counter();recent=Counter()
     for r in rows:
         oid=str(r["id"]).strip();site=r["site_id"].strip()
