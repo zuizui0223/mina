@@ -40,6 +40,20 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V39 SCAR categorical LANDMASS IDENTITY resolved (post-V37/38):**
+Four publisher-original named island groups **Ross / Beaufort / Coulman /
+Inexpressible** are independently classified "Island (5)" in the official
+SCAR Composite Gazetteer (four distinct authenticated national gazetteer
+record IDs). The original colony-site names and 13 concurrent annual
+windows remain unchanged. This supports the NOMINAL existence of four
+separate islands without promoting original ±1-arcminute colony site
+coordinates into accurate mapped nesting positions. V37/38 actual
+high-resolution point-location sensitivity remains FAILED. Island
+biological r's, the 61.5% same-direction V36 description, and causation
+limits remain unchanged.
+- [V39 official SCAR island name ID vs nest GPS evidence](docs/NZ_ROSS_SEA_SCAR_CGA_ISLAND_IDENTITY_V39_RESULT.md)
+- [V39 four authenticated original gazetteer name SHA receipts](results/NZ_ROSS_SEA_SCAR_CGA_FOUR_ISLAND_IDENTITIES_V39.json)
+
 **V38 NEW MAPPPD v5 original published locality API (21 Oct 2026):** 10
 pre-fixed V35 Ross Sea colonies match source MAPPPD v5 site IDs (7 exact
 names and 3 abbreviated Coulman names). Independent published WGS84
