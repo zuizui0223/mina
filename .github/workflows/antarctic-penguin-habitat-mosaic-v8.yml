@@ -1,0 +1,62 @@
+name: Antarctic penguin V8 original ice-free ecosystems and sympatric nest balance
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/APBP_ICEFREE_ECOSYSTEM_COEXISTENCE_V8.md'
+      - 'scripts/evaluate_apbp_icefree_coexistence_v8.py'
+      - 'tests/test_apbp_icefree_coexistence_v8.py'
+      - '.github/workflows/antarctic-penguin-habitat-mosaic-v8.yml'
+  pull_request:
+    paths:
+      - 'contracts/APBP_ICEFREE_ECOSYSTEM_COEXISTENCE_V8.md'
+      - 'scripts/evaluate_apbp_icefree_coexistence_v8.py'
+      - 'tests/test_apbp_icefree_coexistence_v8.py'
+      - '.github/workflows/antarctic-penguin-habitat-mosaic-v8.yml'
+  workflow_dispatch:
+jobs:
+  independent-abiotic-terrestrial-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original georaster and analysis library
+        run: python -m pip install pytest requests numpy pandas pyproj rasterio pyshp
+      - name: Test original within-Event coexistence, habitat source and training-only model
+        run: python -m pytest -q tests/test_apbp_icefree_coexistence_v8.py
+      - name: Retrieve already-verified original APBP v2.3 occurrence-linked measurements
+        uses: actions/download-artifact@v4
+        with:
+          name: apbp-original-six-penguin-records-joined-SCHEMA-NO-EFFECT
+          repository: zuizui0223/mina
+          run-id: 39091772742
+          github-token: ${{ github.token }}
+          path: /tmp/public-input
+      - name: Retrieve already-verified original APBP × high-res coastline site uncertainty
+        uses: actions/download-artifact@v4
+        with:
+          name: apbp-high-res-2026-SCAR-land-source-uncertainty-only
+          repository: zuizui0223/mina
+          run-id: 39200969390
+          github-token: ${{ github.token }}
+          path: /tmp/public-input
+      - name: Download independently published Zenodo Antarctic 100m terrestrial Tier1 ecotypes and evaluate
+        run: |
+          python scripts/evaluate_apbp_icefree_coexistence_v8.py \
+            --population /tmp/public-input/APBP_ALL_ORIGINAL_MEASUREMENTS_V2.csv \
+            --high-land /tmp/public-input/APBP_719_HIGHRES_COAST_MATCH_V4.csv \
+            --out-json /tmp/APBP_TIER1_COEXISTENCE_ECOLOGY_RESULTS_V8.json \
+            --out-csv /tmp/APBP_TIER1_HABITAT_BY_SITE_SPECIESPAIR_V8.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apbp-original-antarctic-abiotic-ecosystems-sympatry-v8
+          path: |
+            /tmp/APBP_TIER1_COEXISTENCE_ECOLOGY_RESULTS_V8.json
+            /tmp/APBP_TIER1_HABITAT_BY_SITE_SPECIESPAIR_V8.csv

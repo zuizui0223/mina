@@ -1,0 +1,88 @@
+{
+  "status": "MAPPPD_V44_CURRENT_PUBLIC_CENSUS_EXTENSION_QA_ONLY",
+  "publisher": "Oceanites MAPPPD",
+  "source_download_all_url": "https://www.penguinmap.com/mapppd/DownloadAll/",
+  "access_time_utc": "2026-10-19T06:11:43.421806+00:00",
+  "official_portal_product": "MAPPPD v4.4, public bulk count CSV through 2024/25",
+  "source_raw_csv_SHA256": "5d1a5a3f136aeb999a5b429b2d8593f72e3c37b0a38fc15cf30eceb29daf10c4",
+  "source_original_bytes": 2114238,
+  "original_source_columns": [
+    "site_name",
+    "site_id",
+    "cammlr_region",
+    "longitude_epsg_4326",
+    "latitude_epsg_4326",
+    "common_name",
+    "day",
+    "month",
+    "year",
+    "season_starting",
+    "penguin_count",
+    "accuracy",
+    "count_type",
+    "vantage",
+    "reference"
+  ],
+  "original_csv_count_rows": 5487,
+  "original_distinct_site_ids": 729,
+  "source_siteIDs_shared_with_APBP_v2_3": 706,
+  "source_siteIDs_absent_from_APBP_v2_3": 23,
+  "APBP_original_site_ID_count": 711,
+  "source_species_record_rows": {
+    "Pygoscelis adeliae": 1920,
+    "Pygoscelis antarcticus": 1507,
+    "Eudyptes chrysolophus": 124,
+    "Pygoscelis papua": 1585,
+    "Aptenodytes patagonicus": 13,
+    "Aptenodytes forsteri": 338
+  },
+  "source_count_type_record_rows": {
+    "nests": 4055,
+    "adults": 582,
+    "chicks": 850
+  },
+  "source_survey_accuracy_values": {
+    "1": 3540,
+    "2": 932,
+    "3": 377,
+    "4": 239,
+    "5": 376,
+    "<EMPTY>": 23
+  },
+  "source_date_quality": {
+    "NO_UNAMBIGUOUS_DEC_JAN_FEB_DATE": 1886,
+    "MATCHED_EXACT_MONTH_VS_SEASON": 3578
+  },
+  "source_metadata_holds": {
+    "INVALID_COUNT": 23
+  },
+  "source_breeding_nest_rows_in_2022_2023_2024": {
+    "2022": 44,
+    "2023": 121,
+    "2024": 79
+  },
+  "n_all_site_species_season_groups": 3399,
+  "n_new_2022_2024_any_nest_groups": 154,
+  "n_new_2022_2024_duplicate_nest_groups": 45,
+  "original_APBP_v2_3_exact_nest_count_source_overlaps": 2265,
+  "same_site_species_season_count_conflicts_with_original": 113,
+  "n_strict_primary_species_dated_single_survey_seasons": 2010,
+  "n_strict_post_2022_primary_species_site_years": 102,
+  "n_distinct_primary_site_species_with_new_2022_2024_records": 80,
+  "n_primary_site_species_with_2plus_distinct_new_2022_2024_seasons": 16,
+  "n_primary_strict_consecutive_pairs_ending_2022_to_2024": 27,
+  "n_primary_strict_consecutive_pairs_bridging_2021_to_2022": 10,
+  "original_census_data_were_not_inferred_zero": true,
+  "ecological_effect_models_fitted": 0,
+  "not_a_replicate_of_apbp_v23": "Source overlaps and 2022+ genuinely newer years must be separated before model fit.",
+  "terms": "MAPPPD copyright terms require source attribution and no unlicensed commercial copying.",
+  "derivative_coverage_csv_sha256": "6d9e2ee1a442564038285cbec6d73e2cf79d3fd5d48761b2dbfb3c6734afe845",
+  "derived_source_rows_with_valid_metadata": 5464,
+  "provenance": {
+    "run_url": "https://github.com/zuizui0223/mina/actions/runs/39208414355",
+    "source_run_date": "2026-10-19",
+    "study": "Public updated Oceanites bulk CSV — source coverage only after original APBP V6 effect failure",
+    "older_apbp_site_count_from_joined_measurement_rows_not_all_719_Event_sites": true,
+    "biological_effects_not_refitted": true
+  }
+}

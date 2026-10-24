@@ -1,0 +1,54 @@
+name: Antarctic V14 original eight-seabird nesting-guild x island-area field test
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/AADC_EAST_ANTARCTIC_NESTING_GUILD_AREA_V14.md'
+      - 'scripts/fit_aadc_nesting_guild_island_area_v14.py'
+      - 'tests/test_aadc_nesting_guild_island_area_v14.py'
+      - '.github/workflows/antarctic-aadc-guild-island-area-v14.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_EAST_ANTARCTIC_NESTING_GUILD_AREA_V14.md'
+      - 'scripts/fit_aadc_nesting_guild_island_area_v14.py'
+      - 'tests/test_aadc_nesting_guild_island_area_v14.py'
+      - '.github/workflows/antarctic-aadc-guild-island-area-v14.yml'
+  workflow_dispatch:
+jobs:
+  original-survey-conditional-nesting-guild-effect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 23
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numeric and original Antarctic projection tools
+        run: python -m pip install pytest numpy pandas scikit-learn pyproj
+      - name: Verify original surveyed presence/direct absence and field-area model with invented sites
+        run: python -m pytest -q tests/test_aadc_nesting_guild_island_area_v14.py
+      - name: Retrieve source-hashed original 2025 AADC geographic site and eight seabird survey records
+        uses: actions/download-artifact@v4
+        with:
+          name: aadc-eight-original-species-sites-observations-source-v13-NO-MODEL
+          repository: zuizui0223/mina
+          run-id: 39268125503
+          github-token: ${{ github.token }}
+          path: /tmp/public-original
+      - name: Fit first locked site-area and nesting-guild comparisons holding out entire Antarctic geographic regions
+        run: |
+          python scripts/fit_aadc_nesting_guild_island_area_v14.py \
+            --sites /tmp/public-original/AADC_ORIGINAL_7785_GEOGRAPHIC_SITES_V13.csv \
+            --surveys /tmp/public-original/AADC_ORIGINAL_33107_BREEDING_SEARCHES_V13.csv \
+            --json /tmp/AADC_GUILD_ISLAND_AREA_SPATIAL_CV_V14.json \
+            --csv /tmp/AADC_ELIGIBLE_SITE_SPECIES_SEASONS_V14.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-seven-flying-seabirds-island-area-guild-v14
+          path: |
+            /tmp/AADC_GUILD_ISLAND_AREA_SPATIAL_CV_V14.json
+            /tmp/AADC_ELIGIBLE_SITE_SPECIES_SEASONS_V14.csv

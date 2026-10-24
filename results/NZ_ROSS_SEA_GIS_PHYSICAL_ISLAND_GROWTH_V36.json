@@ -1,0 +1,421 @@
+{
+  "status": "V36_ORIGINAL_ROSS_SEA_GIS_GROWTH_AUDIT_EXECUTED",
+  "source_DOI": "https://doi.org/10.7931/kf06-x745",
+  "original_census_sha256": "23a95d9e693dd095e085534f2c215b79880a72fe9cfb5a59337501192dae03e6",
+  "original_colony_location_sha256": "d744e7493f85564f1b634f390a5e4a976b2d5359a6f93cdd9ef345639661b6a6",
+  "V35_original_independent_SCAR_ADD_coast_sha256": "b0172d698436f871f49339cea5c7155e3d98648360521cc4bbc44a026c0edc38",
+  "source_2026_CKAN_coverage_QA": {
+    "source_rows_with_colony_name": 39,
+    "duplicate_source_colony_ids_dropped": [],
+    "source_colony_source_years": 44,
+    "original_2020_count_values_present": 0,
+    "2020_missing_survey_not_zero": true
+  },
+  "outcome_method": "same-colony log1p reported nest/breeding-pair change; per-island equal colony mean",
+  "frozen_design": "contracts/NZ_ROSS_SEA_GIS_ISLAND_GROWTH_V36.md",
+  "original_GIS_island_ecology": {
+    "status": "V36_ROSS_SEA_GIS_SOURCE_NAMED_ISLAND_GROWTH_CONCORDANCE",
+    "ecological_effect_computed": true,
+    "source_fixed_independent_land_polygon_groups": {
+      "Ross Island": 59,
+      "Beaufort Island": 50,
+      "Coulman Island": 37,
+      "Inexpressible Island": 43
+    },
+    "island_group_original_annual_windows_with_one_or_more_matched_colonies": {
+      "Beaufort Island": 11,
+      "Coulman Island": 5,
+      "Inexpressible Island": 5,
+      "Ross Island": 35
+    },
+    "per_island_matched_colony_count_by_year": {
+      "Beaufort Island": {
+        "1983": 1,
+        "1984": 1,
+        "1985": 1,
+        "1986": 1,
+        "1987": 1,
+        "1988": 1,
+        "1989": 1,
+        "1990": 1,
+        "1991": 1,
+        "2004": 1,
+        "2005": 1
+      },
+      "Coulman Island": {
+        "1985": 1,
+        "1986": 3,
+        "1987": 3,
+        "1988": 3,
+        "2001": 1
+      },
+      "Inexpressible Island": {
+        "1986": 1,
+        "1991": 1,
+        "1992": 1,
+        "2001": 1,
+        "2005": 1
+      },
+      "Ross Island": {
+        "1982": 1,
+        "1983": 4,
+        "1984": 4,
+        "1985": 4,
+        "1986": 4,
+        "1987": 4,
+        "1988": 4,
+        "1989": 4,
+        "1990": 4,
+        "1991": 4,
+        "1992": 4,
+        "1993": 4,
+        "1994": 4,
+        "1995": 4,
+        "1996": 4,
+        "1997": 4,
+        "1998": 4,
+        "1999": 3,
+        "2000": 3,
+        "2001": 4,
+        "2002": 4,
+        "2003": 4,
+        "2004": 4,
+        "2005": 4,
+        "2006": 4,
+        "2007": 3,
+        "2008": 3,
+        "2009": 4,
+        "2010": 4,
+        "2011": 4,
+        "2012": 4,
+        "2013": 4,
+        "2014": 4,
+        "2015": 4,
+        "2016": 4
+      }
+    },
+    "frozen_original_source_two_island_year_starts": [
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      2001,
+      2004,
+      2005
+    ],
+    "primary_cross_island_year_balanced_directional_coherence": {
+      "years_with_two_nonzero_island_changes": 13,
+      "per_year_sign_pairings": {
+        "1983": {
+          "number_islands_with_nonzero_change": 2,
+          "between_island_pairs": 1,
+          "same_direction_island_pairs": 0,
+          "year_pair_concordance": 0
+        },
+        "1984": {
+          "number_islands_with_nonzero_change": 2,
+          "between_island_pairs": 1,
+          "same_direction_island_pairs": 0,
+          "year_pair_concordance": 0
+        },
+        "1985": {
+          "number_islands_with_nonzero_change": 3,
+          "between_island_pairs": 3,
+          "same_direction_island_pairs": 3,
+          "year_pair_concordance": 1
+        },
+        "1986": {
+          "number_islands_with_nonzero_change": 4,
+          "between_island_pairs": 6,
+          "same_direction_island_pairs": 2,
+          "year_pair_concordance": 0.3333333333333333
+        },
+        "1987": {
+          "number_islands_with_nonzero_change": 3,
+          "between_island_pairs": 3,
+          "same_direction_island_pairs": 3,
+          "year_pair_concordance": 1
+        },
+        "1988": {
+          "number_islands_with_nonzero_change": 3,
+          "between_island_pairs": 3,
+          "same_direction_island_pairs": 3,
+          "year_pair_concordance": 1
+        },
+        "1989": {
+          "number_islands_with_nonzero_change": 2,
+          "between_island_pairs": 1,
+          "same_direction_island_pairs": 1,
+          "year_pair_concordance": 1
+        },
+        "1990": {
+          "number_islands_with_nonzero_change": 2,
+          "between_island_pairs": 1,
+          "same_direction_island_pairs": 1,
+          "year_pair_concordance": 1
+        },
+        "1991": {
+          "number_islands_with_nonzero_change": 3,
+          "between_island_pairs": 3,
+          "same_direction_island_pairs": 1,
+          "year_pair_concordance": 0.3333333333333333
+        },
+        "1992": {
+          "number_islands_with_nonzero_change": 2,
+          "between_island_pairs": 1,
+          "same_direction_island_pairs": 0,
+          "year_pair_concordance": 0
+        },
+        "2001": {
+          "number_islands_with_nonzero_change": 3,
+          "between_island_pairs": 3,
+          "same_direction_island_pairs": 1,
+          "year_pair_concordance": 0.3333333333333333
+        },
+        "2004": {
+          "number_islands_with_nonzero_change": 2,
+          "between_island_pairs": 1,
+          "same_direction_island_pairs": 1,
+          "year_pair_concordance": 1
+        },
+        "2005": {
+          "number_islands_with_nonzero_change": 3,
+          "between_island_pairs": 3,
+          "same_direction_island_pairs": 3,
+          "year_pair_concordance": 1
+        }
+      },
+      "observed_year_balanced_agreement": 0.6153846153846154,
+      "original_pair_comparisons": 30,
+      "original_pair_comparisons_same_sign": 19,
+      "pair_weighted_same_direction_fraction": 0.6333333333333333
+    },
+    "independent_island_source_sign_null_diagnostic": {
+      "source_sign_shuffles": 2000,
+      "source_sign_shuffle_seed": 20261024,
+      "null_diagnostic_preserves_island_year_coverage": true,
+      "null_not_temporal_autocorrelation_robust_or_an_inferential_p_value": true,
+      "valid_shuffles": 2000,
+      "null_year_balanced_agreement_quantiles_05_50_95": [
+        0.3333333333333333,
+        0.5128205128205128,
+        0.6923076923076923
+      ],
+      "observed_minus_null_median": 0.10256410256410264
+    },
+    "six_a_priori_fixed_island_pair_growth_correlations": [
+      {
+        "islands": [
+          "Beaufort Island",
+          "Coulman Island"
+        ],
+        "matched_annual_start_years": [
+          1985,
+          1986,
+          1987,
+          1988
+        ],
+        "n_source_common_years": 4,
+        "r_estimated": false
+      },
+      {
+        "islands": [
+          "Beaufort Island",
+          "Inexpressible Island"
+        ],
+        "matched_annual_start_years": [
+          1986,
+          1991,
+          2005
+        ],
+        "n_source_common_years": 3,
+        "r_estimated": false
+      },
+      {
+        "islands": [
+          "Beaufort Island",
+          "Ross Island"
+        ],
+        "matched_annual_start_years": [
+          1983,
+          1984,
+          1985,
+          1986,
+          1987,
+          1988,
+          1989,
+          1990,
+          1991,
+          2004,
+          2005
+        ],
+        "n_source_common_years": 11,
+        "r_estimated": true,
+        "source_pairwise_growth_pearson_r": 0.4683708532110896,
+        "leave_one_annual_start_year_out_r_min_max": [
+          0.2666182377946491,
+          0.5562434912945012
+        ]
+      },
+      {
+        "islands": [
+          "Coulman Island",
+          "Inexpressible Island"
+        ],
+        "matched_annual_start_years": [
+          1986,
+          2001
+        ],
+        "n_source_common_years": 2,
+        "r_estimated": false
+      },
+      {
+        "islands": [
+          "Coulman Island",
+          "Ross Island"
+        ],
+        "matched_annual_start_years": [
+          1985,
+          1986,
+          1987,
+          1988,
+          2001
+        ],
+        "n_source_common_years": 5,
+        "r_estimated": true,
+        "source_pairwise_growth_pearson_r": -0.5011813882324931,
+        "leave_one_annual_start_year_out_r_min_max": null
+      },
+      {
+        "islands": [
+          "Inexpressible Island",
+          "Ross Island"
+        ],
+        "matched_annual_start_years": [
+          1986,
+          1991,
+          1992,
+          2001,
+          2005
+        ],
+        "n_source_common_years": 5,
+        "r_estimated": true,
+        "source_pairwise_growth_pearson_r": -0.422355011288332,
+        "leave_one_annual_start_year_out_r_min_max": null
+      }
+    ],
+    "leave_one_year_out_primary_directional_agreement_range": [
+      0.5833333333333334,
+      0.6666666666666666
+    ],
+    "GIS_exact_polygon_only_coverage": {
+      "n_exact_polygon_only_islands_with_at_least_five_year_windows": 2,
+      "n_exact_polygon_only_same_year_island_comparisons": 5,
+      "passes_frozen_3island_and_8year_robustness_gate": false,
+      "exact_only_island_year_components": {
+        "Inexpressible Island": {
+          "1986": 1,
+          "1991": 1,
+          "1992": 1,
+          "2001": 1,
+          "2005": 1
+        },
+        "Ross Island": {
+          "1982": 1,
+          "1983": 3,
+          "1984": 3,
+          "1985": 3,
+          "1986": 3,
+          "1987": 3,
+          "1988": 3,
+          "1989": 3,
+          "1990": 3,
+          "1991": 3,
+          "1992": 3,
+          "1993": 3,
+          "1994": 3,
+          "1995": 3,
+          "1996": 3,
+          "1997": 3,
+          "1998": 3,
+          "1999": 2,
+          "2000": 2,
+          "2001": 3,
+          "2002": 3,
+          "2003": 3,
+          "2004": 3,
+          "2005": 3,
+          "2006": 3,
+          "2007": 2,
+          "2008": 2,
+          "2009": 3,
+          "2010": 3,
+          "2011": 3,
+          "2012": 3,
+          "2013": 3,
+          "2014": 3,
+          "2015": 3,
+          "2016": 3
+        }
+      },
+      "exact_only_ecological_conclusion": "HOLD"
+    },
+    "leave_one_island_out_year_balance": {
+      "Beaufort Island": {
+        "remaining_source_years_with_two_nonzero_islands": 8,
+        "year_balanced_sign_agreement_if_gate_passes": 0.7083333333333334,
+        "support_pass_for_leverage_contrast": true
+      },
+      "Coulman Island": {
+        "remaining_source_years_with_two_nonzero_islands": 13,
+        "year_balanced_sign_agreement_if_gate_passes": 0.5897435897435898,
+        "support_pass_for_leverage_contrast": true
+      },
+      "Inexpressible Island": {
+        "remaining_source_years_with_two_nonzero_islands": 12,
+        "year_balanced_sign_agreement_if_gate_passes": 0.6111111111111112,
+        "support_pass_for_leverage_contrast": true
+      },
+      "Ross Island": {
+        "remaining_source_years_with_two_nonzero_islands": 7,
+        "year_balanced_sign_agreement_if_gate_passes": null,
+        "support_pass_for_leverage_contrast": false
+      }
+    },
+    "sample_era": {
+      "primary_early_block_start_years": [
+        1983,
+        1984,
+        1985,
+        1986,
+        1987,
+        1988,
+        1989,
+        1990,
+        1991,
+        1992
+      ],
+      "other_observation_start_years": [
+        2001,
+        2004,
+        2005
+      ],
+      "no_change_point_test_fitted": true
+    },
+    "field_method_after_2017_not_assumed_unchanged": true,
+    "four_islands_in_one_Ross_Sea_sector_not_four_independent_antarctic_regions": true,
+    "source_NZ_colonies_may_overlap_APBP_MAPPPD_population_records": true,
+    "water_isolation_or_marine_climate_causal_effect_identified": false,
+    "original_absolute_penguin_census_count_values_not_reprinted": true,
+    "statistical_p_value_computed": false,
+    "scientific_decision": "DESCRIPTIVE_ROSS_SEA_ISLAND_CONCORDANCE_WITH_GEO_AND_EFFORT_LIMITS"
+  },
+  "ecological_effect_computed": true,
+  "scientific_decision": "DESCRIPTIVE_ROSS_SEA_ISLAND_CONCORDANCE_WITH_GEO_AND_EFFORT_LIMITS"
+}

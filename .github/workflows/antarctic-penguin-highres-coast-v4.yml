@@ -1,0 +1,43 @@
+name: Antarctic penguin high-resolution SCAR island rescue V4
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/APBP_ADD_HIGHRES_ISLAND_RESCUE_V4.md'
+      - 'scripts/validate_apbp_highres_coast_v4.py'
+      - 'tests/test_apbp_highres_coast_v4.py'
+      - '.github/workflows/antarctic-penguin-highres-coast-v4.yml'
+  pull_request:
+    paths:
+      - 'contracts/APBP_ADD_HIGHRES_ISLAND_RESCUE_V4.md'
+      - 'scripts/validate_apbp_highres_coast_v4.py'
+      - 'tests/test_apbp_highres_coast_v4.py'
+      - '.github/workflows/antarctic-penguin-highres-coast-v4.yml'
+  workflow_dispatch:
+jobs:
+  original-highresolution-qa:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source-aware geospatial libraries
+        run: python -m pip install pytest requests shapely pyshp pyproj
+      - name: Verify fictitious small-island recovery and coordinates uncertainty stop gates
+        run: python -m pytest -q tests/test_apbp_highres_coast_v4.py
+      - name: Download original 73 MB 2026 high-res coastline and match all APBP source site coordinates
+        run: |
+          python scripts/validate_apbp_highres_coast_v4.py \
+            --out-json /tmp/APBP_HIGHRES_COAST_UNCERTAINTY_QA_V4.json \
+            --out-csv /tmp/APBP_719_HIGHRES_COAST_MATCH_V4.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apbp-high-res-2026-SCAR-land-source-uncertainty-only
+          path: |
+            /tmp/APBP_HIGHRES_COAST_UNCERTAINTY_QA_V4.json
+            /tmp/APBP_719_HIGHRES_COAST_MATCH_V4.csv

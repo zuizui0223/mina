@@ -1,0 +1,40 @@
+name: Antarctic V37 SCAR highresolution physical island original georeference reliability
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/NZ_ROSS_SEA_HIGHRES_SOURCE_UNCERTAINTY_V37.md'
+      - 'scripts/audit_nz_ross_sea_highres_precision_v37.py'
+      - 'tests/test_nz_ross_sea_highres_precision_v37.py'
+      - '.github/workflows/antarctic-nz-ross-sea-highres-precision-v37.yml'
+  pull_request:
+    paths:
+      - 'contracts/NZ_ROSS_SEA_HIGHRES_SOURCE_UNCERTAINTY_V37.md'
+      - 'scripts/audit_nz_ross_sea_highres_precision_v37.py'
+      - 'tests/test_nz_ross_sea_highres_precision_v37.py'
+      - '.github/workflows/antarctic-nz-ross-sea-highres-precision-v37.yml'
+  workflow_dispatch:
+jobs:
+  original_SCAR_highres_land_and_rounded_source_colony_points:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source and geometry test dependencies
+        run: python -m pip install pytest requests shapely pyshp pyproj
+      - name: Verify source minute-grid buffer and correct coastline polygon set membership
+        run: python -m pytest -q tests/test_nz_ross_sea_highres_precision_v37.py
+      - name: Retrieve official ~73MB high-res SCAR source and audit site island groups without penguin outcomes
+        run: |
+          python scripts/audit_nz_ross_sea_highres_precision_v37.py \
+            --json /tmp/NZ_ROSS_SEA_SOURCE_GEOREFERENCE_HIGHRES_V37.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nz-2026-ross-sea-original-highres-scar-rounded-location-v37
+          path: /tmp/NZ_ROSS_SEA_SOURCE_GEOREFERENCE_HIGHRES_V37.json

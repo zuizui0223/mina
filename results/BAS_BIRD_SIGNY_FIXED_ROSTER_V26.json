@@ -1,0 +1,180 @@
+{
+  "status": "V26_BASELINE_COLONY_SOURCE_SUPPORT_COMPLETED",
+  "source_sha256": {
+    "BirdIsland_V1": "b1abc3c3adacee3f277d481217aabe4206c7b592a81f1f0eb1a0ec20a64450d3",
+    "Signy": "53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b"
+  },
+  "frozen_contract": "contracts/BAS_BIRD_SIGNY_FIXED_ROSTER_V26.md",
+  "original_V25_reproduced_full_33window_r": 0.165616495725728,
+  "original_V23_reproduced_short_8window_r": -0.33420933224382615,
+  "original_V25_numeric_windows": 33,
+  "fixed_roster_source_metadata": {
+    "baseline_years": [
+      1982,
+      1983
+    ],
+    "fixed_original_bird_colonies": [
+      "Johnson",
+      "Lower Mountain Cwm",
+      "Square Pond",
+      "Upper Mountain Cwm",
+      "Upper Natural Arch"
+    ],
+    "baseline_colony_count": 5,
+    "eligible_fixed_roster_metadata_windows": 35,
+    "metadata_start_years": [
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      1993,
+      1994,
+      1995,
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018
+    ],
+    "metadata_pre_1997_windows": 14,
+    "metadata_at_after_1997_windows": 21,
+    "original_Bird_nest_or_Signy_pair_count_values_read": false
+  },
+  "monitoring_date_only_diagnostics": {
+    "source_original_Signy_column": "DATE_PAIR_COUNT",
+    "original_Bird_column": "Date nests counted",
+    "no_source_dates_used_as_outcome_selection": true,
+    "original_date_comparability_by_period": {
+      "earlier": {
+        "parseable_years_with_count_dates": 14,
+        "unparseable_or_missing_years": 0,
+        "median_absolute_source_count_phase_day_difference": 12.5,
+        "years_with_source_phase_day_gap_ge30": 1,
+        "years_with_source_phase_day_gap_ge60": 0
+      },
+      "modern": {
+        "parseable_years_with_count_dates": 21,
+        "unparseable_or_missing_years": 0,
+        "median_absolute_source_count_phase_day_difference": 29,
+        "years_with_source_phase_day_gap_ge30": 9,
+        "years_with_source_phase_day_gap_ge60": 0
+      }
+    }
+  },
+  "source_metadata_gate_pass": true,
+  "effect_computed": true,
+  "scientific_decision": "EXPLORATORY_FIXED_ROSTER_PERIOD_ASSOCIATION_CAUSAL_HOLD",
+  "source_numeric_diagnostics": {
+    "unknown_Signy_original_pair_count": 2
+  },
+  "fixed_roster_effect": {
+    "n_numeric_windows": 33,
+    "original_window_start_years": [
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      1993,
+      1994,
+      1995,
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018
+    ],
+    "n_earlier_windows": 14,
+    "n_modern_windows": 19,
+    "frozen_minimum_windows": 24,
+    "frozen_minimum_earlier": 8,
+    "frozen_minimum_modern": 12,
+    "status": "V26_ORIGINAL_BASELINE_COLONY_PANEL_ASSOCIATION",
+    "effect_computed": true,
+    "descriptive_statistics": {
+      "full_source_history": {
+        "n_windows": 33,
+        "pearson_r": 0.1908475788656115,
+        "leave_one_window_out_min_max": [
+          -0.022006574222475973,
+          0.2680358873116675
+        ],
+        "same_direction_windows": 17,
+        "both_nonzero_windows": 33,
+        "same_direction_fraction": 0.5151515151515151
+      },
+      "source_start_before_1997": {
+        "n_windows": 14,
+        "pearson_r": 0.5764782946978675,
+        "leave_one_window_out_min_max": [
+          0.10449183932324199,
+          0.6968934423420241
+        ],
+        "same_direction_windows": 8,
+        "both_nonzero_windows": 14,
+        "same_direction_fraction": 0.5714285714285714
+      },
+      "source_start_at_or_after_1997": {
+        "n_windows": 19,
+        "pearson_r": -0.14144598256479668,
+        "leave_one_window_out_min_max": [
+          -0.20563273601375623,
+          -0.047138435633526
+        ],
+        "same_direction_windows": 9,
+        "both_nonzero_windows": 19,
+        "same_direction_fraction": 0.47368421052631576
+      }
+    },
+    "earlier_minus_modern_correlation_difference": 0.7179242772626642,
+    "old_positive_new_negative_same_sign_pattern": true,
+    "source_islands": 2,
+    "phase_difference_is_necessarily_ecological": false,
+    "contribution_of_changing_colony_roster_fully_isolated": false,
+    "biotic_or_climatic_causal_effect_identified": false,
+    "no_biological_p_value": true
+  }
+}

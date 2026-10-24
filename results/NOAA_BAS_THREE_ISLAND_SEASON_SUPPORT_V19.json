@@ -1,0 +1,94 @@
+{
+  "status": "V19_ORIGINAL_THREE_ISLAND_SEASON_SUPPORT_ONLY",
+  "noaa_original_sha256": "a57370f82adf82b53da11ce5d85dada1ae3f3750ef246312b59d0f168763eef4",
+  "bas_original_sha256": "53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b",
+  "noaa_structural_coverage": {
+    "original_publisher_season_rows": 38,
+    "parsed_distinct_season_start_years": 38,
+    "duplicate_year_groups_excluded": {},
+    "unsupported_year_labels": [],
+    "first_last_parsed_year": [
+      1977,
+      2014
+    ],
+    "numeric_lexical_valid_years_by_species": {
+      "Copa_Adelie": 32,
+      "Copa_Gentoo": 34,
+      "Copa_Chinstrap": 22,
+      "CapeShirreff_Chinstrap": 18,
+      "CapeShirreff_Gentoo": 18
+    },
+    "missing_nonnumeric_years_by_species": {
+      "Copa_Adelie": 6,
+      "Copa_Gentoo": 4,
+      "Copa_Chinstrap": 16,
+      "CapeShirreff_Chinstrap": 20,
+      "CapeShirreff_Gentoo": 20
+    }
+  },
+  "bas_gentoo_structural_coverage": {
+    "original_rows": 43,
+    "distinct_parsed_original_seasons": 42,
+    "duplicate_year_groups_excluded": {},
+    "unsupported_year_labels": [
+      "1998-8895"
+    ],
+    "first_last_parsed_year": [
+      1978,
+      2020
+    ],
+    "original_BAS_TOTAL_NUMBER_OF_PAIRS_numeric_lexical_years": 40,
+    "original_BAS_TOTAL_NUMBER_OF_PAIRS_nonnumeric_or_missing_years": 2,
+    "original_source_column_is_not_verified_NOAA_count_equivalent": true
+  },
+  "comparison": {
+    "all_three_island_gentoo_numeric_lexical_common_seasons": 16,
+    "all_three_gentoo_common_start_years": [
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2011,
+      2012,
+      2013,
+      2014
+    ],
+    "all_three_island_gentoo_consecutive_year_windows": 14,
+    "all_three_gentoo_consecutive_start_years": [
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2011,
+      2012,
+      2013
+    ],
+    "noaa_aligned_multispecies_seasons_by_local_monitoring_site": {
+      "Copacabana_ADPE_CHPE_GEPE": 22,
+      "CapeShirreff_CHPE_GEPE": 18
+    },
+    "prespecified_three_island_temporal_source_support_pass": true,
+    "source_count_units_fully_harmonized": false,
+    "population_density_or_growth_effect_fitted": false,
+    "physical_island_n": 3,
+    "site_systems_are_not_whole_island_demographic_censuses": true,
+    "scientific_decision": "HOLD_NOAA_BAS_CENSUS_STAGE_DEFINITION_AND_INDEPENDENT_ENVIRONMENT"
+  },
+  "biological_count_magnitudes_opened": 0,
+  "biology_regression_fit": 0
+}

@@ -1,0 +1,626 @@
+{
+  "status": "V37_HIGH_RESOLUTION_SCAR_GEOREFERENCE_ENVELOPE_AUDIT",
+  "frozen_design": "contracts/NZ_ROSS_SEA_HIGHRES_SOURCE_UNCERTAINTY_V37.md",
+  "original_publisher_2026_NZ_census_sha256": "23a95d9e693dd095e085534f2c215b79880a72fe9cfb5a59337501192dae03e6",
+  "original_publisher_2026_NZ_location_sha256": "d744e7493f85564f1b634f390a5e4a976b2d5359a6f93cdd9ef345639661b6a6",
+  "medium_V35_source_sha256": "b0172d698436f871f49339cea5c7155e3d98648360521cc4bbc44a026c0edc38",
+  "original_new_highresolution_coast_source": {
+    "sha256": "66d82fa69f86eb8dbe8b04f01505cb2129feafec608455459ee4ed19d1dc38d4",
+    "original_bytes": 72864027,
+    "doi": "10.5285/13c4d2f1-8903-4d7f-8977-592121975554",
+    "source_url": "https://ramadda.data.bas.ac.uk/repository/entry/get/add_coastline_high_res_polygon_v7_12.shp.zip?entryid=synth%3A13c4d2f1-8903-4d7f-8977-592121975554%3AL2FkZF9jb2FzdGxpbmVfaGlnaF9yZXNfcG9seWdvbl92N18xMi5zaHAuemlw",
+    "source_version": "SCAR_ADD_7.12_2026"
+  },
+  "original_source_highres_polygon_metadata": {
+    "polygon_attributes": [
+      "surface"
+    ],
+    "original_surface_counts": {
+      "land": 17269,
+      "ice shelf": 330,
+      "rumple": 64,
+      "ice tongue": 37
+    },
+    "valid_source_land_features": 17269,
+    "invalid_original_land_polygons_far_from_sites": 0
+  },
+  "site_geometry_source_QA": {
+    "source_independent_highres_land_polygons": 17269,
+    "highres_largest_contiguous_land_polygon_proxy_index": 17264,
+    "site_match_categories": {
+      "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL": 13,
+      "EXACT_ONE_LAND_POLYGON": 9,
+      "HOLD_NO_LAND_WITHIN_2KM": 6,
+      "HOLD_MULTIPLE_NEAR_LAND": 5
+    }
+  },
+  "source_colony_geo_qualifications": [
+    {
+      "original_colony": "Beaufort Island",
+      "original_source_named_island": "Beaufort Island",
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 728,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 1734.1,
+      "distance_to_highres_land_boundary_m": 1734.1,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Adare",
+      "original_source_named_island": null,
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 17264,
+      "landtype": "CONTINENT_LARGEST_POLYGON_PROXY",
+      "distance_to_polygon_m": 1282.9,
+      "distance_to_highres_land_boundary_m": 1282.9,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Anne",
+      "original_source_named_island": "Coulman Island",
+      "status": "EXACT_ONE_LAND_POLYGON",
+      "polygon_id": 713,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 0,
+      "distance_to_highres_land_boundary_m": 144.2,
+      "source_reported_georef_center_exact_island": true,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Bird Middle",
+      "original_source_named_island": "Ross Island",
+      "status": "EXACT_ONE_LAND_POLYGON",
+      "polygon_id": 742,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 0,
+      "distance_to_highres_land_boundary_m": 290.5,
+      "source_reported_georef_center_exact_island": true,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Bird North",
+      "original_source_named_island": "Ross Island",
+      "status": "EXACT_ONE_LAND_POLYGON",
+      "polygon_id": 742,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 0,
+      "distance_to_highres_land_boundary_m": 600,
+      "source_reported_georef_center_exact_island": true,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Bird South",
+      "original_source_named_island": "Ross Island",
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 742,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 716.4,
+      "distance_to_highres_land_boundary_m": 716.4,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Cornish",
+      "original_source_named_island": null,
+      "status": "HOLD_NO_LAND_WITHIN_2KM",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Cape Cotter",
+      "original_source_named_island": null,
+      "status": "EXACT_ONE_LAND_POLYGON",
+      "polygon_id": 17264,
+      "landtype": "CONTINENT_LARGEST_POLYGON_PROXY",
+      "distance_to_polygon_m": 0,
+      "distance_to_highres_land_boundary_m": 177.5,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Crozier East",
+      "original_source_named_island": "Ross Island",
+      "status": "HOLD_NO_LAND_WITHIN_2KM",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Cape Crozier West",
+      "original_source_named_island": "Ross Island",
+      "status": "HOLD_NO_LAND_WITHIN_2KM",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Cape Davis",
+      "original_source_named_island": null,
+      "status": "HOLD_NO_LAND_WITHIN_2KM",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Cape Hallett",
+      "original_source_named_island": null,
+      "status": "HOLD_MULTIPLE_NEAR_LAND",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Cape Jones",
+      "original_source_named_island": null,
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 17264,
+      "landtype": "CONTINENT_LARGEST_POLYGON_PROXY",
+      "distance_to_polygon_m": 511.6,
+      "distance_to_highres_land_boundary_m": 511.6,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Phillips",
+      "original_source_named_island": null,
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 17264,
+      "landtype": "CONTINENT_LARGEST_POLYGON_PROXY",
+      "distance_to_polygon_m": 292.3,
+      "distance_to_highres_land_boundary_m": 292.3,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Royds",
+      "original_source_named_island": "Ross Island",
+      "status": "EXACT_ONE_LAND_POLYGON",
+      "polygon_id": 742,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 0,
+      "distance_to_highres_land_boundary_m": 1910.4,
+      "source_reported_georef_center_exact_island": true,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": true,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": true,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Cape Symthe",
+      "original_source_named_island": null,
+      "status": "HOLD_NO_LAND_WITHIN_2KM",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Cape Wheatstone",
+      "original_source_named_island": null,
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 17264,
+      "landtype": "CONTINENT_LARGEST_POLYGON_PROXY",
+      "distance_to_polygon_m": 35.7,
+      "distance_to_highres_land_boundary_m": 35.7,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Chinstrap Island",
+      "original_source_named_island": "Chinstrap Island",
+      "status": "HOLD_MULTIPLE_NEAR_LAND",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Coulman Island Middle",
+      "original_source_named_island": "Coulman Island",
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 713,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 1110.8,
+      "distance_to_highres_land_boundary_m": 1110.8,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Coulman Island North",
+      "original_source_named_island": "Coulman Island",
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 713,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 599.8,
+      "distance_to_highres_land_boundary_m": 599.8,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Coulman Island South",
+      "original_source_named_island": "Coulman Island",
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 713,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 961.2,
+      "distance_to_highres_land_boundary_m": 961.2,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Downshire Cliffs",
+      "original_source_named_island": null,
+      "status": "EXACT_ONE_LAND_POLYGON",
+      "polygon_id": 17264,
+      "landtype": "CONTINENT_LARGEST_POLYGON_PROXY",
+      "distance_to_polygon_m": 0,
+      "distance_to_highres_land_boundary_m": 1486.6,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Duke of York",
+      "original_source_named_island": null,
+      "status": "EXACT_ONE_LAND_POLYGON",
+      "polygon_id": 665,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 0,
+      "distance_to_highres_land_boundary_m": 667.4,
+      "source_reported_georef_center_exact_island": true,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": true,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Franklin Island East",
+      "original_source_named_island": null,
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 723,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 742.9,
+      "distance_to_highres_land_boundary_m": 742.9,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Franklin Island West",
+      "original_source_named_island": null,
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 723,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 742.9,
+      "distance_to_highres_land_boundary_m": 742.9,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Inexpressible Island",
+      "original_source_named_island": "Inexpressible Island",
+      "status": "EXACT_ONE_LAND_POLYGON",
+      "polygon_id": 720,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 0,
+      "distance_to_highres_land_boundary_m": 15.4,
+      "source_reported_georef_center_exact_island": true,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Mandible Cirque",
+      "original_source_named_island": null,
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 17264,
+      "landtype": "CONTINENT_LARGEST_POLYGON_PROXY",
+      "distance_to_polygon_m": 144,
+      "distance_to_highres_land_boundary_m": 144,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Nella Island",
+      "original_source_named_island": "Nella Island",
+      "status": "HOLD_MULTIPLE_NEAR_LAND",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Possession Island",
+      "original_source_named_island": "Possession Island",
+      "status": "EXACT_ONE_LAND_POLYGON",
+      "polygon_id": 696,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 0,
+      "distance_to_highres_land_boundary_m": 3.3,
+      "source_reported_georef_center_exact_island": true,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    },
+    {
+      "original_colony": "Sabrina Island",
+      "original_source_named_island": "Sabrina Island",
+      "status": "HOLD_MULTIPLE_NEAR_LAND",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "SE Promontory",
+      "original_source_named_island": null,
+      "status": "HOLD_NO_LAND_WITHIN_2KM",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Sentry Rock",
+      "original_source_named_island": null,
+      "status": "HOLD_MULTIPLE_NEAR_LAND",
+      "polygon_id": null
+    },
+    {
+      "original_colony": "Unger Rock",
+      "original_source_named_island": null,
+      "status": "NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL",
+      "polygon_id": 255,
+      "landtype": "SEPARATE_LAND_POLYGON_PROXY",
+      "distance_to_polygon_m": 42.8,
+      "distance_to_highres_land_boundary_m": 42.8,
+      "source_reported_georef_center_exact_island": false,
+      "rounded_half_arcminute_rectangle_on_one_land_feature": false,
+      "round_or_truncate_conservative_one_arcminute_rectangle_on_one_land_feature": false,
+      "source_coordinates_only_full_arcminute_precision": true
+    }
+  ],
+  "geographic_rounded_source_precision_scenarios": {
+    "center_exact": {
+      "islands_with_at_least_five_original_year_pairs": 2,
+      "coincident_year_starts_at_least_two_islands": [
+        1986,
+        1991,
+        1992,
+        2001,
+        2005
+      ],
+      "n_original_shared_source_year_starts": 5,
+      "island_source_metadata": {
+        "Beaufort Island": {
+          "highres_qualified_source_colony_labels": [],
+          "original_highres_feature_id": null,
+          "source_any_same_colony_original_year_windows": 0,
+          "same_original_year_roster": []
+        },
+        "Coulman Island": {
+          "highres_qualified_source_colony_labels": [
+            "Cape Anne"
+          ],
+          "original_highres_feature_id": 713,
+          "source_any_same_colony_original_year_windows": 0,
+          "same_original_year_roster": []
+        },
+        "Inexpressible Island": {
+          "highres_qualified_source_colony_labels": [
+            "Inexpressible Island"
+          ],
+          "original_highres_feature_id": 720,
+          "source_any_same_colony_original_year_windows": 5,
+          "same_original_year_roster": [
+            1986,
+            1991,
+            1992,
+            2001,
+            2005
+          ]
+        },
+        "Ross Island": {
+          "highres_qualified_source_colony_labels": [
+            "Cape Bird Middle",
+            "Cape Bird North",
+            "Cape Royds"
+          ],
+          "original_highres_feature_id": 742,
+          "source_any_same_colony_original_year_windows": 35,
+          "same_original_year_roster": [
+            1982,
+            1983,
+            1984,
+            1985,
+            1986,
+            1987,
+            1988,
+            1989,
+            1990,
+            1991,
+            1992,
+            1993,
+            1994,
+            1995,
+            1996,
+            1997,
+            1998,
+            1999,
+            2000,
+            2001,
+            2002,
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009,
+            2010,
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016
+          ]
+        }
+      },
+      "passes_frozen_island_and_annual_coverage_gate": false,
+      "island_group_polygons_unique": true
+    },
+    "half_minute_stable": {
+      "islands_with_at_least_five_original_year_pairs": 1,
+      "coincident_year_starts_at_least_two_islands": [],
+      "n_original_shared_source_year_starts": 0,
+      "island_source_metadata": {
+        "Beaufort Island": {
+          "highres_qualified_source_colony_labels": [],
+          "original_highres_feature_id": null,
+          "source_any_same_colony_original_year_windows": 0,
+          "same_original_year_roster": []
+        },
+        "Coulman Island": {
+          "highres_qualified_source_colony_labels": [],
+          "original_highres_feature_id": null,
+          "source_any_same_colony_original_year_windows": 0,
+          "same_original_year_roster": []
+        },
+        "Inexpressible Island": {
+          "highres_qualified_source_colony_labels": [],
+          "original_highres_feature_id": null,
+          "source_any_same_colony_original_year_windows": 0,
+          "same_original_year_roster": []
+        },
+        "Ross Island": {
+          "highres_qualified_source_colony_labels": [
+            "Cape Royds"
+          ],
+          "original_highres_feature_id": 742,
+          "source_any_same_colony_original_year_windows": 34,
+          "same_original_year_roster": [
+            1983,
+            1984,
+            1985,
+            1986,
+            1987,
+            1988,
+            1989,
+            1990,
+            1991,
+            1992,
+            1993,
+            1994,
+            1995,
+            1996,
+            1997,
+            1998,
+            1999,
+            2000,
+            2001,
+            2002,
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009,
+            2010,
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016
+          ]
+        }
+      },
+      "passes_frozen_island_and_annual_coverage_gate": false,
+      "island_group_polygons_unique": true
+    },
+    "one_minute_stable": {
+      "islands_with_at_least_five_original_year_pairs": 1,
+      "coincident_year_starts_at_least_two_islands": [],
+      "n_original_shared_source_year_starts": 0,
+      "island_source_metadata": {
+        "Beaufort Island": {
+          "highres_qualified_source_colony_labels": [],
+          "original_highres_feature_id": null,
+          "source_any_same_colony_original_year_windows": 0,
+          "same_original_year_roster": []
+        },
+        "Coulman Island": {
+          "highres_qualified_source_colony_labels": [],
+          "original_highres_feature_id": null,
+          "source_any_same_colony_original_year_windows": 0,
+          "same_original_year_roster": []
+        },
+        "Inexpressible Island": {
+          "highres_qualified_source_colony_labels": [],
+          "original_highres_feature_id": null,
+          "source_any_same_colony_original_year_windows": 0,
+          "same_original_year_roster": []
+        },
+        "Ross Island": {
+          "highres_qualified_source_colony_labels": [
+            "Cape Royds"
+          ],
+          "original_highres_feature_id": 742,
+          "source_any_same_colony_original_year_windows": 34,
+          "same_original_year_roster": [
+            1983,
+            1984,
+            1985,
+            1986,
+            1987,
+            1988,
+            1989,
+            1990,
+            1991,
+            1992,
+            1993,
+            1994,
+            1995,
+            1996,
+            1997,
+            1998,
+            1999,
+            2000,
+            2001,
+            2002,
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009,
+            2010,
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016
+          ]
+        }
+      },
+      "passes_frozen_island_and_annual_coverage_gate": false,
+      "island_group_polygons_unique": true
+    }
+  },
+  "publisher_census_population_magnitudes_read": 0,
+  "original_penguin_growth_correlations_fitted": 0,
+  "original_13year_V36_ecological_effect_unchanged": true,
+  "scientific_decision": "HOLD_COARSE_COLONY_GEOREFERENCE_NOT_FULL_ISLAND_ROBUST"
+}

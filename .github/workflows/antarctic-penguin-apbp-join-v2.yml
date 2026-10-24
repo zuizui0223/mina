@@ -1,0 +1,44 @@
+name: Antarctic penguin APBP original occurrence-linked nest measurements V2
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/APBP_SITEYEAR_NEST_JOIN_V2.md'
+      - 'scripts/audit_apbp_darwincore_source_v1.py'
+      - 'scripts/join_apbp_nest_records_v2.py'
+      - 'tests/test_join_apbp_nest_records_v2.py'
+      - '.github/workflows/antarctic-penguin-apbp-join-v2.yml'
+  pull_request:
+    paths:
+      - 'contracts/APBP_SITEYEAR_NEST_JOIN_V2.md'
+      - 'scripts/audit_apbp_darwincore_source_v1.py'
+      - 'scripts/join_apbp_nest_records_v2.py'
+      - 'tests/test_join_apbp_nest_records_v2.py'
+      - '.github/workflows/antarctic-penguin-apbp-join-v2.yml'
+  workflow_dispatch:
+jobs:
+  publisher-count-type-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 11
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest requests
+      - name: Test occurrence-level relinking, synonyms and strict unit distinctions
+        run: python -m pytest -q tests/test_join_apbp_nest_records_v2.py tests/test_apbp_darwincore_source_v1.py
+      - name: Download pinned APBP v2.3 again and join original public colony records by occurrence ID
+        run: |
+          python scripts/join_apbp_nest_records_v2.py \
+            --out-json /tmp/APBP_SITEYEAR_MEASUREMENT_QA_V2.json \
+            --out-csv /tmp/APBP_ALL_ORIGINAL_MEASUREMENTS_V2.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apbp-original-six-penguin-records-joined-SCHEMA-NO-EFFECT
+          path: |
+            /tmp/APBP_SITEYEAR_MEASUREMENT_QA_V2.json
+            /tmp/APBP_ALL_ORIGINAL_MEASUREMENTS_V2.csv

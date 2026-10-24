@@ -1,0 +1,38 @@
+name: Antarctic penguin pan-Antarctic APBP original source audit V1
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/PENGUIN_ISLAND_LAND_SEA_BOTTLENECK_V1.md'
+      - 'scripts/audit_apbp_darwincore_source_v1.py'
+      - 'tests/test_apbp_darwincore_source_v1.py'
+      - '.github/workflows/antarctic-penguin-apbp-source-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/PENGUIN_ISLAND_LAND_SEA_BOTTLENECK_V1.md'
+      - 'scripts/audit_apbp_darwincore_source_v1.py'
+      - 'tests/test_apbp_darwincore_source_v1.py'
+      - '.github/workflows/antarctic-penguin-apbp-source-v1.yml'
+  workflow_dispatch:
+jobs:
+  primary-source-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 11
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded source-only libraries
+        run: python -m pip install pytest requests
+      - name: Test relational event ID links and source archive path/security
+        run: python -m pytest -q tests/test_apbp_darwincore_source_v1.py
+      - name: Fetch versioned original APBP DwC-A v2.3, audit sample sizes and measures before fitting any effects
+        run: python scripts/audit_apbp_darwincore_source_v1.py --out /tmp/APBP_SOURCE_COVERAGE_V1.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apbp-2023-source-schema-only-NO-ECOLOGY-EFFECT
+          path: /tmp/APBP_SOURCE_COVERAGE_V1.json

@@ -1,0 +1,181 @@
+{
+  "status": "V40_ORIGINAL_MAPPPD5_MACRO_SOURCE_AND_NZ_PEDIGREE_QA",
+  "original_release": {
+    "version": "5.0",
+    "date": "2026-10-21",
+    "citation": "Oceanites, Inc. (2026). MAPPPD: census counts of Antarctic and sub-Antarctic breeding penguins. MAPPPD version 5.0. https://www.penguinmap.com",
+    "license": "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)"
+  },
+  "original_download_SHA_receipts": {
+    "release": {
+      "original_source_sha256": "8f676f6498b1bc79708a67fb05d4ac8ee73249444e85402af87f6a3c64280a65",
+      "original_source_bytes": 556,
+      "MAPPPD_response_version": "5.0"
+    },
+    "sites": {
+      "original_source_sha256": "36059537701069c934227148d32296368943b978b988fb415e07873e48c5ae34",
+      "original_source_bytes": 64956,
+      "MAPPPD_response_version": "5.0"
+    },
+    "observations_p1": {
+      "original_source_sha256": "cd751e43ab61d57a6e7d3c7e918d673cf699392ac4bfccd546d29b99ea62f075",
+      "original_source_bytes": 518644,
+      "MAPPPD_response_version": "5.0"
+    },
+    "observations_p2": {
+      "original_source_sha256": "c2b054fb687d13eb93e67d48a2b492cd47c94ccdef75b562680b770ad6be18f3",
+      "original_source_bytes": 50959,
+      "MAPPPD_response_version": "5.0"
+    }
+  },
+  "frozen_contract": "contracts/MAPPPD_V5_SOURCE_DEDUP_MACRO_PANEL_V40.md",
+  "source_quality": {
+    "original_observations": 5487,
+    "original_site_count": 729,
+    "original_type_counts": {
+      "adults": 582,
+      "chicks": 850,
+      "nests": 4055
+    },
+    "original_top_source_citations": {
+      "lynch2013antarctic": 789,
+      "lynchantarctic": 730,
+      "manaakiwhenua2021aerial": 519,
+      "croxall1979distribution": 206,
+      "kato2006increase": 159,
+      "lynch2014global": 154,
+      "kpri2020report6": 125,
+      "strycker2020a-global": 124,
+      "poncet1987censuses": 124,
+      "kooyman2016emperor": 116,
+      "hinke2020personal": 108,
+      "asiexpedition2026": 107,
+      "asiexpedition2024": 101,
+      "hinke2019census": 101,
+      "lynchunpublished": 98
+    },
+    "original_NZ_aerial_source_citation_record_count": 519,
+    "source_original_records_with_season_start_ge2022_by_species": {
+      "ADPE": 76,
+      "CHPE": 113,
+      "EMPE": 20,
+      "GEPE": 212,
+      "MCPE": 1
+    },
+    "no_absolute_bird_count_magnitude_exported": true
+  },
+  "strict_longitudinal_source_sample": {
+    "source_original_strict_same_site_species_year_method_nest_transitions": 771,
+    "distinct_original_siteIDs": 95,
+    "distinct_publisher_region_labels": 11,
+    "original_species_pair_opportunities": {
+      "ADPE": 414,
+      "CHPE": 152,
+      "GEPE": 205
+    },
+    "original_transitions_by_publisher_region": {
+      "Adelie Land": 27,
+      "Central-west Antarctic Peninsula": 180,
+      "Elephant Island": 14,
+      "Mac. Robertson Land": 11,
+      "Northeast Antarctic Peninsula": 3,
+      "Queen Maud Land": 2,
+      "South Orkney Islands": 5,
+      "South Shetland Islands": 250,
+      "Southwest Antarctic Peninsula": 1,
+      "Victoria Land": 277,
+      "Wilkes Land": 1
+    },
+    "distinct_original_year_starts": 46,
+    "original_pair_start_year_roster": [
+      1971,
+      1978,
+      1979,
+      1980,
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      1993,
+      1994,
+      1995,
+      1996,
+      1997,
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "matched_same_species_year_region_strata_with_ge5_site_IDs": 54,
+    "duplicate_site_species_season_groups_excluded": 426,
+    "original_observation_rows_in_duplicate_groups_excluded": 1022,
+    "adjacent_source_stage_candidates_excluded": {
+      "different_or_unknown_original_source": 104,
+      "different_or_unknown_original_vantage": 19
+    },
+    "strict_macro_source_support_pass": true,
+    "original_publisher_site_ID_not_independent_landmass_ID": true
+  },
+  "original_NZ_author_census_sha256": "23a95d9e693dd095e085534f2c215b79880a72fe9cfb5a59337501192dae03e6",
+  "already_republished_NZ_aerial_source_overlap": {
+    "fixed_upstream_original_source_citation_key": "manaakiwhenua2021aerial",
+    "exact_site_name_species_ADPE_season_nests_citation_numeric_presence_overlaps": 316,
+    "distinct_original_source_siteIDs_with_upstream_overlap": 21,
+    "source_overlap_by_colony_name": {
+      "Beaufort Island": 16,
+      "Cape Adare": 10,
+      "Cape Anne": 11,
+      "Cape Bird Middle": 39,
+      "Cape Bird North": 40,
+      "Cape Bird South": 40,
+      "Cape Cotter": 11,
+      "Cape Davis": 2,
+      "Cape Hallett": 17,
+      "Cape Jones": 10,
+      "Cape Phillips": 10,
+      "Cape Royds": 35,
+      "Cape Wheatstone": 13,
+      "Downshire Cliffs": 10,
+      "Franklin Island East": 11,
+      "Franklin Island West": 10,
+      "Inexpressible Island": 13,
+      "Mandible Cirque": 10,
+      "Possession Island": 4,
+      "SE Promontory": 2,
+      "Sabrina Island": 2
+    },
+    "original_animal_numeric_count_equality_NOT_tested": true,
+    "upstream_field_census_not_an_independent_replication": true
+  },
+  "ecological_models_fitted": 0,
+  "scientific_decision": "PROCEED_INDEPENDENT_ISLAND_SITE_EVENT_LINEAGE_DESIGN"
+}

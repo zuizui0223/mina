@@ -1,0 +1,38 @@
+name: Antarctic V17 original ASI repeated cross-guild breeding change
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/ASI_CROSSGUILD_TEMPORAL_V17.md'
+      - 'scripts/fit_asi_original_pair_temporal_growth_v17.py'
+      - 'tests/test_asi_original_pair_temporal_growth_v17.py'
+      - '.github/workflows/antarctic-asi-crossguild-temporal-v17.yml'
+  pull_request:
+    paths:
+      - 'contracts/ASI_CROSSGUILD_TEMPORAL_V17.md'
+      - 'scripts/fit_asi_original_pair_temporal_growth_v17.py'
+      - 'tests/test_asi_original_pair_temporal_growth_v17.py'
+      - '.github/workflows/antarctic-asi-crossguild-temporal-v17.yml'
+  workflow_dispatch:
+jobs:
+  original_asi_crossguild_growth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit test hypothetical dates, shared co-visits and no invalid temporal linkage
+        run: python -m pip install pytest && python -m pytest -q tests/test_asi_original_pair_temporal_growth_v17.py
+      - name: Original MD5 source, frozen time-series gate, effect only if structurally eligible
+        run: |
+          python scripts/fit_asi_original_pair_temporal_growth_v17.py \
+            --out /tmp/ASI_CROSSGUILD_SAME_SITE_YEAR_GROWTH_V17.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-asi-interannual-crossguild-source-test-v17
+          path: /tmp/ASI_CROSSGUILD_SAME_SITE_YEAR_GROWTH_V17.json
