@@ -40,6 +40,26 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**2026-10-24 V36 ORIGINAL NEW ECOLOGICAL RESULT — heterogeneity among
+SCAR land-polygon matched Ross Sea Adélie breeding units.** NZ publisher
+2026 39-colony aerial census was restricted to four named independent
+Ross/Beaufort/Coulman/Inexpressible land polygons, 13 shared original
+1983–1992/2001/2004/2005 annual-change starts, and exact SAME-COLONY
+paired original nest indices. Equal-year-balanced across-island SAME
+DIRECTION = **61.5%** (19/30 pair-window signs; pair-weighted 63.3%).
+Fixed 2000 within-island sign shuffles have median 51.3% and
+5–95% 33.3–69.2%, placing the observation **inside** the diagnostic
+reference range; this is NOT an autocorrelation-robust p-value or a
+universal synchrony claim. Pair coefficients diverge sharply:
+Ross–Beaufort **r=+0.468** (n11), Ross–Coulman **−0.501** (n5),
+Ross–Inexpressible **−0.422** (n5). Other pair overlaps n<5 held.
+Exact-polygon-only GIS precision sensitivity FAILS (2 islands, 5
+shared years), and omitting Ross leaves only 7 concurrent windows
+below the frozen >=8 threshold. This is observed *conditional island
+heterogeneity*, not a mechanism or general Antarctic island law.
+- [V36 original measured source and qualified ecological interpretation](docs/NZ_ROSS_SEA_GIS_ISLAND_GROWTH_V36_RESULT.md)
+- [V36 full frozen 4-island numerical and GIS sensitivity](results/NZ_ROSS_SEA_GIS_PHYSICAL_ISLAND_GROWTH_V36.json)
+
 **V35 new Ross Sea verified landmass support:** Original
 39-colony NZ aerial census geocoded to independent source SCAR 2026 coastline
 polygon features (original GIS SHA verified). Source-nearest land matches
