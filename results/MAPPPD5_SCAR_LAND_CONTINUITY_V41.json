@@ -1,0 +1,315 @@
+{
+  "status": "V41_MAPPPD5_SOURCE_SCAR_GIS_LAND_CONTINUITY_SUPPORT",
+  "original_source_census_observation_page_SHA": {
+    "release": {
+      "original_source_sha256": "8f676f6498b1bc79708a67fb05d4ac8ee73249444e85402af87f6a3c64280a65",
+      "original_source_bytes": 556,
+      "MAPPPD_response_version": "5.0"
+    },
+    "sites": {
+      "original_source_sha256": "36059537701069c934227148d32296368943b978b988fb415e07873e48c5ae34",
+      "original_source_bytes": 64956,
+      "MAPPPD_response_version": "5.0"
+    },
+    "observations_p1": {
+      "original_source_sha256": "cd751e43ab61d57a6e7d3c7e918d673cf699392ac4bfccd546d29b99ea62f075",
+      "original_source_bytes": 518644,
+      "MAPPPD_response_version": "5.0"
+    },
+    "observations_p2": {
+      "original_source_sha256": "c2b054fb687d13eb93e67d48a2b492cd47c94ccdef75b562680b770ad6be18f3",
+      "original_source_bytes": 50959,
+      "MAPPPD_response_version": "5.0"
+    }
+  },
+  "source_MACRO_record_n": 771,
+  "original_source_distinct_site_IDs": 95,
+  "official_highres_SCAR_source_sha256": "66d82fa69f86eb8dbe8b04f01505cb2129feafec608455459ee4ed19d1dc38d4",
+  "official_highres_land_source_geometry": {
+    "polygon_attributes": [
+      "surface"
+    ],
+    "original_surface_counts": {
+      "land": 17269,
+      "ice shelf": 330,
+      "rumple": 64,
+      "ice tongue": 37
+    },
+    "valid_source_land_features": 17269,
+    "invalid_original_land_polygons_far_from_sites": 0
+  },
+  "source_original_site_polygon_statuses": {
+    "HOLD_AMBIGUOUS_OR_UNMATCHED": 13,
+    "EXACT_ONE_LAND_POLYGON": 54,
+    "CONTINENT_LARGEST_MAPPED_POLYGON_PROXY": 21,
+    "NEAR_UNIQUE_PROVISIONAL": 7
+  },
+  "primary_exact_polygon_matched_geographical_comparison": {
+    "source_geography_tier": "EXACT_LAND_CENTER_ONLY",
+    "total_original_site_pairs_at_frozen_distance": 590,
+    "all_distance_constrained_pair_categories": {
+      "between_distinct_land_polygons": 86,
+      "within_same_land_polygon": 504
+    },
+    "source_species_year_region_citation_method_distance_cells_with_both_kinds": 3,
+    "matched_strata_by_publisher_region": {
+      "Victoria Land": 2,
+      "Central-west Antarctic Peninsula": 1
+    },
+    "matched_strata_by_penguin_species": {
+      "ADPE": 2,
+      "GEPE": 1
+    },
+    "distinct_publisher_region_names_in_matched_cells": 2,
+    "distinct_original_species_in_matched_cells": 2,
+    "distinct_noncontinental_polygon_ids_in_matched_cells": 4,
+    "frozen_distance_bins_km": [
+      [
+        0.5,
+        15
+      ],
+      [
+        15,
+        60
+      ],
+      [
+        60,
+        100
+      ]
+    ],
+    "first_25_source_only_matching_cells": [
+      {
+        "publisher_region": "Central-west Antarctic Peninsula",
+        "species": "GEPE",
+        "source_season_start_year": 2018,
+        "distance_bin_km": [
+          0.5,
+          15
+        ],
+        "within_polygon_site_pairs": 1,
+        "across_polygon_site_pairs": 2
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 2004,
+        "distance_bin_km": [
+          15,
+          60
+        ],
+        "within_polygon_site_pairs": 3,
+        "across_polygon_site_pairs": 3
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 2004,
+        "distance_bin_km": [
+          60,
+          100
+        ],
+        "within_polygon_site_pairs": 8,
+        "across_polygon_site_pairs": 3
+      }
+    ],
+    "future_island_boundary_sample_gate_passes": false,
+    "bird_count_magnitudes_or_correlations_opened": 0
+  },
+  "secondary_provisional_nearby_polygon_source_sensitivity": {
+    "source_geography_tier": "EXACT_OR_NEAR_UNIQUE_WITHIN_2KM_PROVISIONAL",
+    "total_original_site_pairs_at_frozen_distance": 654,
+    "all_distance_constrained_pair_categories": {
+      "between_distinct_land_polygons": 136,
+      "within_same_land_polygon": 518
+    },
+    "source_species_year_region_citation_method_distance_cells_with_both_kinds": 14,
+    "matched_strata_by_publisher_region": {
+      "Victoria Land": 13,
+      "Central-west Antarctic Peninsula": 1
+    },
+    "matched_strata_by_penguin_species": {
+      "ADPE": 13,
+      "GEPE": 1
+    },
+    "distinct_publisher_region_names_in_matched_cells": 2,
+    "distinct_original_species_in_matched_cells": 2,
+    "distinct_noncontinental_polygon_ids_in_matched_cells": 5,
+    "frozen_distance_bins_km": [
+      [
+        0.5,
+        15
+      ],
+      [
+        15,
+        60
+      ],
+      [
+        60,
+        100
+      ]
+    ],
+    "first_25_source_only_matching_cells": [
+      {
+        "publisher_region": "Central-west Antarctic Peninsula",
+        "species": "GEPE",
+        "source_season_start_year": 2018,
+        "distance_bin_km": [
+          0.5,
+          15
+        ],
+        "within_polygon_site_pairs": 1,
+        "across_polygon_site_pairs": 2
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 1984,
+        "distance_bin_km": [
+          15,
+          60
+        ],
+        "within_polygon_site_pairs": 3,
+        "across_polygon_site_pairs": 3
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 1985,
+        "distance_bin_km": [
+          15,
+          60
+        ],
+        "within_polygon_site_pairs": 3,
+        "across_polygon_site_pairs": 3
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 1985,
+        "distance_bin_km": [
+          60,
+          100
+        ],
+        "within_polygon_site_pairs": 8,
+        "across_polygon_site_pairs": 3
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 1988,
+        "distance_bin_km": [
+          60,
+          100
+        ],
+        "within_polygon_site_pairs": 6,
+        "across_polygon_site_pairs": 2
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 1989,
+        "distance_bin_km": [
+          60,
+          100
+        ],
+        "within_polygon_site_pairs": 6,
+        "across_polygon_site_pairs": 2
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 1990,
+        "distance_bin_km": [
+          15,
+          60
+        ],
+        "within_polygon_site_pairs": 3,
+        "across_polygon_site_pairs": 3
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 1990,
+        "distance_bin_km": [
+          60,
+          100
+        ],
+        "within_polygon_site_pairs": 8,
+        "across_polygon_site_pairs": 3
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 1991,
+        "distance_bin_km": [
+          15,
+          60
+        ],
+        "within_polygon_site_pairs": 3,
+        "across_polygon_site_pairs": 3
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 1991,
+        "distance_bin_km": [
+          60,
+          100
+        ],
+        "within_polygon_site_pairs": 4,
+        "across_polygon_site_pairs": 4
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 2004,
+        "distance_bin_km": [
+          15,
+          60
+        ],
+        "within_polygon_site_pairs": 3,
+        "across_polygon_site_pairs": 6
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 2004,
+        "distance_bin_km": [
+          60,
+          100
+        ],
+        "within_polygon_site_pairs": 8,
+        "across_polygon_site_pairs": 6
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 2005,
+        "distance_bin_km": [
+          15,
+          60
+        ],
+        "within_polygon_site_pairs": 3,
+        "across_polygon_site_pairs": 3
+      },
+      {
+        "publisher_region": "Victoria Land",
+        "species": "ADPE",
+        "source_season_start_year": 2005,
+        "distance_bin_km": [
+          60,
+          100
+        ],
+        "within_polygon_site_pairs": 8,
+        "across_polygon_site_pairs": 5
+      }
+    ],
+    "future_island_boundary_sample_gate_passes": false,
+    "bird_count_magnitudes_or_correlations_opened": 0
+  },
+  "all_MAPPPD_original_nest_count_values_opened": 0,
+  "original_site_position_GPS_uncertainty_certified": false,
+  "landpolygon_ID_is_official_named_island_ID": false,
+  "source_polygon_continuity_is_island_causal_effect": false,
+  "scientific_decision": "STOP_STRICT_WITHIN_VS_BETWEEN_LAND_POLYGON_GEOGRAPHY_SUPPORT"
+}

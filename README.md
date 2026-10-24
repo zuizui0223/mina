@@ -40,6 +40,21 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V41 physical land-continuity contrast source STOP (2026-10-24):**
+Original MAPPPD v5 771 matched-method annual nest census changes at 95 sites
+were independently overlaid with original 2026 high-res SCAR land polygons.
+54 source sites were inside one nonambiguous land polygon; 7 unique near
+within 2km remained provisional, 13 unresolved and 21 on the largest
+continental land proxy. In fixed equal-species/year/source/vantage/distance
+bins, exact GIS provided only **3** matched within-vs-between polygon
+cells in 2 regions (>=12/3 regions minimum FAILED). Including provisional
+near-only sites supplied 14 cells but 13 were one region/species.
+No island-barrier effect calculated; do not relax original region,
+precision, distance or source-citation gates. The V40 enlarged source
+is instead retained for a distinct noncausal species-region dynamic analysis.
+- [V41 actual highres coastline sample/stop decision](docs/MAPPPD_V5_LAND_CONTINUITY_V41_RESULT.md)
+- [V41 original matched geographic cells](results/MAPPPD5_SCAR_LAND_CONTINUITY_V41.json)
+
 **V40 ACTUAL MAPPPD v5.0 SOURCE EXPANSION (2026-10-24):** Original
 publisher Oct21 2026 API has 729 sites and 5,487 penguin counts, captured in
 5,000 + 487 paginated records with exact source hashes. A strict
