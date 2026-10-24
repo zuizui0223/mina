@@ -40,6 +40,22 @@ Canonical submission manifest:
 
 ### Paper 2 lane — Antarctic-wide breeding-island macroecology
 
+**V40 ACTUAL MAPPPD v5.0 SOURCE EXPANSION (2026-10-24):** Original
+publisher Oct21 2026 API has 729 sites and 5,487 penguin counts, captured in
+5,000 + 487 paginated records with exact source hashes. A strict
+same-species/site/citation/vantage/adjacent-season NEST-only structure yields
+**771** annual comparison opportunities at **95 original site IDs, 11 source
+regions**, across Adélie **414**, chinstrap **152**, gentoo **205**.
+This is source support NOT 95 independent physically separated islands
+or a pan-Antarctic effect. Ambiguous duplicate site/species/season source
+groups: **426** (1,022 original rows) excluded.
+NZ Ross Sea aerial author source is ALREADY in MAPPPD under
+manaakiwhenua2021aerial: **316** exact source-name/stage/season overlaps
+at **21** site IDs. No independent cross-dataset biological replication
+can be claimed before shared original census events are removed.
+- [V40 authenticated original source sample and lineage result](docs/MAPPPD_V5_MACRO_SOURCE_LINEAGE_V40_RESULT.md)
+- [V40 5,487 original observations source/QA receipt](results/MAPPPD5_MACRO_SOURCE_AND_NZ_PEDIGREE_V40.json)
+
 **V38 METHOD CORRECTION (2026-10-24):** APBP source
 coordinateUncertaintyInMeters for Adélie colonies is calculated from
 mean colony-polygon-vertex-to-centre distance, NOT a reported GPS
