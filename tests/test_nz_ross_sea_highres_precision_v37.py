@@ -24,7 +24,7 @@ def test_minute_resolution_rectangle_stability_is_not_just_center_in_land():
 
 def test_nearby_offshore_source_point_never_becomes_positional_robust_island():
     fake=FakeTransformer()
-    geoms=[box(0.,0.,1.,1.),box(10.,10.,11.,11.)]
+    geoms=[box(0.,0.,1.,1.),box(10000.,10000.,11000.,11000.)]
     v=m.classify_geo_point(Point(1.2,.5),.5,1.2,fake,geoms,STRtree(geoms),1)
     assert v["status"]=="NEAR_UNIQUE_LAND_WITHIN_2KM_PROVISIONAL"
     assert v["source_reported_georef_center_exact_island"] is False
