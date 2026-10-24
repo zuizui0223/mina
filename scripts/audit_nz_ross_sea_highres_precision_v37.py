@@ -206,7 +206,7 @@ def main():
     try:
         frozen=load_fixed_v35()
         source=original_publisher_sites()
-        earlier={r["original_census_colony"] for r in frozen["original_colony_geo_link_records"]}
+        earlier={r["original_colony"] for r in frozen["original_colony_geo_link_records"]}
         current={r["original_census_colony"] for r in source["site_to_named_island_crosswalk"]}
         if earlier!=current or len(earlier)!=33:
             raise ValueError("SOURCE_STOP 33 exact author named colony geo references changed")

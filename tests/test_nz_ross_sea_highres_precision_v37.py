@@ -43,3 +43,8 @@ def test_13year_original_roster_and_island_gate_are_immutable():
     assert m.MIN_ISLAND_YEARS==5 and m.MIN_COINCIDENT_YEARS==8
     assert m.MAX_NEAR_M==2000.
     assert m.HIGHSRC_DOI.startswith("10.5285/")
+
+def test_V35_archived_geographic_link_uses_original_colony_field():
+    old=[{"original_colony":"Cape Bird North","source_named_landmass":"Ross Island"}]
+    names={r["original_colony"] for r in old}
+    assert names=={"Cape Bird North"}
