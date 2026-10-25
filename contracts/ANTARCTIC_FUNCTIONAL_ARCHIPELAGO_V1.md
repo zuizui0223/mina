@@ -62,6 +62,16 @@ For each exactly classified rock polygon compute:
 - when both are observed, whether a different-land rock patch is closer than
   the nearest rock patch on the same continuous land feature.
 
+**Added after V1 source-only geography inspection, NOT after any bird outcome:** 
+2km same-land exposed-rock graph connected components are now calculated
+from the frozen 2km edge-gap neighborhood. Report both network component
+count and the fraction of mapped land features with >=2 exact-assigned rock
+polygons that contain >=2 rock-connected components. This is descriptive
+geographic fragmentation, not animal connectivity or a prospective
+ecological effect. The rare V1 cross-land edges cannot justify a biological
+within/across-island proximity comparison at 2 km.
+
+
 This is an independently derived spatial *topology-disagreement* diagnostic.
 Stage A uses source geometry PREPARED containment and radius-expanded bounding-box
 candidate searches followed by exact GEOS rock-edge distances; it does NOT
