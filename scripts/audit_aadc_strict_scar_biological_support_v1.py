@@ -24,12 +24,12 @@ from audit_aadc_geography_editions_v1 import parse_geo
 from build_functional_archipelago_v1 import build_archipelago, download_original_geography
 from join_aadc_geography_to_scar_network_v1 import crosswalk_source_sites
 from join_aadc_original_site_occupancy_v13 import fetch_original_sources, rows_linked
-from fit_aadc_nesting_guild_island_area_v14 import GUILDS
 import link_apbp_to_add_island_rock_v3 as bas
 import validate_apbp_highres_coast_v4 as coast
 
 BLOCK_M = 250000
-FLYING = frozenset(GUILDS.keys())
+# Seven flying-seabird original AADC codes, unchanged from V14.
+FLYING = frozenset({"SGP", "SK", "AP", "CP", "SF", "SP", "WSP"})
 SPECIES = FLYING | {"ADP"}
 MIN_PROGRAM_SITES = 30
 MIN_SITES_IN_BLOCK = 5
