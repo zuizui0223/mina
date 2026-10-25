@@ -86,6 +86,19 @@ def build_archipelago(
             "different_land_gap_closer_than_same": None,
         })
 
+
+    # Source-feature-aware union-find for connected rock-patch components.
+    uf = list(range(len(rows)))
+    def find(v: int) -> int:
+        while uf[v] != v:
+            uf[v] = uf[uf[v]]
+            v = uf[v]
+        return v
+    def union(a: int, b: int) -> None:
+        a, b = find(a), find(b)
+        if a != b:
+            uf[max(a,b)] = min(a,b)
+
     same_pairs = 0
     different_pairs = 0
     if eligible:
@@ -108,11 +121,49 @@ def build_archipelago(
                 if rows[ri]["land_source_feature_id"] == rows[rj]["land_source_feature_id"]:
                     key = "nearest_same_land_rock_gap_m"
                     same_pairs += 1
+                    union(ri,rj)
                 else:
                     key = "nearest_different_land_rock_gap_m"
                     different_pairs += 1
                 rows[ri][key] = _closer(rows[ri][key], distance)
                 rows[rj][key] = _closer(rows[rj][key], distance)
+
+
+    # Exact original land-feature nesting, no animal occupancy inference.
+    per_land = {}
+    for rock_i, _geom in eligible:
+        land_id = rows[rock_i]["land_source_feature_id"]
+        if land_id not in per_land:
+            per_land[land_id] = {"rocks":0, "roots":set()}
+        per_land[land_id]["rocks"] += 1
+        root = find(rock_i)
+        per_land[land_id]["roots"].add(root)
+        rows[rock_i]["same_land_rock_network_component_index"] = root
+    for row in rows:
+        if "same_land_rock_network_component_index" not in row:
+            row["same_land_rock_network_component_index"] = None
+
+    largest_land_id = max(land_features,key=lambda x:x[1].area)[0]
+    groups_multipatch = [z for z in per_land.values() if z["rocks"] >= 2]
+    groups_fragmented = [z for z in groups_multipatch if len(z["roots"]) >= 2]
+    groups_no_cont = {k:v for k,v in per_land.items() if k != largest_land_id}
+    graph = {
+        "source_mapped_land_features_with_geometrically_assigned_rock":len(per_land),
+        "mapped_land_features_with_two_or_more_rock_polygons":len(groups_multipatch),
+        "mapped_land_features_with_multiple_2km_rock_network_components":len(groups_fragmented),
+        "fraction_fragmented_among_multi_rock_land_features":(
+            len(groups_fragmented)/len(groups_multipatch) if groups_multipatch else None),
+        "total_2km_connected_rock_components_nested_within_land":sum(
+            len(z["roots"]) for z in per_land.values()),
+        "island_proxy_mapped_land_features_with_assigned_rock_excluding_largest":len(groups_no_cont),
+        "island_proxy_features_with_at_least_two_rock_polygons_excluding_largest":sum(
+            z["rocks"]>=2 for z in groups_no_cont.values()),
+        "island_proxy_features_with_multiple_2km_rock_network_components_excluding_largest":sum(
+            len(z["roots"])>=2 for z in groups_no_cont.values()),
+        "largest_single_mapped_land_polygon_treated_as_continent_proxy_not_named_island":True,
+        "mapped_rock_nesting_capacity_or_animal_movement_inferred":False,
+        "original_geometry_maximum_area_polygon_id":largest_land_id,
+    }
 
     both = inverted = 0
     for r in rows:
@@ -134,6 +185,7 @@ def build_archipelago(
             sorted(Counter(r["assignment_status"] for r in rows).items())
         ),
         "unambiguous_rock_polygon_n": len(eligible),
+        "nested_2km_rock_network_summary":graph,
         "within_same_land_rock_patch_pairs_within_radius": same_pairs,
         "between_different_land_rock_patch_pairs_within_radius": different_pairs,
         "rocks_with_both_neighborhood_categories": both,
