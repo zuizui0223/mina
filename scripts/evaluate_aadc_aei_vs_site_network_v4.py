@@ -100,7 +100,7 @@ def eligible_habitat_sample(source_data:pd.DataFrame, atlas:pd.DataFrame):
     sample_qa={
         "source_original_P_A_rows_with_site_area_and_geography":len(source_data),
         "source_P_A_rows_with_independent_AEI_habitat":len(available),
-        "source_distinct_sites_with_independent_AEI_habitat":int(available.site_id.nunique()),
+        "source_distinct_sites_with_independent_AEI_habitat":int(available.geog_site_id.nunique()),
         "source_missing_habitat_rows_excluded_not_zero_filled":len(joined)-len(available),
         "only_non_animal_derived_AEI_classes_enter_predictors":True,
     }
