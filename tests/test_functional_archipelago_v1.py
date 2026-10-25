@@ -34,6 +34,14 @@ def test_cross_land_neighbor_can_be_closer_than_same_land_rock():
     assert result["mapped_land_polygon_n"] == 2
     assert result["mapped_rock_polygon_n"] == 4
     assert result["unambiguous_rock_polygon_n"] == 3
+    graph = result["nested_2km_rock_network_summary"]
+    assert graph["total_2km_connected_rock_components_nested_within_land"] == 2
+    assert graph["source_mapped_land_features_with_geometrically_assigned_rock"] == 2
+    assert graph["mapped_land_features_with_two_or_more_rock_polygons"] == 1
+    assert graph["mapped_land_features_with_multiple_2km_rock_network_components"] == 0
+    assert rows[0]["same_land_rock_network_component_index"] == rows[1]["same_land_rock_network_component_index"]
+    assert rows[0]["same_land_rock_network_component_index"] != rows[2]["same_land_rock_network_component_index"]
+    assert rows[3]["same_land_rock_network_component_index"] is None
     assert result["within_same_land_rock_patch_pairs_within_radius"] == 1
     assert result["between_different_land_rock_patch_pairs_within_radius"] == 2
     assert result["rocks_with_both_neighborhood_categories"] == 2
@@ -83,3 +91,17 @@ def test_radius_contract_rejects_nonpositive_and_oversized():
     for radius in [-1, 0, 20001]:
         with pytest.raises(ValueError, match="GEOMETRY_STOP"):
             build_archipelago(land, rock, radius_m=radius)
+
+def test_two_distant_rocks_on_same_land_are_distinct_functional_components():
+    land = [f(3, box(0, 0, 12000, 4000))]
+    rocks = [
+        f(20, box(100, 100, 200, 200)),
+        f(21, box(8000, 100, 8100, 200))
+    ]
+    rows, result = build_archipelago(land, rocks)
+    graph = result["nested_2km_rock_network_summary"]
+    assert graph["mapped_land_features_with_two_or_more_rock_polygons"] == 1
+    assert graph["mapped_land_features_with_multiple_2km_rock_network_components"] == 1
+    assert graph["total_2km_connected_rock_components_nested_within_land"] == 2
+    assert graph["fraction_fragmented_among_multi_rock_land_features"] == 1.0
+    assert rows[0]["same_land_rock_network_component_index"] != rows[1]["same_land_rock_network_component_index"]
