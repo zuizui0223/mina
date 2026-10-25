@@ -1,0 +1,51 @@
+name: Antarctic AADC original P-A versus AEI habitat missingness V5
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_AEI_V5_MISSINGNESS_DIAGNOSIS.md'
+      - 'scripts/audit_aadc_aei_v5_missingness.py'
+      - 'tests/test_aadc_aei_v5_missingness.py'
+      - '.github/workflows/antarctic-aadc-aei-missingness-v5.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_AEI_V5_MISSINGNESS_DIAGNOSIS.md'
+      - 'scripts/audit_aadc_aei_v5_missingness.py'
+      - 'tests/test_aadc_aei_v5_missingness.py'
+      - '.github/workflows/antarctic-aadc-aei-missingness-v5.yml'
+  workflow_dispatch:
+jobs:
+  original_P_A_geography_selection_diagnosis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install AADC source and geometry dependencies
+        run: python -m pip install numpy scipy pandas scikit-learn pyproj openpyxl xlrd requests pytest
+      - name: Test original map-class selection rules
+        run: python -m pytest -q tests/test_aadc_aei_v5_missingness.py
+      - name: Recover exact successful independent geography raster result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/aei-atlas-v3
+          gh run download 40210293343 --repo "$GITHUB_REPOSITORY" \
+            --name original-AADC-7785-AEI-icefree-habitat-v3 --dir /tmp/aei-atlas-v3
+      - name: Diagnose P vs A excluded map-only and animal-derived class sites
+        run: |
+          python scripts/audit_aadc_aei_v5_missingness.py \
+            --atlas-summary /tmp/aei-atlas-v3/AADC_7785_AEI_HABITAT_ATLAS_V3.json \
+            --atlas-features /tmp/aei-atlas-v3/AADC_7785_AEI_HABITAT_ATLAS_V3.csv \
+            --out /tmp/AADC_AEI_V5_MISSINGNESS_ONLY.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-aei-v5-source-selection-audit
+          path: /tmp/AADC_AEI_V5_MISSINGNESS_ONLY.json
+          if-no-files-found: warn
