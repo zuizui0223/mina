@@ -11,6 +11,10 @@ import csv
 import hashlib
 import json
 import tempfile
+import time
+from functools import lru_cache
+from shapely.geometry import box
+from shapely.prepared import prep
 from collections import Counter
 from pathlib import Path
 
@@ -46,6 +50,9 @@ def build_archipelago(
 
     land_geoms = [r[1] for r in land_features]
     land_index = STRtree(land_geoms)
+    @lru_cache(maxsize=128)
+    def prepared_land(i: int):
+        return prep(land_geoms[i])
     rows = []
     eligible = []
 
@@ -54,17 +61,15 @@ def build_archipelago(
             raise ValueError("GEOMETRY_STOP source rock features not valid")
         covered = [
             int(i) for i in land_index.query(geom)
-            if land_geoms[int(i)].covers(geom)
+            if prepared_land(int(i)).covers(geom)
         ]
         if len(covered) == 1:
             pos = covered[0]
             land_id = land_features[pos][0]
             status = "EXACT_WHOLE_ROCK_ONE_LAND"
-            distance_to_land_edge = float(geom.distance(land_geoms[pos].boundary))
             eligible.append((len(rows), geom))
         else:
             land_id = None
-            distance_to_land_edge = None
             status = (
                 "HOLD_MULTIPLE_FULLY_COVERING_LANDS" if len(covered) > 1
                 else "HOLD_ROCK_NOT_WHOLE_WITHIN_ONE_LAND"
@@ -74,7 +79,6 @@ def build_archipelago(
             "land_source_feature_id": land_id,
             "assignment_status": status,
             "rock_projected_area_epsg3031_km2": float(geom.area / 1000000.0),
-            "distance_rock_edge_to_land_edge_m": distance_to_land_edge,
             "nearest_same_land_rock_gap_m": None,
             "nearest_different_land_rock_gap_m": None,
             "same_gap_censored_at_radius": True,
@@ -88,7 +92,9 @@ def build_archipelago(
         eligible_geoms = [e[1] for e in eligible]
         tree = STRtree(eligible_geoms)
         for i, (ri, gi) in enumerate(eligible):
-            candidates = tree.query(gi.buffer(radius_m))
+            minx, miny, maxx, maxy = gi.bounds
+            candidates = tree.query(box(minx-radius_m, miny-radius_m,
+                                        maxx+radius_m, maxy+radius_m))
             if len(candidates) > MAX_BOX_CANDIDATES:
                 raise ValueError("GEOMETRY_STOP unexpectedly dense patch neighborhood")
             for j0 in candidates:
@@ -140,6 +146,7 @@ def build_archipelago(
         "different_land_polygon_implies_open_ocean_barrier": False,
         "observed_rock_gap_estimates_ice_crossing_cost": False,
         "mapped_rock_equals_available_nesting_capacity": False,
+        "distance_to_coastline_not_in_stage_a": True,
     }
     return rows, summary
 
@@ -165,7 +172,9 @@ def main() -> None:
     parser.add_argument("--features", type=Path, required=True)
     args = parser.parse_args()
 
+    started = time.perf_counter()
     land_blob, rock_blob = download_original_geography()
+    print('ATLAS_STAGE_SOURCE_SECONDS',round(time.perf_counter()-started,2),flush=True)
     with tempfile.TemporaryDirectory(prefix="functional-archipelago-") as td:
         root = Path(td)
         land, land_meta = coast.original_highres_shapes(
@@ -173,7 +182,9 @@ def main() -> None:
         )
         rock_file = bas.unpack_shapefile(rock_blob, root / "rock")
         rock, rock_meta = bas.mapped_features(rock_file, require_surface=False)
+        print('ATLAS_STAGE_SHAPES_SECONDS',round(time.perf_counter()-started,2),'LAND',len(land),'ROCK',len(rock),flush=True)
         rows, summary = build_archipelago(land, rock)
+        print('ATLAS_STAGE_GRAPH_SECONDS',round(time.perf_counter()-started,2),flush=True)
 
     summary["provenance"] = {
         "land_source_doi": coast.HIGH_DOI,
