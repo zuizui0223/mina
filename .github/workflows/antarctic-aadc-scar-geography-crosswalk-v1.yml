@@ -1,0 +1,42 @@
+name: Antarctic AADC to SCAR original geography-only crosswalk v1
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'scripts/join_aadc_geography_to_scar_network_v1.py'
+      - 'tests/test_aadc_scar_geography_crosswalk_v1.py'
+      - '.github/workflows/antarctic-aadc-scar-geography-crosswalk-v1.yml'
+  pull_request:
+    paths:
+      - 'scripts/join_aadc_geography_to_scar_network_v1.py'
+      - 'tests/test_aadc_scar_geography_crosswalk_v1.py'
+      - '.github/workflows/antarctic-aadc-scar-geography-crosswalk-v1.yml'
+  workflow_dispatch:
+jobs:
+  geography_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original spatial source and test dependencies
+        run: python -m pip install requests pyproj shapely pyshp openpyxl xlrd pytest
+      - name: Test conservative original site-point to source rock spatial matching
+        run: python -m pytest -q tests/test_aadc_scar_geography_crosswalk_v1.py
+      - name: Join all 2025 original geographic sites to verified SCAR mapped rock and land
+        run: |
+          python scripts/join_aadc_geography_to_scar_network_v1.py \
+            --out /tmp/AADC_SCAR_GEOGRAPHY_CROSSWALK_V1.json \
+            --site-crosswalk /tmp/AADC_SCAR_SITE_CANDIDATE_CROSSWALK_V1.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-scar-geography-only-crosswalk-v1
+          path: |
+            /tmp/AADC_SCAR_GEOGRAPHY_CROSSWALK_V1.json
+            /tmp/AADC_SCAR_SITE_CANDIDATE_CROSSWALK_V1.csv
+          if-no-files-found: warn
