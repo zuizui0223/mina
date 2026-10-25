@@ -96,10 +96,10 @@ region, repeated-site identity, spatial blocks, observation effort and species,
 does independently mapped *rock-patch configuration* contribute genuine held-out
 information about explicitly surveyed breeding occupancy beyond nominal land
 area and land-feature identity? A difference between land-nesting Adélie and
-flying seabirds is a preregistered *candidate interaction*, not a finding.
+flying seabirds is a proposed *candidate interaction*, not a finding.
 
 Freeze the following model sequence after Stage B's spatial *support* gate and
-before observing any new P/A outcomes:
+before observing any new independent P/A outcomes:
 - M0: effort, time/period, species, region and geographic/spatial random structure;
 - M1: M0 + physical land polygon area and land-geometry class (only if validated);
 - M2: M1 + amount, adjacency and fragmentation of *independently* mapped rock;
@@ -119,12 +119,23 @@ cohort; do not interpret the land-rock Stage A as validating them.
 
 ## Novelty boundary
 
-Existing island-area, Antarctic habitat mapping, sea-ice penguin ecology and
-published AADC seabird occupancy mapping are prior art. The candidate original
+Prior art is explicit: Lee et al. 2022, *Islands in the ice* (DOI
+10.1111/gcb.16331) already describes Antarctic ice-free habitat islands;
+Obrist et al. 2020 (PMCID PMC7126081) already tests marine-subsidized island
+biogeography; existing island-area and Antarctic ecosystem mapping are not
+new concepts; Southwell et al. 2025 (DOI 10.1111/ddi.70066) already publishes
+East Antarctic seabird survey occupancy; and the 2023 *Science Advances* emperor
+fast-ice habitat study (DOI 10.1126/sciadv.adg8340) is not our discovery. The candidate original
 contribution is the independently measured mismatch between *nested Antarctic
 habitat isolation* and *mapped land continuity*, and its cross-guild effect
 under actual sampling controls. Stage A creates a spatial data product but does
-not yet establish a penguin ecological effect.
+not yet establish a penguin ecological effect. Moreover, the earlier V14
+analysis in PR #197 **already inspected** AADC flying-seabird P/A outcomes for
+island-area × nesting guild and FAILED spatial held-out predictive support.
+Consequently a later AADC re-fit with novel rock topology is **exploratory**;
+it cannot be sold as untouched preregistered external validation. A genuinely
+confirmatory claim requires independent newly eligible field programmes/regions
+or prospectively acquired data, frozen before outcome analysis.
 
 ## Original data sources
 
