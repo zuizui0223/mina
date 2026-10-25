@@ -24,9 +24,31 @@ from audit_aadc_original_workbook_headers_v11 import public_dataset_manifests
 from join_aadc_original_site_occupancy_v13 import fetch_original_sources,rows_linked
 from audit_aadc_geography_editions_v1 import parse_geo
 from build_aadc_potential_site_network_v1 import site_point_network
-from audit_aadc_strict_scar_biological_support_v1 import (
-    select_unique_source_eligible, FLYING
-)
+from audit_aadc_penguin_skua_joint_search_v15 import season_valid, direct_eligible
+
+# Preserve the seven original flying-species codes from the frozen V14 sample.
+FLYING = frozenset({"SGP", "SK", "AP", "CP", "SF", "SP", "WSP"})
+
+
+def select_unique_source_eligible(surveys):
+    """Same strict V15/V1 source-group rule, without unrelated rock-GIS imports."""
+    from collections import defaultdict
+    groups = defaultdict(list)
+    for row in surveys:
+        species = str(row.get("species_code", "")).strip()
+        programme = str(row.get("source_study", "")).strip()
+        site = str(row.get("geog_site_id", "")).strip()
+        season = str(row.get("season", "")).strip()
+        if not site or species not in (FLYING | {"ADP"}) or not season_valid(season):
+            continue
+        if species == "ADP" and programme != "penguin_original_search":
+            continue
+        if species in FLYING and programme != "flying_seabird_original_search":
+            continue
+        groups[(site,species,season,programme)].append(row)
+    return [rows[0] for rows in groups.values()
+            if len(rows) == 1 and direct_eligible(rows[0])]
+
 
 BLOCK_M=250000
 MIN_BLOCK_SITES=5
