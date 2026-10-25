@@ -51,8 +51,10 @@ uncovered and mixed-resolution rock features remain HOLD; no nearest-land
 rescue or snapping. Record source-specific status for every exposed-rock feature.
 
 For each exactly classified rock polygon compute:
-- its source identity, parent mapped-land identity, approximate EPSG:3031
-  projected polygon area, and distance to mapped parent-land boundary;
+- its source identity, parent mapped-land identity and approximate EPSG:3031
+  projected polygon area; boundary-distance is deferred because a single
+  extremely complex continental coastline would require an independent
+  optimized coastline-segment index, and would not change the nested-gap test;
 - nearest eligible mapped-rock *edge gap* within the **same** parent land
   feature, censored if no such polygon occurs within the frozen 2 km radius;
 - nearest eligible mapped-rock edge gap on a **different** parent land feature,
@@ -61,6 +63,9 @@ For each exactly classified rock polygon compute:
   the nearest rock patch on the same continuous land feature.
 
 This is an independently derived spatial *topology-disagreement* diagnostic.
+Stage A uses source geometry PREPARED containment and radius-expanded bounding-box
+candidate searches followed by exact GEOS rock-edge distances; it does NOT
+run repeated expensive distance-to-entire-continental-coastline calculations.
 A different mapped land feature is **not automatically a sea-water gap**. The
 separating medium (marine water / glacier / shelf / uncertain) must be resolved
 from independent original surface/topology data before claiming a water-barrier
