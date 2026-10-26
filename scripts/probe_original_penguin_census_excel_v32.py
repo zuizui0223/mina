@@ -6,7 +6,7 @@ Only first 128KiB; no original count values or imaginary quality ranks.
 from __future__ import annotations
 import argparse,hashlib,json
 from pathlib import Path
-from urllib.parse import urlparse,urljoin
+from urllib.parse import urlparse,urljoin,urlunparse
 import requests
 
 SOURCE_URL="https://data.aad.gov.au/aadc/portal/download_file.cfm?file_id=2216"
@@ -45,6 +45,14 @@ def fetch_bounded_source():
                     dest=urljoin(res.url,relative)
                     u=urlparse(dest)
                     # Never log or forward signed query strings to a third-party.
+                    if u.hostname in ALLOWED_HOST and u.scheme=="http":
+                        # Publisher's old HTTP legacy file endpoint: never send
+                        # the browser request over plaintext. Instead resolve
+                        # the same canonical original host/path directly by
+                        # HTTPS; this is not an off-publisher source fallback.
+                        dest=urlunparse(u._replace(scheme="https"))
+                        u=urlparse(dest)
+                        chain[-1]["source_HTTP_legacy_same_host_link_canonicalized_to_HTTPS"]=True
                     if u.scheme!="https" or u.hostname not in ALLOWED_HOST:
                         return {
                             "status":"HOLD_ORIGINAL_AADC_REDIRECT_TO_NONAPPROVED_HOST",
