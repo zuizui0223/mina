@@ -66,3 +66,23 @@ def test_locked_ten_publisher_file_paths_are_not_outcome_selected():
     assert len(selected)==10
     assert len({x["source_original_locality"] for x in selected})==4
     assert not any("ZAVO_2022_Chinstrap" in x["original_archive_relative_path"] for x in selected)
+
+
+def test_missing_source_nest_location_under_one_percent_excluded_not_imputed():
+    lines=["nest_number,lat,lon"]
+    for i in range(200):
+        if i==15:lines.append(f"{i+1},,")
+        else:lines.append(f"{i+1},-58.{(i%100):04d},-26.5001")
+    xyz,qa=source_csv_points(("\n".join(lines)+"\n").encode(),{"taxon":"ADELIE"})
+    assert qa["original_source_nest_identifier_rows_including_missing_coordinates"]==200
+    assert qa["source_rows_with_missing_original_lat_or_lon"]==1
+    assert qa["original_row_count"]==199
+    assert qa["unlocated_source_nests_never_assigned_synthetic_positions"] is True
+
+
+def test_missing_source_nest_location_above_one_percent_is_source_stop():
+    lines=["nest_number,lat,lon"]
+    for i in range(200):
+        lines.append(f"{i+1},," if i in (0,1,2) else f"{i+1},-58.123,-26.456")
+    with pytest.raises(ValueError,match="SOURCE_MISSINGNESS_GATE"):
+        source_csv_points(("\n".join(lines)+"\n").encode(),{"taxon":"ADELIE"})
