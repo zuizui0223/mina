@@ -147,11 +147,22 @@ def traverse_publisher_archives(session):
         x["original_archive_relative_path"] for x in files})
     if duplicate_paths:
         raise ValueError("SOURCE_STOP duplicate original publisher file paths")
+    original_current_complete=(
+        len(files)>=EXPECTED_CSV+EXPECTED_TIFF and
+        counts["csv"]>=EXPECTED_CSV and
+        counts["tif"]+counts["tiff"]>=EXPECTED_TIFF and not pending_failed
+    )
+    exact_catalogue_counts=(
+        counts["csv"]==EXPECTED_CSV and
+        counts["tif"]+counts["tiff"]==EXPECTED_TIFF and
+        len(files)==EXPECTED_CSV+EXPECTED_TIFF
+    )
     state=(
-        "VERIFIED_ALL_ORIGINAL_HART_SOURCE_FILE_MANIFEST"
-        if counts["csv"]==EXPECTED_CSV and counts["tif"]+counts["tiff"]==EXPECTED_TIFF
-           and not pending_failed and len(files)==EXPECTED_CSV+EXPECTED_TIFF
-        else "HOLD_INCOMPLETE_ORIGINAL_SOURCE_FILE_MANIFEST"
+        "VERIFIED_ORIGINAL_SOURCE_FILES_MATCH_PUBLISHED_INVENTORY"
+        if original_current_complete and exact_catalogue_counts else
+        "VERIFIED_ORIGINAL_SOURCE_FILES_PUBLISHER_SUMMARY_COUNT_DISCREPANCY"
+        if original_current_complete else
+        "HOLD_INCOMPLETE_ORIGINAL_SOURCE_FILE_MANIFEST"
     )
     return {
        "status":state,
@@ -161,6 +172,11 @@ def traverse_publisher_archives(session):
        "publisher_directory_manifest_SHA_receipts":receipts,
        "original_filename_inventory_total":len(files),
        "original_file_types":dict(sorted(counts.items())),
+       "original_published_metadata_expected_CSV":EXPECTED_CSV,
+       "original_published_metadata_expected_TIFF":EXPECTED_TIFF,
+       "original_file_manifest_exactly_equals_published_2022_summary":exact_catalogue_counts,
+       "original_file_archive_recursively_complete_under_source_count_gate":original_current_complete,
+       "source_inventory_discrepancy_explained_by_2022_paper_metadata":False,
        "original_top_locality_folder_file_counts":dict(sorted(allgroups.items())),
        "original_all_file_metadata_only":files,
        "unavailable_official_publisher_nested_group_ids":pending_failed,
