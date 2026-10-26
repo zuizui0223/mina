@@ -1,0 +1,56 @@
+name: Antarctic AADC area-conditional nesting versus mapped relocation V11
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_NESTED_COLONY_CONTRACTION_V11.md'
+      - 'scripts/analyze_aadc_colony_nested_overlap_v11.py'
+      - 'tests/test_aadc_colony_nested_overlap_v11.py'
+      - 'results/AADC_REPEATED_ADELIE_COLONY_GIS_V10.json'
+      - '.github/workflows/antarctic-aadc-conditional-overlap-v11.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_NESTED_COLONY_CONTRACTION_V11.md'
+      - 'scripts/analyze_aadc_colony_nested_overlap_v11.py'
+      - 'tests/test_aadc_colony_nested_overlap_v11.py'
+      - 'results/AADC_REPEATED_ADELIE_COLONY_GIS_V10.json'
+      - '.github/workflows/antarctic-aadc-conditional-overlap-v11.yml'
+  workflow_dispatch:
+jobs:
+  derived_source_only_post_result_metrics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test nested shrinkage and site pseudoreplication
+        run: python -m pytest -q tests/test_aadc_colony_nested_overlap_v11.py
+      - name: Recover original 15 site-year observed geometry pairs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/adelie-v10-pairs
+          gh run download 40257955794 --repo "$GITHUB_REPOSITORY" \
+            --name original-AADC-adelie-repeated-colony-boundary-v10 --dir /tmp/adelie-v10-pairs
+      - name: Derive how much spatial boundary change exceeds inevitable geometric shrinkage
+        run: |
+          python scripts/analyze_aadc_colony_nested_overlap_v11.py \
+            --receipt results/AADC_REPEATED_ADELIE_COLONY_GIS_V10.json \
+            --source-pairs /tmp/adelie-v10-pairs/AADC_ADPE_ORIGINAL_15_SITE_PAIRS_V10.csv \
+            --out /tmp/AADC_ADELIE_NESTING_MISMATCH_V11.json \
+            --pairs /tmp/AADC_ADELIE_NESTING_MISMATCH_PAIRS_V11.csv \
+            --sites /tmp/AADC_ADELIE_NESTING_MISMATCH_SITES_V11.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-adelie-area-conditional-nesting-v11
+          path: |
+            /tmp/AADC_ADELIE_NESTING_MISMATCH_V11.json
+            /tmp/AADC_ADELIE_NESTING_MISMATCH_PAIRS_V11.csv
+            /tmp/AADC_ADELIE_NESTING_MISMATCH_SITES_V11.csv
+          if-no-files-found: warn
