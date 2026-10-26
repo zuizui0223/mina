@@ -158,8 +158,8 @@ def read_original_geometry(downloaded):
         source_crs=CRS.from_wkt(downloaded[".prj"].decode("utf-8-sig",errors="strict"))
     except Exception as exc:
         raise ValueError("CRS_STOP original AADC polygon projection unreadable") from exc
-    if not source_crs.is_projected:
-        raise ValueError("CRS_STOP original colony boundary source CRS not projected")
+    if not (source_crs.is_projected or source_crs.is_geographic):
+        raise ValueError("CRS_STOP original AADC WKT is neither geographic nor projected")
     projection=Transformer.from_crs(source_crs,CRS.from_epsg(3031),always_xy=True)
     shapes=[]
     shape_repair=0
@@ -185,6 +185,14 @@ def read_original_geometry(downloaded):
                 shape_repair+=1
             if src is None or src.is_empty or src.geom_type not in ("Polygon","MultiPolygon") or src.area<=0:
                 raise ValueError("GEOMETRY_STOP nonrepairable mapped colony polygon")
+            if source_crs.is_geographic:
+                # A geographic WGS84 source .prj is valid if original source
+                # records really contain Antarctic lon/lat, not UTM metres
+                # with a mislabeled original projection.
+                xmin,ymin,xmax,ymax=src.bounds
+                if not (-180<=xmin<=180 and -180<=xmax<=180 and
+                        -90<=ymin<=-60 and -90<=ymax<=-60):
+                    raise ValueError("CRS_STOP geographic .prj inconsistent with Antarctic source polygon coordinates")
             projected=transform(projection.transform,src)
             if not projected.is_valid:
                 projected=_polygonal_parts(make_valid(projected))
@@ -199,6 +207,7 @@ def read_original_geometry(downloaded):
         raise ValueError("GEOMETRY_STOP original surveyed polygon union invalid")
     return geom,{
         "original_source_crs":source_crs.to_string(),
+        "original_source_crs_is_geographic":bool(source_crs.is_geographic),
         "original_DBf_fields":dbf_fields,
         "original_source_polygon_record_n":shape_original_count,
         "individual_original_polygon_geometries_repaired_by_make_valid":shape_repair,
@@ -285,7 +294,11 @@ def main():
             for f in as_completed(futures):
                 task=futures[f]
                 blobs,sha=f.result()
-                geometry,qa=read_original_geometry(blobs)
+                try:
+                    geometry,qa=read_original_geometry(blobs)
+                except Exception as exc:
+                    raise ValueError("SOURCE_LAYER_STOP "+task["source_metadata_id"]+
+                                     " "+task["original_shape_path"]+" :: "+str(exc)) from exc
                 output.append(({
                     **task,
                     **qa,
