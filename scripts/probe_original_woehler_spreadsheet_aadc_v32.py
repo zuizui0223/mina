@@ -65,7 +65,15 @@ def fetch_original_excel(session):
     },allow_redirects=True) as res:
         for response in [*res.history,res]:
             if not trusted_official_url(response.url):
-                raise ValueError("ACCESS_HOLD AADC source redirect outside official publisher")
+                part=urlparse(response.url)
+                # Report only host/path and QUERY KEY NAMES; never expose signed
+                # download tokens or personal authorisation parameters in logs.
+                keys=sorted({k.split("=",1)[0] for k in part.query.split("&") if k})
+                raise ValueError(
+                    "ACCESS_HOLD AADC source redirected outside official publisher; "
+                    f"HTTP={response.status_code}, target_host={part.hostname}, "
+                    f"target_path={part.path[:160]}, query_parameter_names={keys[:15]}"
+                )
         status=res.status_code
         headers={
             "HTTP_status":status,
