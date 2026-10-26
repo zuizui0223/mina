@@ -81,3 +81,18 @@ def test_shrinking_nested_polygons_distinguish_jaccard_from_relative_retention()
     assert result[0]["earlier_mapped_area_retained_in_later"]==pytest.approx(.25)
     assert result[0]["later_mapped_area_outside_earlier"]==pytest.approx(0)
     assert result[0]["mapped_overlap_jaccard"]==pytest.approx(.25)
+
+def test_original_AADC_geographic_prj_at_actual_antarctic_longitude_latitude(tmp_path):
+    base=tmp_path/"geographic_adpe_colony"
+    with shapefile.Writer(str(base),shapeType=shapefile.POLYGON) as w:
+        w.field("SITE_ID","C")
+        w.poly([[[78.30,-68.50],[78.31,-68.50],[78.31,-68.49],
+                 [78.30,-68.49],[78.30,-68.50]]])
+        w.record("IS_74487")
+    original={ext:base.with_suffix(ext).read_bytes()
+              for ext in (".shp",".shx",".dbf")}
+    original[".prj"]=CRS.from_epsg(4326).to_wkt().encode()
+    geom,meta=read_original_geometry(original)
+    assert meta["original_source_crs_is_geographic"] is True
+    assert geom.area > 0
+    assert all(abs(x)<1.5e7 for x in geom.bounds)
