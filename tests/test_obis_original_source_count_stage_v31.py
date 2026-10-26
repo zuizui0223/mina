@@ -55,7 +55,7 @@ def test_original_exact_locality_stage_repeat_cannot_claim_independent_field_sur
     assert z["original_source_numeric_integer_count_field_n"]==2377
     assert z["source_integer_counts_which_are_zero_n"]==23
     assert z["original_exact_locality_taxon_stage_candidate_groups_with_2plus_years"]>=2
-    assert z["source_original_year_location_stage_groups_with_2plus_count_records"]>0
+    assert z["original_year_location_stage_groups_with_2plus_count_records"]>0
     assert z["original_individualCount_is_verified_breeding_pair_count"] is False
     assert z["original_numeric_zero_is_independently_surveyed_absence"] is False
     assert z["original_locality_text_is_verified_unique_island"] is False
