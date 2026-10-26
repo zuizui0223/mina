@@ -178,8 +178,21 @@ def main():
         r["error"]=str(e)[:700]
     args.out.parent.mkdir(parents=True,exist_ok=True)
     args.out.write_text(json.dumps(r,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
-    print(json.dumps({
-        k:v for k,v in r.items() if k!="original_source_csvs_by_file_path"},ensure_ascii=False))
+    concise={k:v for k,v in r.items() if k!="original_source_csvs_by_file_path"}
+    concise["candidate_first_party_coordinate_file_headers"]=[
+        {
+            "source_locality":z["source_archive_locality"],
+            "path":z["original_source_archive_path"],
+            "source_year_filename":z["original_filename_reported_year"],
+            "species_source_label":z["species_source_filename_label"],
+            "headers":z.get("source_original_header_columns"),
+            "valid_latlon_header":z.get("original_csv_has_unambiguous_coordinate_column_pair"),
+            "header_error":z.get("error"),
+        }
+        for z in r.get("original_source_csvs_by_file_path",[])
+        if z.get("file_source_type")=="POTENTIAL_INDIVIDUAL_NEST_COORDINATE_CSV"
+    ]
+    print(json.dumps(concise,ensure_ascii=False))
     if r["status"].startswith("HOLD"):
         raise SystemExit(2)
 
