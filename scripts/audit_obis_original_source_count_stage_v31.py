@@ -172,7 +172,7 @@ def audit_historical_source(rows):
         "source_original_year_record_n":{str(k):v for k,v in sorted(source_years.items(),key=lambda z:str(z[0]))},
         "original_source_missing_year_by_taxon":dict(sorted(years_missing.items())),
         "source_nonzero_integer_quantity_max":max(counts_numeric) if counts_numeric else None,
-        "original_count_50pct":count_values_sorted[len(count_values_sorted)//2] if counts_values_sorted:=count_values_sorted else None,
+        "original_count_50pct":count_values_sorted[len(count_values_sorted)//2] if count_values_sorted else None,
         "source_original_state_province_record_n":dict(sorted(habitat_region.items())),
         "original_unique_exact_source_locality_tuple_n":len(source_locations),
         "original_site_stage_year_candidate_group_count":len(original_siteyear),
