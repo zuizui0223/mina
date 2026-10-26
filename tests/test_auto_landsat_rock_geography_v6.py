@@ -45,10 +45,10 @@ def test_nearest_rock_containment_and_censored_distance():
 
 
 def test_overlapping_original_rock_polygons_and_invalid_source_hold():
-    points=[Point(0,0),Point(400,0)]
+    points=[Point(0,0),Point(3400,0)]
     good1=SyntheticShape(Polygon([(-20,-20),(20,-20),(20,20),(-20,20)]))
     good2=SyntheticShape(Polygon([(-15,-15),(15,-15),(15,15),(-15,15)]))
-    invalid=SyntheticShape(Polygon([(300,-20),(420,20),(300,20),(420,-20)]))
+    invalid=SyntheticShape(Polygon([(3300,-20),(3420,20),(3300,20),(3420,-20)]))
     # Self-intersecting polygon is not silently interpreted as absence.
     rows,qa=classify_shapes([good1,good2,invalid],["a","b"],points)
     assert rows[0]["independent_landsat_2020_mapped_rock_category"]=="IN_MULTIPLE_ROCKS"
