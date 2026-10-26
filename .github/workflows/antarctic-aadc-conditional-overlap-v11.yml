@@ -28,6 +28,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install deterministic test dependency
+        run: python -m pip install 'pytest>=8,<10'
       - name: Test nested shrinkage and site pseudoreplication
         run: python -m pytest -q tests/test_aadc_colony_nested_overlap_v11.py
       - name: Recover original 15 site-year observed geometry pairs
