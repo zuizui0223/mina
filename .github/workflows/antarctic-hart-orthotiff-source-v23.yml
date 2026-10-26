@@ -1,0 +1,51 @@
+name: Antarctic BAS Hart original orthotiff source coverage gate V23
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/BAS_HART_ORIGINAL_IMAGERY_SOURCE_GATE_V23.md'
+      - 'scripts/audit_bas_hart_original_orthotiff_source_v23.py'
+      - 'tests/test_bas_hart_original_orthotiff_source_v23.py'
+      - '.github/workflows/antarctic-hart-orthotiff-source-v23.yml'
+  pull_request:
+    paths:
+      - 'contracts/BAS_HART_ORIGINAL_IMAGERY_SOURCE_GATE_V23.md'
+      - 'scripts/audit_bas_hart_original_orthotiff_source_v23.py'
+      - 'tests/test_bas_hart_original_orthotiff_source_v23.py'
+      - '.github/workflows/antarctic-hart-orthotiff-source-v23.yml'
+  workflow_dispatch:
+jobs:
+  same_image_coverage_is_not_same_source_folder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original publisher source inventory tests
+        run: python -m pip install pytest
+      - name: Test source filename versus true coverage precision boundary
+        run: python -m pytest -q tests/test_bas_hart_original_orthotiff_source_v23.py
+      - name: Retrieve all 164 original publisher archive path identities
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/bas-source-v16
+          gh run download 40261490725 --repo "$GITHUB_REPOSITORY" \
+            --name bas-hart-original-all-locality-source-manifest-v16 \
+            --dir /tmp/bas-source-v16
+      - name: Record original four locality aerial image TIFF identity before ecological mechanisms
+        run: |
+          python scripts/audit_bas_hart_original_orthotiff_source_v23.py \
+            --manifest /tmp/bas-source-v16/BAS_HART_ALL_ISLANDS_ORIGINAL_MANIFEST_V16.json \
+            --out /tmp/BAS_HART_SOURCE_ORTHOTIFF_COVERAGE_GATE_V23.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bas-original-four-locality-orthotiff-source-v23
+          path: /tmp/BAS_HART_SOURCE_ORTHOTIFF_COVERAGE_GATE_V23.json
+          if-no-files-found: warn
