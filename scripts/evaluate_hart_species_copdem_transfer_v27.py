@@ -97,26 +97,6 @@ def site_original_terrain(arrays,site):
     return predictors,yy,summary
 
 
-def matched_site_class_weights(groups:list,labels:list):
-    """Each physical-island group total mass one; each locality inside it
-    equal mass and each original species within each locality equal mass."""
-    group_names=sorted(set(groups))
-    site_weights=np.zeros(len(labels),dtype=float)
-    for parent in group_names:
-        sites=[i for i,g in enumerate(groups) if g==parent]
-        for site_idx in sites:
-            y=np.asarray(labels[site_idx],dtype=np.uint8)
-            if np.sum(y==0)<MIN_LOCAL_TAXON or np.sum(y==1)<MIN_LOCAL_TAXON:
-                raise ValueError("SAMPLE_STOP source taxon missing in frozen island/site")
-            nsites=len(sites)
-            per=np.zeros(len(y),dtype=float)
-            for code in (0,1):
-                m=y==code
-                per[m]=.5/(nsites*np.sum(m))
-            site_weights[site_idx]=np.sum(per)
-    return site_weights
-
-
 def leave_one_island_terrain_transfer(site_predictors,site_labels):
     if sorted(site_predictors)!=sorted(ORIGINAL_LOCALITY_ORDER):
         raise ValueError("SAMPLE_STOP frozen four original localities changed")
@@ -181,7 +161,7 @@ def leave_one_island_terrain_transfer(site_predictors,site_labels):
     gains=[v["positive_Brier_gain"] for v in records.values()]
     return {
         "original_source_parent_named_island_count":len(records),
-        "original_localities_nested_within_heldout_islands":{x:k for k,v in groups.items() for x in [v]},
+        "original_localities_nested_within_heldout_islands":groups,
         "fixed_B0_class_balanced_Brier":.25,
         "fixed_CopDEM_species_terrain_ridge_strength_C":FIXED_C,
         "source_parent_island_heldout_cv_results":records,
@@ -225,7 +205,7 @@ def main():
             "status":"BAS_HART_INDEPENDENT_COPDEM_TERRAIN_SPECIES_TRANSFER_V27_EXPLORATORY",
             "original_source_dem_point_NPZ_SHA256":digest,
             "original_source_nest_count":source["source_original_colony_gps_points_all_sites_n"],
-            "original_source_CopDEM_tile_references":source["source_original_dem_tiles"]["original_GLO30_publisher_index_SHA256"],
+            "original_source_CopDEM_tile_references":source["source_original_dem_tiles"]["original_GLO30_tile_receipts"],
             "original_4_source_site_species_terrain_descriptors":description,
             "original_3_candidate_island_LOIO":response,
             "original_source_colonial_site_coverage_mask_verified":False,
