@@ -73,7 +73,7 @@ def test_zip_slip_is_rejected_before_unsafe_file_interpretation():
 
 
 def test_obis_core_malformed_width_is_hard_stop():
-    broken=source_zip("a\tb\tc\n")
+    broken=source_zip("column_a\tcolumn_b\tcolumn_c\n1\t2\t3\n")
     z,_=safe_source_zip(broken)
     with z,pytest.raises(ValueError,match="SCHEMA_STOP"):
         parse_dwc_core(z)
