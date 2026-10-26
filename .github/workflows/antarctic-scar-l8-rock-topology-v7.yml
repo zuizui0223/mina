@@ -1,0 +1,54 @@
+name: Antarctic original Landsat rock topology and source origin V7
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_LANDSAT_ROCK_TOPOLOGY_SOURCE_V7.md'
+      - 'scripts/audit_scar_landsat_v7_topology_origin.py'
+      - 'tests/test_scar_landsat_v7_topology_origin.py'
+      - '.github/workflows/antarctic-scar-l8-rock-topology-v7.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_LANDSAT_ROCK_TOPOLOGY_SOURCE_V7.md'
+      - 'scripts/audit_scar_landsat_v7_topology_origin.py'
+      - 'tests/test_scar_landsat_v7_topology_origin.py'
+      - '.github/workflows/antarctic-scar-l8-rock-topology-v7.yml'
+  workflow_dispatch:
+jobs:
+  official_Scar_Landsat_shapefile_source_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install spatial and source libraries
+        run: python -m pip install requests pyproj 'shapely>=2,<3' pyshp xlrd openpyxl pytest
+      - name: Test source lineage and deterministic make-valid topology
+        run: python -m pytest -q tests/test_scar_landsat_v7_topology_origin.py
+      - name: Recover original 7,785-point older SCAR map reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/scar_old
+          gh run download 40163525892 --repo "$GITHUB_REPOSITORY" \
+            --name aadc-scar-geography-only-crosswalk-v1 --dir /tmp/scar_old
+          echo 'c011eddbf2936d627dd22ff7cf5d0dc6992366f047806bf35f63a60bb1e51100  /tmp/scar_old/AADC_SCAR_SITE_CANDIDATE_CROSSWALK_V1.csv' | sha256sum -c -
+      - name: Source-original polygon repair and origin-class comparison
+        run: |
+          python scripts/audit_scar_landsat_v7_topology_origin.py \
+            --old-crosswalk /tmp/scar_old/AADC_SCAR_SITE_CANDIDATE_CROSSWALK_V1.csv \
+            --out /tmp/SCAR_LANDSAT_V7_TOPOLOGY_SOURCE.json \
+            --site-features /tmp/SCAR_LANDSAT_V7_AADC_SOURCE_SITES.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-scar-landsat-geometry-origin-v7
+          path: |
+            /tmp/SCAR_LANDSAT_V7_TOPOLOGY_SOURCE.json
+            /tmp/SCAR_LANDSAT_V7_AADC_SOURCE_SITES.csv
+          if-no-files-found: warn
