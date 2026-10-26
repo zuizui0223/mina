@@ -154,8 +154,18 @@ def main():
             k:{"status":v["status"],
                "version_matches":v.get("source_metadata_registry_matches"),
                "original_file_index_success":v.get("source_object_index_success_n"),
-               "metadata_sample":v.get("source_EDS_version_manifest_receipts",[{}])[0].get(
-                   "spatial_candidate_file_paths_metadata_only",[])[:12]
+               "all_original_registry_source_version_file_status":[
+                  {
+                    "metadata_EDS_id":z.get("metadata_EDS_id"),
+                    "uuid":z.get("original_dataset_EDS_UUID"),
+                    "status":z.get("status"),
+                    "original_files_total":z.get("original_files_total"),
+                    "source_object_extensions":z.get("source_object_extensions"),
+                    "spatial_candidate_file_paths":z.get("spatial_candidate_file_paths_metadata_only",[])[:20],
+                    "error":z.get("error"),
+                  }
+                  for z in v.get("source_EDS_version_manifest_receipts",[])
+               ]
               } for k,v in result["original_AADC_source_field_GIS_candidate_inventory"].items()
         }
     print(json.dumps(concise,ensure_ascii=False))
