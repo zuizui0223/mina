@@ -59,6 +59,10 @@ def probe(session,url):
                 kind in ("POSSIBLE_ZIP_OR_XLSX","PDF","TIFF") or
                 "attachment" in (resp.headers.get("Content-Disposition") or "").lower()),
             "source_first_128KiB_signature":kind,
+            "publisher_html_source_visible_content":(
+                snippet.decode("utf-8",errors="replace")[:2400]
+                if kind=="HTML_OR_XML" else None
+            ),
             "source_first_128KiB_probe_bytes":len(snippet),
             "source_probe_SHA256_NOT_FULL_DATA_FILE":hashlib.sha256(snippet).hexdigest(),
             "original_EDS_HTTP_redirect_chain":redirects,
