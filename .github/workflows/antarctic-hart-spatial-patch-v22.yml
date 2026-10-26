@@ -4,13 +4,13 @@ on:
     branches: [research/antarctic-functional-archipelago-v1]
     paths:
       - 'contracts/BAS_HART_SPATIAL_PATCH_NULL_V22.md'
-      - 'scripts/test_bas_hart_spatial_cell_label_controls_v22.py'
+      - 'scripts/analyze_bas_hart_spatial_cell_label_controls_v22.py'
       - 'tests/test_bas_hart_spatial_cell_label_controls_v22.py'
       - '.github/workflows/antarctic-hart-spatial-patch-v22.yml'
   pull_request:
     paths:
       - 'contracts/BAS_HART_SPATIAL_PATCH_NULL_V22.md'
-      - 'scripts/test_bas_hart_spatial_cell_label_controls_v22.py'
+      - 'scripts/analyze_bas_hart_spatial_cell_label_controls_v22.py'
       - 'tests/test_bas_hart_spatial_cell_label_controls_v22.py'
       - '.github/workflows/antarctic-hart-spatial-patch-v22.yml'
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
             --dir /tmp/baspointv20
       - name: Test original site species assortment after 25m 100m 500m geographic cell controls
         run: |
-          python scripts/test_bas_hart_spatial_cell_label_controls_v22.py \
+          python scripts/analyze_bas_hart_spatial_cell_label_controls_v22.py \
             --v20 results/BAS_HART_10_ORIGINAL_MULTIISLAND_NEST_GPS_V20.json \
             --v21 results/BAS_HART_4_LOCALITY_ORIGINAL_NEST_SPATIAL_V21.json \
             --original-points /tmp/baspointv20/BAS_HART_4_LOCALITIES_UTM_NESTS_V20.npz \
