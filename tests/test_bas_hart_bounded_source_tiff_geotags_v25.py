@@ -71,7 +71,7 @@ def test_tiff_in_bounded_partial_range_reads_only_IFD_metadata(monkeypatch):
         def __enter__(self):return self
         def __exit__(self,*args):return False
         def raise_for_status(self):return None
-        def iter_content(self,*args):
+        def iter_content(self,*args,**kwargs):
             yield raw
     class Fake:
         def __enter__(self):return self
