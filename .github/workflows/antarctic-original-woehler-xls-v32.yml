@@ -1,0 +1,41 @@
+name: Antarctic original Woehler AADC count quality XLS access V32
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/OBIS_HISTORIC_WOEHLER_EXCEL_STAGE_RECOVERY_V32.md'
+      - 'scripts/probe_original_woehler_spreadsheet_aadc_v32.py'
+      - 'tests/test_original_woehler_spreadsheet_aadc_v32.py'
+      - '.github/workflows/antarctic-original-woehler-xls-v32.yml'
+  pull_request:
+    paths:
+      - 'contracts/OBIS_HISTORIC_WOEHLER_EXCEL_STAGE_RECOVERY_V32.md'
+      - 'scripts/probe_original_woehler_spreadsheet_aadc_v32.py'
+      - 'tests/test_original_woehler_spreadsheet_aadc_v32.py'
+      - '.github/workflows/antarctic-original-woehler-xls-v32.yml'
+  workflow_dispatch:
+jobs:
+  firstparty_aadc_original_NACB_count_accuracy_source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original AADC source validation dependencies
+        run: python -m pip install pytest requests
+      - name: Verify original and modified Woehler Excel are not new independent observations
+        run: python -m pytest -q tests/test_original_woehler_spreadsheet_aadc_v32.py
+      - name: Probe exact AADC original file 2216 for count stage and accuracy source binary
+        run: |
+          python scripts/probe_original_woehler_spreadsheet_aadc_v32.py \
+            --out /tmp/AADC_WOEHLER_2008_ORIGINAL_COUNT_QUALITY_SOURCE_V32.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-woehler-stage-accuracy-excel-source-v32
+          path: /tmp/AADC_WOEHLER_2008_ORIGINAL_COUNT_QUALITY_SOURCE_V32.json
+          if-no-files-found: warn
