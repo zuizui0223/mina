@@ -53,3 +53,27 @@ That is a deliberately conservative **source-boundary match HOLD**, NOT evidence
 Do not fit an island-level predictor, an across-island source comparison, dispersal ABM or biodiversity regression to these 13 IDs by pretending these cartographic geometries are population counts or 13 independent islands. Any next confirmatory biology requires independently documented original physical-island IDs/nesting substrate and consistent full coverage with repeated field nest counts across multiple regions. Prefer a truly independent observation programme and original georeferenced survey polygons, not another post-hoc buffer around already-opened GIS endpoints.
 
 Original data terms: public AADC sources are CC BY 4.0; before scientific publication respect the accompanying AAD Seabird Conservation Team data sharing and acknowledgement statement. No publication release has been asserted.
+
+## 6. V14 original count source actually unavailable inside these GIS files
+
+A bounded schema-only audit of the **same frozen 28 original GIS DBF layers**
+([V14 successful original source audit](https://github.com/zuizui0223/mina/actions/runs/40260151816),
+`results/AADC_REPEATED_GIS_COUNT_FIELDS_V14.json`) found the entire literal
+set of original source attribute names:
+`Id` (27 layer files); and one layer each with `Area`, `Colony`,
+`Shape_Area`, `Shape_Leng`. **Zero original source yearfiles** have
+unambiguous observed nest-count/breeding-pair DBF columns, and **zero of the
+15 repeated site pairs** have matching source-count columns. No bird-count
+values were opened or inferred.
+
+This closes the simplest direct bridge from observed mapped footprint shrinkage
+to source-independent demographic decline. A separate count programme could
+exist elsewhere, but requires explicit site/year/census-stage/effort alignment
+and cannot be made by interpreting polygon area or a DBF `Id` as nest number.
+The V11 84.6% nested mapped footprint remains a valid cartographic descriptive
+result only, not a demographic, priority effect or movement mechanism.
+
+**Terminal decision for this exact repeated-GIS cohort:** no further automatic
+post-hoc radius, digitizer, buffer or island-ID model searching. Build a distinct
+multi-region original survey/data source with documented true field nest counts
+and actual parent landmass/site joins before reopening biological causal analysis.
