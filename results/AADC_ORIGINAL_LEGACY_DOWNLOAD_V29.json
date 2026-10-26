@@ -1,0 +1,79 @@
+{
+  "status": "AADC_LEGACY_ORIGINAL_FIELD_SURVEY_SOURCE_PROBE_V29",
+  "original_source_links_as_published_on_AADC_full_metadata": {
+    "VESTFOLD_CAPE_PETREL_ISLAND_SURVEY": "https://data.aad.gov.au/eds/5210/download",
+    "BECHERVAISE_ADELIE_FIELD_NEST_LOCATIONS": "https://data.aad.gov.au/eds/1354/download",
+    "WINDMILL_MULTITAXON_FIELD_BIRD_GIS": "https://data.aad.gov.au/eds/4670/download"
+  },
+  "original_EDS_source_probe_by_dataset": {
+    "VESTFOLD_CAPE_PETREL_ISLAND_SURVEY": {
+      "status": "ORIGINAL_EDS_SOURCE_HTTP_PROBED",
+      "source_first_party_HTTP_status": 200,
+      "source_final_content_type": "text/html",
+      "source_final_content_disposition": null,
+      "source_declared_original_binary_length_bytes": 1211,
+      "source_response_is_attachment_or_binary": false,
+      "source_first_128KiB_signature": "HTML_OR_XML",
+      "source_first_128KiB_probe_bytes": 1211,
+      "source_probe_SHA256_NOT_FULL_DATA_FILE": "776b9561f84830b03ab02a753552ded4145bbbe92bf0b1c5c7e43bcbdc60bfd9",
+      "original_EDS_HTTP_redirect_chain": [
+        {
+          "HTTP_status": 200,
+          "host": "data.aad.gov.au",
+          "path": "/eds/5210/download"
+        }
+      ],
+      "original_data_file_hash_verified": false,
+      "biological_data_values_read": 0,
+      "full_original_binary_downloaded": false
+    },
+    "BECHERVAISE_ADELIE_FIELD_NEST_LOCATIONS": {
+      "status": "ORIGINAL_EDS_SOURCE_HTTP_PROBED",
+      "source_first_party_HTTP_status": 200,
+      "source_final_content_type": "text/html",
+      "source_final_content_disposition": null,
+      "source_declared_original_binary_length_bytes": 1211,
+      "source_response_is_attachment_or_binary": false,
+      "source_first_128KiB_signature": "HTML_OR_XML",
+      "source_first_128KiB_probe_bytes": 1211,
+      "source_probe_SHA256_NOT_FULL_DATA_FILE": "776b9561f84830b03ab02a753552ded4145bbbe92bf0b1c5c7e43bcbdc60bfd9",
+      "original_EDS_HTTP_redirect_chain": [
+        {
+          "HTTP_status": 200,
+          "host": "data.aad.gov.au",
+          "path": "/eds/1354/download"
+        }
+      ],
+      "original_data_file_hash_verified": false,
+      "biological_data_values_read": 0,
+      "full_original_binary_downloaded": false
+    },
+    "WINDMILL_MULTITAXON_FIELD_BIRD_GIS": {
+      "status": "ORIGINAL_EDS_SOURCE_HTTP_PROBED",
+      "source_first_party_HTTP_status": 200,
+      "source_final_content_type": "text/html",
+      "source_final_content_disposition": null,
+      "source_declared_original_binary_length_bytes": 1211,
+      "source_response_is_attachment_or_binary": false,
+      "source_first_128KiB_signature": "HTML_OR_XML",
+      "source_first_128KiB_probe_bytes": 1211,
+      "source_probe_SHA256_NOT_FULL_DATA_FILE": "776b9561f84830b03ab02a753552ded4145bbbe92bf0b1c5c7e43bcbdc60bfd9",
+      "original_EDS_HTTP_redirect_chain": [
+        {
+          "HTTP_status": 200,
+          "host": "data.aad.gov.au",
+          "path": "/eds/4670/download"
+        }
+      ],
+      "original_data_file_hash_verified": false,
+      "biological_data_values_read": 0,
+      "full_original_binary_downloaded": false
+    }
+  },
+  "biological_field_species_counts_or_GIS_opened": 0,
+  "ecological_effects_fit": 0,
+  "execution": {
+    "source_run": "https://github.com/zuizui0223/mina/actions/runs/40282018157",
+    "source_access_decision": "All three first-party current legacy /eds/id/download links returned same 1211-byte HTML not direct binary; no original biological values opened, original files unverified."
+  }
+}
