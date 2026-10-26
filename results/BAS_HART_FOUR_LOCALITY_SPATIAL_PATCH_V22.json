@@ -1,0 +1,725 @@
+{
+  "status": "BAS_HART_MULTIISLAND_NEST_SPECIES_PATCH_PARTITION_V22_POST_RESULT",
+  "original_observation_localities_n": 4,
+  "original_candidate_physical_islands_n": 3,
+  "source_original_P_A_or_nonreported_recoded_to_absence": false,
+  "source_primary_spatial_null_100m_sufficient_mixed_patch_support_localities": 4,
+  "source_primary_spatial_null_100m_insufficient_mixed_patch_support_localities": {},
+  "source_locality_spatial_patch_tests": {
+    "Ashen_Hills": {
+      "candidate_parent_named_island": "Saunders_Island",
+      "original_source_geo_nest_rows": 77583,
+      "original_nests_after_exact_coordinate_duplicate_exclusions": 75255,
+      "original_primary_10m_observed_heterospecific_fraction_replayed": 0.0016743518530822692,
+      "grid_conditional_null_by_scale_and_shift": {
+        "25m_shift_0_0": {
+          "status": "GEOGRAPHIC_MIXED_PATCH_SUPPORT_HOLD",
+          "frozen_cell_width_m": 25,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 664,
+          "mixed_species_source_grid_cell_n": 40,
+          "original_nests_in_mixed_species_grid_cells": 3256,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 3256,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.04326737804472911,
+          "original_observed_heterospecific_NN_fraction": 0.0016743518530822692,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20271126,
+            "median": 0.015600706948560191,
+            "p10": 0.015079797483156817,
+            "p90": 0.016092381699068476,
+            "mean": 0.01559184794404653,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.014909704596494492
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.013926355095477922,
+          "underpowered_source_cell_mixing_not_proof_no_competition": true,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_0_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 85,
+          "mixed_species_source_grid_cell_n": 21,
+          "original_nests_in_mixed_species_grid_cells": 14120,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 14120,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.1876337155993781,
+          "original_observed_heterospecific_NN_fraction": 0.0016743518530822692,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20271227,
+            "median": 0.05145309821535354,
+            "p10": 0.050408621583192696,
+            "p90": 0.052425816910953715,
+            "mean": 0.051472829634497605,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.050934846451304264
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.049778746362271274,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_50_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            50,
+            0
+          ],
+          "original_geographic_grid_cell_n": 79,
+          "mixed_species_source_grid_cell_n": 16,
+          "original_nests_in_mixed_species_grid_cells": 11423,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 11423,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.15179461283935525,
+          "original_observed_heterospecific_NN_fraction": 0.0016743518530822692,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20271328,
+            "median": 0.05211752355387825,
+            "p10": 0.05124313980837973,
+            "p90": 0.052893572349275116,
+            "mean": 0.05208906735756164,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.0517720223778454
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.05044317170079598,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_0_50": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            0,
+            50
+          ],
+          "original_geographic_grid_cell_n": 80,
+          "mixed_species_source_grid_cell_n": 19,
+          "original_nests_in_mixed_species_grid_cells": 12385,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 12385,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.16457815635257067,
+          "original_observed_heterospecific_NN_fraction": 0.0016743518530822692,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20271429,
+            "median": 0.052183966087730724,
+            "p10": 0.05105710071359281,
+            "p90": 0.053061007534583336,
+            "mean": 0.05209081231299614,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.05161256029659947
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.050509614234648455,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_50_50": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            50,
+            50
+          ],
+          "original_geographic_grid_cell_n": 77,
+          "mixed_species_source_grid_cell_n": 17,
+          "original_nests_in_mixed_species_grid_cells": 11901,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 11901,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.15814651907565147,
+          "original_observed_heterospecific_NN_fraction": 0.0016743518530822692,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20271526,
+            "median": 0.05126705912056662,
+            "p10": 0.05049632572787796,
+            "p90": 0.052199912295855314,
+            "mean": 0.051305850822149175,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.05100128898515674
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.049592707267484354,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "500m_shift_0_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 500,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 12,
+          "mixed_species_source_grid_cell_n": 5,
+          "original_nests_in_mixed_species_grid_cells": 59136,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 59135,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.7858158478731745,
+          "original_observed_heterospecific_NN_fraction": 0.0016743518530822692,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20271627,
+            "median": 0.09923856856205068,
+            "p10": 0.09763597464552908,
+            "p90": 0.10017142173733938,
+            "mean": 0.09911091836064928,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.09914554901465722
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.09756421670896841,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        }
+      }
+    },
+    "Bellingshausen": {
+      "candidate_parent_named_island": "Bellingshausen_Island",
+      "original_source_geo_nest_rows": 14435,
+      "original_nests_after_exact_coordinate_duplicate_exclusions": 14005,
+      "original_primary_10m_observed_heterospecific_fraction_replayed": 0.0004284796115118189,
+      "grid_conditional_null_by_scale_and_shift": {
+        "25m_shift_0_0": {
+          "status": "GEOGRAPHIC_MIXED_PATCH_SUPPORT_HOLD",
+          "frozen_cell_width_m": 25,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 56,
+          "mixed_species_source_grid_cell_n": 4,
+          "original_nests_in_mixed_species_grid_cells": 649,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 649,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.046347211311861744,
+          "original_observed_heterospecific_NN_fraction": 0.0004284796115118189,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20281126,
+            "median": 0.006212954366921374,
+            "p10": 0.0056130829108048275,
+            "p90": 0.006855673784189102,
+            "mean": 0.006195642059385544,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.005713061486824252
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.005784474755409556,
+          "underpowered_source_cell_mixing_not_proof_no_competition": true,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_0_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 11,
+          "mixed_species_source_grid_cell_n": 1,
+          "original_nests_in_mixed_species_grid_cells": 2782,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 2782,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.19867171320431337,
+          "original_observed_heterospecific_NN_fraction": 0.0004284796115118189,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20281227,
+            "median": 0.08441048346782833,
+            "p10": 0.08168249660786975,
+            "p90": 0.08749553667071341,
+            "mean": 0.08448838885173955,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.08412483039348712
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.0839820038563165,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_50_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            50,
+            0
+          ],
+          "original_geographic_grid_cell_n": 11,
+          "mixed_species_source_grid_cell_n": 2,
+          "original_nests_in_mixed_species_grid_cells": 2782,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 2782,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.19867171320431337,
+          "original_observed_heterospecific_NN_fraction": 0.0004284796115118189,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20281328,
+            "median": 0.03513532814396915,
+            "p10": 0.03349282296650718,
+            "p90": 0.03622080982646576,
+            "mean": 0.035000436414419134,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.03427836892094551
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.034706848532457334,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_0_50": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            0,
+            50
+          ],
+          "original_geographic_grid_cell_n": 10,
+          "mixed_species_source_grid_cell_n": 2,
+          "original_nests_in_mixed_species_grid_cells": 4723,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 4723,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.33728486752838677,
+          "original_observed_heterospecific_NN_fraction": 0.0004284796115118189,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20281429,
+            "median": 0.05370277797614797,
+            "p10": 0.05227451260444191,
+            "p90": 0.05515960865528815,
+            "mean": 0.05370061393770599,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.05313147182746554
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.05327429836463615,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_50_50": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            50,
+            50
+          ],
+          "original_geographic_grid_cell_n": 10,
+          "mixed_species_source_grid_cell_n": 3,
+          "original_nests_in_mixed_species_grid_cells": 5217,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 5217,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.37256302220952653,
+          "original_observed_heterospecific_NN_fraction": 0.0004284796115118189,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20281526,
+            "median": 0.02670856245090338,
+            "p10": 0.0249232307362708,
+            "p90": 0.027708348211097623,
+            "mean": 0.026521733798745867,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.025994429765050345
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.02628008283939156,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "500m_shift_0_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 500,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 3,
+          "mixed_species_source_grid_cell_n": 1,
+          "original_nests_in_mixed_species_grid_cells": 13192,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 13191,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.9420124259087338,
+          "original_observed_heterospecific_NN_fraction": 0.0004284796115118189,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20281627,
+            "median": 0.42940798400342783,
+            "p10": 0.4226808541026923,
+            "p90": 0.43412125973005783,
+            "mean": 0.42911223208302407,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.4286938513175748
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.428979504391916,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        }
+      }
+    },
+    "Beach_Point": {
+      "candidate_parent_named_island": "Thule_Island",
+      "original_source_geo_nest_rows": 7683,
+      "original_nests_after_exact_coordinate_duplicate_exclusions": 7089,
+      "original_primary_10m_observed_heterospecific_fraction_replayed": 0,
+      "grid_conditional_null_by_scale_and_shift": {
+        "25m_shift_0_0": {
+          "status": "GEOGRAPHIC_MIXED_PATCH_SUPPORT_HOLD",
+          "frozen_cell_width_m": 25,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 58,
+          "mixed_species_source_grid_cell_n": 2,
+          "original_nests_in_mixed_species_grid_cells": 217,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 217,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.030610805473268443,
+          "original_observed_heterospecific_NN_fraction": 0,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20291126,
+            "median": 0.010015516998166173,
+            "p10": 0.008887008040626322,
+            "p90": 0.011426153195090986,
+            "mean": 0.010083911480441316,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.009028071660318803
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.010015516998166173,
+          "underpowered_source_cell_mixing_not_proof_no_competition": true,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_0_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 10,
+          "mixed_species_source_grid_cell_n": 2,
+          "original_nests_in_mixed_species_grid_cells": 2798,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 2798,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.3946960078995627,
+          "original_observed_heterospecific_NN_fraction": 0,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20291227,
+            "median": 0.15968401749188885,
+            "p10": 0.1562702778953308,
+            "p90": 0.16535477500352658,
+            "mean": 0.16042495771653623,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.158555508534349
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.15968401749188885,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_50_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            50,
+            0
+          ],
+          "original_geographic_grid_cell_n": 10,
+          "mixed_species_source_grid_cell_n": 3,
+          "original_nests_in_mixed_species_grid_cells": 3234,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 3234,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.4561997460854846,
+          "original_observed_heterospecific_NN_fraction": 0,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20291328,
+            "median": 0.14402595570602342,
+            "p10": 0.1397658343913105,
+            "p90": 0.14811680067710536,
+            "mean": 0.14388204231623614,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.1396529834955565
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.14402595570602342,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_0_50": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            0,
+            50
+          ],
+          "original_geographic_grid_cell_n": 10,
+          "mixed_species_source_grid_cell_n": 1,
+          "original_nests_in_mixed_species_grid_cells": 1080,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 1080,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.1523487092678798,
+          "original_observed_heterospecific_NN_fraction": 0,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20291429,
+            "median": 0.01594018902525039,
+            "p10": 0.014247425588940613,
+            "p90": 0.017379037946113698,
+            "mean": 0.015850421267264263,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.014670616448018056
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.01594018902525039,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_50_50": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            50,
+            50
+          ],
+          "original_geographic_grid_cell_n": 11,
+          "mixed_species_source_grid_cell_n": 2,
+          "original_nests_in_mixed_species_grid_cells": 2423,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 2423,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.3417971505148822,
+          "original_observed_heterospecific_NN_fraction": 0,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20291526,
+            "median": 0.013683171110170688,
+            "p10": 0.012244322189307379,
+            "p90": 0.014698829171956553,
+            "mean": 0.013479412548392659,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.012413598532938355
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.013683171110170688,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "500m_shift_0_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 500,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 2,
+          "mixed_species_source_grid_cell_n": 1,
+          "original_nests_in_mixed_species_grid_cells": 5718,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 5718,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.8066017774016081,
+          "original_observed_heterospecific_NN_fraction": 0,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20291627,
+            "median": 0.40118493440541686,
+            "p10": 0.39159260826632813,
+            "p90": 0.40911270983213427,
+            "mean": 0.4005594098696088,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.40118493440541686
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.40118493440541686,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        }
+      }
+    },
+    "Hewison_Point": {
+      "candidate_parent_named_island": "Thule_Island",
+      "original_source_geo_nest_rows": 22438,
+      "original_nests_after_exact_coordinate_duplicate_exclusions": 22424,
+      "original_primary_10m_observed_heterospecific_fraction_replayed": 0.000579735997145915,
+      "grid_conditional_null_by_scale_and_shift": {
+        "25m_shift_0_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 25,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 220,
+          "mixed_species_source_grid_cell_n": 4,
+          "original_nests_in_mixed_species_grid_cells": 1175,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 1175,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.052399215126650016,
+          "original_observed_heterospecific_NN_fraction": 0.000579735997145915,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20301126,
+            "median": 0.013333927934356046,
+            "p10": 0.012433107384944703,
+            "p90": 0.014056368176953264,
+            "mean": 0.013290233768292992,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.012754191937210132
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.01275419193721013,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_0_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 37,
+          "mixed_species_source_grid_cell_n": 3,
+          "original_nests_in_mixed_species_grid_cells": 4622,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 4622,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.20611844452372458,
+          "original_observed_heterospecific_NN_fraction": 0.000579735997145915,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20301227,
+            "median": 0.07358187656082768,
+            "p10": 0.07174455940064216,
+            "p90": 0.07537459864430968,
+            "mean": 0.07357331790974317,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.07286835533357118
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.07300214056368176,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_50_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            50,
+            0
+          ],
+          "original_geographic_grid_cell_n": 36,
+          "mixed_species_source_grid_cell_n": 3,
+          "original_nests_in_mixed_species_grid_cells": 4002,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 4002,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.17846949696753478,
+          "original_observed_heterospecific_NN_fraction": 0.000579735997145915,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20301328,
+            "median": 0.052488405280057084,
+            "p10": 0.050882982518729934,
+            "p90": 0.05374598644309668,
+            "mean": 0.05237939509255955,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.05110595790224759
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.05190866928291117,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_0_50": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            0,
+            50
+          ],
+          "original_geographic_grid_cell_n": 40,
+          "mixed_species_source_grid_cell_n": 2,
+          "original_nests_in_mixed_species_grid_cells": 2763,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 2763,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.12321619693185873,
+          "original_observed_heterospecific_NN_fraction": 0.000579735997145915,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20301429,
+            "median": 0.05556546557260079,
+            "p10": 0.053184088476632176,
+            "p90": 0.05681412772029968,
+            "mean": 0.055248345027153443,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.054851944345344274
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.054985729575454875,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "100m_shift_50_50": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 100,
+          "frozen_cell_phase_shift_m": [
+            50,
+            50
+          ],
+          "original_geographic_grid_cell_n": 36,
+          "mixed_species_source_grid_cell_n": 2,
+          "original_nests_in_mixed_species_grid_cells": 2771,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 2771,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.12357295754548697,
+          "original_observed_heterospecific_NN_fraction": 0.000579735997145915,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20301526,
+            "median": 0.0360328219764538,
+            "p10": 0.03504281127363539,
+            "p90": 0.0371566179093828,
+            "mean": 0.036052191555224024,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.034962540135569035
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.03545308597930789,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        },
+        "500m_shift_0_0": {
+          "status": "CELL_CONDITIONAL_LABEL_NULL_REPORTABLE",
+          "frozen_cell_width_m": 500,
+          "frozen_cell_phase_shift_m": [
+            0,
+            0
+          ],
+          "original_geographic_grid_cell_n": 7,
+          "mixed_species_source_grid_cell_n": 2,
+          "original_nests_in_mixed_species_grid_cells": 5346,
+          "original_eligible_NN_source_nests_in_mixed_source_cells": 5346,
+          "fraction_original_NN_eligible_source_nests_in_mixed_species_grid_cells": 0.2384052800570817,
+          "original_observed_heterospecific_NN_fraction": 0.000579735997145915,
+          "within_cell_exchangeable_species_label_null": {
+            "n_permutations": 99,
+            "seed": 20301627,
+            "median": 0.11514448804851944,
+            "p10": 0.11243310738494469,
+            "p90": 0.11766856938993935,
+            "mean": 0.11517601992093608,
+            "null_runs_with_heterospecific_fraction_le_observed": 0,
+            "median_source_nearest_nests_with_labels_actually_changed": 0.11541205850874063
+          },
+          "source_within_cell_local_segregation_delta_nullminusobserved": 0.11456475205137352,
+          "underpowered_source_cell_mixing_not_proof_no_competition": false,
+          "source_spatial_habitat_classes_kept_constant": false,
+          "source_original_nests_are_independent_island_replicates": false
+        }
+      }
+    }
+  },
+  "post_V21_label_geometry_interaction_inference_is_causal": false,
+  "source_all_fully_separate_single_species_patch_can_be_used_to_test_direct_competition": false,
+  "original_flightless_penguin_colony_point_cloud_not_4_independent_geographical_islands": true,
+  "source_survey_footprint_continuity_and_independently_suitable_substrate_verified": false,
+  "original_V20_source_georeferenced_point_cache_SHA256": "5ee4cd4af81776daf92793485c90061ff241d667d4ace44b601e3d181e539660",
+  "original_V21_original_individual_nest_NN_artifact": "https://github.com/zuizui0223/mina/actions/runs/40274846668",
+  "execution": {
+    "run": "https://github.com/zuizui0223/mina/actions/runs/40275598206",
+    "artifact": "https://github.com/zuizui0223/mina/actions/runs/40275598206/artifacts/12629559931",
+    "scientific_status": "Post-V21 spatial-cell-conditioned descriptor, not causal niche competition. 25m tests underpowered in three of four localities; 100m phase strongly changes Beach Point magnitude."
+  }
+}
