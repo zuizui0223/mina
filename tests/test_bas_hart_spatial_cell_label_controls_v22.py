@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
-from test_bas_hart_spatial_cell_label_controls_v22 import (
+from analyze_bas_hart_spatial_cell_label_controls_v22 import (
     recover_primary_point_neighbors,per_source_geo_null
 )
 
