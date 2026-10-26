@@ -1,0 +1,50 @@
+name: Antarctic original Hart South Sandwich penguin nest ledger V18
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/BAS_HART_ORIGINAL_NEST_LEDGER_V18.md'
+      - 'scripts/analyze_bas_hart_original_ssi_nests_v18.py'
+      - 'tests/test_bas_hart_original_ssi_nests_v18.py'
+      - '.github/workflows/antarctic-hart-original-nest-ledger-v18.yml'
+  pull_request:
+    paths:
+      - 'contracts/BAS_HART_ORIGINAL_NEST_LEDGER_V18.md'
+      - 'scripts/analyze_bas_hart_original_ssi_nests_v18.py'
+      - 'tests/test_bas_hart_original_ssi_nests_v18.py'
+      - '.github/workflows/antarctic-hart-original-nest-ledger-v18.yml'
+  workflow_dispatch:
+jobs:
+  independently_counted_and_extrapolated_penguin_nests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install first-party BAS archive parser tests
+        run: python -m pip install pytest requests
+      - name: Test original taxonomic source categories and absent versus unknown rules
+        run: python -m pytest -q tests/test_bas_hart_original_ssi_nests_v18.py
+      - name: Fetch publisher original entire South Sandwich archive manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/hartv16
+          gh run download 40261490725 --repo "$GITHUB_REPOSITORY" \
+            --name bas-hart-original-all-locality-source-manifest-v16 --dir /tmp/hartv16
+      - name: Compute exact counted vs mixed vs estimated nest ledger by all seven original localities
+        run: |
+          python scripts/analyze_bas_hart_original_ssi_nests_v18.py \
+            --source-manifest /tmp/hartv16/BAS_HART_ALL_ISLANDS_ORIGINAL_MANIFEST_V16.json \
+            --out /tmp/BAS_HART_ORIGINAL_SEVEN_LOCALITY_NEST_LEDGER_V18.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bas-original-multiisland-sevensite-nest-ledger-v18
+          path: /tmp/BAS_HART_ORIGINAL_SEVEN_LOCALITY_NEST_LEDGER_V18.json
+          if-no-files-found: warn
