@@ -8,7 +8,7 @@ retained by the national Australian Research Data catalogue.
 from __future__ import annotations
 import argparse,hashlib,io,json
 from pathlib import Path,PurePosixPath
-from urllib.parse import urlparse
+from urllib.parse import urlparse,urljoin
 import zipfile
 import requests
 
@@ -59,23 +59,55 @@ def bounded_zip_members(raw):
 def fetch_original_excel(session):
     if not trusted_official_url(SOURCE):
         raise ValueError("SOURCE_STOP original AADC metadata URL outside publisher")
-    with session.get(SOURCE,timeout=(20,100),stream=True,headers={
+    headers_in={
         "User-Agent":"mina-original-AADC-penguin-fieldcount-quality-recovery-v32/1.0",
         "Accept":"application/octet-stream,application/zip,application/vnd.ms-excel,*/*",
-    },allow_redirects=True) as res:
-        for response in [*res.history,res]:
-            if not trusted_official_url(response.url):
-                part=urlparse(response.url)
-                # Report only host/path and QUERY KEY NAMES; never expose signed
-                # download tokens or personal authorisation parameters in logs.
-                keys=sorted({k.split("=",1)[0] for k in part.query.split("&") if k})
+    }
+    # Stop *before* following any downgrade to HTTP, even on the AADC host.
+    with session.get(SOURCE,timeout=(20,100),stream=True,headers=headers_in,
+                     allow_redirects=False) as first:
+        origin_status=first.status_code
+        destination=SOURCE
+        upgraded=False
+        if origin_status in (301,302,303,307,308):
+            loc=first.headers.get("Location","")
+            candidate=urlparse(urljoin(SOURCE,loc))
+            if (candidate.hostname!="data.aad.gov.au" or
+                candidate.path!="/dataset/file/2216" or
+                candidate.query or candidate.fragment or
+                candidate.scheme not in ("http","https")):
                 raise ValueError(
-                    "ACCESS_HOLD AADC source redirected outside official publisher; "
-                    f"HTTP={response.status_code}, target_host={part.hostname}, "
-                    f"target_path={part.path[:160]}, query_parameter_names={keys[:15]}"
+                    f"ACCESS_HOLD unexpected first-party original redirect host={candidate.hostname}, "
+                    f"scheme={candidate.scheme}, path={candidate.path[:180]}, "
+                    f"query_parameter_names={[x.split('=',1)[0] for x in candidate.query.split('&') if x][:10]}"
                 )
+            # The publisher's original HTTPS metadata endpoint currently
+            # redirects to the *same* host over HTTP. Do not transmit cookies
+            # or fetch original census bytes over insecure HTTP; upgrade the
+            # exact authoritative disclosed path to HTTPS instead.
+            destination="https://data.aad.gov.au/dataset/file/2216"
+            upgraded=(candidate.scheme=="http")
+        elif origin_status!=200:
+            return None,{
+                "original_Metadata_Source_HTTP_status":origin_status,
+                "HTTP_status":origin_status,
+                "response_final_URL":first.url,
+            }
+    with session.get(destination,timeout=(20,100),stream=True,headers=headers_in,
+                     allow_redirects=False) as res:
+        if not trusted_official_url(res.url):
+            raise ValueError("ACCESS_HOLD upgraded original URL not first-party publisher HTTPS")
+        if res.status_code in (301,302,303,307,308):
+            jump=urlparse(urljoin(destination,res.headers.get("Location","")))
+            raise ValueError(
+                f"ACCESS_HOLD secondary publisher redirect: scheme={jump.scheme}, "
+                f"host={jump.hostname}, path={jump.path[:160]}, "
+                f"query_parameter_names={[x.split('=',1)[0] for x in jump.query.split('&') if x][:10]}"
+            )
         status=res.status_code
         headers={
+            "original_Metadata_Source_HTTP_status":origin_status,
+            "original_AADC_redirect_rewritten_to_same_host_HTTPS":upgraded,
             "HTTP_status":status,
             "response_final_URL":res.url,
             "source_MIME_type":res.headers.get("Content-Type"),
