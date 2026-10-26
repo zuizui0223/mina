@@ -1,0 +1,53 @@
+name: Antarctic BAS nest geographic-patch conditioned species null V22
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/BAS_HART_SPATIAL_PATCH_NULL_V22.md'
+      - 'scripts/test_bas_hart_spatial_cell_label_controls_v22.py'
+      - 'tests/test_bas_hart_spatial_cell_label_controls_v22.py'
+      - '.github/workflows/antarctic-hart-spatial-patch-v22.yml'
+  pull_request:
+    paths:
+      - 'contracts/BAS_HART_SPATIAL_PATCH_NULL_V22.md'
+      - 'scripts/test_bas_hart_spatial_cell_label_controls_v22.py'
+      - 'tests/test_bas_hart_spatial_cell_label_controls_v22.py'
+      - '.github/workflows/antarctic-hart-spatial-patch-v22.yml'
+  workflow_dispatch:
+jobs:
+  original_nest_patch_niche_falsification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install frozen original nest source spatial test dependencies
+        run: python -m pip install requests numpy scipy pyproj pytest
+      - name: Test same patch and separate patch geographical label nulls
+        run: python -m pytest -q tests/test_bas_hart_spatial_cell_label_controls_v22.py
+      - name: Recover original source point cloud from V20 verified BAS publisher coordinates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/baspointv20
+          gh run download 40274662115 --repo "$GITHUB_REPOSITORY" \
+            --name bas-original-four-locality-species-nestpoints-v20 \
+            --dir /tmp/baspointv20
+      - name: Test original site species assortment after 25m 100m 500m geographic cell controls
+        run: |
+          python scripts/test_bas_hart_spatial_cell_label_controls_v22.py \
+            --v20 results/BAS_HART_10_ORIGINAL_MULTIISLAND_NEST_GPS_V20.json \
+            --v21 results/BAS_HART_4_LOCALITY_ORIGINAL_NEST_SPATIAL_V21.json \
+            --original-points /tmp/baspointv20/BAS_HART_4_LOCALITIES_UTM_NESTS_V20.npz \
+            --out /tmp/BAS_HART_GEOGRAPHIC_PATCH_NULL_V22.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-bas-nest-spatial-conditional-patch-v22
+          path: /tmp/BAS_HART_GEOGRAPHIC_PATCH_NULL_V22.json
+          if-no-files-found: warn
