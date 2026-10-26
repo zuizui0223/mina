@@ -43,6 +43,14 @@ SITE_GAZETTEER_PARENT={
  "Beach_Point":"Thule_Island",
  "Hewison_Point":"Thule_Island",
 }
+# Two official BAS source files denote the same survey locality differently.
+# This is a source-literal exact alias, not a nearest-name or island inference.
+SOURCE_FOLDER_TO_COUNT_COLUMN={
+ "Ashen_Hills":"Ashen_Hills",
+ "Bellingshausen":"Bellingshausen_Island",
+ "Beach_Point":"Beach_Point",
+ "Hewison_Point":"Hewison_Point",
+}
 
 
 def select_original_files(manifest:dict):
@@ -190,7 +198,7 @@ def build_source_points(manifest:dict,ledger:dict):
                 xy,qa=source_csv_points(raw,source)
             except Exception as e:
                 raise ValueError("SOURCE_FILE_HOLD "+source["original_archive_relative_path"]+" :: "+str(e)) from e
-            publisher_count=expected[source["source_original_locality"]][source["taxon"].title()]
+            publisher_count=expected[SOURCE_FOLDER_TO_COUNT_COLUMN[source["source_original_locality"]]][source["taxon"].title()]
             qa.update({
                 "source_original_file_path":source["original_archive_relative_path"],
                 "source_original_file_id":source["original_publisher_archive_id"],
