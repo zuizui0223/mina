@@ -70,10 +70,19 @@ def parse_original_counts(raw):
     f=io.StringIO(text,newline="")
     reader=csv.DictReader(f)
     columns=list(reader.fieldnames or [])
-    if not columns or len(set(columns))!=len(columns) or not all(columns):
-        raise ValueError("SCHEMA_STOP source original CSV header absent/ambiguous; "
-                         + "literal_header="+repr(columns[:35])
-                         + "; leading_source_rows="+repr(text.splitlines()[:5])[:650])
+    if not columns or len(set(columns))!=len(columns):
+        raise ValueError("SCHEMA_STOP source original CSV header absent or duplicate")
+    # The real first-party count CSV is a wide island/locality matrix. Its
+    # first column is intentionally UNNAMED; row labels contain named species,
+    # unknown/mixed types and method-dependent '_estimate' categories.
+    if columns[0]=="" and len(columns)>=3 and all(columns[1:]):
+        wide=True
+        count_label=""
+    elif all(columns):
+        wide=False
+        count_label=columns[0]
+    else:
+        raise ValueError("SCHEMA_STOP original published wide CSV has missing locality columns")
     if len(columns)>200:
         raise ValueError("SCHEMA_STOP implausibly wide original counts table")
     rows=list(reader)
@@ -101,6 +110,10 @@ def parse_original_counts(raw):
         "status":"BAS_HART_ORIGINAL_SSI_COUNTS_CSV_SOURCE_SCHEMA_V17",
         "first_party_source_nest_count_rows":len(rows),
         "source_column_names":columns,
+        "original_wide_site_by_count_category_matrix":wide,
+        "original_count_category_column_name_literal":count_label,
+        "original_site_or_locality_header_columns":columns[1:] if wide else [],
+        "original_count_category_labels_in_row_order":[str(r.get(count_label,"")) for r in rows],
         "source_column_shape_and_literal_values":per_column,
         "original_record_examples":rows[:min(6,len(rows))],
         "source_species_or_site_missing_values_recoded_as_zero":False,
