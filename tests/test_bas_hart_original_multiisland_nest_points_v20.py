@@ -86,3 +86,13 @@ def test_missing_source_nest_location_above_one_percent_is_source_stop():
         lines.append(f"{i+1},," if i in (0,1,2) else f"{i+1},-58.123,-26.456")
     with pytest.raises(ValueError,match="SOURCE_MISSINGNESS_GATE"):
         source_csv_points(("\n".join(lines)+"\n").encode(),{"taxon":"ADELIE"})
+
+
+def test_publisher_original_Bellingshausen_source_folder_vs_count_table_literal():
+    from validate_bas_hart_original_multiisland_nest_points_v20 import SOURCE_FOLDER_TO_COUNT_COLUMN
+    assert SOURCE_FOLDER_TO_COUNT_COLUMN=={
+        "Ashen_Hills":"Ashen_Hills",
+        "Bellingshausen":"Bellingshausen_Island",
+        "Beach_Point":"Beach_Point",
+        "Hewison_Point":"Hewison_Point",
+    }
