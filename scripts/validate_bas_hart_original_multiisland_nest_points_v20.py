@@ -112,7 +112,8 @@ def source_csv_points(raw:bytes,src:dict):
     coords=[]
     for i,row in enumerate(reader):
         if None in row or any(row.get(k) is None or str(row.get(k)).strip()=="" for k in ("nest_number","lat","lon")):
-            raise ValueError("SOURCE_STOP original nest row missing coordinates or literal nest label")
+            missing=[k for k in ("nest_number","lat","lon") if row.get(k) is None or str(row.get(k)).strip()==""]
+            raise ValueError(f"SOURCE_STOP original nest CSV row {i+2} incomplete, missing_fields={missing}, extra_columns={None in row}")
         number=str(row["nest_number"]).strip()
         if number in original_ids:
             raise ValueError("SOURCE_STOP repeated original nest_number in one species source")
@@ -166,7 +167,10 @@ def build_source_points(manifest:dict,ledger:dict):
         for future in as_completed(futures):
             source=futures[future]
             raw=future.result()
-            xy,qa=source_csv_points(raw,source)
+            try:
+                xy,qa=source_csv_points(raw,source)
+            except Exception as e:
+                raise ValueError("SOURCE_FILE_HOLD "+source["original_archive_relative_path"]+" :: "+str(e)) from e
             publisher_count=expected[source["source_original_locality"]][source["taxon"].title()]
             qa.update({
                 "source_original_file_path":source["original_archive_relative_path"],
