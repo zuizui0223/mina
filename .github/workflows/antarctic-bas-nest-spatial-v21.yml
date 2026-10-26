@@ -35,7 +35,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p /tmp/basoriginalv20
-          gh run download 40274108938 --repo "$GITHUB_REPOSITORY" \
+          gh run download 40274662115 --repo "$GITHUB_REPOSITORY" \
             --name bas-original-four-locality-species-nestpoints-v20 \
             --dir /tmp/basoriginalv20
       - name: Evaluate fixed 199 local exchangeable-source-label controls per locality
