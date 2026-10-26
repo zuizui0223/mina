@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install original nest, terrain statistics and tests
-        run: python -m pip install numpy scipy scikit-learn pytest
+        run: python -m pip install numpy scipy scikit-learn pytest pyproj requests
       - name: Test source-locality-normalized terrain and three island holdouts
         run: python -m pytest -q tests/test_hart_species_copdem_transfer_v27.py
       - name: Retrieve original signed CopDEM 122139 penguin nest terrain source arrays
