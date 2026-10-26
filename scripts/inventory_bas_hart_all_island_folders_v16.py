@@ -12,7 +12,7 @@ from collections import Counter,deque,defaultdict
 import hashlib
 import json
 from pathlib import Path
-from urllib.parse import quote,urlparse
+from urllib.parse import quote,urlparse,unquote
 
 import requests
 from audit_multiisland_original_colony_sources_v9 import (
@@ -70,7 +70,7 @@ def canonical_file_row(row,group_id):
     parsed=urlparse(src)
     if parsed.hostname not in ALLOWED or parsed.scheme not in ("https","http"):
         raise ValueError("SOURCE_STOP original published file URL hostname outside BAS")
-    if parsed.path!=f"/repository/entry/get/{quote(str(row.get('name','')),safe='')}":
+    if unquote(parsed.path)!=f"/repository/entry/get/{str(row.get('name',''))}":
         raise ValueError("SOURCE_STOP original filename and publisher file URL mismatch")
     rel=decode_publisher_relative(identity)
     parent=decode_publisher_relative(group_id)
