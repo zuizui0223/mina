@@ -249,7 +249,15 @@ def main():
         } for k,v in report.get("original_all_12_source_species_guild_metrics",{}).items()},
         "risk_qty_zero":len(report.get("original_zero_quantity_rows_UNVERIFIED_SURVEYED_ABSENCE",[])),
         "risk_qty_ge_1m":report.get("million_count_outliers_NOT_ACCEPTED_DIRECT_NEST_CENSUS",[])[:8],
-        "original_reference_samples":report.get("original_source_original_FIELD_distribution",{}).get("dynamicProperties",{}),
+        "source_count_method_citation_and_precision_literal_fields":{
+            name:{"nonempty":m.get("original_rows_with_value"),
+                  "unique":m.get("original_distinct_values_including_blank"),
+                  "top":m.get("source_top_literal_examples",[])[:6]}
+            for name,m in report.get("original_source_original_FIELD_distribution",{}).items()
+            if name in ("lifeStage","basisOfRecord","dynamicProperties",
+                        "occurrenceRemarks","associatedReferences",
+                        "bibliographicCitation","recordedBy","coordinatePrecision")
+        },
         "year_n":len(report.get("all_records_source_year_x_guild_counts",{})),
         "error":report.get("error"),
     },ensure_ascii=False))
