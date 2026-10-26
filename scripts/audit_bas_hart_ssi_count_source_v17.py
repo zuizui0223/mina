@@ -71,7 +71,9 @@ def parse_original_counts(raw):
     reader=csv.DictReader(f)
     columns=list(reader.fieldnames or [])
     if not columns or len(set(columns))!=len(columns) or not all(columns):
-        raise ValueError("SCHEMA_STOP source original CSV header absent/ambiguous")
+        raise ValueError("SCHEMA_STOP source original CSV header absent/ambiguous; "
+                         + "literal_header="+repr(columns[:35])
+                         + "; leading_source_rows="+repr(text.splitlines()[:5])[:650])
     if len(columns)>200:
         raise ValueError("SCHEMA_STOP implausibly wide original counts table")
     rows=list(reader)
