@@ -110,22 +110,36 @@ def source_csv_points(raw:bytes,src:dict):
         raise ValueError("SCHEMA_STOP original publisher nest source header unexpectedly changed")
     original_ids=set()
     coords=[]
+    original_total_rows=0
+    missing_position_rows=[]
     for i,row in enumerate(reader):
-        if None in row or any(row.get(k) is None or str(row.get(k)).strip()=="" for k in ("nest_number","lat","lon")):
-            missing=[k for k in ("nest_number","lat","lon") if row.get(k) is None or str(row.get(k)).strip()==""]
-            raise ValueError(f"SOURCE_STOP original nest CSV row {i+2} incomplete, missing_fields={missing}, extra_columns={None in row}")
-        number=str(row["nest_number"]).strip()
+        original_total_rows+=1
+        if None in row:
+            raise ValueError(f"SCHEMA_STOP source row {i+2} has more values than original three-column header")
+        number=str(row.get("nest_number") or "").strip()
+        if not number:
+            raise ValueError(f"SOURCE_STOP original nest row {i+2} missing unique nest label")
         if number in original_ids:
-            raise ValueError("SOURCE_STOP repeated original nest_number in one species source")
+            raise ValueError(f"SOURCE_STOP original nest row {i+2} duplicate nest_number within file")
         original_ids.add(number)
+        lat_str=str(row.get("lat") or "").strip()
+        lon_str=str(row.get("lon") or "").strip()
+        if not lat_str or not lon_str:
+            missing_position_rows.append(i+2)
+            continue
         try:
-            lat=float(row["lat"])
-            lon=float(row["lon"])
+            lat=float(lat_str)
+            lon=float(lon_str)
         except (ValueError,TypeError) as e:
-            raise ValueError("SOURCE_STOP invalid latitude/longitude in original nest source") from e
+            raise ValueError(f"SOURCE_STOP invalid latitude/longitude in original nest row {i+2}") from e
         if not(math.isfinite(lat) and math.isfinite(lon) and -61<=lat<=-54 and -30<=lon<=-24):
-            raise ValueError("GEOMETRY_STOP original nest latitude/longitude outside fixed SSI bounds")
+            raise ValueError(f"GEOMETRY_STOP original nest row {i+2} outside fixed SSI bounds")
         coords.append((lon,lat))
+    missing_fraction=len(missing_position_rows)/original_total_rows if original_total_rows else 1
+    if missing_fraction>.01:
+        raise ValueError("SOURCE_MISSINGNESS_GATE source coordinate rows with missing original positions exceed 1%"+
+                         f" missing={len(missing_position_rows)}, original_rows={original_total_rows}, "+
+                         f"fraction={missing_fraction:.6f}, first_missing_source_rows={missing_position_rows[:15]}")
     if not coords:
         raise ValueError("SOURCE_STOP original nest point source empty")
     raw_coords=np.asarray(coords,dtype=float)
@@ -142,6 +156,11 @@ def source_csv_points(raw:bytes,src:dict):
         duplicate_n=0
     return xy,{
         "original_row_count":len(xy),
+        "original_source_nest_identifier_rows_including_missing_coordinates":original_total_rows,
+        "source_rows_with_missing_original_lat_or_lon":len(missing_position_rows),
+        "source_missing_original_position_fraction":missing_fraction,
+        "first_original_line_numbers_with_missing_position":missing_position_rows[:15],
+        "unlocated_source_nests_never_assigned_synthetic_positions":True,
         "unique_original_nest_number_label_count":len(original_ids),
         "source_exact_duplicate_projected_coordinates_within_file_n":duplicate_n,
         "source_original_lon_range":list(map(float,(np.min(raw_coords[:,0]),np.max(raw_coords[:,0])))),
@@ -182,6 +201,9 @@ def build_source_points(manifest:dict,ledger:dict):
                 "source_root_census_labelled_count_for_same_locality_taxon":publisher_count,
                 "source_points_minus_original_reported_labelled_count":(
                     len(xy)-publisher_count if publisher_count is not None else None),
+                "source_total_nest_ID_rows_minus_original_reported_labelled_count":(
+                    qa["original_source_nest_identifier_rows_including_missing_coordinates"]-publisher_count
+                    if publisher_count is not None else None),
                 "source_row_count_identical_to_reported_census_taxon":(
                     len(xy)==publisher_count if publisher_count is not None else None)
             })
