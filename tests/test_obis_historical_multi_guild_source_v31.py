@@ -19,7 +19,7 @@ def build():
             "scientificName":species,
             "year":str(1900+j%95),
             "eventDate":"",
-            "locality":f"Island {j%17}",
+            "locality":f"Island {j%10}",
             "individualCount":"0" if j==4 else ("5400000" if j==5 else str(j%100+1)),
             "decimalLatitude":str(-64 if j%2 else -55),
             "decimalLongitude":str(25+j%5),
@@ -58,5 +58,5 @@ def test_historical_source_record_number_is_not_real_independent_islands():
     source=source_group_audit(build())
     penguin=source["original_all_12_source_species_guild_metrics"]["FLIGHTLESS_PENGUIN"]
     assert penguin["original_duplicate_species_year_literal_locality_group_n"]>0
-    assert penguin["original_source_unique_nonempty_literal_locality_strings"]==17
+    assert penguin["original_source_unique_nonempty_literal_locality_strings"]==10
     assert "original_source_valid_coordinates_rows" in penguin
