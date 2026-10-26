@@ -1,0 +1,41 @@
+name: Antarctic independent historical penguin colony census source V30
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_OBIS_HISTORICAL_PENGUIN_V30.md'
+      - 'scripts/audit_obis_historical_penguin_dwca_v30.py'
+      - 'tests/test_obis_historical_penguin_dwca_v30.py'
+      - '.github/workflows/antarctic-original-obis-penguin-history-v30.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_OBIS_HISTORICAL_PENGUIN_V30.md'
+      - 'scripts/audit_obis_historical_penguin_dwca_v30.py'
+      - 'tests/test_obis_historical_penguin_dwca_v30.py'
+      - '.github/workflows/antarctic-original-obis-penguin-history-v30.yml'
+  workflow_dispatch:
+jobs:
+  original_OBIS_IPT_publisher_historical_census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original IPT archive source client and unit tests
+        run: python -m pip install requests pytest
+      - name: Validate original DarwinCore XML core, original counted values, ZIP security
+        run: python -m pytest -q tests/test_obis_historical_penguin_dwca_v30.py
+      - name: Download authenticated 2018 publisher IPT 2787 historic penguin occurrences and audit all original fields
+        run: |
+          python scripts/audit_obis_historical_penguin_dwca_v30.py \
+            --out /tmp/OBIS_ORIGINAL_ANTARCTIC_PENGUIN_1900_1996_SOURCE_V30.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-obis-antartic-penguin-archive-v30
+          path: /tmp/OBIS_ORIGINAL_ANTARCTIC_PENGUIN_1900_1996_SOURCE_V30.json
+          if-no-files-found: warn
