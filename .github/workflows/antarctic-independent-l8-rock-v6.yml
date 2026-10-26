@@ -1,0 +1,54 @@
+name: Antarctic independent Landsat rock geography V6
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_AUTO_LANDSAT_ROCK_SOURCE_V6.md'
+      - 'scripts/audit_auto_landsat_rock_geography_v6.py'
+      - 'tests/test_auto_landsat_rock_geography_v6.py'
+      - '.github/workflows/antarctic-independent-l8-rock-v6.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_AUTO_LANDSAT_ROCK_SOURCE_V6.md'
+      - 'scripts/audit_auto_landsat_rock_geography_v6.py'
+      - 'tests/test_auto_landsat_rock_geography_v6.py'
+      - '.github/workflows/antarctic-independent-l8-rock-v6.yml'
+  workflow_dispatch:
+jobs:
+  original_source_rock_crosswalk_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install independent source/GIS tools
+        run: python -m pip install requests pyproj 'shapely>=2,<3' pyshp xlrd openpyxl pytest
+      - name: Validate exact source spatial classification and security
+        run: python -m pytest -q tests/test_auto_landsat_rock_geography_v6.py
+      - name: Fetch pinned original manual SCAR rock AADC geography crosswalk
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/previous_scar_reference
+          gh run download 40163525892 --repo "$GITHUB_REPOSITORY" \
+            --name aadc-scar-geography-only-crosswalk-v1 --dir /tmp/previous_scar_reference
+          echo 'c011eddbf2936d627dd22ff7cf5d0dc6992366f047806bf35f63a60bb1e51100  /tmp/previous_scar_reference/AADC_SCAR_SITE_CANDIDATE_CROSSWALK_V1.csv' | sha256sum -c -
+      - name: Compare whole-Antarctic original Landsat automatically mapped rocks with old source
+        run: |
+          python scripts/audit_auto_landsat_rock_geography_v6.py \
+            --old-crosswalk /tmp/previous_scar_reference/AADC_SCAR_SITE_CANDIDATE_CROSSWALK_V1.csv \
+            --out /tmp/AUTO_LANDSAT_ROCK_SOURCE_COMPARE_V6.json \
+            --source-sites /tmp/AUTO_LANDSAT_AADC_7785_V6.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-independent-Landsat-rock-AADC-geography-v6
+          path: |
+            /tmp/AUTO_LANDSAT_ROCK_SOURCE_COMPARE_V6.json
+            /tmp/AUTO_LANDSAT_AADC_7785_V6.csv
+          if-no-files-found: warn
