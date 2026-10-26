@@ -42,3 +42,25 @@ def test_verified_live_source_file_only():
     m["status"]="HOLD_INCOMPLETE_ORIGINAL_SOURCE_FILE_MANIFEST"
     with pytest.raises(ValueError,match="SOURCE_STOP"):
         choose_source(m)
+
+
+def test_original_publisher_wide_island_by_species_count_matrix_without_header():
+    original=(
+        b",Zavodovski,Candlemas,Ashen_Hills,Bellingshausen_Island\n"
+        b"Chinstrap,172352,,21637,5027\n"
+        b"Chinstrap_estimate,161273.739,,,\n"
+        b"Mixed,19812,,,9144\n"
+        b"Macaroni,437812,,500,\n"
+    )
+    raw,result=parse_original_counts(original)
+    assert result["original_wide_site_by_count_category_matrix"] is True
+    assert result["original_count_category_column_name_literal"]==""
+    assert result["original_count_category_labels_in_row_order"]==[
+        "Chinstrap","Chinstrap_estimate","Mixed","Macaroni"
+    ]
+    assert result["original_site_or_locality_header_columns"]==[
+        "Zavodovski","Candlemas","Ashen_Hills","Bellingshausen_Island"
+    ]
+    assert raw[1]["Candlemas"]==""
+    assert raw[1]["Zavodovski"]=="161273.739"
+    assert result["source_species_or_site_missing_values_recoded_as_zero"] is False
