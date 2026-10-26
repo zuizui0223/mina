@@ -40,3 +40,25 @@ If all 10 files pass coordinate integrity, compare within each of **the four sur
 ## Next source-independent generality gate
 
 For a transferable Antarctic island ecology result, independently acquire *multiple* geographic regions and years with full survey footprints, explicit observation effort and source-stable nest counts, and independently mapped habitat availability (island land continuity `P`, breeding substrate `F`, ice continuity `T`). User's research programme contrasts Antarctica with global physical islands from `zuizui0223/island`; these point patterns alone cannot be statistically pooled with island traits from unrelated plants.
+
+
+## Source-data completeness amendment after V20 raw coordinate failure (before V21 effects)
+
+The first V20 strict original-coordinate run **stopped** because
+`Ashen_Hills/coordinates/ASHE_Macaroni_coordinates.csv` contains at least
+one original source nest number without a `lat/lon` pair (line 277). This is
+a real unlocated nest, not zero observed nests or a recoverable GPS point.
+The earlier contract's complete-row source rule is **not silently overwritten**.
+
+For a separately tagged, **post-source-QA V20 complete-coordinate subset**
+of the exact same **ten frozen species files**, allow unlocated original nest
+IDs only when each file's original `lat`/`lon` missing fraction is <=**1%**;
+preserve all original ID counts, missing source row numbers, original file
+SHA receipts, and comparison with the first-party census number. Exclude only
+rows that lack any source spatial location, never infer point positions. Files
+with >1% source coordinate missingness, missing nest labels, invalid numeric
+coordinates or repeated nest labels still SOURCE STOP. The 1% eligibility rule
+was added **after observing source missingness** and must never be represented
+as outcome-blind relative to the source dataset. It was fixed before opening
+any original point-pattern nearest-neighbor result; V21 remains exploratory,
+and complete-case space may be selectively biased even below 1%.
