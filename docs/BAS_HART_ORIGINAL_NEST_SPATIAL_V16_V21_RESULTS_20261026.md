@@ -53,3 +53,27 @@ No island-ecology generalization or new competition mechanism is authorized unti
 ## Main programme alignment
 
 The island-specific causal question remains: do physical land continuity `P`, functionally reachable reproductive rock `F`, and time-dependent ice substrate `T` have different associations with colonisation/persistence and spatial redistribution? For this source study, measured nest points resolve the *spatial response* well but lack the *independent causal environmental exposure* and multi-year individual histories. The global physical-island geographic baseline in `zuizui0223/island` is methodology context, **not** an unrelated taxonomic slope to regress directly against penguin counts. Original Antarctic MAPPPD, SCAR and AEI database source QA remains separate; PR #189 frozen Ecology manuscript untouched.
+
+
+## Executed V22: how much species nesting separation is explainable by local patch composition?
+
+[Source-frozen 100m spatial-patch control CI](https://github.com/zuizui0223/mina/actions/runs/40275598206) succeeded after an import-path regression fix. Post-V21 exploratory result: 99 source-label permutations were performed **within** fixed 100m×100m UTM cells (not over the full locality), preserving *the original geographic counts of all taxa within each cell*.
+
+| Source locality | V21 all-site label-shuffle excess conspecific NN (pp) | V22 fixed 100m-grid excess conspecific NN (pp) | Source NN points in mixed-species 100m cells |
+|:--|--:|--:|--:|
+| Ashen Hills | +43.86 | +4.98 | 18.8% |
+| Bellingshausen | +44.24 | +8.40 | 19.9% |
+| Beach Point | +46.61 | +15.97 | 39.5% |
+| Hewison Point | +49.63 | +7.30 | 20.6% |
+
+Thus **a substantial part of the dramatic V21 site-wide randomization departure is explained by each species' concentration within different 100m-scale spatial cells**. But the fixed 100m mixed-cell controls still yielded fewer heterospecific original nearest-neighbor nests than within-cell exchangeable labels at all four locations. This is a *spatial structure hierarchy* finding, not direct territorial interaction.
+
+**Important scale-and-origin sensitivity:** The 25m cell test failed its >=5% mixed-species-cell eligibility support gate for Ashen (4.33% eligible), Bellingshausen (4.63%), and Beach (3.06%); only Hewison (5.24%) narrowly cleared. The 100m null excess at Beach varied sharply from +1.37 to +15.97 percentage points across its four frozen grid phases; Bellingshausen varied +2.63 to +8.40. Consequently the exact residual magnitude is **not robust to arbitrary grid alignment** at some sites; do not turn this into a fixed taxon-vs-habitat niche breadth parameter.
+
+Source spatial V22 JSON: `results/BAS_HART_FOUR_LOCALITY_SPATIAL_PATCH_V22.json`. Its rules were defined *after* V21, so neither these repeated spatial label controls nor their differences are prospective confirmatory evidence.
+
+## Next source/method gate rather than further result-mining
+
+The 4×species original nest point clouds do **not** include independent uniformly surveyed nesting-substrate masks. Two species may have different registered original source images within a nominal same locality. The separate V23 original TIFF file-list test explicitly asks whether the original source orthomosaics and their acquisition dates/footprints overlap; this must be source-verified before any mechanism is attributed to nesting substrate preference, true microhabitat niche partition or interspecific competition.
+
+**Scientific decision now:** This South Sandwich original source provides a quantitatively demonstrated, reproducible *observed multiscale conspecific clustering phenomenon* at four localities nested in only three provisional island groups. It does not yet establish whether the cause is coastal terrestrial geomorphology, substrate accessibility, inherited colony-site preference, social recruitment, direct species interactions, source digitization extent, or an Antarctic-wide physical-island law.
