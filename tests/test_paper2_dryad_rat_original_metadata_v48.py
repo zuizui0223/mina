@@ -81,3 +81,27 @@ def test_dryad_version_id_mismatch_must_stop(monkeypatch):
               "_links":{"stash:version":{"href":"/api/v2/versions/26724"}}}
     with pytest.raises(ValueError,match="ID_MISMATCH"):
         m.extract_versions_metadata(original,None)
+
+
+def test_dryad_public_file_id_resolved_from_official_self_link(monkeypatch):
+    def fake(session,path):
+        return {"total":1,"_embedded":{"stash:files":[{
+            "path":"survey_island.csv","size":1200,"mimeType":"text/csv",
+            "_links":{"self":{"href":"/api/v2/files/49022"}},
+        }]}}
+    monkeypatch.setattr(m,"first_party_public_get",fake)
+    files=m.original_file_listing(None,26724)
+    assert len(files)==1
+    assert files[0]["official_file_id"]==49022
+    assert files[0]["published_file_bytes"]==1200
+
+
+def test_dryad_cross_domain_file_links_rejected(monkeypatch):
+    def fake(session,path):
+        return {"total":1,"_embedded":{"stash:files":[{
+            "path":"survey_island.csv","size":1200,
+            "_links":{"self":{"href":"https://malicious.example/api/v2/files/2"}},
+        }]}}
+    monkeypatch.setattr(m,"first_party_public_get",fake)
+    with pytest.raises(ValueError,match="NOT_FIRST_PARTY"):
+        m.original_file_listing(None,26724)
