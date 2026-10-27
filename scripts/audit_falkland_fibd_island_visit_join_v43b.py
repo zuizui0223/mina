@@ -62,8 +62,8 @@ def numeric(value):
 def source_table_public(slug):
     if slug not in SOURCE:raise ValueError("OUTSIDE_FROZEN_ORIGINAL_SOURCE_SET")
     with requests.Session() as session:
-        item,meta=original.get_official_package(session,slug)
-        raw=original.bounded_https(session,item["url"],original.MAX_XLS_BYTES)
+        item,meta=original.get_official_package(session,slug,read_timeout=(15,75))
+        raw=original.bounded_https(session,item["url"],original.MAX_XLS_BYTES,read_timeout=(15,75))
     digest=hashlib.sha256(raw).hexdigest()
     sha,nrows,ncols=SOURCE[slug]
     if digest!=sha:
