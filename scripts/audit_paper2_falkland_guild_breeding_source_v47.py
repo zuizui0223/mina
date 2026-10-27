@@ -339,7 +339,8 @@ def birds_source(rows,loc,visited_year,visited_date):
 
 def invasives_source(rows,loc,matched_years):
     # Original invasion workbook NO HEADERS, each row is a source record.
-    if len(rows)!=1212:return {"status":"ORIGINAL_INVASION_FRAME_CHANGED"}
+    if not rows or any(len(row)!=18 for row in rows):
+        raise ValueError("SOURCE_INVADER_EXPECTED_18_COLUMN_HEADERLESS_ROWS")
     taxa=Counter()
     matched=defaultdict(Counter)
     codecols=defaultdict(list)
