@@ -236,14 +236,31 @@ def sheet_rows(raw: bytes) -> tuple[dict, list[dict]]:
                 if matches:
                     candidates.append((ri, matches[0]))
             header = candidates[0] if candidates else None
+            key_mode = "EXPLICIT_LOWID_HEADER" if header else "NONE"
+            # Stanbury ESM5 has a documented but UNLABELED first column; use
+            # it only as an independently cross-validated candidate lowid.
+            # Never apply this to a short arbitrary or malformed workbook.
+            if header is None and len(rows) >= 9002:
+                values = [to_integral_key(row.get(0)) for row in rows[2:]]
+                candidates_numeric = [v for v in values if v is not None]
+                if (
+                    len(candidates_numeric) >= 9000
+                    and len(candidates_numeric) == len(set(candidates_numeric))
+                    and len(candidates_numeric) / max(1, len(values)) >= .99
+                ):
+                    header = (1, 0)
+                    key_mode = "UNLABELED_COL0_CANDIDATE_REQUIRES_FULL_RSPB_LOWID_JOIN"
             report = {
                 "sheet_path": name,
                 "nonempty_rows": len(rows),
                 "first_three_rows_as_source_strings": [
-                    {str(k): str(v)[:80] for k, v in list(row.items())[:18]}
+                    {str(k): str(v)[:500] for k, v in list(row.items())[:40]}
                     for row in rows[:3]
                 ],
-                "exact_lowid_header_row_1indexed": (header[0] + 1 if header else None),
+                "exact_lowid_header_row_1indexed": (
+                    header[0] + 1 if header and key_mode == "EXPLICIT_LOWID_HEADER" else None
+                ),
+                "identifier_mode": key_mode,
             }
             if header is not None:
                 header_ri, key_col = header
@@ -323,7 +340,12 @@ def main() -> None:
     receipt["pre_outcome_lowid_key_join_support"] = all_keyed
     success_arcgis = bool(island_ids) and "RSPB_source_error" not in receipt
     success_xlsx = any("original_sha256" in value for value in supplements.values())
-    joined = any((x.get("joinable_lowid_overlap_n") or 0) > 0 for x in all_keyed)
+    joined = any(
+        x["supplement"] == "ESM5"
+        and (x.get("joinable_lowid_overlap_n") or 0) >= 9000
+        and (x.get("joinable_lowid_overlap_n") or 0) / max(1, x["literal_lowid_distinct_in_sheet"]) >= .95
+        for x in all_keyed
+    )
     receipt["status"] = (
         "SOURCE_GEOGRAPHY_AND_SUPPLEMENT_LOWID_SCHEMA_PASS"
         if success_arcgis and success_xlsx and joined
