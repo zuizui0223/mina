@@ -103,7 +103,7 @@ def original_download(name):
 
 def interpret_header(header):
     cleaned=" ".join(str(header or "").strip().split())[:100]
-    if not cleaned or not COL_PATTERN.search(cleaned):
+    if not cleaned or not COL_PATTERN.search(cleaned.replace("_"," ")):
         return None
     if len(cleaned)>80 or re.search(r"[^A-Za-z0-9 _.,()/#-]",cleaned):
         return None
@@ -143,7 +143,7 @@ def inspect_csv_schema(raw,name):
     keys={"island_name_or_ID":r"\b(?:island|location|site|locality)\b",
           "dated_effort":r"\b(?:year|date|visit|trap|survey|sampling|effort)\b",
           "rat_observed_status_or_eradication":r"\b(?:rat|rattus|mammal|invasive|predator|eradication|eradicated|status)\b"}
-    found={k:[i["col_1based"] for i in labels if re.search(p,i["original_safe_header"],re.I)]
+    found={k:[i["col_1based"] for i in labels if re.search(p,i["original_safe_header"].replace("_"," "),re.I)]
            for k,p in keys.items()}
     return {
       "source_original_filename":name,
