@@ -85,6 +85,21 @@ def matching_taxon(session,names):
     return keys,results
 
 
+def normalized_gbif_license(value):
+    """GBIF Registry may return the canonical CC licence URL rather than enum."""
+    if value in ("CC_BY_4_0","CC_BY_NC_4_0"):
+        return value
+    parsed=urlparse(str(value))
+    if parsed.scheme not in ("https","http") or parsed.hostname!="creativecommons.org":
+        return None
+    path=parsed.path.rstrip("/")
+    if path in ("/licenses/by/4.0","/licenses/by/4.0/legalcode"):
+        return "CC_BY_4_0"
+    if path in ("/licenses/by-nc/4.0","/licenses/by-nc/4.0/legalcode"):
+        return "CC_BY_NC_4_0"
+    return None
+
+
 def source_registration(session):
     report={}
     for label,(key,license_name,doi) in DATASETS.items():
@@ -92,12 +107,13 @@ def source_registration(session):
         if obj.get("key")!=key:
             raise ValueError("GBIF_DATASET_KEY_MISMATCH "+label)
         lic=obj.get("license")
-        if lic!=license_name:
+        if normalized_gbif_license(lic)!=license_name:
             raise ValueError("GBIF_DATASET_LICENSE_CHANGED "+label+":"+str(lic))
         report[label]={
             "datasetKey":key,"expected_DOI":doi,
             "returned_title":obj.get("title"),
             "returned_license":lic,
+            "normalized_license":normalized_gbif_license(lic),
             "returned_publishingOrganizationKey":obj.get("publishingOrganizationKey"),
             "source_last_pub":obj.get("pubDate"),
             "same_source_recording_network_may_overlap":True,
