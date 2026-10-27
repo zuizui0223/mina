@@ -39,7 +39,7 @@ RAT_HEADER=re.compile(r"\brattus\b|\bnorway\s+rat\b|\bbrown\s+rat\b|\bblack\s+ra
 HEADER_WORDS=re.compile(r"island|visit|invasive|rat|mouse|species|survey|date|latitude|longitude|elevation|habitat|eradication",re.I)
 
 
-def bounded_https(session,url,maxbytes):
+def bounded_https(session,url,maxbytes,read_timeout=(8,20)):
     if urlparse(url).hostname!=CKAN_HOST:
         raise ValueError("NON_PUBLISHER_PUBLIC_RESOURCE_HOST")
     parsed=urlparse(url)
@@ -47,7 +47,7 @@ def bounded_https(session,url,maxbytes):
         url=parsed._replace(scheme="https").geturl()
     elif parsed.scheme!="https":
         raise ValueError("INSECURE_SOURCE_SCHEME")
-    with session.get(url,stream=True,timeout=(8,20),
+    with session.get(url,stream=True,timeout=read_timeout,
                      headers={"User-Agent":"mina-original-FIBD-UK-predator-niche-source-audit/1.0"},
                      allow_redirects=True) as response:
         response.raise_for_status()
@@ -65,10 +65,10 @@ def bounded_https(session,url,maxbytes):
         return b"".join(raw)
 
 
-def get_official_package(session,slug):
+def get_official_package(session,slug,read_timeout=(8,20)):
     if slug not in ORIGINAL_DATASETS:
         raise ValueError("UNREGISTERED_SOURCE_SLUG")
-    payload=bounded_https(session,CKAN_ROOT+"/api/3/action/package_show?id="+slug,2_000_000)
+    payload=bounded_https(session,CKAN_ROOT+"/api/3/action/package_show?id="+slug,2_000_000,read_timeout=read_timeout)
     obj=json.loads(payload.decode("utf-8"))
     if obj.get("success") is not True or not isinstance(obj.get("result"),dict):
         raise ValueError("SOURCE_CKAN_PACKAGE_UNAVAILABLE")
