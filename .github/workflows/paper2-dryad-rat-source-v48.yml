@@ -1,0 +1,43 @@
+name: Paper2 V48 original Dryad field-rat dataset public metadata gate
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/PAPER2_FALKLAND_DRYAD_RAT_FIELD_SOURCE_V48.md'
+      - 'scripts/audit_paper2_dryad_rat_original_metadata_v48.py'
+      - 'tests/test_paper2_dryad_rat_original_metadata_v48.py'
+      - '.github/workflows/paper2-dryad-rat-source-v48.yml'
+  pull_request:
+    paths:
+      - 'contracts/PAPER2_FALKLAND_DRYAD_RAT_FIELD_SOURCE_V48.md'
+      - 'scripts/audit_paper2_dryad_rat_original_metadata_v48.py'
+      - 'tests/test_paper2_dryad_rat_original_metadata_v48.py'
+      - '.github/workflows/paper2-dryad-rat-source-v48.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  original_rats_data_source_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public source reader
+        run: python -m pip install requests pytest
+      - name: Verify source DOI, public/version gates, and no partial archive file listings
+        run: python -m pytest -q tests/test_paper2_dryad_rat_original_metadata_v48.py
+      - name: Audit original Tabak rat-survey Dryad exact source DOI and metadata
+        run: |
+          python scripts/audit_paper2_dryad_rat_original_metadata_v48.py \
+            --out /tmp/PAPER2_V48_FALKLAND_ORIGINAL_DRYAD_RAT_SOURCE_METADATA.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v48-exact-Tabak-Dryad-rat-source-metadata-only
+          path: /tmp/PAPER2_V48_FALKLAND_ORIGINAL_DRYAD_RAT_SOURCE_METADATA.json
+          if-no-files-found: warn
