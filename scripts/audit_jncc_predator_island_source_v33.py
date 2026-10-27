@@ -49,7 +49,7 @@ MAX_SUPP_BYTES = 6_000_000
 MAX_XML_BYTES = 45_000_000
 NS = {"x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
 PREDATOR_HEADER = re.compile(
-    r"rat|mink|fox|vulpes|stoat|weasel|ferret|polecat|hedgehog|"
+    r"rat|mink|fox|vulpes|stoat|weasel|ferret|polecat|hedgehog|feral cat|"
     r"mouse|mice|rattus|vison|norvegicus|mustela|felis|predator|"
     r"invasive|badger|rodent",
     re.I,
@@ -120,7 +120,7 @@ def fetch_rpsb_islands() -> tuple[set[int], dict[int, dict], dict]:
             "/query",
             {
                 "where": "1=1",
-                "outFields": "FID,ID,lowid,name,mhwsarea_h,mlwsarea_h,population,ferry,country",
+                "outFields": "FID,ID,lowid,name,mhwsarea_h,mlwsarea_h,population,ferry,country,coast,group_",
                 "outSR": 4326,
                 "returnGeometry": "true",
                 "orderByFields": "FID ASC",
@@ -146,8 +146,14 @@ def fetch_rpsb_islands() -> tuple[set[int], dict[int, dict], dict]:
                     "low_tide_area_h": attr.get("mlwsarea_h"),
                     "human_population": attr.get("population"),
                     "ferry": attr.get("ferry"),
+                    "country": attr.get("country"),
+                    "group": attr.get("group_"),
+                    "coast": attr.get("coast"),
                 }
             pt = feature.get("geometry") or {}
+            if key is not None and key in island_meta:
+                island_meta[key]["longitude"] = pt.get("x")
+                island_meta[key]["latitude"] = pt.get("y")
             if (
                 isinstance(pt.get("x"), (int, float))
                 and isinstance(pt.get("y"), (int, float))
@@ -198,7 +204,11 @@ def norm(s: object) -> str:
     return re.sub(r"[^a-z0-9]", "", str(s).strip().lower())
 
 
-def sheet_rows(raw: bytes, island_meta: dict[int, dict] | None = None) -> tuple[dict, list[dict]]:
+def sheet_rows(
+    raw: bytes,
+    island_meta: dict[int, dict] | None = None,
+    extracted_source_rows: list[dict] | None = None,
+) -> tuple[dict, list[dict]]:
     if not raw.startswith(b"PK"):
         raise ValueError("SOURCE_BINARY_GATE not an XLSX ZIP")
     with zipfile.ZipFile(io.BytesIO(raw)) as z:
@@ -323,6 +333,24 @@ def sheet_rows(raw: bytes, island_meta: dict[int, dict] | None = None) -> tuple[
                             "RSPB_original_qualifying_island_reference_n": len(qualifying),
                             "predator_literal_source_categories": cohorts,
                         }
+                if extracted_source_rows is not None:
+                    exact_taxa = {
+                        "American mink", "Black rat", "Brown rat",
+                        "Feral cat", "European hedgehog", "House mouse",
+                        "Stoat", "Red fox", "Weasel",
+                    }
+                    columns = [(i, title) for i, title in predator_columns
+                               if title.strip() in exact_taxa]
+                    for original in rows[header_ri + 1:]:
+                        original_lowid = to_integral_key(original.get(key_col))
+                        if original_lowid is not None:
+                            extracted_source_rows.append({
+                                "lowid": original_lowid,
+                                "status_codes": {
+                                    title: str(original.get(i, "")).strip()
+                                    for i, title in columns
+                                },
+                            })
                 report.update({
                     "source_original_10ha_stratified_literal_codes": geo_strata,
                     "exact_lowid_distinct_numeric_keys": len(keys),
