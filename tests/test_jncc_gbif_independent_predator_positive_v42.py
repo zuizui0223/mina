@@ -110,3 +110,13 @@ def test_species_resolution_only_exact_taxonomic_usage(monkeypatch):
     keys,report=g.matching_taxon(None,("Rattus norvegicus",))
     assert keys==[243]
     assert report[0]["state"]=="RESOLVED"
+
+
+def test_canonical_gbif_registry_creative_commons_licence_urls_are_not_bypasses():
+    assert g.normalized_gbif_license(
+        "http://creativecommons.org/licenses/by/4.0/legalcode")=="CC_BY_4_0"
+    assert g.normalized_gbif_license(
+        "https://creativecommons.org/licenses/by-nc/4.0/legalcode")=="CC_BY_NC_4_0"
+    assert g.normalized_gbif_license("http://creativecommons.org/licenses/by-nc-nd/4.0/legalcode") is None
+    assert g.normalized_gbif_license("CC_BY_4_0")=="CC_BY_4_0"
+    assert g.normalized_gbif_license("https://fake.creativecommons.org/licenses/by/4.0") is None
