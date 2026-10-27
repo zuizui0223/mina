@@ -5,6 +5,9 @@ on:
     branches: [research/jncc-v32-mechanism-contract]
     paths:
       - '.github/workflows/seabird-fig-fibd-network-diagnostic-v43.yml'
+  pull_request:
+    paths:
+      - '.github/workflows/seabird-fig-fibd-network-diagnostic-v43.yml'
   workflow_dispatch:
 
 permissions:
