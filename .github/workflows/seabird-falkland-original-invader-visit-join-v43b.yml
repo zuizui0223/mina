@@ -1,0 +1,45 @@
+name: FIG V43b native Falkland invader x visited island exact identity survey QA
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'scripts/audit_falkland_fibd_island_visit_join_v43b.py'
+      - 'tests/test_falkland_fibd_island_visit_join_v43b.py'
+      - 'contracts/ISLAND_PREDATOR_FALKLAND_FIBD_V43B_FIELD_JOIN_SOURCE_ONLY.md'
+      - '.github/workflows/seabird-falkland-original-invader-visit-join-v43b.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_falkland_fibd_island_visit_join_v43b.py'
+      - 'tests/test_falkland_fibd_island_visit_join_v43b.py'
+      - 'contracts/ISLAND_PREDATOR_FALKLAND_FIBD_V43B_FIELD_JOIN_SOURCE_ONLY.md'
+      - '.github/workflows/seabird-falkland-original-invader-visit-join-v43b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact_original_mammal_survey_metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original publisher FIBD Excel and source readers
+        run: python -m pip install requests xlrd pytest
+      - name: Test native headerless source species rows, exact island names/coordinates, visit field/desktop distinction
+        run: python -m pytest -q tests/test_falkland_fibd_island_visit_join_v43b.py
+      - name: Source-only strict FIG original 3-file island-invasion-visit lineage (NO bird outcomes)
+        run: |
+          python scripts/audit_falkland_fibd_island_visit_join_v43b.py \
+            --out /tmp/FIBD_V43B_NATIVE_SOURCE_ISLAND_INVADER_VISIT_JOIN.json
+      - name: Archive only aggregate original species/visit/georeference schema and source sha
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: falkland-v43b-native-original-island-predator-and-survey-identity-source-QA
+          path: /tmp/FIBD_V43B_NATIVE_SOURCE_ISLAND_INVADER_VISIT_JOIN.json
+          if-no-files-found: warn
