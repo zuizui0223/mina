@@ -10,13 +10,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import audit_jncc_predator_island_source_v33 as a
 
 
-def _xlsx_from_inline():
+def _xlsx_from_inline(header_label='lowid'):
     sheet = (
         '<?xml version="1.0" encoding="UTF-8"?>'
         '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
         '<sheetData>'
         '<row r="1">'
-        '<c r="A1" t="inlineStr"><is><t>lowid</t></is></c>'
+        f'<c r="A1" t="inlineStr"><is><t>{header_label}</t></is></c>'
         '<c r="B1" t="inlineStr"><is><t>Rattus norvegicus</t></is></c>'
         '<c r="C1" t="inlineStr"><is><t>mink</t></is></c>'
         '</row>'
@@ -56,7 +56,7 @@ def test_excel_source_headers_join_and_unknown_never_zero_imputed():
 
 
 def test_spreadsheet_reader_ignores_texty_loosely_similar_island_id():
-    raw=_xlsx_from_inline().replace(b"lowid", b"island name")
+    raw=_xlsx_from_inline(header_label="island name")
     meta, keyed = a.sheet_rows(raw)
     assert keyed == []
     assert meta["sheets"][0]["exact_lowid_header_row_1indexed"] is None
