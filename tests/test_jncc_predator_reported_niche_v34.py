@@ -14,6 +14,7 @@ def make_rows():
             status="1" if i%2==0 else "0"
             rows.append({
                 "area_ha":(i+1)*(j+1)*.1,
+                "mlws_area_ha":(i+1)*(j+1)*.13,
                 "population":i%3,
                 "ferry":bool(i%4==0),
                 "group":f"archipelago{j}",
@@ -37,9 +38,11 @@ def test_area_bin_original_units_hectares():
     assert result["overall_source_islands"]==240
     assert result["original_source_reported_0_not_surveyed_absence"] is True
     assert sum(b["n"] for b in result["area_bins"])==240
+    assert result["original_islands_over_10ha_low_tide_area"] >= result["original_islands_over_10_ha"]
+    assert result["over10ha_denominator_tide_definitions_are_distinct"]
 
 def test_exact_lowid_and_not_name_required():
-    island={1:{"name":"St_Marys","area_ha":2.1,"population":0,"ferry":"","group":"scilly","country":"england","coast":"southwest"}}
+    island={1:{"name":"St_Marys","area_ha":2.1,"mlws_area_ha":2.5,"population":0,"ferry":"","group":"scilly","country":"england","coast":"southwest"}}
     esm={1:{"name":"st marys","statuses":{"American mink":"0","Brown rat":"1"}}}
     rows,r=m.generate_cohort(island,esm)
     assert len(rows)==1 and rows[0]["status"]["American mink"]=="0"
