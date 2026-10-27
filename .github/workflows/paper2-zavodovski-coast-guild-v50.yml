@@ -1,0 +1,44 @@
+name: Paper2 V50 Zavodovski original flying vs flightless 2023 coast accessibility
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/PAPER2_ZAVODOVSKI_FLIGHT_ACCESS_ORIGINAL_UAV_V50.md'
+      - 'scripts/analyze_paper2_zavodovski_same_day_bird_coast_access_v50.py'
+      - 'tests/test_paper2_zavodovski_same_day_bird_coast_access_v50.py'
+      - '.github/workflows/paper2-zavodovski-coast-guild-v50.yml'
+  pull_request:
+    paths:
+      - 'contracts/PAPER2_ZAVODOVSKI_FLIGHT_ACCESS_ORIGINAL_UAV_V50.md'
+      - 'scripts/analyze_paper2_zavodovski_same_day_bird_coast_access_v50.py'
+      - 'tests/test_paper2_zavodovski_same_day_bird_coast_access_v50.py'
+      - '.github/workflows/paper2-zavodovski-coast-guild-v50.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  original_same_day_bird_guild_shore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original projected GIS source dependencies
+        run: python -m pip install requests shapely>=2.0 pyshp pyproj numpy pytest
+      - name: Synthetic fixed source coastline GIS tests
+        run: python -m pytest -q tests/test_paper2_zavodovski_same_day_bird_coast_access_v50.py
+      - name: Run original five authentic BAS first-party 2023 GIS polygon layers
+        run: |
+          python scripts/analyze_paper2_zavodovski_same_day_bird_coast_access_v50.py \
+            --out /tmp/PAPER2_V50_ZAVODOVSKI_BAS_FLYING_V_FLIGHTLESS_COAST.json
+      - name: Archive ONLY aggregate source-area coast-distance and file SHA results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v50-zavodovski-same-2023-UAV-seabird-guild-coastal-access
+          path: /tmp/PAPER2_V50_ZAVODOVSKI_BAS_FLYING_V_FLIGHTLESS_COAST.json
+          if-no-files-found: warn
