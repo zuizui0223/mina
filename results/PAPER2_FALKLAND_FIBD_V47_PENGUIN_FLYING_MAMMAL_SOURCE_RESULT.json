@@ -1,0 +1,202 @@
+{
+  "schema": "MINA_PAPER2_FALKLAND_FIBD_V47_OBSERVED_BREEDING_SOURCE_GATE",
+  "date": "2026-10-27",
+  "status": "V47_ORIGINAL_FALKLAND_SOURCE_BREEDING_GUILD_OVERLAP_AUDITED",
+  "source_verifications": {
+    "fibdv8-20140601-locations": {
+      "slug": "fibdv8-20140601-locations",
+      "original_SHA256": "4e87141f8819dd7b513400f166cd2a8e7369e08cdf0a8ae7d76023199fb7b56c",
+      "original_rows": 535,
+      "original_columns": 17,
+      "first_party_licence": "CC-BY-SA-4.0",
+      "raw_source_rows_committed": false
+    },
+    "fibdv8-20140601-birds": {
+      "slug": "fibdv8-20140601-birds",
+      "original_SHA256": "207065a69d8b16d5f5c7889bfff40912fe6660ca2947e937317094eb23625103",
+      "original_rows": 4959,
+      "original_columns": 26,
+      "first_party_licence": "CC-BY-SA-4.0",
+      "raw_source_rows_committed": false
+    },
+    "fibdv8-20140601-invasives": {
+      "slug": "fibdv8-20140601-invasives",
+      "original_SHA256": "980cb424b356e524c4c5f15f5a2ec942882530ce8b3b283719148595800205e1",
+      "original_rows": 1212,
+      "original_columns": 18,
+      "first_party_licence": "CC-BY-SA-4.0",
+      "raw_source_rows_committed": false
+    },
+    "fibdv8-20140601-visits": {
+      "slug": "fibdv8-20140601-visits",
+      "original_SHA256": "1a01e2a321e7a45a07a8a864d98c8bff079fb4d789b2493c2c693eed6c562209",
+      "original_rows": 4965,
+      "original_columns": 13,
+      "first_party_licence": "CC-BY-SA-4.0",
+      "raw_source_rows_committed": false
+    }
+  },
+  "source_original_island_reference_quality": {
+    "source_locations_excluding_header": 534,
+    "unique_normalized_named_source_island_locations": 534,
+    "ambiguous_or_duplicate_source_place_names_excluded": 0,
+    "original_island_names_exported": false
+  },
+  "source_original_visit_coverage": {
+    "source_visit_rows_excluding_header": 4964,
+    "original_visit_source_matched_window": 4796,
+    "original_visit_outside_reliable_1997_2013_window": 168,
+    "matched_distinct_island_year_visit_opportunities": 735,
+    "matched_distinct_island_date_visit_opportunities": 602,
+    "visit_method_from_free_notes_nonexclusive_hints": {
+      "UNSPECIFIED_METHOD": 4514,
+      "DESKTOP_ASSESSMENT_HINT": 206,
+      "FIELD_METHOD_HINT_NOT_TARGETED_MAMMAL_SURVEY": 76
+    },
+    "visit_not_proof_of_targeted_mammal_non_detection": true
+  },
+  "source_penguin_and_flying_seabird_breeding_overlap": {
+    "original_bird_records_after_native_header": 4958,
+    "classed_flightless_penguin_source_records": 249,
+    "classed_flying_seabird_source_records": 1104,
+    "other_bird_source_records_without_breeding_flight_guild": 3605,
+    "original_distinct_guild_species_labels_by_source": {
+      "PENGUIN_FLIGHTLESS": 5,
+      "SEABIRD_FLYING": 19
+    },
+    "safe_repeated_bird_english_names_in_original_guilds": {
+      "PENGUIN_FLIGHTLESS": {
+        "magellanic penguin": 206,
+        "rockhopper penguin": 18,
+        "gentoo penguin": 15
+      },
+      "SEABIRD_FLYING": {
+        "rock shag/cormorant": 213,
+        "king/imperial shag": 98,
+        "falkland skua": 91,
+        "dolphin gull": 108,
+        "sooty shearwater": 26,
+        "kelp gull": 203,
+        "brown-hooded gull": 50,
+        "south american tern": 86,
+        "black-browed albatross": 29,
+        "thin-billed prion": 31,
+        "southern giant petrel": 64,
+        "white-chinned petrel": 7,
+        "grey-backed storm-petrel": 16,
+        "common diving petrel": 28
+      }
+    },
+    "all_bird_guild_source_breeding_status_literal_frequency": {
+      "PENGUIN_FLIGHTLESS": {
+        "total_source_rows": 243,
+        "literal_predefined_nonidentifying_codes": {
+          "<BLANK>": 28,
+          "confirmed breeding": 149,
+          "non-breeding": 11,
+          "possible breeding": 2,
+          "probably breeding": 17
+        },
+        "uninterpreted_source_code_or_text_rows": 36,
+        "total_source_unique_literal_categories": 6,
+        "original_raw_free_text_disclosed": false
+      },
+      "SEABIRD_FLYING": {
+        "total_source_rows": 1057,
+        "literal_predefined_nonidentifying_codes": {
+          "<BLANK>": 117,
+          "confirmed breeding": 179,
+          "non-breeding": 505,
+          "possible breeding": 71,
+          "probably breeding": 77,
+          "unknown": 19
+        },
+        "uninterpreted_source_code_or_text_rows": 89,
+        "total_source_unique_literal_categories": 8,
+        "original_raw_free_text_disclosed": false
+      }
+    },
+    "bird_source_year_site_opportunities_with_either_class": 310,
+    "bird_source_same_island_year_BOTH_guilds_ANY_recorded": 198,
+    "bird_source_same_island_year_BOTH_guilds_DEFINITE": 69,
+    "bird_source_same_island_year_BOTH_guilds_DEFINITE_and_visit_same_year": 69,
+    "bird_source_distinct_islands_BOTH_guilds_DEFINITE_and_visit": 66,
+    "bird_source_distinct_publisher_wider_area_regions_for_same_year_pairs": 23,
+    "bird_source_same_island_day_BOTH_guilds_ANY_recorded": 185,
+    "bird_source_same_island_day_BOTH_guilds_DEFINITE": 63,
+    "bird_source_same_island_day_BOTH_guilds_DEFINITE_AND_same_day_original_visit": 63,
+    "definite_same_year_pairs_distinct_species_by_guild": {
+      "PENGUIN_FLIGHTLESS": 5,
+      "SEABIRD_FLYING": 14
+    },
+    "guild_date_checks": {
+      "bird_source_all_rows": 4958,
+      "bird_guild_PENGUIN_FLIGHTLESS": 249,
+      "bird_guild_SEABIRD_FLYING": 1104,
+      "bird_guild_OTHER_OR_AMBIGUOUS": 3605,
+      "bird_source_valid_guild_year_missing_or_outside_source_window": 53
+    },
+    "source_2014_XLS_sample_is_not_all_Falkland_islands_surveyed": true,
+    "blank_species_no_observed_record_NOT_absent": true,
+    "matched_year_not_proven_same_seabird_detection_protocol": true,
+    "G1_predeclared_both_definite_guild_sample_gate_pass": true
+  },
+  "source_mammal_status_quality_and_overlap": {
+    "original_predator_record_rows_per_taxon_not_occupied_islands": {
+      "HOUSE_MOUSE_LITERAL_SOURCE_RECORD": 34,
+      "NORWAY_RAT_LITERAL_SOURCE_RECORD": 78,
+      "CAT_LITERAL_SOURCE_RECORD": 25
+    },
+    "original_distinct_source_island_names_with_any_mammal_label": 76,
+    "original_distinct_islands_with_Norway_rat_SOURCE_RECORD_not_confirmation": 60,
+    "same_year_guild_definite_eligible_islands_with_any_Norway_rat_RECORD": 7,
+    "source_original_invasion_columns_9_to_15_safe_literal_code_profile": {
+      "9": {
+        "<UNRECOGNIZED_NOT_PUBLISHED>": 72,
+        "<BLANK>": 65
+      },
+      "10": {
+        "<UNRECOGNIZED_NOT_PUBLISHED>": 106,
+        "<BLANK>": 31
+      },
+      "11": {
+        "<UNRECOGNIZED_NOT_PUBLISHED>": 137
+      },
+      "12": {
+        "<BLANK>": 133,
+        "<UNRECOGNIZED_NOT_PUBLISHED>": 4
+      },
+      "13": {
+        "1": 130,
+        "<BLANK>": 7
+      },
+      "14": {
+        "<BLANK>": 136,
+        "<UNRECOGNIZED_NOT_PUBLISHED>": 1
+      },
+      "15": {
+        "<BLANK>": 135,
+        "<UNRECOGNIZED_NOT_PUBLISHED>": 2
+      }
+    },
+    "source_invasion_possible_calendar_year_field_candidate_columns_9_to_15": {
+      "11": 112
+    },
+    "source_invasion_rows_are_NOT_surveyed_true_predator_absence": true,
+    "published_Norway_rat_unsurveyed_desktop_inferred_absence_exists": true,
+    "source_original_mammal_field_verified_positive_and_negative_same_year_pair_support": false,
+    "G2_original_matched_mammal_surveyed_positive_and_negative_gate_pass": false
+  },
+  "source_gates": {
+    "G1_recorded_both_guild_definite_breeding_sample": true,
+    "G2_field_confirmed_true_mammal_present_and_surveyed_negative": false,
+    "G3_same_day_and_coverage_surveyed_flight_guild_interaction": false,
+    "ALL_gates_for_predator_flightless_interaction_fitting": false
+  },
+  "ecological_model_fitted": false,
+  "science_decision": "SOURCE_COMPARABILITY_ONLY: positive bird breeding records may share island/year, but mammalian rat absences include unsurveyed assessments and bird absence/effort is not validated; STOP ecological predator×flight effect regardless of number of rows.",
+  "source_actual_CI": "https://github.com/zuizui0223/mina/actions/runs/40501816259",
+  "false_absences_created": false,
+  "raw_site_or_observer_records_archived": false,
+  "original_2014_era_observation_vs_2026_publication_time_correct": true
+}
