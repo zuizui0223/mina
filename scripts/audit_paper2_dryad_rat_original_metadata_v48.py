@@ -68,8 +68,12 @@ def extract_versions_metadata(dataset, session):
         if pp.scheme and (pp.scheme!="https" or pp.hostname!=HOST):
             raise ValueError("DRYAD_CROSS_DOMAIN_VERSION_LINK")
         path=pp.path if pp.scheme else href
-        if not path.startswith("/api/v2/versions/"):
-            raise ValueError("DRYAD_VERSION_LINK_NOT_API")
+        if not re.fullmatch(r"/api/v2/versions/[1-9][0-9]*",path):
+            raise ValueError("DRYAD_VERSION_LINK_NOT_EXACT_INTEGER_API")
+        # Dryad REST GET /versions/{id} public response is a version
+        # METADATA object and can omit "id"; derive it from the official
+        # dataset's exact version link, not biological/source row content.
+        version_id=int(path.rsplit("/",1)[1])
         version=first_party_public_get(session,path)
     else:
         version_list=first_party_public_get(
@@ -80,15 +84,21 @@ def extract_versions_metadata(dataset, session):
         if not isinstance(versions,list) or not versions:
             raise ValueError("DRYAD_NO_VERIFIED_PUBLISHED_VERSION_LINK")
         candidates=[x for x in versions
-                    if str(x.get("curationStatus","")).lower()=="published"]
-        if not candidates:raise ValueError("DRYAD_NO_PUBLIC_PUBLISHED_VERSION")
-        ids=[int(x.get("id",-1)) for x in candidates]
-        version=first_party_public_get(session,"/api/v2/versions/"+str(max(ids)))
-    if str(version.get("curationStatus","")).lower() not in ("published",):
+                    if str(x.get("curationStatus","")).lower()=="published"
+                    and isinstance(x.get("id"),int) and x.get("id")>0]
+        if not candidates:
+            raise ValueError("DRYAD_NO_VALID_PUBLIC_PUBLISHED_VERSION_ID")
+        version_id=max(x["id"] for x in candidates)
+        version=first_party_public_get(session,"/api/v2/versions/"+str(version_id))
+    if str(version.get("curationStatus","")).lower()!="published":
         raise ValueError("DRYAD_LATEST_VERSION_NOT_PUBLISHED")
-    version_id=version.get("id")
-    if not isinstance(version_id,int) or version_id<=0:
-        raise ValueError("DRYAD_PUBLIC_VERSION_ID_INVALID")
+    embedded_id=version.get("id")
+    if embedded_id is not None and embedded_id!=version_id:
+        raise ValueError("DRYAD_VERSION_RESPONSE_ID_MISMATCH")
+    if license_state=="UNVERIFIED_NEED_VERSION":
+        licence=version.get("license") or version.get("licenseUri")
+        if licence:
+            license_state=str(licence)[:250]
     return version_id,license_state,version
 
 
