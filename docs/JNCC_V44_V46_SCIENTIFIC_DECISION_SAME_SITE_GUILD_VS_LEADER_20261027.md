@@ -49,4 +49,4 @@ Frozen original Antarctic Penguin Paper 1 independently found effective nesting-
 - Authentic [V46 original source and synthetic test Action](https://github.com/zuizui0223/mina/actions/runs/40488997728) and [complete V46 machine-readable result artifact](https://github.com/zuizui0223/mina/actions/runs/40488997728/artifacts/12728600011).
 - Original unmodified V37/V38 positive findings and V39 same-census-year restriction remain available in same PR.
 
-No ecological mechanism confirmed. No prey/niche competition fits, marine ice/environment covariates, human introduction/predator causal tests or new data downloads occurred in V44–V46.
+No ecological mechanism confirmed. No prey/niche competition fits, marine ice/environment covariates or human-introduction/predator causal tests occurred in V44–V46. The original pinned JNCC workbook was fetched afresh for checksum-verified reanalysis, but no new independent predator-occurrence dataset was acquired.
