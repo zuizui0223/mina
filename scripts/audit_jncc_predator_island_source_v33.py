@@ -98,7 +98,7 @@ def to_integral_key(value: object) -> int | None:
     return int(number)
 
 
-def fetch_rpsb_islands() -> tuple[set[int], dict]:
+def fetch_rpsb_islands() -> tuple[set[int], dict[int, dict], dict]:
     service = official_json("", {"f": "json"})
     actual_fields = {f["name"] for f in service.get("fields", [])}
     required = {"FID", "lowid", "mhwsarea_h", "mlwsarea_h", "population", "ferry"}
@@ -111,6 +111,7 @@ def fetch_rpsb_islands() -> tuple[set[int], dict]:
         raise ValueError("SOURCE_FRAME_GATE expected static Stanbury 9688, observed " + str(count))
     per_page = 1000
     ids = set()
+    island_meta = {}
     records = []
     coord_count = 0
     missing_key = 0
@@ -140,6 +141,12 @@ def fetch_rpsb_islands() -> tuple[set[int], dict]:
                 raise ValueError("SOURCE_KEY_GATE duplicated RSPB lowid " + str(key))
             else:
                 ids.add(key)
+                island_meta[key] = {
+                    "high_tide_area_h": attr.get("mhwsarea_h"),
+                    "low_tide_area_h": attr.get("mlwsarea_h"),
+                    "human_population": attr.get("population"),
+                    "ferry": attr.get("ferry"),
+                }
             pt = feature.get("geometry") or {}
             if (
                 isinstance(pt.get("x"), (int, float))
@@ -153,7 +160,17 @@ def fetch_rpsb_islands() -> tuple[set[int], dict]:
                 attr.get("mlwsarea_h"), attr.get("country"), attr.get("population")
             ))
     stable = json.dumps(records, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    return ids, {
+    return ids, island_meta, {
+        "area_strata_original_rpsb": {
+            label: sum(
+                isinstance(meta.get(field), (int, float)) and meta[field] >= 10
+                for meta in island_meta.values()
+            )
+            for label, field in (
+                ("ge10ha_high_tide", "high_tide_area_h"),
+                ("ge10ha_low_tide", "low_tide_area_h"),
+            )
+        },
         "publisher": "RSPB UK Islands (2014; Stanbury et al. 2017)",
         "source_url": RSPB_SERVICE,
         "metadata_url": RSPB_METADATA,
@@ -181,7 +198,7 @@ def norm(s: object) -> str:
     return re.sub(r"[^a-z0-9]", "", str(s).strip().lower())
 
 
-def sheet_rows(raw: bytes) -> tuple[dict, list[dict]]:
+def sheet_rows(raw: bytes, island_meta: dict[int, dict] | None = None) -> tuple[dict, list[dict]]:
     if not raw.startswith(b"PK"):
         raise ValueError("SOURCE_BINARY_GATE not an XLSX ZIP")
     with zipfile.ZipFile(io.BytesIO(raw)) as z:
@@ -283,7 +300,31 @@ def sheet_rows(raw: bytes) -> tuple[dict, list[dict]]:
                     value = to_integral_key(row.get(key_col))
                     if value is not None:
                         keys.add(value)
+                geo_strata = {}
+                if island_meta is not None:
+                    for label, area_field in (
+                        ("ge10ha_high_tide", "high_tide_area_h"),
+                        ("ge10ha_low_tide", "low_tide_area_h"),
+                    ):
+                        qualifying = {
+                            key for key, meta in island_meta.items()
+                            if isinstance(meta.get(area_field), (int, float))
+                            and meta[area_field] >= 10
+                        }
+                        cohorts = {}
+                        for col, title in predator_columns[:30]:
+                            values = Counter(
+                                str(row.get(col, "")).strip()[:64] or "<MISSING>"
+                                for row in rows[header_ri + 1:]
+                                if to_integral_key(row.get(key_col)) in qualifying
+                            )
+                            cohorts[title[:100]] = dict(values.most_common(15))
+                        geo_strata[label] = {
+                            "RSPB_original_qualifying_island_reference_n": len(qualifying),
+                            "predator_literal_source_categories": cohorts,
+                        }
                 report.update({
+                    "source_original_10ha_stratified_literal_codes": geo_strata,
                     "exact_lowid_distinct_numeric_keys": len(keys),
                     "predator_header_candidates": [x[1][:120] for x in predator_columns],
                     "predator_column_literal_value_histograms": codes,
@@ -307,8 +348,9 @@ def main() -> None:
         "JNCC_spatial_effects_fitted": False,
     }
     island_ids = set()
+    island_meta = {}
     try:
-        island_ids, receipt["RSPB_islands"] = fetch_rpsb_islands()
+        island_ids, island_meta, receipt["RSPB_islands"] = fetch_rpsb_islands()
     except Exception as exc:
         receipt["RSPB_source_error"] = type(exc).__name__ + ": " + str(exc)[:250]
     supplements = {}
@@ -316,7 +358,9 @@ def main() -> None:
     for label, url in SUPPLEMENTS.items():
         try:
             raw = bounded_get(url, MAX_SUPP_BYTES)
-            info, keys_by_sheet = sheet_rows(raw)
+            info, keys_by_sheet = sheet_rows(
+                raw, island_meta if label == "ESM5" else None
+            )
             supplements[label] = {
                 "publisher_url": url,
                 "bytes": len(raw),
