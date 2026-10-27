@@ -1,0 +1,45 @@
+name: JNCC V38 post-V37 excess concentration plus initial leader switching
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_CONCENTRATION_HIERARCHY_TURNOVER_V38_DIAGNOSTIC.md'
+      - 'scripts/analyze_jncc_hierarchy_turnover_v38.py'
+      - 'tests/test_jncc_hierarchy_turnover_v38.py'
+      - '.github/workflows/seabird-jncc-hierarchy-turnover-v38.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_CONCENTRATION_HIERARCHY_TURNOVER_V38_DIAGNOSTIC.md'
+      - 'scripts/analyze_jncc_hierarchy_turnover_v38.py'
+      - 'tests/test_jncc_hierarchy_turnover_v38.py'
+      - '.github/workflows/seabird-jncc-hierarchy-turnover-v38.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v38_post_result_descriptive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original first-party census reader and fixed simulation
+        run: python -m pip install numpy requests pytest
+      - name: Test invented synthetic signal and case where regression-to-mean alone creates negative score
+        run: python -m pytest -q tests/test_jncc_hierarchy_turnover_v38.py
+      - name: Compute openly post-result original source concentration hierarchy turnover diagnostic
+        run: |
+          python scripts/analyze_jncc_hierarchy_turnover_v38.py \
+            --out /tmp/JNCC_V38_CONCENTRATION_HIERARCHY_TURNOVER.json
+      - name: Archive compact source-derived diagnostic not original child census counts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-v38-post-v37-concentration-hierarchy-turnover
+          path: /tmp/JNCC_V38_CONCENTRATION_HIERARCHY_TURNOVER.json
+          if-no-files-found: warn
