@@ -230,7 +230,8 @@ def calibrated_diagnostics(parents,qualified,sourceqa):
        },
        "ecological_interpretation_ceiling":"Hypothetical independent-count observation model; real JNCC site-census count error and nest-detection mechanisms NOT measured. This sensitivity does not estimate true predation or negate original V44 directional failure.",
        "site_identity_and_traits_unchanged":True,
-       "original_JNCC_seabird_measured_counts_read_for_existing_11_Master_only":True,
+       "original_JNCC_numeric_eligibility_opened_only_for_17_source_qualified_Master_networks":True,
+       "new_concentration_comparison_restricted_to_existing_11_declining_Master_networks":True,
        "no_UK_predator_GBIF_or_Falkland_data":True,
     }
 
