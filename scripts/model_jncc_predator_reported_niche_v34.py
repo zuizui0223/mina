@@ -160,9 +160,12 @@ def generate_cohort(isl,esm):
         elif len(failed)<12:
             failed.append({"lowid":key,"island_RSPB":a["name"],"island_Stanbury":b["name"]})
         area=a["area_ha"]
+        mlws=a["mlws_area_ha"]
         pop=a["population"]
         if area is None or not math.isfinite(float(area)) or float(area)<0:
             raise ValueError("SOURCE_AREA_INCOMPLETE")
+        if mlws is None or not math.isfinite(float(mlws)) or float(mlws)<0:
+            raise ValueError("SOURCE_LOW_TIDE_AREA_INCOMPLETE")
         if pop is None or not math.isfinite(float(pop)) or float(pop)<0:
             raise ValueError("SOURCE_POP_INCOMPLETE")
         # 'group_' is an original RSPB named archipelago, used ONLY for
@@ -172,7 +175,7 @@ def generate_cohort(isl,esm):
             grp="region:"+a["country"]+":"+a["coast"]
         ferry=a["ferry"] not in (""," ","none","no","nil","n/a")
         rows.append({
-            "lowid":key,"area_ha":float(area),"population":float(pop),
+            "lowid":key,"area_ha":float(area),"mlws_area_ha":float(mlws),"population":float(pop),
             "ferry":ferry,"group":grp,"status":b["statuses"],
         })
     return rows,{
@@ -203,12 +206,23 @@ def tabulate(rows:list[dict])->dict:
             }
         })
     over10=[r for r in rows if r["area_ha"]>10]
+    low_tide_over10=[r for r in rows if r["mlws_area_ha"]>10]
+    def status_fraction(records, species):
+        return sum(r["status"][species] in {"1","2"} for r in records)/len(records) if records else None
     return {
         "overall_source_islands":len(rows),
         "original_islands_over_10_ha":len(over10),
+        "original_islands_over_10ha_low_tide_area":len(low_tide_over10),
+        "publisher_reported_506_islands_over10ha_used_only_for_source_denominator_audit":True,
+        "over10ha_denominator_tide_definitions_are_distinct":True,
         "area_bins":bins,
         "confirmed_or_probable_fraction_over10ha":{
             p:sum(r["status"][p] in {"1","2"} for r in over10)/len(over10) if over10 else None
+            for p in PREDATORS
+        },
+        "original_low_tide_over10ha_reported_status":{
+            p:{"literal_status_counts":dict(Counter(r["status"][p] for r in low_tide_over10)),
+               "confirmed_or_probable_fraction":status_fraction(low_tide_over10,p)}
             for p in PREDATORS
         },
         "original_source_reported_0_not_surveyed_absence":True,
