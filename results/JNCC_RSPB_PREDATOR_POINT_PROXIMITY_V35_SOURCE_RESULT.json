@@ -1,0 +1,48 @@
+{
+  "schema": "JNCC_RSPB_PREDATOR_POINT_PROXIMITY_V35_SOURCE_RESULT",
+  "date": "2026-10-27",
+  "status": "SOURCE_ONLY_ORIGINAL_JNCC_TO_RSPB_PROXIMITY_AND_STRICT_NATURAL_EARTH_STOP",
+  "inputs": {
+    "original_JNCC_SHA256": "9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4",
+    "original_Stanbury_SHA256": "3d876a92e68122f8594b320e0794a54c5e8c7306c5a0e6252cbc24776ce1d1c5",
+    "RSPB_island_points": 9688,
+    "JNCC_original_source_structural_panels": 1483,
+    "JNCC_original_site_species_rows": 9821,
+    "read_only_CI": "https://github.com/zuizui0223/mina/actions/runs/40438246155",
+    "independent_strict_NaturalEarth_source_file": "results/JNCC_PREDATOR_NATURAL_EARTH_SOURCE_GEO_SUPPORT_V35.json"
+  },
+  "source_point_proximity_not_island_polygon_assignment": {
+    "matching_thresholds": {
+      "nearest_RSPB_original_point_max_m": 250,
+      "second_nearest_original_point_min_m": 750
+    },
+    "child_match_states": {
+      "NO_RSPB_CENTROID_WITHIN_250M": 7346,
+      "UNIQUE_NEAR_RSPB_CENTROID_NOT_PHYSICAL_ISLAND_ID": 409,
+      "AMBIGUOUS_TWO_OR_MORE_RSPB_CENTROIDS": 2066
+    },
+    "parent_support": {
+      "original_panels_total": 1483,
+      "parents_any_two_distinct_candidate_island_points": 74,
+      "parents_all_children_have_unique_centroid_candidate": 2,
+      "parents_ALL_children_unique_and_at_least_two_distinct_centroid_ids": 2
+    },
+    "variation_in_reported_mink_or_brown_rat_status_between_candidate_points": {},
+    "boundary_uncertain_source_points_cannot_be_promoted_to_verified_physical_islands": true
+  },
+  "strict_NaturalEarth_cross_source_control": {
+    "source_island_land_polygon_version": "Natural Earth 10m plus minor islands, existing pre-outcome V31",
+    "source_child_rows_strict_exact_small_land_to_unique_RSPB": 302,
+    "source_complete_parent_count": 27,
+    "physically_mixed_source_island_parents": 0,
+    "H2_within_parent_source_support_pass": false,
+    "source_reproduction": "https://github.com/zuizui0223/mina/actions/runs/40437554346"
+  },
+  "decision": "STOP_NO_IDENTIFIABLE_WITHIN_PARENT_PREDATOR_ISLAND_REFUGE_EFFECT_IN_CURRENT_JNCC_AND_RSPB_SOURCE_JOIN",
+  "source_0_predator_status_is_assumed_OR_known_absence_not_verified_absence": true,
+  "historical_JNCC_source_1998_to_2021_predator_status_confirmed": false,
+  "any_JNCC_original_count_magnitudes_opened": false,
+  "seabird_island_refuge_mechanism_fitted": false,
+  "ecological_null_claim": false,
+  "next_distinct_data_required": "Independent mapped historical nesting polygons and contemporaneous predator surveillance/eradication dated for both original JNCC census epochs; no retrospective coastal snap optimization"
+}
