@@ -163,12 +163,12 @@ def fetch_rpsb_islands() -> tuple[set[int], dict[int, dict], dict]:
     return ids, island_meta, {
         "area_strata_original_rpsb": {
             label: sum(
-                isinstance(meta.get(field), (int, float)) and meta[field] >= 10
+                isinstance(meta.get(field), (int, float)) and meta[field] > 10
                 for meta in island_meta.values()
             )
             for label, field in (
-                ("ge10ha_high_tide", "high_tide_area_h"),
-                ("ge10ha_low_tide", "low_tide_area_h"),
+                ("gt10ha_high_tide", "high_tide_area_h"),
+                ("gt10ha_low_tide", "low_tide_area_h"),
             )
         },
         "publisher": "RSPB UK Islands (2014; Stanbury et al. 2017)",
@@ -303,13 +303,13 @@ def sheet_rows(raw: bytes, island_meta: dict[int, dict] | None = None) -> tuple[
                 geo_strata = {}
                 if island_meta is not None:
                     for label, area_field in (
-                        ("ge10ha_high_tide", "high_tide_area_h"),
-                        ("ge10ha_low_tide", "low_tide_area_h"),
+                        ("gt10ha_high_tide", "high_tide_area_h"),
+                        ("gt10ha_low_tide", "low_tide_area_h"),
                     ):
                         qualifying = {
                             key for key, meta in island_meta.items()
                             if isinstance(meta.get(area_field), (int, float))
-                            and meta[area_field] >= 10
+                            and meta[area_field] > 10
                         }
                         cohorts = {}
                         for col, title in predator_columns[:30]:
