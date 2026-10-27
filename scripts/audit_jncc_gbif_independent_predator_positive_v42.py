@@ -268,7 +268,19 @@ def collect_public_source():
     }
 
 
-def strict_original_island_witnesses(records):
+def source_taxon_completeness(source_report):
+    """An incompletely paginated GBIF taxon cannot pass independent validation."""
+    meta=source_report["source_dataset_by_taxon"]
+    return {
+        tax:all(
+            meta.get(label+":"+tax,{}).get("status")=="PUBLIC_SOURCE_RETRIEVAL_COMPLETE"
+            for label in DATASETS
+        )
+        for tax in TAXA
+    }
+
+
+def strict_original_island_witnesses(records, complete_taxa):
     ids,rspb,metadata=uk.fetch_rpsb_islands()
     if len(rspb)!=EXPECTED_RSPB_SOURCE_ISLANDS:
         raise ValueError("RSPB_original_2014_island_count_changed")
@@ -341,6 +353,7 @@ def strict_original_island_witnesses(records):
         n_regions=len(region_by_taxon[tax])
         pass_gate=(
             tax!="Cat_sighting_NOT_verified_feral"
+            and bool(complete_taxa.get(tax,False))
             and n_events>=MIN_GBIF_EVENTS and n_islands>=MIN_GBIF_ISLANDS
             and n_regions>=MIN_ARCHIPELAGOS
         )
@@ -349,6 +362,7 @@ def strict_original_island_witnesses(records):
             "unique_physical_island_original_RSPB_lowids":n_islands,
             "distinct_original_RSPB_archipelago_groups":n_regions,
             "GBIF_source_recorder_networks":dict(sources_per_taxon[tax]),
+            "both_independent_GBIF_dataset_species_queries_complete":bool(complete_taxa.get(tax,False)),
             "original_source_positive_only_comparison_gate_pass":bool(pass_gate),
             "focal_island_status":"ELIGIBLE_FOR_POSITIVE_ONLY_RANKING"
                 if pass_gate else "STOP_INDEPENDENT_ISLAND_WITNESS_SUPPORT",
@@ -387,9 +401,21 @@ def main():
         occ,info=collect_public_source()
         out["GBIF_public_source"]=info
         out["downloaded_public_eligible_GBIF_source_record_count"]=len(occ)
-        if info["all_requested_source_pairs_complete"]:
-            out["strict_physical_island_source_qa"]=strict_original_island_witnesses(occ)
-            out["status"]="V42_PUBLIC_GBIF_INDEPENDENT_PREDATOR_ISLAND_WITNESS_AUDITED"
+        complete=source_taxon_completeness(info)
+        out["original_public_GBIF_complete_taxon_sources"]=complete
+        if any(complete.values()) and occ:
+            # Eligibility is only permitted for species with BOTH pinned
+            # sources completely retrieved. Brown rat's 7073-record Atlas
+            # query exceeds the frozen 5000 cap: it stays incomplete, not
+            # retrospectively threshold-relaxed or treated as zero.
+            out["strict_physical_island_source_qa"]=strict_original_island_witnesses(
+                occ,complete
+            )
+            out["status"]=(
+                "V42_PUBLIC_GBIF_INDEPENDENT_PREDATOR_ISLAND_WITNESS_AUDITED"
+                if all(complete.values())
+                else "V42_PARTIAL_PUBLIC_GBIF_STRICT_ISLAND_AUDITED_SOME_TAXA_HOLD"
+            )
         else:
             out["status"]="V42_GBIF_PUBLIC_ACCESS_OR_EXHAUSTIVENESS_HOLD"
     except Exception as e:
@@ -398,7 +424,10 @@ def main():
     args.out.parent.mkdir(parents=True,exist_ok=True)
     args.out.write_text(json.dumps(out,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     print(json.dumps(out,ensure_ascii=False))
-    if out["status"]!="V42_PUBLIC_GBIF_INDEPENDENT_PREDATOR_ISLAND_WITNESS_AUDITED":
+    if out["status"] not in (
+        "V42_PUBLIC_GBIF_INDEPENDENT_PREDATOR_ISLAND_WITNESS_AUDITED",
+        "V42_PARTIAL_PUBLIC_GBIF_STRICT_ISLAND_AUDITED_SOME_TAXA_HOLD",
+    ):
         raise SystemExit(2)
 
 
