@@ -2,6 +2,7 @@
 from pathlib import Path
 import sys
 import pytest
+import json
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
 import audit_jncc_uniform_census_year_v39 as audit
@@ -64,3 +65,15 @@ def test_same_year_gate_fixed_without_tolerance_tuning():
     assert audit.MIN_SPECIES==8
     assert audit.MIN_SOURCE_UNITS==3
     assert audit.MIN_COUNTRY_MASTER==30
+
+
+def test_actual_output_numeric_types_are_json_serializable_on_invented_panels():
+    fabricated=[]
+    for sp in range(8):
+        for site in range(3):
+            fabricated.append(((f"synthetic{sp}","Scotland",f"fake{sp}_{site}","AON"),
+                               [13,8,3],[1,7,2]))
+    output=audit.same_year_replay(fabricated,fabricated)
+    assert output["species"]==8
+    assert type(output["species_with_positive_mean_size_score"]) is int
+    assert "null_q95" in json.loads(json.dumps(output))
