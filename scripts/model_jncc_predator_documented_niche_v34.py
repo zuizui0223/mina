@@ -279,7 +279,22 @@ def main():
                     +item["source_status_distribution_by_fixed_environment"]["(50,500] ha"]["documented_confirmed_or_probable_n"]
                     +item["source_status_distribution_by_fixed_environment"][">500 ha"]["documented_confirmed_or_probable_n"],
                 "brier_G_gain_vs_prevalence":item["geographically_heldout_original_source_label_model"].get("brier_gain_G_vs_prevalence"),
-                "brier_GH_gain_vs_G":item["geographically_heldout_original_source_label_model"].get("brier_gain_GH_vs_G")
+                "brier_GH_gain_vs_G":item["geographically_heldout_original_source_label_model"].get("brier_gain_GH_vs_G"),
+                "complete_case_islands":item["geographically_heldout_original_source_label_model"].get("source_complete_case_islands"),
+                "positive_complete_case":item["geographically_heldout_original_source_label_model"].get("source_positive_confirmed_or_probable"),
+                "scores":item["geographically_heldout_original_source_label_model"].get("scores",{}),
+                "per_fold":item["geographically_heldout_original_source_label_model"].get("per_fold",[]),
+                "stop_fold_support":item["geographically_heldout_original_source_label_model"].get("per_fold_test_label_support",[]),
+                "coefficients":item["geographically_heldout_original_source_label_model"].get("source_label_GH_standardized_coefficients_not_causal",{}),
+                "fixed_area_bins":{
+                    label:{
+                        "n":info["islands_n"],
+                        "positive":info["documented_confirmed_or_probable_n"],
+                        "code_3":info["unknown_possible_code3_n"],
+                        "code_0":info["reference_zero_includes_assumed_absence_n"]
+                    }
+                    for label,info in item["source_status_distribution_by_fixed_environment"].items()
+                }
             } for taxon,item in report.get("predator_taxa_source_profiles",{}).items()
         },
         "error":report.get("error"),
