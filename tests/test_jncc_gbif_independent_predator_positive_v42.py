@@ -120,3 +120,17 @@ def test_canonical_gbif_registry_creative_commons_licence_urls_are_not_bypasses(
     assert g.normalized_gbif_license("http://creativecommons.org/licenses/by-nc-nd/4.0/legalcode") is None
     assert g.normalized_gbif_license("CC_BY_4_0")=="CC_BY_4_0"
     assert g.normalized_gbif_license("https://fake.creativecommons.org/licenses/by/4.0") is None
+
+
+def test_partially_observed_taxon_stays_incomplete_without_threshold_relaxation():
+    meta={}
+    for ds in g.DATASETS:
+        for t in g.TAXA:
+            meta[ds+":"+t]={"status":"PUBLIC_SOURCE_RETRIEVAL_COMPLETE"}
+    meta["National Mammal Atlas:Brown rat"]={"status":"PARTIAL_OR_UNRESOLVED_TAXON_SOURCE_HOLD"}
+    statuses=g.source_taxon_completeness({"source_dataset_by_taxon":meta})
+    assert statuses["American mink"] is True
+    assert statuses["Brown rat"] is False
+    assert statuses["House mouse"] is True
+    assert statuses["Cat_sighting_NOT_verified_feral"] is True
+    assert g.MAX_PER_DATASET_TAXON==5000
