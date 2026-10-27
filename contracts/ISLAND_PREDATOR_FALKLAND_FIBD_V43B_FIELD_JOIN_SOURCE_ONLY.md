@@ -1,0 +1,22 @@
+# V43b Falkland Islands native FIBD island-key × invader × visit alignment (SOURCE-ONLY)
+
+**2026-10-27; in-scope one first-party Government database; new SOURCE-ONLY contact-free audit. No original bird outcome/E and no biological occupancy estimate.**
+
+Prior V43 official XLS SHA256 and sheet-size receipt (verified from original source) is locked:
+- FIG 2014 invasive observations 1,212 original headerless rows / 18 columns; source SHA256 \`980cb424b356e524c4c5f15f5a2ec942882530ce8b3b283719148595800205e1\`.
+- Locations 535 rows (incl header) / 17 columns; SHA \`4e87141f8819dd7b513400f166cd2a8e7369e08cdf0a8ae7d76023199fb7b56c\`.
+- Visits 4,965 rows (incl header) / 13 columns; SHA \`1a01e2a321e7a45a07a8a864d98c8bff079fb4d789b2493c2c693eed6c562209\`.
+- Original BIRDS 4,959 incl header, schema-only prior verified, SHA \`207065a69d8b16d5f5c7889bfff40912fe6660ca2947e937317094eb23625103\` (not re-opened by V43b); original eradication spreadsheet absence in CKAN public inventory remains a hold.
+
+## Pre-outcome first-party data schema rules
+1. Retrieve only 3 identical first-party URLs under CKAN on HTTPS, confirm V43 binary SHA and exact original number rows and columns, original public CC-BY-SA licence and resource public flag. No original XLS bytes/raw site rows stored in git or Actions artifact.
+2. Invasives: **NO HEADER** (V43 original audit shows first row contains island/species/notes and maximizing source header tokens incorrectly selected a data row); treat ALL 1,212 rows as observations. Find candidate species column by fixed list of native original common/scientific mammal taxon names and reproducible column frequency. This is source-only schema inspection and must not optimize predictor/outcome association. Preserve positive/negative/status-vocabulary categories separately, without interpreting blanks/unknowns as negatives. Output only frequency of repeated SAFE common names and safe status keywords, never respondent notes or raw island names.
+3. Locations: first row native header, reference original Location Name (col 1), latitude col 5, longitude col 6, island area col 8. Check 534 original entries, unique canonical names under \`casefold + Unicode NFKC + whitespace collapse\`; ambiguous name aliases excluded rather than fuzzy matched.
+4. Visits: first row native header, original Location Name in col 2; original Year col 9 and visit notes in col 12. 4,964 original rows; source name canonical join plus candidate original dates. **Visits of an island are not evidence that invasion species were actively surveyed.** Count only explicitly identified field/desktop method indicator text; otherwise UNKNOWN and no audited non-detection.
+5. Invasives island name first column joins to **unique** official location name. Use candidate coordinate columns only if a unique source column is actually lat (−54..−50) and lon (−63..−56), in which case confirm ≤250m nominal location-point separation. Record all mismatches/unknown coordinates and stop physical-island join where not verifiable. No match by nearest other island or nickname.
+6. Original biological bird records are excluded from V43b association fits; bird original presence/count/breeding status not opened. Do not transfer UK V40 source-positive probabilities into this opposite-hemisphere system as if calibrated true mammal occupancy.
+7. **One-row versus one-island:** count source original invader observations, unique matched locations, explicit invaded taxon + status category; not equate the 1,212 invader RECORDS with 1,212 islands. Repeated visits/states can coexist on one island; status is time-dependent.
+8. Complete source-only QA output: original checksums/row counts, candidate source position and safe distribution, exact identity join coverage, unique loc count, surveyed visits by source period, field vs desktop flags if explicitly supported, possible candidate invader-status codes. If no **independent explicit target-specific site×visit nondetection and effort**, mark true occupancy likelihood **NOT_IDENTIFIED**, no logistic ecological presence/absence SDM.
+9. Existing Tabak et al. 2015 area/isolation/rat-status logistic model and 10-island five-repeat detection study are PRIOR ART, not new ecological discovery. Any future cross-archipelago physical predator-vs-seabird test requires new source-frozen source-quality and geographic support before bird outcome joins.
+
+**No empirical effect is calculated in this source phase.**
