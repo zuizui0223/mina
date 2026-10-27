@@ -59,24 +59,43 @@ def norm(value):
 
 
 def read_url(session,url,maxbytes):
+    """Read the SAME verified original publisher URL; retry truncated transport only."""
     parsed=urlparse(url)
     if parsed.hostname!=HOST or parsed.scheme not in ("http","https"):
         raise ValueError("SOURCE_UNAPPROVED_HOST")
     if parsed.scheme=="http":
         url=parsed._replace(scheme="https").geturl()
-    with session.get(url,stream=True,timeout=(15,75),
-                     headers={"User-Agent":"mina-Paper2-Falklands-FIBD-source-only-V47/1.0"},
-                     allow_redirects=True) as r:
-        r.raise_for_status()
-        target=urlparse(r.url)
-        if target.scheme!="https" or target.hostname!=HOST:
-            raise ValueError("SOURCE_REDIRECT_NOT_FIRST_PARTY_HTTPS")
-        chunks=[];size=0
-        for chunk in r.iter_content(chunk_size=131072):
-            size+=len(chunk)
-            if size>maxbytes:raise ValueError("SOURCE_TOO_LARGE")
-            chunks.append(chunk)
-        return b"".join(chunks)
+    import time
+    last=None
+    for attempt in range(3):
+        try:
+            with session.get(
+                url,stream=True,timeout=(15,75),
+                headers={"User-Agent":"mina-Paper2-Falklands-FIBD-source-only-V47/1.0"},
+                allow_redirects=True
+            ) as r:
+                r.raise_for_status()
+                target=urlparse(r.url)
+                if target.scheme!="https" or target.hostname!=HOST:
+                    raise ValueError("SOURCE_REDIRECT_NOT_FIRST_PARTY_HTTPS")
+                chunks=[];size=0
+                for chunk in r.iter_content(chunk_size=131072):
+                    size+=len(chunk)
+                    if size>maxbytes:
+                        raise ValueError("SOURCE_TOO_LARGE")
+                    chunks.append(chunk)
+                return b"".join(chunks)
+        except (requests.exceptions.ChunkedEncodingError,
+                requests.exceptions.ReadTimeout,
+                requests.exceptions.ConnectionError) as e:
+            last=e
+            if attempt==2:
+                break
+            time.sleep(1+attempt)
+    raise ValueError(
+        "SOURCE_PUBLIC_TRANSPORT_INCOMPLETE_AFTER_3_ATTEMPTS_"
+        +type(last).__name__
+    )
 
 
 def fetch_first_party_workbook(slug):
