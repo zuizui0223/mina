@@ -1,0 +1,43 @@
+name: JNCC V46 two-epoch source-site leader and size-score robustness
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_V46_TWO_EPOCH_LEADER_SIZE_STABILITY_POSTRESULT.md'
+      - 'scripts/audit_jncc_leader_turnover_two_epoch_v46.py'
+      - 'tests/test_jncc_leader_turnover_two_epoch_v46.py'
+      - '.github/workflows/jncc-v46-leader-two-epoch.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_V46_TWO_EPOCH_LEADER_SIZE_STABILITY_POSTRESULT.md'
+      - 'scripts/audit_jncc_leader_turnover_two_epoch_v46.py'
+      - 'tests/test_jncc_leader_turnover_two_epoch_v46.py'
+      - '.github/workflows/jncc-v46-leader-two-epoch.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  dual_epoch_jncc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install requests numpy pytest
+      - name: Test synthetic leader switches and baseline regression
+        run: python -m pytest -q tests/test_jncc_leader_turnover_two_epoch_v46.py
+      - name: Audit original 959 JNCC source panels with first-and-second epoch randomization
+        run: |
+          python scripts/audit_jncc_leader_turnover_two_epoch_v46.py \
+            --out /tmp/JNCC_V46_TWO_EPOCH_SITE_LEADER_SIZE_RESULT.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-v46-two-epoch-original-source-leader-size
+          path: /tmp/JNCC_V46_TWO_EPOCH_SITE_LEADER_SIZE_RESULT.json
+          if-no-files-found: warn

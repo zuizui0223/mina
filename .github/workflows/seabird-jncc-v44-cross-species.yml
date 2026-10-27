@@ -1,0 +1,41 @@
+name: JNCC V44 same Master site species comparison
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'scripts/model_jncc_within_master_nest_access_v44.py'
+      - 'tests/test_jncc_within_master_nest_access_model_v44.py'
+      - '.github/workflows/seabird-jncc-v44-cross-species.yml'
+  pull_request:
+    paths:
+      - 'scripts/model_jncc_within_master_nest_access_v44.py'
+      - 'tests/test_jncc_within_master_nest_access_model_v44.py'
+      - '.github/workflows/seabird-jncc-v44-cross-species.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source_matched_comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install requests numpy pytest
+      - name: Test original count filters
+        run: python -m pytest -q tests/test_jncc_within_master_nest_access_model_v44.py
+      - name: Run fixed matched-species analysis
+        run: |
+          python scripts/model_jncc_within_master_nest_access_v44.py \
+            --out /tmp/jncc_v44_result.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-v44-original-matched-species-result
+          path: /tmp/jncc_v44_result.json
+          if-no-files-found: warn

@@ -1,0 +1,575 @@
+{
+  "schema": "JNCC_PREDATOR_DOCUMENTED_NICHE_V34_SOURCE_RESULT",
+  "dated": "2026-10-27",
+  "status": "V34_ORIGINAL_PREDATOR_SOURCE_LABEL_NICHE_PROFILE_COMPLETED",
+  "source_files": {
+    "RSPB_first_party_service": "https://services1.arcgis.com/h1C9f6qsGKmqXsVs/arcgis/rest/services/Islands_database/FeatureServer/0",
+    "original_stanbury_ESM5_sha256": "3d876a92e68122f8594b320e0794a54c5e8c7306c5a0e6252cbc24776ce1d1c5",
+    "original_source_RSPB_join_islands": 9688,
+    "original_source_2014_low_tide_gt10ha_islands": 506,
+    "source_run": "https://github.com/zuizui0223/mina/actions/runs/40437646687",
+    "source_read_only_and_test_pass": true,
+    "contract": "contracts/JNCC_PREDATOR_DOCUMENTED_NICHE_V34.md"
+  },
+  "model_constraints": {
+    "source_codes": {
+      "0": "assumed_OR_known_absence_not_detection_calibrated",
+      "1": "confirmed",
+      "2": "probable",
+      "3": "possible_incidental_excluded_from_fit"
+    },
+    "target": "Stanbury published 1+2 vs published 0; 3 excluded",
+    "source_original_island_area": "mlwsarea_h >10",
+    "features_geographic": [
+      "log1p low_tide_island_area",
+      "original latitude",
+      "original longitude"
+    ],
+    "features_plus_human": [
+      "log1p source resident human population"
+    ],
+    "original_geographic_holdout": "GroupKFold 5 folds; 1 degree WGS84 grid cell",
+    "min_positive_and_mixed_reference_per_heldout_fold": 3,
+    "reporting": "Brier lower better. Gains positive = model improves compared with comparator",
+    "no_stable_verified_absences": true,
+    "original_Stanbury_codes_may_depend_on_human_geography_and_detection_effort": true,
+    "ecological_true_occupancy_probability_identified": false,
+    "JNCC_predator_vs_breeding_share_concentration_effect_estimated": false
+  },
+  "observed_results": {
+    "American mink": {
+      "status": "GEOGRAPHICALLY_CROSSVALIDATED_ORIGINAL_SOURCE_LABEL_PREDICTION_ONLY",
+      "source_positive": 113,
+      "brier_G_gain_vs_prevalence": -0.01753921788436416,
+      "brier_GH_gain_vs_G": -0.0004730914721942092,
+      "complete_case_islands": 503,
+      "positive_complete_case": 113,
+      "scores": {
+        "prevalence_null": {
+          "heldout_brier": 0.18254347390139658,
+          "heldout_log_loss": 0.5568332282261675,
+          "heldout_auc": 0.3102450646698435,
+          "heldout_average_precision": 0.17425698062859385
+        },
+        "G": {
+          "heldout_brier": 0.20008269178576074,
+          "heldout_log_loss": 0.586453191439217,
+          "heldout_auc": 0.4847742228273202,
+          "heldout_average_precision": 0.19846869288035812
+        },
+        "GH": {
+          "heldout_brier": 0.20055578325795495,
+          "heldout_log_loss": 0.5873248046800609,
+          "heldout_auc": 0.4839119582482414,
+          "heldout_average_precision": 0.19805198952562347
+        }
+      },
+      "per_fold": [
+        {
+          "fold": 0,
+          "islands_n": 101,
+          "source_positive_n": 3,
+          "reference_n": 98,
+          "group_cells": 8,
+          "brier_prevalence": 0.08832199771547658,
+          "brier_G": 0.18089321619874696,
+          "brier_GH": 0.18206986293767294
+        },
+        {
+          "fold": 1,
+          "islands_n": 101,
+          "source_positive_n": 41,
+          "reference_n": 60,
+          "group_cells": 8,
+          "brier_prevalence": 0.2926074518790708,
+          "brier_G": 0.31778166515611134,
+          "brier_GH": 0.3189231525836525
+        },
+        {
+          "fold": 2,
+          "islands_n": 101,
+          "source_positive_n": 20,
+          "reference_n": 81,
+          "group_cells": 9,
+          "brier_prevalence": 0.15991841442999277,
+          "brier_G": 0.1473141045468989,
+          "brier_GH": 0.14736545185683372
+        },
+        {
+          "fold": 3,
+          "islands_n": 100,
+          "source_positive_n": 22,
+          "reference_n": 78,
+          "group_cells": 8,
+          "brier_prevalence": 0.17163371488033297,
+          "brier_G": 0.16027849276063225,
+          "brier_GH": 0.16027819167854765
+        },
+        {
+          "fold": 4,
+          "islands_n": 100,
+          "source_positive_n": 27,
+          "reference_n": 73,
+          "group_cells": 9,
+          "brier_prevalence": 0.20030361617890635,
+          "brier_G": 0.1936885711609696,
+          "brier_GH": 0.1936753460570249
+        }
+      ],
+      "stop_fold_support": [],
+      "coefficients": {
+        "log1p_area": 0.24147597031493104,
+        "latitude": -0.1679415467680097,
+        "longitude": -0.4682687922927787,
+        "log1p_resident_population": 0.008450761707103962
+      },
+      "fixed_area_bins": {
+        "(10,50] ha": {
+          "n": 280,
+          "positive": 59,
+          "code_3": 0,
+          "code_0": 221
+        },
+        "(50,500] ha": {
+          "n": 148,
+          "positive": 33,
+          "code_3": 0,
+          "code_0": 115
+        },
+        ">500 ha": {
+          "n": 78,
+          "positive": 21,
+          "code_3": 3,
+          "code_0": 54
+        },
+        "population_zero": {
+          "n": 407,
+          "positive": 86,
+          "code_3": 0,
+          "code_0": 321
+        },
+        "population_positive": {
+          "n": 99,
+          "positive": 27,
+          "code_3": 3,
+          "code_0": 69
+        },
+        "population_missing": {
+          "n": 0,
+          "positive": 0,
+          "code_3": 0,
+          "code_0": 0
+        }
+      }
+    },
+    "Brown rat": {
+      "status": "GEOGRAPHICALLY_CROSSVALIDATED_ORIGINAL_SOURCE_LABEL_PREDICTION_ONLY",
+      "source_positive": 106,
+      "brier_G_gain_vs_prevalence": 0.0669243469451975,
+      "brier_GH_gain_vs_G": 0.002446112493996941,
+      "complete_case_islands": 500,
+      "positive_complete_case": 106,
+      "scores": {
+        "prevalence_null": {
+          "heldout_brier": 0.17149750000000002,
+          "heldout_log_loss": 0.5304600862341977,
+          "heldout_auc": 0.363518820036395,
+          "heldout_average_precision": 0.17380345911949685
+        },
+        "G": {
+          "heldout_brier": 0.10457315305480253,
+          "heldout_log_loss": 0.33750517288555293,
+          "heldout_auc": 0.8707259841011398,
+          "heldout_average_precision": 0.7190611143905767
+        },
+        "GH": {
+          "heldout_brier": 0.10212704056080558,
+          "heldout_log_loss": 0.33602599290545515,
+          "heldout_auc": 0.8675893113686429,
+          "heldout_average_precision": 0.7276898368620623
+        }
+      },
+      "per_fold": [
+        {
+          "fold": 0,
+          "islands_n": 100,
+          "source_positive_n": 16,
+          "reference_n": 84,
+          "group_cells": 6,
+          "brier_prevalence": 0.13862500000000005,
+          "brier_G": 0.06788010941759069,
+          "brier_GH": 0.06768140356891603
+        },
+        {
+          "fold": 1,
+          "islands_n": 100,
+          "source_positive_n": 14,
+          "reference_n": 86,
+          "group_cells": 9,
+          "brier_prevalence": 0.12849999999999995,
+          "brier_G": 0.09373055856661358,
+          "brier_GH": 0.08978170964032717
+        },
+        {
+          "fold": 2,
+          "islands_n": 100,
+          "source_positive_n": 14,
+          "reference_n": 86,
+          "group_cells": 9,
+          "brier_prevalence": 0.12849999999999995,
+          "brier_G": 0.07331114617449815,
+          "brier_GH": 0.06907610398286268
+        },
+        {
+          "fold": 3,
+          "islands_n": 100,
+          "source_positive_n": 37,
+          "reference_n": 63,
+          "group_cells": 9,
+          "brier_prevalence": 0.27210625000000005,
+          "brier_G": 0.17324247529386308,
+          "brier_GH": 0.17702567100101738
+        },
+        {
+          "fold": 4,
+          "islands_n": 100,
+          "source_positive_n": 25,
+          "reference_n": 75,
+          "group_cells": 9,
+          "brier_prevalence": 0.18975624999999996,
+          "brier_G": 0.11470147582144721,
+          "brier_GH": 0.10707031461090465
+        }
+      ],
+      "stop_fold_support": [],
+      "coefficients": {
+        "log1p_area": 1.225086041680435,
+        "latitude": -0.26631059556359093,
+        "longitude": 0.516726443917368,
+        "log1p_resident_population": 0.5714311756160703
+      },
+      "fixed_area_bins": {
+        "(10,50] ha": {
+          "n": 280,
+          "positive": 16,
+          "code_3": 1,
+          "code_0": 263
+        },
+        "(50,500] ha": {
+          "n": 148,
+          "positive": 37,
+          "code_3": 1,
+          "code_0": 110
+        },
+        ">500 ha": {
+          "n": 78,
+          "positive": 53,
+          "code_3": 4,
+          "code_0": 21
+        },
+        "population_zero": {
+          "n": 407,
+          "positive": 39,
+          "code_3": 2,
+          "code_0": 366
+        },
+        "population_positive": {
+          "n": 99,
+          "positive": 67,
+          "code_3": 4,
+          "code_0": 28
+        },
+        "population_missing": {
+          "n": 0,
+          "positive": 0,
+          "code_3": 0,
+          "code_0": 0
+        }
+      }
+    },
+    "House mouse": {
+      "status": "GEOGRAPHICALLY_CROSSVALIDATED_ORIGINAL_SOURCE_LABEL_PREDICTION_ONLY",
+      "source_positive": 96,
+      "brier_G_gain_vs_prevalence": 0.09529053549497889,
+      "brier_GH_gain_vs_G": 0.016984555475532716,
+      "complete_case_islands": 493,
+      "positive_complete_case": 96,
+      "scores": {
+        "prevalence_null": {
+          "heldout_brier": 0.15939357410968877,
+          "heldout_log_loss": 0.5016637049669868,
+          "heldout_auc": 0.39508553736356,
+          "heldout_average_precision": 0.16573675454357856
+        },
+        "G": {
+          "heldout_brier": 0.06410303861470988,
+          "heldout_log_loss": 0.22709919313306243,
+          "heldout_auc": 0.9309403862300588,
+          "heldout_average_precision": 0.8550305593268853
+        },
+        "GH": {
+          "heldout_brier": 0.047118483139177166,
+          "heldout_log_loss": 0.1868983411514435,
+          "heldout_auc": 0.9283690176322418,
+          "heldout_average_precision": 0.8891158264152261
+        }
+      },
+      "per_fold": [
+        {
+          "fold": 0,
+          "islands_n": 99,
+          "source_positive_n": 15,
+          "reference_n": 84,
+          "group_cells": 7,
+          "brier_prevalence": 0.13148172440475775,
+          "brier_G": 0.0956622764084965,
+          "brier_GH": 0.08147788998267311
+        },
+        {
+          "fold": 1,
+          "islands_n": 99,
+          "source_positive_n": 14,
+          "reference_n": 85,
+          "group_cells": 8,
+          "brier_prevalence": 0.12586609739332047,
+          "brier_G": 0.032318980659256744,
+          "brier_GH": 0.0187608287171364
+        },
+        {
+          "fold": 2,
+          "islands_n": 99,
+          "source_positive_n": 16,
+          "reference_n": 83,
+          "group_cells": 9,
+          "brier_prevalence": 0.13721278335156561,
+          "brier_G": 0.022792264628885145,
+          "brier_GH": 0.006145764183124506
+        },
+        {
+          "fold": 3,
+          "islands_n": 98,
+          "source_positive_n": 32,
+          "reference_n": 66,
+          "group_cells": 9,
+          "brier_prevalence": 0.24697036385456284,
+          "brier_G": 0.0823659165081425,
+          "brier_GH": 0.06642659294935703
+        },
+        {
+          "fold": 4,
+          "islands_n": 98,
+          "source_positive_n": 19,
+          "reference_n": 79,
+          "group_cells": 9,
+          "brier_prevalence": 0.15629016804606796,
+          "brier_G": 0.08779958746211028,
+          "brier_GH": 0.06313818646088658
+        }
+      ],
+      "stop_fold_support": [],
+      "coefficients": {
+        "log1p_area": 1.210570583766827,
+        "latitude": -0.3960056639657336,
+        "longitude": 0.5586377878098183,
+        "log1p_resident_population": 1.9510577295422702
+      },
+      "fixed_area_bins": {
+        "(10,50] ha": {
+          "n": 280,
+          "positive": 7,
+          "code_3": 0,
+          "code_0": 273
+        },
+        "(50,500] ha": {
+          "n": 148,
+          "positive": 23,
+          "code_3": 9,
+          "code_0": 116
+        },
+        ">500 ha": {
+          "n": 78,
+          "positive": 66,
+          "code_3": 4,
+          "code_0": 8
+        },
+        "population_zero": {
+          "n": 407,
+          "positive": 17,
+          "code_3": 2,
+          "code_0": 388
+        },
+        "population_positive": {
+          "n": 99,
+          "positive": 79,
+          "code_3": 11,
+          "code_0": 9
+        },
+        "population_missing": {
+          "n": 0,
+          "positive": 0,
+          "code_3": 0,
+          "code_0": 0
+        }
+      }
+    },
+    "European hedgehog": {
+      "status": "STOP_SPATIAL_TEST_FOLD_CLASS_IMBALANCE",
+      "source_positive": 59,
+      "brier_G_gain_vs_prevalence": null,
+      "brier_GH_gain_vs_G": null,
+      "complete_case_islands": 502,
+      "positive_complete_case": 59,
+      "scores": {},
+      "per_fold": [],
+      "stop_fold_support": [
+        {
+          "fold": 0,
+          "test_n": 101,
+          "source_positives": 6
+        },
+        {
+          "fold": 1,
+          "test_n": 101,
+          "source_positives": 2
+        },
+        {
+          "fold": 2,
+          "test_n": 100,
+          "source_positives": 16
+        },
+        {
+          "fold": 3,
+          "test_n": 100,
+          "source_positives": 17
+        },
+        {
+          "fold": 4,
+          "test_n": 100,
+          "source_positives": 18
+        }
+      ],
+      "coefficients": {},
+      "fixed_area_bins": {
+        "(10,50] ha": {
+          "n": 280,
+          "positive": 2,
+          "code_3": 1,
+          "code_0": 277
+        },
+        "(50,500] ha": {
+          "n": 148,
+          "positive": 9,
+          "code_3": 1,
+          "code_0": 138
+        },
+        ">500 ha": {
+          "n": 78,
+          "positive": 48,
+          "code_3": 2,
+          "code_0": 28
+        },
+        "population_zero": {
+          "n": 407,
+          "positive": 7,
+          "code_3": 2,
+          "code_0": 398
+        },
+        "population_positive": {
+          "n": 99,
+          "positive": 52,
+          "code_3": 2,
+          "code_0": 45
+        },
+        "population_missing": {
+          "n": 0,
+          "positive": 0,
+          "code_3": 0,
+          "code_0": 0
+        }
+      }
+    },
+    "Stoat": {
+      "status": "STOP_SPATIAL_TEST_FOLD_CLASS_IMBALANCE",
+      "source_positive": 20,
+      "brier_G_gain_vs_prevalence": null,
+      "brier_GH_gain_vs_G": null,
+      "complete_case_islands": 503,
+      "positive_complete_case": 20,
+      "scores": {},
+      "per_fold": [],
+      "stop_fold_support": [
+        {
+          "fold": 0,
+          "test_n": 101,
+          "source_positives": 4
+        },
+        {
+          "fold": 1,
+          "test_n": 101,
+          "source_positives": 8
+        },
+        {
+          "fold": 2,
+          "test_n": 101,
+          "source_positives": 1
+        },
+        {
+          "fold": 3,
+          "test_n": 100,
+          "source_positives": 6
+        },
+        {
+          "fold": 4,
+          "test_n": 100,
+          "source_positives": 1
+        }
+      ],
+      "coefficients": {},
+      "fixed_area_bins": {
+        "(10,50] ha": {
+          "n": 280,
+          "positive": 0,
+          "code_3": 0,
+          "code_0": 280
+        },
+        "(50,500] ha": {
+          "n": 148,
+          "positive": 3,
+          "code_3": 0,
+          "code_0": 145
+        },
+        ">500 ha": {
+          "n": 78,
+          "positive": 17,
+          "code_3": 3,
+          "code_0": 58
+        },
+        "population_zero": {
+          "n": 407,
+          "positive": 2,
+          "code_3": 0,
+          "code_0": 405
+        },
+        "population_positive": {
+          "n": 99,
+          "positive": 18,
+          "code_3": 3,
+          "code_0": 78
+        },
+        "population_missing": {
+          "n": 0,
+          "positive": 0,
+          "code_3": 0,
+          "code_0": 0
+        }
+      }
+    }
+  },
+  "scientific_decision": [
+    "Mink: relative published positive labels not geographically portable in 506 islands; geographic Brier worse than prevalence null",
+    "Brown rat: geographic source-label assignment improves heldout Brier; resident population adds small improvement",
+    "House mouse: geography improves heldout Brier and source resident population adds larger improvement",
+    "Hedgehog and stoat: spatially balanced five-fold support gate fails, even though observed source positives exist",
+    "Source geographical associations not ecological invasion or independent seabird causation; source 0 conflates assumptions and surveyed absence"
+  ]
+}

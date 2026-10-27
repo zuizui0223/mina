@@ -1,0 +1,140 @@
+{
+  "manifest": "FALKLAND_FIBD_V43B_NATIVE_INVASIVE_ISLAND_VISIT_SOURCE_RESULT",
+  "prepared": "2026-10-27",
+  "status": "FIBD_V43B_ISLAND_INVASIVE_VISIT_ORIGINAL_SOURCE_JOIN_AUDITED",
+  "contract": "contracts/ISLAND_PREDATOR_FALKLAND_FIBD_V43B_FIELD_JOIN_SOURCE_ONLY.md",
+  "original_verification": {
+    "fibdv8-20140601-invasives": {
+      "source_slug": "fibdv8-20140601-invasives",
+      "verified_SHA256": "980cb424b356e524c4c5f15f5a2ec942882530ce8b3b283719148595800205e1",
+      "source_rows_including_any_header": 1212,
+      "source_columns": 18,
+      "public_CC_BY_SA_4_0_verified": true,
+      "downloaded_native_original_XLS": true
+    },
+    "fibdv8-20140601-locations": {
+      "source_slug": "fibdv8-20140601-locations",
+      "verified_SHA256": "4e87141f8819dd7b513400f166cd2a8e7369e08cdf0a8ae7d76023199fb7b56c",
+      "source_rows_including_any_header": 535,
+      "source_columns": 17,
+      "public_CC_BY_SA_4_0_verified": true,
+      "downloaded_native_original_XLS": true
+    },
+    "fibdv8-20140601-visits": {
+      "source_slug": "fibdv8-20140601-visits",
+      "verified_SHA256": "1a01e2a321e7a45a07a8a864d98c8bff079fb4d789b2493c2c693eed6c562209",
+      "source_rows_including_any_header": 4965,
+      "source_columns": 13,
+      "public_CC_BY_SA_4_0_verified": true,
+      "downloaded_native_original_XLS": true
+    }
+  },
+  "original_unique_island_qa": {
+    "original_location_rows_excluding_header": 534,
+    "nonempty_distinct_canonical_source_location_names": 534,
+    "unique_name_reference_islands": 534,
+    "colliding_names_excluded_from_exact_match": 0,
+    "WGS84_source_centroids_valid_Falklands_envelope": 532,
+    "island_polygon_boundaries_not_in_original_XLS": true
+  },
+  "original_invasive_rows_and_coordinate_exact_join": {
+    "original_invasive_record_rows": 1212,
+    "distinct_original_invasive_location_name_labels": 535,
+    "source_invasive_rows_unique_exact_location_name_in_original_reference": 1211,
+    "original_invasive_distinct_exactly_matched_island_names": 534,
+    "unmatched_original_invasive_observation_rows": 1,
+    "number_of_invasive_location_names_with_repeated_source_rows": 260,
+    "source_coordinate_candidate_column_positions": {
+      "latitude_candidates": [
+        [
+          1194,
+          2
+        ]
+      ],
+      "longitude_candidates": [
+        [
+          1194,
+          3
+        ]
+      ]
+    },
+    "invasive_lat_col_1indexed": 3,
+    "invasive_lon_col_1indexed": 4,
+    "name_matched_rows_with_both_coordinates_usable": 1194,
+    "name_matched_rows_with_coordinate_unknown": 17,
+    "name_matched_rows_with_coordinate_difference_le250m": 1194,
+    "source_location_names_only_not_independent_two_period_nesting_site_identity": true
+  },
+  "original_rat_and_other_mammal_source_taxa": {
+    "headerless_source_original_rows": 1212,
+    "chosen_species_col_1based": 8,
+    "original_taxon_names_observation_rows_NOT_unique_occupied_islands": {
+      "House mouse": 34,
+      "European rabbit": 23,
+      "Norway rat": 78,
+      "Cat": 25,
+      "Patagonian fox": 38,
+      "Goat": 9,
+      "Black rat": 3
+    },
+    "source_explicit_negative_or_survey_status_indicator_column_verified": false,
+    "zero_absences_imputed": false
+  },
+  "source_original_visits": {
+    "original_visit_rows_excluding_header": 4964,
+    "exact_location_matched_rows": 4964,
+    "unique_original_islands_with_visits": 533,
+    "islands_with_repeated_visit_records": 309,
+    "original_visit_year_counts": {
+      "12": 1,
+      "1789": 9,
+      "1925": 1,
+      "1933": 1,
+      "1934": 5,
+      "1935": 2,
+      "1936": 4,
+      "1938": 1,
+      "1948": 2,
+      "1966": 6,
+      "1977": 2,
+      "1978": 1,
+      "1979": 1,
+      "1983": 1,
+      "1984": 4,
+      "1992": 5,
+      "1994": 1,
+      "1995": 117,
+      "1996": 4,
+      "1997": 424,
+      "1998": 141,
+      "1999": 5,
+      "2000": 1,
+      "2001": 385,
+      "2003": 161,
+      "2005": 4,
+      "2006": 256,
+      "2007": 26,
+      "2008": 207,
+      "2009": 1187,
+      "2010": 581,
+      "2011": 332,
+      "2012": 454,
+      "2013": 632
+    },
+    "note_method_heuristic_categories": {
+      "UNSPECIFIED_METHOD": 4682,
+      "TEXT_HINT_DESKTOP_NOT_VERIFIED_FIELD_VISIT": 206,
+      "TEXT_HINT_FIELD_NOT_TARGETED_PREDATOR_SURVEY": 76
+    },
+    "generic_mammal_mentions_in_visit_notes": 11,
+    "confirmed_rat_survey_repeated_negative_checks": false
+  },
+  "main_scientific_decision": "SOURCE_SPATIAL_AND_SURVEY_METADATA_ONLY; no verified rat-negative visit/station effort or measured detection probabilities; true occupancy probability remains NOT_IDENTIFIED.",
+  "source_GitHub_Actions": "https://github.com/zuizui0223/mina/actions/runs/40473358602",
+  "biological_claim_ceiling": "Original 534 islands and 4,964 visit entries are a potentially analyzable archipelago, but source visit is not species-specific detection survey. True p(z_i=1) and p(detection_i) are UNIDENTIFIED; original Norway rat observation rows cannot be equated with occupied island denominator or all species absences.",
+  "source_visit_quality": {
+    "rows_with_year_1997_through_2013": 4796,
+    "original_year_outlier_year12_count": 1,
+    "original_2014_to_2026_survey_status_in_source": false
+  }
+}

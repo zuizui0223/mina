@@ -1,0 +1,95 @@
+{
+  "result_id": "JNCC_UK_PREDATOR_SDM_ARCHIPELAGO_TRANSFER_V41_RESULT",
+  "date": "2026-10-27",
+  "status": "V41_PREDATOR_ORIGINAL_ARCHIPELAGO_SPATIAL_TRANSFER_AUDITED",
+  "contract": "contracts/JNCC_PREDATOR_SDM_ARCHIPELAGO_STRESS_V41.md",
+  "source_original_esM5_SHA256": "3d876a92e68122f8594b320e0794a54c5e8c7306c5a0e6252cbc24776ce1d1c5",
+  "source_RSPB_original_island_n": 9688,
+  "source_frozen_primary_island_area_gt10ha_n": 506,
+  "source_observation_label": "Stanbury code 1/2 vs mixed assumed/known-absent code 0; code3 excluded",
+  "training_and_reported_species": {
+    "American mink": {
+      "status": "SOURCE_ARCHIPELAGO_PREDICTIVE_TRANSPORTABILITY_NOT_SUPPORTED",
+      "n": 503,
+      "p_source": 113,
+      "num_groups": 26,
+      "largest_group_fraction": 0.24453280318091453,
+      "all_fold_supported": false,
+      "fold_positive_n": [
+        22,
+        58,
+        1,
+        29,
+        3
+      ],
+      "pooled_Brier_gain": -0.016549641702404583,
+      "fold_equal_gain": -0.013239586507178186,
+      "source_label_ECE": 0.16237649670351964
+    },
+    "Brown rat": {
+      "status": "SOURCE_ARCHIPELAGO_LABEL_TRANSPORT_SUPPORT_PASS",
+      "n": 500,
+      "p_source": 106,
+      "num_groups": 26,
+      "largest_group_fraction": 0.25,
+      "all_fold_supported": true,
+      "fold_positive_n": [
+        12,
+        20,
+        19,
+        17,
+        38
+      ],
+      "pooled_Brier_gain": 0.05845847941844233,
+      "fold_equal_gain": 0.05705283111662971,
+      "source_label_ECE": 0.0561195986078621
+    },
+    "House mouse": {
+      "status": "SOURCE_ARCHIPELAGO_LABEL_TRANSPORT_SUPPORT_PASS",
+      "n": 493,
+      "p_source": 96,
+      "num_groups": 26,
+      "largest_group_fraction": 0.2535496957403651,
+      "all_fold_supported": true,
+      "fold_positive_n": [
+        8,
+        20,
+        22,
+        10,
+        36
+      ],
+      "pooled_Brier_gain": 0.11429412143719123,
+      "fold_equal_gain": 0.11658528843448439,
+      "source_label_ECE": 0.030144165295857613
+    },
+    "Feral cat": {
+      "status": "SOURCE_ARCHIPELAGO_LABEL_TRANSPORT_SUPPORT_PASS",
+      "n": 493,
+      "p_source": 84,
+      "num_groups": 26,
+      "largest_group_fraction": 0.2535496957403651,
+      "all_fold_supported": true,
+      "fold_positive_n": [
+        8,
+        18,
+        23,
+        8,
+        27
+      ],
+      "pooled_Brier_gain": 0.11782687865039752,
+      "fold_equal_gain": 0.12213541622469652,
+      "source_label_ECE": 0.01843986841969868
+    }
+  },
+  "source_grouping": "RSPB group_ 26 unique groups with frozen country/coast fallback, GroupKFold5",
+  "source_label_transportability_only_not_true_occupancy": true,
+  "did_not_change_V40_map_or_hyperparameters": true,
+  "source_outcome_ecological_predator_effect_fitted": false,
+  "exact_result_zip": {
+    "github_actions": "https://github.com/zuizui0223/mina/actions/runs/40462552039",
+    "artifact_id": 12714988286,
+    "artifact_browser": "https://github.com/zuizui0223/mina/actions/runs/40462552039/artifacts/12714988286",
+    "source_json": "JNCC_UK_PREDATOR_SDM_ARCHIPELAGO_V41.json"
+  },
+  "interpretational_ceiling": "Brown rat, house mouse and feral cat original source-label classifications transport across original RSPB groups with improved Brier; American mink does not and fails per-fold label support. True ecological island occupancy remains unidentified."
+}

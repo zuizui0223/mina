@@ -1,0 +1,45 @@
+name: JNCC V39 original matched-child strict same-year census source sensitivity
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_MATCHED_EPOCH_COHORT_V39_FROZEN.md'
+      - 'scripts/audit_jncc_uniform_census_year_v39.py'
+      - 'tests/test_jncc_uniform_census_year_v39.py'
+      - '.github/workflows/seabird-jncc-uniform-years-v39.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_MATCHED_EPOCH_COHORT_V39_FROZEN.md'
+      - 'scripts/audit_jncc_uniform_census_year_v39.py'
+      - 'tests/test_jncc_uniform_census_year_v39.py'
+      - '.github/workflows/seabird-jncc-uniform-years-v39.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source_year_comparability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original source reader and score diagnostic
+        run: python -m pip install requests numpy pytest
+      - name: Test strict survey-year matching and frozen sample stop
+        run: python -m pytest -q tests/test_jncc_uniform_census_year_v39.py
+      - name: Audit original within-parent exact survey years, then gated H1a/V38 sensitivity only if source support passes
+        run: |
+          python scripts/audit_jncc_uniform_census_year_v39.py \
+            --out /tmp/JNCC_UNIFORM_YEARS_SOURCE_SENSITIVITY_V39.json
+      - name: Archive source and explicit decision without original child counts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-v39-original-strict-matched-survey-years
+          path: /tmp/JNCC_UNIFORM_YEARS_SOURCE_SENSITIVITY_V39.json
+          if-no-files-found: warn

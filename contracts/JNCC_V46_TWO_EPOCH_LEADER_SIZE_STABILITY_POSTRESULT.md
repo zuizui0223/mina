@@ -1,0 +1,24 @@
+# V46 two-epoch observation-model stress of JNCC leader replacement and size score
+
+Date 2026-10-27. **Post-outcome sensitivity of already-known V37–V38, not a new independent preregistration.** This is the main JNCC ecological inference lane after V44 simple mammal-access nesting contrast failed and V45 showed count-model fragility. No SDMs, GBIF, Falkland original-source acquisition, new species trait classes, alternative regional thresholds or mammalian predator inference.
+
+## Locked source/observable cohort
+- Exact revised JNCC authentic source workbook SHA256 9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4, same original species × Country × Master × unit Site.ID child roster and existing V30 exact integer count support: 1,321 valid panels, 959 with N1<N0, across 17 species.
+- Reproduce source V38 before this new null: 597/959 E>0; 955 size-informative declines, 321 E>0 AND negative size score; 846 declining panels with original unique largest child in BOTH epochs, 412 source-leader switches and 284 E>0 plus switch. Reproduce original species-equal size S=-0.538864 (tolerance 1e-3), not retune.
+- **The fixed 846 originally unique-led-site cohort** is used for leader-switch null regardless of simulated ties; simulations count only synthetic episodes with unique leaders at both times in the denominator and report simulated denominator range. Never silently treat a tie as a "no switch."
+- **The fixed 955 originally size-informative cohort** is used for size-retention score S. If a replicate has all its synthetic original-site first-epoch counts equal, its undefined size-standardization is excluded from that replicate's denominator and counted. Do not pretend early size score is defined then.
+- No physical-island identity or breeding colony polygon inference. Site.ID leader turnover is relative source-monitored component-count dominance, not observed individual emigration/arrival.
+
+## Frozen alternative count model
+For each source declined parent individually, set p_pool=(n0+n1)/(N0+N1) (null MLE for a *shared* underlying component distribution). Condition on the original observed total N0 and N1, keep k and original child order fixed; draw independent multinomial(N0,p_pool) and multinomial(N1,p_pool) **1999** times using seed **20261027**. This is more conservative about first-epoch counting variability than original V38 later-only reallocation. It is explicitly a **parametric two-epoch count model**, not calibrated survey effort or a biological occupancy model; p_pool is estimated from both observed snapshots and not independent of the outcomes.
+
+For each replicate, calculate:
+1. fraction of source panels with unique leaders at both epochs whose dominant original Site.ID changes: compare actual **412/846** and species-equal 47.85% with original panel-weighted and species-equal two-epoch null, 5–95% interval and upper-tail fraction.
+2. proportion of those originally unique 846 that both switch leaders and have legacy finite-count-corrected E>0: compare actual **284/846**. As a structural sensitivity also calculate E_both=U1-U0 with unbiased Simpson U_t under the two-epoch multinomial sampling model; report observed E_both>0 AND switch, the same null and ties.
+3. equal-species mean V37 baseline size-share S (955 original size-informative decreasing panels): under each simulated **early and late draw**, RECOMPUTE smoothed pstar from the simulated early N0 counts, standardized log(1+n0) from simulated early sizes, then S=sum((p1-pstar)*size_z). This directly tests whether observed negative S could arise through regression to mean of noisy initial sizes. Compare actual -0.538864 and 16/17 negative taxa to 1999 null mean/band; report lower-tail fraction. Fixed original 955 panels and species min 3, exclude synthetic all-equal first-epoch panels individually without zero-imputation.
+4. For simulation records, also report original legacy E>0 in the 959 panels as a descriptive arithmetic check, with original numerator 597/959; do not reclassify actual panels into a new cherry-picked subset based on simulated values.
+
+## Exact claims
+If leader replacement still exceeds the alternative two-epoch null, this supports only the **source Site.ID compositional pattern beyond an independent multinomial two-census sampling reference**. It cannot establish actual colony/physical-island movement or predator mechanism. If the difference disappears, retract "49% versus 14% is surprising" as robust evidence, because 14% arose from fixed baseline with no initial census error.
+If negative baseline-size score becomes usual under this null, retract V37 original claim of active reversal/avoidance of large initial sites; it may be measurement regression-to-mean. Distinguish raw descriptive observation from causal ecological interpretation.
+Old V37/V38 results and frozen Ecology #189 are not edited or replaced. No switch in null family after examining V46.

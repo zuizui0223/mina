@@ -1,0 +1,106 @@
+{
+  "schema": "JNCC_UK_ISLAND_PREDATOR_SOURCE_LABEL_SDM_V40_RESULT",
+  "date": "2026-10-27",
+  "status": "V40_ISLAND_PREDATOR_PUBLISHED_LABEL_PROBABILITY_MAP_COMPLETED",
+  "source": {
+    "RSPB_islands_original_n": 9688,
+    "primary_islands_low_tide_area_gt_10ha": 506,
+    "join_key": "RSPB lowid exactly matched to original Stanbury 2017 ESM5",
+    "Stanbury_ESM5_SHA256": "3d876a92e68122f8594b320e0794a54c5e8c7306c5a0e6252cbc24776ce1d1c5",
+    "source_status_code0": "assumed_or_known_absent_not_verified_surveillance_negative",
+    "training_source_positive": "code 1 confirmed + code 2 probable",
+    "code3": "possible/incidental excluded from fit, retained as labelled uncertain in mapping",
+    "spatial_group": "1-degree WGS84 blocks, five-fold GroupKFold",
+    "GH_model_predictors": [
+      "log1p(low_tide_area_ha)",
+      "source_WGS84_latitude",
+      "source_WGS84_longitude",
+      "log1p(RSPB_2014_population)",
+      "source_listed_ferry_access"
+    ],
+    "primary_model": "StandardScaler + fixed ridge logistic C=1",
+    "bootstrap": "199 independently resampled original geographic blocks; 5/95% model instability quantiles; NOT ecological occupancy credible intervals"
+  },
+  "predictive_probability_target": "Probability an original 2017 source status is 1/2, conditional on original source 0/1/2, NOT P(true mammal occupancy)",
+  "four_mammal_results": {
+    "American mink": {
+      "n": 503,
+      "status": "RESEARCH_ONLY_NOT_GEOGRAPHICALLY_PORTABLE",
+      "positive": 0.22465208747514911,
+      "Brier_gain": -0.015817512612394807,
+      "bootstrap_valid": 199,
+      "p_quantiles": [
+        0.07098153773128893,
+        0.22843338380147654,
+        0.3965365964319414
+      ]
+    },
+    "Brown rat": {
+      "n": 500,
+      "status": "SOURCE_LABEL_GEOGRAPHICALLY_PORTABLE_ONLY",
+      "positive": 0.212,
+      "Brier_gain": 0.06903533404437319,
+      "bootstrap_valid": 199,
+      "p_quantiles": [
+        0.027339399636018093,
+        0.08466092905896141,
+        0.90909912030246
+      ]
+    },
+    "House mouse": {
+      "n": 493,
+      "status": "SOURCE_LABEL_GEOGRAPHICALLY_PORTABLE_ONLY",
+      "positive": 0.1947261663286004,
+      "Brier_gain": 0.11295100156905982,
+      "bootstrap_valid": 199,
+      "p_quantiles": [
+        0.01112407086812525,
+        0.03273466194168301,
+        0.9914018401809047
+      ]
+    },
+    "Feral cat": {
+      "n": 493,
+      "status": "SOURCE_LABEL_GEOGRAPHICALLY_PORTABLE_ONLY",
+      "positive": 0.17038539553752535,
+      "Brier_gain": 0.11434665798213481,
+      "bootstrap_valid": 199,
+      "p_quantiles": [
+        0.0034862642786841354,
+        0.007241522424631395,
+        0.9967341059307696
+      ]
+    }
+  },
+  "model_map_output": {
+    "island_x_taxon_probability_rows": 2024,
+    "separate_island_points": 506,
+    "four_sdm_point_maps": [
+      "American mink",
+      "Brown rat",
+      "House mouse",
+      "Feral cat"
+    ],
+    "map_values_are_source_label_propensity_not_surveyed_absence": true
+  },
+  "all_CV_and_calibration_details": {
+    "original_GitHub_Actions": "https://github.com/zuizui0223/mina/actions/runs/40461670193",
+    "artifact_browser": "https://github.com/zuizui0223/mina/actions/runs/40461670193/artifacts/12714872313",
+    "artifact_digest": "sha256:22a0a28b0d37a0ce01d6bb819c9a69d2fd30054ef87db6ed7ebfe3cd58ac3352",
+    "artifact_expiration_utc": "2027-01-25T06:32:01Z",
+    "full_summary_path": "JNCC_UK_PREDATOR_SDM_V40_SUMMARY.json",
+    "CSV": "JNCC_UK_PREDATOR_SDM_V40_PROBABILITIES.csv",
+    "GeoJSON": "JNCC_UK_PREDATOR_SDM_V40_MAP.geojson"
+  },
+  "limits": [
+    "Stanbury 0 conflates assumed and known absence: true occupancy probability unidentifiable",
+    "not a calibrated detection-corrected SDM or a probability of seabird predation",
+    "2014 original source geography and 2017 records do not represent historical seabird censuses 1998-2021",
+    "Mink fails spatial transportability despite a fitted probability surface",
+    "Source predictor values and source status assignments may have overlapping assessment assumptions",
+    "No new JNCC breeding-share or penguin outcome model was fitted",
+    "Predator-island effect V36 remains stopped for insufficient within-network inter-island comparisons"
+  ],
+  "source_model_CI_passed": true,
+  "source_astro_data_not_used": true
+}

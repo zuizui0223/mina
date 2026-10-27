@@ -1,0 +1,45 @@
+name: JNCC V33 original 9688 UK islands and predator supplement source audit
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'scripts/audit_jncc_predator_island_source_v33.py'
+      - 'tests/test_jncc_predator_island_source_v33.py'
+      - '.github/workflows/seabird-jncc-predator-source-v33.yml'
+      - 'contracts/JNCC_PREDATOR_SOURCE_LINEAGE_V33.md'
+  pull_request:
+    paths:
+      - 'scripts/audit_jncc_predator_island_source_v33.py'
+      - 'tests/test_jncc_predator_island_source_v33.py'
+      - '.github/workflows/seabird-jncc-predator-source-v33.yml'
+      - 'contracts/JNCC_PREDATOR_SOURCE_LINEAGE_V33.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source_only_predator_islands:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded first-party source readers
+        run: python -m pip install requests pytest
+      - name: Test original source keys, missingness and guarded downloads
+        run: python -m pytest -q tests/test_jncc_predator_island_source_v33.py
+      - name: Read only RSPB island metadata and Springer Stanbury supplemental source (never JNCC bird counts)
+        run: |
+          python scripts/audit_jncc_predator_island_source_v33.py \
+            --out /tmp/JNCC_UK_PREDATOR_ISLAND_FIRST_PARTY_SOURCE_V33.json
+      - name: Retain audit JSON even if external source is temporarily inaccessible
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-uk-predator-source-schema-v33-no-bird-outcomes
+          path: /tmp/JNCC_UK_PREDATOR_ISLAND_FIRST_PARTY_SOURCE_V33.json
+          if-no-files-found: warn

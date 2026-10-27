@@ -1,0 +1,68 @@
+{
+  "schema": "JNCC_V45_TWO_EPOCH_COUNT_DIAGNOSTIC_COMPACT_SOURCE_RESULT",
+  "original_data_sha256": "9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4",
+  "date": "2026-10-27",
+  "status": "V45_ORIGINAL_11_MASTER_DOUBLE_EPOCH_MEASUREMENT_DIAGNOSTIC_EXECUTED",
+  "contract": "contracts/JNCC_V45_TWO_EPOCH_COUNT_DIAGNOSTIC_POSTRESULT.md",
+  "interpretation": "Explicit post-V44 diagnostic; same 11 Scotland Masters and 17 eligible gull-versus-kittiwake pair links, no original V44 selection change; not independent ecological predator test.",
+  "original_master_networks": 11,
+  "source_pair_links": 17,
+  "original_V44_E_delta_access_minus_cliff": -0.10001721634243599,
+  "corrected_both_epoch_unbiased_simpson_E_delta_access_minus_cliff": -0.03574741551973572,
+  "posthoc_absolute_shrinkage_fraction": 0.642583812,
+  "corrected_E_delta_positive_networks": 5,
+  "corrected_E_leave_one_Master_out_mean_D_range": [
+    -0.080494007377292,
+    0.031940837713699585
+  ],
+  "corrected_E_negative_leaveone_n": 9,
+  "corrected_E_leaveone_total": 11,
+  "original_E_pooled_null_analytical_two_epoch_expected_bias": -0.02362351859818568,
+  "original_E_pooled_two_epoch_sim_null": {
+    "draws": 3999,
+    "mean": -0.02291769392975846,
+    "q05": -0.0840572756426988,
+    "q95": 0.04541744377889817,
+    "left_tail_fraction": 0.01825
+  },
+  "corrected_pairwise_E_pooled_two_epoch_sim_null": {
+    "draws": 3999,
+    "mean": 0.001218306260331056,
+    "q05": -0.09657933970394883,
+    "q95": 0.11281135781140943,
+    "left_tail_fraction": 0.30075,
+    "right_tail_fraction": 0.6995
+  },
+  "original_paired_species_panel_count_by_guild": {
+    "accessible": {
+      "n": 17,
+      "N0_median": 35,
+      "N1_median": 8,
+      "k_median": 6,
+      "N1_div_k_median": 2.142857142857143,
+      "N1_lt10_n": 9,
+      "N1_div_k_lt3_n": 10
+    },
+    "protected": {
+      "n": 11,
+      "N0_median": 1392,
+      "N1_median": 436,
+      "k_median": 5,
+      "N1_div_k_median": 87.2,
+      "N1_lt10_n": 0,
+      "N1_div_k_lt3_n": 0
+    }
+  },
+  "restricted_subset_master_counts": {
+    "both_N0_N1_ge20": 1,
+    "later_N1_div_k_ge3": 2,
+    "later_N1_div_k_ge10": 0
+  },
+  "scientific_decision": "V44 originally negative difference does not robustly survive hypothetical two-epoch multinomial count correction; under corrected estimator observed contrast falls inside two-epoch null. All restrictively count-rich subsets fail V44 original >=10 Master sample requirement. Original user-selected directional predator accessibility hypothesis was NOT supported and cannot be rescued; no measured mammal predator exposure, real field-census count error, or verified within-island nest substrate.",
+  "original_observation_error_measured": false,
+  "source_2024_jncc_counts_are_not_proven_multinomial_samples": true,
+  "changes_to_V44_effect_files": false,
+  "github_actions_run": "https://github.com/zuizui0223/mina/actions/runs/40487811125",
+  "original_full_JSON_download": "https://github.com/zuizui0223/mina/actions/runs/40487811125/artifacts/12725608288",
+  "original_GitHub_actions_artifact_sha256": "5492c3c741062ca4c1ddba248b2000cf8c73a0c4dd5f3a7838dd92a0fcc372dd"
+}

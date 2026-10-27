@@ -1,0 +1,44 @@
+name: JNCC V35 source-only RSPB island predator geographic site linkage
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'scripts/audit_jncc_predator_ne_land_v35.py'
+      - 'scripts/model_jncc_predator_reported_niche_v34.py'
+      - 'tests/test_jncc_predator_ne_land_v35.py'
+      - '.github/workflows/seabird-jncc-predator-land-join-v35.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_jncc_predator_ne_land_v35.py'
+      - 'scripts/model_jncc_predator_reported_niche_v34.py'
+      - 'tests/test_jncc_predator_ne_land_v35.py'
+      - '.github/workflows/seabird-jncc-predator-land-join-v35.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original_geographic_support:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geographic original source readers and synthetic tests
+        run: python -m pip install requests pyshp shapely pyproj numpy scipy scikit-learn pytest
+      - name: Test unique-island status linkage and strict no snapping across physical island boundaries
+        run: python -m pytest -q tests/test_jncc_predator_ne_land_v35.py
+      - name: Audit JNCC matched-site metadata and original predator-island points without opening bird abundances or E
+        run: |
+          python scripts/audit_jncc_predator_ne_land_v35.py \
+            --out /tmp/JNCC_PREDATOR_NE_LAND_GEO_SOURCE_V35.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-predator-original-island-physical-coast-support-v35-no-bird-outcomes
+          path: /tmp/JNCC_PREDATOR_NE_LAND_GEO_SOURCE_V35.json
+          if-no-files-found: warn

@@ -1,0 +1,47 @@
+name: JNCC V34 documented UK invasive mammal source niche (no seabird outcomes)
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_PREDATOR_DOCUMENTED_NICHE_V34.md'
+      - 'scripts/model_jncc_predator_documented_niche_v34.py'
+      - 'scripts/audit_jncc_predator_island_source_v33.py'
+      - 'tests/test_jncc_predator_documented_niche_v34.py'
+      - '.github/workflows/seabird-jncc-predator-niche-v34.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_PREDATOR_DOCUMENTED_NICHE_V34.md'
+      - 'scripts/model_jncc_predator_documented_niche_v34.py'
+      - 'scripts/audit_jncc_predator_island_source_v33.py'
+      - 'tests/test_jncc_predator_documented_niche_v34.py'
+      - '.github/workflows/seabird-jncc-predator-niche-v34.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent_original_predator_source_niche:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install independent predator profile fit and source reader
+        run: python -m pip install pytest requests numpy scikit-learn
+      - name: Synthetic tests for no false absences and spatial holdout
+        run: python -m pytest -q tests/test_jncc_predator_island_source_v33.py tests/test_jncc_predator_documented_niche_v34.py
+      - name: Fit only original Stanbury/RSPB source-label niches with whole-region holdouts, never bird response
+        run: |
+          python scripts/model_jncc_predator_documented_niche_v34.py \
+            --out /tmp/JNCC_ORIGINAL_ISLAND_PREDATOR_DOCUMENTED_NICHE_V34.json
+      - name: Upload original-source niche and source quality receipts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-uk-original-predator-source-label-niche-v34-no-seabird-outcomes
+          path: /tmp/JNCC_ORIGINAL_ISLAND_PREDATOR_DOCUMENTED_NICHE_V34.json
+          if-no-files-found: warn

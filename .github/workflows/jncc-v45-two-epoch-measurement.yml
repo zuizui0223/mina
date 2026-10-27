@@ -1,0 +1,44 @@
+name: JNCC V45 two-epoch count sampling sensitivity
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_V45_TWO_EPOCH_COUNT_DIAGNOSTIC_POSTRESULT.md'
+      - 'scripts/diagnose_jncc_v44_two_epoch_sampling_v45.py'
+      - 'tests/test_jncc_v45_two_epoch_sampling_diagnostic.py'
+      - '.github/workflows/jncc-v45-two-epoch-measurement.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_V45_TWO_EPOCH_COUNT_DIAGNOSTIC_POSTRESULT.md'
+      - 'scripts/diagnose_jncc_v44_two_epoch_sampling_v45.py'
+      - 'tests/test_jncc_v45_two_epoch_sampling_diagnostic.py'
+      - '.github/workflows/jncc-v45-two-epoch-measurement.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  two_epoch_measurement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned source maths dependencies
+        run: python -m pip install requests numpy pytest
+      - name: Check analytic counting-bias formula with synthetic repeated snapshots
+        run: python -m pytest -q tests/test_jncc_v45_two_epoch_sampling_diagnostic.py
+      - name: Re-run original V44 sample then 3999 both-epoch null simulations
+        run: |
+          python scripts/diagnose_jncc_v44_two_epoch_sampling_v45.py \
+            --out /tmp/JNCC_V45_TWO_EPOCH_COUNT_DIAGNOSTIC.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-v45-both-epoch-sampling-diagnostic
+          path: /tmp/JNCC_V45_TWO_EPOCH_COUNT_DIAGNOSTIC.json
+          if-no-files-found: warn

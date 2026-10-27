@@ -1,0 +1,45 @@
+name: JNCC V37 fixed H1a size-dependent breeding-site share-retention score
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_SIZE_SHARE_SCORE_V37_FROZEN.md'
+      - 'scripts/model_jncc_size_share_retention_v37.py'
+      - 'tests/test_jncc_size_share_retention_v37.py'
+      - '.github/workflows/seabird-jncc-size-share-v37.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_SIZE_SHARE_SCORE_V37_FROZEN.md'
+      - 'scripts/model_jncc_size_share_retention_v37.py'
+      - 'tests/test_jncc_size_share_retention_v37.py'
+      - '.github/workflows/seabird-jncc-size-share-v37.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen_h1a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install publisher source reader and frozen numerical null
+        run: python -m pip install requests numpy pytest
+      - name: Test conditional score, zero handling and exact finite-count null on invented panels
+        run: python -m pytest -q tests/test_jncc_size_share_retention_v37.py
+      - name: Fetch pinned JNCC census and evaluate NEW V37 H1a endpoint without altering V30
+        run: |
+          python scripts/model_jncc_size_share_retention_v37.py \
+            --out /tmp/JNCC_SIZE_SHARE_H1A_FROZEN_V37.json
+      - name: Preserve compact source-linked H1a result or explicit STOP
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-v37-frozen-baseline-size-share-score-no-raw-counts
+          path: /tmp/JNCC_SIZE_SHARE_H1A_FROZEN_V37.json
+          if-no-files-found: warn

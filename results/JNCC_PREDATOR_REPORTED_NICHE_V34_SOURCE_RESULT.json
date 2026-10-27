@@ -1,0 +1,365 @@
+{
+  "id": "JNCC_PREDATOR_REPORTED_NICHE_V34_SOURCE_RESULT",
+  "date": "2026-10-27",
+  "status": "SOURCE_ONLY_REPORTING_NICHE_FIT_COMPLETE_NOT_TRUE_OCCUPANCY",
+  "original_sources": {
+    "RSPB_island_feature_service": "https://services1.arcgis.com/h1C9f6qsGKmqXsVs/arcgis/rest/services/Islands_database/FeatureServer/0",
+    "Stanbury_2017_original_supplement": "https://media.springernature.com/original/springer-static/esm/art%3A10.1007%2Fs10344-017-1084-7/MediaObjects/10344_2017_1084_MOESM5_ESM.xlsx",
+    "Stanbury_ESM5_SHA256": "3d876a92e68122f8594b320e0794a54c5e8c7306c5a0e6252cbc24776ce1d1c5",
+    "source_legend_verbatim": "IAV presence: 1= Confirmed; 2= Probable; 3= Possible or incidential records; 0= Assumed or known to be absent. The latter two categories were not included in the prioritisation exercise",
+    "original_islands": 9688,
+    "exact_lowid_join": 9688,
+    "matching_names_n": 8632,
+    "published_table_gt10ha_denominator_reproduced_with": "low tide MLWS area (NOT high tide MHWS)"
+  },
+  "source_island_area_audit": {
+    "high_tide_gt10ha": 401,
+    "low_tide_gt10ha": 506,
+    "low_tide_gt10ha_status": {
+      "American mink": {
+        "literal_status_counts": {
+          "0": 390,
+          "1": 13,
+          "2": 100,
+          "3": 3
+        },
+        "confirmed_or_probable_fraction": 0.22332015810276679
+      },
+      "Brown rat": {
+        "literal_status_counts": {
+          "0": 394,
+          "1": 51,
+          "2": 55,
+          "3": 6
+        },
+        "confirmed_or_probable_fraction": 0.20948616600790515
+      }
+    },
+    "high_tide_0_to_0_1ha": {
+      "area_ha_min_inclusive": 0,
+      "area_ha_max_exclusive": 0.1,
+      "n": 7025,
+      "by_predator": {
+        "American mink": {
+          "literal_status_counts": {
+            "0": 5104,
+            "1": 1494,
+            "2": 427
+          },
+          "fraction_source_confirmed_or_probable": 0.2734519572953737
+        },
+        "Brown rat": {
+          "literal_status_counts": {
+            "0": 5505,
+            "1": 1520
+          },
+          "fraction_source_confirmed_or_probable": 0.21637010676156584
+        }
+      }
+    },
+    "note": "Status 0 is assumed or known absent; no strict surveyed absence. Small-islet status codes are not independent local nest-accessibility observations."
+  },
+  "source_only_models": [
+    {
+      "predator": "American mink",
+      "reported_label": "confirmed_only",
+      "n_original_islands": 9688,
+      "original_islands_with_target_report_status": 1507,
+      "reported_status_fraction": 0.1555532617671346,
+      "original_geographic_group_count": 28,
+      "largest_geographic_group_fraction": 0.3462014863748968,
+      "class_0_definition": "REMAINDER_OF_REPORTED_STATUSES_NOT_SURVEYED_ABSENCE",
+      "model_does_not_return_real_predator_occupancy_probability": true,
+      "features": [
+        "log1p_high_tide_area_ha",
+        "log1p_resident_population",
+        "any_ferry_service"
+      ],
+      "cross_validation": "GroupKFold held-out RSPB original island archipelago group",
+      "status": "SOURCE_REPORTED_STATUS_NICHE_FIT_DESCRIPTIVE_NOT_OCCUPANCY",
+      "equal_fold_Brier_gain": -0.0011982998547123342,
+      "heldout_fold_Brier_better_count": 3,
+      "folds": [
+        {
+          "fold": 1,
+          "held_out_archipelago_count": 1,
+          "test_islands": 3354,
+          "test_source_positive": 0,
+          "baseline_Brier": 0.056607032241333885,
+          "model_Brier": 0.08246626657714688,
+          "AUC_if_both_test_classes": null
+        },
+        {
+          "fold": 2,
+          "held_out_archipelago_count": 1,
+          "test_islands": 1646,
+          "test_source_positive": 0,
+          "baseline_Brier": 0.03511546042070474,
+          "model_Brier": 0.033752642935253915,
+          "AUC_if_both_test_classes": null
+        },
+        {
+          "fold": 3,
+          "held_out_archipelago_count": 1,
+          "test_islands": 1645,
+          "test_source_positive": 8,
+          "baseline_Brier": 0.037785459018429175,
+          "model_Brier": 0.03894669527639803,
+          "AUC_if_both_test_classes": 0.03138362858888209
+        },
+        {
+          "fold": 4,
+          "held_out_archipelago_count": 14,
+          "test_islands": 1521,
+          "test_source_positive": 460,
+          "baseline_Brier": 0.24132452996442333,
+          "model_Brier": 0.23053997522580547,
+          "AUC_if_both_test_classes": 0.8125578822275948
+        },
+        {
+          "fold": 5,
+          "held_out_archipelago_count": 11,
+          "test_islands": 1522,
+          "test_source_positive": 1039,
+          "baseline_Brier": 0.6076919889803685,
+          "model_Brier": 0.598810389884217,
+          "AUC_if_both_test_classes": 0.8303931356197332
+        }
+      ],
+      "standardized_feature_coefficients": {
+        "log1p_high_tide_area_ha": -3.081180823132328,
+        "log1p_resident_population": 1.1541120560831664,
+        "any_ferry_service": 0.7218997389492818
+      },
+      "feature_coefficients_are_reporting_associations_not_invasion_or_predation_causes": true
+    },
+    {
+      "predator": "American mink",
+      "reported_label": "confirmed_or_probable",
+      "n_original_islands": 9688,
+      "original_islands_with_target_report_status": 2404,
+      "reported_status_fraction": 0.2481420313790256,
+      "original_geographic_group_count": 28,
+      "largest_geographic_group_fraction": 0.3462014863748968,
+      "class_0_definition": "REMAINDER_OF_REPORTED_STATUSES_NOT_SURVEYED_ABSENCE",
+      "model_does_not_return_real_predator_occupancy_probability": true,
+      "features": [
+        "log1p_high_tide_area_ha",
+        "log1p_resident_population",
+        "any_ferry_service"
+      ],
+      "cross_validation": "GroupKFold held-out RSPB original island archipelago group",
+      "status": "SOURCE_REPORTED_STATUS_NICHE_FIT_DESCRIPTIVE_NOT_OCCUPANCY",
+      "equal_fold_Brier_gain": -0.006366297454794301,
+      "heldout_fold_Brier_better_count": 1,
+      "folds": [
+        {
+          "fold": 1,
+          "held_out_archipelago_count": 1,
+          "test_islands": 3354,
+          "test_source_positive": 0,
+          "baseline_Brier": 0.144049849405113,
+          "model_Brier": 0.15467038562671787,
+          "AUC_if_both_test_classes": null
+        },
+        {
+          "fold": 2,
+          "held_out_archipelago_count": 1,
+          "test_islands": 1646,
+          "test_source_positive": 323,
+          "baseline_Brier": 0.16163618661312612,
+          "model_Brier": 0.16153388007566935,
+          "AUC_if_both_test_classes": 0.534714470583555
+        },
+        {
+          "fold": 3,
+          "held_out_archipelago_count": 1,
+          "test_islands": 1645,
+          "test_source_positive": 445,
+          "baseline_Brier": 0.198063773104001,
+          "model_Brier": 0.20910869272869276,
+          "AUC_if_both_test_classes": 0.35305430711610486
+        },
+        {
+          "fold": 4,
+          "held_out_archipelago_count": 14,
+          "test_islands": 1521,
+          "test_source_positive": 582,
+          "baseline_Brier": 0.2616835567058341,
+          "model_Brier": 0.262348232376697,
+          "AUC_if_both_test_classes": 0.6853675585272041
+        },
+        {
+          "fold": 5,
+          "held_out_archipelago_count": 11,
+          "test_islands": 1522,
+          "test_source_positive": 1054,
+          "baseline_Brier": 0.4908695020953721,
+          "model_Brier": 0.5004731643896408,
+          "AUC_if_both_test_classes": 0.17929256069673527
+        }
+      ],
+      "standardized_feature_coefficients": {
+        "log1p_high_tide_area_ha": -0.08972258228981261,
+        "log1p_resident_population": 0.11120575906281763,
+        "any_ferry_service": -0.05590233503316373
+      },
+      "feature_coefficients_are_reporting_associations_not_invasion_or_predation_causes": true
+    },
+    {
+      "predator": "Brown rat",
+      "reported_label": "confirmed_only",
+      "n_original_islands": 9688,
+      "original_islands_with_target_report_status": 1582,
+      "reported_status_fraction": 0.16329479768786126,
+      "original_geographic_group_count": 28,
+      "largest_geographic_group_fraction": 0.3462014863748968,
+      "class_0_definition": "REMAINDER_OF_REPORTED_STATUSES_NOT_SURVEYED_ABSENCE",
+      "model_does_not_return_real_predator_occupancy_probability": true,
+      "features": [
+        "log1p_high_tide_area_ha",
+        "log1p_resident_population",
+        "any_ferry_service"
+      ],
+      "cross_validation": "GroupKFold held-out RSPB original island archipelago group",
+      "status": "SOURCE_REPORTED_STATUS_NICHE_FIT_DESCRIPTIVE_NOT_OCCUPANCY",
+      "equal_fold_Brier_gain": -0.000283601244868939,
+      "heldout_fold_Brier_better_count": 4,
+      "folds": [
+        {
+          "fold": 1,
+          "held_out_archipelago_count": 1,
+          "test_islands": 3354,
+          "test_source_positive": 9,
+          "baseline_Brier": 0.06302446602145122,
+          "model_Brier": 0.08229163337671005,
+          "AUC_if_both_test_classes": 0.5914964291645907
+        },
+        {
+          "fold": 2,
+          "held_out_archipelago_count": 1,
+          "test_islands": 1646,
+          "test_source_positive": 7,
+          "baseline_Brier": 0.040942935958432375,
+          "model_Brier": 0.03971113231555573,
+          "AUC_if_both_test_classes": 0.161248147825329
+        },
+        {
+          "fold": 3,
+          "held_out_archipelago_count": 1,
+          "test_islands": 1645,
+          "test_source_positive": 5,
+          "baseline_Brier": 0.04029147520206008,
+          "model_Brier": 0.039508420099740614,
+          "AUC_if_both_test_classes": 0.26182926829268294
+        },
+        {
+          "fold": 4,
+          "held_out_archipelago_count": 14,
+          "test_islands": 1521,
+          "test_source_positive": 514,
+          "baseline_Brier": 0.26665262143315654,
+          "model_Brier": 0.25525027616429313,
+          "AUC_if_both_test_classes": 0.8030092851981654
+        },
+        {
+          "fold": 5,
+          "held_out_archipelago_count": 11,
+          "test_islands": 1522,
+          "test_source_positive": 1047,
+          "baseline_Brier": 0.6020652399603083,
+          "model_Brier": 0.5976332828434536,
+          "AUC_if_both_test_classes": 0.8190881214497563
+        }
+      ],
+      "standardized_feature_coefficients": {
+        "log1p_high_tide_area_ha": -1.7436448480452729,
+        "log1p_resident_population": 0.721235387583538,
+        "any_ferry_service": 0.7436780908084674
+      },
+      "feature_coefficients_are_reporting_associations_not_invasion_or_predation_causes": true
+    },
+    {
+      "predator": "Brown rat",
+      "reported_label": "confirmed_or_probable",
+      "n_original_islands": 9688,
+      "original_islands_with_target_report_status": 1648,
+      "reported_status_fraction": 0.17010734929810073,
+      "original_geographic_group_count": 28,
+      "largest_geographic_group_fraction": 0.3462014863748968,
+      "class_0_definition": "REMAINDER_OF_REPORTED_STATUSES_NOT_SURVEYED_ABSENCE",
+      "model_does_not_return_real_predator_occupancy_probability": true,
+      "features": [
+        "log1p_high_tide_area_ha",
+        "log1p_resident_population",
+        "any_ferry_service"
+      ],
+      "cross_validation": "GroupKFold held-out RSPB original island archipelago group",
+      "status": "SOURCE_REPORTED_STATUS_NICHE_FIT_DESCRIPTIVE_NOT_OCCUPANCY",
+      "equal_fold_Brier_gain": 0.0013772891453437657,
+      "heldout_fold_Brier_better_count": 3,
+      "folds": [
+        {
+          "fold": 1,
+          "held_out_archipelago_count": 1,
+          "test_islands": 3354,
+          "test_source_positive": 14,
+          "baseline_Brier": 0.06857048973478803,
+          "model_Brier": 0.07687030394053018,
+          "AUC_if_both_test_classes": 0.7219204448246365
+        },
+        {
+          "fold": 2,
+          "held_out_archipelago_count": 1,
+          "test_islands": 1646,
+          "test_source_positive": 13,
+          "baseline_Brier": 0.04602050808015951,
+          "model_Brier": 0.04263322044358442,
+          "AUC_if_both_test_classes": 0.39818173253568234
+        },
+        {
+          "fold": 3,
+          "held_out_archipelago_count": 1,
+          "test_islands": 1645,
+          "test_source_positive": 22,
+          "baseline_Brier": 0.0488364797717747,
+          "model_Brier": 0.04454759191640575,
+          "AUC_if_both_test_classes": 0.6557721391362796
+        },
+        {
+          "fold": 4,
+          "held_out_archipelago_count": 14,
+          "test_islands": 1521,
+          "test_source_positive": 546,
+          "baseline_Brier": 0.280306179004901,
+          "model_Brier": 0.2663319474364339,
+          "AUC_if_both_test_classes": 0.7864731849347234
+        },
+        {
+          "fold": 5,
+          "held_out_archipelago_count": 11,
+          "test_islands": 1522,
+          "test_source_positive": 1053,
+          "baseline_Brier": 0.596340784701031,
+          "model_Brier": 0.6028049318289812,
+          "AUC_if_both_test_classes": 0.8184859179884055
+        }
+      ],
+      "standardized_feature_coefficients": {
+        "log1p_high_tide_area_ha": -0.6253241375168986,
+        "log1p_resident_population": 0.4622190325818728,
+        "any_ferry_service": 0.3462295700205583
+      },
+      "feature_coefficients_are_reporting_associations_not_invasion_or_predation_causes": true
+    }
+  ],
+  "ecological_scope": {
+    "independent_from_JNCC_seabird_count_cells": true,
+    "predator_seabird_concentration_effect_fitted": false,
+    "island_predator_occupancy_calibrated": false,
+    "temporal_predator_status_1998_2021_validated": false,
+    "strict_within_parent_refuge_identified": false,
+    "primary_inference": "Source-reported mammal status and strong geographic non-transferability, not predator environmental niche or predation-caused concentration."
+  },
+  "successful_real_source_workflow": "https://github.com/zuizui0223/mina/actions/runs/40436974665"
+}

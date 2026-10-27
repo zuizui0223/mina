@@ -1,0 +1,50 @@
+name: JNCC V40 UK predator source-label SDM probability maps 506 islands
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_UK_PREDATOR_SOURCE_PROBABILITY_SDM_V40.md'
+      - 'scripts/map_jncc_uk_island_predator_sdm_v40.py'
+      - 'tests/test_jncc_uk_predator_source_sdm_v40.py'
+      - '.github/workflows/seabird-jncc-predator-probability-sdm-v40.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_UK_PREDATOR_SOURCE_PROBABILITY_SDM_V40.md'
+      - 'scripts/map_jncc_uk_island_predator_sdm_v40.py'
+      - 'tests/test_jncc_uk_predator_source_sdm_v40.py'
+      - '.github/workflows/seabird-jncc-predator-probability-sdm-v40.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source_label_probability_island_atlas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source readers model and static-mapping library
+        run: python -m pip install requests numpy scipy scikit-learn pytest matplotlib
+      - name: Validate source-only probability, uncertainty, and GIS export on synthetic original island layouts
+        run: python -m pytest -q tests/test_jncc_uk_predator_source_sdm_v40.py
+      - name: Fit independent first-party source-reported UK island mammal model and export probabilities, GIS, maps
+        run: |
+          python scripts/map_jncc_uk_island_predator_sdm_v40.py \
+            --out /tmp/JNCC_UK_PREDATOR_SDM_V40_SUMMARY.json \
+            --products-prefix /tmp/JNCC_UK_PREDATOR_SDM_V40
+      - name: Upload numeric source, CSV, GeoJSON and mapped probability results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-506-island-predator-source-label-probability-sdm-v40
+          path: |
+            /tmp/JNCC_UK_PREDATOR_SDM_V40_SUMMARY.json
+            /tmp/JNCC_UK_PREDATOR_SDM_V40_PROBABILITIES.csv
+            /tmp/JNCC_UK_PREDATOR_SDM_V40_MAP.geojson
+            /tmp/JNCC_UK_PREDATOR_SDM_V40_*.png
+          if-no-files-found: warn

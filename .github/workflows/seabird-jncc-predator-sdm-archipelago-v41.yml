@@ -1,0 +1,45 @@
+name: JNCC V41 original archipelago heldout UK predator SDM probability transfer
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_PREDATOR_SDM_ARCHIPELAGO_STRESS_V41.md'
+      - 'scripts/audit_jncc_uk_predator_sdm_archipelago_v41.py'
+      - 'tests/test_jncc_uk_predator_sdm_archipelago_v41.py'
+      - '.github/workflows/seabird-jncc-predator-sdm-archipelago-v41.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_PREDATOR_SDM_ARCHIPELAGO_STRESS_V41.md'
+      - 'scripts/audit_jncc_uk_predator_sdm_archipelago_v41.py'
+      - 'tests/test_jncc_uk_predator_sdm_archipelago_v41.py'
+      - '.github/workflows/seabird-jncc-predator-sdm-archipelago-v41.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  archived_original_island_group_stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original source and probability model dependencies
+        run: python -m pip install requests numpy scipy scikit-learn pytest
+      - name: Synthetic test source RSPB archipelago group isolation
+        run: python -m pytest -q tests/test_jncc_uk_predator_sdm_archipelago_v41.py
+      - name: Independently reproduce four V40 original source label classifiers in source island-group withheld blocks
+        run: |
+          python scripts/audit_jncc_uk_predator_sdm_archipelago_v41.py \
+            --out /tmp/JNCC_UK_PREDATOR_SDM_ARCHIPELAGO_V41.json
+      - name: Preserve original source validation and measurement-failure evidence
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-v41-predator-source-label-archipelago-geographic-validation
+          path: /tmp/JNCC_UK_PREDATOR_SDM_ARCHIPELAGO_V41.json
+          if-no-files-found: warn

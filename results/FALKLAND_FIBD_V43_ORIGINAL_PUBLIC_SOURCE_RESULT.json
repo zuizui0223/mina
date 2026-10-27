@@ -1,0 +1,88 @@
+{
+  "manifest_id": "FALKLAND_FIBD_V43_ORIGINAL_PUBLIC_SOURCE_RESULT",
+  "original_source": "Falkland Islands Government FIBDv8 20140601",
+  "source_licence": "CC-BY-SA-4.0",
+  "source_catalogue": "https://dataportal.saeri.org",
+  "download_date_UTC": "2026-10-27",
+  "status": "FIBD_V43_PUBLIC_INVASIVE_LOCATION_VISIT_RAW_SCHEMAS_VERIFIED",
+  "verified_original_spreadsheets": 4,
+  "by_first_party_source": {
+    "fibdv8-20140601-invasives": {
+      "source_status": "PUBLIC_ORIGINAL_SPREADSHEET_SCHEMA_VERIFIED",
+      "original_SHA256": "980cb424b356e524c4c5f15f5a2ec942882530ce8b3b283719148595800205e1",
+      "original_public_XLS_bytes": 801792,
+      "source_worksheet_dimensions": [
+        {
+          "sheet": "qryrptfrmInvasivesAll",
+          "rows": 1212,
+          "columns": 18
+        }
+      ],
+      "original_invasive_sheet_is_HEADERLESS": true,
+      "error": null
+    },
+    "fibdv8-20140601-locations": {
+      "source_status": "PUBLIC_ORIGINAL_SPREADSHEET_SCHEMA_VERIFIED",
+      "original_SHA256": "4e87141f8819dd7b513400f166cd2a8e7369e08cdf0a8ae7d76023199fb7b56c",
+      "original_public_XLS_bytes": 537600,
+      "source_worksheet_dimensions": [
+        {
+          "sheet": "qryrptfrmLocationsAll",
+          "rows": 535,
+          "columns": 17
+        }
+      ],
+      "original_invasive_sheet_is_HEADERLESS": false,
+      "error": null
+    },
+    "fibdv8-20140601-visits": {
+      "source_status": "PUBLIC_ORIGINAL_SPREADSHEET_SCHEMA_VERIFIED",
+      "original_SHA256": "1a01e2a321e7a45a07a8a864d98c8bff079fb4d789b2493c2c693eed6c562209",
+      "original_public_XLS_bytes": 969216,
+      "source_worksheet_dimensions": [
+        {
+          "sheet": "Sheet1",
+          "rows": 4965,
+          "columns": 13
+        }
+      ],
+      "original_invasive_sheet_is_HEADERLESS": false,
+      "error": null
+    },
+    "fibdv8-20140601-eradication": {
+      "source_status": "SOURCE_ACCESS_OR_SCHEMA_HOLD",
+      "original_SHA256": null,
+      "original_public_XLS_bytes": null,
+      "source_worksheet_dimensions": [],
+      "original_invasive_sheet_is_HEADERLESS": false,
+      "error": "ValueError: SOURCE_UNEXPECTED_PUBLIC_XLS_RESOURCE_COUNT=0"
+    },
+    "fibdv8-20140601-birds": {
+      "source_status": "PUBLIC_ORIGINAL_SPREADSHEET_SCHEMA_VERIFIED",
+      "original_SHA256": "207065a69d8b16d5f5c7889bfff40912fe6660ca2947e937317094eb23625103",
+      "original_public_XLS_bytes": 5143116,
+      "source_worksheet_dimensions": [
+        {
+          "sheet": "qryrptfrmSpeciesAll",
+          "rows": 4959,
+          "columns": 26
+        }
+      ],
+      "original_invasive_sheet_is_HEADERLESS": false,
+      "error": null
+    }
+  },
+  "source_data_model_caution": {
+    "invasive_workbook_has_NO_HEADER_first_row_is_original_observation": true,
+    "invasion_records_not_distinct_islands": true,
+    "visits_include_desktop_assessments_not_all_targeted_rat_surveys": true,
+    "rattus_norvegicus_assessed_absence_includes_unsurveyed_islands": true,
+    "eradication_original_workbook_NOT_verified_from_public_XLS": true,
+    "surveyed_rat_non_detections_NOT_verified": true,
+    "zero_ecological_predator_occupancy_or_seabird_effect_fitted": true
+  },
+  "source_execution": [
+    "https://github.com/zuizui0223/mina/actions/runs/40470673475",
+    "https://github.com/zuizui0223/mina/actions/runs/40471345335"
+  ]
+}

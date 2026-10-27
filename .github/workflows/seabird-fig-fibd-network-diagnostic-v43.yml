@@ -1,0 +1,40 @@
+name: V43 FIG Falkland Islands original-public-data egress diagnosis (no source rows)
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - '.github/workflows/seabird-fig-fibd-network-diagnostic-v43.yml'
+  pull_request:
+    paths:
+      - '.github/workflows/seabird-fig-fibd-network-diagnostic-v43.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original_host_connectivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check publisher DNS and HTTPS metadata responsiveness with hard process timeout
+        shell: bash
+        run: |
+          set +e
+          echo "--- official Falkland Government catalogue hostname DNS ---"
+          timeout 12 getent ahostsv4 dataportal.saeri.org
+          echo "DNS_exit=$?"
+          echo "--- official CKAN status HTTPS source ---"
+          curl -I -L --max-redirs 1 --connect-timeout 6 --max-time 14 \
+            -sS -o /dev/null \
+            -w 'CKAN_status_http=%{http_code} hostname=%{url.host} connect_seconds=%{time_connect} total_seconds=%{time_total}\n' \
+            'https://dataportal.saeri.org/api/3/action/status_show'
+          echo "HTTPS_exit=$?"
+          echo "--- official original FIBD registry entry metadata ---"
+          curl -I -L --max-redirs 1 --connect-timeout 6 --max-time 14 \
+            -sS -o /dev/null \
+            -w 'FIBD_metadata_http=%{http_code} hostname=%{url.host} connect_seconds=%{time_connect} total_seconds=%{time_total}\n' \
+            'https://dataportal.saeri.org/api/3/action/package_show?id=fibdv8-20140601-invasives'
+          echo "REGISTRY_exit=$?"
+          echo "No private datasets or source records fetched."

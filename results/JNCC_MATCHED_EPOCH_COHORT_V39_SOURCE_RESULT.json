@@ -1,0 +1,167 @@
+{
+  "schema": "JNCC_MATCHED_EPOCH_COHORT_V39_SOURCE_RESULT",
+  "result_timing": "Post V37/V38 year-alignment measurement-bias sensitivity, not independent confirmatory experiment",
+  "date": "2026-10-27",
+  "source_sha256": "9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4",
+  "contract": "contracts/JNCC_MATCHED_EPOCH_COHORT_V39_FROZEN.md",
+  "original_year_metadata": {
+    "original_parent_guarded_panels": 1483,
+    "all_source_rows_not_birth_death_events": true,
+    "original_earlier_year_uniform_parent_n": 1216,
+    "original_later_year_uniform_parent_n": 869,
+    "BOTH_original_epoch_years_uniform_parent_n": 762,
+    "strictly_both_uniform_source_panels_by_species": {
+      "Arctic Skua": 26,
+      "Arctic Tern": 45,
+      "Atlantic Puffin": 11,
+      "Black Guillemot": 95,
+      "Black-headed Gull": 15,
+      "Black-legged Kittiwake": 28,
+      "Common Guillemot": 24,
+      "Common Gull": 59,
+      "Common Tern": 9,
+      "European Shag": 62,
+      "Great Black-backed Gull": 77,
+      "Great Cormorant": 4,
+      "Great Skua": 41,
+      "Herring Gull": 97,
+      "Lesser Black-backed Gull": 14,
+      "Northern Fulmar": 128,
+      "Razorbil": 27
+    },
+    "strictly_both_uniform_source_panels_by_country": {
+      "England": 52,
+      "Isle of Man": 9,
+      "Northern Ireland": 2,
+      "Republic of Ireland": 70,
+      "Scotland": 585,
+      "Wales": 44
+    },
+    "unknown_source_coverage_bias_not_eliminated": true,
+    "source_year_uniform_does_not_guarantee_colony_polygon_identity": true,
+    "original_two_census_counts_opened": 0
+  },
+  "fixed_numeric_information_gate": {
+    "integer_valid_original_uniform_year_panels": 663,
+    "original_uniform_year_panels_with_lower_recent_total": 479,
+    "declining_panels_with_nonidentical_original_child_sizes": 475,
+    "species_with_3_or_more_size_informative_declines": 16,
+    "distinct_country_master_networks": 303,
+    "distinct_original_count_units": 5,
+    "numeric_drop_reasons": {
+      "sum_epoch_lt2": 99
+    },
+    "V39_pre_effect_cohort_information_gate_pass": true
+  },
+  "same_year_post_result_sensitivity": {
+    "exact_same_epoch_primary_species_equal_size_score": -0.5175902690142076,
+    "original_informative_decline_panels": 475,
+    "species": 16,
+    "species_with_positive_mean_size_score": 1,
+    "each_source_species_mean_size_score": {
+      "Arctic Skua": {
+        "n": 13,
+        "mean": -0.2791955694283874
+      },
+      "Arctic Tern": {
+        "n": 31,
+        "mean": -1.1928525629771756
+      },
+      "Atlantic Puffin": {
+        "n": 6,
+        "mean": -0.7408380502549168
+      },
+      "Black Guillemot": {
+        "n": 57,
+        "mean": -0.6465819993638217
+      },
+      "Black-headed Gull": {
+        "n": 5,
+        "mean": -1.0549282829858408
+      },
+      "Black-legged Kittiwake": {
+        "n": 23,
+        "mean": -0.09290532462002521
+      },
+      "Common Guillemot": {
+        "n": 15,
+        "mean": -0.17538025145858624
+      },
+      "Common Gull": {
+        "n": 41,
+        "mean": -0.9247482565439333
+      },
+      "Common Tern": {
+        "n": 3,
+        "mean": -1.4828835727908027
+      },
+      "European Shag": {
+        "n": 38,
+        "mean": -0.5433009354845231
+      },
+      "Great Black-backed Gull": {
+        "n": 48,
+        "mean": -0.33170091476940744
+      },
+      "Great Skua": {
+        "n": 18,
+        "mean": -0.1737064308584873
+      },
+      "Herring Gull": {
+        "n": 59,
+        "mean": -0.3722700810577737
+      },
+      "Lesser Black-backed Gull": {
+        "n": 4,
+        "mean": 0.109724727215657
+      },
+      "Northern Fulmar": {
+        "n": 98,
+        "mean": -0.27273695053659774
+      },
+      "Razorbil": {
+        "n": 14,
+        "mean": -0.10713984831269818
+      }
+    },
+    "null_mean": 0.00023039599770196205,
+    "null_q05": -0.0401027846137555,
+    "null_q95": 0.03905018267026516,
+    "conditional_null_right_tail_fraction": 1,
+    "country_leave_out_species_equal_mean_size_score": {
+      "England": -0.5207964074921357,
+      "Isle of Man": -0.5192486478155887,
+      "Northern Ireland": -0.5166228438259242,
+      "Republic of Ireland": -0.5075276297939334,
+      "Scotland": -0.2526783149910947,
+      "Wales": -0.5829220559094961
+    },
+    "observed_same_epoch_source_concentration_and_leader_events": {
+      "declines": 479,
+      "Epos": 303,
+      "score_informative": 475,
+      "Epos_and_Snegative": 150,
+      "unique_both_leaders": 409,
+      "switched_unique_leader": 207,
+      "Epos_and_switched": 142
+    },
+    "observed_same_epoch_fraction_Epos_among_declines": 0.6325678496868476,
+    "observed_same_epoch_fraction_Epos_and_Snegative_among_size_informative": 0.3157894736842105,
+    "observed_same_epoch_fraction_switched_among_unique_leaders": 0.5061124694376528,
+    "observed_same_epoch_fraction_Epos_and_switched_among_unique_leaders": 0.3471882640586797,
+    "frozen_V37_full_sample_T_not_reestimated_or_modified": -0.5388642801626898,
+    "this_subgroup_was_source_structurally_defined_post_V37_observed_result": true,
+    "no_alternative_subgroup_windows_fitted": true
+  },
+  "scientific_decision": "Size-retention H1a positive prediction still unsupported under exact within-parent matched original census years (15/16 species negative). Concentration and leader switching remain descriptively prevalent, not biologically causal.",
+  "still_uncertain": [
+    "site polygon historical stability",
+    "two census adjusted count protocol",
+    "first-census measurement-error regression to mean",
+    "true predator statuses or local nest accessibility",
+    "individual movement and demographic recruitment"
+  ],
+  "does_not_reopen_V36_predator_refuge_STOP": true,
+  "original_row_level_bird_counts_written": false,
+  "original_CI": "https://github.com/zuizui0223/mina/actions/runs/40440078980"
+}
