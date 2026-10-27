@@ -170,7 +170,7 @@ def same_year_replay(informative,all_declines):
         "exact_same_epoch_primary_species_equal_size_score":t,
         "original_informative_decline_panels":len(informative),
         "species":len(sp),
-        "species_with_positive_mean_size_score":sum(np.mean(species_scores[s])>0 for s in sp),
+        "species_with_positive_mean_size_score":int(sum(np.mean(species_scores[s])>0 for s in sp)),
         "each_source_species_mean_size_score":{s:{"n":len(species_scores[s]),"mean":float(np.mean(species_scores[s]))} for s in sp},
         "null_mean":float(np.mean(sims)),
         "null_q05":float(np.quantile(sims,.05)),
