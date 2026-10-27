@@ -47,7 +47,7 @@ def bounded_https(session,url,maxbytes):
         url=parsed._replace(scheme="https").geturl()
     elif parsed.scheme!="https":
         raise ValueError("INSECURE_SOURCE_SCHEME")
-    with session.get(url,stream=True,timeout=(15,75),
+    with session.get(url,stream=True,timeout=(8,20),
                      headers={"User-Agent":"mina-original-FIBD-UK-predator-niche-source-audit/1.0"},
                      allow_redirects=True) as response:
         response.raise_for_status()
