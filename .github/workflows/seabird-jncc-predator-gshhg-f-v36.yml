@@ -1,0 +1,43 @@
+name: JNCC V36 original full-resolution GSHHG island predator source support
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'scripts/audit_jncc_predator_gshhg_f_land_v36.py'
+      - 'tests/test_jncc_predator_gshhg_f_land_v36.py'
+      - '.github/workflows/seabird-jncc-predator-gshhg-f-v36.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_jncc_predator_gshhg_f_land_v36.py'
+      - 'tests/test_jncc_predator_gshhg_f_land_v36.py'
+      - '.github/workflows/seabird-jncc-predator-gshhg-f-v36.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact_original_gshhg:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install first-party source readers and exact GIS dependencies
+        run: python -m pip install requests pytest pyshp shapely pyproj numpy scipy scikit-learn
+      - name: Synthetic source and non-identifiability tests
+        run: python -m pytest -q tests/test_jncc_predator_gshhg_f_land_v36.py
+      - name: Retrieve pinned GSHHG f coast and original RSPB and JNCC source geometry without bird counts
+        run: |
+          python scripts/audit_jncc_predator_gshhg_f_land_v36.py \
+            --out /tmp/JNCC_GSHHG_F_PREDATOR_SOURCE_V36.json
+      - name: Preserve success or explicit source/geography STOP for audit
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-gshhg-fullresolution-predator-original-source-v36-no-bird-outcomes
+          path: /tmp/JNCC_GSHHG_F_PREDATOR_SOURCE_V36.json
+          if-no-files-found: warn
