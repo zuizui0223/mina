@@ -1,0 +1,118 @@
+{
+  "result_id": "JNCC_PREDATOR_GSHHG_F_L1_ORIGINAL_GEO_SUPPORT_V36",
+  "date": "2026-10-27",
+  "scope": "Original first-party source geometry-only sample and predator reporting-status support, NO bird magnitude/effect",
+  "status": "JNCC_V36_FULL_GSHHG_SOURCE_ONLY_TEST_COMPLETED",
+  "original_source_checksums": {
+    "GSHHG": "8dbbe7e071e77e9e75f2d639239099ebca8d5c16d6a07df8169729d49f15cf41",
+    "Stanbury": "3d876a92e68122f8594b320e0794a54c5e8c7306c5a0e6252cbc24776ce1d1c5",
+    "JNCC": "9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4"
+  },
+  "GSHHG_geometry": {
+    "global_source_resolution": "GSHHS_f_L1",
+    "ROI_original_WGS84": [
+      -13.5,
+      48,
+      3.5,
+      63.5
+    ],
+    "source_shape_records_intersecting_ROI": 3208,
+    "source_original_area_field_positive": 3206,
+    "matched_physical_land_polygons": 3206,
+    "large_global_original_polygon_geometry_clipped_ONLY_for_point_query": 3,
+    "invalid_or_empty_source_features": 0,
+    "source_full_resolution_polygon_is_not_true_JNCC_nest_point_GPS": true
+  },
+  "RSPB_full_resolution_geographic_assignment": {
+    "RSPB_source_island_point_states": {
+      "INTERIOR": 4587,
+      "COAST_SNAPPED": 2286,
+      "UNRESOLVED": 690,
+      "AMBIGUOUS": 2125
+    },
+    "physical_small_land_polygons_with_one_strict_RSPB_lowid": 700,
+    "small_polygons_with_multiple_source_RSPB_lowids_HOLD": 234,
+    "large_landmasses_NEVER_as_RSPB_island_status": true
+  },
+  "JNCC_outcome_blind_source_sample": {
+    "source_original_structural_parent_panels": 1483,
+    "all_original_child_rows_structurally_eligible": 9821,
+    "child_rows_strict_exact_small_land_to_unique_RSPB": 834,
+    "complete_parent_strict_source_child_rows": 235,
+    "parent_support_categories": {
+      "INCOMPLETE_STRICT_SOURCE_CHILD_ISLAND_GEOGRAPHY": 1446,
+      "ALL_CHILDREN_ONE_RSPB_ISLAND": 34,
+      "COMPLETE_MIXED_SOURCE_ISLAND_PARENT": 3,
+      "MIXED_REPORTED_BROWN_RAT": 1
+    },
+    "mixed_source_island_parents_across_taxa": {
+      "Common Tern": 1,
+      "European Shag": 1,
+      "Herring Gull": 1
+    },
+    "mixed_source_island_unique_lowid_count": 8,
+    "mixed_source_island_parent_count": 3,
+    "predeclared_within_parent_mixed_island_support_pass": false,
+    "date_appropriate_true_predator_observation_status_available": false,
+    "model_JNCC_predator_effect_fitted": false,
+    "NO_JNCC_count_magnitudes_opened": true,
+    "interpretation": "Full parent and all component geography required. Source-reported predator label variation is neither true predator absence nor dated 1998–2021.",
+    "candidate_mixed_parent_metadata_without_site_ID_or_count_values": [
+      {
+        "species": "Common Tern",
+        "source_country": "Scotland",
+        "source_unit": "AON",
+        "original_child_count": 3,
+        "independent_RSPB_source_island_lowids": 3,
+        "has_both_reported_presence_label_categories": {
+          "American mink": false,
+          "Brown rat": true
+        }
+      },
+      {
+        "species": "European Shag",
+        "source_country": "Scotland",
+        "source_unit": "AON",
+        "original_child_count": 3,
+        "independent_RSPB_source_island_lowids": 3,
+        "has_both_reported_presence_label_categories": {
+          "American mink": false,
+          "Brown rat": false
+        }
+      },
+      {
+        "species": "Herring Gull",
+        "source_country": "Scotland",
+        "source_unit": "AON",
+        "original_child_count": 3,
+        "independent_RSPB_source_island_lowids": 2,
+        "has_both_reported_presence_label_categories": {
+          "American mink": false,
+          "Brown rat": false
+        }
+      }
+    ]
+  },
+  "comparison_natural_earth_V35": {
+    "matched_child_sites": 302,
+    "entirely_strict_parent_panels": 27,
+    "complete_mixed_island_parents": 0,
+    "link_to_pin": "https://github.com/zuizui0223/mina/blob/research/jncc-v32-mechanism-contract/results/JNCC_PREDATOR_NATURAL_EARTH_SOURCE_GEO_SUPPORT_V35.json"
+  },
+  "predeclared_mechanism_support": {
+    "minimum_mixed_island_parents": 20,
+    "minimum_distinct_islands": 5,
+    "minimum_species": 5,
+    "actual_mixed_island_parents": 3,
+    "actual_mixed_island_taxa": 3,
+    "actual_distinct_islands": 8,
+    "actual_mink_mixed_reported_presence_parent_n": 0,
+    "actual_brown_rat_mixed_reported_presence_parent_n": 1,
+    "gate_pass": false
+  },
+  "ecological_claim": "NOT_IDENTIFIED due to insufficient within-network predator-exposure contrast. No biological null, no causal effect, no transfer of birds observed.",
+  "decision": "STOP_JNCC_WITHIN_PARENT_MAMMALIAN_REFUGE_GEO_SUPPORT_V36",
+  "original_raw_animals_opened": 0,
+  "JNCC_effect_fitted": false,
+  "actions_run": "https://github.com/zuizui0223/mina/actions/runs/40438230884"
+}
