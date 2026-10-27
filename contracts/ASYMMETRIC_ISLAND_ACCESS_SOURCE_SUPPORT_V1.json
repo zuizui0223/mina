@@ -94,7 +94,22 @@
     "H_F_independent_candidate_unoccupied_breeding_habitat_mask": false,
     "H_X_crossed_access_predator_and_flight_is_identified": false
   },
-  "next_source_task": "Within original Falklands FIBD island+bird+invasive matched records, count same-island penguin and flying confirmed breeding records by 1997-2013 survey year, and distinguish recorded rat-positive, independently surveyed rat-negative, desktop-assessed unknown. Check original bird completeness and direct survey-effort denominators before fitting any effect. No inference of true negatives from missing species/record.",
+  "next_source_task": "Only G2: inspect original public survey-dated and independently verified island-rat status on same 66 original breeding islands; publisher Dryad doi:10.5061/dryad.dj524 is an original field-source candidate, not a new bird effect reanalysis. Do not infer site absence or fit H_X without G2/G3.",
   "main_manuscript": "One original-data macroecology study centered on island asymmetric access; no separate predator SDM or penguin turnover papers.",
-  "ecological_effect_fitted_in_this_manifest": false
+  "ecological_effect_fitted_in_this_manifest": false,
+  "V47_empirical_matched_breeding_source_only": {
+    "same_island_year_confirmed_guild_pairs": 69,
+    "independent_named_island_candidates": 66,
+    "regions": 23,
+    "same_day_with_visit_guild_pairs": 63,
+    "source_penguin_rows": 249,
+    "source_flying_seabird_rows": 1104,
+    "G1_source_opportunity_pass": true,
+    "original_islands_with_any_rat_taxon_record": 7,
+    "G2_field_verified_rat_status_support": false,
+    "G3_independent_equal_survey_effort_support": false,
+    "source_receipt": "results/PAPER2_FALKLAND_FIBD_V47_PENGUIN_FLYING_MAMMAL_SOURCE_RESULT.json",
+    "original_CI": "https://github.com/zuizui0223/mina/actions/runs/40501816259",
+    "ecological_mammal_or_flight_effect_fitted": false
+  }
 }
