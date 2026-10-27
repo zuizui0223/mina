@@ -1,0 +1,45 @@
+name: JNCC V44 same Master seabird nest-access guild SOURCE ONLY
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_WITHIN_MASTER_NEST_ACCESS_GUILD_V44_FROZEN.md'
+      - 'scripts/audit_jncc_within_master_nest_access_v44.py'
+      - 'tests/test_jncc_within_master_nest_access_v44.py'
+      - '.github/workflows/seabird-jncc-within-master-nest-access-v44.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_WITHIN_MASTER_NEST_ACCESS_GUILD_V44_FROZEN.md'
+      - 'scripts/audit_jncc_within_master_nest_access_v44.py'
+      - 'tests/test_jncc_within_master_nest_access_v44.py'
+      - '.github/workflows/seabird-jncc-within-master-nest-access-v44.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original_source_pairs_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original JNCC publication schema and test runner
+        run: python -m pip install requests pytest
+      - name: Validate frozen independent nesting-guild classes and source matching before original output
+        run: python -m pytest -q tests/test_jncc_within_master_nest_access_v44.py
+      - name: Assess count-unopened same-network different nesting guild support in original JNCC dataset
+        run: |
+          python scripts/audit_jncc_within_master_nest_access_v44.py \
+            --out /tmp/JNCC_SAME_MASTER_GUILD_METADATA_SUPPORT_V44.json
+      - name: Preserve complete source-only geographic/year/count-unit eligibility receipt
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-v44-same-master-guild-source-only-no-animal-counts
+          path: /tmp/JNCC_SAME_MASTER_GUILD_METADATA_SUPPORT_V44.json
+          if-no-files-found: warn
