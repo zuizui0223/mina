@@ -51,6 +51,7 @@ Thus island occupancy alone cannot explain the *relative* change among children 
 - 2024 Gov Scotland Annex 3 Table A3.7 (species sensitivity, exposure, vulnerability, confidence) is an accessible original agency table; Table A3.14 contains the 15/17 species categories in the JNCC crosswalk. Exact URLs and verbatim fact extraction recorded in V33 register JSON, with explicit two-species coverage gap.
 - NBN Atlas occurrence downloads require user login and dataset-specific licenses. Do NOT bypass controls, send an email, bulk download restricted data, or infer no detection as absence. GBIF public mirrored NBN data are a possible source of records but may cover only provider-permitted datasets and are not automatically an island predator-status census.
 - NatureScot March 2026 biosecurity plan documents rat removal from Ailsa Craig, Canna, Handa with later reinvasion, Shiant Isles, and ongoing work elsewhere. Timeline, not current absence alone, is required for the old JNCC epochs. Period-correct exposure remains unverified.
+- DIISE (https://diise.islandconservation.org/) indexes original island-level invasive vertebrate eradication **events**, including focal species and dates. DIISE is a candidate source for historically dated exposure transitions and independent validation, NOT a complete island-by-year presence/absence census; actual UK event rows, terms and downloadable access have NOT yet been audited.
 
 ## Data support gates (before predator × JNCC associations)
 
