@@ -1,0 +1,45 @@
+name: JNCC V42 independent GBIF mammal records vs UK original islands - SOURCE ONLY
+
+on:
+  push:
+    branches: [research/jncc-v32-mechanism-contract]
+    paths:
+      - 'contracts/JNCC_GBIF_INDEPENDENT_PREDATOR_ISLAND_WITNESS_V42.md'
+      - 'scripts/audit_jncc_gbif_independent_predator_positive_v42.py'
+      - 'tests/test_jncc_gbif_independent_predator_positive_v42.py'
+      - '.github/workflows/seabird-jncc-predator-gbif-independent-v42.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_GBIF_INDEPENDENT_PREDATOR_ISLAND_WITNESS_V42.md'
+      - 'scripts/audit_jncc_gbif_independent_predator_positive_v42.py'
+      - 'tests/test_jncc_gbif_independent_predator_positive_v42.py'
+      - '.github/workflows/seabird-jncc-predator-gbif-independent-v42.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent_original_mammal_source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public GBIF source and original GIS readers
+        run: python -m pip install requests pyshp shapely pyproj numpy scipy scikit-learn pytest
+      - name: Test public GBIF source methods without actual mammal records or survey negatives
+        run: python -m pytest -q tests/test_jncc_gbif_independent_predator_positive_v42.py
+      - name: Audit public third-party mammal 2022-2026 source events and strict GSHHG islands - never V40 source-label probabilities or JNCC bird outcomes
+        run: |
+          python scripts/audit_jncc_gbif_independent_predator_positive_v42.py \
+            --out /tmp/JNCC_GBIF_INDEPENDENT_MAMMAL_ISLAND_WITNESSES_V42.json
+      - name: Store aggregate source completeness and independent positive support (no raw occurrence coordinates)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-v42-independent-gbif-mammals-strict-uk-island-gate-no-bird-effects
+          path: /tmp/JNCC_GBIF_INDEPENDENT_MAMMAL_ISLAND_WITNESSES_V42.json
+          if-no-files-found: warn
