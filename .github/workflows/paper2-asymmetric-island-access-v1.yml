@@ -1,0 +1,50 @@
+name: Paper2 asymmetrical island access ecological identifiability contract
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ASYMMETRIC_ISLAND_ACCESS_PREDATOR_FLIGHTLESS_PAPER2_V1_DRAFT.md'
+      - 'contracts/ASYMMETRIC_ISLAND_ACCESS_SOURCE_SUPPORT_V1.json'
+      - 'tests/test_asymmetric_island_access_support_v1.py'
+      - '.github/workflows/paper2-asymmetric-island-access-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/ASYMMETRIC_ISLAND_ACCESS_PREDATOR_FLIGHTLESS_PAPER2_V1_DRAFT.md'
+      - 'contracts/ASYMMETRIC_ISLAND_ACCESS_SOURCE_SUPPORT_V1.json'
+      - 'tests/test_asymmetric_island_access_support_v1.py'
+      - '.github/workflows/paper2-asymmetric-island-access-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source_identifiability_not_biological_effect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify original source count and experimental contrast boundaries
+        run: |
+          python -m pip install pytest
+          pytest -q tests/test_asymmetric_island_access_support_v1.py
+      - name: Validate the current source support decision without opening animal outcomes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('contracts/ASYMMETRIC_ISLAND_ACCESS_SOURCE_SUPPORT_V1.json')
+          d=json.loads(p.read_text())
+          g=d['gates']
+          assert not any(g.values()), 'UNVERIFIED_EFFECT_GATE'
+          print(json.dumps({
+              'status':'ONE_ASYMMETRIC_ISLAND_ACCESS_PAPER2_FRAMEWORK_SOURCE_GATES_RECORDED',
+              'hypotheses':list(d['hypotheses']),
+              'source_domains':len(d['evidence']),
+              'ecological_effect_fitted':False,
+              'future_primary_sample':'Falklands same-island surveyed penguin/flying and mammal-exposure contrast',
+          }))
+          PY
