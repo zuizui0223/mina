@@ -118,9 +118,25 @@ def original_file_listing(session,version_id):
     for f in files:
         name=str(f.get("path") or f.get("filename") or "").strip()
         f_id=f.get("id")
+        if f_id is None:
+            # Dryad's public file listing can expose ID ONLY in its
+            # canonical HAL self link; the published OpenAPI file shape
+            # doesn't guarantee an in-body id member.
+            link=f.get("_links",{}).get("self",{})
+            href=link.get("href") if isinstance(link,dict) else None
+            if href:
+                pp=urlparse(href)
+                if pp.scheme and (pp.scheme!="https" or pp.hostname!=HOST):
+                    raise ValueError("DRYAD_FILE_SELF_LINK_NOT_FIRST_PARTY")
+                path=pp.path if pp.scheme else href
+                if re.fullmatch(r"/api/v2/files/[1-9][0-9]*",path):
+                    f_id=int(path.rsplit("/",1)[1])
         size=f.get("size")
         if not name or not isinstance(f_id,int) or not isinstance(size,int) or size<0:
-            raise ValueError("DRYAD_NATIVE_FILE_METADATA_INCOMPLETE")
+            raise ValueError("DRYAD_NATIVE_FILE_METADATA_INCOMPLETE:"+(
+                "NO_PATH" if not name else
+                "NO_VALID_PUBLIC_FILE_ID" if not isinstance(f_id,int) else
+                "NO_VALID_FILE_SIZE"))
         processed.append({
            "filename":name[:180],"official_file_id":f_id,
            "published_mime_type":str(f.get("mimeType") or "")[:100],
