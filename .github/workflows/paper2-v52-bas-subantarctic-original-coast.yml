@@ -1,0 +1,54 @@
+name: Paper2 V52 original official BAS Sub-Antarctic island coast source eligibility
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/PAPER2_THREE_ISLAND_BAS_SUBANTARCTIC_COAST_V52_SOURCE.md'
+      - 'scripts/audit_paper2_bas_subantarctic_exact_coast_v52.py'
+      - 'tests/test_paper2_bas_subantarctic_exact_coast_v52.py'
+      - '.github/workflows/paper2-v52-bas-subantarctic-original-coast.yml'
+  pull_request:
+    paths:
+      - 'contracts/PAPER2_THREE_ISLAND_BAS_SUBANTARCTIC_COAST_V52_SOURCE.md'
+      - 'scripts/audit_paper2_bas_subantarctic_exact_coast_v52.py'
+      - 'tests/test_paper2_bas_subantarctic_exact_coast_v52.py'
+      - '.github/workflows/paper2-v52-bas-subantarctic-original-coast.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  original_SGGIS_BAS_2020_three_island_source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install verified BAS coast GIS parser and original NPZ reader
+        run: python -m pip install requests 'pyshp==2.3.1' 'shapely>=2.0' pyproj numpy scikit-learn pytest
+      - name: Test exact original EPSG3031 source polygons and three-island geographic STOP conditions
+        run: python -m pytest -q tests/test_paper2_bas_subantarctic_exact_coast_v52.py
+      - name: Recover existing frozen original BAS nest/DEM public artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bas-original-nest-independent-CopDEM-terrain-v26
+          run-id: 40279185790
+          github-token: ${{ github.token }}
+          path: /tmp/paper2_V52_original_BAS_nests
+      - name: Audit original independent 2020 South Georgia GIS coastline strictly before any bird route effect
+        run: |
+          python scripts/audit_paper2_bas_subantarctic_exact_coast_v52.py \
+            --v26-npz /tmp/paper2_V52_original_BAS_nests/BAS_HART_PUBLIC_GLO30_NEST_TERRAIN_V26.npz \
+            --out /tmp/PAPER2_V52_ORIGINAL_BAS_SUBANTARCTIC_COAST_QA.json
+      - name: Archive only publisher ZIP SHA, CRS, original shape and species-blind source coastline support
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v52-official-BAS-original-3-island-coast-source-only
+          path: /tmp/PAPER2_V52_ORIGINAL_BAS_SUBANTARCTIC_COAST_QA.json
+          if-no-files-found: warn
