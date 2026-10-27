@@ -58,3 +58,26 @@ def test_valid_original_source_file_list_distinguishes_tabular_from_pdf(monkeypa
     assert files[0]["tabular_source_candidate"] is True
     assert files[1]["tabular_source_candidate"] is False
     assert files[0]["bounded_download_allowed_by_size"] is True
+
+
+def test_public_Dryad_version_metadata_may_omit_id_when_link_is_explicit(monkeypatch):
+    def stub(session,path):
+        assert path=="/api/v2/versions/26724"
+        return {"curationStatus":"Published","versionNumber":1,
+                "license":"https://spdx.org/licenses/CC0-1.0.html"}
+    monkeypatch.setattr(m,"first_party_public_get",stub)
+    original={"identifier":m.DOI,"curationStatus":"Published",
+              "_links":{"stash:version":{"href":"/api/v2/versions/26724"}}}
+    vid,lic,meta=m.extract_versions_metadata(original,None)
+    assert vid==26724
+    assert "CC0" in lic
+
+
+def test_dryad_version_id_mismatch_must_stop(monkeypatch):
+    def stub(session,path):
+        return {"curationStatus":"Published","id":9}
+    monkeypatch.setattr(m,"first_party_public_get",stub)
+    original={"identifier":m.DOI,
+              "_links":{"stash:version":{"href":"/api/v2/versions/26724"}}}
+    with pytest.raises(ValueError,match="ID_MISMATCH"):
+        m.extract_versions_metadata(original,None)
