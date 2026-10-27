@@ -1,0 +1,70 @@
+{
+  "schema": "JNCC_V46_TWO_EPOCH_SITE_LEADER_AND_INITIAL_SIZE_RESULT",
+  "generated": "2026-10-27",
+  "source_original_JNCC_sha256": "9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4",
+  "original_species": 17,
+  "source_exact_integer_parent_panels": 1321,
+  "source_declining_parent_panels": 959,
+  "source_initial_size_informative_panels": 955,
+  "source_both_unique_site_leader_panels": 846,
+  "source_observed_legacy_excess_simpson_positive": 597,
+  "source_observed_legacy_E_positive_and_size_score_negative": 321,
+  "source_observed_unique_leader_switch": 412,
+  "source_observed_legacy_excess_simpson_positive_and_switch": 284,
+  "source_observed_both_epoch_pairwise_unbiased_E_positive_and_switch": 291,
+  "source_observed_equal_species_initial_size_score": -0.5388642801626898,
+  "data_model": "Source Site.IDs; original N0,N1 and child roster fixed. Independent 1999 multinomial samples for BOTH epochs from source pooled p_i=(n0_i+n1_i)/(N0+N1), source taxon/site count unit unchanged. Not field-effort-calibrated detection model.",
+  "resampling_seed": 20261027,
+  "resampling_draws": 1999,
+  "source_monte_carlo_expected_unique_leader_eligible_denominator_q05_median_q95": [
+    755,
+    768,
+    780
+  ],
+  "leader_switch": {
+    "observed": 0.48699763593380613,
+    "observed_species_equal": 0.4784905113745841,
+    "null_mean": 0.15948215574772096,
+    "null_q05": 0.1409583047755487,
+    "null_q95": 0.1779803044827748,
+    "upper_tail_fraction": 0.0005,
+    "species_equal_null_mean": 0.15853305483842078,
+    "species_equal_null_q05": 0.13284024039424358,
+    "species_equal_null_q95": 0.18510332950393368,
+    "species_equal_upper_tail_fraction": 0.0005
+  },
+  "legacy_E_positive_and_switch": {
+    "observed": 0.33569739952718675,
+    "null_mean": 0.059573187402846096,
+    "null_q05": 0.04635505893784039,
+    "null_q95": 0.07324196010903436,
+    "upper_tail_fraction": 0.0005
+  },
+  "unbiased_two_epoch_E_positive_and_switch": {
+    "observed": 0.34397163120567376,
+    "null_mean": 0.07383554517336455,
+    "null_q05": 0.05966277561608301,
+    "null_q95": 0.089041220986767,
+    "upper_tail_fraction": 0.0005
+  },
+  "initial_size_retention_S": {
+    "observed_equal_species": -0.5388642801626898,
+    "null_mean": -0.0523745073621901,
+    "null_q05": -0.08313024182777609,
+    "null_q95": -0.023457675608583327,
+    "lower_tail_fraction": 0.0005
+  },
+  "legacy_E_positive_all_declining": {
+    "observed": 0.6225234619395204,
+    "null_mean": 0.41346898683961375,
+    "null_q05": 0.38790406673618355,
+    "null_q95": 0.44004171011470283,
+    "upper_tail_fraction": 0.0005
+  },
+  "scientific_decision": "Original source-reported site composition concentrations, losses of original size rank and source Site.ID leader switches remain far outside TWO independent multinomial-snapshot count model under fixed pooled latent shares. Model fit is POST V37/V38, does not estimate historical observation error or source polygon constancy, and cannot prove bird dispersal, inter-island re-colonization, predator cause or social Allee effects.",
+  "counterexample_to_guild_mechanism": "V44 original 11 Scottish gull/kittiwake nest-access guild difference -0.100 attenuated under V45 corrected double-epoch Simpson to -0.0357; that narrow guild mechanism contrast does NOT generalize or identify predator effects.",
+  "original_V37_V38_readonly": true,
+  "CI_original_run": "https://github.com/zuizui0223/mina/actions/runs/40488997728",
+  "CI_full_results_artifact": "https://github.com/zuizui0223/mina/actions/runs/40488997728/artifacts/12728600011",
+  "CI_full_artifact_sha256": "5fcf5630c283acd085e06ffafdc723006f7335c7faddaa24d8507e0b84226512"
+}
