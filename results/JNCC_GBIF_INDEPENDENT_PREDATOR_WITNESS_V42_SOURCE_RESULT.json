@@ -1,0 +1,302 @@
+{
+  "manifest": "JNCC_GBIF_INDEPENDENT_PREDATOR_WITNESS_V42_SOURCE_RESULT",
+  "date": "2026-10-27",
+  "status": "V42_PARTIAL_PUBLIC_GBIF_STRICT_ISLAND_AUDITED_SOME_TAXA_HOLD",
+  "source_gbif_datasets": {
+    "Mammal Mapper": {
+      "key": "8898e990-9d39-4871-9e6e-d1031c19e24b",
+      "DOI": "10.15468/mjw32e",
+      "original_license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "normalized_license": "CC_BY_4_0",
+      "publisher_record_pubDate": "2026-10-05T00:00:00.000+00:00"
+    },
+    "National Mammal Atlas": {
+      "key": "67e2335c-4303-4ee3-9bfe-ecfe65662629",
+      "DOI": "10.15468/i2eosa",
+      "original_license": "http://creativecommons.org/licenses/by-nc/4.0/legalcode",
+      "normalized_license": "CC_BY_NC_4_0",
+      "publisher_record_pubDate": "2026-10-05T00:00:00.000+00:00"
+    }
+  },
+  "source_gbif_taxonomic_crosswalk": {
+    "American mink": [
+      {
+        "request": "Neogale vison",
+        "state": "UNRESOLVED",
+        "matchType": "NONE",
+        "rank": ""
+      },
+      {
+        "request": "Neovison vison",
+        "state": "RESOLVED",
+        "taxonKey": 5218823,
+        "matchType": "EXACT",
+        "rank": "SPECIES",
+        "canonicalName": "Neovison vison"
+      },
+      {
+        "request": "Mustela vison",
+        "state": "RESOLVED",
+        "taxonKey": 5218823,
+        "matchType": "EXACT",
+        "rank": "SPECIES",
+        "canonicalName": "Mustela vison"
+      }
+    ],
+    "Brown rat": [
+      {
+        "request": "Rattus norvegicus",
+        "state": "RESOLVED",
+        "taxonKey": 2439261,
+        "matchType": "EXACT",
+        "rank": "SPECIES",
+        "canonicalName": "Rattus norvegicus"
+      }
+    ],
+    "House mouse": [
+      {
+        "request": "Mus musculus",
+        "state": "RESOLVED",
+        "taxonKey": 7429082,
+        "matchType": "EXACT",
+        "rank": "SPECIES",
+        "canonicalName": "Mus musculus"
+      }
+    ],
+    "Cat_sighting_NOT_verified_feral": [
+      {
+        "request": "Felis catus",
+        "state": "RESOLVED",
+        "taxonKey": 2435035,
+        "matchType": "EXACT",
+        "rank": "SPECIES",
+        "canonicalName": "Felis catus"
+      }
+    ]
+  },
+  "source_api_completeness": {
+    "Mammal Mapper:American mink": {
+      "status": "PUBLIC_SOURCE_RETRIEVAL_COMPLETE",
+      "queries": [
+        {
+          "taxonKey": 5218823,
+          "api_count": 184,
+          "retrieved": 184,
+          "status": "COMPLETE_PUBLIC_SEARCH",
+          "source_not_safely_exhaustive": false
+        }
+      ],
+      "source_screen_counts": {
+        "COORDINATE_UNCERTAINTY_ELIGIBLE": 183,
+        "COORDINATE_UNCERTAINTY_NOT_KNOWN_LE250": 1
+      },
+      "within_dataset_unique_records_after_GBIF_ID_dedup": 184,
+      "precision_eligible_geo_records": 183
+    },
+    "Mammal Mapper:Brown rat": {
+      "status": "PUBLIC_SOURCE_RETRIEVAL_COMPLETE",
+      "queries": [
+        {
+          "taxonKey": 2439261,
+          "api_count": 803,
+          "retrieved": 803,
+          "status": "COMPLETE_PUBLIC_SEARCH",
+          "source_not_safely_exhaustive": false
+        }
+      ],
+      "source_screen_counts": {
+        "COORDINATE_UNCERTAINTY_ELIGIBLE": 803
+      },
+      "within_dataset_unique_records_after_GBIF_ID_dedup": 803,
+      "precision_eligible_geo_records": 803
+    },
+    "Mammal Mapper:House mouse": {
+      "status": "PUBLIC_SOURCE_RETRIEVAL_COMPLETE",
+      "queries": [
+        {
+          "taxonKey": 7429082,
+          "api_count": 54,
+          "retrieved": 54,
+          "status": "COMPLETE_PUBLIC_SEARCH",
+          "source_not_safely_exhaustive": false
+        }
+      ],
+      "source_screen_counts": {
+        "COORDINATE_UNCERTAINTY_ELIGIBLE": 54
+      },
+      "within_dataset_unique_records_after_GBIF_ID_dedup": 54,
+      "precision_eligible_geo_records": 54
+    },
+    "Mammal Mapper:Cat_sighting_NOT_verified_feral": {
+      "status": "PUBLIC_SOURCE_RETRIEVAL_COMPLETE",
+      "queries": [
+        {
+          "taxonKey": 2435035,
+          "api_count": 575,
+          "retrieved": 575,
+          "status": "COMPLETE_PUBLIC_SEARCH",
+          "source_not_safely_exhaustive": false
+        }
+      ],
+      "source_screen_counts": {
+        "COORDINATE_UNCERTAINTY_ELIGIBLE": 569,
+        "COORDINATE_UNCERTAINTY_NOT_KNOWN_LE250": 6
+      },
+      "within_dataset_unique_records_after_GBIF_ID_dedup": 575,
+      "precision_eligible_geo_records": 569
+    },
+    "National Mammal Atlas:American mink": {
+      "status": "PUBLIC_SOURCE_RETRIEVAL_COMPLETE",
+      "queries": [
+        {
+          "taxonKey": 5218823,
+          "api_count": 858,
+          "retrieved": 858,
+          "status": "COMPLETE_PUBLIC_SEARCH",
+          "source_not_safely_exhaustive": false
+        }
+      ],
+      "source_screen_counts": {
+        "COORDINATE_UNCERTAINTY_ELIGIBLE": 637,
+        "COORDINATE_UNCERTAINTY_NOT_KNOWN_LE250": 221
+      },
+      "within_dataset_unique_records_after_GBIF_ID_dedup": 858,
+      "precision_eligible_geo_records": 637
+    },
+    "National Mammal Atlas:Brown rat": {
+      "status": "PARTIAL_OR_UNRESOLVED_TAXON_SOURCE_HOLD",
+      "queries": [
+        {
+          "taxonKey": 2439261,
+          "api_count": 7073,
+          "retrieved": 0,
+          "status": "TOO_MANY_PUBLIC_SEARCH_ROWS_STOP",
+          "source_not_safely_exhaustive": true
+        }
+      ],
+      "source_screen_counts": {},
+      "within_dataset_unique_records_after_GBIF_ID_dedup": null,
+      "precision_eligible_geo_records": null
+    },
+    "National Mammal Atlas:House mouse": {
+      "status": "PUBLIC_SOURCE_RETRIEVAL_COMPLETE",
+      "queries": [
+        {
+          "taxonKey": 7429082,
+          "api_count": 378,
+          "retrieved": 378,
+          "status": "COMPLETE_PUBLIC_SEARCH",
+          "source_not_safely_exhaustive": false
+        }
+      ],
+      "source_screen_counts": {
+        "COORDINATE_UNCERTAINTY_NOT_KNOWN_LE250": 102,
+        "COORDINATE_UNCERTAINTY_ELIGIBLE": 276
+      },
+      "within_dataset_unique_records_after_GBIF_ID_dedup": 378,
+      "precision_eligible_geo_records": 276
+    },
+    "National Mammal Atlas:Cat_sighting_NOT_verified_feral": {
+      "status": "PUBLIC_SOURCE_RETRIEVAL_COMPLETE",
+      "queries": [
+        {
+          "taxonKey": 2435035,
+          "api_count": 1485,
+          "retrieved": 1485,
+          "status": "COMPLETE_PUBLIC_SEARCH",
+          "source_not_safely_exhaustive": false
+        }
+      ],
+      "source_screen_counts": {
+        "COORDINATE_UNCERTAINTY_NOT_KNOWN_LE250": 572,
+        "COORDINATE_UNCERTAINTY_ELIGIBLE": 913
+      },
+      "within_dataset_unique_records_after_GBIF_ID_dedup": 1485,
+      "precision_eligible_geo_records": 913
+    }
+  },
+  "publicly_retrieved_focal_sighting_records": 4337,
+  "source_taxon_completed": {
+    "American mink": true,
+    "Brown rat": false,
+    "House mouse": true,
+    "Cat_sighting_NOT_verified_feral": true
+  },
+  "frozen_GSHHG_version_and_SHA256": "8dbbe7e071e77e9e75f2d639239099ebca8d5c16d6a07df8169729d49f15cf41",
+  "source_original_GSHHG_polygon_QA": {
+    "global_source_resolution": "GSHHS_f_L1",
+    "ROI_original_WGS84": [
+      -13.5,
+      48,
+      3.5,
+      63.5
+    ],
+    "source_shape_records_intersecting_ROI": 3208,
+    "source_original_area_field_positive": 3206,
+    "matched_physical_land_polygons": 3206,
+    "large_global_original_polygon_geometry_clipped_ONLY_for_point_query": 3,
+    "invalid_or_empty_source_features": 0,
+    "source_full_resolution_polygon_is_not_true_JNCC_nest_point_GPS": true
+  },
+  "V40_original_reference_islands": 506,
+  "strict_GBIF_geographic_counts": {
+    "all_GBIF_records_in_UK_envelope": 4337,
+    "mapped_INTERIOR": 4319,
+    "GBIF_point_inside_unique_land_geometry": 4319,
+    "GBIF_inside_land_but_not_unique_RSPB_island_ID": 4317,
+    "mapped_COAST_SNAPPED": 13,
+    "mapped_UNRESOLVED": 4,
+    "mapped_AMBIGUOUS": 1,
+    "GBIF_inside_strict_unique_RSPB_V40_island": 2
+  },
+  "genuine_source_only_sightings_strictly_on_V40_islands": {
+    "American mink": {
+      "independently_documented_recent_strict_island_events": 0,
+      "unique_physical_island_original_RSPB_lowids": 0,
+      "distinct_original_RSPB_archipelago_groups": 0,
+      "GBIF_source_recorder_networks": {},
+      "both_independent_GBIF_dataset_species_queries_complete": true,
+      "original_source_positive_only_comparison_gate_pass": false,
+      "focal_island_status": "STOP_INDEPENDENT_ISLAND_WITNESS_SUPPORT",
+      "cat_sightings_are_not_field_verified_feral_cat": false
+    },
+    "Brown rat": {
+      "independently_documented_recent_strict_island_events": 0,
+      "unique_physical_island_original_RSPB_lowids": 0,
+      "distinct_original_RSPB_archipelago_groups": 0,
+      "GBIF_source_recorder_networks": {},
+      "both_independent_GBIF_dataset_species_queries_complete": false,
+      "original_source_positive_only_comparison_gate_pass": false,
+      "focal_island_status": "STOP_INDEPENDENT_ISLAND_WITNESS_SUPPORT",
+      "cat_sightings_are_not_field_verified_feral_cat": false
+    },
+    "House mouse": {
+      "independently_documented_recent_strict_island_events": 0,
+      "unique_physical_island_original_RSPB_lowids": 0,
+      "distinct_original_RSPB_archipelago_groups": 0,
+      "GBIF_source_recorder_networks": {},
+      "both_independent_GBIF_dataset_species_queries_complete": true,
+      "original_source_positive_only_comparison_gate_pass": false,
+      "focal_island_status": "STOP_INDEPENDENT_ISLAND_WITNESS_SUPPORT",
+      "cat_sightings_are_not_field_verified_feral_cat": false
+    },
+    "Cat_sighting_NOT_verified_feral": {
+      "independently_documented_recent_strict_island_events": 2,
+      "unique_physical_island_original_RSPB_lowids": 2,
+      "distinct_original_RSPB_archipelago_groups": 2,
+      "GBIF_source_recorder_networks": {
+        "National Mammal Atlas": 2
+      },
+      "both_independent_GBIF_dataset_species_queries_complete": true,
+      "original_source_positive_only_comparison_gate_pass": false,
+      "focal_island_status": "STOP_INDEPENDENT_ISLAND_WITNESS_SUPPORT",
+      "cat_sightings_are_not_field_verified_feral_cat": true
+    }
+  },
+  "possible_duplicate_sighting_ID_cross_datasets": 0,
+  "source_stop": "No independent verified mink/brown rat/house mouse observations meet strictly unique source UK island, geolocation margin and source-licence conditions; two site-matched Felis catus observations cannot prove feral cats. Brown rat National Atlas source was not retrieved because 7073 results exceeded the a priori 5000 limit. Cannot validate actual island occupancy probability, annual change, eradication status or predation risk.",
+  "no_original_mammal_observation_coordinate_committed": true,
+  "no_Stanbury_source_label_or_V40_prediction_read": true,
+  "no_JNCC_bird_count_or_pedation_effect_computed": true,
+  "authentic_GitHub_Actions_execution": "https://github.com/zuizui0223/mina/actions/runs/40468578519"
+}
