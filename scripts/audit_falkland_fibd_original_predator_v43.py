@@ -222,25 +222,30 @@ def main():
         "no_2014_UK_Stanbury_JNCC_or_V40_biological_outcomes_read":True,
         "Norway_rat_unsurveyed_source_status_does_not_mean_field_survey_negative":True,
     }
-    outcomes={}
-    with requests.Session() as session:
-        for slug in ORIGINAL_DATASETS:
-            item={"status":"SOURCE_ACCESS_OR_SCHEMA_HOLD"}
-            try:
+    # Keep the public publisher load bounded: at most 3 concurrent
+    # official XLS requests instead of up to 10 sequential slow URL reads.
+    # The five science/source slugs, licensing and source checks are unchanged.
+    from concurrent.futures import ThreadPoolExecutor
+    def read_original_dataset(slug):
+        item={"status":"SOURCE_ACCESS_OR_SCHEMA_HOLD"}
+        try:
+            with requests.Session() as session:
                 original,metadata=get_official_package(session,slug)
                 item["metadata"]=metadata
                 b=bounded_https(session,original["url"],MAX_XLS_BYTES)
-                if b.startswith(b"<html") or b.startswith(b"<!DOC"):
-                    raise ValueError("SOURCE_RETURNED_HTML_NOT_XLS")
-                item["original_binary_sha256"]=hashlib.sha256(b).hexdigest()
-                item["original_bytes"]=len(b)
-                item["original_source_filename"]=original["filename"]
-                item["source_sheets"]=inspect_xls_sheets(b,slug)
-                item["status"]="PUBLIC_ORIGINAL_SPREADSHEET_SCHEMA_VERIFIED"
-            except Exception as e:
-                item["status"]="SOURCE_ACCESS_OR_SCHEMA_HOLD"
-                item["error"]=type(e).__name__+": "+str(e)[:350]
-            outcomes[slug]=item
+            if b.startswith(b"<html") or b.startswith(b"<!DOC"):
+                raise ValueError("SOURCE_RETURNED_HTML_NOT_XLS")
+            item["original_binary_sha256"]=hashlib.sha256(b).hexdigest()
+            item["original_bytes"]=len(b)
+            item["original_source_filename"]=original["filename"]
+            item["source_sheets"]=inspect_xls_sheets(b,slug)
+            item["status"]="PUBLIC_ORIGINAL_SPREADSHEET_SCHEMA_VERIFIED"
+        except Exception as e:
+            item["status"]="SOURCE_ACCESS_OR_SCHEMA_HOLD"
+            item["error"]=type(e).__name__+": "+str(e)[:350]
+        return item
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        outcomes=dict(zip(ORIGINAL_DATASETS,executor.map(read_original_dataset,ORIGINAL_DATASETS)))
     receipt["source_datasets"]=outcomes
     ok=[slug for slug,x in outcomes.items()
         if x["status"]=="PUBLIC_ORIGINAL_SPREADSHEET_SCHEMA_VERIFIED"]
