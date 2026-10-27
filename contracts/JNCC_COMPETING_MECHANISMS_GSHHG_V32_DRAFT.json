@@ -1,0 +1,169 @@
+{
+  "contract_id": "JNCC_COMPETING_MECHANISMS_GSHHG_V32_DRAFT",
+  "status": "DRAFT_NOT_FROZEN",
+  "prepared_date": "2026-10-27",
+  "goal": "Source-grounded test of three rival explanations of two-census within-parent seabird breeding-site share change",
+  "baseline": {
+    "parent_branch": "research/seabird-island-generality-v1",
+    "original_jncc_xlsx_sha256": "9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4",
+    "structural_parent_panels_after_aggregate_guard": 1483,
+    "count_usable_parent_panels": 1321,
+    "declining_parent_panels": 959,
+    "eligible_seabird_species": 17,
+    "known_v30_excess_concentration_positive_panel_fraction_among_declines": 0.62252346,
+    "prior_geographic_v31_sample": {
+      "small_panels": 229,
+      "large_panels": 157,
+      "unresolved_or_ambiguous_parents": 1092
+    },
+    "evidence_timing": "Post-discovery V30; pre-mechanism association. Not a prospective replication."
+  },
+  "design": {
+    "child_id": [
+      "species",
+      "country",
+      "master_site",
+      "count_unit",
+      "source_site_id"
+    ],
+    "parent_id": [
+      "species",
+      "country",
+      "master_site",
+      "count_unit"
+    ],
+    "epochs": "Two matched censuses, not annual survey time series",
+    "count_units": [
+      "AON",
+      "AOS",
+      "AOT",
+      "AOB",
+      "IND"
+    ],
+    "original_na_rule": "missing_not_zero",
+    "biological_null": "fixed_later_total_multinomial_allocation_not_an_observation_error_model",
+    "baseline_share_smoothing_alpha": 0.5,
+    "finite_count_null_replicates_min": 1999,
+    "species_and_network_cluster_required": true,
+    "site_ids_are_not_physical_islands": true,
+    "never_reinterpret_island_class_as_predator_status": true
+  },
+  "hypotheses": [
+    {
+      "id": "H1a",
+      "label": "size_dependent_share_retention",
+      "direction": "positive",
+      "unit": "child_within_parent",
+      "outcome": "conditional_later_site_share",
+      "predictor": "centered_log1p_baseline_count",
+      "effect_interpretation": "relative_advantage_beyond_finite_count_not_direct_social_allee"
+    },
+    {
+      "id": "H1b",
+      "label": "trait_interaction_colonial_density",
+      "direction": "greater_positive_in_dense_colony_species",
+      "unit": "species_trait_x_child_baseline_size",
+      "gate": "independent_species_trait_codes_frozen_before_effect_join",
+      "status_if_missing": "STOP"
+    },
+    {
+      "id": "H2",
+      "label": "physical_island_refuge",
+      "direction": "remote_or_verified_predator_free_child_share_retention_positive_ONLY_within_parent_cross_landmass",
+      "unit": "strict_mixed_landmass_parent",
+      "gate": "mixed_parent_geo_support",
+      "status_if_missing": "NOT_IDENTIFIED",
+      "cross_network_E": "descriptive_nondirectional_only"
+    },
+    {
+      "id": "H3",
+      "label": "independent_nesting_habitat_quality",
+      "direction": "positive",
+      "unit": "child_within_parent",
+      "predictor": "original_independent_site_usable_nesting_substrate",
+      "gate": "verified_source_footprint_and_habitat_quality_frozen",
+      "status_if_missing": "STOP"
+    }
+  ],
+  "geography": {
+    "primary_source": "GSHHG NOAA/UH full-resolution 2.3.7 level-1 coastline with holes",
+    "reference_repo": "zuizui0223/island",
+    "sensitivity_source": "Natural Earth 10m land 5.1.1 plus minor islands 4.1.0",
+    "optional_unselected_crosscheck": "OSM mapped shoreline polygon",
+    "projected_epsg": "EPSG:3035",
+    "roi_wgs84_lonlat_bbox": [
+      -13.5,
+      48,
+      3.5,
+      63.5
+    ],
+    "small_area_km2_range_inclusive_lower_exclusive_upper": [
+      0.01,
+      1000
+    ],
+    "intermediate_area_km2_range": [
+      1000,
+      50000
+    ],
+    "large_area_km2_min": 50000,
+    "reference_major_landmasses": [
+      "Great Britain",
+      "Ireland"
+    ],
+    "exact_primary_status": "UNIQUE_POINT_IN_LAND",
+    "coast_sensitive_within_m": 250,
+    "provisional_snap_max_m": 250,
+    "provisional_second_nearest_min_m": 750,
+    "exclude_provisional_snap_from_strict_primary": true,
+    "never_assign_from_site_name": true,
+    "center_point_is_verified_nest_gps": false,
+    "spatial_jitter_sensitivity_m": 250
+  },
+  "thresholds": {
+    "H1a": {
+      "parent_panels_min": 100,
+      "species_min": 8,
+      "master_networks_min": 30,
+      "unit_categories_min": 3
+    },
+    "H1b": {
+      "trait_coded_species_min": 8,
+      "species_per_category_min": 3
+    },
+    "H2_small_vs_large_descriptive": {
+      "small_panels_min": 20,
+      "large_panels_min": 20,
+      "small_landmasses_min": 5,
+      "large_landmasses_min": 2,
+      "species_balanced_min": 5,
+      "parents_per_class_per_species_min": 3
+    },
+    "H2_mixed_parent_primary": {
+      "mixed_parents_min": 20,
+      "independent_landmasses_min": 5,
+      "species_min": 5,
+      "landmasses_per_parent_min": 2
+    },
+    "H3": {
+      "parents_min": 40,
+      "species_min": 5,
+      "networks_min": 15,
+      "quality_measured_children_per_parent_min": 3,
+      "quality_levels_per_parent_min": 2
+    },
+    "H2_predator_specific": {
+      "required": "independent_verified_mammal_status_and_eradication_years_for_both_exposure_categories"
+    }
+  },
+  "analysis_prohibitions": [
+    "No retuning GSHHG coast assignment by seeing concentration E",
+    "No island inferred from Master-site name",
+    "No physical island refugia from between-parent concentration E",
+    "No mammal absence inferred from offshore area or distance alone",
+    "No p values treating adjusted census count items as independent animals",
+    "No confidence claim from retrospectively sourced species traits",
+    "No silent merging of AOS/AON/AOB/AOT/IND",
+    "No changes to frozen Ecology PR189, Antarctic PR197/199, or original V30 ecological results"
+  ],
+  "next_action": "Map GSHHG child sites using original coordinate-only source; freeze geography/trait coverage, then decide H1/H2/H3 effect gate before outcome joins."
+}
