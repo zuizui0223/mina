@@ -46,7 +46,7 @@ def source_islands() -> dict[int,dict]:
     for offset in range(0,count,1000):
         obj=source.official_json("/query",{
           "where":"1=1","outFields":"FID,lowid,name,mhwsarea_h,mlwsarea_h,population,ferry,group_,country,coast",
-          "returnGeometry":"false","orderByFields":"FID ASC",
+          "returnGeometry":"true","outSR":4326,"orderByFields":"FID ASC",
           "resultOffset":offset,"resultRecordCount":min(1000,count-offset),"f":"json"
         })
         rows=obj.get("features",[])
@@ -57,7 +57,13 @@ def source_islands() -> dict[int,dict]:
             key=source.to_integral_key(a.get("lowid"))
             if key is None or key in result:
                 raise ValueError("SOURCE_LOWID_MISSING_OR_DUPLICATE")
+            loc=row.get("geometry") or {}
+            if not (isinstance(loc.get("x"),(int,float))
+                    and isinstance(loc.get("y"),(int,float))
+                    and -180<=loc["x"]<=180 and -90<=loc["y"]<=90):
+                raise ValueError("SOURCE_RSPB_COORDINATE_MISSING")
             result[key]={
+                "lon":float(loc["x"]),"lat":float(loc["y"]),
                 "name":str(a.get("name") or "").strip().lower().replace("_"," "),
                 "area_ha":a.get("mhwsarea_h"),
                 "mlws_area_ha":a.get("mlwsarea_h"),
