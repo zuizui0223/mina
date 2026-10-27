@@ -203,7 +203,6 @@ def inspect_xls_sheets(data,slug):
                 "rat_status_value_distributions_only_if_explicit_header":taxon_codes,
                 "visit_rows_are_not_verified_predator_survey_effort":True,
             })
-            book.release_resources()
         return tables
     finally:
         book.release_resources()
