@@ -230,6 +230,12 @@ def main():
                   pool.map(v47.fetch_first_party_workbook,slugs)}
         result["source_original_publisher_SHA_and_shape"]={k:v[1] for k,v in data.items()}
         loc,metadata=v47.locations_source(data["fibdv8-20140601-locations"][0])
+        # V47 georeference helper deliberately omits Category. Derive only
+        # source metadata on the same exact named reference rows, no alias.
+        for item in data["fibdv8-20140601-locations"][0][1:]:
+            original_name=v47.norm(item[0])
+            if original_name in loc:
+                loc[original_name]["category"]=v47.norm(item[3])
         y,d,vis=v47.visits_source(data["fibdv8-20140601-visits"][0],loc)
         bird_v47,year,day=v47.birds_source(data["fibdv8-20140601-birds"][0],loc,y,d)
         if (len(year)!=EXPECTED_G1_YEAR or len({k[0] for k in year})!=EXPECTED_G1_LOCALITIES
