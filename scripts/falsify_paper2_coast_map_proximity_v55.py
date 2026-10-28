@@ -105,8 +105,10 @@ def prep_land_only_cell_source(source,access):
         if len(yy)<2*MIN_SOURCE_NESTS_CLASS_SITE or not np.isfinite(X).all():
             raise ValueError("V55_SOURCE_LAND_ONLY_GEOGRAPHY_OR_DEM_INVALID")
         inv,cells=source_taxon_cell_inverse(data["xy"][eligible],yy)
-        if any(cells[code]<MIN_CELLS_CLASS_SITE for code in (0,1)):
-            raise ValueError("V55_SOURCE_LAND_ONLY_30M_CELL_TAXON_SUPPORT_LT20:"+site)
+        # A genuine original locality×taxon with <20 occupied 30m
+        # cells is a pre-fixed scientific STOP for the B reweighting model,
+        # not a script error. Preserve A (strict land only) and the cell
+        # source denominator without lowering the original 20-cell gate.
         info[site]={
            "X":X,"y":yy,"inv":inv,"original_taxon_cell_n":cells,
            "original_true_source_island":v51.PARENT[site]
@@ -198,11 +200,32 @@ def model_after_original_source_checks(npz_path:Path):
     inside,counts=original_land_and_source_coast(data,coast,measures)
     strictonly=v51.source_heldout_predictive_qa(data,inside)
     cell_input=prep_land_only_cell_source(data,inside)
-    spatial=original_three_island_cell_equal_holdout(cell_input)
+    original_cell_support={
+        site:{species:counts
+              for species,counts in info["original_taxon_cell_n"].items()}
+        for site,info in cell_input.items()
+    }
+    original_cell_gate=all(
+        cells.get(code,0)>=MIN_CELLS_CLASS_SITE
+        for cells in original_cell_support.values() for code in (0,1))
+    if original_cell_gate:
+        spatial=original_three_island_cell_equal_holdout(cell_input)
+    else:
+        spatial={
+          "status":"STOP_V55_ORIGINAL_30M_CELL_LOCALITY_TAXON_SUPPORT_LT20",
+          "source_original_occupied_cell_n_by_locality":original_cell_support,
+          "V55_30m_cell_balanced_incremental_map_source_gate_pass":False,
+          "new_original_30m_cell_reweighted_biological_effect_computed":False,
+          "no_change_to_fixed_minimum_20_30m_cells_per_original_taxon_locality":True,
+        }
     original_criterion=strictonly["fixed_coast_increment_at_least_two_islands_and_gain_ge_0p005_pass"]
     cell_criterion=spatial["V55_30m_cell_balanced_incremental_map_source_gate_pass"]
     return {
-       "status":"V55_ORIGINAL_THREE_ISLAND_STRICT_LAND_AND_CELL_FALSIFICATION_COMPLETED",
+       "status":("V55_STRICT_LAND_SOURCE_EFFECT_COMPUTED_30M_CELL_GATE_STOP"
+                 if not original_cell_gate else
+                 "V55_ORIGINAL_THREE_ISLAND_STRICT_LAND_AND_CELL_FALSIFICATION_COMPLETED"),
+       "original_30m_taxon_cell_sample_support":original_cell_support,
+       "original_30m_cell_source_gate_before_effect_pass":original_cell_gate,
        "original_V54_full_frame_source_equal_island_Brier_gain_unchanged":EXPECTED_V54_GAIN,
        "original_V54_three_source_island_gain_replicated":original["heldout_island_Brier"],
        "actual_original_source_sample_censored_to_strict_2020_land":counts,
