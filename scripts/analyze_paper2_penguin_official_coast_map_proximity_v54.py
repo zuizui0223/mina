@@ -43,7 +43,8 @@ def qsummary(x):
 
 def original_exact_coastal_geography(orig):
     names=set(v51.PARENT.values())
-    if set(orig)!=names:raise ValueError("ORIGINAL_THREE_ISLAND_LOCATIONS_NOT_IDENTICAL")
+    if set(orig)!=set(v51.ORIGINAL_LOCALITIES):
+        raise ValueError("ORIGINAL_FOUR_LOCALITY_KEYS_NOT_IDENTICAL")
     medians={}
     for island in names:
         concat=np.vstack([v["xy"] for site,v in orig.items()
