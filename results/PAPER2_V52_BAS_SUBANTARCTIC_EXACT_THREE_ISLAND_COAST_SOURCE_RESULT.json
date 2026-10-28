@@ -1,0 +1,104 @@
+{
+  "schema": "MINA_PAPER2_V52_BAS_SUBANTARCTIC_OFFICIAL_COAST_SOURCE_RESULT",
+  "date": "2026-10-28",
+  "status": "STOP_V52_BAS_OFFICIAL_SUBANTARCTIC_GEOGRAPHY_SUPPORT",
+  "original_source_contract": "contracts/PAPER2_THREE_ISLAND_BAS_SUBANTARCTIC_COAST_V52_SOURCE.md",
+  "original_V26_bird_source": {
+    "original_2019_20_bird_nest_rows": 122139,
+    "derived_V26_original_NPZ_sha256": "1566f4fef4ac5370f40f6482e9f76f7b252e32ade8915a190cf0d2fc946883ec",
+    "duplicate_source_nest_coordinates_excluded_n": {
+      "Ashen_Hills": 2328,
+      "Bellingshausen": 430,
+      "Beach_Point": 594,
+      "Hewison_Point": 14
+    },
+    "original_country_or_physical_island_replicates": 3,
+    "same_actual_4_BAS_source_localities": [
+      "Ashen_Hills",
+      "Bellingshausen",
+      "Beach_Point",
+      "Hewison_Point"
+    ],
+    "all_original_NPZ_bird_species_are_flightless_penguins": true
+  },
+  "original_BAS_Coast_DOI": "10.5285/c1d83502-8799-4e3c-bdca-21db6a4405d4",
+  "original_BAS_Coast_ZIP_SHA256": "27b4cd2085b9c845abf7928c336cf82f0d37492bbe2c21522ac4c670750f6cff",
+  "original_BAS_Coast_ZIP_bytes": 1267481,
+  "original_coast_crs": 3031,
+  "original_full_GIS_source_metadata": {
+    "original_public_BAS_Scar_coastline_version": "1.0",
+    "original_public_BAS_subantarctic_coastline_DOI": "10.5285/c1d83502-8799-4e3c-bdca-21db6a4405d4",
+    "original_source_SGGIS_South_Sandwich_lineage": true,
+    "original_source_zip_SHA256": "27b4cd2085b9c845abf7928c336cf82f0d37492bbe2c21522ac4c670750f6cff",
+    "original_source_zip_bytes": 1267481,
+    "original_source_native_crs_EPSG": 3031,
+    "original_total_shapefile_polygons": 466,
+    "original_polygons_with_original_bbox_covering_a_site_median": 3,
+    "original_three_island_strict_polygon_counts": {
+      "Bellingshausen": 1,
+      "Saunders": 1,
+      "Thule": 1
+    },
+    "geometry_original_not_adjusted_to_nest_points": true,
+    "provisionally_strict_source_coast_shapes": {
+      "Bellingshausen": {
+        "original_publisher_source_shape_id": "original_v1_file_shape_index_451",
+        "original_shape_index": 451,
+        "original_island_projected_area_km2": 1.558257101129231
+      },
+      "Saunders": {
+        "original_publisher_source_shape_id": "original_v1_file_shape_index_458",
+        "original_shape_index": 458,
+        "original_island_projected_area_km2": 37.93281019131191
+      },
+      "Thule": {
+        "original_publisher_source_shape_id": "original_v1_file_shape_index_450",
+        "original_shape_index": 450,
+        "original_island_projected_area_km2": 16.739957193777226
+      }
+    },
+    "all_three_candidates_unique_containing_polygons": true,
+    "distinct_physical_publisher_polygon_ids": 3
+  },
+  "strict_species_blind_nest_to_original_physical_land": {
+    "Ashen_Hills": {
+      "source_nest_coordinates_after_duplicate_exclusion": 75255,
+      "original_STRICT_island_land_polygon_matched": true,
+      "original_inside_land_n": 72903,
+      "original_outside_land_n": 2352,
+      "fraction_source_nests_inside": 0.9687462627067969
+    },
+    "Bellingshausen": {
+      "source_nest_coordinates_after_duplicate_exclusion": 14005,
+      "original_STRICT_island_land_polygon_matched": true,
+      "original_inside_land_n": 13370,
+      "original_outside_land_n": 635,
+      "fraction_source_nests_inside": 0.9546590503391645
+    },
+    "Beach_Point": {
+      "source_nest_coordinates_after_duplicate_exclusion": 7089,
+      "original_STRICT_island_land_polygon_matched": true,
+      "original_inside_land_n": 7089,
+      "original_outside_land_n": 0,
+      "fraction_source_nests_inside": 1
+    },
+    "Hewison_Point": {
+      "source_nest_coordinates_after_duplicate_exclusion": 22424,
+      "original_STRICT_island_land_polygon_matched": true,
+      "original_inside_land_n": 19203,
+      "original_outside_land_n": 3221,
+      "fraction_source_nests_inside": 0.8563592579379237
+    }
+  },
+  "pre_effect_source_gates": {
+    "three_strict_original_BAS_land_polygon_source_coverage": true,
+    "three_original_land_polygon_areas_source_plausible": true,
+    "per_original_locality_all_species_blind_inside_ge95_percent": false,
+    "source_only_Paper2_Geography_gate_pass": false,
+    "new_species_by_coast_distance_or_terrain_effect_opened": false,
+    "no_animal_nest_locations_changed_to_fit_reference_shoreline": true
+  },
+  "scientific_decision": "Three candidate islands have unique separate original BAS/South Georgia GIS coast polygons, but Hewison Point strict nesting coordinate on-land rate 85.64% below frozen 95%; no coastline access/nesting-species effect fitted, no shoreline snap.",
+  "future_source_diagnostic": "Quantify outside-polygon nest-to-coast distances with no taxon labels to distinguish coastline mismatch/erosion/cartography from gross source coordinate offsets; stop modifying shape thresholds.",
+  "original_execution": "https://github.com/zuizui0223/mina/actions/runs/40629723998"
+}
