@@ -1,0 +1,53 @@
+name: Paper2 V53 exact published BAS nest offshore source-coordinate disagreement
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/PAPER2_V53_SHORELINE_NEST_COORDINATE_DISAGREEMENT.md'
+      - 'scripts/audit_paper2_original_coast_disagreement_v53.py'
+      - 'tests/test_paper2_original_coast_disagreement_v53.py'
+      - '.github/workflows/paper2-v53-original-shore-disagreement.yml'
+  pull_request:
+    paths:
+      - 'contracts/PAPER2_V53_SHORELINE_NEST_COORDINATE_DISAGREEMENT.md'
+      - 'scripts/audit_paper2_original_coast_disagreement_v53.py'
+      - 'tests/test_paper2_original_coast_disagreement_v53.py'
+      - '.github/workflows/paper2-v53-original-shore-disagreement.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  coastline_vs_nest_external_GIS_source_QA:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source geospatial dependencies
+        run: python -m pip install requests 'pyshp==2.3.1' 'shapely>=2.0' pyproj numpy scikit-learn pytest
+      - name: Test source-only exact outside-island distance with no snapping
+        run: python -m pytest -q tests/test_paper2_original_coast_disagreement_v53.py
+      - name: Reuse original BAS V26 full source nest point and DEM package
+        uses: actions/download-artifact@v4
+        with:
+          name: bas-original-nest-independent-CopDEM-terrain-v26
+          run-id: 40279185790
+          github-token: ${{ github.token }}
+          path: /tmp/PAPER2_V53_BAS_OLD_NESTS
+      - name: Diagnose only 2019/20 source nest-to-2020 official coastline mismatch
+        run: |
+          python scripts/audit_paper2_original_coast_disagreement_v53.py \
+            --v26-npz /tmp/PAPER2_V53_BAS_OLD_NESTS/BAS_HART_PUBLIC_GLO30_NEST_TERRAIN_V26.npz \
+            --out /tmp/PAPER2_V53_OFFICIAL_BAS_COAST_NEST_DIAGNOSTIC.json
+      - name: Store aggregate source-only shoreline mismatch distributions and publisher SHA
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v53-original-shoreline-nest-source-mismatch-no-ecological-outcomes
+          path: /tmp/PAPER2_V53_OFFICIAL_BAS_COAST_NEST_DIAGNOSTIC.json
+          if-no-files-found: warn
