@@ -13,6 +13,7 @@ import argparse
 from collections import Counter
 import hashlib
 import io
+import zipfile
 import json
 import math
 from pathlib import Path, PurePosixPath
