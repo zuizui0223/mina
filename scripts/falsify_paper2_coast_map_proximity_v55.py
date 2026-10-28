@@ -269,7 +269,7 @@ def main():
       "V55_A_source_land_only_folds":atlas.get("heldout_island_Brier"),
       "V55_B_strict_land_30m_species_cells_island_equal_gain":grid.get("original_equal_island_Brier_gain"),
       "V55_B_strict_land_cell_species_gains":grid.get("original_island_holdout_results"),
-      "V55_B_source_cells_by_site":grid.get("original_source_land_only_30m_taxon_cells"),
+      "V55_B_source_cells_by_site":grid.get("original_source_land_only_30m_taxon_cells") or grid.get("source_original_occupied_cell_n_by_locality"),
       "both_robust":report.get("V55_both_source_geography_and_original_30m_cell_robustness_PASS"),
       "error":report.get("error"),
     },ensure_ascii=False))
