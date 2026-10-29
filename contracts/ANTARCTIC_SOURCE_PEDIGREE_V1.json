@@ -1,0 +1,147 @@
+{
+  "schema": "mina_antarctic_primary_source_registry_v1",
+  "frozen_as_of": "2026-10-25",
+  "purpose": "Original spatial and ecological observations for independent macroecology, NOT a meta-analysis of published effect sizes.",
+  "observational_units": [
+    "source land feature",
+    "source rock-outcrop feature",
+    "published geographic survey site",
+    "site-species-season report",
+    "site-species-season-stage count",
+    "source citation lineage"
+  ],
+  "sources": [
+    {
+      "id": "SCAR_ADD_LAND_2026_V712",
+      "role": "independent_geography",
+      "publisher": "British Antarctic Survey / SCAR ADD",
+      "doi": "10.5285/13c4d2f1-8903-4d7f-8977-592121975554",
+      "edition": "7.12",
+      "original_zip_sha256": "66d82fa69f86eb8dbe8b04f01505cb2129feafec608455459ee4ed19d1dc38d4",
+      "audited_original_valid_land_polygon_count": 17269,
+      "grain": "mapped land geometry feature",
+      "strength": "original mapped land substrate",
+      "not_verified": [
+        "official named island",
+        "historical ice-free patch",
+        "animal location accuracy",
+        "ocean-only intervening gap"
+      ]
+    },
+    {
+      "id": "SCAR_ADD_ROCK_2025_V711",
+      "role": "independent_geography",
+      "publisher": "British Antarctic Survey / SCAR ADD",
+      "doi": "10.5285/3f0c400f-04b9-4819-98cb-f6b53716aca5",
+      "edition": "7.11",
+      "original_zip_sha256": "4d93119052d3c6bf51d20dab218447686e2273e7489e1b63351b69e4bc3d7d8b",
+      "grain": "mapped outcrop polygon feature",
+      "strength": "independently derived rock geometry for functional habitat atlas",
+      "not_verified": [
+        "nests",
+        "usable breeder capacity",
+        "interannual exposure",
+        "full alignment with ADD land v7.12"
+      ],
+      "audited_original_valid_rock_polygon_count": 31480,
+      "exact_whole_rock_into_unique_land_polygon_count": 28099,
+      "held_unassigned_rock_polygon_count": 3381,
+      "source_qa_run": "https://github.com/zuizui0223/mina/actions/runs/40163069247"
+    },
+    {
+      "id": "AEI_2025",
+      "role": "independent_terrestrial_environment_with_leakage_exclusions",
+      "publisher": "Antarctic Ecosystem Inventory",
+      "doi": "10.1038/s41597-025-04424-y",
+      "spatial_resolution_m": 100,
+      "major_environment_units": 9,
+      "habitat_complex_types": 33,
+      "bioregional_ecosystem_types": 269,
+      "grain": "raster cell / classified habitat type",
+      "rule": "Exclude penguin-colony-derived categories and any source imagery knowingly derived from MAPPPD outcome when joining penguin responses."
+    },
+    {
+      "id": "AADC_EAST_GEOGRAPHIC_SITE_REFERENCE",
+      "role": "survey_effort_geographical_frame",
+      "publisher": "Australian Antarctic Data Centre",
+      "doi": "10.26179/53yk-8z83",
+      "grain": "AADC defined ice-free geographic site",
+      "rule": "This source-defined geographic site is not automatically one SCAR polygon or one penguin colony.",
+      "survey_site_total": "do_not_infer_from_general_rock_feature_count",
+      "not_verified": [
+        "site-to-original ADD feature crosswalk",
+        "nest GPS coordinates"
+      ]
+    },
+    {
+      "id": "AADC_EAST_SEABIRD_OCCUPANCY_2025",
+      "role": "source_survey_presence_absence",
+      "publisher": "Australian Antarctic Data Centre",
+      "doi": "10.26179/5n29-r073",
+      "original_species_n": 8,
+      "species": [
+        "Pygoscelis adeliae",
+        "Thalassoica antarctica",
+        "Daption capense",
+        "Fulmarus glacialoides",
+        "Macronectes giganteus",
+        "Stercorarius maccormicki",
+        "Pagodroma nivea",
+        "Oceanites oceanicus"
+      ],
+      "grain": "geographic-site x species x breeding season x search event",
+      "outcomes_available": [
+        "explicit P",
+        "explicit A",
+        "NR (not absence)"
+      ],
+      "rule": "Model direct P/A only after survey-protocol and geography gates. NR is not 0. Duplicate same-site species-season categories stay source-resolved.",
+      "publisher_reported_original_search_events": 33297,
+      "note": "Prior repo stages report differently filtered records. Do not equate filtered analysis rows with publisher original event total."
+    },
+    {
+      "id": "OCEANITES_MAPPPD_2026_V5",
+      "role": "penguin_longitudinal_census_anchor",
+      "publisher": "Oceanites",
+      "url": "https://www.penguinmap.com/mapppd/",
+      "release_date": "2026-10-21",
+      "version": "5.0",
+      "original_sites": 729,
+      "original_observations": 5487,
+      "species_n": 6,
+      "grain": "source site x species x breeding season x count type / vantage / citation",
+      "audited_strict_adjacent_year_pygoscelis_nest_transitions": 771,
+      "sites_with_audited_strict_transitions": 95,
+      "observational_limits": [
+        "presence-biased colony inventory is not surveyed absence",
+        "site source coordinates not independently measured nest GPS",
+        "stage and citation discontinuity",
+        "geographical blocks are not independent islands"
+      ]
+    },
+    {
+      "id": "NZ_ROSS_SEA_2026",
+      "role": "regional_source_for_lineage_qa",
+      "publisher": "New Zealand Ross Sea aerial census",
+      "grain": "source colony x season x species x stage",
+      "record_overlap_with_mapppd_v5_same_source_observations": 316,
+      "overlapping_site_ids": 21,
+      "rule": "Matched observed records are shared source lineage, not a second independent biological replication."
+    },
+    {
+      "id": "NOAA_NSIDC_SEA_ICE",
+      "role": "marine_context_separate_phase",
+      "publisher": "NOAA/NSIDC",
+      "grain": "monthly gridded sea-ice concentration",
+      "rule": "Sea ice fraction in offshore grid cells cannot be re-labelled annual stable nest fast ice, ocean-current distance or colony-specific prey accessibility."
+    }
+  ],
+  "evaluation_protocol": {
+    "independent_observation_needs_distinct_original_site_programme_season_source": true,
+    "shared_citation_and_exact_stage_year_site_is_independent_replicate": false,
+    "nominal_geographical_site_equals_named_island": false,
+    "map_habitat_category_derived_from_penguins_allowed_as_penguin_predictor": false,
+    "occupancy_non_reporting_is_absence": false,
+    "primary_biological_outcomes_already_opened_for_new_atlas": false
+  }
+}

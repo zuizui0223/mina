@@ -1,0 +1,491 @@
+{
+  "status": "AADC_10KM_OPTION_NETWORK_V2_POST_RESULT_FALSIFICATION",
+  "biological_outcomes_previously_viewed": true,
+  "original_2025_site_reference_count": 7785,
+  "original_2021_site_reference_count": 4884,
+  "original_source_hashes": {
+    "potential_geography_2021": "2236269e754962f9af082a0853993fc65a4afd20c7489a65fae81bdd1899ffaa",
+    "potential_geography_2025": "ed5f59d11a0e2ca7491ecf32dc8b04de524e83edf7acd268702963c3b7561294",
+    "penguin_original_search": "8b38aa86f0ef2a0a9fe8c5bb13da904a9f2431cd503644b962b6e116ac3187ac",
+    "flying_seabird_original_search": "4a03d8efc8f1579b2eafd982811c39edc00d2c87d49e990f93c6411db6860360",
+    "survey_certainty_rules": "b7aba52732102441b4edbe438b854cb9d2dbf39542fd6fbfcd62647ae9fdd156"
+  },
+  "original_manifest_sha256": "c6b06ed506536490ba70947950879713c8eb43480a927bdb3e6d1febda0630af",
+  "diagnostics": {
+    "ADELIE": {
+      "original_v1_replay_exact": true,
+      "original_v1_replay": {
+        "B0": {
+          "Brier_by_block": {
+            "10_-1": 0.16305128119971757,
+            "5_-9": 0.23202146723031644,
+            "5_7": 0.14771472544109993,
+            "6_-8": 0.31563234374733584,
+            "6_-9": 0.17665113602814153,
+            "6_7": 0.397382691380909,
+            "7_-8": 0.6426871251871881,
+            "7_6": 0.4882010606034098,
+            "8_2": 0.1267735053978023,
+            "8_4": 0.3649035860514596,
+            "9_-4": 0.16647044811371647,
+            "9_1": 0.10554930838620813
+          },
+          "Brier_equal_block_mean": 0.2772532232306087,
+          "logloss_equal_block_mean": 0.9189559557701692
+        },
+        "B1": {
+          "Brier_by_block": {
+            "10_-1": 0.0058460472623178775,
+            "5_-9": 0.44034338026406156,
+            "5_7": 0.31109965991482436,
+            "6_-8": 0.30166402880345233,
+            "6_-9": 0.11673588459970252,
+            "6_7": 0.2166483424858521,
+            "7_-8": 0.489768301679243,
+            "7_6": 0.4305786818754157,
+            "8_2": 0.09146263672756517,
+            "8_4": 0.35096193811802906,
+            "9_-4": 0.1988177948346653,
+            "9_1": 0.24467663854644028
+          },
+          "Brier_equal_block_mean": 0.2665502779259641,
+          "logloss_equal_block_mean": 0.8596993368759102
+        },
+        "Brier_improvement_B0_minus_B1": 0.010702945304644607,
+        "spatial_blocks_with_lower_Brier": 8,
+        "spatial_blocks": 12,
+        "improvement_by_spatial_block": {
+          "10_-1": 0.15720523393739969,
+          "5_-9": -0.20832191303374512,
+          "5_7": -0.16338493447372443,
+          "6_-8": 0.013968314943883509,
+          "6_-9": 0.05991525142843901,
+          "6_7": 0.18073434889505688,
+          "7_-8": 0.15291882350794506,
+          "7_6": 0.057622378727994084,
+          "8_2": 0.035310868670237125,
+          "8_4": 0.013941647933430557,
+          "9_-4": -0.03234734672094883,
+          "9_1": -0.13912733016023215
+        },
+        "source_site_n": 1031,
+        "observation_n": 3618,
+        "one_site_species_history_total_weight_one": true
+      },
+      "R1_lean_survey_and_geography_controls": {
+        "B0": {
+          "Brier_by_block": {
+            "10_-1": 0.1415031612354704,
+            "5_-9": 0.2077324106275223,
+            "5_7": 0.1538003028694743,
+            "6_-8": 0.31660670958570714,
+            "6_-9": 0.17302550671401018,
+            "6_7": 0.3976522127243588,
+            "7_-8": 0.6407455205736391,
+            "7_6": 0.4621103995814659,
+            "8_2": 0.12124834722460726,
+            "8_4": 0.2551082882459739,
+            "9_-4": 0.13858119572668795,
+            "9_1": 0.10485543431205095
+          },
+          "Brier_equal_block_mean": 0.259414124118414,
+          "logloss_equal_block_mean": 0.8547832812356607
+        },
+        "B1": {
+          "Brier_by_block": {
+            "10_-1": 0.004604999901069945,
+            "5_-9": 0.3991400288325923,
+            "5_7": 0.33655559116082745,
+            "6_-8": 0.30379657228138174,
+            "6_-9": 0.11065287559173186,
+            "6_7": 0.22444594267667686,
+            "7_-8": 0.4918500972364446,
+            "7_6": 0.38712530967876396,
+            "8_2": 0.08977389460505673,
+            "8_4": 0.23636978846202675,
+            "9_-4": 0.18372735606326468,
+            "9_1": 0.23829796228159275
+          },
+          "Brier_equal_block_mean": 0.2505283682309525,
+          "logloss_equal_block_mean": 0.7928666555112901
+        },
+        "Brier_improvement_B0_minus_B1": 0.008885755887461544,
+        "spatial_blocks_with_lower_Brier": 8,
+        "spatial_blocks": 12,
+        "improvement_by_spatial_block": {
+          "10_-1": 0.13689816133440047,
+          "5_-9": -0.19140761820507002,
+          "5_7": -0.18275528829135315,
+          "6_-8": 0.012810137304325397,
+          "6_-9": 0.062372631122278324,
+          "6_7": 0.17320627004768194,
+          "7_-8": 0.14889542333719452,
+          "7_6": 0.07498508990270192,
+          "8_2": 0.03147445261955052,
+          "8_4": 0.018738499783947177,
+          "9_-4": -0.04514616033657673,
+          "9_1": -0.1334425279695418
+        },
+        "source_site_n": 1031,
+        "observation_n": 3618,
+        "one_site_species_history_total_weight_one": true
+      },
+      "R2_2021_historical_geographic_frame": {
+        "status": "COMMON_2021_SITE_IDS_HISTORICAL_FRAME_CHALLENGE",
+        "original_shared_cohort_source_sites": 1031,
+        "2025_density_on_shared_cohort": {
+          "B0": {
+            "Brier_by_block": {
+              "10_-1": 0.16305128119971757,
+              "5_-9": 0.23202146723031644,
+              "5_7": 0.14771472544109993,
+              "6_-8": 0.31563234374733584,
+              "6_-9": 0.17665113602814153,
+              "6_7": 0.397382691380909,
+              "7_-8": 0.6426871251871881,
+              "7_6": 0.4882010606034098,
+              "8_2": 0.1267735053978023,
+              "8_4": 0.3649035860514596,
+              "9_-4": 0.16647044811371647,
+              "9_1": 0.10554930838620813
+            },
+            "Brier_equal_block_mean": 0.2772532232306087,
+            "logloss_equal_block_mean": 0.9189559557701692
+          },
+          "B1": {
+            "Brier_by_block": {
+              "10_-1": 0.0058460472623178775,
+              "5_-9": 0.44034338026406156,
+              "5_7": 0.31109965991482436,
+              "6_-8": 0.30166402880345233,
+              "6_-9": 0.11673588459970252,
+              "6_7": 0.2166483424858521,
+              "7_-8": 0.489768301679243,
+              "7_6": 0.4305786818754157,
+              "8_2": 0.09146263672756517,
+              "8_4": 0.35096193811802906,
+              "9_-4": 0.1988177948346653,
+              "9_1": 0.24467663854644028
+            },
+            "Brier_equal_block_mean": 0.2665502779259641,
+            "logloss_equal_block_mean": 0.8596993368759102
+          },
+          "Brier_improvement_B0_minus_B1": 0.010702945304644607,
+          "spatial_blocks_with_lower_Brier": 8,
+          "spatial_blocks": 12,
+          "improvement_by_spatial_block": {
+            "10_-1": 0.15720523393739969,
+            "5_-9": -0.20832191303374512,
+            "5_7": -0.16338493447372443,
+            "6_-8": 0.013968314943883509,
+            "6_-9": 0.05991525142843901,
+            "6_7": 0.18073434889505688,
+            "7_-8": 0.15291882350794506,
+            "7_6": 0.057622378727994084,
+            "8_2": 0.035310868670237125,
+            "8_4": 0.013941647933430557,
+            "9_-4": -0.03234734672094883,
+            "9_1": -0.13912733016023215
+          },
+          "source_site_n": 1031,
+          "observation_n": 3618,
+          "one_site_species_history_total_weight_one": true
+        },
+        "2021_density_on_identical_shared_cohort": {
+          "B0": {
+            "Brier_by_block": {
+              "10_-1": 0.16305128119971757,
+              "5_-9": 0.23202146723031644,
+              "5_7": 0.14771472544109993,
+              "6_-8": 0.31563234374733584,
+              "6_-9": 0.17665113602814153,
+              "6_7": 0.397382691380909,
+              "7_-8": 0.6426871251871881,
+              "7_6": 0.4882010606034098,
+              "8_2": 0.1267735053978023,
+              "8_4": 0.3649035860514596,
+              "9_-4": 0.16647044811371647,
+              "9_1": 0.10554930838620813
+            },
+            "Brier_equal_block_mean": 0.2772532232306087,
+            "logloss_equal_block_mean": 0.9189559557701692
+          },
+          "B1": {
+            "Brier_by_block": {
+              "10_-1": 0.0054476746166621645,
+              "5_-9": 0.45794800279077347,
+              "5_7": 0.3124032695907114,
+              "6_-8": 0.30085872866536173,
+              "6_-9": 0.11443689366733688,
+              "6_7": 0.13170908049030125,
+              "7_-8": 0.4613663827670368,
+              "7_6": 0.450205474400078,
+              "8_2": 0.09205886871729048,
+              "8_4": 0.3369384844122382,
+              "9_-4": 0.19933378926990783,
+              "9_1": 0.2499588136381746
+            },
+            "Brier_equal_block_mean": 0.2593887885854894,
+            "logloss_equal_block_mean": 0.842544408093461
+          },
+          "Brier_improvement_B0_minus_B1": 0.017864434645119276,
+          "spatial_blocks_with_lower_Brier": 8,
+          "spatial_blocks": 12,
+          "improvement_by_spatial_block": {
+            "10_-1": 0.15760360658305542,
+            "5_-9": -0.22592653556045703,
+            "5_7": -0.16468854414961148,
+            "6_-8": 0.014773615081974112,
+            "6_-9": 0.06221424236080465,
+            "6_7": 0.2656736108906077,
+            "7_-8": 0.18132074242015128,
+            "7_6": 0.037995586203331766,
+            "8_2": 0.03471463668051182,
+            "8_4": 0.02796510163922139,
+            "9_-4": -0.032863341156191356,
+            "9_1": -0.14440950525196647
+          },
+          "source_site_n": 1031,
+          "observation_n": 3618,
+          "one_site_species_history_total_weight_one": true
+        },
+        "2021_reference_point_total": 4884,
+        "historical_geo_coordinates_only_no_animal_data_in_predictor": true
+      },
+      "R3_stratified_site_level_density_shuffle": {
+        "status": "POST_RESULT_SOURCE_MAP_NEGATIVE_CONTROL_ONLY",
+        "fixed_seed": 20261026,
+        "site_level_replicates": 31,
+        "site_shuffle_nested_in": "250km block x source class x 2021-reference-membership",
+        "shuffled_effective_changed_site_fraction_median": 0.9466537342386033,
+        "shuffled_effective_changed_site_fraction_min": 0.9340446168768186,
+        "shuffle_testability_gate_25pct_pass": true,
+        "observed_original_Brier_gain": 0.010702945304644607,
+        "permuted_Brier_gain_median": 0.02780543923398665,
+        "permuted_Brier_gain_p10": 0.019872260796207075,
+        "permuted_Brier_gain_p90": 0.037985142451656906,
+        "exploratory_empirical_observed_gain_percentile": 0.03225806451612903,
+        "exploratory_number_permutations_gain_at_least_observed": 30,
+        "scientific_p_value_or_causal_effect_estimated": false
+      }
+    },
+    "FLYING": {
+      "original_v1_replay_exact": true,
+      "original_v1_replay": {
+        "B0": {
+          "Brier_by_block": {
+            "5_-9": 0.3712538193636169,
+            "5_7": 0.873207444523477,
+            "6_-8": 0.2805471455450231,
+            "6_-9": 0.24655073657787674,
+            "8_2": 0.1153714130490623,
+            "8_4": 0.30708525317485963,
+            "9_-4": 0.3812935945202034,
+            "9_1": 0.2918126888627942
+          },
+          "Brier_equal_block_mean": 0.3583902619521141,
+          "logloss_equal_block_mean": 1.3905432570454206
+        },
+        "B1": {
+          "Brier_by_block": {
+            "5_-9": 0.3256903480626565,
+            "5_7": 0.8204203201762357,
+            "6_-8": 0.1410600876179406,
+            "6_-9": 0.22050721788588526,
+            "8_2": 0.10688297892523936,
+            "8_4": 0.22945212359760542,
+            "9_-4": 0.37184625183915554,
+            "9_1": 0.2820818752358783
+          },
+          "Brier_equal_block_mean": 0.3122426504175746,
+          "logloss_equal_block_mean": 1.159023273069134
+        },
+        "Brier_improvement_B0_minus_B1": 0.0461476115345395,
+        "spatial_blocks_with_lower_Brier": 8,
+        "spatial_blocks": 8,
+        "improvement_by_spatial_block": {
+          "5_-9": 0.04556347130096039,
+          "5_7": 0.05278712434724131,
+          "6_-8": 0.1394870579270825,
+          "6_-9": 0.02604351869199148,
+          "8_2": 0.008488434123822941,
+          "8_4": 0.07763312957725421,
+          "9_-4": 0.009447342681047854,
+          "9_1": 0.009730813626915913
+        },
+        "source_site_n": 368,
+        "observation_n": 6956,
+        "one_site_species_history_total_weight_one": true
+      },
+      "R1_lean_survey_and_geography_controls": {
+        "B0": {
+          "Brier_by_block": {
+            "5_-9": 0.4068247786655661,
+            "5_7": 0.9093171806398034,
+            "6_-8": 0.20854484521501568,
+            "6_-9": 0.15105210039018835,
+            "8_2": 0.15065340091135793,
+            "8_4": 0.5064391210052872,
+            "9_-4": 0.37989877567306723,
+            "9_1": 0.34147699261532705
+          },
+          "Brier_equal_block_mean": 0.3817758993894516,
+          "logloss_equal_block_mean": 1.6180508125743747
+        },
+        "B1": {
+          "Brier_by_block": {
+            "5_-9": 0.3274899958833861,
+            "5_7": 0.8709825935738044,
+            "6_-8": 0.10631423694779317,
+            "6_-9": 0.21239796920070853,
+            "8_2": 0.1509910171891613,
+            "8_4": 0.32027053468204314,
+            "9_-4": 0.37246556992334123,
+            "9_1": 0.3172679076582434
+          },
+          "Brier_equal_block_mean": 0.33477247813231015,
+          "logloss_equal_block_mean": 1.3235653691922011
+        },
+        "Brier_improvement_B0_minus_B1": 0.047003421257141464,
+        "spatial_blocks_with_lower_Brier": 6,
+        "spatial_blocks": 8,
+        "improvement_by_spatial_block": {
+          "5_-9": 0.07933478278217998,
+          "5_7": 0.038334587065999015,
+          "6_-8": 0.10223060826722251,
+          "6_-9": -0.06134586881052018,
+          "8_2": -0.00033761627780337644,
+          "8_4": 0.18616858632324407,
+          "9_-4": 0.007433205749726002,
+          "9_1": 0.024209084957083626
+        },
+        "source_site_n": 368,
+        "observation_n": 6956,
+        "one_site_species_history_total_weight_one": true
+      },
+      "R2_2021_historical_geographic_frame": {
+        "status": "COMMON_2021_SITE_IDS_HISTORICAL_FRAME_CHALLENGE",
+        "original_shared_cohort_source_sites": 357,
+        "2025_density_on_shared_cohort": {
+          "B0": {
+            "Brier_by_block": {
+              "5_-9": 0.4542972309137446,
+              "5_7": 0.8725729469126968,
+              "6_-8": 0.3042252920633165,
+              "6_-9": 0.30359364190680677,
+              "8_2": 0.11778980645604907,
+              "8_4": 0.3284490345839728,
+              "9_-4": 0.3809569713160223,
+              "9_1": 0.2935909121837213
+            },
+            "Brier_equal_block_mean": 0.38193447954204124,
+            "logloss_equal_block_mean": 1.45920744328735
+          },
+          "B1": {
+            "Brier_by_block": {
+              "5_-9": 0.3996216280110367,
+              "5_7": 0.8281919347915291,
+              "6_-8": 0.15547557922927774,
+              "6_-9": 0.27688936762710614,
+              "8_2": 0.10945307735533033,
+              "8_4": 0.24956539971206482,
+              "9_-4": 0.3729875422429145,
+              "9_1": 0.28491577113204924
+            },
+            "Brier_equal_block_mean": 0.33463753751266356,
+            "logloss_equal_block_mean": 1.2391997022817587
+          },
+          "Brier_improvement_B0_minus_B1": 0.047296942029377675,
+          "spatial_blocks_with_lower_Brier": 8,
+          "spatial_blocks": 8,
+          "improvement_by_spatial_block": {
+            "5_-9": 0.0546756029027079,
+            "5_7": 0.04438101212116774,
+            "6_-8": 0.14874971283403876,
+            "6_-9": 0.026704274279700624,
+            "8_2": 0.00833672910071874,
+            "8_4": 0.07888363487190797,
+            "9_-4": 0.00796942907310777,
+            "9_1": 0.008675141051672053
+          },
+          "source_site_n": 357,
+          "observation_n": 6925,
+          "one_site_species_history_total_weight_one": true
+        },
+        "2021_density_on_identical_shared_cohort": {
+          "B0": {
+            "Brier_by_block": {
+              "5_-9": 0.4542972309137446,
+              "5_7": 0.8725729469126968,
+              "6_-8": 0.3042252920633165,
+              "6_-9": 0.30359364190680677,
+              "8_2": 0.11778980645604907,
+              "8_4": 0.3284490345839728,
+              "9_-4": 0.3809569713160223,
+              "9_1": 0.2935909121837213
+            },
+            "Brier_equal_block_mean": 0.38193447954204124,
+            "logloss_equal_block_mean": 1.45920744328735
+          },
+          "B1": {
+            "Brier_by_block": {
+              "5_-9": 0.3879116381166998,
+              "5_7": 0.7963642045872356,
+              "6_-8": 0.15058109164127553,
+              "6_-9": 0.27325958814348916,
+              "8_2": 0.09622053104496837,
+              "8_4": 0.22248714456550114,
+              "9_-4": 0.36681023259547363,
+              "9_1": 0.2651914428052871
+            },
+            "Brier_equal_block_mean": 0.3198532341874913,
+            "logloss_equal_block_mean": 1.1540775644327956
+          },
+          "Brier_improvement_B0_minus_B1": 0.06208124535454995,
+          "spatial_blocks_with_lower_Brier": 8,
+          "spatial_blocks": 8,
+          "improvement_by_spatial_block": {
+            "5_-9": 0.06638559279704476,
+            "5_7": 0.07620874232546127,
+            "6_-8": 0.15364420042204097,
+            "6_-9": 0.030334053763317603,
+            "8_2": 0.021569275411080696,
+            "8_4": 0.10596189001847164,
+            "9_-4": 0.014146738720548668,
+            "9_1": 0.028399469378434183
+          },
+          "source_site_n": 357,
+          "observation_n": 6925,
+          "one_site_species_history_total_weight_one": true
+        },
+        "2021_reference_point_total": 4884,
+        "historical_geo_coordinates_only_no_animal_data_in_predictor": true
+      },
+      "R3_stratified_site_level_density_shuffle": {
+        "status": "POST_RESULT_SOURCE_MAP_NEGATIVE_CONTROL_ONLY",
+        "fixed_seed": 20261027,
+        "site_level_replicates": 31,
+        "site_shuffle_nested_in": "250km block x source class x 2021-reference-membership",
+        "shuffled_effective_changed_site_fraction_median": 0.8994565217391305,
+        "shuffled_effective_changed_site_fraction_min": 0.8614130434782609,
+        "shuffle_testability_gate_25pct_pass": true,
+        "observed_original_Brier_gain": 0.0461476115345395,
+        "permuted_Brier_gain_median": 0.005634874665830403,
+        "permuted_Brier_gain_p10": -0.004297913025463007,
+        "permuted_Brier_gain_p90": 0.01617739068095908,
+        "exploratory_empirical_observed_gain_percentile": 1,
+        "exploratory_number_permutations_gain_at_least_observed": 0,
+        "scientific_p_value_or_causal_effect_estimated": false
+      }
+    }
+  },
+  "P_A_NR_handling": "Only explicit P/A with V13 exact certainty; NR never zero",
+  "causation_identified": false,
+  "exploratory_after_positive_v1": true,
+  "retuning_after_diagnostics_permitted": false,
+  "execution": {
+    "original_ci": "https://github.com/zuizui0223/mina/actions/runs/40209742219",
+    "artifact": "https://github.com/zuizui0223/mina/actions/runs/40209742219/artifacts/12605390047",
+    "note": "V2 was designed after the positive V1 density result and is exploratory only."
+  }
+}

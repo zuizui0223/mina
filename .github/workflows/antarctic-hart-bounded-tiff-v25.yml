@@ -1,0 +1,51 @@
+name: Antarctic BAS Hart bounded original GeoTIFF source IFD V25
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/BAS_HART_SOURCE_ORTHTIFF_HEADER_V25.md'
+      - 'scripts/audit_bas_hart_bounded_source_tiff_geotags_v25.py'
+      - 'tests/test_bas_hart_bounded_source_tiff_geotags_v25.py'
+      - '.github/workflows/antarctic-hart-bounded-tiff-v25.yml'
+  pull_request:
+    paths:
+      - 'contracts/BAS_HART_SOURCE_ORTHTIFF_HEADER_V25.md'
+      - 'scripts/audit_bas_hart_bounded_source_tiff_geotags_v25.py'
+      - 'tests/test_bas_hart_bounded_source_tiff_geotags_v25.py'
+      - '.github/workflows/antarctic-hart-bounded-tiff-v25.yml'
+  workflow_dispatch:
+jobs:
+  original_publisher_no_pixel_geotiff_source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded official TIFF source inspection dependencies
+        run: python -m pip install pytest requests numpy tifffile
+      - name: Test HTTP range and no full TIFF image download
+        run: python -m pytest -q tests/test_bas_hart_bounded_source_tiff_geotags_v25.py
+      - name: Recover verified first-party BAS archive source file IDs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/bas-orig-v16
+          gh run download 40261490725 --repo "$GITHUB_REPOSITORY" \
+            --name bas-hart-original-all-locality-source-manifest-v16 \
+            --dir /tmp/bas-orig-v16
+      - name: Check first 128KiB original TIFF headers for survey map spatial metadata
+        run: |
+          python scripts/audit_bas_hart_bounded_source_tiff_geotags_v25.py \
+            --v16 /tmp/bas-orig-v16/BAS_HART_ALL_ISLANDS_ORIGINAL_MANIFEST_V16.json \
+            --out /tmp/BAS_HART_ORIGINAL_BOUNDED_TIFF_IFD_V25.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bas-original-four-locality-geoTIFF-IFD-bounded-v25
+          path: /tmp/BAS_HART_ORIGINAL_BOUNDED_TIFF_IFD_V25.json
+          if-no-files-found: warn

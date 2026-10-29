@@ -1,0 +1,258 @@
+{
+  "status": "AADC_AEI_INDEPENDENT_BREEDING_OPTIONS_V4_RETROSPECTIVE_BIOLOGY",
+  "fixed_source_V3_habitat_atlas_CSV_SHA256": "a5c95b53e47bd665fe803677feb845ee77b6ebffb02650615eb5183340e71eba",
+  "fixed_original_AEI_raster_MD5": "cde880d73f7f18b44aecf5690aa2dc92",
+  "source_original_AADC_survey_and_site_workbooks_sha256": {
+    "potential_geography_2021": "2236269e754962f9af082a0853993fc65a4afd20c7489a65fae81bdd1899ffaa",
+    "potential_geography_2025": "ed5f59d11a0e2ca7491ecf32dc8b04de524e83edf7acd268702963c3b7561294",
+    "penguin_original_search": "8b38aa86f0ef2a0a9fe8c5bb13da904a9f2431cd503644b962b6e116ac3187ac",
+    "flying_seabird_original_search": "4a03d8efc8f1579b2eafd982811c39edc00d2c87d49e990f93c6411db6860360",
+    "survey_certainty_rules": "b7aba52732102441b4edbe438b854cb9d2dbf39542fd6fbfcd62647ae9fdd156"
+  },
+  "source_original_AADC_public_manifest_SHA256": "c6b06ed506536490ba70947950879713c8eb43480a927bdb3e6d1febda0630af",
+  "source_original_P_A_filter_report": {
+    "original_source_eligible_P_A_records": 10837,
+    "original_source_after_area_geography_network_join": 10723,
+    "original_source_rows_rejected_after_geography_join": {
+      "AREA_OR_COORD": 114
+    }
+  },
+  "matched_habitat_coverage_report": {
+    "source_original_P_A_rows_with_site_area_and_geography": 10723,
+    "source_P_A_rows_with_independent_AEI_habitat": 9368,
+    "source_distinct_sites_with_independent_AEI_habitat": 543,
+    "source_missing_habitat_rows_excluded_not_zero_filled": 1355,
+    "only_non_animal_derived_AEI_classes_enter_predictors": true
+  },
+  "source_programme_results": {
+    "ADELIE": {
+      "status": "EXPLORATORY_AEI_VS_CANDIDATE_SITE_NETWORK_SPATIAL_CV",
+      "source_original_sites": 338,
+      "source_species_site_histories": 338,
+      "source_P_A_rows": 2573,
+      "eligible_250km_spatial_blocks": 11,
+      "source_species_codes": [
+        "ADP"
+      ],
+      "original_observed_presence_absence_rows": {
+        "0": 1121,
+        "1": 1452
+      },
+      "matched_samples_models": [
+        "M0_original_geography_area_effort",
+        "M1_plus_original_10km_candidate_map_density",
+        "M2_plus_independent_AEI_2km_habitat",
+        "M3_site_map_density_plus_independent_AEI_habitat"
+      ],
+      "equal_spatial_block_Brier_by_model": {
+        "M0_original_geography_area_effort": 0.3228508475151098,
+        "M1_plus_original_10km_candidate_map_density": 0.33573422835315675,
+        "M2_plus_independent_AEI_2km_habitat": 0.34797908303921965,
+        "M3_site_map_density_plus_independent_AEI_habitat": 0.3623585623634809
+      },
+      "equal_spatial_block_logloss_by_model": {
+        "M0_original_geography_area_effort": 1.5609158018586167,
+        "M1_plus_original_10km_candidate_map_density": 1.6262492136731643,
+        "M2_plus_independent_AEI_2km_habitat": 1.6611129695581845,
+        "M3_site_map_density_plus_independent_AEI_habitat": 1.7154243543200527
+      },
+      "Brier_gains": {
+        "source_candidate_density_beyond_M0": {
+          "macro_equal_spatial_block_Brier_gain": -0.012883380838046965,
+          "geographic_blocks_with_lower_Brier": 2,
+          "minimum_directional_blocks": 8,
+          "exploratory_predictive_direction_supported": false,
+          "block_specific_Brier_gain": {
+            "10_-1": -0.00011174595297619991,
+            "5_-9": -0.0007750103525978602,
+            "5_7": -0.00071522520169498,
+            "6_-8": -0.0003395652726660703,
+            "6_-9": -0.0030298598610269817,
+            "7_-8": -0.0839230307895329,
+            "7_6": 0.007418014371859849,
+            "8_2": -0.039000144419119864,
+            "8_4": 0.0007167131021608292,
+            "9_-4": -0.000011997860691032036,
+            "9_1": -0.021945336982230855
+          }
+        },
+        "AEI_habitat_beyond_M0": {
+          "macro_equal_spatial_block_Brier_gain": -0.025128235524109865,
+          "geographic_blocks_with_lower_Brier": 7,
+          "minimum_directional_blocks": 8,
+          "exploratory_predictive_direction_supported": false,
+          "block_specific_Brier_gain": {
+            "10_-1": 0.0001522574131630121,
+            "5_-9": 0.008026211235656833,
+            "5_7": 0.0033887909763269386,
+            "6_-8": 0.008955456476698265,
+            "6_-9": 0.006687413945192518,
+            "7_-8": 0.011166405394320011,
+            "7_6": -0.3047114183936698,
+            "8_2": 0.0129267815964451,
+            "8_4": -0.01444364986461448,
+            "9_-4": -0.000047185441442720855,
+            "9_1": -0.008511654103283993
+          }
+        },
+        "AEI_habitat_beyond_candidate_density": {
+          "macro_equal_spatial_block_Brier_gain": -0.026624334010324158,
+          "geographic_blocks_with_lower_Brier": 5,
+          "minimum_directional_blocks": 8,
+          "exploratory_predictive_direction_supported": false,
+          "block_specific_Brier_gain": {
+            "10_-1": -0.00013837095809806992,
+            "5_-9": 0.020487571041208796,
+            "5_7": 0.004394781714740725,
+            "6_-8": 0.003058990706990561,
+            "6_-9": 0.006875335885956527,
+            "7_-8": -0.01547922516680289,
+            "7_6": -0.30063453195858814,
+            "8_2": -0.011494756727104094,
+            "8_4": -0.016538321981471843,
+            "9_-4": -0.00003669762213748262,
+            "9_1": 0.01663755095174045
+          }
+        },
+        "candidate_density_beyond_AEI_habitat": {
+          "macro_equal_spatial_block_Brier_gain": -0.014379479324261257,
+          "geographic_blocks_with_lower_Brier": 4,
+          "minimum_directional_blocks": 8,
+          "exploratory_predictive_direction_supported": false,
+          "block_specific_Brier_gain": {
+            "10_-1": -0.00040237432423728193,
+            "5_-9": 0.011686349452954103,
+            "5_7": 0.00029076553671880667,
+            "6_-8": -0.006236031042373774,
+            "6_-9": -0.0028419379202629727,
+            "7_-8": -0.1105686613506558,
+            "7_6": 0.011494900806941488,
+            "8_2": -0.06342168274266906,
+            "8_4": -0.0013779590146965337,
+            "9_-4": -0.0000015100413857938033,
+            "9_1": 0.003203868072793589
+          }
+        }
+      },
+      "original_site_history_weights_sum_to_independent_history_count": true,
+      "causal_island_or_phylogenetic_function_effect_identified": false
+    },
+    "FLYING": {
+      "status": "EXPLORATORY_AEI_VS_CANDIDATE_SITE_NETWORK_SPATIAL_CV",
+      "source_original_sites": 305,
+      "source_species_site_histories": 1468,
+      "source_P_A_rows": 6626,
+      "eligible_250km_spatial_blocks": 8,
+      "source_species_codes": [
+        "AP",
+        "CP",
+        "SF",
+        "SGP",
+        "SK",
+        "SP",
+        "WSP"
+      ],
+      "original_observed_presence_absence_rows": {
+        "0": 4849,
+        "1": 1777
+      },
+      "matched_samples_models": [
+        "M0_original_geography_area_effort",
+        "M1_plus_original_10km_candidate_map_density",
+        "M2_plus_independent_AEI_2km_habitat",
+        "M3_site_map_density_plus_independent_AEI_habitat"
+      ],
+      "equal_spatial_block_Brier_by_model": {
+        "M0_original_geography_area_effort": 0.3413045960976192,
+        "M1_plus_original_10km_candidate_map_density": 0.3339898421485335,
+        "M2_plus_independent_AEI_2km_habitat": 0.3557549748694772,
+        "M3_site_map_density_plus_independent_AEI_habitat": 0.35469013538492344
+      },
+      "equal_spatial_block_logloss_by_model": {
+        "M0_original_geography_area_effort": 1.4384675705378822,
+        "M1_plus_original_10km_candidate_map_density": 1.3049562151202254,
+        "M2_plus_independent_AEI_2km_habitat": 1.5173951808623771,
+        "M3_site_map_density_plus_independent_AEI_habitat": 1.4238437566528164
+      },
+      "Brier_gains": {
+        "source_candidate_density_beyond_M0": {
+          "macro_equal_spatial_block_Brier_gain": 0.007314753949085706,
+          "geographic_blocks_with_lower_Brier": 5,
+          "minimum_directional_blocks": 6,
+          "exploratory_predictive_direction_supported": false,
+          "block_specific_Brier_gain": {
+            "5_-9": 0.0038826264483699524,
+            "5_7": 0.0260235561772989,
+            "6_-8": 0.06763254352019704,
+            "6_-9": -0.016430364067628628,
+            "8_2": -0.0015995170182586949,
+            "8_4": -0.03534974608001293,
+            "9_-4": 0.009997034195944665,
+            "9_1": 0.004361898416774979
+          }
+        },
+        "AEI_habitat_beyond_M0": {
+          "macro_equal_spatial_block_Brier_gain": -0.014450378771858008,
+          "geographic_blocks_with_lower_Brier": 2,
+          "minimum_directional_blocks": 6,
+          "exploratory_predictive_direction_supported": false,
+          "block_specific_Brier_gain": {
+            "5_-9": -0.00017472399248535941,
+            "5_7": -0.00340383301989422,
+            "6_-8": 0.0026006969326810014,
+            "6_-9": -0.04056286131371939,
+            "8_2": 0.0028489229426555684,
+            "8_4": -0.05209387664808704,
+            "9_-4": -0.011196970484608826,
+            "9_1": -0.013620384591405799
+          }
+        },
+        "AEI_habitat_beyond_candidate_density": {
+          "macro_equal_spatial_block_Brier_gain": -0.020700293236389944,
+          "geographic_blocks_with_lower_Brier": 1,
+          "minimum_directional_blocks": 6,
+          "exploratory_predictive_direction_supported": false,
+          "block_specific_Brier_gain": {
+            "5_-9": -0.00045642433236864344,
+            "5_7": -0.011474313534012626,
+            "6_-8": -0.004944455134219844,
+            "6_-9": -0.028301751147814663,
+            "8_2": 0.0027158261876642775,
+            "8_4": -0.08863155435809633,
+            "9_-4": -0.01718561765244614,
+            "9_1": -0.017324055919825054
+          }
+        },
+        "candidate_density_beyond_AEI_habitat": {
+          "macro_equal_spatial_block_Brier_gain": 0.00106483948455377,
+          "geographic_blocks_with_lower_Brier": 5,
+          "minimum_directional_blocks": 6,
+          "exploratory_predictive_direction_supported": false,
+          "block_specific_Brier_gain": {
+            "5_-9": 0.0036009261084866684,
+            "5_7": 0.017953075663180496,
+            "6_-8": 0.060087391453296196,
+            "6_-9": -0.004169253901723902,
+            "8_2": -0.0017326137732499858,
+            "8_4": -0.07188742379002222,
+            "9_-4": 0.004008387028107352,
+            "9_1": 0.0006582270883557229
+          }
+        }
+      },
+      "original_site_history_weights_sum_to_independent_history_count": true,
+      "causal_island_or_phylogenetic_function_effect_identified": false
+    }
+  },
+  "ecological_inference_preregistered": false,
+  "previous_AADC_V14_V1_V2_outcomes_already_seen": true,
+  "source_potential_site_centres_not_independent_island_polygon_or_nests": true,
+  "source_static_AEI_does_not_measure_historical_breeding_space": true,
+  "NR_inferred_as_absence": false,
+  "execution": {
+    "run": "https://github.com/zuizui0223/mina/actions/runs/40211049151",
+    "artifact": "https://github.com/zuizui0223/mina/actions/runs/40211049151/artifacts/12605481299",
+    "source_map_version": "original AEI V3 and AADC five publisher workbooks",
+    "preregistration": false
+  }
+}

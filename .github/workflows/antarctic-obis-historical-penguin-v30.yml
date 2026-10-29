@@ -1,0 +1,41 @@
+name: Antarctic original historical penguin OBIS census 1900 to 1996 V30
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_OBIS_HISTORICAL_PENGUIN_V30.md'
+      - 'scripts/audit_obis_historical_penguin_dwca_v30.py'
+      - 'tests/test_obis_historical_penguin_dwca_v30.py'
+      - '.github/workflows/antarctic-obis-historical-penguin-v30.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_OBIS_HISTORICAL_PENGUIN_V30.md'
+      - 'scripts/audit_obis_historical_penguin_dwca_v30.py'
+      - 'tests/test_obis_historical_penguin_dwca_v30.py'
+      - '.github/workflows/antarctic-obis-historical-penguin-v30.yml'
+  workflow_dispatch:
+jobs:
+  first_party_original_historical_census_audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded original publisher ZIP parser dependencies
+        run: python -m pip install requests pytest
+      - name: Verify DwC original metadata field identity and no inferred absences
+        run: python -m pytest -q tests/test_obis_historical_penguin_dwca_v30.py
+      - name: Fetch original OBIS historical Antarctic penguin colony source and inspect observation grain
+        run: |
+          python scripts/audit_obis_historical_penguin_dwca_v30.py \
+            --out /tmp/IPT_OBIS_ORIGINAL_PENGUIN_SOURCE_V30.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-obis-1900-1996-penguin-colony-source-audit-v30
+          path: /tmp/IPT_OBIS_ORIGINAL_PENGUIN_SOURCE_V30.json
+          if-no-files-found: warn

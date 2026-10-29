@@ -1,0 +1,41 @@
+name: Antarctic source-native candidate-site P/A exploratory spatial CV v1
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_POTENTIAL_SITE_NETWORK_P_A_EXPLORATORY_V1.md'
+      - 'scripts/evaluate_aadc_site_option_network_p_a_v1.py'
+      - 'tests/test_aadc_site_option_p_a_v1.py'
+      - '.github/workflows/antarctic-aadc-site-option-p-a-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_POTENTIAL_SITE_NETWORK_P_A_EXPLORATORY_V1.md'
+      - 'scripts/evaluate_aadc_site_option_network_p_a_v1.py'
+      - 'tests/test_aadc_site_option_p_a_v1.py'
+      - '.github/workflows/antarctic-aadc-site-option-p-a-v1.yml'
+  workflow_dispatch:
+jobs:
+  original_survey_exploratory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original AADC source, statistical and test dependencies
+        run: python -m pip install numpy scipy pandas scikit-learn pyproj openpyxl xlrd requests pytest
+      - name: Test original source P/A eligibility, source network features and independent holdouts
+        run: python -m pytest -q tests/test_aadc_site_option_p_a_v1.py
+      - name: Fit frozen exploratory 10km potential-site network predictor on original AADC survey data
+        run: |
+          python scripts/evaluate_aadc_site_option_network_p_a_v1.py \
+            --out /tmp/AADC_SITE_OPTIONS_EXPLORATORY_P_A_V1.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-candidate-site-p-a-exploratory-v1
+          path: /tmp/AADC_SITE_OPTIONS_EXPLORATORY_P_A_V1.json
+          if-no-files-found: warn

@@ -1,0 +1,115 @@
+{
+  "name": "ASYMMETRIC_ISLAND_ACCESS_PAPER2_SOURCE_COMPARISON",
+  "as_of": "2026-10-27",
+  "status": "DRAFT_CROSS_SYSTEM_HYPOTHESIS_NOT_ECOLOGICAL_EFFECT",
+  "ecological_primary_question": "When does island isolation protect breeding seabirds from mammals yet constrain nonflying breeders' shore-to-nest access?",
+  "hypotheses": {
+    "H_M": "Mammal exposure × independently mapped nesting-guild predator reach conditional on bird species and survey availability, within Falklands.",
+    "H_F": "Flightlessness × independent seasonal shore-to-nest terrain accessibility with matched flying controls, within Antarctic mammal-free context.",
+    "H_X": "Crossover of physical refuge benefit and breeder land-route cost across matched flight/mammal statuses; not direct UK-versus-Antarctic binary comparison."
+  },
+  "evidence": [
+    {
+      "id": "FALKLAND_GOVERNMENT_FIBD",
+      "role": "Within-archipelago mammalian introduced predator comparison containing penguins and volant seabirds",
+      "source_registry": "https://dataportal.saeri.org/dataset/fibdv8-20140601-invasives",
+      "source_previous_verified_receipt": "https://github.com/zuizui0223/mina/blob/research/jncc-v32-mechanism-contract/results/FALKLAND_FIBD_V43B_NATIVE_INVASIVE_ISLAND_VISIT_SOURCE_RESULT.json",
+      "original_island_locations_n": 534,
+      "original_invasive_mammal_record_rows_n": 1212,
+      "exact_matched_invasive_rows_n": 1211,
+      "source_visits_n": 4964,
+      "original_bird_source_rows_including_header_n": 4959,
+      "original_islands_with_visits_n": 533,
+      "original_rodent_source_surveyed_non_detection_verified": false,
+      "bird_species_flight_guild_original_same_island_same_visit_overlap_verified": false,
+      "physical_island_exact_polygon_and_nest_access_terrain_verified": false,
+      "can_fit_true_predator_impact_now": false,
+      "NOTES": "Native invaders XLS lacks header; Norway rat labels include desktop-assessed absences; original FIBD bird Presence/Breeding status are columns, NOT independently validated repeated nondetection histories."
+    },
+    {
+      "id": "ANTARCTIC_BAS_HART_NATIVE_NESTS",
+      "role": "High-resolution species-specific penguin shore-access and nesting-substrate exploratory arm ONLY",
+      "source_previous_verified_receipt": "https://github.com/zuizui0223/mina/blob/research/antarctic-functional-archipelago-v1/results/BAS_HART_10_ORIGINAL_MULTIISLAND_NEST_GPS_V20.json",
+      "original_georeferenced_penguin_nests_n": 122139,
+      "source_localities_n": 4,
+      "candidate_islands_n": 3,
+      "flightless_penguin_groups": [
+        "ADELIE",
+        "CHINSTRAP",
+        "GENTOO",
+        "MACARONI"
+      ],
+      "flying_seabird_nest_sources_in_same_original_10_CSVs_n": 0,
+      "original_empty_nesting_habitat_mask_verified": false,
+      "same_survey_penguin_flying_species_comparison_identified": false,
+      "independent_terrain_elevation_slope_available": true,
+      "source_CopDEM_three_island_positive_species_transfer_n": 1,
+      "source_CopDEM_three_island_total_n": 3,
+      "can_fit_penguin_vs_flying_route_effect_now": false,
+      "NOTES": "3 candidate islands cannot become 122139 independent island replication; source 2019-20 observed nest-only mask is NOT unoccupied suitable habitat."
+    },
+    {
+      "id": "ANTARCTIC_AADC_SITES",
+      "role": "Candidate flying seabird controls; separate original survey programmes with mapped-habitat missingness",
+      "source_previous_verified_receipt": "https://github.com/zuizui0223/mina/blob/research/antarctic-functional-archipelago-v1/docs/ANTARCTIC_FUNCTIONAL_ARCHIPELAGO_ECOLOGY_DECISION_20261026.md",
+      "potential_site_gazetteer_n": 7785,
+      "original_explicit_P_A_adelie_sites_n": 1031,
+      "original_explicit_P_A_flying_seabird_sites_n": 368,
+      "strict_source_island_geography_original_adelie_sites_n": 6,
+      "strict_source_island_geography_original_flying_sites_n": 11,
+      "original_shared_eligible_regions_n": 0,
+      "matched_penguin_flying_direct_location_year_effort_verified": false,
+      "can_fit_flightless_flying_same_island_effect_now": false,
+      "NOTES": "P/A source programmes differ; AEI habitat availability is response-associated missing. Do not use a taxon-class interaction as if paired observation design."
+    },
+    {
+      "id": "ANTARCTIC_MAPPPD_V5",
+      "role": "Pygoscelis same-citation same-vantage temporal penguin source after geological/access covariate validation",
+      "source_previous_verified_receipt": "https://github.com/zuizui0223/mina/blob/research/antarctic-penguin-island-macro-v1/results/MAPPPD5_MACRO_SOURCE_AND_NZ_PEDIGREE_V40.json",
+      "annual_nest_change_transitions_n": 771,
+      "original_site_ids_n": 95,
+      "source_regions_n": 11,
+      "exact_duplicated_original_NZ_reported_observations_n": 316,
+      "strict_polygon_paired_land_contrasts_n": 3,
+      "can_infer_geographically_independent_island_access_effect_now": false,
+      "NOTES": "Penguin time-series stage, not directly comparable flying control nor established precise source nesting polygon."
+    },
+    {
+      "id": "UK_JNCC_RSPB_SOURCE_PREDATOR",
+      "role": "Separate benchmark/counterexample; NOT predator-treated endpoint for integrated Paper2",
+      "source_previous_verified_receipt": "https://github.com/zuizui0223/mina/blob/research/jncc-v32-mechanism-contract/results/JNCC_V44_SAME_MASTER_NEST_ACCESS_RESULT.json",
+      "UK_predator_source_label_islands_gt10ha_n": 506,
+      "JNCC_within_parent_verified_mixed_island_networks_n": 3,
+      "V44_access_cliff_both_declining_Scotland_networks_n": 11,
+      "V44_access_cliff_original_D": -0.10001721634243599,
+      "V45_two_epoch_adjusted_original_D": -0.03574741551973572,
+      "can_infer_mammal_impact_now": false,
+      "NOTES": "Source predator code0 assumed OR known absent. V44 nest-guild hypothesis NOT supported, negative magnitude not robust to two-census count model. V46 leader switching remains descriptive."
+    }
+  ],
+  "gates": {
+    "H_M_field_verified_mammal_presence_and_surveyed_absence_both_available": false,
+    "H_M_field_matched_bird_guild_within_island_effort_available": false,
+    "H_F_flightless_and_flying_nest_surveyed_same_locality_year_effort_available": false,
+    "H_F_independent_candidate_unoccupied_breeding_habitat_mask": false,
+    "H_X_crossed_access_predator_and_flight_is_identified": false
+  },
+  "next_source_task": "Only G2: inspect original public survey-dated and independently verified island-rat status on same 66 original breeding islands; publisher Dryad doi:10.5061/dryad.dj524 is an original field-source candidate, not a new bird effect reanalysis. Do not infer site absence or fit H_X without G2/G3.",
+  "main_manuscript": "One original-data macroecology study centered on island asymmetric access; no separate predator SDM or penguin turnover papers.",
+  "ecological_effect_fitted_in_this_manifest": false,
+  "V47_empirical_matched_breeding_source_only": {
+    "same_island_year_confirmed_guild_pairs": 69,
+    "independent_named_island_candidates": 66,
+    "regions": 23,
+    "same_day_with_visit_guild_pairs": 63,
+    "source_penguin_rows": 249,
+    "source_flying_seabird_rows": 1104,
+    "G1_source_opportunity_pass": true,
+    "original_islands_with_any_rat_taxon_record": 7,
+    "G2_field_verified_rat_status_support": false,
+    "G3_independent_equal_survey_effort_support": false,
+    "source_receipt": "results/PAPER2_FALKLAND_FIBD_V47_PENGUIN_FLYING_MAMMAL_SOURCE_RESULT.json",
+    "original_CI": "https://github.com/zuizui0223/mina/actions/runs/40501816259",
+    "ecological_mammal_or_flight_effect_fitted": false
+  }
+}

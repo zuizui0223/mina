@@ -1,0 +1,55 @@
+name: Antarctic original Adélie colony polygons to physical landmass V13
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_SOURCE_POLYGON_TO_LANDMASS_V13.md'
+      - 'scripts/audit_source_colony_polygon_landmass_v13.py'
+      - 'tests/test_source_colony_polygon_landmass_v13.py'
+      - '.github/workflows/antarctic-adpe-colony-landmass-v13.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_SOURCE_POLYGON_TO_LANDMASS_V13.md'
+      - 'scripts/audit_source_colony_polygon_landmass_v13.py'
+      - 'tests/test_source_colony_polygon_landmass_v13.py'
+      - '.github/workflows/antarctic-adpe-colony-landmass-v13.yml'
+  workflow_dispatch:
+jobs:
+  source_polygon_bounds_physical_landmass:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source-geometry audit dependencies
+        run: python -m pip install pytest numpy requests pyproj pyshp 'shapely>=2,<3' openpyxl xlrd
+      - name: Test polygon bounding rectangle matches original parent landmass
+        run: python -m pytest -q tests/test_source_colony_polygon_landmass_v13.py
+      - name: Recover original AADC 28 repeated site-year map bounding boxes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/aadc13
+          gh run download 40257955794 --repo "$GITHUB_REPOSITORY" \
+            --name original-AADC-adelie-repeated-colony-boundary-v10 --dir /tmp/aadc13
+      - name: Directly match original colony spatial bounds to SCAR parent land features
+        run: |
+          python scripts/audit_source_colony_polygon_landmass_v13.py \
+            --v9 results/ANTARCTIC_SOURCE_BOUNDARY_MANIFEST_V9.json \
+            --v10 results/AADC_REPEATED_ADELIE_COLONY_GIS_V10.json \
+            --v10-site-metrics /tmp/aadc13/AADC_ADPE_ORIGINAL_28_SITE_YEAR_V10.csv \
+            --out /tmp/AADC_ADPE_COLONY_PARENT_LAND_V13.json \
+            --site-years /tmp/AADC_ADPE_COLONY_PARENT_LAND_SITE_YR_V13.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-AADC-repeat-bbox-parent-land-v13
+          path: |
+            /tmp/AADC_ADPE_COLONY_PARENT_LAND_V13.json
+            /tmp/AADC_ADPE_COLONY_PARENT_LAND_SITE_YR_V13.csv
+          if-no-files-found: warn

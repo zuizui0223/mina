@@ -1,0 +1,43 @@
+name: Paper2 V48b Dryad original rat exposure file schema check
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/PAPER2_DRYAD_RAT_STATUS_ORIGINAL_CSV_V48B.md'
+      - 'scripts/audit_paper2_dryad_rat_csv_headers_v48b.py'
+      - 'tests/test_paper2_dryad_rat_csv_headers_v48b.py'
+      - '.github/workflows/paper2-dryad-original-rat-columns-v48b.yml'
+  pull_request:
+    paths:
+      - 'contracts/PAPER2_DRYAD_RAT_STATUS_ORIGINAL_CSV_V48B.md'
+      - 'scripts/audit_paper2_dryad_rat_csv_headers_v48b.py'
+      - 'tests/test_paper2_dryad_rat_csv_headers_v48b.py'
+      - '.github/workflows/paper2-dryad-original-rat-columns-v48b.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  first_party_tabak_original_columns:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original public Dryad source test dependencies
+        run: python -m pip install requests pytest
+      - name: Test fixed original public source file ids, host and no biological-response output
+        run: python -m pytest -q tests/test_paper2_dryad_rat_csv_headers_v48b.py
+      - name: Inspect exact two original CC0 CSV files against pinned MD5 and header whitelist
+        run: |
+          python scripts/audit_paper2_dryad_rat_csv_headers_v48b.py \
+            --out /tmp/PAPER2_V48B_DRYAD_RAT_STATUS_COLUMN_SOURCE_RESULT.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v48b-Dryad-rat-source-original-MD5-column-eligibility
+          path: /tmp/PAPER2_V48B_DRYAD_RAT_STATUS_COLUMN_SOURCE_RESULT.json
+          if-no-files-found: warn

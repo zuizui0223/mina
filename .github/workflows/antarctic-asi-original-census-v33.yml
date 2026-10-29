@@ -1,0 +1,41 @@
+name: Antarctic Site Inventory original first-party seven bird taxa census V33
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_SITE_INVENTORY_ORIGINAL_SOURCE_V33.md'
+      - 'scripts/audit_asi_original_census_v33.py'
+      - 'tests/test_asi_original_census_v33.py'
+      - '.github/workflows/antarctic-asi-original-census-v33.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_SITE_INVENTORY_ORIGINAL_SOURCE_V33.md'
+      - 'scripts/audit_asi_original_census_v33.py'
+      - 'tests/test_asi_original_census_v33.py'
+      - '.github/workflows/antarctic-asi-original-census-v33.yml'
+  workflow_dispatch:
+jobs:
+  original_source_stage_and_accuracy_validated_seven_taxa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source-only first-party ASI census parser
+        run: python -m pip install requests pytest
+      - name: Test nest versus chick and exact stage-accuracy-source original observation gates
+        run: python -m pytest -q tests/test_asi_original_census_v33.py
+      - name: Download real Ecological Archives 1124 original field census rows and audit stage/accuracy/site histories
+        run: |
+          python scripts/audit_asi_original_census_v33.py \
+            --out /tmp/ASI_ORIGINAL_2013_ANTARCTIC_CENSUS_SOURCE_V33.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: asi-antarctic-original-multitaxon-stage-census-v33
+          path: /tmp/ASI_ORIGINAL_2013_ANTARCTIC_CENSUS_SOURCE_V33.json
+          if-no-files-found: warn

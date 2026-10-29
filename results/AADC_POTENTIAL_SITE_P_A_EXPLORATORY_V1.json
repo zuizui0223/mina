@@ -1,0 +1,131 @@
+{
+  "status": "AADC_DATABASE_NATIVE_CANDIDATE_SITE_DENSITY_EXPLORATORY_BIOLOGY_V1",
+  "source_sample": {
+    "original_source_eligible_P_A_records": 10837,
+    "original_source_after_area_geography_network_join": 10723,
+    "original_source_rows_rejected_after_geography_join": {
+      "AREA_OR_COORD": 114
+    }
+  },
+  "programmes": {
+    "ADELIE": {
+      "status": "EXPLORATORY_ORIGINAL_SURVEY_SPATIAL_CV_COMPLETED",
+      "pre_250km_gate_source_rows": 3732,
+      "pre_250km_gate_original_sites": 1045,
+      "post_250km_gate_source_rows": 3618,
+      "post_250km_gate_original_sites": 1031,
+      "post_250km_gate_250km_blocks": 12,
+      "unique_site_species_histories": 1031,
+      "source_species_list": [
+        "ADP"
+      ],
+      "source_P_A_class_presence": {
+        "0": 1755,
+        "1": 1863
+      },
+      "macro_equal_block_site_history_weighted_Brier": {
+        "B0_source_area_and_effort": 0.2772532232306087,
+        "B1_plus_10km_candidate_sites": 0.2665502779259641,
+        "SENS_plus_2km_candidate_sites": 0.26350872680183696,
+        "SENS_plus_50km_candidate_sites": 0.2634952454811107
+      },
+      "macro_equal_block_site_history_weighted_logloss": {
+        "B0_source_area_and_effort": 0.9189559557701692,
+        "B1_plus_10km_candidate_sites": 0.8596993368759102,
+        "SENS_plus_2km_candidate_sites": 0.8723374221710337,
+        "SENS_plus_50km_candidate_sites": 0.9396608265826701
+      },
+      "B0_minus_B1_10km_primary_Brier_gain": 0.010702945304644607,
+      "primary_blockwise_Brier_gain": {
+        "10_-1": 0.15720523393739969,
+        "5_-9": -0.20832191303374512,
+        "5_7": -0.16338493447372443,
+        "6_-8": 0.013968314943883509,
+        "6_-9": 0.05991525142843901,
+        "6_7": 0.18073434889505688,
+        "7_-8": 0.15291882350794506,
+        "7_6": 0.057622378727994084,
+        "8_2": 0.035310868670237125,
+        "8_4": 0.013941647933430557,
+        "9_-4": -0.03234734672094883,
+        "9_1": -0.13912733016023215
+      },
+      "number_primary_blocks_with_Brier_gain": 8,
+      "minimum_fixed_primary_support_blocks": 8,
+      "exploratory_source_frame_predictive_support": true,
+      "post_outcome_parameter_selection_permitted": false,
+      "original_survey_site_is_independent_island": false,
+      "model_identifies_physical_island_or_sea_barrier_causation": false
+    },
+    "FLYING": {
+      "status": "EXPLORATORY_ORIGINAL_SURVEY_SPATIAL_CV_COMPLETED",
+      "pre_250km_gate_source_rows": 6991,
+      "pre_250km_gate_original_sites": 381,
+      "post_250km_gate_source_rows": 6956,
+      "post_250km_gate_original_sites": 368,
+      "post_250km_gate_250km_blocks": 8,
+      "unique_site_species_histories": 1581,
+      "source_species_list": [
+        "AP",
+        "CP",
+        "SF",
+        "SGP",
+        "SK",
+        "SP",
+        "WSP"
+      ],
+      "source_P_A_class_presence": {
+        "0": 4968,
+        "1": 1988
+      },
+      "macro_equal_block_site_history_weighted_Brier": {
+        "B0_source_area_and_effort": 0.3583902619521141,
+        "B1_plus_10km_candidate_sites": 0.3122426504175746,
+        "SENS_plus_2km_candidate_sites": 0.31011728129557403,
+        "SENS_plus_50km_candidate_sites": 0.14106553188246618
+      },
+      "macro_equal_block_site_history_weighted_logloss": {
+        "B0_source_area_and_effort": 1.3905432570454206,
+        "B1_plus_10km_candidate_sites": 1.159023273069134,
+        "SENS_plus_2km_candidate_sites": 1.111460383311899,
+        "SENS_plus_50km_candidate_sites": 0.443532398033327
+      },
+      "B0_minus_B1_10km_primary_Brier_gain": 0.0461476115345395,
+      "primary_blockwise_Brier_gain": {
+        "5_-9": 0.04556347130096039,
+        "5_7": 0.05278712434724131,
+        "6_-8": 0.1394870579270825,
+        "6_-9": 0.02604351869199148,
+        "8_2": 0.008488434123822941,
+        "8_4": 0.07763312957725421,
+        "9_-4": 0.009447342681047854,
+        "9_1": 0.009730813626915913
+      },
+      "number_primary_blocks_with_Brier_gain": 8,
+      "minimum_fixed_primary_support_blocks": 6,
+      "exploratory_source_frame_predictive_support": true,
+      "post_outcome_parameter_selection_permitted": false,
+      "original_survey_site_is_independent_island": false,
+      "model_identifies_physical_island_or_sea_barrier_causation": false
+    }
+  },
+  "original_source_workbook_SHA256": {
+    "potential_geography_2021": "2236269e754962f9af082a0853993fc65a4afd20c7489a65fae81bdd1899ffaa",
+    "potential_geography_2025": "ed5f59d11a0e2ca7491ecf32dc8b04de524e83edf7acd268702963c3b7561294",
+    "penguin_original_search": "8b38aa86f0ef2a0a9fe8c5bb13da904a9f2431cd503644b962b6e116ac3187ac",
+    "flying_seabird_original_search": "4a03d8efc8f1579b2eafd982811c39edc00d2c87d49e990f93c6411db6860360",
+    "survey_certainty_rules": "b7aba52732102441b4edbe438b854cb9d2dbf39542fd6fbfcd62647ae9fdd156"
+  },
+  "independent_2025_network_geographic_site_count": 7785,
+  "previous_V14_P_A_outcomes_already_viewed": true,
+  "result_is_preregistered_independent_replication": false,
+  "negative_or_positive_result_does_not_prove_island_causation": true,
+  "source_2025_potential_sites_are_time_invariant_historical_accessible_habitat": false,
+  "no_source_nonreporting_recoded_as_absence": true,
+  "execution": {
+    "run": "https://github.com/zuizui0223/mina/actions/runs/40209072157",
+    "artifact": "https://github.com/zuizui0223/mina/actions/runs/40209072157/artifacts/12604153331",
+    "status": "source-backed exploratory OOS CV",
+    "not_confirmatory": true
+  }
+}
