@@ -1,0 +1,36 @@
+name: palmer-footprint-source-recovery
+on:
+  push:
+    branches: ['codex/climate-penguin-progress']
+    paths:
+      - 'research/climate-penguin/work/abandonment/palmer_footprint_source_recovery.py'
+      - 'tests/test_palmer_footprint_source_recovery.py'
+      - '.github/workflows/palmer-footprint-source-recovery.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bounded-public-map-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate content-type and source boundaries
+        run: |
+          python - <<'PY'
+          import runpy
+          ns = runpy.run_path('tests/test_palmer_footprint_source_recovery.py')
+          tests = [(n,f) for n,f in ns.items() if n.startswith('test_') and callable(f)]
+          assert len(tests)==4
+          for n,f in tests:
+              f(); print('PASS '+n)
+          PY
+      - name: Fetch original maps and small documentation once
+        run: python research/climate-penguin/work/abandonment/palmer_footprint_source_recovery.py --out /tmp/palmer-footprint-sources
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: palmer-footprint-original-maps
+          path: /tmp/palmer-footprint-sources/
+          retention-days: 30
+          if-no-files-found: error
