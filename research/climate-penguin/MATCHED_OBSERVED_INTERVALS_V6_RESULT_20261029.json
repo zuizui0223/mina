@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "analysis_commit": "f2a08b5d954eac770e248041ecbc475435e45869",
+  "source_run": 40889533815,
+  "source_artifact_id": 12904955220,
+  "source_artifact_sha256": "ba24e1fde6eeb84ea8ce96a778ad8732e5466020320b8437946c8ab4e56e3654",
+  "original_source_run": 40868828790,
+  "status": "postexploration_observed_interval_expansion_not_independent_climate_validation",
+  "interval_csv_sha256": "d8bd401224c83f07d767c325fc9ea0abd1a67f9ab7613fa2b40538474ac98d44",
+  "annual_baseline_reproduced": 135,
+  "observed_intervals": 176,
+  "unique_source_sites": 25,
+  "species_contrasts_are_not_independent": true,
+  "nonannual_gaps_range_seasons": [2,18],
+  "comparisons": {
+    "ADPE__GEPE": {
+      "annual_intervals": 51,
+      "all_observed_intervals": 60,
+      "annual_source_sites": 8,
+      "all_source_sites": 8,
+      "publisher_regions": 2,
+      "annual_current_land_units": 5,
+      "all_current_land_units": 5,
+      "retained_current_land_intervals": 52,
+      "retained_current_land_sites": 7,
+      "retained_current_land_regions": 2,
+      "equal_land_annualized_log_ratio_rate": 0.20600331914669734,
+      "positive_land_means": 5,
+      "land_omission_sensitivity_not_CI": [0.1383419423434092,0.23315616397813882],
+      "additional_land_ids": [],
+      "added_source_sites": []
+    },
+    "CHPE__GEPE": {
+      "annual_intervals": 56,
+      "all_observed_intervals": 79,
+      "annual_source_sites": 14,
+      "all_source_sites": 19,
+      "publisher_regions": 3,
+      "annual_current_land_units": 7,
+      "all_current_land_units": 9,
+      "retained_current_land_intervals": 52,
+      "retained_current_land_sites": 11,
+      "retained_current_land_regions": 2,
+      "equal_land_annualized_log_ratio_rate": 0.08533806240798632,
+      "positive_land_means": 8,
+      "land_omission_sensitivity_not_CI": [0.06334719784909046,0.1002536676018676],
+      "additional_land_ids": [9709,10801],
+      "added_source_sites": ["AITC","FORT","HARM","SELV","SPIP"]
+    },
+    "ADPE__CHPE": {
+      "annual_intervals": 28,
+      "all_observed_intervals": 37,
+      "annual_source_sites": 5,
+      "all_source_sites": 6,
+      "publisher_regions": 3,
+      "annual_current_land_units": 4,
+      "all_current_land_units": 4,
+      "retained_current_land_intervals": 29,
+      "retained_current_land_sites": 5,
+      "retained_current_land_regions": 3,
+      "equal_land_annualized_log_ratio_rate": 0.09367679873409542,
+      "positive_land_means": 3,
+      "land_omission_sensitivity_not_CI": [0.04278669419655847,0.14246553555197772],
+      "additional_land_ids": [],
+      "added_source_sites": ["TURR"]
+    }
+  },
+  "CHPE_GEPE_scope_difference": {
+    "annual14site_mean": -0.0521848022518207,
+    "same14sites_with_observed_gaps_mean": 0.05630526304438112,
+    "five_added_sites_mean": -0.016047539756597614,
+    "all19sites_mean": 0.03726505178096566,
+    "reason_not_confirmatory": "Direction changes with monitored periods and weighting; not caused by adding favorable locations. Different estimand, old annual result unchanged."
+  },
+  "new_exact_land_source_cases": [
+    {"site_id":"AITC","source_land_fid":9709,"start":2008,"end":2011,"gap":3,"citekey":"lynch2013antarctic","vantage":"ground","chinstrap_nests_start":5620,"chinstrap_nests_end":4047,"gentoo_nests_start":2210,"gentoo_nests_end":2213,"annualized_log_gentoo_over_chinstrap_change":0.10990411451704112,"same_known_month_between_taxa_at_each_endpoint":true},
+    {"site_id":"HARM","source_land_fid":10801,"start":1988,"end":1995,"gap":7,"citekey":"silva1998status","vantage":"ground","chinstrap_nests_start":110875,"chinstrap_nests_end":89685,"gentoo_nests_start":3957,"gentoo_nests_end":3347,"annualized_log_gentoo_over_chinstrap_change":0.006382595636381184,"same_known_month_between_taxa_at_each_endpoint":false}
+  ],
+  "verification": {
+    "local_new_tests_passed":14,
+    "full_repository_core_CI_passed":204,
+    "full_repository_core_CI_skipped":27,
+    "local_full_checkout_unavailable_reason":"GitHub DNS unavailable in container; full project suite executed on GitHub Actions.",
+    "local_and_CI_csv_identical":true,
+    "independently_reconstructed_source_intervals":176,
+    "independently_checked_numeric_summary_groups":22,
+    "max_absolute_rate_summary_difference":1.7763568394002505e-15,
+    "Fiona_GDAL_vs_pyshp_geographic_sites_checked":25,
+    "original_source_land_IDs_agree":true,
+    "maximum_area_difference_km2":0.0,
+    "near_distances_independently_recomputed":false
+  },
+  "limits": [
+    "Current land containment is not historical nest geometry or certified ecological independence.",
+    "No new climate exposure measured; original44 seaice identification ceiling remains unchanged.",
+    "Positive endpoints only; unsurveyed years are not zeros and are not interpolated.",
+    "Longer observed-interval rates are net changes, not observed constant annual growth.",
+    "Exposed published observations, not newly acquired independent field sampling.",
+    "Same citekey and vantage do not certify simultaneous visits or matched detection.",
+    "Gentoo relative increase can result from faster decline of the other taxon, not Gentoo expansion or competition."
+  ]
+}
