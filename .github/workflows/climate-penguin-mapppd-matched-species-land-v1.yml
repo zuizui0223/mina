@@ -1,0 +1,39 @@
+name: climate-penguin-mapppd-matched-species-land-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - '.github/workflows/climate-penguin-mapppd-matched-species-land-v1.yml'
+      - 'research/climate-penguin/work/climate_penguin/mapppd_matched_species_land_v1.py'
+      - 'research/climate-penguin/contracts/MAPPPD_MATCHED_SPECIES_CURRENT_LAND_V1.md'
+      - 'tests/test_mapppd_matched_species_land_v1.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-matched-current-land-dependence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'shapely>=2,<3' 'pyproj>=3,<4' pyshp requests pytest
+      - run: python -m pytest -q tests/test_mapppd_matched_species_growth_v1.py tests/test_mapppd_matched_species_land_v1.py
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-mapppd-matched-species-growth-v1
+          run-id: 40868828790
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/matched_species_source
+      - name: Original coast identity and same-sample land-balanced contrast
+        run: python research/climate-penguin/work/climate_penguin/mapppd_matched_species_land_v1.py --source-dir '${{ runner.temp }}/matched_species_source' --out '${{ runner.temp }}/matched_species_land'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: climate-penguin-mapppd-matched-species-land-v1
+          path: ${{ runner.temp }}/matched_species_land/
+          retention-days: 30
+          if-no-files-found: warn
