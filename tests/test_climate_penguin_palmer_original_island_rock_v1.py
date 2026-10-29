@@ -1,6 +1,11 @@
 """Only geometry and source status logic: no real habitat effects."""
 import importlib.util
 from pathlib import Path
+import pytest
+
+# Global mina CI installs only its core dependencies; the dedicated GIS workflow
+# installs and executes this test with Shapely. Skip collection only when missing.
+pytest.importorskip("shapely")
 from shapely.geometry import Point,box
 
 TARGET=Path(__file__).resolve().parents[1]/"research/climate-penguin/work/climate_penguin/audit_palmer_original_island_rock_v1.py"
