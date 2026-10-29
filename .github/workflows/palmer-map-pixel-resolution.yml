@@ -1,0 +1,62 @@
+name: palmer-map-pixel-resolution
+on:
+  push:
+    branches: ['codex/climate-penguin-progress']
+    paths:
+      - 'research/climate-penguin/work/abandonment/palmer_map_resolution.py'
+      - 'tests/test_palmer_map_resolution.py'
+      - '.github/workflows/palmer-map-pixel-resolution.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-geometry-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install project and optional geometry dependencies
+        run: python -m pip install -e '.[dev]' numpy==2.3.5 shapely==2.1.2 pyproj==3.7.2 PyMuPDF==1.26.7
+      - name: Run full test suite with geometry enabled
+        run: pytest
+      - name: Retrieve original maps and reconstruct geometry
+        run: |
+          python - <<'PY'
+          import runpy,json
+          from pathlib import Path
+          ns=runpy.run_path('research/climate-penguin/work/abandonment/palmer_footprint_source_recovery.py')
+          out=Path('/tmp/palmer-resolution');out.mkdir()
+          sources=[('era_litchfield_v3.pdf','https://www.era.gs/projects/palmer/Map7-LitchfieldIsland-v3.pdf','pdf'),('era_torgersen_v3.pdf','https://www.era.gs/projects/palmer/Map5-TorgersenIsland-v3.pdf','pdf')]
+          records=[ns['retrieve'](s,out) for s in sources]
+          (out/'source_receipts.json').write_text(json.dumps(records,indent=2))
+          assert all(r['status']=='retrieved_payload' for r in records),records
+          PY
+          python research/climate-penguin/work/abandonment/litchfield_map_alignment.py --pdf /tmp/palmer-resolution/era_litchfield_v3.pdf --out /tmp/palmer-resolution/litchfield
+          python research/climate-penguin/work/abandonment/palmer_map_resolution.py --litchfield-geojson /tmp/palmer-resolution/litchfield/litchfield_map_derived_candidates.geojson --torgersen-pdf /tmp/palmer-resolution/era_torgersen_v3.pdf --out /tmp/palmer-resolution/geometry
+      - name: Verify source result against pinned local calculation
+        run: |
+          python - <<'PY'
+          import json,math
+          from pathlib import Path
+          expected=json.loads(Path('research/climate-penguin/outputs/palmer_abandonment/MAP_PIXEL_RESOLUTION_RESULT_20261029.json').read_text())
+          actual=json.loads(Path('/tmp/palmer-resolution/geometry/resolution_gate_result.json').read_text())
+          assert actual['torgersen']['source_sha256']==expected['torgersen']['source_sha256']
+          assert actual['torgersen']['outline_count']==28
+          assert actual['torgersen']['control_points']==16
+          for a,b in zip(actual['summaries'],expected['summaries'],strict=True):
+              for k in ['site_id','pixel_side_m','map_outlines','unmixed_pixel_geometrically_excluded','not_excluded_but_unvalidated']:
+                  assert a[k]==b[k],(k,a,b)
+              for k in ['area_m2_min','area_m2_max','radius_m_max']:
+                  assert math.isclose(a[k],b[k],rel_tol=1e-7,abs_tol=1e-5),(k,a,b)
+          print('Original PDFs -> map geometries -> all four resolution summaries reproduced')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: palmer-map-resolution-source-replay
+          path: /tmp/palmer-resolution/
+          if-no-files-found: warn
+          retention-days: 30
