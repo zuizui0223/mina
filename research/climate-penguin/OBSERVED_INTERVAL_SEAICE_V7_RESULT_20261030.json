@@ -1,0 +1,76 @@
+{
+  "date_jst": "2026-10-30",
+  "analysis_commit": "267d006a80d2a1399f3939afe6a1757f2ec49190",
+  "source_run": 40967544366,
+  "source_artifact": 12938329585,
+  "artifact_zip_sha256": "49d0896744c3cfce3fa0cda81a1f39381854c5b90b2485c9e91502bd91ce972c",
+  "status": "POST_EXPLORATION_NO_CAUSAL_CLAIM",
+  "cohort": {
+    "V6_candidates": 79,
+    "retained_intervals": 78,
+    "sites": 19,
+    "source_regions": 3,
+    "excluded": [{"site":"LION","start":2018,"end":2023,"reason":"outside_fixed_product"}],
+    "monthly_files": 140,
+    "reused_original_V4_files": 92,
+    "new_monthly_files": 48,
+    "site_months": 2660,
+    "source_calendar_records": 312,
+    "year_only_calendar_records": 184,
+    "chronology_imputed": false
+  },
+  "species_counts": {
+    "species_direction_counts": {"a_down_b_up":17,"a_down_b_down":22,"a_up_b_up":24,"a_up_b_down":12,"a_up_b_flat":1,"a_flat_b_up":2},
+    "relative_positive_intervals": 47,
+    "relative_positive_and_b_decreasing": 14
+  },
+  "models": {
+    "site": {"n":78,"sites":19,"regions":3,"residual_df":58,"coefficients":{"chinstrap":0.008852638071461364,"gentoo":-0.007397104449195243,"relative":-0.01624974252065661},"sites_with_nonzero_within_design_ice_information":15},
+    "region_endpoint_year": {"n":78,"sites":19,"regions":3,"residual_df":12,"coefficients":{"chinstrap":-0.35405651324633036,"gentoo":0.19213479478325723,"relative":0.5461913080295876},"sites_with_nonzero_within_design_ice_information":12}
+  },
+  "land_models": {
+    "site": {"n":52,"sites":11,"land_units":9,"residual_df":40,"coefficients":{"chinstrap":0.013863049706781662,"gentoo":-0.009073712231305651,"relative":-0.022936761938087316},"sites_with_nonzero_within_design_ice_information":7},
+    "region_endpoint_year": {"n":52,"sites":11,"land_units":9,"residual_df":7,"coefficients":{"chinstrap":-0.664651077033879,"gentoo":-0.5441391672462875,"relative":0.12051190978759133},"sites_with_nonzero_within_design_ice_information":7}
+  },
+  "selected_dependence_checks": {
+    "relative_site_model_leave_one_site_range": [-0.04859587356625362,0.010369212269216313],
+    "without_ARDL": {"omitted":"ARDL","status":"DESCRIPTIVE_ONLY","n":58,"coefficients":{"chinstrap":-0.022322442545330713,"gentoo":-0.011953230276114394,"relative":0.010369212269216313}},
+    "relative_land_model_without_ARDL_land": {"omitted":"10818","status":"DESCRIPTIVE_ONLY","n":32,"coefficients":{"chinstrap":-0.026780334602276492,"gentoo":-0.016587152242108574,"relative":0.010193182360167918}},
+    "remaining_ice_SS_percent_after_region_endpoint_year": 0.17510082256250717,
+    "new_land_singletons_do_not_identify_slope": ["AITC","HARM"]
+  },
+  "verification": {
+    "original_monthly_files":140,
+    "independent_HDF_reader":"h5py, no xarray decode",
+    "checked_raw_cells":133280,
+    "checked_site_months":2660,
+    "max_original_pixel_difference":0.0,
+    "max_monthly_mean_difference":2.842170943040401e-14,
+    "source_intervals_unchanged":78,
+    "original_growth_values_max_difference":1.2351231148954867e-15,
+    "independently_recomputed_model_or_deletion_fits":66,
+    "max_total_change_WLS_coefficient_difference":1.7541523789077473e-14,
+    "independent_solver":"scipy.linalg.lstsq(gelsy), total counts/change space; production numpy rate-space FWL",
+    "source_input_SHA":"e65555f37683bba97ede1712d6a943df09b7d0f02a85fe0c2a41d89cd72111d5",
+    "passed":true
+  },
+  "CI": {
+    "dedicated_run_success":true,
+    "normal_project_full_suite_passed":214,
+    "normal_project_full_suite_skipped":27,
+    "normal_PR_CI_success_run":40967552995,
+    "push_CI_cancelled_run":40967544354,
+    "unrelated_furseal_source_failed_run":40967553107,
+    "local_new_tests_passed":10,
+    "local_production_replay":"BLOCKED: missing netCDF4/h5netcdf; dependency install DNS failure; independent h5py verification succeeded"
+  },
+  "interpretation_limits": [
+    "Same endpoints, irregular observation gaps; no annual count interpolation.",
+    "Primary rate weights = gap, a working process-variance assumption; total-change model uses weights 1/gap.",
+    "Coefficients refer to endpoint prior-season SIC change, not full-interval sea-ice exposure.",
+    "No p values, confidence intervals, competition, migration or anthropogenic climate attribution.",
+    "25km satellite estimates averaged over 100km marine buffers; many shared source pixels.",
+    "Current land geometry does not prove independent historical nesting habitat.",
+    "V1-V6, fixed44 analyses, 216-test adjustment, Paper1 and Paper2 unchanged."
+  ]
+}
