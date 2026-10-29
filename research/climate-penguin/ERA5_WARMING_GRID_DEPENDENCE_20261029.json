@@ -1,0 +1,236 @@
+{
+  "schema": 1,
+  "date": "2026-10-29",
+  "provenance": {
+    "repository": "zuizui0223/mina",
+    "branch": "codex/climate-penguin-progress",
+    "source_run_id": 40856645581,
+    "count_link_run_id": 40858204743,
+    "count_link_job_id": 123394457042,
+    "analysis_head": "462846be092b241fe6dc9a5c3779704eba3cafaf",
+    "source_era5_sha256": "f2bad55bc9b714351b8bc30031b1518eece43138f77d4047657a3e145911e9a6",
+    "source_count_sha256": "566781ab3a82afbb5d25f6d957b2df2e629a74b084c3bf47542dc66d556d8443",
+    "original_check": "same two original coefficients; only source-level grid removal audit added"
+  },
+  "status": "post_outcome_grid_dependence_sensitivity_not_climate_attribution",
+  "n_era5_grids_all_40_sites": 30,
+  "panels": {
+    "september_strict": {
+      "site_fixed": {
+        "n_intervals": 203,
+        "n_sites": 26,
+        "n_era5_grid_clusters": 19,
+        "n_grid_omission_estimable": 19,
+        "leave_one_era5_grid_out_range": [
+          -0.010382,
+          -0.00353272
+        ],
+        "n_regions": 3,
+        "victoria_n": 187,
+        "model_adjustment": [
+          "site_id"
+        ],
+        "beta_logN_per_1C_change": -0.00548311,
+        "leave_one_site_out_range": [
+          -0.00777995,
+          -0.00353272
+        ]
+      },
+      "site_year_fixed": {
+        "n_intervals": 203,
+        "n_sites": 26,
+        "n_era5_grid_clusters": 19,
+        "n_grid_omission_estimable": 19,
+        "leave_one_era5_grid_out_range": [
+          0.01088642,
+          0.04484486
+        ],
+        "n_regions": 3,
+        "victoria_n": 187,
+        "model_adjustment": [
+          "site_id",
+          "end_year"
+        ],
+        "beta_logN_per_1C_change": 0.02666092,
+        "leave_one_site_out_range": [
+          0.01846021,
+          0.04484486
+        ]
+      }
+    },
+    "aug_nov_strict": {
+      "site_fixed": {
+        "n_intervals": 191,
+        "n_sites": 23,
+        "n_era5_grid_clusters": 18,
+        "n_grid_omission_estimable": 18,
+        "leave_one_era5_grid_out_range": [
+          0.01398417,
+          0.02388957
+        ],
+        "n_regions": 3,
+        "victoria_n": 187,
+        "model_adjustment": [
+          "site_id"
+        ],
+        "beta_logN_per_1C_change": 0.01986373,
+        "leave_one_site_out_range": [
+          0.01398417,
+          0.02388957
+        ]
+      },
+      "site_year_fixed": {
+        "n_intervals": 191,
+        "n_sites": 23,
+        "n_era5_grid_clusters": 18,
+        "n_grid_omission_estimable": 18,
+        "leave_one_era5_grid_out_range": [
+          0.04431436,
+          0.11033715
+        ],
+        "n_regions": 3,
+        "victoria_n": 187,
+        "model_adjustment": [
+          "site_id",
+          "end_year"
+        ],
+        "beta_logN_per_1C_change": 0.09133572,
+        "leave_one_site_out_range": [
+          0.06676367,
+          0.11033715
+        ]
+      }
+    },
+    "all_descriptive": {
+      "site_fixed": {
+        "n_intervals": 301,
+        "n_sites": 33,
+        "n_era5_grid_clusters": 26,
+        "n_grid_omission_estimable": 26,
+        "leave_one_era5_grid_out_range": [
+          -0.01081776,
+          -0.00615963
+        ],
+        "n_regions": 6,
+        "victoria_n": 189,
+        "model_adjustment": [
+          "site_id"
+        ],
+        "beta_logN_per_1C_change": -0.00745341,
+        "leave_one_site_out_range": [
+          -0.00911814,
+          -0.00615963
+        ]
+      },
+      "site_year_fixed": {
+        "n_intervals": 301,
+        "n_sites": 33,
+        "n_era5_grid_clusters": 26,
+        "n_grid_omission_estimable": 26,
+        "leave_one_era5_grid_out_range": [
+          0.00449828,
+          0.01011139
+        ],
+        "n_regions": 6,
+        "victoria_n": 189,
+        "model_adjustment": [
+          "site_id",
+          "end_year"
+        ],
+        "beta_logN_per_1C_change": 0.0076369,
+        "leave_one_site_out_range": [
+          0.00614972,
+          0.01011139
+        ]
+      }
+    },
+    "september_victoria": {
+      "site_fixed": {
+        "n_intervals": 187,
+        "n_sites": 20,
+        "n_era5_grid_clusters": 15,
+        "n_grid_omission_estimable": 15,
+        "leave_one_era5_grid_out_range": [
+          -0.00730083,
+          -0.00025499
+        ],
+        "n_regions": 1,
+        "victoria_n": 187,
+        "model_adjustment": [
+          "site_id"
+        ],
+        "beta_logN_per_1C_change": -0.00280339,
+        "leave_one_site_out_range": [
+          -0.00490735,
+          -0.00101096
+        ]
+      },
+      "site_year_fixed": {
+        "n_intervals": 187,
+        "n_sites": 20,
+        "n_era5_grid_clusters": 15,
+        "n_grid_omission_estimable": 15,
+        "leave_one_era5_grid_out_range": [
+          0.01466298,
+          0.07770088
+        ],
+        "n_regions": 1,
+        "victoria_n": 187,
+        "model_adjustment": [
+          "site_id",
+          "end_year"
+        ],
+        "beta_logN_per_1C_change": 0.05918638,
+        "leave_one_site_out_range": [
+          0.03516157,
+          0.07770088
+        ]
+      }
+    },
+    "september_without_victoria": {
+      "site_fixed": {
+        "n_intervals": 16,
+        "n_sites": 6,
+        "n_era5_grid_clusters": 4,
+        "n_grid_omission_estimable": 4,
+        "leave_one_era5_grid_out_range": [
+          -0.04476304,
+          -0.01079772
+        ],
+        "n_regions": 2,
+        "victoria_n": 0,
+        "model_adjustment": [
+          "site_id"
+        ],
+        "beta_logN_per_1C_change": -0.0300477,
+        "leave_one_site_out_range": [
+          -0.04476304,
+          -0.01079772
+        ]
+      },
+      "site_year_fixed": {
+        "n_intervals": 16,
+        "n_sites": 6,
+        "n_era5_grid_clusters": 4,
+        "n_grid_omission_estimable": 0,
+        "leave_one_era5_grid_out_range": null,
+        "n_regions": 2,
+        "victoria_n": 0,
+        "model_adjustment": [
+          "site_id",
+          "end_year"
+        ],
+        "beta_logN_per_1C_change": null,
+        "leave_one_site_out_range": null
+      }
+    }
+  },
+  "caveats": [
+    "Grid omission is a leave-one-shared-source-out sensitivity, not a CI or p-value.",
+    "Each 0.25-degree ERA5 source grid can represent multiple monitored site IDs; remaining grids may still be spatially correlated.",
+    "Strict September count cohort retains only three regions, 187 of 203 comparison intervals in Victoria Land.",
+    "Season-over-season delta in September 2m temperature is short-term weather, not long-run climate-forcing attribution.",
+    "Site-only and site-plus-year slopes are of opposite sign, so neither is an identified general warming effect.",
+    "No land availability, breeding success, movement, predation, or greening mechanism was tested."
+  ]
+}
