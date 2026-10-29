@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "date": "2026-10-29",
+  "status": "exploratory_observed_positive_abundance_not_causal_climate_or_competition",
+  "source_growth_run": 40868828790,
+  "source_growth_commit": "0d70ef3d00fbb0d669b81271346265b6139b86f7",
+  "source_growth_artifact_id": 12894917365,
+  "source_growth_artifact_sha256": "dd83a20696bf9666ded9820fec86884cbae61cd2ec4ef75694a6b75c14714619",
+  "source_land_run": 40869812618,
+  "source_land_commit": "914fad72f4be9070cb9c2ea667821299726f3db6",
+  "source_land_artifact_id": 12894464771,
+  "source_land_artifact_sha256": "58a0eca292206a4b7cd23b9ee3dc51a7f46c23573debcac70267b81b86919494",
+  "original_MAPPPD_version": "5.0",
+  "original_MAPPPD_release_date": "2026-10-21",
+  "original_source_observations": 5487,
+  "original_source_registry_sites": 729,
+  "positive_adjacent_same_citation_same_method_panel": {
+    "intervals": 771,
+    "sites": 95,
+    "regions": 11,
+    "by_species": {"ADPE": 414, "CHPE": 152, "GEPE": 205},
+    "duplicate_site_species_seasons_excluded": 426
+  },
+  "definition": "B minus A annual log nest-count change, conditional on positive endpoints. Same site, adjacent seasons, identical known citation and vantage across all four original observations; mean within source site then equal mean across sites.",
+  "primary_ADPE_GEPE": {
+    "A": "ADPE",
+    "B": "GEPE",
+    "source_matched_intervals": 51,
+    "sites": 8,
+    "regions": 2,
+    "calendar_span_of_selected_intervals": [1980, 2018],
+    "equal_site_mean_delta_log_ratio": 0.11253193828594626,
+    "median_site_mean_delta_log_ratio": 0.1329000118350045,
+    "geometric_ratio_change_percent": 11.910799873327958,
+    "site_means_positive": 5,
+    "site_weighted_fraction_GEPE_outgrows_ADPE": 0.7270833333333333,
+    "equal_site_mean_ADPE_log_growth": -0.01676488852968771,
+    "equal_site_mean_GEPE_log_growth": 0.09576704975625856,
+    "raw_joint_direction_counts": {
+      "both_increase": 9,
+      "ADPE_decrease_GEPE_increase": 21,
+      "ADPE_increase_GEPE_decrease": 8,
+      "both_decrease": 13
+    },
+    "leave_one_site_out_mean_range_not_confidence_interval": [0.055010035698852947, 0.16989176002654788],
+    "region_equal_site_means": {
+      "Central-west Antarctic Peninsula": 0.12426080380486121,
+      "South Shetland Islands": 0.1054946189745973
+    },
+    "site_results": [
+      {"site_id":"ARDL", "intervals":20, "mean_delta":0.11921605475275991},
+      {"site_id":"BISC", "intervals":4, "mean_delta":0.5151852563955995},
+      {"site_id":"LION", "intervals":5, "mean_delta":-0.08118654297800536},
+      {"site_id":"LLAN", "intervals":12, "mean_delta":0.18552964564452937},
+      {"site_id":"PCHA", "intervals":1, "mean_delta":-0.28898681389826497},
+      {"site_id":"PETE", "intervals":4, "mean_delta":0.14658396891724906},
+      {"site_id":"PTHO", "intervals":4, "mean_delta":-0.0003758713977389319},
+      {"site_id":"STRA", "intervals":1, "mean_delta":0.3042898088514415}
+    ],
+    "known_same_calendar_months_at_both_endpoints": {
+      "intervals": 2,
+      "sites": 2,
+      "regions": 1,
+      "equal_site_mean_delta": -0.03428661577451862,
+      "insufficient_to_establish_seasonally_matched_primary_result": true
+    },
+    "fixed_period_summaries_not_balanced_cohorts": {
+      "before_2010": {"intervals":42,"sites":7,"mean_delta":0.18923181711406636},
+      "from_2010": {"intervals":9,"sites":4,"mean_delta":0.08133790235515925,"leave_one_site_range":[-0.037243016683663074,0.20477947443963398]}
+    }
+  },
+  "secondary_comparisons": {
+    "CHPE_GEPE": {
+      "intervals":56,"sites":14,"regions":3,
+      "equal_site_mean_delta":-0.05218480225182044,
+      "median_site_mean_delta":0.03425825441653923,
+      "leave_one_site_mean_range":[-0.07312668456761544,0.029796654935456197],
+      "known_same_calendar_month_intervals":16,
+      "direction_stable_to_site_omission":false
+    },
+    "ADPE_CHPE": {
+      "intervals":28,"sites":5,"regions":3,
+      "equal_site_mean_delta":0.03967957943195932,
+      "median_site_mean_delta":-0.04580332559078997,
+      "leave_one_site_mean_range":[-0.04703250248215424,0.08081945264439866],
+      "known_same_calendar_month_intervals":1,
+      "direction_stable_to_site_omission":false
+    },
+    "contrast_sets_overlap_not_135_independent_intervals":true
+  },
+  "post_result_current_land_diagnostic": {
+    "coast_original_sha256":"66d82fa69f86eb8dbe8b04f01505cb2129feafec608455459ee4ed19d1dc38d4",
+    "ADPE_GEPE": {
+      "retained_intervals":46,"retained_sites":7,"distinct_current_mapped_land_features":5,
+      "excluded_site":"LION",
+      "LION_coordinate_distance_from_nearby_source_polygon_m":0.734367406786251,
+      "coordinate_not_snapped_or_claimed_biologically_off_land":true,
+      "same_sample_equal_site_mean":0.14020600703793937,
+      "equal_land_mean_of_site_means":0.1310292654400175,
+      "geometric_ratio_change_percent":14.000114345889275,
+      "leave_one_land_out_mean_range_not_confidence_interval":[0.034990267701122,0.2360332852745881],
+      "land_groups":[
+        {"source_land_fid":4903,"sites":["PETE"],"mean_delta":0.14658396891724906},
+        {"source_land_fid":5253,"sites":["PCHA"],"mean_delta":-0.28898681389826497},
+        {"source_land_fid":5797,"sites":["BISC"],"mean_delta":0.5151852563955995},
+        {"source_land_fid":10818,"sites":["ARDL"],"mean_delta":0.11921605475275991},
+        {"source_land_fid":12020,"sites":["LLAN","PTHO","STRA"],"mean_delta":0.16314786103274398}
+      ]
+    },
+    "CHPE_GEPE":{"retained_intervals":41,"retained_sites":9,"land_features":7,"same_sample_site_mean":0.016824974527051194,"equal_land_mean":0.01057932144178449,"leave_one_land_range":[-0.02433406962683719,0.0683611877249074]},
+    "ADPE_CHPE":{"retained_intervals":23,"retained_sites":4,"land_features":4,"same_sample_site_mean":0.08081945264439866,"equal_land_mean":0.08081945264439866,"leave_one_land_range":[-0.021083365503606313,0.14287944207847364]},
+    "independent_named_physical_islands_or_field_coordinate_precision_verified":false,
+    "historical_colony_boundaries_verified":false
+  },
+  "verification": {
+    "synthetic_tests":10,
+    "growth_source_workflow_success":true,
+    "land_source_workflow_success":true,
+    "independent_local_replay_from_downloaded_original_CSV_matches_all_three_contrasts":true,
+    "independent_local_land_aggregation_replay_matches_all_three_contrasts":true,
+    "core_CI_success_run":40869821346,
+    "unrelated_Dryad_seal_download_workflow_still_failed_run":40869821583
+  },
+  "interpretation_limits": [
+    "Observed relative abundance change is not competitive displacement, niche invasion or human-caused warming attribution.",
+    "Positive endpoints condition on persistence; disappearance and establishment are not included in this contrast.",
+    "Only two regions in the primary comparison, not continent-wide generality.",
+    "Same citation and vantage do not guarantee matched field month or detection; the strictly same-month primary subset contains only two intervals.",
+    "The actual annual comparisons span 1980–2018; do not call this a post-2020 warming response.",
+    "Leave-one-site/land ranges are not confidence intervals or significance tests.",
+    "Current source coastline grouping cannot certify independent named physical islands or historical nesting capacity.",
+    "The 216-test wild-cluster BH/BY family is unchanged and is not rescued by this exploratory contrast.",
+    "Frozen PR189 and separate PR199 analyses are not modified."
+  ]
+}
