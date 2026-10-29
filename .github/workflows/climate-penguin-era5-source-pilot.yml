@@ -1,0 +1,32 @@
+name: climate-penguin-era5-source-pilot
+
+on:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - "research/climate-penguin/work/climate_penguin/acquire_era5_warming_macro_v1.py"
+      - ".github/workflows/climate-penguin-era5-source-pilot.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  era5-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Retrieve pinned-period ERA5 source and audit its daily/monthly support
+        run: python research/climate-penguin/work/climate_penguin/acquire_era5_warming_macro_v1.py --mode pilot --output "${{ runner.temp }}/era5_warming_source"
+      - name: Upload original source / audit (no breeding outcomes)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: climate-penguin-era5-1991-2020-source-pilot
+          path: ${{ runner.temp }}/era5_warming_source/
+          retention-days: 30
+          if-no-files-found: warn
