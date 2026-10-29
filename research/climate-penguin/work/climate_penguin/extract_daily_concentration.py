@@ -12,10 +12,19 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'outputs/climate_penguin'
 RAW=ROOT/'work/climate_penguin/osi_concentration';RAW.mkdir(exist_ok=True)
 EXTRACT=RAW/'extracted';EXTRACT.mkdir(exist_ok=True)
-ap=argparse.ArgumentParser();ap.add_argument('--start',type=int,default=2011);ap.add_argument('--end',type=int,default=2020);args=ap.parse_args()
+ap=argparse.ArgumentParser();ap.add_argument('--start',type=int,default=2011);ap.add_argument('--end',type=int,default=2020);ap.add_argument('--plan-only',action='store_true');args=ap.parse_args()
+assert 1979<=args.start<=args.end<=2020
+manifest_path=OUT/('daily_concentration_manifest.json' if (args.start,args.end)==(2011,2020) else f'daily_concentration_{args.start}_{args.end}_manifest.json')
+table_path=OUT/f'daily_concentration_{args.start}_{args.end}_aug_nov.csv.gz'
+if args.plan_only:
+    print(json.dumps(dict(start=args.start,end=args.end,dates=122*(args.end-args.start+1),manifest=str(manifest_path),table=str(table_path))));raise SystemExit
 sites=pd.read_csv(OUT/'satellite_screen_locations.csv').reset_index(drop=True)
 sites['location_id']=['loc'+str(i).zfill(3) for i in sites.index]
-sites.to_csv(OUT/'daily_ice_locations.csv',index=False)
+if (OUT/'daily_ice_locations.csv').exists():
+    previous=pd.read_csv(OUT/'daily_ice_locations.csv')
+    assert previous.location_id.tolist()==sites.location_id.tolist()
+    assert np.allclose(previous[['latitude','longitude']],sites[['latitude','longitude']])
+else:sites.to_csv(OUT/'daily_ice_locations.csv',index=False)
 sample=xr.open_dataset(ROOT/'work/climate_penguin/conc_sample.nc')
 lat=sample.lat.values;lon=sample.lon.values
 sample.close();geo=Geod(ellps='WGS84');masks=[]
@@ -46,6 +55,8 @@ with ThreadPoolExecutor(max_workers=4) as pool:
             target=EXTRACT/(item['date']+'.csv')
             if not target.exists():
                 with xr.open_dataset(ROOT/item['path']) as z:
+                    assert z.lat.shape==lat.shape and z.lon.shape==lon.shape
+                    assert np.allclose(z.lat.values,lat,equal_nan=True) and np.allclose(z.lon.values,lon,equal_nan=True)
                     assert str(pd.Timestamp(z.time.values[0]).date())==item['date']
                     assert z.ice_conc.attrs['units']=='%'
                     a=z.ice_conc.values[0].ravel();f=z.status_flag.values[0].ravel();u=z.total_standard_uncertainty.values[0].ravel()
@@ -67,10 +78,10 @@ with ThreadPoolExecutor(max_workers=4) as pool:
                 pd.DataFrame(rows).to_csv(target,index=False)
         manifest.append(item)
         if (i+1)%25==0 or i==len(dates)-1:
-            (OUT/'daily_concentration_manifest.json').write_text(json.dumps(manifest,indent=2))
+            manifest_path.write_text(json.dumps(manifest,indent=2))
             print(f'{i+1}/{len(dates)} dates; failures={sum(not x["ok"] for x in manifest)}',flush=True)
 frames=[pd.read_csv(EXTRACT/(x['date']+'.csv')) for x in manifest if x['ok']]
 d=pd.concat(frames,ignore_index=True)
-d.to_csv(OUT/'daily_concentration_2011_2020_aug_nov.csv.gz',index=False,compression='gzip')
+d.to_csv(table_path,index=False,compression='gzip')
 assert not d.duplicated(['location_id','date','inner_km']).any()
 print('DONE',len(d),'rows',d.date.nunique(),'days',flush=True)
