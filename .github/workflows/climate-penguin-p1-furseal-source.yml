@@ -1,0 +1,38 @@
+name: climate-penguin-p1-furseal-source
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/abandonment/audit_furseal_2020_source.py'
+      - 'tests/test_palmer_furseal_source_audit.py'
+      - '.github/workflows/climate-penguin-p1-furseal-source.yml'
+jobs:
+  public-source-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test deterministic CSV and support contracts
+        run: |
+          python - <<'PY'
+          import runpy
+          d = runpy.run_path("tests/test_palmer_furseal_source_audit.py")
+          tests = [(k, v) for k, v in d.items() if k.startswith("test_") and callable(v)]
+          for name, fn in tests:
+              fn()
+              print("PASS", name)
+          assert len(tests) == 4
+          PY
+      - name: Retrieve public original Dryad 2020 fur seal source and audit
+        run: |
+          python research/climate-penguin/work/abandonment/audit_furseal_2020_source.py --out /tmp/palmer_furseal_2020_source
+      - name: Preserve exact original CSV receipts, including failed downloads
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: palmer-2020-furseal-original-source-audit
+          path: /tmp/palmer_furseal_2020_source/
+          if-no-files-found: warn
+          retention-days: 30
