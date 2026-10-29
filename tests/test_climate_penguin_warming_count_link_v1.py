@@ -53,6 +53,8 @@ def test_fixed_effect_slope_recovers_known_effect_without_pseudoreplication():
     result = mod.support_and_effect(rows, "test_temp", ["site_id", "end_year"])
     assert (result["n_intervals"], result["n_sites"], result["n_regions"]) == (24, 4, 2)
     assert result["victoria_n"] == 12
+    assert result["n_era5_grid_clusters"] == 4
+    assert result["n_grid_omission_estimable"] == 4
     assert math.isclose(result["beta_logN_per_1C_change"], 2.5, abs_tol=1e-8)
     assert all(math.isclose(z, 2.5, abs_tol=1e-8) for z in result["leave_one_site_out_range"])
     # Missing exposure is excluded without treating missing as zero.
@@ -79,7 +81,8 @@ def make_era5_fixture(tmp_path: Path):
     path = source / "era5_monthly_1991_2020.csv"
     with path.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=[
-            "site_id", "year", "month", "complete_month", "air2m_mean_c"
+            "site_id", "year", "month", "complete_month", "air2m_mean_c",
+            "returned_grid_latitude", "returned_grid_longitude"
         ])
         writer.writeheader()
         for i, site in enumerate(sites):
@@ -92,6 +95,10 @@ def make_era5_fixture(tmp_path: Path):
                         "complete_month": "True",
                         "air2m_mean_c": -15.0 + .2 * (year - 1991)
                         + .25 * (i % 3) + .05 * month,
+                        # Intentional shared actual ERA5 grid for pairs of
+                        # site identifiers. Do not treat sites as grids.
+                        "returned_grid_latitude": -75.0 + .25 * (i // 2),
+                        "returned_grid_longitude": 160.0 + .25 * (i // 2),
                     })
     return source, path
 
@@ -107,6 +114,7 @@ def test_full_40_site_synthetic_input_preserves_timing_gates_and_no_false_effect
     report = json.loads((output / "count_temperature_exploratory_v1.json").read_text())
     assert report["n_count_intervals"] == 301
     assert report["n_with_era5_september"] == 301
+    assert report["n_era5_grids_all_sites"] == 20
     assert report["n_strict_post_september"] == 203
     assert report["n_strict_post_november"] == 191
     assert report["status"] == "post_outcome_exploratory_not_climate_attribution"
@@ -140,3 +148,21 @@ def test_full_source_gate_rejects_partial_or_duplicate_months(tmp_path, monkeypa
     write_csv(path, rows[:-1] + [rows[0]])
     with pytest.raises(AssertionError):
         mod.main()
+
+
+def test_omit_shared_temperature_grid_not_only_one_replicated_site():
+    mod = module()
+    rows = sample_rows()
+    for row in rows:
+        # A/B use one identical climate-grid source.
+        row["era5_grid_id"] = (
+            "shared-A-B" if row["site_id"] in {"A", "B"}
+            else row["site_id"]
+        )
+    actual = mod.support_and_effect(rows, "test_temp", ["site_id", "end_year"])
+    assert actual["n_sites"] == 4
+    assert actual["n_era5_grid_clusters"] == 3
+    assert actual["n_grid_omission_estimable"] == 3
+    assert math.isclose(actual["beta_logN_per_1C_change"], 2.5, abs_tol=1e-8)
+    assert all(math.isclose(v, 2.5, abs_tol=1e-8)
+               for v in actual["leave_one_era5_grid_out_range"])
