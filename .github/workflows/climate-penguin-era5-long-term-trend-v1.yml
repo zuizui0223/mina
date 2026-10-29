@@ -1,0 +1,41 @@
+name: climate-penguin-era5-long-term-trend-v1
+
+on:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - ".github/workflows/climate-penguin-era5-long-term-trend-v1.yml"
+      - "research/climate-penguin/work/climate_penguin/analyze_long_term_warming_count_trends_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  long-term-trend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch frozen 40-site original ERA5 source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-era5-1991-2020-source-full
+          run-id: 40856645581
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/era5_full
+      - name: Evaluate independent-site long-term count–temperature trend association
+        run: python research/climate-penguin/work/climate_penguin/analyze_long_term_warming_count_trends_v1.py --era5-dir "${{ runner.temp }}/era5_full" --output "${{ runner.temp }}/warming_count_longterm"
+      - name: Archive original-source-linked exploratory results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: climate-penguin-era5-long-term-count-v1
+          path: ${{ runner.temp }}/warming_count_longterm/
+          retention-days: 30
+          if-no-files-found: warn
