@@ -1,0 +1,32 @@
+name: climate-penguin-palmer-january-spectral-pilot
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/abandonment/palmer_january_spectral_probe.py'
+      - 'tests/test_palmer_january_spectral_probe.py'
+      - '.github/workflows/climate-penguin-palmer-january-spectral-pilot.yml'
+jobs:
+  original-qa-preselected-spectral-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Offline source and radiometry rules
+        run: python tests/test_palmer_january_spectral_probe.py
+      - name: Install original GIS readers
+        run: python -m pip install --disable-pip-version-check -q rasterio==1.4.3 pyproj==3.7.1 planetary-computer==1.0.0
+      - name: Read Landsat 7 source SR and QA at preselected fixed positions
+        run: |
+          python research/climate-penguin/work/abandonment/palmer_january_spectral_probe.py \
+            --out /tmp/palmer_january_spectral_pilot
+      - name: Preserve source spectra and possible failure diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: palmer-january-spectral-original-source
+          path: /tmp/palmer_january_spectral_pilot/
+          if-no-files-found: warn
+          retention-days: 30
