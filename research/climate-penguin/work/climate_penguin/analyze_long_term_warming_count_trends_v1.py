@@ -125,7 +125,18 @@ def site_slope_records(counts, lookup, grids, window):
             # Climate source missing; do not substitute a different site/grid.
             continue
         dtemp = linear_slope(temperature_years, temperature_values)
-        assert dlog is not None and dtemp is not None
+        # A common 1991–2020 climate window avoids cross-site trend-window
+        # mismatch, but may include climate years after a site's count series.
+        # Therefore it is a post-result DIAGNOSTIC, not an ecological exposure.
+        fixed_years, fixed_values = [], []
+        for year in range(1991, 2021):
+            vals = [lookup.get((site, year, month)) for month in months]
+            if all(v is not None for v in vals):
+                fixed_years.append(year)
+                fixed_values.append(statistics.mean(vals))
+        assert len(fixed_years) >= 25, "Original 30-year ERA5 climate support unavailable"
+        fixed_dtemp = linear_slope(fixed_years, fixed_values)
+        assert dlog is not None and dtemp is not None and fixed_dtemp is not None
         out.append({
             "analysis": label,
             "site_id": site, "region": part[0]["region"], "method": part[0]["method"],
@@ -134,21 +145,22 @@ def site_slope_records(counts, lookup, grids, window):
             "start": first, "end": last,
             "count_log_slope_per_decade": dlog,
             "temperature_c_slope_per_decade": dtemp,
+            "fixed_1991_2020_temperature_c_slope_per_decade": fixed_dtemp,
         })
     return out
 
 
-def association(rows):
+def association(rows, temperature_key="temperature_c_slope_per_decade"):
     if len(rows) < 3:
         return {"n_sites": len(rows), "association": None}
-    xs = [r["temperature_c_slope_per_decade"] for r in rows]
+    xs = [r[temperature_key] for r in rows]
     ys = [r["count_log_slope_per_decade"] for r in rows]
     g = defaultdict(list)
     for r in rows:
         g[r["era5_grid_id"]].append(r)
     grids = [{
         "grid_id": key,
-        "x": statistics.mean(r["temperature_c_slope_per_decade"] for r in group),
+        "x": statistics.mean(r[temperature_key] for r in group),
         "y": statistics.mean(r["count_log_slope_per_decade"] for r in group),
         "sites": len(group),
     } for key, group in sorted(g.items())]
@@ -157,15 +169,15 @@ def association(rows):
         r_cent[z["region"]].append(z)
     xcenter, ycenter = [], []
     for region, group in r_cent.items():
-        a = statistics.mean(z["temperature_c_slope_per_decade"] for z in group)
+        a = statistics.mean(z[temperature_key] for z in group)
         b = statistics.mean(z["count_log_slope_per_decade"] for z in group)
         for z in group:
-            xcenter.append(z["temperature_c_slope_per_decade"] - a)
+            xcenter.append(z[temperature_key] - a)
             ycenter.append(z["count_log_slope_per_decade"] - b)
     jackknife = []
     for grid in g:
         other = [z for z in rows if z["era5_grid_id"] != grid]
-        c = pearson([z["temperature_c_slope_per_decade"] for z in other],
+        c = pearson([z[temperature_key] for z in other],
                     [z["count_log_slope_per_decade"] for z in other])
         if c is not None:
             jackknife.append(c)
@@ -173,6 +185,12 @@ def association(rows):
         "n_sites": len(rows),
         "n_era5_grids": len(grids),
         "regions": dict(sorted((k, len(v)) for k, v in r_cent.items())),
+        "by_region_pearson_r": {
+            region: pearson([z[temperature_key] for z in group],
+                            [z["count_log_slope_per_decade"] for z in group])
+            for region, group in sorted(r_cent.items())
+        },
+        "climate_exposure_key": temperature_key,
         "warming_positive_sites": sum(x > 0 for x in xs),
         "count_trend_positive_sites": sum(y > 0 for y in ys),
         "median_warming_c_decade": statistics.median(xs),
@@ -211,6 +229,12 @@ def main():
         cohort = site_slope_records(counts, lookup, grids, window)
         assert len(cohort) == len(selected), "eligible count series missing original climate support"
         result = association(cohort)
+        # Same fixed original dataset and same count rosters: this is an
+        # explicit, non-confirmatory window-alignment sensitivity analysis.
+        result["fixed_1991_2020_climate_window_sensitivity"] = association(
+            cohort,
+            temperature_key="fixed_1991_2020_temperature_c_slope_per_decade",
+        )
         result["source_eligible_sites"] = len(selected)
         outputs[window[0]] = result
         parts += cohort
@@ -242,6 +266,7 @@ def main():
             "Shared ERA5 cells are accounted for descriptively, not as independent replicates.",
             "Nonzero monitored count trends exclude true documented absences.",
             "Cross-site trend association is exploratory and not a warming or colony mechanism effect.",
+            "The fixed-window sensitivity can include temperature years AFTER counted seasons, and is NOT a lagged or causal exposure.",
         ],
     }
     (args.output / "warming_long_term_trend_results_v1.json").write_text(
