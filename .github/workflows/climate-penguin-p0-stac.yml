@@ -1,0 +1,30 @@
+name: climate-penguin-p0-stac
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/abandonment/**'
+      - 'tests/test_palmer_abandonment_stac_inventory.py'
+      - '.github/workflows/climate-penguin-p0-stac.yml'
+jobs:
+  source-only-palmer-catalogue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test source gating, season alignment and missingness
+        run: python -m pytest -q tests/test_palmer_abandonment_stac_inventory.py
+      - name: Query original scene catalogues, no images or NDVI
+        run: |
+          python research/climate-penguin/work/abandonment/palmer_abandonment_stac_inventory.py \
+            --first 1986 --last 2026 --workers 4 --out /tmp/palmer_stac_p0
+      - name: Preserve catalog receipts even on request errors
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: palmer-p0-stac-original-catalog
+          path: /tmp/palmer_stac_p0/
+          if-no-files-found: warn
+          retention-days: 30
