@@ -1,0 +1,96 @@
+{
+  "source_run_id": 40866807656,
+  "source_run_sha": "734db1dff088a22f178400ce9ed80c9a89cb5b0e",
+  "source_artifact_id": 12893318960,
+  "status": "original_verified_support_only_not_greening_or_ant_wide_extinction",
+  "result": {
+    "schema": 1,
+    "status": "ORIGINAL_SOURCE_REPEATED_ZERO_SUPPORT_NOT_ISLAND_GRENNING",
+    "sources": {
+      "zero_episodes_SHA256": "4a61573ea8a5b641b04cdf83cae883286f6ee01584f9fc5d730d0493e9c2bf26",
+      "observed_states_SHA256": "b835de8f26c7bbfab57fab5f532b3408ac5eae992405a197782d88ac133b3249",
+      "mapped_vegetation_static_source_SHA256": "f073892fadc925ec27b0b4449133ba0398f838087cae393626b1cb9d9ca762da"
+    },
+    "method": "Original 38 MAPPPD documented zero-episode records across species. Confirm >=2 distinct surveyed years with actual numeric zero and no recorded reappearance in frozen source. Never turn missing years into zero.",
+    "input_original_zero_episodes": 38,
+    "distinct_site_species_in_original_episodes": 37,
+    "multiple_zero_spells_not_independent_sites": true,
+    "original_source_species": {
+      "ADPE": {
+        "apparent_first_zero_episodes": 8,
+        "zero_episodes_with_at_least_two_original_surveyed_zeros": 2,
+        "repeated_zero_without_recorded_reappearance": 2,
+        "distinct_site_ids": 2,
+        "regions_in_repeated_zero_candidates": [
+          "Central-west Antarctic Peninsula",
+          "South Orkney Islands"
+        ],
+        "passes_exploratory_macro_source_replication_floor": false
+      },
+      "CHPE": {
+        "apparent_first_zero_episodes": 21,
+        "zero_episodes_with_at_least_two_original_surveyed_zeros": 6,
+        "repeated_zero_without_recorded_reappearance": 4,
+        "distinct_site_ids": 4,
+        "regions_in_repeated_zero_candidates": [
+          "Central-west Antarctic Peninsula",
+          "South Shetland Islands"
+        ],
+        "passes_exploratory_macro_source_replication_floor": false
+      },
+      "GEPE": {
+        "apparent_first_zero_episodes": 4,
+        "zero_episodes_with_at_least_two_original_surveyed_zeros": 0,
+        "repeated_zero_without_recorded_reappearance": 0,
+        "distinct_site_ids": 0,
+        "regions_in_repeated_zero_candidates": [],
+        "passes_exploratory_macro_source_replication_floor": false
+      },
+      "MCPE": {
+        "apparent_first_zero_episodes": 4,
+        "zero_episodes_with_at_least_two_original_surveyed_zeros": 1,
+        "repeated_zero_without_recorded_reappearance": 1,
+        "distinct_site_ids": 1,
+        "regions_in_repeated_zero_candidates": [
+          "South Shetland Islands"
+        ],
+        "passes_exploratory_macro_source_replication_floor": false
+      },
+      "EMPE": {
+        "apparent_first_zero_episodes": 1,
+        "zero_episodes_with_at_least_two_original_surveyed_zeros": 0,
+        "repeated_zero_without_recorded_reappearance": 0,
+        "distinct_site_ids": 0,
+        "regions_in_repeated_zero_candidates": [],
+        "passes_exploratory_macro_source_replication_floor": false
+      }
+    },
+    "n_repeated_zero_no_reappearance": 7,
+    "strict_island_status_qualified": false,
+    "source_panel_ready_for_ant_wide_causal_greening": false,
+    "critical_limits": [
+      "Repeated observed zero is not proof biological permanent extinction or standardized full-island survey.",
+      "Source site IDs may be a mainland coast or multiple plots, not uniquely verified physical islands.",
+      "Litchfield official ASPA primary data have 2009–2012 zeros missing from this frozen MAPPPD snapshot; add only as explicitly separate original-source crosswalk, never silent override.",
+      "No source-confirmed never-occupied controls, historical nest polygons or annually matched vegetation histories here.",
+      "A 2024 published single-season vegetation composite cannot estimate post-event plant gain.",
+      "These outcomes have been exposed before eligibility gates; this is a support diagnostic, not prospective hypothesis confirmation."
+    ]
+  },
+  "decision": {
+    "species_macro_zero_replication_sufficient": false,
+    "total_exact_original_zero_spells": 38,
+    "distinct_species_site_keys": 37,
+    "repeated_zero_no_observed_reappearance_spells": 7,
+    "no_single_species_passes_geographic_replication_gate": true,
+    "future_primary_analytic_lane": "Use a separately source-qualified positive abundance trend panel rather than claim island-wide greening after apparent extinction; no post-hoc threshold rescue.",
+    "unmeasured": [
+      "historically measured per-island annual vegetated area",
+      "corrected field survey effort",
+      "original nest polygons",
+      "actual seal pressure at Litchfield",
+      "island-specific snow/sea-ice seasonal exposure"
+    ],
+    "source_report_not_causal": true
+  }
+}
