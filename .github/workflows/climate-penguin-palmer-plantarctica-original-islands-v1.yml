@@ -1,0 +1,38 @@
+name: climate-penguin-palmer-plantarctica-original-islands-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - ".github/workflows/climate-penguin-palmer-plantarctica-original-islands-v1.yml"
+      - "research/climate-penguin/work/climate_penguin/audit_palmer_plants_original_land_clip_v1.py"
+      - "research/climate-penguin/contracts/PALMER_PLANTARCTICA_PHYSICAL_ISLAND_CLIP_V1.md"
+      - "tests/test_climate_penguin_palmer_plants_island_clip_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-figshare-map-and-publisher-island-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install 'shapely>=2,<3' 'pyproj>=3,<4' pyshp requests pytest
+      - name: Test exclusive polygon clip and original SHA pins
+        run: python -m pytest -q tests/test_climate_penguin_palmer_plants_island_clip_v1.py
+      - name: Download published original vegetation ZIP and clip exact source physical land polygons
+        run: |
+          python research/climate-penguin/work/climate_penguin/audit_palmer_plants_original_land_clip_v1.py \
+            --output "${{ runner.temp }}/palmer_original_plantarctica_clipped.json"
+      - name: Archive genuine source receipts and static mapped footprint estimates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: climate-penguin-palmer-original-plantarctica-physical-islands-v1
+          path: "${{ runner.temp }}/palmer_original_plantarctica_clipped.json"
+          retention-days: 30
+          if-no-files-found: warn
