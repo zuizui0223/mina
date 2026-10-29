@@ -1,0 +1,6 @@
+from pathlib import Path
+import pandas as pd,json
+p=Path('outputs/ice_asymmetry');d=pd.read_csv('outputs/comparison_audit/mapppd_unambiguous_site_seasons.csv');c=pd.read_csv('outputs/comparison_audit/candidate_series.csv');ids=c[c.species_id=='ADPE'].site_id;d=d[(d.species_id=='ADPE')&d.site_id.isin(ids)&d.season.between(1980,2024)]
+s=d.groupby(['site_id','region','site_name','latitude','longitude']).agg(n_seasons=('season','nunique'),first=('season','min'),last=('season','max')).reset_index();s['span']=s['last']-s['first'];s['retains_gate']=(s.n_seasons>=5)&(s.span>=10);s.to_csv(p/'adelie_macro_support_1980_2024.csv',index=False)
+i=pd.read_csv('outputs/comparison_audit/mapppd_intervals.csv');i=i[(i.species_id=='ADPE')&(i.gap==1)&(i.same_known_method==True)&(i.transition=='positive_positive')&i.end.between(1980,2024)];i.to_csv(p/'adelie_annual_interval_support.csv',index=False)
+print('allcandidate',len(ids),'retained',int(s.retains_gate.sum()),'observations',len(d),'annualintervalsall',len(i),'annualsites',i.site_id.nunique());print(s[s.retains_gate].groupby('region').agg(sites=('site_id','nunique'),records=('n_seasons','sum')).to_string());print(i.groupby('region').agg(intervals=('site_id','size'),sites=('site_id','nunique')).to_string())

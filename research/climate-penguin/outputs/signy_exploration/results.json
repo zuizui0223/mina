@@ -1,0 +1,384 @@
+{
+  "status": "exploratory; no flight-effect estimator",
+  "years": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+  ],
+  "rosters": {
+    "Adelie": [
+      "A1+A60",
+      "A2",
+      "A3",
+      "A4",
+      "A64"
+    ],
+    "Chinstrap": [
+      "C15",
+      "C16",
+      "C17",
+      "C18",
+      "C46",
+      "C47",
+      "C79",
+      "C80",
+      "C81"
+    ],
+    "Shag": [
+      "North Point",
+      "Shagnasty Island"
+    ]
+  },
+  "within_species": {
+    "Adelie": {
+      "n_years": 8,
+      "n_components": 5,
+      "first_total": 1040.0,
+      "last_total": 1217.0,
+      "total_percent_change": 17.019230769230774,
+      "first_neff": 2.0849477413708684,
+      "last_neff": 1.936162758624296,
+      "first_evenness": 0.41698954827417367,
+      "last_evenness": 0.3872325517248592,
+      "pearson_logN_evenness": 0.4107640030283321,
+      "spearman_N_evenness": 0.467074242146171,
+      "detrended_r": 0.4143877913646648,
+      "first_difference_r": 0.12992676177214085,
+      "leave_one_year_out_min": 0.2654523499602753,
+      "leave_one_year_out_max": 0.709301771329423,
+      "evenness_slope_year": -0.006595979412873388,
+      "sensitivities": {
+        "omit_shag_2015_boundary_note": {
+          "n_years": 7,
+          "n_components": 5,
+          "first_total": 1040.0,
+          "last_total": 1217.0,
+          "total_percent_change": 17.019230769230774,
+          "first_neff": 2.0849477413708684,
+          "last_neff": 1.936162758624296,
+          "first_evenness": 0.41698954827417367,
+          "last_evenness": 0.3872325517248592,
+          "pearson_logN_evenness": 0.2654523499602753,
+          "spearman_N_evenness": 0.23424374030084538,
+          "detrended_r": 0.2691382174360581,
+          "first_difference_r": 0.08870391958462548,
+          "leave_one_year_out_min": -0.35581347897494137,
+          "leave_one_year_out_max": 0.6848653521841864,
+          "evenness_slope_year": -0.006241160530876721
+        },
+        "omit_chinstrap_no_empty_nest_data_years": {
+          "n_years": 5,
+          "n_components": 5,
+          "first_total": 1040.0,
+          "last_total": 1307.0,
+          "total_percent_change": 25.67307692307692,
+          "first_neff": 2.0849477413708684,
+          "last_neff": 2.055444388961418,
+          "first_evenness": 0.41698954827417367,
+          "last_evenness": 0.41108887779228354,
+          "pearson_logN_evenness": 0.7055041643328084,
+          "spearman_N_evenness": 0.7999999999999999,
+          "detrended_r": 0.796274312497404,
+          "first_difference_r": -0.3406684135854468,
+          "leave_one_year_out_min": 0.64894284471709,
+          "leave_one_year_out_max": 0.8734391885357139,
+          "evenness_slope_year": -0.002473402385624321
+        }
+      },
+      "null_diagnostics": {
+        "0": {
+          "simulations": 30000,
+          "r_q025_median_q975": [
+            -0.709651421902481,
+            -0.0020788572923272587,
+            0.710866693923649
+          ],
+          "r_two_tail_probability": 0.321922602579914,
+          "evenness_slope_q025_median_q975": [
+            -0.003995963617898658,
+            1.8424407522589437e-05,
+            0.003963964943520575
+          ]
+        },
+        "0.1": {
+          "simulations": 30000,
+          "r_q025_median_q975": [
+            -0.7756879060982452,
+            -0.16415514055246333,
+            0.6143432075998879
+          ],
+          "r_two_tail_probability": 0.17466084463851206,
+          "evenness_slope_q025_median_q975": [
+            -0.008564782378618022,
+            -5.1299575995792415e-05,
+            0.008604705326433839
+          ]
+        },
+        "0.2": {
+          "simulations": 30000,
+          "r_q025_median_q975": [
+            -0.8322498228652144,
+            -0.3129260007265171,
+            0.4933485080353088
+          ],
+          "r_two_tail_probability": 0.07899736675444152,
+          "evenness_slope_q025_median_q975": [
+            -0.015552317122577118,
+            6.11013542326352e-05,
+            0.015557696640951095
+          ]
+        }
+      }
+    },
+    "Chinstrap": {
+      "n_years": 8,
+      "n_components": 9,
+      "first_total": 945.0,
+      "last_total": 581.0,
+      "total_percent_change": -38.51851851851852,
+      "first_neff": 3.442563230753218,
+      "last_neff": 2.1910297601661637,
+      "first_evenness": 0.38250702563924643,
+      "last_evenness": 0.24344775112957373,
+      "pearson_logN_evenness": 0.832927525378229,
+      "spearman_N_evenness": 0.7380952380952381,
+      "detrended_r": 0.0676944502637712,
+      "first_difference_r": 0.3768241340917811,
+      "leave_one_year_out_min": 0.7356564265052734,
+      "leave_one_year_out_max": 0.877015516099005,
+      "evenness_slope_year": -0.016207194818604834,
+      "sensitivities": {
+        "omit_shag_2015_boundary_note": {
+          "n_years": 7,
+          "n_components": 9,
+          "first_total": 945.0,
+          "last_total": 581.0,
+          "total_percent_change": -38.51851851851852,
+          "first_neff": 3.442563230753218,
+          "last_neff": 2.1910297601661637,
+          "first_evenness": 0.38250702563924643,
+          "last_evenness": 0.24344775112957373,
+          "pearson_logN_evenness": 0.842996074426665,
+          "spearman_N_evenness": 0.8214285714285715,
+          "detrended_r": -0.057817344471677405,
+          "first_difference_r": 0.41000833548381577,
+          "leave_one_year_out_min": 0.7575358549115733,
+          "leave_one_year_out_max": 0.9133378895044826,
+          "evenness_slope_year": -0.016101949341727536
+        },
+        "omit_chinstrap_no_empty_nest_data_years": {
+          "n_years": 5,
+          "n_components": 9,
+          "first_total": 945.0,
+          "last_total": 657.0,
+          "total_percent_change": -30.476190476190478,
+          "first_neff": 3.442563230753218,
+          "last_neff": 2.8253902798232695,
+          "first_evenness": 0.38250702563924643,
+          "last_evenness": 0.3139322533136966,
+          "pearson_logN_evenness": 0.4943280795157659,
+          "spearman_N_evenness": 0.0,
+          "detrended_r": -0.8782035177527066,
+          "first_difference_r": -0.949240664760007,
+          "leave_one_year_out_min": -0.8580116627637423,
+          "leave_one_year_out_max": 0.7315298202884221,
+          "evenness_slope_year": -0.010294882939994966
+        }
+      },
+      "null_diagnostics": {
+        "0": {
+          "simulations": 30000,
+          "r_q025_median_q975": [
+            -0.7122229874835124,
+            0.004972847471955751,
+            0.7326334917956172
+          ],
+          "r_two_tail_probability": 0.013799540015332823,
+          "evenness_slope_q025_median_q975": [
+            -0.004981718814527134,
+            -2.7399813685471554e-05,
+            0.004957177014003486
+          ]
+        },
+        "0.1": {
+          "simulations": 30000,
+          "r_q025_median_q975": [
+            -0.7791037492894454,
+            -0.14082345564306076,
+            0.6241881098065657
+          ],
+          "r_two_tail_probability": 0.004866504449851671,
+          "evenness_slope_q025_median_q975": [
+            -0.008812714638185608,
+            -2.0228641761127154e-05,
+            0.00895391289348287
+          ]
+        },
+        "0.2": {
+          "simulations": 30000,
+          "r_q025_median_q975": [
+            -0.8365344219798906,
+            -0.31460645494561734,
+            0.4775362971436389
+          ],
+          "r_two_tail_probability": 0.0015332822239258691,
+          "evenness_slope_q025_median_q975": [
+            -0.015713110522799528,
+            2.5157662694869076e-05,
+            0.015728557011390202
+          ]
+        }
+      }
+    },
+    "Shag": {
+      "n_years": 8,
+      "n_components": 2,
+      "first_total": 310.0,
+      "last_total": 425.0,
+      "total_percent_change": 37.09677419354838,
+      "first_neff": 1.999667068958342,
+      "last_neff": 1.845428445906597,
+      "first_evenness": 0.999833534479171,
+      "last_evenness": 0.9227142229532985,
+      "pearson_logN_evenness": -0.41995472892446023,
+      "spearman_N_evenness": -0.14285714285714288,
+      "detrended_r": -0.41398461068533793,
+      "first_difference_r": -0.1798598652176768,
+      "leave_one_year_out_min": -0.9305549893207149,
+      "leave_one_year_out_max": -0.24005414325384244,
+      "evenness_slope_year": -0.0048986049526294284,
+      "sensitivities": {
+        "omit_shag_2015_boundary_note": {
+          "n_years": 7,
+          "n_components": 2,
+          "first_total": 310.0,
+          "last_total": 425.0,
+          "total_percent_change": 37.09677419354838,
+          "first_neff": 1.999667068958342,
+          "last_neff": 1.845428445906597,
+          "first_evenness": 0.999833534479171,
+          "last_evenness": 0.9227142229532985,
+          "pearson_logN_evenness": -0.9305549893207149,
+          "spearman_N_evenness": -0.28571428571428575,
+          "detrended_r": -0.9295348766707784,
+          "first_difference_r": -0.8937285033803978,
+          "leave_one_year_out_min": -0.9446051436977918,
+          "leave_one_year_out_max": -0.8965788518143119,
+          "evenness_slope_year": -0.004670303718005696
+        },
+        "omit_chinstrap_no_empty_nest_data_years": {
+          "n_years": 5,
+          "n_components": 2,
+          "first_total": 310.0,
+          "last_total": 299.0,
+          "total_percent_change": -3.548387096774197,
+          "first_neff": 1.999667068958342,
+          "last_neff": 1.9630882062317472,
+          "first_evenness": 0.999833534479171,
+          "last_evenness": 0.9815441031158736,
+          "pearson_logN_evenness": -0.14470112028031595,
+          "spearman_N_evenness": -0.09999999999999999,
+          "detrended_r": -0.13859305296083532,
+          "first_difference_r": 0.16167522101266352,
+          "leave_one_year_out_min": -0.9434048405525203,
+          "leave_one_year_out_max": 0.18189763113824822,
+          "evenness_slope_year": -0.001709034736975432
+        }
+      },
+      "null_diagnostics": {
+        "0": {
+          "simulations": 30000,
+          "r_q025_median_q975": [
+            -0.6789224140388047,
+            0.18949971819231914,
+            0.6405379703516629
+          ],
+          "r_two_tail_probability": 0.1690610312989567,
+          "evenness_slope_q025_median_q975": [
+            -0.0013341220217996243,
+            -3.0582194105137946e-06,
+            0.0015100108486469702
+          ]
+        },
+        "0.1": {
+          "simulations": 30000,
+          "r_q025_median_q975": [
+            -0.7369144822907104,
+            0.09470063423041192,
+            0.6398996411589766
+          ],
+          "r_two_tail_probability": 0.2627245758474718,
+          "evenness_slope_q025_median_q975": [
+            -0.0034765026345493855,
+            -8.552248986119054e-06,
+            0.0035962796352836304
+          ]
+        },
+        "0.2": {
+          "simulations": 30000,
+          "r_q025_median_q975": [
+            -0.7299306948553338,
+            0.04889142195909663,
+            0.6726329641245218
+          ],
+          "r_two_tail_probability": 0.2869237692076931,
+          "evenness_slope_q025_median_q975": [
+            -0.008826046009071761,
+            1.2756350380374857e-05,
+            0.009009684449225376
+          ]
+        }
+      }
+    }
+  },
+  "cross_species": [
+    {
+      "species_a": "Adelie",
+      "species_b": "Chinstrap",
+      "raw_log_count_r": 0.39200115630805843,
+      "detrended_r": 0.6766014428889615,
+      "annual_log_change_r": 0.5008168018298925
+    },
+    {
+      "species_a": "Adelie",
+      "species_b": "Shag",
+      "raw_log_count_r": 0.6232157377327027,
+      "detrended_r": 0.6390558664363998,
+      "annual_log_change_r": 0.5958261500557733
+    },
+    {
+      "species_a": "Adelie",
+      "species_b": "Giant petrel",
+      "raw_log_count_r": 0.1279724474155783,
+      "detrended_r": 0.12825298469041063,
+      "annual_log_change_r": -0.07655187395164033
+    },
+    {
+      "species_a": "Chinstrap",
+      "species_b": "Shag",
+      "raw_log_count_r": 0.22266357717977175,
+      "detrended_r": 0.6901893654691237,
+      "annual_log_change_r": 0.528452676135785
+    },
+    {
+      "species_a": "Chinstrap",
+      "species_b": "Giant petrel",
+      "raw_log_count_r": 0.19712145120250346,
+      "detrended_r": 0.4300196273322543,
+      "annual_log_change_r": 0.12682872885229554
+    },
+    {
+      "species_a": "Shag",
+      "species_b": "Giant petrel",
+      "raw_log_count_r": -0.09475295607769516,
+      "detrended_r": -0.09486205361288481,
+      "annual_log_change_r": -0.37280469526487553
+    }
+  ],
+  "null_limit": "Independent Poisson/Gamma-Poisson error diagnostics, not serially correlated ecological null; tail areas are not confirmatory tests."
+}
