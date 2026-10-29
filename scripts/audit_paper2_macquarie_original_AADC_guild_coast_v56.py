@@ -257,7 +257,21 @@ def audit():
                 raw,receipt=get_public_source_bytes(session,meta["download_url"])
             info.update(receipt)
             info["source_structure"]=source_file_structure(raw)
-            info["status"]="AADC_ORIGINAL_PUBLIC_SOURCE_HEADER_VERIFIED"
+            geom=info["source_structure"]
+            # Publication access is NOT an original GIS sample success unless
+            # the actual bird/coast feature header & geometry are identified.
+            verified_geo=(
+                geom.get("source_file_format")=="ZIP_ARCHIVE"
+                and geom.get("original_readable_shapefile_header_layers_n",0)>0
+                or geom.get("source_file_format")=="GEOJSON"
+                and geom.get("original_source_features_n",0)>0
+            )
+            info["original_GIS_feature_header_verified"]=bool(verified_geo)
+            info["status"]=(
+                "AADC_ORIGINAL_PUBLIC_SOURCE_HEADER_VERIFIED"
+                if verified_geo
+                else "SOURCE_BYTES_VERIFIED_BUT_ORIGINAL_GIS_GRAIN_UNVERIFIED"
+            )
         except Exception as e:
             info["error"]=type(e).__name__+": "+str(e)[:420]
         return tag,info
