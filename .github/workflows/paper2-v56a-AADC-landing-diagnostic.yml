@@ -1,0 +1,41 @@
+name: Paper2 V56a AADC public source download landing diagnosis only
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'scripts/audit_paper2_macquarie_AADC_download_landing_v56a.py'
+      - 'tests/test_paper2_macquarie_AADC_download_landing_v56a.py'
+      - '.github/workflows/paper2-v56a-AADC-landing-diagnostic.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_paper2_macquarie_AADC_download_landing_v56a.py'
+      - 'tests/test_paper2_macquarie_AADC_download_landing_v56a.py'
+      - '.github/workflows/paper2-v56a-AADC-landing-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose_official_file_navigation_without_consent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public HTML source diagnostic reader
+        run: python -m pip install requests pytest
+      - name: Check site boundary, consent and URL token redaction
+        run: python -m pytest -q tests/test_paper2_macquarie_AADC_download_landing_v56a.py
+      - name: Inspect two original AADC public landing pages WITHOUT downloading data or submitting forms
+        run: |
+          python scripts/audit_paper2_macquarie_AADC_download_landing_v56a.py \
+            --out /tmp/PAPER2_V56A_AADC_LANDING_DIAGNOSIS.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v56a-aadc-publisher-landing-HTML-diagnosis
+          path: /tmp/PAPER2_V56A_AADC_LANDING_DIAGNOSIS.json
+          if-no-files-found: warn
