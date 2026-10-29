@@ -37,10 +37,14 @@ def model(rows,term,year_effect):
     if n<MIN_YEAR_SITE or len(sites)<MIN_SITES or len(regions)<MIN_REGIONS:
         out["status"]="SOURCE_SUPPORT_BELOW_PREDECLARED_GROUP_GATE";return out
     def fit(subset):
+        result={"coefficient":None,"algebraic_coefficient":None,
+                "nuisance_rank":None,"full_design_rank":None,
+                "residual_df":None,"remaining_climate_ss_fraction":None,
+                "status":"SOURCE_SUPPORT_BELOW_PREDECLARED_GROUP_GATE"}
         if len(subset)<MIN_YEAR_SITE or len({z["site_id"] for z in subset})<MIN_SITES or len({z["source_region"] for z in subset})<MIN_REGIONS:
-            return None
-        x=np.asarray([z[term] for z in subset])
-        y=np.asarray([z["relative_growth"] for z in subset])
+            return result
+        x=np.asarray([z[term] for z in subset],dtype=float)
+        y=np.asarray([z["relative_growth"] for z in subset],dtype=float)
         if not (np.isfinite(x).all() and np.isfinite(y).all()):raise ValueError("nonfinite source")
         columns=[np.ones(len(subset))]
         for field in ["site_id"]+(["end_year"] if year_effect else []):
@@ -51,16 +55,38 @@ def model(rows,term,year_effect):
         rx=x-matrix@np.linalg.lstsq(matrix,x,rcond=None)[0]
         ry=y-matrix@np.linalg.lstsq(matrix,y,rcond=None)[0]
         den=float(rx@rx)
-        if den<=1e-10:return None
-        return float(rx@ry/den)
-    coef=fit(rows)
-    if coef is None:
-        out["status"]="RESIDUAL_CLIMATE_UNIDENTIFIABLE";return out
-    out["status"]="EXPLORATORY_COEFFICIENT_FITTED_NOT_CAUSAL"
-    out["per_1C_climate_coefficient"]=coef
+        rank0=int(np.linalg.matrix_rank(matrix))
+        rank1=int(np.linalg.matrix_rank(np.column_stack([matrix,x])))
+        centered=float(np.sum((x-x.mean())**2))
+        result.update(nuisance_rank=rank0,full_design_rank=rank1,
+                      residual_df=len(subset)-rank1,
+                      remaining_climate_ss_fraction=den/centered if centered>1e-10 else None)
+        if den<=1e-10 or rank1<=rank0:
+            result["status"]="RESIDUAL_CLIMATE_UNIDENTIFIABLE"
+            return result
+        result["algebraic_coefficient"]=float(rx@ry/den)
+        if result["residual_df"]<=0:
+            # Algebraic interpolation can identify a slope with no residual
+            # degrees of freedom. Preserve it for audit, not as supported evidence.
+            result["status"]="SATURATED_NO_RESIDUAL_DF"
+            return result
+        result["coefficient"]=result["algebraic_coefficient"]
+        result["status"]="EXPLORATORY_COEFFICIENT_FITTED_NOT_CAUSAL"
+        return result
+    diagnosed=fit(rows)
+    out.update(status=diagnosed["status"],
+               nuisance_rank=diagnosed["nuisance_rank"],
+               full_design_rank=diagnosed["full_design_rank"],
+               residual_df=diagnosed["residual_df"],
+               algebraic_coefficient_audit_only=diagnosed["algebraic_coefficient"],
+               remaining_climate_ss_fraction=diagnosed["remaining_climate_ss_fraction"],
+               only_one_residual_df=diagnosed["residual_df"]==1)
+    if diagnosed["coefficient"] is None:return out
+    out["per_1C_climate_coefficient"]=diagnosed["coefficient"]
     other=[fit([z for z in rows if z["site_id"]!=site]) for site in sites]
-    valid=[v for v in other if v is not None and math.isfinite(v)]
+    valid=[v["coefficient"] for v in other if v["coefficient"] is not None]
     out["jackknife_refits_identifiable"]=len(valid)
+    out["jackknife_saturated_refits_excluded"]=sum(v["status"]=="SATURATED_NO_RESIDUAL_DF" for v in other)
     out["leave_one_original_site_out_range"]=[min(valid),max(valid)] if valid else None
     return out
 
@@ -117,7 +143,8 @@ def main():
                 "site_year_fixed":model(subset,term,True)
             }
     output={
-       "schema":1,"date":"2026-10-29",
+       "schema":2,"date":"2026-10-29",
+       "rank_guard":"saturated fits retain algebraic slope for audit, not as supported coefficient",
        "status":"ORIGINAL_POSTEXPLORATORY_MATCHED_SPECIES_CLIMATE_DIFFERENCES_NOT_CAUSAL",
        "source_381_counts_ERA5_sha256":sha(primary),
        "source_same_site_year_species_sha256":sha(second),
