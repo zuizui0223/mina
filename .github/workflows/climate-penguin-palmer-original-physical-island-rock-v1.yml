@@ -1,0 +1,47 @@
+name: climate-penguin-palmer-original-physical-island-rock-v1
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/audit_palmer_original_island_rock_v1.py"
+      - "research/climate-penguin/contracts/PALMER_ORIGINAL_PHYSICAL_ISLAND_ROCK_V1.md"
+      - "tests/test_climate_penguin_palmer_original_island_rock_v1.py"
+      - ".github/workflows/climate-penguin-palmer-original-physical-island-rock-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  source-only-island-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install 'shapely>=2,<3' 'pyproj>=3,<4' pyshp requests pytest
+      - run: python -m pytest -q tests/test_climate_penguin_palmer_original_island_rock_v1.py
+      - name: Reuse genuine original-rock atlas artifact with immutable land-FID assignments
+        uses: actions/download-artifact@v4
+        with:
+          name: original-scar-functional-archipelago-v1
+          run-id: 40163069247
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/original_scar_rock
+      - name: Verify original SCAR land and strictly classify five unshifted site points
+        run: |
+          python research/climate-penguin/work/climate_penguin/audit_palmer_original_island_rock_v1.py \
+            --rock-csv "${{ runner.temp }}/original_scar_rock/functional-archipelago-v1-rock-patches.csv" \
+            --rock-summary "${{ runner.temp }}/original_scar_rock/functional-archipelago-v1-summary.json" \
+            --output "${{ runner.temp }}/palmer_original_rock_land_result.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: climate-penguin-palmer-original-scar-land-rock-v1
+          path: ${{ runner.temp }}/palmer_original_rock_land_result.json
+          retention-days: 30
+          if-no-files-found: warn

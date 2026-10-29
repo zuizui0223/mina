@@ -1,0 +1,11 @@
+# Five Palmer island original SCAR land × rock eligibility V1
+
+**This stage measures only 2026 published SCAR geography**, not usable historical nesting habitat. Reuses the original high-res (v7.12) SCAR land ZIP SHA 66d82fa69f86... from independent Paper2 atlas source-run 40163069247, and its original v7.11 rock atlas **derived whole-rock original-land source-ID CSV** with pinned original rock SHA 4d93119052d3... . It does **not** recompute exposed-rock patches or their 2km connected graph. Exact published source feature IDs and original CRS EPSG:3031 are mandatory.
+
+Fixed scope: Palmer original five site coordinates CHIS, CORM, HUMB, LITC, TORG from the already pinned 2026 source; no species-response-based location moving or coastline snapping. Each WGS84 point must lie inside exactly one original mapped `surface=land` polygon to qualify as an exact 2026 mapped-land source feature. Off-polygon within 250m is a source/georeferencing diagnostic only and remains HOLD. Same mapped polygon for two nominal islands prevents treating them as two independent physical land units. Largest mainland polygon cannot be assumed an island.
+
+For exact lands only, aggregate original 2026 rock patch rows that were certified wholly inside that specific original land ID. Report count and *sum of original patch feature EPSG:3031 areas*, not union nesting habitat, annual capacity, or habitat available in 2007. Feature overlap and mapped source-label uncertainty remain. The original 2026 land and rock source editions are not perfectly synchronized; no source polygon proves accessible sea-to-nest movement.
+
+**STOP** on an island-specific mechanism, snow-mediated population disappearance or vegetation causal effect unless all corresponding site coordinates are assigned reliable original island polygons AND annual ice-free/rock/snow/vegetation are observed at matching dates. Static source geography is a useful candidate environmental covariate, not the biological outcome.
+
+Input original source ancestry: `results/SCAR_FUNCTIONAL_ARCHIPELAGO_GEOGRAPHY_V1.json` and original artifact `https://github.com/zuizui0223/mina/actions/runs/40163069247` (from Paper2 PR199). No changes are made to that branch, failed source gates, or PR189.
