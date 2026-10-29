@@ -43,3 +43,27 @@ Reproducible source code and full 40-site source command: `work/climate_penguin/
 - **Island mechanism remains HOLD:** changing snow, ice-free rock/available patches, migration paths, marine prey and productivity are separate mechanisms. A temperature/count association alone neither measures the breeding-patch capacity nor validates predator × flightless access. Physical island area and penguin occupancy/space must be co-measured to support that claim.
 
 **Priority:** obtain the fixed 40-site ERA5 source and original count join, quantify the supported effect sizes and region/time uncertainty, then decide whether the observational signal justifies an independent-source holdout. No change to published phenology claims, the frozen Ecology submission, or already-failed island/predator source gates.
+
+
+## 6. Actual full-source 40-site temperature and count execution (2026-10-29, executed)
+
+**ERA5 first-party delivery/derived source audit succeeded** in [Actions #40856645581](https://github.com/zuizui0223/mina/actions/runs/40856645581), with full daily 1991–2020 source, 40 original sites, **30 distinct ERA5 API grid coordinates**, and 40×30×12=14,400 monthly source-site windows. Raw compressed API response, URL/response hashes, monthly and season-year climate summaries, site trends and source checks were saved in original [artifact #12889668094](https://github.com/zuizui0223/mina/actions/runs/40856645581/artifacts/12889668094).
+
+Descriptive 30-year site-slope median (°C/decade): **full-year +0.44016** (39/40 positive); **Aug–Nov +0.34029** (38/40 positive); Aug +0.82321 (33/40 positive); Sep +0.20896 (37/40 positive); Oct +0.41149 (38/40 positive); Nov +0.02356 (21/40 positive). These are *unadjusted temporal slopes*, not anthropogenic attribution, formal confidence intervals, or 40 independent ecosystem replicates. Some ERA5 locations are coastal coarse grid analogues and not penguin nest microclimate measurements.
+
+**Original MAPPPD count × ERA5 pairing actually executed** using that verified full-source artifact on [Actions #40857800306](https://github.com/zuizui0223/mina/actions/runs/40857800306), [numerical original output artifact #12889423234](https://github.com/zuizui0223/mina/actions/runs/40857800306/artifacts/12889423234). All **301 of 301** originally qualified 1991–2020 consecutive-season count intervals have valid September temperature pairs. Strict timing support remains 203 after-September pairs, 191 after-November pairs, with overwhelming Victoria Land concentration.
+
+The below numbers are `delta log(count)` **per +1°C year-to-year temperature change**, not long-term warming causal coefficients. Source-verified outputs and leave-one-site-out ranges:
+
+| Chronology + temperature | Sites / intervals | Site fixed | Site + year fixed |
+| --- | --- | ---: | ---: |
+| Sep temperature, both counts after Sep | 26 / 203 | **−0.00548** (LOSO −0.00778 to −0.00353) | **+0.02666** (LOSO +0.01846 to +0.04484) |
+| Aug–Nov temperature, both counts after Nov | 23 / 191 | **+0.01986** (LOSO +0.01398 to +0.02389) | **+0.09134** (LOSO +0.06676 to +0.11034) |
+| Sep temperature, **Victoria only** | 20 / 187 | −0.00280 | +0.05919 |
+| Sep temperature, **other regions** | 6 / 16 | −0.03005 | **not identifiable** |
+
+The September coefficient changes sign when the common year effect is included: **the annual biological association is not stable to how shared year variation is treated**. A year FE can also remove actual spatially shared climatic variation, so do not automatically declare the year-adjusted coefficient the more causal estimate. The Aug–Nov strict cohort is 187/191 (**97.9%**) Victoria; the apparent positive coefficient is not an Antarctic-wide replicated warming effect. LOSO describes which monitored sites leverage an *observed fitted slope*, not an interval with valid spatial/temporal dependence calibration. No multi-source causal model, formal p-values or confidence intervals were reported for this temperature/count fit.
+
+**Decision:** Significant source-level progress on the **exposure** side (climate warming signal measured in ERA5 and month-specific ice heterogeneity), but **breeding response to warming is not confirmed**, and physical-island substrate/competition mechanisms are still unmeasured. An independent south/peninsula versus Victoria count chronology and coast/ice-free land data are necessary before asserting a general Antarctic breeding mechanism.
+
+The source-verified machine-readable summary with run IDs and hashes is `CLIMATE_WARMING_ERA5_40SITE_SOURCE_RESULT_20261029.json` in this directory, not to be confused with the original raw-source run artifact.
