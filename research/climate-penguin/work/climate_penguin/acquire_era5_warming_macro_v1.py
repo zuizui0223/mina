@@ -112,7 +112,15 @@ def fetch_batch(batch, attempts=3):
             if any("daily" not in item for item in payload):
                 raise RuntimeError("Source did not return required ERA5 daily payload")
             return url, raw, payload
-        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError, ValueError, RuntimeError) as ex:
+        except urllib.error.HTTPError as ex:
+            detail = ex.read(4096).decode("utf-8", errors="replace")
+            last_error = RuntimeError(f"HTTP {ex.code}; source error body: {detail}")
+            if 400 <= ex.code < 500 and ex.code != 429:
+                raise last_error
+            if attempt < attempts - 1:
+                print(f"Retrying remote HTTP {ex.code}: {detail[:250]}", flush=True)
+                time.sleep(3 * (attempt + 1))
+        except (urllib.error.URLError, TimeoutError, OSError, ValueError, RuntimeError) as ex:
             last_error = ex
             if attempt < attempts - 1:
                 print(f"Retrying after source download error: {type(ex).__name__} {str(ex)[:150]}", flush=True)
