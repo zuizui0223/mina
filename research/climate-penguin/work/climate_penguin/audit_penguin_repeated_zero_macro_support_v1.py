@@ -26,7 +26,10 @@ def audit():
     observed=readcsv(STATE)
     plant=readcsv(VEG)
     assert len(zeros)==38 and len(observed)>3000
-    assert len({(r["site_id"],r["species_id"],r["first_observed_zero"]) for r in zeros})==38\n    # A source site/species may have >1 zero episode followed by reoccupation.\n    # Those are separate spells, not independent islands or species×sites.\n    assert len({(r["site_id"],r["species_id"]) for r in zeros})==37
+    assert len({(r["site_id"],r["species_id"],r["first_observed_zero"]) for r in zeros})==38
+    # A source site/species may have >1 zero episode followed by reoccupation.
+    # Those are separate spells, not independent islands or species×sites.
+    assert len({(r["site_id"],r["species_id"]) for r in zeros})==37
     assert all(r["species_id"] in SPECIES for r in zeros)
     obs=defaultdict(list)
     for r in observed:
