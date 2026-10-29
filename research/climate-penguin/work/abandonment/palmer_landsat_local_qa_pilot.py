@@ -25,9 +25,22 @@ def clear_land_qa(qa: int) -> bool:
     return all((qa & bit) == 0 for bit in BITS_BAD)
 
 
-def fetch_all(year):
+def build_source_query(year, month=None):
+    from calendar import monthrange
     source = "landsat"
     query = next(q for s, y, q in mod.queries(year, year, (source,)))
+    if month is not None:
+        final_day = monthrange(year, month)[1]
+        query["datetime"] = (
+            f"{year}-{month:02d}-01T00:00:00Z/"
+            f"{year}-{month:02d}-{final_day:02d}T23:59:59Z"
+        )
+    return query
+
+
+def fetch_all(year, month=None):
+    source = "landsat"
+    query = build_source_query(year, month)
     url = mod.SOURCES[source]["url"]
     body, method = query, "POST"
     items, seen = {}, set()
@@ -78,6 +91,8 @@ def sample_site(dataset, loc):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=Path("qa_pilot"))
+    parser.add_argument("--years", type=int, nargs="+", default=list(YEARS))
+    parser.add_argument("--month", type=int, choices=range(1, 13))
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     import rasterio
@@ -87,8 +102,8 @@ def main():
         GDAL_DISABLE_READDIR_ON_OPEN="EMPTY_DIR",
         GDAL_HTTP_MAX_RETRY="2", GDAL_HTTP_RETRY_DELAY="1",
     ):
-        for year in YEARS:
-            for feature in fetch_all(year):
+        for year in args.years:
+            for feature in fetch_all(year, args.month):
                 asset = feature.get("assets", {}).get("qa_pixel")
                 for site, loc in mod.SITES.items():
                     row = {
@@ -126,11 +141,12 @@ def main():
                 "scenes_any_qa_clear_land": sum(
                     r["site_id"] == site and r["year"] == year and
                     r.get("qa_clear_nonwater_nonsnow", 0) > 0 for r in rows),
-            } for year in YEARS
+            } for year in args.years
         } for site in mod.SITES
     }
     checks = {
-        "years": YEARS, "site_codes": list(mod.SITES), "sample_offsets_m": GRID_M,
+        "years": args.years, "calendar_months": [args.month] if args.month else [2, 3],
+        "site_codes": list(mod.SITES), "sample_offsets_m": GRID_M,
         "rule": "QA_PIXEL bits 0 fill,1 dilated cloud,3 cloud,4 shadow,5 snow,7 water all OFF",
         "results": results,
         "limitations": [

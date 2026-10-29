@@ -20,7 +20,8 @@ jobs:
           import runpy
           ns=runpy.run_path("tests/test_palmer_landsat_local_qa_pilot.py")
           ns["test_landsat_qa_flags"]()
-          print("PASS QA_PIXEL fill/cloud/snow/water bit contract")
+          ns["test_january_window_contract"]()
+          print("PASS QA flags and fixed January/February-March date windows")
           PY
       - name: Install published Python GIS drivers
         run: python -m pip install --disable-pip-version-check -q rasterio==1.4.3 pyproj==3.7.1 planetary-computer==1.0.0
@@ -34,5 +35,17 @@ jobs:
         with:
           name: palmer-p0-landsat-qa-pilot
           path: /tmp/palmer_landsat_qa_p0/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Check January 2007 and 2008 as a post-hoc observation-support sensitivity
+        run: |
+          python research/climate-penguin/work/abandonment/palmer_landsat_local_qa_pilot.py \
+            --years 2007 2008 --month 1 --out /tmp/palmer_landsat_qa_january
+      - name: Preserve January 2007-2008 local QA source results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: palmer-january-local-qa-pilot
+          path: /tmp/palmer_landsat_qa_january/
           if-no-files-found: warn
           retention-days: 30

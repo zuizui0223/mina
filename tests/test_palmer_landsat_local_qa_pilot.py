@@ -13,3 +13,10 @@ def test_landsat_qa_flags():
     for bit in (0, 1, 3, 4, 5, 7):
         assert not m.clear_land_qa(1 << bit)
     assert 2008 in m.YEARS and len(m.GRID_M) == 5
+
+def test_january_window_contract():
+    q = m.build_source_query(2008, month=1)
+    assert q["datetime"] == "2008-01-01T00:00:00Z/2008-01-31T23:59:59Z"
+    d = m.build_source_query(2008)
+    assert d["datetime"].startswith("2008-02-01")
+    assert d["datetime"].endswith("2008-03-31T23:59:59Z")
