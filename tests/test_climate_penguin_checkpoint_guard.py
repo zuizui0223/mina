@@ -60,21 +60,18 @@ def independent_fdr(p_values: list[float], by: bool) -> list[float]:
     return out
 
 
-def test_checkpoint_input_sha256_matches_source_manifest():
-    manifest = {
-        item["path"]: item
-        for item in json.loads((CHECKPOINT / "SNAPSHOT_MANIFEST.json").read_text())
-    }
-    for name in (
-        "historical_count_interval_timing.csv",
-        "historical_count_timing_summary.csv",
-        "wild_cluster_sensitivity_results.csv",
-    ):
-        rel = "outputs/climate_penguin/" + name
-        data = (OUT / name).read_bytes()
-        assert rel in manifest
-        assert len(data) == manifest[rel]["bytes"]
-        assert hashlib.sha256(data).hexdigest() == manifest[rel]["sha256"]
+def test_complete_snapshot_manifest_file_integrity():
+    # Byte-level integrity is intentionally distinct from regenerating
+    # excluded external caches or repeating the original scientific fits.
+    ledger = json.loads((CHECKPOINT / "SNAPSHOT_MANIFEST.json").read_text())
+    assert len(ledger) == 283
+    assert len({item["path"] for item in ledger}) == len(ledger)
+    for item in ledger:
+        rel = Path(item["path"])
+        assert not rel.is_absolute() and ".." not in rel.parts
+        data = (CHECKPOINT / rel).read_bytes()
+        assert len(data) == item["bytes"], item["path"]
+        assert hashlib.sha256(data).hexdigest() == item["sha256"], item["path"]
 
 
 def test_historical_count_timing_nestedness_and_geographical_support():
