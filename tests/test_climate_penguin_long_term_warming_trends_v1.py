@@ -44,6 +44,15 @@ def test_numerical_trends_and_structural_independence():
     assert report["leave_one_grid_out_r_range"] is not None
     assert math.isclose(report["equal_grid_pearson_r"],
         m.pearson([1, 2, 3, 4, 5], [2, 2, 4, 6, 7]), abs_tol=1e-12)
+    assert report["by_region_pearson_r"]["B"] is None  # n=2
+    # Switching the climate window must NOT silently switch the count roster.
+    for j, record in enumerate(d):
+        record["fixed_1991_2020_temperature_c_slope_per_decade"] = -2 * j
+    fixed = m.association(d, "fixed_1991_2020_temperature_c_slope_per_decade")
+    assert fixed["n_sites"] == report["n_sites"]
+    assert fixed["n_era5_grids"] == report["n_era5_grids"]
+    assert fixed["climate_exposure_key"] == "fixed_1991_2020_temperature_c_slope_per_decade"
+    assert fixed["site_pearson_r"] != report["site_pearson_r"]
 
 
 def test_count_support_gate_frozen_independent_of_trend_direction():
