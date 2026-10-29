@@ -1,0 +1,58 @@
+name: observed-interval-seaice-v7
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - '.github/workflows/observed-interval-seaice-v7.yml'
+      - 'research/climate-penguin/work/climate_penguin/observed_interval_seaice_v7.py'
+      - 'research/climate-penguin/contracts/OBSERVED_INTERVAL_SEAICE_V7.md'
+      - 'tests/test_observed_interval_seaice_v7.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original140months-78observedintervals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Normal project environment and complete core test suite
+        run: |
+          python -m pip install -e '.[dev]'
+          pytest
+      - uses: actions/download-artifact@v4
+        with:
+          name: matched-observed-intervals-v6-original-source
+          run-id: 40889533815
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/source-v6
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-mapppd-matched-species-growth-v1
+          run-id: 40868828790
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/original-counts
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-seaice-fixed44-original96-v4
+          run-id: 40881769676
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/source-v4
+      - name: Install optional original NetCDF/GIS reader
+        run: python -m pip install xarray netCDF4 pyproj
+      - name: Original monthly sea ice and fixed observed-interval species decomposition
+        run: |
+          python research/climate-penguin/work/climate_penguin/observed_interval_seaice_v7.py \
+            --v6-dir /tmp/source-v6 --original-dir /tmp/original-counts \
+            --v4-cache /tmp/source-v4 --out /tmp/interval-seaice-v7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: observed-interval-seaice-v7-original-source
+          path: /tmp/interval-seaice-v7/
+          retention-days: 30
+          if-no-files-found: warn
