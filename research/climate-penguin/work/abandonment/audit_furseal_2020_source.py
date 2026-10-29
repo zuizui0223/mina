@@ -139,6 +139,7 @@ def main(argv=None):
                          "columns": report["files"][name].get("columns"),
                          "island_matches": report["files"][name].get("support", {}).get("named_island_record_matches"),
                          "coordinate_support": report["files"][name].get("support", {}).get("coordinate_support"),
+                         "source_errors": report["files"][name].get("error"),
                        } for name in FILE_IDS}}, ensure_ascii=False))
     return 0 if report["all_three_source_files_verified"] else 2
 
