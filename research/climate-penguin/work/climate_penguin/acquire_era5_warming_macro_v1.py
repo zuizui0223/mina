@@ -94,7 +94,10 @@ def fetch_batch(batch, attempts=3):
         "models": MODEL,
         "timezone": "UTC",
         "temperature_unit": "celsius",
-        "elevation": "nan",
+        # The API requires one elevation token per coordinate, even when
+        # all tokens disable elevation downscaling.
+        "elevation": ",".join(["nan"] * len(batch)),
+        "cell_selection": "nearest",
     }
     url = API + "?" + urllib.parse.urlencode(params)
     last_error = None
