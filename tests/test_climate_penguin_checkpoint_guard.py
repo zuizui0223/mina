@@ -172,3 +172,104 @@ def test_wild_cluster_family_and_independent_bh_by_recalculation():
                 else:
                     assert math.isclose(float(r[displayed]), expected, abs_tol=1e-11)
             assert not any(float(r[displayed]) < 0.05 for r in rows if r[displayed])
+
+
+def test_seasonally_heterogeneous_ice_trends_and_duplicate_grid_support():
+    # These are ten-year DESCRIPTIVE climate slopes, not climate attribution.
+    from collections import defaultdict
+    from statistics import median
+    monthly = read_csv("macro_monthly_seaice_2011_2020.csv")
+    assert len(monthly) == 40 * 10 * 4 * 2 == 3200
+    assert all(r["complete_month"] == "True" for r in monthly)
+    assert len({
+        (r["site_id"], r["year"], r["month"], r["inner_km"])
+        for r in monthly
+    }) == len(monthly)
+
+    def trend(points):
+        xx = [float(r["year"]) for r in points]
+        yy = [float(r["sic_mean"]) for r in points]
+        mx = sum(xx) / len(xx)
+        my = sum(yy) / len(yy)
+        return 10 * sum((x - mx) * (y - my) for x, y in zip(xx, yy)) / sum((x - mx)**2 for x in xx)
+
+    grouped = defaultdict(list)
+    near = defaultdict(list)
+    for row in monthly:
+        if row["inner_km"] != "0":
+            continue
+        grouped[(row["site_id"], int(row["month"]))].append(row)
+        near[row["site_id"]].append(row)
+    assert len(near) == 40
+    expected = {
+        8: (36, -3.444180585660246),
+        9: (14, +0.4818357683982658),
+        10: (31, -0.8400439147722665),
+        11: (23, -0.5638232006337889),
+    }
+    for month, (negatives, midpoint) in expected.items():
+        slopes = [trend(grouped[(sid, month)]) for sid in sorted(near)]
+        assert all(len(grouped[(sid, month)]) == 10 for sid in near)
+        assert sum(v < 0 for v in slopes) == negatives
+        assert math.isclose(median(slopes), midpoint, abs_tol=1e-8)
+
+    signatures = defaultdict(list)
+    for sid, rows in near.items():
+        series = tuple(
+            r["sic_mean"] for r in sorted(rows, key=lambda r: (int(r["year"]), int(r["month"])))
+        )
+        assert len(series) == 40
+        signatures[series].append(sid)
+    assert len(signatures) == 38
+    assert sorted(tuple(sorted(ids)) for ids in signatures.values() if len(ids) > 1) == [
+        ("BRDM", "BRDS"), ("LLAN", "PTHO")
+    ]
+
+
+def test_short_overlap_seaice_count_growth_is_not_region_general():
+    # Exploration only: changing the aggregation (pooled versus within-site)
+    # reverses the sign. Never infer anthropogenic warming causation.
+    monthly = read_csv("macro_monthly_seaice_2011_2020.csv")
+    september = {
+        (r["site_id"], int(r["year"])): float(r["sic_mean"])
+        for r in monthly if int(r["month"]) == 9 and int(r["inner_km"]) == 0
+    }
+    pairs = []
+    for r in read_csv("historical_count_interval_timing.csv"):
+        start, end = int(r["start"]), int(r["end"])
+        if not (2011 <= start and end <= 2020):
+            continue
+        k0, k1 = (r["site_id"], start), (r["site_id"], end)
+        if k0 not in september or k1 not in september:
+            continue
+        pairs.append({
+            "site": r["site_id"],
+            "region": r["region"],
+            "valid": truth(r["both_all_after_september"]),
+            "x": september[k1] - september[k0],
+            "y": math.log(float(r["n_end"]) / float(r["n_start"])),
+        })
+    assert len(pairs) == 76
+    strict = [r for r in pairs if r["valid"]]
+    assert (len(strict), len({r["site"] for r in strict})) == (61, 16)
+    assert sum(r["region"] == "Victoria Land" for r in strict) == 55
+    from collections import defaultdict
+
+    def univariate_slope(rows, within_site):
+        centered = []
+        if within_site:
+            groups = defaultdict(list)
+            for r in rows:
+                groups[r["site"]].append(r)
+            for values in groups.values():
+                mx = sum(v["x"] for v in values) / len(values)
+                my = sum(v["y"] for v in values) / len(values)
+                centered.extend((v["x"] - mx, v["y"] - my) for v in values)
+        else:
+            mx = sum(r["x"] for r in rows) / len(rows)
+            my = sum(r["y"] for r in rows) / len(rows)
+            centered = [(r["x"] - mx, r["y"] - my) for r in rows]
+        return 10 * sum(x * y for x, y in centered) / sum(x * x for x, _ in centered)
+
+    assert math.isclose(univariate_slope(strict, False), 0.02873083794615691, abs_tol=1e-9)
+    assert math.isclose(univariate_slope(strict, True), -0.06511999674708197, abs_tol=1e-9)
