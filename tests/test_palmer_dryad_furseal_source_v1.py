@@ -1,6 +1,8 @@
 """Pure source parsing/guard fixtures; no network and no seal outcome."""
 import importlib.util
 from pathlib import Path
+import pytest
+pytest.importorskip('requests')  # Optional Dryad acquisition dependency
 P=Path(__file__).resolve().parents[1]/"research/climate-penguin/work/climate_penguin/audit_palmer_dryad_furseal_source_v1.py"
 def mod():
  s=importlib.util.spec_from_file_location("seal_source",P)
