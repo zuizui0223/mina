@@ -26,7 +26,7 @@ def audit():
     observed=readcsv(STATE)
     plant=readcsv(VEG)
     assert len(zeros)==38 and len(observed)>3000
-    assert len({(r["site_id"],r["species_id"]) for r in zeros})==38
+    assert len({(r["site_id"],r["species_id"],r["first_observed_zero"]) for r in zeros})==38\n    # A source site/species may have >1 zero episode followed by reoccupation.\n    # Those are separate spells, not independent islands or species×sites.\n    assert len({(r["site_id"],r["species_id"]) for r in zeros})==37
     assert all(r["species_id"] in SPECIES for r in zeros)
     obs=defaultdict(list)
     for r in observed:
@@ -89,7 +89,7 @@ def audit():
        "sources":{"zero_episodes_SHA256":sha(ZERO),"observed_states_SHA256":sha(STATE),
                   "mapped_vegetation_static_source_SHA256":sha(VEG)},
        "method":"Original 38 MAPPPD documented zero-episode records across species. Confirm >=2 distinct surveyed years with actual numeric zero and no recorded reappearance in frozen source. Never turn missing years into zero.",
-       "input_original_zero_episodes":len(zeros),
+       "input_original_zero_episodes":len(zeros),\n       "distinct_site_species_in_original_episodes":len({(r["site_id"],r["species_id"]) for r in zeros}),\n       "multiple_zero_spells_not_independent_sites":True,
        "original_source_species":by_species,
        "n_repeated_zero_no_reappearance":sum(z["eligible_as_repeated_zero_source_candidate"] for z in decisions),
        "strict_island_status_qualified":False,
