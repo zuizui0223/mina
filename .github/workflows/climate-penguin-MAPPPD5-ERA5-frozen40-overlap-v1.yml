@@ -1,0 +1,51 @@
+name: climate-penguin-MAPPPD5-ERA5-frozen40-overlap-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - ".github/workflows/climate-penguin-MAPPPD5-ERA5-frozen40-overlap-v1.yml"
+      - "research/climate-penguin/work/climate_penguin/audit_MAPPPD5_ERA5_40site_overlap_v1.py"
+      - "research/climate-penguin/contracts/MAPPPD5_ERA5_40SITE_SUPPORT_V1.md"
+      - "tests/test_climate_penguin_MAPPPD5_ERA5_40site_overlap_v1.py"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-source-overlap-no-ecological-effects:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pytest
+      - run: pytest -q tests/test_climate_penguin_MAPPPD5_ERA5_40site_overlap_v1.py
+      - name: Reuse original 771-pair publisher source manifest
+        uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-MAPPPD5-original-771-macro-source-v1
+          run-id: 40867618437
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/MAPPPD5_original_macro
+      - name: Reuse verified 40-site ERA5 1991–2020 original reanalysis archive
+        uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-era5-1991-2020-source-full
+          run-id: 40856645581
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/ERA5_original40
+      - name: Compute immutable 771-row climate opportunity overlap; no effects
+        run: |
+          python research/climate-penguin/work/climate_penguin/audit_MAPPPD5_ERA5_40site_overlap_v1.py \
+            --macro-source-dir "${{ runner.temp }}/MAPPPD5_original_macro" \
+            --era5-dir "${{ runner.temp }}/ERA5_original40" \
+            --out "${{ runner.temp }}/MAPPPD5_ERA5_overlap"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: climate-penguin-MAPPPD5-ERA5-40site-original-source-bridge-v1
+          path: ${{ runner.temp }}/MAPPPD5_ERA5_overlap/
+          retention-days: 30
+          if-no-files-found: warn
