@@ -1,0 +1,44 @@
+{
+  "identity": {
+    "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Omon/tos/gn/v20190308/",
+    "years": [
+      2011,
+      2012,
+      2013,
+      2014
+    ],
+    "month": 9,
+    "support_sha256": "817c5888662f569300fa7e8ded3ea039e6c8200a54638b498c865ecd79e27352",
+    "code_sha256": "627a3f894ab3f034e25f950290a3be1db2b7086b6d92255892ee2227ae4556f4"
+  },
+  "rows": 424,
+  "sha256": "45a74fe2998cddd70fdb78aa9c2afd5f775ef3b031d54c84ea4f1e36b4316504",
+  "source_units": "degC",
+  "variable_attributes": {
+    "cell_measures": "area: areacello",
+    "cell_methods": "area: mean where sea time: mean",
+    "comment": "This may differ from \"surface temperature\" in regions of sea ice or floating ice shelves. For models using conservative temperature as the prognostic field, they should report the top ocean layer as surface potential temperature, which is the same as surface in situ temperature.",
+    "description": "This may differ from \"surface temperature\" in regions of sea ice or floating ice shelves. For models using conservative temperature as the prognostic field, they should report the top ocean layer as surface potential temperature, which is the same as surface in situ temperature.",
+    "frequency": "mon",
+    "id": "tos",
+    "long_name": "Sea Surface Temperature",
+    "mipTable": "Omon",
+    "out_name": "tos",
+    "prov": "Omon ((isd.003))",
+    "realm": "ocean",
+    "standard_name": "sea_surface_temperature",
+    "time": "time",
+    "time_label": "time-mean",
+    "time_title": "Temporal mean",
+    "title": "Sea Surface Temperature",
+    "type": "real",
+    "units": "degC",
+    "variable_id": "tos"
+  },
+  "calendar": "noleap",
+  "parent_variant_label": "r1i1p1f1",
+  "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Omon/tos/gn/v20190308/",
+  "source_id": "CESM2",
+  "member_id": "r4i1p1f1",
+  "experiment_id": "historical"
+}
