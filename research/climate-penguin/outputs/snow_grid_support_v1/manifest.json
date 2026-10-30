@@ -1,0 +1,42 @@
+{
+  "status": "grid_support_audit_only",
+  "url": "https://storage.googleapis.com/gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3",
+  "dates": [
+    "2011-09-01T00:00:00",
+    "2020-09-01T00:00:00"
+  ],
+  "units": {
+    "snow_depth": {
+      "_ARRAY_DIMENSIONS": [
+        "time",
+        "latitude",
+        "longitude"
+      ],
+      "long_name": "Snow depth",
+      "short_name": "sd",
+      "standard_name": "lwe_thickness_of_surface_snow_amount",
+      "units": "m of water equivalent"
+    },
+    "land_sea_mask": {
+      "_ARRAY_DIMENSIONS": [
+        "time",
+        "latitude",
+        "longitude"
+      ],
+      "long_name": "Land-sea mask",
+      "short_name": "lsm",
+      "standard_name": "land_binary_mask",
+      "units": "(0 - 1)"
+    }
+  },
+  "source_locations_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+  "snapshots_sha256": "8293e36bb270d0eae4e4f105d4ae560ee702e52604e754ca0709158d734f415c",
+  "unique_cells": 54,
+  "maximum_land_fraction_change": 0.0,
+  "limits": [
+    "Two snapshots are not seasonal means or a snow trend",
+    "Water equivalent is not physical snow depth or snow cover fraction",
+    "Nearest grid and descriptive 0.5 fraction do not validate breeding-ground snow",
+    "No substitution of missing or marine snow values for terrestrial absence"
+  ]
+}
