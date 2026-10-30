@@ -1,7 +1,7 @@
 {
   "audit_passed": true,
   "goal_complete": false,
-  "verified_input_hash_references": 67,
+  "verified_input_hash_references": 93,
   "requirements": [
     {
       "requirement": "Existing data and frozen results preserved",
@@ -44,9 +44,12 @@
       "status": "conditional_sensitivity_delivered_not_calibrated",
       "evidence": [
         "conditional_response_v1/conditional_summary.csv",
-        "conditional_response_v1/forward/summary.csv"
+        "conditional_response_v1/forward/summary.csv",
+        "four_environment_scenarios_v1/summary.csv",
+        "surface_temperature_projection_v1/matched_site_changes.csv",
+        "environment_identifiability_v1/observed_geometry.csv"
       ],
-      "limit": "Index shifts only; unvalidated climate transformation; broad coefficient and extrapolation uncertainty"
+      "limit": "Two- and four-environment conditional index scenarios delivered; specification-dependent direction, extrapolation, unvalidated tos/potential-temperature proxy and climate transformations remain"
     },
     {
       "requirement": "Vegetation/snow and breeding-use sequence requested in research goal v2",
@@ -67,6 +70,14 @@
         "chinstrap_winter_v1/ROUTE_QC_JA.md"
       ],
       "limit": "No causal transport effect, absolute return date, or future nest count claimed"
+    },
+    {
+      "requirement": "Updated v2 snow, lag and nonlinear hypothesis comparisons",
+      "status": "incomplete",
+      "evidence": [
+        "climate_penguin/RESEARCH_GOAL_V2.md"
+      ],
+      "limit": "No validated annual snow/vegetation sequence or broad nonlinear/lag comparison is established by the current four-variable linear analysis"
     }
   ],
   "next_unresolved_work": "Validated vegetation/breeding-patch measurements, calendar origin and return-route identification, and climate-scenario calibration remain unresolved; correlation-first results and conditional index scenarios delivered"
