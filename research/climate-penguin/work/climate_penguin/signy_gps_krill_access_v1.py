@@ -297,6 +297,45 @@ def save(path,rows):
         writer=csv.DictWriter(f,fieldnames=list(rows[0]))
         writer.writeheader();writer.writerows(rows)
 
+def leave_one_deployment_out(source):
+    """Leave-one-tag deletion ranges: descriptive, not confidence intervals."""
+    selected=[r for r in source if r["minimum_distance_km"]==10 and r["isolated_spike_filter"]
+              and r["qualifies"] and r["preseason_krill_model_g_m2_equal_visited_cells"] is not None
+              and r["same_summer_krill_model_g_m2_equal_visited_cells"] is not None]
+    cohorts=sorted({(r["species"],r["season_start"]) for r in selected})
+    rows=[]
+    for species,year in cohorts:
+        group=[r for r in selected if r["species"]==species and r["season_start"]==year]
+        n=len(group)
+        record={"species":species,"season_start":year,"n_eligible_deployments":n}
+        for label in ("preseason","same_summer"):
+            x=[r[label+"_krill_model_g_m2_equal_visited_cells"] for r in group]
+            mean=float(statistics.mean(x))
+            loo=[float((sum(x)-v)/(n-1)) for v in x] if n>1 else []
+            record[label+"_mean_model_g_m2"]=mean
+            record[label+"_leave_one_deployment_min"]=min(loo) if loo else None
+            record[label+"_leave_one_deployment_max"]=max(loo) if loo else None
+            record[label+"_single_deployment_is_not_robust"]=n==1
+        rows.append(record)
+    return rows
+
+def verify_2013_loo(source):
+    """Do not infer a transferable species ranking, only 2013 source consistency."""
+    x={(r["species"],r["season_start"]):r for r in source}
+    if {s:x[s,2013]["n_eligible_deployments"] for s in
+        ("Adelie","Chinstrap","Gentoo")}!={"Adelie":22,"Chinstrap":20,"Gentoo":7}:
+        raise ValueError("2013 GPS individual roster drift")
+    for k in ("preseason","same_summer"):
+        a=x["Adelie",2013]
+        c=x["Chinstrap",2013]
+        g=x["Gentoo",2013]
+        if not(g[k+"_leave_one_deployment_min"] > a[k+"_leave_one_deployment_max"]
+               > c[k+"_leave_one_deployment_max"]):
+            raise ValueError("2013 track deletion sensitivity no longer separates source pattern")
+    if x["Gentoo",2015]["n_eligible_deployments"]!=1:
+        raise ValueError("2015 gentoo n=1 warning no longer applies")
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--gps-root",required=True,type=Path)
@@ -353,11 +392,16 @@ def main():
             "No forecast of penguin pairs, N_eff, colony occupancy, vegetation or breeding success at 2050/2100 is validated."
         ]
     }
-    if a.check:verify(deployment,result)
+    robustness=leave_one_deployment_out(deployment)
+    result["leave_one_deployment_out"]=robustness
+    if a.check:
+        verify(deployment,result)
+        verify_2013_loo(robustness)
     a.out.mkdir(parents=True,exist_ok=True)
     save(a.out/"original_deployment_model_exposures.csv",deployment)
     save(a.out/"species_year_exposures.csv",years)
     save(a.out/"source_model_geographic_reference.csv",geography)
+    save(a.out/"leave_one_deployment_out.csv",robustness)
     (a.out/"result.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"status":result["status"],
         "source_deployments":result["original_unique_deployments"],

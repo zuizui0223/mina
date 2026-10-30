@@ -53,6 +53,9 @@ class GPSKrillAccessTests(unittest.TestCase):
                 {r["season_start"] for r in prim if r["species"]==sp} for sp in m.TRACK_FILES
              ])), "primary_species_years":prim}
         self.assertTrue(m.verify(rows,out))
+        loo=m.leave_one_deployment_out(rows)
+        self.assertTrue(m.verify_2013_loo(loo))
+        self.assertEqual(len(loo),9)
         self.assertEqual(audit["species"]["Chinstrap"]["empty_gps_source_file"],4)
         self.assertEqual(audit["species"]["Chinstrap"]["identical_duplicate_source_file"],1)
         self.assertEqual(sum(int(z["qualifies"]) for z in rows if z["minimum_distance_km"]==10 and z["isolated_spike_filter"]),152)
