@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-30",
+  "status": "POST_EXPLORATION_RECORDED_CHICK_OUTPUT_NOT_CERTIFIED_FLEDGING",
+  "analysis_commit": "d9f6be6348266ea5e18013cc5636b206426c9c91",
+  "source_documents_run": 40981148317,
+  "analysis_run": 40982733943,
+  "analysis_artifact_id": 12945457748,
+  "analysis_artifact_ZIP_SHA256": "05951fe3406419036f58ed3ae5f5d73faece9e33993a72236c22ac5f26e9a037",
+  "source_original_SHA256": {
+    "release.json": "8f676f6498b1bc79708a67fb05d4ac8ee73249444e85402af87f6a3c64280a65",
+    "sites.csv": "36059537701069c934227148d32296368943b978b988fb415e07873e48c5ae34",
+    "observations_p1.csv": "cd751e43ab61d57a6e7d3c7e918d673cf699392ac4bfccd546d29b99ea62f075",
+    "observations_p2.csv": "c2b054fb687d13eb93e67d48a2b492cd47c94ccdef75b562680b770ad6be18f3"
+  },
+  "official_transcription_sha256": "9354e9e334985433f69d350d2c7535cf9b99d1c4e449865e6b198ae882610c34",
+  "stage_inventory": {"source_combinations":274,"sites":63,"distinct_site_species_seasons":272,"chronology_supported":172,"chronology_unresolved":102,"ratio_above_two":1},
+  "fixed_primary_scope": {"sites":["ARDL","BART"],"species":["CHPE","GEPE"],"season_start_years":[2010,2019],"common_seasons":10,"paired_stage_records":40,"original_count_records":80,"source":"kpri2020report6","vantage":"ground","all40_within_season_dates_unresolved":true},
+  "primary_means": {
+    "ARDL_CHPE":{"mean_recorded_chicks_per_nest":1.2803991184254342,"nest_range":[9,22]},
+    "BART_CHPE":{"mean_recorded_chicks_per_nest":1.2994700902021041,"nest_range":[2353,3332]},
+    "ARDL_GEPE":{"mean_recorded_chicks_per_nest":1.1666765236950196,"nest_range":[5603,7227]},
+    "BART_GEPE":{"mean_recorded_chicks_per_nest":1.1177571025107278,"nest_range":[2112,2604]}
+  },
+  "within_species_site_comparisons": {
+    "CHPE":{"mean_Ardley_minus_Barton":-0.019070971776669877,"Ardley_higher_seasons":5,"n_seasons":10,"raw_across_site_correlation":0.5567611240440073},
+    "GEPE":{"mean_Ardley_minus_Barton":0.048919421184291864,"Ardley_higher_seasons":7,"n_seasons":10,"raw_across_site_correlation":0.8537647162540667}
+  },
+  "within_site_species_comparisons": {
+    "ARDL":{"mean_GEPE_minus_CHPE":-0.11372259473041456,"GEPE_higher_seasons":4,"n_seasons":10},
+    "BART":{"mean_GEPE_minus_CHPE":-0.1817129876913763,"GEPE_higher_seasons":1,"n_seasons":10}
+  },
+  "official_Barton_nest_comparison": {"overlap":20,"matches":16,"discrepancies":[
+    {"season_start":2012,"species":"GEPE","MAPPPD":2496,"UBA":2366},
+    {"season_start":2012,"species":"CHPE","MAPPPD":3332,"UBA":3304},
+    {"season_start":2015,"species":"CHPE","MAPPPD":2850,"UBA":3352},
+    {"season_start":2019,"species":"GEPE","MAPPPD":2408,"UBA":2451}
+  ],"no_denominator_replacement":true},
+  "alternate_MAPPPD_Ardley_source_counts": [
+    {"season_start":2014,"species":"CHPE","focal_source_count":19,"other_source_count":15},
+    {"season_start":2019,"species":"GEPE","focal_source_count":6870,"other_source_count":6695}
+  ],
+  "recent_official_reported_fledged_young_per_breeding_pair": [
+    {"site":"BART","season":"2021/22","CHPE":1.29,"GEPE":0.97,"pdf_page_index":108},
+    {"site":"BART","season":"2022/23","CHPE":1.46,"GEPE":1.19,"pdf_page_index":108}
+  ],
+  "official_cross_document_overlapping_counts": {"UBA_vs_ASPA171_matches":6,"independent_field_replication":false},
+  "official_source_documents": {
+    "UBA2025":{"url":"https://www.umweltbundesamt.de/system/files/medien/11850/publikationen/63_2025_texte.pdf","sha256":"7c53635e6799c1eafca006e9293baa336288689afc2f1d405c802f832069b8b9","visually_checked_PDF_pages_zero_based":[108,232,233]},
+    "ASPA171_2024":{"url":"https://documents.ats.aq/recatt/att783_e.pdf","sha256":"c33aab53ce29965ad24d3aac2098422d5777310476a2b364879d762518daddc2","visually_checked_PDF_pages_zero_based":[4]}
+  },
+  "verification": {"new_tests_passed":14,"full_core_repository_tests_passed":240,"core_tests_skipped":27,"independent_ratios_checked":274,"max_ratio_difference":0.0,"max_summary_difference":2.220446049250313e-16,"CI_local_output_files_exactly_identical":5,"PR_CI_run":40982741196,"PR_CI_status":"success","push_CI_run":40982733814,"push_CI_status":"cancelled","unrelated_furseal_run":40982741419,"unrelated_furseal_status":"failure"},
+  "interpretation_limits": [
+    "Original recorded chicks/nest is not independently certified fledging success, survival or shared survey extent.",
+    "Focal nest and chick dates lack month/day: all40 stage pair orderings remain unresolved.",
+    "Matching mean ratios is not an equivalence test or evidence against all Allee/density effects.",
+    "Descriptive across-site correlations may reflect common environment, survey process or trends; no causal attribution.",
+    "Official sources can reuse Korean field observations and published success ratios are rounded; never back-calculate integer chick counts.",
+    "Discrepant nest denominators are retained, not substituted; UBA and MAPPPD values do not form a single revised field dataset.",
+    "No identification of survival, recruitment, dispersal, competition, nesting access, snowfall or anthropogenic warming.",
+    "V1--V8, the216-test correction, PR189 and PR199 remain unchanged."
+  ]
+}
