@@ -1,0 +1,22 @@
+{
+  "status": "exploratory_cluster_sign_flip_sensitivity",
+  "spatial_group": "ocean_grid",
+  "family_size": 48,
+  "seed": 20261030,
+  "frozen_coefficient_and_correlation_matches": 48,
+  "explicit_pseudo_regression_checks": 288,
+  "max_p_below_005": 2,
+  "bh_below_005": 0,
+  "by_below_005": 0,
+  "hashes": {
+    "relationship_response_v1/cohort.csv": "80acc588898ee44144c4697dac22d8c522efe5d2d4c684ee0621fb173175d1c7",
+    "salinity_sensitivity_v1/specifications.csv": "b9eb7fa32684c728e35d54ae1cc7e355113f2835c80c17cb28c0a461c4f2c044",
+    "ocean_grid_replication_v1/observation_cells.csv": "cd9566e40772cacaea3f2cd52bd9ff624f66846354091925b87b93e57931edd1"
+  },
+  "limits": [
+    "Separate site/year sign flips do not guarantee valid joint two-way inference",
+    "Enumeration is exact over sign assignments, not proof of exact inferential calibration",
+    "Nuisance estimation, cluster symmetry, few years and shared ocean grids limit calibration",
+    "48-test family is exploratory and does not replace earlier broader families"
+  ]
+}
