@@ -1,0 +1,43 @@
+name: climate-penguin-chinstrap-matched-island-gps-krill-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/south_orkney_chinstrap_island_krill_v1.py"
+      - "tests/test_south_orkney_chinstrap_island_krill_v1.py"
+      - "research/climate-penguin/outputs/south_orkney_island_gps_krill_v1/**"
+      - ".github/workflows/climate-penguin-chinstrap-matched-island-gps-krill-v1.yml"
+
+jobs:
+  original-gps:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install "rasterio>=1.4,<1.6"
+      - name: Download first-party BAS Chinstrap GPS Version2 and original krill raster
+        run: |
+          mkdir -p build/signy_gps_source build/freer_krill
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/signy_gps_source/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' -o build/freer_krill/bas_published_source.zip
+      - name: Recompute matched-year Signy versus other island source-geographic contrasts
+        run: |
+          python research/climate-penguin/work/climate_penguin/south_orkney_chinstrap_island_krill_v1.py \
+            --chinstrap-gps-zip build/signy_gps_source/chinstrap.zip \
+            --krill-zip build/freer_krill/bas_published_source.zip \
+            --out build/island_krill_result --check
+      - name: Verify independent source roster, model and matched years
+        run: python -m unittest discover -s tests -p test_south_orkney_chinstrap_island_krill_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: south-orkney-chinstrap-island-gps-krill-v1
+          path: |
+            build/island_krill_result/decision.json
+            build/island_krill_result/source_tag_model_exposures.csv
+            build/island_krill_result/source_island_centers.csv
+            build/island_krill_result/species_island_year.csv
+            build/island_krill_result/matched_year_island_contrasts.csv
