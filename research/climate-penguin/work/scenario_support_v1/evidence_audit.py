@@ -3,6 +3,7 @@ from pathlib import Path
 import hashlib,json
 import pandas as pd
 ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'outputs/research_synthesis_v1';OUT.mkdir(exist_ok=True)
+read=lambda p:pd.read_csv(ROOT/'outputs'/p)
 receipts=[
  'scenario_support_v1/validation.json','scenario_support_v1/joint_validation.json',
  'scenario_support_v1/recent_comparison/overlap_validation.json',
@@ -17,8 +18,32 @@ for name in receipts:
             actual=hashlib.sha256(path.read_bytes()).hexdigest()
             assert actual==expected,(name,relative)
             hashes.append(dict(receipt=name,input=path.relative_to(ROOT).as_posix(),sha256=actual))
+for name,field in [
+ ('ross_ice_temporal_support_v1/validation.json','input_hashes'),
+ ('salinity_cluster_sensitivity_v1/validation.json','hashes'),
+ ('vegetation_influence_v1/validation.json','hashes'),
+ ('ross_movement_pairs_v1/association_validation.json','hashes')]:
+    receipt=json.loads((ROOT/'outputs'/name).read_text())
+    for relative,expected in receipt[field].items():
+        path=ROOT/'outputs'/relative.replace('\\','/')
+        actual=hashlib.sha256(path.read_bytes()).hexdigest()
+        assert actual==expected,(name,relative)
+        hashes.append(dict(receipt=name,input=path.relative_to(ROOT).as_posix(),sha256=actual))
 pd.DataFrame(hashes).to_csv(OUT/'input_hash_audit.csv',index=False)
-read=lambda p:pd.read_csv(ROOT/'outputs'/p)
+
+ross_support=read('ross_ensemble_ice_v1/interval_support.csv.gz')
+assert len(ross_support)==8469 and ross_support.draws.sum()==4234500
+ross_direction=read('ross_directional_exposure_v1/summary.csv')
+selected=ross_direction[(ross_direction.product_class=='satellite')&(ross_direction.month==9)&(ross_direction.threshold==.5)&ross_direction.target.isin(['CRZE','ROYD'])]
+assert len(selected)==6 and selected.mean_projected_km_day.lt(0).all()
+assert selected.bird_years.sum()==170 and selected.positive_bird_years.sum()==29
+movement=read('ross_movement_pairs_v1/associations.csv')
+selected=movement[(movement.target_choice=='east')&(movement['product']=='satellite')&(movement.threshold==.5)&(movement.month==9)&(movement['mode']=='trip_date')&(movement.deleted_season=='none')]
+assert len(selected)==1 and selected.n.item()==515 and selected.trips.item()==169
+assert abs(selected.r.item()-(-.013487677204149985))<1e-10
+salt_tests=read('salinity_cluster_sensitivity_v1/tests.csv')
+assert len(salt_tests)==48 and not salt_tests.fdr_bh.lt(.05).any() and not salt_tests.fdr_by.lt(.05).any()
+veg_influence=read('vegetation_influence_v1/comparisons.csv');assert len(veg_influence)==686
 counts=read('long_count_seaice_v1/intervals.csv');tests=read('long_count_seaice_v1/associations.csv')
 assert len(counts)==301 and counts.site_id.nunique()==33 and counts.region.nunique()==6
 assert len(tests)==12 and tests.p.notna().sum()==10 and not tests.fdr_bh.lt(.05).any()
@@ -93,9 +118,15 @@ requirements.append({'requirement':'Updated v2 snow, lag and nonlinear hypothesi
  'evidence':['climate_penguin/RESEARCH_GOAL_V2.md','nonlinear_association_v1/shape_sensitivity.csv','previous_september_v1/correlations.csv','previous_september_v1/cluster_sensitivity.csv'],
  'limit':'48 quadratic checks, current/previous September comparisons with 72 cluster sensitivity tests, and 36 regional snow comparisons delivered; local vegetation/snow sequence and mechanistic carryover remain unverified'})
 requirements[-1]['evidence'] += ['september_snow_v1/regional_correlations.csv']
+requirements[2]['evidence'] += ['ross_directional_exposure_v1/summary.csv','ross_movement_pairs_v1/associations.csv']
+requirements[2]['limit']='Broad monthly associations and directional Ross exposure/movement comparison delivered. Ross September matched 515 intervals/169 bird-years, trip/date r=-0.01349; shared GLS position errors and short satellite support prevent independent assistance inference.'
+requirements[3]['evidence'] += ['pointblue_full_positions_v1/trip_support.csv','ross_ensemble_ice_v1/validation.json','ross_ice_temporal_support_v1/colony_year_summary.csv','ross_movement_pairs_v1/independent_validation.json']
+requirements[3]['limit']='Full Ross positions acquired and aligned: 188 retained bird-years, 8469 intervals. Satellite support concentrated in September 27-30; same published cohort, not independent replication. Day-scale supported, absolute calendar origin and independent return dates unresolved.'
+requirements[5]['evidence'] += ['salinity_cluster_sensitivity_v1/tests.csv','vegetation_influence_v1/comparisons.csv']
+requirements[5]['limit'] += '; 48 salinity sensitivity tests have no BH/BY discoveries; 686 static-vegetation sensitivity fits expose geographic/observation dependence, not annual vegetation effects'
 for r in requirements:
     for name in r['evidence']:assert (ROOT/'outputs'/name).exists()
 result={'audit_passed':True,'goal_complete':False,'verified_input_hash_references':len(hashes),'requirements':requirements,
- 'next_unresolved_work':'Independent return-route drift and local vegetation/breeding-patch sequence remain unidentified; day-scale changes supported but absolute calendar origin and calibrated extrapolation unresolved. Correlation and conditional scenario outputs delivered; full mechanism claim not achieved.'}
+ 'next_unresolved_work':'Ross environmental direction and model-movement association are now computed; independent transport mechanism remains unidentified. Local vegetation/breeding-patch sequence, absolute calendar origin and calibrated extrapolation unresolved. Existing-data correlation and conditional scenario outputs delivered; do not treat these as causal transport or calibrated future nest-count predictions.'}
 (OUT/'requirements_audit.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps({'audit_passed':True,'goal_complete':False,'verified_hash_references':len(hashes),'requirement_rows':len(requirements)}))

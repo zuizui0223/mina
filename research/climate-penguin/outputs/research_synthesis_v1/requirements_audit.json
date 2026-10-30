@@ -1,7 +1,7 @@
 {
   "audit_passed": true,
   "goal_complete": false,
-  "verified_input_hash_references": 100,
+  "verified_input_hash_references": 109,
   "requirements": [
     {
       "requirement": "Existing data and frozen results preserved",
@@ -25,9 +25,11 @@
       "status": "partial_identification",
       "evidence": [
         "long_ice_timing_v1/transition_support.csv",
-        "drift_block_v1/joint_tests.csv"
+        "drift_block_v1/joint_tests.csv",
+        "ross_directional_exposure_v1/summary.csv",
+        "ross_movement_pairs_v1/associations.csv"
       ],
-      "limit": "Onset-date paired support 0-2 timing-supported intervals per definition; conditional drift association not transport assistance"
+      "limit": "Broad monthly associations and directional Ross exposure/movement comparison delivered. Ross September matched 515 intervals/169 bird-years, trip/date r=-0.01349; shared GLS position errors and short satellite support prevent independent assistance inference."
     },
     {
       "requirement": "Independent tracking and phenology availability/year alignment",
@@ -38,9 +40,13 @@
         "climate_penguin/phenology_audit.md",
         "settlement_origin_refresh_v1/source_slope_crosscheck.csv",
         "return_tracking_refresh_v1/PRIMARY_SOURCES_JA.md",
-        "ross_phase_reference_v1/REPORT_JA.md"
+        "ross_phase_reference_v1/REPORT_JA.md",
+        "pointblue_full_positions_v1/trip_support.csv",
+        "ross_ensemble_ice_v1/validation.json",
+        "ross_ice_temporal_support_v1/colony_year_summary.csv",
+        "ross_movement_pairs_v1/independent_validation.json"
       ],
-      "limit": "Day-scale supported by 32 published slope matches; absolute calendar origin still unknown. Independent route drift unavailable; published Ross seasonal contrast is not independent mechanism verification."
+      "limit": "Full Ross positions acquired and aligned: 188 retained bird-years, 8469 intervals. Satellite support concentrated in September 27-30; same published cohort, not independent replication. Day-scale supported, absolute calendar origin and independent return dates unresolved."
     },
     {
       "requirement": "Future warming/sea-ice conditional connection and uncertainty",
@@ -65,9 +71,11 @@
         "vegetation_expansion_pixels_v1/one_two_date_comparison.csv",
         "landsat_vegetation_support_v1/paired_qa_support.csv",
         "september_snow_v1/september_summary.csv",
-        "september_snow_v1/regional_correlations.csv"
+        "september_snow_v1/regional_correlations.csv",
+        "salinity_cluster_sensitivity_v1/tests.csv",
+        "vegetation_influence_v1/comparisons.csv"
       ],
-      "limit": "Annual NDVI measured, but mapped vegetation overlap is sparse; expanded Sentinel comparison lacks two-date repeated support; Landsat support depends on Tier 2 geometry and Jan-Feb pooling; breeding-patch classification unverified"
+      "limit": "Annual NDVI measured, but mapped vegetation overlap is sparse; expanded Sentinel comparison lacks two-date repeated support; Landsat support depends on Tier 2 geometry and Jan-Feb pooling; breeding-patch classification unverified; 48 salinity sensitivity tests have no BH/BY discoveries; 686 static-vegetation sensitivity fits expose geographic/observation dependence, not annual vegetation effects"
     },
     {
       "requirement": "Mechanism and uncertainty claims separated without invented predictions",
@@ -91,5 +99,5 @@
       "limit": "48 quadratic checks, current/previous September comparisons with 72 cluster sensitivity tests, and 36 regional snow comparisons delivered; local vegetation/snow sequence and mechanistic carryover remain unverified"
     }
   ],
-  "next_unresolved_work": "Independent return-route drift and local vegetation/breeding-patch sequence remain unidentified; day-scale changes supported but absolute calendar origin and calibrated extrapolation unresolved. Correlation and conditional scenario outputs delivered; full mechanism claim not achieved."
+  "next_unresolved_work": "Ross environmental direction and model-movement association are now computed; independent transport mechanism remains unidentified. Local vegetation/breeding-patch sequence, absolute calendar origin and calibrated extrapolation unresolved. Existing-data correlation and conditional scenario outputs delivered; do not treat these as causal transport or calibrated future nest-count predictions."
 }
