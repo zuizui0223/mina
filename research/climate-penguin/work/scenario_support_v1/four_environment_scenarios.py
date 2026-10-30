@@ -99,7 +99,7 @@ def main():
         regressions=len(coefficients),deletion_fits=len(deletions),summaries=len(summary),
         input_sha256={p:hashlib.sha256((ROOT/'outputs'/p).read_bytes()).hexdigest() for p in PATHS.values()},
         limitations=['tos change used as proxy for top-level potential temperature change',
-        'Index not calendar days; fixed effects not projected',
+        'Day-scale differences supported by source slope audit; absolute calendar origin unconfirmed; fixed effects not projected',
         'Deletion ranges not confidence intervals; climate target held fixed',
         'Four-variable convex hull is descriptive support not a calibrated validity boundary',
         'Vegetation and drift omitted; conditional coefficients not causal mechanisms']),indent=2)+'\n')

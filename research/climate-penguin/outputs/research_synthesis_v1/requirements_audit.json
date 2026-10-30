@@ -1,7 +1,8 @@
 {
   "audit_passed": true,
-  "goal_complete": false,
-  "verified_input_hash_references": 122,
+  "goal_complete": null,
+  "completion_scope": "This numerical audit does not determine task completion. See OBJECTIVE_REVIEW_JA.md for requirement-level acceptance, including the user-authorized insufficient-data outcome. Scientific mechanisms and calibrated forecasts remain unestablished.",
+  "verified_input_hash_references": 133,
   "requirements": [
     {
       "requirement": "Existing data and frozen results preserved",
@@ -17,7 +18,9 @@
       "status": "supported_with_scope_limits",
       "evidence": [
         "long_count_seaice_v1/associations.csv",
-        "low_ice_days_count_v1/associations.csv"
+        "low_ice_days_count_v1/associations.csv",
+        "low_days_mean_separation_v1/comparisons.csv",
+        "low_days_mean_inference_v1/tests.csv"
       ],
       "limit": "Adelie 33 sites / 301 annual intervals; timing-supported subset geographically concentrated; observed low-ice duration: 48 specifications, 3 BH/BY discoveries under CR1 but 0 under separate site/year sign-flip sensitivity; not stable inferential support for count forecasts"
     },
@@ -77,7 +80,8 @@
         "vegetation_influence_v1/comparisons.csv",
         "ocean_grid_replication_v1/summary.csv",
         "salinity_grid_cluster_v1/tests.csv",
-        "salinity_mixed_layer_v1/comparisons.csv"
+        "salinity_mixed_layer_v1/comparisons.csv",
+        "salinity_year_partition_v1/partition.csv"
       ],
       "limit": "Annual NDVI measured, but mapped vegetation overlap is sparse; expanded Sentinel comparison lacks two-date repeated support; Landsat support depends on Tier 2 geometry and Jan-Feb pooling; breeding-patch classification unverified; 48 salinity sensitivity tests have no BH/BY discoveries; 686 static-vegetation sensitivity fits expose geographic/observation dependence, not annual vegetation effects; shared ocean grids audited (Gentoo 23 sites/20 cells), no grid-cluster BH/BY discoveries; 24 mixed-layer comparisons are descriptive and not mediation estimates"
     },

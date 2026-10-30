@@ -105,6 +105,10 @@ new_receipts={
  'environment_identifiability_v1/validation.json':ROOT,
  'september_snow_v1/association_validation.json':ROOT,
  'scenario_specification_comparison_v1/validation.json':ROOT/'outputs',
+ 'salinity_year_partition_v1/validation.json':ROOT,
+ 'low_days_mean_separation_v1/validation.json':ROOT/'outputs',
+ 'low_days_mean_separation_v1/daily_validation.json':ROOT/'outputs',
+ 'low_days_mean_inference_v1/validation.json':ROOT/'outputs',
 }
 for name,base in new_receipts.items():
     receipt=json.loads((ROOT/'outputs'/name).read_text())
@@ -152,13 +156,24 @@ requirements[3]['limit']='Full Ross positions acquired and aligned: 188 retained
 requirements[5]['evidence'] += ['salinity_cluster_sensitivity_v1/tests.csv','vegetation_influence_v1/comparisons.csv']
 requirements[5]['limit'] += '; 48 salinity sensitivity tests have no BH/BY discoveries; 686 static-vegetation sensitivity fits expose geographic/observation dependence, not annual vegetation effects'
 requirements[1]['evidence'] += ['low_ice_days_count_v1/associations.csv']
+requirements[1]['evidence'] += ['low_days_mean_separation_v1/comparisons.csv','low_days_mean_inference_v1/tests.csv']
+adjusted=read('low_days_mean_inference_v1/tests.csv')
+assert len(adjusted)==48 and adjusted.status.eq('estimated').sum()==34
+assert adjusted.sensitivity_max_p.lt(.05).sum()==7
+assert not adjusted.fdr_bh.lt(.05).any() and not adjusted.fdr_by.lt(.05).any()
+partition=read('salinity_year_partition_v1/partition.csv')
+assert len(partition)==24
+assert (partition.common_year_covariance_scaled+partition.remaining_covariance_scaled-partition.r_site).abs().max()<1e-10
 requirements[1]['limit'] += '; observed low-ice duration: 48 specifications, 3 BH/BY discoveries under CR1 but 0 under separate site/year sign-flip sensitivity; not stable inferential support for count forecasts'
 requirements[5]['evidence'] += ['ocean_grid_replication_v1/summary.csv','salinity_grid_cluster_v1/tests.csv','salinity_mixed_layer_v1/comparisons.csv']
+requirements[5]['evidence'] += ['salinity_year_partition_v1/partition.csv']
 requirements[5]['limit'] += '; shared ocean grids audited (Gentoo 23 sites/20 cells), no grid-cluster BH/BY discoveries; 24 mixed-layer comparisons are descriptive and not mediation estimates'
 requirements[6]['evidence'] += ['evidence_figure_v1/panel_checks.csv','evidence_figure_v1/plotted_points.csv']
 for r in requirements:
     for name in r['evidence']:assert (ROOT/'outputs'/name).exists()
-result={'audit_passed':True,'goal_complete':False,'verified_input_hash_references':len(hashes),'requirements':requirements,
+result={'audit_passed':True,'goal_complete':None,
+ 'completion_scope':'This numerical audit does not determine task completion. See OBJECTIVE_REVIEW_JA.md for requirement-level acceptance, including the user-authorized insufficient-data outcome. Scientific mechanisms and calibrated forecasts remain unestablished.',
+ 'verified_input_hash_references':len(hashes),'requirements':requirements,
  'next_unresolved_work':'Ross environmental direction and model-movement association are now computed; independent transport mechanism remains unidentified. Local vegetation/breeding-patch sequence, absolute calendar origin and calibrated extrapolation unresolved. Existing-data correlation and conditional scenario outputs delivered; do not treat these as causal transport or calibrated future nest-count predictions.'}
 (OUT/'requirements_audit.json').write_text(json.dumps(result,indent=2)+'\n')
-print(json.dumps({'audit_passed':True,'goal_complete':False,'verified_hash_references':len(hashes),'requirement_rows':len(requirements)}))
+print(json.dumps({'audit_passed':True,'goal_complete':None,'verified_hash_references':len(hashes),'requirement_rows':len(requirements)}))
