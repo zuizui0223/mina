@@ -1,0 +1,39 @@
+name: climate-penguin-signy-gps-original-schema-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/signy_gps_source_schema_v1.py"
+      - "tests/test_signy_gps_source_schema_v1.py"
+      - ".github/workflows/climate-penguin-signy-gps-original-schema-v1.yml"
+
+jobs:
+  original-source:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Validate source-only code on synthetic rows
+        run: python -m unittest discover -s tests -p test_signy_gps_source_schema_v1.py -v
+      - name: Download original BAS GPS sources including Chinstrap Version 2.0
+        run: |
+          mkdir -p build/signy_gps_source
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=55b4d36f-c5e1-4d64-bb14-0b832dcd4b88&output=zip.tree' -o build/signy_gps_source/adelie.zip
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/signy_gps_source/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=9cb04ca6-f88f-4368-b715-45ff73ff81eb&output=zip.tree' -o build/signy_gps_source/gentoo.zip
+      - name: Audit original GPS member schema and source hashes without numeric positions
+        run: |
+          python research/climate-penguin/work/climate_penguin/signy_gps_source_schema_v1.py \
+            --root build/signy_gps_source \
+            --out build/signy_gps_source/schema.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-original-gps-source-schema-v1
+          path: build/signy_gps_source/schema.json
