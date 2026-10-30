@@ -24,7 +24,7 @@ class SignyStageSourceTests(unittest.TestCase):
 
     def test_no_annual_zeros_from_missing(self):
         r=[dict(species="Adelie",season_start=2017,colony="A1",
-                pairs=10,chicks=15,reported_chicks_per_pair=1.5,nest_before_chicks=True)]
+                pairs=10,chicks=15,recorded_fledglings_per_pair=None,source_spatial_unit="source_colony",reported_chicks_per_pair=1.5,nest_before_chicks=True)]
         annual,common=module.summarize(r)
         self.assertEqual(len(annual),1)
         self.assertEqual(annual[0]["strict_date_colonies"],1)
