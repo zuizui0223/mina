@@ -140,3 +140,19 @@ Primary all nine breeding seasons T=2011–2019, shared yearly acoustic exposure
 The conclusion strengthens the prior **NO-GO for quantitative 2050/2100 climate-driven nesting-pair, breeding N_eff or vegetation forecast**: actual external prey biomass can be measured and joined, but available **regional** abundance does not identify the actual within-commuting-range prey availability of nesting adults or subsequent recruitment. The ecological next information is smaller-scale acoustics/NASC and verified foraging area/time, multiple independent islands/regions, and date-matched salinity/stratification, not more specification search over nine surveys.
 
 Durable source data, executed method and caveats: [IMR biomass × BAS fledgling stage source report](outputs/imr_south_orkney_krill_v1/REPORT_JA.md) and [successful first-party BAS source CI / numeric receipt](https://github.com/zuizui0223/mina/actions/runs/41065644242), 5 tests PASS. Freeze-replay source \`inputs/imr_south_orkney_krill_2011_2020_2024_table2.csv\` is explicitly a manual transcription of published estimates, not new original krill measurements. Paper 1/PR189, Paper 2/PR199 and the 216-test environmental family remain untouched.
+
+
+## 2026-10-30 BAS 2011–2020 original annual spatial krill predictions: executed proximity sensitivity
+
+Signy native BAS source colony GPS reference points (14), plus 2011–2020 original first-party Freer et al 2025 modelled krill raster source [DOI](https://doi.org/10.5285/4fd0a1bf-da1a-4021-82eb-2fc513910e32), have now been genuinely spatially joined. **This source is already GAM-modelled** using raw acoustic data, ice, salinity and oceanography. It is not independently measured near-colony krill or a second independent validation of environmental effects.
+
+BAS 0.083333° GeoTIFF original grid, original 30 TIFF combined content hash \`f4fffbc2b0cbe2dffc5a5728c81f1b46ba9ff99988c6589bb3515d38d2a2fead\`. Original Signy GPS bbox center lat **−60.704025**, lon **−45.6275835**. Fixed 0–50/50–100/100–150 km rings yielded **90 published-model annual×product×band measurements**, with all native noData and output mask preserved. Stage response is the original 3-species 2011–2019 pre-fledging count per pair; there are **nine years of shared island model exposure** (not 27 independent climate replicates).
+
+Probability-weighted predicted krill field r with recorded fledgling output in **all 9** years by ring 0–50 / 50–100 / 100–150 km:
+- Adélie **+0.226 / +0.167 / +0.012**
+- Chinstrap **−0.115 / −0.112 / −0.326**
+- Gentoo **−0.239 / −0.259 / −0.387**
+
+Restricting to original acoustic coverage-complete years (n=7) shifts values; additionally excluding influential 2012 (n=6, posthoc only) produces markedly different positive values. Thus *neither the regional IMR observational mean nor source-GAM-modelled Signy-proximate density gives a stable, transferable food-to-fledgling coefficient* on these data. Since the year-specific raster is already fitted with ice-edge, salinity and other environmental predictors, its correlation with climate cannot be advertised as an independent mechanism test. Original GPS reference points are not measured feeding routes; source raster mask has not been independently verified as a coastline/ocean mask. Do not call fixed rings actual foraging areas.
+
+[Full executed spatial source outcome](outputs/bas_spatial_krill_signy_v2/REPORT_JA.md) · [GitHub Actions source/data verification](https://github.com/zuizui0223/mina/actions/runs/41067871772) SUCCESS (5 tests). The user-directed climate, sea-ice, salinity, breeding-space and vegetation future scenario remains **conditional/exploratory**; no scientific validation of 2050/2100 pair count or patch N_eff forecasts.
