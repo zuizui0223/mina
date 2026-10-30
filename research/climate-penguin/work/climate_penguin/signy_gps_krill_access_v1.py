@@ -330,7 +330,7 @@ def verify_2013_loo(source):
         c=x["Chinstrap",2013]
         g=x["Gentoo",2013]
         if not(g[k+"_leave_one_deployment_min"] > a[k+"_leave_one_deployment_max"]
-               > c[k+"_leave_one_deployment_max"]):
+               and a[k+"_leave_one_deployment_min"] > c[k+"_leave_one_deployment_max"]):
             raise ValueError("2013 track deletion sensitivity no longer separates source pattern")
     if x["Gentoo",2015]["n_eligible_deployments"]!=1:
         raise ValueError("2015 gentoo n=1 warning no longer applies")
