@@ -28,6 +28,23 @@ jobs:
           curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o build/signy_source/adelie.zip
           curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o build/signy_source/chinstrap.zip
           curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o build/signy_source/gentoo.zip
+      - name: Diagnose original Gentoo row grain without numerical outcomes
+        run: |
+          python - <<'PY'
+          from scripts.audit_signy_replication_support import read_official_zip
+          import pandas as pd
+          x, meta=read_official_zip('build/signy_source/gentoo.zip')
+          print("source_name",meta['selected_csv'])
+          print("source_sha",meta['selected_csv_sha256'])
+          print("source_rows",len(x))
+          print("source_headers",list(x.columns))
+          print("original_species_labels", x['SPECIES'].fillna('MISSING').astype(str).value_counts().to_dict())
+          s=x['SEASON'].astype(str)
+          print("duplicated_seasons",s.value_counts().loc[lambda z:z>1].to_dict())
+          keep=['SPECIES','SEASON','DATE_PAIR_COUNT','DATE_CHICK_COUNT','DATE_FLEDGLING_COUNT','COMMENTS']
+          print("repeated_1998_source_noncount_metadata")
+          print(x.loc[s.str.startswith('1998'),[k for k in keep if k in x.columns]].to_json(orient='records'))
+          PY
       - name: Audit three original species and create derived source-stage panel
         run: |
           python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py \
