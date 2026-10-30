@@ -13,9 +13,11 @@ import json
 import math
 import re
 import statistics
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
 from scripts.audit_signy_replication_support import read_official_zip, season_start
 
 SOURCE = {
@@ -167,7 +169,7 @@ def summarize(rows):
             source_country="Signy, South Orkney Islands",
             is_total_island_population=False,
             no_spatial_independence_claim=True,
-            source_stages_not_independent_fledging_survival=False
+            stage_to_individual_survival_verified=False
         )
         if ann["distinct_literal_colonies"]!=len(group):
             raise ValueError("duplicate within species-year source")
