@@ -34,7 +34,7 @@ SOURCE = {
     "Gentoo": {
         "doi": "10.5285/883c6b40-024e-41e8-9c3e-2668a44b5751",
         "entry_id": "883c6b40-024e-41e8-9c3e-2668a44b5751",
-        "prior_csv_sha256": None
+        "prior_csv_sha256": "53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b"
     }
 }
 UNKNOWN = {"", "na", "nan", "none", "unknown", "n/a"}

@@ -25,6 +25,7 @@ class SignyStageSourceTests(unittest.TestCase):
         self.assertAlmostEqual(module.number("3.2"),3.2)
 
     def test_original_source_pins(self):
+        self.assertEqual(module.SOURCE["Gentoo"]["prior_csv_sha256"], "53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b")
         self.assertEqual(module.SOURCE["Adelie"]["prior_csv_sha256"], "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62")
         self.assertEqual(module.SOURCE["Chinstrap"]["prior_csv_sha256"], "e50e98719ba5eedc6f5e617e0c7aa404ebfba15bc22a51e93e78cd4443bf787b")
 
