@@ -1,0 +1,44 @@
+name: climate-penguin-signy-3species-stage-source-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - "research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py"
+      - "tests/test_signy_trispecies_stage_source_v1.py"
+      - ".github/workflows/climate-penguin-signy-3species-stage-source-v1.yml"
+
+jobs:
+  source-audit:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install published source CSV parser
+        run: python -m pip install pandas lxml html5lib beautifulsoup4
+      - name: Verify synthetic safeguards
+        run: python -m unittest discover -s tests -p test_signy_trispecies_stage_source_v1.py -v
+      - name: Fetch publisher-original BAS Signy three-species archives
+        run: |
+          mkdir -p build/signy_source
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o build/signy_source/adelie.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o build/signy_source/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o build/signy_source/gentoo.zip
+      - name: Audit three original species and create derived source-stage panel
+        run: |
+          python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py \
+            --source-dir build/signy_source \
+            --out build/signy_stage_derived
+      - name: Preserve reproducible source/number receipts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-3species-stage-source-v1
+          path: |
+            build/signy_stage_derived/source_gate.json
+            build/signy_stage_derived/source_stage_site_seasons.csv
+            build/signy_stage_derived/species_annual_stage_summary.csv
