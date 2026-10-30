@@ -36,4 +36,8 @@ jobs:
         if: always()
         with:
           name: signy-original-gps-source-schema-v1
-          path: build/signy_gps_source/schema.json
+          path: |
+            build/signy_gps_source/schema.json
+            build/signy_gps_source/adelie.zip
+            build/signy_gps_source/chinstrap.zip
+            build/signy_gps_source/gentoo.zip
