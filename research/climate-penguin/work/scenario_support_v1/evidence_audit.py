@@ -74,8 +74,8 @@ requirements=[
 requirements[4]['evidence'] += ['four_environment_scenarios_v1/summary.csv','surface_temperature_projection_v1/matched_site_changes.csv','environment_identifiability_v1/observed_geometry.csv']
 requirements[4]['limit']='Two- and four-environment conditional index scenarios delivered; specification-dependent direction, extrapolation, unvalidated tos/potential-temperature proxy and climate transformations remain'
 requirements.append({'requirement':'Updated v2 snow, lag and nonlinear hypothesis comparisons','status':'incomplete',
- 'evidence':['climate_penguin/RESEARCH_GOAL_V2.md','nonlinear_association_v1/shape_sensitivity.csv'],
- 'limit':'48 one-quadratic-term shape checks now delivered; validated annual snow/vegetation sequence and broad lag comparisons remain incomplete'})
+ 'evidence':['climate_penguin/RESEARCH_GOAL_V2.md','nonlinear_association_v1/shape_sensitivity.csv','previous_september_v1/correlations.csv','previous_september_v1/cluster_sensitivity.csv'],
+ 'limit':'48 quadratic checks and current/previous September comparisons with 72 cluster sensitivity tests delivered; validated annual snow/vegetation sequence and mechanistic carryover identification remain incomplete'})
 for r in requirements:
     for name in r['evidence']:assert (ROOT/'outputs'/name).exists()
 result={'audit_passed':True,'goal_complete':False,'verified_input_hash_references':len(hashes),'requirements':requirements,
