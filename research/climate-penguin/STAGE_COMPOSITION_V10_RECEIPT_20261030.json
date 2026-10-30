@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "analysis_commit": "64f2473c35211088db44fb0160d929eb05bd9b64",
+  "source_run_id": 40985387009,
+  "source_artifact_id": 12945824570,
+  "artifact_sha256": "4bfc7501c83fac0b0a8599dcde3b3cf2360da32798561d6227ce542abc68f479",
+  "status": "POST_EXPLORATION_STAGE_COMPOSITION_NOT_CAUSAL",
+  "raw_records": 5487,
+  "source_stage_pairs": 274,
+  "source_sites_with_stage_pairs": 63,
+  "all_species_pair_source_comparisons": 75,
+  "all_species_pair_comparisons_are_independent": false,
+  "primary_species_pair": "CHPE|GEPE",
+  "cohorts": {
+    "all_unique_sources": {"n": 41, "sites": 8, "regions": 2, "nest_leader_lower_output_n": 20, "nest_chick_rank_reversal_n": 0, "equal_site_mean_share_shift_b": -0.023391876679866575},
+    "ordered_stages_primary": {"n": 21, "sites": 6, "regions": 2, "nest_leader_lower_output_n": 14, "nest_chick_rank_reversal_n": 0, "row_mean_share_shift_b": 0.007024921332715039, "equal_site_mean_share_shift_b": -0.02495356748619633, "equal_site_mean_output_difference_b_minus_a": -0.20681869883137732, "leave_one_site_mean_shift_range_not_CI": [-0.03448438246887765, -0.008585755797782056]},
+    "same_full_dates_secondary": {"n": 8, "sites": 5, "regions": 2, "nest_leader_lower_output_n": 3, "nest_chick_rank_reversal_n": 0, "equal_site_mean_share_shift_b": -0.027174570178872502},
+    "ordered_mapped_nonmainland": {"n": 19, "sites": 4, "regions": 2, "mapped_land_ids": [6194, 6306, 9408, 9709], "nest_leader_lower_output_n": 14, "nest_chick_rank_reversal_n": 0, "equal_site_mean_share_shift_b": -0.010779990518707549}
+  },
+  "primary_site_summaries": [
+    {"site_id": "AITC", "n": 1, "mean_share_shift_b": -0.03408051005118615, "nest_leader_lower_output_n": 0},
+    {"site_id": "ORNE", "n": 2, "mean_share_shift_b": -0.02056235107675025, "nest_leader_lower_output_n": 0},
+    {"site_id": "SELV", "n": 1, "mean_share_shift_b": 0.0001911830859199215, "nest_leader_lower_output_n": 0},
+    {"site_id": "SHIR", "n": 15, "mean_share_shift_b": 0.022700507427210286, "nest_leader_lower_output_n": 13},
+    {"site_id": "SPIP", "n": 1, "mean_share_shift_b": -0.10679262592826769, "nest_leader_lower_output_n": 0},
+    {"site_id": "USEF", "n": 1, "mean_share_shift_b": -0.011177608374104087, "nest_leader_lower_output_n": 1}
+  ],
+  "output_sha256": {
+    "stage_species_composition_v10.csv": "3b3637c545ba3b804895ff406907fa50f51b95d765b554184368688ea4a4b557",
+    "stage_species_composition_v10_result.json": "1b8596b2623f96515aa1fb1b8074b0239978751eea12a316c03c141cc3886016",
+    "rebuilt_source_stage_pairs_v10.csv": "65abf53c16c6417b37bdeae1cb2ae15284594478746918c885adce8cd1a5070d",
+    "primary_site_summaries_v10.csv": "c3918084183bcccf5f781bb1c1b62a3bfa05a65b282aef25d4e1db651d4ac897"
+  },
+  "verification": {"new_local_tests": 20, "core_repository_tests_passed": 260, "core_repository_tests_skipped": 27, "independent_numeric_and_cohort_checks": 510, "maximum_independent_error": 1.942890293094024e-16, "all_four_files_CI_local_byte_identical": true, "normal_PR_CI": 40985392970, "normal_PR_CI_status": "success", "separate_furseal_source_run": 40985392948, "separate_furseal_source_status": "failure", "all_workflows_success_claimed": false},
+  "limits": ["Recorded chicks are not certified fledglings.", "Same date is not equal chick age or equal census extent.", "Four current land units are not historical nest polygons or independent field replicates.", "Thirteen of fourteen primary output-rank mismatches occur at one site, Cape Shirreff.", "No ratio-versus-denominator regression, density effect, Allee effect or future recruitment claim.", "No new climate model or p-value; V1--V9 and earlier multiplicity correction unchanged."]
+}
