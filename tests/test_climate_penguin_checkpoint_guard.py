@@ -63,8 +63,8 @@ def independent_fdr(p_values: list[float], by: bool) -> list[float]:
 def test_complete_snapshot_manifest_file_integrity():
     # Byte-level integrity is intentionally distinct from regenerating
     # excluded external caches or repeating the original scientific fits.
-    ledger = json.loads((CHECKPOINT / "SNAPSHOT_MANIFEST.json").read_text())
-    assert len(ledger) == 283
+    ledger = json.loads((CHECKPOINT / "SNAPSHOT_MANIFEST.json").read_text(encoding="utf-8"))
+    assert len(ledger) == 366  # Expanded checkpoint committed in 238449c4.
     assert len({item["path"] for item in ledger}) == len(ledger)
     for item in ledger:
         rel = Path(item["path"])

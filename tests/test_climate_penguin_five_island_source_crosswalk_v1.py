@@ -35,7 +35,7 @@ def test_original_source_crosswalk_identity_and_no_temporal_leakage():
     assert sum(int(r["nests_2017"])>0 for r in x)==4
 
 def test_ERA5_source_grid_receipt_frozen_and_not_island_warming_effect():
-    j=json.loads((BASE/"ORIGINAL_PALMER_FIVE_ISLAND_ERA5_GRID_RECEIPT_20261029.json").read_text())
+    j=json.loads((BASE/"ORIGINAL_PALMER_FIVE_ISLAND_ERA5_GRID_RECEIPT_20261029.json").read_text(encoding="utf-8"))
     x=j["ERA5_actual_grid_support"]
     assert x["n_original_island_site_locations"]==5
     assert x["n_actual_era5_nearest_grids"]==1
@@ -50,6 +50,6 @@ def test_ERA5_source_grid_receipt_frozen_and_not_island_warming_effect():
     assert d["warming_anthropogenic_attribution_or_penguin_induced_greening_identified"] is False
 
 def test_publisher_count_1998_1999_disagreement_kept_as_source_warning():
-    j=json.loads((BASE/"ORIGINAL_LITCHFIELD_PALMER_EVENT_RECEIPTS_20261029.json").read_text())
+    j=json.loads((BASE/"ORIGINAL_LITCHFIELD_PALMER_EVENT_RECEIPTS_20261029.json").read_text(encoding="utf-8"))
     assert [r["year"] for r in j["palmer_five_island"]["receipt"]["litchfield_official_overlap_1991_2012"]["discrepancies"]]==[1998,1999]
     assert j["palmer_five_island"]["receipt"]["design_stop"]["island_mediator_or_diD_identifiable"] is False
