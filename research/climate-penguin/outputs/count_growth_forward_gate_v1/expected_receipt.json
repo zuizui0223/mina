@@ -1,0 +1,73 @@
+{
+  "contract_id": "mina-count-growth-forward-hindcast-v1",
+  "status": "exploratory_observed_only_not_future_abundance_forecast",
+  "source_path": "research/climate-penguin/outputs/climate_penguin/count_environment_annual_intervals.csv",
+  "source_git_blob_sha": "bcee8af700c02b28050f39c02b20730961ded19d",
+  "test_end_start_years": [
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "train_before_test": true,
+  "model_specification": {
+    "predictor": "start-year September near sea-ice concentration",
+    "response": "log(n_end/n_start) for one-year same-method positive-count intervals",
+    "year_feature": "(start_year - 2013) / 3",
+    "site_dummy_penalty": 3,
+    "year_trend_penalty": 3,
+    "ice_standardization": "train_years_only",
+    "sea_ice_ridge_penalty": 8
+  },
+  "full_support": {
+    "all_intervals": 76,
+    "interval_sites": 20,
+    "interval_regions": 4,
+    "three_environment_complete": 28,
+    "three_environment_sites": 14,
+    "complete_timing_supported": 13,
+    "complete_timing_sites": 10,
+    "three_env_seen_forward_test": 9,
+    "three_env_seen_forward_timing": 4
+  },
+  "forward_support": {
+    "test_intervals": 33,
+    "test_sites": 10,
+    "strict_test_intervals": 28,
+    "strict_test_sites": 8,
+    "fold_train_rows": [
+      34,
+      44,
+      53,
+      69
+    ],
+    "fold_test_seen": [
+      10,
+      8,
+      9,
+      6
+    ]
+  },
+  "metrics": {
+    "all": {
+      "n": 33,
+      "mae_nochange": 0.15512536412645683,
+      "mae_siteyear": 0.19808037148926894,
+      "mae_siteyear_ice": 0.19869539993180033,
+      "rmse_nochange": 0.23058456348246997,
+      "rmse_siteyear": 0.2551758758513311,
+      "rmse_siteyear_ice": 0.25165132053495487
+    },
+    "timing": {
+      "n": 28,
+      "mae_nochange": 0.1654076070918537,
+      "mae_siteyear": 0.2163189415237725,
+      "mae_siteyear_ice": 0.21444999717810406
+    }
+  },
+  "ice_penalty_sensitivity_mae": {
+    "2": 0.19887119638233403,
+    "8": 0.19869539993180033,
+    "20": 0.19850311376898414
+  }
+}
