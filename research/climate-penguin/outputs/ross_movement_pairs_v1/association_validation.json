@@ -1,0 +1,17 @@
+{
+  "status": "descriptive_model_path_association_not_independent_tracking_confirmation",
+  "specifications": 222,
+  "estimable": 188,
+  "hashes": {
+    "ross_movement_pairs_v1/interval_movement.csv.gz": "72bbb384d70c82a436fc710f44d5eb6fa42a3f7bc7cf7e3dc181b8eb629c641d",
+    "ross_directional_exposure_v1/interval_exposure.csv.gz": "5794e603cfc71297bfa86e9f24712eb952942bf92046f70889ff40d54ade2c91",
+    "ross_ensemble_ice_v1/interval_support.csv.gz": "56798156122cd964a346c1447c7c3d72971e910a94c656871b0b69eb549d1977"
+  },
+  "limits": [
+    "Shared model positions enter exposure assignment and response; correlated errors remain",
+    "Trip/date adjustment is descriptive, not causal identification",
+    "Nominal time-window overlap >=50%, not per-cell complete temporal co-observation",
+    "No p-values: few shared dates/years, repeated individuals and spatial grid dependence",
+    "No extrapolation of these slopes to future swimming speed or arrival dates"
+  ]
+}
