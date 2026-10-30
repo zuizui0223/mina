@@ -1,0 +1,35 @@
+{
+  "contract": "mina-signy-diet-stage-v2",
+  "date": "2026-10-30",
+  "timing": "fields selected after source-only schema, before new diet outcome calculation",
+  "original_bio_data": {
+    "Adelie": {
+      "diet_sha256": "ab05193e94864ca05ea54a01154506f8e86f85291e2f01a68abab5d92229a04d",
+      "year_window": "1997-2020"
+    },
+    "Chinstrap": {
+      "diet_sha256": "a8dc89e0440cc8826925fc65bf9194de5151162b83c7d42db7ba3c97d49b164a",
+      "year_window": "1997-2020"
+    },
+    "Gentoo": {
+      "diet_sha256": "6f2a5fa1fc136ad6102dee8cd1c429d24c8ab81b50077bd21eb03f4e80fbd902",
+      "year_window": "1998-2010"
+    }
+  },
+  "original_diet_fields": [
+    "DATE",
+    "RECORD_ID",
+    "TOTAL_MASS_g",
+    "EUPHAUSIA_SUPERBA_MASS_g",
+    "FISH_MASS_g"
+  ],
+  "primary_diet_sample": "EUPHAUSIA_SUPERBA_MASS_g/TOTAL_MASS_g; total>0 and both finite, all values from same individual original RECORD_ID/date",
+  "primary_diet_annual": "mean equal-weighted per recorded stomach sample fraction; at least 3 samples per species season",
+  "sensitivity_diet_annual": "median stomach fraction; mean TOTAL_MASS_g",
+  "primary_stage": "source-preserved median recorded fledglings/pairs at species×season, not actual survival",
+  "season_assignment": "DATE month 7–12 -> same year; 1–6 -> previous year; strict ISO or DD/MM/YYYY; no unknown replacement",
+  "exposure_order": "store each diet sample min/max and each stage fledgling-date min/max; only 'all diets before all fledgling' supports strict sequence; overlapping/missing dates not forward exposures",
+  "exploratory_associations": "species-specific Pearson same-season and year-to-year first differences, plus paired species differences when same season observed",
+  "inference": "descriptive only, no selected p-value, no transfer to climate or forecast",
+  "no_pooling": "no treating multiple stomachs as independent ecosystem-years; Gentoo aggregate stage and other species colony medians not identical grain"
+}
