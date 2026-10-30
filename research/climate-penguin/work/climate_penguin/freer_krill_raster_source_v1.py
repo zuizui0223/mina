@@ -21,7 +21,7 @@ EXPECTED = set(range(2011, 2021))
 
 def classify(path):
     base=Path(path).name.lower()
-    years=[int(y) for y in re.findall(r"(?<!\d)(20(?:1\d|20))(?!\d)",path)]
+    years=[int(y) for y in re.findall(r"(?<!\d)(20(?:1\d|20))(?!\d)",base)]
     yr=years[0] if len(set(years))==1 and years[0] in EXPECTED else None
     model=("combined" if "combined" in base else
            "binom" if "binom" in base else

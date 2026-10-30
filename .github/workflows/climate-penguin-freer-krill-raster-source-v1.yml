@@ -35,4 +35,6 @@ jobs:
         if: always()
         with:
           name: freer-krill-raster-source-audit-v1
-          path: build/freer_krill/source_profile.json
+          path: |
+            build/freer_krill/source_profile.json
+            build/freer_krill/bas_published_source.zip

@@ -11,6 +11,9 @@ class FreerSourceTests(unittest.TestCase):
         self.assertEqual(m.classify("annual_krill_rasters/2011_combined_mean.tif"),(2011,"combined","mean"))
         self.assertEqual(m.classify("annual_krill_rasters/2012_gam_binom_mean.tif"),(2012,"binom","mean"))
         self.assertEqual(m.classify("annual_krill_rasters/2017_combined_sd.tif"),(2017,"combined","sd"))
+    def test_parent_decade_label_does_not_mask_filename_year(self):
+        path="Modelled krill between 2011-2020/annual_krill_rasters/2017_predict_combined_mean.tif"
+        self.assertEqual(m.classify(path),(2017,"combined","mean"))
     def test_no_unsupported_component(self):
         self.assertEqual(m.classify("krill_decade_combined_decademean.tif"),(None,"combined","mean"))
     def test_all_years(self):
