@@ -1,7 +1,7 @@
 {
   "audit_passed": true,
   "goal_complete": false,
-  "verified_input_hash_references": 93,
+  "verified_input_hash_references": 100,
   "requirements": [
     {
       "requirement": "Existing data and frozen results preserved",
@@ -35,9 +35,12 @@
       "evidence": [
         "chinstrap_winter_v1/route_ice_support.csv",
         "noaa_date_support_v1/nest_date_support.csv",
-        "climate_penguin/phenology_audit.md"
+        "climate_penguin/phenology_audit.md",
+        "settlement_origin_refresh_v1/source_slope_crosscheck.csv",
+        "return_tracking_refresh_v1/PRIMARY_SOURCES_JA.md",
+        "ross_phase_reference_v1/REPORT_JA.md"
       ],
-      "limit": "No adopted satellite drift at selected tracks; colony settlement calendar origin remains unconfirmed"
+      "limit": "Day-scale supported by 32 published slope matches; absolute calendar origin still unknown. Independent route drift unavailable; published Ross seasonal contrast is not independent mechanism verification."
     },
     {
       "requirement": "Future warming/sea-ice conditional connection and uncertainty",
@@ -47,9 +50,11 @@
         "conditional_response_v1/forward/summary.csv",
         "four_environment_scenarios_v1/summary.csv",
         "surface_temperature_projection_v1/matched_site_changes.csv",
-        "environment_identifiability_v1/observed_geometry.csv"
+        "environment_identifiability_v1/observed_geometry.csv",
+        "scenario_specification_comparison_v1/paired_specifications.csv",
+        "scenario_specification_comparison_v1/year_adjustment_comparisons.csv"
       ],
-      "limit": "Two- and four-environment conditional index scenarios delivered; specification-dependent direction, extrapolation, unvalidated tos/potential-temperature proxy and climate transformations remain"
+      "limit": "Conditional changes on a supported day scale delivered; 112/224 model and 78/224 year-adjustment sign reversals. Absolute dates, causal effects and calibrated forecasts remain unproven."
     },
     {
       "requirement": "Vegetation/snow and breeding-use sequence requested in research goal v2",
@@ -58,7 +63,9 @@
         "vegetation_annual_ndvi_v1/ndvi_count_correlations.csv",
         "ndvi_vegetation_overlay_v1/support_summary.csv",
         "vegetation_expansion_pixels_v1/one_two_date_comparison.csv",
-        "landsat_vegetation_support_v1/paired_qa_support.csv"
+        "landsat_vegetation_support_v1/paired_qa_support.csv",
+        "september_snow_v1/september_summary.csv",
+        "september_snow_v1/regional_correlations.csv"
       ],
       "limit": "Annual NDVI measured, but mapped vegetation overlap is sparse; expanded Sentinel comparison lacks two-date repeated support; Landsat support depends on Tier 2 geometry and Jan-Feb pooling; breeding-patch classification unverified"
     },
@@ -78,10 +85,11 @@
         "climate_penguin/RESEARCH_GOAL_V2.md",
         "nonlinear_association_v1/shape_sensitivity.csv",
         "previous_september_v1/correlations.csv",
-        "previous_september_v1/cluster_sensitivity.csv"
+        "previous_september_v1/cluster_sensitivity.csv",
+        "september_snow_v1/regional_correlations.csv"
       ],
-      "limit": "48 quadratic checks and current/previous September comparisons with 72 cluster sensitivity tests delivered; validated annual snow/vegetation sequence and mechanistic carryover identification remain incomplete"
+      "limit": "48 quadratic checks, current/previous September comparisons with 72 cluster sensitivity tests, and 36 regional snow comparisons delivered; local vegetation/snow sequence and mechanistic carryover remain unverified"
     }
   ],
-  "next_unresolved_work": "Validated vegetation/breeding-patch measurements, calendar origin and return-route identification, and climate-scenario calibration remain unresolved; correlation-first results and conditional index scenarios delivered"
+  "next_unresolved_work": "Independent return-route drift and local vegetation/breeding-patch sequence remain unidentified; day-scale changes supported but absolute calendar origin and calibrated extrapolation unresolved. Correlation and conditional scenario outputs delivered; full mechanism claim not achieved."
 }

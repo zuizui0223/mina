@@ -51,6 +51,8 @@ new_receipts={
  'surface_temperature_projection_v1/alignment_validation.json':ROOT,
  'four_environment_scenarios_v1/validation.json':ROOT/'outputs',
  'environment_identifiability_v1/validation.json':ROOT,
+ 'september_snow_v1/association_validation.json':ROOT,
+ 'scenario_specification_comparison_v1/validation.json':ROOT/'outputs',
 }
 for name,base in new_receipts.items():
     receipt=json.loads((ROOT/'outputs'/name).read_text())
@@ -63,6 +65,15 @@ for name,base in new_receipts.items():
 pd.DataFrame(hashes).to_csv(OUT/'input_hash_audit.csv',index=False)
 overlay=read('ndvi_vegetation_overlay_v1/support_summary.csv');assert overlay.loc[overlay['mask'].eq('pixel_center'),'pairs_100_mapped_pixels'].item()==0
 landsat=read('landsat_vegetation_support_v1/paired_qa_support.csv');assert len(landsat)==96
+snow=read('september_snow_v1/september_summary.csv');assert len(snow)==1166
+snow_tests=read('september_snow_v1/regional_correlations.csv');assert len(snow_tests)==36
+scale=read('settlement_origin_refresh_v1/source_slope_crosscheck.csv')
+assert len(scale)==32 and scale.matches.all() and scale.source_n.eq(scale.csv_n).all()
+assert scale.csv_n.sum()==271 and (scale.csv_slope-scale.paper_slope).abs().max()<=.0005
+spec=read('scenario_specification_comparison_v1/paired_specifications.csv')
+assert len(spec)==288 and spec.comparison_available.sum()==224 and spec.opposite_sign.eq(True).sum()==112
+yearspec=read('scenario_specification_comparison_v1/year_adjustment_comparisons.csv')
+assert len(yearspec)==288 and yearspec.comparison_available.sum()==224 and yearspec.opposite_sign.eq(True).sum()==78
 requirements=[
  {'requirement':'Existing data and frozen results preserved','status':'supported','evidence':['long_count_seaice_v1/intervals.csv','relationship_response_v1/cohort.csv'],'limit':'Different cohorts remain separate; new exploratory analyses do not overwrite frozen claims'},
  {'requirement':'Macro breeding-count/environment relationships','status':'supported_with_scope_limits','evidence':['long_count_seaice_v1/associations.csv'],'limit':'Adelie 33 sites / 301 annual intervals; timing-supported subset geographically concentrated'},
@@ -73,12 +84,18 @@ requirements=[
  {'requirement':'Mechanism and uncertainty claims separated without invented predictions','status':'supported','evidence':['conditional_response_v1/REPORT_JA.md','chinstrap_winter_v1/ROUTE_QC_JA.md'],'limit':'No causal transport effect, absolute return date, or future nest count claimed'}]
 requirements[4]['evidence'] += ['four_environment_scenarios_v1/summary.csv','surface_temperature_projection_v1/matched_site_changes.csv','environment_identifiability_v1/observed_geometry.csv']
 requirements[4]['limit']='Two- and four-environment conditional index scenarios delivered; specification-dependent direction, extrapolation, unvalidated tos/potential-temperature proxy and climate transformations remain'
+requirements[3]['evidence'] += ['settlement_origin_refresh_v1/source_slope_crosscheck.csv','return_tracking_refresh_v1/PRIMARY_SOURCES_JA.md','ross_phase_reference_v1/REPORT_JA.md']
+requirements[3]['limit']='Day-scale supported by 32 published slope matches; absolute calendar origin still unknown. Independent route drift unavailable; published Ross seasonal contrast is not independent mechanism verification.'
+requirements[4]['evidence'] += ['scenario_specification_comparison_v1/paired_specifications.csv','scenario_specification_comparison_v1/year_adjustment_comparisons.csv']
+requirements[4]['limit']='Conditional changes on a supported day scale delivered; 112/224 model and 78/224 year-adjustment sign reversals. Absolute dates, causal effects and calibrated forecasts remain unproven.'
+requirements[5]['evidence'] += ['september_snow_v1/september_summary.csv','september_snow_v1/regional_correlations.csv']
 requirements.append({'requirement':'Updated v2 snow, lag and nonlinear hypothesis comparisons','status':'incomplete',
  'evidence':['climate_penguin/RESEARCH_GOAL_V2.md','nonlinear_association_v1/shape_sensitivity.csv','previous_september_v1/correlations.csv','previous_september_v1/cluster_sensitivity.csv'],
- 'limit':'48 quadratic checks and current/previous September comparisons with 72 cluster sensitivity tests delivered; validated annual snow/vegetation sequence and mechanistic carryover identification remain incomplete'})
+ 'limit':'48 quadratic checks, current/previous September comparisons with 72 cluster sensitivity tests, and 36 regional snow comparisons delivered; local vegetation/snow sequence and mechanistic carryover remain unverified'})
+requirements[-1]['evidence'] += ['september_snow_v1/regional_correlations.csv']
 for r in requirements:
     for name in r['evidence']:assert (ROOT/'outputs'/name).exists()
 result={'audit_passed':True,'goal_complete':False,'verified_input_hash_references':len(hashes),'requirements':requirements,
- 'next_unresolved_work':'Validated vegetation/breeding-patch measurements, calendar origin and return-route identification, and climate-scenario calibration remain unresolved; correlation-first results and conditional index scenarios delivered'}
+ 'next_unresolved_work':'Independent return-route drift and local vegetation/breeding-patch sequence remain unidentified; day-scale changes supported but absolute calendar origin and calibrated extrapolation unresolved. Correlation and conditional scenario outputs delivered; full mechanism claim not achieved.'}
 (OUT/'requirements_audit.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps({'audit_passed':True,'goal_complete':False,'verified_hash_references':len(hashes),'requirement_rows':len(requirements)}))
