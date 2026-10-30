@@ -1,0 +1,49 @@
+name: stage-followthrough-v11
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - '.github/workflows/stage-followthrough-v11.yml'
+      - 'research/climate-penguin/work/climate_penguin/stage_followthrough_v11.py'
+      - 'research/climate-penguin/contracts/STAGE_FOLLOWTHROUGH_V11.md'
+      - 'tests/test_stage_followthrough_v11.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-stage-to-later-nest-composition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Complete repository tests in normal dependency environment
+        run: |
+          python -m pip install -e '.[dev]'
+          pytest
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-mapppd-matched-species-growth-v1
+          run-id: 40868828790
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/original-counts
+      - uses: actions/download-artifact@v4
+        with:
+          name: stage-composition-v10-original-source
+          run-id: 40985387009
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/stages-v10
+      - name: Fixed future window without shared original baseline counts
+        run: |
+          python research/climate-penguin/work/climate_penguin/stage_followthrough_v11.py \
+            --original-dir /tmp/original-counts --v10-dir /tmp/stages-v10 \
+            --out /tmp/stage-followthrough-v11
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stage-followthrough-v11-original-source
+          path: /tmp/stage-followthrough-v11/
+          retention-days: 30
+          if-no-files-found: error
