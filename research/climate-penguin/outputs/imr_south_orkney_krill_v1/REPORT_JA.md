@@ -1,5 +1,7 @@
 # South Orkney region independent acoustic krill biomass × Signy penguin fledgling stage v1
 
+> **SOURCE CORRECTION / SUPERSEDED — 2026-10-30:** このv1はIMR 2024報告Table2の年ラベルがSkaret et al. 2023原論文Table3と矛盾するため、**広域オキアミ量×雛生産の科学的結果として使用しない**。2013年の原論文南北統合値は欠測、2014〜2020年の値も元表と不整合。履歴と失敗原因の検査のため旧コード・CSV・CIを残す。訂正された元表と再検証は [v2 source reconciliation](../south_orkney_source_reconciliation_v2/REPORT_JA.md) を参照。旧v1のrやnは訂正済み値ではない。
+
 2026-10-30. **Post-exposure exploratory analysis** in draft PR #206. Original acoustic biomass data are **previously published annual estimates**, transcribed from the Norwegian Institute of Marine Research, [2024 Antarctic krill survey report](https://www.hi.no/hi/nettrapporter/toktrapport-en-2024-14), **Table 2 / Overall stratum**, and are NOT newly measured by mina; raw acoustic data underlying [Skaret et al. 2023](https://doi.org/10.1093/icesjms/fsad076) are available upon reasonable request, not publicly downloaded here. The 10 annual records represent about 60,000 km² around the South Orkney Islands (Subarea 48.2) and not Signy nest-side krill density. Source units: density g/m², biomass million tonnes; survey CV dimensionless, acoustic 38/120 kHz per publisher table.
 
 ## Physical timing and reproducibility rule

@@ -24,7 +24,7 @@ from rasterio.io import MemoryFile
 
 ROOT=Path(__file__).resolve().parents[4]
 GPS=ROOT/"research/climate-penguin/outputs/spatial_feasibility/signy_gps_crosswalk.csv"
-REGIONAL=ROOT/"research/climate-penguin/inputs/imr_south_orkney_krill_2011_2020_2024_table2.csv"
+REGIONAL=ROOT/"research/climate-penguin/inputs/skaret_2023_krill_stratum_table3_reconciled_v2.csv"
 PINS=ROOT/"research/climate-penguin/inputs/freer_krill_combined_raster_sha_v1.json"
 RADIUS=(25,50,100)
 YEARS=tuple(range(2011,2021))
@@ -249,23 +249,38 @@ def associations(krill_rows,stage_values):
     return results
 
 def region_compare(krill_rows):
+    """Compare against Skaret (2023) *observed* 9 combined-stratum years.
+
+    The old IMR 2024 Table2 lists incompatible year labels; 2013 has no
+    original observed South+North combined estimate. Never substitute 2013
+    GAM raster prediction for the absent survey estimate.
+    """
     observations={}
     for r in read_csv(REGIONAL):
-        if r["source_table"]!="Table_2_overall_stratum":
-            raise ValueError("not original whole-stratum series")
-        observations[int(r["survey_calendar_year"])]=float(r["density_g_m2"])
-    if set(observations)!=set(YEARS):
-        raise ValueError("prior same-IMR survey source changed")
+        if r["stratum"]!="Combined":
+            continue
+        if (r["source_paper"],r["source_table"])!=("Skaret_2023_ICES","Table_3"):
+            raise ValueError("original acoustic source not Skaret Table3")
+        year=int(r["survey_calendar_year"])
+        if year in observations:
+            raise ValueError("duplicate acoustic combined source year")
+        observations[year]=float(r["density_g_m2"])
+    years=sorted(observations)
+    if set(years)!=set(YEARS)-{2013}:
+        raise ValueError("paper 2023 South+North combined year roster drift")
     local={(r["distance_radius_km"],r["survey_calendar_year"]):r["area_weighted_predicted_krill_g_m2"] for r in krill_rows}
     results=[]
     for rad in RADIUS:
-        x=[local[(rad,y)] for y in YEARS]
-        y=[observations[t] for t in YEARS]
-        results.append({"radius_km":rad,"n_years":len(YEARS),
+        x=[local[(rad,t)] for t in years]
+        y=[observations[t] for t in years]
+        results.append({"radius_km":rad,"n_years":len(years),
+                        "observed_acoustic_years":";".join(map(str,years)),
+                        "observed_2013_combined":"missing",
                         "pearson_r":simple_corr(x,y),
                         "spearman_r":simple_corr(ranks(x),ranks(y)),
                         "overlaps_original_IMR_acoustic_samples":True})
     return results
+
 
 def run(source,stage_dir):
     spatial,metadata=grid_rows(source)

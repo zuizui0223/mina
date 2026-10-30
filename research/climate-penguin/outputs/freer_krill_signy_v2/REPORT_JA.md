@@ -25,3 +25,6 @@ Freer et al. 2025 (DOI https://doi.org/10.1002/lno.12809) の出力は、**IMR�
 **結論**：全域音響平均より局所的な地理的指標を構築できるようになったが、これを使っても現時点で「海氷・塩分→オキアミ→雛生産→巣数・繁殖空間→植生」の因果・将来数値予測は許可できない。外部GCMをこの既存GAMへそのまま入力すれば将来のkrill現存量が確定するものでもない。次に必要なのは島の採餌移動・接触可能な餌場と、GAMに使われていない独立年または独立地域の音響原データでの外的検証。
 
 **再現**：原ZIPをGitHub Actions内で取得、元10年combined mean TIFFのSHA256とWGS84・原画素サイズ、モデルGAM積、BAS雛段階の元出典ハッシュ・暦年対応を検査し、30行年次 exposure/54件相関/3件全域の重複音響比較をartifactに保存。原ZIP本体はGitHubリポへコミットしない。Paper1、Paper2、既存216検定は変更しない。
+
+
+**2026-10-30 source correction:** 元IMR2024 Table2の年ラベルに原論文Skaret2023 Table3と8年の衝突を確認。元GeoTIFF（GAM）による30件環境曝露と54件の雛段階対応は不変だが、元全域音響密度との補助比較は新しい `inputs/skaret_2023_krill_stratum_table3_reconciled_v2.csv` に変更し、2013年は欠測として統合密度の比較から除外する。[ソース照合](../south_orkney_source_reconciliation_v2/REPORT_JA.md)。
