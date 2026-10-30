@@ -4,7 +4,12 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
-- **[Current results: vegetation, sea ice, salinity and warming scenarios, 2026-10-30](CLIMATE_RELATIONSHIPS_AND_SCENARIOS_20261030.md):** same-cohort relationships on 169 species/site/seasons; vegetation associations on 246 site/species units; actual 3-model CMIP6 extraction at 106 coordinates. Future environmental changes are quantified; biological future responses remain uncalibrated.
+- **[Latest integrated findings: correlations and conditional scenarios](outputs/research_synthesis_v1/RESEARCH_STATUS_JA.md)**: updated inference, salinity, annual NDVI, mapped vegetation support, tracking limits and remaining work. Earlier reports below are dated checkpoints.
+- [Full correlation atlas](outputs/correlation_atlas_v1/REPORT_JA.md), [salinity sensitivity](outputs/salinity_sensitivity_v1/REPORT_JA.md), and [conditional response decomposition](outputs/scenario_components_v1/REPORT_JA.md).
+- [Annual NDVI/count comparison](outputs/vegetation_annual_ndvi_v1/REPORT_JA.md), [mapped vegetation overlap](outputs/ndvi_vegetation_overlay_v1/REPORT_JA.md), and [Landsat support](outputs/landsat_vegetation_support_v1/REPORT_JA.md). NDVI differences are not validated vegetation changes.
+- [Completed historical count association analysis](outputs/long_count_seaice_v1/REPORT_JA.md) and [timing support](outputs/long_ice_timing_v1/REPORT_JA.md): 1991–2020 sea-ice acquisition and the 301-interval association analysis are now available, superseding the acquisition-in-progress statements in the earlier checkpoints below.
+
+- **[Earlier checkpoint: vegetation, sea ice, salinity and warming scenarios, 2026-10-30](CLIMATE_RELATIONSHIPS_AND_SCENARIOS_20261030.md):** same-cohort relationships on 169 species/site/seasons; vegetation associations on 246 site/species units; actual 3-model CMIP6 extraction at 106 coordinates. Future environmental changes are quantified; biological future responses remain uncalibrated.
 - [Current research objective](outputs/climate_penguin/RESEARCH_GOAL_V2.md): correlation-first work across climate, sea ice, drift, ocean conditions and vegetation, leading to conditional future scenarios. Predictive performance and descriptive relationships are distinct questions.
 - [September relationships and conditional historical prediction](outputs/relationship_response_v1/REPORT_JA.md): identical complete cases, between/within-site comparisons, and chronological evaluation using realized heldout-year environments at previously observed sites.
 - [Vegetation and observed breeding counts](outputs/vegetation_response_v1/VEGETATION_RELATIONSHIPS_RESULTS_JA.md): 2017–2023 map/count period alignment, regional contrasts, detection sensitivity and species comparisons on common observed site/seasons.
@@ -16,14 +21,14 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 - [Satellite common support](outputs/climate_penguin/SATELLITE_MULTISCENE_RESULTS_JA.md): 106 coordinates screened; unequal observation opportunities and limited common clear land constrain vegetation comparisons.
 - [Original-pixel reflectance validation](outputs/climate_penguin/REFLECTANCE_ORIGINAL_VALIDATION_JA.md): 28 sampled band comparisons resolve the offset convention for the selected 14 images. No vegetation trend has yet been estimated.
 - [Matched-pixel NDVI comparison](outputs/climate_penguin/MATCHED_NDVI_RESULTS_JA.md): seven coordinates, identical clear-land pixels, dates matched within five days, and boundary-mask sensitivity. These are two-date spectral differences, not validated vegetation change or warming attribution.
-- [Historical count support](outputs/climate_penguin/HISTORICAL_COUNT_SUPPORT_JA.md): the 1991–2020 scope has 301 eligible consecutive-year comparisons at 33 sites across six regions. Historical sea-ice acquisition is in progress; the incomplete live manifest is excluded from this checkpoint.
-- [Historical observation timing](outputs/climate_penguin/HISTORICAL_COUNT_TIMING_JA.md): 203 of the 301 comparisons have both counts confirmed after September, with stronger regional imbalance. The monthly aggregation pipeline reproduces all 3,200 existing 2011–2020 macro-site monthly SIC values; historical acquisition is not yet complete.
+- [Historical count support](outputs/climate_penguin/HISTORICAL_COUNT_SUPPORT_JA.md): the 1991–2020 scope has 301 eligible consecutive-year comparisons at 33 sites across six regions. The historical sea-ice series and count association analysis are now complete within the specified scope; see the updated links above.
+- [Historical observation timing](outputs/climate_penguin/HISTORICAL_COUNT_TIMING_JA.md): 203 of the 301 comparisons have both counts confirmed after September, with stronger regional imbalance. The monthly aggregation pipeline reproduces all 3,200 existing 2011–2020 macro-site monthly SIC values; historical acquisition is now complete; see the updated timing and count analyses above.
 
 ## Scope and evidence limits
 
 Settlement, nest counts, breeding success and migration behavior are distinct outcomes. Sea-ice concentration retreat is not necessarily physical melting. Directional drift near colonies is not an observed bird trajectory. Vegetation composites are not annual observations. All current environmental associations are exploratory; source-calendar uncertainties, small cluster counts and spatial/temporal dependence constrain inference. There is no validated future breeding-date projection in this checkpoint.
 
-The broader goals remain open: migration-route calibration, full-period count analyses, vegetation and breeding-patch extraction, annual vegetation support, and climate-scenario transfer with uncertainty. No goal completion is claimed by this PR.
+The broader goals remain open: migration-route identification, validated vegetation and breeding-patch measurements, and climate-scenario calibration; full-period count associations and conditional index scenarios have been delivered. No goal completion is claimed by this PR.
 
 ## Layout and reproducibility
 
@@ -31,7 +36,7 @@ The original workspace-relative layout is retained inside this directory:
 
 - `work/`: analysis and acquisition scripts authored during this research.
 - `outputs/`: reviewable reports, derived tables, source inventories, checks and compressed daily environmental extracts.
-- `SNAPSHOT_MANIFEST.json`: byte sizes and SHA256 for synchronized files.
+- `SNAPSHOT_MANIFEST.json`: the earlier synchronization snapshot, not a manifest of later additions. The latest synthesis inputs are listed in `outputs/research_synthesis_v1/current_evidence_manifest.csv`.
 
 Python scripts usually resolve the analysis root from their file location. Run from this directory when a script uses relative paths. Requirements vary by task; used packages include Python 3.10, numpy, pandas, scipy, statsmodels, rasterio, pyproj, shapely, geopandas, xarray, netCDF4, zarr, fsspec, requests and Pillow. The inference checkpoint used statsmodels 0.14.6. Dependency locking and a single end-to-end runner are not yet provided.
 
