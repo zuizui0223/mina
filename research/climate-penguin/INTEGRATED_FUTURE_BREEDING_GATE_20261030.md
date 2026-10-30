@@ -78,3 +78,28 @@ A **what-if**, NOT a climate forecast: *if* a comparable declining, fixed-roster
 - `results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json`; `results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json` for κ; never substitute `N_eff` for actual occupied breeding polygons.
 
 This note adds exploratory cross-layer analysis only; it is not a publication-grade end-to-end prediction or a replacement for the frozen manuscript.
+
+
+## 2026-10-30 follow-up: three-GCM sign concordance across matched nesting/vegetation sites
+
+**Additional executed geographic-exposure audit**, using the original 58 matched species-site rows from the same ID + <=2 km coordinate crosswalk and **per-GCM** \`site_model_changes.csv\` rather than model-averaged sign. A sign is unanimous only if every ACCESS-CM2, BCC-CSM2-MR and CESM2 first-member value has that sign. This is not a statistical confidence interval, three independent ecological observations or a predictive risk classification.
+
+| SSP5-8.5 2081–2100 | matched site×species | all 3 GCMs warming | all 3 GCMs sea-ice loss | sea-ice direction mixed | all 3 GCMs salinity lower | salinity direction mixed | ice-loss-unanimous AND nearby mapped vegetation detected |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Adélie | 31 | 31 | **17** | 14 | 27 | 4 | 17 |
+| Chinstrap | 9 | 9 | **9** | 0 | 6 | 3 | 8 |
+| Gentoo | 18 | 18 | **18** | 0 | 8 | 10 | 13 |
+
+The same all-three-model sea-ice *decrease* counts (17/31, 9/9, 18/18) occur under both SSPs at both 2041–2060 and 2081–2100, **for this particular same-site cohort and these three GCMs**. None of the selected site×species rows shows unanimous sea-ice increase. In this analysis, a "mixed ice" location means at least one GCM predicts a non-negative change; it is NOT evidence of unchanged ice, safe habitat or a penguin refuge.
+
+The species contrast is strongly conditioned on the observed distribution of sampling locations: Adélie matched sites include Victoria Land and Adélie Land, whereas the selected Chinstrap/Gentoo sites are concentrated around South Shetland/Antarctic Peninsula. Do **not** report different intrinsic penguin thermal sensitivity based on 17/31 versus 18/18. Marine model grids are coarser and shared by multiple sites. Sensitivity to equal-unique-model-grid weighting, already noted above, remains relevant.
+
+For this exact SSP5-8.5 2081–2100 scope, salinity direction is particularly inconsistent in Gentoo (10/18 mixed) and Chinstrap (3/9). Mapped vegetation positive is a 2017–2023 composite detection within 2 km, not annual greening, habitat suitability, nest placement or plant use. None of these intersections is a climate-driven biological outcome.
+
+## 2026-10-30 follow-up: held-out-year population-response gate FAILED
+
+An independent forward-only 2015–2018 Adelie nest-change audit is now executable at \`work/scenario_support_v1/count_growth_forward_gate_v1.py\`, with a source-frozen numeric receipt, 4 time-leakage/solver/independent-result tests and an [executed report](outputs/count_growth_forward_gate_v1/REPORT_JA.md). On **33 same-site held-out one-year count intervals**, MAE of the no-change benchmark was **0.155125**, site+year ridge **0.198080** and site+year+start-year September sea-ice ridge **0.198695**. The 28 timing-supported test intervals give **0.165408 / 0.216319 / 0.214450**, respectively. The tiny all-cohort RMSE improvement of ice versus site+year (0.255176 to 0.251651) does not beat no-change RMSE 0.230585. It is a single exploratory benchmark family, not exhaustive model optimality or proof of no climate effect.
+
+Only **28 of the original 76 annual intervals** have complete start-year September ice, salinity and potential-water-temperature; **13** also have recorded original count-month support; only **9** full-feature intervals have a training-history-matched test site during the four held-out years, with **4** timing-supported. **No validated joint 3-environment → future nest-count elasticity can be inferred** from this observational overlap. Do not silently multiply the existing settlement/arrival-index coefficients, vegetation correlations or retrospective Signy \`κ\` by the projected climate changes.
+
+Source and reproducibility: \`outputs/climate_penguin/count_environment_annual_intervals.csv\` (Git blob \`bcee8af700c02b28050f39c02b20730961ded19d\`); \`outputs/count_growth_forward_gate_v1/expected_receipt.json\`; [GitHub Actions successful time-held-out validation](https://github.com/zuizui0223/mina/actions/runs/41046631619) (4 tests passed, output archive ID 12973075740). Frozen Paper 1, Paper 2 and previous 216 comparisons remain unchanged.
