@@ -38,7 +38,8 @@ def read_all_chinstrap(source):
             digest.update(name.encode()+b"\0"+sha)
             deployment=name.split("_")[0]
             site=deployment[:2]
-            if site not in SITES or not deployment.startswith(site+"C"):
+            valid_source_id=(site in ("SI","LI","MI") and deployment.startswith(site+"C") and deployment[3:].isdigit()) or (site=="PI" and deployment.startswith("PI") and deployment[2:].isdigit())
+            if site not in SITES or not valid_source_id:
                 raise ValueError("unexpected publisher island/species GPS ID")
             if deployment in seen:
                 if seen[deployment]!=sha:raise ValueError("duplicate source deployment not identical")

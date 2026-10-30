@@ -15,6 +15,9 @@ class IslandGPSKrillTests(unittest.TestCase):
         self.assertEqual(m.GPS_SHA,"f56dc817aefefda41e509541d24a184f68644d12c0a1c28af8071717275101c9")
         self.assertEqual({r[0] for r in m.PAIRS},{2011,2013,2015})
         self.assertEqual(set(m.SITES),{"SI","LI","PI","MI"})
+    def test_original_Powell_file_id_has_no_species_letter(self):
+        self.assertEqual(m.SITES["PI"],"Powell")
+        self.assertNotEqual("PI001","PIC001")
     def test_centers_are_not_krill_fitted(self):
         a=[{"island":"PI","season":2013,"points":[(None,-60.73,-45.02,0)]},
            {"island":"PI","season":2013,"points":[(None,-60.72,-45.01,0)]}]
