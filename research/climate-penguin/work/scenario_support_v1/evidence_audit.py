@@ -21,6 +21,10 @@ for name in receipts:
 for name,field in [
  ('ross_ice_temporal_support_v1/validation.json','input_hashes'),
  ('salinity_cluster_sensitivity_v1/validation.json','hashes'),
+ ('salinity_grid_cluster_v1/validation.json','hashes'),
+ ('ocean_grid_replication_v1/validation.json','hashes'),
+ ('salinity_mixed_layer_v1/validation.json','inputs'),
+ ('evidence_figure_v1/validation.json','inputs'),
  ('vegetation_influence_v1/validation.json','hashes'),
  ('ross_movement_pairs_v1/association_validation.json','hashes')]:
     receipt=json.loads((ROOT/'outputs'/name).read_text())
@@ -30,6 +34,29 @@ for name,field in [
         assert actual==expected,(name,relative)
         hashes.append(dict(receipt=name,input=path.relative_to(ROOT).as_posix(),sha256=actual))
 pd.DataFrame(hashes).to_csv(OUT/'input_hash_audit.csv',index=False)
+
+# This receipt has a single explicit source, unlike the path-keyed receipts.
+name='low_ice_days_count_v1/validation.json'
+receipt=json.loads((ROOT/'outputs'/name).read_text())
+path=ROOT/'outputs/long_ice_timing_v1/count_interval_features.csv'
+actual=hashlib.sha256(path.read_bytes()).hexdigest()
+assert actual==receipt['input_sha256']
+hashes.append(dict(receipt=name,input=path.relative_to(ROOT).as_posix(),sha256=actual))
+low_ice=read('low_ice_days_count_v1/associations.csv')
+assert len(low_ice)==48 and low_ice.p.notna().sum()==33
+assert low_ice.fdr_bh.lt(.05).sum()==3 and low_ice.fdr_by.lt(.05).sum()==3
+assert not low_ice.sign_fdr_bh.lt(.05).any() and not low_ice.sign_fdr_by.lt(.05).any()
+grid_tests=read('salinity_grid_cluster_v1/tests.csv')
+assert len(grid_tests)==48 and not grid_tests.fdr_bh.lt(.05).any() and not grid_tests.fdr_by.lt(.05).any()
+grid=read('ocean_grid_replication_v1/summary.csv')
+g=grid[grid.scope.eq('all_source_labels')&grid.species.eq('Gentoo')]
+assert len(g)==1 and g.observations.item()==87 and g.sites.item()==23 and g.cell_sets.item()==20
+mld=read('salinity_mixed_layer_v1/comparisons.csv')
+assert len(mld)==24
+assert mld[mld.scope.eq('all_source_labels')].groupby(['mode','form']).n.sum().eq(169).all()
+points=read('evidence_figure_v1/plotted_points.csv')
+panels=read('evidence_figure_v1/panel_checks.csv')
+assert len(points)==1778 and len(panels)==9
 
 ross_support=read('ross_ensemble_ice_v1/interval_support.csv.gz')
 assert len(ross_support)==8469 and ross_support.draws.sum()==4234500
@@ -124,6 +151,11 @@ requirements[3]['evidence'] += ['pointblue_full_positions_v1/trip_support.csv','
 requirements[3]['limit']='Full Ross positions acquired and aligned: 188 retained bird-years, 8469 intervals. Satellite support concentrated in September 27-30; same published cohort, not independent replication. Day-scale supported, absolute calendar origin and independent return dates unresolved.'
 requirements[5]['evidence'] += ['salinity_cluster_sensitivity_v1/tests.csv','vegetation_influence_v1/comparisons.csv']
 requirements[5]['limit'] += '; 48 salinity sensitivity tests have no BH/BY discoveries; 686 static-vegetation sensitivity fits expose geographic/observation dependence, not annual vegetation effects'
+requirements[1]['evidence'] += ['low_ice_days_count_v1/associations.csv']
+requirements[1]['limit'] += '; observed low-ice duration: 48 specifications, 3 BH/BY discoveries under CR1 but 0 under separate site/year sign-flip sensitivity; not stable inferential support for count forecasts'
+requirements[5]['evidence'] += ['ocean_grid_replication_v1/summary.csv','salinity_grid_cluster_v1/tests.csv','salinity_mixed_layer_v1/comparisons.csv']
+requirements[5]['limit'] += '; shared ocean grids audited (Gentoo 23 sites/20 cells), no grid-cluster BH/BY discoveries; 24 mixed-layer comparisons are descriptive and not mediation estimates'
+requirements[6]['evidence'] += ['evidence_figure_v1/panel_checks.csv','evidence_figure_v1/plotted_points.csv']
 for r in requirements:
     for name in r['evidence']:assert (ROOT/'outputs'/name).exists()
 result={'audit_passed':True,'goal_complete':False,'verified_input_hash_references':len(hashes),'requirements':requirements,

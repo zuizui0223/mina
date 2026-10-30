@@ -1,7 +1,7 @@
 {
   "audit_passed": true,
   "goal_complete": false,
-  "verified_input_hash_references": 109,
+  "verified_input_hash_references": 122,
   "requirements": [
     {
       "requirement": "Existing data and frozen results preserved",
@@ -16,9 +16,10 @@
       "requirement": "Macro breeding-count/environment relationships",
       "status": "supported_with_scope_limits",
       "evidence": [
-        "long_count_seaice_v1/associations.csv"
+        "long_count_seaice_v1/associations.csv",
+        "low_ice_days_count_v1/associations.csv"
       ],
-      "limit": "Adelie 33 sites / 301 annual intervals; timing-supported subset geographically concentrated"
+      "limit": "Adelie 33 sites / 301 annual intervals; timing-supported subset geographically concentrated; observed low-ice duration: 48 specifications, 3 BH/BY discoveries under CR1 but 0 under separate site/year sign-flip sensitivity; not stable inferential support for count forecasts"
     },
     {
       "requirement": "Sea-ice timing and drift versus observable behavior",
@@ -73,16 +74,21 @@
         "september_snow_v1/september_summary.csv",
         "september_snow_v1/regional_correlations.csv",
         "salinity_cluster_sensitivity_v1/tests.csv",
-        "vegetation_influence_v1/comparisons.csv"
+        "vegetation_influence_v1/comparisons.csv",
+        "ocean_grid_replication_v1/summary.csv",
+        "salinity_grid_cluster_v1/tests.csv",
+        "salinity_mixed_layer_v1/comparisons.csv"
       ],
-      "limit": "Annual NDVI measured, but mapped vegetation overlap is sparse; expanded Sentinel comparison lacks two-date repeated support; Landsat support depends on Tier 2 geometry and Jan-Feb pooling; breeding-patch classification unverified; 48 salinity sensitivity tests have no BH/BY discoveries; 686 static-vegetation sensitivity fits expose geographic/observation dependence, not annual vegetation effects"
+      "limit": "Annual NDVI measured, but mapped vegetation overlap is sparse; expanded Sentinel comparison lacks two-date repeated support; Landsat support depends on Tier 2 geometry and Jan-Feb pooling; breeding-patch classification unverified; 48 salinity sensitivity tests have no BH/BY discoveries; 686 static-vegetation sensitivity fits expose geographic/observation dependence, not annual vegetation effects; shared ocean grids audited (Gentoo 23 sites/20 cells), no grid-cluster BH/BY discoveries; 24 mixed-layer comparisons are descriptive and not mediation estimates"
     },
     {
       "requirement": "Mechanism and uncertainty claims separated without invented predictions",
       "status": "supported",
       "evidence": [
         "conditional_response_v1/REPORT_JA.md",
-        "chinstrap_winter_v1/ROUTE_QC_JA.md"
+        "chinstrap_winter_v1/ROUTE_QC_JA.md",
+        "evidence_figure_v1/panel_checks.csv",
+        "evidence_figure_v1/plotted_points.csv"
       ],
       "limit": "No causal transport effect, absolute return date, or future nest count claimed"
     },
