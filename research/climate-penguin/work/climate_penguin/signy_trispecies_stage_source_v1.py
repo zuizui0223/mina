@@ -71,11 +71,13 @@ def source_extract(species, zip_path):
         raise ValueError(f"Source CSV SHA drift for {species}: {sha}")
     fields = {
         "season":column(frame,["SEASON", "BREEDING_SEASON"]),
-        "colony":column(frame,["COLONY", "COLONY_ID"]),
+        "colony":column(frame,["COLONY", "COLONY_ID"],species!="Gentoo"),
         "pairs":column(frame,["TOTAL_NUMBER_OF_PAIRS", "BREEDING_PAIRS"]),
         "chicks":column(frame,["TOTAL_NUMBER_OF_CHICKS", "CHICKS_EXPECTED_TO_FLEDGE"]),
+        "fledglings":column(frame,["TOTAL_NUMBER_OF_FLEDGLINGS", "FLEDGLINGS"],False),
         "nest_date":column(frame,["DATE_PAIR_COUNT", "DATE_NEST_COUNT"],False),
         "chick_date":column(frame,["DATE_CHICK_COUNT","DATE_FLEDGE_COUNT"],False),
+        "fledgling_date":column(frame,["DATE_FLEDGLING_COUNT","DATE_FLEDGLING"],False),
         "comments":column(frame,["COMMENTS","COMMENT"],False),
     }
     import pandas as pd
@@ -89,7 +91,8 @@ def source_extract(species, zip_path):
             continue
         if not 1996<=year<=2019:
             continue
-        colony = str(obj[fields["colony"]]).strip()
+        colony = (str(obj[fields["colony"]]).strip()
+                  if fields["colony"] else "SIGNY_SOURCE_AGGREGATE")
         if colony.lower() in UNKNOWN:
             audit["unknown_colony"] += 1
             continue
@@ -98,13 +101,15 @@ def source_extract(species, zip_path):
             raise ValueError(f"duplicate literal colony-season for {species}: {key}")
         seen.add(key)
         pairs, chicks = number(obj[fields["pairs"]]), number(obj[fields["chicks"]])
+        fledglings = number(obj[fields["fledglings"]]) if fields["fledglings"] else None
         comments = str(obj[fields["comments"]]).strip() if fields["comments"] and pd.notna(obj[fields["comments"]]) else ""
         def iso(key):
             if not fields[key] or pd.isna(obj[fields[key]]):
                 return ""
-            dt = pd.to_datetime(obj[fields[key]],dayfirst=True,errors="coerce")
+            raw_date = str(obj[fields[key]]).strip()
+            dt = pd.to_datetime(raw_date,dayfirst=not bool(re.match(r"^\d{4}-\d\d-\d\d$",raw_date)),errors="coerce")
             return dt.date().isoformat() if pd.notna(dt) else ""
-        nd, cd = iso("nest_date"), iso("chick_date")
+        nd, cd, fd = iso("nest_date"), iso("chick_date"), iso("fledgling_date")
         ordered = bool(nd and cd and nd<cd)
         valid = pairs is not None and pairs>0 and chicks is not None
         if pairs==0:
@@ -113,6 +118,12 @@ def source_extract(species, zip_path):
             audit["missing_pairs"] += 1
         if chicks is None:
             audit["missing_chicks"] += 1
+        if fields["fledglings"] and fledglings is None:
+            audit["missing_fledglings"] += 1
+        if pairs and fledglings is not None:
+            audit["valid_pair_fledgling_rows"] += 1
+            if nd and fd and nd<fd:
+                audit["ordered_pair_fledgling_rows"] += 1
         if valid:
             audit["valid_pair_chick_rows"] += 1
             if ordered:
@@ -121,11 +132,14 @@ def source_extract(species, zip_path):
                 audit["ratio_above_2"] += 1
         extracted.append({
             "species":species,"season_start":year,"colony":colony,
-            "pairs":pairs,"chicks":chicks,
+            "pairs":pairs,"chicks":chicks,"fledglings":fledglings,
+            "recorded_fledglings_per_pair":fledglings/pairs if pairs and fledglings is not None else None,
+            "source_spatial_unit":"island_aggregate_no_colony_field" if not fields["colony"] else "source_colony",
             "reported_chicks_per_pair":chicks/pairs if valid else None,
             "source_row_index":int(idx),
-            "nest_count_date":nd,"chick_count_date":cd,
+            "nest_count_date":nd,"chick_count_date":cd,"fledgling_count_date":fd,
             "nest_before_chicks":ordered,
+            "nest_before_fledglings":bool(nd and fd and nd<fd),
             "comments":comments,
             "source_csv_sha256":sha
         })
@@ -168,6 +182,12 @@ def summarize(rows):
             distinct_literal_colonies=len({r["colony"] for r in group}),
             source_country="Signy, South Orkney Islands",
             is_total_island_population=False,
+            original_spatial_unit=group[0]["source_spatial_unit"],
+            has_reported_fledglings_n=sum(r["recorded_fledglings_per_pair"] is not None for r in group),
+            median_recorded_fledglings_per_pair=(
+                statistics.median(r["recorded_fledglings_per_pair"] for r in group if r["recorded_fledglings_per_pair"] is not None)
+                if any(r["recorded_fledglings_per_pair"] is not None for r in group) else None
+            ),
             no_spatial_independence_claim=True,
             stage_to_individual_survival_verified=False
         )
@@ -214,7 +234,8 @@ def run(source_dir,output_dir):
         raw_stage_rows=len(collected),
         valid_stage_rows=sum(r["reported_chicks_per_pair"] is not None for r in collected),
         limitations=[
-            "Original source ratios are per recorded source colony, not whole-island reproductive success.",
+            "Source units differ by species: Gentoo is island aggregate without a colony field, whereas Adelie/Chinstrap have source colony labels.",
+            "Adelie/Chinstrap source-colony ratios are not a whole-island success rate.",
             "CEMP chick stages are not individual survival or recruitment, and reported counts may have different scope and survey timing.",
             "Colony labels with composite units can change meaning; do not treat as immutable polygons or sum overlapping labels.",
             "All species share one island and annual marine environment; source colony count is not an independent climate replicate.",
