@@ -1,0 +1,25 @@
+{
+  "status": "full_file_support_audited_not_route_validation",
+  "object_bytes": 4900817011,
+  "rows": 46522500,
+  "location_bird_years": 208,
+  "location_birds": 120,
+  "run_groups": 104000,
+  "invalid_geographic_rows": 0,
+  "nonpositive_interval_rows": 0,
+  "time1_year_not_season_plus_one": 0,
+  "within_chunk_or_adjacent_duplicate_keys": 0,
+  "nonmonotonic_within_group_transitions": 0,
+  "revisited_run_groups": 0,
+  "source_rows_are_ensemble_samples": true,
+  "raw_data_redistributed": false,
+  "elapsed_seconds": 229.4,
+  "reference_sha256": "829cd4e56b8109bb42c46117df7dc28fc9fcea14477e5544c57b9ad72b65d609",
+  "deployment_sha256": "dc9e5c55b8c57297e71c86a391fe43d9d0e5ab2c02c4d7cd194ccb863178a678",
+  "limits": [
+    "No independent biological observations implied by ensemble row counts",
+    "Duplicates counted within chunks and at adjacent boundaries; nonlocal cross-chunk duplicates not exhaustively searched",
+    "filterLand is a median-path land-intersection flag per separate source-code audit; counted, not automatically excluded",
+    "Equinox/inserted masks are support diagnostics, not validated return or quality classification"
+  ]
+}
