@@ -4,22 +4,7 @@ import argparse,hashlib,io,json,time
 import numpy as np
 import pandas as pd
 
-class Blocks(io.RawIOBase):
-    def __init__(self, paths):self.paths=iter(paths);self.current=None
-    def readable(self):return True
-    def readinto(self, buffer):
-        view=memoryview(buffer);filled=0
-        while filled<len(view):
-            if self.current is None:
-                try:self.current=next(self.paths).open('rb')
-                except StopIteration:break
-            n=self.current.readinto(view[filled:])
-            if n:filled+=n
-            else:self.current.close();self.current=None
-        return filled
-    def close(self):
-        if self.current:self.current.close()
-        super().close()
+from pointblue_stream import Blocks
 
 p=argparse.ArgumentParser();p.add_argument('--cache',type=Path,required=True);p.add_argument('--deployment',type=Path,required=True);p.add_argument('--reference',type=Path,required=True);args=p.parse_args()
 out=Path(__file__).resolve().parents[2]/'outputs/pointblue_full_positions_v1'
