@@ -1,0 +1,52 @@
+name: climate-penguin-signy-original-gps-krill-access-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/signy_gps_krill_access_v1.py"
+      - "research/climate-penguin/outputs/signy_gps_krill_access_v1/**"
+      - "tests/test_signy_gps_krill_access_v1.py"
+      - ".github/workflows/climate-penguin-signy-original-gps-krill-access-v1.yml"
+
+jobs:
+  originals:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install source and TIFF readers
+        run: python -m pip install "rasterio>=1.4,<1.6" pandas lxml html5lib beautifulsoup4
+      - name: Fetch exact publisher source GPS, Freer krill and 3 breeding-stage archives
+        run: |
+          mkdir -p build/signy_gps_source build/freer_krill build/signy_source
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=55b4d36f-c5e1-4d64-bb14-0b832dcd4b88&output=zip.tree' -o build/signy_gps_source/adelie.zip
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/signy_gps_source/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=9cb04ca6-f88f-4368-b715-45ff73ff81eb&output=zip.tree' -o build/signy_gps_source/gentoo.zip
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' -o build/freer_krill/bas_published_source.zip
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o build/signy_source/adelie.zip
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o build/signy_source/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o build/signy_source/gentoo.zip
+      - name: Reconstruct original source-native three-species fledgling stages
+        run: |
+          python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py --source-dir build/signy_source --out build/signy_stage_derived
+      - name: Extract GPS-tracked krill model fields and check original source receipts
+        run: |
+          python research/climate-penguin/work/climate_penguin/signy_gps_krill_access_v1.py \
+            --gps-root build/signy_gps_source \
+            --model-zip build/freer_krill/bas_published_source.zip \
+            --stage-annual build/signy_stage_derived/species_annual_stage_summary.csv \
+            --out build/signy_gps_krill_access --check
+      - name: Test source, geodesic, duplicates, and original 2013 receipts
+        run: python -m unittest discover -s tests -p test_signy_gps_krill_access_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-gps-krill-access-v1
+          path: |
+            build/signy_gps_krill_access/original_deployment_model_exposures.csv
+            build/signy_gps_krill_access/species_year_exposures.csv
+            build/signy_gps_krill_access/source_model_geographic_reference.csv
+            build/signy_gps_krill_access/result.json
