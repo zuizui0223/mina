@@ -7,3 +7,8 @@ Fixed native BAS spatial source: 14 previously validated Adélie and Chinstrap G
 Annual source field Jan–Feb T aligned to BAS stage in season T (Oct T–Feb T+1) without future data. For each species, there are **nine environmental year opportunities**, not 27 independent ocean measurements; all correlations are *post hoc*. Any association could reflect the existing krill GAM's environmental assumptions, lack of independently verified marine space, field weather/ice coverage, temporal lag mismatch, or non-independence of several stages. No climate→future nesting population, N_eff or vegetation causal effect is estimated. The release gate remains NO-GO.
 
 Reproduce via original ZIP and script \`research/climate-penguin/work/climate_penguin/bas_spatial_krill_signy_v2.py\`. This analysis leaves PR189 and PR199 frozen.
+
+
+## Native TIFF content digest correction, 2026-10-30
+
+RAMADDA regenerates ZIP archives; the container SHA varies across downloads. The full content of the 30 native year-specific TIFFs (2011–2020, three mean products per year) is instead SHA256-verified by iteratively updating the digest with \`basename + NUL + original TIFF bytes\` in year/product order. The frozen payload hash is **\`f4fffbc2b0cbe2dffc5a5728c81f1b46ba9ff99988c6589bb3515d38d2a2fead\`**. The original zip wrapper's hash is recorded but not used as a false drift failure. Any changed native TIFF content is rejected.

@@ -22,7 +22,7 @@ class SourceSpatialTests(unittest.TestCase):
         self.assertEqual(len(x.BANDS),3)
         self.assertEqual(len(x.PRODUCTS),3)
     def test_source_file_digest_guard(self):
-        self.assertEqual(x.EXPECTED_ZIP_SHA,"8ab00f1ed6169acf190bf372effd1b1b664e48a7411915ced476c69abcb41f14")
+        self.assertEqual(x.EXPECTED_MODEL_PAYLOAD_SHA,"f4fffbc2b0cbe2dffc5a5728c81f1b46ba9ff99988c6589bb3515d38d2a2fead")
     def test_full_original_data_only_in_actions(self):
         p=ROOT/"build/bas_spatial_krill/source.zip"
         stage=ROOT/"build/signy_stage_derived"

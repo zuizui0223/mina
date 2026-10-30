@@ -13,7 +13,7 @@ from rasterio.io import MemoryFile
 ROOT=Path(__file__).resolve().parents[4]
 GPS=ROOT/"research/climate-penguin/outputs/spatial_feasibility/signy_gps_crosswalk.csv"
 IMR=ROOT/"research/climate-penguin/inputs/imr_south_orkney_krill_2011_2020_2024_table2.csv"
-EXPECTED_ZIP_SHA="8ab00f1ed6169acf190bf372effd1b1b664e48a7411915ced476c69abcb41f14"
+EXPECTED_MODEL_PAYLOAD_SHA="f4fffbc2b0cbe2dffc5a5728c81f1b46ba9ff99988c6589bb3515d38d2a2fead"
 PRODUCTS={"combined":"predict_combined_mean","occurrence":"gam_binom_mean","positive_density":"gam_gaus_mean_exp"}
 BANDS=((0,50),(50,100),(100,150))
 SPECIES=("Adelie","Chinstrap","Gentoo")
@@ -44,9 +44,9 @@ def extract(zip_path):
     if not zipfile.is_zipfile(p):
         raise ValueError("not official GeoTIFF ZIP")
     digest=hashlib.sha256(p.read_bytes()).hexdigest()
-    if digest!=EXPECTED_ZIP_SHA:
-        raise ValueError("original source archive digest changed: "+digest)
+    # Regenerated ZIP wrapper hash varies; pin the 30 native original TIFF payloads.
     z=zipfile.ZipFile(p)
+    content_sha=hashlib.sha256()
     files=z.namelist()
     ref=anchor()
     common_transform=None
@@ -58,7 +58,10 @@ def extract(zip_path):
             matches=[n for n in files if n.endswith("/annual_krill_rasters/"+base)]
             if len(matches)!=1:
                 raise ValueError("required original publisher model output unavailable: "+base)
-            with MemoryFile(z.read(matches[0])) as mem:
+            raw_tiff=z.read(matches[0])
+            content_sha.update(base.encode("utf-8")+b"\0")
+            content_sha.update(raw_tiff)
+            with MemoryFile(raw_tiff) as mem:
                 with mem.open() as ds:
                     if str(ds.crs)!="EPSG:4326" or ds.count!=1:
                         raise ValueError("raster CRS/grain incompatible")
@@ -93,9 +96,11 @@ def extract(zip_path):
                              "predicted_area_weighted_mean":value,
                              "n_valid_model_cells":n,"n_candidate_cells":total,
                              "model_valid_fraction":n/total})
+    if content_sha.hexdigest()!=EXPECTED_MODEL_PAYLOAD_SHA:
+        raise ValueError("published native raster data changed: "+content_sha.hexdigest())
     if len(rows)!=90:
         raise ValueError("annual × product × band table not complete")
-    return rows,ref,digest,{"grid_crs":"EPSG:4326","grid_shape":list(grid_shape),"grid_resolution_deg":abs(float(common_transform.a))}
+    return rows,ref,{"zip_repack_sha256":digest,"native_selected_raster_bytes_sha256":content_sha.hexdigest()},{"grid_crs":"EPSG:4326","grid_shape":list(grid_shape),"grid_resolution_deg":abs(float(common_transform.a))}
 
 def corr(x,y):
     x=np.asarray(x,dtype=float);y=np.asarray(y,dtype=float)
@@ -147,7 +152,7 @@ def main():
     parser.add_argument("--stage-dir",required=True,type=Path)
     parser.add_argument("--out",required=True,type=Path)
     opt=parser.parse_args()
-    rows,anchor_data,digest,grid=extract(opt.source_zip)
+    rows,anchor_data,source_provenance,grid=extract(opt.source_zip)
     relationships=analyze(rows,opt.stage_dir)
     opt.out.mkdir(parents=True,exist_ok=True)
     with (opt.out/"annual_spatial_bands.csv").open("w",newline="",encoding="utf-8") as f:
@@ -156,7 +161,7 @@ def main():
     receipt={
         "status":"EXPLORATORY_PUBLISHED_GAM_SPATIAL_PREY_PROXY_NOT_INDEPENDENT_OBSERVATION",
         "BAS_DOI":"10.5285/4fd0a1bf-da1a-4021-82eb-2fc513910e32",
-        "publisher_raster_archive_sha256":digest,
+        "publisher_raster_content":source_provenance,
         "anchor":anchor_data,"native_grid":grid,
         "fixed_distance_bands_km":[list(z) for z in BANDS],
         "n_modelled_environmental_years":10,
