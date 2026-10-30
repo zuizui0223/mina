@@ -1,0 +1,38 @@
+name: climate-penguin-freer-krill-raster-source-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/freer_krill_raster_source_v1.py"
+      - "tests/test_freer_krill_raster_source_v1.py"
+      - ".github/workflows/climate-penguin-freer-krill-raster-source-v1.yml"
+
+jobs:
+  source-raster:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install binary GeoTIFF reader
+        run: python -m pip install "rasterio>=1.4,<1.6"
+      - name: Verify source parser tests
+        run: python -m unittest discover -s tests -p test_freer_krill_raster_source_v1.py -v
+      - name: Fetch DOI original published gridded predictions
+        run: |
+          mkdir -p build/freer_krill
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' \
+            -o build/freer_krill/bas_published_source.zip
+      - name: Inspect source GeoTIFF headers and checksum
+        run: |
+          python research/climate-penguin/work/climate_penguin/freer_krill_raster_source_v1.py \
+            --zip build/freer_krill/bas_published_source.zip \
+            --out build/freer_krill/source_profile.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: freer-krill-raster-source-audit-v1
+          path: build/freer_krill/source_profile.json
