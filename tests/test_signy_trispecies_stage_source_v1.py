@@ -12,6 +12,12 @@ module=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 class SignyStageSourceTests(unittest.TestCase):
+    def test_malformed_publisher_season_quarantined(self):
+        self.assertIsNone(module.strict_season_start("1998-8895"))
+        self.assertEqual(module.strict_season_start("1998-1999"), 1998)
+        self.assertEqual(module.strict_season_start("1998/99"), 1998)
+        self.assertEqual(module.strict_season_start("1999-2000"), 1999)
+
     def test_nonnegative_and_missing(self):
         self.assertIsNone(module.number(""))
         self.assertIsNone(module.number("-1"))

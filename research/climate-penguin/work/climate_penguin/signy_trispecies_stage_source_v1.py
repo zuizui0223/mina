@@ -42,6 +42,21 @@ ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_OUT = ROOT/"research/climate-penguin/outputs/signy_trispecies_stage_source_v1"
 
 
+def strict_season_start(value):
+    """Do not accept malformed YYYY-YYYY labels by reading only first four digits."""
+    value = str(value).strip()
+    match = re.fullmatch(r"(\d{4})\s*[-/]\s*(\d{2}|\d{4})", value)
+    if not match:
+        return None
+    first = int(match.group(1))
+    end = int(match.group(2))
+    if len(match.group(2)) == 2:
+        valid = end == (first + 1) % 100
+    else:
+        valid = end == first + 1
+    return first if valid else None
+
+
 def number(value):
     if value is None or str(value).strip().lower() in UNKNOWN:
         return None
@@ -84,10 +99,12 @@ def source_extract(species, zip_path):
     extracted = []
     audit = Counter()
     seen = set()
+    bad_labels = []
     for idx, obj in frame.iterrows():
-        year = season_start(str(obj[fields["season"]]))
+        year = strict_season_start(obj[fields["season"]])
         if year is None:
             audit["unparsed_season"] += 1
+            bad_labels.append(str(obj[fields["season"]]))
             continue
         if not 1996<=year<=2019:
             continue
@@ -143,6 +160,7 @@ def source_extract(species, zip_path):
             "comments":comments,
             "source_csv_sha256":sha
         })
+    audit["quarantined_unparsed_source_season_labels"] = sorted(set(bad_labels))
     audit["source_csv_rows"] = len(frame)
     audit["in_window_rows"] = len(extracted)
     audit["in_window_seasons"] = len({r["season_start"] for r in extracted})
