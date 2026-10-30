@@ -1,0 +1,50 @@
+name: stage-composition-v10
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - .github/workflows/stage-composition-v10.yml
+      - research/climate-penguin/work/climate_penguin/stage_composition_v10.py
+      - research/climate-penguin/contracts/STAGE_COMPOSITION_V10.md
+      - tests/test_stage_composition_v10.py
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-chronology-matched-stage-composition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Complete repository tests in the normal dependency environment
+        run: |
+          python -m pip install -e '.[dev]'
+          pytest
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-mapppd-matched-species-growth-v1
+          run-id: 40868828790
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/original-counts
+      - uses: actions/download-artifact@v4
+        with:
+          name: matched-observed-intervals-v6-original-source
+          run-id: 40889533815
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/geography-v6
+      - name: Rebuild original pairs and compare same-source stages without date imputation
+        run: |
+          python research/climate-penguin/work/climate_penguin/stage_composition_v10.py \
+            --original-dir /tmp/original-counts \
+            --geography-json /tmp/geography-v6/observed_species_intervals_v6_result.json \
+            --out /tmp/stage-composition-v10
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stage-composition-v10-original-source
+          path: /tmp/stage-composition-v10/
+          retention-days: 30
+          if-no-files-found: error
