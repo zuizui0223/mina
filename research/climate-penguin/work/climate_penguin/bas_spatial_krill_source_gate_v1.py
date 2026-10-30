@@ -26,7 +26,7 @@ def audit(path):
             continue
         name=info.filename
         is_tif=name.lower().endswith((".tif",".tiff"))
-        year_match=re.search(r"(?<!\d)(201[1-9]|2020)(?!\d)",name)
+        year_match=re.search(r"(?<!\d)(201[1-9]|2020)(?!\d)",Path(name).name)
         year=int(year_match.group(1)) if year_match else None
         entries.append({"name":name,"bytes":info.file_size,
                         "compressed_bytes":info.compress_size,
@@ -39,7 +39,7 @@ def audit(path):
         raise ValueError("fewer rasters than advertised; check parent source tree")
     present=sorted({e["year_in_path"] for e in annual})
     if present!=list(EXPECTED_YEARS):
-        raise ValueError(f"published annual prediction years do not span 2011-2020: {present}")
+        raise ValueError(f"published annual prediction years do not span 2011-2020: {present}; examples={[(v['name'],v['year_in_path']) for v in rasters[:12]]}")
     sample={}
     # Raster schema; source-only no biologically selected positive outcome.
     import rasterio
