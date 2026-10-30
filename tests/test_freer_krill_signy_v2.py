@@ -30,6 +30,7 @@ class FreerSignyTests(unittest.TestCase):
         spatial,comparison,acoustic,meta=m.run(source,stage)
         self.assertTrue(m.check(spatial,comparison,meta))
         self.assertEqual(len(acoustic),3)
-        self.assertEqual(len({z["breeding_years"] for z in comparison if z["cohort"]=="all"}),2)
+        self.assertEqual(len({z["breeding_years"] for z in comparison if z["cohort"]=="all"}),1)
+        self.assertEqual({z["survey_year_offset"] for z in comparison if z["cohort"]=="all"},{0,1})
 if __name__=="__main__":
     unittest.main()

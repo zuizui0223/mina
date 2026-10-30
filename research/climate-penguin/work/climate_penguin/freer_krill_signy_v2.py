@@ -289,7 +289,7 @@ def check(spatial,comparison,metadata):
             raise ValueError(f"independent local numeric receipt changed {yr}/{rad}")
     if len(spatial)!=30 or len(comparison)!=54:
         raise ValueError("the full 10y × 3 radii or 54 combinations not retained")
-    if metadata["source_colony_reference_points"]!=14 or any(metadata["native_resolution_degrees"][i] != 0 for i in []):
+    if metadata["source_colony_reference_points"]!=14 or not all(math.isclose(v,1/12,abs_tol=1e-10) for v in metadata["native_resolution_degrees"]):
         raise ValueError("source geometry changed")
     for rad,n in ((25,38),(50,175),(100,745)):
         if {x["model_valid_grid_cells"] for x in spatial if x["distance_radius_km"]==rad}!={n}:
