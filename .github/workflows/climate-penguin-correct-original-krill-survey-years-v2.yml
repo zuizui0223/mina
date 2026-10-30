@@ -1,0 +1,41 @@
+name: climate-penguin-correct-original-krill-survey-years-v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/inputs/skaret_2023_krill_stratum_table3_reconciled_v2.csv"
+      - "research/climate-penguin/work/climate_penguin/south_orkney_krill_source_reconcile_v2.py"
+      - "tests/test_south_orkney_krill_source_reconcile_v2.py"
+      - ".github/workflows/climate-penguin-correct-original-krill-survey-years-v2.yml"
+
+jobs:
+  source-reconciliation:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install pandas lxml html5lib beautifulsoup4
+      - run: python -m unittest discover -s tests -p test_south_orkney_krill_source_reconcile_v2.py -v
+      - name: Download original BAS 3-species breeding source records
+        run: |
+          mkdir -p build/signy_source
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o build/signy_source/adelie.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o build/signy_source/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o build/signy_source/gentoo.zip
+      - name: Reproduce original BAS fledgling stage years
+        run: python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py --source-dir build/signy_source --out build/signy_stage_derived
+      - name: Recompute 2024 versus 2023 source-year conflict and frozen diagnostics
+        run: |
+          python research/climate-penguin/work/climate_penguin/south_orkney_krill_source_reconcile_v2.py --stage-dir build/signy_stage_derived --out build/skaret_reconciled --check
+          python -m unittest discover -s tests -p test_south_orkney_krill_source_reconcile_v2.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: krill-survey-year-source-conflict-v2
+          path: |
+            build/skaret_reconciled/source_year_conflicts.csv
+            build/skaret_reconciled/stage_correlations_reconciled.csv
+            build/skaret_reconciled/decision.json
