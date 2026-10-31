@@ -4,6 +4,7 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[3種のMAPPPD長期繁殖数×実測海氷のマクロ解析・CMIP6統合（2026-10-31）](outputs/breeding_count_macro_v1/REPORT_JA.md):** 元729地点・5,487観測から3種の計数を抽出、40地点海氷と一致した725地点×種×季、56地点×種、連続年467区間、長期傾き54地点×種、CMIP6 224地点×種×シナリオを実行。3種の海氷年変化との関連は探索的で補正後有意なし。アデリーの歴史的減少地に将来海氷減少の大きい地域が偏るが、地域内相関は約0。AEI/REMA陸上環境の追加比較も保存。
 - **[最優先研究主題 v3：温暖化はペンギンの繁殖をどう変えるか](RESEARCH_GOAL_WARMING_IMPACTS_V3.md)** — 温暖化→繁殖時期・繁殖数・種構成の実測と条件付き2050/2100生物予測。単なる気候曝露地図・繁殖集中の理論を主線にしない。
 - **[観測された同地点の種間繁殖構成変化](outputs/warming_species_breeding_v1/REPORT_JA.md)** — 同じ方法・同じ地点・同年の繁殖数比でGentoo/Adélie 7/7、Chinstrap/Adélie 6/6が長期増加方向。8地点のCMIP6未来気温/SICへ同位置で接続（将来種比は未較正）。
 - **[39地点アデリー：長期海氷×繁殖成長とCMIP6の条件付き変化](outputs/historical_ice_breeding_transfer_v1/REPORT_JA.md)** — 1991–2020実測の空間相関 r=+0.622。線形移植は世紀末SSP585に成長率傾向の負方向を出すが、二次モデルでは符号が反転しうる。
