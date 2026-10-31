@@ -1,0 +1,39 @@
+name: climate-penguin-chinstrap-krill-GAM-hurdle-components-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_GAM_hurdle_components_GPS_v1.py"
+      - "tests/test_chinstrap_GAM_hurdle_components_GPS_v1.py"
+      - ".github/workflows/climate-penguin-chinstrap-GAM-hurdle-components-v1.yml"
+jobs:
+  source-original:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install source GeoTIFF reader
+        run: python -m pip install "rasterio>=1.4,<1.6" numpy
+      - name: Validate exact decomposition and no arbitrary zero handling
+        run: python -m unittest discover -s tests -p test_chinstrap_GAM_hurdle_components_GPS_v1.py -v
+      - name: Fetch first-party BAS original Chinstrap GPS and 30 component TIFFs
+        run: |
+          mkdir -p build/GAM_component_source
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 240 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/GAM_component_source/gps-original.zip
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 240 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' -o build/GAM_component_source/krill-original.zip
+      - name: Regenerate all 308 tracks and both original two-part krill prediction surfaces
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_GAM_hurdle_components_GPS_v1.py --gps-zip build/GAM_component_source/gps-original.zip --model-zip build/GAM_component_source/krill-original.zip --out build/GAM_component_source/derived --check
+          python -m unittest discover -s tests -p test_chinstrap_GAM_hurdle_components_GPS_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-GAM-presence-vs-conditional-density-original-source-v1
+          path: |
+            build/GAM_component_source/derived/308_source_GPS_hurdle_components.csv
+            build/GAM_component_source/derived/14_island_year_hurdle_components.csv
+            build/GAM_component_source/derived/6_matched_island_hurdle_log_decomposition.csv
+            build/GAM_component_source/derived/decision.json
