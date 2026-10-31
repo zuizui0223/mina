@@ -214,3 +214,11 @@ Source verification: [GPS×TDR original overlap](https://github.com/zuizui0223/m
 原BAS TDR×GPSと既存Freerオキアミモデルの固定4タグ接続が実行済み。圧力5dbar・10秒以上（暫定q1/60min ZOC）、前後実GPS600秒以内＋最近実GPS300秒以内という候補段階で、原GPS時間対応はLaurie901、Powell2117、Monroe876、Signy24。地理10〜150km条件の後にモデル値を得られたのはLaurie901/27固有セル、Powell543/28、Monroe802/13、Signy0/0。先行夏の候補GAM平均は8.813、11.902、6.485 g/m²（Signyは推定不能）；タグ内全GPSセル基準の比は0.985、0.928、0.982。原4タグ・48条件すべて保存し、[元CI](https://github.com/zuizui0223/mina/actions/runs/41168213176)はSUCCESS。
 
 したがって『潜水が起きている場所ほどモデル上のオキアミ密度が高い』とは支持できない。なお潜水候補は実捕食・海上潜水ではなく、GAM自体は音響観測と海氷・塩分の入力を使用済み。Monroeのセンサゼロ点漂移7.75dbar、各島1タグ、年が異なる問題を保持。陽性結果は**原GPS・原TDR・GAM格子の技術的接続に成功したこと**であり、2050/2100年の生態学的予測ゲートは通過しない。
+## 2026-10-31 source-fixed 16-tag actual sensor QA (run complete)
+
+
+## 2026-10-31 pressure sensor quality 16-tag source extension
+
+[Original BAS 16-tag × four ZOC method workflow](https://github.com/zuizui0223/mina/actions/runs/41176761764) **SUCCESS**: all 16 original frozen GPS/TDR matched tags were opened, and 64 source-offset 5dbar candidate profiles reconstructed. Source choice fixed to first four original matched tags per island, not based on outcome values. Provisional 1% 60-minute zero-offset range >2 dbar in **3 of 16** tags: Powell PI004 2.50 dbar, Monroe MIC001 7.7525 dbar, Monroe MIC002 11.4975 dbar. MIC002 had 3,246 candidate events, only 108 strict original-GPS time-bracketed (3.33%), with 20.5% maximum–minimum candidate count range across four correction algorithms. Signy/Laurie 0/4 tags above 2 dbar in this **nonrepresentative** subset; other three source series (LIC003, MIC004, SIC010) had 0 provisional 5dbar events despite usable pressure, which is *not* absence of biological diving. The original 4-tag pilot receipts and 16×4 source/QA breadth are reproduced.
+
+Instrument-level positive endpoint = source processing and detection of candidate-instrument heterogeneity, **not a new ecological divergence or prey capture**. Original 300 matched tags cannot be interpreted uniformly without sensor/clock/land-activity QA, and the number flagged (3/16) is not a population failure frequency. The 2050/2100 breeding-pairs/N_eff/vegetation quantitative forecast remains NO-GO.

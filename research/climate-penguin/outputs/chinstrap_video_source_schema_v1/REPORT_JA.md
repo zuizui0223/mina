@@ -9,3 +9,8 @@
 本ゲートはDryadの元ZIPをダウンロードし、原CSV ChinstrapForagingDiveOutcomesVariables.csv、770行、列名、README、ハッシュだけを確認する。まだ潜水成功率や種差・島差の係数を再推定しない。2018/19年のSigny動画であり、BAS 2011–2019 GPS/TDR version2と同じ個体であることも未確認。個体ID・時刻・座標の実値を開ける段階で初めてクロスウォークを検証する。
 
 TDRの水圧から実潜水、潜水から捕食、捕食から繁殖成功、繁殖成功から次期巣数・空間、という因果鎖を一度に完成したものとして扱わない。実海氷や塩分による独立応答・2050/2100年のペンギン繁殖数予測は今も未検証。
+
+
+## 2026-10-31 実取得結果
+
+Dryad元データは公開Webページから列挙可能だが、API ZIP endpointはHTTP **401**、Webページに明記されたpublic download-file_stream URL 2件をGitHub Actionsから直接試した結果も**403**だった。匿名GitHubランナーの元CSV 770行は**まだダウンロード成功していない**。URL・ステータス監査は [Dryad public access diagnostic](DRYAD_SOURCE_TRANSPORT_DIAGNOSIS_20261031.md) と Actions実行履歴へ保存。これは研究データの不存在ではなく取得経路の権限/アクセス制約として扱う。未取得のデータに基づく潜水→捕食ラベルの独自分類・個体別交差検証を実施したと記述しない。先行論文は映像観測16羽・770潜水を報告しているが、当該本研究は2022年Mancoらの既報の実測。
