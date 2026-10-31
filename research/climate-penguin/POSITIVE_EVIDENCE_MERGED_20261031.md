@@ -331,4 +331,4 @@ Copernicus GLORYS12V1 202311原Zarrから8固定元生物地点・海洋8格子�
 
 この区別はこれまでの温暖化予測NO-GOを撤回しない。元1993–2020 GLORYS海洋環境＋実衛星SICの年次複合モデルは、将来の繁殖比を過去の年・未使用地点へ移す予測精度を確認できなかった。同じ8地点のCMIP6昇温・退氷は物理的曝露としてのみ保持。**確認できた繁殖構成の変化を、温暖化が起こした確定因果現象と呼ばない**。
 
-[原本再監査コード](work/breeding_presence_decomposition_v1/audit.mjs)、[GitHub Actions SUCCESS 41213287352](https://github.com/zuizui0223/mina/actions/runs/41213287352)、11?ではなく3成果ファイル（全共有年実巣数CSV・比較傾向CSV・summary.json）を含むartifact 13046642728。判定条件は探索後の感度分析であり、別標本による独立検定ではない。
+[原本再監査コード](work/breeding_presence_decomposition_v1/audit.mjs)、[GitHub Actions SUCCESS 41213287352](https://github.com/zuizui0223/mina/actions/runs/41213287352)、原共有年の巣数CSV・種ペアごとの絶対増減CSV・summary.jsonの3成果ファイルを含むartifact 13046642728。判定条件は探索後の感度分析であり、別標本による独立検定ではない。
