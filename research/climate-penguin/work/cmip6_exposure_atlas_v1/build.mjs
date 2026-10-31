@@ -132,4 +132,18 @@ const outDir=resolve(process.argv[3]||"research/climate-penguin/outputs/cmip6_ex
 const content=Object.fromEntries(input.map(n=>[n,readFileSync(join(srcDir,n),"utf8")]));
 const r=buildAtlas(content,Object.fromEntries(input.map(n=>[n,"local_run_check_pinned_source_git_blob_shas_in_committed_summary"])));
 mkdirSync(outDir,{recursive:true});for(const [name,data] of Object.entries(r.files))writeFileSync(join(outDir,name),data);
+
+// Geographic point layer for QGIS/GeoJSON clients; repeated coordinates across scenarios
+// are separate features, not separate islands. Filter by experiment and period to view.
+const rowsGeo=parseCSV(r.files["site_scenario_exposure.csv"]);
+const numericGeo=["tas_change_mean_degC","tas_change_min_degC","tas_change_max_degC","tas_increase_models","siconc_change_mean_pp","siconc_change_min_pp","siconc_change_max_pp","siconc_loss_ge10pp_all3","siconc_decrease_models","sos_change_mean_native001","sos_decrease_models","marine_max_model_cell_distance_km","marine_all_3_models_within_50km"];
+const geojson={type:"FeatureCollection",name:"CMIP6 physical exposure, not future penguin breeding prediction",
+  features:rowsGeo.map((x,i)=>({type:"Feature",id:i+1,
+    geometry:{type:"Point",coordinates:[Number(x.longitude),Number(x.latitude)]},
+    properties:Object.fromEntries([
+      ...["experiment","period","location_id","site_id","cohort","marine_fingerprint"].map(k=>[k,x[k]]),
+      ...numericGeo.map(k=>[k,Number(x[k])])
+    ])}))};
+writeFileSync(join(outDir,"site_scenario_exposure.geojson"),JSON.stringify(geojson)+"\\n");
+
 console.log(JSON.stringify(r.meta.scenarios,null,2));
