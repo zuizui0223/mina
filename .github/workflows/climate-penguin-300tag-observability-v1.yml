@@ -9,7 +9,6 @@ on:
       - ".github/workflows/climate-penguin-300tag-observability-v1.yml"
 permissions:
   contents: read
-  actions: read
 jobs:
   frozen-source:
     runs-on: ubuntu-latest
@@ -20,12 +19,17 @@ jobs:
           python-version: "3.12"
       - name: Unit tests for source-only criteria
         run: python -m unittest discover -s tests -p test_chinstrap_300tag_observability_v1.py -v
-      - name: Fetch frozen original BAS 300tag source QA artifact
-        env:
-          GH_TOKEN: \${{ github.token }}
+      - name: Install native original pressure reader
+        run: python -m pip install numpy
+      - name: Fetch original BAS GPS and TDR Version 2 directly from publisher
+        run: |
+          mkdir -p build/tdr_original
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 1200 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=da13e049-be2b-4345-bbdd-ab960cb24731&output=zip.tree' -o build/tdr_original/TDR_v2_original.zip
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 1200 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/tdr_original/GPS_v2_original.zip
+      - name: Reproduce complete 300 source tag sensor/time QA before screening
         run: |
           mkdir -p build/original300
-          gh run download 41177252296 -R zuizui0223/mina -n chinstrap-all-300-original-TDR-instrument-QA-v1 -D build/original300
+          python research/climate-penguin/work/climate_penguin/chinstrap_300tag_tdr_sensor_census_v1.py --tdr-zip build/tdr_original/TDR_v2_original.zip --gps-zip build/tdr_original/GPS_v2_original.zip --out build/original300 --check
       - name: Verify frozen source content and all 300 decisions
         run: |
           python research/climate-penguin/work/climate_penguin/chinstrap_300tag_observability_v1.py --original-qa build/original300/all_300_original_sensor_QA.csv --out build/operational300 --check
