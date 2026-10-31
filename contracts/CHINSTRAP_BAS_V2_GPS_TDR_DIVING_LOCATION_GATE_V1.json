@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "created_jst": "2026-10-31",
+  "status": "source_first_method_contract_before_opening_original_TDR_pressure_outcomes_NOT_FORMALLY_PREREGISTERED",
+  "objective": "Determine how many original BAS Version2 chinstrap GPS deployments can be reliably time-aligned with actual pressure-defined dives, then compare original-dive-linked movement locations with previously published Freer krill GAM surfaces across matched South Orkney islands, without climate causality claims.",
+  "sources": {
+    "GPS": {
+      "doi": "10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
+      "version": "2.0",
+      "source_count_known": 313,
+      "previous_member_pin": "f56dc817aefefda41e509541d24a184f68644d12c0a1c28af8071717275101c9"
+    },
+    "TDR": {
+      "doi": "10.5285/da13e049-be2b-4345-bbdd-ab960cb24731",
+      "version": "2.0",
+      "pressure_unit": "dbar",
+      "nominal_sampling_seconds": 1,
+      "original_zip_member_count_reported": 317,
+      "source_time_zone": "must audit; do not guess"
+    },
+    "modelled_krill": {
+      "doi": "10.5285/4fd0a1bf-da1a-4021-82eb-2fc513910e32",
+      "source": "Freer 2025 hurdle GAM trained on IMR 2011–2020 acoustics and sea ice/salinity",
+      "original_tiff_pin": "research/climate-penguin/inputs/freer_krill_combined_raster_sha_v1.json"
+    }
+  },
+  "primary_source_gates": [
+    "ID exact same original deployment in GPS v2 and TDR v2. Do not use known-mismatched v1.",
+    "Original pressure field units, valid timestamp field, timestamp precision and time zone must be checked; unknown clock-offset direction means NO JOIN.",
+    "Zero-offset calibration and raw pressure QC explicitly separated from ecological thresholds; pressure > threshold is potential dive, not feeding.",
+    "No interpolated positioning over original GPS temporal gaps longer than 10 minutes; time of linked GPS fix must differ from dive timestamp <=5 minutes, with valid bracketing constraints.",
+    "Use single tag/deployment as the observational unit. Do not count ~1-second pressure samples or GPS fixes as independent island/year environmental replicates.",
+    "Retain every island-year and every original file missingness. No modification of source raw GPS/TDR values to rescue a desired krill direction."
+  ],
+  "dive_candidate_protocol": {
+    "offset_proposal": "per-deployment time-varying 1st percentile pressure in fixed 60-minute windows with ≥300 valid measurements, linearly interpolated; if insufficient surface support, do not assign calibrated depth",
+    "pressure_threshold_dbar": {
+      "primary": 5,
+      "reported_sensitivities": [
+        2,
+        10
+      ]
+    },
+    "minimum_consecutive_above_threshold_seconds": 10,
+    "maximum_time_gap_inside_event_seconds": 3,
+    "event_location_time": "time of corrected-pressure maximum within event",
+    "note": "Exact offset/clock QC must be implemented and source-audited before inference; thresholds fixed here before source pressure values inspected"
+  },
+  "gps_link_protocol": {
+    "primary_nearest_original_fix_tolerance_seconds": 300,
+    "alternative_tolerances_seconds": [
+      120,
+      600
+    ],
+    "require_temporal_bracket": true,
+    "maximum_bracketing_gps_gap_seconds": 600,
+    "primary_island_anchor": "median first original GPS fix per island and breeding season, source-only",
+    "primary_distance_window_km": [
+      10,
+      150
+    ],
+    "sensitivity_minimum_distances_km": [
+      5,
+      20
+    ],
+    "isolated_spike_filter_threshold_m_s": 12,
+    "location_representation": "use actual nearest recorded GPS fix, never label it exact dive location; no between-fix interpolation in primary",
+    "coordinate_uncertainty": "report temporal offset, bracket length, sensor GPS gaps and proportion of events unlocalized"
+  },
+  "ecological_comparison": {
+    "main": "same species chinstrap, within observed same breeding season, compare dive-associated vs all GPS fixed modelled krill surface values at equal-tag then equal-island-year grain",
+    "islands_matched_by_year": {
+      "2011": [
+        "Signy",
+        "Laurie"
+      ],
+      "2013": [
+        "Signy",
+        "Powell"
+      ],
+      "2015": [
+        "Signy",
+        "Monroe"
+      ]
+    },
+    "support": "do not compute species or island food-effect slope when <3 qualified dive-tag deployments per group",
+    "seasonal_raster_alignment": [
+      "Jan-Feb T before colony breeding season",
+      "Jan-Feb T+1 contemporaneous (not prospective)"
+    ],
+    "primary_weighting": "each deployment's distinct visited model cells equal-weighted; deployment means equal-weighted within island-year",
+    "biological_outcome": "no reproductive mechanism until same-island original nest/fledgling data can be matched externally"
+  },
+  "absolute_exclusions": [
+    "No new acoustic observational data from the published krill raster (already model fitted)",
+    "No assumption that every pressure dive was krill capture",
+    "No independent sea-ice/salinity test on a GAM trained with those predictors",
+    "No p values treating fix/dive/tag as independent climate replicates",
+    "No future 2050/2100 nest number, occupied patch, N_eff or vegetation projections"
+  ]
+}
