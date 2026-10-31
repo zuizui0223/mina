@@ -194,3 +194,18 @@ GPSが通る海域の衛星SIC差（Signy−Powell）を日等重みで取ると
 **既存条件付き将来生物応答の移植性の重要な検証結果（予測方向は未確定）**：上の58から原カメラ全行を同種・同地点コード・**全座標2km以内**で照合できた19地点×種（**17地点コード**）。3 CMIP6モデル×地点/地点＋年調整2×気温海氷のみ/4環境変数2の**12仕様**を4将来条件で比較（**912モデル個別値・76地点条件**）。**76/76ですべて正負の条件付き定着日尺度の変化が混在し、一方向に頑健な地点条件0**。SSP5-8.5末期は19のうち18で4変数の将来点が少なくとも1仕様の観測凸包外。これは生物の温暖化反応が無いという否定でもなく、**相関ベースの将来方向がモデル構成・観測範囲に敏感**という定量診断。[報告](outputs/future_direction_identifiability_v1/REPORT_JA.md)・[912個別値](outputs/future_direction_identifiability_v1/paired_variant_shifts.csv)・[76地理要約](outputs/future_direction_identifiability_v1/site_scenario_direction_identifiability.geojson)・[独立照合結果](outputs/future_direction_identifiability_v1/validation.json)を保存。
 
 **統合する生態学的問い**：地域で共有する繁殖減少の方向と、島・コロニーの区画構成変化を、海域の物理曝露と陸側の営巣機会がどう修飾するか。Palmer/Signyの繁殖区画非比例集中、同種島間GPS×既報オキアミGAM差、海氷の将来地域差は**別々の実測・計算結果**として保持し、未同定の連鎖（海氷/塩分→実餌取得→雛生存/繁殖区画→植生）を因果係数や2100年の巣数予測に置換しない。後続は独立の海洋餌実測、年次地表/積雪の同位置データ、地域・年ホールドアウトでの較正。凍結Paper1/2・mainは未変更。
+
+
+### 2026-10-31｜現存する繁殖配置の重みと将来曝露：地域構成の影響を分離
+
+**ユーザー方針の変更に従い、因果係数や将来の繁殖量を外挿せず、現在の観測配置×将来物理曝露を実測連結した。** [新解析](outputs/breeding_allocation_exposure_v1/REPORT_JA.md)は、MAPPPD由来2017–2023年の各地点×種の実測巣数中央値を、既存の58地点×種（48地点コード）と3モデルCMIP6の4条件へ接続した**232種地点×条件**。現存巣数の同時点総量ではなく、調査年・調査法の異なる標本の記述的重み。海氷密接度が3モデルとも10ポイント以上低下する場所を**物理的曝露**として標識（有害・保護を決める閾値ではない）。
+
+**SSP5-8.5世紀末の肯定的な分布比較（予測された巣数減少ではない）**：アデリー強い海氷低下4/31地点（**12.90%**）だが、その地点の実測巣数中央値の合計比は**0.20%**。ヒゲ2/9（**22.22%**）・巣数中央値比**0.36%**。ジェンツー14/18（**77.78%**）・巣数中央値比**64.89%**。同じ群の海氷変化量を全地点等重み／観測巣数中央値重みで集計すると、アデリー−10.54/−2.54pp、ヒゲ−28.47/−20.08pp、ジェンツー−44.51/−40.19pp。いずれも気候モデル値の重み付けであり、生物影響の係数ではない。
+
+**重要な地域調整**：各地域の観測巣数重みを固定し、地域内で地点を等重みとした参照下では、強い海氷低下地点の期待巣数中央値比はアデリー**0.20%**、ヒゲ**0.86%**、ジェンツー**62.18%**。観測値との差は**0、−0.50、+2.71パーセントポイント**。アデリーの大きな全地点平均との差はVictoria Landと南極半島の標本地域構成で生じ、ジェンツーの見かけの回避も地域の違いで大半が説明される。**気候避難所への選択的集積を支持する証拠ではない。** 独立した物理島の反復・地域内追跡の因果モデルではないためp値を作らない。
+
+**独立陸側GISを合流**：[GitHub Actions原実行AEI階層](https://github.com/zuizui0223/mina/actions/runs/36520281872)・[REMA地形](https://github.com/zuizui0223/mina/actions/runs/36490682577)の原122地点アトラスを今回再取得しZIP SHA照合、46/48地点コードの**観測時点の**無氷地面積・Tier2生息環境多様性・地形起伏を2km尺度で対応。[派生46地点CSV](outputs/breeding_allocation_exposure_v1/frozen_AEI_REMA_46site_traits.csv)、[出典](outputs/breeding_allocation_exposure_v1/PHYSICAL_SOURCE_PROVENANCE.md)を保存。元122地点のAEI無氷地面積下位四分位**114ha以下**と3モデルで将来海氷10pp以上減少の両方を示すのは、SSP5-8.5世紀末でADPE1・CHPE1・GEPE3地点×種。しかし**5件すべて3モデル海洋格子中心50km以内の精度ゲートを満たさず**、新たな「高リスク」地点認定は保留。元AEI面積は営巣可能面積でも未来の無雪面積でもない。[12仕様全件と品質停止](outputs/breeding_allocation_exposure_v1/joint_land_marine_strata.csv)、[独立検証](outputs/breeding_allocation_exposure_v1/joint_land_marine_validation.json)。
+
+**形式面の検証：** 個々の公開CMIP6モデルを残した[232地点モデル照合](outputs/breeding_allocation_exposure_v1/site_allocation_exposure.csv)、[72種別・シナリオ・標本条件の感度表](outputs/breeding_allocation_exposure_v1/species_scenario_summary.csv)、[36地域別表](outputs/breeding_allocation_exposure_v1/region_scenario_summary.csv)、[GeoJSON](outputs/breeding_allocation_exposure_v1/site_allocation_exposure.geojson)、[独立元データ再照合](outputs/breeding_allocation_exposure_v1/validation.json)を作成。ヒゲではBAILの**単年UAVの大きなセンサス値が標本巣数中央値合計の86.9%**を占めるため、種全体の曝露偏りに一般化しない。
+
+**核心の未達と判断**：Palmer・Signyの「減少に伴い残った**島内サブコロニー**」の確定GISポリゴンと年次海氷曝露は未照合。CMIP6の海洋セルは島内部のパッチ間差を識別できる空間粒度ではない。今回の解析は**現在の広域繁殖地コードの分布と将来気候物理曝露**であり、歴史的な**島内集中から気候避難所へ移った**との直接検定ではない。今後に必要なのは同一区画の地理境界・時系列と、島内で識別可能な局所的雪・裸地・植生などの観測である。凍結Paper1/2とmainを変更せず、PR206のみで結果を統合。
