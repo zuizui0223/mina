@@ -263,6 +263,35 @@ def analyze(gps_zip,root,receipt):
             ]}
     return rows,summary,pairs,result
 
+def verify_observed_satellite_cell_receipts(site):
+    """Original source-pixel QA receipts; NOT pre-registered ecology tests."""
+    main={(z["island"],z["breeding_season"],z["GPS_calendar_month"]):z
+          for z in site if z["nearest_satellite_limit_km"]==20 and not z["strict_quality"]}
+    expectations={
+       ("SI",2013,"2013-12"):(42,33,24.028333333333336),
+       ("PI",2013,"2013-12"):(29,11,9.765862068965516),
+       ("SI",2013,"2014-01"):(25,0,0.0),
+       ("PI",2013,"2014-01"):(51,0,0.2035294117647059),
+       ("SI",2015,"2015-12"):(30,2,4.3933333333333335),
+       ("MI",2015,"2015-12"):(30,0,0.0)
+    }
+    for key,(pixels,ice15,mean) in expectations.items():
+        r=main[key]
+        if (r["n_distinct_original_satellite_ocean_pixels"],
+            r["n_distinct_source_pixels_SIC_ge15"])!=(pixels,ice15):
+            raise ValueError("Original satellite physical-pixel provenance/count changed "+str(key))
+        if not math.isclose(r["one_vote_per_native_source_satellite_cell_mean_SIC_percent"],
+                            mean,abs_tol=1e-10):
+            raise ValueError("Source satellite 25km ocean-cell SIC numeric receipt changed "+str(key))
+    for sourcekey in (("SI",2013,"2013-12"),("PI",2013,"2013-12")):
+        a=main[sourcekey]
+        strict=next(z for z in site if z["island"]==sourcekey[0] and
+                    z["breeding_season"]==sourcekey[1] and z["GPS_calendar_month"]==sourcekey[2]
+                    and z["nearest_satellite_limit_km"]==35 and z["strict_quality"])
+        if a["n_distinct_original_satellite_ocean_pixels"]!=strict["n_distinct_original_satellite_ocean_pixels"]:
+            raise ValueError("Strict quality and 35km satellite extraction changed source spatial support")
+    return True
+
 def save(path,rows):
     if not rows:raise ValueError("no original source data to write")
     with Path(path).open("w",encoding="utf-8",newline="") as f:
@@ -290,6 +319,7 @@ def main():
     else:
         receipt=json.loads((a.out/"satellite_original_receipts.json").read_text())
         rows,site,pairs,decision=analyze(a.gps,a.out/"original_OSI_monthly",receipt)
+        verify_observed_satellite_cell_receipts(site)
         save(a.out/"original_GPS_tag_month_SIC.csv",rows)
         save(a.out/"original_island_year_month_SIC.csv",site)
         if pairs:save(a.out/"original_same_year_island_month_SIC.csv",pairs)

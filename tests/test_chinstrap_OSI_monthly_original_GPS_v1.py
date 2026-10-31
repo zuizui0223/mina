@@ -29,4 +29,5 @@ class SourceSIC(unittest.TestCase):
         result=m.analyze(gps,root/"original_OSI_monthly",json.loads(proof.read_text()))
         self.assertEqual(result[3]["n_original_source_GPS_tracks"],308)
         self.assertEqual(result[3]["n_GPS_qualified_tracks"],253)
+        self.assertTrue(m.verify_observed_satellite_cell_receipts(result[1]))
 if __name__=="__main__":unittest.main()
