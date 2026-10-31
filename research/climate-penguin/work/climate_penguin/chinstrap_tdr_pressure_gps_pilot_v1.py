@@ -234,7 +234,7 @@ def main():
     p.add_argument("--out",required=True,type=Path)
     a=p.parse_args()
     res=analyze(a.tdr_zip,a.gps_zip)
-    a.out.parent.mkdir(parents=True,exist_ok=True)
+    a.out.mkdir(parents=True,exist_ok=True)
     with (a.out/"pilot_4source_deployments.csv").open("w",newline="",encoding="utf-8") as f:
         w=csv.DictWriter(f,fieldnames=list(res[0]))
         w.writeheader();w.writerows(res)
