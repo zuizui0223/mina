@@ -185,6 +185,34 @@ for(const [k,p] of Object.entries(files)){
 }
 const sourcePhysical=readFileSync(join(dst,"frozen_AEI_REMA_46site_traits.csv"),"utf8");
 const result=buildAllocation(input,sourcePhysical,expected);
+// Physical land intersection: source-independent AEI atlas q25 of 114 ha
+// is a descriptive cut, not a threshold of biological nesting feasibility.
+const allSiteRows=parseCSV(result.files["site_allocation_exposure.csv"]);
+const landMarine=[];
+for(const experiment of ["ssp245","ssp585"])
+for(const period of ["2041-2060","2081-2100"])
+for(const species_id of ["ADPE","CHPE","GEPE"]){
+ const group=allSiteRows.filter(x=>x.experiment===experiment&&x.period===period&&x.species_id===species_id);
+ const mapped=group.filter(x=>x.physical_atlas_status==="original_AEI_REMA_atlas_coordinates_within_2km");
+ const low=mapped.filter(x=>Number(x.mapped_ice_free_area_ha_2000m)<=114);
+ const strong=mapped.filter(x=>x.sea_ice_decline_ge10pp_all3==="1");
+ const joint=low.filter(x=>x.sea_ice_decline_ge10pp_all3==="1");
+ const strict=joint.filter(x=>x.marine_all3_model_centres_within50km==="1");
+ const weights=mapped.reduce((v,x)=>v+Number(x.count_median_observed_nests),0);
+ landMarine.push({
+   experiment,period,species_id,
+   physical_site_species_n:mapped.length,
+   low_AEI_area_at_most_114ha_n:low.length,
+   marine_SIC_loss_at_least_10pp_3of3_n:strong.length,
+   joint_low_AEI_area_and_strong_ice_loss_n:joint.length,
+   joint_low_AEI_area_and_strong_ice_loss_all_marine_cells_within50km_n:strict.length,
+   joint_share_of_sampled_site_median_nest_sum:joint.reduce((v,x)=>v+Number(x.count_median_observed_nests),0)/weights,
+   joint_site_codes:[...new Set(joint.map(x=>x.site_id))].join(";"),
+   region_names:[...new Set(joint.map(x=>x.region))].join(";")
+ });
+}
+if(landMarine.length!==12)throw Error("land/sea crosswalk must have 12 panels");
+result.files["joint_land_marine_strata.csv"]=csvEncode(landMarine,Object.keys(landMarine[0]));
 mkdirSync(dst,{recursive:true});
 for(const [n,s] of Object.entries(result.files))writeFileSync(join(dst,n),s);
 console.log(JSON.stringify(result.meta.checks,null,2));
