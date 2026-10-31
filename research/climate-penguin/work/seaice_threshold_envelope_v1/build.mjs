@@ -312,9 +312,9 @@ writeFileSync(join(outdir,"allocation_decomposition_grid.csv"),csv(allocationDec
 writeFileSync(join(outdir,"allocation_decomposition_range.csv"),csv(allocationRange));
 writeFileSync(join(outdir,"model_grid_independence_summary.csv"),csv(dedupedScenarioRows));
 const regionInventory=[...regionPools].map(([region,pool])=>({
- region,source_site_codes:pool.length,latest_count_total:regionTotalWeight.get(region),
- percent_all_snapshot_count:regionTotalWeight.get(region)/denominator*100,
- count_simpson_effective_site_number:(regionTotalWeight.get(region)**2)/
+ region,source_site_codes:pool.length,latest_count_total:total(pool.map(x=>x.latest_recorded_count)),
+ percent_all_snapshot_count:total(pool.map(x=>x.latest_recorded_count))/denominator*100,
+ count_simpson_effective_site_number:(total(pool.map(x=>x.latest_recorded_count))**2)/
   total(pool.map(x=>x.latest_recorded_count**2)),
 }));
 writeFileSync(join(outdir,"region_snapshot_weight_inventory.csv"),csv(regionInventory));
