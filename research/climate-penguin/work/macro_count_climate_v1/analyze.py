@@ -218,8 +218,8 @@ def main():
         decline=matched[matched.historical_trend_category.eq("historical_decline")]
         rise=matched[matched.historical_trend_category.eq("historical_increase")]
         def within_region(x,y):
-            xx=matched[x]-matched.groupby("region_historical")[x].transform("mean")
-            yy=matched[y]-matched.groupby("region_historical")[y].transform("mean")
+            xx=matched[x]-matched.groupby("region")[x].transform("mean")
+            yy=matched[y]-matched.groupby("region")[y].transform("mean")
             return pear(xx.to_numpy(),yy.to_numpy())
         for exposure in ["siconc_change_mean_pp","tas_change_mean_degC","sos_change_mean_native001"]:
             if nmatched < 5:
@@ -234,7 +234,7 @@ def main():
                 matched_site_species_units=nmatched,
                 historical_declining_sites=len(decline),
                 historical_increasing_sites=len(rise),
-                observed_regions=matched.region_historical.nunique(),
+                observed_regions=matched.region.nunique(),
                 observed_marine_grid_fingerprints=matched.marine_fingerprint.nunique(),
                 pooled_count_trend_vs_future_exposure_r=raw_r,
                 region_demeaned_count_trend_vs_future_exposure_r=regional_r,
