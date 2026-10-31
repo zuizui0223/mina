@@ -354,7 +354,7 @@ CI全出力 \`source_1993_2020_breeding_ocean_intervals.csv\`、\`historical_env
         "observed_environment_correlations": result["environment_adjusted_correlations"],
         "forecast_gate": gate,
         "future_nests_projection_permitted": prediction_permitted,
-    }, ensure_ascii=False), flush=True)
+    }, ensure_ascii=False, default=float), flush=True)
 
 if __name__ == "__main__":
     main()
