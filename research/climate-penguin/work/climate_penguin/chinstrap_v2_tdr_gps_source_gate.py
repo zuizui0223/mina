@@ -26,7 +26,7 @@ EXPECTED_GPS_DIGEST="f56dc817aefefda41e509541d24a184f68644d12c0a1c28af8071717275
 
 def is_track_name(name,suffix):
     base=Path(name).name
-    return base.lower().endswith(".csv") and f"_{suffix.lower()}" in base.lower()
+    return re.search(rf"_{re.escape(suffix)}\.csv$",base,flags=re.I) is not None
 
 def get_id(name,suffix):
     base=Path(name).name
