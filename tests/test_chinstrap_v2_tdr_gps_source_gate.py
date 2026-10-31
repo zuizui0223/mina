@@ -7,7 +7,9 @@ m=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)
 class TDRSourceTests(unittest.TestCase):
     def test_filename_schemas_from_BAS_publisher(self):
-        self.assertEqual(m.get_id("PIC078_GPS.csv","GPS"),("PIC078","PI") if False else ("PIC078","PI")) 
+        self.assertEqual(m.get_id("LIC078_GPS.csv","GPS"),("LIC078","LI"))
+        with self.assertRaises(ValueError):
+            m.get_id("PIC078_GPS.csv","GPS") 
     def test_publisher_Powell_PI_without_C(self):
         self.assertEqual(m.get_id("PI001_TDR.csv","TDR"),("PI001","PI"))
         self.assertEqual(m.get_id("SIC005_TDR.csv","TDR"),("SIC005","SI"))
