@@ -1,0 +1,39 @@
+name: climate-penguin-chinstrap-island-geographic-prey-vs-gps-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_krill_geographic_vs_GPS_direction_v1.py"
+      - "tests/test_chinstrap_krill_geographic_vs_GPS_direction_v1.py"
+      - ".github/workflows/climate-penguin-chinstrap-island-krill-geography-v1.yml"
+jobs:
+  original-GPS-spatial-replay:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install native GeoTIFF source reader
+        run: python -m pip install "rasterio>=1.4,<1.6"
+      - name: Synthetic geography and tag-unit source tests
+        run: python -m unittest discover -s tests -p test_chinstrap_krill_geographic_vs_GPS_direction_v1.py -v
+      - name: Re-fetch first-party GPS and published acoustic+ice+salinity GAM fields
+        run: |
+          mkdir -p build/source_geo
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 240 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/source_geo/gps-original.zip
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 240 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' -o build/source_geo/krill-original.zip
+      - name: Compare GPS visited GAM cells with same-island geographic and radial backgrounds
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_krill_geographic_vs_GPS_direction_v1.py --gps-zip build/source_geo/gps-original.zip --model-zip build/source_geo/krill-original.zip --out build/source_geo/derived --check
+          python -m unittest discover -s tests -p test_chinstrap_krill_geographic_vs_GPS_direction_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-original-GPS-krill-geography-decomposition-v1
+          path: |
+            build/source_geo/derived/original_tag_visited_vs_radial_background.csv
+            build/source_geo/derived/seven_island_years_two_model_periods.csv
+            build/source_geo/derived/three_matched_island_pairs_two_periods.csv
+            build/source_geo/derived/decision.json
