@@ -47,3 +47,11 @@ All future breeding abundance/N_eff/species replacement/greening projections rem
 Inputs: `../land_marine_colocation_v1/matched_site_species_scenarios.csv`, `../vegetation_response_v1/site_species_cohort.csv`, `../cmip6_projection_v1/site_model_changes.csv`, derived`frozen_AEI_REMA_46site_traits.csv`. Source Git blob hashes and two GitHub Actions ZIP/source CSV SHA-256 recorded in `summary.json`.
 
 Output: `site_allocation_exposure.csv` 232 records, `species_scenario_summary.csv` 72 records (3 species ×4 scenarios ×6 prespecified descriptive cohorts), `region_scenario_summary.csv`, and WGS84 `site_allocation_exposure.geojson`. Model-specific values are preserved for the three actual CMIP6 models. Derived code `../../work/breeding_allocation_exposure_v1/build.mjs` uses Node.js built-ins. This is source-arithmetic reproducibility, **not** a prospective validation of biological response.
+
+## Additional land–marine overlap gate (AEI baseline, not future nesting suitability)
+
+A new source-backed stratification compares the published 122-site AEI Gate-1 `mapped_ice_free_area_ha_2000m` lower quartile, **≤114 ha**, against the *previously fixed* physical marine flag of ≥10pp future 8–11-month mean SIC decline in **each of the three CMIP6 models**. The 114-ha threshold is taken from the original atlas' own published distribution (all 122 candidates), not chosen to maximize a penguin association.
+
+Under SSP5-8.5 / 2081–2100, the joint set includes **1/31 ADPE, 1/8 CHPE and 3/17 GEPE** of the source-biologically matched units with AEI/REMA coverage. They correspond to YALO (ADPE), GEOR (CHPE), DANC/GEOR/MOOT (GEPE). Every one fails the independent **all 3 marine model cell centres ≤50km** location gate, so the result is **a screening list of coarse-model intersections, not validated high-risk colonies or nest habitats**.
+
+Present AEI mapped ice-free ecosystem area is neither actual available nest surface nor future snow-free terrestrial area. No physical future land change has been measured. The distinct candidate coastal source coverage and taxon counts are kept in `joint_land_marine_strata.csv`; do not promote this into a mechanistic refuge test.
