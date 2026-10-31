@@ -192,6 +192,169 @@ for(const baseline of ["1995-2014","1991-2020"]){
   });
  }
 }
+// Original-count allocation counterfactuals. Keep crossed-site physical SIC fixed in each case.
+// Region-conditional shuffle is an exact finite-population expectation and SD, not an inferential CI.
+const historicalMethodLatestBySite=new Map();
+for(const s of sites){
+ const rows=(countsBySite.get(s.site_id)||[]).filter(x=>x.method===s.historical_trend_method);
+ if(rows.length===0)throw Error("No historical count-method reference for "+s.site_id);
+ historicalMethodLatestBySite.set(s.site_id,+rows[0].count);
+}
+const methodWeightDenominator=total([...historicalMethodLatestBySite.values()]);
+const crozierSites=new Set(["CRZE","CRZW"]),crozierSnapshotWeight=total(crozier.map(x=>x.latest_recorded_count));
+const withoutCrozierDenominator=denominator-crozierSnapshotWeight;
+const CapeAdareSite=sites.find(x=>x.site_id==="ADAR");
+if(!CapeAdareSite)throw Error("Missing top weighted original site");
+const withoutAdareDenominator=denominator-CapeAdareSite.latest_recorded_count;
+const regionPools=new Map();
+for(const s of sites){const old=regionPools.get(s.region)||[];old.push(s);regionPools.set(s.region,old)}
+const allocationDecomposition=[],dedupedScenarioRows=[];
+const sourceHistCounts=total(sites.map(s=>historicalMethodLatestBySite.get(s.site_id)));
+if(sourceHistCounts!==methodWeightDenominator||sites.length!==39)throw Error("Source census weight drift");
+for(const base of ["1995-2014","1991-2020"])
+for(const sc of exps)for(const pe of periods)for(const model of models){
+ const same=siteForecasts.filter(x=>x.observed_baseline===base&&x.scenario===sc&&x.period===pe&&x.model===model);
+ const rows=sweep.filter(x=>x.observed_baseline===base&&x.scenario===sc&&x.period===pe&&x.model===model);
+ if(same.length!==39||rows.length!==201)throw Error("Source exposure group incomplete "+base+sc+pe+model);
+ const cr=same.filter(x=>crozierSites.has(x.site_id));
+ const capeSameCell=cr.length===2&&cr[0].CMIP_grid_cell_id===cr[1].CMIP_grid_cell_id;
+ const regionTotalWeight=new Map([...regionPools].map(([k,pool])=>[k,total(pool.map(x=>x.latest_recorded_count))]));
+ for(const q of rows){
+  const crossed=same.filter(x=>x.observed_reference_SIC_pct>=q.threshold_SIC_pct&&x.conditional_future_SIC_pct<q.threshold_SIC_pct);
+  const count=total(crossed.map(x=>x.latest_recorded_count));
+  const crozierCount=total(crossed.filter(x=>crozierSites.has(x.site_id)).map(x=>x.latest_recorded_count));
+  const adareCount=total(crossed.filter(x=>x.site_id==="ADAR").map(x=>x.latest_recorded_count));
+  const alternateCount=total(crossed.map(x=>historicalMethodLatestBySite.get(x.site_id)));
+  let regionExpectedCount=0,regionShuffleVariance=0;
+  for(const [region,pool] of regionPools){
+   const n=pool.length,k=crossed.filter(x=>x.region===region).length;
+   const meanWeight=regionTotalWeight.get(region)/n;
+   const populationVariance=total(pool.map(x=>(x.latest_recorded_count-meanWeight)**2))/n;
+   regionExpectedCount+=k*meanWeight;
+   if(n>1)regionShuffleVariance+=k*(n-k)/(n-1)*populationVariance;
+  }
+  const observedPct=count/denominator*100;
+  const equalPct=crossed.length/sites.length*100;
+  const regionExpectedPct=regionExpectedCount/denominator*100;
+  const extraWithinRegionPct=observedPct-regionExpectedPct;
+  const geographicCompositionPct=regionExpectedPct-equalPct;
+  const decomposed=equalPct+geographicCompositionPct+extraWithinRegionPct;
+  if(Math.abs(observedPct-q.new_crossing_recorded_count_pct)>1e-8||Math.abs(decomposed-observedPct)>1e-9)
+   throw Error("Allocation identity, original source crossing, or threshold cohort drift");
+  allocationDecomposition.push({
+   observed_baseline:base,scenario:sc,period:pe,model,threshold_SIC_pct:q.threshold_SIC_pct,
+   new_crossing_source_site_n:crossed.length,
+   n_unique_model_seaice_cells:new Set(crossed.map(x=>x.CMIP_grid_cell_id)).size,
+   original_latest_count_mass_pct:observedPct,
+   equal_site_counterfactual_pct:equalPct,
+   region_constrained_random_weight_expected_pct:regionExpectedPct,
+   region_constrained_random_weight_sd_pct:Math.sqrt(regionShuffleVariance)/denominator*100,
+   regional_composition_contribution_pp:geographicCompositionPct,
+   within_region_count_allocation_contribution_pp:extraWithinRegionPct,
+   Cape_Crozier_contribution_original_denominator_pp:crozierCount/denominator*100,
+   Cape_Crozier_share_of_new_crossed_mass_pct:count>0?crozierCount/count*100:0,
+   non_Crozier_contribution_original_denominator_pp:(count-crozierCount)/denominator*100,
+   leave_Cape_Crozier_out_reweight_37sites_pct:(count-crozierCount)/withoutCrozierDenominator*100,
+   leave_Cape_Adare_out_reweight_38sites_pct:(count-adareCount)/withoutAdareDenominator*100,
+   historical_selected_method_latest_census_weight_pct:alternateCount/methodWeightDenominator*100,
+   two_Crozier_codes_share_same_CMIP_marine_cell:capeSameCell?1:0,
+   interpretation:"fixed_scenario_count_allocation_and_geographic_composition_counterfactual_not_a_p_value_or_future_demography"
+  });
+ }
+ dedupedScenarioRows.push({observed_baseline:base,scenario:sc,period:pe,model,
+  Cape_Crozier_same_CMIP_seaice_cell:capeSameCell?1:0,
+  source_site_count:same.length,distinct_CMIP_grid_cells:new Set(same.map(x=>x.CMIP_grid_cell_id)).size});
+}
+if(allocationDecomposition.length!==4824||dedupedScenarioRows.length!==24)
+ throw Error("Allocation decomposition cohort length");
+const allocationPrimary=allocationDecomposition.filter(x=>x.observed_baseline==="1995-2014"&&x.scenario==="ssp585"&&x.period==="2081-2100"&&x.threshold_SIC_pct===77.5);
+if(allocationPrimary.length!==3)throw Error("No primary three models for allocation");
+const allocateReceipt=JSON.parse(readFileSync(join(outdir,"decomposition_expected_receipt.json"),"utf8"));
+const allocateExpected=allocateReceipt.fixed_primary_SSP585_late_77_5;
+const close=(x,y,label)=>{if(!Number.isFinite(x)||Math.abs(x-y)>1e-8)throw Error("Allocation frozen receipt mismatch "+label+": "+x+" vs "+y)};
+if(process.argv.includes("--check-receipt")){
+ close(methodWeightDenominator,allocateReceipt.historical_method_weights_total,"historical method denominator");
+ close(withoutCrozierDenominator,allocateReceipt.non_Crozier_snapshot_count,"non Cape Crozier count");
+ for(const r of allocationPrimary){
+  const k=allocateExpected[r.model];if(!k)throw Error("Unexpected climate model allocation");
+  close(r.original_latest_count_mass_pct,k.original_latest_count_mass_pct,r.model+".weighted");
+  close(r.equal_site_counterfactual_pct,k.equal_site_counterfactual_pct,r.model+".equal");
+  close(r.region_constrained_random_weight_expected_pct,k.region_constrained_random_weight_expected_pct,r.model+".region");
+  close(r.leave_Cape_Crozier_out_reweight_37sites_pct,k.leave_Cape_Crozier_out_reweight_37sites_pct,r.model+".noCape");
+  close(r.historical_selected_method_latest_census_weight_pct,k.historical_selected_method_latest_census_weight_pct,r.model+".histMethod");
+ }
+}
+const allocationRange=[];
+for(const base of ["1995-2014","1991-2020"])for(const sc of exps)for(const pe of periods){
+ const baseRows=allocationDecomposition.filter(x=>x.observed_baseline===base&&x.scenario===sc&&x.period===pe);
+ const min=x=>Math.min(...x),max=x=>Math.max(...x);
+ const scalarKeys=[
+  "original_latest_count_mass_pct",
+  "equal_site_counterfactual_pct",
+  "region_constrained_random_weight_expected_pct",
+  "leave_Cape_Crozier_out_reweight_37sites_pct",
+  "historical_selected_method_latest_census_weight_pct",
+  "within_region_count_allocation_contribution_pp"
+ ];
+ for(const band of [[60,80],[70,80],[74.4,79.8],[75,79]]){
+  const q=baseRows.filter(x=>x.threshold_SIC_pct>=band[0]&&x.threshold_SIC_pct<=band[1]);
+  const res={observed_baseline:base,scenario:sc,period:pe,
+   assumed_threshold_min_pct:band[0],assumed_threshold_max_pct:band[1],
+   grid_candidate_count:new Set(q.map(x=>x.threshold_SIC_pct)).size,model_count:models.length};
+  for(const key of scalarKeys){
+   res[key+"_min"]=min(q.map(x=>x[key]));
+   res[key+"_max"]=max(q.map(x=>x[key]));
+  }
+  allocationRange.push(res);
+ }
+}
+writeFileSync(join(outdir,"allocation_decomposition_grid.csv"),csv(allocationDecomposition));
+writeFileSync(join(outdir,"allocation_decomposition_range.csv"),csv(allocationRange));
+writeFileSync(join(outdir,"model_grid_independence_summary.csv"),csv(dedupedScenarioRows));
+const regionInventory=[...regionPools].map(([region,pool])=>({
+ region,source_site_codes:pool.length,latest_count_total:regionTotalWeight.get(region),
+ percent_all_snapshot_count:regionTotalWeight.get(region)/denominator*100,
+ count_simpson_effective_site_number:(regionTotalWeight.get(region)**2)/
+  total(pool.map(x=>x.latest_recorded_count**2)),
+}));
+writeFileSync(join(outdir,"region_snapshot_weight_inventory.csv"),csv(regionInventory));
+const sourceSiteCountAudit=sites.map(s=>({
+ site_id:s.site_id,region:s.region,latest_recorded_count:s.latest_recorded_count,
+ latest_count_year:s.latest_count_year,latest_count_method:s.latest_count_method,
+ historical_long_term_count_method:s.historical_trend_method,
+ latest_count_for_historical_selected_method:historicalMethodLatestBySite.get(s.site_id)
+}));
+writeFileSync(join(outdir,"census_weight_source_audit.csv"),csv(sourceSiteCountAudit));
+const allocationSummary={
+ schema_version:1,
+ status:"count_allocation_counterfactual_only_no_population_forecast_or_significance",
+ source_git_blobs:Object.fromEntries(Object.entries(sources).map(([key,[,sha]])=>[key,sha])),
+ dated_source_count_total:denominator,
+ historical_method_latest_census_denominator:methodWeightDenominator,
+ crozier_recorded_count:crozierSnapshotWeight,
+ Simpson_effective_site_count_from_noncontemporaneous_snapshot:
+  denominator**2/total(sites.map(x=>x.latest_recorded_count**2)),
+ source_site_count:sites.length,
+ snapshot_region_inventory:regionInventory,
+ SSP585_2081_2100_77_5_three_models:allocationPrimary,
+ subset_and_model_range:allocationRange,
+ interpretive_boundary:"Region-constrained shuffle is an arithmetic counterfactual, not inferential evidence; source sites are not independent marine cells or breeding units; latest MAPPPD counts mix years/methods/count metrics. Neither a biological SIC hazard threshold nor climate-demographic transfer has been validated."
+};
+writeFileSync(join(outdir,"decomposition_summary.json"),JSON.stringify(allocationSummary,null,2)+"\n");
+console.log("EXPOSURE ALLOCATION DECOMPOSITION "+JSON.stringify({
+ source_sites:sites.length,regions:regionPools.size,method_weight_total:methodWeightDenominator,
+ models_primary:allocationPrimary.map(x=>({
+  model:x.model,weighted:x.original_latest_count_mass_pct,equal:x.equal_site_counterfactual_pct,
+  region:x.region_constrained_random_weight_expected_pct,within:x.within_region_count_allocation_contribution_pp,
+  crozier:x.Cape_Crozier_contribution_original_denominator_pp,
+  without_Crozier:x.leave_Cape_Crozier_out_reweight_37sites_pct,
+  method_matched:x.historical_selected_method_latest_census_weight_pct,
+  crossing_cells:x.n_unique_model_seaice_cells,crozier_common_cell:!!x.two_Crozier_codes_share_same_CMIP_marine_cell
+ })),
+ ssp585_late_ranges:allocationRange.filter(x=>x.observed_baseline==="1995-2014"&&x.scenario==="ssp585"&&x.period==="2081-2100").map(x=>({band:[x.assumed_threshold_min_pct,x.assumed_threshold_max_pct],weighted:[x.original_latest_count_mass_pct_min,x.original_latest_count_mass_pct_max],equal:[x.equal_site_counterfactual_pct_min,x.equal_site_counterfactual_pct_max],withoutCrozier:[x.leave_Cape_Crozier_out_reweight_37sites_pct_min,x.leave_Cape_Crozier_out_reweight_37sites_pct_max]})),
+ frozen_validation:process.argv.includes("--check-receipt")
+}));
+
 const receiptValues={
  original_sites:sites.length,latest_count_total:denominator,
  crozier_count:total(crozier.map(x=>x.latest_recorded_count)),
