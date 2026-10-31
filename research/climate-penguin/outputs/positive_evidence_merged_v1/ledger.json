@@ -354,6 +354,18 @@
       "source_report": "https://www.hi.no/hi/nettrapporter/rapport-fra-havforskningen-en-2026-43",
       "source_gate": "research/climate-penguin/inputs/IMR_2026_acoustic_nonestimable_and_penguin_observatory.json",
       "boundary": "The directly documented barrier is to research-vessel acoustic sampling, NOT proven penguin ice-navigation or ecological prey response. Ice and gear accidents jointly confound missingness, so this cannot separately attribute coverage loss to ice alone. Lack of area-wide krill estimate is missing, NOT zero. Observatory installation is not a dataset of observed nest numbers or breeding success. No 2026 krill density, nor causal or future abundance/vegetation effect."
+    },
+    {
+      "id": "IMR_acoustic_documented_packice_survey_coverage_2011_2026",
+      "grade": "B_PUBLISHER_DOCUMENTED_SAMPLING_PROCESS_CENSORED_NOT_BIOLOGICAL_EFFECT",
+      "n": "16 calendar years 2011-2026, 14 original-survey years documented in audited primary (2011-20, 2023-26), 12 with comparable whole-area Combined/Overall acoustic estimates, 2 explicitly non-estimable (2013,2026), 2 unaudited comparable-year estimates (2021,2022).",
+      "effects": "Original source explicitly documents sea-ice-limited acoustic coverage in 2013, 2015, 2026 (3 of 14 audited survey years); 2013 and 2026 no regional density, 2015 Combined estimate exists despite restricted southern coverage. Other 11 audited years have estimates and no explicit ice-limitation note in audited source. 2026 additionally has a separate ship trawl/propeller incident. No estimation of the ice-specific causal missingness rate is supported.",
+      "source": "research/climate-penguin/outputs/IMR_source_observability_2011_2026_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41195496438",
+      "source_series": "research/climate-penguin/inputs/IMR_yearwise_acoustic_coverage_2011_2026_v1.csv",
+      "original_primary": "https://academic.oup.com/icesjms/article/80/5/1472/7161638",
+      "original_2026": "https://www.hi.no/hi/nettrapporter/rapport-fra-havforskningen-en-2026-43",
+      "boundary": "Observability is about research vessel acoustic biomass survey and its spatial coverage, NOT krill absence, penguin routes or breeding success. Lack of a documented ice limitation for another year is not documented proof that sea ice was absent. 2026 regional estimate missing jointly due ice and operational ship incident; no causal ice-only effect identifiable. Unknown comparable 2021/22 source availability not absence of survey. No 2050/2100 breeding numeric response."
     }
   ],
   "external_draft_evidence": [
@@ -401,7 +413,8 @@
     "2026-07 Rusch et al. (ICES JMS, DOI 10.1093/icesjms/fsag115) already reported prey accessibility rather than maximum acoustic biomass as a chinstrap foraging determinant using 2022 Monroe & 2023 Powell high-frequency GPS/TDR plus acoustic surveys (45 penguins). Broad 'prey access over absolute density' is NOT a new mina claim. Underlying 2026 paper data are held by IMR/NPI and require reasonable request/collaboration; 2024 Schoombie et al. (DOI 10.1098/rsos.240271) published accelerometer+video prey capture validation for Monroe2022/Powell2023 (41 individuals), public code/example data only. Separate new macro question is when independently measured offshore prey opportunity and terrestrial breeding-site opportunity jointly predict nesting-space contraction/recovery across species, island-years and heldout geography.",
     "No validated krill→penguin breeding causal inference from IMR annual 2023-2025 overall-stratum acoustic summaries alone: published annual means/CV outside 2011–20 GAM training, but 25km source GPS and regional acoustic transects not spatially/temporally matched, model lacks 2023–25 predictions, 2025 CV0.75 and 2021–22 missing. Descriptive 13-year Kendall tau~0.039 p~0.855 does not prove no climate response.",
     "2026 South Orkney pack-ice + trawl propeller accident jointly prevented representative survey coverage; IMR2026 expressly reports NO full-area acoustic krill density/biomass. The observation process is environmentally and operationally censored, not krill=0, and ice alone cannot be assigned the whole cause. 2026 Chinstrap Coronation Island observatory is installed but reports NO longitudinal breeding outcomes.",
-    "The earlier IMR2024-reprint-derived 13-year (2011-2020 10 values + 2023-25 3) annual krill Kendall tau +.038710, p=.8545 is scientifically INVALID due source-year shift; original Skaret2023 Combined 2013 missing and 2020 different. Only current 12-year source-authority-corrected values may be used."
+    "The earlier IMR2024-reprint-derived 13-year (2011-2020 10 values + 2023-25 3) annual krill Kendall tau +.038710, p=.8545 is scientifically INVALID due source-year shift; original Skaret2023 Combined 2013 missing and 2020 different. Only current 12-year source-authority-corrected values may be used.",
+    "Original 2011-2026 publisher acoustic observation-process audit: of 14 source-documented survey years, 2013 and 2026 have no whole-area biomass estimate, both with explicit ice coverage restriction (2026 also ship accident), while 2015 had reduced southern coverage but produced Combined. 2021/22 remain unaudited rather than zero or proof surveys absent. This non-random survey availability cannot be ignored in ice/krill regressions or interpreted as a penguin ice barrier."
   ],
   "rule": "Only add verified positive entries with source+sampling grain+effect+limitations+workflow where present. Never convert observational association into causal mechanistic support. Never merge draft PR189/199 to main without author signoff."
 }
