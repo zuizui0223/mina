@@ -4,6 +4,12 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[最優先研究主題 v3：温暖化はペンギンの繁殖をどう変えるか](RESEARCH_GOAL_WARMING_IMPACTS_V3.md)** — 温暖化→繁殖時期・繁殖数・種構成の実測と条件付き2050/2100生物予測。単なる気候曝露地図・繁殖集中の理論を主線にしない。
+- **[観測された同地点の種間繁殖構成変化](outputs/warming_species_breeding_v1/REPORT_JA.md)** — 同じ方法・同じ地点・同年の繁殖数比でGentoo/Adélie 7/7、Chinstrap/Adélie 6/6が長期増加方向。8地点のCMIP6未来気温/SICへ同位置で接続（将来種比は未較正）。
+- **[39地点アデリー：長期海氷×繁殖成長とCMIP6の条件付き変化](outputs/historical_ice_breeding_transfer_v1/REPORT_JA.md)** — 1991–2020実測の空間相関 r=+0.622。線形移植は世紀末SSP585に成長率傾向の負方向を出すが、二次モデルでは符号が反転しうる。
+- **[同地点・過去2時期の生物応答の答え合わせ](outputs/historical_temporal_transfer_v1/REPORT_JA.md)** — 23地点の1991–2005/2006–2020海氷変化と実繁殖数傾向変化はr≈+0.269。空間係数を時間効果へ単純に転写する較正は未成立。
+
+
 - **[南極40地点・30年の実測海氷：距離別の地域共通変動（2026-10-31）](outputs/sic_spatial_coherence_macro40_v1/REPORT_JA.md):** 40地点の元SICを30年・4月・近傍／沖合に接続し、6,240件の地点ペアの年次海氷相関を再計算。9月の50km未満r中央値=0.991、250–500km=0.315、1000km以上=0.011。広い沖合では250–500kmでもr=0.797。全件の独立照合と地点除外感度を保存。
 - **[実測海氷の地域共通性と局所年変動の分解（2026-10-31）](outputs/observed_sic_covariance_scale_v1/REPORT_JA.md):** Palmer周辺から南の6固定地点×1991–2020年×8–11月の0–100km／100–500km衛星海氷を元値から再集計。9月近傍の分散内訳は年共通87.94%、地点固定10.93%、地点×年固有1.137%。海域が重複するため島内区画の独立海氷とは言えない。独立検証・地理座標・全数CSVを保存。
 - **[観測された近隣の海氷変動の同期性と局所差（2026-10-31）](outputs/observed_nearby_sic_covariance_v1/REPORT_JA.md):** 2011–2020年の元衛星SIC、沿岸参照5地点×8–11月×2製品バッファ。年変動は共通成分97%以上だが絶対値の局所差も残る。Palmerの真の5島・繁殖区画ポリゴンとの一対一対応ではない。
