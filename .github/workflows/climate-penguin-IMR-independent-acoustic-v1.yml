@@ -5,6 +5,8 @@ on:
     branches: [codex/climate-penguin-progress]
     paths:
       - "research/climate-penguin/inputs/IMR_annual_overall_acoustic_2011_2025_v1.csv"
+      - "research/climate-penguin/inputs/IMR2024_reprint_vs_Skaret2023_year_label_discrepancy.csv"
+      - "research/climate-penguin/inputs/IMR_2026_acoustic_nonestimable_and_penguin_observatory.json"
       - "research/climate-penguin/work/climate_penguin/imr_krill_independent_acoustic_2023_2025_v1.py"
       - "tests/test_imr_krill_independent_acoustic_2023_2025_v1.py"
       - ".github/workflows/climate-penguin-IMR-independent-acoustic-v1.yml"
@@ -15,17 +17,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: "3.12"}
-      - name: Install analysis stats
+        with:
+          python-version: "3.12"
+      - name: Install original survey statistics
         run: python -m pip install "scipy>=1.11,<2"
-      - name: Validate official IMR annual source numbers and uncertainty
+      - name: Verify primary Skaret Table3 years and IMR2026 informative missingness
         run: python -m unittest discover -s tests -p test_imr_krill_independent_acoustic_2023_2025_v1.py -v
-      - name: Recalculate region-level observed krill annual statistics
+      - name: Recompute corrected official annual krill series and limits
         run: |
           python research/climate-penguin/work/climate_penguin/imr_krill_independent_acoustic_2023_2025_v1.py --source research/climate-penguin/inputs/IMR_annual_overall_acoustic_2011_2025_v1.csv --out build/imr_out_of_training_acoustic
       - uses: actions/upload-artifact@v4
         with:
-          name: IMR-original-official-annual-krill-overall-2011-25-v1
+          name: IMR-original-primary-corrected-2011-2026-annual-krill-v1
           path: |
             build/imr_out_of_training_acoustic/acoustic_annual_source_summary.json
             build/imr_out_of_training_acoustic/decision.json
