@@ -1,0 +1,47 @@
+name: climate-penguin-chinstrap-daily-GPS-ice-radial-background-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_daily_GPS_ice_radial_direction_v1.py"
+      - "tests/test_chinstrap_daily_GPS_ice_radial_direction_v1.py"
+      - ".github/workflows/climate-penguin-GPS-daily-SIC-radial-direction-v1.yml"
+jobs:
+  original-source-radial-diagnostic:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install original GPS, geodesic and NetCDF readers
+        run: python -m pip install numpy scipy xarray netCDF4 "rasterio>=1.4,<1.6"
+      - name: Test original ocean-grid missingness and 25-km radial baseline
+        run: python -m unittest discover -s tests -p test_chinstrap_daily_GPS_ice_radial_direction_v1.py -v
+      - name: Retrieve BAS publisher original Chinstrap GPS Version2
+        run: |
+          mkdir -p build/daily_GPS_radial
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 300 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/daily_GPS_radial/gps_original.zip
+      - name: Freeze source same-species island-year GPS dates before opening SIC
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_daily_GPS_ice_radial_direction_v1.py --gps-zip build/daily_GPS_radial/gps_original.zip --out build/daily_GPS_radial --phase discover
+      - name: Retrieve all 45 original EUMETSAT OSI SAF daily NetCDFs
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_daily_GPS_ice_radial_direction_v1.py --gps-zip build/daily_GPS_radial/gps_original.zip --out build/daily_GPS_radial --phase download
+      - name: Compare actual GPS native SIC cells with same-date same-colony-radius ocean cells
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_daily_GPS_ice_radial_direction_v1.py --gps-zip build/daily_GPS_radial/gps_original.zip --out build/daily_GPS_radial --phase analyze
+          python -m unittest discover -s tests -p test_chinstrap_daily_GPS_ice_radial_direction_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-original-daily-GPS-vs-radial-satellite-SIC-v1
+          path: |
+            build/daily_GPS_radial/source_days_fixed_before_SIC.json
+            build/daily_GPS_radial/publisher_original_SIC_daily_receipts.json
+            build/daily_GPS_radial/GPS_original_tag_day_radial_ice_excess.csv
+            build/daily_GPS_radial/GPS_native_pixel_island_day_radial_ice_excess.csv
+            build/daily_GPS_radial/same_calendar_day_Signy_other_radial_ice_excess.csv
+            build/daily_GPS_radial/same_GPS_month_day_block_radial_excess_summary.csv
+            build/daily_GPS_radial/decision.json
