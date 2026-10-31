@@ -87,10 +87,17 @@ def analyze(tdr_zip,gps_zip,freer_zip):
         anchor=(loc_center["center_lat"],loc_center["center_lon"])
         if not(set(q.year if q.month>=7 else q.year-1 for q in times)=={year}):
             raise ValueError("TDR season and GPS source season differ")
-        if gps[0][0].timestamp()<t[0]-3600 or gps[-1][0].timestamp()>t[-1]+3600:
-            # GPS may have short pre/post deployment margin. Record in later gate,
-            # do not silently ignore large difference in sensor chronology.
-            raise ValueError("TDR and GPS deployment time windows differ by >1 h")
+        # GPS and TDR original instruments need not have identical start/end.
+        # Preserve differences and compare ONLY the actually overlapping span.
+        # An unmatched GPS interval is not evidence of a non-diving bird.
+        gps_start,gps_end=gps[0][0].timestamp(),gps[-1][0].timestamp()
+        overlap_start,overlap_end=max(gps_start,t[0]),min(gps_end,t[-1])
+        if overlap_end<=overlap_start:
+            raise ValueError("source GPS and TDR do not overlap in recorded time")
+        tdr_span=t[-1]-t[0]
+        gps_span=gps_end-gps_start
+        overlap_fraction_tdr=(overlap_end-overlap_start)/tdr_span
+        overlap_fraction_gps=(overlap_end-overlap_start)/gps_span
         spike=bas.singleton_spike_mask(gps)
         spike_timestamps={gps[i][0].isoformat() for i in np.flatnonzero(spike)}
         in_tdr_time=[q for q in gps if t[0]<=q[0].timestamp()<=t[-1]]
@@ -101,7 +108,13 @@ def analyze(tdr_zip,gps_zip,freer_zip):
                   "tdr_original_csv":Path(tdr_native).name,
                   "n_GPS_original":len(source_gps),"n_GPS_distinct_time":len(gps),
                   "n_isolated_GPS_spikes":int(spike.sum()),
-                  "n_hourly_GPS_source_in_TDR_time":len(hourly)}
+                  "n_hourly_GPS_source_in_TDR_time":len(hourly),
+                  "recorded_time_overlap_seconds":overlap_end-overlap_start,
+                  "fraction_TDR_span_overlapping_GPS":overlap_fraction_tdr,
+                  "fraction_GPS_span_overlapping_TDR":overlap_fraction_gps,
+                  "GPS_source_starts_before_TDR_seconds":max(0.0,t[0]-gps_start),
+                  "GPS_source_ends_after_TDR_seconds":max(0.0,gps_end-t[-1]),
+                  "different_source_sensor_coverage_is_not_non_diving":True}
         for period,yr in (("preseason",year),("same_summer",year+1)):
             m=model_cells([(r[1],r[2]) for r in hourly],model,anchor,yr)
             baseline[period+"_GPS_reference_mean_model_g_m2"]=m["mean_model_g_m2"]
