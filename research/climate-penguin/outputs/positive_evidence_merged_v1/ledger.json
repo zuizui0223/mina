@@ -184,6 +184,22 @@
       "workflow": "https://github.com/zuizui0223/mina/actions/runs/41177957583",
       "artifact_sha256": "0d077d8b757f59e7f501b861525b01781a605dc800fd74512077e2a9d5d29af6",
       "boundary": "Source-selected post-result instrument diagnoses, not sensor failure incidence or penguin dive ecology. Logger frequency/pressure clipping unresolved; PI009 first timestamp dedup is unacceptable for dive event timing."
+    },
+    {
+      "id": "Chinstrap_GPS_island_GAM_after_original_sensor_qa",
+      "n": "Original 300 BAS matched GPS/TDR tracking units; 190 instrument-and-time-observability tier, 52 stringent tier; original GPS model source has 253 qualified tags, 247 TDR matches, 175 primary QA and 47 stringent qualified GPS tags; 3 same-species same-year island comparisons",
+      "effects": "Original other-island/Signy GAM ratio 2011 Laurie 2.440→2.330 after source QA; 2013 Powell 6.314→6.849; 2015 Monroe 2.748→2.791. Stringent GPS tier ratios 2.082, 8.926, 3.002. Modelled density ratios not measured food catch.",
+      "source": "research/climate-penguin/outputs/chinstrap_GPS_island_QA_krill_robustness_v1/REPORT_JA.md",
+      "original_source_SHA256": {
+        "TDR_source_300": "a985b036716bf18f1356988ccba08374ab3b0b97c579f53a86f5bef07f4207fc",
+        "GPS_model_original": "44cb30e8b3136317578d4e86b1dcf99146fae6ab0e721e35a05d4e5ebc6bdda6"
+      },
+      "upstream_source_workflows": [
+        "https://github.com/zuizui0223/mina/actions/runs/41177252296",
+        "https://github.com/zuizui0223/mina/actions/runs/41075715761"
+      ],
+      "downstream_source_reproduction": "https://github.com/zuizui0223/mina/actions/runs/41178815612",
+      "boundary": "Only retained direction of same published krill GAM at real GPS locations after retrospective *sensor-coverage* selection; not measured krill or independent ice/salinity effect. Island/other-island year confounded; Signy 2011 n3 after QA, strict n3; 2013 strict n3. 2018 Signy stringent GPS>=50% has 0 original source tags, so temporal extrapolation not supported."
     }
   ],
   "external_draft_evidence": [
