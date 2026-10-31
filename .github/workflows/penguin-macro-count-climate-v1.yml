@@ -34,6 +34,7 @@ jobs:
           python research/climate-penguin/work/macro_count_climate_v1/analyze.py \
             --mapppdr build/mapppdr \
             --ice-csv research/climate-penguin/outputs/climate_penguin/macro_monthly_seaice_1991_2020.csv \
+            --scenario-csv research/climate-penguin/outputs/cmip6_exposure_atlas_v1/site_scenario_exposure.csv \
             --out build/macro_count_climate_v1
       - uses: actions/upload-artifact@v4
         if: always()
