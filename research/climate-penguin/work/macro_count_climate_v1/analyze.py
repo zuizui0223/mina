@@ -120,7 +120,7 @@ def main():
         if joined is None:
             joined = panel.merge(subset, on=["site_id", "season"], validate="many_to_one", how="inner")
         else:
-            joined = joined.merge(subset, on=["site_id", "season"], validate="one_to_one", how="left")
+            joined = joined.merge(subset, on=["site_id", "season"], validate="many_to_one", how="left")
     if joined.empty:
         raise RuntimeError("All source site-year intersection missing")
     assert joined[["near_0_100km", "offshore_100_500km"]].notna().all().all()
