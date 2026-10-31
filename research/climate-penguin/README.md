@@ -4,6 +4,10 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[繁殖集中×局所ショック：階層別N_effの定量化（2026-10-31）](outputs/climate_concentration_leverage_v1/REPORT_JA.md):** Palmer5島の実効島数3.45→3.08と実効センサス区画数31.06→6.15を分離。共通海氷ショックでは島内集中の増幅は数学的に起きない。Palmer/Signyの5系とρ感度、独立原本照合。
+- **[局所海氷差の比較可能性ゲート（2026-10-31）](outputs/within_region_pair_support_v1/REPORT_JA.md):** 同種・同地域の全331ペア/将来条件から50厳密比較ペア（11地点、アデリーのみ）を確保。ただし同じモデル海域格子を共有し、ヒゲ・ジェンツーの厳密対照は未成立。
+
+
 - **[地域構成と将来気候曝露の交絡・気候格子による見かけの分散（2026-10-31）](outputs/exposure_geographic_decomposition_v1/REPORT_JA.md):** 現在のAEI/REMA無氷地・地形46地点と将来のCMIP6海洋変化を照合し、5地域・25海洋格子指紋へ階層分解。地域内/地域間の相関、全3気候モデル、4将来条件、現地巣数の地点単位・モデル格子単位の実効数を比較。**生態学的な避難所選好や将来の巣数予測とは解釈しない。**
 
 - **[Breeding allocation versus future climate exposure (2026-10-31)](outputs/breeding_allocation_exposure_v1/REPORT_JA.md):** Quantified 2017–2023 observed site-median nest allocation across three penguins against physical CMIP6 warming/sea-ice/salinity changes, compared equal-site, nest-weighted and region-conditioned exposures. Original AEI/REMA 122-site source artifacts supply 46 matched site-code land-context traits. The observed geographic allocation is not a forecast of nest survival nor a mapped subcolony refuge test.
