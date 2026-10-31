@@ -64,6 +64,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--mapppdr", type=Path, required=True)
     p.add_argument("--ice-csv", type=Path, required=True)
+    p.add_argument("--scenario-csv", type=Path, required=True)
     p.add_argument("--out", type=Path, required=True)
     a = p.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
@@ -193,11 +194,68 @@ def main():
     per_site.to_csv(a.out / "site_species_trends.csv", index=False)
     results = pd.DataFrame(summaries)
     results.to_csv(a.out / "association_atlas.csv", index=False)
+    # An exposure overlay, not a fitted forecast of breeding outcomes. The
+    # response is a historical observed nest-count site-specific trend.
+    scenarios = pd.read_csv(a.scenario_csv)
+    scenarios = scenarios[scenarios["cohort"].eq("macro_40")].copy()
+    assert len(scenarios) == 160, f"CMIP6 40 sites x 4 cases: {len(scenarios)}"
+    assert not scenarios.duplicated(["site_id","experiment","period"]).any()
+    future = per_site.merge(scenarios, on="site_id", validate="many_to_many",
+                            how="left", suffixes=("_historical", "_climate"))
+    assert len(future) == len(per_site)*4, "Each observed species×site must have 4 scenarios"
+    assert future[["siconc_change_mean_pp", "tas_change_mean_degC"]].notna().all().all()
+    future["historical_trend_category"] = np.select(
+        [future.count_trend_log1p_per_year < 0,
+         future.count_trend_log1p_per_year > 0],
+        ["historical_decline","historical_increase"],
+        default="not_estimated_or_flat")
+    future.sort_values(["species_id","site_id","experiment","period"]).to_csv(
+        a.out/"historical_trends_future_exposure.csv", index=False)
+    exposure_rows=[]
+    for (species,exp,period), g in future.groupby(["species_id","experiment","period"]):
+        matched=g[g.count_trend_log1p_per_year.notna()].copy()
+        nmatched=len(matched)
+        decline=matched[matched.historical_trend_category.eq("historical_decline")]
+        rise=matched[matched.historical_trend_category.eq("historical_increase")]
+        def within_region(x,y):
+            xx=matched[x]-matched.groupby("region_historical")[x].transform("mean")
+            yy=matched[y]-matched.groupby("region_historical")[y].transform("mean")
+            return pear(xx.to_numpy(),yy.to_numpy())
+        for exposure in ["siconc_change_mean_pp","tas_change_mean_degC","sos_change_mean_native001"]:
+            if nmatched < 5:
+                continue
+            raw_r=pear(matched.count_trend_log1p_per_year.to_numpy(),
+                       matched[exposure].to_numpy())
+            regional_r=within_region("count_trend_log1p_per_year", exposure)
+            d_mean=float(decline[exposure].mean()) if len(decline) else None
+            r_mean=float(rise[exposure].mean()) if len(rise) else None
+            exposure_rows.append(dict(
+                species_id=species,experiment=exp,period=period,exposure=exposure,
+                matched_site_species_units=nmatched,
+                historical_declining_sites=len(decline),
+                historical_increasing_sites=len(rise),
+                observed_regions=matched.region_historical.nunique(),
+                observed_marine_grid_fingerprints=matched.marine_fingerprint.nunique(),
+                pooled_count_trend_vs_future_exposure_r=raw_r,
+                region_demeaned_count_trend_vs_future_exposure_r=regional_r,
+                mean_future_exposure_of_historical_decliners=d_mean,
+                mean_future_exposure_of_historical_increasers=r_mean,
+                projected_ice_loss10_all3_of_decliners=int(decline.siconc_loss_ge10pp_all3.sum()),
+                projected_ice_loss10_all3_of_increasers=int(rise.siconc_loss_ge10pp_all3.sum()),
+                all_model_marine_cells_within50km=int(
+                    (matched.marine_all_3_models_within_50km == 1).sum())))
+    exposure_table = pd.DataFrame(exposure_rows)
+    assert len(exposure_table)==36, f"3 sp x 4 conditions x 3 environmental exposures, got {len(exposure_table)}"
+    exposure_table.to_csv(a.out/"historical_trends_vs_future_exposure_summary.csv",index=False)
+
     info = dict(status="observed_exploratory_mapped_MACRO_counts_not_future_breeding_predictor",
         source=dict(mapppdr_commit=PINNED_COMMIT,
           penguin_obs_rda_sha256=sha256(a.mapppdr/"data"/"penguin_obs.rda"),
           sites_rda_sha256=sha256(a.mapppdr/"data"/"sites.rda"),
           historical_sic_csv_sha256=sha256(a.ice_csv)),
+        future_exposure_overlay=dict(site_species_scenarios=len(future),summary_rows=len(exposure_table),
+            climate_models=3,site_climate_scenarios=4,
+            statement="Cross-sectional historical trend versus future physical exposure only, not forecast of breeding count."),
         raw=dict(mapppdr_sites=len(sites), mapppdr_observations=len(obs),
           nest_records_three_species_known_method_1991_2020=len(nest),
           same_method_site_species_season_records=len(panel),
@@ -228,6 +286,8 @@ def main():
       +json.dumps(info["by_species"],ensure_ascii=False,indent=2)
       +"\n\n## 主要相関\n\n"
       +results.to_markdown(index=False)
+      +"\n\n## 過去の繁殖数変化とCMIP6将来曝露の記述的対応\n\n"
+      +exposure_table.to_markdown(index=False)
       +"\n\n## 不確実性\n\n"
       +"\n".join("- "+z for z in info["explicit_cautions"])
       +"\n",encoding="utf-8")
