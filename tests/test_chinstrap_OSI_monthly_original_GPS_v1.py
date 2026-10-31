@@ -19,6 +19,8 @@ class SourceSIC(unittest.TestCase):
              "strict_tree":cKDTree(t),"strict_idx":np.array([0])}
         self.assertEqual(m.match_month(src,[-60],[-45],20,False)[0][0],0.0)
         self.assertIsNone(m.match_month(src,[-64],[-45],20,False)[0][0])
+        self.assertIsNone(m.match_month(src,[-64],[-45],20,False)[0][3])
+        self.assertEqual(m.match_month(src,[-60],[-45],20,False)[0][3],0)
     def test_original_in_environment(self):
         root=ROOT/"build/observed_ice_GPS"
         gps=root/"gps.zip";proof=root/"satellite_original_receipts.json"

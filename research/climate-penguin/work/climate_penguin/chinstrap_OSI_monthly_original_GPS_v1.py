@@ -122,13 +122,14 @@ def source_month(path,receipt):
 def match_month(month,lat,lon,limit,strict):
     key="strict" if strict else "all"
     tree=month[key+"_tree"]
-    if tree is None:return [(None,None,None) for _ in lat]
+    if tree is None:return [(None,None,None,None) for _ in lat]
     d,p=tree.query(xyz(lat,lon))
     distance=12742.0176*np.arcsin(np.clip(d/2,0,1))
     idx=month[key+"_idx"][p]
     return [(float(month["sic"][idx[i]]) if distance[i]<=limit else None,
              float(distance[i]),
-             int(month["flags"][idx[i]]) if distance[i]<=limit else None)
+             int(month["flags"][idx[i]]) if distance[i]<=limit else None,
+             int(idx[i]) if distance[i]<=limit else None)
             for i in range(len(lat))]
 
 def analyze(gps_zip,root,receipt):
@@ -150,6 +151,12 @@ def analyze(gps_zip,root,receipt):
                     hits=match_month(ocean[y,m],lat,lon,limit,strict)
                     valid=[x for x in hits if x[0] is not None]
                     values=np.array([x[0] for x in valid],dtype=float)
+                    cells={}
+                    for hit in valid:
+                        key=int(hit[3])
+                        if key in cells and not math.isclose(cells[key],hit[0],abs_tol=1e-10):
+                            raise ValueError("original monthly ocean cell had different source SIC")
+                        cells[key]=hit[0]
                     rows.append({
                       "site":tag["site"],"breeding_season":tag["season"],
                       "original_source_tag":tag["tag"],
@@ -158,6 +165,9 @@ def analyze(gps_zip,root,receipt):
                       "nearest_monthly_satellite_ocean_radius_km":limit,
                       "strict_publisher_quality_flags":strict,
                       "n_GPS_hours_with_valid_source_sic":len(valid),
+                      "n_distinct_original_satellite_ocean_pixels":len(cells),
+                      "original_source_ocean_pixel_values_JSON":json.dumps(
+                          {str(c):cells[c] for c in sorted(cells)},sort_keys=True),
                       "source_gps_satellite_coverage_fraction":len(valid)/len(positions),
                       "mean_observed_monthly_SIC_percent_at_GPS":float(values.mean()) if valid else None,
                       "fraction_matched_hours_with_monthly_SIC_ge15":float(np.mean(values>=15)) if valid else None,
@@ -175,6 +185,13 @@ def analyze(gps_zip,root,receipt):
     summary=[]
     for key,records in sorted(groups.items()):
         match=[r for r in records if r["mean_observed_monthly_SIC_percent_at_GPS"] is not None]
+        pixel_values={}
+        for r in match:
+            for k,v in json.loads(r["original_source_ocean_pixel_values_JSON"]).items():
+                idx=int(k)
+                if idx in pixel_values and not math.isclose(pixel_values[idx],v,abs_tol=1e-10):
+                    raise ValueError("same month source pixel maps to conflicting SIC")
+                pixel_values[idx]=float(v)
         summary.append({
             "island":key[0],"breeding_season":key[1],
             "GPS_calendar_month":f"{key[2]:04d}-{key[3]:02d}",
@@ -183,6 +200,11 @@ def analyze(gps_zip,root,receipt):
             "source_tags_satellite_matched":len(match),
             "source_hourly_GPS_n":sum(r["original_GPS_source_hours_in_month"] for r in records),
             "source_hourly_ocean_SIC_matched_n":sum(r["n_GPS_hours_with_valid_source_sic"] for r in records),
+            "n_distinct_original_satellite_ocean_pixels":len(pixel_values),
+            "n_distinct_source_pixels_SIC_ge15":sum(v>=15 for v in pixel_values.values()),
+            "one_vote_per_native_source_satellite_cell_mean_SIC_percent":float(np.mean(
+                list(pixel_values.values()))) if pixel_values else None,
+            "tag_hours_are_not_independent_satellite_cells":True,
             "equal_tag_mean_monthly_SIC_percent":float(np.mean([r["mean_observed_monthly_SIC_percent_at_GPS"] for r in match])) if match else None,
             "equal_tag_fraction_GPS_hours_SIC_ge15":float(np.mean([r["fraction_matched_hours_with_monthly_SIC_ge15"] for r in match])) if match else None,
             "observation_not_independent_climate_replicate":True
@@ -210,6 +232,15 @@ def analyze(gps_zip,root,receipt):
                          "Signy_mean_original_OSI_SIC_percent":u,
                          "other_mean_original_OSI_SIC_percent":v,
                          "other_minus_Signy_monthly_SIC_percentage_points":v-u if u is not None and v is not None else None,
+                         "Signy_unique_original_satellite_cells":a["n_distinct_original_satellite_ocean_pixels"],
+                         "other_unique_original_satellite_cells":b["n_distinct_original_satellite_ocean_pixels"],
+                         "Signy_source_unique_cell_mean_SIC_percent":a["one_vote_per_native_source_satellite_cell_mean_SIC_percent"],
+                         "other_source_unique_cell_mean_SIC_percent":b["one_vote_per_native_source_satellite_cell_mean_SIC_percent"],
+                         "other_minus_Signy_unique_cell_SIC_percentage_points":(
+                           b["one_vote_per_native_source_satellite_cell_mean_SIC_percent"]-
+                           a["one_vote_per_native_source_satellite_cell_mean_SIC_percent"]
+                           if a["one_vote_per_native_source_satellite_cell_mean_SIC_percent"] is not None and
+                           b["one_vote_per_native_source_satellite_cell_mean_SIC_percent"] is not None else None),
                          "not_daily_ice_passability":True})
     result={"status":"SOURCE_GPS_MONTHLY_OBSERVED_SATELLITE_SIC_COLOCATION_NOT_ICE_ACCESS",
             "source_SIC_DOI":DOI,"source_GPS_DOI":"10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
