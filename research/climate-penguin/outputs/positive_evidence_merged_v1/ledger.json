@@ -234,6 +234,17 @@
       "effects": "Signy all 103/103, QA-primary 76/76 modelled GAM visited-pixel values below their same-radius 10-km model-valid spatial background. Other-island/Signy 2011 Laurie, 2013 Powell, 2015 Monroe GAM ratios after both radial and source instrument QA 1.665914/4.499388/3.016099.",
       "grade": "B_modelled_GAM_source_verified_descriptive",
       "boundary": "Only movement location and within-model spatial field; source acoustic, sea ice, salinity all used in original GAM, cannot validate real krill capture, true accessible marine geography, demographic response or 2050/2100 climate-driven breeding forecasts. Source QA post-exposure and Signy 2018 strict n=0."
+    },
+    {
+      "id": "chinstrap_hurdle_GAM_occurrence_conditional_density_components",
+      "n": "308 source Chinstrap GPS tracks from seven island-year cohorts; 3 same-species matched-island-year comparisons; Freer BAS original 2011–2020 krill hurdle-GAM 30 source GeoTIFFs; 14 site×year×model-period groups and 6 matched island×model-period contrasts",
+      "effects": "Preseason T GPS tag-weighted radial-adjusted other-island/Signy GAM occurrence ratios 1.079, 1.484, 1.050; positive-density conditional ratios 1.585, 2.778, 2.900; combined ratios 1.730, 4.040, 2.965. With original native GAM cells deduplicated, occurrence ratios 1.184,1.716,1.004, conditional positive density 1.416,2.708,3.276, combined 1.642,4.511,3.240; positive-density log component contributes 70.2%,66.1%,100.9% of the matched difference (including exact aggregation interaction terms). T+1 combined union ratios weaken to 1.258,1.866,1.187, not time-forward predictions.",
+      "source": "research/climate-penguin/outputs/chinstrap_GAM_hurdle_components_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41184743053",
+      "independent_native_pixel_source_CI": "https://github.com/zuizui0223/mina/actions/runs/41183507450",
+      "source_artifact_id": 13036146864,
+      "grade": "B_POSTHOC_WITHIN_PRETRAINED_GAM_COMPONENT_ACCOUNTING",
+      "boundary": "Occurrence and positive-density are two components of the SAME Freer GAM trained on original acoustic/sea-ice/salinity. Source GPS positions are not confirmed capture/dive, model-valid circular distance reference is not real ocean access, no independent spatial or temporal validation. Log component shares are arithmetic attribution, not ecology causality. One other island per year, Signy 2011 n4. No climate/vegetation/future nests/N_eff prediction."
     }
   ],
   "external_draft_evidence": [

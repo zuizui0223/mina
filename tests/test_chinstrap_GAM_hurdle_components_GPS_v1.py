@@ -45,4 +45,19 @@ class HurdleSource(unittest.TestCase):
            math.log(r["combined_radial_adjusted_ratio"]),abs_tol=1e-10)
            for r in pixel_pairs))
         self.assertTrue(all(p["mathematical_log_decomposition_exact"] for p in pairs))
+        expectations={
+            (2011,"LI"):(1.0787113024024448,1.585105793986495),
+            (2013,"PI"):(1.4839679857040118,2.777961578471998),
+            (2015,"MI"):(1.0499003314311552,2.8998008868270224)}
+        independent_pixel={
+            (2011,"LI"):(1.1842891836437592,1.4161181880924871),
+            (2013,"PI"):(1.7159220936127033,2.7080514566652845),
+            (2015,"MI"):(1.0035443087789429,3.275944845264624)}
+        for rows,expected in ((pairs,expectations),(pixel_pairs,independent_pixel)):
+            for row in rows:
+                if row["model_period"]!="preseason":continue
+                a,b=expected[row["season_start"],row["other_island"]]
+                self.assertTrue(math.isclose(row["prob_radial_adjusted_ratio"],a,abs_tol=1e-10))
+                self.assertTrue(math.isclose(row["density_positive_radial_adjusted_ratio"],b,abs_tol=1e-10))
+
 if __name__=="__main__":unittest.main()
