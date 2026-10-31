@@ -120,7 +120,7 @@ def main() -> None:
             name: sha for name, (_, sha) in EXPECTED_GIT_BLOBS.items()
         },
         "surface_depth_m": float(ds.elevation.values[depth_idx]),
-        "months": 112, "sites": 8, "monthly_site_rows": len(hist),
+        "months": 112, "sites": n_site, "monthly_site_rows": len(hist),
         "unique_ocean_native_cells": n_grid,
         "start_year": 1993, "end_year": 2020, "frozen_overlap_rows": len(q),
         "max_abs_reanalysis_difference": diffs,

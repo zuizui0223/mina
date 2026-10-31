@@ -140,6 +140,59 @@ def score(data):
             })
     return out
 
+
+def residual_diagnostic(sub, field):
+    # Explicit rank and residual variation after species-site plus year adjustment.
+    def residual_and_rank(frame, key):
+        keys=("group","end_year")
+        columns=[np.ones(len(frame))]
+        for k in keys:
+            levels=sorted(frame[k].unique())
+            columns.extend((frame[k].to_numpy()==v).astype(float) for v in levels[1:])
+        x=np.column_stack(columns)
+        v=frame[key].to_numpy(float)
+        z=v-x@np.linalg.lstsq(x,v,rcond=None)[0]
+        return z,int(np.linalg.matrix_rank(x))
+    x,rank=residual_and_rank(sub,field)
+    y,_=residual_and_rank(sub,"delta_log_nests")
+    raw=sub[field].to_numpy(float)
+    denom=float(np.sum((raw-np.mean(raw))**2))
+    return {
+      "n":int(len(sub)),"site_n":int(sub.site_id.nunique()),"cell_n":int(sub.cell_id.nunique()),
+      "year_n":int(sub.end_year.nunique()),"design_rank":rank,
+      "residual_degrees_of_freedom":int(len(sub)-rank),
+      "adjusted_r":corr(x,y),
+      "remaining_environment_variance_fraction":float(np.dot(x,x)/denom) if denom>1e-10 else None,
+      "environment_residual_sd":float(np.std(x)),
+      "outcome_residual_sd":float(np.std(y)),
+    }
+def sensitity_audit(panel):
+    # These are DIAGNOSTICS of high in-sample r, not additional confirmatory tests.
+    out={}
+    for species in ("ADPE","CHPE","GEPE"):
+        sub=panel.loc[panel.species_id==species]
+        vals={}
+        for field in ("sic_start_September_pct","sst_start_September_c","sss_start_September"):
+            base=residual_diagnostic(sub,field)
+            exclusions=[]
+            for site in sorted(sub.site_id.unique()):
+                fold=sub.loc[sub.site_id!=site]
+                q=residual_diagnostic(fold,field)
+                exclusions.append({"site_excluded":site,"r":q["adjusted_r"],
+                                   "residual_df":q["residual_degrees_of_freedom"],
+                                   "remaining_environment_fraction":q["remaining_environment_variance_fraction"]})
+            ordered=[z["r"] for z in exclusions if z["r"] is not None]
+            base["leave_one_biological_site_out"]={
+                "n_valid":len(ordered),"n_sites_tested":len(exclusions),
+                "r_min":min(ordered) if ordered else None,
+                "r_max":max(ordered) if ordered else None,
+                "all_sign_match":all(q*base["adjusted_r"]>0 for q in ordered) if base["adjusted_r"] is not None and ordered else False,
+                "rows":exclusions,
+            }
+            vals[field]=base
+        out[species]=vals
+    return out
+
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
     opath=OUT/"original_glorys_34sites_1993_2020_monthly.csv"
@@ -258,6 +311,8 @@ def main():
               "interpretation":"exploratory_association_not_a_causal_effect",
             })
     pd.DataFrame(assoc).to_csv(OUT/"macro_historical_environment_correlations.csv",index=False)
+    sensitivity=sensitity_audit(panel)
+    (OUT/"macro_partial_r_diagnostics.json").write_text(json.dumps(sensitivity,indent=2,default=float)+"\n")
     predictions=[]
     for strat in ("chronological","chronological_site_out","chronological_marine_cell_out"):
         q=holdouts(panel,group_levels,strat)
@@ -307,11 +362,12 @@ def main():
        "matched_native_marine_cells":panel.cell_id.nunique(),
        "unique_site_start_years":panel[["site_id","start_year"]].drop_duplicates().shape[0],
        "species_intervals":{s:int(v) for s,v in panel.species_id.value_counts().items()},
-       "eligible_2011on_ADPE_time_month_support":int(panel.month_audit_applicable.sum()),
+       "ADPE_month_audit_applicable_intervals":int(panel.month_audit_applicable.sum()),
        "verified_later_than_September_count_intervals":int(panel.months_verified_after_september.sum()),
-       "timing_audit_scope":"existing dates audit covers ADPE only, 2011-2020; CHPE/GEPE date support unassessed",
+       "timing_audit_scope":"existing source month audit covers ADPE only; CHPE/GEPE source dates not yet independently audited",
       },
       "association":assoc,
+      "environment_identification_diagnostics":sensitivity,
       "prediction_metrics":cv,"model_specification":{
         "outcome":"log(nests_end / nests_start), known method positive-positive consecutive seasons",
         "features":"start-year September OSI near SIC and fixed GLORYS surface potential SST, salinity",
@@ -326,8 +382,20 @@ def main():
       "caveat":"Historical model/model-assimilation variables, same colony and native-grid dependence, missing timing for some species; no causal climate effect or calibrated 2050/2100 nest projection.",
     }
     (OUT/"macro_result.json").write_text(json.dumps(meta,indent=2,default=float)+"\n")
+    species_holdout={
+        sp:{strategy:{
+            model:{"mae":float(row.mae),"n":int(row.intervals),"sites":int(row.sites)}
+            for model in ("baseline","SIC","SST_SSS","SIC_SST_SSS")
+            for row in [metrics.loc[(metrics.species==sp)&(metrics.strategy==strategy)&(metrics.model==model)].iloc[0]]
+        } for strategy in ("chronological","chronological_site_out","chronological_marine_cell_out")}
+        for sp in ("ADPE","CHPE","GEPE")
+    }
     summary={
       "cohort":meta["cohort"],
+      "species_holdout":species_holdout,
+      "identification_diagnostics":{sp:{f:{k:v for k,v in d.items() if k!="leave_one_biological_site_out"}|
+       {"loso":{z:w for z,w in d["leave_one_biological_site_out"].items() if z!="rows"}} for f,d in fs.items()}
+       for sp,fs in sensitivity.items()},
       "CV":cv,
       "associations":assoc,
       "gates":gate,
