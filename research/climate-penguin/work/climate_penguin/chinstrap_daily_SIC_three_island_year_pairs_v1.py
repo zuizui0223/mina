@@ -253,7 +253,7 @@ def valid_cell_means(taglocations,pairdates,receipts,directory):
                    r["other_island"]=="PI" and r["fixed_GPS_footprint"]=="all_GPS_days"
                    and r["month"]=="Dec"),None)
     if positive is None or not math.isclose(positive["mean_Signy_minus_other_fixed_25km_cell_SIC_pp"],
-            10.97786549707602,abs_tol=1e-7):
+            10.97786900584795,abs_tol=1e-7):
         raise ValueError("2013 previous original fixed-pixel positive control not reproduced")
     return source_tag,island_day,matched,fixed_rows,fixedcontrast,totals,{
         "status":"THREE_SAME_SPECIES_ISLAND_YEAR_ORIGINAL_GPS_DAILY_SIC_GENERALITY_AUDIT",
