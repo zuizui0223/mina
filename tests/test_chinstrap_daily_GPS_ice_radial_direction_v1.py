@@ -10,10 +10,10 @@ m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 class NativeRadialDailySIC(unittest.TestCase):
     def test_constant_satellite_field_has_zero_selection(self):
         # 4 native ocean cells around -60,-45, at multiple distances.
-        la=np.array([-60.1,-60.2,-60.3,-60.4])
-        lo=np.array([-45.,-45.,-45.,-45.])
-        vals=np.array([20.,20.,20.,20.])
-        r,idx,n=m.ring_means(vals,np.arange(4),la,lo,(-60.,-45.))
+        la=np.array([-60.1,-60.2,-60.3,-60.4,-60.5])
+        lo=np.array([-45.,-45.,-45.,-45.,-45.])
+        vals=np.array([20.,20.,20.,20.,20.])
+        r,idx,n=m.ring_means(vals,np.arange(5),la,lo,(-60.,-45.))
         s=m.source_pixel_excess({0:20.,2:20.},idx,r)
         self.assertEqual(s["n_matched_native_source_pixels"],2)
         self.assertAlmostEqual(s["GPS_minus_radial_source_SIC_pp"],0.)
