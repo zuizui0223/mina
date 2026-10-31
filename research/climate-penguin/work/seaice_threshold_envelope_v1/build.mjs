@@ -325,6 +325,61 @@ const sourceSiteCountAudit=sites.map(s=>({
  latest_count_for_historical_selected_method:historicalMethodLatestBySite.get(s.site_id)
 }));
 writeFileSync(join(outdir,"census_weight_source_audit.csv"),csv(sourceSiteCountAudit));
+// Exhaustive finite count-weight allocations, conditional on fixed regional source codes
+// and fixed modeled sea-ice crossings. These are NOT biological randomization p-values.
+function exactRegionCountWeights(weights,k,observed){
+ const n=weights.length,idx=Array.from({length:k},(_,i)=>i),distribution=[];
+ if(!(k>0&&k<n))throw Error("Degenerate source-region allocation");
+ let count=0,upper=0,full=0;
+ while(true){
+  let subtotal=0;
+  for(let j=0;j<k;j++)subtotal+=weights[idx[j]];
+  distribution.push(subtotal);full+=subtotal;count++;
+  if(subtotal>=observed-1e-9)upper++;
+  let j=k-1;while(j>=0&&idx[j]===n-k+j)j--;
+  if(j<0)break;
+  idx[j]++;
+  for(let z=j+1;z<k;z++)idx[z]=idx[z-1]+1;
+ }
+ distribution.sort((a,b)=>a-b);
+ const q=p=>distribution[Math.floor(p*count)]/denominator*100;
+ return {
+  source_region_site_count:n,
+  fixed_crossing_site_count:k,
+  number_exact_region_allocations:count,
+  allocations_at_least_as_weighted_as_observed:upper,
+  descriptive_upper_tail_fraction:upper/count,
+  exact_region_shuffled_expected_pct:full/count/denominator*100,
+  median_pct:q(.5),p025_pct:q(.025),p975_pct:q(.975),
+  interpretation:"Within-region exchangeability is a mathematical diagnostic and not a plausible ecological sampling process, confirmatory p-value or future demography"
+ };
+}
+const exactRegionAllocation=[];
+const victoria=regionPools.get("Victoria Land");
+if(!victoria||victoria.length!==26)throw Error("Region 26-site source changed");
+const weights=victoria.map(x=>x.latest_recorded_count);
+for(const row of allocationPrimary){
+ const model=row.model;
+ const vals=siteForecasts.filter(x=>x.observed_baseline==="1995-2014"&&x.scenario==="ssp585"&&x.period==="2081-2100"&&x.model===model);
+ const crossed=vals.filter(x=>x.observed_reference_SIC_pct>=77.5&&x.conditional_future_SIC_pct<77.5);
+ if(crossed.length!==row.new_crossing_source_site_n||crossed.some(x=>x.region!=="Victoria Land"))
+  throw Error("Census region source support has changed "+model);
+ const obs=total(crossed.map(x=>x.latest_recorded_count));
+ const result=exactRegionCountWeights(weights,crossed.length,obs);
+ close(result.exact_region_shuffled_expected_pct,row.region_constrained_random_weight_expected_pct,model+" region mean");
+ const expected=allocateReceipt.exact_region_tail_reference[model];
+ if(process.argv.includes("--check-receipt")){
+  close(result.number_exact_region_allocations,expected.number_exact_region_allocations,model+" exact combinations");
+  close(result.allocations_at_least_as_weighted_as_observed,expected.allocations_at_least_as_weighted_as_observed,model+" upper tail count");
+  close(result.descriptive_upper_tail_fraction,expected.descriptive_upper_tail_fraction,model+" fraction");
+ }
+ exactRegionAllocation.push({model,observed_crossing_pct:row.original_latest_count_mass_pct,
+  crossed_site_ids:crossed.map(x=>x.site_id),...result});
+}
+writeFileSync(join(outdir,"exact_region_allocation_reference.json"),JSON.stringify({
+ status:"exhaustive_region_constrained_arithmetic_reference_not_biological_inference",models:exactRegionAllocation
+},null,2)+"\n");
+
 const allocationSummary={
  schema_version:1,
  status:"count_allocation_counterfactual_only_no_population_forecast_or_significance",
@@ -336,6 +391,7 @@ const allocationSummary={
   denominator**2/total(sites.map(x=>x.latest_recorded_count**2)),
  source_site_count:sites.length,
  snapshot_region_inventory:regionInventory,
+ exact_region_allocation_diagnostic:exactRegionAllocation,
  SSP585_2081_2100_77_5_three_models:allocationPrimary,
  subset_and_model_range:allocationRange,
  interpretive_boundary:"Region-constrained shuffle is an arithmetic counterfactual, not inferential evidence; source sites are not independent marine cells or breeding units; latest MAPPPD counts mix years/methods/count metrics. Neither a biological SIC hazard threshold nor climate-demographic transfer has been validated."
