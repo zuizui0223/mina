@@ -23,6 +23,10 @@ class GraphTest(unittest.TestCase):
         seed,n=m.select_coast_seed(lab,eligible,[0,1,2,60,70,3,4,5,6],35.)
         self.assertIsNone(seed)
         self.assertEqual(n,0)
+        score=m.diagnostic({3:0.,4:0.},v,lab,eligible,
+                           np.array([0,1,2,60,70,3,4,5,6],dtype=float),seed)
+        self.assertIsNone(score["fraction_visited_in_binary_low_SIC_connected_component"])
+        self.assertIsNone(score["n_original_GPS_cells_below_threshold_connected_to_seed"])
         good,n=m.select_coast_seed(lab,eligible,[0,1,2,60,70,3,4,5,6],70.)
         self.assertEqual(good,3)
         self.assertEqual(n,2)
