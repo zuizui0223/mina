@@ -144,6 +144,6 @@ const geojson={type:"FeatureCollection",name:"CMIP6 physical exposure, not futur
       ...["experiment","period","location_id","site_id","cohort","marine_fingerprint"].map(k=>[k,x[k]]),
       ...numericGeo.map(k=>[k,Number(x[k])])
     ])}))};
-writeFileSync(join(outDir,"site_scenario_exposure.geojson"),JSON.stringify(geojson)+"\\n");
+writeFileSync(join(outDir,"site_scenario_exposure.geojson"),JSON.stringify(geojson)+"\n");
 
 console.log(JSON.stringify(r.meta.scenarios,null,2));
