@@ -24,4 +24,16 @@ class FixedNativeSatellitePixels(unittest.TestCase):
         self.assertEqual(len(a),84)
         self.assertEqual(len(b),42)
         self.assertTrue(d["no_daily_ice_navigability_or_causal_breeding_response_tested"])
+        expected={
+            "all_14_source_GPS_days":(10.97786900584795,2.6582947368421053,25,57),
+            "Dec_2013_source_GPS_only":(11.594778325123151,1.082872816838334,14,29),
+            "Jan_2014_source_GPS_only":(11.051169444444444,2.482710606060606,25,48)
+        }
+        for key,(dec,jan,nSI,nPI) in expected.items():
+            val=d["fixed_footprint_analysis"][key]
+            self.assertAlmostEqual(val["December_Signy_minus_Powell_pp"],dec,places=7)
+            self.assertAlmostEqual(val["January_Signy_minus_Powell_pp"],jan,places=7)
+            self.assertEqual((val["Signy_original_fixed_cells"],val["Powell_original_fixed_cells"]),
+                             (nSI,nPI))
+
 if __name__=="__main__":unittest.main()

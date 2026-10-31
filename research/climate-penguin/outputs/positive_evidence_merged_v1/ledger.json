@@ -257,6 +257,19 @@
       "original_GPS_DOI": "10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
       "grade": "B_GPS_LINKED_OBSERVED_PHYSICAL_MONTHLY_ICE_SOURCE_NOT_ECOLOGICAL_CAUSAL",
       "boundary": "This is real satellite-derived monthly 25km SIC at nearest ocean cells to GPS positions, not actual ice at each GPS day/time, daily traversable routes, penguin feeding or original krill acoustic biomass. Many tags share pixels; December-to-January birds and locations differ, two Signy matched tags only. Freer model trained with ice/salinity/acoustic, so joint ice/krill-model correlations are not independent ice→prey causality. Not a 2050/2100 penguin abundance, N_eff or vegetation prediction."
+    },
+    {
+      "id": "chinstrap_source_daily_sic_shared_dates_fixed_grid",
+      "n": "BAS Chinstrap Version2 308 original source tags, 253 source GPS-qualified; 2013/14 SI–PI 14 exact GPS-common calendar dates Dec29–Jan11, 14 daily original EUMETSAT OSI-450-a1 v3.1 Antarctic 25km EASE2 NetCDF, 168 fixed sensitivity configurations (20/35 km, standard/strict status flags, 1/3/6 valid source-hour thresholds); fixed source-pixel footprints 25/57,14/29,25/48 SI/PI cells, all observed on all 14 days",
+      "effects": "Daily GPS-used SIC contrast Signy−Powell averaged over 3 shared days Dec2013 +10.36965 percentage points, 11 shared days Jan2014 −0.12340pp (per-source-tag equal), original satellite pixel dedup +11.78744 vs +0.23724pp. Fixed 25km ocean pixels across all 14 days Dec contrast+10.97787→Jan+2.65829pp (reduction8.31957); December-only footprint+11.59478→+1.08287pp; January-only footprint+11.05117→+2.48271pp. Original daily satellite input SHAs per day verified; unchanged footprint establishes observed physical ice change alongside movement-geography selection.",
+      "source": "research/climate-penguin/outputs/chinstrap_daily_ice_same_day_GPS_2013_v1/REPORT_JA.md",
+      "fixed_pixel_report": "research/climate-penguin/outputs/chinstrap_OSI_daily_fixed_native_cells_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41189042766",
+      "original_daily_source_CI": "https://github.com/zuizui0223/mina/actions/runs/41188717803",
+      "source_artifact_id": 13037832534,
+      "original_SIC_DOI": "10.15770/EUM_SAF_OSI_0023",
+      "grade": "B_ACTUAL_GPS_DAY_OBSERVED_PHYSICAL_ICE_FIXED_SPATIAL_GEOMETRY_POSTHOC",
+      "boundary": "One postresult selected 2013/14 Signy-Powell breeding season only. Source GPS calendar timezone not independently validated. Real satellite 25km 24h SIC vs GPS movement, original fixed valid ocean pixels are a retrospectively defined geographic reference; no observed ice navigation constraint at exact animal time, independent prey biomass, foraging or nesting success. Some spatial autocorrelation persists and calendar day/satellite grid not independent in time. No 2050/2100 population or vegetation projections."
     }
   ],
   "external_draft_evidence": [
@@ -295,7 +308,8 @@
     "No validated 2050/2100 breeding-pair/N_eff/vegetation forecast",
     "In 300-source TDR quality census, provisional q1 60min zero-baseline range >2dbar in 42/300, five extreme >100dbar, PI009 repeated same-second source timestamps 668268; true pressure-to-depth, surface ZOC and dive capture remain unvalidated.",
     "PI009 has 614298 same-timestamp pressure values differing from first among 668268 additional records; potential logger time precision mismatch; five source tags have hourly q1 span >100dbar. Source metadata and validated calibration needed before accurate dive-time location.",
-    "Original 25km monthly OSI satellite SIC can be matched to original 2011/13/15/18 Chinstrap GPS months, but lacks daily/microscale sea-ice navigability, independent prey biomass and stage-specific breeding response; do not use monthly 15% SIC as literal penguin travel barrier."
+    "Original 25km monthly OSI satellite SIC can be matched to original 2011/13/15/18 Chinstrap GPS months, but lacks daily/microscale sea-ice navigability, independent prey biomass and stage-specific breeding response; do not use monthly 15% SIC as literal penguin travel barrier.",
+    "Daily OSI-450-a1 SI-Powell 2013/14 source same-calendar-day 14-day SIC and fixed native satellite pixel ice-reduction are robust DESCRIPTIVE physical environmental observations, but one posthoc breeding season, no true bird-specific ice traversability or biological outcome validation; do not infer ice causal mechanism or transfer to 2050/2100 demographics."
   ],
   "rule": "Only add verified positive entries with source+sampling grain+effect+limitations+workflow where present. Never convert observational association into causal mechanistic support. Never merge draft PR189/199 to main without author signoff."
 }
