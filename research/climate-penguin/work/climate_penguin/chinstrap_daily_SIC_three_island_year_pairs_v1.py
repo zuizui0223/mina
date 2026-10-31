@@ -281,6 +281,38 @@ def valid_cell_means(taglocations,pairdates,receipts,directory):
             "No penguin breeding output, N_eff, plant succession or future 2050/2100 demographic forecast tested."
         ]}
 
+def verify_original_three_year_SIC_receipts(totals,result):
+    """Lock all three original BAS GPS cohorts and the exact original OSI SIC.
+
+    Scientific evidence is DESCRIPTIVE / post-hoc; checking numerical
+    reproduction is not a significance test or ecological extrapolation.
+    """
+    if result["n_original_source_netCDF_days"]!=45:
+        raise ValueError("Original shared GPS source satellite day support changed")
+    shared={key:len(days) for key,days in result["source_shared_calendar_days"].items()}
+    if shared!={"2011_LI":6,"2013_PI":14,"2015_MI":25}:
+        raise ValueError("Original three fixed GPS shared-day roster drift")
+    actual={(r["season_start"],r["other_island"],r["month"]):r for r in totals
+            if r["fixed_GPS_footprint"]=="all_GPS_days"}
+    expected={
+      (2011,"LI","Dec"):(1,0.0),
+      (2011,"LI","Jan"):(5,0.0),
+      (2013,"PI","Dec"):(3,10.977869005847952),
+      (2013,"PI","Jan"):(11,2.6582947368421057),
+      (2015,"MI","Dec"):(5,0.5218378378378379),
+      (2015,"MI","Jan"):(20,0.0)
+    }
+    if set(actual)!=set(expected):
+        raise ValueError("Exact original source site-year-month supporting cells lost")
+    for key,(n,contrast) in expected.items():
+        row=actual[key]
+        if row["n_original_shared_source_GPS_days"]!=n or row["n_valid_fixed_pixel_daily_contrasts"]!=n:
+            raise ValueError("Source GPS matched date intersection or missingness drift "+str(key))
+        v=row["mean_Signy_minus_other_fixed_25km_cell_SIC_pp"]
+        if v is None or not math.isclose(v,contrast,rel_tol=1e-12,abs_tol=1e-12):
+            raise ValueError("Source SIC exact observed pixel contrast changed "+str((key,v,contrast)))
+    return True
+
 def write(path,rows):
     if not rows:return
     with Path(path).open("w",encoding="utf-8",newline="") as f:
@@ -311,6 +343,7 @@ def main():
     else:
         orig=json.loads((a.out/"source_daily_ice_download_receipts.json").read_text())
         tag,site,pairs,px,cp,tot,result=valid_cell_means(locations,dates,orig,a.out/"daily_original_NetCDF")
+        verify_original_three_year_SIC_receipts(tot,result)
         write(a.out/"source_3pair_tag_daily_SIC.csv",tag)
         write(a.out/"source_3pair_site_daily_SIC.csv",site)
         write(a.out/"source_3pair_matched_daily_SIC.csv",pairs)

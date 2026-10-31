@@ -270,6 +270,18 @@
       "original_SIC_DOI": "10.15770/EUM_SAF_OSI_0023",
       "grade": "B_ACTUAL_GPS_DAY_OBSERVED_PHYSICAL_ICE_FIXED_SPATIAL_GEOMETRY_POSTHOC",
       "boundary": "One postresult selected 2013/14 Signy-Powell breeding season only. Source GPS calendar timezone not independently validated. Real satellite 25km 24h SIC vs GPS movement, original fixed valid ocean pixels are a retrospectively defined geographic reference; no observed ice navigation constraint at exact animal time, independent prey biomass, foraging or nesting success. Some spatial autocorrelation persists and calendar day/satellite grid not independent in time. No 2050/2100 population or vegetation projections."
+    },
+    {
+      "id": "chinstrap_original_daily_ice_three_island_years_source_generalization",
+      "n": "Three same-species different-island/same-year BAS Chinstrap Version 2 GPS comparisons, original 308 tracks / 253 GPS-qualified; 45 publisher-original OSI-450-a1 v3.1 Southern 25km daily NetCDF: six shared GPS dates 2011 LI–SI, fourteen 2013 PI–SI, twenty-five 2015 MI–SI. Source dates frozen from GPS before daily satellite ice was read. Fixed 25km native ocean pixels across ALL matched days: source 4/6, 25/57, 37/45 SI/other; all publisher NetCDF source SHA receipts preserved.",
+      "effects": "Source daily observed fixed same ocean-pixel mean SIC differences Signy−other, December/January percentage points: 2011 Laurie 0.000/0.000 (1/5 shared days); 2013 Powell +10.977869/+2.658295 (3/11 shared days); 2015 Monroe +0.521838/0.000 (5/20 shared days). Previously chosen 2013 case reproduced to full original source precision; large December ice contrast DOES NOT replicate in either 2011 or 2015 other-island matched case. Krill GAM positive-density ratios persist in all three same-species island-year pairs but are NOT independently observed krill biomass.",
+      "source": "research/climate-penguin/outputs/chinstrap_daily_SIC_three_island_year_pairs_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41190087752",
+      "source_artifact_id": 13038686584,
+      "original_OSI_45day_receipt_digest": "f0a0223b19bfe47bb430bba64fd937c5c3ad9a62b24d7b27f6e63a7ac4caa04c",
+      "original_BAS_GPS_source_digest": "f56dc817aefefda41e509541d24a184f68644d12c0a1c28af8071717275101c9",
+      "grade": "B_ORIGINAL_GPS_MATCHED_DAILY_SATELLITE_ICE_EXTERNAL_YEAR_NEGATIVE_GENERALIZATION",
+      "boundary": "Real 25km daily satellite 24h means in an original GPS-derived fixed source-pixel footprint, not a true penguin water-route accessibility barrier. Three different other islands each in one different year; Signy2011 source GPS support is small, within-island satellite days and pixels are highly correlated. SIC zeros are observed ocean cells, missing GPS days do not become zeros. The historical Freer krill GAM already used sea ice/salinity/acoustics, so model prey differences are not independent ice effects. This does not identify causal breeding-stage or future 2050/2100 nesting, N_eff or vegetation outcomes."
     }
   ],
   "external_draft_evidence": [
@@ -309,7 +321,8 @@
     "In 300-source TDR quality census, provisional q1 60min zero-baseline range >2dbar in 42/300, five extreme >100dbar, PI009 repeated same-second source timestamps 668268; true pressure-to-depth, surface ZOC and dive capture remain unvalidated.",
     "PI009 has 614298 same-timestamp pressure values differing from first among 668268 additional records; potential logger time precision mismatch; five source tags have hourly q1 span >100dbar. Source metadata and validated calibration needed before accurate dive-time location.",
     "Original 25km monthly OSI satellite SIC can be matched to original 2011/13/15/18 Chinstrap GPS months, but lacks daily/microscale sea-ice navigability, independent prey biomass and stage-specific breeding response; do not use monthly 15% SIC as literal penguin travel barrier.",
-    "Daily OSI-450-a1 SI-Powell 2013/14 source same-calendar-day 14-day SIC and fixed native satellite pixel ice-reduction are robust DESCRIPTIVE physical environmental observations, but one posthoc breeding season, no true bird-specific ice traversability or biological outcome validation; do not infer ice causal mechanism or transfer to 2050/2100 demographics."
+    "Daily OSI-450-a1 SI-Powell 2013/14 source same-calendar-day 14-day SIC and fixed native satellite pixel ice-reduction are robust DESCRIPTIVE physical environmental observations, but one posthoc breeding season, no true bird-specific ice traversability or biological outcome validation; do not infer ice causal mechanism or transfer to 2050/2100 demographics.",
+    "Large same-day Signy−other-island DAILY SIC contrast seen in the selected 2013/14 Powell case is NOT a general three-pair rule: 2011 Laurie all fixed ocean-cell shared-day difference 0pp and 2015 Monroe December +0.52pp/January 0pp; the 2013 winter/early-summer event is one post-hoc case, no ice-passability or independent krill-to-breeding mechanism."
   ],
   "rule": "Only add verified positive entries with source+sampling grain+effect+limitations+workflow where present. Never convert observational association into causal mechanistic support. Never merge draft PR189/199 to main without author signoff."
 }

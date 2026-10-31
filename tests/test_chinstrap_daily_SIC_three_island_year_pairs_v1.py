@@ -14,6 +14,28 @@ class MultiYearSourceDailySIC(unittest.TestCase):
         self.assertEqual(m.EXPECTED_2013[0],"20131229")
         self.assertEqual(m.EXPECTED_2013[-1],"20140111")
         self.assertEqual(len(m.EXPECTED_2013),14)
+    def test_three_year_exact_original_sic_receipts(self):
+        vals=[
+          (2011,"LI","Dec",1,0.0),(2011,"LI","Jan",5,0.0),
+          (2013,"PI","Dec",3,10.977869005847952),
+          (2013,"PI","Jan",11,2.6582947368421057),
+          (2015,"MI","Dec",5,0.5218378378378379),
+          (2015,"MI","Jan",20,0.0)
+        ]
+        totals=[{
+            "season_start":y,"other_island":site,"month":month,
+            "fixed_GPS_footprint":"all_GPS_days",
+            "n_original_shared_source_GPS_days":n,
+            "n_valid_fixed_pixel_daily_contrasts":n,
+            "mean_Signy_minus_other_fixed_25km_cell_SIC_pp":v
+        } for y,site,month,n,v in vals]
+        result={"n_original_source_netCDF_days":45,
+                "source_shared_calendar_days":{
+                    "2011_LI":["x"]*6,"2013_PI":["x"]*14,"2015_MI":["x"]*25}}
+        self.assertTrue(m.verify_original_three_year_SIC_receipts(totals,result))
+        totals[0]["mean_Signy_minus_other_fixed_25km_cell_SIC_pp"]=0.1
+        with self.assertRaisesRegex(ValueError,"contrast changed"):
+            m.verify_original_three_year_SIC_receipts(totals,result)
     def test_originals_when_available(self):
         root=ROOT/"build/three_GPS_islands_daily"
         gps=root/"original_chinstrap_gps.zip"
