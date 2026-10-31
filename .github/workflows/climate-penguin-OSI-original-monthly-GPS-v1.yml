@@ -6,6 +6,8 @@ on:
     paths:
       - "research/climate-penguin/work/climate_penguin/chinstrap_OSI_monthly_original_GPS_v1.py"
       - "tests/test_chinstrap_OSI_monthly_original_GPS_v1.py"
+      - "research/climate-penguin/work/climate_penguin/chinstrap_same_GPS_tag_ice_DecJan_v1.py"
+      - "tests/test_chinstrap_same_GPS_tag_ice_DecJan_v1.py"
       - ".github/workflows/climate-penguin-OSI-original-monthly-GPS-v1.yml"
 jobs:
   original-satellite:
@@ -31,6 +33,10 @@ jobs:
         run: |
           python research/climate-penguin/work/climate_penguin/chinstrap_OSI_monthly_original_GPS_v1.py --gps build/observed_ice_GPS/gps.zip --out build/observed_ice_GPS --phase evaluate
           python -m unittest discover -s tests -p test_chinstrap_OSI_monthly_original_GPS_v1.py -v
+      - name: Require actual source-identical Chinstrap GPS Dec-to-Jan seasonal pairs
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_same_GPS_tag_ice_DecJan_v1.py --tag-month build/observed_ice_GPS/original_GPS_tag_month_SIC.csv --out build/observed_ice_GPS
+          python -m unittest discover -s tests -p test_chinstrap_same_GPS_tag_ice_DecJan_v1.py -v
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -42,3 +48,6 @@ jobs:
             build/observed_ice_GPS/original_island_year_month_SIC.csv
             build/observed_ice_GPS/original_same_year_island_month_SIC.csv
             build/observed_ice_GPS/decision.json
+            build/observed_ice_GPS/source_same_tag_Dec_Jan_SIC.csv
+            build/observed_ice_GPS/same_tag_island_year_monthly_SIC_summary.csv
+            build/observed_ice_GPS/same_tag_temporal_gate.json
