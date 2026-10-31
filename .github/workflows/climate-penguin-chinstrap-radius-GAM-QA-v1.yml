@@ -1,0 +1,48 @@
+name: climate-penguin-chinstrap-radius-controlled-GAM-QA-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_radial_GAM_source_QA_join_v1.py"
+      - "tests/test_chinstrap_radial_GAM_source_QA_join_v1.py"
+      - ".github/workflows/climate-penguin-chinstrap-radius-GAM-QA-v1.yml"
+jobs:
+  reproduce-publisher-source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install native source decoders
+        run: python -m pip install numpy "rasterio>=1.4,<1.6"
+      - name: Validate all small synthetic data unit checks before source analyses
+        run: python -m unittest discover -s tests -p test_chinstrap_radial_GAM_source_QA_join_v1.py -v
+      - name: Fetch actual BAS original GPS TDR and Freer 2011-20 model fields
+        run: |
+          mkdir -p build/tdr_original build/source_geo
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 1200 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=da13e049-be2b-4345-bbdd-ab960cb24731&output=zip.tree' -o build/tdr_original/TDR_v2_original.zip
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 1200 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/tdr_original/GPS_v2_original.zip
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 300 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' -o build/source_geo/krill-original.zip
+      - name: Rebuild original 300 source TDR/GPS sensor quality census
+        run: |
+          mkdir -p build/original300
+          python research/climate-penguin/work/climate_penguin/chinstrap_300tag_tdr_sensor_census_v1.py --tdr-zip build/tdr_original/TDR_v2_original.zip --gps-zip build/tdr_original/GPS_v2_original.zip --out build/original300 --check
+      - name: Rebuild original 308 GPS source movement fields and radius-matched source GAM
+        run: |
+          mkdir -p build/source_geo/derived
+          python research/climate-penguin/work/climate_penguin/chinstrap_krill_geographic_vs_GPS_direction_v1.py --gps-zip build/tdr_original/GPS_v2_original.zip --model-zip build/source_geo/krill-original.zip --out build/source_geo/derived --check
+      - name: Source-verify GPS radial model contrast at all 300 TDR coverage levels
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_radial_GAM_source_QA_join_v1.py --original-radial-source build/source_geo/derived/original_tag_visited_vs_radial_background.csv --original-300-qa build/original300/all_300_original_sensor_QA.csv --out build/radial_QA --check
+          python -m unittest discover -s tests -p test_chinstrap_radial_GAM_source_QA_join_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-GAM-radial-matched-308-GPS-300tag-TDR-QA-v1
+          path: |
+            build/radial_QA/all_original_GPS_tags_with_sensor_QA_flags.csv
+            build/radial_QA/island_year_radial_selection_QA_56.csv
+            build/radial_QA/same_species_same_year_island_differences_QA_24.csv
+            build/radial_QA/decision.json
