@@ -217,7 +217,7 @@ def run(gps_zip,netcdf_folder,receipt):
             "original_GPS_DOI":GPS_DOI,"original_OSI_SAF_DOI":DOI,
             "source_native_GPS_total":locked["original_GPS_source_tracks"],
             "GPS_source_qualified":locked["original_source_qualified_tracks"],
-            "original_day_from_GPS_before_observed_ice":locked["source_shared_calendar_days"],
+            "original_day_from_GPS_before_observed_ice":locked["same_year_island_pair_support"],
             "original_SIC_n_days":len(days),"n_daily_island_comparisons":len(comparison),
             "n_native_GPS_tag_day_geo_quality_rows":len(tagresults),
             "n_native_island_day_quality_rows":len(annualresults),
