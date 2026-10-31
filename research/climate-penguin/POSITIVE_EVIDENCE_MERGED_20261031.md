@@ -209,3 +209,14 @@ GPSが通る海域の衛星SIC差（Signy−Powell）を日等重みで取ると
 **形式面の検証：** 個々の公開CMIP6モデルを残した[232地点モデル照合](outputs/breeding_allocation_exposure_v1/site_allocation_exposure.csv)、[72種別・シナリオ・標本条件の感度表](outputs/breeding_allocation_exposure_v1/species_scenario_summary.csv)、[36地域別表](outputs/breeding_allocation_exposure_v1/region_scenario_summary.csv)、[GeoJSON](outputs/breeding_allocation_exposure_v1/site_allocation_exposure.geojson)、[独立元データ再照合](outputs/breeding_allocation_exposure_v1/validation.json)を作成。ヒゲではBAILの**単年UAVの大きなセンサス値が標本巣数中央値合計の86.9%**を占めるため、種全体の曝露偏りに一般化しない。
 
 **核心の未達と判断**：Palmer・Signyの「減少に伴い残った**島内サブコロニー**」の確定GISポリゴンと年次海氷曝露は未照合。CMIP6の海洋セルは島内部のパッチ間差を識別できる空間粒度ではない。今回の解析は**現在の広域繁殖地コードの分布と将来気候物理曝露**であり、歴史的な**島内集中から気候避難所へ移った**との直接検定ではない。今後に必要なのは同一区画の地理境界・時系列と、島内で識別可能な局所的雪・裸地・植生などの観測である。凍結Paper1/2とmainを変更せず、PR206のみで結果を統合。
+
+
+### 2026-10-31｜将来海氷曝露・現在の無氷地と繁殖分布：地域交絡とモデル格子重複を分解
+
+[新しい解析全体](outputs/exposure_geographic_decomposition_v1/REPORT_JA.md)・[46地点の物理条件](outputs/exposure_geographic_decomposition_v1/site_land_climate.csv)・[4将来条件×3物理形質×6環境指標の72感度](outputs/exposure_geographic_decomposition_v1/regional_trait_climate_sensitivity.csv)・[巣数重み付き気候格子ポートフォリオ](outputs/exposure_geographic_decomposition_v1/breeding_climate_portfolio.csv)・[地域条件付き巣数曝露](outputs/exposure_geographic_decomposition_v1/region_conditioned_allocation.csv)・[数値の独立照合](outputs/exposure_geographic_decomposition_v1/validation.json)をDraft #206に保存。元232地点×種×将来条件を種の重複なし**46の物理地点コード**（5地域・25海洋モデル格子組合せ）に変換。original AEI/REMA 122地点の2km無氷地面積、Habitat Complex richness、REMA起伏を使い、将来の地表変化と誤認しない。
+
+**支持できる新しい地理的結論（条件付きの記述パターン）**：SSP5-8.5・2081–2100年の3モデル平均・8–11月海氷密接度の**減少量**は、原AEI無氷地面積`log1p(ha)`と地理を無視するとPearson **r=−0.5545**、5地域の平均をそれぞれ除くと**r=+0.2386**。地域のみの分散説明割合**91.62%**。ACCESS/BCC/CESMの別モデルでも同条件の地域内相関は正（**+0.205/+0.217/+0.259**）だが、他のSSP/将来期間では符号が不一致。モデル海域の重複をまとめた25指紋では、地点平均無氷地面積のlogと海氷減少の地域内相関**+0.442**。**この符号反転は生物学的な地形保護効果・将来営巣機会の因果関係ではなく、地域構成と粗いCMIP6格子に依存した物理環境の地理分布**。
+
+**繁殖地の現在の実効数とモデル曝露の実効数は別**：2017–23年の異なる観測年・方法の**site_code別の観測巣数中央値**（共時的・全域総数でない）を使うと、`(sum w)^2/sum(w²)`でADPEの31地点実効数**4.52**対CMIP6海域実効数**4.39**、CHPE 9地点**1.31対1.30**、GEPE 18地点**10.14対4.69**。GEPEで複数の観測繁殖地点が同じ海域格子を共有し、粗格子上では空間的な曝露の多様性が低く見える。ただし実採餌機会や生物学的リスクが同じであるという結論ではない。3季以上・海洋セル50km以内・ground-only・AEI/REMA同定など5種の標本感度を併記。
+
+**避難所判定の境界**：Region-conditioned allocationでSSP585末期の高海氷減少地に対応する観測巣数中央値の割合はADPE**0.20%**（地域条件付き均等区画0.20%）、CHPE**0.36%**（0.86%）、GEPE**64.89%**（62.18%）。region調整後に「残った集団が低曝露の巣地へ退いた」という一般則は支持されない。海氷減少＝危険とは定義しない。Palmer/Signyの区画N_effには検証済みの全区画GISがないので、ここで計算した広域サンプルの`N_eff`と**混同・置換しない**。Paper1/2/main未変更、確定的巣数・緑化・種交代の将来予測は未較正のまま保持。
