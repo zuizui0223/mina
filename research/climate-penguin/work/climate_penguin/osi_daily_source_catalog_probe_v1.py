@@ -9,7 +9,7 @@ import argparse,hashlib,json,re,urllib.request,urllib.parse,xml.etree.ElementTre
 from pathlib import Path
 
 PUBLISHER="thredds.met.no"
-ROOT="https://thredds.met.no/thredds/catalog/osisaf/met.no/reprocessed/ice/conc_450a1_files/daily/catalog.xml"
+ROOT="https://thredds.met.no/thredds/catalog/osisaf/met.no/reprocessed/ice/conc_450a1_files/catalog.xml"
 DOI="10.15770/EUM_SAF_OSI_0023"
 TARGETS=("20131215","20140115")
 MAX_CATALOG_BYTES=4_000_000
@@ -81,7 +81,7 @@ def run(out):
             wanted=[]
             for r in refs:
                 z=(r["title"]+" "+r["url"]).lower()
-                if any(t in z for t in ("2013","2014","201312","201401","dec","jan")):
+                if any(t in z for t in ("daily","day","2013","2014","201312","201401")):
                     wanted.append(r["url"])
             queue=wanted+queue
         except Exception as e:
