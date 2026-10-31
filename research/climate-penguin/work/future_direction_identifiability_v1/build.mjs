@@ -151,7 +151,7 @@ const expectedGitBlobs={
 const src={};
 for(const [name,path] of Object.entries(paths)){
  const bytes=readFileSync(join(base,path));
- const sha=createHash("sha1").update(Buffer.concat([Buffer.from("blob "+bytes.length+"\\0"),bytes])).digest("hex");
+ const sha=createHash("sha1").update(Buffer.concat([Buffer.from("blob "+bytes.length+"\0"),bytes])).digest("hex");
  if(sha!==expectedGitBlobs[name])throw Error("source Git blob sha mismatch: "+name+" / "+sha);
  src[name]=bytes.toString("utf8");
 }
