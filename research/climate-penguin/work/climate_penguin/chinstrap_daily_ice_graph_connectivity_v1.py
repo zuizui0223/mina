@@ -267,7 +267,9 @@ def run(gps_file,ice_dir,receipt):
                 "n_unpaired_due_to_missing_SIC_or_no_graph_seed":len(arr)-len(n_valid),
                 "source_missing_is_not_ice_free_or_no_movement":True
             })
+    verified=verify_source_graph_receipts(daily,months)
     return daily,paired,months,{
+        "original_publisher_source_numeric_receipts":verified,
         "status":COAST_SIC_STATUS,
         "source_GPS_DOI":GPS_DOI,"source_OSI_SIC_DOI":SIC_DOI,
         "source_GPS_pre_ice_day_roster":gps_frozen,
@@ -292,6 +294,61 @@ def run(gps_file,ice_dir,receipt):
            "Connected source grid cells and multiple GPS tags are spatially correlated, not independent climate experiments.",
            "No independent krill acoustic response, salinity causal slope, demographic, N_eff or 2050/2100 breeding forecasts validated."
         ]
+    }
+
+def verify_source_graph_receipts(rows,months):
+    """Pin measured satellite-source data support, not biological ice thresholds."""
+    if len(rows)!=4320:
+        raise ValueError("4320 original source island-day/sensitivity units changed")
+    if any(not r["low_ice_seed_defined"] for r in rows):
+        raise ValueError("Original coastal seed source support changed")
+    disconnected=[r for r in rows if r["n_original_GPS_low_ice_cells_disconnected_from_seed"] not in (0,None)]
+    if disconnected:
+        raise ValueError("Source low-ice original GPS cell acquired a disconnected native graph component")
+    if any(r["background_low_SIC_connectivity_fraction"]!=1.0 for r in rows):
+        raise ValueError("Original 25km low-ice graph background source continuity changed")
+
+    base=[r for r in rows if
+          not r["original_SIC_source_status_strict"] and
+          r["original_native_pixel_connectivity_neighbours"]==8 and
+          r["hypothetical_nearest_low_ice_coastal_seed_limit_km"]==35. and
+          r["GPS_nearest_satellite_ocean_cell_limit_km"]==20.]
+    expected={15.0:(679,39),30.0:(679,0),50.0:(679,0)}
+    for threshold,(size,high) in expected.items():
+        p=[r for r in base if r["SIC_cutoff_percent_binary_open_below"]==threshold]
+        if len(p)!=90:
+            raise ValueError("Original daily GPS source native island-day 90 units lost")
+        if (sum(r["n_original_distinct_GPS_ocean_pixels"] for r in p),
+            sum(r["n_original_GPS_cells_meeting_or_exceeding_SIC_threshold"] for r in p))!=(size,high):
+            raise ValueError("Source observed native ocean SIC threshold count drift")
+        if threshold==15.0:
+            if sum(r["n_original_GPS_cells_meeting_or_exceeding_SIC_threshold"]
+                   for r in p if r["season_start"]!=2013)!=0:
+                raise ValueError("Unmatched source season acquired 15%-or-higher daily SIC GPS cell")
+    core={(r["season_start"],r["other_island"],r["month"]):r for r in months}
+    expected_month={
+        (2011,"LI","December"):0.0,
+        (2011,"LI","January"):0.0,
+        (2013,"PI","December"):-0.4868386243386243,
+        (2013,"PI","January"):0.00621777212686303,
+        (2015,"MI","December"):0.0,
+        (2015,"MI","January"):0.0
+    }
+    if set(core)!=set(expected_month):
+        raise ValueError("Original source three-island two-season month support changed")
+    for key,value in expected_month.items():
+        r=core[key]
+        if not math.isclose(r["mean_Signy_minus_other_hypothetical_low_ice_connected_GPS_fraction"],
+                            value,abs_tol=1e-12,rel_tol=1e-12):
+            raise ValueError("Original descriptive binary connectivity contrast changed "+str(key))
+    return {
+        "original_source_island_day_sensitivities":len(rows),
+        "primary_source_GPS_pixel_days":679,
+        "original_pixel_days_SIC_ge15":39,
+        "original_pixel_days_SIC_ge30":0,
+        "n_low_ice_visited_pixels_disconnected_in_any_sensitivity":0,
+        "source_ice_15pct_above_threshold_only_in_2013":True,
+        "source_all_4_and_8_neighbour_low_ice_cells_connected":True
     }
 
 def write_csv(path,records):

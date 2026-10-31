@@ -37,6 +37,9 @@ class GraphTest(unittest.TestCase):
         self.assertEqual(s["n_original_GPS_cells_below_SIC_threshold"],1)
         self.assertEqual(s["n_original_GPS_cells_meeting_or_exceeding_SIC_threshold"],1)
         self.assertEqual(s["n_original_GPS_cells_below_threshold_connected_to_seed"],1)
+    def test_empty_source_count_does_not_fake_route_obstruction(self):
+        with self.assertRaisesRegex(ValueError,"4320 original source"):
+            m.verify_source_graph_receipts([],[])
     def test_full_original_source_if_present(self):
         root=ROOT/"build/chinstrap_ice_graph_original"
         gps=root/"BAS_GPS.zip"
@@ -47,5 +50,6 @@ class GraphTest(unittest.TestCase):
         a,b,c,gate=m.run(gps,root/"original_daily_SIC_NetCDF",json.loads(receipt.read_text()))
         self.assertEqual(gate["n_source_original_daily_NetCDF"],45)
         self.assertEqual(len(b),45*3*2*2*2*2)
+        self.assertEqual(gate["original_publisher_source_numeric_receipts"]["original_pixel_days_SIC_ge30"],0)
 if __name__=="__main__":
     unittest.main()
