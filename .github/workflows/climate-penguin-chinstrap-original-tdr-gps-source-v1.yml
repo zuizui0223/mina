@@ -1,0 +1,44 @@
+name: climate-penguin-chinstrap-original-tdr-gps-source-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_v2_tdr_gps_source_gate.py"
+      - "tests/test_chinstrap_v2_tdr_gps_source_gate.py"
+      - ".github/workflows/climate-penguin-chinstrap-original-tdr-gps-source-v1.yml"
+
+jobs:
+  audit-original:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Verify source header and BAS naming unit tests
+        run: python -m unittest discover -s tests -p test_chinstrap_v2_tdr_gps_source_gate.py -v
+      - name: Retrieve original BAS GPS and TDR Version 2 matching deployments
+        run: |
+          mkdir -p build/bas_chinstrap_tdr
+          curl -L --fail --retry 4 --retry-delay 6 --max-time 1200 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' \
+            -o build/bas_chinstrap_tdr/GPS_v2_original.zip
+          curl -L --fail --retry 4 --retry-delay 6 --max-time 1200 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=da13e049-be2b-4345-bbdd-ab960cb24731&output=zip.tree' \
+            -o build/bas_chinstrap_tdr/TDR_v2_original.zip
+      - name: Audit source TDR data headers and deployment overlap without pressure outcomes
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_v2_tdr_gps_source_gate.py \
+            --gps-zip build/bas_chinstrap_tdr/GPS_v2_original.zip \
+            --tdr-zip build/bas_chinstrap_tdr/TDR_v2_original.zip \
+            --out build/bas_chinstrap_tdr/audit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-version2-gps-tdr-source-audit-v1
+          path: |
+            build/bas_chinstrap_tdr/audit/source_gate.json
+            build/bas_chinstrap_tdr/audit/gps_tdr_joint_deployment_ids.txt
+            build/bas_chinstrap_tdr/audit/TDR_source_member_header_manifest.json
