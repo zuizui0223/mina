@@ -125,7 +125,7 @@ def main() -> None:
         "start_year": 1993, "end_year": 2020, "frozen_overlap_rows": len(q),
         "max_abs_reanalysis_difference": diffs,
         "grid_max_distance_km": float(focus.grid_distance_km.max()),
-        "derived_csv_sha256": hashlib.sha256((OUT / "original_glorys_8sites_1993_2020_monthly.csv").read_bytes()).hexdigest(),
+        "derived_csv_sha256": hashlib.sha256((OUT / "original_glorys_34sites_1993_2020_monthly.csv").read_bytes()).hexdigest(),
         "interpretation": "This is a Copernicus model reanalysis (assimilation includes SIC and SST), not an independent satellite salinity observation.",
     }
     (OUT / "source_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
