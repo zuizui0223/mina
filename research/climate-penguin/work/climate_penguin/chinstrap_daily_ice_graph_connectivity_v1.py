@@ -99,15 +99,19 @@ def diagnostic(visited,ice,labels,eligible,distances,coast_seed,context=(10.,150
         "n_original_distinct_GPS_ocean_pixels":n,
         "n_original_GPS_cells_meeting_or_exceeding_SIC_threshold":high,
         "n_original_GPS_cells_below_SIC_threshold":low,
-        "n_original_GPS_cells_below_threshold_connected_to_seed":seed_connected,
-        "n_original_GPS_low_ice_cells_disconnected_from_seed":disconnected,
+        "n_original_GPS_cells_below_threshold_connected_to_seed":(
+            seed_connected if coast_seed is not None else None),
+        "n_original_GPS_low_ice_cells_disconnected_from_seed":(
+            disconnected if coast_seed is not None else None),
         "n_source_GPS_pixels_with_unknown_daily_SIC":unknown,
         "fraction_visited_in_binary_low_SIC_connected_component":(
-            seed_connected/n if n else None),
+            seed_connected/n if n and coast_seed is not None else None),
         "n_background_original_low_SIC_ocean_pixels_10_150km":int(background_open.sum()),
-        "n_background_original_low_SIC_connected_pixels_10_150km":int(background_reachable.sum()),
+        "n_background_original_low_SIC_connected_pixels_10_150km":(
+            int(background_reachable.sum()) if coast_seed is not None else None),
         "background_low_SIC_connectivity_fraction":(
-            float(background_reachable.sum()/background_open.sum()) if background_open.any() else None),
+            float(background_reachable.sum()/background_open.sum())
+            if background_open.any() and coast_seed is not None else None),
         "low_ice_seed_defined":coast_seed is not None,
     }
 
