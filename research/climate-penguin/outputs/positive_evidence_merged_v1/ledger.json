@@ -204,6 +204,24 @@
       "downstream_source_ci_run": "https://github.com/zuizui0223/mina/actions/runs/41178815612",
       "downstream_result_artifact_id": 13034222467,
       "data_validation_gate": "Original BAS 300-tag TDR/GPS recomputation and GPS raster model source 308-tag re-extraction both completed; 24 original fixed comparisons independently checked."
+    },
+    {
+      "id": "Chinstrap_GAM_spatial_geography_vs_GPS_distance_adjusted",
+      "n": "308 original Chinstrap GPS source deployments in 7 island-year groups; 253 original GPS tracks meet 10-hour/10-150km window, 3 matched same-species island-year pairs",
+      "effects": "Other island/Signy direct visited Freer GAM ratios Laurie 2011 2.440, Powell 2013 6.314, Monroe 2015 2.748; model-valid all-geography ratios 1.024, 1.187, 0.971; radial-distance-adjusted ratios 1.730, 4.040, 2.965. Signy 4 observation seasons 103/103 original GPS tag-level modelled values below same-distance model reference.",
+      "source": "research/climate-penguin/outputs/chinstrap_krill_geography_vs_movement_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41183123990",
+      "grade": "B_exploratory_source_backed_within_published_GAM",
+      "boundary": "All values from same previously fitted GAM with acoustic/salinity/ice inputs; circular if used as independent climate–prey evidence. Geographical radial availability is not verified navigability or feeding. Tag sample, year and island confounded; no causal choice, true prey or future breeding prediction."
+    },
+    {
+      "id": "Chinstrap_GAM_native_pixel_union_pseudoreplication_check",
+      "n": "Original GPS source 308 tracks. Signy original native pixel union per site×year (2011 n15, 2013 n305, 2015 n371, 2018 n219); 0.25° coarse spatial tiles 4/61/70/38, NOT independent replicates.",
+      "effects": "Signy unique model pixels below same-radial GAM reference 14/15, 304/305, 368/371, 208/219. Distance-adjusted other-island/Signy union-pixel GAM ratios Laurie 1.642, Powell 4.511, Monroe 3.240.",
+      "source": "research/climate-penguin/outputs/chinstrap_native_cell_independence_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41183507450",
+      "grade": "B_exploratory_source_backed_GAM_not_independent_ocean_measurement",
+      "boundary": "Native GAM model pixels have spatial autocorrelation, same ocean model and same years. GPS points not confirmed forage; avoids tag-pixel repeat weighting but does not establish effective independent environmental N, independent krill acoustic, salinity mechanism or island breeding causality."
     }
   ],
   "external_draft_evidence": [
