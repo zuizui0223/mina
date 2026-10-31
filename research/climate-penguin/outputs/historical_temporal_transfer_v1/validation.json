@@ -1,0 +1,26 @@
+{
+  "status": "passed_independent_all_39_source_window_recomputations_and_23_complete_temporal_shifts",
+  "source_git_blob_sha": {
+    "historical_temporal_transfer_v1/two_period_historical_growth_sic.csv": "f6c9a4efae904407e57cc837047f29fbcc1ff4c4",
+    "historical_temporal_transfer_v1/summary.json": "c0eb59ef49832e57a0e4fa1ffae7c651a0454de0",
+    "comparison_audit/mapppd_unambiguous_site_seasons.csv": "fc134e364cf38699fa7611d7dee5fbbbcb370c0a",
+    "warming_species_breeding_v1/historical_species_site_trends.csv": "2b6c0793ea9f9ea9acf0771052cf7a2ad9ab335b",
+    "climate_penguin/macro_monthly_seaice_1991_2020.csv": "4fcea71c2d8b1069b6ad143f6522061ed434daf5",
+    "historical_ice_breeding_transfer_v1/summary.json": "913344733e372c3a6ae5cb6a988a0a98b13ffc82"
+  },
+  "audited": {
+    "n": 39,
+    "supported": 23,
+    "mean_delta_sic": -0.8852280719582035,
+    "mean_growth_change": 0.3494250042647383,
+    "observed_temporal_correlation": 0.26938919082711227,
+    "mean_spatial_model_prediction": -0.014803432445649209,
+    "rmse_temporal_spatial_transfer": 0.674248516889149,
+    "rmse_zero_change": 0.6753069336829893
+  },
+  "errors": [],
+  "limits": [
+    "Exploratory split-window association; full-period spatial model uses same biological source records, so this is NOT independent temporal model validation.",
+    "Site-year imbalance and shared marine grids and region structure are not overcome by arithmetic verification."
+  ]
+}
