@@ -34,6 +34,7 @@
 - `site_scenario_exposure.csv`：106座標×4組＝**424行**。3モデルの平均・範囲・符号一致、5/10/20ppの海氷低下、モデル海洋セル距離、過去気温変動との比、海氷15%への物理的変化。
 - `marine_fingerprint_scenario.csv`：43海洋セル指紋×4組＝**172行**。共有する3モデル海氷格子を地点の重複から分離した集計。
 - `summary.json`：全シナリオ数値と原3CSVのGit blob SHA。
+- `site_scenario_exposure.geojson`：全424地点×シナリオのWGS84点ジオメトリ。地図表示では `experiment` と `period` で絞り込む。地点は現地繁殖島のポリゴンや将来生息適地ではない。
 - `../../work/cmip6_exposure_atlas_v1/build.mjs`：Node.js標準ライブラリだけで元CSVから再構築。
 
 **数値チェック**：入力 `site_model_changes.csv` 3,816行／historical 954行／`site_model_ensemble.csv` 1,272行。3,816件のfuture差を元historical平均と照合。全1,272件のensemble平均・最大・最小を元3モデルから再計算し差<1e−9。106位置・43海域指紋の重複判定も完了。
