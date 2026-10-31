@@ -1,0 +1,33 @@
+name: climate-penguin-chinstrap-video-capture-source-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_video_source_schema_v1.py"
+      - "tests/test_chinstrap_video_source_schema_v1.py"
+      - ".github/workflows/climate-penguin-video-capture-source-v1.yml"
+jobs:
+  source-schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify original video source audit assumptions
+        run: python -m unittest discover -s tests -p test_chinstrap_video_source_schema_v1.py -v
+      - name: Download first-party Dryad video-labelled dive archive
+        run: |
+          mkdir -p build/chinstrap_video
+          curl -fsSL --retry 4 --retry-delay 8 --max-time 300 'https://datadryad.org/api/v2/datasets/doi%3A10.5061%2Fdryad.x69p8czmk/download' -o build/chinstrap_video/source.zip
+      - name: Audit original labelled outcomes source without training or selecting a model
+        run: python research/climate-penguin/work/climate_penguin/chinstrap_video_source_schema_v1.py --source build/chinstrap_video/source.zip --out build/chinstrap_video/source_gate.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-chinstrap-video-prey-original-schema-v1
+          path: |
+            build/chinstrap_video/source.zip
+            build/chinstrap_video/source_gate.json
