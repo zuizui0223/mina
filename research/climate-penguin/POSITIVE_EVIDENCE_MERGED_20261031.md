@@ -246,3 +246,14 @@ Palmer5島の総繁殖ペアは**6689→140**。5島に割った繁殖ペアの�
 [月別8条件の原値](outputs/observed_nearby_sic_covariance_v1/monthly_sic_synchrony.csv)、[全80ペア](outputs/observed_nearby_sic_covariance_v1/pairwise_sic_correlations.csv)、[元Git blobを固定した機械可読台帳](outputs/observed_nearby_sic_covariance_v1/summary.json)、[独立の全8条件数値監査](outputs/observed_nearby_sic_covariance_v1/validation.json)をDraft #206へ保存。
 
 **中心仮説の到達点**：繁殖区画の集中（実測）→局所の独立環境ショックなら感度増幅（数学的条件）→島/地域内の海氷共通性が強い（参照地点の衛星観測）という3段階までは区別して示せる。**「局所の海氷が残存繁殖地の運命を直接支配する」因果係数や、将来のペンギン繁殖数は未確立**。次は実繁殖区画GIS・採餌範囲に対応した日次沿岸SIC/餌機会/積雪を同じ時間で照合する。
+
+
+### 2026-10-31｜海氷の地域共通変動と局所変動：30年の実測から集中による増幅条件を検証
+
+[30年衛星SICの独立再集計](outputs/observed_sic_covariance_scale_v1/REPORT_JA.md)と[元値・地点×年残差1440行](outputs/observed_sic_covariance_scale_v1/site_year_month_source_decomposition.csv)、[8月別・海域別集計](outputs/observed_sic_covariance_scale_v1/month_band_shared_sic_summary.csv)、[120組の地点相関](outputs/observed_sic_covariance_scale_v1/pairwise_annual_sic_correlations.csv)、[一地点集中の仮想感度48件](outputs/observed_sic_covariance_scale_v1/hypothetical_single_site_concentration.csv)、[入力ハッシュ・独立全数監査](outputs/observed_sic_covariance_scale_v1/validation.json)を`mina` Draft PR #206に追加。1991–2020年の原マクロ海氷9,600行から、地理枠（緯度−65.30〜−64.70／経度−64.20〜−63.70）で結果を見る前に定義した6地点（BISC/LITC/PCHA/PETE/PLEN/YALO）×30年×8〜11月×近傍0–100km/沖合100–500kmの**1,440元SIC値**を全照合。
+
+**新しい物理環境についての実測結果：** 9月近傍SICの2方向直交分散分解は**年共通87.94%／サイト固定10.93%／年×サイト残差1.137%**。沖合では**96.09%／3.843%／0.0635%**。6地点の9月SIC年変動の中央値ペア相関は近傍**r=0.9881**、沖合**r=0.9995**。SIC相関行列の実効ランクは近傍**1.023**、沖合**1.001**。これらの数値は地域気候の共通性と**大きく重なり合う海域平均窓の共有**を両方反映し、実際の島内微細な海氷差がないとは結論できない。6地点はPalmer LTERの正確な5島・全区画GIS対応ではなく、南極半島の近傍地域を広くとった6固定観測座標である。
+
+**独立区画ショックという理論条件と実測海氷は区別する：** 別の[Palmer/Signy区画N_eff仮説感度](outputs/climate_concentration_leverage_v1/REPORT_JA.md)では、区画ショックを全て独立と仮定すると1991→2017年の5島統合監視区画の加重ショック分散倍率は**5.05倍**。一方、**実際の9月の0–100km SIC系列**を6地点等重みから任意の1地点へ仮想的に全配分すると、年変動分散比は**0.928〜1.107倍**、沖合なら**0.983〜1.027倍**。実繁殖数の変化予測でも、地理的に完全対応したPalmer5島のSICでもなく、現在測れる広域海氷の時間的共分散の感度である。**N_eff減少は「独立した局所環境の影響」の潜在的レバレッジであり、地域全体で共有される気候を自動的に増幅しない。**
+
+**中心仮説の精密化（肯定結果と未検証機構を分離）：** 繁殖区画集中は観測的に支持される。次に検証すべきは`共通海洋気候 × 島ごとの海洋アクセス × 区画ごとの積雪/裸地/微環境`のどの階層が個体群運命へ追加的な情報を持つか、そしてその独立変動の共分散が繁殖配分の機能を決めるか。海氷減少＝害、繁殖区画N_eff＝実GIS面積、広域SICの共有＝区画ごとの雪・陸上条件の共有とは置かない。温暖化による局所巣数・実効区画数・緑化の将来点予測はまだNO-GO。Paper1/2/mainは変更しない。
