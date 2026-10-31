@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "updated": "2026-10-31",
+  "state": "merged_scientific_evidence_in_draft_PR206_only",
+  "paper_status": {
+    "paper1_pr": 189,
+    "paper2_pr": 199,
+    "climate_pr": 206,
+    "merge_main_authorized": false
+  },
+  "supported": [
+    {
+      "id": "palmer_sync",
+      "tier": "confirmed_descriptive",
+      "source": "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+      "key": [
+        "common_long_term_component",
+        "pc1_variance_fraction"
+      ],
+      "value": 0.9640284642946518,
+      "n": "5 islands; 27 years",
+      "claim": "Common long-term population decline component PC1 96.4%",
+      "boundary": "No causal sea-ice effect or uniform annual demographic synchronization"
+    },
+    {
+      "id": "palmer_space_COR",
+      "tier": "source_tested",
+      "source": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "COR",
+        "fractional_change"
+      ],
+      "value": -0.19113899359974384,
+      "n": "Original COR colony-code fixed roster",
+      "claim": "Effective breeding composition decreased 19.1%",
+      "boundary": "Not mapped physical patch area or directly counted dispersal"
+    },
+    {
+      "id": "palmer_space_HUM",
+      "tier": "source_tested",
+      "source": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "HUM",
+        "fractional_change"
+      ],
+      "value": -0.5059971291433084,
+      "n": "Original HUM colony-code fixed roster",
+      "claim": "Effective breeding composition decreased 50.6%",
+      "boundary": "Not mapped physical patch area or causal snow/predator response"
+    },
+    {
+      "id": "palmer_space_LIT",
+      "tier": "source_tested",
+      "source": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "LIT",
+        "fractional_change"
+      ],
+      "value": -0.8270791752527236,
+      "n": "Original LIT fixed colony-code roster",
+      "claim": "Effective breeding composition decreased 82.7%",
+      "boundary": "Local extinction and effective composition not equivalent to vegetation/area"
+    },
+    {
+      "id": "signy_adelie",
+      "tier": "independent_system",
+      "source": "results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "fractional_change_first_to_last"
+      ],
+      "value": -0.3715276804405254,
+      "n": "22 seasons 1996–2019",
+      "claim": "Adelie effective colony-code count down 37.2%",
+      "boundary": "Original colony-code observation units, not geo-polygons"
+    },
+    {
+      "id": "signy_chinstrap",
+      "tier": "cross_species_repeat",
+      "source": "results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "fractional_change_first_to_last"
+      ],
+      "value": -0.5062892782809985,
+      "n": "22 seasons 1996–2019",
+      "claim": "Chinstrap effective colony-code count down 50.6%",
+      "boundary": "No general climate-driven breeding-space parameter"
+    },
+    {
+      "id": "palmer_lag2",
+      "tier": "conditional_association",
+      "source": "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+      "key": [
+        "primary_lag_profile",
+        "lag_2",
+        "beta"
+      ],
+      "value": 0.040890746633273245,
+      "n": "754 source rows at lag 2",
+      "claim": "Short-lived 2-year performance–redistribution association beta=0.0409, sensitivity p=0.00327",
+      "boundary": "Not preregistered confirmatory evidence, individual movement, or validated forecast"
+    }
+  ],
+  "verified_exploratory": [
+    {
+      "id": "signy_three_species_stage",
+      "n": "22 native seasons; 19 consecutive changes; one island",
+      "effects": "Adelie-Chinstrap r=0.794; Adelie-Gentoo r=0.703; Chinstrap-Gentoo r=0.738",
+      "source": "research/climate-penguin/outputs/signy_stage_synchrony_v2/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41056721425",
+      "boundary": "Dunn et al. 2016 already reported related success correlations; three different source grain definitions"
+    },
+    {
+      "id": "chinstrap_island_position_krill_model",
+      "n": "3 same-species same-year island pair comparisons",
+      "effects": "Laurie/Signy 2011 2.44x; Powell/Signy 2013 6.31x; Monroe/Signy 2015 2.75x modelled krill",
+      "source": "research/climate-penguin/outputs/south_orkney_island_gps_krill_v1/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41075715761",
+      "boundary": "Real GPS position, but GAM modelled prey using same original acoustic+ice+salinity, island confounded with year"
+    },
+    {
+      "id": "chinstrap_tdr_source_link",
+      "n": "300 source ID matches across Signy Laurie Powell Monroe",
+      "effects": "4 fixed source tags pilot provisional dive times; Monroe pressure baseline drift 7.75 dbar",
+      "source": "research/climate-penguin/ORIGINAL_GPS_TDR_ISLAND_ACCESS_GATE_20261031.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41165153690",
+      "boundary": "Technical data linkage positive, not independent prey capture or diving ecology"
+    },
+    {
+      "id": "cmip6_physical_exposure",
+      "n": "3 climate models and 58 matched species-sites",
+      "effects": "Scenario physical temperature/sea-ice/salinity change available",
+      "source": "research/climate-penguin/INTEGRATED_FUTURE_BREEDING_GATE_20261030.md",
+      "boundary": "Conditional GCM physics only; not forecast penguin abundance or vegetation"
+    }
+  ],
+  "external_draft_evidence": [
+    {
+      "id": "ross_recovery",
+      "pr": 189,
+      "source_commit": "58fd7f4d0246c19344098dc5ce309343514346d2",
+      "source_path": "results/ROSS_AGGREGATE_VS_SPATIAL_RESTORATION_V1.json",
+      "effect": "0.9696749 of observed total breeding-territory loss recovered by 2002; local six-unit reweighting; 9.41% mismatch",
+      "boundary": "Author signoff pending, only immutable citation; result structure-dependent and original publication draft not merged"
+    }
+  ],
+  "failed_or_open": [
+    "Observed sea-ice predictor did not beat no-growth forecast in 129 held-out count intervals (baseline MAE 0.1540)",
+    "Preceding one- and three-year sea ice proxies did not beat no-growth in 126 held-out intervals (baseline MAE 0.1528)",
+    "Earlier 2024 IMR acoustic year table conflicts with Skaret 2023 primary publication; 2013 combined missing, earlier krill correlation superseded",
+    "Freer krill GAM uses sea ice/salinity and original acoustic data and cannot validate either independently",
+    "Original TDR provisional pressure zero-offset unstable at Monroe and dive/feeding not verified",
+    "Static vegetation detection does not establish time change or nest-level plant use",
+    "No validated 2050/2100 breeding-pair/N_eff/vegetation forecast"
+  ],
+  "rule": "Only add verified positive entries with source+sampling grain+effect+limitations+workflow where present. Never convert observational association into causal mechanistic support. Never merge draft PR189/199 to main without author signoff."
+}

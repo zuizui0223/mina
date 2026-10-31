@@ -1,0 +1,19 @@
+name: climate-penguin-evidence-merge-audit-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/POSITIVE_EVIDENCE_MERGED_20261031.md"
+      - "research/climate-penguin/outputs/positive_evidence_merged_v1/ledger.json"
+      - "tests/test_climate_positive_evidence_merges_v1.py"
+      - ".github/workflows/climate-penguin-evidence-merge-audit-v1.yml"
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Verify immutable positive numbers and explicit failed gates
+        run: python -m unittest discover -s tests -p test_climate_positive_evidence_merges_v1.py -v
