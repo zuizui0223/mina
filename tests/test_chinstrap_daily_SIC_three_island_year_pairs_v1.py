@@ -36,6 +36,10 @@ class MultiYearSourceDailySIC(unittest.TestCase):
         totals[0]["mean_Signy_minus_other_fixed_25km_cell_SIC_pp"]=0.1
         with self.assertRaisesRegex(ValueError,"contrast changed"):
             m.verify_original_three_year_SIC_receipts(totals,result)
+    def test_exact_day_source_receipts_reject_invalid_count(self):
+        with self.assertRaisesRegex(ValueError,"source shared-day support"):
+            m.verify_three_pair_source_receipts(
+                {(2011,"LI"):[],(2013,"PI"):[],(2015,"MI"):[]},[],[])
     def test_originals_when_available(self):
         root=ROOT/"build/three_GPS_islands_daily"
         gps=root/"original_chinstrap_gps.zip"
@@ -48,4 +52,6 @@ class MultiYearSourceDailySIC(unittest.TestCase):
                              root/"daily_original_NetCDF")
         self.assertEqual(len(v[-1]["source_three_pairs"]),3)
         self.assertTrue(v[-1]["selected_2013_published_result_matched_as_positive_control"])
+        self.assertTrue(m.verify_three_pair_source_receipts(
+            dates,v[5],v[4]))
 if __name__=="__main__":unittest.main()

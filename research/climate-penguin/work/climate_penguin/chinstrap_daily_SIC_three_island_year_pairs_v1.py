@@ -249,6 +249,7 @@ def valid_cell_means(taglocations,pairdates,receipts,directory):
                        "mean_Signy_minus_other_fixed_25km_cell_SIC_pp":summ(valid,
                            "Signy_minus_other_fixed_pixel_SIC_pp"),
                        "descriptive_posthoc_not_independent_climate_replication":True})
+    verify_three_pair_source_receipts(pairdates,totals,fixedcontrast)
     positive=next((r for r in totals if r["season_start"]==2013 and
                    r["other_island"]=="PI" and r["fixed_GPS_footprint"]=="all_GPS_days"
                    and r["month"]=="Dec"),None)
@@ -311,6 +312,41 @@ def verify_original_three_year_SIC_receipts(totals,result):
         v=row["mean_Signy_minus_other_fixed_25km_cell_SIC_pp"]
         if v is None or not math.isclose(v,contrast,rel_tol=1e-12,abs_tol=1e-12):
             raise ValueError("Source SIC exact observed pixel contrast changed "+str((key,v,contrast)))
+    return True
+
+def verify_three_pair_source_receipts(pairdates,totals,fixedcontrast):
+    """Immutable original satellite-GPS source receipts, not significance tests."""
+    expected_days={(2011,"LI"):6,(2013,"PI"):14,(2015,"MI"):25}
+    expected={
+        (2011,"LI","Dec"):(1,0.0),
+        (2011,"LI","Jan"):(5,0.0),
+        (2013,"PI","Dec"):(3,10.977869005847952),
+        (2013,"PI","Jan"):(11,2.6582947368421057),
+        (2015,"MI","Dec"):(5,0.5218378378378379),
+        (2015,"MI","Jan"):(20,0.0)
+    }
+    expected_cells={(2011,"LI"):(4,6),(2013,"PI"):(25,57),
+                    (2015,"MI"):(37,45)}
+    index={(z["season_start"],z["other_island"],z["month"]):z
+           for z in totals if z["fixed_GPS_footprint"]=="all_GPS_days"}
+    for key,n in expected_days.items():
+        if len(pairdates[key])!=n:
+            raise ValueError("GPS source shared-day support changed "+str(key))
+        result=[r for r in fixedcontrast if
+                r["season_start"]==key[0] and r["other_island"]==key[1]
+                and r["footprint"]=="all_GPS_days"]
+        if len(result)!=n:
+            raise ValueError("Original fixed pixel daily source support changed "+str(key))
+        if {(r["n_Signy_same_original_pixels"],r["n_other_same_original_pixels"])
+            for r in result}!={expected_cells[key]}:
+            raise ValueError("Original EASE2 fixed pixel numerator/denominator drift "+str(key))
+    for key,(days,value) in expected.items():
+        r=index.get(key)
+        if r is None or r["n_original_shared_source_GPS_days"]!=days or r["n_valid_fixed_pixel_daily_contrasts"]!=days:
+            raise ValueError("Satellite source month day or missingness drift "+str(key))
+        if not math.isclose(r["mean_Signy_minus_other_fixed_25km_cell_SIC_pp"],value,
+                            rel_tol=1e-10,abs_tol=1e-10):
+            raise ValueError("Satellite original daily fixed cell SIC contrast changed "+str(key))
     return True
 
 def write(path,rows):
