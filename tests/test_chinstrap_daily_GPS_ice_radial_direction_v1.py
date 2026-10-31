@@ -28,6 +28,9 @@ class NativeRadialDailySIC(unittest.TestCase):
         z=m.source_pixel_excess({1:0.,2:80.},{1:1},{1:20.})
         self.assertEqual(z["n_native_pixels_not_in_175km_source_background"],1)
         self.assertAlmostEqual(z["GPS_minus_radial_source_SIC_pp"],-20.)
+    def test_empty_source_outcomes_do_not_pass_numeric_receipt(self):
+        with self.assertRaisesRegex(ValueError,"time support changed"):
+            m.verify_original_45_day_radius_SIC_receipts([],[],[],[])
     def test_original_BAS_and_OSI_if_in_source_workflow(self):
         root=ROOT/"build/daily_GPS_radial"
         gps=root/"gps_original.zip"

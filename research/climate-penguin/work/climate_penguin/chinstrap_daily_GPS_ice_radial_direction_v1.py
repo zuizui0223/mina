@@ -234,7 +234,70 @@ def run(gps_zip,netcdf_folder,receipt):
                "Original satellite quality flags and two nearest radii (20/35km) retained; no missingness recoded as no ice.",
                "Only three matched other-island-year pairs, with other island confounded with year; 2011 December n1 day.",
                "No trained Freer krill GAM causal inference or demographic/vegetation 2050/2100 forecast enabled."]}
+    verify_original_45_day_radius_SIC_receipts(
+        tagresults,annualresults,comparison,monthly)
     return tagresults,annualresults,comparison,monthly,result
+
+def verify_original_45_day_radius_SIC_receipts(tags,sites,contrasts,monthly):
+    """Numerical reproducibility of publisher-original data; not hypothesis p-values."""
+    primary=[r for r in monthly if r["nearest_original_satellite_limit_km"]==20
+             and not r["strict_satellite_flags"]]
+    expected={
+        (2011,"LI","Dec"):(1,0.0),
+        (2011,"LI","Jan"):(5,0.0),
+        (2013,"PI","Dec"):(3,12.229572851552945),
+        (2013,"PI","Jan"):(11,0.4706488415063152),
+        (2015,"MI","Dec"):(5,0.7098052633161792),
+        (2015,"MI","Jan"):(20,0.0)
+    }
+    by={(r["season_start"],r["other_island"],r["month"]):r for r in primary}
+    if set(by)!=set(expected):raise ValueError("Original three-pair source time support changed")
+    for key,(days,value) in expected.items():
+        row=by[key]
+        if (row["source_GPS_shared_dates"],row["valid_native_cell_daily_differences"])!=(days,days):
+            raise ValueError("Original GPS day / source SIC missingness changed "+str(key))
+        if not math.isclose(row["mean_Signy_minus_other_radial_adjusted_GPS_SIC_pp"],
+                            value,abs_tol=1e-10,rel_tol=1e-10):
+            raise ValueError("Original publisher SIC distance-matched observed value drift "+str(key))
+    tagged=[r for r in tags if r["season_start"]==2013 and
+            r["GPS_calendar_date"].startswith("201312") and
+            r["nearest_original_satellite_pixel_limit_km"]==20 and
+            not r["strict_quality_flags"] and
+            r["GPS_minus_radial_source_SIC_pp"] is not None]
+    signy=[r for r in tagged if r["island"]=="SI"]
+    powell=[r for r in tagged if r["island"]=="PI"]
+    if not (len(signy)==12 and all(r["GPS_minus_radial_source_SIC_pp"]>0 for r in signy)
+            and len(powell)==22 and
+            sum(r["GPS_minus_radial_source_SIC_pp"]<0 for r in powell)==15):
+        raise ValueError("Original 2013 December tag-day signed SIC contrasts changed")
+    orig=[r for r in sites if r["season_start"]==2013 and
+          r["GPS_calendar_date"].startswith("201312") and
+          r["nearest_original_satellite_pixel_limit_km"]==20 and
+          not r["strict_quality_flags"]]
+    si=[r["GPS_minus_radial_source_SIC_pp"] for r in orig if r["island"]=="SI"]
+    pi=[r["GPS_minus_radial_source_SIC_pp"] for r in orig if r["island"]=="PI"]
+    if len(si)!=3 or len(pi)!=3 or not all(x>0 for x in si) or not all(x<0 for x in pi):
+        raise ValueError("Original GPS native 2013 December paired SIC directions drift")
+    if not (math.isclose(statistics.mean(si),6.027418136115822,abs_tol=1e-10)
+            and math.isclose(statistics.mean(pi),-6.202154715437124,abs_tol=1e-10)):
+        raise ValueError("Daily native pixel mean SIC excess receipt changed")
+    original_primary=[r for r in contrasts if r["season_start"]==2013 and
+        r["GPS_calendar_date"].startswith("201312") and
+        r["nearest_satellite_source_km"]==20 and not r["strict_satellite_source_flags"]]
+    if len(original_primary)!=3:
+        raise ValueError("Original 2013 source day count changed")
+    for strict in (False,True):
+        for radius in (20.,35.):
+            part=[r for r in contrasts if r["season_start"]==2013 and
+                  r["GPS_calendar_date"].startswith("201312") and
+                  r["nearest_satellite_source_km"]==radius and r["strict_satellite_source_flags"]==strict]
+            if len(part)!=3:
+                raise ValueError("Original source spatial sensitivity coverage changed")
+            if any(not math.isclose(a["Signy_minus_other_GPS_radial_relative_SIC_pp"],
+                      b["Signy_minus_other_GPS_radial_relative_SIC_pp"],abs_tol=1e-10)
+                   for a,b in zip(part,original_primary)):
+                raise ValueError("Original satellite source flag/nearest ocean radius sensitivity changed")
+    return True
 
 def write_csv(path,records):
     if not records:raise ValueError("Empty source result")

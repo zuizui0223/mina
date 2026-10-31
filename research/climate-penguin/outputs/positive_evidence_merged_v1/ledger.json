@@ -300,6 +300,18 @@
         "daily_ice": "bcaa350b5e1b5c3729bf1c7941e225dbc233cd178b6447582d2f55f309faa366",
         "pretrained_GAM": "5efa3e418794691d43e186368f93e335da2809b92ce286e9bca67e2ecddf8b63"
       }
+    },
+    {
+      "id": "chinstrap_daily_satellite_GPS_vs_same_radius_ocean_ice_exposure",
+      "grade": "B_SOURCE_OBSERVED_PHYSICAL_SPATIAL_CONDITIONAL_POSTHOC",
+      "n": "308 original BAS Version2 Chinstrap GPS tracks; 253 source-qualified; three different same-species matched island-year pairs; 45 original shared GPS calendar days (6/14/25), 45 OSI-SAF v3.1 original daily satellite NetCDF files; 360 island-day-radius×quality source summaries, 180 island day-pair-radius×quality comparisons; 1420 original GPS tag-day-radius×quality rows",
+      "effects": "On 2013 Dec29–31 GPS-selected unique original OSI 25km ocean pixels vs SAME-DAY SAME-25km RADIAL RING other original valid ocean pixels: Signy excess daily means +7.108898,+7.694984,+3.278373 percentage points (3-day mean +6.027418); Powell −2.572693,−9.191743,−6.842027 (mean −6.202155); Signy minus Powell source radial-adjusted contrast +12.22957285pp (Jan2014 +0.47064884pp). 2011 Dec/Jan paired differences 0/0; 2015 Dec +0.70980526pp and Jan0. Signy source GPS tag-day 12/12 positive, Powell 15/22 negative during 2013 Dec. 2013 source physical source angle/latitude contrasts persist across 20/35km nearest source ocean radius and permissive/strict original status flags.",
+      "source": "research/climate-penguin/outputs/chinstrap_daily_GPS_ice_radial_direction_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41191518232",
+      "original_SIC_DOI": "10.15770/EUM_SAF_OSI_0023",
+      "original_GPS_DOI": "10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
+      "source_artifact_id": 13039200633,
+      "boundary": "Same-day satellite SIC source is measured physical environmental data but NOT fine ice/navigability or penguin actual feeding. Same radial distance across all azimuths does not establish reachable habitat; satellite valid ocean/land coast mask spatial selection. 3 consecutive days 2013 are strongly autocorrelated, 2011 Dec only 1 shared day, each different island in a different year. Source penguin GPS not actual dive/capture. Observed direction difference cannot infer active ice avoidance, attraction, iceberg passage, ice→krill or 2050/2100 breeding count/N_eff/vegetation mechanism."
     }
   ],
   "external_draft_evidence": [
@@ -341,7 +353,8 @@
     "Original 25km monthly OSI satellite SIC can be matched to original 2011/13/15/18 Chinstrap GPS months, but lacks daily/microscale sea-ice navigability, independent prey biomass and stage-specific breeding response; do not use monthly 15% SIC as literal penguin travel barrier.",
     "Daily OSI-450-a1 SI-Powell 2013/14 source same-calendar-day 14-day SIC and fixed native satellite pixel ice-reduction are robust DESCRIPTIVE physical environmental observations, but one posthoc breeding season, no true bird-specific ice traversability or biological outcome validation; do not infer ice causal mechanism or transfer to 2050/2100 demographics.",
     "Large same-day Signy−other-island DAILY SIC contrast seen in the selected 2013/14 Powell case is NOT a general three-pair rule: 2011 Laurie all fixed ocean-cell shared-day difference 0pp and 2015 Monroe December +0.52pp/January 0pp; the 2013 winter/early-summer event is one post-hoc case, no ice-passability or independent krill-to-breeding mechanism.",
-    "Across original 45 daily OSI GPS-shared dates (2011/12,2013/14,2015/16), the strong 2013 Signy-Powell ice SIC contrast does not recur in other matched island-year pairs; same species but other-island identity confounded with year; 2011 December only one shared day. Do not generalize ice barrier or ice-to-krill explanation, prey capture or future breeding response."
+    "Across original 45 daily OSI GPS-shared dates (2011/12,2013/14,2015/16), the strong 2013 Signy-Powell ice SIC contrast does not recur in other matched island-year pairs; same species but other-island identity confounded with year; 2011 December only one shared day. Do not generalize ice barrier or ice-to-krill explanation, prey capture or future breeding response.",
+    "Same-day same-distance original satellite SIC contrasts show no universal negative GPS ice preference: in 2013 December Signy tracks have +6.027pp excess vs same-distance ocean while Powell tracks have −6.202pp; this is not a causal ice avoidance/attraction or true passability test. 2011/15 original paired ice mostly zero; no environmental signal to test."
   ],
   "rule": "Only add verified positive entries with source+sampling grain+effect+limitations+workflow where present. Never convert observational association into causal mechanistic support. Never merge draft PR189/199 to main without author signoff."
 }
