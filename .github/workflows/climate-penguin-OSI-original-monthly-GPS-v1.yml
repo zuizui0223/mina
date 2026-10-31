@@ -1,0 +1,44 @@
+name: climate-penguin-original-OSI-SAF-GPS-monthly-source-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_OSI_monthly_original_GPS_v1.py"
+      - "tests/test_chinstrap_OSI_monthly_original_GPS_v1.py"
+      - ".github/workflows/climate-penguin-OSI-original-monthly-GPS-v1.yml"
+jobs:
+  original-satellite:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install satellite NetCDF and original geographic reader
+        run: python -m pip install numpy scipy xarray netCDF4 h5netcdf rasterio
+      - name: Check source-only calendar and missing ice unit tests
+        run: python -m unittest discover -s tests -p test_chinstrap_OSI_monthly_original_GPS_v1.py -v
+      - name: Retrieve original BAS Chinstrap GPS version 2
+        run: |
+          mkdir -p build/observed_ice_GPS
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 300 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/observed_ice_GPS/gps.zip
+      - name: Freeze original penguin-GPS recording months
+        run: python research/climate-penguin/work/climate_penguin/chinstrap_OSI_monthly_original_GPS_v1.py --gps build/observed_ice_GPS/gps.zip --out build/observed_ice_GPS --phase discover
+      - name: Fetch original EUMETSAT OSI-450-a1 v3p1 Southern monthly NetCDF source
+        run: python research/climate-penguin/work/climate_penguin/chinstrap_OSI_monthly_original_GPS_v1.py --gps build/observed_ice_GPS/gps.zip --out build/observed_ice_GPS --phase fetch
+      - name: Verify source-month ocean-cell SIC and summarize eligible GPS island-months
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_OSI_monthly_original_GPS_v1.py --gps build/observed_ice_GPS/gps.zip --out build/observed_ice_GPS --phase evaluate
+          python -m unittest discover -s tests -p test_chinstrap_OSI_monthly_original_GPS_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Chinstrap-original-OSI-SAF-monthly-satellite-SIC-GPS-v1
+          path: |
+            build/observed_ice_GPS/gps_calendar_months.json
+            build/observed_ice_GPS/satellite_original_receipts.json
+            build/observed_ice_GPS/original_GPS_tag_month_SIC.csv
+            build/observed_ice_GPS/original_island_year_month_SIC.csv
+            build/observed_ice_GPS/original_same_year_island_month_SIC.csv
+            build/observed_ice_GPS/decision.json
