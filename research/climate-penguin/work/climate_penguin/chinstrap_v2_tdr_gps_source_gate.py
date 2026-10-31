@@ -34,7 +34,12 @@ def get_id(name,suffix):
     marker=f"_{suffix}"
     if marker.lower() not in stem.lower():
         raise ValueError("instrument code not in basename")
-    id_=stem.split("_")[0]
+    original_id=stem.split("_")[0]
+    # Publisher V2 source namespace differs at Powell:
+    # GPS PI001 while TDR PIC001; canonicalize only this documented
+    # island/numeric-suffix equivalence, preserving both raw file IDs.
+    id_=("PI"+original_id[3:] if suffix.upper()=="TDR"
+         and re.fullmatch(r"PIC[0-9]+",original_id) else original_id)
     loc=id_[:2]
     legal=((loc in {"SI","LI","MI"} and re.fullmatch(loc+r"C[0-9]+",id_) is not None)
            or (loc=="PI" and re.fullmatch(r"PI[0-9]+",id_) is not None))
@@ -101,7 +106,9 @@ def scan(path,suffix,check_expected=None):
             name=Path(item.filename).name
             deploy,loc=get_id(name,suffix)
             h=member_head(z,item)
-            row={"deployment_id":deploy,"island_code":loc,"island_name":ISLAND[loc],
+            row={"deployment_id":deploy,"original_deployment_id":name.split("_")[0],
+                 "publisher_Powell_namespace_mapped":(suffix=="TDR" and name.startswith("PIC")),
+                 "island_code":loc,"island_name":ISLAND[loc],
                  "original_member_path":item.filename,
                  "original_bytes_uncompressed":item.file_size,
                  "original_member_crc32":f"{item.CRC:08x}",

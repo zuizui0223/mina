@@ -28,6 +28,17 @@ jobs:
           curl -L --fail --retry 4 --retry-delay 6 --max-time 1200 \
             'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=da13e049-be2b-4345-bbdd-ab960cb24731&output=zip.tree' \
             -o build/bas_chinstrap_tdr/TDR_v2_original.zip
+      - name: Print original source deployment namespaces before joining
+        run: |
+          python - <<'PY'
+          import zipfile,collections,re
+          from pathlib import Path
+          for stem,part in (("GPS","GPS_v2_original.zip"),("TDR","TDR_v2_original.zip")):
+              z=zipfile.ZipFile("build/bas_chinstrap_tdr/"+part)
+              names=[Path(x).name for x in z.namelist() if re.search("_"+stem+r"\.csv$",Path(x).name,re.I)]
+              counts=collections.Counter(re.match(r"^[A-Z]+",x).group(0) for x in names if re.match(r"^[A-Z]+",x))
+              print(stem,"matched_files",len(names),"source_prefixes",dict(counts))
+          PY
       - name: Audit source TDR data headers and deployment overlap without pressure outcomes
         run: |
           python research/climate-penguin/work/climate_penguin/chinstrap_v2_tdr_gps_source_gate.py \

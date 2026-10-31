@@ -8,7 +8,8 @@
       "doi": "10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
       "version": "2.0",
       "source_count_known": 313,
-      "previous_member_pin": "f56dc817aefefda41e509541d24a184f68644d12c0a1c28af8071717275101c9"
+      "previous_member_pin": "f56dc817aefefda41e509541d24a184f68644d12c0a1c28af8071717275101c9",
+      "Powell_publisher_id": "PI###"
     },
     "TDR": {
       "doi": "10.5285/da13e049-be2b-4345-bbdd-ab960cb24731",
@@ -16,7 +17,8 @@
       "pressure_unit": "dbar",
       "nominal_sampling_seconds": 1,
       "original_zip_member_count_reported": 317,
-      "source_time_zone": "must audit; do not guess"
+      "source_time_zone": "must audit; do not guess",
+      "Powell_publisher_id": "PIC###"
     },
     "modelled_krill": {
       "doi": "10.5285/4fd0a1bf-da1a-4021-82eb-2fc513910e32",
@@ -25,6 +27,7 @@
     }
   },
   "primary_source_gates": [
+    "Exception to literal-ID equality fixed from publisher sources: Powell GPS PI### maps to TDR PIC### by identical numeric suffix ONLY, preserving raw IDs and auditing one-to-one uniqueness; other island IDs remain unchanged.",
     "ID exact same original deployment in GPS v2 and TDR v2. Do not use known-mismatched v1.",
     "Original pressure field units, valid timestamp field, timestamp precision and time zone must be checked; unknown clock-offset direction means NO JOIN.",
     "Zero-offset calibration and raw pressure QC explicitly separated from ecological thresholds; pressure > threshold is potential dive, not feeding.",

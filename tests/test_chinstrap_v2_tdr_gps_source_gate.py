@@ -11,6 +11,9 @@ class TDRSourceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             m.get_id("PIC078_GPS.csv","GPS") 
     def test_publisher_Powell_PI_without_C(self):
+        self.assertEqual(m.get_id("PIC001_TDR.csv","TDR"),("PI001","PI"))
+        with self.assertRaises(ValueError):
+            m.get_id("PIC001_GPS.csv","GPS")
         self.assertEqual(m.get_id("PI001_TDR.csv","TDR"),("PI001","PI"))
         self.assertEqual(m.get_id("SIC005_TDR.csv","TDR"),("SIC005","SI"))
         with self.assertRaises(ValueError):
