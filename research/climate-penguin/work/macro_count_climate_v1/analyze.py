@@ -113,11 +113,11 @@ def main():
     assert len(climate) == 2400, f"September coverage unexpectedly {len(climate)}"
     climate = climate[["site_id", "year", "inner_km", "sic_mean"]]
 
-    joined = []
+    joined = None
     for inner, name in SIC_BANDS:
         subset = climate[climate.inner_km.eq(inner)][["site_id", "year", "sic_mean"]]
         subset = subset.rename(columns={"year": "season", "sic_mean": name})
-        if not joined:
+        if joined is None:
             joined = panel.merge(subset, on=["site_id", "season"], validate="many_to_one", how="inner")
         else:
             joined = joined.merge(subset, on=["site_id", "season"], validate="one_to_one", how="left")
