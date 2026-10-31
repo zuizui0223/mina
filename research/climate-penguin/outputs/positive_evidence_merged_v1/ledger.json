@@ -165,6 +165,16 @@
       "source": "research/climate-penguin/outputs/chinstrap_16tag_tdr_sensor_qa_v1/REPORT_JA.md",
       "workflow": "https://github.com/zuizui0223/mina/actions/runs/41176761764",
       "boundary": "Source-first technical instrument QA only; nonrandom first four tags per island and unvalidated depth/foraging. No estimated ecology or biological 2050/2100 forecast."
+    },
+    {
+      "id": "full_300_native_tdr_pressure_source_QA",
+      "n": "All 300 source-native matched GPS/TDR deployments; 109435170 original pressure rows, 108766902 unique valid source timestamps",
+      "effects": "300/300 source QA computed, provisional q1/60min baseline range >2dbar in 42/300; q5/60min in 33/300, intersection 32. Original 13 tags TDR/GPS timeline overlap<50%; one original PI009 tag has 668268 duplicate pressure timestamps.",
+      "source": "research/climate-penguin/outputs/chinstrap_300tag_tdr_sensor_qa_v1/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41177252296",
+      "artifact_sha256": "1ccdd88095434126db51183199564bd3301215b0a527f9a600fa1e07c21f34db",
+      "derived_300row_sha256": "a985b036716bf18f1356988ccba08374ab3b0b97c579f53a86f5bef07f4207fc",
+      "boundary": "Full sampled tag universe instrument/source QC, not population sensor failure rate; provisional pressure lower-quantile is not validated water surface, clock sync/true foraging unverified and island-year confounded."
     }
   ],
   "external_draft_evidence": [
@@ -200,7 +210,8 @@
     "Freer krill GAM uses sea ice/salinity and original acoustic data and cannot validate either independently",
     "Original TDR provisional pressure zero-offset unstable at Monroe and dive/feeding not verified",
     "Static vegetation detection does not establish time change or nest-level plant use",
-    "No validated 2050/2100 breeding-pair/N_eff/vegetation forecast"
+    "No validated 2050/2100 breeding-pair/N_eff/vegetation forecast",
+    "In 300-source TDR quality census, provisional q1 60min zero-baseline range >2dbar in 42/300, five extreme >100dbar, PI009 repeated same-second source timestamps 668268; true pressure-to-depth, surface ZOC and dive capture remain unvalidated."
   ],
   "rule": "Only add verified positive entries with source+sampling grain+effect+limitations+workflow where present. Never convert observational association into causal mechanistic support. Never merge draft PR189/199 to main without author signoff."
 }
