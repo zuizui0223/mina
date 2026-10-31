@@ -1,7 +1,8 @@
 """All fixed-source footprint contracts; no exposure result chosen to fit sign."""
-import importlib.util,unittest
+import importlib.util,sys,unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/"research/climate-penguin/work/climate_penguin"))
 P=ROOT/"research/climate-penguin/work/climate_penguin/chinstrap_OSI_daily_fixed_native_cells_v1.py"
 s=importlib.util.spec_from_file_location("fixed_ice",P)
 m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
