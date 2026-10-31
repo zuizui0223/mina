@@ -175,6 +175,15 @@
       "artifact_sha256": "1ccdd88095434126db51183199564bd3301215b0a527f9a600fa1e07c21f34db",
       "derived_300row_sha256": "a985b036716bf18f1356988ccba08374ab3b0b97c579f53a86f5bef07f4207fc",
       "boundary": "Full sampled tag universe instrument/source QC, not population sensor failure rate; provisional pressure lower-quantile is not validated water surface, clock sync/true foraging unverified and island-year confounded."
+    },
+    {
+      "id": "tdr_source_six_extreme_trace_diagnosis",
+      "n": "6 source-selected after full300 source QA; pressure native rows: PI011110562 PI054426429 SIC033212250 SIC036431999 SIC039480600 PI009977848",
+      "effects": "Five tags q1/hour range>100dbar, SIC033/036/039 exactly share native max245.81 and min-10.13dbar. PI009 668268 extra original same-timestamp pressure records, of which 614298 differ from first; 86400 timestamps have >1 records, max9/time.",
+      "source": "research/climate-penguin/outputs/chinstrap_tdr_extreme_source_v1/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41177957583",
+      "artifact_sha256": "0d077d8b757f59e7f501b861525b01781a605dc800fd74512077e2a9d5d29af6",
+      "boundary": "Source-selected post-result instrument diagnoses, not sensor failure incidence or penguin dive ecology. Logger frequency/pressure clipping unresolved; PI009 first timestamp dedup is unacceptable for dive event timing."
     }
   ],
   "external_draft_evidence": [
@@ -211,7 +220,8 @@
     "Original TDR provisional pressure zero-offset unstable at Monroe and dive/feeding not verified",
     "Static vegetation detection does not establish time change or nest-level plant use",
     "No validated 2050/2100 breeding-pair/N_eff/vegetation forecast",
-    "In 300-source TDR quality census, provisional q1 60min zero-baseline range >2dbar in 42/300, five extreme >100dbar, PI009 repeated same-second source timestamps 668268; true pressure-to-depth, surface ZOC and dive capture remain unvalidated."
+    "In 300-source TDR quality census, provisional q1 60min zero-baseline range >2dbar in 42/300, five extreme >100dbar, PI009 repeated same-second source timestamps 668268; true pressure-to-depth, surface ZOC and dive capture remain unvalidated.",
+    "PI009 has 614298 same-timestamp pressure values differing from first among 668268 additional records; potential logger time precision mismatch; five source tags have hourly q1 span >100dbar. Source metadata and validated calibration needed before accurate dive-time location."
   ],
   "rule": "Only add verified positive entries with source+sampling grain+effect+limitations+workflow where present. Never convert observational association into causal mechanistic support. Never merge draft PR189/199 to main without author signoff."
 }
