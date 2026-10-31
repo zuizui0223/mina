@@ -4,6 +4,8 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[観測された近隣の海氷変動の同期性と局所差（2026-10-31）](outputs/observed_nearby_sic_covariance_v1/REPORT_JA.md):** 2011–2020年の元衛星SIC、沿岸参照5地点×8–11月×2製品バッファ。年変動は共通成分97%以上だが絶対値の局所差も残る。Palmerの真の5島・繁殖区画ポリゴンとの一対一対応ではない。
+
 - **[繁殖集中×局所ショック：階層別N_effの定量化（2026-10-31）](outputs/climate_concentration_leverage_v1/REPORT_JA.md):** Palmer5島の実効島数3.45→3.08と実効センサス区画数31.06→6.15を分離。共通海氷ショックでは島内集中の増幅は数学的に起きない。Palmer/Signyの5系とρ感度、独立原本照合。
 - **[局所海氷差の比較可能性ゲート（2026-10-31）](outputs/within_region_pair_support_v1/REPORT_JA.md):** 同種・同地域の全331ペア/将来条件から50厳密比較ペア（11地点、アデリーのみ）を確保。ただし同じモデル海域格子を共有し、ヒゲ・ジェンツーの厳密対照は未成立。
 
