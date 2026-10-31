@@ -1,0 +1,109 @@
+{
+  "status": "calculated_conditional_physical_exposure_not_biological_forecast",
+  "source_git_blob_sha": {
+    "site_model_changes.csv": "b383ef1cc3b0807b0bd010ca0e825937ab83ce97",
+    "seasonal_climatologies.csv": "2a794a27fbd6460f7efc78cf09d5d3e98d38fd45",
+    "site_model_ensemble.csv": "683d8b14710679f0ac0e7d52d00b49c04556c0f9"
+  },
+  "baseline": "1995-2014",
+  "season": "August–November",
+  "scenarios": [
+    {
+      "experiment": "ssp245",
+      "period": "2041-2060",
+      "locations": 106,
+      "marine_fingerprints": 43,
+      "all3_warming_locations": 106,
+      "all3_ice_decline_locations": 83,
+      "all3_ice_loss5_locations": 9,
+      "all3_ice_loss10_locations": 6,
+      "all3_ice_loss10_fingerprints": 2,
+      "all3_ice_loss20_locations": 0,
+      "all3_ice_loss10_locations_cell_dist_le50km": 0,
+      "all3_marine_cell_dist_le50km_locations": 70,
+      "all3_salinity_decline_locations": 31,
+      "mixed_sign_salinity_locations": 75,
+      "all3_temp_delta_ge2_hist_sd_locations": 0,
+      "all3_sic_future_below15pct_locations": 42,
+      "all3_sic_newly_below15pct_locations": 0
+    },
+    {
+      "experiment": "ssp245",
+      "period": "2081-2100",
+      "locations": 106,
+      "marine_fingerprints": 43,
+      "all3_warming_locations": 106,
+      "all3_ice_decline_locations": 83,
+      "all3_ice_loss5_locations": 30,
+      "all3_ice_loss10_locations": 25,
+      "all3_ice_loss10_fingerprints": 3,
+      "all3_ice_loss20_locations": 6,
+      "all3_ice_loss10_locations_cell_dist_le50km": 2,
+      "all3_marine_cell_dist_le50km_locations": 70,
+      "all3_salinity_decline_locations": 35,
+      "mixed_sign_salinity_locations": 71,
+      "all3_temp_delta_ge2_hist_sd_locations": 17,
+      "all3_sic_future_below15pct_locations": 49,
+      "all3_sic_newly_below15pct_locations": 3
+    },
+    {
+      "experiment": "ssp585",
+      "period": "2041-2060",
+      "locations": 106,
+      "marine_fingerprints": 43,
+      "all3_warming_locations": 106,
+      "all3_ice_decline_locations": 83,
+      "all3_ice_loss5_locations": 9,
+      "all3_ice_loss10_locations": 6,
+      "all3_ice_loss10_fingerprints": 2,
+      "all3_ice_loss20_locations": 3,
+      "all3_ice_loss10_locations_cell_dist_le50km": 0,
+      "all3_marine_cell_dist_le50km_locations": 70,
+      "all3_salinity_decline_locations": 35,
+      "mixed_sign_salinity_locations": 71,
+      "all3_temp_delta_ge2_hist_sd_locations": 3,
+      "all3_sic_future_below15pct_locations": 44,
+      "all3_sic_newly_below15pct_locations": 0
+    },
+    {
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "locations": 106,
+      "marine_fingerprints": 43,
+      "all3_warming_locations": 106,
+      "all3_ice_decline_locations": 83,
+      "all3_ice_loss5_locations": 36,
+      "all3_ice_loss10_locations": 32,
+      "all3_ice_loss10_fingerprints": 8,
+      "all3_ice_loss20_locations": 32,
+      "all3_ice_loss10_locations_cell_dist_le50km": 7,
+      "all3_marine_cell_dist_le50km_locations": 70,
+      "all3_salinity_decline_locations": 79,
+      "mixed_sign_salinity_locations": 27,
+      "all3_temp_delta_ge2_hist_sd_locations": 96,
+      "all3_sic_future_below15pct_locations": 52,
+      "all3_sic_newly_below15pct_locations": 6
+    }
+  ],
+  "periods": [
+    "2041-2060",
+    "2081-2100"
+  ],
+  "models": [
+    "ACCESS-CM2",
+    "BCC-CSM2-MR",
+    "CESM2"
+  ],
+  "n_locations": 106,
+  "n_distinct_site_codes": 71,
+  "n_marine_fingerprints": 43,
+  "input_checks": {
+    "source_change_rows": 3816,
+    "source_historical_rows": 954,
+    "source_ensemble_rows": 1272,
+    "crosschecked_ensemble_rows": 1272,
+    "site_scenario_rows": 424,
+    "fingerprint_scenario_rows": 172
+  },
+  "caveat": "A marine fingerprint is a shared 3-model SIC grid-cell tuple, NOT an independent island or statistical replicate. 15% seasonal-mean SIC is NOT a bird route threshold; 2 historical annual SD is descriptive model climate novelty, NOT a viability threshold."
+}
