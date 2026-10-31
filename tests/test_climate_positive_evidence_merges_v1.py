@@ -28,6 +28,6 @@ class EvidenceMergeTests(unittest.TestCase):
     def test_draft_references_separated(self):
         self.assertTrue(all(x["pr"]==189 for x in self.j["external_draft_evidence"]))
         self.assertGreaterEqual(len(self.j["external_draft_evidence"]),2)
-        self.assertEqual(len(self.j["verified_exploratory"]),4)
+        self.assertGreaterEqual(len(self.j["verified_exploratory"]),5)
 if __name__=="__main__":
     unittest.main()

@@ -208,3 +208,9 @@ Source verification: [GPS×TDR original overlap](https://github.com/zuizui0223/m
 
 
 **2026-10-31 TDR pressure quality sensitivity finalized:** [48 fixed original-tag zero-offset×pressure-cutoff tests](outputs/chinstrap_tdr_zoc_sensitivity_v2/REPORT_JA.md), [dedicated successful CI](https://github.com/zuizui0223/mina/actions/runs/41165153690) with 4 tests. Among four original pilot tags, 5dbar candidate-event counts across calibration methods vary Laurie1476–1481, Powell4771–4825, Monroe**1254–1456**, Signy51–52; GPS-bracketed event counts Laurie897–901, Powell2113–2132, Monroe**846–1012**, Signy24. The large Monroe sensor drift (~7.75dbar) forces sensor-specific offset QA before original 300 source units can be interpreted as comparable diving ecology. No independent acoustic/krill capture or environmental causal response has been established.
+
+## 2026-10-31: 4 native TDR dive-candidate GPS cells joined to original krill GAM
+
+原BAS TDR×GPSと既存Freerオキアミモデルの固定4タグ接続が実行済み。圧力5dbar・10秒以上（暫定q1/60min ZOC）、前後実GPS600秒以内＋最近実GPS300秒以内という候補段階で、原GPS時間対応はLaurie901、Powell2117、Monroe876、Signy24。地理10〜150km条件の後にモデル値を得られたのはLaurie901/27固有セル、Powell543/28、Monroe802/13、Signy0/0。先行夏の候補GAM平均は8.813、11.902、6.485 g/m²（Signyは推定不能）；タグ内全GPSセル基準の比は0.985、0.928、0.982。原4タグ・48条件すべて保存し、[元CI](https://github.com/zuizui0223/mina/actions/runs/41168213176)はSUCCESS。
+
+したがって『潜水が起きている場所ほどモデル上のオキアミ密度が高い』とは支持できない。なお潜水候補は実捕食・海上潜水ではなく、GAM自体は音響観測と海氷・塩分の入力を使用済み。Monroeのセンサゼロ点漂移7.75dbar、各島1タグ、年が異なる問題を保持。陽性結果は**原GPS・原TDR・GAM格子の技術的接続に成功したこと**であり、2050/2100年の生態学的予測ゲートは通過しない。

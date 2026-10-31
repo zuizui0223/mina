@@ -149,6 +149,14 @@
       "effects": "Scenario physical temperature/sea-ice/salinity change available",
       "source": "research/climate-penguin/INTEGRATED_FUTURE_BREEDING_GATE_20261030.md",
       "boundary": "Conditional GCM physics only; not forecast penguin abundance or vegetation"
+    },
+    {
+      "id": "chinstrap_tdr_pressure_gps_model_cell_pilot",
+      "n": "4 fixed source tags, 48 q1/q5 ZOC×2/5/10 dbar pressure-candidate specifications",
+      "effects": "Original-GPS time bracket candidates Laurie901 Powell2117 Monroe876 Signy24; 10–150km and published GAM source model valid Laurie901/27 unique cells Powell543/28 Monroe802/13 Signy0; three tag within-model candidate/all-GPS cell ratios 0.985,0.928,0.982",
+      "source": "research/climate-penguin/outputs/chinstrap_tdr_krill_location_pilot_v3/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41168213176",
+      "boundary": "Only technical co-registration, pressure ZOC provisional especially Monroe 7.75 dbar, original GPS point does not identify feeding, GAM prefit ice/salinity/acoustics, no island or future breeding causal evidence"
     }
   ],
   "external_draft_evidence": [
