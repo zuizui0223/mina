@@ -4,6 +4,10 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[Climate–breeding/vegetation spatial crosswalk (2026-10-31)](outputs/land_marine_colocation_v1/REPORT_JA.md):** 58 original site×species rows across 48 site IDs matched to 106 fixed CMIP6 climate coordinates; 188 unmatched source rows preserved. Includes land-mask QA, CSV, GeoJSON and source-level audit.
+- **[Matched-colony conditional future direction audit (2026-10-31)](outputs/future_direction_identifiability_v1/REPORT_JA.md):** 19 strict camera-geographic site×species matches, 76 scenario panels, 912 original two/four-environment model predictions. All 76 panels contain both earlier and later conditional predictions; no calibrated breeding forecast.
+- **[Spatial CMIP6 exposure atlas (2026-10-31)](outputs/cmip6_exposure_atlas_v1/REPORT_JA.md):** physical air-temperature, sea-ice and salinity change at 106 fixed locations, grouped into 43 repeated three-model marine-grid fingerprints.
+
 - **[Latest integrated findings: correlations and conditional scenarios](outputs/research_synthesis_v1/RESEARCH_STATUS_JA.md)**: updated inference, salinity, annual NDVI, mapped vegetation support, tracking limits and remaining work. Earlier reports below are dated checkpoints.
 - [Full correlation atlas](outputs/correlation_atlas_v1/REPORT_JA.md), [salinity sensitivity](outputs/salinity_sensitivity_v1/REPORT_JA.md), and [conditional response decomposition](outputs/scenario_components_v1/REPORT_JA.md).
 - [Salinity site-deletion sensitivity](outputs/salinity_site_influence_v1/REPORT_JA.md): 48 fixed specifications and 656 deletion fits. Adelie retains positive direction after each camera deletion; previous year-deletion sensitivity still crosses zero.
