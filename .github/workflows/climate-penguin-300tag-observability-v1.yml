@@ -1,0 +1,40 @@
+name: climate-penguin-source-300tag-observability-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_300tag_observability_v1.py"
+      - "tests/test_chinstrap_300tag_observability_v1.py"
+      - ".github/workflows/climate-penguin-300tag-observability-v1.yml"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  frozen-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests for source-only criteria
+        run: python -m unittest discover -s tests -p test_chinstrap_300tag_observability_v1.py -v
+      - name: Fetch frozen original BAS 300tag source QA artifact
+        env:
+          GH_TOKEN: \${{ github.token }}
+        run: |
+          mkdir -p build/original300
+          gh run download 41177252296 -R zuizui0223/mina -n chinstrap-all-300-original-TDR-instrument-QA-v1 -D build/original300
+      - name: Verify frozen source content and all 300 decisions
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_300tag_observability_v1.py --original-qa build/original300/all_300_original_sensor_QA.csv --out build/operational300 --check
+          python -m unittest discover -s tests -p test_chinstrap_300tag_observability_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-300tag-calibration-priority-cohort-v1
+          path: |
+            build/operational300/all_300_operational_source_tags.csv
+            build/operational300/island_coverage.csv
+            build/operational300/decision.json
