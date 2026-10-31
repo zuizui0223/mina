@@ -189,6 +189,51 @@ const leaveOneSiteOut = [...sites].sort().map(site => {
     september_first_difference_r: pearson(dd.map(r => r.delta_sic_september_pp), dd.map(r => r.delta_ratio)),
   };
 });
+// Species-specific exploratory time-transfer gate: same fixed 20 prior intervals as pooled model.
+// This sensitivity does not reselect a climate coefficient after observing future scores.
+const speciesOnlyTemporal = {}, speciesOnlyPredictions = [];
+for (const species of ["GEPE", "CHPE"]) {
+  const sub = intervals.filter(r => r.compared_species === species);
+  const exclusions = [...new Set(sub.map(r => r.site))].sort().map(site => {
+    const q = sub.filter(r => r.site !== site);
+    return {
+      excluded_site: site,
+      n_remaining_intervals: q.length,
+      september_first_difference_r: pearson(q.map(r => r.delta_sic_september_pp), q.map(r => r.delta_ratio)),
+    };
+  });
+  kindStats[species].september_first_difference_leave_one_site_out = exclusions;
+  const pred = [];
+  for (const obs of sub) {
+    const train = sub.filter(r => r.year < obs.year);
+    if (train.length < 20) continue;
+    const ymean = mean(train.map(r => r.delta_ratio)), xmean = mean(train.map(r => r.delta_sic_september_pp));
+    const xx = train.reduce((s, r) => s + (r.delta_sic_september_pp - xmean) ** 2, 0);
+    const xy = train.reduce((s, r) => s + (r.delta_sic_september_pp - xmean) * (r.delta_ratio - ymean), 0);
+    const beta = xy / (xx + 500);
+    pred.push({
+      compared_species: species, group: obs.group, site: obs.site, test_year: obs.year,
+      n_earlier_training_intervals: train.length,
+      actual_delta_ratio: obs.delta_ratio, observed_test_year_delta_sic_pp: obs.delta_sic_september_pp,
+      predict_no_change: 0, predict_prior_mean: ymean,
+      predict_prior_mean_plus_sic: ymean + beta * (obs.delta_sic_september_pp - xmean),
+    });
+  }
+  speciesOnlyPredictions.push(...pred);
+  const score = (field) => {
+    const delta = pred.map(r => r[field] - r.actual_delta_ratio);
+    return { mae: mean(delta.map(Math.abs)), rmse: Math.sqrt(mean(delta.map(v => v * v))) };
+  };
+  speciesOnlyTemporal[species] = {
+    test_intervals: pred.length,
+    tested_sites: new Set(pred.map(r => r.site)).size,
+    prior_train_support: 20,
+    no_change: score("predict_no_change"),
+    prior_mean: score("predict_prior_mean"),
+    prior_mean_plus_sic: score("predict_prior_mean_plus_sic"),
+  };
+}
+
 const predictions = [];
 for (const obs of intervals) {
   // Strictly earlier test end years; observed test-year SIC makes this a conditional hindcast.
@@ -241,6 +286,7 @@ const summary = {
   chronological_conditional_hindcast: {
     definition: "all records with interval end_year < test end_year, min 20 prior intervals, fixed ridge 500; same-year observed SIC input, full-panel cohort selection",
     test_intervals: predictions.length, test_sites: new Set(predictions.map(r => r.site)).size,
+    species_only_sensitivity: speciesOnlyTemporal,
     no_change: err("predict_no_change"),
     prior_mean: err("predict_prior_mean"),
     prior_mean_plus_sic: err("predict_prior_mean_plus_sic"),
@@ -261,12 +307,24 @@ if (process.argv.includes("--check-receipt")) {
   assertClose(summary.chronological_conditional_hindcast.prior_mean.mae, expected.prior_mean_mae, "prior MAE");
   assertClose(summary.chronological_conditional_hindcast.prior_mean_plus_sic.mae, expected.sic_mae, "SIC MAE");
   if (predictions.length !== receipt.predictions) throw Error("Prediction fold drift");
+  assertClose(kindStats.GEPE.september_consecutive_difference_r, receipt.species_values.gentoo_firstdiff_r, "Gentoo first difference");
+  assertClose(kindStats.CHPE.september_consecutive_difference_r, receipt.species_values.chinstrap_firstdiff_r, "Chinstrap first difference");
+  for (const species of ["GEPE", "CHPE"]) {
+    const expected = receipt.species_values[species];
+    const observed = speciesOnlyTemporal[species];
+    if (observed.test_intervals !== expected.test_intervals) throw Error("Species-only fold drift " + species);
+    assertClose(observed.prior_mean.mae, expected.prior_mean_mae, "Species-only prior mean " + species);
+    assertClose(observed.prior_mean_plus_sic.mae, expected.sic_mae, "Species-only SIC " + species);
+  }
+  if (kindStats.GEPE.september_first_difference_leave_one_site_out.some(r => r.september_first_difference_r >= 0))
+    throw Error("Gentoo leave-one-site sign drift");
 }
 mkdirSync(outdir, { recursive: true });
 writeFileSync(join(outdir, "summary.json"), JSON.stringify(summary, null, 2) + "\n");
 writeFileSync(join(outdir, "same_year_ratios.csv"), csv(yearly));
 writeFileSync(join(outdir, "consecutive_ratio_intervals.csv"), csv(intervals));
 writeFileSync(join(outdir, "chronological_conditional_hindcasts.csv"), csv(predictions));
+writeFileSync(join(outdir, "species_only_conditional_hindcasts.csv"), csv(speciesOnlyPredictions));
 writeFileSync(join(outdir, "validation.json"), JSON.stringify({
   input_git_blobs_verified: true,
   frozen_receipt_passed: process.argv.includes("--check-receipt"),
