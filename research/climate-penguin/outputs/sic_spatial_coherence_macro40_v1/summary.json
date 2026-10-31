@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-31",
+  "status": "verified_observed_ice_spatial_coherence_by_distance_not_independent_site_biology",
+  "source_git_blob_sha": {
+    "sic": "4fcea71c2d8b1069b6ad143f6522061ed434daf5",
+    "positions": "1c5214ab355d3d2e19bc33e5de4693fa21f38731"
+  },
+  "primary_September_near": {
+    "r_lt50km": 0.9912946729477736,
+    "nPairs_lt50km": 61,
+    "r_250_500km": 0.3153535517541149,
+    "nPairs_250_500km": 145,
+    "r_ge1000km": 0.011319142247277788,
+    "nPairs_ge1000km": 395,
+    "SeptemberOffshore_250_500km": 0.7970395285026719,
+    "leave_one_out_range_r_250_500km": [
+      0.30744610733046285,
+      0.33587468784944513
+    ]
+  },
+  "study_units": {
+    "sites": 40,
+    "years": 30,
+    "site_year_month_band_rows": 9600,
+    "site_pairs_per_month_band": 780,
+    "pair_scenarios": 6240,
+    "month_band_distance_bin_rows": 48,
+    "all_site_leave_one_out_rows": 1920,
+    "cross_scale_bin_rows": 24
+  },
+  "bins": [
+    "0–50 km",
+    "50–100 km",
+    "100–250 km",
+    "250–500 km",
+    "500–1000 km",
+    "≥1000 km"
+  ],
+  "interpretation": "Geographic coherence of source-observed sea-ice averages depends on distance and offshore buffer size. This does not identify a causal climate-population relationship or a unique biological climate refuge.",
+  "restrictions": [
+    "40 fixed macro Pygoscelis sampling sites are not a uniformly random survey of Antarctic coastal sea ice.",
+    "The 780 pairs reuse 40 original sites and must not be treated as independent statistical units.",
+    "SIC marine buffers overlap at short distances; offshore 100-500km averages intentionally smooth variation and mechanically increase correlation.",
+    "Temporal correlations over 30 years may reflect shared trends and regional regimes; no validated process-specific coherence length.",
+    "No colony/subcolony-specific marine or feeding-track ice data, and no sea-ice effects on breeding counts estimated."
+  ]
+}
