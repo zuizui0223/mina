@@ -40,7 +40,7 @@ def main() -> None:
     sites = sorted(pairs.loc[pairs.gate == 1, "site_id"].unique())
     if len(sites) != 8:
         raise ValueError("Original 8-site paired colony cohort drift")
-    focus = grid.loc[grid.site_id.isin(sites)].sort_values("site_id").reset_index(drop=True)
+    focus = grid.loc[grid.site_id.isin(sites) & (grid.cohort == "macro_40")].sort_values("site_id").reset_index(drop=True)
     if len(focus) != 8 or not focus.grid_within_25km.all():
         raise ValueError("GLORYS distance gate: all 8 exact site codes must be wet and within 25 km")
     if focus[["grid_y", "grid_x"]].drop_duplicates().shape[0] != 8:
