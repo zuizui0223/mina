@@ -26,7 +26,8 @@ class EvidenceMergeTests(unittest.TestCase):
         self.assertTrue(any("2013" in x for x in self.j["failed_or_open"]))
         self.assertTrue(any("2050/2100" in x for x in self.j["failed_or_open"]))
     def test_draft_references_separated(self):
-        self.assertEqual(self.j["external_draft_evidence"][0]["pr"],189)
+        self.assertTrue(all(x["pr"]==189 for x in self.j["external_draft_evidence"]))
+        self.assertGreaterEqual(len(self.j["external_draft_evidence"]),2)
         self.assertEqual(len(self.j["verified_exploratory"]),4)
 if __name__=="__main__":
     unittest.main()
