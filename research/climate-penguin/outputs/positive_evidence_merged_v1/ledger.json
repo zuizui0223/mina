@@ -245,6 +245,18 @@
       "source_artifact_id": 13036146864,
       "grade": "B_POSTHOC_WITHIN_PRETRAINED_GAM_COMPONENT_ACCOUNTING",
       "boundary": "Occurrence and positive-density are two components of the SAME Freer GAM trained on original acoustic/sea-ice/salinity. Source GPS positions are not confirmed capture/dive, model-valid circular distance reference is not real ocean access, no independent spatial or temporal validation. Log component shares are arithmetic attribution, not ecology causality. One other island per year, Signy 2011 n4. No climate/vegetation/future nests/N_eff prediction."
+    },
+    {
+      "id": "chinstrap_original_satellite_monthly_ice_gps_colocation",
+      "n": "Original 308 BAS Chinstrap Version2 GPS deployment tracks, 253 position-hour qualified; 11 independent OSI SAF 25km Southern monthly NetCDF original satellite source files; 1164 source tag-month-distance-quality rows; 7 island-year location cohorts, 3 matched same-species island-year pairs, monthly spatial GPS hours and distinct satellite cell support retained",
+      "effects": "December 2013 monthly original satellite SIC near source GPS Signy 26.25988% vs Powell 12.78829% (10 source tags each, +13.47159 percentage points). One vote per original OSI satellite ocean cell: Signy 42 cells mean24.02833% (33/42 cells >=15%) vs Powell29 cells mean9.76586% (11/29 >=15%), difference14.26247pp. Jan2014 original satellite SIC Signy 0%, Powell 0.03152% (cell means 0%,0.20353%). Same original GPS deployment IDs Dec2013-Jan2014: Signy 2 tags 27.28226%→0%, Powell 10 tags 12.78829%→0.16389%. Dec2015 Signy 4.04921% vs Monroe 0%, Jan2016 both 0%. 20 vs35km nearest ocean pixel and permissive vs stringent flags unchanged for the December 2013 contrast.",
+      "source": "research/climate-penguin/outputs/chinstrap_OSI_monthly_original_GPS_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41186205042",
+      "source_artifact_id": 13036218741,
+      "original_SIC_DOI": "10.15770/EUM_SAF_OSI_0023",
+      "original_GPS_DOI": "10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
+      "grade": "B_GPS_LINKED_OBSERVED_PHYSICAL_MONTHLY_ICE_SOURCE_NOT_ECOLOGICAL_CAUSAL",
+      "boundary": "This is real satellite-derived monthly 25km SIC at nearest ocean cells to GPS positions, not actual ice at each GPS day/time, daily traversable routes, penguin feeding or original krill acoustic biomass. Many tags share pixels; December-to-January birds and locations differ, two Signy matched tags only. Freer model trained with ice/salinity/acoustic, so joint ice/krill-model correlations are not independent ice→prey causality. Not a 2050/2100 penguin abundance, N_eff or vegetation prediction."
     }
   ],
   "external_draft_evidence": [
@@ -282,7 +294,8 @@
     "Static vegetation detection does not establish time change or nest-level plant use",
     "No validated 2050/2100 breeding-pair/N_eff/vegetation forecast",
     "In 300-source TDR quality census, provisional q1 60min zero-baseline range >2dbar in 42/300, five extreme >100dbar, PI009 repeated same-second source timestamps 668268; true pressure-to-depth, surface ZOC and dive capture remain unvalidated.",
-    "PI009 has 614298 same-timestamp pressure values differing from first among 668268 additional records; potential logger time precision mismatch; five source tags have hourly q1 span >100dbar. Source metadata and validated calibration needed before accurate dive-time location."
+    "PI009 has 614298 same-timestamp pressure values differing from first among 668268 additional records; potential logger time precision mismatch; five source tags have hourly q1 span >100dbar. Source metadata and validated calibration needed before accurate dive-time location.",
+    "Original 25km monthly OSI satellite SIC can be matched to original 2011/13/15/18 Chinstrap GPS months, but lacks daily/microscale sea-ice navigability, independent prey biomass and stage-specific breeding response; do not use monthly 15% SIC as literal penguin travel barrier."
   ],
   "rule": "Only add verified positive entries with source+sampling grain+effect+limitations+workflow where present. Never convert observational association into causal mechanistic support. Never merge draft PR189/199 to main without author signoff."
 }
