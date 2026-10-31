@@ -17,7 +17,7 @@ class RadialSourceQATests(unittest.TestCase):
            "same_summer_qualified_source_hourly":"True",
            "preseason_observed_track_mean_GAM_g_m2":"2.0",
            "same_summer_observed_track_mean_GAM_g_m2":"1.0"}
-        got=m.attach_QA([x],[])[0]
+        got=m.attach_QA([x],[],require_complete_source=False)[0]
         self.assertTrue(got["GPS_source_hourly_ge10"])
         self.assertTrue(got["source_not_in_TDR_300_is_not_animal_no_dive"])
         self.assertIsNone(got["TDR_source_covered_and_QA_primary"])

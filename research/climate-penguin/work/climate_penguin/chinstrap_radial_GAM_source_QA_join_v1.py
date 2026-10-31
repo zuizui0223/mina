@@ -43,9 +43,9 @@ def modelled_tag_rows(file):
         raise ValueError("source GPS island×year support changed")
     return records
 
-def attach_QA(gps,qa_rows):
+def attach_QA(gps,qa_rows,require_complete_source=True):
     decisions={x["original_source_id"]:x for x in qa_rows}
-    if len(decisions)!=300:
+    if require_complete_source and len(decisions)!=300:
         raise ValueError("expected complete source 300 TDR/GPS original QA")
     out=[]
     for g in gps:
