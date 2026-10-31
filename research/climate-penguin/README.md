@@ -4,6 +4,7 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[Breeding allocation versus future climate exposure (2026-10-31)](outputs/breeding_allocation_exposure_v1/REPORT_JA.md):** Quantified 2017–2023 observed site-median nest allocation across three penguins against physical CMIP6 warming/sea-ice/salinity changes, compared equal-site, nest-weighted and region-conditioned exposures. Original AEI/REMA 122-site source artifacts supply 46 matched site-code land-context traits. The observed geographic allocation is not a forecast of nest survival nor a mapped subcolony refuge test.
 - **[Climate–breeding/vegetation spatial crosswalk (2026-10-31)](outputs/land_marine_colocation_v1/REPORT_JA.md):** 58 original site×species rows across 48 site IDs matched to 106 fixed CMIP6 climate coordinates; 188 unmatched source rows preserved. Includes land-mask QA, CSV, GeoJSON and source-level audit.
 - **[Matched-colony conditional future direction audit (2026-10-31)](outputs/future_direction_identifiability_v1/REPORT_JA.md):** 19 strict camera-geographic site×species matches, 76 scenario panels, 912 original two/four-environment model predictions. All 76 panels contain both earlier and later conditional predictions; no calibrated breeding forecast.
 - **[Spatial CMIP6 exposure atlas (2026-10-31)](outputs/cmip6_exposure_atlas_v1/REPORT_JA.md):** physical air-temperature, sea-ice and salinity change at 106 fixed locations, grouped into 43 repeated three-model marine-grid fingerprints.
