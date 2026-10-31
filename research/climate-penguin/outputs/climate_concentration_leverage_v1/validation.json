@@ -1,0 +1,24 @@
+{
+  "status": "passed_independent_full_derived_numeric_audit",
+  "checked": [
+    "Palmer five-island 2-year hierarchy recomputed from source endpoints",
+    "42 shock variance scenarios recalculated independently",
+    "16 climate records verified against 4 shared-model SIC fingerprints",
+    "Source Git blob version IDs and Palmer artifact original CSV hash fixed"
+  ],
+  "files": {
+    "palmer_island_state_endpoints.csv": "a72a3eee545d07352db29b7f90d44bdeb3bb9978",
+    "palmer_region_endpoints.csv": "8836c1b2c613a0d2d7e25626caac7675d712f7b7",
+    "shock_correlation_sensitivity.csv": "69688ed95f1210f1775eb69b2945f54ecc11b105",
+    "nearby_climate_grid_support.csv": "336beb97b2dfb509ec4df8a4df01c0486c8c3df7",
+    "summary.json": "60340e126996917f93e8487cb570800d9e94a297"
+  },
+  "counts": {
+    "palmerIslandYears": 10,
+    "regionEndpoints": 2,
+    "varianceSensitivities": 42,
+    "nearbyClimateRecords": 16
+  },
+  "errors": [],
+  "caution": "Mathematical variance identities under exchangeable equal-variance environmental shocks are NOT observed SIC covariance, causation, or breeding forecast."
+}
