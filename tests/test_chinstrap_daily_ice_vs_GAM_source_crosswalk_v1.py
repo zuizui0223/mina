@@ -22,5 +22,5 @@ class TestOriginalSourceCrosswalk(unittest.TestCase):
              "n_valid_fixed_pixel_daily_contrasts":"3",
              "n_original_shared_source_GPS_days":"3",
              "mean_Signy_minus_other_fixed_25km_cell_SIC_pp":"10.9"}]
-        with self.assertRaises(KeyError):m.join(a,[])
+        with self.assertRaisesRegex(ValueError,"source sensitivity support incomplete"):m.join(a,[])
 if __name__=="__main__":unittest.main()
