@@ -1,0 +1,48 @@
+name: climate-penguin-three-matched-island-years-daily-SIC-generalization-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_daily_SIC_three_island_year_pairs_v1.py"
+      - "tests/test_chinstrap_daily_SIC_three_island_year_pairs_v1.py"
+      - ".github/workflows/climate-penguin-Chinstrap-three-year-daily-SIC-v1.yml"
+jobs:
+  source-three-years:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install original BAS/OSI source decoders
+        run: python -m pip install numpy scipy xarray netCDF4 "rasterio>=1.4,<1.6"
+      - name: Validate source-only tests before opening any ice
+        run: python -m unittest discover -s tests -p test_chinstrap_daily_SIC_three_island_year_pairs_v1.py -v
+      - name: Get original BAS Chinstrap GPS v2
+        run: |
+          mkdir -p build/three_GPS_islands_daily
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 300 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/three_GPS_islands_daily/original_chinstrap_gps.zip
+      - name: Freeze shared original GPS days for 2011, 2013 and 2015 before opening SIC
+        run: python research/climate-penguin/work/climate_penguin/chinstrap_daily_SIC_three_island_year_pairs_v1.py --gps build/three_GPS_islands_daily/original_chinstrap_gps.zip --out build/three_GPS_islands_daily --phase discover
+      - name: Fetch only original daily OSI SAF NetCDF files on source shared dates
+        run: python research/climate-penguin/work/climate_penguin/chinstrap_daily_SIC_three_island_year_pairs_v1.py --gps build/three_GPS_islands_daily/original_chinstrap_gps.zip --out build/three_GPS_islands_daily --phase fetch
+      - name: Compute matched GPS day and exact fixed native-ocean-cell reference
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_daily_SIC_three_island_year_pairs_v1.py --gps build/three_GPS_islands_daily/original_chinstrap_gps.zip --out build/three_GPS_islands_daily --phase analyze
+          python -m unittest discover -s tests -p test_chinstrap_daily_SIC_three_island_year_pairs_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-three-year-original-GPS-daily-SIC-fixed-pixels-v1
+          path: |
+            build/three_GPS_islands_daily/source_frozen_GPS_three_pair_dates.json
+            build/three_GPS_islands_daily/source_daily_ice_download_receipts.json
+            build/three_GPS_islands_daily/source_3pair_tag_daily_SIC.csv
+            build/three_GPS_islands_daily/source_3pair_site_daily_SIC.csv
+            build/three_GPS_islands_daily/source_3pair_matched_daily_SIC.csv
+            build/three_GPS_islands_daily/source_3pair_fixed_pixels_SIC.csv
+            build/three_GPS_islands_daily/source_3pair_fixed_pixel_daily_contrast.csv
+            build/three_GPS_islands_daily/source_3pair_fixed_pixel_month_summary.csv
+            build/three_GPS_islands_daily/decision.json
