@@ -1,0 +1,11 @@
+# Five Palmer island coarse-grid ERA5 climate separability source gate
+
+Date 2026-10-29. Outcome-aware **source diagnostic only**, not new climate-effect or difference-in-differences test.
+
+The 2014 Litchfield ASPA primary source gives four nesting pairs 2006–07 followed by six explicit observed zero breeding-pair seasons 2007–2012. Palmer original 1991–2017 five-island aggregate monitoring data retain positive breeding counts for four other nearby islands after 2007. SCAR official high-resolution v7.12 independently verifies five distinct physical mapped-land polygons; first-party Plantarctica Figshare 2024 published static map now gives **independent island-clipped mapped vegetation footprints** but not annual before/after vegetation.
+
+This new fixed original-source audit sends **exact** five preexisting Palmer site coordinates (CHIS,CORM,HUMB,LITC,TORG) to Open-Meteo Historical Weather API, requesting only explicit ERA5 2m daily temperature for 1991-01-01–2020-12-31, no elevation downscaling (`nan` per coordinate), UTC, nearest grid selection. Freeze query parameters before checking response data. Report source returned actual ERA5 cell ID for each island, number distinct grid cells, exact 30-year daily-array equality when grids coincide, and descriptive 2005–2008 September local-grid conditions. Compare LITC returned cell with already independent 40-site original 1991–2020 source gate when possible.
+
+If multiple island points use the **same reanalysis grid**, this means they share an **identical mapped source atmospheric series**, not identical actual weather, land temperature, snowpack, access to sea, productivity, vegetation or bird movement. A shared coarse regional atmospheric covariate cannot itself discriminate why one local monitored colony went to zero while neighboring groups continued, but it also cannot rule out a common forcing with species/colony-specific susceptibility or unmeasured local interactions. If grids differ, report exact IDs and independence limitation; do not impose equality.
+
+No ad hoc climate covariate, warming/colony effect, 2007 local causality, annual vegetation trend, GIS access mechanism or competing guild explanation inferred. Frozen Ecology PR189 and independent island Paper2 PR199 unaffected.

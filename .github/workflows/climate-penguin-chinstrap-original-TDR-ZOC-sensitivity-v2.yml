@@ -1,0 +1,47 @@
+name: climate-penguin-chinstrap-original-TDR-ZOC-sensitivity-v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_tdr_zoc_sensitivity_v2.py"
+      - "tests/test_chinstrap_tdr_zoc_sensitivity_v2.py"
+      - ".github/workflows/climate-penguin-chinstrap-original-TDR-ZOC-sensitivity-v2.yml"
+
+jobs:
+  original-offset:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install numpy
+      - name: Test pressure-ZOC logic with pre-fixed sources not yet downloaded
+        run: python -m unittest discover -s tests -p test_chinstrap_tdr_zoc_sensitivity_v2.py -v
+      - name: Fetch original publisher BAS GPS and TDR v2
+        run: |
+          mkdir -p build/chinstrap_original_pilot
+          curl -L --fail --retry 4 --retry-delay 6 --max-time 1200 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' \
+            -o build/chinstrap_original_pilot/GPS.zip
+          curl -L --fail --retry 4 --retry-delay 6 --max-time 1200 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=da13e049-be2b-4345-bbdd-ab960cb24731&output=zip.tree' \
+            -o build/chinstrap_original_pilot/TDR.zip
+      - name: Evaluate all 48 source TDR offset and threshold conditions
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_tdr_zoc_sensitivity_v2.py \
+            --tdr-zip build/chinstrap_original_pilot/TDR.zip \
+            --gps-zip build/chinstrap_original_pilot/GPS.zip \
+            --out build/chinstrap_original_pilot/offset_result \
+            --check-receipt
+          python -m unittest discover -s tests -p test_chinstrap_tdr_zoc_sensitivity_v2.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-original-tdr-ZOC-sensitivity-v2
+          path: |
+            build/chinstrap_original_pilot/offset_result/original_tdr_offset_event_sensitivity.csv
+            build/chinstrap_original_pilot/offset_result/per_original_tag_qc_gate.csv
+            build/chinstrap_original_pilot/offset_result/decision.json

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "analysis_status": "executed_exploratory_relationships",
+  "period": [
+    2017,
+    2023
+  ],
+  "fixed_species": [
+    "ADPE",
+    "CHPE",
+    "GEPE"
+  ],
+  "fixed_endpoints": [
+    "observed_log_count_slope_per_year",
+    "log1p_count_median"
+  ],
+  "bootstrap_replicates": 999,
+  "bootstrap_seed": 20261030,
+  "spatial_bootstrap": "10 km connected geographic components; uncertainty sensitivity, not independence proof",
+  "n_site_species": 246,
+  "n_unique_sites": 222,
+  "n_positive_site_species": 197,
+  "n_observed_site_seasons": 389,
+  "n_with_repeated_counts": 79,
+  "n_positive_with_repeated_counts": 64,
+  "n_two_season_only": 41,
+  "common_census_year_sensitivity": 2019,
+  "static_map_copied_to_annual_records": false,
+  "unobserved_counts_imputed": false,
+  "vegetation_non_detection_treated_as_biological_absence": false,
+  "vegetation_temporal_trend_estimated": false,
+  "causal_effect_estimated": false,
+  "forecast_estimated": false,
+  "source_sha256": {
+    "outputs/comparison_audit/mapppd_unambiguous_site_seasons.csv": "fcb622814d9aec674fb34ff5f8acd357f5508cf4bc1c63945e62d0c558fbc3c1",
+    "outputs/comparison_audit/vegetation_2km_mapped_area.csv": "c3db12b5561919a7b4ac600369b3a65b767b186201945496cd079ef250eaa080",
+    "work/vegetation_response_v1/analyze_vegetation_relationships.py": "b46c72288bb94c0354569c5ff9351ac6ed81b11f2c0882dd9a5b2567cfb2c770"
+  },
+  "primary_source_urls": [
+    "https://doi.org/10.1038/s41561-024-01492-4",
+    "https://doi.org/10.6084/m9.figshare.24745956.v1",
+    "https://github.com/CCheCastaldo/mapppdr/tree/88c73a507e0921b2541c218c71eaf16721bc6502"
+  ],
+  "limitations": [
+    "2017–2023 composite provides spatial mapped detection only, no vegetation growth rate.",
+    "Map non-detection can reflect coverage/classification limits; the all-sites sensitivity is mapped signal only.",
+    "Count slopes summarize irregular observed seasons; two-point changes are not established biological trends.",
+    "Region adjustment does not remove continuous latitude, ice-free land area, terrain, microclimate or survey-method differences.",
+    "Vegetation and breeding counts overlap in time, so direction and temporal precedence are unidentified.",
+    "10 km bootstrap blocks reduce immediate spatial pseudoreplication but do not guarantee independent errors.",
+    "Counts concern surveyed known breeding sites; no inference about unobserved occupation or new site selection.",
+    "All fixed combinations are reported; no multiple-testing significance claims or result-based model selection."
+  ]
+}

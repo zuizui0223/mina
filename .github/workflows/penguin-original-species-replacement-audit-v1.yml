@@ -1,0 +1,33 @@
+name: Penguin original species replacement positive-count audit v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/breeding_presence_decomposition_v1/**'
+      - 'research/climate-penguin/outputs/breeding_presence_decomposition_v1/**'
+      - '.github/workflows/penguin-original-species-replacement-audit-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/breeding_presence_decomposition_v1/**'
+      - 'research/climate-penguin/outputs/breeding_presence_decomposition_v1/**'
+      - '.github/workflows/penguin-original-species-replacement-audit-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify biological replacement criteria against all original counts
+        run: node research/climate-penguin/work/breeding_presence_decomposition_v1/audit.mjs
+      - name: Upload original-count evidence and gates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-species-replacement-audit-v1
+          path: research/climate-penguin/outputs/breeding_presence_decomposition_v1/
+          if-no-files-found: error

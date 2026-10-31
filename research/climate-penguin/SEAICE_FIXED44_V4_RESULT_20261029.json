@@ -1,0 +1,80 @@
+{
+  "date": "2026-10-29",
+  "analysis_commit": "1f7e3d03b975f17f2593b0c52fa46ad2496e1a03",
+  "source_run": 40881769676,
+  "source_artifact": 12899744979,
+  "artifact_sha256": "81b8933bab83d82bd9cb1a39fc40f3a502aebc71a35d120a32dddf2dfae1a862",
+  "status": "EXPLORATORY_FIXED44_PRIOR_MARINE_ICE_NOT_CAUSAL",
+  "data": {
+    "input_pair_sha256": "c5c6a07c14f73728aa8b5fc40e96c12e95b7718028c02e3bd35154b0ef5f76f0",
+    "input_sites_sha256": "36059537701069c934227148d32296368943b978b988fb415e07873e48c5ae34",
+    "original_month_files": 96,
+    "site_month_rows": 672,
+    "source_years": [1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2014,2015,2016,2017],
+    "primary_field": "ice_conc (provider filtered primary monthly estimate)",
+    "units": "growth difference per 10 percentage-point prior Aug-Nov SIC change",
+    "n_unique_ocean_cell_supports": 6,
+    "monthly_quality_ranges": {
+      "n_ocean": [32,51], "n_valid": [32,51], "valid_fraction": [1.0,1.0],
+      "n_landspill": [0,0], "n_interpolated": [0,0], "n_high_t2m": [0,0], "n_climatology_zero": [0,0]
+    }
+  },
+  "models": {
+    "site_fixed": {
+      "status": "DESCRIPTIVE_ONLY", "n": 44, "sites": 7, "years": 22, "regions": 2,
+      "nuisance_rank": 7, "full_rank": 8, "residual_df": 36,
+      "coefficient": -0.01367020387297222,
+      "algebraic_coefficient_audit_only": -0.01367020387297222,
+      "residual_climate_ss": 114.07225352057162,
+      "remaining_climate_ss_fraction": 0.8926207466559414,
+      "p_value": null, "confidence_interval": null, "causal_warming_effect": false
+    },
+    "site_year_fixed": {
+      "status": "DESCRIPTIVE_ONLY", "n": 44, "sites": 7, "years": 22, "regions": 2,
+      "nuisance_rank": 28, "full_rank": 29, "residual_df": 15,
+      "coefficient": -0.0067694160605810145,
+      "algebraic_coefficient_audit_only": -0.0067694160605810145,
+      "residual_climate_ss": 19.18058563709754,
+      "remaining_climate_ss_fraction": 0.15008898434356482,
+      "p_value": null, "confidence_interval": null, "causal_warming_effect": false
+    }
+  },
+  "source_deletion_ranges": {
+    "site_fixed": {"site_id": [-0.03920066913968944,-0.002705159549182218], "end_year": [-0.027099978667708666,-0.004674006015313334]},
+    "site_year_fixed": {"site_id": [-0.033759425791896766,0.025637516445583926], "end_year": [-0.048713185647135074,0.04154332936241186]}
+  },
+  "source_overlap_components": [["ARDL","LION","LLAN","PTHO"],["BISC","PCHA","PETE"]],
+  "components_not_independent_replicate_count": true,
+  "independent_tabular_check": {
+    "verified_original_monthly_files": 96, "selected_grid_records": 34272,
+    "all_original44_outcome_and_source_fields_unchanged": true,
+    "max_independent_monthly_mean_abs_difference": 1.4210854715202004e-14,
+    "direct_dummy_fit_and_all_deletion_max_abs_difference": 5.585809592645319e-16,
+    "coefficients": {"site_fixed": -0.013670203872972138, "site_year_fixed": -0.006769416060580849},
+    "new_inferential_claim": false
+  },
+  "independent_raw_NetCDF_check": {
+    "independently_read_original_NetCDF_files": 96,
+    "checked_raw_scaled_pixels_and_quality_flags": 34272,
+    "max_scaling_difference_percent": 0.0,
+    "all_cell_indices_recomputed_from_original_geographic_coordinates": true,
+    "all_source_time_bounds_match": true,
+    "reader": "h5py direct HDF5, independent of production xarray/NetCDF4"
+  },
+  "local_tests_passed": 8,
+  "core_CI_success_run": 40881784663,
+  "dedicated_original_data_CI_success_run": 40881769676,
+  "all_scientific_workflows_success": false,
+  "unrelated_existing_furseal_source_workflow_failed": 40881784688,
+  "limits": [
+    "Same44 positive-endpoint original pairs, exploratory not preregistered confirmation.",
+    "Sea-ice retrieval includes ERA5 ancillary input; not fully independent of temperature.",
+    "Monthly filtered primary estimate differs from averaging filtered daily files; never substitute silently.",
+    "100km marine grid cell support is not nesting snow or direct coastal accessibility.",
+    "Overlapping source pixels are not independent site climates.",
+    "Current year labels bound prior exposure; field observation dates not independently verified.",
+    "No calibrated p value, confidence interval, competing species effect or anthropogenic attribution.",
+    "Monthly flag values do not document the fraction of interpolated contributing daily observations.",
+    "No island nesting snow observations were added by this stage."
+  ]
+}

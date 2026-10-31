@@ -1,0 +1,21 @@
+{
+  "status": "conditional_sensitivity_not_calibrated_forecast",
+  "regressions": 12,
+  "scenario_summaries": 288,
+  "resamples_per_cluster": 999,
+  "seed": 20261030,
+  "inputs": {
+    "outputs/relationship_response_v1/cohort.csv": "80acc588898ee44144c4697dac22d8c522efe5d2d4c684ee0621fb173175d1c7",
+    "outputs/scenario_support_v1/observed_range_audit.csv": "acda29590bd84d26549c4fe84286a8eb2e9d95d2f342cc34077060be9db4f2a5",
+    "outputs/scenario_support_v1/recent_comparison/overlap_site_levels.csv": "5681c58fb6bce68fb74446e7bd1db0aacbb775855f23ce8c75c85088f13e8fcb"
+  },
+  "limitations": [
+    "Response is an index change, not a calendar date or absolute breeding date",
+    "Two-environment reduced model omits ocean temperature, salinity, drift, snow and vegetation",
+    "Mean future environment conditional scenario excludes projected site/year effects and internal variability",
+    "Bounded fractional transformation is unvalidated; physical plausibility does not establish statistical calibration",
+    "Site/year resampling intervals separately reflect coefficient sensitivity, not full forecast uncertainty",
+    "No p value, effect selection or causal interpretation; all models and both transformations retained",
+    "Same-century model reference uses the actual observed years for each site; this is not a uniform climatological baseline"
+  ]
+}

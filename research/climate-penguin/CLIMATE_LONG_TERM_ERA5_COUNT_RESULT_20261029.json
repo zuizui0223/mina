@@ -1,0 +1,169 @@
+{
+  "schema": 1,
+  "analysis_code_commit": "262b127061dc742f3794b8ea272973b33562c56e",
+  "source_artifact": {
+    "run_id": 40856645581,
+    "artifact_id": 12889668094
+  },
+  "output_run": {
+    "id": 40859296688,
+    "artifact_name": "climate-penguin-era5-long-term-count-v1"
+  },
+  "review_status": "post-exploration, original-source linked, no inferential p-values or climate causality",
+  "checked_original_receipt": {
+    "schema": 1,
+    "date": "2026-10-29",
+    "status": "post_exploration_observational_not_warming_attribution",
+    "ERA5_source_sha256": "f2bad55bc9b714351b8bc30031b1518eece43138f77d4047657a3e145911e9a6",
+    "count_source_sha256": "8d453e4d3d432f69de88e699705abd61a9a0c1d448adeabdda932a02d7eb9ffa",
+    "n_original_count_seasons": 516,
+    "n_original_ERA5_grids": 30,
+    "effects": {
+      "september_after_september": {
+        "n_sites": 16,
+        "n_era5_grids": 13,
+        "regions": {
+          "Central-west Antarctic Peninsula": 2,
+          "Victoria Land": 14
+        },
+        "by_region_pearson_r": {
+          "Central-west Antarctic Peninsula": null,
+          "Victoria Land": 0.1034634877141826
+        },
+        "climate_exposure_key": "temperature_c_slope_per_decade",
+        "warming_positive_sites": 15,
+        "count_trend_positive_sites": 10,
+        "median_warming_c_decade": 0.36412153201970454,
+        "median_log_count_trend_decade": 0.26010170163384777,
+        "site_pearson_r": 0.5594148138120306,
+        "within_region_centered_pearson_r": 0.09504559405912893,
+        "equal_grid_pearson_r": 0.621759646301149,
+        "leave_one_grid_out_r_range": [
+          0.3045116705330831,
+          0.6450054964356401
+        ],
+        "macro_generalization_gate": {
+          "minimum_source_regions": 3,
+          "minimum_outside_victoria_sites": 5,
+          "minimum_unique_climate_grids": 10,
+          "pass": false
+        },
+        "no_inference": "No p values or inferential intervals; association is not a causal warming effect.",
+        "fixed_1991_2020_climate_window_sensitivity": {
+          "n_sites": 16,
+          "n_era5_grids": 13,
+          "regions": {
+            "Central-west Antarctic Peninsula": 2,
+            "Victoria Land": 14
+          },
+          "by_region_pearson_r": {
+            "Central-west Antarctic Peninsula": null,
+            "Victoria Land": -0.13920373934456623
+          },
+          "climate_exposure_key": "fixed_1991_2020_temperature_c_slope_per_decade",
+          "warming_positive_sites": 16,
+          "count_trend_positive_sites": 10,
+          "median_warming_c_decade": 0.3161438876529479,
+          "median_log_count_trend_decade": 0.26010170163384777,
+          "site_pearson_r": 0.37962834845014637,
+          "within_region_centered_pearson_r": -0.13838466000651584,
+          "equal_grid_pearson_r": 0.393215717767968,
+          "leave_one_grid_out_r_range": [
+            0.18890660522401903,
+            0.477695665914281
+          ],
+          "macro_generalization_gate": {
+            "minimum_source_regions": 3,
+            "minimum_outside_victoria_sites": 5,
+            "minimum_unique_climate_grids": 10,
+            "pass": false
+          },
+          "no_inference": "No p values or inferential intervals; association is not a causal warming effect."
+        },
+        "source_eligible_sites": 16
+      },
+      "aug_nov_after_november": {
+        "n_sites": 15,
+        "n_era5_grids": 12,
+        "regions": {
+          "Central-west Antarctic Peninsula": 1,
+          "Victoria Land": 14
+        },
+        "by_region_pearson_r": {
+          "Central-west Antarctic Peninsula": null,
+          "Victoria Land": -0.03821236745193616
+        },
+        "climate_exposure_key": "temperature_c_slope_per_decade",
+        "warming_positive_sites": 14,
+        "count_trend_positive_sites": 10,
+        "median_warming_c_decade": 0.5744635960591131,
+        "median_log_count_trend_decade": 0.29169971516848187,
+        "site_pearson_r": 0.5071053276667323,
+        "within_region_centered_pearson_r": -0.038212367451936145,
+        "equal_grid_pearson_r": 0.5106441540448196,
+        "leave_one_grid_out_r_range": [
+          -0.03821236745193616,
+          0.657418805412527
+        ],
+        "macro_generalization_gate": {
+          "minimum_source_regions": 3,
+          "minimum_outside_victoria_sites": 5,
+          "minimum_unique_climate_grids": 10,
+          "pass": false
+        },
+        "no_inference": "No p values or inferential intervals; association is not a causal warming effect.",
+        "fixed_1991_2020_climate_window_sensitivity": {
+          "n_sites": 15,
+          "n_era5_grids": 12,
+          "regions": {
+            "Central-west Antarctic Peninsula": 1,
+            "Victoria Land": 14
+          },
+          "by_region_pearson_r": {
+            "Central-west Antarctic Peninsula": null,
+            "Victoria Land": -0.1514674708057048
+          },
+          "climate_exposure_key": "fixed_1991_2020_temperature_c_slope_per_decade",
+          "warming_positive_sites": 15,
+          "count_trend_positive_sites": 10,
+          "median_warming_c_decade": 0.5509721012235815,
+          "median_log_count_trend_decade": 0.29169971516848187,
+          "site_pearson_r": 0.22083329114071296,
+          "within_region_centered_pearson_r": -0.1514674708057048,
+          "equal_grid_pearson_r": 0.20816962706986303,
+          "leave_one_grid_out_r_range": [
+            -0.1514674708057048,
+            0.3564060864955427
+          ],
+          "macro_generalization_gate": {
+            "minimum_source_regions": 3,
+            "minimum_outside_victoria_sites": 5,
+            "minimum_unique_climate_grids": 10,
+            "pass": false
+          },
+          "no_inference": "No p values or inferential intervals; association is not a causal warming effect."
+        },
+        "source_eligible_sites": 15
+      }
+    },
+    "qualifications": [
+      "Temperature slope is °C/decade; nest abundance slope is log count/decade.",
+      "Time span of temperature trend is aligned with the original count-series span.",
+      "Most long-term count cohorts are Victoria Land. Region generality gates FAIL.",
+      "Shared ERA5 cells are accounted for descriptively, not as independent replicates.",
+      "Nonzero monitored count trends exclude true documented absences.",
+      "Cross-site trend association is exploratory and not a warming or colony mechanism effect.",
+      "The fixed-window sensitivity can include temperature years AFTER counted seasons, and is NOT a lagged or causal exposure."
+    ]
+  },
+  "interpretation_constraints": [
+    "The matched-window +0.559 Pearson correlation is not a climate-attribution coefficient.",
+    "September matched climate is 16 sites from two regions; 14/16 are Victoria Land.",
+    "Within-region Pearson +0.095; Victoria-only +0.103: pooled association does not generalize within-region.",
+    "Using fixed climate period 1991-2020, pooled Pearson +0.380 and within-region -0.138: chronology-dependent association.",
+    "Fixed window can include years after individual colony surveys and is only a sensitivity diagnostic.",
+    "August-November matched 15 sites pooled Pearson +0.507 and within-region -0.038; fixed climate period pooled +0.221 and within-region -0.151.",
+    "The precommitted macro generality gate fails under both seasonal windows.",
+    "No multiple-testing rescue, colony abandonment inference, climate forced attribution, or wider Antarctic claim."
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "status": "completed_descriptive_geographic_source_decomposition_not_climate_breeding_fate_prediction",
+  "date": "2026-10-31",
+  "source_git_blobs": {
+    "sites": "67bc986ed52aff59a26ab32fc28393f376c52b6b",
+    "physical": "b30e9344e67381a0ddc5ade0edabcc76bf3688c3",
+    "prior": "e34823736e8e3df8123b473114279d528b286dcb"
+  },
+  "inputs": {
+    "site_species_scenarios": 232,
+    "physical_trait_rows": 46,
+    "prior_summary_rows": 72
+  },
+  "checked": {
+    "physical_codes_and_original_traits": 46,
+    "unique_codes_per_scenario": 46,
+    "cell_fingerprints_per_scenario": 25,
+    "land_climate_rows": 184,
+    "trait_model_scenario_comparisons": 72,
+    "portfolio_subset_rows": 15,
+    "region_conditioned_species_scenarios": 12
+  },
+  "flagship": {
+    "scenario": "ssp585/2081-2100",
+    "area_vs_ice_decline_46_codes": {
+      "raw_pearson": -0.5545167223073433,
+      "pooled_spearman": -0.497620058320571,
+      "region_demeaned_pearson": 0.23861611086536935,
+      "cell_collapsed_pearson": -0.5455423623514537,
+      "cell_collapsed_region_pearson": 0.4424243035217984,
+      "region_only_R2": 0.9162284236065783,
+      "cell_count": 25
+    },
+    "gentoo_current_sampled_nests": {
+      "site_codes": 18,
+      "site_code_effective_n": 10.135831292888241,
+      "marine_grid_fingerprints": 10,
+      "marine_grid_effective_n": 4.686127042526461,
+      "site_to_grid_ratio": 0.46233277834985875
+    }
+  },
+  "boundaries": [
+    "Current AEI 2 km mapped ice-free land/REMA relief is local context, NOT current nesting capacity or future terrestrial change.",
+    "The 46 sites are a selected intersection of 122 originally surveyed AEI/REMA candidates and 48 matched climate-breeding codes; 25 model marine fingerprints are NOT statistically independent regions.",
+    "Region fixed effects are descriptive demeaning; species count medians mix observation years/methods and do not represent a synchronized breeding abundance census.",
+    "The sign reversal is a single selected scenario-conditional spatial diagnostic, NOT a stable biological response or habitat mechanism.",
+    "Model sea-ice reduction may improve or worsen feeding/breeding by species and timing; this is not a physical hazard probability.",
+    "No within-island stable breeding-subcolony GIS mapping exists at a resolution matched to native CMIP6."
+  ]
+}

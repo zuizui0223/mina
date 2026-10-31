@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "date_utc": "2026-10-29",
+  "conclusion": "SPATIAL_QA_COMMON_POINT_GATE_POSITIVE__COLONY_POLYGON_AND_VEGETATION_OUTCOMES_UNVERIFIED",
+  "original_actions_run": "https://github.com/zuizui0223/mina/actions/runs/40860291095",
+  "original_action_artifact_id": 12891775316,
+  "original_artifact_sha256": "d0b1450e9422f0b376b31bc704470ed0aa393ba33261dd5533ef4d071ddbb979",
+  "original_sha256": {
+    "all_qa_scene_pairs.csv": "406d48f47cfd02045f7b657f9a278d2bfedc5fb195a929394276151c50c87b48",
+    "checks.json": "31fc57c81405ea1e1434496119edb565041bab6924f09f5de5a2ffb22af6ee8d",
+    "fixed_sample_qa.csv": "0ad5bd69ecf305192d8c3bde689cbc965816ebf049425cd6789854d2d78d1fe6",
+    "source_scene_site.csv": "cabd53faf59216f96612d544c18b623cee352db3066ab78ced6526eb74a8178d"
+  },
+  "source": "Planetary Computer original Landsat C2 Level 2, January 2007/2008 QA_PIXEL",
+  "design": "all January scenes 2007 6 and January 2008 3, all 18 paired source combinations by site; choose max common QA-clear EPSG:3031 points from 5x5 offsets ±80,±40,0m; ties by closest calendar day",
+  "inputs_read": "QA_PIXEL only, no vegetation or NDVI or reflectance",
+  "per_site": {
+    "LITC": {
+      "images_before": 6,
+      "images_after": 3,
+      "matched_QA_valid_ground_probe_points": 7,
+      "offset_indices": [
+        9,
+        11,
+        15,
+        16,
+        20,
+        22,
+        23
+      ],
+      "before_date": "2007-01-05",
+      "after_date": "2008-01-15",
+      "before_scene_id": "LE07_L2SR_218106_20070105_02_T2",
+      "after_scene_id": "LE07_L2SR_219105_20080115_02_T2"
+    },
+    "HUMB": {
+      "images_before": 6,
+      "images_after": 3,
+      "matched_QA_valid_ground_probe_points": 0,
+      "comparison_not_available": true
+    },
+    "TORG": {
+      "images_before": 6,
+      "images_after": 3,
+      "matched_QA_valid_ground_probe_points": 3,
+      "offset_indices": [
+        9,
+        12,
+        13
+      ],
+      "before_date": "2007-01-05",
+      "after_date": "2008-01-15",
+      "before_scene_id": "LE07_L2SR_218106_20070105_02_T2",
+      "after_scene_id": "LE07_L2SR_219105_20080115_02_T2"
+    }
+  },
+  "conclusion_limits": [
+    "Same ground coordinate not same native satellite pixel footprint",
+    "Site centroid 5x5 probe not authentic historical colony / non-colony polygons",
+    "January compared post hoc after failed February-March support",
+    "Only 2 calendar observations, no annual vegetation trend, no plant cover measured",
+    "Independent soil nutrient/snow/aspect and temporal controls remain absent"
+  ]
+}

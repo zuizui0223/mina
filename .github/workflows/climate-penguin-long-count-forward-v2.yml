@@ -1,0 +1,39 @@
+name: climate-penguin-long-count-forward-v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - "research/climate-penguin/work/scenario_support_v1/long_count_forward_gate_v2.py"
+      - "research/climate-penguin/outputs/long_count_forward_gate_v2/**"
+      - "tests/test_long_count_forward_gate_v2.py"
+      - ".github/workflows/climate-penguin-long-count-forward-v2.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/scenario_support_v1/long_count_forward_gate_v2.py"
+      - "research/climate-penguin/outputs/long_count_forward_gate_v2/**"
+      - "tests/test_long_count_forward_gate_v2.py"
+      - ".github/workflows/climate-penguin-long-count-forward-v2.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Source-pinned 301-interval rolling audit
+        run: python research/climate-penguin/work/scenario_support_v1/long_count_forward_gate_v2.py --check-receipt
+      - name: Verify 5 source and no-leakage tests
+        run: python -m unittest discover -s tests -p "test_long_count_forward_gate_v2.py" -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: climate-long-count-forward-v2
+          path: |
+            research/climate-penguin/outputs/long_count_forward_gate_v2/predictions.csv
+            research/climate-penguin/outputs/long_count_forward_gate_v2/result.json
+            research/climate-penguin/outputs/long_count_forward_gate_v2/expected_receipt.json

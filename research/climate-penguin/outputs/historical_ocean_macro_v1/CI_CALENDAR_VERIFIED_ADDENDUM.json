@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-31",
+  "source_month_audit_CI": "https://github.com/zuizui0223/mina/actions/runs/41214525097",
+  "source_month_audit_artifact_id": 13047219194,
+  "source_month_audit_receipt": {
+    "source_sha256": "b569def7d9a121bcca4bf78f4a4918af16f07e252ac65578ccc7636f3242afbd",
+    "original_observation_rows": 5487,
+    "matched_original_events": 279,
+    "crossvalidated_ADPE_events": 160,
+    "original_intervals": 216,
+    "by_species": [
+      {
+        "species_id": "ADPE",
+        "intervals": 121,
+        "sites": 25,
+        "both_known": 31,
+        "both_after_september": 31,
+        "both_after_november": 22
+      },
+      {
+        "species_id": "CHPE",
+        "intervals": 31,
+        "sites": 6,
+        "both_known": 3,
+        "both_after_september": 3,
+        "both_after_november": 3
+      },
+      {
+        "species_id": "GEPE",
+        "intervals": 64,
+        "sites": 8,
+        "both_known": 9,
+        "both_after_september": 9,
+        "both_after_november": 5
+      }
+    ],
+    "all_species_known": 43,
+    "all_species_after_september": 43,
+    "original_ADPE_31_supported_intervals_reproduced": true,
+    "interpretation": "Source counts/date provenance only, no climate effect; missing counts/months not imputed"
+  },
+  "source_calendar_stratum_CI": "https://github.com/zuizui0223/mina/actions/runs/41214700146",
+  "source_calendar_subset_artifact_id": 13047439033,
+  "calendar_subset_cv_receipt": {
+    "status": "completed_original_source_calendar_stratum_hindcast_no_retraining",
+    "original_macro_intervals": 216,
+    "verified_post_September_original_intervals": 43,
+    "verified_by_species": {
+      "ADPE": 31,
+      "CHPE": 3,
+      "GEPE": 9
+    },
+    "full_training_note": "Frozen forecast models trained on ALL 216 source observations; month flags only restrict the test set. Thus not fully time-verified training.",
+    "subset_folds": {
+      "chronological": {
+        "intervals": 43,
+        "unique_sites": 20
+      },
+      "chronological_site_out": {
+        "intervals": 43,
+        "unique_sites": 20
+      },
+      "chronological_marine_cell_out": {
+        "intervals": 43,
+        "unique_sites": 20
+      }
+    },
+    "MAE_overview": {
+      "chronological": {
+        "no_change": 0.1927444441821449,
+        "species_mean": 0.1979963383715798,
+        "baseline": 0.19257695543259432,
+        "SIC": 0.19880918726560445,
+        "SST_SSS": 0.19454821300456368,
+        "SIC_SST_SSS": 0.20389397814962687
+      },
+      "chronological_site_out": {
+        "no_change": 0.1927444441821449,
+        "species_mean": 0.19862050083886232,
+        "baseline": 0.20038122691893878,
+        "SIC": 0.2028194083866513,
+        "SST_SSS": 0.20312279915989798,
+        "SIC_SST_SSS": 0.20537794578270596
+      },
+      "chronological_marine_cell_out": {
+        "no_change": 0.1927444441821449,
+        "species_mean": 0.19869008518899095,
+        "baseline": 0.20042916838110392,
+        "SIC": 0.2030524910331469,
+        "SST_SSS": 0.20304283700824846,
+        "SIC_SST_SSS": 0.20565462470086515
+      }
+    },
+    "forecast_permitted": false,
+    "basis_for_gate": "Only 43 original intervals are calendar-verified; 12 are non-Adelie, model trained with mostly calendar-unknown intervals; geographical transfer and out-of-sample climate gain must both be demonstrated."
+  }
+}

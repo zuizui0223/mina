@@ -1,0 +1,36 @@
+name: climate-penguin-chinstrap-TDR-extreme-source-6tag-diagnostic-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_tdr_extreme_source_diagnostic_v1.py"
+      - "tests/test_chinstrap_tdr_extreme_source_diagnostic_v1.py"
+      - ".github/workflows/climate-penguin-chinstrap-TDR-extreme-source-v1.yml"
+jobs:
+  source-diagnostic:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install numpy
+      - name: Validate fixed outlier IDs and timestamp multiplicity schema
+        run: python -m unittest discover -s tests -p test_chinstrap_tdr_extreme_source_diagnostic_v1.py -v
+      - name: Download publisher original v2 pressure source
+        run: |
+          mkdir -p build/chinstrap_extreme
+          curl -fsSL --retry 4 --retry-delay 6 --max-time 1200 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=da13e049-be2b-4345-bbdd-ab960cb24731&output=zip.tree' -o build/chinstrap_extreme/TDR_v2_original.zip
+      - name: Inspect exact six extreme source members and diagnostic provenance
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_tdr_extreme_source_diagnostic_v1.py \
+            --original-tdr-zip build/chinstrap_extreme/TDR_v2_original.zip \
+            --out build/chinstrap_extreme/anomaly --check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-TDR-extreme-six-original-source-v1
+          path: |
+            build/chinstrap_extreme/anomaly/decision.json
+            build/chinstrap_extreme/anomaly/original_source_6tag_anomalies.csv

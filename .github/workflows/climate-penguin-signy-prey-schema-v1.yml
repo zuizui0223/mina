@@ -1,0 +1,35 @@
+name: climate-penguin-signy-prey-schema-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/signy_prey_schema_gate_v1.py"
+      - "tests/test_signy_prey_schema_gate_v1.py"
+      - ".github/workflows/climate-penguin-signy-prey-schema-v1.yml"
+
+jobs:
+  source-schema:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Verify tests on synthetic-only rows
+        run: python -m unittest discover -s tests -p test_signy_prey_schema_gate_v1.py -v
+      - name: Download actual 3 BAS diets from original repository
+        run: |
+          mkdir -p build/signy_prey
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=eb421e6d-b93b-4174-904b-9a7b0b401403&output=zip.tree' -o build/signy_prey/adelie.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=95e38251-797c-495a-abc0-40a613599759&output=zip.tree' -o build/signy_prey/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=fb9bd975-e6fe-406c-84be-01e57d612b5e&output=zip.tree' -o build/signy_prey/gentoo.zip
+      - name: Extract source schema only without numeric outcomes
+        run: |
+          python research/climate-penguin/work/climate_penguin/signy_prey_schema_gate_v1.py \
+            --source-dir build/signy_prey --out build/SIGNY_PREY_ORIGINAL_SCHEMA_V1.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-prey-original-source-schema-v1
+          path: build/SIGNY_PREY_ORIGINAL_SCHEMA_V1.json

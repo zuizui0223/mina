@@ -1,0 +1,91 @@
+{
+  "status": "observed_matched_penguin_breeding_shift_with_projected_warming_conditions_not_causal_attribution_or_nesting_count_forecast",
+  "date": "2026-10-31",
+  "source_blob_sha": {
+    "bio": "fc134e364cf38699fa7611d7dee5fbbbcb370c0a",
+    "locations": "1c5214ab355d3d2e19bc33e5de4693fa21f38731",
+    "ice": "4fcea71c2d8b1069b6ad143f6522061ed434daf5",
+    "cmip": "b383ef1cc3b0807b0bd010ca0e825937ab83ce97"
+  },
+  "inputs": {
+    "mapppd_records": 2999,
+    "ice_monthly_records": 9600,
+    "CMIP6_model_changes": 3816,
+    "macro_site_codes": 40
+  },
+  "outputs": {
+    "historical_species_sites": 54,
+    "candidates": 15,
+    "matched_species_pairs": 13,
+    "unique_co_observed_site_codes": 8,
+    "site_scenarios": 32,
+    "paired_breeding_future_rows": 52
+  },
+  "effects": [
+    {
+      "contrast": "GEPE/ADPE",
+      "n_sites": 7,
+      "n_ratio_trend_positive": 7,
+      "leave_first_positive": 7,
+      "leave_last_positive": 7,
+      "average_decadal_log1p_ratio_trend": 1.1438759202189501,
+      "median_decadal_log1p_ratio_trend": 0.8458744156449403
+    },
+    {
+      "contrast": "CHPE/ADPE",
+      "n_sites": 6,
+      "n_ratio_trend_positive": 6,
+      "leave_first_positive": 6,
+      "leave_last_positive": 5,
+      "average_decadal_log1p_ratio_trend": 0.8771808690046684,
+      "median_decadal_log1p_ratio_trend": 1.1076653933169984
+    }
+  ],
+  "scenario_climate": [
+    {
+      "experiment": "ssp245",
+      "period": "2041-2060",
+      "n_site_codes": 8,
+      "three_models_warming_sites": 8,
+      "three_models_SIC_decline_sites": 8,
+      "sites_with_all3_ocean_cells_50km": 5,
+      "sites_3model_SIC_decline10pp": 0,
+      "eight_sites_mean_temperature_change_C": 1.6579137710925662,
+      "eight_sites_mean_ice_change_pp": -12.818450177869352
+    },
+    {
+      "experiment": "ssp245",
+      "period": "2081-2100",
+      "n_site_codes": 8,
+      "three_models_warming_sites": 8,
+      "three_models_SIC_decline_sites": 8,
+      "sites_with_all3_ocean_cells_50km": 5,
+      "sites_3model_SIC_decline10pp": 4,
+      "eight_sites_mean_temperature_change_C": 2.4972278680957736,
+      "eight_sites_mean_ice_change_pp": -28.46606724877796
+    },
+    {
+      "experiment": "ssp585",
+      "period": "2041-2060",
+      "n_site_codes": 8,
+      "three_models_warming_sites": 8,
+      "three_models_SIC_decline_sites": 8,
+      "sites_with_all3_ocean_cells_50km": 5,
+      "sites_3model_SIC_decline10pp": 0,
+      "eight_sites_mean_temperature_change_C": 1.9095510941385578,
+      "eight_sites_mean_ice_change_pp": -16.199056264675693
+    },
+    {
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "n_site_codes": 8,
+      "three_models_warming_sites": 8,
+      "three_models_SIC_decline_sites": 8,
+      "sites_with_all3_ocean_cells_50km": 5,
+      "sites_3model_SIC_decline10pp": 4,
+      "eight_sites_mean_temperature_change_C": 4.369333643991439,
+      "eight_sites_mean_ice_change_pp": -35.752823551129254
+    }
+  ],
+  "caveats": "Count slopes are a source-backed historical biological phenomenon, not identified warming effects. Climatic CMIP6 changes only indicate future physical conditions, not calibrated biological responses. Same 8 sites share regions and ocean grid cells, model ensemble small. Zero counts retained as log1p, same method & years enforced, no independent climate->fitness coefficient."
+}

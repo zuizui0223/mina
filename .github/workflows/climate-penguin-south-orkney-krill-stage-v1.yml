@@ -1,0 +1,43 @@
+name: climate-penguin-south-orkney-krill-stage-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/south_orkney_krill_fledgling_v1.py"
+      - "research/climate-penguin/inputs/imr_south_orkney_krill_2011_2020_2024_table2.csv"
+      - "tests/test_south_orkney_krill_fledgling_v1.py"
+      - ".github/workflows/climate-penguin-south-orkney-krill-stage-v1.yml"
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install original BAS ZIP table reader
+        run: python -m pip install pandas lxml html5lib beautifulsoup4
+      - name: Fetch original BAS Signy source-stage surveys
+        run: |
+          mkdir -p build/signy_source
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o build/signy_source/adelie.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o build/signy_source/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o build/signy_source/gentoo.zip
+      - name: Reconstruct BAS original stage records independently
+        run: python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py --source-dir build/signy_source --out build/signy_stage_derived
+      - name: Reproduce published regional acoustic overlap and time boundaries
+        run: |
+          python research/climate-penguin/work/climate_penguin/south_orkney_krill_fledgling_v1.py --stage-dir build/signy_stage_derived --out build/imr_signy_krill_stage --check-receipt
+      - name: Run five checks including physical chronology
+        run: python -m unittest discover -s tests -p test_south_orkney_krill_fledgling_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: south-orkney-acoustic-krill-vs-signy-stage-v1
+          path: |
+            build/imr_signy_krill_stage/year_alignment.csv
+            build/imr_signy_krill_stage/result.json
+            build/signy_stage_derived/source_gate.json

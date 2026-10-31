@@ -1,0 +1,1802 @@
+[
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "tas",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Amon/tas/gn/v20191108/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Amon/tas/gn/v20191108/",
+    "source_units": "K",
+    "output_units": "degC",
+    "calendar": "proleptic_gregorian",
+    "first_date": "1850-01-16 12:00:00",
+    "last_date": "2014-12-16 12:00:00",
+    "requested_months": 80,
+    "sites": 106,
+    "monthly_values": 8480,
+    "actual_min": -43.91660156249998,
+    "actual_max": 7.982324218750023,
+    "grid_shape": [
+      144,
+      192
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/d893128b-e107-4dcc-b543-46c77896f295",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/).  Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file).  The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-10-30T02:09:08.945933+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Amon/tas/gn/v20191108/",
+      "variable_id": "tas",
+      "experiment_id": "historical",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "378d196b6f1fe8b94135efd0fc50c9d19e57a9f5ba5e432ad265d1fd6d5658f7",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "2b81d26a7000ac4d5d9f47a4484a390e408bb759c020a34c95a887247af95240",
+      "metadata_sha256": "59fcd6f0bde22d20fba5b7b86f6a19816c0bc72baa560dd83174758ab927c3ee",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "caa1878da1f99de12d5c78f766d52b2eaa1b7a7a17881b37298e08fb6f122593",
+      "historical_identity_sha256": "9ad609e7eb2ddfcea355903c5006dd4926df60d87c1e7cca4b8d87b722b5ba66"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "tas",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Amon/tas/gn/v20191108/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Amon/tas/gn/v20191108/",
+    "source_units": "K",
+    "output_units": "degC",
+    "calendar": "proleptic_gregorian",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": -41.89072265624998,
+    "actual_max": 9.811181640625023,
+    "grid_shape": [
+      144,
+      192
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/5539b9f2-92df-4832-9963-6db728b08676",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/).  Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file).  The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-10-30T02:09:12.121130+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Amon/tas/gn/v20191108/",
+      "variable_id": "tas",
+      "experiment_id": "ssp245",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "378d196b6f1fe8b94135efd0fc50c9d19e57a9f5ba5e432ad265d1fd6d5658f7",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "407ce6e2e9d950271919cec3f2cb8f62a2a3774a460c056b9d925e8bdab21c12",
+      "metadata_sha256": "2d69f0fcfd63024eb8701a339273aefcf5748658dd4213523ac65876ee75e570",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "caa1878da1f99de12d5c78f766d52b2eaa1b7a7a17881b37298e08fb6f122593",
+      "historical_identity_sha256": "9ad609e7eb2ddfcea355903c5006dd4926df60d87c1e7cca4b8d87b722b5ba66"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "tas",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Amon/tas/gn/v20210317/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Amon/tas/gn/v20210317/",
+    "source_units": "K",
+    "output_units": "degC",
+    "calendar": "proleptic_gregorian",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2300-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": -47.79697265624998,
+    "actual_max": 10.913964843750023,
+    "grid_shape": [
+      144,
+      192
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/e9717713-9f90-40b5-ae95-9597ee9feb1a",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/).  Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file).  The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-10-30T02:09:18.100999+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Amon/tas/gn/v20210317/",
+      "variable_id": "tas",
+      "experiment_id": "ssp585",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "378d196b6f1fe8b94135efd0fc50c9d19e57a9f5ba5e432ad265d1fd6d5658f7",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "a586b0b4202d05489e5bc3927ae93dab14529323e737fadccdd35ec4dc4e85ed",
+      "metadata_sha256": "b8cb8a89e6c304aa91fd4b84c60daadb0a8d3e107f52c4306523cbe34bf2f00a",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "caa1878da1f99de12d5c78f766d52b2eaa1b7a7a17881b37298e08fb6f122593",
+      "historical_identity_sha256": "9ad609e7eb2ddfcea355903c5006dd4926df60d87c1e7cca4b8d87b722b5ba66"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "sos",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Omon/sos/gn/v20191108/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Omon/sos/gn/v20191108/",
+    "source_units": "0.001",
+    "output_units": "0.001",
+    "calendar": "proleptic_gregorian",
+    "first_date": "1850-01-16 12:00:00",
+    "last_date": "2014-12-16 12:00:00",
+    "requested_months": 80,
+    "sites": 106,
+    "monthly_values": 8480,
+    "actual_min": 33.38412857055664,
+    "actual_max": 35.39881134033203,
+    "grid_shape": [
+      300,
+      360
+    ],
+    "spatial_dimensions": [
+      "j",
+      "i"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/8d3e4b8f-6cac-48e9-9eea-2f6a7057bb8b",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/).  Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file).  The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-10-30T02:09:12.685046+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Omon/sos/gn/v20191108/",
+      "variable_id": "sos",
+      "experiment_id": "historical",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "3b37df83ebecd81363eb565cf825d9db03190da18348746e651ba9220c4b9a41",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "2b81d26a7000ac4d5d9f47a4484a390e408bb759c020a34c95a887247af95240",
+      "metadata_sha256": "c6824e3b8751fd74ab367768171aa8f32e7629fca54be6bc252ed94da37eb036",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "b044447d53ed0ae5d8415118f9f498622594663566de594514eadce8c04918e1",
+      "historical_identity_sha256": "28978e939b9903c5c80a6d1f7f96fcab9bb68f9a49e4177949d3432ec7f09528"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "sos",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Omon/sos/gn/v20191108/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Omon/sos/gn/v20191108/",
+    "source_units": "0.001",
+    "output_units": "0.001",
+    "calendar": "proleptic_gregorian",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 32.73605728149414,
+    "actual_max": 35.40837860107422,
+    "grid_shape": [
+      300,
+      360
+    ],
+    "spatial_dimensions": [
+      "j",
+      "i"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/5724ac3e-ae03-4e34-86c9-0800cdca1f75",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/).  Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file).  The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-10-30T02:09:19.131130+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Omon/sos/gn/v20191108/",
+      "variable_id": "sos",
+      "experiment_id": "ssp245",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "3b37df83ebecd81363eb565cf825d9db03190da18348746e651ba9220c4b9a41",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "407ce6e2e9d950271919cec3f2cb8f62a2a3774a460c056b9d925e8bdab21c12",
+      "metadata_sha256": "528586038f0f55ab1fb40976a3c0e53523253ab45e78a8df587698b7307167eb",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "b044447d53ed0ae5d8415118f9f498622594663566de594514eadce8c04918e1",
+      "historical_identity_sha256": "28978e939b9903c5c80a6d1f7f96fcab9bb68f9a49e4177949d3432ec7f09528"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "sos",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Omon/sos/gn/v20210317/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Omon/sos/gn/v20210317/",
+    "source_units": "0.001",
+    "output_units": "0.001",
+    "calendar": "proleptic_gregorian",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2300-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 32.62763214111328,
+    "actual_max": 35.33455276489258,
+    "grid_shape": [
+      300,
+      360
+    ],
+    "spatial_dimensions": [
+      "j",
+      "i"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/f87b2048-75d2-49f1-b287-5f10f8ce9eec",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/).  Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file).  The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-10-30T02:09:24.576430+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Omon/sos/gn/v20210317/",
+      "variable_id": "sos",
+      "experiment_id": "ssp585",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "3b37df83ebecd81363eb565cf825d9db03190da18348746e651ba9220c4b9a41",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "a586b0b4202d05489e5bc3927ae93dab14529323e737fadccdd35ec4dc4e85ed",
+      "metadata_sha256": "a7e22213275e04953579f9efb6216d7fc6a74b84c2f199a53d9965f7b675adeb",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "b044447d53ed0ae5d8415118f9f498622594663566de594514eadce8c04918e1",
+      "historical_identity_sha256": "28978e939b9903c5c80a6d1f7f96fcab9bb68f9a49e4177949d3432ec7f09528"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "siconc",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/SImon/siconc/gn/v20200817/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/SImon/siconc/gn/v20200817/",
+    "source_units": "%",
+    "output_units": "percent",
+    "calendar": "proleptic_gregorian",
+    "first_date": "1850-01-16 12:00:00",
+    "last_date": "2014-12-16 12:00:00",
+    "requested_months": 80,
+    "sites": 106,
+    "monthly_values": 8480,
+    "actual_min": 0.0,
+    "actual_max": 99.99859619140625,
+    "grid_shape": [
+      300,
+      360
+    ],
+    "spatial_dimensions": [
+      "j",
+      "i"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/a4f561bc-18df-450f-ae74-9cb906caf5ec",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file). The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-10-30T02:09:14.498865+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/SImon/siconc/gn/v20200817/",
+      "variable_id": "siconc",
+      "experiment_id": "historical",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "52aaed8d8ae0ba67813d111367122d00708d619431c2ee394ebeef22692cffb0",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "2b81d26a7000ac4d5d9f47a4484a390e408bb759c020a34c95a887247af95240",
+      "metadata_sha256": "a556ba7247e4f0cefab9b0e801037cd93e460ac2ccae13ca7a46f06e23c89908",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "b044447d53ed0ae5d8415118f9f498622594663566de594514eadce8c04918e1",
+      "historical_identity_sha256": "b5207c58822badf8ac5526c97b564bf06471759d86205f8441d91c1735c2a662"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "siconc",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/SImon/siconc/gn/v20200817/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/SImon/siconc/gn/v20200817/",
+    "source_units": "%",
+    "output_units": "percent",
+    "calendar": "proleptic_gregorian",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 0.0,
+    "actual_max": 99.9984359741211,
+    "grid_shape": [
+      300,
+      360
+    ],
+    "spatial_dimensions": [
+      "j",
+      "i"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/d51e3059-6347-484b-a85d-8edd936db58d",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file). The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-10-30T02:09:19.685019+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/SImon/siconc/gn/v20200817/",
+      "variable_id": "siconc",
+      "experiment_id": "ssp245",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "52aaed8d8ae0ba67813d111367122d00708d619431c2ee394ebeef22692cffb0",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "407ce6e2e9d950271919cec3f2cb8f62a2a3774a460c056b9d925e8bdab21c12",
+      "metadata_sha256": "3c334d27aef1392f50e74dca9c73a2be6b64f8f2389fa1c61c90cd8cc2b505e9",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "b044447d53ed0ae5d8415118f9f498622594663566de594514eadce8c04918e1",
+      "historical_identity_sha256": "b5207c58822badf8ac5526c97b564bf06471759d86205f8441d91c1735c2a662"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "siconc",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/SImon/siconc/gn/v20210317/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/SImon/siconc/gn/v20210317/",
+    "source_units": "%",
+    "output_units": "percent",
+    "calendar": "proleptic_gregorian",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2300-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 0.0,
+    "actual_max": 99.99854278564453,
+    "grid_shape": [
+      300,
+      360
+    ],
+    "spatial_dimensions": [
+      "j",
+      "i"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/158397fd-be5d-481c-b1d0-18de523f4c8e",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file). The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-10-30T02:09:27.437909+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/SImon/siconc/gn/v20210317/",
+      "variable_id": "siconc",
+      "experiment_id": "ssp585",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "52aaed8d8ae0ba67813d111367122d00708d619431c2ee394ebeef22692cffb0",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "a586b0b4202d05489e5bc3927ae93dab14529323e737fadccdd35ec4dc4e85ed",
+      "metadata_sha256": "728c5882b2e9f0314f5789276aea46878f0e82f86a0214deac4ee6673a1ab487",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "b044447d53ed0ae5d8415118f9f498622594663566de594514eadce8c04918e1",
+      "historical_identity_sha256": "b5207c58822badf8ac5526c97b564bf06471759d86205f8441d91c1735c2a662"
+    }
+  },
+  {
+    "source_id": "BCC-CSM2-MR",
+    "member_id": "r1i1p1f1",
+    "variable_id": "tas",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/Amon/tas/gn/v20181126/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/Amon/tas/gn/v20181126/",
+    "source_units": "K",
+    "output_units": "degC",
+    "calendar": "365_day",
+    "first_date": "1850-01-16 12:00:00",
+    "last_date": "2014-12-16 12:00:00",
+    "requested_months": 80,
+    "sites": 106,
+    "monthly_values": 8480,
+    "actual_min": -33.339193725585915,
+    "actual_max": 7.975823974609398,
+    "grid_shape": [
+      160,
+      320
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "BCC-CSM2-MR",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/007da5e5-12bb-4fe9-8df9-5cd473280650",
+    "license": "CMIP6 model data produced by BCC is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file) and at https:///pcmdi.llnl.gov/. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "BCC-CSM 2 MR (2017):   aerosol: none  atmos: BCC_AGCM3_MR (T106; 320 x 160 longitude/latitude; 46 levels; top level 1.46 hPa)  atmosChem: none  land: BCC_AVIM2  landIce: none  ocean: MOM4 (1/3 deg 10S-10N, 1/3-1 deg 10-30 N/S, and 1 deg in high latitudes; 360 x 232 longitude/latitude; 40 levels; top grid cell 0-10 m)  ocnBgchem: none  seaIce: SIS2",
+    "institution": "Beijing Climate Center, Beijing 100081, China",
+    "read_utc": "2026-10-30T02:09:26.792808+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/Amon/tas/gn/v20181126/",
+      "variable_id": "tas",
+      "experiment_id": "historical",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "7fa7330ae9bc4a866fd17771765ea637165fa4cc17b79a76f80b475ed2116bf9",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "364eab26cc021f35dd764b7d197dc617ce8694c78187c74ae4a3b9d03a864ed7",
+      "metadata_sha256": "c72ae9c78d1b8993ddd3740f9b25bde5427222c817734e4e2fe9b1ee6ace1dfe",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "94224b88ce487367c3e3c5f7447dd381efb5267bdfee6b513dcf08a0c5974a69",
+      "historical_identity_sha256": "026f6a10ec488db34e212999c8501d7a84741a69aff1d42d04f23329600c944d"
+    }
+  },
+  {
+    "source_id": "BCC-CSM2-MR",
+    "member_id": "r1i1p1f1",
+    "variable_id": "tas",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/Amon/tas/gn/v20190314/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/Amon/tas/gn/v20190314/",
+    "source_units": "K",
+    "output_units": "degC",
+    "calendar": "365_day",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": -31.64311828613279,
+    "actual_max": 9.134393310546898,
+    "grid_shape": [
+      160,
+      320
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "BCC-CSM2-MR",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/89c4b5d6-088a-49e9-8cf8-176e6a7b4a59",
+    "license": "CMIP6 model data produced by BCC is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file) and at https:///pcmdi.llnl.gov/. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "BCC-CSM 2 MR (2017):   aerosol: none  atmos: BCC_AGCM3_MR (T106; 320 x 160 longitude/latitude; 46 levels; top level 1.46 hPa)  atmosChem: none  land: BCC_AVIM2  landIce: none  ocean: MOM4 (1/3 deg 10S-10N, 1/3-1 deg 10-30 N/S, and 1 deg in high latitudes; 360 x 232 longitude/latitude; 40 levels; top grid cell 0-10 m)  ocnBgchem: none  seaIce: SIS2",
+    "institution": "Beijing Climate Center, Beijing 100081, China",
+    "read_utc": "2026-10-30T02:09:30.609384+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/Amon/tas/gn/v20190314/",
+      "variable_id": "tas",
+      "experiment_id": "ssp245",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "7fa7330ae9bc4a866fd17771765ea637165fa4cc17b79a76f80b475ed2116bf9",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "662831d82346edca4636e5b5521f3dfcfba420a2ae803ad04efa4dd5dbdfe6db",
+      "metadata_sha256": "f3d87057e35a5a42493567e79fab4391756a26bdaf0b474b150771745bcd0298",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "94224b88ce487367c3e3c5f7447dd381efb5267bdfee6b513dcf08a0c5974a69",
+      "historical_identity_sha256": "026f6a10ec488db34e212999c8501d7a84741a69aff1d42d04f23329600c944d"
+    }
+  },
+  {
+    "source_id": "BCC-CSM2-MR",
+    "member_id": "r1i1p1f1",
+    "variable_id": "tas",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/Amon/tas/gn/v20190314/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/Amon/tas/gn/v20190314/",
+    "source_units": "K",
+    "output_units": "degC",
+    "calendar": "365_day",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": -30.734274291992165,
+    "actual_max": 10.034753417968773,
+    "grid_shape": [
+      160,
+      320
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "BCC-CSM2-MR",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/b4c1b72a-72b7-4ded-868b-b0f00c5b4738",
+    "license": "CMIP6 model data produced by BCC is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file) and at https:///pcmdi.llnl.gov/. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "BCC-CSM 2 MR (2017):   aerosol: none  atmos: BCC_AGCM3_MR (T106; 320 x 160 longitude/latitude; 46 levels; top level 1.46 hPa)  atmosChem: none  land: BCC_AVIM2  landIce: none  ocean: MOM4 (1/3 deg 10S-10N, 1/3-1 deg 10-30 N/S, and 1 deg in high latitudes; 360 x 232 longitude/latitude; 40 levels; top grid cell 0-10 m)  ocnBgchem: none  seaIce: SIS2",
+    "institution": "Beijing Climate Center, Beijing 100081, China",
+    "read_utc": "2026-10-30T02:09:35.735104+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/Amon/tas/gn/v20190314/",
+      "variable_id": "tas",
+      "experiment_id": "ssp585",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "7fa7330ae9bc4a866fd17771765ea637165fa4cc17b79a76f80b475ed2116bf9",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "662831d82346edca4636e5b5521f3dfcfba420a2ae803ad04efa4dd5dbdfe6db",
+      "metadata_sha256": "6e57a73070def6d19afe38463ce457fd0959695a694c3ac7e7d751ebf41c6a3c",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "94224b88ce487367c3e3c5f7447dd381efb5267bdfee6b513dcf08a0c5974a69",
+      "historical_identity_sha256": "026f6a10ec488db34e212999c8501d7a84741a69aff1d42d04f23329600c944d"
+    }
+  },
+  {
+    "source_id": "BCC-CSM2-MR",
+    "member_id": "r1i1p1f1",
+    "variable_id": "siconc",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/SImon/siconc/gn/v20200218/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/SImon/siconc/gn/v20200218/",
+    "source_units": "%",
+    "output_units": "percent",
+    "calendar": "noleap",
+    "first_date": "1850-01-16 12:00:00",
+    "last_date": "2014-12-16 12:00:00",
+    "requested_months": 80,
+    "sites": 106,
+    "monthly_values": 8480,
+    "actual_min": 0.0,
+    "actual_max": 99.99581146240234,
+    "grid_shape": [
+      232,
+      360
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "BCC-CSM2-MR",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/ce374c1e-20fb-4627-9074-52ca90a07e49",
+    "license": "CMIP6 model data produced by BCC is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file) and at https:///pcmdi.llnl.gov/. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "BCC-CSM 2 MR (2017):   aerosol: none  atmos: BCC_AGCM3_MR (T106; 320 x 160 longitude/latitude; 46 levels; top level 1.46 hPa)  atmosChem: none  land: BCC_AVIM2  landIce: none  ocean: MOM4 (1/3 deg 10S-10N, 1/3-1 deg 10-30 N/S, and 1 deg in high latitudes; 360 x 232 longitude/latitude; 40 levels; top grid cell 0-10 m)  ocnBgchem: none  seaIce: SIS2",
+    "institution": "Beijing Climate Center, Beijing 100081, China",
+    "read_utc": "2026-10-30T02:09:32.138499+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/SImon/siconc/gn/v20200218/",
+      "variable_id": "siconc",
+      "experiment_id": "historical",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "44c66ff0788537cf831f567f96f164a288714df1aea3c0ce8689554e14864f9e",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "364eab26cc021f35dd764b7d197dc617ce8694c78187c74ae4a3b9d03a864ed7",
+      "metadata_sha256": "afc9381f4f00a4832e202f29aff6214defbc6e6cbe39a325d91fea12d4c70467",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "d4b69a87aad592772ccb3938871c0f45a6125a5b41e2271333c1e409579f2f92",
+      "historical_identity_sha256": "452c6cae28082a0b62bc92b1e1ccc767e2848d34e83a07b5703d3abd9b33be5b"
+    }
+  },
+  {
+    "source_id": "BCC-CSM2-MR",
+    "member_id": "r1i1p1f1",
+    "variable_id": "siconc",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/SImon/siconc/gn/v20200219/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/SImon/siconc/gn/v20200219/",
+    "source_units": "%",
+    "output_units": "percent",
+    "calendar": "noleap",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 0.0,
+    "actual_max": 99.99835968017578,
+    "grid_shape": [
+      232,
+      360
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "BCC-CSM2-MR",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/c1940c1e-0f87-497e-92a8-c4c07dd66189",
+    "license": "CMIP6 model data produced by BCC is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file) and at https:///pcmdi.llnl.gov/. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "BCC-CSM 2 MR (2017):   aerosol: none  atmos: BCC_AGCM3_MR (T106; 320 x 160 longitude/latitude; 46 levels; top level 1.46 hPa)  atmosChem: none  land: BCC_AVIM2  landIce: none  ocean: MOM4 (1/3 deg 10S-10N, 1/3-1 deg 10-30 N/S, and 1 deg in high latitudes; 360 x 232 longitude/latitude; 40 levels; top grid cell 0-10 m)  ocnBgchem: none  seaIce: SIS2",
+    "institution": "Beijing Climate Center, Beijing 100081, China",
+    "read_utc": "2026-10-30T02:09:35.116643+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/SImon/siconc/gn/v20200219/",
+      "variable_id": "siconc",
+      "experiment_id": "ssp245",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "44c66ff0788537cf831f567f96f164a288714df1aea3c0ce8689554e14864f9e",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "662831d82346edca4636e5b5521f3dfcfba420a2ae803ad04efa4dd5dbdfe6db",
+      "metadata_sha256": "4aa7f31b5c7828d6d9c7dc5100df1f14f7204db598d4316a7faa9df6fe0be7eb",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "d4b69a87aad592772ccb3938871c0f45a6125a5b41e2271333c1e409579f2f92",
+      "historical_identity_sha256": "452c6cae28082a0b62bc92b1e1ccc767e2848d34e83a07b5703d3abd9b33be5b"
+    }
+  },
+  {
+    "source_id": "BCC-CSM2-MR",
+    "member_id": "r1i1p1f1",
+    "variable_id": "siconc",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/SImon/siconc/gn/v20200219/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/SImon/siconc/gn/v20200219/",
+    "source_units": "%",
+    "output_units": "percent",
+    "calendar": "noleap",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 0.0,
+    "actual_max": 99.9965591430664,
+    "grid_shape": [
+      232,
+      360
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "BCC-CSM2-MR",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/a6ddbae4-20d9-4c09-8e07-c2133089c625",
+    "license": "CMIP6 model data produced by BCC is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file) and at https:///pcmdi.llnl.gov/. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "BCC-CSM 2 MR (2017):   aerosol: none  atmos: BCC_AGCM3_MR (T106; 320 x 160 longitude/latitude; 46 levels; top level 1.46 hPa)  atmosChem: none  land: BCC_AVIM2  landIce: none  ocean: MOM4 (1/3 deg 10S-10N, 1/3-1 deg 10-30 N/S, and 1 deg in high latitudes; 360 x 232 longitude/latitude; 40 levels; top grid cell 0-10 m)  ocnBgchem: none  seaIce: SIS2",
+    "institution": "Beijing Climate Center, Beijing 100081, China",
+    "read_utc": "2026-10-30T02:09:37.331555+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/SImon/siconc/gn/v20200219/",
+      "variable_id": "siconc",
+      "experiment_id": "ssp585",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "44c66ff0788537cf831f567f96f164a288714df1aea3c0ce8689554e14864f9e",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "662831d82346edca4636e5b5521f3dfcfba420a2ae803ad04efa4dd5dbdfe6db",
+      "metadata_sha256": "7ac151a66dd03d01862b3019456c228256c22526ccf48e5844e1de7567c0f190",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "d4b69a87aad592772ccb3938871c0f45a6125a5b41e2271333c1e409579f2f92",
+      "historical_identity_sha256": "452c6cae28082a0b62bc92b1e1ccc767e2848d34e83a07b5703d3abd9b33be5b"
+    }
+  },
+  {
+    "source_id": "BCC-CSM2-MR",
+    "member_id": "r1i1p1f1",
+    "variable_id": "sos",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/Omon/sos/gn/v20181126/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/Omon/sos/gn/v20181126/",
+    "source_units": "0.001",
+    "output_units": "0.001",
+    "calendar": "365_day",
+    "first_date": "1850-01-16 12:00:00",
+    "last_date": "2014-12-16 12:00:00",
+    "requested_months": 80,
+    "sites": 106,
+    "monthly_values": 8480,
+    "actual_min": 33.14443588256836,
+    "actual_max": 35.529457092285156,
+    "grid_shape": [
+      232,
+      360
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "BCC-CSM2-MR",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/839a87a8-d7d1-4c09-8c31-e6302d276920",
+    "license": "CMIP6 model data produced by BCC is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file) and at https:///pcmdi.llnl.gov/. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "BCC-CSM 2 MR (2017):   aerosol: none  atmos: BCC_AGCM3_MR (T106; 320 x 160 longitude/latitude; 46 levels; top level 1.46 hPa)  atmosChem: none  land: BCC_AVIM2  landIce: none  ocean: MOM4 (1/3 deg 10S-10N, 1/3-1 deg 10-30 N/S, and 1 deg in high latitudes; 360 x 232 longitude/latitude; 40 levels; top grid cell 0-10 m)  ocnBgchem: none  seaIce: SIS2",
+    "institution": "Beijing Climate Center, Beijing 100081, China",
+    "read_utc": "2026-10-30T02:09:30.275982+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/Omon/sos/gn/v20181126/",
+      "variable_id": "sos",
+      "experiment_id": "historical",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "44c66ff0788537cf831f567f96f164a288714df1aea3c0ce8689554e14864f9e",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "364eab26cc021f35dd764b7d197dc617ce8694c78187c74ae4a3b9d03a864ed7",
+      "metadata_sha256": "be3afd968e700a69e3f49c6faea8d42a8f80711b72e2fadedbe3900a68fbf2e6",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "d4b69a87aad592772ccb3938871c0f45a6125a5b41e2271333c1e409579f2f92",
+      "historical_identity_sha256": "7d00d324edd6636edf80a214365fcd67c5a0535426023e4b191ebaf05c2b18ff"
+    }
+  },
+  {
+    "source_id": "BCC-CSM2-MR",
+    "member_id": "r1i1p1f1",
+    "variable_id": "sos",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/Omon/sos/gn/v20190319/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/Omon/sos/gn/v20190319/",
+    "source_units": "0.001",
+    "output_units": "0.001",
+    "calendar": "365_day",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 33.44899368286133,
+    "actual_max": 35.42586135864258,
+    "grid_shape": [
+      232,
+      360
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "BCC-CSM2-MR",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/93a36282-345e-43fd-95d0-fe681a7dc921",
+    "license": "CMIP6 model data produced by BCC is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file) and at https:///pcmdi.llnl.gov/. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "BCC-CSM 2 MR (2017):   aerosol: none  atmos: BCC_AGCM3_MR (T106; 320 x 160 longitude/latitude; 46 levels; top level 1.46 hPa)  atmosChem: none  land: BCC_AVIM2  landIce: none  ocean: MOM4 (1/3 deg 10S-10N, 1/3-1 deg 10-30 N/S, and 1 deg in high latitudes; 360 x 232 longitude/latitude; 40 levels; top grid cell 0-10 m)  ocnBgchem: none  seaIce: SIS2",
+    "institution": "Beijing Climate Center, Beijing 100081, China",
+    "read_utc": "2026-10-30T02:09:35.025529+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/Omon/sos/gn/v20190319/",
+      "variable_id": "sos",
+      "experiment_id": "ssp245",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "44c66ff0788537cf831f567f96f164a288714df1aea3c0ce8689554e14864f9e",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "662831d82346edca4636e5b5521f3dfcfba420a2ae803ad04efa4dd5dbdfe6db",
+      "metadata_sha256": "12e52e583a375275c6cd6e5ab6f735284b348b40d56f6b5b2f380edd9730ea38",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "d4b69a87aad592772ccb3938871c0f45a6125a5b41e2271333c1e409579f2f92",
+      "historical_identity_sha256": "7d00d324edd6636edf80a214365fcd67c5a0535426023e4b191ebaf05c2b18ff"
+    }
+  },
+  {
+    "source_id": "BCC-CSM2-MR",
+    "member_id": "r1i1p1f1",
+    "variable_id": "sos",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/Omon/sos/gn/v20190319/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/Omon/sos/gn/v20190319/",
+    "source_units": "0.001",
+    "output_units": "0.001",
+    "calendar": "noleap",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 33.31917190551758,
+    "actual_max": 35.39735794067383,
+    "grid_shape": [
+      232,
+      360
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "BCC-CSM2-MR",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/2351fc37-6383-4d09-afd5-e81eac74d751",
+    "license": "CMIP6 model data produced by BCC is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file) and at https:///pcmdi.llnl.gov/. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "BCC-CSM 2 MR (2017):   aerosol: none  atmos: BCC_AGCM3_MR (T106; 320 x 160 longitude/latitude; 46 levels; top level 1.46 hPa)  atmosChem: none  land: BCC_AVIM2  landIce: none  ocean: MOM4 (1/3 deg 10S-10N, 1/3-1 deg 10-30 N/S, and 1 deg in high latitudes; 360 x 232 longitude/latitude; 40 levels; top grid cell 0-10 m)  ocnBgchem: none  seaIce: SIS2",
+    "institution": "Beijing Climate Center, Beijing 100081, China",
+    "read_utc": "2026-10-30T02:09:38.357771+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/Omon/sos/gn/v20190319/",
+      "variable_id": "sos",
+      "experiment_id": "ssp585",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "44c66ff0788537cf831f567f96f164a288714df1aea3c0ce8689554e14864f9e",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "662831d82346edca4636e5b5521f3dfcfba420a2ae803ad04efa4dd5dbdfe6db",
+      "metadata_sha256": "21b8f13c2a79b087b923c1e5328fe5ea299afbd794abbde52a53ff0e54a6b6bd",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "d4b69a87aad592772ccb3938871c0f45a6125a5b41e2271333c1e409579f2f92",
+      "historical_identity_sha256": "7d00d324edd6636edf80a214365fcd67c5a0535426023e4b191ebaf05c2b18ff"
+    }
+  },
+  {
+    "source_id": "CESM2",
+    "member_id": "r4i1p1f1",
+    "variable_id": "tas",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Amon/tas/gn/v20190308/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Amon/tas/gn/v20190308/",
+    "source_units": "K",
+    "output_units": "degC",
+    "calendar": "noleap",
+    "first_date": "1850-01-15 12:00:00",
+    "last_date": "2014-12-15 12:00:00",
+    "requested_months": 80,
+    "sites": 106,
+    "monthly_values": 8480,
+    "actual_min": -43.0604309082031,
+    "actual_max": 9.290246582031273,
+    "grid_shape": [
+      192,
+      288
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "CESM2",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/ef376c2e-c83b-4e73-a770-010e28bb1776",
+    "license": "CMIP6 model data produced by <The National Center for Atmospheric Research> is licensed under a Creative Commons Attribution-[]ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file)[]. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "CESM2 (2017): atmosphere: CAM6 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); ocean: POP2 (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m); sea_ice: CICE5.1 (same grid as ocean); land: CLM5 0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); aerosol: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); atmoschem: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); landIce: CISM2.1; ocnBgchem: MARBL (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m)",
+    "institution": "National Center for Atmospheric Research, Climate and Global Dynamics Laboratory, 1850 Table Mesa Drive, Boulder, CO 80305, USA",
+    "read_utc": "2026-10-30T02:09:41.835739+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Amon/tas/gn/v20190308/",
+      "variable_id": "tas",
+      "experiment_id": "historical",
+      "member_id": "r4i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "dc6c1c62d5bec9c2ff976a0d1e34ee154834ebddd1eaf2aaa205b44c3a9921c6",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "bda04f820ae57e1602385b6369d983aad77fa8660af42c8ed51d9070ba5ceed5",
+      "metadata_sha256": "dea54918b47f3c42ff2c0efdf59b672e9d0941c581778c1708fcf2b4a41a9e17",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "9ed943fb6229d5678ce59dcc2ad8e5296564dc3ebe2f61508ffd5e9f5153782d",
+      "historical_identity_sha256": "c4ba26e56a19b3f78dc8b8dfd67f7590e2c549668307ebda7f520e5efd30dc9d"
+    }
+  },
+  {
+    "source_id": "CESM2",
+    "member_id": "r4i1p1f1",
+    "variable_id": "tas",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/Amon/tas/gn/v20200528/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/Amon/tas/gn/v20200528/",
+    "source_units": "K",
+    "output_units": "degC",
+    "calendar": "noleap",
+    "first_date": "2015-01-15 12:00:00",
+    "last_date": "2100-12-15 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": -40.96866455078123,
+    "actual_max": 10.883508300781273,
+    "grid_shape": [
+      192,
+      288
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "CESM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r4i1p1f1",
+    "tracking_id": "hdl:21.14100/47432dac-b66f-41f9-a901-776f66b07394\nhdl:21.14100/47432dac-b66f-41f9-a901-776f66b07394",
+    "license": "CMIP6 model data produced by <The National Center for Atmospheric Research> is licensed under a Creative Commons Attribution-[]ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file)[]. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "CESM2 (2017): atmosphere: CAM6 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); ocean: POP2 (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m); sea_ice: CICE5.1 (same grid as ocean); land: CLM5 0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); aerosol: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); atmoschem: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); landIce: CISM2.1; ocnBgchem: MARBL (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m)",
+    "institution": "National Center for Atmospheric Research, Climate and Global Dynamics Laboratory, 1850 Table Mesa Drive, Boulder, CO 80305, USA",
+    "read_utc": "2026-10-30T02:09:47.029079+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/Amon/tas/gn/v20200528/",
+      "variable_id": "tas",
+      "experiment_id": "ssp245",
+      "member_id": "r4i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "dc6c1c62d5bec9c2ff976a0d1e34ee154834ebddd1eaf2aaa205b44c3a9921c6",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "7fdca4516c7be01764913d94009de73d50e71cabd5d9c0ead0dd4ff395f1c140",
+      "metadata_sha256": "7f1d95dddb6b280be12cdf2540f9eab00689aba66294e9e820119a1b41c2dc37",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "9ed943fb6229d5678ce59dcc2ad8e5296564dc3ebe2f61508ffd5e9f5153782d",
+      "historical_identity_sha256": "c4ba26e56a19b3f78dc8b8dfd67f7590e2c549668307ebda7f520e5efd30dc9d"
+    }
+  },
+  {
+    "source_id": "CESM2",
+    "member_id": "r4i1p1f1",
+    "variable_id": "tas",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/Amon/tas/gn/v20200528/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/Amon/tas/gn/v20200528/",
+    "source_units": "K",
+    "output_units": "degC",
+    "calendar": "noleap",
+    "first_date": "2015-01-15 12:00:00",
+    "last_date": "2100-12-15 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": -40.135336303710915,
+    "actual_max": 13.388391113281273,
+    "grid_shape": [
+      192,
+      288
+    ],
+    "spatial_dimensions": [
+      "lat",
+      "lon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "CESM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r4i1p1f1",
+    "tracking_id": "hdl:21.14100/6aa12f5a-cf48-42af-acb0-f54b5afa0f41\nhdl:21.14100/6aa12f5a-cf48-42af-acb0-f54b5afa0f41",
+    "license": "CMIP6 model data produced by <The National Center for Atmospheric Research> is licensed under a Creative Commons Attribution-[]ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file)[]. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "CESM2 (2017): atmosphere: CAM6 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); ocean: POP2 (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m); sea_ice: CICE5.1 (same grid as ocean); land: CLM5 0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); aerosol: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); atmoschem: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); landIce: CISM2.1; ocnBgchem: MARBL (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m)",
+    "institution": "National Center for Atmospheric Research, Climate and Global Dynamics Laboratory, 1850 Table Mesa Drive, Boulder, CO 80305, USA",
+    "read_utc": "2026-10-30T02:09:51.015655+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/Amon/tas/gn/v20200528/",
+      "variable_id": "tas",
+      "experiment_id": "ssp585",
+      "member_id": "r4i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "dc6c1c62d5bec9c2ff976a0d1e34ee154834ebddd1eaf2aaa205b44c3a9921c6",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "7fdca4516c7be01764913d94009de73d50e71cabd5d9c0ead0dd4ff395f1c140",
+      "metadata_sha256": "8b31febff981ba1a303ca76f106bfc1506d412581aa630fc681cefab9a69f4fe",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "9ed943fb6229d5678ce59dcc2ad8e5296564dc3ebe2f61508ffd5e9f5153782d",
+      "historical_identity_sha256": "c4ba26e56a19b3f78dc8b8dfd67f7590e2c549668307ebda7f520e5efd30dc9d"
+    }
+  },
+  {
+    "source_id": "CESM2",
+    "member_id": "r4i1p1f1",
+    "variable_id": "siconc",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/SImon/siconc/gn/v20190308/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/SImon/siconc/gn/v20190308/",
+    "source_units": "%",
+    "output_units": "percent",
+    "calendar": "noleap",
+    "first_date": "1850-01-15 12:00:00",
+    "last_date": "2014-12-15 12:00:00",
+    "requested_months": 80,
+    "sites": 106,
+    "monthly_values": 8480,
+    "actual_min": 0.0,
+    "actual_max": 99.99574279785156,
+    "grid_shape": [
+      384,
+      320
+    ],
+    "spatial_dimensions": [
+      "nj",
+      "ni"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "CESM2",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/c74fb434-c3a0-4b26-a956-de57b4c1f665",
+    "license": "CMIP6 model data produced by <The National Center for Atmospheric Research> is licensed under a Creative Commons Attribution-[]ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file)[]. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "CESM2 (2017): atmosphere: CAM6 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); ocean: POP2 (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m); sea_ice: CICE5.1 (same grid as ocean); land: CLM5 0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); aerosol: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); atmoschem: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); landIce: CISM2.1; ocnBgchem: MARBL (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m)",
+    "institution": "National Center for Atmospheric Research, Climate and Global Dynamics Laboratory, 1850 Table Mesa Drive, Boulder, CO 80305, USA",
+    "read_utc": "2026-10-30T02:09:47.779468+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/SImon/siconc/gn/v20190308/",
+      "variable_id": "siconc",
+      "experiment_id": "historical",
+      "member_id": "r4i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "eb4529a62bde60b0a5379f6fbfc7a8810be8a591c7845adbb70aae984b98be25",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "bda04f820ae57e1602385b6369d983aad77fa8660af42c8ed51d9070ba5ceed5",
+      "metadata_sha256": "8307cc0be20d4d1f0ebe1872e7c8d12f55cdb4dc0cb631aff8253002fa07f714",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "db2402ce2649e4c6caee5d7b89d25333256a9f9861b875fbb3f10e1ff08f7f30",
+      "historical_identity_sha256": "0c0535b0c7952dc69837d8f87a36fda83a52320dce5192802ce47c2cd797cac0"
+    }
+  },
+  {
+    "source_id": "CESM2",
+    "member_id": "r4i1p1f1",
+    "variable_id": "siconc",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/SImon/siconc/gn/v20200528/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/SImon/siconc/gn/v20200528/",
+    "source_units": "%",
+    "output_units": "percent",
+    "calendar": "noleap",
+    "first_date": "2015-01-15 12:00:00",
+    "last_date": "2100-12-15 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 0.0,
+    "actual_max": 99.99401092529297,
+    "grid_shape": [
+      384,
+      320
+    ],
+    "spatial_dimensions": [
+      "nj",
+      "ni"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "CESM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r4i1p1f1",
+    "tracking_id": "hdl:21.14100/259824d0-ebfd-4eca-a4e2-0e97c4ff520f\nhdl:21.14100/259824d0-ebfd-4eca-a4e2-0e97c4ff520f",
+    "license": "CMIP6 model data produced by <The National Center for Atmospheric Research> is licensed under a Creative Commons Attribution-[]ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file)[]. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "CESM2 (2017): atmosphere: CAM6 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); ocean: POP2 (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m); sea_ice: CICE5.1 (same grid as ocean); land: CLM5 0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); aerosol: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); atmoschem: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); landIce: CISM2.1; ocnBgchem: MARBL (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m)",
+    "institution": "National Center for Atmospheric Research, Climate and Global Dynamics Laboratory, 1850 Table Mesa Drive, Boulder, CO 80305, USA",
+    "read_utc": "2026-10-30T02:09:58.013518+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/SImon/siconc/gn/v20200528/",
+      "variable_id": "siconc",
+      "experiment_id": "ssp245",
+      "member_id": "r4i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "eb4529a62bde60b0a5379f6fbfc7a8810be8a591c7845adbb70aae984b98be25",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "7fdca4516c7be01764913d94009de73d50e71cabd5d9c0ead0dd4ff395f1c140",
+      "metadata_sha256": "83a3f7155d25d23896daa46320b2e43f5142083383d7143629ed901bd2162e40",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "db2402ce2649e4c6caee5d7b89d25333256a9f9861b875fbb3f10e1ff08f7f30",
+      "historical_identity_sha256": "0c0535b0c7952dc69837d8f87a36fda83a52320dce5192802ce47c2cd797cac0"
+    }
+  },
+  {
+    "source_id": "CESM2",
+    "member_id": "r4i1p1f1",
+    "variable_id": "siconc",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/SImon/siconc/gn/v20200528/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/SImon/siconc/gn/v20200528/",
+    "source_units": "%",
+    "output_units": "percent",
+    "calendar": "noleap",
+    "first_date": "2015-01-15 12:00:00",
+    "last_date": "2100-12-15 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 0.0,
+    "actual_max": 99.9876708984375,
+    "grid_shape": [
+      384,
+      320
+    ],
+    "spatial_dimensions": [
+      "nj",
+      "ni"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "CESM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r4i1p1f1",
+    "tracking_id": "hdl:21.14100/f00095a1-c73b-4f93-8743-0b434de753e5\nhdl:21.14100/f00095a1-c73b-4f93-8743-0b434de753e5",
+    "license": "CMIP6 model data produced by <The National Center for Atmospheric Research> is licensed under a Creative Commons Attribution-[]ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file)[]. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "CESM2 (2017): atmosphere: CAM6 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); ocean: POP2 (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m); sea_ice: CICE5.1 (same grid as ocean); land: CLM5 0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); aerosol: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); atmoschem: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); landIce: CISM2.1; ocnBgchem: MARBL (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m)",
+    "institution": "National Center for Atmospheric Research, Climate and Global Dynamics Laboratory, 1850 Table Mesa Drive, Boulder, CO 80305, USA",
+    "read_utc": "2026-10-30T02:10:03.587303+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/SImon/siconc/gn/v20200528/",
+      "variable_id": "siconc",
+      "experiment_id": "ssp585",
+      "member_id": "r4i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "eb4529a62bde60b0a5379f6fbfc7a8810be8a591c7845adbb70aae984b98be25",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "7fdca4516c7be01764913d94009de73d50e71cabd5d9c0ead0dd4ff395f1c140",
+      "metadata_sha256": "c1d3def7fd5f58a4555908d124382d92b6ea8cb76c8c82279c660acdbd46b223",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "db2402ce2649e4c6caee5d7b89d25333256a9f9861b875fbb3f10e1ff08f7f30",
+      "historical_identity_sha256": "0c0535b0c7952dc69837d8f87a36fda83a52320dce5192802ce47c2cd797cac0"
+    }
+  },
+  {
+    "source_id": "CESM2",
+    "member_id": "r4i1p1f1",
+    "variable_id": "sos",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Omon/sos/gn/v20190308/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Omon/sos/gn/v20190308/",
+    "source_units": "0.001",
+    "output_units": "0.001",
+    "calendar": "noleap",
+    "first_date": "1850-01-15 12:59:59.999997",
+    "last_date": "2014-12-15 12:00:00",
+    "requested_months": 80,
+    "sites": 106,
+    "monthly_values": 8480,
+    "actual_min": 32.837955474853516,
+    "actual_max": 34.76884460449219,
+    "grid_shape": [
+      384,
+      320
+    ],
+    "spatial_dimensions": [
+      "nlat",
+      "nlon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "CESM2",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/fdd67554-4fb2-4e77-a663-24e75bda8e91",
+    "license": "CMIP6 model data produced by <The National Center for Atmospheric Research> is licensed under a Creative Commons Attribution-[]ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file)[]. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "CESM2 (2017): atmosphere: CAM6 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); ocean: POP2 (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m); sea_ice: CICE5.1 (same grid as ocean); land: CLM5 0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); aerosol: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); atmoschem: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); landIce: CISM2.1; ocnBgchem: MARBL (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m)",
+    "institution": "National Center for Atmospheric Research, Climate and Global Dynamics Laboratory, 1850 Table Mesa Drive, Boulder, CO 80305, USA",
+    "read_utc": "2026-10-30T02:09:58.199211+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Omon/sos/gn/v20190308/",
+      "variable_id": "sos",
+      "experiment_id": "historical",
+      "member_id": "r4i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "20c35c64c814dba227cd1c52bcf1acff8072bb85bea4279ecf2c2c0119d68822",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "8b270f7592e040c4996d78227314dbca1e3a3640a757c87891711ef2e46fabd8",
+      "metadata_sha256": "545d15295b5e8821ba1a5ef9963f903c2dc9aad71bb1fb5ace4c37bd85421a76",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "db2402ce2649e4c6caee5d7b89d25333256a9f9861b875fbb3f10e1ff08f7f30",
+      "historical_identity_sha256": "12cdabf66d00a9413dc0b2fd88601a7be516a262b8058d2f4ef469bb25cbd6e1"
+    }
+  },
+  {
+    "source_id": "CESM2",
+    "member_id": "r4i1p1f1",
+    "variable_id": "sos",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/Omon/sos/gn/v20200528/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/Omon/sos/gn/v20200528/",
+    "source_units": "0.001",
+    "output_units": "0.001",
+    "calendar": "noleap",
+    "first_date": "2015-01-15 13:00:00",
+    "last_date": "2100-12-15 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 32.73442459106445,
+    "actual_max": 34.71235656738281,
+    "grid_shape": [
+      384,
+      320
+    ],
+    "spatial_dimensions": [
+      "nlat",
+      "nlon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "CESM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r4i1p1f1",
+    "tracking_id": "hdl:21.14100/601e12ad-a76d-4a17-beb0-f3dfb1105ee7\nhdl:21.14100/601e12ad-a76d-4a17-beb0-f3dfb1105ee7",
+    "license": "CMIP6 model data produced by <The National Center for Atmospheric Research> is licensed under a Creative Commons Attribution-[]ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file)[]. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "CESM2 (2017): atmosphere: CAM6 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); ocean: POP2 (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m); sea_ice: CICE5.1 (same grid as ocean); land: CLM5 0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); aerosol: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); atmoschem: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); landIce: CISM2.1; ocnBgchem: MARBL (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m)",
+    "institution": "National Center for Atmospheric Research, Climate and Global Dynamics Laboratory, 1850 Table Mesa Drive, Boulder, CO 80305, USA",
+    "read_utc": "2026-10-30T02:10:03.537811+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/Omon/sos/gn/v20200528/",
+      "variable_id": "sos",
+      "experiment_id": "ssp245",
+      "member_id": "r4i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "20c35c64c814dba227cd1c52bcf1acff8072bb85bea4279ecf2c2c0119d68822",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "1b66818c4867a98153860d1def1b80cd7979cf584097dcbbb07abeaa06a11140",
+      "metadata_sha256": "451e18a6961c26c1b77464b7a485b74ece98cc938bacd29065a93f6e0b24065a",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "db2402ce2649e4c6caee5d7b89d25333256a9f9861b875fbb3f10e1ff08f7f30",
+      "historical_identity_sha256": "12cdabf66d00a9413dc0b2fd88601a7be516a262b8058d2f4ef469bb25cbd6e1"
+    }
+  },
+  {
+    "source_id": "CESM2",
+    "member_id": "r4i1p1f1",
+    "variable_id": "sos",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/Omon/sos/gn/v20200528/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/Omon/sos/gn/v20200528/",
+    "source_units": "0.001",
+    "output_units": "0.001",
+    "calendar": "noleap",
+    "first_date": "2015-01-15 13:00:00",
+    "last_date": "2100-12-15 12:00:00",
+    "requested_months": 160,
+    "sites": 106,
+    "monthly_values": 16960,
+    "actual_min": 32.59231185913086,
+    "actual_max": 34.7052116394043,
+    "grid_shape": [
+      384,
+      320
+    ],
+    "spatial_dimensions": [
+      "nlat",
+      "nlon"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "CESM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r4i1p1f1",
+    "tracking_id": "hdl:21.14100/38afa449-ce5d-4e09-a8da-c2231ecf59d5\nhdl:21.14100/38afa449-ce5d-4e09-a8da-c2231ecf59d5",
+    "license": "CMIP6 model data produced by <The National Center for Atmospheric Research> is licensed under a Creative Commons Attribution-[]ShareAlike 4.0 International License (https://creativecommons.org/licenses/). Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment. Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file)[]. The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "CESM2 (2017): atmosphere: CAM6 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); ocean: POP2 (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m); sea_ice: CICE5.1 (same grid as ocean); land: CLM5 0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); aerosol: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); atmoschem: MAM4 (0.9x1.25 finite volume grid; 288 x 192 longitude/latitude; 32 levels; top level 2.25 mb); landIce: CISM2.1; ocnBgchem: MARBL (320x384 longitude/latitude; 60 levels; top grid cell 0-10 m)",
+    "institution": "National Center for Atmospheric Research, Climate and Global Dynamics Laboratory, 1850 Table Mesa Drive, Boulder, CO 80305, USA",
+    "read_utc": "2026-10-30T02:10:07.543077+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/Omon/sos/gn/v20200528/",
+      "variable_id": "sos",
+      "experiment_id": "ssp585",
+      "member_id": "r4i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "20c35c64c814dba227cd1c52bcf1acff8072bb85bea4279ecf2c2c0119d68822",
+      "sites_sha256": "8714d3f750665fe7ff9a9a85a6293103463f3ed5d60488158136bf93ef786d1a",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "time_sha256": "1b66818c4867a98153860d1def1b80cd7979cf584097dcbbb07abeaa06a11140",
+      "metadata_sha256": "14aec97ed1d0fd3b51fa15d656c57c08dc7779a887b0913ed312fd1f8c7fc3db",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "db2402ce2649e4c6caee5d7b89d25333256a9f9861b875fbb3f10e1ff08f7f30",
+      "historical_identity_sha256": "12cdabf66d00a9413dc0b2fd88601a7be516a262b8058d2f4ef469bb25cbd6e1"
+    }
+  }
+]

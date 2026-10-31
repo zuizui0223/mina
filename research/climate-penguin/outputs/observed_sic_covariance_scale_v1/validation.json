@@ -1,0 +1,113 @@
+{
+  "status": "passed_independent_source_row_and_variance_decomposition_audit",
+  "source_git_blobs": {
+    "monthly": "4fcea71c2d8b1069b6ad143f6522061ed434daf5",
+    "coords": "1c5214ab355d3d2e19bc33e5de4693fa21f38731"
+  },
+  "derived_files": {
+    "observed_sic_covariance_scale_v1/site_year_month_source_decomposition.csv": "0aed00b751de0c09faa5f2562f1e68ac072213f4",
+    "observed_sic_covariance_scale_v1/month_band_shared_sic_summary.csv": "120ec22ac019468514e160a0d80baa3907ab01a3",
+    "observed_sic_covariance_scale_v1/pairwise_annual_sic_correlations.csv": "d519e02c99a7d357342a4c17f03687770c3192df",
+    "observed_sic_covariance_scale_v1/hypothetical_single_site_concentration.csv": "5b0f7ae30ba92b5ab4492a411bfa67c630aacf9d",
+    "observed_sic_covariance_scale_v1/summary.json": "971c9a29d2e58e4a8f0f45361881f310f7026c68"
+  },
+  "counts": {
+    "original_monthly_rows": 9600,
+    "selected_site_month_year_band_rows": 1440,
+    "models": 8,
+    "pairwise": 120,
+    "concentrated_profiles": 48
+  },
+  "independent_results": [
+    {
+      "month": "8",
+      "inner_km": "0",
+      "ST": 53723.538576297426,
+      "SS_year": 51814.901820562445,
+      "SS_site": 1565.1300106983813,
+      "SS_interaction": 343.50674503656313,
+      "yearR2": 0.9644729888180326,
+      "residualR2": 0.006393970950903012,
+      "effrank": 1.0119166789360863
+    },
+    {
+      "month": "9",
+      "inner_km": "0",
+      "ST": 25074.933177481144,
+      "SS_year": 22049.67745495552,
+      "SS_site": 2740.2559854875576,
+      "SS_interaction": 284.99973703808666,
+      "yearR2": 0.8793513944339244,
+      "residualR2": 0.01136592209521955,
+      "effrank": 1.0230931720205965
+    },
+    {
+      "month": "10",
+      "inner_km": "0",
+      "ST": 49096.26517905831,
+      "SS_year": 42448.1728896579,
+      "SS_site": 6194.861877892507,
+      "SS_interaction": 453.2304115079729,
+      "yearR2": 0.8645906717108879,
+      "residualR2": 0.009231464142027964,
+      "effrank": 1.0210127743461173
+    },
+    {
+      "month": "11",
+      "inner_km": "0",
+      "ST": 61489.93818208702,
+      "SS_year": 53619.39533675528,
+      "SS_site": 7154.190505938769,
+      "SS_interaction": 716.3523393929704,
+      "yearR2": 0.8720027523523426,
+      "residualR2": 0.011649911523275122,
+      "effrank": 1.0161200588057746
+    },
+    {
+      "month": "8",
+      "inner_km": "100",
+      "ST": 21945.105937205848,
+      "SS_year": 21351.502733329555,
+      "SS_site": 573.7513258445584,
+      "SS_interaction": 19.851878031749994,
+      "yearR2": 0.9729505427964285,
+      "residualR2": 0.0009046152745197286,
+      "effrank": 1.0014163889417618
+    },
+    {
+      "month": "9",
+      "inner_km": "100",
+      "ST": 16172.910521801112,
+      "SS_year": 15541.108490420565,
+      "SS_site": 621.5271028886569,
+      "SS_interaction": 10.274928491888309,
+      "yearR2": 0.9609345497504066,
+      "residualR2": 0.0006353172162819851,
+      "effrank": 1.0011983321867552
+    },
+    {
+      "month": "10",
+      "inner_km": "100",
+      "ST": 19513.844066836045,
+      "SS_year": 18895.216621375264,
+      "SS_site": 600.2692525272641,
+      "SS_interaction": 18.35819293352724,
+      "yearR2": 0.9682980225043335,
+      "residualR2": 0.0009407778841856769,
+      "effrank": 1.0008115527108068
+    },
+    {
+      "month": "11",
+      "inner_km": "100",
+      "ST": 11736.440106803637,
+      "SS_year": 11254.764502263752,
+      "SS_site": 467.7006467961156,
+      "SS_interaction": 13.97495774377,
+      "yearR2": 0.9589589688051442,
+      "residualR2": 0.0011907322507161853,
+      "effrank": 1.0009811052577224
+    }
+  ],
+  "errors": [],
+  "limitation": "This audit verifies observed buffer-scale environmental covariance and arithmetic. Overlapping marine buffers cannot distinguish independently measured colony or foraging-site shocks; no breeding responses have been tested."
+}

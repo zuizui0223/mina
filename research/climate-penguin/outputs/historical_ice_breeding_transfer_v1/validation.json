@@ -1,0 +1,31 @@
+{
+  "status": "passed_independent_all_1404_scenario_values_and_36_ensemble_summaries",
+  "model": "39 long-observation Adélie locations, linear and quadratic and region-demeaned sensitivities; no causal validation",
+  "source_git_sha": {
+    "bio": "2b6c0793ea9f9ea9acf0771052cf7a2ad9ab335b",
+    "ice": "4fcea71c2d8b1069b6ad143f6522061ed434daf5",
+    "cmip": "b383ef1cc3b0807b0bd010ca0e825937ab83ce97"
+  },
+  "derived_blobs": {
+    "adeli_39site_historical_climate_growth.csv": "db58938630e80d22ba445600ce1ad3f554c452e2",
+    "future_conditional_growth_component.csv": "e70388bdcccc481d7b9d19af51d373f13e4c494b",
+    "future_conditional_scenarios.csv": "5391b3e4c7fac10899bc3d93448e366c2c680f09",
+    "leave_region_sensitivity.csv": "c5a9de7f7818d08e623cf7632fc6d5b88dd911e0",
+    "summary.json": "913344733e372c3a6ae5cb6a988a0a98b13ffc82"
+  },
+  "independent_check": {
+    "site_count": 39,
+    "scenario_individual_rows": 1404,
+    "scenario_group_rows": 36,
+    "region_sensitivity_rows": 5,
+    "line_slope_recomputed_per10pp": 0.1672273272231719,
+    "quad_coefficients_recomputed": [
+      -0.7787679836354127,
+      0.30332921561456955,
+      0.21557790516379
+    ],
+    "region_slope_declared_per10pp": 0.2751957028419474
+  },
+  "errors": [],
+  "caveat": "This is numerical integrity validation and spatial holdout only. Historical climatic causality and future breeding response remain uncalibrated."
+}

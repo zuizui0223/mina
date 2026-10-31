@@ -1,0 +1,36 @@
+{
+  "status": "exploratory_association_not_demographic_or_transport_mechanism",
+  "family_size": 12,
+  "input_sha256": {
+    "outputs/climate_penguin/historical_count_interval_timing.csv": "566781ab3a82afbb5d25f6d957b2df2e629a74b084c3bf47542dc66d556d8443",
+    "outputs/climate_penguin/macro_monthly_seaice_1991_2020.csv": "b21b10743f3a56281d0cf62f55988823f55b645b6d3fbb1bf7c2d366dff1b3ae"
+  },
+  "cohorts": {
+    "all_annual": {
+      "intervals": 301,
+      "sites": 33,
+      "regions": 6
+    },
+    "timing_supported": {
+      "intervals": 203,
+      "sites": 26,
+      "regions": 3
+    },
+    "timing_supported_without_victoria": {
+      "intervals": 16,
+      "sites": 6,
+      "regions": 2
+    }
+  },
+  "finite_p_values": 10,
+  "bh_below_005": 0,
+  "by_below_005": 0,
+  "inference": "CR1 site and end-year two-way clustered covariance; t df=min(clusters)-1; small cluster approximation",
+  "limitations": [
+    "September concentration change is not melt timing or ice-assisted travel",
+    "Growth combines survival, breeding participation, movement and count uncertainty",
+    "Timing-supported subset is dominated by Victoria Land; no robust generalization from significance alone",
+    "Within-year fixed effects can absorb real regional climate variation as well as nuisance variation",
+    "Exploratory new 12-test family does not replace the earlier 216-test settlement family"
+  ]
+}

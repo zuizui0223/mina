@@ -1,0 +1,46 @@
+name: matched-observed-intervals-v6
+on:
+  push:
+    branches: ['codex/climate-penguin-progress']
+    paths:
+      - 'research/climate-penguin/work/climate_penguin/matched_observed_intervals_v6.py'
+      - 'research/climate-penguin/contracts/MATCHED_OBSERVED_INTERVALS_V6.md'
+      - 'tests/test_matched_observed_intervals_v6.py'
+      - '.github/workflows/matched-observed-intervals-v6.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-source-and-current-land:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install normal project test dependencies
+        run: python -m pip install -e '.[dev]'
+      - name: Full repository test suite in its normal core environment
+        run: pytest
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-mapppd-matched-species-growth-v1
+          run-id: 40868828790
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/matched-annual-original
+      - name: Install optional GIS source reader
+        run: python -m pip install shapely==2.1.2 pyproj==3.7.2 pyshp requests
+      - name: Reconstruct observed-interval panel and exact source land identity
+        run: |
+          python research/climate-penguin/work/climate_penguin/matched_observed_intervals_v6.py \
+            --original-dir /tmp/matched-annual-original --with-geometry \
+            --out /tmp/observed-intervals-v6
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-observed-intervals-v6-original-source
+          path: /tmp/observed-intervals-v6/
+          if-no-files-found: warn
+          retention-days: 30

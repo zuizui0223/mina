@@ -1,0 +1,47 @@
+name: climate-penguin-litchfield-source-event-v1
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/inputs/ASPA113_LITCHFIELD_ADELIE_COUNTS_1991_2012.csv"
+      - "research/climate-penguin/work/climate_penguin/audit_litchfield_aspa113_v1.py"
+      - "research/climate-penguin/contracts/LITCHFIELD_ASPA113_ORIGINAL_SOURCE_EVENT_V1.md"
+      - "tests/test_climate_penguin_litchfield_aspa113_v1.py"
+      - ".github/workflows/climate-penguin-litchfield-source-event-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  source-reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check original independent-source transcription and preserve zeros
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_climate_penguin_litchfield_aspa113_v1.py
+      - name: Fetch fixed 40-site genuine ERA5 artifact, no reanalysis re-fetch
+        uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-era5-1991-2020-source-full
+          run-id: 40856645581
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/era5_source
+      - name: Audit original zero chronology and ERA5 climate context (no vegetation effect)
+        run: python research/climate-penguin/work/climate_penguin/audit_litchfield_aspa113_v1.py --era5-dir "${{ runner.temp }}/era5_source" --output "${{ runner.temp }}/litchfield_original"
+      - name: Preserve original source comparison and date recovery priority
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: climate-penguin-aspa113-original-event-source-v1
+          path: ${{ runner.temp }}/litchfield_original/
+          retention-days: 30
+          if-no-files-found: warn

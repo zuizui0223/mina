@@ -1,0 +1,46 @@
+name: climate-penguin-Chinstrap-original-daily-ice-graph-connectivity-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_graph_connectivity_v1.py"
+      - "tests/test_chinstrap_daily_ice_graph_connectivity_v1.py"
+      - ".github/workflows/climate-penguin-Chinstrap-OSI-daily-ice-connectivity-v1.yml"
+jobs:
+  original-ice-graph:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install BAS GPS and original satellite NetCDF native graph readers
+        run: python -m pip install numpy scipy xarray netCDF4 "rasterio>=1.4,<1.6"
+      - name: Test frozen hypothetical ice binary threshold and source-no-seed safeguards
+        run: python -m unittest discover -s tests -p test_chinstrap_daily_ice_graph_connectivity_v1.py -v
+      - name: Fetch BAS original Chinstrap GPS version2 from original publisher
+        run: |
+          mkdir -p build/chinstrap_ice_graph_original
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 300 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/chinstrap_ice_graph_original/BAS_GPS.zip
+      - name: Freeze original three island/year pair days before reading ice
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_graph_connectivity_v1.py --gps-source build/chinstrap_ice_graph_original/BAS_GPS.zip --out build/chinstrap_ice_graph_original --phase discover
+      - name: Fetch 45 original EUMETSAT OSI SAF daily source NetCDFs with SHA
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_graph_connectivity_v1.py --gps-source build/chinstrap_ice_graph_original/BAS_GPS.zip --out build/chinstrap_ice_graph_original --phase download
+      - name: Calculate hypothetical low-SIC native ocean graph source connectivity
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_graph_connectivity_v1.py --gps-source build/chinstrap_ice_graph_original/BAS_GPS.zip --out build/chinstrap_ice_graph_original --phase analyze
+          python -m unittest discover -s tests -p test_chinstrap_daily_ice_graph_connectivity_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-original-daily-OSI-25km-hypothetical-connectivity-v1
+          path: |
+            build/chinstrap_ice_graph_original/source_GPS_days_frozen_before_SIC.json
+            build/chinstrap_ice_graph_original/original_daily_ice_SHA_receipts.json
+            build/chinstrap_ice_graph_original/island_day_25km_lowSIC_binary_graph_source.csv
+            build/chinstrap_ice_graph_original/same_date_Signy_other_binary_graph_comparison.csv
+            build/chinstrap_ice_graph_original/source_island_year_month_binary_graph_summary.csv
+            build/chinstrap_ice_graph_original/decision.json

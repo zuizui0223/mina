@@ -1,0 +1,48 @@
+name: climate-seaice-fixed44-v4
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/climate_penguin/seaice_fixed_pairs_v4.py'
+      - 'tests/test_seaice_fixed_pairs_v4.py'
+      - '.github/workflows/climate-seaice-fixed44-v4.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original96months-fixed44pairs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy xarray netCDF4 pyproj pytest
+      - run: pytest -q tests/test_seaice_catalog_probe_v4.py tests/test_seaice_monthly_source_v4.py tests/test_seaice_fixed_pairs_v4.py
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-fixed-precensus-lag-v3
+          run-id: 40878003696
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/prior44
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-mapppd-matched-species-growth-v1
+          run-id: 40868828790
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/original-sites
+      - name: Fetch and extract fixed 96 original monthly marine ice fields
+        run: |
+          python research/climate-penguin/work/climate_penguin/seaice_fixed_pairs_v4.py \
+            --pairs /tmp/prior44/lagged_primary_common_pairs.csv \
+            --sites /tmp/original-sites/source/sites.csv \
+            --out /tmp/fixed44-marine
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: climate-seaice-fixed44-original96-v4
+          path: /tmp/fixed44-marine/
+          retention-days: 30
+          if-no-files-found: warn
