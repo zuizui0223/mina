@@ -72,6 +72,7 @@ def run(original_gps,original_gam):
                     fld[c],tr,center["center_lat"],center["center_lon"])
                 grids[site,season,period,c]=(rings,bins)
     tags=[]
+    unique_native_cells=defaultdict(set)
     for tag in tracks:
         site,season=tag["island"],tag["season"]
         center=centers[site,season]
@@ -102,6 +103,7 @@ def run(original_gps,original_gam):
                 row[period+"_"+c+"_visit"]=float(statistics.mean(values))
                 row[period+"_"+c+"_distance_background"]=float(statistics.mean(bg))
             if cells:
+                unique_native_cells[site,season,period].update(cells)
                 if not math.isclose(row[period+"_combined_visit"],float(
                     statistics.mean(fld["combined"][r,k] for r,k in cells)),abs_tol=1e-11):
                     raise ValueError("GPS component source cell mean mismatch")
@@ -191,7 +193,72 @@ def run(original_gps,original_gam):
              "Source GPS not dive-confirmed/capture; variable tag sample and only one other island per year.",
              "No effective independent regional or year heldout, no evidence of climate-driven future recruitment, nests, N_eff or greening."
           ]}
-    return tags,annual,pair_results,gate
+    pixel_annual,pixel_pairs=independent_pixel_weighting_for_components(
+        unique_native_cells,centers,models,grids)
+    gate["native_pixel_union_preseason"]=[r for r in pixel_pairs if r["model_period"]=="preseason"]
+    return tags,annual,pair_results,gate,pixel_annual,pixel_pairs
+
+def independent_pixel_weighting_for_components(unions,centers,models,grids):
+    """One vote per native GAM cell, rather than repeated source GPS tags.
+
+    Native cells are spatially autocorrelated and do not represent
+    independent marine prey observations or habitat availability.
+    """
+    annual=[]
+    for (site,season),center in sorted(centers.items()):
+        for period in PERIODS:
+            cells=sorted(unions[site,season,period])
+            if not cells:raise ValueError("original native pixel union is empty")
+            year=season+(period=="same_summer")
+            fld=models[year]
+            observed={}
+            background={}
+            for c in COMPS:
+                arr=fld[c]
+                rings,bins=grids[site,season,period,c]
+                observed[c]=float(statistics.mean(float(arr[r,k]) for r,k in cells))
+                background[c]=float(statistics.mean(rings[int(bins[r,k])] for r,k in cells))
+            parts=partition(observed,background)
+            row={"island":site,"season_start":season,"model_period":period,
+                 "model_year":year,"n_native_unique_model_pixels":len(cells),
+                 "pixels_not_independent_ocean_observations":True,**parts}
+            for c in COMPS:
+                row[c+"_visited_GAM_mean"]=observed[c]
+                row[c+"_same_distance_GAM_background"]=background[c]
+                row[c+"_visited_div_background"]=observed[c]/background[c]
+            annual.append(row)
+    idx={(r["island"],r["season_start"],r["model_period"]):r for r in annual}
+    paired=[]
+    previously_verified={(2011,"LI"):1.6418902195131548,
+                         (2013,"PI"):4.5112838741401875,
+                         (2015,"MI"):3.239683825849412}
+    for yr,other in PAIRS:
+        for period in PERIODS:
+            a=idx["SI",yr,period]
+            b=idx[other,yr,period]
+            row={"season_start":yr,"other_island":other,"model_period":period,
+                 "n_native_pixels_other":b["n_native_unique_model_pixels"],
+                 "n_native_pixels_Signy":a["n_native_unique_model_pixels"]}
+            for c in COMPS:
+                row[c+"_radial_adjusted_ratio"]=b[c+"_visited_div_background"]/a[c+"_visited_div_background"]
+            for k in ("log_occurrence_probability_ratio",
+                      "log_conditional_positive_density_ratio",
+                      "log_aggregation_interaction_residual"):
+                row["other_minus_Signy_"+k]=b[k]-a[k]
+            terms=sum(row["other_minus_Signy_"+k] for k in (
+                    "log_occurrence_probability_ratio",
+                    "log_conditional_positive_density_ratio",
+                    "log_aggregation_interaction_residual"))
+            if not math.isclose(terms,math.log(row["combined_radial_adjusted_ratio"]),abs_tol=1e-11):
+                raise ValueError("native pixel exact log partition drift")
+            if period=="preseason" and not math.isclose(row["combined_radial_adjusted_ratio"],
+                       previously_verified[yr,other],abs_tol=1e-10):
+                raise ValueError("independent source-native pixel union receipt changed")
+            row["same_published_GAM_not_independent_ocean_data"]=True
+            paired.append(row)
+    if len(annual)!=14 or len(paired)!=6:
+        raise ValueError("14 original island-year periods and 6 pairs required")
+    return annual,paired
 
 def save(path,rows):
     if not rows:raise ValueError("empty source result")
@@ -206,7 +273,7 @@ def main():
     p.add_argument("--out",required=True,type=Path)
     p.add_argument("--check",action="store_true")
     arg=p.parse_args()
-    tags,annual,pairs,receipt=run(arg.gps_zip,arg.model_zip)
+    tags,annual,pairs,receipt,pixel_annual,pixel_pairs=run(arg.gps_zip,arg.model_zip)
     if arg.check:
         if len(tags)!=308 or len(annual)!=14 or len(pairs)!=6:
             raise ValueError("known cohort shape changed")
@@ -217,6 +284,8 @@ def main():
     save(arg.out/"308_source_GPS_hurdle_components.csv",tags)
     save(arg.out/"14_island_year_hurdle_components.csv",annual)
     save(arg.out/"6_matched_island_hurdle_log_decomposition.csv",pairs)
+    save(arg.out/"14_island_year_native_pixel_hurdle_components.csv",pixel_annual)
+    save(arg.out/"6_matched_island_native_pixel_hurdle_decomposition.csv",pixel_pairs)
     (arg.out/"decision.json").write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({
         "status":receipt["status"],"source_tags":len(tags),"source_island_years":len(annual),
@@ -226,6 +295,14 @@ def main():
             "other_minus_Signy_log_occurrence_probability_ratio",
             "other_minus_Signy_log_conditional_positive_density_ratio",
             "other_minus_Signy_log_aggregation_interaction_residual")}
-            for r in receipt["matched_preseason_results"]],"check":arg.check
+            for r in receipt["matched_preseason_results"]],
+        "native_pixel_union_preseason":[{k:r[k] for k in (
+          "season_start","other_island","prob_radial_adjusted_ratio",
+          "density_positive_radial_adjusted_ratio","combined_radial_adjusted_ratio",
+          "other_minus_Signy_log_occurrence_probability_ratio",
+          "other_minus_Signy_log_conditional_positive_density_ratio",
+          "other_minus_Signy_log_aggregation_interaction_residual")}
+           for r in pixel_pairs if r["model_period"]=="preseason"],
+        "check":arg.check
     },ensure_ascii=False))
 if __name__=="__main__":main()

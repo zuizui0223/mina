@@ -34,7 +34,15 @@ class HurdleSource(unittest.TestCase):
         model=root/"krill-original.zip"
         if not(gps.exists() and model.exists()):
             self.skipTest("source GPS and Freer model TIFF original ZIP required")
-        tags,annual,pairs,gate=m.run(gps,model)
+        tags,annual,pairs,gate,pixel_annual,pixel_pairs=m.run(gps,model)
         self.assertEqual((len(tags),len(annual),len(pairs)),(308,14,6))
+        self.assertEqual((len(pixel_annual),len(pixel_pairs)),(14,6))
+        self.assertTrue(all(math.isclose(
+           sum(r["other_minus_Signy_"+x] for x in (
+               "log_occurrence_probability_ratio",
+               "log_conditional_positive_density_ratio",
+               "log_aggregation_interaction_residual")),
+           math.log(r["combined_radial_adjusted_ratio"]),abs_tol=1e-10)
+           for r in pixel_pairs))
         self.assertTrue(all(p["mathematical_log_decomposition_exact"] for p in pairs))
 if __name__=="__main__":unittest.main()
