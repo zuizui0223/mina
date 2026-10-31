@@ -163,12 +163,13 @@ function buildCoLocation(src,sourceGitShas){
       "No causal or prospective prey-to-breeding coefficient, nest-patch area or vegetation change projection is estimated"
     ]
   };
+  const geoCategoricalKeys=new Set(["experiment","period","location_id","site_id","species_id","site_name","region","historical_count_method","historical_slope_sign","vegetation_detection_status","marine_fingerprint"]);
   return {files:{
       "source_matching_receipt.csv":csvEncode(receipts,Object.keys(receipts[0])),
       "matched_site_species_scenarios.csv":csvEncode(scenarios,Object.keys(scenarios[0])),
       "matched_site_species_scenarios.geojson":JSON.stringify({
         type:"FeatureCollection",name:"Static observed breeding/vegetation co-location × conditional 3-model climate exposure; NOT nesting forecast",
-        features:scenarios.map((s,i)=>({type:"Feature",id:i+1,geometry:{type:"Point",coordinates:[Number(s.longitude),Number(s.latitude)]},properties:Object.fromEntries(Object.entries(s).filter(([k])=>!["latitude","longitude"].includes(k)).map(([k,val])=>[k,val===""?null:typeof val==="number"?val:val]))}))
+        features:scenarios.map((s,i)=>({type:"Feature",id:i+1,geometry:{type:"Point",coordinates:[Number(s.longitude),Number(s.latitude)]},properties:Object.fromEntries(Object.entries(s).filter(([k])=>!["latitude","longitude"].includes(k)).map(([k,val])=>[k,val===""?null:geoCategoricalKeys.has(k)?val:Number(val)]))}))
       })+"\n",
       "summary.json":JSON.stringify(meta,null,2)+"\n"
     },meta};
@@ -184,11 +185,11 @@ const expectedGitBlobs={
 const source={};
 for(const [key,rel] of Object.entries(inputPaths)){
  const buffer=readFileSync(join(base,rel));
- const blob=createHash("sha1").update(Buffer.from("blob "+buffer.length+"\\0")).update(buffer).digest("hex");
+ const blob=createHash("sha1").update(Buffer.from("blob "+buffer.length+"\0")).update(buffer).digest("hex");
  if(blob!==expectedGitBlobs[key])throw Error("source git blob SHA differs: "+key+" observed "+blob+" expected "+expectedGitBlobs[key]);
  source[key]=buffer.toString("utf8");
 }
 const r=buildCoLocation(source,expectedGitBlobs);
 mkdirSync(out,{recursive:true});
 for(const [name,body] of Object.entries(r.files))writeFileSync(join(out,name),body);
-console.log(JSON.stringify(r.meta.outputs)+"\\n"+JSON.stringify(r.meta.scenarios,null,2));
+console.log(JSON.stringify(r.meta.outputs)+"\n"+JSON.stringify(r.meta.scenarios,null,2));
