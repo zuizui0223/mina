@@ -1,5 +1,7 @@
 # Climate × sea ice × salinity × vegetation × breeding space: integrated future scenario gate (2026-10-30)
 
+> **2026-10-31 最新の確定エビデンス入口:** [肯定結果・未達ゲートの統合台帳](POSITIVE_EVIDENCE_MERGED_20261031.md) を参照。Palmer・Signyの繁殖構成単位の縮退と地域同期は元結果JSONに照合済み。Rossの再配置・回復は著者確認待ちPR189の固定コミットを参照するだけで、こちらのDraft PRへ論文全体を混ぜない。新しいGPS/TDRの位置・圧力対応は技術的に前進したが、**2050/2100年の繁殖数・N_eff・植生の確定予測は未許可**。
+
 **2026-10-30 critical source correction:** IMR 2024 Table2 and Skaret 2023 original Table3 disagree on annual krill labels (8 of the 10 year alignments). Prior \`imr_south_orkney_krill_v1\` numerical food→fledgling results are superseded. Skaret 2023's 2013 combined value is missing (not zero), and 2014 combined is 76.5 g/m². On the corrected 8-year source, Pearson r to source Signy fledgling stage is Adélie +0.0573, Chinstrap −0.2118, Gentoo −0.4134, not the old 9-year figures. [Source conflict audit](outputs/south_orkney_source_reconciliation_v2/REPORT_JA.md) and [dedicated successful checks](https://github.com/zuizui0223/mina/actions/runs/41069153393). Source-implied NO-GO for climate-driven future nesting forecasts remains.
 
 **Status: measured joint climate exposure + conditional breeding-space sensitivity. NOT a calibrated penguin abundance or vegetation forecast.** This note is an exploratory extension in draft PR #206. It does not change frozen Paper 1 PR #189, Antarctic GIS Paper 2 PR #199, the previous 216 comparisons, or any existing model outcomes.
