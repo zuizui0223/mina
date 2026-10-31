@@ -1,0 +1,44 @@
+name: climate-penguin-Chinstrap-Signy-Powell-original-daily-SIC-GPS-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_same_day_GPS_2013_v1.py"
+      - "tests/test_chinstrap_daily_ice_same_day_GPS_2013_v1.py"
+      - ".github/workflows/climate-penguin-daily-SIC-matched-GPS-days-v1.yml"
+jobs:
+  first-party-daily-SIC:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install native source geography and NetCDF readers
+        run: python -m pip install "rasterio>=1.4,<1.6" scipy numpy xarray netCDF4
+      - name: Run source-only units before looking at original daily SIC
+        run: python -m unittest discover -s tests -p test_chinstrap_daily_ice_same_day_GPS_2013_v1.py -v
+      - name: Fetch BAS original Chinstrap GPS Version 2
+        run: |
+          mkdir -p build/daily_GPS
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 300 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/daily_GPS/original_Chinstrap_GPS.zip
+      - name: Freeze the actual GPS dates observed by both islands before opening ice
+        run: python research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_same_day_GPS_2013_v1.py --gps build/daily_GPS/original_Chinstrap_GPS.zip --out build/daily_GPS --phase discover
+      - name: Fetch only original source daily Southern satellite NetCDF on frozen GPS days
+        run: python research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_same_day_GPS_2013_v1.py --gps build/daily_GPS/original_Chinstrap_GPS.zip --out build/daily_GPS --phase fetch
+      - name: Match same GPS calendar day and verify original source ocean pixels
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_same_day_GPS_2013_v1.py --gps build/daily_GPS/original_Chinstrap_GPS.zip --out build/daily_GPS --phase analyze
+          python -m unittest discover -s tests -p test_chinstrap_daily_ice_same_day_GPS_2013_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-original-source-GPS-same-day-OSI-ice-v1
+          path: |
+            build/daily_GPS/source_GPS_shared_days_locked.json
+            build/daily_GPS/source_daily_NetCDF_SHA_receipts.json
+            build/daily_GPS/daily_GPS_tag_original_SIC.csv
+            build/daily_GPS/daily_island_original_SIC.csv
+            build/daily_GPS/matched_same_day_Signy_Powell_original_SIC.csv
+            build/daily_GPS/decision.json
