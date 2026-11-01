@@ -1,0 +1,40 @@
+# Results draft — Threshold-free multidecadal sea-ice novelty at sampled Adélie penguin breeding sites
+
+## Question
+
+Can source-matched CMIP6 future seasonal sea-ice climatologies move below the historical range observed at the same breeding sites **without** requiring a postulated demographic hazard cutoff of 60–80% SIC? Do sampling geography and unequal recorded breeding counts change the macroecological exposure summary?
+
+## Original sources and time-scale-matched reference
+
+We reconstructed 30 annual August–November coastal satellite sea-ice concentration (SIC) values (1991–2020) for each of 39 geographically biased Adélie penguin census site codes (1,170 site-years). Each site's observed multidecadal baseline was represented by 11 overlapping rolling 20-year climatologies (1991–2010 to 2001–2020). The median observed range of these *overlapping* climatologies was only **0.848 percentage points**. These windows are not independent draws or a statistical interval; future 20-year averages are classified as physically outside the sampled historical range if they are lower than the smallest rolling 20-year observed mean. We further assessed exceedance by 2 and 5 percentage points and alternative 10/15-year historical rolling-window minima.
+
+Three source-matched CMIP6 models (ACCESS-CM2, BCC-CSM2-MR and CESM2) were delta-adjusted to the observed 1995–2014 seasonal sea-ice mean at each original site, for SSP2-4.5 and SSP5-8.5 in 2041–2060 and 2081–2100. The denominator for census-weighted summaries was the sum of the most recently recorded original MAPPPD counts at the 39 sites (1,074,279), which are not a temporally synchronized census or a single consistent unit of breeding population size.
+
+## Physical exposure across scenarios
+
+| Scenario | Period | Across-model share of census-count weight with future SIC below its historical 20-y lower bound | Share at source codes below the bound in all three models | Common 3-model share at least 2 pp below | Common 3-model share at least 5 pp below |
+|---|---|---:|---:|---:|---:|
+| SSP2-4.5 | 2041–2060 | 39.1–43.4% | 35.5% | 0.0% | 0.0% |
+| SSP2-4.5 | 2081–2100 | 40.4–75.1% | 39.7% | 22.8% | 0.2% |
+| SSP5-8.5 | 2041–2060 | 40.7–48.1% | 39.7% | 20.7% | 0.0% |
+| SSP5-8.5 | 2081–2100 | **48.8–85.9%** | **39.7%** | **35.7%** | **22.8%** |
+
+The magnitude of these percentages is sensitive to the narrow observed envelope and coarse coastal model grids. Importantly, even when a site remains above an illustrative 77.5% SIC level, its modeled future 20-year climatology can fall outside the range of its own observed historical 20-year means. Under SSP5-8.5 in 2081–2100, the model-specific fraction of present census weight meeting both conditions ranged from **12.4% to 59.5%**. Thus, not crossing a region-wide low-SIC threshold does **not** imply climatic stationarity.
+
+## Cape Crozier and count-weighted geography
+
+The two original Cape Crozier count codes together contributed 242,681 of the recorded counts (22.6%). Their lowest observed 20-year mean SIC values were **79.85% (CRZE)** and **80.39% (CRZW)**. The three model futures under SSP5-8.5 in 2081–2100 were **67.75–73.80%** and **68.30–74.35%**, respectively, placing both sites **6.05–12.09 percentage points** below their site-specific historical 20-year minima under all three models. This result avoids the unvalidated 77.5% hazard threshold; it establishes no demographic response. The two source codes do not represent independently replicated climate-model exposure cells.
+
+The study-region mean SIC change in SSP5-8.5 late century differed according to geographic weighting: **−6.54 to −11.19 percentage points** across the 39 site codes with equal site weights, versus **−1.68 to −4.05 percentage points** after weighting by their original latest recorded census counts. A high-SIC relative refugium can therefore still experience climate conditions beyond its own historical multidecadal envelope, while current census concentration near comparatively stable high-SIC areas reduces the count-weighted mean change compared with a simple site mean.
+
+## Interpretation boundary and limitations
+
+This is an alternative **physical exposure envelope**, not a validation or replacement of a biological cutoff. Historical 20-year climatologies are highly overlapping and the available 30-year period is short; the 2/5 percentage-point thresholds are transparent sensitivity margins, not inferred hazards or confidence bounds. The nested 10/15-year historical window and annual minimum comparisons use different temporal averaging lengths and are deliberately retained only as sensitivity checks. Site selection over-represents Victoria Land, sea-ice values share pixels, CMIP6 coastal cells are coarse, and each of the three models contributes only one realization. Census weights refer to different survey years (2001–2025) and incompatible count methods/targets. Neither future Adélie population decline, occupancy, breeding failure, competition, salinity response nor vegetation change is projected.
+
+## Figures
+
+**Main**: (A) empirical distribution of historical site-specific 20-year SIC lower bounds and current census-count weight; (B) model-specific 2041–2060 / 2081–2100 site-weighted versus latest-record-count-weighted physical SIC changes; (C) scenario sensitivity with three-model ranges for physical novelty beyond historical 20-y minimum, then 2 pp and 5 pp, alongside the common three-model intersection. Distinguish the present-census exposure index from a numerical forecast of future colony size.
+
+**Supplement**: source 39×30 annual SIC; 11/16/21 historical rolling windows for 20/15/10 years; full 936 site×scenario×baseline×model climate values; native CMIP6 grid IDs and distances; exact model-overlap site sets, observed latest count method/year, and comparison with the exploratory hypothetical 60–80% boundary.
+
+**Reproducible sources**: [GitHub Actions source-verified successful run](https://github.com/zuizui0223/mina/actions/runs/41261450601), artifact ID 13064883160; original code: \`research/climate-penguin/work/seaice_historical_novelty_v1/build.mjs\`.

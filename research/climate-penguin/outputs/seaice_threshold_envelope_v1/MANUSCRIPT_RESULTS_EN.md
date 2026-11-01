@@ -38,3 +38,5 @@ An exploratory rolling-origin hindcast using observed test-season SIC, trained o
 Accordingly, the hypothetical SIC boundary is retained only as a transparent sensitivity variable. The main exposure envelope (0–39.03% of currently recorded count weight under SSP5-8.5 late-century across all assumed 60–80% thresholds and three models) must **not** be interpreted as a forecast of population decline, extinction risk, or a confidence interval on a biological threshold.
 
 [Original data and code](../seaice_threshold_temporal_gate_v1/REPORT_JA.md) · [Source-pinned CI SUCCESS](https://github.com/zuizui0223/mina/actions/runs/41259423402).
+
+See also the threshold-free multidecadal climatological novelty analysis in [the source-verified Results](../seaice_historical_novelty_v1/MANUSCRIPT_RESULTS_EN.md), which does not require an unvalidated biological SIC threshold.
