@@ -282,6 +282,92 @@ for(const a of accuracy){
  if(thresholds.includes(t))cvDetails.push(...preds);
 }
 if(accuracy.length!==201||supports.length!==201||cv.length!==201)throw Error("Cutoff grid size drift");
+// Post-specification sensitivity: the same t=77.5, no threshold refitting to outcome.
+// First remove Crozier from TEST predictions only (influence diagnosis), then rebuild the
+// conditional temporal hindcast with both Crozier site codes removed from ALL training/test.
+const test77=cvDetails.filter(x=>x.threshold_SIC_pct===77.5);
+if(!test77.length||test77.length!==cv.find(x=>x.threshold_SIC_pct===77.5).test_count_pairs)
+ throw Error("Missing prior source time-origin forecasts");
+const predictorError=(rows,key)=>avg(rows.map(x=>Math.abs(x[key]-x.actual_log_growth)));
+const subsetScores=rows=>({
+ n:rows.length,
+ distinct_sites:uniq(rows,x=>x.site_id),
+ distinct_regions:uniq(rows,x=>x.region),
+ original_site_past_mean_MAE:predictorError(rows,"prediction_site_past_mean"),
+ threshold_addition_MAE:predictorError(rows,"prediction_site_past_mean_plus_low_SIC"),
+ improvement_MAE:predictorError(rows,"prediction_site_past_mean")-predictorError(rows,"prediction_site_past_mean_plus_low_SIC")
+});
+const fixed77cv=cv.find(x=>x.threshold_SIC_pct===77.5);
+if(Math.abs(subsetScores(test77).threshold_addition_MAE-fixed77cv.hypothetical_low_SIC_extra_MAE)>1e-12)
+ throw Error("77.5% historical predictions inconsistent");
+const crozierCodes=new Set(["CRZE","CRZW"]);
+const groupName=site=>crozierCodes.has(site)?"Cape Crozier":(
+ ["BRDM","BRDN","BRDS"].includes(site)?"Cape Bird":site
+);
+const namedGroups=[...new Set(test77.map(x=>groupName(x.site_id)))].sort();
+const groupDeleted=namedGroups.map(name=>{
+ const kept=test77.filter(x=>groupName(x.site_id)!==name);
+ return{group_omitted_from_test:name,...subsetScores(kept)};
+});
+const byRegionStrict=[...new Set(strict.map(x=>x.region))].sort().map(region=>({
+ region,verified_after_nov_annual_count_intervals:strict.filter(x=>x.region===region).length,
+ distinct_site_codes:uniq(strict.filter(x=>x.region===region),x=>x.site_id)
+}));
+const byRegionCV=[...new Set(test77.map(x=>x.region))].sort().map(region=>({
+ region,...subsetScores(test77.filter(x=>x.region===region))
+}));
+const bySiteCrossing77=[...new Set(pairs.map(x=>x.site_id))].sort().map(site=>{
+ const a=pairs.filter(x=>x.site_id===site),verified=a.filter(x=>x.both_count_months_after_november),
+ down=verified.filter(x=>x.SIC_start_year_pct>=77.5&&x.SIC_end_year_pct<77.5),
+ up=verified.filter(x=>x.SIC_start_year_pct<77.5&&x.SIC_end_year_pct>=77.5);
+ return {site_id:site,strict_count_intervals:verified.length,
+ down_event_count:down.length,up_event_count:up.length,
+ down_mean_log_count_growth:down.length?avg(down.map(x=>x.yearly_log_count_growth)):null,
+ up_mean_log_count_growth:up.length?avg(up.map(x=>x.yearly_log_count_growth)):null,
+ down_negative_log_growth_n:down.filter(x=>x.yearly_log_count_growth<0).length,
+ up_negative_log_growth_n:up.filter(x=>x.yearly_log_count_growth<0).length};
+}).filter(x=>x.down_event_count||x.up_event_count);
+function retrainNoCrozier(data,t){
+ const years=[...new Set(data.map(x=>x.end_year))].sort((a,b)=>a-b),preds=[];
+ for(const year of years){
+  const train=data.filter(x=>x.end_year<year);
+  const test=data.filter(x=>x.end_year===year);
+  if(train.length<minPrior||uniq(train,x=>x.site_id)<minPriorSites)continue;
+  const groups=siteMeans(train),ind=new Map();
+  for(const x of train){const a=ind.get(x.site_id)||[];a.push(x.SIC_end_year_pct<t?1:0);ind.set(x.site_id,a)}
+  const meanX=new Map([...ind].map(([k,v])=>[k,avg(v)]));
+  let numer=0,denom=0;
+  for(const x of train){
+   const dx=(x.SIC_end_year_pct<t?1:0)-meanX.get(x.site_id);
+   numer+=dx*(x.yearly_log_count_growth-groups.get(x.site_id).meanY);
+   denom+=dx*dx;
+  }
+  const beta=numer/(denom+ridge);
+  for(const x of test){
+   const info=groups.get(x.site_id);
+   if(!info||info.n<2)continue;
+   const base=info.meanY;
+   const newPred=base+beta*((x.SIC_end_year_pct<t?1:0)-meanX.get(x.site_id));
+   preds.push({site_id:x.site_id,region:x.region,test_year:year,
+    actual_log_growth:x.yearly_log_count_growth,
+    prediction_site_past_mean:base,prediction_site_past_mean_plus_low_SIC:newPred});
+  }
+ }
+ if(!preds.length)throw Error("Crozier removal makes chronological testing empty");
+ return subsetScores(preds);
+}
+const robustness77={
+ fixed_77_5_threshold_not_chosen_from_future_outcomes:true,
+ original_conditionally_evaluated:subsetScores(test77),
+ same_predictions_without_Crozier_in_test_only:subsetScores(test77.filter(x=>!crozierCodes.has(x.site_id))),
+ retrained_without_Crozier_in_training_and_test:retrainNoCrozier(strict.filter(x=>!crozierCodes.has(x.site_id)),77.5),
+ region_count_month_support:byRegionStrict,
+ observed_time_validation_by_region:byRegionCV,
+ test_group_deletion_influence:groupDeleted,
+ after_november_measured_crossing_direction_by_site:bySiteCrossing77,
+ interpretation:"Crozier site codes are not independent marine exposure; temporal model is observational conditional hindcast, not long-term climate demography; test-group deletion is not retraining."
+};
+
 const facts={
  historical_sites:historical.length,
  negative_30yr_growth_site_n:historical.filter(x=>x.observed_growth_negative).length,
@@ -324,8 +410,9 @@ writeFileSync(join(outdir,"month_verified_selected_annual_crossings.csv"),csvWri
 writeFileSync(join(outdir,"three_year_low_sic_episode_support.csv"),csvWrite(sequences));
 writeFileSync(join(outdir,"chronological_conditional_hindcast_metrics.csv"),csvWrite(cv));
 writeFileSync(join(outdir,"selected_cutoff_chronological_hindcasts.csv"),csvWrite(cvDetails));
-writeFileSync(join(outdir,"result.json"),JSON.stringify({status:"annual_source_verified_observability_and_biological_threshold_temporal_gate_only",facts,cutoff_selected:comparisons,
+writeFileSync(join(outdir,"robustness_77_5.json"),JSON.stringify(robustness77,null,2)+"\n");
+writeFileSync(join(outdir,"result.json"),JSON.stringify({status:"annual_source_verified_observability_and_biological_threshold_temporal_gate_only",facts,robustness_77_5:robustness77,cutoff_selected:comparisons,
  cutoff_annual_cv:cv.filter(x=>thresholds.includes(x.threshold_SIC_pct)),
  boundary:"Historical site-means are geographically confounded; annual excursions are not equal to decades-long climate regime transitions. No demonstrated causal population response, climate mortality hazard, extinction probability, or forecast.",root_sources:sources},null,2)+"\n");
 writeFileSync(join(outdir,"validation.json"),JSON.stringify({source_pins_verified:true,receipt_verified:process.argv.includes("--check-receipt"),count_pairs:pairs.length,strict_after_nov_count_pairs:strict.length,annual_site_years:annual.length,thresholds:accuracy.length,crossing_reference_t:77.5},null,2)+"\n");
-console.log("TEMPORAL SEAICE BIOLOGICAL BOUNDARY GATE "+JSON.stringify({facts,selected:comparisons,cv:cv.filter(x=>thresholds.includes(x.threshold_SIC_pct)),receipt_verified:process.argv.includes("--check-receipt")}));
+console.log("TEMPORAL SEAICE BIOLOGICAL BOUNDARY GATE "+JSON.stringify({facts,robustness_77_5:robustness77,selected:comparisons,cv:cv.filter(x=>thresholds.includes(x.threshold_SIC_pct)),receipt_verified:process.argv.includes("--check-receipt")}));
