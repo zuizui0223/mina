@@ -10,7 +10,8 @@ const original={
  history:["historical_ice_breeding_transfer_v1/adeli_39site_historical_climate_growth.csv","db58938630e80d22ba445600ce1ad3f554c452e2"],
  ice:["climate_penguin/macro_monthly_seaice_1991_2020.csv","4fcea71c2d8b1069b6ad143f6522061ed434daf5"],
  cmip:["cmip6_projection_v1/site_model_changes.csv","b383ef1cc3b0807b0bd010ca0e825937ab83ce97"],
- bio:["comparison_audit/mapppd_unambiguous_site_seasons.csv","fc134e364cf38699fa7611d7dee5fbbbcb370c0a"]
+ bio:["comparison_audit/mapppd_unambiguous_site_seasons.csv","fc134e364cf38699fa7611d7dee5fbbbcb370c0a"],
+ species:["warming_species_breeding_v1/historical_species_site_trends.csv","2b6c0793ea9f9ea9acf0771052cf7a2ad9ab335b"]
 };
 const expected=JSON.parse(readFileSync(join(outputDir,"expected_receipt.json"),"utf8"));
 const mean=a=>a.reduce((s,v)=>s+v,0)/a.length,sum=a=>a.reduce((s,v)=>s+v,0);
@@ -48,7 +49,7 @@ for(const [k,[p,pin]] of Object.entries(original)){
  if(sha!==pin||expected.git_blobs[k]!==sha)throw Error("Original file changed "+k);
  D[k]=parseCSV(data.toString("utf8"));blobs[k]=sha;
 }
-if(D.history.length!==39||D.ice.length!==9600||D.cmip.length!==3816||D.bio.length!==2999)
+if(D.history.length!==39||D.ice.length!==9600||D.cmip.length!==3816||D.bio.length!==2999||D.species.length!==54)
  throw Error("Original 39-site monthly source shape changed");
 const mapHistory=new Map(D.history.map(x=>[x.site_id,x]));
 if(mapHistory.size!==39)throw Error("Duplicated historical site code");
@@ -258,8 +259,109 @@ for(const baseline of baselines)for(const scenario of scenarios)for(const period
 }
 if(robustRows.length!==39*2*2*2||rangeRows.length!==8)throw Error("Ensemble cardinality drift");
 const median=a=>{const vals=a.slice().sort((x,y)=>x-y);return vals[Math.floor(vals.length/2)]};
+// Three penguin species: reuse the same 39 *physical* site coordinate climate rows,
+// but select species-supported original long-term breeding-count site codes.
+// Site×species pseudo-replicates of climate fields are NOT independent environmental samples.
+const species=["ADPE","CHPE","GEPE"];
+const speciesSites=new Map(species.map(sp=>[sp,[]]));
+const speciesOriginalKeys=new Set();
+for(const r of D.species){
+ const key=r.site_id+"|"+r.species_id;
+ if(speciesOriginalKeys.has(key)||!speciesSites.has(r.species_id)||!siteById.has(r.site_id))
+  throw Error("Original 54 species/site climate crosswalk does not match original 39 sites "+key);
+ speciesOriginalKeys.add(key);
+ const originalSite=siteById.get(r.site_id);
+ if(r.region!==originalSite.region)throw Error("Region drift at "+key);
+ if(r.species_id==="ADPE"&&Math.abs(+r.slope_log1p_count_decade-originalSite.original_historical_count_growth_decade)>1e-8)
+  throw Error("Adelie source species-trend mismatch "+key);
+ speciesSites.get(r.species_id).push({
+  site_id:r.site_id,species_id:r.species_id,region:r.region,
+  original_long_count_method:r.method,
+  historical_count_growth_log1p_slope_decade:+r.slope_log1p_count_decade
+ });
+}
+if(speciesSites.get("ADPE").length!==39||speciesSites.get("CHPE").length!==7||speciesSites.get("GEPE").length!==8)
+ throw Error("Original species monitoring coverage has changed");
+const speciesSiteNicheRows=[],speciesModelRows=[],speciesConsensusRows=[];
+for(const baseline of baselines)for(const scenario of scenarios)for(const period of periods){
+ const allmodels=sourceSiteRows.filter(x=>x.observed_baseline===baseline&&x.scenario===scenario&&x.period===period);
+ for(const sp of species){
+  const list=speciesSites.get(sp),members=[];
+  for(const src of list){
+   const matching=allmodels.filter(x=>x.site_id===src.site_id);
+   if(matching.length!==3)throw Error("Missing species site climate model rows "+src.site_id+" "+sp);
+   for(const x of matching){
+    const rec={
+     observed_baseline:baseline,scenario,period,model:x.model,
+     site_id:src.site_id,species_id:sp,region:src.region,
+     original_long_count_method:src.original_long_count_method,
+     historical_count_growth_log1p_slope_decade:src.historical_count_growth_log1p_slope_decade,
+     observed_SIC_baseline_pct:x.historical_reference_SIC_pct,
+     observed_historical_lower_20year_pct:x.historical_20yr_low_pct,
+     future_climate_20yr_SIC_pct:x.conditional_future_20yr_SIC_pct,
+     model_grid_cell_id:x.model_SIC_grid_id,
+     below_historical_20year_min:x.below_historical_20yr_range,
+     below_historical_20year_min_by_2pp:x.beyond_20yr_lower_bound_by_2pp,
+     below_historical_20year_min_by_5pp:x.beyond_20yr_lower_bound_by_5pp,
+     below_historical_10year_min:x.below_historical_10yr_range
+    };
+    speciesSiteNicheRows.push(rec);members.push(rec);
+   }
+  }
+  if(members.length!==list.length*3)throw Error("Species source pseudo replication mismatch "+sp);
+  for(const model of models){
+   const f=members.filter(x=>x.model===model);
+   if(f.length!==list.length)throw Error("Species model lacks sites");
+   speciesModelRows.push({
+    observed_baseline:baseline,scenario,period,model,species_id:sp,
+    n_original_species_sites:list.length,
+    region_count:uniq(f,x=>x.region),
+    original_site_codes_with_novel_lower_20yr_SIC:f.filter(x=>x.below_historical_20year_min).length,
+    original_site_codes_at_least_2pp_beyond_hist20yr_min:f.filter(x=>x.below_historical_20year_min_by_2pp).length,
+    original_site_codes_at_least_5pp_beyond_hist20yr_min:f.filter(x=>x.below_historical_20year_min_by_5pp).length,
+    equal_site_novelty_fraction:f.filter(x=>x.below_historical_20year_min).length/list.length,
+    n_distinct_native_CMIP_cells:uniq(f,x=>x.model_grid_cell_id),
+    counts_as_independent_climate_replicates:false
+   });
+  }
+  const all3=(criterion)=>list.filter(src=>{
+   const observations=members.filter(x=>x.site_id===src.site_id);
+   return observations.length===3&&observations.every(x=>x[criterion]);
+  });
+  speciesConsensusRows.push({
+   observed_baseline:baseline,scenario,period,species_id:sp,
+   n_original_species_sites:list.length,
+   original_species_site_codes_novel_20yr_all3:all3("below_historical_20year_min").length,
+   original_species_site_codes_novel_20yr_2pp_all3:all3("below_historical_20year_min_by_2pp").length,
+   original_species_site_codes_novel_20yr_5pp_all3:all3("below_historical_20year_min_by_5pp").length,
+   original_species_site_codes_novel_10yr_all3:all3("below_historical_10year_min").length,
+   species_site_ids_novel_20yr_all3:all3("below_historical_20year_min").map(x=>x.site_id).join(";"),
+   source_scope:"only sites in original 54 long-count site-species records; shared climate pixels between different species; NOT a species-specific physiological response"
+  });
+ }
+}
+if(speciesSiteNicheRows.length!==54*2*2*2*3||speciesModelRows.length!==3*2*2*2*3||speciesConsensusRows.length!==3*2*2*2)
+ throw Error("New three-species site×climate support cross-product incomplete");
+const speciesPrimary=speciesModelRows.filter(x=>x.observed_baseline==="1995-2014"&&x.scenario==="ssp585"&&x.period==="2081-2100");
+const speciesConsensusPrimary=speciesConsensusRows.filter(x=>x.observed_baseline==="1995-2014"&&x.scenario==="ssp585"&&x.period==="2081-2100");
+const original3Species={
+ source_species_site_rows:D.species.length,
+ species_site_counts:Object.fromEntries(species.map(sp=>[sp,speciesSites.get(sp).length])),
+ unique_actual_source_site_codes:uniq(D.species,x=>x.site_id),
+ primary_model_species_site_counts:speciesPrimary.map(x=>({species:x.species_id,model:x.model,n_sites:x.n_original_species_sites,novel20_n:x.original_site_codes_with_novel_lower_20yr_SIC})),
+ primary_3model_common_sites:speciesConsensusPrimary.map(x=>({species:x.species_id,n_sites:x.n_original_species_sites,novel20_n:x.original_species_site_codes_novel_20yr_all3,novel5_n:x.original_species_site_codes_novel_20yr_5pp_all3}))
+};
+writeFileSync(join(outputDir,"original_three_species_site_novelty.csv"),toCSV(speciesSiteNicheRows));
+writeFileSync(join(outputDir,"three_species_model_site_support.csv"),toCSV(speciesModelRows));
+writeFileSync(join(outputDir,"three_species_three_model_site_consensus.csv"),toCSV(speciesConsensusRows));
+
 const fact={
- original_site_n:39,latest_ADPE_snapshot_count_sum:N,Cape_Crozier_snapshot_count: capeCount,
+ original_site_n:39,
+ species_source_panel_rows:original3Species.source_species_site_rows,
+ source_original_CHPE_sites:original3Species.species_site_counts.CHPE,
+ source_original_GEPE_sites:original3Species.species_site_counts.GEPE,
+ primary_SSP585_late_CHPE_three_model_novel20_n:speciesConsensusPrimary.find(x=>x.species_id==="CHPE").original_species_site_codes_novel_20yr_all3,
+ primary_SSP585_late_GEPE_three_model_novel20_n:speciesConsensusPrimary.find(x=>x.species_id==="GEPE").original_species_site_codes_novel_20yr_all3,latest_ADPE_snapshot_count_sum:N,Cape_Crozier_snapshot_count: capeCount,
  min_count_year:Math.min(...sites.map(x=>x.latest_census_year)),max_count_year:Math.max(...sites.map(x=>x.latest_census_year)),
  number_historical_siteyears:39*30,number_20yr_overlapping_windows_per_site:11,
  historical_20yr_band_median_width_pp:median(sites.map(x=>x.historical_20yr_range_pp)),
@@ -301,7 +403,10 @@ const result={
  source_git_blobs:blobs,
  receipt:fact,
  model_rows:modelRows,
- ranges:rangeRows
+ ranges:rangeRows,
+ three_species_monitoring_site_support:original3Species,
+ three_species_model_site_support:speciesModelRows,
+ three_species_site_consensus:speciesConsensusRows
 };
 writeFileSync(join(outputDir,"result.json"),JSON.stringify(result,null,2)+"\n");
 writeFileSync(join(outputDir,"validation.json"),JSON.stringify({
@@ -309,6 +414,9 @@ writeFileSync(join(outputDir,"validation.json"),JSON.stringify({
  n_historical_20yr_windows:39*11,n_site_scenario_model_baseline_rows:sourceSiteRows.length,
  n_model_summaries:modelRows.length,n_ensemble_summaries:rangeRows.length,
  n_all_model_consensus_rows:robustRows.length,
+ n_original_three_species_site_trend_rows:speciesSiteNicheRows.length,
+ n_species_model_summary_rows:speciesModelRows.length,
+ n_species_three_model_agreement_rows:speciesConsensusRows.length,
  expected_receipt_checked:process.argv.includes("--check-receipt"),
  physical_only_no_population_model:true
 },null,2)+"\n");
@@ -316,6 +424,7 @@ console.log("HISTORICAL SEAICE PHYSICAL NOVELTY "+JSON.stringify({
  receipt:fact,
  primary_ranges:rangeRows.filter(x=>x.observed_baseline==="1995-2014"),
  model_585_late:modelRows.filter(x=>x.observed_baseline==="1995-2014"&&x.scenario==="ssp585"&&x.period==="2081-2100"),
+ three_species_source_support:original3Species,
  key_Crozier:sourceSiteRows.filter(x=>x.observed_baseline==="1995-2014"&&x.scenario==="ssp585"&&x.period==="2081-2100"&&["CRZE","CRZW"].includes(x.site_id)).map(x=>({site:x.site_id,model:x.model,future:x.conditional_future_20yr_SIC_pct,hist20low:x.historical_20yr_low_pct,histAnnualMin:x.original_min_one_year_SIC_pct,lower20margin:x.lower_20year_envelope_exceedance_pp})),
  verified:process.argv.includes("--check-receipt")
 }));
