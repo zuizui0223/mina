@@ -351,6 +351,86 @@ def main():
                                             "paired_support_sites":old["n_sites_used"],
                                             "portfolio_SIC_pct":result["annual_raw_SIC"][i],
                                             "portfolio_standardized_anomaly":result["annual_z"][i]})
+    # Prevent a misleading model comparison from using *different* sets of source breeding codes.
+    # This is a second comparison: intersect all three models' paired historical/future
+    # non-constant SIC support, and optionally restrict each model's nearest marine cell
+    # distance and historical absolute model-versus-satellite SIC mismatch.
+    common_three_model_matched_site_cohort = []
+    common_three_model_portfolio = []
+    common_masks = [
+        ("all_model_var", None, None),
+        ("all_model_var_and_50km", 50.0, None),
+        ("all_model_var_50km_bias15pp", 50.0, 15.0),
+    ]
+    for experiment in ("ssp245","ssp585"):
+        for period in ("2041-2060","2081-2100"):
+            for minSD in thresholds:
+                for name,max_distance,max_bias in common_masks:
+                    shared=[]
+                    for site in sorted(SITE):
+                        compatible=True
+                        for model in MODELS:
+                            old=mapped_model[(model,"historical","1995-2014")]
+                            future=mapped_model[(model,experiment,period)]
+                            if sample_std(old["annual"][site])<minSD or sample_std(future["annual"][site])<minSD:
+                                compatible=False
+                                break
+                            record=check[(model,"historical","1995-2014",SITE[site]["location_id"])]
+                            if max_distance is not None and float(record["distance_km"])>max_distance:
+                                compatible=False
+                                break
+                            historical_observed_bias=abs(float(record["seasonal_mean"])-mean(observedSIC[site]))
+                            if max_bias is not None and historical_observed_bias>max_bias:
+                                compatible=False
+                                break
+                        if compatible:
+                            shared.append(site)
+                    supported_count=sum(SITE[s]["latest_count"] for s in shared)
+                    common_three_model_matched_site_cohort.append({
+                        "scenario":experiment,"future_period":period,"minimum_paired_annual_site_SIC_SD_pp":minSD,
+                        "support_mask":name,"n_common_breeding_site_codes":len(shared),
+                        "original_latest_count_weight_coverage_pct":100*supported_count/source_weight,
+                        "source_site_codes":";".join(shared),
+                        "minimum_source_breeding_sites_for_covariance":3,
+                        "no_demographic_forecast":True,
+                    })
+                    if len(shared)<3:
+                        continue
+                    for model in MODELS:
+                        old=mapped_model[(model,"historical","1995-2014")]
+                        future=mapped_model[(model,experiment,period)]
+                        for mode in ("equal_sites","latest_counts","region_fixed_total",
+                                     "exclude_crozier","equal_native_model_cells"):
+                            for detrend in (False,True):
+                                a=get_stats(old["annual"],shared,region_weight,old["cells"],minSD,mode,detrend)
+                                b=get_stats(future["annual"],shared,region_weight,future["cells"],minSD,mode,detrend)
+                                if a is None or b is None:
+                                    continue
+                                if a["n_sites_used"]!=b["n_sites_used"]:
+                                    raise ValueError("Inconsistent identical three-model source cohort within periods")
+                                common_three_model_portfolio.append({
+                                    "scenario":experiment,"future_period":period,
+                                    "minimum_paired_site_SIC_annual_SD_pp":minSD,
+                                    "source_support_mask":name,"model":model,"weight_mode":mode,
+                                    "linear_detrending":detrend,
+                                    "three_model_common_site_cohort_size":len(shared),
+                                    "paired_sites_after_weight_mode":a["n_sites_used"],
+                                    "original_census_mass_coverage_pct":a["original_latest_count_weight_coverage_pct"],
+                                    "native_model_cells":a["n_model_cells_used"],
+                                    "effective_weighted_native_model_cells":a["effective_weighted_native_model_cells"],
+                                    "historical_raw_annual_SD_pp":a["raw_weighted_mean_SIC_annual_SD_pp"],
+                                    "future_raw_annual_SD_pp":b["raw_weighted_mean_SIC_annual_SD_pp"],
+                                    "historical_common_standardized_anomaly_SD":a["site_standardized_common_anomaly_SD"],
+                                    "future_common_standardized_anomaly_SD":b["site_standardized_common_anomaly_SD"],
+                                    "future_minus_historical_standardized_SD":
+                                      b["site_standardized_common_anomaly_SD"]-a["site_standardized_common_anomaly_SD"],
+                                    "environment_not_demographic_future":True,
+                                })
+    csv_write(OUT/"common_three_model_matched_breeding_site_support.csv",
+              common_three_model_matched_site_cohort)
+    csv_write(OUT/"common_three_model_source_cohort_future_covariance.csv",
+              common_three_model_portfolio)
+
     if len(paired)<180 or len(timeSeries)==0:
         raise ValueError("Missing sufficient original climate ensemble source support")
     numericalFacts={
@@ -395,6 +475,9 @@ def main():
        "observed_20yr_same_site_satellite_baseline":observedSummary,
        "main_model_results":list(map(brief,focal)),
        "detrended_sensitivity":list(map(brief,trend)),
+       "common_three_model_matched_source_sites":common_three_model_matched_site_cohort,
+       "common_three_model_future_covariance":common_three_model_portfolio,
+
        "boundary":"CMIP6 3 models, one member each, 20 years per period; source sites are repeated over native model marine cells; standardization drops sites with small model variability and pairs support within each model; changed future covariance is not future nesting synchrony or risk probability."
     }
     (OUT/"summary.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
@@ -409,6 +492,14 @@ def main():
         "scenario_results":[x for x in map(brief,focal) if x["scenario"]=="ssp585" and x["future_period"]=="2081-2100"],
         "detrended":[x for x in map(brief,trend) if x["scenario"]=="ssp585" and x["future_period"]=="2081-2100" and x["weight_mode"] in ("equal_sites","latest_counts")],
         "selected_threshold_variation":[brief(x) for x in paired if x["scenario"]=="ssp585" and x["future_period"]=="2081-2100" and x["weight_mode"]=="latest_counts" and not x["remove_period_linear_trend"]],
+        "common_allmodels_SSP585_late_0_5": [x for x in common_three_model_portfolio if
+            x["scenario"]=="ssp585" and x["future_period"]=="2081-2100"
+            and x["minimum_paired_site_SIC_annual_SD_pp"]==0.5 and
+            x["source_support_mask"]=="all_model_var" and not x["linear_detrending"]
+            and x["weight_mode"] in ("equal_sites","latest_counts","exclude_crozier")],
+        "common_support_SSP585_late_0_5":[x for x in common_three_model_matched_site_cohort if
+            x["scenario"]=="ssp585" and x["future_period"]=="2081-2100"
+            and x["minimum_paired_annual_site_SIC_SD_pp"]==0.5],
         "verified":args.check_receipt
      },ensure_ascii=False),flush=True)
 
