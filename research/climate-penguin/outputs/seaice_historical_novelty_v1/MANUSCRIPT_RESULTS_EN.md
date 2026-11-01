@@ -57,3 +57,16 @@ Applying the identical source-pinned historical rolling 20-year SIC range and CM
 Under the stricter **5-percentage-point** margin, all-model-common counts were **8/39**, **2/7** and **4/8**, respectively. These are source-backed **geographical sample supports** for exposure, *not* the species-wide fraction of occupied colonies and not comparative physiological climate sensitivity or demographic forecasting. Multiple species at the same location reuse identical satellite SIC and the same CMIP6 cell; apparent differences arise from the small, geographically biased species-site samples. Historical annual census series are not a consistent site-independent measure of future nesting abundance.
 
 [Verified original source replay and archived site×species rows](https://github.com/zuizui0223/mina/actions/runs/41261833552), artifact 13065143256. Preserve as supplementary geographic context, not an independent replication of the main 39-site Adélie result.
+
+
+## Observed disjoint-decade physical-change sensitivity (1 November 2026)
+
+To evaluate whether threshold-free coastal sea-ice novelty was driven by the narrow range of 11 highly overlapping historical 20-year climatologies, we reconstructed **three disjoint 10-year observed SIC means at each of the 39 original Adélie census sites** (1991–2000, 2001–2010, 2011–2020). The median site-specific maximum *downward change between adjacent historical 10-year averages* was **1.494 percentage points**.
+
+Under SSP5-8.5 in 2081–2100, all three CMIP6 models projected SIC mean declines from the observed 1995–2014 baseline exceeding each site's largest recorded historical downward decadal step at **13/39 sites**, representing **35.68%** of the fixed, noncontemporaneous current census count weight. When the modeled reduction was required to exceed the historical step by an additional 2 or 5 percentage points, the common subsets decreased to **10 sites / 27.21%** and **8 sites / 22.81%**, respectively. As an independent conservative indicator, the future mean being 5 points below all three observed disjoint-decade means also identified **8 sites / 22.81%**.
+
+At Cape Crozier, the largest measured adjacent-decade drops were only 0.173 and 0.244 percentage points for two census codes, compared with model-based late-century declines of about 6–12 points. Together, these two codes contributed **99.016% of current census counts** in the strict 8-site model-common subset. This is not biological mortality, population decline, or a random geographic risk test.
+
+**Limitation:** the historical steps compare two 10-year means while modeled changes refer to future 20-year mean conditions. Neither the averaging scale nor time gap is identical, and only two original historical transitions are available per colony. It is a physical-magnitude sensitivity test, not a statistical return-period estimate or a calibrated ecological threshold.
+
+[Original method and results](../seaice_nonoverlap_decade_v1/REPORT_JA.md) · [source-verification CI](https://github.com/zuizui0223/mina/actions/runs/41274472286).
