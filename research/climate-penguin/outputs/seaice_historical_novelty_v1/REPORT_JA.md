@@ -63,3 +63,22 @@ SSP5-8.5・2081–2100年の**全39地点の8～11月SIC減少量（モデル×�
 - **[GitHub Actions SUCCESS #41261450601](https://github.com/zuizui0223/mina/actions/runs/41261450601)**。source blobs SHA・11歴史窓・元39地点×カウント・物理CMIP6の全対応について数値検証済み。artifact **13064883160** にモデル・地点・基準・歴史10/15/20年の値と全モデル共通サイト、summary/validation JSONを保存。
 - ファイル：\`original_39_site_historical_10_15_20yr_envelopes.csv\`、\`future_site_historical_novelty.csv\`、\`model_scenario_novelty.csv\`、\`three_model_site_consensus.csv\`、\`three_model_scenario_ranges.csv\`、\`result.json\`、\`validation.json\`。
 - 本論文の固定した60～80%の仮境界の[曝露シナリオ](../seaice_threshold_envelope_v1/RESULT_JA.md)を**補完**し、あちらの不確実性を覆さない。既存のPaper 1/2とmainは変更しない。
+
+
+## 6. 3種の長期繁殖地点に展開した元ソース検証
+
+これまでの39地点はアデリーの長期記録に基づく。別の固定原本 \`warming_species_breeding_v1/historical_species_site_trends.csv\`（Git blob \`2b6c0793ea9f9ea9acf0771052cf7a2ad9ab335b\`）を使い、元3種 **54地点×種** の全記録を照合した：ADPE 39、CHPE 7、GEPE 8。ただし**地理的にはすべてアデリー39地点と同じ39の地点コード**で、同じ地点の海氷気候値を種ごとに重複結合した。**独立した54気候地点ではない。**
+
+SSP5-8.5・2081–2100年、観測1995–2014年基準で、各種の**元長期記録にある地点の数**として「将来20年平均が、同地点で1991–2020年に観測されたすべての20年平均より低い」を評価：
+
+| 種 | 同種の元長期繁殖記録の地点数 | ACCESS-CM2 | BCC-CSM2-MR | CESM2 | 全3モデル共通の同一地点 |
+|---|---:|---:|---:|---:|---:|
+| アデリー (ADPE) | 39 | 28 | 24 | 25 | **15** |
+| ヒゲ (CHPE) | 7 | 3 | 6 | 7 | **2** |
+| ジェンツー (GEPE) | 8 | 4 | 8 | 8 | **4** |
+
+将来の20年平均がさらに過去20年下限より **5 pp** 低い条件も3モデル共通で、ADPE **8/39**、CHPE **2/7**、GEPE **4/8**。これは環境差の地点・種標本内比較である。
+
+**種間生物学の解釈はNO-GO。** CHPE 7地点とGEPE 8地点は南極半島中西部・South Shetlandに限られる。種が異なるのに同じ繁殖地点コードが含まれるため、種による温暖化生理耐性・繁殖成功・定着確率に関する独立な証拠ではない。各種の元カウントの最新値も、年・計数法・測定対象が一致しないため、**CHPE・GEPEの総個体群に占める曝露割合は算出しない**。必要な主解析は分類群にわたる観測地理の一般化であり、現段階では3種の比較はSupplementにとどめる。
+
+保存元CSV：\`original_three_species_site_novelty.csv\`（1,296行、2基準×4シナリオ×3モデル×54地点種）、\`three_species_model_site_support.csv\`（72行）、\`three_species_three_model_site_consensus.csv\`（24行）。[Original 54-site-species source-pinned GitHub Actions SUCCESS #41261833552](https://github.com/zuizui0223/mina/actions/runs/41261833552)（artifact **13065143256**）。ADPEの既存39地点の物理出力および計数重みの判定は変更していない。

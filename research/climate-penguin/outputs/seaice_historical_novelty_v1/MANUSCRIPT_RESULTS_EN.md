@@ -38,3 +38,20 @@ This is an alternative **physical exposure envelope**, not a validation or repla
 **Supplement**: source 39×30 annual SIC; 11/16/21 historical rolling windows for 20/15/10 years; full 936 site×scenario×baseline×model climate values; native CMIP6 grid IDs and distances; exact model-overlap site sets, observed latest count method/year, and comparison with the exploratory hypothetical 60–80% boundary.
 
 **Reproducible sources**: [GitHub Actions source-verified successful run](https://github.com/zuizui0223/mina/actions/runs/41261450601), artifact ID 13064883160; original code: \`research/climate-penguin/work/seaice_historical_novelty_v1/build.mjs\`.
+
+
+## Three-species observation-geography extension (supplementary, original source-verified)
+
+The fixed original long-term source contains **54 site-by-species series** across the same **39 distinct geographic breeding-site codes**: 39 Adélie, 7 chinstrap and 8 gentoo series. This is **not 54 independent climatic sites**, and the last two species are sampled only within South Shetland Islands and the central-western Antarctic Peninsula.
+
+Applying the identical source-pinned historical rolling 20-year SIC range and CMIP6 SSP5-8.5 late-century physical exposures to the *original long-term breeding locations*, the observed site-code counts with future SIC below their local historical multidecadal minima were:
+
+| Species | Original site codes | ACCESS-CM2 | BCC-CSM2-MR | CESM2 | Same original site codes in all 3 models |
+|---|---:|---:|---:|---:|---:|
+| Adélie | 39 | 28 | 24 | 25 | **15** |
+| Chinstrap | 7 | 3 | 6 | 7 | **2** |
+| Gentoo | 8 | 4 | 8 | 8 | **4** |
+
+Under the stricter **5-percentage-point** margin, all-model-common counts were **8/39**, **2/7** and **4/8**, respectively. These are source-backed **geographical sample supports** for exposure, *not* the species-wide fraction of occupied colonies and not comparative physiological climate sensitivity or demographic forecasting. Multiple species at the same location reuse identical satellite SIC and the same CMIP6 cell; apparent differences arise from the small, geographically biased species-site samples. Historical annual census series are not a consistent site-independent measure of future nesting abundance.
+
+[Verified original source replay and archived site×species rows](https://github.com/zuizui0223/mina/actions/runs/41261833552), artifact 13065143256. Preserve as supplementary geographic context, not an independent replication of the main 39-site Adélie result.
