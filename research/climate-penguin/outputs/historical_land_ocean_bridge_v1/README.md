@@ -1,0 +1,9 @@
+# Original site-linked ADPE land vegetation and future physical ocean conditions
+
+Read nine original Git source blobs. Join strictly by source site_id, ADPE species, source coordinate and matching receipt within 2 km; reject any ambiguous/missing climate/land/snow/site key. The original 39 historical breeding sites are the denominator. The 31 with static 2017–2023 terrestrial vegetation-map and recent same-site count records are an observed subset, never the full Antarctica population. Unmatched 8 sites are MISSING, not vegetation absence.
+
+Verify all 4 scenario rows per observed land-matched source code against independent macro_40 CMIP6 model triplets tas/siconc/sos (3 models × 3 variables). Historical source counts, vegetation detection/area, land-marine climate-cell distances and coarse ERA5 land fraction must agree. Source snow grid is 0.25° and 2011–2021; this is not nesting-site snow. Vegetation detection is a static detected polygon, not percent cover or temporal greening; no_mapped_polygon_absence_unresolved is NOT true vegetation absence.
+
+Define independently: >=3 actually observed breeding seasons; marine cell centers <=50km for every original CMIP model; ERA5 source cell land fraction >=0.5. The last two are coarse *source support gates*, not breeding land suitability. Intersection may be only 3 source codes, of which CRZE and CRZW belong to a single large Cape Crozier colony area, so independent site support is lower still.
+
+Historical 1991–2020 long-run counts and 2017–2023 short-run vegetation-associated census slopes differ in time/quality, not a validated decline reversal. Joint model-scenario future warming/sea-ice/freshening can describe physically co-observed site conditions, NOT future vegetation response, nest-success model, plant succession, krill, salinity tolerance, population or colony extinction forecast.
