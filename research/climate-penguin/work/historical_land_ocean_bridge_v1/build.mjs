@@ -151,14 +151,18 @@ for(const [scenario,period] of times)for(const v of v39){
  const nIce=models.filter(model=>changes[model].siconc.delta<0).length;
  const nSalt=models.filter(model=>changes[model].sos.delta<0).length;
  const nWarm=models.filter(model=>changes[model].tas.delta>0).length;
- const maxMarineDist=Math.max(...models.flatMap(model=>[changes[model].siconc.distance,changes[model].sos.distance]));
+ // Original 106-point atlas's 'marine' distance checks SIC only (not salt).
+ // Preserve that original receipt as source lineage AND separately calculate the stricter both-variable support.
+ const maxIceDist=Math.max(...models.map(model=>changes[model].siconc.distance));
+ const maxSaltDist=Math.max(...models.map(model=>changes[model].sos.distance));
+ const maxMarineDist=Math.max(maxIceDist,maxSaltDist);
  if(+old.siconc_decrease_models!==nIce||+old.sos_decrease_models!==nSalt||
   +old.warming_3of3!==(nWarm===3?1:0))
   throw Error("Original land-marine atlas climate differs from 39-site cohort "+scenario+period+site);
- close(+old.marine_max_model_cell_distance_km,maxMarineDist,"max marine model distance",1e-6);
- const all3Marine50=maxMarineDist<=50;
- if((old.all_three_marine_model_cell_centres_within_50km==="1")!==all3Marine50)
-  throw Error("Original 50km marine source gate changed");
+ close(+old.marine_max_model_cell_distance_km,maxIceDist,"source atlas SIC-only marine model distance",1e-6);
+ const originalIce50=maxIceDist<=50,all3Marine50=maxMarineDist<=50;
+ if((old.all_three_marine_model_cell_centres_within_50km==="1")!==originalIce50)
+  throw Error("Original 50km SIC-only marine source gate changed");
  const newest=latestBySite.get(site),recentSlope=v.observed_log_count_slope_per_year;
  const historicGrowth=+s0.get(site).count_growth_log1p_slope_per_decade;
  const recentPositive=recentSlope!==""?+recentSlope>0:null;
@@ -189,7 +193,10 @@ for(const [scenario,period] of times)for(const v of v39){
   land_snow_grid_fraction:snow.era5_land_fraction,
   source_ERA5_grid_fingerprint:snow.ERA5_0_25deg_grid_fingerprint,
   source_ERA5_2011_2021_september_mean_SWE_m:snow.era5_september_mean_swe_m,
+  original_atlas_max_SIC_grid_distance_km:maxIceDist,
+  max_SOS_grid_distance_km:maxSaltDist,
   all_three_model_marine_cell_max_distance_km:maxMarineDist,
+  original_atlas_ice_only_within50km:originalIce50,
   all_three_marine_cell_within50km:all3Marine50,
   land_grid_fraction_ge0_5:land05,
   at_least_3_original_recent_census_seasons:slopeYears>=3,
@@ -217,6 +224,10 @@ for(const [scenario,period] of times)for(const v of v39){
   all_variables_agree_with_original_macro_climate:true,
   all_31_land_vegetation_rows_source_verified:true,
   original_breeding_plus_vegetation_same_site_by_coordinates:true,
+  source_atlas_siconc_only_distance_km:maxIceDist,
+  derived_both_SIC_SOS_marine_distance_km:maxMarineDist,
+  source_atlas_SIC_50km_flag_matched:originalIce50,
+  stricter_original_both_model_SIC_SOS_50km_flag:all3Marine50,
   all_ERA5_grid_fraction_values_verified:true,
   source_snow_11_complete_years:true});
 }
