@@ -13,7 +13,7 @@ const SOURCES={
  climate:["cmip6_projection_v1/site_model_changes.csv","b383ef1cc3b0807b0bd010ca0e825937ab83ce97"],
  originalCounts:["comparison_audit/mapppd_unambiguous_site_seasons.csv","fc134e364cf38699fa7611d7dee5fbbbcb370c0a"],
  originalCoordinates:["climate_penguin/daily_ice_locations.csv","1c5214ab355d3d2e19bc33e5de4693fa21f38731"],
- snow:["september_snow_v1/september_summary.csv","204fb5bf1ab14496ca783d4d08e3b72fd5cfd8b"],
+ snow:["september_snow_v1/september_summary.csv","204fb5bf1ab14496ca783d4d08e3b72fd5cfd8b4"],
  priorReceipt:["land_marine_colocation_v1/summary.json","c8e5ec2329337fad96e916aff387e84a3e8ea200"]
 };
 const freeze=JSON.parse(readFileSync(join(OUT,"expected_receipt.json"),"utf8"));
