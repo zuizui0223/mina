@@ -250,6 +250,20 @@ for(const baseline of baselines)for(const scenario of scenarios)for(const period
   robust_all3_20yr_exceedance_more_than_2pp_count_pct:share(all3b2),
   robust_all3_20yr_exceedance_more_than_5pp_n:all3b5.length,
   robust_all3_20yr_exceedance_more_than_5pp_count_pct:share(all3b5),
+  robust_all3_20yr_Cape_Crozier_contribution_all39_pct:
+    share(all3.filter(x=>["CRZE","CRZW"].includes(x.site_id))),
+  robust_all3_5pp_Cape_Crozier_contribution_all39_pct:
+    share(all3b5.filter(x=>["CRZE","CRZW"].includes(x.site_id))),
+  robust_all3_5pp_Crozier_fraction_of_current_novel_mass_pct:
+    sum(all3b5.map(x=>x.latest_recorded_count))>0?
+      100*sum(all3b5.filter(x=>["CRZE","CRZW"].includes(x.site_id)).map(x=>x.latest_recorded_count))/
+        sum(all3b5.map(x=>x.latest_recorded_count)):0,
+  robust_all3_5pp_nonCrozier_original_record_count:
+    sum(all3b5.filter(x=>!["CRZE","CRZW"].includes(x.site_id)).map(x=>x.latest_recorded_count)),
+  robust_all3_5pp_nonCrozier_mass_pct_of_other37_sites:
+    100*sum(all3b5.filter(x=>!["CRZE","CRZW"].includes(x.site_id)).map(x=>x.latest_recorded_count))/
+      (N-capeCount),
+
   robust_all3_10yr_n:all3d10.length,robust_all3_10yr_count_pct:share(all3d10),
   robust_all3_20yr_but_not_lowSIC77_5_n:all3high.length,robust_all3_20yr_but_not_lowSIC77_5_count_pct:share(all3high),
   robust_all3_Cape_Crozier_both_20yr:crozier.every(x=>all3.some(y=>y.site_id===x.site_id)),
@@ -361,7 +375,11 @@ const fact={
  source_original_CHPE_sites:original3Species.species_site_counts.CHPE,
  source_original_GEPE_sites:original3Species.species_site_counts.GEPE,
  primary_SSP585_late_CHPE_three_model_novel20_n:speciesConsensusPrimary.find(x=>x.species_id==="CHPE").original_species_site_codes_novel_20yr_all3,
- primary_SSP585_late_GEPE_three_model_novel20_n:speciesConsensusPrimary.find(x=>x.species_id==="GEPE").original_species_site_codes_novel_20yr_all3,latest_ADPE_snapshot_count_sum:N,Cape_Crozier_snapshot_count: capeCount,
+ primary_SSP585_late_GEPE_three_model_novel20_n:speciesConsensusPrimary.find(x=>x.species_id==="GEPE").original_species_site_codes_novel_20yr_all3,
+ primary_SSP585_late_5pp_Crozier_fraction_of_novel_mass_pct:
+   rangeRows.find(x=>x.observed_baseline==="1995-2014"&&x.scenario==="ssp585"&&x.period==="2081-2100").robust_all3_5pp_Crozier_fraction_of_current_novel_mass_pct,
+ primary_SSP585_late_5pp_nonCrozier_record_count:
+   rangeRows.find(x=>x.observed_baseline==="1995-2014"&&x.scenario==="ssp585"&&x.period==="2081-2100").robust_all3_5pp_nonCrozier_original_record_count,latest_ADPE_snapshot_count_sum:N,Cape_Crozier_snapshot_count: capeCount,
  min_count_year:Math.min(...sites.map(x=>x.latest_census_year)),max_count_year:Math.max(...sites.map(x=>x.latest_census_year)),
  number_historical_siteyears:39*30,number_20yr_overlapping_windows_per_site:11,
  historical_20yr_band_median_width_pp:median(sites.map(x=>x.historical_20yr_range_pp)),
