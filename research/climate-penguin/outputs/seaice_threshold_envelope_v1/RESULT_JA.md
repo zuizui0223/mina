@@ -117,3 +117,11 @@ SSP5-8.5・2081–2100年の60～80%の全閾値×3モデルの新規越境幅�
 
 再現可能な新成果物：\`allocation_decomposition_grid.csv\`（4,824組）、\`allocation_decomposition_range.csv\`（閾値帯とモデルの範囲）、\`census_weight_source_audit.csv\`（最新方法と旧計数法比較）、\`model_grid_independence_summary.csv\`（モデル格子の重複）、\`exact_region_allocation_reference.json\`（26地点全組合せ対照）、\`decomposition_summary.json\`、\`decomposition_expected_receipt.json\`。**[GitHub Actions run 41217189731](https://github.com/zuizui0223/mina/actions/runs/41217189731) SUCCESS**、source-pinned固定数値および全組合せ照合成功、artifact ID **13048193821**。既存の論文Paper 1/2とmainは変更しない。
 
+
+## 年次データによる生物学的閾値の検証（2026-11-01 追記）
+
+[39地点×30年の年次海氷・原巣数からの独立実測検証](../seaice_threshold_temporal_gate_v1/REPORT_JA.md)を追加。長期地点平均には **60.314〜80.429%の観測空白**があるが、年々のSICは60〜80%に**139地点・年**入り、同じ固定調査方法による隣接年の巣数296区間のうち43区間で前年SICがこの帯域、34区間は両年の11月後計数が出典で確証。平均SIC77.5%による長期成長率符号の分類は **34/39地点**で、地域多数派だけの **34/39**と同じ。これは「生物学的境界を同定した」という根拠ではない。
+
+77.5%の下向き年次越境8月支持区間（**3地点コード**）では7区間の巣数増減が正で、長期SIC低下の作用を否定はできないものの**短期一方向の害とは一致しない**。年・計数月を厳格に保持した翌年の条件付きhindcastは146区間・Victoria Land12地点でMAE **0.21934→0.21536**（約1.8%改善）。CRZE/CRZWを訓練・評価とも除外して再訓練すると94区間で **0.23207→0.23187**（約0.08%改善）に縮小し、地域を越える生物応答には移植できない。
+
+従って本シナリオの **60〜80%は生物学的信頼区間ではなく仮定範囲**、77.5%も効果発現の真の分岐点ではない。Cape Crozierの年次SICは過去に各3年だけ77.5%未満に入ったが、3年連続ではないため、将来20年平均の継続的な海氷変化への検証と混同しない。
