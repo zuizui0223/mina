@@ -211,7 +211,7 @@ for(const [scenario,period] of times)for(const v of v39){
   descriptive_physical_exposure_not_biological_projection:true};
  bridge.push(record);
  reconciliations.push({experiment:scenario,period,site_id:site,
-  source_L_match_status:receipt.matching_status,
+  source_L_match_status:receiptBySite.get(site).matching_status,
   source_land_to_climate_km:+old.source_to_climate_distance_km,
   source_macro_location_id:same.location_id,
   all_variables_agree_with_original_macro_climate:true,
