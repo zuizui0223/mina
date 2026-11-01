@@ -500,6 +500,11 @@ def main():
         "common_support_SSP585_late_0_5":[x for x in common_three_model_matched_site_cohort if
             x["scenario"]=="ssp585" and x["future_period"]=="2081-2100"
             and x["minimum_paired_annual_site_SIC_SD_pp"]==0.5],
+        "common_climate_sensitivity":[x for x in common_three_model_portfolio if
+            x["scenario"]=="ssp585" and x["future_period"]=="2081-2100"
+            and x["weight_mode"]=="latest_counts"
+            and x["source_support_mask"] in ("all_model_var","all_model_var_50km_bias15pp")
+            and x["minimum_paired_site_SIC_annual_SD_pp"] in (0.1,0.5,1.0)],
         "verified":args.check_receipt
      },ensure_ascii=False),flush=True)
 
