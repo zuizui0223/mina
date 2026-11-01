@@ -10,7 +10,8 @@ const out=join(root,"seaice_covariance_portfolio_v1");
 const sources={
   hist:["historical_ice_breeding_transfer_v1/adeli_39site_historical_climate_growth.csv","db58938630e80d22ba445600ce1ad3f554c452e2"],
   ice:["climate_penguin/macro_monthly_seaice_1991_2020.csv","4fcea71c2d8b1069b6ad143f6522061ed434daf5"],
-  counts:["comparison_audit/mapppd_unambiguous_site_seasons.csv","fc134e364cf38699fa7611d7dee5fbbbcb370c0a"]
+  counts:["comparison_audit/mapppd_unambiguous_site_seasons.csv","fc134e364cf38699fa7611d7dee5fbbbcb370c0a"],
+  cmip:["cmip6_projection_v1/site_model_changes.csv","b383ef1cc3b0807b0bd010ca0e825937ab83ce97"]
 };
 const exp=JSON.parse(readFileSync(join(out,"expected_receipt.json"),"utf8"));
 function csvParse(s){
@@ -44,7 +45,7 @@ for(const [key,[rel,sha]] of Object.entries(sources)){
  if(blob!==sha||exp.source_git_blobs[key]!==sha)throw Error("Upstream original Git blob changed "+key+" "+blob);
  DATA[key]=csvParse(src.toString("utf8"));
 }
-if(DATA.hist.length!==39||DATA.ice.length!==9600||DATA.counts.length!==2999)
+if(DATA.hist.length!==39||DATA.ice.length!==9600||DATA.counts.length!==2999||DATA.cmip.length!==3816)
  throw Error("Original source cohort changed");
 const mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
 const sum=a=>a.reduce((s,x)=>s+x,0);
@@ -221,6 +222,53 @@ for(const band of ["near","off"]){
   });
  }
 }
+// The *same* 39 site weights applied to observationally anchored future marine SIC changes.
+// This is a physical exposure index only, not a forecast of colony growth, breeding success,
+// climate response, or spatial redistribution in 2050/2100.
+const originalCMIP=new Map();
+for(const r of DATA.cmip){
+ if(r.cohort!=="macro_40"||r.variable_id!=="siconc")continue;
+ const id=[r.source_id,r.experiment_id,r.period].join("|"),
+  m=originalCMIP.get(id)||new Map();
+ if(m.has(r.site_id))throw Error("Multiple source climate rows for original site");
+ m.set(r.site_id,+r.change);
+ originalCMIP.set(id,m);
+}
+const futureWeightedMeanShifts=[];
+const minmax=(a)=>[Math.min(...a),Math.max(...a)];
+for(const experiment of ["ssp245","ssp585"])
+for(const period of ["2041-2060","2081-2100"])
+for(const model of ["ACCESS-CM2","BCC-CSM2-MR","CESM2"]){
+ const mp=originalCMIP.get([model,experiment,period].join("|"));
+ if(!mp||mp.size!==40)throw Error("Original 40 macro site model support changed");
+ const siteChanges=rawSource.map(s=>{
+  const anomaly=mp.get(s.site_id);
+  if(!Number.isFinite(anomaly))throw Error("Missing CMIP6 future physical anomaly "+s.site_id);
+  const obs=mean(s.near.slice(4,24));
+  return Math.min(100,Math.max(0,obs+anomaly))-obs;
+ });
+ for(const [scheme,w] of Object.entries(weights)){
+  const avgPhysical=sum(w.map((wi,i)=>wi*siteChanges[i]));
+  futureWeightedMeanShifts.push({
+   experiment,period,model,site_count:rawSource.length,weight_scheme:scheme,
+   physically_clipped_mean_nearshore_SIC_change_pp:avgPhysical,
+   historical_satellite_reference:"1995–2014 (August–November)",
+   future_CMIP6_period:"2041–2060 or 2081–2100",
+   interpretation:"observed_anchor_plus_model_anomaly_not_a_breeding_population_forecast"
+  });
+ }
+}
+if(futureWeightedMeanShifts.length!==60||nUnique(futureWeightedMeanShifts,x=>[x.experiment,x.period,x.model,x.weight_scheme].join("|"))!==60)
+ throw Error("Original CMIP6 4x3x5 physical portfolio cohort changed");
+const late585=futureWeightedMeanShifts.filter(x=>x.experiment==="ssp585"&&x.period==="2081-2100");
+const byWeight=[];
+for(const scheme of weightFields){
+ const arr=late585.filter(x=>x.weight_scheme===scheme).map(x=>x.physically_clipped_mean_nearshore_SIC_change_pp);
+ if(arr.length!==3)throw Error("Missing 3 CMIP physical model shifts");
+ const [min,max]=minmax(arr);
+ byWeight.push({weight_scheme:scheme,scenario:"ssp585",period:"2081-2100",model_min_change_pp:min,model_max_change_pp:max,model_count:3});
+}
+
 const find=(band,w)=>diagnostics.find(x=>x.spatial_band===band&&x.weight_scheme===w);
 const northMean=rawSource.filter(x=>x.region==="Victoria Land");
 const countInNorth=sum(northMean.map(x=>x.latest_count));
@@ -240,7 +288,13 @@ const facts={
  off_equal_standardizedSD:find("100-500km","equal").standardized_site_anomaly_common_SD,
  off_latest_standardizedSD:find("100-500km","latest").standardized_site_anomaly_common_SD,
  off_equal_rawSD_pp:find("100-500km","equal").physical_SIC_annual_SD_pp,
- off_latest_rawSD_pp:find("100-500km","latest").physical_SIC_annual_SD_pp
+ off_latest_rawSD_pp:find("100-500km","latest").physical_SIC_annual_SD_pp,
+ ssp585_late_ACCESS_latest_physical_change_pp:late585.find(x=>x.model==="ACCESS-CM2"&&x.weight_scheme==="latest").physically_clipped_mean_nearshore_SIC_change_pp,
+ ssp585_late_ACCESS_equal_physical_change_pp:late585.find(x=>x.model==="ACCESS-CM2"&&x.weight_scheme==="equal").physically_clipped_mean_nearshore_SIC_change_pp,
+ ssp585_late_BCC_latest_physical_change_pp:late585.find(x=>x.model==="BCC-CSM2-MR"&&x.weight_scheme==="latest").physically_clipped_mean_nearshore_SIC_change_pp,
+ ssp585_late_BCC_equal_physical_change_pp:late585.find(x=>x.model==="BCC-CSM2-MR"&&x.weight_scheme==="equal").physically_clipped_mean_nearshore_SIC_change_pp,
+ ssp585_late_CESM_latest_physical_change_pp:late585.find(x=>x.model==="CESM2"&&x.weight_scheme==="latest").physically_clipped_mean_nearshore_SIC_change_pp,
+ ssp585_late_CESM_equal_physical_change_pp:late585.find(x=>x.model==="CESM2"&&x.weight_scheme==="equal").physically_clipped_mean_nearshore_SIC_change_pp
 };
 if(process.argv.includes("--check-receipt")){
  for(const [key,want] of Object.entries(exp.values))close(facts[key],want,key);
@@ -254,6 +308,8 @@ writeFileSync(join(out,"fixed_site_source_and_annual_sic_traits.csv"),toCSV(site
 writeFileSync(join(out,"annual_weighted_and_standardized_SIC_portfolios.csv"),toCSV(annualPortfolio));
 writeFileSync(join(out,"observed_spatial_covariance_weight_diagnostics.csv"),toCSV(diagnostics));
 writeFileSync(join(out,"region_constrained_count_shuffle_reference.csv"),toCSV(permutationReference));
+writeFileSync(join(out,"future_climate_mean_change_same_site_weights.csv"),toCSV(futureWeightedMeanShifts));
+writeFileSync(join(out,"ssp585_late_future_mean_change_weight_ranges.csv"),toCSV(byWeight));
 writeFileSync(join(out,"summary.json"),JSON.stringify({
  status:"source_verified_spatial_covariance_of_observed_sea_ice_not_penguin_climate_risk",
  original_source_git_blobs:Object.fromEntries(Object.entries(sources).map(([k,[,sha]])=>[k,sha])),
@@ -261,6 +317,8 @@ writeFileSync(join(out,"summary.json"),JSON.stringify({
   current_census_weight_count:totalCount,current_census_latest_years:"noncontemporaneous 2001–2025",
   current_victoria_share:countInNorth/totalCount,original_Crozier_weight:crozierCount},
  facts,diagnostics,region_conditioned_shuffles:permutationReference,
+ future_climate_same_site_weight_changes:futureWeightedMeanShifts,
+ future_ssp585_late_model_ranges:byWeight,
  scientific_interpretation:"Unstandardized (raw pp) count-weighted nearshore temporal SIC fluctuations are smaller than equal-site, but unit-SD-normalized anomalies show greater spatial covariance. This is driven largely by the site-geography composition: within-region shuffles do not show a special nearshore allocation. Offshore band is more synchronous and has different within-region allocation. These are not survival or nest growth results.",
  caveats:"Original 39 sites selected/bias toward Victoria Land. Several adjacent site codes share overlapping nearshore SIC windows and model cells; 30 annual observations and 5 regions are not independent replicated environments. Latest 2001–2025 counts can be different methods/targets; normalized SD is a hypothetical statistical standardization, not biological response or danger. Shared-variance effective-unit number is a covariance heuristic only, not number of independent breeding sites, island habitats, or climate realizations."
 },null,2)+"\n");
@@ -270,6 +328,7 @@ writeFileSync(join(out,"validation.json"),JSON.stringify({
  historical_site_codes:n,historical_years:T,observed_bands:2,
  output_site_band_rows:siteRows.length,output_annual_portfolios:annualPortfolio.length,
  output_portfolio_statistics:diagnostics.length,output_shuffle_reference:permutationReference.length,
+ original_CMIP_model_rows:DATA.cmip.length,output_scenario_weight_model_rows:futureWeightedMeanShifts.length,
  consecutive_years:years.every((x,i)=>x===1991+i),
  trained_demographic_response_model:false,
  forecast_of_future_penguin_nests:false,
@@ -280,5 +339,6 @@ console.log("BREEDING CENSUS CLIMATE COVARIANCE "+JSON.stringify({
  near_models:diagnostics.filter(x=>x.spatial_band==="0-100km"),
  off_models:diagnostics.filter(x=>x.spatial_band==="100-500km"),
  permutation_summary:permutationReference,
+ SSP585_late_future_climate_same_source_weight_comparison:byWeight,
  original_receipt_passed:process.argv.includes("--check-receipt")
 }));
