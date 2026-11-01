@@ -25,6 +25,8 @@ jobs:
           node-version: '22'
       - name: Recompute 39 site count-weighted observed SIC covariance and pinned receipt
         run: node research/climate-penguin/work/seaice_covariance_portfolio_v1/build.mjs --check-receipt
+      - name: Audit whether independent original breeding units support marine-SIC synchrony inference
+        run: node research/climate-penguin/work/seaice_covariance_portfolio_v1/breeding_sync_support.mjs --check-receipt
       - name: Save all original source annual observations and climate-portfolio comparisons
         if: always()
         uses: actions/upload-artifact@v4
