@@ -64,8 +64,8 @@ for(const scenario of ["ssp245","ssp585"])for(const period of ["2041-2060","2081
    census_weight:weight(arr),census_pct:pct(arr),marine_fingerprints:new Set(arr.map(x=>x.fingerprint)).size,
    Crozier_count_pct:pct(arr.filter(x=>x.crozier)),
    excluding_Crozier_reweighted_pct:100*weight(without)/831598,
-   50km_supported_sites:arr.filter(x=>x.coastal_50km_all3).length,
-   50km_supported_count_pct:pct(arr.filter(x=>x.coastal_50km_all3)),
+   supported_50km_site_n:arr.filter(x=>x.coastal_50km_all3).length,
+   supported_50km_count_pct:pct(arr.filter(x=>x.coastal_50km_all3)),
    site_ids:arr.map(x=>x.site_id).join(";")}}
  summ.push(...[
   aggregate("warming",x=>x.all3_warming),
