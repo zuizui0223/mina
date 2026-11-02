@@ -4,6 +4,9 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[Signy以外の海ニッチ：Palmer原同位体・3島の海氷観測独立性監査（2026-11-02）](outputs/palmer_original_isotope_niche_v1/REPORT_JA.md)** — 344原記録から324性別既知同位体、6同島・同年種ペアを測定。3島を2海氷環境系列へ厳格照合し、Signy胃内魚率の追試とは区別。
+
+
 - **[Signy実測食性ニッチ×海氷の正確9年検定・採取日監査（2026-11-02）](outputs/signy_marine_niche_robustness_v2/REPORT_JA.md)** — 3種同年9季節の胃サンプルからGentoo−他2種の魚類比率差を測定し、9!順列・2海氷期間・育雛採取日差を厳格監査。元の各軸肯定結果は維持。
 
 
