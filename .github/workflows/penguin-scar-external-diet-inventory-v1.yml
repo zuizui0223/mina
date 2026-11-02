@@ -1,0 +1,38 @@
+name: penguin-scar-external-diet-inventory-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/scar_external_diet_v1/**'
+      - 'research/climate-penguin/outputs/scar_external_diet_v1/**'
+      - 'tests/test_scar_external_diet_v1.py'
+      - '.github/workflows/penguin-scar-external-diet-inventory-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/scar_external_diet_v1/**'
+      - 'research/climate-penguin/outputs/scar_external_diet_v1/**'
+      - 'tests/test_scar_external_diet_v1.py'
+      - '.github/workflows/penguin-scar-external-diet-inventory-v1.yml'
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -p 'test_scar_external_diet_v1.py' -v
+      - name: Fetch original fixed 2023 SCAR diet Git mirror
+        run: |
+          curl -L --fail --retry 2 --max-time 180 'https://raw.githubusercontent.com/globalbioticinteractions/scar/1856664248be16b9dcee9ba56d2b23d87f3d9cd1/scar_diet.csv' -o /tmp/original_scar_diet.csv
+      - name: Run full raw-data origin and sampling-grain inventory
+        run: |
+          python research/climate-penguin/work/scar_external_diet_v1/audit.py --diet /tmp/original_scar_diet.csv --out /tmp/scar_external_inventory
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-scar-external-diet-inventory-v1
+          path: /tmp/scar_external_inventory/
+          retention-days: 30
