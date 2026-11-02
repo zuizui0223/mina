@@ -4,6 +4,9 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[新結果：種構成の長期変化と観測年の海氷の不一致（2026-11-02）](outputs/niche_timescale_divergence_v1/REPORT_JA.md)** — 厳格共存6地点・67共通年・45連続年。実巣数比は6/6増、観測年9月SICは4/6増、1991–2020年の8–11月SICは6/6減。
+
+
 - **[温暖化と時間・陸・海のニッチ：2同一カメラ・計数結合ゲート（2026-11-02）](outputs/temporal_niche_cross_axis_v2/REPORT_JA.md)** — 2組の正確な順列検定と、同年巣数への結合が2地点年だけという同定制約を再現。
 
 
