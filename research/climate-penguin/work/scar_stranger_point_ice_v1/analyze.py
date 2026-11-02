@@ -168,7 +168,7 @@ def run(original,output):
        zero_versus_positive_year_sensitivity={ref:recorded_above_rounding_gap(
            [r["prior_september_sic_pct"] for r in outrows if r["proxy_site_id"]==ref],
            [r["fish_fraction"] for r in outrows if r["proxy_site_id"]==ref]) for ref in PROXIES},
-       n_independent_marine_proxy_time_series=2,
+       n_distinct_not_independent_marine_proxy_time_series=2,
        source_git_blob=mod.s.BLOB,
        flags=["single Adélie species; cannot reproduce multi-species niche gap",
          "all year values are published source-level fraction aggregates, NOT independent bird stomachs",
