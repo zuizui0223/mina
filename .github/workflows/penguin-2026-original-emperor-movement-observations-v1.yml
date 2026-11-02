@@ -28,7 +28,7 @@ jobs:
       - name: Decode every original shapefile's geometry and observation date
         run: python research/climate-penguin/work/macdonald2026_true_emperor_movement_v1/inspect.py
       - name: Quantify original dated emperor MultiPoint group-centroid displacement with seasonal matching
-        run: python research/climate-penguin/work/macdonald2026_true_emperor_movement_v1/movement_metrics.py
+        run: python research/climate-penguin/work/macdonald2026_true_emperor_movement_v1/movement_metrics.py --check-receipt
       - name: Archive external source, geometry evidence and diagnostics
         if: always()
         uses: actions/upload-artifact@v4

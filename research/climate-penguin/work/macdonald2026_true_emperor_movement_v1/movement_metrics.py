@@ -410,6 +410,25 @@ def main():
         "three_original_tracked_colony_modelled_adult_index_crosswalk":three_source_crosswalk,
         "same_day_multi_image_pair_n":len(same_day_survey_pair_dist),
         "same_day_multi_image_difference_median_km":med(same_day_survey_pair_dist)}
+    if "--check-receipt" in __import__("sys").argv:
+        receipt=json.loads((OUT/"expected_receipt.json").read_text(encoding="utf-8"))
+        if receipt["original_source_canonical_sha256"]!=EXPECTED_CANONICAL_SHA256:
+            raise ValueError("Original doi-backed tracking source changed")
+        for k,want in receipt["facts"].items():
+            got=facts.get(k)
+            if got is None:
+                raise ValueError("Missing receipt field "+k)
+            if isinstance(want,(float,int)):
+                if abs(got-want)>1e-9:raise ValueError("Independent numeric receipt mismatch "+k+" "+str(got)+" != "+str(want))
+            elif got!=want:raise ValueError("Independent receipt mismatch "+k)
+        for k,want in receipt["baseline_free"].items():
+            got=baseline_free_summary.get(k)
+            if got is None or abs(got-want)>1e-9:raise ValueError("Independent baseline-free receipt mismatch "+k+" "+str(got))
+        if receipt["original_2017_2018_crosswalk_names"]!=[x["LaRue_author_50model_source_id"] for x in three_source_crosswalk]:
+            raise ValueError("Original observed tracking vs modelled 3 site IDs drift")
+        if receipt["observational_paired_siteyear_expected"]!=len(all_stage_differences):
+            raise ValueError("Original observed winter to spring sample size changed")
+
     OUT.mkdir(parents=True,exist_ok=True)
     write_csv("original_24siteyears_detected_colony_group_centroid_metrics.csv",annual)
     write_csv("original_1110_date_stamped_colony_observations.csv",summary_observations)
