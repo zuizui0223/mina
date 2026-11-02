@@ -46,11 +46,20 @@ def shape_read(data):
   types[type_id]+=1
   if type_id in (1,11,21):
    x,y=struct.unpack_from("<dd",data,start+4)
-   pts.append({"record_number":number,"shape_type":type_id,"x":x,"y":y})
+   pts.append({"record_number":number,"shape_type":type_id,"x":x,"y":y,"group_coordinates":[(x,y)],"groups":1})
+  elif type_id in (8,18,28):
+   npoints=struct.unpack_from("<i",data,start+36)[0]
+   if npoints<0 or start+40+16*npoints>start+size:
+    raise ValueError("Published MultiPoint geometry record is invalid")
+   xy=[struct.unpack_from("<dd",data,start+40+16*j) for j in range(npoints)]
+   if not xy:
+    pts.append({"record_number":number,"shape_type":type_id,"x":None,"y":None,"group_coordinates":[],"groups":0})
+   else:
+    pts.append({"record_number":number,"shape_type":type_id,"x":sum(x for x,y in xy)/len(xy),"y":sum(y for x,y in xy)/len(xy),"group_coordinates":xy,"groups":len(xy)})
   elif type_id==0:
-   pts.append({"record_number":number,"shape_type":0,"x":None,"y":None})
+   pts.append({"record_number":number,"shape_type":0,"x":None,"y":None,"group_coordinates":[],"groups":0})
   else:
-   pts.append({"record_number":number,"shape_type":type_id,"x":None,"y":None})
+   raise ValueError("Unexpected original tracking geometry shape type "+str(type_id))
   offset=start+size
  return src_type,bbox,types,pts
 
@@ -80,9 +89,13 @@ def main():
    colony,year=match.group(1),int(match.group(2))
    fields=[{"name":n,"type":t,"width":w} for n,t,w in types]
    values={n:Counter(row[n] for row in rows).most_common(8) for n,t,w in types}
-   sample=[{**rows[i],"shape_x":pts[i]["x"],"shape_y":pts[i]["y"]} for i in range(min(5,len(rows)))]
+   sample=[{**rows[i],"group_centroid_lon":pts[i]["x"],"group_centroid_lat":pts[i]["y"],
+    "number_detected_groups":pts[i]["groups"],"first_group_positions":pts[i]["group_coordinates"][:3]} for i in range(min(5,len(rows)))]
    result={"colony":colony,"year":year,"source_shp_filename":filename,"source_shp_sha256":hashlib.sha256(z.read(path)).hexdigest(),
      "source_dbf_sha256":hashlib.sha256(dbf).hexdigest(),"source_CRS_WKT":projection,
+     "number_source_observation_dates":len(pts),"total_group_point_positions":sum(x["groups"] for x in pts),
+     "n_observations_with_multiple_groups":sum(x["groups"]>1 for x in pts),
+     "max_groups_in_one_observation":max(x["groups"] for x in pts),
      "number_source_points":len(pts),"shape_header_type":shapetype,"record_shape_types":dict(shapeTypes),
      "shape_raw_XY_minmax":{"x_min":min((x["x"] for x in pts if x["x"] is not None),default=None),"x_max":max((x["x"] for x in pts if x["x"] is not None),default=None),
                            "y_min":min((x["y"] for x in pts if x["y"] is not None),default=None),"y_max":max((x["y"] for x in pts if x["y"] is not None),default=None)},
@@ -91,6 +104,8 @@ def main():
    print("MACDONALD2026 TRACKING SHAPE SOURCE "+json.dumps(result,ensure_ascii=False),flush=True)
  report["per_colony_year"].sort(key=lambda x:(x["colony"],x["year"]))
  report["cohort_counts"]={"source_year_files":len(shpfiles),"source_total_point_records":sum(x["number_source_points"] for x in report["per_colony_year"]),
+  "source_total_group_positions":sum(x["total_group_point_positions"] for x in report["per_colony_year"]),
+  "multi_group_source_observations":sum(x["n_observations_with_multiple_groups"] for x in report["per_colony_year"]),
   "colony_year_counts":{c:{str(x["year"]):x["number_source_points"] for x in report["per_colony_year"] if x["colony"]==c} for c in sorted(set(x["colony"] for x in report["per_colony_year"]))}}
  (OUT/"tracking_original_source_fields.json").write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n")
  print("MACDONALD2026 TRACKING GEOMETRY SOURCE COMPLETE "+json.dumps({"dataset":ID,"canonical_sha256":report["source_canonical_sha256"],"facts":report["cohort_counts"],"crs":list({x["source_CRS_WKT"] for x in report["per_colony_year"]}),"fields_by_colony":{c:report["per_colony_year"][[x["colony"] for x in report["per_colony_year"]].index(c)]["field_schema"] for c in report["cohort_counts"]["colony_year_counts"]}}),flush=True)
