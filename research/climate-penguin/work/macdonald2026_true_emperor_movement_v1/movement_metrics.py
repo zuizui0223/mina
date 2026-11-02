@@ -302,6 +302,95 @@ def main():
        "source_climate_covariate_absent":True,
     }
 
+    # Baseline-free check: instead of measuring both seasons against a *winter*
+    # reference point (which can inherently favor winter), compare adjacent
+    # observation dates of similar elapsed duration within each season.
+    baseline_free_adjacent_day_movement_speeds=[]
+    baseline_free_season_comparison=[]
+    for colony in COLONIES:
+        for year in YEARS:
+            days=all_daily[colony,year]
+            site_recs=[]
+            for before,after in zip(days[:-1],days[1:]):
+                dt=(after["date"]-before["date"]).days
+                if not 3<=dt<=14:continue
+                def stageOf(x):
+                    if x.year!=year:return "other"
+                    if 4<=x.month<=8:return "winter_AprAug"
+                    if x.month in (10,11):return "late_spring_OctNov"
+                    return "other"
+                period=stageOf(before["date"])
+                if period=="other" or period!=stageOf(after["date"]):continue
+                step=distkm(before["centroid"],after["centroid"])
+                r={"colony":colony,"season_year":year,"stage":period,
+                    "from_date":before["date"].isoformat(),"to_date":after["date"].isoformat(),
+                    "day_difference":dt,"group_centroid_separation_km":step,
+                    "group_centroid_separation_km_per_day":step/dt,
+                    "same_observed_median_group_count":before["median_detected_group_count"]==after["median_detected_group_count"],
+                    "multiple_source_images_on_either_date":before["number_source_images"]>1 or after["number_source_images"]>1,
+                    "different_winter_SAR_vs_spring_optical_sensors_possible":True}
+                baseline_free_adjacent_day_movement_speeds.append(r)
+                site_recs.append(r)
+            win=[x for x in site_recs if x["stage"]=="winter_AprAug"]
+            spring=[x for x in site_recs if x["stage"]=="late_spring_OctNov"]
+            valid=len(win)>=2 and len(spring)>=2
+            r={"colony":colony,"season_year":year,"winter_3to14day_pairs":len(win),
+                "late_spring_3to14day_pairs":len(spring),"both_stages_at_least2_pairs":valid,
+                "winter_median_group_centroid_km_per_day":med([x["group_centroid_separation_km_per_day"] for x in win]),
+                "late_spring_median_group_centroid_km_per_day":med([x["group_centroid_separation_km_per_day"] for x in spring]),
+                "winter_source_same_detected_group_count_pairs":sum(x["same_observed_median_group_count"] for x in win),
+                "late_spring_source_same_detected_group_count_pairs":sum(x["same_observed_median_group_count"] for x in spring),
+                "stage_rate_difference_late_minus_winter_km_per_day":(
+                    med([x["group_centroid_separation_km_per_day"] for x in spring])-
+                    med([x["group_centroid_separation_km_per_day"] for x in win])) if valid else None,
+                "sensor_and_group_count_detection_confounded":True}
+            baseline_free_season_comparison.append(r)
+    write_csv("source_same_3to14day_lag_observed_group_centroid_offsets.csv",baseline_free_adjacent_day_movement_speeds)
+    write_csv("baseline_free_withinyear_winter_latespring_rate_comparison.csv",baseline_free_season_comparison)
+    valid_pairs=[x for x in baseline_free_season_comparison if x["both_stages_at_least2_pairs"]]
+    baseline_free_summary={
+        "source_consecutive_3to14day_pairs":len(baseline_free_adjacent_day_movement_speeds),
+        "winter_source_pairs":sum(x["stage"]=="winter_AprAug" for x in baseline_free_adjacent_day_movement_speeds),
+        "latespring_source_pairs":sum(x["stage"]=="late_spring_OctNov" for x in baseline_free_adjacent_day_movement_speeds),
+        "siteyears_paired_at_least2_short_lag_pairs_each_stage":len(valid_pairs),
+        "siteyears_latespring_speed_greater_than_winter":sum(x["stage_rate_difference_late_minus_winter_km_per_day"]>0 for x in valid_pairs),
+        "paired_median_latespring_minus_winter_km_per_day":med([x["stage_rate_difference_late_minus_winter_km_per_day"] for x in valid_pairs]),
+        "caveat":"Stage-specific sensors (winter SAR vs spring optical), detection and group count differences; point-to-point apparent centroid velocity, not penguin locomotion."}
+    # Direct source crosswalk: three original tracked 2017-2018 colony sites
+    # are present as fixed IDs in the 50-colony Bayesian abundance panel.
+    # This joint membership is source-grounded, but a n=3 descriptive join
+    # cannot identify substrate movement causing abundance changes.
+    author=Path("research/climate-penguin/outputs/emperor_ice_land_substrate_v1/author_colony_summary.csv")
+    authorBytes=author.read_bytes()
+    mHash=hashlib.sha1(b"blob "+str(len(authorBytes)).encode()+b"\0"+authorBytes).hexdigest()
+    if mHash!="133c900c9dfbf2ce23ca403c9a59edecd9b51ace":raise ValueError("Original LaRue author model summary Git blob drift")
+    sourceModel=list(csv.DictReader(authorBytes.decode("utf-8").splitlines()))
+    if len(sourceModel)!=500:raise ValueError("LaRue model source panel drift")
+    three_source_crosswalk=[]
+    for colony in COLONIES:
+        sitecode={"Atka":"ATKA","Coulman":"COUL","Washington":"WASH"}[colony]
+        rows=[x for x in sourceModel if x["site_id"]==sitecode and int(x["year"]) in (2017,2018)]
+        if len(rows)!=2:raise ValueError("Original 50-colony observed movement site-year overlap not recovered")
+        start=next(x for x in rows if int(x["year"])==2017)
+        end=next(x for x in rows if int(x["year"])==2018)
+        if not (float(start["N_mean"])>0 and float(end["N_mean"])>0):
+            raise ValueError("Expected positive modelled 2017–2018 population index both years")
+        year2017=next(x for x in annual if x["colony"]==colony and x["year"]==2017)
+        year2018=next(x for x in annual if x["colony"]==colony and x["year"]==2018)
+        september=next(x for x in transitions if x["colony"]==colony and x["start_year"]==2017 and x["season_anchor"]=="September15")
+        three_source_crosswalk.append({
+            "colony":colony,"LaRue_author_50model_source_id":sitecode,
+            "LaRue_2017_posterior_marginal_mean_adult_index":float(start["N_mean"]),
+            "LaRue_2018_posterior_marginal_mean_adult_index":float(end["N_mean"]),
+            "modelled_adult_index_change_pct":100*(float(end["N_mean"])/float(start["N_mean"])-1),
+            "both_author_2017_and_2018_modelled_colony_indices_positive":True,
+            "Macdonald_2017_earlylate_group_centroid_km":year2017["first_last_detected_group_centroid_km"],
+            "Macdonald_2018_earlylate_group_centroid_km":year2018["first_last_detected_group_centroid_km"],
+            "Macdonald_2017_to_2018_September_group_centroid_km":september["distance_detected_group_centroids_km"],
+            "different_satellite_sensing_and_modelled_adult_index_estimand":True,
+            "three_colony_join_not_a_population_motion_regression":True})
+    write_csv("original_2017_2018_three_colony_movement_vs_modelled_adult_index_crosswalk.csv",three_source_crosswalk)
+
     facts={"author_dataset_DOI":DATA_DOI,"original_canonical_source_checksum":EXPECTED_CANONICAL_SHA256,
         "source_tracked_colonies":len(COLONIES),"original_year_site_files":len(annual),
         "original_observation_date_records":len(summary_observations),"original_group_point_positions":source_points,
@@ -317,6 +406,8 @@ def main():
         "filename_year_minus_observation_year_distribution":dict(sorted(source_label_vs_actual_date_year.items())),
         "first_original_filename_date_mismatches":first_mismatched_original_dates,
         "earlywinter_vs_latespring_quality_gate":source_stage_summary,
+        "baseline_free_short_lag_velocity_gate":baseline_free_summary,
+        "three_original_tracked_colony_modelled_adult_index_crosswalk":three_source_crosswalk,
         "same_day_multi_image_pair_n":len(same_day_survey_pair_dist),
         "same_day_multi_image_difference_median_km":med(same_day_survey_pair_dist)}
     OUT.mkdir(parents=True,exist_ok=True)
@@ -328,7 +419,7 @@ def main():
         "source_method":"published WGS84 MultiPoint of one or more emperor breeding group detections per date",
         "not_author_50_colony_census_sample":"This 3-site observed group footprint panel is not the 50-site 2009–2018 LaRue abundance model"},
         "facts":facts,"withinyear_earlywinter_vs_latespring_siteyear":seasonal_rows,
-        "by_stage":source_stage_summary,"by_colony":yearsSummary,
+        "by_stage":source_stage_summary,"baseline_free":baseline_free_summary,"modelled_index_2017_2018":three_source_crosswalk,"by_colony":yearsSummary,
         "measurement_caveats":["MultiPoint centroids give detectable group-location centroid per survey; exact group identity is not matched across dates",
         "Changes in groups detected or imagery footprint affect centroid; same-day multi-image divergence is an empirical observation-quality check",
         "September/October nearest-image matched contrasts control observation time of year only approximately",
