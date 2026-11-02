@@ -4,6 +4,9 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[Signy実測食性ニッチ×海氷の正確9年検定・採取日監査（2026-11-02）](outputs/signy_marine_niche_robustness_v2/REPORT_JA.md)** — 3種同年9季節の胃サンプルからGentoo−他2種の魚類比率差を測定し、9!順列・2海氷期間・育雛採取日差を厳格監査。元の各軸肯定結果は維持。
+
+
 - **[温暖化と時間・海・陸ニッチの統合結果（2026-11-02）](CLIMATE_NICHE_SYNTHESIS_20261102.md)** — 6地点の巣数実変化、Signy胃1,364試料、47種季節・37食性ペア、45同年の食性×雛数と物理CMIP6を統合。すべて因果・未来繁殖数予測とは分離。
 
 
