@@ -5,7 +5,7 @@ study. Published fish mass is extremely low. Uses fixed original SCAR source
 398 and three geographic proxies; no response calibration or future forecast.
 """
 from __future__ import annotations
-import argparse,csv,json,math,datetime,tempfile,importlib.util
+import argparse,csv,json,math,datetime,tempfile,importlib.util,itertools
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -51,6 +51,28 @@ def summary_corr(a,b):
         circular_shifts_extreme_count=sum(abs(v)+1e-12>=abs(r) for v in shifts if v is not None),
         n_circular_shifts=len(shifts),
         circular_shift_only_exploratory=True)
+def recorded_above_rounding_gap(ice,fish):
+    """Exact 6-vs-6 label permutation of recorded >0 vs rounded 0 annual fractions.
+
+    These recorded zero fractions do not establish that fish were biologically absent.
+    The year-exchangeability assumption is unverified; exploratory only.
+    """
+    mark=[v>0 for v in fish]
+    n_pos=sum(mark)
+    if not (0<n_pos<len(mark)):return None
+    obs=mean([x for x,yes in zip(ice,mark) if yes])-mean([x for x,yes in zip(ice,mark) if not yes])
+    vals=0;extreme=0
+    for choice in itertools.combinations(range(len(mark)),n_pos):
+        mask=set(choice)
+        delta=mean([x for i,x in enumerate(ice) if i in mask])-mean([x for i,x in enumerate(ice) if i not in mask])
+        vals+=1
+        extreme+=abs(delta)+1e-12>=abs(obs)
+    return dict(n=len(mark),n_recorded_positive=n_pos,n_recorded_zero=len(mark)-n_pos,
+        mean_ice_difference_positive_minus_zero_pp=obs,
+        exact_year_label_permutations=vals,extreme_assignments=extreme,
+        nominal_two_sided_fraction=extreme/vals,rounded_zero_is_not_true_absence=True,
+        no_exchangeability_or_confirmatory_p_claim=True)
+
 def write(path,rows):
     with Path(path).open("w",newline="",encoding="utf-8") as f:
         w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
@@ -143,6 +165,10 @@ def run(original,output):
                 for sp in ("Chinstrap","Gentoo")) for yr in (2007,2008)),
           "trace_season_not_zero":"Chinstrap, breeding season 2008"},
        correlations_by_proxy_window=stats,
+       zero_versus_positive_year_sensitivity={ref:recorded_above_rounding_gap(
+           [r["prior_september_sic_pct"] for r in outrows if r["proxy_site_id"]==ref],
+           [r["fish_fraction"] for r in outrows if r["proxy_site_id"]==ref]) for ref in PROXIES},
+       n_independent_marine_proxy_time_series=2,
        source_git_blob=mod.s.BLOB,
        flags=["single Adélie species; cannot reproduce multi-species niche gap",
          "all year values are published source-level fraction aggregates, NOT independent bird stomachs",
