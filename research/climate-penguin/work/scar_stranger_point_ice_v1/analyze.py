@@ -40,10 +40,15 @@ def summary_corr(a,b):
     sp=pearson(rank(a),rank(b))
     if len(a)<5:return dict(n=len(a),pearson=r,spearman=sp)
     lo=[pearson(a[:i]+a[i+1:],b[:i]+b[i+1:]) for i in range(len(a))]
+    lo=[v for v in lo if v is not None]
     shifts=[pearson(a,b[t:]+b[:t]) for t in range(len(a))]
+    if r is None or not lo:return dict(n=len(a),pearson=r,spearman=sp,
+        leave_one_season_pearson_min=None,leave_one_season_pearson_max=None,
+        circular_shifts_extreme_count=None,n_circular_shifts=len(shifts),
+        circular_shift_only_exploratory=True)
     return dict(n=len(a),pearson=r,spearman=sp,
         leave_one_season_pearson_min=min(lo),leave_one_season_pearson_max=max(lo),
-        circular_shifts_extreme_count=sum(abs(v)+1e-12>=abs(r) for v in shifts),
+        circular_shifts_extreme_count=sum(abs(v)+1e-12>=abs(r) for v in shifts if v is not None),
         n_circular_shifts=len(shifts),
         circular_shift_only_exploratory=True)
 def write(path,rows):
