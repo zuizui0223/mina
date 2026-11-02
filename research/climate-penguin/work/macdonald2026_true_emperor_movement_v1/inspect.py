@@ -84,8 +84,8 @@ def main():
    result={"colony":colony,"year":year,"source_shp_filename":filename,"source_shp_sha256":hashlib.sha256(z.read(path)).hexdigest(),
      "source_dbf_sha256":hashlib.sha256(dbf).hexdigest(),"source_CRS_WKT":projection,
      "number_source_points":len(pts),"shape_header_type":shapetype,"record_shape_types":dict(shapeTypes),
-     "shape_raw_XY_minmax":{"x_min":min(x["x"] for x in pts if x["x"] is not None),"x_max":max(x["x"] for x in pts if x["x"] is not None),
-                           "y_min":min(x["y"] for x in pts if x["y"] is not None),"y_max":max(x["y"] for x in pts if x["y"] is not None)},
+     "shape_raw_XY_minmax":{"x_min":min((x["x"] for x in pts if x["x"] is not None),default=None),"x_max":max((x["x"] for x in pts if x["x"] is not None),default=None),
+                           "y_min":min((x["y"] for x in pts if x["y"] is not None),default=None),"y_max":max((x["y"] for x in pts if x["y"] is not None),default=None)},
      "field_schema":fields,"common_field_values":values,"first_observations":sample}
    report["per_colony_year"].append(result)
    print("MACDONALD2026 TRACKING SHAPE SOURCE "+json.dumps(result,ensure_ascii=False),flush=True)
