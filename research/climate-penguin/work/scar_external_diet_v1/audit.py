@@ -16,7 +16,7 @@ def species(r):
 def year(r):
     found=[]
     for k,v in r.items():
-        if k.lower() in ("year","year_start","sample_year","sampling_year","date","date_start","date_end","sample_date","start_date","end_date") and valid(v):
+        if k.lower() in ("year","year_start","sample_year","sampling_year","date","date_start","date_end","sample_date","start_date","end_date","observation_date_start","observation_date_end") and valid(v):
             found.extend(int(x) for x in re.findall(r"(?<!\d)(?:18\d{2}|19\d{2}|20\d{2})(?!\d)",str(v)))
     return found[0] if found and len(set(found))==1 else None
 def group(r):
@@ -34,11 +34,13 @@ def main(source,out):
     data=csv.DictReader(b.decode("utf-8-sig").splitlines())
     fields=data.fieldnames
     if "fraction_diet_by_weight" not in fields:raise ValueError("weight measure not in original schema")
-    n=0;target=[];format_counts=collections.Counter()
+    n=0;target=[];format_counts=collections.Counter();raw_date_examples=collections.defaultdict(list)
     locfields=[k for k in fields if any(z in k.lower() for z in ("site","location","island","latitude","longitude"))]
     for r in data:
         n+=1;sp=species(r)
         if not sp:continue
+        if len(raw_date_examples[str(r.get("source_id",""))])<4:
+            raw_date_examples[str(r.get("source_id",""))].append({"start":r.get("observation_date_start"),"end":r.get("observation_date_end"),"source_sample":r.get("predator_sample_id"),"quality_flag":r.get("quality_flag"),"is_secondary_data":r.get("is_secondary_data"),"stage":r.get("predator_breeding_stage")})
         mass=num(r.get("fraction_diet_by_weight"))
         loc="|".join(str(r.get(k,"")).strip() for k in locfields if valid(r.get(k)))
         f=group(r)
@@ -83,7 +85,7 @@ def main(source,out):
         source_git_blob=sha,source_sha256=hashlib.sha256(b).hexdigest(),source_commit=COMMIT,
         original_zenodo="10.5281/zenodo.7796465",focal_species_rows=len(target),
         focal_by_species=dict(collections.Counter(x["species"] for x in target)),
-        fields=fields,location_fields=locfields,measure_types=dict(format_counts),
+        fields=fields,location_fields=locfields,measure_types=dict(format_counts),raw_date_examples=dict(raw_date_examples),
         n_source_ids=len(source_rows),n_source_species_site_year=len(panels),
         n_sources_with_at_least_three_years=sum(x["n_years"]>=3 for x in source_rows),
         n_potential_pair_years=len(same),candidate_pairs=same[:40],
