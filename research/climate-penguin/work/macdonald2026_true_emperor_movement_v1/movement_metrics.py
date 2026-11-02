@@ -109,7 +109,7 @@ def main():
                 item={"colony":colony,"source_site_code":all_species[colony],"year":year,
                     "date":observed,"satellite":fieldrow.get("Satellite",""),
                     "group_count":n,"centroid":c,"within_group_median_radius_km":within,
-                    "image_path":fieldrow.get("ImagePath","")}
+                    "image_path":fieldrow.get("ImagePath",""),"original_group_lon_lat":groups}
                 all_samples[(colony,year)].append(item)
                 summary_observations.append({"colony":colony,"year":year,"date":observed.isoformat(),
                     "satellite":item["satellite"],"group_count":n,
@@ -209,6 +209,99 @@ def main():
             "year_pair_good_October_matches":len(o),
             "October_nearest15_betweenyear_median_km":med([x["distance_detected_group_centroids_km"] for x in o]),
             "October_nearest15_betweenyear_over2km_n":sum(x["detected_group_center_shift_above_2km"] for x in o)}
+    # Stronger source-grounded stage comparison: separate winter (Apr–Aug) from
+    # later spring (Oct–Nov) rather than treating Jan/Feb of the next calendar
+    # year as an anomalous source date. Original season-year includes those dates.
+    seasonal_rows=[]
+    daily_stage_positions=[]
+    all_stage_differences=[]
+    for colony in COLONIES:
+        for year in YEARS:
+            days=all_daily[colony,year]
+            winter=[x for x in days if x["date"].year==year and 4<=x["date"].month<=8]
+            late=[x for x in days if x["date"].year==year and x["date"].month in (10,11)]
+            if not winter:
+                seasonal_rows.append({"colony":colony,"year":year,"early_winter_source_days":0,
+                    "late_spring_source_days":len(late),"early_winter_ref_first3_dates":"",
+                    "median_winter_group_centroid_distance_km":None,
+                    "median_late_spring_group_centroid_distance_km":None,
+                    "median_winter_grouppoint_distance_km":None,
+                    "median_late_spring_group_point_distance_km":None,
+                    "late_minus_winter_centroid_distance_km":None,
+                    "late_minus_winter_group_point_distance_km":None,
+                    "source_status":"missing_original_AprAug_reference"})
+                continue
+            winter.sort(key=lambda x:x["date"])
+            base=centroid([(x["centroid"][1],x["centroid"][0]) for x in winter[:min(3,len(winter))]])
+            samples_by_day=defaultdict(list)
+            for im in all_samples[colony,year]:
+                samples_by_day[im["date"]].append(im)
+            for day in days:
+                # Every group is a manually mapped detected sub-group, not an
+                # identified track. Divide within each image by its own number
+                # of groups so extra satellite scenes are not false abundance.
+                imgs=samples_by_day[day["date"]]
+                means=[]
+                for im in imgs:
+                    dd=[distkm(base,(float(lat),float(lon))) for lon,lat in im["original_group_lon_lat"]]
+                    means.append(statistics.mean(dd))
+                individual_mean=statistics.mean(means)
+                season="winter_AprAug" if day["date"].year==year and 4<=day["date"].month<=8 else (
+                    "late_spring_OctNov" if day["date"].year==year and day["date"].month in (10,11) else
+                    "other_or_next_year")
+                daily_stage_positions.append({"colony":colony,"season_year":year,
+                    "observation_date":day["date"].isoformat(),"source_season":season,
+                    "number_images":day["number_source_images"],
+                    "median_detected_groups":day["median_detected_group_count"],
+                    "group_centroid_distance_from_first3_winter_days_km":distkm(base,day["centroid"]),
+                    "mean_detected_group_point_distance_from_first3_winter_days_km":individual_mean,
+                    "original_group_identity_not_tracked":True})
+            records=[x for x in daily_stage_positions if x["colony"]==colony and x["season_year"]==year]
+            early=[x for x in records if x["source_season"]=="winter_AprAug"]
+            late_rows=[x for x in records if x["source_season"]=="late_spring_OctNov"]
+            wc=med([x["group_centroid_distance_from_first3_winter_days_km"] for x in early])
+            lc=med([x["group_centroid_distance_from_first3_winter_days_km"] for x in late_rows])
+            wp=med([x["mean_detected_group_point_distance_from_first3_winter_days_km"] for x in early])
+            lp=med([x["mean_detected_group_point_distance_from_first3_winter_days_km"] for x in late_rows])
+            source_status="paired_winter_and_late_spring" if len(late_rows)>=2 and len(early)>=2 else "limited_stage_support"
+            rec={"colony":colony,"year":year,"early_winter_source_days":len(early),
+                "late_spring_source_days":len(late_rows),
+                "early_winter_ref_first3_dates":";".join(x["date"].isoformat() for x in winter[:3]),
+                "median_winter_group_centroid_distance_km":wc,
+                "median_late_spring_group_centroid_distance_km":lc,
+                "median_winter_grouppoint_distance_km":wp,
+                "median_late_spring_group_point_distance_km":lp,
+                "late_minus_winter_centroid_distance_km":lc-wc if lc is not None else None,
+                "late_minus_winter_group_point_distance_km":lp-wp if lp is not None else None,
+                "source_status":source_status}
+            seasonal_rows.append(rec)
+            if source_status=="paired_winter_and_late_spring":all_stage_differences.append(rec)
+    if len(seasonal_rows)!=24: raise ValueError("Original 3×8 seasonal support changed")
+    write_csv("original_24siteyears_earlywinter_vs_latespring_movement.csv",seasonal_rows)
+    write_csv("original_1075_daily_source_mapped_group_position_offsets.csv",daily_stage_positions)
+    def percentile(x,p):
+        if not x:return None
+        a=sorted(x);i=(len(a)-1)*p;j=int(i)
+        return a[j] if j>=len(a)-1 else a[j]+(i-j)*(a[j+1]-a[j])
+    source_stage_summary={
+       "original_source_years":24,
+       "siteyears_with_winter_AprAug_reference":sum(x["early_winter_source_days"]>0 for x in seasonal_rows),
+       "siteyears_with_latespring_OctNov_images":sum(x["late_spring_source_days"]>0 for x in seasonal_rows),
+       "siteyears_paired_at_least2_days_each_stage":len(all_stage_differences),
+       "paired_siteyears_late_spring_median_group_point_displacement_gt_winter":
+          sum(x["late_minus_winter_group_point_distance_km"]>0 for x in all_stage_differences),
+       "paired_siteyears_late_spring_median_centroid_displacement_gt_winter":
+          sum(x["late_minus_winter_centroid_distance_km"]>0 for x in all_stage_differences),
+       "paired_siteyears_late_minus_winter_median_group_point_difference_km":
+          med([x["late_minus_winter_group_point_distance_km"] for x in all_stage_differences]),
+       "paired_siteyears_late_minus_winter_median_centroid_difference_km":
+          med([x["late_minus_winter_centroid_distance_km"] for x in all_stage_differences]),
+       "same_day_mapped_centroid_difference_p95_km":percentile(same_day_survey_pair_dist,.95),
+       "same_day_mapped_centroid_difference_max_km":max(same_day_survey_pair_dist),
+       "source_days_with_multi_sensor_replicate_pairs":len(same_day_survey_pair_dist),
+       "source_climate_covariate_absent":True,
+    }
+
     facts={"author_dataset_DOI":DATA_DOI,"original_canonical_source_checksum":EXPECTED_CANONICAL_SHA256,
         "source_tracked_colonies":len(COLONIES),"original_year_site_files":len(annual),
         "original_observation_date_records":len(summary_observations),"original_group_point_positions":source_points,
@@ -223,6 +316,7 @@ def main():
         "October15_quality_pair_above_2km":sum(x["detected_group_center_shift_above_2km"] for x in october),
         "filename_year_minus_observation_year_distribution":dict(sorted(source_label_vs_actual_date_year.items())),
         "first_original_filename_date_mismatches":first_mismatched_original_dates,
+        "earlywinter_vs_latespring_quality_gate":source_stage_summary,
         "same_day_multi_image_pair_n":len(same_day_survey_pair_dist),
         "same_day_multi_image_difference_median_km":med(same_day_survey_pair_dist)}
     OUT.mkdir(parents=True,exist_ok=True)
@@ -233,13 +327,14 @@ def main():
         "tracking_DOI":DATA_DOI,"source_SHA256_bytes":rootsha,"source_canonical_SHA256":EXPECTED_CANONICAL_SHA256,
         "source_method":"published WGS84 MultiPoint of one or more emperor breeding group detections per date",
         "not_author_50_colony_census_sample":"This 3-site observed group footprint panel is not the 50-site 2009–2018 LaRue abundance model"},
-        "facts":facts,"by_colony":yearsSummary,
+        "facts":facts,"withinyear_earlywinter_vs_latespring_siteyear":seasonal_rows,
+        "by_stage":source_stage_summary,"by_colony":yearsSummary,
         "measurement_caveats":["MultiPoint centroids give detectable group-location centroid per survey; exact group identity is not matched across dates",
         "Changes in groups detected or imagery footprint affect centroid; same-day multi-image divergence is an empirical observation-quality check",
         "September/October nearest-image matched contrasts control observation time of year only approximately",
         "The three original colonies span eight years and do not establish substrate causal effect against terrestrial breeding"],
         "not_future_demographic_forecast":True},ensure_ascii=False,indent=2)+"\n")
-    print("MACDONALD ORIGINAL DETECTED-GROUP MOVEMENT METRICS "+json.dumps({"facts":facts,"by_colony":yearsSummary,
+    print("MACDONALD ORIGINAL DETECTED-GROUP MOVEMENT METRICS "+json.dumps({"facts":facts,"stage_summary":source_stage_summary,"by_colony":yearsSummary,
         "sept_between_year":sep,"oct_between_year":october},ensure_ascii=False),flush=True)
 
 if __name__=="__main__":main()
