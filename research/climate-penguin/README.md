@@ -4,6 +4,9 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[海のニッチ：Signy 3種の原胃内容物×先行海氷実測（2026-11-02）](outputs/signy_diet_climate_v1/REPORT_JA.md)** — 元639/653/74試料から魚/甲殻類質量比を個別胃→species×繁殖季へ集約し、先行GOPT海氷との種間差を分析。独立した餌食性資料。
+
+
 - **[Signy海のニッチ：3種BAS食性・繁殖時期・繁殖成績の原ソースゲート（2026-11-02）](outputs/signy_three_diet_source_gate_v1/REPORT_JA.md)** — 1997–2020年の2種と1998–2010年のジェンツーの胃内容物の原CSVを独立取得してデータ粒度を検査。新しい因果結果は未主張。
 
 
