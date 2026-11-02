@@ -59,6 +59,8 @@ def main():
     if not src.is_file(): raise FileNotFoundError("Original Macdonald 2026 archive not present, run probe.py first")
     rootsha=hashlib.sha256(src.read_bytes()).hexdigest()
     all_samples=defaultdict(list)
+    source_label_vs_actual_date_year=Counter()
+    first_mismatched_original_dates=[]
     annual=[]
     summary_observations=[]
     all_species={"Atka":"ATKA","Coulman":"COUL","Washington":"WASH"}
@@ -89,7 +91,11 @@ def main():
                 dateStr=fieldrow.get("Date","")
                 try: observed=date.fromisoformat(dateStr)
                 except ValueError: raise ValueError("Original record lacked parsable date "+name+" / "+repr(dateStr))
-                if observed.year!=year: raise ValueError("Year in original attributes != site shapefile: "+name)
+                if abs(observed.year-year)>1:
+                    raise ValueError("Original source date unexpectedly outside ±1 calendar year: "+name+" "+dateStr)
+                source_label_vs_actual_date_year[observed.year-year]+=1
+                if observed.year!=year and len(first_mismatched_original_dates)<25:
+                    first_mismatched_original_dates.append({"source_filename":name,"source_date":dateStr,"offset_from_filename_year":observed.year-year})
                 groups=geom["group_coordinates"]
                 n=len(groups)
                 if n==0: continue
@@ -215,6 +221,8 @@ def main():
         "September15_quality_pair_above_2km":sum(x["detected_group_center_shift_above_2km"] for x in sep),
         "October15_quality_matched_pairs":len(october),
         "October15_quality_pair_above_2km":sum(x["detected_group_center_shift_above_2km"] for x in october),
+        "filename_year_minus_observation_year_distribution":dict(sorted(source_label_vs_actual_date_year.items())),
+        "first_original_filename_date_mismatches":first_mismatched_original_dates,
         "same_day_multi_image_pair_n":len(same_day_survey_pair_dist),
         "same_day_multi_image_difference_median_km":med(same_day_survey_pair_dist)}
     OUT.mkdir(parents=True,exist_ok=True)
