@@ -42,6 +42,7 @@ def main(source,out):
         if len(raw_date_examples[str(r.get("source_id",""))])<4:
             raw_date_examples[str(r.get("source_id",""))].append({"start":r.get("observation_date_start"),"end":r.get("observation_date_end"),"source_sample":r.get("predator_sample_id"),"quality_flag":r.get("quality_flag"),"is_secondary_data":r.get("is_secondary_data"),"stage":r.get("predator_breeding_stage")})
         mass=num(r.get("fraction_diet_by_weight"))
+        if mass is not None and not 0<=mass<=1: mass=None  # SCAR -999 means trace, not weight
         loc="|".join(str(r.get(k,"")).strip() for k in locfields if valid(r.get(k)))
         f=group(r)
         id=str(r.get("predator_sample_id","")).strip()

@@ -55,15 +55,29 @@ def run(src,outdir):
         groups[(r["source_id"],label,yr,str(r.get("predator_sample_id","")))].append(item)
     annual=[]
     for (source_id,label,yr,sample_id),a in sorted(groups.items(),key=lambda kv:str(kv[0])):
-        f=[z["weight_fraction"] for z in a if z["prey_class"]=="fish" and z["weight_fraction"] is not None]
-        c=[z["weight_fraction"] for z in a if z["prey_class"]=="crustacean" and z["weight_fraction"] is not None]
-        others=[z["weight_fraction"] for z in a if z["prey_class"] is None and z["weight_fraction"] is not None]
-        fish=sum(f) if f else None;crust=sum(c) if c else None
+        # SCAR trace -999 is *unknown small amount*, not negative diet mass.
+        # An aggregate prey group and its constituent species are nested, not additive.
+        def group_fraction(taxon):
+            rr=[z for z in a if z["prey_class"]==taxon]
+            summary=[z for z in rr if str(z["prey_aggregate_flag"]).upper()=="Y"]
+            if summary:
+                good=[z["weight_fraction"] for z in summary if z["weight_fraction"] is not None and 0<=z["weight_fraction"]<=1]
+                return (sum(good) if good and len(good)==len(summary) else None),len(good)
+            if any(z["weight_fraction"] is not None and z["weight_fraction"]<0 for z in rr):
+                return None,sum(z["weight_fraction"] is not None and 0<=z["weight_fraction"]<=1 for z in rr)
+            good=[z["weight_fraction"] for z in rr if z["weight_fraction"] is not None and 0<=z["weight_fraction"]<=1]
+            return (sum(good) if good else None),len(good)
+        fish,nfish=group_fraction("fish")
+        crust,ncrust=group_fraction("crustacean")
+        others=[z["weight_fraction"] for z in a if z["prey_class"] is None
+                and z["weight_fraction"] is not None and 0<=z["weight_fraction"]<=1]
         denom=fish+crust if fish is not None and crust is not None else None
+        ntrace=sum(z["weight_fraction"] == -999 for z in a)
         annual.append(dict(source_id=source_id,source_location=SOURCES[source_id],species=label,
             breeding_season_start=yr,original_calendar_year=min((z["original_calendar_year"] for z in a if z["original_calendar_year"] is not None),default=None),
-            sample_id=sample_id,n_rows=len(a),n_fish_rows=len(f),n_crust_rows=len(c),
+            sample_id=sample_id,n_rows=len(a),n_fish_rows=nfish,n_crust_rows=ncrust,
             n_other_weight_rows=len(others),n_missing_weight_rows=sum(z["weight_fraction"] is None for z in a),
+            n_trace_sentinel_rows=ntrace,
             n_aggregate_prey_rows=sum(str(z["prey_aggregate_flag"]).lower() in ("y","true","1") for z in a),
             fish_fraction_of_all_prey=fish,crust_fraction_of_all_prey=crust,
             fish_plus_crust_fraction=denom,fish_within_fish_plus_crust=(fish/denom if denom and denom>0 else None),
@@ -84,6 +98,7 @@ def run(src,outdir):
             n_fish_and_crust_mass=sum(z["fish_within_fish_plus_crust"] is not None for z in a),
             n_fish_crust_total_above_100pct=sum(z["fish_plus_crust_fraction"] is not None and z["fish_plus_crust_fraction"]>1.001 for z in a),
             n_all_prey_total_above_100pct=sum(z["total_all_prey_weight"] is not None and z["total_all_prey_weight"]>1.001 for z in a),
+            n_trace_sentinel_rows=sum(z["n_trace_sentinel_rows"] for z in a),
             n_secondary_rows=sum(z["n_secondary"] for z in a),
             n_source_quality_not_G=sum(z["n_quality_not_G"] for z in a))
     result=dict(status="raw_fraction_grain_audit_no_climate_effect",source_sha=s.BLOB,
