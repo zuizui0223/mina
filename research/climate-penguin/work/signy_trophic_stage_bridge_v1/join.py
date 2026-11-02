@@ -42,7 +42,7 @@ def run(dietdir,stagedir,outdir):
         sc[key]=row
     joined=[]
     for key in sorted(set(di)&set(sc)):
-        d,s=di[key]
+        d,s=di[key],sc[key]
         if int(d["n_valid_stomachs"])<3:continue
         fish=number(d["mean_stomach_fish_fraction"])
         chick=number(s["median_recorded_chicks_per_pair"])
