@@ -20,6 +20,8 @@ jobs:
           python-version: '3.11'
       - name: Fetch Macdonald et al. (2026) original UK Polar Data Centre shapefile archive and inspect
         run: python research/climate-penguin/work/macdonald2026_true_emperor_movement_v1/probe.py
+      - name: Inspect original 24 geo-tracked shapefiles and provenance before calculating movement
+        run: python research/climate-penguin/work/macdonald2026_true_emperor_movement_v1/inspect.py
       - name: Archive DOI landing metadata and tracking source ZIP
         if: always()
         uses: actions/upload-artifact@v4
