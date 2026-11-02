@@ -4,6 +4,9 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[温暖化と時間・海・陸ニッチの統合結果（2026-11-02）](CLIMATE_NICHE_SYNTHESIS_20261102.md)** — 6地点の巣数実変化、Signy胃1,364試料、47種季節・37食性ペア、45同年の食性×雛数と物理CMIP6を統合。すべて因果・未来繁殖数予測とは分離。
+
+
 - **[海のニッチ：Signy 3種の原胃内容物×先行海氷実測（2026-11-02）](outputs/signy_diet_climate_v1/REPORT_JA.md)** — 元639/653/74試料から魚/甲殻類質量比を個別胃→species×繁殖季へ集約し、先行GOPT海氷との種間差を分析。独立した餌食性資料。
 
 

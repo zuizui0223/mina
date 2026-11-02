@@ -34,3 +34,9 @@ Lynnes et al. (2004), Polar Biology は1997–2001年のSignyアデリー・ヒ�
 
 ### 取得状態
 本レポートは**source-firstの実行契約**。CIによるZIP取得とinventory生成の結果はActions runとartifactで判定し、失敗した場合は無理に値を補完しない。元main/Paper1/Paper2は変更しない。
+
+## 実測 source-gate 結果（2026-11-02、CI SUCCESS）
+
+[原ZIP3点を取得・CSV列とSHAを検証した実行](https://github.com/zuizui0223/mina/actions/runs/41406085881)。原胃内容物集計 \`*_diet_summary.csv\` はアデリー**639行**（2002–2020年）、ヒゲ**653行**（2002–2020年）、ジェンツー**74行**（2002–2010年）。この3表には \`DATE, RECORD_ID, FISH_MASS_g, CRUSTACEAN_MASS_g, EUPHAUSIA_SUPERBA_MASS_g, TOTAL_MASS_g\` が共通。
+
+対照的に、オキアミの個体甲長／成熟段階の別表は**35,384／37,185／3,931行**。1胃中の複数オキアミが複数行になるため、これを気候解析の独立胃標本や年反復と数えない。年情報は元集計表だけ2002年以降。データ公開タイトルの「1997–2020」を全列にそのまま仮定しない。ジェンツーにはフリッパー列がないなどスキーマの違いがあり、種間の身体指標は別設計。原データは再配布しない。
