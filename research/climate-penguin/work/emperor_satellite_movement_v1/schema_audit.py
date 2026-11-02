@@ -63,7 +63,7 @@ def parse_worksheet(data):
 
 def audit(label,sh,cols,rows):
  candidates=lambda pattern:[k for k in cols if re.search(pattern,k,re.I)]
- years=candidates("year"),ids=candidates("site_id|colony_id"),lat=candidates("lat|northing"),lon=candidates("lon|long|easting")
+ years=candidates("year");ids=candidates("site_id|colony_id");lat=candidates("lat|northing");lon=candidates("lon|long|easting")
  names=list(dict.fromkeys(years+ids+lat+lon+candidates("qual|area|month|day|pixel|presence|occ|image|img_")))
  site=ids[0] if ids else None
  year=next((x for x in years if x.lower() in ("year","img_year")),years[0] if years else None)
