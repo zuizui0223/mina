@@ -6,6 +6,11 @@ on:
       - "research/climate-penguin/work/emperor_satellite_movement_v1/**"
       - "research/climate-penguin/outputs/emperor_satellite_movement_v1/**"
       - ".github/workflows/penguin-emperor-original-satellite-coordinate-audit-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/emperor_satellite_movement_v1/**"
+      - "research/climate-penguin/outputs/emperor_satellite_movement_v1/**"
+      - ".github/workflows/penguin-emperor-original-satellite-coordinate-audit-v1.yml"
   workflow_dispatch:
 permissions:
   contents: read
