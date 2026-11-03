@@ -137,6 +137,10 @@ def run(dietdir,hatchdir,out):
   a=source_dates["Adelie",year];b=source_dates["Chinstrap",year]
   if (year,"Adelie") not in hatch or (year,"Chinstrap") not in hatch:raise ValueError("Missing original hatch")
   ma=med_date(a);mb=med_date(b);ha=hatch[year,"Adelie"];hb=hatch[year,"Chinstrap"]
+  near_ad,near_ch=selectable(a,b,7)
+  near_eligible=min(len(near_ad),len(near_ch))>=3
+  near_calendar_gap=(med_date(near_ch)-med_date(near_ad)) if near_eligible else None
+  near_stage_gap=(near_calendar_gap-(hb-ha)) if near_eligible else None
   stage.append(dict(year=year,mean_hatching_gap_chinstrap_minus_adelie_days=hb-ha,
     sample_calendar_median_gap_chinstrap_minus_adelie_days=mb-ma,
     Adelie_median_sample_days_after_mean_hatch=ma-ha,
@@ -148,7 +152,11 @@ def run(dietdir,hatchdir,out):
     original_last_Chinstrap_sample=coll["second_species_sample_date_last"],
     minimum_same_calendar_sample_day_distance=coll["min_separation_of_original_collection_dates_days"],
     physical_calendar_sample_ranges_overlap=coll["calendar_collection_span_intersection_days"]>0,
-    n_true_joint_day_stomach_samples=coll["n_exact_identical_calendar_collection_dates"]))
+    n_true_joint_day_stomach_samples=coll["n_exact_identical_calendar_collection_dates"],
+    n_Adelie_sampled_stomachs_with_other_date_within_7_days=len(near_ad),
+    n_Chinstrap_sampled_stomachs_with_other_date_within_7_days=len(near_ch),
+    calendar_7d_selected_median_collection_day_gap=near_calendar_gap,
+    calendar_7d_selected_relative_hatch_stage_gap_days=near_stage_gap))
  if len(stage)!=14:raise ValueError("14 original date pairs expected")
  if any(r["physical_calendar_sample_ranges_overlap"] for r in stage):
   raise ValueError("Original 14-season nonoverlap receipt changed")
@@ -167,7 +175,17 @@ def run(dietdir,hatchdir,out):
    n_relative_hatch_stage_within_7days=sum(abs(r["chinstrap_minus_adelie_breeding_stage_sample_day_difference"])<=7 for r in stage),
    mean_calendar_sampling_gap_days=mean([r["sample_calendar_median_gap_chinstrap_minus_adelie_days"] for r in stage]),
    mean_hatching_gap_days=mean([r["mean_hatching_gap_chinstrap_minus_adelie_days"] for r in stage]),
-   mean_stage_relative_gap_days=mean([r["chinstrap_minus_adelie_breeding_stage_sample_day_difference"] for r in stage])),
+   mean_stage_relative_gap_days=mean([r["chinstrap_minus_adelie_breeding_stage_sample_day_difference"] for r in stage]),
+   n_hatching_years_with_7day_nearest_calendar_stomach_samples_both_species=sum(
+    r["calendar_7d_selected_relative_hatch_stage_gap_days"] is not None for r in stage),
+   near_calendar7_induced_breeding_stage_age_difference_mean_days=mean([
+    r["calendar_7d_selected_relative_hatch_stage_gap_days"] for r in stage
+    if r["calendar_7d_selected_relative_hatch_stage_gap_days"] is not None]),
+   near_calendar7_induced_breeding_stage_age_difference_range_days=[
+    min(r["calendar_7d_selected_relative_hatch_stage_gap_days"] for r in stage
+     if r["calendar_7d_selected_relative_hatch_stage_gap_days"] is not None),
+    max(r["calendar_7d_selected_relative_hatch_stage_gap_days"] for r in stage
+     if r["calendar_7d_selected_relative_hatch_stage_gap_days"] is not None)]),
   all_seasons_with_exact_same_day_stomachs=0,
   original_9_year_Adelie_Gentoo_calendar_near_7day_mean_gap=response["Adelie-Gentoo"]["within_7_days"]["mean_equal_season_weight_fish_share_gap"],
   no_contemporaneous_two_species_stomach_diet_test=True,

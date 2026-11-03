@@ -27,5 +27,7 @@ class Source(unittest.TestCase):
    self.assertEqual(r["hatching_14_season_support"]["n_relative_hatch_stage_within_7days"],13)
    self.assertEqual(r["hatching_14_season_support"]["closest_collection_date_gap_min_days"],3)
    self.assertEqual(r["hatching_14_season_support"]["closest_collection_date_gap_max_days"],19)
+   self.assertEqual(r["hatching_14_season_support"]["n_hatching_years_with_7day_nearest_calendar_stomach_samples_both_species"],8)
+   self.assertAlmostEqual(r["hatching_14_season_support"]["near_calendar7_induced_breeding_stage_age_difference_mean_days"],-25.25)
    self.assertTrue((Path(root)/"hatching_14_seasons_sampling_stage_and_calendar.csv").exists())
 if __name__=="__main__":unittest.main()
