@@ -31,7 +31,7 @@ def run(original,out):
   if len(files)!=1:raise ValueError("Original one-CSV archive expectation drift")
   raw=z.read(files[0])
  if hashlib.sha256(raw).hexdigest()!=CSV_SHA256:raise ValueError("Original BAS arrival CSV SHA256 changed")
- with io.StringIO(raw.decode("utf8-sig")) as h:
+ with io.StringIO(raw.decode("utf-8-sig")) as h:
   rows=list(csv.DictReader(h))
  if len(rows)!=168 or list(rows[0])!=["DATE","NO_BIRDS","COMMENTS"]:
   raise ValueError("168-row source schema changed")
