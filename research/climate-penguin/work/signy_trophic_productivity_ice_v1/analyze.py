@@ -20,7 +20,7 @@ DIET_SHA={
 STAGE_SHA={
  "Adelie":"585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62",
  "Chinstrap":"e50e98719ba5eedc6f5e617e0c7aa404ebfba15bc22a51e93e78cd4443bf787b",
- "Gentoo":"53fe3821f313ed35840376fcf4d11c8e8fbbd63f01ba84a5e21c2db4df6d6b"}
+ "Gentoo":"53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b"}
 def read(path):
  with Path(path).open(encoding="utf-8",newline="") as f:return list(csv.DictReader(f))
 def val(v):
