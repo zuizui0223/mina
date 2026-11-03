@@ -154,6 +154,56 @@ def run(hatchdir,dietdir,stagedir,outdir):
     "One Signy island only; 14 years with nonrandom sample availability and previous literature covering same organism",
     "No causal sea-ice to food to reproductive outcomes or calibrated CMIP6 future penguin biological projections"])
  outdir.mkdir(parents=True,exist_ok=True)
+ # Exact original chronology-colony label to independent source breeding census.
+ # Do not automatically rescue C69 with ambiguous A69 or arbitrary nearby labels.
+ chronology=[]
+ target_by_year={}
+ for a in actual:
+  year=a["year"]
+  target_by_year[year]={}
+  for sp in SP:
+   target=a[sp+"_hatching_colony"]
+   orig=by_stage[sp,year]
+   candidates=sorted({z["colony"] for z in orig})
+   matched=[z for z in orig if z["colony"].strip().upper()==target.upper()]
+   if len(matched)>1:raise ValueError("Original stage chronology label duplicate")
+   r=matched[0] if matched else None
+   ratio=float(r["reported_chicks_per_pair"]) if r and r["reported_chicks_per_pair"] not in ("",None) else None
+   late=float(r["recorded_fledglings_per_pair"]) if r and r["recorded_fledglings_per_pair"] not in ("",None) else None
+   target_by_year[year][sp]=ratio
+   chronology.append(dict(year=year,species=sp,original_hatching_colony=target,
+    exact_original_stage_colony_found=bool(r),
+    observed_original_stage_colony_labels=";".join(candidates),
+    original_stage_chicks_per_pair=ratio,
+    original_stage_recorded_fledglings_per_pair=late,
+    original_chick_count_date=r["chick_count_date"] if r else "",
+    original_late_count_date=r["fledgling_count_date"] if r else "",
+    original_source_stage_island_colony_not_individual_100nests=True))
+ matched_chronology=[]
+ for a in actual:
+  year=a["year"];z=target_by_year[year]
+  if all(z[sp] is not None for sp in SP):
+   matched_chronology.append(dict(year=year,
+     hatching_gap_days=a["source_mean_hatch_gap_days"],
+     source_chronology_chick_gap_chin_minus_adelie=z["Chinstrap"]-z["Adelie"],
+     source_colonies=a["Adelie_hatching_colony"]+"|"+a["Chinstrap_hatching_colony"],
+     nearshore_aug_nov_SIC_pct=a["GOPT_AugNov_SIC"]))
+ def paircor(rs):
+  if len(rs)<3:return None
+  return pearson([z["hatching_gap_days"] for z in rs],
+    [z["source_chronology_chick_gap_chin_minus_adelie"] for z in rs])
+ summary["original_chronology_colony_census_qa"]={
+  "n_year_species_colony_rows":len(chronology),
+  "n_year_species_exact_matching_colony":sum(r["exact_original_stage_colony_found"] for r in chronology),
+  "n_years_with_both_exact_original_colony_chick_counts":len(matched_chronology),
+  "all_matched_years_hatch_gap_vs_original_colony_chick_gap_r":paircor(matched_chronology),
+  "post_2003_fixed_Adelie_A39_versus_Chinstrap_C69_n":sum(z["year"]>=2003 for z in matched_chronology),
+  "post_2003_hatch_gap_vs_original_colony_chick_gap_r":paircor([z for z in matched_chronology if z["year"]>=2003]),
+  "is_not_the_same_100_marked_nests":True,
+  "original_colony_labels_not_GIS_verified":True,
+  "no_imputation_for_absent_colony":True}
+ save(outdir/"original_chronology_colony_matching_14years.csv",chronology)
+ if matched_chronology:save(outdir/"hatching_chronology_colony_chick_pairs.csv",matched_chronology)
  save(outdir/"fourteen_hatching_food_chicks_years.csv",actual)
  save(outdir/"fourteen_years_three_axis_correlations.csv",metrics)
  (outdir/"summary.json").write_text(json.dumps(summary,indent=2,ensure_ascii=False)+"\n",encoding="utf8")
