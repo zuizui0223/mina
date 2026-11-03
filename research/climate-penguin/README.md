@@ -4,6 +4,9 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[2026-11-03・Signy原BASの海氷×食性×早期雛数／後段階巣立ち雛数の差](outputs/signy_trophic_productivity_ice_v1/REPORT_JA.md)** — 原6ZIPを照合した9繁殖季で記録段階によって海氷との相関が変化。固定コロニー（5/8）、後段階が前段階を上回る元16/158、12比較9!極端率0.176を記録。
+
+
 - **[2026-11-02・Signyの３種食性差はGentoo魚割合が主に寄与](outputs/signy_species_trophic_forward_v1/REPORT_JA.md)** — 元９年の食性差×先行SICは数学的にGentoo共変動が約99.8%を担う。４季節時系列外MAE 0.3114→0.1680（同島・事後探索）。
 - **[2026-11-02・SCAR外部データの質量・trace・再現性ゲート](outputs/scar_external_diet_v1/REPORT_JA.md)** — 41,010元餌項目から３種1,180行31出典。Cape Shirreffの２種魚類割合は数値的に１共通繁殖季、Signy再録は独立島ではない。
 - **[2026-11-02・Stranger Point別島のAdélie12季節×海氷](outputs/scar_stranger_point_ice_v1/REPORT_JA.md)** — 単独Adélieの微量魚利用が近岸SICと探索的に負相関。重複する海氷参照を別地点反復と数えない。
