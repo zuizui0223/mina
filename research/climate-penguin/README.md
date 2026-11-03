@@ -4,6 +4,9 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[2026-11-03・Signy 2016〜19海×時間×陸の同年4繁殖季・原日付順序検証](outputs/signy_three_axis_same_season_v1/REPORT_JA.md)** — 同実カメラSIGNc×原BAS242胃×原繁殖巣区画を2種×4季節で照合。胃採取は全8種×年で早期雛数計数後・後段階計数前。4!相関は非確証的。
+
+
 - **[2026-11-03・Signy原BASの海氷×食性×早期雛数／後段階巣立ち雛数の差](outputs/signy_trophic_productivity_ice_v1/REPORT_JA.md)** — 原6ZIPを照合した9繁殖季で記録段階によって海氷との相関が変化。固定コロニー（5/8）、後段階が前段階を上回る元16/158、12比較9!極端率0.176を記録。
 
 
