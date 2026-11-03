@@ -4,6 +4,9 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[2026-11-03・Signyヒゲ到着調査17年の観測開始日偏りと13年3軸同年照合](outputs/signy_chinstrap_arrival_multiaxis_v1/REPORT_JA.md)** — 公式168原行・17暦年、13年の魚利用・雛計数・SIC同年接続。観測された到着数中央値は初回調査日に依存（r=0.726）。実カメラの二種定着差とは区別。
+
+
 - **[2026-11-03・Signy 2016〜19海×時間×陸の同年4繁殖季・原日付順序検証](outputs/signy_three_axis_same_season_v1/REPORT_JA.md)** — 同実カメラSIGNc×原BAS242胃×原繁殖巣区画を2種×4季節で照合。胃採取は全8種×年で早期雛数計数後・後段階計数前。4!相関は非確証的。
 
 
