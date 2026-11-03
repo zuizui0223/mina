@@ -24,6 +24,7 @@ def parse(raw):
 def year_from(value):
  if value is None:return None
  s=str(value)
+ if re.fullmatch(r"\s*(?:19|20)\d{2}\s*[-/]\s*\d{2}\s*",s):return None  # seasonal range, not a unique census year
  years={int(v) for v in re.findall(r"(?<!\d)(?:19\d{2}|20\d{2})(?!\d)",s)}
  if len(years)==1:return next(iter(years))
  return None
