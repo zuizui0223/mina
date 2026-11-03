@@ -42,4 +42,4 @@ GPSが同時にあることは生態学的な個体の同一空間・採餌同�
 
 ## 再現
 
-research/climate-penguin/work/signy_calendar_GPS_spatial_v1/analyze.py。BAS元3GPS ZIPの内容SHA固定、元追跡の再構築、同じ暦日・同じ1時間枠を本物のGPSタイムスタンプで照合。派生CSV gps_two_species_by_season.csv（3行）、original_GPS_same_calendar_day_species_pairs.csv（65行）、original_GPS_same_clock_hour_species_pairs.csv（1,121行）およびsummary.json。原GPS緯度経度全件はGitに公開しない。[元GPSで成功した最初のCI](https://github.com/zuizui0223/mina/actions/runs/41730171512)。厳格2タグの再現runは、BASサーバのSSL resetが生じたため同一元ZIPを再取得して検証中（解析コードの失敗ではない）。main・Paper1/2は不変。
+research/climate-penguin/work/signy_calendar_GPS_spatial_v1/analyze.py。BAS元3GPS ZIPの内容SHA固定、元追跡の再構築、同じ暦日・同じ1時間枠を本物のGPSタイムスタンプで照合。派生CSV gps_two_species_by_season.csv（3行）、original_GPS_same_calendar_day_species_pairs.csv（65行）、original_GPS_same_clock_hour_species_pairs.csv（1,121行）およびsummary.json。原GPS緯度経度全件はGitに公開しない。[元GPSで成功した最初のCI](https://github.com/zuizui0223/mina/actions/runs/41730171512)。厳格2タグの再現runはBASサーバのSSL接続resetで初回ダウンロードに失敗したが、失敗ジョブの再実行により同一元ZIPの取得から全源流検査までSUCCESSとなった（https://github.com/zuizui0223/mina/actions/runs/41730811560、artifact 13276901228）。main・Paper1/2は不変。
