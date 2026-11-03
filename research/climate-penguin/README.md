@@ -4,6 +4,10 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[2026-11-03・BAS元平均孵化日17年×海氷](outputs/signy_original_hatching_source_v1/REPORT_JA.md)** — 公開DOIの34種×年を取得。海氷増加時に両種孵化日は遅い方向（r+0.576/+0.622）、時期差は平均29.3日、海氷とのr+0.078。
+- **[2026-11-03・実孵化日と食性・原雛数14年の3軸同年結合](outputs/signy_hatching_diet_chick_v1/REPORT_JA.md)** — 元BAS7ZIP・1,001胃と同年照合。胃試料採取時期は両種とも平均孵化後約31〜32日、元監視コロニーが繁殖計数と一致するのは4年だけ。
+
+
 - **[2026-11-03・Signyヒゲ到着調査17年の観測開始日偏りと13年3軸同年照合](outputs/signy_chinstrap_arrival_multiaxis_v1/REPORT_JA.md)** — 公式168原行・17暦年、13年の魚利用・雛計数・SIC同年接続。観測された到着数中央値は初回調査日に依存（r=0.726）。実カメラの二種定着差とは区別。
 
 
