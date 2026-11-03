@@ -103,6 +103,12 @@ def run(root,out):
    dayrows.append(rec)
   these_days=[r for r in dayrows if r["season_start"]==year]
   these_hours=[r for r in hourrows if r["season_start"]==year]
+  strict_days=[r for r in these_days if r["n_Adelie_original_deployments"]>=2 and r["n_Chinstrap_original_deployments"]>=2]
+  strict_radial=sorted(r["median_GPS_radial_difference_chin_minus_adelie_km"] for r in strict_days)
+  def empirical_quantile(a,p):
+   if not a:return None
+   z=(len(a)-1)*p;i=int(z);w=z-i
+   return a[i]*(1-w)+a[min(i+1,len(a)-1)]*w
   summaryrows.append(dict(season_start=year,
     n_original_Adelie_deployments=len(original_tracks_by_year["Adelie",year]),
     n_original_Chinstrap_deployments=len(original_tracks_by_year["Chinstrap",year]),
@@ -115,6 +121,13 @@ def run(root,out):
     n_joint_hours_at_least_2_deployments_each=sum(
       z["n_adelie_original_deployments"]>=2 and z["n_chinstrap_original_deployments"]>=2 for z in these_hours),
     n_joint_days_with_0p1deg_observed_cell_overlap=sum(r["GPS_0p1deg_cell_jaccard"]>0 for r in these_days),
+    n_strict_2plus_tag_joint_days_with_Chinstrap_farther_than_Adelie=sum(
+      r["median_GPS_radial_difference_chin_minus_adelie_km"]>0 for r in strict_days),
+    strict_2plus_tag_joint_day_median_Chinstrap_minus_Adelie_km=median(strict_radial) if strict_radial else None,
+    strict_2plus_tag_joint_day_radial_Q25_km=empirical_quantile(strict_radial,.25),
+    strict_2plus_tag_joint_day_radial_Q75_km=empirical_quantile(strict_radial,.75),
+    strict_2plus_tag_joint_day_median_0p1deg_cell_jaccard=median(
+      [r["GPS_0p1deg_cell_jaccard"] for r in strict_days]) if strict_days else None,
     equal_joint_day_median_species_radial_difference_km=
       median([r["median_GPS_radial_difference_chin_minus_adelie_km"] for r in these_days])
       if these_days else None,

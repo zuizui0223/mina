@@ -20,4 +20,11 @@ class Tests(unittest.TestCase):
    self.assertEqual(z["n_original_tracking_deployments"],168)
    self.assertEqual(z["original_source_shared_years"],[2011,2013,2015])
    self.assertTrue((Path(tmp)/"gps_two_species_by_season.csv").exists())
+   data={v["season_start"]:v for v in z["year_summary"]}
+   self.assertEqual(data[2013]["n_joint_days_with_at_least_2_deployments_each"],24)
+   self.assertEqual(data[2015]["n_joint_days_with_at_least_2_deployments_each"],16)
+   self.assertEqual(data[2013]["n_both_species_same_clock_hour_bins"],672)
+   self.assertEqual(data[2015]["n_both_species_same_clock_hour_bins"],440)
+   self.assertAlmostEqual(data[2013]["strict_2plus_tag_joint_day_median_Chinstrap_minus_Adelie_km"],49.960171272,places=5)
+   self.assertAlmostEqual(data[2015]["strict_2plus_tag_joint_day_median_Chinstrap_minus_Adelie_km"],-5.592767248,places=5)
 if __name__=="__main__":unittest.main()
