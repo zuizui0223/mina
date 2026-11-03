@@ -35,8 +35,8 @@ def selectable(a,b,k):
  the number of climate-year replicates.
  """
  aa=date_dict(a);bb=date_dict(b)
- chosen_a=[v for d,vals in aa.items() if min(abs((d,e).days) for e in bb)<=k for v in vals]
- chosen_b=[v for d,vals in bb.items() if min(abs((d,e).days) for e in aa)<=k for v in vals]
+ chosen_a=[v for d,vals in aa.items() if min(abs((d-e).days) for e in bb)<=k for v in vals]
+ chosen_b=[v for d,vals in bb.items() if min(abs((d-e).days) for e in aa)<=k for v in vals]
  return chosen_a,chosen_b
 def csvout(p,rows):
  if not rows:raise ValueError("No CSV output")
