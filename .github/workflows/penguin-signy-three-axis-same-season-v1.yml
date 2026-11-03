@@ -1,0 +1,54 @@
+name: penguin-signy-three-axis-same-season-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_three_axis_same_season_v1/**'
+      - 'research/climate-penguin/outputs/signy_three_axis_same_season_v1/**'
+      - 'tests/test_signy_three_axis_same_season_v1.py'
+      - '.github/workflows/penguin-signy-three-axis-same-season-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_three_axis_same_season_v1/**'
+      - 'research/climate-penguin/outputs/signy_three_axis_same_season_v1/**'
+      - 'tests/test_signy_three_axis_same_season_v1.py'
+      - '.github/workflows/penguin-signy-three-axis-same-season-v1.yml'
+permissions:
+  contents: read
+jobs:
+  original-same-island-year-three-axes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original BAS parser
+        run: python -m pip install pandas lxml html5lib beautifulsoup4
+      - name: Test numerical permutation and year support guards
+        run: python -m unittest discover -s tests -p test_signy_three_axis_same_season_v1.py -v
+      - name: Download publisher original BAS 3 species diet and 3 stage archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/signy_3axis_diet_original /tmp/signy_3axis_stage_original
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=eb421e6d-b93b-4174-904b-9a7b0b401403&output=zip.tree' -o /tmp/signy_3axis_diet_original/adelie.zip
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=95e38251-797c-495a-abc0-40a613599759&output=zip.tree' -o /tmp/signy_3axis_diet_original/chinstrap.zip
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=fb9bd975-e6fe-406c-84be-01e57d612b5e&output=zip.tree' -o /tmp/signy_3axis_diet_original/gentoo.zip
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o /tmp/signy_3axis_stage_original/adelie.zip
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o /tmp/signy_3axis_stage_original/chinstrap.zip
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o /tmp/signy_3axis_stage_original/gentoo.zip
+      - name: Build independent source diet and recorded chick stage tables
+        run: |
+          python research/climate-penguin/work/signy_diet_climate_v1/analyze.py --source-dir /tmp/signy_3axis_diet_original --out /tmp/signy_3axis_diet
+          python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py --source-dir /tmp/signy_3axis_stage_original --out /tmp/signy_3axis_stage
+      - name: Verify four exact same-camera three-axis seasons from original source
+        run: |
+          SIGNY_ORIGINAL_DIET_DERIVED=/tmp/signy_3axis_diet SIGNY_ORIGINAL_STAGE_DERIVED=/tmp/signy_3axis_stage python -m unittest discover -s tests -p test_signy_three_axis_same_season_v1.py -v
+          python research/climate-penguin/work/signy_three_axis_same_season_v1/analyze.py --diet-dir /tmp/signy_3axis_diet --stage-dir /tmp/signy_3axis_stage --out /tmp/signy_3axis_output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-signy-three-axis-same-season-v1
+          path: /tmp/signy_3axis_output/
+          retention-days: 30
