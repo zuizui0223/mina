@@ -27,4 +27,8 @@ class Test(unittest.TestCase):
    self.assertAlmostEqual(a["r_ice_fish"],.7141071407852608,places=10)
    self.assertAlmostEqual(a["r_ice_recorded_chicks"],-.7041437525127027,places=10)
    self.assertAlmostEqual(a["r_fish_recorded_chicks_partial_ice"],.15367379691876412,places=10)
+   self.assertEqual(v["exact_two_stage_six_species_comparison_permutations"]["n"],362880)
+   self.assertEqual(v["n_fledgling_ratio_years"],{"Adelie":9,"Chinstrap":9,"Gentoo":9})
+   self.assertAlmostEqual(a["r_ice_fledglings_when_full"],.094479681,delta=.002)
+   self.assertTrue((Path(d)/"raw_source_stage_count_quality.csv").exists())
 if __name__=="__main__":unittest.main()

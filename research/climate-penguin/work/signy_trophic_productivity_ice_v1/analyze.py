@@ -86,6 +86,38 @@ def exact_year_permutation(ice,stage):
          "null_assumption":"all nine annual observation vectors exchangeable; unverified",
          "family_scope":"three species x September/Aug-Nov SIC; other previous exploratory choices not corrected"}
 
+
+def exact_two_stage_year_permutation(ice,stage,labels):
+ """Paired year-vector permutation for two reported reproductive stages.
+
+ FWER max absolute correlation across 2 SIC windows x 6 species-stages;
+ interpretation requires unverified year exchangeability.
+ """
+ if len(ice)!=9 or len(stage)!=9 or len(labels)!=6:raise ValueError("Expected nine annual rows and six endpoints")
+ def z(x):
+  a=centered(x);d=math.sqrt(sum(t*t for t in a))
+  if d<1e-12:raise ValueError("No observed variation")
+  return [v/d for v in a]
+ xx=[z([r[key] for r in ice]) for key in ICE]
+ yy=[z([r[key] for r in stage]) for key in labels]
+ observed=[[sum(x[t]*y[t] for t in range(9)) for y in yy] for x in xx]
+ joint=max(abs(v) for r in observed for v in r)
+ tally=0;n=0
+ for p in itertools.permutations(range(9)):
+  biggest=0
+  for x in xx:
+   for y in yy:
+    r=abs(sum(x[t]*y[p[t]] for t in range(9)))
+    if r>biggest:biggest=r
+  tally+=biggest+1e-12>=joint
+  n+=1
+ assert n==362880
+ return dict(n=n,n_compared_outcomes=12,labels=list(labels),
+             observed_r=observed,
+             exact_joint_max_extreme=tally,exact_joint_max_fraction=tally/n,
+             year_exchangeability_unverified=True,
+             posthoc_family_not_global_search_correction=True)
+
 def save(path,rows):
  if not rows:raise ValueError("No output rows")
  with Path(path).open("w",newline="",encoding="utf-8") as f:
@@ -110,17 +142,36 @@ def run(diet_dir,stage_dir,out):
  if len(diet_index)!=len(diet) or len(stage_index)!=len(stage):raise ValueError("Duplicate species-season")
  ice_index={(r["pair"],int(r["breeding_season_start"])):r for r in icepairs}
  if len(ice_index)!=len(icepairs):raise ValueError("Duplicate paired ice season")
- fullcol=defaultdict(dict)
+ fullcol=defaultdict(dict);latecol=defaultdict(dict)
+ qa=defaultdict(lambda:dict(n_original=0,n_valid_both_stage_counts=0,n_fledglings_exceed_chicks=0,
+                             n_both_count_dates=0,n_correct_date_order=0))
+ for r in stage_rows:
+  sp=r["species"];yr=int(r["season_start"])
+  if yr not in YEARS or sp not in SPECIES:continue
+  item=qa[sp,yr];item["n_original"]+=1
+  nc=val(r.get("chicks"));nf=val(r.get("fledglings"));pairs=val(r.get("pairs"))
+  if nc is not None and nf is not None and pairs is not None and pairs>0:
+   item["n_valid_both_stage_counts"]+=1
+   item["n_fledglings_exceed_chicks"]+=int(nf>nc+1e-8)
+  dc=r.get("chick_count_date") or "";df=r.get("fledgling_count_date") or ""
+  if dc and df:
+   item["n_both_count_dates"]+=1
+   item["n_correct_date_order"]+=int(dc<df)
  for r in stage_rows:
   sp=r["species"];yr=int(r["season_start"]);col=r["colony"]
   if yr not in YEARS or sp not in ("Adelie","Chinstrap"):continue
   value=val(r["reported_chicks_per_pair"])
-  if value is None:continue
-  if col in fullcol[sp,yr]:raise ValueError("Duplicate strict stage colony")
-  fullcol[sp,yr][col]=value
- fixed={}
+  fvalue=val(r.get("recorded_fledglings_per_pair"))
+  if value is not None:
+   if col in fullcol[sp,yr]:raise ValueError("Duplicate original chick source colony")
+   fullcol[sp,yr][col]=value
+  if fvalue is not None:
+   if col in latecol[sp,yr]:raise ValueError("Duplicate original fledgling source colony")
+   latecol[sp,yr][col]=fvalue
+ fixed={};fixed_late={}
  for sp in ("Adelie","Chinstrap"):
   fixed[sp]=set.intersection(*(set(fullcol[sp,y]) for y in YEARS))
+  fixed_late[sp]=set.intersection(*(set(latecol[sp,y]) for y in YEARS))
   if len(fixed[sp])<3:raise ValueError("Too few persistent source colony labels")
  records=[];stage_vector=[];ice_vector=[]
  for year in YEARS:
@@ -140,6 +191,11 @@ def run(diet_dir,stage_dir,out):
    yr[sp+"_spatial_unit"]=st["original_spatial_unit"]
    yr[sp+"_chicks_per_pair_fixed_roster"]=(median([fullcol[sp,year][k] for k in sorted(fixed[sp])]) if sp in fixed else chick)
    yr[sp+"_recorded_fledglings_per_pair"]=val(st.get("median_recorded_fledglings_per_pair"))
+   if sp in fixed_late and fixed_late[sp]:
+    yr[sp+"_fledglings_per_pair_fixed_roster"]=median(
+      [latecol[sp,year][k] for k in sorted(fixed_late[sp])])
+   else:
+    yr[sp+"_fledglings_per_pair_fixed_roster"]=yr[sp+"_recorded_fledglings_per_pair"]
    chicks[sp]=chick
   sics=[]
   for pair in ("Adelie-Chinstrap","Adelie-Gentoo","Chinstrap-Gentoo"):
@@ -156,12 +212,21 @@ def run(diet_dir,stage_dir,out):
   raise ValueError("Original strict 9-year stomach count mismatch")
  if len(records)!=9:raise ValueError("Nine annual replicates required")
  exact=exact_year_permutation(ice_vector,stage_vector)
+ late_labels=tuple(sp+"_"+suffix for sp in SPECIES for suffix in ("chicks","fledglings"))
+ late_years=[{sp+"_chicks":r[sp+"_chicks_per_pair"] for sp in SPECIES} |
+             {sp+"_fledglings":r[sp+"_recorded_fledglings_per_pair"] for sp in SPECIES}
+             for r in records]
+ if any(v is None for row in late_years for v in row.values()):
+  raise ValueError("Expected complete original nine-season recorded fledgling stage")
+ exact_late=exact_two_stage_year_permutation(ice_vector,late_years,late_labels)
+ qa_rows=[dict(species=sp,year=yr,**qa[sp,yr]) for sp in SPECIES for yr in YEARS]
  metrics=[];fledgling_support={};stage_n9={}
  for sp in SPECIES:
   food=[r[sp+"_fish"] for r in records]
   chick=[r[sp+"_chicks_per_pair"] for r in records]
   fixedchick=[r[sp+"_chicks_per_pair_fixed_roster"] for r in records]
   fledgling=[r[sp+"_recorded_fledglings_per_pair"] for r in records]
+  fixedfledge=[r[sp+"_fledglings_per_pair_fixed_roster"] for r in records]
   stage_n9[sp]=[r[sp+"_n_original_chick_units"] for r in records]
   fledgling_support[sp]=sum(v is not None for v in fledgling)
   for i,window in enumerate(ICE):
@@ -170,6 +235,7 @@ def run(diet_dir,stage_dir,out):
    metrics.append(dict(species=sp,ice_window=window,n_years=len(records),
      n_fixed_colonies=len(fixed.get(sp,[])),
      n_fledgling_years=fledgling_support[sp],
+     n_fixed_fledgling_colonies=len(fixed_late.get(sp,[])),
      r_ice_fish=rfood,r_ice_recorded_chicks=rchick,
      r_ice_recorded_chicks_fixed_colonies=corr(x,fixedchick),
      r_fish_recorded_chicks=corr(food,chick),
@@ -178,25 +244,39 @@ def run(diet_dir,stage_dir,out):
      r_delta_ice_delta_recorded_chicks=corr([x[j]-x[j-1] for j in range(1,9)],
                                             [chick[j]-chick[j-1] for j in range(1,9)]),
      r_ice_fledglings_when_full=corr(x,fledgling) if fledgling_support[sp]==9 else None,
+     r_ice_fledglings_fixed_colonies=corr(x,fixedfledge) if all(v is not None for v in fixedfledge) else None,
+     r_ice_fledglings_detrend_year=corr(yearslope_residual(x),yearslope_residual(fledgling)),
+     r_fish_recorded_fledglings=corr(food,fledgling),
+     r_fish_recorded_fledglings_partial_ice=partial(food,fledgling,x),
+     n_original_colony_source_rows_with_fledglings_gt_chicks=sum(qa[sp,y]["n_fledglings_exceed_chicks"] for y in YEARS),
      loo_ice_chicks_min=loo_range(x,chick)[0],loo_ice_chicks_max=loo_range(x,chick)[1],
      exact_two_sided_year_permutation_fraction=exact["unadjusted_two_sided_fraction"][i][SPECIES.index(sp)],
      source_climate_independent_islands=1))
  out.mkdir(parents=True,exist_ok=True)
  save(out/"strict_nine_years_three_species.csv",records)
  save(out/"axis_relation_by_species_and_seaice_window.csv",metrics)
+ save(out/"raw_source_stage_count_quality.csv",qa_rows)
  result=dict(date="2026-11-03",status="exploratory_same_Signy_9_seasons_3species_ice_diet_chick_coanalysis",
    season_start_years=list(YEARS),n_temporal_replications=9,n_independent_geographic_islands=1,
    n_species=3,source_diet_SHA256=DIET_SHA,source_stage_SHA256=STAGE_SHA,
    original_stage_spatial_unit={"Adelie":"source_colony","Chinstrap":"source_colony",
                                 "Gentoo":"island_aggregate_no_colony_field"},
    fixed_original_colony_label_count={sp:len(ids) for sp,ids in fixed.items()},
+   fixed_fledgling_colony_label_count={sp:len(ids) for sp,ids in fixed_late.items()},
+   original_count_stage_qa_totals={
+     sp:{k:sum(qa[sp,y][k] for y in YEARS)
+         for k in ("n_original","n_valid_both_stage_counts","n_fledglings_exceed_chicks",
+                   "n_both_count_dates","n_correct_date_order")}
+     for sp in SPECIES},
    fixed_label_stability_not_geospatially_verified=True,
    n_fledgling_ratio_years=fledgling_support,
    stage_units_per_year=stage_n9,
    exact_joint_9_year_permutations=exact,
+   exact_two_stage_six_species_comparison_permutations=exact_late,
    metrics=metrics,
    limits=["Diet sampled during chick rearing: individual nesting pairs are not matched to stomach samples",
      "Original recorded chicks per breeding pair is not survival or recruitment",
+     "Stage counts may not be monotone at original nesting units; neither stage difference nor apparent fledgling count can be equated to a tracked survival rate",
      "Adelie/Chinstrap colony median vs Gentoo island aggregate prevents causal species-pair fitness comparisons",
      "Persistent colony LABELS are not verified immutable GIS nesting patches",
      "Observational years may be temporally autocorrelated; full permutation p values are illustrative",
