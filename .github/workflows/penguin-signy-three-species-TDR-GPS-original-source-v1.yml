@@ -4,26 +4,34 @@ on:
     branches: [codex/climate-penguin-progress]
     paths:
       - 'research/climate-penguin/work/signy_three_species_TDR_GPS_source_v1/**'
+      - 'research/climate-penguin/work/signy_three_tdr_gps_pilot_v1/**'
       - 'tests/test_signy_three_species_TDR_GPS_source_v1.py'
+      - 'tests/test_signy_three_tdr_gps_pilot_v1.py'
       - '.github/workflows/penguin-signy-three-species-TDR-GPS-original-source-v1.yml'
   pull_request:
     paths:
       - 'research/climate-penguin/work/signy_three_species_TDR_GPS_source_v1/**'
+      - 'research/climate-penguin/work/signy_three_tdr_gps_pilot_v1/**'
       - 'tests/test_signy_three_species_TDR_GPS_source_v1.py'
+      - 'tests/test_signy_three_tdr_gps_pilot_v1.py'
       - '.github/workflows/penguin-signy-three-species-TDR-GPS-original-source-v1.yml'
 permissions:
   contents: read
 jobs:
   publisher-source-gate:
     runs-on: ubuntu-22.04
-    timeout-minutes: 35
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install existing BAS GPS and pressure numerical readers
+        run: python -m pip install 'numpy>=1.26,<3' 'rasterio>=1.4,<1.6'
       - name: Test filename, source ID and pressure schema detection
         run: python -m unittest discover -s tests -p test_signy_three_species_TDR_GPS_source_v1.py -v
+      - name: Pre-run TDR pressure and original GPS timestamp math tests
+        run: python -m unittest discover -s tests -p test_signy_three_tdr_gps_pilot_v1.py -v
       - name: Download BAS original three species TDR plus three GPS archives
         shell: bash
         run: |
@@ -45,9 +53,19 @@ jobs:
         run: |
           python research/climate-penguin/work/signy_three_species_TDR_GPS_source_v1/audit.py \
             --source /tmp/signy_breeding_six_sources --out /tmp/signy_tdr_gps_source_gate
+      - name: Analyze pre-fixed original source tags' pressure-derived candidate dives and GPS positions
+        run: |
+          python research/climate-penguin/work/signy_three_tdr_gps_pilot_v1/analyze.py \
+            --source /tmp/signy_breeding_six_sources --out /tmp/signy_three_species_dive_location_pilot
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: penguin-signy-three-species-TDR-GPS-original-source-v1
           path: /tmp/signy_tdr_gps_source_gate/
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-signy-three-TDR-matched-dive-GPS-pilot-v1
+          path: /tmp/signy_three_species_dive_location_pilot/
           retention-days: 30
