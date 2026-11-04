@@ -4,6 +4,9 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[2026-11-05・BAS3種GPS×TDR全78元タグと孵化前後の空間再分配](outputs/signy_three_tdr_gps_alltags_v2/REPORT_JA.md)** — 原圧力候補133,525、元GPS結合100,293、共通時計693時間。2015年の厳格2tag同時刻×各7日ではChinstrap孵化前+13.83km→後−29.98km（元GPS-only同じ時間も+3.86→−27.37km）。Clewlow2019既報leapfrogのsource検証。
+
+
 - **[2026-11-05・Signy 3種のGPS×TDR原個体ID監査](outputs/signy_three_species_TDR_GPS_source_v1/REPORT_JA.md)** — BAS新取得のAdélie/Gentoo元TDRと既存Chinstrap v2原TDR、GPS各3ZIPのソース照合。潜水解析の前のスキーマ・原ID支持ゲート。
 - **[2026-11-05・Signy 3種の潜水候補×GPS同時刻再解析](outputs/signy_three_tdr_gps_pilot_v1/REPORT_JA.md)** — 2013・2015年の源GPS標本のみでタグを固定し、元TDRのセンサ補正、GPSブランケット、同じ暦日・同時計で種間の位置差を監査。解析結果はCI検証前に主張しない。
 
