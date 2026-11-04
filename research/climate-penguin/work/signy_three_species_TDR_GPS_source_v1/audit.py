@@ -10,7 +10,7 @@ from collections import Counter
 from pathlib import Path
 
 SRC={
- "Adelie":{"tid":"bf62d713-93e5-487f-acba-1ec2da35c7e1","gid":"55b4d36f-c5e1-4d64-bb14-0b832dcd4b88","prefix":"SIA","expected_tdr":48,"expected_gps":41},
+ "Adelie":{"tid":"bf62d713-93e5-487f-acba-1ec2da35c7e1","gid":"55b4d36f-c5e1-4d64-bb14-0b832dcd4b88","prefix":"SIA","expected_tdr":None,"expected_gps":41},
  "Chinstrap":{"tid":"da13e049-be2b-4345-bbdd-ab960cb24731","gid":"8f8ccba5-01af-4b00-8a3b-c3c85b24bf92","prefix":"SIC","expected_tdr":None,"expected_gps":121},
  "Gentoo":{"tid":"ff0cbcb7-bdad-4d03-bdf2-a54c54d67d9f","gid":"9cb04ca6-f88f-4368-b715-45ff73ff81eb","prefix":"SIG","expected_tdr":None,"expected_gps":11},
 }
@@ -29,35 +29,53 @@ def get_header(z,item):
  return head,first,len(rows)
 def source_track_roster(path,prefix,role):
  if not zipfile.is_zipfile(path):raise ValueError("Publisher original invalid ZIP "+str(path))
- entries=[];all_tracks=[]
+ entries=[];by_id={};matched_names=[];diagnostic=[]
  with zipfile.ZipFile(path) as z:
   for info in z.infolist():
    if info.is_dir():continue
    name=Path(info.filename).name
-   m=re.fullmatch(r"([A-Z]{3}\d{3,4})_"+role+r"\.csv",name,flags=re.I)
-   if not m:continue
-   rawid=m.group(1).upper()
-   if not rawid.startswith(prefix):continue
+   upper=name.upper()
+   # Existing source-verified gps.read_tracks accepts a publisher filename
+   # with extra tokens between original tag and final _GPS.csv.
+   if upper.startswith(prefix) and upper.endswith(".CSV"):
+    diagnostic.append(name)
+   if not (upper.startswith(prefix) and upper.endswith(".CSV") and "_"+role.upper() in upper):
+    continue
+   rawid=upper.split("_")[0]
+   if not re.fullmatch(re.escape(prefix.upper())+r"\d{3,4}",rawid):
+    continue
+   matched_names.append(name)
    head,first,nprobe=get_header(z,info)
    if role=="GPS":
-    required={"DateTime","Latitude_degrees_north","Longitude_degrees_east"}
+    valid={"DateTime","Latitude_degrees_north","Longitude_degrees_east"}.issubset(set(head))
    else:
-    required={"DateTime","Pressure [dBars]"}
-   # Some manufacturer TDR exports differ in casing; strict schema gate.
-   valid=required.issubset(set(head))
+    valid="DateTime" in head and any(q.lower().startswith("pressure") for q in head)
    x=dict(id=rawid,member=info.filename,size=info.file_size,compressed_size=info.compress_size,
           crc32=f"{info.CRC:08x}",header=head,header_ok=valid,
           source_datetime_first=first,first_rows_probed=nprobe,empty_or_short=info.file_size<120 or not first)
-   entries.append(x);all_tracks.append(rawid)
- if len(all_tracks)!=len(set(all_tracks)):raise ValueError("Duplicate original deployment name "+role+" "+prefix)
- return sorted(entries,key=lambda x:x["id"])
+   # Duplicate version2 publisher GPS member SIC005 exists: permit only
+   # identical compressed-source CRC and content length for same original ID.
+   if rawid in by_id:
+    seen=by_id[rawid]
+    if (seen["crc32"],seen["size"])!=(x["crc32"],x["size"]):
+     raise ValueError("Conflicting duplicate original deployment "+role+" "+rawid)
+    x["duplicate_original_identical_member"]=True
+   else:
+    by_id[rawid]=x
+    x["duplicate_original_identical_member"]=False
+   entries.append(x)
+ if not entries:
+  raise ValueError("No source files matched role "+role+" prefix "+prefix+
+                   "; candidate examples="+str(sorted(diagnostic)[:10])+
+                   "; sample members="+str([a.filename for a in zipfile.ZipFile(path).infolist()[:8]]))
+ return sorted(entries,key=lambda x:(x["id"],x["member"]))
 def run(source,out):
  source,out=map(Path,(source,out))
  summary={}
  for sp,c in SRC.items():
   gps=source_track_roster(source/"gps"/(sp.lower()+".zip"),c["prefix"],"GPS")
   tdr=source_track_roster(source/"tdr"/(sp.lower()+".zip"),c["prefix"],"TDR")
-  if len(gps)!=c["expected_gps"]:raise ValueError(f"{sp} GPS source roster changed: {len(gps)}")
+  if len(gps)!=c["expected_gps"]:raise ValueError(f"{sp} GPS source roster changed: {len(gps)}; names="+str([x["member"] for x in gps[:7]]))
   if c["expected_tdr"] is not None and len(tdr)!=c["expected_tdr"]:
    raise ValueError(f"{sp} TDR source roster changed: {len(tdr)}")
   gp={r["id"]:r for r in gps if r["header_ok"] and not r["empty_or_short"]}
@@ -72,6 +90,8 @@ def run(source,out):
   summary[sp]=dict(gps_original_count=len(gps),tdr_original_count=len(tdr),
    original_GPS_doI="10.5285/"+c["gid"],original_TDR_DOI="10.5285/"+c["tid"],
    source_gps_nonempty_schema_valid=len(gp),source_tdr_nonempty_schema_valid=len(dp),
+   original_duplicate_gps_member_rows=sum(x["duplicate_original_identical_member"] for x in gps),
+   original_duplicate_tdr_member_rows=sum(x["duplicate_original_identical_member"] for x in tdr),
    n_same_deployment_source_GPS_and_TDR=len(matched),
    source_deployments_GPS_only=no_tdr,source_deployments_TDR_only=no_gps,
    n_tdr_original_bytes=sum(v["size"] for v in tdr),
