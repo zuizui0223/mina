@@ -121,3 +121,14 @@
 既報のClewlow et al. (2019)はSignyのleapfrog foragingをすでに議論している。本研究は「時間分業そのものの新発見」ではなく、**胃試料の測定粒度を確認して、同一時計枠の実GPS位置へ推定対象を正しく切り替えた実証的再解析**である。元海氷×Gentoo魚利用、17年の孵化日差、14年の3軸同年照合、6地点の陸上種構成変化、繁殖空間集中は保持。実潜水・捕食位置を識別するには同deploymentのGPS×TDR照合が必要。CMIP6から2050/2100年の生物数値予報へ外挿しない。
 
 [暦日サンプリングCI SUCCESS](https://github.com/zuizui0223/mina/actions/runs/41730493733)／[元同時刻GPS CI SUCCESS（取得SSL retry済み）](https://github.com/zuizui0223/mina/actions/runs/41730811560)。元main・凍結Paper1/2は不変。
+
+
+## 2026-11-05｜同時刻GPSの空間ニッチを実潜水候補へ限定する源流検証
+
+前回のAdélie/Chinstrap原GPSの**共通65暦日・1,121時間枠**および2013年（同日両種2タグ以上24日：半径差約+50km）と2015年（16日：約−6km）の正負の違いは維持する。ただしGPS点には移動・通過・上陸が含まれ、捕食位置や空間的競争を検証したものではなかった。
+
+今回、元BAS公式のAdélie **TDR DOI 10.5285/bf62d713-93e5-487f-acba-1ec2da35c7e1**、Gentoo **TDR DOI 10.5285/ff0cbcb7-bdad-4d03-bdf2-a54c54d67d9f**を新たに特定し、既存の修正版Chinstrap v2 **TDR DOI 10.5285/da13e049-be2b-4345-bbdd-ab960cb24731**と合わせて全3種の原GPS／TDRにアクセス可能と確認。これにより、**同一タグのGPSに時刻対応する水圧上の潜水候補位置**という一段厳密な観測単位を追加できる。[元TDR/GPSのsource-first監査](outputs/signy_three_species_TDR_GPS_source_v1/REPORT_JA.md)。
+
+原圧力イベントの実測結果を選択しないため、2013/15年の源GPS上の元タグIDを先に固定（GPSが10〜150kmで10時間以上、同じ元TDR IDあり、元ID順最大10/種×年）。従来のChinstrap潜水pilotと同一の60分1%点暫定圧力補正・5dbar/10秒・元GPS前後600秒以内＆最近300秒以内を主基準とし、2/10dbarと距離0/2/5/10/20kmを感度。タグ・年を独立気候反復と数えない。**元6ZIPの取得・スキーマ・候補潜水の新CIはqueuedのため、今は潜水候補GPS位置の実測数値・生物学的結論は未開封。** [方法・停止条件](outputs/signy_three_tdr_gps_pilot_v1/REPORT_JA.md)。
+
+これまでの17年平均孵化日差、14年同年胃食性／雛出力、海氷とGentoo魚利用の探索的共変動、6地点Adélie減×Gentoo増、Palmer/Signy繁殖空間集中は撤回しない。潜水が確認されても魚／オキアミの実捕食、競争や温暖化による因果的な空間再編は別途検証が必要。凍結main・Paper1・Paper2は編集しない。

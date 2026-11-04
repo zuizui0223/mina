@@ -4,6 +4,10 @@ Research checkpoint, 2026-10-30. This directory is a draft research lane. It doe
 
 ## Start here
 
+- **[2026-11-05・Signy 3種のGPS×TDR原個体ID監査](outputs/signy_three_species_TDR_GPS_source_v1/REPORT_JA.md)** — BAS新取得のAdélie/Gentoo元TDRと既存Chinstrap v2原TDR、GPS各3ZIPのソース照合。潜水解析の前のスキーマ・原ID支持ゲート。
+- **[2026-11-05・Signy 3種の潜水候補×GPS同時刻再解析](outputs/signy_three_tdr_gps_pilot_v1/REPORT_JA.md)** — 2013・2015年の源GPS標本のみでタグを固定し、元TDRのセンサ補正、GPSブランケット、同じ暦日・同時計で種間の位置差を監査。解析結果はCI検証前に主張しない。
+
+
 - **[2026-11-04・Signy元胃37種ペア×年は同日採取ゼロ：育雛段階と暦日の比較可能性](outputs/signy_calendar_sample_overlap_v1/REPORT_JA.md)** — 1,364元胃、孵化日がある14年で胃採取中央値は孵化時期差29日にほぼ追従。同暦日±7日で選ぶと逆に雛齢段階が25日ずれる。
 - **[2026-11-04・Signy元GPSの2種同日65日・共通1時間1,121枠と年別の空間配置](outputs/signy_calendar_GPS_spatial_v1/REPORT_JA.md)** — 元168タグのSHA固定。2タグ以上の2013年24日（距離差+50km）と2015年16日（−6km）、孵化日差・地域平均海氷が近くても距離配置が変わる探索的証拠。捕食・競争機構ではない。
 
