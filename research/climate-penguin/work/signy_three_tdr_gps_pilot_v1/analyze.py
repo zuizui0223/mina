@@ -69,7 +69,8 @@ def read_pressure(z,member):
    except (ValueError,TypeError):pressure=float("nan")
    raw.append((t,pressure))
  return raw
-def select_source_tags(root):
+def select_source_tags(root,max_source_tags_per_species_year=MAX_PER_SPECIES_YEAR):
+ if max_source_tags_per_species_year<1:raise ValueError("Source tag cap must be >=1")
  tracks,verified=gps.read_tracks(root/"gps")
  if verified["canonical_member_content_sha256"]!=gps.TRACK_SHA:
   raise ValueError("Original 3-species BAS GPS data source SHA drift")
@@ -96,14 +97,14 @@ def select_source_tags(root):
  selections={}
  for sp in SPECIES:
   for year in YEARS:
-   selected=sorted(trackroster[sp,year],key=lambda t:t["deployment"])[:MAX_PER_SPECIES_YEAR]
+   selected=sorted(trackroster[sp,year],key=lambda t:t["deployment"])[:max_source_tags_per_species_year]
    selections[sp,year]=selected
  if not all(selections["Adelie",y] and selections["Chinstrap",y] for y in YEARS):
   raise ValueError("No two-species GPS/TDR original source-eligible tracks")
  return tracks,tdr_rosters,allsource,trackroster,selections,verified
-def run(root,out):
+def run(root,out,max_source_tags_per_species_year=MAX_PER_SPECIES_YEAR):
  root,out=map(Path,(root,out))
- tracks,rosters,allsource,trackroster,selections,gpsreceipt=select_source_tags(root)
+ tracks,rosters,allsource,trackroster,selections,gpsreceipt=select_source_tags(root,max_source_tags_per_species_year)
  selected=defaultdict(list)
  tracking=[];attempts=[];all_events=[]
  byspecies_hour=defaultdict(list)
@@ -259,7 +260,12 @@ def run(root,out):
  total=dict(date="2026-11-05",status="predeclared_source_tag_pilot_pressure_derived_dive_GPS_locations_not_confirmed_prey",
   original_gps_three_species_SHA256=gpsreceipt["canonical_member_content_sha256"],
   original_TDR_zip_wrapper_sha256={sp:hashlib.sha256((root/"tdr"/(sp.lower()+".zip")).read_bytes()).hexdigest() for sp in SPECIES},
-  source_tag_selection="GPS qual >=10 hours in 10–150km, exact GPS/TDR deployment ID, lexicographic first max 10 per species/year; no selection using TDR dive outcomes",
+  source_tag_selection=("GPS qual >=10 hours in 10–150km, exact GPS/TDR deployment ID, "
+      + ("ALL available source-matched tags" if max_source_tags_per_species_year>=999 else "lexicographic first up to "+str(max_source_tags_per_species_year)+" per species/year")
+      + "; no selection using TDR dive outcomes"),
+  max_source_tags_per_species_year=max_source_tags_per_species_year,
+  all_source_eligible_tags_included=(max_source_tags_per_species_year>=999),
+  n_original_source_eligible_tags=sum(len(v) for v in trackroster.values()),
   main_pressure_cutoff_dbar=MAIN_CUTOFF,main_min_radius_km=MAIN_MIN_RADIUS_KM,
   n_source_selected_tags=len(attempts),
   n_original_source_tags_with_sensor_calibration=sum(r["measurement_qa_status"]=="PROVISIONAL_CORRECTION" for r in attempts),
@@ -269,7 +275,7 @@ def run(root,out):
   n_A_C_same_day_with_both_pressure_candidate_locations=len(perday),
   n_A_C_same_day_at_least_two_tags_each=sum(r["minimum_two_source_tags_each"] for r in perday),
   all_GPS_gps_only_previous_exposure_not_rederived_here=True,
-  limits=["Not all original tags are opened: lexicographically first capped GPS+TDR source matches; descriptive pilot, not representative",
+  limits=["Selection includes all original source-eligible GPS/TDR tags when cap>=999, else a capped source-first pilot; neither is a representative wildlife survey",
    "Existing published Signy GPS/TDR leapfrog foraging/sea-stage niche findings are prior art; no novelty claim for mere dive detection",
    "Hour-wise 1-percentile source pressure baseline is provisional; no independently known surface zero or validated depths",
    "No pressure-to-verified prey capture, no krill/fish prey observation, and some candidate dives may be travelling",
@@ -286,4 +292,5 @@ def run(root,out):
 if __name__=="__main__":
  p=argparse.ArgumentParser();p.add_argument("--source",type=Path,required=True)
  p.add_argument("--out",type=Path,required=True)
- a=p.parse_args();run(a.source,a.out)
+ p.add_argument("--max-source-tags-per-species-year",type=int,default=MAX_PER_SPECIES_YEAR)
+ a=p.parse_args();run(a.source,a.out,a.max_source_tags_per_species_year)

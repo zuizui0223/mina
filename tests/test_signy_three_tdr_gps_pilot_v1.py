@@ -4,6 +4,9 @@ from pathlib import Path
 F=Path(__file__).resolve().parents[1]/"research/climate-penguin/work/signy_three_tdr_gps_pilot_v1/analyze.py"
 sp=importlib.util.spec_from_file_location("tdr3pil",F);a=importlib.util.module_from_spec(sp);sp.loader.exec_module(a)
 class Tests(unittest.TestCase):
+ def test_invalid_source_tag_cap_stops_before_loading_archives(self):
+  with self.assertRaisesRegex(ValueError,"Source tag cap"):
+   a.select_source_tags("/does-not-exist",0)
  def test_spatial_and_clock_invariants(self):
   self.assertEqual(a.time_hour(1700001000),"2023-11-14T22:00Z")
   self.assertAlmostEqual(a.sep_km((0,0),(0,0)),0)

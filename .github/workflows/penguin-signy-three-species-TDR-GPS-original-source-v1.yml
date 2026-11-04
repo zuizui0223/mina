@@ -53,10 +53,11 @@ jobs:
         run: |
           python research/climate-penguin/work/signy_three_species_TDR_GPS_source_v1/audit.py \
             --source /tmp/signy_breeding_six_sources --out /tmp/signy_tdr_gps_source_gate
-      - name: Analyze pre-fixed original source tags' pressure-derived candidate dives and GPS positions
+      - name: Analyze ALL source-eligible original TDR tags with fixed GPS and pressure QC
         run: |
           python research/climate-penguin/work/signy_three_tdr_gps_pilot_v1/analyze.py \
-            --source /tmp/signy_breeding_six_sources --out /tmp/signy_three_species_dive_location_pilot
+            --source /tmp/signy_breeding_six_sources --out /tmp/signy_three_species_dive_location_alltags \
+            --max-source-tags-per-species-year 999
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -66,6 +67,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: penguin-signy-three-TDR-matched-dive-GPS-pilot-v1
-          path: /tmp/signy_three_species_dive_location_pilot/
+          name: penguin-signy-three-TDR-matched-dive-GPS-all-source-v2
+          path: /tmp/signy_three_species_dive_location_alltags/
           retention-days: 30
