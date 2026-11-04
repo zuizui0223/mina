@@ -1,0 +1,53 @@
+name: penguin-signy-three-species-TDR-GPS-original-source-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_three_species_TDR_GPS_source_v1/**'
+      - 'tests/test_signy_three_species_TDR_GPS_source_v1.py'
+      - '.github/workflows/penguin-signy-three-species-TDR-GPS-original-source-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_three_species_TDR_GPS_source_v1/**'
+      - 'tests/test_signy_three_species_TDR_GPS_source_v1.py'
+      - '.github/workflows/penguin-signy-three-species-TDR-GPS-original-source-v1.yml'
+permissions:
+  contents: read
+jobs:
+  publisher-source-gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test filename, source ID and pressure schema detection
+        run: python -m unittest discover -s tests -p test_signy_three_species_TDR_GPS_source_v1.py -v
+      - name: Download BAS original three species TDR plus three GPS archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/signy_breeding_six_sources/gps /tmp/signy_breeding_six_sources/tdr
+          fetch() {
+            curl -L --fail --retry 4 --retry-all-errors --retry-delay 7 --max-time 1200 \
+              "https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=$1&output=zip.tree" \
+              -o "$2"
+            unzip -tq "$2" >/dev/null
+          }
+          fetch 55b4d36f-c5e1-4d64-bb14-0b832dcd4b88 /tmp/signy_breeding_six_sources/gps/adelie.zip
+          fetch 8f8ccba5-01af-4b00-8a3b-c3c85b24bf92 /tmp/signy_breeding_six_sources/gps/chinstrap.zip
+          fetch 9cb04ca6-f88f-4368-b715-45ff73ff81eb /tmp/signy_breeding_six_sources/gps/gentoo.zip
+          fetch bf62d713-93e5-487f-acba-1ec2da35c7e1 /tmp/signy_breeding_six_sources/tdr/adelie.zip
+          fetch da13e049-be2b-4345-bbdd-ab960cb24731 /tmp/signy_breeding_six_sources/tdr/chinstrap.zip
+          fetch ff0cbcb7-bdad-4d03-bdf2-a54c54d67d9f /tmp/signy_breeding_six_sources/tdr/gentoo.zip
+      - name: Audit all original deployment IDs and TDR schema (no pressure outcomes)
+        run: |
+          python research/climate-penguin/work/signy_three_species_TDR_GPS_source_v1/audit.py \
+            --source /tmp/signy_breeding_six_sources --out /tmp/signy_tdr_gps_source_gate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-signy-three-species-TDR-GPS-original-source-v1
+          path: /tmp/signy_tdr_gps_source_gate/
+          retention-days: 30
