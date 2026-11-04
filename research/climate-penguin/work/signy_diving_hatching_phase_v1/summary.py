@@ -14,7 +14,7 @@ HASH={
 def load(p,kind):
  b=Path(p).read_bytes()
  if hashlib.sha256(b).hexdigest()!=HASH[kind]:raise ValueError("SHA receipt changed "+kind)
- return list(csv.DictReader(b.decode("utf8-sig").splitlines()))
+ return list(csv.DictReader(b.decode("utf-8-sig").splitlines()))
 def period(d,a,c):
  return "pre-Adelie" if d<a else "between-hatching" if d<c else "post-Chinstrap"
 def med(x):return statistics.median(x)
