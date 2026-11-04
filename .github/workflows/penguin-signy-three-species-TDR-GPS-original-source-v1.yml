@@ -53,11 +53,11 @@ jobs:
         run: |
           python research/climate-penguin/work/signy_three_species_TDR_GPS_source_v1/audit.py \
             --source /tmp/signy_breeding_six_sources --out /tmp/signy_tdr_gps_source_gate
-      - name: Analyze ALL source-eligible original TDR tags with fixed GPS and pressure QC
+      - name: Sensor-QA sensitivity on ALL original eligible TDR/GPS tags, exclude only offset drift >2dbar
         run: |
           python research/climate-penguin/work/signy_three_tdr_gps_pilot_v1/analyze.py \
-            --source /tmp/signy_breeding_six_sources --out /tmp/signy_three_species_dive_location_alltags \
-            --max-source-tags-per-species-year 999
+            --source /tmp/signy_breeding_six_sources --out /tmp/signy_three_species_dive_location_offset_QA \
+            --max-source-tags-per-species-year 999 --max-baseline-drift-dbar 2.0
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -67,6 +67,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: penguin-signy-three-TDR-matched-dive-GPS-all-source-v2
-          path: /tmp/signy_three_species_dive_location_alltags/
+          name: penguin-signy-three-TDR-matched-dive-GPS-offset-QA-v3
+          path: /tmp/signy_three_species_dive_location_offset_QA/
           retention-days: 30

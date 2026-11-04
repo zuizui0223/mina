@@ -102,7 +102,9 @@ def select_source_tags(root,max_source_tags_per_species_year=MAX_PER_SPECIES_YEA
  if not all(selections["Adelie",y] and selections["Chinstrap",y] for y in YEARS):
   raise ValueError("No two-species GPS/TDR original source-eligible tracks")
  return tracks,tdr_rosters,allsource,trackroster,selections,verified
-def run(root,out,max_source_tags_per_species_year=MAX_PER_SPECIES_YEAR):
+def run(root,out,max_source_tags_per_species_year=MAX_PER_SPECIES_YEAR,max_baseline_drift_dbar=None):
+ if max_baseline_drift_dbar is not None and max_baseline_drift_dbar<=0:
+  raise ValueError("max baseline drift must be positive")
  root,out=map(Path,(root,out))
  tracks,rosters,allsource,trackroster,selections,gpsreceipt=select_source_tags(root,max_source_tags_per_species_year)
  selected=defaultdict(list)
@@ -141,6 +143,9 @@ def run(root,out,max_source_tags_per_species_year=MAX_PER_SPECIES_YEAR):
      row["n_nonfinite_pressure"]=nonfinite
      row["hourly_p01_drift_range_dbar"]=cal["surface_q01_drift_range_dbar"]
      row["drift_over_2_dbar"]=cal["surface_q01_drift_range_dbar"]>2.
+     row["excluded_from_spatial_by_source_pressure_QA"]=bool(
+       max_baseline_drift_dbar is not None and
+       cal["surface_q01_drift_range_dbar"]>max_baseline_drift_dbar)
      original_fix=[(p[0],p[1],p[2]) for p in track["points"]]
      for cut in CUTS:
       event=pilot.dive_candidates(times,corrected,cut)
@@ -172,8 +177,9 @@ def run(root,out,max_source_tags_per_species_year=MAX_PER_SPECIES_YEAR):
        # Choose the middle source event by radial distance, not a fake centroid.
        s=sorted(samples,key=lambda q:q["radial_km"])
        chosen_sample=s[(len(s)-1)//2]
-       byspecies_hour[sp,year,h].append(chosen_sample)
-       all_events.append(chosen_sample)
+       if not row["excluded_from_spatial_by_source_pressure_QA"]:
+        byspecies_hour[sp,year,h].append(chosen_sample)
+        all_events.append(chosen_sample)
       row["n_unique_source_diving_GPS_hours_main"]=len(hours)
       row["n_main_radial_2_150km_candidate_events"]=len(sub)
       row["original_GPS_bracket_definition"]="both actual source fixes span <=600s, nearest <=300s"
@@ -240,6 +246,7 @@ def run(root,out,max_source_tags_per_species_year=MAX_PER_SPECIES_YEAR):
           "n_GPS_bracket_eligible_main","median_nearest_original_GPS_timedelta_seconds"]+[
           f"n_GPS_bracket_events_radial_{int(r)}_150km" for r in MIN_RADIUS_KM]+[
           "n_unique_source_diving_GPS_hours_main","n_main_radial_2_150km_candidate_events",
+          "excluded_from_spatial_by_source_pressure_QA",
           "original_GPS_bracket_definition","dive_definition"]
  csvwrite(out/"original_source_tag_TDR_GPS_QA.csv",attempts,fields)
  csvwrite(out/"source_year_TDR_GPS_support.csv",tracking,list(tracking[0]))
@@ -270,6 +277,9 @@ def run(root,out,max_source_tags_per_species_year=MAX_PER_SPECIES_YEAR):
   n_source_selected_tags=len(attempts),
   n_original_source_tags_with_sensor_calibration=sum(r["measurement_qa_status"]=="PROVISIONAL_CORRECTION" for r in attempts),
   n_original_source_tags_with_pressure_baseline_drift_over_2_dbar=sum(r.get("drift_over_2_dbar",False) for r in attempts),
+  qa_max_pressure_surface_offset_drift_dbar=max_baseline_drift_dbar,
+  n_original_source_tags_excluded_from_candidate_spatial_comparison_by_sensor_QA=sum(
+    r.get("excluded_from_spatial_by_source_pressure_QA",False) for r in attempts),
   n_years=len(summary),by_year=summary,
   n_A_C_same_original_GPS_clock_hours_with_both_pressure_candidate_locations=len(perhour),
   n_A_C_same_day_with_both_pressure_candidate_locations=len(perday),
@@ -293,4 +303,5 @@ if __name__=="__main__":
  p=argparse.ArgumentParser();p.add_argument("--source",type=Path,required=True)
  p.add_argument("--out",type=Path,required=True)
  p.add_argument("--max-source-tags-per-species-year",type=int,default=MAX_PER_SPECIES_YEAR)
- a=p.parse_args();run(a.source,a.out,a.max_source_tags_per_species_year)
+ p.add_argument("--max-baseline-drift-dbar",type=float,default=None)
+ a=p.parse_args();run(a.source,a.out,a.max_source_tags_per_species_year,a.max_baseline_drift_dbar)
