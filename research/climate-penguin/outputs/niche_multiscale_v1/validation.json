@@ -1,0 +1,25 @@
+{
+  "status": "pass",
+  "independently_rebuilt_distance_cells": 324,
+  "independent_permutations": 362880,
+  "independent_exact_tests": 3,
+  "raw_sources": [
+    {
+      "species": "Adelie",
+      "summary_sha256": "ab05193e94864ca05ea54a01154506f8e86f85291e2f01a68abab5d92229a04d",
+      "krill_sha256": "318499115f56ce0f9010ea304ec65f969abd063bad7686e9289af6b20b1e03c3"
+    },
+    {
+      "species": "Chinstrap",
+      "summary_sha256": "a8dc89e0440cc8826925fc65bf9194de5151162b83c7d42db7ba3c97d49b164a",
+      "krill_sha256": "be3b68b22a7e36d3cc6cf81f17d18df9428ca176d8249ee2e63f5b56a93153b6"
+    },
+    {
+      "species": "Gentoo",
+      "summary_sha256": "6f2a5fa1fc136ad6102dee8cd1c429d24c8ab81b50077bd21eb03f4e80fbd902",
+      "krill_sha256": "99dc437260a7782109a745ec53f61f22246bed3ad8a353748fcef4cac9f64164"
+    }
+  ],
+  "scope": "full and both date-matched source reconstructions, scipy weighted W1 vs production CDF, stage and mass distances, exact p and max3; not global CI",
+  "limitations": "unit equality and maturity-code harmonization remain unresolved, not cured by numerical agreement"
+}
