@@ -1,0 +1,1188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mina:network-concentration-unified:v0.1",
+  "title": "Unified two-endpoint breeding distribution data bundle — draft v0.1",
+  "description": "Schema only, no empirical rows. Traits and climate covariates are deliberately excluded until Step 2 definitions are frozen.",
+  "x-status": {
+    "date": "2026-11-06",
+    "draft": true,
+    "frozen": false,
+    "externally_registered": false,
+    "common_outcomes_computed": false
+  },
+  "x-conventions": {
+    "missing": "JSON null; CSV empty cell; never encode missing/unobserved as 0. No NaN or Infinity in JSON.",
+    "logs": "natural logarithms",
+    "time": "breeding-season start year; actual synchronized endpoint dates",
+    "null": "B=20000 independent draws per endpoint; p_pool=(n0+n1)/(N0+N1); uint32 seed = first 8 hex digits of SHA256(UTF-8(\"20261106|\" + row_id)). Pair seed uses pair_row_id.",
+    "quantile": "linear interpolation (Hyndman–Fan type 7); SD uses B-1 denominator; Monte Carlo SE = SD/sqrt(B)",
+    "cohort_hash": "SHA-256 of UTF-8 JSON array of sorted dataset-prefixed physical component IDs with compact separators, ensure_ascii=false",
+    "row_hash": "SHA-256 of UTF-8 compact JSON array [dataset_id, network_id, species_id, count_unit, cohort_id, year0, year1]; pending candidate key is recorded explicitly",
+    "pair_hash": "SHA-256 of UTF-8 compact JSON array [dataset_id, network_id, species_a, species_b, count_unit_a, count_unit_b, pair_cohort_id, year0, year1]; species_a/species_b sorted lexicographically",
+    "validation": "Cross-column mathematical and lineage invariants below are checked in the builder; JSON Schema alone does not prove them."
+  },
+  "x-cross-field-invariants": [
+    "year1 > year0 and dt_years == year1 - year0 for synchronous estimable rows.",
+    "K == number of unique fixed component IDs, 0 <= occupied0,occupied1 <= K, N0,N1 are exact sums over the same K.",
+    "coverage_t == K/surveyed_components_t when the denominator is positive and known; never report as abundance coverage.",
+    "1 <= neff_t <= K for positive totals; raw and adjusted effects obey the formulas in STEP1_TABLE_SPEC.md.",
+    "Common count null requires synchronous epochs, K>=3, nonnegative integer-equivalent comparable counts, and N0,N1>=2.",
+    "Terminal-zero rows preserve N1=0 and interval_pct=-100 when N0>0; log change, raw concentration change and corrected concentration are null.",
+    "All corrected/null summary fields are null when null_status is not computed; their unavailability is not zero effect.",
+    "Model posterior means cannot be rounded into integer counts; no independent draws from marginal intervals.",
+    "extent_km requires comparable coordinates for every fixed component; no extent from island centroids for patch-level rows.",
+    "One original observation lineage cannot enter macro_primary multiple times via parent/child or repeated-window rows.",
+    "Pair rows require actual shared physical units at the same two epochs; per-species counts and total changes are recomputed on that pair cohort.",
+    "Both species in a pair require positive totals at both epochs and K_pair>=3 for corrected overlap; missing species records never become zero.",
+    "Endpoint registry lock and input hashes precede new common-effect computation; existing prior results remain disclosed.",
+    "No traits, climate associations, future projections or empirical row values are supplied by this schema.",
+    "For endpoint_registry.analysis_unit=network_species, species_id/count_unit are nonnull and pair-only species/unit fields are null; pair rows use species_a/species_b/count_unit_a/count_unit_b with species_id/count_unit null.",
+    "Pair endpoint choices are independent of single-species endpoint choices but use the same frozen input; species-pair MAPPPD earliest-start/latest-end selection uses both species at both endpoints and at least three verified physical units.",
+    "For a pair corrected null, all four species-by-endpoint totals must be >=2, not just the combined or single-species main-table totals.",
+    "An endpoint with a positive total retains its own neff even if the other endpoint is zero.",
+    "Three-year-window sensitivity is a separate prespecified output with nonoverlapping complete windows and elapsed mean observation years, never additional primary rows.",
+    "Q4 uncertainty must preserve shared source counts among species pairs within a network; global species membership effects plus a network intercept do not by themselves guarantee independent pair residuals."
+  ],
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "network_species",
+    "unit_endpoints",
+    "network_species_pairs",
+    "endpoint_registry"
+  ],
+  "properties": {
+    "network_species": {
+      "type": "array",
+      "description": "One source × network × species × unit × fixed cohort × endpoint pair, including explicit non-estimation candidates.",
+      "x-primary-key": [
+        "row_id"
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "row_id",
+          "dataset_id",
+          "network_id",
+          "species_id",
+          "cohort_id",
+          "scale_class",
+          "component_type",
+          "parent_network_id",
+          "lineage_group",
+          "year0",
+          "year1",
+          "dt_years",
+          "epoch_sync_status",
+          "K",
+          "occupied0",
+          "occupied1",
+          "surveyed_components0",
+          "surveyed_components1",
+          "coverage0",
+          "coverage1",
+          "N0",
+          "N1",
+          "count_unit",
+          "estimate_type",
+          "neff0",
+          "neff1",
+          "concentration_raw_decade",
+          "concentration_excess_decade",
+          "null_mean_decade",
+          "null_sd_decade",
+          "null_q025_decade",
+          "null_q975_decade",
+          "null_mcse_decade",
+          "null_status",
+          "abundance_log_change_decade",
+          "abundance_pct_change_decade",
+          "abundance_pct_change_interval",
+          "extent_km",
+          "coordinate_status",
+          "endpoint_status",
+          "analysis_role",
+          "exclusion_reason",
+          "prior_view_status",
+          "source_id"
+        ],
+        "properties": {
+          "row_id": {
+            "type": "string",
+            "description": "Deterministic SHA-256 ID of dataset, network, species, count unit, cohort and endpoint pair; pending rows use candidate key."
+          },
+          "dataset_id": {
+            "type": "string",
+            "description": "Stable input family; source effects use the family, not each file or island."
+          },
+          "network_id": {
+            "type": "string",
+            "description": "Dataset-prefixed original network identity; species is not part of this identity."
+          },
+          "species_id": {
+            "type": "string",
+            "description": "Harmonized taxon ID; original spelling remains in unit_endpoints and source catalog."
+          },
+          "cohort_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SHA-256 of the sorted, dataset-prefixed fixed physical component IDs."
+          },
+          "scale_class": {
+            "type": "string",
+            "description": "Original spatial grain.",
+            "enum": [
+              "master_site_network",
+              "regional_network",
+              "sector_network",
+              "within_island"
+            ]
+          },
+          "component_type": {
+            "type": "string",
+            "description": "Original breeding component type, not assumed equivalent across source families."
+          },
+          "parent_network_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Known enclosing network; null if not applicable or unresolved."
+          },
+          "lineage_group": {
+            "type": "string",
+            "description": "Shared original observation lineage, used to prevent pseudoreplication."
+          },
+          "year0": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Earlier synchronous census / breeding-season start year; null for non-synchronous or unavailable endpoint."
+          },
+          "year1": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Later synchronous census / breeding-season start year; never shifted to retain positive counts."
+          },
+          "dt_years": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "year1 - year0; strictly positive if known.",
+            "exclusiveMinimum": 0
+          },
+          "epoch_sync_status": {
+            "type": "string",
+            "description": "Whether all retained units share the same early and late census years.",
+            "enum": [
+              "synchronous",
+              "asynchronous",
+              "unresolved"
+            ]
+          },
+          "K": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Fixed cohort size at both endpoints, including explicitly observed zero-count components.",
+            "minimum": 0
+          },
+          "occupied0": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Number of fixed-cohort components with a strictly positive early count.",
+            "minimum": 0
+          },
+          "occupied1": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Number of fixed-cohort components with a strictly positive late count.",
+            "minimum": 0
+          },
+          "surveyed_components0": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "All comparable recorded components in the early original network census, not just the matched intersection.",
+            "minimum": 0
+          },
+          "surveyed_components1": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "All comparable recorded components in the late original network census.",
+            "minimum": 0
+          },
+          "coverage0": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "K / surveyed_components0; surveyed-component coverage, not population coverage.",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "coverage1": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "K / surveyed_components1; surveyed-component coverage, not population coverage.",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "N0": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Sum of early values over exactly the fixed cohort in its original count unit.",
+            "minimum": 0
+          },
+          "N1": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Sum of late values over exactly the fixed cohort in its original count unit.",
+            "minimum": 0
+          },
+          "count_unit": {
+            "type": "string",
+            "description": "Unconverted original unit: AON, AOS, AOT, AOB, IND, nest, breeding_pair, adult_index, or documented source-specific equivalent."
+          },
+          "estimate_type": {
+            "type": "string",
+            "description": "Observation status; adjusted counts are not an observation-error-calibrated census.",
+            "enum": [
+              "recorded_count",
+              "adjusted_count",
+              "model_posterior_mean",
+              "unresolved"
+            ]
+          },
+          "neff0": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "D2_0 = 1 / sum((n_j0/N0)^2). Null if N0 is zero or source is unavailable.",
+            "minimum": 1
+          },
+          "neff1": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "D2_1 = 1 / sum((n_j1/N1)^2). Null if N1 is zero or source is unavailable.",
+            "minimum": 1
+          },
+          "concentration_raw_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Y_raw = -10/(year1-year0) * log(neff1/neff0); positive means increasing concentration."
+          },
+          "concentration_excess_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Y_raw - mean(Y_null); common two-end fixed-share count benchmark. Never replace unavailable model uncertainty by zero."
+          },
+          "null_mean_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Monte Carlo mean under the paired common-share multinomial benchmark."
+          },
+          "null_sd_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "SD of simulated null outcomes, not the SE of the observed effect.",
+            "minimum": 0
+          },
+          "null_q025_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "2.5th percentile of null outcomes, not an observed-effect confidence limit."
+          },
+          "null_q975_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "97.5th percentile of null outcomes, not an observed-effect confidence limit."
+          },
+          "null_mcse_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Monte Carlo SE of the estimated null mean, SD/sqrt(B), not observation uncertainty.",
+            "minimum": 0
+          },
+          "null_status": {
+            "type": "string",
+            "description": "Why the common null is computed or unavailable.",
+            "enum": [
+              "computed",
+              "not_computed",
+              "insufficient_components",
+              "nonpositive_total",
+              "total_below_two",
+              "noninteger_count",
+              "asynchronous_epochs",
+              "incomparable_units",
+              "model_joint_uncertainty_unavailable",
+              "input_recovery_pending"
+            ]
+          },
+          "abundance_log_change_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "G = 10/(year1-year0) * log(N1/N0), defined only for positive endpoint totals."
+          },
+          "abundance_pct_change_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "100*(exp(G)-1); null when either endpoint total is zero."
+          },
+          "abundance_pct_change_interval": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "100*(N1/N0-1), defined when N0>0; equals -100 for terminal zero.",
+            "minimum": -100
+          },
+          "extent_km": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Maximum pairwise WGS84 geodesic distance across all fixed-cohort components, including zeros; null if any comparable coordinates missing.",
+            "minimum": 0
+          },
+          "coordinate_status": {
+            "type": "string",
+            "description": "Coordinate provenance and completeness.",
+            "enum": [
+              "complete_original",
+              "complete_source_start_points",
+              "incomplete",
+              "wrong_grain",
+              "unavailable",
+              "unresolved"
+            ]
+          },
+          "endpoint_status": {
+            "type": "string",
+            "description": "Endpoint outcome / support state, without dropping zero totals.",
+            "enum": [
+              "positive_both",
+              "terminal_zero",
+              "origin_zero",
+              "both_zero",
+              "no_comparable_pair",
+              "pending_recovery",
+              "invalid_values"
+            ]
+          },
+          "analysis_role": {
+            "type": "string",
+            "description": "Mutually exclusive use in the current unified design.",
+            "enum": [
+              "macro_primary",
+              "local_resolution",
+              "model_index_reference",
+              "descriptive_only",
+              "input_recovery_pending"
+            ]
+          },
+          "exclusion_reason": {
+            "type": "array",
+            "description": "Machine-readable reasons for no primary count inference, including outcome-specific or covariate-specific missingness.",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "prior_view_status": {
+            "type": "string",
+            "description": "Whether previous outcomes from this source had already been viewed.",
+            "enum": [
+              "previous_results_viewed",
+              "availability_only",
+              "not_yet_recovered"
+            ]
+          },
+          "source_id": {
+            "type": "string",
+            "description": "Foreign key to SOURCE_CATALOG.json source_id."
+          }
+        }
+      }
+    },
+    "unit_endpoints": {
+      "type": "array",
+      "description": "Original source rows on the two frozen endpoints, with explicit survey/missingness semantics.",
+      "x-primary-key": [
+        "analysis_unit",
+        "row_id",
+        "component_id",
+        "species_id",
+        "endpoint"
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "row_id",
+          "dataset_id",
+          "network_id",
+          "species_id",
+          "raw_species_label",
+          "cohort_id",
+          "component_id",
+          "physical_unit_id",
+          "endpoint",
+          "year",
+          "raw_season_label",
+          "count_value",
+          "raw_value",
+          "count_status",
+          "count_unit",
+          "estimate_type",
+          "method",
+          "latitude",
+          "longitude",
+          "coordinate_semantics",
+          "source_id",
+          "source_record_id",
+          "source_row_locator",
+          "lineage_group",
+          "analysis_unit"
+        ],
+        "properties": {
+          "row_id": {
+            "type": "string",
+            "description": "Parent network_species.row_id or network_species_pairs.pair_row_id, distinguished by analysis_unit; source lineage retained across cohorts."
+          },
+          "dataset_id": {
+            "type": "string",
+            "description": "Original input family."
+          },
+          "network_id": {
+            "type": "string",
+            "description": "Original network ID."
+          },
+          "species_id": {
+            "type": "string",
+            "description": "Harmonized taxon ID."
+          },
+          "raw_species_label": {
+            "type": "string",
+            "description": "Original source spelling, including Razorbil if present."
+          },
+          "cohort_id": {
+            "type": "string",
+            "description": "Fixed-cohort membership hash."
+          },
+          "component_id": {
+            "type": "string",
+            "description": "Dataset-prefixed original physical component ID."
+          },
+          "physical_unit_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Verified physical-unit ID for cross-species overlap; null if source species labels do not establish common physical support."
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Endpoint label.",
+            "enum": [
+              "early",
+              "late"
+            ]
+          },
+          "year": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Actual component census / breeding-season start year."
+          },
+          "raw_season_label": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Original year or season text before harmonization."
+          },
+          "count_value": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Unrounded recorded value; explicit observed zero retained; null for missing or unobserved species.",
+            "minimum": 0
+          },
+          "raw_value": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Original source cell representation for exact reconstruction."
+          },
+          "count_status": {
+            "type": "string",
+            "description": "Missing records never become zero.",
+            "enum": [
+              "observed_positive",
+              "observed_zero",
+              "missing",
+              "not_surveyed",
+              "noncomparable",
+              "invalid"
+            ]
+          },
+          "count_unit": {
+            "type": "string",
+            "description": "Unconverted original unit."
+          },
+          "estimate_type": {
+            "type": "string",
+            "description": "Observation status; adjusted counts are not an observation-error-calibrated census.",
+            "enum": [
+              "recorded_count",
+              "adjusted_count",
+              "model_posterior_mean",
+              "unresolved"
+            ]
+          },
+          "method": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Original method label; null when absent from saved source."
+          },
+          "latitude": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Original comparable component latitude in degrees.",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Original comparable component longitude in degrees.",
+            "minimum": -180,
+            "maximum": 180
+          },
+          "coordinate_semantics": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "e.g. original_start_point, colony_point, monitoring_patch; null if unavailable."
+          },
+          "source_id": {
+            "type": "string",
+            "description": "Foreign key to SOURCE_CATALOG."
+          },
+          "source_record_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Original observation ID if present; do not invent absent IDs."
+          },
+          "source_row_locator": {
+            "type": "string",
+            "description": "Exact file/sheet/row or stable keyed locator in the fixed source."
+          },
+          "lineage_group": {
+            "type": "string",
+            "description": "Shared original observation identity / family for duplicate detection."
+          },
+          "analysis_unit": {
+            "type": "string",
+            "description": "Whether row_id references a species row or an independently frozen species-pair row.",
+            "enum": [
+              "network_species",
+              "network_species_pairs"
+            ]
+          }
+        }
+      }
+    },
+    "network_species_pairs": {
+      "type": "array",
+      "description": "Unordered species pairs on verified common physical support; not inferred from aggregate totals.",
+      "x-primary-key": [
+        "pair_row_id"
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pair_row_id",
+          "dataset_id",
+          "network_id",
+          "species_a",
+          "species_b",
+          "pair_cohort_id",
+          "year0",
+          "year1",
+          "dt_years",
+          "K_pair",
+          "count_unit_a",
+          "count_unit_b",
+          "N_a0",
+          "N_a1",
+          "N_b0",
+          "N_b1",
+          "G_a_decade",
+          "G_b_decade",
+          "pair_decline_decade",
+          "overlap0",
+          "overlap1",
+          "overlap_raw_decade",
+          "overlap_excess_decade",
+          "null_mean_decade",
+          "null_sd_decade",
+          "null_q025_decade",
+          "null_q975_decade",
+          "null_mcse_decade",
+          "null_status",
+          "extent_km",
+          "coordinate_status",
+          "analysis_role",
+          "pair_status",
+          "exclusion_reason",
+          "source_ids",
+          "lineage_group"
+        ],
+        "properties": {
+          "pair_row_id": {
+            "type": "string",
+            "description": "Deterministic network, unordered species pair, unit pair, cohort and endpoint key."
+          },
+          "dataset_id": {
+            "type": "string",
+            "description": "Source family."
+          },
+          "network_id": {
+            "type": "string",
+            "description": "Network ID."
+          },
+          "species_a": {
+            "type": "string",
+            "description": "Lexicographically first harmonized species ID; labels have no distinct random-effect roles."
+          },
+          "species_b": {
+            "type": "string",
+            "description": "Second species ID; must differ from species_a."
+          },
+          "pair_cohort_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SHA-256 of verified shared physical components observed for BOTH species at BOTH endpoints."
+          },
+          "year0": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Earlier synchronous census / breeding-season start year; null for non-synchronous or unavailable endpoint."
+          },
+          "year1": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Later synchronous census / breeding-season start year; never shifted to retain positive counts."
+          },
+          "dt_years": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "year1 - year0; strictly positive if known.",
+            "exclusiveMinimum": 0
+          },
+          "K_pair": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Fixed physical units common to both species and both epochs.",
+            "minimum": 0
+          },
+          "count_unit_a": {
+            "type": "string",
+            "description": "Original species-a count unit."
+          },
+          "count_unit_b": {
+            "type": "string",
+            "description": "Original species-b count unit; no adding unlike units."
+          },
+          "N_a0": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Early species-a total recomputed on pair cohort.",
+            "minimum": 0
+          },
+          "N_a1": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Late species-a total recomputed on pair cohort.",
+            "minimum": 0
+          },
+          "N_b0": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Early species-b total recomputed on pair cohort.",
+            "minimum": 0
+          },
+          "N_b1": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Late species-b total recomputed on pair cohort.",
+            "minimum": 0
+          },
+          "G_a_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Species-a log total change recomputed on pair cohort."
+          },
+          "G_b_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Species-b log total change recomputed on pair cohort."
+          },
+          "pair_decline_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "-(G_a_decade+G_b_decade)/2; positive is greater mean proportional decline, without summing unlike count units."
+          },
+          "overlap0": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "sum_j min(p_aj0,p_bj0).",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "overlap1": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "sum_j min(p_aj1,p_bj1).",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "overlap_raw_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "10*(overlap1-overlap0)/(year1-year0)."
+          },
+          "overlap_excess_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Raw overlap change minus the mean of the independent species-specific common-share count benchmark."
+          },
+          "null_mean_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Mean simulated overlap change; not observed-effect uncertainty."
+          },
+          "null_sd_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "SD of simulated overlap changes, not an observed-effect SE.",
+            "minimum": 0
+          },
+          "null_q025_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Null-outcome lower percentile."
+          },
+          "null_q975_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Null-outcome upper percentile."
+          },
+          "null_mcse_decade": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Monte Carlo error of the null mean only.",
+            "minimum": 0
+          },
+          "null_status": {
+            "type": "string",
+            "description": "Why the common null is computed or unavailable.",
+            "enum": [
+              "computed",
+              "not_computed",
+              "insufficient_components",
+              "nonpositive_total",
+              "total_below_two",
+              "noninteger_count",
+              "asynchronous_epochs",
+              "incomparable_units",
+              "model_joint_uncertainty_unavailable",
+              "input_recovery_pending"
+            ]
+          },
+          "extent_km": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "WGS84 diameter of the fixed pair cohort, not copied from a different species cohort.",
+            "minimum": 0
+          },
+          "coordinate_status": {
+            "type": "string",
+            "description": "Coordinate provenance and completeness.",
+            "enum": [
+              "complete_original",
+              "complete_source_start_points",
+              "incomplete",
+              "wrong_grain",
+              "unavailable",
+              "unresolved"
+            ]
+          },
+          "analysis_role": {
+            "type": "string",
+            "description": "Mutually exclusive use in the current unified design.",
+            "enum": [
+              "macro_primary",
+              "local_resolution",
+              "model_index_reference",
+              "descriptive_only",
+              "input_recovery_pending"
+            ]
+          },
+          "pair_status": {
+            "type": "string",
+            "description": "Estimability of the geographic overlap.",
+            "enum": [
+              "eligible",
+              "not_computed",
+              "insufficient_common_units",
+              "nonpositive_total",
+              "no_shared_physical_units",
+              "incomparable_epochs",
+              "input_recovery_pending",
+              "invalid_values"
+            ]
+          },
+          "exclusion_reason": {
+            "type": "array",
+            "description": "All non-estimation / non-primary reasons; absent common physical support does not mean zero overlap.",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "source_ids": {
+            "type": "array",
+            "description": "Original source catalog IDs.",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "lineage_group": {
+            "type": "string",
+            "description": "Shared original observation family."
+          }
+        }
+      }
+    },
+    "endpoint_registry": {
+      "type": "array",
+      "description": "Availability-only single-species and species-pair endpoint/roster choices; each locked before its new common metrics.",
+      "x-primary-key": [
+        "candidate_id"
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "row_id",
+          "dataset_id",
+          "network_id",
+          "species_id",
+          "count_unit",
+          "endpoint_rule",
+          "year0",
+          "year1",
+          "component_ids",
+          "cohort_id",
+          "epoch_sync_status",
+          "candidate_pair_count",
+          "selection_basis",
+          "selection_status",
+          "non_estimation_reasons",
+          "source_ids",
+          "source_sha256s",
+          "locked_at_utc",
+          "analysis_unit",
+          "species_a",
+          "species_b",
+          "count_unit_a",
+          "count_unit_b"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "description": "Stable source/network/taxon-or-unordered-pair/original-unit availability-audit key; independent of ecological effect values."
+          },
+          "row_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Output row_id or pair_row_id according to analysis_unit; null until the endpoint/cohort choice is resolved."
+          },
+          "dataset_id": {
+            "type": "string",
+            "description": "Input family."
+          },
+          "network_id": {
+            "type": "string",
+            "description": "Original network ID."
+          },
+          "species_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Harmonized single-species ID; null for a species-pair registry row."
+          },
+          "count_unit": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Single-species source unit; null for a pair, whose two units are recorded separately."
+          },
+          "endpoint_rule": {
+            "type": "string",
+            "description": "Fixed rule identifier.",
+            "enum": [
+              "jncc_v39_exact_years",
+              "mapppd_earliest_then_latest_available_pair",
+              "fixed_palmer_1991_2017",
+              "fixed_signy_1996_2019",
+              "fixed_ross_1985_2024",
+              "fixed_emperor_2009_2018",
+              "no_comparable_rule",
+              "pair_jncc_exact_shared_census_years",
+              "pair_mapppd_earliest_then_latest_shared_available_pair"
+            ]
+          },
+          "year0": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Earlier synchronous census / breeding-season start year; null for non-synchronous or unavailable endpoint."
+          },
+          "year1": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Later synchronous census / breeding-season start year; never shifted to retain positive counts."
+          },
+          "component_ids": {
+            "type": "array",
+            "description": "Sorted fixed physical components; empty only when unresolved or none.",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "cohort_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SHA-256 of the sorted, dataset-prefixed fixed physical component IDs."
+          },
+          "epoch_sync_status": {
+            "type": "string",
+            "description": "Whether all retained units share the same early and late census years.",
+            "enum": [
+              "synchronous",
+              "asynchronous",
+              "unresolved"
+            ]
+          },
+          "candidate_pair_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Number of availability/method-compatible candidate epoch pairs, if applicable.",
+            "minimum": 0
+          },
+          "selection_basis": {
+            "type": "string",
+            "description": "Outcome-blind variables for NEW endpoint selection.",
+            "const": "source_contract_ids_availability_units_methods_only"
+          },
+          "selection_status": {
+            "type": "string",
+            "description": "Registry must be locked before new common metric computation.",
+            "enum": [
+              "pending_recovery",
+              "selected_not_locked",
+              "locked",
+              "not_estimable"
+            ]
+          },
+          "non_estimation_reasons": {
+            "type": "array",
+            "description": "Non-selection reasons retained for every candidate.",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "source_ids": {
+            "type": "array",
+            "description": "Source catalog IDs used for endpoint choice.",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "source_sha256s": {
+            "type": "array",
+            "description": "Original input content hashes.",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "uniqueItems": true
+          },
+          "locked_at_utc": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "ISO-8601 lock time; null while this document is a draft."
+          },
+          "analysis_unit": {
+            "type": "string",
+            "description": "Which output table this endpoint/cohort lock supports.",
+            "enum": [
+              "network_species",
+              "network_species_pairs"
+            ]
+          },
+          "species_a": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "First lexicographically sorted pair species; null for a single-species registry row."
+          },
+          "species_b": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Second pair species; null for a single-species registry row."
+          },
+          "count_unit_a": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Original first-species count unit for pair rows; null for single-species rows."
+          },
+          "count_unit_b": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Original second-species count unit for pair rows; null for single-species rows."
+          }
+        }
+      }
+    }
+  }
+}
