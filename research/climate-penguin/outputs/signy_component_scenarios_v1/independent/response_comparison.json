@@ -1,0 +1,141 @@
+{
+  "status": "passed",
+  "scope": "Full-precision independent response checks; no primary helper imports and no report/text claim verification by this script",
+  "tolerances": {
+    "ols_and_hc3_absolute": 1e-11,
+    "fractional_logit_absolute": 1e-08,
+    "primary_fractional_logit_score_absolute": 1e-07,
+    "relative": 0.0,
+    "reason": "OLS/HC3 differ at floating-point precision; independent exact score solve and primary default GLM stopping rule can differ slightly for fractional-logit parameters."
+  },
+  "fits": {
+    "frequency": {
+      "ols_params_max_absolute_difference": 1.6653345369377348e-16,
+      "ols_slope_and_hc3_interval_max_absolute_difference": 2.0816681711721685e-16,
+      "hc3_covariance_max_absolute_difference": 1.8735013540549517e-16,
+      "fractional_logit_params_max_absolute_difference": 1.7763568394002505e-15,
+      "primary_fractional_logit_score_max_abs": 9.669557063244486e-15,
+      "independent_fractional_logit_score_max_abs": 2.5499664541432583e-16
+    },
+    "composition": {
+      "ols_params_max_absolute_difference": 1.249000902703301e-16,
+      "ols_slope_and_hc3_interval_max_absolute_difference": 2.914335439641036e-16,
+      "hc3_covariance_max_absolute_difference": 3.3306690738754696e-16,
+      "fractional_logit_params_max_absolute_difference": 1.6312871053969502e-09,
+      "primary_fractional_logit_score_max_abs": 1.4437342324107883e-09,
+      "independent_fractional_logit_score_max_abs": 9.306097538412785e-16
+    },
+    "mean_response": {
+      "ols_params_max_absolute_difference": 8.326672684688674e-17,
+      "ols_slope_and_hc3_interval_max_absolute_difference": 2.636779683484747e-16,
+      "hc3_covariance_max_absolute_difference": 1.700029006457271e-16,
+      "fractional_logit_params_max_absolute_difference": 8.599476686299568e-11,
+      "primary_fractional_logit_score_max_abs": 7.458904892495971e-11,
+      "independent_fractional_logit_score_max_abs": 2.9073428122430667e-15
+    }
+  },
+  "conditional_scenarios": {
+    "n_rows": 36,
+    "n_finite_numeric_pairs": 378,
+    "n_matching_na_pairs": 18,
+    "n_wholly_withheld_rows": 3,
+    "max_absolute_difference_by_field": {
+      "reference_sic": 0.0,
+      "target_sic": 1.4210854715202004e-14,
+      "delta_sic_pp": 1.4210854715202004e-14,
+      "reference_ols": 3.3306690738754696e-16,
+      "reference_fractional_logit": 3.872591136655501e-11,
+      "future_ols": 3.3306690738754696e-16,
+      "change_ols": 1.6609977282477928e-16,
+      "change_ci_low": 7.216449660063518e-16,
+      "change_ci_high": 6.800116025829084e-16,
+      "future_fractional_logit": 1.9221874092423263e-10,
+      "change_fractional_logit": 1.5349282955767762e-10
+    }
+  },
+  "controlled_reductions": {
+    "n_rows": 12,
+    "n_finite_numeric_pairs": 114,
+    "n_matching_na_pairs": 18,
+    "n_wholly_withheld_rows": 3,
+    "max_absolute_difference_by_field": {
+      "reference_sic": 0.0,
+      "target_sic": 0.0,
+      "delta_sic_pp": 0.0,
+      "reference_ols": 3.3306690738754696e-16,
+      "reference_fractional_logit": 3.872591136655501e-11,
+      "future_ols": 2.220446049250313e-16,
+      "change_ols": 8.326672684688674e-17,
+      "change_ci_low": 4.996003610813204e-16,
+      "change_ci_high": 5.828670879282072e-16,
+      "future_fractional_logit": 1.7688606135379814e-10,
+      "change_fractional_logit": 1.3816014998724313e-10
+    }
+  },
+  "accounting": {
+    "n_rows": 12,
+    "matching_na_pairs": 5,
+    "max_absolute_difference_by_field": {
+      "frequency_change": 9.71445146547012e-17,
+      "composition_change": 8.955509944730267e-17,
+      "covariation_change": 2.3852447794681098e-18,
+      "sum_component_changes": 1.6740081543176188e-16,
+      "mean_response_change": 1.6609977282477928e-16
+    }
+  },
+  "summary_shape_max_absolute_difference": 1.608344013526164e-10,
+  "checked_file_hashes": [
+    {
+      "path": "outputs/signy_component_scenarios_v1/fit_parameters.json",
+      "sha256": "c16bc0bc95e8527d39e4f1619287ecb11f48046e16a09934174363a146c9d093"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/summary.json",
+      "sha256": "b7bec06b3a31ab225751b82c2608c87bbb62c3c83b56ecb7577a241c9a307e61"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/independent/diet_response_verification.json",
+      "sha256": "5cc6a11b97e3f785aa0a1eace0340e76ff68b081bd121926236a43be367e1a60"
+    },
+    {
+      "path": "outputs/signy_diet_components_v1/gentoo_primary_nine_seasons.csv",
+      "sha256": "fc483ae990f9a4f6137edebbe02f4efaab003cd3f6de65d0c313407d55f23a57"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/component_scenarios.csv",
+      "sha256": "87ee32921ab051f62f0daf047a793359d1b9e36c67817b15df1e624c0d85c537"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/controlled_reductions.csv",
+      "sha256": "15d2fef65047ee1c9a3c30b8ffa26927a25b18c2d22fa37c057c1d27604a8770"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/slope_accounting_scenarios.csv",
+      "sha256": "6656aaffe2ab7c2dc9d82369205d78deee0b5b9ee2166d152270648ece490dc3"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/independent/diet_conditional_scenarios.csv",
+      "sha256": "1bb85c96f96c9475798286d712e01a9d620a9b165d7d7cadd5d41c6579074a49"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/independent/diet_controlled_reductions.csv",
+      "sha256": "475344c89ee9a0f2dd3b38074f93065aaf889d44b5cd9e7fdc4596c48ad15771"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/independent/diet_accounting_scenarios.csv",
+      "sha256": "b1e72f040bb917bc7ad3830641c8755bd2ceb99ad93d6b9abca3037ff802c1d4"
+    },
+    {
+      "path": "work/signy_component_scenarios_v1/analyze.py",
+      "sha256": "b20a0b6dfb7cf8d62e7e39efe3708f7dfd4b3ce64d35b24d332160fb288b85bc"
+    },
+    {
+      "path": "work/signy_component_scenarios_v1/independent/compare_responses.py",
+      "sha256": "56e93193a238e9c3fb13006a27cf9df2aed53d9db5020e3ecd92b74823aa295e"
+    },
+    {
+      "path": "work/signy_component_scenarios_v1/independent/diet_responses.py",
+      "sha256": "913889ac3237041621056986da870391f537a50e4de074989086a36a67a4b68b"
+    }
+  ]
+}
