@@ -2,17 +2,17 @@
 
 **English title:** Lower sea ice is associated with reduced dietary separation among sympatric penguins at Signy Island: nine breeding seasons and conditional future scenarios
 
-研究論文ドラフト v1 — 2026-11-05。著者・所属・投稿先は未設定。
+研究論文ドラフト v1 — 2026-11-06、Palmerの外部地域比較を追加。著者・所属・投稿先は未設定。
 
 ## Abstract
 
-Climate change may alter not only species-specific diets but also dietary separation among coexisting predators. We analysed stomach composition of Adélie, chinstrap and gentoo penguins at Signy Island over nine matched breeding seasons (2001/02–2009/10; 772 stomach samples). Dietary separation was defined as the mean absolute difference in fish mass fraction between gentoo penguins and each of the other two species, conditional on fish plus crustacean mass. Separation increased with antecedent August–November sea-ice concentration (SIC; r = 0.784; exact permutation p = 0.0133; adjustment across three dietary metrics p = 0.0342). The fitted change was 0.118 per 10 percentage points of SIC (HC3 95% interval 0.019–0.217). The association persisted under stomach-count balancing and, for the gentoo–Adélie pair, restriction to overlapping sampling dates. Krill-size and maturity-label analyses did not establish corresponding convergence at finer dietary resolution. Holding the observed relationship fixed, a 10-percentage-point SIC reduction from the 1995–2014 reference implies a 0.118 decrease in separation; this is a conditional sensitivity, not a validated ecological forecast. Three CMIP6 models illustrate possible exposure changes but show substantial historical coastal biases. These results identify a local, interannual association between sea ice and realized dietary separation, principally involving gentoo diet variation. They do not establish increased competition, causal effects of warming, or convergence of the full ecological niche. Limited temporal replication, exploratory selection and temporal dependence constrain inference.
+Climate change may alter dietary separation among coexisting predators. We analysed stomach composition of Adélie, chinstrap and gentoo penguins at Signy Island over nine matched breeding seasons (2001/02–2009/10; 772 stomach samples). Separation was the mean absolute difference in fish mass fraction between gentoo penguins and each other species, conditional on fish plus crustacean mass. Separation increased with antecedent August–November sea-ice concentration (SIC; r = 0.784; exact permutation p = 0.0133; adjustment across three dietary metrics p = 0.0342). The fitted change was 0.118 per 10 SIC percentage points (HC3 95% interval 0.019–0.217). The association persisted under stomach-count balancing and, for the gentoo–Adélie pair, restriction to overlapping sampling dates. Finer krill-size and maturity-label analyses did not establish corresponding convergence. An external comparison used published mean food wet-mass percentages for the gentoo–Adélie pair in six Palmer-region seasons (2009/10–2014/15) and a harmonized Signy food denominator. Mean pairwise separation was 0.0127 at Palmer and 0.3624 at Signy; the Palmer SIC association was weak (r = 0.207; exact p = 0.778). The unaltered Signy pair model overpredicted all six Palmer seasons and had mean absolute error 0.406 versus 0.350 for the fixed Signy mean. Colonies, periods and sampling differ, so this retrospective comparison does not establish different biological climate effects between regions. Holding the Signy three-species relationship fixed, a 10-point SIC reduction implies a 0.118 decrease in separation, a conditional sensitivity rather than a validated forecast. Three CMIP6 models illustrate exposure changes but show substantial coastal biases. The results retain a local Signy association, principally involving gentoo diet variation, while showing that its pairwise relationship cannot be transferred unchanged to the observed Palmer cohort. Limited temporal replication, exploratory selection and temporal dependence constrain inference; competition and convergence of the full ecological niche remain untested.
 
 **Keywords:** Pygoscelis; sea ice; dietary separation; realized niche; climate scenarios; Southern Ocean
 
 ## 要旨
 
-温暖化に伴う環境変化は、各種の食性だけでなく、共存する種どうしの食性差も変える可能性がある。本研究はSigny島のアデリー、ヒゲ、ジェンツーペンギンを対象に、同じ9繁殖季節に対応する772胃試料を用いて、この差と先行海氷との関係を調べた。ジェンツーと他二種の魚割合の平均絶対差は、8–11月の海氷密接度と正に相関した。胃数の均等化でも関係は残り、ジェンツー–アデリーでは採取日を近づけた比較でも同方向だった。観測された関係を固定すれば、海氷密接度が10パーセントポイント低下する条件で、食性差は0.118縮小する。これを観測域内の条件付き感度として提示し、将来予報とは区別した。結果は、海氷の少ない年に粗い食性軸で種間差が小さくなるという局所的な関連を支持する。一方、餌サイズ・成熟段階を含むニッチ全体の収束や競争増加は示していない。
+温暖化に伴う環境変化は、各種の食性だけでなく、共存する種どうしの食性差も変える可能性がある。本研究はSigny島のアデリー、ヒゲ、ジェンツーペンギンを対象に、同じ9繁殖季節に対応する772胃試料を用いて、この差と先行海氷との関係を調べた。ジェンツーと他二種の魚割合の平均絶対差は、8–11月の海氷密接度と正に相関した（r = 0.784）。胃数の均等化でも関係は残り、ジェンツー–アデリーでは採取日を近づけた比較でも同方向だった。外部比較では、二種の食物中魚割合差に指標を揃え、Palmer地域の公開年平均6季節を照合した。二種差の平均はSigny 0.3624、Palmer 0.0127で、Palmerの海氷との関連は弱かった（r = 0.207、完全置換p = 0.778）。Signyで固定した二種モデルはPalmerの全6季節を過大予測し、学習地域の平均を用いる基準より誤差が大きかった。この比較は地域・年代・コロニー・採集条件の差を伴い、地域間の気候効果の差を立証するものではない。Signyの三種観測関係を固定すれば、海氷密接度10パーセントポイントの低下に対し食性差は0.118縮小するが、これは局所的な条件付き感度である。Signyの肯定的関連を保持しつつ、観測されたPalmerの二種関係へそのまま移せるという一般化は支持されなかった。餌サイズ・成熟段階を含むニッチ全体の収束や競争増加は示していない。
 
 ## 1. はじめに
 
@@ -21,6 +21,8 @@ Climate change may alter not only species-specific diets but also dietary separa
 ペンギンの食性と海氷の関連自体は新しい問題ではない。Youngflesh et al.（2026）は、衛星に基づくアデリーペンギンの食性指標を用いて海氷と魚・オキアミ利用の関連を示した。McMahon et al.（2019）は、長期の同位体記録からジェンツーとヒゲの栄養応答の分岐を報告した。一方、Wawrzynek-Borejko et al.（2022）は三種の食性が高く類似する場合と、餌サイズ・成熟段階を調べる重要性を示している。Signyでも、アデリーとヒゲの食性および繁殖成績と餌個体群の関係が調べられてきた（Lynnes et al., 2004）。したがって必要なのは、海氷と食性の関連や三種の類似性を再提示することだけではなく、**同所・同年の種間差が、海氷の年変動とともにどう変わるか**を数量化することである。
 
 本研究は公開胃内容物データを統合し、ジェンツーと他二種の魚・甲殻類という粗い食性軸の差が、低海氷年に小さくなるかを検討する。対立する見方は、種特異的な資源利用差が海氷条件を通じておおむね維持される、というものである。ただし本研究は事前登録された検証ではなく、既存の探索的解析で得られた関係を整理し、試料数・採取日の感度と将来への移用可能性を評価する研究である。さらに、同じ関係が維持されるという仮定の下で、海氷減少に対する食性差の条件付き変化を示す。
+
+地域外への適用可能性は、Palmer周辺の二種の公開胃内容物集計（Pickett et al., 2018）で別に調べた。対象種と食物湿重量の指標を揃え、地域内の海氷関連が再び見られるか、Signyで学習した関係が外部地域の食性差の水準を予測できるか、という二つの問いを分けた。
 
 ## 2. 方法
 
@@ -50,6 +52,20 @@ Pearsonの相関と D～SIC の線形回帰を計算した。傾きはSIC 10パ�
 
 モデルの最近傍沿岸セルと観測0–100 km平均には空間尺度の差があり、差分補正はバイアスの定常性を仮定する。算出値は「将来平均SICに対応する条件付きD」であって、将来の年々のDの分布や非線形モデルでの将来Dの期待値ではない。HC3区間は係数の不確実性のみを表し、将来予測区間ではない。生態学的応答の定常性を仮定する点を一貫して明示した。
 
+### 2.5 Palmer地域における二種の外部比較
+
+Pickett et al.（2018）のTable 1から、Palmer地域のアデリー・ジェンツー各6季節（2009/10–2014/15）の魚湿重量割合の公表平均を取得した。原表の年は繁殖季開始年であり、調査期は12月末から翌年2月中旬の育雛期である。これは個体別胃質量ではなく、胃試料ごとの食物重量構成比を平均した公表集計である。ジェンツーは主にBiscoe Point、アデリーはHumble/Torgersenの別コロニーに由来する。同じPalmer地域の比較として扱い、同一島・同一コロニーでの再現とは数えない。
+
+対応するSignyの指標を、各胃の p = F/(F+C+頭足類質量+その他食物質量) の種・季節内等重み平均とした。非食物を加えず、甲殻類の内訳であるオキアミを重複加算しない。既存の原胃品質条件を保持し、有効胃はアデリー349、ジェンツー73だった。Palmerは原表の平均魚百分率を100で割り、両地域で D_GA = |p̄Gentoo − p̄Adélie| を計算した。この二種指標は2.1節の三種Dとは別の推定対象である。原総内容物を分母とするF/TOTAL_MASSと、従来のF/(F+C)をSigny内の感度分析とした。
+
+海氷は2.2節と同じ月次原データから、PalmerではBISCとLITCの0–100 km系列を等重みで平均し、季節開始年の8–11月を4か月等重みで集約した。GOPT、BISC、LITCの各季で全4完全月を要求した。BISC単独・LITC単独も感度分析としたが、重なる海域の代理系列を独立地域とは数えない。
+
+地域ごとに相関、SIC 10ポイント当たりの傾き、HC3区間、年ラベルの全置換、一季節除外を計算した。Palmerは6! = 720通り、Signyは9! = 362,880通りで、年交換可能性を条件とする探索的診断である。三種解析の三指標補正をこの別解析へ流用せず、プロジェクト全探索の多重比較補正も行っていない。地域間の傾き差・相関差の有意性は検定していない。15地域×季節は14の異なる暦年開始年に対応し、独立した15島・15気候年の標本として統合しない。
+
+移用の診断では、Signyの二種9季節だけで線形モデルを適合し、その切片・傾きを変えずにPalmerへ適用した。比較基準は固定したSignyの平均D_GAで、Palmerの応答から基準値を学習しなかった。SignyのSIC観測域内にあるPalmerの季節を分け、範囲外予測をクリップせず表示した。解析仕様はこの拡張での海氷–食性相関を計算する前に文書化したが、既存Signy結果とPalmer公開食性表は既知であり、事前登録・前向き予測ではない。
+
+Palmerの平均は0.1パーセントポイント単位の丸め値で、胃ごとの値・日付を復元していない。4カテゴリー平均の和が99.9%の行も再正規化しなかった。Table 1のnの合計はアデリー136、ジェンツー129で、後者は方法本文の128と不一致のため、そのまま注記した。nに基づく精密な重み付けや推定個体データの生成は行わなかった。[出典・抽出照合](../../work/palmer_signy_diet_external_v1/sources/source_notes.md)、[固定した解析仕様](../../work/palmer_signy_diet_external_v1/DESIGN.md)、[再計算結果](../palmer_signy_diet_external_v1/REPORT_JA.md)を公開する。
+
 ## 3. 結果
 
 ### 3.1 低海氷年の食性差縮小
@@ -72,6 +88,19 @@ CMIP6の12条件のうち11条件は差分補正後の平均SICが観測域内�
 
 過去年のみで順次適合した4年の診断では、平均値基準のMAE 0.315に対し線形回帰は0.179、fractional-logitは0.166だった（表S2）。これは指標選択後の同一島の事後的診断であり、独立した将来予測性能の検証ではない。
 
+### 3.4 Palmerでは二種差が小さく、Signyからの固定関係の移用は改善しなかった
+
+食物成分の和を分母とする二種D_GAの9季平均はSignyで0.3624、Palmerの6季平均は0.0127だった（魚割合差として36.24対1.27パーセントポイント；図4）。Palmerの各季のD_GAは0.001–0.043で、両種とも魚割合の小さい組成だった。以下は三種の主解析と別の二種比較である。
+
+| 地域 | 対応季節数 | 平均D_GA（0–1） | SICとのr | SIC +10pp当たり傾き | HC3 95%区間 | 年交換可能性を仮定する完全置換p |
+| --- | ---: | ---: | ---: | ---: | --- | ---: |
+| Signy | 9 | 0.3624 | 0.7818 | 0.1175 | 0.0177–0.2173 | 0.0132 |
+| Palmer | 6 | 0.0127 | 0.2067 | 0.00225 | −0.02418–0.02868 | 0.7778 |
+
+Palmerのrは一季節除外で−0.318～+0.737と不安定で、正の年次関連を支持する証拠は得られなかった。BISC単独とLITC単独のrは0.205と0.208で、代理点の変更によって結論は変わらなかった。Signyの食物分母と従来F/(F+C)による平均二種差の違いは1.37×10⁻⁸で表示精度では一致し、原総内容物を分母とする感度でもr = 0.7808だった。これらは厳密な分母同一性や地域間の関連の有意差を意味しない。
+
+Signyで固定した切片・傾きをPalmerへ移すと、全6季節を過大予測した。平均絶対誤差（MAE、D_GAの0–1単位）は線形モデル0.4060、固定Signy平均の基準0.3497だった。Palmerの2013/14季だけはSICがSigny上限を0.326ポイント上回ったが、この季節を除いた観測域内5季節でもMAEは0.3538対0.3474で改善しなかった。これは[固定モデルの地域外移用診断](../palmer_signy_diet_external_v1/signy_to_palmer_transport.csv)であり、Palmerデータに再適合した予測性能ではない。
+
 ## 4. 考察
 
 ### 4.1 主張の中心：種間差は海氷とともに変動する
@@ -86,15 +115,19 @@ CMIP6の12条件のうち11条件は差分補正後の平均SICが観測域内�
 
 一方、海氷と共変する海況や餌資源、漁業、捕食者密度が将来変化すれば、過去の関連は維持されない可能性がある。本研究は温度上昇から餌資源を経て食性へ至る因果経路を推定していない。CMIP6の沿岸バイアスも大きいため、特定の排出シナリオで何年までにどれだけ収束するという予報は主張しない。固定幅の海氷減少感度を主結果とし、モデル別の将来気候は、その感度が適用され得る範囲と適用不能な範囲を示す補助情報と位置づける。
 
+Palmerへの二種モデルの移用では、Signyと海氷範囲が重なる5季節に限っても固定平均の基準を上回る精度が得られなかった。この結果はSignyの局所的な正の共変動を取り消すものではないが、海氷値が似ていれば食性差の水準も同じ式で推定できる、という移用を支持しない。したがって三種の将来感度もSignyの観測関係を固定した条件付き計算として保持する。二種の外部移用が不成功だったことから、三種の将来変化量を外部地域へ拡張することはできない。
+
 ### 4.3 ニッチと研究範囲
 
 魚・甲殻類の構成が近づいても、餌の種、サイズ、採餌深度や場所、日内・季節時間が分かれていれば、全体のニッチは重ならない。また、同じ餌の利用が増えても、餌が十分に供給される場合には競争増加を伴わない。したがって「海氷減少で競争が激化する」「共存が崩れる」は本データから導かない。補足のサイズ・成熟度結果は、この区別の必要性を示すが、細分化されたニッチの維持を肯定する結果ではない。
 
-研究規模は1島・9年であり、南極全体に一般化するマクロ生態学的検証はまだ成立していない。ここで示した同所・同年の種間距離という応答は、地域を追加する際の共通単位になる。今後は地点間の平均差と地点内の年変動を分け、独立地点・年代で効果を評価する必要がある。植生、塩分、繁殖時期に関するプロジェクト内の別解析は、今回の食性関係と同じ標本で検証されていないため、説明変数や裏づけとして統合しなかった。
+三種の主解析は1島・9年であり、追加したPalmerは別コロニー由来の二種・6季節の地域比較である。Palmerで食性差の平均水準が小さいことは観測されたが、地域と年代、種とコロニー、採集時期や胃試料の集計条件を分離できない。Palmerの公開平均の丸め、ジェンツーのnの不一致、個体別日付の不在も残る。小標本での弱い相関を「Palmerでは海氷の効果がない」「地域間で気候効果が有意に異なる」と読むことはできない。今回の追加が示したのは、観測された外部地域・年代へSignyの二種関係をそのまま移す実用上の限界である。
+
+今後は地点間の平均差と地点内の年変動を分け、同じ採集段階で複数地域・年代の効果を評価する必要がある。植生、塩分、繁殖時期に関するプロジェクト内の別解析は、今回の食性関係と同じ標本で検証されていないため、説明変数や裏づけとして統合しなかった。
 
 ## 5. 結論
 
-Signy島の9繁殖季節では、海氷が少ない年ほどジェンツーと他二種の魚・甲殻類の食性差が小さかった。この関係は胃数の不均衡だけでは説明されず、ジェンツー–アデリーでは採取日制限後も残った。観測関係を固定した海氷減少シナリオは、粗い食性軸の種間差が縮小する可能性を数量化する。論文の主張はこの局所的関連と条件付き変化に置き、将来のニッチ全体・競争・個体群応答の確定的予報には広げない。
+Signy島の9繁殖季節では、海氷が少ない年ほどジェンツーと他二種の魚・甲殻類の食性差が小さかった。この関係は胃数の不均衡だけでは説明されず、ジェンツー–アデリーでは採取日制限後も残った。一方、Palmerの二種6季節では食性差の水準が小さく、海氷との関連は弱く、Signyで固定した二種モデルの移用も固定平均基準より改善しなかった。地域・年代・観測条件の差があるため、気候効果の地域差やその原因は判定できない。観測関係を固定した海氷減少シナリオはSignyの局所的な条件付き感度として提示し、将来のニッチ全体・競争・個体群応答の確定的予報には広げない。
 
 ## 図
 
@@ -109,6 +142,10 @@ Signy島の9繁殖季節では、海氷が少ない年ほどジェンツーと�
 ![図3](figures/Figure_3_conditional_scenarios.png)
 
 **図3. 条件付き海氷減少感度と将来の気候曝露。** A：観測気候基準48.683%からの減少に対するDの変化。青帯は線形係数のみのHC3 95%区間で、将来予測区間ではない。両モデルとも観測関係を固定した。B：観測基準に各CMIP6モデルの将来–歴史差を加えたSIC。灰帯は食性解析9年のSIC範囲、縦点線は観測基準。世紀中頃は2041–2060年、世紀末は2081–2100年。×は範囲外で食性応答を算出しない条件。モデル間の幅は確率区間ではない。
+
+![図4](../palmer_signy_diet_external_v1/Figure_1_external_comparison.png)
+
+**図4. 二種食性差の外部地域比較と固定関係の移用。** A：Signy 9季節とPalmer 6季節のD_GAと先行SIC。縦軸は魚割合差のパーセントポイント（100×D_GA）で、両地域を同じ0–90の尺度に表示する。B：Palmerだけを0–5の別尺度で拡大し、小さい食性差の年変動を示す。C：Palmerの各季節の観測値、Signyの切片・傾きを固定した予測、固定Signy平均の基準。2013/14季のSICはSignyの学習範囲上限を0.326ポイント上回る。地域内の季節を観測単位とし、全15点を独立した15気候年として統計処理していない。A・Bの傾きや相関の違いは、地域差の有意性の検定ではない。[元年次値](../palmer_signy_diet_external_v1/annual_pair_comparison.csv)と[移用結果](../palmer_signy_diet_external_v1/signy_to_palmer_transport.csv)を併記する。
 
 ## 表
 
@@ -148,7 +185,7 @@ Signy島の9繁殖季節では、海氷が少ない年ほどジェンツーと�
 
 ## データ・コードの利用可能性
 
-原胃内容物は下記BAS DOI、海氷はOSI SAF DOIで公開されている。本稿の図表、集計CSV、入力ハッシュ、文献照合記録、解析および図表生成コードはminaリポジトリのresearch/climate-penguinに保存した。再実行手順は[README](README.md)を参照。CMIP6の取得ストア・実験・版は同梱表で追跡できる。
+原胃内容物は下記BAS DOI、海氷はOSI SAF DOIで公開されている。Palmerの公開年平均はPickett et al.（2018）のTable 1から抽出し、原著のCC BY 4.0に従って出典・変換内容を示した。個体別のPalmer胃内容物データを取得したとは主張しない。本稿の図表、集計CSV、入力ハッシュ、文献照合記録、解析および図表生成コードはminaリポジトリのresearch/climate-penguinに保存した。再実行手順は[README](README.md)、外部比較の[出典・再計算](../palmer_signy_diet_external_v1/REPORT_JA.md)を参照。CMIP6の取得ストア・実験・版は同梱表で追跡できる。
 
 ## 謝辞・宣言（投稿前に著者確認）
 
@@ -166,6 +203,8 @@ McMahon, Kelton W.; Michelson, Chantel I.; Hart, Tom; McCarthy, Matthew D.; Patt
 Wawrzynek-Borejko, Justyna; Panasiuk, Anna; Hinke, Jefferson T.; Korczak-Abshire, Małgorzata (2022). Are the diets of sympatric Pygoscelid penguins more similar than previously thought? Polar Biology 45(10), 1559-1569. https://doi.org/10.1007/s00300-022-03090-9
 
 Lynnes, A.S.; Reid, K.; Croxall, J.P. (2004). Diet and reproductive success of Adélie and chinstrap penguins: linking response of predators to prey population dynamics Polar Biology 27(9), 544-554. https://doi.org/10.1007/s00300-004-0617-1
+
+Pickett, Erin P.; Fraser, William R.; Patterson-Fraser, Donna L.; Cimino, Megan A.; Torres, Leigh G.; Friedlaender, Ari S. (2018). Spatial niche partitioning may promote coexistence of Pygoscelis penguins as climate-induced sympatry occurs. Ecology and Evolution 8(19), 9764–9778. https://doi.org/10.1002/ece3.4445
 
 Dunn, Michael J; Waluda, Claire; Adlard, Stacey; Lynnes, Amanda; Morley, Tim; Fox, Derren (2022). Annual samples and measurements of diet composition of Adelie penguins at Signy Island, from 1997 to 2020. Version 1.0. NERC EDS UK Polar Data Centre [Data set]. https://doi.org/10.5285/eb421e6d-b93b-4174-904b-9a7b0b401403
 

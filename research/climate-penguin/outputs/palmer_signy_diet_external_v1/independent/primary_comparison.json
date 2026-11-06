@@ -1,0 +1,136 @@
+{
+  "status": "PASS",
+  "checked_utc": "2026-11-06T06:45:14.732107+00:00",
+  "independent_recalculation_script": "recalculate.py",
+  "comparison_script": "compare_primary.py",
+  "absolute_tolerance": 1e-12,
+  "relative_tolerance": 1e-12,
+  "numeric_comparisons": 361,
+  "exact_comparisons": 321,
+  "maximum_numeric_absolute_difference": {
+    "difference": 1.4210854715202004e-14,
+    "field": "sensitivity[0].sic_max"
+  },
+  "compared_tables": {
+    "annual_pair_comparison.csv": {
+      "rows": 15,
+      "fields": [
+        "Adelie",
+        "Gentoo",
+        "distance",
+        "region",
+        "sic_aug_nov",
+        "signed_gap",
+        "year"
+      ]
+    },
+    "annual_ice_proxies.csv": {
+      "rows": 21,
+      "fields": [
+        "sic_aug_nov",
+        "site_id",
+        "year"
+      ]
+    },
+    "signy_species_seasons.csv": {
+      "rows": 18,
+      "fields": [
+        "fish_food_mean",
+        "fish_total_mean",
+        "legacy_fish_crustacean_mean",
+        "n_source_stomachs",
+        "n_stomachs",
+        "region",
+        "species",
+        "year"
+      ]
+    },
+    "palmer_species_seasons.csv": {
+      "rows": 12,
+      "fields": [
+        "fish_food_mean",
+        "region",
+        "species",
+        "year"
+      ]
+    },
+    "signy_to_palmer_transport.csv": {
+      "rows": 6,
+      "fields": [
+        "Adelie",
+        "Gentoo",
+        "distance",
+        "in_training_ice_range",
+        "model_absolute_error",
+        "predicted_distance",
+        "prediction_in_response_range",
+        "region",
+        "sic_aug_nov",
+        "signed_gap",
+        "training_mean_absolute_error",
+        "training_mean_prediction",
+        "year"
+      ]
+    }
+  },
+  "diagnostics": {
+    "all_six_target_seasons_overpredicted": true,
+    "overprediction_count": 6,
+    "minimum_overprediction_fraction": 0.22570671405003967,
+    "maximum_overprediction_fraction": 0.6673394785073775,
+    "all_predictions_within_0_1_without_clipping": true,
+    "only_out_of_training_ice_support_years": [
+      2013
+    ],
+    "model_mae_worse_than_training_mean_all_six": true,
+    "model_rmse_worse_than_training_mean_all_six": true,
+    "model_mae_worse_than_training_mean_within_support_five": true,
+    "model_rmse_worse_than_training_mean_within_support_five": true,
+    "primary_minus_legacy_mean_distance": 1.3730115100418772e-08,
+    "primary_and_legacy_are_not_exactly_identical": true,
+    "signy_valid_stomachs": 422,
+    "season_counts": {
+      "Signy": 9,
+      "Palmer": 6
+    },
+    "unique_season_start_years": 14,
+    "method_notes": [
+      "Main three-species result is not this two-species contrast; keep its original value unchanged.",
+      "Palmer exact p is 560/720 using absolute Pearson statistic, not a doubled one-sided tail.",
+      "HC3 t intervals use 7 degrees of freedom for Signy and 4 for Palmer; they do not account for serial dependence.",
+      "Different significance within each region does not itself establish a between-region difference in slopes.",
+      "Both baseline and regression overpredict the target level; the failure diagnoses uncalibrated geographic transfer, not absence of any local ice response."
+    ]
+  },
+  "comparison_input_hashes": [
+    {
+      "file": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/independent/independent_results.json",
+      "sha256": "15adfd413030215ac2812a4cdebe545806efbe0d786d1b7cb6fb8dffa53891e0"
+    },
+    {
+      "file": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/summary.json",
+      "sha256": "3ee83192c9188c529f5a7c598e321c2fda35698254a2d72a838612c857aa333f"
+    },
+    {
+      "file": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/annual_pair_comparison.csv",
+      "sha256": "63103796741d475b6427a23ccf94d53caadbaa2dcee59a8db75af6e7e8440f8c"
+    },
+    {
+      "file": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/annual_ice_proxies.csv",
+      "sha256": "4f002563a411f30878d47c1eb3854ee5a7f01d070244ba86b9ba9eaa245fc92a"
+    },
+    {
+      "file": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/signy_species_seasons.csv",
+      "sha256": "673f2433a84f99663404f04c7cd10675aa988473ed09a84fe5970950bb99e365"
+    },
+    {
+      "file": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/palmer_species_seasons.csv",
+      "sha256": "7325152a6c217d2c389208f0769aaf7f96effaa2068223f9bcb8c1fd9fcb92ca"
+    },
+    {
+      "file": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/signy_to_palmer_transport.csv",
+      "sha256": "78abcc599a1af64a96a91180e989b68b3e5d46972233076457f06e07fc8b547b"
+    }
+  ],
+  "failures": []
+}

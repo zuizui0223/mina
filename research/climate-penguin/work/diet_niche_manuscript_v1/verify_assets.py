@@ -29,8 +29,10 @@ for file in out.glob('*.md'):
 for p in (out/'figures').glob('*.pdf'):assert p.read_bytes().startswith(b'%PDF')
 assert len(list((out/'figures').glob('*.pdf')))==3
 assert len(list((out/'figures').glob('*.png')))==3
-assert len(json.loads((out/'references.json').read_text(encoding='utf-8'))['references'])==8
+references=json.loads((out/'references.json').read_text(encoding='utf-8'))['references']
+assert len(references)==9
+assert next(r for r in references if r['id']=='Pickett2018')['doi']=='10.1002/ece3.4445'
 result=dict(status='pass',input_hashes=len(m['inputs']),years=9,stomachs=772,model_conditions=12,local_links=links,figures=3,
-            scope='Asset/source arithmetic and local links; not independent biological forecast validation')
+            references=len(references),scope='Signy asset/source arithmetic and all manuscript local links; external comparison verified in its own output; not biological forecast validation')
 (out/'validation.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result))
