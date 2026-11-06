@@ -1,0 +1,836 @@
+{
+  "status": "independent_recalculation_complete",
+  "analysis_date": "2026-11-06",
+  "independence": "Raw CSV loops, SciPy common exposure permutations, statsmodels HC3; no primary analysis helpers or numeric outputs used.",
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "statsmodels": "0.15.0"
+  },
+  "primary_species": "Gentoo",
+  "n_seasons": 9,
+  "n_stomachs": 73,
+  "source_manifest": [
+    {
+      "file": "Adelie_diet_summary.csv",
+      "sha256": "ab05193e94864ca05ea54a01154506f8e86f85291e2f01a68abab5d92229a04d"
+    },
+    {
+      "file": "Gentoo_diet_summary.csv",
+      "sha256": "6f2a5fa1fc136ad6102dee8cd1c429d24c8ab81b50077bd21eb03f4e80fbd902"
+    },
+    {
+      "file": "research/climate-penguin/outputs/climate_penguin/macro_monthly_seaice_1991_2020.csv",
+      "sha256": "b21b10743f3a56281d0cf62f55988823f55b645b6d3fbb1bf7c2d366dff1b3ae"
+    }
+  ],
+  "source_audit": [
+    {
+      "species": "Adelie",
+      "n_source": 350,
+      "n_valid": 349,
+      "n_excluded": 1,
+      "excluded_keys": [
+        {
+          "DATE": "2004-01-23",
+          "RECORD_ID": "20040123 AD034",
+          "failed_checks": [
+            "fish_plus_crustacean_not_excessive",
+            "food_not_excessive"
+          ]
+        }
+      ]
+    },
+    {
+      "species": "Gentoo",
+      "n_source": 74,
+      "n_valid": 73,
+      "n_excluded": 1,
+      "excluded_keys": [
+        {
+          "DATE": "2006-01-13",
+          "RECORD_ID": "20060113 GE8",
+          "failed_checks": [
+            "finite_food_components_and_total",
+            "crustacean_nonnegative",
+            "fish_plus_crustacean_positive",
+            "fish_plus_crustacean_not_excessive",
+            "food_positive",
+            "food_not_excessive"
+          ]
+        }
+      ]
+    }
+  ],
+  "ice_source_audit": {
+    "n_selected_months": 36,
+    "all_months_complete": true,
+    "all_days_match_calendar": true,
+    "unique_selected_keys": true,
+    "months_equally_weighted": true
+  },
+  "species_season_components": [
+    {
+      "species": "Adelie",
+      "year": 2001,
+      "n_stomachs": 50,
+      "n_positive_fish_mass": 0,
+      "positive_mass_frequency": 0.0,
+      "conditional_fish_fraction": null,
+      "mean_fish_fraction": 0.0,
+      "mean_fish_mass_g": 0.0,
+      "mean_crustacean_mass_g": 559.956,
+      "mean_food_mass_g": 559.956,
+      "sic_aug_nov": 23.43296905859118
+    },
+    {
+      "species": "Adelie",
+      "year": 2002,
+      "n_stomachs": 40,
+      "n_positive_fish_mass": 5,
+      "positive_mass_frequency": 0.125,
+      "conditional_fish_fraction": 0.021028084937870443,
+      "mean_fish_fraction": 0.0026285106172338054,
+      "mean_fish_mass_g": 1.45,
+      "mean_crustacean_mass_g": 563.3199999999999,
+      "mean_food_mass_g": 564.77,
+      "sic_aug_nov": 54.885130732938336
+    },
+    {
+      "species": "Adelie",
+      "year": 2003,
+      "n_stomachs": 39,
+      "n_positive_fish_mass": 12,
+      "positive_mass_frequency": 0.3076923076923077,
+      "conditional_fish_fraction": 0.026318091813831577,
+      "mean_fish_fraction": 0.00809787440425587,
+      "mean_fish_mass_g": 2.5871794871794873,
+      "mean_crustacean_mass_g": 340.62051282051283,
+      "mean_food_mass_g": 343.2076923076923,
+      "sic_aug_nov": 21.90128214834321
+    },
+    {
+      "species": "Adelie",
+      "year": 2004,
+      "n_stomachs": 40,
+      "n_positive_fish_mass": 14,
+      "positive_mass_frequency": 0.35,
+      "conditional_fish_fraction": 0.02237941914125816,
+      "mean_fish_fraction": 0.007832796699440356,
+      "mean_fish_mass_g": 2.3850000000000002,
+      "mean_crustacean_mass_g": 314.935,
+      "mean_food_mass_g": 317.32,
+      "sic_aug_nov": 23.871724105771342
+    },
+    {
+      "species": "Adelie",
+      "year": 2005,
+      "n_stomachs": 40,
+      "n_positive_fish_mass": 5,
+      "positive_mass_frequency": 0.125,
+      "conditional_fish_fraction": 0.09136712436212494,
+      "mean_fish_fraction": 0.011420890545265617,
+      "mean_fish_mass_g": 2.1825,
+      "mean_crustacean_mass_g": 322.49,
+      "mean_food_mass_g": 324.6725,
+      "sic_aug_nov": 45.12995764757516
+    },
+    {
+      "species": "Adelie",
+      "year": 2006,
+      "n_stomachs": 40,
+      "n_positive_fish_mass": 5,
+      "positive_mass_frequency": 0.125,
+      "conditional_fish_fraction": 0.0054540157887162065,
+      "mean_fish_fraction": 0.0006817519735895258,
+      "mean_fish_mass_g": 0.19,
+      "mean_crustacean_mass_g": 283.3275,
+      "mean_food_mass_g": 283.51750000000004,
+      "sic_aug_nov": 65.23213896203643
+    },
+    {
+      "species": "Adelie",
+      "year": 2007,
+      "n_stomachs": 40,
+      "n_positive_fish_mass": 2,
+      "positive_mass_frequency": 0.05,
+      "conditional_fish_fraction": 0.0018108495887712982,
+      "mean_fish_fraction": 9.054247943856491e-05,
+      "mean_fish_mass_g": 0.02,
+      "mean_crustacean_mass_g": 638.9725000000001,
+      "mean_food_mass_g": 638.9925000000001,
+      "sic_aug_nov": 66.68284803598858
+    },
+    {
+      "species": "Adelie",
+      "year": 2008,
+      "n_stomachs": 30,
+      "n_positive_fish_mass": 9,
+      "positive_mass_frequency": 0.3,
+      "conditional_fish_fraction": 0.018530192500020668,
+      "mean_fish_fraction": 0.0055590577500062004,
+      "mean_fish_mass_g": 1.4333333333333333,
+      "mean_crustacean_mass_g": 229.41666666666666,
+      "mean_food_mass_g": 230.85666666666665,
+      "sic_aug_nov": 22.89901563528637
+    },
+    {
+      "species": "Adelie",
+      "year": 2009,
+      "n_stomachs": 30,
+      "n_positive_fish_mass": 15,
+      "positive_mass_frequency": 0.5,
+      "conditional_fish_fraction": 0.11851251060212108,
+      "mean_fish_fraction": 0.05925625530106054,
+      "mean_fish_mass_g": 7.61,
+      "mean_crustacean_mass_g": 237.58666666666667,
+      "mean_food_mass_g": 245.2,
+      "sic_aug_nov": 44.64144256089533
+    },
+    {
+      "species": "Gentoo",
+      "year": 2001,
+      "n_stomachs": 10,
+      "n_positive_fish_mass": 7,
+      "positive_mass_frequency": 0.7,
+      "conditional_fish_fraction": 0.6339545760719087,
+      "mean_fish_fraction": 0.44376820325033617,
+      "mean_fish_mass_g": 213.6,
+      "mean_crustacean_mass_g": 274.7,
+      "mean_food_mass_g": 488.3,
+      "sic_aug_nov": 23.43296905859118
+    },
+    {
+      "species": "Gentoo",
+      "year": 2002,
+      "n_stomachs": 10,
+      "n_positive_fish_mass": 7,
+      "positive_mass_frequency": 0.7,
+      "conditional_fish_fraction": 0.3242351533108025,
+      "mean_fish_fraction": 0.22696460731756174,
+      "mean_fish_mass_g": 155.34,
+      "mean_crustacean_mass_g": 462.46000000000004,
+      "mean_food_mass_g": 617.8,
+      "sic_aug_nov": 54.885130732938336
+    },
+    {
+      "species": "Gentoo",
+      "year": 2003,
+      "n_stomachs": 9,
+      "n_positive_fish_mass": 5,
+      "positive_mass_frequency": 0.5555555555555556,
+      "conditional_fish_fraction": 0.21485757471443967,
+      "mean_fish_fraction": 0.11936531928579981,
+      "mean_fish_mass_g": 8.3,
+      "mean_crustacean_mass_g": 349.1222222222222,
+      "mean_food_mass_g": 357.4222222222222,
+      "sic_aug_nov": 21.90128214834321
+    },
+    {
+      "species": "Gentoo",
+      "year": 2004,
+      "n_stomachs": 10,
+      "n_positive_fish_mass": 2,
+      "positive_mass_frequency": 0.2,
+      "conditional_fish_fraction": 0.018776200671703134,
+      "mean_fish_fraction": 0.0037552401343406267,
+      "mean_fish_mass_g": 1.24,
+      "mean_crustacean_mass_g": 314.46999999999997,
+      "mean_food_mass_g": 315.71,
+      "sic_aug_nov": 23.871724105771342
+    },
+    {
+      "species": "Gentoo",
+      "year": 2005,
+      "n_stomachs": 7,
+      "n_positive_fish_mass": 6,
+      "positive_mass_frequency": 0.8571428571428571,
+      "conditional_fish_fraction": 0.4935496633412611,
+      "mean_fish_fraction": 0.4230425685782238,
+      "mean_fish_mass_g": 105.95714285714287,
+      "mean_crustacean_mass_g": 134.72857142857143,
+      "mean_food_mass_g": 240.68571428571428,
+      "sic_aug_nov": 45.12995764757516
+    },
+    {
+      "species": "Gentoo",
+      "year": 2006,
+      "n_stomachs": 7,
+      "n_positive_fish_mass": 7,
+      "positive_mass_frequency": 1.0,
+      "conditional_fish_fraction": 0.7450987889984555,
+      "mean_fish_fraction": 0.7450987889984555,
+      "mean_fish_mass_g": 152.15714285714287,
+      "mean_crustacean_mass_g": 75.84285714285714,
+      "mean_food_mass_g": 228.0,
+      "sic_aug_nov": 65.23213896203643
+    },
+    {
+      "species": "Gentoo",
+      "year": 2007,
+      "n_stomachs": 8,
+      "n_positive_fish_mass": 7,
+      "positive_mass_frequency": 0.875,
+      "conditional_fish_fraction": 0.9491018183271002,
+      "mean_fish_fraction": 0.8304640910362127,
+      "mean_fish_mass_g": 239.1375,
+      "mean_crustacean_mass_g": 72.3625,
+      "mean_food_mass_g": 311.5,
+      "sic_aug_nov": 66.68284803598858
+    },
+    {
+      "species": "Gentoo",
+      "year": 2008,
+      "n_stomachs": 6,
+      "n_positive_fish_mass": 2,
+      "positive_mass_frequency": 0.3333333333333333,
+      "conditional_fish_fraction": 0.5162315733872146,
+      "mean_fish_fraction": 0.17207719112907152,
+      "mean_fish_mass_g": 48.61666666666667,
+      "mean_crustacean_mass_g": 160.98333333333332,
+      "mean_food_mass_g": 209.6,
+      "sic_aug_nov": 22.89901563528637
+    },
+    {
+      "species": "Gentoo",
+      "year": 2009,
+      "n_stomachs": 6,
+      "n_positive_fish_mass": 5,
+      "positive_mass_frequency": 0.8333333333333334,
+      "conditional_fish_fraction": 0.46089232910627753,
+      "mean_fish_fraction": 0.384076940921898,
+      "mean_fish_mass_g": 46.35,
+      "mean_crustacean_mass_g": 78.33333333333333,
+      "mean_food_mass_g": 124.68333333333334,
+      "sic_aug_nov": 44.64144256089533
+    }
+  ],
+  "gentoo_primary_nine_seasons": [
+    {
+      "species": "Gentoo",
+      "year": 2001,
+      "n_stomachs": 10,
+      "n_positive_fish_mass": 7,
+      "positive_mass_frequency": 0.7,
+      "conditional_fish_fraction": 0.6339545760719087,
+      "mean_fish_fraction": 0.44376820325033617,
+      "mean_fish_mass_g": 213.6,
+      "mean_crustacean_mass_g": 274.7,
+      "mean_food_mass_g": 488.3,
+      "sic_aug_nov": 23.43296905859118
+    },
+    {
+      "species": "Gentoo",
+      "year": 2002,
+      "n_stomachs": 10,
+      "n_positive_fish_mass": 7,
+      "positive_mass_frequency": 0.7,
+      "conditional_fish_fraction": 0.3242351533108025,
+      "mean_fish_fraction": 0.22696460731756174,
+      "mean_fish_mass_g": 155.34,
+      "mean_crustacean_mass_g": 462.46000000000004,
+      "mean_food_mass_g": 617.8,
+      "sic_aug_nov": 54.885130732938336
+    },
+    {
+      "species": "Gentoo",
+      "year": 2003,
+      "n_stomachs": 9,
+      "n_positive_fish_mass": 5,
+      "positive_mass_frequency": 0.5555555555555556,
+      "conditional_fish_fraction": 0.21485757471443967,
+      "mean_fish_fraction": 0.11936531928579981,
+      "mean_fish_mass_g": 8.3,
+      "mean_crustacean_mass_g": 349.1222222222222,
+      "mean_food_mass_g": 357.4222222222222,
+      "sic_aug_nov": 21.90128214834321
+    },
+    {
+      "species": "Gentoo",
+      "year": 2004,
+      "n_stomachs": 10,
+      "n_positive_fish_mass": 2,
+      "positive_mass_frequency": 0.2,
+      "conditional_fish_fraction": 0.018776200671703134,
+      "mean_fish_fraction": 0.0037552401343406267,
+      "mean_fish_mass_g": 1.24,
+      "mean_crustacean_mass_g": 314.46999999999997,
+      "mean_food_mass_g": 315.71,
+      "sic_aug_nov": 23.871724105771342
+    },
+    {
+      "species": "Gentoo",
+      "year": 2005,
+      "n_stomachs": 7,
+      "n_positive_fish_mass": 6,
+      "positive_mass_frequency": 0.8571428571428571,
+      "conditional_fish_fraction": 0.4935496633412611,
+      "mean_fish_fraction": 0.4230425685782238,
+      "mean_fish_mass_g": 105.95714285714287,
+      "mean_crustacean_mass_g": 134.72857142857143,
+      "mean_food_mass_g": 240.68571428571428,
+      "sic_aug_nov": 45.12995764757516
+    },
+    {
+      "species": "Gentoo",
+      "year": 2006,
+      "n_stomachs": 7,
+      "n_positive_fish_mass": 7,
+      "positive_mass_frequency": 1.0,
+      "conditional_fish_fraction": 0.7450987889984555,
+      "mean_fish_fraction": 0.7450987889984555,
+      "mean_fish_mass_g": 152.15714285714287,
+      "mean_crustacean_mass_g": 75.84285714285714,
+      "mean_food_mass_g": 228.0,
+      "sic_aug_nov": 65.23213896203643
+    },
+    {
+      "species": "Gentoo",
+      "year": 2007,
+      "n_stomachs": 8,
+      "n_positive_fish_mass": 7,
+      "positive_mass_frequency": 0.875,
+      "conditional_fish_fraction": 0.9491018183271002,
+      "mean_fish_fraction": 0.8304640910362127,
+      "mean_fish_mass_g": 239.1375,
+      "mean_crustacean_mass_g": 72.3625,
+      "mean_food_mass_g": 311.5,
+      "sic_aug_nov": 66.68284803598858
+    },
+    {
+      "species": "Gentoo",
+      "year": 2008,
+      "n_stomachs": 6,
+      "n_positive_fish_mass": 2,
+      "positive_mass_frequency": 0.3333333333333333,
+      "conditional_fish_fraction": 0.5162315733872146,
+      "mean_fish_fraction": 0.17207719112907152,
+      "mean_fish_mass_g": 48.61666666666667,
+      "mean_crustacean_mass_g": 160.98333333333332,
+      "mean_food_mass_g": 209.6,
+      "sic_aug_nov": 22.89901563528637
+    },
+    {
+      "species": "Gentoo",
+      "year": 2009,
+      "n_stomachs": 6,
+      "n_positive_fish_mass": 5,
+      "positive_mass_frequency": 0.8333333333333334,
+      "conditional_fish_fraction": 0.46089232910627753,
+      "mean_fish_fraction": 0.384076940921898,
+      "mean_fish_mass_g": 46.35,
+      "mean_crustacean_mass_g": 78.33333333333333,
+      "mean_food_mass_g": 124.68333333333334,
+      "sic_aug_nov": 44.64144256089533
+    }
+  ],
+  "component_associations": {
+    "frequency": {
+      "status": "estimable",
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "mean_value": 0.6727072310405644,
+      "min_value": 0.2,
+      "max_value": 1.0,
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.7828999608378409,
+      "slope_per_10pp": 0.1116007180861297,
+      "intercept": 0.21554541844807426,
+      "hc3_slope_95_low": 0.026012998950077873,
+      "hc3_slope_95_high": 0.19718843722218155,
+      "hc3_slope_se": 0.036195061045492076,
+      "hc3_t_df": 7,
+      "leave_one_season_r_min": 0.7196498720316219,
+      "leave_one_season_r_max": 0.852233549208923,
+      "leave_one_season_r": {
+        "2001": 0.852233549208923,
+        "2002": 0.8050274139777798,
+        "2003": 0.7899849371378466,
+        "2004": 0.7915016542371623,
+        "2005": 0.7910890752253165,
+        "2006": 0.7196498720316219,
+        "2007": 0.7744725963898004,
+        "2008": 0.7442120228700566,
+        "2009": 0.7888035620993414
+      },
+      "detrended_r": 0.7817742314473045,
+      "first_difference_r": 0.7038353567602703,
+      "circular_extreme_count": 1,
+      "circular_denominator": 9,
+      "circular_shift_r": [
+        0.7828999608378409,
+        0.1286125517432007,
+        -0.1316101712002755,
+        -0.7312483575223228,
+        0.19751672001179008,
+        0.14411578649188383,
+        0.08679792905155329,
+        -0.43882514670274925,
+        -0.03825927271092129
+      ],
+      "n_permutations": 362880,
+      "r": 0.782899960837841,
+      "extreme_count": 4682,
+      "p_exact": 0.012902336860670193,
+      "max2_extreme_count": 8321,
+      "p_max2": 0.02293044532627866
+    },
+    "composition": {
+      "status": "estimable",
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "mean_value": 0.484077519769907,
+      "min_value": 0.018776200671703134,
+      "max_value": 0.9491018183271002,
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.6240985126219452,
+      "slope_per_10pp": 0.09369545739835415,
+      "intercept": 0.10026291830062085,
+      "hc3_slope_95_low": -0.03506001599991389,
+      "hc3_slope_95_high": 0.2224509307966222,
+      "hc3_slope_se": 0.054450711698291944,
+      "hc3_t_df": 7,
+      "leave_one_season_r_min": 0.44932362874740267,
+      "leave_one_season_r_max": 0.7589190328191987,
+      "leave_one_season_r": {
+        "2001": 0.7589190328191987,
+        "2002": 0.7301604087175799,
+        "2003": 0.5635486159081096,
+        "2004": 0.5576364790255468,
+        "2005": 0.62529140594228,
+        "2006": 0.5540047747001918,
+        "2007": 0.44932362874740267,
+        "2008": 0.6877402921344166,
+        "2009": 0.6284457704219141
+      },
+      "detrended_r": 0.5830856594707261,
+      "first_difference_r": 0.45880321154406895,
+      "circular_extreme_count": 2,
+      "circular_denominator": 9,
+      "circular_shift_r": [
+        0.6240985126219452,
+        0.16539061180018574,
+        -0.39003841346796697,
+        -0.679566801809417,
+        -0.0013781092886077776,
+        -0.08107292017769356,
+        0.016588905758951854,
+        -0.1825024499577709,
+        0.5284806645203735
+      ],
+      "n_permutations": 362880,
+      "r": 0.6240985126219453,
+      "extreme_count": 27033,
+      "p_exact": 0.07449570105820105,
+      "max2_extreme_count": 47015,
+      "p_max2": 0.12956073633156967
+    }
+  },
+  "mean_response_association": {
+    "status": "estimable",
+    "n_seasons": 9,
+    "years": [
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009
+    ],
+    "mean_value": 0.37206810562798887,
+    "min_value": 0.0037552401343406267,
+    "max_value": 0.8304640910362127,
+    "sic_min": 21.90128214834321,
+    "sic_max": 66.68284803598858,
+    "pearson_r": 0.7876286787480066,
+    "slope_per_10pp": 0.1177410074483909,
+    "intercept": -0.11024682302713522,
+    "hc3_slope_95_low": 0.020743101370796574,
+    "hc3_slope_95_high": 0.21473891352598523,
+    "hc3_slope_se": 0.041020431052526694,
+    "hc3_t_df": 7,
+    "leave_one_season_r_min": 0.6947873555653341,
+    "leave_one_season_r_max": 0.8952885689254622,
+    "leave_one_season_r": {
+      "2001": 0.8827763053525567,
+      "2002": 0.8952885689254622,
+      "2003": 0.7565232263118341,
+      "2004": 0.7565798328135974,
+      "2005": 0.7864862936254114,
+      "2006": 0.7182904280086012,
+      "2007": 0.6947873555653341,
+      "2008": 0.7686993760664739,
+      "2009": 0.7887030489232948
+    },
+    "detrended_r": 0.767900269799576,
+    "first_difference_r": 0.6866420347111065,
+    "circular_extreme_count": 1,
+    "circular_denominator": 9,
+    "circular_shift_r": [
+      0.7876286787480066,
+      0.1973044285730753,
+      -0.21650271316064373,
+      -0.6784008534505008,
+      0.013745303739574834,
+      0.006005987380058393,
+      -0.1157995920870455,
+      -0.30270457098970865,
+      0.3087233312471837
+    ],
+    "n_permutations": 362880,
+    "r": 0.7876286787480065,
+    "extreme_count": 4876,
+    "p_exact": 0.013436948853615521
+  },
+  "permutation_family": {
+    "n_permutations": 362880,
+    "n_prespecified_components": 2,
+    "n_variable_components": 2,
+    "components": {
+      "frequency": {
+        "status": "estimable",
+        "r": 0.782899960837841,
+        "extreme_count": 4682,
+        "p_exact": 0.012902336860670193,
+        "max2_extreme_count": 8321,
+        "p_max2": 0.02293044532627866
+      },
+      "composition": {
+        "status": "estimable",
+        "r": 0.6240985126219453,
+        "extreme_count": 27033,
+        "p_exact": 0.07449570105820105,
+        "max2_extreme_count": 47015,
+        "p_max2": 0.12956073633156967
+      }
+    }
+  },
+  "slope_accounting": {
+    "mean_frequency": 0.6727072310405644,
+    "mean_conditional_fraction": 0.484077519769907,
+    "constant_product_of_means": 0.3256424479333982,
+    "mean_fish_fraction": 0.37206810562798887,
+    "covariation_mean": 0.046425657694590665,
+    "component_slopes_per_10pp": {
+      "frequency": 0.05402339881567426,
+      "composition": 0.06302961170752598,
+      "covariation": 0.0006879969251906491
+    },
+    "sum_component_slopes_per_10pp": 0.11774100744839089,
+    "mean_response_slope_per_10pp": 0.11774100744839086,
+    "signed_slope_fraction": {
+      "frequency": 0.4588324831461478,
+      "composition": 0.5353242092408085,
+      "covariation": 0.0058433076130439705
+    },
+    "max_value_identity_error": 2.7755575615628914e-17,
+    "slope_identity_error": 2.7755575615628914e-17
+  },
+  "annual_accounting_terms": [
+    {
+      "year": 2001,
+      "frequency": 0.013211815905536668,
+      "composition": 0.10082337954143038,
+      "covariation": 0.0040905598699708485,
+      "mean_fish_fraction": 0.4437682032503361,
+      "sic_aug_nov": 23.43296905859118
+    },
+    {
+      "year": 2002,
+      "frequency": 0.013211815905536668,
+      "composition": -0.10752711574367536,
+      "covariation": -0.00436254077769777,
+      "mean_fish_fraction": 0.22696460731756174,
+      "sic_aug_nov": 54.885130732938336
+    },
+    {
+      "year": 2003,
+      "frequency": -0.05671049250567208,
+      "composition": -0.18110620377915632,
+      "covariation": 0.03153956763723001,
+      "mean_fish_fraction": 0.11936531928579983,
+      "sic_aug_nov": 21.90128214834321
+    },
+    {
+      "year": 2004,
+      "frequency": -0.2288269439794168,
+      "composition": -0.3130115619700748,
+      "covariation": 0.21995129815043402,
+      "mean_fish_fraction": 0.003755240134340627,
+      "sic_aug_nov": 23.871724105771342
+    },
+    {
+      "year": 2005,
+      "frequency": 0.08928114044080776,
+      "composition": 0.006371979473904312,
+      "covariation": 0.0017470007301135038,
+      "mean_fish_fraction": 0.42304256857822375,
+      "sic_aug_nov": 45.12995764757516
+    },
+    {
+      "year": 2006,
+      "frequency": 0.1584350718365088,
+      "composition": 0.17559089526543054,
+      "covariation": 0.08543037396311796,
+      "mean_fish_fraction": 0.7450987889984555,
+      "sic_aug_nov": 65.23213896203643
+    },
+    {
+      "year": 2007,
+      "frequency": 0.09792538186527042,
+      "composition": 0.3128252082489901,
+      "covariation": 0.09407105298855388,
+      "mean_fish_fraction": 0.8304640910362127,
+      "sic_aug_nov": 66.68284803598858
+    },
+    {
+      "year": 2008,
+      "frequency": -0.16428327467676254,
+      "composition": 0.021630264375628847,
+      "covariation": -0.010912246503192976,
+      "mean_fish_fraction": 0.17207719112907152,
+      "sic_aug_nov": 22.89901563528637
+    },
+    {
+      "year": 2009,
+      "frequency": 0.07775548520819098,
+      "composition": -0.015596845412477713,
+      "covariation": -0.0037241468072134964,
+      "mean_fish_fraction": 0.384076940921898,
+      "sic_aug_nov": 44.64144256089533
+    }
+  ],
+  "leave_one_season_accounting": [
+    {
+      "omitted_year": 2001,
+      "frequency": 0.060392628750797296,
+      "composition": 0.07985520620616318,
+      "covariation": 0.0001724897365819402,
+      "mean_response": 0.14042032469354243
+    },
+    {
+      "omitted_year": 2002,
+      "frequency": 0.060223662938437054,
+      "composition": 0.07465948089302932,
+      "covariation": 0.0018640686332144548,
+      "mean_response": 0.1367472124646808
+    },
+    {
+      "omitted_year": 2003,
+      "frequency": 0.06228488706593239,
+      "composition": 0.058731252240950736,
+      "covariation": -0.005847696880842715,
+      "mean_response": 0.1151684424260404
+    },
+    {
+      "omitted_year": 2004,
+      "frequency": 0.04844416092808579,
+      "composition": 0.0509359372948281,
+      "covariation": 0.005171315983799929,
+      "mean_response": 0.10455141420671381
+    },
+    {
+      "omitted_year": 2005,
+      "frequency": 0.05275387108856652,
+      "composition": 0.06119741933587525,
+      "covariation": 0.0037568527379946157,
+      "mean_response": 0.1177081431624364
+    },
+    {
+      "omitted_year": 2006,
+      "frequency": 0.04707116438641144,
+      "composition": 0.05643550234825265,
+      "covariation": 0.002894588146967598,
+      "mean_response": 0.1064012548816317
+    },
+    {
+      "omitted_year": 2007,
+      "frequency": 0.05270540428011691,
+      "composition": 0.03988485465889741,
+      "covariation": 0.0028677647800876742,
+      "mean_response": 0.09545802371910202
+    },
+    {
+      "omitted_year": 2008,
+      "frequency": 0.04796780227648387,
+      "composition": 0.07921593251044898,
+      "covariation": -0.008365278402879355,
+      "mean_response": 0.11881845638405351
+    },
+    {
+      "omitted_year": 2009,
+      "frequency": 0.05347045332007588,
+      "composition": 0.06171447812646187,
+      "covariation": 0.003026942020147363,
+      "mean_response": 0.11821187346668512
+    }
+  ],
+  "recovered_mass_descriptives": {
+    "mean_fish_mass_g": {
+      "mean_g": 107.8553835978836,
+      "min_g": 1.24,
+      "max_g": 239.1375,
+      "pearson_r": 0.6007973636789858,
+      "slope_g_per_10pp": 28.270980933461274
+    },
+    "mean_crustacean_mass_g": {
+      "mean_g": 213.66697971781304,
+      "min_g": 72.3625,
+      "max_g": 462.46000000000004,
+      "pearson_r": -0.4162466921486352,
+      "slope_g_per_10pp": -31.70909232034661
+    },
+    "mean_food_mass_g": {
+      "mean_g": 321.5223633156967,
+      "min_g": 124.68333333333334,
+      "max_g": 617.8,
+      "pearson_r": -0.04218998100222755,
+      "slope_g_per_10pp": -3.4381113868853443
+    }
+  },
+  "support_checks": {
+    "all_nine_seasons_have_positive_fish_mass": true,
+    "positive_counts_by_year": {
+      "2001": 7,
+      "2002": 7,
+      "2003": 5,
+      "2004": 2,
+      "2005": 6,
+      "2006": 7,
+      "2007": 7,
+      "2008": 2,
+      "2009": 5
+    },
+    "zero_positive_gentoo_seasons": [],
+    "max_direct_mean_minus_product_absolute_error": 5.551115123125783e-17,
+    "both_prespecified_components_vary": true,
+    "mass_means_include_zero_fish_stomachs": true,
+    "loo_accounting_recentres_P_and_C_in_each_subset": true
+  }
+}
