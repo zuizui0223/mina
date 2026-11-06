@@ -1,0 +1,743 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-11-06T09:04:23.818101+00:00",
+  "status": "passed_english_document_delivery_checks",
+  "base_commit_sha": "a0b678bad6b8bd57d1f73e687aa6c415416aebb3",
+  "scope": "English manuscript and supplement, exact existing figure reuse, formal CMIP6 source citations, Word conversion and two repository entry-point updates. No new ecological analysis.",
+  "document_verification": {
+    "status": "pass",
+    "checked_at_utc": "2026-11-06T09:00:57.048928+00:00",
+    "scope": "Pinned inputs, build hashes, complete whitespace-normalized visible-text order (math/image placeholders), native equations, tables, image bytes/order, local links and abstract length; excludes visual layout and scientific reanalysis.",
+    "checks_passed": 95,
+    "checks_total": 95,
+    "documents": [
+      {
+        "source": "MANUSCRIPT_EN.md",
+        "output": "Signy_diet_manuscript.docx",
+        "source_sha256": "dbf8293e0bcc36e7fa27c5aa215665c3d5a99560ef7b54776fe87bb91e6638ec",
+        "docx_sha256": "40e8e1dadb65711d75aebdbbb587d30793dc4de1fa0a42f397d4d551101bdda2",
+        "native_equations": 54,
+        "tables": 4,
+        "figures": 4
+      },
+      {
+        "source": "SUPPLEMENT_EN.md",
+        "output": "Signy_diet_supplement.docx",
+        "source_sha256": "75813c3741c4bb35bfab4b2258a38eccaddb392a7248e0af482fab378d1553af",
+        "docx_sha256": "0cba2cbf7adb159a0bf15368fe9bc4b056fa0566f024e80aac7fe1eb4b28cdf6",
+        "native_equations": 96,
+        "tables": 10,
+        "figures": 2
+      }
+    ],
+    "checks": [
+      {
+        "check": "source_manifest_contains_30_inputs",
+        "passed": true,
+        "count": 30
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/ASSET_MANIFEST.json"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/CMIP6_SOURCE_STORES.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Figure_1_data.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Figure_2_matched_data.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/MANUSCRIPT_JA.md"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/REFERENCES_VERIFIED.md"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/SUPPLEMENT_JA.md"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/TABLES.md"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_1_observed_support.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_2_effects_and_inference.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_3_conditional_sensitivity.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_S1_model_scenarios.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_S2_rolling_diagnostics.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/figures/Figure_1_observed_diet.png"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/figures/Figure_2_sampling_sensitivity.png"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/figures/Figure_3_conditional_scenarios.png"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/references.json"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/Figure_1_external_comparison.png"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/REPORT_JA.md"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/summary.json"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/Figure_1_component_scenarios.png"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/REPORT_JA.md"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/climate_scenarios.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/component_scenarios.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/controlled_reductions.csv"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/fit_parameters.json"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/summary.json"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_diet_components_v1/Figure_1_diet_components.png"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_diet_components_v1/REPORT_JA.md"
+      },
+      {
+        "check": "pinned_input",
+        "passed": true,
+        "path": "research/climate-penguin/outputs/signy_diet_components_v1/summary.json"
+      },
+      {
+        "check": "two_expected_documents",
+        "passed": true
+      },
+      {
+        "check": "document_output_name",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md"
+      },
+      {
+        "check": "markdown_build_hash",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md"
+      },
+      {
+        "check": "docx_build_hash",
+        "passed": true,
+        "output": "Signy_diet_manuscript.docx"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "SUPPLEMENT_EN.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../diet_niche_manuscript_v1/README.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../palmer_signy_diet_external_v1/REPORT_JA.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../diet_niche_manuscript_v1/CMIP6_SOURCE_STORES.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../signy_component_scenarios_v1/source_manifest.json"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../signy_component_scenarios_v1/component_scenarios.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../signy_component_scenarios_v1/annual_climate_support.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../diet_niche_manuscript_v1/figures/Figure_1_observed_diet.png"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../diet_niche_manuscript_v1/figures/Figure_2_sampling_sensitivity.png"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../diet_niche_manuscript_v1/figures/Figure_3_conditional_scenarios.png"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../palmer_signy_diet_external_v1/Figure_1_external_comparison.png"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../palmer_signy_diet_external_v1/annual_pair_comparison.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "link": "../palmer_signy_diet_external_v1/signy_to_palmer_transport.csv"
+      },
+      {
+        "check": "complete_visible_text_order",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "ast_characters": 35934,
+        "docx_characters": 35934,
+        "ast_text_sha256": "a242365613e3720637e9ba63dfd853f9236df4b527aa50c4b2cab03d10161a7d",
+        "docx_text_sha256": "a242365613e3720637e9ba63dfd853f9236df4b527aa50c4b2cab03d10161a7d"
+      },
+      {
+        "check": "native_math_count",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "ast": 54,
+        "docx": 54,
+        "manifest": 54
+      },
+      {
+        "check": "table_count",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "ast": 4,
+        "docx": 4,
+        "manifest": 4
+      },
+      {
+        "check": "embedded_figure_bytes_and_order",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md",
+        "figure_count": 4,
+        "hashes": [
+          "b70f19e6914115894cf6059b7799b8664e196a3d3c6906af7f4c683ceef8519e",
+          "bd139dd13f034d4623cf707ae2292673fbc850b7f02780c98ace3d6ad1193227",
+          "5d562d9dce82fbe7ff0fc3dbad63575864031628c839d19a1310919aef63d5ef",
+          "69684831695d0a043628b2edea0d0b39b6b37f63df0caf4e12305af07e24d55f"
+        ]
+      },
+      {
+        "check": "figure_manifest_paths",
+        "passed": true,
+        "source": "MANUSCRIPT_EN.md"
+      },
+      {
+        "check": "document_output_name",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md"
+      },
+      {
+        "check": "markdown_build_hash",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md"
+      },
+      {
+        "check": "docx_build_hash",
+        "passed": true,
+        "output": "Signy_diet_supplement.docx"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../diet_niche_manuscript_v1/Table_S1_model_scenarios.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../diet_niche_manuscript_v1/CMIP6_SOURCE_STORES.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../diet_niche_manuscript_v1/Table_S2_rolling_diagnostics.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../diet_niche_scenarios_v1/rolling_origin_predictions.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../../work/palmer_signy_diet_external_v1/sources/source_notes.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../../work/palmer_signy_diet_external_v1/DESIGN.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../palmer_signy_diet_external_v1/REPORT_JA.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../diet_niche_manuscript_v1/ASSET_MANIFEST.json"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../diet_niche_manuscript_v1/validation.json"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_diet_components_v1/gentoo_primary_nine_seasons.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_diet_components_v1/source_manifest.json"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_diet_components_v1/annual_accounting_terms.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_diet_components_v1/leave_one_season_accounting.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_diet_components_v1/summary.json"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_diet_components_v1/palmer_reported_detection_reference.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_diet_components_v1/Figure_1_diet_components.png"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../../work/signy_diet_components_v1/DESIGN.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_diet_components_v1/REPORT_JA.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/fit_parameters.json"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../../work/signy_component_scenarios_v1/DESIGN.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/controlled_reductions.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/component_scenarios.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/annual_climate_support.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/climate_scenarios.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/slope_accounting_scenarios.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/REPORT_JA.md"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/source_manifest.json"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/Figure_1_component_scenarios.png"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/controlled_reductions.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "../signy_component_scenarios_v1/Figure_1_component_scenarios.pdf"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "CMIP6_CITATIONS.csv"
+      },
+      {
+        "check": "local_link_exists",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "link": "CMIP6_CITATION_AUDIT.md"
+      },
+      {
+        "check": "complete_visible_text_order",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "ast_characters": 36894,
+        "docx_characters": 36894,
+        "ast_text_sha256": "f173e2004eac8cbcc278e11d0dfecab52ef764e2aaf75b367f702e88739104b1",
+        "docx_text_sha256": "f173e2004eac8cbcc278e11d0dfecab52ef764e2aaf75b367f702e88739104b1"
+      },
+      {
+        "check": "native_math_count",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "ast": 96,
+        "docx": 96,
+        "manifest": 96
+      },
+      {
+        "check": "table_count",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "ast": 10,
+        "docx": 10,
+        "manifest": 10
+      },
+      {
+        "check": "embedded_figure_bytes_and_order",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md",
+        "figure_count": 2,
+        "hashes": [
+          "6af97e7b40c088ef579c83d31d9b3a260d32ec1729d2562b8c5515e211e29e78",
+          "fa147bde7188e439800d9d9420b65536a6678a86c6ee65923c975c44305fd958"
+        ]
+      },
+      {
+        "check": "figure_manifest_paths",
+        "passed": true,
+        "source": "SUPPLEMENT_EN.md"
+      },
+      {
+        "check": "six_figures_total",
+        "passed": true,
+        "count": 6
+      },
+      {
+        "check": "abstract_at_most_250_words",
+        "passed": true,
+        "count": 233
+      }
+    ]
+  },
+  "scientific_review": {
+    "path": "research/climate-penguin/outputs/diet_niche_english_v1/REVIEW.json",
+    "sha256": "20383971fdf16197fc3d51b839f1ec87deaea5cd24cfd6aa2798b226c4783b98",
+    "status": "pass",
+    "automatically_compared_table_rows": 71,
+    "matched_table_rows": 71,
+    "remaining_values": "Manual checks documented in REVIEW.json; no unresolved scientific or numerical blockers."
+  },
+  "visual_review": {
+    "total_pages": 29,
+    "main_pages": 15,
+    "supplement_pages": 14,
+    "all_pages_viewed": true,
+    "main_record": "VISUAL_QA_MAIN.json",
+    "main_record_sha256": "9fa576bbfb647db63ba46305ca17b78364ff21e51b1a7c4b047fdd69d901624b",
+    "supplement_record": "VISUAL_QA_SUPPLEMENT.json",
+    "supplement_record_sha256": "e8e16554b900738e73cf9f8c65b520bf86c227d4d499c90953a9908a36a91152",
+    "rendered_text_outside_page_guard": 0,
+    "page_guard_definition": "No extracted PDF text span outside 40 pt side, 25 pt top, 10 pt bottom guards; supplements actual visual inspection."
+  },
+  "cmip6_citations": {
+    "source_stores": 9,
+    "distinct_experiment_dois": 9,
+    "audit": "CMIP6_CITATION_AUDIT.json",
+    "audit_sha256": "c3521484511859801ce0f8bbda59ed8052230162326bb2d4a477e0160c6b0139",
+    "scope": "Formal attribution and model/experiment-prefix mapping; analysed member and used file version preserved. No redownload or checksum audit of model files.",
+    "output_csv_line_endings": "LF; CSV values unchanged."
+  },
+  "unchanged_analysis_tests": {
+    "rerun_this_turn": false,
+    "reason": "Only manuscripts, document conversion and entry-point text changed. Existing ecological analysis code and outputs remain pinned.",
+    "prior_validation_path": "research/climate-penguin/outputs/signy_component_scenarios_v1/VALIDATION.json",
+    "prior_validation_sha256": "3d3bad0b8bc94dc80c95c36a7a4128da18f624afbf0364741ade171611c98b90",
+    "previous_repository_totals": {
+      "tests": 684,
+      "errors": 0,
+      "failures": 3,
+      "skipped": 39,
+      "passed": 642
+    },
+    "known_baseline_failures": [
+      "tests/test_climate_penguin_checkpoint_guard.py::test_complete_snapshot_manifest_file_integrity",
+      "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_known_source_three_species",
+      "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_source_flags_prevent_pseudoreplication"
+    ],
+    "interpretation": "642 passed, 39 skipped and 3 pre-existing failures are the previous analysis run, not a new all-green result."
+  },
+  "author_inputs_not_fabricated": [
+    "Names, affiliations and corresponding-author details",
+    "Contributions, funding, interests, acknowledgments and required ethics/permit/data-use statements",
+    "Target journal format and permanent code/results release identifier"
+  ],
+  "artifact_manifest_path_basis": "repository_root; VALIDATION.json excludes itself",
+  "artifact_manifest": [
+    {
+      "path": "research/climate-penguin/CLIMATE_NICHE_SYNTHESIS_20261102.md",
+      "bytes": 43355,
+      "sha256": "7f1662f8e408e8b796fd957aef5a691597a8059f466c7738f3fbf8b0df4a7771"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/BUILD_MANIFEST.json",
+      "bytes": 2357,
+      "sha256": "334cb1607378fe07fed2c9984dba66af9306b9e2570ac5d9801c39b9ffae2059"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/CMIP6_CITATIONS.csv",
+      "bytes": 16392,
+      "sha256": "0203b5e6c5e4264ddb6d4710e364de8bad7f06788a58038d859febd838b225d0"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/CMIP6_CITATION_AUDIT.json",
+      "bytes": 27408,
+      "sha256": "c3521484511859801ce0f8bbda59ed8052230162326bb2d4a477e0160c6b0139"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/CMIP6_CITATION_AUDIT.md",
+      "bytes": 6635,
+      "sha256": "4669fe0e23fbc4d7305950b74ddd7b70f98cab70218e7dd45d5a16f21bae48c0"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/MANUSCRIPT_EN.md",
+      "bytes": 38511,
+      "sha256": "dbf8293e0bcc36e7fa27c5aa215665c3d5a99560ef7b54776fe87bb91e6638ec"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/README.md",
+      "bytes": 3322,
+      "sha256": "29e2737da789aec2b783d0f1e728bce63ad9b4245841702638cc7d3dfe6cdc14"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/REVIEW.json",
+      "bytes": 8559,
+      "sha256": "20383971fdf16197fc3d51b839f1ec87deaea5cd24cfd6aa2798b226c4783b98"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/SOURCE_MANIFEST.json",
+      "bytes": 6651,
+      "sha256": "2bfc24ac9abff7e1cc84ffadee847d989acfc6253548ee7a1dfc0eff04ec74f7"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/SUPPLEMENT_EN.md",
+      "bytes": 41540,
+      "sha256": "75813c3741c4bb35bfab4b2258a38eccaddb392a7248e0af482fab378d1553af"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/Signy_diet_manuscript.docx",
+      "bytes": 836085,
+      "sha256": "40e8e1dadb65711d75aebdbbb587d30793dc4de1fa0a42f397d4d551101bdda2"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/Signy_diet_supplement.docx",
+      "bytes": 815508,
+      "sha256": "0cba2cbf7adb159a0bf15368fe9bc4b056fa0566f024e80aac7fe1eb4b28cdf6"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/VISUAL_QA_MAIN.json",
+      "bytes": 2984,
+      "sha256": "9fa576bbfb647db63ba46305ca17b78364ff21e51b1a7c4b047fdd69d901624b"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/VISUAL_QA_SUPPLEMENT.json",
+      "bytes": 13727,
+      "sha256": "e8e16554b900738e73cf9f8c65b520bf86c227d4d499c90953a9908a36a91152"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/README.md",
+      "bytes": 6509,
+      "sha256": "5dd7f4061ee0331d74eb193679e93c22fc60e8a071ba25884abda1dcbe1e4e7d"
+    },
+    {
+      "path": "research/climate-penguin/work/diet_niche_english_v1/DESIGN.md",
+      "bytes": 4602,
+      "sha256": "4b5868c651de984f7813c824d3f27af16108b03cc7ec4bb005c1cf3fa0b7a992"
+    },
+    {
+      "path": "research/climate-penguin/work/diet_niche_english_v1/PLAN.md",
+      "bytes": 4904,
+      "sha256": "cda49ccbff1540d2056a2548aaa02ea991159106ad13ee70f556dca30a18e2d8"
+    },
+    {
+      "path": "research/climate-penguin/work/diet_niche_english_v1/build_documents.py",
+      "bytes": 17088,
+      "sha256": "04a2bed81e33378158d6407693146b346294854641ab124b3b0e3d49a3260918"
+    },
+    {
+      "path": "research/climate-penguin/work/diet_niche_english_v1/verify_documents.py",
+      "bytes": 9555,
+      "sha256": "878c326f3092cf69698c91f35a2400977964b980f975971ae946ae7a8f24c866"
+    }
+  ],
+  "publication": {
+    "status_at_snapshot": "prepared_for_existing_draft_pr206",
+    "branch": "codex/climate-penguin-progress",
+    "expected_parent_sha": "a0b678bad6b8bd57d1f73e687aa6c415416aebb3",
+    "method": "Commit the verified files, update with an expected-head lease, then verify remote/local tree equality. The remote update occurs after this snapshot and is reported in the delivery response."
+  }
+}
