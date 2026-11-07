@@ -54,11 +54,13 @@ def main():
     ax[1].set_yticks(y,site,fontsize=9)
     ax[1].set_xlabel("Observed nearshore SIC slope (percentage points / decade)")
     ax[1].set_title("Sea-ice trend changes with the observation window",loc="left",fontsize=11)
-    ax[1].legend(loc="lower right",fontsize=8,frameon=False)
+    # Avoid covering LLAN data bar; legend beneath the right panel.
+    ax[1].legend(loc="upper center",bbox_to_anchor=(.52,-.20),
+                 ncol=2,fontsize=8,frameon=False)
     ax[1].invert_yaxis()
     for a in ax:a.spines[["top","right"]].set_visible(False)
     fig.suptitle("Fixed six-site breeding-community reorganization and climate timescales",fontsize=13,fontweight="bold")
-    fig.tight_layout(rect=(0,0,1,.93))
+    fig.tight_layout(rect=(0,.07,1,.93))
     export(fig,"FIG1_SIX_SITE_BREEDING_VS_SIC_TIMESCALE")
 
     nine=sorted(nine,key=lambda r:int(r["year"]))
