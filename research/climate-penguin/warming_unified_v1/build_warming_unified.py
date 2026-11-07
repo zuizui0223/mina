@@ -138,7 +138,8 @@ def main():
             p=phys[(site,*condition)]
             ensure(p["all3_tas_increase"]=="1" and p["all3_sic_decrease"]=="1",
                    "Source consensus climate sign changed")
-            ensure(p["all3_marine_cell_within50km"]=="1","Marine physical support changed")
+            # Two of six source sites have distant marine cells. Keep ocean missing.
+            marine_ok=(p["all3_marine_cell_within50km"]=="1")
             h=reported[site]
             ensure(abs(val(p["historical_obs_SIC_trend_pp_decade"])-h["full_30yr_aug_nov_sic_slope"])<.001,
                    "Source 1991–2020 SIC slope does not match prior strict-site report")
@@ -147,9 +148,11 @@ def main():
                  experiment=condition[0],period=condition[1],
                  tas_C_change_mean=val(p["tas_C_change_model_mean"]),
                  tas_C_change_min=val(p["tas_C_change_min"]),tas_C_change_max=val(p["tas_C_change_max"]),
-                 SIC_pp_change_mean=val(p["SIC_pp_change_model_mean"]),
-                 SIC_pp_change_min=val(p["SIC_pp_change_min"]),SIC_pp_change_max=val(p["SIC_pp_change_max"]),
-                 sos_change_native=val(p["sos_change_model_mean"]),
+                 SIC_pp_change_mean=val(p["SIC_pp_change_model_mean"]) if marine_ok else "",
+                 SIC_pp_change_min=val(p["SIC_pp_change_min"]) if marine_ok else "",
+                 SIC_pp_change_max=val(p["SIC_pp_change_max"]) if marine_ok else "",
+                 sos_change_native=val(p["sos_change_model_mean"]) if marine_ok else "",
+                 source_verified_marine=int(marine_ok),
                  observed_SIC_full30yr_trend_pp_decade=h["full_30yr_aug_nov_sic_slope"],
                  three_models_tas_increase=p["all3_tas_increase"],
                  three_models_sic_decrease=p["all3_sic_decrease"],
@@ -157,14 +160,16 @@ def main():
         future_rows+=these
         climate.append(dict(experiment=condition[0],period=condition[1],
            n_site=6,n_geographic_regions=2,
-           n_unique_marine_fingerprints=len({x["marine_fingerprint"] for x in these if x["marine_fingerprint"]}),
+           n_unique_marine_fingerprints=len({x["marine_fingerprint"] for x in these if x["marine_fingerprint"] and x["source_verified_marine"]}),
+           n_source_verified_marine_sites=sum(x["source_verified_marine"] for x in these),
            mean_tas_C=statistics.mean(x["tas_C_change_mean"] for x in these),
-           mean_SIC_pp=statistics.mean(x["SIC_pp_change_mean"] for x in these),
-           mean_sos_native=statistics.mean(x["sos_change_native"] for x in these),
+           mean_SIC_pp=statistics.mean(x["SIC_pp_change_mean"] for x in these if x["source_verified_marine"]),
+           mean_sos_native=statistics.mean(x["sos_change_native"] for x in these if x["source_verified_marine"]),
            tas_site_range=[min(x["tas_C_change_mean"] for x in these),max(x["tas_C_change_mean"] for x in these)],
-           sic_site_range=[min(x["SIC_pp_change_mean"] for x in these),max(x["SIC_pp_change_mean"] for x in these)],
+           sic_site_range=[min(x["SIC_pp_change_mean"] for x in these if x["source_verified_marine"]),
+                           max(x["SIC_pp_change_mean"] for x in these if x["source_verified_marine"])],
            n_all3_tas_warming=sum(x["three_models_tas_increase"]=="1" for x in these),
-           n_all3_sic_decreasing=sum(x["three_models_sic_decrease"]=="1" for x in these)))
+           n_all3_sic_decreasing=sum(x["three_models_sic_decrease"]=="1" for x in these if x["source_verified_marine"])))
     save(DATA/"six_site_original_breeding_ice.csv",strict)
     save(DATA/"six_site_future_physical.csv",future_rows)
 
@@ -273,10 +278,10 @@ def main():
       f"- 海と時間のSIC相関の絶対値差 |r海|−|r時間|={abs(r_fish)-abs(r_gap):+.4f}。これは差の有意性や気候因果を検定した結果ではない。",
       "- Signy時期差はClewlow et al. (2019)がすでに報告。今回の追加は9年同一海氷系列と元胃差の独立原行の同年監査。",
       "","## 3. 同一6繁殖地点への4条件の将来物理曝露（生物予測ではない）","",
-      "| SSP / 期間 | 空気温度tas平均Δ℃ | 海氷SIC平均Δpp | 塩分sos元単位Δ | 全3モデル昇温/海氷減 | 実海洋格子指紋数 |",
+      "| SSP / 期間 | 空気温度tas平均Δ℃（6地点） | 海氷SIC平均Δpp（適格4地点） | 塩分sos元単位Δ（適格4地点） | 全3モデル昇温/海氷減 | 実海洋格子指紋数 |",
       "|---|---:|---:|---:|---|---:|"]
     for z in climate:
-        lines.append(f"| {z['experiment']} / {z['period']} | {z['mean_tas_C']:+.2f} | {z['mean_SIC_pp']:+.2f} | {z['mean_sos_native']:+.3f} | {z['n_all3_tas_warming']}/6、{z['n_all3_sic_decreasing']}/6 | {z['n_unique_marine_fingerprints']} |")
+        lines.append(f"| {z['experiment']} / {z['period']} | {z['mean_tas_C']:+.2f} | {z['mean_SIC_pp']:+.2f} | {z['mean_sos_native']:+.3f} | {z['n_all3_tas_warming']}/6、{z['n_all3_sic_decreasing']}/{z['n_source_verified_marine_sites']} | {z['n_unique_marine_fingerprints']} |")
     lines.extend([
       "","## 4. 陸・植生、塩分/水温、空間集中の使い方","",
       "- 陸上繁殖数の種組成変化は主観測の繁殖応答だが、**緑化・無氷地・巣ポリゴンの時系列は較正不足**。植生の同年・同地点因果効果を入れない。",
