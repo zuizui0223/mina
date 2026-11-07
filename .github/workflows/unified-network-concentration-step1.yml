@@ -27,7 +27,7 @@ jobs:
       - name: Python syntax gate and numerical dependencies
         run: |
           python -m py_compile research/network_concentration_unified_v1/build_step1.py
-          python -m pip install numpy geographiclib jsonschema
+          python -m pip install numpy geographiclib jsonschema requests
       - name: Recover existing frozen JNCC parser by immutable commit
         run: |
           mkdir -p build/step1_inputs/jncc_code
