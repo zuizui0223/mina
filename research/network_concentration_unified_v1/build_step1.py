@@ -23,7 +23,7 @@ from pathlib import Path
 import numpy as np
 from geographiclib.geodesic import Geodesic
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / "research/network_concentration_unified_v1"
 DATA = BASE / "data"
 OUT = BASE / "outputs"
@@ -188,8 +188,8 @@ def build_candidates(root):
         species = sorted(sp for rg, sp in groups if rg == region)
         for a, b in itertools.combinations(species, 2):
             aa, bb = groups[(region, a)], groups[(region, b)]
-            years = sorted({y for sites in aa.values() for y in set().union(*[set(s) for s in aa.values()])}
-                           | {y for sites in bb.values() for y in set().union(*[set(s) for s in bb.values()])})
+            years = sorted({y for years_by_site in aa.values() for y in years_by_site}
+                           | {y for years_by_site in bb.values() for y in years_by_site})
             # no abundance values are consulted when selecting pair endpoints
             valid = []
             for y0, y1 in itertools.combinations(years, 2):
@@ -446,7 +446,8 @@ def registry_record(c, actual_sha, timestamp):
 
 def extent_and_status(comps, coordinate_label):
     coords = [(float(c["lat"]), float(c["lon"])) for c in comps if
-              number(c.get("lat")) is not None and c.get("lon") not in (None, "")]
+              c.get("lat") not in (None, "") and c.get("lon") not in (None, "") and
+              math.isfinite(float(c["lat"])) and math.isfinite(float(c["lon"]))]
     if len(coords) != len(comps) or not coords:
         return None, "unavailable" if coordinate_label=="unavailable" else "incomplete"
     d = max((Geodesic.WGS84.Inverse(a[0],a[1],b[0],b[1])["s12"]
@@ -549,8 +550,8 @@ def make_network(c, e):
                analysis_role=c["role"],exclusion_reason=list(e["non_estimation_reasons"]),
                prior_view_status="previous_results_viewed",source_id=c["sourceids"][0])
     if not co:
-        out["null_status"]="input_recovery_pending" if c["status"]=="pending_recovery" else
-            "asynchronous_epochs" if c["dataset"]=="JNCC" else "insufficient_components"
+        out["null_status"]=("input_recovery_pending" if c["status"]=="pending_recovery" else
+            "asynchronous_epochs" if c["dataset"]=="JNCC" else "insufficient_components")
         return out
     x0=[number(q["raw0"]) for q in c["components"]]
     x1=[number(q["raw1"]) for q in c["components"]]
