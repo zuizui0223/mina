@@ -32,7 +32,7 @@ SIX=("ARDL","BISC","LION","LLAN","PCHA","PETE")
 SEASONS=tuple(range(2001,2010))
 SCENARIOS=(("ssp245","2041-2060"),("ssp245","2081-2100"),
            ("ssp585","2041-2060"),("ssp585","2081-2100"))
-SPS=("Adelie","Chinstrap","Gentoo")
+SPS=("Adelie","Gentoo")
 
 def rows(path):
     with path.open(encoding="utf-8",newline="") as f:
@@ -178,35 +178,33 @@ def main():
     hatch={int(r["year"]):r for r in hatching}
     ensure(len(hatch)==17 and len(hatching)==17,"Published 17-season hatching source changed")
     digest={(int(r["year"]),r["species"]):r for r in diet}
-    ensure(len(diet)==27 and len(digest)==27,"Original three species x nine diet years changed")
+    ensure(len(diet)==18 and len(digest)==18,"Archived Adelie/Gentoo diet source must contain 2 x 9 original years")
     nine=[]
     for y in SEASONS:
         ensure(y in hatch and all((y,sp) in digest for sp in SPS),
                "Exact common calendar year lacks both axes "+str(y))
-        a,g,c=[digest[(y,sp)] for sp in ("Adelie","Gentoo","Chinstrap")]
+        a,g=[digest[(y,sp)] for sp in ("Adelie","Gentoo")]
         h=hatch[y]
         sic=val(g["sic_aug_nov"])
-        ensure(all(abs(val(x["sic_aug_nov"])-sic)<1e-10 for x in (a,c)),
+        ensure(all(abs(val(x["sic_aug_nov"])-sic)<1e-10 for x in (a,)),
                "Species stomachs were joined to different GOPT SIC")
         ensure(abs(sic-10*val(h["ice10"]))<.00001,
                "Two original annual SIC proxies do not refer to same climate series")
-        fish=val(g["mean_fish_fraction"])-.5*(val(a["mean_fish_fraction"])+val(c["mean_fish_fraction"]))
+        fish=val(g["mean_fish_fraction"])-val(a["mean_fish_fraction"])
         gap=val(h["gap"])
         ensure(abs(gap-(val(h["Chinstrap"])-val(h["Adelie"])))<1e-10,
                "Original hatching gap not species difference")
         nine.append(dict(year=y,site_id="SIGNY::GOPT",sic_aug_nov_pct=sic,
              diet_gentoo_fish_fraction=val(g["mean_fish_fraction"]),
              diet_adelie_fish_fraction=val(a["mean_fish_fraction"]),
-             diet_chinstrap_fish_fraction=val(c["mean_fish_fraction"]),
              diet_gap_fish_fraction=fish,
              hatching_adelie_day=val(h["Adelie"]),
              hatching_chinstrap_day=val(h["Chinstrap"]),
              hatching_gap_days=gap,
              n_stomachs_adelie=a["n_stomachs"],
-             n_stomachs_chinstrap=c["n_stomachs"],
              n_stomachs_gentoo=g["n_stomachs"],
              adelie_hatching_source_colony=h["Adelie_colony"]))
-    ensure(sum(int(r["n_stomachs_"+sp]) for r in nine for sp in ("adelie","chinstrap","gentoo"))==772,
+    ensure(sum(int(r["n_stomachs_"+sp]) for r in nine for sp in ("adelie","gentoo"))==422,
            "BAS source sample total changed; stomachs not climate-year replicates")
     save(DATA/"signy_same_year_diet_phenology.csv",nine)
     def series(k):return [r[k] for r in nine]
@@ -235,7 +233,7 @@ def main():
           site_codes=list(SIX),all_site_values= "data/six_site_original_breeding_ice.csv"),
        same_year_Signy=dict(
           island="Signy",n_climate_years=9,years=list(SEASONS),
-          n_original_stomachs_across_9_years=772,
+          n_original_stomachs_across_9_years=422,
           r_sic_vs_fish_gap=r_fish,r_sic_vs_hatching_gap=r_gap,
           r_fish_gap_vs_hatching_gap=r_cog,
           r_sic_vs_absolute_adelie_hatch_day=r_adelie,
@@ -254,7 +252,7 @@ def main():
                no_greenup_or_future_nest_access_forecast=True),
        limitations=[
          "Six community sites share two regions and reused ocean-grid values; repeated sites are not independent geographic experiments.",
-         "Signy 9 shared years are one island, and 772 stomachs are not independent climate replicates.",
+         "Signy 9 shared years are one island; the 422 co-archived fish records are not independent climate replicates. Earlier 772-stomach three-species contrast is distinct.",
          "Absolute hatching timing and allochrony findings were already reported by Clewlow et al. (2019).",
          "Existing diet/ice relationships and population trajectories were inspected before cross-axis audit.",
          "Sea-ice and temperatures are observations, not random treatments; no climate caused species replacement inference.",
@@ -271,8 +269,8 @@ def main():
       "- 同所・同年・同一計数法で全共通年に2種が繁殖したアデリー対ジェンツー6地点（2地域）：元実巣数比の増加6/6、アデリー絶対減6/6、ジェンツー絶対増6/6。",
       f"- 元1991–2020年の8–11月SIC長期低下6/6。一方、元繁殖数を観測した年だけの9月SIC増加は{report['same_location_community']['observed_year_september_sic_positive_sites']}/6。これは逆転ではなく環境窓の違い。",
       "","## 2. 同じSigny繁殖季を使った海・時間ニッチの新しい同年照合","",
-      "- 2001–2009の共通9繁殖季、3種元胃772個、原平均孵化日を別原資料で接続。元SICの10倍単位差まで相互に点検した。",
-      f"- 海の3種魚類比率差 D と8–11月SIC: r={r_fish:+.4f}（9季、留一季 r={min(loo_fish):+.4f}〜{max(loo_fish):+.4f}）。",
+      "- 2001–2009の共通9繁殖季、Gitにあるアデリーとジェンツーの原胃422個、アデリーとヒゲの平均孵化日を別原資料で接続。3種772胃の既存r=0.784は独立の旧結果として保持。元SICの10倍単位差まで照合した。",
+      f"- 海のジェンツー−アデリー2種魚類比率差 D と8–11月SIC: r={r_fish:+.4f}（9季、留一季 r={min(loo_fish):+.4f}〜{max(loo_fish):+.4f}）。",
       f"- 時間ニッチ（Chinstrap−Adélie孵化日の差）と同じSIC: r={r_gap:+.4f}（同9季、留一季 r={min(loo_gap):+.4f}〜{max(loo_gap):+.4f}）。",
       f"- 海・時間の2軸の同年相関: r={r_cog:+.4f}、絶対孵化日とSICはAdélie r={r_adelie:+.4f}／Chinstrap r={r_chin:+.4f}。個体胃772を気候反復772と数えない。",
       f"- 海と時間のSIC相関の絶対値差 |r海|−|r時間|={abs(r_fish)-abs(r_gap):+.4f}。これは差の有意性や気候因果を検定した結果ではない。",
