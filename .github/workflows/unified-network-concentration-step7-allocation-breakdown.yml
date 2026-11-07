@@ -27,6 +27,7 @@ jobs:
           python-version: "3.12"
       - name: Syntax and synthetic brute force optimum checks
         run: |
+          python -m pip install numpy==2.2.6 requests==2.34.2 jsonschema==4.26.0
           python -m py_compile research/network_concentration_unified_v1/audit_step7_allocation_breakdown.py
           python research/network_concentration_unified_v1/audit_step7_allocation_breakdown.py --selftest
       - name: Recover original publisher parsers with pinned commit
