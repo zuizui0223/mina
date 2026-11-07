@@ -120,7 +120,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
+          git add -f \
             research/network_concentration_unified_v1/data/endpoint_registry.json \
             research/network_concentration_unified_v1/data/endpoint_registry.sha256 \
             research/network_concentration_unified_v1/data/input_checksums.json \
