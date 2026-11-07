@@ -2,6 +2,12 @@
 
 Research checkpoint, 2026-10-30. This directory is a draft research lane. It does not replace the frozen Paper 1 / Paper 2 analyses or establish publication readiness.
 
+## 現在の主線（2026-11-07）— 温暖化を一本化したペンギン論文
+
+**新しい唯一の主論文は [warming_unified_v1](warming_unified_v1/README.md)。** 以前の海鳥JNCC繁殖集中の共通帰無は別の研究成果として保存し、温暖化影響の直接証拠に加算しない。繁殖群集6地点・Signy同年9季節の海と時間のニッチ・同地点CMIP6 4条件の出典照合を実行した。[英語全文初稿](warming_unified_v1/MANUSCRIPT_WARMING_UNIFIED_V0_1.md)。温暖化の物理曝露と将来の実巣数予報は分ける。BTOの追加データ待ちやメール送信を主線へ入れない。
+
+以下は旧作業・原本監査の索引であり、肯定結果も限界も保存する。
+
 ## Start here
 
 - **[2026-11-05・BAS3種GPS×TDR全78元タグと孵化前後の空間再分配](outputs/signy_three_tdr_gps_alltags_v2/REPORT_JA.md)** — 原圧力候補133,525、元GPS結合100,293、共通時計693時間。2015年の厳格2tag同時刻×各7日ではChinstrap孵化前+13.83km→後−29.98km（元GPS-only同じ時間も+3.86→−27.37km）。Clewlow2019既報leapfrogのsource検証。
