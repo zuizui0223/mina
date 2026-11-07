@@ -107,9 +107,9 @@ def main():
        "r = 0.781","r = −0.066","r = −0.052",
        "29.22","+4.35°C","−23.94",
        "not external preregistration","not identify causal warming",
-       "not projected","not identical",
+       "not a population projection","not identical",
        "A41 to A39","Youngflesh et al. (2026)","Clewlow et al. (2019)",
-       "not a complete three-species","PCHA","PETE",
+       "neither is a complete three-species","PCHA","PETE",
     ]
     missing=[x for x in fixed_phrases if x not in article]
     require(not missing,"missing essential manuscript scope/claims "+str(missing))
