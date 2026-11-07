@@ -1,0 +1,65 @@
+name: unified-network-concentration-step3-prefit-support
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/audit_step3_prefit.py"
+      - ".github/workflows/unified-network-concentration-step3-prefit-support.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit-predictor-support:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Only source IDs and predictor design, no outcome fitting
+        run: |
+          python -m pip install numpy
+          python -m py_compile research/network_concentration_unified_v1/audit_step3_prefit.py
+          python research/network_concentration_unified_v1/audit_step3_prefit.py
+      - name: Check source and support
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("research/network_concentration_unified_v1/outputs/STEP3_PREFIT_SOURCE_DESIGN_QA.json")
+          j=json.loads(p.read_text())
+          assert j['status']=="PREFIT_DESIGN_ONLY_NO_HYPOTHESIS_FITTING"
+          assert j['H2']['ready'] is False
+          assert j['H3']['support']['n_rows']==662
+          assert j['H4D_H4W']['support']['n_rows']==376
+          assert j['H3']['fixed_effects']['full_column_rank']
+          assert j['H4D_H4W']['fixed_effects']['full_column_rank']
+          assert 'p values' in j['null_and_inference_not_run']
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-unified-step3-prefit-design-audit
+          retention-days: 90
+          path: |
+            research/network_concentration_unified_v1/outputs/STEP3_PREFIT_SOURCE_DESIGN_QA.json
+            research/network_concentration_unified_v1/outputs/STEP3_PREFIT_SOURCE_DESIGN_JA.md
+      - name: Persist prefit QA on Draft PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f \
+            research/network_concentration_unified_v1/outputs/STEP3_PREFIT_SOURCE_DESIGN_QA.json \
+            research/network_concentration_unified_v1/outputs/STEP3_PREFIT_SOURCE_DESIGN_JA.md
+          if git diff --cached --quiet; then
+            echo "No prefit source QA differences"
+          else
+            git commit -m "Step3: record outcome-blind predictor matrix and dependence support"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi
