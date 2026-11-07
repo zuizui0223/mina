@@ -1,0 +1,148 @@
+{
+  "analysis_status": "POST_PRIOR_RESULTS_EXPLORATORY_FIXED_BEFORE_H3_H4_FITS",
+  "H2": {
+    "status": "NOT_ESTIMABLE",
+    "fidelity_species_n": 0,
+    "p_observed": null,
+    "p_holm_4": null,
+    "internal_holm_placeholder": 1
+  },
+  "hypothesis_family": [
+    "H2",
+    "H3",
+    "H4D",
+    "H4W"
+  ],
+  "inference": "species fixed effects; CR1 + network-block restricted wild Rademacher bootstrap",
+  "B": 9999,
+  "software": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3"
+  },
+  "pre_fit_plan_sha256": "c96c9e0f50d6799588e7821abf9fe10874429f93f684e1e6e19d4f17ee2e79b8",
+  "frozen_inputs": {
+    "network_species.csv": {
+      "git_blob": "e089c4525226c156a1554ce4f480a7611c946ae7",
+      "sha256": "2aa36a7ab0c9145e6e4eac1ebb54f81533fe8546d634e92cdbb0d580b46dad28"
+    },
+    "network_species_pairs.csv": {
+      "git_blob": "fe4751b9f12e7ffa6f92ed43c233f6a77b109065",
+      "sha256": "9eff5dfe9d9dbfc6855fe82d6c7592da7a752defa1c52670904e5a874034451d"
+    },
+    "network_climate_intake.csv": {
+      "git_blob": "d8a642977202daf563fa8c0622caffe60b657a27",
+      "sha256": "d4e6c131c90a045a828704f6352a1ca2442097086112086555dbc836ce9ef41f"
+    },
+    "species_traits_intake.csv": {
+      "git_blob": "95662a64e6a62e1965bdea20f7b05a702838499a",
+      "sha256": "0d752879a3f418771897de9845c6b149af97042aec0f944ae9b57a5695c7bb36"
+    },
+    "step2_join_readiness.csv": {
+      "git_blob": "f42bbd8720a16d6fff6f1e7d6d3dae1f16eded80",
+      "sha256": "1da3eff61c8b08d6115365ea52a857642c0012e71751afb22b1d7f3206bec1ac"
+    }
+  },
+  "results": {
+    "H3": {
+      "coef": 0.03316307915510576,
+      "se": 0.027739391552292367,
+      "t": 1.195522947667725,
+      "ci_low": -0.021376136163620142,
+      "ci_high": 0.08770229447383165,
+      "n": 662,
+      "m": 387,
+      "p": 25,
+      "p_raw": 0.235,
+      "bootstrap_n": 9999,
+      "bootstrap_extreme": 2349,
+      "seed": 20261108,
+      "source_rows": {
+        "JNCC": 656,
+        "MAPPPD": 6
+      },
+      "species_n": 20,
+      "aliased_species_columns": [
+        "species_GEPE"
+      ],
+      "design_condition_number": 2403.2866601045284,
+      "scotland_exclusion": {
+        "status": "not_estimable",
+        "reason": "Intercept aliased from nuisance model"
+      },
+      "predicted_direction": "positive",
+      "holm_4": 0.94,
+      "prediction_supported": false,
+      "significant_opposite": false
+    },
+    "H4D": {
+      "coef": 0.006160793802448404,
+      "se": 0.019115422160775285,
+      "t": 0.3222944149823858,
+      "ci_low": -0.031821142863082415,
+      "ci_high": 0.04414273046797922,
+      "n": 376,
+      "m": 90,
+      "p": 23,
+      "p_raw": 0.7576,
+      "bootstrap_n": 9999,
+      "bootstrap_extreme": 7575,
+      "seed": 20261109,
+      "source_rows": {
+        "JNCC": 373,
+        "MAPPPD": 3
+      },
+      "species_n": 18,
+      "aliased_species_columns": [
+        "shared_species_GEPE"
+      ],
+      "design_condition_number": 1536.6732993462601,
+      "scotland_exclusion": {
+        "status": "not_estimable",
+        "reason": "Intercept aliased from nuisance model"
+      },
+      "predicted_direction": "positive",
+      "holm_4": 1,
+      "prediction_supported": false,
+      "significant_opposite": false
+    },
+    "H4W": {
+      "coef": -0.015215574022541332,
+      "se": 0.0174125953634964,
+      "t": -0.8738257396389695,
+      "ci_low": -0.04981403011293051,
+      "ci_high": 0.019382882067847843,
+      "n": 376,
+      "m": 90,
+      "p": 23,
+      "p_raw": 0.4212,
+      "bootstrap_n": 9999,
+      "bootstrap_extreme": 4211,
+      "seed": 20261110,
+      "source_rows": {
+        "JNCC": 373,
+        "MAPPPD": 3
+      },
+      "species_n": 18,
+      "aliased_species_columns": [
+        "shared_species_GEPE"
+      ],
+      "design_condition_number": 1536.6732993462601,
+      "scotland_exclusion": {
+        "status": "not_estimable",
+        "reason": "Intercept aliased from nuisance model"
+      },
+      "predicted_direction": "positive",
+      "holm_4": 1,
+      "prediction_supported": false,
+      "significant_opposite": false
+    }
+  },
+  "limitations": [
+    "Not externally preregistered; earlier concentration outcomes were viewed.",
+    "Model is a documented prefit revision to the earlier LMM draft.",
+    "Observed-species conditional inference, not a random species-population generalization.",
+    "Shared source counts stay together within network; between-network spatial and phylogenetic dependence may remain.",
+    "JNCC, especially Scotland, dominates; Antarctic network replication is sparse.",
+    "SST is an observed environmental covariate, not an identified causal warming effect."
+  ]
+}
