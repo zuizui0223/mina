@@ -1,6 +1,6 @@
 # 繁殖分布の集中を比較する統合マクロ解析
 
-**状態：2026-11-07、Step 1〜5を実データで実施。Step 1 共通表675主解析行・378種ペア、Step 2 観測SSTを1,038／1,053候補行へ結合。Step 3 解析契約を新たなH3/H4関連係数の計算前に凍結（外部登録なし）。Step 4: H3/H4D/H4Wは4仮説Holm補正で支持なし、H2固執率は0/20種で未推定。独立行列実装の係数・CR1検算PASS。Step 5: 対応するCMIP6将来物理曝露は南極MAPPPDの気温3/12・海氷2/12ネットワーク×種のみ完全被覆。Step 6の一本化原稿構成を作成済み。**
+**状態：2026-11-07、Step 1〜5を実データで実施。Step 1 共通表675主解析行・378種ペア、Step 2 観測SSTを1,038／1,053候補行へ結合。Step 3 解析契約を新たなH3/H4関連係数の計算前に凍結（外部登録なし）。Step 4: H3/H4D/H4Wは4仮説Holm補正で支持なし、H2固執率は0/20種で未推定。独立行列実装の係数・CR1検算PASS。Step 5: 対応するCMIP6将来物理曝露は南極MAPPPDの気温3/12・海氷2/12ネットワーク×種のみ完全被覆。Step 6は原本測定監査・実際の英語全文初稿・出典照合CI・主要3図のレンダリングまで実行。2026-11-07の独立監査で減少ネットワークの正は324/479（旧転記327を訂正）。投稿手続は未実施。**
 
 ## 一つの中心質問
 
@@ -59,6 +59,17 @@ JNCC・Palmer・Signyの既存固定原本はActions内でSHA照合して回収�
 - [Step5将来物理曝露](outputs/STEP5_PHYSICAL_EXPOSURE_JA.md)・[被覆率の完全監査](outputs/STEP5_PHYSICAL_EXPOSURE_QA.json)：南極12ネットワーク×種（61元構成単位）のうち元座標一致は13地点、完全対応は気温3行・厳格海域2行。英国663行には同じCMIP6 source-site mapがない。**生物学的な繁殖未来予測は実施していない。**
 - [Step6 一つのマクロ論文スパイン](MANUSCRIPT_SPINE_V1.md)：本論文の肯定的な観察パターンは英国海鳥17種中15種のネットワーク平均で過剰集中が正、436/663行で正。気候・減少・種間重なりの事前方向仮説は主検定で支持されず、英国・アイルランドから南極までの普遍的機構、島嶼因果、温暖化による将来個体数予測を主張しない。
 
+## Step 6 の実測品質監査・英語全文・図
+
+- [JNCC元原本品質監査](outputs/STEP6_JNCC_METHOD_QA_JA.md)・[機械可読監査](outputs/STEP6_JNCC_METHOD_QA.json)：663主解析行の元計数と調査年・計数単位が原公式Excelと完全一致。子Site.IDの累計4,217件、開始座標重複のパネル10件、名称重複2件。曖昧な12件の記述除外でも427/651正、15/17種平均正。
+- JNCCが全国トレンドの方法上の比較可能性に留保を付けるHerring Gull/Lesser Black-backed Gull計90行を別枠にしても、374/573（65.3%）で正、14/15種平均正。ただし観測努力・歴史的営巣ポリゴン・検出誤差の較正は未解決。
+- [2026-11-07数値訂正済みStep1記述](outputs/STEP1_DESCRIPTIVE_PROFILE_JA.md)：減少ネットワーク479行中の正は **324（67.6%）**、旧「327（68.3%）」は転記ミス。共通表自体の数値やSHAは変更なし。
+- [英語全文初稿](MANUSCRIPT_FULL_DRAFT_V0_1.md)、[論文内容・数値整合性のCI監査](outputs/STEP6_MANUSCRIPT_SOURCE_QA.json)、[一本化原稿骨子](MANUSCRIPT_SPINE_V1.md)。
+- Figure 1 [Country別ネットワーク×種の正負数（PNG）](figures/FIG1_COUNTRY_MONITORING_SUPPORT.png) / [SVG](figures/FIG1_COUNTRY_MONITORING_SUPPORT.svg)。
+- Figure 2 [17種の過剰集中平均（PNG）](figures/FIG2_TAXON_CONCENTRATION.png) / [SVG](figures/FIG2_TAXON_CONCENTRATION.svg)。
+- Figure 3 [H3・H4D・H4Wの95%区間（PNG）](figures/FIG3_FIXED_ASSOCIATION_ESTIMATES.png) / [SVG](figures/FIG3_FIXED_ASSOCIATION_ESTIMATES.svg)。
+- [Figure captions](figures/FIGURE_CAPTIONS_V0_1.md)、[3図の出典SHAと画素サイズのQA](outputs/STEP6_FIGURES_QA.json)、[描画コード](render_step6_manuscript_figures.py)。この図では追加の関連モデルやp値を計算していない。
+
 ## 現在の次の一手
 
-**Step6の投稿可能性を査読目線で監査する。** 最優先は原調査境界・観測努力・非同期、JNCCの行政ネットワークを物理島と見なせない問題、およびスコットランド偏重を本文で明確に扱うこと。H2の定義を揃えた数値が確認できなければ未推定のままにする。ネガティブな主検定を事後選択で別モデルへ置き換えない。凍結済みPaper1/Paper2/mainは変更していない。
+**Step6は本文と主図が作成でき、次の主作業は投稿前の独立査読・観測努力の外部資料監査。** 最優先は原調査境界・観測努力・非同期、JNCCの行政ネットワークを物理島と見なせない問題、およびスコットランド偏重を本文で明確に扱うこと。H2の定義を揃えた数値が確認できなければ未推定のままにする。ネガティブな主検定を事後選択で別モデルへ置き換えない。凍結済みPaper1/Paper2/mainは変更していない。
