@@ -57,7 +57,7 @@ JNCC・Palmer・Signyの既存固定原本はActions内でSHA照合して回収�
 - [Step3固定解析契約](contracts/ANALYSIS_PLAN_FROZEN.md)（旧草案の混合モデルから種固定効果＋ネットワークブロック検定へ、係数閲覧前に変更理由を記録）。外部事前登録済みではない。
 - [Step4固定H3/H4実測結果](outputs/STEP4_MODEL_READOUT_JA.md)・[全係数/不確実性/ハッシュ](outputs/STEP4_FIXED_ASSOCIATIONS.json)：H3 β=+0.03316、Holm p=0.940、H4D β=+0.00616、Holm p=1.000、H4W β=−0.01522、Holm p=1.000。H2は未推定。[GitHub Actions成功](https://github.com/zuizui0223/mina/actions/runs/42331279597)。[独立行列実装のQA](outputs/STEP4_INDEPENDENT_ARITHMETIC_QA.json) PASS。
 - [Step5将来物理曝露](outputs/STEP5_PHYSICAL_EXPOSURE_JA.md)・[被覆率の完全監査](outputs/STEP5_PHYSICAL_EXPOSURE_QA.json)：南極12ネットワーク×種（61元構成単位）のうち元座標一致は13地点、完全対応は気温3行・厳格海域2行。英国663行には同じCMIP6 source-site mapがない。**生物学的な繁殖未来予測は実施していない。**
-- [Step6 一つのマクロ論文スパイン](MANUSCRIPT_SPINE_V1.md)：本論文の肯定的な観察パターンは英国海鳥17種中15種のネットワーク平均で過剰集中が正、436/663行で正。気候・減少・種間重なりの事前方向仮説は主検定で支持されず、北海道〜南極の普遍的機構、島嶼因果、温暖化による将来個体数予測を主張しない。
+- [Step6 一つのマクロ論文スパイン](MANUSCRIPT_SPINE_V1.md)：本論文の肯定的な観察パターンは英国海鳥17種中15種のネットワーク平均で過剰集中が正、436/663行で正。気候・減少・種間重なりの事前方向仮説は主検定で支持されず、英国・アイルランドから南極までの普遍的機構、島嶼因果、温暖化による将来個体数予測を主張しない。
 
 ## 現在の次の一手
 
