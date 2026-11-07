@@ -1,0 +1,46 @@
+name: unified-network-concentration-step7-manuscript-v02-qa
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/MANUSCRIPT_FULL_DRAFT_V0_2.md"
+      - "research/network_concentration_unified_v1/audit_step7_manuscript_v02.py"
+      - ".github/workflows/unified-network-concentration-step7-manuscript-v02-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify-postresult-fragility-claims:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compare v0.2 manuscript with frozen main results and post-result fragility
+        run: |
+          python -m py_compile research/network_concentration_unified_v1/audit_step7_manuscript_v02.py
+          python research/network_concentration_unified_v1/audit_step7_manuscript_v02.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-step7-postresult-manuscript-v02-qa
+          retention-days: 90
+          path: research/network_concentration_unified_v1/outputs/STEP7_MANUSCRIPT_V02_QA.json
+      - name: Save evidence lock for revised manuscript on Draft PR
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/network_concentration_unified_v1/outputs/STEP7_MANUSCRIPT_V02_QA.json
+          if git diff --cached --quiet; then
+            echo "No source QA changes"
+          else
+            git commit -m "Step7: verify revised full manuscript against source and fixed hypothesis results"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi
