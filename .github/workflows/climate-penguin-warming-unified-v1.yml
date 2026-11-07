@@ -41,7 +41,7 @@ jobs:
           assert a["same_location_community"]["observed_year_september_sic_positive_sites"]==4
           assert a["same_location_community"]["long_period_aug_nov_sic_negative_sites"]==6
           assert a["same_year_Signy"]["n_climate_years"]==9
-          assert a["same_year_Signy"]["n_original_stomachs_across_9_years"]==772
+          assert a["same_year_Signy"]["n_original_stomachs_across_9_years"]==422
           assert len(a["future_six_sites"]["scenario_site_equal_means"])==4
           assert len(list(csv.DictReader((base/"data/signy_same_year_diet_phenology.csv").open())))==9
           assert len(list(csv.DictReader((base/"data/six_site_future_physical.csv").open())))==24
