@@ -1,0 +1,75 @@
+name: unified-network-concentration-step2-source-audit
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/audit_step2_readiness.py"
+      - ".github/workflows/unified-network-concentration-step2-source-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit-covariate-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate script and materialize source-intake gates
+        run: |
+          python -m py_compile research/network_concentration_unified_v1/audit_step2_readiness.py
+          python research/network_concentration_unified_v1/audit_step2_readiness.py
+      - name: Confirm pinned counts and no invented source values
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          b=Path('research/network_concentration_unified_v1')
+          qa=json.loads((b/'outputs/STEP2_SOURCE_READINESS.json').read_text())
+          assert qa['status']=='SOURCE_READINESS_ONLY_NO_HYPOTHESIS_TESTS'
+          assert (qa['step1_n_main'],qa['step1_n_pair'])==(675,378)
+          assert (qa['main_temporal_oisst_candidate'],qa['pair_temporal_oisst_candidate'])==(669,376)
+          for n in ['species_traits_intake.csv','network_climate_intake.csv','step2_join_readiness.csv']:
+            with (b/'data'/n).open() as f:
+              rr=list(csv.DictReader(f))
+            print(n,len(rr))
+          assert len(list(csv.DictReader((b/'data/species_traits_intake.csv').open())))==20
+          assert len(list(csv.DictReader((b/'data/network_climate_intake.csv').open())))==1053
+          assert len(list(csv.DictReader((b/'data/step2_join_readiness.csv').open())))==1053
+          # This gate tests source readiness only, NEVER runs association models.
+          PY
+      - name: Upload Step2 audited readiness artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mina-unified-step2-source-readiness
+          retention-days: 90
+          path: |
+            research/network_concentration_unified_v1/data/species_traits_intake.csv
+            research/network_concentration_unified_v1/data/network_climate_intake.csv
+            research/network_concentration_unified_v1/data/step2_join_readiness.csv
+            research/network_concentration_unified_v1/outputs/STEP2_SOURCE_READINESS.json
+            research/network_concentration_unified_v1/outputs/STEP2_SOURCE_READINESS_JA.md
+      - name: Save audit ledger to existing Draft PR branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f \
+            research/network_concentration_unified_v1/data/species_traits_intake.csv \
+            research/network_concentration_unified_v1/data/network_climate_intake.csv \
+            research/network_concentration_unified_v1/data/step2_join_readiness.csv \
+            research/network_concentration_unified_v1/outputs/STEP2_SOURCE_READINESS.json \
+            research/network_concentration_unified_v1/outputs/STEP2_SOURCE_READINESS_JA.md
+          if git diff --cached --quiet; then
+            echo "Source-readiness files unchanged"
+          else
+            git commit -m "Step2: record covariate source gaps and temporal candidate support"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi
