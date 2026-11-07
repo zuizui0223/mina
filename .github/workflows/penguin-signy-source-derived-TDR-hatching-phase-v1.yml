@@ -1,0 +1,45 @@
+name: penguin-signy-source-derived-TDR-hatching-phase-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_diving_hatching_phase_v1/**'
+      - 'tests/test_signy_diving_hatching_phase_v1.py'
+      - '.github/workflows/penguin-signy-source-derived-TDR-hatching-phase-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_diving_hatching_phase_v1/**'
+      - 'tests/test_signy_diving_hatching_phase_v1.py'
+      - '.github/workflows/penguin-signy-source-derived-TDR-hatching-phase-v1.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-derived-phase-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -p test_signy_diving_hatching_phase_v1.py -v
+      - name: Download only exact original-verified small derived artifacts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/dives /tmp/gps /tmp/hatch
+          gh run download 41922844790 --repo "$GITHUB_REPOSITORY" --name penguin-signy-three-TDR-matched-dive-GPS-all-source-v2 --dir /tmp/dives
+          gh run download 41730811560 --repo "$GITHUB_REPOSITORY" --name penguin-signy-concurrent-original-GPS-two-species-v1 --dir /tmp/gps
+          gh run download 41590421785 --repo "$GITHUB_REPOSITORY" --name penguin-signy-original-hatching-source-v1 --dir /tmp/hatch
+      - name: Verify exact source hashes and hatching-phase original GPS overlap
+        run: |
+          DIVE_SOURCE=/tmp/dives/same_clock_hour_A_C_candidate_dive_GPS_support.csv GPS_SOURCE=/tmp/gps/original_GPS_same_clock_hour_species_pairs.csv HATCH_SOURCE=/tmp/hatch/original_34_species_seasons.csv python -m unittest discover -s tests -p test_signy_diving_hatching_phase_v1.py -v
+          python research/climate-penguin/work/signy_diving_hatching_phase_v1/summary.py --dive /tmp/dives/same_clock_hour_A_C_candidate_dive_GPS_support.csv --gps /tmp/gps/original_GPS_same_clock_hour_species_pairs.csv --hatch /tmp/hatch/original_34_species_seasons.csv --out /tmp/leapfrog_phase
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-signy-TDR-dive-hatching-phase-source-v1
+          path: /tmp/leapfrog_phase/
+          retention-days: 30

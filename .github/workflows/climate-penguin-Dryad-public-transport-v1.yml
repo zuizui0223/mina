@@ -1,0 +1,47 @@
+name: climate-penguin-Dryad-public-source-transport-diagnostic-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - ".github/workflows/climate-penguin-Dryad-public-transport-v1.yml"
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check anonymous public Dryad landing versus published REST GET
+        run: |
+          mkdir -p build/dryad_access
+          curl -LsS --max-time 50 -A 'Mozilla/5.0 (scientific DOI access audit)' -o build/dryad_access/public.html -D build/dryad_access/public.headers -w '%{http_code}' 'https://datadryad.org/dataset/doi%3A10.5061%2Fdryad.x69p8czmk' > build/dryad_access/public.code || true
+          curl -LsS --max-time 50 -H 'Accept: application/json' -o build/dryad_access/api.json -D build/dryad_access/api.headers -w '%{http_code}' 'https://datadryad.org/api/v2/datasets/doi%3A10.5061%2Fdryad.x69p8czmk' > build/dryad_access/api.code || true
+      - name: Report accessible real original-source links only
+        run: |
+          python - <<'PY'
+          import re,html,json,pathlib,urllib.parse
+          root=pathlib.Path('build/dryad_access')
+          page=(root/'public.html').read_text(encoding='utf-8',errors='replace')
+          api=(root/'api.json').read_text(encoding='utf-8',errors='replace')
+          links=[html.unescape(x) for x in re.findall(r'href=["\u0027]([^"\u0027]+)["\u0027]',page)]
+          valid=sorted(set(urllib.parse.urljoin('https://datadryad.org',x)
+                for x in links if any(t in x.lower() for t in ('file_stream','download_resource','/downloads','/api/v2/files'))))
+          probes={
+            'status':'SOURCE_TRANSPORT_ONLY_NO_CAMERA_VALUES',
+            'landing_http_status':(root/'public.code').read_text().strip(),
+            'landing_bytes':len(page.encode('utf-8')),
+            'page_contains_original_csv_name':'ChinstrapForagingDiveOutcomesVariables.csv' in page,
+            'api_metadata_http_status':(root/'api.code').read_text().strip(),
+            'api_body_bytes':len(api.encode('utf-8')),
+            'public_download_links_from_actual_page':valid[:30],
+            'source_doi':'10.5061/dryad.x69p8czmk',
+            'api_download_previous_observed_http_status':401,
+            'original_csv_currently_downloaded':False
+          }
+          (root/'diagnostic.json').write_text(json.dumps(probes,indent=2))
+          print(json.dumps(probes,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chinstrap-Dryad-video-public-transport-diagnostic-v1
+          path: build/dryad_access/diagnostic.json

@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "analysis_date_jst": "2026-10-30",
+  "status": "POST_EXPLORATION_STAGE_TO_LATER_COUNTS_NOT_RECRUITMENT_OR_FORECAST",
+  "analysis_commit": "d883f9c67d1ab6e6e4b41a4b87449ffcea9cdf7b",
+  "run_id": 40987771335,
+  "job_id": 123842690820,
+  "artifact_id": 12947533784,
+  "artifact_sha256": "8a31d24967a2eb5328ff3ac9bd5d58efa642c09c013f801ce4797c82f3bcd4b1",
+  "baseline_stage_SHA256": "3b3637c545ba3b804895ff406907fa50f51b95d765b554184368688ea4a4b557",
+  "fixed_future_season_offsets": [2, 5],
+  "baseline_contrasts": 75,
+  "all_species_links": 29,
+  "no_qualified_future_source": 46,
+  "primary_pair": "CHPE|GEPE",
+  "primary_ordered_same_citation": {"n": 0, "not_identified": true},
+  "ordered_count_agreement_bridge": {
+    "n": 8,
+    "site_ids": ["SHIR"],
+    "regions": ["South Shetland Islands"],
+    "baseline_seasons": [1997, 1998, 1999, 2001, 2004, 2007, 2008, 2009],
+    "same_direction_n": 6,
+    "opposite_direction_n": 2,
+    "all_stage_directions_positive": true,
+    "constant_positive_direction_same_n": 6,
+    "predictive_skill_not_established": true,
+    "nonoverlapping_windows": {"n": 3, "baseline_seasons": [1997, 2001, 2007], "same_direction_n": 3, "independent_ecological_replicates": false},
+    "same_full_dates_subset": {"n": 2, "same_direction_n": 1, "opposite_direction_n": 1}
+  },
+  "all_baseline_timing_diagnostic": {
+    "n": 18,
+    "sites": 3,
+    "regions": 1,
+    "same_direction_n": 9,
+    "opposite_direction_n": 9,
+    "site_summaries": [
+      {"site_id": "ARDL", "n": 5, "same_direction": 2, "opposite_direction": 3, "baseline_stage_order_verified": false, "mean_stage_share_shift": -0.0005635084099974375, "mean_future_share_change_per_year": 4.034212858661289e-07},
+      {"site_id": "BART", "n": 5, "same_direction": 1, "opposite_direction": 4, "baseline_stage_order_verified": false, "mean_stage_share_shift": -0.04274429238012697, "mean_future_share_change_per_year": 0.010605926940059195},
+      {"site_id": "SHIR", "n": 8, "same_direction": 6, "opposite_direction": 2, "baseline_stage_order_verified": true, "mean_stage_share_shift": 0.032725309435261196, "mean_future_share_change_per_year": 0.00407265769899304}
+    ]
+  },
+  "verification": {
+    "new_tests": 20,
+    "repository_tests_passed": 280,
+    "repository_tests_skipped": 27,
+    "repository_tests_failed": 0,
+    "independent_comparison_checks": 224,
+    "independent_metric_max_abs_error": 6.396792817664476e-17,
+    "independently_rebuilt_links": 29,
+    "shared_baseline_future_original_count_ids": 0,
+    "CI_local_files_byte_equal": 3,
+    "output_sha256": {
+      "stage_followthrough_v11_result.json": "a6a720a5df3871a8ccc191b30ecf702b72b0b792ad94b0c59ecaa2273e689c02",
+      "stage_future_accepted_v11.csv": "b5aa5c202be018cb54dba587df1cf04d8daff6acb4b3c0add5368bbd108e3d4f",
+      "stage_future_eligibility_v11.csv": "93901de4d492a6b6b3dda5f80c691422b4a4fd7bffa15d394000c3f147644dd2"
+    },
+    "normal_PR_CI_success": 40987780093,
+    "push_CI_cancelled": 40987770270,
+    "separate_furseal_source_failure": 40987780130
+  },
+  "limitations": [
+    "Source-matched future counts do not track baseline chicks as recruits.",
+    "Exact baseline count agreement across publications does not certify equal census footprint or effort.",
+    "Overlapping follow-up windows and common sites are not independent replicates.",
+    "The strict ordered same-citation primary cohort is empty; bridges remain a separate diagnostic.",
+    "All primary bridge evidence comes from one site, and the stage direction is invariant.",
+    "Ardley and Barton baseline nest-before-chick chronology is unresolved; no fledging-success claim.",
+    "No survival, immigration, competition, climate or island mechanism identified; no p values."
+  ]
+}

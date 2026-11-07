@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "status": "postexploration_geometric_observation_gate_not_ecological_effect",
+  "litchfield_geometry_sha256": "cab12966316d3d7dc6e48fdec6e0962f3f28d7799bfb1e07fefd96e2db1a4f93",
+  "torgersen": {
+    "source_url": "https://www.era.gs/projects/palmer/Map5-TorgersenIsland-v3.pdf",
+    "source_sha256": "89e2af9b2708e8eba05d0a5a46fcb34b6ca1ec763d57883cae91d40fb75aef6f",
+    "map_publication_date": "2008-12-11",
+    "source_statement": "USGS orthophoto (2001) and Patterson (2001)",
+    "exact_polygon_survey_dates": null,
+    "census_code_crosswalk": false,
+    "outline_count": 28,
+    "control_points": 16,
+    "graticule_fit_rmse_m": 0.06970147255628717,
+    "graticule_fit_max_m": 0.10885288254768237,
+    "projection_assumption": "+proj=lcc +lat_1=-64.76666666666667 +lat_2=-64.8 +lat_0=-64.76666666666667 +lon_0=-64.075 +datum=WGS84 +units=m +no_defs",
+    "field_accuracy_established": false,
+    "map_shapes_are_not_23_census_units": true
+  },
+  "summaries": [
+    {"site_id":"LITC","pixel_side_m":10,"map_outlines":10,"unmixed_pixel_geometrically_excluded":10,"not_excluded_but_unvalidated":0,"area_m2_min":9.67889270814599,"area_m2_max":114.97058323982975,"radius_m_max":4.162610135505379},
+    {"site_id":"LITC","pixel_side_m":30,"map_outlines":10,"unmixed_pixel_geometrically_excluded":10,"not_excluded_but_unvalidated":0,"area_m2_min":9.67889270814599,"area_m2_max":114.97058323982975,"radius_m_max":4.162610135505379},
+    {"site_id":"TORG","pixel_side_m":10,"map_outlines":28,"unmixed_pixel_geometrically_excluded":23,"not_excluded_but_unvalidated":5,"area_m2_min":15.797835736442025,"area_m2_max":910.0705276751276,"radius_m_max":9.479238042338144},
+    {"site_id":"TORG","pixel_side_m":30,"map_outlines":28,"unmixed_pixel_geometrically_excluded":28,"not_excluded_but_unvalidated":0,"area_m2_min":15.797835736442025,"area_m2_max":910.0705276751276,"radius_m_max":9.479238042338144}
+  ],
+  "limits": [
+    "Map outlines are generalized and not complete verified historical occupancy.",
+    "Disk criterion rules out a full unmixed square pixel; passing it does NOT establish a fitting square.",
+    "A native pixel response/PSF can mix surroundings even when its nominal footprint fits.",
+    "Cannot infer plant absence, greening, extinction years, independent island replication or nutrient mechanism.",
+    "Subpixel or multi-patch aggregation requires a different estimand and independently validated model."
+  ]
+}

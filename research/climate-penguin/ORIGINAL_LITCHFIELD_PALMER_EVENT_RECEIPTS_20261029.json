@@ -1,0 +1,312 @@
+{
+  "analysis_date": "2026-10-29",
+  "scope": "Original source encounter and five-island observational support, not inferred penguin-induced greening or warming mechanism",
+  "litchfield_original": {
+    "run_id": 40860679373,
+    "artifact_id": 12890948435,
+    "receipt": {
+      "schema": 1,
+      "status": "verified_primary_source_count_chronology_not_caused_greening",
+      "pdf_url": "https://www.env.go.jp/nature/nankyoku/kankyohogo/database/jyouyaku/aspa/aspa_pdf_en/113.pdf",
+      "source_type": "2014 first-party Antarctic Treaty ASPA113 management plan Table 1; pp 5-6",
+      "original_count_csv_sha256": "d84c442853ad357e701d0714c08a509bffb7f6776ced137b907a12a66c3aca56",
+      "mapppd_original_snapshot_sha256": "fcb622814d9aec674fb34ff5f8acd357f5508cf4bc1c63945e62d0c558fbc3c1",
+      "seasons": 22,
+      "positive_seasons": 16,
+      "explicit_zero_seasons": 6,
+      "first_zero_season_start": 2007,
+      "last_positive_season_start": 2006,
+      "published_2006_breeding_pairs": 4,
+      "mapppd_exact_matches": 17,
+      "mapppd_count_disagreements": 0,
+      "published_only_seasons": [
+        2006,
+        2009,
+        2010,
+        2011,
+        2012
+      ],
+      "last_positive_mapppd": 2005,
+      "mapppd_first_zero": 2007,
+      "survey_month_resolved": false,
+      "static_point_buffer_only": {
+        "radius_m": 500,
+        "vegetation_map_features": 27,
+        "lichen_map_features": 59,
+        "time_indexed_vegetation": false,
+        "physical_land_polygon_resolved": false
+      },
+      "source_priority": {
+        "outside_victoria_rows": 181,
+        "unresolved_month_rows": 120,
+        "known_month_rows": 61
+      },
+      "climate": {
+        "status": "ERA5_original_source_retrieved_context_only",
+        "source_sha256": "f2bad55bc9b714351b8bc30031b1518eece43138f77d4047657a3e145911e9a6",
+        "grid_location": [
+          "-64.75",
+          "-64.0"
+        ],
+        "n_complete_years": 22,
+        "pre_first_zero_september_mean_c": -7.6570833125,
+        "observed_zero_period_september_mean_c": -5.796111333333333,
+        "source_calendar_overlap_only": true,
+        "causal_or_precensus_exposure": false
+      },
+      "not_inferred": [
+        "penguin-induced greening",
+        "individual migration",
+        "annually surveyed all-patch occupancy",
+        "true climate-attributable population effect",
+        "physical rock-capacity increase",
+        "seasonal sea-ice loss before observed counts"
+      ]
+    }
+  },
+  "palmer_five_island": {
+    "run_id": 40861309794,
+    "artifact_id": 12891846366,
+    "receipt": {
+      "schema": 1,
+      "source_status": "source_overlap_verified_not_independent_causal_test",
+      "source_sha256": {
+        "ASPA113": "d84c442853ad357e701d0714c08a509bffb7f6776ced137b907a12a66c3aca56",
+        "Palmer": "23259f773577356bd01eee995e256b8b297e3270b5d96147d4e7454d8f202a80",
+        "Palmer_coordinates": "bc15daf42bc8c24d8bec204235e3e16288efbb3238ec24e3d3f450259ab0b11f",
+        "Plantarctica_point_buffer": "f073892fadc925ec27b0b4449133ba0398f838087cae393626b1cb9d9ca762da"
+      },
+      "source_lineage_note": "Palmer LTER and ASPA table may reuse Fraser original counts; not independent field replications.",
+      "palmer_count_roster_1991_2017": {
+        "sites": 5,
+        "years": 27,
+        "records": 135
+      },
+      "litchfield_official_overlap_1991_2012": {
+        "years": 22,
+        "matched": 20,
+        "discrepancies": [
+          {
+            "year": 1998,
+            "ASPA113_breeding_pairs": 338,
+            "Palmer_group_count": 325,
+            "difference_palmer_minus_ASPA": -13
+          },
+          {
+            "year": 1999,
+            "ASPA113_breeding_pairs": 322,
+            "Palmer_group_count": 301,
+            "difference_palmer_minus_ASPA": -21
+          }
+        ]
+      },
+      "litchfield_official_first_recorded_zero": 2007,
+      "palmer_LIT_explicit_zero_2007_2017": true,
+      "palmer_comparison_islands_2017_positive": 4,
+      "selected_count_years": [
+        {
+          "year": 1991,
+          "CHR": 1410,
+          "COR": 681,
+          "HUM": 1085,
+          "LIT": 497,
+          "TOR": 3016,
+          "four_other_islands_sum": 6192,
+          "other_islands_all_positive": true
+        },
+        {
+          "year": 2006,
+          "CHR": 229,
+          "COR": 134,
+          "HUM": 188,
+          "LIT": 4,
+          "TOR": 362,
+          "four_other_islands_sum": 913,
+          "other_islands_all_positive": true
+        },
+        {
+          "year": 2007,
+          "CHR": 329,
+          "COR": 94,
+          "HUM": 178,
+          "LIT": 0,
+          "TOR": 246,
+          "four_other_islands_sum": 847,
+          "other_islands_all_positive": true
+        },
+        {
+          "year": 2012,
+          "CHR": 181,
+          "COR": 53,
+          "HUM": 114,
+          "LIT": 0,
+          "TOR": 103,
+          "four_other_islands_sum": 451,
+          "other_islands_all_positive": true
+        },
+        {
+          "year": 2017,
+          "CHR": 27,
+          "COR": 23,
+          "HUM": 68,
+          "LIT": 0,
+          "TOR": 22,
+          "four_other_islands_sum": 140,
+          "other_islands_all_positive": true
+        }
+      ],
+      "point_buffer_geometry": {
+        "distance_rows": [
+          {
+            "site_a": "CHIS",
+            "site_b": "CORM",
+            "distance_km": 2.695604,
+            "overlap_500m_point_buffers": false,
+            "overlap_2000m_point_buffers": true
+          },
+          {
+            "site_a": "CHIS",
+            "site_b": "HUMB",
+            "distance_km": 4.496689,
+            "overlap_500m_point_buffers": false,
+            "overlap_2000m_point_buffers": false
+          },
+          {
+            "site_a": "CHIS",
+            "site_b": "LITC",
+            "distance_km": 4.180127,
+            "overlap_500m_point_buffers": false,
+            "overlap_2000m_point_buffers": false
+          },
+          {
+            "site_a": "CHIS",
+            "site_b": "TORG",
+            "distance_km": 3.382111,
+            "overlap_500m_point_buffers": false,
+            "overlap_2000m_point_buffers": true
+          },
+          {
+            "site_a": "CORM",
+            "site_b": "HUMB",
+            "distance_km": 6.580431,
+            "overlap_500m_point_buffers": false,
+            "overlap_2000m_point_buffers": false
+          },
+          {
+            "site_a": "CORM",
+            "site_b": "LITC",
+            "distance_km": 6.463703,
+            "overlap_500m_point_buffers": false,
+            "overlap_2000m_point_buffers": false
+          },
+          {
+            "site_a": "CORM",
+            "site_b": "TORG",
+            "distance_km": 5.588936,
+            "overlap_500m_point_buffers": false,
+            "overlap_2000m_point_buffers": false
+          },
+          {
+            "site_a": "HUMB",
+            "site_b": "LITC",
+            "distance_km": 0.709631,
+            "overlap_500m_point_buffers": true,
+            "overlap_2000m_point_buffers": true
+          },
+          {
+            "site_a": "HUMB",
+            "site_b": "TORG",
+            "distance_km": 1.129532,
+            "overlap_500m_point_buffers": false,
+            "overlap_2000m_point_buffers": true
+          },
+          {
+            "site_a": "LITC",
+            "site_b": "TORG",
+            "distance_km": 0.881524,
+            "overlap_500m_point_buffers": true,
+            "overlap_2000m_point_buffers": true
+          }
+        ],
+        "point_buffers_are_not_island_polygons": true,
+        "500m_overlapping_pairs": 2,
+        "2000m_overlapping_pairs": 5
+      },
+      "static_map_context": [
+        {
+          "source_site_id": "CHIS",
+          "palmer_code": "CHR",
+          "site_name": "Christine Island",
+          "distance_from_litchfield_km": 4.180127,
+          "500m_vegetation_features": 23,
+          "2000m_vegetation_features": 61,
+          "500m_lichen_features": 24,
+          "2000m_lichen_features": 96
+        },
+        {
+          "source_site_id": "CORM",
+          "palmer_code": "COR",
+          "site_name": "Cormorant Island",
+          "distance_from_litchfield_km": 6.463703,
+          "500m_vegetation_features": 0,
+          "2000m_vegetation_features": 14,
+          "500m_lichen_features": 4,
+          "2000m_lichen_features": 25
+        },
+        {
+          "source_site_id": "HUMB",
+          "palmer_code": "HUM",
+          "site_name": "Humble Island",
+          "distance_from_litchfield_km": 0.709631,
+          "500m_vegetation_features": 38,
+          "2000m_vegetation_features": 103,
+          "500m_lichen_features": 44,
+          "2000m_lichen_features": 199
+        },
+        {
+          "source_site_id": "LITC",
+          "palmer_code": "LIT",
+          "site_name": "Litchfield Island",
+          "distance_from_litchfield_km": 0,
+          "500m_vegetation_features": 27,
+          "2000m_vegetation_features": 104,
+          "500m_lichen_features": 59,
+          "2000m_lichen_features": 207
+        },
+        {
+          "source_site_id": "TORG",
+          "palmer_code": "TOR",
+          "site_name": "Torgersen Island",
+          "distance_from_litchfield_km": 0.881524,
+          "500m_vegetation_features": 4,
+          "2000m_vegetation_features": 110,
+          "500m_lichen_features": 0,
+          "2000m_lichen_features": 232
+        }
+      ],
+      "design_stop": {
+        "event_count_observed": true,
+        "matched_annual_vegetation_area_measured": false,
+        "independent_rock_habitat_area_by_actual_island": false,
+        "annual_island_snow_census": false,
+        "longitudinal_seal_pressure_measured": false,
+        "1991_2007_original_nearshore_seaice_verified_complete": false,
+        "island_mediator_or_diD_identifiable": false
+      },
+      "unsupported": [
+        "greening_from_penguin_abandonment",
+        "island-level vegetation area from point-buffer features",
+        "four independent temperature exposures for nearby islands",
+        "the baseline size and survey-method effects are controlled"
+      ]
+    }
+  },
+  "scientific_ceiling": [
+    "Publisher-original 2006-07 four breeding pairs and 2007-08 onward six explicit zeros through 2012-13; missing from frozen MAPPPD are 2006 and 2009–2012.",
+    "Original Litchfield seasonal census month is unspecified for all 22 reconstructed observations. Do not infer survey dates from N1 count accuracy or other seabird seasonal timing.",
+    "Palmer LTER 135 site-year rows share original survey lineage; 20/22 corresponding Litchfield source counts match, with only 1998 and 1999 differing.",
+    "Four neighboring colonies remained >0 even in 2017 while Litchfield original series reaches zero in 2007; difference under same broad region is not evidence of causal local island filtering.",
+    "Plantarctica features in 500m circular buffers overlap between Litchfield, Humble and Torgersen point locations. Not unique physical-island habitat, not annual greening.",
+    "Single-site original ERA5 9-month temperature is reanalysis context only; site season/month unknown, no historical 1991–2007 nearshore ice and no validated vegetation time series. No climate attribution."
+  ]
+}

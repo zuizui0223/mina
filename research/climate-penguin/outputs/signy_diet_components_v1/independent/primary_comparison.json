@@ -1,0 +1,190 @@
+{
+  "status": "PASS",
+  "checked_utc": "2026-11-06T07:12:53.711961+00:00",
+  "absolute_tolerance": 1e-12,
+  "relative_tolerance": 1e-12,
+  "signy_numeric_comparisons": 379,
+  "signy_exact_comparisons": 198,
+  "maximum_signy_numeric_absolute_difference": {
+    "absolute_difference": 1.1368683772161603e-13,
+    "field": "recovered_mass_descriptives.mean_food_mass_g.max_g"
+  },
+  "palmer_reference_primary_comparison": {
+    "status": "PASS",
+    "rows": 12,
+    "numeric_comparisons": 60,
+    "scope_checks": 12,
+    "absolute_tolerance": 1e-12,
+    "relative_tolerance": 1e-12,
+    "maximum_absolute_difference": {
+      "species": "Gentoo",
+      "year": 2011,
+      "field": "detection_conditioned_fish_fraction_reference",
+      "absolute_difference": 6.938893903907228e-18
+    }
+  },
+  "palmer_reference_xml_to_long_comparison": {
+    "status": "PASS",
+    "rows": 12,
+    "exact_numeric_comparisons": 144
+  },
+  "compared_summary_fields": [
+    "primary_species",
+    "n_seasons",
+    "n_stomachs",
+    "source_audit",
+    "component_associations",
+    "mean_response_association",
+    "permutation_family",
+    "slope_accounting",
+    "recovered_mass_descriptives"
+  ],
+  "compared_tables": {
+    "species_season_components": {
+      "rows": 18,
+      "columns": [
+        "conditional_fish_fraction",
+        "mean_crustacean_mass_g",
+        "mean_fish_fraction",
+        "mean_fish_mass_g",
+        "mean_food_mass_g",
+        "n_positive_fish_mass",
+        "n_stomachs",
+        "positive_mass_frequency",
+        "sic_aug_nov",
+        "species",
+        "year"
+      ]
+    },
+    "gentoo_primary_nine_seasons": {
+      "rows": 9,
+      "columns": [
+        "conditional_fish_fraction",
+        "mean_crustacean_mass_g",
+        "mean_fish_fraction",
+        "mean_fish_mass_g",
+        "mean_food_mass_g",
+        "n_positive_fish_mass",
+        "n_stomachs",
+        "positive_mass_frequency",
+        "sic_aug_nov",
+        "species",
+        "year"
+      ]
+    },
+    "annual_accounting_terms": {
+      "rows": 9,
+      "columns": [
+        "composition",
+        "covariation",
+        "frequency",
+        "mean_fish_fraction",
+        "sic_aug_nov",
+        "year"
+      ]
+    },
+    "leave_one_season_accounting": {
+      "rows": 9,
+      "columns": [
+        "composition",
+        "covariation",
+        "frequency",
+        "mean_response",
+        "omitted_year"
+      ]
+    }
+  },
+  "diagnostics": {
+    "same_nine_season_73_stomach_cohort": true,
+    "all_nine_seasons_have_positive_fish_mass": true,
+    "positive_counts_by_year": {
+      "2001": 7,
+      "2002": 7,
+      "2003": 5,
+      "2004": 2,
+      "2005": 6,
+      "2006": 7,
+      "2007": 7,
+      "2008": 2,
+      "2009": 5
+    },
+    "zero_positive_gentoo_seasons": [],
+    "max_direct_mean_minus_product_absolute_error": 5.551115123125783e-17,
+    "both_prespecified_components_vary": true,
+    "mass_means_include_zero_fish_stomachs": true,
+    "loo_accounting_recentres_P_and_C_in_each_subset": true,
+    "n_positive_fish_mass_over_all_valid_stomachs": 48,
+    "max_annual_accounting_reconstruction_error": 2.7755575615628914e-17,
+    "accounting_slope_identity_error": 2.7755575615628914e-17,
+    "leave_one_season_accounting_ranges": {
+      "frequency": {
+        "min": 0.04707116438641144,
+        "max": 0.06228488706593239
+      },
+      "composition": {
+        "min": 0.03988485465889741,
+        "max": 0.07985520620616318
+      },
+      "covariation": {
+        "min": -0.008365278402879355,
+        "max": 0.005171315983799929
+      },
+      "mean_response": {
+        "min": 0.09545802371910202,
+        "max": 0.14042032469354243
+      }
+    },
+    "both_frequency_and_composition_full_sample_slopes_positive": true,
+    "single_common_x_permutation_family": true,
+    "hc3_t_df": {
+      "frequency": 7,
+      "composition": 7
+    },
+    "method_limits": [
+      "The two-component max statistic uses one common exposure permutation and does not adjust the whole project.",
+      "Exact p remains conditional on exchangeable years; HC3 does not remove serial dependence.",
+      "Both accounting slopes are positive; stronger evidence for frequency does not mean only frequency contributes.",
+      "Recovered gram measurements are meals recovered at sampling, not intake rates or prey availability.",
+      "Palmer reference conditions on reported detection; it is not a harmonized positive-mass comparison."
+    ]
+  },
+  "input_file_hashes": [
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/summary.json",
+      "sha256": "d3cb95eb01f995b2b9eee428e7e6ae3f68e1bd2641a810bd423bd2b1137cc35c"
+    },
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/independent/independent_results.json",
+      "sha256": "2f2c2c4159dafc43551e37b193b8bd7bd6b919d010eb6b08cbd5abfc1c2f6190"
+    },
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/species_season_components.csv",
+      "sha256": "f87c6085160bd75acf0688d3381831614322d944c4309a0b79a60a80e756fd91"
+    },
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/gentoo_primary_nine_seasons.csv",
+      "sha256": "fc483ae990f9a4f6137edebbe02f4efaab003cd3f6de65d0c313407d55f23a57"
+    },
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/annual_accounting_terms.csv",
+      "sha256": "5b7425490d7e1f7b0184920e9f27fea8166e5545cf41f2cf00eb6397c488ed90"
+    },
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/leave_one_season_accounting.csv",
+      "sha256": "510dd7392920dbc9a92977e94c1af907ff3fb4a40bfa816c9ba29e0f6c59d672"
+    },
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/palmer_reported_detection_reference.csv",
+      "sha256": "400cd7daefda67647d6774434cbf947d3ebef5512ccdfe3e611b42d2f213f05d"
+    },
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/independent/palmer_reference_verification.json",
+      "sha256": "f2f84f5988cdb84e399adeda1f5b50c0f9d3574537cf3b278df9b751917d1d49"
+    },
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/source_manifest.json",
+      "sha256": "5d9d28ee10d1540ce36e8867f88d0328dd37e454f67d5c18709ffab4094110b4"
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,38 @@
+name: penguin-signy-chinstrap-arrival-effort-v2
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_chinstrap_arrival_effort_v2/**'
+      - 'research/climate-penguin/outputs/signy_chinstrap_arrival_effort_v2/**'
+      - 'tests/test_signy_chinstrap_arrival_effort_v2.py'
+      - '.github/workflows/penguin-signy-chinstrap-arrival-effort-v2.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_chinstrap_arrival_effort_v2/**'
+      - 'research/climate-penguin/outputs/signy_chinstrap_arrival_effort_v2/**'
+      - 'tests/test_signy_chinstrap_arrival_effort_v2.py'
+      - '.github/workflows/penguin-signy-chinstrap-arrival-effort-v2.yml'
+permissions:
+  contents: read
+jobs:
+  source-count-effort:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -p 'test_signy_chinstrap_arrival_effort_v2.py' -v
+      - name: Download original BAS Signy chinstrap arrival date/count source
+        run: |
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=64a8291f-8c23-4e5d-9085-c36c8d83b09a&output=zip.tree' -o /tmp/signy_chinstrap_arrival_original.zip
+      - name: Reconstruct survey sessions with original CSV SHA guard
+        run: |
+          python research/climate-penguin/work/signy_chinstrap_arrival_effort_v2/analyze.py --original-zip /tmp/signy_chinstrap_arrival_original.zip --out /tmp/signy_arrival_effort
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-signy-chinstrap-arrival-effort-v2
+          path: /tmp/signy_arrival_effort/
+          retention-days: 30

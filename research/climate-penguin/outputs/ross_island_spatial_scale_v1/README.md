@@ -1,0 +1,11 @@
+# Ross Island annual colony-area vs sector count concentration (original source-backed control)
+
+This analysis uses seven frozen Git blobs. It does not conflate 31 matching terrestrial/vegetation sites with 39 macro sites, map non-detection with true biological absence, or time-invariant coarse ERA5 September SWE with observed annual nesting snow.
+
+**First gate:** summarize all 106 original ERA5 snow-grid locations over 2011–2021 and all 39/31 intersection locations. Test whether original same-method ADPE count intervals from 2011–2020 with both censuses source-verified after November and source-matched September SWE have any within-site interannual snow variation. If not, terrestrial snow effect cannot be estimated from this data even though multiple rows exist.
+
+**Second gate:** use precisely six original Ross Island aerial MAPPPD census *sector* codes: Cape Bird (BRDM/BRDN/BRDS), Cape Crozier (CRZE/CRZW), Cape Royds (ROYD). Every sector-year has one original source row and one positive recorded count; never interpolate missing years. Compute total and scale-independent inverse Simpson effective number N_eff at two nested levels (three colony districts and six sector codes), 1985–2024. Evaluate within original 1991–2020 with same years as observed OSI satellite SIC; compare 2010–2019 and 2011–2024 to avoid treating one cross-era association as universal.
+
+**Third gate:** for the 23 original 1991–2020 complete-source years, match observed 8–11mo marine SIC at each original sector and compare true year-on-year changes in Crozier minus Bird relative spring SIC against Crozier's census share change. This is not a quasi-experiment with independent sea-ice cells and does not estimate local penguin climate response. A source-matched aerial census count is not automatically a universally standardized nest pair count.
+
+**Interpretation:** Ross Island has three districts on ONE physical island and six source sector codes; there are not six biological climate replicates. Concentration relationships are compositional and depend on temporal window and spatial unit. Separate this direct empirical pattern from the positive Palmer/Signy within-colony breeding-space contraction and the CMIP6 conditional future sea-ice/salinity/temperature physical exposure. Do not project nest survival, recruitment, habitat, or future population size.

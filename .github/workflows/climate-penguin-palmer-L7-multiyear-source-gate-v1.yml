@@ -1,0 +1,45 @@
+name: climate-penguin-palmer-L7-multiyear-source-gate-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - ".github/workflows/climate-penguin-palmer-L7-multiyear-source-gate-v1.yml"
+      - "research/climate-penguin/work/abandonment/palmer_L7_multiyear_source_gate_v1.py"
+      - "research/climate-penguin/contracts/PALMER_L7_MULTIYEAR_SOURCE_GATE_V1.md"
+      - "tests/test_palmer_L7_multiyear_source_gate_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  independent-qa-only-source-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install 'shapely>=2,<3' 'pyproj>=3,<4' pyshp requests pytest
+      - run: pytest -q tests/test_palmer_L7_multiyear_source_gate_v1.py
+      - name: Download original complete 1986–2026 Landsat annual QA source
+        uses: actions/download-artifact@v4
+        with:
+          name: palmer-annual-local-qa-original-source
+          run-id: 40863960933
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/annual_qa_source
+      - name: Physical island QA land-mask and frozen same-sensor multiyear eligibility
+        run: |
+          python research/climate-penguin/work/abandonment/palmer_L7_multiyear_source_gate_v1.py \
+            --annual-QA-dir "${{ runner.temp }}/annual_qa_source" \
+            --out "${{ runner.temp }}/palmer_L7_source_gate"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: climate-penguin-palmer-L7-multiyear-source-gate-v1
+          path: ${{ runner.temp }}/palmer_L7_source_gate/
+          retention-days: 30
+          if-no-files-found: warn

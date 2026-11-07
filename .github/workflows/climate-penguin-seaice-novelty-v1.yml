@@ -1,0 +1,37 @@
+name: climate-penguin-historical-seaice-novelty-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/seaice_historical_novelty_v1/**"
+      - "research/climate-penguin/outputs/seaice_historical_novelty_v1/**"
+      - ".github/workflows/climate-penguin-seaice-novelty-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/seaice_historical_novelty_v1/**"
+      - "research/climate-penguin/outputs/seaice_historical_novelty_v1/**"
+      - ".github/workflows/climate-penguin-seaice-novelty-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  historical-physical-climatology:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate source-pinned historical 10,15,20-year SIC envelopes and future CMIP6 novelty
+        run: node research/climate-penguin/work/seaice_historical_novelty_v1/build.mjs --check-receipt
+      - name: Retain all original source-matched site and scenario records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-seaice-multidecadal-novelty-v1
+          path: |
+            research/climate-penguin/outputs/seaice_historical_novelty_v1/*.csv
+            research/climate-penguin/outputs/seaice_historical_novelty_v1/*.json
+          retention-days: 60
+          if-no-files-found: error

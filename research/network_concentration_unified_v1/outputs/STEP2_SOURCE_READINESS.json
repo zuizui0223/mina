@@ -1,0 +1,74 @@
+{
+  "status": "SOURCE_READINESS_ONLY_NO_HYPOTHESIS_TESTS",
+  "step1_n_main": 675,
+  "step1_n_pair": 378,
+  "main_networks": 396,
+  "pair_networks": 90,
+  "independent_species_ids_main": 20,
+  "main_jncc": 663,
+  "main_mapppd": 12,
+  "pair_jncc": 373,
+  "pair_mapppd": 5,
+  "main_temporal_oisst_candidate": 669,
+  "pair_temporal_oisst_candidate": 376,
+  "species_fidelity_verified": 0,
+  "observed_sst_verified_rows": 1038,
+  "H2_ready_rows": 0,
+  "H3_ready_rows": 662,
+  "H4D_ready_rows": 376,
+  "H4W_ready_rows": 376,
+  "source_sha256": {
+    "network_species.csv": "2aa36a7ab0c9145e6e4eac1ebb54f81533fe8546d634e92cdbb0d580b46dad28",
+    "network_species_pairs.csv": "9eff5dfe9d9dbfc6855fe82d6c7592da7a752defa1c52670904e5a874034451d"
+  },
+  "not_done": [
+    "H2/H3/H4D/H4W coefficients",
+    "multiple-testing correction",
+    "SST for pre-1981 or inland unmatched rows",
+    "site-fidelity numeric synthesis",
+    "frozen model and uncertainty implementation"
+  ],
+  "sst_descriptive_profiles": {
+    "network_species_JNCC": {
+      "n": 656,
+      "network_n": 383,
+      "median_C_per_decade": 0.02836657705765,
+      "positive_n": 354,
+      "negative_n": 302,
+      "mean_C_per_decade": 0.07008054788573914,
+      "min_C_per_decade": -0.772550125917,
+      "max_C_per_decade": 0.787116984526
+    },
+    "network_species_MAPPPD": {
+      "n": 6,
+      "network_n": 4,
+      "median_C_per_decade": -0.0152354771419,
+      "positive_n": 0,
+      "negative_n": 6,
+      "mean_C_per_decade": -0.04191054311577,
+      "min_C_per_decade": -0.139022697177,
+      "max_C_per_decade": -0.00125448665922
+    },
+    "network_species_pairs_JNCC": {
+      "n": 373,
+      "network_n": 88,
+      "median_C_per_decade": 0.25478644371,
+      "positive_n": 214,
+      "negative_n": 159,
+      "mean_C_per_decade": 0.13400563097678259,
+      "min_C_per_decade": -0.680178035924,
+      "max_C_per_decade": 0.787116984526
+    },
+    "network_species_pairs_MAPPPD": {
+      "n": 3,
+      "network_n": 2,
+      "median_C_per_decade": -0.32858821253,
+      "positive_n": 0,
+      "negative_n": 3,
+      "mean_C_per_decade": -0.47257467570813333,
+      "min_C_per_decade": -1.01269216449,
+      "max_C_per_decade": -0.0764436501044
+    }
+  },
+  "n_sst_not_verified": 15
+}

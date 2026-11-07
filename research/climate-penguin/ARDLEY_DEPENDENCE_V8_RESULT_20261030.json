@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "analysis_date": "2026-10-30",
+  "analysis_commit": "d1e6f2c895864d2fea5cc6769a8bebbeadfed116",
+  "source_run": 40979215013,
+  "source_artifact_id": 12944266629,
+  "source_artifact_sha256": "12102a74d3857f6a086f3080409d0c66b1393585f1c3a4995b2861c8a18d4975",
+  "original_V7_roster_sha256": "e65555f37683bba97ede1712d6a943df09b7d0f02a85fe0c2a41d89cd72111d5",
+  "status": "POST_RESULT_DIAGNOSIS_NOT_CAUSAL_OR_INDEPENDENT_CONFIRMATION",
+  "units": "GEPE-minus-CHPE observed interval log-count change per +10 percentage point prior seasonal SIC change, with original duration weighting",
+  "baseline_78_rows_unchanged": true,
+  "relative_coefficients": {
+    "all_78": -0.01624974252065661,
+    "Ardley_20": -0.07365339398788691,
+    "without_Ardley_58": 0.010369212269216322,
+    "Ardley_1981_2005_14": -0.1230509057112777,
+    "Ardley_2010_2018_6": 0.034295576352625236,
+    "Ardley_INACH1994_2005_11_source_subset": -0.18354308486178725,
+    "Barton_exact_same_late_6": 0.06159872436059961,
+    "all_78_site_citation_vantage_adjusted": -0.02076175414712166
+  },
+  "Ardley_species_slopes": {"chinstrap": 0.07608155356854812, "gentoo": 0.0024281595806612054},
+  "Ardley_share_of_residual_exposure_SS_not_explained_variance": 0.316807059143355,
+  "original_ASPA150_count_values_match": {"matched":32,"total_checked":32,"primary_field_source_homogeneous":false,"field_dates_verified":false},
+  "original_source_text": ["https://www.env.go.jp/nature/nankyoku/kankyohogo/database/jyouyaku/aspa/aspa_pdf_en/150.pdf", "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000023459270"],
+  "nearest_comparison": {"site":"BART", "original_registry_distance_km":8.611047304020211, "same_intervals":6,"all_same_published_citation":true,"ice_rate_correlation":0.9987600112046018,"independent_climate_replication":false},
+  "verification": {"new_local_tests_passed":12,"core_repo_tests_passed":226,"core_repo_tests_skipped":27,"independent_numeric_checks":210,"max_coefficient_difference":2.3314683517128287e-15,"downloaded_CI_JSON_and_3_CSV_byte_equal":true},
+  "inference": {"p_values":null,"causal_climate_effect":false,"observed_demographic_noise_measured":false,"source_period_change_causally_identified":false,"fixed_216_test_family_modified":false}
+}

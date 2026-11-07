@@ -1,0 +1,246 @@
+{
+  "status": "analysis_verified_with_preexisting_repository_test_failures",
+  "checked_utc": "2026-11-06T07:12:54.158814+00:00",
+  "base_commit": "fc47b21ca373f8faefcc8a93cb83dd8abee6385b",
+  "primary_cohort": {
+    "species": "Gentoo",
+    "seasons": 9,
+    "valid_stomachs": 73,
+    "positive_fish_mass_stomachs": 48,
+    "same_existing_stomach_cohort": true
+  },
+  "independent_calculation": {
+    "status": "PASS",
+    "signy_numeric_comparisons": 379,
+    "signy_exact_comparisons": 198,
+    "maximum_numeric_absolute_difference": {
+      "absolute_difference": 1.1368683772161603e-13,
+      "field": "recovered_mass_descriptives.mean_food_mass_g.max_g"
+    },
+    "palmer_numeric_comparisons": 60,
+    "palmer_source_table_comparisons": 144,
+    "absolute_tolerance": 1e-12,
+    "relative_tolerance": 1e-12,
+    "record": "independent/primary_comparison.json",
+    "recalculation_command": "python research/climate-penguin/work/signy_diet_components_v1/independent/recalculate.py --source-dir build/signy_diet_raw",
+    "comparison_command": "python research/climate-penguin/work/signy_diet_components_v1/independent/compare_primary.py",
+    "root_rerun_exit_codes": {
+      "recalculation": 0,
+      "comparison": 0
+    }
+  },
+  "new_tests": {
+    "passed": 6,
+    "failed": 0,
+    "names": [
+      "test_frequency_times_conditional_fraction_is_equal_stomach_mean",
+      "test_no_positive_fish_has_undefined_conditional_mean",
+      "test_missing_mass_is_excluded_and_nonfood_is_not_denominator",
+      "test_decomposition_reconstructs_values_and_slopes_with_covariation",
+      "test_constant_frequency_assigns_all_mean_slope_to_composition",
+      "test_max_family_uses_joint_permutations_and_preserves_perfect_dependence"
+    ]
+  },
+  "whole_repository_pytest": {
+    "command": "python -m pytest --tb=short --junitxml=/tmp/signy_components_pytest.xml",
+    "exit_code": 1,
+    "tests": 667,
+    "passed": 621,
+    "failed": 3,
+    "errors": 0,
+    "skipped": 43,
+    "duration_seconds": 54.025,
+    "failures": [
+      {
+        "nodeid": "tests/test_climate_penguin_checkpoint_guard.py::test_complete_snapshot_manifest_file_integrity",
+        "cause": "Baseline snapshot manifest is stale: README.md byte length does not match the recorded entry."
+      },
+      {
+        "nodeid": "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_known_source_three_species",
+        "cause": "Required generated input species_annual_stage_summary.csv is absent from the committed baseline archive."
+      },
+      {
+        "nodeid": "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_source_flags_prevent_pseudoreplication",
+        "cause": "Required generated input source_stage_site_seasons.csv is absent from the committed baseline archive."
+      }
+    ],
+    "all_tests_pass": false,
+    "prior_baseline_record": "../palmer_signy_diet_external_v1/BASELINE_TEST_FAILURES.json",
+    "prior_baseline_commit": "51b6578d8254d6ac2f4083e6ffc8fb94aacdcbb2",
+    "same_failure_names_and_causes_as_prior_baseline": true,
+    "stale_snapshot_entry_and_file_hashes_unchanged_and_generated_inputs_still_absent": true,
+    "baseline_reexecuted_this_extension": false
+  },
+  "main_manuscript_assets": {
+    "status": "pass",
+    "input_hashes": 11,
+    "years": 9,
+    "stomachs": 772,
+    "model_conditions": 12,
+    "local_links": 41,
+    "figures": 3,
+    "references": 9,
+    "scope": "Signy asset/source arithmetic and all manuscript local links; external comparison verified in its own output; not biological forecast validation"
+  },
+  "new_report_local_links": {
+    "checked": 38,
+    "missing": []
+  },
+  "figure_visual_inspection": {
+    "status": "PASS",
+    "file": "Figure_1_diet_components.png",
+    "dimensions_pixels": [
+      2640,
+      2112
+    ],
+    "details": "All four panels inspected after separating 2005/2009 point labels. Titles, labels, percentages versus grams, slope allocation, legends and source notes are legible and unclipped.",
+    "pdf": "Figure_1_diet_components.pdf"
+  },
+  "independent_prose_review": "No blocking numeric, unit or interpretation errors in REPORT_JA.md and README.md; completion wording updated after verification.",
+  "verification_record_build": {
+    "resolved_issue": "The prior baseline field manifest_sha256 is the expected README entry hash, not the manifest file hash. The check now reads the README entry explicitly.",
+    "recheck": "PASS",
+    "csv_line_endings": "Independent CSV writers use explicit LF; regenerated outputs and numerical comparison pass."
+  },
+  "scientific_scope": "Exploratory description of a known local association. Nine seasons, not 73 climate replicates. Positive recorded fish mass is not all fish occurrence. Two-component max statistic does not adjust the entire project. Algebraic slope accounting is not causal attribution or decomposition of the three-species distance.",
+  "unresolved_source_issues": [
+    "BAS source metadata do not fully define fish mass zero versus trace-only records.",
+    "Palmer reported detection is not established to equal positive fish mass.",
+    "Palmer per-stomach effective sets and exact missing-data treatment are not available.",
+    "Palmer Gentoo Table 1 n totals 129 versus 128 in the methods; rounding bounds are not confidence intervals."
+  ],
+  "artifact_hashes": [
+    {
+      "path": "research/climate-penguin/CLIMATE_NICHE_SYNTHESIS_20261102.md",
+      "sha256": "ff64fb907b7a49ff21ef106e592b00b17bcbc4fdcb500d4642c26c0cec2f6e92"
+    },
+    {
+      "path": "research/climate-penguin/POSITIVE_EVIDENCE_MERGED_20261031.md",
+      "sha256": "ebf118c72dc3879bcec7d7a38da3450fe30cf391395738ac36b82042b2682a8b"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/MANUSCRIPT_JA.md",
+      "sha256": "8b11ba58b08c527247b2b5b17569f220ac8fae5aee105307fc3c3841b555cf81"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/README.md",
+      "sha256": "1549a3314200984effe85efcb0e86d5ff61b9eb00009634eb5078a3693fa6428"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/SUPPLEMENT_JA.md",
+      "sha256": "dc96dccac17ac39dbd3d33c42940889a376cf5b87cc48ac3d9386cb97fa2cee9"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/validation.json",
+      "sha256": "c34d646b4aaa5ebadc3440488244d96540e25c6e951836fc886285e4b346969e"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/Figure_1_diet_components.pdf",
+      "sha256": "cfd8f7e777a1b70d37cb8917317e8a7d2479ca7bd3fdc4d1ad739790ef4f4623"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/Figure_1_diet_components.png",
+      "sha256": "6af97e7b40c088ef579c83d31d9b3a260d32ec1729d2562b8c5515e211e29e78"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/README.md",
+      "sha256": "151ac04b3a3dcf82ece355309108a2f6d992aa9a8d21ecc25412ab13971d5460"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/REPORT_JA.md",
+      "sha256": "09b1c876fbb07019bf890a0d0b0bbf0e3677149c07add0fa6b1c6faee32945c1"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/annual_accounting_terms.csv",
+      "sha256": "5b7425490d7e1f7b0184920e9f27fea8166e5545cf41f2cf00eb6397c488ed90"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/gentoo_primary_nine_seasons.csv",
+      "sha256": "fc483ae990f9a4f6137edebbe02f4efaab003cd3f6de65d0c313407d55f23a57"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/independent/annual_accounting_terms.csv",
+      "sha256": "7ea33bbd2ae80c5659e72eb63770469ddf99ad770cec9fbf39d6ed6e87d40d75"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/independent/gentoo_primary_nine_seasons.csv",
+      "sha256": "75c3d4613af988e97af8e076563fdb0a6867f10565b9c4be6bd39b543a75644d"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/independent/independent_results.json",
+      "sha256": "2f2c2c4159dafc43551e37b193b8bd7bd6b919d010eb6b08cbd5abfc1c2f6190"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/independent/leave_one_season_accounting.csv",
+      "sha256": "5edc9140a9d756e34c33910d37c90e6d6661fe1c1c1820663b96de6262608be0"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/independent/palmer_reference_independent.csv",
+      "sha256": "02d5564309d4b3e55f69c6464d58d6b0fc25e068ba39e1f248e2954e0b083a1b"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/independent/palmer_reference_verification.json",
+      "sha256": "f2f84f5988cdb84e399adeda1f5b50c0f9d3574537cf3b278df9b751917d1d49"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/independent/primary_comparison.json",
+      "sha256": "1fb968de53ed645d0a89a5af6171d49024882b19c032159019122c9510d772c3"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/independent/species_season_components.csv",
+      "sha256": "c0f9bced90af940e506c6bf2797e643260eb627d871ebff3685ab0f4a73f0c97"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/leave_one_season_accounting.csv",
+      "sha256": "510dd7392920dbc9a92977e94c1af907ff3fb4a40bfa816c9ba29e0f6c59d672"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/palmer_reported_detection_reference.csv",
+      "sha256": "400cd7daefda67647d6774434cbf947d3ebef5512ccdfe3e611b42d2f213f05d"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/source_manifest.json",
+      "sha256": "5d9d28ee10d1540ce36e8867f88d0328dd37e454f67d5c18709ffab4094110b4"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/species_season_components.csv",
+      "sha256": "f87c6085160bd75acf0688d3381831614322d944c4309a0b79a60a80e756fd91"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/summary.json",
+      "sha256": "d3cb95eb01f995b2b9eee428e7e6ae3f68e1bd2641a810bd423bd2b1137cc35c"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_diet_components_v1/DESIGN.md",
+      "sha256": "5f40c2b38ce7cb69274b36d659eef09e80af3e2658ecbb4eb4aeabac9d731696"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_diet_components_v1/SOURCE_METHODS.md",
+      "sha256": "8aaf707357bac0602a50438c9d9b1da832aa606e0427ee74b53b123cc8774619"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_diet_components_v1/analyze.py",
+      "sha256": "273186b078150d8b29be45c0df9427853583ae759e7212b9e86fa47e0338c407"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_diet_components_v1/independent/compare_primary.py",
+      "sha256": "cc9814c4b573a2341eef58c98e5a258b1425638ce54ae5495b6e60ea93d6c402"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_diet_components_v1/independent/palmer_reference.py",
+      "sha256": "b8958bebe5b191c466133cfbdd241e7925ba05ad996cc730d92cb0f59b6f3ec8"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_diet_components_v1/independent/recalculate.py",
+      "sha256": "6e1bda8d9868ba3d5bb5359ada46b8c93168bff36a33c1ab3468328917011b7b"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_diet_components_v1/plot.py",
+      "sha256": "c2cc97c5e24371fdac481cc2d4b8d1781189f2e49fba2616467ed85a1eda3951"
+    },
+    {
+      "path": "tests/test_signy_diet_components_v1.py",
+      "sha256": "37847a83789a262332e5c13aceb2c54640d6ee3fe036b0aa6bab59e4d8522858"
+    }
+  ]
+}

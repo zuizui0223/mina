@@ -1,0 +1,1131 @@
+{
+  "status": "independent_recalculation_complete",
+  "independence": "No primary analysis helper or numeric output used; raw CSV row loops, primary XML extraction, SciPy permutations and statsmodels HC3.",
+  "analysis_date": "2026-11-06",
+  "source_manifest": [
+    {
+      "file": "Adelie_diet_summary.csv",
+      "sha256": "ab05193e94864ca05ea54a01154506f8e86f85291e2f01a68abab5d92229a04d",
+      "expected_sha256": "ab05193e94864ca05ea54a01154506f8e86f85291e2f01a68abab5d92229a04d"
+    },
+    {
+      "file": "Gentoo_diet_summary.csv",
+      "sha256": "6f2a5fa1fc136ad6102dee8cd1c429d24c8ab81b50077bd21eb03f4e80fbd902",
+      "expected_sha256": "6f2a5fa1fc136ad6102dee8cd1c429d24c8ab81b50077bd21eb03f4e80fbd902"
+    },
+    {
+      "file": "research/climate-penguin/outputs/climate_penguin/macro_monthly_seaice_1991_2020.csv",
+      "sha256": "b21b10743f3a56281d0cf62f55988823f55b645b6d3fbb1bf7c2d366dff1b3ae",
+      "expected_sha256": "b21b10743f3a56281d0cf62f55988823f55b645b6d3fbb1bf7c2d366dff1b3ae"
+    },
+    {
+      "file": "research/climate-penguin/work/palmer_signy_diet_external_v1/sources/pickett2018_europepmc.xml",
+      "sha256": "7d074d865cb6cf187f4aad56f7535179a8de9832c54b46783d6013dad7efd97d",
+      "expected_sha256": "7d074d865cb6cf187f4aad56f7535179a8de9832c54b46783d6013dad7efd97d"
+    },
+    {
+      "file": "research/climate-penguin/work/palmer_signy_diet_external_v1/sources/pickett2018_palmer_diet_species_season.csv",
+      "sha256": "38930ccb8e71884dc00fbab51a663d489b9e58f96db680268635b50b763288c4",
+      "expected_sha256": null
+    }
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "statsmodels": "0.15.0"
+  },
+  "estimand": "Absolute Gentoo–Adelie difference in equal-stomach mean fish fraction of recovered food",
+  "primary_qc": "Existing F+C mass mask plus complete nonnegative edible components and food <= 1.05 * total + 0.05 g",
+  "signy_species_seasons": [
+    {
+      "region": "Signy",
+      "species": "Adelie",
+      "year": 2001,
+      "n_source_stomachs": 50,
+      "n_stomachs": 50,
+      "fish_food_mean": 0.0,
+      "fish_total_mean": 0.0,
+      "legacy_fish_crustacean_mean": 0.0
+    },
+    {
+      "region": "Signy",
+      "species": "Adelie",
+      "year": 2002,
+      "n_source_stomachs": 40,
+      "n_stomachs": 40,
+      "fish_food_mean": 0.0026285106172338054,
+      "fish_total_mean": 0.00262883734349263,
+      "legacy_fish_crustacean_mean": 0.0026285106172338054
+    },
+    {
+      "region": "Signy",
+      "species": "Adelie",
+      "year": 2003,
+      "n_source_stomachs": 40,
+      "n_stomachs": 39,
+      "fish_food_mean": 0.00809787440425587,
+      "fish_total_mean": 0.008085189852718397,
+      "legacy_fish_crustacean_mean": 0.00809787440425587
+    },
+    {
+      "region": "Signy",
+      "species": "Adelie",
+      "year": 2004,
+      "n_source_stomachs": 40,
+      "n_stomachs": 40,
+      "fish_food_mean": 0.007832796699440356,
+      "fish_total_mean": 0.007982099701787575,
+      "legacy_fish_crustacean_mean": 0.007832796699440356
+    },
+    {
+      "region": "Signy",
+      "species": "Adelie",
+      "year": 2005,
+      "n_source_stomachs": 40,
+      "n_stomachs": 40,
+      "fish_food_mean": 0.011420890545265617,
+      "fish_total_mean": 0.011426918755350955,
+      "legacy_fish_crustacean_mean": 0.011420890545265617
+    },
+    {
+      "region": "Signy",
+      "species": "Adelie",
+      "year": 2006,
+      "n_source_stomachs": 40,
+      "n_stomachs": 40,
+      "fish_food_mean": 0.0006817519735895258,
+      "fish_total_mean": 0.0006817475210873585,
+      "legacy_fish_crustacean_mean": 0.0006817519735895258
+    },
+    {
+      "region": "Signy",
+      "species": "Adelie",
+      "year": 2007,
+      "n_source_stomachs": 40,
+      "n_stomachs": 40,
+      "fish_food_mean": 9.054247943856491e-05,
+      "fish_total_mean": 9.015990683903793e-05,
+      "legacy_fish_crustacean_mean": 9.054247943856491e-05
+    },
+    {
+      "region": "Signy",
+      "species": "Adelie",
+      "year": 2008,
+      "n_source_stomachs": 30,
+      "n_stomachs": 30,
+      "fish_food_mean": 0.0055590577500062004,
+      "fish_total_mean": 0.005558275189455378,
+      "legacy_fish_crustacean_mean": 0.0055590577500062004
+    },
+    {
+      "region": "Signy",
+      "species": "Adelie",
+      "year": 2009,
+      "n_source_stomachs": 30,
+      "n_stomachs": 30,
+      "fish_food_mean": 0.05925625530106054,
+      "fish_total_mean": 0.05829298708717822,
+      "legacy_fish_crustacean_mean": 0.059256378872096664
+    },
+    {
+      "region": "Signy",
+      "species": "Gentoo",
+      "year": 2001,
+      "n_source_stomachs": 10,
+      "n_stomachs": 10,
+      "fish_food_mean": 0.44376820325033617,
+      "fish_total_mean": 0.4436332440919572,
+      "legacy_fish_crustacean_mean": 0.44376820325033617
+    },
+    {
+      "region": "Signy",
+      "species": "Gentoo",
+      "year": 2002,
+      "n_source_stomachs": 10,
+      "n_stomachs": 10,
+      "fish_food_mean": 0.22696460731756174,
+      "fish_total_mean": 0.2269628856179485,
+      "legacy_fish_crustacean_mean": 0.22696460731756174
+    },
+    {
+      "region": "Signy",
+      "species": "Gentoo",
+      "year": 2003,
+      "n_source_stomachs": 9,
+      "n_stomachs": 9,
+      "fish_food_mean": 0.11936531928579981,
+      "fish_total_mean": 0.1192240260379504,
+      "legacy_fish_crustacean_mean": 0.11936531928579981
+    },
+    {
+      "region": "Signy",
+      "species": "Gentoo",
+      "year": 2004,
+      "n_source_stomachs": 10,
+      "n_stomachs": 10,
+      "fish_food_mean": 0.0037552401343406267,
+      "fish_total_mean": 0.0037552401343406267,
+      "legacy_fish_crustacean_mean": 0.0037552401343406267
+    },
+    {
+      "region": "Signy",
+      "species": "Gentoo",
+      "year": 2005,
+      "n_source_stomachs": 8,
+      "n_stomachs": 7,
+      "fish_food_mean": 0.4230425685782238,
+      "fish_total_mean": 0.4202765538076153,
+      "legacy_fish_crustacean_mean": 0.4230425685782238
+    },
+    {
+      "region": "Signy",
+      "species": "Gentoo",
+      "year": 2006,
+      "n_source_stomachs": 7,
+      "n_stomachs": 7,
+      "fish_food_mean": 0.7450987889984555,
+      "fish_total_mean": 0.7450987889984555,
+      "legacy_fish_crustacean_mean": 0.7450987889984555
+    },
+    {
+      "region": "Signy",
+      "species": "Gentoo",
+      "year": 2007,
+      "n_source_stomachs": 8,
+      "n_stomachs": 8,
+      "fish_food_mean": 0.8304640910362127,
+      "fish_total_mean": 0.8288181395566164,
+      "legacy_fish_crustacean_mean": 0.8304640910362127
+    },
+    {
+      "region": "Signy",
+      "species": "Gentoo",
+      "year": 2008,
+      "n_source_stomachs": 6,
+      "n_stomachs": 6,
+      "fish_food_mean": 0.17207719112907152,
+      "fish_total_mean": 0.17207719112907152,
+      "legacy_fish_crustacean_mean": 0.17207719112907152
+    },
+    {
+      "region": "Signy",
+      "species": "Gentoo",
+      "year": 2009,
+      "n_source_stomachs": 6,
+      "n_stomachs": 6,
+      "fish_food_mean": 0.384076940921898,
+      "fish_total_mean": 0.3769670403262803,
+      "legacy_fish_crustacean_mean": 0.384076940921898
+    }
+  ],
+  "palmer_species_seasons": [
+    {
+      "region": "Palmer",
+      "species": "Adelie",
+      "year": 2009,
+      "fish_mean_pct": 0.4,
+      "fish_food_mean": 0.004,
+      "sample_n": 23
+    },
+    {
+      "region": "Palmer",
+      "species": "Gentoo",
+      "year": 2009,
+      "fish_mean_pct": 1.3,
+      "fish_food_mean": 0.013000000000000001,
+      "sample_n": 10
+    },
+    {
+      "region": "Palmer",
+      "species": "Adelie",
+      "year": 2010,
+      "fish_mean_pct": 0.2,
+      "fish_food_mean": 0.002,
+      "sample_n": 25
+    },
+    {
+      "region": "Palmer",
+      "species": "Gentoo",
+      "year": 2010,
+      "fish_mean_pct": 0.3,
+      "fish_food_mean": 0.003,
+      "sample_n": 15
+    },
+    {
+      "region": "Palmer",
+      "species": "Adelie",
+      "year": 2011,
+      "fish_mean_pct": 0.4,
+      "fish_food_mean": 0.004,
+      "sample_n": 15
+    },
+    {
+      "region": "Palmer",
+      "species": "Gentoo",
+      "year": 2011,
+      "fish_mean_pct": 4.7,
+      "fish_food_mean": 0.047,
+      "sample_n": 36
+    },
+    {
+      "region": "Palmer",
+      "species": "Adelie",
+      "year": 2012,
+      "fish_mean_pct": 0.2,
+      "fish_food_mean": 0.002,
+      "sample_n": 25
+    },
+    {
+      "region": "Palmer",
+      "species": "Gentoo",
+      "year": 2012,
+      "fish_mean_pct": 1.5,
+      "fish_food_mean": 0.015,
+      "sample_n": 20
+    },
+    {
+      "region": "Palmer",
+      "species": "Adelie",
+      "year": 2013,
+      "fish_mean_pct": 0.6,
+      "fish_food_mean": 0.006,
+      "sample_n": 21
+    },
+    {
+      "region": "Palmer",
+      "species": "Gentoo",
+      "year": 2013,
+      "fish_mean_pct": 0.7,
+      "fish_food_mean": 0.006999999999999999,
+      "sample_n": 18
+    },
+    {
+      "region": "Palmer",
+      "species": "Adelie",
+      "year": 2014,
+      "fish_mean_pct": 0.2,
+      "fish_food_mean": 0.002,
+      "sample_n": 27
+    },
+    {
+      "region": "Palmer",
+      "species": "Gentoo",
+      "year": 2014,
+      "fish_mean_pct": 1.1,
+      "fish_food_mean": 0.011000000000000001,
+      "sample_n": 30
+    }
+  ],
+  "annual_pair_comparison": [
+    {
+      "region": "Signy",
+      "year": 2001,
+      "Adelie": 0.0,
+      "Gentoo": 0.44376820325033617,
+      "signed_gap": 0.44376820325033617,
+      "distance": 0.44376820325033617,
+      "sic_aug_nov": 23.43296905859118
+    },
+    {
+      "region": "Signy",
+      "year": 2002,
+      "Adelie": 0.0026285106172338054,
+      "Gentoo": 0.22696460731756174,
+      "signed_gap": 0.22433609670032795,
+      "distance": 0.22433609670032795,
+      "sic_aug_nov": 54.885130732938336
+    },
+    {
+      "region": "Signy",
+      "year": 2003,
+      "Adelie": 0.00809787440425587,
+      "Gentoo": 0.11936531928579981,
+      "signed_gap": 0.11126744488154394,
+      "distance": 0.11126744488154394,
+      "sic_aug_nov": 21.90128214834321
+    },
+    {
+      "region": "Signy",
+      "year": 2004,
+      "Adelie": 0.007832796699440356,
+      "Gentoo": 0.0037552401343406267,
+      "signed_gap": -0.004077556565099729,
+      "distance": 0.004077556565099729,
+      "sic_aug_nov": 23.871724105771342
+    },
+    {
+      "region": "Signy",
+      "year": 2005,
+      "Adelie": 0.011420890545265617,
+      "Gentoo": 0.4230425685782238,
+      "signed_gap": 0.4116216780329582,
+      "distance": 0.4116216780329582,
+      "sic_aug_nov": 45.12995764757516
+    },
+    {
+      "region": "Signy",
+      "year": 2006,
+      "Adelie": 0.0006817519735895258,
+      "Gentoo": 0.7450987889984555,
+      "signed_gap": 0.744417037024866,
+      "distance": 0.744417037024866,
+      "sic_aug_nov": 65.23213896203643
+    },
+    {
+      "region": "Signy",
+      "year": 2007,
+      "Adelie": 9.054247943856491e-05,
+      "Gentoo": 0.8304640910362127,
+      "signed_gap": 0.8303735485567741,
+      "distance": 0.8303735485567741,
+      "sic_aug_nov": 66.68284803598858
+    },
+    {
+      "region": "Signy",
+      "year": 2008,
+      "Adelie": 0.0055590577500062004,
+      "Gentoo": 0.17207719112907152,
+      "signed_gap": 0.16651813337906532,
+      "distance": 0.16651813337906532,
+      "sic_aug_nov": 22.89901563528637
+    },
+    {
+      "region": "Signy",
+      "year": 2009,
+      "Adelie": 0.05925625530106054,
+      "Gentoo": 0.384076940921898,
+      "signed_gap": 0.32482068562083743,
+      "distance": 0.32482068562083743,
+      "sic_aug_nov": 44.64144256089533
+    },
+    {
+      "region": "Palmer",
+      "year": 2009,
+      "Adelie": 0.004,
+      "Gentoo": 0.013000000000000001,
+      "signed_gap": 0.009000000000000001,
+      "distance": 0.009000000000000001,
+      "sic_aug_nov": 36.717144963630616
+    },
+    {
+      "region": "Palmer",
+      "year": 2010,
+      "Adelie": 0.002,
+      "Gentoo": 0.003,
+      "signed_gap": 0.001,
+      "distance": 0.001,
+      "sic_aug_nov": 29.41767663512659
+    },
+    {
+      "region": "Palmer",
+      "year": 2011,
+      "Adelie": 0.004,
+      "Gentoo": 0.047,
+      "signed_gap": 0.043,
+      "distance": 0.043,
+      "sic_aug_nov": 54.97438728588646
+    },
+    {
+      "region": "Palmer",
+      "year": 2012,
+      "Adelie": 0.002,
+      "Gentoo": 0.015,
+      "signed_gap": 0.013,
+      "distance": 0.013,
+      "sic_aug_nov": 35.13556349470913
+    },
+    {
+      "region": "Palmer",
+      "year": 2013,
+      "Adelie": 0.006,
+      "Gentoo": 0.006999999999999999,
+      "signed_gap": 0.0009999999999999992,
+      "distance": 0.0009999999999999992,
+      "sic_aug_nov": 67.0092846257073
+    },
+    {
+      "region": "Palmer",
+      "year": 2014,
+      "Adelie": 0.002,
+      "Gentoo": 0.011000000000000001,
+      "signed_gap": 0.009000000000000001,
+      "distance": 0.009000000000000001,
+      "sic_aug_nov": 51.314633095500625
+    }
+  ],
+  "annual_ice_proxies": [
+    {
+      "site_id": "GOPT",
+      "year": 2001,
+      "sic_aug_nov": 23.43296905859118
+    },
+    {
+      "site_id": "GOPT",
+      "year": 2002,
+      "sic_aug_nov": 54.885130732938336
+    },
+    {
+      "site_id": "GOPT",
+      "year": 2003,
+      "sic_aug_nov": 21.90128214834321
+    },
+    {
+      "site_id": "GOPT",
+      "year": 2004,
+      "sic_aug_nov": 23.871724105771342
+    },
+    {
+      "site_id": "GOPT",
+      "year": 2005,
+      "sic_aug_nov": 45.12995764757516
+    },
+    {
+      "site_id": "GOPT",
+      "year": 2006,
+      "sic_aug_nov": 65.23213896203643
+    },
+    {
+      "site_id": "GOPT",
+      "year": 2007,
+      "sic_aug_nov": 66.68284803598858
+    },
+    {
+      "site_id": "GOPT",
+      "year": 2008,
+      "sic_aug_nov": 22.89901563528637
+    },
+    {
+      "site_id": "GOPT",
+      "year": 2009,
+      "sic_aug_nov": 44.64144256089533
+    },
+    {
+      "site_id": "BISC",
+      "year": 2009,
+      "sic_aug_nov": 36.268994228336496
+    },
+    {
+      "site_id": "BISC",
+      "year": 2010,
+      "sic_aug_nov": 29.01636685641999
+    },
+    {
+      "site_id": "BISC",
+      "year": 2011,
+      "sic_aug_nov": 54.44604229917773
+    },
+    {
+      "site_id": "BISC",
+      "year": 2012,
+      "sic_aug_nov": 34.94109756483238
+    },
+    {
+      "site_id": "BISC",
+      "year": 2013,
+      "sic_aug_nov": 66.54366682479444
+    },
+    {
+      "site_id": "BISC",
+      "year": 2014,
+      "sic_aug_nov": 50.8437543485136
+    },
+    {
+      "site_id": "LITC",
+      "year": 2009,
+      "sic_aug_nov": 37.16529569892473
+    },
+    {
+      "site_id": "LITC",
+      "year": 2010,
+      "sic_aug_nov": 29.818986413833187
+    },
+    {
+      "site_id": "LITC",
+      "year": 2011,
+      "sic_aug_nov": 55.50273227259518
+    },
+    {
+      "site_id": "LITC",
+      "year": 2012,
+      "sic_aug_nov": 35.330029424585874
+    },
+    {
+      "site_id": "LITC",
+      "year": 2013,
+      "sic_aug_nov": 67.47490242662016
+    },
+    {
+      "site_id": "LITC",
+      "year": 2014,
+      "sic_aug_nov": 51.78551184248765
+    }
+  ],
+  "regions": {
+    "Signy": {
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "mean_distance": 0.3623555982235343,
+      "min_distance": 0.004077556565099729,
+      "max_distance": 0.8303735485567741,
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.7817548759399484,
+      "slope_per_10pp": 0.11748174341677463,
+      "intercept": -0.11889727978651911,
+      "hc3_slope_95_low": 0.017710327621080907,
+      "hc3_slope_95_high": 0.21725315921246835,
+      "hc3_slope_se": 0.04219334878617135,
+      "hc3_t_df": 7,
+      "leave_one_season_r_min": 0.6852989464841618,
+      "leave_one_season_r_max": 0.884057694776893,
+      "leave_one_season_r": {
+        "2001": 0.8823768708625042,
+        "2002": 0.884057694776893,
+        "2003": 0.7503706655219694,
+        "2004": 0.7483999316480092,
+        "2005": 0.7806616355712152,
+        "2006": 0.7089245525852885,
+        "2007": 0.6852989464841618,
+        "2008": 0.7634592441685306,
+        "2009": 0.7886651887991106
+      },
+      "detrended_r": 0.7653148969313308,
+      "first_difference_r": 0.6828515549196834,
+      "circular_extreme_count": 1,
+      "circular_denominator": 9,
+      "circular_shift_r": [
+        0.7817548759399484,
+        0.21829569339404592,
+        -0.23919839542713148,
+        -0.6493490779562846,
+        0.033162067048149134,
+        0.00887479278280585,
+        -0.15355084105531377,
+        -0.33223873652472163,
+        0.3322496217985022
+      ],
+      "n_permutations": 362880,
+      "extreme_count": 4788,
+      "p_exact": 0.013194444444444444
+    },
+    "Palmer": {
+      "n_seasons": 6,
+      "years": [
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014
+      ],
+      "mean_distance": 0.012666666666666666,
+      "min_distance": 0.0009999999999999992,
+      "max_distance": 0.043,
+      "sic_min": 29.41767663512659,
+      "sic_max": 67.0092846257073,
+      "pearson_r": 0.20667421981252843,
+      "slope_per_10pp": 0.0022497632000520844,
+      "intercept": 0.0023714244187542236,
+      "hc3_slope_95_low": -0.02417999778830263,
+      "hc3_slope_95_high": 0.0286795241884068,
+      "hc3_slope_se": 0.009519280946299086,
+      "hc3_t_df": 4,
+      "leave_one_season_r_min": -0.31775377269740523,
+      "leave_one_season_r_max": 0.7374391986483765,
+      "leave_one_season_r": {
+        "2009": 0.18114752486702115,
+        "2010": 0.003111220480133007,
+        "2011": -0.31775377269740523,
+        "2012": 0.22587549558908515,
+        "2013": 0.7374391986483765,
+        "2014": 0.2342652457496995
+      },
+      "detrended_r": 0.3455385358357554,
+      "first_difference_r": 0.4670672338364231,
+      "circular_extreme_count": 5,
+      "circular_denominator": 6,
+      "circular_shift_r": [
+        0.20667421981252843,
+        -0.3521149657068401,
+        0.8052577615146669,
+        0.10123613627714158,
+        -0.4383477066221234,
+        -0.32270544527537337
+      ],
+      "n_permutations": 720,
+      "extreme_count": 560,
+      "p_exact": 0.7777777777777778
+    }
+  },
+  "transport": {
+    "all_target_seasons": {
+      "n": 6,
+      "model_mae": 0.40604952689138063,
+      "training_mean_mae": 0.34968893155686764,
+      "model_rmse": 0.4334092178358504,
+      "training_mean_rmse": 0.34997938664385064
+    },
+    "within_training_ice_range": {
+      "n": 5,
+      "model_mae": 0.3537915365681813,
+      "training_mean_mae": 0.3473555982235343,
+      "model_rmse": 0.36924770034652976,
+      "training_mean_rmse": 0.3476594765244137
+    },
+    "training_intercept": -0.1188972797865192,
+    "training_slope_per_10pp": 0.11748174341677466
+  },
+  "predictions": [
+    {
+      "region": "Palmer",
+      "year": 2009,
+      "Adelie": 0.004,
+      "Gentoo": 0.013000000000000001,
+      "signed_gap": 0.009000000000000001,
+      "distance": 0.009000000000000001,
+      "sic_aug_nov": 36.717144963630616,
+      "predicted_distance": 0.312462140574858,
+      "training_mean_prediction": 0.3623555982235343,
+      "in_training_ice_range": true,
+      "prediction_in_response_range": true,
+      "model_absolute_error": 0.303462140574858,
+      "training_mean_absolute_error": 0.3533555982235343
+    },
+    {
+      "region": "Palmer",
+      "year": 2010,
+      "Adelie": 0.002,
+      "Gentoo": 0.003,
+      "signed_gap": 0.001,
+      "distance": 0.001,
+      "sic_aug_nov": 29.41767663512659,
+      "predicted_distance": 0.22670671405003967,
+      "training_mean_prediction": 0.3623555982235343,
+      "in_training_ice_range": true,
+      "prediction_in_response_range": true,
+      "model_absolute_error": 0.22570671405003967,
+      "training_mean_absolute_error": 0.3613555982235343
+    },
+    {
+      "region": "Palmer",
+      "year": 2011,
+      "Adelie": 0.004,
+      "Gentoo": 0.047,
+      "signed_gap": 0.043,
+      "distance": 0.043,
+      "sic_aug_nov": 54.97438728588646,
+      "predicted_distance": 0.526951406374972,
+      "training_mean_prediction": 0.3623555982235343,
+      "in_training_ice_range": true,
+      "prediction_in_response_range": true,
+      "model_absolute_error": 0.48395140637497197,
+      "training_mean_absolute_error": 0.3193555982235343
+    },
+    {
+      "region": "Palmer",
+      "year": 2012,
+      "Adelie": 0.002,
+      "Gentoo": 0.015,
+      "signed_gap": 0.013,
+      "distance": 0.013,
+      "sic_aug_nov": 35.13556349470913,
+      "predicted_distance": 0.29388144574240205,
+      "training_mean_prediction": 0.3623555982235343,
+      "in_training_ice_range": true,
+      "prediction_in_response_range": true,
+      "model_absolute_error": 0.28088144574240204,
+      "training_mean_absolute_error": 0.3493555982235343
+    },
+    {
+      "region": "Palmer",
+      "year": 2013,
+      "Adelie": 0.006,
+      "Gentoo": 0.006999999999999999,
+      "signed_gap": 0.0009999999999999992,
+      "distance": 0.0009999999999999992,
+      "sic_aug_nov": 67.0092846257073,
+      "predicted_distance": 0.6683394785073775,
+      "training_mean_prediction": 0.3623555982235343,
+      "in_training_ice_range": false,
+      "prediction_in_response_range": true,
+      "model_absolute_error": 0.6673394785073775,
+      "training_mean_absolute_error": 0.3613555982235343
+    },
+    {
+      "region": "Palmer",
+      "year": 2014,
+      "Adelie": 0.002,
+      "Gentoo": 0.011000000000000001,
+      "signed_gap": 0.009000000000000001,
+      "distance": 0.009000000000000001,
+      "sic_aug_nov": 51.314633095500625,
+      "predicted_distance": 0.4839559760986346,
+      "training_mean_prediction": 0.3623555982235343,
+      "in_training_ice_range": true,
+      "prediction_in_response_range": true,
+      "model_absolute_error": 0.4749559760986346,
+      "training_mean_absolute_error": 0.3533555982235343
+    }
+  ],
+  "source_audit": [
+    {
+      "species": "Adelie",
+      "n_source": 350,
+      "n_valid": 349,
+      "legacy_n_valid": 349,
+      "n_excluded": 1,
+      "excluded_keys": [
+        {
+          "DATE": "2004-01-23",
+          "RECORD_ID": "20040123 AD034",
+          "failed_checks": [
+            "fish_plus_crustacean_not_excessive",
+            "food_not_excessive"
+          ]
+        }
+      ],
+      "nonfood_positive_source_rows": 48,
+      "closure_anomalies_gt_0_5g": [
+        {
+          "DATE": "2004-01-23",
+          "RECORD_ID": "20040123 AD034",
+          "year": 2003,
+          "total_g": 252.9,
+          "nonfood_g": 0.0,
+          "food_sum_g": 352.90000000000003,
+          "total_minus_nonfood_minus_food_g": -100.00000000000003,
+          "passes_primary_qc": false
+        },
+        {
+          "DATE": "2005-01-19",
+          "RECORD_ID": "20050119 AD034",
+          "year": 2004,
+          "total_g": 346.1,
+          "nonfood_g": 0.0,
+          "food_sum_g": 363.4,
+          "total_minus_nonfood_minus_food_g": -17.299999999999955,
+          "passes_primary_qc": true
+        },
+        {
+          "DATE": "2008-12-21",
+          "RECORD_ID": "20081221 AD02",
+          "year": 2008,
+          "total_g": 280.9,
+          "nonfood_g": 0.1,
+          "food_sum_g": 290.8,
+          "total_minus_nonfood_minus_food_g": -10.000000000000057,
+          "passes_primary_qc": true
+        }
+      ]
+    },
+    {
+      "species": "Gentoo",
+      "n_source": 74,
+      "n_valid": 73,
+      "legacy_n_valid": 73,
+      "n_excluded": 1,
+      "excluded_keys": [
+        {
+          "DATE": "2006-01-13",
+          "RECORD_ID": "20060113 GE8",
+          "failed_checks": [
+            "finite_fish_crustacean_total",
+            "crustacean_nonnegative",
+            "fish_plus_crustacean_positive",
+            "fish_plus_crustacean_not_excessive",
+            "food_positive",
+            "food_not_excessive"
+          ]
+        }
+      ],
+      "nonfood_positive_source_rows": 19,
+      "closure_anomalies_gt_0_5g": [
+        {
+          "DATE": "2004-02-11",
+          "RECORD_ID": "20040211 GE06",
+          "year": 2003,
+          "total_g": 506.6,
+          "nonfood_g": 0.0,
+          "food_sum_g": 346.40000000000003,
+          "total_minus_nonfood_minus_food_g": 160.2,
+          "passes_primary_qc": true
+        },
+        {
+          "DATE": "2010-01-15",
+          "RECORD_ID": "20100115 GE02",
+          "year": 2009,
+          "total_g": 129.3,
+          "nonfood_g": 5.4,
+          "food_sum_g": 123.3,
+          "total_minus_nonfood_minus_food_g": 0.6000000000000085,
+          "passes_primary_qc": true
+        },
+        {
+          "DATE": "2010-01-15",
+          "RECORD_ID": "20100115 GE05",
+          "year": 2009,
+          "total_g": 76.6,
+          "nonfood_g": 0.0,
+          "food_sum_g": 72.6,
+          "total_minus_nonfood_minus_food_g": 4.0,
+          "passes_primary_qc": true
+        }
+      ]
+    }
+  ],
+  "palmer_source_audit": {
+    "independently_read_primary_xml": true,
+    "fish_means_compared_to_derived_csv": 12,
+    "fish_sample_sizes_compared_to_derived_csv": 12,
+    "table_sample_n_totals": {
+      "Adelie": 136,
+      "Gentoo": 129
+    },
+    "methods_sample_n_totals": {
+      "Adelie": 136,
+      "Gentoo": 128
+    },
+    "unresolved_source_issue": "Gentoo Table 1 sum 129 versus methods 128; no correction or individual reconstruction"
+  },
+  "ice_source_audit": {
+    "unique_monthly_rows": 84,
+    "expected_monthly_rows": 84,
+    "all_four_months_present": true,
+    "all_daily_counts_equal_calendar_days": true,
+    "all_complete_month_flags_true": true,
+    "no_duplicate_selected_keys": true,
+    "equal_month_then_equal_proxy_weighting": true
+  },
+  "sensitivity": [
+    {
+      "scope": "Palmer_proxy",
+      "variant": "BISC",
+      "n_seasons": 6,
+      "years": [
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014
+      ],
+      "mean_distance": 0.012666666666666666,
+      "min_distance": 0.0009999999999999992,
+      "max_distance": 0.043,
+      "sic_min": 29.01636685641999,
+      "sic_max": 66.54366682479444,
+      "pearson_r": 0.2052788868591044,
+      "slope_per_10pp": 0.002244769956466841,
+      "intercept": 0.0024881343410276457,
+      "hc3_slope_95_low": -0.02442382707205226,
+      "hc3_slope_95_high": 0.02891336698498594,
+      "hc3_slope_se": 0.009605303190973493,
+      "hc3_t_df": 4,
+      "leave_one_season_r_min": -0.31462972106213394,
+      "leave_one_season_r_max": 0.7381279810457716,
+      "leave_one_season_r": {
+        "2009": 0.1795238588359538,
+        "2010": 0.00037127105927170685,
+        "2011": -0.31462972106213394,
+        "2012": 0.2237532333527243,
+        "2013": 0.7381279810457716,
+        "2014": 0.2326801442221
+      },
+      "detrended_r": 0.3451512419199393,
+      "first_difference_r": 0.4660244906275181,
+      "circular_extreme_count": 5,
+      "circular_denominator": 6,
+      "circular_shift_r": [
+        0.2052788868591044,
+        -0.3459028298996543,
+        0.8059053630299756,
+        0.10020193422045427,
+        -0.44003365906819225,
+        -0.3254496951416878
+      ],
+      "n_permutations": 720,
+      "extreme_count": 564,
+      "p_exact": 0.7833333333333333
+    },
+    {
+      "scope": "Palmer_proxy",
+      "variant": "LITC",
+      "n_seasons": 6,
+      "years": [
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014
+      ],
+      "mean_distance": 0.012666666666666666,
+      "min_distance": 0.0009999999999999992,
+      "max_distance": 0.043,
+      "sic_min": 29.818986413833187,
+      "sic_max": 67.47490242662016,
+      "pearson_r": 0.20804748498397002,
+      "slope_per_10pp": 0.0022543697585763354,
+      "intercept": 0.002256082628723244,
+      "hc3_slope_95_low": -0.023936907320930238,
+      "hc3_slope_95_high": 0.02844564683808291,
+      "hc3_slope_se": 0.009433385529745856,
+      "hc3_t_df": 4,
+      "leave_one_season_r_min": -0.32084055105588805,
+      "leave_one_season_r_max": 0.7366989810230531,
+      "leave_one_season_r": {
+        "2009": 0.1827459797949476,
+        "2010": 0.005817417407115949,
+        "2011": -0.32084055105588805,
+        "2012": 0.2279878608223638,
+        "2013": 0.7366989810230531,
+        "2014": 0.23582570085955157
+      },
+      "detrended_r": 0.34590242268417365,
+      "first_difference_r": 0.46808282587404354,
+      "circular_extreme_count": 5,
+      "circular_denominator": 6,
+      "circular_shift_r": [
+        0.20804748498397002,
+        -0.35825465311744387,
+        0.8045794706831227,
+        0.10225634146010841,
+        -0.4366571663012967,
+        -0.31997147770846085
+      ],
+      "n_permutations": 720,
+      "extreme_count": 560,
+      "p_exact": 0.7777777777777778
+    },
+    {
+      "scope": "Signy_denominator",
+      "variant": "fish_total_mean",
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "mean_distance": 0.36116895705302443,
+      "min_distance": 0.004226859567446948,
+      "max_distance": 0.8287279796497774,
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.7808313625179822,
+      "slope_per_10pp": 0.1172131375759667,
+      "intercept": -0.11898360247196405,
+      "hc3_slope_95_low": 0.017309549996356338,
+      "hc3_slope_95_high": 0.21711672515557706,
+      "hc3_slope_se": 0.04224924425617154,
+      "hc3_t_df": 7,
+      "leave_one_season_r_min": 0.6839048320124262,
+      "leave_one_season_r_max": 0.8824316862389071,
+      "leave_one_season_r": {
+        "2001": 0.88211802871238,
+        "2002": 0.8824316862389071,
+        "2003": 0.7494737041479997,
+        "2004": 0.7472174842632874,
+        "2005": 0.7798018037157017,
+        "2006": 0.7073440006351676,
+        "2007": 0.6839048320124262,
+        "2008": 0.7626802948776861,
+        "2009": 0.7885242483124614
+      },
+      "detrended_r": 0.7648007312738876,
+      "first_difference_r": 0.6821177908572998,
+      "circular_extreme_count": 1,
+      "circular_denominator": 9,
+      "circular_shift_r": [
+        0.7808313625179822,
+        0.22025320690289069,
+        -0.24325242123412513,
+        -0.6452695684596391,
+        0.03477309368711628,
+        0.010183333988642403,
+        -0.15772497154197013,
+        -0.3351446583785364,
+        0.3353506225176394
+      ],
+      "n_permutations": 362880,
+      "extreme_count": 4850,
+      "p_exact": 0.013365299823633157
+    },
+    {
+      "scope": "Signy_denominator",
+      "variant": "legacy_fish_crustacean_mean",
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "mean_distance": 0.3623555844934192,
+      "min_distance": 0.004077556565099729,
+      "max_distance": 0.8303735485567741,
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.781754859192909,
+      "slope_per_10pp": 0.11748174177288763,
+      "intercept": -0.11889728678260623,
+      "hc3_slope_95_low": 0.017710321341713978,
+      "hc3_slope_95_high": 0.21725316220406127,
+      "hc3_slope_se": 0.0421933507465166,
+      "hc3_t_df": 7,
+      "leave_one_season_r_min": 0.6852989203571944,
+      "leave_one_season_r_max": 0.8840576677621158,
+      "leave_one_season_r": {
+        "2001": 0.8823768612722003,
+        "2002": 0.8840576677621158,
+        "2003": 0.7503706495423214,
+        "2004": 0.7483999102142366,
+        "2005": 0.780661618141763,
+        "2006": 0.7089245278634146,
+        "2007": 0.6852989203571944,
+        "2008": 0.7634592294023266,
+        "2009": 0.7886651887991106
+      },
+      "detrended_r": 0.7653148882445726,
+      "first_difference_r": 0.682851536861474,
+      "circular_extreme_count": 1,
+      "circular_denominator": 9,
+      "circular_shift_r": [
+        0.781754859192909,
+        0.2182957439206809,
+        -0.23919843506001254,
+        -0.6493490164271383,
+        0.033162117645130974,
+        0.008874780324854772,
+        -0.15355091210304853,
+        -0.33223881056018795,
+        0.33224967306681163
+      ],
+      "n_permutations": 362880,
+      "extreme_count": 4788,
+      "p_exact": 0.013194444444444444
+    }
+  ],
+  "inference_limit": "Region-specific descriptive results; exact p assumes exchangeable years; HC3 does not correct serial dependence; retrospective geographically external comparison."
+}

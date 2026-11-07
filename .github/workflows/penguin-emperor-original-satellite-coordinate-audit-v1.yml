@@ -1,0 +1,40 @@
+name: penguin-emperor-original-satellite-coordinate-audit-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/emperor_satellite_movement_v1/**"
+      - "research/climate-penguin/outputs/emperor_satellite_movement_v1/**"
+      - ".github/workflows/penguin-emperor-original-satellite-coordinate-audit-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/emperor_satellite_movement_v1/**"
+      - "research/climate-penguin/outputs/emperor_satellite_movement_v1/**"
+      - ".github/workflows/penguin-emperor-original-satellite-coordinate-audit-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  author-original-xlsx-satellite-positions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download, verify Git blob, and inspect author satellite/aerial records
+        run: python research/climate-penguin/work/emperor_satellite_movement_v1/schema_audit.py
+      - name: Audit potential image positions against static site, nonzero adult detection and year-by-year repeat images
+        run: python research/climate-penguin/work/emperor_satellite_movement_v1/geometry_support.py
+      - name: Preserve audited original source, schema and candidate image-position diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: emperor-original-observation-location-source
+          path: |
+            research/climate-penguin/outputs/emperor_satellite_movement_v1/*.xlsx
+            research/climate-penguin/outputs/emperor_satellite_movement_v1/*.json
+            research/climate-penguin/outputs/emperor_satellite_movement_v1/*.csv
+          if-no-files-found: error
+          retention-days: 30

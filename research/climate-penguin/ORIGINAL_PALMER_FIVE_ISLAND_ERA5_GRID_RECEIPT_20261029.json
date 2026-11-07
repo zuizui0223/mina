@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "analysis_date": "2026-10-29",
+  "source_receipts": {
+    "aspa_palmer_path": "research/climate-penguin/ORIGINAL_LITCHFIELD_PALMER_EVENT_RECEIPTS_20261029.json",
+    "map_area_path": "research/climate-penguin/ORIGINAL_PALMER_5ISLAND_PLANTARCTICA_LAND_CLIPPED_RESULT_20261029.json",
+    "ERA5_run": 40863372786,
+    "ERA5_artifact_id": 12893210106
+  },
+  "ERA5_actual_grid_support": {
+    "schema": 1,
+    "status": "original_ERA5_grid_separability_only",
+    "source_request_sha256": "3ecdee19edcebd44837d137734634b622a2c005d3e3d1757646c221cb9448596",
+    "source_query_url": "https://archive-api.open-meteo.com/v1/archive?latitude=-64.7946%2C-64.7939%2C-64.7647%2C-64.7708%2C-64.7731&longitude=-64.0236%2C-63.9667%2C-64.0875%2C-64.0919%2C-64.0741&start_date=1991-01-01&end_date=2020-12-31&daily=temperature_2m_mean&models=era5&timezone=UTC&temperature_unit=celsius&elevation=nan%2Cnan%2Cnan%2Cnan%2Cnan&cell_selection=nearest",
+    "source_site_coordinates_sha256": "bc15daf42bc8c24d8bec204235e3e16288efbb3238ec24e3d3f450259ab0b11f",
+    "dataset": "Open-Meteo Historical Weather API explicit ERA5 2m mean daily grid, 1991-2020; no elevation downscaling; nearest grid",
+    "n_original_island_site_locations": 5,
+    "n_actual_era5_nearest_grids": 1,
+    "grid_per_site": {
+      "CHIS": [
+        -64.75,
+        -64
+      ],
+      "CORM": [
+        -64.75,
+        -64
+      ],
+      "HUMB": [
+        -64.75,
+        -64
+      ],
+      "LITC": [
+        -64.75,
+        -64
+      ],
+      "TORG": [
+        -64.75,
+        -64
+      ]
+    },
+    "all_five_share_identical_original_era5_source_grid": true,
+    "max_absolute_same_day_temperature_between_island_sites_c": 0,
+    "daily_source_day_count": 10958,
+    "2005_2008_september_era5_source_context": {
+      "CHIS": {
+        "source_returned_era5_grid": [
+          -64.75,
+          -64
+        ],
+        "september_source_years_c": {
+          "2005": -5.133333333333333,
+          "2006": -8.003333333333334,
+          "2007": -4.346666666666667,
+          "2008": -3.236666666666667
+        }
+      },
+      "CORM": {
+        "source_returned_era5_grid": [
+          -64.75,
+          -64
+        ],
+        "september_source_years_c": {
+          "2005": -5.133333333333333,
+          "2006": -8.003333333333334,
+          "2007": -4.346666666666667,
+          "2008": -3.236666666666667
+        }
+      },
+      "HUMB": {
+        "source_returned_era5_grid": [
+          -64.75,
+          -64
+        ],
+        "september_source_years_c": {
+          "2005": -5.133333333333333,
+          "2006": -8.003333333333334,
+          "2007": -4.346666666666667,
+          "2008": -3.236666666666667
+        }
+      },
+      "LITC": {
+        "source_returned_era5_grid": [
+          -64.75,
+          -64
+        ],
+        "september_source_years_c": {
+          "2005": -5.133333333333333,
+          "2006": -8.003333333333334,
+          "2007": -4.346666666666667,
+          "2008": -3.236666666666667
+        }
+      },
+      "TORG": {
+        "source_returned_era5_grid": [
+          -64.75,
+          -64
+        ],
+        "september_source_years_c": {
+          "2005": -5.133333333333333,
+          "2006": -8.003333333333334,
+          "2007": -4.346666666666667,
+          "2008": -3.236666666666667
+        }
+      }
+    },
+    "biological_event": "Litchfield observed nesting zero from 2007; other four monitored groups remain positive in 2017 (from separate original source)",
+    "comparison_scope": "Same coarse atmospheric reanalysis exposure does not guarantee identical island microclimate/ice/prey, and its common signal cannot identify different local colony fate",
+    "causal_warming_effect_fitted": false,
+    "distinct_island_microclimate_exposures_measured": false
+  },
+  "source_calibrated_design_summary": {
+    "physical_mapped_islands": 5,
+    "n_unique_original_coast_fids": 5,
+    "n_unique_era5_grid_coordinates": 1,
+    "Litchfield_has_largest_mapped_land_area": true,
+    "Litchfield_has_smallest_1991_observed_breeding_count": true,
+    "Litchfield_only_observed_zero_in_2007": "LITC",
+    "four_other_islands_2017_positive": 4,
+    "source_mapped_green_is_not_2007_2017_change": true,
+    "independent_mapped_climate_contrast_for_five_islands": false,
+    "unique_island_persistence_does_not_refute_classical_probabilistic_island_area_theory": true,
+    "warming_anthropogenic_attribution_or_penguin_induced_greening_identified": false
+  },
+  "limitations": [
+    "All five island coordinate queries returned the SAME original ERA5 2m grid (-64.75,-64.0) and 10,958 identical daily 1991-2020 values; this does not prove the actual five physical islands share microclimate or ice/coast conditions.",
+    "Five 2026 SCAR land polygons are unique, but the medium-resolution exposed-rock source assigned no original rock feature to any island; nesting area remains unknown.",
+    "Original Plantarctica composite 2024-published area is static and cannot support pre- vs post-2007 vegetation increase or the effect of seal pressure.",
+    "Observed 1991 nesting size in Litchfield is already the smallest among five despite largest SCAR mapped land area. Population-size/history and island-area explanations are not separable from one local extinction.",
+    "One shared climate cell and five geographically close islands fail general independent climate exposure support. No p-value, species response curve or causal island mechanism is computed."
+  ]
+}

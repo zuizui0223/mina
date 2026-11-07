@@ -1,0 +1,50 @@
+name: palmer-preabandonment-original-maps
+on:
+  push:
+    branches: ['codex/climate-penguin-progress']
+    paths: ['.github/workflows/palmer-preabandonment-original-maps.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate existing bounded source reader
+        run: |
+          python - <<'PY'
+          import runpy
+          ns=runpy.run_path('tests/test_palmer_footprint_source_recovery.py')
+          fs=[v for k,v in ns.items() if k.startswith('test_') and callable(v)]
+          assert len(fs)==4
+          for f in fs: f()
+          print('4 source-payload tests passed')
+          PY
+      - name: Retrieve newly identified original sources once
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from concurrent.futures import ThreadPoolExecutor
+          import runpy,json
+          ns=runpy.run_path('research/climate-penguin/work/abandonment/palmer_footprint_source_recovery.py')
+          out=Path('/tmp/palmer-preabandonment');out.mkdir()
+          sources=[
+            ('aspa113_2004.pdf','https://documents.ats.aq/recatt/att210_e.pdf','pdf'),
+            ('usgs_sanchez1999_ofr99402.pdf','https://pubs.usgs.gov/of/1999/0402/report.pdf','pdf'),
+            ('duke_datacite_metadata.json','https://api.datacite.org/dois/10.7924/r4sf2xs2w','text')]
+          with ThreadPoolExecutor(max_workers=3) as p:
+            rows=list(p.map(lambda s:ns['retrieve'](s,out),sources))
+          r={'schema':1,'intent':'pre-abandonment source chronology and geometry provenance; no ecological effect','sources':rows}
+          (out/'source_receipts.json').write_text(json.dumps(r,indent=2)+'\n')
+          print(json.dumps(r,indent=2))
+          assert any(x['status']=='retrieved_payload' and x['expected_type']=='pdf' for x in rows)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: palmer-preabandonment-originals
+          path: /tmp/palmer-preabandonment/
+          if-no-files-found: error
+          retention-days: 30

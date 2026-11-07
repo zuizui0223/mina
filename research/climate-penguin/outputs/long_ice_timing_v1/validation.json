@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "features": 9600,
+  "legacy_status_and_date_checks": 1600,
+  "independent_run_checks": 9600,
+  "input_sha256": {
+    "outputs/climate_penguin/daily_concentration_1991_2010_aug_nov.csv.gz": "4c8059085c1668b2f0d1c45bdcda6e41fe617c91b6a2a28045543ff868ca6bf8",
+    "outputs/climate_penguin/daily_concentration_2011_2020_aug_nov.csv.gz": "cff32ee7a73b23b0388eb023be49470d2421489cdef17f2da886fe8d22a6e7ab"
+  },
+  "definitions": "First seven consecutive days strictly below 15 or 30 percent. Same existing definitions, both retained.",
+  "limitations": [
+    "Not physical melt or final retreat",
+    "No event date imputed to already-low or no-observed-event windows",
+    "Last six days cannot start a confirmed seven-day episode within the window",
+    "Low-day count is fully observed even when first-transition date is censored",
+    "Outcome regressions not run in this support audit"
+  ]
+}

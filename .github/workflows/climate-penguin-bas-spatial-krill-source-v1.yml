@@ -1,0 +1,39 @@
+name: climate-penguin-bas-spatial-krill-source-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/bas_spatial_krill_source_gate_v1.py"
+      - "tests/test_bas_spatial_krill_source_gate_v1.py"
+      - ".github/workflows/climate-penguin-bas-spatial-krill-source-v1.yml"
+
+jobs:
+  source-only:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install open native-GeoTIFF reader
+        run: python -m pip install rasterio
+      - name: Check source-only safeguards
+        run: python -m unittest discover -s tests -p test_bas_spatial_krill_source_gate_v1.py -v
+      - name: Download original public BAS spatial krill archive (2011-2020)
+        run: |
+          mkdir -p build/bas_spatial_krill
+          curl -L --fail --retry 4 --retry-delay 4 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' \
+            -o build/bas_spatial_krill/source.zip
+      - name: Strictly audit original GeoTIFF years/CRS/coverage
+        run: |
+          python research/climate-penguin/work/climate_penguin/bas_spatial_krill_source_gate_v1.py \
+            --source-zip build/bas_spatial_krill/source.zip \
+            --out-json build/bas_spatial_krill/source_manifest.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bas-annual-spatial-krill-source-v1
+          path: build/bas_spatial_krill/source_manifest.json

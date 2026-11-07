@@ -1,0 +1,47 @@
+name: penguin three-species source calendar audit v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/historical_ocean_macro_v1/calendar_audit.py"
+      - ".github/workflows/penguin-three-species-source-calendar-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-calendar-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install RData reader
+        run: python -m pip install "numpy>=1.26,<2.1" "pandas>=2.1,<3" "pyreadr>=0.5,<1"
+      - name: Get pinned MAPPPD original
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+      - name: Get already-verified 216 macro observations
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-historical-ocean-macro34-1993-2020-v1
+          run-id: 41213849262
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/original_macro
+      - name: Reconstruct three-species count months from the exact RDA
+        run: |
+          python research/climate-penguin/work/historical_ocean_macro_v1/calendar_audit.py \
+            --rda build/mapppdr/data/penguin_obs.rda \
+            --intervals "${{ runner.temp }}/original_macro/macro_original_breeding_ocean_intervals.csv" \
+            --out build/three_species_month_audit_v1
+      - name: Save source events and 216 interval month flags
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-3species-source-calendar-v1
+          path: build/three_species_month_audit_v1/
+          if-no-files-found: warn
+          retention-days: 45

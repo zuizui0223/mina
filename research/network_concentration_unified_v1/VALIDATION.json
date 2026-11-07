@@ -1,0 +1,155 @@
+{
+  "artifact": "network_concentration_unified_design_v0.1",
+  "validated_at_utc": "2026-11-06T12:30:36.839101+00:00",
+  "base_commit": "fb4c44f187120044ebfb806929373a9daec6992d",
+  "scope": "Design and preregistration draft only; no newly harmonized effects, association models, or future exposures.",
+  "checks": {
+    "json_schema_draft_2020_12": "valid",
+    "json_documents_parsed": 2,
+    "main_column_definitions": 44,
+    "main_columns_match_document": true,
+    "tables": {
+      "network_species": 44,
+      "unit_endpoints": 25,
+      "network_species_pairs": 36,
+      "endpoint_registry": 24
+    },
+    "new_document_relative_links": 22,
+    "source_files_match_base": true,
+    "source_files_compared": 16,
+    "existing_tracked_files_changed": [
+      "README.md",
+      "research/climate-penguin/CLIMATE_NICHE_SYNTHESIS_20261102.md"
+    ]
+  },
+  "independent_scientific_review": {
+    "reviewer": "unify_null_and_local",
+    "scope": "STEP1/README, then preregistration and schema; read-only, no ecological analyses",
+    "resolved_findings": [
+      "Species-independent geographic network IDs",
+      "Pair-specific endpoints and all four totals >=2",
+      "Per-endpoint D2 retained when the other total is zero",
+      "Nonoverlapping complete three-year windows and elapsed mean years",
+      "Q4 uncertainty must preserve shared count dependence within network",
+      "Future exposure limited to included monitoring coverage with census vintage"
+    ],
+    "remaining_design_work": "Trait sources/values, climate variables/aggregation, and exact inference implementation must be frozen in Steps 2-3 before associations."
+  },
+  "artifacts": [
+    {
+      "path": "research/network_concentration_unified_v1/PLAN.md",
+      "sha256": "708d332be09e458b8c216886f4f4e0a29e9c6beacb8f1c5cd0e15a704c802a47"
+    },
+    {
+      "path": "research/network_concentration_unified_v1/PREREGISTRATION_DRAFT.md",
+      "sha256": "46da0273e8ec0bb6bf029927d83246688548ffd91cbb7e328971771d55261ca7"
+    },
+    {
+      "path": "research/network_concentration_unified_v1/README.md",
+      "sha256": "3019bbaca0c8ae44a57bc6241398bad9ec8dc08c283853d846c12665e66f28a7"
+    },
+    {
+      "path": "research/network_concentration_unified_v1/SCHEMA.json",
+      "sha256": "53246cba6750588be97f855c9a6b9de79066ddb3c08f8352c5aa88d3bd030f46"
+    },
+    {
+      "path": "research/network_concentration_unified_v1/SOURCE_CATALOG.json",
+      "sha256": "95b6e2c2b16354386ffca687b69e369a58aaa6b9e1c758b86eeeabe5e33b020d"
+    },
+    {
+      "path": "research/network_concentration_unified_v1/STEP1_TABLE_SPEC.md",
+      "sha256": "525cffd5f20658f8704f1ae98035ce6ce7ac03276e8662439b8e9498c56fc232"
+    }
+  ],
+  "preserved_source_files": [
+    {
+      "path": "research/climate-penguin/outputs/comparison_audit/mapppd_unambiguous_site_seasons.csv",
+      "sha256": "fcb622814d9aec674fb34ff5f8acd357f5508cf4bc1c63945e62d0c558fbc3c1",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/comparison_audit/source_manifest.json",
+      "sha256": "97f415352ec6d612cdaf261462a3f4bc74066af7ee6edf67c0fd65be4c32d1f4",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/work/comparison_audit/audit.py",
+      "sha256": "f63aebef4d96622b349121bc38639deeca60503530b4aeda362d428c9145afb4",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/emperor_ice_land_substrate_v1/author_colony_summary.csv",
+      "sha256": "c887b9e1176b153345073281ebcaf6752ffb361023269afb5bdcfa371ec381ec",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/emperor_ice_land_substrate_v1/README.md",
+      "sha256": "a120b46090f16296b6ce39716f6d2c5bbbcc5748d7591d6da5f472527899300d",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/comparison_audit/palmer_five_island_counts.csv",
+      "sha256": "23259f773577356bd01eee995e256b8b297e3270b5d96147d4e7454d8f202a80",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_exploration/matched_counts.csv",
+      "sha256": "4c97646462d224c416c80876c45f8c333793a63cc809c9a36154c8e11793eeef",
+      "matches_base": true
+    },
+    {
+      "path": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "sha256": "765391b01bbfdd76d9b4471a9bea45d3cfcd4631f7e7ba37a09b60a339f35412",
+      "matches_base": true
+    },
+    {
+      "path": "contracts/SIGNY_BREEDING_PATCH_CONCENTRATION_V1.json",
+      "sha256": "082f9b637937d940c31b68f6a000d6b40813dadd61af71a94e3bd5a9ea2a6d73",
+      "matches_base": true
+    },
+    {
+      "path": "contracts/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_V1.json",
+      "sha256": "904c8d3edfe02945091905f509a0573e0f580bcac52cb56d084c5cf8304b9aff",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/ross_island_spatial_scale_v1/README.md",
+      "sha256": "1a7b2cf0ff4b5e70c8cd14d5993eab0839f6a12203baafa3c1ffb74287388fd5",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/work/ross_island_spatial_scale_v1/build.mjs",
+      "sha256": "4edf1874675c58795ade337582ec59bb195cf6df3f7aec03feb26b19c7803cbc",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/historical_ocean_macro_v1/README.md",
+      "sha256": "44bba2fe002a687553cb3dcf2f54d16159fdee1c565f429c57d52d459a821058",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/historical_ocean_species_v1/README.md",
+      "sha256": "480a88c8a6b8428c6ca2c398fc18c63ff85a12630de2fb5af892f5f92ad396ac",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/surface_temperature_projection_v1/REPORT_JA.md",
+      "sha256": "def3bb4ca27ce338b85ea70a45cf8a453e4f26aef6072dc592bfb4662e71e218",
+      "matches_base": true
+    },
+    {
+      "path": "research/climate-penguin/outputs/cmip6_exposure_atlas_v1/site_scenario_exposure.csv",
+      "sha256": "479e170458ea1487d9c0daa7451b75063a57011f31069bd0a2c988df00f55fa6",
+      "matches_base": true
+    }
+  ],
+  "not_performed": [
+    "New common ecological effect calculations",
+    "Trait or climate association fits",
+    "New external data acquisition",
+    "External preregistration",
+    "Main-branch merge"
+  ],
+  "errors": [],
+  "result": "PASS_DRAFT_INTEGRITY"
+}

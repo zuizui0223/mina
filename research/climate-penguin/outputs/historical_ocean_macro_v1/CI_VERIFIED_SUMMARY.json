@@ -1,0 +1,763 @@
+{
+  "CI_success": "https://github.com/zuizui0223/mina/actions/runs/41213849262",
+  "artifact_id": 13047696226,
+  "source_acquisition": "https://github.com/zuizui0223/mina/actions/runs/41213239826",
+  "source_receipt": {
+    "status": "historical_ocean_source_retrieved_and_old_2011_2020_values_verified",
+    "source_store": "https://s3.waw3-1.cloudferro.com/mdl-arco-time-025/arco/GLOBAL_MULTIYEAR_PHY_001_030/cmems_mod_glo_phy_my_0.083deg_P1M-m_202311/timeChunked.zarr",
+    "source_version": "202311",
+    "source_original_git_blobs": {
+      "grid": "5d0f90cab39e192645b3ff3406a40349a0ff22d0",
+      "paired": "f17b4a21e9e5a045a40f5a4af9019e3bbc011758",
+      "original": "cafa0e6f934ad5e3ae67ca0c6cd52d1e29156dd6",
+      "manifest": "7d62ce17e77ae356ea62116d2446b0a8521c7ded"
+    },
+    "surface_depth_m": -0.49402499198913574,
+    "months": 112,
+    "sites": 34,
+    "monthly_site_rows": 3808,
+    "unique_ocean_native_cells": 31,
+    "start_year": 1993,
+    "end_year": 2020,
+    "frozen_overlap_rows": 1360,
+    "max_abs_reanalysis_difference": {
+      "surface_salinity": 7.105427357601002e-15,
+      "surface_potential_temperature_c": 4.440892098500626e-16
+    },
+    "grid_max_distance_km": 17.918738334974712,
+    "derived_csv_sha256": "a167b389f9c8e4ba7f18c886025b4abfe19c7b67000c675064f93ad4fb5aee42",
+    "interpretation": "This is a Copernicus model reanalysis (assimilation includes SIC and SST), not an independent satellite salinity observation."
+  },
+  "computed_macro": {
+    "cohort": {
+      "original_macro_sites": 40,
+      "marine_within25km_sites": 34,
+      "unmatched_far_marine_sites": [
+        "BRDM",
+        "BRDN",
+        "BRDS",
+        "CRZE",
+        "CRZW",
+        "ROYD"
+      ],
+      "all_long_count_site_species": 54,
+      "strict_single_method_all_positive_positive_intervals": 392,
+      "strict_near_marine_intervals": 236,
+      "historical_1993_2020_complete_intervals": 216,
+      "matched_site_species": 39,
+      "matched_site_codes": 26,
+      "matched_native_marine_cells": 24,
+      "unique_site_start_years": 143,
+      "species_intervals": {
+        "ADPE": 121,
+        "GEPE": 64,
+        "CHPE": 31
+      },
+      "ADPE_month_audit_applicable_intervals": 121,
+      "verified_later_than_September_count_intervals": 31,
+      "timing_audit_scope": "existing source month audit covers ADPE only; CHPE/GEPE source dates not yet independently audited"
+    },
+    "species_holdout": {
+      "ADPE": {
+        "chronological": {
+          "baseline": {
+            "mae": 0.18141249060480102,
+            "n": 105,
+            "sites": 25
+          },
+          "SIC": {
+            "mae": 0.18098299779956098,
+            "n": 105,
+            "sites": 25
+          },
+          "SST_SSS": {
+            "mae": 0.179489221976432,
+            "n": 105,
+            "sites": 25
+          },
+          "SIC_SST_SSS": {
+            "mae": 0.1828413951998185,
+            "n": 105,
+            "sites": 25
+          }
+        },
+        "chronological_site_out": {
+          "baseline": {
+            "mae": 0.1893038607778429,
+            "n": 104,
+            "sites": 25
+          },
+          "SIC": {
+            "mae": 0.18812798665235336,
+            "n": 104,
+            "sites": 25
+          },
+          "SST_SSS": {
+            "mae": 0.18819353368321828,
+            "n": 104,
+            "sites": 25
+          },
+          "SIC_SST_SSS": {
+            "mae": 0.18917592583045043,
+            "n": 104,
+            "sites": 25
+          }
+        },
+        "chronological_marine_cell_out": {
+          "baseline": {
+            "mae": 0.1895342632424641,
+            "n": 104,
+            "sites": 25
+          },
+          "SIC": {
+            "mae": 0.18867935924944376,
+            "n": 104,
+            "sites": 25
+          },
+          "SST_SSS": {
+            "mae": 0.18849231699122743,
+            "n": 104,
+            "sites": 25
+          },
+          "SIC_SST_SSS": {
+            "mae": 0.1897358816289116,
+            "n": 104,
+            "sites": 25
+          }
+        }
+      },
+      "CHPE": {
+        "chronological": {
+          "baseline": {
+            "mae": 0.32188843788367394,
+            "n": 22,
+            "sites": 4
+          },
+          "SIC": {
+            "mae": 0.3195633211167232,
+            "n": 22,
+            "sites": 4
+          },
+          "SST_SSS": {
+            "mae": 0.3258739540963599,
+            "n": 22,
+            "sites": 4
+          },
+          "SIC_SST_SSS": {
+            "mae": 0.3248902853572578,
+            "n": 22,
+            "sites": 4
+          }
+        },
+        "chronological_site_out": {
+          "baseline": {
+            "mae": 0.28918324614744895,
+            "n": 21,
+            "sites": 4
+          },
+          "SIC": {
+            "mae": 0.2996344669218671,
+            "n": 21,
+            "sites": 4
+          },
+          "SST_SSS": {
+            "mae": 0.30230927999350693,
+            "n": 21,
+            "sites": 4
+          },
+          "SIC_SST_SSS": {
+            "mae": 0.30587947193135717,
+            "n": 21,
+            "sites": 4
+          }
+        },
+        "chronological_marine_cell_out": {
+          "baseline": {
+            "mae": 0.28918324614744895,
+            "n": 21,
+            "sites": 4
+          },
+          "SIC": {
+            "mae": 0.2996344669218671,
+            "n": 21,
+            "sites": 4
+          },
+          "SST_SSS": {
+            "mae": 0.30230927999350693,
+            "n": 21,
+            "sites": 4
+          },
+          "SIC_SST_SSS": {
+            "mae": 0.30587947193135717,
+            "n": 21,
+            "sites": 4
+          }
+        }
+      },
+      "GEPE": {
+        "chronological": {
+          "baseline": {
+            "mae": 0.17049537882249444,
+            "n": 55,
+            "sites": 7
+          },
+          "SIC": {
+            "mae": 0.17032929641093905,
+            "n": 55,
+            "sites": 7
+          },
+          "SST_SSS": {
+            "mae": 0.1731462856032994,
+            "n": 55,
+            "sites": 7
+          },
+          "SIC_SST_SSS": {
+            "mae": 0.17422854383853642,
+            "n": 55,
+            "sites": 7
+          }
+        },
+        "chronological_site_out": {
+          "baseline": {
+            "mae": 0.18454631024393928,
+            "n": 54,
+            "sites": 7
+          },
+          "SIC": {
+            "mae": 0.18305644408817215,
+            "n": 54,
+            "sites": 7
+          },
+          "SST_SSS": {
+            "mae": 0.1910066844660242,
+            "n": 54,
+            "sites": 7
+          },
+          "SIC_SST_SSS": {
+            "mae": 0.19097640066377974,
+            "n": 54,
+            "sites": 7
+          }
+        },
+        "chronological_marine_cell_out": {
+          "baseline": {
+            "mae": 0.18475070945829097,
+            "n": 53,
+            "sites": 7
+          },
+          "SIC": {
+            "mae": 0.18225013851319696,
+            "n": 53,
+            "sites": 7
+          },
+          "SST_SSS": {
+            "mae": 0.18961002439122085,
+            "n": 53,
+            "sites": 7
+          },
+          "SIC_SST_SSS": {
+            "mae": 0.18939739235384376,
+            "n": 53,
+            "sites": 7
+          }
+        }
+      }
+    },
+    "identification_diagnostics": {
+      "ADPE": {
+        "sic_start_September_pct": {
+          "n": 121,
+          "site_n": 25,
+          "cell_n": 23,
+          "year_n": 26,
+          "design_rank": 50,
+          "residual_degrees_of_freedom": 71,
+          "adjusted_r": 0.12030695391329363,
+          "remaining_environment_variance_fraction": 0.09392061895178257,
+          "environment_residual_sd": 9.88088968826538,
+          "outcome_residual_sd": 0.1729937891832392,
+          "loso": {
+            "n_valid": 25,
+            "n_sites_tested": 25,
+            "r_min": 0.07870131992048743,
+            "r_max": 0.17189294626358376,
+            "all_sign_match": true
+          }
+        },
+        "sst_start_September_c": {
+          "n": 121,
+          "site_n": 25,
+          "cell_n": 23,
+          "year_n": 26,
+          "design_rank": 50,
+          "residual_degrees_of_freedom": 71,
+          "adjusted_r": 0.004360717158860971,
+          "remaining_environment_variance_fraction": 0.3174428547737265,
+          "environment_residual_sd": 0.08074445053824873,
+          "outcome_residual_sd": 0.1729937891832392,
+          "loso": {
+            "n_valid": 25,
+            "n_sites_tested": 25,
+            "r_min": -0.10331092109258233,
+            "r_max": 0.08443397278725037,
+            "all_sign_match": false
+          }
+        },
+        "sss_start_September": {
+          "n": 121,
+          "site_n": 25,
+          "cell_n": 23,
+          "year_n": 26,
+          "design_rank": 50,
+          "residual_degrees_of_freedom": 71,
+          "adjusted_r": 0.006794187489843163,
+          "remaining_environment_variance_fraction": 0.263987572299024,
+          "environment_residual_sd": 0.12674563697693908,
+          "outcome_residual_sd": 0.1729937891832392,
+          "loso": {
+            "n_valid": 25,
+            "n_sites_tested": 25,
+            "r_min": -0.04813498676653424,
+            "r_max": 0.04133692583252818,
+            "all_sign_match": false
+          }
+        }
+      },
+      "CHPE": {
+        "sic_start_September_pct": {
+          "n": 31,
+          "site_n": 6,
+          "cell_n": 5,
+          "year_n": 23,
+          "design_rank": 28,
+          "residual_degrees_of_freedom": 3,
+          "adjusted_r": 0.8041628813154879,
+          "remaining_environment_variance_fraction": 0.000295982603392503,
+          "environment_residual_sd": 0.4356256846547598,
+          "outcome_residual_sd": 0.039234623947327636,
+          "loso": {
+            "n_valid": 6,
+            "n_sites_tested": 6,
+            "r_min": 0.8029587721289199,
+            "r_max": 1,
+            "all_sign_match": true
+          }
+        },
+        "sst_start_September_c": {
+          "n": 31,
+          "site_n": 6,
+          "cell_n": 5,
+          "year_n": 23,
+          "design_rank": 28,
+          "residual_degrees_of_freedom": 3,
+          "adjusted_r": -0.34087721406535487,
+          "remaining_environment_variance_fraction": 0.008119545812093404,
+          "environment_residual_sd": 0.012979833642779406,
+          "outcome_residual_sd": 0.039234623947327636,
+          "loso": {
+            "n_valid": 6,
+            "n_sites_tested": 6,
+            "r_min": -1,
+            "r_max": -0.34087721406535426,
+            "all_sign_match": true
+          }
+        },
+        "sss_start_September": {
+          "n": 31,
+          "site_n": 6,
+          "cell_n": 5,
+          "year_n": 23,
+          "design_rank": 28,
+          "residual_degrees_of_freedom": 3,
+          "adjusted_r": 0.897644897843242,
+          "remaining_environment_variance_fraction": 0.006268525187297344,
+          "environment_residual_sd": 0.014775133496712063,
+          "outcome_residual_sd": 0.039234623947327636,
+          "loso": {
+            "n_valid": 6,
+            "n_sites_tested": 6,
+            "r_min": -0.9999999999999999,
+            "r_max": 1,
+            "all_sign_match": false
+          }
+        }
+      },
+      "GEPE": {
+        "sic_start_September_pct": {
+          "n": 64,
+          "site_n": 8,
+          "cell_n": 7,
+          "year_n": 25,
+          "design_rank": 32,
+          "residual_degrees_of_freedom": 32,
+          "adjusted_r": 0.21350963827462618,
+          "remaining_environment_variance_fraction": 0.09918788880260522,
+          "environment_residual_sd": 7.928825522006538,
+          "outcome_residual_sd": 0.21364038679724714,
+          "loso": {
+            "n_valid": 8,
+            "n_sites_tested": 8,
+            "r_min": 0.1622918762365165,
+            "r_max": 0.31612393535844024,
+            "all_sign_match": true
+          }
+        },
+        "sst_start_September_c": {
+          "n": 64,
+          "site_n": 8,
+          "cell_n": 7,
+          "year_n": 25,
+          "design_rank": 32,
+          "residual_degrees_of_freedom": 32,
+          "adjusted_r": 0.008356219608012394,
+          "remaining_environment_variance_fraction": 0.29781667995761235,
+          "environment_residual_sd": 0.08346226428951814,
+          "outcome_residual_sd": 0.21364038679724714,
+          "loso": {
+            "n_valid": 8,
+            "n_sites_tested": 8,
+            "r_min": -0.0484479739742823,
+            "r_max": 0.07173066337698354,
+            "all_sign_match": false
+          }
+        },
+        "sss_start_September": {
+          "n": 64,
+          "site_n": 8,
+          "cell_n": 7,
+          "year_n": 25,
+          "design_rank": 32,
+          "residual_degrees_of_freedom": 32,
+          "adjusted_r": 0.07469860573763819,
+          "remaining_environment_variance_fraction": 0.277642760025001,
+          "environment_residual_sd": 0.096690279285766,
+          "outcome_residual_sd": 0.21364038679724714,
+          "loso": {
+            "n_valid": 8,
+            "n_sites_tested": 8,
+            "r_min": -0.09075767819663727,
+            "r_max": 0.15059724190123297,
+            "all_sign_match": false
+          }
+        }
+      }
+    },
+    "CV": {
+      "chronological": {
+        "no_change": {
+          "mae": 0.19675138302019818,
+          "rmse": 0.3023889656026631,
+          "intervals": 182,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "past_mean": {
+          "mae": 0.20138623803490432,
+          "rmse": 0.3043476910642815,
+          "intervals": 182,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "species_mean": {
+          "mae": 0.1990489283114141,
+          "rmse": 0.3037761472714355,
+          "intervals": 182,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "baseline": {
+          "mae": 0.19509397242957216,
+          "rmse": 0.30234449194429913,
+          "intervals": 182,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "SIC": {
+          "mae": 0.19451494030837066,
+          "rmse": 0.30155022570775386,
+          "intervals": 182,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "SST_SSS": {
+          "mae": 0.19526725827377334,
+          "rmse": 0.305132529295071,
+          "intervals": 182,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "SIC_SST_SSS": {
+          "mae": 0.19740935541186877,
+          "rmse": 0.3046125138640312,
+          "intervals": 182,
+          "sites": 26,
+          "marine_cells": 24
+        }
+      },
+      "chronological_site_out": {
+        "no_change": {
+          "mae": 0.19403731051049017,
+          "rmse": 0.29871843254455666,
+          "intervals": 179,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "past_mean": {
+          "mae": 0.2000120313821199,
+          "rmse": 0.30309586709430064,
+          "intervals": 179,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "species_mean": {
+          "mae": 0.2086035504445242,
+          "rmse": 0.314748698007226,
+          "intervals": 179,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "baseline": {
+          "mae": 0.19958631532494306,
+          "rmse": 0.3072793515600831,
+          "intervals": 179,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "SIC": {
+          "mae": 0.19967978993276678,
+          "rmse": 0.30701617359095534,
+          "intervals": 179,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "SST_SSS": {
+          "mae": 0.2024300745479534,
+          "rmse": 0.31080218137293986,
+          "intervals": 179,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "SIC_SST_SSS": {
+          "mae": 0.2034105633115612,
+          "rmse": 0.3110743509713288,
+          "intervals": 179,
+          "sites": 26,
+          "marine_cells": 24
+        }
+      },
+      "chronological_marine_cell_out": {
+        "no_change": {
+          "mae": 0.19477132859365837,
+          "rmse": 0.2995186809094658,
+          "intervals": 178,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "past_mean": {
+          "mae": 0.20052986064136583,
+          "rmse": 0.303742529692401,
+          "intervals": 178,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "species_mean": {
+          "mae": 0.2100148565166975,
+          "rmse": 0.31606070799440195,
+          "intervals": 178,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "baseline": {
+          "mae": 0.19986628734607928,
+          "rmse": 0.30784917906322173,
+          "intervals": 178,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "SIC": {
+          "mae": 0.1998552500477573,
+          "rmse": 0.3072879420772348,
+          "intervals": 178,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "SST_SSS": {
+          "mae": 0.2022529614589101,
+          "rmse": 0.31110963091400473,
+          "intervals": 178,
+          "sites": 26,
+          "marine_cells": 24
+        },
+        "SIC_SST_SSS": {
+          "mae": 0.20333742918381478,
+          "rmse": 0.31131927622059313,
+          "intervals": 178,
+          "sites": 26,
+          "marine_cells": 24
+        }
+      }
+    },
+    "associations": [
+      {
+        "species": "ALL",
+        "environment": "sic_start_September_pct",
+        "intervals": 216,
+        "sites": 26,
+        "native_grid_cells": 24,
+        "r_unadjusted": 0.10340770142668047,
+        "r_site_species_and_year_adjusted": 0.12518774053152912,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "ALL",
+        "environment": "sst_start_September_c",
+        "intervals": 216,
+        "sites": 26,
+        "native_grid_cells": 24,
+        "r_unadjusted": -0.08664040646361577,
+        "r_site_species_and_year_adjusted": 0.05784829987103343,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "ALL",
+        "environment": "sss_start_September",
+        "intervals": 216,
+        "sites": 26,
+        "native_grid_cells": 24,
+        "r_unadjusted": -0.05067181868601078,
+        "r_site_species_and_year_adjusted": 0.043165671404353956,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "ADPE",
+        "environment": "sic_start_September_pct",
+        "intervals": 121,
+        "sites": 25,
+        "native_grid_cells": 23,
+        "r_unadjusted": 0.14652626273756883,
+        "r_site_species_and_year_adjusted": 0.12030695391329363,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "ADPE",
+        "environment": "sst_start_September_c",
+        "intervals": 121,
+        "sites": 25,
+        "native_grid_cells": 23,
+        "r_unadjusted": -0.16046715521047614,
+        "r_site_species_and_year_adjusted": 0.004360717158860971,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "ADPE",
+        "environment": "sss_start_September",
+        "intervals": 121,
+        "sites": 25,
+        "native_grid_cells": 23,
+        "r_unadjusted": -0.00042562990252240253,
+        "r_site_species_and_year_adjusted": 0.006794187489843163,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "CHPE",
+        "environment": "sic_start_September_pct",
+        "intervals": 31,
+        "sites": 6,
+        "native_grid_cells": 5,
+        "r_unadjusted": 0.1399314015297807,
+        "r_site_species_and_year_adjusted": 0.8041628813154879,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "CHPE",
+        "environment": "sst_start_September_c",
+        "intervals": 31,
+        "sites": 6,
+        "native_grid_cells": 5,
+        "r_unadjusted": 0.056324701360840876,
+        "r_site_species_and_year_adjusted": -0.34087721406535487,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "CHPE",
+        "environment": "sss_start_September",
+        "intervals": 31,
+        "sites": 6,
+        "native_grid_cells": 5,
+        "r_unadjusted": 0.06774069181600252,
+        "r_site_species_and_year_adjusted": 0.897644897843242,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "GEPE",
+        "environment": "sic_start_September_pct",
+        "intervals": 64,
+        "sites": 8,
+        "native_grid_cells": 7,
+        "r_unadjusted": 0.2729102632635331,
+        "r_site_species_and_year_adjusted": 0.21350963827462618,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "GEPE",
+        "environment": "sst_start_September_c",
+        "intervals": 64,
+        "sites": 8,
+        "native_grid_cells": 7,
+        "r_unadjusted": -0.17499132266777057,
+        "r_site_species_and_year_adjusted": 0.008356219608012394,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      },
+      {
+        "species": "GEPE",
+        "environment": "sss_start_September",
+        "intervals": 64,
+        "sites": 8,
+        "native_grid_cells": 7,
+        "r_unadjusted": 0.005291552412493503,
+        "r_site_species_and_year_adjusted": 0.07469860573763819,
+        "interpretation": "exploratory_association_not_a_causal_effect"
+      }
+    ],
+    "gates": {
+      "at_least_100_complete_original_intervals": true,
+      "at_least_15_biological_sites": true,
+      "at_least_30_verified_premeasurement_intervals_across_species": false,
+      "time_out_all_environment_better_than_baseline": false,
+      "time_out_all_environment_better_than_SIC": false,
+      "site_out_all_environment_better_than_baseline": false,
+      "native_marine_cell_out_all_environment_better_than_baseline": false
+    },
+    "future_nesting_projection_allowed": false
+  },
+  "future_26_site_physical": [
+    {
+      "scenario": "SSP2-4.5",
+      "period": "2041–2060",
+      "tas": 1.387912766279017,
+      "sic": -5.5842903781670525,
+      "sos": -0.04105926730543503
+    },
+    {
+      "scenario": "SSP2-4.5",
+      "period": "2081–2100",
+      "tas": 2.307037161738493,
+      "sic": -12.847801754898564,
+      "sos": -0.15646160012686713
+    },
+    {
+      "scenario": "SSP5-8.5",
+      "period": "2041–2060",
+      "tas": 1.675538409643184,
+      "sic": -7.331007278436047,
+      "sos": -0.07189120087818186
+    },
+    {
+      "scenario": "SSP5-8.5",
+      "period": "2081–2100",
+      "tas": 3.9459639201699397,
+      "sic": -16.646626254062753,
+      "sos": -0.2449190565696942
+    }
+  ]
+}

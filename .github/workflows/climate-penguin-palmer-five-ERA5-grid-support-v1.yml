@@ -1,0 +1,35 @@
+name: climate-penguin-palmer-five-ERA5-grid-support-v1
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/audit_palmer_five_island_era5_grids_v1.py"
+      - "research/climate-penguin/contracts/PALMER_FIVE_ISLAND_ERA5_GRID_SUPPORT_V1.md"
+      - "tests/test_climate_penguin_palmer_five_era5_grid_v1.py"
+      - ".github/workflows/climate-penguin-palmer-five-ERA5-grid-support-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-five-site-grid:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pytest
+      - run: pytest -q tests/test_climate_penguin_palmer_five_era5_grid_v1.py
+      - name: Check original ERA5 reanalysis grid support for five fixed source site coordinates
+        run: python research/climate-penguin/work/climate_penguin/audit_palmer_five_island_era5_grids_v1.py --output "${{ runner.temp }}/palmer_five_island_era5_grid.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: climate-penguin-palmer-five-original-ERA5-grid-v1
+          path: "${{ runner.temp }}/palmer_five_island_era5_grid.json"
+          if-no-files-found: warn
+          retention-days: 30

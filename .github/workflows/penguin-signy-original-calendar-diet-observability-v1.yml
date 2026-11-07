@@ -1,0 +1,50 @@
+name: penguin-signy-original-calendar-diet-observability-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_calendar_sample_overlap_v1/**'
+      - 'research/climate-penguin/outputs/signy_calendar_sample_overlap_v1/**'
+      - 'tests/test_signy_calendar_sample_overlap_v1.py'
+      - '.github/workflows/penguin-signy-original-calendar-diet-observability-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_calendar_sample_overlap_v1/**'
+      - 'research/climate-penguin/outputs/signy_calendar_sample_overlap_v1/**'
+      - 'tests/test_signy_calendar_sample_overlap_v1.py'
+      - '.github/workflows/penguin-signy-original-calendar-diet-observability-v1.yml'
+permissions:
+  contents: read
+jobs:
+  source-calendar-observability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Synthetic selection and original-source guards
+        run: python -m unittest discover -s tests -p test_signy_calendar_sample_overlap_v1.py -v
+      - name: Obtain four original BAS diet and mean hatching archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/signy_date_original
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=eb421e6d-b93b-4174-904b-9a7b0b401403&output=zip.tree' -o /tmp/signy_date_original/adelie.zip
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=95e38251-797c-495a-abc0-40a613599759&output=zip.tree' -o /tmp/signy_date_original/chinstrap.zip
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=fb9bd975-e6fe-406c-84be-01e57d612b5e&output=zip.tree' -o /tmp/signy_date_original/gentoo.zip
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=274b49bd-40a4-4e5d-bd5f-69a1ba09d403&output=zip.tree' -o /tmp/signy_date_hatch.zip
+      - name: Reconstruct individual original stomachs and original mean hatching dates
+        run: |
+          python research/climate-penguin/work/signy_diet_climate_v1/analyze.py --source-dir /tmp/signy_date_original --out /tmp/signy_dates_diet_derived
+          python research/climate-penguin/work/signy_original_hatching_source_v1/inspect.py --source /tmp/signy_date_hatch.zip --out /tmp/signy_dates_hatch_derived
+      - name: Verify every source date pairing and 14-year breeding-stage correspondence
+        run: |
+          ORIGINAL_SIGNY_DIET_DERIVED=/tmp/signy_dates_diet_derived ORIGINAL_SIGNY_HATCH_DERIVED=/tmp/signy_dates_hatch_derived python -m unittest discover -s tests -p test_signy_calendar_sample_overlap_v1.py -v
+          python research/climate-penguin/work/signy_calendar_sample_overlap_v1/audit.py --diet-dir /tmp/signy_dates_diet_derived --hatch-dir /tmp/signy_dates_hatch_derived --out /tmp/signy_calendar_diet_observability
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-signy-calendar-diet-observability-v1
+          path: /tmp/signy_calendar_diet_observability/
+          retention-days: 30

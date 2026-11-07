@@ -1,0 +1,99 @@
+{
+  "signy_n_sites": 1,
+  "signy_n_seasons": 17,
+  "signy_years": [
+    1996,
+    1998,
+    2000,
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015
+  ],
+  "mean_gap_days": 29.294117647058822,
+  "gap_range": [
+    26.0,
+    34.0
+  ],
+  "noaa_pair_sites": 4,
+  "noaa_method_pair_rows": 5,
+  "noaa_unique_site_pair_years": 4,
+  "temp_ice_r": -0.6451051117405061,
+  "primary_results": [
+    {
+      "response": "gap",
+      "model": "joint_primary",
+      "term": "temp_oct",
+      "n": 17,
+      "estimate": -0.8502530562225525,
+      "ci_low": -2.711708479658366,
+      "ci_high": 1.011202367213261,
+      "p_hc3": 0.3438761146165389,
+      "p_ols": 0.04525795924136468,
+      "r_squared": 0.2611179438917429,
+      "uncertainty": "HC3 t; no serial-dependence correction",
+      "q_bh_primary_gap_2": 0.4482126255335124
+    },
+    {
+      "response": "gap",
+      "model": "joint_primary",
+      "term": "ice10",
+      "n": 17,
+      "estimate": -0.40912601744230515,
+      "ci_low": -1.5336927230444584,
+      "ci_high": 0.7154406881598482,
+      "p_hc3": 0.4482126255335124,
+      "p_ols": 0.26620294568295105,
+      "r_squared": 0.2611179438917429,
+      "uncertainty": "HC3 t; no serial-dependence correction",
+      "q_bh_primary_gap_2": 0.4482126255335124
+    }
+  ],
+  "checks": {
+    "signy_34_rows_17_pairs": true,
+    "calendar_gap_matches_published_gap": true,
+    "noaa_photo_77_events_74_nests": true,
+    "primary_two_tests": true,
+    "independent_slope_temp_oct": true,
+    "independent_slope_ice10": true
+  },
+  "provenance": [
+    {
+      "file": "signy_hatching.zip",
+      "url": "https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=274b49bd-40a4-4e5d-bd5f-69a1ba09d403&output=zip.tree",
+      "sha256": "e8e8d6a8100c4aaa40a886398aee72c3523fb66f78be3a8447d11f72235562f2"
+    },
+    {
+      "file": "Orcadas.All.temperature.html",
+      "url": "https://legacy.bas.ac.uk/met/READER/surface/Orcadas.All.temperature.html",
+      "sha256": "cc94ddf6ae3284e1fd74e8ad6317dd97856f362c7f5c85aa5d6ceb9be50de270"
+    },
+    {
+      "file": "C:\\Users\\zuizui\\Documents\\Codex\\2026-10-29\\mina\\work\\mina-sync\\research\\climate-penguin\\outputs\\climate_penguin\\macro_monthly_seaice_1991_2020.csv",
+      "sha256": "b21b10743f3a56281d0cf62f55988823f55b645b6d3fbb1bf7c2d366dff1b3ae"
+    },
+    {
+      "file": "repro v1-1-DATA.csv",
+      "url": "https://www.ncei.noaa.gov/archive/accession/0171619/1.1",
+      "sha256": "246ad86b50a1acd896b9e33dc7a70b08e429642ae16d44bee41957a395575ed1"
+    },
+    {
+      "file": "validation v1-1-DATA.csv",
+      "url": "https://www.ncei.noaa.gov/archive/accession/0171619/1.1",
+      "sha256": "cc0a67eb0b493829b2557c346d5afc336fed913c292e49d37b19eb57d2d117b5"
+    }
+  ],
+  "scope": "Existing local NOAA archive plus public Signy annual hatching, not all global available data",
+  "inference": "Exploratory; one island; HC3 not serial correction; no equivalence test or causal warming attribution; no future biological forecast",
+  "method": "Signy model-estimated 50%-nest hatching date; NOAA mean first confirmed nest hatch, kept separate"
+}

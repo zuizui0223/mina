@@ -1,0 +1,331 @@
+{
+  "status": "passed",
+  "purpose": "Independent climate-input reconstruction and annual predictor-support audit only",
+  "source_snapshot_git_commit": "fcf369b6aaf1e3824e1ae48e6009e6c3b591e7a5",
+  "implementation": "Python standard-library csv/gzip/math/statistics; no original analysis helpers imported",
+  "script_sha256": "10a7d4b31a8bf451cf15424d257c8a26dd6794e68b311838c2dcfec1a7fb8306",
+  "comparison_absolute_tolerance_pp": 1e-10,
+  "support_comparison": "Closed interval, inclusive; no clipping, no annual exclusions, no extrapolated diet output",
+  "units": "SIC percent; differences and additive correction in percentage points",
+  "annual_definition": "Equal arithmetic weights across August, September, October, November in each complete year",
+  "reference_definition": "Equal arithmetic mean across 80 observed monthly values, equivalently 20 complete annual means, 1995-2014",
+  "correction": "adjusted_annual_sic = raw_annual_sic + observed_reference_mean - model_historical_mean",
+  "scenario_mean": "observed_reference_mean + model_future_mean - model_historical_mean",
+  "averaging_caveat": "CMIP6 seasonal_climatologies.csv uses calendar-day weights. Existing diet_niche_scenarios_v1 uses equal monthly weights; this independent audit reproduces the latter, including its observed reference.",
+  "site": {
+    "site_id": "GOPT",
+    "location_id": "loc020",
+    "latitude": -60.7309,
+    "longitude": -45.5863,
+    "observed_spatial_window_km": [
+      0,
+      100
+    ],
+    "model_support": "single native ocean grid cell per model",
+    "distance_definition": "WGS84 site-to-model-cell displacement, not measured coastline distance"
+  },
+  "observed_source": {
+    "product": "OSI SAF OSI-450-a1",
+    "filename_version": "cdr-v3p1",
+    "unit_evidence": "Tracked extraction code explicitly checks ice_conc units == '%' and monthly code averages sic_percent_mean",
+    "reference_months": 80,
+    "reference_years": 20,
+    "reference_complete_supported_days": 2440,
+    "acquisition_manifest_dates_verified": 2440,
+    "raw_daily_files_reopened": false,
+    "limitation": "Daily acquisition success/hashes and version are checked in retained manifests; original netCDF content is not re-read in this audit"
+  },
+  "observed_reference_sic": 48.68273700076805,
+  "diet_support": [
+    21.90128214834321,
+    66.68284803598858
+  ],
+  "observed_reference_annual": {
+    "n_years": 20,
+    "n_within_support": 19,
+    "n_below_support": 0,
+    "n_above_support": 1,
+    "annual_min": 21.90128214834321,
+    "annual_max": 72.00183240070223,
+    "years_above_support": [
+      1997
+    ]
+  },
+  "checks": {
+    "original_manifest_hashes_matched": 11,
+    "selected_model_members": 3,
+    "source_versions_units_verified": 9,
+    "complete_four_month_years_model": 300,
+    "complete_twenty_year_model_periods": 15,
+    "scenario_climate_inputs_matched": 12,
+    "scenario_climate_max_absolute_difference_pp": 7.105427357601002e-15,
+    "supported_scenario_means": 11,
+    "future_periods_with_all_annual_values_supported": 7,
+    "model_cell_distances_independently_recomputed_wgs84": 3,
+    "all_output_csv_lf": true
+  },
+  "model_bias_and_floor_caveats": [
+    {
+      "model": "ACCESS-CM2",
+      "member": "r1i1p1f1",
+      "raw_historical_mean_sic": 22.159158499957993,
+      "observed_reference_sic": 48.68273700076805,
+      "additive_correction_pp": 26.523578500810057,
+      "historical_model_bias_pp": -26.523578500810057,
+      "raw_zero_implies_adjusted_sic": 26.523578500810057,
+      "minimum_possible_delta_given_raw_sic_ge_zero_pp": -22.159158499957993,
+      "warning": "Additive mean correction does not correct variability, distribution, coastal representation, or bounds."
+    },
+    {
+      "model": "BCC-CSM2-MR",
+      "member": "r1i1p1f1",
+      "raw_historical_mean_sic": 0.29225475806852047,
+      "observed_reference_sic": 48.68273700076805,
+      "additive_correction_pp": 48.39048224269953,
+      "historical_model_bias_pp": -48.39048224269953,
+      "raw_zero_implies_adjusted_sic": 48.39048224269953,
+      "minimum_possible_delta_given_raw_sic_ge_zero_pp": -0.29225475806852047,
+      "warning": "BCC raw reference is near zero; subsequent nonnegative SIC can decline by at most 0.292254758069 pp. Additive correction relocates the raw zero floor to 48.3904822427%. Within-support future years do not validate climatic fidelity."
+    },
+    {
+      "model": "CESM2",
+      "member": "r4i1p1f1",
+      "raw_historical_mean_sic": 28.234852734680487,
+      "observed_reference_sic": 48.68273700076805,
+      "additive_correction_pp": 20.447884266087563,
+      "historical_model_bias_pp": -20.447884266087563,
+      "raw_zero_implies_adjusted_sic": 20.447884266087563,
+      "minimum_possible_delta_given_raw_sic_ge_zero_pp": -28.234852734680487,
+      "warning": "Additive mean correction does not correct variability, distribution, coastal representation, or bounds."
+    }
+  ],
+  "additive_correction_physical_range_violations": [
+    {
+      "model": "CESM2",
+      "member": "r4i1p1f1",
+      "scenario": "historical",
+      "period": "1995-2014",
+      "location_id": "loc020",
+      "site_id": "GOPT",
+      "year": 2001,
+      "n_months": 4,
+      "raw_annual_sic": 81.5465202331543,
+      "observed_reference_sic": 48.68273700076805,
+      "model_historical_sic": 28.234852734680487,
+      "additive_correction_pp": 20.447884266087563,
+      "adjusted_annual_sic": 101.99440449924185,
+      "support_min": 21.90128214834321,
+      "support_max": 66.68284803598858,
+      "support_class": "above",
+      "within_diet_sic_support": false,
+      "within_physical_percent_range": false,
+      "raw_annual_at_zero": false,
+      "model_cell_distance_km": 36.875550401383165
+    }
+  ],
+  "limitations": [
+    "Predictor support is a gate for the observed SIC association; it does not establish future ecological or climatic validity.",
+    "Annual within-support counts are labeled scenario/model diagnostics, not probabilities; simulated years are not paired observed years.",
+    "All three availability-selected models and their designated members are retained without response-dependent exclusion or ensemble probabilities.",
+    "The constant correction changes the mean only; it leaves model variability and raw-zero floors intact and can exceed physical bounds.",
+    "Observed 0-100 km regional exposure and a native model grid cell have different spatial support; distance does not correct coastal representation.",
+    "Historical/future version, grid, member and unit provenance is verified against retained files and metadata, without a new remote source validation.",
+    "No new annual or future-mean diet response is calculated by this script."
+  ],
+  "input_hashes": [
+    {
+      "file": "outputs/climate_penguin/daily_concentration_1991_2010_manifest.json",
+      "sha256": "bef194478959d89ea68ffba1759bd8dd10061e17a99774f3de3a2f333d7de4e3",
+      "bytes": 1027243
+    },
+    {
+      "file": "outputs/climate_penguin/daily_concentration_manifest.json",
+      "sha256": "360096d3bc0f136e47f1a01603bf166fa5caf11054bd41a8ada09dc271ccce68",
+      "bytes": 513623
+    },
+    {
+      "file": "outputs/climate_penguin/daily_ice_locations.csv",
+      "sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "bytes": 5457
+    },
+    {
+      "file": "outputs/climate_penguin/macro_monthly_seaice_1991_2020.csv",
+      "sha256": "b21b10743f3a56281d0cf62f55988823f55b645b6d3fbb1bf7c2d366dff1b3ae",
+      "bytes": 707568,
+      "original_manifest_sha256": "b21b10743f3a56281d0cf62f55988823f55b645b6d3fbb1bf7c2d366dff1b3ae",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/climate_penguin/macro_monthly_seaice_1991_2020_checks.json",
+      "sha256": "d6f54dc46eaabe2474a2241402ac4cf60ab11c4e62a919970da32b92deb8f5a1",
+      "bytes": 177
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/manifest.json",
+      "sha256": "136f9aed9472d0819357a99195b7f13471355bf80f5dd56a67544a2f6901e79a",
+      "bytes": 2648
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/monthly_ACCESS-CM2_r1i1p1f1_siconc_historical.csv.gz",
+      "sha256": "941d1830d46fca368525d8b4b0bdcf597c475d4ca53ce55b609e74a399787ffe",
+      "bytes": 53339,
+      "original_manifest_sha256": "941d1830d46fca368525d8b4b0bdcf597c475d4ca53ce55b609e74a399787ffe",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/monthly_ACCESS-CM2_r1i1p1f1_siconc_ssp245.csv.gz",
+      "sha256": "969473c25d2a266b153c55689acd4fac8da879f20cba4298295a867a8d196884",
+      "bytes": 101938,
+      "original_manifest_sha256": "969473c25d2a266b153c55689acd4fac8da879f20cba4298295a867a8d196884",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/monthly_ACCESS-CM2_r1i1p1f1_siconc_ssp585.csv.gz",
+      "sha256": "ce2a09643f1d3bd5733e92bd0c87ac53fcab37ece35794cda2cfd7b494e7de12",
+      "bytes": 98689,
+      "original_manifest_sha256": "ce2a09643f1d3bd5733e92bd0c87ac53fcab37ece35794cda2cfd7b494e7de12",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/monthly_BCC-CSM2-MR_r1i1p1f1_siconc_historical.csv.gz",
+      "sha256": "33d9d0191cedc32af3cdd969d5be4a5ed890350ae1d00952498434c460c3ce23",
+      "bytes": 47711,
+      "original_manifest_sha256": "33d9d0191cedc32af3cdd969d5be4a5ed890350ae1d00952498434c460c3ce23",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/monthly_BCC-CSM2-MR_r1i1p1f1_siconc_ssp245.csv.gz",
+      "sha256": "caa89f530bb454833d2a7d91d681de12aac4f4a930d6fcd656556a690d1c0b1c",
+      "bytes": 88265,
+      "original_manifest_sha256": "caa89f530bb454833d2a7d91d681de12aac4f4a930d6fcd656556a690d1c0b1c",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/monthly_BCC-CSM2-MR_r1i1p1f1_siconc_ssp585.csv.gz",
+      "sha256": "386626c3e25955aea3de547466b6ffed6c642eb648e55eb789131e0ab054334d",
+      "bytes": 87832,
+      "original_manifest_sha256": "386626c3e25955aea3de547466b6ffed6c642eb648e55eb789131e0ab054334d",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/monthly_CESM2_r4i1p1f1_siconc_historical.csv.gz",
+      "sha256": "81e5dca81be239852a54666438ef2fde92420a10ce11bf96cdf2046b91b9e87e",
+      "bytes": 48885,
+      "original_manifest_sha256": "81e5dca81be239852a54666438ef2fde92420a10ce11bf96cdf2046b91b9e87e",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/monthly_CESM2_r4i1p1f1_siconc_ssp245.csv.gz",
+      "sha256": "aede7f9b671914ffc857bba20e30f4c93c4d6f9126a153565dd9a23180ad4854",
+      "bytes": 90205,
+      "original_manifest_sha256": "aede7f9b671914ffc857bba20e30f4c93c4d6f9126a153565dd9a23180ad4854",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/monthly_CESM2_r4i1p1f1_siconc_ssp585.csv.gz",
+      "sha256": "383642cd6c46e3e7d62764ce7ef36efc051039c64e7bef82e856717a62850040",
+      "bytes": 85270,
+      "original_manifest_sha256": "383642cd6c46e3e7d62764ce7ef36efc051039c64e7bef82e856717a62850040",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/seasonal_climatologies.csv",
+      "sha256": "a1192d5170d40be1a3caa6bd0349509fb18847a15e13e65adc8a0fd793069ca8",
+      "bytes": 846694
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/selected_stores.csv",
+      "sha256": "feb5851494fde518f22dcb09fa1010519fc52648d02a29b9e6caf6f346b5a889",
+      "bytes": 4245
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/source_metadata.json",
+      "sha256": "0fae70d26081d9b07a40d2a057d52510fa5139db0ae8c10cf6ba3c16f6c0200f",
+      "bytes": 103353
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/support_ACCESS-CM2_r1i1p1f1_siconc.csv",
+      "sha256": "c003fe36b6cf34e818b95f56e0fece96ff3a3124b6a552f88e41b3a5cdbeb1e9",
+      "bytes": 22490
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/support_BCC-CSM2-MR_r1i1p1f1_siconc.csv",
+      "sha256": "468d6093a733cd22b75330a9b99f547d7fafc03debd49f9cfb3a34b91a6177f7",
+      "bytes": 21299
+    },
+    {
+      "file": "outputs/cmip6_projection_v1/support_CESM2_r4i1p1f1_siconc.csv",
+      "sha256": "6ec0bfb6c05c5e0ea69e9d36dfc907401d504ca431e09c0477a61858c77d567a",
+      "bytes": 21714
+    },
+    {
+      "file": "outputs/diet_niche_manuscript_v1/CMIP6_SOURCE_STORES.csv",
+      "sha256": "c71b4f19c3f8bcd402645be27e593afba4e94391f622aa3bebd2ffa89459e694",
+      "bytes": 1545
+    },
+    {
+      "file": "outputs/diet_niche_scenarios_v1/conditional_scenarios.csv",
+      "sha256": "0ad7acb115cdf53a758617c7e6435473b52424aa6e999ce3f74ec36c7cf96c1d",
+      "bytes": 6248
+    },
+    {
+      "file": "outputs/diet_niche_scenarios_v1/source_manifest.json",
+      "sha256": "bc798cb13224eb1590adca77010ac59cb6a0542d73b6f9c9f98c69e38f83c08a",
+      "bytes": 1980
+    },
+    {
+      "file": "outputs/niche_multiscale_v1/annual_distances.csv",
+      "sha256": "46fadd2c4c03c0a00c67a25e3841b75bef89e16ce9f6e9796f52c4f2255766b2",
+      "bytes": 67542,
+      "original_manifest_sha256": "46fadd2c4c03c0a00c67a25e3841b75bef89e16ce9f6e9796f52c4f2255766b2",
+      "original_manifest_hash_match": true
+    },
+    {
+      "file": "work/climate_penguin/extract_daily_concentration.py",
+      "sha256": "9d72e31a97932dd80682a3062db6213e2ef0002aa4d05f690ad25ceeecfb23ea",
+      "bytes": 5552
+    },
+    {
+      "file": "work/climate_penguin/monthly_seaice_for_counts.py",
+      "sha256": "31e2b3d0497875e45969df72814156c9d230524f0f080cd8208313e1c4b589ca",
+      "bytes": 2948
+    },
+    {
+      "file": "work/cmip6_projection_v1/extract.py",
+      "sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+      "bytes": 25639
+    },
+    {
+      "file": "work/diet_niche_scenarios_v1/analyze.py",
+      "sha256": "8022fea688bc7070019777e0d547bc6d293134e812ed5224b188d5be196f95da",
+      "bytes": 8115
+    }
+  ],
+  "output_csv_hashes": [
+    {
+      "file": "climate_inputs_scenarios.csv",
+      "rows": 12,
+      "sha256": "73132bc886a6e1f0267fc85ff9f2a68167b163a95f3d5da495c494625881e276"
+    },
+    {
+      "file": "climate_inputs_annual.csv",
+      "rows": 300,
+      "sha256": "fbc0e40725e04bb21dffbbfc5eeb853639b00ebfa67c4d1ede395fb16db73f18"
+    },
+    {
+      "file": "climate_inputs_support.csv",
+      "rows": 15,
+      "sha256": "59ffa745c5b536f3f516c3d5217f73fd553fc9d66ede795bdab565d4fca2c872"
+    },
+    {
+      "file": "climate_inputs_observed_annual.csv",
+      "rows": 20,
+      "sha256": "38b18adbc44a58cbf84a525291e2a9fcc5159145e702872cdf29f17ecb249d6c"
+    },
+    {
+      "file": "climate_inputs_sources.csv",
+      "rows": 9,
+      "sha256": "b79499d1a261c9ba6f6da3e69c91198009c29c2dd9268f6af9408939362195e6"
+    }
+  ]
+}

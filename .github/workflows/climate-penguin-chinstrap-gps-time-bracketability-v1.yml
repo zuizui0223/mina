@@ -1,0 +1,38 @@
+name: climate-penguin-chinstrap-gps-time-bracketability-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_v2_gps_bracketability_v1.py"
+      - "tests/test_chinstrap_v2_gps_bracketability_v1.py"
+      - ".github/workflows/climate-penguin-chinstrap-gps-time-bracketability-v1.yml"
+
+jobs:
+  original-GPS:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Unit tests before original observations
+        run: python -m unittest discover -s tests -p test_chinstrap_v2_gps_bracketability_v1.py -v
+      - name: Download BAS original GPS Version2
+        run: |
+          mkdir -p build/gps_gap
+          curl -L --fail --retry 4 --retry-delay 4 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' \
+            -o build/gps_gap/original_gps.zip
+      - name: Reproduce source-verified time availability by tracked island-year
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_v2_gps_bracketability_v1.py \
+            --gps-zip build/gps_gap/original_gps.zip --out build/gps_gap/result --check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-GPS-interval-time-coverage-v1
+          path: |
+            build/gps_gap/result/tag_gps_time_support.csv
+            build/gps_gap/result/island_year_gps_time_support.csv
+            build/gps_gap/result/decision.json

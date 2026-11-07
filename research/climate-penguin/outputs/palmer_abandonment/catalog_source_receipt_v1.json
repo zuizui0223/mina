@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "status": "CATALOG_SOURCE_COMPLETE__LOCAL_PIXEL_AND_GEOMETRY_NOT_VERIFIED",
+  "source_run": "https://github.com/zuizui0223/mina/actions/runs/40858156062",
+  "run_head": "4c8fd4c56e72983cb58e6c0984d3a90b8fab3c2d",
+  "artifact_id": 12889064493,
+  "artifact_zip_sha256": "89d7ccc08c1c44ff10822b26f6d8f1e1fdbad3c0788a324d8ee6f162990a8d6f",
+  "original_catalog_years_sha256": "3d249ba580b5bd53bfc8e998cb56beeec325f557b1c78630708f3deea58a6a31",
+  "original_catalog_items_sha256": "2163ed28553d9b49d4a9d38ef92e69fd9ebf97abfc10cf8ec8e64c30876ec558",
+  "original_checks_sha256": "c457dc748fd0933ec96b0317f56786b927d5035642f6036c5e8f021b23a03e99",
+  "source_requests": 52,
+  "request_errors": 0,
+  "scene_items": 558,
+  "query_bbox_wgs84": [
+    -64.125,
+    -64.81,
+    -64.035,
+    -64.74
+  ],
+  "fixed_months_feb_mar": [
+    2,
+    3
+  ],
+  "landsat": {
+    "search_years": 41,
+    "years_with_scenes": 32,
+    "scenes": 406,
+    "unique_acquisition_dates": 286,
+    "scenes_cloud_lt20": 36,
+    "before_Litchfield_zero_1986_2007": {
+      "scenes": 96,
+      "years_with_scenes": 13,
+      "scene_cloud_lt20": 9
+    },
+    "immediately_after_2008_2011": {
+      "scenes": 19,
+      "scene_cloud_lt20": 0
+    },
+    "first_post_zero_2008": {
+      "scenes": 1,
+      "scene_cloud_pct": 94
+    }
+  },
+  "sentinel2": {
+    "search_years": 11,
+    "years_with_scenes": 8,
+    "scenes": 152,
+    "unique_acquisition_dates": 117,
+    "scenes_cloud_lt20": 6,
+    "no_scene_calendar_years": [
+      2016,
+      2017,
+      2018
+    ]
+  },
+  "litchfield": {
+    "last_positive_breeding_season": 2006,
+    "first_zero_breeding_season": 2007,
+    "post_breeding_image_year_offset": 1
+  },
+  "torgersen": {
+    "historical_subcolonies": 23,
+    "extinct_2022": 18,
+    "active_2022": 5,
+    "extinct_historic_areas_m2_min": 212,
+    "extinct_historic_areas_m2_max": 3433,
+    "authenticated_polygon_data_in_repository": false
+  },
+  "interpretation_ceiling": "Scene counts and whole-scene cloud metadata do not establish usable local colony pixels, cover changes, nutrient mechanisms or causation.",
+  "next_gate": "Authenticate historic subcolony polygons, verify clear land pixels on identical fixed plots in at least three seasons before and after event."
+}

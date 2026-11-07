@@ -1,0 +1,46 @@
+{
+  "baseline_commit_sha": "51b6578d8254d6ac2f4083e6ffc8fb94aacdcbb2",
+  "baseline_method": "git archive of the captured HEAD SHA, extracted into an isolated temporary directory; no checkout or stash",
+  "archive_sha256": "7b76e1f014358691b2d18db6daf58d85af9518d097551291bafb087baa39b024",
+  "pytest_exit_code": 1,
+  "requested_tests": [
+    "tests/test_climate_penguin_checkpoint_guard.py::test_complete_snapshot_manifest_file_integrity",
+    "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_known_source_three_species",
+    "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_source_flags_prevent_pseudoreplication"
+  ],
+  "failed_test_names": [
+    "tests/test_climate_penguin_checkpoint_guard.py::test_complete_snapshot_manifest_file_integrity",
+    "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_known_source_three_species",
+    "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_source_flags_prevent_pseudoreplication"
+  ],
+  "failure_count": 3,
+  "all_three_failures_reproduced": true,
+  "conclusion": "All three reported full-suite failures also occur at the unchanged baseline commit.",
+  "failures": [
+    {
+      "nodeid": "tests/test_climate_penguin_checkpoint_guard.py::test_complete_snapshot_manifest_file_integrity",
+      "status": "failed",
+      "cause": "Baseline snapshot manifest is stale: README.md byte length does not match the recorded entry.",
+      "evidence": {
+        "manifest_path": "research/climate-penguin/SNAPSHOT_MANIFEST.json",
+        "file_path": "research/climate-penguin/README.md",
+        "manifest_bytes": 11490,
+        "actual_bytes": 23797,
+        "manifest_sha256": "714e55b1f457d3309727f940295d79fa20fd36e9554b551625d1c137bf514cb1",
+        "actual_sha256": "d8145f3dd933865868889a4cb51025471f44ef09b9116ecfc5e6ab8535a14c69"
+      }
+    },
+    {
+      "nodeid": "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_known_source_three_species",
+      "status": "failed",
+      "cause": "Required generated input species_annual_stage_summary.csv is absent from the committed baseline archive.",
+      "missing_input": "build/signy_stage_derived/species_annual_stage_summary.csv"
+    },
+    {
+      "nodeid": "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_source_flags_prevent_pseudoreplication",
+      "status": "failed",
+      "cause": "Required generated input source_stage_site_seasons.csv is absent from the committed baseline archive.",
+      "missing_input": "build/signy_stage_derived/source_stage_site_seasons.csv"
+    }
+  ]
+}

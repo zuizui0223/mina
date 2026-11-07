@@ -1,0 +1,40 @@
+name: climate-penguin-era5-count-link-v1
+
+on:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - ".github/workflows/climate-penguin-era5-count-link-v1.yml"
+      - "research/climate-penguin/work/climate_penguin/analyze_warming_count_link_v1.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  warming-count-link:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch fixed 40-site original ERA5 source artifact from verified run
+        uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-era5-1991-2020-source-full
+          run-id: 40856645581
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/climate_era5_original
+      - name: Join fixed air-temperature exposure to original 301 count intervals
+        run: python research/climate-penguin/work/climate_penguin/analyze_warming_count_link_v1.py --era5-dir "${{ runner.temp }}/climate_era5_original" --output "${{ runner.temp }}/climate_era5_count"
+      - name: Preserve original-source-linked quantitative results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: climate-penguin-era5-40site-1991-2020-count-link-v1
+          path: ${{ runner.temp }}/climate_era5_count/
+          retention-days: 30
+          if-no-files-found: warn

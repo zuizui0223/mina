@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "halfspace_and_linear_program_checks": 984,
+  "variables": [
+    "September air temperature (C)",
+    "September sea ice (%)",
+    "September surface salinity (0.001 scale)"
+  ],
+  "input_sha256": {
+    "outputs/relationship_response_v1/cohort.csv": "80acc588898ee44144c4697dac22d8c522efe5d2d4c684ee0621fb173175d1c7",
+    "outputs/scenario_support_v1/observed_range_audit.csv": "acda29590bd84d26549c4fe84286a8eb2e9d95d2f342cc34077060be9db4f2a5"
+  },
+  "limitations": [
+    "Additive changes retain the previous baseline mismatch; no bias-corrected climate or biological forecast",
+    "Species-wide hull includes between-site variation; inclusion does not establish within-site temporal transportability",
+    "Finite-sample hull is descriptive, not a confidence region, probability, or significance test",
+    "Three environmental variables do not cover water temperature, drift, snow, vegetation or all predictors",
+    "No clipping, model selection, or removal of invalid scenarios; all are reported"
+  ]
+}

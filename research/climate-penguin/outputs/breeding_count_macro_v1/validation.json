@@ -1,0 +1,65 @@
+{
+  "status": "passed_independent_source_to_derived_audit_with_explicit_observation_bias_limits",
+  "workflow_run_id": 41208190415,
+  "artifact_id": 13044813409,
+  "checks": {
+    "source_site_species_season_rows": 725,
+    "observed_positive_annual_intervals": 467,
+    "site_species_units": 56,
+    "climate_scenario_rows": 224,
+    "interval_numeric_fields_recomputed": 2335,
+    "scenario_group_summaries_recomputed": 36,
+    "site_and_year_fixed_effects_recomputed": 6,
+    "leave_one_site_out_sensitivities_computed": 6,
+    "source_method_per_site_species": "single chosen method",
+    "original_AEI_REMA_site_code_match": "56 of 56 exact same source geographic coordinates",
+    "AEI_usable_site_species": 52,
+    "AEI_missing_nodata_site_species": 4
+  },
+  "cluster_sensitivity": [
+    {
+      "species": "ADPE",
+      "predictor": "near_change10",
+      "n": 335,
+      "sites": 33,
+      "r": -0.0769802567,
+      "site_loo_min": -0.0915960185,
+      "site_loo_max": -0.045867295,
+      "cluster_approx_p": 0.269008,
+      "BH6": 0.674726
+    },
+    {
+      "species": "CHPE",
+      "predictor": "near_change10",
+      "n": 42,
+      "sites": 7,
+      "r": 0.3254412207,
+      "site_loo_min": -0.6105228673,
+      "site_loo_max": 0.9834147939,
+      "cluster_approx_p": 0.561025,
+      "BH6": 0.674726
+    },
+    {
+      "species": "GEPE",
+      "predictor": "near_change10",
+      "n": 90,
+      "sites": 8,
+      "r": -0.3437482921,
+      "site_loo_min": -0.541389167,
+      "site_loo_max": -0.284248612,
+      "cluster_approx_p": 0.088471,
+      "BH6": 0.530828
+    }
+  ],
+  "future_crosscheck": {
+    "ADPE_39_sites_SSP585_2081_2100": {
+      "negative_historical_count_slope_n": 14,
+      "positive_n": 25,
+      "mean_future_sic_change_pp_decliners": -25.68846299223768,
+      "mean_future_sic_change_pp_increasers": -4.382216340545015,
+      "pooled_pearson_r": 0.594951170623502,
+      "region_demeaned_pearson_r": -0.0636659339680821
+    }
+  },
+  "caution": "All checks ensure output arithmetic and reproducibility only. Model climate values are coarse spatial grid means, small site samples share regions, and no climate-to-demography predictive skill or causal identification is confirmed."
+}

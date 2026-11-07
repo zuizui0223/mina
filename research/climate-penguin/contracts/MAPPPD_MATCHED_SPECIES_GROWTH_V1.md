@@ -1,0 +1,17 @@
+# MAPPPD matched-species annual growth: exploratory contrast V1
+
+2026-10-29. Continue the committed decision to use a source-qualified positive abundance panel rather than promote seven repeated-zero spells into a continental abandonment/greening experiment. Existing 216 wild-cluster tests and their correction family stay unchanged.
+
+Question: within the same source site and same adjacent breeding seasons, do species share count declines or show different relative growth? Primary contrast is GEPE minus ADPE annual log nest-count change. CHPE-GEPE and ADPE-CHPE are predefined secondary descriptions, not alternative primary tests selected by outcome. This dataset was already explored; this is NOT independent confirmation.
+
+Original sources: MAPPPD 5.0 release of 2026-10-21; 729 site registry rows and 5,487 raw observations from two original pages. Four SHA256 values are fixed from the original V40 audit in Paper2. Do not merge datasets that reuse the same field counts as independent sources. Save downloaded original bytes and API URLs with the result.
+
+Eligibility: ADPE, CHPE or GEPE nest counts with documented presence and finite count; unique site/species/season group only, excluding every duplicate group even if numerical counts agree. Within-species adjacent seasons must have unchanged known original citation and vantage; effect calculation requires both endpoints >0. Across species require the exact same site, interval, citation and vantage across all four records. No matching by proximity or names, no pseudocount for zeros, no missing-as-absence.
+
+Response: D = log(N_B,t+1/N_B,t) - log(N_A,t+1/N_A,t), equivalent to change in the B/A count ratio. Average within each site then equally across sites, preventing long monitored series from dominating. Report site-level estimates, regional distributions, joint growth-sign categories, and leave-one-site-out ranges. These ranges are sensitivity diagnostics, not confidence intervals. No p-values or significance claim. Dates are source years/months, not assumed nesting dates. Separately summarize records with both species observed in the same explicit calendar month at each endpoint, and fixed pre-2010/from-2010 descriptive periods; never relax source matching for a favorable result.
+
+Interpretation boundaries: this estimates differential change conditional on both species persisting and being counted; it does not measure establishment/extinction. Same source site is not independently verified physical island, and shared source/month does not prove identical observers or detection. A relative gain is neither competitive displacement nor warming attribution. Before interpreting climatic or island-access effects, independently dated environmental exposures and physical site-to-island crosswalk must be added. No arbitrary claim that mainland versus island is known.
+
+Prior work: Cimino et al. 2025 (10.1007/s10980-025-02088-y) already tests terrain/wind/snow and local Adélie sub-colony persistence. The USAP p0010354 project already investigates penguin and moss history. Those are contextual mechanisms, not independent validation of a new three-species macro contrast. Their original Palmer field census product must not be counted twice.
+
+Implementation: stdlib-only source reader, test-first synthetic paired examples, source-hash stop, one analysis-specific push workflow, preserved full CSV and JSON artifacts. No automatic merge or change to frozen PR189/PR199.
