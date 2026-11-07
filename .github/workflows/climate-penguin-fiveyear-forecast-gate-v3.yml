@@ -1,0 +1,46 @@
+name: climate-penguin-fiveyear-forecast-gate-v3
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/warming_unified_v1/forecast_gate_v3/**"
+      - ".github/workflows/climate-penguin-fiveyear-forecast-gate-v3.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fiveyear-independent-forward-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+      - name: Syntax check
+        run: node --check research/climate-penguin/warming_unified_v1/forecast_gate_v3/build.mjs
+      - name: Recompute pinned input panels and chronological forecast scores
+        run: node research/climate-penguin/warming_unified_v1/forecast_gate_v3/build.mjs
+      - name: Check non-predictive forecast gate
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'), assert=require('node:assert/strict');
+          const p='research/climate-penguin/warming_unified_v1/forecast_gate_v3/outputs/metrics.json';
+          const m=JSON.parse(fs.readFileSync(p,'utf8'));
+          assert.equal(m.cohorts.site_species_original,54);
+          assert.equal(m.cohorts.fiveyear_transitions,87);
+          assert.equal(m.cohorts.sites,20);
+          assert.equal(m.cohorts.test_transitions,47);
+          assert.equal(m.status,'NOT_VALIDATED_FOR_FUTURE_BREEDING_FORECAST');
+          assert(Math.abs(m.scores.zero.mae-0.3387361202492943)<1e-8);
+          assert(Math.abs(m.scores.ice.mae-0.41511217517832133)<1e-8);
+          assert(m.scores.zero.mae<m.scores.ice.mae);
+          console.log('PASS: honest non-transfer gate with 47 chronological tests');
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-fiveyear-forecast-validation-v3
+          retention-days: 90
+          path: research/climate-penguin/warming_unified_v1/forecast_gate_v3/outputs/
