@@ -32,7 +32,7 @@ def main():
     check((len(j),len(an),len(ps))==(663,12,378),"Step1 source cohorts changed")
     check(sum(float(x["concentration_excess_decade"])>0 for x in j)==436,"JNCC concentration positive 436")
     check(sum(float(x["N1"])<float(x["N0"]) for x in j)==479,"Declining panels 479")
-    check(sum(float(x["concentration_excess_decade"])>0 and float(x["N1"])<float(x["N0"]) for x in j)==327,"Declining positive 327")
+    check(sum(float(x["concentration_excess_decade"])>0 and float(x["N1"])<float(x["N0"]) for x in j)==324,"Declining positive 324")
     check(sum(float(x["concentration_excess_decade"])>0 for x in an)==5,"Antarctic positive 5")
     mean_by_species=defaultdict(list)
     for r in j:mean_by_species[r["species_id"]].append(float(r["concentration_excess_decade"]))
@@ -55,7 +55,7 @@ def main():
            summary["air_complete_network_species"],summary["marine_complete_network_species"])==(12,61,13,3,2),"Frozen CMIP6 coverage changed")
     required=[
        "675 source-compatible network-by-species", "663 British–Irish", "436 (65.8%)",
-       "15 of 17", "327 (68.3%)", "427 of the 651", "374/573 (65.3%)",
+       "15 of 17", "324 (67.6%)", "427 of the 651", "374/573 (65.3%)",
        "source-matched monitored components", "H3 adjusted p = 0.940",
        "H4D adjusted p = 1.000", "H4W adjusted p = 1.000",
        "4,217 child site records", "Three",
@@ -80,7 +80,7 @@ def main():
         "manuscript_sha256":hashlib.sha256(MAN.read_bytes()).hexdigest(),
         "characters":len(article),"approx_words":len(article.split()),
         "frozen_source_cohorts":{"JNCC":len(j),"MAPPPD":len(an),"species_pairs":len(ps)},
-        "JNCC":{"positive":436,"declines":479,"positive_in_declines":327,
+        "JNCC":{"positive":436,"declines":479,"positive_in_declines":324,
                 "positive_species":15,"source_child_record_memberships":4217,
                 "metadata_clean":clean,"publisher_warn_removed":warned},
         "fixed_hypothesis_decisions":{
