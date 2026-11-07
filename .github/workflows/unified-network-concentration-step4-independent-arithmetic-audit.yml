@@ -1,0 +1,113 @@
+name: unified-network-concentration-step4-independent-arithmetic-audit
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - ".github/workflows/unified-network-concentration-step4-independent-arithmetic-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  independently-verify-coefficients:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy==2.2.6 scipy==1.15.3
+      - name: Reconstruct coefficients by separate full dummy generalized inverse and cluster scores
+        run: |
+          python - <<'PY'
+          import sys,math,json
+          from pathlib import Path
+          from collections import defaultdict
+          import numpy as np
+          base=Path('research/network_concentration_unified_v1')
+          sys.path.insert(0,str(base.resolve()))
+          import fit_frozen_h3_h4 as frozen
+          a,b,c,inputs=frozen.preflight()
+          results=json.loads((base/'outputs/STEP4_FIXED_ASSOCIATIONS.json').read_text())['results']
+          def independent(rows,kind,target,omit_scotland=False):
+              if omit_scotland:
+                  rows=[r for r in rows if not r['network_id'].startswith('JNCC::Scotland::')]
+              n=len(rows);is_main=(kind=='H3')
+              field='row_id' if is_main else 'pair_row_id'
+              unit='network_species' if is_main else 'network_species_pairs'
+              W=np.array([float(c[unit,r[field]]['delta_sst_C_per_decade']) for r in rows])
+              K=np.array([float(r['K' if is_main else 'K_pair']) for r in rows])
+              E=np.array([float(r['extent_km']) for r in rows])
+              dt=np.array([float(r['dt_years']) for r in rows])
+              basic=[np.ones(n),np.log(K),np.log(E),dt]
+              if is_main:
+                  y=np.array([float(r['concentration_excess_decade']) for r in rows])
+                  G=np.array([float(r['abundance_log_change_decade']) for r in rows])
+                  basic.append(G)
+                  for sp in sorted({r['species_id'] for r in rows}):
+                      basic.append(np.array([float(r['species_id']==sp) for r in rows]))
+                  X=np.column_stack([W,*basic]);idx=0
+              else:
+                  y=np.array([float(r['overlap_excess_decade']) for r in rows])
+                  D=np.array([float(r['pair_decline_decade']) for r in rows])
+                  for sp in sorted({s for r in rows for s in (r['species_a'],r['species_b'])}):
+                      basic.append(np.array([float(int(r['species_a']==sp)+int(r['species_b']==sp)) for r in rows]))
+                  X=np.column_stack([D,W,*basic]);idx=0 if target=='H4D' else 1
+              # DIFFERENT basis: retain ALL indicator columns and use Moore-Penrose
+              # inverse on a deliberately rank-deficient source-only model matrix.
+              L=np.linalg.pinv(X,rcond=1e-12)
+              coef=float((L@y)[idx])
+              error=y-X@(L@y)
+              levels={net:i for i,net in enumerate(sorted({r['network_id'] for r in rows}))}
+              groups=np.array([levels[r['network_id']] for r in rows])
+              m=len(levels);p=np.linalg.matrix_rank(X)
+              scores=np.bincount(groups,weights=L[idx,:]*error,minlength=m)
+              factor=(m/(m-1))*((n-1)/(n-p))
+              se=math.sqrt(factor*float(np.dot(scores,scores)))
+              return dict(n=n,m=m,p=int(p),coef=coef,se=se)
+          audits={}
+          for key,cohort,kind in (('H3',a,'H3'),('H4D',b,'H4'),('H4W',b,'H4')):
+              direct=independent(cohort,kind,key)
+              old=results[key]
+              deltas={f:abs(direct[f]-old[f]) for f in ('coef','se')}
+              assert max(deltas.values())<1e-8,(key,direct,old,deltas)
+              assert direct['n']==old['n'] and direct['m']==old['m']
+              reduced=independent(cohort,kind,key,True)
+              prior=old['scotland_exclusion']
+              assert prior['status']=='descriptive_sensitivity_no_pvalue'
+              reduced_deltas={f:abs(reduced[f]-prior[f]) for f in ('coef','se')}
+              assert max(reduced_deltas.values())<1e-8,(key,'without Scotland',reduced,prior,reduced_deltas)
+              audits[key]=dict(original=direct,abs_differences=deltas,
+                                without_Scotland=reduced,without_Scotland_abs_differences=reduced_deltas)
+          out=dict(status='PASS_INDEPENDENT_COEFFICIENT_AND_CR1_ARITHMETIC',
+                   method='full species indicator matrix with Moore-Penrose generalized inverse; independently accumulated network score sandwich',
+                   primary_results_unmodified=True,
+                   matched_original_data_sha=inputs,verified=audits,
+                   not_recomputed='restricted wild bootstrap p-values; CI provided by frozen runner')
+          path=base/'outputs/STEP4_INDEPENDENT_ARITHMETIC_QA.json'
+          path.write_text(json.dumps(out,indent=2,ensure_ascii=False)+'\n')
+          print(json.dumps({k:{'coef_delta':v['abs_differences']['coef'],'se_delta':v['abs_differences']['se'],
+             'Scotland_coef_delta':v['without_Scotland_abs_differences']['coef']} for k,v in audits.items()}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-unified-step4-independent-qa
+          retention-days: 90
+          path: research/network_concentration_unified_v1/outputs/STEP4_INDEPENDENT_ARITHMETIC_QA.json
+      - name: Commit independent audit only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/network_concentration_unified_v1/outputs/STEP4_INDEPENDENT_ARITHMETIC_QA.json
+          if git diff --cached --quiet; then
+            echo "Audit stable"
+          else
+            git commit -m "Step4: independently verify full and Scotland-excluded regression arithmetic"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi
