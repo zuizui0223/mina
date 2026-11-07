@@ -94,7 +94,20 @@ def select_nuisance(values,labels):
     diagonal=np.abs(np.diag(R))
     keep=sorted(int(j) for j in piv[:int(np.sum(diagonal>diagonal[0]*1e-10))])
     if 0 not in keep:
-        raise ValueError("Intercept aliased from nuisance model")
+        # Source-only numerical basis repair. In a Scotland-excluded subset,
+        # exhaustive species indicators can span the intercept and QR may
+        # choose every dummy instead. Replace one aliased dummy by intercept;
+        # preserve exactly the same nuisance column space and full model.
+        repaired=None
+        for remove in sorted(keep,reverse=True):
+            trial=sorted([0]+[j for j in keep if j!=remove])
+            sv=np.linalg.svd(X[:,trial],compute_uv=False)
+            if sv[-1]>sv[0]*1e-10:
+                repaired=trial
+                break
+        if repaired is None:
+            raise ValueError("Unable to preserve intercept under source-only QR repair")
+        keep=repaired
     return X[:,keep],[labels[j] for j in keep],[labels[j] for j in range(len(labels)) if j not in keep]
 
 def design(rows,kind,climate):
@@ -247,6 +260,16 @@ def fit():
         tests[name]=val
         print(json.dumps({"hypothesis":name,"coef":val["coef"],"raw_p":val["p_raw"],
                "network_blocks":val["m"],"rows":val["n"]}),flush=True)
+    # Previously saved full-sample primary test is locked. This later repair
+    # must not alter its coefficient, bootstrap p or CR1 uncertainty.
+    previous_path=OUT/"STEP4_FIXED_ASSOCIATIONS.json"
+    if previous_path.exists():
+        prev=json.loads(previous_path.read_text(encoding="utf-8"))
+        for h in ("H3","H4D","H4W"):
+            old=prev.get("results",{}).get(h,{})
+            for field in ("coef","se","t","ci_low","ci_high","p_raw"):
+                if field in old and not math.isclose(float(old[field]),float(tests[h][field]),rel_tol=0,abs_tol=1e-10):
+                    raise ValueError(f"Primary inferential outcome changed during sensitivity-only repair: {h}.{field}")
     adjusted=holm({"H2":None,**{k:v["p_raw"] for k,v in tests.items()}})
     for k,v in tests.items():
         v["holm_4"]=adjusted[k]
