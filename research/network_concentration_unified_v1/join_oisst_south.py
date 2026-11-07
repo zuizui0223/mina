@@ -23,45 +23,60 @@ SECTORS={
 }
 
 def fetch_sector(name,bbox):
-    params={"var":"sst","time_start":"1981-09-01T00:00:00Z",
-            "time_end":"2022-12-31T23:59:59Z",
-            "accept":"netcdf4",**bbox}
-    for attempt in range(4):
-        response=requests.get(URL,params=params,timeout=250,
-              headers={"User-Agent":"mina-sst-reproducibility-study/1.0"})
-        if response.status_code!=429:break
-        if attempt==3:raise ValueError("PSL NOAA rate limit after bounded retries")
-        delay=(30,65,120)[attempt]
-        ra=response.headers.get("Retry-After","")
-        if ra.isdigit():delay=max(delay,min(180,int(ra)))
-        print(f"NOAA HTTP429 {name}, retry in {delay}s",flush=True)
-        time.sleep(delay)
-    response.raise_for_status()
-    blob=response.content
-    if len(blob)<400 or blob[:3] not in (b"CDF",b"\x89HD"):
-        raise ValueError(f"NOAA response not NetCDF ({name}): {blob[:100]!r}")
-    dest=BASE/"build"/"oisst"/f"south_{name}.nc"
-    dest.parent.mkdir(parents=True,exist_ok=True)
-    dest.write_bytes(blob)
-    with xr.open_dataset(dest,decode_times=True) as ds:
-        if "sst" not in ds or not {"time","lat","lon"}.issubset(ds.sst.dims):
-            raise ValueError("NOAA grid format mismatch")
-        lat=np.asarray(ds["lat"].values)
-        lon=np.asarray(ds["lon"].values)
-        dates=np.asarray(ds["time"].values)
-        values=np.asarray(ds["sst"].values,dtype=float)
-        if len(lat)>160 or len(lon)>360 or len(dates)>510:
-            raise ValueError("NOAA subset too large or unexpected dimensions")
-    tm={}
-    for i,date in enumerate(dates):
-        key=np.datetime_as_string(date,unit="D")[:7]
-        if key in tm:raise ValueError("Duplicate monthly source datum")
-        tm[key]=i
+    # NCSS all-month 42-year subtropical bounding boxes exceed proxy limits.
+    # Fetch exactly three month-specific yearly slices using timeStride=12.
+    # These are the same Sep/Oct/Nov observations, never substituted series.
+    arrays=[];receipts=[];lat_ref=lon_ref=None;all_dates=[]
+    for mo in MONTHS:
+        params={"var":"sst","time_start":f"1981-{mo:02d}-01T00:00:00Z",
+                "time_end":"2022-12-31T23:59:59Z",
+                "timeStride":12,"accept":"netcdf4",**bbox}
+        for attempt in range(4):
+            response=requests.get(URL,params=params,timeout=240,
+                  headers={"User-Agent":"mina-sst-reproducibility-study/1.0"})
+            if response.status_code not in (429,502,503,504):break
+            if attempt==3:
+                response.raise_for_status()
+                raise ValueError("NOAA source unavailable after bounded retrieval")
+            delay=(25,55,105)[attempt]
+            ra=response.headers.get("Retry-After","")
+            if ra.isdigit():delay=max(delay,min(180,int(ra)))
+            print(f"NOAA HTTP {response.status_code} for {name} month {mo}; retry in {delay}s",flush=True)
+            time.sleep(delay)
+        response.raise_for_status()
+        blob=response.content
+        if len(blob)<400 or blob[:3] not in (b"CDF",b"\x89HD"):
+            raise ValueError(f"NOAA source not NetCDF: {name}, month {mo}, {blob[:90]!r}")
+        dest=BASE/"build"/"oisst"/f"south_{name}_{mo}.nc"
+        dest.parent.mkdir(parents=True,exist_ok=True)
+        dest.write_bytes(blob)
+        with xr.open_dataset(dest,decode_times=True) as ds:
+            if "sst" not in ds or not {"time","lat","lon"}.issubset(ds.sst.dims):
+                raise ValueError("NOAA source grid dimensions unexpected")
+            lat=np.asarray(ds["lat"].values);lon=np.asarray(ds["lon"].values)
+            dates=np.asarray(ds["time"].values);values=np.asarray(ds["sst"].values,dtype=float)
+            if len(lat)>160 or len(lon)>360 or len(dates)>50:
+                raise ValueError(f"NOAA timeStride or bounding box not applied {values.shape}")
+            if lat_ref is not None and (not np.array_equal(lat,lat_ref) or not np.array_equal(lon,lon_ref)):
+                raise ValueError("Different source grid axes across fixed months")
+            lat_ref,lon_ref=lat,lon
+            for t in dates:
+                key=np.datetime_as_string(t,unit="D")[:7]
+                if int(key[-2:])!=mo:
+                    raise ValueError(f"NOAA timeStride wrong month: expected {mo} got {key}")
+                all_dates.append(key)
+            arrays.append(values)
+        receipts.append({"source_url":response.url,"sha256":hashlib.sha256(blob).hexdigest(),
+                         "bytes":len(blob)})
+        time.sleep(20)
+    vals=np.concatenate(arrays,axis=0)
+    if len(set(all_dates))!=len(all_dates) or vals.shape[0]!=len(all_dates):
+        raise ValueError("Duplicate or invalid source monthly records")
+    idx={k:i for i,k in enumerate(all_dates)}
     expected={f"{y}-{m:02d}" for y in range(1981,2023) for m in MONTHS}
-    if not expected.issubset(tm):
-        raise ValueError("NOAA missing frozen autumn source months")
-    receipt={"source_url":response.url,"sha256":hashlib.sha256(blob).hexdigest(),"bytes":len(blob)}
-    return (lat,lon,tm,values),receipt
+    if not expected.issubset(idx):
+        raise ValueError("Missing Sep-Nov NOAA source months: "+str(sorted(expected-set(idx))[:10]))
+    return (lat_ref,lon_ref,idx,vals),receipts
 
 def sample(lat,lon,y0,y1,grid,bounds):
     if not bounds["south"]<=lat<=bounds["north"]:
