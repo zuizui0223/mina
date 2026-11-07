@@ -48,7 +48,8 @@ def ensure(x,why):
     if not x:raise ValueError("WARMING_UNIFIED_SOURCE_GATE: "+why)
 
 def val(x):
-    y=float(x)
+    # Existing narrative report uses a typographic minus sign; source numerics do not.
+    y=float(str(x).replace("−","-"))
     if not math.isfinite(y):raise ValueError("Nonfinite source numeric value")
     return y
 
