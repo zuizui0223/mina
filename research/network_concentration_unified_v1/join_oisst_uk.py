@@ -2,7 +2,7 @@
 """Join NOAA OISST monthly SST to frozen Step1 JNCC geographic site rosters; no models."""
 from pathlib import Path
 from collections import defaultdict,Counter
-import csv,hashlib,math,json
+import csv,hashlib,math,json,time
 import numpy as np
 import requests,xarray as xr
 
@@ -51,8 +51,21 @@ def get_ocean():
         params=dict(var="sst",north=64,south=46,west=west,east=east,
                     time_start="1998-01-01T00:00:00Z",time_end="2021-12-31T23:59:59Z",
                     accept="netcdf4")
-        res=requests.get(URL,params=params,timeout=240,
+        # PSL NCSS can rate-limit requests made seconds apart. Honor 429 with
+        # bounded backoff; never switch to another temperature product.
+        if i: time.sleep(20)
+        for attempt in range(4):
+            res=requests.get(URL,params=params,timeout=240,
                          headers={"User-Agent":"mina-sst-reproducibility-study/1.0"})
+            if res.status_code != 429:
+                break
+            if attempt==3:
+                raise RuntimeError("NOAA PSL NCSS rate limit persists after 4 attempts")
+            delay=(30,65,120)[attempt]
+            retry=res.headers.get("Retry-After","")
+            if retry.isdigit(): delay=max(delay,min(180,int(retry)))
+            print(f"NOAA NCSS HTTP 429: retry after {delay}s (tile={i}, attempt={attempt+1})",flush=True)
+            time.sleep(delay)
         res.raise_for_status()
         blob=res.content
         if len(blob)<400 or blob[:3] not in (b"CDF",b"\x89HD"):
