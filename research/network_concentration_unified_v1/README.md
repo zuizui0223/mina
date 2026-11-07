@@ -64,12 +64,19 @@ JNCC・Palmer・Signyの既存固定原本はActions内でSHA照合して回収�
 - [JNCC元原本品質監査](outputs/STEP6_JNCC_METHOD_QA_JA.md)・[機械可読監査](outputs/STEP6_JNCC_METHOD_QA.json)：663主解析行の元計数と調査年・計数単位が原公式Excelと完全一致。子Site.IDの累計4,217件、開始座標重複のパネル10件、名称重複2件。曖昧な12件の記述除外でも427/651正、15/17種平均正。
 - JNCCが全国トレンドの方法上の比較可能性に留保を付けるHerring Gull/Lesser Black-backed Gull計90行を別枠にしても、374/573（65.3%）で正、14/15種平均正。ただし観測努力・歴史的営巣ポリゴン・検出誤差の較正は未解決。
 - [2026-11-07数値訂正済みStep1記述](outputs/STEP1_DESCRIPTIVE_PROFILE_JA.md)：減少ネットワーク479行中の正は **324（67.6%）**、旧「327（68.3%）」は転記ミス。共通表自体の数値やSHAは変更なし。
-- [英語全文初稿](MANUSCRIPT_FULL_DRAFT_V0_1.md)、[論文内容・数値整合性のCI監査](outputs/STEP6_MANUSCRIPT_SOURCE_QA.json)、[一本化原稿骨子](MANUSCRIPT_SPINE_V1.md)。
+- [英語全文初稿 v0.1（旧）](MANUSCRIPT_FULL_DRAFT_V0_1.md)、[Step7測定感度を統合した改訂初稿 v0.2](MANUSCRIPT_FULL_DRAFT_V0_2.md)、[v0.1原本数字監査](outputs/STEP6_MANUSCRIPT_SOURCE_QA.json)、[Step7改稿監査](outputs/STEP7_MANUSCRIPT_V02_QA.json)、[一本化原稿骨子](MANUSCRIPT_SPINE_V1.md)。
 - Figure 1 [Country別ネットワーク×種の正負数（PNG）](figures/FIG1_COUNTRY_MONITORING_SUPPORT.png) / [SVG](figures/FIG1_COUNTRY_MONITORING_SUPPORT.svg)。
 - Figure 2 [17種の過剰集中平均（PNG）](figures/FIG2_TAXON_CONCENTRATION.png) / [SVG](figures/FIG2_TAXON_CONCENTRATION.svg)。
 - Figure 3 [H3・H4D・H4Wの95%区間（PNG）](figures/FIG3_FIXED_ASSOCIATION_ESTIMATES.png) / [SVG](figures/FIG3_FIXED_ASSOCIATION_ESTIMATES.svg)。
 - [Figure captions](figures/FIGURE_CAPTIONS_V0_1.md)、[3図の出典SHAと画素サイズのQA](outputs/STEP6_FIGURES_QA.json)、[描画コード](render_step6_manuscript_figures.py)。この図では追加の関連モデルやp値を計算していない。
 
+## Step 7：配分の数学的脆弱性・外部観測誤差データの連携
+
+- [事前に計算規則を固定した事後感度契約](contracts/STEP7_ALLOCATION_BREAKDOWN_CONTRACT.md)、[元site由来のTV崩壊距離](outputs/STEP7_LATE_SHARE_BREAKDOWN_JA.md)、[機械可読監査](outputs/STEP7_LATE_SHARE_BREAKDOWN.json)、[全663行の結果台帳](data/step7_late_share_breakdown.csv)。元正方向436行のうち94行（21.6%）は、**後期シェアだけ**を最大5%数学的に平坦化すると、**元の帰無平均を固定した状態で**正符号が消える。10%なら185行（42.4%）。この数字は真の調査誤差率や生物学的移動率を推定していない。
+- [CI成功](https://github.com/zuizui0223/mina/actions/runs/42336684441)：元原本の再取得・台帳照合、3区画の直接探索とwaterfillingの最適値照合、TV全数計算、帰無値・数値の不変性QA、公開集計だけを保存。
+- 追加フィールドの実データが必要。既存の [SMPデータ要請仕様](../../docs/SMP_DATA_REQUEST_SPEC_V1.md)、[MasterSite/子Site実測可能性の過去監査](../../docs/SMP_MASTER_SITE_FEASIBILITY_AUDIT_V1.md)、[原本の取得依頼ドラフト](../../submission/SMP_MACRO_DATA_REQUEST_DRAFT.md)を引き継ぐ。原Site.IDの調査方法・回数・視認性・精度・split/mergeポリゴン履歴は公開比較Excelに未収録。閲覧制限のある調査データを取得したと偽らない。
+- 追加解析は外部事前登録ではなく**既知の肯定・未支持結果の後の脆弱性監査**。Step1の436/663、324/479、Step4 H3/H4の不支持判定は一切変更していない。
+
 ## 現在の次の一手
 
-**Step6は本文と主図が作成でき、次の主作業は投稿前の独立査読・観測努力の外部資料監査。** 最優先は原調査境界・観測努力・非同期、JNCCの行政ネットワークを物理島と見なせない問題、およびスコットランド偏重を本文で明確に扱うこと。H2の定義を揃えた数値が確認できなければ未推定のままにする。ネガティブな主検定を事後選択で別モデルへ置き換えない。凍結済みPaper1/Paper2/mainは変更していない。
+**Step1–7の実測・原本監査・数値照合・英語初稿v0.2は完成。次の主作業は独立した観測努力・区画履歴データの取得可能性を確認して、観測誤差に較正された感度解析が可能か判定すること。** 最優先は原調査境界・観測努力・非同期、JNCCの行政ネットワークを物理島と見なせない問題、およびスコットランド偏重を本文で明確に扱うこと。H2の定義を揃えた数値が確認できなければ未推定のままにする。ネガティブな主検定を事後選択で別モデルへ置き換えない。凍結済みPaper1/Paper2/mainは変更していない。
