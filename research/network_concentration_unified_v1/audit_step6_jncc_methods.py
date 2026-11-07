@@ -169,6 +169,13 @@ def main():
     if len(main)-len(clean)!=len(suspect_ids):
         raise ValueError("Original source quality flags do not join 1:1")
 
+    # Public JNCC population-trend warning (not learned from these outcomes):
+    # lower comparability for these gulls due to method or survey coverage.
+    publisher_warning={"Herring Gull","Lesser Black-backed Gull"}
+    no_warning=[r for r in main if r["species_id"] not in publisher_warning]
+    if len(main)-len(no_warning)!=90:
+        raise ValueError("Expected JNCC publisher warning cohort shifted")
+
     groupings={
       "by_country": {k:stats([r for r in main if r["network_id"].split("::",2)[1]==k])
                      for k in sorted({r["network_id"].split("::",2)[1] for r in main})},
@@ -207,6 +214,14 @@ def main():
        "source_metadata_ambiguity_eligible_n":len(suspect_ids),
        "unique_coordinate_and_label_descriptive_subset":stats(clean),
        "this_subset_is_post_result_descriptive_not_independent_confirmation":True,
+       "publisher_population_trend_method_warning":{
+           "publisher_url":"https://jncc.gov.uk/our-work/seabirds-count/",
+           "risk":"JNCC states lower confidence in Herring Gull and Lesser Black-backed Gull population trends due to methodology and/or coverage; this is a population-trend warning and not proof that each source Site.ID record is invalid",
+           "species":["Herring Gull","Lesser Black-backed Gull"],
+           "excluded_panel_n":len(main)-len(no_warning),
+           "descriptive_remaining":stats(no_warning),
+           "after_result_exploratory":True
+       },
        "complete_main":obs,
        "without_scotland":stats(non_scot),
        "source_extent_km":{"min":min(sizes),"median":statistics.median(sizes),
@@ -240,6 +255,7 @@ def main():
         f"- 固定した原Site.IDの開始点座標が同じものを含むネットワーク×種は{duplicate_source_point_panels}行、重複した追加子Site.IDは{duplicated_point_child_rows}件。地点の同一物理パッチや重複計数を証明するものではない。",
         f"- 同じMaster site内部で元Site名が重複するネットワーク×種は{duplicate_label_panels}行。単なる文字列一致で除外・地理的重複認定しない。",
         f"- 開始点座標・地点名の重複がある{len(suspect_ids)}行を**記述のみ**別枠にした場合、残る{len(clean)}行の正は{stats(clean)['positive']}行、種平均が正は{stats(clean)['species_with_positive_mean']}/{stats(clean)['n_species']}種。これは主対象の変更や新しい事前登録検定ではない。",
+        f"- JNCCが国全体のトレンド比較に方法・被覆率上の留保を付けたHerring Gull/Lesser Black-backed Gull（計90行）を別枠にすると、残る{len(no_warning)}行の正は{stats(no_warning)['positive']}行、種平均正は{stats(no_warning)['species_with_positive_mean']}/{stats(no_warning)['n_species']}種。出版社の全国傾向への注意は、各原Site.IDが不適格と証明したものではない。",
         "- 二時点の年次とAON/AOS/AOT/AOB/IND単位は元原本で一致する行だけを採用済み。一方、調査努力・観測誤差・物理区画の歴史的同一性はこの二時点の比較表だけでは較正できない。",
         "",
         "## 元Excelに存在する列名（main比較表）",
