@@ -23,55 +23,59 @@ SECTORS={
 }
 
 def fetch_sector(name,bbox):
-    # NCSS all-month 42-year subtropical bounding boxes exceed proxy limits.
-    # Fetch exactly three month-specific yearly slices using timeStride=12.
-    # These are the same Sep/Oct/Nov observations, never substituted series.
+    # NOAA PSL NCSS returned server-side 'IOException sending File 13: Permission denied'
+    # even on 1-month Antarctic subsets. The NOAA ERDDAP mirror exposes the SAME
+    # OISST 2.1 monthly source, verified on a tiny Antarctic 1983 grid (diagnostic CI).
+    base="https://comet.nefsc.noaa.gov/erddap/griddap/noaa_psl_2d74_d418_a6fb"
     arrays=[];receipts=[];lat_ref=lon_ref=None;all_dates=[]
     for mo in MONTHS:
-        params={"var":"sst","time_start":f"1981-{mo:02d}-01T00:00:00Z",
-                "time_end":"2022-12-31T23:59:59Z",
-                "timeStride":12,"accept":"netcdf4",**bbox}
+        west=bbox["west"]+0.125;east=bbox["east"]-0.125
+        south=bbox["south"]+0.125;north=bbox["north"]-0.125
+        # Step 12 corresponds to the same calendar month each successive year.
+        query=(f"sst[(1981-{mo:02d}-01T00:00:00Z):12:(2022-{mo:02d}-01T00:00:00Z)]"
+               f"[({south}):1:({north})][({west}):1:({east})]")
+        from urllib.parse import quote
+        url=base+".nc?"+quote(query,safe="[]():-")
         for attempt in range(4):
-            response=requests.get(URL,params=params,timeout=240,
-                  headers={"User-Agent":"mina-sst-reproducibility-study/1.0"})
+            response=requests.get(url,timeout=240,
+                  headers={"User-Agent":"mina-source-locked-OISST-study/1.0"})
             if response.status_code not in (429,502,503,504):break
             if attempt==3:
                 response.raise_for_status()
-                raise ValueError("NOAA source unavailable after bounded retrieval")
-            delay=(25,55,105)[attempt]
+                raise ValueError("NOAA ERDDAP source unavailable after bounded retries")
+            delay=(20,45,90)[attempt]
             ra=response.headers.get("Retry-After","")
             if ra.isdigit():delay=max(delay,min(180,int(ra)))
-            print(f"NOAA HTTP {response.status_code} for {name} month {mo}; retry in {delay}s",flush=True)
+            print(f"NOAA ERDDAP HTTP {response.status_code}: {name}/{mo}; retry in {delay}s",flush=True)
             time.sleep(delay)
         response.raise_for_status()
         blob=response.content
         if len(blob)<400 or blob[:3] not in (b"CDF",b"\x89HD"):
             raise ValueError(f"NOAA source not NetCDF: {name}, month {mo}, {blob[:90]!r}")
-        dest=BASE/"build"/"oisst"/f"south_{name}_{mo}.nc"
+        dest=BASE/"build"/"oisst"/f"erddap_south_{name}_{mo}.nc"
         dest.parent.mkdir(parents=True,exist_ok=True)
         dest.write_bytes(blob)
         with xr.open_dataset(dest,decode_times=True) as ds:
-            if "sst" not in ds or not {"time","lat","lon"}.issubset(ds.sst.dims):
-                raise ValueError("NOAA source grid dimensions unexpected")
-            lat=np.asarray(ds["lat"].values);lon=np.asarray(ds["lon"].values)
+            if "sst" not in ds or not {"time","latitude","longitude"}.issubset(ds.sst.dims):
+                raise ValueError("NOAA ERDDAP source-grid dimension mismatch")
+            lat=np.asarray(ds["latitude"].values);lon=np.asarray(ds["longitude"].values)
             dates=np.asarray(ds["time"].values);values=np.asarray(ds["sst"].values,dtype=float)
             if len(lat)>160 or len(lon)>360 or len(dates)>50:
-                raise ValueError(f"NOAA timeStride or bounding box not applied {values.shape}")
+                raise ValueError(f"NOAA subset unbounded or stride ignored {values.shape}")
             if lat_ref is not None and (not np.array_equal(lat,lat_ref) or not np.array_equal(lon,lon_ref)):
-                raise ValueError("Different source grid axes across fixed months")
+                raise ValueError("Month source grid mismatch")
             lat_ref,lon_ref=lat,lon
             for t in dates:
                 key=np.datetime_as_string(t,unit="D")[:7]
-                if int(key[-2:])!=mo:
-                    raise ValueError(f"NOAA timeStride wrong month: expected {mo} got {key}")
+                if int(key[-2:])!=mo:raise ValueError("Unexpected source month "+key)
                 all_dates.append(key)
             arrays.append(values)
         receipts.append({"source_url":response.url,"sha256":hashlib.sha256(blob).hexdigest(),
                          "bytes":len(blob)})
-        time.sleep(20)
+        time.sleep(5)
     vals=np.concatenate(arrays,axis=0)
     if len(set(all_dates))!=len(all_dates) or vals.shape[0]!=len(all_dates):
-        raise ValueError("Duplicate or invalid source monthly records")
+        raise ValueError("Duplicate NOAA monthly source records")
     idx={k:i for i,k in enumerate(all_dates)}
     expected={f"{y}-{m:02d}" for y in range(1981,2023) for m in MONTHS}
     if not expected.issubset(idx):
@@ -125,7 +129,7 @@ def main():
     sectors={};source_receipts={};stats=Counter();results=[]
     for name,box in SECTORS.items():
         sectors[name],source_receipts[name]=fetch_sector(name,box)
-        time.sleep(20)
+        time.sleep(5)
     cache={}
     for unit,group,key_col in (("network_species",eligible_p,"row_id"),
                                 ("network_species_pairs",eligible_q,"pair_row_id")):
