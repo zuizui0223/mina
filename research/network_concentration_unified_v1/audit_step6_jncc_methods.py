@@ -162,6 +162,13 @@ def main():
     if len(seen)!=MAIN_JNCC_N:
         raise ValueError("Main parent to original worksheet join not one-to-one")
 
+    collided_ids={q["row_id"] for q in source_qa if q["original_startpoints_with_duplicate_coordinates"]}
+    repeated_label_ids={q["row_id"] for q in source_qa if q["original_repeated_child_site_labels"]}
+    suspect_ids=collided_ids | repeated_label_ids
+    clean=[r for r in main if r["row_id"] not in suspect_ids]
+    if len(main)-len(clean)!=len(suspect_ids):
+        raise ValueError("Original source quality flags do not join 1:1")
+
     groupings={
       "by_country": {k:stats([r for r in main if r["network_id"].split("::",2)[1]==k])
                      for k in sorted({r["network_id"].split("::",2)[1] for r in main})},
@@ -197,6 +204,9 @@ def main():
        "source_additional_child_IDs_sharing_a_start_point_n":duplicated_point_child_rows,
        "original_repeated_child_site_names_panel_n":duplicate_label_panels,
        "duplicated_coordinate_panels_descriptive_only":stats(profiles),
+       "source_metadata_ambiguity_eligible_n":len(suspect_ids),
+       "unique_coordinate_and_label_descriptive_subset":stats(clean),
+       "this_subset_is_post_result_descriptive_not_independent_confirmation":True,
        "complete_main":obs,
        "without_scotland":stats(non_scot),
        "source_extent_km":{"min":min(sizes),"median":statistics.median(sizes),
@@ -229,6 +239,7 @@ def main():
         f"- 原子地点のレコードは延べ{matched_child_count}件（同じ地点が別種等で再利用されるため独立地点数ではない）。",
         f"- 固定した原Site.IDの開始点座標が同じものを含むネットワーク×種は{duplicate_source_point_panels}行、重複した追加子Site.IDは{duplicated_point_child_rows}件。地点の同一物理パッチや重複計数を証明するものではない。",
         f"- 同じMaster site内部で元Site名が重複するネットワーク×種は{duplicate_label_panels}行。単なる文字列一致で除外・地理的重複認定しない。",
+        f"- 開始点座標・地点名の重複がある{len(suspect_ids)}行を**記述のみ**別枠にした場合、残る{len(clean)}行の正は{stats(clean)['positive']}行、種平均が正は{stats(clean)['species_with_positive_mean']}/{stats(clean)['n_species']}種。これは主対象の変更や新しい事前登録検定ではない。",
         "- 二時点の年次とAON/AOS/AOT/AOB/IND単位は元原本で一致する行だけを採用済み。一方、調査努力・観測誤差・物理区画の歴史的同一性はこの二時点の比較表だけでは較正できない。",
         "",
         "## 元Excelに存在する列名（main比較表）",
