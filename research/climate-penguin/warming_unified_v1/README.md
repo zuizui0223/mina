@@ -30,6 +30,7 @@
 - [6地点×将来4条件（24行）](data/six_site_future_physical.csv)
 - [観測と将来物理の独立の統合レポート](outputs/WARMING_UNIFIED_EVIDENCE_JA.md)と[出典SHA・依存・全値QA](outputs/WARMING_UNIFIED_EVIDENCE.json)
 - [温暖化中心の英語一本化全文初稿](MANUSCRIPT_WARMING_UNIFIED_V0_1.md)
+- [海氷関連の時間尺度・格子重複の追加感度監査](WARMING_SENSITIVITY_READOUT_20261107.md)／[元CSVからの独立再計算コード](check_warming_unified_sensitivity.py)（食性×SIC年調整r=+0.765、2格子平均SIC変化と4地点曝露平均の違い。事後記述、因果推定・生物未来予測ではない）
 - [主図1：6地点の繁殖と海氷時間窓](figures/FIG1_SIX_SITE_BREEDING_VS_SIC_TIMESCALE.png)
 - [主図2：Signy同年の海・時間ニッチ](figures/FIG2_SIGNY_SHARED_YEARS_MARINE_TEMPORAL.png)
 - [主図3：6地点の将来物理曝露](figures/FIG3_PHYSICAL_CMIP6_NOT_BREEDING_FORECAST.png)
