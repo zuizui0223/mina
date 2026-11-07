@@ -23,7 +23,8 @@ def rows(path):
         return list(csv.DictReader(f))
 
 def save(path,items):
-    with path.open(encoding="utf-8",newline="") as f:
+    path.parent.mkdir(parents=True,exist_ok=True)
+    with path.open("w",encoding="utf-8",newline="") as f:
         writer=csv.DictWriter(f,fieldnames=list(items[0]),lineterminator="\n")
         writer.writeheader()
         writer.writerows(items)
