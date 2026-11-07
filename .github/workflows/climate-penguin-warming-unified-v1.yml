@@ -1,0 +1,75 @@
+name: climate-penguin-warming-unified-v1
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/warming_unified_v1/ANALYSIS_CONTRACT_20261107.md"
+      - "research/climate-penguin/warming_unified_v1/build_warming_unified.py"
+      - ".github/workflows/climate-penguin-warming-unified-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  original-penguin-climate-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Syntax check before opening original effects
+        run: python -m py_compile research/climate-penguin/warming_unified_v1/build_warming_unified.py
+      - name: Compute a true same-year Signy trophic/temporal bridge and six-site physical future panel
+        run: python research/climate-penguin/warming_unified_v1/build_warming_unified.py
+      - name: Verify source-level support and noncausal status
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,csv,math
+          base=Path("research/climate-penguin/warming_unified_v1")
+          a=json.loads((base/"outputs/WARMING_UNIFIED_EVIDENCE.json").read_text())
+          assert a["status"]=="WARMING_SINGLE_PAPER_CROSS_AXIS_OBSERVATIONAL_JOIN_NO_CAUSAL_FORECAST"
+          assert a["same_location_community"]["strict_shared_breeding_sites"]==6
+          assert a["same_location_community"]["observed_year_september_sic_positive_sites"]==4
+          assert a["same_location_community"]["long_period_aug_nov_sic_negative_sites"]==6
+          assert a["same_year_Signy"]["n_climate_years"]==9
+          assert a["same_year_Signy"]["n_original_stomachs_across_9_years"]==772
+          assert len(a["future_six_sites"]["scenario_site_equal_means"])==4
+          assert len(list(csv.DictReader((base/"data/signy_same_year_diet_phenology.csv").open())))==9
+          assert len(list(csv.DictReader((base/"data/six_site_future_physical.csv").open())))==24
+          assert all(math.isfinite(a["same_year_Signy"][k]) for k in
+            ("r_sic_vs_fish_gap","r_sic_vs_hatching_gap","r_fish_gap_vs_hatching_gap"))
+          assert a["future_six_sites"]["physical_exposure_only"] is True
+          assert a["same_year_Signy"]["no_new_formal_hypothesis_p_values"] is True
+          print("PASS: 6 sites, 9 same climate years, published data hashes, future physical only")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-warming-unified-source-backed
+          retention-days: 90
+          path: |
+            research/climate-penguin/warming_unified_v1/data/six_site_original_breeding_ice.csv
+            research/climate-penguin/warming_unified_v1/data/six_site_future_physical.csv
+            research/climate-penguin/warming_unified_v1/data/signy_same_year_diet_phenology.csv
+            research/climate-penguin/warming_unified_v1/outputs/WARMING_UNIFIED_EVIDENCE.json
+            research/climate-penguin/warming_unified_v1/outputs/WARMING_UNIFIED_EVIDENCE_JA.md
+      - name: Commit only new derived source-audited results to the existing Draft PR
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/climate-penguin/warming_unified_v1/data \
+            research/climate-penguin/warming_unified_v1/outputs
+          if git diff --cached --quiet; then
+            echo "No source-backed changes"
+          else
+            git commit -m "Warming unified: verify 6-site ecology, 9-year shared-ice niches and future physical support"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi
