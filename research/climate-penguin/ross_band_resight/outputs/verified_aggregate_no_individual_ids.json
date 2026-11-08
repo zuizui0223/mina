@@ -99,7 +99,55 @@
     "The field-status codebook was not present inside the two uploaded ZIPs; INC and BR with source egg/chick counts are an operational conservative rule.",
     "CHIC band-inventory ID ranges stand in for chick-banding year/origin; not original individual-level hatch records.",
     "Already-known literature Dugger et al. 2010 PNAS DOI 10.1073/pnas.1000623107 and Dugger et al. 2026 Frontiers DOI 10.3389/fevo.2026.1868960 analyzed movement; this is original-data reconstruction not first biological discovery.",
-    "Not a Circuitscape penguin resistance calibration; no climate causal effect, future SSP biological forecast or transfer to western Antarctic Peninsula."
+    "Not a Circuitscape penguin resistance calibration; no climate causal effect, future SSP biological forecast or transfer to western Antarctic Peninsula.",
+    "Site-year accepted-event coverage is dramatically uneven and cannot be treated as survey effort or comparable detection probability. Source-accepted observations: 80437 Crozier, 8545 Royds, 5693 Bird, 3 Beaufort. This and destination imbalance block directional immigration/preference claims.",
+    "All 64 distinct chick-origin-away nesting cases have their first documented strict nesting year away from natal colony, but two also have a strict nesting record at natal colony in another year; undetected earlier natal nesting remains possible."
   ],
-  "privacy_and_provenance": "No original bird ID, observer initials, free-text notes, or complete raw records included in this public aggregate"
+  "privacy_and_provenance": "No original bird ID, observer initials, free-text notes, or complete raw records included in this public aggregate",
+  "n_CHIC_off_natal_first_documented_strict_nesting_year": 64,
+  "n_CHIC_off_natal_ever_documented_strict_nesting_at_natal_site": 2,
+  "n_CHIC_off_natal_first_year_multisite_strict_nesting": 0,
+  "n_verified_colony_season_coverage_cells": 36,
+  "original_observation_records_by_colony": [
+    {
+      "colony": "BEAU",
+      "n_years_with_verified_observations": 1,
+      "first_year": 2004,
+      "last_year": 2004,
+      "verified_resight_events": 3,
+      "strict_active_nest_events": 0,
+      "band_years_with_verified_resighting": 3,
+      "band_years_with_strict_nesting": 0
+    },
+    {
+      "colony": "BIRD",
+      "n_years_with_verified_observations": 5,
+      "first_year": 2002,
+      "last_year": 2013,
+      "verified_resight_events": 5693,
+      "strict_active_nest_events": 493,
+      "band_years_with_verified_resighting": 2262,
+      "band_years_with_strict_nesting": 267
+    },
+    {
+      "colony": "CROZ",
+      "n_years_with_verified_observations": 19,
+      "first_year": 2002,
+      "last_year": 2020,
+      "verified_resight_events": 80437,
+      "strict_active_nest_events": 14206,
+      "band_years_with_verified_resighting": 16048,
+      "band_years_with_strict_nesting": 5385
+    },
+    {
+      "colony": "ROYD",
+      "n_years_with_verified_observations": 11,
+      "first_year": 1998,
+      "last_year": 2014,
+      "verified_resight_events": 8545,
+      "strict_active_nest_events": 458,
+      "band_years_with_verified_resighting": 1535,
+      "band_years_with_strict_nesting": 239
+    }
+  ]
 }
