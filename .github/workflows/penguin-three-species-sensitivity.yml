@@ -1,0 +1,32 @@
+name: Antarctic penguin three-species matched-year sensitivity
+on:
+  push:
+    branches: [codex/penguin-three-species-compensation-sensitivity-20261108]
+    paths:
+      - 'research/climate-penguin/warming_unified_v1/three_species_sensitivity/**'
+      - '.github/workflows/penguin-three-species-sensitivity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-count-three-species:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check program syntax
+        run: node --check research/climate-penguin/warming_unified_v1/three_species_sensitivity/build.mjs
+      - name: Build from source-pinned census records
+        run: node research/climate-penguin/warming_unified_v1/three_species_sensitivity/build.mjs
+      - name: Independently recompute site-year arithmetic and temporal slopes
+        run: python research/climate-penguin/warming_unified_v1/three_species_sensitivity/verify.py
+      - name: Preserve all matched rows, missingness, and verdict
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-three-species-sameyear-sensitivity-v1
+          path: research/climate-penguin/warming_unified_v1/three_species_sensitivity/outputs/
+          if-no-files-found: warn
