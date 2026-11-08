@@ -161,7 +161,7 @@ def main():
             if abs(gps_sic-float(v["original_daily_sic"]))>1e-7:
                 raise ValueError("Recorded GPS source cell SIC does not match original raster")
             diff=float(gps_sic-np.mean(avail))
-            pct=(float(np.sum(avail<gps_sic))+.5*float(np.sum(np.abs(avail-gps_sic)<1e-8)))/len(avail)
+            pct=(float(np.sum(avail<gps_sic-1e-8))+.5*float(np.sum(np.abs(avail-gps_sic)<=1e-8)))/len(avail)
             gpsrow={"case_id":key,"year":int(rec["season_start"]),"island":rec["island"],
                 "date":date,"source_flat_native_pixel":flat,
                 "distance_km":original_distance,"distance_bin_index":b,
