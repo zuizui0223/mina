@@ -1,0 +1,30 @@
+name: Penguin warming six-site effect audit
+on:
+  push:
+    branches: [codex/penguin-climatic-legacy-20261108]
+    paths:
+      - 'research/climate-penguin/warming_unified_v1/audit_six_site_effects.mjs'
+      - '.github/workflows/penguin-warming-six-site-effect-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit-six-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Recalculate from pinned original MAPPPD records
+        run: node research/climate-penguin/warming_unified_v1/audit_six_site_effects.mjs
+      - name: Archive the exact six-site counts and effects
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-reciprocal-six-site-effects-v1
+          path: |
+            research/climate-penguin/warming_unified_v1/outputs/reciprocal_summary.json
+            research/climate-penguin/warming_unified_v1/outputs/six_site_reciprocal_effects.csv
+          if-no-files-found: warn
