@@ -84,6 +84,8 @@ def audit(banding_zip,resighting_zip,outdir):
     strict_recruit=defaultdict(set);inc_only=defaultdict(set)
     broader_recruit=defaultdict(set);active_nests=defaultdict(lambda:defaultdict(set))
     band_kind={}
+    off_natal_resighted=defaultdict(set)
+    post_age2_CHIC_seen=defaultdict(set)
     # Original record-availability denominators are observations, NOT survey effort.
     verified_event_rows_by_site_year=Counter()
     strict_nest_event_rows_by_site_year=Counter()
@@ -124,6 +126,10 @@ def audit(banding_zip,resighting_zip,outdir):
         if not (1994<=yr<=2020) or season_start(r["season"])!=yr:
             quality["inconsistent_season_and_observation_date"]+=1;continue
         quality["eligible_verified_rows"]+=1
+        if kind=="CHIC" and birthyear>=1994 and yr>=birthyear+2:
+            post_age2_CHIC_seen[birthsite].add(tag)
+            if observed!=birthsite:
+                off_natal_resighted[birthsite,observed].add(tag)
         siteyear=(observed,yr)
         verified_event_rows_by_site_year[siteyear]+=1
         verified_bands_by_site_year[siteyear].add(tag)
@@ -162,6 +168,14 @@ def audit(banding_zip,resighting_zip,outdir):
                           "later_documented_breeding_colony":site_b,
                           "years_between_documented_seasons":year_b-year_a,
                           "band_category":"CHIC" if band_kind[bird]=="CHIC" else "other"})
+    n_offsite_seen=unique(off_natal_resighted)
+    n_CHIC_post_age2=unique(post_age2_CHIC_seen)
+    offsite_visit_nesting_rows=[{
+        "original_chick_banding_colony":a,
+        "observed_other_colony":b,
+        "n_unique_bands_observed_at_other_colony_age2_plus":len(ids),
+        "n_unique_bands_with_strict_active_nest_at_other_colony":len(strict_recruit.get((a,b),set()))
+      } for (a,b),ids in sorted(off_natal_resighted.items())]
     # A different-colony nest is only documented at the *first observed* breeding
     # season; undetected nesting at a natal colony in an earlier year is possible.
     natal_off_first=0
@@ -201,8 +215,9 @@ def audit(banding_zip,resighting_zip,outdir):
            "band_years_with_verified_resighting":sum(r["unique_bands_with_verified_resight"] for r in rows0),
            "band_years_with_strict_nesting":sum(r["unique_bands_with_strict_active_nest"] for r in rows0)})
     if (quality["eligible_verified_rows"],quality["strict_active_nest_rows"],
-         natal_off_first,natal_off_ever_home,natal_off_same_firstseason_multisite)!=(
-         94678,15157,64,2,0):
+         natal_off_first,natal_off_ever_home,natal_off_same_firstseason_multisite,
+         n_CHIC_post_age2,n_offsite_seen,len(offsite_visit_nesting_rows))!=(
+         94678,15157,64,2,0,7132,506,11):
         raise ValueError("Source-locked effort/first-breeding chronology failed")
     summary={
       "status":"OFFICIAL_MD5_VERIFIED_CONSERVATIVE_OBSERVED_NEST_SITE_MOVEMENT",
@@ -216,6 +231,10 @@ def audit(banding_zip,resighting_zip,outdir):
       "n_CHIC_origin_different_INC_egg_only_birds":unique(inc_only),
       "n_CHIC_origin_different_broad_status_birds":unique(broader_recruit),
       "n_birds_with_active_nests_at_two_colonies_in_distinct_seasons":len(anonymous),
+      "n_CHIC_post_age2_ever_verified_resighted_any_site":n_CHIC_post_age2,
+      "n_CHIC_post_age2_ever_verified_resighted_off_natal":n_offsite_seen,
+      "n_off_natal_original_to_other_site_observation_routes":len(offsite_visit_nesting_rows),
+      "off_natal_observations_vs_documented_nesting_by_route":offsite_visit_nesting_rows,
       "n_CHIC_off_natal_first_documented_strict_nesting_year":natal_off_first,
       "n_CHIC_off_natal_ever_documented_strict_nesting_at_natal_site":natal_off_ever_home,
       "n_CHIC_off_natal_first_year_multisite_strict_nesting":natal_off_same_firstseason_multisite,
@@ -239,6 +258,11 @@ def audit(banding_zip,resighting_zip,outdir):
     if (len(ranges),len(ambiguous),unique(strict_recruit),unique(inc_only),
         unique(broader_recruit),len(anonymous))!=(229,4,64,59,69,3):
         raise ValueError("Pinned original source aggregation no longer reproduces")
+    save_csv(outdir/"anonymous_off_natal_resight_vs_nest_by_route.csv",
+             offsite_visit_nesting_rows,
+             ["original_chick_banding_colony","observed_other_colony",
+              "n_unique_bands_observed_at_other_colony_age2_plus",
+              "n_unique_bands_with_strict_active_nest_at_other_colony"])
     save_csv(outdir/"anonymous_colony_season_record_availability.csv",site_year_rows,
              ["colony","season_start_year","verified_resight_event_rows",
               "unique_bands_with_verified_resight","strict_active_nest_event_rows",
@@ -257,6 +281,8 @@ def audit(banding_zip,resighting_zip,outdir):
         "natal_broad_status":unique(broader_recruit),
         "verified_breeding_two_colonies_distinct_seasons":len(anonymous),
         "first_documented_chick_off_natal_nesting":natal_off_first,
+        "chick_banded_resighted_any_colony_age2_plus":n_CHIC_post_age2,
+        "chick_banded_resighted_off_natal_age2_plus":n_offsite_seen,
         "source_verified_events":quality["eligible_verified_rows"],
         "source_verified_strict_nest_events":quality["strict_active_nest_rows"],
         "n_colony_season_availability_cells":len(site_year_rows)}))
