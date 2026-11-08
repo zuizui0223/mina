@@ -1,0 +1,105 @@
+{
+  "status": "OFFICIAL_MD5_VERIFIED_CONSERVATIVE_OBSERVED_NEST_SITE_MOVEMENT",
+  "source_scope": "Original user-supplied USAP-DC ZIPs in current conversation; original uncompressed bytes independently checked against publisher MD5",
+  "original_source": {
+    "inventory": {
+      "doi": "10.15784/601443",
+      "filename": "band_inv_1994-2021.csv",
+      "uncompressed_bytes": 11416,
+      "md5": "3da33defa4decc82b6e317c7fa9f9044",
+      "sha256": "5f3705fb5e62476b72bee98572c1aa587714e94c184d07a9cb5171d1f1835815"
+    },
+    "resight": {
+      "doi": "10.15784/601444",
+      "filename": "band_resighting_1997-2021.csv",
+      "uncompressed_bytes": 25121436,
+      "md5": "aaae6ddad6d12081b5a68466794438a2",
+      "sha256": "2adb79cc566f7d71372c90b9b9968094b762b8fc58f14a75e5062c5d5736689c"
+    }
+  },
+  "original_rows": {
+    "band_inventory_ranges": 229,
+    "resighting_event_rows": 193638
+  },
+  "data_quality": {
+    "malformed_unquoted_notes_rows_reassembled_without_modifying_original": 14,
+    "overlapping_band_label_assignments_in_inventory": 4,
+    "overlapping_band_labels_observed_in_resight": 0,
+    "unique_positive_integer_resight_band_ids": 11731,
+    "nonnumeric_or_zero_band_rows": 545,
+    "other_source_qa": {
+      "eligible_verified_id_year_site_rows": 94678,
+      "strict_active_nest_rows": 15157,
+      "source_date_season_mismatches_after_other_gates": 250,
+      "proofed_or_bandseen_not_strict_after_other_gates": 97255
+    }
+  },
+  "operational_primary_definition": "Band ID mapped to unique original band range; orig_col matches banding colony; proofed=1; bandseen=Y; date and season agree; status=INC & nuegg in {1,2} OR status=BR & nuch in {1,2}; status definitions operational pending formal data dictionary",
+  "natal_origin_difference_definition": "Original band range type CHIC (banded as chick) and resighting season at least two years later; primary active nest documented at colony different from banded origin",
+  "strict_observed_natal_origin_to_other_nesting_individuals": 64,
+  "strict_incubating_with_egg_only_individuals": 59,
+  "broader_status_sensitivity_individuals": 69,
+  "strict_distinct_individuals_documented_nesting_at_2_colonies_in_distinct_seasons": 3,
+  "natal_routes": [
+    {
+      "origin": "BEAU",
+      "observed": "CROZ",
+      "birds": 7
+    },
+    {
+      "origin": "BIRD",
+      "observed": "CROZ",
+      "birds": 39
+    },
+    {
+      "origin": "BIRD",
+      "observed": "ROYD",
+      "birds": 1
+    },
+    {
+      "origin": "CROZ",
+      "observed": "BIRD",
+      "birds": 1
+    },
+    {
+      "origin": "ROYD",
+      "observed": "BIRD",
+      "birds": 5
+    },
+    {
+      "origin": "ROYD",
+      "observed": "CROZ",
+      "birds": 11
+    }
+  ],
+  "observed_two_colony_nesting_cases_aggregated": [
+    {
+      "earlier": "ROYD",
+      "later": "CROZ",
+      "season_gap_years": 2,
+      "original_band_category": "BREF"
+    },
+    {
+      "earlier": "CROZ",
+      "later": "BIRD",
+      "season_gap_years": 8,
+      "original_band_category": "CHIC"
+    },
+    {
+      "earlier": "CROZ",
+      "later": "ROYD",
+      "season_gap_years": 5,
+      "original_band_category": "CHIC"
+    }
+  ],
+  "inferential_guardrails": [
+    "These are detected individual cases, not population rates or detection-adjusted dispersal estimates.",
+    "No movement date is known between two seasons of observed nesting; other breeding years may be unobserved.",
+    "Site/year search effort and detectability differ greatly and no effort model was fitted.",
+    "The field-status codebook was not present inside the two uploaded ZIPs; INC and BR with source egg/chick counts are an operational conservative rule.",
+    "CHIC band-inventory ID ranges stand in for chick-banding year/origin; not original individual-level hatch records.",
+    "Already-known literature Dugger et al. 2010 PNAS DOI 10.1073/pnas.1000623107 and Dugger et al. 2026 Frontiers DOI 10.3389/fevo.2026.1868960 analyzed movement; this is original-data reconstruction not first biological discovery.",
+    "Not a Circuitscape penguin resistance calibration; no climate causal effect, future SSP biological forecast or transfer to western Antarctic Peninsula."
+  ],
+  "privacy_and_provenance": "No original bird ID, observer initials, free-text notes, or complete raw records included in this public aggregate"
+}
