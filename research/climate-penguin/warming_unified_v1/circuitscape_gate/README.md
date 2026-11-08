@@ -2,6 +2,8 @@
 
 **2026-11-08, separate exploration on top of climate PR #206.** This gate tests whether Circuitscape can be *applied meaningfully* to the currently available physical and biological observations. It does not claim an effective-resistance estimate, penguin movement, or a validation of the warming manuscript's demographic response.
 
+> **実行結果の更新（2026-11-08）：** [Circuitscape.jl v6.0.0 の実計算結果（日本語・数値表）](ACTUAL_CIRCUITSCAPE_RESULT_20261108.md)を追加。**[成功CI #42446429749](https://github.com/zuizui0223/mina/actions/runs/42446429749)**で、元OSISAF25km格子・6地点・10モデル・15ペア＝**150有効抵抗値**を計算し、独立SciPyとの30組比較（最大相対差4.40×10⁻¹³）を通過。以下の文書の「入力ゲート」は実行前に固定した設計履歴であり、すでに数値は出ている。ただし**仮定した海氷抵抗の生物学的な較正・繁殖移住の実証は未完了**。
+
 ## Biological question
 
 > Does a changing marine resistance network make island/colony movement opportunities more or less accessible, and are those opportunities ever demonstrably associated with actual redistribution of **breeding individuals** rather than just local counts?
