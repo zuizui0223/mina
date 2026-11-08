@@ -17,7 +17,7 @@ OUT=Path(__file__).resolve().parent/"outputs"
 OUT.mkdir(parents=True,exist_ok=True)
 LISTING="https://deju-penguinscience.s3.us-east-2.amazonaws.com/"
 POINTBLUE="https://data.pointblue.org/apps/penguin_science/"
-PUBLIC_LANDING="https://deju-penguinscience.s3-website.us-east-2.amazonaws.com/index.html?path=AllData%2F"
+PUBLIC_LANDING="http://deju-penguinscience.s3-website.us-east-2.amazonaws.com/index.html?path=AllData%2F"
 KNOWN={
  "band_resighting_1997-2021.csv":"aaae6ddad6d12081b5a68466794438a2",
  "band_inv_1994-2021.csv":"3da33defa4decc82b6e317c7fa9f9044"}
@@ -49,6 +49,7 @@ def main():
  routes={}
  for label,url in (("official_pointblue_landing",POINTBLUE),
                    ("official_pointblue_raw_repository_landing",PUBLIC_LANDING),
+                   ("official_pointblue_public_read_object_https",LISTING+"index.html?path=AllData%2F"),
                    ("public_s3_listing_for_advertised_AllData",
                     LISTING+"?"+urlencode({"list-type":"2","prefix":"AllData/","max-keys":"1000"}))):
   obj=fetch(url,2*1024*1024)
