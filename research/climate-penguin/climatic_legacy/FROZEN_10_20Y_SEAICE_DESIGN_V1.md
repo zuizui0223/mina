@@ -26,7 +26,7 @@ Let SIC(i,y) be August–November 0–100-km nearshore monthly sea-ice concentra
 
 - **Recent R(i,t):** mean SIC(i,y) for y = t−10, ..., t−1 (10 complete antecedent years).
 - **Legacy L(i,t):** mean SIC(i,y) for y = t−20, ..., t−11 (the preceding, non-overlapping 10 years).
-- Both means have exactly 10 annual values, with the same four fixed months and identical weights. No outcome-year or future-year SIC enters either predictor. No search across seasons, distance buffers, 5/10/15/20-year peaks, or sea-ice thresholds.
+- Each annual SIC is the August–November aggregate of monthly means with fixed calendar-day weighting (month day counts), matching the original 1991–2020 extraction convention. R and L then average exactly 10 annual values each with equal year weight. No outcome-year or future-year SIC enters either predictor. No search across seasons, distance buffers, 5/10/15/20-year peaks, or sea-ice thresholds.
 - **Secondary recruitment window:** 5-year mean for y = t−7, ..., t−3. Distinct window duration and overlapping support are clearly labelled secondary; it is not a replacement for the equal-width primary contrast.
 - Existing source-matched satellite extraction covers **1991–2020**; for primary legacy support starting 1999, reconstruct **1979–2020** using one product version and harmonized ocean masks, e.g. documented NSIDC-0051 passive-microwave sea-ice concentration. Do NOT splice different product algorithms without cross-calibration. Archive version, grid, land/ocean mask, site geolocations, month weights, and source hash before analysis.
 - In early SMMR years the nominal sensor acquisition cadence differs from later daily SSM/I series. Check coverage against *expected sensor acquisitions*, not calendar-day completeness, and apply a single predefined monthly ≥80% acquisition-coverage and marine-pixel ≥80% validity rule. Require all four months and all 10 years for each window. Never fill missing sea ice as zero; record exclusions before fitting.
@@ -48,7 +48,7 @@ Data gate before biological lag scoring: require at least 150 complete eligible 
 
 ## Locked models and chronological evaluation
 
-Use the same eligible count transitions for every model at each test origin. For test year t ∈ 2006..2018, fit on **eligible transitions with start < t only**, predict only sites observed in that training set, and record all dropped/unseen sites. Recompute all standardization and site means from training years only; do not use held-out responses for tuning. Keep existing fixed ridge penalties: site = 3, linear time trend = 3, climate = 8. All climate models have the same site and time backbone. No penalty optimization on test outcomes.
+Use the same eligible count transitions for every model at each test origin. **Forecast origin is immediately AFTER the census count N(i,t) is observed**, predicting N(i,t+1); therefore earlier transitions ending at t are already known, while any transition ending later is unavailable. For test year t ∈ 2006..2018, fit on **eligible transitions with start < t only**, predict only sites observed in that training set, and record all dropped/unseen sites. Recompute all standardization and site means from training years only; do not use held-out responses for tuning. Keep existing fixed ridge penalties: site = 3, linear time trend = 3, climate = 8. All climate models have the same site and time backbone. No penalty optimization on test outcomes.
 
 - **M0:** zero change yhat = 0 (unchanged nest count).
 - **Mbase:** site intercept + linear calendar trend, ridge penalties fixed above.
