@@ -2,6 +2,8 @@
 
 **状態：`SOURCE_MD5_VERIFIED_CONSERVATIVE_NEST_MOVEMENT_OBSERVATIONS`。ユーザー提供の公式USAP-DC ZIP 2点を現在の実行環境で実際に開き、原CSVの出版社公開MD5を照合済み。個体単位の巣活動記録から肯定的な実例を再構成。ただし移住率・温暖化因果・新規性は別問題。**
 
+> **追加監査（同日）：** [出生地外での「再観察506個体」と「巣活動64個体」の違い、36地点×年の観察不均衡](OBSERVABILITY_AND_STAGE_GATE_JA_20261108.md)まで元原本と別処理で確認。採用された原イベントは94,678行、巣活動イベント15,157行。Cape Crozierの採用再観察は**80,437行**（Royds 8,545、Bird 5,693、Beaufort 3）。報告済みの64は最初に記録された厳格巣活動年が出生地外だが、うち2個体は別年に出生地の巣活動記録もある。506→64を生涯の定着成功率とせず、標準化野外努力がない限り移住率へ変換しない。[元個体IDを含まない年×地点表](outputs/anonymous_colony_season_record_availability.csv)、[別地点の訪問/巣活動の集計](outputs/anonymous_off_natal_resight_vs_nest_by_route.csv)は再現コードと整合確認済み。
+ 
 ## 1. 原本と品質
 
 | 原CSV | 元DOI | 元CSV実バイト数 | MD5 | 判定 |
