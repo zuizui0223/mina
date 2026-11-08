@@ -1,0 +1,38 @@
+name: Penguin 2018 Signy withheld-season GPS and sea-ice power gate
+on:
+  push:
+    branches: [codex/penguin-circuitscape-feasibility-20261108]
+    paths:
+      - 'research/climate-penguin/warming_unified_v1/circuitscape_gate/holdout_signy2018/**'
+      - '.github/workflows/penguin-circuitscape-signy2018-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  signy-2018-original-source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original BAS GPS and OSI daily satellite readers
+        run: python -m pip install --disable-pip-version-check numpy scipy xarray netCDF4 'rasterio>=1.4,<1.6'
+      - name: Verify held-out source-only script syntax
+        run: python -m py_compile research/climate-penguin/warming_unified_v1/circuitscape_gate/holdout_signy2018/source_power_gate.py
+      - name: Retrieve original BAS Chinstrap GPS V2 archive
+        run: |
+          mkdir -p build/signy2018_circuit_original
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 300 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/signy2018_circuit_original/original_chinstrap_gps.zip
+      - name: Freeze unused 2018 season GPS days before ice, inspect all same-day OSI SIC original pixels
+        run: python research/climate-penguin/warming_unified_v1/circuitscape_gate/holdout_signy2018/source_power_gate.py
+      - name: Archive source-and-identifiability gate, including NO-GO without selectively dropping dates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-signy2018-original-GPS-ice-power-gate
+          path: |
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/holdout_signy2018/outputs/*.csv
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/holdout_signy2018/outputs/*.json
+          if-no-files-found: warn
