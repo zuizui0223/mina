@@ -140,7 +140,7 @@ def main():
                     gr,gc=divmod(gps_id,432)
                     in_crop=minr<=gr<maxr and minc<=gc<maxc
                     isconnected=bool(connect[gr-minr,gc-minc]) if in_crop else False
-                    valid_rank=bool(isconnected and 10<=dist[gr,gc]<160 and not grounds[gr-minr,gc-minc])
+                    valid_rank=bool(isconnected and 10<=dist[gr,gc]<160 and not grounds[gr-minr,gc-minc] and (gr,gc)!=(sr,sc))
                     good_visits+=valid_rank
                     visitrows.append({"case_id":group,"season_start":year,"other_island":other,
                         "date":date,"island":site,"native_source_pixel":gps_id,"original_daily_sic":v,
@@ -152,7 +152,9 @@ def main():
                     "native_min_row":minr,"native_min_col":minc,"n_ground_cells":int(grounds.sum()),
                     "n_connected_ocean_cells":int(connect.sum()),
                     "n_source_valid_GPS_pixels_in_radial_domain":good_visits,
-                    "grid_shape_rows":maxr-minr,"grid_shape_cols":maxc-minc})
+                    "grid_shape_rows":maxr-minr,"grid_shape_cols":maxc-minc,
+                    "x_reversed_in_ascii":bool(x[1]<x[0]),
+                    "y_reversed_in_ascii":bool(y[1]>y[0])})
                 if not active:continue
                 sourcegrid=np.full(d.shape,NO)
                 sourcegrid[src]=1.
