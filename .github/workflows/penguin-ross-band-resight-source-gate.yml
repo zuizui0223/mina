@@ -22,6 +22,7 @@ jobs:
           python -m py_compile research/climate-penguin/ross_band_resight/probe_public_sources.py
           python -m py_compile research/climate-penguin/ross_band_resight/audit_original_csvs.py
           python -m py_compile research/climate-penguin/ross_band_resight/reconstruct_observed_nesting_movements.py
+          python -m py_compile research/climate-penguin/ross_band_resight/verify_public_aggregates.py
       - name: Test conservative season and active-nest parser without individual data
         run: |
           python - <<'PY'
@@ -41,6 +42,8 @@ jobs:
           assert not m.primary_nest({"status":"INC","nuegg":"9","nuch":"0"})
           print("ROSS_MOVEMENT_METHODS_STATIC_GATE_PASS")
           PY
+      - name: Reconcile all public aggregate results without access to original individual IDs
+        run: python research/climate-penguin/ross_band_resight/verify_public_aggregates.py
       - name: Inspect only provider-advertised public PointBlue original data routes
         run: python research/climate-penguin/ross_band_resight/probe_public_sources.py
       - name: Archive original-source feasibility and access receipt (no individual records)
