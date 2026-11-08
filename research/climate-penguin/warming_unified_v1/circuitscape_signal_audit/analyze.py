@@ -79,8 +79,9 @@ def main():
         raise ValueError("Original circuit source roster / support changed")
     cases=rows(RUN/"island_day_source_domain_support.csv")
     visits=rows(RUN/"gps_original_source_pixel_visits.csv")
-    if len(cases)!=90 or len(visits)!=679 or sum(v["within_fixed_score_distance_bins"]=="True" for v in visits)!=629:
-        raise ValueError(f"Wrong frozen 90 island-days / 679 original matched GPS pixels / 629 eligible pixels: {len(cases)}, {len(visits)}, {sum(v[\"within_fixed_score_distance_bins\"]==\"True\" for v in visits)}")
+    eligible_source_count=sum(v["within_fixed_score_distance_bins"]=="True" for v in visits)
+    if len(cases)!=90 or len(visits)!=679 or eligible_source_count!=629:
+        raise ValueError(f"Wrong original 90 island-days / 679 matched pixel records / 629 eligible records: {len(cases)}, {len(visits)}, {eligible_source_count}")
     by=defaultdict(list)
     for r in visits:by[r["case_id"]].append(r)
     if len({r["case_id"] for r in cases})!=90:raise ValueError("Duplicate original case IDs")
