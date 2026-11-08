@@ -1,0 +1,39 @@
+name: Penguin climatic legacy 10–20y frozen forecast
+on:
+  push:
+    branches: [codex/penguin-climatic-legacy-20261108]
+    paths:
+      - 'research/climate-penguin/climatic_legacy/extract_legacy_monthly.py'
+      - 'research/climate-penguin/climatic_legacy/forecast_legacy.py'
+      - '.github/workflows/penguin-climatic-legacy-full-test.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  historical-climate-and-forward-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source extraction dependencies
+        run: python -m pip install --disable-pip-version-check numpy xarray netCDF4 pyproj
+      - name: Compile scripts without reading outcomes
+        run: python -m py_compile research/climate-penguin/climatic_legacy/extract_legacy_monthly.py research/climate-penguin/climatic_legacy/forecast_legacy.py
+      - name: Extract 1979–1990 official monthly SIC and source-comparability gate
+        run: python research/climate-penguin/climatic_legacy/extract_legacy_monthly.py
+      - name: Execute frozen time-forward ADPE test only after quality gate
+        run: python research/climate-penguin/climatic_legacy/forecast_legacy.py
+      - name: Archive source SHA, quality and complete predictions
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-legacy-ice-and-chronological-prediction-v1
+          path: |
+            research/climate-penguin/climatic_legacy/source_extract_outputs/*.json
+            research/climate-penguin/climatic_legacy/source_extract_outputs/*.csv
+            research/climate-penguin/climatic_legacy/prediction_outputs/*.json
+            research/climate-penguin/climatic_legacy/prediction_outputs/*.csv
+          if-no-files-found: warn
