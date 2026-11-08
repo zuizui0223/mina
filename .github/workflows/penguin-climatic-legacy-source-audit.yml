@@ -1,0 +1,30 @@
+name: Penguin climatic legacy source audit (1979–2020)
+on:
+  push:
+    branches: [codex/penguin-climatic-legacy-20261108]
+    paths:
+      - 'research/climate-penguin/climatic_legacy/**'
+      - '.github/workflows/penguin-climatic-legacy-source-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sample-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install NetCDF data reader
+        run: python -m pip install --disable-pip-version-check numpy xarray netCDF4
+      - name: Verify original 1979 and overlap monthly source files, without count outcomes
+        run: python research/climate-penguin/climatic_legacy/source_audit.py
+      - name: Upload outcome-blind source receipt
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-climatic-legacy-source-audit
+          path: research/climate-penguin/climatic_legacy/source_audit_outputs/source_audit.json
+          if-no-files-found: warn
