@@ -27,7 +27,7 @@ def readcsv(name,delimiter=","):
         return list(csv.DictReader(f,delimiter=delimiter))
 def writecsv(name,records):
     if not records:return
-    with (OUT/name).open(encoding="utf-8",newline="") as f:
+    with (OUT/name).open("w",encoding="utf-8",newline="") as f:
         w=csv.DictWriter(f,fieldnames=list(records[0]));w.writeheader();w.writerows(records)
 def readasc(file):
     with file.open(encoding="ascii") as f:
