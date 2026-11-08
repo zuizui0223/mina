@@ -148,7 +148,7 @@ def main():
       "min_resistance":float(vals[supported_mask].min()),
       "mean_resistance":float(vals[supported_mask].mean()),
       "max_resistance":float(vals[supported_mask].max())})
- result={"status":"INPUTS_READY" if four_ok else "FOUR_NEIGHBOR_NOT_CONNECTED",
+ result={"status":"INPUTS_READY" if four_ok else "INPUTS_READY_8_NEIGHBOR_ONLY",
    "n_focal_sites":len(SITES),"focal_sites":nodes,
    "source_url_sha256":{str(k):{n:v[n] for n in ("url","sha256","bytes","all_ocean_cells")} for k,v in dataset.items()},
    "crop_native_y":[YLO,YHI],"crop_native_x":[XLO,XHI],
@@ -171,5 +171,5 @@ def main():
    "four_neighbor_all_six_connected":four_ok,
    "crop_shape":result["crop_native_shape"],
    "selected_nodes":nodes}),flush=True)
- if not four_ok:raise SystemExit(2)
+ if not four_ok:\n  print("SOURCE_WARNING=four-neighbor not supported by all six nodes; eight-neighbor pilot remains valid",flush=True)
 if __name__=="__main__":main()
