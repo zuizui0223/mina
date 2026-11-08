@@ -21,6 +21,8 @@ jobs:
         run: node --check research/climate-penguin/warming_unified_v1/paired_compensation/build.mjs
       - name: Run original-count source audit and six-site analysis
         run: node research/climate-penguin/warming_unified_v1/paired_compensation/build.mjs
+      - name: Independently rederive count sums and temporal slopes
+        run: python research/climate-penguin/warming_unified_v1/paired_compensation/verify_outputs.py
       - name: Archive source-verified annual counts and same-method support
         if: always()
         uses: actions/upload-artifact@v4
