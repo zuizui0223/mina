@@ -1,8 +1,10 @@
 # Circuitscape applicability gate — Antarctic breeding-colony marine connectivity
 
-**2026-11-08, separate exploration on top of climate PR #206.** This gate tests whether Circuitscape can be *applied meaningfully* to the currently available physical and biological observations. It does not claim an effective-resistance estimate, penguin movement, or a validation of the warming manuscript's demographic response.
+**2026-11-08, separate exploration on top of climate PR #206.** This file began as an input feasibility gate. **Native Circuitscape has subsequently computed both the pairwise effective-resistance atlas and the GPS-day-matched marine current comparison**. The original gate contract below is kept as methods history. Neither computation measures inter-colony breeding dispersal, nor validates a future warming-driven demographic response.
 
 > **実行結果の更新（2026-11-08）：** [Circuitscape.jl v6.0.0 の実計算結果（日本語・数値表）](ACTUAL_CIRCUITSCAPE_RESULT_20261108.md)を追加。**[成功CI #42446429749](https://github.com/zuizui0223/mina/actions/runs/42446429749)**で、元OSISAF25km格子・6地点・10モデル・15ペア＝**150有効抵抗値**を計算し、独立SciPyとの30組比較（最大相対差4.40×10⁻¹³）を通過。以下の文書の「入力ゲート」は実行前に固定した設計履歴であり、すでに数値は出ている。ただし**仮定した海氷抵抗の生物学的な較正・繁殖移住の実証は未完了**。
+
+> **45日×実GPSの検証も完了（2026-11-08）：** [原GPS45日・90島日・270回路の本体計算と結果（日本語）](gps_same_day/RESULT_JA_20261108.md)／[元ソースを固定した評価契約](gps_same_day/CONTRACT_20261108.md)／[GitHub Actions SUCCESS #42448153660](https://github.com/zuizui0223/mina/actions/runs/42448153660)（[artifact 13604691998](https://github.com/zuizui0223/mina/actions/runs/42448153660/artifacts/13604691998)）。元BASヒゲペンギンGPSの12〜1月45日と元OSI SAF同日海氷で、6島×年の実測GPS画素629を距離帯条件付き電流順位で評価。**β=+2（海氷障害）とβ=−2（海氷有利）は、どちらも一様海洋抵抗を6島年の平均では上回らなかった**（順位差 −0.00108／−0.01210）。Signy/Powellの2013年同日で比較方向が異なる。既存の1993/2018年9月の回路図ではなくGPSと一致する日の回路を本当に再計算した。SciPy独立電流検算を通過。ただしこれは**採餌期の仮想回路×GPS空間利用の記述的照合**であり、繁殖島間の移住や生物学的な氷抵抗の推定ではない。
 
 ## Biological question
 
