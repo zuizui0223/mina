@@ -6,7 +6,7 @@ import calendar,csv,hashlib,json,math
 from pathlib import Path
 import numpy as np
 
-ROOT=Path(__file__).resolve().parents[2]
+ROOT=Path(__file__).resolve().parents[1]
 HERE=Path(__file__).parent
 SOURCE=HERE/"source_extract_outputs"
 OUT=HERE/"prediction_outputs"
