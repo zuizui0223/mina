@@ -62,6 +62,7 @@ def main():
    p=Hrefs();p.feed(obj["body"].decode("utf-8",errors="replace"))
    routes[label]["public_links"]=[x for x in p.hrefs if "AllData" in x or x.endswith(".js")][:40]
    routes[label]["page_contains_AllData"]=b"AllData" in obj["body"]
+   print("OFFICIAL_PUBLIC_POINTBLUE_INDEX_HTML="+obj["body"][:1000].decode("utf-8",errors="replace"),flush=True)
   if label=="public_s3_listing_for_advertised_AllData" and obj["status"]==200:
    try:
     parsed=ET.fromstring(obj["body"])
