@@ -1,0 +1,34 @@
+name: Penguin focal-pair nest compensation audit
+on:
+  push:
+    branches: [codex/penguin-focal-pair-demographic-compensation-20261108]
+    paths:
+      - 'research/climate-penguin/warming_unified_v1/paired_compensation/**'
+      - '.github/workflows/penguin-focal-pair-compensation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reproducible-subtotal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JS syntax
+        run: node --check research/climate-penguin/warming_unified_v1/paired_compensation/build.mjs
+      - name: Run original-count source audit and six-site analysis
+        run: node research/climate-penguin/warming_unified_v1/paired_compensation/build.mjs
+      - name: Archive source-verified annual counts and same-method support
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-focal-pair-compensation-source-v1
+          path: |
+            research/climate-penguin/warming_unified_v1/paired_compensation/outputs/summary.json
+            research/climate-penguin/warming_unified_v1/paired_compensation/outputs/six_site_yearly_focal_pair_counts.csv
+            research/climate-penguin/warming_unified_v1/paired_compensation/outputs/six_site_compensation_metrics.csv
+            research/climate-penguin/warming_unified_v1/paired_compensation/outputs/chinstrap_observability_audit.csv
+          if-no-files-found: warn
