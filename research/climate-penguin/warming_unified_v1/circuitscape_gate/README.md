@@ -8,6 +8,8 @@
 
 > **なぜ海氷抵抗がGPS予測を改善しなかったか（事後診断も完了）：** [元45日・90島日の海氷空間差の実測監査](../circuitscape_signal_audit/RESULT_JA_20261108.md)／[SUCCESS #42455862499](https://github.com/zuizui0223/mina/actions/runs/42455862499)／[原本SHAと629画素の成果物](https://github.com/zuizui0223/mina/actions/runs/42455862499/artifacts/13607791121)。元SICから抵抗面を逆算して全45NetCDF原値と照合し（最大差1.95×10⁻¹¹pp）、**42/90島日では回路域のSICが完全一様、62/90島日でGPS評価海域のSIC 10〜90%幅が1pp未満**と確認。これは主に2011・2015年の12〜1月で、2013年Signy・Powellの28島日は海氷の空間差があった。**一様な海氷では抵抗係数βによって同一流路の電流分布を変えられない**ため、元270回路の「平均予測改善なし」は全90島日で生態学的な氷抵抗を否定した検定ではない。2013年の変動がある条件でも両島に共通のβ符号は支持されない。追加のβ最適化による救済は行わない。
 
+> **追加の未使用GPS季節2018/19を監査（2026-11-08）：** [結果・事前固定したGO/NO-GO条件](holdout_signy2018/RESULT_JA_20261108.md)／[元45GPS暦日×OSI原本のCI SUCCESS #42457532430](https://github.com/zuizui0223/mina/actions/runs/42457532430)（[artifact 13608193106](https://github.com/zuizui0223/mina/actions/runs/42457532430/artifacts/13608193106)）。Signyで2018年12月10日〜2019年1月23日の原GPS **54資格追跡・45日・2,966時間対応測位**を取得し、全45日の同日海氷源点・周縁地面が成立。ただし原25km評価海域の海氷p90−p10が**1pp以上だった日は0/45**（回路全体SIC完全一様25/45日）。凍結済み5日以上の海氷勾配条件に達せず、**2018年の回路GPS適合度は再計算しないNO-GO**。夏季の氷不足から冬季移住や将来繁殖数の効果を否定しない。Ross海域の個体別標識再観察原データの目録調査は別の[Draft PR #212](https://github.com/zuizui0223/mina/pull/212)として分離した。
+
 ## Biological question
 
 > Does a changing marine resistance network make island/colony movement opportunities more or less accessible, and are those opportunities ever demonstrably associated with actual redistribution of **breeding individuals** rather than just local counts?
