@@ -162,6 +162,10 @@ def main():
    "circuit_scenarios":manifest,
    "scientific_boundary":"Physical model-only R=exp(beta*SIC/100); zero calibrated penguin movement coefficients."}
  (OUT/"build_manifest.json").write_text(json.dumps(result,indent=2)+"\n")
+ with (OUT/"circuit_scenarios.tsv").open("w",encoding="utf-8") as scenario_f:
+  scenario_f.write("key\tyear\tmodel\tbeta\tneighbor_count\thabitat_raster\tfocal_raster\twrite_current\n")
+  for row in manifest:
+   scenario_f.write("\t".join(str(row[k]) for k in ("key","year","model","beta","neighbor_count","habitat_raster","focal_raster","write_cumulative_current_map"))+"\n")
  print("CIRCUIT_INPUT_GATE="+json.dumps({"status":result["status"],"n_inputs":len(manifest),
    "supported_ocean":result["source_connected_8_neighbor_ocean_cells"],
    "four_neighbor_all_six_connected":four_ok,
