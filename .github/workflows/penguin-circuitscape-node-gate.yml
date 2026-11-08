@@ -1,0 +1,35 @@
+name: Penguin Circuitscape source-node feasibility gate
+on:
+  push:
+    branches: [codex/penguin-circuitscape-feasibility-20261108]
+    paths:
+      - 'research/climate-penguin/warming_unified_v1/circuitscape_gate/**'
+      - '.github/workflows/penguin-circuitscape-node-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-ocean-node-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install scientific source readers
+        run: python -m pip install --disable-pip-version-check numpy xarray pyproj netCDF4
+      - name: Check program syntax
+        run: python -m py_compile research/climate-penguin/warming_unified_v1/circuitscape_gate/audit_nodes.py
+      - name: Audit 6 original source colonies against original valid OSI ocean cells
+        run: python research/climate-penguin/warming_unified_v1/circuitscape_gate/audit_nodes.py
+      - name: Save original source pixel and site distance receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-circuitscape-six-colony-node-support-v1
+          path: |
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/outputs/circuitscape_node_support.json
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/outputs/six_focal_site_pairwise_distance.csv
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/outputs/six_coastal_node_source_assignments.csv
+          if-no-files-found: warn
