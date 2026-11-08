@@ -21,6 +21,26 @@ jobs:
         run: |
           python -m py_compile research/climate-penguin/ross_band_resight/probe_public_sources.py
           python -m py_compile research/climate-penguin/ross_band_resight/audit_original_csvs.py
+          python -m py_compile research/climate-penguin/ross_band_resight/reconstruct_observed_nesting_movements.py
+      - name: Test conservative season and active-nest parser without individual data
+        run: |
+          python - <<'PY'
+          import importlib.util
+          p="research/climate-penguin/ross_band_resight/reconstruct_observed_nesting_movements.py"
+          spec=importlib.util.spec_from_file_location("ross_source_audit",p)
+          m=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(m)
+          assert m.season_start("9495")==1994
+          assert m.season_start("1819")==2018
+          assert m.season_start("2021")==2020
+          assert m.season_start("-10") is None
+          assert m.primary_nest({"status":"INC","nuegg":"2","nuch":"0"})
+          assert m.primary_nest({"status":"BR","nuegg":"0","nuch":"1"})
+          assert not m.primary_nest({"status":"SLP","nuegg":"2","nuch":"0"})
+          assert not m.primary_nest({"status":"P/INC","nuegg":"2","nuch":"0"})
+          assert not m.primary_nest({"status":"INC","nuegg":"9","nuch":"0"})
+          print("ROSS_MOVEMENT_METHODS_STATIC_GATE_PASS")
+          PY
       - name: Inspect only provider-advertised public PointBlue original data routes
         run: python research/climate-penguin/ross_band_resight/probe_public_sources.py
       - name: Archive original-source feasibility and access receipt (no individual records)
