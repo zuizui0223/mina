@@ -69,7 +69,7 @@ Adélie counts declined and gentoo counts increased at all six focal co-breeding
 
 **Arithmetic compensation without overall species stability.** Adding the directly counted Adélie and gentoo nests within each of the exact 67 jointly observed site-years revealed increasing *two-species* totals at five of the six sites over their recorded first-to-last census comparisons (median site-equal change +33.94%, range −25.56% to +101.46%). The all-year `log(Adélie+gentoo)` slope was positive at five sites, but remained positive after excluding either the first or last year at only four. In particular, LION lost 25.56% of the two-species subtotal while LLAN's slight positive full-series slope reversed on deleting its last count. This demonstrates **how a focal-species loss can coexist with a growing aggregate of those same two species**, not a general compensatory demographic mechanism.
 
-| Site | Adélie+gentoo first → last | Change of two-species subtotal | All-year log subtotal slope / decade | Robust to either endpoint deletion |
+| Site | Adélie+gentoo first → last | Change of two-species subtotal | All-year log subtotal slope / decade | Positive after deleting either endpoint |
 |---|---:|---:|---:|---|
 | ARDL | 4,883 → 6,767 | +38.58% | +0.1945 | Yes |
 | BISC | 1,846 → 3,719 | +101.46% | +0.6156 | Yes |
