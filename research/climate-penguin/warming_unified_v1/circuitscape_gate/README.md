@@ -6,6 +6,8 @@
 
 > **45日×実GPSの検証も完了（2026-11-08）：** [原GPS45日・90島日・270回路の本体計算と結果（日本語）](gps_same_day/RESULT_JA_20261108.md)／[元ソースを固定した評価契約](gps_same_day/CONTRACT_20261108.md)／[GitHub Actions SUCCESS #42448153660](https://github.com/zuizui0223/mina/actions/runs/42448153660)（[artifact 13604691998](https://github.com/zuizui0223/mina/actions/runs/42448153660/artifacts/13604691998)）。元BASヒゲペンギンGPSの12〜1月45日と元OSI SAF同日海氷で、6島×年の実測GPS画素629を距離帯条件付き電流順位で評価。**β=+2（海氷障害）とβ=−2（海氷有利）は、どちらも一様海洋抵抗を6島年の平均では上回らなかった**（順位差 −0.00108／−0.01210）。Signy/Powellの2013年同日で比較方向が異なる。既存の1993/2018年9月の回路図ではなくGPSと一致する日の回路を本当に再計算した。SciPy独立電流検算を通過。ただしこれは**採餌期の仮想回路×GPS空間利用の記述的照合**であり、繁殖島間の移住や生物学的な氷抵抗の推定ではない。
 
+> **なぜ海氷抵抗がGPS予測を改善しなかったか（事後診断も完了）：** [元45日・90島日の海氷空間差の実測監査](../circuitscape_signal_audit/RESULT_JA_20261108.md)／[SUCCESS #42455862499](https://github.com/zuizui0223/mina/actions/runs/42455862499)／[原本SHAと629画素の成果物](https://github.com/zuizui0223/mina/actions/runs/42455862499/artifacts/13607791121)。元SICから抵抗面を逆算して全45NetCDF原値と照合し（最大差1.95×10⁻¹¹pp）、**42/90島日では回路域のSICが完全一様、62/90島日でGPS評価海域のSIC 10〜90%幅が1pp未満**と確認。これは主に2011・2015年の12〜1月で、2013年Signy・Powellの28島日は海氷の空間差があった。**一様な海氷では抵抗係数βによって同一流路の電流分布を変えられない**ため、元270回路の「平均予測改善なし」は全90島日で生態学的な氷抵抗を否定した検定ではない。2013年の変動がある条件でも両島に共通のβ符号は支持されない。追加のβ最適化による救済は行わない。
+
 ## Biological question
 
 > Does a changing marine resistance network make island/colony movement opportunities more or less accessible, and are those opportunities ever demonstrably associated with actual redistribution of **breeding individuals** rather than just local counts?
