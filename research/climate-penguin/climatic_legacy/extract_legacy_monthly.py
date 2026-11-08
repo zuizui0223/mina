@@ -10,7 +10,7 @@ import numpy as np
 import xarray as xr
 from pyproj import Geod
 
-ROOT=Path(__file__).resolve().parents[2]
+ROOT=Path(__file__).resolve().parents[1]
 OUT=Path(__file__).parent/"source_extract_outputs"
 CACHE=OUT/"cache"
 OUT.mkdir(exist_ok=True);CACHE.mkdir(exist_ok=True)
