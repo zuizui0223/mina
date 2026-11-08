@@ -66,9 +66,9 @@ const summary={
   ratio_fold_median:median(individual.map(x=>x.first_last_ratio_fold)),
   median_Adelie_first_last_change_pct:median(individual.map(x=>x.Adelie_pct_change)),
   median_Gentoo_first_last_change_pct:median(individual.map(x=>x.Gentoo_pct_change)),
-  ratio_fold_median_leave_one_site:[
-    ...new Set(individual.map((_,i)=>median(individual.filter((_,j)=>i!==j).map(x=>x.first_last_ratio_fold)))
-  ].sort((a,b)=>a-b),
+  ratio_fold_median_leave_one_site: individual.map((_,i)=>
+    median(individual.filter((_,j)=>i!==j).map(x=>x.first_last_ratio_fold))
+  ).sort((a,b)=>a-b),
   SIC_full_AugNov_decrease:individual.filter(x=>x.augnov_SIC_full_period_pp_decade<0).length,
   SIC_censusyear_September_increase:individual.filter(x=>x.sep_SIC_observed_years_pp_decade>0).length,
   SIC_censusyear_AugNov_increase:individual.filter(x=>x.augnov_SIC_observed_years_pp_decade>0).length,
