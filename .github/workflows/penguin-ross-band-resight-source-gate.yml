@@ -1,0 +1,30 @@
+name: Ross Adélie public band-resight provider access and source-schema gate
+on:
+  push:
+    branches: [codex/penguin-ross-band-resight-source-audit-20261108]
+    paths:
+      - 'research/climate-penguin/ross_band_resight/**'
+      - '.github/workflows/penguin-ross-band-resight-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-source-metadata-and-public-route:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile original publication source probe
+        run: python -m py_compile research/climate-penguin/ross_band_resight/probe_public_sources.py
+      - name: Inspect only provider-advertised public PointBlue original data routes
+        run: python research/climate-penguin/ross_band_resight/probe_public_sources.py
+      - name: Archive original-source feasibility and access receipt (no individual records)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-ross-1997-2021-public-band-resight-source-audit-v1
+          path: research/climate-penguin/ross_band_resight/outputs/public_source_access_receipt.json
+          if-no-files-found: warn
