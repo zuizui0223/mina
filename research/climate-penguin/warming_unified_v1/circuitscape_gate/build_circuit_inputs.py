@@ -171,5 +171,6 @@ def main():
    "four_neighbor_all_six_connected":four_ok,
    "crop_shape":result["crop_native_shape"],
    "selected_nodes":nodes}),flush=True)
- if not four_ok:\n  print("SOURCE_WARNING=four-neighbor not supported by all six nodes; eight-neighbor pilot remains valid",flush=True)
+ if not four_ok:
+  print("SOURCE_WARNING=four-neighbor not supported by all six nodes; eight-neighbor pilot remains valid",flush=True)
 if __name__=="__main__":main()
