@@ -18,7 +18,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Compile original publication source probe
-        run: python -m py_compile research/climate-penguin/ross_band_resight/probe_public_sources.py
+        run: |
+          python -m py_compile research/climate-penguin/ross_band_resight/probe_public_sources.py
+          python -m py_compile research/climate-penguin/ross_band_resight/audit_original_csvs.py
       - name: Inspect only provider-advertised public PointBlue original data routes
         run: python research/climate-penguin/ross_band_resight/probe_public_sources.py
       - name: Archive original-source feasibility and access receipt (no individual records)
