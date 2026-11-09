@@ -4,6 +4,7 @@ on:
     branches: [codex/penguin-nonmaxent-abundance-sdm-20261109]
     paths:
       - 'research/climate-penguin/nonmaxent_sdm/audit_joint_ice_vegetation_support.py'
+      - 'research/climate-penguin/nonmaxent_sdm/audit_existing_annual_vegetation_support.py'
       - 'research/climate-penguin/nonmaxent_sdm/JOINT_ICE_VEGETATION_SOURCE_GATE_20261109.md'
       - '.github/workflows/penguin-joint-ice-vegetation-source-gate.yml'
   workflow_dispatch:
@@ -22,10 +23,13 @@ jobs:
         run: |
           python -m py_compile research/climate-penguin/nonmaxent_sdm/build_source_panels.py
           python -m py_compile research/climate-penguin/nonmaxent_sdm/audit_joint_ice_vegetation_support.py
+          python -m py_compile research/climate-penguin/nonmaxent_sdm/audit_existing_annual_vegetation_support.py
       - name: Verify source SHA and regenerate original colony census and vegetation panels
         run: python research/climate-penguin/nonmaxent_sdm/build_source_panels.py
       - name: Audit actual original 2017 to 2020 observed site-year and static vegetation intersection
         run: python research/climate-penguin/nonmaxent_sdm/audit_joint_ice_vegetation_support.py
+      - name: Audit existing independent annual NDVI and same-year count pixel support
+        run: python research/climate-penguin/nonmaxent_sdm/audit_existing_annual_vegetation_support.py
       - name: Preserve real co-located site-years and static-map uncertainty receipts
         if: always()
         uses: actions/upload-artifact@v4
