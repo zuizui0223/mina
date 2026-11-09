@@ -104,7 +104,7 @@ def main():
       "model_diagnostics":{k:{"AIC":float(z["AIC"]),"adj_r2":float(z["adj_r2"]),
                              "deviance_explained":float(z["deviance_explained"]),
                              "delta_AIC_from_base":float(z["delta_AIC_to_matching_base"])
-                               if z["delta_AIC_to_matching_base"] else None}
+                               if z["delta_AIC_to_matching_base"] not in ("","NA","NaN") else None}
                              for k,z in keys.items()},
       "post_first_fit_sensitivity": [{
         "scenario":z["scenario"], "term":z["term"],
