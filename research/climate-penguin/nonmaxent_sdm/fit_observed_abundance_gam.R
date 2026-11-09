@@ -42,6 +42,7 @@ land_veg <- update(land_base,. ~ . +
   s(log1p_static_vegetation_area_m2,by=species,k=4))
 
 fit <- function(formula, data) {
+  set.seed(20261109)  # repeatable source-only exploratory smooth construction
   suppressWarnings(
     mgcv::gam(formula,data=data,family=gaussian(link="identity"),
               method="REML",select=TRUE)
@@ -154,4 +155,16 @@ for (key in names(sensitivity)) {
 }
 write.csv(sensrows,file.path(outdir,"post_first_fit_Victoria_year_sensitivity.csv"),row.names=FALSE)
 stopifnot(nrow(sensrows)==6)
+# QA only: repeated land GAM fits must not depend materially on process-level
+# random initialization; compare both original formulas on the same fixed input.
+repeat_land_null <- fit(land_base, land)
+repeat_land_veg <- fit(land_veg, land)
+repeat_differences <- c(
+  land_without_mapped_veg=abs(AIC(repeat_land_null)-AIC(model$land_without_mapped_veg)),
+  land_with_mapped_veg=abs(AIC(repeat_land_veg)-AIC(model$land_with_mapped_veg))
+)
+cat("IN_RUN_GAM_LAND_AIC_REPRODUCIBILITY=",paste(names(repeat_differences),
+    sprintf("%.8g",repeat_differences),sep=":",collapse=";"),"\n",sep="")
+if(any(!is.finite(repeat_differences))||max(repeat_differences)>0.01)
+  stop("Unstable mgcv land basis/REML AIC within exact same runner and seed")
 cat("NONMAXENT_GAM_FITS_COMPLETED=4 core + 2 post-first-fit sensitivity models\n")
