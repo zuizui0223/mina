@@ -1,0 +1,51 @@
+name: Penguin native-count negative-binomial GAM robustness
+on:
+  push:
+    branches: [codex/penguin-nonmaxent-abundance-sdm-20261109]
+    paths:
+      - 'research/climate-penguin/nonmaxent_sdm/*negative_binomial*'
+      - 'research/climate-penguin/nonmaxent_sdm/COUNT_LIKELIHOOD_SENSITIVITY_CONTRACT_20261109.md'
+      - '.github/workflows/penguin-native-count-nb-sdm.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+jobs:
+  post-result-count-distribution-check:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile source and original count panel check
+        run: |
+          python -m py_compile research/climate-penguin/nonmaxent_sdm/build_source_panels.py
+          python -m py_compile research/climate-penguin/nonmaxent_sdm/verify_negative_binomial_sensitivity.py
+      - name: Reproduce original 661 observations and unchanged source SHA
+        run: python research/climate-penguin/nonmaxent_sdm/build_source_panels.py
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+      - name: Inspect native R negative-binomial mgcv support
+        run: |
+          Rscript -e 'stopifnot(requireNamespace("mgcv",quietly=TRUE)); cat("R=",as.character(getRversion())," mgcv=",as.character(packageVersion("mgcv")),"\n")'
+      - name: Fit fixed three native observed-count NB GAMs
+        run: Rscript research/climate-penguin/nonmaxent_sdm/fit_negative_binomial_count_sensitivity.R
+      - name: Independently verify native-count model receipts and inference boundaries
+        run: python research/climate-penguin/nonmaxent_sdm/verify_negative_binomial_sensitivity.py
+      - name: Retain source and likelihood comparisons without raw bird IDs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-count-negative-binomial-GAM-v1
+          path: |
+            research/climate-penguin/nonmaxent_sdm/outputs/source_coverage.json
+            research/climate-penguin/nonmaxent_sdm/nb_outputs/*.csv
+            research/climate-penguin/nonmaxent_sdm/nb_outputs/*.txt
+            research/climate-penguin/nonmaxent_sdm/nb_outputs/*.json
+          if-no-files-found: warn
