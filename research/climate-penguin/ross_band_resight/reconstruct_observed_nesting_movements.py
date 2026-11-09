@@ -14,6 +14,7 @@ import datetime
 import hashlib
 import io
 import json
+import statistics
 import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -84,6 +85,7 @@ def audit(banding_zip,resighting_zip,outdir):
     strict_recruit=defaultdict(set);inc_only=defaultdict(set)
     broader_recruit=defaultdict(set);active_nests=defaultdict(lambda:defaultdict(set))
     band_kind={}
+    observed_CHIC_site_year_events=defaultdict(list)  # raw animal IDs remain only in memory
     off_natal_resighted=defaultdict(set)
     post_age2_CHIC_seen=defaultdict(set)
     # Original record-availability denominators are observations, NOT survey effort.
@@ -134,6 +136,9 @@ def audit(banding_zip,resighting_zip,outdir):
         verified_event_rows_by_site_year[siteyear]+=1
         verified_bands_by_site_year[siteyear].add(tag)
         nest=primary_nest(r)
+        if kind=="CHIC" and birthyear>=1994 and yr>=birthyear+2:
+            observed_CHIC_site_year_events[tag].append((observed,yr,stamp,nest,
+                r["status"].strip().upper(),r["nuegg"].strip(),r["nuch"].strip()))
         if nest:
             quality["strict_active_nest_rows"]+=1
             strict_nest_event_rows_by_site_year[siteyear]+=1
@@ -219,6 +224,114 @@ def audit(banding_zip,resighting_zip,outdir):
          n_CHIC_post_age2,n_offsite_seen,len(offsite_visit_nesting_rows))!=(
          94678,15157,64,2,0,7132,506,11):
         raise ValueError("Source-locked effort/first-breeding chronology failed")
+    # New post-result chronology: original individual-site-year observations, NOT
+    # first biological prospecting/natal recruitment dates or movement rates.
+    first_away_nesters=set().union(*strict_recruit.values())
+    if len(first_away_nesters)!=64 or len(observed_CHIC_site_year_events)!=7132:
+        raise ValueError("Offsite stage support changed from pinned original cohort")
+    from_colony=defaultdict(Counter)
+    observed_gap=Counter()
+    first_nest_age=Counter()
+    stage_q=Counter()
+    for tag in first_away_nesters:
+        natal,bandyear,kind=assignments[tag]
+        if kind!="CHIC":raise ValueError("Non-chick band in offsite nest cohort")
+        ev=observed_CHIC_site_year_events[tag]
+        foreign_nests=[(year,site0) for site0,year,dt,is_nest,st,eg,ch in ev
+                       if site0!=natal and is_nest]
+        if not foreign_nests:raise ValueError("Missing strict foreign nest for eligible band")
+        first_nest_year=min(year for year,site0 in foreign_nests)
+        first_nest_sites={site0 for year,site0 in foreign_nests if year==first_nest_year}
+        if len(first_nest_sites)!=1:
+            stage_q["first_nest_year_tied_destination"]+=1
+            continue
+        destination=next(iter(first_nest_sites))
+        from_colony[destination]["nesting_birds"]+=1
+        visits=[(year,dt,is_nest,st,eg,ch)
+                for site0,year,dt,is_nest,st,eg,ch in ev if site0==destination]
+        earliest_visit_year=min(row[0] for row in visits)
+        lag=first_nest_year-earliest_visit_year
+        if lag<0:raise ValueError("Observed first visit occurs after strict nest year")
+        observed_gap[lag]+=1
+        first_nest_age[first_nest_year-bandyear]+=1
+        if lag>0:
+            stage_q["different_year_prior_observed_site_visit"]+=1
+            from_colony[destination]["different_year_prior_site_visit"]+=1
+            earlier=[v for v in visits if v[0]<first_nest_year]
+            if any(eg in ("0","") and ch in ("0","") for year,dt,is_nest,st,eg,ch in earlier):
+                stage_q["prior_year_explicit_zero_egg_chick_event"]+=1
+            if any(st.startswith("P/") or eg in ("1","2") or ch in ("1","2")
+                   for year,dt,is_nest,st,eg,ch in earlier):
+                stage_q["prior_year_possible_nest_non_strict_status"]+=1
+            else:
+                stage_q["prior_year_no_ambiguous_nest_status"]+=1
+        else:
+            stage_q["first_observed_site_season_already_strict_nesting"]+=1
+            from_colony[destination]["first_observed_year_already_nesting"]+=1
+        first_nest_date=min(dt for year,dt,is_nest,st,eg,ch in visits
+                            if year==first_nest_year and is_nest)
+        earlier_this_year=[v for v in visits if v[0]==first_nest_year and
+                           v[1]<first_nest_date and not v[2]]
+        if earlier_this_year:
+            stage_q["same_year_earlier_non_strict_observation"]+=1
+            if any(v[4] in ("0","") and v[5] in ("0","") for v in earlier_this_year):
+                stage_q["same_year_earlier_zero_egg_chick_event"]+=1
+            if any(v[3].startswith("P/") or v[4] in ("1","2") or v[5] in ("1","2")
+                   for v in earlier_this_year):
+                stage_q["same_year_earlier_possible_nest_non_strict_status"]+=1
+        if any(site0!=natal and site0!=destination and year<first_nest_year
+               for site0,year,dt,is_nest,st,eg,ch in ev):
+            stage_q["earlier_other_foreign_colony_visit"]+=1
+        natal_nesting_years=active_nests.get(tag,{}).get(natal,set())
+        if natal_nesting_years:
+            stage_q["also_documented_natal_strict_nesting"]+=1
+            if any(year<first_nest_year for year in natal_nesting_years):
+                stage_q["natal_nest_before_foreign_first_nest"]+=1
+            if first_nest_year in natal_nesting_years:
+                stage_q["natal_nest_same_year_as_foreign_first_nest"]+=1
+            if any(year>first_nest_year for year in natal_nesting_years):
+                stage_q["natal_nest_after_foreign_first_nest"]+=1
+    if (len(first_away_nesters),sum(observed_gap.values()),observed_gap[0],
+        sum(n for gap,n in observed_gap.items() if gap>0),
+        stage_q["same_year_earlier_non_strict_observation"],
+        stage_q["prior_year_possible_nest_non_strict_status"],
+        stage_q["also_documented_natal_strict_nesting"],
+        stage_q["natal_nest_after_foreign_first_nest"])!=(64,64,41,23,35,14,2,2):
+        raise ValueError("Published original stage chronology does not rederive")
+    new_stage_summary={
+      "source":"USAP-DC 601443/601444 original publisher MD5-verified observations",
+      "status":"POST_RESULT_OBSERVED_STAGE_CHRONOLOGY_ONLY",
+      "source_all_193638_events_rechecked":quality["original_rows"],
+      "original_eligible_resights":quality["eligible_verified_rows"],
+      "original_strict_active_nest_events":quality["strict_active_nest_rows"],
+      "n_chick_banded_age2_plus_seen":len(observed_CHIC_site_year_events),
+      "n_chick_banded_age2_plus_seen_offsite":n_offsite_seen,
+      "n_chick_banded_offsite_strict_nest":64,
+      "n_prior_year_observed_site_before_offsite_nest":23,
+      "n_first_observed_offsite_year_already_strict_nesting":41,
+      "observed_site_visit_to_first_nest_year_gap_distribution":dict(sorted(observed_gap.items())),
+      "first_documented_foreign_nest_age_distribution_years":dict(sorted(first_nest_age.items())),
+      "median_age_at_first_documented_offsite_nest":statistics.median(
+          [age for age,n in first_nest_age.items() for _ in range(n)]),
+      "operational_stage_qa":dict(stage_q),
+      "destination_stage_observation_coverage":{
+           k:dict(v) for k,v in sorted(from_colony.items())},
+      "limitations":[
+           "These are selected detected individuals, NOT an immigration or establishment probability.",
+           "Observed visit-to-nest gap is NOT actual biological settling latency.",
+           "Earlier P/INC and other ambiguous nest-activity codes are not definitive nonbreeding states.",
+           "First observed nesting at a foreign site does not exclude prior undetected nesting elsewhere.",
+           "Crozier dominates the destination histories and colony-year observation effort is highly unequal.",
+           "Dugger et al 2026 DOI 10.3389/fevo.2026.1868960 already estimates demographic prospecting/recruitment with multistate mark-recapture."],
+      "no_raw_individual_ids_or_human_observer_notes_exported":True}
+    (outdir/"observed_stage_chronology_no_individual_ids.json").write_text(
+        json.dumps(new_stage_summary,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+    save_csv(outdir/"observed_foreign_visit_to_nest_gap_histogram.csv",
+             [{"year_gap":year,"n_individuals":n} for year,n in sorted(observed_gap.items())],
+             ["year_gap","n_individuals"])
+    save_csv(outdir/"first_foreign_nest_observed_age_histogram.csv",
+             [{"age_years":age,"n_individuals":n} for age,n in sorted(first_nest_age.items())],
+             ["age_years","n_individuals"])
     summary={
       "status":"OFFICIAL_MD5_VERIFIED_CONSERVATIVE_OBSERVED_NEST_SITE_MOVEMENT",
       "doi_sources":{"banding":source_a,"resighting":source_b},
@@ -280,6 +393,8 @@ def audit(banding_zip,resighting_zip,outdir):
         "natal_only_inc_eggs":unique(inc_only),
         "natal_broad_status":unique(broader_recruit),
         "verified_breeding_two_colonies_distinct_seasons":len(anonymous),
+        "prior_year_observed_same_foreign_colony_before_nesting":23,
+        "same_first_observed_foreign_colony_season_already_nesting":41,
         "first_documented_chick_off_natal_nesting":natal_off_first,
         "chick_banded_resighted_any_colony_age2_plus":n_CHIC_post_age2,
         "chick_banded_resighted_off_natal_age2_plus":n_offsite_seen,
