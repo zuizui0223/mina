@@ -106,6 +106,13 @@ def main():
                              "delta_AIC_from_base":float(z["delta_AIC_to_matching_base"])
                                if z["delta_AIC_to_matching_base"] else None}
                              for k,z in keys.items()},
+      "post_first_fit_sensitivity": [{
+        "scenario":z["scenario"], "term":z["term"],
+        "n_obs":int(z["n_obs"]), "site_n":int(z["site_n"]),
+        "edf":float(z["edf"]),
+        "p_approximate_unadjusted":float(z["p_mgcv_approximate_unadjusted"]),
+        "not_independent_confirmation":True
+        } for z in sensitivity],
       "environment_smooths":[{
         "model":z["model"],"term":z["term"],"edf":float(z["edf"]),
         "p_approximate_unadjusted":float(z["p_mgcv_approximate"])}
