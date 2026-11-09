@@ -120,4 +120,38 @@ for(i in seq_len(nrow(smooths))){
         "|edf=",fmt(rr$edf),"|p_nominal=",fmt(rr$p_mgcv_approximate),"\n",sep="")
   }
 }
-cat("NONMAXENT_GAM_FITS_COMPLETED=4\n")
+# POST-FIRST-FIT diagnostic: added after inspecting four original GAM results.
+# Two specified sensitivities, neither region nor year subset selected by p.
+marine_exVL <- droplevels(subset(marine, region!="Victoria Land"))
+stopifnot(length(unique(marine_exVL$site_id))==14,nrow(marine_exVL)==353)
+year_factor_formula <- log1p_nests ~ species + factor(year) +
+  s(sphere_x,sphere_y,sphere_z,k=12) + s(site_species,bs="re") +
+  s(sic_site_anomaly_per10pp,by=species,k=4)
+sensitivity <- list(
+  no_Victoria_Land=fit(marine_sic,marine_exVL),
+  calendar_year_factors=fit(year_factor_formula,marine)
+)
+sensrows <- data.frame()
+for (key in names(sensitivity)) {
+  m=sensitivity[[key]]
+  sm=summary(m)
+  tab=sm$s.table
+  for(i in seq_len(nrow(tab))) {
+    if(grepl("sic_site_anomaly",rownames(tab)[i],fixed=TRUE)) {
+      sensrows=rbind(sensrows,data.frame(
+        scenario=key,n_obs=nobs(m),
+        site_n=if(key=="no_Victoria_Land") 14 else 40,
+        term=rownames(tab)[i],
+        edf=as.numeric(tab[i,"edf"]),
+        p_mgcv_approximate_unadjusted=as.numeric(tab[i,"p-value"]),
+        original_hypothesis_was_fixed_before_first_fit=FALSE,
+        not_external_climate_replication=TRUE
+      ))
+    }
+  }
+  cat("POST_RESULT_SENSITIVITY=",key," n=",nobs(m),
+      " AIC=",fmt(AIC(m))," explained=",fmt(sm$dev.expl),"\n",sep="")
+}
+write.csv(sensrows,file.path(outdir,"post_first_fit_Victoria_year_sensitivity.csv"),row.names=FALSE)
+stopifnot(nrow(sensrows)==6)
+cat("NONMAXENT_GAM_FITS_COMPLETED=4 core + 2 post-first-fit sensitivity models\n")
