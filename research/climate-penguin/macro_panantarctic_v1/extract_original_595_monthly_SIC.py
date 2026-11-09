@@ -6,7 +6,7 @@ biological climate effect. Use 1993-09 to freeze native ocean memberships before
 looking at any penguin counts; all locations predeclared by 595-site macro atlas.
 """
 from __future__ import annotations
-import csv,hashlib,json,math,time
+import argparse,csv,hashlib,json,math,time
 from collections import defaultdict
 from pathlib import Path
 from urllib.request import urlopen,Request
@@ -112,6 +112,12 @@ def frozen_membership(sites,lat,lon,valid):
     return source
 
 def main():
+    ap=argparse.ArgumentParser()
+    ap.add_argument("--full-30yr",action="store_true",
+                    help="After fixed source pilot, read all 1991-2020 Aug-Nov native 25km monthly files")
+    args=ap.parse_args()
+    years=tuple(range(1991,2021)) if args.full_30yr else YEARS
+    full=bool(args.full_30yr)
     sites=csvrows(HERE/"outputs"/"panantarctic_595_site_inventory.csv")
     if len(sites)!=595 or len({r["site_id"] for r in sites})!=595:
         raise ValueError("Primary full source 595-site geometry changed")
@@ -119,7 +125,9 @@ def main():
     if len(old)!=9600:raise ValueError("Old 40-site SIC reference coverage changed")
     oldmap={(z["site_id"],int(z["year"]),int(z["month"])):z for z in old
             if z["inner_km"]=="0" and z["complete_month"]=="True"}
-    order=[BASE]+[(y,m) for y in YEARS for m in MONTHS if (y,m)!=BASE]
+    order=[BASE]+[(y,m) for y in years for m in MONTHS if (y,m)!=BASE]
+    if (full and len(order)!=120) or (not full and len(order)!=12):
+        raise ValueError("Original requested time horizon changed")
     receipts=[];lines=[];frozen=None;gridfp=None
     for year,month in order:
         receipt=source(year,month)
@@ -170,15 +178,16 @@ def main():
         return float(np.corrcoef(a,b)[0,1]) if len(a)>=3 else None
     diff=[float(z["source_25km_buffer_mean_SIC_pct"])-float(z["source_40_site_daily_derived_monthly_SIC_pct"]) for z in cross]
     status={
-        "status":"PANANTARCTIC_NATIVE_MONTHLY_ICE_MACRO_SOURCE_PILOT_COMPLETE",
+        "status":"PANANTARCTIC_ORIGINAL_30YR_MONTHLY_SIC_MACRO_SOURCE_COMPLETE" if full else "PANANTARCTIC_NATIVE_MONTHLY_ICE_MACRO_SOURCE_PILOT_COMPLETE",
         "original_publisher":"EUMETSAT OSI SAF OSI-450a1 v3.1 monthly original 25km Southern EASE2",
-        "monthly_scene_years":list(YEARS),"months":list(MONTHS),
+        "monthly_scene_years":list(years),"months":list(MONTHS),
+        "run_kind":"FULL_1991_2020_ORIGINAL_120MONTHS" if full else "FIXED_3YEAR_ORIGINAL_12MONTH_SOURCE_PILOT",
         "n_original_source_netCDF_files":len(receipts),
         "n_frozen_breeding_site_codes":len(bysite),
         "n_site_month_records":len(lines),
         "n_sites_with_baseline_100km_ocean_grid_at_least3":sum(len(x)>=MIN_OCEAN for x in frozen.values()),
-        "n_sites_with_complete_QA_supported_all_12months":sum(
-             len(x)==12 and all(r["source_full_595_site_monthly_support"]=="OK" for r in x)
+        "n_sites_with_complete_QA_supported_all_requested_months":sum(
+             len(x)==len(order) and all(r["source_full_595_site_monthly_support"]=="OK" for r in x)
              for x in bysite.values()),
         "n_source_supported_site_months":sum(z["source_full_595_site_monthly_support"]=="OK" for z in lines),
         "n_native_ocean_reference_cells_by_site":{
@@ -192,20 +201,20 @@ def main():
         "original_40site_product_difference_median_abs_pp":float(np.median(np.abs(diff))) if diff else None,
         "original_native_grid_geo_sha256":gridfp,
         "source_notes":[
-          "This is fixed 1993/2008/2018 × Aug-Nov publisher source QA, NOT a 30year time-series correlation.",
+          "This is fixed all 1991-2020 × Aug-Nov original monthly environmental extraction (not a penguin climate association test)." if full else "This is fixed 1993/2008/2018 × Aug-Nov publisher source QA, NOT a 30year time-series correlation.",
           "Marine native ocean pixels fixed using 1993 September to avoid resnapping to preferred climate years.",
           "Original mapped site is a source breeding locality, not a biological habitat absence.",
           "Existing 40-site means came from a daily-derived OSI ice series and need not equal native monthly product.",
           "The source is a continental spatial-environment expansion, not a future CMIP6 model or vegetation change."
         ]}
-    write(OUT/"original_595_site_months_12_source_QA.csv",lines)
+    write(OUT/("original_595_site_months_120_source_QA.csv" if full else "original_595_site_months_12_source_QA.csv"),lines)
     write(OUT/"original_595_sites_marine_native_reference_cells.csv",
           [{"site_id":z["site_id"],"region":z["source_region"],
             "n_frozen_native_ocean_pixels":len(frozen[z["site_id"]]),
             "native_original_25km_flat_pixel_ids":";".join(str(i) for i in frozen[z["site_id"]])}
            for z in sites])
-    (OUT/"original_monthly_source_receipts.json").write_text(json.dumps(receipts,indent=2)+"\n")
-    (OUT/"original_595_native_monthly_SIC_pilot_summary.json").write_text(
+    (OUT/("original_monthly_120_source_receipts.json" if full else "original_monthly_source_receipts.json")).write_text(json.dumps(receipts,indent=2)+"\n")
+    (OUT/("original_595_native_monthly_SIC_30year_summary.json" if full else "original_595_native_monthly_SIC_pilot_summary.json")).write_text(
          json.dumps(status,indent=2)+"\n")
     print("PANANTARCTIC_595_ORIGINAL_MONTHLY_SIC="+json.dumps(status),flush=True)
 
