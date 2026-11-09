@@ -1,0 +1,51 @@
+name: Penguin non-MaxEnt observed-abundance GAM SDM pilot
+on:
+  push:
+    branches: [codex/penguin-nonmaxent-abundance-sdm-20261109]
+    paths:
+      - 'research/climate-penguin/nonmaxent_sdm/**'
+      - '.github/workflows/penguin-nonmaxent-abundance-sdm.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-pinned-observed-colony-gam:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check source and independent QA syntax
+        run: |
+          python -m py_compile research/climate-penguin/nonmaxent_sdm/build_source_panels.py
+          python -m py_compile research/climate-penguin/nonmaxent_sdm/verify_gam_results.py
+      - name: Recreate actual 661 marine observations and 197 current vegetation observations
+        run: python research/climate-penguin/nonmaxent_sdm/build_source_panels.py
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+      - name: Verify R mgcv/GAM package is present
+        run: |
+          Rscript -e 'stopifnot(requireNamespace("mgcv",quietly=TRUE)); cat("R=",getRversion()," mgcv=",as.character(packageVersion("mgcv")),"\n")'
+      - name: Fit fixed marine SIC and contemporary mapped vegetation spatial GAMs
+        run: Rscript research/climate-penguin/nonmaxent_sdm/fit_observed_abundance_gam.R
+      - name: Independently recheck source cohorts and report exploratory GAM diagnostics
+        run: |
+          python -m pip install --disable-pip-version-check numpy
+          python research/climate-penguin/nonmaxent_sdm/verify_gam_results.py
+      - name: Archive original observation panels and GAM evidence without raw individual GPS
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-nonmaxent-observed-abundance-GAM-source-v1
+          path: |
+            research/climate-penguin/nonmaxent_sdm/outputs/source_coverage.json
+            research/climate-penguin/nonmaxent_sdm/outputs/marine_observed_site_species_year_661.csv
+            research/climate-penguin/nonmaxent_sdm/outputs/contemporary_vegetation_site_species_197.csv
+            research/climate-penguin/nonmaxent_sdm/outputs/four_fixed_GAM_fit_metrics.csv
+            research/climate-penguin/nonmaxent_sdm/outputs/fixed_GAM_approximate_smooths.csv
+            research/climate-penguin/nonmaxent_sdm/outputs/*_summary.txt
+            research/climate-penguin/nonmaxent_sdm/outputs/post_result_model_interpretation.json
+          if-no-files-found: warn
