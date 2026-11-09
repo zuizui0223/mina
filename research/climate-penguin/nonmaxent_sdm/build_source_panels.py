@@ -14,7 +14,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[1]
+ROOT = HERE.parent
 OUT = HERE / "outputs"
 OUT.mkdir(parents=True, exist_ok=True)
 
