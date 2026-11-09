@@ -54,7 +54,7 @@ def main():
             raise ValueError("Model observed source grain diverged")
         if not math.isfinite(float(r["AIC"])) or not math.isfinite(float(r["adj_r2"])):
             raise ValueError("Non-finite model fit diagnostics")
-        if r["is_presence_absence_or_unobserved_site_SDM"]!="False":
+        if r["is_presence_absence_or_unobserved_site_SDM"].lower() not in ("false","0"):
             raise ValueError("False occupancy/suitability claim in model outputs")
     if len([r for r in smooth if "sic_site_anomaly" in r["term"]])!=3:
         raise ValueError("Missing species-specific marine ice GAM smooth")
