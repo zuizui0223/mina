@@ -61,7 +61,7 @@ def main():
     if len([r for r in smooth if "static_vegetation_area" in r["term"]])!=3:
         raise ValueError("Missing species-specific terrestrial vegetation GAM smooth")
     for r in smooth:
-        if r["p_is_spatial_cluster_or_project_fdr"]!="False":
+        if r["p_is_spatial_cluster_or_project_fdr"].lower()!="false":
             raise ValueError("Nominal p mislabeled as spatial or project-wide adjusted p")
 
     group=defaultdict(list)
