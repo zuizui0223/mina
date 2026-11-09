@@ -2,6 +2,16 @@
 
 Research checkpoint, 2026-10-30. This directory is a draft research lane. It does not replace the frozen Paper 1 / Paper 2 analyses or establish publication readiness.
 
+## 現在の主線（2026-11-09更新）— 南極全域のマクロ生態学
+
+**ユーザー希望により小規模の衛星QA・食性だけの論文化から主線を修正した。** 今は[元MAPPPDの595地点・18地域・3種のマクロ観測台帳](macro_panantarctic_v1/RESULT_JA_20261109.md)が出発点。2,456件の調査法を固定した元巣数、303地点×年の複数種同年記録、87の100km固定空間格子を元ハッシュで独立再構築済み（[CI SUCCESS](https://github.com/zuizui0223/mina/actions/runs/42610664607)）。
+
+**海氷レイヤーの小規模40地点制約も解消**：元OSI SAF海氷の1991〜2020年8〜11月を595地点全てで抽出、**71,400地点×月／120原NetCDF**を全件取得（[CI SUCCESS](https://github.com/zuizui0223/mina/actions/runs/42612067836)）。元40地点の既存資料と4,800件照合してr=0.99996。これは**海氷の実測原データの大陸的な拡張**であり、温暖化によるペンギンの巣数変化を証明したわけではない。
+
+**次の唯一の生物検定**は[1991–2020年の長期同一方法の3種100地点×種系列／77地点／7地域を固定した海氷×巣数トレンド比較](macro_panantarctic_v1/THREE_SPECIES_100_TREND_TEST_CONTRACT_20261109.md)。地点×種で巣数と海氷を**同じ計数年**だけで評価し、地域平均・250km空間ブロックによる脆弱性を監査する（[実行ジョブ](https://github.com/zuizui0223/mina/actions/runs/42613076334)）。海氷・植生・ニッチの大陸的関係を一つずつ識別するのが目的で、単独のpを救うモデル変更や未調査地点の擬似不在は行わない。
+
+**植生はまだ別レイヤー**：Plantarcticaの2017–2023年静的地図が元222/595地点と一致する。静的植生を1991〜2020年の年次緑化と見なさず、陸側の環境ニッチの空間勾配として扱う。かつての「25地点の年次NDVIとGAMのpを追う」路線（Draft PR #213）は検証資料として保管するが、大陸規模の主論文の分母にしない。
+
 ## 現在の主線（2026-11-07）— 温暖化を一本化したペンギン論文
 
 **新しい唯一の主論文は [warming_unified_v1](warming_unified_v1/README.md)。** 以前の海鳥JNCC繁殖集中の共通帰無は別の研究成果として保存し、温暖化影響の直接証拠に加算しない。繁殖群集6地点・Signy同年9季節の海と時間のニッチ・同地点CMIP6 4条件の出典照合を実行した。[英語全文初稿](warming_unified_v1/MANUSCRIPT_WARMING_UNIFIED_V0_1.md)。温暖化の物理曝露と将来の実巣数予報は分ける。BTOの追加データ待ちやメール送信を主線へ入れない。
