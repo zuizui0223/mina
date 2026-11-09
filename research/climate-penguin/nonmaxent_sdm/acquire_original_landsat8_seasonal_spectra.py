@@ -340,7 +340,7 @@ def main():
     for (site,year,pt),scene_dates in sorted(by_key.items()):
         if any(len(v)!=1 for v in scene_dates.values()):
             raise ValueError("Expected one qa-blind scene per original day")
-        val=median(list(scene_dates.values()))
+        val=median([values[0] for values in scene_dates.values()])
         sitepoints.append({
           "site_id":site,"survey_season":year,"point_id":pt,
           "n_distinct_qa_valid_original_scene_dates":len(scene_dates),
