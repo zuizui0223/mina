@@ -53,7 +53,6 @@ def main():
         z["endpoint"]=="log1p_count_median" and z["species"]=="GEPE"]
     unadj=next(z for z in target if z["adjustment"]=="unadjusted")
     region=next(z for z in target if z["adjustment"]=="region_fixed_effects")
-    rv,pv=pearsonr(np.array([0.,1.]),np.array([0.,1.])) # discard; p is computed from reported r and n below
     rv=float(unadj["pearson_r"]); n=int(unadj["n"])
     from scipy.stats import t as student_t
     tvalue=rv*np.sqrt((n-2)/(1-rv*rv))
