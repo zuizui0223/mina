@@ -31,6 +31,12 @@ def write(p,rows):
         w=csv.DictWriter(f,fieldnames=list(rows[0]))
         w.writeheader();w.writerows(rows)
 
+def write(path,rows):
+    if not rows:raise ValueError("No original observations to archive")
+    with path.open("w",newline="",encoding="utf-8") as f:
+        w=csv.DictWriter(f,fieldnames=list(rows[0]))
+        w.writeheader();w.writerows(rows)
+
 def corr(x,y):
     a=np.asarray(x,dtype=float);b=np.asarray(y,dtype=float)
     if len(a)<4 or min(np.std(a),np.std(b))<1e-10:return None
