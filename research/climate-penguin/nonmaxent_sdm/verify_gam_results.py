@@ -64,6 +64,16 @@ def main():
         if r["p_is_spatial_cluster_or_project_fdr"].lower()!="false":
             raise ValueError("Nominal p mislabeled as spatial or project-wide adjusted p")
 
+    sensitivity=rows('post_first_fit_Victoria_year_sensitivity.csv')
+    if len(sensitivity)!=6 or set(x['scenario'] for x in sensitivity)!={'no_Victoria_Land','calendar_year_factors'}:
+        raise ValueError('Nonprespecified sensitivity scenario introduced')
+    for z in sensitivity:
+        n_expected=353 if z['scenario']=='no_Victoria_Land' else 661
+        sites_expected=14 if z['scenario']=='no_Victoria_Land' else 40
+        if int(z['n_obs'])!=n_expected or int(z['site_n'])!=sites_expected:
+            raise ValueError('Post-result geographic sensitivity cohort changed')
+        if z['original_hypothesis_was_fixed_before_first_fit'].lower()!='false':
+            raise ValueError('Post-result test incorrectly labeled preregistered')
     group=defaultdict(list)
     for z in marine:group[z["species"]].append(z)
     correlations={}
