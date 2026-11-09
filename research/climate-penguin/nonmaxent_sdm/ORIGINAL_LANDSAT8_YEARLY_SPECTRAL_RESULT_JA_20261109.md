@@ -45,7 +45,7 @@ Cape Crozierの同一年でも個々の撮影日に由来するNDVIの幅が大�
 - 次の実行では**50カタログ要求、150サイト×シーン元反射率読取が全部成功**。ただし年別NDVIの中央値集計でPythonのリスト／数値型を取り違え失敗。元の11,550サンプルのCSVはGitHub Actions artifactへ保存。
 - 集計型を修正した最終取得 [**SUCCESS #42608609143**](https://github.com/zuizui0223/mina/actions/runs/42608609143)・[元シーンID／11,550全QAサンプル／年別比較のartifact 13669078857](https://github.com/zuizui0223/mina/actions/runs/42608609143/artifacts/13669078857)で、50地点×年、150サイト×シーン読取、33候補年比較、3成立ペアをすべて成功判定。
 - 失敗した集計ジョブの**元画像読取部分（Actions #42607674023、source artifact 13668124286）**と、成功実行の元画像読取部分を個別にダウンロードして独立照合したところ、**全11,550の `site_id×year×scene_id×point_id` が一致、元QA判定、元QAフラグ、NDVI値の相違は0**。失敗は数値集計箇所であり、衛星の生データ取得・画素値の変化ではない。
-- [独立の月揃えQA SUCCESS #42609376845](https://github.com/zuizui0223/mina/actions/runs/42609376845)（[成果物13670070790](https://github.com/zuizui0223/mina/actions/runs/42609376845/artifacts/13670070790)）で、事前に選択した150サイト×シーンをそのまま再読込し、12月の年比較は1ペア（13地点）と確定。元STAC64シーンを3日×50地点の独立反復として重複計数しないことも別途監査。
+- [独立の月揃えQA最終再検証 SUCCESS #42609671701](https://github.com/zuizui0223/mina/actions/runs/42609671701)（[成果物13670170765](https://github.com/zuizui0223/mina/actions/runs/42609671701/artifacts/13670170765)）で、事前に選択した150サイト×シーンをそのまま再読込し、12月の年比較は1ペア（13地点）と確定。元STAC64シーンを3日×50地点の独立反復として重複計数しないことも別途監査。
 
 ## 4. マクロ論文の判定と次の一点
 
