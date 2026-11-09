@@ -38,6 +38,8 @@ def main():
         points=csv_from_bytes(z.read(POINTS))
     if len(cat)!=50 or len(scenes)!=150 or len(points)!=11550:
         raise ValueError("Original source counts changed or data corrupted")
+    if len({z["original_item_id"] for z in scenes})!=64:
+        raise ValueError("Original source site×scene reuse and independent scene identity changed")
     if Counter(z["catalog_status"] for z in cat)!={"ok":50} or Counter(z["retrieval_status"] for z in scenes)!={"ok":150}:
         raise ValueError("Catalog/asset errors in supposedly successful raw Landsat scenes")
     status=Counter(p["qa_status"] for p in points)
@@ -113,6 +115,8 @@ def main():
       "original_source_artifact_sha256":hashlib.sha256(a.artifact.read_bytes()).hexdigest(),
       "n_eligible_original_census_siteyears":len(cat),
       "n_original_Landsat8_QA_and_reflectance_scenes":len(scenes),
+      "n_unique_original_Landsat8_scene_ids":len({z["original_item_id"] for z in scenes}),
+      "n_site_scene_source_reads_not_independent_images":len(scenes),
       "n_original_fixed_sample_pixel_scenes":len(points),
       "n_QA_valid_spectral_points":status["qa_clear_land_non_snow"],
       "n_potential_census_site_yearpairs":len(summary_rows),
