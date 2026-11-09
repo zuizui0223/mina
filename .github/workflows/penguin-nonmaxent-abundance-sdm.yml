@@ -28,7 +28,7 @@ jobs:
           r-version: 'release'
       - name: Verify R mgcv/GAM package is present
         run: |
-          Rscript -e 'stopifnot(requireNamespace("mgcv",quietly=TRUE)); cat("R=",getRversion()," mgcv=",as.character(packageVersion("mgcv")),"\n")'
+          Rscript -e 'stopifnot(requireNamespace("mgcv",quietly=TRUE)); cat("R=",as.character(getRversion())," mgcv=",as.character(packageVersion("mgcv")),"\n")'
       - name: Fit fixed marine SIC and contemporary mapped vegetation spatial GAMs
         run: Rscript research/climate-penguin/nonmaxent_sdm/fit_observed_abundance_gam.R
       - name: Independently recheck source cohorts and report exploratory GAM diagnostics
