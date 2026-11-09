@@ -8,6 +8,10 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+env:
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
 jobs:
   source-pinned-observed-colony-gam:
     runs-on: ubuntu-22.04
