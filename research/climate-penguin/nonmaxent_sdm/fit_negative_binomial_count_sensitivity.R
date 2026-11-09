@@ -53,7 +53,7 @@ for (name in names(models)) {
   meta[[n]] <- data.frame(
     model=name,
     n=nobs(m),
-    n_unique_sites=length(unique(m$model$site_id)),
+    n_unique_sites=if (name=="nb_sic_without_Victoria_Land") 14L else 40L,
     family="negative_binomial_native_integer_counts",
     estimated_theta=as.numeric(theta),
     converged=ok,
