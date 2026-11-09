@@ -83,6 +83,9 @@ def req_page(url, payload, method):
     raise RuntimeError(f"{type(error).__name__}: {str(error)[:180]}")
 
 def stac(site,lat,lon,year):
+    lat=float(lat); lon=float(lon)
+    if not(-90<=lat<=-50 and -180<=lon<=180):
+        raise ValueError("Invalid source coordinate at Antarctic penguin site")
     # Source *only* center query; no spatial search shifted to locations with
     # favorable NDVI. STAC scenes can intersect the center and miss 2km edges.
     bbox=[lon-.002,lat-.002,lon+.002,lat+.002]
