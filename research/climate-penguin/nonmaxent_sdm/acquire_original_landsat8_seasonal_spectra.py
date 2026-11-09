@@ -286,6 +286,7 @@ def main():
                 features[(site,year)]=[]
     catalog_rows=[catalogs[z] for z in actual_siteyears]
     write_table(OUT/"original_landsat_catalog_50_siteyears.csv",catalog_rows)
+    print("ORIGINAL_LANDSAT_STAC_FAILURE_DETAILS="+json.dumps([{"site":r["site_id"],"year":r["survey_season"],"error":r.get("error","")} for r in catalog_rows if r["catalog_status"]!="ok"][:6]),flush=True)
 
     scene_rows=[];sample_rows=[]
     for k,(site,year) in enumerate(actual_siteyears,1):
