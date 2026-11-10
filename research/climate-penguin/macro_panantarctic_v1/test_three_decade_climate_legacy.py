@@ -198,13 +198,35 @@ def analyze(args):
             delta=abs(prior["r"])-abs(same["r"])
         else:
             delta=None
+        # Post-result timing support audit; survey years are not decade midpoints.
+        baseline["original_observation_timing_support"]={
+          "actual_original_census_year_median_by_decade":{
+              label(j):median(r[f"median_original_census_year_{j}"] for r in roster)
+              if roster else None for j in range(3)},
+          "site_year_gap_1990s_to_2000s_median":
+              median(r["median_original_census_year_1"]-r["median_original_census_year_0"]
+                     for r in roster) if roster else None,
+          "site_year_gap_2000s_to_2010s_median":
+              median(r["median_original_census_year_2"]-r["median_original_census_year_1"]
+                     for r in roster) if roster else None,
+          "n_sites_year_gap_1990s_to_2000s_under_5":
+              sum(r["median_original_census_year_1"]-r["median_original_census_year_0"]<5
+                  for r in roster),
+          "n_sites_year_gap_2000s_to_2010s_under_5":
+              sum(r["median_original_census_year_2"]-r["median_original_census_year_1"]<5
+                  for r in roster)}
         baseline["lag_vs_concurrent_abs_region_demeaned_r_advantage"]=delta
         enough=(len(roster)>=10 and prior["n_blocks"]>=5 and
                 prior["n_regions"]>=2 and prior["r"] is not None and same["r"] is not None)
         if not enough:
             verdict="SOURCE_SUPPORT_INSUFFICIENT_FOR_REGION_CONDITIONED_TEMPORAL_LEGACY"
         elif delta is not None and delta>0:
-            verdict="DESCRIPTIVE_EARLIER_CLIMATE_ALIGNMENT_ONLY_NOT_VALIDATED_LAG"
+            omit=prior["leave_one_region_out"]
+            if (omit["r_min"] is not None and omit["r_max"] is not None
+                    and omit["r_min"] < 0 < omit["r_max"]):
+                verdict="DESCRIPTIVE_EARLIER_SIGNAL_CHANGES_SIGN_AFTER_REGION_OMISSION"
+            else:
+                verdict="DESCRIPTIVE_EARLIER_CLIMATE_ALIGNMENT_ONLY_NOT_VALIDATED_LAG"
         else:
             verdict="NO_DESCRIPTIVE_EARLIER_CLIMATE_ALIGNMENT_ADVANTAGE"
         baseline["time_lag_gate"]=verdict
@@ -265,6 +287,7 @@ def analyze(args):
     print("TRIPLE_DECADE_LAG_SENSITIVITY="+json.dumps([
         {
             "species":r["species"],
+            "original_census_time_support":r["original_observation_timing_support"],
             "r_checks":{k:{"r":v["r"],"informative_sites":v["n_sites"],
                        "source_regions":v["n_regions"],"spatial_blocks":v["n_blocks"],
                        "leave_block_range":[v["leave_one_250km_block_out"]["r_min"],
