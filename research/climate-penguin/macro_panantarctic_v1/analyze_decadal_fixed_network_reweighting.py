@@ -239,6 +239,19 @@ def result_for(rows: list[dict], pi: int, pj: int, scale: str, group: str) -> di
             for m in metrics
         }
         out["n_valid_leave_block_out_recalculations"] = len(jackknife)
+    # Post-outcome diagnostic only: remove each entire original source region.
+    regional_sensitivity = {}
+    for region in sorted({r["source_region"] for r in rows}):
+        trial = [r for r in rows if r["source_region"] != region]
+        rec = decompose(trial, pi, pj)
+        regional_sensitivity[region] = (
+            {"n_sites": len(trial),
+             "southward_positive_latitudinal_reweighting_km": rec["southward_positive_latitudinal_reweighting_km"],
+             "physical_SIC_change_component_pp": rec["physical_SIC_change_component_pp"],
+             "count_reweighting_component_pp": rec["count_reweighting_component_pp"]}
+            if rec is not None else {"n_sites": len(trial), "status": "INSUFFICIENT_OR_ZERO_WEIGHT"}
+        )
+    out["post_result_leave_one_region_out"] = regional_sensitivity
     return out
 
 
