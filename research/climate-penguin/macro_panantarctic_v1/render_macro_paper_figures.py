@@ -34,6 +34,7 @@ def main():
     ap.add_argument("--land-summary",type=Path,required=True)
     ap.add_argument("--trend-summary",type=Path,required=True)
     ap.add_argument("--pair-summary",type=Path,required=True)
+    ap.add_argument("--strict-publisher-summary",type=Path,required=True)
     ap.add_argument("--out",type=Path,required=True)
     a=ap.parse_args()
     a.out.mkdir(parents=True,exist_ok=True)
@@ -43,6 +44,7 @@ def main():
     land=openjson(a.land_summary)
     trend=openjson(a.trend_summary)
     pair=openjson(a.pair_summary)
+    strict=openjson(a.strict_publisher_summary)
     if len(all_sites)!=595 or len({r["site_id"] for r in all_sites})!=595:
         raise ValueError("Original full 595 colony site map input changed")
     if len(breeding_sites)!=100 or len({r["site_id"] for r in breeding_sites})!=77:
@@ -52,7 +54,9 @@ def main():
     if trend["original_macro_site_support"]["eligible_trend_site_species"]!=100:
         raise ValueError("Original 100 breeding-site species cohort changed")
     if len(pair["pairs_fixed_before_statistical_outcome"])!=3:
-        raise ValueError("Original 3-pair co-census family changed")
+        raise ValueError("Original 3-pair source family changed")
+    if strict["all_original_known_nest_count_same_site_season_pair_comparisons"]!=357 or strict["strict_shared_source_vantage_pairs"]!=277:
+        raise ValueError("Original publisher citation/source pairing has changed")
     labels={"ADPE":"Adelie","CHPE":"Chinstrap","GEPE":"Gentoo"}
 
     # Fig 1: source coordinates only; do not claim an Antarctic coastline mask.
@@ -143,31 +147,43 @@ def main():
     ax.grid(axis="x",alpha=.2)
     save(fig,a.out,"Figure3_100_colony_species_longterm_ice_nest_trends")
 
-    # Supplement figure: regional pair balance, all three pairs predeclared.
-    PAIRS=[("ADPE__GEPE","Adelie / Gentoo"),
-           ("ADPE__CHPE","Adelie / Chinstrap"),
+    # Original 357 nominal-season pairs versus publisher-citation-matched 277.
+    PAIRS=[("ADPE__GEPE","Adelie / Gentoo"),("ADPE__CHPE","Adelie / Chinstrap"),
            ("CHPE__GEPE","Chinstrap / Gentoo")]
-    mu=[];lo=[];hi=[];names=[]
-    for sp,title in PAIRS:
-        x=pair["pairs_fixed_before_statistical_outcome"][sp]
+    broadmu=[];broadlo=[];broadhi=[]
+    strictmu=[];strictlo=[];stricthi=[];names=[]
+    for key,title in PAIRS:
+        x=pair["pairs_fixed_before_statistical_outcome"][key]
         ci=x["region_demeaned_250km_block_interval"]["95pct_interval"]
-        if ci is None or not ci[0]<=0<=ci[1]:
-            raise ValueError("Unexpected spatial error interval for original co-censused pair")
-        mu.append(x["site_equal_region_demeaned_r"])
-        lo.append(ci[0]);hi.append(ci[1])
-        names.append(f"{title}  (sites={x['unique_original_colony_sites']}, "
-                     f"blocks={x['n_polar_250km_blocks']})")
-    fig,ax=plt.subplots(figsize=(7.6,4.6))
+        y=strict["fixed_all_three_species_pairs"][key]
+        sci=y["strict_250km_block_interval"]["percentile_interval"]
+        if ci is None or sci is None or not ci[0]<=0<=ci[1] or not sci[0]<=0<=sci[1]:
+            raise ValueError("Unexpected source-matched spatial uncertainty")
+        broadmu.append(x["site_equal_region_demeaned_r"])
+        broadlo.append(ci[0]);broadhi.append(ci[1])
+        strictmu.append(y["strict_region_demeaned_site_equal_r"])
+        strictlo.append(sci[0]);stricthi.append(sci[1])
+        names.append(f"{title} (n={x['source_same_year_co_census_observations']}/"
+                     f"{y['n_strict_same_source_vantage_pairs']})")
+    fig,ax=plt.subplots(figsize=(8.3,5.0))
     ypos=np.arange(len(PAIRS))
-    mu=np.asarray(mu);lo=np.asarray(lo);hi=np.asarray(hi)
-    ax.errorbar(mu,ypos,xerr=np.vstack((mu-lo,hi-mu)),fmt="o",capsize=5)
+    bm=np.asarray(broadmu);bl=np.asarray(broadlo);bh=np.asarray(broadhi)
+    sm=np.asarray(strictmu);sl=np.asarray(strictlo);sh=np.asarray(stricthi)
+    ax.errorbar(bm,ypos-.12,xerr=np.vstack((bm-bl,bh-bm)),
+                fmt="o",capsize=4,label="Both species recorded in same nominal season")
+    ax.errorbar(sm,ypos+.12,xerr=np.vstack((sm-sl,sh-sm)),
+                fmt="s",capsize=4,label="Original publisher citation + method match")
     ax.axvline(0,linestyle="--")
     ax.set_yticks(ypos,labels=names)
     ax.invert_yaxis()
     ax.set_xlim(-1.05,1.05)
-    ax.set_xlabel("Within-region site-equal r: SIC vs log nest ratio")
-    ax.set_title("Co-censused species' nesting balances\nPeninsula-biased subpanel, 1991–2020")
+    ax.set_xlabel("Within-region site-equal r: SIC vs observed log nest ratio")
+    ax.set_title("Same-colony-season species-pair nesting associations\n"
+                 "Spatial-block percentile intervals (250 km)")
+    ax.legend(loc="upper center",bbox_to_anchor=(0.5,-.14),fontsize=8)
     ax.grid(axis="x",alpha=.2)
+    fig.text(.5,.016,"Original survey date and effort not verified within either source cohort.",
+             fontsize=8,ha="center")
     save(fig,a.out,"Supplement_original_species_pair_seaice")
 
     receipt={
@@ -176,6 +192,8 @@ def main():
       "n_mapped_terrestrial_sites":len(site),
       "n_original_breeding_trend_site_species":100,
       "n_original_cocensused_pairs":3,
+      "n_source_pair_siteyears_broad":357,
+      "n_source_pair_siteyears_shared_publisher_citation_method":277,
       "original_marine_site_months":71400,
       "figures":[
         "Figure1_595colony_original_observation_coverage",
@@ -184,7 +202,7 @@ def main():
         "Supplement_original_species_pair_seaice"
       ],
       "no_novel_statistical_test_fitted":True,
-      "source_note":"Plantarctica original land extent is static 2017–2023; do not relabel it as annual greening. All 250km intervals include zero; no regional climate effect is confirmed."
+      "source_note":"Plantarctica original land extent is static 2017–2023; do not relabel it as annual greening. The publisher audit verified 277/357 pairs with matching citation and vantage; exact field days unknown. All original and strict 250km intervals include zero."
     }
     (a.out/"figure_source_receipt.json").write_text(json.dumps(receipt,indent=2)+"\n")
     print("MACRO_PAPER_FIGURE_RENDER_GATE="+json.dumps(receipt))
