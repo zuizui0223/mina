@@ -166,11 +166,6 @@ def main():
             })
     if len(qa)!=357:
         raise ValueError(f"Pre-frozen observed site-year species pair count drift: {len(qa)}")
-    if sum(z["same_recorded_method"]=="False" for z in qa)!=1 or [
-            (z["source_site_id"],z["breeding_season"],z["species_pair"])
-            for z in qa if not z["same_recorded_method"]] not in ([],[("PEIN",2015,"ADPE__GEPE")]):
-        # Python booleans aren't str; check again below.
-        pass
     mixed=[z for z in qa if z["same_recorded_method"] is False]
     if len(mixed)!=1 or [(z["source_site_id"],z["breeding_season"],z["species_pair"]) for z in mixed]!=[("PEIN",2015,"ADPE__GEPE")]:
         raise ValueError("Original 1/357 method mismatch changed")
