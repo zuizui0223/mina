@@ -50,7 +50,14 @@ jobs:
           run-id: 42768561120
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: build/original_cocensus_3pairs
-      - name: Render three distinct source-only macro scientific figures
+      - name: Retrieve original published MAPPPD v5 same-citation and same-method source sensitivity
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-macro-277-strict-shared-citation-three-species-niche-sensitivity
+          run-id: 42775802254
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_publisher_citation_277
+      - name: Render four source-backed macro figures with both nominal and strict publisher provenance
         run: |
           python research/climate-penguin/macro_panantarctic_v1/render_macro_paper_figures.py \
             --all-colony-site-inventory build/original_all_colonies_595/panantarctic_595_site_inventory.csv \
@@ -59,11 +66,12 @@ jobs:
             --land-summary build/original_land_173/land_173_macro_outputs/macroscopic_173site_marine_terrestrial_support.json \
             --trend-summary build/original_breeding_100/three_species_100_outputs/three_species_macro_climate_trend_verdict.json \
             --pair-summary build/original_cocensus_3pairs/cocensus_niche_outputs/three_species_cocensus_niche_summary.json \
+            --strict-publisher-summary build/original_publisher_citation_277/strict_original_357to277_species_niche_sensitivity.json \
             --out research/climate-penguin/macro_panantarctic_v1/paper_figure_outputs
       - name: Preserve vector and raster versions of fixed scientific evidence plots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: penguin-595-site-macro-manuscript-source-figures-v0p1
+          name: penguin-595-site-macro-manuscript-source-figures-v0p2
           path: research/climate-penguin/macro_panantarctic_v1/paper_figure_outputs/
           if-no-files-found: warn
