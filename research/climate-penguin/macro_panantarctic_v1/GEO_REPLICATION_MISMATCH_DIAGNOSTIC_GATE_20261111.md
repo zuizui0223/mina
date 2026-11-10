@@ -22,3 +22,14 @@ For three fixed comparisons (preceding SIC to later nest change, concurrent SIC 
 - Do not fit regression p-values, new thresholds, reference years or temperature dependence. Stop after reporting supported sector counts and regional influence.
 
 Goal: decide whether the original +0.480 earlier climate relation and apparent population vs physical-front phase differences represent a replicated multi-region signature, or a geography-dependent descriptive mismatch. An unsupported outcome is informative and does not negate the robust descriptive original colony weight shift.
+
+
+### 3. Exact nesting-latitude decomposition by the same original 10-degree sectors (post-result accounting)
+
+To avoid over-interpreting a large global nest-weighted latitude shift as within-sector movement, decompose **exactly the same fixed three-decade site roster and counts**, without new geographic bins, climate thresholds, predictor optimization or new census observations. Let w_it be each site's share of all observed source median nests in a period. For each original 10-degree sector k with positive share in both periods, let W_kt = sum_{i in k} w_it and c_kt = sum_{i in k} w_it * latitude_i / W_kt. Then the exact southward-positive latitude change satisfies:
+
+- between-sector share allocation = -111.195 * sum_k (W_k1-W_k0)*(c_k0+c_k1)/2;
+- within-sector observed-site count reweighting = -111.195 * sum_k (W_k1+W_k0)*(c_k1-c_k0)/2;
+- exact total = sum of the above, verified against (overall weighted latitude at t0 - t1)*111.195 km.
+
+Report sector-level terms, W_k0 / W_k1, number of original sites, physical sea-ice sector shift separately, and the exact global identity for each adjacent decade. If a sector has zero combined original nest weight in either period, record partition non-identifiability rather than assigning it an arbitrary latitude or manufacturing a colony absence. This is an **accounting** breakdown, not unique causal attribution, local displacement, true occupancy or biological climate velocity.
