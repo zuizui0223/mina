@@ -259,12 +259,17 @@ def analyze(census: Path, atlas: Path, ice: Path, ice_summary: Path, output: Pat
             })
     matched = []
     all_results = []
+    strict_results = []
     regions = sorted({r["source_region"] for r in sites.values()})
     for pi, pj in PAIRS:
         for sp in SPECIES:
             rows = matched_rows(sites, observed, sic, pi, pj, sp)
             matched.extend(rows)
             all_results.append(result_for(rows, pi, pj, "all_original_regions", sp))
+            strictly_repeated = [r for r in rows if r["n_original_count_years_early"] >= 2
+                                 and r["n_original_count_years_late"] >= 2]
+            strict_results.append(result_for(strictly_repeated, pi, pj,
+                            "all_original_regions_at_least_2_observed_years_in_each_decade", sp))
             for region in regions:
                 sub = [r for r in rows if r["source_region"] == region]
                 if sub:  # Do not populate empty unobserved region as zero
@@ -290,6 +295,7 @@ def analyze(census: Path, atlas: Path, ice: Path, ice_summary: Path, output: Pat
             for pi in range(3)
         ],
         "continental_balanced_panel_results": [r for r in all_results if r["scale"] == "all_original_regions"],
+        "strict_two_census_years_per_window_sensitivity": strict_results,
         "regional_balanced_panel_results": [r for r in all_results if r["scale"] == "within_original_region"],
         "n_matched_source_site_species_pair_records": len(matched),
         "climate_isopleth_velocity": {
@@ -315,6 +321,7 @@ def analyze(census: Path, atlas: Path, ice: Path, ice_summary: Path, output: Pat
         json.dumps(summary, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     print("DECADE_SOURCE_SUPPORT=" + json.dumps(coverage, ensure_ascii=False))
     print("DECADE_FIXED_PANEL_RESULTS=" + json.dumps(summary["continental_balanced_panel_results"], ensure_ascii=False))
+    print("DECADE_STRICT_TWO_YEAR_RESULTS=" + json.dumps(summary["strict_two_census_years_per_window_sensitivity"], ensure_ascii=False))
     print("DECADE_TOTAL_MATCHED_ROWS=" + str(len(matched)))
     return summary
 
