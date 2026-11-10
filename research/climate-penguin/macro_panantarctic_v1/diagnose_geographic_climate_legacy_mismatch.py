@@ -189,10 +189,10 @@ def sector_mismatch(rows,fronts,species):
                 "sectors_with_nontrivial_direction_in_both_axes":len(direct),
                 "same_sign":sum(r["direction"]=="SAME_SIGN" for r in direct),
                 "opposite_sign":sum(r["direction"]=="OPPOSITE_SIGN" for r in direct),
-                "distinct_supported_original_regions":len({q["source_region"] for r in rows
+                "distinct_supported_original_regions":len({r["source_region"] for r in rows
                      if int(r["longitude_sector_10deg"]) in {z["sector"] for z in supported}}),
                 "sector_level_macro_replication": "SUPPORTED_DESCRIPTIVE_SECTOR_PATTERN_ONLY"
-                   if len(direct)>=5 and len({q["source_region"] for r in rows
+                   if len(direct)>=5 and len({r["source_region"] for r in rows
                      if int(r["longitude_sector_10deg"]) in {z["sector"] for z in direct}})>=3
                    else "NO_MACRO_SECTOR_REPLICATION",
                 "not_an_independent_climate_tracking_or_lag_result":True
