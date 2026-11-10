@@ -82,6 +82,14 @@ class TestGeographicMismatch(unittest.TestCase):
                 summary["overall_original_roster_latitudinal_nest_reweighting_km"])
             self.assertLess(summary["exact_identity_absolute_error_km"],1e-8)
         self.assertEqual(len(contributions),4)
+        # A universal geographic latitude offset must not change contributions.
+        relocated=[{**r,"latitude":r["latitude"]+12.5} for r in records]
+        shifted,shifted_details=geo.exact_sector_nesting_partition(relocated,"ADPE")
+        for original,updated in zip(summaries,shifted):
+            self.assertAlmostEqual(original["between_sector_share_component_km"],updated["between_sector_share_component_km"],places=8)
+            self.assertAlmostEqual(original["within_sector_observed_site_component_km"],updated["within_sector_observed_site_component_km"],places=8)
+        for original,updated in zip(contributions,shifted_details):
+            self.assertAlmostEqual(original["between_sector_share_contribution_km"],updated["between_sector_share_contribution_km"],places=8)
 
     def test_zero_weight_sector_does_not_create_latitude(self):
         records=[
