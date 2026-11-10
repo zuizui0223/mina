@@ -1,0 +1,55 @@
+name: Ross Adélie public band-resight provider access and source-schema gate
+on:
+  push:
+    branches: [codex/penguin-ross-band-resight-source-audit-20261108]
+    paths:
+      - 'research/climate-penguin/ross_band_resight/**'
+      - '.github/workflows/penguin-ross-band-resight-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-source-metadata-and-public-route:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile original publication source probe
+        run: |
+          python -m py_compile research/climate-penguin/ross_band_resight/probe_public_sources.py
+          python -m py_compile research/climate-penguin/ross_band_resight/audit_original_csvs.py
+          python -m py_compile research/climate-penguin/ross_band_resight/reconstruct_observed_nesting_movements.py
+          python -m py_compile research/climate-penguin/ross_band_resight/verify_public_aggregates.py
+      - name: Test conservative season and active-nest parser without individual data
+        run: |
+          python - <<'PY'
+          import importlib.util
+          p="research/climate-penguin/ross_band_resight/reconstruct_observed_nesting_movements.py"
+          spec=importlib.util.spec_from_file_location("ross_source_audit",p)
+          m=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(m)
+          assert m.season_start("9495")==1994
+          assert m.season_start("1819")==2018
+          assert m.season_start("2021")==2020
+          assert m.season_start("-10") is None
+          assert m.primary_nest({"status":"INC","nuegg":"2","nuch":"0"})
+          assert m.primary_nest({"status":"BR","nuegg":"0","nuch":"1"})
+          assert not m.primary_nest({"status":"SLP","nuegg":"2","nuch":"0"})
+          assert not m.primary_nest({"status":"P/INC","nuegg":"2","nuch":"0"})
+          assert not m.primary_nest({"status":"INC","nuegg":"9","nuch":"0"})
+          print("ROSS_MOVEMENT_METHODS_STATIC_GATE_PASS")
+          PY
+      - name: Reconcile all public aggregate results without access to original individual IDs
+        run: python research/climate-penguin/ross_band_resight/verify_public_aggregates.py
+      - name: Inspect only provider-advertised public PointBlue original data routes
+        run: python research/climate-penguin/ross_band_resight/probe_public_sources.py
+      - name: Archive original-source feasibility and access receipt (no individual records)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-ross-1997-2021-public-band-resight-source-audit-v1
+          path: research/climate-penguin/ross_band_resight/outputs/public_source_access_receipt.json
+          if-no-files-found: warn

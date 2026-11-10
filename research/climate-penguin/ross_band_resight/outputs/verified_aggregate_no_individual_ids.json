@@ -1,0 +1,227 @@
+{
+  "status": "OFFICIAL_MD5_VERIFIED_CONSERVATIVE_OBSERVED_NEST_SITE_MOVEMENT",
+  "source_scope": "Original user-supplied USAP-DC ZIPs in current conversation; original uncompressed bytes independently checked against publisher MD5",
+  "original_source": {
+    "inventory": {
+      "doi": "10.15784/601443",
+      "filename": "band_inv_1994-2021.csv",
+      "uncompressed_bytes": 11416,
+      "md5": "3da33defa4decc82b6e317c7fa9f9044",
+      "sha256": "5f3705fb5e62476b72bee98572c1aa587714e94c184d07a9cb5171d1f1835815"
+    },
+    "resight": {
+      "doi": "10.15784/601444",
+      "filename": "band_resighting_1997-2021.csv",
+      "uncompressed_bytes": 25121436,
+      "md5": "aaae6ddad6d12081b5a68466794438a2",
+      "sha256": "2adb79cc566f7d71372c90b9b9968094b762b8fc58f14a75e5062c5d5736689c"
+    }
+  },
+  "original_rows": {
+    "band_inventory_ranges": 229,
+    "resighting_event_rows": 193638
+  },
+  "data_quality": {
+    "malformed_unquoted_notes_rows_reassembled_without_modifying_original": 14,
+    "overlapping_band_label_assignments_in_inventory": 4,
+    "overlapping_band_labels_observed_in_resight": 0,
+    "unique_positive_integer_resight_band_ids": 11731,
+    "nonnumeric_or_zero_band_rows": 545,
+    "other_source_qa": {
+      "eligible_verified_id_year_site_rows": 94678,
+      "strict_active_nest_rows": 15157,
+      "source_date_season_mismatches_after_other_gates": 250,
+      "proofed_or_bandseen_not_strict_after_other_gates": 97255
+    }
+  },
+  "operational_primary_definition": "Band ID mapped to unique original band range; orig_col matches banding colony; proofed=1; bandseen=Y; date and season agree; status=INC & nuegg in {1,2} OR status=BR & nuch in {1,2}; status definitions operational pending formal data dictionary",
+  "natal_origin_difference_definition": "Original band range type CHIC (banded as chick) and resighting season at least two years later; primary active nest documented at colony different from banded origin",
+  "strict_observed_natal_origin_to_other_nesting_individuals": 64,
+  "strict_incubating_with_egg_only_individuals": 59,
+  "broader_status_sensitivity_individuals": 69,
+  "strict_distinct_individuals_documented_nesting_at_2_colonies_in_distinct_seasons": 3,
+  "natal_routes": [
+    {
+      "origin": "BEAU",
+      "observed": "CROZ",
+      "birds": 7
+    },
+    {
+      "origin": "BIRD",
+      "observed": "CROZ",
+      "birds": 39
+    },
+    {
+      "origin": "BIRD",
+      "observed": "ROYD",
+      "birds": 1
+    },
+    {
+      "origin": "CROZ",
+      "observed": "BIRD",
+      "birds": 1
+    },
+    {
+      "origin": "ROYD",
+      "observed": "BIRD",
+      "birds": 5
+    },
+    {
+      "origin": "ROYD",
+      "observed": "CROZ",
+      "birds": 11
+    }
+  ],
+  "observed_two_colony_nesting_cases_aggregated": [
+    {
+      "earlier": "ROYD",
+      "later": "CROZ",
+      "season_gap_years": 2,
+      "original_band_category": "BREF"
+    },
+    {
+      "earlier": "CROZ",
+      "later": "BIRD",
+      "season_gap_years": 8,
+      "original_band_category": "CHIC"
+    },
+    {
+      "earlier": "CROZ",
+      "later": "ROYD",
+      "season_gap_years": 5,
+      "original_band_category": "CHIC"
+    }
+  ],
+  "inferential_guardrails": [
+    "These are detected individual cases, not population rates or detection-adjusted dispersal estimates.",
+    "No movement date is known between two seasons of observed nesting; other breeding years may be unobserved.",
+    "Site/year search effort and detectability differ greatly and no effort model was fitted.",
+    "The field-status codebook was not present inside the two uploaded ZIPs; INC and BR with source egg/chick counts are an operational conservative rule.",
+    "CHIC band-inventory ID ranges stand in for chick-banding year/origin; not original individual-level hatch records.",
+    "Already-known literature Dugger et al. 2010 PNAS DOI 10.1073/pnas.1000623107 and Dugger et al. 2026 Frontiers DOI 10.3389/fevo.2026.1868960 analyzed movement; this is original-data reconstruction not first biological discovery.",
+    "Not a Circuitscape penguin resistance calibration; no climate causal effect, future SSP biological forecast or transfer to western Antarctic Peninsula.",
+    "Site-year accepted-event coverage is dramatically uneven and cannot be treated as survey effort or comparable detection probability. Source-accepted observations: 80437 Crozier, 8545 Royds, 5693 Bird, 3 Beaufort. This and destination imbalance block directional immigration/preference claims.",
+    "All 64 distinct chick-origin-away nesting cases have their first documented strict nesting year away from natal colony, but two also have a strict nesting record at natal colony in another year; undetected earlier natal nesting remains possible.",
+    "506 distinct chick-banded birds were detected outside the natal colony after age >=2; 64 had strict verified active nests outside natal colony. The remainder must NOT be called birds that never bred, because undetected nesting and truncated resight years are possible.",
+    "The 11 directional route sightings sum to 520 route-bird occurrences but only 506 distinct off-natal birds; some individuals visited multiple destinations. Do not divide 64 by 520 or treat either quantity as migration rate."
+  ],
+  "privacy_and_provenance": "No original bird ID, observer initials, free-text notes, or complete raw records included in this public aggregate",
+  "n_CHIC_off_natal_first_documented_strict_nesting_year": 64,
+  "n_CHIC_off_natal_ever_documented_strict_nesting_at_natal_site": 2,
+  "n_CHIC_off_natal_first_year_multisite_strict_nesting": 0,
+  "n_verified_colony_season_coverage_cells": 36,
+  "original_observation_records_by_colony": [
+    {
+      "colony": "BEAU",
+      "n_years_with_verified_observations": 1,
+      "first_year": 2004,
+      "last_year": 2004,
+      "verified_resight_events": 3,
+      "strict_active_nest_events": 0,
+      "band_years_with_verified_resighting": 3,
+      "band_years_with_strict_nesting": 0
+    },
+    {
+      "colony": "BIRD",
+      "n_years_with_verified_observations": 5,
+      "first_year": 2002,
+      "last_year": 2013,
+      "verified_resight_events": 5693,
+      "strict_active_nest_events": 493,
+      "band_years_with_verified_resighting": 2262,
+      "band_years_with_strict_nesting": 267
+    },
+    {
+      "colony": "CROZ",
+      "n_years_with_verified_observations": 19,
+      "first_year": 2002,
+      "last_year": 2020,
+      "verified_resight_events": 80437,
+      "strict_active_nest_events": 14206,
+      "band_years_with_verified_resighting": 16048,
+      "band_years_with_strict_nesting": 5385
+    },
+    {
+      "colony": "ROYD",
+      "n_years_with_verified_observations": 11,
+      "first_year": 1998,
+      "last_year": 2014,
+      "verified_resight_events": 8545,
+      "strict_active_nest_events": 458,
+      "band_years_with_verified_resighting": 1535,
+      "band_years_with_strict_nesting": 239
+    }
+  ],
+  "n_CHIC_post_age2_ever_verified_resighted_any_site": 7132,
+  "n_CHIC_post_age2_ever_verified_resighted_off_natal": 506,
+  "n_off_natal_original_to_other_site_observation_routes": 11,
+  "off_natal_observations_vs_documented_nesting_by_route": [
+    {
+      "original_chick_banding_colony": "BEAU",
+      "observed_other_colony": "BIRD",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 3,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 0
+    },
+    {
+      "original_chick_banding_colony": "BEAU",
+      "observed_other_colony": "CROZ",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 68,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 7
+    },
+    {
+      "original_chick_banding_colony": "BEAU",
+      "observed_other_colony": "ROYD",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 8,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 0
+    },
+    {
+      "original_chick_banding_colony": "BIRD",
+      "observed_other_colony": "BEAU",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 1,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 0
+    },
+    {
+      "original_chick_banding_colony": "BIRD",
+      "observed_other_colony": "CROZ",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 247,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 39
+    },
+    {
+      "original_chick_banding_colony": "BIRD",
+      "observed_other_colony": "ROYD",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 47,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 1
+    },
+    {
+      "original_chick_banding_colony": "CROZ",
+      "observed_other_colony": "BIRD",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 10,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 1
+    },
+    {
+      "original_chick_banding_colony": "CROZ",
+      "observed_other_colony": "ROYD",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 4,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 0
+    },
+    {
+      "original_chick_banding_colony": "ROYD",
+      "observed_other_colony": "BEAU",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 2,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 0
+    },
+    {
+      "original_chick_banding_colony": "ROYD",
+      "observed_other_colony": "BIRD",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 64,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 5
+    },
+    {
+      "original_chick_banding_colony": "ROYD",
+      "observed_other_colony": "CROZ",
+      "n_unique_bands_observed_at_other_colony_age2_plus": 66,
+      "n_unique_bands_with_strict_active_nest_at_other_colony": 11
+    }
+  ],
+  "n_birds_with_active_nests_at_two_colonies_in_distinct_seasons": 3
+}
