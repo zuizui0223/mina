@@ -25,7 +25,7 @@
 |---|---|---|
 | 元地域／固定250km極ブロック | Victoria Land / 1:-6 | 同じ |
 | 実座標 | −77.4536, +169.2377 | −77.5545, +166.1639 |
-| 距離 | colspan相当74.7909km | 同じ |
+| 地点間距離 | 74.7909 km | 両地点間の直線的な球面距離 |
 | 計数法 | aerial | aerial |
 | 実際に同年に計数した年 | 1991–2019中の25年 | 同じ |
 | 同年計数log(1+nests)傾き／10年 | **+0.445932** | **−0.051690** |
@@ -55,6 +55,18 @@
 3. **NO: causal ice mismatch/refugia** — 元SICとの差が小さいことを根拠に「海氷では説明できない適応の避難所」と宣言しない。すでにロス島の例にはより具体的な氷山／ポリニヤ・捕食圧の先行研究があり、源のSIC平均はその機構を測っていない。
 4. **Do not multiply papers/tests** — 本探索は単一の南極マクロ論文の「地理的・観測解像度に応じて見える異質性」の一つの図候補。次に元サイト画素と異なる独立な**海へのアクセスの遮断・海底地形・局所ポリニヤ**データが得られた場合だけ、候補に優先順位を付けて機構仮説を外部検証する。
 
+## 5. 地図で結果と観測支持を探索する（GIS）
+
+元のWGS84地理座標を持つ **2つの独立GeoJSON FeatureCollection** を元観測sourceだけから生成し、GISで開けるようにした。
+
+- **penguin_original_bright_dark_100_species_site_points.geojson:** 全100地点×種。5年以上・10年spanの元系列は全部保持し、地域内比較不能10点を絶対に0/普通の繁殖地と誤ラベルしない。元のspecies×region peerが使える6群、真の同年観測support、元Theil–Sen/endpoint sensitivity、外部250kmブロックから支持されるCape Crozier West（正）とCape Royds（負）の2点の判定、真正0観測履歴を属性として保持。
+- **penguin_original_147_same_year_nearby_colony_pair_contrasts.geojson:** 前回実測147組の元同年巣数差・100km SIC差・元25km海域画素Jaccard、距離・ブロック・計数法を保持。線は2つの元サイト座標を幾何的につないだだけであり、**GPS移動・同じ個体の行動圏・実際の海洋輸送路を描いたものではない**。
+- 地理的に十分比較可能なグループ（元種×地域）が6つに限られることと、25の初期頑健source候補から9の同年観測支持、さらに2の外部空間ブロックを満たす候補へ縮むことがレイヤー上でも確認可能。
+- 生成CI [Actions #42923759660](https://github.com/zuizui0223/mina/actions/runs/42923759660) **SUCCESS**、地図アーティファクト **13812977461**（GeoJSON 100ポイント、147比較ライン、原source legend JSON）、source-independent 4単体テスト。
+- 生成には元atlas / #42916058266 / #42919208344 / #42923119624 の固定入力をそのまま使用。表示されない地域は「ペンギンがいない」という意味ではなく、源1991–2020長期カウントの条件を満たしたデータがない地域。
+
+**論文候補の図にするなら**、(A) 全100真正サイトの地理的サポート階級、(B) 明暗2候補と比較地理、(C) 元100km海氷画素共有を同じ地図の分図にする。候補の点の色は相対変化の支持ラベルであり、絶滅リスクや適地確率ではない。
+
 ## 再現コード
 
 - Source overlap all-pair code: audit_pair_nesting_ice_buffer_overlap.py
@@ -62,4 +74,6 @@
 - Execution: .github/workflows/penguin-original-nearshore-source-pixel-overlap.yml
 - Physical output artifact name: penguin-original-147-local-pairs-source-25km-ice-pixel-sharing-v1
 - Full original pair input: #42919893846, count common-year check #42919208344, native source ocean-pixel map #42612067836.
+- Map code: build_spot_and_neighbor_map_geojson.py, original GIS source tests: unit_test_spot_and_neighbor_geojson.py, workflow: .github/workflows/penguin-bright-dark-source-map-gis.yml.
+- External published benchmark: Lyver et al. 2014 (10.1371/journal.pone.0091188), Ainley et al. 2024 Antarctic Science (Cambridge), not a new mechanistic discovery.
 - Draft PR #215 is independent of climate-front PR #214; do not merge main or frozen Paper 1/Paper 2.
