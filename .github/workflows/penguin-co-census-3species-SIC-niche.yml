@@ -4,6 +4,7 @@ on:
     branches: [codex/climate-penguin-progress]
     paths:
       - 'research/climate-penguin/macro_panantarctic_v1/co_census_three_pair_niche.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/verify_co_census_original.py'
       - 'research/climate-penguin/macro_panantarctic_v1/COCENSUS_THREE_PAIR_NICHE_CONTRACT_20261110.md'
       - '.github/workflows/penguin-co-census-3species-SIC-niche.yml'
   workflow_dispatch:
@@ -25,6 +26,7 @@ jobs:
         run: |
           python -m py_compile research/climate-penguin/macro_panantarctic_v1/build.py
           python -m py_compile research/climate-penguin/macro_panantarctic_v1/co_census_three_pair_niche.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/verify_co_census_original.py
       - name: Reproduce all 595 original sites and same-year 303 true species co-censuses
         run: python research/climate-penguin/macro_panantarctic_v1/build.py
       - name: Retrieve original complete 595-site 30-year monthly OSI source
@@ -37,6 +39,11 @@ jobs:
       - name: Fixed same-year climate vs observed colony pairwise breeding ratio analysis
         run: |
           python research/climate-penguin/macro_panantarctic_v1/co_census_three_pair_niche.py \
+            --full-ice-csv build/source_595_30year_ice/ice_595_outputs/original_595_site_months_120_source_QA.csv \
+            --full-ice-summary build/source_595_30year_ice/ice_595_outputs/original_595_native_monthly_SIC_30year_summary.json
+      - name: Independently recompute source census ratios and same-year SIC under 3 planned pairs
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/verify_co_census_original.py \
             --full-ice-csv build/source_595_30year_ice/ice_595_outputs/original_595_site_months_120_source_QA.csv \
             --full-ice-summary build/source_595_30year_ice/ice_595_outputs/original_595_native_monthly_SIC_30year_summary.json
       - name: Preserve original 3-pair co-census and marine niche statistical support
