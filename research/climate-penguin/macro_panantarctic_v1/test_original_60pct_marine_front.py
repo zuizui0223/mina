@@ -67,6 +67,9 @@ class TestOriginalMarineFront(unittest.TestCase):
             {"site_id":"B","longitude":-179.0},
             {"site_id":"C","longitude":-169.0}
         ]
+        # Mirror the required frozen atlas shape without fabricating observed censuses.
+        siteids.extend({"site_id":f"D{i:03d}", "longitude":0.}
+                       for i in range(592))
         matched=[]
         for sid in ("A","B","C"):
             matched.append({
