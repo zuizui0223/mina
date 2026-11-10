@@ -215,6 +215,10 @@ def exact_sector_nesting_partition(rows, species):
             continue
         w0=[v/n0 for v in all_n0];w1=[v/n1 for v in all_n1]
         lat=[float(r["latitude"]) for r in rows]
+        # Fixed source-location anchor is independent of observed nest outcomes.
+        # Sector-wise between contributions expressed relative to this anchor
+        # avoid misleading >hundreds-km signed entries that merely cancel at 0°.
+        lat_reference=mean(lat)
         total=KM_LAT*(sum(w*ll for w,ll in zip(w0,lat))-
                       sum(w*ll for w,ll in zip(w1,lat)))
         sect=defaultdict(list)
@@ -225,13 +229,14 @@ def exact_sector_nesting_partition(rows, species):
             meta={"species":species,"period_start":PERIODS[early],
                   "period_end":PERIODS[late],"longitude_sector_10deg":sec,
                   "n_sites":len(indices),
+                  "fixed_unweighted_roster_latitude_reference_deg":lat_reference,
                   "early_sampled_nest_share":W0,"late_sampled_nest_share":W1}
             if W0<=0 or W1<=0:
                 meta["status"]="ZERO_WEIGHT_IN_SOURCE_SECTOR_ONE_PERIOD"
                 ok=False;components.append(meta);continue
             c0=sum(w0[i]*lat[i] for i in indices)/W0
             c1=sum(w1[i]*lat[i] for i in indices)/W1
-            between_contrib=-KM_LAT*(W1-W0)*(c0+c1)/2
+            between_contrib=-KM_LAT*(W1-W0)*((c0+c1)/2-lat_reference)
             within_contrib=-KM_LAT*(W1+W0)*(c1-c0)/2
             meta.update({
                "status":"EXACT_SYMMETRIC_SOURCE_SECTOR_PARTITION",
@@ -251,6 +256,7 @@ def exact_sector_nesting_partition(rows, species):
                 raise AssertionError(f"Exact original sector latitude partition failed {species} {early}->{late}")
             record.update({
               "status":"EXACT_SOURCE_SECTOR_WEIGHTED_LATITUDE_PARTITION",
+              "fixed_unweighted_roster_latitude_reference_deg":lat_reference,
               "between_sector_share_component_km":between,
               "within_sector_observed_site_component_km":within,
               "exact_identity_absolute_error_km":abs(between+within-total),
