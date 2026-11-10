@@ -1,0 +1,57 @@
+name: Penguin GPS-aligned same-day native Circuitscape current validation
+on:
+  push:
+    branches: [codex/penguin-circuitscape-feasibility-20261108]
+    paths:
+      - 'research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/**'
+      - '.github/workflows/penguin-circuitscape-gps-sameday.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-breeding-season-gps-currents:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original BAS GPS, OSI NetCDF and independent graph readers
+        run: python -m pip install --disable-pip-version-check numpy scipy xarray netCDF4 'rasterio>=1.4,<1.6'
+      - name: Verify source acquisition and analysis code syntax
+        run: |
+          python -m py_compile research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/build_original_days.py
+          python -m py_compile research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/validate_and_score.py
+      - name: Retrieve original BAS Chinstrap GPS v2 from original publisher
+        run: |
+          mkdir -p build/chinstrap_gps_circuit_original
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 300 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/chinstrap_gps_circuit_original/original_gps.zip
+      - name: Freeze verified original 45 GPS/OSI days and build advanced physical current inputs
+        run: python research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/build_original_days.py
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.11'
+      - name: Install frozen native Circuitscape.jl v6.0.0
+        run: |
+          julia --startup-file=no --project=research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/daily_outputs -e 'import Pkg; Pkg.add(Pkg.PackageSpec(name="Circuitscape",version="6.0.0")); Pkg.status()'
+      - name: Solve each original island-day current field using actual Circuitscape.jl
+        run: |
+          julia --startup-file=no --project=research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/daily_outputs research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/run_native_advanced.jl
+      - name: Validate actual advanced currents independently and evaluate source GPS spatial use
+        run: python research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/validate_and_score.py
+      - name: Archive original publisher hashes, fixed GPS cells, current grids and validation summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-45day-original-GPS-native-Circuitscape-v1
+          compression-level: 6
+          path: |
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/daily_outputs/*.json
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/daily_outputs/*.csv
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/daily_outputs/*.tsv
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/daily_outputs/Project.toml
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/daily_outputs/Manifest.toml
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/daily_outputs/cases/*/*.asc
+            research/climate-penguin/warming_unified_v1/circuitscape_gate/gps_same_day/daily_outputs/currents/*_curmap.asc
+          if-no-files-found: warn
