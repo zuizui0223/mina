@@ -1,0 +1,76 @@
+name: Penguin original same-year neighboring colony versus local SIC contrast
+on:
+  push:
+    branches: [analysis/penguin-bright-dark-spots-v1-20261111]
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/audit_neighbor_colony_vs_local_ice.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_neighbor_colony_vs_local_ice.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/ORIGINAL_LOCAL_CLIMATE_PAIR_DIAGNOSTIC_20261111.md'
+      - '.github/workflows/penguin-original-neighbor-colony-ice-contrast.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/audit_neighbor_colony_vs_local_ice.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_neighbor_colony_vs_local_ice.py'
+      - '.github/workflows/penguin-original-neighbor-colony-ice-contrast.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-common-year-nests-and-100km-ice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original Antarctic colony EPSG3031 source geometry
+        run: python -m pip install --disable-pip-version-check pyproj==3.7.1
+      - name: Check exact common-year and marine SIC observation semantics
+        run: |
+          python -m py_compile research/climate-penguin/bright_dark_spots_v1/audit_neighbor_colony_vs_local_ice.py
+          python research/climate-penguin/bright_dark_spots_v1/unit_test_neighbor_colony_vs_local_ice.py -v
+      - name: Rebuild original 595 source site, 2456 actually observed fixed method nest counts
+        run: python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Restore 100 original long colony series and bright dark assignments
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-exploratory-original-bright-dark-colony-100-trends-v1
+          run-id: 42916058266
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/previous_bright_dark
+      - name: Restore 100 original actual co-observed year and strict source candidates
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-bright-dark-common-census-year-peer-sensitivity-v1
+          run-id: 42919208344
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/source_actual_same_year
+      - name: Restore original OSI SAF 595-by-30-by-4 months local SIC source
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-panantarctic-595site-original-1991-2020-monthly-ice
+          run-id: 42612067836
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/source_ice_595
+      - name: Compare every same-block co-observed colony pair and actual site-specific original ice
+        run: |
+          PREVIOUS="$(find build/previous_bright_dark -name 'original_all_100_site_species_relative_spots.csv' -print -quit)"
+          MATCHED="$(find build/source_actual_same_year -name 'all_100_same_year_comparability.csv' -print -quit)"
+          ICE="$(find build/source_ice_595 -name 'original_595_site_months_120_source_QA.csv' -print -quit)"
+          ICE_META="$(find build/source_ice_595 -name 'original_595_native_monthly_SIC_30year_summary.json' -print -quit)"
+          test -s "$PREVIOUS" && test -s "$MATCHED" && test -s "$ICE" && test -s "$ICE_META"
+          python research/climate-penguin/bright_dark_spots_v1/audit_neighbor_colony_vs_local_ice.py \
+            --previous "$PREVIOUS" --common-year "$MATCHED" \
+            --census research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --atlas research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --ice "$ICE" --ice-summary "$ICE_META" \
+            --out research/climate-penguin/bright_dark_spots_v1/neighbor_local_ice_outputs
+      - name: Save original count pair, climate distance and all co-survey-year source rows
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-local-colony-pair-vs-source-marine-ice-v1
+          path: research/climate-penguin/bright_dark_spots_v1/neighbor_local_ice_outputs/
+          if-no-files-found: warn
