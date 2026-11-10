@@ -127,8 +127,17 @@ def front_join_diagnostic(rows, fronts, species):
             sec=site["longitude_sector_10deg"]
             ice_by_sector[sec]=float(edge["southward_positive_ice_edge_meridional_km"])
             counts_by_sector[sec].append(site["site_id"])
+        physical_weighted = None
+        physical_weight_total = sum(float(site[f"median_original_nest_count_{a}"])
+                                    for site,_ in selected)
+        if physical_weight_total > 0:
+            physical_weighted = sum(
+                float(site[f"median_original_nest_count_{a}"]) *
+                float(edge["southward_positive_ice_edge_meridional_km"])
+                for site,edge in selected) / physical_weight_total
         info[key]={
             "species":species,"paired_sites":len(selected),
+            "same_triple_roster_early_nest_weighted_physical_front_shift_km":physical_weighted,
             "paired_sectors":len(ice_by_sector),
             "paired_regions":len({r["source_region"] for r,_ in selected}),
             "sectors":[{"sector":k,"n_sites":len(counts_by_sector[k]),
@@ -253,6 +262,22 @@ def analyze(args):
          "centroid":{k:v["southward_positive_latitudinal_reweighting_km"] for k,v in r.get("same_roster_components",{}).items()},
          "source_support_status":r["time_lag_gate"]}
          for r in results],ensure_ascii=False),flush=True)
+    print("TRIPLE_DECADE_LAG_SENSITIVITY="+json.dumps([
+        {
+            "species":r["species"],
+            "r_checks":{k:{"r":v["r"],"informative_sites":v["n_sites"],
+                       "source_regions":v["n_regions"],"spatial_blocks":v["n_blocks"],
+                       "leave_block_range":[v["leave_one_250km_block_out"]["r_min"],
+                                            v["leave_one_250km_block_out"]["r_max"]],
+                       "leave_region_range":[v["leave_one_region_out"]["r_min"],
+                                             v["leave_one_region_out"]["r_max"]]}
+              for k,v in r["temporal_association_checks"].items()},
+            "same_3_decade_roster_marine_front":{k:{
+                "sites":v["paired_sites"],"sectors":v["paired_sectors"],
+                "early_nest_weighted_physical_front_shift_km":
+                   v["same_triple_roster_early_nest_weighted_physical_front_shift_km"]}
+                for k,v in r["original_marine_front_overlap"].items()},
+        } for r in results],ensure_ascii=False),flush=True)
     return output
 
 
