@@ -31,7 +31,7 @@ class TestOriginalMarineFront(unittest.TestCase):
         front, report = ice.continuous_front(
             sic, valid, lat, np.sin(np.deg2rad(lon)), np.cos(np.deg2rad(lon))
         )
-        self.assertEqual(report["status"], "CONTIGUOUS_60PCT_MARINE_RING_CANDIDATE")
+        self.assertEqual(report["status"], "CONTIGUOUS_60PCT_MARINE_TRACE_CANDIDATE")
         self.assertGreaterEqual(report["selected_contour_sectors"], 24)
         self.assertGreaterEqual(len(front), 24)
         self.assertLess(abs(float(np.median([z["lat_median"] for z in front.values()]))-(-79.2)), .5)
@@ -43,7 +43,7 @@ class TestOriginalMarineFront(unittest.TestCase):
         lat=-90.0+rr*.27
         lon=np.rad2deg(np.arctan2(c-59.5,r-59.5))
         mask=np.ones(rr.shape,dtype=bool)
-        # Remove the eastern half, forcing an open contour and therefore NO ring.
+        # Remove the eastern half, reducing support to fewer than 24 longitude sectors.
         mask[:,:60]=False
         front, report=ice.continuous_front(
             sic,mask,lat,np.sin(np.deg2rad(lon)),np.cos(np.deg2rad(lon))
