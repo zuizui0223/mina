@@ -174,6 +174,35 @@ def decompose(rows: list[dict], pi: int, pj: int) -> dict | None:
     center_separation_years = (mean(PERIODS[pj]) - mean(PERIODS[pi]))
     blocks = {r["polar_250km_block"] for r in rows}
     regions = {r["source_region"] for r in rows}
+    # Post-result descriptive breakdown of the SAME latitudinal reweighting.
+    # Region weights versus within-region colony share movements are different
+    # accounting terms, not individual movements or regional causal effects.
+    region_indices = defaultdict(list)
+    for i, r in enumerate(rows):
+        region_indices[r["source_region"]].append(i)
+    between_region_km = 0.0
+    within_region_km = 0.0
+    region_weights = {}
+    identifiable_region_partition = True
+    for region, indices in sorted(region_indices.items()):
+        rw0, rw1 = sum(w0[i] for i in indices), sum(w1[i] for i in indices)
+        if rw0 <= 0 or rw1 <= 0:
+            identifiable_region_partition = False
+            break
+        rl0 = sum(w0[i] * lats[i] for i in indices) / rw0
+        rl1 = sum(w1[i] * lats[i] for i in indices) / rw1
+        between_region_km += -KM_PER_LAT_DEGREE * (rw1-rw0) * (rl0+rl1) / 2
+        within_region_km += -KM_PER_LAT_DEGREE * (rw1+rw0) * (rl1-rl0) / 2
+        region_weights[region] = {
+            "early_recorded_nest_share": rw0,
+            "late_recorded_nest_share": rw1,
+            "early_weighted_latitude": rl0,
+            "late_weighted_latitude": rl1
+        }
+    if identifiable_region_partition and not math.isclose(
+        shift, between_region_km+within_region_km, rel_tol=1e-11, abs_tol=1e-7
+    ):
+        raise AssertionError("Region share plus within-region latitude shift identity failed")
     # A positive redistribution term offsets negative physical SIC change.
     compensate = redistribution / (-climate) if climate < -1e-9 and redistribution > 0 else None
     return {
@@ -193,6 +222,11 @@ def decompose(rows: list[dict], pi: int, pj: int) -> dict | None:
         "weighted_latitude_late_deg": lat1,
         "southward_positive_latitudinal_reweighting_km": shift,
         "southward_positive_km_per_nominal_decade": shift * 10 / center_separation_years,
+        "post_result_region_partition_status": ("COMPLETE_FIXED_REGION_IDENTITY"
+                    if identifiable_region_partition else "REGION_HAS_ZERO_PERIOD_WEIGHT"),
+        "post_result_between_region_share_shift_km": between_region_km if identifiable_region_partition else None,
+        "post_result_within_region_site_reweighting_shift_km": within_region_km if identifiable_region_partition else None,
+        "post_result_region_share_record": region_weights if identifiable_region_partition else None,
         "weighted_original_SIC_early_pp": exposure0,
         "weighted_original_SIC_late_pp": exposure1,
         "experienced_SIC_change_pp": exposure1 - exposure0,
