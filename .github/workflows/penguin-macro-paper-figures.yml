@@ -1,0 +1,60 @@
+name: Penguin source-verified continental macro manuscript figures
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/render_macro_paper_figures.py'
+      - '.github/workflows/penguin-macro-paper-figures.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  render-continental-verified-figures:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install fixed source figure numeric readers
+        run: python -m pip install --disable-pip-version-check numpy matplotlib
+      - name: Compile figure script
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/render_macro_paper_figures.py
+      - name: Retrieve original 173 terrestrial site and 595×120 SIC macro source results
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-macro-173-site-original-ice-land-niche-covariation
+          run-id: 42765413899
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_land_173
+      - name: Retrieve original 100 species-site breeding trend and spatial-block results
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-100-real-colony-species-SIC-count-trend-macro-association
+          run-id: 42613076334
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_breeding_100
+      - name: Retrieve source independently audited 3-pair co-censused ecological comparisons
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-macro-3species-true-cocensus-ice-niche-1991to2020
+          run-id: 42768561120
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_cocensus_3pairs
+      - name: Render three distinct source-only macro scientific figures
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/render_macro_paper_figures.py \
+            --land-data build/original_land_173/land_173_macro_outputs/original_173_unique_site_marine_terrestrial_environment.csv \
+            --land-summary build/original_land_173/land_173_macro_outputs/macroscopic_173site_marine_terrestrial_support.json \
+            --trend-summary build/original_breeding_100/three_species_100_outputs/three_species_macro_climate_trend_verdict.json \
+            --pair-summary build/original_cocensus_3pairs/cocensus_niche_outputs/three_species_cocensus_niche_summary.json \
+            --out research/climate-penguin/macro_panantarctic_v1/paper_figure_outputs
+      - name: Preserve vector and raster versions of fixed scientific evidence plots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-595-site-macro-manuscript-source-figures-v0p1
+          path: research/climate-penguin/macro_panantarctic_v1/paper_figure_outputs/
+          if-no-files-found: warn
