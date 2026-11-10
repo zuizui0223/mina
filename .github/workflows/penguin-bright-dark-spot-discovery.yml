@@ -1,0 +1,55 @@
+name: Penguin original colony relative bright and dark spots (exploratory source audit)
+on:
+  push:
+    branches: [analysis/penguin-bright-dark-spots-v1-20261111]
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/**'
+      - '.github/workflows/penguin-bright-dark-spot-discovery.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/**'
+      - '.github/workflows/penguin-bright-dark-spot-discovery.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-exact-bright-dark-spot-discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original Antarctic source polar map
+        run: python -m pip install --disable-pip-version-check pyproj==3.7.1
+      - name: Compile code and run independent source-free arithmetic tests
+        run: |
+          python -m py_compile research/climate-penguin/bright_dark_spots_v1/discover_bright_dark_colonies.py
+          python research/climate-penguin/bright_dark_spots_v1/unit_test_bright_dark_colonies.py -v
+      - name: Reconstruct exact original 595 colony 2456 fixed-method observed nests
+        run: python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Restore previously successful original 100 species-site trend cohort (no new outcome tuning)
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-100-real-colony-species-SIC-count-trend-macro-association
+          run-id: 42613076334
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/verified_original_100
+      - name: Independently reconstruct original 100 nest slopes, diagnose source year stability and rank candidate deviations
+        run: |
+          TREND="$(find build/verified_original_100 -name '100_original_site_species_observed_trends.csv' -print -quit)"
+          test -s "$TREND"
+          python research/climate-penguin/bright_dark_spots_v1/discover_bright_dark_colonies.py \
+            --original-100-trends "$TREND" \
+            --original-census research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --original-sites research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --output research/climate-penguin/bright_dark_spots_v1/outputs
+      - name: Archive all site-level source QA, bright/dark rankings, and comparability verdict
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-exploratory-original-bright-dark-colony-100-trends-v1
+          path: research/climate-penguin/bright_dark_spots_v1/outputs/
+          if-no-files-found: warn
