@@ -2,6 +2,12 @@
 
 Research checkpoint, 2026-10-30. This directory is a draft research lane. It does not replace the frozen Paper 1 / Paper 2 analyses or establish publication readiness.
 
+## 2026-11-10 統合英語原稿：595地点の大陸マクロ解析 v0.1
+
+**[Geographic scale constrains sea-ice, terrestrial habitat and breeding-niche associations in Antarctic penguins — 英文原稿v0.1](macro_panantarctic_v1/MANUSCRIPT_MACRO_V0_1.md)** を作成。南極595地点/18地域/2,456元巣数観測、30年間71,400地点月の元海氷、77地点の長期繁殖数と海氷傾向、173地点の静的陸上植生、同年3種の巣数比を**本文3図＋補助**という一つのマクロ生態学的推定枠組みに統合した。
+
+中心結果は**広域の環境差と地域内の生物応答は異なる空間尺度に現れ、海氷–陸植生の広域の相関を地域内に移すと弱まる**という観測上のスケール依存性。3種の繁殖数変化・同年種間比の250kmブロック区間は0を含み、未調査種の不在・植生の年次緑化・温暖化因果・将来の巣数は推定していない。食性の局所結果、Circuitscape、Ross個体移動、25地点Landsatは独立補助レーンとする。**追加解析によるp値探しを中止し、原稿と図の品質を主線として進める。**
+
 ## 2026-11-10 追加：3種の同年共調査ニッチも元データから検証済み
 
 **[元同年3種ペアの地理・地域内・同地点時系列の完全比較](macro_panantarctic_v1/COCENSUS_NICHE_RESULT_JA_20261110.md)**を追加。1991–2020年・近岸海氷に同年照合できた元3種ペアはアデリー/ジェンツー**100地点年／25地点**、アデリー/ヒゲ**89／24**、ヒゲ/ジェンツー**168／33**。地域平均を除いた地点等重み相関rは**+0.285／−0.069／+0.016**で、すべて250km空間ブロック区間は0を含む。見かけの地点年プールrでは3組とも微小な負方向だが、サイトを一票にすると一部の符号が反転する。**同一地域で3種が共通の海氷巣数応答を示すという結論は支持されない**。ただし元595地点は主分析の大陸規模の母体で、同年共調査の地点群は南極半島周辺の地域限定サブパネルであることを明示する。[元観測・元OSIからの2実装検算成功CI #42768561120](https://github.com/zuizui0223/mina/actions/runs/42768561120)。GPS Circuitscapeや特定地点の画像QAを再び論文の中心に増やさない。
