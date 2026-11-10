@@ -2,9 +2,15 @@
 
 Research checkpoint, 2026-10-30. This directory is a draft research lane. It does not replace the frozen Paper 1 / Paper 2 analyses or establish publication readiness.
 
+## 2026-11-10 元MAPPPDまで遡ったマクロ論文v0.2の監査
+
+**[原出典・計数方法の重要なQA](macro_panantarctic_v1/ORIGINAL_PUBLISHER_SOURCE_PROVENANCE_RESULT_JA_20261110.md)**：上流コードの`type='nests'`抽出を確認し、成鳥・雛数の混入疑惑を解消。2026年のMAPPPD v5.0原API 5,487件と照合し、同じ地点・年の3種ペア357観測のうち**同一元`citekey`＋計数方法`vantage`が揃うのは277組**（アデリー／ジェンツー88、アデリー／ヒゲ57、ヒゲ／ジェンツー132）。同一方法のみの不一致は1組（PEIN 2015）だが、**同じ年だけで同じ調査日とは保証できない**。[公式SHAと調査源照合CI #42775226941](https://github.com/zuizui0223/mina/actions/runs/42775226941)。
+
+原出典が一致する277組に絞ると、地域平均を除いた地点等重みの海氷×種間巣数比相関rは**+0.208／−0.190／−0.059**、全て250kmブロック95%区間は0を含む（[原出典に限定した検定CI #42775802254](https://github.com/zuizui0223/mina/actions/runs/42775802254)）。したがって種間関係の「完全同時センサス」という強すぎた表現を修正し、MAPPPDデータ論文（2023）・Oceanites公式v5（2026）・OSI SAF v3.1・Walshawらの植生地図（2024）の一次資料DOIを[英文v0.2](macro_panantarctic_v1/MANUSCRIPT_MACRO_V0_2.md)に付した。元v0.1・図・計算値は経緯として保持し、推定の弱さを隠さない。
+
 ## 2026-11-10 統合英語原稿：595地点の大陸マクロ解析 v0.1
 
-**[Geographic scale constrains sea-ice, terrestrial habitat and breeding-niche associations in Antarctic penguins — 英文原稿v0.1](macro_panantarctic_v1/MANUSCRIPT_MACRO_V0_1.md)** を作成。南極595地点/18地域/2,456元巣数観測、30年間71,400地点月の元海氷、77地点の長期繁殖数と海氷傾向、173地点の静的陸上植生、同年3種の巣数比を**本文3図＋補助**という一つのマクロ生態学的推定枠組みに統合した。
+**[Geographic scale constrains sea-ice, terrestrial habitat and breeding-niche associations in Antarctic penguins — 原出典・計数法監査済み英文原稿v0.2](macro_panantarctic_v1/MANUSCRIPT_MACRO_V0_2.md)** を作成。南極595地点/18地域/2,456元巣数観測、30年間71,400地点月の元海氷、77地点の長期繁殖数と海氷傾向、173地点の静的陸上植生、同年3種の巣数比を**本文3図＋補助**という一つのマクロ生態学的推定枠組みに統合した。
 
 中心結果は**広域の環境差と地域内の生物応答は異なる空間尺度に現れ、海氷–陸植生の広域の相関を地域内に移すと弱まる**という観測上のスケール依存性。3種の繁殖数変化・同年種間比の250kmブロック区間は0を含み、未調査種の不在・植生の年次緑化・温暖化因果・将来の巣数は推定していない。食性の局所結果、Circuitscape、Ross個体移動、25地点Landsatは独立補助レーンとする。**追加解析によるp値探しを中止し、原稿と図の品質を主線として進める。**
 
