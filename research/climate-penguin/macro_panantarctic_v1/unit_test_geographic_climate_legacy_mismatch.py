@@ -61,6 +61,41 @@ class TestGeographicMismatch(unittest.TestCase):
         self.assertEqual(sector2["support"],"NO_VALID_ORIGINAL_MARINE_60PCT_FRONT")
         self.assertEqual([z for z in summary if z["basis"]=="aug_nov" and z["period_start"]==geo.PERIODS[0]][0]["sector_level_macro_replication"],"NO_MACRO_SECTOR_REPLICATION")
 
+    def test_exact_between_and_within_sector_partition(self):
+        records=[
+            {"site_id":"A","source_region":"R1","longitude_sector_10deg":10,"latitude":-62.0,
+             "median_original_nest_count_0":10,"median_original_nest_count_1":30,
+             "median_original_nest_count_2":25},
+            {"site_id":"B","source_region":"R1","longitude_sector_10deg":10,"latitude":-64.0,
+             "median_original_nest_count_0":30,"median_original_nest_count_1":10,
+             "median_original_nest_count_2":15},
+            {"site_id":"C","source_region":"R2","longitude_sector_10deg":31,"latitude":-70.0,
+             "median_original_nest_count_0":50,"median_original_nest_count_1":40,
+             "median_original_nest_count_2":20},
+        ]
+        summaries,contributions=geo.exact_sector_nesting_partition(records,"ADPE")
+        self.assertEqual(len(summaries),2)
+        self.assertTrue(all(r["status"]=="EXACT_SOURCE_SECTOR_WEIGHTED_LATITUDE_PARTITION" for r in summaries))
+        for summary in summaries:
+            self.assertAlmostEqual(summary["between_sector_share_component_km"]+
+                summary["within_sector_observed_site_component_km"],
+                summary["overall_original_roster_latitudinal_nest_reweighting_km"])
+            self.assertLess(summary["exact_identity_absolute_error_km"],1e-8)
+        self.assertEqual(len(contributions),4)
+
+    def test_zero_weight_sector_does_not_create_latitude(self):
+        records=[
+            {"site_id":"A","longitude_sector_10deg":10,"latitude":-61.0,
+             "median_original_nest_count_0":5,"median_original_nest_count_1":0,
+             "median_original_nest_count_2":10},
+            {"site_id":"B","longitude_sector_10deg":20,"latitude":-65.0,
+             "median_original_nest_count_0":10,"median_original_nest_count_1":10,
+             "median_original_nest_count_2":10}
+        ]
+        summary,components=geo.exact_sector_nesting_partition(records,"ADPE")
+        self.assertEqual(summary[0]["status"],"SOME_ORIGINAL_SECTORS_HAVE_ZERO_PERIOD_WEIGHT_PARTITION_UNIDENTIFIED")
+        self.assertTrue(any(z["status"]=="ZERO_WEIGHT_IN_SOURCE_SECTOR_ONE_PERIOD" for z in components))
+
     def test_zero_movement_is_indeterminate_not_pseudomatch(self):
         r=[
             {"site_id":"a","source_region":"R","polar_250km_block":"X",
