@@ -127,14 +127,16 @@ def continuous_front(field, mask, lat, sinlon, coslon):
             continue
         sectors = sector_indices(lonpts[finite])
         coverage = len(set(sectors.tolist()))
+        closed = bool(np.linalg.norm(contour[0] - contour[-1]) <= 2.0)
         record = {
+            "is_closed_contour": closed,
             "vertices": int(finite.sum()),
             "distinct_10degree_sectors": coverage,
             "lat_min": float(np.min(latpts[finite])),
             "lat_max": float(np.max(latpts[finite])),
         }
         audit.append(record)
-        if coverage >= 24:
+        if coverage >= 24 and closed:
             candidates.append((coverage, int(finite.sum()), latpts[finite], sectors))
     # Prechosen rule: widest longitude-sector coverage then longest contour.
     candidates.sort(key=lambda x: (x[0], x[1]), reverse=True)
