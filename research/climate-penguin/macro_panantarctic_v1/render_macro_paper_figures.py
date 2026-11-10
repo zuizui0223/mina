@@ -14,6 +14,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from pyproj import Transformer
 
 def csvrows(p):
     with Path(p).open(encoding="utf-8",newline="") as f:
@@ -27,6 +28,8 @@ def save(fig,out,name):
 
 def main():
     ap=argparse.ArgumentParser()
+    ap.add_argument("--all-colony-site-inventory",type=Path,required=True)
+    ap.add_argument("--breeding-trend-site-data",type=Path,required=True)
     ap.add_argument("--land-data",type=Path,required=True)
     ap.add_argument("--land-summary",type=Path,required=True)
     ap.add_argument("--trend-summary",type=Path,required=True)
@@ -34,10 +37,16 @@ def main():
     ap.add_argument("--out",type=Path,required=True)
     a=ap.parse_args()
     a.out.mkdir(parents=True,exist_ok=True)
+    all_sites=csvrows(a.all_colony_site_inventory)
+    breeding_sites=csvrows(a.breeding_trend_site_data)
     site=csvrows(a.land_data)
     land=openjson(a.land_summary)
     trend=openjson(a.trend_summary)
     pair=openjson(a.pair_summary)
+    if len(all_sites)!=595 or len({r["site_id"] for r in all_sites})!=595:
+        raise ValueError("Original full 595 colony site map input changed")
+    if len(breeding_sites)!=100 or len({r["site_id"] for r in breeding_sites})!=77:
+        raise ValueError("Original 77 colony long-term trend geographic cohort changed")
     if len(site)!=173 or land["n_original_2017to2023_positive_mapped_land_sites"]!=173:
         raise ValueError("Original positive mapped land site count changed")
     if trend["original_macro_site_support"]["eligible_trend_site_species"]!=100:
@@ -45,6 +54,50 @@ def main():
     if len(pair["pairs_fixed_before_statistical_outcome"])!=3:
         raise ValueError("Original 3-pair co-census family changed")
     labels={"ADPE":"Adelie","CHPE":"Chinstrap","GEPE":"Gentoo"}
+
+    # Fig 1: source coordinates only; do not claim an Antarctic coastline mask.
+    all_ids={z["site_id"] for z in all_sites}
+    land_ids={z["site_id"] for z in site}
+    trend_ids={z["site_id"] for z in breeding_sites}
+    if not land_ids<=all_ids or not trend_ids<=all_ids:
+        raise ValueError("Figure site subsets are not subsets of 595 original colonies")
+    to_polar=Transformer.from_crs("EPSG:4326","EPSG:3031",always_xy=True)
+    polar={}
+    for z in all_sites:
+        x,y=to_polar.transform(float(z["longitude"]),float(z["latitude"]))
+        if not np.isfinite([x,y]).all():
+            raise ValueError("Original colony cannot be positioned in Antarctic polar projection")
+        polar[z["site_id"]]=(x/1e6,y/1e6)
+    fig,ax=plt.subplots(figsize=(7.7,7.3))
+    for latitude in (-60,-70,-80):
+        lon=np.linspace(-180,180,361)
+        xx,yy=to_polar.transform(lon,np.full(len(lon),latitude))
+        ax.plot(np.array(xx)/1e6,np.array(yy)/1e6,linestyle=":",alpha=.25,linewidth=.8)
+        lx,ly=to_polar.transform(10,latitude)
+        ax.text(lx/1e6,ly/1e6,f"{abs(latitude)}°S",fontsize=8,alpha=.7)
+    for longitude in range(-180,180,45):
+        lats=np.linspace(-85,-60,100)
+        xx,yy=to_polar.transform(np.full(len(lats),longitude),lats)
+        ax.plot(np.array(xx)/1e6,np.array(yy)/1e6,linestyle=":",alpha=.2,linewidth=.65)
+    xx=[polar[k][0] for k in sorted(all_ids)]
+    yy=[polar[k][1] for k in sorted(all_ids)]
+    ax.scatter(xx,yy,s=16,alpha=.5,label="Original surveyed penguin colonies (n=595)")
+    ax.scatter([polar[k][0] for k in sorted(land_ids)],
+               [polar[k][1] for k in sorted(land_ids)],
+               s=25,marker="^",alpha=.7,
+               label="Positive static mapped land sites (n=173)")
+    ax.scatter([polar[k][0] for k in sorted(trend_ids)],
+               [polar[k][1] for k in sorted(trend_ids)],
+               s=26,marker="x",alpha=.9,
+               label="Long-term nest/ice trend sites (n=77)")
+    ax.set_aspect("equal")
+    ax.set_title("Antarctic penguin colony observation coverage\n"
+                 "Polar stereographic source coordinates (not a habitat map)")
+    ax.set_xlabel("EPSG:3031 x (million metres)")
+    ax.set_ylabel("EPSG:3031 y (million metres)")
+    ax.legend(loc="lower center",bbox_to_anchor=(.5,-.17),fontsize=8)
+    ax.grid(alpha=.1)
+    save(fig,a.out,"Figure1_595colony_original_observation_coverage")
 
     # Fig 2: actual SITE-LEVEL mean SIC vs static mapped positive plant area.
     fig,ax=plt.subplots(figsize=(7.5,5.5))
@@ -118,13 +171,14 @@ def main():
     save(fig,a.out,"Supplement_original_species_pair_seaice")
 
     receipt={
-      "status":"SOURCE_VERIFIED_PANANTARCTIC_THREE_FIGURES_RENDERED",
+      "status":"SOURCE_VERIFIED_PANANTARCTIC_FOUR_FIGURES_RENDERED",
       "n_antarctic_original_colony_sites":595,
       "n_mapped_terrestrial_sites":len(site),
       "n_original_breeding_trend_site_species":100,
       "n_original_cocensused_pairs":3,
       "original_marine_site_months":71400,
       "figures":[
+        "Figure1_595colony_original_observation_coverage",
         "Figure2_original_173site_ice_static_land",
         "Figure3_100_colony_species_longterm_ice_nest_trends",
         "Supplement_original_species_pair_seaice"
