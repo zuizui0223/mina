@@ -136,8 +136,11 @@ def continuous_front(field, mask, lat, sinlon, coslon):
             "lat_max": float(np.max(latpts[finite])),
         }
         audit.append(record)
-        if coverage >= 24 and closed:
-            candidates.append((coverage, int(finite.sum()), latpts[finite], sectors))
+        # The frozen criterion is geographic continuity through >=24 sectors;
+        # a trace may terminate at a source-valid mask edge. Closure was an
+        # overstrict implementation error, diagnosed before marine-front scores.
+        if coverage >= 24:
+            candidates.append((coverage, int(finite.sum()), latpts[finite], sectors, closed))
     # Prechosen rule: widest longitude-sector coverage then longest contour.
     candidates.sort(key=lambda x: (x[0], x[1]), reverse=True)
     if not candidates:
@@ -147,7 +150,7 @@ def continuous_front(field, mask, lat, sinlon, coslon):
             "best_coverage": max((a["distinct_10degree_sectors"] for a in audit), default=0),
             "largest_vertices": max((a["vertices"] for a in audit), default=0),
         }
-    cover, vertices, latpts, sectors = candidates[0]
+    cover, vertices, latpts, sectors, closed = candidates[0]
     edges = {}
     for sec in range(36):
         values = latpts[sectors == sec]
@@ -160,11 +163,13 @@ def continuous_front(field, mask, lat, sinlon, coslon):
             "n_vertices": int(len(values))
         }
     return edges, {
-        "status": "CONTIGUOUS_60PCT_MARINE_RING_CANDIDATE",
+        "status": "CONTIGUOUS_60PCT_MARINE_TRACE_CANDIDATE",
         "large_contour_components": len(audit),
         "eligible_ring_candidates": len(candidates),
         "selected_contour_vertices": vertices,
         "selected_contour_sectors": cover,
+        "selected_trace_is_closed": bool(closed),
+        "geometric_closure_after_source_diagnosis_is_not_required": True,
         "sector_median_latitudes": len(edges),
         "selected_contour_lat_range": [float(np.min(latpts)), float(np.max(latpts))],
         "other_large_components": audit[:12],
