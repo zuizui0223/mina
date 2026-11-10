@@ -1,0 +1,58 @@
+name: Penguin bright/dark colony true co-survey-year source comparison
+on:
+  push:
+    branches: [analysis/penguin-bright-dark-spots-v1-20261111]
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/audit_common_year_bright_dark.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_common_year_bright_dark.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/FROZEN_COMMON_YEAR_PEER_VALIDATION_20261111.md'
+      - '.github/workflows/penguin-common-year-bright-dark-validation.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/audit_common_year_bright_dark.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_common_year_bright_dark.py'
+      - '.github/workflows/penguin-common-year-bright-dark-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-common-census-year-source-peer-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original polar-source region projection library
+        run: python -m pip install --disable-pip-version-check pyproj==3.7.1
+      - name: Check new exact common-year arithmetic and zero-count negative controls
+        run: |
+          python -m py_compile research/climate-penguin/bright_dark_spots_v1/audit_common_year_bright_dark.py
+          python research/climate-penguin/bright_dark_spots_v1/unit_test_common_year_bright_dark.py -v
+      - name: Reconstruct original 595 sites, actual 2456 source nest counts
+        run: python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Restore pre-existing verified 100 longitudinal source-bright-dark site×species candidate cohort
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-exploratory-original-bright-dark-colony-100-trends-v1
+          run-id: 42916058266
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_100_bright_dark
+      - name: Compare all original colony peers only on actually common surveyed years, with zero-free and spatial block audits
+        run: |
+          PREVIOUS="$(find build/original_100_bright_dark -name 'original_all_100_site_species_relative_spots.csv' -print -quit)"
+          test -s "$PREVIOUS"
+          python research/climate-penguin/bright_dark_spots_v1/audit_common_year_bright_dark.py \
+            --previous "$PREVIOUS" \
+            --census research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --atlas research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --out research/climate-penguin/bright_dark_spots_v1/common_year_outputs
+      - name: Archive all source sites, actual common-survey-year pair rows, zero sensitivity, strict ranked candidates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-bright-dark-common-census-year-peer-sensitivity-v1
+          path: research/climate-penguin/bright_dark_spots_v1/common_year_outputs/
+          if-no-files-found: warn
