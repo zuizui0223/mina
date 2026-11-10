@@ -1,5 +1,11 @@
 name: Penguin three-decade original climate legacy vs contemporary and reverse-time placebo
 on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/test_three_decade_climate_legacy.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_three_decade_climate_legacy.py'
+      - '.github/workflows/penguin-three-decade-climate-legacy-gate.yml'
   pull_request:
     paths:
       - 'research/climate-penguin/macro_panantarctic_v1/test_three_decade_climate_legacy.py'
