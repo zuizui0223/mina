@@ -1,0 +1,46 @@
+name: Penguin original Plantarctica class overlap on fixed Landsat8 points
+on:
+  push:
+    branches: [codex/penguin-nonmaxent-abundance-sdm-20261109]
+    paths:
+      - 'research/climate-penguin/nonmaxent_sdm/audit_original_botanical_polygon_overlap.py'
+      - 'research/climate-penguin/nonmaxent_sdm/BOTANICAL_POLYGON_ORIGINAL_SOURCE_GATE_20261109.md'
+      - '.github/workflows/penguin-original-plantarctica-l8-botanical-overlay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-verified-published-map-vs-fixed-pixels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original first-party vegetation polygon and CRS readers
+        run: python -m pip install --disable-pip-version-check -q 'shapely>=2,<3' 'pyproj>=3,<4' pyshp requests
+      - name: Compile original botanical map and fixed-grid source
+        run: |
+          python -m py_compile research/climate-penguin/nonmaxent_sdm/audit_original_botanical_polygon_overlap.py
+          python -m py_compile research/climate-penguin/work/climate_penguin/audit_palmer_plants_original_land_clip_v1.py
+      - name: Rebuild 197 source-pinned positive Plantarctica site-species coordinates
+        run: python research/climate-penguin/nonmaxent_sdm/build_source_panels.py
+      - name: Fetch successful original Landsat8 source QA artifact, same exact geographic positions
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-25site-original-Landsat8-source-spectral-2017to2020
+          run-id: 42608609143
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/fixed_Landsat8_source
+      - name: Fetch 87391 publisher-pinned original Plantarctica classes and map fixed sampled points
+        run: |
+          python research/climate-penguin/nonmaxent_sdm/audit_original_botanical_polygon_overlap.py             --source-folder build/fixed_Landsat8_source             --out research/climate-penguin/nonmaxent_sdm/botanical_QA_outputs
+      - name: Save original map source receipt and 154-point class concordance (no new greening claims)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-official-Plantarctica-2024-classes-vs-L8-154-geometry-fixedpoints
+          path: research/climate-penguin/nonmaxent_sdm/botanical_QA_outputs/
+          if-no-files-found: warn

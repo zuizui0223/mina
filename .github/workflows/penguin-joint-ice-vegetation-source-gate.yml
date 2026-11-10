@@ -1,0 +1,42 @@
+name: Penguin co-located SIC and mapped vegetation support gate
+on:
+  push:
+    branches: [codex/penguin-nonmaxent-abundance-sdm-20261109]
+    paths:
+      - 'research/climate-penguin/nonmaxent_sdm/audit_joint_ice_vegetation_support.py'
+      - 'research/climate-penguin/nonmaxent_sdm/audit_existing_annual_vegetation_support.py'
+      - 'research/climate-penguin/nonmaxent_sdm/JOINT_ICE_VEGETATION_SOURCE_GATE_20261109.md'
+      - '.github/workflows/penguin-joint-ice-vegetation-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-site-season-join:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check original input and cross-axis join scripts
+        run: |
+          python -m py_compile research/climate-penguin/nonmaxent_sdm/build_source_panels.py
+          python -m py_compile research/climate-penguin/nonmaxent_sdm/audit_joint_ice_vegetation_support.py
+          python -m py_compile research/climate-penguin/nonmaxent_sdm/audit_existing_annual_vegetation_support.py
+      - name: Verify source SHA and regenerate original colony census and vegetation panels
+        run: python research/climate-penguin/nonmaxent_sdm/build_source_panels.py
+      - name: Audit actual original 2017 to 2020 observed site-year and static vegetation intersection
+        run: python research/climate-penguin/nonmaxent_sdm/audit_joint_ice_vegetation_support.py
+      - name: Audit existing independent annual NDVI and same-year count pixel support
+        run: python research/climate-penguin/nonmaxent_sdm/audit_existing_annual_vegetation_support.py
+      - name: Preserve real co-located site-years and static-map uncertainty receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-ice-static-vegetation-real-63-row-overlap
+          path: |
+            research/climate-penguin/nonmaxent_sdm/outputs/source_coverage.json
+            research/climate-penguin/nonmaxent_sdm/joint_support_outputs/*.json
+            research/climate-penguin/nonmaxent_sdm/joint_support_outputs/*.csv
+          if-no-files-found: warn

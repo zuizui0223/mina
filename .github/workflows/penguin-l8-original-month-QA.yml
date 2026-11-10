@@ -1,0 +1,51 @@
+name: Penguin original Landsat8 same-month spectral QA audit
+on:
+  push:
+    branches: [codex/penguin-nonmaxent-abundance-sdm-20261109]
+    paths:
+      - 'research/climate-penguin/nonmaxent_sdm/audit_original_l8_same_month.py'
+      - '.github/workflows/penguin-l8-original-month-QA.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-qa-from-original-150-scenes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile independent fixed-month same-position QA
+        run: python -m py_compile research/climate-penguin/nonmaxent_sdm/audit_original_l8_same_month.py
+      - name: Retrieve raw original source-only QA pixels from prior 150-scene scan
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-25site-original-Landsat8-source-spectral-2017to2020
+          run-id: 42607674023
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_l8_150_scene_QA
+      - name: Package fixed original observation receipts without reselecting Landsat scenes
+        run: |
+          python - <<'PY'
+          import zipfile,pathlib
+          root=pathlib.Path("build/original_l8_150_scene_QA")
+          files=list(root.rglob("*.csv"))
+          assert len(files)==3, files
+          with zipfile.ZipFile("/tmp/fixed_original_150scene_QA.zip","w",compression=zipfile.ZIP_DEFLATED) as z:
+            for file in files:
+              z.write(file,file.relative_to(root))
+          print("ORIGINAL_SOURCE_QA_ROWS_READY")
+          PY
+      - name: Recompute 33 potential pairs and strict source-only December sensitivities
+        run: |
+          python research/climate-penguin/nonmaxent_sdm/audit_original_l8_same_month.py             --artifact /tmp/fixed_original_150scene_QA.zip             --output research/climate-penguin/nonmaxent_sdm/month_checked_outputs
+      - name: Archive original same-month comparison with no penguin-vegetation causal claims
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-L8-QA-strict-December-actual-150-scene-receipts
+          path: research/climate-penguin/nonmaxent_sdm/month_checked_outputs/
+          if-no-files-found: warn
