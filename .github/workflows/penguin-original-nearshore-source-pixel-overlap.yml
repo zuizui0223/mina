@@ -1,0 +1,61 @@
+name: Penguin 147 near-colony pairs original 25km ice pixel sharing and comparable response diagnostics
+on:
+  push:
+    branches: [analysis/penguin-bright-dark-spots-v1-20261111]
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/audit_pair_nesting_ice_buffer_overlap.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_pair_nesting_ice_buffer_overlap.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/LOCAL_PAIR_CENSUS_ICE_SCALE_AUDIT_CONTRACT_20261111.md'
+      - '.github/workflows/penguin-original-nearshore-source-pixel-overlap.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/audit_pair_nesting_ice_buffer_overlap.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_pair_nesting_ice_buffer_overlap.py'
+      - '.github/workflows/penguin-original-nearshore-source-pixel-overlap.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-147-observed-same-year-pair-25km-ocean-pixel-sharing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify original ocean-cell overlap and observational ranking arithmetic
+        run: |
+          python -m py_compile research/climate-penguin/bright_dark_spots_v1/audit_pair_nesting_ice_buffer_overlap.py
+          python research/climate-penguin/bright_dark_spots_v1/unit_test_pair_nesting_ice_buffer_overlap.py -v
+      - name: Reuse exact 147 same-year penguin source pairs and local SIC from earlier successful run
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-local-colony-pair-vs-source-marine-ice-v1
+          run-id: 42919893846
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_147_source_pairs
+      - name: Reuse original fixed source 1993 September native 25km marine cell membership for all 595 sites
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-panantarctic-595site-original-1991-2020-monthly-ice
+          run-id: 42612067836
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_full_595_marine_ice
+      - name: Audit actual site buffer marine pixel sharing without re-fitting ecological or climate models
+        run: |
+          PAIRS="$(find build/original_147_source_pairs -name 'all_same_region_same_250km_block_common_year_colony_pairs.csv' -print -quit)"
+          CELLS="$(find build/original_full_595_marine_ice -name 'original_595_sites_marine_native_reference_cells.csv' -print -quit)"
+          test -s "$PAIRS" && test -s "$CELLS"
+          python research/climate-penguin/bright_dark_spots_v1/audit_pair_nesting_ice_buffer_overlap.py \
+            --pairs "$PAIRS" \
+            --membership "$CELLS" \
+            --out research/climate-penguin/bright_dark_spots_v1/ice_pixel_overlap_outputs
+      - name: Preserve raw original 147 pair ocean pixel overlap, geographic coverage and case ranks
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-147-local-pairs-source-25km-ice-pixel-sharing-v1
+          path: research/climate-penguin/bright_dark_spots_v1/ice_pixel_overlap_outputs/
+          if-no-files-found: warn
