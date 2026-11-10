@@ -1,0 +1,49 @@
+name: climate-penguin-chinstrap-video-capture-source-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_video_source_schema_v1.py"
+      - "tests/test_chinstrap_video_source_schema_v1.py"
+      - ".github/workflows/climate-penguin-video-capture-source-v1.yml"
+jobs:
+  source-schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify original video source audit assumptions
+        run: python -m unittest discover -s tests -p test_chinstrap_video_source_schema_v1.py -v
+      - name: Retrieve two exact first-party public page file hrefs
+        run: |
+          mkdir -p build/chinstrap_video
+          curl -fsSL --retry 4 --retry-delay 8 --max-time 300 'https://datadryad.org/downloads/file_stream/1555935' -o build/chinstrap_video/1555935.original
+          curl -fsSL --retry 4 --retry-delay 8 --max-time 300 'https://datadryad.org/downloads/file_stream/1555936' -o build/chinstrap_video/1555936.original
+          python - <<'PY'
+          import zipfile,pathlib,hashlib
+          root=pathlib.Path('build/chinstrap_video')
+          source=[root/'1555935.original',root/'1555936.original']
+          sizes={p:len(p.read_bytes()) for p in source}
+          big=[p for p in source if sizes[p]>50000]
+          small=[p for p in source if 1000<=sizes[p]<20000]
+          if len(big)!=1 or len(small)!=1:
+              raise ValueError('Dryad original source page binary sizes unexpected: '+str(sizes))
+          with zipfile.ZipFile(root/'source.zip','w',compression=zipfile.ZIP_DEFLATED) as z:
+              z.write(big[0],'ChinstrapForagingDiveOutcomesVariables.csv')
+              z.write(small[0],'README_file.txt')
+          print({p.name:{'bytes':sizes[p],'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
+                 for p in source})
+          PY
+      - name: Audit original labelled outcomes source without training or selecting a model
+        run: python research/climate-penguin/work/climate_penguin/chinstrap_video_source_schema_v1.py --source build/chinstrap_video/source.zip --out build/chinstrap_video/source_gate.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-chinstrap-video-prey-original-schema-v1
+          path: |
+            build/chinstrap_video/source.zip
+            build/chinstrap_video/source_gate.json

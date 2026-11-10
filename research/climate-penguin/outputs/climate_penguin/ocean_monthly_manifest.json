@@ -1,0 +1,48 @@
+{
+  "store": "https://s3.waw3-1.cloudferro.com/mdl-arco-time-025/arco/GLOBAL_MULTIYEAR_PHY_001_030/cmems_mod_glo_phy_my_0.083deg_P1M-m_202311/timeChunked.zarr",
+  "product": "GLOBAL_MULTIYEAR_PHY_001_030",
+  "version": "202311",
+  "top_level_coordinate_m": -0.49402499198913574,
+  "variables": {
+    "so": {
+      "cell_methods": "area: mean",
+      "long_name": "Salinity",
+      "standard_name": "sea_water_salinity",
+      "unit_long": "Practical Salinity Unit",
+      "units": "1e-3",
+      "valid_max": 31700,
+      "valid_min": 1
+    },
+    "thetao": {
+      "cell_methods": "area: mean",
+      "long_name": "Temperature",
+      "standard_name": "sea_water_potential_temperature",
+      "unit_long": "Degrees Celsius",
+      "units": "degrees_C",
+      "valid_max": 22600,
+      "valid_min": -32767
+    },
+    "mlotst": {
+      "cell_methods": "area: mean",
+      "long_name": "Density ocean mixed layer thickness",
+      "standard_name": "ocean_mixed_layer_thickness_defined_by_sigma_theta",
+      "unit_long": "Meters",
+      "units": "m",
+      "valid_max": 23400,
+      "valid_min": 1
+    }
+  },
+  "coordinate_warning": "elevation coordinates negative despite positive=down attribute; nearest-to-zero level selected by absolute value",
+  "months": 44,
+  "locations": 106,
+  "unique_wet_cells": 60,
+  "rows": 4664,
+  "distance_max_km": 71.2073104760673,
+  "distance_median_km": 2.2835456843417887,
+  "locations_beyond_25km": 6,
+  "files": {
+    "mlotst_monthly_points.nc": "7506ba97235eef5b319349f3057688ab7ee5a3eab9229787627135afc2b30c73",
+    "so_monthly_points.nc": "dd378e1470e1c19820904e88fc6f28bf21dbc07014e369798fe0ed1bada3bf9d",
+    "thetao_monthly_points.nc": "77667dacf40b86fc4d9cb2a0a1d5834663257902e3dacd7887e0170e507ac2ac"
+  }
+}

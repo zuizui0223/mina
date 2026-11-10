@@ -1,0 +1,32 @@
+name: Penguin pan-Antarctic observed-colony macro atlas v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/**'
+      - '.github/workflows/penguin-panantarctic-full-macro-panel.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-penguin-colony-macro-atlas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Antarctic polar geographic source-block mapping
+        run: python -m pip install --disable-pip-version-check pyproj==3.7.1
+      - name: Compile full original 2999-row macro source audit
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Generate source-hash-pinned 595-site, 18-region Pan-Antarctic count and multi-species inventory
+        run: python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Archive original Pan-Antarctic survey data atlas and ecology grain receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-panantarctic-original-595-site-count-macro-atlas-v1
+          path: research/climate-penguin/macro_panantarctic_v1/outputs/
+          if-no-files-found: warn

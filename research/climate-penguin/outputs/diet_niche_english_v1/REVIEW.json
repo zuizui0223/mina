@@ -1,0 +1,128 @@
+{
+  "reviewer": "independent english_fidelity_review agent",
+  "reviewed_at_utc": "2026-11-06T08:50:39.225327+00:00",
+  "base_commit": "a0b678bad6b8bd57d1f73e687aa6c415416aebb3",
+  "scope": "Scientific and numerical fidelity of the complete English main manuscript and Supplement S1-S8, existing nine references, tables and six figure captions, against frozen Japanese text and saved analysis outputs. No model fitting or analysis tests.",
+  "out_of_scope": [
+    "DOCX rendering and pagination (root reviewer responsibility)",
+    "Subsequent official CMIP6 reference additions, Supplement S9 and Table S8",
+    "Fresh audit of underlying original datasets or publisher bibliography"
+  ],
+  "reviewed_files": [
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/MANUSCRIPT_EN.md",
+      "sha256": "dbf8293e0bcc36e7fa27c5aa215665c3d5a99560ef7b54776fe87bb91e6638ec"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/SUPPLEMENT_EN.md",
+      "sha256": "75813c3741c4bb35bfab4b2258a38eccaddb392a7248e0af482fab378d1553af"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/MANUSCRIPT_JA.md",
+      "sha256": "f218ca0afa30163bcb8e6f6c0f0592d4704fa809940b6aa18bde18d8f5590981"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/SUPPLEMENT_JA.md",
+      "sha256": "9cdf75f97b1dd3a422dd77300abd9ef6b43bd66d3cd4d34b30be6b0868c475a5"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/REFERENCES_VERIFIED.md",
+      "sha256": "61d8adec1bb2f032c25d8388b45d77734814719a4c7e2bf79b7e523689fa525c"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/references.json",
+      "sha256": "1c127f56fe031a2c2304ac899eccb216abebd6d69bb7eb70d68c3b14c3ecfd88"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_1_observed_support.csv",
+      "sha256": "daf0a18f8755f2d9894986e7fa3434072c9472ff370a1083598ff6c67a45fbd5"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_2_effects_and_inference.csv",
+      "sha256": "873373adfbc13def4ece3100b7c18cb92988c11c023b61e168c1b956e1b1816f"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_3_conditional_sensitivity.csv",
+      "sha256": "b40cf08e9dbc9cb5bf92c725206b4e1b9be3fffe4d778ab93e5d3268fe358d8d"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_S1_model_scenarios.csv",
+      "sha256": "2130ce4ccff6f0d71ef417487f3a7b1c14ba75765b9fc51277bd967958033fd2"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/Table_S2_rolling_diagnostics.csv",
+      "sha256": "b5d7fed48caf70888f0cae1714e3a1e7e6ec2938de5aa6bed6c4b986dc7fc224"
+    },
+    {
+      "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/summary.json",
+      "sha256": "3ee83192c9188c529f5a7c598e321c2fda35698254a2d72a838612c857aa333f"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/summary.json",
+      "sha256": "d3cb95eb01f995b2b9eee428e7e6ae3f68e1bd2641a810bd423bd2b1137cc35c"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_diet_components_v1/gentoo_primary_nine_seasons.csv",
+      "sha256": "fc483ae990f9a4f6137edebbe02f4efaab003cd3f6de65d0c313407d55f23a57"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/summary.json",
+      "sha256": "b7bec06b3a31ab225751b82c2608c87bbb62c3c83b56ecb7577a241c9a307e61"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/controlled_reductions.csv",
+      "sha256": "15d2fef65047ee1c9a3c30b8ffa26927a25b18c2d22fa37c057c1d27604a8770"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/component_scenarios.csv",
+      "sha256": "87ee32921ab051f62f0daf047a793359d1b9e36c67817b15df1e624c0d85c537"
+    }
+  ],
+  "verdict": "pass",
+  "scientific_or_numerical_blockers": [],
+  "findings": [
+    {
+      "id": "EN-REF-01",
+      "severity": "minor",
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/MANUSCRIPT_EN.md",
+      "section": "Methods / Palmer comparison and model transfer / final sentence",
+      "finding": "The sentence points to Supplement S6 for Palmer extraction, provenance and reproducibility records, but S6 currently describes the earlier niche_multiscale_v1 and diet_niche_scenarios_v1 validations only. The main availability section does contain a Palmer report link, so this does not invalidate evidence or numerical results.",
+      "fix": "Replace the parenthetical Supplement S6 citation with explicit links to ../../work/palmer_signy_diet_external_v1/sources/source_notes.md, ../../work/palmer_signy_diet_external_v1/DESIGN.md and ../palmer_signy_diet_external_v1/REPORT_JA.md; alternatively add those Palmer-specific records to S6.",
+      "status": "resolved",
+      "resolution": "Root added a Palmer-specific provenance paragraph to Supplement S6. Independently reread that paragraph and verified all three linked local files exist. Main manuscript citation to S6 is now appropriate."
+    }
+  ],
+  "checks": {
+    "full_text_comparison": "Main and Supplement S1-S8 read against Japanese originals; no consequential mistranslation or unsupported scientific extension found.",
+    "cohort_and_replication": "Nine seasons, 772 valid stomachs, 349/350/73 species counts and reuse of the 73 gentoo stomachs are explicit; Palmer 15 region-seasons / 14 distinct starting years not pooled as independent climate years.",
+    "estimands_and_denominators": "D uses fish+crustaceans; D_GA and c/m use four food groups; p uses valid stomach counts and recorded F>0. Correct distinctions retained.",
+    "sampling_dates": "Mutual-support seven-day restriction, not individual pairing or breeding-stage matching; incomplete three-species support retained.",
+    "components": "Recorded-positive frequency, weaker c evidence, no component-effect difference inference, exact noncausal allocation and non-product of fitted p/c versus fitted m retained.",
+    "inference": "Exploratory selection, limited-family permutation adjustment, year exchangeability, temporal diagnostics and cyclic-shift resolution retained.",
+    "palmer": "Fixed Signy intercept/slope and training-mean comparator; worse transfer error even in support; no test of biological regional effect difference; counts discrepancy and rounded aggregates retained.",
+    "scenarios": "All 12 conditions retained with one withheld; seven fully supported annual conditions and four supported means with unsupported years retained; BCC historical floor, conditional mean-SIC estimand and coefficient-only uncertainty retained.",
+    "table_rows_automatically_compared": 71,
+    "table_rows_automatically_matching": 71,
+    "additional_manual_numeric_checks": "S4 exact extremes and p values, S5 slope allocations, Palmer effects/MAEs, component effect sizes/temporal diagnostics, baseline fits/non-product and shape-sensitivity extrema match saved JSON summaries.",
+    "references": "All nine reference identities, author initials, titles, years, journals/datasets, page spans and DOI targets match REFERENCES_VERIFIED.md and references.json; existing attributed claims remain within verified source scope.",
+    "figure_captions": "All six original figure paths preserved; caption panel definitions, units, uncertainty and interpretation match Japanese counterparts and source analyses.",
+    "local_links": "All local Markdown link targets still resolve after final additions.",
+    "abstract_word_count": 233
+  },
+  "changes_made": [
+    "Only this REVIEW.json was written; no manuscript, source analysis, model or figure edits."
+  ],
+  "initial_reviewed_files": [
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/MANUSCRIPT_EN.md",
+      "sha256": "6f960c2c927a17d38dfb79c16f5007ec6de3aefa9413f122d7e6d623556ad523"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_english_v1/SUPPLEMENT_EN.md",
+      "sha256": "57194663e04d3e4459c907689f8bdc1b368735df8fc6e9ca4a80da0d37ec73e3"
+    }
+  ],
+  "final_revision_scope": "Final whole-file hashes include the subsequent S9/Table S8/official CMIP6 citation additions, which remain outside this review. The added S6 Palmer paragraph and retained S1-S8 scientific content are within scope. No new model fitting or analysis tests."
+}

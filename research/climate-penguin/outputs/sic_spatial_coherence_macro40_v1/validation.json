@@ -1,0 +1,33 @@
+{
+  "status": "passed_all_6240_original_pairwise_seaice_correlations_and_distance_summaries",
+  "input_git_blob_sha": {
+    "sic": "4fcea71c2d8b1069b6ad143f6522061ed434daf5",
+    "positions": "1c5214ab355d3d2e19bc33e5de4693fa21f38731"
+  },
+  "saved_git_blob_sha": {
+    "sic_spatial_coherence_macro40_v1/macro40_site_coordinates.csv": "5a211a0eaa63b6a5d3516353dd9431428618dbd3",
+    "sic_spatial_coherence_macro40_v1/pairwise_30year_ice_correlations.csv": "a75309b118f5dd6dff3af0e6f7f5bd4cce2f7468",
+    "sic_spatial_coherence_macro40_v1/month_band_distance_bins.csv": "2c7be2c4245c0660d84b7227ca12d32d111f4ccc",
+    "sic_spatial_coherence_macro40_v1/paired_near_offshore_distance_bins.csv": "895292128f847c668a42417c924d93c650d2a79d",
+    "sic_spatial_coherence_macro40_v1/leave_one_site_out_median_correlations.csv": "2013bc158cb75be18524353700916e85320e099f",
+    "sic_spatial_coherence_macro40_v1/summary.json": "c872d04fb682e85c22c0c52025f2a4b6a1092704"
+  },
+  "comparisons": {
+    "observed_monthly_sic_rows": 9600,
+    "sites": 40,
+    "years": 30,
+    "pairwise_site_month_band_rows": 6240,
+    "bin_rows": 48,
+    "LOO_rows": 1920,
+    "cross_scale_rows": 24
+  },
+  "checks": [
+    "Every pairwise Pearson r independently recalculated from 30 source years",
+    "All 48 binned medians and means independently recomputed",
+    "All 1920 leave-one-original-site-out medians checked",
+    "All 24 near-versus-offshore median contrasts checked",
+    "Pinned source Git blobs validated"
+  ],
+  "limitations": "Site pairs reuse original stations; big, overlapping marine averaging windows induce local correlation. No breeding-response or actual colony-scale marine-exposure effect is identified.",
+  "errors": []
+}

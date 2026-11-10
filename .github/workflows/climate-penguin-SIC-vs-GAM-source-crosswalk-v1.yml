@@ -1,0 +1,29 @@
+name: climate-penguin-SIC-vs-trained-krill-GAM-crosswalk-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/inputs/three_pair_original_45day_SIC_fixed_pixel_receipt.csv"
+      - "research/climate-penguin/inputs/three_pair_original_GAM_nativepixel_receipt.csv"
+      - "research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_vs_GAM_source_crosswalk_v1.py"
+      - "tests/test_chinstrap_daily_ice_vs_GAM_source_crosswalk_v1.py"
+      - ".github/workflows/climate-penguin-SIC-vs-GAM-source-crosswalk-v1.yml"
+jobs:
+  immutable-source-crosswalk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Verify two native source-derived receipts and noncausal crosswalk gate
+        run: python -m unittest discover -s tests -p test_chinstrap_daily_ice_vs_GAM_source_crosswalk_v1.py -v
+      - name: Emit inspectable complete three-pair physical-ice versus trained-prey crosswalk
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_daily_ice_vs_GAM_source_crosswalk_v1.py --source-ice research/climate-penguin/inputs/three_pair_original_45day_SIC_fixed_pixel_receipt.csv --source-gam research/climate-penguin/inputs/three_pair_original_GAM_nativepixel_receipt.csv --out build/ice_GAM_crosswalk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chinstrap-source-SIC-vs-trained-GAM-3islandyear-crosswalk-v1
+          path: |
+            build/ice_GAM_crosswalk/satellite_SIC_vs_published_krill_GAM_source_crosswalk.csv
+            build/ice_GAM_crosswalk/decision.json

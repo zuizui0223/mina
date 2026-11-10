@@ -1,0 +1,47 @@
+name: climate-penguin-freer-krill-signy-v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/freer_krill_signy_v2.py"
+      - "research/climate-penguin/inputs/freer_krill_combined_raster_sha_v1.json"
+      - "tests/test_freer_krill_signy_v2.py"
+      - ".github/workflows/climate-penguin-freer-krill-signy-v2.yml"
+
+jobs:
+  extract:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install raster and original BAS table readers
+        run: python -m pip install "rasterio>=1.4,<1.6" pandas lxml html5lib beautifulsoup4
+      - name: Retrieve exact BAS Freer krill source and BAS three-species stages
+        run: |
+          mkdir -p build/freer_krill build/signy_source
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' -o build/freer_krill/bas_published_source.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o build/signy_source/adelie.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o build/signy_source/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o build/signy_source/gentoo.zip
+      - name: Reconstruct original BAS stage annual values
+        run: python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py --source-dir build/signy_source --out build/signy_stage_derived
+      - name: Reproduce year-specific native GeoTIFF × stage sensitivity
+        run: |
+          python research/climate-penguin/work/climate_penguin/freer_krill_signy_v2.py \
+            --zip build/freer_krill/bas_published_source.zip \
+            --stage-dir build/signy_stage_derived --out build/freer_krill_signy --check-receipt
+      - name: Verify geometry, source and all 54 comparisons
+        run: python -m unittest discover -s tests -p test_freer_krill_signy_v2.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: freer-krill-signy-exposure-v2
+          path: |
+            build/freer_krill_signy/year_radii.csv
+            build/freer_krill_signy/stage_correlations.csv
+            build/freer_krill_signy/regional_compare.csv
+            build/freer_krill_signy/source_checks.json
+            build/signy_stage_derived/source_gate.json

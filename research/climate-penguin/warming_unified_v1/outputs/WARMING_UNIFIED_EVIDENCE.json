@@ -1,0 +1,188 @@
+{
+  "status": "WARMING_SINGLE_PAPER_CROSS_AXIS_OBSERVATIONAL_JOIN_NO_CAUSAL_FORECAST",
+  "prior_outcomes_viewed": true,
+  "input_git_blob_and_sha256": {
+    "warming_species_breeding_v1/matched_species_breeding_change.csv": {
+      "git_blob": "f17b4a21e9e5a045a40f5a4af9019e3bbc011758",
+      "sha256": "6d070de27f9f3016289a19590565e026b9ca55462a70ad8bca40c8d23459a380"
+    },
+    "warming_species_breeding_v1/historical_species_site_trends.csv": {
+      "git_blob": "2b6c0793ea9f9ea9acf0771052cf7a2ad9ab335b",
+      "sha256": "e95ee1cfb5f7b56a476c2846eff664a75272459a3374b7c3939016b9bf824235"
+    },
+    "warming_species_breeding_v1/future_climate_coobserved_sites.csv": {
+      "git_blob": "97ae24e98a0cb5f6b36e275d036cb4b71c953312",
+      "sha256": "5931cfe39ce36ab13274d0acfbaea5b5e96d29ae4594da995262336be43b4006"
+    },
+    "signy_diet_components_v1/species_season_components.csv": {
+      "git_blob": "715364538b0542cf1198e9a2ab0ae2133495ba9a",
+      "sha256": "f87c6085160bd75acf0688d3381831614322d944c4309a0b79a60a80e756fd91"
+    },
+    "hatching_gap_climate_v1/signy_17_seasons.csv": {
+      "git_blob": "f12581366ce908bafec1bd1b450efe8f41eeb605",
+      "sha256": "694110e8a04901913b04691a11ebd86462763ad2f6e5761188ede35d23b1299e"
+    },
+    "cmip6_exposure_atlas_v1/site_scenario_exposure.csv": {
+      "git_blob": "9d7badfd2ad077047cb6f20accc74e3738cf4648",
+      "sha256": "479e170458ea1487d9c0daa7451b75063a57011f31069bd0a2c988df00f55fa6"
+    }
+  },
+  "contract_sha256": "d8b7a13217dd102a816b14c2da78bf9109e62be6efd59fbbb0be7063c67c23bf",
+  "same_location_community": {
+    "strict_shared_breeding_sites": 6,
+    "regions": 2,
+    "all_six_true_ratio_slope_positive": true,
+    "six_adelie_absolute_endpoints_declining": true,
+    "six_gentoo_absolute_endpoints_increasing": true,
+    "observed_year_september_sic_positive_sites": 4,
+    "long_period_aug_nov_sic_negative_sites": 6,
+    "site_codes": [
+      "ARDL",
+      "BISC",
+      "LION",
+      "LLAN",
+      "PCHA",
+      "PETE"
+    ],
+    "all_site_values": "data/six_site_original_breeding_ice.csv"
+  },
+  "same_year_Signy": {
+    "island": "Signy",
+    "n_climate_years": 9,
+    "years": [
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009
+    ],
+    "n_original_stomachs_across_9_years": 422,
+    "r_sic_vs_fish_gap": 0.7814247513630724,
+    "r_sic_vs_hatching_gap": -0.06607505241266795,
+    "r_fish_gap_vs_hatching_gap": -0.05180423317763634,
+    "r_sic_vs_absolute_adelie_hatch_day": 0.41604367077003823,
+    "r_sic_vs_absolute_chinstrap_hatch_day": 0.4388850826618917,
+    "mean_fish_gap": 0.361449474542401,
+    "mean_hatch_gap_days": 29.22222222222222,
+    "r_fish_sic_leave_one_year_range": [
+      0.6849256569147084,
+      0.8827378679491643
+    ],
+    "r_hatch_gap_sic_leave_one_year_range": [
+      -0.3551592967181727,
+      0.15198810368094912
+    ],
+    "descriptive_abs_correlation_contrast": 0.7153496989504045,
+    "hatching_adelie_colony_changed_in_2003": true,
+    "no_new_formal_hypothesis_p_values": true
+  },
+  "future_six_sites": {
+    "scenario_conditions": 4,
+    "locations_per_condition": 6,
+    "physical_exposure_only": true,
+    "scenario_site_equal_means": [
+      {
+        "experiment": "ssp245",
+        "period": "2041-2060",
+        "n_site": 6,
+        "n_geographic_regions": 2,
+        "n_unique_marine_fingerprints": 2,
+        "n_source_verified_marine_sites": 4,
+        "mean_tas_C": 1.660491240871409,
+        "mean_SIC_pp": -11.266739336167712,
+        "mean_sos_native": 0.003983589339127276,
+        "tas_site_range": [
+          1.3246259011857495,
+          2.0042416202566025
+        ],
+        "sic_site_range": [
+          -15.999904068858472,
+          -9.689017758604125
+        ],
+        "n_all3_tas_warming": 6,
+        "n_all3_sic_decreasing": 4
+      },
+      {
+        "experiment": "ssp245",
+        "period": "2081-2100",
+        "n_site": 6,
+        "n_geographic_regions": 2,
+        "n_unique_marine_fingerprints": 2,
+        "n_source_verified_marine_sites": 4,
+        "mean_tas_C": 2.509989086352628,
+        "mean_SIC_pp": -19.95709848128862,
+        "mean_sos_native": -0.10185781398106226,
+        "tas_site_range": [
+          1.8919455022759772,
+          3.0368505863544084
+        ],
+        "sic_site_range": [
+          -45.35219284170726,
+          -11.492067027815743
+        ],
+        "n_all3_tas_warming": 6,
+        "n_all3_sic_decreasing": 4
+      },
+      {
+        "experiment": "ssp585",
+        "period": "2041-2060",
+        "n_site": 6,
+        "n_geographic_regions": 2,
+        "n_unique_marine_fingerprints": 2,
+        "n_source_verified_marine_sites": 4,
+        "mean_tas_C": 1.9175179236573605,
+        "mean_SIC_pp": -13.95558418082567,
+        "mean_sos_native": -0.011136988212504306,
+        "tas_site_range": [
+          1.5524132692097312,
+          2.2510563959840892
+        ],
+        "sic_site_range": [
+          -20.662676300300188,
+          -11.7198868076675
+        ],
+        "n_all3_tas_warming": 6,
+        "n_all3_sic_decreasing": 4
+      },
+      {
+        "experiment": "ssp585",
+        "period": "2081-2100",
+        "n_site": 6,
+        "n_geographic_regions": 2,
+        "n_unique_marine_fingerprints": 2,
+        "n_source_verified_marine_sites": 4,
+        "mean_tas_C": 4.351187602114374,
+        "mean_SIC_pp": -23.939487478097448,
+        "mean_sos_native": -0.2028014175227426,
+        "tas_site_range": [
+          3.154850051963264,
+          5.742131993027986
+        ],
+        "sic_site_range": [
+          -59.33799449640018,
+          -12.139985138663205
+        ],
+        "n_all3_tas_warming": 6,
+        "n_all3_sic_decreasing": 4
+      }
+    ]
+  },
+  "land_vegetation": {
+    "status": "UNVALIDATED_NEST_POLYGON_ANNUAL_VEGETATION_RESPONSE",
+    "no_greenup_or_future_nest_access_forecast": true
+  },
+  "limitations": [
+    "Six community sites share two regions and reused ocean-grid values; repeated sites are not independent geographic experiments.",
+    "Signy 9 shared years are one island; the 422 co-archived fish records are not independent climate replicates. Earlier 772-stomach three-species contrast is distinct.",
+    "Absolute hatching timing and allochrony findings were already reported by Clewlow et al. (2019).",
+    "Existing diet/ice relationships and population trajectories were inspected before cross-axis audit.",
+    "Sea-ice and temperatures are observations, not random treatments; no climate caused species replacement inference.",
+    "Marine, phenology and community observations were obtained in different localities, temporal grains and methods.",
+    "Published static vegetation map / unvalidated NDVI is not a nest-level vegetation trajectory.",
+    "CMIP6 future physical changes do not constitute future nest counts, diet, or hatching-day predictions."
+  ]
+}

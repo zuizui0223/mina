@@ -1,0 +1,136 @@
+{
+  "source_sha256": "5c3ecb4d07f8cb2fee35e3668c4f3526177ccc0859144f048165185c7186cbdb",
+  "code_sha256": "5b0cfde1ed31ed2f369733fc2c15b71d1c143b650b4b1a33cfb5cdf249315ea8",
+  "source_rows": 288,
+  "common_cohort": [
+    {
+      "scope": "all_source_labels",
+      "species": "Adelie",
+      "n": 41,
+      "sites": 9,
+      "years": 9,
+      "camera_rows": 79,
+      "first_year": 2012,
+      "last_year": 2020
+    },
+    {
+      "scope": "all_source_labels",
+      "species": "Chinstrap",
+      "n": 41,
+      "sites": 11,
+      "years": 9,
+      "camera_rows": 48,
+      "first_year": 2011,
+      "last_year": 2020
+    },
+    {
+      "scope": "all_source_labels",
+      "species": "Gentoo",
+      "n": 87,
+      "sites": 23,
+      "years": 9,
+      "camera_rows": 141,
+      "first_year": 2012,
+      "last_year": 2020
+    },
+    {
+      "scope": "appendix_consistent",
+      "species": "Adelie",
+      "n": 35,
+      "sites": 8,
+      "years": 9,
+      "camera_rows": 64,
+      "first_year": 2012,
+      "last_year": 2020
+    },
+    {
+      "scope": "appendix_consistent",
+      "species": "Chinstrap",
+      "n": 37,
+      "sites": 11,
+      "years": 9,
+      "camera_rows": 43,
+      "first_year": 2011,
+      "last_year": 2020
+    },
+    {
+      "scope": "appendix_consistent",
+      "species": "Gentoo",
+      "n": 75,
+      "sites": 20,
+      "years": 9,
+      "camera_rows": 123,
+      "first_year": 2012,
+      "last_year": 2020
+    }
+  ],
+  "features": {
+    "airC": [
+      "tmean_9",
+      1.0
+    ],
+    "ice10": [
+      "near_sic_mean_month9",
+      10.0
+    ],
+    "salt01": [
+      "ocean_m9_surface_salinity",
+      0.1
+    ],
+    "waterC": [
+      "ocean_m9_surface_potential_temperature_c",
+      1.0
+    ]
+  },
+  "models": {
+    "B": [],
+    "I": [
+      "airC",
+      "ice10"
+    ],
+    "O": [
+      "airC",
+      "waterC",
+      "salt01"
+    ],
+    "J": [
+      "airC",
+      "waterC",
+      "salt01",
+      "ice10"
+    ]
+  },
+  "forward_years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020
+  ],
+  "ridge_alpha": 1.0,
+  "all_forward_training_precedes_test": true,
+  "prediction_evaluation": "chronological conditional hindcast using realized heldout-year September environments",
+  "test_population": "previously observed sites only; new-site exclusions recorded in forward_folds.csv",
+  "environment_precedes_settlement_verified": false,
+  "bootstrap_repeats": 499,
+  "bootstrap_scope": "site and year pairs bootstrap separately; not simultaneous two-way coverage",
+  "bootstrap_selection": "coefficient ranges condition on resamples retaining identifiable exposures and positive residual degrees of freedom",
+  "inference_status": "post-exploration descriptive and model evaluation; no confirmatory p-values",
+  "calendar_origin_verified": false,
+  "causal_effect": false,
+  "biological_future_projection_validated": false,
+  "complete_case_target": "cameras with all four September inputs, averaged to species/geographic-code/season",
+  "observation_units": "one mean per species × geographic code × nominal season; not independent climate cells",
+  "files_sha256": {
+    "coefficients.csv": "ab46db91cf24d44a99d061a46c7d88887421b03d1ce78a32b6da5ba1c6c865e3",
+    "cohort.csv": "80acc588898ee44144c4697dac22d8c522efe5d2d4c684ee0621fb173175d1c7",
+    "forward_folds.csv": "4ef17586806b676b432e6d298836b06c3978e213eaabdcc6138f095ebee54653",
+    "forward_metrics.csv": "35ea1472c0f26b6621a44e8961f5e6beb98dac6903f8e63915c579c6381b5b4b",
+    "forward_paired_intervals.csv": "6f325ae0dfd1462c2d344b602269acfb873138507209778f1e27ad0c0ca320ae",
+    "forward_predictions.csv": "c02de101839d2254b3ec981534c9f93e21dbc884a6e41868ae993c1e3312274b",
+    "forward_year_differences.csv": "87e28eef598664b339b2352f169ab453cf2217c41d8975d4599e3555840dbc7b",
+    "relationships.csv": "620403819cb0db378490d60fe8564dc46c0f7f59e1427124f11c6edb8b78a554",
+    "support.csv": "562542767bb05c4137db859344f482770104b0384276c90d97f8680babe44958"
+  }
+}

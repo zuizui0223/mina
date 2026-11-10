@@ -1,0 +1,68 @@
+{
+  "analysis_date": "2026-11-06",
+  "n_seasons": 9,
+  "n_stomachs": 73,
+  "reference_sic": 48.68273700076806,
+  "observed_diet_sic_range": [
+    21.90128214834321,
+    66.68284803598858
+  ],
+  "n_climate_models": 3,
+  "n_climate_conditions": 12,
+  "n_supported_mean_conditions": 11,
+  "n_supported_response_rows": 33,
+  "ols_reference_responses": {
+    "frequency": 0.7588482592164656,
+    "composition": 0.5563980493696954,
+    "mean_response": 0.46294862695441363
+  },
+  "reference_product_of_fitted_components": 0.4222216911956304,
+  "shape_sensitivity": {
+    "frequency": {
+      "n_conditions": 11,
+      "n_negative_ols_changes": 11,
+      "n_negative_fractional_logit_changes": 11,
+      "max_absolute_future_level_difference": 0.04207220196794348,
+      "max_absolute_change_difference": 0.04493970047173751,
+      "ols_future_min": 0.4992844936752957,
+      "ols_future_max": 0.7557374327309128,
+      "ols_change_min": -0.2595637655411699,
+      "ols_change_max": -0.0031108264855528407
+    },
+    "composition": {
+      "n_conditions": 11,
+      "n_negative_ols_changes": 11,
+      "n_negative_fractional_logit_changes": 11,
+      "max_absolute_future_level_difference": 0.003692038933263586,
+      "max_absolute_change_difference": 0.007015978297322811,
+      "ols_future_min": 0.33847879084261534,
+      "ols_future_max": 0.5537863250416687,
+      "ols_change_min": -0.21791925852708,
+      "ols_change_max": -0.002611724328026644
+    },
+    "mean_response": {
+      "n_conditions": 11,
+      "n_negative_ols_changes": 11,
+      "n_negative_fractional_logit_changes": 11,
+      "max_absolute_future_level_difference": 0.02455361532799538,
+      "max_absolute_change_difference": 0.010361990575573049,
+      "ols_future_min": 0.18910362150983334,
+      "ols_future_max": 0.4596666422979758,
+      "ols_change_min": -0.27384500544458035,
+      "ols_change_max": -0.003281984656437894
+    }
+  },
+  "accounting_slopes_per_10pp": {
+    "frequency": 0.05402339881567421,
+    "composition": 0.06302961170752594,
+    "covariation": 0.000687996925190655
+  },
+  "maximum_accounting_change_identity_error": 1.1102230246251565e-16,
+  "n_scenarios_with_all_future_years_in_support": 7,
+  "n_supported_means_with_some_unsupported_future_years": 4,
+  "n_unphysical_corrected_annual_climate_values": 1,
+  "estimand": "separate conditional response at future mean SIC; not expected annual future diet or population change",
+  "uncertainty": "OLS change intervals include only HC3 t7 coefficient uncertainty at a fixed climate delta; climate models are labelled conditions, not probability samples",
+  "relation_assumption": "observed local SIC-response and measurement relationships remain invariant",
+  "source_inputs": 16
+}

@@ -1,0 +1,48 @@
+name: ardley-dependence-v8
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - '.github/workflows/ardley-dependence-v8.yml'
+      - 'research/climate-penguin/work/climate_penguin/ardley_dependence_v8.py'
+      - 'research/climate-penguin/contracts/ARDLEY_DEPENDENCE_V8.md'
+      - 'tests/test_ardley_dependence_v8.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-source-contribution-diagnosis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Full repository tests in normal dependency environment
+        run: |
+          python -m pip install -e '.[dev]'
+          pytest
+      - uses: actions/download-artifact@v4
+        with:
+          name: observed-interval-seaice-v7-original-source
+          run-id: 40967544366
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/source-v7
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-penguin-mapppd-matched-species-growth-v1
+          run-id: 40868828790
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/original-counts
+      - name: Recompute exact V7 site and source contributions with unchanged original counts
+        run: |
+          python research/climate-penguin/work/climate_penguin/ardley_dependence_v8.py \
+            --v7-dir /tmp/source-v7 --original-dir /tmp/original-counts --out /tmp/ardley-v8
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ardley-dependence-v8-original-source
+          path: /tmp/ardley-v8/
+          retention-days: 30
+          if-no-files-found: error

@@ -1,0 +1,74 @@
+{
+  "status": "PASS_MANUSCRIPT_SOURCE_FACTS_WITH_DISCLOSED_MEASUREMENT_HOLD",
+  "source": "research/network_concentration_unified_v1/MANUSCRIPT_FULL_DRAFT_V0_1.md",
+  "manuscript_sha256": "c6dd045039a808d16be4c885957aa959f83dae8f4342de9f537c1c542fc0831f",
+  "characters": 25629,
+  "approx_words": 3443,
+  "frozen_source_cohorts": {
+    "JNCC": 663,
+    "MAPPPD": 12,
+    "species_pairs": 378
+  },
+  "JNCC": {
+    "positive": 436,
+    "declines": 479,
+    "positive_in_declines": 324,
+    "positive_species": 15,
+    "source_child_record_memberships": 4217,
+    "metadata_clean": {
+      "n_rows": 651,
+      "n_networks": 386,
+      "n_species": 17,
+      "positive": 427,
+      "negative": 224,
+      "fraction_positive": 0.6559139784946236,
+      "species_with_positive_mean": 15,
+      "species_equal_mean_excess_decade": 0.12563848953962287,
+      "median_excess_decade": 0.0715709627164337,
+      "declining_rows": 469
+    },
+    "publisher_warn_removed": {
+      "n_rows": 573,
+      "n_networks": 371,
+      "n_species": 15,
+      "positive": 374,
+      "negative": 199,
+      "fraction_positive": 0.6527050610820244,
+      "species_with_positive_mean": 14,
+      "species_equal_mean_excess_decade": 0.14155757373202066,
+      "median_excess_decade": 0.07051954518794848,
+      "declining_rows": 416
+    }
+  },
+  "fixed_hypothesis_decisions": {
+    "H3": {
+      "coef": 0.03316307915510672,
+      "p_holm": 0.94,
+      "support": false
+    },
+    "H4D": {
+      "coef": 0.00616079380244838,
+      "p_holm": 1,
+      "support": false
+    },
+    "H4W": {
+      "coef": -0.015215574022541397,
+      "p_holm": 1,
+      "support": false
+    }
+  },
+  "CMIP6": {
+    "matched_site_memberships": 13,
+    "candidate_site_memberships": 61,
+    "full_air_networks": 3,
+    "full_marine_networks": 2
+  },
+  "not_proven": [
+    "stable historic nesting polygons",
+    "constant detection or effort",
+    "causal warming response",
+    "physical-island effect",
+    "biological future breeding prediction"
+  ],
+  "full_paper_submission_ready": false
+}

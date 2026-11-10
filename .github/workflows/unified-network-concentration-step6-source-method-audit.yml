@@ -1,0 +1,86 @@
+name: unified-network-concentration-step6-source-method-audit
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/audit_step6_jncc_methods.py"
+      - ".github/workflows/unified-network-concentration-step6-source-method-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  jncc-original-methods-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Frozen source QA dependencies
+        run: |
+          python -m pip install numpy==2.2.6 geographiclib==2.1 requests==2.34.2
+          python -m py_compile research/network_concentration_unified_v1/audit_step6_jncc_methods.py
+      - name: Recover pinned V29/V30 JNCC publisher parser commit
+        run: |
+          mkdir -p build/step1_inputs/jncc_code
+          git fetch --no-tags origin 0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e
+          for source in audit_jncc_two_censuses_source_v28 audit_jncc_comparable_site_panels_v29 model_jncc_component_concentration_v30; do
+            git show "0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e:scripts/$source.py" > "build/step1_inputs/jncc_code/$source.py"
+          done
+      - name: Reacquire unmodified original publisher XLSX
+        run: |
+          mkdir -p build/step1_inputs
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://data.jncc.gov.uk/data/63f0ea40-485d-46dd-b967-150df90a7b2b/comparative-seabirds-count-dataset-revised-20240708.xlsx' \
+            -o build/step1_inputs/jncc.xlsx
+      - name: Inspect source year, units, adjusted count comparability and original headers
+        run: |
+          python research/network_concentration_unified_v1/audit_step6_jncc_methods.py
+      - name: Verify source identity, exact old outputs, country and unit partition
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('research/network_concentration_unified_v1/outputs/STEP6_JNCC_METHOD_QA.json')
+          a=json.loads(p.read_text())
+          assert a['audit_status']=='SOURCE_VERIFIED_JNCC_METADATA_AND_DESCRIPTIVE_STRATA_ONLY'
+          assert a['n_main_exact_year_count_panels']==663
+          assert a['n_original_matched_JNCC_parent_source_panels']==1483
+          assert a['complete_main']['positive']==436
+          assert a['complete_main']['declining_rows']==479
+          count=a['stratified_original_outcome_descriptives']['by_original_count_unit']
+          assert sum(v['n_rows'] for v in count.values())==663
+          assert sum(v['positive'] for v in count.values())==436
+          country=a['stratified_original_outcome_descriptives']['by_country']
+          assert sum(v['n_rows'] for v in country.values())==663
+          assert not any(k.startswith('H3') or k.startswith('H4') for k in a)
+          print('PASS: source count units, support, original year, original SHA, outcome unchanged')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-step6-jncc-method-source-audit
+          retention-days: 90
+          path: |
+            research/network_concentration_unified_v1/outputs/STEP6_JNCC_METHOD_QA.json
+            research/network_concentration_unified_v1/outputs/STEP6_JNCC_METHOD_QA_JA.md
+      - name: Commit source-level metadata report only on Draft PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f \
+            research/network_concentration_unified_v1/outputs/STEP6_JNCC_METHOD_QA.json \
+            research/network_concentration_unified_v1/outputs/STEP6_JNCC_METHOD_QA_JA.md
+          if git diff --cached --quiet; then
+            echo "Report unchanged"
+          else
+            git commit -m "Step6: verify original JNCC survey metadata, country and count unit limits"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi

@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "checked_utc": "2026-11-06T07:12:53.710188+00:00",
+  "source_doi": "10.1002/ece3.4445",
+  "source_table_id": "ece34445-tbl-0001",
+  "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6202752/",
+  "independence": "Primary XML cells parsed directly; Decimal precision inferred from raw tokens; no main analysis or extraction helper used.",
+  "source_manifest": [
+    {
+      "file": "research/climate-penguin/work/palmer_signy_diet_external_v1/sources/pickett2018_europepmc.xml",
+      "sha256": "7d074d865cb6cf187f4aad56f7535179a8de9832c54b46783d6013dad7efd97d"
+    },
+    {
+      "file": "research/climate-penguin/work/palmer_signy_diet_external_v1/sources/pickett2018_table1_long.csv",
+      "sha256": "57677f51ddab96e5014d150f3498a891307a432e69ca99911624f44b65235d05"
+    },
+    {
+      "file": "research/climate-penguin/outputs/signy_diet_components_v1/palmer_reported_detection_reference.csv",
+      "sha256": "400cd7daefda67647d6774434cbf947d3ebef5512ccdfe3e611b42d2f213f05d"
+    }
+  ],
+  "long_transcription_verification": {
+    "status": "PASS",
+    "rows": 12,
+    "exact_numeric_comparisons": 144
+  },
+  "primary_output_verification": {
+    "status": "PASS",
+    "rows": 12,
+    "numeric_comparisons": 60,
+    "scope_checks": 12,
+    "absolute_tolerance": 1e-12,
+    "relative_tolerance": 1e-12,
+    "maximum_absolute_difference": {
+      "species": "Gentoo",
+      "year": 2011,
+      "field": "detection_conditioned_fish_fraction_reference",
+      "absolute_difference": 6.938893903907228e-18
+    }
+  },
+  "formulas": {
+    "reference_fraction": "reported_mean_pct / reported_occurrence_pct",
+    "lower_fraction": "mean_rounding_lower_pct / occurrence_rounding_upper_pct",
+    "upper_fraction": "min(1, mean_rounding_upper_pct / occurrence_rounding_lower_pct)",
+    "conditional_mean_identity": "E[q] = P(D=1) E[q|D=1] if the same observations/weights are used and q=0 when D=0"
+  },
+  "unit_checks": {
+    "input_means_and_occurrence": "percent_0_to_100",
+    "output_reference_and_bounds": "fraction_0_to_1",
+    "all_bounds_contain_reported_reference": true,
+    "all_bounds_within_0_1": true,
+    "occurrence_lower_bounds_positive": true
+  },
+  "reported_table_sample_n_totals": {
+    "Adelie": 136,
+    "Gentoo": 129
+  },
+  "reported_methods_sample_n_totals": {
+    "Adelie": 136,
+    "Gentoo": 128
+  },
+  "review_notes": [
+    "Palmer occurrence is reported detection, not established to mean positive fish wet mass; methods also record otolith/bone evidence.",
+    "The conditional identity requires the same sample set and weighting, with zero fish fraction in nondetections; the published table alone cannot verify every individual record.",
+    "Intervals concern nearest rounding to displayed precision only, not sampling uncertainty or confidence intervals.",
+    "The ratio is in 0–1 fraction units; multiplying by 100 would express conditional composition in percent.",
+    "Gentoo table n sums to 129 while methods report 128. These totals remain unresolved; no individual data or exact detection counts are reconstructed.",
+    "No Signy–Palmer component effect comparison or Palmer component–SIC test is performed."
+  ]
+}

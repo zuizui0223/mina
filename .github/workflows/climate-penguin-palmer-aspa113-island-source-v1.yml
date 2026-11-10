@@ -1,0 +1,35 @@
+name: climate-penguin-palmer-aspa113-island-source-v1
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - ".github/workflows/climate-penguin-palmer-aspa113-island-source-v1.yml"
+      - "research/climate-penguin/work/climate_penguin/audit_palmer_aspa113_island_context_v1.py"
+      - "tests/test_climate_penguin_palmer_aspa113_context_v1.py"
+      - "research/climate-penguin/contracts/PALMER_ASPA113_FIVE_ISLAND_SOURCE_GATES_V1.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  five-island-source-gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pytest
+      - name: Source count lineage and overlapping habitat buffer tests
+        run: python -m pytest -q tests/test_climate_penguin_palmer_aspa113_context_v1.py
+      - name: Original-data five-island gate receipt
+        run: python research/climate-penguin/work/climate_penguin/audit_palmer_aspa113_island_context_v1.py --output "${{ runner.temp }}/five_island_original"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: climate-penguin-palmer-aspa113-five-island-source-v1
+          path: ${{ runner.temp }}/five_island_original/
+          retention-days: 30
+          if-no-files-found: error

@@ -1,0 +1,37 @@
+name: penguin-cmip6-historical-bias-audit-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/seaice_cmip_historical_bias_v1/**"
+      - "research/climate-penguin/outputs/seaice_cmip_historical_bias_v1/**"
+      - ".github/workflows/penguin-cmip6-historical-bias-audit-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/seaice_cmip_historical_bias_v1/**"
+      - "research/climate-penguin/outputs/seaice_cmip_historical_bias_v1/**"
+      - ".github/workflows/penguin-cmip6-historical-bias-audit-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-observed-historical-model-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify raw coastal CMIP6 historical SIC against source OSI and delta correction
+        run: node research/climate-penguin/work/seaice_cmip_historical_bias_v1/build.mjs --check-receipt
+      - name: Save all original site×model×scenario and method support audits
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-cmip6-historical-sic-bias-v1
+          path: |
+            research/climate-penguin/outputs/seaice_cmip_historical_bias_v1/*.csv
+            research/climate-penguin/outputs/seaice_cmip_historical_bias_v1/*.json
+          if-no-files-found: error
+          retention-days: 60

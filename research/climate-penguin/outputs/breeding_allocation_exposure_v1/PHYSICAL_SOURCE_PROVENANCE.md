@@ -1,0 +1,5 @@
+# AEI + REMA frozen source subatlas, strictly descriptive
+Original 122-site AEI hierarchy and terrain products were downloaded on 2026-10-31 from official mina GitHub Actions source runs 36520281872 / 36490682577 (artifact IDs 11012935837 / 11001148358).
+The artifact ZIP SHA256 and complete original source CSV SHA256 are fixed in summary.json. This committed 46-site, 6-column table retains original published MAPPPD site_id plus original location, 2-km ice-free area (ha), Tier-2 richness and REMA p90–p10 relief. It is the intersection with the 48 codes of land_marine_colocation_v1, excluding BAIL and HERO which are absent from the 122-site candidate atlas. All 46 site positions are independently checked against the original joint biology table within 2km. Data not in the frozen source are not filled with zero. No current nests or future ice-free area are measured by AEI/REMA.
+
+Sources: [AEI hierarchy published result](https://github.com/zuizui0223/mina/blob/main/results/ANTARCTIC_BREEDING_OPTIONS_HIERARCHY_RESULT_V1.json) and [REMA terrain result](https://github.com/zuizui0223/mina/blob/main/results/ANTARCTIC_TERRAIN_ATLAS_GATE1D_A_RESULT_V1.json).

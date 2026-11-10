@@ -1,0 +1,814 @@
+{
+  "schema_version": 1,
+  "purpose": "Compare four primary climate outputs against previously reconstructed independent outputs.",
+  "summary": {
+    "status": "passed",
+    "total_matching_rows": 335,
+    "total_expected_rows": 335,
+    "max_absolute_sic_difference_pp": 2.1316282072803006e-14,
+    "annual_diet_support_flags_matching": 300,
+    "annual_physical_range_flags_matching": 300,
+    "annual_flag_count_expected": 300
+  },
+  "comparison_policy": {
+    "floating_point_absolute_tolerance": 1e-10,
+    "relative_tolerance": 0,
+    "integers_booleans_identifiers": "Exact equality; unique identifier joins; no row-order dependency.",
+    "coverage": "Every primary column is compared, including source grid identifiers and distances.",
+    "reference_mapping": "Independent historical 1995-2014 support rows provide the three reference summaries.",
+    "summary_derivations": "Fractions are support counts divided by n_years; physical violations sum the independent below-zero and above-100 counts.",
+    "observed_support_flags": "The primary observed file has no support flag; all 20 SIC values and year identifiers are compared.",
+    "scope": "Existing CSV outputs only; no raw monthly reads, reconstruction, downloads, or future diet predictions."
+  },
+  "script": {
+    "path": "work/signy_component_scenarios_v1/independent/compare_climate.py",
+    "sha256": "4c345e66a2caa1c4a2ed37ce468f4111cc7f0f4ec5aacf18effe28a4683b98ce"
+  },
+  "inputs": {
+    "primary_scenarios": {
+      "path": "outputs/signy_component_scenarios_v1/climate_scenarios.csv",
+      "sha256": "9df070e298ec31248b988a9e9c384571a75756f997fd4f1c5184b005aa705d3e",
+      "row_count": 12,
+      "columns": [
+        "model",
+        "member",
+        "location_id",
+        "model_cell_distance_km",
+        "grid_cell_id",
+        "scenario",
+        "period",
+        "observed_reference_sic",
+        "model_historical_sic",
+        "historical_model_bias_pp",
+        "model_future_sic",
+        "model_delta_sic_pp",
+        "delta_adjusted_sic",
+        "within_observed_diet_sic_range",
+        "future_annual_support_count",
+        "future_annual_support_fraction",
+        "future_annual_sic_min",
+        "future_annual_sic_max",
+        "future_annual_unphysical_count",
+        "n_future_years"
+      ],
+      "lf_line_endings": true
+    },
+    "primary_reference": {
+      "path": "outputs/signy_component_scenarios_v1/climate_reference.csv",
+      "sha256": "184edfa69ce9a7c4bc2963fd240499394352545e53995114e1bb03583f9ce0a6",
+      "row_count": 3,
+      "columns": [
+        "model",
+        "member",
+        "location_id",
+        "model_cell_distance_km",
+        "grid_cell_id",
+        "observed_reference_sic",
+        "model_historical_sic",
+        "historical_model_bias_pp",
+        "n_years",
+        "mean_sic",
+        "annual_min_sic",
+        "annual_max_sic",
+        "mean_within_observed_range",
+        "n_in_observed_range",
+        "fraction_in_observed_range",
+        "n_outside_physical_range"
+      ],
+      "lf_line_endings": true
+    },
+    "primary_annual": {
+      "path": "outputs/signy_component_scenarios_v1/annual_climate_support.csv",
+      "sha256": "e470a49afcf7e87f3a238a6896e52ab4cb9760820c6612fa9d23363ab1f833db",
+      "row_count": 300,
+      "columns": [
+        "model",
+        "member",
+        "location_id",
+        "model_cell_distance_km",
+        "grid_cell_id",
+        "experiment",
+        "period",
+        "year",
+        "model_annual_sic",
+        "delta_adjusted_sic",
+        "within_observed_diet_sic_range",
+        "within_physical_range"
+      ],
+      "lf_line_endings": true
+    },
+    "primary_observed": {
+      "path": "outputs/signy_component_scenarios_v1/observed_reference_annual_sic.csv",
+      "sha256": "00c8f81a8e1a14e859c2922b9c67ace26495cab08ed19ff244dd00f1c1840340",
+      "row_count": 20,
+      "columns": [
+        "year",
+        "sic_aug_nov"
+      ],
+      "lf_line_endings": true
+    },
+    "independent_scenarios": {
+      "path": "outputs/signy_component_scenarios_v1/independent/climate_inputs_scenarios.csv",
+      "sha256": "73132bc886a6e1f0267fc85ff9f2a68167b163a95f3d5da495c494625881e276",
+      "row_count": 12,
+      "columns": [
+        "model",
+        "member",
+        "scenario",
+        "period",
+        "location_id",
+        "observed_reference_sic",
+        "model_historical_sic",
+        "historical_model_bias_pp",
+        "model_future_sic",
+        "model_delta_sic_pp",
+        "delta_adjusted_sic",
+        "model_cell_distance_km",
+        "observed_diet_sic_min",
+        "observed_diet_sic_max",
+        "within_observed_diet_sic_range",
+        "annual_n_within_support",
+        "annual_n_below_support",
+        "annual_n_above_support",
+        "legacy_delta_adjusted_sic",
+        "legacy_max_absolute_numeric_difference",
+        "legacy_climatic_fields_match"
+      ],
+      "lf_line_endings": true
+    },
+    "independent_support": {
+      "path": "outputs/signy_component_scenarios_v1/independent/climate_inputs_support.csv",
+      "sha256": "59ffa745c5b536f3f516c3d5217f73fd553fc9d66ede795bdab565d4fca2c872",
+      "row_count": 15,
+      "columns": [
+        "model",
+        "member",
+        "scenario",
+        "period",
+        "location_id",
+        "n_years",
+        "n_monthly_values",
+        "raw_mean_sic",
+        "raw_annual_sd",
+        "additive_correction_pp",
+        "adjusted_mean_sic",
+        "adjusted_annual_sd",
+        "adjusted_annual_min",
+        "adjusted_annual_max",
+        "support_min",
+        "support_max",
+        "n_years_within_support",
+        "n_years_below_support",
+        "n_years_above_support",
+        "all_years_within_support",
+        "mean_within_support",
+        "n_years_below_physical_zero",
+        "n_years_above_physical_100",
+        "n_raw_annual_zero",
+        "years_below_support",
+        "years_above_support"
+      ],
+      "lf_line_endings": true
+    },
+    "independent_annual": {
+      "path": "outputs/signy_component_scenarios_v1/independent/climate_inputs_annual.csv",
+      "sha256": "fbc0e40725e04bb21dffbbfc5eeb853639b00ebfa67c4d1ede395fb16db73f18",
+      "row_count": 300,
+      "columns": [
+        "model",
+        "member",
+        "scenario",
+        "period",
+        "location_id",
+        "site_id",
+        "year",
+        "n_months",
+        "raw_annual_sic",
+        "observed_reference_sic",
+        "model_historical_sic",
+        "additive_correction_pp",
+        "adjusted_annual_sic",
+        "support_min",
+        "support_max",
+        "support_class",
+        "within_diet_sic_support",
+        "within_physical_percent_range",
+        "raw_annual_at_zero",
+        "model_cell_distance_km"
+      ],
+      "lf_line_endings": true
+    },
+    "independent_observed": {
+      "path": "outputs/signy_component_scenarios_v1/independent/climate_inputs_observed_annual.csv",
+      "sha256": "38b18adbc44a58cbf84a525291e2a9fcc5159145e702872cdf29f17ecb249d6c",
+      "row_count": 20,
+      "columns": [
+        "site_id",
+        "location_id",
+        "year",
+        "n_months",
+        "observed_annual_sic",
+        "support_min",
+        "support_max",
+        "support_class"
+      ],
+      "lf_line_endings": true
+    },
+    "independent_sources": {
+      "path": "outputs/signy_component_scenarios_v1/independent/climate_inputs_sources.csv",
+      "sha256": "b79499d1a261c9ba6f6da3e69c91198009c29c2dd9268f6af9408939362195e6",
+      "row_count": 9,
+      "columns": [
+        "model",
+        "member",
+        "scenario",
+        "location_id",
+        "site_id",
+        "grid_label",
+        "grid_cell_id",
+        "site_latitude",
+        "site_longitude",
+        "grid_latitude",
+        "grid_longitude",
+        "distance_km",
+        "independently_recomputed_wgs84_distance_km",
+        "distance_absolute_difference_km",
+        "locations_sharing_cell",
+        "mask_strategy",
+        "source_units",
+        "normalized_units",
+        "calendar",
+        "version",
+        "zstore",
+        "requested_months",
+        "complete_years",
+        "months",
+        "every_year_four_complete_months",
+        "raw_monthly_sic_min",
+        "raw_monthly_sic_max",
+        "source_file",
+        "sha256",
+        "original_manifest_hash_match"
+      ],
+      "lf_line_endings": true
+    }
+  },
+  "comparisons": {
+    "scenarios": {
+      "status": "passed",
+      "key_fields": [
+        "model",
+        "member",
+        "location_id",
+        "scenario",
+        "period"
+      ],
+      "expected_row_count": 12,
+      "primary_row_count": 12,
+      "independent_row_count": 12,
+      "matched_key_count": 12,
+      "matching_row_count": 12,
+      "missing_primary_keys": [],
+      "extra_primary_keys": [],
+      "uncompared_primary_columns": [],
+      "missing_primary_columns": [],
+      "max_absolute_numeric_difference": 2.1316282072803006e-14,
+      "max_absolute_sic_difference_pp": 2.1316282072803006e-14,
+      "fields": {
+        "delta_adjusted_sic": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 0,
+          "mismatches": [],
+          "max_absolute_difference": 2.1316282072803006e-14,
+          "worst_case": {
+            "key": {
+              "model": "BCC-CSM2-MR",
+              "member": "r1i1p1f1",
+              "location_id": "loc020",
+              "scenario": "ssp245",
+              "period": "2041-2060"
+            },
+            "primary": 48.39048224269955,
+            "independent": 48.39048224269953
+          },
+          "unit": "percentage_points"
+        },
+        "future_annual_sic_max": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 2,
+          "mismatches": [],
+          "max_absolute_difference": 1.4210854715202004e-14,
+          "worst_case": {
+            "key": {
+              "model": "CESM2",
+              "member": "r4i1p1f1",
+              "location_id": "loc020",
+              "scenario": "ssp245",
+              "period": "2041-2060"
+            },
+            "primary": 91.68895501346306,
+            "independent": 91.68895501346304
+          },
+          "unit": "percentage_points"
+        },
+        "future_annual_sic_min": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 0,
+          "mismatches": [],
+          "max_absolute_difference": 7.105427357601002e-15,
+          "worst_case": {
+            "key": {
+              "model": "ACCESS-CM2",
+              "member": "r1i1p1f1",
+              "location_id": "loc020",
+              "scenario": "ssp245",
+              "period": "2041-2060"
+            },
+            "primary": 26.523578500810064,
+            "independent": 26.523578500810057
+          },
+          "unit": "percentage_points"
+        },
+        "future_annual_support_count": {
+          "type": "integer",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 12,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null
+        },
+        "future_annual_support_fraction": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 12,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null,
+          "unit": "fraction"
+        },
+        "future_annual_unphysical_count": {
+          "type": "integer",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 12,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null
+        },
+        "grid_cell_id": {
+          "type": "text",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 12,
+          "mismatches": []
+        },
+        "historical_model_bias_pp": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 0,
+          "mismatches": [],
+          "max_absolute_difference": 7.105427357601002e-15,
+          "worst_case": {
+            "key": {
+              "model": "ACCESS-CM2",
+              "member": "r1i1p1f1",
+              "location_id": "loc020",
+              "scenario": "ssp245",
+              "period": "2041-2060"
+            },
+            "primary": -26.523578500810064,
+            "independent": -26.523578500810057
+          },
+          "unit": "percentage_points"
+        },
+        "model_cell_distance_km": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 12,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null,
+          "unit": "km"
+        },
+        "model_delta_sic_pp": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 11,
+          "mismatches": [],
+          "max_absolute_difference": 5.551115123125783e-17,
+          "worst_case": {
+            "key": {
+              "model": "BCC-CSM2-MR",
+              "member": "r1i1p1f1",
+              "location_id": "loc020",
+              "scenario": "ssp585",
+              "period": "2081-2100"
+            },
+            "primary": -0.2892289873951086,
+            "independent": -0.28922898739510855
+          },
+          "unit": "percentage_points"
+        },
+        "model_future_sic": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 9,
+          "mismatches": [],
+          "max_absolute_difference": 8.673617379884035e-18,
+          "worst_case": {
+            "key": {
+              "model": "BCC-CSM2-MR",
+              "member": "r1i1p1f1",
+              "location_id": "loc020",
+              "scenario": "ssp245",
+              "period": "2081-2100"
+            },
+            "primary": 0.01350865867943866,
+            "independent": 0.013508658679438668
+          },
+          "unit": "percentage_points"
+        },
+        "model_historical_sic": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 12,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null,
+          "unit": "percentage_points"
+        },
+        "n_future_years": {
+          "type": "integer",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 12,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null
+        },
+        "observed_reference_sic": {
+          "type": "number",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 0,
+          "mismatches": [],
+          "max_absolute_difference": 7.105427357601002e-15,
+          "worst_case": {
+            "key": {
+              "model": "ACCESS-CM2",
+              "member": "r1i1p1f1",
+              "location_id": "loc020",
+              "scenario": "ssp245",
+              "period": "2041-2060"
+            },
+            "primary": 48.68273700076806,
+            "independent": 48.68273700076805
+          },
+          "unit": "percentage_points"
+        },
+        "within_observed_diet_sic_range": {
+          "type": "boolean",
+          "compared_count": 12,
+          "matching_count": 12,
+          "exactly_equal_count": 12,
+          "mismatches": [],
+          "primary_true_count": 11,
+          "independent_true_count": 11
+        }
+      }
+    },
+    "reference": {
+      "status": "passed",
+      "key_fields": [
+        "model",
+        "member",
+        "location_id"
+      ],
+      "expected_row_count": 3,
+      "primary_row_count": 3,
+      "independent_row_count": 3,
+      "matched_key_count": 3,
+      "matching_row_count": 3,
+      "missing_primary_keys": [],
+      "extra_primary_keys": [],
+      "uncompared_primary_columns": [],
+      "missing_primary_columns": [],
+      "max_absolute_numeric_difference": 1.4210854715202004e-14,
+      "max_absolute_sic_difference_pp": 1.4210854715202004e-14,
+      "fields": {
+        "annual_max_sic": {
+          "type": "number",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 1,
+          "mismatches": [],
+          "max_absolute_difference": 1.4210854715202004e-14,
+          "worst_case": {
+            "key": {
+              "model": "CESM2",
+              "member": "r4i1p1f1",
+              "location_id": "loc020"
+            },
+            "primary": 101.99440449924187,
+            "independent": 101.99440449924185
+          },
+          "unit": "percentage_points"
+        },
+        "annual_min_sic": {
+          "type": "number",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 0,
+          "mismatches": [],
+          "max_absolute_difference": 7.105427357601002e-15,
+          "worst_case": {
+            "key": {
+              "model": "ACCESS-CM2",
+              "member": "r1i1p1f1",
+              "location_id": "loc020"
+            },
+            "primary": 26.523578500810064,
+            "independent": 26.523578500810057
+          },
+          "unit": "percentage_points"
+        },
+        "fraction_in_observed_range": {
+          "type": "number",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 3,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null,
+          "unit": "fraction"
+        },
+        "grid_cell_id": {
+          "type": "text",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 3,
+          "mismatches": []
+        },
+        "historical_model_bias_pp": {
+          "type": "number",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 0,
+          "mismatches": [],
+          "max_absolute_difference": 7.105427357601002e-15,
+          "worst_case": {
+            "key": {
+              "model": "ACCESS-CM2",
+              "member": "r1i1p1f1",
+              "location_id": "loc020"
+            },
+            "primary": -26.523578500810064,
+            "independent": -26.523578500810057
+          },
+          "unit": "percentage_points"
+        },
+        "mean_sic": {
+          "type": "number",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 0,
+          "mismatches": [],
+          "max_absolute_difference": 1.4210854715202004e-14,
+          "worst_case": {
+            "key": {
+              "model": "BCC-CSM2-MR",
+              "member": "r1i1p1f1",
+              "location_id": "loc020"
+            },
+            "primary": 48.682737000768064,
+            "independent": 48.68273700076805
+          },
+          "unit": "percentage_points"
+        },
+        "mean_within_observed_range": {
+          "type": "boolean",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 3,
+          "mismatches": [],
+          "primary_true_count": 3,
+          "independent_true_count": 3
+        },
+        "model_cell_distance_km": {
+          "type": "number",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 3,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null,
+          "unit": "km"
+        },
+        "model_historical_sic": {
+          "type": "number",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 3,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null,
+          "unit": "percentage_points"
+        },
+        "n_in_observed_range": {
+          "type": "integer",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 3,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null
+        },
+        "n_outside_physical_range": {
+          "type": "integer",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 3,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null
+        },
+        "n_years": {
+          "type": "integer",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 3,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null
+        },
+        "observed_reference_sic": {
+          "type": "number",
+          "compared_count": 3,
+          "matching_count": 3,
+          "exactly_equal_count": 0,
+          "mismatches": [],
+          "max_absolute_difference": 7.105427357601002e-15,
+          "worst_case": {
+            "key": {
+              "model": "ACCESS-CM2",
+              "member": "r1i1p1f1",
+              "location_id": "loc020"
+            },
+            "primary": 48.68273700076806,
+            "independent": 48.68273700076805
+          },
+          "unit": "percentage_points"
+        }
+      }
+    },
+    "annual": {
+      "status": "passed",
+      "key_fields": [
+        "model",
+        "member",
+        "location_id",
+        "experiment",
+        "period",
+        "year"
+      ],
+      "expected_row_count": 300,
+      "primary_row_count": 300,
+      "independent_row_count": 300,
+      "matched_key_count": 300,
+      "matching_row_count": 300,
+      "missing_primary_keys": [],
+      "extra_primary_keys": [],
+      "uncompared_primary_columns": [],
+      "missing_primary_columns": [],
+      "max_absolute_numeric_difference": 1.4210854715202004e-14,
+      "max_absolute_sic_difference_pp": 1.4210854715202004e-14,
+      "fields": {
+        "delta_adjusted_sic": {
+          "type": "number",
+          "compared_count": 300,
+          "matching_count": 300,
+          "exactly_equal_count": 22,
+          "mismatches": [],
+          "max_absolute_difference": 1.4210854715202004e-14,
+          "worst_case": {
+            "key": {
+              "model": "CESM2",
+              "member": "r4i1p1f1",
+              "location_id": "loc020",
+              "experiment": "historical",
+              "period": "1995-2014",
+              "year": "1997"
+            },
+            "primary": 71.97334689349846,
+            "independent": 71.97334689349844
+          },
+          "unit": "percentage_points"
+        },
+        "grid_cell_id": {
+          "type": "text",
+          "compared_count": 300,
+          "matching_count": 300,
+          "exactly_equal_count": 300,
+          "mismatches": []
+        },
+        "model_annual_sic": {
+          "type": "number",
+          "compared_count": 300,
+          "matching_count": 300,
+          "exactly_equal_count": 216,
+          "mismatches": [],
+          "max_absolute_difference": 1.7763568394002505e-15,
+          "worst_case": {
+            "key": {
+              "model": "CESM2",
+              "member": "r4i1p1f1",
+              "location_id": "loc020",
+              "experiment": "historical",
+              "period": "1995-2014",
+              "year": "1998"
+            },
+            "primary": 14.07020775504134,
+            "independent": 14.070207755041338
+          },
+          "unit": "percentage_points"
+        },
+        "model_cell_distance_km": {
+          "type": "number",
+          "compared_count": 300,
+          "matching_count": 300,
+          "exactly_equal_count": 300,
+          "mismatches": [],
+          "max_absolute_difference": 0.0,
+          "worst_case": null,
+          "unit": "km"
+        },
+        "within_observed_diet_sic_range": {
+          "type": "boolean",
+          "compared_count": 300,
+          "matching_count": 300,
+          "exactly_equal_count": 300,
+          "mismatches": [],
+          "primary_true_count": 233,
+          "independent_true_count": 233
+        },
+        "within_physical_range": {
+          "type": "boolean",
+          "compared_count": 300,
+          "matching_count": 300,
+          "exactly_equal_count": 300,
+          "mismatches": [],
+          "primary_true_count": 299,
+          "independent_true_count": 299
+        }
+      }
+    },
+    "observed": {
+      "status": "passed",
+      "key_fields": [
+        "year"
+      ],
+      "expected_row_count": 20,
+      "primary_row_count": 20,
+      "independent_row_count": 20,
+      "matched_key_count": 20,
+      "matching_row_count": 20,
+      "missing_primary_keys": [],
+      "extra_primary_keys": [],
+      "uncompared_primary_columns": [],
+      "missing_primary_columns": [],
+      "max_absolute_numeric_difference": 7.105427357601002e-15,
+      "max_absolute_sic_difference_pp": 7.105427357601002e-15,
+      "fields": {
+        "sic_aug_nov": {
+          "type": "number",
+          "compared_count": 20,
+          "matching_count": 20,
+          "exactly_equal_count": 19,
+          "mismatches": [],
+          "max_absolute_difference": 7.105427357601002e-15,
+          "worst_case": {
+            "key": {
+              "year": "1995"
+            },
+            "primary": 51.238812047399605,
+            "independent": 51.23881204739961
+          },
+          "unit": "percentage_points"
+        }
+      }
+    }
+  }
+}

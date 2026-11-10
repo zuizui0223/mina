@@ -1,0 +1,40 @@
+name: climate-penguin-chinstrap-original-300-QA-fusion-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_300tag_original_source_flags_v1.py"
+      - "tests/test_chinstrap_300tag_original_source_flags_v1.py"
+      - ".github/workflows/climate-penguin-chinstrap-original-300-QA-fusion-v1.yml"
+permissions:
+  actions: read
+  contents: read
+jobs:
+  source-provenance:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate source QC guard logic before downloading outcome receipts
+        run: python -m unittest discover -s tests -p test_chinstrap_300tag_original_source_flags_v1.py -v
+      - name: Get 300 and 6 original-data source audit results from successful runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/source300 build/source6
+          gh run download 41177252296 --repo "$GITHUB_REPOSITORY" --name chinstrap-all-300-original-TDR-instrument-QA-v1 --dir build/source300
+          gh run download 41177957583 --repo "$GITHUB_REPOSITORY" --name chinstrap-TDR-extreme-six-original-source-v1 --dir build/source6
+      - name: Verify source CSV checksums and combine all 300 non-ecological warnings
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_300tag_original_source_flags_v1.py --source300 build/source300/all_300_original_sensor_QA.csv --source6 build/source6/original_source_6tag_anomalies.csv --out build/source_qa_status
+          python -m unittest discover -s tests -p test_chinstrap_300tag_original_source_flags_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-original-all300-QA-source-flags-v1
+          path: |
+            build/source_qa_status/all_300_original_source_QA_status.csv
+            build/source_qa_status/decision.json

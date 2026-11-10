@@ -1,0 +1,42 @@
+name: climate-penguin-bas-modelled-krill-signy-distance-v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/bas_spatial_krill_signy_v2.py"
+      - "tests/test_bas_spatial_krill_signy_v2.py"
+      - ".github/workflows/climate-penguin-bas-modelled-krill-signy-distance-v2.yml"
+
+jobs:
+  evidence:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install original raster and BAS CSV readers
+        run: python -m pip install rasterio pandas lxml html5lib beautifulsoup4
+      - name: Download exact original published BAS krill model and three Signy censuses
+        run: |
+          mkdir -p build/bas_spatial_krill build/signy_source
+          curl -L --fail --retry 4 --retry-delay 5 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' -o build/bas_spatial_krill/source.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o build/signy_source/adelie.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o build/signy_source/chinstrap.zip
+          curl -L --fail --retry 4 --retry-delay 5 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o build/signy_source/gentoo.zip
+      - name: Rebuild source stage counts and compute three fixed spatial distances
+        run: |
+          python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py --source-dir build/signy_source --out build/signy_stage_derived
+          python research/climate-penguin/work/climate_penguin/bas_spatial_krill_signy_v2.py --source-zip build/bas_spatial_krill/source.zip --stage-dir build/signy_stage_derived --out build/bas_spatial_krill/breeding_result
+      - name: Test source geodesic/masks/years
+        run: python -m unittest discover -s tests -p test_bas_spatial_krill_signy_v2.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bas-modelled-krill-signy-spatial-bands-v2
+          path: |
+            build/bas_spatial_krill/breeding_result/result.json
+            build/bas_spatial_krill/breeding_result/annual_spatial_bands.csv
+            build/signy_stage_derived/source_gate.json

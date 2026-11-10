@@ -1,0 +1,55 @@
+{
+  "status": "complete",
+  "created_utc": "2026-10-30T02:10:07.765177+00:00",
+  "purpose": "conditional_environmental_model_projection_not_biological_forecast_or_observational_attribution",
+  "source_catalog_url": "https://storage.googleapis.com/cmip6/cmip6-zarr-consolidated-stores.csv",
+  "catalog_sha256": "e319cd2bf1daf9b5aa531f92c022d5322ee6bce0b566ac81dfae31dbae203fd9",
+  "site_input": "outputs/climate_penguin/daily_ice_locations.csv",
+  "site_input_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+  "selection": "First 3 complete models by ASCII source_id; smallest numeric r/i/p/f member per model; native gn preferred among experiment-common grids; newest catalog version; selection before values",
+  "selected_models": [
+    {
+      "source_id": "ACCESS-CM2",
+      "member_id": "r1i1p1f1"
+    },
+    {
+      "source_id": "BCC-CSM2-MR",
+      "member_id": "r1i1p1f1"
+    },
+    {
+      "source_id": "CESM2",
+      "member_id": "r4i1p1f1"
+    }
+  ],
+  "baseline": "1995-2014",
+  "future_periods": [
+    "2041-2060",
+    "2081-2100"
+  ],
+  "months": [
+    8,
+    9,
+    10,
+    11
+  ],
+  "averaging": "calendar-day-weighted monthly average per complete year, then equal weight over 20 complete years; equal weight per model for site ensemble",
+  "model_spread": "min/max across selected models; not a confidence or probability interval",
+  "extraction_code_sha256": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00",
+  "cache_policy": "Content identity from source/version URL, grid, input sites, dates, units, periods/months, historical support cells/mask, mask policy and extraction code; hash-key plus exact JSON sidecar match",
+  "n_stores_read": 27,
+  "n_monthly_values": 381600,
+  "n_model_site_period_rows": 4770,
+  "n_site_changes": 3816,
+  "failures": [],
+  "limitations": [
+    "3 availability-selected models are not a representative or probabilistic CMIP6 ensemble",
+    "one member per model does not characterize internal variability",
+    "nearest coarse cells are not local downscaling or bias correction",
+    "distance is site-to-model-cell geodesic displacement, not measured coastline distance",
+    "tas is nearest atmospheric grid cell with no land fraction filter; small islands may be unresolved",
+    "ocean validity from two finite historical mask frames; no observed coastline mask used",
+    "sites sharing a grid cell are not independent environmental replicates",
+    "salinity is model sea-surface salinity, not measured colony coastal salinity",
+    "vegetation, sea ice drift, reproductive response and population forecasts are outside this extraction"
+  ]
+}

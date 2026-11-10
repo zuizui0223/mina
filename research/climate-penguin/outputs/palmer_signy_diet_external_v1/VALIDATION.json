@@ -1,0 +1,117 @@
+{
+  "status": "analysis_verified_with_preexisting_repository_test_failures",
+  "checked_utc": "2026-11-06T06:44:09.043787+00:00",
+  "base_commit": "51b6578d8254d6ac2f4083e6ffc8fb94aacdcbb2",
+  "new_tests": {
+    "passed": 7,
+    "failed": 0,
+    "names": [
+      "test_stomach_mean_excludes_nonfood_and_does_not_pool_mass",
+      "test_missing_food_is_not_zero_and_source_keys_must_be_unique",
+      "test_ice_requires_four_unique_complete_months_and_equal_weights",
+      "test_published_means_use_start_year_without_expanding_stomachs",
+      "test_region_average_is_per_proxy_not_per_stomach",
+      "test_transport_freezes_training_mean_and_flags_extrapolation",
+      "test_exact_permutation_counts_years_not_stomachs"
+    ]
+  },
+  "independent_calculation": {
+    "status": "PASS",
+    "numeric_comparisons": 361,
+    "exact_comparisons": 321,
+    "maximum_numeric_absolute_difference": {
+      "difference": 1.4210854715202004e-14,
+      "field": "sensitivity[0].sic_max"
+    },
+    "absolute_tolerance": 1e-12,
+    "relative_tolerance": 1e-12
+  },
+  "whole_repository_pytest": {
+    "command": "python -m pytest --tb=short --junitxml=/tmp/mina_final_pytest.xml",
+    "exit_code": 1,
+    "tests": 661,
+    "passed": 615,
+    "failed": 3,
+    "errors": 0,
+    "skipped": 43,
+    "duration_seconds": 44.945,
+    "failures": [
+      {
+        "class": "tests.test_climate_penguin_checkpoint_guard",
+        "test": "test_complete_snapshot_manifest_file_integrity"
+      },
+      {
+        "class": "tests.test_signy_stage_synchrony_v2.SignyStageSynchronyTests",
+        "test": "test_known_source_three_species"
+      },
+      {
+        "class": "tests.test_signy_stage_synchrony_v2.SignyStageSynchronyTests",
+        "test": "test_source_flags_prevent_pseudoreplication"
+      }
+    ],
+    "baseline_reproduction": "BASELINE_TEST_FAILURES.json",
+    "all_failures_reproduced_at_unchanged_base": true,
+    "all_tests_pass": false
+  },
+  "main_manuscript_assets": {
+    "status": "pass",
+    "input_hashes": 11,
+    "years": 9,
+    "stomachs": 772,
+    "model_conditions": 12,
+    "local_links": 26,
+    "figures": 3,
+    "references": 9,
+    "scope": "Signy asset/source arithmetic and all manuscript local links; external comparison verified in its own output; not biological forecast validation"
+  },
+  "figure_visual_inspection": "PNG inspected after correcting top-margin clipping; all panel titles, labels, scale changes, points, legends and source notes visible",
+  "unresolved_source_issues": [
+    "Palmer gentoo n: Table 1 total 129 versus methods 128",
+    "Palmer mean percentages rounded to 0.1 percentage points",
+    "Different regional colonies and periods; no individual Palmer masses or sampling dates"
+  ],
+  "scientific_scope": "Numerical and software verification only; no causal or prospective forecast validation",
+  "new_report_local_links": {
+    "checked": 16,
+    "missing": []
+  },
+  "artifact_hashes": [
+    {
+      "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/REPORT_JA.md",
+      "sha256": "b201489f2b642329f6d93d966a27832573ec2960ccaa032d25ca11ef0a61f253"
+    },
+    {
+      "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/README.md",
+      "sha256": "a5dd15636e9049ef45d605e3c290c3121982ccb02505cee51f147acfdf1163fc"
+    },
+    {
+      "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/summary.json",
+      "sha256": "3ee83192c9188c529f5a7c598e321c2fda35698254a2d72a838612c857aa333f"
+    },
+    {
+      "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/Figure_1_external_comparison.png",
+      "sha256": "69684831695d0a043628b2edea0d0b39b6b37f63df0caf4e12305af07e24d55f"
+    },
+    {
+      "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/Figure_1_external_comparison.pdf",
+      "sha256": "9f711b06b9eff17502fb64cebbe8cb11f6c74d4f5ca894b2ef0b13e2e9c0a14a"
+    },
+    {
+      "path": "research/climate-penguin/work/palmer_signy_diet_external_v1/analyze.py",
+      "sha256": "1cf6c948681dc191d26531fdbff998f68f080ae2ab98840c90dead34387baccb"
+    },
+    {
+      "path": "research/climate-penguin/work/palmer_signy_diet_external_v1/plot.py",
+      "sha256": "f26351d3fd171683aa05e315bfe1711f88aa6a4a7caa46deaf2a4b1941e41151"
+    },
+    {
+      "path": "tests/test_palmer_signy_diet_external_v1.py",
+      "sha256": "a38cb9de15119c53561fbb0a3489bef9e4093fabe804d5cbaab9ff8e152c4b88"
+    }
+  ],
+  "raw_source_preservation": {
+    "path": "research/climate-penguin/work/palmer_signy_diet_external_v1/sources/pickett2018_europepmc.xml",
+    "sha256": "7d074d865cb6cf187f4aad56f7535179a8de9832c54b46783d6013dad7efd97d",
+    "note": "Original XML bytes retained, including publisher whitespace. Whitespace checks on authored files exclude this exact archival source."
+  }
+}

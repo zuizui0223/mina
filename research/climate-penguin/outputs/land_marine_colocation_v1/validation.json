@@ -1,0 +1,30 @@
+{
+  "status": "passed_independent_crosswalk_record_audit",
+  "review_scope": "all derived 232 scenario rows were independently joined back to both unmodified source CSVs by source_row_1based and location_id; all 246 source-receipt decisions counted; GIS coordinates and numeric property types checked",
+  "source_git_blobs": {
+    "land_marine_colocation_v1/source_matching_receipt.csv": "d6c70a05e357c8629a5e0caa2c13ccff162fc2f5",
+    "land_marine_colocation_v1/matched_site_species_scenarios.csv": "5cc45d5bddeb6a6a4c89880ff38c4cff290f7783",
+    "land_marine_colocation_v1/matched_site_species_scenarios.geojson": "6a7af94733b7bf0ddad020713aab2c713a88c49b",
+    "land_marine_colocation_v1/summary.json": "c8e5ec2329337fad96e916aff387e84a3e8ea200",
+    "cmip6_exposure_atlas_v1/site_scenario_exposure.csv": "9d7badfd2ad077047cb6f20accc74e3738cf4648",
+    "vegetation_response_v1/site_species_cohort.csv": "23fea5988889303ecdc16f4b5309073cf38e366a"
+  },
+  "checks": {
+    "receipts": 246,
+    "matchedReceipts": 58,
+    "noSameSiteCode": 188,
+    "geographyRejected": 0,
+    "scenarioRows": 232,
+    "geoFeatures": 232,
+    "uniqueSourceMatchedRows": 58,
+    "uniqueBiologicalSiteIds": 48,
+    "fourScenarioPerMatchedBiologicalRow": true,
+    "endCenturyStrongIceCount": 20,
+    "endCenturyStrongIce50km": 3,
+    "bioCountPriorPositive": 5,
+    "bioCountPriorNegative": 12,
+    "geojsonValid": true
+  },
+  "errors": [],
+  "caveat": "This validates saved data linkages and arithmetic, not field-verified colony geography, causal coefficients or prospective future breeding performance."
+}

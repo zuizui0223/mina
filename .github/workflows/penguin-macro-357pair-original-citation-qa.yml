@@ -1,0 +1,38 @@
+name: Penguin MAPPPD original 357-pair nests and same-citation audit
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/audit_original_pair_nest_and_citation.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/ORIGINAL_METHOD_SOURCE_PROVENANCE_AUDIT_CONTRACT_20261110.md'
+      - '.github/workflows/penguin-macro-357pair-original-citation-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publisher-pinned-nest-and-multispecies-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original published API client and polar source georeference
+        run: python -m pip install --disable-pip-version-check -q requests pyproj==3.7.1
+      - name: Compile same-method and original citekey audit before downloading
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/build.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/audit_original_pair_nest_and_citation.py
+          python -m py_compile research/climate-penguin/work/climate_penguin/derive_MAPPPD5_original_macro_source_v1.py
+      - name: Independently reconstruct original 595-site nests-only aggregate
+        run: python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Recheck 2026 publisher SHA-pinned 5487 original observations and 357 pairs' citation and vantage
+        run: python research/climate-penguin/macro_panantarctic_v1/audit_original_pair_nest_and_citation.py
+      - name: Archive source-matched pair methodology and publisher receipt (no new ecology model)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-macro-357-original-nest-pair-MAPPPD5-publisher-citation-audit
+          path: research/climate-penguin/macro_panantarctic_v1/original_source_method_audit/
+          if-no-files-found: warn

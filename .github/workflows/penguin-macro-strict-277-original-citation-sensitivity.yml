@@ -1,0 +1,52 @@
+name: Penguin strict original MAPPPD same-citation three-pair sensitivity
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/strict_same_citation_pair_sensitivity.py'
+      - '.github/workflows/penguin-macro-strict-277-original-citation-sensitivity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  same-original-citation-and-vantage-277:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical source check
+        run: python -m pip install --disable-pip-version-check numpy
+      - name: Compile fixed original publisher source sensitivity
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/strict_same_citation_pair_sensitivity.py
+      - name: Retrieve original 357 same-site-season penguin nest ratio and original SIC rows
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-macro-3species-true-cocensus-ice-niche-1991to2020
+          run-id: 42768561120
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_357
+      - name: Retrieve 2026 publisher SHA-verified 357 source citation and vantage audit
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-macro-357-original-nest-pair-MAPPPD5-publisher-citation-audit
+          run-id: 42775226941
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/publisher_qa
+      - name: Calculate one original-source same-citation/vantage 277/357 three-species geographic sensitivity
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/strict_same_citation_pair_sensitivity.py \
+            --original-cocensus build/original_357/cocensus_niche_outputs/original_cocensused_3species_pairs_1991_2020.csv \
+            --original-publisher-qa build/publisher_qa/original_357_pairs_source_method_and_citation.csv \
+            --original-publisher-qa-json build/publisher_qa/original_357_pair_publisher_citation_provenance.json \
+            --out research/climate-penguin/macro_panantarctic_v1/source_citation_277_outputs
+      - name: Preserve complete source-identity sensitivity and original exclusions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-macro-277-strict-shared-citation-three-species-niche-sensitivity
+          path: research/climate-penguin/macro_panantarctic_v1/source_citation_277_outputs/
+          if-no-files-found: warn

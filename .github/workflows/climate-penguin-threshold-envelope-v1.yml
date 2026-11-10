@@ -1,0 +1,37 @@
+name: climate-penguin-threshold-envelope-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/seaice_threshold_envelope_v1/**"
+      - "research/climate-penguin/outputs/seaice_threshold_envelope_v1/**"
+      - ".github/workflows/climate-penguin-threshold-envelope-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/seaice_threshold_envelope_v1/**"
+      - "research/climate-penguin/outputs/seaice_threshold_envelope_v1/**"
+      - ".github/workflows/climate-penguin-threshold-envelope-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-pinned-39-site-sensitivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Source-verified SIC threshold 60–80% range and original counts
+        run: node research/climate-penguin/work/seaice_threshold_envelope_v1/build.mjs --check-receipt
+      - name: Archive all site×scenario×threshold values
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-39site-threshold-range-v1
+          path: |
+            research/climate-penguin/outputs/seaice_threshold_envelope_v1/*.csv
+            research/climate-penguin/outputs/seaice_threshold_envelope_v1/*.json
+          if-no-files-found: error
+          retention-days: 60

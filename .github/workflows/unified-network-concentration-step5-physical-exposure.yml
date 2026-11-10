@@ -1,0 +1,99 @@
+name: unified-network-concentration-step5-physical-exposure
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/aggregate_step5_exposure.py"
+      - "research/network_concentration_unified_v1/contracts/STEP5_FUTURE_EXPOSURE_LOCK.md"
+      - ".github/workflows/unified-network-concentration-step5-physical-exposure.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  source-locked-physical-exposure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Frozen source-side dependencies
+        run: |
+          python -m pip install numpy==2.2.6 geographiclib==2.1 jsonschema==4.26.0 requests==2.34.2
+          python -m py_compile research/network_concentration_unified_v1/aggregate_step5_exposure.py
+      - name: Restore exactly pinned source JNCC parsers
+        run: |
+          mkdir -p build/step1_inputs/jncc_code
+          git fetch --no-tags origin 0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e
+          for source in audit_jncc_two_censuses_source_v28 audit_jncc_comparable_site_panels_v29 model_jncc_component_concentration_v30; do
+            git show "0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e:scripts/$source.py" > "build/step1_inputs/jncc_code/$source.py"
+          done
+      - name: Recover exact-original source bytes
+        run: |
+          mkdir -p build/step1_inputs
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://data.jncc.gov.uk/data/63f0ea40-485d-46dd-b967-150df90a7b2b/comparative-seabirds-count-dataset-revised-20240708.xlsx' \
+            -o build/step1_inputs/jncc.xlsx
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://pallter-data.marine.rutgers.edu/erddap/tabledap/AdeliePenguinCensus.csv?study_name,time,island_name,colony_code,num_breeding_pairs' \
+            -o build/step1_inputs/palmer.csv
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/step1_inputs/signy_adelie.zip
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' \
+            -o build/step1_inputs/signy_chinstrap.zip
+      - name: Recreate original site components from locked before-count registry
+        run: python research/network_concentration_unified_v1/build_step1.py --phase endpoints
+      - name: Match original fixed late-site counts to original CMIP6 geography
+        run: python research/network_concentration_unified_v1/aggregate_step5_exposure.py
+      - name: Validate no substitution, four scenarios and network/source counts
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          root=Path('research/network_concentration_unified_v1')
+          data=root/'data'; out=root/'outputs'
+          a=json.loads((out/'STEP5_PHYSICAL_EXPOSURE_QA.json').read_text())
+          assert a['status']=='PHYSICAL_EXPOSURE_ONLY_NO_BREEDING_FORECAST'
+          assert a['analysis_network_species']==12 and a['n_uncovered_JNCC_macro_species_network_rows']==663
+          assert a['summary']['total_scenario_network_rows']==48
+          assert a['summary']['total_network_species']==12
+          assert len(list(csv.DictReader((data/'step5_species_physical_exposure.csv').open())))==12
+          assert len(list(csv.DictReader((data/'step5_network_physical_exposure.csv').open())))==48
+          assert a['summary']['matched_sites']<=a['summary']['candidate_sites']
+          assert a['summary']['strict_marine_sites']<=a['summary']['matched_sites']
+          print('Validated fixed-site physical exposure and missingness',a['summary'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-unified-step5-physical-exposure
+          retention-days: 90
+          path: |
+            research/network_concentration_unified_v1/data/step5_network_physical_exposure.csv
+            research/network_concentration_unified_v1/data/step5_species_physical_exposure.csv
+            research/network_concentration_unified_v1/outputs/STEP5_PHYSICAL_EXPOSURE_QA.json
+            research/network_concentration_unified_v1/outputs/STEP5_PHYSICAL_EXPOSURE_JA.md
+      - name: Commit only derived network and species physical exposure
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f \
+            research/network_concentration_unified_v1/data/step5_network_physical_exposure.csv \
+            research/network_concentration_unified_v1/data/step5_species_physical_exposure.csv \
+            research/network_concentration_unified_v1/outputs/STEP5_PHYSICAL_EXPOSURE_QA.json \
+            research/network_concentration_unified_v1/outputs/STEP5_PHYSICAL_EXPOSURE_JA.md
+          if git diff --cached --quiet; then
+            echo "No new physical exposure"
+          else
+            git commit -m "Step5: quantify source-matched future physical exposure without breeding predictions"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi

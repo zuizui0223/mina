@@ -1,0 +1,29 @@
+{
+  "status": "passed_independent_source_row_and_region_aggregation_audit",
+  "checks": {
+    "allocationRows": 232,
+    "speciesScenario": 72,
+    "regional": 36,
+    "geospatialFeatures": 232,
+    "traits": 46,
+    "matchedPhysicalDistinctSiteIds": 46,
+    "missingPhysicalCodes": [
+      "BAIL",
+      "HERO"
+    ],
+    "siteIndependenceCaution": "46 site codes with land traits, not 46 independent physical islands"
+  },
+  "errors": [],
+  "inputGitBlobSHA": {
+    "breeding_allocation_exposure_v1/site_allocation_exposure.csv": "67bc986ed52aff59a26ab32fc28393f376c52b6b",
+    "breeding_allocation_exposure_v1/species_scenario_summary.csv": "e34823736e8e3df8123b473114279d528b286dcb",
+    "breeding_allocation_exposure_v1/region_scenario_summary.csv": "12b31e42f6166704742327586cac6df9ea17d946",
+    "breeding_allocation_exposure_v1/site_allocation_exposure.geojson": "a63bfb6a0d6dea020ce0dfc7717e5ad53a950ec8",
+    "breeding_allocation_exposure_v1/summary.json": "1c6018fae1d2bb25b9f9e52c1fd3aff26f93a060",
+    "breeding_allocation_exposure_v1/frozen_AEI_REMA_46site_traits.csv": "b30e9344e67381a0ddc5ade0edabcc76bf3688c3",
+    "vegetation_response_v1/site_species_cohort.csv": "23fea5988889303ecdc16f4b5309073cf38e366a",
+    "land_marine_colocation_v1/matched_site_species_scenarios.csv": "5cc45d5bddeb6a6a4c89880ff38c4cff290f7783"
+  },
+  "method": "Independently inspect all 232 derived source row IDs, recorded observed site medians, frozen climate change and 232 GeoJSON coordinates/properties, recompute 3 species' end-century strong-ice and region-conditional shares",
+  "limits": "Independent validation of saved calculations, not independent future field verification; physical source 46 rows compared with original AEI/REMA 122-row archive checksum and regional cohort selection is nonrandom."
+}

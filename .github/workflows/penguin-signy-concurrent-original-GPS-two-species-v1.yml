@@ -1,0 +1,48 @@
+name: penguin-signy-concurrent-original-GPS-two-species-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_calendar_GPS_spatial_v1/**'
+      - 'research/climate-penguin/outputs/signy_calendar_GPS_spatial_v1/**'
+      - 'tests/test_signy_calendar_GPS_spatial_v1.py'
+      - '.github/workflows/penguin-signy-concurrent-original-GPS-two-species-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_calendar_GPS_spatial_v1/**'
+      - 'research/climate-penguin/outputs/signy_calendar_GPS_spatial_v1/**'
+      - 'tests/test_signy_calendar_GPS_spatial_v1.py'
+      - '.github/workflows/penguin-signy-concurrent-original-GPS-two-species-v1.yml'
+permissions:
+  contents: read
+jobs:
+  simultaneous-source-position-opportunity:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original BAS GPS readers (from already verified script)
+        run: python -m pip install "numpy>=1.26,<3" "rasterio>=1.4,<1.6"
+      - name: Synthetic physical coordinates and source time-bin tests
+        run: python -m unittest discover -s tests -p test_signy_calendar_GPS_spatial_v1.py -v
+      - name: Download publisher original 3-species GPS (Version2 chinstrap)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/signy_original_gps
+          curl -L --fail --retry 3 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=55b4d36f-c5e1-4d64-bb14-0b832dcd4b88&output=zip.tree' -o /tmp/signy_original_gps/adelie.zip
+          curl -L --fail --retry 3 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o /tmp/signy_original_gps/chinstrap.zip
+          curl -L --fail --retry 3 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=9cb04ca6-f88f-4368-b715-45ff73ff81eb&output=zip.tree' -o /tmp/signy_original_gps/gentoo.zip
+      - name: Compute truly same clock-hour A-C GPS use at Signy 2011,2013,2015
+        run: |
+          SIGNY_THREE_SOURCE_GPS=/tmp/signy_original_gps python -m unittest discover -s tests -p test_signy_calendar_GPS_spatial_v1.py -v
+          python research/climate-penguin/work/signy_calendar_GPS_spatial_v1/analyze.py --gps-root /tmp/signy_original_gps --out /tmp/signy_source_concurrent_GPS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-signy-concurrent-original-GPS-two-species-v1
+          path: /tmp/signy_source_concurrent_GPS/
+          retention-days: 30

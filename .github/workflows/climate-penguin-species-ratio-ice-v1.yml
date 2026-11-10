@@ -1,0 +1,37 @@
+name: Penguin species-ratio annual sea-ice temporal check v1
+on:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - 'research/climate-penguin/work/species_ratio_annual_ice_v1/**'
+      - 'research/climate-penguin/outputs/species_ratio_annual_ice_v1/**'
+      - '.github/workflows/climate-penguin-species-ratio-ice-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/species_ratio_annual_ice_v1/**'
+      - 'research/climate-penguin/outputs/species_ratio_annual_ice_v1/**'
+      - '.github/workflows/climate-penguin-species-ratio-ice-v1.yml'
+  workflow_dispatch:
+
+jobs:
+  source-verified-temporal-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Recompute same-site source observations and frozen receipt
+        run: node research/climate-penguin/work/species_ratio_annual_ice_v1/build.mjs --check-receipt
+      - name: Save all observational values and conditional backtest predictions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: species-ratio-annual-ice-v1
+          path: |
+            research/climate-penguin/outputs/species_ratio_annual_ice_v1/*.json
+            research/climate-penguin/outputs/species_ratio_annual_ice_v1/*.csv
+          if-no-files-found: error

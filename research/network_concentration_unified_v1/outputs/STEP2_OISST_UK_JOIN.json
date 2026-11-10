@@ -1,0 +1,28 @@
+{
+  "status": "SOURCE_VERIFIED_UK_SST_JOIN_NO_HYPOTHESIS_TESTS",
+  "source": "https://psl.noaa.gov/thredds/ncss/grid/Datasets/noaa.oisst.v2.highres/sst.mon.mean.nc",
+  "source_doi": "10.25921/RE9P-PT57",
+  "months": "March to May in both original UK census years",
+  "site_rule": "same wet OISST 0.25deg cell <=50km for all six months; equal source site weighting",
+  "source_subsets": [
+    {
+      "source_url": "https://psl.noaa.gov/thredds/ncss/grid/Datasets/noaa.oisst.v2.highres/sst.mon.mean.nc?var=sst&north=64&south=46&west=341&east=359.99&time_start=1998-01-01T00%3A00%3A00Z&time_end=2021-12-31T23%3A59%3A59Z&accept=netcdf4",
+      "sha256": "3ac8e5310c3043d334798b35a68f15ea8363cb7b7256a7eec16a5a321bc7da70",
+      "size_bytes": 3812413
+    },
+    {
+      "source_url": "https://psl.noaa.gov/thredds/ncss/grid/Datasets/noaa.oisst.v2.highres/sst.mon.mean.nc?var=sst&north=64&south=46&west=0&east=8&time_start=1998-01-01T00%3A00%3A00Z&time_end=2021-12-31T23%3A59%3A59Z&accept=netcdf4",
+      "sha256": "2a28c729e83c9f1af9e66eabbb762470d642200a8d28e7ba4d24f8c080883e0e",
+      "size_bytes": 1256761
+    }
+  ],
+  "n_JNCC_main": 663,
+  "n_JNCC_pairs": 373,
+  "stats": {
+    "verified_network_species": 656,
+    "no_common_wet_cell_within_50km": 7,
+    "verified_network_species_pairs": 373
+  },
+  "network_receipts": 1036,
+  "raw_source_site_table_redistributed": false
+}

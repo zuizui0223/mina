@@ -1,0 +1,196 @@
+{
+  "status": "PREFIT_DESIGN_ONLY_NO_HYPOTHESIS_FITTING",
+  "step1_candidates": {
+    "main": 675,
+    "pairs": 378
+  },
+  "H2": {
+    "ready": false,
+    "verified_species": 0,
+    "reason": "No comparable exact adult same-site interannual fidelity values"
+  },
+  "H3": {
+    "support": {
+      "n_rows": 662,
+      "n_networks": 387,
+      "n_species": 20,
+      "source_rows": {
+        "MAPPPD": 6,
+        "JNCC": 656
+      },
+      "source_networks": {
+        "JNCC": 383,
+        "MAPPPD": 4
+      }
+    },
+    "fixed_effects": {
+      "n_rows": 662,
+      "n_parameters": 6,
+      "predictor_names": [
+        "W_sst_C_decade",
+        "log_abundance_or_pair_decline",
+        "log_K",
+        "log_extent_km",
+        "dt_years"
+      ],
+      "rank": 6,
+      "full_column_rank": true,
+      "standardized_condition_number": 1.9452532888160747,
+      "means": {
+        "W_sst_C_decade": 0.06906552289176769,
+        "log_abundance_or_pair_decline": -0.2984269316253829,
+        "log_K": 1.6384864561826828,
+        "log_extent_km": 1.7901864369143579,
+        "dt_years": 18.457703927492446
+      },
+      "standard_deviations": {
+        "W_sst_C_decade": 0.3228790177640778,
+        "log_abundance_or_pair_decline": 0.6023617849421364,
+        "log_K": 0.5760073530707494,
+        "log_extent_km": 0.8965706998181634,
+        "dt_years": 2.247983029386157
+      },
+      "correlation_matrix": [
+        [
+          1.0,
+          -0.06715597765936024,
+          0.08728358700220248,
+          -0.02239100611210416,
+          -0.10377348548272769
+        ],
+        [
+          -0.06715597765936024,
+          1.0,
+          -0.07092896537263156,
+          -0.0384700557718929,
+          -0.09057246496932488
+        ],
+        [
+          0.08728358700220248,
+          -0.07092896537263156,
+          1.0,
+          0.5208096273308556,
+          -0.03083815706285771
+        ],
+        [
+          -0.02239100611210416,
+          -0.0384700557718929,
+          0.5208096273308556,
+          1.0,
+          0.22308769402415185
+        ],
+        [
+          -0.10377348548272769,
+          -0.09057246496932488,
+          -0.03083815706285771,
+          0.22308769402415185,
+          1.0
+        ]
+      ],
+      "max_absolute_predictor_correlation": 0.5208096273308556
+    }
+  },
+  "H4D_H4W": {
+    "support": {
+      "n_rows": 376,
+      "n_networks": 90,
+      "n_species": 18,
+      "source_rows": {
+        "MAPPPD": 3,
+        "JNCC": 373
+      },
+      "source_networks": {
+        "JNCC": 88,
+        "MAPPPD": 2
+      }
+    },
+    "fixed_effects": {
+      "n_rows": 376,
+      "n_parameters": 6,
+      "predictor_names": [
+        "W_sst_C_decade",
+        "log_abundance_or_pair_decline",
+        "log_K",
+        "log_extent_km",
+        "dt_years"
+      ],
+      "rank": 6,
+      "full_column_rank": true,
+      "standardized_condition_number": 1.8474454686257566,
+      "means": {
+        "W_sst_C_decade": 0.12916589448727497,
+        "log_abundance_or_pair_decline": 0.3150686812798504,
+        "log_K": 1.5711404817023644,
+        "log_extent_km": 1.8755682336590442,
+        "dt_years": 18.04787234042553
+      },
+      "standard_deviations": {
+        "W_sst_C_decade": 0.37520156830937074,
+        "log_abundance_or_pair_decline": 0.4610860667271596,
+        "log_K": 0.5219856644683318,
+        "log_extent_km": 0.8610623954989465,
+        "dt_years": 2.1547703963515232
+      },
+      "correlation_matrix": [
+        [
+          1.0,
+          0.1260663070584093,
+          0.1554281526560447,
+          0.1803252428527552,
+          0.017068913198465974
+        ],
+        [
+          0.1260663070584093,
+          1.0,
+          0.12934872545506845,
+          0.1738332977151381,
+          0.1530942643443718
+        ],
+        [
+          0.1554281526560447,
+          0.12934872545506845,
+          1.0,
+          0.4968818003788567,
+          -0.059749534511571833
+        ],
+        [
+          0.1803252428527552,
+          0.1738332977151381,
+          0.4968818003788567,
+          1.0,
+          0.03541721344328966
+        ],
+        [
+          0.017068913198465974,
+          0.1530942643443718,
+          -0.059749534511571833,
+          0.03541721344328966,
+          1.0
+        ]
+      ],
+      "max_absolute_predictor_correlation": 0.4968818003788567
+    },
+    "shared_species_dependence": {
+      "network_count": 90,
+      "networks_with_multiple_pairs": 46,
+      "networks_with_shared_species_pairs": 46,
+      "pair_pair_combinations_with_shared_species": 1054,
+      "all_within_network_pair_pair_combinations": 1909,
+      "largest_pair_cluster": 28
+    }
+  },
+  "null_and_inference_not_run": [
+    "H3 model coefficient",
+    "H4D/H4W model coefficients",
+    "confidence intervals",
+    "p values",
+    "Holm correction"
+  ],
+  "source_hashes": {
+    "network_species.csv": "2aa36a7ab0c9145e6e4eac1ebb54f81533fe8546d634e92cdbb0d580b46dad28",
+    "network_species_pairs.csv": "9eff5dfe9d9dbfc6855fe82d6c7592da7a752defa1c52670904e5a874034451d",
+    "network_climate_intake.csv": "d4e6c131c90a045a828704f6352a1ca2442097086112086555dbc836ce9ef41f",
+    "species_traits_intake.csv": "0d752879a3f418771897de9845c6b149af97042aec0f944ae9b57a5695c7bb36"
+  },
+  "conclusion": "Full fixed-effect rank is necessary, not sufficient for identifiable mixed-model variances; group dependence and convergence remain unfrozen in Step3."
+}

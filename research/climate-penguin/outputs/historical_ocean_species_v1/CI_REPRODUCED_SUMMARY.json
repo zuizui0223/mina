@@ -1,0 +1,230 @@
+{
+  "source_workflow": "https://github.com/zuizui0223/mina/actions/runs/41212619491",
+  "source_artifact_id": 13047465354,
+  "result": {
+    "cohort": {
+      "source_status": "completed_1993_2020_glorys_at_frozen_original_8_sites",
+      "temporal_direction": "start_year September environment -> next season's relative nest ratio difference; count month not always known",
+      "original_pair_years": 137,
+      "matched_original_intervals": 90,
+      "independent_site_codes": 8,
+      "native_ocean_grid_cells": 8,
+      "unique_source_start_site_years": 51,
+      "matched_count_month_known_intervals": 0,
+      "matched_count_month_after_september_intervals": 0,
+      "year_counts": {
+        "first": 1994,
+        "last": 2018,
+        "test": 23
+      },
+      "numbers_of_intervals": {
+        "CHPE": 43,
+        "GEPE": 47
+      },
+      "ocean_source_csv_sha256": "28989cb27b06491326fe6fbb827e58fae5b60eab7a73278eb24c56ab41ca2eb8"
+    },
+    "chronological": {
+      "zero": {
+        "mae": 0.2863621435407837,
+        "rmse": 0.506867741702422,
+        "n": 70,
+        "sites": 8,
+        "unique_site_years": 41
+      },
+      "prior_mean": {
+        "mae": 0.2667661404234082,
+        "rmse": 0.502304296887851,
+        "n": 70,
+        "sites": 8,
+        "unique_site_years": 41
+      },
+      "species_mean": {
+        "mae": 0.26561172864257915,
+        "rmse": 0.5063707058577135,
+        "n": 70,
+        "sites": 8,
+        "unique_site_years": 41
+      },
+      "baseline": {
+        "mae": 0.278571294601349,
+        "rmse": 0.5163210368190887,
+        "n": 70,
+        "sites": 8,
+        "unique_site_years": 41
+      },
+      "SIC": {
+        "mae": 0.29117165163404474,
+        "rmse": 0.5270981953605444,
+        "n": 70,
+        "sites": 8,
+        "unique_site_years": 41
+      },
+      "SST_SSS": {
+        "mae": 0.2873677266966729,
+        "rmse": 0.5259002820932757,
+        "n": 70,
+        "sites": 8,
+        "unique_site_years": 41
+      },
+      "SIC_SST_SSS": {
+        "mae": 0.30596305960191694,
+        "rmse": 0.5309384703886239,
+        "n": 70,
+        "sites": 8,
+        "unique_site_years": 41
+      }
+    },
+    "chronological_heldout_site": {
+      "zero": {
+        "mae": 0.3028184887478021,
+        "rmse": 0.5399679491300056,
+        "n": 60,
+        "sites": 8,
+        "unique_site_years": 36
+      },
+      "prior_mean": {
+        "mae": 0.28932280592745346,
+        "rmse": 0.5353965069146738,
+        "n": 60,
+        "sites": 8,
+        "unique_site_years": 36
+      },
+      "species_mean": {
+        "mae": 0.29133804861726703,
+        "rmse": 0.5387732363874614,
+        "n": 60,
+        "sites": 8,
+        "unique_site_years": 36
+      },
+      "baseline": {
+        "mae": 0.3139002619912807,
+        "rmse": 0.5443710640864912,
+        "n": 60,
+        "sites": 8,
+        "unique_site_years": 36
+      },
+      "SIC": {
+        "mae": 0.33136940792698316,
+        "rmse": 0.5529682400616002,
+        "n": 60,
+        "sites": 8,
+        "unique_site_years": 36
+      },
+      "SST_SSS": {
+        "mae": 0.32431024295137384,
+        "rmse": 0.5459861668658935,
+        "n": 60,
+        "sites": 8,
+        "unique_site_years": 36
+      },
+      "SIC_SST_SSS": {
+        "mae": 0.34837580688918385,
+        "rmse": 0.5509601430364467,
+        "n": 60,
+        "sites": 8,
+        "unique_site_years": 36
+      }
+    },
+    "observed_environment_correlations": [
+      {
+        "compared_species": "ALL",
+        "variable": "sic_prior_september_pct",
+        "intervals": 90,
+        "unique_sites": 8,
+        "unique_site_years": 51,
+        "raw_pearson_r": 0.01805166988447213,
+        "site_pair_and_end_year_adjusted_r": 0.06824204451908646,
+        "no_independent_effect_claim": true
+      },
+      {
+        "compared_species": "ALL",
+        "variable": "sst_prior_september_c",
+        "intervals": 90,
+        "unique_sites": 8,
+        "unique_site_years": 51,
+        "raw_pearson_r": 0.16672633094968023,
+        "site_pair_and_end_year_adjusted_r": 0.04422190772084974,
+        "no_independent_effect_claim": true
+      },
+      {
+        "compared_species": "ALL",
+        "variable": "sss_prior_september",
+        "intervals": 90,
+        "unique_sites": 8,
+        "unique_site_years": 51,
+        "raw_pearson_r": 0.04619479462513779,
+        "site_pair_and_end_year_adjusted_r": 0.033293472533438534,
+        "no_independent_effect_claim": true
+      },
+      {
+        "compared_species": "GEPE",
+        "variable": "sic_prior_september_pct",
+        "intervals": 47,
+        "unique_sites": 7,
+        "unique_site_years": 47,
+        "raw_pearson_r": 0.06302996706725147,
+        "site_pair_and_end_year_adjusted_r": 0.13673921489182386,
+        "no_independent_effect_claim": true
+      },
+      {
+        "compared_species": "GEPE",
+        "variable": "sst_prior_september_c",
+        "intervals": 47,
+        "unique_sites": 7,
+        "unique_site_years": 47,
+        "raw_pearson_r": 0.05116244055460984,
+        "site_pair_and_end_year_adjusted_r": 0.18315819457867652,
+        "no_independent_effect_claim": true
+      },
+      {
+        "compared_species": "GEPE",
+        "variable": "sss_prior_september",
+        "intervals": 47,
+        "unique_sites": 7,
+        "unique_site_years": 47,
+        "raw_pearson_r": 0.13461037236735032,
+        "site_pair_and_end_year_adjusted_r": 0.23520167381453277,
+        "no_independent_effect_claim": true
+      },
+      {
+        "compared_species": "CHPE",
+        "variable": "sic_prior_september_pct",
+        "intervals": 43,
+        "unique_sites": 6,
+        "unique_site_years": 43,
+        "raw_pearson_r": -0.002164271098276279,
+        "site_pair_and_end_year_adjusted_r": -0.14748424636603327,
+        "no_independent_effect_claim": true
+      },
+      {
+        "compared_species": "CHPE",
+        "variable": "sst_prior_september_c",
+        "intervals": 43,
+        "unique_sites": 6,
+        "unique_site_years": 43,
+        "raw_pearson_r": 0.23672816268593314,
+        "site_pair_and_end_year_adjusted_r": 0.09483943035695912,
+        "no_independent_effect_claim": true
+      },
+      {
+        "compared_species": "CHPE",
+        "variable": "sss_prior_september",
+        "intervals": 43,
+        "unique_sites": 6,
+        "unique_site_years": 43,
+        "raw_pearson_r": 0.019142821854421895,
+        "site_pair_and_end_year_adjusted_r": 0.08049253765444889,
+        "no_independent_effect_claim": true
+      }
+    ],
+    "forecast_gate": {
+      "at_least_40_complete_intervals": true,
+      "at_least_5_independent_sites": true,
+      "at_least_20_verified_count_month_intervals": false,
+      "chronology_all_environment_beats_no_environment": false,
+      "chronology_all_environment_beats_ice_only": false,
+      "site_out_all_environment_beats_no_environment": false
+    },
+    "future_nests_projection_permitted": false
+  }
+}

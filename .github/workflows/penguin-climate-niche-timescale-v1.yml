@@ -1,0 +1,35 @@
+name: penguin-climate-niche-timescale-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/niche_timescale_divergence_v1/**'
+      - 'research/climate-penguin/outputs/niche_timescale_divergence_v1/**'
+      - 'tests/test_niche_timescale_divergence_v1.py'
+      - '.github/workflows/penguin-climate-niche-timescale-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/niche_timescale_divergence_v1/**'
+      - 'research/climate-penguin/outputs/niche_timescale_divergence_v1/**'
+      - 'tests/test_niche_timescale_divergence_v1.py'
+      - '.github/workflows/penguin-climate-niche-timescale-v1.yml'
+permissions:
+  contents: read
+jobs:
+  climate-niche-timescale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source-first independent test
+        run: python tests/test_niche_timescale_divergence_v1.py
+      - name: Rebuild source-signed derived observations
+        run: python research/climate-penguin/work/niche_timescale_divergence_v1/analyze.py --out /tmp/niche-timescale
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-climate-niche-timescale-v1
+          path: /tmp/niche-timescale/
+          retention-days: 30

@@ -1,0 +1,42 @@
+# Manuscript-ready framing: scenario envelopes and spatial weighting, not demographic prediction
+
+**Working scientific question:** How do unequal breeding-count allocations and uncertainty in ecological sea-ice boundaries alter macroecological summaries of future sea-ice exposure across Antarctic Adélie penguin breeding sites?
+
+## Results (draft; source-backed but exploratory)
+
+A source-pinned panel of 39 Adélie penguin census-site codes was matched to August–November satellite sea-ice concentration (SIC) during 1995–2014, and to three CMIP6 models under two shared socioeconomic pathways for mid- and late-century conditions. The most recently reported original MAPPPD counts summed to 1,074,279 across sites, but were noncontemporaneous (2001–2025) and combined survey methods and counting targets. The count weights should therefore be interpreted as a descriptive census snapshot, not as a single-year estimate of nesting pairs.
+
+We examined a continuum of hypothetical SIC boundaries between 60% and 80% rather than assuming a calibrated biological response threshold. Under SSP5-8.5 during 2081–2100, the proportion of current census weight at sites newly moving below the boundary ranged from **0% to 39.03%**, considering all three climate models and the full boundary band. The range was **22.59–35.46%** when the boundary was fixed illustratively at 77.5%; these values represent exposure to conditions, not demographic decline.
+
+At the 77.5% boundary, the crossing sites represented **5.13–17.95% of the 39 site codes**, whereas their share of current census counts was **22.59–35.46%**. A counterfactual expectation obtained by redistributing recorded counts only within their original geographic regions was **7.27–25.43%**. Two Cape Crozier census codes alone contributed 242,681 recorded counts, accounting for **22.59 percentage points** of the total 39-site count-weighted crossing index under each of the three late-century models. Removing those two codes and renormalizing the remaining 37 sites reduced the crossing range to **0–16.62%**. Using counts from each site's long-term analysis survey method instead of the most recent count method produced **22.06–34.63%**.
+
+The crossing-code sets occupy only **one to three CMIP6 marine grid cells**, depending on the climate model. A descriptive enumeration of all within-Victoria-Land assignments of recorded count weights among the same numbers of crossing codes yielded fractions of **10.46–29.20%** of allocations with a crossing weight at least as high as observed; these are not ecological null-model p-values and do not establish preferential placement of large colonies in climate-sensitive locations.
+
+## Boundary and generality
+
+All climate and cutoff results depend on the observational sea-ice baseline and the hypothetical boundary. For the SSP5-8.5 late-century case, the two Cape Crozier source codes crossed under all three models for assumed SIC boundaries from **74.4% to 79.8%** in the 0.1-percentage-point sensitivity grid. This conditional common crossing is an arithmetic property of scenario and current-count inputs, not evidence of population decline. Historical spatial climate–count associations failed to produce robust temporal transfer to future demographic change. No calibrated projections of nesting abundance, occupancy, extinction, settlement, vegetation change or salinity-mediated demographic response are presented.
+
+## Figure plan
+
+**Main Figure**: (A) historical SIC and logged census counts by study region, displaying observation coverage and spatial count skew; (B) continuous boundary sweep (60–80%) of CMIP6 count-weighted new crossing shares, distinguished by model and observational baseline, with no probability colors; (C) matched 77.5% comparison of site-equal, within-region allocation reference and actual count-weighted exposure, highlighting the Cape Crozier contribution.
+
+**Supplement**: all 4,824 original model×threshold records, original count method/year audit, marine-cell duplication, zero/positive historical growth mismatches, and the exact finite-allocation diagnostic. This should be positioned as an environmental-exposure scenario or supporting analysis unless its novelty is established against prior colony-size-weighted Antarctic studies.
+
+Source code and archived CSVs: [validated CI](https://github.com/zuizui0223/mina/actions/runs/41217189731). Work remains in Draft PR #206; main and frozen Paper 1/2 are unchanged.
+
+
+## Additional observational test: the assumed sea-ice boundary is not a calibrated demographic threshold (2026-11-01)
+
+To assess whether the 60–80% sensitivity interval identified a transferable biological threshold, we reconstructed original August–November satellite SIC for all 39 study sites over 1991–2020 (**1,170 site-years**) and matched the original MAPPPD same-survey-method breeding counts to adjacent seasons (**296 valid positive-count intervals from 32 site codes**). Exactly **191** intervals had source-supported census months after November in both years. Annual SIC fell in the proposed boundary band in **139 site-years**, although the site-level 30-year means had no colonies between **60.314% and 80.429%**.
+
+A purely descriptive classification of the sign of long-term nest-count trend by mean SIC below versus above 77.5% agreed with **34 of 39 sites**; classification by the majority trend sign of each original geographic region also agreed with **34 of 39**. The location-based result therefore does not identify a unique biological SIC threshold independent of regional composition.
+
+Among the 191 count-month-confirmed intervals, **eight** transitions crossed downward below 77.5% of SIC across only **three** site codes. **Seven of the eight** showed positive annual log-count changes (average **+0.307**), inconsistent with a simple immediate negative response at that cutoff. The two Cape Crozier original count codes each experienced three years below 77.5% over 1991–2020, but **none** of these spells lasted longer than one year. Such short excursions cannot validate a demographic response to a 20-year future mean shift.
+
+An exploratory rolling-origin hindcast using observed test-season SIC, trained on source-verified earlier-year counts, showed a small difference in mean absolute prediction error (MAE) when a binary 77.5% indicator was added to a source-site historical mean: **0.21934 to 0.21536**, evaluated on **146 intervals / 12 sites**. However, all test sites were in Victoria Land. Refitting the same model after excluding both Cape Crozier source codes from training and testing yielded **0.23207 to 0.23187** over **94 intervals / 10 sites**, effectively removing the gain. No across-region temporal transport or demographic threshold has been established.
+
+Accordingly, the hypothetical SIC boundary is retained only as a transparent sensitivity variable. The main exposure envelope (0–39.03% of currently recorded count weight under SSP5-8.5 late-century across all assumed 60–80% thresholds and three models) must **not** be interpreted as a forecast of population decline, extinction risk, or a confidence interval on a biological threshold.
+
+[Original data and code](../seaice_threshold_temporal_gate_v1/REPORT_JA.md) · [Source-pinned CI SUCCESS](https://github.com/zuizui0223/mina/actions/runs/41259423402).
+
+See also the threshold-free multidecadal climatological novelty analysis in [the source-verified Results](../seaice_historical_novelty_v1/MANUSCRIPT_RESULTS_EN.md), which does not require an unvalidated biological SIC threshold.
