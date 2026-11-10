@@ -42,7 +42,7 @@ def slope(years,x,y):
     return float(np.dot(a-a.mean(),b-b.mean())/np.dot(a-a.mean(),a-a.mean()))
 def region_corr(sites):
     regions=defaultdict(list)
-    for i,z in enumerate(sites):regions[z["region"]].append(i)
+    for i,z in enumerate(sites):regions[z["source_region"]].append(i)
     x=np.array([z["mean_SIC_pct"] for z in sites])
     y=np.array([z["mean_log_nest_ratio"] for z in sites])
     for ind in regions.values():
