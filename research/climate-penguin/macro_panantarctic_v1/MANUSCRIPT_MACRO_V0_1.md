@@ -86,12 +86,14 @@ The 595 source colonies are not a spatially exhaustive sample of all Antarctic c
 
 Within the currently sampled Antarctic penguin colony network, sea-ice and terrestrial vegetation environments show strong broad regional structure, whereas their local relationships with breeding abundance and co-censused species ratios remain uncertain and species-dependent. **Quantifying the geographic scale of an association is itself essential before projecting it in time or extending it to unobserved sites.** Future causal inference requires independent repeated colony censuses with actual nondetection/effort information, temporally matched land vegetation measurements and marine prey or movement observations. The present results provide a source-reproducible macroecological baseline, not a calibrated forecast of warming-driven changes in Antarctic colony abundance.
 
-## Proposed figures (strict evidence boundaries)
+## Produced figures and manuscript placements (strict evidence boundaries)
 
 - **Figure 1:** Map of all 595 actually recorded breeding sites and their survey-year support (18 regions), with native 1991–2020 SIC context. Overlays of 173 vegetation-detected sites shown separately; never imply complete 595-site land mapping.
 - **Figure 2:** Scatter of 173 independent site-mean SIC vs `log1p` static mapped land area by source region, and explicit between-region/within-region covariance decomposition (89.13% of SIC between-site variance among regions).
 - **Figure 3:** Species-specific same-census-year SIC-trend versus log nest-count-trend for 100 site–species series, 250-km block interval summary, region support (9/5/6 blocks).
 - **Supplement:** Three pairs' directly co-censused species nest ratios and SIC (100/89/168 source site-years), 197 static habitat abundance model coefficients, source uncertainty and optional local Signy trophic evidence. No extrapolated 2050/2100 penguin nesting forecast.
+
+**Verified figure production:** the original 595 colony-site coordinate Figure 1, 173 independent site environmental scatter Figure 2, 100 long-term species-series regional-correlation Figure 3 and 3-pair co-census supplementary figure were rendered in **[GitHub Actions SUCCESS #42769768412](https://github.com/zuizui0223/mina/actions/runs/42769768412)** with original published source data and fixed spatial-block uncertainty. [Figure archive: PNG and vector SVG, artifact 13740679999](https://github.com/zuizui0223/mina/actions/runs/42769768412/artifacts/13740679999). The full geographical Figure 1 is an EPSG:3031 source-location scatter with graticule, **not** a coastline, distribution-suitability or habitat map. The generated figures render already documented results, not additional statistical discoveries. [Reproduction code](render_macro_paper_figures.py).
 
 ## Internal source/provenance record (remove from the submitted manuscript)
 
