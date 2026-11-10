@@ -199,15 +199,79 @@ def sector_mismatch(rows,fronts,species):
             })
     return results,summaries
 
+def exact_sector_nesting_partition(rows, species):
+    """Exact symmetric shift decomposition, fixed source sectors and counts."""
+    result=[];components=[]
+    for early,late in PAIRS:
+        all_n0=[float(r[f"median_original_nest_count_{early}"]) for r in rows]
+        all_n1=[float(r[f"median_original_nest_count_{late}"]) for r in rows]
+        n0=sum(all_n0);n1=sum(all_n1)
+        record={"species":species,"period_start":PERIODS[early],
+                "period_end":PERIODS[late],"n_original_sites":len(rows),
+                "n_original_sectors":len({r["longitude_sector_10deg"] for r in rows})}
+        if min(n0,n1)<=0 or len(rows)<2:
+            record["status"]="SOURCE_ZERO_COUNTS_OR_TOO_FEW_SITES"
+            result.append(record)
+            continue
+        w0=[v/n0 for v in all_n0];w1=[v/n1 for v in all_n1]
+        lat=[float(r["latitude"]) for r in rows]
+        total=KM_LAT*(sum(w*ll for w,ll in zip(w0,lat))-
+                      sum(w*ll for w,ll in zip(w1,lat)))
+        sect=defaultdict(list)
+        for idx,site in enumerate(rows):sect[int(site["longitude_sector_10deg"])].append(idx)
+        between=within=0.0;ok=True
+        for sec,indices in sorted(sect.items()):
+            W0=sum(w0[i] for i in indices);W1=sum(w1[i] for i in indices)
+            meta={"species":species,"period_start":PERIODS[early],
+                  "period_end":PERIODS[late],"longitude_sector_10deg":sec,
+                  "n_sites":len(indices),
+                  "early_sampled_nest_share":W0,"late_sampled_nest_share":W1}
+            if W0<=0 or W1<=0:
+                meta["status"]="ZERO_WEIGHT_IN_SOURCE_SECTOR_ONE_PERIOD"
+                ok=False;components.append(meta);continue
+            c0=sum(w0[i]*lat[i] for i in indices)/W0
+            c1=sum(w1[i]*lat[i] for i in indices)/W1
+            between_contrib=-KM_LAT*(W1-W0)*(c0+c1)/2
+            within_contrib=-KM_LAT*(W1+W0)*(c1-c0)/2
+            meta.update({
+               "status":"EXACT_SYMMETRIC_SOURCE_SECTOR_PARTITION",
+               "sector_early_weighted_latitude_deg":c0,
+               "sector_late_weighted_latitude_deg":c1,
+               "between_sector_share_contribution_km":between_contrib,
+               "within_sector_site_reweighting_contribution_km":within_contrib,
+               "sum_sector_contribution_km":between_contrib+within_contrib
+            })
+            between+=between_contrib;within+=within_contrib
+            components.append(meta)
+        record["overall_original_roster_latitudinal_nest_reweighting_km"]=total
+        if not ok:
+            record["status"]="SOME_ORIGINAL_SECTORS_HAVE_ZERO_PERIOD_WEIGHT_PARTITION_UNIDENTIFIED"
+        else:
+            if not math.isclose(between+within,total,abs_tol=1e-8,rel_tol=1e-11):
+                raise AssertionError(f"Exact original sector latitude partition failed {species} {early}->{late}")
+            record.update({
+              "status":"EXACT_SOURCE_SECTOR_WEIGHTED_LATITUDE_PARTITION",
+              "between_sector_share_component_km":between,
+              "within_sector_observed_site_component_km":within,
+              "exact_identity_absolute_error_km":abs(between+within-total),
+              "n_source_sectors_with_positive_two_period_weight":len(sect),
+              "dominance_note":"Source nest-weighted latitude is not the true species range or individual dispersal"
+            })
+        result.append(record)
+    return result,components
+
+
 def run(args):
     source=load(args.roster);fronts=load(args.front)
     bysp=defaultdict(list)
     for r in source:
         bysp[r["species"]].append(r)
-    allregion=[];allsector=[];all_sector_summaries=[];summ=[]
+    allregion=[];allsector=[];all_sector_summaries=[];summ=[];all_sector_partition=[];all_partition_components=[]
     for species in SPECIES:
         regional,details=assess_lag_geography(bysp[species],species)
         sectors,sector_sum=sector_mismatch(bysp[species],fronts,species)
+        partition,partition_parts=exact_sector_nesting_partition(bysp[species],species)
+        all_sector_partition+=partition;all_partition_components+=partition_parts
         summ.append(regional);allregion+=details;allsector+=sectors;all_sector_summaries+=sector_sum
     response={
         "status":"ORIGINAL_REGION_AND_SECTOR_MISMATCH_DIAGNOSTIC_COMPLETED",
@@ -217,6 +281,7 @@ def run(args):
         "no_new_climate_source_or_lag_thresholds":True,
         "region_lag_replication_verdicts":summ,
         "marine_sector_support":all_sector_summaries,
+        "original_sector_nested_latitude_partition":all_sector_partition,
         "inference_limit":[
             "Region-specific correlation in n=2 group is not a valid replicated effect.",
             "A region's covariance contribution is not a biological percentage attribution.",
@@ -230,6 +295,8 @@ def run(args):
     save(args.out/"original_region_climate_legacy_contributions.csv",allregion)
     save(args.out/"original_60pct_sector_matched_colony_direction.csv",allsector)
     save(args.out/"original_60pct_sector_support_summary.csv",all_sector_summaries)
+    save(args.out/"original_sector_weighted_latitude_partition.csv",all_sector_partition)
+    save(args.out/"original_sector_latitude_partition_components.csv",all_partition_components)
     (args.out/"geographic_replication_and_mismatch_verdict.json").write_text(
         json.dumps(response,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     print("GEO_REGION_LEGACY="+json.dumps([{
@@ -244,6 +311,8 @@ def run(args):
         } for r in summ],ensure_ascii=False),flush=True)
     print("GEO_SECTOR_MISMATCH="+json.dumps(all_sector_summaries,ensure_ascii=False),flush=True)
     print("GEO_SECTOR_MATCHED_DETAILS="+json.dumps(allsector,ensure_ascii=False),flush=True)
+    print("GEO_SECTOR_NESTING_PARTITION="+json.dumps(all_sector_partition,ensure_ascii=False),flush=True)
+    print("GEO_SECTOR_NESTING_COMPONENTS="+json.dumps(all_partition_components,ensure_ascii=False),flush=True)
 
 def main():
     ap=argparse.ArgumentParser()
