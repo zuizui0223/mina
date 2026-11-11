@@ -25,7 +25,7 @@ class TestOriginalExclusiveSIC(unittest.TestCase):
 
     def test_source_min_three_and_80pct_quality(self):
         sic=np.array([0,10,20,30,40,50],dtype=float)
-        bad=np.array([True,True,True,False,True,True])
+        bad=np.array([True,True,False,False,True,True])
         self.assertIsNone(excl.subset_source_mean(sic,bad,np.array([0,1,2,3,4])))
         good=np.array([True,True,True,True,False,True])
         self.assertEqual(excl.subset_source_mean(sic,good,np.array([0,1,2,3,4])),15.)
