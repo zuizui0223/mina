@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install original GLORYS12 Copernicus Zarr remote source readers and polar geometry
-        run: python -m pip install --disable-pip-version-check 'numpy<3' 'scipy<2' 'xarray' 'pandas' 'fsspec[http]' 'zarr<3' pyproj==3.7.1
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'scipy<2' 'xarray==2024.10.0' 'pandas<3' 'fsspec[http]' 'zarr==2.18.7' pyproj==3.7.1
       - name: Check source geometry math and Antarctic wet cell no-absence gates
         run: |
           python -m py_compile research/climate-penguin/macro_panantarctic_v1/map_original_595_GLORYS_wet_grid.py
