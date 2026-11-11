@@ -1,0 +1,64 @@
+name: Penguin 588 original Antarctic colonies 1993–2020 marine PCA and true species co-census
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/analyze_original_588_18region_marine_pca.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_original_588_18region_marine_pca.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/GLORYS_588_18REGION_SPATIOTEMPORAL_PCA_CONTRACT_20261111.md'
+      - '.github/workflows/penguin-original-588-18region-marine-pca-and-species.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-18-reporting-regions-marine-physical-trajectory-and-count-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Original Antarctic atlas projection and numerical marine PCA
+        run: python -m pip install --disable-pip-version-check numpy scipy pyproj==3.7.1
+      - name: Unit-test PCA region covariance and original biological source-year semantics
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/analyze_original_588_18region_marine_pca.py
+          python research/climate-penguin/macro_panantarctic_v1/unit_test_original_588_18region_marine_pca.py -v
+      - name: Rebuild source-pinned true 595 original penguin colonies and 2456 fixed-method count observations
+        run: python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Reuse all original 595 colony 1991–2020 OSI SAF satellite sea ice site-month records
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-panantarctic-595site-original-1991-2020-monthly-ice
+          run-id: 42612067836
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/source_original_sic
+      - name: Reuse actually verified 588 Antarctic colony 1993–2020 GLORYS salinity and potential temperature
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-595-colony-GLORYS12-1993-2020-18region-true-marine-months
+          run-id: 42958013800
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/source_original_glorys
+      - name: Estimate original 18-region source-based PCA, balanced 28y region trajectories, and true two-species same-year counts
+        run: |
+          SIC="$(find build/source_original_sic -name 'original_595_site_months_120_source_QA.csv' -print -quit)"
+          HYDRO="$(find build/source_original_glorys -name 'all_original_eligible_colony_GLORYS12_1993_2020_AugNov_monthly.csv' -print -quit)"
+          test -s "$SIC" && test -s "$HYDRO"
+          python research/climate-penguin/macro_panantarctic_v1/analyze_original_588_18region_marine_pca.py \
+            --atlas research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --original-sic "$SIC" \
+            --original-hydro "$HYDRO" \
+            --baseline40 research/climate-penguin/outputs/climate_penguin/ocean_grid_support.csv \
+            --static research/climate-penguin/outputs/vegetation_response_v1/site_species_cohort.csv \
+            --out research/climate-penguin/macro_panantarctic_v1/GLORYS_588_18region_spatiotemporal_outputs
+      - name: Archive full original 588 site×28-year environmental PCA, 18 region time series, genuine dual-count support and static vegetation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-588-colony-18-region-1993-2020-marine-axis-and-breeding-composition-v1
+          path: research/climate-penguin/macro_panantarctic_v1/GLORYS_588_18region_spatiotemporal_outputs/
+          if-no-files-found: warn
