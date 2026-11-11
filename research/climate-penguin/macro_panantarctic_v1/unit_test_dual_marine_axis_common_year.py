@@ -43,6 +43,10 @@ class TestSourceTrueYearFWL(unittest.TestCase):
         self.assertAlmostEqual(fit["PC2_saline_coef_per_original_global_source_SD"],-.29,places=11)
         self.assertAlmostEqual(fit["source_year_and_site_partialled_in_sample_R2_NOT_FORECAST"],1.,places=11)
         self.assertGreaterEqual(fit["effective_unclustered_residual_degrees_of_freedom_NOT_INDEPENDENT"],5)
+        region=m.geographic_year_FWL_sensitivity(rows,fit,"source_region")
+        block=m.geographic_year_FWL_sensitivity(rows,fit,"source_250km_block")
+        self.assertTrue(region["PC2"]["every_supported_omission_preserves_original_sign"])
+        self.assertTrue(block["PC2"]["every_supported_omission_preserves_original_sign"])
 
     def test_unobserved_years_not_counted(self):
         rows=[row(f"S{i}","R","B",1993+i,i,i,5+i) for i in range(8)]
