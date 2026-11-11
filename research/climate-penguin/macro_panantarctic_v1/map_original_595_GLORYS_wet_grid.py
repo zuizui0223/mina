@@ -68,8 +68,8 @@ def xyz(lat,lon):
 def nearest_wet(source_sites,wet_y,wet_x,wet_lat,wet_lon):
     if not (len(wet_y)==len(wet_x)==len(wet_lat)==len(wet_lon)):
         raise ValueError("Original gridded marine wet coordinate arrays do not align")
-    if len(wet_y)<50:
-        raise ValueError("Original Antarctic wet marine mask unexpectedly empty")
+    if len(wet_y)<MARINE_CANDIDATES:
+        raise ValueError("Native wet marine point set too small for candidate geodesic check")
     geod=Geod(ellps="WGS84")
     unit=xyz(wet_lat,wet_lon)
     tree=cKDTree(unit)
