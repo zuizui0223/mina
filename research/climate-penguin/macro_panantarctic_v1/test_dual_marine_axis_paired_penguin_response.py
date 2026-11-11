@@ -154,7 +154,7 @@ def raw_vs_within(rows,key):
         yy.extend([r[outcome]-my for r in rs])
     return {
         "raw_r":pearson([r[key] for r in rows],[r[outcome] for r in rows]),
-        "within_site_r":pearson(xx,yy) if len(groups)>=3 and len(xx)>=5 else None,
+        "within_site_r":pearson(xx,yy) if len({r["site_id"] for r in informative})>=3 and len(xx)>=5 else None,
         "n_records":len(rows),
         "n_original_colony_sites":len(groups),
         "n_informative_sites":len({r["site_id"] for r in informative}),
