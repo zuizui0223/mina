@@ -226,6 +226,25 @@ def fit_regime(siteyears):
             "2011_to_2020_PC1_change":shift,
             "cannot_estimate_ecological_trend_from_one_region":True
         }
+    # Geographic-sampling sensitivity: each original source region gets
+    # equal total weight, rather than Victoria Land's many mapped colony sites.
+    region_year_means = np.asarray([
+        np.mean(x[yearids],axis=0)
+        for region,ids in sorted(reg.items())
+        for year in YEARS
+        for yearids in [[i for i in ids if siteyears[i]["year"]==year]]
+    ],dtype=float)
+    if region_year_means.shape!=(len(reg)*len(YEARS),3):
+        raise ValueError("Equal-source-region PCA temporal panel dimension changed")
+    region_year_equal = pca(region_year_means)
+    # The strictly geographic case: one climate observation per region,
+    # averaging over real mapped source sites and over real 10-year means.
+    region_mean = pca(np.asarray([
+        np.mean(x[ids],axis=0) for region,ids in sorted(reg.items())
+    ],dtype=float))
+    site_mean = pca(np.asarray([
+        np.mean(x[ids],axis=0) for site_code,ids in sorted(site.items())
+    ],dtype=float))
     l1=fit["loadings"][:,0]; lt=temp["loadings"][:,0]
     result={
         "status":"EXPLORATORY_ORIGINAL_MARINE_PCA_COMPLETE",
@@ -245,6 +264,18 @@ def fit_regime(siteyears):
         "within_site_temporal_PCA_explained":[float(v) for v in temp["explained"]],
         "within_site_temporal_PC1_loadings":dict(zip(COLUMNS,[float(v) for v in lt])),
         "pooled_vs_within_site_PC1_loading_alignment":align_cosine(l1,lt),
+        "region_equal_site_year_PCA_explained":[float(v) for v in region_year_equal["explained"]],
+        "region_equal_site_year_PC1_loadings":dict(zip(COLUMNS,[
+            float(v) for v in region_year_equal["loadings"][:,0]])),
+        "pooled_vs_region_equal_PC1_loading_alignment":align_cosine(
+            l1,region_year_equal["loadings"][:,0]),
+        "equal_six_source_region_decadal_climatology_PCA_explained":[
+            float(v) for v in region_mean["explained"]],
+        "equal_six_source_region_PC1_loadings":dict(zip(COLUMNS,[
+            float(v) for v in region_mean["loadings"][:,0]])),
+        "one_site_one_vote_ten_year_mean_PCA_explained":[
+            float(v) for v in site_mean["explained"]],
+        "region_equality_warning":"Six original regions include three with one only one ocean-glorys matched colony",
         "region_difference_decomposition":decomp,
         "source_region_climate_PC1_2011_to_2020":score_trajectory,
         "site_years_in_PCA_are_not_geographic_independent_samples":True
@@ -295,11 +326,26 @@ def static_plants(siteyears,source):
     rho=pearson(rankdata([r["marine_PC1_2011_2020_mean"] for r in positive]),
                 rankdata([r["mapped_positive_2km_polygon_area_m2"] for r in positive])) \
                 if len(positive)>=3 else None
+    # Source region-demeaned site-level correlation is a geographic
+    # sensitivity; 2017-2023 vegetation remains static, not an annual outcome.
+    rg=defaultdict(list)
+    for r in positive:
+        rg[r["source_region"]].append(r)
+    rx=[];ry=[]
+    for region,part in rg.items():
+        if len(part)<2:continue
+        x=np.asarray([r["marine_PC1_2011_2020_mean"] for r in part])
+        y=np.log1p(np.asarray([r["mapped_positive_2km_polygon_area_m2"] for r in part]))
+        rx.extend(x-x.mean());ry.extend(y-y.mean())
+    regional_r=pearson(rx,ry)
     return res,{
         "n_marine_cohort_sites_with_static_2km_map":len(res),
         "n_sites_with_positive_mapped_vegetation_polygon_detection":len(positive),
         "n_source_regions_with_positive_static_map":len({r["source_region"] for r in positive}),
         "positive_mapped_area_vs_site_mean_2011_2020_marine_PC1_spearman_r":rho,
+        "region_demeaned_log1p_positive_mapped_area_vs_site_mean_marine_PC1_pearson_r":regional_r,
+        "n_region_informative_positive_mapped_sites":len(rx),
+        "n_region_informative_positive_map_regions":sum(len(q)>=2 for q in rg.values()),
         "correlation_is_cross_sectional_and_region_confounded":True,
         "source_static_vegetation_2017_2023_composite":True,
         "vegetation_1986_to_2021_year_change_inferred":False
