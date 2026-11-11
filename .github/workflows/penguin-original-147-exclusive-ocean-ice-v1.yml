@@ -1,0 +1,64 @@
+name: Penguin 147 original paired colonies exclusive 25km ocean SIC vs 100km shared mean
+on:
+  push:
+    branches: [analysis/penguin-bright-dark-spots-v1-20261111]
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/extract_exclusive_ocean_original_SIC_120months.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_exclusive_ocean_original_SIC.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/EXCLUSIVE_OCEAN_ICE_ORIGINAL_120MONTH_CONTRACT_20261111.md'
+      - '.github/workflows/penguin-original-147-exclusive-ocean-ice-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-original-all-120months-exclusive-native-ocean-pixels:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original EUMETSAT monthly CDR reader and original polar/ocean cell geometry dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy xarray netCDF4 pyproj==3.7.1
+      - name: Verify source-free original exclusive/ocean cell QA, 120 original dates, and no imputed missingness
+        run: |
+          python -m py_compile research/climate-penguin/bright_dark_spots_v1/extract_exclusive_ocean_original_SIC_120months.py
+          python research/climate-penguin/bright_dark_spots_v1/unit_test_exclusive_ocean_original_SIC.py -v
+      - name: Restore fixed all-147 original same-year penguin local count/ice pair rows
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-local-colony-pair-vs-source-marine-ice-v1
+          run-id: 42919893846
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original147
+      - name: Restore immutable original 595-pixel membership, 71400 source site-month means, 120 official SHA receipts
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-panantarctic-595site-original-1991-2020-monthly-ice
+          run-id: 42612067836
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original595ice
+      - name: Independently SHA-check 120 original full-grid monthly files, reproduce original full site SIC and compute exclusive-only native ocean cells
+        run: |
+          PAIRS="$(find build/original147 -name 'all_same_region_same_250km_block_common_year_colony_pairs.csv' -print -quit)"
+          SITE_PIX="$(find build/original595ice -name 'original_595_sites_marine_native_reference_cells.csv' -print -quit)"
+          ORIGINAL_SIC="$(find build/original595ice -name 'original_595_site_months_120_source_QA.csv' -print -quit)"
+          SHA="$(find build/original595ice -name 'original_monthly_120_source_receipts.json' -print -quit)"
+          META="$(find build/original595ice -name 'original_595_native_monthly_SIC_30year_summary.json' -print -quit)"
+          test -s "$PAIRS" && test -s "$SITE_PIX" && test -s "$ORIGINAL_SIC" && test -s "$SHA" && test -s "$META"
+          python research/climate-penguin/bright_dark_spots_v1/extract_exclusive_ocean_original_SIC_120months.py \
+            --pairs "$PAIRS" \
+            --original-595-pixel-membership "$SITE_PIX" \
+            --original-595-site-month "$ORIGINAL_SIC" \
+            --original-month-SHA-receipts "$SHA" \
+            --original-ice-metadata "$META" \
+            --out research/climate-penguin/bright_dark_spots_v1/exclusive_ocean_ice_outputs
+      - name: Preserve reproducible original 120-month receipts, all 147 local pairs and same-year marine SIC evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-147-exclusive-native-ocean-pixel-ice-120months-v1
+          path: research/climate-penguin/bright_dark_spots_v1/exclusive_ocean_ice_outputs/
+          if-no-files-found: warn

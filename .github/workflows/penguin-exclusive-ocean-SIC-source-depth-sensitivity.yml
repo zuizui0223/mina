@@ -1,0 +1,46 @@
+name: Penguin original 147-pair exclusive marine SIC grid-depth sensitivity
+on:
+  push:
+    branches: [analysis/penguin-bright-dark-spots-v1-20261111]
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/summarize_exclusive_ocean_source_sensitivity.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_exclusive_ocean_source_sensitivity.py'
+      - '.github/workflows/penguin-exclusive-ocean-SIC-source-depth-sensitivity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-original-nonoverlap-climate-cell-depth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit-check original independent grid-cell-depth and no-ecological-zero semantics
+        run: |
+          python -m py_compile research/climate-penguin/bright_dark_spots_v1/summarize_exclusive_ocean_source_sensitivity.py
+          python research/climate-penguin/bright_dark_spots_v1/unit_test_exclusive_ocean_source_sensitivity.py -v
+      - name: Restore all original 147 publisher-verified pixel-exclusive source pair results
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-147-exclusive-native-ocean-pixel-ice-120months-v1
+          run-id: 42951867959
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/previous_original_exclusive_ice
+      - name: Evaluate source sampling depth and original survey-depth robustness without any new environmental model
+        run: |
+          DATA="$(find build/previous_original_exclusive_ice -name 'all_147_original_pair_exclusive_vs_full_ice_1991_2020.csv' -print -quit)"
+          test -s "$DATA"
+          python research/climate-penguin/bright_dark_spots_v1/summarize_exclusive_ocean_source_sensitivity.py \
+            --pairs "$DATA" \
+            --out research/climate-penguin/bright_dark_spots_v1/exclusive_ocean_sensitivity_outputs
+      - name: Save all explicit grid-depth, group-source and selected-case support receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-exclusive-marine-147-pair-depth-and-year-sensitivity-v1
+          path: research/climate-penguin/bright_dark_spots_v1/exclusive_ocean_sensitivity_outputs/
+          if-no-files-found: warn

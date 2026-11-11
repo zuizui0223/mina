@@ -1,0 +1,72 @@
+name: Penguin 100 bright-dark original monitored sites and 147 original pair GIS layers
+on:
+  push:
+    branches: [analysis/penguin-bright-dark-spots-v1-20261111]
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/build_spot_and_neighbor_map_geojson.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_spot_and_neighbor_geojson.py'
+      - '.github/workflows/penguin-bright-dark-source-map-gis.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/bright_dark_spots_v1/build_spot_and_neighbor_map_geojson.py'
+      - 'research/climate-penguin/bright_dark_spots_v1/unit_test_spot_and_neighbor_geojson.py'
+      - '.github/workflows/penguin-bright-dark-source-map-gis.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-original-100-spots-and-147-local-pairs-wgs84-GIS:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test source longitude/latitude and no invented bright/absence classes
+        run: |
+          python -m py_compile research/climate-penguin/bright_dark_spots_v1/build_spot_and_neighbor_map_geojson.py
+          python research/climate-penguin/bright_dark_spots_v1/unit_test_spot_and_neighbor_geojson.py -v
+      - name: Install original 595 Antarctic source colony coordinate dependency
+        run: python -m pip install --disable-pip-version-check pyproj==3.7.1
+      - name: Rebuild pinned original 595 colony source coordinates
+        run: python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Reuse original 100 long colony trend source evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-exploratory-original-bright-dark-colony-100-trends-v1
+          run-id: 42916058266
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/source_original_100_spots
+      - name: Reuse original 100 source same-year candidate support and independent-block evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-bright-dark-common-census-year-peer-sensitivity-v1
+          run-id: 42919208344
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_same_year_comparators
+      - name: Reuse original 147 local pair source SIC and native pixel overlap evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-147-local-pairs-source-25km-ice-pixel-sharing-v1
+          run-id: 42923119624
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_147_ice_overlap
+      - name: Generate GIS GeoJSON feature layers of all original source evidence
+        run: |
+          ORIG="$(find build/source_original_100_spots -name 'original_all_100_site_species_relative_spots.csv' -print -quit)"
+          YEARS="$(find build/original_same_year_comparators -name 'all_100_same_year_comparability.csv' -print -quit)"
+          PAIRS="$(find build/original_147_ice_overlap -name 'all_original_147_local_colony_pairs_ocean_pixel_overlap.csv' -print -quit)"
+          test -s "$ORIG" && test -s "$YEARS" && test -s "$PAIRS"
+          python research/climate-penguin/bright_dark_spots_v1/build_spot_and_neighbor_map_geojson.py \
+            --original "$ORIG" --validated "$YEARS" --pairs "$PAIRS" \
+            --atlas research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --out research/climate-penguin/bright_dark_spots_v1/source_map_outputs
+      - name: Archive map layers and original source coverage metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-source-100-bright-dark-spots-147-neighbor-GIS-geojson
+          path: research/climate-penguin/bright_dark_spots_v1/source_map_outputs/
+          if-no-files-found: warn
