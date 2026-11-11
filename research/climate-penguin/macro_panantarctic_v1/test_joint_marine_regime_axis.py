@@ -399,6 +399,26 @@ def penguin_composition(siteyears,counts):
             xs.extend([r["marine_PC1"]-mu1 for r in rr])
             ys.extend([r["log1p_gentoo_minus_baseline_observed_nests"]-mu2 for r in rr])
         within=pearson(xs,ys) if len(bysite)>=3 and len(xs)>=5 else None
+        # Post-result geographic site influence: a repeated census year is
+        # not independent information about the species' climate preference.
+        within_leave_one_site=[]
+        for omitted_site in sorted(bysite):
+            retained={site_code:rr for site_code,rr in bysite.items()
+                      if site_code != omitted_site and len(rr)>=2}
+            xoo=[];yoo=[]
+            for site_code,rr in retained.items():
+                m1=mean(r["marine_PC1"] for r in rr)
+                m2=mean(r["log1p_gentoo_minus_baseline_observed_nests"] for r in rr)
+                xoo.extend(r["marine_PC1"]-m1 for r in rr)
+                yoo.extend(r["log1p_gentoo_minus_baseline_observed_nests"]-m2 for r in rr)
+            rr=pearson(xoo,yoo) if len(retained)>=3 and len(xoo)>=5 else None
+            within_leave_one_site.append({
+                "omitted_original_colony_site":omitted_site,
+                "n_remaining_informative_sites":len(retained),
+                "n_remaining_same_year_count_records":len(xoo),
+                "within_site_demeaned_r":rr})
+        loovalues=[r["within_site_demeaned_r"] for r in within_leave_one_site
+                   if r["within_site_demeaned_r"] is not None]
         summ[baseline+"__"+gentoo]={
             "n_exact_source_same_site_same_season_pairs":len(subset),
             "n_original_sites":len(bysite),
@@ -407,6 +427,12 @@ def penguin_composition(siteyears,counts):
             "n_sites_with_more_than_one_true_cocensus_year":sum(len(v)>=2 for v in bysite.values()),
             "raw_same_season_record_correlation_r":raw,
             "within_site_demeaned_same_season_correlation_r":within,
+            "leave_one_actual_colony_out_within_site_r_range":[
+                min(loovalues),max(loovalues)] if loovalues else None,
+            "n_valid_leave_one_actual_colony_out_diagnostics":len(loovalues),
+            "leave_one_site_out_diagnostics":within_leave_one_site,
+            "only_two_spatial_blocks_no_climate_replication":len({
+                r["source_250km_block"] for r in subset})<=2,
             "source_support_only_not_a_18_region_abundance_proportion_model":True,
             "not_independently_held_out_or_a_causal_warming_test":True
         }
