@@ -1,0 +1,49 @@
+name: Penguin original two marine axes vs co-counted species source calendar-year guard
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/audit_dual_marine_axis_calendar_year.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_dual_marine_axis_common_year.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/DUAL_MARINE_AXIS_COMMON_YEAR_DIAGNOSTIC_20261111.md'
+      - '.github/workflows/penguin-original-dual-marine-axes-calendar-year-guard.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-same-colony-same-year-penguin-physical-axis-residualization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original marine PCs and source FWL numerical arithmetic
+        run: python -m pip install --disable-pip-version-check numpy scipy
+      - name: Verify site/year source FE and disconnected-year negative controls
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/audit_dual_marine_axis_calendar_year.py
+          python research/climate-penguin/macro_panantarctic_v1/unit_test_dual_marine_axis_common_year.py -v
+      - name: Restore prior successfully source-reproduced 351 two-species coobserved nest records and two marine PCA physical scores
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-18region-PC1-ice-thermal-PC2-salinity-true-cocensus-gate-v1
+          run-id: 42969734584
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/prior_original_dual_marine_cocensus
+      - name: Residualize both actual-count response and 2 climate PC scores by same source site and calendar year, keep actual original zero-count sensitivity
+        run: |
+          RECORDS="$(find build/prior_original_dual_marine_cocensus -name 'original_351_actual_same_site_year_species_pairs_with_two_fixed_marine_PCs.csv' -print -quit)"
+          test -s "$RECORDS"
+          python research/climate-penguin/macro_panantarctic_v1/audit_dual_marine_axis_calendar_year.py \
+            --input "$RECORDS" \
+            --out research/climate-penguin/macro_panantarctic_v1/marine_two_axis_year_guard_outputs
+      - name: Archive all original site/calendar-year FE covariance and actual source-year controls
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-351-true-cocensus-two-marine-axes-site-and-year-FWL-control
+          path: research/climate-penguin/macro_panantarctic_v1/marine_two_axis_year_guard_outputs/
+          if-no-files-found: warn
