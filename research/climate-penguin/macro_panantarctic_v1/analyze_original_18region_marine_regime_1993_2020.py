@@ -289,7 +289,13 @@ def original_penguin_cocensus(full,counts_csv):
     src=pd.read_csv(counts_csv)
     if len(src)!=2456 or src.duplicated(["site_id","species","season"]).any():
         raise ValueError("Original MAPPPD 2456 observed count source duplicated")
-    count=src.loc[src.season.isin(YEARS)&src.species.isin(("ADPE","CHPE","GEPE"))].copy()
+    # Original count rows already contain source_region, latitude, etc.
+    # Select only true observed count grain before marine join to avoid
+    # pandas suffixing both region columns into _x/_y and confusing sources.
+    count=src.loc[
+        src.season.isin(YEARS)&src.species.isin(("ADPE","CHPE","GEPE")),
+        ["site_id","season","species","observed_nest_count"]
+    ].copy()
     original_year=full[["site_id","year","source_region","source_250km_block","equal_region_PC1"]]
     original_year=original_year.rename(columns={"year":"season"})
     combined=count.merge(original_year,on=["site_id","season"],how="inner",validate="many_to_one")
