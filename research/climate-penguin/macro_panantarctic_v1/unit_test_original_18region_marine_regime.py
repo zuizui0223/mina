@@ -54,6 +54,33 @@ class TestContinentalMarine(unittest.TestCase):
         self.assertEqual(len(physical["leave_one_original_region_out_marine_PC1_sensitivity"]),18)
         self.assertTrue(all(r["n_real_calendar_years"]==28 for r in trends))
 
+    def test_real_species_cocensus_marine_join_preserves_region_from_source(self):
+        # The original 2456-count table already carries source_region; the
+        # marine merge must not create source_region_x/_y ambiguous columns.
+        import tempfile
+        records=[
+            {"site_id":"A","species":sp,"season":2011,
+             "observed_nest_count":n,"source_region":"RegionA"}
+            for sp,n in (("ADPE",10),("GEPE",20),("CHPE",5))
+        ]
+        records += [
+            {"site_id":f"UNOBS_{i}","species":"ADPE","season":1892,
+             "observed_nest_count":100,"source_region":"Other"}
+            for i in range(2453)
+        ]
+        sites=pd.DataFrame([{"site_id":"A","year":2011,
+            "source_region":"RegionA","source_250km_block":"B",
+            "equal_region_PC1":0.5}])
+        with tempfile.TemporaryDirectory() as work:
+            path=Path(work)/"observed.csv"
+            pd.DataFrame(records).to_csv(path,index=False)
+            joined,info=m.original_penguin_cocensus(sites,path)
+        self.assertEqual(len(joined),3)
+        self.assertEqual(info["ADPE__GEPE"]["n_original_source_regions"],1)
+        self.assertEqual(info["ADPE__GEPE"]["n_unique_original_breeding_site_codes"],1)
+        self.assertEqual(joined.source_region.unique().tolist(),["RegionA"])
+        self.assertEqual(info["ADPE__GEPE"]["n_original_250km_spatial_blocks"],1)
+
     def test_geographically_unique_ocean_cells_not_same_as_site_year_replicates(self):
         df=pd.DataFrame([{"site_id":f"A{i}","source_original_wet_grid_y":1,
                           "source_original_wet_grid_x":1} for i in range(10)])
