@@ -234,6 +234,21 @@ def leave_geography_out(rows,field):
     return result
 
 
+def original_actual_co_count_site_slope(records):
+    """Real source co-count ≥3 genuine years over ≥10y, no padded calendar."""
+    if len(records)<MIN_SITE_SLOPE_COUNT:
+        return None
+    times=np.asarray([float(y) for y,v in records],dtype=float)
+    vals=np.asarray([float(v) for y,v in records],dtype=float)
+    if len(set(times))!=len(times) or max(times)-min(times)<MIN_SITE_SLOPE_YEARS:
+        return None
+    centered=times-times.mean()
+    den=float(centered@centered)
+    if den<1e-12 or not np.all(np.isfinite(vals)):
+        return None
+    return float(10*(centered@(vals-vals.mean()))/den)
+
+
 def slope_per_actual_colony(rows):
     groups=defaultdict(list)
     for r in rows:groups[r["site_id"]].append(r)
@@ -260,7 +275,8 @@ def slope_per_actual_colony(rows):
            ("observed_log1p_second_minus_first_nest_ratio","observed_nest_logratio_slope_per_decade"),
            ("PC1_warm_low_ice_global_source_SD","marine_PC1_global_SD_slope_per_decade"),
            ("PC2_saline_global_source_SD","marine_PC2_global_SD_slope_per_decade")]:
-            source[name]=slope_year([(r["year"],r[var]) for r in obs])
+            source[name]=original_actual_co_count_site_slope(
+                [(r["year"],r[var]) for r in obs])
         if any(source[name] is None for name in (
             "observed_nest_logratio_slope_per_decade",
             "marine_PC1_global_SD_slope_per_decade",
