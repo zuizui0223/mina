@@ -127,6 +127,58 @@ def FWL_twice(rows):
     return result
 
 
+def geographic_year_FWL_sensitivity(rows,original_fit,source_group):
+    """Delete every original region or polar250km source block, one at a time.
+
+    This is post-result geography diagnostics, never a spatially independent
+    confidence interval or external validation of selected candidate biology.
+    """
+    checks=[]
+    for omitted in sorted({r[source_group] for r in rows}):
+        kept=[r for r in rows if r[source_group]!=omitted]
+        fit=FWL_twice(kept)
+        checks.append({
+            "deleted_source_unit_type":source_group,
+            "deleted_original_source_unit":omitted,
+            "n_remaining_actual_both_species_count_records":len(kept),
+            "status":fit["status"],
+            "n_repeat_colonies":fit.get("n_repeated_original_colony_sites"),
+            "n_source_regions":fit.get("n_source_regions_repeated"),
+            "n_source_blocks":fit.get("n_original_250km_blocks_repeated"),
+            "PC1_year_adjusted_coef":fit.get(
+                "PC1_warm_low_ice_coef_per_original_global_source_SD"),
+            "PC2_year_adjusted_coef":fit.get(
+                "PC2_saline_coef_per_original_global_source_SD"),
+        })
+    success=[r for r in checks if r["status"]==
+             "POST_RESULT_DESCRIPTIVE_SITE_AND_YEAR_FWL_TWO_SOURCE_MARINE_PCS"]
+    def pkey(axis):
+        return "PC1_warm_low_ice_coef_per_original_global_source_SD" if axis==1 \
+            else "PC2_saline_coef_per_original_global_source_SD"
+    def summary(axis):
+        vals=[r[f"PC{axis}_year_adjusted_coef"] for r in success]
+        original=original_fit.get(pkey(axis))
+        return {
+            "n_fitted_source_geographic_omissions":len(vals),
+            "n_source_geographic_omission_units":len(checks),
+            "coefficient_sign_original":sign(original),
+            "coefficient_delete_unit_min":min(vals) if vals else None,
+            "coefficient_delete_unit_max":max(vals) if vals else None,
+            "every_original_unit_omission_supported":len(vals)==len(checks),
+            "every_supported_omission_preserves_original_sign":
+                bool(original is not None and len(vals)==len(checks)
+                     and all(sign(v)==sign(original) and sign(original)!="NEAR_ZERO"
+                             for v in vals))
+        }
+    return {
+        "source_unit_type":source_group,
+        "PC1":summary(1),
+        "PC2":summary(2),
+        "original_omissions":checks,
+        "post_result_diagnostic_not_independent_replication":True
+    }
+
+
 def run(args):
     raw=readcsv(args.input)
     if len(raw)!=sum(EXPECTED_ORIGINAL_PAIR_ROWS.values()):
@@ -157,6 +209,12 @@ def run(args):
             raise ValueError("Original source PCA dual-axis site-only coefficient not reproduced")
         same_year=FWL_twice(same)
         sensitivity=FWL_twice(nozeros)
+        geo_year={
+            "source_region":geographic_year_FWL_sensitivity(
+                same,same_year,"source_region"),
+            "source_250km_block":geographic_year_FWL_sensitivity(
+                same,same_year,"source_250km_block")
+        }
         values={
             "species_pair":pair,
             "same_original_recorded_survey_method_co_count_source_records":len(same),
@@ -170,6 +228,7 @@ def run(args):
                 "PC2_baseline_sign":sign(expected[1]),
             },
             "source_site_and_calendar_year_fixed_effects":same_year,
+            "original_region_and_250km_block_delete_one_source_sensitivity":geo_year,
             "actual_recorded_zero_free_site_and_calendar_year_sensitivity":sensitivity,
             "physical_2PC_was_fitted_without_penguin_counts":True,
             "siteyear_pseudoreplication_does_not_permit_simple_pvalues":True,
@@ -190,6 +249,16 @@ def run(args):
             "site_plus_year_effective_unclustered_resid_df":
                 same_year.get("effective_unclustered_residual_degrees_of_freedom_NOT_INDEPENDENT"),
             "site_plus_year_source_status":same_year["status"],
+            "site_plus_year_PC2_region_delete_range":[
+                geo_year["source_region"]["PC2"]["coefficient_delete_unit_min"],
+                geo_year["source_region"]["PC2"]["coefficient_delete_unit_max"]],
+            "site_plus_year_PC2_block_delete_range":[
+                geo_year["source_250km_block"]["PC2"]["coefficient_delete_unit_min"],
+                geo_year["source_250km_block"]["PC2"]["coefficient_delete_unit_max"]],
+            "site_plus_year_PC2_stable_under_all_source_region_omissions":
+                geo_year["source_region"]["PC2"]["every_supported_omission_preserves_original_sign"],
+            "site_plus_year_PC2_stable_under_all_source_250km_block_omissions":
+                geo_year["source_250km_block"]["PC2"]["every_supported_omission_preserves_original_sign"],
             "source_zero_free_site_plus_year_PC1":
                 sensitivity.get("PC1_warm_low_ice_coef_per_original_global_source_SD"),
             "source_zero_free_site_plus_year_PC2":
