@@ -56,6 +56,22 @@ class RegionalMarineSourceSynchronyTests(unittest.TestCase):
         self.assertAlmostEqual(first["common_year_fraction_reference"]["observed"],1.,places=12)
         self.assertTrue(first["not_pvalues_and_not_a_prospective_causal_significance_test"])
 
+    def test_post_result_common_trend_removed_without_changing_source_PCs(self):
+        # Shared linear trend cannot itself establish coincident anomalies.
+        t=np.arange(28,dtype=float)
+        m=np.column_stack([.7*t+np.sin(t*.4+phase)
+                           for phase in (0,.8,1.7,2.5,3.4,4.4)])
+        before,_=a.synchrony_metrics(a.anomaly_standardized(m))
+        detrended=a.detrend_region_anomaly_standardized(m)
+        after,_=a.synchrony_metrics(detrended)
+        self.assertAlmostEqual(float(np.max(abs(np.mean(detrended,axis=0)))),0.,places=10)
+        self.assertAlmostEqual(float(np.max(abs(np.std(detrended,axis=0)-1))),0.,places=10)
+        x=np.arange(28,dtype=float)-13.5
+        self.assertLess(float(np.max(abs(x@detrended))),1e-8)
+        self.assertLess(
+            after["mean_region_temporal_anomaly_common_year_variance_fraction"],
+            before["mean_region_temporal_anomaly_common_year_variance_fraction"])
+
     def test_source_region_period_peak_with_8_10_10_year_calendar(self):
         source={}
         region={"R0":{"n_source_colonies":5,"n_original_250km_blocks":2,
