@@ -53,7 +53,7 @@ class RegionalMarineSourceSynchronyTests(unittest.TestCase):
         second=a.circular_phase_reference(z,seed=20261112,n=60)
         self.assertEqual(first,second)
         self.assertLess(first["common_year_fraction_reference"]["offset_median"],.7)
-        self.assertEqual(first["common_year_fraction_reference"]["observed"],1.)
+        self.assertAlmostEqual(first["common_year_fraction_reference"]["observed"],1.,places=12)
         self.assertTrue(first["not_pvalues_and_not_a_prospective_causal_significance_test"])
 
     def test_source_region_period_peak_with_8_10_10_year_calendar(self):
