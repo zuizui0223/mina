@@ -258,6 +258,10 @@ def marine_pca(siteyears):
         "marine_variables":list(VARIABLES),
         "spatial_siteyear_PC_explained":[float(z) for z in fit["explained"]],
         "spatial_siteyear_PC1_loadings":dict(zip(VARIABLES,[float(z) for z in reference])),
+        "spatial_siteyear_PC2_loadings":dict(zip(VARIABLES,[
+            float(z) for z in fit["loadings"][:,1]])),
+        "spatial_siteyear_PC3_loadings":dict(zip(VARIABLES,[
+            float(z) for z in fit["loadings"][:,2]])),
         "spatial_siteyear_source_pairwise_correlations":{
             VARIABLES[i]+"__"+VARIABLES[j]:pearson(arr[:,i],arr[:,j])
             for i in range(3) for j in range(i+1,3)
@@ -420,6 +424,78 @@ def true_observed_penguin_pairs(siteyears,countrows):
     return observations,report
 
 
+def source_matched_biological_axis_sensitivity(siteyears,actual_cocensus,original40):
+    """Separate effect of extending climate axes from including new sites/years.
+
+    Fitted PCA scores are compared on the exact original 34-site 2011-2020
+    biological records, and independently on the expanded 588-site observations.
+    This is post-result decomposition, not new a priori biology or significance.
+    """
+    original34={r["site_id"] for r in original40
+                if r["cohort"]=="macro_40" and r["grid_within_25km"]=="True"}
+    if len(original34)!=34:
+        raise ValueError("Original 34-site source macro cohort changed")
+    old_climate=[r for r in siteyears if r["site_id"] in original34
+                 and 2011<=r["year"]<=2020]
+    if len(old_climate)!=340:
+        raise ValueError("Original 34 site baseline climate cohort lost in full expansion")
+    old_fit=pca(np.asarray([[r[v] for v in VARIABLES] for r in old_climate]))
+    oldscore={(r["site_id"],r["year"]):float(z)
+              for r,z in zip(old_climate,old_fit["scores"][:,0])}
+    cohort={}
+    for first,second in PAIRS:
+        key=first+"__"+second
+        original=[r for r in actual_cocensus if r["species_pair"]==key]
+        original_2011=[r for r in original if 2011<=r["season"]<=2020]
+        oldmatched=[r for r in original_2011 if r["site_id"] in original34]
+        copy_old=[{**r,"old_34_original_PC1":oldscore[r["site_id"],r["season"]]}
+                  for r in oldmatched]
+        def summary(rows,name,climate_var):
+            return {
+                "comparison_cohort":name,
+                "n_actual_same_colony_season_both_species_observed":len(rows),
+                "n_distinct_original_sites":len({r["site_id"] for r in rows}),
+                "n_source_regions":len({r["source_region"] for r in rows}),
+                "n_original_250km_blocks":len({r["source_250km_block"] for r in rows}),
+                "raw_pearson_r":pearson(
+                    [r[climate_var] for r in rows],
+                    [r["log1p_second_minus_first_actual_nests"] for r in rows]),
+                "within_site_pearson":bysite_centered_pearson(
+                    rows,climate_var,"log1p_second_minus_first_actual_nests"),
+                "same_site_same_year_data_not_independent_spatial_replicates":True
+            }
+        cohort[key]=[
+            summary(copy_old,"original_34_sites_2011_2020_own_PC1",
+                    "old_34_original_PC1"),
+            summary(oldmatched,"identical_original_34_sites_2011_2020_FULL_588_PC1",
+                    "fixed_marine_PC1_original_global_axis"),
+            summary(original_2011,"all_new_588_sites_2011_2020_FULL_588_PC1",
+                    "fixed_marine_PC1_original_global_axis"),
+            summary(original,"all_new_588_sites_1993_2020_FULL_588_PC1",
+                    "fixed_marine_PC1_original_global_axis")
+        ]
+    # Source-equivalent original 34-site co-census reproduction, with exactly
+    # its 2011-2020 site-years and climate loadings, must pass before claiming
+    # any expansion changed a species response.
+    prior={"ADPE__GEPE":(23,-0.5079500862836571,0.5231858620924323),
+           "CHPE__GEPE":(16,0.1069163224384602,0.1931843601493883)}
+    for key,(count,raw,within) in prior.items():
+        original=cohort[key][0]
+        if (original["n_actual_same_colony_season_both_species_observed"]!=count
+             or original["raw_pearson_r"] is None
+             or abs(original["raw_pearson_r"]-raw)>1e-8
+             or original["within_site_pearson"]["r"] is None
+             or abs(original["within_site_pearson"]["r"]-within)>1e-8):
+            raise ValueError("Original 34-site co-census result did not reproduce in full-source branch: "+
+                             json.dumps({key:original}))
+    return {
+        "status":"ORIGINAL_34_BIOLOGICAL_COCENSUS_REPRODUCED_AND_FULL_AXIS_COHORT_COMPARISON_COMPLETE",
+        "species_pair_4way_source_cohort_and_PCA_definition":cohort,
+        "source_34_old_pooled_biological_correlations_reproduced":True,
+        "comparison_is_post_result_source_cohort_sensitivity_not_external_validation":True
+    }
+
+
 def mapped_static_land(siteyears,source):
     # 246 original modern breeding site×species rows; the site-level
     # Plantarctica mapped area must not be duplicated when the same colony
@@ -491,6 +567,8 @@ def analyze(args):
     regime,region_year=marine_pca(siteyears)
     region_trends=original_region_temporal_change(siteyears,region_year)
     bio,biosummary=true_observed_penguin_pairs(siteyears,countrows)
+    biological_axis_cohort_sensitivity=source_matched_biological_axis_sensitivity(
+        siteyears,bio,baseline40)
     plants,plantsummary=mapped_static_land(siteyears,static)
     result={
         "status":"ORIGINAL_588_18_REGION_1993_2020_MARINE_PCA_AND_TRUE_PENGUIN_COCENSUS_COMPLETED",
@@ -500,6 +578,8 @@ def analyze(args):
         "actual_full_18_region_spatiotemporal_marine_PCA":regime,
         "original_18_region_fixed_axis_1993_2020_trends":region_trends,
         "original_true_paired_species_census":biosummary,
+        "original_biological_sample_and_axis_definition_sensitivity":
+            biological_axis_cohort_sensitivity,
         "original_2017_2023_static_terrestrial_mapping":plantsummary,
         "evidence_boundary":{
             "real_maritime_physocean_gradients_across_18_source_regions":True,
@@ -528,6 +608,8 @@ def analyze(args):
     },ensure_ascii=False),flush=True)
     print("SOURCE_FULL_18_REGION_TRENDS="+json.dumps(region_trends,ensure_ascii=False),flush=True)
     print("SOURCE_FULL_18_REGION_TRUE_COCENSUS="+json.dumps(biosummary,ensure_ascii=False),flush=True)
+    print("SOURCE_FULL_18_REGION_BIOLOGICAL_AXIS_COHORT_SENSITIVITY="+json.dumps(
+        biological_axis_cohort_sensitivity,ensure_ascii=False),flush=True)
     print("SOURCE_FULL_18_REGION_STATIC_PLANTS="+json.dumps(plantsummary,ensure_ascii=False),flush=True)
     return result
 
