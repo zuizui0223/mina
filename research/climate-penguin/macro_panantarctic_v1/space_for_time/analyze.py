@@ -43,8 +43,8 @@ for pair, panel in data.groupby("species_pair"):
                         delta_temp=b.temperature-a.temperature, delta_ice=b.ice-a.ice,
                         observed=b.share-a.share, predicted=pred))
 p = pd.DataFrame(rows)
-p.to_csv(root/"predictions.csv", index=False)
-pd.DataFrame(contrasts).to_csv(root/"region_means.csv", index=False)
+p.to_csv(root/"predictions.csv", index=False, lineterminator="\n")
+pd.DataFrame(contrasts).to_csv(root/"region_means.csv", index=False, lineterminator="\n")
 scores = []
 for (pair, region, mode, model), group in p.groupby(["pair","region","mode","model"]):
     for subset, g in [("all", group), ("warming",group[group.delta_temp > 0])]:
@@ -54,7 +54,7 @@ for (pair, region, mode, model), group in p.groupby(["pair","region","mode","mod
             mae=(v.predicted-v.observed).abs().mean(), persistence_mae=v.observed.abs().mean(),
             correct_direction=int(((v.observed*v.predicted)>0).sum()),
             nonzero_observed=int((v.observed!=0).sum())))
-pd.DataFrame(scores).to_csv(root/"scores.csv", index=False)
+pd.DataFrame(scores).to_csv(root/"scores.csv", index=False, lineterminator="\n")
 
 # Literal space-for-time substitution: two regional means determine a secant,
 # with no residual degrees of freedom. This diagnostic is in sample by region.
@@ -73,7 +73,7 @@ for pair, group in means.groupby("pair"):
                 end=r.end, model=variable, warming=r.delta_temp>0, slope=slope,
                 observed=r.observed, predicted=change))
 q = pd.DataFrame(regional_predictions)
-q.to_csv(root/"regional_substitution.csv",index=False)
+q.to_csv(root/"regional_substitution.csv",index=False, lineterminator="\n")
 for (pair, model), group in q.groupby(["pair","model"]):
     for g in [group,group[group.warming]]:
         print(pair,model,len(g),round((g.observed-g.predicted).abs().mean(),3),
