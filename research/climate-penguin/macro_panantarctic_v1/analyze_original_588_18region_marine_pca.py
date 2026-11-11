@@ -350,9 +350,10 @@ def original_region_temporal_change(siteyears,regionyears):
 def true_observed_penguin_pairs(siteyears,countrows):
     climates={(r["site_id"],r["year"]):r for r in siteyears}
     events={}
+    source_sites={x[0] for x in climates}
     for r in countrows:
         site=r["site_id"];y=int(r["season"]);sp=r["species"]
-        if y not in YEARS or site not in {x[0] for x in climates}:continue
+        if y not in YEARS or site not in source_sites:continue
         if sp not in ("ADPE","CHPE","GEPE"):continue
         key=(site,y,sp)
         if key in events:raise ValueError("Original site×species×year count duplicated")
