@@ -1,0 +1,202 @@
+[
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "tos",
+    "experiment_id": "historical",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Omon/tos/gn/v20191108/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Omon/tos/gn/v20191108/",
+    "source_units": "degC",
+    "output_units": "degC",
+    "calendar": "proleptic_gregorian",
+    "first_date": "1850-01-16 12:00:00",
+    "last_date": "2014-12-16 12:00:00",
+    "requested_months": 80,
+    "sites": 25,
+    "monthly_values": 2000,
+    "actual_min": -1.83938467502594,
+    "actual_max": 1.8902043104171753,
+    "grid_shape": [
+      300,
+      360
+    ],
+    "spatial_dimensions": [
+      "j",
+      "i"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "piControl",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/0bcaaa74-aedb-4d45-a5e5-cb3ab467f2b5",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/).  Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file).  The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-11-11T05:03:50.316029+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Omon/tos/gn/v20191108/",
+      "variable_id": "tos",
+      "experiment_id": "historical",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "3b37df83ebecd81363eb565cf825d9db03190da18348746e651ba9220c4b9a41",
+      "sites_sha256": "1700fe62905943d57a7e36244f38b7cba496955b28f3c7248eca74a7a7950a9b",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          1995,
+          2014
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "72aabf061dc29cb9670ef7cabc3217a23cb64904ea40251e9b1452ce989aad28",
+      "time_sha256": "2b81d26a7000ac4d5d9f47a4484a390e408bb759c020a34c95a887247af95240",
+      "metadata_sha256": "19965bdc5901ca996ace68b489ef75958e0c7020cea15e7fbfd64a70e22936ab",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "b738cf2a96185ec272efe5e46787c5c26d9ec928f41c63f2cfed308ef28165ad",
+      "historical_identity_sha256": "c8268d0e388d5f2debcfca04f0af08d2054e517a6fea896839fb57348a85bd7c"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "tos",
+    "experiment_id": "ssp245",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Omon/tos/gn/v20191108/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Omon/tos/gn/v20191108/",
+    "source_units": "degC",
+    "output_units": "degC",
+    "calendar": "proleptic_gregorian",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2100-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 25,
+    "monthly_values": 4000,
+    "actual_min": -1.8189685344696045,
+    "actual_max": 2.8043718338012695,
+    "grid_shape": [
+      300,
+      360
+    ],
+    "spatial_dimensions": [
+      "j",
+      "i"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/da35486f-5133-40ba-83d1-fae50b37d395",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/).  Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file).  The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-11-11T05:04:08.025116+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Omon/tos/gn/v20191108/",
+      "variable_id": "tos",
+      "experiment_id": "ssp245",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "3b37df83ebecd81363eb565cf825d9db03190da18348746e651ba9220c4b9a41",
+      "sites_sha256": "1700fe62905943d57a7e36244f38b7cba496955b28f3c7248eca74a7a7950a9b",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "72aabf061dc29cb9670ef7cabc3217a23cb64904ea40251e9b1452ce989aad28",
+      "time_sha256": "407ce6e2e9d950271919cec3f2cb8f62a2a3774a460c056b9d925e8bdab21c12",
+      "metadata_sha256": "289b216087c2c90f9b0dbc4666c04c19400109edfcb284d976f3cd92f6124d26",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "b738cf2a96185ec272efe5e46787c5c26d9ec928f41c63f2cfed308ef28165ad",
+      "historical_identity_sha256": "c8268d0e388d5f2debcfca04f0af08d2054e517a6fea896839fb57348a85bd7c"
+    }
+  },
+  {
+    "source_id": "ACCESS-CM2",
+    "member_id": "r1i1p1f1",
+    "variable_id": "tos",
+    "experiment_id": "ssp585",
+    "grid_label": "gn",
+    "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Omon/tos/gn/v20210317/",
+    "http_url": "https://storage.googleapis.com/cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Omon/tos/gn/v20210317/",
+    "source_units": "degC",
+    "output_units": "degC",
+    "calendar": "proleptic_gregorian",
+    "first_date": "2015-01-16 12:00:00",
+    "last_date": "2300-12-16 12:00:00",
+    "requested_months": 160,
+    "sites": 25,
+    "monthly_values": 4000,
+    "actual_min": -1.8303139209747314,
+    "actual_max": 4.022678852081299,
+    "grid_shape": [
+      300,
+      360
+    ],
+    "spatial_dimensions": [
+      "j",
+      "i"
+    ],
+    "grid_unchanged_vs_historical": true,
+    "parent_source_id": "ACCESS-CM2",
+    "parent_experiment_id": "historical",
+    "parent_variant_label": "r1i1p1f1",
+    "tracking_id": "hdl:21.14100/40343764-43b1-4010-9eeb-b31fdafaecda",
+    "license": "CMIP6 model data produced by CSIRO is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/).  Consult https://pcmdi.llnl.gov/CMIP6/TermsOfUse for terms of use governing CMIP6 output, including citation requirements and proper acknowledgment.  Further information about this data, including some limitations, can be found via the further_info_url (recorded as a global attribute in this file).  The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.",
+    "source": "ACCESS-CM2 (2019): \naerosol: UKCA-GLOMAP-mode\natmos: MetUM-HadGEM3-GA7.1 (N96; 192 x 144 longitude/latitude; 85 levels; top level 85 km)\natmosChem: none\nland: CABLE2.5\nlandIce: none\nocean: ACCESS-OM2 (GFDL-MOM5, tripolar primarily 1deg; 360 x 300 longitude/latitude; 50 levels; top grid cell 0-10 m)\nocnBgchem: none\nseaIce: CICE5.1.2 (same grid as ocean)",
+    "institution": "CSIRO (Commonwealth Scientific and Industrial Research Organisation, Aspendale, Victoria 3195, Australia), ARCCSS (Australian Research Council Centre of Excellence for Climate System Science)",
+    "read_utc": "2026-11-11T05:04:20.464280+00:00",
+    "cache_identity": {
+      "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Omon/tos/gn/v20210317/",
+      "variable_id": "tos",
+      "experiment_id": "ssp585",
+      "member_id": "r1i1p1f1",
+      "grid_label": "gn",
+      "grid_sha256": "3b37df83ebecd81363eb565cf825d9db03190da18348746e651ba9220c4b9a41",
+      "sites_sha256": "1700fe62905943d57a7e36244f38b7cba496955b28f3c7248eca74a7a7950a9b",
+      "site_file_sha256": "1a18537140b9ceaaa9c3878ca62a9887a94defc08cc5f9da4709472317ff2095",
+      "periods": [
+        [
+          2041,
+          2060
+        ],
+        [
+          2081,
+          2100
+        ]
+      ],
+      "months": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "code_sha256": "72aabf061dc29cb9670ef7cabc3217a23cb64904ea40251e9b1452ce989aad28",
+      "time_sha256": "a586b0b4202d05489e5bc3927ae93dab14529323e737fadccdd35ec4dc4e85ed",
+      "metadata_sha256": "3964d0bcc77e85278f3c604f7fe6182ab123829d79b12de9004a02b207e39a43",
+      "mask_policy": "historical_1995_Aug_Nov_finite_ocean_or_all_surface_atmosphere_v1",
+      "support_sha256": "b738cf2a96185ec272efe5e46787c5c26d9ec928f41c63f2cfed308ef28165ad",
+      "historical_identity_sha256": "c8268d0e388d5f2debcfca04f0af08d2054e517a6fea896839fb57348a85bd7c"
+    }
+  }
+]
