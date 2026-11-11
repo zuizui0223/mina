@@ -291,6 +291,20 @@ def run(args):
            "with_year":v["source_site_and_calendar_year_fixed_effects"],
            "without_original_zeros":v["actual_recorded_zero_free_site_and_calendar_year_sensitivity"]}
         for k,v in out.items()},ensure_ascii=False),flush=True)
+    print("DUAL_SOURCE_ORIGINAL_REGION_BLOCK_YEAR_FWL="+json.dumps({
+        k:{"region":[{"region_omitted":x["deleted_original_source_unit"],
+                         "remaining_regions":x["n_source_regions"],
+                         "remaining_blocks":x["n_source_blocks"],
+                         "PC2":x["PC2_year_adjusted_coef"],
+                         "status":x["status"]}
+                        for x in v["original_region_and_250km_block_delete_one_source_sensitivity"]
+                              ["source_region"]["original_omissions"]],
+           "block":[{"block_omitted":x["deleted_original_source_unit"],
+                      "PC2":x["PC2_year_adjusted_coef"],
+                      "status":x["status"]}
+                     for x in v["original_region_and_250km_block_delete_one_source_sensitivity"]
+                           ["source_250km_block"]["original_omissions"]]}
+        for k,v in out.items()},ensure_ascii=False),flush=True)
     return receipt
 
 
