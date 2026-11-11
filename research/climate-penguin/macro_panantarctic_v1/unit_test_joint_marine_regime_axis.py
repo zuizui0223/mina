@@ -40,7 +40,7 @@ class MarineRegimeIndependentQA(unittest.TestCase):
 
     def test_site_year_centered_annual_changes_not_same_as_site_geography(self):
         xs=[]
-        for site,base in (("A",0.),("B",15.),("C",25.)):
+        for site,base in (("A",0.),("B",15.),("C",25.),("D",37.)):
             for year in range(2011,2021):
                 y=year-2011
                 xs.append({
@@ -50,10 +50,13 @@ class MarineRegimeIndependentQA(unittest.TestCase):
                     "source_glorys_salinity":33.+base*.03-y*.01,
                     "source_glorys_thetao_C":-1.+base*.02+y*.09})
         out,seq=regime.fit_regime(xs)
-        self.assertEqual(out["source_site_year_count"],30)
-        self.assertEqual(len(seq),30)
+        self.assertEqual(out["source_site_year_count"],40)
+        self.assertEqual(len(seq),40)
         self.assertAlmostEqual(sum(out["pooled_standardized_PCA_explained"]),1.,places=12)
         self.assertAlmostEqual(sum(out["within_site_temporal_PCA_explained"]),1.,places=12)
+        self.assertAlmostEqual(sum(out["region_equal_site_year_PCA_explained"]),1.,places=12)
+        self.assertAlmostEqual(sum(out["equal_six_source_region_decadal_climatology_PCA_explained"]),1.,places=12)
+        self.assertEqual(len(out["region_equal_site_year_PC1_loadings"]),3)
         dec=out["region_difference_decomposition"]
         self.assertAlmostEqual(
             dec["between_source_regions_fraction_of_pooled_original_PC1_variance"]
