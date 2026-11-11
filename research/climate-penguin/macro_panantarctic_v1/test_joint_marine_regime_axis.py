@@ -212,6 +212,9 @@ def fit_regime(siteyears):
                 "source_region":region,"year":year,
                 "source_site_count":len(ix),
                 "mean_empirical_marine_PC1":float(np.mean(scores[ix])),
+                "mean_source_SIC_pp":float(np.mean(x[ix,0])),
+                "mean_source_GLORYS_salinity":float(np.mean(x[ix,1])),
+                "mean_source_GLORYS_thetao_C":float(np.mean(x[ix,2])),
                 "within_region_source_exposure_not_an_independent_climate_experiment":True
             })
         if len(yeargroup)!=len(YEARS):
@@ -220,11 +223,36 @@ def fit_regime(siteyears):
         start=seq[0]["mean_empirical_marine_PC1"]
         end=seq[-1]["mean_empirical_marine_PC1"]
         shift=end-start
+        # Full ten-year temporal trends, NOT just endpoint 2011 and 2020.
+        ys=np.asarray([r["year"] for r in seq],dtype=float)
+        xc=ys-ys.mean()
+        def time_slope_per_decade(key, omit_year=None):
+            sub=[r for r in seq if omit_year is None or r["year"]!=omit_year]
+            if len(sub)<5:return None
+            tx=np.asarray([r["year"] for r in sub],dtype=float)
+            ty=np.asarray([r[key] for r in sub],dtype=float)
+            xx=tx-tx.mean()
+            return float(10*np.dot(xx,ty-ty.mean())/np.dot(xx,xx))
+        annual_PC1_slope=time_slope_per_decade("mean_empirical_marine_PC1")
+        leave_years=[time_slope_per_decade("mean_empirical_marine_PC1",omit_year=y)
+                     for y in YEARS]
         score_trajectory[region]={
             "n_sites":len({siteyears[i]["site_id"] for i in ids}),
             "2011_PC1":start,"2020_PC1":end,
             "2011_to_2020_PC1_change":shift,
-            "cannot_estimate_ecological_trend_from_one_region":True
+            "OLS_2011_2020_PC1_change_per_decade":annual_PC1_slope,
+            "leave_one_actual_source_year_out_PC1_slope_range_per_decade":[
+                min(leave_years),max(leave_years)],
+            "OLS_2011_2020_source_SIC_change_pp_per_decade":
+                time_slope_per_decade("mean_source_SIC_pp"),
+            "OLS_2011_2020_GLORYS_salinity_change_per_decade":
+                time_slope_per_decade("mean_source_GLORYS_salinity"),
+            "OLS_2011_2020_GLORYS_thetao_change_C_per_decade":
+                time_slope_per_decade("mean_source_GLORYS_thetao_C"),
+            "n_actual_source_years":len(seq),
+            "single_site_source_region_not_an_independent_regional_trend":
+                len({siteyears[i]["site_id"] for i in ids})<3,
+            "not_causal_temperature_or_colony_distribution_change":True
         }
     # Geographic-sampling sensitivity: each original source region gets
     # equal total weight, rather than Victoria Land's many mapped colony sites.
