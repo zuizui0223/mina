@@ -192,6 +192,30 @@ def anomaly_standardized(matrix):
     return (mat-np.mean(mat,axis=0))/scale
 
 
+def detrend_region_anomaly_standardized(matrix):
+    """Post-result sensitivity: OLS site-region 1993–2020 trend removal.
+
+    The physical source PCA is NOT refitted; only each region's time trajectory
+    is projected orthogonally off a constant and linear calendar-year trend.
+    This is not independent validation or a causal climate-noise decomposition.
+    """
+    x=np.asarray(matrix,dtype=float)
+    if x.ndim!=2 or x.shape[0]!=len(YEARS):
+        raise ValueError("Original regional detrending requires exactly 28 real years")
+    t=np.asarray(YEARS,dtype=float)
+    centered=t-t.mean()
+    z=x-x.mean(axis=0)
+    slopes=(centered[:,None]*z).sum(axis=0)/np.dot(centered,centered)
+    resid=z-centered[:,None]*slopes[None,:]
+    residual_sd=resid.std(axis=0)
+    if np.any(residual_sd<1e-10):
+        raise ValueError("Original detrended region has no estimable temporal variance")
+    out=resid/residual_sd
+    if np.max(abs(centered@out))>1e-8:
+        raise AssertionError("Original regional source detrending failed to remove OLS calendar slope")
+    return out
+
+
 def synchrony_metrics(Z):
     """Equal-direction year-common variance and general possible signed EOF."""
     Z=np.asarray(Z,dtype=float)
@@ -350,15 +374,35 @@ def evaluate(args):
                 stats["n_regions_source_midperiod_peak"]=len(stats["source_period_peak_regions"])
                 stats["n_regions_source_midperiod_trough"]=len(stats["source_period_trough_regions"])
                 stats["fixed_phase_reference_1000"]=circular_phase_reference(Z)
+                # An explicit post-observed-result sensitivity checks whether
+                # a common OLS 28-year trend masquerades as shared year shocks.
+                Zd=detrend_region_anomaly_standardized(observed)
+                det_stats,det_common=synchrony_metrics(Zd)
+                stats["post_result_linear_trend_removed_sensitivity"]={
+                    "common_year_anomaly_fraction_after_original_1993_2020_OLS_detrending":
+                        det_stats["mean_region_temporal_anomaly_common_year_variance_fraction"],
+                    "first_source_temporal_EOF_explained_fraction_after_detrending":
+                        det_stats["first_source_temporal_EOF_explained_fraction"],
+                    "n_positive_EOF_regions_after_detrending":
+                        det_stats["n_regions_temporal_EOF1_positive_loading"],
+                    "n_negative_EOF_regions_after_detrending":
+                        det_stats["n_regions_temporal_EOF1_negative_loading"],
+                    "regional_anomaly_pair_correlation_median_after_detrending":
+                        det_stats["regional_anomaly_correlation_median"],
+                    "fixed_source_phase_reference_1000_after_detrending":
+                        circular_phase_reference(Zd),
+                    "this_diagnostic_was_added_after_observed_undetrended_synchrony":True,
+                }
                 results[key][axis]=stats
                 source_matrices[axis]=common
-                for year,value in zip(YEARS,common):
+                for year,value,value_d in zip(YEARS,common,det_common):
                     timepoints.append({
                         "original_source_weighting":weighting,
                         "source_geographic_region_panel":cohort,
                         "original_source_year":year,
                         "source_marine_axis":axis,
                         "original_common_year_standardized_region_anomaly":float(value),
+                        "post_result_original_common_year_after_region_OLS_detrend":float(value_d),
                         "n_source_regions":len(rs),
                         "not_an_external_climate_forcing_or_p-value":True
                     })
@@ -449,6 +493,7 @@ def evaluate(args):
                 "median_region_pair_r":x[axis]["regional_anomaly_correlation_median"],
                 "n_2000s_peak_regions":x[axis]["n_regions_source_midperiod_peak"],
                 "phase_reference":x[axis]["fixed_phase_reference_1000"],
+                "post_result_OLS_detrended":x[axis]["post_result_linear_trend_removed_sensitivity"],
             } for axis in ("PC1","PC2")
         } | {"PC1_PC2_year_mode_correlation":
                 x["original_PC1_PC2_common_year_anomaly_correlation"]}
