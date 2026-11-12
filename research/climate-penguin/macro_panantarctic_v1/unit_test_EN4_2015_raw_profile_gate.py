@@ -21,6 +21,9 @@ class TestOriginalEN4QualityGate(unittest.TestCase):
         self.assertEqual(en4.letter(b"1"),"1")
         self.assertEqual(en4.letter(np.bytes_("4")),"4")
         self.assertEqual(en4.letter(np.array([b"1"])),"1")
+        self.assertEqual(en4.letter(np.ma.array(np.bytes_("1"),mask=False)),"1")
+        self.assertEqual(en4.letter(np.ma.array(np.bytes_("4"),mask=False)),"4")
+        self.assertEqual(en4.letter(np.ma.array(np.bytes_("0"),mask=False)),"0")
         self.assertEqual(en4.letter(np.ma.masked),"")
         self.assertNotEqual(en4.letter(b"4"),"1")
 
