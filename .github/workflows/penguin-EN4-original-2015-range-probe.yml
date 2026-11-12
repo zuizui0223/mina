@@ -36,3 +36,22 @@ jobs:
           if not all(x["status"]==206 for x in outputs.values()):
               raise SystemExit("Official year ZIP server does not support true byte-range; cannot run efficient random-access profile retrieval")
           PY
+      - name: Inspect central directory for publisher Aug-Nov compressed member sizes without downloading source profiles
+        run: |
+          python -m pip install --disable-pip-version-check remotezip
+          python - <<'PY'
+          import json,re
+          from remotezip import RemoteZip
+          url="https://hadleyserver.metoffice.gov.uk/hadobs/en4/data/en4-2-1/EN.4.2.2/EN.4.2.2.profiles.g10.2015.zip"
+          with RemoteZip(url) as z:
+              members=[{
+                  "filename":item.filename,
+                  "compressed_bytes":item.compress_size,
+                  "uncompressed_bytes":item.file_size,
+                  "official_zip_CRC32":f"{item.CRC:08x}",
+              } for item in z.infolist() if re.search(r"\\.2015(08|09|10|11)\\.nc$",item.filename)]
+          print("EN4_2015_FOUR_SOURCE_MONTH_ZIP_MEMBER_SIZES="+json.dumps({
+              "months":members,
+              "total_compressed":sum(x["compressed_bytes"] for x in members),
+              "n_months":len(members)},ensure_ascii=False),flush=True)
+          PY
