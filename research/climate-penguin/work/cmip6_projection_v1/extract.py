@@ -58,7 +58,9 @@ def seasonal_means(values, times, start, end, months=MONTHS):
 def normalize_values(values, variable, units):
     values = np.asarray(values, dtype=float)
     normalized_units = str(units).strip()
-    if variable == 'tas':
+    if variable == 'tos' and normalized_units in ('degC', 'degrees_C', 'degree_Celsius', 'degrees_Celsius'):
+        return values, 'degC'
+    if variable in ('tas', 'tos'):
         if normalized_units in ('K', 'kelvin'):
             return values - 273.15, 'degC'
         if normalized_units in ('degC', 'degree_Celsius', 'degrees_Celsius'):

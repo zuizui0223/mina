@@ -1,0 +1,51 @@
+name: Penguin source original dual marine axis and three observed species-pair nesting response
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/test_dual_marine_axis_paired_penguin_response.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_dual_marine_axis_paired_penguin.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/DUAL_MARINE_AXIS_PENGUIN_COCENSUS_EXPLORATORY_CONTRACT_20261111.md'
+      - '.github/workflows/penguin-original-dual-marine-axis-coobserved-species.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-18region-dual-PC1-PC2-genuine-two-species-colony-source-response:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source PCA and marine math
+        run: python -m pip install --disable-pip-version-check numpy scipy
+      - name: Check original genuine species-pair calendar, PC1 vs PC2 and site equal weighted coefficient arithmetic
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/test_dual_marine_axis_paired_penguin_response.py
+          python research/climate-penguin/macro_panantarctic_v1/unit_test_dual_marine_axis_paired_penguin.py -v
+      - name: Restore source-complete 588 Antarctic colony original 28y PC1 PCA and true 351 two-species coobserved siteyear records
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-588-colony-18-region-1993-2020-marine-axis-and-breeding-composition-v1
+          run-id: 42961084667
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_588_marine_and_actual_dual_census
+      - name: Reproduce exact source 18-region PC1/PC2 and calculate three real two-species nesting temporal associations and region/block sensitivity
+        run: |
+          CLIMATE="$(find build/original_588_marine_and_actual_dual_census -name 'original_588_site_1993_2020_actual_SIC_SSS_SST_PC1.csv' -print -quit)"
+          SPECIES="$(find build/original_588_marine_and_actual_dual_census -name 'original_true_two_species_same_colony_same_year_marine_ratio.csv' -print -quit)"
+          test -s "$CLIMATE" && test -s "$SPECIES"
+          python research/climate-penguin/macro_panantarctic_v1/test_dual_marine_axis_paired_penguin_response.py \
+            --climate "$CLIMATE" \
+            --pairs "$SPECIES" \
+            --out research/climate-penguin/macro_panantarctic_v1/dual_marine_penguin_outputs
+      - name: Archive 351 actual original dual-census source rows, 2-PC coefficients, geographic leaveout and true longitudinal colony slopes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-18region-PC1-ice-thermal-PC2-salinity-true-cocensus-gate-v1
+          path: research/climate-penguin/macro_panantarctic_v1/dual_marine_penguin_outputs/
+          if-no-files-found: warn

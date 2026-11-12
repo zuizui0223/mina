@@ -1,0 +1,44 @@
+name: Penguin continental 595 real colony GLORYS surface wet ocean geography gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/map_original_595_GLORYS_wet_grid.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_original_595_GLORYS_wet_grid.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/GLORYS_595_MACRO_EXPANSION_CONTRACT_20261111.md'
+      - '.github/workflows/penguin-595-source-GLORYS-wet-grid-coverage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  frozen-september-2011-ocean-wet-cell-coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original GLORYS12 Copernicus Zarr remote source readers and polar geometry
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'scipy<2' 'xarray==2024.10.0' 'pandas<3' 'fsspec[http]' 'zarr==2.18.7' pyproj==3.7.1
+      - name: Check source geometry math and Antarctic wet cell no-absence gates
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/map_original_595_GLORYS_wet_grid.py
+          python research/climate-penguin/macro_panantarctic_v1/unit_test_original_595_GLORYS_wet_grid.py -v
+      - name: Rebuild pinned 595 original MAPPPD breeding colony coordinates and regions
+        run: python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Open real Copernicus reanalysis Sep 2011 2D wet mask and cross-verify original 40 colony ocean cells
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/map_original_595_GLORYS_wet_grid.py \
+            --atlas research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --manifest research/climate-penguin/outputs/climate_penguin/ocean_monthly_manifest.json \
+            --old40 research/climate-penguin/outputs/climate_penguin/ocean_grid_support.csv \
+            --out research/climate-penguin/macro_panantarctic_v1/GLORYS_595_geographic_source_outputs
+      - name: Preserve all original 595 source site-to-marine grid geodesic distances and real region coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-595-colony-GLORYS-wet-grid-2011-september-geo-source-gate
+          path: research/climate-penguin/macro_panantarctic_v1/GLORYS_595_geographic_source_outputs/
+          if-no-files-found: warn
