@@ -194,6 +194,30 @@ def letter(value):
     return str(value).strip("\x00 ")
 
 
+def original_profile_metadata_text(ds,name,pidx):
+    """Read original source per-profile platform/project char, never publish ID."""
+    if name not in ds.variables:
+        return ""
+    raw=np.ma.asarray(ds.variables[name][pidx])
+    if np.ma.is_masked(raw) and np.all(np.ma.getmaskarray(raw)):
+        return ""
+    arr=np.asarray(np.ma.filled(raw,b""))
+    if arr.size==0:return ""
+    if arr.dtype.kind=="S":
+        if arr.ndim==0:return arr.item().decode("utf-8",errors="ignore").strip("\x00 ")
+        return b"".join(arr.ravel().tolist()).decode("utf-8",errors="ignore").strip("\x00 ")
+    if arr.dtype.kind=="U":
+        return "".join(arr.ravel().tolist()).strip("\x00 ")
+    return str(arr.flat[0]).strip("\x00 ")
+
+
+def instrument_family(project_name):
+    a=project_name.upper().strip()
+    for source in ("ARGO","GTSPP","WOD","ASBO"):
+        if a.startswith(source):return source
+    return "OTHER_OR_UNSPECIFIED"
+
+
 def xyz(latitudes,longitudes):
     a=np.deg2rad(np.asarray(latitudes,dtype=float))
     b=np.deg2rad(np.asarray(longitudes,dtype=float))
@@ -276,6 +300,10 @@ def sample_month_nc(raw,year,month,sites):
                 counts["rejected_position_QC"]+=1;continue
             if salinity_profile_flag!="1":
                 counts["rejected_profile_salinity_QC"]+=1;continue
+            project=original_profile_metadata_text(ds,"PROJECT_NAME",pidx)
+            platform=original_profile_metadata_text(ds,"PLATFORM_NUMBER",pidx)
+            family=instrument_family(project)
+            platform_key=(family+"|"+platform) if platform else ""
             depths=np.asarray(np.ma.filled(ds.variables["DEPH_CORRECTED"][pidx,:],np.nan),dtype=float).reshape(-1)
             salinities=np.asarray(np.ma.filled(ds.variables["PSAL_CORRECTED"][pidx,:],np.nan),dtype=float).reshape(-1)
             qcs=np.asarray(ds.variables["PSAL_CORRECTED_QC"][pidx,:]).reshape(-1)
@@ -301,6 +329,8 @@ def sample_month_nc(raw,year,month,sites):
                     "distance_km":distance_km,
                     "source_depth_gate_m":depthmax,
                     "source_shallowest_qualified_depth_m":float(depths[ix]),
+                    "source_instrument_family":family,
+                    "source_private_platform_key_for_internal_aggregation_only":platform_key,
                     # Do not archive individual raw profile salinity or
                     # exact observation position in public research outputs.
                     "source_profile_QC_is_1_at_location_profile_and_level":True,
@@ -390,8 +420,26 @@ def run(args):
             group=defaultdict(list)
             for r in relevant:group[r["region"]].append(r)
             key=f"depth_le_{int(depth)}m_dist_le_{int(radius)}km"
+            known=[r for r in relevant if r["source_private_platform_key_for_internal_aggregation_only"]]
+            platforms=Counter(r["source_private_platform_key_for_internal_aggregation_only"] for r in known)
+            platforms_region=defaultdict(set)
+            platforms_month=defaultdict(set)
+            for r in known:
+                platforms_region[r["region"]].add(r["source_private_platform_key_for_internal_aggregation_only"])
+                platforms_month[r["region"],r["month"]].add(r["source_private_platform_key_for_internal_aggregation_only"])
             coverage[key]={
                 "n_raw_qualified_profile_instances":len(relevant),
+                "n_unique_identified_original_platforms":len(platforms),
+                "n_profiles_without_identifiable_original_platform":len(relevant)-len(known),
+                "largest_same_platform_repeat_profile_count":max(platforms.values(),default=0),
+                "source_instrument_family_profile_counts":dict(sorted(Counter(
+                    r["source_instrument_family"] for r in relevant).items())),
+                "n_original_regions_with_3plus_distinct_observed_platforms":sum(
+                    len(xs)>=3 for xs in platforms_region.values()),
+                "n_source_region_month_cells_with_3plus_identified_platforms":sum(
+                    len(xs)>=3 for xs in platforms_month.values()),
+                "identified_observed_platforms_per_original_region":{
+                    region:len(platforms_region[region]) for region in sorted(group)},
                 "n_distinct_original_regions_with_any_EN4_shallow_profiles":len(group),
                 "n_regions_with_3plus_original_profiles":sum(len(v)>=3 for v in group.values()),
                 "n_distinct_original_colony_sites_represented":len({r["nearest_colony_site_id"] for r in relevant}),
