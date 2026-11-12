@@ -176,12 +176,19 @@ def fetch(url,destination):
 
 
 def letter(value):
-    """EN4 QC flags may use bytes, chars, or 1-char ndarray scalars."""
-    if isinstance(value,np.ma.core.MaskedConstant):return ""
+    """Decode EN4 NetCDF 0-D masked char arrays to literal QC 1/4.
+
+    netCDF4 returns a 0-D MaskedArray, whose str() is 'b\'1\''.
+    That representation is NOT the QC '1' and previously rejected every
+    observed position. Convert via ndarray.item() before source QC filtering.
+    """
+    if isinstance(value,np.ma.core.MaskedConstant) or np.ma.is_masked(value):
+        return ""
     arr=np.asarray(value)
-    if arr.ndim>0:
-        if arr.size==0:return ""
-        value=arr.flat[0]
+    if arr.size==0:return ""
+    value=arr.flat[0]
+    if isinstance(value,(np.generic,)):
+        value=value.item()
     if isinstance(value,(bytes,np.bytes_)):
         return value.decode("utf-8",errors="ignore").strip("\x00 ")
     return str(value).strip("\x00 ")
@@ -261,9 +268,13 @@ def sample_month_nc(raw,year,month,sites):
         counts=Counter()
         for pidx,(site,distance_km) in source_nearest.items():
             counts["geolocated_within_250km"]+=1
-            if letter(ds.variables["POSITION_QC"][pidx])!="1":
+            position_flag=letter(ds.variables["POSITION_QC"][pidx])
+            salinity_profile_flag=letter(ds.variables["PROFILE_PSAL_QC"][pidx])
+            counts["position_QC_flag_"+str(position_flag)]+=1
+            counts["salinity_profile_QC_flag_"+str(salinity_profile_flag)]+=1
+            if position_flag!="1":
                 counts["rejected_position_QC"]+=1;continue
-            if letter(ds.variables["PROFILE_PSAL_QC"][pidx])!="1":
+            if salinity_profile_flag!="1":
                 counts["rejected_profile_salinity_QC"]+=1;continue
             depths=np.asarray(np.ma.filled(ds.variables["DEPH_CORRECTED"][pidx,:],np.nan),dtype=float).reshape(-1)
             salinities=np.asarray(np.ma.filled(ds.variables["PSAL_CORRECTED"][pidx,:],np.nan),dtype=float).reshape(-1)
