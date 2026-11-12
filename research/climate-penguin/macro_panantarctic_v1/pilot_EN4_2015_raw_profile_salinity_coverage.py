@@ -21,7 +21,7 @@ import tempfile
 import time
 import urllib.request
 import zipfile
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, OrderedDict
 from pathlib import Path
 from statistics import mean
 
@@ -53,6 +53,109 @@ def open_head(url):
                     "content_type":r.headers.get("Content-Type"),"final_url":r.geturl()}
     except Exception as e:
         return {"url":url,"status":None,"error":str(e)[:250]}
+
+
+class HTTPRangeZipReader(io.RawIOBase):
+    """Seekable source ZIP using verified HTTP 206 blocks, not whole-year file.
+
+    A central directory at ZIP end identifies original publisher monthly
+    members. zipfile validates original per-member CRC on full decompression.
+    A downloaded member also receives our own SHA256 source receipt. Do not
+    falsely claim a SHA256 of the full 727 MB original archive.
+    """
+    def __init__(self,url,size,chunk_bytes=4*1024*1024,cache_blocks=6):
+        super().__init__()
+        self.url=url
+        self.file_size=int(size)
+        self.chunk_bytes=int(chunk_bytes)
+        self.cache_blocks=int(cache_blocks)
+        self.location=0
+        self.cache=OrderedDict()
+        self.http_range_requests=0
+        self.bytes_transferred=0
+        if self.file_size<=0 or self.chunk_bytes<=0:
+            raise ValueError("Original EN4 remote ZIP source size unknown")
+
+    def readable(self):
+        return True
+
+    def seekable(self):
+        return True
+
+    def tell(self):
+        return self.location
+
+    def seek(self,offset,whence=io.SEEK_SET):
+        if whence==io.SEEK_SET:
+            new=int(offset)
+        elif whence==io.SEEK_CUR:
+            new=self.location+int(offset)
+        elif whence==io.SEEK_END:
+            new=self.file_size+int(offset)
+        else:
+            raise ValueError("Invalid original EN4 remote ZIP seek")
+        if new<0:
+            raise ValueError("Negative original EN4 ZIP byte seek")
+        self.location=new
+        return new
+
+    def _fetch_block(self,index):
+        start=index*self.chunk_bytes
+        end=min(self.file_size-1,start+self.chunk_bytes-1)
+        if end<start:
+            return b""
+        if self.bytes_transferred+(end-start+1)>MAX_BYTES:
+            raise ValueError("Subset source original EN4 month byte-ranges exceed explicit 600MB transfer cap")
+        req=urllib.request.Request(
+            self.url,
+            headers={
+                "Range":f"bytes={start}-{end}",
+                "User-Agent":"EN4-raw-profile-noncommercial-research-range-source/1.0"
+            })
+        error=None
+        for trial in range(3):
+            try:
+                with urllib.request.urlopen(req,timeout=120) as response:
+                    content_range=response.headers.get("Content-Range","")
+                    required=f"bytes {start}-{end}/{self.file_size}"
+                    if response.status!=206 or content_range!=required:
+                        raise ValueError("Original publisher HTTP partial source not 206 exact byte range: "+
+                                         repr((response.status,content_range,required)))
+                    data=response.read()
+                if len(data)!=end-start+1:
+                    raise ValueError("Original EN4 source ranged response returned incomplete bytes")
+                self.bytes_transferred+=len(data)
+                self.http_range_requests+=1
+                return data
+            except Exception as exc:
+                error=exc
+                if trial<2:time.sleep(2**trial)
+        raise RuntimeError("Original EN4 ZIP byte-range source unavailable") from error
+
+    def _get_block(self,index):
+        if index not in self.cache:
+            self.cache[index]=self._fetch_block(index)
+            while len(self.cache)>self.cache_blocks:
+                self.cache.popitem(last=False)
+        self.cache.move_to_end(index)
+        return self.cache[index]
+
+    def read(self,size=-1):
+        if size is None or size<0:size=self.file_size-self.location
+        if size==0 or self.location>=self.file_size:
+            return b""
+        n=min(size,self.file_size-self.location)
+        result=[]
+        while n>0:
+            k=self.location//self.chunk_bytes
+            start_in_block=self.location%self.chunk_bytes
+            block=self._get_block(k)
+            piece=block[start_in_block:start_in_block+n]
+            if not piece:raise IOError("Remote original source ZIP returned empty data before EOF")
+            result.append(piece)
+            self.location+=len(piece)
+            n-=len(piece)
+        return b"".join(result)
 
 
 def fetch(url,destination):
@@ -209,7 +312,7 @@ def run(args):
         "year":YEAR,"four_direct_months":candidates,"official_year_zip":zipmeta
     },ensure_ascii=False),flush=True)
     mode=("MONTHLY_NC_GZ" if all(c["status"]==200 for c in candidates)
-          else "ANNUAL_OFFICIAL_ZIP" if zipmeta["status"]==200
+          else "REMOTE_OFFICIAL_ZIP_HTTP_206" if zipmeta["status"]==200
           else "NO_OFFICIAL_EN4_SOURCE_AVAILABLE")
     if mode=="NO_OFFICIAL_EN4_SOURCE_AVAILABLE":
         raise RuntimeError("Neither official EN4 finalized monthly URLs nor the official 2015 ZIP are fetchable")
@@ -229,10 +332,15 @@ def run(args):
                 destination.unlink()
                 print("EN4_QC_RAW_MONTH="+json.dumps(data,ensure_ascii=False),flush=True)
         else:
-            dest=root/YEAR_ZIP
-            receipt=fetch(BASE+YEAR_ZIP,dest)
-            source_receipts.append(receipt)
-            with zipfile.ZipFile(dest) as z:
+            remote=HTTPRangeZipReader(BASE+YEAR_ZIP,zipmeta["size_bytes"])
+            source_receipts.append({
+                "official_year_ZIP_url":BASE+YEAR_ZIP,
+                "official_year_ZIP_total_bytes":zipmeta["size_bytes"],
+                "HTTP_206_byte_range_verified_before_use":True,
+                "annual_archive_full_SHA256_NOT_COMPUTED":True,
+                "original_members_verified_using_official_ZIP_CRC32_and_monthly_SHA256":True
+            })
+            with zipfile.ZipFile(remote) as z:
                 members=z.namelist()
                 for month in MONTHS:
                     pattern=re.compile(fr"\.{YEAR}{month:02d}\.nc$",re.I)
@@ -241,16 +349,27 @@ def run(args):
                         raise ValueError(f"Official EN4 2015 ZIP missing unique source month {month}: "+
                                          repr(members[:24]))
                     filename=chosen[0]
+                    member=z.getinfo(filename)
+                    # zipfile internally validates original CRC32 on reading.
                     src=z.read(filename)
                     data,keep=sample_month_nc(src,YEAR,month,sites)
                     results.append(data);qualified.extend(keep)
                     source_receipts.append({
                         "year":YEAR,"month":month,
                         "source_zip_member":filename,
+                        "original_publisher_zip_member_CRC32":f"{member.CRC:08x}",
+                        "original_publisher_zip_member_compressed_bytes":member.compress_size,
+                        "original_publisher_zip_member_uncompressed_bytes":member.file_size,
                         "uncompressed_original_month_netCDF_sha256":hashlib.sha256(src).hexdigest(),
-                        "uncompressed_original_month_bytes":len(src)
+                        "uncompressed_original_month_bytes":len(src),
+                        "source_CRC32_checked_by_zipfile_on_complete_decompression":True
                     })
                     print("EN4_QC_RAW_MONTH="+json.dumps(data,ensure_ascii=False),flush=True)
+            source_receipts.append({
+                "total_original_http206_range_requests":remote.http_range_requests,
+                "total_original_http206_source_bytes_transferred":remote.bytes_transferred,
+                "whole_727MB_publisher_archive_was_not_downloaded":True
+            })
     support={}
     coverage={}
     for depth in QC_SURFACE_M:
