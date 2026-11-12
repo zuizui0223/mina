@@ -1,0 +1,38 @@
+name: Penguin EN4 raw 2015 official 727MB ZIP byte-range retrieval feasibility
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - '.github/workflows/penguin-EN4-original-2015-range-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-EN4-2015-source-zip-206-range-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify HTTP 206 byte-range support without downloading 727MB
+        run: |
+          python - <<'PY'
+          import json
+          import urllib.request
+          url="https://hadleyserver.metoffice.gov.uk/hadobs/en4/data/en4-2-1/EN.4.2.2/EN.4.2.2.profiles.g10.2015.zip"
+          outputs={}
+          for label,byte_range in (("start","bytes=0-1023"),("zip_end","bytes=727110572-727111595")):
+              q=urllib.request.Request(url,headers={"Range":byte_range,"User-Agent":"EN4-noncommercial-research-source-gate"})
+              with urllib.request.urlopen(q,timeout=40) as r:
+                  result={"status":r.status,"content_range":r.headers.get("Content-Range"),"content_length":r.headers.get("Content-Length"),"accept_ranges":r.headers.get("Accept-Ranges")}
+                  if r.status==206:
+                      data=r.read(1024)
+                      result["returned_bytes"]=len(data)
+                      result["sample_first_four_hex"]=data[:4].hex()
+                  outputs[label]=result
+          print("EN4_ORIGINAL_727MB_HTTP_RANGE_GATE="+json.dumps(outputs),flush=True)
+          if not all(x["status"]==206 for x in outputs.values()):
+              raise SystemExit("Official year ZIP server does not support true byte-range; cannot run efficient random-access profile retrieval")
+          PY
