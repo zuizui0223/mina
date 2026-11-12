@@ -2,6 +2,8 @@
 """Source-free QC and geography guards, no fake EN4 observation data."""
 from __future__ import annotations
 import importlib.util
+import io
+import zipfile
 import unittest
 from pathlib import Path
 
@@ -43,6 +45,28 @@ class TestOriginalEN4QualityGate(unittest.TestCase):
         self.assertEqual(found[1][0]["site_id"],"B")
         self.assertNotIn(2,found)
         self.assertLess(found[0][1],100)
+
+    def test_remote_zip_byte_ranges_read_only_selected_members(self):
+        source=io.BytesIO()
+        with zipfile.ZipFile(source,"w",compression=zipfile.ZIP_DEFLATED) as z:
+            z.writestr("en4.201508.nc",b"correct raw Aug netCDF test"*15)
+            z.writestr("en4.201509.nc",b"correct raw Sep netCDF test"*20)
+            z.writestr("en4.201510.nc",b"correct raw Oct netCDF test"*100)
+        original=source.getvalue()
+        remote=en4.HTTPRangeZipReader(
+            "https://example.invalid/official-en4-source.zip",
+            len(original),chunk_bytes=37,cache_blocks=4)
+        touched=set()
+        def source_read_block(index):
+            start=index*remote.chunk_bytes
+            touched.add(index)
+            return original[start:min(len(original),start+remote.chunk_bytes)]
+        remote._fetch_block=source_read_block
+        with zipfile.ZipFile(remote) as z:
+            self.assertEqual(z.read("en4.201509.nc"),b"correct raw Sep netCDF test"*20)
+            self.assertEqual(z.getinfo("en4.201508.nc").filename,"en4.201508.nc")
+        self.assertTrue(touched)
+        self.assertLess(len(touched)*remote.chunk_bytes,5*len(original))
 
     def test_original_sources_pinned_and_archive_goes_to_summary(self):
         self.assertIn("hadleyserver.metoffice.gov.uk",en4.BASE)
