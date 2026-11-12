@@ -112,7 +112,10 @@ def coordinates_nearest_to_original_colonies(sites,lat,lon):
     source_lat=np.asarray([float(r["colony_latitude"]) for r in sites])
     source_lon=np.asarray([float(r["colony_longitude"]) for r in sites])
     tree=cKDTree(xyz(source_lat,source_lon))
-    _,knn=tree.query(xyz(lat[valid],lon[valid]),k=8)
+    k=min(8,len(sites))
+    _,knn=tree.query(xyz(lat[valid],lon[valid]),k=k)
+    if k==1:
+        knn=np.asarray(knn).reshape(-1,1)
     geod=Geod(ellps="WGS84")
     for i,neighbors in zip(valid,np.atleast_2d(knn)):
         j=np.asarray(neighbors,dtype=int)
