@@ -28,3 +28,10 @@ EN4 raw profiles are a separate source and processing product but their instrume
 
 ## Deliverable now
 An actually completed GitHub Action with official 2015 yearly ZIP source URL, ZIP SHA256, four monthly original file headers/dimensions, spatial coverage (all original 18 source regions and reported <=100/250km counts), observed upper-level source-depth and QC audit. If support is strong, the next phase can reuse this code for more years; if sparse, use a high-coverage gridded observational analysis only as a weaker product-sensitivity and make the raw observation limitation explicit.
+
+
+## Source transfer repair: original 727MB official 2015 ZIP, partial read only
+
+Actual official 2015 publisher ZIP metadata confirmed total archive size **727,111,596 bytes** in the first source workflow #43127291829; the four individually guessed monthly .nc.gz URLs returned HTTP 404. Full archive source exceeds the initially set explicit 600MB transfer cap. Independent official byte-range gate [#43127855730](https://github.com/zuizui0223/mina/actions/runs/43127855730) verified **HTTP 206** Content-Range at the beginning and end of the exact official ZIP, without downloading the entire archive. The protocol therefore uses an HTTP-206 seekable source ZIP reader to retrieve only the four required August–November original compressed monthly members, checking the ZIP's official per-month **CRC32** via complete zipfile decompression and calculating the **SHA256 of each original uncompressed monthly NetCDF**.
+
+**Do not claim a full annual ZIP SHA256:** it cannot be verified from selected byte ranges and is explicitly labeled NOT COMPUTED. The original URL, total archive byte count, verified ranged responses, per-member original CRC32, individual monthly SHA256, and aggregate transferred byte count are reproducibility receipts. This is a source-transfer fix only; 2015, months, 588 original site geography, depth 0–10m, source salinity and QC filters and radius limits are unchanged. No results of source salinity QC have been used to change acceptance criteria.
