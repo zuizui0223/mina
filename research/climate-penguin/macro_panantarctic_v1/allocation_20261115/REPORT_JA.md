@@ -45,5 +45,5 @@
 ## 実際の検証と成果物
 
 - **元ソース原本2 ZIP** をGitHubの成功Actionsから取得し、元43の3年代実コロニー系列・元326の年代ペア表から50の厳格両端期系列を抽出、43が50の完全な真部分集合であり早期・後期の元巣数中央値と海氷値が全件一致することを確認。
-- [解析コード](audit_penguin_allocation_concentration_20261115.py)、[独立した検算コード](verify_penguin_concentration_independent_20261115.py)、[全種／期間の結果表](fixed_roster_species_period_allocation_metrics.csv)、[サイト・250kmブロック・原地域の全一括除外結果](fixed_roster_leave_site_block_region_out.csv)、[厳格両端期のみの7サイト原入力](original_seven_ADPE_omitted_middle_decade.csv)、[43サイト×種の元3年代表](original_three_decade_43_source_site_species.csv)、[50サイト×種の元2年代表](original_strict_paired_end_50_source_site_species.csv)、出典ZIP SHA256と検算JSONを同じ監査ディレクトリへ保存。
+- [GitHub上での実行・再現用コード](recompute_fixed_roster_concentration.py)（元の拡張解析コードと独立181項目検算コードは会話の完全再現ZIPに収録）、[全種／期間の結果表](fixed_roster_species_period_allocation_metrics.csv)、[サイト・250kmブロック・原地域の全一括除外結果](fixed_roster_leave_site_block_region_out.csv)、[厳格両端期のみの7サイト原入力](original_seven_ADPE_omitted_middle_decade.csv)、[43サイト×種の元3年代表](original_three_decade_43_source_site_species.csv)、[50サイト×種の元2年代表](original_strict_paired_end_50_source_site_species.csv)、出典ZIP SHA256と検算JSONは会話の完全再現ZIPに保存。GitHub上には原43/50行・結果CSV・実行可能な短いコードを保持し、元の全ソースZIPは成功Actionsのartifactで追跡する。
 - SciPy/標準numpy計算で**181項目を別の代数実装から確認**、最大計算差 **4.8×10⁻¹¹**。独立生態観測ではなく同一元レコードの算術検算。新しいGitHub Actions runでの成功とは主張しない。
