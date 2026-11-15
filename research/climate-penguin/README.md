@@ -1,5 +1,13 @@
 # Climate, sea ice and penguin breeding: exploratory progress
 
+## 2026-11-15 巣数加重南北再配分と集中度を分離：マクロ生態学の追加肯定結果
+
+**[最新の同期間・同一標本の原本再計算](macro_panantarctic_v1/GEOGRAPHY_VS_CONCENTRATION_FIXED_ROSTER_RESULT_JA_20261115.md)**：アデリー固定19地点は1990s→2010sで巣数加重緯度が南へ **+107.31km**、Hill q2実効繁殖地数 **−29.98%**、近岸海氷曝露 +0.022pp。一方、両端年代の各2年以上を満たす固定26地点では南へ **+88.41km**、Hill q2は逆に **+8.15%**、海氷 +0.625pp。両端各1年以上35地点でも南へ +99.60km。**南向きの巣数重心変化の符号はコロニー群・1地点除外・1原地域除外・250kmブロック除外でも維持する一方、集中度の符号は母集団定義と大型コロニーの採否で反転**。固定コロニー間の相対的な巣数再配分であり、鳥の移動・分布境界・気候追跡の成否ではない。
+
+19／26地点を同じ計数年代に揃えると、重心の南向き変化は地域間巣数シェア変化と地域内地点比重変化に分解できるが、その比率自体は観測コホートに依存する。**136件の各地点・ブロック・地域除外を含む独立数値検算とGitHub Actions [#43692515650](https://github.com/zuizui0223/mina/actions/runs/43692515650)は成功**。元43/50 site×speciesの実数記録から再現。主張は単一マクロ原稿v0.4のResults/Discussionおよび補助図として統合。従来のPalmer/Signy島内営巣区画の集中縮退と、全域コロニー間重心の変化を同一の効果量として混同しない。
+
+---
+
 ## 2026-11-15 一本の南極マクロ論文 v0.4 — 2019–2020 GLORYSソース監査で物理と生物の主張を整理
 
 **現在の単一統合原稿:** [MANUSCRIPT_MACRO_V0_4_SOURCE_GATED_WORKING.md](macro_panantarctic_v1/MANUSCRIPT_MACRO_V0_4_SOURCE_GATED_WORKING.md)（未投稿、Draft PR #214）。v0.3は履歴として保持。主図は4枚の構成を固定。
