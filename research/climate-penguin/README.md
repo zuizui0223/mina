@@ -1,5 +1,20 @@
 # Climate, sea ice and penguin breeding: exploratory progress
 
+## 2026-11-15 一本の南極マクロ論文 v0.4 — 2019–2020 GLORYSソース監査で物理と生物の主張を整理
+
+**現在の単一統合原稿:** [MANUSCRIPT_MACRO_V0_4_SOURCE_GATED_WORKING.md](macro_panantarctic_v1/MANUSCRIPT_MACRO_V0_4_SOURCE_GATED_WORKING.md)（未投稿、Draft PR #214）。v0.3は履歴として保持。主図は4枚の構成を固定。
+
+- 588元繁殖地点×28年の海洋PCAでは**海氷/水温PC1 60.37%、塩分PC2 33.38%**。2019–20年を除外しても**60.15% / 33.49%**で二軸性は維持。
+- **塩分の強い同期を一般化する主張はSOURCE HOLD。** 18地域の塩分PC2共通年分散は全28年**52.14%**から2019–2020年を除外すると**29.29%**。378元GLORYSセル中2019年368・2020年363セルで1993–2018年基準より低塩分。Copernicus公式QUIDは2019年のERA-Interim→ERA5大気強制切替を明示しているが因果源は未特定。[監査・資料](macro_panantarctic_v1/GLORYS_2019_2020_SOURCE_GATE_JA_20261115.md)。
+- 繁殖数長期同年気候支持85系列＝65地点・6地域、同一出典・同方法・同年厳格種間比較18系列＝12地点・2地域。厳格12地点は海洋PC1最寒冷四分位に**0地点**。[地理的推論範囲](macro_panantarctic_v1/CLIMATE_VS_BREEDING_SUPPORT_SCOPE_JA_20261115.md)。
+- 生物側ではGentoo/Adélieの同所厳格巣数比が6/6上昇、2種観測巣数合計は5/6で増加。ただし空間的支持は2地域で、温暖化因果・塩分ニッチ・未来巣数は未推定。[厳格2種/3種再解析](macro_panantarctic_v1/strict_pair_20261115/REPLACEMENT_VS_COMMUNITY_TOTAL_JA_20261115.md)。
+
+**生物学上の主張の限界:** 大陸マクロ物理勾配は成立するが、群集の種間交代を全18地域で較正したとは言えない。静的植生地図は年々の緑化ではない。残作業は2019–20年の独立上層海洋塩分資料での確認と、標準化された多地域の同年・同法ペンギン巣数。新しいパラメータ探索による正のp値救済はしない。
+
+---
+
+
+
 Research checkpoint, 2026-10-30. This directory is a draft research lane. It does not replace the frozen Paper 1 / Paper 2 analyses or establish publication readiness.
 
 ## 2026-11-10 元MAPPPDまで遡ったマクロ論文v0.2の監査
