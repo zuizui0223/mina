@@ -1,0 +1,29 @@
+name: Antarctic penguin 19-26 original-census geographic reweighting and concentration QA
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/allocation_20261115/original_three_decade_43_source_site_species.csv'
+      - 'research/climate-penguin/macro_panantarctic_v1/allocation_20261115/original_strict_paired_end_50_source_site_species.csv'
+      - 'research/climate-penguin/macro_panantarctic_v1/allocation_20261115/same_period_polar_allocation_roster_comparison.csv'
+      - 'research/climate-penguin/macro_panantarctic_v1/allocation_20261115/site_region_block_influence_on_latitude_concentration.csv'
+      - 'research/climate-penguin/macro_panantarctic_v1/allocation_20261115/verify_published_colony_reweighting.py'
+      - '.github/workflows/penguin-fixed-roster-geography-vs-concentration-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-original-count-roster-geography-concentration:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install arithmetic verification dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas
+      - name: Verify both original census source cohorts and every site, region and block deletion
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/allocation_20261115/verify_published_colony_reweighting.py
+          python research/climate-penguin/macro_panantarctic_v1/allocation_20261115/verify_published_colony_reweighting.py
