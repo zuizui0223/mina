@@ -24,17 +24,10 @@ jobs:
         run: |
           python -m py_compile research/climate-penguin/macro_panantarctic_v1/en4_2017_2020_raw_salinity_time_gate.py
           python research/climate-penguin/macro_panantarctic_v1/en4_2017_2020_raw_salinity_time_gate.py --self-test
-      - name: Restore verified 595-colony geography and original 588 eligible marine sites
-        uses: actions/download-artifact@v4
-        with:
-          name: penguin-original-595-colony-GLORYS-wet-grid-2011-september-geo-source-gate
-          run-id: 42957439858
-          github-token: \${{ secrets.GITHUB_TOKEN }}
-          path: build/verified_595_marine_geography
-      - name: Read genuine Met Office EN4 2017-2020 Aug-Nov original QC profiles
+      - name: Validate frozen 588-colony source coordinates, then read original Met Office EN4 2017-2020 Aug-Nov profiles
         run: |
           set -euo pipefail
-          SITES="$(find build/verified_595_marine_geography -name 'all_original_595_sites_frozen_GLORYS_nearest_2011_September_wet_ocean_cells.csv' -print -quit)"
+          SITES="research/climate-penguin/macro_panantarctic_v1/source_audit_20261115/source_cohort_climate_support_588_sites.csv"
           test -s "$SITES"
           python research/climate-penguin/macro_panantarctic_v1/en4_2017_2020_raw_salinity_time_gate.py \
             --geography "$SITES" \
