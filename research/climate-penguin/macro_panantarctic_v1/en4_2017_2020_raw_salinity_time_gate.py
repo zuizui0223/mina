@@ -135,8 +135,32 @@ def summarize(obs):
                 })
     return results,comparisons
 
+def accepted_588_sites_from_frozen_climate_cohort(path):
+    """Use previously source-validated original 588-site coordinates in this branch.
+
+    Avoid an expired or inaccessible remote Actions artifact; do not infer
+    latitude, longitude or missing sites from species presence.
+    """
+    import csv
+    with path.open(encoding="utf-8",newline="") as h:
+        original=list(csv.DictReader(h))
+    required={"site_id","source_region","block","lat","lon"}
+    if len(original)!=588 or any(not required.issubset(r) for r in original):
+        raise ValueError("Fixed 588-site physical source coordinate roster changed")
+    sites=[]
+    for r in original:
+        lat=float(r["lat"]);lon=float(r["lon"])
+        if not (np.isfinite(lat) and np.isfinite(lon) and -90<=lat<=-55 and -180<=lon<=180):
+            raise ValueError("Invalid original polar source coordinates")
+        sites.append({"site_id":r["site_id"],"source_region":r["source_region"],
+                      "source_250km_block":r["block"],
+                      "colony_latitude":str(lat),"colony_longitude":str(lon)})
+    if len({r["site_id"] for r in sites})!=588 or len({r["source_region"] for r in sites})!=18:
+        raise ValueError("Original 588 climate site/18 source region roster drift")
+    return sites
+
 def make_receipts(geography,output):
-    sites=en4.accepted_sites(geography)
+    sites=accepted_588_sites_from_frozen_climate_cohort(geography)
     output.mkdir(parents=True,exist_ok=True)
     records=[];months=[];receipts=[]
     for year in YEARS:
