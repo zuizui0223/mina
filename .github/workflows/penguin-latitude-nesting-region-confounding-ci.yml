@@ -1,0 +1,25 @@
+name: Antarctic Adélie original-colony latitude-growth between-vs-within-region CI
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/latitudinal_scale_20261115/**'
+      - 'research/climate-penguin/macro_panantarctic_v1/allocation_20261115/original_three_decade_43_source_site_species.csv'
+      - 'research/climate-penguin/macro_panantarctic_v1/allocation_20261115/original_strict_paired_end_50_source_site_species.csv'
+      - '.github/workflows/penguin-latitude-nesting-region-confounding-ci.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-observed-site-geography-audit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify original 19/26/35 Adélie site counts, region-covariance partition and southward reweighting
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/latitudinal_scale_20261115/verify_region_scale_from_original_sites.py
+          python research/climate-penguin/macro_panantarctic_v1/latitudinal_scale_20261115/verify_region_scale_from_original_sites.py
