@@ -1,35 +1,39 @@
-# Antarctic marine salinity synchrony: era-dependence sensitivity (2026-11-15)
+# 南極18地域の塩分同期はいつ強いか：28年間の年代除外・地理除外監査（2026-11-15）
 
-**Status:** post-result descriptive stability audit; extension of Draft PR #214, not a new paper or biological p-value. Based on the existing 18-region × 28-year source-verified OSI SAF/GLORYS regional physical panel. No penguin outcomes were opened for this audit.
+**位置づけ:** Draft PR #214 の既存の海洋物理解析への事後感度解析。新しい独立観測・ペンギンの応答係数・気候因果・p値の追加ではない。元データは Actions [#43049546362](https://github.com/zuizui0223/mina/actions/runs/43049546362) の artifact **13869360730** に保存された、実際の18原地域×1993–2020年の504地域年。原本SHA256 `99b794fa585ecf7b2ca6651456e0056f2e43c321a58daeb9e82d5b90eb3b3d29`。
 
-## Result
+## 今回新たに確認した肯定結果
 
-The already reported all-period equal-region annual synchrony is independently recovered from 504 original region-year rows: PC1 (warmer/low-ice thermal axis) **19.71%** versus PC2 (salinity axis) **52.14%**. The originally published physical PCA spatial variance fractions of PC1=60.37% and PC2=33.38% are different estimands.
+既存の28年全体の地域共通年分散割合 **海氷・水温PC1=19.71%、塩分PC2=52.14%** を、新たな実装で元504行から再計算して一致した。ただし塩分同期の優位性は**どの年代でも一様ではない**。指定期間ごとに地域内平均と標準偏差を再推定すると、全18地域では以下になる。
 
-New fixed sensitivity calculations standardize each region within each evaluated time window (each region one vote) and calculate n_regions × sum_t(mean_region_z_t²) / sum_(r,t)(z_rt²).
+| 対象 | 海氷–水温 PC1 | 塩分 PC2 | 差 PC2−PC1 |
+|---|---:|---:|---:|
+| 1993–2020年 全28年 | 19.71% | 52.14% | +32.43 pp |
+| 1993–2000年のみ | 16.64% | 16.39% | −0.25 pp |
+| 2001–2010年のみ | 17.55% | 27.75% | +10.19 pp |
+| 2011–2020年のみ | 22.12% | 71.28% | +49.15 pp |
+| 2011–2020年を除外 | 20.25% | 27.46% | +7.21 pp |
+| 地理的支持13地域、全28年 | 17.80% | 58.74% | +40.94 pp |
+| 地理的支持13地域、2011–2020年を除外 | 18.42% | 35.32% | +16.90 pp |
 
-| Full 18-region panel | PC1 common-year fraction | PC2 common-year fraction | PC2−PC1 |
-| --- | ---: | ---: | ---: |
-| 1993–2020 (28y) | 19.71% | 52.14% | +32.43pp |
-| 1993–2000 only (8y) | 16.64% | 16.39% | −0.25pp |
-| 2001–2010 only (10y) | 17.55% | 27.75% | +10.19pp |
-| 2011–2020 only (10y) | 22.12% | 71.28% | +49.15pp |
-| 2011–2020 *omitted* (18y) | 20.25% | 27.46% | +7.21pp |
+**結論:** 塩分主体の海洋再解析PC2が広域で同じ年に変化する性質は確認できるが、28年全体の大きな差はとくに2011–2020年の変動構造に強く依存する。1990年代の18地域だけでは塩分の同期優位性は出ない。
 
-The stronger PC2 coherence in the 28-year aggregate is **not constant through time**; it is concentrated in the 2011–2020 decade. Omitting that decade reduces, but does not erase, the 28-year contrast.
+## 頑健性
 
-Geographic replication sensitivity: for the 13 original regions with ≥3 colonies, ≥2 polar blocks, and ≥2 distinct ocean cells, common-year fractions are **17.80% PC1 and 58.74% PC2** over 1993–2020, and **18.42% PC1 versus 35.32% PC2** with 2011–2020 removed. Single-region omissions yield PC2−PC1 ranges of **+27.95–35.20pp** for all 18 regions and **+35.61–43.40pp** for 13 supported regions.
+- 全28年から原地域を1つ除外したときのPC2−PC1: **+27.95〜+35.20 pp**（18地域）、**+35.61〜+43.40 pp**（地理的支持13地域）。
+- さらに1つの年代を同時に除外しても: **+3.37〜+47.87 pp**（18地域）、**+12.72〜+52.38 pp**（13地域）。海洋セル重複の重みを抑えた**元GLORYS固有海域セル等重み**の比較も同方向。
+- 2011–2020年から元の暦年を1つずつ除外: **+37.09〜+63.80 pp**（全18地域）、**+36.36〜+66.69 pp**（13地域）。一つの突出年のみによる結果ではない。
 
-All single-era plus single-region omissions retain PC2>PC1: margin **+3.37–47.87pp** among 18 regions and **+12.72–52.38pp** among the 13 geography-supported regions. Reweighting unique GLORYS marine cells equally within each region gives the same qualitative outcome. In 2011–2020 alone, leave-one-calendar-year-out differences remain **+37.09–63.80pp** among all 18 regions; not one exceptional year.
+これは地域間気候場の事後的な数値安定性であり、地理ブロック・年代の独立な実験的反復、年代差の有意差、温暖化帰属を証明するものではない。
 
-## Source and validation
+## 方法・再現性
 
-- Archived Actions run: https://github.com/zuizui0223/mina/actions/runs/43049546362, artifact 13869360730.
-- Exact input: original_source_18_region_28year_PC1_PC2_site_vs_unique_cell.csv; 18 × 28 = 504 genuine region-years. SHA256: 99b794fa585ecf7b2ca6651456e0056f2e43c321a58daeb9e82d5b90eb3b3d29.
-- A fresh Python/numpy independent implementation reproduced the archived all-period PC1 fraction to within 1e-12 and PC2 to rounding; verified original 18-year×28-region balance, each region's unchanged geographic support, 13 pre-existing multi-block eligibility and the mathematical 0–1 variance bound.
-- Full audit grid contains 528 fixed-axis records (both axes, 18/13 region cohorts, site/cell weighting, all-period and each of three omitted eras, each single region omission). Results also inspected by within-era and late-era leave-one-year-out diagnostics.
-- The source remains the **same GLORYS assimilation product** and observational marine SIC; no new independent in-situ salinity validation is claimed. Existing EN4 source coverage is insufficient for the 18-region 28-year independence test (2015 strict: 385 profiles, five regions).
+元ソースのregion–yearと地理支持（18地域、地理的支持13地域）を固定し、期間ごとに各地域の海洋PCスコアを標準化した。地域間共通年分散割合は `n_regions * sum_t(mean_r(z_rt)^2) / sum_rt(z_rt^2)`。元の全海洋PCAが説明する変数間分散（PC1=60.37%、PC2=33.38%）とは分母・推定対象が異なる。全18地域/地理支持13地域×サイト等重み/海洋セル等重み×4年代除外×1地域除外×2PCの**528通り**を固定して出力。アーカイブ済み全期間の**8指標すべてを誤差1e−12以内**で数値再現した。
 
-## Interpretation boundary
+完全な検算Python、全528行CSV、フル精度JSON、日本語レポートは会話内の再現ZIPに保存。GitHubには機械可読の要約 `REGIONAL_SYNCHRONY_ERA_OMISSION_SUMMARY_20261115.json` を追加した。大容量の入力となる元出版社由来CSVは Actions original artifact を参照し、ここには再配布していない。
 
-This is an **episodic temporal covariance property of a marine reanalysis**, not evidence that greenhouse warming caused increasing salinity synchrony, that salinity acts as a demographic driver, or that penguin communities respond synchronously. The short 8–10-year within-era windows and temporal autocorrelation prevent formal era-to-era significance inference. GLORYS source assimilation procedures and changes in hydrographic observation coverage remain candidate explanations requiring independent verification. Retain in the single macro manuscript as a physical scale/time-resolution qualification to the warming–ice–salinity–vegetation–niche discussion. Do not turn the static 2017–2023 terrestrial map into a 28-year greening trajectory or reopen frozen Paper 1/2.
+## 解釈の限界と論文への使い方
+
+塩分は **GLORYS12V1海洋再解析** 由来であり、海洋の実変動と年代ごとの観測同化・測定密度の影響を分離していない。独立のEN4原観測は2015年に固定100km条件で385プロファイル／5地域のみで、28年・18地域の物理同期の独立検証には足りない。したがって今回の結果から、塩分によるペンギンの増減、複数地域の同期的な種交代、気候遅延、適応、21世紀末の繁殖巣数を予測しない。
+
+**編集上の位置づけ:** 温暖化・海氷–水温–塩分・繁殖巣数・静的植生を一本の論文で比較するときの、物理軸の**時期依存性を示す補助結果**。凍結済み Ecology Report、旧Paper 2、main、別研究線への変更はしない。
