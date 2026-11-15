@@ -1,0 +1,49 @@
+name: Antarctic penguin EN4 raw salinity 2017-2020 matched source gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/en4_2017_2020_raw_salinity_time_gate.py'
+      - '.github/workflows/penguin-original-EN4-2017-2020-raw-salinity-time-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-en4-raw-observed-2017-2020:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source NetCDF/QC and WGS84 nearest-location dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy netCDF4 pyproj==3.7.1
+      - name: Compile and test source-free four-year platform/month aggregation
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/en4_2017_2020_raw_salinity_time_gate.py
+          python research/climate-penguin/macro_panantarctic_v1/en4_2017_2020_raw_salinity_time_gate.py --self-test
+      - name: Restore verified 595-colony geography and original 588 eligible marine sites
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-595-colony-GLORYS-wet-grid-2011-september-geo-source-gate
+          run-id: 42957439858
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+          path: build/verified_595_marine_geography
+      - name: Read genuine Met Office EN4 2017-2020 Aug-Nov original QC profiles
+        run: |
+          set -euo pipefail
+          SITES="$(find build/verified_595_marine_geography -name 'all_original_595_sites_frozen_GLORYS_nearest_2011_September_wet_ocean_cells.csv' -print -quit)"
+          test -s "$SITES"
+          python research/climate-penguin/macro_panantarctic_v1/en4_2017_2020_raw_salinity_time_gate.py \
+            --geography "$SITES" \
+            --out build/en4_2017_2020_real_observation_gate
+      - name: Upload only publisher QA receipts and platform-aggregated supported contrasts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: antarctic-en4-original-2017-2020-aug-nov-salinity-time-support
+          path: build/en4_2017_2020_real_observation_gate/
+          if-no-files-found: warn
+          retention-days: 14
