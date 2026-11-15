@@ -94,7 +94,7 @@ def main():
             row[level+'_southward_max_km']=high
             row[level+'_nearshore_ice_change_min_pp']=ia
             row[level+'_nearshore_ice_change_max_pp']=ib
-            row[level+'_guaranteed_southward_for_any_nonnegative_within_group_nest_weights']=low>0
+            row[level+'_guaranteed_southward_for_any_nonnegative_within_group_nest_weights']=bool(low>0)
             draws=permuted_centroids(g,keys,args.permutations,args.seed,early)
             assert draws.min()>=low-1e-8 and draws.max()<=high+1e-8
             randomizations.append({
