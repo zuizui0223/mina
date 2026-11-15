@@ -1,0 +1,25 @@
+name: Penguin source-verified nesting reallocation by reporting region and 250-km block
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/three_level_allocation_20261115/**'
+      - '.github/workflows/penguin-three-level-nesting-allocation-original-QA.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-three-level-original-census-and-ice:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install arithmetic check dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas
+      - name: Independently check original 19-26-35 cohort IDs and 3-level geographic/ice identities
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/three_level_allocation_20261115/verify_three_level_original_source.py
+          python research/climate-penguin/macro_panantarctic_v1/three_level_allocation_20261115/verify_three_level_original_source.py
