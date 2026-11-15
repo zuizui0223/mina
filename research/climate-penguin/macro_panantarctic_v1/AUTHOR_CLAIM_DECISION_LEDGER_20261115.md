@@ -11,6 +11,11 @@ Canonical single working manuscript: [v0.4](MANUSCRIPT_MACRO_V0_4_SOURCE_GATED_W
 | Gentoo relative nesting gains are locally reproducible | 6/6 source-matched gentoo/Adélie ratio slopes increase; two-species observed subtotal rises 5/6 | Figure 4: descriptive local reassembly, not competition or pan-Antarctic law |
 | Relative composition and subtotal are different observations | 34 actual three-species site-years at three colonies: gentoo share rises at all three while three-species observed subtotal rises in two and falls in one | Supplement; do not equate nesting shares with population growth |
 
+## Independent salinity source-gate progress (2019–2020)
+
+- Same-source negative controls on 378 distinct GLORYS wet cells, using each cell's own 1993–2018 reference: salinity anomalies below −2 SD at **239/378 cells (2019)** and **310/378 cells (2020)**, versus seawater temperature **7/378 and 11/378** and original nearshore OSI SAF SIC **0/378 and 8/378**, respectively. [Cell-wise actual-source table](source_audit_20261115/GLORYS_378cell_2019_2020_three_variable_anomalies.csv), [methods / caveats](GLORYS_2019_2020_CROSSVARIABLE_DIAGNOSTIC_JA_20261115.md). This is an additional **same-source diagnostic only**, not independent field validation nor climate attribution.
+- The [EN4 original-profile 2017–2020 fixed source protocol](EN4_2017_2020_INDEPENDENT_TIME_GATE_PROTOCOL_20261115.md) is implemented in [reproducible original-source code](en4_2017_2020_raw_salinity_time_gate.py) with [GitHub Actions workflow](https://github.com/zuizui0223/mina/actions/workflows/penguin-original-EN4-2017-2020-raw-salinity-time-gate.yml). The operational four-year source run is separate from the source-free synthetic test; **no 18-region field confirmation can be inferred until the source QC and instrument/month coverage result is inspected**. The observation study is deliberately restricted to genuine source near-colony measured salinity, not gridded EN4 interpolation.
+
 ## Held claims and required evidence
 
 | Gate | Source result | Prohibited extrapolation / necessary validation |
