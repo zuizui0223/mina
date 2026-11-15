@@ -1,0 +1,102 @@
+{
+  "status": "REAL_EN4_RAW_2017_2020_COMPLETE_STRICT_18REGION_NO_GO",
+  "created_utc": "2026-11-15",
+  "source": "Met Office EN4.2.2 g10 original raw profiles",
+  "github_actions_run_id": 43681294518,
+  "github_actions_url": "https://github.com/zuizui0223/mina/actions/runs/43681294518",
+  "artifact_id": 14149243392,
+  "artifact_zip_sha256": "307243f33741c651bb4fa4e0f4d86d9b827c17cde48cb7caf097e1b6b2ea1720",
+  "source_original_netcdf_months": 16,
+  "raw_original_worldwide_profiles": 714756,
+  "original_site_universe": 595,
+  "marine_eligible_site_universe": 588,
+  "original_reporting_regions": 18,
+  "source_primary": {
+    "within_km": 100,
+    "measured_depth_max_m": 10,
+    "all_source_QC_equal_1": true,
+    "practical_salinity_valid_range": [
+      28,
+      38
+    ],
+    "total_profiles": 2414,
+    "profiles_by_year": {
+      "2017": 316,
+      "2018": 364,
+      "2019": 887,
+      "2020": 847
+    },
+    "regions_with_any_observations_over_four_years": 12,
+    "regions_with_profiles_by_year": {
+      "2017": 8,
+      "2018": 4,
+      "2019": 7,
+      "2020": 7
+    },
+    "region_month_cells_with_3plus_identifiable_platforms_by_year": {
+      "2017": 4,
+      "2018": 0,
+      "2019": 6,
+      "2020": 5
+    },
+    "regions_with_4year_2month_3platform_support": 0
+  },
+  "relaxed_sensitivity": [
+    {
+      "radius_km": 100,
+      "depthmax_m": 20,
+      "observed_profiles": 2482,
+      "regions_with_any_profiles": 12,
+      "regions_supported_four_year": 0
+    },
+    {
+      "radius_km": 250,
+      "depthmax_m": 10,
+      "observed_profiles": 3429,
+      "regions_with_any_profiles": 16,
+      "regions_supported_four_year": 0
+    },
+    {
+      "radius_km": 250,
+      "depthmax_m": 20,
+      "observed_profiles": 3873,
+      "regions_with_any_profiles": 16,
+      "regions_supported_four_year": 1,
+      "only_supported_region": "Victoria Land",
+      "matched_months": [
+        10,
+        11
+      ],
+      "pre2019_mean": 34.38946,
+      "post2019_mean": 34.478595,
+      "difference": 0.089135
+    }
+  ],
+  "observed_year_geographic_shift": {
+    "year2018_primary_south_shetlands_profiles": 335,
+    "year2018_total": 364,
+    "year2019_victoria_land": 709,
+    "year2019_total": 887,
+    "year2020_victoria_land": 737,
+    "year2020_total": 847
+  },
+  "publisher_verification": {
+    "original_monthly_zip_members": 16,
+    "all_16_monthly_netCDF_sha256_present": true,
+    "original_zip_member_crc32_verified": true,
+    "annual_archive_full_sha256_not_computed": true,
+    "total_HTTP206_source_bytes_transferred": 1167035225
+  },
+  "archive_aggregate_rows": {
+    "source_region_year_month_coverage": 386,
+    "comparison_region_radius_depth": 64
+  },
+  "inference": {
+    "true_18region_2019_2020_freshening_supported": false,
+    "glorys_2019_salinity_anomaly_disproved": false,
+    "glorys2019_physical_cause_identified": false,
+    "none_qualifying_strict_is_not_no_physical_change": true,
+    "same_instruments_might_enter_GLORYS_assimilation": true,
+    "source_raw_profiles_redistributed": false
+  }
+}
