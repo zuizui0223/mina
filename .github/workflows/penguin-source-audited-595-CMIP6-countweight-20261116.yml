@@ -4,6 +4,7 @@ on:
     branches: [analysis/penguin-decade-redistribution-v1-20261110]
     paths:
       - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_595_site_count_weighted_physical_exposure.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/derive_species_geographic_exposure_decomposition.py'
       - '.github/workflows/penguin-source-audited-595-CMIP6-countweight-20261116.yml'
   workflow_dispatch:
 permissions:
@@ -72,6 +73,36 @@ jobs:
           assert y.weighted_minus_equal.notna().all()
           print('PASS 595 original physical sites and 271 actual site-nesting weights across 4 scenarios; no nest forecast')
           PY
+      - name: Independently decompose future sea-ice exposure by species geography
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/derive_species_geographic_exposure_decomposition.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/derive_species_geographic_exposure_decomposition.py \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --cmip6-zip build/physical_595.zip \
+            --out build/verified_species_geographic_exposure
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads((Path('build/verified_species_geographic_exposure')/'species_geographic_physical_source_receipt.json').read_text())
+          assert x['status']=='PASS_ORIGINAL_COUNTED_271_SPECIES_GEOGRAPHIC_PHYSICAL_DECOMPOSITION_ONLY'
+          assert x['model_count']==3 and x['scenario_count']==4
+          assert x['original_cmip6_source_rows']==21420
+          assert x['no_future_population_prediction']
+          main=[x for x in x['selected_case'] if x['cohort']=='counted271']
+          assert len(main)==5
+          for v in main:
+              assert abs(v['species_weighted_sic_delta_pp']-v['counterfactual_region_mean_pp']-v['within_region_delta_from_region_mean_pp'])<1e-9
+          print('PASS source-counted species regional vs within-region physical exposure accounting')
+          PY
+      - name: Archive species-specific exposure decomposition, not a demographic forecast
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-271-counted-species-CMIP6-regional-exposure-accounting
+          path: build/verified_species_geographic_exposure/
+          if-no-files-found: warn
+          retention-days: 30
       - name: Archive original-source deterministic numerical outputs, not biological predictions
         if: always()
         uses: actions/upload-artifact@v4
