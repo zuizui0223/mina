@@ -96,11 +96,19 @@ def calc_species(physical,counts,obs):
                     "within_region_delta_from_region_mean_pp":within})
                 if (ex,per)==MAIN:
                     for region,gr in g.groupby("source_region"):
+                        # A genuine observed zero counts as a survey, but a
+                        # region whose species nest weight sums to ZERO cannot
+                        # have a nest-weighted average. Preserve the row, with
+                        # zero contribution and an undefined local weighted SIC.
+                        region_weight=float(gr.source_observed_nest_median.sum())
+                        local_physical=(mean(gr.delta_sic_pp,gr.source_observed_nest_median)
+                                        if region_weight>0 else None)
                         region_rows.append({"cohort":support,"species":sp,"region":region,
                             "species_source_site_count":len(gr),
-                            "species_nest_proxy_share":float(gr.source_observed_nest_median.sum()/wsum),
+                            "species_nest_proxy_share":region_weight/float(wsum),
                             "region_site_equal_physical_sic_pp":float(reference[region]),
-                            "within_region_species_weighted_sic_pp":mean(gr.delta_sic_pp,gr.source_observed_nest_median)})
+                            "within_region_species_weighted_sic_pp":local_physical,
+                            "zero_species_nest_proxy_weight":region_weight==0})
             for other in ("CHPE","GEPE"):
                 ag=species_models["ADPE"]
                 bg=species_models[other]
