@@ -62,7 +62,7 @@ SSP5-8.5世紀末の同271 siteで、**3モデル平均の海氷変化が−10pp
 
 1. **265系列の「用量反応」は未再現**：ソース固定版2456記録から作った前後1980–2000 vs 2005–2025年各1実計数以上は159系列だった。提示済み265の効果が地域間相関である以上、この係数を未来の温暖化deltaへ掛けない。今ある595site CMIP6は環境曝露で、将来巣数を校正したものではない。
 2. **全南極の現在の繁殖個体数ではない**：595 site中324 siteには2011–2020年の選択methodの実測がない。271地点の巣数重みは、前後年代・種別の中央値の非同時合算であり、真の総繁殖個体数・同年営巣ペアではない。主要地点の調査努力／日付差と元MAPPPDの更新もある。
-3. **保護区の法的位置は未確認**：公式CCAMLR採択zoneのポリゴン、法的管理、近岸海域maskと現実の採餌利用の支持データがない。陸上のsite点を海洋MPAに重ねても保護された採餌域割合にならない。[公式MPA source gate](climate_risk_frozen_20261116/ccamlr_mpa_source_gate.py)は原sourceがない場合「NO_GO_PROTECTION_COVERAGE」と判定する。
+3. **保護区の法的位置は未確認**：公式CCAMLR採択zoneのポリゴン、法的管理、近岸海域maskと現実の採餌利用の支持データがない。陸上のsite点を海洋MPAに重ねても保護された採餌域割合にならない。[公式MPA source gate](ccamlr_mpa_source_gate.py)は原sourceがない場合「NO_GO_PROTECTION_COVERAGE」と判定する。
 4. **気候曝露と繁殖応答を混同しない**：本sourceは**1995–2014年モデル過去**に対する将来変化。3モデルが海氷の近岸格子を共有し、coastal micro-habitatや真の採餌域を再現していない。海洋sosはモデル単位そのまま、過去GLORYS2019年のソース依存を独立に解消するものではない。
 
 ## 出典・再計算
@@ -71,4 +71,4 @@ SSP5-8.5世紀末の同271 siteで、**3モデル平均の海氷変化が−10pp
 - 元2456実計数、595 source site inventory：[Actions #42610664607](https://github.com/zuizui0223/mina/actions/runs/42610664607) artifact 13669533413。
 - 2011–2020の271地点と331地点×種真正実数、36個の source cohort×variable×scenario比較、地域間/地域内の4つの式、モデル別12値、種別12値、地域全64行、元source top5/地域除外100行、10/20/30pp将来物理閾値の64行を同じ2つのsource ZIPから再計算。
 - 第二の独立コードが元source 21,420 model deltaを直接pivotして76値を再計算し、最大数値差 **4.90×10⁻¹³**。これも同じ元データの算術照合であり、新しい環境観測でも独立CMIP6モデルでもない。
-- 数値・ソース情報の詳細は[凍結 v1 のsource契約](climate_risk_frozen_20261116/FROZEN_SOURCE_AND_EXPOSURE_CONTRACT_JA.md)。現在の single-paper v0.5 は**未変更・未投稿**。この新しい物理曝露と生物重みの非同義性は補助結果であり、温暖化の繁殖巣数係数や地理的保護効果を誤って主図に昇格しない。
+- 数値・ソース情報の詳細は[凍結 v1 のsource契約](FROZEN_SOURCE_AND_EXPOSURE_CONTRACT_JA.md)。現在の single-paper v0.5 は**未変更・未投稿**。この新しい物理曝露と生物重みの非同義性は補助結果であり、温暖化の繁殖巣数係数や地理的保護効果を誤って主図に昇格しない。
