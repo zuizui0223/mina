@@ -99,8 +99,7 @@ def wmean(frame,key="source_observed_nest_median"):
     return mean(frame.sic_delta_pp,frame[key])
 
 def pair_result(species,grid,obs,coannual,sp1,sp2,subset,screen,scenario,period,model):
-    sd=species[species.species.species.isin([sp1,sp2])] if False else species[
-        species.species.isin([sp1,sp2])].copy()
+    sd=species[species.species.isin([sp1,sp2])].copy()
     baseline_weights={s:float(sd[sd.species.eq(s)].source_observed_nest_median.sum())
                       for s in (sp1,sp2)}
     assert all(x>0 for x in baseline_weights.values())
@@ -155,14 +154,14 @@ def pair_result(species,grid,obs,coannual,sp1,sp2,subset,screen,scenario,period,
         # two count-weighted site distributions may differ.
         w1=wmean(x,"weight_a")
         w2=wmean(x,"weight_b")
+        # Selection coverage must use the SAME original species baseline
+        # median weights; matched-year medians are a different estimator and
+        # must never appear as a fraction of the full baseline denominator.
+        selected_sites=set(x.site_id)
         common_sites_fraction={
-            sp1:float(x.weight_a.sum()/baseline_weights[sp1]),
-            sp2:float(x.weight_b.sum()/baseline_weights[sp2])}
-        if subset=="same_site_sameyear_samemethod_medians":
-            # This fraction uses the restricted same-year medians, NOT the
-            # original all-year medians; it is a scale indicator only.
-            # Keep it separate from any true capture-recapture denominator.
-            pass
+            ss:float(species[(species.species.eq(ss)) &
+                 (species.site_id.isin(selected_sites))].source_observed_nest_median.sum()
+                 /baseline_weights[ss]) for ss in (sp1,sp2)}
     else:raise ValueError("Unexpected support definition")
 
     estimable=w1 is not None and w2 is not None
