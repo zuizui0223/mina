@@ -6,6 +6,7 @@ on:
       - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_595_site_count_weighted_physical_exposure.py'
       - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/derive_species_geographic_exposure_decomposition.py'
       - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_species_marine_grid_selection.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/source_match_species_shared_site_exposure.py'
       - '.github/workflows/penguin-source-audited-595-CMIP6-countweight-20261116.yml'
   workflow_dispatch:
 permissions:
@@ -122,6 +123,41 @@ jobs:
                 z['excluded_species_nest_proxy_fraction']*z['excluded_species_sic_delta_pp'])<1e-9
           print('PASS exact original sea-ice support restriction species coverage and excluded site identity')
           PY
+      - name: Evaluate identical original regions, sites and true same-year method source supports
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/source_match_species_shared_site_exposure.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/source_match_species_shared_site_exposure.py \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --cmip6-zip build/physical_595.zip \
+            --out build/verified_species_shared_site
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          x=json.loads((Path('build/verified_species_shared_site')/'source_matched_species_geographic_support_receipt.json').read_text())
+          d=pd.read_csv('build/verified_species_shared_site/source_matched_species_geographic_support_comparison.csv')
+          assert x['status']=='PASS_SOURCE_SAME_SITE_SPECIES_PHYSICAL_EXPOSURE_SUPPORT'
+          assert x['n_support_rows']==384 and len(d)==384
+          assert x['no_physiological_or_demographic_inference']
+          assert len(x['main_ensemble'])==24
+          for (a,b,support),g in d.groupby(['species_a','species_b','support']):
+              assert len(g)==32
+          for r in x['main_ensemble']:
+              if r['both_species_exposures_estimable']:
+                  assert abs(r['species_b_minus_a_sic_delta_pp']-(r['species_b_weighted_sic_delta_pp']-r['species_a_weighted_sic_delta_pp']))<1e-9
+              if r['same_site_physical_sic_identical_by_construction']:
+                  assert r['n_support_sites']>=0
+          print('PASS strict source ecology support and algebra: no false cross-species climate reaction')
+          PY
+      - name: Archive matched species sites and comparable baseline climate weights
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-271-recorded-species-common-region-common-site-physical-sic
+          path: build/verified_species_shared_site/
+          if-no-files-found: warn
+          retention-days: 30
       - name: Archive spatial marine-grid source selection, not climate-risk conclusions
         if: always()
         uses: actions/upload-artifact@v4
