@@ -1,5 +1,17 @@
 # Climate, sea ice and penguin breeding: exploratory progress
 
+## 2026-11-16 元595地点×3モデルCMIP6物理シナリオの全域再抽出成功
+
+**今回の読みに行くべき最新版：** [真の595site CMIP6物理曝露・巣数重みの日本語検証結果](macro_panantarctic_v1/climate_risk_frozen_20261116/CMIP6_595_COUNT_WEIGHTED_PHYSICAL_EXPOSURE_RESULT_JA_20261116.md)、[完全な元データ再計算Python](macro_panantarctic_v1/climate_risk_frozen_20261116/recompute_595_source_nesting_exposure.py)。27個の元CMIP6 Zarr storeを同一3モデル/同一member/同一基準期間に固定した元source extractorを利用して、**既知595繁殖地×3モデル×3変数×2 SSP×2将来期間＝21,420 model-future change records**の新しい物理シナリオを本当に取得した。[元真正Source CI #43845907301 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/43845907301)、artifact **14214704362**。
+
+元の固定MAPPPD 2456実計数のうち**2011–2020年に実巣数がある271site（16元地域、331 site×species）**のみを生物学的重みの分母とし、元種別実測中央値の非同期合計2,848,329.5を固定重みとする。元同じ271siteのSSP5-8.5/2081–2100海氷減少は**site等重み−28.634pp**、**巣数重み−13.276pp**。全595 known-site等重みは**−21.442pp**。海域格子中心が3モデルとも50km以内にある158 real-counted site（13地域、巣数proxy重み80.21%）では**site等重み−19.799pp**、**nest-weight −11.767pp**。同じ271siteで巣数重みの未来**大気気温tasは+3.741°C**。この空間的な違いは**将来巣数の予報でも温暖化耐性でもない**。Victoria Landを除けば巣数重みSICは−24.227ppとなり、巣数が大きい現存調査地域に強く依存。
+
+**旧状態の訂正：** 「CMIP6物理は25siteまたは106座標だけで595への曝露が計算不能」という2026-11-16午前の記述は、**今回の595本抽出成功で更新された**。旧25/106アトラスとその既存計算は地理標本の異なる履歴として保存。原265長期巣数系列のソース未同定、region内の時間向き気候応答係数未確立、正式なCCAMLR採択済みMPA zone/source shape未確認の**3ゲートは依然NO-GO**。だから森林・植生の年変化、将来ペンギン巣数、保護区が守る個体数を捏造しない。単一biology-first v0.5原稿の主図4枚は維持し、CMIP6未来物理曝露の新結果はsource付き補助Resultsとして追加。
+
+---
+
+
+
 ## 2026-11-16 将来気候曝露・巣数重み・保護区の固定ソース品質ゲート
 
 **方針：文献メタ解析より、先に原データと将来曝露の真正支持を固定。** [仕様書](macro_panantarctic_v1/climate_risk_frozen_20261116/FROZEN_SOURCE_AND_EXPOSURE_CONTRACT_JA.md)／[元データ・旧159パイロット・CMIP6 25-siteの実行結果](macro_panantarctic_v1/climate_risk_frozen_20261116/SOURCE_GATE_AND_PILOT_RESULT_JA_20261116.md)。元595site・2456実計数では、1980–2000年／2005–2025年に各1年以上の本当のlongitudinal site×speciesは**159**（ADPE64/CHPE51/GEPE44）。今回別に報告された272系列→265環境結合系列はこの版では再現できず、**独立系の係数−0.55／−0.80をsource-verifiedとして採用しない**。出所が揃うまで意図的な`STOP_SOURCE_SERIES_MISMATCH`を実装。初期同種巣数の10/25/50/100km指標はコード化し、50km近隣に早期同種計数のない既知サイトが少なくとも1ある系列は**131/159**。近隣圧力は大幅に未知サイトを含む。
