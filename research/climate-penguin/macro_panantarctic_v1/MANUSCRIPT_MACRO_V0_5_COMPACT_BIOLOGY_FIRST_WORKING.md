@@ -124,6 +124,13 @@ At recorded Antarctic penguin breeding colonies, **marine climate has distinguis
 
 **Supplementary:** original 18-region marine source tables; 2019–2020 GLORYS and EN4 source QC; nested 85/65 matching and joint PC coefficient intervals; complete Adélie 19/26/35 sampling-year support, polar-grid origin/size and mathematical envelopes; strict source-pair full 18-site results; 2017–2023 static mapped land positive-area comparison and limits; source DOI/SHA receipts. Existing archived v0.4 is the full method/sensitivity provenance, not material to reproduce in the main text.
 
+
+## Data and code access
+
+The public living MAPPPD source provides original census citations and downloads at https://www.penguinmap.com/mapppd/. Satellite sea-ice observations are provided by OSI SAF (https://doi.org/10.15770/EUM_SAF_OSI_0023); physical reanalysis is the Copernicus GLORYS12V1 202311 source product. Fixed observational cohorts, original-source derivation and analysis scripts, numerical validation tables and source receipts are maintained in the public [mina analysis branch](https://github.com/zuizui0223/mina/tree/analysis/penguin-decade-redistribution-v1-20261110/research/climate-penguin/macro_panantarctic_v1). Original source-verified GitHub Actions runs are linked below. **Actions artifacts have finite retention periods and cannot serve as the permanent archive required for publication.** Before journal submission, deposit an appropriately licensed, versioned package of derived source records, scripts and figure data in a persistent repository and verify its permanent identifier. Restricted individual hydrographic profiles and licensed third-party media are not redistributed in this manuscript.
+
+**Authorship and declarations (not yet finalised):** Author affiliations and contact details, contributions, funding acknowledgement, conflicts of interest and repository archival identifier require confirmation from the actual authors; they are not inferred from the analysis repository.
+
 ## Source provenance and key references
 
 - [Canonical original output inventory and detailed QA in manuscript v0.4](MANUSCRIPT_MACRO_V0_4_SOURCE_GATED_WORKING.md), [source-and-claim ledger](AUTHOR_CLAIM_DECISION_LEDGER_20261115.md). This manuscript is a compression of *already source-verified results*, not a fresh preregistered confirmatory study.
@@ -135,5 +142,13 @@ At recorded Antarctic penguin breeding colonies, **marine climate has distinguis
 - Lynch, H. J. & LaRue, M. A. (2014). *First global census of the Adélie Penguin*. **The Auk** 131, 457–466. https://doi.org/10.1642/AUK-14-31.1.
 - Good, S. A., Martin, M. J. & Rayner, N. A. (2013). *EN4: Quality controlled ocean temperature and salinity profiles and monthly objective analyses with uncertainty estimates*. **Journal of Geophysical Research: Oceans**. https://doi.org/10.1002/2013JC009067.
 - [Copernicus Marine GLORYS12V1 2023 Quality Information Document](https://catalogue.marine.copernicus.eu/documents/QUID/CMEMS-GLO-QUID-001-030.pdf); [EUMETSAT OSI SAF satellite SIC data DOI](https://doi.org/10.15770/EUM_SAF_OSI_0023); [MAPPPD living public database](https://www.penguinmap.com/).
+
+
+- Ainley, D. G., Morandini, V., Barton, K., Lyver, P. O'B., Elrod, M., LaRue, M. A. & Pennycook, J. (2024). Varying population size of the Cape Royds Adélie penguin colony, 1955–2020: a synthesis. **Antarctic Science** 36, 127–140. https://doi.org/10.1017/S0954102024000051.
+- Cimino, M. A., Larsen, G. D., Johnston, D. W. & Groff, D. V. (2025). Long-term, landscape- and wind-driven snow conditions influence Adélie penguin colony extinctions. **Landscape Ecology** 40, article 78. https://doi.org/10.1007/s10980-025-02088-y.
+- Cimino, M. A., Kim, P., Larsen, G., Fraser, W., Johnston, D. W., Patterson-Fraser, D., Roberts, D. & Roberts, M. (2026). Gentoo penguin *Pygoscelis papua* occupation and colonization in relation to glacial retreat and sea ice decline near Palmer Station, Antarctica. **Marine Ornithology** 54, 341–349. https://doi.org/10.5038/2074-1235.54.2.1707.
+- Hilton, M., Humphries, G., Nichol, C., Flynn, C. M., Naveen, R., Forrest, S., Clucas, G. V. & Trathan, P. N. (2026). A comparison of uncrewed aerial vehicle and on-ground surveys of penguin populations on the Antarctic Peninsula. **Polar Biology** 49, article 43. https://doi.org/10.1007/s00300-026-03484-z.
+- Machado-Gaye, A. L., Manta, G., Braun, C., Menéndez-Blázquez, J., Raslan, M., Zaldúa, N. & Soutullo, Á. (2025). Divergent responses of *Pygoscelis* penguins to unfavourable weather conditions in the South Shetland Islands. **Antarctic Science** 37, 384–394. https://doi.org/10.1017/S0954102025100291.
+- Ramírez, F., Giménez, J., Fuster-Alonso, A., Gimeno, M., Ouled-Cheikh, J., Coll, M. & Bas, M. (2026). Penguins on the Move: Mapping Priority Penguin Habitat Areas Under Climate Change. **Diversity and Distributions** 32, article e70233. https://doi.org/10.1111/ddi.70233.
 
 **Evidence ceiling / status:** This is a descriptive, source-verified exploratory macroecological manuscript draft, not a completed causal test. The 3 nested Adélie rosters are **not** three independent replications; the strict species-pair subpanel is supported by **two** original regions; the original GLORYS environmental time signal is **not** independently verified as a salinity-induced demographic mechanism. A journal selection, complete figure redraw and reference/word-limit checks remain editorial tasks, not evidence already obtained.
