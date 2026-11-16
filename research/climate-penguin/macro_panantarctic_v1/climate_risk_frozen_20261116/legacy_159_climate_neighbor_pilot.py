@@ -15,8 +15,8 @@ SEED=20261116
 B=1000
 RADII=(10,25,50,100)
 def within_fit(frame,predictors):
-    x=frame[predictors].to_numpy(float)
-    y=frame.growth_per_decade.to_numpy(float)
+    x=frame[predictors].to_numpy(dtype=float,copy=True)
+    y=frame.growth_per_decade.to_numpy(dtype=float,copy=True)
     # Fixed original reporting region × species (not region alone).
     grp=(frame.source_region+"|"+frame.species).to_numpy()
     for g in np.unique(grp):
