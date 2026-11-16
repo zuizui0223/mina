@@ -1,5 +1,19 @@
 # Climate, sea ice and penguin breeding: exploratory progress
 
+## 2026-11-16 全595地点CMIP6と地域間巣数重み差の検証
+
+[統合結果・算術分解の日本語レポート](macro_panantarctic_v1/climate_risk_frozen_20261116/CMIP6_595_COUNT_WEIGHTED_PHYSICAL_EXPOSURE_RESULT_JA_20261116.md)／[地域間・地域内の詳細数値／物理閾値](macro_panantarctic_v1/climate_risk_frozen_20261116/FULL595_CMIP6_NEST_WEIGHT_REGION_DECOMPOSITION_RESULT_JA_20261116.md)。公開元CMIP6の固定3モデル×3変数×2 SSP×2期、元595サイトの**21,420原モデル変化**と元2,456件実巣数から、2011–2020年に真の実計数がある**271 site・331 site×species**で巣数proxy重みづけした。SSP5-8.5末期の海氷Δは同じ271 siteの地点等重み**−28.63pp**、巣数重み**−13.28pp**。この差+15.36ppは、**報告地域間の巣数シェア構成+15.66ppと地域内−0.30pp**という算術分解で、Victoria Landが271 site中32だが巣数proxy重み**49.46%**を占めることが大きい。Victoria Land除外で巣数重み−24.23pp。種ごとの実計数で重みづけるとAdélie−11.26pp、Chinstrap−17.53pp、Gentoo−34.84pp（分布の違いであり種の気候耐性ではない）。海氷10pp以上減少の3モデル平均該当siteは206/271、巣数proxyの45.42%。**未来の巣数・絶滅・適応成功の予測ではない。**
+
+[原全595CMIP6抽出 #43845907301 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/43845907301)、[271実計数の巣数重み・閾値検算 #43872754084 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/43872754084)、別実装76数値照合最大差4.9e−13。全3モデル海域格子距離≤50kmなら158 site・元巣数proxy80.21%を支持。元source年数が2年以上のsiteは92で、元巣数proxy48.52%。この標本不完全性を無視しない。
+
+[公式CCAMLR保護区6ゾーンの地理sourceと保護区NO-GO](macro_panantarctic_v1/climate_risk_frozen_20261116/CCAMLR_2026_MPA_OFFICIAL_SOURCE_READINESS_JA.md)。公式v0.9/2022 polygonは**EPSG6932であってlon/latではない**。 [公式 source geometry CI #43874200577 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/43874200577)。採択zoneルール・真正海域mask・GPS採餌支持を揃えるまでは実際の巣数保護率を算定せず `NO_GO_PROTECTION_COVERAGE`。
+
+既存v0.5論文には今回の実測支持と地域シェアの算術的分解だけを1節に統合、主図4枚は固定。265系列の外部横断的気候係数は別sourceで未再現のまま、将来巣数への代入はしない。main・凍結Ecology Reportは変更していない。
+
+---
+
+
+
 ## 2026-11-16 実計数に対する3種階層状態空間モデルを推定・保留年検証：予測改善はNO-GO
 
 [日本語のモデル・検証結果](macro_panantarctic_v1/population_dynamics_20261116/POPULATION_DYNAMICS_SSM_BACKTEST_RESULT_JA_20261116.md)／[実行した状態空間モデルPython](macro_panantarctic_v1/population_dynamics_20261116/fit_state_space_backtest.py)／[独立観測・計算照合](macro_panantarctic_v1/population_dynamics_20261116/verify_state_space_backtest_independent.py)／[真正元sourceから動かしたGitHub CI #43865296666](https://github.com/zuizui0223/mina/actions/runs/43865296666) **SUCCESS**。
