@@ -64,6 +64,27 @@ jobs:
               assert (all_sites==measured+zero+unknown).all()
           print("PASS genuine early-only inventory source gate: old 159 pilot and 265 hard stop")
           PY
+      - name: Audit archived CMIP6 25-site extent against genuine 2011–2020 nesting weights
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/physical_exposure_source_gate.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/physical_exposure_source_gate.py \
+            --count-csv research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory-csv research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --physical-csv research/climate-penguin/macro_panantarctic_v1/ice_sst_all/physical.csv \
+            --out-dir build/physical_25_source_pilot
+          python - <<'PY'
+          import json,pathlib,pandas as pd
+          root=pathlib.Path('build/physical_25_source_pilot')
+          status=json.loads((root/'physical_exposure_coverage.json').read_text())
+          counts=pd.read_csv(root/'only_archived_25site_physical_exposure_not_antarctic_population.csv')
+          assert status['source_status']=='STOP_SCENARIO_COVERAGE_NOT_PAN_ANTARCTIC'
+          assert status['source_physical_scenarios']==600
+          assert len(status['source_25_cohort_site_ids'])==25
+          assert len(counts)==24
+          assert not counts.is_a_future_penguin_nest_change_forecast.any()
+          assert all(not x for x in counts.all_595_source_coverage)
+          print("PASS 25-site CMIP6 source-only physical exposure, full population risk stopped")
+          PY
       - name: Archive provenance, original cohort, four-radius source neighbor and intentional NO-GO
         if: always()
         uses: actions/upload-artifact@v4
@@ -73,5 +94,7 @@ jobs:
             build/climate_risk_pilot_159/*.csv
             build/climate_risk_pilot_159/*.json
             build/climate_risk_gate_265/*.json
+            build/physical_25_source_pilot/*.json
+            build/physical_25_source_pilot/*.csv
           retention-days: 30
           if-no-files-found: warn
