@@ -1,5 +1,19 @@
 # Climate, sea ice and penguin breeding: exploratory progress
 
+## 2026-11-16 実計数に対する3種階層状態空間モデルを推定・保留年検証：予測改善はNO-GO
+
+[日本語のモデル・検証結果](macro_panantarctic_v1/population_dynamics_20261116/POPULATION_DYNAMICS_SSM_BACKTEST_RESULT_JA_20261116.md)／[実行した状態空間モデルPython](macro_panantarctic_v1/population_dynamics_20261116/fit_state_space_backtest.py)／[独立観測・計算照合](macro_panantarctic_v1/population_dynamics_20261116/verify_state_space_backtest_independent.py)／[真正元sourceから動かしたGitHub CI #43865296666](https://github.com/zuizui0223/mina/actions/runs/43865296666) **SUCCESS**。
+
+元595 colony・method-selected2,456 genuine nest countsと595×30年×4月＝71,400 OSI SAF源を直接取得。1995–2020の真の巣数の潜在年次変化を元source region×speciesの縮小・過程誤差・観測誤差でモデル化し、過去5年のSIC真の時系列変動を入れた。**カルマンフィルタで訓練系列の全観測を条件にした潜在最終巣数から予測**し、2010/2015年で後の実際の巣数71/78件を隠して予測精度を比較。MAE(log1p巣数) は2010年の最後の巣数維持 **0.337** vs 階層状態空間 **0.381** vs 階層＋5年SIC **0.386**、2015年は **0.241 vs 0.331 vs 0.342**。対象は延べ149予測だがsiteは72固有・5地域・9〜10極域250kmブロックで、重複して独立な149サイトではない。
+
+2015年の海氷追加モデル－最後の巣数維持のMAE差は+0.1009、250kmブロック4,000再標本で **[+0.0153,+0.1697]**（正は誤差悪化、人口母集団の95%CIではない）。モデルは作れたが、**今回の過去の隠し実測巣数を予測できるようになったわけではない**。未来のCMIP6から個体群の巣数・絶滅率を算出する前に、検証された時系列予測係数が必要。元265系列の解析係数も未再現のまま保留。
+
+生存率、初繁殖年齢、ヒナ加入、skip breeding、移住は巣数だけでは識別できず、今回のstate-space abundanceモデルは**マーク再捕獲や繁殖成功を統合するdemographic IPMではない**。Che-Castaldoら2017が元267アデリーの状態空間・5年冬季海氷／遅延季節シグナルを扱っており、その方法自体は新規でない。実IPMへは3種別の真正CMR・ヒナ数と観測年/同出典一致が必要。主論文v0.5の4主図、凍結Ecology Report、main、親PR #206は未変更。
+
+---
+
+
+
 ## 2026-11-16 元595地点×3モデルCMIP6物理シナリオの全域再抽出成功
 
 **今回の読みに行くべき最新版：** [真の595site CMIP6物理曝露・巣数重みの日本語検証結果](macro_panantarctic_v1/climate_risk_frozen_20261116/CMIP6_595_COUNT_WEIGHTED_PHYSICAL_EXPOSURE_RESULT_JA_20261116.md)、[完全な元データ再計算Python](macro_panantarctic_v1/climate_risk_frozen_20261116/recompute_595_source_nesting_exposure.py)。27個の元CMIP6 Zarr storeを同一3モデル/同一member/同一基準期間に固定した元source extractorを利用して、**既知595繁殖地×3モデル×3変数×2 SSP×2将来期間＝21,420 model-future change records**の新しい物理シナリオを本当に取得した。[元真正Source CI #43845907301 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/43845907301)、artifact **14214704362**。
