@@ -150,6 +150,25 @@ def get_prediction(model,site,sp,reg,t0,t1,clim):
         drift+=vals['beta_ice5_'+sp]*np.sum([clim[site][y] for y in range(t0+1,t1+1)])
     return float(drift)
 
+def filtered_last_state(model,seq,clim):
+    """Use Kalman filtering, rather than the last noisy observation, to initialize a future state.
+
+    Diffuse first-state prior collapses to the first original observed count
+    with posterior variance r. Recursions condition on every real training count.
+    """
+    years=seq['years'];values=seq['logcounts']
+    x=float(values[0]);P=float(model['r'])
+    for i in range(1,len(years)):
+        step=get_prediction(model,seq['site'],seq['species'],seq['region'],
+                            int(years[i-1]),int(years[i]),clim)
+        prior=x+step
+        var=P+model['q']*float(years[i]-years[i-1])
+        gain=var/(var+model['r'])
+        x=prior+gain*(float(values[i])-prior)
+        P=(1-gain)*var
+    assert np.isfinite(x) and P>0
+    return x,P
+
 def split_holdouts(c,cutoff):
     groups=[]
     for (site,sp),g in c.groupby(['site_id','species'],sort=True):
@@ -189,14 +208,22 @@ def main():
                 'beta_5yr_sic':{k:float(v) for k,v in zip(m1['labels'],m1['theta']) if k.startswith('beta_')},
                 'source_censor':'genuine count observations only; observed count zero retained'}
         fitted[str(cut)]=result
+        model_sequences={(q['site'],q['species']):q for q in seqs}
         for v in held.itertuples(index=False):
             base=v.y_last
+            seq=model_sequences[(v.site_id,v.species)]
+            x0,P0=filtered_last_state(m0,seq,clim)
+            x1,P1=filtered_last_state(m1,seq,clim)
             d0=get_prediction(m0,v.site_id,v.species,v.source_region,v.t_last,v.t_test,clim)
             d1=get_prediction(m1,v.site_id,v.species,v.source_region,v.t_last,v.t_test,clim)
             holdouts.append({**v._asdict(),
              'model_persistence_log_n':base,
-             'model_region_species_ssm_log_n':base+d0,
-             'model_5year_ice_ssm_log_n':base+d1,
+             'model_region_species_ssm_log_n':x0+d0,
+             'model_5year_ice_ssm_log_n':x1+d1,
+             'posterior_filtered_last_nonclimate_log_n':x0,
+             'posterior_filtered_last_climate_log_n':x1,
+             'posterior_filtered_last_nonclimate_variance':P0,
+             'posterior_filtered_last_climate_variance':P1,
              'gap_years':v.t_test-v.t_last})
     scored=pd.DataFrame(holdouts)
     preds=['model_persistence_log_n','model_region_species_ssm_log_n','model_5year_ice_ssm_log_n']
