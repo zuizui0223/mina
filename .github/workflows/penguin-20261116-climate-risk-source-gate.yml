@@ -85,6 +85,23 @@ jobs:
           assert all(not x for x in counts.all_595_source_coverage)
           print("PASS 25-site CMIP6 source-only physical exposure, full population risk stopped")
           PY
+      - name: Compare original 159-pilot static PC1 and observed-only conspecific pressure in the same source support
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/legacy_159_climate_neighbor_pilot.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/legacy_159_climate_neighbor_pilot.py \
+            --neighborhood-csv build/climate_risk_pilot_159/conspecific_neighborhood_10_25_50_100km.csv \
+            --source-gate-json build/climate_risk_pilot_159/source_gate.json \
+            --climate-588-csv research/climate-penguin/macro_panantarctic_v1/source_audit_20261115/source_cohort_climate_support_588_sites.csv \
+            --output build/climate_risk_pilot_fit
+          python - <<'PY'
+          import json,pathlib,pandas as pd
+          root=pathlib.Path('build/climate_risk_pilot_fit')
+          r=json.loads((root/'legacy_159_climate_neighbor_pilot.json').read_text())
+          assert r['n_159_original_pairs']==159
+          assert r['status']=='LEGACY_159_PILOT_NOT_265_COMPARABLE'
+          assert len(r['model_versions'])==7
+          print('PASS original source static PC1 and 4-radii exploratory pilot, no extrapolated warming effects')
+          PY
       - name: Archive provenance, original cohort, four-radius source neighbor and intentional NO-GO
         if: always()
         uses: actions/upload-artifact@v4
@@ -96,5 +113,7 @@ jobs:
             build/climate_risk_gate_265/*.json
             build/physical_25_source_pilot/*.json
             build/physical_25_source_pilot/*.csv
+            build/climate_risk_pilot_fit/*.csv
+            build/climate_risk_pilot_fit/*.json
           retention-days: 30
           if-no-files-found: warn
