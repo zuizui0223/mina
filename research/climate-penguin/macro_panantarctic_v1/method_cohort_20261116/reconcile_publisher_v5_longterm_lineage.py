@@ -180,6 +180,41 @@ def main():
                 "derived_only_by_species":{s:sum(sp==s for _,sp in old-rr) for s in SPECIES},
                 "publisher_only_by_species":{s:sum(sp==s for _,sp in rr-old) for s in SPECIES}}
     # A season vs year discrepancy is a real source property, not a climate lag.
+    # Exact set operations: changing label definitions can swap series rather
+    # than merely changing a denominator by one record.
+    def matched_ids(roster,key):
+        return {(r["site_id"],r["species"]) for r in roster if r[key]}
+    cohort_reconciliation={}
+    for flag in ("has_early_late_unambiguous_counts",
+                 "both_periods_have_known_vantage",
+                 "any_identical_vantage_across_periods",
+                 "one_identical_vantage_in_each_period",
+                 "full_history_most_frequent_vantage_both_periods",
+                 "identical_nonblank_citation_and_vantage_across_periods"):
+        season_ids=matched_ids(first,flag)
+        calendar_ids=matched_ids(second,flag)
+        lost=season_ids-calendar_ids
+        new=calendar_ids-season_ids
+        cohort_reconciliation[flag]={
+            "season_series":len(season_ids),"calendar_series":len(calendar_ids),
+            "identical_site_species":len(season_ids&calendar_ids),
+            "season_only":len(lost),"calendar_only":len(new),
+            "season_only_by_species":{s:sum(z[1]==s for z in lost) for s in SPECIES},
+            "calendar_only_by_species":{s:sum(z[1]==s for z in new) for s in SPECIES}
+        }
+    offset=collections.Counter()
+    offset_species=collections.defaultdict(collections.Counter)
+    for record in focal:
+        yy,ss=valid_year(record.get("year")),valid_year(record.get("season"))
+        if yy is None or ss is None:continue
+        offset[yy-ss]+=1
+        offset_species[record["species_id"]][yy-ss]+=1
+    # Confirm every original observation record is evaluated without assuming
+    # that a breeding-season label is its actual calendar census timestamp.
+    calendar_offset={
+        "year_minus_breeding_season":dict(sorted(offset.items())),
+        "by_species":{sp:dict(sorted(offset_species[sp].items())) for sp in SPECIES}
+    }
     mismatch=sum(valid_year(r.get("year")) is not None
                  and valid_year(r.get("season")) is not None
                  and valid_year(r.get("year"))!=valid_year(r.get("season")) for r in focal)
@@ -195,6 +230,8 @@ def main():
          "actual_calendar_columns":completeness,
          "focal_calendar_year_differs_from_season":mismatch,
          "season_roster":summary(first),"calendar_year_roster":summary(second),
+         "exact_site_species_calendar_vs_season_crosswalk":cohort_reconciliation,
+         "source_calendar_vs_season_year_offsets":calendar_offset,
          "season_source_key_quality":season_reject,
          "calendar_source_key_quality":year_reject,
          "frozen_derived_268_vs_original_v5":stats_overlap(first),
@@ -214,7 +251,9 @@ def main():
         "status":out["status"],"n_original_focal_nest_rows":len(focal),
         "season":out["season_roster"],"calendar":out["calendar_year_roster"],
         "frozen_derived_vs_publisher":out["frozen_derived_268_vs_original_v5"],
-        "calendar_season_mismatches":mismatch
+        "calendar_season_mismatches":mismatch,
+        "season_to_calendar_id_crosswalk":cohort_reconciliation["both_periods_have_known_vantage"],
+        "original_year_minus_season_counts":calendar_offset["year_minus_breeding_season"]
     },ensure_ascii=False),flush=True)
 
 if __name__=="__main__":main()
