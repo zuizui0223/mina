@@ -107,19 +107,56 @@ function main() {
     const ar=makeRow(E,L);
     for(const n of eligible)subs[n].push(n==='most_frequent_method'?makeRow(pe,pl):ar);
   }
+  // Optional publisher source crosswalk: the shared *count* of 265 is
+  // NOT the historically reported 265 cohort (species composition differs).
+  const optIndex=process.argv.indexOf('--calendar-roster');
+  let candidates=COHORTS.slice();
+  let intersectionProvenance=null;
+  if(optIndex>=0){
+    assert(process.argv[optIndex+1], 'Missing --calendar-roster path');
+    const calendar=csvParse(readFileSync(process.argv[optIndex+1],'utf8'));
+    const validCalendar=new Set(calendar.filter(x=>x.both_periods_have_known_vantage==='True')
+      .map(x=>x.site_id+'|'+x.species));
+    assert.equal(validCalendar.size,269);
+    const seasonCandidates=[...groups.values()].filter(rr=>{
+      const E=rr.filter(x=>+x.season>=1980&&+x.season<=2000);
+      const L=rr.filter(x=>+x.season>=2005&&+x.season<=2025);
+      return E.length>0&&L.length>0;
+    });
+    const shared=seasonCandidates.filter(rr=>validCalendar.has(rr[0].site_id+'|'+rr[0].species_id));
+    assert.equal(seasonCandidates.length,268);
+    assert.equal(shared.length,265);
+    const species={ADPE:0,CHPE:0,GEPE:0};
+    shared.forEach(x=>species[x[0].species_id]++);
+    assert.deepEqual(species,{ADPE:101,CHPE:113,GEPE:51});
+    const idset=new Set(shared.map(x=>x[0].site_id+'|'+x[0].species_id));
+    const label='season_and_calendar_intersection_265_NOT_PRIOR_265';
+    rawCohorts[label]=265;
+    subs[label]=subs.per_year_known_method.filter(x=>idset.has(x.site_id+'|'+x.species));
+    candidates.push(label);
+    intersectionProvenance={
+      calendar_year_v5_known_vantage_roster:269,
+      season_year_known_vantage_roster:268,
+      intersection_source_site_species_count:265,
+      intersection_species:species,
+      external_reported_unverified_265_species:{ADPE:102,CHPE:116,GEPE:47},
+      same_source_roster_as_external_265:false,
+      observed_growth_time_definition:'breeding season label (not calendar year); calendar list used ONLY for eligibility'
+    };
+  }
   assert.deepEqual(COHORTS.map(x=>rawCohorts[x]),[268,159,96,161,107]);
   assert.deepEqual(COHORTS.map(x=>subs[x].length),[262,153,90,155,107]);
-  const fits=Object.fromEntries(COHORTS.map(x=>[x,{total_source_series:rawCohorts[x],marine_matched_series:subs[x].length,fit:fit(subs[x]),bootstrap_250km:null}]));
+  const fits=Object.fromEntries(candidates.map(x=>[x,{total_source_series:rawCohorts[x],marine_matched_series:subs[x].length,fit:fit(subs[x]),bootstrap_250km:null}]));
   // Common block draw for all five cohorts; repeated blocks are repeated original sites.
   const allRows=subs.per_year_known_method;
   const blocks=[...new Set(allRows.map(x=>x.block))].sort();
-  const index=Object.fromEntries(COHORTS.map(k=>[k,new Map(blocks.map(b=>[b,subs[k].filter(x=>x.block===b)]))]));
+  const index=Object.fromEntries(candidates.map(k=>[k,new Map(blocks.map(b=>[b,subs[k].filter(x=>x.block===b)]))]));
   const rng=randGenerator(SEED);
-  const boots=Object.fromEntries(COHORTS.map(k=>[k,[]]));
+  const boots=Object.fromEntries(candidates.map(k=>[k,[]]));
   const intr=[];
   for(let d=0;d<DRAWS;d++){
     const sampled=Array.from({length:blocks.length},()=>blocks[Math.floor(rng()*blocks.length)]);
-    for(const k of COHORTS){
+    for(const k of candidates){
       const sample=sampled.flatMap(b=>index[k].get(b));
       const result=fit(sample);
       if(result)boots[k].push(result.coefficients.PC1);
@@ -128,7 +165,7 @@ function main() {
     const intFit=fit(pooled,'interaction');
     if(intFit)intr.push(intFit.coefficients.PC1_x_method_disjoint);
   }
-  for(const k of COHORTS){
+  for(const k of candidates){
     const q=boots[k];
     fits[k].bootstrap_250km={draws_requested:DRAWS,draws_valid:q.length,
       q025:quantile(q,.025),median:quantile(q,.5),q975:quantile(q,.975),
@@ -147,6 +184,7 @@ function main() {
     provenance:{derived_source_git_blob_sha1:SHA_OBS,marine_source_git_blob_sha1:SHA_PC},
     model:'OLS within original region-by-species strata, response=decadal log1p nest change, predictors=STATIC marine PC1, log1p early nests, log1p early/late observed years',
     tested_cohorts:fits,
+    nominal_265_overlap_not_original_265:intersectionProvenance,
     interaction:{pooled_within_region_species:originalInteraction,
       block_resample_difference_for_no_shared_vs_shared:{draws_requested:DRAWS,draws_valid:intr.length,
         q025:quantile(intr,.025),median:quantile(intr,.5),q975:quantile(intr,.975)},
@@ -164,7 +202,7 @@ function main() {
   mkdirSync(out,{recursive:true});
   writeFileSync(join(out,'method_selection_pc1_sensitivity.json'),JSON.stringify(receipt,null,2)+'\n');
   console.log(JSON.stringify({status:receipt.status,
-    coefficients:Object.fromEntries(COHORTS.map(k=>[k,{n:fits[k].marine_matched_series,
+    coefficients:Object.fromEntries(candidates.map(k=>[k,{n:fits[k].marine_matched_series,
       beta:fits[k].fit.coefficients.PC1,
       lower:fits[k].bootstrap_250km.q025,upper:fits[k].bootstrap_250km.q975}])),
     interaction_PC1_x_method_disjoint:originalInteraction.coefficients.PC1_x_method_disjoint,
