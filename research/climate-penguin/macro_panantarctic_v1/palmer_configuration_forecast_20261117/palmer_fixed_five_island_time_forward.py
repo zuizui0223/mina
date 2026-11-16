@@ -97,7 +97,7 @@ def ridge_predict(X,y,next_x,lam=1.):
 def features(year,sic):
     return [(year-1991)/10.,(sic[year]-50)/20.]
 
-def time_forward(shares,sic):
+def time_forward(shares,sic,totals):
     rows=[]
     for target in TEST:
         trained=[y for y in YEARS if y<target]
@@ -147,17 +147,12 @@ def time_forward(shares,sic):
             "test_year":int(target),"training_years":int(len(trained)),
             "most_recent_source_census_year":int(target-1),
             "physical_SIC_AugOct_percent":float(sic[target]),
-            "original_census_total_pairs":float(truth.sum()*sum(totals_y_for_target(shares,target))),
+            "original_census_total_pairs":float(totals[target]),
             "observed_share":list(map(float,truth)),
             "models":per
         })
     assert len(rows)==17
     return rows
-
-def totals_y_for_target(shares,target):
-    # Valid score denominator is one entire island-system composition per
-    # year, not 5 independent colony climate observations.
-    return [1.0]
 
 def quantile(z,p):
     return float(np.quantile(np.asarray(z),p))
@@ -200,11 +195,8 @@ def block_sensitivity(rows):
 def run(count_file,ice_file,out):
     out.mkdir(parents=True,exist_ok=True)
     shares,sic,totals,changes=load(count_file,ice_file)
-    score=time_forward(shares,sic)
-    # Source totals are not calculated from normalized shares.
-    for row in score:
-        row["original_census_total_pairs"]=totals[row["test_year"]]
-        assert row["original_census_total_pairs"]>0
+    score=time_forward(shares,sic,totals)
+    assert all(row["original_census_total_pairs"]>0 for row in score)
     maetv={
         k:float(np.mean([r["models"][k]["TV"] for r in score]))
         for k in MODELS
