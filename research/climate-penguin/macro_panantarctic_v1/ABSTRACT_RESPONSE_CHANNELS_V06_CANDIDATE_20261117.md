@@ -24,6 +24,7 @@ Antarctic penguins may respond to marine environmental change through resource u
 | Adélie count-weighted latitude shifts south | +107.31 km/19 three-decade matched colonies; +88.41 km/26 two-endpoint strict colonies; nearshore SIC +0.022/+0.625pp | **Observed fixed-roster reweighting, NOT bird movement or proof locations cannot change** |
 | Six reciprocal gentoo/Adélie pairs | 6/6 nest ratio increases, 5/6 two-species subtotal increases at same-source/same-method colonies | **Relative community composition, not region-wide species extinction/replacement/competition** |
 | CMIP6 physical losses under SSP5-8.5/2081–2100 | 595 equal sites −21.44pp, counted 271 equal sites −28.63pp, same 271 nest proxy weighted −13.28pp; 3 models | **Physical fixed-weight scenario, not future nest forecast** |
+| Same-colony exposure contrasts | ADPE–GEPE original 23 shared site IDs: GEPE minus ADPE +0.312pp, but omit-one-original-region range −12.423 to +10.903pp across only five 250km blocks; source geographies change results markedly | **Do not claim universally no same-site species difference or statistically proven equivalence** |
 | Climate vs configuration decisive model | Existing 2010/2015 first-held-out nest-count SSM: log1p MAE persistence 0.337/0.241, marine-SIC-SSM 0.386/0.342, but last-observed-nest persistence is NOT a measured within-colony patch-configuration predictor | **Do not claim a spatial-configuration model won** |
 | Positive selection into better-colony sites, Bird Island p=0.0001 | Original individual-level movement/first-breeding event ID and prospective protocol not verified in current PR #214 | **Mechanistic hypothesis only, excluded from Abstract** |
 | Concentration replicated across Palmer, Signy and other groups | Multiple positive within-network examples, but colony/patch, island and species all have different grain; broad leave-one-region and source/measurement qualification remains | **Interpret as supporting spatial-configuration context, NOT a pooled universal causal coefficient** |
@@ -40,3 +41,7 @@ Antarctic penguins may respond to marine environmental change through resource u
 - \`research/climate-penguin/outputs/signy_species_trophic_forward_v1/REPORT_JA.md\`
 - \`research/climate-penguin/outputs/regional_diet_paper/MANUSCRIPT_JA.md\`
 - \`macro_panantarctic_v1/population_dynamics_20261116/POPULATION_DYNAMICS_SSM_BACKTEST_RESULT_JA_20261116.md\`
+
+## Source-matched site influence gate, verified after candidate draft
+
+One-source-region deletion of the shared-site ADPE/GEPE contrast (23 source IDs; five original 250km blocks) ranges from −12.423 to +10.903 percentage points around the original +0.312pp. The limited common-site average is therefore not proof of physical species exposure equivalence. The repeated count spans are source-observational and do not identify individuals moving among colonies. Original full same-site source influence GitHub Actions run #43903127206 completed **SUCCESS**; retain the entire range in the supplementary reporting and do not replace it with a confidence interval.
