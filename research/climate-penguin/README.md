@@ -1,5 +1,19 @@
 # Climate, sea ice and penguin breeding: exploratory progress
 
+## 2026-11-16 将来気候曝露・巣数重み・保護区の固定ソース品質ゲート
+
+**方針：文献メタ解析より、先に原データと将来曝露の真正支持を固定。** [仕様書](macro_panantarctic_v1/climate_risk_frozen_20261116/FROZEN_SOURCE_AND_EXPOSURE_CONTRACT_JA.md)／[元データ・旧159パイロット・CMIP6 25-siteの実行結果](macro_panantarctic_v1/climate_risk_frozen_20261116/SOURCE_GATE_AND_PILOT_RESULT_JA_20261116.md)。元595site・2456実計数では、1980–2000年／2005–2025年に各1年以上の本当のlongitudinal site×speciesは**159**（ADPE64/CHPE51/GEPE44）。今回別に報告された272系列→265環境結合系列はこの版では再現できず、**独立系の係数−0.55／−0.80をsource-verifiedとして採用しない**。出所が揃うまで意図的な`STOP_SOURCE_SERIES_MISMATCH`を実装。初期同種巣数の10/25/50/100km指標はコード化し、50km近隣に早期同種計数のない既知サイトが少なくとも1ある系列は**131/159**。近隣圧力は大幅に未知サイトを含む。
+
+旧159系列のregion×species＋初期巣数＋調査年数調整パイロットでは、50km早期同種巣数係数**−0.0286 [−0.1037,+0.0180]**、同じ元588siteの物理PC1地点平均係数**−0.1158 [−1.573,+0.238]**（250kmブロック1000復元抽出の感度範囲、真の個体群CIではない）。**新265の結果の否定ではなく、別母集団の結果**。CMIP6の既存3モデル×2 SSP×2将来時期×2物理変数は**25実siteのみ**。原2011–2020年に実計数のある271siteの種別中央値巣数重み合計に対し**4.1%**しか対応せず、各モデルの50km海洋格子距離条件後は13–16site・約2–3%の支持。全南極の巣数重み−2.2pp／地点平均−10.1pp等の旧主張はこのsourceで独立に再現していない。地理間のPC1×増減係数を将来環境Δへかけて巣数を予測しない。
+
+**保護区のソースゲート：** [採択済みCCAMLR zone/海域maskを要求する実行コード](macro_panantarctic_v1/climate_risk_frozen_20261116/ccamlr_mpa_source_gate.py)。陸の営巣site点が海洋MPAに含まれるかという指標を採餌保護の代理にしない。正式な海洋区域／制限ルール／海域shapeが未取得なら `NO_GO_PROTECTION_COVERAGE`。先行文献Santoraら2020（GEB DOI 10.1111/geb.13144）は既にコロニー間距離・餌資源と密度依存を検討しているので、この概念そのものを新規としない。
+
+**GitHub CI** [source/neighbor/CMIP6/protection strict gate](https://github.com/zuizui0223/mina/actions/workflows/penguin-20261116-climate-risk-source-gate.yml)。単一原稿v0.5の主図は未変更、未投稿。main/凍結Ecology Report/親PR #206は未変更。
+
+---
+
+
+
 ## 2026-11-16 ペンギン→植生の逆向き仮説を真正データで試行：未支持、ただし生態機構を否定しない
 
 [元ソース・検算・先行研究の監査](macro_panantarctic_v1/GUANO_TERRESTRIAL_REVERSE_ARROW_RESULT_JA_20261116.md)。元2017–2023年Plantarctica Vegetation+Lichen 2km検出面積は246地点×種に対応するが**222固有site、正の植生検出は173site（8地域・14 EPSG3031 250kmブロック）**。正検出siteを1票に直して植生面積を応答にすると、最大記録種の巣数規模との全域相関r+0.0854、元地域平均を除くと+0.1127。地域FE/緯度/調査回数/記録種数調整後の植生log面積係数 **+0.07194**、250kmブロック2000回再標本の感度範囲 **−0.0552〜+0.1630**。前史1991–2010年の元2,456件から同site×種2実測年以上の57正検出siteを結合すると、地域内r+0.0779、調整係数 **−0.09356**、感度範囲 **−0.5528〜+0.2486**。同一site ID・緯度経度は新旧222地点すべて一致した。
