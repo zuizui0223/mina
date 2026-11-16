@@ -7,6 +7,7 @@ on:
       - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/derive_species_geographic_exposure_decomposition.py'
       - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_species_marine_grid_selection.py'
       - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/source_match_species_shared_site_exposure.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_shared_site_species_influence.py'
       - '.github/workflows/penguin-source-audited-595-CMIP6-countweight-20261116.yml'
   workflow_dispatch:
 permissions:
@@ -150,6 +151,37 @@ jobs:
                   assert r['n_support_sites']>=0
           print('PASS strict source ecology support and algebra: no false cross-species climate reaction')
           PY
+      - name: Assess leave-one-original-region/block and largest-site source influence
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_shared_site_species_influence.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_shared_site_species_influence.py \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --cmip6-zip build/physical_595.zip \
+            --out build/verified_species_common_site_influence
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/verified_species_common_site_influence')/'matched_site_species_influence_receipt.json'
+          x=json.loads(p.read_text())
+          assert x['status']=='PASS_ORIGINAL_COMMON_SITE_REGIONAL_AND_250KM_INFLUENCE_PHYSICAL_ONLY'
+          assert x['n_comparisons']==12 and x['source_595_sites']==595 and x['original_counted_sites']==271
+          assert x['no_inferential_p_or_population_confidence_interval']
+          assert x['no_biological_response_or_future_nests']
+          for z in x['main_results']:
+              assert z['n_matched_site_ids']>=3
+              assert z['delete_one_reporting_region']['number_deletions']==z['n_original_source_regions']
+              assert z['delete_one_original_250km_block']['number_deletions']==z['n_original_polar250_blocks']
+          print('PASS source-correct spatial block and region influence; descriptive only')
+          PY
+      - name: Archive original matched-site influence diagnostics without p-values
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-common-colony-geography-influence-source
+          path: build/verified_species_common_site_influence/
+          if-no-files-found: warn
+          retention-days: 30
       - name: Archive matched species sites and comparable baseline climate weights
         if: always()
         uses: actions/upload-artifact@v4
