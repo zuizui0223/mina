@@ -1,0 +1,82 @@
+name: Antarctic penguin exact 595-source CMIP6 exposure and 271-site nesting weight QA
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_595_site_count_weighted_physical_exposure.py'
+      - '.github/workflows/penguin-source-audited-595-CMIP6-countweight-20261116.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-595-site-physical-source-271-observed-weight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source and original geospatial row dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas pyproj
+      - name: Rebuild the genuine historical 595-site, 2456-count source
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/build.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_595_site_count_weighted_physical_exposure.py
+      - name: Fetch actual completed 595-site 27-source CMIP6 physical artifact from prior verified run
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-595-known-colony-3model-27store-cmip6-physical-only
+          run-id: 43845907301
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+          path: build/source_595_original_CMIP6
+      - name: Construct explicit original-source ZIPs, no missing or future nests imputed
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile,ZIP_DEFLATED
+          x=Path('build'); x.mkdir(parents=True,exist_ok=True)
+          c=Path('research/climate-penguin/macro_panantarctic_v1/outputs')
+          with ZipFile(x/'source_595_counts.zip','w',ZIP_DEFLATED) as z:
+              for n in ['source_observed_2456.csv','panantarctic_595_site_inventory.csv']:
+                  q=c/n
+                  assert q.is_file(),q
+                  z.write(q,arcname=n)
+          physical=Path('build/source_595_original_CMIP6/source_root/outputs/cmip6_projection_v1/site_model_changes.csv')
+          assert physical.is_file() and physical.stat().st_size>100000, physical
+          with ZipFile(x/'physical_595.zip','w',ZIP_DEFLATED) as z:
+              z.write(physical,arcname='source_root/outputs/cmip6_projection_v1/site_model_changes.csv')
+          PY
+      - name: Compute scenario, source region, species and 10/20/30pp purely physical exposure
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_595_site_count_weighted_physical_exposure.py \
+            --count-zip build/source_595_counts.zip \
+            --physical-zip build/physical_595.zip \
+            --out build/verified_physical_271
+          python - <<'PY'
+          import pandas as pd,json
+          from pathlib import Path
+          p=Path('build/verified_physical_271')
+          x=pd.read_csv(p/'summary.csv')
+          y=pd.read_csv(p/'decomposition.csv')
+          t=pd.read_csv(p/'threshold.csv')
+          m=pd.read_csv(p/'models.csv')
+          receipt=json.loads((p/'source_gate.json').read_text())
+          assert len(x)==36 and len(y)==4 and len(t)==64 and len(m)==12
+          assert receipt['n_source_counted_2011_2020']==271
+          assert receipt['n_original_three_model_future_delta_rows']==21420
+          q=x[(x.variable=='siconc')&(x.experiment=='ssp585')&(x.period=='2081-2100')&(x.cohort=='observed_271')].iloc[0]
+          assert abs(q.equal_sites_delta+28.634133941766486)<1e-9
+          assert abs(q.observed_nest_medians_weighted_delta+13.27624091727433)<1e-9
+          assert y.weighted_minus_equal.notna().all()
+          print('PASS 595 original physical sites and 271 actual site-nesting weights across 4 scenarios; no nest forecast')
+          PY
+      - name: Archive original-source deterministic numerical outputs, not biological predictions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-595-model-271-actual-nesting-exposure
+          path: build/verified_physical_271/
+          if-no-files-found: warn
+          retention-days: 30
