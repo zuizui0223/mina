@@ -60,6 +60,33 @@ jobs:
           assert(x.limitations.some(s=>s.includes('NOT reproduced')));
           console.log('PASS source matched cohort climate sensitivity and no fake independent inference');
           NODE
+      - name: Set up Python for original MAPPPD v5 source verification
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install publisher source client
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Fetch hash-pinned original publisher 729 sites and 5487 observations
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/reconcile_publisher_v5_longterm_lineage.py
+          python research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/reconcile_publisher_v5_longterm_lineage.py --out build/publisher_v5_longterm_lineage
+      - name: Verify original observation IDs, census calendar and 265 source firewall
+        run: |
+          node --input-type=module - <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const x=JSON.parse(readFileSync('build/publisher_v5_longterm_lineage/publisher_v5_longterm_source_lineage.json'));
+          assert.equal(x.status,'SOURCE_PINNED_PUBLISHER_V5_LONGTERM_LINEAGE_ONLY');
+          assert.equal(x.original_sites,729);
+          assert.equal(x.original_observations,5487);
+          assert.equal(x.frozen_derived_268_vs_original_v5.frozen_derived_268,268);
+          assert(x.season_roster.both_periods_have_known_vantage.total>0);
+          assert(x.calendar_year_roster.has_early_late_unambiguous_counts.total>0);
+          assert.equal(x.external_265_original_observation_roster_available,false);
+          assert.equal(x.external_265_coefficients_verified,false);
+          assert.equal(x.no_climate_dose_response_or_population_forecast,true);
+          console.log('PASS original MAPPPD v5 site×species IDs, geography and source-census provenance');
+          NODE
       - name: Archive derived source roster and exact audit receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -68,5 +95,6 @@ jobs:
           path: |
             build/penguin_method_cohort_20261116/
             build/penguin_method_pc1_sensitivity_20261116/
+            build/publisher_v5_longterm_lineage/
           if-no-files-found: warn
           retention-days: 30
