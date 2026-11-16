@@ -148,7 +148,7 @@ def main():
     inventory=pd.read_csv(a.original_site_inventory)
     atlas=pd.read_csv(a.existing_cmip6_atlas)
     result,records,locations,qc=calculate(counts,inventory,atlas)
-    pd.DataFrame(result).to_csv(a.output/"106_atlas_25macro_real_nest_weighted_exposure.csv",index=False)
+    pd.DataFrame(result).to_csv(a.output/"106_atlas_40macro_real_nest_weighted_exposure.csv",index=False)
     records.to_csv(a.output/"106_source_atlas_location_and_actual_count_coverage.csv",index=False)
     locations.to_csv(a.output/"106_location_coordinate_identity_audit.csv",index=False)
     verdict={"status":"SELECTED_CMIP6_ATLAS_PHYSICAL_ONLY_NOT_PAN_ANTARCTIC",
