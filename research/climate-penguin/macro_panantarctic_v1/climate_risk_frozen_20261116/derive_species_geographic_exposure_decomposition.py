@@ -131,7 +131,26 @@ def calc_species(physical,counts,obs):
     for sp,v in known.items():
         got=float(p[p.species.eq(sp)].species_weighted_sic_delta_pp.iloc[0])
         assert abs(got-v)<0.01,(sp,got)
-    return table,pd.DataFrame(region_rows)
+    # Selected 3 source model members, not an uncertainty/credible interval.
+    model_rows=[]
+    selected=a[a.experiment_id.eq(MAIN[0]) & a.period.eq(MAIN[1])]
+    for model,g in selected.groupby("source_id"):
+        joined=b.merge(g[["site_id","change"]],on="site_id",validate="many_to_one")
+        for support in ("counted271","three_model_marine50_158"):
+            t=joined if support=="counted271" else joined[joined.all3_within50km]
+            exposure={}
+            for sp in SP:
+                ss=t[t.species.eq(sp)]
+                exposure[sp]=mean(ss.change,ss.source_observed_nest_median)
+                model_rows.append({"model":model,"cohort":support,"species":sp,
+                    "n_species_sites":len(ss),"species_weighted_sic_delta_pp":exposure[sp]})
+            for other in ("CHPE","GEPE"):
+                model_rows.append({"model":model,"cohort":support,
+                    "species":other+"_minus_ADPE","n_species_sites":None,
+                    "species_weighted_sic_delta_pp":exposure[other]-exposure["ADPE"]})
+    mdf=pd.DataFrame(model_rows)
+    assert len(mdf)==3*2*5
+    return table,pd.DataFrame(region_rows),mdf
 
 def main():
     pa=argparse.ArgumentParser()
@@ -143,9 +162,10 @@ def main():
     c=pd.read_csv(ar.counts);i=pd.read_csv(ar.inventory)
     raw=original_cmip6(ar.cmip6_zip)
     s,obs=audit_counts(c,i)
-    table,regional=calc_species(raw,s,obs)
+    table,regional,model_sens=calc_species(raw,s,obs)
     table.to_csv(ar.out/"original_species_climate_geography_decomposition.csv",index=False)
     regional.to_csv(ar.out/"original_species_region_exposure_shares.csv",index=False)
+    model_sens.to_csv(ar.out/"original_species_seaice_source_model_sensitivity.csv",index=False)
     selected=table[(table.experiment==MAIN[0])&(table.period==MAIN[1])]
     rec={"status":"PASS_ORIGINAL_COUNTED_271_SPECIES_GEOGRAPHIC_PHYSICAL_DECOMPOSITION_ONLY",
       "original_595_sites":595,"original_2456_genuine_counts":2456,
@@ -159,9 +179,12 @@ def main():
       "reference_regional_mean_equal_counted_sites":True,
       "pure_accounting_not_an_independent_causes_partition":True,
       "no_future_population_prediction":True,
-      "selected_case":[{k:(None if pd.isna(v) else v) for k,v in row.items()} for row in selected.to_dict("records")]
+      "selected_case":[{k:(None if pd.isna(v) else v) for k,v in row.items()} for row in selected.to_dict("records")],
+      "model_specific_selected_case":[{k:(None if pd.isna(v) else v) for k,v in row.items()} for row in model_sens.to_dict("records")]
     }
     (ar.out/"species_geographic_physical_source_receipt.json").write_text(json.dumps(rec,ensure_ascii=False,indent=2)+"\n")
-    print("SOURCE_VERIFIED_SPECIES_EXPOSURE="+json.dumps({"status":rec["status"],"selected_case":rec["selected_case"]},ensure_ascii=False),flush=True)
+    print("SOURCE_VERIFIED_SPECIES_EXPOSURE="+json.dumps({"status":rec["status"],
+        "selected_case":rec["selected_case"],
+        "model_specific_selected_case":rec["model_specific_selected_case"]},ensure_ascii=False),flush=True)
 
 if __name__=="__main__":main()
