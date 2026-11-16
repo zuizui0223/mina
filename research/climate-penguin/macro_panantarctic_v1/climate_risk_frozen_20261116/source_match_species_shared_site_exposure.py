@@ -141,11 +141,14 @@ def pair_result(species,grid,obs,coannual,sp1,sp2,subset,screen,scenario,period,
             shared=pair_sites(species,sp1,sp2)
         else:
             shared=coannual[(sp1,sp2)]["sites"].copy()
-            co_years=coannual[(sp1,sp2)]["siteyears"]
+            # Count co-census site-years on the *selected* geography below.
+            # The initial whole-pair siteyear count is metadata only.
         shared=shared.merge(obs[["site_id","source_region","all_model_marine50"]],
                             on="site_id",validate="one_to_one")
         if screen:shared=shared[shared.all_model_marine50]
         x=shared.merge(grid,on="site_id",validate="one_to_one")
+        if subset=="same_site_sameyear_samemethod_medians":
+            co_years=int(x.n_same_year_method.sum())
         support_sites=len(x)
         support_regions=x.source_region.nunique()
         if support_sites:
