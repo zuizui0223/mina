@@ -44,6 +44,15 @@ def main(a):
                  future=("seasonal_mean", "mean"), delta=("change", "mean")))
     assert np.allclose(site.baseline + site.delta, site.future, atol=1e-9)
     results, species, diagnostics, regional = [], [], [], []
+    # Match the separately source-tested 5000-permutation region-conditional diagnostic.
+    prng=np.random.default_rng(a.seed)
+    prng.integers(0,27,size=(4000,27))  # fixed original 250km block bootstrap RNG stream
+    base_weights=w.n.to_numpy(float)
+    shuffled_weights=np.tile(base_weights,(5000,1))
+    for _,grp in w.groupby("source_region",sort=True):
+        idx=grp.index.to_numpy()
+        order=np.argsort(prng.random((5000,len(idx))),axis=1)
+        shuffled_weights[:,idx]=base_weights[idx][order]
     for experiment, period in SCENARIOS:
         frame = w.merge(site.loc[site.experiment_id.eq(experiment)
                                  & site.period.eq(period), ["site_id", "baseline", "future", "delta"]],
@@ -67,6 +76,10 @@ def main(a):
                                  future_sic_nest_pct=np.average(g.future,weights=g.n),
                                  delta_sic_nest_pp=weighted_r))
         gap = nest_mean - equal_mean
+        shuffle_center = sum(g.n.sum()/n.sum()*g.delta.mean()
+                             for _,g in frame.groupby("source_region"))
+        shuffled_within=(shuffled_weights@delta)/n.sum()-shuffle_center
+        perm_p=(1+np.sum(np.abs(shuffled_within)>=abs(within)))/5001
         assert abs(between + within - gap) < 1e-8
 
         res = dict(experiment=experiment, period=period, sites=len(frame),
@@ -77,7 +90,8 @@ def main(a):
                    future_sic_equal_pct=frame.future.mean(),
                    future_sic_nest_pct=np.average(frame.future, weights=n),
                    delta_sic_equal_pp=equal_mean, delta_sic_nest_pp=nest_mean,
-                   gap_pp=gap, between_region_pp=between, within_region_pp=within)
+                   gap_pp=gap, between_region_pp=between, within_region_pp=within,
+                   region_conditional_permutation_p_diagnostic=perm_p)
         for threshold in (15, 50):
             flag = frame.future <= threshold
             res["future_le%d_site_share" % threshold] = flag.mean()
