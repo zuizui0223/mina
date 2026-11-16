@@ -93,7 +93,7 @@ def main():
         print("SOURCE_PINNED 27 original CMIP6 stores selected, 595 sites cohort frozen")
         return
     manifest=json.loads((result/"manifest.json").read_text())
-    if manifest.get("status")!="complete" or manifest["n_stores_read"]!=9 or manifest["failures"]:
+    if manifest.get("status")!="complete" or manifest["n_stores_read"]!=27 or manifest["failures"]:
         raise RuntimeError("Remote physical data source incomplete")
     expected_future=595*3*3*2*2 # 595 locations x 3 models x 3 variables x 2 future SSP x 2 periods
     delta=pd.read_csv(result/"site_model_changes.csv")
@@ -102,7 +102,7 @@ def main():
     assert len(ensemble)==595*3*2*2
     assert delta.groupby(["source_id","variable_id","experiment_id","period"]).site_id.nunique().eq(595).all()
     assert ensemble.n_models.eq(3).all()
-    assert delta.groupby(["source_id","variable_id","experiment_id","period"]).complete_years.eq(20).all().all()
+    assert delta.complete_years.eq(20).all()
     assert not delta.duplicated(["source_id","variable_id","experiment_id","period","site_id"]).any()
     assert manifest["n_site_changes"]==len(delta)
     report={"status":"PASS_PHYSICAL_ONLY_595_SELECTED_SOURCE",
