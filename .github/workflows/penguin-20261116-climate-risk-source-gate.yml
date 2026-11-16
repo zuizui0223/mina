@@ -1,0 +1,77 @@
+name: Penguin climate risk frozen cohort and true early-neighborhood source gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/**'
+      - '.github/workflows/penguin-20261116-climate-risk-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-method-cohort-neighbor-pilot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original method and spatial source dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas pyproj==3.7.1
+      - name: Compile strict baseline-neighbor source gate and original data constructor
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/frozen_neighbor_source_gate.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Reconstruct exact old frozen original 595-site 2456 method-selected count rows
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Pilot known 159 source pairs without ever calling them verified 265
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/frozen_neighbor_source_gate.py \
+            --source research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --expected-series 159 --legacy-pilot \
+            --output build/climate_risk_pilot_159
+      - name: Prove predeclared 265-series mismatch fails closed
+        run: |
+          set -euo pipefail
+          set +e
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/frozen_neighbor_source_gate.py \
+            --source research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --expected-series 265 \
+            --output build/climate_risk_gate_265
+          RC=$?
+          set -e
+          test "$RC" -ne 0
+          python - <<'PY'
+          import json,pathlib,pandas as pd
+          base=pathlib.Path('build')
+          pil=json.loads((base/'climate_risk_pilot_159/source_gate.json').read_text())
+          gate=json.loads((base/'climate_risk_gate_265/source_gate.json').read_text())
+          df=pd.read_csv(base/'climate_risk_pilot_159/conspecific_neighborhood_10_25_50_100km.csv')
+          assert pil['observed_series']==159 and gate['observed_series']==159
+          assert pil['status']=='LEGACY_2456_159_PILOT_NOT_265_VERIFICATION'
+          assert gate['status']=='STOP_SOURCE_SERIES_MISMATCH'
+          assert gate['expected_source_series']==265
+          assert len(df)==159 and df[['site_id','species']].drop_duplicates().shape[0]==159
+          for radius in (10,25,50,100):
+              all_sites=df[f'n_all_catalogued_other_sites_{radius}km']
+              measured=df[f'n_observed_early_same_species_positive_{radius}km']
+              zero=df[f'n_actual_early_surveyed_zero_{radius}km']
+              unknown=df[f'n_early_unobserved_species_sites_UNKNOWN_{radius}km']
+              assert (all_sites==measured+zero+unknown).all()
+          print("PASS genuine early-only inventory source gate: old 159 pilot and 265 hard stop")
+          PY
+      - name: Archive provenance, original cohort, four-radius source neighbor and intentional NO-GO
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-20261116-climate-risk-original-159-vs-265-source-gate
+          path: |
+            build/climate_risk_pilot_159/*.csv
+            build/climate_risk_pilot_159/*.json
+            build/climate_risk_gate_265/*.json
+          retention-days: 30
+          if-no-files-found: warn
