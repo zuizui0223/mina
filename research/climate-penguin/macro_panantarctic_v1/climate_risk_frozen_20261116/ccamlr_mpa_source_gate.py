@@ -57,9 +57,23 @@ def main():
     zones=json.loads(args.ccamlr_geojson.read_text())
     mask=json.loads(args.marine_mask_geojson.read_text())
     assert zones.get("type")=="FeatureCollection" and mask.get("type")=="FeatureCollection"
+    def original_declared_crs(data, source_name):
+        prop=data.get("crs",{}).get("properties",{})
+        declared=prop.get("name", "")
+        if declared in ("EPSG:4326","urn:ogc:def:crs:EPSG::4326","urn:ogc:def:crs:OGC:1.3:CRS84"):
+            return "EPSG:4326"
+        if declared in ("EPSG:6932","urn:ogc:def:crs:EPSG::6932"):
+            return "EPSG:6932"
+        raise ValueError(source_name+" has missing/unknown source CRS; cannot assign a geographic interpretation")
+    # The genuine CCAMLR v0.9 MPA GeoJSON is **EPSG:6932**, not longitude and
+    # latitude. Ocean mask may use a different source CRS, but must declare it.
+    zone_crs=original_declared_crs(zones,"official CCAMLR protected zones")
+    marine_crs=original_declared_crs(mask,"marine mask")
+    zone_proj=Transformer.from_crs(zone_crs,"EPSG:3031",always_xy=True)
+    marine_proj=Transformer.from_crs(marine_crs,"EPSG:3031",always_xy=True)
     proj=Transformer.from_crs("EPSG:4326","EPSG:3031",always_xy=True)
     geo=Geod(ellps="WGS84")
-    ocean=unary_union([transform(proj.transform,shape(f["geometry"])) for f in mask["features"]])
+    ocean=unary_union([transform(marine_proj.transform,shape(f["geometry"])) for f in mask["features"]])
     if ocean.is_empty or not ocean.is_valid:raise ValueError("No valid ocean-mask geometry")
     safe=[];knownzones=[]
     for feature in zones["features"]:
@@ -70,7 +84,7 @@ def main():
         if p["management_rule"] not in ("no_take","fishing_restricted","managed_research"):
             raise ValueError("Unknown fishing management restriction; do not infer no-take")
         if not (2000<=int(p["adoption_year"])<=2100):raise ValueError("Invalid adoption year")
-        geom=transform(proj.transform,shape(feature["geometry"])).intersection(ocean)
+        geom=transform(zone_proj.transform,shape(feature["geometry"])).intersection(ocean)
         if not geom.is_valid:raise ValueError("Invalid original CCAMLR polygon")
         knownzones.append(p["zone_id"])
         if p["management_rule"] in ("no_take","fishing_restricted"):safe.append(geom)
