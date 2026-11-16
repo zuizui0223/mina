@@ -1,0 +1,35 @@
+name: Penguin guano–terrestrial map source audit 20261116
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/guano_land_20261116/rebuild_original_site_vegetation_panel.py'
+      - '.github/workflows/penguin-guano-static-land-source-20261116.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-static-land-site-scale:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original source statistical dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas
+      - name: Validate source and rebuild 222 original unique penguin sites
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/guano_land_20261116/rebuild_original_site_vegetation_panel.py
+          python research/climate-penguin/macro_panantarctic_v1/guano_land_20261116/rebuild_original_site_vegetation_panel.py
+      - name: Preserve original source receipt and unique site outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-20261116-original-222site-vegetation-as-response-audit
+          path: |
+            research/climate-penguin/macro_panantarctic_v1/guano_land_20261116/*.csv
+            research/climate-penguin/macro_panantarctic_v1/guano_land_20261116/*.json
+          if-no-files-found: warn
+          retention-days: 30
