@@ -203,6 +203,23 @@ def main():
         return {k:(None if pd.isna(v) else (v.item() if isinstance(v,np.generic) else v))
                 for k,v in row.items()}
 
+    # Explicit excluded-region concentration: avoid an unsupported conclusion
+    # that the 50km screen is geographically neutral or representative.
+    excluded_top_regions={}
+    for sp in SP:
+        bad=geo[(geo.species.eq(sp)) & (geo.support.eq(COHORTS[2]))].sort_values(
+            ["n_species_nest_median_proxy","region"],ascending=[False,True]
+        )
+        excluded_top_regions[sp]=[
+            dict(region=str(z.region),
+                 n_species_sites=int(z.n_observed_species_sites),
+                 excluded_source_nest_proxy=float(z.n_species_nest_median_proxy),
+                 fraction_of_all_species_nest_proxy=float(z.fraction_of_all_species_nests),
+                 mean_sic_pp_if_positive_weight=(
+                     None if pd.isna(z.sic_pp_when_positive_nest_weight)
+                     else float(z.sic_pp_when_positive_nest_weight)))
+            for z in bad.head(8).itertuples(index=False)
+        ]
     receipt={
         "status":"PASS_SOURCE_SPECIES_MARINE50_COVERAGE_SELECTION_PHYSICAL_ONLY",
         "n_original_source_sites":595,
@@ -217,6 +234,7 @@ def main():
         "original_inventory_sha256":hashlib.sha256(a.inventory.read_bytes()).hexdigest(),
         "original_cmip6_zip_sha256":hashlib.sha256(a.cmip6_zip.read_bytes()).hexdigest(),
         "main_ssp585_late_century":[serialize(x) for x in focus.to_dict("records")],
+        "top_excluded_source_regions_by_species":excluded_top_regions,
         "uncertainty_statement":"Three chosen model members, not probabilistic scenario/ensemble confidence interval",
         "grid50km_is_model_cell_proximity_not_penguin_foraging_range":True,
         "no_unobserved_nests_or_species_imputed":True,
@@ -227,7 +245,8 @@ def main():
     )
     print("PASS_SOURCE_SPECIES_MARINE50_SELECTION="+json.dumps({
         "status":receipt["status"],
-        "main_ssp585_late_century":receipt["main_ssp585_late_century"]
+        "main_ssp585_late_century":receipt["main_ssp585_late_century"],
+        "top_excluded_source_regions_by_species":excluded_top_regions
     },ensure_ascii=False),flush=True)
 
 if __name__=="__main__":
