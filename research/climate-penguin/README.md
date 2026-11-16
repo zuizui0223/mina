@@ -1,5 +1,17 @@
 # Climate, sea ice and penguin breeding: exploratory progress
 
+## 2026-11-16 査読者視点の修正：観測上の比較と生態学的機構を区別
+
+**読む原稿は同一の[biology-first v0.5](macro_panantarctic_v1/MANUSCRIPT_MACRO_V0_5_COMPACT_BIOLOGY_FIRST_WORKING.md)。** 仮説の論理を監査し、「南下なら海氷曝露が必ず増える」「PCAの2軸＝独立な物理原因2つ」「ジェンツー比率増加で2種巣数合計が必ず減る」を因果的な事前予測として述べる部分を訂正。実際に測った変数（固定コロニー間の巣数配分／近岸海氷／同所2種の比と和）を別々の状態量として扱う。
+
+**先行研究の重複を明確化**：Lynch & LaRue 2014のRoss Sea・東南極増加と西南極半島減少は既知。2026年のRamírezらの12種HMSC将来分布、CiminoらのGentoo新規定着、Hiltonらの調査法別カウント差を追加し、今回のコロニー巣数重みと相違を明確化。**[4図の見直し済み英語キャプション](macro_panantarctic_v1/FIGURE_LEGENDS_V05_REVIEWED_20261116.md)** と、[投稿先の現実的な適合性・必要な永続データアーカイブ・原稿の科学的限界の監査](macro_panantarctic_v1/REVIEWER_GATE_NOVELTY_JOURNAL_DATA_JA_20261116.md)を追加。
+
+**投稿先の暫定第一候補はAntarctic Science**：観測的・南極領域横断のResearch Articleとしての適合がJBIより自然。ただし著者確認・Word最終体裁・恒久的に保存された再現データ・図キャプション検査が未完了。投稿・PRマージは実施しない。
+
+---
+
+
+
 
 ## 2026-11-15 統合マクロ論文をv0.5へ短縮・生物学の主張を固定
 
