@@ -5,6 +5,7 @@ on:
     paths:
       - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_595_site_count_weighted_physical_exposure.py'
       - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/derive_species_geographic_exposure_decomposition.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_species_marine_grid_selection.py'
       - '.github/workflows/penguin-source-audited-595-CMIP6-countweight-20261116.yml'
   workflow_dispatch:
 permissions:
@@ -95,6 +96,40 @@ jobs:
               assert abs(v['species_weighted_sic_delta_pp']-v['counterfactual_region_mean_pp']-v['within_region_delta_from_region_mean_pp'])<1e-9
           print('PASS source-counted species regional vs within-region physical exposure accounting')
           PY
+      - name: Audit marine50 exclusion and weighted exposure across all 3 source models
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_species_marine_grid_selection.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_species_marine_grid_selection.py \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --cmip6-zip build/physical_595.zip \
+            --out build/verified_species_marine50_selection
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads((Path('build/verified_species_marine50_selection')/'species_50km_source_selection_receipt.json').read_text())
+          assert r['status']=='PASS_SOURCE_SPECIES_MARINE50_COVERAGE_SELECTION_PHYSICAL_ONLY'
+          assert r['n_original_source_sites']==595 and r['n_sites_with_observed_2011_2020_nests']==271
+          assert r['n_both_marine50_sites']==158 and r['n_species_model_scenario_rows']==48
+          assert r['n_source_models']==3 and r['no_future_nests_or_species_vulnerability_estimated']
+          q={x['species']:x for x in r['main_ssp585_late_century']}
+          assert set(q)=={'ADPE','CHPE','GEPE'}
+          assert (q['ADPE']['n_marine50_sites'],q['CHPE']['n_marine50_sites'],q['GEPE']['n_marine50_sites'])==(63,93,37)
+          for sp in q:
+              z=q[sp]
+              assert abs(z['full_species_sic_delta_pp']-
+                z['marine50_species_nest_proxy_fraction']*z['marine50_species_sic_delta_pp']-
+                z['excluded_species_nest_proxy_fraction']*z['excluded_species_sic_delta_pp'])<1e-9
+          print('PASS exact original sea-ice support restriction species coverage and excluded site identity')
+          PY
+      - name: Archive spatial marine-grid source selection, not climate-risk conclusions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-271-original-species-marine50-selected-vs-excluded
+          path: build/verified_species_marine50_selection/
+          if-no-files-found: warn
+          retention-days: 30
       - name: Archive species-specific exposure decomposition, not a demographic forecast
         if: always()
         uses: actions/upload-artifact@v4
