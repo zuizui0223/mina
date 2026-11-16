@@ -1,0 +1,48 @@
+name: Antarctic penguin original-method cohort 265/159 source reconciliation
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/**'
+      - '.github/workflows/penguin-method-cohort-reconciliation-20261116.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pinned-derived-2999-to-268-to-159:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unit-test CSV reader and same-method criteria
+        run: node research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/audit_method_cohort_bridge.mjs --self-test
+      - name: Rebuild method-dependent biological sample from pinned 2999 original-derived rows
+        run: node research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/audit_method_cohort_bridge.mjs build/penguin_method_cohort_20261116
+      - name: Verify source denominators and explicitly prevent 265-coefficient transport
+        run: |
+          node --input-type=module - <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const p='build/penguin_method_cohort_20261116/method_cohort_reconciliation.json';
+          const r=JSON.parse(readFileSync(p));
+          assert.equal(r.status,'PASS_PINNED_METHOD_COHORT_RECONCILIATION_265_NOT_REPRODUCED');
+          assert.equal(r.candidate_cohorts.each_year_known_single_method.n_site_species_series,268);
+          assert.equal(r.candidate_cohorts.frozen_most_frequent_method.n_site_species_series,159);
+          assert.equal(r.candidate_cohorts.one_identical_method_through_both_periods.n_site_species_series,96);
+          assert.equal(r.audit.no_cross_period_shared_method,107);
+          assert.equal(r.audit.some_shared_method_but_lost_to_dominant_method,2);
+          assert.equal(r.climate_effect_reproduced,false);
+          assert.equal(r.exact_265_row_roster_or_generation_filters_verified,false);
+          console.log('PASS source-method attrition provenance and no-climate-coefficient gate');
+          NODE
+      - name: Archive derived source roster and exact audit receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-20261116-pinned-2999-method-283-268-159-audit
+          path: build/penguin_method_cohort_20261116/
+          if-no-files-found: warn
+          retention-days: 30
