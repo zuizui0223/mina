@@ -47,20 +47,21 @@ def rostering(rows,time_field):
         if len(set(nums))!=1:
             reasons["conflicting_numeric_count_group"]+=1
             continue
+        # A blank source row cannot be silently discarded to manufacture
+        # an apparently unique method or citation for that season.
         methods={r["vantage"].strip() for r in group}
         citations={r["citekey"].strip() for r in group}
-        methods={m for m in methods if m}
-        citations={c for c in citations if c}
-        if len(methods)!=1:
+        if len(methods)!=1 or "" in methods:
             reasons["ambiguous_or_blank_vantage_group"]+=1
-        if len(citations)!=1:
+        if len(citations)!=1 or "" in citations:
             reasons["ambiguous_or_blank_citation_group"]+=1
         chosen.append(dict(site=site,sp=sp,year=year,
             count_nests=nums[0],n_obs=len(group),
-            method=next(iter(methods)) if len(methods)==1 else "",
-            citation=next(iter(citations)) if len(citations)==1 else "",
+            method=next(iter(methods)) if len(methods)==1 and "" not in methods else "",
+            citation=next(iter(citations)) if len(citations)==1 and "" not in citations else "",
             observation_ids=";".join(sorted({r["id"] for r in group})),
-            has_one_vantage=len(methods)==1,has_one_citation=len(citations)==1))
+            has_one_vantage=len(methods)==1 and "" not in methods,
+            has_one_citation=len(citations)==1 and "" not in citations))
     by=collections.defaultdict(list)
     for r in chosen: by[(r["site"],r["sp"])].append(r)
     out=[]
