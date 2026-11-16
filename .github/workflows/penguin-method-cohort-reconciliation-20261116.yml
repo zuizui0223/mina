@@ -87,6 +87,25 @@ jobs:
           assert.equal(x.no_climate_dose_response_or_population_forecast,true);
           console.log('PASS original MAPPPD v5 site×species IDs, geography and source-census provenance');
           NODE
+      - name: Test accidental 265-label intersection against marine PC1 with original source IDs
+        run: |
+          node research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/explore_climate_pc1_method_sensitivity.mjs \
+            build/penguin_method_pc1_nominal265_20261117 \
+            --calendar-roster build/publisher_v5_longterm_lineage/publisher_v5_calendar_year_original_ids_no_counts.csv
+          node --input-type=module - <<'NODE'
+          import assert from 'node:assert/strict';
+          import {readFileSync} from 'node:fs';
+          const x=JSON.parse(readFileSync('build/penguin_method_pc1_nominal265_20261117/method_selection_pc1_sensitivity.json'));
+          const p=x.nominal_265_overlap_not_original_265;
+          assert.equal(p.intersection_source_site_species_count,265);
+          assert.deepEqual(p.intersection_species,{ADPE:101,CHPE:113,GEPE:51});
+          assert.deepEqual(p.external_reported_unverified_265_species,{ADPE:102,CHPE:116,GEPE:47});
+          assert.equal(p.same_source_roster_as_external_265,false);
+          const g=x.tested_cohorts.season_and_calendar_intersection_265_NOT_PRIOR_265;
+          assert.equal(g.total_source_series,265);
+          assert(g.bootstrap_250km.draws_valid>1500);
+          console.log('PASS nominal 265 occurrence is not the old 265 biological sample');
+          NODE
       - name: Archive derived source roster and exact audit receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -96,5 +115,6 @@ jobs:
             build/penguin_method_cohort_20261116/
             build/penguin_method_pc1_sensitivity_20261116/
             build/publisher_v5_longterm_lineage/
+            build/penguin_method_pc1_nominal265_20261117/
           if-no-files-found: warn
           retention-days: 30
