@@ -47,9 +47,16 @@
 
 Santora et al. (2020), *Geographic structuring of Antarctic penguin populations*, **Global Ecology and Biogeography** DOI 10.1111/geb.13144 は、南極ペンギンの近隣コロニー距離・規模と地形・ポリニヤなどの餌資源を既に検討している。「近隣コロニー間の競争があるか」自体を新発見として投稿しない。更新可能な貢献は、**先行する同種近隣巣数がその後の長期巣数変化を予測し、実測・空間支持・独立地域に一般化できるか**。その確認には元265/272の観測sourceの正確な原本・source ID・法的公開利用条件が必要。英国海鳥の独立調査への外部再現はこのgateを通過後に別の事前固定契約とする。新規「気候→巣数予報」は地域内時間応答係数が支持されない限り作らない。
 
+## 最新の統合検証（最終run 2026-11-16）
+
+- [実際に完走した最終 GitHub Actions #43835000909](https://github.com/zuizui0223/mina/actions/runs/43835000909) **SUCCESS**。本source gateでは元159の再生成と265不一致検出、近隣10/25/50/100km、旧159のregion×species/250km復元抽出、CMIP6 source25だけの物理曝露と真の2011–2020年巣数重みカバレッジ、正式CCAMLR保護区レイヤー不在での保護域NO-GOをすべて通過。出力 artifact **14210905482**。
+- 元出力 artifact ZIP のSHA256 = `8968179320e8ca448e83990a60a1922b08933aa9b4d1ad4ddd1d3d4f73709e52`、ZIP内12データ・JSONのCRCと真159 unique site×species・地域数10・250kmブロック16・50km近隣UNKNOWN131・3つの固定モデル係数をローカル別実装で照合。
+- [CCAMLR-MPA真正ゾーンと海域マスクの検証コード](ccamlr_mpa_source_gate.py) は**元595 source site点をそのまま保護判定に使わない**。真正polygon/管理ルール/年のmanifestが入力されなければ `NO_GO_PROTECTION_COVERAGE` とし、偽の保護区割合を作らない。最終ActionsでこのNO-GO挙動を確認。
+- 一度目の元159回帰はPandas NumPyのread-only viewで停止したが、`to_numpy(copy=True)` の修正後、同じデータ・同じseedで最終ジョブSUCCESS。過去のエラー実行結果は採用しない。
+
 ## 実行済み出典と成果物
 
 - 元595site/2456元計数をローカル版から再構築し、初期同種の真の近隣だけを計算する[実行スクリプト](frozen_neighbor_source_gate.py)と、元159パイロットの[region×species PC1/近隣同時係数スクリプト](legacy_159_climate_neighbor_pilot.py)。
 - 既存25site CMIP6の巣数proxyに対する地理支持を監査する[物理曝露スクリプト](physical_exposure_source_gate.py)。
-- [元データから再構築する真正GitHub Actions CI #43834447375](https://github.com/zuizui0223/mina/actions/runs/43834447375) **SUCCESS**。出力artifact `penguin-20261116-climate-risk-original-159-vs-265-source-gate`（原 sourceコホート、4半径、地域speciesモデル、25site physical-only source exposure、JSON NO-GO）。失敗した初回pilotスクリプトはPandasのread-only配列に地域平均を引こうとした処理を修正（`.to_numpy(copy=True)`）し同一入力・同一seedで再実行成功。
+- [元データから再構築する真正GitHub Actions CI #43835000909](https://github.com/zuizui0223/mina/actions/runs/43835000909) **SUCCESS**。出力artifact `penguin-20261116-climate-risk-original-159-vs-265-source-gate`（原 sourceコホート、4半径、地域speciesモデル、25site physical-only source exposure、JSON NO-GO）。失敗した初回pilotスクリプトはPandasのread-only配列に地域平均を引こうとした処理を修正（`.to_numpy(copy=True)`）し同一入力・同一seedで再実行成功。
 - 著者による元265seriesの解析はこのリポからまだ再現されていないため、再現を報告しない。今回の未支持結果を既存v0.5原稿の陽性成果として追加しない。元 `main`、凍結Ecology Report、親PR #206は未変更。
