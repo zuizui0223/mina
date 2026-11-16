@@ -203,6 +203,41 @@ def run(count_file,ice_file,out):
     }
     rmse={k:float(np.mean([r["models"][k]["RMSE"] for r in score])) for k in MODELS}
     assert maetv["previous_share"]<maetv["ice_only"]
+    # Phase sensitivity is frozen at the recorded 2007 Litchfield transition
+    # to true zero. It is NOT a change-point fitted from forecasting errors.
+    def phase_summary(sub):
+        return {
+            "n_years":len(sub),
+            "years":[sub[0]["test_year"],sub[-1]["test_year"]],
+            "mean_TV":{name:float(np.mean([z["models"][name]["TV"] for z in sub]))
+                       for name in MODELS}
+        }
+    phase={
+       "2001_2006_before_LIT_observed_zero":phase_summary(
+             [z for z in score if z["test_year"]<=2006]),
+       "2007_2017_after_LIT_observed_zero":phase_summary(
+             [z for z in score if z["test_year"]>=2007])
+    }
+    comparison_ablation={
+      "climate_only_minus_observed_previous_share":{
+        "leave_one_target_year_out_min":float(min(
+            np.mean([x["models"]["ice_only"]["TV"]-x["models"]["previous_share"]["TV"]
+                     for x in score if x is not z]) for z in score)),
+        "leave_one_target_year_out_max":float(max(
+            np.mean([x["models"]["ice_only"]["TV"]-x["models"]["previous_share"]["TV"]
+                     for x in score if x is not z]) for z in score)),
+      },
+      "adding_ice_to_configuration_drift":{
+        "leave_one_target_year_out_min":float(min(
+            np.mean([x["models"]["previous_share_plus_ice"]["TV"]-
+                     x["models"]["previous_share_plus_drift"]["TV"]
+                     for x in score if x is not z]) for z in score)),
+        "leave_one_target_year_out_max":float(max(
+            np.mean([x["models"]["previous_share_plus_ice"]["TV"]-
+                     x["models"]["previous_share_plus_drift"]["TV"]
+                     for x in score if x is not z]) for z in score)),
+      },
+    }
     summary={
         "status":"ORIGINAL_PALMER_5ISLAND_TRUE_FORWARD_ALLOCATION_SIC_COMPARISON",
         "source_counts_git_blob_sha1":SOURCE_COUNTS_SHA,
@@ -221,6 +256,8 @@ def run(count_file,ice_file,out):
           for k in MODELS
         },
         "year_block_sensitivity":block_sensitivity(score),
+        "fixed_observed_LIT_zero_transition_phase_sensitivity":phase,
+        "target_year_omission_sensitivity":comparison_ablation,
         "no_independent_island_climate_replicates":True,
         "previous_share_is_observed_state_not_neutral_spatial_configuration_causality":True,
         "not_a_prospective_climate_forecast":True,
