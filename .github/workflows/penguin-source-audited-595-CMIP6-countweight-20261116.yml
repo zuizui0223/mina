@@ -29,7 +29,7 @@ jobs:
         with:
           name: penguin-595-known-colony-3model-27store-cmip6-physical-only
           run-id: 43845907301
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           path: build/source_595_original_CMIP6
       - name: Construct explicit original-source ZIPs, no missing or future nests imputed
         run: |
