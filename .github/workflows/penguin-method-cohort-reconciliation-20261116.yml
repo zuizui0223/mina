@@ -38,11 +38,35 @@ jobs:
           assert.equal(r.exact_265_row_roster_or_generation_filters_verified,false);
           console.log('PASS source-method attrition provenance and no-climate-coefficient gate');
           NODE
+      - name: Independently derive matched marine PC1 slopes across source-method cohorts
+        run: node research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/explore_climate_pc1_method_sensitivity.mjs build/penguin_method_pc1_sensitivity_20261116
+      - name: Fail closed on changed roster, missed marine joins or transported 265 coefficient
+        run: |
+          node --input-type=module - <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const p='build/penguin_method_pc1_sensitivity_20261116/method_selection_pc1_sensitivity.json';
+          const x=JSON.parse(readFileSync(p));
+          assert.equal(x.status,'PASS_EXPLORATORY_METHOD_COHORT_PC1_SENSITIVITY_NO_CLIMATE_DOSE_RESPONSE');
+          const q=x.tested_cohorts;
+          assert.deepEqual([
+            q.per_year_known_method.marine_matched_series,
+            q.most_frequent_method.marine_matched_series,
+            q.strict_single_shared_method.marine_matched_series,
+            q.any_shared_method.marine_matched_series,
+            q.no_shared_method.marine_matched_series],[262,153,90,155,107]);
+          assert(Math.abs(q.most_frequent_method.fit.coefficients.PC1+0.11578532372741632)<1e-9);
+          assert.equal(x.interaction.block_resample_difference_for_no_shared_vs_shared.draws_requested,2000);
+          assert(x.limitations.some(s=>s.includes('NOT reproduced')));
+          console.log('PASS source matched cohort climate sensitivity and no fake independent inference');
+          NODE
       - name: Archive derived source roster and exact audit receipt
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: penguin-20261116-pinned-2999-method-283-268-159-audit
-          path: build/penguin_method_cohort_20261116/
+          path: |
+            build/penguin_method_cohort_20261116/
+            build/penguin_method_pc1_sensitivity_20261116/
           if-no-files-found: warn
           retention-days: 30
