@@ -35,9 +35,9 @@
 
 | ペア（B−A） | 各種全対象site | 共通region均等 | 共通site | 同年同方法site |
 |---|---:|---:|---:|---:|
-| CHPE−ADPE | −5.220 | −0.302（6 region） | +10.570（10 site） | +11.481（9 site） |
-| GEPE−ADPE | −8.127 | +1.642（5 region） | +7.445（15 site） | +7.213（14 site） |
-| GEPE−CHPE | −2.907 | +0.622（5 region） | −0.735（16 site） | −1.129（15 site） |
+| CHPE−ADPE | −5.220 | −0.302（6 region） | +10.570（10 site） | +11.481（9 site / 16 site-year） |
+| GEPE−ADPE | −8.127 | +1.642（5 region） | +7.445（15 site） | +7.213（14 site / 23 site-year） |
+| GEPE−CHPE | −2.907 | +0.622（5 region） | −0.735（16 site） | −1.129（15 site / 42 site-year） |
 
 この50kmはモデル格子位置の支持域を揃える判定であって、ペンギンの採餌距離ではない。common-site/同年のrestricted supportは種ごとの真の巣数母集団を代表するとは限らない。具体的にfull23 ADPE/GEPE shared siteは元全species median proxyのADPE**12.365%**、GEPE**43.054%**。sameyear20 siteではそれぞれ**7.114% / 42.359%**。50km common15 siteへ狭めると**6.534% / 29.465%**。この重み喪失を隠して新しい生物学的有意差を主張しない。
 
@@ -53,5 +53,5 @@
 - Python source: source_match_species_shared_site_exposure.py
 - 元の凍結MAPPPD原実数再構成: build.py
 - 元のfull595 CMIP6 artifact: Actions #43845907301
-- 再現CI： https://github.com/zuizui0223/mina/actions/runs/43901632512 SUCCESS、全384行と元site×season/method auditを原入力から再計算。新しい同年・同方法原本の地理50kmサブセット内site-year分母はCI追加監査で絞り込み中。
+- 再現CI： https://github.com/zuizui0223/mina/actions/runs/43901632512 SUCCESS、全384行と元site×season/method auditを原入力から再計算。距離条件後の同年同方法の**実際のsite-year分母**は元28→16（ADPE/CHPE）、36→23（ADPE/GEPE）、74→42（CHPE/GEPE）で、同じ原site×yearだけで重みを再計算した。訂正後の [Actions #43902145453](https://github.com/zuizui0223/mina/actions/runs/43902145453) も **SUCCESS**。
 - Derived downloadable artifact: penguin-271-recorded-species-common-region-common-site-physical-sic、保持期限30日。恒久DOIなし。
