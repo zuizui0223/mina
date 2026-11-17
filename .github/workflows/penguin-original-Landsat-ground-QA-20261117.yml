@@ -1,0 +1,56 @@
+name: Penguin 5 original Gentoo sites 1997-2016 Landsat native ground QA pixel gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/audit_original_landsat_pixel_QA_event_windows.py'
+      - '.github/workflows/penguin-original-Landsat-ground-QA-20261117.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  seasonal-original-native-raster-ground-qa:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public geospatial source dependencies
+        run: python -m pip install --disable-pip-version-check "numpy<3" requests planetary-computer rasterio pyproj
+      - name: Compile original QA bit arithmetic
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/audit_original_landsat_pixel_QA_event_windows.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/audit_original_landsat_pixel_QA_event_windows.py --self-test
+      - name: Read original Landsat C2 L2 QA_PIXEL at 25 fixed land-adjacent sample points around 5 sites
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/audit_original_landsat_pixel_QA_event_windows.py \
+            --out build/penguin_original_landsat_native_site_QA
+      - name: Check original sample geometry, source distinction and paired observation support
+        run: |
+          python - <<'PY'
+          import json,csv
+          from pathlib import Path
+          base=Path('build/penguin_original_landsat_native_site_QA')
+          rec=json.loads((base/'original_landsat_5site_two_era_ground_QA_receipt.json').read_text())
+          rows=list(csv.DictReader((base/'source_cluster_year_landsat_QA_native_raster_footprint.csv').open()))
+          assert rec['status']=='SOURCE_ORIGINAL_QA_PIXEL_FOR_HISTORIC_PENGUIN_EVENT_SUPPORT'
+          assert rec['n_original_candidate_site_ids']==5 and rec['n_original_clusters']==3
+          assert rec['n_original_query_cluster_years']==6 and rec['n_site_years_with_asset_source_checks']==10
+          assert len(rows)==10 and len(rec['cross_year_support'])==5
+          assert set(rec['QA_pixel_excluded_bit_positions'])=={0,1,2,3,4,5,7}
+          assert rec['fixed_grid_epsg']==3031 and len(rec['fixed_grid_meter_offsets'])==5
+          assert rec['no_source_verified_rock_age_or_true_penguin_colonization_date']
+          assert rec['no_possible_nest_patch_absence_denominator']
+          assert rec['all_scene_overview_not_actual_local_pixel']
+          print('PASS original QA pixel evidence with explicit censored census years and site-level co-observation denominator')
+          PY
+      - name: Preserve source scene ID and native QA sample masks; never archive signed URLs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-5-original-gentoo-landscape-qa-snow-water-native-scene-support
+          path: build/penguin_original_landsat_native_site_QA/
+          if-no-files-found: warn
+          retention-days: 30
