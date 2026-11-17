@@ -89,7 +89,7 @@ def audit(d,sources,atlas,out):
     source_groups=precise.groupby(GROUP_COLS,dropna=False).agg(
         prey_row_count=("record_id","size"),
         n_distinct_prey=("prey_name","nunique"),
-        n_weight_fractions=("fraction_diet_by_weight",lambda x:int(pd.to_numeric(x,errors="coerce").notna().sum())),
+        n_weight_fractions=("fraction_diet_by_weight",lambda x:int(pd.to_numeric(x,errors="coerce").between(0,1).sum())),
         species_group=("species_group","first"),
         lon_mid=("lon_mid","first"),lat_mid=("lat_mid","first"),
         source_bbox_km=("source_bbox_km","first"),
@@ -115,6 +115,8 @@ def audit(d,sources,atlas,out):
               "diet_weight_entries_in_group":int(row.n_weight_fractions),
               "original_geo_bbox_km":float(row.source_bbox_km),
               "nearest_original_site":str(coords.iloc[first].site_id),
+              "n_original_colony_ids_within25km":int((dk<=MATCH_DISTANCE_KM).sum()),
+              "locality_has_catalogued_colony_within25km":bool(dk[first]<=MATCH_DISTANCE_KM),
               "nearest_original_site_region":str(coords.iloc[first].source_region),
               "original_site_distance_km":float(dk[first]),
               "nearest_site_is_unique_within25km":matches})
@@ -122,7 +124,10 @@ def audit(d,sources,atlas,out):
     if not link.empty:
         link.to_csv(out/"original_scar_precise_penguin_diet_candidate_source_panels.csv",index=False)
         selected=link.loc[link.nearest_site_is_unique_within25km]
-    else:selected=link
+        locality=link.loc[link.locality_has_catalogued_colony_within25km]
+    else:
+        selected=link
+        locality=link
     r={"status":"SOURCE_SCAR_DIET_PANEL_SUPPORT_GATE_NO_CLIMATE_OR_Diet_EFFECT",
        "source":GH_SOURCE,"md5":PIN_MD5,
        **counts,
@@ -135,6 +140,15 @@ def audit(d,sources,atlas,out):
        "matched_source_seasons":int(selected.source_season.nunique()) if len(selected) else 0,
        "matched_source_original_studies":int(selected.source_id.nunique()) if len(selected) else 0,
        "matched_groups_with_quantitative_weight_preys":int((selected.diet_weight_entries_in_group>0).sum()) if len(selected) else 0,
+       "locality_within25km_even_if_multiple_colony_IDs":int(len(locality)),
+       "locality_within25km_distinct_names":int(locality.source_location.nunique()) if len(locality) else 0,
+       "locality_within25km_studies":int(locality.source_id.nunique()) if len(locality) else 0,
+       "locality_within25km_regions":int(locality.nearest_original_site_region.nunique()) if len(locality) else 0,
+       "locality_within25km_start_seasons":int(locality.source_season.nunique()) if len(locality) else 0,
+       "locality_within25km_groups_with_valid_weight":int((locality.diet_weight_entries_in_group>0).sum()) if len(locality) else 0,
+       "locality_within25km_unique_study_location_species_seasons":int(locality.drop_duplicates(["source_id","source_location","source_species","source_season"]).shape[0]) if len(locality) else 0,
+       "locality_within25km_study_location_species_seasons_by_species":locality.drop_duplicates(["source_id","source_location","source_species","source_season"]).source_species.value_counts().astype(int).to_dict() if len(locality) else {},
+       "locality_link_is_not_valid_unique_colony_demographic_link":True,
        "not_independent_sample_counts":"prey rows, sample IDs, and multiple records of a single study cannot be counted as independent climate replications",
        "no_false_absences":True,"no_pool_mixed_diet_methods":True,"no_climate_response_estimated":True}
     if len(selected):
