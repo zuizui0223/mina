@@ -11,7 +11,7 @@ permissions:
 jobs:
   youngflesh-diet-original-meta:
     runs-on: ubuntu-22.04
-    timeout-minutes: 8
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -23,10 +23,13 @@ jobs:
         run: |
           python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/probe_zenodo_diet_source.py \
             --out build/youngflesh_2026_zenodo_source_inventory
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
       - name: Verify original 256 MB diet archive MD5 and list embedded data files
         run: |
           python - <<'PYCODE'
-          import hashlib,json,urllib.request,zipfile
+          import hashlib,json,urllib.request,zipfile,subprocess,shutil
           from pathlib import Path
           root=Path('build/youngflesh_2026_zenodo_source_inventory')
           receipt=json.loads((root/'original_zenodo_17409948_source_receipt.json').read_text())
@@ -62,9 +65,39 @@ jobs:
                               with z.open(info) as fd: head=fd.readline(8192).decode('utf-8-sig').strip()
                               headers.append({'name':info.filename,'header':head[:1500]})
                           except Exception as e: headers.append({'name':info.filename,'header_error':str(e)[:200]})
+              rds_member='L0/Landsat/landsat_reflectance_L457-2025-07-16.rds'
+              rds_path=root/'_original_landsat_reflectance_temp.rds'
+              with zipfile.ZipFile(source_zip) as z:
+                  with z.open(rds_member) as source, rds_path.open('wb') as target: shutil.copyfileobj(source,target)
+              rexpr=('args <- commandArgs(trailingOnly=TRUE); '
+                     'x <- readRDS(args[1]); '
+                     'stopifnot("site_id" %in% names(x), "season" %in% names(x)); '
+                     'd <- data.frame(site_id=as.character(x$site_id), season=as.integer(x$season)); '
+                     'd <- d[!is.na(d$site_id) & !is.na(d$season),]; '
+                     'q <- aggregate(rep(1L,nrow(d)),list(site_id=d$site_id,season=d$season),length); '
+                     'names(q)[3] <- "n_original_landsat_records"; '
+                     'write.csv(q,args[2],row.names=FALSE); '
+                     'writeLines(paste(names(x),collapse=","),args[3]); '
+                     'if("geometry" %in% names(x)) { '
+                     ' xy <- tryCatch(t(vapply(x$geometry,function(p){a<-as.numeric(unclass(p)); c(a[1],a[2])},numeric(2))),error=function(e)NULL); '
+                     ' if(!is.null(xy)){ coords <- data.frame(site_id=as.character(x$site_id), easting=xy[,1], northing=xy[,2]); '
+                     ' coords <- aggregate(cbind(easting,northing) ~ site_id, data=coords, FUN=mean); '
+                     ' write.csv(coords,args[4],row.names=FALSE) } }')
+              r_status='NOT_STARTED'
+              try:
+                  subprocess.run(['Rscript','--vanilla','-e',rexpr,str(rds_path),
+                                  str(root/'source_site_season_landsat_coverage.csv'),
+                                  str(root/'source_landsat_columns.txt'),
+                                  str(root/'source_site_projected_centroids.csv')],
+                                 check=True,timeout=180)
+                  r_status='ORIGINAL_RDS_SITE_SEASON_AGGREGATED'
+              except Exception as e:
+                  r_status=f'RDS_SUPPORT_EXTRACTION_BLOCKED_{type(e).__name__}_{str(e)[:200]}'
+              finally:
+                  if rds_path.exists():rds_path.unlink()
               result={'status':'PUBLISHER_SOURCE_ZIP_VERIFIED_MD5_MEMBER_INVENTORY',
                       'record_id':17409948,'source_bytes':n,'source_md5':h.hexdigest(),
-                      'n_members':len(members),'members':members,'csv_headers':headers,
+                      'n_members':len(members),'members':members,'csv_headers':headers,'source_landsat_site_season_status':r_status,
                       'diet_values_not_yet_linked':True,'original_zip_not_redistributed':True}
               print('VERIFIED ORIGINAL ZENODO ZIP:',n,'bytes',len(members),'members')
           except Exception as e:
