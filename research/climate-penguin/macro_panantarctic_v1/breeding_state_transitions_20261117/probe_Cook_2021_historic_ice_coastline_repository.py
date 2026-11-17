@@ -16,6 +16,8 @@ BASE="https://ramadda.data.bas.ac.uk/repository/entry/show"
 TARGETS=[
  BASE+"?"+urllib.parse.urlencode({"entryid":ENTRY}),
  BASE+"?"+urllib.parse.urlencode({"entryid":ENTRY,"output":"json"}),
+ BASE+"?"+urllib.parse.urlencode({"entryid":"61100714-1e32-44af-a237-0a517529bc49"}),
+ BASE+"?"+urllib.parse.urlencode({"entryid":"451eb7be-b895-4535-aa48-b6411723b407"}),
 ]
 class Links(html.parser.HTMLParser):
     def __init__(self):super().__init__();self.items=[]
@@ -53,6 +55,7 @@ def main(out):
          "original_source_years":"1843-2008 irregular glacier fronts, not annual glacier map",
          "n_official_repository_urls_tested":len(TARGETS),
          "n_successful_page_metadata_reads":sum(z.get("http_status")==200 for z in r),
+         "linked_child_entries_pinned_from_original_20261117_source_html":2,
          "full_glacier_front_geometries_downloaded":False,
          "no_new_bare_rock_or_colony_state_inference":True,
          "results":r}
