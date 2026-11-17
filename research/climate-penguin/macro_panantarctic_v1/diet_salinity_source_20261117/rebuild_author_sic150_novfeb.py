@@ -30,6 +30,43 @@ def verify_source(path):
         raise ValueError("Publisher Zenodo source bytes or original MD5 changed")
     return {"bytes":size,"md5":h.hexdigest()}
 
+def source_native_25km_axes(x,y):
+    """Guard when NetCDF dimension indexes, not native meter coordinates, are decoded.
+
+    NSIDC south grid: 316 columns x 332 rows, 25km, documented outer
+    boundaries x=-3950..3950km, y=4350..-3950km. Reconstruct cell
+    CENTERS only when raw dimensions are 0..N-1 synthetic indexes.
+    """
+    x=np.asarray(x,dtype=float)
+    y=np.asarray(y,dtype=float)
+    if x.size!=316 or y.size!=332:
+        raise ValueError("NSIDC V4 native south grid dimensions changed")
+    raw_x=[float(x[0]),float(x[-1])]
+    raw_y=[float(y[0]),float(y[-1])]
+    derived=False
+    if np.array_equal(x,np.arange(316,dtype=float)) and np.array_equal(y,np.arange(332,dtype=float)):
+        x=-3_937_500+25_000*np.arange(316,dtype=float)
+        y=+4_337_500-25_000*np.arange(332,dtype=float)
+        derived=True
+    elif np.isclose(abs(np.diff(x)).mean(),25,atol=1e-5) and np.max(np.abs(x))<5000:
+        # Original file may encode km rather than meters. Require both axes.
+        if not np.isclose(abs(np.diff(y)).mean(),25,atol=1e-5):
+            raise ValueError("Inconsistent native metric-grid units")
+        x=x*1000
+        y=y*1000
+        derived=True
+    if max(np.abs(x))<1_000_000 or max(np.abs(y))<1_000_000:
+        raise ValueError(f"Native grid cannot be interpreted in meters x={raw_x} y={raw_y}")
+    if not np.isclose(np.median(np.abs(np.diff(x))),25_000,atol=5):
+        raise ValueError("NSIDC original x-spacing is not 25 km")
+    if not np.isclose(np.median(np.abs(np.diff(y))),25_000,atol=5):
+        raise ValueError("NSIDC original y-spacing is not 25 km")
+    print("NSIDC_NATIVE_GRID_QA",{"raw_x_ends":raw_x,"raw_y_ends":raw_y,
+          "metric_x_ends":[float(x[0]),float(x[-1])],
+          "metric_y_ends":[float(y[0]),float(y[-1])],
+          "reconstructed_from_official_south_grid":derived},flush=True)
+    return x,y,derived
+
 def cells_within(x,y,xc,yc,radius=RADIUS_M):
     # Row y, column x. This is center-within geometry, NOT terra touches polygon.
     return (np.asarray(y)[:,None]-yc)**2+(np.asarray(x)[None,:]-xc)**2<=radius**2
@@ -76,6 +113,9 @@ def extract(archive,centroids,matched,output):
                     v=np.asarray(variable.squeeze(drop=True).transpose(yname,xname).values,dtype=float)
                     x=np.asarray(ds[xname].values,dtype=float)
                     y=np.asarray(ds[yname].values,dtype=float)
+                    x,y,rebuilt=source_native_25km_axes(x,y)
+                    if month==months[0]:
+                        print("NSIDC_ORIGINAL_COORD_KIND",str(ds[xname].attrs),str(ds[yname].attrs),flush=True)
                     if v.shape!=(len(y),len(x)):raise ValueError("Source SIC dimensions drift")
                     if not (np.isfinite(x).all() and np.isfinite(y).all()):
                         raise ValueError("Invalid original polar grid coords")
@@ -95,6 +135,12 @@ def extract(archive,centroids,matched,output):
                              "source_sic150_center_mean_fraction":float(good.mean()) if len(good) else np.nan})
                     monthlist.append(months_in_zip[month])
             if len(monthly)%len(source)!=0:raise RuntimeError("Incomplete source month extraction")
+            if month==months[0]:
+                first=monthly[:len(source)]
+                if not all(rec["source_n_150km_cell_centers"]>0 for rec in first):
+                    raise ValueError("Source geographic mask cannot locate all 99 sites; NO zero-as-SIC interpretation")
+                if not any(rec["source_n_valid_ocean_cells"]>=3 for rec in first):
+                    raise ValueError("All 99 native source site-months lack valid ocean cells; diagnose coordinate orientation")
             print("ORIGINAL_NSIC_V4_MONTH:",month,flush=True)
     daily=pd.DataFrame(monthly)
     monthly_map={(r.site_id,r.source_year,r.source_month):r for r in daily.itertuples(index=False)}
