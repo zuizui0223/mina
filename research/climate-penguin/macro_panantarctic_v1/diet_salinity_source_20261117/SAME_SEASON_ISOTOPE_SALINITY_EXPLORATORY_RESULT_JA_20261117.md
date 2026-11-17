@@ -80,4 +80,13 @@ These improve neither original DI posterior validation nor causal identifiabilit
 - Full fixed-source GitHub Actions end-to-end [\`penguin-20261117-source-isotope-salinity-conditional.yml\`](../../../.github/workflows/penguin-20261117-source-isotope-salinity-conditional.yml). Locally independent consistency checks and ZIP freeze include output site×season and omit-year/region audits. Github Actions artifact retention is temporary, not DOI archival.
 - **Freeze:** no overwrite or merge into main, no changes to v0.5 source data/figures or protected Ecology Report. This is a Draft PR #214 research lane, not a paper accepted or submitted.
 
+
+## 最終再現監査（同日）
+
+- Source-matched **full CI** [Actions #44083346932](https://github.com/zuizui0223/mina/actions/runs/44083346932) **SUCCESS**。オリジナルZenodo ZIP MD5、PLSR派生原103個校正標本、119サイト／179,346ピクセル／3,938元撮影日、元892厳格地理source、海氷150kmとGLORYS 4か月、860サイト×季／88地点／82wet格子／13地域を別ステップで再監査した。
+- `fit_source_isotope_salinity_conditional.py` の **CIからの完全再計算β=+0.8341458422, residual partial R²=0.02880176895** は会話ローカルの独立同一source実装と小数点以下で一致。8地域の推定可能性と5地域のsource不足判定も一致。保存された派生source tables artifact **14328755565**。
+- 画像サポートの事後感度では、同じ元入力で `log(1+pixel数)`・`log(1+撮影日数)` を加えるとβ=+0.7186、島・siteごとの線形時系列トレンドを加えるとβ=+0.9117。両方を追加してもβ=+0.8199。画像数・撮影季節の交絡を完全には排除しない。
+- **適切な推定区間**：82 wet格子の区間[+0.3886,+1.2797]に対し、13元報告地域のsmall-group t(12) intervalは[−0.0159,+1.6842]。後者を欠いた「南極全域で有意」とする表現は禁止。
+- 結論と原稿の境界：source-audited探索的δ¹⁵N optical proxy関連、海域別符号異質性の候補。元著者のStan DI posterior、餌種比率、個体数、独立海域への予測転写、真の因果/融水機構は未完了。Publication frozen main/figure変更無し。
+
 **Final level:** exploratory positive isotope-proxy–salinity association, with substantial geographic heterogeneity and source-validity constraints. Before claiming genuinely new macroecological mechanism, obtain/independently reproduce published hierarchical \`DI\` posterior and isotope baseline or independently observed diet, and repeat fixed tests in independent marine provinces.
