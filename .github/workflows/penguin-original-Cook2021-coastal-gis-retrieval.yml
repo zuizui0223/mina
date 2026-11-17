@@ -1,0 +1,48 @@
+name: Antarctic Peninsula Cook2021 actual original 1843-2008 historic coastline archive
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/retrieve_original_Cook2021_historic_glacier_fronts.py'
+      - '.github/workflows/penguin-original-Cook2021-coastal-gis-retrieval.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publisher-original-historic-ice-coastline-shapefile:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python shapefile reader
+        run: python -m pip install --disable-pip-version-check pyshp
+      - name: Compile and fetch actual official ZIP and reconstruct original geographic source schema
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/retrieve_original_Cook2021_historic_glacier_fronts.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/retrieve_original_Cook2021_historic_glacier_fronts.py \
+             --out build/cook2021_original_ice_front_zip
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/cook2021_original_ice_front_zip")
+          d=json.loads((root/"Cook2021_original_GIS_source_inspection_receipt.json").read_text())
+          assert d['status']=='PASS_ACTUAL_ORIGINAL_COOK2021_HISTORIC_COASTAL_CHANGE_SOURCE_ARCHIVE'
+          assert d['n_original_archive_bytes']>5_000_000
+          assert d['n_original_archive_bytes']<35_000_000
+          assert d['size_equal_official_repository_metadata']
+          assert d['vector_validation']['zip_has_usable_shapefile']
+          assert d['glacier_front_lines_not_ice_free_land_polygons']
+          assert d['future_colony_date_or_climate_effect_not_inferred']
+          print('PASS original full BAS 2021 historical Antarctic Peninsula shapefile archive and explicit glacier-front inference limit')
+          PY
+      - name: Preserve original Cook 2021 archive and all source-schema QA receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-Cook2021-genuine-1843-2008-glacier-front-original-GIS
+          path: build/cook2021_original_ice_front_zip/
+          if-no-files-found: warn
+          retention-days: 30
