@@ -1,0 +1,46 @@
+name: Penguin original GLIMS dated glacier-outline source opportunity
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/probe_GLIMS_coastal_glacier_date_support.py'
+      - '.github/workflows/penguin-original-GLIMS-glacier-date-source-20261117.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-temporal-glacier-geometry-feasibility:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile original GLIMS source audit
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/probe_GLIMS_coastal_glacier_date_support.py
+      - name: Get authentic source WFS glacier feature types and three coastal cluster source bboxes
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/probe_GLIMS_coastal_glacier_date_support.py \
+            --out build/penguin_original_GLIMS_source_feasibility
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/penguin_original_GLIMS_source_feasibility')/'glims_original_multitemporal_glacier_source_receipt.json'
+          d=json.loads(p.read_text())
+          assert d['status']=='GLIMS_DATED_GLACIER_SOURCE_SUPPORT_AUDIT_NOT_ROCK_CHANGE'
+          assert d['n_target_original_site_clusters']==3
+          assert d['no_glacier_area_change_computed']
+          assert d['no_yearly_icefree_rock_time_series_confirmed']
+          assert d['source_date_is_not_colony_founding_date']
+          assert d['no_islandization_connectivity_time_series']
+          print('PASS GLIMS WFS source availability with explicit biological timing limits')
+          PY
+      - name: Archive genuine layer metadata and query feature attributes, not climate inference
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-GLIMS-source-date-availability-three-original-coastal-clusters
+          path: build/penguin_original_GLIMS_source_feasibility/
+          if-no-files-found: warn
+          retention-days: 30
