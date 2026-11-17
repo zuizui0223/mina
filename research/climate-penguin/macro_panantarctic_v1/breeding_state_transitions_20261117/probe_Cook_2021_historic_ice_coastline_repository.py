@@ -8,7 +8,7 @@ new rock, colony counts or inland glacier extent. This probe tries only
 authoritative, fixed source entry URLs and reports failures plainly.
 """
 from __future__ import annotations
-import argparse,hashlib,html.parser,json,urllib.parse,urllib.request
+import argparse,hashlib,html.parser,json,re,urllib.parse,urllib.request
 from pathlib import Path
 
 ENTRY="07727663-9b94-4069-a486-67e4d82177d3"
@@ -44,6 +44,8 @@ def main(out):
                 "response_sha256_sampled":hashlib.sha256(raw).hexdigest(),
                 "anchor_links_total":len(p.items),
                 "possible_download_links":files[:45],
+                "source_body_start":source[:1000] if url.endswith('output=json') else '',
+                "source_keyword_samples":[source[max(0,m.start()-150):min(len(source),m.end()+170)] for m in list(re.finditer(r'(?i)gpkg|shapefile|\\.zip|\\.shp|repository/entry/get|download',source))[:18]],
                 "seems_official_cook_record":ENTRY in source or "coastal change" in source.lower(),
                 "is_full_file_downloaded":False}
         except Exception as e:
@@ -64,7 +66,8 @@ def main(out):
     print("COOK2021_OFFICIAL_SOURCE="+json.dumps(
         {"status":rec["status"],"successful":rec["n_successful_page_metadata_reads"],
          "urls":[{"http_status":z.get("http_status"),"error":z.get("error"),
-                  "links":z.get("possible_download_links",[])[:8]} for z in r]},
+                  "links":z.get("possible_download_links",[])[:8],
+                  "body_start":z.get("source_body_start"),"samples":z.get("source_keyword_samples",[])[:7]} for z in r]},
         ensure_ascii=False),flush=True)
 if __name__=="__main__":
     p=argparse.ArgumentParser()
