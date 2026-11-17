@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install source annual SIC arithmetic dependency
+        run: python -m pip install --disable-pip-version-check numpy
       - name: Compile and test census-state geography arithmetic
         run: |
           python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/audit_original_zero_to_positive_transitions.py
@@ -29,6 +31,7 @@ jobs:
           set -euo pipefail
           mkdir -p build/penguin_zero_source
           gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_zero_source/source_original_2456.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13671496095/zip" > build/penguin_zero_source/source_original_OSISAF_71400.zip
           python - <<'PY'
           from zipfile import ZipFile
           import io,csv
@@ -71,6 +74,31 @@ jobs:
           assert rec['recorded_zero_not_assumed_species_absence_offsite']
           assert rec['not_true_foundation_or_discovery_date']
           print('PASS 35 verified census-only transitions; 5 repeated gentoo positive sites cluster into 3 groups at 10 km')
+          PY
+      - name: Match real zero/positive census times with 595-original-site-year SIC physical context
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/link_true_nesting_transition_to_annual_SIC.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/link_true_nesting_transition_to_annual_SIC.py \
+            --status-events build/penguin_zero_transitions_verified/all_35_original_nest_status_transitions.csv \
+            --source-SIC-zip build/penguin_zero_source/source_original_OSISAF_71400.zip \
+            --out build/penguin_zero_transitions_verified
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          root=Path('build/penguin_zero_transitions_verified')
+          x=json.loads((root/'original_ice_nesting_transition_support_receipt.json').read_text())
+          rows=list(csv.DictReader((root/'five_recorded_gentoo_appearance_events_original_SIC.csv').open()))
+          assert x["status"]=="PASS_SOURCE_CENSUS_EVENT_TO_TRUE_ORIGINAL_SIC_CONTEXT_ONLY"
+          assert x["original_595_1991_2020_AugNov_site_months"]==71400
+          assert x["original_595_1991_2020_site_years"]==595*30
+          assert x["all_original_sustained_gentoo_nesting_cases"]==5
+          assert len(rows)==5 and {r["site_id"] for r in rows}=={'BISC','GALE','ORNE','TXRX','VERN'}
+          assert x["n_five_gentoo_cases_with_both_recorded_0_year_and_first_positive_year_SIC"]==4
+          b=next(r for r in rows if r["site_id"]=="BISC")
+          assert int(b["from_source_count_year"])==1984 and b["true_original_0_year_SIC_AugNov_pp"]==""
+          assert x["no_annual_ice_free_land_or_foraging_behavior_available"] is True
+          assert x["no_independent_regions_or_climate_selection_test"] is True
+          print("PASS original SIC 1991-2020 exact scope, 4/5 before-after cases, and no fabricated 1984 physical exposure")
           PY
       - name: Preserve all 35 transition records and 5 supported case rows as artifacts
         if: always()
