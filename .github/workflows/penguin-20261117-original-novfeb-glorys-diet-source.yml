@@ -46,7 +46,9 @@ jobs:
               assert z.testzip() is None
               for name in names:
                 (root/name).write_bytes(z.read(name))
-          source=json.loads((root/'publisher_original_zip_scan_receipt.json').read_text())
+          raw=(root/'publisher_original_zip_scan_receipt.json').read_text()
+          source,end=json.JSONDecoder().raw_decode(raw)
+          assert raw[end:].strip() in ('', chr(92)+'n'), 'Unexpected original receipt suffix'
           assert (source['status'],source['source_md5'])==(
              'PUBLISHER_SOURCE_ZIP_VERIFIED_MD5_MEMBER_INVENTORY',
              'e29a2f68c84e3a515044d554540def2f')
