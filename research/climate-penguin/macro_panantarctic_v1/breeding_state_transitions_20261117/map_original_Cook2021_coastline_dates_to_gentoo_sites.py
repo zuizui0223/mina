@@ -106,6 +106,21 @@ def run(source_zip,out):
                       and x["nearest_coastline_distance_to_source_site_km"]<=radius]
             years=collections.Counter(x["source_year"] for x in selected)
             types=collections.Counter(x["source_coast_category"] for x in selected)
+            year_type=collections.defaultdict(lambda:collections.Counter())
+            year_reliability=collections.defaultdict(lambda:collections.Counter())
+            year_distance=collections.defaultdict(lambda:collections.defaultdict(list))
+            for z in selected:
+                yr=str(z["source_year"])
+                typ=z["source_coast_category"]
+                year_type[yr][typ]+=1
+                year_reliability[yr][z["source_reliability_class"]]+=1
+                year_distance[yr][typ].append(z["nearest_coastline_distance_to_source_site_km"])
+            year_type=dict(sorted((yr,dict(types)) for yr,types in year_type.items()))
+            year_reliability=dict(sorted((yr,dict(types)) for yr,types in year_reliability.items()))
+            year_nearest=dict(sorted((yr,dict(sorted(
+                (type_name,round(min(distances),6))
+                for type_name,distances in types.items())))
+                for yr,types in year_distance.items()))
             before=sum(x["before_or_on_last_zero_census"] for x in selected)
             middle=sum(x["between_source_census_zero_and_first_positive"] for x in selected)
             after=sum(x["on_or_after_first_source_positive"] for x in selected)
@@ -120,6 +135,9 @@ def run(source_zip,out):
              "n_segments_strictly_within_census_interval":middle,
              "n_segments_on_or_after_first_positive":after,
              "year_segment_counts":dict(sorted(years.items())),
+             "year_coast_type_counts":year_type,
+             "year_coast_reliability_counts":year_reliability,
+             "year_nearest_source_coast_by_type_km":year_nearest,
              "coast_type_counts":dict(sorted(types.items())),
              "has_any_definite_rock_coast":any(x["source_coast_category"]=="definite_rock_coast" for x in selected),
              "has_any_definite_ice_coast":any(x["source_coast_category"]=="definite_ice_coast" for x in selected),
