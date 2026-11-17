@@ -1,0 +1,71 @@
+# 原MAPPPDによる「0巣→繁殖記録」：真の成立機構と観測記録を分ける
+
+2026-11-17 JST｜mina Draft PR #214｜source-audited positive breeding-state observations。生物学的な新規コロニー成立年や気候の因果効果を推定したものではない。
+
+## 観測原本から得た数値
+
+固定元MAPPPD2,999 unambiguous site×species×season行→方法既知2,724行→site×speciesの最頻調査法に固定した**2,456真正巣数計数／595site／707site×species系列**。発行元artifact内2456行を再構築し、観測年・元方法・元巣数・座標・種・名称を全行照合。未調査年/未調査種は0と扱わない。
+
+- **実際に0巣だった計数98件**、これを含む46site×species系列
+- 同じsite×speciesの隣り合う実調査記録間で0↔正巣数が変わった**35件／29系列**：0→正15、正→0 20
+- 最初のsource記録が実際0巣で、その後4回以上の正巣数が観測され、その後の記録に0巣がなかった、という観測機会条件を満たす**GEPE 5 siteコード、すべて原地域Central-west Antarctic Peninsula**。この事後の再調査選別は生物学的な成立確率推定ではない。
+
+| 元site ID・名 | 最後の0巣原記録 | 次に正巣数の記録 | 記録年の空白 | 後続正巣数計数 | 後続0巣計数 |
+|---|---|---|---:|---:|---:|
+| BISC・Biscoe Point | 1984 : 0 | 1994 : 14巣 | 10年 | 16 | 0 |
+| GALE・Galindez Island East | 1999 : 0 | 2007 : 5巣 | 8年 | 6 | 0 |
+| ORNE・Orne Islands | 1998 : 0 | 1999 : 3巣 | 1年 | 10 | 0 |
+| TXRX・Tuxen Rocks | 2003 : 0 | 2006 : 15巣 | 3年 | 6 | 0 |
+| VERN・Vernadsky Station | 1999 : 0 | 2007 : 21巣 | 8年 | 6 | 0 |
+
+原座標から計算したGALE/VERN距離は**約0.82km**、GALE/TXRXは約5.02km。2km連結クラスタはBISC、GALE+VERN、ORNE、TXRXの4つ。10km連結クラスタはBISC、GALE+TXRX+VERN、ORNEの3つ。**この5個は独立の5地域でも5つの気候実験でもない**。
+
+**実際の生物学的初記録は観測表の初正巣数より早い場合がある**。Biscoe PointのASPA139計画は1992–93年のジェンツー繁殖地の発見を記録（元MAPPPD厳格計数表では最初の正巣数1994）。原管理計画の1971年0も今回の厳格な方法選別では除外しており、物理的な定着年を厳格表から逆算しない。原資料：https://www.env.go.jp/nature/nankyoku/kankyohogo/database/jyouyaku/aspa/aspa_pdf_en/139.pdf
+
+## 元衛星SIC71,400 site-monthとの完全な時点照合
+
+1991–2020年8–11月の元OSI SAF 595×30×4の全値を読取り、各source site×yearの物理SICを計算。元実観測で0巣だった年→最初に正巣数だった年、同じ元site IDで比較。物理を1991年以前へ捏造しない。
+
+| Gentoo site | 最後の0→最初正の実調査年 | 両実調査年SIC差 pp | 最初正の調査年SIC − 直前3年平均SIC pp |
+|---|---|---:|---:|
+| BISC | 1984→1994 | 不明（1984はSIC原本外） | **+10.45** |
+| GALE | 1999→2007 | **−27.10** | −27.78 |
+| ORNE | 1998→1999 | **−9.22** | −1.96 |
+| TXRX | 2003→2006 | **−0.23** | −15.65 |
+| VERN | 1999→2007 | **−27.10** | −27.78 |
+
+GALEとVERNの年次SICは元抽出海域で同じ値であり独立な気候複製ではない。4/5の前後SIC差は物理的に負だが、調査間隔1–8年・地域共有・元の巣数観測時点・餌場の未測定がある。BISCは正の巣数記録の直前年3年平均より海氷が多い。気候ウィンドウによって符号と強さが変わり、0→正記録が海氷低下により因果的に生じたという推定はできない。
+
+## 先行研究との直接的重複を確認
+
+**Herman & Lynch (2022), Ornithological Applications, DOI 10.1093/ornithapp/duac014** はMAPPPDからBiscoe Point、Orne Islands、Moot Point、Vernadsky Stationの4地点を使い、年齢構造＋ABCから急速なGentooの繁殖巣数増には**継続的な移入が必要**と推定した。今回の5siteのうち**BISC/ORNE/VERNの3siteは生物系列として同じ先行資料**。Moot Pointは本sourceの「最初の計数が0」基準に該当しないが、成立しなかったことを意味しない。過去の移入モデルの再現を新規データの独立な機構実証とは呼ばない。
+
+**Herman et al. (2020), Polar Biology, DOI 10.1007/s00300-020-02759-3** は既に南極半島西部のジェンツー分布拡大と新コロニーの時系列を検討。
+
+**Cimino et al. (2026), Marine Ornithology, DOI 10.5038/2074-1235.54.2.1707** はPoint8で2018–2020の氷河後退、2019初観察、2020初営巣、2023初育雛成功という**実際の生物学的段階の違い**を実測。同じ土地で0→正だけよりはるかに強い状態判別を既に行っている。今回の5siteについて土地開放と繁殖成功は同期した元資料を持っていない。
+
+## なぜ今までの探索ではっきりした新しい生態学的結果が出なかったか
+
+1. **known-colony-only sampleの選択**。MAPPPDは既知のサイトに実巣数が記録される場合の表。選択肢として存在した全ての空き裸地を同じ頻度で確認していない。既知サイト内の0巣は有用な観測だが真の未占有の対照群を提供しない。
+2. **観測の間隔**。BISC 10年間、GALE/VERN 8年間などの空白で、最初に記録された正巣数を創設年と置くと遅延・発見努力を混同する。
+3. **地理と物理の交絡**。5siteは1報告地域、実質3個の10kmクラスタ。同じ海氷格子のGALE/VERNを別の気候実験と数えて有意なp値を作ってはならない。
+4. **必要な陸の変化を測っていない**。2017–2023の静的Plantarctica地図は1994/1999/2006/2007年の新しい露岩・雪・排水条件を測っていない。SCAR ADD high-res coastline v7.13 (DOI 10.5285/1c81cf24-576f-43df-be72-a5c7dbb51ffb) は異なる年代の元地形資料を合成しており、毎年一律に観測したice-free breeding landの時系列ではない。
+5. **既刊の機構研究と重複**。移入の必要性は2022年、静的陸海ニッチの違いはGallagher2025、氷河後退直後の段階的定着はCimino2026が既に示す。新しい多項式/階層モデルをfitしても独立した生物学的機構を発見したことにならない。
+6. **繁殖成功と出生/加入/移出のデータの分離**。原MAPPPDの巣数だけでは実生存と現地加入を別々に識別できない。Herman2022は他資料に基づく生存・繁殖率事前情報で移入を推定しており、元source数値だけから直接移入個体を計測したわけではない。
+
+## 元データから次に可能なこと／不可能なこと
+
+**実行済み**：35全イベントの元全行の真ゼロ/真正、数年の空白、4回以上再計数の条件、500kmではなく2km/10kmの地理クラスタ、71,400元衛星SICからの1991–2020真source-yearのみの物理照合。生物学的な**観測された繁殖利用状態の変化**までは識別した。
+
+**未実行かつ不可欠**：同じ撮影機会で連続年観測した*可能裸地×年*のゼロ/巣/雛成功、実際のbare rock新規露出面積、餌場/着岸経路の個体あるいは地域別の動的量。元の海氷・未来CMIP6・静的植生からこれらを推測で埋めない。
+
+**取得状況**：USAP-DC doi 10.15784/602035にPalmer2018/19–2024/25のAdélie/Gentoo GPS+潜水深が公開されている（6個の巨大CSV、個々は約118MB～1.8GB）。2026-11-17時点の公開UIにはdownload completionでreCAPTCHAがあり、今回の研究ブランチで原GPSを実取得してはいない。地域はPalmer周辺で、1990年代の5siteの実採餌環境に自動的に時間遡及できない。
+
+**結論／投稿判定**：5つのGentoo「0巣→繰返し正巣数」パターンは実証可能だが、主要事例・機構は2022年以前の文献と重複する。これを単独の新規colonization結果としてv0.6の主図・要旨へ追加しない。動的な海×陸機会の相互作用を主張するには同一の利用可能候補パッチ・真正な非利用と観測努力・海洋到達条件を複数地域で取得し、独立の標本で検証する必要がある。今回は**source feasibility supplement**として保存する。
+
+## 再現
+
+- Frozen original 2,999 MAPPPD derived Git blob SHA1 fc134e364cf38699fa7611d7dee5fbbbcb370c0a、method-selected 2,456 source artifact 13669533413。
+- Original 595site×1991–2020年×8–11月衛星SIC artifact 13671496095、1991以前は未取得・値を創作しない。
+- Script: audit_original_zero_to_positive_transitions.py、link_true_nesting_transition_to_annual_SIC.py、workflow .github/workflows/penguin-original-nest-zero-to-positive-20261117.yml。
+- GitHub Actions **#44025152509 SUCCESS** https://github.com/zuizui0223/mina/actions/runs/44025152509 。artifact **14302403231**：全35イベントの元数値監査、5重点site、全SIC物理年次join、source SHA receipts。元ブランチPR #214、main/凍結Paper1/2は変更しない。
