@@ -23,6 +23,58 @@ jobs:
         run: |
           python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/probe_zenodo_diet_source.py \
             --out build/youngflesh_2026_zenodo_source_inventory
+      - name: Verify original 256 MB diet archive MD5 and list embedded data files
+        run: |
+          python - <<'PYCODE'
+          import hashlib,json,urllib.request,zipfile
+          from pathlib import Path
+          root=Path('build/youngflesh_2026_zenodo_source_inventory')
+          receipt=json.loads((root/'original_zenodo_17409948_source_receipt.json').read_text())
+          assert receipt['status']=='ZENODO_METADATA_RETRIEVED_NO_DATA_DOWNLOADED'
+          assert len(receipt['file_inventory'])==1
+          item=receipt['file_inventory'][0]
+          assert (item['key'],item['size_bytes'],item['checksum'])==('data.zip',256425816,'md5:e29a2f68c84e3a515044d554540def2f')
+          result_path=root/'publisher_original_zip_scan_receipt.json'
+          source_zip=root/'publisher_verified_data.zip'
+          try:
+              ua='mina-original-diet-source-audit/0.2 (zuizui0223/mina)'
+              req=urllib.request.Request('https://zenodo.org/api/records/17409948',headers={'User-Agent':ua})
+              with urllib.request.urlopen(req,timeout=50) as r: meta=json.load(r)
+              assert meta['id']==17409948
+              f=next(x for x in meta['files'] if x['key']=='data.zip')
+              url=f['links'].get('content') or f['links']['self']
+              h=hashlib.md5(); n=0
+              with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':ua}),timeout=180) as response,source_zip.open('wb') as out:
+                  while True:
+                      chunk=response.read(1_048_576)
+                      if not chunk:break
+                      out.write(chunk);h.update(chunk);n+=len(chunk)
+                      if n>256425816:raise ValueError('Original source ZIP larger than pinned size')
+              assert n==256425816,('byte_count',n)
+              assert h.hexdigest()=='e29a2f68c84e3a515044d554540def2f',('source_md5',h.hexdigest())
+              with zipfile.ZipFile(source_zip) as z:
+                  members=[{'name':i.filename,'uncompressed_bytes':i.file_size,'compressed_bytes':i.compress_size,'is_dir':i.is_dir()} for i in z.infolist()]
+                  assert not any(i['name'].startswith('/') or '..' in Path(i['name']).parts for i in members)
+                  headers=[]
+                  for info in z.infolist():
+                      if info.filename.lower().endswith(('.csv','.tsv')) and info.file_size<=10_000_000:
+                          try:
+                              with z.open(info) as fd: head=fd.readline(8192).decode('utf-8-sig').strip()
+                              headers.append({'name':info.filename,'header':head[:1500]})
+                          except Exception as e: headers.append({'name':info.filename,'header_error':str(e)[:200]})
+              result={'status':'PUBLISHER_SOURCE_ZIP_VERIFIED_MD5_MEMBER_INVENTORY',
+                      'record_id':17409948,'source_bytes':n,'source_md5':h.hexdigest(),
+                      'n_members':len(members),'members':members,'csv_headers':headers,
+                      'diet_values_not_yet_linked':True,'original_zip_not_redistributed':True}
+              print('VERIFIED ORIGINAL ZENODO ZIP:',n,'bytes',len(members),'members')
+          except Exception as e:
+              result={'status':'PUBLISHER_SOURCE_ZIP_SCAN_BLOCKED','error':f'{type(e).__name__}: {str(e)[:500]}','diet_values_not_yet_linked':True}
+              print(result)
+              raise
+          finally:
+              if 'result' in locals():result_path.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\\n')
+              if source_zip.exists():source_zip.unlink()
+          PYCODE
       - name: Store exact source inventory or failure receipt only
         if: always()
         uses: actions/upload-artifact@v4
