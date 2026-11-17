@@ -100,6 +100,26 @@ jobs:
           assert x["no_independent_regions_or_climate_selection_test"] is True
           print("PASS original SIC 1991-2020 exact scope, 4/5 before-after cases, and no fabricated 1984 physical exposure")
           PY
+      - name: Probe actual 1985-2016 original summer Landsat scene availability and GLIMS historical glacier service
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/probe_public_historical_land_source_coverage.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/probe_public_historical_land_source_coverage.py \
+            --out build/penguin_zero_transitions_verified
+          python - <<'PY'
+          import json,csv
+          from pathlib import Path
+          root=Path('build/penguin_zero_transitions_verified')
+          x=json.loads((root/'land_source_metadata_coverage_receipt.json').read_text())
+          rows=list(csv.DictReader((root/'landsat_climate_event_summer_scene_availability.csv').open()))
+          assert x['status']=='PUBLIC_ORIGINAL_HISTORIC_GROUND_SURFACE_SOURCE_PROBE_ONLY'
+          assert x['n_original_gentoo_site_codes']==5 and x['n_spatial_clusters_at_10km']==3
+          assert x['n_landsat_searches_successful']+x['n_landsat_search_errors']==x['n_landsat_searches_requested']==19
+          assert len(rows)==x['n_landsat_searches_successful']
+          assert x['scene_catalog_coverage_cannot_prove_land_pixel_quality']
+          assert x['no_glacier_retreat_area_or_bare_rock_change_calculated']
+          assert x['not_an_independent_breeding_site_nonoccupied_comparator']
+          print('PASS objective historical Landsat metadata support audit (source errors remain separately counted)')
+          PY
       - name: Preserve all 35 transition records and 5 supported case rows as artifacts
         if: always()
         uses: actions/upload-artifact@v4
