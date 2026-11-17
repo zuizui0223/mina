@@ -5,6 +5,7 @@ on:
     paths:
       - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/retrieve_original_Cook2021_historic_glacier_fronts.py'
       - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/map_original_Cook2021_coastline_dates_to_gentoo_sites.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/test_Cook2021_Biscoe_1989_1998_coastline_lineage.py'
       - '.github/workflows/penguin-original-Cook2021-coastal-gis-retrieval.yml'
   workflow_dispatch:
 permissions:
@@ -61,6 +62,24 @@ jobs:
           assert x['never_impute_unsurveyed_glacier_years']
           assert x['not_a_counterfactual_true_unoccupied_breeding_patch_design']
           print('PASS publisher-original glacier/rock coastline source year/type support without assuming new nesting land')
+          PY
+      - name: Check identical 1989/1998 Biscoe rock/ice line geometry in the original source
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/test_Cook2021_Biscoe_1989_1998_coastline_lineage.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/test_Cook2021_Biscoe_1989_1998_coastline_lineage.py \
+            --original-source-zip build/cook2021_original_ice_front_zip/Cook2021_Coastal_change_EPSG_original.zip \
+            --out build/cook2021_original_ice_front_zip
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads((Path('build/cook2021_original_ice_front_zip')/'Cook2021_Biscoe_1989_1998_rock_ice_lineage_receipt.json').read_text())
+          assert x['status']=='PASS_COOK2021_BISCOE_1989_1998_GIS_LINEAGE_EQUALITY_CHECK'
+          assert x['n_original_local_source_features']==17
+          assert len(x['by_type'])==2
+          assert all(z['mapped_line_not_true_land_change'] for z in x['by_type'])
+          assert x['same_year_coastline_missing_segments_dont_imply_change']
+          assert x['no_direct_ice_ramp_break_or_new_bare_rock_area']
+          print('PASS exact original mapped-line geometry lineage, never infer new rock or direct colony mechanism')
           PY
       - name: Preserve original Cook 2021 archive and all source-schema QA receipts
         if: always()
