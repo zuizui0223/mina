@@ -1,0 +1,60 @@
+name: Penguin isotope salinity original-source spatial and temporal falsification
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_spatial_temporal_salt_placebos.py'
+      - '.github/workflows/penguin-20261117-isotope-salt-placebo-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-source-falsification:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical dependencies for source-fixed replay
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3'
+      - name: Retrieve fixed original-source 860 analysis and Nov-Feb physical cell archive
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/isotope_salt_placebo_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/isotope_salt_placebo_source/verified_860.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14326721399/zip" > build/isotope_salt_placebo_source/original_892_GLORYS.zip
+      - name: Recompute source-true model and source-preserving marine-cell and time-direction controls
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_spatial_temporal_salt_placebos.py \
+            --original-860-zip build/isotope_salt_placebo_source/verified_860.zip \
+            --glorys-zip build/isotope_salt_placebo_source/original_892_GLORYS.zip \
+            --out build/isotope_salt_placebo_result \
+            --permutations 1000
+      - name: Assert original frozen source count, primary coefficient, and negative-control scope
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/isotope_salt_placebo_result/isotope_salinity_spatial_temporal_negative_controls.json')
+          r=json.loads(p.read_text())
+          assert r['status']=='PASS_SOURCE_AUDITED_EXPLORATORY_PLACEBO_NO_CAUSAL_OR_DIET_RESULT'
+          assert (r['source_original_n'],r['source_sites'],r['source_wet_cells'],r['regions'])==(860,88,82,13)
+          assert abs(r['spatial_assignment']['source_true_beta']-0.8341458422)<1e-6
+          assert abs(r['spatial_assignment']['source_true_partial_r2']-0.02880176895)<1e-9
+          assert r['temporally_misaligned_source_exposures']['n_site_seasons']==721
+          assert r['post_selection_not_confirmatory']
+          print('PASS: original 860-source isotope proxy, 1000 post-selection marine cell assignments, 721 original time-control seasons')
+          PY
+      - name: Archive only derived falsification scores and limitation verdict
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-isotope-salinity-spatial-and-temporal-negative-controls-20261117
+          path: build/isotope_salt_placebo_result/
+          if-no-files-found: warn
+          retention-days: 30
