@@ -20,7 +20,7 @@
 | フェノロジー別期の評価 | Youngflesh et al. 2017, Ecology, https://doi.org/10.1002/ecy.1749 | 全南極アデリーのフェノロジーと繁殖成功の環境マッチ。平均成功との関連弱く、観測した期間・指標で統一的時系列トレンドなし | 同じ「フェノロジー」でも環境窓、観測時期、定着vs孵化、成功上限vs平均で異なる。2026論文と矛盾と断定しない |
 | 大陸食性 | Youngflesh et al. 2026, Current Biology, https://doi.org/10.1016/j.cub.2026.06.028 | 衛星糞色＋安定同位体＋階層モデルで1984–2013年アデリー食性を分布全体に復元。食性の年変化とSIC、長期個体数地域差に関連 | 「海氷が食性と関連」は2026年に**既に大陸規模で新規実証済み**。Signy単一島の同じ発見は主題として競争力が弱い |
 | Signy食性の移用 | mina regional source paper (unsubmitted): research/climate-penguin/outputs/regional_diet_paper/MANUSCRIPT_JA.md | Signy9年のGentoo魚食–SICは正、同島4年後続テストは改善。ただしPalmerへ傾き移用で予測が現地平均より悪い | **生物機構の地理間転写可能性を検証したこと**には意味があるが、1対の地域比較から全球ギルド一般則を言えない |
-| 餌場とオキアミ | Trivelpiece et al. 2011, PNAS, https://doi.org/10.1073/pnas.1016560108 | Scotia Seaのアデリー・ヒゲ減少と長期krill動態・歴史的捕獲/捕食者回復の影響を解釈 | SICは餌量そのものではない。海氷単独と成長の一方向因果は理論的にも成り立ちにくい |
+| 餌場とオキアミ | Trivelpiece et al. 2011, PNAS, https://doi.org/10.1073/pnas.1016560108 | Scotia Seaで「アデリーは氷好きで減るがヒゲは氷を避けるので増える」という単純説に反し、**両種が減少**。歴史的なkrill量・競争・若鳥加入（繁殖に達するまで2–4年）で説明を試みた | 海氷を種の好みだけで個体数へ転写する古いモデル自体が否定的に検証済み。SICは餌の量や加入率そのものではない |
 | オキアミ環境の機構 | 2024 NR Earth Environ, https://doi.org/10.1038/s43017-023-00504-y | 海氷変化とKrillの生活史・成育段階・群れ構造・地理的縮小、異なる季節と地域 | 実利用海域/同季節のkrillサイズと分布が欠けると、近岸100km SICは食物可用性の粗い代理 |
 | 将来の食物網 | Krumhardt et al. 2026, Nat Clim Change, https://doi.org/10.1038/s41558-026-02561-9 | 気候シグナルの出現時期が海氷・植物プランクトン・オキアミ・魚・ペンギンで異なり、季節・地域で正負も変化 | 温暖化→海氷→餌→巣を一本の線形符号で描くと真の非同調性を隠す |
 | 海洋採餌適性 | 2026, Global Planet Change, https://doi.org/10.1016/j.gloplacha.2026.105518 | 多コロニー追跡・再解析・RFとCMIP6を統合、AP Adélieの夏季採餌適性にSSTの非線形閾値、1993–2020の変化と将来シナリオ | 「GPS×海洋SDM＋温暖化」は既刊。自研究で新しくやるなら単にもう1モデルでなく**巣数/定着に繋がる実応答**が必要 |
@@ -29,6 +29,7 @@
 | 密度依存と繁殖空間 | 2020, Ecol Evol, https://doi.org/10.1002/ece3.6037 | 東南極のアデリー7地域、環境と営巣地キャパシティによる密度依存・占有変化の関連 | 収縮/集中を社会的競争や理想自由分布の新規証明と呼べない |
 | ペンギン分布の反例 | Wethington et al. 2023, Sci Rep, https://doi.org/10.1038/s41598-023-29465-4 | 半島の「Adélie gap」付近でも維持される繁殖地がある。局所氷とアクセス、25kmSICの限界を論じる | 半島一律アデリー減・ジェンツー増の外挿は不適切 |
 | 真の新規コロニー形成 | Cimino et al. 2026, Marine Ornithology, https://doi.org/10.5038/2074-1235.54.2.1707 | 氷河後退したAnvers Island Point8でジェンツー2019観察→2020営巣→2023育雛成功 | 「ペンギンは繁殖場所では気候に応答しない」は誤り。**定着が起こる必要条件**は検証可能だが一例の因果一般化は不可 |
+| 海氷の適量と採餌行動 | Le Guen et al. 2018, GCB, https://doi.org/10.1111/gcb.14377 | アデリーで繁殖成績と潜水行動が**共通した海氷濃度の最適値**に沿うことを検証 | SICと繁殖の線形傾きや単調な適応前線を前提にするのは生物学的に不適切 |
 | 氷が多過ぎる危険 | Ropert-Coudert et al. 2018, Front Mar Sci, https://doi.org/10.3389/fmars.2018.00264 | Adélieコロニーで沿岸海氷持続・ポリニヤ不在・積雪等の重なりで繁殖失敗 | 全領域に「SICが高いほど良い」を当てはめるのは誤指定。季節に依るアクセス条件が重要 |
 | 海氷変動状態 | Hobbs et al. 2024, J Climate, https://doi.org/10.1175/JCLI-D-23-0479.1 | 近年の南極夏季海氷の分散・持続性が大きく変化、2014年高値→2016年の大幅低下後の低水準を分析 | 1991–2020の平均海氷を全地域に同じ単調温暖化軸として使うと物理的に無理 |
 | 海氷レジームの議論 | 2025, Communications Earth & Environment, https://doi.org/10.1038/s43247-025-02107-5 | 海氷持続性が21世紀に構造的変化。単発の急激shiftモデルより連続した持続性進化を支持する解析 | 「2016年に永久不可逆なレジーム転換が確認」と断定しない。気候期間により構造が変わる程度を監査 |
@@ -38,7 +39,7 @@
 | 衛星緑化の批判 | Colesie et al. 2025, GCB, https://doi.org/10.1111/gcb.70294 | 植物の遅い成長と観測機会の不均一から衛星NDVI拡大の生物学的解釈に疑義 | 静的植生地図とペンギン巣数相関だけで、温暖化→植生増加と結論不可 |
 | 緑化をめぐる応酬 | Bokhorst et al. 2026, Nat Geosci, https://doi.org/10.1038/s41561-026-02076-0; Roland et al. 2026 reply, https://doi.org/10.1038/s41561-026-02080-4 | 2024年のNDVIから生物被覆の14倍化と読めるかをめぐり原著と批判が並存 | どちらかの見解を勝手に確定事実として採用しない。独立ground truthが必要 |
 | 鳥と植生の逆向き矢印 | 2020, Sci Total Environ, https://doi.org/10.1016/j.scitotenv.2019.134496 | ^15N同位体を用い、ペンギン糞由来Nが土壌・コケ類等に影響することを実証 | 植生は繁殖地の原因でも**繁殖個体群の結果**でもあり得る。横断相関では方向不明 |
-| 計数の観測誤差 | Che-Castaldo et al. 2017 MAPPPD original publication, https://www.cambridge.org/core/journals/polar-record/article/mapping-application-for-penguin-populations-and-projected-dynamics-mapppd-data-and-tools-for-dynamic-management-and-decision-support/A949B52DA3AE1A7E963C5888B8E92275 | MAPPPDは地上・航空・衛星・写真・文献資料を統合。品質フラグ1～5も導入 | source method一致だけでは日付/範囲/精度同等性なし。欠測を0と扱うと占有推定に偽の絶滅が出る |
+| 計数の観測誤差 | Humphries et al. 2017 MAPPPD original publication, https://www.cambridge.org/core/journals/polar-record/article/mapping-application-for-penguin-populations-and-projected-dynamics-mapppd-data-and-tools-for-dynamic-management-and-decision-support/A949B52DA3AE1A7E963C5888B8E92275 | MAPPPDは地上・航空・衛星・写真・文献資料を統合。品質フラグ1～5も導入 | source method一致だけでは日付/範囲/精度同等性なし。欠測を0と扱うと占有推定に偽の絶滅が出る |
 | 元データの更新 | Oceanites MAPPPD v5.0, 2026-10-21 https://www.penguinmap.com/mapppd/ | 現行729 site、5,487 count、6種、2025/26 season、元source183件 | minaの595 site / 2,456 countsは**固定した厳格解析標本**であり現在の全MAPPPDではない。265旧系列は未再現 |
 | 観測と更新の効果 | Oceanites SOAP 2024 https://static1.squarespace.com/static/62238a882e477312d4e14c7d/t/66dcb40c6660ed040c78260b/1725740046160/Oceanites%2BSOAP%2B2024.pdf | 新たな計数siteを追加すると見かけの全域ペア総数が増える。古いsite固定でみると種/地域の減少傾向が別に残ると報告 | 「サイトが増えた」は実個体群増や定着と同一でない。解析対象のsampling frameを固定する理由 |
 | 衛星計数の観測過程 | 2024, Nat Commun, https://doi.org/10.1038/s41467-024-48239-8 | 皇帝の衛星撮像における密度・天候/行動変化と個体数推定誤差 | ラスター検出面積≠生物個体数、観測変換校正が必要 |
