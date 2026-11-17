@@ -105,7 +105,8 @@ def run(out):
        "glacier_types":layer.get("n_glacier_feature_types"),
        "chosen_layer":layer.get("requested_layer"),"success_bboxes":len(probes),
        "counts":{k:v["n_returned_features"] for k,v in probes.items()},
-       "attribute_previews":{k:vv["glacier_attribute_records"][:3] for k,vv in probes.items()},
+       "distinct_source_dates":{k:sorted({str(a["properties"].get("src_date",""))[:10] for a in vv["glacier_attribute_records"]}) for k,vv in probes.items()},
+       "glacier_source_rows":{k:[{"glac_id":a["properties"].get("glac_id"),"db_area":a["properties"].get("db_area"),"date":str(a["properties"].get("src_date",""))[:10],"name":a["properties"].get("glac_name")} for a in vv["glacier_attribute_records"]] for k,vv in probes.items()},
        "errors":errors},ensure_ascii=False),flush=True)
 
 if __name__=="__main__":
