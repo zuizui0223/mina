@@ -1,0 +1,33 @@
+name: Penguin 2026 dietary Zenodo original source metadata gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/**'
+      - '.github/workflows/penguin-youngflesh-zenodo-diet-source-20261117.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  youngflesh-diet-original-meta:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source metadata and checksum gate locally
+        run: python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/test_probe_zenodo_diet_source.py -v
+      - name: Retrieve original publisher Zenodo file inventory (not original contents)
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/probe_zenodo_diet_source.py \
+            --out build/youngflesh_2026_zenodo_source_inventory
+      - name: Store exact source inventory or failure receipt only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-zenodo-17409948-source-file-inventory-only
+          path: build/youngflesh_2026_zenodo_source_inventory/
+          if-no-files-found: warn
+          retention-days: 30
