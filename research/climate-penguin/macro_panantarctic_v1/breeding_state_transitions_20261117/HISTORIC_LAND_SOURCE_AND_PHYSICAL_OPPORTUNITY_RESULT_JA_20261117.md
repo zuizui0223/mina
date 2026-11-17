@@ -46,7 +46,36 @@ GLIMSの2002年輪郭は**Biscoe 1992/93年Gentoo発見と1994年source正巣数
 
 **氷河ポリゴンの消えた面積 ≠ 2002年の営巣可能裸地。** 氷が後退した場所は開水面かもしれず、現代の地図上の露岩でもその時点での雪・排水・巣のための面積とは異なる。Biscoeでは歴史的氷ランプ喪失によりAnversとの接続が分断されたことは別文献で裏付けられるが、GLIMSの半径2km氷河ポリゴン面積差だけでそのランプの季節・年代を特定できない。
 
-## 3. 先行研究と照合した、今回できたこと・まだ識別できないこと
+## 3. Cook–Fox–Thomson (2021) の原海岸線GISを取得し、1989/1998年の地理同一性まで検査
+
+英国極地データセンターDOI **10.5285/07727663-9B94-4069-A486-67E4D82177D3** の原ファイル Coastal_change_EPSG.zip を実際にダウンロードした。**7,493,252 bytes**、原SHA256 **cd17b91692d2f110acbe84553b950161f03f3e4c01c0d622ffaca1682af972d4**。原EPSG:3031のShapefileには**13,436本**の実海岸・氷河前縁の線分があり、元観測年、信頼性、地形区分、元ソース出典を各行で確認した。1843–2008年というデータセット期間は、各地点の年次連続観測を意味しない。
+
+各source繁殖地群の中心半径2kmにある本物の線分の元年・種類：
+
+| 群 | 2km内原線分 | 実際にある測定年 | 対応する巣数記録 |
+|---|---:|---|---|
+| **Biscoe Point** | **24** | 1956,1968,1973,**1989**,1998 | 1984年0→1994年14巣 |
+| Orne Islands | 7 | 1956,1973,1989 | 1998年0→1999年3巣 |
+| Galindez/Vernadsky/Tuxen | 28 | 1956のみ | 1999/2003年0→2006/07年正巣数 |
+
+Biscoe1989の資料は0→最初の正巣数の記録間に位置する。1989年の岩石海岸4線分・氷海岸5線分、1998年の岩石海岸3線分・氷海岸5線分はそれぞれ元で区別できた。一方OrneやGalindezでは変化期間の前後を独立に覆う海岸線がない。
+
+### 決定的な確認：異なるsource年・IDでも地図の大部分は全く同じ線分だった
+
+Biscoe半径2kmの1989年と1998年を、元source EPSG:3031で地物ジオメトリそのものの完全一致と共通ライン長で比較した。
+
+| Source類型 | 1989年線分 | 1998年線分 | 別年で幾何的に完全一致した線分ペア | 1989年の総線長に占める重複 | 1998年の総線長に占める重複 |
+|---|---:|---:|---:|---:|---:|
+| 氷の海岸線 | 5 | 5 | **3ペア** | **91.87%** | **83.24%** |
+| 岩石海岸線 | 4 | 3 | **3ペア** | **80.75%** | **100.00%** |
+
+GISの元地物IDは異なるが、全く同じ座標列を持つ別年ラインが実際に存在した。したがって、**2つの年号があることを2つの独立した地形変化測定と呼ぶのは誤り**。1998年岩石海岸線長の100%は1989年の地図にもすでにあり、1998年に「新しく露出した岩石海岸」をこれらの線から算出できない。1989と1998の全海岸線が変化しなかったという意味ではない。欠損ラインや測量範囲の差、元の画像幾何と原編集履歴を分離しない限り、真の氷ランプ切断日や裸地増加面積は不明。
+
+このことは、旧MAPPPDの既知コロニーだけに複数の時代の海氷や海岸線を加えても、**独立して観測された生態学的応答の反復数が増えない**という、今までの探索の実測された問題点である。
+
+ソース再現：公式7.5MB原ZIPの実取得 [#44037197204](https://github.com/zuizui0223/mina/actions/runs/44037197204)、13,436線分の観測年・岩/氷分類照合 [#44037806473](https://github.com/zuizui0223/mina/actions/runs/44037806473)、Biscoeの完全同一geometry照合 [#44038011806](https://github.com/zuizui0223/mina/actions/runs/44038011806)。3件ともSUCCESS。元ZIPと派生CSV/JSONをGitHub Actions artifactへ30日保持。
+
+## 4. 先行研究と照合した、今回できたこと・まだ識別できないこと
 
 **新たに実測した肯定的な物理量**：公開の同じglacier ID・2源時代の元geometryから、Biscoe/Orneの2km周辺でそれぞれ約0.53/0.50 km²の描画済み氷河被覆減少を再現した。元MAPPPDでは両地点のGentooが0記録から繰返し正巣数へ変化した。ただし**2期氷河地理と繁殖遷移の完全な同時ペアではなく、独立の複数地域反復ではない**。
 
@@ -56,12 +85,12 @@ GLIMSの2002年輪郭は**Biscoe 1992/93年Gentoo発見と1994年source正巣数
 
 **論文への境界**：これをv0.6の主要旨に新しい気候適応・新規コロニー発生法則として加えない。supplementには**source support finding**として入れられる。マクロ論文を本当に新しい動的海陸機会論へ変えるには、過去を空き地として調査した比較候補裸地パッチを揃え、未開封の別地域で事前仕様を一度だけ検証する。
 
-## 4. 実行の真正ソースとCI
+## 5. 実行の真正ソースとCI
 
 - 元MAPPPD2,456 original counts, 35 observed 0/positive transitions, 5 repeated GEPE site IDs: [original count/sea-ice source audit #44025152509](https://github.com/zuizui0223/mina/actions/runs/44025152509) SUCCESS。
 - Landsat元検索19件/123 scene（source coverage/status): [#44035241809](https://github.com/zuizui0223/mina/actions/runs/44035241809) SUCCESS、artifact **14306602925**。
 - 実元Landsat QA_PIXEL read77/77 with 5 site 2-year same-location diagnostics: [#44035592053](https://github.com/zuizui0223/mina/actions/runs/44035592053) SUCCESS、artifact **14306748172**。WGS84元坐標→EPSG:3031地表固定5×5格子へ投影、QA bit/source timestamp/source IDを全部記録。
 - GLIMS WFS original 38 features / source times and glacier IDs: [#44036033057](https://github.com/zuizui0223/mina/actions/runs/44036033057) SUCCESS。
 - GLIMS source geometry/2km-5km actual polygon accounting: [#44036259707](https://github.com/zuizui0223/mina/actions/runs/44036259707) SUCCESS、artifact **14307467301**。
-- 元公式情報：USGS [Landsat Collection 2 Level-2 Surface Reflectance](https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-reflectance)、[Planetary Computer STAC](https://planetarycomputer.microsoft.com/api/stac/v1/collections/landsat-c2-l2)、[GLIMS Database](https://www.glims.org/glacierdata/)、[Cook/Fox/Thomson 2021 historical coastlines, DOI 10.5285/07727663-9B94-4069-A486-67E4D82177D3](https://doi.org/10.5285/07727663-9B94-4069-A486-67E4D82177D3)。最後のCook元GISは**今回未取得・未計算**。確認済みのGLIMS年次差とは混ぜない。
+- 元公式情報：USGS [Landsat Collection 2 Level-2 Surface Reflectance](https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-reflectance)、[Planetary Computer STAC](https://planetarycomputer.microsoft.com/api/stac/v1/collections/landsat-c2-l2)、[GLIMS Database](https://www.glims.org/glacierdata/)、[Cook/Fox/Thomson 2021 historical coastlines, DOI 10.5285/07727663-9B94-4069-A486-67E4D82177D3](https://doi.org/10.5285/07727663-9B94-4069-A486-67E4D82177D3)。Cook原GISについても上記の通り**実際に取得・位置照合・幾何同一性を検証済み**。ただしCookの海岸線とGLIMSの氷河ポリゴンは異なる推定対象なので、共通の裸地面積として足し合わせない。
 - 実行script: \`probe_public_historical_land_source_coverage.py\`, \`audit_original_landsat_pixel_QA_event_windows.py\`, \`probe_GLIMS_coastal_glacier_date_support.py\`, \`derive_GLIMS_1989_2002_fixed_neighborhood_glacier_cover.py\`。ソースZIPは成果保存、期限30日。main・Paper1/2・単一マクロ原稿v0.5は変更しない。
