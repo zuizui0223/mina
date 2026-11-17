@@ -34,7 +34,7 @@ def source_native_25km_axes(x,y):
     """Guard when NetCDF dimension indexes, not native meter coordinates, are decoded.
 
     NSIDC south grid: 316 columns x 332 rows, 25km, documented outer
-    upper-left pixel CENTERS x=-3950km, y=4350km. Reconstruct cell
+    upper-left pixel BOUNDARIES x=-3950km, y=4350km; actual pixel CENTERS start x=-3937.5km, y=4337.5km. Reconstruct center coordinates only for zero-based NetCDF dimension indices. See NSIDC G02202 v4 coordinate metadata: xgrid actual_range [-3937500,3937500], ygrid actual_range [-3937500,4337500] meters
     CENTERS only when raw dimensions are 0..N-1 synthetic indexes.
     """
     x=np.asarray(x,dtype=float)
@@ -45,8 +45,8 @@ def source_native_25km_axes(x,y):
     raw_y=[float(y[0]),float(y[-1])]
     derived=False
     if np.array_equal(x,np.arange(316,dtype=float)) and np.array_equal(y,np.arange(332,dtype=float)):
-        x=-3_950_000+25_000*np.arange(316,dtype=float)
-        y=+4_350_000-25_000*np.arange(332,dtype=float)
+        x=-3_937_500+25_000*np.arange(316,dtype=float)
+        y=+4_337_500-25_000*np.arange(332,dtype=float)
         derived=True
     elif np.isclose(abs(np.diff(x)).mean(),25,atol=1e-5) and np.max(np.abs(x))<5000:
         # Original file may encode km rather than meters. Require both axes.
@@ -187,6 +187,10 @@ if __name__=="__main__":
         x=np.array([-200e3,0,200e3]); y=x.copy()
         mask=cells_within(x,y,0,0)
         assert mask.shape==(3,3) and mask.sum()==1
+        xn,yn,derived=source_native_25km_axes(np.arange(316),np.arange(332))
+        assert derived
+        assert (xn[0],xn[-1],yn[0],yn[-1])==(-3937500.0,3937500.0,4337500.0,-3937500.0)
+        assert np.isclose(np.diff(xn),25000).all() and np.isclose(np.diff(yn),-25000).all()
         print("PASS 150km center-cell buffer geometry synthetic")
     else:
         extract(a.archive,a.centroids,a.matched,a.out)
