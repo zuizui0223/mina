@@ -1,0 +1,80 @@
+name: Penguin original POM nitrogen baseline geographic and season coverage
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_pom_baseline_overlap.py'
+      - '.github/workflows/penguin-20261117-pom-isotope-baseline-support.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-pom-baseline-audit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source geographic requirements
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3' 'pyproj==3.7.1'
+      - name: Compile source audited baseline overlap script
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_pom_baseline_overlap.py
+      - name: Retrieve source 860 true isotope/marine matched site seasons and 595 publisher original atlas
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p build/penguin_pom_baseline_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_pom_baseline_source/frozen_860_isotope_source.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_pom_baseline_source/frozen_595_original_atlas.zip
+      - name: Retrieve original published Southern Ocean POM isotope dataset
+        run: |
+          python - <<'PY'
+          import hashlib,urllib.request
+          from pathlib import Path
+          url='https://raw.githubusercontent.com/KatieSJG/SO_isoscape/main/Appendix%20A.csv'
+          req=urllib.request.Request(url,headers={'User-Agent':'mina-POM-isotope-source-audit/0.1'})
+          with urllib.request.urlopen(req,timeout=90) as f: raw=f.read(3_000_001)
+          assert len(raw)<3_000_000
+          sha=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+          assert sha=='e44eb37cd772781b986e1a1776cf104eaaddd716', f'POM original source drift {sha}'
+          Path('build/penguin_pom_baseline_source/original_SO_POM_AppendixA.csv').write_bytes(raw)
+          print('PASS pinned 2021 POM source Git blob',sha,'bytes',len(raw))
+          PY
+      - name: Exact same-season and geodesic-distance baseline availability gates
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_pom_baseline_overlap.py \
+            --pom-csv build/penguin_pom_baseline_source/original_SO_POM_AppendixA.csv \
+            --original-860-zip build/penguin_pom_baseline_source/frozen_860_isotope_source.zip \
+            --original-595-zip build/penguin_pom_baseline_source/frozen_595_original_atlas.zip \
+            --out build/penguin_pom_baseline_results
+      - name: Validate no false baseline time series or false causal effect
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          p=Path('build/penguin_pom_baseline_results')
+          a=json.loads((p/'original_pom_baseline_overlap_verdict.json').read_text())
+          assert a['pom_pinned_github_blob']=='e44eb37cd772781b986e1a1776cf104eaaddd716'
+          assert a['original_pom_nonmissing_d15N']==2718
+          assert a['penguin_original_site_seasons']==860
+          assert a['seasonal_POM_climatology_is_not_time_resolved_baseline']
+          assert a['cannot_separate_isotope_baseline_from_prey_with_unmatched_rows']
+          d=pd.read_csv(p/'original_isotope_860_same_season_pom_spatial_coverage.csv')
+          assert len(d)==860 and d[['site_id','season']].duplicated().sum()==0
+          assert not d.filter(regex='^n_pom_samples').isna().any().any()
+          assert (d['n_pom_samples_50km']<=d['n_pom_samples_100km']).all()
+          assert (d['n_pom_samples_100km']<=d['n_pom_samples_250km']).all()
+          assert (d['n_pom_samples_250km']<=d['n_pom_samples_500km']).all()
+          print('PASS observational support only; raw POM not republished as a data product')
+          PY
+      - name: Archive only derived baseline coverage and source verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-isotope-source-original-POM-baseline-same-season-geography-no-pseudo-biology
+          path: build/penguin_pom_baseline_results/
+          if-no-files-found: warn
+          retention-days: 30
