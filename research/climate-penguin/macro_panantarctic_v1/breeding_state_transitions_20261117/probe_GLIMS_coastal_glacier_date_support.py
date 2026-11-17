@@ -105,6 +105,7 @@ def run(out):
        "glacier_types":layer.get("n_glacier_feature_types"),
        "chosen_layer":layer.get("requested_layer"),"success_bboxes":len(probes),
        "counts":{k:v["n_returned_features"] for k,v in probes.items()},
+       "attribute_previews":{k:vv["glacier_attribute_records"][:3] for k,vv in probes.items()},
        "errors":errors},ensure_ascii=False),flush=True)
 
 if __name__=="__main__":
