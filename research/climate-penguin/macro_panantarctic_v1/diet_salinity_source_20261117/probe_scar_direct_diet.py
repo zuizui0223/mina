@@ -60,8 +60,17 @@ def run(output):
                     if z.testzip() is not None:raise ValueError("Original ZIP failed integrity")
                     report["original_archive_member_names"]=[x.filename for x in z.infolist()[:100]]
                     report["original_archive_member_count"]=len(z.infolist())
-                    candidate=next((x for x in z.infolist() if x.filename.lower().endswith(".csv") and x.file_size<=1_000_000),None)
-                    if candidate:report["sample_schema"]=inspect_csv(z.read(candidate),candidate.filename)
+                    report["original_csv_schema"]={}
+                    for member in z.infolist():
+                        if member.filename.lower().endswith(".csv"):
+                            with z.open(member) as stream:
+                                head=stream.readline(20000).decode("utf-8-sig").strip()
+                                second=stream.readline(20000).decode("utf-8-sig").strip()
+                            report["original_csv_schema"][member.filename]={
+                                "source_file_size_bytes":member.file_size,
+                                "header":next(csv.reader([head]),[]),
+                                "first_row":next(csv.reader([second]),[])[:30]
+                            }
             elif name.endswith(".xlsx"):
                 import openpyxl
                 book=openpyxl.load_workbook(io.BytesIO(raw),read_only=True,data_only=True)
