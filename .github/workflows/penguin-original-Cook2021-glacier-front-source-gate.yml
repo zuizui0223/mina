@@ -26,7 +26,7 @@ jobs:
           p='build/cook_2021_original_historic_front_source/cook2021_historical_front_repository_discovery.json'
           x=json.load(open(p))
           assert x['status']=='COOK_2021_HISTORIC_COASTLINE_OFFICIAL_REPOSITORY_SOURCE_GATE'
-          assert x['n_official_repository_urls_tested']==2
+          assert x['n_official_repository_urls_tested']==4
           assert x['full_glacier_front_geometries_downloaded'] is False
           assert x['no_new_bare_rock_or_colony_state_inference']
           print('PASS original publisher access attempted; retrieval result kept separate from ecological hypothesis')
