@@ -61,7 +61,10 @@ def inspect_metadata(z):
     valid=None
     for x in candidates:
         with z.open(x) as raw:
-            d=pd.read_csv(raw,low_memory=False)
+            # Original 2020 contributor names include non-UTF8 Latin-1 bytes.
+            # Preserve numeric geographic/date source fields; never substitute
+            # silently decoded text for species or colony identity matching.
+            d=pd.read_csv(raw,low_memory=False,encoding='latin1')
         desc={"name":x.filename,"rows":len(d),"cols":len(d.columns),
               "columns":[str(x) for x in d.columns],
               "scientific_names":sorted(map(str,d["scientific_name"].dropna().unique()))
