@@ -1,0 +1,73 @@
+name: Penguin original 860 optical isotope salinity by background summer sea ice interaction
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/response_support_bridge_20261118/audit_salinity_by_background_seaice_860.py'
+      - '.github/workflows/penguin-20261118-salinity-background-ice-interaction-860.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_source_fixed_interaction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned numerical and clustered regression tools
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3' 'statsmodels>=0.14,<1' 'scipy<2'
+      - name: Check original-source interaction test syntax
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/response_support_bridge_20261118/audit_salinity_by_background_seaice_860.py
+      - name: Fetch only original validated isotope 860 fixed-source artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/original_ice_interaction_input
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/original_ice_interaction_input/isotope_860_source.zip
+      - name: Test one frozen salinity by background sea ice hypothesis and spatial transfer sensitivity
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/response_support_bridge_20261118/audit_salinity_by_background_seaice_860.py \
+            --original-isotope-zip build/original_ice_interaction_input/isotope_860_source.zip \
+            --out build/original_ice_interaction_result
+      - name: Recheck original positive salinity estimate while prohibiting nonrobust new sign-switch claim
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          p=Path('build/original_ice_interaction_result')
+          x=json.loads((p/'original_860_salinity_background_ice_interaction_verdict.json').read_text())
+          assert x['status']=='SOURCE_VERIFIED_INTERACTION_NO_CONFIRMED_SALT_EFFECT_SIGN_SWITCH'
+          assert abs(x['original_salinity_no_interaction_beta']-.8341458422028288)<1e-7
+          wet=x['primary_model_cell_cluster']
+          reg=x['primary_model_region_cluster']
+          assert (wet['n_colony_seasons'],wet['n_sites'],wet['n_marine_wet_cells'],wet['n_reporting_regions'])==(860,88,82,13)
+          assert abs(wet['columns'][-1]['beta']-.07521357)<1e-6
+          assert abs(x['primary_additional_residual_partial_r2']-.00148077582785866)<1e-8
+          assert wet['columns'][-1]['conservative_t_cluster_minus1_95ci'][0]<0<wet['columns'][-1]['conservative_t_cluster_minus1_95ci'][1]
+          assert reg['columns'][-1]['conservative_t_cluster_minus1_95ci'][0]<0<reg['columns'][-1]['conservative_t_cluster_minus1_95ci'][1]
+          assert abs(x['within_region_centered_site_context_sensitivity']['columns'][-1]['beta']-(-.01392028))<1e-6
+          assert len(x['leave_one_region_out_interaction'])==13
+          assert x['marine_model_regime_interaction_confirmed'] is False
+          assert x['region_slope_reversal_explained_by_ice_context'] is False
+          assert x['salinity_positive_main_effect_retained_separately']
+          original=pd.read_csv(p/'source_88_original_isotope_site_ice_background_from_observed_seasons.csv')
+          assert len(original)==88 and original.site_id.is_unique
+          assert original.site_ice_mean_pp.between(0,100).all()
+          q=pd.read_csv(p/'source_Q25_Q75_background_seaice_salinity_slopes.csv')
+          assert len(q)==4 and q.salinity_slope_delta15N_per_salinity_unit.gt(0).all()
+          print('PASS original 860 positive salinity slope, +0.0752 interaction no geographic corroboration, primary interval crosses zero at cell and region grain')
+          PY
+      - name: Archive source-preserving interaction results and 13-region omission only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-860-salinity-background-ice-interaction-no-supported-switch
+          path: build/original_ice_interaction_result/
+          if-no-files-found: warn
+          retention-days: 30
