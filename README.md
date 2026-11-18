@@ -74,6 +74,26 @@ Program documents:
 
 ---
 
+## Main-accepted Antarctic penguin macroecology results (2026-11-18)
+
+The independently source-audited, **positive** results from the Antarctic
+climate/colony macroecology research lane are now retained on `main` as an
+explicitly bounded **claims ledger**, separate from frozen Paper 1 and Paper 2:
+[human-readable Japanese result ledger](docs/ANTARCTIC_MACRO_POSITIVE_RESULTS_20261118.md)
+and [machine-readable source and inference gate](results/ANTARCTIC_MACRO_POSITIVE_RESULTS_20261118.json).
+
+Accepted observational outcomes are: two nearshore marine physical axes
+(temperature/sea ice and salinity); positive conditional salinity–Adélie optical
+δ¹⁵N association (exploratory, 13-region interval includes zero); recorded Adélie
+nest reweighting to more southerly fixed known colonies; changes in locally
+co-surveyed gentoo/Adélie nest ratios and subtotals; and CMIP6 three-model
+physical sea-ice/freshening source exposure with structurally heterogeneous
+spatial coupling. No causal diet-switching, true dispersal, future nest count,
+or universal salinity effect is claimed. Draft PR #214 as a whole is **not**
+merged, and the v0.5 manuscripts/figures are untouched.
+
+---
+
 ## Independent Palmer phenotype reassembly lane
 
 A separate short-paper lane now asks where the conspicuous Palmer

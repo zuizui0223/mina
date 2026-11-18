@@ -1,0 +1,135 @@
+{
+  "status": "MAIN_ACCEPTED_SOURCE_AUDITED_POSITIVE_CLAIMS_NOT_CAUSAL_INFERENCE",
+  "date_utc": "2026-11-18",
+  "project": "Antarctic penguin climate macroecology",
+  "integration_scope": "claim ledger only; draft PR214, experimental analyses and v0.5 manuscript not merged",
+  "source_branch": "analysis/penguin-decade-redistribution-v1-20261110",
+  "independent_observation_windows_not_combined": true,
+  "claims": [
+    {
+      "id": "physical_two_axes",
+      "tier": "direct_source_physical_result",
+      "statement": "Historical near-colony marine conditions have a temperature–sea-ice principal component and a distinct salinity-dominated component.",
+      "n_original_sites": 588,
+      "n_original_site_years": 16464,
+      "n_original_wet_cells": 378,
+      "n_regions": 18,
+      "PC1_explained_fraction": 0.603654,
+      "PC2_explained_fraction": 0.333773,
+      "PC1_sign": "warmer and less sea ice",
+      "PC2_salinity_loading": 0.99772,
+      "provenance": {
+        "source_report": "research/climate-penguin/macro_panantarctic_v1/DUAL_MARINE_AXIS_PENGUIN_RESPONSE_RESULT_JA_20261111.md",
+        "original_source_workflow_run": 42961084667
+      },
+      "inference_boundary": "PCA components are mathematically orthogonal, not experimentally separable causal mechanisms"
+    },
+    {
+      "id": "adelie_salinity_optical_isotope",
+      "tier": "exploratory_positive_biological_association",
+      "statement": "Adelie satellite-reconstructed optical guano δ15N is positively associated with same-season coastal salinity conditional on sea ice, ocean temperature, image timing, site and region×season.",
+      "n_original_site_seasons": 860,
+      "n_sites": 88,
+      "n_GLORYS_wet_cells": 82,
+      "n_regions": 13,
+      "beta_delta15N_per_salinity_unit": 0.8341458422,
+      "conditional_residual_partial_r2": 0.02880176895,
+      "cell_cluster_normal_95ci": [
+        0.38863,
+        1.27967
+      ],
+      "conservative_13region_t_95ci": [
+        -0.01594,
+        1.68424
+      ],
+      "original_months": "November to following February",
+      "source_region_slope_directions": "Victoria Land and Wilkes Land positive; southwest Antarctic Peninsula negative; northeast Antarctic Peninsula close to zero",
+      "following_season_salinity_negative_control_beta": -0.6532,
+      "provenance": {
+        "source_report": "research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/SAME_SEASON_ISOTOPE_SALINITY_EXPLORATORY_RESULT_JA_20261117.md",
+        "original_source_workflow_run": 44083346932,
+        "spatial_time_negative_control_run": 44088674449
+      },
+      "inference_boundary": "Isotope is an optical proxy, not a measured fish fraction. Region-level CI includes zero, isotope baseline unresolved and future-exposure placebo remains; do not claim causal prey switching or universal Antarctic positive slope."
+    },
+    {
+      "id": "fixed_adelie_colony_nest_reweighting",
+      "tier": "direct_observed_nesting_reallocation",
+      "statement": "Among genuinely revisited fixed-known Adélie colony rosters, the nest-count-weighted nesting location shifted south between 1991–2000 and 2011–2020.",
+      "n_nested_rosters": [
+        19,
+        26,
+        35
+      ],
+      "weighted_south_shift_km": [
+        107.310346337,
+        88.4108322945,
+        99.6026266267
+      ],
+      "source_matched_nestweighted_sea_ice_change_percentage_points": [
+        0.022,
+        0.625,
+        0.908
+      ],
+      "provenance": {
+        "source_report": "research/climate-penguin/macro_panantarctic_v1/GEOGRAPHY_VS_CONCENTRATION_FIXED_ROSTER_RESULT_JA_20261115.md",
+        "figure_source": "research/climate-penguin/macro_panantarctic_v1/latitudinal_scale_20261115/adelie_latitude_nesting_scale_3rosters_summary.csv",
+        "figure_source_workflow_run": 44248712605
+      },
+      "inference_boundary": "The same colony coordinates are fixed; this is reweighting among recorded nests, not tracked dispersal or proven sea-ice niche tracking. Rosters overlap, not independent replications."
+    },
+    {
+      "id": "source_matched_gentoo_adelie_nesting_composition",
+      "tier": "direct_observed_local_species_ratio",
+      "statement": "In six exactly source/citation/method-matched long-term colony series, the gentoo-to-Adelie observed nest ratio increased in every series, while the actually observed two-species nest subtotal increased in five.",
+      "n_strict_matched_colonies": 6,
+      "n_reporting_regions": 2,
+      "n_positive_gentoo_to_adelie_ratio_slopes": 6,
+      "n_positive_two_species_observed_subtotal_change": 5,
+      "n_adelie_log_nest_trends_negative": 6,
+      "n_gentoo_log_nest_trends_positive": 6,
+      "provenance": {
+        "source_report": "research/climate-penguin/macro_panantarctic_v1/strict_pair_20261115/REPLACEMENT_VS_COMMUNITY_TOTAL_JA_20261115.md",
+        "figure_source": "research/climate-penguin/macro_panantarctic_v1/strict_pair_20261115/strict_18_pairs_absolute_vs_relative_component_decomposition.csv"
+      },
+      "inference_boundary": "Only two source regions; relative species restructuring is not a competitive replacement mechanism and a changing ratio does not imply declining total nests."
+    },
+    {
+      "id": "CMIP6_joint_ice_freshening_physical_exposure",
+      "tier": "source_verified_selected_model_physical_projection",
+      "statement": "Three selected source CMIP6 models project widespread surface freshening, while the same models disagree on geographical sea-ice and salinity change coupling.",
+      "known_site_ids": 595,
+      "n_selected_models": 3,
+      "n_SSPs": 2,
+      "n_future_periods": 2,
+      "primary_scenario": "SSP5-8.5;2081-2100 versus model historical 1995-2014; August-November",
+      "n_595_sites_all3_sos_decrease": 464,
+      "n_595_sites_all3_sos_and_sic_decrease": 384,
+      "n_true_2011_2020_counted_sites": 271,
+      "n_counted_sites_all3_sos_decrease": 179,
+      "n_counted_sites_all3_both_decrease": 152,
+      "fixed_observed_nest_median_weight_fraction_all3_sos_decrease": 0.935425,
+      "fixed_observed_nest_median_weight_fraction_all3_both_decrease": 0.590808,
+      "model_raw_spatial_r_delta_sic_vs_delta_sos": {
+        "ACCESS-CM2": 0.743,
+        "BCC-CSM2-MR": -0.296,
+        "CESM2": -0.333
+      },
+      "provenance": {
+        "source_report": "research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/CMIP6_FUTURE_SIC_SOS_SPATIAL_DECOUPLING_HISTORICAL_LOCAL_SOURCE_RESULT_20261118_JA.md",
+        "raw_source_rebuild_workflow_run": 44238218203,
+        "coupling_workflow_run": 44244226558,
+        "actual_nest_weights_workflow_run": 43872754084
+      },
+      "inference_boundary": "Only 3 selected models, each one member; model agreement is not probability. Nest-median weights are fixed historical source proxies, NOT future nests. CMIP6 physical season and ocean grid differ from the isotope model; no future δ15N or breeding forecast."
+    }
+  ],
+  "rejected_as_unverified_main_claims": [
+    "salinity causally switches fish/krill diet",
+    "uniform Antarctic salinity biological slope",
+    "warming causes individual Adélie southward migration",
+    "gentoo competitive displacement of Adelie",
+    "future SSP-to-colony nest-count or extinction predictions",
+    "historical 265-series climate coefficient not reproduced from frozen original MAPPPD source"
+  ]
+}
