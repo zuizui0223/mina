@@ -128,8 +128,6 @@ def make_figures(a):
     ax.set_xlim(0,135)
     for k,shift in enumerate(vals):ax.text(shift+3,k,f"{shift:.1f} km",va="center",fontsize=9)
     ax.set_title("a. Fixed-colony Adélie nesting reweighting",loc="left")
-    ax.text(.98,.07,"Fixed site locations; no tracked movement",transform=ax.transAxes,
-            fontsize=8,ha="right",color=INK)
     ax=axs[1]
     ax.scatter(pair.ratio_slope,pair.pair_subtotal_pct_change,c=np.where(pair.pair_subtotal_pct_change>0,TEAL,ORANGE),
                s=65,edgecolors="white",linewidth=.6,zorder=3)
