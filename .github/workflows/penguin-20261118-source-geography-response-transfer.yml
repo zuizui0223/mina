@@ -1,0 +1,71 @@
+name: Penguin original salinity isotope vs census response geography transfer gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/response_support_bridge_20261118/**'
+      - '.github/workflows/penguin-20261118-source-geography-response-transfer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verified-original-source-transfer:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install exact original source numerical analysis dependencies
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3' 'statsmodels>=0.14,<1' 'scipy<2'
+      - name: Syntax-check original cross-channel source test
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/response_support_bridge_20261118/audit_response_channel_transfer.py
+      - name: Retrieve frozen true source archives without modifying source records
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_source_response_bridge
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_source_response_bridge/iso860.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13828472111/zip" > build/penguin_source_response_bridge/marine588.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_source_response_bridge/census2456.zip
+      - name: Recompute original geography-restricted isotope response and source overlap denominators
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/response_support_bridge_20261118/audit_response_channel_transfer.py \
+            --isotope-860-zip build/penguin_source_response_bridge/iso860.zip \
+            --marine-588-zip build/penguin_source_response_bridge/marine588.zip \
+            --original-counts-zip build/penguin_source_response_bridge/census2456.zip \
+            --out build/penguin_response_transfer_result
+      - name: Independently validate source denominator, zero exact biological co-observations and full positive association
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          p=Path('build/penguin_response_transfer_result')
+          r=json.loads((p/'original_response_channel_geographical_transfer_verdict.json').read_text())
+          assert r['status']=='PASS_ORIGINAL_SOURCE_REGION_TRANSFER_SCOPE_NEGATIVE_CONTROL'
+          assert (r['original_588_marine_sites'],r['original_physical_site_years'],r['original_method_fixed_census_records'])==(588,16464,2456)
+          assert (r['original_Adelie_isotope_site_seasons'],r['original_true_same_site_species_pair_records'])==(860,351)
+          assert (r['exact_isotope_to_cocensus_site_season_matches'],r['cross_channel_same_region_season_pairs'])==(0,7)
+          assert (r['cross_channel_regionseason_subset_isotope_rows'],r['cross_channel_regionseason_subset_cocensus_rows'])==(38,24)
+          assert r['original_Adelie_actual_count_and_isotope_exact_site_seasons']==70
+          assert abs(r['isotope_all_source_regions']['beta_salt']-0.8341458422)<1e-6
+          assert abs(r['isotope_restricted_to_preselected_cocensus_regions']['beta_salt']-0.0798952639)<1e-6
+          assert r['transfer_to_other_biological_response_not_established']
+          byreg=pd.read_csv(p/'original_response_region_by_region_source_support.csv')
+          assert byreg.isotope_site_seasons.sum()==860
+          assert byreg.co_census_pair_records.sum()==351
+          shared=pd.read_csv(p/'original_seven_shared_response_region_seasons.csv')
+          assert len(shared)==7 and shared[['source_region','season']].duplicated().sum()==0
+          print('PASS positive original 13-region estimate retained, externally selected 4-region sensitivity and zero exact paired species–isotope outcomes.')
+          PY
+      - name: Archive original-source response geography and limitation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-iso860-cocensus351-source-geographic-transfer-20261118
+          path: build/penguin_response_transfer_result/
+          if-no-files-found: warn
+          retention-days: 30
