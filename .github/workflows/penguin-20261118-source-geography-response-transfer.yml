@@ -53,6 +53,9 @@ jobs:
           assert r['original_Adelie_actual_count_and_isotope_exact_site_seasons']==70
           assert abs(r['isotope_all_source_regions']['beta_salt']-0.8341458422)<1e-6
           assert abs(r['isotope_restricted_to_preselected_cocensus_regions']['beta_salt']-0.0798952639)<1e-6
+          assert abs(r['isotope_all_source_regions']['salinity_residual_sd_after_all_controls']-0.1889633257)<1e-6
+          assert abs(r['isotope_restricted_to_preselected_cocensus_regions']['salinity_residual_sd_after_all_controls']-0.2245062285)<1e-6
+          assert r['isotope_restricted_to_preselected_cocensus_regions']['salinity_residual_sd_after_all_controls'] > r['isotope_all_source_regions']['salinity_residual_sd_after_all_controls']
           assert r['transfer_to_other_biological_response_not_established']
           byreg=pd.read_csv(p/'original_response_region_by_region_source_support.csv')
           assert byreg.isotope_site_seasons.sum()==860
