@@ -1,0 +1,43 @@
+name: penguin-temporal-niche-pair-v1
+
+on:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - 'research/climate-penguin/work/temporal_niche_pair_v1/**'
+      - 'research/climate-penguin/outputs/temporal_niche_pair_v1/**'
+      - 'tests/test_temporal_niche_pair_v1.py'
+      - '.github/workflows/penguin-temporal-niche-pair-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/temporal_niche_pair_v1/**'
+      - 'research/climate-penguin/outputs/temporal_niche_pair_v1/**'
+      - 'tests/test_temporal_niche_pair_v1.py'
+      - '.github/workflows/penguin-temporal-niche-pair-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  paired-niche-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run isolated source-matched regression tests
+        run: |
+          python -m pip install pytest
+          python -m pytest tests/test_temporal_niche_pair_v1.py -q
+      - name: Regenerate audited paired observations
+        run: |
+          python research/climate-penguin/work/temporal_niche_pair_v1/analyze.py --out "${RUNNER_TEMP}/penguin-temporal-niche"
+      - name: Upload full source-derived tables and result checksum
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-temporal-niche-pairs
+          path: ${{ runner.temp }}/penguin-temporal-niche/
+          retention-days: 30

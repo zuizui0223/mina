@@ -1,0 +1,32 @@
+name: climate-penguin-palmer-annual-qa
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/abandonment/palmer_annual_qa_support.py'
+      - 'tests/test_palmer_annual_qa_support.py'
+      - '.github/workflows/climate-penguin-palmer-annual-qa.yml'
+jobs:
+  annual-source-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Offline temporal and bit tests
+        run: python tests/test_palmer_annual_qa_support.py
+      - name: Install original GIS readers
+        run: python -m pip install --disable-pip-version-check -q rasterio==1.4.3 pyproj==3.7.1 planetary-computer==1.0.0
+      - name: Read all source Landsat QA_PIXEL scenes at fixed Palmer samples
+        run: |
+          python research/climate-penguin/work/abandonment/palmer_annual_qa_support.py \
+            --first 1986 --last 2026 --out /tmp/palmer_annual_qa
+      - name: Preserve receipts including incomplete years
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: palmer-annual-local-qa-original-source
+          path: /tmp/palmer_annual_qa/
+          if-no-files-found: warn
+          retention-days: 30

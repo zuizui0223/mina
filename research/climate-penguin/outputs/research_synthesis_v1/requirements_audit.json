@@ -1,0 +1,113 @@
+{
+  "audit_passed": true,
+  "goal_complete": null,
+  "completion_scope": "This numerical audit does not determine task completion. See OBJECTIVE_REVIEW_JA.md for requirement-level acceptance, including the user-authorized insufficient-data outcome. Scientific mechanisms and calibrated forecasts remain unestablished.",
+  "verified_input_hash_references": 133,
+  "requirements": [
+    {
+      "requirement": "Existing data and frozen results preserved",
+      "status": "supported",
+      "evidence": [
+        "long_count_seaice_v1/intervals.csv",
+        "relationship_response_v1/cohort.csv"
+      ],
+      "limit": "Different cohorts remain separate; new exploratory analyses do not overwrite frozen claims"
+    },
+    {
+      "requirement": "Macro breeding-count/environment relationships",
+      "status": "supported_with_scope_limits",
+      "evidence": [
+        "long_count_seaice_v1/associations.csv",
+        "low_ice_days_count_v1/associations.csv",
+        "low_days_mean_separation_v1/comparisons.csv",
+        "low_days_mean_inference_v1/tests.csv"
+      ],
+      "limit": "Adelie 33 sites / 301 annual intervals; timing-supported subset geographically concentrated; observed low-ice duration: 48 specifications, 3 BH/BY discoveries under CR1 but 0 under separate site/year sign-flip sensitivity; not stable inferential support for count forecasts"
+    },
+    {
+      "requirement": "Sea-ice timing and drift versus observable behavior",
+      "status": "partial_identification",
+      "evidence": [
+        "long_ice_timing_v1/transition_support.csv",
+        "drift_block_v1/joint_tests.csv",
+        "ross_directional_exposure_v1/summary.csv",
+        "ross_movement_pairs_v1/associations.csv"
+      ],
+      "limit": "Broad monthly associations and directional Ross exposure/movement comparison delivered. Ross September matched 515 intervals/169 bird-years, trip/date r=-0.01349; shared GLS position errors and short satellite support prevent independent assistance inference."
+    },
+    {
+      "requirement": "Independent tracking and phenology availability/year alignment",
+      "status": "audited_with_unresolved_conditions",
+      "evidence": [
+        "chinstrap_winter_v1/route_ice_support.csv",
+        "noaa_date_support_v1/nest_date_support.csv",
+        "climate_penguin/phenology_audit.md",
+        "settlement_origin_refresh_v1/source_slope_crosscheck.csv",
+        "return_tracking_refresh_v1/PRIMARY_SOURCES_JA.md",
+        "ross_phase_reference_v1/REPORT_JA.md",
+        "pointblue_full_positions_v1/trip_support.csv",
+        "ross_ensemble_ice_v1/validation.json",
+        "ross_ice_temporal_support_v1/colony_year_summary.csv",
+        "ross_movement_pairs_v1/independent_validation.json"
+      ],
+      "limit": "Full Ross positions acquired and aligned: 188 retained bird-years, 8469 intervals. Satellite support concentrated in September 27-30; same published cohort, not independent replication. Day-scale supported, absolute calendar origin and independent return dates unresolved."
+    },
+    {
+      "requirement": "Future warming/sea-ice conditional connection and uncertainty",
+      "status": "conditional_sensitivity_delivered_not_calibrated",
+      "evidence": [
+        "conditional_response_v1/conditional_summary.csv",
+        "conditional_response_v1/forward/summary.csv",
+        "four_environment_scenarios_v1/summary.csv",
+        "surface_temperature_projection_v1/matched_site_changes.csv",
+        "environment_identifiability_v1/observed_geometry.csv",
+        "scenario_specification_comparison_v1/paired_specifications.csv",
+        "scenario_specification_comparison_v1/year_adjustment_comparisons.csv"
+      ],
+      "limit": "Conditional changes on a supported day scale delivered; 112/224 model and 78/224 year-adjustment sign reversals. Absolute dates, causal effects and calibrated forecasts remain unproven."
+    },
+    {
+      "requirement": "Vegetation/snow and breeding-use sequence requested in research goal v2",
+      "status": "measured_support_with_unresolved_classification",
+      "evidence": [
+        "vegetation_annual_ndvi_v1/ndvi_count_correlations.csv",
+        "ndvi_vegetation_overlay_v1/support_summary.csv",
+        "vegetation_expansion_pixels_v1/one_two_date_comparison.csv",
+        "landsat_vegetation_support_v1/paired_qa_support.csv",
+        "september_snow_v1/september_summary.csv",
+        "september_snow_v1/regional_correlations.csv",
+        "salinity_cluster_sensitivity_v1/tests.csv",
+        "vegetation_influence_v1/comparisons.csv",
+        "ocean_grid_replication_v1/summary.csv",
+        "salinity_grid_cluster_v1/tests.csv",
+        "salinity_mixed_layer_v1/comparisons.csv",
+        "salinity_year_partition_v1/partition.csv"
+      ],
+      "limit": "Annual NDVI measured, but mapped vegetation overlap is sparse; expanded Sentinel comparison lacks two-date repeated support; Landsat support depends on Tier 2 geometry and Jan-Feb pooling; breeding-patch classification unverified; 48 salinity sensitivity tests have no BH/BY discoveries; 686 static-vegetation sensitivity fits expose geographic/observation dependence, not annual vegetation effects; shared ocean grids audited (Gentoo 23 sites/20 cells), no grid-cluster BH/BY discoveries; 24 mixed-layer comparisons are descriptive and not mediation estimates"
+    },
+    {
+      "requirement": "Mechanism and uncertainty claims separated without invented predictions",
+      "status": "supported",
+      "evidence": [
+        "conditional_response_v1/REPORT_JA.md",
+        "chinstrap_winter_v1/ROUTE_QC_JA.md",
+        "evidence_figure_v1/panel_checks.csv",
+        "evidence_figure_v1/plotted_points.csv"
+      ],
+      "limit": "No causal transport effect, absolute return date, or future nest count claimed"
+    },
+    {
+      "requirement": "Updated v2 snow, lag and nonlinear hypothesis comparisons",
+      "status": "incomplete",
+      "evidence": [
+        "climate_penguin/RESEARCH_GOAL_V2.md",
+        "nonlinear_association_v1/shape_sensitivity.csv",
+        "previous_september_v1/correlations.csv",
+        "previous_september_v1/cluster_sensitivity.csv",
+        "september_snow_v1/regional_correlations.csv"
+      ],
+      "limit": "48 quadratic checks, current/previous September comparisons with 72 cluster sensitivity tests, and 36 regional snow comparisons delivered; local vegetation/snow sequence and mechanistic carryover remain unverified"
+    }
+  ],
+  "next_unresolved_work": "Ross environmental direction and model-movement association are now computed; independent transport mechanism remains unidentified. Local vegetation/breeding-patch sequence, absolute calendar origin and calibrated extrapolation unresolved. Existing-data correlation and conditional scenario outputs delivered; do not treat these as causal transport or calibrated future nest-count predictions."
+}

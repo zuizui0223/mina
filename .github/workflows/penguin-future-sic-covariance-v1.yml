@@ -1,0 +1,37 @@
+name: penguin-future-sic-covariance-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/seaice_future_covariance_v1/**"
+      - "research/climate-penguin/outputs/seaice_future_covariance_v1/**"
+      - ".github/workflows/penguin-future-sic-covariance-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/seaice_future_covariance_v1/**"
+      - "research/climate-penguin/outputs/seaice_future_covariance_v1/**"
+      - ".github/workflows/penguin-future-sic-covariance-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-monthly-39-site-future-sic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Reconstruct original annual model SIC and source-check published climatology means and SD
+        run: python research/climate-penguin/work/seaice_future_covariance_v1/build.py --check-receipt
+      - name: Archive model-year SIC, paired covariance and coverage diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-future-native-sic-covariance-v1
+          path: |
+            research/climate-penguin/outputs/seaice_future_covariance_v1/*.csv
+            research/climate-penguin/outputs/seaice_future_covariance_v1/*.json
+          if-no-files-found: error
+          retention-days: 60

@@ -1,0 +1,101 @@
+name: unified-network-concentration-step8-fixed-margins-null
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/contracts/STEP8_CONDITIONAL_COUNT_NULL_LOCK.md"
+      - "research/network_concentration_unified_v1/audit_step8_fixed_margins_null.py"
+      - ".github/workflows/unified-network-concentration-step8-fixed-margins-null.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  source-locked-fixed-margins-null:
+    runs-on: ubuntu-latest
+    timeout-minutes: 24
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Syntax and exact-enumeration synthetic test
+        run: |
+          python -m pip install numpy==2.2.6 geographiclib==2.1 requests==2.34.2 jsonschema==4.26.0
+          python -m py_compile research/network_concentration_unified_v1/audit_step8_fixed_margins_null.py
+          python research/network_concentration_unified_v1/audit_step8_fixed_margins_null.py --selftest
+      - name: Recover original publisher parsers with pinned commit
+        run: |
+          mkdir -p build/step1_inputs/jncc_code
+          git fetch --no-tags origin 0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e
+          for source in audit_jncc_two_censuses_source_v28 audit_jncc_comparable_site_panels_v29 model_jncc_component_concentration_v30; do
+            git show "0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e:scripts/$source.py" > "build/step1_inputs/jncc_code/$source.py"
+          done
+      - name: Restore six exact source originals for registry check
+        run: |
+          mkdir -p build/step1_inputs
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://data.jncc.gov.uk/data/63f0ea40-485d-46dd-b967-150df90a7b2b/comparative-seabirds-count-dataset-revised-20240708.xlsx' \
+            -o build/step1_inputs/jncc.xlsx
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://pallter-data.marine.rutgers.edu/erddap/tabledap/AdeliePenguinCensus.csv?study_name,time,island_name,colony_code,num_breeding_pairs' \
+            -o build/step1_inputs/palmer.csv
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/step1_inputs/signy_adelie.zip
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' \
+            -o build/step1_inputs/signy_chinstrap.zip
+      - name: Reconstruct ephemeral original source components under fixed endpoint registry
+        run: python research/network_concentration_unified_v1/build_step1.py --phase endpoints
+      - name: Compute all 663 JNCC fixed-margins hypergeometric alternative nulls
+        run: python research/network_concentration_unified_v1/audit_step8_fixed_margins_null.py
+      - name: Verify fixed source results and no new hypothesis p values
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          base=Path('research/network_concentration_unified_v1')
+          report=json.loads((base/'outputs/STEP8_FIXED_MARGINS_NULL_QA.json').read_text())
+          assert report['status']=='ALTERNATIVE_CONDITIONAL_FIXED_MARGINS_COUNT_NULL_EXPLORATORY'
+          assert report['sample_n']==663
+          assert report['existing_positive_n']==436
+          assert report['declined_total']==479
+          assert report['original_positive_declines']==324
+          assert report['original_positive_still_positive']+report['original_positive_reversed']==436
+          assert report['original_positive_still_positive']+report['original_nonpositive_to_positive']==report['conditional_positive_n']
+          source=list(csv.DictReader((base/'data/step8_fixed_margins_hypergeom.csv').open()))
+          assert len(source)==663
+          assert sum(r['hypergeom_sign_positive']=='true' for r in source)==report['conditional_positive_n']
+          assert report['hypothesis_p_values_computed'] is False
+          assert report['original_step1_3_4_unmodified'] is True
+          print('PASS source fixed margins, complete cohort, arithmetic signs, no new fitted hypotheses')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-step7-source-locked-conditional-count-null
+          retention-days: 90
+          path: |
+            research/network_concentration_unified_v1/data/step8_fixed_margins_hypergeom.csv
+            research/network_concentration_unified_v1/outputs/STEP8_FIXED_MARGINS_NULL_QA.json
+            research/network_concentration_unified_v1/outputs/STEP8_FIXED_MARGINS_NULL_JA.md
+      - name: Commit derived conditional-null audit to existing Draft PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f \
+            research/network_concentration_unified_v1/data/step8_fixed_margins_hypergeom.csv \
+            research/network_concentration_unified_v1/outputs/STEP8_FIXED_MARGINS_NULL_QA.json \
+            research/network_concentration_unified_v1/outputs/STEP8_FIXED_MARGINS_NULL_JA.md
+          if git diff --cached --quiet; then
+            echo "Alternative null results unchanged"
+          else
+            git commit -m "Step8: quantify source-margins conditioned alternative count-null concentration"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi

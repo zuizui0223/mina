@@ -1,0 +1,37 @@
+name: penguin-ross-island-original-spatial-scale-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/ross_island_spatial_scale_v1/**"
+      - "research/climate-penguin/outputs/ross_island_spatial_scale_v1/**"
+      - ".github/workflows/penguin-ross-island-spatial-scale-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/ross_island_spatial_scale_v1/**"
+      - "research/climate-penguin/outputs/ross_island_spatial_scale_v1/**"
+      - ".github/workflows/penguin-ross-island-spatial-scale-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pin-original-ross-sic-count-and-snow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild source matched aerial census and year-to-year snow and SIC observability
+        run: node research/climate-penguin/work/ross_island_spatial_scale_v1/build.mjs --check-receipt
+      - name: Archive all verified original sector/area seasonal results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross-island-original-spatial-scale-v1
+          path: |
+            research/climate-penguin/outputs/ross_island_spatial_scale_v1/*.csv
+            research/climate-penguin/outputs/ross_island_spatial_scale_v1/*.json
+          if-no-files-found: error
+          retention-days: 60

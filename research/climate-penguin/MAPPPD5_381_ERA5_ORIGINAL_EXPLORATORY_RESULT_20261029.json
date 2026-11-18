@@ -1,0 +1,530 @@
+{
+  "source_run_id": 40868420083,
+  "artifact_id": 12895310158,
+  "original_data_branches": [
+    "codex/climate-penguin-progress",
+    "research/antarctic-functional-archipelago-v1"
+  ],
+  "status": "post_exploration_original_source_association_not_causal_warming_or_greening",
+  "real_source_receipt": {
+    "schema": 1,
+    "date": "2026-10-29",
+    "status": "POST_EXPLORATION_CLIMATE_COUNTS_ASSOCIATION_NO_CAUSAL_ATTRIBUTION",
+    "original_publisher_source_sha256": {
+      "release": "8f676f6498b1bc79708a67fb05d4ac8ee73249444e85402af87f6a3c64280a65",
+      "sites": "36059537701069c934227148d32296368943b978b988fb415e07873e48c5ae34",
+      "observations_p1": "cd751e43ab61d57a6e7d3c7e918d673cf699392ac4bfccd546d29b99ea62f075",
+      "observations_p2": "c2b054fb687d13eb93e67d48a2b492cd47c94ccdef75b562680b770ad6be18f3"
+    },
+    "original_381_cohort_source_sha256": "cb3a337811431169f687c0d4ffc4ee159d0d0f35e3fac60b9282563d514fa87f",
+    "source_original_ERA5_sha256": "f2bad55bc9b714351b8bc30031b1518eece43138f77d4047657a3e145911e9a6",
+    "observed_source_rows": 381,
+    "zero_count_pairs": 0,
+    "result": {
+      "delta_September_ERA5_C": {
+        "all_three_taxa": {
+          "site_species_fixed": {
+            "original_pair_rows": 381,
+            "source_site_ids": 34,
+            "actual_ERA5_grid_ids": 26,
+            "original_source_regions": 6,
+            "distinct_breeding_years": 28,
+            "species": {
+              "ADPE": 294,
+              "CHPE": 29,
+              "GEPE": 58
+            },
+            "year_label_min_max": [
+              1992,
+              2019
+            ],
+            "x_name": "delta_September_ERA5_C",
+            "effects": [
+              "site_species"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": -0.0036545099801892004,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.006300449236168217,
+              -0.0024913063813474454
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 26,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          },
+          "site_species_plus_breeding_year_fixed": {
+            "original_pair_rows": 381,
+            "source_site_ids": 34,
+            "actual_ERA5_grid_ids": 26,
+            "original_source_regions": 6,
+            "distinct_breeding_years": 28,
+            "species": {
+              "ADPE": 294,
+              "CHPE": 29,
+              "GEPE": 58
+            },
+            "year_label_min_max": [
+              1992,
+              2019
+            ],
+            "x_name": "delta_September_ERA5_C",
+            "effects": [
+              "site_species",
+              "end_year"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.014129946212903314,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              0.010688912283103959,
+              0.01915100371867513
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 26,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          }
+        },
+        "ADPE": {
+          "site_species_fixed": {
+            "original_pair_rows": 294,
+            "source_site_ids": 33,
+            "actual_ERA5_grid_ids": 26,
+            "original_source_regions": 6,
+            "distinct_breeding_years": 28,
+            "species": {
+              "ADPE": 294
+            },
+            "year_label_min_max": [
+              1992,
+              2019
+            ],
+            "x_name": "delta_September_ERA5_C",
+            "effects": [
+              "site_species"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": -0.006216850421739128,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.009376860038109256,
+              -0.004892070203132313
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 26,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          },
+          "site_species_plus_breeding_year_fixed": {
+            "original_pair_rows": 294,
+            "source_site_ids": 33,
+            "actual_ERA5_grid_ids": 26,
+            "original_source_regions": 6,
+            "distinct_breeding_years": 28,
+            "species": {
+              "ADPE": 294
+            },
+            "year_label_min_max": [
+              1992,
+              2019
+            ],
+            "x_name": "delta_September_ERA5_C",
+            "effects": [
+              "site_species",
+              "end_year"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.011086811680480861,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              0.007994831874779944,
+              0.015797312043582996
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 26,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          }
+        },
+        "CHPE": {
+          "site_species_fixed": {
+            "original_pair_rows": 29,
+            "source_site_ids": 7,
+            "actual_ERA5_grid_ids": 6,
+            "original_source_regions": 3,
+            "distinct_breeding_years": 20,
+            "species": {
+              "CHPE": 29
+            },
+            "year_label_min_max": [
+              1995,
+              2019
+            ],
+            "x_name": "delta_September_ERA5_C",
+            "effects": [
+              "site_species"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.010148515930596264,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              0.008444658280367213,
+              0.03207692793818064
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 5,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          },
+          "site_species_plus_breeding_year_fixed": {
+            "original_pair_rows": 29,
+            "source_site_ids": 7,
+            "actual_ERA5_grid_ids": 6,
+            "original_source_regions": 3,
+            "distinct_breeding_years": 20,
+            "species": {
+              "CHPE": 29
+            },
+            "year_label_min_max": [
+              1995,
+              2019
+            ],
+            "x_name": "delta_September_ERA5_C",
+            "effects": [
+              "site_species",
+              "end_year"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": -0.125980008666062,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.1395142956149667,
+              1.5745822007101753
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 5,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          }
+        },
+        "GEPE": {
+          "site_species_fixed": {
+            "original_pair_rows": 58,
+            "source_site_ids": 8,
+            "actual_ERA5_grid_ids": 6,
+            "original_source_regions": 2,
+            "distinct_breeding_years": 25,
+            "species": {
+              "GEPE": 58
+            },
+            "year_label_min_max": [
+              1992,
+              2018
+            ],
+            "x_name": "delta_September_ERA5_C",
+            "effects": [
+              "site_species"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.003425971616167385,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.003578864477804269,
+              0.01384781732554879
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 6,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          },
+          "site_species_plus_breeding_year_fixed": {
+            "original_pair_rows": 58,
+            "source_site_ids": 8,
+            "actual_ERA5_grid_ids": 6,
+            "original_source_regions": 2,
+            "distinct_breeding_years": 25,
+            "species": {
+              "GEPE": 58
+            },
+            "year_label_min_max": [
+              1992,
+              2018
+            ],
+            "x_name": "delta_September_ERA5_C",
+            "effects": [
+              "site_species",
+              "end_year"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": -0.04214064161305196,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.057045502387031675,
+              0.06251910056989952
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 6,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          }
+        }
+      },
+      "delta_AugNov_ERA5_C": {
+        "all_three_taxa": {
+          "site_species_fixed": {
+            "original_pair_rows": 381,
+            "source_site_ids": 34,
+            "actual_ERA5_grid_ids": 26,
+            "original_source_regions": 6,
+            "distinct_breeding_years": 28,
+            "species": {
+              "ADPE": 294,
+              "CHPE": 29,
+              "GEPE": 58
+            },
+            "year_label_min_max": [
+              1992,
+              2019
+            ],
+            "x_name": "delta_AugNov_ERA5_C",
+            "effects": [
+              "site_species"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.0016172954455392864,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.0032244491806428196,
+              0.005959838427128694
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 26,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          },
+          "site_species_plus_breeding_year_fixed": {
+            "original_pair_rows": 381,
+            "source_site_ids": 34,
+            "actual_ERA5_grid_ids": 26,
+            "original_source_regions": 6,
+            "distinct_breeding_years": 28,
+            "species": {
+              "ADPE": 294,
+              "CHPE": 29,
+              "GEPE": 58
+            },
+            "year_label_min_max": [
+              1992,
+              2019
+            ],
+            "x_name": "delta_AugNov_ERA5_C",
+            "effects": [
+              "site_species",
+              "end_year"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.04224592443394992,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              0.036667902230751205,
+              0.04848195798847172
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 26,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          }
+        },
+        "ADPE": {
+          "site_species_fixed": {
+            "original_pair_rows": 294,
+            "source_site_ids": 33,
+            "actual_ERA5_grid_ids": 26,
+            "original_source_regions": 6,
+            "distinct_breeding_years": 28,
+            "species": {
+              "ADPE": 294
+            },
+            "year_label_min_max": [
+              1992,
+              2019
+            ],
+            "x_name": "delta_AugNov_ERA5_C",
+            "effects": [
+              "site_species"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.0029457747376075583,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.004354624218981049,
+              0.0075312986306013754
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 26,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          },
+          "site_species_plus_breeding_year_fixed": {
+            "original_pair_rows": 294,
+            "source_site_ids": 33,
+            "actual_ERA5_grid_ids": 26,
+            "original_source_regions": 6,
+            "distinct_breeding_years": 28,
+            "species": {
+              "ADPE": 294
+            },
+            "year_label_min_max": [
+              1992,
+              2019
+            ],
+            "x_name": "delta_AugNov_ERA5_C",
+            "effects": [
+              "site_species",
+              "end_year"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.0480924604052655,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              0.04103349513533672,
+              0.055915704095280246
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 26,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          }
+        },
+        "CHPE": {
+          "site_species_fixed": {
+            "original_pair_rows": 29,
+            "source_site_ids": 7,
+            "actual_ERA5_grid_ids": 6,
+            "original_source_regions": 3,
+            "distinct_breeding_years": 20,
+            "species": {
+              "CHPE": 29
+            },
+            "year_label_min_max": [
+              1995,
+              2019
+            ],
+            "x_name": "delta_AugNov_ERA5_C",
+            "effects": [
+              "site_species"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.002165696701551249,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.006793802286404249,
+              0.03432293803649487
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 5,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          },
+          "site_species_plus_breeding_year_fixed": {
+            "original_pair_rows": 29,
+            "source_site_ids": 7,
+            "actual_ERA5_grid_ids": 6,
+            "original_source_regions": 3,
+            "distinct_breeding_years": 20,
+            "species": {
+              "CHPE": 29
+            },
+            "year_label_min_max": [
+              1995,
+              2019
+            ],
+            "x_name": "delta_AugNov_ERA5_C",
+            "effects": [
+              "site_species",
+              "end_year"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": 0.11192536858033797,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              0.11130798822279891,
+              3.7806661884841675
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 5,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          }
+        },
+        "GEPE": {
+          "site_species_fixed": {
+            "original_pair_rows": 58,
+            "source_site_ids": 8,
+            "actual_ERA5_grid_ids": 6,
+            "original_source_regions": 2,
+            "distinct_breeding_years": 25,
+            "species": {
+              "GEPE": 58
+            },
+            "year_label_min_max": [
+              1992,
+              2018
+            ],
+            "x_name": "delta_AugNov_ERA5_C",
+            "effects": [
+              "site_species"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": -0.003808497058935275,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.0132792032202911,
+              0.0136078450275689
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 6,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          },
+          "site_species_plus_breeding_year_fixed": {
+            "original_pair_rows": 58,
+            "source_site_ids": 8,
+            "actual_ERA5_grid_ids": 6,
+            "original_source_regions": 2,
+            "distinct_breeding_years": 25,
+            "species": {
+              "GEPE": 58
+            },
+            "year_label_min_max": [
+              1992,
+              2018
+            ],
+            "x_name": "delta_AugNov_ERA5_C",
+            "effects": [
+              "site_species",
+              "end_year"
+            ],
+            "beta_delta_log1p_nests_per_plus1C_annual_environment_change": -0.04251612821358957,
+            "leave_one_ERA5_grid_out_beta_min_max": [
+              -0.06092525777594898,
+              -0.02615291428510947
+            ],
+            "leave_one_ERA5_grid_out_valid_refits": 6,
+            "inferential_p_value": null,
+            "calibrated_confidence_interval": null,
+            "source_month_before_count_confirmed": false,
+            "physical_island_factor_measured": false
+          }
+        }
+      }
+    },
+    "no_mechanism_identified": true,
+    "assumptions_unverified": [
+      "Source breeding-season year is not original survey date; many climate months can occur after original census.",
+      "40 site roster is Adélie selected; three species are unequal and not independent continental samples.",
+      "Publisher records sharing original citation/vantage still have observation uncertainty and possible dependency.",
+      "Site fixed effects remove between-site differences; common-year fixed effects change estimand and may remove true broad climate signals.",
+      "Published site ID is not a unique physical island/colony or independently mapped habitat patch.",
+      "Leave-one-grid-out ranges are not inferential confidence intervals or hypothesis tests.",
+      "Anthropogenic warming/nearshore ice/snow/vegetation effects are not identified."
+    ]
+  },
+  "interpretive_gates": {
+    "no_phenology_pvalue_rescue": true,
+    "no_inferential_p_values": true,
+    "all_source_months_verifiably_before_climate": false,
+    "exact_independent_island_geographies_supported": false,
+    "three_species_fully_matched_same_island_year": false,
+    "different_fixed_effect_models_are_not_same_causal_estimand": true,
+    "none_of_seal_snow_rock_prey_habitat_mechanisms_identified": true
+  },
+  "next": "Assess same site-year-and-original-citation cross-species overlap before any formal species-response comparison. Then source survey dates and 95-site local atmosphere and sea-ice supports."
+}

@@ -1,0 +1,46 @@
+name: penguin-signy-original-diet-climate-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_diet_climate_v1/**'
+      - 'research/climate-penguin/outputs/signy_diet_climate_v1/**'
+      - 'tests/test_signy_diet_climate_v1.py'
+      - '.github/workflows/penguin-signy-original-diet-climate-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_diet_climate_v1/**'
+      - 'research/climate-penguin/outputs/signy_diet_climate_v1/**'
+      - 'tests/test_signy_diet_climate_v1.py'
+      - '.github/workflows/penguin-signy-original-diet-climate-v1.yml'
+permissions:
+  contents: read
+jobs:
+  diet-sic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Synthetic missing-value and year safeguards
+        run: python tests/test_signy_diet_climate_v1.py
+      - name: Download original BAS diet ZIPs (do not republish)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/signy_diet_source
+          curl -L --fail --retry 2 --retry-delay 3 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=eb421e6d-b93b-4174-904b-9a7b0b401403&output=zip.tree' -o /tmp/signy_diet_source/adelie.zip
+          curl -L --fail --retry 2 --retry-delay 3 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=95e38251-797c-495a-abc0-40a613599759&output=zip.tree' -o /tmp/signy_diet_source/chinstrap.zip
+          curl -L --fail --retry 2 --retry-delay 3 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=fb9bd975-e6fe-406c-84be-01e57d612b5e&output=zip.tree' -o /tmp/signy_diet_source/gentoo.zip
+      - name: Calculate source-verified diet, season and antecedent sea ice
+        run: |
+          python research/climate-penguin/work/signy_diet_climate_v1/analyze.py --source-dir /tmp/signy_diet_source --out /tmp/signy_diet_climate
+      - name: Retain derived sample, season, and quality data, not raw ZIPs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-original-diet-climate-v1
+          path: /tmp/signy_diet_climate/
+          retention-days: 30

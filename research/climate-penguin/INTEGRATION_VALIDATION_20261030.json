@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-30",
+  "source_base_commit": "0035a298f48534785cd2bf7cf76f35c5a66f8428",
+  "repository_tests": {
+    "command": "PYTHONPATH=src MPLCONFIGDIR=/tmp/mina_mpl python -m pytest -o addopts='' -q",
+    "passed": 430,
+    "skipped": 1,
+    "elapsed_seconds": 31.4,
+    "log_sha256": "b29b476b13ea6c8550abdd90ebb424f5c0c022f51333a462ff000548c9d21dae"
+  },
+  "focused_test_counts": {
+    "relationship": 7,
+    "vegetation": 6,
+    "cmip6": 20
+  },
+  "independent_review": {
+    "unresolved_critical": 0,
+    "unresolved_important": 0,
+    "relationship_all_72_coefficients_max_absolute_difference": 1.42e-13,
+    "relationship_24_mae_rmse_groups_match": true,
+    "vegetation_slope_max_absolute_difference": 1.54e-12,
+    "vegetation_24_correlations_max_absolute_difference": 2.16e-16,
+    "cmip6_all_4770_seasonal_means_max_absolute_difference": 4.27e-14,
+    "cmip6_all_3816_deltas_and_1272_ensembles_match": true,
+    "both_observation_figures_visually_checked": true
+  },
+  "remaining_scientific_limits": [
+    "Exploratory analysis after prior 216-comparison family; no new confirmatory claim",
+    "Settlement calendar origin unresolved; hindcast uses realized test-year environments at previously observed sites",
+    "Static vegetation composite is not annual greening",
+    "Three uncorrected climate models and one member each; shared coastal cells; model range is not a probability interval",
+    "Biological future projection is not validated"
+  ],
+  "code_sha256": {
+    "work/relationship_response_v1/analyze.py": "5b0cfde1ed31ed2f369733fc2c15b71d1c143b650b4b1a33cfb5cdf249315ea8",
+    "work/vegetation_response_v1/analyze_vegetation_relationships.py": "b46c72288bb94c0354569c5ff9351ac6ed81b11f2c0882dd9a5b2567cfb2c770",
+    "work/cmip6_projection_v1/extract.py": "e9b11e5bd5392c30d95d65c215f0598d7d20de363da2b8446b43698e8b3e1f00"
+  }
+}

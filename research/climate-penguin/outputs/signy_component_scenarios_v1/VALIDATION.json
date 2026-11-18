@@ -1,0 +1,492 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-11-06T07:53:00.072546+00:00",
+  "status": "passed_new_analysis_with_3_unchanged_repository_baseline_failures",
+  "base_commit_sha": "fcf369b6aaf1e3824e1ae48e6009e6c3b591e7a5",
+  "scope": "Source hashes, independent climate and response comparisons, scientific review, manuscript assets and local file references, eight added tests and repository-wide test accounting; not validation of future biological forecasts.",
+  "source_inputs": {
+    "count": 16,
+    "all_sha256_match": true,
+    "manifest": "research/climate-penguin/outputs/signy_component_scenarios_v1/source_manifest.json"
+  },
+  "independent_climate": {
+    "status": "passed",
+    "total_matching_rows": 335,
+    "total_expected_rows": 335,
+    "max_absolute_sic_difference_pp": 2.1316282072803006e-14,
+    "annual_diet_support_flags_matching": 300,
+    "annual_physical_range_flags_matching": 300,
+    "annual_flag_count_expected": 300
+  },
+  "independent_responses": {
+    "status": "passed",
+    "tolerances": {
+      "ols_and_hc3_absolute": 1e-11,
+      "fractional_logit_absolute": 1e-08,
+      "primary_fractional_logit_score_absolute": 1e-07,
+      "relative": 0.0,
+      "reason": "OLS/HC3 differ at floating-point precision; independent exact score solve and primary default GLM stopping rule can differ slightly for fractional-logit parameters."
+    },
+    "fits": {
+      "frequency": {
+        "ols_params_max_absolute_difference": 1.6653345369377348e-16,
+        "ols_slope_and_hc3_interval_max_absolute_difference": 2.0816681711721685e-16,
+        "hc3_covariance_max_absolute_difference": 1.8735013540549517e-16,
+        "fractional_logit_params_max_absolute_difference": 1.7763568394002505e-15,
+        "primary_fractional_logit_score_max_abs": 9.669557063244486e-15,
+        "independent_fractional_logit_score_max_abs": 2.5499664541432583e-16
+      },
+      "composition": {
+        "ols_params_max_absolute_difference": 1.249000902703301e-16,
+        "ols_slope_and_hc3_interval_max_absolute_difference": 2.914335439641036e-16,
+        "hc3_covariance_max_absolute_difference": 3.3306690738754696e-16,
+        "fractional_logit_params_max_absolute_difference": 1.6312871053969502e-09,
+        "primary_fractional_logit_score_max_abs": 1.4437342324107883e-09,
+        "independent_fractional_logit_score_max_abs": 9.306097538412785e-16
+      },
+      "mean_response": {
+        "ols_params_max_absolute_difference": 8.326672684688674e-17,
+        "ols_slope_and_hc3_interval_max_absolute_difference": 2.636779683484747e-16,
+        "hc3_covariance_max_absolute_difference": 1.700029006457271e-16,
+        "fractional_logit_params_max_absolute_difference": 8.599476686299568e-11,
+        "primary_fractional_logit_score_max_abs": 7.458904892495971e-11,
+        "independent_fractional_logit_score_max_abs": 2.9073428122430667e-15
+      }
+    },
+    "conditional_scenarios": {
+      "n_rows": 36,
+      "n_finite_numeric_pairs": 378,
+      "n_matching_na_pairs": 18,
+      "n_wholly_withheld_rows": 3,
+      "max_absolute_difference_by_field": {
+        "reference_sic": 0.0,
+        "target_sic": 1.4210854715202004e-14,
+        "delta_sic_pp": 1.4210854715202004e-14,
+        "reference_ols": 3.3306690738754696e-16,
+        "reference_fractional_logit": 3.872591136655501e-11,
+        "future_ols": 3.3306690738754696e-16,
+        "change_ols": 1.6609977282477928e-16,
+        "change_ci_low": 7.216449660063518e-16,
+        "change_ci_high": 6.800116025829084e-16,
+        "future_fractional_logit": 1.9221874092423263e-10,
+        "change_fractional_logit": 1.5349282955767762e-10
+      }
+    },
+    "controlled_reductions": {
+      "n_rows": 12,
+      "n_finite_numeric_pairs": 114,
+      "n_matching_na_pairs": 18,
+      "n_wholly_withheld_rows": 3,
+      "max_absolute_difference_by_field": {
+        "reference_sic": 0.0,
+        "target_sic": 0.0,
+        "delta_sic_pp": 0.0,
+        "reference_ols": 3.3306690738754696e-16,
+        "reference_fractional_logit": 3.872591136655501e-11,
+        "future_ols": 2.220446049250313e-16,
+        "change_ols": 8.326672684688674e-17,
+        "change_ci_low": 4.996003610813204e-16,
+        "change_ci_high": 5.828670879282072e-16,
+        "future_fractional_logit": 1.7688606135379814e-10,
+        "change_fractional_logit": 1.3816014998724313e-10
+      }
+    },
+    "accounting": {
+      "n_rows": 12,
+      "matching_na_pairs": 5,
+      "max_absolute_difference_by_field": {
+        "frequency_change": 9.71445146547012e-17,
+        "composition_change": 8.955509944730267e-17,
+        "covariation_change": 2.3852447794681098e-18,
+        "sum_component_changes": 1.6740081543176188e-16,
+        "mean_response_change": 1.6609977282477928e-16
+      }
+    },
+    "summary_shape_max_absolute_difference": 1.608344013526164e-10
+  },
+  "scientific_review": {
+    "status": "passed_scoped_review",
+    "material_findings": [],
+    "file": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/final_review.json",
+    "all_recorded_review_hashes_match": true
+  },
+  "scenario_support": {
+    "n_seasons": 9,
+    "n_stomachs": 73,
+    "n_climate_conditions": 12,
+    "n_supported_mean_conditions": 11,
+    "n_supported_response_rows": 33,
+    "n_scenarios_with_all_future_years_in_support": 7,
+    "n_supported_means_with_some_unsupported_future_years": 4,
+    "n_unphysical_corrected_annual_climate_values": 1
+  },
+  "new_tests": {
+    "red_observed_before_implementation": true,
+    "red_log_sha256": "c77524eef7ee2b3831a4d21287afa05bd472bbd1ce87af0bb747ff5d8f9b49b7",
+    "passed": 8,
+    "cases": [
+      {
+        "nodeid": "tests/test_signy_component_scenarios_v1.py::test_climate_uses_four_equal_months_before_equal_years",
+        "status": "passed"
+      },
+      {
+        "nodeid": "tests/test_signy_component_scenarios_v1.py::test_climate_rejects_incomplete_duplicate_or_wrong_unit_support[missing]",
+        "status": "passed"
+      },
+      {
+        "nodeid": "tests/test_signy_component_scenarios_v1.py::test_climate_rejects_incomplete_duplicate_or_wrong_unit_support[duplicate]",
+        "status": "passed"
+      },
+      {
+        "nodeid": "tests/test_signy_component_scenarios_v1.py::test_climate_rejects_incomplete_duplicate_or_wrong_unit_support[wrong_units]",
+        "status": "passed"
+      },
+      {
+        "nodeid": "tests/test_signy_component_scenarios_v1.py::test_supported_mean_does_not_imply_supported_climate_years",
+        "status": "passed"
+      },
+      {
+        "nodeid": "tests/test_signy_component_scenarios_v1.py::test_negative_climate_delta_scales_and_reorders_coefficient_interval",
+        "status": "passed"
+      },
+      {
+        "nodeid": "tests/test_signy_component_scenarios_v1.py::test_outside_observed_support_withholds_both_response_shapes",
+        "status": "passed"
+      },
+      {
+        "nodeid": "tests/test_signy_component_scenarios_v1.py::test_overall_mean_is_predicted_separately_from_product_of_fitted_components",
+        "status": "passed"
+      }
+    ],
+    "final_evidence": "Included in the final full-suite JUnit results"
+  },
+  "repository_tests": {
+    "totals": {
+      "tests": 684,
+      "errors": 0,
+      "failures": 3,
+      "skipped": 39,
+      "passed": 642
+    },
+    "time_seconds": 42.129,
+    "started_at": "2026-11-06T16:46:57.140768+09:00",
+    "xml_sha256": "034d166e9b13b993daf9b7caf0ed7eb0c42f328752a93fe2e04dac235c4325af"
+  },
+  "remaining_failures": [
+    {
+      "nodeid": "tests/test_climate_penguin_checkpoint_guard.py::test_complete_snapshot_manifest_file_integrity",
+      "status": "failed",
+      "message": "AssertionError: README.md\nassert 23797 == 11490\n +  where 23797 = len(b\"# Climate, sea ice and penguin breeding: exploratory progress\\r\\n\\r\\nResearch checkpoint, 2026-10-30. This directory...e sync: deletions must be reviewed explicitly. Never run it with source and destination set to the same directory.\\r\\n\")"
+    },
+    {
+      "nodeid": "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_known_source_three_species",
+      "status": "failed",
+      "message": "FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/1d6e97d9a7ad/mina/build/signy_stage_derived/species_annual_stage_summary.csv'"
+    },
+    {
+      "nodeid": "tests/test_signy_stage_synchrony_v2.py::SignyStageSynchronyTests::test_source_flags_prevent_pseudoreplication",
+      "status": "failed",
+      "message": "FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/1d6e97d9a7ad/mina/build/signy_stage_derived/source_stage_site_seasons.csv'"
+    }
+  ],
+  "baseline_failure_check": {
+    "evidence_file": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/BASELINE_TEST_FAILURES.json",
+    "evidence_sha256": "2de2db23bc9dea00ba9475be43456b713be7bcdac31a87f57c86ba5bfb928676",
+    "baseline_commit": "51b6578d8254d6ac2f4083e6ffc8fb94aacdcbb2",
+    "same_three_failed_tests": true,
+    "test_blobs_identical_to_baseline": true,
+    "same_stale_readme_bytes_and_hash": true,
+    "same_missing_generated_inputs": true,
+    "baseline_archive_not_repeated": "The earlier baseline reproduction was reused after checking unchanged test definitions, file hashes and missing-file conditions."
+  },
+  "local_dependency_resolution": {
+    "initial_test_totals": {
+      "tests": 684,
+      "errors": 0,
+      "failures": 10,
+      "skipped": 39,
+      "passed": 635
+    },
+    "initial_xml_sha256": "c3e6f324f7689508d956df05f55bd054348928a81b35a834ce6d95e546bb1434",
+    "failure_cause": "ModuleNotFoundError: No module named 'shapefile'",
+    "resolved_by": "Installed pyshp into the local .venv; no repository dependency file changed",
+    "installed_version": "3.1.6",
+    "resolved_failure_count": 7,
+    "all_seven_pass_on_final_run": true,
+    "test_names": [
+      "tests/test_climate_penguin_palmer_original_island_rock_v1.py::test_strict_original_land_point_not_snapped_to_nearest",
+      "tests/test_climate_penguin_palmer_original_island_rock_v1.py::test_original_source_is_pinned_and_not_phenological",
+      "tests/test_climate_penguin_palmer_plants_island_clip_v1.py::test_source_clip_union_independent_real_islands",
+      "tests/test_climate_penguin_palmer_plants_island_clip_v1.py::test_invalid_geometry_and_source_expectations",
+      "tests/test_palmer_L7_multiyear_source_gate_v1.py::test_QA_selection_is_predefined_not_spectral",
+      "tests/test_palmer_L7_multiyear_source_gate_v1.py::test_same_fixed_physical_positions_and_3year_gate",
+      "tests/test_palmer_L7_multiyear_source_gate_v1.py::test_calendar_day_handling_and_no_sensor_switch"
+    ]
+  },
+  "manuscript_asset_verification": {
+    "status": "pass",
+    "input_hashes": 11,
+    "years": 9,
+    "stomachs": 772,
+    "model_conditions": 12,
+    "local_links": 64,
+    "figures": 3,
+    "references": 9,
+    "scope": "Signy asset/source arithmetic and all manuscript local links; external comparison verified in its own output; not biological forecast validation"
+  },
+  "local_markdown_references": {
+    "checked_occurrences": 256,
+    "all_targets_exist": true,
+    "anchors_not_independently_validated": true
+  },
+  "figure_verification": {
+    "png": "Figure_1_component_scenarios.png",
+    "pdf": "Figure_1_component_scenarios.pdf",
+    "png_dimensions": [
+      2684,
+      2023
+    ],
+    "root_visual_review": "Full PNG and top/bottom crops inspected: four panels, units, model legend, reference lines, annual support labels, NA values and footnotes visible without overlap or clipping.",
+    "independent_png_review": "passed",
+    "pdf_scope": "Exists, starts with a PDF header, and is saved from the same matplotlib figure; not independently rendered."
+  },
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0",
+    "statsmodels": "0.15.0",
+    "matplotlib": "3.10.8",
+    "pytest": "8.4.2",
+    "pyshp": "3.1.6"
+  },
+  "artifact_manifest_path_basis": "repository root; excludes this self-referential validation file and Python caches",
+  "artifact_manifest": [
+    {
+      "path": "research/climate-penguin/CLIMATE_NICHE_SYNTHESIS_20261102.md",
+      "bytes": 41827,
+      "sha256": "77f7894366bdaca5b4b956d3916a4756ae3e983f3b17e205f5399483ec050b68"
+    },
+    {
+      "path": "research/climate-penguin/POSITIVE_EVIDENCE_MERGED_20261031.md",
+      "bytes": 126460,
+      "sha256": "7ee5b7a7c5744a3350e29ea63916a163660dd319a04677c52419981a8a65b50c"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/MANUSCRIPT_JA.md",
+      "bytes": 47151,
+      "sha256": "f218ca0afa30163bcb8e6f6c0f0592d4704fa809940b6aa18bde18d8f5590981"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/README.md",
+      "bytes": 5622,
+      "sha256": "51189059c8219e138c0bcd79db8c22cdb79c4cce883dfbab3640e6c7c76eafb8"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/SUPPLEMENT_JA.md",
+      "bytes": 21575,
+      "sha256": "9cdf75f97b1dd3a422dd77300abd9ef6b43bd66d3cd4d34b30be6b0868c475a5"
+    },
+    {
+      "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/validation.json",
+      "bytes": 319,
+      "sha256": "9d26f0fcf9895b3284e33ae2e4514378157be67dbf27535233ef30f5813e123b"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/Figure_1_component_scenarios.pdf",
+      "bytes": 30318,
+      "sha256": "3a32f707e10108d1c837588b136bcf677ac51814640d4df50bd2d25a3d321fa2"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/Figure_1_component_scenarios.png",
+      "bytes": 402267,
+      "sha256": "fa147bde7188e439800d9d9420b65536a6678a86c6ee65923c975c44305fd958"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/README.md",
+      "bytes": 4059,
+      "sha256": "c0ace8ca9d96d558d229d95ff3b74ac7548860fd9e16134800751700dfab8e04"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/REPORT_JA.md",
+      "bytes": 11496,
+      "sha256": "249d012cb079169c0931c8b9ab75e3d9e9f90844f0f1092c9562203eab25706f"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/annual_climate_support.csv",
+      "bytes": 40108,
+      "sha256": "e470a49afcf7e87f3a238a6896e52ab4cb9760820c6612fa9d23363ab1f833db"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/climate_reference.csv",
+      "bytes": 871,
+      "sha256": "184edfa69ce9a7c4bc2963fd240499394352545e53995114e1bb03583f9ce0a6"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/climate_scenarios.csv",
+      "bytes": 3408,
+      "sha256": "9df070e298ec31248b988a9e9c384571a75756f997fd4f1c5184b005aa705d3e"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/component_scenarios.csv",
+      "bytes": 17767,
+      "sha256": "87ee32921ab051f62f0daf047a793359d1b9e36c67817b15df1e624c0d85c537"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/controlled_reductions.csv",
+      "bytes": 2575,
+      "sha256": "15d2fef65047ee1c9a3c30b8ffa26927a25b18c2d22fa37c057c1d27604a8770"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/fit_parameters.json",
+      "bytes": 1896,
+      "sha256": "c16bc0bc95e8527d39e4f1619287ecb11f48046e16a09934174363a146c9d093"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/climate_inputs_annual.csv",
+      "bytes": 66530,
+      "sha256": "fbc0e40725e04bb21dffbbfc5eeb853639b00ebfa67c4d1ede395fb16db73f18"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/climate_inputs_observed_annual.csv",
+      "bytes": 1695,
+      "sha256": "38b18adbc44a58cbf84a525291e2a9fcc5159145e702872cdf29f17ecb249d6c"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/climate_inputs_scenarios.csv",
+      "bytes": 3658,
+      "sha256": "73132bc886a6e1f0267fc85ff9f2a68167b163a95f3d5da495c494625881e276"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/climate_inputs_sources.csv",
+      "bytes": 5189,
+      "sha256": "b79499d1a261c9ba6f6da3e69c91198009c29c2dd9268f6af9408939362195e6"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/climate_inputs_support.csv",
+      "bytes": 4366,
+      "sha256": "59ffa745c5b536f3f516c3d5217f73fd553fc9d66ede795bdab565d4fca2c872"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/climate_inputs_verification.json",
+      "bytes": 14865,
+      "sha256": "25195eb12ea47dc2fcd40c024ad8ca6a4f8a6f7d897921db978bc30bf56c3a31"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/climate_primary_comparison.json",
+      "bytes": 25486,
+      "sha256": "0e7456d701ba05b97e2a3f9118faafa2c736bad971c913c554dcb22a246b195f"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/diet_accounting_scenarios.csv",
+      "bytes": 2716,
+      "sha256": "b1e72f040bb917bc7ad3830641c8755bd2ceb99ad93d6b9abca3037ff802c1d4"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/diet_conditional_scenarios.csv",
+      "bytes": 9569,
+      "sha256": "1bb85c96f96c9475798286d712e01a9d620a9b165d7d7cadd5d41c6579074a49"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/diet_controlled_reductions.csv",
+      "bytes": 2558,
+      "sha256": "475344c89ee9a0f2dd3b38074f93065aaf889d44b5cd9e7fdc4596c48ad15771"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/diet_nonproduct_diagnostics.csv",
+      "bytes": 1745,
+      "sha256": "a7cb8ff8da9514d90e84d3acdf53bbc824665e3208a81291c89508d640dd8204"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/diet_response_fits.csv",
+      "bytes": 727,
+      "sha256": "d5dd14f88dae0e88f19827446205d5821058272911d1546136cd8cb0cf726785"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/diet_response_verification.json",
+      "bytes": 8199,
+      "sha256": "5cc6a11b97e3f785aa0a1eace0340e76ff68b081bd121926236a43be367e1a60"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/final_review.json",
+      "bytes": 10444,
+      "sha256": "dd4cad2011228a31756f95870c04f62409bf09238c09a049391e3b985f8a4349"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/independent/response_comparison.json",
+      "bytes": 6159,
+      "sha256": "d35ca637f1c934aa0016344f272a71db26f8ab43b490e55f0bd773664702c08d"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/observed_reference_annual_sic.csv",
+      "bytes": 482,
+      "sha256": "00c8f81a8e1a14e859c2922b9c67ace26495cab08ed19ff244dd00f1c1840340"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/slope_accounting_scenarios.csv",
+      "bytes": 4978,
+      "sha256": "6656aaffe2ab7c2dc9d82369205d78deee0b5b9ee2166d152270648ece490dc3"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/source_manifest.json",
+      "bytes": 2777,
+      "sha256": "d9e4c2c4a2980feb3b7048f4e5c4a8dc0f27c317e44d00cb9005150f44a8424c"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/summary.json",
+      "bytes": 2724,
+      "sha256": "b7bec06b3a31ab225751b82c2608c87bbb62c3c83b56ecb7577a241c9a307e61"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_component_scenarios_v1/DESIGN.md",
+      "bytes": 5089,
+      "sha256": "28d62e8eaa408437320254886ca4c09a9078a16646b480a09ba85dc6aae8e9ca"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_component_scenarios_v1/INPUT_MANIFEST.json",
+      "bytes": 2777,
+      "sha256": "d9e4c2c4a2980feb3b7048f4e5c4a8dc0f27c317e44d00cb9005150f44a8424c"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_component_scenarios_v1/PLAN.md",
+      "bytes": 4267,
+      "sha256": "bff779e8824d483534b8d8484912b03a62dc0e2e7b0e0d699e8473476f085bba"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_component_scenarios_v1/analyze.py",
+      "bytes": 16941,
+      "sha256": "b20a0b6dfb7cf8d62e7e39efe3708f7dfd4b3ce64d35b24d332160fb288b85bc"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_component_scenarios_v1/independent/climate_inputs.py",
+      "bytes": 29311,
+      "sha256": "10a7d4b31a8bf451cf15424d257c8a26dd6794e68b311838c2dcfec1a7fb8306"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_component_scenarios_v1/independent/compare_climate.py",
+      "bytes": 15776,
+      "sha256": "4c345e66a2caa1c4a2ed37ce468f4111cc7f0f4ec5aacf18effe28a4683b98ce"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_component_scenarios_v1/independent/compare_responses.py",
+      "bytes": 13913,
+      "sha256": "56e93193a238e9c3fb13006a27cf9df2aed53d9db5020e3ecd92b74823aa295e"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_component_scenarios_v1/independent/diet_responses.py",
+      "bytes": 19218,
+      "sha256": "913889ac3237041621056986da870391f537a50e4de074989086a36a67a4b68b"
+    },
+    {
+      "path": "research/climate-penguin/work/signy_component_scenarios_v1/plot.py",
+      "bytes": 4892,
+      "sha256": "74d678bbd05cdd8d686d72252b51c521547b3c49d8ae0457c03c4fae93da59da"
+    },
+    {
+      "path": "tests/test_signy_component_scenarios_v1.py",
+      "bytes": 3170,
+      "sha256": "6b5beef93623d5b20246d01f69b9a13f409c1422dc5e439ce6bc43e722e83468"
+    }
+  ],
+  "publication": "Prepared for the existing draft PR206. Remote expected-head lease and exact tree verification occur after commit and are reported separately."
+}

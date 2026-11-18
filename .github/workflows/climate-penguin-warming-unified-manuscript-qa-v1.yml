@@ -1,0 +1,60 @@
+name: climate-penguin-warming-unified-manuscript-qa-v1
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/warming_unified_v1/audit_warming_manuscript.py"
+      - "research/climate-penguin/warming_unified_v1/MANUSCRIPT_WARMING_UNIFIED_V0_1.md"
+      - ".github/workflows/climate-penguin-warming-unified-manuscript-qa-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify-original-penguin-and-climate-paper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check source and manuscript numerical claims
+        run: |
+          python -m py_compile research/climate-penguin/warming_unified_v1/audit_warming_manuscript.py
+          python research/climate-penguin/warming_unified_v1/audit_warming_manuscript.py
+      - name: Validate complete source-year, spatial and future safeguards
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/climate-penguin/warming_unified_v1/outputs/WARMING_MANUSCRIPT_QA.json')
+          a=json.loads(p.read_text())
+          assert a['status']=='PASS_ORIGINAL_SOURCE_RECOMPUTATION_AND_WARMING_MANUSCRIPT_CLAIMS'
+          assert (len(a['six_original_sites']),a['same_climate_years'],a['yearly_stomach_memberships'])==(6,9,422)
+          assert len(a['four_scenarios'])==4
+          assert a['publication_ready'] is False
+          print('PASS: warming-first integrated manuscript evidence provenance')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-warming-onepaper-manuscript-qa
+          retention-days: 90
+          path: research/climate-penguin/warming_unified_v1/outputs/WARMING_MANUSCRIPT_QA.json
+      - name: Save source validation on existing Draft PR
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/climate-penguin/warming_unified_v1/outputs/WARMING_MANUSCRIPT_QA.json
+          if git diff --cached --quiet; then
+            echo "Source audit unchanged"
+          else
+            git commit -m "Warming unified: independently QA original six-site and nine-season manuscript facts"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi

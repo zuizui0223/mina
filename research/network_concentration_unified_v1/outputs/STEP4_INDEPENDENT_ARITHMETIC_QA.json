@@ -1,0 +1,102 @@
+{
+  "status": "PASS_INDEPENDENT_COEFFICIENT_AND_CR1_ARITHMETIC",
+  "method": "full species indicator matrix with Moore-Penrose generalized inverse; independently accumulated network score sandwich",
+  "primary_results_unmodified": true,
+  "matched_original_data_sha": {
+    "network_species.csv": {
+      "git_blob": "e089c4525226c156a1554ce4f480a7611c946ae7",
+      "sha256": "2aa36a7ab0c9145e6e4eac1ebb54f81533fe8546d634e92cdbb0d580b46dad28"
+    },
+    "network_species_pairs.csv": {
+      "git_blob": "fe4751b9f12e7ffa6f92ed43c233f6a77b109065",
+      "sha256": "9eff5dfe9d9dbfc6855fe82d6c7592da7a752defa1c52670904e5a874034451d"
+    },
+    "network_climate_intake.csv": {
+      "git_blob": "d8a642977202daf563fa8c0622caffe60b657a27",
+      "sha256": "d4e6c131c90a045a828704f6352a1ca2442097086112086555dbc836ce9ef41f"
+    },
+    "species_traits_intake.csv": {
+      "git_blob": "95662a64e6a62e1965bdea20f7b05a702838499a",
+      "sha256": "0d752879a3f418771897de9845c6b149af97042aec0f944ae9b57a5695c7bb36"
+    },
+    "step2_join_readiness.csv": {
+      "git_blob": "f42bbd8720a16d6fff6f1e7d6d3dae1f16eded80",
+      "sha256": "1da3eff61c8b08d6115365ea52a857642c0012e71751afb22b1d7f3206bec1ac"
+    }
+  },
+  "verified": {
+    "H3": {
+      "original": {
+        "n": 662,
+        "m": 387,
+        "p": 25,
+        "coef": 0.03316307915510458,
+        "se": 0.027739391552292294
+      },
+      "abs_differences": {
+        "coef": 2.1371793224034263e-15,
+        "se": 4.85722573273506e-17
+      },
+      "without_Scotland": {
+        "n": 171,
+        "m": 94,
+        "p": 22,
+        "coef": 0.04146178178156159,
+        "se": 0.04579719952217801
+      },
+      "without_Scotland_abs_differences": {
+        "coef": 1.970645868709653e-15,
+        "se": 1.8735013540549517e-16
+      }
+    },
+    "H4D": {
+      "original": {
+        "n": 376,
+        "m": 90,
+        "p": 23,
+        "coef": 0.006160793802448425,
+        "se": 0.0191154221607753
+      },
+      "abs_differences": {
+        "coef": 4.5102810375396984e-17,
+        "se": 2.42861286636753e-17
+      },
+      "without_Scotland": {
+        "n": 104,
+        "m": 36,
+        "p": 18,
+        "coef": -0.007146400961642818,
+        "se": 0.025959199636453583
+      },
+      "without_Scotland_abs_differences": {
+        "coef": 7.129713486264677e-16,
+        "se": 8.673617379884035e-17
+      }
+    },
+    "H4W": {
+      "original": {
+        "n": 376,
+        "m": 90,
+        "p": 23,
+        "coef": -0.015215574022541626,
+        "se": 0.01741259536349639
+      },
+      "abs_differences": {
+        "coef": 2.2898349882893854e-16,
+        "se": 3.469446951953614e-17
+      },
+      "without_Scotland": {
+        "n": 104,
+        "m": 36,
+        "p": 18,
+        "coef": -0.09189102271976937,
+        "se": 0.027497620273079643
+      },
+      "without_Scotland_abs_differences": {
+        "coef": 1.249000902703301e-16,
+        "se": 1.249000902703301e-16
+      }
+    }
+  },
+  "not_recomputed": "restricted wild bootstrap p-values; CI provided by frozen runner"
+}

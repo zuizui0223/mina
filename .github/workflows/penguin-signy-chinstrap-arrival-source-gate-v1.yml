@@ -1,0 +1,39 @@
+name: penguin-signy-chinstrap-arrival-source-gate-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_chinstrap_arrival_source_gate_v1/**'
+      - 'tests/test_signy_chinstrap_arrival_source_gate_v1.py'
+      - '.github/workflows/penguin-signy-chinstrap-arrival-source-gate-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_chinstrap_arrival_source_gate_v1/**'
+      - 'tests/test_signy_chinstrap_arrival_source_gate_v1.py'
+      - '.github/workflows/penguin-signy-chinstrap-arrival-source-gate-v1.yml'
+permissions:
+  contents: read
+jobs:
+  audit-publisher-original:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Synthetic date/source robustness
+        run: python -m unittest discover -s tests -p test_signy_chinstrap_arrival_source_gate_v1.py -v
+      - name: Obtain official BAS chinstrap arrival-count archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=64a8291f-8c23-4e5d-9085-c36c8d83b09a&output=zip.tree' -o /tmp/signy_chinstrap_arrival_publisher.zip
+      - name: Audit original files, row grain, dates and census sessions
+        run: |
+          python research/climate-penguin/work/signy_chinstrap_arrival_source_gate_v1/inspect.py --original-zip /tmp/signy_chinstrap_arrival_publisher.zip --out /tmp/arrival_inventory
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-signy-chinstrap-arrival-source-gate-v1
+          path: /tmp/arrival_inventory/
+          retention-days: 30

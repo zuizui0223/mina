@@ -1,0 +1,43 @@
+name: penguin calendar-verified climate hindcast v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/historical_ocean_macro_v1/calendar_subset.py"
+      - ".github/workflows/penguin-calendar-verified-hindcast-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-month-verified-hindcast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: penguin-historical-ocean-macro34-1993-2020-v1
+          run-id: 41213849262
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/macro
+      - uses: actions/download-artifact@v4
+        with:
+          name: penguin-3species-source-calendar-v1
+          run-id: 41214525097
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/calendar
+      - name: Evaluate fixed predictions only where both counts demonstrably follow September
+        run: |
+          python research/climate-penguin/work/historical_ocean_macro_v1/calendar_subset.py \
+            --macro "${{ runner.temp }}/macro" --calendar "${{ runner.temp }}/calendar" \
+            --out build/calendar_hindcast_audit_v1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-calendar-verified-hindcast-v1
+          path: build/calendar_hindcast_audit_v1/
+          if-no-files-found: error
+          retention-days: 45

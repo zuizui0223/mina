@@ -1,0 +1,37 @@
+name: climate-penguin-historical-seaice-boundary-temporal-gate-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/seaice_threshold_temporal_gate_v1/**"
+      - "research/climate-penguin/outputs/seaice_threshold_temporal_gate_v1/**"
+      - ".github/workflows/climate-penguin-seaice-temporal-boundary-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/seaice_threshold_temporal_gate_v1/**"
+      - "research/climate-penguin/outputs/seaice_threshold_temporal_gate_v1/**"
+      - ".github/workflows/climate-penguin-seaice-temporal-boundary-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-sic-count-month-verified:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reproduce historical SIC 39-site temporal support, fixed threshold bands, and count-month gate
+        run: node research/climate-penguin/work/seaice_threshold_temporal_gate_v1/build.mjs --check-receipt
+      - name: Save original annual site-ice/count and future-response observability diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-sic-boundary-temporal-support-v1
+          path: |
+            research/climate-penguin/outputs/seaice_threshold_temporal_gate_v1/*.csv
+            research/climate-penguin/outputs/seaice_threshold_temporal_gate_v1/*.json
+          if-no-files-found: error
+          retention-days: 60

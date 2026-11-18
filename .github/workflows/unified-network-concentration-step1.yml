@@ -1,0 +1,136 @@
+name: unified-network-concentration-step1
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/build_step1.py"
+      - ".github/workflows/unified-network-concentration-step1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-common-table:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Python syntax gate and numerical dependencies
+        run: |
+          python -m py_compile research/network_concentration_unified_v1/build_step1.py
+          python -m pip install numpy geographiclib jsonschema requests
+      - name: Recover existing frozen JNCC parser by immutable commit
+        run: |
+          mkdir -p build/step1_inputs/jncc_code
+          git fetch --no-tags origin 0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e
+          for source in audit_jncc_two_censuses_source_v28 audit_jncc_comparable_site_panels_v29 model_jncc_component_concentration_v30; do
+            git show "0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e:scripts/${source}.py" > "build/step1_inputs/jncc_code/${source}.py"
+          done
+      - name: Recover byte-pinned JNCC and Palmer original source
+        shell: bash
+        run: |
+          mkdir -p build/step1_inputs
+          if curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://data.jncc.gov.uk/data/63f0ea40-485d-46dd-b967-150df90a7b2b/comparative-seabirds-count-dataset-revised-20240708.xlsx' \
+            -o build/step1_inputs/jncc.xlsx; then
+            echo 'JNCC original downloaded; frozen SHA is validated by builder'
+          else
+            rm -f build/step1_inputs/jncc.xlsx
+            echo 'JNCC original unavailable; explicit pending-recovery row is retained'
+          fi
+          if curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://pallter-data.marine.rutgers.edu/erddap/tabledap/AdeliePenguinCensus.csv?study_name,time,island_name,colony_code,num_breeding_pairs' \
+            -o build/step1_inputs/palmer.csv; then
+            echo 'Palmer original downloaded; frozen SHA is validated by builder'
+          else
+            rm -f build/step1_inputs/palmer.csv
+            echo 'Palmer original unavailable; local rows remain pending'
+          fi
+      - name: Recover original Signy Adélie and chinstrap source archives
+        shell: bash
+        run: |
+          if ! curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/step1_inputs/signy_adelie.zip; then
+            rm -f build/step1_inputs/signy_adelie.zip
+          fi
+          if ! curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' \
+            -o build/step1_inputs/signy_chinstrap.zip; then
+            rm -f build/step1_inputs/signy_chinstrap.zip
+          fi
+          for file in build/step1_inputs/signy_*.zip; do
+            if [ -f "$file" ] && ! unzip -tq "$file"; then
+              echo "Broken provider archive: $file; retaining pending status"
+              rm -f "$file"
+            fi
+          done
+      - name: Lock all endpoint choices before effect calculation
+        run: python research/network_concentration_unified_v1/build_step1.py --phase registry
+      - name: Materialize frozen original-count endpoints without reselecting
+        run: python research/network_concentration_unified_v1/build_step1.py --phase endpoints
+      - name: Compute common two-endpoint count benchmark and overlap
+        run: python research/network_concentration_unified_v1/build_step1.py --phase outcomes
+      - name: Assert common table/schema columns and numeric end-to-end integrity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import csv,hashlib,json
+          base=Path('research/network_concentration_unified_v1')
+          schema=json.loads((base/'SCHEMA.json').read_text())
+          registry=(base/'data/endpoint_registry.json').read_bytes()
+          assert hashlib.sha256(registry).hexdigest()==(base/'data/endpoint_registry.sha256').read_text().strip()
+          rr=json.loads(registry)
+          assert rr and all(set(schema['properties']['endpoint_registry']['items']['required'])==set(r) for r in rr)
+          for p,t in [('data/network_species.csv','network_species'),('data/unit_endpoints.csv','unit_endpoints'),('data/network_species_pairs.csv','network_species_pairs')]:
+            with (base/p).open() as f:
+              r=csv.DictReader(f)
+              assert set(r.fieldnames)==set(schema['properties'][t]['items']['required']),p
+              vals=list(r)
+            print(p,len(vals))
+          x=json.loads((base/'outputs/STEP1_QA.json').read_text())
+          assert x['n_rows']>0 and x['n_rows']>=x['computed']
+          assert x['n_pairs']>=x['pairs_computed']
+          print('PASS: registry locked, schema columns match, totals valid',json.dumps(x))
+          PY
+      - name: Upload reproducible derived count panel (no original publisher workbook)
+        uses: actions/upload-artifact@v4
+        with:
+          name: mina-unified-step1-tables
+          retention-days: 90
+          path: |
+            research/network_concentration_unified_v1/data/endpoint_registry.json
+            research/network_concentration_unified_v1/data/endpoint_registry.sha256
+            research/network_concentration_unified_v1/data/input_checksums.json
+            research/network_concentration_unified_v1/data/network_species.csv
+            research/network_concentration_unified_v1/data/network_species_pairs.csv
+            research/network_concentration_unified_v1/outputs/STEP1_READOUT.md
+            research/network_concentration_unified_v1/outputs/STEP1_QA.json
+      - name: Save derived tables on existing Draft PR branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f \
+            research/network_concentration_unified_v1/data/endpoint_registry.json \
+            research/network_concentration_unified_v1/data/endpoint_registry.sha256 \
+            research/network_concentration_unified_v1/data/input_checksums.json \
+            research/network_concentration_unified_v1/data/network_species.csv \
+            research/network_concentration_unified_v1/data/network_species_pairs.csv \
+            research/network_concentration_unified_v1/outputs/STEP1_READOUT.md \
+            research/network_concentration_unified_v1/outputs/STEP1_QA.json
+          if git diff --cached --quiet; then
+            echo 'Derived tables unchanged'
+          else
+            git commit -m "Step1: lock actual original-source endpoints and count-null readout"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi

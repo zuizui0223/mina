@@ -43,7 +43,7 @@ def test_manuscript_v04_ecosphere_after_neff_diagnostics():
     assert out["citation_count"]>=12
     assert out["manuscript_words"]>3000
 
-    text=(root/"docs/MANUSCRIPT_ECOSPHERE_V0_4.md").read_text()
+    text=(root/"docs/MANUSCRIPT_ECOSPHERE_V0_4.md").read_text(encoding="utf-8")
     assert "0.262" in text
     assert "5,244/20,000" in text
     assert "Palmer Penguins data set" not in text
@@ -63,7 +63,7 @@ def test_manuscript_v05_ecosphere_after_structured_neff_nulls():
     assert out["unknown_citations"]==[]
     assert out["citation_count"]>=12
     assert out["manuscript_words"]>3000
-    text=(root/"docs/MANUSCRIPT_ECOSPHERE_V0_5.md").read_text()
+    text=(root/"docs/MANUSCRIPT_ECOSPHERE_V0_5.md").read_text(encoding="utf-8")
     assert "0.262" in text
     assert "*p* < 0.00001" in text
     assert "1/416 = **0.0024**" in text

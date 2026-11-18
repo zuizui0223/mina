@@ -1,0 +1,102 @@
+{
+  "status": "analysis_and_independent_numerical_verification_complete_with_source_limits",
+  "n_islands": 1,
+  "n_years": 9,
+  "years": [
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009
+  ],
+  "n_resamples": 1000,
+  "size_gate": "three-species size is numerical common-scale assumption; no verified Gentoo mm conversion",
+  "maturity_gate": "recorded labels; catalogue-only sensitivity; no inferred adult proportions",
+  "prior_signed_fish_r": 0.7838587732429944,
+  "primary_associations": [
+    {
+      "variant": "full",
+      "window": -1,
+      "metric": "fish",
+      "pair": "Gentoo-vs-others",
+      "ice_window": "Aug-Nov",
+      "n_years": 9,
+      "r": 0.784042737486591,
+      "slope_per_10pp": 0.11776007610795575,
+      "hc3_low": 0.018803441862988435,
+      "hc3_high": 0.21671671035292306,
+      "p_hc3": 0.02599831443721719,
+      "detrended_r": 0.7662180643121117,
+      "first_difference_r": 0.6850639746973958,
+      "loo_min": 0.688984929402791,
+      "loo_max": 0.8881435435146532,
+      "circular_extreme": 1.0,
+      "circular_denominator": 9.0
+    },
+    {
+      "variant": "full",
+      "window": -1,
+      "metric": "size_assumed_common_scale",
+      "pair": "Gentoo-vs-others",
+      "ice_window": "Aug-Nov",
+      "n_years": 9,
+      "r": 0.3797301003193255,
+      "slope_per_10pp": 0.1369357768706526,
+      "hc3_low": -0.19761785800968915,
+      "hc3_high": 0.47148941175099435,
+      "p_hc3": 0.36535594575992913,
+      "detrended_r": 0.33856124485780176,
+      "first_difference_r": 0.5362637931684228,
+      "loo_min": 0.2244235043407757,
+      "loo_max": 0.56397763096043,
+      "circular_extreme": 5.0,
+      "circular_denominator": 9.0
+    },
+    {
+      "variant": "full",
+      "window": -1,
+      "metric": "stage_labels",
+      "pair": "Gentoo-vs-others",
+      "ice_window": "Aug-Nov",
+      "n_years": 9,
+      "r": 0.3451891395330231,
+      "slope_per_10pp": 0.023777533545081015,
+      "hc3_low": -0.0276759675230528,
+      "hc3_high": 0.07523103461321483,
+      "p_hc3": 0.31068486258954914,
+      "detrended_r": 0.3303206835864903,
+      "first_difference_r": 0.473519760931456,
+      "loo_min": 0.18515200907382653,
+      "loo_max": 0.46551559466018977,
+      "circular_extreme": 4.0,
+      "circular_denominator": 9.0
+    }
+  ],
+  "exact": [
+    {
+      "metric": "fish",
+      "r": 0.7840427374865907,
+      "n_permutations": 362880,
+      "p_exact": 0.013260582010582011,
+      "p_max3": 0.03419863315696649
+    },
+    {
+      "metric": "size_assumed_common_scale",
+      "r": 0.3797301003193255,
+      "n_permutations": 362880,
+      "p_exact": 0.30263447971781304,
+      "p_max3": 0.6182787698412698
+    },
+    {
+      "metric": "stage_labels",
+      "r": 0.345189139533023,
+      "n_permutations": 362880,
+      "p_exact": 0.3787808641975309,
+      "p_max3": 0.6835289902998236
+    }
+  ]
+}

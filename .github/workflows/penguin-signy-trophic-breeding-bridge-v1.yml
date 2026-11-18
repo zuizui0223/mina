@@ -1,0 +1,48 @@
+name: penguin-signy-trophic-breeding-bridge-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_trophic_stage_bridge_v1/**'
+      - 'research/climate-penguin/outputs/signy_trophic_stage_bridge_v1/**'
+      - '.github/workflows/penguin-signy-trophic-breeding-bridge-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_trophic_stage_bridge_v1/**'
+      - 'research/climate-penguin/outputs/signy_trophic_stage_bridge_v1/**'
+      - '.github/workflows/penguin-signy-trophic-breeding-bridge-v1.yml'
+permissions:
+  contents: read
+jobs:
+  trophic-stage-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pandas lxml html5lib beautifulsoup4
+      - name: Download source-pinned three stomach and three breeding-stage archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/diet_source /tmp/stage_source
+          curl -L --fail --retry 2 --retry-delay 3 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=eb421e6d-b93b-4174-904b-9a7b0b401403&output=zip.tree' -o /tmp/diet_source/adelie.zip
+          curl -L --fail --retry 2 --retry-delay 3 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=95e38251-797c-495a-abc0-40a613599759&output=zip.tree' -o /tmp/diet_source/chinstrap.zip
+          curl -L --fail --retry 2 --retry-delay 3 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=fb9bd975-e6fe-406c-84be-01e57d612b5e&output=zip.tree' -o /tmp/diet_source/gentoo.zip
+          curl -L --fail --retry 2 --retry-delay 3 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o /tmp/stage_source/adelie.zip
+          curl -L --fail --retry 2 --retry-delay 3 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o /tmp/stage_source/chinstrap.zip
+          curl -L --fail --retry 2 --retry-delay 3 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o /tmp/stage_source/gentoo.zip
+      - name: Recompute per-sample 3 species diet from official original files
+        run: python research/climate-penguin/work/signy_diet_climate_v1/analyze.py --source-dir /tmp/diet_source --out /tmp/diet_derived
+      - name: Recompute all three original breeding-stage series and fixed SHA audit
+        run: python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py --source-dir /tmp/stage_source --out /tmp/stage_derived
+      - name: Join diet and breeding-stage niches by literal species and breeding season
+        run: python research/climate-penguin/work/signy_trophic_stage_bridge_v1/join.py --diet-derived /tmp/diet_derived --stage-derived /tmp/stage_derived --out /tmp/trophic_bridge
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-trophic-breeding-bridge-v1
+          path: /tmp/trophic_bridge/
+          retention-days: 30

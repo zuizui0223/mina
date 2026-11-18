@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "date": "2026-10-29",
+  "status": "POSTEXPLORATORY_REGIONAL_IDENTIFICATION_NOT_CAUSAL",
+  "analysis_commit": "05feb8411d636d505fa32ab550bca57169afc27a",
+  "original_source_run": 40881769676,
+  "source_hashes": {
+    "fixed44_prior_seaice_pairs.csv": "a405141db916f53c9a852d24f722514bf0c545a56878ee2a73d9501230ede217",
+    "original_selected_grid_cells.csv": "60751e5a2dc042e90d48c7e4c3a139e45849fe76369724efc1db326a6cb48576",
+    "seaice_fixed44_v4_result.json": "6fbe873c2a0d92a5c27d90bd2ba2059b591db9e5e688492be362a17c0fe821d9"
+  },
+  "original_pairs_unchanged": 44,
+  "source_sites": 7,
+  "source_regions": 2,
+  "response": "Gentoo minus Adelie annual delta log(1+nests)",
+  "coefficient_unit": "per +10 percentage-point prior Aug-Nov sea-ice concentration year change",
+  "region_separate_site_fixed": {
+    "Central-west Antarctic Peninsula": {"n": 9, "sites": 3, "years": 9, "coefficient": -0.054726410616302505, "residual_df": 5},
+    "South Shetland Islands": {"n": 35, "sites": 4, "years": 22, "coefficient": -0.0021179852841920377, "residual_df": 30}
+  },
+  "nested_models": {
+    "site": {"coefficient": -0.013670203872972122, "remaining_x_ss": 114.07225352057159, "residual_df": 36},
+    "site_year": {"coefficient": -0.006769416060581161, "remaining_x_ss": 19.180585637097554, "residual_df": 15},
+    "site_region_year": {"coefficient": -0.63137107425023, "remaining_x_ss": 0.08376099554037282, "residual_df": 9}
+  },
+  "orthogonal_information_partition": [
+    {"component": "added_shared_year_space", "fraction_of_site_residual_x_ss": 0.8318558190521024, "xy_crossproduct": -1.4295495974124564, "slope_contribution": -0.012531965953970164},
+    {"component": "added_region_year_space", "fraction_of_site_residual_x_ss": 0.1674099007618298, "xy_crossproduct": -0.07695709472852658, "slope_contribution": -0.0006746346491230513},
+    {"component": "within_region_year_space", "fraction_of_site_residual_x_ss": 0.0007342801860688017, "xy_crossproduct": -0.05288426973459391, "slope_contribution": -0.00046360326987891803}
+  ],
+  "fractions_are_not_causal_ecological_variance_explained": true,
+  "original_region_year_support": {"groups": 31, "single_site_groups": 20, "multiple_site_groups": 11},
+  "local_information": {
+    "Central-west Antarctic Peninsula": {"original_rows": 9, "nonzero_residual_rows": 0},
+    "South Shetland Islands": {"original_rows": 35, "nonzero_residual_rows": 24, "sites": 4, "years": 11, "residual_ice_difference_pp_range": [-1.1442893424036216, 1.144289342403635]}
+  },
+  "same_exact_land_subset": {
+    "rows": 40, "sites": 6, "mapped_land_features": 5,
+    "site_region_year_coefficient": -0.4350434685329803,
+    "residual_df": 8,
+    "delete_land_statuses": {
+      "10818": "NO_RESIDUAL_PREDICTOR",
+      "12020": "NO_RESIDUAL_PREDICTOR",
+      "4903": "ESTIMABLE_SAME_LOCAL_CONTRAST",
+      "5253": "ESTIMABLE_SAME_LOCAL_CONTRAST",
+      "5797": "ESTIMABLE_SAME_LOCAL_CONTRAST"
+    },
+    "not_five_independent_replicated_land_effects": true
+  },
+  "fixed_marine_unions": {
+    "Central-west Antarctic Peninsula": {"unique_cells": 41, "summed_site_cell_assignments": 98},
+    "South Shetland Islands": {"unique_cells": 65, "summed_site_cell_assignments": 200},
+    "original_months": 96,
+    "regional_monthly_means": 192,
+    "union_scope": "union of existing seven site buffers; NOT all ocean in named regions"
+  },
+  "verification": {
+    "new_tests_passed": 8,
+    "independent_direct_dummy_QR_coefficients_and_null_refits": 110,
+    "max_absolute_coefficient_difference": 1.1501910535116622e-13,
+    "original96_NetCDF_SHA_verified": true,
+    "independent_raw_ocean_cell_month_values": 10176,
+    "independent_region_month_means": 192,
+    "max_regional_mean_error": 0.0,
+    "original44_all_fields_unchanged": true,
+    "remote_source_run": 40886381719,
+    "remote_full_repository_pytest_step": "success",
+    "remote_source_replay_step": "success",
+    "remote_result_artifact": 12901639810,
+    "remote_artifact_zip_sha256": "4d8c2c757250ddd76e87de60fde07ce1d260e69f73a43fd24a78d0974d50ef9d",
+    "downloaded_CI_JSON_numbers_compared": 1383,
+    "CI_local_max_number_difference": 2.744471316873387e-13,
+    "CSV_byte_identical_files": 3,
+    "residual_CSV_numeric_match": true,
+    "all_other_scientific_workflows_reexecuted": false
+  },
+  "calibrated_p_values": null,
+  "calibrated_confidence_intervals": null,
+  "causal_or_anthropogenic_warming_claim": false,
+  "nest_snow_sea_access_or_prey_measured": false,
+  "previous216_correction_changed": false,
+  "limits": [
+    "Two original geographic labels are not independent continental confirmation.",
+    "Region-year controls remove true regional climate signals together with confounding; these are different estimands.",
+    "Large local coefficient is based on a tiny source contrast and must not be extrapolated to a 10-point local sea-ice perturbation.",
+    "Mapped land feature IDs are not historical nest polygons or independently verified island populations.",
+    "Temporal order remains conditional on original observation-year bounds, not invented field dates.",
+    "No new time window, radius, cohort or outcome search was performed."
+  ]
+}

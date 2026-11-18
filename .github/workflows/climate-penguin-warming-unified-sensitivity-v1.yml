@@ -1,0 +1,55 @@
+name: climate-penguin-warming-unified-sensitivity-v1
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/warming_unified_v1/check_warming_unified_sensitivity.py"
+      - "research/climate-penguin/warming_unified_v1/data/signy_same_year_diet_phenology.csv"
+      - "research/climate-penguin/warming_unified_v1/data/six_site_future_physical.csv"
+      - ".github/workflows/climate-penguin-warming-unified-sensitivity-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-niche-timescale-and-ocean-cell-weights:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Source data and Python syntax
+        run: |
+          python -m py_compile research/climate-penguin/warming_unified_v1/check_warming_unified_sensitivity.py
+      - name: Run fixed nine-year and four-scenario sensitivity
+        run: python research/climate-penguin/warming_unified_v1/check_warming_unified_sensitivity.py
+      - name: Verify independent source-grain counts and numerical checks
+        run: |
+          python - <<'PY'
+          import json, math
+          from pathlib import Path
+          d=Path("research/climate-penguin/warming_unified_v1/outputs/WARMING_SENSITIVITY_DIAGNOSTICS_20261107.json")
+          a=json.loads(d.read_text())
+          assert a["status"]=="POST_RESULT_DESCRIPTIVE_ONLY_NO_FUTURE_BIOLOGICAL_FORECAST"
+          assert (a["island_climate_years"],a["original_stomachs_not_climate_replicates"])==(9,422)
+          diet=a["diet_gentoo_minus_adelie"]
+          hatch=a["hatching_chinstrap_minus_adelie"]
+          assert math.isclose(diet["linear_year_detrended_r"],0.76494071747104,abs_tol=1e-10)
+          assert math.isclose(hatch["pearson_r"],-0.066075052412668,abs_tol=1e-10)
+          assert (diet["circular_shift_abs_alignment_rank"],hatch["circular_shift_abs_alignment_rank"])==(1,6)
+          s=a["marine_physical_scenario_weighting"]
+          assert len(s)==4
+          assert all(q["n_original_marine_sites"]==4 and q["n_distinct_marine_fingerprints"]==2 for q in s)
+          assert math.isclose(s[-1]["sic_4site_equal_pp"],-23.939487478097448,abs_tol=1e-10)
+          assert math.isclose(s[-1]["sic_2pixel_equal_pp"],-35.73898981753169,abs_tol=1e-10)
+          print("PASS: independent 9-climate-year diagnostics and 2-grid physical-weighting QA")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-warming-unified-sensitivity-20261107
+          retention-days: 90
+          path: research/climate-penguin/warming_unified_v1/outputs/WARMING_SENSITIVITY_DIAGNOSTICS_20261107.json

@@ -1,0 +1,32 @@
+name: Penguin existing macro association evidence audit
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/association_evidence/**'
+      - '.github/workflows/penguin-macro-association-evidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-correlations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install independent Pearson test implementation
+        run: python -m pip install --disable-pip-version-check numpy scipy
+      - name: Compile independent source-backed audit
+        run: python -m py_compile research/climate-penguin/association_evidence/audit_existing_associations.py
+      - name: Recalculate source-backed association and FDR evidence
+        run: python research/climate-penguin/association_evidence/audit_existing_associations.py
+      - name: Archive verified statistical-evidence receipt only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-correlation-evidence-and-uncertainty-20261109
+          path: research/climate-penguin/association_evidence/outputs/source_checked_association_summary.json
+          if-no-files-found: warn

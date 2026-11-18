@@ -1,0 +1,33 @@
+name: climate-penguin-antecedent-ice-forward-v3
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - "research/climate-penguin/work/scenario_support_v1/antecedent_ice_forward_gate_v3.py"
+      - "research/climate-penguin/outputs/antecedent_ice_forward_gate_v3/**"
+      - "tests/test_antecedent_ice_forward_gate_v3.py"
+      - ".github/workflows/climate-penguin-antecedent-ice-forward-v3.yml"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Execute source-pinned antecedent sea-ice hindcast
+        run: python research/climate-penguin/work/scenario_support_v1/antecedent_ice_forward_gate_v3.py --check-receipt
+      - name: Verify reproducibility and chronology
+        run: python -m unittest discover -s tests -p "test_antecedent_ice_forward_gate_v3.py" -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: climate-penguin-antecedent-ice-v3
+          path: |
+            research/climate-penguin/outputs/antecedent_ice_forward_gate_v3/predictions.csv
+            research/climate-penguin/outputs/antecedent_ice_forward_gate_v3/result.json
+            research/climate-penguin/outputs/antecedent_ice_forward_gate_v3/expected_receipt.json

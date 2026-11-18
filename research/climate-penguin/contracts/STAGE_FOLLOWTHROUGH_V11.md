@@ -1,0 +1,26 @@
+# V11: Recorded chick output and subsequent nest composition, no shared baseline counts
+
+2026-10-30 JST. Explicitly retrospective/post-exploration after V10, not a prospective prediction test. One question: is the direction of the within-season recorded chick-output species contrast retained in a later recorded nest-composition change?
+
+## Fixed quantities and source population
+Original MAPPPD v5 2026-10-21 release and four input SHA values remain those of V9. Reuse the 75 V10 same-site/season/source/vantage species comparisons; primary CHPE|GEPE and the 21 originally stage-ordered comparisons, supplementary other species and the 41 all-timing primary contrasts. The earlier 216 exploratory-test family and all V1--V10 results are unchanged.
+
+For each baseline breeding-season start year t, fix future census seasons to **t+2 and t+5**, before opening the joined outcomes. This three-year later interval is chosen to separate counts from the baseline and to permit conservative actual calendar-order checks even when future months are not known. It is NOT an assumed age at recruitment or a test of descendants from baseline chicks. No neighboring-year substitution, variable endpoint, best lag search, or missing-as-zero.
+
+Predictor is the V10 chick-share minus nest-share contrast for species b. Response is [nest share b at t+5 minus nest share b at t+2]/3 per year. Store raw counts and log-ratio diagnostics when strictly positive; observed zeros remain numeric and a both-zero total yields undefined composition, not a pseudocount. Baseline counts at t are NOT in the response: all four source IDs must be disjoint from the four future IDs. Shared-baseline error otherwise creates algebraic correlation. Confirm the latest possible original chick date is BEFORE the earliest possible t+2 count, and t+2 latest count is BEFORE t+5 earliest count; retain source precision, never impute month/day.
+
+## Source identity, not manufactured independent data
+Both taxa and both future endpoints must use the same original nonblank citekey AND vantage, with unique records before numerical filtering. Prefer the baseline citekey solely by provenance. If this does not cover the endpoints, a separately labelled source-bridge diagnostic is allowed ONLY when a single future citekey also provides BOTH baseline nest counts at t, exactly matching the original baseline values. Same vantage required. More than one alternative qualifying future citekey is ambiguous and is not chosen by effect sign. Counts disagreeing at baseline are retained as rejected bridges; exact agreement does not prove identical survey footprint/effort or independent field replication. In particular NOAA Annual Penguin Census 1977--2015 DOI10.25921/58yq-7g68 and annual reports can reuse US AMLR observations, not independent data. NOAA documentation: https://www.fisheries.noaa.gov/inport/item/55435 and /55436.
+
+## Reporting and dependence
+Report same-source separately from baseline-count-agreement bridges; primary ordered baseline stage subset separately from all-timing diagnostic and same-full-date subset. Original field coordinates/current SCAR land labels are metadata, not historical breeding polygons. Repeated overlapping three-year response windows are NOT independent seasons: additionally take an earliest-first deterministic subset per site/species contrast with future-start > previous future-end. This reduces reused years but does not eliminate ecological autocorrelation. Do not combine taxa into a larger n. Summaries: per-site average stage shift, future share change, directional concordance and ties, raw/unique counts, source/region/land representation, and disjoint-window diagnostic. Do not perform significance tests. A multi-site generality flag requires at least 3 site IDs and 2 regions in the stage-ordered cohort; no relaxation when it fails.
+
+## Biological limits
+Recorded chicks are not certified fledglings, recruits, or surviving offspring. Neither species-specific survival nor dispersal/competition/sea-ice mediation can be inferred. Future population differences may involve already breeding adults, immigrants, breeding propensity, survey changes, and earlier cohorts. Date order is necessary but not sufficient. A common source is a bibliographic key, not guaranteed identical field protocol. This is an inspectable original-data follow-through, not a causal model or a validated forecast.
+
+## Implementation plan
+1. Write failing synthetic tests for source selection, exact date/ID separation, missing/zero counts, duplicate-stage rejection, conflicting bridges and deterministic window selection.
+2. Implement a standard-library reader/reconstructor using the unchanged V9 date parser. Rebuild baseline counts from IDs and verify V10 quantities before later joins.
+3. Run real input once after design lock, preserving every rejected baseline and reason. Independently reconstruct joins and key metrics with different code.
+4. Commit code/tests/contract/workflow on PR206 with expected-head protection. Full repository pytest and source replay run on GitHub; download outputs and compare to local calculation.
+5. Pin actual results, evidence, limits and reproduction archive. Existing fixed papers and ecological endpoints stay untouched.

@@ -1,0 +1,39 @@
+name: climate-penguin-count-growth-forward-v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - "research/climate-penguin/work/scenario_support_v1/count_growth_forward_gate_v1.py"
+      - "research/climate-penguin/outputs/count_growth_forward_gate_v1/**"
+      - "tests/test_count_growth_forward_gate_v1.py"
+      - ".github/workflows/climate-penguin-count-growth-forward-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/scenario_support_v1/count_growth_forward_gate_v1.py"
+      - "research/climate-penguin/outputs/count_growth_forward_gate_v1/**"
+      - "tests/test_count_growth_forward_gate_v1.py"
+      - ".github/workflows/climate-penguin-count-growth-forward-v1.yml"
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run chronological hindcast and frozen numeric checks
+        run: python research/climate-penguin/work/scenario_support_v1/count_growth_forward_gate_v1.py --check-receipt
+      - name: Run independent tests
+        run: python -m unittest discover -s tests -p "test_count_growth_forward_gate_v1.py" -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: climate-count-growth-forward-v1
+          path: |
+            research/climate-penguin/outputs/count_growth_forward_gate_v1/forward_predictions.csv
+            research/climate-penguin/outputs/count_growth_forward_gate_v1/result.json
+            research/climate-penguin/outputs/count_growth_forward_gate_v1/expected_receipt.json

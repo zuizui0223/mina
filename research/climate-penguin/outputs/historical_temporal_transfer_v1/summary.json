@@ -1,0 +1,40 @@
+{
+  "status": "historical_temporal_transfer_diagnostic_not_out_of_time_training_independent_validation",
+  "source_sha": {
+    "bio": "fc134e364cf38699fa7611d7dee5fbbbcb370c0a",
+    "sites": "2b6c0793ea9f9ea9acf0771052cf7a2ad9ab335b",
+    "ice": "4fcea71c2d8b1069b6ad143f6522061ed434daf5",
+    "model": "913344733e372c3a6ae5cb6a988a0a98b13ffc82"
+  },
+  "original": {
+    "full_selected_Adelie_sites": 39,
+    "two_15year_period_sites_with_3plus_count_years_and_5plus_span_each": 23,
+    "regions": {
+      "Victoria Land": 17,
+      "South Shetland Islands": 3,
+      "Central-west Antarctic Peninsula": 2,
+      "Adelie Land": 1
+    }
+  },
+  "analysis": {
+    "time_window_early": "1991-2005",
+    "time_window_late": "2006-2020",
+    "environment": "original satellite Aug-Nov nearby mean SIC",
+    "response": "difference in fitted log1p nest count slopes per decade",
+    "mean_ice_shift_pp": -0.8852280719582035,
+    "mean_actual_shift_log_growth_decade": 0.3494250042647383,
+    "historical_spatial_slope_implied_mean_shift": -0.014803432445649209,
+    "correlation_between_period_ice_and_growth_shift": 0.26938919082711227,
+    "within_region_correlation": 0.32292164144662944,
+    "fixed_spatial_model_prediction_RMSE": 0.674248516889149,
+    "zero_change_reference_RMSE": 0.6753069336829893,
+    "exploratory_slope_per10pp": 0.5780868844913729
+  },
+  "meaning": "This checks temporal association for the same count method and fixed periods; no cause attribution, no independent heldout climate transfer because beta was fitted using full 1991-2020 source sites.",
+  "caveats": [
+    "Biological early/late regression slopes depend strongly on counts, and site-year support is selected by observation density.",
+    "Only 2 historical blocks; some regions contain <=2 sites, and SIC observational buffers overlap.",
+    "1991-2005 vs 2006-2020 is an exploratory time sensitivity, not a frozen hypothesis test.",
+    "Small mean historical SIC shift does not identify response to 2100 extreme future warming."
+  ]
+}

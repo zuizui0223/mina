@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-11-06T07:48:49.734266+00:00",
+  "reviewer": "Independent scenario response reviewer",
+  "status": "passed_scoped_review",
+  "material_findings": [],
+  "conclusion": "No material numerical, unit, scientific-claim, calculation-omission or coding error was found in the reviewed conditional scenario analysis, report, README and figure.",
+  "scope": "One final full reading of the new analysis, report, README and plotting code, visual PNG review, and direct report-to-output comparisons using already independently verified numerical outputs. No new exploratory analysis, model fitting, raw-input reconstruction, repository-wide testing or manuscript review.",
+  "checks": [
+    {
+      "id": "cohort_and_models",
+      "status": "passed",
+      "detail": "The original nine 2001-2009 seasons and 73 stomachs remain fixed. All three responses use separate intercept plus SIC/10 equal-season OLS fits with HC3 t intervals at 7 residual degrees of freedom. Fractional logit uses the same unweighted observed fractions, including p=1, with no epsilon transformation."
+    },
+    {
+      "id": "separate_mean_response",
+      "status": "passed",
+      "detail": "m is fitted and predicted separately. The report correctly distinguishes the observed m=p*c identity from fitted m=46.29% versus fitted p times fitted c=42.22% at the reference SIC."
+    },
+    {
+      "id": "change_and_uncertainty",
+      "status": "passed",
+      "detail": "OLS changes multiply the independently checked slope by fixed SIC difference/10. Both coefficient-interval limits are multiplied and sorted. Report and README restrict the intervals to coefficient uncertainty and make no absolute future-level, climate-probability or individual-stomach interval claim."
+    },
+    {
+      "id": "support_withholding",
+      "status": "passed",
+      "detail": "Eleven of twelve future mean climates are supported, yielding 33 finite responses. CESM2 SSP5-8.5 2081-2100 remains in the climate table with all six future/contrast fields withheld for each of three responses. The controlled 30 pp reduction is likewise withheld. Mean support and annual support are distinguished."
+    },
+    {
+      "id": "reported_scenario_table",
+      "status": "passed",
+      "detail": "All twelve report rows match the CSV after the stated display rounding, including mean SIC, p/c/m percentages, three NA entries and annual support counts. The opening late-century SSP2-4.5 values and reference fitted responses match the same outputs."
+    },
+    {
+      "id": "reported_control_and_accounting",
+      "status": "passed",
+      "detail": "The report SIC -10 pp changes and coefficient-only intervals match: p -11.16 [-19.72,-2.60], c -9.37 [-22.25,3.51], m -11.77 [-21.47,-2.07] response percentage points. The rounded -5.40, -6.30 and -0.07 pp accounting terms sum to -11.77 pp and are described as an algebraic allocation, not causal shares."
+    },
+    {
+      "id": "reported_shape_sensitivity",
+      "status": "passed",
+      "detail": "Reported maximum OLS versus fractional-logit future-level differences (p 4.21, c 0.37, m 2.46 pp) and change differences (4.49, 0.70, 1.04 pp) match the independently checked summary. All eleven supported point changes are negative for each response under both forms, while the c coefficient interval includes zero."
+    },
+    {
+      "id": "climate_and_scientific_scope",
+      "status": "passed",
+      "detail": "The report correctly states the observed 1995-2014 reference SIC, additive model-specific anomaly, equal-month/equal-year means, model distances and historical biases, BCC near-zero raw historical SIC limitation, 11 supported means versus 7 fully supported annual windows, one corrected historical value above 100%, and the 23.87-44.64% gap among observed diet SIC values. Future mean-climate conditions are not represented as expected annual future diets, causal effects, independent biological replicates, population forecasts or regional transfer validation."
+    },
+    {
+      "id": "figure_and_units",
+      "status": "passed",
+      "detail": "The PNG visually agrees with the climate and OLS response data. Response panels display fractions times 100, the climate panel displays SIC percent, reference lines are explicitly fitted conditions, annual support counts and unsupported CESM2 NA values are visible, and the explanatory footnotes retain the core limitations. No material legend/text overlap or clipping was observed."
+    },
+    {
+      "id": "prior_independent_evidence_freshness",
+      "status": "passed",
+      "detail": "All files hashed by the existing independent response comparison, including analyze.py, primary numerical outputs and the two independent scripts, still match their recorded SHA-256 values. Numerical calculations were not rerun in this final review."
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "work/signy_component_scenarios_v1/analyze.py",
+      "review_mode": "Full code reading",
+      "sha256": "b20a0b6dfb7cf8d62e7e39efe3708f7dfd4b3ce64d35b24d332160fb288b85bc"
+    },
+    {
+      "path": "work/signy_component_scenarios_v1/plot.py",
+      "review_mode": "Full code reading",
+      "sha256": "74d678bbd05cdd8d686d72252b51c521547b3c49d8ae0457c03c4fae93da59da"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/REPORT_JA.md",
+      "review_mode": "Full scientific and numerical review",
+      "sha256": "249d012cb079169c0931c8b9ab75e3d9e9f90844f0f1092c9562203eab25706f"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/README.md",
+      "review_mode": "Full methodological and reproduction-description review",
+      "sha256": "c0ace8ca9d96d558d229d95ff3b74ac7548860fd9e16134800751700dfab8e04"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/Figure_1_component_scenarios.png",
+      "review_mode": "Visual inspection of all four panels, legend, axes, footnotes, support annotations and NA labels",
+      "sha256": "fa147bde7188e439800d9d9420b65536a6678a86c6ee65923c975c44305fd958"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/Figure_1_component_scenarios.pdf",
+      "review_mode": "File existence and common figure-save code only; PDF was not independently rendered",
+      "sha256": "3a32f707e10108d1c837588b136bcf677ac51814640d4df50bd2d25a3d321fa2"
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "path": "outputs/signy_component_scenarios_v1/summary.json",
+      "sha256": "b7bec06b3a31ab225751b82c2608c87bbb62c3c83b56ecb7577a241c9a307e61"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/climate_scenarios.csv",
+      "sha256": "9df070e298ec31248b988a9e9c384571a75756f997fd4f1c5184b005aa705d3e"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/climate_reference.csv",
+      "sha256": "184edfa69ce9a7c4bc2963fd240499394352545e53995114e1bb03583f9ce0a6"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/component_scenarios.csv",
+      "sha256": "87ee32921ab051f62f0daf047a793359d1b9e36c67817b15df1e624c0d85c537"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/controlled_reductions.csv",
+      "sha256": "15d2fef65047ee1c9a3c30b8ffa26927a25b18c2d22fa37c057c1d27604a8770"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/independent/response_comparison.json",
+      "sha256": "d35ca637f1c934aa0016344f272a71db26f8ab43b490e55f0bd773664702c08d"
+    },
+    {
+      "path": "outputs/signy_component_scenarios_v1/independent/climate_primary_comparison.json",
+      "sha256": "0e7456d701ba05b97e2a3f9118faafa2c736bad971c913c554dcb22a246b195f"
+    },
+    {
+      "path": "outputs/signy_diet_components_v1/gentoo_primary_nine_seasons.csv",
+      "sha256": "fc483ae990f9a4f6137edebbe02f4efaab003cd3f6de65d0c313407d55f23a57"
+    }
+  ],
+  "handoff_exclusions": [
+    "The separate main manuscript and supplement were still being edited by another agent and were outside this review.",
+    "The root agent owns repository-wide pytest and the final scenario VALIDATION.json. This reviewer has now read the root-generated full-suite JUnit XML and manuscript asset-validation JSON, as recorded in validation_paragraph_update, but has not independently rerun those checks or the baseline-failure classification. The scenario VALIDATION.json itself is not covered by this review; it was absent at the initial review.",
+    "The PDF file exists and is saved from the same matplotlib figure as the inspected PNG; this review did not separately render or inspect the PDF."
+  ],
+  "primary_files_modified": false,
+  "additional_exploratory_analysis_or_test_runs": false,
+  "committed_or_pushed": false,
+  "validation_paragraph_update": {
+    "recorded_at_utc": "2026-11-06T07:52:23.231868+00:00",
+    "scope": "Updated REPORT_JA.md hash and read its final validation paragraph. Scientific-review conclusions are unchanged; no additional exploratory analysis, fitting or test execution was performed.",
+    "previous_report_sha256": "f2bff4f4fb2a2c5c8a763694ef118e92605f303461b5a57f9cf15e5fdfa06db1",
+    "current_report_sha256": "249d012cb079169c0931c8b9ab75e3d9e9f90844f0f1092c9562203eab25706f",
+    "execution_provenance": "The root agent performed the tests and asset-reference validation. This reviewer read the root-provided execution records below; this is not an independent rerun of the full suite or the eight added tests.",
+    "root_pytest_results_read": {
+      "tests": 684,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 39,
+      "passed": 642
+    },
+    "root_added_scenario_tests_read": {
+      "test_cases": 8,
+      "passed": 8
+    },
+    "root_asset_validation_read": {
+      "status": "pass",
+      "local_links": 64
+    },
+    "failure_classification_provenance": "The root agent reports that the three remaining failures match the previously recorded ledger/input baseline failures. This follow-up did not rerun the baseline or independently repeat that classification.",
+    "evidence": [
+      {
+        "path": "/tmp/component_scenarios_pytest_final.xml",
+        "sha256": "034d166e9b13b993daf9b7caf0ed7eb0c42f328752a93fe2e04dac235c4325af",
+        "kind": "root-generated full-suite JUnit XML"
+      },
+      {
+        "path": "outputs/diet_niche_manuscript_v1/validation.json",
+        "sha256": "9d26f0fcf9895b3284e33ae2e4514378157be67dbf27535233ef30f5813e123b",
+        "kind": "root-provided manuscript asset validation record"
+      }
+    ]
+  }
+}

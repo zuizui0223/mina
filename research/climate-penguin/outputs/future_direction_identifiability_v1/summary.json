@@ -1,0 +1,78 @@
+{
+  "status": "all_future_settlement_directions_specification_dependent_in_strict_land_camera_cohort_not_calibrated_forecast",
+  "source_git_blob_sha": {
+    "behavior": "31373115b5f1b46d990952e69c4a705da3e00827",
+    "land": "5cc45d5bddeb6a6a4c89880ff38c4cff290f7783",
+    "two": "6288feab14ea84719932c0760aca2f4860a5065c",
+    "four": "f1e7cecd958e1ec011489ad279782b9d1327aa5f"
+  },
+  "counts": {
+    "camera_raw_rows": 288,
+    "baseline_land_species_rows": 58,
+    "two_environment_rows": 3936,
+    "four_environment_rows": 3936,
+    "location_camera_receipts": 58,
+    "eligible_matched_site_species": 19,
+    "excluded_no_same_code_camera": 37,
+    "excluded_camera_geography_gt2km": 2,
+    "paired_model_variant_rows": 912,
+    "scenario_site_species_rows": 76
+  },
+  "scenarios": [
+    {
+      "experiment": "ssp245",
+      "period": "2041-2060",
+      "site_species": 19,
+      "distinct_site_ids": 17,
+      "full_12_specifications": 19,
+      "signs_mixed": 19,
+      "all_same_sign": 0,
+      "at_least_one_four_environment_hull_outside": 18,
+      "six_of_six_four_environment_hull_outside": 4,
+      "three_model_ice_loss_ge10pp": 3,
+      "strong_ice_loss_and_sign_robust": 0
+    },
+    {
+      "experiment": "ssp245",
+      "period": "2081-2100",
+      "site_species": 19,
+      "distinct_site_ids": 17,
+      "full_12_specifications": 19,
+      "signs_mixed": 19,
+      "all_same_sign": 0,
+      "at_least_one_four_environment_hull_outside": 19,
+      "six_of_six_four_environment_hull_outside": 6,
+      "three_model_ice_loss_ge10pp": 10,
+      "strong_ice_loss_and_sign_robust": 0
+    },
+    {
+      "experiment": "ssp585",
+      "period": "2041-2060",
+      "site_species": 19,
+      "distinct_site_ids": 17,
+      "full_12_specifications": 19,
+      "signs_mixed": 19,
+      "all_same_sign": 0,
+      "at_least_one_four_environment_hull_outside": 13,
+      "six_of_six_four_environment_hull_outside": 7,
+      "three_model_ice_loss_ge10pp": 3,
+      "strong_ice_loss_and_sign_robust": 0
+    },
+    {
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "site_species": 19,
+      "distinct_site_ids": 17,
+      "full_12_specifications": 19,
+      "signs_mixed": 19,
+      "all_same_sign": 0,
+      "at_least_one_four_environment_hull_outside": 18,
+      "six_of_six_four_environment_hull_outside": 10,
+      "three_model_ice_loss_ge10pp": 12,
+      "strong_ice_loss_and_sign_robust": 0
+    }
+  ],
+  "scope": "Same camera species and site code with ALL source camera coordinates within 2 km of static breeding-source point; all_source_labels, bounded ice, 3 climate models, site or site_year fixed effects, two- and four-variable models.",
+  "interpretation": "Conditional scenario shifts are on day scale, not validated absolute arrival dates or future nest/vegetation predictions. Signs are not probabilities. 4D hull outside is a diagnostic of empirical support.",
+  "caveat": "Model variants share the same source birds and climate models, so 12 variants are NOT independent biological replicates. Seasonal and camera-date alignment, coast/land precision, prey observations, and independent out-of-time response calibration remain unresolved."
+}

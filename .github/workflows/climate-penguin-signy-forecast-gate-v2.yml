@@ -1,0 +1,48 @@
+name: Climate penguin Signy forecast gate v2
+
+on:
+  push:
+    branches:
+      - codex/climate-penguin-progress
+    paths:
+      - ".github/workflows/climate-penguin-signy-forecast-gate-v2.yml"
+      - "research/climate-penguin/warming_unified_v1/forecast_gate_v2/**"
+      - "research/climate-penguin/warming_unified_v1/data/signy_same_year_diet_phenology.csv"
+      - "research/climate-penguin/outputs/diet_niche_scenarios_v1/conditional_scenarios.csv"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-locked-forecast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compute source-locked conditional future diet and chronological hindcast
+        run: |
+          node research/climate-penguin/warming_unified_v1/forecast_gate_v2/build.mjs --out "$RUNNER_TEMP/signy-forecast-gate"
+      - name: Check JSON and CSV have 4 test years and 12 future scenarios
+        run: |
+          python - <<'PY'
+          import csv, json, os, pathlib
+          p = pathlib.Path(os.environ["RUNNER_TEMP"])/"signy-forecast-gate"
+          s = json.loads((p/"forecast_summary.json").read_text())
+          with (p/"chronological_hindcast.csv").open() as f:
+              y=list(csv.DictReader(f))
+          with (p/"conditional_signy_two_species.csv").open() as f:
+              z=list(csv.DictReader(f))
+          assert len(y)==4 and len(z)==12
+          assert [int(r["year"]) for r in y]==[2006,2007,2008,2009]
+          assert s["within_observed_sic_support"]==11
+          assert 1-s["chronological_known_sic_nowcast_2006_2009"]["sea_ice"]["mae"]/s["chronological_known_sic_nowcast_2006_2009"]["past_mean"]["mae"]>0.42
+          assert all(not r["future_breeding_nests_forecast"] for r in z)
+          assert all(not r["future_breeding_space_forecast"] for r in z)
+          print("4 chronological tests; 12 scenario rows; 11 in-range; future nests and breeding space deliberately unestimated.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signy-forecast-gate-v2
+          path: ${{ runner.temp }}/signy-forecast-gate/
+          if-no-files-found: error

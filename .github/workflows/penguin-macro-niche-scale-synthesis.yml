@@ -1,0 +1,52 @@
+name: Penguin Pan-Antarctic macro niche and climate spatial-scale synthesis
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/summarize_scale_dependent_niches.py'
+      - '.github/workflows/penguin-macro-niche-scale-synthesis.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-reconciled-macro-scale:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical tools for source-reconciled spatial covariance only
+        run: python -m pip install --disable-pip-version-check numpy
+      - name: Verify macro scale code before source data
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/summarize_scale_dependent_niches.py
+      - name: Retrieve published original 173-site land and 595-site historical SIC source result
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-macro-173-site-original-ice-land-niche-covariation
+          run-id: 42765413899
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/macro_land_173
+      - name: Retrieve independently produced 100 original colony-species climate time trends
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-100-real-colony-species-SIC-count-trend-macro-association
+          run-id: 42613076334
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/macro_longterm_100
+      - name: Calculate covariance fractions and reconcile species-specific spatial uncertainty
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/summarize_scale_dependent_niches.py \
+            --land-sites build/macro_land_173/land_173_macro_outputs/original_173_unique_site_marine_terrestrial_environment.csv \
+            --land-summary build/macro_land_173/land_173_macro_outputs/macroscopic_173site_marine_terrestrial_support.json \
+            --nest-trends build/macro_longterm_100/three_species_100_outputs/100_original_site_species_observed_trends.csv \
+            --trend-summary build/macro_longterm_100/three_species_100_outputs/three_species_macro_climate_trend_verdict.json
+      - name: Archive reconciled source evidence without extrapolated ecological effect
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-595site-macro-niche-climate-scale-synthesis
+          path: research/climate-penguin/macro_panantarctic_v1/outputs/scale_decomposition_*.json
+          if-no-files-found: warn

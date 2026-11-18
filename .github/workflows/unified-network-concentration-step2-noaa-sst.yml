@@ -1,0 +1,99 @@
+name: unified-network-concentration-step2-noaa-sst
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/join_oisst_uk.py"
+      - ".github/workflows/unified-network-concentration-step2-noaa-sst.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  source-first-UK-SST:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependencies and syntax
+        run: |
+          python -m pip install numpy geographiclib jsonschema requests xarray netcdf4
+          python -m py_compile research/network_concentration_unified_v1/{build_step1,join_oisst_uk,audit_step2_readiness}.py
+      - name: Restore pinned JNCC parsers
+        run: |
+          mkdir -p build/step1_inputs/jncc_code
+          git fetch --no-tags origin 0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e
+          for source in audit_jncc_two_censuses_source_v28 audit_jncc_comparable_site_panels_v29 model_jncc_component_concentration_v30; do
+            git show "0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e:scripts/$source.py" > "build/step1_inputs/jncc_code/$source.py"
+          done
+      - name: Retrieve exact pinned original files
+        run: |
+          mkdir -p build/step1_inputs
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://data.jncc.gov.uk/data/63f0ea40-485d-46dd-b967-150df90a7b2b/comparative-seabirds-count-dataset-revised-20240708.xlsx' \
+            -o build/step1_inputs/jncc.xlsx
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://pallter-data.marine.rutgers.edu/erddap/tabledap/AdeliePenguinCensus.csv?study_name,time,island_name,colony_code,num_breeding_pairs' \
+            -o build/step1_inputs/palmer.csv
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/step1_inputs/signy_adelie.zip
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' \
+            -o build/step1_inputs/signy_chinstrap.zip
+      - name: Recover ephemeral original site coordinates under frozen registry
+        run: python research/network_concentration_unified_v1/build_step1.py --phase endpoints
+      - name: Read actual NOAA OISST and join to original fixed site rosters
+        run: python research/network_concentration_unified_v1/join_oisst_uk.py
+      - name: Recheck complete-case matrix; no association regressions
+        run: |
+          python research/network_concentration_unified_v1/audit_step2_readiness.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/network_concentration_unified_v1/outputs')
+          a=json.loads((p/'STEP2_OISST_UK_JOIN.json').read_text())
+          b=json.loads((p/'STEP2_SOURCE_READINESS.json').read_text())
+          assert a['network_receipts']==1036 and (a['n_JNCC_main'],a['n_JNCC_pairs'])==(663,373)
+          assert b['observed_sst_verified_rows']==sum(
+              a['stats'].get('verified_'+k,0) for k in ('network_species','network_species_pairs'))
+          assert b['H2_ready_rows']==0
+          print(a['stats'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-unified-step2-noaa-uk-sst
+          retention-days: 90
+          path: |
+            research/network_concentration_unified_v1/data/network_climate_intake.csv
+            research/network_concentration_unified_v1/data/oisst_uk_join_qa.csv
+            research/network_concentration_unified_v1/data/step2_join_readiness.csv
+            research/network_concentration_unified_v1/outputs/STEP2_OISST_UK_JOIN.json
+            research/network_concentration_unified_v1/outputs/STEP2_SOURCE_READINESS.json
+            research/network_concentration_unified_v1/outputs/STEP2_SOURCE_READINESS_JA.md
+      - name: Save network-level results only on existing Draft PR
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f \
+            research/network_concentration_unified_v1/data/network_climate_intake.csv \
+            research/network_concentration_unified_v1/data/oisst_uk_join_qa.csv \
+            research/network_concentration_unified_v1/data/step2_join_readiness.csv \
+            research/network_concentration_unified_v1/outputs/STEP2_OISST_UK_JOIN.json \
+            research/network_concentration_unified_v1/outputs/STEP2_SOURCE_READINESS.json \
+            research/network_concentration_unified_v1/outputs/STEP2_SOURCE_READINESS_JA.md
+          if git diff --cached --quiet; then
+            echo "Nothing changed"
+          else
+            git commit -m "Step2: attach actual NOAA OISST UK seasonal SST by original site"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi

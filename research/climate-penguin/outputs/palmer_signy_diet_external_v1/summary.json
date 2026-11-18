@@ -1,0 +1,316 @@
+{
+  "status": "computed; independent verification recorded in VALIDATION.json",
+  "analysis_date": "2026-11-06",
+  "estimand": "absolute gentoo-Adelie difference in equal-stomach mean fish fraction among recovered food",
+  "n_regions": 2,
+  "n_region_seasons": 15,
+  "n_unique_calendar_start_years": 14,
+  "regions": {
+    "Signy": {
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "mean_distance": 0.3623555982235343,
+      "min_distance": 0.004077556565099729,
+      "max_distance": 0.8303735485567741,
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.7817548759399483,
+      "slope_per_10pp": 0.11748174341677459,
+      "intercept": -0.11889727978651875,
+      "hc3_slope_95_low": 0.017710327621080713,
+      "hc3_slope_95_high": 0.21725315921246846,
+      "leave_one_season_r_min": 0.6852989464841619,
+      "leave_one_season_r_max": 0.884057694776893,
+      "leave_one_season_r": {
+        "2001": 0.8823768708625042,
+        "2002": 0.884057694776893,
+        "2003": 0.7503706655219693,
+        "2004": 0.748399931648009,
+        "2005": 0.780661635571215,
+        "2006": 0.7089245525852885,
+        "2007": 0.6852989464841619,
+        "2008": 0.7634592441685306,
+        "2009": 0.7886651887991107
+      },
+      "detrended_r": 0.7653148969313308,
+      "first_difference_r": 0.6828515549196837,
+      "circular_extreme_count": 1,
+      "circular_denominator": 9,
+      "n_permutations": 362880,
+      "extreme_count": 4788,
+      "p_exact": 0.013194444444444444
+    },
+    "Palmer": {
+      "n_seasons": 6,
+      "years": [
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014
+      ],
+      "mean_distance": 0.012666666666666668,
+      "min_distance": 0.0009999999999999992,
+      "max_distance": 0.043,
+      "sic_min": 29.41767663512659,
+      "sic_max": 67.0092846257073,
+      "pearson_r": 0.20667421981252831,
+      "slope_per_10pp": 0.0022497632000520835,
+      "intercept": 0.0023714244187542253,
+      "hc3_slope_95_low": -0.024179997788302727,
+      "hc3_slope_95_high": 0.028679524188406896,
+      "leave_one_season_r_min": -0.3177537726974052,
+      "leave_one_season_r_max": 0.7374391986483765,
+      "leave_one_season_r": {
+        "2009": 0.1811475248670212,
+        "2010": 0.0031112204801329647,
+        "2011": -0.3177537726974052,
+        "2012": 0.22587549558908512,
+        "2013": 0.7374391986483765,
+        "2014": 0.2342652457496995
+      },
+      "detrended_r": 0.3455385358357554,
+      "first_difference_r": 0.46706723383642307,
+      "circular_extreme_count": 5,
+      "circular_denominator": 6,
+      "n_permutations": 720,
+      "extreme_count": 560,
+      "p_exact": 0.7777777777777778
+    }
+  },
+  "transport": {
+    "all_target_seasons": {
+      "n": 6,
+      "model_mae": 0.40604952689138046,
+      "training_mean_mae": 0.34968893155686764,
+      "model_rmse": 0.4334092178358502,
+      "training_mean_rmse": 0.34997938664385064
+    },
+    "within_training_ice_range": {
+      "n": 5,
+      "model_mae": 0.3537915365681811,
+      "training_mean_mae": 0.3473555982235343,
+      "model_rmse": 0.36924770034652965,
+      "training_mean_rmse": 0.3476594765244137
+    },
+    "training_intercept": -0.118897279786519,
+    "training_slope_per_10pp": 0.11748174341677457
+  },
+  "source_audit": [
+    {
+      "species": "Adelie",
+      "n_source": 350,
+      "n_valid": 349,
+      "n_excluded": 1,
+      "legacy_n_valid": 349,
+      "excluded_keys": [
+        {
+          "DATE": "2004-01-23",
+          "RECORD_ID": "20040123 AD034"
+        }
+      ],
+      "food_total_mass_absolute_difference_max_g": 22.499999999999943
+    },
+    {
+      "species": "Gentoo",
+      "n_source": 74,
+      "n_valid": 73,
+      "n_excluded": 1,
+      "legacy_n_valid": 73,
+      "excluded_keys": [
+        {
+          "DATE": "2006-01-13",
+          "RECORD_ID": "20060113 GE8"
+        }
+      ],
+      "food_total_mass_absolute_difference_max_g": 160.2
+    }
+  ],
+  "palmer_scope": "different colonies within Palmer region; year means from published Table 1",
+  "inference_scope": "exploratory; exact p assumes exchangeable years; no project-wide multiplicity correction; no pooled independent 15-season claim",
+  "sensitivity": [
+    {
+      "scope": "Palmer_proxy",
+      "variant": "BISC",
+      "n_seasons": 6,
+      "years": [
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014
+      ],
+      "mean_distance": 0.012666666666666668,
+      "min_distance": 0.0009999999999999992,
+      "max_distance": 0.043,
+      "sic_min": 29.01636685641999,
+      "sic_max": 66.54366682479443,
+      "pearson_r": 0.20527888685910464,
+      "slope_per_10pp": 0.0022447699564668434,
+      "intercept": 0.0024881343410276284,
+      "hc3_slope_95_low": -0.02442382707205218,
+      "hc3_slope_95_high": 0.028913366984985867,
+      "leave_one_season_r_min": -0.3146297210621335,
+      "leave_one_season_r_max": 0.7381279810457714,
+      "leave_one_season_r": {
+        "2009": 0.17952385883595398,
+        "2010": 0.00037127105927189474,
+        "2011": -0.3146297210621335,
+        "2012": 0.22375323335272454,
+        "2013": 0.7381279810457714,
+        "2014": 0.23268014422210034
+      },
+      "detrended_r": 0.3451512419199396,
+      "first_difference_r": 0.4660244906275183,
+      "circular_extreme_count": 5,
+      "circular_denominator": 6,
+      "n_permutations": 720,
+      "extreme_count": 564,
+      "p_exact": 0.7833333333333333
+    },
+    {
+      "scope": "Palmer_proxy",
+      "variant": "LITC",
+      "n_seasons": 6,
+      "years": [
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014
+      ],
+      "mean_distance": 0.012666666666666668,
+      "min_distance": 0.0009999999999999992,
+      "max_distance": 0.043,
+      "sic_min": 29.818986413833187,
+      "sic_max": 67.47490242662016,
+      "pearson_r": 0.20804748498397008,
+      "slope_per_10pp": 0.002254369758576337,
+      "intercept": 0.002256082628723237,
+      "hc3_slope_95_low": -0.023936907320930078,
+      "hc3_slope_95_high": 0.02844564683808275,
+      "leave_one_season_r_min": -0.32084055105588793,
+      "leave_one_season_r_max": 0.7366989810230532,
+      "leave_one_season_r": {
+        "2009": 0.1827459797949476,
+        "2010": 0.005817417407116009,
+        "2011": -0.32084055105588793,
+        "2012": 0.22798786082236386,
+        "2013": 0.7366989810230532,
+        "2014": 0.23582570085955165
+      },
+      "detrended_r": 0.3459024226841737,
+      "first_difference_r": 0.46808282587404343,
+      "circular_extreme_count": 5,
+      "circular_denominator": 6,
+      "n_permutations": 720,
+      "extreme_count": 560,
+      "p_exact": 0.7777777777777778
+    },
+    {
+      "scope": "Signy_denominator",
+      "variant": "fish_total_mean",
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "mean_distance": 0.36116895705302443,
+      "min_distance": 0.004226859567446948,
+      "max_distance": 0.8287279796497774,
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.7808313625179821,
+      "slope_per_10pp": 0.11721313757596666,
+      "intercept": -0.11898360247196373,
+      "hc3_slope_95_low": 0.017309549996356213,
+      "hc3_slope_95_high": 0.21711672515557712,
+      "leave_one_season_r_min": 0.6839048320124261,
+      "leave_one_season_r_max": 0.8824316862389071,
+      "leave_one_season_r": {
+        "2001": 0.88211802871238,
+        "2002": 0.8824316862389071,
+        "2003": 0.749473704148,
+        "2004": 0.7472174842632874,
+        "2005": 0.7798018037157018,
+        "2006": 0.7073440006351676,
+        "2007": 0.6839048320124261,
+        "2008": 0.7626802948776861,
+        "2009": 0.7885242483124616
+      },
+      "detrended_r": 0.7648007312738876,
+      "first_difference_r": 0.6821177908572998,
+      "circular_extreme_count": 1,
+      "circular_denominator": 9,
+      "n_permutations": 362880,
+      "extreme_count": 4850,
+      "p_exact": 0.013365299823633157
+    },
+    {
+      "scope": "Signy_denominator",
+      "variant": "legacy_fish_crustacean_mean",
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "mean_distance": 0.3623555844934192,
+      "min_distance": 0.004077556565099729,
+      "max_distance": 0.8303735485567741,
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.7817548591929089,
+      "slope_per_10pp": 0.1174817417728876,
+      "intercept": -0.11889728678260598,
+      "hc3_slope_95_low": 0.017710321341713853,
+      "hc3_slope_95_high": 0.21725316220406135,
+      "leave_one_season_r_min": 0.6852989203571943,
+      "leave_one_season_r_max": 0.8840576677621157,
+      "leave_one_season_r": {
+        "2001": 0.8823768612722004,
+        "2002": 0.8840576677621157,
+        "2003": 0.7503706495423215,
+        "2004": 0.7483999102142366,
+        "2005": 0.780661618141763,
+        "2006": 0.7089245278634145,
+        "2007": 0.6852989203571943,
+        "2008": 0.7634592294023268,
+        "2009": 0.7886651887991107
+      },
+      "detrended_r": 0.7653148882445726,
+      "first_difference_r": 0.682851536861474,
+      "circular_extreme_count": 1,
+      "circular_denominator": 9,
+      "n_permutations": 362880,
+      "extreme_count": 4788,
+      "p_exact": 0.013194444444444444
+    }
+  ]
+}

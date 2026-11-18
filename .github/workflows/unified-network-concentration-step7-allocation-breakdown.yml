@@ -1,0 +1,100 @@
+name: unified-network-concentration-step7-allocation-breakdown
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/contracts/STEP7_ALLOCATION_BREAKDOWN_CONTRACT.md"
+      - "research/network_concentration_unified_v1/audit_step7_allocation_breakdown.py"
+      - ".github/workflows/unified-network-concentration-step7-allocation-breakdown.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  source-locked-allocation-breakdown:
+    runs-on: ubuntu-latest
+    timeout-minutes: 24
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Syntax and synthetic brute force optimum checks
+        run: |
+          python -m pip install numpy==2.2.6 geographiclib==2.1 requests==2.34.2 jsonschema==4.26.0
+          python -m py_compile research/network_concentration_unified_v1/audit_step7_allocation_breakdown.py
+          python research/network_concentration_unified_v1/audit_step7_allocation_breakdown.py --selftest
+      - name: Recover original publisher parsers with pinned commit
+        run: |
+          mkdir -p build/step1_inputs/jncc_code
+          git fetch --no-tags origin 0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e
+          for source in audit_jncc_two_censuses_source_v28 audit_jncc_comparable_site_panels_v29 model_jncc_component_concentration_v30; do
+            git show "0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e:scripts/$source.py" > "build/step1_inputs/jncc_code/$source.py"
+          done
+      - name: Restore six exact source originals for registry check
+        run: |
+          mkdir -p build/step1_inputs
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://data.jncc.gov.uk/data/63f0ea40-485d-46dd-b967-150df90a7b2b/comparative-seabirds-count-dataset-revised-20240708.xlsx' \
+            -o build/step1_inputs/jncc.xlsx
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://pallter-data.marine.rutgers.edu/erddap/tabledap/AdeliePenguinCensus.csv?study_name,time,island_name,colony_code,num_breeding_pairs' \
+            -o build/step1_inputs/palmer.csv
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/step1_inputs/signy_adelie.zip
+          curl -fL --retry 3 --retry-delay 3 --max-time 180 \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' \
+            -o build/step1_inputs/signy_chinstrap.zip
+      - name: Reconstruct ephemeral original source components under fixed endpoint registry
+        run: python research/network_concentration_unified_v1/build_step1.py --phase endpoints
+      - name: Compute all 663 fixed-epoch late-only share-breakdown TV values
+        run: python research/network_concentration_unified_v1/audit_step7_allocation_breakdown.py
+      - name: Verify fixed source results and no new hypothesis p values
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          base=Path('research/network_concentration_unified_v1')
+          report=json.loads((base/'outputs/STEP7_LATE_SHARE_BREAKDOWN.json').read_text())
+          a=report['all_JNCC']
+          assert report['status']=='POST_RESULT_LATE_ONLY_COMPOSITION_TV_FRAGILITY_NOT_ERROR_CALIBRATION'
+          assert a['rows']==663 and a['positive_rows']==436
+          assert a['unreachable_n']+a['reached_n']==436
+          thresholds=list(a['threshold_n'].values())
+          assert thresholds==sorted(thresholds)
+          assert a['threshold_n']['0.1']<=436
+          source=list(csv.DictReader((base/'data/step7_late_share_breakdown.csv').open()))
+          assert len(source)==663 and sum(r['primary_positive']=='true' for r in source)==436
+          assert sum(r['breakdown_status']=='unreachable_late_only' for r in source)==a['unreachable_n']
+          assert report['prior_step1_4_6_not_refitted'] is True
+          print('PASS Step7 source SHA, denominators, monotonic thresholds and complete publication QA')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mina-step7-source-locked-late-composition-fragility
+          retention-days: 90
+          path: |
+            research/network_concentration_unified_v1/data/step7_late_share_breakdown.csv
+            research/network_concentration_unified_v1/outputs/STEP7_LATE_SHARE_BREAKDOWN.json
+            research/network_concentration_unified_v1/outputs/STEP7_LATE_SHARE_BREAKDOWN_JA.md
+      - name: Commit derived TV audit only to existing Draft PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f \
+            research/network_concentration_unified_v1/data/step7_late_share_breakdown.csv \
+            research/network_concentration_unified_v1/outputs/STEP7_LATE_SHARE_BREAKDOWN.json \
+            research/network_concentration_unified_v1/outputs/STEP7_LATE_SHARE_BREAKDOWN_JA.md
+          if git diff --cached --quiet; then
+            echo "Source diagnostics unchanged"
+          else
+            git commit -m "Step7: quantify original JNCC concentration fragility to late-site allocation shifts"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi

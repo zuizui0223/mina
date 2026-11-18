@@ -1,0 +1,35 @@
+name: climate-penguin-chinstrap-all-300-original-TDR-sensor-QA-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_300tag_tdr_sensor_census_v1.py"
+      - "tests/test_chinstrap_300tag_tdr_sensor_census_v1.py"
+      - ".github/workflows/climate-penguin-chinstrap-300tag-TDR-QA-v1.yml"
+jobs:
+  all-source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install numpy
+      - name: Check original instrument source algorithm first
+        run: python -m unittest discover -s tests -p test_chinstrap_300tag_tdr_sensor_census_v1.py -v
+      - name: Retrieve original BAS Chinstrap native TDR and GPS version2 publishers
+        run: |
+          mkdir -p build/chinstrap_300_original
+          curl -fsSL --retry 4 --retry-delay 6 --max-time 1200 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=da13e049-be2b-4345-bbdd-ab960cb24731&output=zip.tree' -o build/chinstrap_300_original/TDR_v2_original.zip
+          curl -fsSL --retry 4 --retry-delay 6 --max-time 1200 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/chinstrap_300_original/GPS_v2_original.zip
+      - name: Source-screen all 300 matched original tracks with native pressure and GPS window checks
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_300tag_tdr_sensor_census_v1.py --tdr-zip build/chinstrap_300_original/TDR_v2_original.zip --gps-zip build/chinstrap_300_original/GPS_v2_original.zip --out build/chinstrap_300_QA --check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-all-300-original-TDR-instrument-QA-v1
+          path: |
+            build/chinstrap_300_QA/all_300_original_sensor_QA.csv
+            build/chinstrap_300_QA/decision.json

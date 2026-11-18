@@ -1,0 +1,37 @@
+name: climate-penguin-chinstrap-native-krill-GAM-cell-independence-v1
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/climate_penguin/chinstrap_krill_native_cell_independence_v1.py"
+      - "tests/test_chinstrap_krill_native_cell_independence_v1.py"
+      - ".github/workflows/climate-penguin-chinstrap-GAM-cell-union-v1.yml"
+jobs:
+  original-source-cell-audit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install "rasterio>=1.4,<1.6"
+      - name: Check synthetic native-pixel dedup guards
+        run: python -m unittest discover -s tests -p test_chinstrap_krill_native_cell_independence_v1.py -v
+      - name: Fetch original BAS 308 Chinstrap GPS & 10 original modelled krill TIFF
+        run: |
+          mkdir -p build/source_cells
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 240 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/source_cells/original-GPS.zip
+          curl -fsSL --retry 4 --retry-delay 7 --max-time 240 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=4fd0a1bf-da1a-4021-82eb-2fc513910e32&output=zip.tree' -o build/source_cells/original-GAM.zip
+      - name: Recompute native shared pixels across tracked tags for each source island-year
+        run: |
+          python research/climate-penguin/work/climate_penguin/chinstrap_krill_native_cell_independence_v1.py --gps-zip build/source_cells/original-GPS.zip --model-zip build/source_cells/original-GAM.zip --out build/source_cells/derived --check
+          python -m unittest discover -s tests -p test_chinstrap_krill_native_cell_independence_v1.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-native-published-GAM-pixel-reuse-audit-v1
+          path: |
+            build/source_cells/derived/seven_island_years_native_visited_GAM_cell_union.csv
+            build/source_cells/derived/three_matched_islands_native_cell_union_contrasts.csv
+            build/source_cells/derived/decision.json

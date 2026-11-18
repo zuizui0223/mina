@@ -1,0 +1,39 @@
+name: penguin-palmer-independent-isotope-niche-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/palmer_original_isotope_niche_v1/**'
+      - 'research/climate-penguin/outputs/palmer_original_isotope_niche_v1/**'
+      - 'tests/test_palmer_original_isotope_niche_v1.py'
+      - '.github/workflows/penguin-palmer-independent-isotope-niche-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/palmer_original_isotope_niche_v1/**'
+      - 'research/climate-penguin/outputs/palmer_original_isotope_niche_v1/**'
+      - 'tests/test_palmer_original_isotope_niche_v1.py'
+      - '.github/workflows/penguin-palmer-independent-isotope-niche-v1.yml'
+permissions:
+  contents: read
+jobs:
+  original-isotopes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -p 'test_palmer_original_isotope_niche_v1.py' -v
+      - name: Retrieve fixed public 344-row isotope CSV
+        run: |
+          curl -L --fail --retry 2 --max-time 90 'https://raw.githubusercontent.com/allisonhorst/palmerpenguins/8db8ef55e61d9a36b81e39833655410ace199e37/inst/extdata/penguins_raw.csv' -o /tmp/palmer_original.csv
+      - name: Verify source and analyze Palmer isotope niche and SIC proxy
+        run: |
+          PALMER_RAW_SOURCE=/tmp/palmer_original.csv python -m unittest discover -s tests -p 'test_palmer_original_isotope_niche_v1.py' -v
+          python research/climate-penguin/work/palmer_original_isotope_niche_v1/analyze.py --source /tmp/palmer_original.csv --out /tmp/palmer_isotope_v1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-palmer-independent-isotope-niche-v1
+          path: /tmp/palmer_isotope_v1/
+          retention-days: 30

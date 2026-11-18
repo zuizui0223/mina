@@ -1,0 +1,260 @@
+{
+  "status": "passed",
+  "implementation": "Independent NumPy least squares + explicit HC3 sandwich; SciPy analytic fractional-logit score solve; no primary imports",
+  "sample": {
+    "n_seasons": 9,
+    "n_stomachs": 73,
+    "years": [
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009
+    ],
+    "equal_season_weights": true,
+    "response_transformation": "none; observed endpoints retained"
+  },
+  "reference_sic": 48.68273700076806,
+  "support_sic": [
+    21.90128214834321,
+    66.68284803598858
+  ],
+  "fits": {
+    "frequency": {
+      "ols": {
+        "intercept": 0.21554541844807473,
+        "slope_per_10pp": 0.11160071808612963,
+        "hc3_slope_standard_error": 0.03619506104549215,
+        "hc3_slope_95_low": 0.026012998950077623,
+        "hc3_slope_95_high": 0.19718843722218166,
+        "hc3_covariance": [
+          [
+            0.037577460385823006,
+            -0.00674128551064985
+          ],
+          [
+            -0.006741285510649848,
+            0.0013100824440869033
+          ]
+        ],
+        "df_residual": 7,
+        "t_critical_0_975": 2.364624251592784,
+        "max_leverage": 0.3503970438102384,
+        "ols_score_max_abs": 6.860252398582053e-15
+      },
+      "fractional_logit": {
+        "intercept": -1.5523594170679225,
+        "slope_per_10pp": 0.6042687146222309,
+        "converged": true,
+        "solver": "scipy.optimize.root(method=hybr), analytic score Jacobian",
+        "solver_success": true,
+        "solver_message": "The solution converged.",
+        "solver_nfev": 12,
+        "solver_njev": 1,
+        "solver_xtol": 1e-12,
+        "score_tolerance": 1e-10,
+        "score_max_abs": 2.5499664541432583e-16,
+        "information_eigenvalues": [
+          0.24855546543913043,
+          24.18821788729253
+        ],
+        "quasi_log_likelihood": -4.834943651514337,
+        "point_sensitivity_only": true
+      }
+    },
+    "composition": {
+      "ols": {
+        "intercept": 0.10026291830062094,
+        "slope_per_10pp": 0.09369545739835414,
+        "hc3_slope_standard_error": 0.054450711698292055,
+        "hc3_slope_95_low": -0.03506001599991415,
+        "hc3_slope_95_high": 0.22245093079662243,
+        "hc3_covariance": [
+          [
+            0.0645996139387379,
+            -0.012978042977671595
+          ],
+          [
+            -0.012978042977671593,
+            0.002964880004450519
+          ]
+        ],
+        "df_residual": 7,
+        "t_critical_0_975": 2.364624251592784,
+        "max_leverage": 0.3503970438102384,
+        "ols_score_max_abs": 5.851246183585893e-16
+      },
+      "fractional_logit": {
+        "intercept": -1.6870905630616229,
+        "slope_per_10pp": 0.3958537506780087,
+        "converged": true,
+        "solver": "scipy.optimize.root(method=hybr), analytic score Jacobian",
+        "solver_success": true,
+        "solver_message": "The solution converged.",
+        "solver_nfev": 11,
+        "solver_njev": 1,
+        "solver_xtol": 1e-12,
+        "score_tolerance": 1e-10,
+        "score_max_abs": 9.306097538412785e-16,
+        "information_eigenvalues": [
+          0.28526753689878137,
+          41.15733632660084
+        ],
+        "quasi_log_likelihood": -5.735138872423967,
+        "point_sensitivity_only": true
+      }
+    },
+    "mean": {
+      "ols": {
+        "intercept": -0.1102468230271347,
+        "slope_per_10pp": 0.1177410074483908,
+        "hc3_slope_standard_error": 0.041020431052526785,
+        "hc3_slope_95_low": 0.020743101370796255,
+        "hc3_slope_95_high": 0.21473891352598534,
+        "hc3_covariance": [
+          [
+            0.03039652167882907,
+            -0.006564724452334034
+          ],
+          [
+            -0.006564724452334033,
+            0.0016826757637351036
+          ]
+        ],
+        "df_residual": 7,
+        "t_critical_0_975": 2.364624251592784,
+        "max_leverage": 0.3503970438102384,
+        "ols_score_max_abs": 3.100906444861125e-15
+      },
+      "fractional_logit": {
+        "intercept": -2.880022827359144,
+        "slope_per_10pp": 0.5493381866562244,
+        "converged": true,
+        "solver": "scipy.optimize.root(method=hybr), analytic score Jacobian",
+        "solver_success": true,
+        "solver_message": "The solution converged.",
+        "solver_nfev": 12,
+        "solver_njev": 1,
+        "solver_xtol": 1e-12,
+        "score_tolerance": 1e-10,
+        "score_max_abs": 2.9073428122430667e-15,
+        "information_eigenvalues": [
+          0.20443748390725136,
+          40.60292596231276
+        ],
+        "quasi_log_likelihood": -5.089253152004716,
+        "point_sensitivity_only": true
+      }
+    }
+  },
+  "accounting_fits": {
+    "frequency": {
+      "intercept": -0.22130175637328747,
+      "slope_per_10pp": 0.05402339881567422,
+      "hc3_slope_standard_error": 0.017521215378822216,
+      "hc3_slope_95_low": 0.012592308013530763,
+      "hc3_slope_95_high": 0.09545448961781769,
+      "hc3_covariance": [
+        [
+          0.008805565566164287,
+          -0.001579692479342107
+        ],
+        [
+          -0.0015796924793421068,
+          0.00030699298835107613
+        ]
+      ],
+      "df_residual": 7,
+      "t_critical_0_975": 2.364624251592784,
+      "max_leverage": 0.3503970438102384,
+      "ols_score_max_abs": 2.429371527952557e-16
+    },
+    "composition": {
+      "intercept": -0.25819485778734097,
+      "slope_per_10pp": 0.06302961170752594,
+      "hc3_slope_standard_error": 0.03662938749474612,
+      "hc3_slope_95_low": -0.023585126283540175,
+      "hc3_slope_95_high": 0.14964434969859206,
+      "hc3_covariance": [
+        [
+          0.029233587501408944,
+          -0.005873018921515567
+        ],
+        [
+          -0.005873018921515568,
+          0.0013417120282402633
+        ]
+      ],
+      "df_residual": 7,
+      "t_critical_0_975": 2.364624251592784,
+      "max_leverage": 0.3503970438102384,
+      "ols_score_max_abs": 6.212591766987913e-16
+    },
+    "covariation": {
+      "intercept": 0.04360734320009541,
+      "slope_per_10pp": 0.000687996925190654,
+      "hc3_slope_standard_error": 0.01742446982806077,
+      "hc3_slope_95_low": -0.040514327001388586,
+      "hc3_slope_95_high": 0.0418903208517699,
+      "hc3_covariance": [
+        [
+          0.008406572030668504,
+          -0.001533352250064435
+        ],
+        [
+          -0.0015333522500644348,
+          0.0003036121487890002
+        ]
+      ],
+      "df_residual": 7,
+      "t_critical_0_975": 2.364624251592784,
+      "max_leverage": 0.3503970438102384,
+      "ols_score_max_abs": 5.415462841929681e-16
+    }
+  },
+  "checks": {
+    "previous_ols_hc3_max_absolute_difference": 1.1102230246251565e-16,
+    "previous_annual_accounting_max_absolute_difference": 0.0,
+    "accounting_scenario_sum_max_absolute_error": 5.551115123125783e-17,
+    "n_scenario_response_rows": 36,
+    "n_supported_future_response_rows": 33,
+    "n_wholly_withheld_response_rows": 3,
+    "controlled_reduction_support": {
+      "5": true,
+      "10": true,
+      "20": true,
+      "30": false
+    },
+    "fractional_logit_all_converged": true,
+    "all_csv_lf": true,
+    "numeric_comparison_atol": 1e-11
+  },
+  "scope": "Responses are conditional evaluations at future mean SIC, not mean of future annual diets. HC3 t7 intervals describe coefficient-only fixed-delta contrasts; no absolute future-level intervals or logit inferential claims.",
+  "input_hashes": [
+    {
+      "path": "outputs/signy_diet_components_v1/gentoo_primary_nine_seasons.csv",
+      "sha256": "fc483ae990f9a4f6137edebbe02f4efaab003cd3f6de65d0c313407d55f23a57"
+    },
+    {
+      "path": "outputs/signy_diet_components_v1/annual_accounting_terms.csv",
+      "sha256": "5b7425490d7e1f7b0184920e9f27fea8166e5545cf41f2cf00eb6397c488ed90"
+    },
+    {
+      "path": "outputs/signy_diet_components_v1/summary.json",
+      "sha256": "d3cb95eb01f995b2b9eee428e7e6ae3f68e1bd2641a810bd423bd2b1137cc35c"
+    },
+    {
+      "path": "outputs/diet_niche_scenarios_v1/conditional_scenarios.csv",
+      "sha256": "0ad7acb115cdf53a758617c7e6435473b52424aa6e999ce3f74ec36c7cf96c1d"
+    }
+  ],
+  "software": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  }
+}

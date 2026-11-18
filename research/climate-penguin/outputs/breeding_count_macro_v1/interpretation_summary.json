@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "status": "calculated_observational_macro_correlations_and_future_physical_exposure_only",
+  "source": {
+    "MAPPPD_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "MAPPPD_penguin_obs_sha256": "b569def7d9a121bcca4bf78f4a4918af16f07e252ac65578ccc7636f3242afbd",
+    "ice_source_sha256": "b21b10743f3a56281d0cf62f55988823f55b645b6d3fbb1bf7c2d366dff1b3ae",
+    "workflow_run_id": 41208190415,
+    "artifact_id": 13044813409
+  },
+  "counts": {
+    "original_MAPPPD_sites": 729,
+    "observations": 5487,
+    "selected_raw_known_method_counts": 2599,
+    "chosen_method_seasons": 2067,
+    "matched_species_site_seasons": 725,
+    "species_site_units": 56,
+    "consecutive_positive_intervals": 467,
+    "trend_units": 54,
+    "future_overlay_rows": 224,
+    "future_exposure_summaries": 36
+  },
+  "annual": {
+    "ADPE": {
+      "n": 335,
+      "sites": 33,
+      "r": -0.0769802567,
+      "p": 0.269,
+      "bh": 0.6747
+    },
+    "CHPE": {
+      "n": 42,
+      "sites": 7,
+      "r": 0.3254412207,
+      "p": 0.561,
+      "bh": 0.6747
+    },
+    "GEPE": {
+      "n": 90,
+      "sites": 8,
+      "r": -0.3437482921,
+      "p": 0.088471,
+      "bh": 0.5308
+    }
+  },
+  "future": {
+    "ADPE_SSP585_2081_2100": {
+      "decline_sites": 14,
+      "positive_sites": 25,
+      "mean_sic_change_decliners_pp": -25.688462992,
+      "mean_sic_change_increasers_pp": -4.38221634,
+      "pooled_r": 0.5949511706,
+      "within_region_r": -0.06366593397
+    }
+  },
+  "status_note": "Exploratory spatial association and physical climate overlap; no calibrated biology projection"
+}

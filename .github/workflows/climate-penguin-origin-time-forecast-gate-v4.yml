@@ -1,0 +1,51 @@
+name: climate-penguin-origin-time-forecast-gate-v4
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/warming_unified_v1/forecast_gate_v4/**"
+      - ".github/workflows/climate-penguin-origin-time-forecast-gate-v4.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  origin-time-hindcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Syntax
+        run: node --check research/climate-penguin/warming_unified_v1/forecast_gate_v4/build.mjs
+      - name: Rebuild source-pinned v3 and independently validate non-oracle v4
+        run: node research/climate-penguin/warming_unified_v1/forecast_gate_v4/build.mjs
+      - name: Mandatory gates
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'), assert=require('node:assert/strict');
+          const p='research/climate-penguin/warming_unified_v1/forecast_gate_v4/outputs/metrics.json';
+          const x=JSON.parse(fs.readFileSync(p,'utf8'));
+          assert.equal(x.status,'COMPLETE_ORIGIN_TIME_VALIDATION__FUTURE_BREEDING_NOT_CALIBRATED');
+          assert.equal(x.observations.test,47);
+          assert.equal(x.oracle_regression_reproduced,94);
+          assert.equal(x.physical_scenarios.length,4);
+          assert.equal(x.future_biological_forecasts,null);
+          for(const row of x.physical_scenarios){
+            assert.equal(row.n_marine_sites,4);
+            assert.equal(row.n_marine_cells,2);
+            assert.equal(row.future_nests,null);
+          }
+          console.log('PASS: 47 strictly chronological breeding tests, 94 oracle controls, 4 physical-only scenarios');
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-origin-time-forecast-audit-v4
+          retention-days: 90
+          path: research/climate-penguin/warming_unified_v1/forecast_gate_v4/outputs/

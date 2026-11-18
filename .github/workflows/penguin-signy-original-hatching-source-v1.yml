@@ -1,0 +1,39 @@
+name: penguin-signy-original-hatching-source-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/signy_original_hatching_source_v1/**'
+      - 'tests/test_signy_original_hatching_source_v1.py'
+      - '.github/workflows/penguin-signy-original-hatching-source-v1.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/signy_original_hatching_source_v1/**'
+      - 'tests/test_signy_original_hatching_source_v1.py'
+      - '.github/workflows/penguin-signy-original-hatching-source-v1.yml'
+permissions:
+  contents: read
+jobs:
+  publisher-source-hatching:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source format and no-zip tests
+        run: python -m unittest discover -s tests -p test_signy_original_hatching_source_v1.py -v
+      - name: Download publisher archival mean-hatching dates from 2018 original DOI
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 2 --max-time 120 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=274b49bd-40a4-4e5d-bd5f-69a1ba09d403&output=zip.tree' -o /tmp/mean_hatching_dunn2018.zip
+      - name: Determine actual original columns and species-year observations
+        run: |
+          python research/climate-penguin/work/signy_original_hatching_source_v1/inspect.py --source /tmp/mean_hatching_dunn2018.zip --out /tmp/mean_hatching_original_inventory
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-signy-original-hatching-source-v1
+          path: /tmp/mean_hatching_original_inventory/
+          retention-days: 30

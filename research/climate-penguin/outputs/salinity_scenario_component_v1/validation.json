@@ -1,0 +1,20 @@
+{
+  "status": "passed_with_interpretation_limits",
+  "matched_site_scenarios": 984,
+  "site_components": 1968,
+  "scenario_summaries": 144,
+  "input_sha256": {
+    "scenario_support_v1/observed_range_audit.csv": "acda29590bd84d26549c4fe84286a8eb2e9d95d2f342cc34077060be9db4f2a5",
+    "scenario_support_v1/recent_comparison/overlap_site_levels.csv": "5681c58fb6bce68fb74446e7bd1db0aacbb775855f23ce8c75c85088f13e8fcb",
+    "salinity_sensitivity_v1/specifications.csv": "b9eb7fa32684c728e35d54ae1cc7e355113f2835c80c17cb28c0a461c4f2c044",
+    "salinity_sensitivity_v1/year_deletions.csv": "36e11cb9953a9cb550f596cfaefc62468c3110074791a639afa3634d98c0d248",
+    "salinity_site_influence_v1/site_deletions.csv": "098fd16a783735784b3febbdedf4658b1267ef2e1ae7dee1ae0c475b2b09c7c4"
+  },
+  "limits": [
+    "Salt-only component holds water temperature, air temperature and ice fixed",
+    "Never add this to the previous two-variable model coefficients",
+    "Coefficient deletion ranges are not confidence or prediction intervals",
+    "Additive change is not validated bias correction; shared coarse cells remain",
+    "Index origin unresolved; values are not days"
+  ]
+}

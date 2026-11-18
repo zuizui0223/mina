@@ -1,0 +1,41 @@
+name: climate-penguin-palmer-january-common-qa
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/abandonment/palmer_january_common_qa.py'
+      - '.github/workflows/climate-penguin-palmer-january-common-qa.yml'
+jobs:
+  source-january-same-position-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run deterministic pair-selection check
+        run: |
+          python - <<'PY'
+          import runpy
+          m=runpy.run_path("research/climate-penguin/work/abandonment/palmer_january_common_qa.py")
+          a=[{"status":"ok","item_id":"A","date":"2007-01-05","clear_points":[0,1,2]}]
+          b=[{"status":"ok","item_id":"B","date":"2008-01-15","clear_points":[1,2,3]},
+             {"status":"ok","item_id":"C","date":"2008-01-20","clear_points":[1]}]
+          pairs=m["choose_best_pair"](a,b)
+          assert pairs[0]["same_grid_clear_points"] == 2
+          assert pairs[0]["before_id"] == "A" and pairs[0]["after_id"] == "B"
+          PY
+      - name: Install source raster readers
+        run: python -m pip install --disable-pip-version-check -q rasterio==1.4.3 pyproj==3.7.1 planetary-computer==1.0.0
+      - name: Verify same geographic QA-clear positions across 2007/08 January
+        run: |
+          python research/climate-penguin/work/abandonment/palmer_january_common_qa.py \
+            --out /tmp/palmer_january_same_position
+      - name: Preserve original per-point QA source receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: palmer-january-same-position-original-source
+          path: /tmp/palmer_january_same_position/
+          if-no-files-found: warn
+          retention-days: 30

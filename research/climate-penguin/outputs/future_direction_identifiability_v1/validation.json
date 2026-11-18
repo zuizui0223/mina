@@ -1,0 +1,32 @@
+{
+  "status": "passed_source_to_derived_independent_audit",
+  "review_scope": "all 912 model variant values were checked against persisted source two- and four-environment site-level predictions, all 76 scenario extrema/sign counts independently recomputed; 76 GIS records verified",
+  "source_blob_sha": {
+    "future_direction_identifiability_v1/camera_geography_receipt.csv": "77ed6d7215f18b619e4e24227ba5527c97f36c06",
+    "future_direction_identifiability_v1/paired_variant_shifts.csv": "2c98b0efa5743daefb014a890565c5131bbd46b6",
+    "future_direction_identifiability_v1/site_scenario_direction_identifiability.csv": "63731fbbae8e4065be30a5662934250f34d01a56",
+    "future_direction_identifiability_v1/site_scenario_direction_identifiability.geojson": "979daad3eb9c793edc2d064c88b48eeb405b4fd0",
+    "future_direction_identifiability_v1/summary.json": "2ba3f3730258a6e1a048242697a05003bd4d1edd",
+    "conditional_response_v1/site_index_shifts.csv": "6288feab14ea84719932c0760aca2f4860a5065c",
+    "four_environment_scenarios_v1/site_components.csv": "f1e7cecd958e1ec011489ad279782b9d1327aa5f"
+  },
+  "checks": {
+    "receipts": 58,
+    "eligible": 19,
+    "unmatched": 37,
+    "spatialGatedOut": 2,
+    "pairedRows": 912,
+    "scenarios": 76,
+    "geoFeatures": 76,
+    "uniqueSites": 17,
+    "uniqueSiteSpecies": 19,
+    "groups": 76,
+    "signMixed": 76,
+    "sameSign": 0,
+    "anyFutureHullOut": 68,
+    "endCenturyAnyHullOut": 18,
+    "futurePointAndSourceRowsComparable": true
+  },
+  "errors": [],
+  "caveats": "This confirms arithmetic and record correspondence only. Camera stage timing, 4D future climate transfer, coastal precision and causal effects are not validated."
+}

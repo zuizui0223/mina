@@ -1,0 +1,79 @@
+name: unified-network-concentration-step4-fixed-associations
+
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/network_concentration_unified_v1/fit_frozen_h3_h4.py"
+      - "research/network_concentration_unified_v1/contracts/ANALYSIS_PLAN_FROZEN.md"
+      - ".github/workflows/unified-network-concentration-step4-fixed-associations.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-fixed-associations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Frozen numerical package versions and syntax
+        run: |
+          python -m pip install numpy==2.2.6 scipy==1.15.3
+          python -m py_compile research/network_concentration_unified_v1/fit_frozen_h3_h4.py
+      - name: Validate bootstrap and four-slot Holm on synthetic data
+        run: |
+          python research/network_concentration_unified_v1/fit_frozen_h3_h4.py --mode selftest
+      - name: Check SHA of all original locked data before biological fitting
+        run: |
+          python research/network_concentration_unified_v1/fit_frozen_h3_h4.py --mode preflight
+      - name: Fit all fixed H3/H4D/H4W with four-slot Holm
+        run: |
+          python research/network_concentration_unified_v1/fit_frozen_h3_h4.py --mode fit
+      - name: Audit actual numerical results
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,math
+          p=Path("research/network_concentration_unified_v1/outputs/STEP4_FIXED_ASSOCIATIONS.json")
+          x=json.loads(p.read_text())
+          assert x["hypothesis_family"]==["H2","H3","H4D","H4W"]
+          assert x["B"]==9999 and x["H2"]["status"]=="NOT_ESTIMABLE"
+          assert set(x["results"])=={"H3","H4D","H4W"}
+          assert [x["results"][z]["n"] for z in ("H3","H4D","H4W")]==[662,376,376]
+          assert [x["results"][z]["m"] for z in ("H3","H4D","H4W")]==[387,90,90]
+          for v in x["results"].values():
+            assert all(math.isfinite(v[k]) for k in ("coef","se","t","ci_low","ci_high","p_raw","holm_4"))
+            assert 0 < v["p_raw"] <= v["holm_4"] <= 1
+            assert v["ci_low"] < v["ci_high"]
+          print("PASS outcome-independent frozen inference audit")
+          PY
+      - name: Save result artifact for independent review
+        uses: actions/upload-artifact@v4
+        with:
+          name: mina-step4-locked-h3-h4-20261107
+          retention-days: 90
+          path: |
+            research/network_concentration_unified_v1/outputs/STEP4_FIXED_ASSOCIATIONS.json
+            research/network_concentration_unified_v1/outputs/STEP4_MODEL_READOUT_JA.md
+      - name: Store outputs only on existing draft PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f \
+            research/network_concentration_unified_v1/outputs/STEP4_FIXED_ASSOCIATIONS.json \
+            research/network_concentration_unified_v1/outputs/STEP4_MODEL_READOUT_JA.md
+          if git diff --cached --quiet; then
+            echo "No new results"
+          else
+            git commit -m "Step4: compute frozen SST/decline associations with four-slot Holm"
+            git push origin HEAD:codex/climate-penguin-progress
+          fi

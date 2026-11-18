@@ -1,0 +1,57 @@
+{
+  "builder": "python-docx with Pandoc native math",
+  "documents": [
+    {
+      "source": "MANUSCRIPT_EN.md",
+      "output": "Signy_diet_manuscript.docx",
+      "source_sha256": "dbf8293e0bcc36e7fa27c5aa215665c3d5a99560ef7b54776fe87bb91e6638ec",
+      "docx_sha256": "40e8e1dadb65711d75aebdbbb587d30793dc4de1fa0a42f397d4d551101bdda2",
+      "figures": [
+        {
+          "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/figures/Figure_1_observed_diet.png",
+          "sha256": "b70f19e6914115894cf6059b7799b8664e196a3d3c6906af7f4c683ceef8519e",
+          "width_inches": 6.9
+        },
+        {
+          "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/figures/Figure_2_sampling_sensitivity.png",
+          "sha256": "bd139dd13f034d4623cf707ae2292673fbc850b7f02780c98ace3d6ad1193227",
+          "width_inches": 6.9
+        },
+        {
+          "path": "research/climate-penguin/outputs/diet_niche_manuscript_v1/figures/Figure_3_conditional_scenarios.png",
+          "sha256": "5d562d9dce82fbe7ff0fc3dbad63575864031628c839d19a1310919aef63d5ef",
+          "width_inches": 6.9
+        },
+        {
+          "path": "research/climate-penguin/outputs/palmer_signy_diet_external_v1/Figure_1_external_comparison.png",
+          "sha256": "69684831695d0a043628b2edea0d0b39b6b37f63df0caf4e12305af07e24d55f",
+          "width_inches": 6.9
+        }
+      ],
+      "tables": 4,
+      "native_equations": 54,
+      "hyperlinks": 19
+    },
+    {
+      "source": "SUPPLEMENT_EN.md",
+      "output": "Signy_diet_supplement.docx",
+      "source_sha256": "75813c3741c4bb35bfab4b2258a38eccaddb392a7248e0af482fab378d1553af",
+      "docx_sha256": "0cba2cbf7adb159a0bf15368fe9bc4b056fa0566f024e80aac7fe1eb4b28cdf6",
+      "figures": [
+        {
+          "path": "research/climate-penguin/outputs/signy_diet_components_v1/Figure_1_diet_components.png",
+          "sha256": "6af97e7b40c088ef579c83d31d9b3a260d32ec1729d2562b8c5515e211e29e78",
+          "width_inches": 6.9
+        },
+        {
+          "path": "research/climate-penguin/outputs/signy_component_scenarios_v1/Figure_1_component_scenarios.png",
+          "sha256": "fa147bde7188e439800d9d9420b65536a6678a86c6ee65923c975c44305fd958",
+          "width_inches": 6.9
+        }
+      ],
+      "tables": 10,
+      "native_equations": 96,
+      "hyperlinks": 39
+    }
+  ]
+}

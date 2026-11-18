@@ -4,7 +4,22 @@ Research program for **penguin breeding-island ecology**, linking a local
 long-term discovery system at Palmer Station to Antarctic-wide comparative
 macroecology.
 
-## Research program
+## Current analysis: one comparative concentration paper (2026-11-06)
+
+The active user-directed workflow is now a **network × species, two-endpoint
+comparison of breeding-distribution concentration** across JNCC seabirds,
+MAPPPD Pygoscelis, emperor sectors, and within-island Palmer, Signy and Ross
+monitoring units. The common table leads to frozen trait and climate definitions,
+prespecified association tests, and physical future exposure in one paper.
+
+Start with [the unified analysis entry point](research/network_concentration_unified_v1/README.md),
+[table specification](research/network_concentration_unified_v1/STEP1_TABLE_SPEC.md),
+and [preregistration draft](research/network_concentration_unified_v1/PREREGISTRATION_DRAFT.md).
+These are design drafts, not completed harmonized results or an external registration.
+Existing positive results and manuscripts remain preserved under their original
+estimands; the historical lanes below are not parallel active objectives.
+
+## Preserved research program and prior results
 
 ### Paper 1 — replicated breeding-space contraction
 

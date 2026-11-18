@@ -1,0 +1,37 @@
+name: penguin-39site-joint-physical-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/joint_climate_39site_v1/**"
+      - "research/climate-penguin/outputs/joint_climate_39site_v1/**"
+      - ".github/workflows/penguin-39site-joint-physical-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/joint_climate_39site_v1/**"
+      - "research/climate-penguin/outputs/joint_climate_39site_v1/**"
+      - ".github/workflows/penguin-39site-joint-physical-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-original-39-site-joint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify joint physical future temperature SIC and salinity from pinned sources
+        run: node research/climate-penguin/work/joint_climate_39site_v1/build.mjs --check-receipt
+      - name: Archive original site and marine exposure fingerprint outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-39site-joint-physical-v1
+          path: |
+            research/climate-penguin/outputs/joint_climate_39site_v1/*.csv
+            research/climate-penguin/outputs/joint_climate_39site_v1/*.json
+          if-no-files-found: error
+          retention-days: 60

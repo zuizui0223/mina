@@ -1,0 +1,629 @@
+{
+  "schema_version": 1,
+  "catalog_id": "mina-network-concentration-unified-source-catalog-v0.1",
+  "catalog_date": "2026-11-07",
+  "status": "step1_originals_recovered_derived_tables_computed",
+  "repository": "zuizui0223/mina",
+  "base_commit_sha": "fb4c44f187120044ebfb806929373a9daec6992d",
+  "path_basis": "repository_root",
+  "design_documents": [
+    "research/network_concentration_unified_v1/README.md",
+    "research/network_concentration_unified_v1/STEP1_TABLE_SPEC.md"
+  ],
+  "scope": {
+    "purpose": "Inventory existing inputs for one two-endpoint network-by-species concentration analysis.",
+    "new_external_source_search_or_download_in_catalog_task": false,
+    "new_unified_concentration_effects_computed": true,
+    "trait_or_climate_associations_computed": false,
+    "future_exposure_computed": false,
+    "final_eligible_network_species_n": 675,
+    "coverage_counts_are_source_inventory_or_candidates_not_final_analysis_n": true,
+    "prior_results_role": "Existing source inventories, frozen specifications and previously viewed result receipts are provenance and exposure disclosures. They are not newly recomputed common effects.",
+    "recovery_policy": "Recover only the already-used original input or saved artifact, verify its recorded identity, and retain missing-input status until recovery succeeds. Do not substitute a shorter series, a higher-level aggregate, a new source, or a prior effect estimate.",
+    "branch_policy": "Integrate on one working branch. JNCC is a pinned read-only source reference from an existing other branch, not an instruction to merge its old analysis gates."
+  },
+  "verified_current_files": [
+    {
+      "path": "research/climate-penguin/outputs/comparison_audit/mapppd_unambiguous_site_seasons.csv",
+      "exists": true,
+      "bytes": 314384,
+      "sha256": "fcb622814d9aec674fb34ff5f8acd357f5508cf4bc1c63945e62d0c558fbc3c1"
+    },
+    {
+      "path": "research/climate-penguin/outputs/comparison_audit/source_manifest.json",
+      "exists": true,
+      "bytes": 1699,
+      "sha256": "97f415352ec6d612cdaf261462a3f4bc74066af7ee6edf67c0fd65be4c32d1f4"
+    },
+    {
+      "path": "research/climate-penguin/work/comparison_audit/audit.py",
+      "exists": true,
+      "bytes": 8471,
+      "sha256": "f63aebef4d96622b349121bc38639deeca60503530b4aeda362d428c9145afb4"
+    },
+    {
+      "path": "research/climate-penguin/outputs/emperor_ice_land_substrate_v1/author_colony_summary.csv",
+      "exists": true,
+      "bytes": 176403,
+      "sha256": "c887b9e1176b153345073281ebcaf6752ffb361023269afb5bdcfa371ec381ec"
+    },
+    {
+      "path": "research/climate-penguin/outputs/emperor_ice_land_substrate_v1/README.md",
+      "exists": true,
+      "bytes": 3125,
+      "sha256": "a120b46090f16296b6ce39716f6d2c5bbbcc5748d7591d6da5f472527899300d"
+    },
+    {
+      "path": "research/climate-penguin/outputs/comparison_audit/palmer_five_island_counts.csv",
+      "exists": true,
+      "bytes": 2217,
+      "sha256": "23259f773577356bd01eee995e256b8b297e3270b5d96147d4e7454d8f202a80"
+    },
+    {
+      "path": "research/climate-penguin/outputs/signy_exploration/matched_counts.csv",
+      "exists": true,
+      "bytes": 15952,
+      "sha256": "4c97646462d224c416c80876c45f8c333793a63cc809c9a36154c8e11793eeef"
+    },
+    {
+      "path": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "exists": true,
+      "bytes": 5122,
+      "sha256": "765391b01bbfdd76d9b4471a9bea45d3cfcd4631f7e7ba37a09b60a339f35412"
+    },
+    {
+      "path": "contracts/SIGNY_BREEDING_PATCH_CONCENTRATION_V1.json",
+      "exists": true,
+      "bytes": 7201,
+      "sha256": "082f9b637937d940c31b68f6a000d6b40813dadd61af71a94e3bd5a9ea2a6d73"
+    },
+    {
+      "path": "contracts/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_V1.json",
+      "exists": true,
+      "bytes": 5305,
+      "sha256": "904c8d3edfe02945091905f509a0573e0f580bcac52cb56d084c5cf8304b9aff"
+    },
+    {
+      "path": "research/climate-penguin/outputs/ross_island_spatial_scale_v1/README.md",
+      "exists": true,
+      "bytes": 2378,
+      "sha256": "1a7b2cf0ff4b5e70c8cd14d5993eab0839f6a12203baafa3c1ffb74287388fd5"
+    },
+    {
+      "path": "research/climate-penguin/work/ross_island_spatial_scale_v1/build.mjs",
+      "exists": true,
+      "bytes": 19063,
+      "sha256": "4edf1874675c58795ade337582ec59bb195cf6df3f7aec03feb26b19c7803cbc"
+    },
+    {
+      "path": "research/climate-penguin/outputs/historical_ocean_macro_v1/README.md",
+      "exists": true,
+      "bytes": 1374,
+      "sha256": "44bba2fe002a687553cb3dcf2f54d16159fdee1c565f429c57d52d459a821058"
+    },
+    {
+      "path": "research/climate-penguin/outputs/historical_ocean_species_v1/README.md",
+      "exists": true,
+      "bytes": 1655,
+      "sha256": "480a88c8a6b8428c6ca2c398fc18c63ff85a12630de2fb5af892f5f92ad396ac"
+    },
+    {
+      "path": "research/climate-penguin/outputs/surface_temperature_projection_v1/REPORT_JA.md",
+      "exists": true,
+      "bytes": 4890,
+      "sha256": "def3bb4ca27ce338b85ea70a45cf8a453e4f26aef6072dc592bfb4662e71e218"
+    },
+    {
+      "path": "research/climate-penguin/outputs/cmip6_exposure_atlas_v1/site_scenario_exposure.csv",
+      "exists": true,
+      "bytes": 136429,
+      "sha256": "479e170458ea1487d9c0daa7451b75063a57011f31069bd0a2c988df00f55fa6"
+    }
+  ],
+  "verified_file_record_basis": "Sixteen current-file paths, byte lengths and SHA-256 values supplied in the already-verified /tmp/unify_source_hashes.json inventory; no new hashes or ecological calculations were generated for this catalog.",
+  "sources": [
+    {
+      "source_id": "jncc_two_censuses",
+      "dataset": "JNCC comparative seabird counts: Seabird 2000 and Seabirds Count",
+      "source_family": "JNCC",
+      "planned_analysis_role": "macro_primary",
+      "current_analysis_role": "macro_primary",
+      "network_definition": "Country x Master site",
+      "component_type": "original Site.ID",
+      "count_unit": "Preserve the original source unit; do not combine units within a row.",
+      "source_unit_labels_to_preserve": [
+        "AON",
+        "AOS",
+        "AOT",
+        "AOB",
+        "IND"
+      ],
+      "estimate_type": "source_recorded_census_or_adjusted_census_value",
+      "coverage": {
+        "original_species_label_count": 17,
+        "census_labels": [
+          "Seabird 2000",
+          "Seabirds Count"
+        ],
+        "actual_network_endpoint_years": null,
+        "final_eligible_network_species_rows": null,
+        "interpretation": "Seventeen original species labels are an inventory total. Actual synchronous network-by-species rows must be established from the original survey-year fields.",
+        "taxon_label_policy": "Keep original labels, including Razorbil; record any standard display name separately instead of silently changing the source key."
+      },
+      "pinned_existing_repository_reference": {
+        "branch": "research/jncc-v32-mechanism-contract",
+        "commit_sha": "0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e",
+        "git_commit_object_available_locally": true,
+        "reference_status": "Existing code, specifications and aggregate results are available at the pinned Git reference.",
+        "matched_epoch_contract_path": "contracts/JNCC_MATCHED_EPOCH_COHORT_V39_FROZEN.md",
+        "matched_epoch_contract_url": "https://github.com/zuizui0223/mina/blob/0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e/contracts/JNCC_MATCHED_EPOCH_COHORT_V39_FROZEN.md",
+        "legacy_concentration_contract_path": "contracts/JNCC_COMPONENT_CONCENTRATION_V30.md",
+        "rules_reused_for_this_draft": "V39 within-network agreement of the original early survey year and of the original late survey year only.",
+        "rules_not_inherited": [
+          "Old declining-only cohort gates",
+          "Prior significance or concentration thresholds",
+          "Old effect estimates or null p values as common two-endpoint outcomes"
+        ]
+      },
+      "required_original_input": {
+        "original_filename": "comparative-seabirds-count-dataset-revised-20240708.xlsx",
+        "original_url": "https://data.jncc.gov.uk/data/63f0ea40-485d-46dd-b967-150df90a7b2b/comparative-seabirds-count-dataset-revised-20240708.xlsx",
+        "expected_bytes": 2570979,
+        "expected_sha256": "9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4",
+        "current_local_path": null,
+        "found_in_git": false,
+        "found_in_library_inventory": false,
+        "status": "byte_verified_original_recovered_ephemerally_on_runner",
+        "actions_run_id": 42324472225
+      },
+      "current_file_refs": [],
+      "recovery_status": "Verified original source or matching on-branch source table in GitHub Actions #42324472225; raw source not added to Git repository.",
+      "limitations": [
+        "Do not infer a synchronous time point from a census label or the median of asynchronous child-site survey years.",
+        "Do not assume adjusted values are integer counts; preserve the recorded estimate type and apply the common count null only where the draft specification permits it.",
+        "Original Start.Lat/Long are source start points, not verified colony centroids."
+      ],
+      "prior_view_status": "Existing JNCC outcome summaries and old concentration analyses have been viewed; new common effects have not been computed.",
+      "source_geographic_coverage": {
+        "known_source_jurisdictions": [
+          "United Kingdom",
+          "Republic of Ireland",
+          "Isle of Man",
+          "Channel Islands"
+        ],
+        "basis": "Existing source inventory supplied for this catalog; this is geographic coverage metadata, not a newly re-read list of literal Country cell labels.",
+        "literal_country_field_policy": "Preserve original Country values in network keys when the original workbook is recovered; do not replace them with these display labels."
+      },
+      "source_sheet_rules": {
+        "Atlantic Puffin": {
+          "publisher_sheet": "3_Atlantic_Puffin_comparable",
+          "policy": "Use only the publisher comparable sheet for Atlantic Puffin; do not combine it with alternative Puffin source sheets.",
+          "evidence_path": "contracts/JNCC_COMPONENT_CONCENTRATION_V30.md",
+          "evidence_commit_sha": "0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e"
+        }
+      },
+      "parent_child_duplicate_policy": {
+        "rule": "Within the original species x Country x Master-site x count-unit parent, exclude a child Site record when its literal normalized Site name equals the normalized Master-site name and that parent contains other child Site.ID values; an aggregate-over-child record cannot be ruled out.",
+        "preserve_original_site_ids": true,
+        "combine_parent_totals_with_children": false,
+        "report_excluded_source_rows": true,
+        "limitation": "This conservative metadata rule can discard valid sites and does not resolve all source boundary changes.",
+        "evidence_path": "contracts/JNCC_COMPONENT_CONCENTRATION_V30.md",
+        "evidence_commit_sha": "0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e",
+        "legacy_effect_or_declining_only_gates_inherited": false
+      },
+      "step1_readout": {
+        "candidate_network_species_rows": 1483,
+        "count_null_computed_rows": 663,
+        "source_pinned_and_recovered": true,
+        "source_recovery_medium": "official byte-matched original retrieved in GitHub Actions run 42324472225 or existing verified branch blob"
+      }
+    },
+    {
+      "source_id": "mapppd_pygoscelis",
+      "dataset": "Pinned APBP/MAPPPD nest-count snapshot, unambiguous site-species-season derivation",
+      "source_family": "MAPPPD",
+      "planned_analysis_role": "macro_primary",
+      "network_definition": "Original MAPPPD region; the geographical network identity does not include species.",
+      "component_type": "original site_id; may be a colony, sector, island site or mainland site",
+      "count_unit": "nest",
+      "estimate_type": "recorded_nest_count_or_census_estimate",
+      "coverage": {
+        "all_taxa_derived_rows": 2999,
+        "focal_species_ids": [
+          "ADPE",
+          "CHPE",
+          "GEPE"
+        ],
+        "focal_site_species_season_rows": 2861,
+        "focal_distinct_site_ids": 603,
+        "focal_site_species_series": 721,
+        "original_region_labels": 18,
+        "candidate_region_species_strata": 32,
+        "candidate_strata_are_not_final_eligible_rows": true,
+        "source_period_by_species": {
+          "ADPE": {
+            "first_recorded_season": 1936,
+            "last_recorded_season": 2025,
+            "rows": 1223,
+            "site_ids": 267
+          },
+          "CHPE": {
+            "first_recorded_season": 1956,
+            "last_recorded_season": 2025,
+            "rows": 966,
+            "site_ids": 334
+          },
+          "GEPE": {
+            "first_recorded_season": 1892,
+            "last_recorded_season": 2025,
+            "rows": 672,
+            "site_ids": 120
+          }
+        },
+        "final_eligible_network_species_rows": null
+      },
+      "original_repository_reference": {
+        "repository": "CCheCastaldo/mapppdr",
+        "commit_sha": "88c73a507e0921b2541c218c71eaf16721bc6502",
+        "original_observation_rows": 5487,
+        "registered_sites": 729
+      },
+      "current_file_refs": [
+        "research/climate-penguin/outputs/comparison_audit/mapppd_unambiguous_site_seasons.csv",
+        "research/climate-penguin/outputs/comparison_audit/source_manifest.json",
+        "research/climate-penguin/work/comparison_audit/audit.py"
+      ],
+      "available_columns": [
+        "site_id",
+        "species_id",
+        "season",
+        "n_rows",
+        "n_counts",
+        "count",
+        "count_max",
+        "n_methods",
+        "site_name",
+        "region",
+        "ccamlr_id",
+        "latitude",
+        "longitude",
+        "method"
+      ],
+      "derivation": "Numeric nest observations were grouped by site_id, species_id and breeding-season start year; groups with conflicting count values were excluded rather than averaged, while identical-count duplicate source records can remain flagged by n_rows.",
+      "source_metadata_not_retained_in_derived_table": [
+        "original observation ID",
+        "accuracy category",
+        "citekey",
+        "exact census date"
+      ],
+      "raw_snapshot_local_status": "The original work/data_audit/mapppdr CSV/RDA paths recorded in source_manifest.json are absent from this checkout; their identities and the derived table are retained.",
+      "recovery_status": "Verified original source or matching on-branch source table in GitHub Actions #42324472225; raw source not added to Git repository.",
+      "endpoint_selection_status": "Pending endpoint_registry. Apply STEP1_TABLE_SPEC.md using observation presence, IDs and methods, without looking at concentration, growth direction or climate.",
+      "zero_and_missing_policy": "Retain explicit recorded zero counts. A missing site-species-season record is unobserved, not zero. Do not inherit a both-endpoints-positive selection from an older analysis.",
+      "lineage_group": "mapppd_pinned_88c73a5_field_count_lineage",
+      "overlap_with_other_sources": [
+        "ross_within_island",
+        "palmer_within_island"
+      ],
+      "limitations": [
+        "The 32 region-by-species strata include sparse strata; no final eligible sample size is claimed.",
+        "Original site_id is not an independently verified physical island.",
+        "Same mathematical concentration metric does not remove differences among census methods or accuracy categories."
+      ],
+      "prior_view_status": "Counts, regional support and earlier demographic/climate results have been viewed. The new unified endpoint roster and excess-concentration outcomes have not been computed.",
+      "network_id_rule": "MAPPPD::<original region label>",
+      "row_definition": "Network x species x count unit x fixed matched site cohort x endpoint pair.",
+      "cohort_definition": "Species-specific fixed matched original site_id roster; stored separately from network_id.",
+      "current_analysis_role": "macro_primary",
+      "step1_readout": {
+        "candidate_network_species_rows": 32,
+        "count_null_computed_rows": 12,
+        "source_pinned_and_recovered": true,
+        "source_recovery_medium": "official byte-matched original retrieved in GitHub Actions run 42324472225 or existing verified branch blob"
+      }
+    },
+    {
+      "source_id": "emperor_author_index",
+      "dataset": "LaRue et al. 2024 author-provided emperor colony posterior summaries",
+      "source_family": "EMPE_Global",
+      "planned_analysis_role": "model_index_reference",
+      "network_definition": "Original ice_reg, eight fixed sector labels",
+      "component_type": "fixed named colony site_id",
+      "count_unit": "adult_index",
+      "estimate_type": "posterior_marginal_mean",
+      "coverage": {
+        "species_id": "EMPE",
+        "model_summary_rows": 500,
+        "fixed_colonies": 50,
+        "model_years": [
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "sector_count": 8,
+        "colonies_per_sector": {
+          "Amundsen Sea": 6,
+          "Bellingshausen Sea": 7,
+          "Weddell Sea": 7,
+          "Dronning Maud Land": 5,
+          "West Indian Ocean": 9,
+          "East Indian Ocean": 4,
+          "Australia": 4,
+          "Victoria Oates Land": 8
+        },
+        "planned_year0": 2009,
+        "planned_year1": 2018,
+        "final_calculated_common_response_rows": null
+      },
+      "original_source": {
+        "paper_doi": "10.1098/rspb.2023.2067",
+        "data_doi": "10.5061/dryad.m63xsj48v",
+        "repository": "davidiles/EMPE_Global",
+        "commit_sha": "13f71112da43c1fd082273677757b41c550457ed",
+        "colony_csv_git_blob_sha": "133c900c9dfbf2ce23ca403c9a59edecd9b51ace"
+      },
+      "current_file_refs": [
+        "research/climate-penguin/outputs/emperor_ice_land_substrate_v1/author_colony_summary.csv",
+        "research/climate-penguin/outputs/emperor_ice_land_substrate_v1/README.md"
+      ],
+      "value_fields": [
+        "N_mean",
+        "N_se",
+        "N_q025",
+        "N_median",
+        "N_q975"
+      ],
+      "coordinate_fields": [
+        "lat",
+        "lon"
+      ],
+      "coordinate_status": "Static source colony anchors, not annual movement observations.",
+      "recovery_status": "Verified original source or matching on-branch source table in GitHub Actions #42324472225; raw source not added to Git repository.",
+      "null_status": "model_joint_uncertainty_unavailable",
+      "common_count_null_excess_value": null,
+      "uncertainty_policy": "Do not round N_mean into individual counts and do not simulate independent colony marginals as a joint posterior. D2 calculated from N_mean is a point allocation index, not posterior mean D2.",
+      "zero_and_missing_policy": "Modelled zero adult index is distinct from an unobserved value and from confirmed permanent colony extinction.",
+      "q4_status": "not_applicable_single_species_sector_series",
+      "prior_view_status": "The 2009-to-2018 global and eight-sector allocation results were already reported and viewed; no new common effects or trait/climate tests were computed here.",
+      "current_analysis_role": "model_index_reference",
+      "step1_readout": {
+        "candidate_network_species_rows": 8,
+        "count_null_computed_rows": 0,
+        "source_pinned_and_recovered": true,
+        "source_recovery_medium": "official byte-matched original retrieved in GitHub Actions run 42324472225 or existing verified branch blob"
+      }
+    },
+    {
+      "source_id": "palmer_within_island",
+      "dataset": "Palmer LTER within-island Adelie breeding-pair census",
+      "source_family": "Palmer_LTER",
+      "planned_analysis_role": "local_resolution",
+      "current_analysis_role": "local_resolution",
+      "network_definition": "Each physical island with a fixed monitored colony-code roster",
+      "component_type": "original colony_code within island",
+      "count_unit": "pair",
+      "estimate_type": "recorded_breeding_pair_census",
+      "planned_coverage_from_existing_contract": {
+        "species_id": "ADPE",
+        "year0": 1991,
+        "year1": 2017,
+        "fixed_component_counts": {
+          "Cormorant": 7,
+          "Humble": 9,
+          "Litchfield": 9
+        },
+        "changed_roster_islands_not_substituted": [
+          "Christine",
+          "Torgersen"
+        ],
+        "final_eligible_response_rows": null
+      },
+      "current_file_refs": [
+        "research/climate-penguin/outputs/comparison_audit/palmer_five_island_counts.csv",
+        "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json"
+      ],
+      "current_cache_role": "The available five-island 1991-2017 totals and existing concentration result receipt establish provenance and prior findings. Island totals cannot reconstruct concentration among within-island colony codes.",
+      "required_original_input": {
+        "expected_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+        "expected_bytes": 59485,
+        "current_local_path": null,
+        "known_saved_run_id": 36397540988,
+        "known_saved_artifact_id": 10959385511,
+        "status": "byte_verified_original_recovered_ephemerally_on_runner",
+        "actions_run_id": 42324472225
+      },
+      "recovery_status": "Verified original source or matching on-branch source table in GitHub Actions #42324472225; raw source not added to Git repository.",
+      "zero_and_missing_policy": "Keep the recorded final Litchfield zero and the resulting total-loss status; do not switch to its last positive year to obtain a finite concentration response.",
+      "coordinate_status": "An island representative point cannot stand in for coordinates of its monitored colony codes.",
+      "lineage_overlap": {
+        "related_source_id": "mapppd_pygoscelis",
+        "site_ids_to_reconcile": [
+          "CHIS",
+          "CORM",
+          "HUMB",
+          "LITC",
+          "TORG"
+        ],
+        "policy": "Reconcile original site-species-season lineage; do not count reused field counts as independent regional and local observations."
+      },
+      "q4_status": "not_applicable_to_single_species_Adelie_series",
+      "prior_view_status": "Existing within-island concentration results and Litchfield zero history are known. Old full-time-series slopes or p values are not the new two-endpoint response.",
+      "step1_readout": {
+        "candidate_network_species_rows": 3,
+        "count_null_computed_rows": 2,
+        "source_pinned_and_recovered": true,
+        "source_recovery_medium": "official byte-matched original retrieved in GitHub Actions run 42324472225 or existing verified branch blob"
+      }
+    },
+    {
+      "source_id": "signy_within_island",
+      "dataset": "Canonical Signy Adelie and chinstrap breeding-patch counts",
+      "source_family": "BAS_Signy",
+      "planned_analysis_role": "local_resolution",
+      "current_analysis_role": "local_resolution",
+      "network_definition": "Signy Island; the geographical network identity does not include species.",
+      "component_type": "canonical monitored breeding patch within species",
+      "count_unit": "Preserve the exact breeding-count unit in the original frozen source contracts.",
+      "estimate_type": "original_recorded_breeding_patch_count",
+      "planned_coverage_from_existing_contract": {
+        "species_ids": [
+          "ADPE",
+          "CHPE"
+        ],
+        "year0": 1996,
+        "year1": 2019,
+        "canonical_component_counts": {
+          "ADPE": 5,
+          "CHPE": 9
+        },
+        "final_eligible_response_rows": null
+      },
+      "current_file_refs": [
+        "research/climate-penguin/outputs/signy_exploration/matched_counts.csv",
+        "contracts/SIGNY_BREEDING_PATCH_CONCENTRATION_V1.json",
+        "contracts/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_V1.json"
+      ],
+      "current_cache_role": "The existing matched-count cache covers 2012-2019 and does not supply the canonical 1996 starting endpoint. It must not silently replace the 1996-2019 series.",
+      "required_original_inputs": [
+        {
+          "species_id": "ADPE",
+          "expected_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62",
+          "current_local_path": null,
+          "known_saved_run_id": 36849448730,
+          "known_saved_artifact_id": 11154614094,
+          "status": "same_original_canonical_series_recovery_pending"
+        },
+        {
+          "species_id": "CHPE",
+          "expected_sha256": "e50e98719ba5eedc6f5e617e0c7aa404ebfba15bc22a51e93e78cd4443bf787b",
+          "current_local_path": null,
+          "known_saved_run_id": 36849448768,
+          "known_saved_artifact_id": 11154807954,
+          "status": "same_original_canonical_series_recovery_pending"
+        }
+      ],
+      "recovery_status": "Verified original source or matching on-branch source table in GitHub Actions #42324472225; raw source not added to Git repository.",
+      "alternative_history_not_an_additional_replicate": "The other 1998-2009 eight-literal-unit Adelie version is a different representation of the same study system, not an additional independent network.",
+      "q4_status": "Source A and C patch labels are different geographical units; do not take their union and zero-fill the absent species to manufacture spatial separation.",
+      "prior_view_status": "Original Signy concentration findings and alternative coding schemes are known. The new common two-endpoint effects have not been recomputed.",
+      "cohort_definition": "Each species retains its original fixed canonical monitored patch roster; species-specific cohort_id is separate from network_id.",
+      "step1_readout": {
+        "candidate_network_species_rows": 2,
+        "count_null_computed_rows": 2,
+        "source_pinned_and_recovered": true,
+        "source_recovery_medium": "official byte-matched original retrieved in GitHub Actions run 42324472225 or existing verified branch blob"
+      }
+    },
+    {
+      "source_id": "ross_within_island",
+      "dataset": "Ross Island six MAPPPD aerial census sectors",
+      "source_family": "MAPPPD",
+      "planned_analysis_role": "local_resolution",
+      "network_definition": "Ross Island, one physical island",
+      "component_type": "six original aerial census sector codes",
+      "count_unit": "nest",
+      "estimate_type": "recorded_aerial_census_count",
+      "source_dataset_id": "mapppd_pygoscelis",
+      "planned_coverage_from_existing_contract": {
+        "species_id": "ADPE",
+        "year0": 1985,
+        "year1": 2024,
+        "component_ids": [
+          "BRDM",
+          "BRDN",
+          "BRDS",
+          "CRZE",
+          "CRZW",
+          "ROYD"
+        ],
+        "district_crosswalk": {
+          "Cape Bird": [
+            "BRDM",
+            "BRDN",
+            "BRDS"
+          ],
+          "Cape Crozier": [
+            "CRZE",
+            "CRZW"
+          ],
+          "Cape Royds": [
+            "ROYD"
+          ]
+        },
+        "district_aggregation_role": "Resolution comparison, not another independent network.",
+        "final_calculated_common_response_rows": null
+      },
+      "current_file_refs": [
+        "research/climate-penguin/outputs/comparison_audit/mapppd_unambiguous_site_seasons.csv",
+        "research/climate-penguin/outputs/ross_island_spatial_scale_v1/README.md",
+        "research/climate-penguin/work/ross_island_spatial_scale_v1/build.mjs"
+      ],
+      "recovery_status": "Verified original source or matching on-branch source table in GitHub Actions #42324472225; raw source not added to Git repository.",
+      "lineage_group": "mapppd_pinned_88c73a5_field_count_lineage",
+      "parent_network_id": "MAPPPD::Victoria Land",
+      "duplication_status": "Confirmed reuse of the same MAPPPD sector count records; never add to the parent regional row as independent primary replication.",
+      "q4_status": "not_applicable_to_single_species_Adelie_series",
+      "limitations": [
+        "Six sectors are not six independent islands or climatic regions.",
+        "Aerial census values are not automatically a universally standardized error-free breeding-pair count."
+      ],
+      "prior_view_status": "Existing six-sector and three-district allocation results are known; the new two-endpoint common null has not been computed.",
+      "current_analysis_role": "local_resolution",
+      "step1_readout": {
+        "candidate_network_species_rows": 1,
+        "count_null_computed_rows": 1,
+        "source_pinned_and_recovered": true,
+        "source_recovery_medium": "official byte-matched original retrieved in GitHub Actions run 42324472225 or existing verified branch blob"
+      }
+    }
+  ],
+  "climate_existing_input_status": {
+    "role": "Step 2 covariate definition and Step 5 physical exposure; no climate association is fitted at the catalog stage.",
+    "current_file_refs": [
+      "research/climate-penguin/outputs/historical_ocean_macro_v1/README.md",
+      "research/climate-penguin/outputs/historical_ocean_species_v1/README.md",
+      "research/climate-penguin/outputs/surface_temperature_projection_v1/REPORT_JA.md",
+      "research/climate-penguin/outputs/cmip6_exposure_atlas_v1/site_scenario_exposure.csv"
+    ],
+    "uk_historical_sst": "Saved UK SST values for the planned networks and periods have not been located in the existing inventory.",
+    "antarctic_historical_temperature": "Existing historical GLORYS thetao is potential temperature; it must not be relabelled as a common UK-Antarctic SST covariate.",
+    "future_temperature": "Existing CMIP6 tos materials are available, but existing model/location coverage is not evidence that every new network and species is covered.",
+    "historical_sea_ice": "Existing Antarctic sea-ice analyses provide candidate inputs; network, period, spatial weights and variable identity still have to be frozen under Step 2.",
+    "frozen_network_covariates_available": false,
+    "future_all_network_exposure_available": false,
+    "policy": "Use only existing source identities and saved inputs; retain NA and the reason when the common variable or geographic coverage is absent. Do not substitute air temperature or differently defined ocean temperature for SST."
+  },
+  "cross_source_rules": [
+    "All final eligibility counts remain unset until endpoint_registry is created and checked.",
+    "Keep explicit observed/modelled zeros separate from missing or unobserved records.",
+    "Do not reuse declining-only selection, a favourable endpoint, or prior significance as a row-selection rule.",
+    "Macro-primary, local-resolution and model-index rows share a catalog and descriptive scale but do not automatically share sampling errors or independent replication.",
+    "No global emperor joint uncertainty is inferred from independent marginal summaries.",
+    "Q4 requires both species on the same surveyed spatial components and the same endpoints; absent records are not zero-filled.",
+    "Current hashes identify files that are actually present; recorded expected hashes identify unavailable originals and do not imply recovered bytes.",
+    "Future exposure weights use the late recorded distribution within included matched monitoring networks, not an assumed complete species-wide census; report census vintage and distinguish climate-input coverage from species population coverage."
+  ],
+  "step1_provenance": {
+    "github_actions_run_id": 42324472225,
+    "status": "success",
+    "lock_sha256": "439bd6a0403d7698209e8e5c79676e44b3182618f35ef2dfacebe4a10b7c0783",
+    "candidate_network_species_rows": 1529,
+    "computed_network_species_count_null_rows": 680,
+    "macro_primary_computed_rows": 675,
+    "computed_pair_count_null_rows": 378,
+    "endpoint_raw_rows_ephemeral_in_actions_runner": 19218,
+    "original_workbooks_not_committed_to_git": true,
+    "source_checksum_receipt": "research/network_concentration_unified_v1/data/input_checksums.json",
+    "QA_report": "research/network_concentration_unified_v1/outputs/STEP1_QA.json",
+    "descriptive_report": "research/network_concentration_unified_v1/outputs/STEP1_DESCRIPTIVE_PROFILE_JA.md",
+    "has_h2_h3_h4_tests": false
+  }
+}

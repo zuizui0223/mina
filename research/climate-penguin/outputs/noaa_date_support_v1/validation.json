@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "source": "https://www.ncei.noaa.gov/archive/accession/0171619",
+  "version": "1.1",
+  "source_sha256": {
+    "attendance.xlsx": "25381a6084e8bd8194b1ffe338d7fcaa38caee49a5fc7d0240a7285cbc2b7891",
+    "repro.xlsx": "6189e4be772c8ffb4c7a4fb2382ad42d883bba200db8f6f6ae4697b978a65778"
+  },
+  "nest_series": 467,
+  "site_species_seasons": 18,
+  "positive_at_first_observation": 365,
+  "zero_before_first_positive": 85,
+  "explicit_lay_rows": 44,
+  "nests_with_explicit_lay": 42,
+  "ambiguous_lay_rows": 1,
+  "lay_nests_without_exact_attendance_match": 1,
+  "repro_duplicate_key_rows": 26,
+  "earliest_monitoring": "2015-11-12 00:00:00",
+  "limitations": [
+    "nest-level attendance is not colony settlement",
+    "first observed positive is left-censored when monitoring starts with attendance",
+    "absence of explicit lay confirmation is not failure to lay",
+    "LAY=2 conflicts with logical metadata; not recoded to true",
+    "independent dates do not establish an offset for the separate Zenodo settlement index"
+  ]
+}

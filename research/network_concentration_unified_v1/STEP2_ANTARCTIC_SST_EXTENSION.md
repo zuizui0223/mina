@@ -1,0 +1,5 @@
+## Antarctic extension of the Step 2 SST source rule
+
+The same NOAA PSL OISST v2.1 monthly sea-surface temperature grid is sampled for the Southern Hemisphere MAPPPD cohort, using September-November of the already locked census years. The season is chosen from hemisphere, not from any response coefficient or selected favorable effect. All components within a fixed Step1 cohort must have a source ocean cell valid in both years, using an identical cell within 50 km for each component and equal component weights, not abundances.
+
+Only start years in 1981 or later (September 1981 product start) enter this physical source attempt. Eligible: 6 MAPPPD network×species and 3 species-pair rows. Six earlier main and two earlier pair rows are kept missing for OISST; no model air temperature, GLORYS thetao or ERSST is substituted to fill them. Joint area and year coverage remain uneven, and only nine Antarctic rows could receive W here. This is not independent cross-system replication of a JNCC climate coefficient and it is not a tested mechanistic prediction.

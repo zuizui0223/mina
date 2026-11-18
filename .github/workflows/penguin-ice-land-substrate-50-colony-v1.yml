@@ -1,0 +1,37 @@
+name: penguin-ice-land-substrate-50-colony-v1
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - "research/climate-penguin/work/emperor_ice_land_substrate_v1/**"
+      - "research/climate-penguin/outputs/emperor_ice_land_substrate_v1/**"
+      - ".github/workflows/penguin-ice-land-substrate-50-colony-v1.yml"
+  pull_request:
+    paths:
+      - "research/climate-penguin/work/emperor_ice_land_substrate_v1/**"
+      - "research/climate-penguin/outputs/emperor_ice_land_substrate_v1/**"
+      - ".github/workflows/penguin-ice-land-substrate-50-colony-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  external-original-50colony-and-land-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Recalculate byte-pinned published emperor posterior marginal and land census panel
+        run: node research/climate-penguin/work/emperor_ice_land_substrate_v1/build.mjs --check-receipt
+      - name: Archive source-backed 500 colony-year and land comparison summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: emperor-land-substrate-50colony-v1
+          path: |
+            research/climate-penguin/outputs/emperor_ice_land_substrate_v1/*.csv
+            research/climate-penguin/outputs/emperor_ice_land_substrate_v1/*.json
+          if-no-files-found: error
+          retention-days: 60

@@ -1,0 +1,432 @@
+{
+  "version": 1,
+  "updated": "2026-10-31",
+  "state": "merged_scientific_evidence_in_draft_PR206_only",
+  "paper_status": {
+    "paper1_pr": 189,
+    "paper2_pr": 199,
+    "climate_pr": 206,
+    "merge_main_authorized": false
+  },
+  "supported": [
+    {
+      "id": "palmer_sync",
+      "tier": "confirmed_descriptive",
+      "source": "results/PALMER_LTER_FIVE_ISLAND_SYNCHRONY_RESULT_V1.json",
+      "key": [
+        "common_long_term_component",
+        "pc1_variance_fraction"
+      ],
+      "value": 0.9640284642946518,
+      "n": "5 islands; 27 years",
+      "claim": "Common long-term population decline component PC1 96.4%",
+      "boundary": "No causal sea-ice effect or uniform annual demographic synchronization"
+    },
+    {
+      "id": "palmer_space_COR",
+      "tier": "source_tested",
+      "source": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "COR",
+        "fractional_change"
+      ],
+      "value": -0.19113899359974384,
+      "n": "Original COR colony-code fixed roster",
+      "claim": "Effective breeding composition decreased 19.1%",
+      "boundary": "Not mapped physical patch area or directly counted dispersal"
+    },
+    {
+      "id": "palmer_space_HUM",
+      "tier": "source_tested",
+      "source": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "HUM",
+        "fractional_change"
+      ],
+      "value": -0.5059971291433084,
+      "n": "Original HUM colony-code fixed roster",
+      "claim": "Effective breeding composition decreased 50.6%",
+      "boundary": "Not mapped physical patch area or causal snow/predator response"
+    },
+    {
+      "id": "palmer_space_LIT",
+      "tier": "source_tested",
+      "source": "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "LIT",
+        "fractional_change"
+      ],
+      "value": -0.8270791752527236,
+      "n": "Original LIT fixed colony-code roster",
+      "claim": "Effective breeding composition decreased 82.7%",
+      "boundary": "Local extinction and effective composition not equivalent to vegetation/area"
+    },
+    {
+      "id": "signy_adelie",
+      "tier": "independent_system",
+      "source": "results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "fractional_change_first_to_last"
+      ],
+      "value": -0.3715276804405254,
+      "n": "22 seasons 1996–2019",
+      "claim": "Adelie effective colony-code count down 37.2%",
+      "boundary": "Original colony-code observation units, not geo-polygons"
+    },
+    {
+      "id": "signy_chinstrap",
+      "tier": "cross_species_repeat",
+      "source": "results/SIGNY_CHINSTRAP_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+      "key": [
+        "observed",
+        "fractional_change_first_to_last"
+      ],
+      "value": -0.5062892782809985,
+      "n": "22 seasons 1996–2019",
+      "claim": "Chinstrap effective colony-code count down 50.6%",
+      "boundary": "No general climate-driven breeding-space parameter"
+    },
+    {
+      "id": "palmer_lag2",
+      "tier": "conditional_association",
+      "source": "results/PALMER_PERFORMANCE_REDISTRIBUTION_LAGS_RESULT_V2.json",
+      "key": [
+        "primary_lag_profile",
+        "lag_2",
+        "beta"
+      ],
+      "value": 0.040890746633273245,
+      "n": "754 source rows at lag 2",
+      "claim": "Short-lived 2-year performance–redistribution association beta=0.0409, sensitivity p=0.00327",
+      "boundary": "Not preregistered confirmatory evidence, individual movement, or validated forecast"
+    },
+    {
+      "id": "palmer_hierarchy",
+      "tier": "source_tested",
+      "source": "results/PALMER_HIERARCHICAL_VARIABILITY_RESULT_V1.json",
+      "key": [
+        "primary_raw_abundance",
+        "log_beta_share_within_islands"
+      ],
+      "value": 0.8642664462053955,
+      "n": "Stable-roster 3 islands, 25 census units, 27 years",
+      "claim": "86.4% of exact multiplicative variance-buffering scale share occurs within islands rather than among islands",
+      "boundary": "Descriptive hierarchy of original colony codes, not dispersal, true GIS habitat insurance, mechanism or forecast"
+    }
+  ],
+  "verified_exploratory": [
+    {
+      "id": "signy_three_species_stage",
+      "n": "22 native seasons; 19 consecutive changes; one island",
+      "effects": "Adelie-Chinstrap r=0.794; Adelie-Gentoo r=0.703; Chinstrap-Gentoo r=0.738",
+      "source": "research/climate-penguin/outputs/signy_stage_synchrony_v2/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41056721425",
+      "boundary": "Dunn et al. 2016 already reported related success correlations; three different source grain definitions"
+    },
+    {
+      "id": "chinstrap_island_position_krill_model",
+      "n": "3 same-species same-year island pair comparisons",
+      "effects": "Laurie/Signy 2011 2.44x; Powell/Signy 2013 6.31x; Monroe/Signy 2015 2.75x modelled krill",
+      "source": "research/climate-penguin/outputs/south_orkney_island_gps_krill_v1/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41075715761",
+      "boundary": "Real GPS position, but GAM modelled prey using same original acoustic+ice+salinity, island confounded with year"
+    },
+    {
+      "id": "chinstrap_tdr_source_link",
+      "n": "300 source ID matches across Signy Laurie Powell Monroe",
+      "effects": "4 fixed source tags pilot provisional dive times; Monroe pressure baseline drift 7.75 dbar",
+      "source": "research/climate-penguin/ORIGINAL_GPS_TDR_ISLAND_ACCESS_GATE_20261031.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41165153690",
+      "boundary": "Technical data linkage positive, not independent prey capture or diving ecology"
+    },
+    {
+      "id": "cmip6_physical_exposure",
+      "n": "3 climate models and 58 matched species-sites",
+      "effects": "Scenario physical temperature/sea-ice/salinity change available",
+      "source": "research/climate-penguin/INTEGRATED_FUTURE_BREEDING_GATE_20261030.md",
+      "boundary": "Conditional GCM physics only; not forecast penguin abundance or vegetation"
+    },
+    {
+      "id": "chinstrap_tdr_pressure_gps_model_cell_pilot",
+      "n": "4 fixed source tags, 48 q1/q5 ZOC×2/5/10 dbar pressure-candidate specifications",
+      "effects": "Original-GPS time bracket candidates Laurie901 Powell2117 Monroe876 Signy24; 10–150km and published GAM source model valid Laurie901/27 unique cells Powell543/28 Monroe802/13 Signy0; three tag within-model candidate/all-GPS cell ratios 0.985,0.928,0.982",
+      "source": "research/climate-penguin/outputs/chinstrap_tdr_krill_location_pilot_v3/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41168213176",
+      "boundary": "Only technical co-registration, pressure ZOC provisional especially Monroe 7.75 dbar, original GPS point does not identify feeding, GAM prefit ice/salinity/acoustics, no island or future breeding causal evidence"
+    },
+    {
+      "id": "source_fixed_16tag_pressure_ZOC_GPS_qa",
+      "n": "16 source-matched GPS/TDR deployments fixed across four islands; 4 ZOC procedures per tag = 64 source QA rows",
+      "effects": "16/16 raw pressure and all 4 ZOC inputs processed; q1/60 pressure-baseline drift >2dbar in PI004 2.50, MIC001 7.7525, MIC002 11.4975. MIC002 strict GPS matched 108/3246 events (3.33%), 20.5% candidate count sensitivity.",
+      "source": "research/climate-penguin/outputs/chinstrap_16tag_tdr_sensor_qa_v1/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41176761764",
+      "boundary": "Source-first technical instrument QA only; nonrandom first four tags per island and unvalidated depth/foraging. No estimated ecology or biological 2050/2100 forecast."
+    },
+    {
+      "id": "full_300_native_tdr_pressure_source_QA",
+      "n": "All 300 source-native matched GPS/TDR deployments; 109435170 original pressure rows, 108766902 unique valid source timestamps",
+      "effects": "300/300 source QA computed, provisional q1/60min baseline range >2dbar in 42/300; q5/60min in 33/300, intersection 32. Original 13 tags TDR/GPS timeline overlap<50%; one original PI009 tag has 668268 duplicate pressure timestamps.",
+      "source": "research/climate-penguin/outputs/chinstrap_300tag_tdr_sensor_qa_v1/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41177252296",
+      "artifact_sha256": "1ccdd88095434126db51183199564bd3301215b0a527f9a600fa1e07c21f34db",
+      "derived_300row_sha256": "a985b036716bf18f1356988ccba08374ab3b0b97c579f53a86f5bef07f4207fc",
+      "boundary": "Full sampled tag universe instrument/source QC, not population sensor failure rate; provisional pressure lower-quantile is not validated water surface, clock sync/true foraging unverified and island-year confounded."
+    },
+    {
+      "id": "tdr_source_six_extreme_trace_diagnosis",
+      "n": "6 source-selected after full300 source QA; pressure native rows: PI011110562 PI054426429 SIC033212250 SIC036431999 SIC039480600 PI009977848",
+      "effects": "Five tags q1/hour range>100dbar, SIC033/036/039 exactly share native max245.81 and min-10.13dbar. PI009 668268 extra original same-timestamp pressure records, of which 614298 differ from first; 86400 timestamps have >1 records, max9/time.",
+      "source": "research/climate-penguin/outputs/chinstrap_tdr_extreme_source_v1/REPORT_JA.md",
+      "workflow": "https://github.com/zuizui0223/mina/actions/runs/41177957583",
+      "artifact_sha256": "0d077d8b757f59e7f501b861525b01781a605dc800fd74512077e2a9d5d29af6",
+      "boundary": "Source-selected post-result instrument diagnoses, not sensor failure incidence or penguin dive ecology. Logger frequency/pressure clipping unresolved; PI009 first timestamp dedup is unacceptable for dive event timing."
+    },
+    {
+      "id": "Chinstrap_GPS_island_GAM_after_original_sensor_qa",
+      "n": "Original 300 BAS matched GPS/TDR tracking units; 190 instrument-and-time-observability tier, 52 stringent tier; original GPS model source has 253 qualified tags, 247 TDR matches, 175 primary QA and 47 stringent qualified GPS tags; 3 same-species same-year island comparisons",
+      "effects": "Original other-island/Signy GAM ratio 2011 Laurie 2.440→2.330 after source QA; 2013 Powell 6.314→6.849; 2015 Monroe 2.748→2.791. Stringent GPS tier ratios 2.082, 8.926, 3.002. Modelled density ratios not measured food catch.",
+      "source": "research/climate-penguin/outputs/chinstrap_GPS_island_QA_krill_robustness_v1/REPORT_JA.md",
+      "original_source_SHA256": {
+        "TDR_source_300": "a985b036716bf18f1356988ccba08374ab3b0b97c579f53a86f5bef07f4207fc",
+        "GPS_model_original": "44cb30e8b3136317578d4e86b1dcf99146fae6ab0e721e35a05d4e5ebc6bdda6"
+      },
+      "upstream_source_workflows": [
+        "https://github.com/zuizui0223/mina/actions/runs/41177252296",
+        "https://github.com/zuizui0223/mina/actions/runs/41075715761"
+      ],
+      "downstream_source_reproduction": "https://github.com/zuizui0223/mina/actions/runs/41178815612",
+      "boundary": "Only retained direction of same published krill GAM at real GPS locations after retrospective *sensor-coverage* selection; not measured krill or independent ice/salinity effect. Island/other-island year confounded; Signy 2011 n3 after QA, strict n3; 2013 strict n3. 2018 Signy stringent GPS>=50% has 0 original source tags, so temporal extrapolation not supported.",
+      "downstream_source_ci_status": "success",
+      "downstream_source_ci_run": "https://github.com/zuizui0223/mina/actions/runs/41178815612",
+      "downstream_result_artifact_id": 13034222467,
+      "data_validation_gate": "Original BAS 300-tag TDR/GPS recomputation and GPS raster model source 308-tag re-extraction both completed; 24 original fixed comparisons independently checked."
+    },
+    {
+      "id": "Chinstrap_GAM_spatial_geography_vs_GPS_distance_adjusted",
+      "n": "308 original Chinstrap GPS source deployments in 7 island-year groups; 253 original GPS tracks meet 10-hour/10-150km window, 3 matched same-species island-year pairs",
+      "effects": "Other island/Signy direct visited Freer GAM ratios Laurie 2011 2.440, Powell 2013 6.314, Monroe 2015 2.748; model-valid all-geography ratios 1.024, 1.187, 0.971; radial-distance-adjusted ratios 1.730, 4.040, 2.965. Signy 4 observation seasons 103/103 original GPS tag-level modelled values below same-distance model reference.",
+      "source": "research/climate-penguin/outputs/chinstrap_krill_geography_vs_movement_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41183123990",
+      "grade": "B_exploratory_source_backed_within_published_GAM",
+      "boundary": "All values from same previously fitted GAM with acoustic/salinity/ice inputs; circular if used as independent climate–prey evidence. Geographical radial availability is not verified navigability or feeding. Tag sample, year and island confounded; no causal choice, true prey or future breeding prediction."
+    },
+    {
+      "id": "Chinstrap_GAM_native_pixel_union_pseudoreplication_check",
+      "n": "Original GPS source 308 tracks. Signy original native pixel union per site×year (2011 n15, 2013 n305, 2015 n371, 2018 n219); 0.25° coarse spatial tiles 4/61/70/38, NOT independent replicates.",
+      "effects": "Signy unique model pixels below same-radial GAM reference 14/15, 304/305, 368/371, 208/219. Distance-adjusted other-island/Signy union-pixel GAM ratios Laurie 1.642, Powell 4.511, Monroe 3.240.",
+      "source": "research/climate-penguin/outputs/chinstrap_native_cell_independence_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41183507450",
+      "grade": "B_exploratory_source_backed_GAM_not_independent_ocean_measurement",
+      "boundary": "Native GAM model pixels have spatial autocorrelation, same ocean model and same years. GPS points not confirmed forage; avoids tag-pixel repeat weighting but does not establish effective independent environmental N, independent krill acoustic, salinity mechanism or island breeding causality."
+    },
+    {
+      "id": "chinstrap_original_GAM_radial_sensor_QA_full_replay",
+      "source": "research/climate-penguin/outputs/chinstrap_radial_GAM_source_QA_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41183430520",
+      "source_CI_conclusion": "success",
+      "source_CI_artifact_id": 13036360637,
+      "source_300_original_QA_CSV_sha256": "a985b036716bf18f1356988ccba08374ab3b0b97c579f53a86f5bef07f4207fc",
+      "n": "Original native Chinstrap GPS 308 tags; GPS geographic qualified 253, source TDR matched 247, operational QA primary 175, stringent QA 47; Signy 103 GPS tags across four observed seasons and 76 QA-primary tags.",
+      "effects": "Signy all 103/103, QA-primary 76/76 modelled GAM visited-pixel values below their same-radius 10-km model-valid spatial background. Other-island/Signy 2011 Laurie, 2013 Powell, 2015 Monroe GAM ratios after both radial and source instrument QA 1.665914/4.499388/3.016099.",
+      "grade": "B_modelled_GAM_source_verified_descriptive",
+      "boundary": "Only movement location and within-model spatial field; source acoustic, sea ice, salinity all used in original GAM, cannot validate real krill capture, true accessible marine geography, demographic response or 2050/2100 climate-driven breeding forecasts. Source QA post-exposure and Signy 2018 strict n=0."
+    },
+    {
+      "id": "chinstrap_hurdle_GAM_occurrence_conditional_density_components",
+      "n": "308 source Chinstrap GPS tracks from seven island-year cohorts; 3 same-species matched-island-year comparisons; Freer BAS original 2011–2020 krill hurdle-GAM 30 source GeoTIFFs; 14 site×year×model-period groups and 6 matched island×model-period contrasts",
+      "effects": "Preseason T GPS tag-weighted radial-adjusted other-island/Signy GAM occurrence ratios 1.079, 1.484, 1.050; positive-density conditional ratios 1.585, 2.778, 2.900; combined ratios 1.730, 4.040, 2.965. With original native GAM cells deduplicated, occurrence ratios 1.184,1.716,1.004, conditional positive density 1.416,2.708,3.276, combined 1.642,4.511,3.240; positive-density log component contributes 70.2%,66.1%,100.9% of the matched difference (including exact aggregation interaction terms). T+1 combined union ratios weaken to 1.258,1.866,1.187, not time-forward predictions.",
+      "source": "research/climate-penguin/outputs/chinstrap_GAM_hurdle_components_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41184743053",
+      "independent_native_pixel_source_CI": "https://github.com/zuizui0223/mina/actions/runs/41183507450",
+      "source_artifact_id": 13036146864,
+      "grade": "B_POSTHOC_WITHIN_PRETRAINED_GAM_COMPONENT_ACCOUNTING",
+      "boundary": "Occurrence and positive-density are two components of the SAME Freer GAM trained on original acoustic/sea-ice/salinity. Source GPS positions are not confirmed capture/dive, model-valid circular distance reference is not real ocean access, no independent spatial or temporal validation. Log component shares are arithmetic attribution, not ecology causality. One other island per year, Signy 2011 n4. No climate/vegetation/future nests/N_eff prediction."
+    },
+    {
+      "id": "chinstrap_original_satellite_monthly_ice_gps_colocation",
+      "n": "Original 308 BAS Chinstrap Version2 GPS deployment tracks, 253 position-hour qualified; 11 independent OSI SAF 25km Southern monthly NetCDF original satellite source files; 1164 source tag-month-distance-quality rows; 7 island-year location cohorts, 3 matched same-species island-year pairs, monthly spatial GPS hours and distinct satellite cell support retained",
+      "effects": "December 2013 monthly original satellite SIC near source GPS Signy 26.25988% vs Powell 12.78829% (10 source tags each, +13.47159 percentage points). One vote per original OSI satellite ocean cell: Signy 42 cells mean24.02833% (33/42 cells >=15%) vs Powell29 cells mean9.76586% (11/29 >=15%), difference14.26247pp. Jan2014 original satellite SIC Signy 0%, Powell 0.03152% (cell means 0%,0.20353%). Same original GPS deployment IDs Dec2013-Jan2014: Signy 2 tags 27.28226%→0%, Powell 10 tags 12.78829%→0.16389%. Dec2015 Signy 4.04921% vs Monroe 0%, Jan2016 both 0%. 20 vs35km nearest ocean pixel and permissive vs stringent flags unchanged for the December 2013 contrast.",
+      "source": "research/climate-penguin/outputs/chinstrap_OSI_monthly_original_GPS_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41186205042",
+      "source_artifact_id": 13036218741,
+      "original_SIC_DOI": "10.15770/EUM_SAF_OSI_0023",
+      "original_GPS_DOI": "10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
+      "grade": "B_GPS_LINKED_OBSERVED_PHYSICAL_MONTHLY_ICE_SOURCE_NOT_ECOLOGICAL_CAUSAL",
+      "boundary": "This is real satellite-derived monthly 25km SIC at nearest ocean cells to GPS positions, not actual ice at each GPS day/time, daily traversable routes, penguin feeding or original krill acoustic biomass. Many tags share pixels; December-to-January birds and locations differ, two Signy matched tags only. Freer model trained with ice/salinity/acoustic, so joint ice/krill-model correlations are not independent ice→prey causality. Not a 2050/2100 penguin abundance, N_eff or vegetation prediction."
+    },
+    {
+      "id": "chinstrap_source_daily_sic_shared_dates_fixed_grid",
+      "n": "BAS Chinstrap Version2 308 original source tags, 253 source GPS-qualified; 2013/14 SI–PI 14 exact GPS-common calendar dates Dec29–Jan11, 14 daily original EUMETSAT OSI-450-a1 v3.1 Antarctic 25km EASE2 NetCDF, 168 fixed sensitivity configurations (20/35 km, standard/strict status flags, 1/3/6 valid source-hour thresholds); fixed source-pixel footprints 25/57,14/29,25/48 SI/PI cells, all observed on all 14 days",
+      "effects": "Daily GPS-used SIC contrast Signy−Powell averaged over 3 shared days Dec2013 +10.36965 percentage points, 11 shared days Jan2014 −0.12340pp (per-source-tag equal), original satellite pixel dedup +11.78744 vs +0.23724pp. Fixed 25km ocean pixels across all 14 days Dec contrast+10.97787→Jan+2.65829pp (reduction8.31957); December-only footprint+11.59478→+1.08287pp; January-only footprint+11.05117→+2.48271pp. Original daily satellite input SHAs per day verified; unchanged footprint establishes observed physical ice change alongside movement-geography selection.",
+      "source": "research/climate-penguin/outputs/chinstrap_daily_ice_same_day_GPS_2013_v1/REPORT_JA.md",
+      "fixed_pixel_report": "research/climate-penguin/outputs/chinstrap_OSI_daily_fixed_native_cells_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41189042766",
+      "original_daily_source_CI": "https://github.com/zuizui0223/mina/actions/runs/41188717803",
+      "source_artifact_id": 13037832534,
+      "original_SIC_DOI": "10.15770/EUM_SAF_OSI_0023",
+      "grade": "B_ACTUAL_GPS_DAY_OBSERVED_PHYSICAL_ICE_FIXED_SPATIAL_GEOMETRY_POSTHOC",
+      "boundary": "One postresult selected 2013/14 Signy-Powell breeding season only. Source GPS calendar timezone not independently validated. Real satellite 25km 24h SIC vs GPS movement, original fixed valid ocean pixels are a retrospectively defined geographic reference; no observed ice navigation constraint at exact animal time, independent prey biomass, foraging or nesting success. Some spatial autocorrelation persists and calendar day/satellite grid not independent in time. No 2050/2100 population or vegetation projections."
+    },
+    {
+      "id": "chinstrap_original_daily_ice_three_island_years_source_generalization",
+      "n": "Three same-species different-island/same-year BAS Chinstrap Version 2 GPS comparisons, original 308 tracks / 253 GPS-qualified; 45 publisher-original OSI-450-a1 v3.1 Southern 25km daily NetCDF: six shared GPS dates 2011 LI–SI, fourteen 2013 PI–SI, twenty-five 2015 MI–SI. Source dates frozen from GPS before daily satellite ice was read. Fixed 25km native ocean pixels across ALL matched days: source 4/6, 25/57, 37/45 SI/other; all publisher NetCDF source SHA receipts preserved.",
+      "effects": "Source daily observed fixed same ocean-pixel mean SIC differences Signy−other, December/January percentage points: 2011 Laurie 0.000/0.000 (1/5 shared days); 2013 Powell +10.977869/+2.658295 (3/11 shared days); 2015 Monroe +0.521838/0.000 (5/20 shared days). Previously chosen 2013 case reproduced to full original source precision; large December ice contrast DOES NOT replicate in either 2011 or 2015 other-island matched case. Krill GAM positive-density ratios persist in all three same-species island-year pairs but are NOT independently observed krill biomass.",
+      "source": "research/climate-penguin/outputs/chinstrap_daily_SIC_three_island_year_pairs_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41190087752",
+      "source_artifact_id": 13038686584,
+      "original_OSI_45day_receipt_digest": "f0a0223b19bfe47bb430bba64fd937c5c3ad9a62b24d7b27f6e63a7ac4caa04c",
+      "original_BAS_GPS_source_digest": "f56dc817aefefda41e509541d24a184f68644d12c0a1c28af8071717275101c9",
+      "grade": "B_ORIGINAL_GPS_MATCHED_DAILY_SATELLITE_ICE_EXTERNAL_YEAR_NEGATIVE_GENERALIZATION",
+      "boundary": "Real 25km daily satellite 24h means in an original GPS-derived fixed source-pixel footprint, not a true penguin water-route accessibility barrier. Three different other islands each in one different year; Signy2011 source GPS support is small, within-island satellite days and pixels are highly correlated. SIC zeros are observed ocean cells, missing GPS days do not become zeros. The historical Freer krill GAM already used sea ice/salinity/acoustics, so model prey differences are not independent ice effects. This does not identify causal breeding-stage or future 2050/2100 nesting, N_eff or vegetation outcomes."
+    },
+    {
+      "id": "chinstrap_three_matched_years_original_same_day_sic_generalization",
+      "grade": "B_OBSERVED_SATELLITE_ICE_ISLAND_YEAR_CONDITIONAL_POSTHOC",
+      "n": "308 original BAS Chinstrap GPS deployment units, 253 source-qualified; 45 GPS-common calendar days across three different island-year pairs (2011 Laurie/Signy 6 days, 2013 Powell/Signy 14 days, 2015 Monroe/Signy 25 days); 45 original OSI SAF v3.1 satellite daily 25-km NetCDF SHA-checked; original fixed ocean pixel support 4/6,25/57,37/45 Signy/other; 540 day×source quality comparisons and 135 fixed source pixel/day comparisons",
+      "effects": "Signy-minus-other original source 25km GPS-defined fixed ocean pixel mean satellite SIC pp: 2011 Laurie Dec 0.0 (1 shared day), Jan 0.0 (5); 2013 Powell Dec +10.977869005847952 (3), Jan +2.6582947368421057 (11), change −8.319574269005846pp; 2015 Monroe Dec +0.5218378378378379 (5), Jan 0.0 (20). The large ice contrast seen at 2013/14 does not recur in the other two distinct island-year pairs.",
+      "source": "research/climate-penguin/outputs/chinstrap_daily_SIC_three_island_year_pairs_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41190087752",
+      "source_artifact_id": 13038686584,
+      "original_SIC_DOI": "10.15770/EUM_SAF_OSI_0023",
+      "original_GPS_DOI": "10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
+      "boundary": "Three posthoc source-defined same-species matched island-year pairs but each other island measured in only one different year, confounded island-year, 2011 December n=1 day. Satellite 25km 24h concentrations at GPS-dependent and retrospectively fixed footprints are real physical source observations but NOT exact ice navigability, prey supply, diving, foraging or climate-to-breeding causal effects; daily source pixels and days not independent. Earlier Freer krill GAM model uses original acoustic/ice/salinity and is not independent prey observation. No future 2050/2100 nest,N_eff,vegetation prediction.",
+      "linked_physical_vs_prey_model_crosswalk": "research/climate-penguin/outputs/chinstrap_SIC_vs_GAM_crosswalk_v1/REPORT_JA.md",
+      "crosswalk_source_CI": "https://github.com/zuizui0223/mina/actions/runs/41190787792",
+      "crosswalk_source_receipt_SHA256": {
+        "daily_ice": "bcaa350b5e1b5c3729bf1c7941e225dbc233cd178b6447582d2f55f309faa366",
+        "pretrained_GAM": "5efa3e418794691d43e186368f93e335da2809b92ce286e9bca67e2ecddf8b63"
+      }
+    },
+    {
+      "id": "chinstrap_daily_satellite_GPS_vs_same_radius_ocean_ice_exposure",
+      "grade": "B_SOURCE_OBSERVED_PHYSICAL_SPATIAL_CONDITIONAL_POSTHOC",
+      "n": "308 original BAS Version2 Chinstrap GPS tracks; 253 source-qualified; three different same-species matched island-year pairs; 45 original shared GPS calendar days (6/14/25), 45 OSI-SAF v3.1 original daily satellite NetCDF files; 360 island-day-radius×quality source summaries, 180 island day-pair-radius×quality comparisons; 1420 original GPS tag-day-radius×quality rows",
+      "effects": "On 2013 Dec29–31 GPS-selected unique original OSI 25km ocean pixels vs SAME-DAY SAME-25km RADIAL RING other original valid ocean pixels: Signy excess daily means +7.108898,+7.694984,+3.278373 percentage points (3-day mean +6.027418); Powell −2.572693,−9.191743,−6.842027 (mean −6.202155); Signy minus Powell source radial-adjusted contrast +12.22957285pp (Jan2014 +0.47064884pp). 2011 Dec/Jan paired differences 0/0; 2015 Dec +0.70980526pp and Jan0. Signy source GPS tag-day 12/12 positive, Powell 15/22 negative during 2013 Dec. 2013 source physical source angle/latitude contrasts persist across 20/35km nearest source ocean radius and permissive/strict original status flags.",
+      "source": "research/climate-penguin/outputs/chinstrap_daily_GPS_ice_radial_direction_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41191518232",
+      "original_SIC_DOI": "10.15770/EUM_SAF_OSI_0023",
+      "original_GPS_DOI": "10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
+      "source_artifact_id": 13039200633,
+      "boundary": "Same-day satellite SIC source is measured physical environmental data but NOT fine ice/navigability or penguin actual feeding. Same radial distance across all azimuths does not establish reachable habitat; satellite valid ocean/land coast mask spatial selection. 3 consecutive days 2013 are strongly autocorrelated, 2011 Dec only 1 shared day, each different island in a different year. Source penguin GPS not actual dive/capture. Observed direction difference cannot infer active ice avoidance, attraction, iceberg passage, ice→krill or 2050/2100 breeding count/N_eff/vegetation mechanism."
+    },
+    {
+      "id": "chinstrap_daily_satellite_native_lowice_graph_connectivity_falsification",
+      "grade": "B_SOURCE_SATELLITE_GEOMETRY_SENSITIVITY_NEGATIVE_MECHANISM",
+      "n": "BAS v2 308 original GPS tracks, 253 qualified source tracks, 45 shared calendar days across three same-species island-year pairs; OSI SAF v3.1 original daily source 25km EASE2 45 NetCDF SHA checked; 4320 native island×day×ice cut/quality/adjacency/seed/radius strata, 2160 matched island-day scenarios; 679 original native GPS ocean-pixel×island-day observations at reference settings",
+      "effects": "No GPS pixels with SIC <15/30/50% disconnected from near-coast hypothetical low-ice component across 4320 original day/sensitivity cases; all coastal source seeds present. At 15% primary case 39/679 satellite GPS cell-days >=15% (all 2013), while 0/679 >=30%. 2013 December ratio of source GPS pixel fraction below SIC15% and 8-connected to low-ice coast: Signy 0.227 vs Powell 0.714 (difference -0.48684); January 0.942 vs 0.936 (+0.00622); other paired seasons and 30/50% thresholds both islands 1.0. Any 15% difference is threshold status of visited native cells, not grid graph fragmentation.",
+      "source": "research/climate-penguin/outputs/chinstrap_ice_graph_connectivity_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41193469710",
+      "source_artifact_id": 13039737974,
+      "original_SIC_DOI": "10.15770/EUM_SAF_OSI_0023",
+      "original_GPS_DOI": "10.5285/8f8ccba5-01af-4b00-8a3b-c3c85b24bf92",
+      "boundary": "NEGATIVE test of an artificial original 25km monthly-independent daily SIC binary graph, not evidence penguins can swim through ice, never a measurement of true coastal ocean routes/iceberg/pack ice gaps. Ocean-source valid mask and 4/8 connectivity are coarse; a pixel with 15% daily SIC may have traversable channels, and original GPS location may match nearest ocean pixel 20/35km away. Observed 39/679 source cell-days with SIC>=15 says binary 15% cell exclusion cannot literally describe all observations, not proof of passage through >15 ice. No prey capture, independent krill amount, nesting or future climate projection."
+    },
+    {
+      "id": "IMR_krill_out_of_training_2023_2025_regional_acoustic_estimates",
+      "grade": "B_REGION_LEVEL_OFFICIAL_ACOUSTIC_SOURCE_CORRECTED_PRIMARY_YEAR_AUTHORITY_NOT_GPS_PREY",
+      "n": "12 actual IMR region-wide whole-stratum acoustic annual estimates: original Skaret2023 Combined Table3 n=9 in 2011-2020 (2013 Combined absent due ice), post-Freer-training IMR official 2023/24/25 n=3; unobserved comparable years 2021-22; 2026 source published but no robust whole-stratum biomass due ice/ship incident.",
+      "effects": "IMR official posttraining original acoustic regional density: 2023 36.7 g/m² CV0.51, 2024 80.5 CV0.11, 2025 102.0 CV0.75. Proper original historical Combined chronology: 2017 23.2; 2018 69.4; 2020 38.8; 2013 missing. Original 2011-20 n9 Kendall tau -0.38889 p0.18018; all 12 estimated years Kendall tau 0 p1.0; 120kHz n9 tau 0.11111 p0.76141; Theil-Sen full 95% slope bounds -6.54 to 5.20 g/m²/year. 2025/2023 observed point ratio 2.779 is not uncertainty-confirmed increase.",
+      "source": "research/climate-penguin/outputs/IMR_independent_acoustic_2023_2025_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41194995081",
+      "source_artifact_id": 13039304274,
+      "source_original_official_reports": [
+        "https://www.hi.no/hi/nettrapporter/toktrapport-en-2024-14",
+        "https://www.hi.no/en/hi/nettrapporter/toktrapport-en-2025-8"
+      ],
+      "boundary": "Historical reprinted 2024 report mislabels 2013–20 rows, and original Skaret 2023 Table3 must be used: 2013 Combined missing, nine pretraining years only. The earlier 13-row Kendall tau=+.0387 and p=.8545 are INVALID and superseded; 2026 survey not estimable full area due sea ice plus vessel accident, no biomass zero. 2023–25 IMR annual observations independent of Freer 2011–20 training years but NO published year-specific 2023–25 Freer forecast, so no model temporal hindcast accuracy; regional acoustic estimate not prey at penguin GPS locations, breeding-stage effects and future quantitative nests/N_eff/vegetation not shown.",
+      "original_authority": "https://academic.oup.com/icesjms/article/80/5/1472/7161638",
+      "official2026": "https://www.hi.no/hi/nettrapporter/rapport-fra-havforskningen-en-2026-43",
+      "primary_source_year_discrepancy": "research/climate-penguin/inputs/IMR2024_reprint_vs_Skaret2023_year_label_discrepancy.csv",
+      "artifact_id": 13041070048,
+      "superseded_earlier_CI": "https://github.com/zuizui0223/mina/actions/runs/41194404701"
+    },
+    {
+      "id": "IMR_2026_packice_and_operational_censored_survey_new_coronation_observatory",
+      "grade": "B_PUBLISHED_PHYSICAL_OBSERVATION_PROCESS_AND_OBSERVATORY_INSTALLATION_NO_ESTIMATED_BIOMASS",
+      "n": "One IMR 2026 South Orkney survey report published 2026-08-31; whole ~60360 km2 acoustic study stratum lacks comparable biomass estimate due incomplete southern ice-covered sampling + ship propeller/trawl incident; Corona­tion Island Chinstrap camera and acoustic recorder installed, future study design only.",
+      "effects": "Dense pack ice prevented full southern transect coverage; operational gear incident led to vessel losing propulsion and early staffed-survey termination, with some later remote northern transects lacking paired biological sampling. Original 2026 report explicitly declines whole-stratum biomass calculation, although local acoustic NASC krill detections exist. Coronation Island Chinstrap observatory installed for planned future nest counts, creche-stage chick outcomes and timing, but no verified breeding time series or annual nest counts in the publication.",
+      "source": "research/climate-penguin/outputs/IMR_independent_acoustic_2023_2025_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41194995081",
+      "source_report": "https://www.hi.no/hi/nettrapporter/rapport-fra-havforskningen-en-2026-43",
+      "source_gate": "research/climate-penguin/inputs/IMR_2026_acoustic_nonestimable_and_penguin_observatory.json",
+      "boundary": "The directly documented barrier is to research-vessel acoustic sampling, NOT proven penguin ice-navigation or ecological prey response. Ice and gear accidents jointly confound missingness, so this cannot separately attribute coverage loss to ice alone. Lack of area-wide krill estimate is missing, NOT zero. Observatory installation is not a dataset of observed nest numbers or breeding success. No 2026 krill density, nor causal or future abundance/vegetation effect."
+    },
+    {
+      "id": "IMR_acoustic_documented_packice_survey_coverage_2011_2026",
+      "grade": "B_PUBLISHER_DOCUMENTED_SAMPLING_PROCESS_CENSORED_NOT_BIOLOGICAL_EFFECT",
+      "n": "16 calendar years 2011-2026, 14 original-survey years documented in audited primary (2011-20, 2023-26), 12 with comparable whole-area Combined/Overall acoustic estimates, 2 explicitly non-estimable (2013,2026), 2 unaudited comparable-year estimates (2021,2022).",
+      "effects": "Original source explicitly documents sea-ice-limited acoustic coverage in 2013, 2015, 2026 (3 of 14 audited survey years); 2013 and 2026 no regional density, 2015 Combined estimate exists despite restricted southern coverage. Other 11 audited years have estimates and no explicit ice-limitation note in audited source. 2026 additionally has a separate ship trawl/propeller incident. No estimation of the ice-specific causal missingness rate is supported.",
+      "source": "research/climate-penguin/outputs/IMR_source_observability_2011_2026_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41195496438",
+      "source_series": "research/climate-penguin/inputs/IMR_yearwise_acoustic_coverage_2011_2026_v1.csv",
+      "original_primary": "https://academic.oup.com/icesjms/article/80/5/1472/7161638",
+      "original_2026": "https://www.hi.no/hi/nettrapporter/rapport-fra-havforskningen-en-2026-43",
+      "boundary": "Observability is about research vessel acoustic biomass survey and its spatial coverage, NOT krill absence, penguin routes or breeding success. Lack of a documented ice limitation for another year is not documented proof that sea ice was absent. 2026 regional estimate missing jointly due ice and operational ship incident; no causal ice-only effect identifiable. Unknown comparable 2021/22 source availability not absence of survey. No 2050/2100 breeding numeric response."
+    },
+    {
+      "id": "primary_skaret_acoustic_versus_prior_observed_GOPT_satellite_SIC_9year",
+      "grade": "C_POSTHOC_NINE_YEAR_ORIGINAL_OBSERVED_ICE_TO_REGIONAL_PREY_ASSOCIATION_UNCONFIRMED",
+      "n": "9 original Skaret2023 2011/12/2014-2020 acoustic Combined annual region-wide survey estimates; same 9 calendar-year pairs of GOPT/loc020 original historical OSI satellite complete preceding Aug-Nov monthly ice, 2 pre-existing source buffer specifications inner_km 0/100 and 72 original complete site-month source windows; source GOPT 3.9026km from Signy pheno coordinate, NOT full South Orkney acoustic area",
+      "effects": "Corrected original acoustic density vs preceding Aug-Nov satellite SIC: Pearson r +0.4123 (p.2701) at inner_km0 and +0.5192 (p.1521) at inner_km100, Holm two-exposure p.3041 each; Spearman rho+0.3667/+0.6333. Inverse source-reported density(CV)-SE² weighting r+.2923/+.3725. At 100km omit 2012 r+.2841, omit incomplete 2015 r+.6246. Internal rolling historical 2016-20 (five true later years, posthoc model defined in 2026) mean-only MAE 26.6917 versus ice-OLS MAE 24.5150 (0km)/22.3049 (100km) g/m²; not independent Freer temporal prediction.",
+      "source": "research/climate-penguin/outputs/observed_SIC_prior_to_primary_krill_acoustic_v1/REPORT_JA.md",
+      "source_CI": "https://github.com/zuizui0223/mina/actions/runs/41197072520",
+      "source_artifact_id": 13040639232,
+      "origin": "Original Skaret2023 Table3 Combined and original OSI SIC 1991–2020 macro_40 GOPT source, with independent corrected IMR year authority",
+      "boundary": "Both ice GOPT buffers overlap same island and 9 annual acoustic regional data; ice at one near-Signy source point and Aug-Nov preceding Jan-Feb survey is NOT 60,360 km2 original acoustic region footprint, actual per-transect exposure or physical ice-to-krill causal test. 2013 Combined missing due pack ice, 2015 coverage limited, different acoustic 38/120kHz and CV; two exploratory p values >0.15 and Holm >0.30; true recent posttraining 2023–2025 acoustic estimates lack matched original source ice series. No climate→krill→foraging→breeding stage/N_eff/2050/2100 forecast."
+    }
+  ],
+  "external_draft_evidence": [
+    {
+      "id": "ross_recovery",
+      "pr": 189,
+      "source_commit": "58fd7f4d0246c19344098dc5ce309343514346d2",
+      "source_path": "results/ROSS_AGGREGATE_VS_SPATIAL_RESTORATION_V1.json",
+      "effect": "0.9696749 of observed total breeding-territory loss recovered by 2002; local six-unit reweighting; 9.41% mismatch",
+      "boundary": "Author signoff pending, only immutable citation; result structure-dependent and original publication draft not merged"
+    },
+    {
+      "id": "beaufort_capacity_example",
+      "pr": 189,
+      "source_commit": "58fd7f4d0246c19344098dc5ce309343514346d2",
+      "source_path": "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json",
+      "effect": "Island +34.3% breeding pairs 2004–2010; small/new colony observed gain 497 vs proportional baseline 157.8 (3.15×), main colony 96.99% of absolute increase; N_eff rose 1.019→1.030",
+      "boundary": "Observational one-case capacity example, not intensification-before-expansion or universal island effect; banded export inference from independent LaRue et al. 2013; author signoff of PR189 pending"
+    },
+    {
+      "id": "paper2_coastline_heldout_source",
+      "pr": 199,
+      "source_commit": "348e741dc046eaaf632ebd70c2b1f0d7ea36c794",
+      "source_path": "results/PAPER2_V55_BAS_COAST_MAP_STRICT_LAND_AND_30M_CELL_SOURCE_RESULT.json",
+      "effect": "Three independent South Sandwich held-out islands: strict source-land heldout Adelie-vs-Chinstrap nest species classification improves equal-island Brier by +0.051197 when adding independent original coastline distance beyond DEM elevation and slope (3/3 positive).",
+      "boundary": "Original nest source 122,139 points but only 3 island replicates. 30m occupied-cell independent weighting test STOP (Bellingshausen Chinstrap n=16, Thule Beach Point Chinstrap n=12 below pre-fixed 20). Does not demonstrate real landing/shore-to-nest paths, available nesting habitat, mammalian effects, selection, or future climate impacts; draft PR199 is not merged."
+    }
+  ],
+  "failed_or_open": [
+    "Observed sea-ice predictor did not beat no-growth forecast in 129 held-out count intervals (baseline MAE 0.1540)",
+    "Preceding one- and three-year sea ice proxies did not beat no-growth in 126 held-out intervals (baseline MAE 0.1528)",
+    "Earlier 2024 IMR acoustic year table conflicts with Skaret 2023 primary publication; 2013 combined missing, earlier krill correlation superseded",
+    "Freer krill GAM uses sea ice/salinity and original acoustic data and cannot validate either independently",
+    "Original TDR provisional pressure zero-offset unstable at Monroe and dive/feeding not verified",
+    "Static vegetation detection does not establish time change or nest-level plant use",
+    "No validated 2050/2100 breeding-pair/N_eff/vegetation forecast",
+    "In 300-source TDR quality census, provisional q1 60min zero-baseline range >2dbar in 42/300, five extreme >100dbar, PI009 repeated same-second source timestamps 668268; true pressure-to-depth, surface ZOC and dive capture remain unvalidated.",
+    "PI009 has 614298 same-timestamp pressure values differing from first among 668268 additional records; potential logger time precision mismatch; five source tags have hourly q1 span >100dbar. Source metadata and validated calibration needed before accurate dive-time location.",
+    "Original 25km monthly OSI satellite SIC can be matched to original 2011/13/15/18 Chinstrap GPS months, but lacks daily/microscale sea-ice navigability, independent prey biomass and stage-specific breeding response; do not use monthly 15% SIC as literal penguin travel barrier.",
+    "Daily OSI-450-a1 SI-Powell 2013/14 source same-calendar-day 14-day SIC and fixed native satellite pixel ice-reduction are robust DESCRIPTIVE physical environmental observations, but one posthoc breeding season, no true bird-specific ice traversability or biological outcome validation; do not infer ice causal mechanism or transfer to 2050/2100 demographics.",
+    "Large same-day Signy−other-island DAILY SIC contrast seen in the selected 2013/14 Powell case is NOT a general three-pair rule: 2011 Laurie all fixed ocean-cell shared-day difference 0pp and 2015 Monroe December +0.52pp/January 0pp; the 2013 winter/early-summer event is one post-hoc case, no ice-passability or independent krill-to-breeding mechanism.",
+    "Across original 45 daily OSI GPS-shared dates (2011/12,2013/14,2015/16), the strong 2013 Signy-Powell ice SIC contrast does not recur in other matched island-year pairs; same species but other-island identity confounded with year; 2011 December only one shared day. Do not generalize ice barrier or ice-to-krill explanation, prey capture or future breeding response.",
+    "Same-day same-distance original satellite SIC contrasts show no universal negative GPS ice preference: in 2013 December Signy tracks have +6.027pp excess vs same-distance ocean while Powell tracks have −6.202pp; this is not a causal ice avoidance/attraction or true passability test. 2011/15 original paired ice mostly zero; no environmental signal to test.",
+    "Original daily OSI SAF 25km observed-ice binary graph falsification: 0 source GPS low-SIC pixels disconnected from a hypothetical coastal open component across all 4320 island-day/threshold/sensitivity rows. The only <=15% low-ice connectivity discrepancy is 39 native GPS satellite pixel-days >=15% SIC, entirely in 2013; no visited pixel >=30%. Consequently no extra graph-severance signal for true penguin movement or ice barrier is supported on this source grain, and thresholds 15/30/50% are not validated passability cutoffs.",
+    "2026-07 Rusch et al. (ICES JMS, DOI 10.1093/icesjms/fsag115) already reported prey accessibility rather than maximum acoustic biomass as a chinstrap foraging determinant using 2022 Monroe & 2023 Powell high-frequency GPS/TDR plus acoustic surveys (45 penguins). Broad 'prey access over absolute density' is NOT a new mina claim. Underlying 2026 paper data are held by IMR/NPI and require reasonable request/collaboration; 2024 Schoombie et al. (DOI 10.1098/rsos.240271) published accelerometer+video prey capture validation for Monroe2022/Powell2023 (41 individuals), public code/example data only. Separate new macro question is when independently measured offshore prey opportunity and terrestrial breeding-site opportunity jointly predict nesting-space contraction/recovery across species, island-years and heldout geography.",
+    "No validated krill→penguin breeding causal inference from IMR annual 2023-2025 overall-stratum acoustic summaries alone: published annual means/CV outside 2011–20 GAM training, but 25km source GPS and regional acoustic transects not spatially/temporally matched, model lacks 2023–25 predictions, 2025 CV0.75 and 2021–22 missing. Descriptive 13-year Kendall tau~0.039 p~0.855 does not prove no climate response.",
+    "2026 South Orkney pack-ice + trawl propeller accident jointly prevented representative survey coverage; IMR2026 expressly reports NO full-area acoustic krill density/biomass. The observation process is environmentally and operationally censored, not krill=0, and ice alone cannot be assigned the whole cause. 2026 Chinstrap Coronation Island observatory is installed but reports NO longitudinal breeding outcomes.",
+    "The earlier IMR2024-reprint-derived 13-year (2011-2020 10 values + 2023-25 3) annual krill Kendall tau +.038710, p=.8545 is scientifically INVALID due source-year shift; original Skaret2023 Combined 2013 missing and 2020 different. Only current 12-year source-authority-corrected values may be used.",
+    "Original 2011-2026 publisher acoustic observation-process audit: of 14 source-documented survey years, 2013 and 2026 have no whole-area biomass estimate, both with explicit ice coverage restriction (2026 also ship accident), while 2015 had reduced southern coverage but produced Combined. 2021/22 remain unaudited rather than zero or proof surveys absent. This non-random survey availability cannot be ignored in ice/krill regressions or interpreted as a penguin ice barrier.",
+    "Corrected primary 2011-20 Skaret n9 Combined density vs prior Aug-Nov OSI satellite GOPT SIC (inner_km 0/100) yields r+0.412/+0.519, but classical Pearson p.270/.152 and two-exposure Holm p.304; robust source-CV weighted r+.292/.372 and removing original high 2012 drops 100km r+.284. Rolling origin 2016-20 n5 internal MAE improvements are posthoc and cannot validate a predictive krill coefficient or transfer to 2023-25/future breeding."
+  ],
+  "rule": "Only add verified positive entries with source+sampling grain+effect+limitations+workflow where present. Never convert observational association into causal mechanistic support. Never merge draft PR189/199 to main without author signoff."
+}

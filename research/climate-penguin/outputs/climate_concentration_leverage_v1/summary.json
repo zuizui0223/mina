@@ -1,0 +1,569 @@
+{
+  "status": "calculated_hierarchical_shock_sensitivity_not_empirical_local_ice_or_future_population_forecast",
+  "source_git_blob_sha": {
+    "palmer": "241ff94d59c4cfcc25ac81d4ad10bff4a585517b",
+    "signy_adelie": "7ad808e34334109918031c2a2685f4dbc5546a14",
+    "signy_chinstrap": "dc96605d8d81448911e3fcd958427d696917718d",
+    "climate": "9d7badfd2ad077047cb6f20accc74e3738cf4648"
+  },
+  "original_palmer_artifact": {
+    "run_id": 36292092967,
+    "artifact_id": 10922223641,
+    "zip_sha256": "dda3767d451eb644f08e0c46702b194d3bd1389265e139d369e6eec4740f779c",
+    "census_csv_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16"
+  },
+  "inputs": {
+    "palmer_island_year_endpoint_rows": 10,
+    "Palmer_within_island_reported_results": 3,
+    "Signy_independent_species": 2,
+    "climate_nearby_scenario_rows": 16
+  },
+  "observed": {
+    "regional_palmer_first": {
+      "year": 1991,
+      "total_pairs": 6689,
+      "occupied_islands": 5,
+      "H_island": 0.2899320986758941,
+      "H_component": 0.032200209727968936,
+      "neff_islands": 3.449083439077466,
+      "neff_components": 31.055698346318692,
+      "top_island": "TOR",
+      "top_share": 0.4508895201076394
+    },
+    "regional_palmer_last": {
+      "year": 2017,
+      "total_pairs": 140,
+      "occupied_islands": 4,
+      "H_island": 0.32479591836734695,
+      "H_component": 0.1626530612244898,
+      "neff_islands": 3.078856424756519,
+      "neff_components": 6.148055207026348,
+      "top_island": "HUM",
+      "top_share": 0.4857142857142857
+    },
+    "within_island_and_signy": [
+      {
+        "system": "Palmer COR",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.535167892670656,
+        "neff_last": 2.8594594594594596
+      },
+      {
+        "system": "Palmer HUM",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 4.624639076034649,
+        "neff_last": 2.2845849802371543
+      },
+      {
+        "system": "Palmer LIT last positive",
+        "year_first": 1991,
+        "year_last": 2006,
+        "neff_first": 5.78299346803081,
+        "neff_last": 1
+      },
+      {
+        "system": "Signy Adelie",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 3.080744685750746,
+        "neff_last": 1.936162758624296
+      },
+      {
+        "system": "Signy Chinstrap",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 4.437881665882074,
+        "neff_last": 2.1910297601661637
+      }
+    ]
+  },
+  "hypothetical": {
+    "rhos": [
+      0,
+      0.25,
+      0.5,
+      0.75,
+      0.9,
+      1
+    ],
+    "regional_island_shock_variance_multiplier_at_rho0": 1.1202482231207729,
+    "regional_colony_shock_variance_multiplier_at_rho0": 5.051304404493061,
+    "details": [
+      {
+        "system": "Palmer COR",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.535167892670656,
+        "neff_last": 2.8594594594594596,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0,
+        "hypothetical_variance_ratio": 1.236306351879152,
+        "hypothetical_sd_ratio": 1.1118931386959594
+      },
+      {
+        "system": "Palmer COR",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.535167892670656,
+        "neff_last": 2.8594594594594596,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.25,
+        "hypothetical_variance_ratio": 1.10847755823267,
+        "hypothetical_sd_ratio": 1.0528426084808071
+      },
+      {
+        "system": "Palmer COR",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.535167892670656,
+        "neff_last": 2.8594594594594596,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.5,
+        "hypothetical_variance_ratio": 1.052105315055932,
+        "hypothetical_sd_ratio": 1.0257218507255912
+      },
+      {
+        "system": "Palmer COR",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.535167892670656,
+        "neff_last": 2.8594594594594596,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.75,
+        "hypothetical_variance_ratio": 1.0203615765791245,
+        "hypothetical_sd_ratio": 1.0101294850558142
+      },
+      {
+        "system": "Palmer COR",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.535167892670656,
+        "neff_last": 2.8594594594594596,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.9,
+        "hypothetical_variance_ratio": 1.0072008371527998,
+        "hypothetical_sd_ratio": 1.003593960301077
+      },
+      {
+        "system": "Palmer COR",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.535167892670656,
+        "neff_last": 2.8594594594594596,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 1,
+        "hypothetical_variance_ratio": 1,
+        "hypothetical_sd_ratio": 1
+      },
+      {
+        "system": "Palmer HUM",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 4.624639076034649,
+        "neff_last": 2.2845849802371543,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0,
+        "hypothetical_variance_ratio": 2.024279733973644,
+        "hypothetical_sd_ratio": 1.4227718488828924
+      },
+      {
+        "system": "Palmer HUM",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 4.624639076034649,
+        "neff_last": 2.2845849802371543,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.25,
+        "hypothetical_variance_ratio": 1.4030143815697864,
+        "hypothetical_sd_ratio": 1.1844890803928023
+      },
+      {
+        "system": "Palmer HUM",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 4.624639076034649,
+        "neff_last": 2.2845849802371543,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.5,
+        "hypothetical_variance_ratio": 1.1821058596164642,
+        "hypothetical_sd_ratio": 1.0872469175014774
+      },
+      {
+        "system": "Palmer HUM",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 4.624639076034649,
+        "neff_last": 2.2845849802371543,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.75,
+        "hypothetical_variance_ratio": 1.068864154497128,
+        "hypothetical_sd_ratio": 1.033858865850232
+      },
+      {
+        "system": "Palmer HUM",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 4.624639076034649,
+        "neff_last": 2.2845849802371543,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.9,
+        "hypothetical_variance_ratio": 1.0240318544756257,
+        "hypothetical_sd_ratio": 1.011944590615329
+      },
+      {
+        "system": "Palmer HUM",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 4.624639076034649,
+        "neff_last": 2.2845849802371543,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 1,
+        "hypothetical_variance_ratio": 1,
+        "hypothetical_sd_ratio": 1
+      },
+      {
+        "system": "Palmer LIT last positive",
+        "year_first": 1991,
+        "year_last": 2006,
+        "neff_first": 5.78299346803081,
+        "neff_last": 1,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0,
+        "hypothetical_variance_ratio": 5.78299346803081,
+        "hypothetical_sd_ratio": 2.404785534726706
+      },
+      {
+        "system": "Palmer LIT last positive",
+        "year_first": 1991,
+        "year_last": 2006,
+        "neff_first": 5.78299346803081,
+        "neff_last": 1,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.25,
+        "hypothetical_variance_ratio": 2.633723223900967,
+        "hypothetical_sd_ratio": 1.6228749871450256
+      },
+      {
+        "system": "Palmer LIT last positive",
+        "year_first": 1991,
+        "year_last": 2006,
+        "neff_first": 5.78299346803081,
+        "neff_last": 1,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.5,
+        "hypothetical_variance_ratio": 1.7051449320382988,
+        "hypothetical_sd_ratio": 1.3058119818864808
+      },
+      {
+        "system": "Palmer LIT last positive",
+        "year_first": 1991,
+        "year_last": 2006,
+        "neff_first": 5.78299346803081,
+        "neff_last": 1,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.75,
+        "hypothetical_variance_ratio": 1.2606680786995688,
+        "hypothetical_sd_ratio": 1.1227947625009518
+      },
+      {
+        "system": "Palmer LIT last positive",
+        "year_first": 1991,
+        "year_last": 2006,
+        "neff_first": 5.78299346803081,
+        "neff_last": 1,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.9,
+        "hypothetical_variance_ratio": 1.0901653018765165,
+        "hypothetical_sd_ratio": 1.044109813131031
+      },
+      {
+        "system": "Palmer LIT last positive",
+        "year_first": 1991,
+        "year_last": 2006,
+        "neff_first": 5.78299346803081,
+        "neff_last": 1,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 1,
+        "hypothetical_variance_ratio": 1,
+        "hypothetical_sd_ratio": 1
+      },
+      {
+        "system": "Signy Adelie",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 3.080744685750746,
+        "neff_last": 1.936162758624296,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0,
+        "hypothetical_variance_ratio": 1.5911599745569485,
+        "hypothetical_sd_ratio": 1.2614118972631219
+      },
+      {
+        "system": "Signy Adelie",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 3.080744685750746,
+        "neff_last": 1.936162758624296,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.25,
+        "hypothetical_variance_ratio": 1.2916550546558405,
+        "hypothetical_sd_ratio": 1.1365100328003446
+      },
+      {
+        "system": "Signy Adelie",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 3.080744685750746,
+        "neff_last": 1.936162758624296,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.5,
+        "hypothetical_variance_ratio": 1.1448657095900112,
+        "hypothetical_sd_ratio": 1.06998397632395
+      },
+      {
+        "system": "Signy Adelie",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 3.080744685750746,
+        "neff_last": 1.936162758624296,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.75,
+        "hypothetical_variance_ratio": 1.0577178739767585,
+        "hypothetical_sd_ratio": 1.0284541185569527
+      },
+      {
+        "system": "Signy Adelie",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 3.080744685750746,
+        "neff_last": 1.936162758624296,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.9,
+        "hypothetical_variance_ratio": 1.0205787622617593,
+        "hypothetical_sd_ratio": 1.010236983218175
+      },
+      {
+        "system": "Signy Adelie",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 3.080744685750746,
+        "neff_last": 1.936162758624296,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 1,
+        "hypothetical_variance_ratio": 1,
+        "hypothetical_sd_ratio": 1
+      },
+      {
+        "system": "Signy Chinstrap",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 4.437881665882074,
+        "neff_last": 2.1910297601661637,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0,
+        "hypothetical_variance_ratio": 2.0254775843599284,
+        "hypothetical_sd_ratio": 1.4231927432220586
+      },
+      {
+        "system": "Signy Chinstrap",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 4.437881665882074,
+        "neff_last": 2.1910297601661637,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.25,
+        "hypothetical_variance_ratio": 1.413616791887337,
+        "hypothetical_sd_ratio": 1.18895617744614
+      },
+      {
+        "system": "Signy Chinstrap",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 4.437881665882074,
+        "neff_last": 2.1910297601661637,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.5,
+        "hypothetical_variance_ratio": 1.1885803420096281,
+        "hypothetical_sd_ratio": 1.090220318105303
+      },
+      {
+        "system": "Signy Chinstrap",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 4.437881665882074,
+        "neff_last": 2.1910297601661637,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.75,
+        "hypothetical_variance_ratio": 1.0716433574067654,
+        "hypothetical_sd_ratio": 1.0352020852986945
+      },
+      {
+        "system": "Signy Chinstrap",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 4.437881665882074,
+        "neff_last": 2.1910297601661637,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 0.9,
+        "hypothetical_variance_ratio": 1.025047732411016,
+        "hypothetical_sd_ratio": 1.0124464096489336
+      },
+      {
+        "system": "Signy Chinstrap",
+        "year_first": 1996,
+        "year_last": 2019,
+        "neff_first": 4.437881665882074,
+        "neff_last": 2.1910297601661637,
+        "shock_scale": "within_island_monitored_components",
+        "assumed_pairwise_shock_correlation": 1,
+        "hypothetical_variance_ratio": 1,
+        "hypothetical_sd_ratio": 1
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.449083439077466,
+        "neff_last": 3.078856424756519,
+        "shock_scale": "between_island",
+        "assumed_pairwise_shock_correlation": 0,
+        "hypothetical_variance_ratio": 1.1202482231207729,
+        "hypothetical_sd_ratio": 1.0584177923300293
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.449083439077466,
+        "neff_last": 3.078856424756519,
+        "shock_scale": "between_island",
+        "assumed_pairwise_shock_correlation": 0.25,
+        "hypothetical_variance_ratio": 1.0559373549389093,
+        "hypothetical_sd_ratio": 1.027588125144948
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.449083439077466,
+        "neff_last": 3.078856424756519,
+        "shock_scale": "between_island",
+        "assumed_pairwise_shock_correlation": 0.5,
+        "hypothetical_variance_ratio": 1.027027639460434,
+        "hypothetical_sd_ratio": 1.0134237215796924
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.449083439077466,
+        "neff_last": 3.078856424756519,
+        "shock_scale": "between_island",
+        "assumed_pairwise_shock_correlation": 0.75,
+        "hypothetical_variance_ratio": 1.0105971243921674,
+        "hypothetical_sd_ratio": 1.0052845987043506
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.449083439077466,
+        "neff_last": 3.078856424756519,
+        "shock_scale": "between_island",
+        "assumed_pairwise_shock_correlation": 0.9,
+        "hypothetical_variance_ratio": 1.0037528605506625,
+        "hypothetical_sd_ratio": 1.0018746730757608
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 3.449083439077466,
+        "neff_last": 3.078856424756519,
+        "shock_scale": "between_island",
+        "assumed_pairwise_shock_correlation": 1,
+        "hypothetical_variance_ratio": 1,
+        "hypothetical_sd_ratio": 1
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 31.055698346318692,
+        "neff_last": 6.148055207026348,
+        "shock_scale": "between_monitored_components_across_5_islands",
+        "assumed_pairwise_shock_correlation": 0,
+        "hypothetical_variance_ratio": 5.051304404493061,
+        "hypothetical_sd_ratio": 2.2475107128761502
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 31.055698346318692,
+        "neff_last": 6.148055207026348,
+        "shock_scale": "between_monitored_components_across_5_islands",
+        "assumed_pairwise_shock_correlation": 0.25,
+        "hypothetical_variance_ratio": 1.356883394076486,
+        "hypothetical_sd_ratio": 1.1648533787891444
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 31.055698346318692,
+        "neff_last": 6.148055207026348,
+        "shock_scale": "between_monitored_components_across_5_islands",
+        "assumed_pairwise_shock_correlation": 0.5,
+        "hypothetical_variance_ratio": 1.1263832832691452,
+        "hypothetical_sd_ratio": 1.0613120574407628
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 31.055698346318692,
+        "neff_last": 6.148055207026348,
+        "shock_scale": "between_monitored_components_across_5_islands",
+        "assumed_pairwise_shock_correlation": 0.75,
+        "hypothetical_variance_ratio": 1.0430225059275438,
+        "hypothetical_sd_ratio": 1.0212847330336157
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 31.055698346318692,
+        "neff_last": 6.148055207026348,
+        "shock_scale": "between_monitored_components_across_5_islands",
+        "assumed_pairwise_shock_correlation": 0.9,
+        "hypothetical_variance_ratio": 1.0144430867858774,
+        "hypothetical_sd_ratio": 1.0071956546698746
+      },
+      {
+        "system": "Palmer five islands",
+        "year_first": 1991,
+        "year_last": 2017,
+        "neff_first": 31.055698346318692,
+        "neff_last": 6.148055207026348,
+        "shock_scale": "between_monitored_components_across_5_islands",
+        "assumed_pairwise_shock_correlation": 1,
+        "hypothetical_variance_ratio": 1,
+        "hypothetical_sd_ratio": 1
+      }
+    ]
+  },
+  "climate_resolution": {
+    "shared_grid_id": "F018",
+    "named_nearby_study_sites": [
+      "BISC",
+      "LITC",
+      "DAMO",
+      "PCHA"
+    ],
+    "climate_scenario_count": 4
+  },
+  "interpretation": "An island-common SIC forcing is mathematically unaffected by redistribution among subcolonies at fixed island share. Concentration only amplifies independent local shock components under stated equal-variance and correlation assumptions; not an empirically calibrated penguin response."
+}

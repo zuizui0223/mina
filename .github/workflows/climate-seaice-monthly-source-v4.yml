@@ -1,0 +1,30 @@
+name: climate-seaice-monthly-source-v4
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/climate_penguin/seaice_monthly_source_v4.py'
+      - 'tests/test_seaice_monthly_source_v4.py'
+      - '.github/workflows/climate-seaice-monthly-source-v4.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  monthly-original-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest xarray netCDF4
+      - run: pytest -q tests/test_seaice_monthly_source_v4.py
+      - run: python research/climate-penguin/work/climate_penguin/seaice_monthly_source_v4.py --out /tmp/seaice-monthly
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seaice-original-monthly-metadata-v4
+          path: /tmp/seaice-monthly/
+          retention-days: 30
+          if-no-files-found: error

@@ -1,0 +1,38 @@
+name: Penguin long-term sea-ice climatic legacy slope v2
+on:
+  push:
+    branches: [codex/penguin-climatic-legacy-20261108]
+    paths:
+      - 'research/climate-penguin/climatic_legacy/longterm_slope_v2.py'
+      - '.github/workflows/penguin-climatic-legacy-longterm-v2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  longterm-locked-site-slope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source extraction and model dependencies
+        run: python -m pip install --disable-pip-version-check numpy xarray netCDF4 pyproj
+      - name: Compile frozen analysis scripts
+        run: python -m py_compile research/climate-penguin/climatic_legacy/extract_legacy_monthly.py research/climate-penguin/climatic_legacy/longterm_slope_v2.py
+      - name: Reconstruct 1979–1990 original SIC source and validate overlap (outcome blind)
+        run: python research/climate-penguin/climatic_legacy/extract_legacy_monthly.py
+      - name: Compute pre-fixed long-term 2001–2020 trends and leave-site/region-out comparison
+        run: python research/climate-penguin/climatic_legacy/longterm_slope_v2.py
+      - name: Upload full source and all new results even on failure
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-climatic-legacy-longterm-slope-v2
+          path: |
+            research/climate-penguin/climatic_legacy/source_extract_outputs/*.json
+            research/climate-penguin/climatic_legacy/source_extract_outputs/*.csv
+            research/climate-penguin/climatic_legacy/longterm_v2_outputs/*.json
+            research/climate-penguin/climatic_legacy/longterm_v2_outputs/*.csv
+          if-no-files-found: warn

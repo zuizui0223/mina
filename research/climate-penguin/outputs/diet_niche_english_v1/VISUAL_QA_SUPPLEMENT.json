@@ -1,0 +1,344 @@
+{
+  "review_type": "final rendered supplement visual QA",
+  "reviewed_at_utc": "2026-11-06T09:02:14.398968+00:00",
+  "reviewer": "english_supplement agent",
+  "render_revision": "final2 only",
+  "scope": "Visual layout review only; all 14 final2 page PNGs actually opened in five calls of 3, 3, 3, 3 and 2 pages. No earlier renders inspected for this review; no new scientific analysis.",
+  "documents_skill_applied": true,
+  "docx": {
+    "path": "/workspace/scratch/1d6e97d9a7ad/mina/research/climate-penguin/outputs/diet_niche_english_v1/Signy_diet_supplement.docx",
+    "sha256": "0cba2cbf7adb159a0bf15368fe9bc4b056fa0566f024e80aac7fe1eb4b28cdf6"
+  },
+  "rendered_pdf": {
+    "path": "/tmp/diet_niche_english_final2_qa/supplement/Signy_diet_supplement.pdf",
+    "sha256": "a47052821c44504ae6b472ccb460fd2604197bd556dd66a4cb504578e1179ac1"
+  },
+  "render_directory": "/tmp/diet_niche_english_final2_qa/supplement",
+  "expected_pages": 14,
+  "rendered_page_images": 14,
+  "pages_visually_inspected": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "overall_result": "pass",
+  "blocking_issues": [],
+  "nonblocking_observations": [
+    "The long Table S1 Panel B continues over pages 3-4 with its column header repeated and rows intact.",
+    "Page 8 contains intentional trailing whitespace before the Figure S1 page; it is not a blank page.",
+    "Text within original figure source footnotes is smaller than body type but remains readable in the full-resolution page images."
+  ],
+  "targeted_checks": {
+    "Table_S5_last_row": {
+      "page": 8,
+      "result": "pass",
+      "observed": "Total: gentoo mean m slope | 0.117741007 | 100.0%"
+    },
+    "Figure_S1": {
+      "page": 9,
+      "result": "pass",
+      "complete_caption_same_page": true
+    },
+    "S8_4_and_Figure_S2": {
+      "page": 12,
+      "result": "pass",
+      "complete_caption_same_page": true
+    },
+    "Table_S8": {
+      "page": 13,
+      "result": "pass",
+      "all_entries_C1_to_C9_visible": true
+    },
+    "dataset_reference_list": {
+      "page": 14,
+      "result": "pass",
+      "all_entries_C1_to_C9_visible": true,
+      "orphan_trailing_reference": false
+    },
+    "page_numbers": {
+      "result": "pass",
+      "observed_sequence": "1-14"
+    },
+    "native_math_visuals": {
+      "result": "pass",
+      "pages_with_targeted_display_or_fitted_notation_checks": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        10,
+        12
+      ]
+    }
+  },
+  "pages": [
+    {
+      "page": 1,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-1.png",
+      "image_sha256": "a3d33d47b5e4fe558ac04316615df2c3fb6228a0546355ae52e92424c9c0b901",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Title, S1 and S2 are readable; inline mathematics visible; headings paired with body text; page number clear.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 2,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-2.png",
+      "image_sha256": "f8079fae8de8a8309cc12bcefe48d6944c488e9acc64deeba581d6bb03de2770",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "S3 and S4 readable; additive-adjustment display equation renders fully; ordinary paragraph continues to page 3 without clipping.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 3,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-3.png",
+      "image_sha256": "0df3b6a9d1c7f070517deb870f5da53c752c819b2fc27900149e6f94bba2e13c",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Table S1 caption, metadata Panel A and first ten rows of climate Panel B are readable, with complete rows and visible borders.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 4,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-4.png",
+      "image_sha256": "d5844b5c294ea0088511fe55b2991811a102bf6d35e9723130ada4b7cbc47541",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Panel B continues with repeated column header and its two remaining rows; all 12 Panel C response rows including the NA condition are complete; provenance paragraph fits.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 5,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-5.png",
+      "image_sha256": "737033a3e252deaacba6ec5a7ee7fb4ea14c275141ee31b5b21f386febcad81c",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "S5, complete three-row Table S2, S6, S7 and start of S7.1 fit with headings attached to body text; food-fraction inline equation is visible.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 6,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-6.png",
+      "image_sha256": "7bb8004ab117546a0fbbeb2e76e91d04d15a2d93de898fb0f01728fba14bedaf",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Display equation for p, c and m is present and legible; all nine Table S3 observations and note fit; S7.2 begins with substantive body text.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 7,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-7.png",
+      "image_sha256": "377fde9bcbff74722b8d7da02eebbdbf1148e946f17b1ff05df88d40a83759bd",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Complete two-row Table S4 is readable; S7.3 product identity and OLS slope equation have visible symbols and subscripts without clipping.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 8,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-8.png",
+      "image_sha256": "a4717d997f335d638bb95300a130963ae19521a28e5687af10b05fe24ce56896",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Table S5 includes all four rows, including total gentoo mean m slope 0.117741007 and 100.0%; S7.4 text fits; unused space before figure page is intentional, with no blank page.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 9,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-9.png",
+      "image_sha256": "22768957d790e26bb029a09c1c241975d835a545e8fe0f7a6d69dae9d66ae06d",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Figure S1 is fully visible; all four panels, axes, legends, labels and full caption are readable; S8 and S8.1 follow with substantive body text.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 10,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-10.png",
+      "image_sha256": "b93100a6ae2f567c3b974ce7d3fe53a067b22d837e43004cc8fd7625450f4a6d",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Fitted-response notation, hats and subscript reference values render; S8.2, complete four-row Table S6 and S8.3 fit; NA outside-range row is fully visible.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 11,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-11.png",
+      "image_sha256": "0ce7d1d0e08b61a7807e45b254bfc7e0a948b7a2503d1f63f256360fd4d6e010",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "All 12 Table S7 climate/component rows including final CESM2 NA row are complete; support and physical-range diagnostic paragraphs fit within margins.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 12,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-12.png",
+      "image_sha256": "96f967b009adacc6f748bde2546b6089323b41495994309fb537106f34badca3",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "S8.4 heading and full paragraph share page with Figure S2; all four panels, legend, NA labels, annual-support counts and full caption are visible and readable.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 13,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-13.png",
+      "image_sha256": "8e5175dacc891be0fe254e6e3f8c13f9611df2252f45b86e6d0c33d643dedf46",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Pickett reference, S9 text and complete Table S8 C1-C9 appear on one page; wrapped DOI identifiers remain inside cells; final C9 row visible.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    },
+    {
+      "page": 14,
+      "image_path": "/tmp/diet_niche_english_final2_qa/supplement/page-14.png",
+      "image_sha256": "e8c1b8f4dd55f3bdeccad429710ab9515fff3bc5d3643205c82d7a7863397c01",
+      "image_dimensions_px": [
+        1547,
+        2002
+      ],
+      "visually_opened": true,
+      "inspection_method": "tools.view_image; original full-page PNG, no thumbnail/contact-sheet substitution",
+      "observations": "Dataset reference list C1-C9 is complete and readable; C9 title, version, publisher and DOI remain together on page; no isolated trailing citation or extra blank page.",
+      "missing_equations_or_glyphs": false,
+      "clipped_text_or_tables": false,
+      "overflow_or_overlap": false,
+      "orphan_heading": false,
+      "blank_page": false,
+      "blocking_issue": false
+    }
+  ],
+  "files_modified_by_reviewer": [
+    "outputs/diet_niche_english_v1/VISUAL_QA_SUPPLEMENT.json"
+  ],
+  "source_docx_pdf_or_builder_modified": false
+}

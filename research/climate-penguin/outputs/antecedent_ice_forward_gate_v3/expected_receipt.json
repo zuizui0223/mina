@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-30",
+  "status": "post_result_exploratory_no_future_prediction",
+  "count_git_blob": "6d5982d6f241879de9a2da0232f0f05ec227d3a7",
+  "ice_git_blob": "4fcea71c2d8b1069b6ad143f6522061ed434daf5",
+  "method": "preceding Aug-Nov yearly source means (month-day weighted); lag1=t-1, lag3=mean(t-3..t-1); ridge climate standardized using training records; site centered climate uses only training-site means",
+  "source_usable": 264,
+  "train_per_year": [
+    128,
+    143,
+    152,
+    160,
+    169,
+    179,
+    188,
+    198,
+    207,
+    214,
+    222,
+    232,
+    241,
+    257
+  ],
+  "test_per_year": [
+    13,
+    9,
+    7,
+    8,
+    10,
+    9,
+    10,
+    9,
+    7,
+    8,
+    10,
+    9,
+    10,
+    7
+  ],
+  "groups": {
+    "all": {
+      "n": 126,
+      "sites": 19,
+      "zero_mae": 0.15283107368848475,
+      "site_mae": 0.16181700298947677,
+      "lag1_raw_mae": 0.16251767393659533,
+      "lag3_raw_mae": 0.16452116685466625,
+      "lag1_within_mae": 0.16202169537541658,
+      "lag3_within_mae": 0.16918496474568326,
+      "lag3_within_sd_mae": 0.17007550684464007,
+      "sept_within_mae": 0.1609492062972501
+    },
+    "timing": {
+      "n": 95,
+      "sites": 14,
+      "zero_mae": 0.15229198244991513,
+      "site_mae": 0.16208021956164695,
+      "lag1_raw_mae": 0.16240492881525656,
+      "lag3_raw_mae": 0.16387348260945792,
+      "lag1_within_mae": 0.16221196447692127,
+      "lag3_within_mae": 0.17022522934126247,
+      "lag3_within_sd_mae": 0.17145884132239836,
+      "sept_within_mae": 0.16304031681237924
+    },
+    "nonVic": {
+      "n": 38,
+      "sites": 9,
+      "zero_mae": 0.17052604111365333,
+      "site_mae": 0.1768789252523931,
+      "lag1_raw_mae": 0.1784819416849545,
+      "lag3_raw_mae": 0.18159862395390852,
+      "lag1_within_mae": 0.1767807901302369,
+      "lag3_within_mae": 0.18612834366992106,
+      "lag3_within_sd_mae": 0.18811479794946478,
+      "sept_within_mae": 0.17400501297824647
+    },
+    "timingNonVic": {
+      "n": 8,
+      "sites": 4,
+      "zero_mae": 0.22875280793682934,
+      "site_mae": 0.22122274822579377,
+      "lag1_raw_mae": 0.22062764655370662,
+      "lag3_raw_mae": 0.22164630138655397,
+      "lag1_within_mae": 0.21883321278843565,
+      "lag3_within_mae": 0.2502238716201885,
+      "lag3_within_sd_mae": 0.26012253131998864,
+      "sept_within_mae": 0.232433384635618
+    }
+  },
+  "year_equal": {
+    "zero": 0.15070663840624238,
+    "site": 0.15994839749940018,
+    "lag1_raw": 0.1604963776307141,
+    "lag3_raw": 0.16224650636702814,
+    "lag1_within": 0.16015738084751066,
+    "lag3_within": 0.16719290499210662,
+    "lag3_within_sd": 0.1681962761416022,
+    "sept_within": 0.15884410866480891
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "analysis_date": "2026-11-06",
+  "primary_species": "Gentoo",
+  "n_seasons": 9,
+  "n_stomachs": 73,
+  "definitions": {
+    "frequency": "recorded fish wet mass > 0",
+    "composition": "equal-stomach fish fraction conditional on positive fish wet mass",
+    "food_denominator": "fish + crustaceans + cephalopods + other food"
+  },
+  "source_audit": [
+    {
+      "species": "Adelie",
+      "n_source": 350,
+      "n_valid": 349,
+      "n_excluded": 1,
+      "excluded_keys": [
+        {
+          "DATE": "2004-01-23",
+          "RECORD_ID": "20040123 AD034"
+        }
+      ]
+    },
+    {
+      "species": "Gentoo",
+      "n_source": 74,
+      "n_valid": 73,
+      "n_excluded": 1,
+      "excluded_keys": [
+        {
+          "DATE": "2006-01-13",
+          "RECORD_ID": "20060113 GE8"
+        }
+      ]
+    }
+  ],
+  "component_associations": {
+    "frequency": {
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.782899960837841,
+      "slope_per_10pp": 0.11160071808612963,
+      "intercept": 0.21554541844807473,
+      "hc3_slope_95_low": 0.02601299895007765,
+      "hc3_slope_95_high": 0.1971884372221816,
+      "leave_one_season_r_min": 0.7196498720316219,
+      "leave_one_season_r_max": 0.852233549208923,
+      "leave_one_season_r": {
+        "2001": 0.852233549208923,
+        "2002": 0.8050274139777797,
+        "2003": 0.7899849371378466,
+        "2004": 0.7915016542371621,
+        "2005": 0.7910890752253165,
+        "2006": 0.7196498720316219,
+        "2007": 0.7744725963898003,
+        "2008": 0.7442120228700564,
+        "2009": 0.7888035620993415
+      },
+      "detrended_r": 0.7817742314473047,
+      "first_difference_r": 0.7038353567602703,
+      "circular_extreme_count": 1,
+      "circular_denominator": 9,
+      "n_permutations": 362880,
+      "extreme_count": 4682,
+      "p_exact": 0.012902336860670193,
+      "mean_value": 0.6727072310405644,
+      "min_value": 0.2,
+      "max_value": 1.0,
+      "status": "estimable",
+      "r": 0.7828999608378409,
+      "max2_extreme_count": 8321,
+      "p_max2": 0.02293044532627866
+    },
+    "composition": {
+      "n_seasons": 9,
+      "years": [
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "sic_min": 21.90128214834321,
+      "sic_max": 66.68284803598858,
+      "pearson_r": 0.6240985126219452,
+      "slope_per_10pp": 0.09369545739835414,
+      "intercept": 0.10026291830062094,
+      "hc3_slope_95_low": -0.03506001599991404,
+      "hc3_slope_95_high": 0.22245093079662231,
+      "leave_one_season_r_min": 0.44932362874740245,
+      "leave_one_season_r_max": 0.7589190328191986,
+      "leave_one_season_r": {
+        "2001": 0.7589190328191986,
+        "2002": 0.7301604087175799,
+        "2003": 0.5635486159081097,
+        "2004": 0.5576364790255467,
+        "2005": 0.6252914059422799,
+        "2006": 0.5540047747001918,
+        "2007": 0.44932362874740245,
+        "2008": 0.6877402921344166,
+        "2009": 0.6284457704219141
+      },
+      "detrended_r": 0.5830856594707261,
+      "first_difference_r": 0.45880321154406906,
+      "circular_extreme_count": 2,
+      "circular_denominator": 9,
+      "n_permutations": 362880,
+      "extreme_count": 27033,
+      "p_exact": 0.07449570105820105,
+      "mean_value": 0.484077519769907,
+      "min_value": 0.018776200671703134,
+      "max_value": 0.9491018183271003,
+      "status": "estimable",
+      "r": 0.6240985126219453,
+      "max2_extreme_count": 47015,
+      "p_max2": 0.12956073633156967
+    }
+  },
+  "mean_response_association": {
+    "n_seasons": 9,
+    "years": [
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009
+    ],
+    "sic_min": 21.90128214834321,
+    "sic_max": 66.68284803598858,
+    "pearson_r": 0.7876286787480064,
+    "slope_per_10pp": 0.1177410074483908,
+    "intercept": -0.1102468230271347,
+    "hc3_slope_95_low": 0.020743101370796282,
+    "hc3_slope_95_high": 0.21473891352598534,
+    "leave_one_season_r_min": 0.694787355565334,
+    "leave_one_season_r_max": 0.8952885689254624,
+    "leave_one_season_r": {
+      "2001": 0.8827763053525568,
+      "2002": 0.8952885689254624,
+      "2003": 0.7565232263118341,
+      "2004": 0.7565798328135974,
+      "2005": 0.7864862936254113,
+      "2006": 0.718290428008601,
+      "2007": 0.694787355565334,
+      "2008": 0.7686993760664739,
+      "2009": 0.7887030489232948
+    },
+    "detrended_r": 0.767900269799576,
+    "first_difference_r": 0.6866420347111065,
+    "circular_extreme_count": 1,
+    "circular_denominator": 9,
+    "n_permutations": 362880,
+    "extreme_count": 4876,
+    "p_exact": 0.013436948853615521,
+    "mean_value": 0.37206810562798887,
+    "min_value": 0.0037552401343406267,
+    "max_value": 0.8304640910362127,
+    "status": "estimable"
+  },
+  "permutation_family": {
+    "n_permutations": 362880,
+    "n_prespecified_components": 2,
+    "n_variable_components": 2,
+    "components": {
+      "frequency": {
+        "status": "estimable",
+        "r": 0.7828999608378409,
+        "extreme_count": 4682,
+        "max2_extreme_count": 8321,
+        "p_exact": 0.012902336860670193,
+        "p_max2": 0.02293044532627866
+      },
+      "composition": {
+        "status": "estimable",
+        "r": 0.6240985126219453,
+        "extreme_count": 27033,
+        "max2_extreme_count": 47015,
+        "p_exact": 0.07449570105820105,
+        "p_max2": 0.12956073633156967
+      }
+    }
+  },
+  "slope_accounting": {
+    "mean_frequency": 0.6727072310405644,
+    "mean_conditional_fraction": 0.484077519769907,
+    "constant_product_of_means": 0.3256424479333982,
+    "mean_fish_fraction": 0.37206810562798887,
+    "covariation_mean": 0.04642565769459066,
+    "component_slopes_per_10pp": {
+      "frequency": 0.05402339881567422,
+      "composition": 0.06302961170752594,
+      "covariation": 0.000687996925190654
+    },
+    "sum_component_slopes_per_10pp": 0.11774100744839082,
+    "mean_response_slope_per_10pp": 0.11774100744839083,
+    "signed_slope_fraction": {
+      "frequency": 0.45883248314614755,
+      "composition": 0.5353242092408083,
+      "covariation": 0.005843307613044013
+    }
+  },
+  "recovered_mass_descriptives": {
+    "mean_fish_mass_g": {
+      "mean_g": 107.85538359788362,
+      "min_g": 1.24,
+      "max_g": 239.1375,
+      "pearson_r": 0.6007973636789858,
+      "slope_g_per_10pp": 28.27098093346126
+    },
+    "mean_crustacean_mass_g": {
+      "mean_g": 213.66697971781306,
+      "min_g": 72.3625,
+      "max_g": 462.46000000000004,
+      "pearson_r": -0.4162466921486352,
+      "slope_g_per_10pp": -31.70909232034661
+    },
+    "mean_food_mass_g": {
+      "mean_g": 321.5223633156967,
+      "min_g": 124.68333333333334,
+      "max_g": 617.8000000000001,
+      "pearson_r": -0.04218998100222747,
+      "slope_g_per_10pp": -3.438111386885331
+    }
+  },
+  "interpretation": "post hoc description of known association; no causal, individual-switching or energy-intake estimate",
+  "palmer_reference_scope": "reported-detection reference only; occurrence definitions differ; no regional component tests"
+}

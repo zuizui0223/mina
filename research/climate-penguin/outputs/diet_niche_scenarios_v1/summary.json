@@ -1,0 +1,49 @@
+{
+  "n_species": 3,
+  "n_islands": 1,
+  "n_years": 9,
+  "observed_sic_range": [
+    21.90128214834321,
+    66.68284803598858
+  ],
+  "reference_sic": 48.68273700076806,
+  "slope_per_10pp": 0.11776007610795572,
+  "hc3_slope_ci_per_10pp": [
+    0.018803441862988435,
+    0.216716710352923
+  ],
+  "n_supported_scenario_means": 11,
+  "n_scenario_means": 12,
+  "fitted_reference_gap_ols": 0.45593324568790106,
+  "fitted_reference_gap_fractional_logit": 0.440115599406123,
+  "models_scores": [
+    {
+      "model": "past_mean",
+      "n_test_years": 4,
+      "mae": 0.31549019181376736,
+      "rmse": 0.37545777404063213
+    },
+    {
+      "model": "ols",
+      "n_test_years": 4,
+      "mae": 0.1792104589728602,
+      "rmse": 0.2316886429542858
+    },
+    {
+      "model": "fractional_logit",
+      "n_test_years": 4,
+      "mae": 0.16579348009544326,
+      "rmse": 0.2220560539250459
+    }
+  ],
+  "checks": "monthly units/window support, 12 deltas, independent slope, no unsupported response, supported responses in [0,1] pass",
+  "limitations": [
+    "conditional sensitivity, not validated warming-causal forecast",
+    "linear annual association is assumed invariant for a future mean climate",
+    "fractional-logit alternative evaluated at future mean, not expected annual gap (nonlinearity)",
+    "model delta stationarity and coastal representation unvalidated",
+    "historical diet cohort 2001-2009; reference 1995-2014 gap is fitted, not observed",
+    "coefficient CI omits future climate, ecological drift and serial dependence",
+    "three climate models chosen by availability, not probability ensemble"
+  ]
+}

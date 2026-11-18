@@ -1,0 +1,37 @@
+name: penguin-scar-original-source-grain-v2
+on:
+  push:
+    branches: [codex/climate-penguin-progress]
+    paths:
+      - 'research/climate-penguin/work/scar_external_diet_grain_v2/**'
+      - 'research/climate-penguin/outputs/scar_external_diet_grain_v2/**'
+      - 'tests/test_scar_external_diet_grain_v2.py'
+      - '.github/workflows/penguin-scar-original-source-grain-v2.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/work/scar_external_diet_grain_v2/**'
+      - 'research/climate-penguin/outputs/scar_external_diet_grain_v2/**'
+      - 'tests/test_scar_external_diet_grain_v2.py'
+      - '.github/workflows/penguin-scar-original-source-grain-v2.yml'
+permissions:
+  contents: read
+jobs:
+  source-grain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -p 'test_scar_external_diet_grain_v2.py' -v
+      - run: |
+          curl -L --fail --retry 2 --max-time 180 'https://raw.githubusercontent.com/globalbioticinteractions/scar/1856664248be16b9dcee9ba56d2b23d87f3d9cd1/scar_diet.csv' -o /tmp/scar_original.csv
+      - name: Audit fish/crust fractions and sample grain for 3 source studies
+        run: |
+          python research/climate-penguin/work/scar_external_diet_grain_v2/inspect.py --diet /tmp/scar_original.csv --out /tmp/scar_grain
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-scar-original-source-grain-v2
+          path: /tmp/scar_grain/
+          retention-days: 30

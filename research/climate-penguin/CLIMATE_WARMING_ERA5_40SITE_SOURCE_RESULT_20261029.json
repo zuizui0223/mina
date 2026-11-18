@@ -1,0 +1,245 @@
+{
+  "schema": 1,
+  "date": "2026-10-29",
+  "source_status": "source-retrieved original ERA5 reanalysis 1991-2020; counts linked without exploratory p-values",
+  "source_run": {
+    "id": 40856645581,
+    "head": "c430498ddb15697cabd8abb7d145bc9f9a960bee",
+    "artifact_id": 12889668094,
+    "url": "https://github.com/zuizui0223/mina/actions/runs/40856645581"
+  },
+  "analysis_run": {
+    "id": 40857800306,
+    "head": "c1e951500ece1478c4563043f8cae42a1a4e02e9",
+    "artifact_id": 12889423234,
+    "url": "https://github.com/zuizui0223/mina/actions/runs/40857800306"
+  },
+  "temperature_site_source": {
+    "status": "source_only_not_attribution",
+    "sites": 40,
+    "grid_count": 30,
+    "trend_descriptive": {
+      "full_year": {
+        "n_sites": 40,
+        "positive": 39,
+        "negative": 1,
+        "median_c_per_decade": 0.4401617,
+        "mean_c_per_decade": 0.4446396
+      },
+      "aug_nov": {
+        "n_sites": 40,
+        "positive": 38,
+        "negative": 2,
+        "median_c_per_decade": 0.3402926,
+        "mean_c_per_decade": 0.3631165
+      },
+      "month_8": {
+        "n_sites": 40,
+        "positive": 33,
+        "negative": 7,
+        "median_c_per_decade": 0.8232085,
+        "mean_c_per_decade": 0.7017878
+      },
+      "month_9": {
+        "n_sites": 40,
+        "positive": 37,
+        "negative": 3,
+        "median_c_per_decade": 0.2089581,
+        "mean_c_per_decade": 0.2372616
+      },
+      "month_10": {
+        "n_sites": 40,
+        "positive": 38,
+        "negative": 2,
+        "median_c_per_decade": 0.4114894,
+        "mean_c_per_decade": 0.4230062
+      },
+      "month_11": {
+        "n_sites": 40,
+        "positive": 21,
+        "negative": 19,
+        "median_c_per_decade": 0.0235595,
+        "mean_c_per_decade": 0.0904103
+      }
+    }
+  },
+  "count_temperature_effects": {
+    "schema": 1,
+    "status": "post_outcome_exploratory_not_climate_attribution",
+    "source_era5_sha256": "f2bad55bc9b714351b8bc30031b1518eece43138f77d4047657a3e145911e9a6",
+    "source_count_sha256": "566781ab3a82afbb5d25f6d957b2df2e629a74b084c3bf47542dc66d556d8443",
+    "n_count_intervals": 301,
+    "n_with_era5_september": 301,
+    "n_strict_post_september": 203,
+    "n_strict_post_november": 191,
+    "effects": {
+      "september_strict": {
+        "site_fixed": {
+          "n_intervals": 203,
+          "n_sites": 26,
+          "n_regions": 3,
+          "victoria_n": 187,
+          "model_adjustment": [
+            "site_id"
+          ],
+          "beta_logN_per_1C_change": -0.00548311,
+          "leave_one_site_out_range": [
+            -0.00777995,
+            -0.00353272
+          ]
+        },
+        "site_year_fixed": {
+          "n_intervals": 203,
+          "n_sites": 26,
+          "n_regions": 3,
+          "victoria_n": 187,
+          "model_adjustment": [
+            "site_id",
+            "end_year"
+          ],
+          "beta_logN_per_1C_change": 0.02666092,
+          "leave_one_site_out_range": [
+            0.01846021,
+            0.04484486
+          ]
+        }
+      },
+      "aug_nov_strict": {
+        "site_fixed": {
+          "n_intervals": 191,
+          "n_sites": 23,
+          "n_regions": 3,
+          "victoria_n": 187,
+          "model_adjustment": [
+            "site_id"
+          ],
+          "beta_logN_per_1C_change": 0.01986373,
+          "leave_one_site_out_range": [
+            0.01398417,
+            0.02388957
+          ]
+        },
+        "site_year_fixed": {
+          "n_intervals": 191,
+          "n_sites": 23,
+          "n_regions": 3,
+          "victoria_n": 187,
+          "model_adjustment": [
+            "site_id",
+            "end_year"
+          ],
+          "beta_logN_per_1C_change": 0.09133572,
+          "leave_one_site_out_range": [
+            0.06676367,
+            0.11033715
+          ]
+        }
+      },
+      "all_descriptive": {
+        "site_fixed": {
+          "n_intervals": 301,
+          "n_sites": 33,
+          "n_regions": 6,
+          "victoria_n": 189,
+          "model_adjustment": [
+            "site_id"
+          ],
+          "beta_logN_per_1C_change": -0.00745341,
+          "leave_one_site_out_range": [
+            -0.00911814,
+            -0.00615963
+          ]
+        },
+        "site_year_fixed": {
+          "n_intervals": 301,
+          "n_sites": 33,
+          "n_regions": 6,
+          "victoria_n": 189,
+          "model_adjustment": [
+            "site_id",
+            "end_year"
+          ],
+          "beta_logN_per_1C_change": 0.0076369,
+          "leave_one_site_out_range": [
+            0.00614972,
+            0.01011139
+          ]
+        }
+      },
+      "september_victoria": {
+        "site_fixed": {
+          "n_intervals": 187,
+          "n_sites": 20,
+          "n_regions": 1,
+          "victoria_n": 187,
+          "model_adjustment": [
+            "site_id"
+          ],
+          "beta_logN_per_1C_change": -0.00280339,
+          "leave_one_site_out_range": [
+            -0.00490735,
+            -0.00101096
+          ]
+        },
+        "site_year_fixed": {
+          "n_intervals": 187,
+          "n_sites": 20,
+          "n_regions": 1,
+          "victoria_n": 187,
+          "model_adjustment": [
+            "site_id",
+            "end_year"
+          ],
+          "beta_logN_per_1C_change": 0.05918638,
+          "leave_one_site_out_range": [
+            0.03516157,
+            0.07770088
+          ]
+        }
+      },
+      "september_without_victoria": {
+        "site_fixed": {
+          "n_intervals": 16,
+          "n_sites": 6,
+          "n_regions": 2,
+          "victoria_n": 0,
+          "model_adjustment": [
+            "site_id"
+          ],
+          "beta_logN_per_1C_change": -0.0300477,
+          "leave_one_site_out_range": [
+            -0.04476304,
+            -0.01079772
+          ]
+        },
+        "site_year_fixed": {
+          "n_intervals": 16,
+          "n_sites": 6,
+          "n_regions": 2,
+          "victoria_n": 0,
+          "model_adjustment": [
+            "site_id",
+            "end_year"
+          ],
+          "beta_logN_per_1C_change": null,
+          "leave_one_site_out_range": null
+        }
+      }
+    },
+    "interpretation": [
+      "Site-season annual air temperature change is short-term weather, NOT attributable climate warming.",
+      "Counts describe monitored abundance, NOT breeding success or a random sample of birds.",
+      "Most strict intervals fall within Victoria Land; do not generalize to six regions.",
+      "Significance/causal inference and a climate change counterfactual are not estimated."
+    ]
+  },
+  "warnings": [
+    "40 source sites correspond to 30 distinct ERA5 grid coordinates; they are not 40 independent atmospheric samples.",
+    "Annual ERA5 temperature trends are descriptive and not anthropogenic warming attribution.",
+    "The 203 September-chronology-qualified count intervals are 92.1% Victoria Land; 191 after-November-qualified are 97.9% Victoria.",
+    "Both count outcomes and initial ice screens were previously exposed, so the new temperature-count regression is exploratory, not confirmatory.",
+    "Site-only and site+year adjustments differ materially and are not causal identification.",
+    "Neither t/p values nor calibrated 95% intervals have been computed for warming–count coefficients.",
+    "No frozen Penguin Paper1, Antarctic predator-access Paper2, or JNCC claim is modified."
+  ]
+}

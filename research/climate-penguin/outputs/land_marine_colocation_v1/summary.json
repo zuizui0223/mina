@@ -1,0 +1,203 @@
+{
+  "status": "observed_breeding_and_static_land_context_linked_to_conditional_physical_climate_exposure_not_breeding_forecast",
+  "data_vintage": "2026-10-31",
+  "match_rule": "same site_id, nearest source coordinates within 2 km, deterministic location_id tie; one vegetation source row per species-site; never substitute similar names",
+  "source_git_blob_sha": {
+    "climate": "9d7badfd2ad077047cb6f20accc74e3738cf4648",
+    "vegetation": "23fea5988889303ecdc16f4b5309073cf38e366a",
+    "snow": "204fb5bf1ab14496ca783d4d08e3b72fd5cfd8b4"
+  },
+  "inputs": {
+    "climate_rows": 424,
+    "vegetation_rows": 246,
+    "era5_snow_month_rows": 1166,
+    "climate_unique_locations": 106,
+    "vegetation_unique_site_species_keys": 246
+  },
+  "outputs": {
+    "receipts": 246,
+    "matched_source_rows": 58,
+    "unmatched_source_rows": 188,
+    "scenario_rows": 232,
+    "geojson_features": 232
+  },
+  "scenarios": [
+    {
+      "experiment": "ssp245",
+      "period": "2041-2060",
+      "matched_site_species": 58,
+      "distinct_site_codes": 48,
+      "regions": 5,
+      "distinct_marine_fingerprints": 27,
+      "with_count_slope": 50,
+      "with_3plus_observed_seasons": 27,
+      "with_positive_mapped_vegetation_detection": 47,
+      "all3_marine_cell_within50km": 36,
+      "all3_marine_cell_within50km_and_count_slope": 30,
+      "era5_land_fraction_atleast_half": 9,
+      "both_marine_within50km_and_era5_land_frac_half": 5,
+      "climate_ice_loss_10pp_3of3_site_species": 4,
+      "climate_ice_loss_10pp_3of3_distinct_site_codes": 3,
+      "climate_ice_loss_10pp_3of3_distinct_marine_fingerprints": 2,
+      "climate_ice_loss_10pp_3of3_and_marine_all_within50km": 0,
+      "climate_ice_loss_10pp_3of3_with_prior_positive_slope": 0,
+      "climate_ice_loss_10pp_3of3_with_prior_negative_slope": 4,
+      "climate_ice_loss_10pp_3of3_with_prior_unavailable_slope": 0,
+      "species": {
+        "ADPE": {
+          "site_species_rows": 31,
+          "with_count_slope": 28,
+          "n_3plus_observed_seasons": 17,
+          "large_future_ice_loss": 0
+        },
+        "CHPE": {
+          "site_species_rows": 9,
+          "with_count_slope": 6,
+          "n_3plus_observed_seasons": 5,
+          "large_future_ice_loss": 1
+        },
+        "GEPE": {
+          "site_species_rows": 18,
+          "with_count_slope": 16,
+          "n_3plus_observed_seasons": 5,
+          "large_future_ice_loss": 3
+        }
+      }
+    },
+    {
+      "experiment": "ssp245",
+      "period": "2081-2100",
+      "matched_site_species": 58,
+      "distinct_site_codes": 48,
+      "regions": 5,
+      "distinct_marine_fingerprints": 27,
+      "with_count_slope": 50,
+      "with_3plus_observed_seasons": 27,
+      "with_positive_mapped_vegetation_detection": 47,
+      "all3_marine_cell_within50km": 36,
+      "all3_marine_cell_within50km_and_count_slope": 30,
+      "era5_land_fraction_atleast_half": 9,
+      "both_marine_within50km_and_era5_land_frac_half": 5,
+      "climate_ice_loss_10pp_3of3_site_species": 16,
+      "climate_ice_loss_10pp_3of3_distinct_site_codes": 11,
+      "climate_ice_loss_10pp_3of3_distinct_marine_fingerprints": 3,
+      "climate_ice_loss_10pp_3of3_and_marine_all_within50km": 0,
+      "climate_ice_loss_10pp_3of3_with_prior_positive_slope": 4,
+      "climate_ice_loss_10pp_3of3_with_prior_negative_slope": 11,
+      "climate_ice_loss_10pp_3of3_with_prior_unavailable_slope": 1,
+      "species": {
+        "ADPE": {
+          "site_species_rows": 31,
+          "with_count_slope": 28,
+          "n_3plus_observed_seasons": 17,
+          "large_future_ice_loss": 4
+        },
+        "CHPE": {
+          "site_species_rows": 9,
+          "with_count_slope": 6,
+          "n_3plus_observed_seasons": 5,
+          "large_future_ice_loss": 2
+        },
+        "GEPE": {
+          "site_species_rows": 18,
+          "with_count_slope": 16,
+          "n_3plus_observed_seasons": 5,
+          "large_future_ice_loss": 10
+        }
+      }
+    },
+    {
+      "experiment": "ssp585",
+      "period": "2041-2060",
+      "matched_site_species": 58,
+      "distinct_site_codes": 48,
+      "regions": 5,
+      "distinct_marine_fingerprints": 27,
+      "with_count_slope": 50,
+      "with_3plus_observed_seasons": 27,
+      "with_positive_mapped_vegetation_detection": 47,
+      "all3_marine_cell_within50km": 36,
+      "all3_marine_cell_within50km_and_count_slope": 30,
+      "era5_land_fraction_atleast_half": 9,
+      "both_marine_within50km_and_era5_land_frac_half": 5,
+      "climate_ice_loss_10pp_3of3_site_species": 4,
+      "climate_ice_loss_10pp_3of3_distinct_site_codes": 3,
+      "climate_ice_loss_10pp_3of3_distinct_marine_fingerprints": 2,
+      "climate_ice_loss_10pp_3of3_and_marine_all_within50km": 0,
+      "climate_ice_loss_10pp_3of3_with_prior_positive_slope": 0,
+      "climate_ice_loss_10pp_3of3_with_prior_negative_slope": 4,
+      "climate_ice_loss_10pp_3of3_with_prior_unavailable_slope": 0,
+      "species": {
+        "ADPE": {
+          "site_species_rows": 31,
+          "with_count_slope": 28,
+          "n_3plus_observed_seasons": 17,
+          "large_future_ice_loss": 0
+        },
+        "CHPE": {
+          "site_species_rows": 9,
+          "with_count_slope": 6,
+          "n_3plus_observed_seasons": 5,
+          "large_future_ice_loss": 1
+        },
+        "GEPE": {
+          "site_species_rows": 18,
+          "with_count_slope": 16,
+          "n_3plus_observed_seasons": 5,
+          "large_future_ice_loss": 3
+        }
+      }
+    },
+    {
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "matched_site_species": 58,
+      "distinct_site_codes": 48,
+      "regions": 5,
+      "distinct_marine_fingerprints": 27,
+      "with_count_slope": 50,
+      "with_3plus_observed_seasons": 27,
+      "with_positive_mapped_vegetation_detection": 47,
+      "all3_marine_cell_within50km": 36,
+      "all3_marine_cell_within50km_and_count_slope": 30,
+      "era5_land_fraction_atleast_half": 9,
+      "both_marine_within50km_and_era5_land_frac_half": 5,
+      "climate_ice_loss_10pp_3of3_site_species": 20,
+      "climate_ice_loss_10pp_3of3_distinct_site_codes": 15,
+      "climate_ice_loss_10pp_3of3_distinct_marine_fingerprints": 7,
+      "climate_ice_loss_10pp_3of3_and_marine_all_within50km": 3,
+      "climate_ice_loss_10pp_3of3_with_prior_positive_slope": 5,
+      "climate_ice_loss_10pp_3of3_with_prior_negative_slope": 12,
+      "climate_ice_loss_10pp_3of3_with_prior_unavailable_slope": 3,
+      "species": {
+        "ADPE": {
+          "site_species_rows": 31,
+          "with_count_slope": 28,
+          "n_3plus_observed_seasons": 17,
+          "large_future_ice_loss": 4
+        },
+        "CHPE": {
+          "site_species_rows": 9,
+          "with_count_slope": 6,
+          "n_3plus_observed_seasons": 5,
+          "large_future_ice_loss": 2
+        },
+        "GEPE": {
+          "site_species_rows": 18,
+          "with_count_slope": 16,
+          "n_3plus_observed_seasons": 5,
+          "large_future_ice_loss": 14
+        }
+      }
+    }
+  ],
+  "caveats": [
+    "Climate 8-Nov seasonal mean is not synchronized with 2017-2023 biological census season, and this overlay estimates no future nest trends",
+    "Static Plantarctica composite covers vegetation/lichen detected in 2 km circle, not ice-free area, accessible nesting habitat or annual vegetation trends",
+    "ERA5 land_fraction is the nearby ~0.25 degree surrounding grid and not the fraction of real breeding land; it is quality support only",
+    "Climate 106 locations, 43 marine cell fingerprints and 48 matched site codes are not counts of independent physical islands",
+    "Most strong future ice-loss matches use coarse model ocean cells >50 km from colony coordinate; only 3 strict matches in SSP585 2081-2100",
+    "Any historical observed count slope with two seasons is not a long-term population trend and is not a future climate response",
+    "No causal or prospective prey-to-breeding coefficient, nest-patch area or vegetation change projection is estimated"
+  ]
+}
