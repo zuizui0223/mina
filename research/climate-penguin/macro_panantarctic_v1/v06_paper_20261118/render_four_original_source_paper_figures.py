@@ -105,7 +105,7 @@ def make_figures(a):
     ax.set_ylabel("Signed principal component loading")
     ax.set_ylim(-.90,1.12)
     ax.set_title("b. Nearshore marine conditions are multidimensional",loc="left")
-    ax.text(.02,.04,"588 sites · 378 unique GLORYS ocean cells\n1993–2020 · 16,464 site-years",fontsize=9,
+    ax.text(.44,.07,"588 sites · 378 unique ocean cells\n1993–2020 · 16,464 site-years",fontsize=8.3,
             transform=ax.transAxes,va="bottom",ha="left",color=INK)
     ax.legend(loc="upper left",fontsize=9,frameon=False)
     fig.suptitle("Figure 1 | Antarctic marine environment and true observation footprint",fontsize=14,fontweight="bold")
@@ -128,7 +128,8 @@ def make_figures(a):
     ax.set_xlim(0,135)
     for k,shift in enumerate(vals):ax.text(shift+3,k,f"{shift:.1f} km",va="center",fontsize=9)
     ax.set_title("a. Fixed-colony Adélie nesting reweighting",loc="left")
-    ax.text(.02,.08,"The same colony locations stay fixed.\nNo individual movement measured.",transform=ax.transAxes,fontsize=8.5)
+    ax.text(.98,.07,"Fixed site locations; no tracked movement",transform=ax.transAxes,
+            fontsize=8,ha="right",color=INK)
     ax=axs[1]
     ax.scatter(pair.ratio_slope,pair.pair_subtotal_pct_change,c=np.where(pair.pair_subtotal_pct_change>0,TEAL,ORANGE),
                s=65,edgecolors="white",linewidth=.6,zorder=3)
