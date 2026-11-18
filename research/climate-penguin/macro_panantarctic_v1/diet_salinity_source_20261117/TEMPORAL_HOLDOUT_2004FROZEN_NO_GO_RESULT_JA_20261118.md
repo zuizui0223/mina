@@ -1,6 +1,6 @@
 # アデリーδ¹⁵N–塩分：2004年以前で学習→2005–2012で評価する凍結時間外検証
 
-**2026-11-18 JST | Mina PR #214 探索的検証レーン。** [凍結仕様](FROZEN_TEMPORAL_TRANSFER_AND_TWO_AXIS_TEST_20261118_JA.md)を結果閲覧前にコミットした後、元source派生860元colony×seasonからの独立ローカル実装で算術検証した。元GitHub CI workflow [#44292899030](https://github.com/zuizui0223/mina/actions/runs/44292899030) はこの記述時点でGitHubランナー **queued**。**CI SUCCESSとは書かない**。元の肯定的な塩分–δ¹⁵N相関はmain採用台帳から削除しない。
+**2026-11-18 JST | Mina PR #214 探索的検証レーン。** [凍結仕様](FROZEN_TEMPORAL_TRANSFER_AND_TWO_AXIS_TEST_20261118_JA.md)を結果閲覧前にコミットした後、元source派生860元colony×seasonからの独立ローカル実装で算術検証した。元GitHub CIの初回[#44292899030](https://github.com/zuizui0223/mina/actions/runs/44292899030)はMAE計算行の括弧一つという構文誤りで、source読込前に失敗。その行だけ修正し、仕様・元データ・判定閾値は不変更で[#44293631475](https://github.com/zuizui0223/mina/actions/runs/44293631475) **SUCCESS**。出力artifact **14421853995**。独立実装と4モデルのRMSE/MAEが全て一致。元の肯定的な塩分–δ¹⁵N相関はmain採用台帳から削除しない。
 
 ## 1. 判定
 
@@ -22,15 +22,15 @@
 | **Site + DOY・DOY² + 海氷 + GLORYS thetao**（M0） | **1.39165** | **1.03054** |
 | M0 + **GLORYS salinity**（M1） | **1.40486** | **1.04474** |
 
-M1は元site最後の観測値より改善し、海洋環境に**相関的・予測的情報がある**ことを示す。しかし、塩分単独の追加効果は**M0に対してsite-equal RMSE +0.01321‰、MAE +0.01420‰悪化**、MSE差（M1−M0）は**+0.036929‰²**。地域11群2000回の復元bootstrapでのMSE差条件付き95%区間は**[−0.03063,+0.12400]**。予測改善の支持はなく、モデル間の性能差自体の精密な検定でもない。元site等重みと行等重みの両方を報告する仕様は維持。
+M1は元site最後の観測値より改善し、海洋環境に**相関的・予測的情報がある**ことを示す。しかし、塩分単独の追加効果は**M0に対してsite-equal RMSE +0.01321‰、MAE +0.01420‰悪化**、MSE差（M1−M0）は**+0.036929‰²**。地域11群2000回の復元bootstrapでのMSE差条件付き95%区間は**[−0.02870,+0.12075]**。予測改善の支持はなく、モデル間の性能差自体の精密な検定でもない。元site等重みと行等重みの両方を報告する仕様は維持。
 
 地域ブートストラップ（同じ82siteのsite平均損失差）：
 
 | ΔMSE = M1 − 比較モデル | 点推定 | 2000回source地域復元区間 |
 |---|---:|---|
 | M1 − 最後のsite観測値 | **−2.14764** | [−3.20084,−1.45520] |
-| M1 − source site平均 | **−0.92785** | [−1.31555,−0.43889] |
-| **M1 − 海氷・水温モデルM0** | **+0.03693** | **[−0.03063,+0.12400]** |
+| M1 − source site平均 | **−0.92785** | [−1.32565,−0.44301] |
+| **M1 − 海氷・水温モデルM0** | **+0.03693** | **[−0.02870,+0.12075]** |
 
 元ユーザー提案の「塩分を入れた時点外予測が海氷だけのモデルや前年持越しより良い」条件のうち、**肝心の塩分追加予測ゲインは成立しなかった**。厳格なGO判定はNO。
 
@@ -59,8 +59,16 @@ M1は元site最後の観測値より改善し、海洋環境に**相関的・予
 
 - 凍結文書のコミット：**db34c156**（計算前）。
 - source-only分析コード：[`temporal_isotope_2004freeze_2012holdout.py`](temporal_isotope_2004freeze_2012holdout.py)（コミット456c1c47）。
-- GitHub workflow：[`penguin-20261118-original-isotope-temporal-2004freeze-holdout.yml`](../../../.github/workflows/penguin-20261118-original-isotope-temporal-2004freeze-holdout.yml)、[Actions #44292899030](https://github.com/zuizui0223/mina/actions/runs/44292899030)（**queued**; CI完走として記載しない）。
+- GitHub workflow：[`penguin-20261118-original-isotope-temporal-2004freeze-holdout.yml`](../../../.github/workflows/penguin-20261118-original-isotope-temporal-2004freeze-holdout.yml)、[Actions #44292899030](https://github.com/zuizui0223/mina/actions/runs/44292899030)（初回コードの括弧構文誤りで失敗。修正後**#44293631475 SUCCESS**、artifact **14421853995**）。
 - 同じ元ZIPを読み、site one-hot/学習期のmean/SDだけで予測を計算する**別実装ローカル検算**を実行し、上記304/541、全4RMSE・MAE、12学習地域除外係数、11地域2000-bootstrap、連続年442件を保存。これは独立観測による再現ではなく、同一元資料への二重実装検算。
 - 凍結済み `main` positive ledger [main commit 94fadb8](https://github.com/zuizui0223/mina/commit/94fadb8ddd62e2ea6ac53b4d9605fdab61b21ff1) を変更しない。今回の時間外予測がNO-GOだった事実は探索PR #214の検証補助資料にのみ追加する。
 
 **最終判断：正の塩分–δ¹⁵N相関あり、塩分による予測改善は時点外検証で成立せず。海氷–塩分の二重解離と2100年の食性/巣数予報へは進まない。** 
+
+### CIと別実装の数値一致（判定変更なし）
+
+成功CIの実出力はM1（塩分追加）の対M0（塩分なし）source site-equal残差MSE比の改善 **−1.90679%**。つまり塩分追加で時間外MSEが約1.9%増えた。source11報告地域の2,000回固定seed bootstrapでは`M1−M0`差 **+0.03692884‰²**、95%区間 **[−0.028704,+0.120750]**。区間は0を含むため「塩分の追加が確実に悪化させる」とも言えないが、事前GO条件（M1がM0より予測誤差を減らす）は**未達**。
+
+成功CIでの同一2005–2012元541 site×seasonの「最後の実観測を毎年更新した参考予測」（将来評価Yは各tより前だけ）のsite-equal RMSE **1.86193**、MAE **1.37454**。その541件のうち真正前年に撮影があるのは **442件**。学習期固定のM0/M1に後年のδ¹⁵Nを学習させていない。
+
+成功CI元出力：`frozen_541_holdout_predictions.csv`、`holdout_year_by_model_source_loss.csv`、`holdout_region_by_model_source_loss.csv`、`training_salt_beta_omit_each_source_region.csv`、`source_site_observation_support.csv`、`double_dissociation_evidence_gate.json`、`frozen_temporal_transfer_result.json`。外部δ¹³Cはこの原103光学校正標本の入力に無く、勝手に生成していない。
