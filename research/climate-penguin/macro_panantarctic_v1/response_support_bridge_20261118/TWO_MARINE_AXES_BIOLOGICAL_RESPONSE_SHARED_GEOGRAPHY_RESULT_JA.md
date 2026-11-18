@@ -45,3 +45,11 @@
 Source-fixed Python [`audit_response_channel_transfer.py`](audit_response_channel_transfer.py)、[GitHub Actions #44222977506 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/44222977506)、artifact **14390778853**。Inputs: 元Youngflesh原source δ¹⁵N+海氷/GLORYS matched860 artifact 14328755565；元595/2456 true source counts artifact 13669533413；元588×28物理+351共調査 artifact 13828472111。全3 ZIPをGitHub原source artifactから取得し、元標本境界、ゼロ/欠測、site×season重複、全860先行βの正確な再現、4地域sourceへの制約下β、0同site同年、7同region-yearを別stepsで独立検算。出力JSON/地域表/3組別表/7年地域表/70 ADPE生同時記録をarchiveへ保存。mainと凍結v0.5は未変更。
 
 **確定判定**：全源sourceの塩分–同位体の肯定相関あり。同時に地理制約でその効果は不安定なため、他の生物応答へ一律の「塩分が効く」機構を移せない。これは生物応答が異なる可能性への情報であり、チャネルごとの独立した機構を立証した結果ではない。
+
+## 追加検証：共通地域で塩分の物理的変動が消えていただけか？
+
+**否。** 同じ固定生物/物理ソースと同じ調整変数で、塩分を site FE、original region×season FE、撮影日・DOY²、Nov–FebのGLORYS水温、NSIDC海氷から残差化した塩分原物理コントラストを別に算出。source全860行では塩分残差SD **0.1889633**、共調査4地域に絞った227行では**0.2245062**と、狭めた側の方が大きい。site/region-season FEだけを抜いた段階でもそれぞれ**0.2230196**対**0.2634045**。
+
+したがって、salinity β=+0.834→+0.080の地理条件付き減衰は**塩分残差変動が数学的に消滅したためではない**。あくまで別地域・別観測site・別原気候環境という母集団変更であり、個体食性機構の差やβ差の仮説検定ではない。
+
+[原固定sourceの全860と狭域227、残差SDを追加したCI #44224044031 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/44224044031)、artifact **14392141706**。コード・レポートのsourceキーとcrosswalk分母に変更無し。前のoriginal #44222977506も独立保存。
