@@ -21,7 +21,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/penguin_v06_packet_source
-          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14403086374/zip" > build/penguin_v06_packet_source/original_figure_source_verified.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14403076944/zip" > build/penguin_v06_packet_source/original_figure_source_verified.zip
       - name: Check full v0.6 text, figure numbers, original source reference and build shareable candidate packet
         run: |
           python - <<'PY'
@@ -101,15 +101,15 @@ jobs:
           Original manuscript GitHub:
           https://github.com/zuizui0223/mina/blob/analysis/penguin-decade-redistribution-v1-20261110/research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/MANUSCRIPT_V06_MARINE_AXES_NESTING_ISOTOPE_CMIP6_WORKING.md
           Original verified figure run:
-          https://github.com/zuizui0223/mina/actions/runs/44248712605
+          https://github.com/zuizui0223/mina/actions/runs/44249130388
           '''
           (out/'README_SOURCE_AND_STATUS.md').write_text('\n'.join(line.strip() for line in readme.splitlines())+'\n')
           provenance={'status':'PASS_ONE_ANNOTATED_V06_MANUSCRIPT_FOUR_PUBLISHED_SOURCE_FIGURES',
                       'source_git_commit':os.environ.get('GITHUB_SHA'),
                       'manuscript_word_count_whitespace':len(m.split()),
                       'figure_names':expected,'figure_count':4,
-                      'total_figure_png_svg_files':8,'source_original_figure_run_id':44248712605,
-                      'source_figure_artifact_id':14403086374,
+                      'total_figure_png_svg_files':8,'source_original_figure_run_id':44249130388,
+                      'source_figure_artifact_id':14403076944,
                       'source_sha256_manifest':sha,
                       'no_original_third_party_raw_archives_in_packet':True,
                       'no_causal_salinity_diet_or_future_nest_claim':True,
