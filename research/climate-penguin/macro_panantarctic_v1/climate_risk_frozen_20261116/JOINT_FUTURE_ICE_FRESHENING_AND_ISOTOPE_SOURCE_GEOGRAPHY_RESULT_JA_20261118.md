@@ -77,3 +77,19 @@ Youngflesh 2026 original Zenodoの真のLandsat画像から再構成したδ¹�
 - 本件は**主論文v0.6 candidateのphysical-climate extensionとして補助Results／図案に組み込み候補**。元v0.5・図4枚・既存mainを変更しない。3モデルの不確実性、GCM格子の疎さ、調査済みsite選択、空間構造を全て記載し、強い未来生物予測・種の保護区適性等は不主張。
 
 **一文の結論：海氷後退だけでなく沿岸海面塩分の低下も3-model futureで広範囲に予測されるが、両方が同時に一致する既知繁殖地と現在の巣数proxyの範囲は局所地理とモデル選択に依存し、海洋物理曝露から食性や将来巣数へ飛躍できない。**
+
+## 7. 追加の厳密チェック：将来CMIP6塩分の「絶対量」を現在実際のGLORYS近岸と比べてよいか？
+
+原21,420 source model change rowsの**historical 1995–2014 baseline値**が4 scenario再出力で完全一致することを確認。元source 588 sites×28年の GLORYS/OSI SAFから **同じ1995–2014、8–11月**の真のサイト平均を抽出し、588 site（18地域、**GLORYSの実異なる近岸海洋wet grid378セル**）×3モデル=1764 site-modelで同一site ID対応を検算した。観測方法は**GLORYS再解析の最寄り≤25km wet cell** と **OSI SAF衛星の近岸約100km平均**。CMIP6は各モデルの粗い元格子であり、月のday weightingも完全同一ではない。比較は**ソース間の実測可能性・絶対状態の一致度**であって、独立in situ正解に対する予測精度を示すものではない。
+
+| source original CMIP6 model | historical model SOS − 同期GLORYS平均 | SOS RMSE | 源site間のSOS相関 | original SIC model−同時OSI SAF平均 pp | SIC RMSE pp |
+|---|---:|---:|---:|---:|---:|
+| ACCESS-CM2 | **+0.075635** | **0.256979** | 0.383928 | −13.215 | 26.008 |
+| BCC-CSM2-MR | **−0.059034** | **0.198319** | 0.678523 | −14.348 | 24.608 |
+| CESM2 | **−0.440333** | **0.507368** | 0.522438 | +11.407 | 24.671 |
+
+元2011–2020実巣数がある271地点中、原588site GLORYS sourceに一致するのは**265地点**（6地点は実計数があるがmarine wet gate外）。CMIP6が3モデル全変数で海洋格子≤50kmを満たす元595は372、そのうちGLORYSもある367siteで比較し直してもhistorical SOS RMSEはACCESS **0.239**、BCC **0.171**、CESM2 **0.474**（元全588の0.257、0.198、0.507から一定の改善はあるが解消しない）。
+
+**科学的解釈：** SOSの将来モデル**差分・方向**のensemble一致と、現在の絶対沿岸塩分水準・生物学的閾値を別物として扱う必要がある。特に観測δ¹⁵Nの同季節GLORYS塩分係数を、historical絶対状態に系統差を持つ粗いCMIP6へ代入するのは二重の外挿問題。historical差は絶対モデル値をそのまま真の巣/魚の塩分閾値やoriginal PCAの将来海水温へ割当てない追加根拠となる。海氷・塩分の空間解像差とGLORYS自身が再解析であることにより、この歴史モデル差を「真のGCM誤差」や気候将来変化の無効性に直結させない。
+
+[元source SHA/実値固定の独立CI #44239541320 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/44239541320) artifact **14397794445**、[源588 historical model–GLORYS/OSI対応を再構築したscript](audit_CMIP6_vs_historical_GLORYS_SIC_support.py)。source original 595 CMIP6・588 GLORYS・2456 source countsを同じGitHub Actionsで取得、model/period別historical baseline一致、20年支持、source 378 wet grid数、265 recent-count marine overlap、367地点距離支持、3モデル原差とRMSEを別ステップで検証。main/v0.5 unchanged.
