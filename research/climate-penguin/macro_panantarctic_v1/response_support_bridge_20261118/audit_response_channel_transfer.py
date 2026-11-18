@@ -68,6 +68,13 @@ def isotope_fit(data):
     if len(d)<30 or report["rank_with_original_fe"]!=5:
         report["estimate_status"]="UNIDENTIFIABLE_OR_TOO_SMALL"
         return report
+    # Physical identifiability control: salinity anomaly range after the
+    # other original covariates and both sets of fixed effects are partialled.
+    # If restricted beta attenuates with retained residual salinity variation,
+    # it is not merely a mathematical zero-salinity-variance result.
+    salt_conditional=x[:,4]-x[:,:4]@np.linalg.lstsq(x[:,:4],x[:,4],rcond=None)[0]
+    if float(np.std(salt_conditional))<1e-10:
+        raise ValueError("No physical salinity contrast remains after covariates")
     fit0=sm.OLS(y,x[:,:4]).fit()
     fit1=sm.OLS(y,x).fit(cov_type="cluster",cov_kwds={"groups":cells})
     b=float(fit1.params[-1])
@@ -75,6 +82,8 @@ def isotope_fit(data):
     report.update({
         "estimate_status":"SOURCE_CONDITIONAL_EXPLORATORY",
         "beta_salt":b,
+        "salinity_residual_sd_after_all_controls":float(np.std(salt_conditional,ddof=0)),
+        "salinity_sd_after_site_regionseason_fe_before_other_physics":float(np.std(x[:,4],ddof=0)),
         "cluster_cell_95ci":[float(ci[0]),float(ci[1])],
         "partial_residual_r2":float(1-(fit1.resid@fit1.resid)/(fit0.resid@fit0.resid)),
         "n_source_residual_df_proxy_not_ecological_replicates":int(len(d)-5),
