@@ -1,0 +1,128 @@
+name: Penguin v0.6 integrated draft manuscript and four verified paper figures packet
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/MANUSCRIPT_V06_MARINE_AXES_NESTING_ISOTOPE_CMIP6_WORKING.md'
+      - '.github/workflows/penguin-20261118-v06-integrated-manuscript-figure-packet.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  freeze_internal_candidate_packet:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve exact already validated v0.6 four main figures, PNG and SVG
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_v06_packet_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14403086374/zip" > build/penguin_v06_packet_source/original_figure_source_verified.zip
+      - name: Check full v0.6 text, figure numbers, original source reference and build shareable candidate packet
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile,hashlib,json,re,os,shutil
+          manuscript=Path('research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/MANUSCRIPT_V06_MARINE_AXES_NESTING_ISOTOPE_CMIP6_WORKING.md')
+          m=manuscript.read_text()
+          out=Path('build/penguin_v06_candidate_verified')
+          out.mkdir(parents=True,exist_ok=True)
+          assert 3500<len(m.split())<6500
+          assert '2,456' in m and '595' in m and '588' in m and '16,464' in m
+          assert '60.3654%' in m and '33.3773%' in m
+          assert '860' in m and '88' in m and '+0.8341458' in m
+          assert '13 reporting-region groups' in m and 'included zero' in m
+          assert '107.31' in m and '88.41' in m and '99.60' in m
+          assert 'six strictly source' in m.lower() or 'six Adélie/gentoo paired-colony series' in m
+          assert '464/595' in m and '384/595' in m
+          assert '93.54%' in m and '59.08%' in m
+          assert 'SOURCE' not in m[:100]
+          assert 'Youngflesh et al. (2026)' in m
+          for s in ['## Abstract','## 1. Introduction','## 2. Materials and methods',
+                    '## 3. Results','## 4. Discussion','## 5. Conclusion','## Main figures']:
+              assert s in m, f'Manuscript major section missing: {s}'
+          expected=[
+            'Fig1_Marine_axes_and_source_footprint',
+            'Fig2_Nest_reweighting_and_species_ratio',
+            'Fig3_Positive_salinity_isotope_geography',
+            'Fig4_Future_ice_freshening_model_disagreement']
+          sha={}
+          with zipfile.ZipFile('build/penguin_v06_packet_source/original_figure_source_verified.zip') as z:
+              assert z.testzip() is None
+              names=set(z.namelist())
+              assert all(f+'.png' in names and f+'.svg' in names for f in expected)
+              receipt=json.loads(z.read('v06_four_figure_original_source_receipt.json'))
+              assert receipt['status']=='PASS_FOUR_V06_ORIGINAL_SOURCE_FIGURES_WITH_DISTINCT_BIOLOGICAL_DENOMINATORS'
+              assert receipt['figures']==expected
+              assert (receipt['n_original_known_colony_sites'],receipt['n_original_marine_annual_site_years'],receipt['n_original_distinct_GLORYS_wet_cells'])==(595,16464,378)
+              assert (receipt['strict_pair_positive_ratios'],receipt['strict_pair_subtotals_positive'])==(6,5)
+              assert receipt['historical_optical_isotope_region_conservative_CI_crosses_zero']
+              assert receipt['no_salinity_mechanism_or_penguin_abundance_forecast']
+              dest=out/'figures'
+              dest.mkdir(parents=True,exist_ok=True)
+              for f in expected:
+                  for ext in ('png','svg'):
+                      target=dest/(f+'.'+ext)
+                      target.write_bytes(z.read(f+'.'+ext))
+                      sha[str(target.relative_to(out))]=hashlib.sha256(target.read_bytes()).hexdigest()
+              (out/'v06_original_figure_source_receipt.json').write_text(
+                  json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+          (out/'MANUSCRIPT_V06_WORKING.md').write_text(m)
+          sha['MANUSCRIPT_V06_WORKING.md']=hashlib.sha256(m.encode()).hexdigest()
+          editorial=Path('research/climate-penguin/macro_panantarctic_v1/EDITORIAL_V06_ONE_MACRO_PAPER_CORE_AND_FOUR_FIGURE_ALTERNATIVE_20261118.md')
+          if editorial.is_file():
+              shutil.copy2(editorial,out/'EDITORIAL_ORIGINAL_FOUR_FIGURE_CONTRACT.md')
+              sha['EDITORIAL_ORIGINAL_FOUR_FIGURE_CONTRACT.md']=hashlib.sha256(
+                  (out/'EDITORIAL_ORIGINAL_FOUR_FIGURE_CONTRACT.md').read_bytes()).hexdigest()
+          readme='''# Antarctic penguin macro manuscript — integrated v0.6 candidate (2026-11-18)
+
+          One working English manuscript and four reproducibly generated main figures.
+          This packet is source-audited **editorial material, not submitted/accepted**.
+          The frozen previously reviewed v0.5 manuscript, Figures 1–4, Paper 1,
+          Paper 2, and the repository main branch were not modified.
+
+          Scientific scope: separate temperature–ice and salinity gradients;
+          actual colony redistribution and local pair species nesting; positive
+          but regionally uncertain optical δ15N–salinity association; physical
+          future CMIP6 SOS/SIC model disagreement.
+
+          Not established: future penguin nesting, fish/krill fractions, climate
+          causal pathway, tracked bird migration, or robust transfer across
+          biological source cohorts.
+
+          Main original archived input providers remain the owners of their data;
+          the packet contains only figures, original-source receipts and our
+          manuscript text, not republished third-party raw records.
+
+          Original manuscript GitHub:
+          https://github.com/zuizui0223/mina/blob/analysis/penguin-decade-redistribution-v1-20261110/research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/MANUSCRIPT_V06_MARINE_AXES_NESTING_ISOTOPE_CMIP6_WORKING.md
+          Original verified figure run:
+          https://github.com/zuizui0223/mina/actions/runs/44248712605
+          '''
+          (out/'README_SOURCE_AND_STATUS.md').write_text('\n'.join(line.strip() for line in readme.splitlines())+'\n')
+          provenance={'status':'PASS_ONE_ANNOTATED_V06_MANUSCRIPT_FOUR_PUBLISHED_SOURCE_FIGURES',
+                      'source_git_commit':os.environ.get('GITHUB_SHA'),
+                      'manuscript_word_count_whitespace':len(m.split()),
+                      'figure_names':expected,'figure_count':4,
+                      'total_figure_png_svg_files':8,'source_original_figure_run_id':44248712605,
+                      'source_figure_artifact_id':14403086374,
+                      'source_sha256_manifest':sha,
+                      'no_original_third_party_raw_archives_in_packet':True,
+                      'no_causal_salinity_diet_or_future_nest_claim':True,
+                      'manuscript_status':'working candidate not submitted; existing frozen v0.5 untouched'}
+          (out/'v06_package_validation_receipt.json').write_text(json.dumps(provenance,indent=2,ensure_ascii=False)+'\n')
+          print('PASS candidate v0.6 original source figure and manuscript consistency',
+                len(m.split()),'words; 4 figures; 8 PNG/SVG assets')
+          PY
+      - name: Archive v0.6 candidate manuscript and original-source verified editable vectors
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-v06-complete-source-verified-manuscript-and-4figures-candidate
+          path: build/penguin_v06_candidate_verified/
+          if-no-files-found: warn
+          retention-days: 30
