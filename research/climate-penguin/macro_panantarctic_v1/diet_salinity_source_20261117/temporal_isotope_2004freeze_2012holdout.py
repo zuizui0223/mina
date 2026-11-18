@@ -157,7 +157,7 @@ def metrics(pred,y,w=None):
     diff=pred-y
     return {
         "RMSE":float(np.sqrt(np.average(diff**2,weights=w))),
-        "MAE":float(np.average(abs(diff),weights=w))),
+        "MAE":float(np.average(abs(diff),weights=w)),
         "source_rows":len(y)
     }
 
