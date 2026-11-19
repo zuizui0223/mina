@@ -1,0 +1,49 @@
+name: AADC 16 observed AtoP full Landsat STAC source inventory
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_landsat_scene_source.py
+      - tests/test_aadc_landsat_scene_source.py
+      - .github/workflows/aadc-16-atoP-landsat-full-source.yml
+  workflow_dispatch:
+concurrency:
+  group: aadc16-landsat-complete-source-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  all-source-events:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests openpyxl xlrd
+      - name: Compile and test source year and geography
+        run: |
+          python -m py_compile scripts/audit_aadc_landsat_scene_source.py
+          python -m unittest discover -s tests -p test_aadc_landsat_scene_source.py -v
+      - name: Download original bounded AADC verified 16 reported transitions
+        run: |
+          mkdir -p build/aadc
+          gh run download 44530909415 -n aadc-eight-species-high-evidence-source-20261119 -D build/aadc
+          test -f build/aadc/AADC_2025_EIGHT_SPECIES_HIGH_EVIDENCE_TRANSITION_SOURCE_GATE_20261119.json
+      - name: Query both austral summers for all original 16 A-to-P events
+        run: |
+          python -m scripts.audit_aadc_landsat_scene_source \
+            --strict-aadc-events-json build/aadc/AADC_2025_EIGHT_SPECIES_HIGH_EVIDENCE_TRANSITION_SOURCE_GATE_20261119.json \
+            --out-json build/AADC_16_AP_LANDSAT_FULL_SOURCE_SUPPORT_20261119.json \
+            --max-events 16
+      - name: Keep source evidence or explicit HOLD without ecological model
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-16-events-landsat-original-scene-source-full
+          path: build/AADC_16_AP_LANDSAT_FULL_SOURCE_SUPPORT_20261119.json
+          retention-days: 30
