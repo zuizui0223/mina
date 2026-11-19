@@ -132,7 +132,7 @@ def source_link(cohort,phys):
 
 def main(a):
     cohort,cells,regions,source_sha=source_cohort(a.original_isotope_zip)
-    seasons=sorted(cohort.season.astype(int).unique())
+    seasons=[int(v) for v in sorted(cohort.season.astype(int).unique())]
     months=make_months(seasons)
     ds=xr.open_zarr(fsspec.get_mapper(ZARR_URL),consolidated=True)
     idx, actual = select_levels(ds)
