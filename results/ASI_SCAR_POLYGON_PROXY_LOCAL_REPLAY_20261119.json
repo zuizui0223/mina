@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-asi-scar-polygon-proxy-exploratory-local-replay-20261119",
+  "status": "RECOMPUTED_FROM_PINNED_SOURCE_ARTIFACTS_GITHUB_ACTIONS_VALIDATION_QUEUED",
+  "provenance": {
+    "asi_source_original_commit": "f34545a163ee22eb557ac2cd8c01e219271787aa",
+    "asi_source_csv_blob_sha1": "b26be882f7a56e77287dbebd897e8762efafe7a3",
+    "scar_original_zip_sha256": "1e9103e9afaa012b0746eec487c0a473c70834bfc85220f89082e747658aaa66",
+    "input_asi_source_actions_run": 44511340025,
+    "input_scar_source_actions_run": 44512297362,
+    "input_asi_panel_csv_sha256": "44f746cd66727afed648a372eac970669ce8c59570df52c15b41db2d4678acaa",
+    "input_scar_geo_csv_sha256": "62141712b88c4ffa9ce46f0f4d30634147aa44ac0a71cf9145584951f94885e1",
+    "model_code": "scripts/fit_asi_antarctic_polygon_proxy_exploratory.py",
+    "ci_workflow_run": 44513846995,
+    "reproduction": "Independent container replay using pandas 2.2.3 statsmodels 0.14.6; source CSV bytes from GitHub Actions artifacts. This result is not yet certified by the queued CI run."
+  },
+  "design": {
+    "source_spatial_blocks": [
+      "-24_10",
+      "-25_11",
+      "-25_12",
+      "-25_13",
+      "-25_15",
+      "-25_16"
+    ],
+    "source_sites": 82,
+    "site_species_seasons": 1127,
+    "species": [
+      "ADPE",
+      "CHPE",
+      "GEPE"
+    ],
+    "response": "Breeding observed during at least one ASI visit within that site×species×season; non-detection is NOT true absence",
+    "contrast": "Non-largest SCAR land feature vs largest continuous land source polygon; NOT verified physical ocean island",
+    "formula": "breeding_confirmed ~ separate_source_polygon + C(species) + C(spatial_block_100km) + log2_visits + year_decades",
+    "variance": "clustered sandwich at ASI site code (not at six 100km spatial blocks)",
+    "timing": "Post-source exploratory after 0/1/2 field state and geo class support inspected; not preregistered"
+  },
+  "effect": {
+    "focal_beta": -0.29396375972927163,
+    "odds_ratio": 0.745303500954519,
+    "site_cluster_robust_beta_95ci": [
+      -0.8698475955563254,
+      0.2819200760977822
+    ],
+    "site_cluster_robust_OR_95ci": [
+      0.41901540419119365,
+      1.325672762812325
+    ],
+    "site_cluster_robust_descriptive_p": 0.3170798493321789,
+    "no_detection_of_direction": true,
+    "no_equivalence_inference": true
+  },
+  "leave_one_100km_block_out_beta": {
+    "-24_10": -0.33029560553084,
+    "-25_11": -0.34894803454364826,
+    "-25_12": -0.4112870791534473,
+    "-25_13": -0.2920398252083267,
+    "-25_15": -0.08163757003727015,
+    "-25_16": -0.3437949461555682
+  },
+  "species_source_count": [
+    {
+      "species": "ADPE",
+      "class": "CONTINENT_PROXY",
+      "n": 94,
+      "breeding_confirmed": 22
+    },
+    {
+      "species": "ADPE",
+      "class": "NONCONTINENTAL_PROXY",
+      "n": 281,
+      "breeding_confirmed": 107
+    },
+    {
+      "species": "CHPE",
+      "class": "CONTINENT_PROXY",
+      "n": 92,
+      "breeding_confirmed": 42
+    },
+    {
+      "species": "CHPE",
+      "class": "NONCONTINENTAL_PROXY",
+      "n": 280,
+      "breeding_confirmed": 81
+    },
+    {
+      "species": "GEPE",
+      "class": "CONTINENT_PROXY",
+      "n": 98,
+      "breeding_confirmed": 74
+    },
+    {
+      "species": "GEPE",
+      "class": "NONCONTINENTAL_PROXY",
+      "n": 282,
+      "breeding_confirmed": 180
+    }
+  ],
+  "claim_ceiling": [
+    "This model assesses observed breeding-detection odds only; site history and detection probability are not modeled explicitly.",
+    "Map source feature is not independently validated physical island or mainland.",
+    "Six spatial blocks are too few for reliable block-level inference; site robust CI may be optimistic.",
+    "Non-significance does not establish island/mainland equivalence, presence or absence of mammalian predator effects, or continental island convergence.",
+    "No glacial retreat effect or first colonization event identified.",
+    "Results are exploratory and must not replace frozen Paper 1/Paper 2."
+  ]
+}
