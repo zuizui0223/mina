@@ -1,0 +1,45 @@
+name: All eight AADC source-paired events actual Landsat QA pixel gate
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_all8_aadc_landsat_local_qa.py
+      - tests/test_all8_aadc_landsat_local_qa.py
+      - .github/workflows/aadc-all8-landsat-pixel-source-gate.yml
+  workflow_dispatch:
+jobs:
+  all8-source-pixels:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 17
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests numpy rasterio pyproj shapely
+      - name: Compile source QA logic and synthetic selection gate
+        run: |
+          python -m py_compile scripts/audit_all8_aadc_landsat_local_qa.py
+          python -m unittest discover -s tests -p test_all8_aadc_landsat_local_qa.py -v
+      - name: Original source-pinned all sixteen AADC Landsat scene metadata
+        run: |
+          mkdir -p build/ori
+          gh run download 44538120002 -n aadc-16-events-landsat-original-scene-source-full -D build/ori
+          test -f build/ori/AADC_16_AP_LANDSAT_FULL_SOURCE_SUPPORT_20261119.json
+      - name: Read 21x21 QA chips in both seasons of every available fixed case
+        run: |
+          python -m scripts.audit_all8_aadc_landsat_local_qa \
+            --full-stac-source-json build/ori/AADC_16_AP_LANDSAT_FULL_SOURCE_SUPPORT_20261119.json \
+            --out-json build/AADC_ALL8_EVENT_PAIRED_LOCAL_LANDSAT_QA_20261119.json
+      - name: Preserve source-only per-event raw QA summaries without ephemeral SAS tokens
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aadc-all8-original-event-local-landsat-QA
+          path: build/AADC_ALL8_EVENT_PAIRED_LOCAL_LANDSAT_QA_20261119.json
+          retention-days: 30
