@@ -1,0 +1,45 @@
+name: AADC original QA pixels free Planetary Computer fallback
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_landsat_qa_via_planetary_computer.py
+      - tests/test_aadc_landsat_pc_sas_source.py
+      - .github/workflows/aadc-landsat-PC-free-qa.yml
+  workflow_dispatch:
+jobs:
+  original-local-QA:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests numpy rasterio pyproj shapely
+      - name: Verify original scene and signed URL restrictions
+        run: |
+          python -m py_compile scripts/audit_aadc_landsat_qa_via_planetary_computer.py
+          python -m unittest discover -s tests -p test_aadc_landsat_pc_sas_source.py -v
+      - name: Fetch original source same two Landsat IDs and original AWS rejection
+        run: |
+          mkdir -p build/first
+          gh run download 44539638611 -n aadc-original-local-landsat-QA-source -D build/first
+          test -f build/first/AADC_ORIGINAL_LANDSAT_LOCAL_QA_2017_2018_20261119.json
+      - name: Read identical Landsat scene QA via public PC data authorization API
+        run: |
+          python -m scripts.audit_aadc_landsat_qa_via_planetary_computer \
+            --previous-qa-source-json build/first/AADC_ORIGINAL_LANDSAT_LOCAL_QA_2017_2018_20261119.json \
+            --out-json build/AADC_LANDSAT_LOCAL_QA_PC_ORIGINAL_SCENES_20261119.json
+      - name: Preserve redacted SAS-free source QA receipt
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-landsat-QA-free-PC-original-scenes
+          path: build/AADC_LANDSAT_LOCAL_QA_PC_ORIGINAL_SCENES_20261119.json
+          retention-days: 30
