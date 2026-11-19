@@ -1,0 +1,41 @@
+name: postglacial-scar-v713-static-land-source
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_scar_v713_land_service.py
+      - tests/test_scar_v713_land_service.py
+      - .github/workflows/postglacial-scar-v713-static-land-source.yml
+  workflow_dispatch:
+
+concurrency:
+  group: postglacial-scar-v713-static-land-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-availability:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 6
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test fail-closed ArcGIS service semantics
+        run: |
+          python -m py_compile scripts/audit_scar_v713_land_service.py
+          python -m unittest discover -s tests -p test_scar_v713_land_service.py -v
+      - name: Query publisher original ArcGIS static land counts
+        run: |
+          python -m scripts.audit_scar_v713_land_service \
+            --out-json build/SCAR_ADD_V713_LAND_SOURCE_SUPPORT_20261119.json
+      - name: Preserve source and STOP without ecological fit
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scar-v713-land-source-support
+          path: build/SCAR_ADD_V713_LAND_SOURCE_SUPPORT_20261119.json
+          retention-days: 30
