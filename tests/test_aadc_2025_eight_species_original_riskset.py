@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from scripts.audit_aadc_2025_eight_species_original_riskset import (
     SOURCE_COUNTS, SOURCE_EXPECTED_EVENTS, PUBLICATION_REPORTED_EVENTS,
     season_year,strict_state,audit_source
@@ -42,16 +43,18 @@ class TestPublisherRiskSet(unittest.TestCase):
         ]
         cert=[dict(species_code="CP",occurrence="A",vantage="G",
                    geog_site_area_cat3="1",occurrence_cert_cat="H")]
-        d=audit_source({
-            "2025_seabird":fly,
-            "2025_penguin":[],
-            "2025_geographic_sites":geo,
-            "2025_certainty":cert,
-            "2016_icefree_site_atlas":old,
-        })
-        # This small synthetic fixture deliberately must NOT call original
-        # 33,107-count gate; the source function rejects a partial archive.
+        with patch("scripts.audit_aadc_2025_eight_species_original_riskset.SOURCE_EXPECTED_EVENTS",len(fly)):
+            d=audit_source({
+                "2025_seabird":fly,
+                "2025_penguin":[],
+                "2025_geographic_sites":geo,
+                "2025_certainty":cert,
+                "2016_icefree_site_atlas":old,
+            })
         self.assertEqual(d["status"],"PUBLISHER_EIGHT_SPECIES_SOURCE_SUPPORT_NO_BIOLOGICAL_EFFECT")
+        self.assertEqual(d["observed_site_species_A_then_P_pairs"],1)
+        self.assertEqual(d["consecutive_strict_state_pairs_by_species"]["CP"].get("A_REPORTED_ONLY__to__P_REPORTED_NO_A",0),1)
+        self.assertEqual(d["resolved_annual_site_species_status"]["CONFLICT_P_AND_A"],1)
 
 if __name__=="__main__":
     unittest.main()
