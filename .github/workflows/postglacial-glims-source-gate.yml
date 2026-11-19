@@ -1,0 +1,42 @@
+name: postglacial-glims-source-gate
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_glims_antarctic_island_source.py
+      - tests/test_glims_antarctic_island_source.py
+      - .github/workflows/postglacial-glims-source-gate.yml
+  workflow_dispatch:
+
+concurrency:
+  group: postglacial-glims-source-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pilot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax and synthetic provenance validation
+        run: |
+          python -m py_compile scripts/audit_glims_antarctic_island_source.py
+          python -m unittest discover -s tests -p test_glims_antarctic_island_source.py -v
+      - name: GLIMS public WFS metadata-only pilot
+        run: |
+          python -m scripts.audit_glims_antarctic_island_source \
+            --out-json build/GLIMS_ANTARCTIC_ISLAND_SOURCE_GATE_20261119.json \
+            --max-features 300
+      - name: Preserve source-gate output regardless of availability status
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: glims-antarctic-island-source-gate-20261119
+          path: build/GLIMS_ANTARCTIC_ISLAND_SOURCE_GATE_20261119.json
+          retention-days: 30
