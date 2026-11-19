@@ -1,0 +1,69 @@
+name: Penguin direct DEEP-AA actual daily source validation (no isotope fit)
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inspect_deepaa_original_zip_source_20261119.py'
+      - '.github/workflows/penguin-20261119-DEEPAA-direct-polynya-source-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  actual_DEEPAA_source_manifest:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read predeclared spatial and time support gate
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/POLYNYA_DIRECT_SOURCE_SUPPORT_GATE_20261119_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inspect_deepaa_original_zip_source_20261119.py
+      - name: Install actual NetCDF4 reader, source geography pandas and numpy
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'netCDF4>=1.6,<2'
+      - name: Retrieve exact original source isotope geography artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/deepaa_source_gate
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/deepaa_source_gate/original860.zip
+          echo "dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205  build/deepaa_source_gate/original860.zip" | sha256sum --check
+      - name: Download actual 248MB Zenodo recommended DEEP-AA subset, not sensitivity datasets
+        run: |
+          set -euo pipefail
+          curl -fL --retry 5 --retry-delay 5 --connect-timeout 60 --max-time 1200 \
+            --output build/deepaa_source_gate/SIC60_6.25km_20d.zip \
+            'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1'
+          echo 'f3f958389cc5e67ac1c4e3a6ee164318  build/deepaa_source_gate/SIC60_6.25km_20d.zip' | md5sum --check
+      - name: Inspect all real daily data filenames and several native NetCDF schemas, no Y fit
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inspect_deepaa_original_zip_source_20261119.py \
+            --deepaa-zip build/deepaa_source_gate/SIC60_6.25km_20d.zip \
+            --original-zip build/deepaa_source_gate/original860.zip \
+            --out build/deepaa_source_gate/preflight_result
+      - name: Assert actual author files, no isotope response access, no post-hoc proxies
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/deepaa_source_gate/preflight_result/DEEPAA_NATIVE_SOURCE_MANIFEST_RECEIPT.json')
+          r=json.loads(p.read_text())
+          assert r['source_verified_md5']=='f3f958389cc5e67ac1c4e3a6ee164318'
+          assert r['original_isotope_rows']==860
+          assert r['did_not_access_or_test_optical_isotope_response']
+          assert r['no_isotope_mechanism_test_performed']
+          assert r['source_n_all_native_netCDF_daily_maps']>=1500
+          print('ACTUAL_DEEPAA_COVERAGE',r['source_full_80pct_winter_years_before_response_open'])
+          PY
+      - name: Preserve original full native date manifest and native variable metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-DEEPAA-original-source-native-date-and-schema-preflight-20261119
+          path: build/deepaa_source_gate/preflight_result/
+          if-no-files-found: warn
+          retention-days: 30
