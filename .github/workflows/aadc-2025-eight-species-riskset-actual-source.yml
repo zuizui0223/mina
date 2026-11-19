@@ -1,0 +1,43 @@
+name: AADC original eight-seabird explicit surveyed riskset audit
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_2025_eight_species_original_riskset.py
+      - tests/test_aadc_2025_eight_species_original_riskset.py
+      - .github/workflows/aadc-2025-eight-species-riskset-actual-source.yml
+  workflow_dispatch:
+
+concurrency:
+  group: aadc-2025-eight-species-real-source-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  original-source-support:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source parser dependencies
+        run: python -m pip install requests openpyxl xlrd
+      - name: Only source-state semantics and published count discrepancy tests
+        run: |
+          python -m py_compile scripts/audit_aadc_2025_eight_species_original_riskset.py
+          python -m unittest discover -s tests -p test_aadc_2025_eight_species_original_riskset.py -v
+      - name: Retrieve verified publisher source files and original 2025 site identities
+        run: |
+          python -m scripts.audit_aadc_2025_eight_species_original_riskset \
+            --out-json build/AADC_2025_EIGHT_SPECIES_ORIGINAL_RISKSET_SUPPORT_20261119.json
+      - name: Preserve source gate without ecological p-values or model
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aadc-2025-eight-species-original-riskset-support
+          path: build/AADC_2025_EIGHT_SPECIES_ORIGINAL_RISKSET_SUPPORT_20261119.json
+          retention-days: 30
