@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-19",
+  "analysis_id": "mina-aadc-2025-original-sixdigit-season-and-high-evidence-transition-support-v1",
+  "status": "SOURCE_QA_PASS_BUT_CAUSAL_NEW_SETTLEMENT_AND_ISLAND_GENERALITY_HOLD",
+  "source": {
+    "publisher": "Australian Antarctic Data Centre",
+    "doi_2025": "10.26179/5n29-r073",
+    "original_SHA256": {
+      "occupancy_penguin": "8b38aa86f0ef2a0a9fe8c5bb13da904a9f2431cd503644b962b6e116ac3187ac",
+      "occupancy_seabird": "4a03d8efc8f1579b2eafd982811c39edc00d2c87d49e990f93c6411db6860360",
+      "geog_sites_all": "ed5f59d11a0e2ca7491ecf32dc8b04de524e83edf7acd268702963c3b7561294",
+      "occupancy_certainty": "b7aba52732102441b4edbe438b854cb9d2dbf39542fd6fbfcd62647ae9fdd156"
+    },
+    "original_event_rows": 33107,
+    "published_2025_event_rows": 33297,
+    "difference_unresolved": 190,
+    "original_geographical_site_candidates": 7785,
+    "original_visited_sites_in_2025": 4019,
+    "reference_2016_geographic_sites": 4884,
+    "reference_2016_ids_retained_in_2025": 4862
+  },
+  "time_axis": {
+    "original_excel_season_code_example": 191213,
+    "decoded_start_year": 1912,
+    "decoded_end_year": 1913,
+    "original_raw_season_as_integer_is_not_calendar_year": true,
+    "proper_year_bounds": [
+      1912,
+      2020
+    ],
+    "legacy_PR180_reproduction": {
+      "original_site_seasons": 4904,
+      "P_site_seasons": 2323,
+      "A_site_seasons": 2581,
+      "AA": 28,
+      "AP": 1,
+      "PP": 38,
+      "PA": 0,
+      "total_pseudo_consecutive_pairs": 67,
+      "legacy_pseudo_year_example": "199899 -> 199900"
+    },
+    "corrected_original_ADP_replay": {
+      "AA": 884,
+      "AP": 5,
+      "PP": 1412,
+      "PA": 5,
+      "total_valid_consecutive_pairs": 2306,
+      "A_risk_pairs": 889,
+      "first_observed_AP": 2,
+      "previously_detected_AP": 3,
+      "AP_sites": 5,
+      "AP_subgroups": 3,
+      "AP_all_on_source_islands": true,
+      "prior_original_expansion_gate_still_passes": false,
+      "prior_original_island_continent_gate_still_passes": false
+    }
+  },
+  "eight_species": {
+    "source_broad_states": {
+      "A": 11613,
+      "P": 4719,
+      "NR": 16607,
+      "mixed_A_NR": 4,
+      "conflicting_P_A": 4
+    },
+    "original_observed_annual_A_to_P": {
+      "all_events": 16,
+      "distinct_site_ids": 14,
+      "species": {
+        "ADP": 5,
+        "SK": 9,
+        "CP": 1,
+        "SGP": 1
+      },
+      "distinct_subgroups": 4,
+      "large_region_prefixes": [
+        "DUM",
+        "LUT"
+      ],
+      "A_risk_pairs": 4249,
+      "source_polygon_event_counts": {
+        "island": 15,
+        "continent": 1
+      }
+    },
+    "strict_source_grade_scheme": {
+      "A_absence_category": 4,
+      "P_category": 5,
+      "NR_categories": [
+        2,
+        3
+      ],
+      "rule": "Exact source certainty tuple and all three expert validation flags Y; no NR/mixed year included",
+      "original_certainty_lookup_rules": 216,
+      "eligible_site_species_years": 11748,
+      "site_species_years_excluded_for_not_all_expert_Y": 4584,
+      "AA": 4225,
+      "AP": 16,
+      "PA": 11,
+      "PP": 2827,
+      "A_risk_pairs": 4241,
+      "distinct_AP_site_ids": 14,
+      "distinct_AP_subgroups": 4,
+      "AP_by_source_polygon": {
+        "island": 15,
+        "continent": 1
+      },
+      "A_risk_by_source_polygon": {
+        "island": 4176,
+        "continent": 65
+      },
+      "all_sixteen_original_AP_preserved": true
+    }
+  },
+  "execution": {
+    "source_schema_workflow": 44524557961,
+    "source_full_riskset_workflow": 44528819900,
+    "old_vs_corrected_Adelie_replay_workflow": 44529626081,
+    "strict_expert_grade_workflow": 44530909415,
+    "strict_expert_grade_artifact_id": 14534131482,
+    "replay_artifact_id": 14532293566,
+    "analyzed_branch": "analysis/postglacial-glims-sourcegate-20261119"
+  },
+  "interpretation": {
+    "new_biological_effect_fitted": false,
+    "new_icefree_land_verified": false,
+    "true_new_settlement_events_estimated": false,
+    "publisher_event_count_discrepancy_resolved": false,
+    "island_mammalian_predator_causal_effect_identifiable": false,
+    "major_remaining_limits": [
+      "State A is publisher-reported absence with high relative validation certainty, not independently verified zero across a precisely mapped new rock patch.",
+      "No original survey record establishes post-glacier-exposure occupancy changes on the same physically dated land polygon.",
+      "Events are concentrated in DUM and LUT parent regions, not independent pan-Antarctic replicates.",
+      "15/16 island events must not be interpreted as island preference: 4176/4241 (98.5%) strict A risk pairs are on islands, continent has one transition from 65 risk pairs.",
+      "Published 2025 article analyzed the same survey source; not a novel independent experiment.",
+      "Six digit year bug correction changes transition support but does not unlock original >=10 first observed colonization or island/continent balance gates.",
+      "Original user Paper1/Paper2 scientific freeze and main are unchanged."
+    ]
+  }
+}
