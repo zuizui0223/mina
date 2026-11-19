@@ -1,0 +1,55 @@
+name: Antarctic ASI all-site island-continent GIS support
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_asi_ant_island_mainland_source_support.py
+      - tests/test_asi_ant_island_mainland_source_support.py
+      - .github/workflows/asi-antarctic-island-mainland-source-gate.yml
+  workflow_dispatch:
+
+concurrency:
+  group: asi-antarctic-island-mainland-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  all-site-geometry:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy pandas pyproj shapely pyshp requests
+      - name: Test source-only land classification semantics
+        run: |
+          python -m py_compile scripts/audit_asi_ant_island_mainland_source_support.py
+          python -m unittest discover -s tests -p test_asi_ant_island_mainland_source_support.py -v
+      - name: Fetch ASI original visit source and exact immutable files
+        run: |
+          mkdir -p build/asi
+          base='https://raw.githubusercontent.com/lynch-lab/Schrimpf_etal_PolarBiology_Occupancy/f34545a163ee22eb557ac2cd8c01e219271787aa'
+          curl --fail --location --silent --show-error --retry 2 --max-time 60 "$base/Raw_ASI_Data.csv" > build/asi/Raw_ASI_Data.csv
+          curl --fail --location --silent --show-error --retry 2 --max-time 60 "$base/ESM_5.csv" > build/asi/ESM_5.csv
+          test "$(git hash-object build/asi/Raw_ASI_Data.csv)" = 'b26be882f7a56e77287dbebd897e8762efafe7a3'
+          test "$(git hash-object build/asi/ESM_5.csv)" = '44dfb41e696ed84cba54af356204e39f87561533'
+      - name: Determine source-only original SCAR exact island-continental sample support
+        run: |
+          python -m scripts.audit_asi_ant_island_mainland_source_support \
+            --raw-asi-csv build/asi/Raw_ASI_Data.csv \
+            --asi-site-csv build/asi/ESM_5.csv \
+            --out-json build/ASI_196_SCAR_ISLAND_MAINLAND_SOURCE_SUPPORT_20261119.json \
+            --out-geography-csv build/ASI_196_SCAR_SOURCE_GEOGRAPHY_20261119.csv
+      - name: Retain original-source geometry support and ambiguity
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asi-196-scar-island-mainland-source-gate-20261119
+          path: |
+            build/ASI_196_SCAR_ISLAND_MAINLAND_SOURCE_SUPPORT_20261119.json
+            build/ASI_196_SCAR_SOURCE_GEOGRAPHY_20261119.csv
+          retention-days: 30
