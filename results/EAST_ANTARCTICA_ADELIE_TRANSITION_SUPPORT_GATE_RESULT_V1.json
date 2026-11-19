@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "result_id": "east-antarctica-adelie-transition-support-gate-result-v1",
+  "date": "2026-10-06",
+  "status": "support_gate_failed_no_effect_opened",
+  "execution": {
+    "workflow_run_id": 37401294166,
+    "artifact_id": 11385426302,
+    "artifact_digest": "sha256:5f94d5e80d81545792492e388e785cbb9135fc18e72fb6f9e55efdbe64d3e6cb",
+    "head_sha": "554950af7289fb50a8c26253128314a9a2e9909b"
+  },
+  "support": {
+    "explicit_PA_site_seasons": 4904,
+    "present_site_seasons": 2323,
+    "absent_site_seasons": 2581,
+    "consecutive_transitions": {
+      "AA": 28,
+      "AP": 1,
+      "PP": 38,
+      "PA": 0
+    },
+    "A_risk_transitions": 29,
+    "first_colonizations": 1,
+    "recolonizations": 0,
+    "previously_occupied_A_risk_transitions": 0
+  },
+  "gates": {
+    "expansion_gate": false,
+    "recovery_gate": false,
+    "island_feature_interaction_gate": false
+  },
+  "interpretation": [
+    "The East Antarctic occupancy archive contains many explicit P/A observations but very few consecutive-year absent-site risk transitions.",
+    "The frozen annual colonization/recolonization design is not identifiable from these data.",
+    "No distance, area, abundance-pressure, isolation effect, or p-value was computed.",
+    "The published long-term East Antarctic expansion remains a useful biological counterexample, but not a valid prospective annual settlement-hazard test under this design."
+  ],
+  "stop_rule": "Do not bridge unobserved years, convert NR to absence, change the geographic-site aggregation, or select periods to rescue the failed gate."
+}
