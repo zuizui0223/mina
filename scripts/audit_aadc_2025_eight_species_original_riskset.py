@@ -67,8 +67,9 @@ def read_source_rows(raw:bytes,filename:str,sheet:str,expected:int):
             ws=wb[sheet]
             stream=ws.iter_rows(values_only=True)
             cols=[txt(x).lower() for x in next(stream)]
-            if len(cols)!=len(set(cols)):
-                raise ValueError("ambiguous original XLSX header")
+            nonempty=[x for x in cols if x]
+            if len(nonempty)!=len(set(nonempty)):
+                raise ValueError("ambiguous nonblank original XLSX header")
             body=[dict(zip(cols,row)) for row in stream]
         finally:wb.close()
     if len(body)!=expected:
