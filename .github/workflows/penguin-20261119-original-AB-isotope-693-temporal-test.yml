@@ -1,0 +1,70 @@
+name: Penguin source-locked 693 isotope winter salinity vs stratification AB
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/fit_original_AB_693_optical_isotope_exploratory_20261119.py'
+      - '.github/workflows/penguin-20261119-original-AB-isotope-693-temporal-test.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source_same_support_AB_temporal_validation:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical source fit libraries
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'statsmodels>=0.14,<1' 'scipy<2'
+      - name: Validate locked A-B exploratory contract and compile run
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/MECHANISM_AB_EXPLORATORY_MODEL_FROZEN_20261119_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/fit_original_AB_693_optical_isotope_exploratory_20261119.py
+      - name: Retrieve exact original author optical isotope and prior original physical only source
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_AB_693_original_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_AB_693_original_source/original_isotope860.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14537926313/zip" > build/penguin_AB_693_original_source/original_AB_physical.zip
+          echo "dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205  build/penguin_AB_693_original_source/original_isotope860.zip" | sha256sum --check
+          echo "a300e588c85256c060ffffa14717378fc9198a75a0ef583669e6e94e2236255f  build/penguin_AB_693_original_source/original_AB_physical.zip" | sha256sum --check
+      - name: Run source-locked 693 original matched season A vs B optical-isotope exploratory comparison
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/fit_original_AB_693_optical_isotope_exploratory_20261119.py \
+            --isotope-zip build/penguin_AB_693_original_source/original_isotope860.zip \
+            --physical-zip build/penguin_AB_693_original_source/original_AB_physical.zip \
+            --out build/penguin_AB_693_source_results
+      - name: Guard genuine historical train-test, source geometry, and no fish/diet forecasts
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          p=Path('build/penguin_AB_693_source_results')
+          r=json.loads((p/'same_693_original_source_AB_isotope_association.json').read_text())
+          h=pd.read_csv(p/'AB_frozen_known_site_holdout_predictions.csv')
+          assert r['status'] in ('NO_GO_AB_MECHANISM_WINNER','PROVISIONAL_PREDICTIVE_PROXY_ONLY_NO_MECHANISM_CAUSAL_IDENTIFICATION')
+          s=r['original_observational_support']
+          assert (s['original_n'],s['original_site_n'],s['complete_B_n'],s['complete_B_wetcells'],s['complete_B_regions'])==(860,88,693,68,13)
+          assert r['train']['max_source_season']==2004 and r['test']['min_source_season']==2005
+          assert len(h)==r['test']['rows']
+          assert h[['site_id','season']].duplicated().sum()==0
+          assert r['not_independent_confirmatory_experiment'] and r['original_optical_isotope_proxy_not_prey_guild']
+          assert r['no_full_ABC_equal_support'] and r['no_future_isotope_or_breeding_forecast']
+          assert len(r['in_sample_models'])==8 and len(r['heldout_model_loss'])==6
+          print('SOURCE_693_AB_VALIDATION',r['status'], 'train',r['train'],'test',r['test'])
+          print('SOURCE_693_AB_RMSE',{k:v['RMSE_site_equal'] for k,v in r['heldout_model_loss'].items()})
+          PY
+      - name: Preserve source-derived same-support coefficients, losses, and no-go decision
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-693-isotope-A-winter-salt-B-stratification-locked-2004-holdout
+          path: build/penguin_AB_693_source_results/
+          if-no-files-found: warn
+          retention-days: 30
