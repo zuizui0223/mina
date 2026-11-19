@@ -70,8 +70,12 @@ def find_source_members(z):
 def read_original_adpe(raatd_zip):
     with pinned_zip(raatd_zip,RAATD_MD5,"md5") as z:
         mname,tname,names=find_source_members(z)
-        meta=pd.read_csv(z.open(mname),dtype=str,low_memory=False)
-        track=pd.read_csv(z.open(tname),dtype=str,low_memory=False)
+        # RAATD 2020 publisher metadata contain legacy Windows/Latin-1
+        # contact and site-name bytes (0x95 etc.), not strictly UTF-8.
+        # All join IDs and geographic numeric fields are ASCII; encoding
+        # does not modify any tracked coordinates, times or source ID.
+        meta=pd.read_csv(z.open(mname),dtype=str,low_memory=False,encoding="latin1")
+        track=pd.read_csv(z.open(tname),dtype=str,low_memory=False,encoding="latin1")
     for df in [meta,track]:
         df.columns=[c.strip().lower().replace(".","_") for c in df.columns]
     expected_meta={"individual_id","abbreviated_name","deployment_decimal_latitude",
