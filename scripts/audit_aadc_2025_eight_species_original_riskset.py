@@ -78,6 +78,14 @@ def read_source_rows(raw:bytes,filename:str,sheet:str,expected:int):
 
 def season_year(value)->int|None:
     x=txt(value)
+    # Publisher XLS stores austral breeding seasons as six digits 191213=1912/13.
+    # Validate successor-year suffix rather than taking the first four digits
+    # from arbitrary numeric IDs or malformed season labels.
+    m6=re.fullmatch(r"((?:18|19|20)\d{2})(\d{2})",x)
+    if m6:
+        year=int(m6.group(1))
+        return year if (1850<=year<=2025 and
+                        int(m6.group(2))==(year+1)%100) else None
     m=re.fullmatch(r"((?:18|19|20)\d{2})(?:[-/]\d{2,4})?",x)
     if not m:return None
     year=int(m.group(1))
