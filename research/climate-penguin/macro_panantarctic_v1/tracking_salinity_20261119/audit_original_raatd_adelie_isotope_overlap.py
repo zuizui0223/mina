@@ -164,6 +164,13 @@ def audit(data,allmeta,source_detail,isotope,sites,out):
     available=set(map(tuple,src_isotope[["site_id","season"]].itertuples(index=False,name=None)))
     groups=[]
     for radius in RADII:
+        # Two distinct location notions. "Nearest within radius" increases
+        # with radius; "unique single colony within radius" need NOT.
+        # A deployment may be 2km from the nearest known colony but have
+        # another different colony 8km away, making 25km ambiguous.
+        nearest=data.loc[data[f"original_some_colony_near_{radius}km"]].copy()
+        nearest["candidate_pair"]=list(zip(nearest.nearest_isotope_site_id,nearest.season))
+        nearest=nearest.loc[nearest.candidate_pair.isin(available)].copy()
         q=data.loc[data[f"original_single_colony_unique_{radius}km"]].copy()
         q["matched_isotope_site_season"]=list(zip(q.nearest_isotope_site_id,q.season))
         q["genuine_matched_site_season"]=q.matched_isotope_site_season.isin(available)
@@ -178,6 +185,13 @@ def audit(data,allmeta,source_detail,isotope,sites,out):
             for_name=pd.DataFrame(columns=["individual_id","site_id","season","source_region","RAATD_device_type"])
         groups.append({
             "radius_km":radius,
+            "n_deployments_nearest_isotope_site_within_radius_regardless_ambiguous":int(data[f"original_some_colony_near_{radius}km"].sum()),
+            "n_nearest_source_isotope_site_seasons_same_year":int(nearest[["nearest_isotope_site_id","season"]].drop_duplicates().shape[0]),
+            "n_nearest_source_isotope_sites_same_year":int(nearest.nearest_isotope_site_id.nunique()),
+            "n_nearest_source_reporting_regions_same_year":int(nearest.nearest_isotope_site_id.map(
+                src_isotope.drop_duplicates("site_id").set_index("site_id").source_region).nunique()),
+            "n_nearest_source_individuals_same_year":int(nearest.individual_id.nunique()),
+            "n_nearest_ambiguous_individual_seasons_same_year":int((nearest.next_nearest_isotope_distance_km<=radius).sum()),
             "n_raatd_original_deployment_individual_seasons_near":len(q),
             "n_raatd_original_deployment_individuals_near":int(q.individual_id.nunique()),
             "n_raatd_original_isotope_site_seasons_matched":int(for_name[["site_id","season"]].drop_duplicates().shape[0]),
@@ -191,27 +205,43 @@ def audit(data,allmeta,source_detail,isotope,sites,out):
             "n_original_source_isotope_sites_total":88,
             "n_individuals_not_independent_predator_populations":True
         })
-    # Only genuine ≤25km geo-year matches, as a *descriptive* metadata site-year
-    # support map. Never publish private deployment contact or exact tracks.
-    matched=data.loc[data.original_single_colony_unique_25km].copy()
-    matched["key"]=list(zip(matched.nearest_isotope_site_id,matched.season))
-    matched=matched.loc[matched.key.isin(available)].copy()
-    table=matched.groupby(["nearest_isotope_site_id","season"],as_index=False).agg(
-        RAATD_n_source_individuals=("individual_id","nunique"),
-        RAATD_n_source_deployment_seasons=("season","size"),
-        RAATD_n_GPS_PTT_individuals=("RAATD_device_type",lambda x:int(x.isin(["GPS","PTT"]).sum())),
-        n_filtered_pos_estimates_novfeb=("tracking_filtered_fixes_in_novfeb","sum"),
-        nearest_deployment_km_min=("nearest_isotope_distance_km","min"),
-        nearest_deployment_km_max=("nearest_isotope_distance_km","max"))
-    table=table.rename(columns={"nearest_isotope_site_id":"site_id"})
-    table=table.merge(src_isotope,on=["site_id","season"],validate="one_to_one")
-    if table.duplicated(["site_id","season"]).any():
-        raise ValueError("Multiple source metadata site-year associations erroneously joined")
-    table.to_csv(out/"original_raatd_adelie_isotope_site_season_support_25km_unique_only.csv",index=False)
+    # Do not erase the 5-km genuine closest-colony matches when the 25-km
+    # distance window overlaps two distinct catalogued penguin colonies.
+    # The secondary nearest-site report flags ambiguity and is NOT an
+    # individually confirmed breeding-colony or guano-sample link.
+    for radius, scheme in [(5,"unique"),(25,"nearest")]:
+        if scheme=="unique":
+            matched=data.loc[data[f"original_single_colony_unique_{radius}km"]].copy()
+        else:
+            matched=data.loc[data[f"original_some_colony_near_{radius}km"]].copy()
+        matched["key"]=list(zip(matched.nearest_isotope_site_id,matched.season))
+        matched=matched.loc[matched.key.isin(available)].copy()
+        matched["ambiguous_other_isotope_colony_in_radius"]=(matched.next_nearest_isotope_distance_km<=radius)
+        table=matched.groupby(["nearest_isotope_site_id","season"],as_index=False).agg(
+            RAATD_n_source_individuals=("individual_id","nunique"),
+            RAATD_n_source_deployment_seasons=("season","size"),
+            RAATD_n_GPS_PTT_individuals=("RAATD_device_type",lambda x:int(x.isin(["GPS","PTT"]).sum())),
+            n_filtered_pos_estimates_novfeb=("tracking_filtered_fixes_in_novfeb","sum"),
+            nearest_deployment_km_min=("nearest_isotope_distance_km","min"),
+            nearest_deployment_km_max=("nearest_isotope_distance_km","max"),
+            any_other_colony_ambiguous=("ambiguous_other_isotope_colony_in_radius","any"))
+        table=table.rename(columns={"nearest_isotope_site_id":"site_id"})
+        table=table.merge(src_isotope,on=["site_id","season"],validate="one_to_one")
+        if table.duplicated(["site_id","season"]).any():
+            raise ValueError("Multiple source metadata site-year associations erroneously joined")
+        table.to_csv(out/f"original_raatd_adelie_isotope_site_season_support_{radius}km_{scheme}.csv",index=False)
     pd.DataFrame(groups).to_csv(out/"original_raatd_source_geographic_temporal_overlap_gate.csv",index=False)
     dev_meta=allmeta.device_type.fillna("UNKNOWN").str.upper().value_counts().astype(int).to_dict()
+    strict=groups[0]
+    # Fixed before seeing this original source: >=12 strict 5-km unique
+    # site-seasons with >=3 original GPS/PTT individuals each, >=3 distinct
+    # reporting regions and >=3 different source breeding seasons.
+    strict_table=pd.read_csv(out/"original_raatd_adelie_isotope_site_season_support_5km_unique.csv")
+    strong=strict_table.loc[strict_table.RAATD_n_GPS_PTT_individuals>=3]
+    gate=(len(strong)>=12 and strong.source_region.nunique()>=3
+          and strong.season.nunique()>=3)
     report={
-        "status":"SOURCE_TRACKING_2020_RAADT_DEPLOYMENT_SPACE_TIME_AUDIT_ONLY",
+        "status":"GO_TRACKING_ISOTOPE_SOURCE_OVERLAP" if gate else "NO_GO_TRACKING_ISOTOPE_MACRO_JOIN",
         "original_RAATD_source":RAATD_RECORD,
         "original_RAATD_source_md5":RAATD_MD5,
         "original_isotope_source_sha256":ISOTOPE_SOURCE_SHA256,
@@ -223,6 +253,12 @@ def audit(data,allmeta,source_detail,isotope,sites,out):
         "source_88_isotope_colonies":len(sites),
         "source_860_isotope_site_seasons":len(isotope),
         "source_overlap_by_radius":groups,
+        "strict_5km_actual_colony_seasons_with_min3_GPS_PTT_individuals":int(len(strong)),
+        "strict_5km_actual_regions_with_min3_GPS_PTT_individuals":int(strong.source_region.nunique()),
+        "strict_5km_actual_seasons_with_min3_GPS_PTT_individuals":int(strong.season.nunique()),
+        "fixed_minimum_gate":"strict 5km unique source colony match: >=12 site-seasons with >=3 GPS/PTT original individuals each, >=3 source reporting regions and >=3 source seasons",
+        "can_move_to_multi_region_used_available_isotope_integration":bool(gate),
+        "unique_site_25km_match_count_is_not_monotonic_in_radius":True,
         "attribution_limit":"Individual tracked deployment within 5/25/100km of isotope-observed known colony, NOT same individual or observed guano sample; only near-colony spatial support.",
         "filtered_locations_not_direct_feeding_or_dive_observations":True,
         "GLS_estimates_not_used_as_high_precision_GPS_tracks":True,
