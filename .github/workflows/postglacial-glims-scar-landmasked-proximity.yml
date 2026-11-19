@@ -1,0 +1,52 @@
+name: postglacial-glims-scar-landmasked-proximity
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_glims_scar_landmasked_proximity.py
+      - tests/test_glims_scar_landmasked_proximity.py
+      - .github/workflows/postglacial-glims-scar-landmasked-proximity.yml
+  workflow_dispatch:
+
+concurrency:
+  group: postglacial-glims-scar-landmasked-proximity-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-support:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install GIS libraries
+        run: python -m pip install numpy pandas pyreadr shapely pyproj
+      - name: Compile and test geometry semantics
+        run: |
+          python -m py_compile scripts/audit_glims_scar_landmasked_proximity.py
+          python -m unittest discover -s tests -p test_glims_scar_landmasked_proximity.py -v
+      - name: Clone pinned MAPPPD original source
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          test -f build/mapppdr/data/sites.rda
+      - name: Run actual read-only SCAR static-land × GLIMS metadata support
+        run: |
+          python -m scripts.audit_glims_scar_landmasked_proximity \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/GLIMS_SCAR_V713_STATIC_LAND_SOURCE_SUPPORT_20261119.json \
+            --out-csv build/GLIMS_SCAR_V713_SAME_FEATURE_SITE_PROXIMITY_20261119.csv
+      - name: Preserve success or gate hold
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: glims-scar-static-land-proximity-source-support
+          path: |
+            build/GLIMS_SCAR_V713_STATIC_LAND_SOURCE_SUPPORT_20261119.json
+            build/GLIMS_SCAR_V713_SAME_FEATURE_SITE_PROXIMITY_20261119.csv
+          retention-days: 30
