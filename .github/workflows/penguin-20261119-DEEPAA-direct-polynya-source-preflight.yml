@@ -32,13 +32,43 @@ jobs:
           mkdir -p build/deepaa_source_gate
           gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/deepaa_source_gate/original860.zip
           echo "dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205  build/deepaa_source_gate/original860.zip" | sha256sum --check
-      - name: Download actual 248MB Zenodo recommended DEEP-AA subset, not sensitivity datasets
+      - name: Download recommended original DEEP-AA 248MB via official Zenodo file APIs, exact MD5 only
         run: |
           set -euo pipefail
-          curl -fL --retry 5 --retry-delay 5 --connect-timeout 60 --max-time 1200 \
-            --output build/deepaa_source_gate/SIC60_6.25km_20d.zip \
+          target='build/deepaa_source_gate/SIC60_6.25km_20d.zip'
+          checked='f3f958389cc5e67ac1c4e3a6ee164318'
+          receipt='build/deepaa_source_gate/source_download_diagnostic.txt'
+          echo "Expected published source MD5 $checked" > "$receipt"
+          urls=(
+            'https://zenodo.org/api/records/13358042/files/SIC60_6.25km_20d.zip/content'
+            'https://zenodo.org/api/records/11379148/files/SIC60_6.25km_20d.zip/content'
             'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1'
-          echo 'f3f958389cc5e67ac1c4e3a6ee164318  build/deepaa_source_gate/SIC60_6.25km_20d.zip' | md5sum --check
+            'https://zenodo.org/records/11379148/files/SIC60_6.25km_20d.zip?download=1'
+          )
+          found=0
+          for url in "${urls[@]}"; do
+            echo "Attempting official Zenodo source $url" | tee -a "$receipt"
+            rm -f "$target"
+            if curl -fL --retry 2 --retry-delay 5 --connect-timeout 30 --max-time 1200 \
+                 --user-agent 'Mozilla/5.0 (compatible; AntarcticScientificResearch/1.0)' \
+                 --header 'Accept: application/octet-stream' \
+                 --output "$target" \
+                 --write-out "HTTP_CODE=%{http_code} BYTES=%{size_download}\n" \
+                 "$url" 2>> "$receipt" >> "$receipt"; then
+              if echo "$checked  $target" | md5sum --check; then
+                echo "VERIFIED_DEEPAA_ORIGINAL $url" | tee -a "$receipt"
+                found=1
+                break
+              fi
+              echo 'Failed exact publisher MD5; never use a different subset/version' | tee -a "$receipt"
+            else
+              echo "FAILED_SOURCE_TRANSFER $url" | tee -a "$receipt"
+            fi
+          done
+          if [ "$found" != 1 ]; then
+            echo 'DATA_SOURCE_UNVERIFIED: all current and archived official provider URLs unavailable or checksum failed' | tee -a "$receipt"
+            exit 1
+          fi
       - name: Inspect all real daily data filenames and several native NetCDF schemas, no Y fit
         run: |
           python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inspect_deepaa_original_zip_source_20261119.py \
@@ -64,6 +94,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: penguin-DEEPAA-original-source-native-date-and-schema-preflight-20261119
-          path: build/deepaa_source_gate/preflight_result/
+          path: |
+            build/deepaa_source_gate/preflight_result/
+            build/deepaa_source_gate/source_download_diagnostic.txt
           if-no-files-found: warn
           retention-days: 30
