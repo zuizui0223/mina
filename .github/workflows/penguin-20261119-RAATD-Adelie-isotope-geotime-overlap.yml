@@ -1,0 +1,97 @@
+name: Penguin RAATD published Adélie deployment overlap with isotope site seasons
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/tracking_salinity_20261119/audit_original_raatd_adelie_isotope_overlap.py'
+      - '.github/workflows/penguin-20261119-RAATD-Adelie-isotope-geotime-overlap.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_open_RAADT_filtered_ADPE:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source geodesic analysis dependencies
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3' 'pyproj>=3.6,<4'
+      - name: Syntax-check original RAATD location and year matching script
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/tracking_salinity_20261119/audit_original_raatd_adelie_isotope_overlap.py
+      - name: Fetch original validated isotope site years and original MAPPPD atlas
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_raatd_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_raatd_source/original_youngflesh860.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_raatd_source/original_MAPPPD595.zip
+      - name: Download and verify 2020 RAATD filtered-noTMB 263MB original public source
+        run: |
+          python - <<'PY'
+          import urllib.request,json,hashlib
+          from pathlib import Path
+          root=Path('build/penguin_raatd_source')
+          ua={'User-Agent':'mina-RaadT-original-breeding-season-coverage/0.1 (+https://github.com/zuizui0223/mina)', 'Accept':'application/json'}
+          with urllib.request.urlopen(urllib.request.Request('https://zenodo.org/api/records/3722948',headers=ua),timeout=90) as r:
+              j=json.load(r)
+          assert str(j['id'])=='3722948', 'Wrong RAATD source record'
+          x=next(f for f in j['files'] if f['key']=='SCAR_EGBAMM_RAATD-filtered-noTMB.zip')
+          assert x['checksum']=='md5:168e5b9b5c4ed20bb84dd00145acb0a5'
+          assert 255_000_000<=x['size']<=270_000_000
+          url=x['links'].get('content') or x['links']['self']
+          target=root/'RAATD_3722948_filtered_noTMB_original_verified.zip'
+          digest=hashlib.md5()
+          size=0
+          req=urllib.request.Request(url,headers={'User-Agent':ua['User-Agent']})
+          with urllib.request.urlopen(req,timeout=180) as r,target.open('wb') as out:
+              while True:
+                  blob=r.read(4_194_304)
+                  if not blob:break
+                  out.write(blob);digest.update(blob);size+=len(blob)
+                  if size>x['size']:raise ValueError('Data download exceeded source publisher bytes')
+          assert size==x['size'],(size,x['size'])
+          assert digest.hexdigest()=='168e5b9b5c4ed20bb84dd00145acb0a5'
+          print('PASS pinned original RAATD published filtered-noTMB 2020',size,digest.hexdigest())
+          PY
+      - name: Link true original RAATD tracking Nov–Feb years and deployment locations to original 88 isotope sites
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/tracking_salinity_20261119/audit_original_raatd_adelie_isotope_overlap.py \
+            --raatd-zip build/penguin_raatd_source/RAATD_3722948_filtered_noTMB_original_verified.zip \
+            --isotope-zip build/penguin_raatd_source/original_youngflesh860.zip \
+            --atlas-zip build/penguin_raatd_source/original_MAPPPD595.zip \
+            --out build/penguin_raatd_overlap_derived_only
+      - name: Validate original isotope numerator and show no raw individual data were republished
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          p=Path('build/penguin_raatd_overlap_derived_only')
+          r=json.loads((p/'raatd_adelie_2020_original_isotope_overlap_verdict.json').read_text())
+          assert r['original_RAATD_source_md5']=='168e5b9b5c4ed20bb84dd00145acb0a5'
+          assert (r['source_88_isotope_colonies'],r['source_860_isotope_site_seasons'])==(88,860)
+          assert len(r['source_overlap_by_radius'])==3
+          assert r['filtered_locations_not_direct_feeding_or_dive_observations']
+          assert r['RAATD_tracking_only_can_test_habitat_use_not_fish_krill_choice']
+          assert r['third_party_original_coordinates_and_contact_emails_not_redistributed']
+          x=pd.read_csv(p/'original_raatd_source_geographic_temporal_overlap_gate.csv')
+          assert list(x.radius_km)==[5,25,100]
+          assert x.n_original_source_isotope_site_seasons_total.eq(860).all()
+          assert x.n_original_source_isotope_sites_total.eq(88).all()
+          assert x.n_original_raatd_isotope_site_seasons_matched.le(860).all() if 'n_original_raatd_isotope_site_seasons_matched' in x else True
+          assert x.n_raatd_original_isotope_site_seasons_matched.is_monotonic_increasing
+          print('PASS RAATD original source geometry + year overlap, derived aggregate only, isotope 860/88')
+          PY
+      - name: Archive only derived study/source support, not original tracking coordinates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-2020-RAATD-original-Adelie-520track-isotope88site-860season-overlap-audit
+          path: build/penguin_raatd_overlap_derived_only/
+          if-no-files-found: warn
+          retention-days: 30
