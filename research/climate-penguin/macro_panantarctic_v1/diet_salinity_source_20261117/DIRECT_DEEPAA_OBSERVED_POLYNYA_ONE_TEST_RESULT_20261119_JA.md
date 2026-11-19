@@ -1,6 +1,6 @@
 # 実測沿岸ポリニヤはδ¹⁵N光学proxyと正ではなく負に関連：事前の正方向仮説は不支持、時間外予測改善なし
 
-**2026-11-19 JST | Draft PR #214 only | 同一439観測で元GitHub成果物をローカル独立計算。GitHub再現workflow #44547277067は最初の記録時点でqueued：完走時に数値一致を別途監査する。main・凍結原稿は未変更。**
+**2026-11-19 JST | Draft PR #214 only | 同一439観測で元GitHub成果物をローカル独立計算。GitHub Actions #44547277067 **SUCCESS**、同じ元ソースで独立ローカル計算と係数・予測RMSE・CIが数値一致。結果artifact **14539734362**、digest **sha256:e413eab31b101c4a9a11c6dc7656d58906527a2146e6ccef442bb677ede6b233**。main・凍結原稿は未変更。**
 
 ## 元データが本当に重なった（Yを開く前の段階）
 
@@ -42,10 +42,10 @@ M_SP の追加残差割合：**M_Sに対して3.2188%**。region×season・site 
 1. **直接ポリニヤを測った意味はあった**：少なくとも塩分の正の相関を説明する正方向の中間機構を示すものではなく、ポリニヤ曝露は**逆向きの条件付き関連**があり、地域除外にも耐える。
 2. **実測食性シフトの証拠ではない**：光学δ¹⁵N proxyの地理的/時間的な基準同位体変化、採餌範囲、夏の本当の栄養段階、海域一次生産等を区別する独立実測がなく、δ¹⁵Nを魚の摂食割合に直結できない。多くの同源検定探索の後であり、全探索経路でのfamily-wise発見として扱わない。
 3. **機構探索停止**：A/B/C・実測ポリニヤも、最初の「夏表層塩分→δ¹⁵N proxy 正方向」を独立に説明し、かつ未来の島嶼・南極域へ時間転用できる機構を発見したとは言えない。主原稿に「機構未確定の弱い条件付き塩分相関」として極小の位置づけ。温暖化・海氷・繁殖時期・繁殖空間の既存肯定結果を主線に戻す。
-4. **再現確認条件**：元432nd source ZIP digest と原source site-season count、FWL 2-way FE、region t10 intervals、known site holdoutをGitHub Actions #44547277067と照合。再現差があれば原因を記録し、作為的な追加仮説/窓を探索しない。
+4. **再現確認条件**：元source ZIP digest と原source site-season count、FWL 2-way FE、region t10 intervals、known site holdoutをGitHub Actions #44547277067と照合。再現差があれば原因を記録し、作為的な追加仮説/窓を探索しない。
 
 ## 実装/再現入口
 
 - source-only [`extract_original_DEEPAA_100km_25km_source_20261119.py`](extract_original_DEEPAA_100km_25km_source_20261119.py)、source [Actions #44545732891](https://github.com/zuizui0223/mina/actions/runs/44545732891)
-- frozen test [`fit_one_frozen_DEEPAA_100km_optical_d15N_20261119.py`](fit_one_frozen_DEEPAA_100km_optical_d15N_20261119.py), [Actions #44547277067](https://github.com/zuizui0223/mina/actions/runs/44547277067)（rerunまでpendingの場合は上記ローカル独立計算を成果として区別する）。
+- frozen test [`fit_one_frozen_DEEPAA_100km_optical_d15N_20261119.py`](fit_one_frozen_DEEPAA_100km_optical_d15N_20261119.py), [Actions #44547277067](https://github.com/zuizui0223/mina/actions/runs/44547277067)（**SUCCESS**、同一439行と符号・region CI・2004–06→2007–10時間外RMSEでローカル計算と一致。）。
 - すべてDraft PR #214枝であり、main・凍結Paper2・Ecology Report等を変更・mergeしない。
