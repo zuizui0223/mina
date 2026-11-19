@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-glims-antarctic-island-wfs-source-gate-20261119",
+  "date": "2026-11-19",
+  "execution": {
+    "repo": "zuizui0223/mina",
+    "branch": "analysis/postglacial-glims-sourcegate-20261119",
+    "workflow_run_id": 44480527812,
+    "artifact_id": 14508760799,
+    "head_sha": "704d9b53e06efe52bb89369a30145c4c2f062b51",
+    "conclusion": "success"
+  },
+  "source": {
+    "provider": "GLIMS/NSIDC",
+    "wfs": "https://www.glims.org/geoserver/ows",
+    "layer": "GLIMS:GLIMS_Glacier_Outlines",
+    "version": "WFS 1.0.0",
+    "geometry": "GeoJSON lon/lat, EPSG:4326",
+    "published_source_date_attribute": "src_date",
+    "max_features_per_query": 500
+  },
+  "coverage": {
+    "south_shetland_king_george_area": {
+      "original_features": 132,
+      "features_returned": 132,
+      "glacier_ids": 73,
+      "glacier_ids_with_2plus_source_years": 58,
+      "glacier_ids_with_source_year_span_5plus": 58,
+      "source_year_counts": {"1957": 4, "1989": 7, "2000": 60, "2005": 61}
+    },
+    "south_shetland_livingston_area": {
+      "original_features": 187,
+      "features_returned": 187,
+      "glacier_ids": 112,
+      "glacier_ids_with_2plus_source_years": 75,
+      "glacier_ids_with_source_year_span_5plus": 75,
+      "source_year_counts": {"1956": 4, "1957": 70, "1979": 34, "2003": 12, "2013": 26, "2019": 41}
+    },
+    "palmer_anvers_area": {
+      "original_features": 320,
+      "features_returned": 320,
+      "glacier_ids": 179,
+      "glacier_ids_with_2plus_source_years": 39,
+      "glacier_ids_with_source_year_span_5plus": 39,
+      "source_year_counts": {"1956": 28, "1989": 51, "1990": 2, "2002": 239}
+    }
+  },
+  "totals": {
+    "wfs_features": 639,
+    "glacier_id_records_summed_by_disjoint_pilot_boxes": 364,
+    "glacier_ids_with_2plus_source_years_summed": 172,
+    "glacier_ids_with_source_year_span_5plus_summed": 172
+  },
+  "scientific_limits": [
+    "Each spatial box includes mixed physical geography and is not a verified island landmass.",
+    "Multi-year GLIMS ID is only a candidate for longitudinal comparison; stable glacier identity across epochs is not yet independently established.",
+    "No paired geometry differences, rock exposure, ice-free breeding patch, bird survey history or ecological effect estimated by this source gate.",
+    "These are original WFS feature and date counts; do not treat 172 glacier IDs as independent penguin sites or colonization events.",
+    "Anvers source dates available here end in 2002, so this gate does not cover Point 8 retreat in 2018–2020."
+  ],
+  "status": "DATED_OUTLINE_METADATA_AVAILABLE; NO_EXPOSURE_OR_A_P_PAIRING"
+}
