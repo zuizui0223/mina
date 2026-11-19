@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-postglacial-scar-rock-time-penguin-source-support-decision-20261119",
+  "date_utc": "2026-11-19",
+  "source_provenance": {
+    "glims_wfs": "https://www.glims.org/geoserver/ows",
+    "scar_land_doi": "10.5285/1c81cf24-576f-43df-be72-a5c7dbb51ffb",
+    "scar_land_sha256": "1e9103e9afaa012b0746eec487c0a473c70834bfc85220f89082e747658aaa66",
+    "scar_rock_doi": "10.5285/815525ca-cefe-4fbf-9224-3ee784e7de4e",
+    "scar_rock_sha256": "e21f76b886e723ba5009d971946de55a6f6eb43fd0e9c9d2920bb265a6df9d76",
+    "mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502"
+  },
+  "original_actions": {
+    "landmask_source": {
+      "run_id": 44507460876,
+      "artifact_id": 14520326734
+    },
+    "rock_source_date": {
+      "run_id": 44508221303,
+      "artifact_id": 14519854681
+    },
+    "rocktime_spatial": {
+      "run_id": 44508816915,
+      "artifact_id": 14520279224
+    },
+    "mapppdr_survey_support": {
+      "run_id": 44509366291,
+      "artifact_id": 14521900139
+    }
+  },
+  "geography": {
+    "site_ids_in_3_bounding_boxes": 133,
+    "exact_unique_scar_land_feature": 101,
+    "same_land_feature_glims_apparent_loss_within_1km": 36,
+    "same_land_feature_glims_apparent_loss_within_5km": 51,
+    "three_source_later_dated_bare_rock_1km": 25,
+    "three_source_later_dated_bare_rock_5km": 41,
+    "original_scar_land_feature_ids_among_25_sites": 10,
+    "by_region": {
+      "palmer_anvers_area": {
+        "n_1km": 4,
+        "n_5km": 5
+      },
+      "south_shetland_king_george_area": {
+        "n_1km": 10,
+        "n_5km": 17
+      },
+      "south_shetland_livingston_area": {
+        "n_1km": 11,
+        "n_5km": 19
+      }
+    },
+    "rock_source_image_year_for_near1km_sites": 2024,
+    "original_rock_polygons": 74781,
+    "rock_polygons_dated_2019_or_later": 40019
+  },
+  "actual_survey_support": {
+    "near1km_candidate_sites": 25,
+    "sites_with_any_original_mapppd_nest_record": 15,
+    "site_species_units_with_any_original_nest_record": 20,
+    "sites_with_nest_observation_strictly_after_2024": 3,
+    "site_species_units_with_nest_observation_strictly_after_2024": 4,
+    "names_of_2025_record_sites": [
+      "Jougla Point",
+      "Py Point",
+      "Truant Island"
+    ],
+    "sites_with_any_numeric_zero_nest_record": 1,
+    "zero_site_example": "Llano Point, chinstrap, 14 seasons containing reported numeric zero; not independently validated as surveyed-patch absence",
+    "verified_past_surveyed_absence_events": null,
+    "verified_postglacial_A_to_P_events": null
+  },
+  "status": "STOP_ECOLOGICAL_COLONIZATION_INFERENCE_SOURCE_RISK_SET_NOT_IDENTIFIABLE",
+  "inference_limits": [
+    "SCAR land feature IDs are not independent physical islands.",
+    "SCAR 2024 bare-rock mapped after GLIMS source year does not prove the rock was newly exposed during the old/new GLIMS interval.",
+    "A known MAPPPD colony site coordinate does not locate its actual nests relative to apparent GLIMS change polygons.",
+    "Original MAPPPD missing rows are not absences; original numeric zero is not survey verified whole patch absence.",
+    "Three sources do not produce a surveyed habitat risk set of empty patches, and no colonization, persistence, or climate effect is estimable.",
+    "Some colonies already have nest count records decades before the 2024 rock map (e.g. Jougla Point gentoo 1982), demonstrating that later rock mapping need not imply newly occupied colony."
+  ],
+  "next_decisive_data": "Independent dated before/after land-exposure imagery, exact nest-patch georeferences and repeat surveyed non-detection plus detection from same defined risk set, replicated across physical islands."
+}
