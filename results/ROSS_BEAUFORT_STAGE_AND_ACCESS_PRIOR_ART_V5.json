@@ -1,0 +1,102 @@
+{
+  "schema_version": 5,
+  "date": "2026-10-08",
+  "audit_id": "ross-beaufort-origin-stage-and-iceberg-access-v5",
+  "status": "PUBLISHED_HISTORICAL_DATA_PREREGISTRATION_BOUNDARY_AUDIT_NOT_NEW_CAUSAL_TEST",
+  "previous_breeding_adults": {
+    "source": "Dugger et al 2010 PNAS Table 3 plus Materials and Methods (PDF p.4)",
+    "doi": "10.1073/pnas.1000623107",
+    "url": "https://penguinscience.com/reprints/Dugger_Ainley_2010_survival.pdf",
+    "years": "1996-2007",
+    "n_prior_ross_breeders": 2681,
+    "columns": [
+      "origin_ross_prior_breeding",
+      "n_known_prior_breeders",
+      "later_seen_beaufort"
+    ],
+    "data": [
+      [
+        "Cape Royds",
+        475,
+        3
+      ],
+      [
+        "Cape Bird",
+        970,
+        1
+      ],
+      [
+        "Cape Crozier",
+        1236,
+        1
+      ]
+    ],
+    "documented_later_seen_beaufort": 5,
+    "original_breeding_status": "bred_at_origin_ross_at_least_once",
+    "destination_breeding_status": "Table3 five are later Beaufort resightings; Methods separately explicitly describe Ross-experienced breeding birds observed breeding at Beaufort, without individual Table3 crosswalk",
+    "beaufort_north_versus_south_resolved": false,
+    "stage": "adults_with_prior_breeding",
+    "destination_effort": "beaufort_sparse",
+    "valid_published_conclusion": "ross_to_beaufort_cross_island_breeding_dispersal_among_experienced_ross_breeders_already_described_in_2010_methods; five_table3_resightings_not_individually_crosswalked_to_breeding_status",
+    "invalid_conclusion": "all_five_table3_birds_proven_first_breeding_at_north_beach_or_capacity_induced",
+    "first_lifetime_breeding_at_beaufort": false,
+    "previously_bred_ross_and_subsequently_bred_beaufort_referred_to_in_methods": true,
+    "exact_five_table3_individuals_each_proven_breeding_at_beaufort": false,
+    "beaufort_breeding_location_within_north_or_south_identified": false
+  },
+  "prospective_comparison_young": {
+    "source": "Shepherd et al 2005 PNAS doi:10.1073/pnas.0502281102",
+    "years": [
+      "2000/01 preB15A",
+      "2001/02 withB15A"
+    ],
+    "source_colony": "Cape Bird",
+    "destination": "Cape Crozier",
+    "bird_banded_young_seen": [
+      348,
+      160
+    ],
+    "visitors_at_crozier": [
+      2,
+      7
+    ],
+    "after_visits_lower_bound": true,
+    "destination_first_breeding_verified": false,
+    "stage": "prebreeding_age2to4",
+    "observational_limit": "different at-risk/seen cohorts and environmental conditions; conditional sightings",
+    "established_mechanism": "mega_iceberg_physically_changes_migration_routes"
+  },
+  "counterpart_beaufort_to_ross": {
+    "source": "LaRue et al 2013 PLOS ONE doi:10.1371/journal.pone.0060568",
+    "sampling": "Beaufort_chicks_banded_from_1999_to_2010_except_2005_and_2008",
+    "response": "annual_fraction_of_modeled_potentially_surviving_marked_cohorts_seen_visiting_ross",
+    "approx_peak_fraction_2005": 0.03,
+    "status": "already_published_visit_ratio",
+    "first_breeding_destinations": false,
+    "source_eligible_total_breeding_recruits_identified": false,
+    "directly_comparable_to_2010_prior_breeder_5_out_of_2681": false
+  },
+  "nuisance_and_rival_mechanisms": [
+    "iceberg_obstruction_2001_to_mid_2000s_alters_access_and_prospecting",
+    "source_juvenile_cohort_age_and_marking_missing_2005_2008",
+    "beaufort_detection_much_weaker_than_ross",
+    "north_shore_suitable_options_not_independently_mapped_annually",
+    "true_origin_destination_first_breeding_not_recorded_at_north"
+  ],
+  "inference_gates": {
+    "Ross_to_Beaufort_prior_breeder_cross_island_movement_exist": "YES_ALREADY_PUBLISHED",
+    "Ross_to_Beaufort_north_first_breeding_identified": "NO",
+    "within_Beaufort_north_vs_south_breeding_settlement": "NO",
+    "adult_move_observations_and_juvenile_visits_share_population_denominator": "NO",
+    "Beaufort_derived_confirmed_settled_export_declines_after_source_option_gain": "UNIDENTIFIED",
+    "source_nesting_options_vs_access_effect_sep": "UNIDENTIFIED",
+    "confirmed_receiver_recolonization": "NO_ELIGIBLE_ROSS_1985_2012_PANELS",
+    "action": "HOLD_SOURCE_CAPACITY_RESCUE_MECHANISM_DO_NOT_RESCOPE_PR142_OR_PR189",
+    "Ross_to_Beaufort_experienced_breeder_breeding_dispersion_published": "YES_METHODS_DESCRIBE_BREEDING_BEYOND_ROSS",
+    "Ross_to_Beaufort_table3_five_breeder_status": "UNLINKED_TO_METHODS_BREEDER_DESCRIPTIONS"
+  },
+  "new_unopened_individual_data_rows_accessed": 0,
+  "new_claim_of_successful_source_option_causation": false,
+  "literature_reanalysis_is_prospective": false,
+  "audit_annotation": "2026-10-08: Methods p4 correction; previously too broadly stated Ross->Beaufort consisted only of visits. At least some known Ross-breeders subsequently observed breeding at Beaufort, but five Table3 observations not individuallly linked in paper."
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "result_id": "beaufort-north-founder-season-aligned-bound-v3",
+  "date": "2026-10-08",
+  "inferential_status": "published-count arithmetic only; no local census completeness, immigrant origin, or causal inference",
+  "source_management_pdf": "https://www.env.go.jp/nature/nankyoku/kankyohogo/database/jyouyaku/aspa/aspa_pdf_en/Measure5_ASPA105.pdf",
+  "source_age_constraint": "https://doi.org/10.1111/1365-2656.13422",
+  "source_prior_art": "https://doi.org/10.1093/ornithapp/duac014",
+  "input": {
+    "1994/95": {
+      "observed_pairs": 2,
+      "observed_chicks": 3,
+      "nonbreeders_max": 15
+    },
+    "2005/06": {
+      "observed_pairs": 525
+    }
+  },
+  "mapping": "January 1995 => start-year1994; 2005/06 => start-year2005",
+  "optimistic_null": "all 15 nonbreeders breed in 1995/96, all breeders persist, 2 chicks/pair/season, 100% survival and local pairing, earliest recruitment age3",
+  "maximal_closed_pair_equivalents": {
+    "1994/95": 2,
+    "1995/96": 9.5,
+    "1997/98": 11,
+    "2004/05": 194,
+    "2005/06": 285.5,
+    "2006/07": 418,
+    "2008/09": 897.5,
+    "2013/14": 6068
+  },
+  "age3_gap_for_525_pairs_2005_06": 239.5,
+  "illustrative_2004_site_mismatch_guard": {
+    "source": "LaRue 2013 (north-east site)",
+    "observed_2004_count": 460,
+    "model_upper_2004_start_year": 194,
+    "only_if_georeferenced_site_id_matches": true
+  },
+  "sensitivity": {
+    "four_initial_chicks_age3_upper_2005": 292,
+    "youngest_age4_upper_2005": 140.5,
+    "observed_sample_unseen_pair_equivalents_in_1995_to_meet_525": 8.553571428571429,
+    "additional_whole_adults_under_optimistic_initial_matching": 18,
+    "founders_added_1995_one_pair_fully_fledged_descendant_contribution_2005": 28,
+    "counterfactual_age2_all_upper_2005": 928,
+    "hypothetical_fraction_age2_in_every_cohort_to_meet_525": 0.5247593536552306
+  },
+  "interpretation": {
+    "complete_roster_hypothetical_closed_model_rejected": true,
+    "claimed_immigrant_breeders": false,
+    "claimed_inter_island_origin": false,
+    "observer_coverage_verified": false,
+    "founder_age_history_verified": false,
+    "spatial_identity_LaRue_vs_ASPA_verified": false,
+    "source_capacity_to_receiver_rescue_supported": false
+  },
+  "provenance": {
+    "execution": "JS independent arithmetic cross-check of repo Python recursion",
+    "frozen_pr189_changed": false,
+    "usapdc_individual_rows_opened": 0
+  }
+}

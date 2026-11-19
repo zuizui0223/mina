@@ -1,0 +1,82 @@
+{
+  "schema_version": 7,
+  "date": "2026-10-08",
+  "status": "PUBLISHED_PRIOR_ART_SITE_HISTORY_NOT_NEW_CAUSAL_DISCOVERY",
+  "sources": [
+    {
+      "type": "1988_direct_field",
+      "uri": "https://newzealandecology.org/nzje/1883/pdf",
+      "label": "Taylor & Wilson 1990"
+    },
+    {
+      "type": "2026_history_and_revisit",
+      "uri": "https://doi.org/10.1017/S0954102026100807",
+      "label": "Emslie 2026"
+    },
+    {
+      "type": "frozen_prior_ross_count",
+      "uri": "https://github.com/zuizui0223/mina/blob/analysis/ross-sea-expansion-intensification-support-v1/external/ross_island_v2_frozen_counts.csv"
+    }
+  ],
+  "spatial_identity": {
+    "physical_landmass": "Ross Island",
+    "distance_to_cape_royds_km_approx": 3,
+    "distinct_breeding_patch": "Cape Barne",
+    "in_frozen_royds_bird_crozier_census_roster": false,
+    "in_frozen_six_aerial_components": false,
+    "separate_physical_island": false
+  },
+  "published_observations": [
+    {
+      "season": "1988/89",
+      "date": "1988-12-01",
+      "explicit_breeding_nests": 5,
+      "egg_nests_single_egg": 1,
+      "egg_nests_two_eggs": 4,
+      "empty_nests": 5,
+      "occupied": true,
+      "visit_is_first_colonization_event": false
+    },
+    {
+      "season": "1988/89",
+      "date": "1989-01-22",
+      "approx_egg_chick_mortality_fraction_to_date": 0.23,
+      "full_fledging_success_identified": false
+    },
+    {
+      "season": "2000/01",
+      "date": "2001-01",
+      "survey_visit_no_breeding_pairs_seen": true,
+      "occupied": false,
+      "complete_annual_zero_roster": false
+    },
+    {
+      "season": "2024/25",
+      "date": "2024-12",
+      "old_nest_structures_observed": true,
+      "breeding_colony_active_reported": false,
+      "continuous_yearly_survey_since_2001": false
+    }
+  ],
+  "frozen_roster_support": {
+    "observation_years": 26,
+    "major_colony_unit_years": 78,
+    "major_colony_zero_years": 0,
+    "six_component_unit_years": 156,
+    "six_component_zero_years": 0,
+    "scope": "ONLY frozen major-colony census IDs, does NOT inventory Cape Barne"
+  },
+  "conclusion": {
+    "coarse_archival_cape_barne_occupied_then_observed_absent": true,
+    "exact_date_of_zero_to_positive_before_1988_known": false,
+    "all_year_1988_to_2001_occupancy_path_identified": false,
+    "site_reoccupation_mechanism_identified": false,
+    "five_nests_are_known_immigrants": false,
+    "partial_early_chick_survival_rules_out_zero_success_as_deterministic_process": true,
+    "alley_effect_absent_or_noncausal_proven": false,
+    "nearby_royds_source_pressure_identified": false,
+    "cross_island_rescue_claim_licensed": false,
+    "newly_opened_individual_records": 0
+  },
+  "novelty_veto": "Cape Barne intermittent breeding already described in Taylor Wilson 1990, Lynch LaRue 2014, Emslie 2026. The study asks instead what predicts persistence of temporarily reoccupied suitable nesting patches, conditional on ocean access and source demographics."
+}
