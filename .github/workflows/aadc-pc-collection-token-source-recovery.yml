@@ -1,0 +1,48 @@
+name: AADC recover three 429 Landsat QA via one PC collection token
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_pc_collection_token_source_recovery.py
+      - tests/test_aadc_pc_collection_token_source_recovery.py
+      - .github/workflows/aadc-pc-collection-token-source-recovery.yml
+  workflow_dispatch:
+jobs:
+  original-three-source-recovery:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests numpy rasterio pyproj shapely
+      - name: Compile and verify original source and token redaction
+        run: |
+          python -m py_compile scripts/audit_aadc_pc_collection_token_source_recovery.py
+          python -m unittest discover -s tests -p test_aadc_pc_collection_token_source_recovery.py -v
+      - name: Download original 5/8 QA outcome and 16 all-source scene listing
+        run: |
+          mkdir -p build/qa build/full
+          gh run download 44540867647 -n aadc-all8-original-event-local-landsat-QA -D build/qa
+          gh run download 44538120002 -n aadc-16-events-landsat-original-scene-source-full -D build/full
+          test -f build/qa/AADC_ALL8_EVENT_PAIRED_LOCAL_LANDSAT_QA_20261119.json
+          test -f build/full/AADC_16_AP_LANDSAT_FULL_SOURCE_SUPPORT_20261119.json
+      - name: Read only the three original provider-limited QA scenes using a collection token
+        run: |
+          python -m scripts.audit_aadc_pc_collection_token_source_recovery \
+            --all8-qa-json build/qa/AADC_ALL8_EVENT_PAIRED_LOCAL_LANDSAT_QA_20261119.json \
+            --all16-scene-json build/full/AADC_16_AP_LANDSAT_FULL_SOURCE_SUPPORT_20261119.json \
+            --out-json build/AADC_PC_COLLECTION_TOKEN_SOURCE_RECOVERY_20261119.json
+      - name: Preserve source outcome without signed URLs, bearer token or ecological p
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aadc-pc-collection-token-three-QA-source-recovery
+          path: build/AADC_PC_COLLECTION_TOKEN_SOURCE_RECOVERY_20261119.json
+          retention-days: 30
