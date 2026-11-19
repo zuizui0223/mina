@@ -218,7 +218,8 @@ def audit_source(source:dict[str,list[dict]]):
             byfeature_explicit_siteyears[cls].add((site,yr))
     actual_sites={k[0] for k in survey_keys}
     return {
-        "status":("PUBLISHER_EIGHT_SPECIES_SOURCE_SUPPORT_NO_BIOLOGICAL_EFFECT"\n                  if years else "HOLD_SOURCE_SEASON_FORMAT_NOT_VALIDATED"),
+        "status":("PUBLISHER_EIGHT_SPECIES_SOURCE_SUPPORT_NO_BIOLOGICAL_EFFECT"
+                  if years else "HOLD_SOURCE_SEASON_FORMAT_NOT_VALIDATED"),
         "source_files":{"2025_seabird":"occupancy_seabird.xls",
                         "2025_penguin":"occupancy_penguin.xlsx",
                         "geographic_sites":"geog_sites_all.xlsx",
