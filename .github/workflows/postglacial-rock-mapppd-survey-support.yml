@@ -1,0 +1,60 @@
+name: postglacial-rock-candidate-MAPPPD-survey-support
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_glims_rocktime_mapppd_survey_support.py
+      - tests/test_glims_rocktime_mapppd_survey_support.py
+      - .github/workflows/postglacial-rock-mapppd-survey-support.yml
+  workflow_dispatch:
+
+concurrency:
+  group: postglacial-rock-mapppd-survey-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  support:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pandas pyreadr
+      - name: Synthetic missing versus zero and time-axis tests
+        run: |
+          python -m py_compile scripts/audit_glims_rocktime_mapppd_survey_support.py
+          python -m unittest discover -s tests -p test_glims_rocktime_mapppd_survey_support.py -v
+      - name: Retrieve previously frozen original three-source site cohort
+        run: |
+          mkdir -p build/rocksites
+          gh run download 44508816915 -n glims-scar-rocktime-source-support-20261119 -D build/rocksites
+          test -f build/rocksites/GLIMS_SCAR_ROCKTIME_SITE_SUPPORT_20261119.csv
+      - name: Clone pinned original APBP/MAPPPD (metadata only)
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          test -f build/mapppdr/data/penguin_obs.rda
+      - name: Source-only nest-survey chronology support QA
+        run: |
+          python -m scripts.audit_glims_rocktime_mapppd_survey_support \
+            --source-site-csv build/rocksites/GLIMS_SCAR_ROCKTIME_SITE_SUPPORT_20261119.csv \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/GLIMS_SCAR_ROCKTIME_MAPPPD_SURVEY_SUPPORT_20261119.json \
+            --out-csv build/GLIMS_SCAR_ROCKTIME_MAPPPD_SURVEY_SUPPORT_SITE_SPECIES_20261119.csv
+      - name: Preserve survey-support outcome, no inferential fit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: glims-scar-rocktime-mapppd-survey-support-20261119
+          path: |
+            build/GLIMS_SCAR_ROCKTIME_MAPPPD_SURVEY_SUPPORT_20261119.json
+            build/GLIMS_SCAR_ROCKTIME_MAPPPD_SURVEY_SUPPORT_SITE_SPECIES_20261119.csv
+          retention-days: 30
