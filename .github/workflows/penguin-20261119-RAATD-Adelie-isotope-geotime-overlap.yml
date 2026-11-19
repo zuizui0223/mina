@@ -84,8 +84,17 @@ jobs:
           assert x.n_original_source_isotope_site_seasons_total.eq(860).all()
           assert x.n_original_source_isotope_sites_total.eq(88).all()
           assert x.n_original_raatd_isotope_site_seasons_matched.le(860).all() if 'n_original_raatd_isotope_site_seasons_matched' in x else True
-          assert x.n_raatd_original_isotope_site_seasons_matched.is_monotonic_increasing
-          print('PASS RAATD original source geometry + year overlap, derived aggregate only, isotope 860/88')
+          # Nearest-colony inclusion increases with search distance, but a
+          # uniquely attributable colony may become ambiguous if a second
+          # catalogued source site enters the wider search radius.
+          assert x.n_nearest_source_isotope_site_seasons_same_year.is_monotonic_increasing
+          assert r['unique_site_25km_match_count_is_not_monotonic_in_radius']
+          assert r['can_move_to_multi_region_used_available_isotope_integration'] is False
+          assert r['status']=='NO_GO_TRACKING_ISOTOPE_MACRO_JOIN'
+          assert len(pd.read_csv(p/'original_raatd_adelie_isotope_site_season_support_5km_unique.csv'))==4
+          assert len(pd.read_csv(p/'original_raatd_adelie_isotope_site_season_support_25km_unique.csv'))==0
+          assert (p/'original_raatd_adelie_isotope_site_season_support_25km_nearest.csv').is_file()
+          print('PASS publisher RAATD / original site-year geodesic overlap, nearest vs unique radius ambiguity distinguished, fixed 25km gate NO-GO')
           PY
       - name: Archive only derived study/source support, not original tracking coordinates
         if: always()
