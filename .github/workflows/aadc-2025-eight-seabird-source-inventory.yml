@@ -1,0 +1,42 @@
+name: AADC 2025 eight-seabird and East Antarctic atlas original source inventory
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_2025_occupancy_riskset_sources.py
+      - tests/test_aadc_2025_occupancy_riskset_sources.py
+      - .github/workflows/aadc-2025-eight-seabird-source-inventory.yml
+  workflow_dispatch:
+
+concurrency:
+  group: aadc-2025-eight-seabird-original-source-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  official-manifest:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests
+      - name: Source-identity and metadata-only tests
+        run: |
+          python -m py_compile scripts/audit_aadc_2025_occupancy_riskset_sources.py
+          python -m unittest discover -s tests -p test_aadc_2025_occupancy_riskset_sources.py -v
+      - name: Verify original Australian Antarctic Data Centre dataset IDs and object inventory
+        run: |
+          python -m scripts.audit_aadc_2025_occupancy_riskset_sources \
+            --out-json build/AADC_2025_EIGHT_SEABIRD_RISKSET_AND_ATLAS_SOURCE_INVENTORY_20261119.json
+      - name: Keep exact source receipt including HOLD
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aadc-2025-seabird-riskset-atlas-original-source-inventory
+          path: build/AADC_2025_EIGHT_SEABIRD_RISKSET_AND_ATLAS_SOURCE_INVENTORY_20261119.json
+          retention-days: 30
