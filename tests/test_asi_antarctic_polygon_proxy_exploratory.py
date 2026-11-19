@@ -19,7 +19,7 @@ class TestSingleExploratoryModel(unittest.TestCase):
                             "spatial_block_100km":f"B{block}",
                             "species":species,"year_decades":(year-2006)/10,
                             "separate_source_polygon":group,
-                            "log2_visits":1.0,
+                            "log2_visits":float(np.log2(int(rng.integers(1,5)))),
                             "breeding_confirmed":int(rng.random()<p)
                         })
         a,b=fit_one(pd.DataFrame(rows))
