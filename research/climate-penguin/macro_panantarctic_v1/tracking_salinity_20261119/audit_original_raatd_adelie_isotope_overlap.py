@@ -209,7 +209,7 @@ def audit(data,allmeta,source_detail,isotope,sites,out):
     # distance window overlaps two distinct catalogued penguin colonies.
     # The secondary nearest-site report flags ambiguity and is NOT an
     # individually confirmed breeding-colony or guano-sample link.
-    for radius, scheme in [(5,"unique"),(25,"nearest")]:
+    for radius, scheme in [(5,"unique"),(25,"unique"),(25,"nearest")]:
         if scheme=="unique":
             matched=data.loc[data[f"original_single_colony_unique_{radius}km"]].copy()
         else:
@@ -232,12 +232,13 @@ def audit(data,allmeta,source_detail,isotope,sites,out):
         table.to_csv(out/f"original_raatd_adelie_isotope_site_season_support_{radius}km_{scheme}.csv",index=False)
     pd.DataFrame(groups).to_csv(out/"original_raatd_source_geographic_temporal_overlap_gate.csv",index=False)
     dev_meta=allmeta.device_type.fillna("UNKNOWN").str.upper().value_counts().astype(int).to_dict()
-    strict=groups[0]
-    # Fixed before seeing this original source: >=12 strict 5-km unique
-    # site-seasons with >=3 original GPS/PTT individuals each, >=3 distinct
-    # reporting regions and >=3 different source breeding seasons.
-    strict_table=pd.read_csv(out/"original_raatd_adelie_isotope_site_season_support_5km_unique.csv")
+    # Respect the pre-source contract: 25km unambiguous was the primary
+    # colony-link criterion. 5km is a stricter-distance diagnostic; it
+    # cannot override the primary 25km ambiguity and rescue the GO gate.
+    strict_table=pd.read_csv(out/"original_raatd_adelie_isotope_site_season_support_25km_unique.csv")
     strong=strict_table.loc[strict_table.RAATD_n_GPS_PTT_individuals>=3]
+    short=pd.read_csv(out/"original_raatd_adelie_isotope_site_season_support_5km_unique.csv")
+    shortstrong=short.loc[short.RAATD_n_GPS_PTT_individuals>=3]
     gate=(len(strong)>=12 and strong.source_region.nunique()>=3
           and strong.season.nunique()>=3)
     report={
@@ -253,10 +254,13 @@ def audit(data,allmeta,source_detail,isotope,sites,out):
         "source_88_isotope_colonies":len(sites),
         "source_860_isotope_site_seasons":len(isotope),
         "source_overlap_by_radius":groups,
-        "strict_5km_actual_colony_seasons_with_min3_GPS_PTT_individuals":int(len(strong)),
-        "strict_5km_actual_regions_with_min3_GPS_PTT_individuals":int(strong.source_region.nunique()),
-        "strict_5km_actual_seasons_with_min3_GPS_PTT_individuals":int(strong.season.nunique()),
-        "fixed_minimum_gate":"strict 5km unique source colony match: >=12 site-seasons with >=3 GPS/PTT original individuals each, >=3 source reporting regions and >=3 source seasons",
+        "primary_25km_unique_actual_colony_seasons_with_min3_GPS_PTT_individuals":int(len(strong)),
+        "primary_25km_unique_actual_regions_with_min3_GPS_PTT_individuals":int(strong.source_region.nunique()),
+        "primary_25km_unique_actual_seasons_with_min3_GPS_PTT_individuals":int(strong.season.nunique()),
+        "sensitivity_5km_unique_colony_seasons_with_min3_GPS_PTT_individuals":int(len(shortstrong)),
+        "sensitivity_5km_unique_regions_with_min3_GPS_PTT_individuals":int(shortstrong.source_region.nunique()),
+        "sensitivity_5km_unique_seasons_with_min3_GPS_PTT_individuals":int(shortstrong.season.nunique()),
+        "fixed_minimum_gate":"PREDECLARED strict 25km unique source colony match: >=12 site-seasons with >=3 GPS/PTT original individuals each, >=3 source reporting regions and >=3 source seasons",
         "can_move_to_multi_region_used_available_isotope_integration":bool(gate),
         "unique_site_25km_match_count_is_not_monotonic_in_radius":True,
         "attribution_limit":"Individual tracked deployment within 5/25/100km of isotope-observed known colony, NOT same individual or observed guano sample; only near-colony spatial support.",
