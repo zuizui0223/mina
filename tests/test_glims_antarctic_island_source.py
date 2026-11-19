@@ -30,12 +30,16 @@ class TestGlimsGate(unittest.TestCase):
                           "properties": {"source_date": "2005-01-01",
                                          "glims_id": "x"}},
                          {"type": "Feature", "geometry": None,
-                          "properties": {"source_date": "2018-01-01"}}],
+                          "properties": {"source_date": "2018-01-01",
+                                         "glims_id": "x"}}],
         }, limit=2)
         self.assertEqual(a["features_returned"], 2)
         self.assertTrue(a["limited_page_possible"])
         self.assertEqual(a["years_sample_histogram"], {2005: 1, 2018: 1})
         self.assertEqual(a["features_with_geometry"], 1)
+        self.assertEqual(a["distinct_glacier_ids_in_sample"], 1)
+        self.assertEqual(a["glacier_ids_with_two_or_more_source_years"], 1)
+        self.assertEqual(a["glacier_ids_with_year_span_ge_5"], 1)
         self.assertTrue(a["sample_only"])
 
 
