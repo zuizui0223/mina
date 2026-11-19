@@ -41,9 +41,7 @@ def schema_one(zipf,name):
                 meta={"shape":list(v.shape),"dimensions":list(v.dimensions),"dtype":str(v.dtype),
                       "attrs":{t:str(getattr(v,t))[:250] for t in v.ncattrs()}}
                 if 0<len(v.shape)<=2 and np.prod(v.shape)<5_000_000:
-                    s=np.asarray(v[:])
-                    if np.ma.isMaskedArray(v[:]):
-                        s=np.ma.filled(v[:],np.nan).astype(float)
+                    s=np.ma.asarray(v[:],dtype=float).filled(np.nan)
                     # A real pixel sampled from native file, to inspect ID/flags not infer metadata.
                     if s.ndim==2 and np.issubdtype(s.dtype,np.number):
                         p=s[::max(1,s.shape[0]//32),::max(1,s.shape[1]//32)]
@@ -85,8 +83,16 @@ def main(a):
         invalid=z.testzip()
         if invalid:raise ValueError("DEEP-AA source original NetCDF ZIP CRC failed: "+invalid)
         zlist=z.namelist()
+        lonlat_members=[n for n in zlist if Path(n).name.lower()=="lonlat.nc"]
+        if len(lonlat_members)!=1:
+            raise ValueError(f"Expected exactly one native geographic LonLat.nc grid; found {len(lonlat_members)}")
+        lonlat_schema=schema_one(z,lonlat_members[0])
+        if "parse_error" in lonlat_schema:
+            raise ValueError("Native LonLat.nc cannot be parsed")
+        if not {"Lon","Lat"}.issubset(lonlat_schema["variables"]):
+            raise ValueError("Native LonLat.nc missing geodetic Lon/Lat")
         for name in zlist:
-            if not name.lower().endswith(".nc"):continue
+            if not name.lower().endswith(".nc") or name in lonlat_members:continue
             m=DATE_RE.search(Path(name).name)
             if not m: raise ValueError("Native daily filename DATE cannot be parsed: "+name)
             try:
@@ -131,6 +137,7 @@ def main(a):
       "original_isotope_rows":len(cohort),"original_site_seasons_undrifted":860,
       "original_88_site_geographic_columns":coords,
       "provider_source_native_file_samples":schemas,
+      "provider_native_1file_LonLat_geographic_grid_schema":lonlat_schema,
       "original_source_isotope_cohort_season_counts":original_cohort_years,
       "winter_by_original_isotope_season":winter_support,
       "source_full_80pct_winter_years_before_response_open":months_pass,
