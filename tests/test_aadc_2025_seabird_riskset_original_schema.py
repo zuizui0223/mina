@@ -21,7 +21,7 @@ class TestAADCSourceSchema(unittest.TestCase):
             [x["text"] for x in got[0]["text_only_cells"] if "text" in x])
         self.assertTrue(any(x.get("type")=="NUMERIC_CELL_REDACTED"
                             for x in got[0]["text_only_cells"]))
-        self.assertNotIn(1998,str(got))
+        self.assertNotIn('1998',str(got))
         self.assertNotIn("103.5",str(got))
 if __name__=="__main__":
     unittest.main()
