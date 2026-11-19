@@ -121,6 +121,11 @@ def audit(originals,source_sha):
         cert[key].append(row)
     if len(cert)!=216 or any(len(v)!=1 for v in cert.values()):
         raise ValueError("original certainty lookup has duplicates")
+    publisher_absence_grade_codes=defaultdict(Counter)
+    for rule in files["2025_certainty"]:
+        occ=txt(rule.get("occurrence")).upper()
+        grade=txt(rule.get("occurrence_cert_cat")).upper()
+        publisher_absence_grade_codes[occ][grade or "<BLANK>"]+=1
     grouped=defaultdict(list)
     dropped=Counter()
     for r in rows:
@@ -162,6 +167,11 @@ def audit(originals,source_sha):
        "source_sha256":source_sha,
        "original_2025_geographic_sites":len(loc),
        "original_certainty_source_rules":len(cert),
+       "publisher_certainty_grade_code_histogram_by_occurrence":{
+          k:dict(v) for k,v in sorted(publisher_absence_grade_codes.items())},
+       "publisher_absence_grade_code_has_literal_H":any(
+          grade=="H" for occ,vals in publisher_absence_grade_codes.items()
+          if occ=="A" for grade in vals),
        "valid_source_site_species_season_groups":len(grouped),
        "source_invalid_rows":dict(dropped),
        "source_year_states":dict(broad_outcomes),
