@@ -233,8 +233,7 @@ def main():
                 "reason":f"{type(e).__name__}: {str(e)}"[:300],
                 "ecological_effect_fitted":False}
     a.out_json.parent.mkdir(parents=True,exist_ok=True)
-    a.out_json.write_text(json.dumps(report,indent=2,ensure_ascii=False,sort_keys=True)+"
-")
+    a.out_json.write_text(json.dumps(report,indent=2,ensure_ascii=False,sort_keys=True)+"\n")
     print(json.dumps({"status":report["status"],"events_sampled":report.get("events_sampled"),
                       "paired_scene_metadata":report.get("events_with_complete_scene_metadata_both_seasons"),
                       "query_errors":report.get("source_query_error_counts")},sort_keys=True))
