@@ -33,7 +33,7 @@ SOURCE_DATE_FIELDS = (
     "orig_date", "orig_time", "source_time",
 )
 GLACIER_KEY_FIELDS = ("glims_id", "glimsid", "glacier_id", "glac_id")
-YEAR_RE = re.compile(r"(?<!\\d)((?:18|19|20)\\d{2})(?!\\d)")
+YEAR_RE = re.compile(r"(?<!\d)((?:18|19|20)\d{2})(?!\d)")
 
 
 def http_get(params: dict[str, str], timeout: int = 35) -> bytes:
