@@ -193,6 +193,12 @@ def audit(event_json:Path,max_events:int):
     for x in itemrows:
         bykey[(x["geog_site_id"],x["species_code"],x["a_season_start"])].append(x)
     paired=sum(len(v)==2 and all(x in valid for x in v) for v in bykey.values())
+    any_paired=sum(len(v)==2 and all(x["source_status"]=="SCENE_METADATA_PRESENT"
+                                   and x.get("n_scene_items",0)>0 for x in v)
+                   for v in bykey.values())
+    returnable_firstpage_pairs=sum(len(v)==2 and any(
+                                    x.get("possible_incomplete_first_page") for x in v)
+                                   for v in bykey.values())
     return {
       "status":"LANDSAT_STAC_PILOT_ORIGINAL_SCENE_METADATA_ONLY",
       "sources":{"aadc_original_publisher_geographic_sha256":publisher_sha,
@@ -205,6 +211,9 @@ def audit(event_json:Path,max_events:int):
       "original_eight_species_AtoP_site_ids":EXPECTED_SITES,
       "events_sampled":len(selected),
       "events_with_complete_scene_metadata_both_seasons":paired,
+      "events_with_any_scene_metadata_in_both_seasons":any_paired,
+      "events_with_at_least_one_paginated_search":returnable_firstpage_pairs,
+      "first_page_counts_are_total_counts":False,
       "source_queries_run":len(itemrows),
       "source_query_error_counts":dict(errs),
       "source_site_scene_metadata":itemrows,
@@ -236,6 +245,7 @@ def main():
     a.out_json.write_text(json.dumps(report,indent=2,ensure_ascii=False,sort_keys=True)+"\n")
     print(json.dumps({"status":report["status"],"events_sampled":report.get("events_sampled"),
                       "paired_scene_metadata":report.get("events_with_complete_scene_metadata_both_seasons"),
+                      "paired_any_scene_metadata":report.get("events_with_any_scene_metadata_in_both_seasons"),
                       "query_errors":report.get("source_query_error_counts")},sort_keys=True))
 
 if __name__=="__main__":
