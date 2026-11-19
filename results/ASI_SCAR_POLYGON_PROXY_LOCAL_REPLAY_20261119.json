@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "result_id": "mina-asi-scar-polygon-proxy-exploratory-local-replay-20261119",
-  "status": "RECOMPUTED_FROM_PINNED_SOURCE_ARTIFACTS_GITHUB_ACTIONS_VALIDATION_QUEUED",
+  "status": "REPRODUCED_IDENTICALLY_BY_ORIGINAL_GITHUB_ACTIONS",
   "provenance": {
     "asi_source_original_commit": "f34545a163ee22eb557ac2cd8c01e219271787aa",
     "asi_source_csv_blob_sha1": "b26be882f7a56e77287dbebd897e8762efafe7a3",
@@ -12,7 +12,9 @@
     "input_scar_geo_csv_sha256": "62141712b88c4ffa9ce46f0f4d30634147aa44ac0a71cf9145584951f94885e1",
     "model_code": "scripts/fit_asi_antarctic_polygon_proxy_exploratory.py",
     "ci_workflow_run": 44513846995,
-    "reproduction": "Independent container replay using pandas 2.2.3 statsmodels 0.14.6; source CSV bytes from GitHub Actions artifacts. This result is not yet certified by the queued CI run."
+    "reproduction": "Source-pinned independent local re-computation and GitHub Actions original-source workflow produce identical estimates at numerical precision (rounded differences <1e-12).",
+    "ci_artifact_id": 14526035124,
+    "ci_workflow_conclusion": "success"
   },
   "design": {
     "source_spatial_blocks": [
