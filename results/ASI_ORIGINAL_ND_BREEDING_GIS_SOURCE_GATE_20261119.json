@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-asi-detection-penguin-sourcegate-20261119",
+  "date": "2026-11-19",
+  "source": {
+    "publisher": "Schrimpf, Che-Castaldo & Lynch 2020 Polar Biology",
+    "doi": "10.1007/s00300-019-02613-1",
+    "original_repo": "lynch-lab/Schrimpf_etal_PolarBiology_Occupancy",
+    "original_commit": "f34545a163ee22eb557ac2cd8c01e219271787aa",
+    "original_visits_blob": "b26be882f7a56e77287dbebd897e8762efafe7a3",
+    "original_site_metadata_blob": "44dfb41e696ed84cba54af356204e39f87561533",
+    "original_gis_candidate_artifact_run": 44508816915,
+    "script": "scripts/audit_asi_glims_rock_candidate_source.py",
+    "workflow_run": 44511340025,
+    "workflow_artifact_id": 14524376093
+  },
+  "verified_counts": {
+    "ASI_visits": 1565,
+    "ASI_distinct_sites": 196,
+    "ASI_site_seasons": 827,
+    "ASI_seasons": 22,
+    "ASI_start_season": 1995,
+    "ASI_last_start_season": 2016,
+    "GIS_frozen_sites": 25,
+    "exact_ASI_code_and_10m_location_matches": 5,
+    "exact_site_codes": [
+      "JOUG",
+      "PYPT",
+      "RENI",
+      "SART",
+      "TRUA"
+    ],
+    "five_matched_visits": 89,
+    "five_matched_site_seasons": 32,
+    "matches_geographic_meter_distance": 0,
+    "ASI_per_species_visit_state": {
+      "ADPE": {
+        "zero_nondetected": 1058,
+        "one_present": 123,
+        "two_breeding": 356,
+        "NA": 28
+      },
+      "CHPE": {
+        "zero_nondetected": 891,
+        "one_present": 140,
+        "two_breeding": 510,
+        "NA": 24
+      },
+      "GEPE": {
+        "zero_nondetected": 505,
+        "one_present": 128,
+        "two_breeding": 915,
+        "NA": 17
+      }
+    },
+    "ASI_same_site_same_season_mixed_zero_and_positive": {
+      "ADPE": 82,
+      "CHPE": 78,
+      "GEPE": 75
+    },
+    "ASI_consecutive_recorded_site_species_season_pairs": {
+      "ADPE": 435,
+      "CHPE": 438,
+      "GEPE": 442
+    },
+    "ASI_observed_zero_only_to_breeding_next_season": {
+      "ADPE": 3,
+      "CHPE": 3,
+      "GEPE": 7,
+      "total": 13,
+      "unique_site_codes": 11
+    },
+    "ASI_observed_zero_only_to_breeding_exact_five_sites": {
+      "ADPE": 0,
+      "CHPE": 0,
+      "GEPE": 0
+    },
+    "ASI_observed_zero_only_to_breeding_events_within_original_GIS_133_sites": 1,
+    "ASI_event_within_133_GIS_site_code": "BAIL",
+    "ASI_event_within_133_GIS_has_rock_exposure_nearby": false,
+    "ASI_observed_zero_only_to_breeding_events_within_frozen_25_sites": 0
+  },
+  "decision": "STOP_FALSE_COLONIZATION; ASI original nondetections support occupancy models but no temporally matched bare-rock exposure and verified breeding-patch risk set.",
+  "limits": [
+    "ASI state 0 is visited non-detection, not true absence; mixed zero and positive in same site-season shows detection uncertainty.",
+    "Site-level non-detection then breeding is NOT confirmed first occupation of formerly glaciated nesting rock.",
+    "The 2024 rock map postdates ASI 1995-2017 so no post-exposure verified ASI survey season exists at frozen 25.",
+    "ASI raw visits and some MAPPPD censuses share survey provenance; not independent whole-animal replication.",
+    "The 11 source site codes contain 13 candidate detection state transitions; none is in 25 three-source rock-proximity sites.",
+    "No effect size or significance tests added."
+  ],
+  "next_potential_pivot": "For more inferential support, broaden the risk set to all 196 original ASI visit locations; independently map their land geometry and audit island-vs-continental strata before any breeding-effect test. Never treat SCAR feature ID as island identity."
+}
