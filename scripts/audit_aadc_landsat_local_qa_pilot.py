@@ -41,6 +41,12 @@ def get_scene(scene_id):
 def qa_from_cog(href,lat,lon):
     u=urlparse(href)
     host=(u.hostname or "").lower()
+    if u.scheme=="s3" and host=="usgs-landsat" and u.path.startswith("/") and not u.query:
+        # EarthSearch explicitly gives s3://usgs-landsat keys. Use the original
+        # public, narrowly allowlisted AWS bucket over HTTPS. No arbitrary S3.
+        href="https://usgs-landsat.s3.amazonaws.com"+u.path
+        u=urlparse(href)
+        host=(u.hostname or "").lower()
     if u.scheme!="https" or not (
         host=="landsatlook.usgs.gov" or host=="usgs-landsat.s3.amazonaws.com"
         or host.endswith(".s3.amazonaws.com")
