@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install numpy pandas pyproj shapely pyshp requests
+      - run: python -m pip install numpy pandas pyproj shapely pyshp pyreadr requests
       - name: Test source-only land classification semantics
         run: |
           python -m py_compile scripts/audit_asi_ant_island_mainland_source_support.py
