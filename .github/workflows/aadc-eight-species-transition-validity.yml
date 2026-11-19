@@ -1,0 +1,42 @@
+name: AADC 2025 eight-seabird high-evidence transition source gate
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_eight_species_transition_validity.py
+      - tests/test_aadc_eight_species_transition_validity.py
+      - .github/workflows/aadc-eight-species-transition-validity.yml
+  workflow_dispatch:
+
+concurrency:
+  group: aadc-eight-species-high-evidence-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests openpyxl xlrd
+      - name: Test conservative source A/P/NR and expert evidence semantics
+        run: |
+          python -m py_compile scripts/audit_aadc_eight_species_transition_validity.py
+          python -m unittest discover -s tests -p test_aadc_eight_species_transition_validity.py -v
+      - name: Verify original AADC 2025 publisher SHA and audit strict evidence A/P pairs
+        run: |
+          python -m scripts.audit_aadc_eight_species_transition_validity \
+            --out-json build/AADC_2025_EIGHT_SPECIES_HIGH_EVIDENCE_TRANSITION_SOURCE_GATE_20261119.json
+      - name: Preserve full source support and HOLD
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-eight-species-high-evidence-source-20261119
+          path: build/AADC_2025_EIGHT_SPECIES_HIGH_EVIDENCE_TRANSITION_SOURCE_GATE_20261119.json
+          retention-days: 30
