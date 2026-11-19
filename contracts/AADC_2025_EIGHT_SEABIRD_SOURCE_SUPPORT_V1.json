@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-aadc-2025-eight-seabird-original-source-support-v1",
+  "date": "2026-11-19",
+  "status": "SOURCE_SCHEMA_VERIFIED_FULL_EVENT_GATE_QUEUED",
+  "scientific_question": "Is there sufficient independently surveyed island and coastal continental rock support to attempt a detection-aware, site-level Antarctic seabird association distinct from prior published search-effort maps?",
+  "source": {
+    "publisher": "Australian Antarctic Data Centre",
+    "doi_2025": "10.26179/5n29-r073",
+    "eds_2025": 5959,
+    "doi_icefree_2016": "10.26179/53yk-8z83",
+    "eds_icefree_2016": 4344,
+    "source_event_files": {
+      "seabird_xls": {
+        "rows": 22018,
+        "sha256": "4a03d8efc8f1579b2eafd982811c39edc00d2c87d49e990f93c6411db6860360"
+      },
+      "penguin_xlsx": {
+        "rows": 11089,
+        "sha256": "8b38aa86f0ef2a0a9fe8c5bb13da904a9f2431cd503644b962b6e116ac3187ac"
+      }
+    },
+    "source_geography": {
+      "rows": 7785,
+      "sha256": "ed5f59d11a0e2ca7491ecf32dc8b04de524e83edf7acd268702963c3b7561294"
+    },
+    "source_certainty": {
+      "rows": 216,
+      "sha256": "b7aba52732102441b4edbe438b854cb9d2dbf39542fd6fbfcd62647ae9fdd156"
+    },
+    "original_2016_site_atlas": {
+      "rows": 4884,
+      "sha256": "2236269e754962f9af082a0853993fc65a4afd20c7489a65fae81bdd1899ffaa"
+    }
+  },
+  "published_results_prior_art": {
+    "paper": "Southwell et al. 2025 Diversity and Distributions 31:e70066",
+    "doi": "10.1111/ddi.70066",
+    "published_search_events": 33297,
+    "downloaded_current_original_event_rows": 33107,
+    "difference_unresolved": 190,
+    "already_analyzes": [
+      "Presence/absence/ignorance by habitat site",
+      "Species-specific search-effort coverage",
+      "High/mid/low absence certainty",
+      "Distance to station accessibility bias",
+      "Temporal repeat search inadequacy"
+    ],
+    "source_published_continent_search_effort_pct_max_optimistic_approx": 0.2,
+    "geographic_scope": "East Antarctica 30E–150E"
+  },
+  "rules": {
+    "unit_for_spatial_source_support": "original unique geog_site_id x species_code x season",
+    "original_event_state": [
+      "P",
+      "A",
+      "NR"
+    ],
+    "strict_A": "only direct original A with no co-occurring P or NR for the same site/species/season",
+    "strict_P": "direct original P with no contradictory A for the same site/species/season",
+    "exclude": [
+      "NR",
+      "unmatched site",
+      "ambiguous site ID",
+      "conflicting A/P",
+      "unknown species or season"
+    ],
+    "certainty": "preserve source occurrence_cert_cat and expert validation; do not infer from row count",
+    "geographic_class": "read geog_site_feature and subgroup exactly as original, do not infer mainland from SCAR FID",
+    "mainland_controls": "flying seabirds only and independently verify exposure of coastal vs inland habitat; flightless Adélie cannot access continental inland 1km+",
+    "independence": "unique physical landmass and independent source, not 33k event rows or old atlas duplicate sites",
+    "longitudinal": "only consecutive actually observed A/P seasons; do not bridge missing or NR",
+    "unsurveyed": "7785 potential sites include many unvisited; no source row is not absence"
+  },
+  "descriptive_support_thresholds_not_a_power_calculation": {
+    "minimum_unique_geo_sites_with_explicit_P_or_A_per_group_for_any_species": 20,
+    "minimum_subgroups_with_both_island_and_continent_source_support": 3,
+    "minimum_actual_revisited_site_species_with_two_or_more_seasons_per_group": 10,
+    "minimum_independently_verified_physical_islands_with_replicates": 5
+  },
+  "preserve_prior_stops": [
+    "Paper2 original 2km area by habitat p=0.0947 nonconfirmatory",
+    "AADC original ADP-only PR180 consecutive A-to-P n=1 STOP",
+    "MAPPPD original strict SCAR land continuity V41 STOP",
+    "ASI peninsula proxy exploratory OR 0.745 CI crossing 1"
+  ],
+  "next_executable_check": "Source-pinned read of two current survey workbooks, join 7785 geog sites with 216 certainty tuples, count actual P/A/NR by species, site and original feature; DO NOT fit outcomes or claim new substrate exposure.",
+  "limitations": [
+    "Not an independent new penguin sample; ADP original 11089 rows previously audited.",
+    "The 2025 East Antarctic domain and 2016 original candidate atlas do not overlap Western Antarctic Peninsula 25 GLIMS rock candidates.",
+    "No post-2024 field observation on newly exposed rock and no measured mammalian predator exposure.",
+    "Published Southwell et al 2025 already analyzes source detection, accessibility and ignorance; unadjusted duplicate plots are not novel.",
+    "Source schema count discrepancy 190 must be resolved before equating records with published article."
+  ]
+}
