@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install requests openpyxl
+      - run: python -m pip install requests openpyxl xlrd
       - name: Compile and test site/season provenance
         run: |
           python -m py_compile scripts/audit_aadc_landsat_scene_source.py
