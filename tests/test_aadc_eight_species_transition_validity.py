@@ -9,10 +9,10 @@ def datum(occ="A",expert="Y",species="ADP",vantage="G"):
       "site_expert_validation":expert,
       "occurrence_expert_validation":expert
     }
-def lookup(grade="H"):
+def lookup(grade="4"):
     return {
        ("ADP","A","G","S"):[{"occurrence_cert_cat":grade}],
-       ("ADP","P","G","S"):[{"occurrence_cert_cat":"H"}]
+       ("ADP","P","G","S"):[{"occurrence_cert_cat":"5"}]
     }
 class TestAADCSourceEvidenceLevel(unittest.TestCase):
     def test_original_direct_high_absence_and_validated_presence(self):
@@ -24,7 +24,7 @@ class TestAADCSourceEvidenceLevel(unittest.TestCase):
         self.assertIsNone(year_detection_group_status(
             [datum("A",expert="N")],lookup(),"S")[1])
         self.assertIsNone(year_detection_group_status(
-            [datum("A")],lookup("M"),"S")[1])
+            [datum("A")],lookup("3"),"S")[1])
         self.assertIsNone(year_detection_group_status(
             [datum("A"),datum("NR")],lookup(),"S")[1])
         self.assertIsNone(year_detection_group_status(
