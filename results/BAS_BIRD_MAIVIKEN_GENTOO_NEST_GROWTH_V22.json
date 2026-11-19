@@ -1,0 +1,159 @@
+{
+  "status": "V22_METADATA_SUPPORT_COMPLETED",
+  "bird_original_sha256": "b1abc3c3adacee3f277d481217aabe4206c7b592a81f1f0eb1a0ec20a64450d3",
+  "maiviken_original_sha256": "8eef8ba06b0f1e666041be38415cfcc70d16cdb07e72ca6db805d8b70631dc85",
+  "original_metadata_support": {
+    "bird_source_rows": 252,
+    "maiviken_source_rows": 12,
+    "bird_original_species_unrecognized_rows": 0,
+    "bird_original_duplicate_colony_year_groups_excluded": 0,
+    "maiviken_original_duplicate_year_groups_excluded": 0,
+    "bird_distinct_colonies_in_valid_source_metadata": 7,
+    "maiviken_unambiguous_original_years": 11,
+    "eligible_same_year_seasons": 11,
+    "eligible_same_year_start_years": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019
+    ],
+    "original_years_excluded_due_phase_gt30_days": 0,
+    "original_years_excluded_due_invalid_phase": 0,
+    "eligible_consecutive_year_colonymatched_windows": 10,
+    "windows_start_years": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018
+    ],
+    "shared_bird_colonies_per_window": {
+      "2009": 7,
+      "2010": 7,
+      "2011": 7,
+      "2012": 7,
+      "2013": 7,
+      "2014": 7,
+      "2015": 7,
+      "2016": 7,
+      "2017": 7,
+      "2018": 7
+    },
+    "original_count_magnitudes_read": 0,
+    "original_source_calendar_lexical_diagnostics": {
+      "bird_first_calendar_labels": [
+        "20-Oct-19",
+        "20-Oct-19",
+        "19-Oct-19",
+        "19-Oct-19",
+        "19-Oct-19",
+        "19-Oct-19"
+      ],
+      "bird_last_calendar_labels": [
+        "27-Nov-81",
+        "27-Nov-81",
+        "27-Nov-81",
+        "27-Nov-81",
+        "12-Nov-81",
+        "12-Nov-81"
+      ],
+      "bird_calendar_labels_parseable_all_years": 250,
+      "maiviken_first_season_day_labels": [
+        [
+          "2008-2009",
+          "11-Nov-08"
+        ],
+        [
+          "2009-2010",
+          "27-Dec-09"
+        ],
+        [
+          "2010-2011",
+          "29-Oct-10"
+        ],
+        [
+          "2011-2012",
+          "10-Nov-11"
+        ],
+        [
+          "2012-2013",
+          "28-Oct-12"
+        ],
+        [
+          "2013-2014",
+          "23-Nov-13"
+        ],
+        [
+          "2014-2015",
+          "07-Nov-14"
+        ],
+        [
+          "2015-2016",
+          "15-Nov-15"
+        ]
+      ],
+      "maiviken_calendar_labels_parseable": 12,
+      "maiviken_season_labels_parseable": 12,
+      "no_biological_count_fields_inspected": true
+    }
+  },
+  "metadata_support_gate_pass": true,
+  "ecological_effect_fitted": true,
+  "scientific_decision": "DESCRIPTIVE_SINGLE_ISLAND_BOUNDARY_ASSOCIATION_CAUSAL_HOLD",
+  "descriptive_model": {
+    "status": "DESCRIPTIVE_BAS_ISLAND_MAIN_ISLAND_NEST_GROWTH_ASSOCIATION",
+    "ecological_effect_fitted": true,
+    "original_common_years_numeric_valid": 11,
+    "original_matched_yearly_growth_windows_numeric_valid": 10,
+    "nested_Bird_colony_count_values_not_independent_islands": true,
+    "missing_source_count_diagnostics": {},
+    "source_matched_growth_years": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018
+    ],
+    "original_within_Bird_colony_roster": [
+      "Johnson",
+      "Landing Beach",
+      "Lower Mountain Cwm",
+      "Lower Natural Arch",
+      "Square Pond",
+      "Upper Mountain Cwm",
+      "Upper Natural Arch"
+    ],
+    "coastal_small_island_vs_large_main_island_growth_pearson_r": 0.5621534427494942,
+    "leave_one_year_out_r_range": [
+      0.46096277397736507,
+      0.7574255492713723
+    ],
+    "same_direction_annual_growth_windows": 7,
+    "nonzero_both_change_windows": 10,
+    "proportion_same_direction_given_nonzero": 0.7,
+    "within_Bird_colony_pair_r_median": 0.6106618550720883,
+    "within_Bird_colony_pairs_with_ge6_common_years": 21,
+    "comparison_is_single_island_boundary": true,
+    "regional_wind_ice_prey_mechanism_estimated": false,
+    "ecology_generalized_to_other_islands": false,
+    "no_biological_p_value": true,
+    "scientific_decision": "DESCRIPTIVE_SINGLE_ISLAND_BOUNDARY_ASSOCIATION_CAUSAL_HOLD"
+  }
+}

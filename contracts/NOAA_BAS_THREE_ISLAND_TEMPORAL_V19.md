@@ -1,0 +1,18 @@
+# V19 — Source-only temporal intersection of three independently monitored penguin islands
+
+Frozen on 2026-10-20 after V18 original SHA receipts, before any original penguin census/egg/chick magnitude is used. This is a **different question/data source** from failed V14–V17 and not a positive ecological effect. No changes to frozen Ecology PR #189.
+
+## Pinned source bytes
+NOAA 0185113 (DOI 10.25921/58yq-7g68), source URL fixed in V18, verified original file SHA256 a57370f82adf82b53da11ce5d85dada1ae3f3750ef246312b59d0f168763eef4. XLSX census-data worksheet: 38 season labels, with 32 Copacabana Adélie, 34 Copacabana gentoo, 22 Copacabana chinstrap, 18 Cape Shirreff chinstrap, 18 Cape Shirreff gentoo **nonblank** row cells (not certified numeric or full census data). King George Island and Livingston Island are independent physical islands, but each station is only a local monitored breeding site; the observations are not whole-island population totals.
+
+BAS Signy Island gentoo reproductive-stage dataset (DOI 10.5285/883c6b40-024e-41e8-9c3e-2668a44b5751), verified original CSV SHA256 53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b, 43 source season records. Original BAS field TOTAL_NUMBER_OF_PAIRS is **a breeding-stage-specific reproductive pair tally**, not automatically equivalent to NOAA species census. Missing numeric values and literal textual NA must be distinguished from actual 0.
+
+## Eligibility and explicit STOP
+1. Re-fetch exactly the two V18 publisher URLs via HTTPS, verify exact pinned SHA256 source bytes before examining any source data.
+2. Use only public header and original breeding-season label; parse 4-digit austral start year with exact YYYY, YYYY-YY or YYYY/YY, YYYY-YYYY or YYYY/YYYY formats, and verify the next year equals start+1. Do not infer missing years.
+3. Count strictly numeric-looking values with **lexical classification only**; never convert, record, rank, sum, or inspect numeric count magnitudes. Original source integer/float typed Excel values are treated as numeric-present. Zero string is numeric-present; empty, NA, missing, notes/error are unknown. Only original valid season years and a single source row per year are eligible; duplicate years dropped in full.
+4. Prechoose gentoo as the only species measured in all THREE physical islands (NOAA Copa_Gentoo / CapeShirreff_Gentoo and BAS TOTAL_NUMBER_OF_PAIRS). Report distinct exact overlapping original years with lexically valid counts at all three, and complete consecutive-year three-site windows. Also report NOAA within-rookery multi-species co-observation years for its different species. Never equate NOAA unknown census stage to BAS pair count. Do not turn unmeasured entries into 0.
+5. Prospective stage-two structural gate requires >=10 original three-island common valid seasons and >=8 consecutive-year three-island transitions. If fewer, stop before further harmonisation work. Even if numerically eligible, keep biological model on HOLD until original NOAA census protocols and unit are confirmed comparable to BAS *pairs*; source programme was nonrandom and NOAA 2015 vs BAS 2020 different years. Three physical islands do not constitute a circumpolar macro law.
+6. Numeric breeding response effects, correlations, p-values and causal climate interpretation are expressly forbidden in this task. The prior literature already addresses south Shetlands species differences and Signy trends; do not sell new reanalysed trends as independent discovery. An independent environmental mechanism hypothesis must be frozen later using physical/access/sea-ice exposures.
+
+Data QA and a finite cohort can succeed while a novel biological ecological claim remains unsupported.

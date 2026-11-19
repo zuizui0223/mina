@@ -1,0 +1,80 @@
+{
+  "status": "EXACT_SOURCE_AND_FROZEN_MODEL_REPRODUCED_REPORTING_COMPLETED",
+  "date_UTC": "2026-10-20",
+  "scientific_decision": "NOT_SUPPORTED_OR_UNIDENTIFIABLE",
+  "historical_model_commit": "31616bc8b9d1b678d0444660bc815feb4b002625",
+  "historical_model_run": "https://github.com/zuizui0223/mina/actions/runs/39271034255",
+  "historical_model_artifact_id": 12194938002,
+  "historical_model_artifact_zip_sha256": "668464240f3f2243b84550313d703a53da645e1c811c4c7e9f067aac112e76ab",
+  "historical_source_run": "https://github.com/zuizui0223/mina/actions/runs/39268125503",
+  "historical_source_artifact_zip_sha256": "0e247c7bfb71e20766489db5e7a1c4256131c772539757983d817e9203f3bd66",
+  "original_source_DOIs": [
+    "10.26179/53yk-8z83",
+    "10.26179/5n29-r073"
+  ],
+  "publisher_download_route": "Official public data.aad.gov.au /eds/api/dataset/{uuid}/object/download?prefix={original_file}, with publisher transfer.data.aad.gov.au redirect",
+  "original_workbooks_verified": {
+    "potential_geography_2021": {
+      "sha256": "2236269e754962f9af082a0853993fc65a4afd20c7489a65fae81bdd1899ffaa",
+      "bytes": 336800,
+      "rows": 4884
+    },
+    "potential_geography_2025": {
+      "sha256": "ed5f59d11a0e2ca7491ecf32dc8b04de524e83edf7acd268702963c3b7561294",
+      "bytes": 533501,
+      "rows": 7785
+    },
+    "penguin_original_search": {
+      "sha256": "8b38aa86f0ef2a0a9fe8c5bb13da904a9f2431cd503644b962b6e116ac3187ac",
+      "bytes": 817591,
+      "rows": 11089
+    },
+    "flying_seabird_original_search": {
+      "sha256": "4a03d8efc8f1579b2eafd982811c39edc00d2c87d49e990f93c6411db6860360",
+      "bytes": 5259776,
+      "rows": 22018
+    },
+    "survey_certainty_rules": {
+      "sha256": "b7aba52732102441b4edbe438b854cb9d2dbf39542fd6fbfcd62647ae9fdd156",
+      "bytes": 21242,
+      "rows": 216
+    }
+  },
+  "original_derived_csv_sha256": {
+    "AADC_ORIGINAL_7785_GEOGRAPHIC_SITES_V13.csv": "48c716c38c41a054eefc20c03de3c21d75047049e6e277d471d9b9135aab7da5",
+    "AADC_ORIGINAL_33107_BREEDING_SEARCHES_V13.csv": "dba39d79f6309f90e23e896415177ea75086aaf2ecb5523256e48895e95dfc5c"
+  },
+  "eligible_survey_rows_sha256": "9343c9c7a491178a9ceda489f77a389d2c2fb907c15782eac3ba52ff799df4b5",
+  "original_fields_compared_exactly": true,
+  "max_absolute_original_numeric_difference": 0,
+  "numeric_values_checked": 115,
+  "original_field_mismatches": [],
+  "reporting_repair_changes_model_or_sample": false,
+  "reporting_additions": [
+    "original-row Brier with its own denominator",
+    "per-model absolute block scores",
+    "rows and site-species histories per block",
+    "explicit implemented largest-block definition",
+    "final eligible island/continent site counts"
+  ],
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scikit_learn": "1.8.0",
+    "pyproj": "3.8.0"
+  },
+  "focused_tests": {
+    "passed": 27,
+    "files": [
+      "test_aadc_nesting_guild_island_area_v14.py",
+      "test_aadc_original_site_occupancy_v13.py",
+      "test_aadc_original_decoded_headers_v12.py",
+      "test_aadc_original_workbook_headers_v11.py"
+    ]
+  },
+  "result_files": {
+    "results/AADC_GUILD_ISLAND_AREA_SPATIAL_CV_V14.json": "954ec01572bd2340a0fd44e88d97b5468ebd24c74f580bc13d9d5c7a42d72b00",
+    "results/AADC_GUILD_ISLAND_AREA_ORIGINAL_RUN_20261019.json": "cdaa56826c0084d213f6c00fe8240d6ccabab6924deee4a70d30fe59300c7e0b"
+  }
+}

@@ -1,0 +1,45 @@
+name: Antarctic V13 actual AADC seven-thousand sites x eight seabirds verified survey records
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/AADC_ORIGINAL_SITE_SPECIES_SURVEY_JOIN_V13.md'
+      - 'scripts/join_aadc_original_site_occupancy_v13.py'
+      - 'tests/test_aadc_original_site_occupancy_v13.py'
+      - '.github/workflows/antarctic-aadc-original-occupancy-join-v13.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_ORIGINAL_SITE_SPECIES_SURVEY_JOIN_V13.md'
+      - 'scripts/join_aadc_original_site_occupancy_v13.py'
+      - 'tests/test_aadc_original_site_occupancy_v13.py'
+      - '.github/workflows/antarctic-aadc-original-occupancy-join-v13.yml'
+  workflow_dispatch:
+jobs:
+  original-eight-seabird-records:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original-author workbook read libraries
+        run: python -m pip install pytest requests openpyxl xlrd
+      - name: Test explicit survey absence vs unreported species and original row/year/source ID joins
+        run: python -m pytest -q tests/test_aadc_original_site_occupancy_v13.py
+      - name: Directly fetch original 2021/2025 AADC official DOI XLS/XLSX data by verified REST dataset/object identity
+        run: |
+          python scripts/join_aadc_original_site_occupancy_v13.py \
+            --out-json /tmp/AADC_ORIGINAL_8SEABIRD_SURVEY_QA_V13.json \
+            --out-sites /tmp/AADC_ORIGINAL_7785_GEOGRAPHIC_SITES_V13.csv \
+            --out-surveys /tmp/AADC_ORIGINAL_33107_BREEDING_SEARCHES_V13.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-eight-original-species-sites-observations-source-v13-NO-MODEL
+          path: |
+            /tmp/AADC_ORIGINAL_8SEABIRD_SURVEY_QA_V13.json
+            /tmp/AADC_ORIGINAL_7785_GEOGRAPHIC_SITES_V13.csv
+            /tmp/AADC_ORIGINAL_33107_BREEDING_SEARCHES_V13.csv

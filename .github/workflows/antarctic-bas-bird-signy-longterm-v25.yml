@@ -1,0 +1,40 @@
+name: Antarctic V25 historical BAS Bird Island–Signy Gentoo synchrony generality
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/BAS_BIRD_SIGNY_LONG_HORIZON_V25.md'
+      - 'scripts/compare_bas_bird_signy_longterm_v25.py'
+      - 'tests/test_bas_bird_signy_longterm_v25.py'
+      - '.github/workflows/antarctic-bas-bird-signy-longterm-v25.yml'
+  pull_request:
+    paths:
+      - 'contracts/BAS_BIRD_SIGNY_LONG_HORIZON_V25.md'
+      - 'scripts/compare_bas_bird_signy_longterm_v25.py'
+      - 'tests/test_bas_bird_signy_longterm_v25.py'
+      - '.github/workflows/antarctic-bas-bird-signy-longterm-v25.yml'
+  workflow_dispatch:
+jobs:
+  original_BAS_historical_Bird_Signy_Gentoo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install publisher source access and synthetic test libraries
+        run: python -m pip install pytest requests
+      - name: Unit tests on invented site years and historic season continuity
+        run: python -m pytest -q tests/test_bas_bird_signy_longterm_v25.py
+      - name: Original SHA-pinned BAS long history and V23 short-window consistency test
+        run: |
+          python scripts/compare_bas_bird_signy_longterm_v25.py \
+            --json /tmp/BAS_BIRD_SIGNY_LONG_HISTORY_V25.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-BAS-Bird-Signy-historical-synchrony-v25
+          path: /tmp/BAS_BIRD_SIGNY_LONG_HISTORY_V25.json

@@ -1,0 +1,97 @@
+{
+  "status": "DESCRIPTIVE_SOURCE_SAMPLING_GAP_AUDIT_NOT_TURNOVER_CAUSAL_TEST",
+  "source_original_sha256": "75c98ad9174f6ca8b88ae915adb8bb39de5d279099b45ce1ae7d1b2e25d5ba59",
+  "canonical_dataset": "APBP DwC-A v2.3; DOI 10.48361/zftxkr",
+  "taxa": [
+    "Pygoscelis adeliae",
+    "Pygoscelis antarcticus",
+    "Pygoscelis papua"
+  ],
+  "eligibility": {
+    "exact_season_original_nest_record_rows_including_replicates": 2321,
+    "same_site_species_year_groups_with_multiple_original_surveys": 214,
+    "same_site_species_year_duplicate_rows_omitted": 520,
+    "valid_unique_site_species_season_rows": 1801,
+    "distinct_original_source_site_ids": 530
+  },
+  "original_site_species_histories_with_two_or_more_distinct_seasons": 323,
+  "consecutive_reported_survey_pairs_all_time_gaps": 1181,
+  "exactly_one_breeding_season_behind_pairs": 470,
+  "exact_1year_original_measured_state_transitions": {
+    "positive_to_positive": 462,
+    "zero_to_zero": 8,
+    "positive_to_reported_zero": 0,
+    "reported_zero_to_positive": 0
+  },
+  "reported_positive_zero_switches_any_gap": 27,
+  "reported_positive_zero_switches_exact_1year": 0,
+  "reported_switch_gap_min": 4,
+  "reported_switch_gap_median": 16,
+  "reported_switch_gap_max": 49,
+  "observed_interval_gap_table": {
+    "1": {
+      "original_observed_record_pairs": 470,
+      "reported_state_classes": {
+        "positive_to_positive": 462,
+        "zero_to_zero": 8,
+        "positive_to_reported_zero": 0,
+        "reported_zero_to_positive": 0
+      }
+    },
+    "2": {
+      "original_observed_record_pairs": 187,
+      "reported_state_classes": {
+        "positive_to_positive": 186,
+        "zero_to_zero": 1,
+        "positive_to_reported_zero": 0,
+        "reported_zero_to_positive": 0
+      }
+    },
+    "3-5": {
+      "original_observed_record_pairs": 225,
+      "reported_state_classes": {
+        "positive_to_positive": 215,
+        "zero_to_zero": 5,
+        "positive_to_reported_zero": 1,
+        "reported_zero_to_positive": 4
+      }
+    },
+    "6-10": {
+      "original_observed_record_pairs": 64,
+      "reported_state_classes": {
+        "positive_to_positive": 56,
+        "zero_to_zero": 4,
+        "positive_to_reported_zero": 1,
+        "reported_zero_to_positive": 3
+      }
+    },
+    "11-20": {
+      "original_observed_record_pairs": 71,
+      "reported_state_classes": {
+        "positive_to_positive": 66,
+        "zero_to_zero": 0,
+        "positive_to_reported_zero": 4,
+        "reported_zero_to_positive": 1
+      }
+    },
+    "21-200": {
+      "original_observed_record_pairs": 164,
+      "reported_state_classes": {
+        "positive_to_positive": 150,
+        "zero_to_zero": 1,
+        "positive_to_reported_zero": 10,
+        "reported_zero_to_positive": 3
+      }
+    }
+  },
+  "interpretation": "No source-observed positive/zero switch in exactly adjacent years. Long-gap source count-state changes cannot be dated to a true local breeding extinction or recolonization event. This is known-site measurement coverage, not unbiased island occupancy monitoring.",
+  "ecological_parameter_or_pvalue_fitted": false,
+  "novel_island_causal_mechanism_found": false,
+  "observed_pair_derivative_sha256": "75a6f678e27c1d6d33022b6a2596ee73a6c6246c9b3ef814d08829e64d8fcb70",
+  "provenance": {
+    "run_url": "https://github.com/zuizui0223/mina/actions/runs/39234197654",
+    "source_sha": "75c98ad9174f6ca8b88ae915adb8bb39de5d279099b45ce1ae7d1b2e25d5ba59",
+    "classification": "POST_OUTCOME_DESCRIPTIVE_WITHOUT_COAST_OR_DETECTION_CONTROLS",
+    "source_dataset_DOI": "10.48361/zftxkr"
+  }
+}

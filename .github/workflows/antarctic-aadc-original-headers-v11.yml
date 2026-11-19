@@ -1,0 +1,35 @@
+name: Antarctic original AADC 4884 site and seabird occupancy workbook schemas V11
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'scripts/audit_aadc_original_workbook_headers_v11.py'
+      - 'tests/test_aadc_original_workbook_headers_v11.py'
+      - '.github/workflows/antarctic-aadc-original-headers-v11.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_aadc_original_workbook_headers_v11.py'
+      - 'tests/test_aadc_original_workbook_headers_v11.py'
+      - '.github/workflows/antarctic-aadc-original-headers-v11.yml'
+  workflow_dispatch:
+jobs:
+  first-original-source-workbook-headers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest requests
+      - name: Prove only original first spreadsheet row is opened with invented observations
+        run: python -m pytest -q tests/test_aadc_original_workbook_headers_v11.py
+      - name: Download AADC public original site, eight-seabird and certainty files by exact API ID; inspect headers ONLY
+        run: python scripts/audit_aadc_original_workbook_headers_v11.py --out-json /tmp/AADC_ORIGINAL_WORKBOOK_SCHEMAS_V11.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-first-party-site-occupancy-workbook-headers-NO-RESPONSE-ROWS
+          path: /tmp/AADC_ORIGINAL_WORKBOOK_SCHEMAS_V11.json

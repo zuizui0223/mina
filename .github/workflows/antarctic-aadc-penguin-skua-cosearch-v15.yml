@@ -1,0 +1,51 @@
+name: Antarctic V15 original Adélie-skua co-search support only
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/AADC_PENGUIN_SKUA_COSEARCH_V15.md'
+      - 'scripts/audit_aadc_penguin_skua_joint_search_v15.py'
+      - 'tests/test_aadc_penguin_skua_joint_search_v15.py'
+      - '.github/workflows/antarctic-aadc-penguin-skua-cosearch-v15.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_PENGUIN_SKUA_COSEARCH_V15.md'
+      - 'scripts/audit_aadc_penguin_skua_joint_search_v15.py'
+      - 'tests/test_aadc_penguin_skua_joint_search_v15.py'
+      - '.github/workflows/antarctic-aadc-penguin-skua-cosearch-v15.yml'
+  workflow_dispatch:
+jobs:
+  original_same_site_season_structure_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original geography and synthetic tests
+        run: python -m pip install pytest pyproj
+      - name: Verify synthetic stop conditions without accessing seabird outcomes
+        run: python -m pytest -q tests/test_aadc_penguin_skua_joint_search_v15.py
+      - name: Download source-hashed V13 AADC public records
+        uses: actions/download-artifact@v4
+        with:
+          name: aadc-eight-original-species-sites-observations-source-v13-NO-MODEL
+          repository: zuizui0223/mina
+          run-id: 39268125503
+          github-token: ${{ github.token }}
+          path: /tmp/public-original
+      - name: Count exact original co-survey support and STOP if insufficient
+        run: |
+          python scripts/audit_aadc_penguin_skua_joint_search_v15.py \
+            --sites /tmp/public-original/AADC_ORIGINAL_7785_GEOGRAPHIC_SITES_V13.csv \
+            --surveys /tmp/public-original/AADC_ORIGINAL_33107_BREEDING_SEARCHES_V13.csv \
+            --out /tmp/AADC_PENGUIN_SKUA_COSEARCH_SUPPORT_V15.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-penguin-skua-cosearch-support-v15-NO-OUTCOMES
+          path: /tmp/AADC_PENGUIN_SKUA_COSEARCH_SUPPORT_V15.json

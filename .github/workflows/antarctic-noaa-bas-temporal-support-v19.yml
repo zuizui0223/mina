@@ -1,0 +1,40 @@
+name: Antarctic V19 verified NOAA/BAS three-island season support
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/NOAA_BAS_THREE_ISLAND_TEMPORAL_V19.md'
+      - 'scripts/audit_noaa_bas_three_island_temporal_v19.py'
+      - 'tests/test_noaa_bas_three_island_temporal_v19.py'
+      - '.github/workflows/antarctic-noaa-bas-temporal-support-v19.yml'
+  pull_request:
+    paths:
+      - 'contracts/NOAA_BAS_THREE_ISLAND_TEMPORAL_V19.md'
+      - 'scripts/audit_noaa_bas_three_island_temporal_v19.py'
+      - 'tests/test_noaa_bas_three_island_temporal_v19.py'
+      - '.github/workflows/antarctic-noaa-bas-temporal-support-v19.yml'
+  workflow_dispatch:
+jobs:
+  source_audited_gentoo_three_island_years:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install parser dependencies
+        run: python -m pip install pytest openpyxl requests
+      - name: Synthetic source-year and missingness tests
+        run: python -m pytest -q tests/test_noaa_bas_three_island_temporal_v19.py
+      - name: Exact SHA verification and original three-island date overlap WITHOUT counts
+        run: |
+          python scripts/audit_noaa_bas_three_island_temporal_v19.py \
+            --out /tmp/NOAA_BAS_THREE_ISLAND_SEASON_SUPPORT_V19.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-noaa-bas-gentoo-three-island-source-years-v19
+          path: /tmp/NOAA_BAS_THREE_ISLAND_SEASON_SUPPORT_V19.json

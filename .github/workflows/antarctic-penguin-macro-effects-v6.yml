@@ -1,0 +1,81 @@
+name: Antarctic penguin first island substrate × offshore sea-ice test V6
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/APBP_LAND_SEA_ISLAND_MACRO_V6_PRE_EFFECT.md'
+      - 'scripts/evaluate_apbp_land_sea_macro_v6.py'
+      - 'tests/test_apbp_land_sea_macro_v6.py'
+      - '.github/workflows/antarctic-penguin-macro-effects-v6.yml'
+  pull_request:
+    paths:
+      - 'contracts/APBP_LAND_SEA_ISLAND_MACRO_V6_PRE_EFFECT.md'
+      - 'scripts/evaluate_apbp_land_sea_macro_v6.py'
+      - 'tests/test_apbp_land_sea_macro_v6.py'
+      - '.github/workflows/antarctic-penguin-macro-effects-v6.yml'
+  workflow_dispatch:
+jobs:
+  independent-original-derived-v6:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated original data/model dependencies
+        run: python -m pip install pytest numpy pandas pyproj
+      - name: Test source SHA, consecutive same-site/season, duplicate and train-only ridge leakage
+        run: python -m pytest -q tests/test_apbp_land_sea_macro_v6.py
+      - name: Authenticated APBP v2 nest records from successful source run
+        uses: actions/download-artifact@v4
+        with:
+          name: apbp-original-six-penguin-records-joined-SCHEMA-NO-EFFECT
+          repository: zuizui0223/mina
+          run-id: 39091772742
+          github-token: ${{ github.token }}
+          path: /tmp/data
+      - name: Authenticated APBP × SCAR rock input from successful source run
+        uses: actions/download-artifact@v4
+        with:
+          name: apbp-scar-add-original-island-rock-QA-NO-ECOLOGY-EFFECT
+          repository: zuizui0223/mina
+          run-id: 39092290194
+          github-token: ${{ github.token }}
+          path: /tmp/data
+      - name: Authenticated high-res SCAR coastline land classifications
+        uses: actions/download-artifact@v4
+        with:
+          name: apbp-high-res-2026-SCAR-land-source-uncertainty-only
+          repository: zuizui0223/mina
+          run-id: 39200969390
+          github-token: ${{ github.token }}
+          path: /tmp/data
+      - name: Authenticated NOAA/NSIDC v6 44-year offshore SIC input
+        uses: actions/download-artifact@v4
+        with:
+          name: apbp-NSIDC-G02202-v6-original-ocean-climate-siteyear-NO-ABUNDANCE
+          repository: zuizui0223/mina
+          run-id: 39202300184
+          github-token: ${{ github.token }}
+          path: /tmp/data
+      - name: Verify original-derived CSV SHA256 identities and sample counts, run prespecified 12-block ecological comparison
+        run: |
+          python scripts/evaluate_apbp_land_sea_macro_v6.py \
+            --population /tmp/data/APBP_ALL_ORIGINAL_MEASUREMENTS_V2.csv \
+            --medium-rock /tmp/data/APBP_ADD_719_SITE_LAND_ROCK_LINK_V3.csv \
+            --high-land /tmp/data/APBP_719_HIGHRES_COAST_MATCH_V4.csv \
+            --marine /tmp/data/APBP_NOAA_1979_2022_SITEYEAR_OCEAN_SIC_V5.csv \
+            --out-json /tmp/APBP_LAND_SEA_ISLAND_MACRO_RESULTS_V6.json \
+            --out-csv /tmp/APBP_406_CONSECUTIVE_PAIRS_V6.csv
+      - name: Archive strict 406-pair source panel and exact model/CV receipt
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apbp-original-406-pair-12-block-macro-effect-v6-EXPLORATORY
+          path: |
+            /tmp/APBP_LAND_SEA_ISLAND_MACRO_RESULTS_V6.json
+            /tmp/APBP_406_CONSECUTIVE_PAIRS_V6.csv

@@ -1,0 +1,20 @@
+# V18 — Two new original-data families: NOAA South Shetlands + BAS Signy
+
+2026-10-20. Freeze publisher URLs, source family, data grain and outcome-blind eligibility before reading original numerical penguin census and reproductive counts. This is a source acquisition / schema / observation-coverage gate, not an extension of the closed AADC V14 or ASI V16–V17 effect tests. Ecology PR189 remains scientifically frozen.
+
+## First-party sources, no convenient bibliography digitizing
+1. NOAA / NCEI original accession 0185113, DOI 10.25921/58yq-7g68, official accession version 1.1:
+   https://www.ncei.noaa.gov/data/oceans/archive/arc0132/0185113/1.1/data/0-data/Annual%20Penguin%20Census%201977-2015%20v1_0.xlsx
+   This is the original US-AML R annual penguin census at **Copacabana (King George Island)** and **Cape Shirreff (Livingston Island)**. Publisher InPort #55436 defines year as austral-season label and fields Copa_Adelie, Copa_Gentoo, Copa_Chinstrap, CapeShirreff_Chinstrap, CapeShirreff_Gentoo. The five fields are original local **census counts**, not guaranteed nest/egg attempts. DOI and exact publisher source are pinned before response data.
+2. BAS UK Polar Data Centre, Signy Island, 1978–2020 gentoo stage-resolved breeding success DOI 10.5285/883c6b40-024e-41e8-9c3e-2668a44b5751; original link published by ramadda BAS:
+   https://ramadda.data.bas.ac.uk/repository/entry/get/signy_gentoo_breeding_success.csv?entryid=synth%3A883c6b40-024e-41e8-9c3e-2668a44b5751%3AL3NpZ255X2dlbnRvb19icmVlZGluZ19zdWNjZXNzLmNzdg%3D%3D
+   The data contain occupied/incubating nests, eggs, hatched chicks, fledglings; never convert them to a NOAA abundance count without an authenticated matching definition, documented timing and effort.
+3. BAS Adélie DOI 10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d and chinstrap DOI 10.5285/d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9 remain additional source records, **not confirmed accessible original CSVs** at this stage.
+
+## Outcome-blind source-stage gate
+- Download ONLY the exact official URLs above and follow HTTPS redirects to their named official publisher host families (NOAA .noaa.gov; BAS .bas.ac.uk). Maximum 2 MiB each; SHA256 source receipts and HTTP/MIME/byte counts. Never invent a file, infer an absence from a blank, or substitute an article's table for original data.
+- NOAA: verify XLSX ZIP magic, parse first <=12 worksheet rows for source-text header candidate, report actual publisher sheet names, candidate source header names, original row and column counts, availability of the five promised series columns, number of *nonblank* source values per series and number of austral season labels. No magnitudes, population effects, p-values or count contrasts. A source dataset may contain only subset years despite advertised date span.
+- BAS: verify actual CSV (not HTML/JavaScript shell), report literal source header names, structural total rows, season and colony column names, **only nonblank observation presence counts** per candidate stage column; no original count magnitudes. Keep source breeding phenological stages distinct and do not label total eggs as penguin pair counts.
+- If NOAA lacks all expected five fields or BAS is unavailable, keep partial source QA but **do not combine islands and do not infer ecology**. Even passing both source formats is *not* permission to estimate novel causal island traits: require independently date-aligned environmental exposure, controlled observation changes, and at least 3 geographically independent island populations. Three named islands is only 3 independent physical island units, not hundreds of colony-year island replicates.
+
+Scientific target for a distinct prospective downstream test (only after source audit): compare relative penguin composition changes across separately measured physical island units, and ask whether divergent nesting ecology interacts with externally measured sea-ice/foraging accessibility. Avoid rediscovery of well-known Adélie/chinstrap/gentoo directional trends; distinguish published baseline results and overlapping source pedigree before any claim of novelty.

@@ -1,0 +1,94 @@
+{
+  "source_noaa_sha256": "a57370f82adf82b53da11ce5d85dada1ae3f3750ef246312b59d0f168763eef4",
+  "source_bas_sha256": "53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b",
+  "excluded_invalid_BAS_original_season": [
+    "1998-8895"
+  ],
+  "frozen_contract": "contracts/NOAA_BAS_GENTOO_GROWTH_SYNCHRONY_V20.md",
+  "source_original_matched_years": 16,
+  "source_matched_year_start_list": [
+    1998,
+    1999,
+    2000,
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009,
+    2011,
+    2012,
+    2013,
+    2014
+  ],
+  "strict_positive_three_island_years": 16,
+  "excluded_original_years_with_nonpositive_three_site_count": [],
+  "strict_three_island_yearly_change_windows": 14,
+  "yearly_change_start_years": [
+    1998,
+    1999,
+    2000,
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2011,
+    2012,
+    2013
+  ],
+  "source_raw_counts_pooled": false,
+  "three_monitored_sites_are_not_whole_island_demographic_populations": true,
+  "status": "V20_EXPLORATORY_THREE_ISLAND_WITHIN_SOURCE_ANNUAL_GROWTH",
+  "biological_descriptive_association_computed": true,
+  "primary": {
+    "pairwise_pearson": {
+      "KingGeorge_vs_Livingston": 0.6349133960993795,
+      "KingGeorge_vs_Signy": 0.12368965173233049,
+      "Livingston_vs_Signy": -0.02805936545433183
+    },
+    "mean_pairwise_pearson": 0.24351456079245937,
+    "eligible_strict_nonzero_windows": 14,
+    "three_way_same_sign_windows": 4,
+    "fraction_all_same_sign": 0.2857142857142857
+  },
+  "leave_one_window_out_mean_r_min_max": [
+    0.10905131685200692,
+    0.30417425882352495
+  ],
+  "early_late_source_sensitivity": {
+    "early_start_1998_2005": {
+      "n_windows": 8,
+      "eligible_strict_nonzero_windows": 8,
+      "three_way_same_sign_windows": 3,
+      "fraction_all_same_sign": 0.375,
+      "mean_pairwise_pearson": 0.1885312412105888
+    },
+    "late_start_2006_2014": {
+      "n_windows": 6,
+      "eligible_strict_nonzero_windows": 6,
+      "three_way_same_sign_windows": 1,
+      "fraction_all_same_sign": 0.16666666666666666,
+      "mean_pairwise_pearson": 0.3090517285007312
+    }
+  },
+  "same_NOAA_programme_cross_species_controls": {
+    "Copacabana": {
+      "n_windows": 12,
+      "gentoo_vs_chinstrap_growth_pearson": 0.6259488917499135
+    },
+    "CapeShirreff": {
+      "n_windows": 14,
+      "gentoo_vs_chinstrap_growth_pearson": 0.7140219024719837
+    }
+  },
+  "environmental_island_causation_supported": false,
+  "general_antarctic_island_law_demonstrated": false,
+  "scientific_decision": "DESCRIPTIVE_SYNCHRONY_ONLY_NOT_ISLAND_CAUSATION"
+}

@@ -1,0 +1,36 @@
+name: Antarctic original AADC 4884 sites and 8 seabirds decoded source headers V12
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'scripts/decode_aadc_original_site_occupancy_headers_v12.py'
+      - 'tests/test_aadc_original_decoded_headers_v12.py'
+      - '.github/workflows/antarctic-aadc-decoded-headers-v12.yml'
+  pull_request:
+    paths:
+      - 'scripts/decode_aadc_original_site_occupancy_headers_v12.py'
+      - 'tests/test_aadc_original_decoded_headers_v12.py'
+      - '.github/workflows/antarctic-aadc-decoded-headers-v12.yml'
+  workflow_dispatch:
+jobs:
+  source-headers-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install legacy Excel source header reader
+        run: python -m pip install pytest requests xlrd
+      - name: Validate actual OOXML relationships and first-row-only no-biological-row reader
+        run: python -m pytest -q tests/test_aadc_original_decoded_headers_v12.py
+      - name: Read official AADC first header per sheet and preserve raw publisher SHA256 before ecological use
+        run: python scripts/decode_aadc_original_site_occupancy_headers_v12.py --out-json /tmp/AADC_ORIGINAL_SHEETS_HEADERS_V12.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-geographic-sites-and-penguin-petrel-survey-first-headers-NO-ROWS
+          path: /tmp/AADC_ORIGINAL_SHEETS_HEADERS_V12.json

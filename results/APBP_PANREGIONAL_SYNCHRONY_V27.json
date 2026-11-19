@@ -1,0 +1,820 @@
+{
+  "status": "V27_ORIGINAL_APBP_SPATIAL_SOURCE_AUDIT",
+  "original_publisher_DOI": "10.48361/zftxkr",
+  "original_V2_join_SHA256": "75c98ad9174f6ca8b88ae915adb8bb39de5d279099b45ce1ae7d1b2e25d5ba59",
+  "contract": "contracts/APBP_SPATIAL_SYNCHRONY_V27.md",
+  "structural_support": {
+    "source_original_total_measurements": 4750,
+    "original_eligible_unique_site_species_seasons": 1726,
+    "duplicate_source_groups_excluded": 214,
+    "source_rows_in_duplicate_groups": 520,
+    "source_sites_with_multiblock_coordinates_removed": 0,
+    "source_quality_exclusions": {
+      "no_exact_source_season_or_site": 1124
+    },
+    "strict_same_month_same_protocol_adjacent_site_changes": 394,
+    "transition_metadata_exclusions": {
+      "protocol_changed_or_unreported": 5,
+      "month_changed": 71
+    },
+    "source_reference_continuity": {
+      "same_nonempty_reference": 375,
+      "different_or_unknown_reference": 19
+    },
+    "growth_change_records_by_species": {
+      "Pygoscelis papua": 64,
+      "Pygoscelis adeliae": 299,
+      "Pygoscelis antarcticus": 31
+    },
+    "species_start_year_geographic_support": {
+      "Pygoscelis papua|2006": {
+        "site_year_changes": 4,
+        "geographic_blocks": 3,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 5,
+        "eligible": false
+      },
+      "Pygoscelis papua|2009": {
+        "site_year_changes": 2,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 1,
+        "eligible": false
+      },
+      "Pygoscelis papua|2014": {
+        "site_year_changes": 5,
+        "geographic_blocks": 4,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 9,
+        "eligible": false
+      },
+      "Pygoscelis papua|2017": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2004": {
+        "site_year_changes": 9,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 28,
+        "between_block_site_pairs": 8,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1983": {
+        "site_year_changes": 10,
+        "geographic_blocks": 5,
+        "same_block_site_pairs": 8,
+        "between_block_site_pairs": 37,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1984": {
+        "site_year_changes": 13,
+        "geographic_blocks": 5,
+        "same_block_site_pairs": 16,
+        "between_block_site_pairs": 62,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1985": {
+        "site_year_changes": 11,
+        "geographic_blocks": 4,
+        "same_block_site_pairs": 22,
+        "between_block_site_pairs": 33,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1988": {
+        "site_year_changes": 10,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 24,
+        "between_block_site_pairs": 21,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1989": {
+        "site_year_changes": 7,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 21,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1990": {
+        "site_year_changes": 11,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 27,
+        "between_block_site_pairs": 28,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1991": {
+        "site_year_changes": 14,
+        "geographic_blocks": 3,
+        "same_block_site_pairs": 40,
+        "between_block_site_pairs": 51,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|2005": {
+        "site_year_changes": 13,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 42,
+        "between_block_site_pairs": 36,
+        "eligible": true
+      },
+      "Pygoscelis papua|2013": {
+        "site_year_changes": 7,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 9,
+        "between_block_site_pairs": 12,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1986": {
+        "site_year_changes": 14,
+        "geographic_blocks": 3,
+        "same_block_site_pairs": 32,
+        "between_block_site_pairs": 59,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1987": {
+        "site_year_changes": 14,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 43,
+        "between_block_site_pairs": 48,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1992": {
+        "site_year_changes": 13,
+        "geographic_blocks": 3,
+        "same_block_site_pairs": 34,
+        "between_block_site_pairs": 44,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|1993": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1994": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1995": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1996": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1997": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1998": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1999": {
+        "site_year_changes": 4,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 6,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2000": {
+        "site_year_changes": 4,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 6,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2001": {
+        "site_year_changes": 10,
+        "geographic_blocks": 3,
+        "same_block_site_pairs": 22,
+        "between_block_site_pairs": 23,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|2002": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2003": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2006": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2009": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2010": {
+        "site_year_changes": 7,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 6,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|2011": {
+        "site_year_changes": 7,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 6,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|2012": {
+        "site_year_changes": 8,
+        "geographic_blocks": 3,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 13,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|2013": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2014": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2015": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2016": {
+        "site_year_changes": 6,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 15,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|2017": {
+        "site_year_changes": 16,
+        "geographic_blocks": 3,
+        "same_block_site_pairs": 39,
+        "between_block_site_pairs": 81,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|2007": {
+        "site_year_changes": 6,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 10,
+        "between_block_site_pairs": 5,
+        "eligible": true
+      },
+      "Pygoscelis adeliae|2008": {
+        "site_year_changes": 7,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 11,
+        "between_block_site_pairs": 10,
+        "eligible": true
+      },
+      "Pygoscelis papua|1999": {
+        "site_year_changes": 2,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 1,
+        "eligible": false
+      },
+      "Pygoscelis papua|2000": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis papua|2008": {
+        "site_year_changes": 6,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 6,
+        "between_block_site_pairs": 9,
+        "eligible": true
+      },
+      "Pygoscelis papua|2010": {
+        "site_year_changes": 2,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1981": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1982": {
+        "site_year_changes": 3,
+        "geographic_blocks": 3,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 3,
+        "eligible": false
+      },
+      "Pygoscelis papua|2012": {
+        "site_year_changes": 6,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 7,
+        "between_block_site_pairs": 8,
+        "eligible": true
+      },
+      "Pygoscelis papua|2015": {
+        "site_year_changes": 2,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis papua|2018": {
+        "site_year_changes": 3,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 2,
+        "eligible": false
+      },
+      "Pygoscelis papua|1982": {
+        "site_year_changes": 3,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 2,
+        "eligible": false
+      },
+      "Pygoscelis papua|2007": {
+        "site_year_changes": 6,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 7,
+        "between_block_site_pairs": 8,
+        "eligible": true
+      },
+      "Pygoscelis antarcticus|1984": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2011": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2012": {
+        "site_year_changes": 3,
+        "geographic_blocks": 3,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 3,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2013": {
+        "site_year_changes": 6,
+        "geographic_blocks": 4,
+        "same_block_site_pairs": 2,
+        "between_block_site_pairs": 13,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2014": {
+        "site_year_changes": 2,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|1996": {
+        "site_year_changes": 3,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 2,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2004": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis papua|2004": {
+        "site_year_changes": 4,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 3,
+        "between_block_site_pairs": 3,
+        "eligible": true
+      },
+      "Pygoscelis antarcticus|2010": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis papua|1996": {
+        "site_year_changes": 2,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 1,
+        "eligible": false
+      },
+      "Pygoscelis adeliae|1979": {
+        "site_year_changes": 3,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 3,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|1982": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis papua|2002": {
+        "site_year_changes": 2,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 1,
+        "eligible": false
+      },
+      "Pygoscelis papua|2003": {
+        "site_year_changes": 3,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 2,
+        "eligible": false
+      },
+      "Pygoscelis papua|2005": {
+        "site_year_changes": 2,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 1,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|1997": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis papua|1997": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|1998": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|1999": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2000": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2001": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2007": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2015": {
+        "site_year_changes": 2,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 1,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2008": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2009": {
+        "site_year_changes": 1,
+        "geographic_blocks": 1,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 0,
+        "eligible": false
+      },
+      "Pygoscelis antarcticus|2017": {
+        "site_year_changes": 2,
+        "geographic_blocks": 2,
+        "same_block_site_pairs": 0,
+        "between_block_site_pairs": 1,
+        "eligible": false
+      }
+    },
+    "qualified_species_year_strata": 23,
+    "qualified_unique_start_years": 19,
+    "qualified_species": 2,
+    "qualified_geographic_blocks": 8,
+    "qualified_original_site_IDs": 50,
+    "frozen_macro_gate_pass": true,
+    "original_biological_count_values_accessed": 0
+  },
+  "biological_effect_computed": true,
+  "scientific_decision": "NO_SUPPORTED_PANREGIONAL_SPATIAL_CONCORDANCE_DIRECTION",
+  "original_growth_sign_results": {
+    "status": "V27_EXPLORATORY_SPATIAL_SYNCHRONY_BY_SOURCE_YEAR",
+    "effects_computed": true,
+    "original_species_year_strata": [
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 1983,
+        "site_changes": 10,
+        "within_site_pairs": 8,
+        "across_site_pairs": 37,
+        "near_same_sign": 1,
+        "far_same_sign": 1,
+        "difference": 0
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 1984,
+        "site_changes": 13,
+        "within_site_pairs": 16,
+        "across_site_pairs": 62,
+        "near_same_sign": 0.5,
+        "far_same_sign": 0.4838709677419355,
+        "difference": 0.016129032258064502
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 1985,
+        "site_changes": 11,
+        "within_site_pairs": 22,
+        "across_site_pairs": 33,
+        "near_same_sign": 0.9545454545454546,
+        "far_same_sign": 0.48484848484848486,
+        "difference": 0.4696969696969697
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 1986,
+        "site_changes": 14,
+        "within_site_pairs": 32,
+        "across_site_pairs": 59,
+        "near_same_sign": 0.4375,
+        "far_same_sign": 0.4915254237288136,
+        "difference": -0.05402542372881358
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 1987,
+        "site_changes": 14,
+        "within_site_pairs": 43,
+        "across_site_pairs": 48,
+        "near_same_sign": 0.6511627906976745,
+        "far_same_sign": 0.625,
+        "difference": 0.026162790697674465
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 1988,
+        "site_changes": 10,
+        "within_site_pairs": 24,
+        "across_site_pairs": 21,
+        "near_same_sign": 0.5833333333333334,
+        "far_same_sign": 0.7142857142857143,
+        "difference": -0.13095238095238093
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 1990,
+        "site_changes": 11,
+        "within_site_pairs": 27,
+        "across_site_pairs": 28,
+        "near_same_sign": 0.8888888888888888,
+        "far_same_sign": 0.25,
+        "difference": 0.6388888888888888
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 1991,
+        "site_changes": 14,
+        "within_site_pairs": 40,
+        "across_site_pairs": 51,
+        "near_same_sign": 0.65,
+        "far_same_sign": 0.803921568627451,
+        "difference": -0.153921568627451
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 1992,
+        "site_changes": 13,
+        "within_site_pairs": 34,
+        "across_site_pairs": 44,
+        "near_same_sign": 0.7941176470588235,
+        "far_same_sign": 0.20454545454545456,
+        "difference": 0.5895721925133689
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 2001,
+        "site_changes": 10,
+        "within_site_pairs": 22,
+        "across_site_pairs": 23,
+        "near_same_sign": 0.6818181818181818,
+        "far_same_sign": 0.391304347826087,
+        "difference": 0.2905138339920948
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 2005,
+        "site_changes": 13,
+        "within_site_pairs": 42,
+        "across_site_pairs": 36,
+        "near_same_sign": 0.5952380952380952,
+        "far_same_sign": 0.6388888888888888,
+        "difference": -0.04365079365079361
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 2007,
+        "site_changes": 6,
+        "within_site_pairs": 10,
+        "across_site_pairs": 5,
+        "near_same_sign": 1,
+        "far_same_sign": 0,
+        "difference": 1
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 2008,
+        "site_changes": 7,
+        "within_site_pairs": 11,
+        "across_site_pairs": 10,
+        "near_same_sign": 1,
+        "far_same_sign": 1,
+        "difference": 0
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 2010,
+        "site_changes": 7,
+        "within_site_pairs": 15,
+        "across_site_pairs": 6,
+        "near_same_sign": 0.4666666666666667,
+        "far_same_sign": 0.3333333333333333,
+        "difference": 0.13333333333333336
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 2011,
+        "site_changes": 7,
+        "within_site_pairs": 15,
+        "across_site_pairs": 6,
+        "near_same_sign": 0.6666666666666666,
+        "far_same_sign": 0.8333333333333334,
+        "difference": -0.16666666666666674
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 2012,
+        "site_changes": 8,
+        "within_site_pairs": 15,
+        "across_site_pairs": 13,
+        "near_same_sign": 0.6666666666666666,
+        "far_same_sign": 0.23076923076923078,
+        "difference": 0.43589743589743585
+      },
+      {
+        "species": "Pygoscelis adeliae",
+        "year": 2017,
+        "site_changes": 16,
+        "within_site_pairs": 39,
+        "across_site_pairs": 81,
+        "near_same_sign": 0.5128205128205128,
+        "far_same_sign": 0.49382716049382713,
+        "difference": 0.018993352326685642
+      },
+      {
+        "species": "Pygoscelis papua",
+        "year": 2004,
+        "site_changes": 4,
+        "within_site_pairs": 3,
+        "across_site_pairs": 3,
+        "near_same_sign": 1,
+        "far_same_sign": 1,
+        "difference": 0
+      },
+      {
+        "species": "Pygoscelis papua",
+        "year": 2007,
+        "site_changes": 6,
+        "within_site_pairs": 6,
+        "across_site_pairs": 4,
+        "near_same_sign": 0.5,
+        "far_same_sign": 0.75,
+        "difference": -0.25
+      },
+      {
+        "species": "Pygoscelis papua",
+        "year": 2008,
+        "site_changes": 6,
+        "within_site_pairs": 6,
+        "across_site_pairs": 9,
+        "near_same_sign": 0.3333333333333333,
+        "far_same_sign": 0.5555555555555556,
+        "difference": -0.22222222222222227
+      },
+      {
+        "species": "Pygoscelis papua",
+        "year": 2012,
+        "site_changes": 6,
+        "within_site_pairs": 7,
+        "across_site_pairs": 8,
+        "near_same_sign": 0.42857142857142855,
+        "far_same_sign": 0.5,
+        "difference": -0.07142857142857145
+      },
+      {
+        "species": "Pygoscelis papua",
+        "year": 2013,
+        "site_changes": 7,
+        "within_site_pairs": 9,
+        "across_site_pairs": 12,
+        "near_same_sign": 0.4444444444444444,
+        "far_same_sign": 0.5833333333333334,
+        "difference": -0.13888888888888895
+      }
+    ],
+    "n_species_year_strata": 22,
+    "n_original_start_years": 19,
+    "mean_within_minus_between_same_direction_concordance": 0.1085196051563058,
+    "n_strata_positive_difference": 10,
+    "fraction_strata_positive": 0.45454545454545453,
+    "leave_one_year_out_delta_range": [
+      0.08187156567193637,
+      0.1304826767830475
+    ],
+    "frozen_directional_support": false,
+    "spatial_block_is_not_original_island": true,
+    "source_overlap_prior_V6": true,
+    "climate_or_island_causal_mechanism_identified": false,
+    "scientific_decision": "NO_SUPPORTED_PANREGIONAL_SPATIAL_CONCORDANCE_DIRECTION"
+  }
+}

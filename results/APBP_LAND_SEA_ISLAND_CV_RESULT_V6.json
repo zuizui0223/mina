@@ -1,0 +1,203 @@
+{
+  "status": "EXPLORATORY_OUT_OF_REGION_PREDICTIVE_TEST",
+  "source_scope": "original_APBP_v2.3_ADD2025_2026_NSIDC_v6",
+  "model_contract": "contracts/APBP_LAND_SEA_ISLAND_MACRO_V6_PRE_EFFECT.md",
+  "sample_unit": "same_source_locationID_species_consecutive_surveyed_nest_seasons",
+  "model_coefficients_no_confirmation": true,
+  "baseline_source_no_missing_as_zero": true,
+  "equivalent_to_independent_islands": false,
+  "response": "log1p(original measured nests in season t)-log1p(nests in t-1)",
+  "CV": "Leave one EPSG3031 250km geographic block out; fixed ridge alpha20",
+  "n_heldout_spatial_blocks": 12,
+  "largest_block_id": "1_-6",
+  "largest_block_pair_n": 217,
+  "Ridge_alpha": 20,
+  "macro_equal_block_MSE": {
+    "B0_baseline": 0.200104166,
+    "B1_marine": 0.227392335,
+    "B2_land_island_marine": 0.259979114
+  },
+  "micro_pair_weighted_MSE": {
+    "B0_baseline": 0.172317767,
+    "B1_marine": 0.180675144,
+    "B2_land_island_marine": 0.189579382
+  },
+  "land_over_marine_macro_MSE_improvement": -0.032586779,
+  "marine_over_baseline_macro_MSE_improvement": -0.02728817,
+  "spatial_blocks_land_features_improve": 1,
+  "gate_minimum_blocks_improved": 8,
+  "largest_block_heldout_land_improved": false,
+  "largest_block_B1_MSE": 0.075061269,
+  "largest_block_B2_MSE": 0.079409522,
+  "island_rock_marine_threeway_coef_full": -0.291253595,
+  "island_rock_marine_threeway_coef_omit_largest_block": 0.089362272,
+  "threeway_coef_sign_stable_omit_largest": false,
+  "all_predeclared_H1_support_gates_passed": false,
+  "ecological_decision": "NOT_SUPPORTED_BY_THIS_DATA",
+  "novel_island_mechanism_demonstrated": false,
+  "original_block_holdout_statistics": [
+    {
+      "block_id_250km_polar_stereographic": "-10_3",
+      "original_pairs": 1,
+      "B0_baseline_MSE": 0.615348186,
+      "B1_marine_MSE": 0.854915357,
+      "B2_land_island_marine_MSE": 0.869776607,
+      "marine_MSE_improvement": -0.239567171,
+      "land_MSE_improvement": -0.014861251
+    },
+    {
+      "block_id_250km_polar_stereographic": "-10_4",
+      "original_pairs": 39,
+      "B0_baseline_MSE": 0.655421382,
+      "B1_marine_MSE": 0.721278657,
+      "B2_land_island_marine_MSE": 0.743034142,
+      "marine_MSE_improvement": -0.065857276,
+      "land_MSE_improvement": -0.021755484
+    },
+    {
+      "block_id_250km_polar_stereographic": "-10_5",
+      "original_pairs": 70,
+      "B0_baseline_MSE": 0.305603563,
+      "B1_marine_MSE": 0.31320929,
+      "B2_land_island_marine_MSE": 0.317164575,
+      "marine_MSE_improvement": -0.007605727,
+      "land_MSE_improvement": -0.003955285
+    },
+    {
+      "block_id_250km_polar_stereographic": "-10_6",
+      "original_pairs": 4,
+      "B0_baseline_MSE": 0.131321788,
+      "B1_marine_MSE": 0.170811065,
+      "B2_land_island_marine_MSE": 0.513767692,
+      "marine_MSE_improvement": -0.039489277,
+      "land_MSE_improvement": -0.342956627
+    },
+    {
+      "block_id_250km_polar_stereographic": "-11_4",
+      "original_pairs": 5,
+      "B0_baseline_MSE": 0.01869136,
+      "B1_marine_MSE": 0.008092933,
+      "B2_land_island_marine_MSE": 0.014160185,
+      "marine_MSE_improvement": 0.010598427,
+      "land_MSE_improvement": -0.006067252
+    },
+    {
+      "block_id_250km_polar_stereographic": "-11_5",
+      "original_pairs": 10,
+      "B0_baseline_MSE": 0.02076777,
+      "B1_marine_MSE": 0.018457266,
+      "B2_land_island_marine_MSE": 0.019271591,
+      "marine_MSE_improvement": 0.002310504,
+      "land_MSE_improvement": -0.000814325
+    },
+    {
+      "block_id_250km_polar_stereographic": "-11_6",
+      "original_pairs": 9,
+      "B0_baseline_MSE": 0.250580156,
+      "B1_marine_MSE": 0.258462699,
+      "B2_land_island_marine_MSE": 0.263262641,
+      "marine_MSE_improvement": -0.007882543,
+      "land_MSE_improvement": -0.004799942
+    },
+    {
+      "block_id_250km_polar_stereographic": "1_-6",
+      "original_pairs": 217,
+      "B0_baseline_MSE": 0.075555782,
+      "B1_marine_MSE": 0.075061269,
+      "B2_land_island_marine_MSE": 0.079409522,
+      "marine_MSE_improvement": 0.000494513,
+      "land_MSE_improvement": -0.004348253
+    },
+    {
+      "block_id_250km_polar_stereographic": "1_-7",
+      "original_pairs": 21,
+      "B0_baseline_MSE": 0.0669963,
+      "B1_marine_MSE": 0.066841286,
+      "B2_land_island_marine_MSE": 0.07180354,
+      "marine_MSE_improvement": 0.000155014,
+      "land_MSE_improvement": -0.004962254
+    },
+    {
+      "block_id_250km_polar_stereographic": "1_-8",
+      "original_pairs": 27,
+      "B0_baseline_MSE": 0.039967978,
+      "B1_marine_MSE": 0.041927318,
+      "B2_land_island_marine_MSE": 0.042304891,
+      "marine_MSE_improvement": -0.00195934,
+      "land_MSE_improvement": -0.000377573
+    },
+    {
+      "block_id_250km_polar_stereographic": "1_-9",
+      "original_pairs": 1,
+      "B0_baseline_MSE": 0.01331498,
+      "B1_marine_MSE": 0.013072341,
+      "B2_land_island_marine_MSE": 0.0219112,
+      "marine_MSE_improvement": 0.00024264,
+      "land_MSE_improvement": -0.00883886
+    },
+    {
+      "block_id_250km_polar_stereographic": "5_7",
+      "original_pairs": 2,
+      "B0_baseline_MSE": 0.207680743,
+      "B1_marine_MSE": 0.186578541,
+      "B2_land_island_marine_MSE": 0.163882783,
+      "marine_MSE_improvement": 0.021102202,
+      "land_MSE_improvement": 0.022695758
+    }
+  ],
+  "structural_limits": [
+    "Only 61 repeated nest survey sites with 12 unequal spatial regions",
+    "Half of consecutive pairs from one geographical block",
+    "Two/three-dimensional island × rock × sea ice interaction confounded by species ranges",
+    "ADD modern rock is not measured historical available nest habitat",
+    "Static coastline geomatching uncertain for coastal records; often >1km source coordinate uncertainty",
+    "G02202 offshore 25km SIC is not breeding fast ice or krill",
+    "Original surveys may differ in date and measurement detection effort",
+    "CV prediction differences are exploratory and not species causal mechanisms"
+  ],
+  "original_panel_support": {
+    "original_three_species_measured_nests": 3370,
+    "dated_dec_jan_feb_rows": 2246,
+    "ambiguous_duplicate_site_species_season_groups_discarded": 214,
+    "source_rows_in_ambiguous_groups_discarded": 520,
+    "unique_season_rows_before_geographic_QA": 1726,
+    "unique_season_rows_after_geo_marine_QA": 1372,
+    "valid_consecutive_site_species_pairs": 406,
+    "distinct_source_site_ids": 61,
+    "distinct_source_land_polygon_features": 31,
+    "spatial_250km_blocks": 12,
+    "pairs_in_biggest_spatial_block": 217,
+    "pairs_by_species": {
+      "Pygoscelis adeliae": 280,
+      "Pygoscelis papua": 80,
+      "Pygoscelis antarcticus": 46
+    },
+    "pairs_by_provisional_land_class": {
+      "ISLAND_SEPARATE_LAND_POLYGON_PROXY": 350,
+      "CONTINENT_LARGEST_POLYGON_PROXY": 56
+    },
+    "first_last_comparable_season": [
+      1980,
+      2020
+    ],
+    "original_precision_missing_in_second_observation": 0,
+    "zero_to_zero_original_measured_pairs": 8,
+    "source_dec_jan_feb_season_definition": "t=Dec YYYY or Jan-Feb YYYY+1; year-only records excluded"
+  },
+  "derived_matched_panel_SHA256": "81096031e58676623444d3a61a2fcf563eea150010a6bdef126c4dba058bc1a1",
+  "input_derived_source_csv_SHAs": {
+    "population": "75c98ad9174f6ca8b88ae915adb8bb39de5d279099b45ce1ae7d1b2e25d5ba59",
+    "medium_rock": "e51b4ddf14677c2b01f03be91629104d8be47a46d29c0f1fc1ed0f6427de8016",
+    "high_land": "b93c4e85667d7a12ae76166620e5ff5d4ea6482c182457cf3ca4cd0321551c41",
+    "marine": "44d0b7feea08b7c0216cc5595b3e17bbf48ce4fd0b197a758afa33aceea9c8b4"
+  },
+  "full_matched_panel_saved_as_CI_artifact_only": true,
+  "provenance": {
+    "model_source_branch": "research/antarctic-penguin-island-macro-v1",
+    "model_source_commit": "e9d142aeba8ad949ee0b0895018472664e9e40c7",
+    "actual_model_actions_run_url": "https://github.com/zuizui0223/mina/actions/runs/39207033264",
+    "authentic_original_derived_source_csv_sha256_verified": true,
+    "stage": "EXPLORATORY_POST_SUPPORT_FIRST_PRESPECIFIED_EFFECT_TEST",
+    "model_output_from_original_records": true
+  }
+}

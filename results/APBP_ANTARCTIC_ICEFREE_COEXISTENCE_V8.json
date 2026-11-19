@@ -1,0 +1,174 @@
+{
+  "status": "V8_ANTARCTIC_ABIOTIC_HABITAT_COEXISTENCE_EXPLORATORY",
+  "source_APBP_pub_sha256": "75c98ad9174f6ca8b88ae915adb8bb39de5d279099b45ce1ae7d1b2e25d5ba59",
+  "source_ADD_v4_pub_sha256": "b93c4e85667d7a12ae76166620e5ff5d4ea6482c182457cf3ca4cd0321551c41",
+  "source_Zenodo_raster": {
+    "sha256": "7d6c93613f47924f491b74005aa6dda6503ea48abf43dc38d2028d29b8b2f87c",
+    "md5": "cde880d73f7f18b44aecf5690aa2dc92",
+    "bytes": 56185140,
+    "published_file": "AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif",
+    "original_record_doi": "10.5281/zenodo.11629115"
+  },
+  "source_Zenodo_Tier1_VAT": {
+    "sha256": "f4de71a32ec735096bf0898adb78eea8cb120c2e452ef7f14502dd8b586955aa",
+    "md5": "fa5363b1c0d882b4343e239d03dc2ba4",
+    "bytes": 103681,
+    "published_file": "AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf",
+    "original_record_doi": "10.5281/zenodo.11629115"
+  },
+  "original_abiotic_ecosystem_raster": {
+    "raster_original_crs": "EPSG:3031",
+    "raster_original_pixel_size_m": [
+      100,
+      100
+    ],
+    "raster_original_shape": [
+      48122,
+      52767
+    ],
+    "raster_nodata": "65535.0",
+    "source_Tier1_labels": [
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "G1",
+      "G2",
+      "G3",
+      "L"
+    ],
+    "response_leakage_guard": "All original Tier2 E1B8 penguin colonies and Tier3 penguin class pixels excluded from environmental raster sampling",
+    "icefree_fraction_caveat": "Fraction of retained non-penguin-classified mapped Tier1 cells, NOT historical ice-free nest capacity"
+  },
+  "original_corecording_QA": {
+    "original_simultaneous_multispecies_Events": 348,
+    "original_taxa_pair_event_rows": 472,
+    "original_site_pair_independent_rows": 82,
+    "original_locationIDs_at_multispecies_Events": 60,
+    "n_discarded_ambiguous_multispecies_event_IDs": 1,
+    "original_both_species_measured_zero_pairs_excluded": 2,
+    "site_land_categories_original": {
+      "ISLAND_SEPARATE_LAND_POLYGON_PROXY": 49,
+      "CONTINENT_LARGEST_POLYGON_PROXY": 6,
+      "HOLD_UNMATCHED": 5
+    }
+  },
+  "raster_supported_site_pair_rows": 61,
+  "raster_valid_source_locationIDs": 42,
+  "excluded_site_pairs_without_30_icefree_pixels": 21,
+  "CV_eligible_site_pair_rows": 55,
+  "CV_eligible_unique_source_sites": 40,
+  "CV_eligible_spatial_blocks": 5,
+  "novel_island_mechanism_demonstrated": false,
+  "main_model_comparison": {
+    "model_full_sample_n_site_pair_rows": 55,
+    "n_distinct_sites": 40,
+    "n_eligible_geographical_blocks": 5,
+    "largest_block": "-11_6",
+    "block_site_counts": {
+      "-10_4": 5,
+      "-10_5": 11,
+      "-10_6": 8,
+      "-11_5": 3,
+      "-11_6": 13
+    },
+    "models": {
+      "B0": {
+        "equal_block_MSE": 0.0767405111037589,
+        "row_weighted_MSE": 0.07512624644506369,
+        "per_block_MSE": {
+          "-10_4": 0.05339669293050562,
+          "-10_5": 0.05478707255979191,
+          "-10_6": 0.03241635869323724,
+          "-11_5": 0.13808955559799188,
+          "-11_6": 0.10501287573726784
+        }
+      },
+      "B1": {
+        "equal_block_MSE": 0.07135239185789254,
+        "row_weighted_MSE": 0.06976572991766022,
+        "per_block_MSE": {
+          "-10_4": 0.053829866780572284,
+          "-10_5": 0.05534328500998082,
+          "-10_6": 0.042713646128487624,
+          "-11_5": 0.11529051589988352,
+          "-11_6": 0.08958464547053845
+        }
+      }
+    },
+    "incremental_habitat_prediction_gain_equal_block_MSE": 0.005388119245866366,
+    "n_geographic_blocks_improved": 2,
+    "improvements_by_block": {
+      "-10_4": -0.00043317385006666487,
+      "-10_5": -0.0005562124501889074,
+      "-10_6": -0.010297287435250387,
+      "-11_5": 0.022799039698108356,
+      "-11_6": 0.01542823026672939
+    },
+    "full_fit_abiotic_Tier1_entropy_coefficient": -0.03427370745780668,
+    "omit_largest_block_Tier1_entropy_coefficient": -0.04802851073828961,
+    "entropy_coef_sign_stable_no_largest": true
+  },
+  "precise_original_coordinate_subset_n_sites": 10,
+  "precision_subset_entropy_coef": null,
+  "predeclared_2km_habitat_sensitivity": {
+    "model_full_sample_n_site_pair_rows": 55,
+    "n_distinct_sites": 40,
+    "n_eligible_geographical_blocks": 5,
+    "largest_block": "-11_6",
+    "block_site_counts": {
+      "-10_4": 5,
+      "-10_5": 11,
+      "-10_6": 8,
+      "-11_5": 3,
+      "-11_6": 13
+    },
+    "models": {
+      "B0": {
+        "equal_block_MSE": 0.0767405111037589,
+        "row_weighted_MSE": 0.07512624644506369,
+        "per_block_MSE": {
+          "-10_4": 0.05339669293050562,
+          "-10_5": 0.05478707255979191,
+          "-10_6": 0.03241635869323724,
+          "-11_5": 0.13808955559799188,
+          "-11_6": 0.10501287573726784
+        }
+      },
+      "B1": {
+        "equal_block_MSE": 0.07953602065326851,
+        "row_weighted_MSE": 0.07631111687512308,
+        "per_block_MSE": {
+          "-10_4": 0.057630331888734204,
+          "-10_5": 0.06262461252535997,
+          "-10_6": 0.03943421725646829,
+          "-11_5": 0.13897764127987586,
+          "-11_6": 0.09901330031590415
+        }
+      }
+    },
+    "incremental_habitat_prediction_gain_equal_block_MSE": -0.002795509549509606,
+    "n_geographic_blocks_improved": 1,
+    "improvements_by_block": {
+      "-10_4": -0.004233638958228585,
+      "-10_5": -0.00783753996556806,
+      "-10_6": -0.007017858563231054,
+      "-11_5": -0.0008880856818839766,
+      "-11_6": 0.005999575421363687
+    },
+    "full_fit_abiotic_Tier1_entropy_coefficient": 0.05651630545983529,
+    "omit_largest_block_Tier1_entropy_coefficient": -0.029990281366668387,
+    "entropy_coef_sign_stable_no_largest": false
+  },
+  "passed_full_descriptive_macro_support_gates": false,
+  "scientific_decision": "NOT_SUPPORTED_OR_UNIDENTIFIABLE",
+  "derived_site_pair_cohabitat_SHA256": "b1d03b7dfeba1e535834465ce3a01532735f208485f4a1ffae509a81bb881eb3",
+  "source_reproducibility": {
+    "original_run": "https://github.com/zuizui0223/mina/actions/runs/39219124577",
+    "model_commit": "87643c071528f1001cc472a45d23564f2d3fa44a",
+    "stage": "V8 third-party 100m raster×original 350 co-census penguin events",
+    "response_leakage_block": "Excluded penguin-identified Tier2 E1B8 original habitat cells prior to fitting",
+    "not_primary_Ecology_manuscript_result": true
+  }
+}

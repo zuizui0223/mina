@@ -1,0 +1,98 @@
+{
+  "status": "V21_SOURCE_CHECK_PERFORMED",
+  "sources": {
+    "bird_island_v1": {
+      "status": "ORIGINAL_PUBLISHER_FILE_VERIFIED",
+      "doi": "10.5285/c8d5a7a4-e19b-497f-b7ae-56f9a2b15a56",
+      "description": "Historical v1 1982-2020 only, not BAS 2026 v2",
+      "receipt": {
+        "url": "https://ramadda.data.bas.ac.uk/repository/entry/get/Gentoo_BI_nest_chick_counts.csv?entryid=synth%3Ac8d5a7a4-e19b-497f-b7ae-56f9a2b15a56%3AL0dlbnRvb19CSV9uZXN0X2NoaWNrX2NvdW50cy5jc3Y%3D",
+        "mime": "text/csv",
+        "bytes": 18625,
+        "sha256": "b1abc3c3adacee3f277d481217aabe4206c7b592a81f1f0eb1a0ec20a64450d3"
+      },
+      "structural_metadata": {
+        "headers": [
+          "Species",
+          "Colony",
+          "Date nests counted",
+          "Number of nests",
+          "Date chicks counted",
+          "Number of chicks",
+          "Comments"
+        ],
+        "original_rows": 252,
+        "per_column_nonempty": {
+          "Species": 252,
+          "Colony": 252,
+          "Date nests counted": 250,
+          "Number of nests": 250,
+          "Date chicks counted": 207,
+          "Number of chicks": 234,
+          "Comments": 77
+        },
+        "source_year_column_candidates": [],
+        "distinct_nonempty_year_labels_by_candidate": {},
+        "potential_reproductive_stage_field_names": [
+          "Date nests counted",
+          "Number of nests",
+          "Date chicks counted",
+          "Number of chicks"
+        ],
+        "original_breeding_count_values_read": 0
+      }
+    },
+    "south_georgia_maiviken": {
+      "status": "ORIGINAL_PUBLISHER_FILE_VERIFIED",
+      "doi": "10.5285/1fd5bc8a-96b5-4f53-aa15-33e5330e7705",
+      "description": "Maiviken monitoring site on main South Georgia island",
+      "receipt": {
+        "url": "https://ramadda.data.bas.ac.uk/repository/entry/get/Gentoo_SG_nest_chick_counts.csv?entryid=synth%3A1fd5bc8a-96b5-4f53-aa15-33e5330e7705%3AL0dlbnRvb19TR19uZXN0X2NoaWNrX2NvdW50cy5jc3Y%3D",
+        "mime": "text/csv",
+        "bytes": 855,
+        "sha256": "8eef8ba06b0f1e666041be38415cfcc70d16cdb07e72ca6db805d8b70631dc85"
+      },
+      "structural_metadata": {
+        "headers": [
+          "Season",
+          "Date of nest count",
+          "Number of incubating nests",
+          "Date of chick count",
+          "Number of nests with chicks",
+          "Date of fledgling count",
+          "Number of fledglings",
+          "Breeding success"
+        ],
+        "original_rows": 12,
+        "per_column_nonempty": {
+          "Season": 12,
+          "Date of nest count": 12,
+          "Number of incubating nests": 12,
+          "Date of chick count": 12,
+          "Number of nests with chicks": 12,
+          "Date of fledgling count": 12,
+          "Number of fledglings": 12,
+          "Breeding success": 12
+        },
+        "source_year_column_candidates": [
+          "Season"
+        ],
+        "distinct_nonempty_year_labels_by_candidate": {
+          "Season": 12
+        },
+        "potential_reproductive_stage_field_names": [
+          "Date of nest count",
+          "Number of incubating nests",
+          "Date of chick count",
+          "Number of nests with chicks",
+          "Date of fledgling count",
+          "Number of fledglings"
+        ],
+        "original_breeding_count_values_read": 0
+      }
+    }
+  },
+  "ecological_effects_fit": 0,
+  "files_validated": 2,
+  "scientific_decision": "PASS_BOTH_ORIGINAL_SCHEMAS_NO_EFFECT"
+}

@@ -1,0 +1,97 @@
+{
+  "status": "V23_THREE_ORIGINAL_BAS_SOURCES_RECONCILED",
+  "source_sha256": {
+    "bird_island_v1": "b1abc3c3adacee3f277d481217aabe4206c7b592a81f1f0eb1a0ec20a64450d3",
+    "south_georgia_maiviken": "8eef8ba06b0f1e666041be38415cfcc70d16cdb07e72ca6db805d8b70631dc85",
+    "signy": "53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b"
+  },
+  "frozen_contract": "contracts/BAS_GENTOO_NEAR_FAR_REGION_V23.md",
+  "known_v22_before_far_contrasts_r": 0.5621534427494942,
+  "v22_exact_reproduction": true,
+  "v22_original_common_years": [
+    2009,
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "signy_source_QA": {
+    "original_source_rows": 43,
+    "invalid_original_season_rows": 1,
+    "other_years_outside_fixed_V22_period": 31,
+    "rows_not_explicitly_Gentoo": 0,
+    "duplicate_season_groups_excluded": 0,
+    "eligible_unambiguous_source_years": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019
+    ],
+    "numeric_original_pair_count_years": 10,
+    "invalid_unknown_pair_count_years": 1
+  },
+  "comparison": {
+    "common_adjacent_year_windows": 8,
+    "common_growth_start_years": [
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018
+    ],
+    "fixed_minimum_windows": 8,
+    "original_physical_landmass_n": 3,
+    "all_three_pairwise_correlations_use_identical_years": true,
+    "status": "EXPLORATORY_WITHIN_BAS_NEAR_VS_FAR_GENTOO",
+    "effect_computed": true,
+    "pearson_r": {
+      "near_Bird_Maiviken": 0.5143600100940884,
+      "far_Bird_Signy": -0.33420933224382615,
+      "far_Maiviken_Signy": -0.6680306761477973
+    },
+    "near_minus_mean_far_r": 1.0154800142899,
+    "leave_one_window_out_delta_min_max": [
+      0.7089716456574724,
+      1.2963925338339093
+    ],
+    "annual_change_sign_agreement": {
+      "near_Bird_Maiviken": {
+        "both_nonzero_windows": 8,
+        "same_direction_windows": 6,
+        "fraction_same_direction": 0.75
+      },
+      "far_Bird_Signy": {
+        "both_nonzero_windows": 8,
+        "same_direction_windows": 3,
+        "fraction_same_direction": 0.375
+      },
+      "far_Maiviken_Signy": {
+        "both_nonzero_windows": 8,
+        "same_direction_windows": 3,
+        "fraction_same_direction": 0.375
+      }
+    },
+    "spatial_distance_causes_synchrony": false,
+    "physical_island_boundary_causes_synchrony": false,
+    "regional_sea_ice_wind_or_prey_causation_supported": false,
+    "no_inferential_p_value": true,
+    "decision": "DESCRIPTIVE_WITHIN_BAS_NEAR_GREATER_THAN_FAR_CAUSAL_HOLD"
+  },
+  "ecological_effect_fitted": true,
+  "scientific_decision": "DESCRIPTIVE_WITHIN_BAS_NEAR_GREATER_THAN_FAR_CAUSAL_HOLD"
+}

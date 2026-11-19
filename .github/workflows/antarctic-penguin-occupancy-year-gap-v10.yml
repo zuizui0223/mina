@@ -1,0 +1,50 @@
+name: Antarctic penguin APBP survey-gap versus apparent breeding turnover V10
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'scripts/audit_apbp_reported_zero_year_gaps_v10.py'
+      - 'tests/test_apbp_zero_year_gaps_v10.py'
+      - '.github/workflows/antarctic-penguin-occupancy-year-gap-v10.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_apbp_reported_zero_year_gaps_v10.py'
+      - 'tests/test_apbp_zero_year_gaps_v10.py'
+      - '.github/workflows/antarctic-penguin-occupancy-year-gap-v10.yml'
+  workflow_dispatch:
+jobs:
+  original-reported-zeros-without-turnover-inference:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest pandas
+      - name: Test original exact source dates, ambiguous survey drops and reported-zero gap classes
+        run: python -m pytest -q tests/test_apbp_zero_year_gaps_v10.py
+      - name: Load previous source-hashed original APBP v2.3 nest records
+        uses: actions/download-artifact@v4
+        with:
+          name: apbp-original-six-penguin-records-joined-SCHEMA-NO-EFFECT
+          repository: zuizui0223/mina
+          run-id: 39091772742
+          github-token: ${{ github.token }}
+          path: /tmp/public
+      - name: Construct original observed positive/zero nest series and report exact survey gaps
+        run: |
+          python scripts/audit_apbp_reported_zero_year_gaps_v10.py \
+            --population /tmp/public/APBP_ALL_ORIGINAL_MEASUREMENTS_V2.csv \
+            --json /tmp/APBP_SAMPLED_NEST_ZERO_GAPS_V10.json \
+            --csv /tmp/APBP_ORIGINAL_OBSERVED_SEASON_TRANSITIONS_V10.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apbp-observed-source-nest-zero-gap-audit-NOT-colony-extinction
+          path: |
+            /tmp/APBP_SAMPLED_NEST_ZERO_GAPS_V10.json
+            /tmp/APBP_ORIGINAL_OBSERVED_SEASON_TRANSITIONS_V10.csv

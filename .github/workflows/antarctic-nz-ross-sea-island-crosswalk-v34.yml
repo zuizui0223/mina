@@ -1,0 +1,40 @@
+name: Antarctic V34 original NZ Ross Sea exact colony-site and named-island source crosswalk
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/NZ_ROSS_SEA_COLONY_ISLAND_CROSSWALK_V34.md'
+      - 'scripts/audit_nz_ross_sea_island_groups_v34.py'
+      - 'tests/test_nz_ross_sea_island_groups_v34.py'
+      - '.github/workflows/antarctic-nz-ross-sea-island-crosswalk-v34.yml'
+  pull_request:
+    paths:
+      - 'contracts/NZ_ROSS_SEA_COLONY_ISLAND_CROSSWALK_V34.md'
+      - 'scripts/audit_nz_ross_sea_island_groups_v34.py'
+      - 'tests/test_nz_ross_sea_island_groups_v34.py'
+      - '.github/workflows/antarctic-nz-ross-sea-island-crosswalk-v34.yml'
+  workflow_dispatch:
+jobs:
+  original_colony_year_with_named_landmass_ids:
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source access and tests
+        run: python -m pip install pytest requests
+      - name: Test genuine named island labels and no invented mainland alias
+        run: python -m pytest -q tests/test_nz_ross_sea_island_groups_v34.py
+      - name: Download exact original publisher source/location and count island-year eligibility without biology
+        run: |
+          python scripts/audit_nz_ross_sea_island_groups_v34.py \
+            --json /tmp/NZ_ROSS_SEA_SOURCE_ISLAND_ID_CROSSWALK_V34.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-NZ-RossSea-source-colony-named-island-crosswalk-v34
+          path: /tmp/NZ_ROSS_SEA_SOURCE_ISLAND_ID_CROSSWALK_V34.json

@@ -1,0 +1,43 @@
+name: Antarctic penguin APBP to SCAR ADD island/rock covariate QA V3
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/ADD_COAST_ROCK_SITE_LINK_V3.md'
+      - 'scripts/link_apbp_to_add_island_rock_v3.py'
+      - 'tests/test_apbp_add_site_link_v3.py'
+      - '.github/workflows/antarctic-penguin-add-join-v3.yml'
+  pull_request:
+    paths:
+      - 'contracts/ADD_COAST_ROCK_SITE_LINK_V3.md'
+      - 'scripts/link_apbp_to_add_island_rock_v3.py'
+      - 'tests/test_apbp_add_site_link_v3.py'
+      - '.github/workflows/antarctic-penguin-add-join-v3.yml'
+  workflow_dispatch:
+jobs:
+  original-provenance-and-land-coverage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install independent polar projection and spatial analysis libraries
+        run: python -m pip install pytest requests shapely pyshp pyproj
+      - name: Check islands versus mainland, invalid geometry and uncatalogued micro-islet HOLDs
+        run: python -m pytest -q tests/test_apbp_add_site_link_v3.py
+      - name: Download SCAR Antarctic rock/land at published 2025/2026 versions and match original 719 source sites
+        run: |
+          python scripts/link_apbp_to_add_island_rock_v3.py \
+            --out-json /tmp/APBP_ADD_GEOGRAPHY_LINK_QA_V3.json \
+            --out-csv /tmp/APBP_ADD_719_SITE_LAND_ROCK_LINK_V3.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apbp-scar-add-original-island-rock-QA-NO-ECOLOGY-EFFECT
+          path: |
+            /tmp/APBP_ADD_GEOGRAPHY_LINK_QA_V3.json
+            /tmp/APBP_ADD_719_SITE_LAND_ROCK_LINK_V3.csv

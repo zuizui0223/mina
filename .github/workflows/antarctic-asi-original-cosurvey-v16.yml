@@ -1,0 +1,38 @@
+name: Antarctic V16 original ASI seven-species exact-day source gate
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/ASI_ORIGINAL_COSURVEY_V16.md'
+      - 'scripts/audit_asi_2013_original_cosurvey_v16.py'
+      - 'tests/test_asi_2013_original_cosurvey_v16.py'
+      - '.github/workflows/antarctic-asi-original-cosurvey-v16.yml'
+  pull_request:
+    paths:
+      - 'contracts/ASI_ORIGINAL_COSURVEY_V16.md'
+      - 'scripts/audit_asi_2013_original_cosurvey_v16.py'
+      - 'tests/test_asi_2013_original_cosurvey_v16.py'
+      - '.github/workflows/antarctic-asi-original-cosurvey-v16.yml'
+  workflow_dispatch:
+jobs:
+  original_asi_field_multispecies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test strict nest-source selection without biological outcomes
+        run: python -m pip install pytest && python -m pytest -q tests/test_asi_2013_original_cosurvey_v16.py
+      - name: Download publisher checksum-pinned Ecological Archives original and report co-survey coverage
+        run: |
+          python scripts/audit_asi_2013_original_cosurvey_v16.py \
+            --out /tmp/ASI_ORIGINAL_SAME_DAY_NEST_COSURVEY_V16.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: antarctic-original-ASI-2013-source-same-day-support-V16
+          path: /tmp/ASI_ORIGINAL_SAME_DAY_NEST_COSURVEY_V16.json

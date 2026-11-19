@@ -1,0 +1,40 @@
+name: Antarctic V39 authoritative SCAR four Ross Sea island labels versus uncertain nest GPS
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/NZ_ROSS_SEA_SCAR_GAZETTEER_ISLAND_IDENTITY_V39.md'
+      - 'scripts/audit_scar_composite_gazetteer_islands_v39.py'
+      - 'tests/test_scar_composite_gazetteer_islands_v39.py'
+      - '.github/workflows/antarctic-scar-gazetteer-island-identity-v39.yml'
+  pull_request:
+    paths:
+      - 'contracts/NZ_ROSS_SEA_SCAR_GAZETTEER_ISLAND_IDENTITY_V39.md'
+      - 'scripts/audit_scar_composite_gazetteer_islands_v39.py'
+      - 'tests/test_scar_composite_gazetteer_islands_v39.py'
+      - '.github/workflows/antarctic-scar-gazetteer-island-identity-v39.yml'
+  workflow_dispatch:
+jobs:
+  original_official_SCAR_4_island_names_not_nest_GPS:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source site-name HTML parser and tests
+        run: python -m pip install pytest requests beautifulsoup4
+      - name: Test exact authoritative island name/type and GPS accuracy distinction
+        run: python -m pytest -q tests/test_scar_composite_gazetteer_islands_v39.py
+      - name: Fetch original four named official NZ-US SCAR CGA feature records
+        run: |
+          python scripts/audit_scar_composite_gazetteer_islands_v39.py \
+            --json /tmp/NZ_ROSS_SEA_SCAR_CGA_AUTHOR_ISLAND_LABELS_V39.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: official-SCAR-gazetteer-RossSea-island-not-nest-location-v39
+          path: /tmp/NZ_ROSS_SEA_SCAR_CGA_AUTHOR_ISLAND_LABELS_V39.json

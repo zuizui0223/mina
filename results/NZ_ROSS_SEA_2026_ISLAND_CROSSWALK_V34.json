@@ -1,0 +1,602 @@
+{
+  "status": "V34_ORIGINAL_NZ_COLONY_TO_PUBLISHER_NAMED_ISLAND_SOURCE_AUDIT",
+  "source_census_sha256": "23a95d9e693dd095e085534f2c215b79880a72fe9cfb5a59337501192dae03e6",
+  "source_location_sha256": "d744e7493f85564f1b634f390a5e4a976b2d5359a6f93cdd9ef345639661b6a6",
+  "source_DOI": "https://doi.org/10.7931/kf06-x745",
+  "frozen_contract": "contracts/NZ_ROSS_SEA_COLONY_ISLAND_CROSSWALK_V34.md",
+  "source_geography_and_year_support": {
+    "original_census": {
+      "source_census_colony_ids": 39,
+      "source_duplicate_colony_ids_excluded": 0,
+      "matched_original_year_column_count": 44,
+      "original_count_magnitudes_opened": 0
+    },
+    "original_location": {
+      "original_distinct_colony_site_names": 40,
+      "duplicate_source_location_name_keys_excluded": 0,
+      "original_location_rows": 40,
+      "unparseable_source_latitudes": 0,
+      "unparseable_source_longitudes": 0
+    },
+    "exact_colony_location_ID_matches": 33,
+    "unmatched_original_census_colony_names": [
+      "Aviation Islands",
+      "Beaufort Island New",
+      "Foyn Island",
+      "Terra Nova Bay",
+      "Thala Island",
+      "Wood Bay"
+    ],
+    "location_names_without_exact_census_match": [
+      "Beaufort Island North",
+      "Conical Island",
+      "Dome Island",
+      "Edmonson Point",
+      "Northern Foothills",
+      "Southwest Island",
+      "Svwend Foyn Island"
+    ],
+    "site_to_named_island_crosswalk": [
+      {
+        "original_census_colony": "Beaufort Island",
+        "original_site_map_colony": "Beaufort Island",
+        "published_named_region_or_landmass": "Southern Ross Sea",
+        "publisher_explicit_island_group": "Beaufort Island",
+        "island_source_classification": "SOURCE_COLONY_ITSELF_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 19,
+        "original_site_coordinate_approx_lat": -76.93333333333334,
+        "original_site_coordinate_approx_lon": 167.05
+      },
+      {
+        "original_census_colony": "Cape Adare",
+        "original_site_map_colony": "Cape Adare",
+        "published_named_region_or_landmass": "Adare Peninsula",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 10,
+        "original_site_coordinate_approx_lat": -71.3,
+        "original_site_coordinate_approx_lon": 170.15
+      },
+      {
+        "original_census_colony": "Cape Anne",
+        "original_site_map_colony": "Cape Anne",
+        "published_named_region_or_landmass": "Coulman Island",
+        "publisher_explicit_island_group": "Coulman Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 11,
+        "original_site_coordinate_approx_lat": -73.61666666666666,
+        "original_site_coordinate_approx_lon": 169.86666666666667
+      },
+      {
+        "original_census_colony": "Cape Bird Middle",
+        "original_site_map_colony": "Cape Bird Middle",
+        "published_named_region_or_landmass": "Ross Island",
+        "publisher_explicit_island_group": "Ross Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 40,
+        "original_site_coordinate_approx_lat": -77.23333333333333,
+        "original_site_coordinate_approx_lon": 166.41666666666666
+      },
+      {
+        "original_census_colony": "Cape Bird North",
+        "original_site_map_colony": "Cape Bird North",
+        "published_named_region_or_landmass": "Ross Island",
+        "publisher_explicit_island_group": "Ross Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 41,
+        "original_site_coordinate_approx_lat": -77.21666666666667,
+        "original_site_coordinate_approx_lon": 166.46666666666667
+      },
+      {
+        "original_census_colony": "Cape Bird South",
+        "original_site_map_colony": "Cape Bird South",
+        "published_named_region_or_landmass": "Ross Island",
+        "publisher_explicit_island_group": "Ross Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 41,
+        "original_site_coordinate_approx_lat": -77.26666666666667,
+        "original_site_coordinate_approx_lon": 166.33333333333334
+      },
+      {
+        "original_census_colony": "Cape Cornish",
+        "original_site_map_colony": "Cape Cornish",
+        "published_named_region_or_landmass": "Balleny Islands",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 2,
+        "original_site_coordinate_approx_lat": -66.65,
+        "original_site_coordinate_approx_lon": 163.53333333333333
+      },
+      {
+        "original_census_colony": "Cape Cotter",
+        "original_site_map_colony": "Cape Cotter",
+        "published_named_region_or_landmass": "Hallett Peninsula",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 13,
+        "original_site_coordinate_approx_lat": -72.4,
+        "original_site_coordinate_approx_lon": 170.3
+      },
+      {
+        "original_census_colony": "Cape Crozier East",
+        "original_site_map_colony": "Cape Crozier East",
+        "published_named_region_or_landmass": "Ross Island",
+        "publisher_explicit_island_group": "Ross Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 39,
+        "original_site_coordinate_approx_lat": -77.48333333333333,
+        "original_site_coordinate_approx_lon": 169.55
+      },
+      {
+        "original_census_colony": "Cape Crozier West",
+        "original_site_map_colony": "Cape Crozier West",
+        "published_named_region_or_landmass": "Ross Island",
+        "publisher_explicit_island_group": "Ross Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 38,
+        "original_site_coordinate_approx_lat": -77.45,
+        "original_site_coordinate_approx_lon": 169.38333333333333
+      },
+      {
+        "original_census_colony": "Cape Davis",
+        "original_site_map_colony": "Cape Davis",
+        "published_named_region_or_landmass": "Balleny Islands",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 2,
+        "original_site_coordinate_approx_lat": -66.65,
+        "original_site_coordinate_approx_lon": 163.53333333333333
+      },
+      {
+        "original_census_colony": "Cape Hallett",
+        "original_site_map_colony": "Cape Hallett",
+        "published_named_region_or_landmass": "Hallett Peninsula",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 20,
+        "original_site_coordinate_approx_lat": -72.31666666666666,
+        "original_site_coordinate_approx_lon": 170.2
+      },
+      {
+        "original_census_colony": "Cape Jones",
+        "original_site_map_colony": "Cape Jones",
+        "published_named_region_or_landmass": "Daniell Peninsula",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 11,
+        "original_site_coordinate_approx_lat": -73.28333333333333,
+        "original_site_coordinate_approx_lon": 169.16666666666666
+      },
+      {
+        "original_census_colony": "Cape Phillips",
+        "original_site_map_colony": "Cape Phillips",
+        "published_named_region_or_landmass": "Daniell Peninsula",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 10,
+        "original_site_coordinate_approx_lat": -73.06666666666666,
+        "original_site_coordinate_approx_lon": 169.63333333333333
+      },
+      {
+        "original_census_colony": "Cape Royds",
+        "original_site_map_colony": "Cape Royds",
+        "published_named_region_or_landmass": "Ross Island",
+        "publisher_explicit_island_group": "Ross Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 41,
+        "original_site_coordinate_approx_lat": -77.53333333333333,
+        "original_site_coordinate_approx_lon": 166.3
+      },
+      {
+        "original_census_colony": "Cape Symthe",
+        "original_site_map_colony": "Cape Symthe",
+        "published_named_region_or_landmass": "Balleny Islands",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 1,
+        "original_site_coordinate_approx_lat": -66.65,
+        "original_site_coordinate_approx_lon": 163.05
+      },
+      {
+        "original_census_colony": "Cape Wheatstone",
+        "original_site_map_colony": "Cape Wheatstone",
+        "published_named_region_or_landmass": "Hallett Peninsula",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 14,
+        "original_site_coordinate_approx_lat": -72.61666666666666,
+        "original_site_coordinate_approx_lon": 170.23333333333332
+      },
+      {
+        "original_census_colony": "Chinstrap Island",
+        "original_site_map_colony": "Chinstrap Island",
+        "published_named_region_or_landmass": "Balleny Islands",
+        "publisher_explicit_island_group": "Chinstrap Island",
+        "island_source_classification": "SOURCE_COLONY_ITSELF_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 2,
+        "original_site_coordinate_approx_lat": -66.91666666666667,
+        "original_site_coordinate_approx_lon": 163.31666666666666
+      },
+      {
+        "original_census_colony": "Coulman Island Middle",
+        "original_site_map_colony": "Coulman Island Middle",
+        "published_named_region_or_landmass": "Coulman Island",
+        "publisher_explicit_island_group": "Coulman Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 16,
+        "original_site_coordinate_approx_lat": -73.43333333333334,
+        "original_site_coordinate_approx_lon": 169.9
+      },
+      {
+        "original_census_colony": "Coulman Island North",
+        "original_site_map_colony": "Coulman Island North",
+        "published_named_region_or_landmass": "Coulman Island",
+        "publisher_explicit_island_group": "Coulman Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 13,
+        "original_site_coordinate_approx_lat": -73.36666666666666,
+        "original_site_coordinate_approx_lon": 169.85
+      },
+      {
+        "original_census_colony": "Coulman Island South",
+        "original_site_map_colony": "Coulman Island South",
+        "published_named_region_or_landmass": "Coulman Island",
+        "publisher_explicit_island_group": "Coulman Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 13,
+        "original_site_coordinate_approx_lat": -73.51666666666667,
+        "original_site_coordinate_approx_lon": 169.9
+      },
+      {
+        "original_census_colony": "Downshire Cliffs",
+        "original_site_map_colony": "Downshire Cliffs",
+        "published_named_region_or_landmass": "Adare Peninsula",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 10,
+        "original_site_coordinate_approx_lat": -71.55,
+        "original_site_coordinate_approx_lon": 170.53333333333333
+      },
+      {
+        "original_census_colony": "Duke of York",
+        "original_site_map_colony": "Duke of York",
+        "published_named_region_or_landmass": "Pennell Coast",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 9,
+        "original_site_coordinate_approx_lat": -71.61666666666666,
+        "original_site_coordinate_approx_lon": 170.03333333333333
+      },
+      {
+        "original_census_colony": "Franklin Island East",
+        "original_site_map_colony": "Franklin Island East",
+        "published_named_region_or_landmass": "Southern Ross Sea",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 12,
+        "original_site_coordinate_approx_lat": -76.11666666666666,
+        "original_site_coordinate_approx_lon": 168.25
+      },
+      {
+        "original_census_colony": "Franklin Island West",
+        "original_site_map_colony": "Franklin Island West",
+        "published_named_region_or_landmass": "Southern Ross Sea",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 10,
+        "original_site_coordinate_approx_lat": -76.11666666666666,
+        "original_site_coordinate_approx_lon": 168.25
+      },
+      {
+        "original_census_colony": "Inexpressible Island",
+        "original_site_map_colony": "Inexpressible Island",
+        "published_named_region_or_landmass": "Wood and Terra Nova bays",
+        "publisher_explicit_island_group": "Inexpressible Island",
+        "island_source_classification": "SOURCE_COLONY_ITSELF_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 16,
+        "original_site_coordinate_approx_lat": -74.88333333333334,
+        "original_site_coordinate_approx_lon": 163.75
+      },
+      {
+        "original_census_colony": "Mandible Cirque",
+        "original_site_map_colony": "Mandible Cirque",
+        "published_named_region_or_landmass": "Daniell Peninsula",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 10,
+        "original_site_coordinate_approx_lat": -73.1,
+        "original_site_coordinate_approx_lon": 169.38333333333333
+      },
+      {
+        "original_census_colony": "Nella Island",
+        "original_site_map_colony": "Nella Island",
+        "published_named_region_or_landmass": "Pennell Coast",
+        "publisher_explicit_island_group": "Nella Island",
+        "island_source_classification": "SOURCE_COLONY_ITSELF_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 1,
+        "original_site_coordinate_approx_lat": -70.61666666666666,
+        "original_site_coordinate_approx_lon": 166.06666666666666
+      },
+      {
+        "original_census_colony": "Possession Island",
+        "original_site_map_colony": "Possession Island",
+        "published_named_region_or_landmass": "Possession Island",
+        "publisher_explicit_island_group": "Possession Island",
+        "island_source_classification": "SOURCE_EXPLICIT_NAMED_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 4,
+        "original_site_coordinate_approx_lat": -71.88333333333334,
+        "original_site_coordinate_approx_lon": 171.18333333333334
+      },
+      {
+        "original_census_colony": "Sabrina Island",
+        "original_site_map_colony": "Sabrina Island",
+        "published_named_region_or_landmass": "Balleny Islands",
+        "publisher_explicit_island_group": "Sabrina Island",
+        "island_source_classification": "SOURCE_COLONY_ITSELF_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 2,
+        "original_site_coordinate_approx_lat": -66.91666666666667,
+        "original_site_coordinate_approx_lon": 163.31666666666666
+      },
+      {
+        "original_census_colony": "SE Promontory",
+        "original_site_map_colony": "SE Promontory",
+        "published_named_region_or_landmass": "Balleny Islands",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 2,
+        "original_site_coordinate_approx_lat": -66.65,
+        "original_site_coordinate_approx_lon": 163.05
+      },
+      {
+        "original_census_colony": "Sentry Rock",
+        "original_site_map_colony": "Sentry Rock",
+        "published_named_region_or_landmass": "Pennell Coast",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 1,
+        "original_site_coordinate_approx_lat": -70.76666666666667,
+        "original_site_coordinate_approx_lon": 167.4
+      },
+      {
+        "original_census_colony": "Unger Rock",
+        "original_site_map_colony": "Unger Rock",
+        "published_named_region_or_landmass": "Pennell Coast",
+        "publisher_explicit_island_group": null,
+        "island_source_classification": "NO_SOURCE_EXPLICIT_SINGULAR_ISLAND",
+        "original_source_year_observation_count": 2,
+        "original_site_coordinate_approx_lat": -70.68333333333334,
+        "original_site_coordinate_approx_lon": 166.91666666666666
+      }
+    ],
+    "named_source_singular_island_candidate_groups": [
+      {
+        "publisher_explicit_named_island": "Beaufort Island",
+        "source_colonies": [
+          "Beaufort Island"
+        ],
+        "source_colony_count": 1,
+        "source_colony_year_presence_by_site": {
+          "Beaufort Island": 19
+        },
+        "number_original_adjacent_windows_at_least_one_same_colony": 11,
+        "number_original_adjacent_windows_at_least_two_same_colonies": 0,
+        "source_original_windows_with_any_repeat": [
+          1983,
+          1984,
+          1985,
+          1986,
+          1987,
+          1988,
+          1989,
+          1990,
+          1991,
+          2004,
+          2005
+        ],
+        "original_names_are_not_verified_GIS_land_polygon_IDs": true
+      },
+      {
+        "publisher_explicit_named_island": "Chinstrap Island",
+        "source_colonies": [
+          "Chinstrap Island"
+        ],
+        "source_colony_count": 1,
+        "source_colony_year_presence_by_site": {
+          "Chinstrap Island": 2
+        },
+        "number_original_adjacent_windows_at_least_one_same_colony": 0,
+        "number_original_adjacent_windows_at_least_two_same_colonies": 0,
+        "source_original_windows_with_any_repeat": [],
+        "original_names_are_not_verified_GIS_land_polygon_IDs": true
+      },
+      {
+        "publisher_explicit_named_island": "Coulman Island",
+        "source_colonies": [
+          "Cape Anne",
+          "Coulman Island Middle",
+          "Coulman Island North",
+          "Coulman Island South"
+        ],
+        "source_colony_count": 4,
+        "source_colony_year_presence_by_site": {
+          "Cape Anne": 11,
+          "Coulman Island Middle": 16,
+          "Coulman Island North": 13,
+          "Coulman Island South": 13
+        },
+        "number_original_adjacent_windows_at_least_one_same_colony": 6,
+        "number_original_adjacent_windows_at_least_two_same_colonies": 4,
+        "source_original_windows_with_any_repeat": [
+          1985,
+          1986,
+          1987,
+          1988,
+          2001,
+          2017
+        ],
+        "original_names_are_not_verified_GIS_land_polygon_IDs": true
+      },
+      {
+        "publisher_explicit_named_island": "Inexpressible Island",
+        "source_colonies": [
+          "Inexpressible Island"
+        ],
+        "source_colony_count": 1,
+        "source_colony_year_presence_by_site": {
+          "Inexpressible Island": 16
+        },
+        "number_original_adjacent_windows_at_least_one_same_colony": 6,
+        "number_original_adjacent_windows_at_least_two_same_colonies": 0,
+        "source_original_windows_with_any_repeat": [
+          1986,
+          1991,
+          1992,
+          2001,
+          2005,
+          2017
+        ],
+        "original_names_are_not_verified_GIS_land_polygon_IDs": true
+      },
+      {
+        "publisher_explicit_named_island": "Nella Island",
+        "source_colonies": [
+          "Nella Island"
+        ],
+        "source_colony_count": 1,
+        "source_colony_year_presence_by_site": {
+          "Nella Island": 1
+        },
+        "number_original_adjacent_windows_at_least_one_same_colony": 0,
+        "number_original_adjacent_windows_at_least_two_same_colonies": 0,
+        "source_original_windows_with_any_repeat": [],
+        "original_names_are_not_verified_GIS_land_polygon_IDs": true
+      },
+      {
+        "publisher_explicit_named_island": "Possession Island",
+        "source_colonies": [
+          "Possession Island"
+        ],
+        "source_colony_count": 1,
+        "source_colony_year_presence_by_site": {
+          "Possession Island": 4
+        },
+        "number_original_adjacent_windows_at_least_one_same_colony": 0,
+        "number_original_adjacent_windows_at_least_two_same_colonies": 0,
+        "source_original_windows_with_any_repeat": [],
+        "original_names_are_not_verified_GIS_land_polygon_IDs": true
+      },
+      {
+        "publisher_explicit_named_island": "Ross Island",
+        "source_colonies": [
+          "Cape Bird Middle",
+          "Cape Bird North",
+          "Cape Bird South",
+          "Cape Crozier East",
+          "Cape Crozier West",
+          "Cape Royds"
+        ],
+        "source_colony_count": 6,
+        "source_colony_year_presence_by_site": {
+          "Cape Bird Middle": 40,
+          "Cape Bird North": 41,
+          "Cape Bird South": 41,
+          "Cape Crozier East": 39,
+          "Cape Crozier West": 38,
+          "Cape Royds": 41
+        },
+        "number_original_adjacent_windows_at_least_one_same_colony": 40,
+        "number_original_adjacent_windows_at_least_two_same_colonies": 39,
+        "source_original_windows_with_any_repeat": [
+          1982,
+          1983,
+          1984,
+          1985,
+          1986,
+          1987,
+          1988,
+          1989,
+          1990,
+          1991,
+          1992,
+          1993,
+          1994,
+          1995,
+          1996,
+          1997,
+          1998,
+          1999,
+          2000,
+          2001,
+          2002,
+          2003,
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2021,
+          2022,
+          2023
+        ],
+        "original_names_are_not_verified_GIS_land_polygon_IDs": true
+      },
+      {
+        "publisher_explicit_named_island": "Sabrina Island",
+        "source_colonies": [
+          "Sabrina Island"
+        ],
+        "source_colony_count": 1,
+        "source_colony_year_presence_by_site": {
+          "Sabrina Island": 2
+        },
+        "number_original_adjacent_windows_at_least_one_same_colony": 0,
+        "number_original_adjacent_windows_at_least_two_same_colonies": 0,
+        "source_original_windows_with_any_repeat": [],
+        "original_names_are_not_verified_GIS_land_polygon_IDs": true
+      }
+    ],
+    "n_distinct_explicit_named_source_island_candidate_groups": 8,
+    "n_named_islands_with_ge5_original_adjacent_growth_windows": 4,
+    "years_with_ge2_named_islands_annual_colony_pair_observations": [
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      2001,
+      2004,
+      2005,
+      2017
+    ],
+    "n_years_with_ge2_named_islands": 14,
+    "years_with_ge2_named_islands_each_ge2_original_colonies": [
+      1986,
+      1987,
+      1988,
+      2017
+    ],
+    "n_strict_within_vs_between_years": 4,
+    "original_count_magnitudes_opened": 0,
+    "numeric_source_colony_year_values_never_published": true,
+    "true_GIS_island_identities_or_boundaries_independently_verified": false,
+    "source_named_island_panel_gate": true,
+    "stricter_multi_colony_island_comparison_gate": false
+  },
+  "counts_or_synchrony_estimated": 0,
+  "scientific_decision": "HOLD_GIS_ISLAND_POLYGONS_AND_COUNT_STAGE_BEFORE_BIOLOGY"
+}

@@ -1,0 +1,38 @@
+name: Antarctic V22 original BAS Bird Island vs Maiviken annual nest test
+on:
+  push:
+    branches: [research/antarctic-penguin-island-macro-v1]
+    paths:
+      - 'contracts/BAS_BIRD_MAIVIKEN_NEST_GROWTH_V22.md'
+      - 'scripts/fit_bas_bird_maiviken_nests_v22.py'
+      - 'tests/test_bas_bird_maiviken_nests_v22.py'
+      - '.github/workflows/antarctic-bas-bird-maiviken-nests-v22.yml'
+  pull_request:
+    paths:
+      - 'contracts/BAS_BIRD_MAIVIKEN_NEST_GROWTH_V22.md'
+      - 'scripts/fit_bas_bird_maiviken_nests_v22.py'
+      - 'tests/test_bas_bird_maiviken_nests_v22.py'
+      - '.github/workflows/antarctic-bas-bird-maiviken-nests-v22.yml'
+  workflow_dispatch:
+jobs:
+  original_BAS_physical_boundary_nest_growth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original source retrieval and synthetic tests
+        run: python -m pip install pytest requests
+      - name: Verify biological-stage, year, duplicate, missingness and gate code on invented animals
+        run: python -m pytest -q tests/test_bas_bird_maiviken_nests_v22.py
+      - name: Download original publisher SHA pinned Bird Island and Maiviken data, fit only if metadata source support passes
+        run: python scripts/fit_bas_bird_maiviken_nests_v22.py --out /tmp/BAS_BIRD_MAIVIKEN_GENTOO_NEST_GROWTH_V22.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-BAS-south-georgia-island-main-island-Gentoo-v22
+          path: /tmp/BAS_BIRD_MAIVIKEN_GENTOO_NEST_GROWTH_V22.json
