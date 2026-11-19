@@ -1,0 +1,49 @@
+name: AADC 16 observed AtoP Landsat STAC scene-source gate
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_landsat_scene_source.py
+      - tests/test_aadc_landsat_scene_source.py
+      - .github/workflows/aadc-observed-atoP-landsat-stac-gate.yml
+  workflow_dispatch:
+concurrency:
+  group: aadc-original-atoP-landsat-stac-\${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  pilot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: \${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests openpyxl
+      - name: Compile and test site/season provenance
+        run: |
+          python -m py_compile scripts/audit_aadc_landsat_scene_source.py
+          python -m unittest discover -s tests -p test_aadc_landsat_scene_source.py -v
+      - name: Obtain original source-pinned high-evidence A/P event receipt
+        run: |
+          mkdir -p build/aadc
+          gh run download 44530909415 -n aadc-eight-species-high-evidence-source-20261119 -D build/aadc
+          test -f build/aadc/AADC_2025_EIGHT_SPECIES_HIGH_EVIDENCE_TRANSITION_SOURCE_GATE_20261119.json
+      - name: Chronologically balanced fixed 3-event Landsat metadata pilot
+        run: |
+          python -m scripts.audit_aadc_landsat_scene_source \\
+            --strict-aadc-events-json build/aadc/AADC_2025_EIGHT_SPECIES_HIGH_EVIDENCE_TRANSITION_SOURCE_GATE_20261119.json \\
+            --out-json build/AADC_16_AP_LANDSAT_SOURCE_PILOT_20261119.json \\
+            --max-events 3
+      - name: Preserve original source inventory even when STAC query holds
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-16-events-landsat-original-scene-source-pilot
+          path: build/AADC_16_AP_LANDSAT_SOURCE_PILOT_20261119.json
+          retention-days: 30
