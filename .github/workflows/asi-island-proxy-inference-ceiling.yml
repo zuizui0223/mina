@@ -1,0 +1,66 @@
+name: Antarctic ASI island-proxy post-result inference ceiling
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_asi_island_proxy_inference_ceiling.py
+      - .github/workflows/asi-island-proxy-inference-ceiling.yml
+  workflow_dispatch:
+
+concurrency:
+  group: asi-island-proxy-inference-ceiling-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-audit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 7
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pandas
+      - name: Syntax check
+        run: python -m py_compile scripts/audit_asi_island_proxy_inference_ceiling.py
+      - name: Retrieve original successful source and model artifacts (no refitting)
+        run: |
+          mkdir -p build/asi build/scar build/model
+          gh run download 44511340025 -n asi-original-visit-glims-rock-source-gate-20261119 -D build/asi
+          gh run download 44512297362 -n asi-196-scar-island-mainland-source-gate-20261119 -D build/scar
+          gh run download 44513846995 -n asi-scar-polygon-proxy-exploratory-20261119 -D build/model
+          test -f build/asi/ASI_3PYGOSCELIS_OBSERVED_SITE_YEAR_STATES_20261119.csv
+          test -f build/scar/ASI_196_SCAR_SOURCE_GEOGRAPHY_20261119.csv
+          test -f build/model/ASI_SCAR_POLYGON_PROXY_EXPLORATORY_20261119.json
+      - name: Compute descriptive regional sampling fragility only
+        run: |
+          python -m scripts.audit_asi_island_proxy_inference_ceiling \
+            --panel-csv build/asi/ASI_3PYGOSCELIS_OBSERVED_SITE_YEAR_STATES_20261119.csv \
+            --geography-csv build/scar/ASI_196_SCAR_SOURCE_GEOGRAPHY_20261119.csv \
+            --exploratory-json build/model/ASI_SCAR_POLYGON_PROXY_EXPLORATORY_20261119.json \
+            --out-json build/ASI_ISLAND_PROXY_INFERENCE_CEILING_20261119.json
+      - name: Validate original source sample scope
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('build/ASI_ISLAND_PROXY_INFERENCE_CEILING_20261119.json'))
+          assert j['matched_comparison']=={'site_codes':82,'source_site_species_seasons':1127,'spatial_blocks':6}
+          assert sum(x['site_species_seasons_total'] for x in j['block_source_structure'])==1127
+          assert j['source_fragility_diagnostics']['spatial_blocks_with_at_most_2_continental_sites']==3
+          assert j['decision']=='HOLD_ANY_ISLAND_REFUGE_CAUSAL_OR_EQUIVALENCE_INFERENCE'
+          assert j['fixed_exploratory_result_unchanged']['conditional_odds_ratio'] > 0
+          print('Verified source-count and no-inference scope; no new ecological model fit.')
+          PY
+      - name: Preserve immutable original artifact evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asi-island-proxy-inference-ceiling-20261119
+          path: build/ASI_ISLAND_PROXY_INFERENCE_CEILING_20261119.json
+          retention-days: 30
