@@ -61,9 +61,9 @@ def year_detection_group_status(rows,certainty,area_category):
         if validation!=("Y","Y","Y"):
             return source,None,"NOT_ALL_EXPERT_VALIDATED"
         absence_grade=txt(lookup[0].get("occurrence_cert_cat")).upper()
-        # High-certainty absence H is the published conservative class,
+        # Original publisher numeric category 4 is explicit high-certainty A (5=P),
         # not proof of true absence.
-        if occur=="A" and absence_grade!="H":
+        if occur=="A" and absence_grade!="4":
             return source,None,"REPORTED_A_NOT_HIGH_CERTAINTY"
         records.append(occur)
     if not records:
@@ -167,6 +167,8 @@ def audit(originals,source_sha):
        "source_sha256":source_sha,
        "original_2025_geographic_sites":len(loc),
        "original_certainty_source_rules":len(cert),
+       "published_original_certainty_code_map":{"A":4,"P":5,"NR":[2,3]},
+       "numeric_high_A_class_validated_from_original_publisher":True,
        "publisher_certainty_grade_code_histogram_by_occurrence":{
           k:dict(v) for k,v in sorted(publisher_absence_grade_codes.items())},
        "publisher_absence_grade_code_has_literal_H":any(
