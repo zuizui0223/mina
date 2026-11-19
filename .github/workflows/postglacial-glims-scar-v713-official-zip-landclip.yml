@@ -1,0 +1,53 @@
+name: postglacial-GLIMS-SCAR-v713-official-zip-landclip
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_glims_scar_v713_official_zip_landclip.py
+      - .github/workflows/postglacial-glims-scar-v713-official-zip-landclip.yml
+  workflow_dispatch:
+
+concurrency:
+  group: postglacial-glims-scar-v713-zip-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  original-source-landclip:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install spatial libraries
+        run: python -m pip install numpy pandas pyreadr shapely pyproj pyshp requests
+      - name: Compile and run synthetic geospatial guards
+        run: |
+          python -m py_compile scripts/audit_glims_scar_v713_official_zip_landclip.py
+          python -m unittest discover -s tests -p test_glims_scar_landmasked_proximity.py -v
+          python -m unittest discover -s tests -p test_glims_mapppd_retreat_proximity.py -v
+      - name: Clone original frozen MAPPPD before accessing site locations
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          test -f build/mapppdr/data/sites.rda
+          test -f build/mapppdr/data/site_species.rda
+      - name: Clip GLIMS source differences to BAS official high-res shapefile
+        run: |
+          python -m scripts.audit_glims_scar_v713_official_zip_landclip \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/GLIMS_SCAR_V713_OFFICIAL_LANDMASK_RESULT_20261119.json \
+            --out-csv build/GLIMS_SCAR_V713_OFFICIAL_LANDMASK_SITE_LIST_20261119.csv
+      - name: Keep source outcome even on HOLD
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: glims-scar-v713-official-landclip-20261119
+          path: |
+            build/GLIMS_SCAR_V713_OFFICIAL_LANDMASK_RESULT_20261119.json
+            build/GLIMS_SCAR_V713_OFFICIAL_LANDMASK_SITE_LIST_20261119.csv
+          retention-days: 30
