@@ -8,7 +8,7 @@ must precede any glacier-to-penguin join.
 from __future__ import annotations
 
 import argparse
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -100,6 +100,7 @@ def audit_features(data: dict, limit: int) -> dict:
     hist = Counter()
     hasdate, hasglac, hasgeom = 0, 0, 0
     date_keys = Counter()
+    id_years = defaultdict(set)
     for feat in feats:
         props = feat.get("properties") or {}
         years = years_from_properties(props)
@@ -109,8 +110,12 @@ def audit_features(data: dict, limit: int) -> dict:
         for k in props:
             if str(k).lower() in SOURCE_DATE_FIELDS:
                 date_keys[str(k)] += 1
-        if any(props.get(k) not in (None, "") for k in GLACIER_KEY_FIELDS):
+        lower_props = {str(k).lower(): v for k, v in props.items()}
+        glac_id = next((str(lower_props[k]) for k in GLACIER_KEY_FIELDS
+                        if lower_props.get(k) not in (None, "")), None)
+        if glac_id is not None:
             hasglac += 1
+            id_years[glac_id].update(years)
         if feat.get("geometry"):
             hasgeom += 1
     return {
@@ -122,6 +127,10 @@ def audit_features(data: dict, limit: int) -> dict:
         "features_with_geometry": hasgeom,
         "source_date_fields_seen": dict(date_keys),
         "years_sample_histogram": dict(sorted(hist.items())),
+        "distinct_glacier_ids_in_sample": len(id_years),
+        "glacier_ids_with_two_or_more_source_years": sum(len(v) >= 2 for v in id_years.values()),
+        "glacier_ids_with_year_span_ge_5": sum(len(v) >= 2 and max(v)-min(v) >= 5 for v in id_years.values()),
+        "multi_year_id_fraction": (sum(len(v) >= 2 for v in id_years.values()) / len(id_years)) if id_years else None,
         "reported_total_features": data.get("totalFeatures") or data.get("numberMatched"),
         "sample_only": True,
     }
