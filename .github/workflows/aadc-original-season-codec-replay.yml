@@ -1,0 +1,42 @@
+name: AADC 2025 original Adélie austral season-code replay
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/replay_aadc_adelie_original_season_codec.py
+      - tests/test_aadc_original_season_codec_replay.py
+      - .github/workflows/aadc-original-season-codec-replay.yml
+  workflow_dispatch:
+
+concurrency:
+  group: aadc-original-adelie-season-codec-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  exact-source-replay:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests openpyxl xlrd
+      - name: Check fixed year-code semantics and frozen legacy replay
+        run: |
+          python -m py_compile scripts/replay_aadc_adelie_original_season_codec.py
+          python -m unittest discover -s tests -p test_aadc_original_season_codec_replay.py -v
+      - name: Download original AADC publisher penguin and geog file with SHA verification
+        run: |
+          python -m scripts.replay_aadc_adelie_original_season_codec \
+            --out-json build/AADC_ORIGINAL_ADELIE_AUSTRAL_SEASON_CODEC_REPLAY_20261119.json
+      - name: Preserve corrected temporal source QA or explicit HOLD
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-adelie-austral-code-replay-20261119
+          path: build/AADC_ORIGINAL_ADELIE_AUSTRAL_SEASON_CODEC_REPLAY_20261119.json
+          retention-days: 30
