@@ -1,0 +1,38 @@
+name: postglacial-SCAR-v713-archive-source-gate
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_scar_v713_official_zip.py
+      - .github/workflows/postglacial-scar-v713-archive-gate.yml
+  workflow_dispatch:
+
+concurrency:
+  group: postglacial-scar-v713-archive-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  official-zip:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests
+      - name: Syntax check and original archive download
+        run: |
+          python -m py_compile scripts/audit_scar_v713_official_zip.py
+          python scripts/audit_scar_v713_official_zip.py \
+            --out-json build/SCAR_V713_OFFICIAL_ZIP_SOURCE_GATE_20261119.json
+      - name: Preserve original source receipt even when provider denies access
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scar-v713-official-zip-source-gate
+          path: build/SCAR_V713_OFFICIAL_ZIP_SOURCE_GATE_20261119.json
+          retention-days: 30
