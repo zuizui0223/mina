@@ -1,0 +1,53 @@
+name: postglacial-glims-mapppd-proximity
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_glims_mapppd_retreat_proximity.py
+      - tests/test_glims_mapppd_retreat_proximity.py
+      - .github/workflows/postglacial-glims-mapppd-proximity.yml
+  workflow_dispatch:
+
+concurrency:
+  group: postglacial-glims-mapppd-proximity-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  spatial-support:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install spatial libraries
+        run: python -m pip install numpy pandas pyreadr shapely pyproj
+      - name: Compile and validate synthetic geometry
+        run: |
+          python -m py_compile scripts/audit_glims_mapppd_retreat_proximity.py
+          python -m unittest discover -s tests -p test_glims_mapppd_retreat_proximity.py -v
+      - name: Clone pinned original MAPPPD R database
+        run: |
+          git clone --quiet https://github.com/CCheCastaldo/mapppdr.git build/mapppdr
+          git -C build/mapppdr checkout --quiet 88c73a507e0921b2541c218c71eaf16721bc6502
+          test -f build/mapppdr/data/sites.rda
+          test -f build/mapppdr/data/site_species.rda
+      - name: Compute outcome-blind original WFS×MAPPPD proximity
+        run: |
+          python -m scripts.audit_glims_mapppd_retreat_proximity \
+            --mapppdr-dir build/mapppdr \
+            --out-json build/GLIMS_MAPPPD_APPARENT_RETREAT_SOURCE_PROXIMITY_20261119.json \
+            --out-csv build/GLIMS_MAPPPD_APPARENT_RETREAT_SITE_CANDIDATES_20261119.csv
+      - name: Upload source-only reproducible receipts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: glims-mapppd-spatial-source-support-20261119
+          path: |
+            build/GLIMS_MAPPPD_APPARENT_RETREAT_SOURCE_PROXIMITY_20261119.json
+            build/GLIMS_MAPPPD_APPARENT_RETREAT_SITE_CANDIDATES_20261119.csv
+          retention-days: 30
