@@ -1,0 +1,54 @@
+name: Antarctic ASI polygon proxy exploratory site-clustered contrast
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/fit_asi_antarctic_polygon_proxy_exploratory.py
+      - tests/test_asi_antarctic_polygon_proxy_exploratory.py
+      - .github/workflows/asi-antarctic-polygon-proxy-exploratory.yml
+  workflow_dispatch:
+
+concurrency:
+  group: asi-antarctic-polygon-proxy-exploratory-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy pandas scipy statsmodels
+      - name: Synthetic single-model regression test
+        run: |
+          python -m py_compile scripts/fit_asi_antarctic_polygon_proxy_exploratory.py
+          python -m unittest discover -s tests -p test_asi_antarctic_polygon_proxy_exploratory.py -v
+      - name: Retrieve exact successful ASI and SCAR source artifacts
+        run: |
+          mkdir -p build/asi build/scar
+          gh run download 44511340025 -n asi-original-visit-glims-rock-source-gate-20261119 -D build/asi
+          gh run download 44512297362 -n asi-196-scar-island-mainland-source-gate-20261119 -D build/scar
+          test -f build/asi/ASI_3PYGOSCELIS_OBSERVED_SITE_YEAR_STATES_20261119.csv
+          test -f build/scar/ASI_196_SCAR_SOURCE_GEOGRAPHY_20261119.csv
+      - name: Fit one post-source observational model with site clustering
+        run: |
+          python -m scripts.fit_asi_antarctic_polygon_proxy_exploratory \
+            --asi-panel-csv build/asi/ASI_3PYGOSCELIS_OBSERVED_SITE_YEAR_STATES_20261119.csv \
+            --asi-geo-csv build/scar/ASI_196_SCAR_SOURCE_GEOGRAPHY_20261119.csv \
+            --out-json build/ASI_SCAR_POLYGON_PROXY_EXPLORATORY_20261119.json
+      - name: Preserve observational estimates and caveats
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asi-scar-polygon-proxy-exploratory-20261119
+          path: build/ASI_SCAR_POLYGON_PROXY_EXPLORATORY_20261119.json
+          retention-days: 30
