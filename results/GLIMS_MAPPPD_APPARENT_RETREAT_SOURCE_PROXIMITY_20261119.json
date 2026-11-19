@@ -1,0 +1,36 @@
+{
+ "schema_version": 1,
+ "result_id": "mina-glims-mapppd-apparent-glacier-retreat-site-proximity-20261119",
+ "observed_source_gates": {
+   "glims_layer": "GLIMS:GLIMS_Glacier_Outlines",
+   "glims_wfs": "https://www.glims.org/geoserver/ows",
+   "pin_mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+   "geometry_crs": "EPSG:3031",
+   "source_glims_polygon_operation": "earliest_valid_outline - latest_valid_outline, same GLIMS ID, at least 5 calendar years",
+   "repeated_polygon_id_is_not_validated_stable_glacier": true,
+   "original_github_actions_run": 44481091708,
+   "original_actions_artifact_id": 14509050447,
+   "run_status": "success"
+ },
+ "observed_counts": {
+   "original_mapppdr_pygoscelis_sites": 664,
+   "within_three_bounding_regions": 133,
+   "glacier_ids_with_positive_apparent_outline_loss": 144,
+   "mapped_colony_points_near_apparent_loss_1km": 59,
+   "mapped_colony_points_near_apparent_loss_5km": 109,
+   "regions": {
+     "palmer_anvers_area": {"glims_features": 320, "paired_positive_difference_ids": 21, "mapped_colony_sites": 28, "site_points_1km": 10, "site_points_5km": 16, "apparent_old_minus_new_polygon_km2_sum": 216.164, "invalid_source_polygon_rows": 41},
+     "south_shetland_king_george_area": {"glims_features": 132, "paired_positive_difference_ids": 51, "mapped_colony_sites": 40, "site_points_1km": 23, "site_points_5km": 38, "apparent_old_minus_new_polygon_km2_sum": 79.8382, "invalid_source_polygon_rows": 8},
+     "south_shetland_livingston_area": {"glims_features": 187, "paired_positive_difference_ids": 72, "mapped_colony_sites": 65, "site_points_1km": 26, "site_points_5km": 55, "apparent_old_minus_new_polygon_km2_sum": 196.3346, "invalid_source_polygon_rows": 4}
+   }
+ },
+ "inference_limitations": [
+   "These geographic bounding boxes are not unique biological islands or independent landmasses.",
+   "144 GLIMS IDs with old-minus-new geometry are NOT validated glacier retreats or newly exposed bedrock; 0m candidate matches can reflect source centroid/mapping differences.",
+   "639 original GLIMS polygon features cover different source years from 1956–2019 and have no annual completeness claim.",
+   "The listed old-minus-new areas are not land gain or usable nesting habitat; can include marine calving, changed glacier delineation and overlapping source polygons.",
+   "SCAR land-only current coastline mask, paired temporal proof of ice-to-rock, verified penguin A/P survey transitions, and spatially validated landmass identity remain unavailable.",
+   "No penguin abundance, colonization rate, ecological or causal effect was analyzed."
+ ],
+ "decision": "SOURCE_PROXIMITY_PASS; NEW_ROCK_AND_SETTLEMENT_CAUSAL_GATE_HOLD"
+}
