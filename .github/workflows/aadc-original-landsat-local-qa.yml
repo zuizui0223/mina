@@ -1,0 +1,46 @@
+name: AADC original Landsat local QA chip pilot
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_landsat_local_qa_pilot.py
+      - tests/test_aadc_landsat_local_qa_pilot.py
+      - .github/workflows/aadc-original-landsat-local-qa.yml
+  workflow_dispatch:
+jobs:
+  local-pixel-qa:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install real raster and source dependencies
+        run: python -m pip install numpy rasterio pyproj shapely requests
+      - name: Synthetic QA bit test and syntax
+        run: |
+          python -m py_compile scripts/audit_aadc_landsat_local_qa_pilot.py
+          python -m unittest discover -s tests -p test_aadc_landsat_local_qa_pilot.py -v
+      - name: Download original frozen 16 AADC transitions Landsat source metadata
+        run: |
+          mkdir -p build/full
+          gh run download 44538120002 -n aadc-16-events-landsat-original-scene-source-full -D build/full
+          test -f build/full/AADC_16_AP_LANDSAT_FULL_SOURCE_SUPPORT_20261119.json
+      - name: Read original Landsat scene QA_PIXEL spatial windows at fixed AADC event
+        run: |
+          python -m scripts.audit_aadc_landsat_local_qa_pilot \
+            --original-stac-json build/full/AADC_16_AP_LANDSAT_FULL_SOURCE_SUPPORT_20261119.json \
+            --out-json build/AADC_ORIGINAL_LANDSAT_LOCAL_QA_2017_2018_20261119.json
+      - name: Preserve local pixel QA or provider error without biological effect
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aadc-original-local-landsat-QA-source
+          path: build/AADC_ORIGINAL_LANDSAT_LOCAL_QA_2017_2018_20261119.json
+          retention-days: 30
