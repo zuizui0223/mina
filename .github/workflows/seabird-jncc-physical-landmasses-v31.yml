@@ -1,0 +1,40 @@
+name: Seabird V31 Natural Earth physical landmass mapping for JNCC survey sites
+on:
+  push:
+    branches: [research/seabird-island-generality-v1]
+    paths:
+      - 'contracts/JNCC_NATURAL_EARTH_LANDMASS_V31.md'
+      - 'scripts/audit_jncc_naturalearth_landmass_v31.py'
+      - 'tests/test_jncc_naturalearth_landmass_v31.py'
+      - '.github/workflows/seabird-jncc-physical-landmasses-v31.yml'
+  pull_request:
+    paths:
+      - 'contracts/JNCC_NATURAL_EARTH_LANDMASS_V31.md'
+      - 'scripts/audit_jncc_naturalearth_landmass_v31.py'
+      - 'tests/test_jncc_naturalearth_landmass_v31.py'
+      - '.github/workflows/seabird-jncc-physical-landmasses-v31.yml'
+  workflow_dispatch:
+jobs:
+  independently_measured_physical_landmasses:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original-source readers and geometry unions
+        run: python -m pip install pytest requests shapely pyproj pyshp
+      - name: Test original physical landmass connectivity and snap gating on invented coordinates
+        run: python -m pytest -q tests/test_jncc_naturalearth_landmass_v31.py
+      - name: Download official JNCC and independent major+minor Natural Earth polygons and audit source-only physical island matching
+        run: |
+          python scripts/audit_jncc_naturalearth_landmass_v31.py \
+            --out /tmp/JNCC_NATURAL_EARTH_PHYSICAL_LANDMASS_V31.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jncc-10m-natural-earth-physical-landmasses-v31-no-counts
+          path: /tmp/JNCC_NATURAL_EARTH_PHYSICAL_LANDMASS_V31.json
