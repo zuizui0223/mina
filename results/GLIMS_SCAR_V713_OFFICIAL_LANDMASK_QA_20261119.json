@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-scar-v713-official-zip-glims-mapppd-landmask-20261119",
+  "status": "SOURCE_LAND_MASK_GEOGRAPHY_COMPLETED_NO_BIOLOGICAL_INFERENCE",
+  "date_utc": "2026-11-19",
+  "official_source": {
+    "doi": "10.5285/1c81cf24-576f-43df-be72-a5c7dbb51ffb",
+    "edition": "7.13",
+    "shapefile_zip_sha256": "1e9103e9afaa012b0746eec487c0a473c70834bfc85220f89082e747658aaa66",
+    "shapefile_zip_size_bytes": 72957803,
+    "original_features": 17689,
+    "original_valid_land_features": 17257,
+    "nonland_features": 432,
+    "crs": "EPSG:3031"
+  },
+  "execution": {
+    "workflow_run_id": 44507460876,
+    "artifact_id": 14520326734,
+    "repo": "zuizui0223/mina",
+    "analysis_branch": "analysis/postglacial-glims-sourcegate-20261119",
+    "result_extracted_from_original_artifact": true
+  },
+  "sites": {
+    "source_mapppdr_commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "in_pilot_bboxes": 133,
+    "unique_site_ids": 133,
+    "exact_unique_source_land_feature": 101,
+    "source_land_feature_with_apparent_glims_difference": 56,
+    "within_1km_same_source_feature_after_landclip": 36,
+    "within_5km_same_source_feature_after_landclip": 51,
+    "within_1km_before_landclip": 59,
+    "within_5km_before_landclip": 109,
+    "distinct_original_scar_feature_ids_among_1km_sites": 11
+  },
+  "by_region": {
+    "south_shetland_king_george_area": {
+      "site_ids": 40,
+      "exact_unique_land": 30,
+      "within_1km_same_feature": 12,
+      "within_5km_same_feature": 19,
+      "glims_ids_with_apparent_old_minus_new": 51
+    },
+    "south_shetland_livingston_area": {
+      "site_ids": 65,
+      "exact_unique_land": 52,
+      "within_1km_same_feature": 20,
+      "within_5km_same_feature": 27,
+      "glims_ids_with_apparent_old_minus_new": 72
+    },
+    "palmer_anvers_area": {
+      "site_ids": 28,
+      "exact_unique_land": 19,
+      "within_1km_same_feature": 4,
+      "within_5km_same_feature": 5,
+      "glims_ids_with_apparent_old_minus_new": 21
+    }
+  },
+  "inferential_boundary": [
+    "Original SCAR polygon source row numbers are map features, NOT independent physical islands, landmasses or colonization replicates.",
+    "GLIMS old-minus-new source geometry is not a geologically verified new-rock exposure; mapping and source years differ across glaciers.",
+    "SCAR land includes ice-covered land, so this landmask does not independently identify bare rock.",
+    "No penguin surveyed absence or A-to-P transitions, nest-count effects or ecological tests were used.",
+    "A reported 0m site-to-polygon distance can reflect map georeferencing mismatch rather than new settlement."
+  ],
+  "next_source_gate": "Independent dated bare-rock polygons, preferably SCAR rock-outcrop v7.11 source-date audited, plus survey-verified non-detection histories."
+}
