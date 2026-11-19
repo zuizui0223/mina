@@ -76,3 +76,28 @@ UKについてPR#201 V44–V46はアクセス型の種群proxyを比較したが
 - v7.12原幾何停止: `docs/MAPPPD_V5_LAND_CONTINUITY_V41_RESULT.md`; [PR#197](https://github.com/zuizui0223/mina/pull/197)
 - JNCC site組成: [PR#198](https://github.com/zuizui0223/mina/pull/198); UK捕食者proxy限界: [PR#201](https://github.com/zuizui0223/mina/pull/201)
 - 東南極時系列P/Aの遷移不足: [PR#180](https://github.com/zuizui0223/mina/pull/180)
+
+## 5. 2026-11-19 継続監査：既存Paper 2は「未実行」ではない（重要な訂正）
+
+前節「GO：現在ある構造で可能な関連解析」は**既に2026-09-29に本解析から置換検定まで完走済み**。ここを新規解析候補として扱わない。凍結Paper2: 1980–2025、2,100真正巣数観測、107時間ブリッジ済み系列のうち説明量完備104 site×species（ADPE 41/CHPE 34/GEPE 29）。主要モデルは種ごとの共通潜在年要因に対するサイト応答（loading）と2 km繁殖オプション面積A、Habitat Complex richness H、A×Hとの関連。**単純な個体数増減の回帰ではない**。
+
+- 凍結主効果 `gamma_AH`: ADPE **−0.303571**（Holm p=0.2162）、CHPE **−1.184398**（Holm p=0.1689）、GEPE **−0.318226**（Holm p=0.1689）。3種の中央値 **−0.318226**、9,999回地域ブロック置換のpaper-level **p=0.0947**。否定でもなく確認でもなく、一般則に対する**非確証**。
+- A-only 3種の方向は全て負だがHolm p=0.4278 / 0.6134 / 0.6134：単純な「広いほど気候変動を緩衝」も支持されず。
+- 半径を1/2/5 kmにするとcross-species gamma_AH中央値は **−0.057655 / −0.318226 / +0.106781**。5kmでは3種とも正。複数半径の帰無まで含め、真の生物学的scale-dependenceの確認としては扱わない。
+- この試行は**既に凍結した結果**。同じ点・同じ説明量を使用して閾値・年範囲・環境時期を後付け変更して新しいp値を探すことは禁止。
+
+根拠：`main/results/PAPER2_FIRST_REAL_V3_FIT_RESULT_V1.json`、`main/results/PAPER2_A_BUFFERING_SECONDARY_RESULT_V1.json`、`main/results/PAPER2_SCALE_TRAIT_SENSITIVITY_RESULT_V1.json`、`main/docs/PAPER2_MANUSCRIPT_SPINE_V0_1.md`。前節の「次の判定条件1」は**完了・非確証**に訂正。
+
+## 6. 公開資料の追加：新しい空間データと真の時間軸を区別
+
+- **SCAR ADD v7.13高解像land polygon**（2026-11-12） https://doi.org/10.5285/1c81cf24-576f-43df-be72-a5c7dbb51ffb 。`surface`=land/ice shelf/ice tongue/rumple。出版社は1990s–2026の多年代素材を合成すると明記。**v7.12とv7.13のland差分は真の「2026年に露出した露岩」ではない。** v7.13のShapefileは約73 MBだが、今回の実ファイルをこの環境にダウンロードできず、site 95件の再照合は**未実行**。版更新はGEO-QAの独立資料であって旧V41の生物学検定の再開ではない。
+- **BAS Zavodovski polygon time-series 2010/2011/2016/2020/2022/2025** https://doi.org/10.5285/7220dc6b-2f52-4160-a6c0-e57c50963308 。原時点ごとにデジタイズしたchinstrap/macaronisの占有コロニー領域があり、2023-12に高解像UAV + nesting density calibration。**重要:** 雲などで欠落した部分は近接時期のpolygonを補完したと明記。原polygon year/validationと画像被覆率を照合せずに増減を「真の変化」と扱わない。しかもZavodovskiは**約56.3°S**にありSCAR ADD南緯60°以南の対象域外。これを本土/島のADDと無理に結合しない。独立なphysical landmassは**1島**なのでマクロ法則の種間・島間反復はない。
+- **Loebel et al. (2025) 南極半島42氷河の2013–2023カービングフロント** https://doi.org/10.5194/essd-17-65-2025 。時間的氷河前線情報はあるが、**全面的な露岩パッチ/巣適地の年ごとのpolygonではない**。沿岸後退前線を営巣可能面積増分と等置しない。42氷河と調査ペンギン地点の重複をoutcome-blindに照合する段階が必要。
+- **Cimino et al. (2026)** https://doi.org/10.5038/2074-1235.54.2.1707 。Point 8（Anvers島）：2018–2020の氷河後退、2019初観察、2020初営巣、2023ひな成功。先行実証例なので、この「発見」自体は今回の新規知見にはできない。
+- **既存AADC東南極P/Aサポート** [PR#180](https://github.com/zuizui0223/mina/pull/180) は連続年の真のA→P **1件**、A-risk **29**。ここから単年度の定着 hazard を共変量付きで識別できない。
+
+### 更新した次の主目標
+
+既存Paper2の露岩×個体数負傾向を再計算するのではなく、**『新規露岩曝露パッチを実地に確認した候補地全体』と『同じパッチの訪問済み明示的A/P』を組にした新しいrisk-setデータベースが複数の独立したlandmassで成立するか**のsource-only gateとする。必要なデータ列：`patch_id, landmass_id, actual_image_date, previously_icecovered_evidence, first_exposed_date_interval, survey_site_id, survey_season, survey_effort_verified, surveyed_A_or_P, spatial_identity_status, publisher_citation`。未訪問をA、日付不明を直近年、静的ADDの版差を真の新露岩に変換しない。
+
+**設計結論:** 完了済み Paper2 の新しいp値は追加しない。Zavodovskiは「時系列繁殖地polygonの取得可能性」を示す1島のpilotに限定し、Zavodovskiを含む群島間比較や、露岩増分→colonization生物学検定を始めるには、別の独立した土地・観測risk setが必要。現時点では新しい生態学的効果を主張しない。
