@@ -166,7 +166,9 @@ def audit(event_json:Path,max_events:int):
     events,event_sha=read_events(event_json)
     if not 1<=max_events<=EXPECTED_EVENTS:raise ValueError("max-events out of source contract")
     places,publisher_sha=read_source_geo()
-    selected=events[:max_events]
+    # Chronologically stratified deterministic pilot: earliest, middle, latest; not based on scene success.
+    indices=[round(i*(len(events)-1)/(max_events-1)) for i in range(max_events)] if max_events>1 else [0]
+    selected=[events[i] for i in indices]
     itemrows=[]
     errs=Counter()
     with requests.Session() as s:
