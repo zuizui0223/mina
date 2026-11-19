@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import re
@@ -63,8 +63,10 @@ def feature_types(xml_data: bytes) -> list[str]:
 
 def select_layer(types: list[str]) -> str | None:
     # Explicit prefer glacier polygon outline; never silently switch to RGI or photo.
-    candidates = [x for x in types if "glims" in x.lower()
-                  and any(s in x.lower() for s in ("glacier", "outline"))]
+    candidates = [x for x in types
+                  if x.lower().split(":", 1)[0] == "glims"
+                  and x.lower().rsplit(":", 1)[-1]
+                  in {"glims_glacier_outlines", "glacier_outlines"}]
     if len(candidates) == 1:
         return candidates[0]
     # If more/none, report rather than cherry-pick another dataset.
@@ -128,7 +130,7 @@ def audit_features(data: dict, limit: int) -> dict:
 def probe(max_features: int = 300) -> dict:
     report = {
         "study": "GLIMS dated glacier outline source-availability; Antarctic island pilot",
-        "date_utc": datetime.utcnow().strftime("%Y-%m-%d"),
+        "date_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "source": WFS,
         "max_features_per_bbox": max_features,
         "source_only": True,
