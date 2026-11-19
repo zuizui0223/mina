@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-postglacial-settlement-source-support-v1",
+  "date": "2026-11-19",
+  "status": "SOURCE_ONLY_GATE_IMPLEMENTED_NO_REAL_EXPOSURE_P_A_PAIRING_RUN",
+  "purpose": "Audit availability of independent time-confirmed newly ice-free breeding patches joined to verified surveyed non-detection/detection histories. No count outcomes, climate association or colonization effect estimation.",
+  "source_scope": {
+    "parent_project": "mina Antarctic breeding islands",
+    "avoid_reopening": [
+      "Ecology Report Paper 1 scientific freeze",
+      "Paper 2 V3 2km area×heterogeneity inference already nonconfirmatory (paper p=0.0947)",
+      "MAPPPD V41 strict physical land-continuity test sample STOP",
+      "AADC consecutive-season East Antarctica A→P n=1 source STOP"
+    ],
+    "candidate_sources": [
+      {
+        "name": "SCAR ADD high-res land polygon v7.13",
+        "url": "https://doi.org/10.5285/1c81cf24-576f-43df-be72-a5c7dbb51ffb",
+        "use": "static geography QA only; composite 1990s–2026; not a calendar-year exposure map",
+        "domain": "south of 60°S"
+      },
+      {
+        "name": "Zavodovski penguin colony polygon time series 2010–2025",
+        "url": "https://doi.org/10.5285/7220dc6b-2f52-4160-a6c0-e57c50963308",
+        "use": "one-island multi-time colony footprint pilot; layer-level image-year and cloud gap-filling required; not new ice-free land",
+        "domain": "~56.3°S outside SCAR ADD domain"
+      },
+      {
+        "name": "Loebel et al 2025 AP glacier calving fronts",
+        "url": "https://doi.org/10.5194/essd-17-65-2025",
+        "use": "time-specific glacier front source; independent ice-free-patch construction and proximity/coverage validation required"
+      },
+      {
+        "name": "Cimino et al 2026 Point 8 colonization",
+        "url": "https://doi.org/10.5038/2074-1235.54.2.1707",
+        "use": "prior-art single site 2018–2023 demonstration; not new discovery"
+      },
+      {
+        "name": "AADC East Antarctica P/A search events",
+        "url": "https://github.com/zuizui0223/mina/pull/180",
+        "use": "prior consecutive-year P/A risk-set pilot insufficient (1 A→P); must not impute NR"
+      }
+    ]
+  },
+  "csv_contract": {
+    "exposure_fields": [
+      "site_id",
+      "species_id",
+      "patch_id",
+      "landmass_id",
+      "exposure_first_year",
+      "exposure_last_year",
+      "prior_ice_verified",
+      "icefree_verified",
+      "spatial_match",
+      "source_id"
+    ],
+    "survey_fields": [
+      "site_id",
+      "species_id",
+      "season",
+      "state",
+      "visited",
+      "effort_verified",
+      "source_id"
+    ],
+    "species_codes": [
+      "ADPE",
+      "CHPE",
+      "GEPE"
+    ],
+    "exposure_meaning": "first_year-last_year brackets credible new exposure of a physical patch independently of penguin observations. Both verified prior-ice and verified current ice-free state required, and an exact same patch-to-site spatial match.",
+    "survey_meaning": "state A denotes verified visited and protocol-supported absence, P denotes verified presence, NR/missing/unsurveyed is not absence; count magnitudes must not be included.",
+    "consecutive_rule": "Only same-site same-species adjacent surveyed seasons after the LATEST exposure-confirmation year count as observed A/P transitions. Nonconsecutive gaps are interval-censored and do not count as annual A→P.",
+    "landmass_rule": "landmass_id is a verified physical continuous landmass, not a SCAR polygon feature ID or administrative MasterSite; aliases resolved without inspecting outcomes.",
+    "temporal_alignment_rule": "No adjacency by calendar year from a 1990s–2026 composite coastline edition; original image date required.",
+    "source_novelty_rule": "Raw satellite imagery and compiled polygon layer can share upstream sources; use original footprint and citation to avoid false independent replication."
+  },
+  "script": "scripts/audit_postglacial_support.py",
+  "tests": "tests/test_postglacial_support.py",
+  "synthetic_validation": {
+    "date": "2026-11-19",
+    "tests_passed": 7,
+    "test_execution": "local Python unittest and py_compile passed; no original site exposure-sighting combined dataset run"
+  },
+  "descriptive_sample_support_gates": {
+    "minimum_distinct_landmasses_with_repeated_visits": 5,
+    "minimum_site_species_with_at_least_two_verified_postexposure_visits": 20,
+    "minimum_consecutive_verified_A_to_P_events": 10,
+    "minimum_landmasses_with_A_to_P": 3,
+    "minimum_consecutive_observed_A_risk_pairs": 30,
+    "meaning": "Eligibility threshold for considering an inferential design, not a power calculation, evidence of biological effect, or a license to fit models without separate predeclared hypothesis."
+  },
+  "execution": "python -m scripts.audit_postglacial_support --exposure-csv source_exposure.csv --survey-csv source_survey.csv --out-json build/postglacial_support.json",
+  "interpretation_limitations": [
+    "PASS would only prove source availability, not causal identification, independent surveys, calibrated detection or transferable settlement dynamics.",
+    "Exposures identified after viewing colony occupancy may induce ascertainment bias and require independent whole risk-set candidate generation.",
+    "Only exact source-verified spatial matches are eligible; unsupported unknown year, patch, visit, or species are not treated as ecological zero."
+  ],
+  "next_data_gate": "Find independent mapped before/after ice exposure and surveyed post-exposure A/P histories on >=5 physical landmasses; hold biological testing until linked original source supports pass."
+}
