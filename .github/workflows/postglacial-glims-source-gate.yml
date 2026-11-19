@@ -32,7 +32,7 @@ jobs:
         run: |
           python -m scripts.audit_glims_antarctic_island_source \
             --out-json build/GLIMS_ANTARCTIC_ISLAND_SOURCE_GATE_20261119.json \
-            --max-features 300
+            --max-features 500
       - name: Preserve source-gate output regardless of availability status
         uses: actions/upload-artifact@v4
         if: always()
