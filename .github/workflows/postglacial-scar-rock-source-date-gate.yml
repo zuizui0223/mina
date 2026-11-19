@@ -1,0 +1,38 @@
+name: postglacial-SCAR-7.11-rock-source-date-gate
+
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_scar_rock_v711_source_dates.py
+      - .github/workflows/postglacial-scar-rock-source-date-gate.yml
+  workflow_dispatch:
+
+concurrency:
+  group: postglacial-scar-rock-source-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rock-source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests pyshp
+      - name: Audit original publisher rock DBF without opening original polygons
+        run: |
+          python -m py_compile scripts/audit_scar_rock_v711_source_dates.py
+          python -m scripts.audit_scar_rock_v711_source_dates \
+            --out-json build/SCAR_ROCK_V711_SOURCE_DATE_GATE_20261119.json
+      - name: Upload original source-date QA or provider HOLD
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scar-rock-v711-source-date-gate
+          path: build/SCAR_ROCK_V711_SOURCE_DATE_GATE_20261119.json
+          retention-days: 30
