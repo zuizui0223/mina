@@ -19,7 +19,7 @@ class TestPublisherRiskSet(unittest.TestCase):
     def test_annual_season_parse(self):
         self.assertEqual(season_year(191213),1912)
         self.assertEqual(season_year(195960.0),1959)
-        self.assertEqual(season_year(199900),None)  # malformed successor
+        self.assertEqual(season_year(199901),None)  # 1999/01 is not adjacent
         self.assertEqual(season_year(199920),None)  # unrelated year suffix
         self.assertEqual(season_year(200001),2000)
         self.assertEqual(season_year("2001-02"),2001)
