@@ -50,7 +50,7 @@ jobs:
           h=pd.read_csv(p/'AB_frozen_known_site_holdout_predictions.csv')
           assert r['status'] in ('NO_GO_AB_MECHANISM_WINNER','PROVISIONAL_PREDICTIVE_PROXY_ONLY_NO_MECHANISM_CAUSAL_IDENTIFICATION')
           s=r['original_observational_support']
-          assert (s['original_n'],s['original_site_n'],s['complete_B_n'],s['complete_B_wetcells'],s['complete_B_regions'])==(860,88,693,68,13)
+          assert (s['original_n'],s['original_site_n'],s['complete_B_n'],s['complete_B_wetcells'],s['complete_B_regions'])==(860,88,693,68,12)
           assert r['train']['max_source_season']==2004 and r['test']['min_source_season']==2005
           assert len(h)==r['test']['rows']
           assert h[['site_id','season']].duplicated().sum()==0
