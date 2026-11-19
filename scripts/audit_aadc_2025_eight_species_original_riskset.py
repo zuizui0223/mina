@@ -114,6 +114,20 @@ def audit_source(source:dict[str,list[dict]]):
                   ("species_code","occurrence","vantage","geog_site_area_cat3"))
         certainty_exact[key].append(row)
     raw=(("2025_seabird",fly),("2025_penguin",peng))
+    # Calendar/breeding-season labels are provenance, not biological outcomes.
+    original_season_samples={}
+    for family,entries in raw:
+        unique=[]
+        seen=set()
+        for row in entries:
+            value=row.get("season")
+            representation=txt(value)
+            key=(type(value).__name__,representation)
+            if key not in seen:
+                unique.append({"source_type":key[0],"source_label":key[1][:80]})
+                seen.add(key)
+            if len(unique)>=20:break
+        original_season_samples[family]=unique
     event_counts=Counter()
     species_counts=Counter()
     species_event_states=defaultdict(Counter)
@@ -204,7 +218,7 @@ def audit_source(source:dict[str,list[dict]]):
             byfeature_explicit_siteyears[cls].add((site,yr))
     actual_sites={k[0] for k in survey_keys}
     return {
-        "status":"PUBLISHER_EIGHT_SPECIES_SOURCE_SUPPORT_NO_BIOLOGICAL_EFFECT",
+        "status":("PUBLISHER_EIGHT_SPECIES_SOURCE_SUPPORT_NO_BIOLOGICAL_EFFECT"\n                  if years else "HOLD_SOURCE_SEASON_FORMAT_NOT_VALIDATED"),
         "source_files":{"2025_seabird":"occupancy_seabird.xls",
                         "2025_penguin":"occupancy_penguin.xlsx",
                         "geographic_sites":"geog_sites_all.xlsx",
@@ -244,6 +258,8 @@ def audit_source(source:dict[str,list[dict]]):
         "source_certainty_duplicate_keys":sum(len(v)>1 for v in certainty_exact.values()),
         "event_certainty_table_exact_tuple_match":dict(precision_lookup),
         "source_year_min_max":[min(years) if years else None,max(years) if years else None],
+        "source_season_original_field_examples":original_season_samples,
+        "source_season_parse_gate":"PASS" if years else "HOLD_ALL_33107_SEASON_LABELS_UNPARSED",
         "source_years_count":len(years),
         "events_in_or_after_2024":prior_year_event_count,
         "unique_site_species_year_combinations":len(survey_keys),
