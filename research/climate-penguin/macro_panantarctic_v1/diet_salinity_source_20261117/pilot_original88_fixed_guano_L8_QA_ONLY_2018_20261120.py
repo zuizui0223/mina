@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 import zipfile
 import requests
+import planetary_computer
 import numpy as np
 import pandas as pd
 from pyproj import Transformer
@@ -25,6 +26,7 @@ L8_SCENES_CSV="original_88_L8_real_scene_metadata_no_Y.csv"
 REGIONS=("Victoria Land","Wilkes Land","Southwest Antarctic Peninsula")
 YEAR=2018
 STAC_ITEM_URL="https://earth-search.aws.element84.com/v1/collections/landsat-c2-l2/items/"
+MIRROR_SAME_SCENE_ID_ITEM_URL="https://planetarycomputer.microsoft.com/api/stac/v1/collections/landsat-c2-l2/items/"
 SOURCE_CRS="EPSG:3031"
 QA_PIXEL_INVALID_BITS=(0,1,2,3,4,5,7) # fill, dilated cloud, cirrus, cloud, shadow, snow, water; bit 6 is clear
 # L8 OLI/TIRS QA_RADSAT bits 0..6 reflectance saturation, bit 11 terrain occlusion.
@@ -102,7 +104,7 @@ def qa_values(points,asset):
             ys=points.source_geometry_northing.to_numpy(dtype=float)
             tr=Transformer.from_crs(SOURCE_CRS,src.crs,always_xy=True)
             tx,ty=tr.transform(xs,ys)
-            sampled=np.asarray(list(src.sample(list(zip(tx,ty)),indexes=1,masked=True)))
+            sampled=np.ma.asarray(list(src.sample(list(zip(tx,ty)),indexes=1,masked=True)))
             if sampled.shape!=(len(points),):
                 raise ValueError(f"Point rasterio.sample unexpected {sampled.shape} for {len(points)}")
             mask=np.ma.getmaskarray(sampled)
@@ -126,8 +128,22 @@ def one(item,original):
     if info.get("id")!=scene:raise ValueError("Source requested STAC item ID mismatch")
     if str(info.get("properties",{}).get("platform","")).lower().replace("_","-")!="landsat-8":
         raise ValueError("STAC original scene not Landsat 8")
-    qa_url=get_asset(info,"qa_pixel")
-    rad_url=get_asset(info,"qa_radsat")
+    # Earth Search STAC points to USGS s3 requester-pays: GitHub unauthenticated
+    # runner was rejected. PC mirrors the SAME USGS C2 scene ID without changing
+    # instrument, source season or QA_PIXEL semantics. Sign its Azure blob only.
+    pc_response=requests.get(MIRROR_SAME_SCENE_ID_ITEM_URL+scene,
+       headers={"Accept":"application/geo+json, application/json",
+                "User-Agent":"mina-original-source-L8-QA-same-scene-pc-mirror/1.0"},timeout=55)
+    pc_response.raise_for_status()
+    pc_item=pc_response.json()
+    if pc_item.get("id")!=info.get("id") or pc_item.get("id")!=scene:
+        raise ValueError("PC and USGS-source Earth Search scene identity mismatch")
+    if pc_item.get("properties",{}).get("platform","").lower().replace("_","-")!="landsat-8":
+        raise ValueError("PC mirrored USGS source is not same Landsat 8 platform")
+    qa_source=get_asset(pc_item,"qa_pixel")
+    rad_source=get_asset(pc_item,"qa_radsat")
+    qa_url=planetary_computer.sign(qa_source)
+    rad_url=planetary_computer.sign(rad_source)
     pixel,miss,pix_meta=qa_values(points,qa_url)
     rad,missrad,rad_meta=qa_values(points,rad_url)
     if pix_meta["crs"]!=rad_meta["crs"] or pix_meta["size"]!=rad_meta["size"]:
@@ -147,8 +163,10 @@ def one(item,original):
        "source_native_L8_QA_snow":int((~miss&snow).sum()),
        "source_native_L8_QA_water":int((~miss&water).sum()),
        "source_native_L8_RADSAT_saturation_terrain":int((~missrad&sat).sum()),
-       "new_L8_QA_PIXEL_source_href":qa_url,
-       "new_L8_QA_RADSAT_source_href":rad_url,
+       "new_L8_QA_PIXEL_source_unsigned_href":qa_source,
+       "new_L8_QA_RADSAT_source_unsigned_href":rad_source,
+       "native_publisher_scene_id_identical_across_EarthSearch_and_PC":True,
+       "qa_source_mirror":"Microsoft Planetary Computer signed temporary SAS for SAME USGS C2 L2 scene",
        "native_raster_source":pix_meta,
        "source_satellite_2018_spectral_reflectance_not_read":True,
        "new_current_guano_presence_not_determined":True,
