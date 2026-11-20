@@ -1,0 +1,45 @@
+{
+  "raw_rows": 639,
+  "valid_rows": 638,
+  "seasons": 19,
+  "first_sample": "2002-01-03",
+  "last_sample": "2020-01-18",
+  "source_sha256": "ab05193e94864ca05ea54a01154506f8e86f85291e2f01a68abab5d92229a04d",
+  "exclusions": {
+    "duplicate_key": 0,
+    "outside_season": 0,
+    "missing_or_negative_mass": 0,
+    "nonpositive_food_or_total": 0,
+    "food_over_total": 1,
+    "krill_over_crustacean": 0,
+    "invalid_fraction": 0
+  },
+  "main_test": {
+    "n_matched_seasons": 14,
+    "years": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019
+    ],
+    "exposure_min": 0.0065405659717147,
+    "exposure_max": 0.0584194481210504,
+    "verdict": "ESTIMATED_ASSOCIATION_NOT_CAUSAL",
+    "coefficient": 0.4208084704174295,
+    "ci95": [
+      -1.5682750319794598,
+      2.409891972814319
+    ],
+    "p": 0.6474831645481338
+  }
+}
