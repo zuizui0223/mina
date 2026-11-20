@@ -1,0 +1,65 @@
+name: Penguin proven source-original 44 dated guano polygon 30m mathematical purity bounds
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_ardley_true_guano_source_30m_mathematical_pixel_upper_bound_20261120.py'
+      - '.github/workflows/penguin-20261120-Ardley-44-original-guano-30m-provable-purity-bound.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_true_geographic_masks_no_more_Zenodo_fetch_30m_bound:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Guard original true source GIS and original L8 label contract
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_ardley_true_guano_source_30m_mathematical_pixel_upper_bound_20261120.py
+      - name: Install numerics only
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3'
+      - name: Reuse existing successful independent native 44 SHP geography audit ZIP, never re-request rate-limited Zenodo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/ardley_original_guano30m_mathematical_bound
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14599603634/zip" > build/ardley_original_guano30m_mathematical_bound/native44_geo.zip
+          echo '95289f3dad6e8604f8116e60e230616b36b167874623951be6fee95dac8e75c4  build/ardley_original_guano30m_mathematical_bound/native44_geo.zip' | sha256sum --check
+      - name: Compute mathematically strict positive guano area fraction of any 30m cell by species/date
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_ardley_true_guano_source_30m_mathematical_pixel_upper_bound_20261120.py \
+            --old-source-audit-zip build/ardley_original_guano30m_mathematical_bound/native44_geo.zip \
+            --out build/ardley_original_guano30m_mathematical_bound/result
+      - name: Assert real data species-specific source limits, no future Y or new fit
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/ardley_original_guano30m_mathematical_bound/result/ARDLEY_44_GUANO_SHAPEFILE_MATHEMATICAL_30M_PURITY_UPPER_BOUND_RESULT.json')
+          d=json.loads(p.read_text())
+          assert d['status']=='ALL_44_SOURCE_VERIFIED_30M_PIXEL_PURITY_MATHEMATICAL_UPPER_BOUNDS'
+          assert d['n_original_real_species_and_date_shapefiles']==44
+          assert d['n_independent_source_mask_dates']==22
+          assert d['purity_bounds_are_rigorous_regardless_30m_grid_phase']
+          assert d['mathematical_upper_bounds_by_species'][0]['species']=='adelie'
+          assert d['mathematical_upper_bounds_by_species'][0]['n_dates_mathematically_impossible_at_least_80pct_pure_30m_pixel']==22
+          assert d['source_Ardley_not_in_original_88_sites']
+          assert d['new_2013_2021_L8_spectral_isotope_outcomes_not_opened']
+          assert d['no_new_polynya_association_fitted']
+          print('SOURCE_GUANO30M_ADÉLIE_STRICT_LIMIT',d['mathematical_upper_bounds_by_species'])
+          PY
+      - name: Archive exact 44 source guano mathematical upper bounds, no raster or isotope data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-Ardley-44-real-guano-source-30m-purity-mathematical-bounds-without-new-Y
+          path: build/ardley_original_guano30m_mathematical_bound/result/
+          if-no-files-found: warn
+          retention-days: 30
