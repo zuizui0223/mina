@@ -1,0 +1,144 @@
+name: Penguin EXACT author-style R PLSR 1000 ensemble L7 vs L8 lab ONLY no new image Y
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/fit_author_style_original_103_L7_vs_L8_1000_PLSR5_ENSEMBLE_LAB_ONLY_20261120.R'
+      - '.github/workflows/penguin-20261120-original-author-R-1000-L7-vs-L8-guano-PLSR-lab-only.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original_author_R_1000_lab_only_per_sensor:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+      - name: Confirm original published 2026 author code and 2013-21 time-outcome firewall
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/FROZEN_2013_2021_L7_NEGATIVE_POLYNYA_TEMPORAL_REPLICATION_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/calibrate_original_103_guano_spectra_L8_OLI_SOURCE_ONLY_20261120.py
+      - name: Install author's own R pls::oscorespls and source R json receipt, plus lab RSR readers
+        run: |
+          Rscript --vanilla -e 'install.packages(c("pls","jsonlite"),repos="https://cloud.r-project.org")'
+          python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'scikit-learn==1.7.2' 'openpyxl>=3,<4'
+      - name: MD5 verify actual source original 103 isotope-guano laboratory spectra and original L7 RSR from author publication
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,urllib.request,zipfile,shutil
+          root=Path('build/original_author_R1000_L7_L8_guano_lab_only')
+          root.mkdir(parents=True,exist_ok=True)
+          ua={'User-Agent':'mina-1000PLSR-author-original103-source-verified (https://github.com/zuizui0223/mina)'}
+          with urllib.request.urlopen(urllib.request.Request('https://zenodo.org/api/records/17409948',headers=ua),timeout=60) as resp:
+              record=json.load(resp)
+          assert record['id']==17409948
+          f=next(x for x in record['files'] if x['key']=='data.zip')
+          assert (f['size'],f['checksum'])==(256425816,'md5:e29a2f68c84e3a515044d554540def2f')
+          url=f['links'].get('content') or f['links']['self']
+          tmp=root/'original_publisher_TEMP_delete_256MB.zip'
+          n=0;md5=hashlib.md5()
+          with urllib.request.urlopen(urllib.request.Request(url,headers=ua),timeout=240) as source,tmp.open('wb') as sink:
+              while True:
+                  b=source.read(2**20)
+                  if not b:break
+                  sink.write(b);md5.update(b);n+=len(b)
+                  if n>256425816:raise RuntimeError('Wrong publisher source bytes')
+          assert (n,md5.hexdigest())==(256425816,'e29a2f68c84e3a515044d554540def2f')
+          needed=['L1/SIA_spectra.csv','L0/RSR/L7_ETM_RSR.xlsx']
+          with zipfile.ZipFile(tmp) as z:
+              assert z.testzip() is None
+              for name in needed:
+                  with z.open(name) as src,(root/Path(name).name).open('wb') as dest:
+                      shutil.copyfileobj(src,dest)
+          tmp.unlink()
+          print('PASS source original 103 lab + original L7 RSR, never original 2013+ Landsat reflectance',flush=True)
+          PY
+      - name: Fetch true NASA-derived external L8 OLI SRF six bands, verify original published SHA
+        run: |
+          set -euo pipefail
+          mkdir -p build/original_author_R1000_L7_L8_guano_lab_only/l8_oli_srf
+          for band in 02 03 04 05 06 07; do
+            fn="rtcoef_landsat_8_oli_srf_ch$band.txt"
+            curl --fail --location --retry 3 --retry-delay 3 --connect-timeout 45 --max-time 120 \
+              --output "build/original_author_R1000_L7_L8_guano_lab_only/l8_oli_srf/$fn" \
+              "https://nwp-saf.eumetsat.int/downloads/rtcoef_info/visir_srf/rtcoef_landsat_8_oli_srf/$fn"
+            test -s "build/original_author_R1000_L7_L8_guano_lab_only/l8_oli_srf/$fn"
+          done
+          echo '81d7d5ca153374387325e956fca2cdb3e84777545d3398a579f0f0e09290f297  build/original_author_R1000_L7_L8_guano_lab_only/l8_oli_srf/rtcoef_landsat_8_oli_srf_ch02.txt' | sha256sum --check
+          echo '90f4068f3e0dc6c1eab70a0d0e2a8943e7313f806db5cf9353bb96619297ec83  build/original_author_R1000_L7_L8_guano_lab_only/l8_oli_srf/rtcoef_landsat_8_oli_srf_ch03.txt' | sha256sum --check
+          echo 'f9f814311a6ed4ec9e7fafb0bf961b8f177a0db88f4c2474302b2a09379555a8  build/original_author_R1000_L7_L8_guano_lab_only/l8_oli_srf/rtcoef_landsat_8_oli_srf_ch04.txt' | sha256sum --check
+          echo '6338e8efefc05e8d43f384f787b08ee8598c4d7a450f840e7d1ffb5b4d026419  build/original_author_R1000_L7_L8_guano_lab_only/l8_oli_srf/rtcoef_landsat_8_oli_srf_ch05.txt' | sha256sum --check
+          echo '784d46147d50b4777258d46643f0bd00ec21e20dfe95031b4a74d61e0116bf2f  build/original_author_R1000_L7_L8_guano_lab_only/l8_oli_srf/rtcoef_landsat_8_oli_srf_ch06.txt' | sha256sum --check
+          echo '7ec7ee268fcddc1e839924b60e30adf9fb8fcb42de3b94a089de50b32f08581f  build/original_author_R1000_L7_L8_guano_lab_only/l8_oli_srf/rtcoef_landsat_8_oli_srf_ch07.txt' | sha256sum --check
+      - name: Prepare only same original 103 fixed laboratory isotopes with L7 and L8 independent instrument RSR convolution
+        run: |
+          python - <<'PY'
+          import sys,hashlib
+          from pathlib import Path
+          import numpy as np,pandas as pd
+          src=Path('research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117')
+          sys.path.insert(0,str(src.resolve()))
+          from reconstruct_isotope_proxy import weighted_spectra,WAVES
+          from calibrate_original_103_guano_spectra_L8_OLI_SOURCE_ONLY_20261120 import read_srf
+          root=Path('build/original_author_R1000_L7_L8_guano_lab_only')
+          lab=pd.read_csv(root/'SIA_spectra.csv')
+          lab['d_15N']=pd.to_numeric(lab.d_15N,errors='coerce')
+          lab=lab.loc[lab.d_15N.notna()].reset_index(drop=True)
+          assert (len(lab),len(WAVES))==(103,2151)
+          assert hashlib.sha256((root/'SIA_spectra.csv').read_bytes()).hexdigest()=='e6822e390a763d6b991819046b8a642fe24f412fe92efdef7a8822e198553d23'
+          assert hashlib.sha256((root/'L7_ETM_RSR.xlsx').read_bytes()).hexdigest()=='b075f8ff6ff8fb894d45c0a2979486a77878e453e7788dc671457d3f9bc0ceee'
+          spec=lab[[f'Wave_{v}' for v in WAVES]].to_numpy(dtype=float)
+          l7=weighted_spectra(lab,root/'L7_ETM_RSR.xlsx','L7')
+          bands=[]
+          for i in (2,3,4,5,6,7):
+              w,centre,n=read_srf(root/'l8_oli_srf'/f'rtcoef_landsat_8_oli_srf_ch{i:02}.txt')
+              bands.append(spec@w)
+          l8=np.column_stack(bands)
+          assert l7.shape==l8.shape==(103,6)
+          names=['blue','green','red','nir','swir1','swir2']
+          df=pd.DataFrame(np.column_stack([lab.d_15N.to_numpy(),l7,l8]),
+            columns=['d_15N']+[f'L7_{x}' for x in names]+[f'L8_{x}' for x in names])
+          assert np.isfinite(df.to_numpy()).all()
+          df.to_csv(root/'_TEMP_LAB103_two_sensor_spectral_features_DELETE.csv',index=False)
+          print('PASS true original same103 source lab Y, L7/L8 independent RSR, no 2013+ image',flush=True)
+          PY
+      - name: Author's original R pls oscorespls 1000-fold same 65pct split L7 and new L8 PLSR5 ensemble
+        run: |
+          Rscript --vanilla research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/fit_author_style_original_103_L7_vs_L8_1000_PLSR5_ENSEMBLE_LAB_ONLY_20261120.R \
+             build/original_author_R1000_L7_L8_guano_lab_only/_TEMP_LAB103_two_sensor_spectral_features_DELETE.csv \
+             build/original_author_R1000_L7_L8_guano_lab_only/results
+          rm build/original_author_R1000_L7_L8_guano_lab_only/_TEMP_LAB103_two_sensor_spectral_features_DELETE.csv
+      - name: Check source laboratory-only frozen PLSR5 and independent outcome firewall
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          root=Path('build/original_author_R1000_L7_L8_guano_lab_only/results')
+          d=json.loads((root/'AUTHOR_1000_R_PLSR_L7_L8_LAB_ONLY_CALIBRATION_RECEIPT.json').read_text())
+          assert d['status'] in ('PASS_L8_ORIGINAL_R_1000_ENSEMBLE_SOURCE_ONLY_LAB_CV','NO_GO_L8_ORIGINAL_R_1000_ENSEMBLE_LAB_CV')
+          assert d['originally_published_R_source_1000_repeats']
+          assert d['same_exact_1000_random_holdout_partitions']
+          assert d['L7']['author_style_stratified_resamples']==1000
+          assert d['L8']['author_style_stratified_resamples']==1000
+          assert d['no_2013_2021_L8_satellite_reflectance_or_isotope_proxy_opened']
+          assert d['no_current_new_guano_pixel_classifier_or_negative_labels']
+          assert d['no_polynya_environment_association_fit']
+          assert len(pd.read_csv(root/'L8_1000_author_style_5component_PLSR_CV_ensemble_coefficients.csv'))==1000
+          print('AUTHOR_STYLE_SOURCE_LAB_1000_R_CV_GATE',d['status'],d['L7']['median_cv_rmse'],d['L8']['median_cv_rmse'])
+          PY
+      - name: Archive 1000 author-style instrument-specific coefficient ensemble and fold audit only, no original guano source rows
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-author-R-pls-1000-CV-ensemble-L7-vs-L8-lab-only-no-future-Y
+          path: build/original_author_R1000_L7_L8_guano_lab_only/results/
+          if-no-files-found: warn
+          retention-days: 30
