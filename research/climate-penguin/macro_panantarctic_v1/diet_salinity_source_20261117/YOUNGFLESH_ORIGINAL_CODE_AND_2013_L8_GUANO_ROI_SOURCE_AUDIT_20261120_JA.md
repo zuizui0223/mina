@@ -20,7 +20,7 @@
 
 [原著 `Scripts/2-PLSR.R`](https://github.com/caseyyoungflesh/penguin_diet_from_space/blob/4ab7c992fc2232b7905af0d1aa949d88dc9561ea/Scripts/2-PLSR.R) に、原103糞実標本から各L4/5/7センサーのRSRを畳み込み、`pls.options(plsralg = "oscorespls")`、層化5bin65% train、`set.seed(1)`、**1,000回**、6成分をfitして5成分の係数を取得し、1,000係数をアンサンブルする仕様が確認できる。原著 `Scripts/3-predict-diet.R` はその1,000本の係数から画素ごとの平均・SDを出す。元 `4-diet-est.R` はさらにStanモデルで日・サイトのDIを推定する。2026-11-17の自前Python単一PLSR5＋100回CVによるsource optical δ¹⁵N proxyは**原著の最終Stan posteriorではなく測定誤差の範囲も違う**。
 
-前日までにL8 OLI専用の103原糞標本・6真正RSRで100回holdout RMSE=1.7289‰は確認されているが、**原著1,000係数のsource methodにはまだ一致していない**。今回、その差を解消するため [`fit_author_style_original_103_L7_vs_L8_1000_PLSR5_ENSEMBLE_LAB_ONLY_20261120.R`](fit_author_style_original_103_L7_vs_L8_1000_PLSR5_ENSEMBLE_LAB_ONLY_20261120.R) を作成、原著自身のR `pls::plsr` algorithm・seed・同じ1,000分割・R原式でL7/8を直接比較するCIを実行。**検証結果は実際の成功runのレシートでのみ確定させる**。
+**原著に準拠した1,000係数較正まで実際に再現成功した。** [GitHub Actions #44676042238 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/44676042238)、artifact **14602063283**（SHA256 `ac1199ad312df63173f7be73452ccbb5e01b7c55f29d3413ede63e1a1b665669`）。元103実糞標本、真のL7/L8各6RSR、著者元R `pls::plsr`/`oscorespls`、5同位体分位の65%学習・35%検証、`set.seed(1)`と**同じ1,000分割**で、6成分fit→5成分採用、各センサー1,000組の係数アンサンブルを出力。RMSE中央値は元 **L7=1.739038‰**、新 **L8=1.741775‰**、標本平均null=2.325794‰。同じ分割でL8−L7差の中央値 **+0.003419‰**。保存した両センサーの1000行係数CSVとCVスコアCSV、実行JSONを再展開し独立に数値を確認した。原著と同じ**実験室測定モデルの比較**であって、真の2013–21糞画素認定・原著DI posterior・時間外ポリニヤ負相関の再現ではない。[完全結果・method/bounds/エラー修正履歴](ORIGINAL_AUTHOR_STYLE_1000_R_PLSR5_L7_VS_L8_LAB_CALIBRATION_RESULT_20261120_JA.md)。
 
 ## なぜ元アーカイブだけでは2013–21の独立再現に進めないか
 
