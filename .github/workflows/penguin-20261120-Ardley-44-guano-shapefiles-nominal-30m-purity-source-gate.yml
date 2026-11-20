@@ -1,0 +1,70 @@
+name: Penguin Ardley real 2013-18 guano polygon geometry 30m mixed pixel feasibility NO Y
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/ardley_dated_guano_polygons_30m_source_purity_diagnostic_20261120.py'
+      - '.github/workflows/penguin-20261120-Ardley-44-guano-shapefiles-nominal-30m-purity-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  geometry_only_real_external_guano_polygon_purity:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify original L8 external classifier source gate and compile diagnostics
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/ardley_dated_guano_polygons_30m_source_purity_diagnostic_20261120.py
+      - name: Install remote 4GB ZIP64 byte range shapefile and 30m geometry dependencies only
+        run: |
+          python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'requests>=2.32,<3' 'pyshp>=2.3,<3' 'remotezip>=0.12,<1' 'pyproj>=3.6,<4' 'shapely>=2,<3'
+      - name: Retrieve published original 2448-member ZIP64 source file index without 4GB imagery
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_Ardley_2013_18_source_guano_30m_geometry
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14600415833/zip" > build/penguin_Ardley_2013_18_source_guano_30m_geometry/source_native_zip_index.zip
+          echo 'ef4afd6db995ac83cdd51c798d08d00dcd729e2e39c85b096b91785cb36a6ebc  build/penguin_Ardley_2013_18_source_guano_30m_geometry/source_native_zip_index.zip' | sha256sum --check
+      - name: Evaluate positive guano polygon coverage on predeclared 9 30m native-UTM-phase griddings, source only
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/ardley_dated_guano_polygons_30m_source_purity_diagnostic_20261120.py \
+            --original-manifest-zip build/penguin_Ardley_2013_18_source_guano_30m_geometry/source_native_zip_index.zip \
+            --out build/penguin_Ardley_2013_18_source_guano_30m_geometry/report
+      - name: Assert original 44 species-dated source polygons, no positive-guano-only classification claim
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          p=Path('build/penguin_Ardley_2013_18_source_guano_30m_geometry/report')
+          j=json.loads((p/'ARDLEY_22DATES_TRUE_GUANO_GEOMETRY_30M_MIXED_PIXEL_SUPPORT_REPORT.json').read_text())
+          m=pd.read_csv(p/'ARDLEY_22DATES_THREE_CLASSES_9PHASES_NOMINAL30M_POLYGON_PURITY_NO_Y.csv')
+          assert j['status']=='REAL_44_ARDLEY_GUANO_SHAPEFILES_22DATES_NOMINAL_30M_PURITY_GEOMETRIC_SOURCE_AUDIT'
+          assert j['all_44_real_native_guano_shapefiles_read']
+          assert j['grid_IS_NOT_TRUE_NATIVE_L8_ALIGNED']
+          assert j['real_native_GIS_EPSG']==32721
+          assert j['30m_nominal_L8_pixel_area_m2']==900
+          assert len(j['actual_independent_source_dates'])==22
+          assert len(m)==22*3*9
+          assert j['treat_source_Guano_geometry_as_generous_positive_upper_bound']
+          assert j['no_independent_negative_rocks_snow_ice_labels_verified']
+          assert j['site_Ardley_not_in_original_88_isotope_sites']
+          assert j['new_2013_2021_L8_optical_delta15N_not_opened']
+          assert j['new_coastal_polynya_ecological_effect_not_fitted']
+          print('TRUE_GUANO_30M_GEOMETRY_FEASIBILITY',j['quantitative_support_by_class'])
+          PY
+      - name: Archive only source-area and source30m ratio, not original 4GB imagery or Y
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-Ardley-22-real-guano-mask-dates-30m-mixed-pixel-geometry-no-Y
+          path: build/penguin_Ardley_2013_18_source_guano_30m_geometry/report/
+          if-no-files-found: warn
+          retention-days: 30
