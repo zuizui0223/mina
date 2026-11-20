@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Response-blind 2013–2021 L8 OLI separate-sensor scene source feasibility.
 
-Original 88 geography source-only; no optical Y or stable isotope fit; L8 gate preserved.
+Original 88 geography source-only; no optical Y or stable isotope fit; prior L7 no-go preserved.
 Before use, L8 OLI requires new RSR/103-original-guano lab calibration and guano-ROI source gate.
 See L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md.
 """
@@ -194,7 +194,7 @@ def main(a):
       "no_optical_delta15N_computed":True,
       "no_polynya_effect_model_fitted":True,
       "catalog_scene_hit_not_proof_clean_valid_guano":True,
-      "new_sensor_not_a_substitution_for_frozen_L8":True,
+      "new_sensor_not_a_substitution_for_frozen_L7":True,
     }
     (a.out/"ORIGINAL88_L8_2013_2021_SEPARATE_SENSOR_SCENE_GATE.json").write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n")
     print(json.dumps(result,indent=2,ensure_ascii=False),flush=True)
