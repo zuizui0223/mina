@@ -1,0 +1,80 @@
+name: Penguin old88 new 2013-21 independent VHR guano-area label geography source gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_VHR_2013_2021_independent_guano_labels_same_original88_20261120.py'
+      - '.github/workflows/penguin-20261120-original88-external-VHR-guano-truth-coverage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source_only_strict_2013_2021_independent_VHR_guano_area:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require original negative-direction replication contracts and compile source audit
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/FROZEN_2013_2021_L7_NEGATIVE_POLYNYA_TEMPORAL_REPLICATION_20261120_JA.md
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_VHR_2013_2021_independent_guano_labels_same_original88_20261120.py
+      - name: Install pandas numpy for strict site-year overlap only
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3'
+      - name: Obtain old original88 source-only real colony geography artifact from successful DEEPAA prefit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_external_VHR_2013_2021_ground_truth
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14539723210/zip" > build/penguin_external_VHR_2013_2021_ground_truth/original88_only_geo.zip
+          echo '702ab3eeff9ed953c19a9e696492ba9bf5cddce204d40a9c7d9b1234d98f9f96  build/penguin_external_VHR_2013_2021_ground_truth/original88_only_geo.zip' | sha256sum --check
+      - name: Fetch exact independent Strang et al 2025 30 VHR area observations, Git blob verified
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 --retry-delay 4 --connect-timeout 25 --max-time 120 \
+            'https://raw.githubusercontent.com/AlexandraStrang/ADPE_Remote_Sensing/759935d0a16f731af44d568ec47f686f6fb050e4/Data/ADPE_guano_area_trends.csv' \
+            -o build/penguin_external_VHR_2013_2021_ground_truth/independent_strang_original_vhr.csv
+          printf 'd279d3f0d1cbcce6c027d0457ce685d0d8bf378d\n' | (
+             read expected
+             got=$(git hash-object build/penguin_external_VHR_2013_2021_ground_truth/independent_strang_original_vhr.csv)
+             echo "EXPECTED_GIT_BLOB=$expected ACTUAL_GIT_BLOB=$got"
+             test "$expected" = "$got"
+          )
+      - name: Strict original ID by year match of VHR independent guano-area labels, no 2013+ L8 isotope proxy
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_VHR_2013_2021_independent_guano_labels_same_original88_20261120.py \
+             --original88-geography-zip build/penguin_external_VHR_2013_2021_ground_truth/original88_only_geo.zip \
+             --external-strang-vhr-csv build/penguin_external_VHR_2013_2021_ground_truth/independent_strang_original_vhr.csv \
+             --out build/penguin_external_VHR_2013_2021_ground_truth/source_receipt
+      - name: Guard strict ID geography, no false pixel label or population outcome claims
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          p=Path('build/penguin_external_VHR_2013_2021_ground_truth/source_receipt')
+          r=json.loads((p/'EXTERNAL_GUANO_VHR_SITE_AREA_NOT_PIXEL_CLASSIFIER_GATE.json').read_text())
+          d=pd.read_csv(p/'independent_2013_2021_VHR_only_strict_original_site_years.csv')
+          assert r['status']=='EXTERNAL_VHR_AREA_SOURCE_OVERLAP_VALIDATED_NOT_GUANO_PIXEL_LABELS'
+          assert r['original_sites']==88 and r['original_regions']==13
+          assert len(d)==r['strict_source_2013_2021_site_season_area_rows']
+          assert r['external_VHR_area_is_not_pixel_level_true_guano_label']
+          assert r['no_2013_2021_L8_optical_isotope_proxy_constructed']
+          assert r['no_2013_2021_polynya_isotope_association_tested']
+          assert r['source_gate_for_pixel_classifier_external_multiregion_truth']=='NO_GO_TRUE_POSITIVE_AND_NEGATIVE_GUANO_PIXEL_LABELS_NOT_OPENLY_VERIFIED'
+          print('EXTERNAL_VHR_AREA_SUPPORT_TRUE_ORIGINAL_IDS',r['same_original_site_code_independent_VHR'],
+             'source_regions',r['strict_independent_regions_with_actual_VHR_area'],
+             'original_site_years',len(d))
+          PY
+      - name: Retain only public source-derived overlap by year and honest label gate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-external-VHR-2013-2021-exact-original-88-guano-area-only-not-pixel-truth
+          path: build/penguin_external_VHR_2013_2021_ground_truth/source_receipt/
+          if-no-files-found: warn
+          retention-days: 30
