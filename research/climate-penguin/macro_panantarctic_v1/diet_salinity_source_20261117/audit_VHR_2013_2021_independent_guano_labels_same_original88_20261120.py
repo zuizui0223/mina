@@ -125,8 +125,8 @@ def main(a):
     holdout.to_csv(a.out/"independent_2013_2021_VHR_only_strict_original_site_years.csv",index=False)
     group.to_csv(a.out/"independent_2013_2021_VHR_exact_original_site_temporal_support.csv",index=False)
     (a.out/"EXTERNAL_GUANO_VHR_SITE_AREA_NOT_PIXEL_CLASSIFIER_GATE.json").write_text(
-       json.dumps(rep,indent=2,ensure_ascii=False)+"\n")
-    print(json.dumps(rep,indent=2,ensure_ascii=False),flush=True)
+       json.dumps(rep,indent=2,ensure_ascii=False,default=lambda x:x.item() if isinstance(x,np.generic) else str(x))+"\n")
+    print(json.dumps(rep,indent=2,ensure_ascii=False,default=lambda x:x.item() if isinstance(x,np.generic) else str(x)),flush=True)
 if __name__=="__main__":
     p=argparse.ArgumentParser()
     p.add_argument("--original88-geography-zip",type=Path,required=True)
