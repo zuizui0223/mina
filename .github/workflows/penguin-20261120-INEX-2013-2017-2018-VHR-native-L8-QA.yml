@@ -1,0 +1,70 @@
+name: Penguin INEX three independently VHR-observed seasons with real L8 QA only
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/pilot_INEX_VHR_three_years_L8_native_QA_NO_Y_20261120.py'
+      - '.github/workflows/penguin-20261120-INEX-2013-2017-2018-VHR-native-L8-QA.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  strict_external_VHR_date_L8_native_QA_only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preexisting source-only guano geometry, new sensor contract and toolchain compile
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/pilot_INEX_VHR_three_years_L8_native_QA_NO_Y_20261120.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/pilot_original88_fixed_guano_L8_QA_ONLY_2018_20261120.py
+      - name: Install C2 Landsat QA-only geospatial dependencies (no image Y, no isotope fit)
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'rasterio>=1.4,<2' 'pyproj>=3.6,<4' 'requests>=2.32,<3' 'planetary-computer>=1.0,<2'
+      - name: Retrieve exact prior VHR-to-L8 independently verified dates and old original guano-point locations
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_INEX_VHR_L8_nativeQA
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14598104169/zip" > build/penguin_INEX_VHR_L8_nativeQA/INEX_source_dates.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14594649354/zip" > build/penguin_INEX_VHR_L8_nativeQA/old_guano_ROI.zip
+          echo 'e439ae605988981b807954b763e145bdd9083f7beeb5f4d18ab22ec61e65c688  build/penguin_INEX_VHR_L8_nativeQA/INEX_source_dates.zip' | sha256sum --check
+          echo '0ee6a774bd960a132b270e34a8873529600dc985015085fdd3351626c653f4e7  build/penguin_INEX_VHR_L8_nativeQA/old_guano_ROI.zip' | sha256sum --check
+      - name: Sample real same-scene USGS QA_PIXEL and QA_RADSAT at three VHR days without 2013+ spectra
+        env:
+          GDAL_DISABLE_READDIR_ON_OPEN: 'YES'
+          AWS_NO_SIGN_REQUEST: 'YES'
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/pilot_INEX_VHR_three_years_L8_native_QA_NO_Y_20261120.py \
+            --crosswalk-zip build/penguin_INEX_VHR_L8_nativeQA/INEX_source_dates.zip \
+            --old-roi-zip build/penguin_INEX_VHR_L8_nativeQA/old_guano_ROI.zip \
+            --out build/penguin_INEX_VHR_L8_nativeQA/source_results
+      - name: Verify this is a one-site source diagnostic, not true future δ15N or guano labels
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/penguin_INEX_VHR_L8_nativeQA/source_results/INEX_VHR_3YEARS_L8_NATIVE_QA_ONLY_GATE.json')
+          r=json.loads(p.read_text())
+          assert r['status']=='SOURCE_INEX_2013_2017_2018_VHR_L8_MATCHED_QA_ONLY'
+          assert r['true_regions']==1 and r['true_original_source_site']=='INEX'
+          assert r['new_2013_2021_independent_reference_VHR_seasons']==[2013,2017,2018]
+          assert len(r['source_results'])==6
+          assert r['all_2013_2021_optical_delta15N_not_estimated']
+          assert r['no_polynya_ecological_model_fitted']
+          assert r['external_VHR_area_not_guano_pixel_mask']
+          print('REAL_EXTERNAL_SOURCE_VHR_INEX_L8_QA',[(z['season'],z['valid_original_2018_L8_QA_selected_source_points']) for z in r['source_results']])
+          PY
+      - name: Archive source-only same-date external VHR and USGS native QA mask results, never new isotope Y
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-INEX-2013-17-18-external-VHR-same-day-L8-nativeQA-no-isotope
+          path: build/penguin_INEX_VHR_L8_nativeQA/source_results/
+          if-no-files-found: warn
+          retention-days: 30
