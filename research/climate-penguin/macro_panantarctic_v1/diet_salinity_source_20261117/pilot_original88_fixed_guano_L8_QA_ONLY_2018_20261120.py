@@ -105,8 +105,10 @@ def qa_values(points,asset):
             tr=Transformer.from_crs(SOURCE_CRS,src.crs,always_xy=True)
             tx,ty=tr.transform(xs,ys)
             sampled=np.ma.asarray(list(src.sample(list(zip(tx,ty)),indexes=1,masked=True)))
-            if sampled.shape!=(len(points),):
-                raise ValueError(f"Point rasterio.sample unexpected {sampled.shape} for {len(points)}")
+            # rasterio.sample(indexes=1) yields one-band vector per point: (n,1).
+            if sampled.shape!=(len(points),1):
+                raise ValueError(f"Point rasterio.sample expected (n,1), got {sampled.shape} for {len(points)}")
+            sampled=sampled[:,0]
             mask=np.ma.getmaskarray(sampled)
             val=np.ma.filled(sampled,-999).astype(np.int64)
             idx=np.array([src.index(float(x),float(y)) for x,y in zip(tx,ty)])
