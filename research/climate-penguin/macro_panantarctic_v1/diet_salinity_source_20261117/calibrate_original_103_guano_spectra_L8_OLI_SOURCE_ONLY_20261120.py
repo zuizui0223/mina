@@ -84,7 +84,7 @@ def main(a):
     score8,pred8,model8=fits_and_predictions(l8,y,l8[:1],seed=SEED_L8,nrep=N_REPS)
     m7=pd.DataFrame(score7);m8=pd.DataFrame(score8)
     summary={}
-    for label,frame in (("L7_ETM_original","L7" if False else m7),("L8_OLI_new_RSR",m8)):
+    for label,frame in (("L7_ETM_original",m7),("L8_OLI_new_RSR",m8)):
         summary[label]={
           "stratified_100_holdout_median_RMSE":float(frame.holdout_rmse.median()),
           "stratified_100_holdout_median_train_mean_null_RMSE":float(frame.holdout_train_mean_rmse.median()),
