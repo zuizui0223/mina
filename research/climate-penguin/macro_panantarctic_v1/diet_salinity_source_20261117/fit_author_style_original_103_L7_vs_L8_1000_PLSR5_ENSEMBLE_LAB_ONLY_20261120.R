@@ -58,7 +58,7 @@ do_sensor <- function(name) {
     model <- pls::plsr(d_15N~Spectra,scale=FALSE,
        ncomp=model_ncomp_original,validation="none",data=Xtrain,trace=FALSE)
     yp <- as.vector(predict(model,newdata=Xtest,ncomp=ncomp,type="response"))
-    cof <- as.numeric(pls::coef(model,ncomp=ncomp,intercept=TRUE))
+    cof <- as.numeric(stats::coef(model,ncomp=ncomp,intercept=TRUE))
     if(length(cof)!=7L || any(!is.finite(cof)) || !all(is.finite(yp))) {
       stop("Source original R PLSR oscorespls coefficients not finite")
     }
