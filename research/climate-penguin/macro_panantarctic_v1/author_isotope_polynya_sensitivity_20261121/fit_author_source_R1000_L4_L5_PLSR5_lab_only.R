@@ -17,7 +17,7 @@ stopifnot(nrow(d)==103L,identical(names(d),expected),all(is.finite(as.matrix(d))
 y <- d$d_15N
 n <- nrow(d)
 if(n!=103L)stop("Original published 103 lab measurements missing")
-fold_labels <- stats::findInterval(y,stats::quantile(y,c(0,.2,.4,.6,.8),names=FALSE))
+fold_labels <- findInterval(y,stats::quantile(y,c(0,.2,.4,.6,.8),names=FALSE))
 if(!identical(sort(unique(fold_labels)),1:5))stop("Original five isotope quantile bins changed")
 fit_one <- function(name) {
   set.seed(1)
