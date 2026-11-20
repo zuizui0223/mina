@@ -1,0 +1,72 @@
+name: Penguin holdout L7 2013-2021 original88 scene coverage only
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inventory_2013_2021_original88_landsat7_scene_STAC_gate_20261120.py'
+      - '.github/workflows/penguin-20261120-L7-2013-2021-original88-scene-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original88_L7_new_years_metadata_only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require time-outcome/prior-L7 only model contract frozen before newer source metadata
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/FROZEN_2013_2021_L7_NEGATIVE_POLYNYA_TEMPORAL_REPLICATION_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inventory_2013_2021_original88_landsat7_scene_STAC_gate_20261120.py
+      - name: Load source original geography and public STAC metadata reader
+        run: python -m pip install --disable-pip-version-check 'pandas>=2.2,<3' 'requests>=2.31,<3'
+      - name: Retrieve original 88 coordinate table from no-isotope source-only DEEP-AA result
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_l7_2013_2021_source_gate
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14539723210/zip" > build/penguin_l7_2013_2021_source_gate/original88_geo.zip
+          echo "702ab3eeff9ed953c19a9e696492ba9bf5cddce204d40a9c7d9b1234d98f9f96  build/penguin_l7_2013_2021_source_gate/original88_geo.zip" | sha256sum --check
+      - name: Query real Landsat-7-only Nov-Feb scenes at all 88 original colony positions 2013-21 and historical positive control
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inventory_2013_2021_original88_landsat7_scene_STAC_gate_20261120.py \
+             --source-only-geography-zip build/penguin_l7_2013_2021_source_gate/original88_geo.zip \
+             --out build/penguin_l7_2013_2021_source_gate/catalog_result
+      - name: Check no optical outcome opened, no L8 substitution, no false positive scene proxy
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/penguin_l7_2013_2021_source_gate/catalog_result/ORIGINAL88_L7_2013_2021_SCENE_GATE.json')
+          r=json.loads(p.read_text())
+          assert r['original_88_site_population']==88 and r['original_13_regions']==13
+          assert r['new_years_frozen']==list(range(2013,2022))
+          assert r['sensor_used_only_for_catalog']=='landsat-7'
+          assert r['no_2013_2021_reflectance_or_guano_pixel_read']
+          assert r['no_optical_delta15N_computed'] and r['no_polynya_effect_model_fitted']
+          assert r['no_L8_L9_Sentinel_substitution'] and r['catalog_scene_hit_not_proof_clean_valid_guano']
+          assert r['status'] in (
+            'NO_GO_L7_2013_2021_SCENE_SUPPORT',
+            'PASS_L7_SCENE_METADATA_ONLY_NEEDS_PIXEL_AND_GUANO_QA',
+            'CATALOG_QUERY_UNVALIDATED_HISTORICAL_L7_SCENE_MISSING'
+          )
+          print('FROZEN_L7_SOURCE_INVENTORY',r['status'])
+          print('SOURCE_SCENE_UPPER_BOUNDS',{k:r[k] for k in (
+             'historical_controls_with_a_matching_scene',
+             'catalog_sites_with_any_novfeb_scene',
+             'catalog_regions_with_any_novfeb_scene',
+             'catalog_seasons_with_any_novfeb_scene')})
+          PY
+      - name: Preserve native source catalog scene inventory, checks and failure diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-2013-21-L7-original-88-scene-presence-STAC-no-isotope-model
+          path: build/penguin_l7_2013_2021_source_gate/catalog_result/
+          if-no-files-found: warn
+          retention-days: 30
