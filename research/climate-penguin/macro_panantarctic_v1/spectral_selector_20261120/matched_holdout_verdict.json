@@ -1,0 +1,64 @@
+{
+  "status": "LIMITED_HISTORICAL_RECOVERY_NOT_SUPPORTED",
+  "support": {
+    "sites": 45,
+    "regions": 8,
+    "seasons": 5,
+    "site_scene_pairs": 830,
+    "unique_scenes": 480,
+    "positive_rows": 21037,
+    "candidate_background_rows": 54993,
+    "candidate_site_scene_pairs": 872,
+    "candidate_positive_rows": 23253,
+    "no_qa_positive_pairs": 42,
+    "no_background_pairs": 0
+  },
+  "support_passed": true,
+  "confidence_bounds_passed": false,
+  "all_region_omissions_passed": false,
+  "rates": {
+    "positive_recovery": {
+      "estimate": 0.6482785259830346,
+      "lower95": 0.5833485533191889,
+      "upper95": 0.7464970636055468,
+      "replicates": 4999
+    },
+    "candidate_background_rejection": {
+      "estimate": 0.990282335753095,
+      "lower95": 0.9842197738276559,
+      "upper95": 0.9943276943095414,
+      "replicates": 4999
+    }
+  },
+  "threshold": 0.9476471187775797,
+  "frozen_model_sha256": "6d4542ab12845d0038f9d367fe510f8912789dd1fab8faebe02ff66078ebffaa",
+  "shared_scene_block_map": {
+    "Victoria Land": "Adelie Land",
+    "Enderby Land": "Enderby Land",
+    "Wilkes Land": "Adelie Land",
+    "Princess Elizabeth Land": "Princess Elizabeth Land",
+    "Marie Byrd Land": "Marie Byrd Land",
+    "Mac. Robertson Land": "Mac. Robertson Land",
+    "Adelie Land": "Adelie Land",
+    "Palmer Land": "Palmer Land"
+  },
+  "shared_scene_blocks": 6,
+  "shared_scene_block_rates": {
+    "positive_recovery": {
+      "estimate": 0.6482785259830346,
+      "lower95": 0.6070509306423733,
+      "upper95": 0.7744131013489262,
+      "replicates": 4999
+    },
+    "candidate_background_rejection": {
+      "estimate": 0.9902823357530952,
+      "lower95": 0.9804104523956176,
+      "upper95": 0.993310652763864,
+      "replicates": 4999
+    }
+  },
+  "shared_scene_sensitivity_passed": false,
+  "guano_purity_validated": false,
+  "L8_measurement_validated": false,
+  "post2013_ecological_replication": false
+}
