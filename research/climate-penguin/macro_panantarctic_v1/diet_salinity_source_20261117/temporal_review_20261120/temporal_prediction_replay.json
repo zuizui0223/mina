@@ -1,0 +1,50 @@
+{
+  "status": "HISTORICAL_SPLIT_VALIDATED_NO_REGION_YEAR_LEAKAGE",
+  "support": {
+    "train_n": 132,
+    "test_n": 291,
+    "train_sites": 79,
+    "test_sites": 79,
+    "train_regions": 10,
+    "test_regions": 10,
+    "n_future_new_site_excluded": 16,
+    "no_future_region_year_effects_used": true
+  },
+  "site_equal_RMSE": {
+    "M0": 1.839537680076769,
+    "M_S": 1.8009034447138537,
+    "M_P": 1.84893475237841,
+    "M_SP": 1.812207536540925
+  },
+  "region_cluster_bootstrap_2000_paired_MSE_deltas": {
+    "M_P_minus_M0": {
+      "paired_site_equal_MSE_diff": 0.03466084213039096,
+      "cluster_region_boot_95CI": [
+        -0.13760497273950398,
+        0.2253402207570397
+      ]
+    },
+    "M_P_minus_M_S": {
+      "paired_site_equal_MSE_diff": 0.1753065013703873,
+      "cluster_region_boot_95CI": [
+        -0.20273378083479862,
+        0.5338105656171589
+      ]
+    },
+    "M_SP_minus_M0": {
+      "paired_site_equal_MSE_diff": -0.09980272092649314,
+      "cluster_region_boot_95CI": [
+        -0.5507834939645074,
+        0.4729442592853905
+      ]
+    },
+    "M_SP_minus_M_S": {
+      "paired_site_equal_MSE_diff": 0.04084293831350325,
+      "cluster_region_boot_95CI": [
+        -0.17040259035656816,
+        0.29469205083347216
+      ]
+    }
+  },
+  "prediction_improves_M0_and_M_S": false
+}
