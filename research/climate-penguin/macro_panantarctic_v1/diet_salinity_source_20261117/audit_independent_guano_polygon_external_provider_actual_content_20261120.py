@@ -25,7 +25,7 @@ ARDLEY_LAT=-62.213
 ARDLEY_LON=-58.933
 DEVIL="DEVI"
 EXTERNAL_HANDBOOK_REPO="hao-yu-wu/penguin_colony_registration"
-EXTERNAL_HANDBOOK_SHA="master"
+EXTERNAL_HANDBOOK_SHA="7a5e0788b7415faf76fa5cd56b37659538a1993d"
 EXTERNAL_HANDBOOK_EXACT_SOURCE="ATA/Devil_Island-GT/DEVI_1_081.json"
 GH_RAW="https://raw.githubusercontent.com/"+EXTERNAL_HANDBOOK_REPO+"/"+EXTERNAL_HANDBOOK_SHA+"/"+EXTERNAL_HANDBOOK_EXACT_SOURCE
 MAX_NATIVE_SMALL_VECTOR_BYTES=32_000_000
@@ -152,7 +152,7 @@ def original_dev_i_truth():
            "status":"REAL_MANUAL_GROUND_PHOTO_POLYGON_LABELS_VERIFIED",
            "source_repo":EXTERNAL_HANDBOOK_REPO,
            "actual_repository_source":GH_RAW,
-           "original_source_GitHub_commit":"b2b5a61a32137c250d1f26fd6bdb6c8ea03babef", # provenance note, this is NOT the source repo commit!
+           "original_source_GitHub_commit":EXTERNAL_HANDBOOK_SHA,
            "source_json_sha256":hashlib.sha256(r.content).hexdigest(),
            "original_source_photo_label_sample":EXTERNAL_HANDBOOK_EXACT_SOURCE,
            "source_manual_polygon_count":len(polygons),
