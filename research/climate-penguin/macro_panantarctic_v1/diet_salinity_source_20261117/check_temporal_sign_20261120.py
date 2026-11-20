@@ -44,7 +44,7 @@ def main():
     holdout, _ = original.holdout(panel)
     (output / 'temporal_prediction_replay.json').write_text(
         json.dumps(holdout, indent=2), encoding='utf-8', newline='\n')
-    print(pd.DataFrame(rows).to_string(index=False, lineterminator='\n'))
+    print(pd.DataFrame(rows).to_string(index=False))
 
 
 if __name__ == '__main__':
