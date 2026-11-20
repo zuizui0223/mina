@@ -14,7 +14,7 @@ s['valid_mass']=pd.to_numeric(s['WEIGHT(%)'],errors='coerce').between(0,100)
 rows=[]
 for url,g in s.groupby('URL'):
  rows.append(dict(source_url=url,prey_rows=len(g),coordinates=len(g[['Latitude','Longitude']].drop_duplicates()),mass_rows=int(g.valid_mass.sum()),start_year_min=g.Start_year.min(),end_year_max=g.End_year.max(),start_year_labels=';'.join(str(int(v)) for v in sorted(g.Start_year.dropna().unique())),latitude=g.Latitude.iloc[0],longitude=g.Longitude.iloc[0],post2003_start_label=bool(g.Start_year.ge(2003).any())))
-pd.DataFrame(rows).to_csv(out/'stomach_source_inventory.csv',index=False)
+pd.DataFrame(rows).to_csv(out/'stomach_source_inventory.csv',index=False,lineterminator='\n')
 summary=dict(source='https://digital.csic.es/bitstream/10261/399953/1/Penguin_Diet_Dataset-v2.xlsx',sha256=hashlib.sha256(a.workbook.read_bytes()).hexdigest(),adelie_prey_rows=len(ad),adelie_sources=ad.URL.nunique(),adelie_coordinates=len(ad[['Latitude','Longitude']].drop_duplicates()),stomach_prey_rows=len(s),stomach_sources=s.URL.nunique(),stomach_coordinates=len(s[['Latitude','Longitude']].drop_duplicates()),valid_mass_rows=int(s.valid_mass.sum()),post2003_label_sources=s.loc[s.Start_year.ge(2003),'URL'].nunique(),post2003_label_mass_rows=int(s.loc[s.Start_year.ge(2003),'valid_mass'].sum()))
 # Tables transcribed from Hope Table 1 and Stranger Table 1; references in report.
 records=[]
@@ -27,9 +27,9 @@ palmer=pd.read_csv(root/'work/palmer_signy_diet_external_v1/sources/pickett2018_
 for r in palmer[palmer.species.eq('Adelie')].itertuples():
  records.append(dict(locality='Palmer',source_year_label=r.source_year_label,season_start_year=r.season_start_year,season_end_year=r.season_end_year,krill_mass_percent=r.e_superba_mean_pct,source=r.source_doi,statistic='mean_sample_wet_mass_percent',provenance='existing_repo_primary_table_extraction'))
 t=pd.DataFrame(records);t['preceding_winter_in_2003_2022']=t.season_start_year.between(2003,2022)
-t.to_csv(out/'primary_table_seasons.csv',index=False)
+t.to_csv(out/'primary_table_seasons.csv',index=False,lineterminator='\n')
 summary['table_localities']=t.locality.nunique();summary['table_site_seasons']=len(t);summary['table_seasons_preceding_winter_2003_2022']=int(t.preceding_winter_in_2003_2022.sum())
-(out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+(out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
 assert not t.duplicated(['locality','season_start_year']).any()
 assert t.krill_mass_percent.between(0,100).all()
 assert t.season_end_year.sub(t.season_start_year).eq(1).all()
