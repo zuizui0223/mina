@@ -69,3 +69,7 @@ Schwaller et al. (2013)の[PANGAEA原画素表](https://doi.org/10.1594/PANGAEA.
 - 14個のテストで、近傍の列端処理、格子復元、面積配分、重み、閾値と直接集計の一致、scene→site集計、共有sceneの推移的なblock結合を確認した。
 
 再実行は `fetch_grid_evidence.py --data-only` → `crosscheck_published_pixels.py` → `extract_matched_training.py` → `fit_matched_training.py` → `prepare_matched_test.py`。後年は `extract_matched_training.py --phase test --shard 0..7 --n-shards 8` の8出力を集め、`evaluate_matched_holdout.py --input-dir <8artifactの親ディレクトリ>` → `plot_matched_holdout.py`。原RDSの準備・既知陽性位置の出力は既存exportスクリプトを使用する。既に固定したモデルと異なる再fitは上書きを拒否する。
+
+## 回収率低下の追加診断
+
+[固定分類器の失敗診断](FAILURE_DIAGNOSIS_RESULT_JA.md)に同画像内の参照選択、空間的連続性、分光・撮影条件の結果をまとめた。元の不合格判定は変更していない。
