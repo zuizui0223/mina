@@ -41,13 +41,33 @@ def main():
         scene, selected = job
         receipt = args.out / (scene + '_bounds_checked.json')
         if receipt.exists():
-            return json.loads(receipt.read_text())
+            cached = json.loads(receipt.read_text())
+            if all(r['error'] is None for r in cached):
+                for row in cached:
+                    row.setdefault('actual_source_scene_id', scene)
+                return cached
         rows = []
         try:
             response = requests.get('https://planetarycomputer.microsoft.com/api/stac/v1/collections/landsat-c2-l2/items/' + scene, timeout=45)
-            response.raise_for_status()
-            item = response.json()
-            assert item['id'] == scene and item['properties']['platform'] == 'landsat-8'
+            if response.status_code == 404:
+                # Catalog products can be reprocessed; retain acquisition/path/row/sensor.
+                parts = scene.split('_')
+                day = pd.Timestamp(parts[3]).strftime('%Y-%m-%d')
+                response = requests.post('https://planetarycomputer.microsoft.com/api/stac/v1/search', json={
+                    'collections': ['landsat-c2-l2'], 'datetime': day + 'T00:00:00Z/' + day + 'T23:59:59Z',
+                    'query': {'platform': {'eq': 'landsat-8'}, 'landsat:wrs_path': {'eq': int(parts[2][:3])},
+                              'landsat:wrs_row': {'eq': int(parts[2][3:])}}, 'limit': 100}, timeout=45)
+                response.raise_for_status()
+                candidates = response.json()['features']
+                if len(candidates) != 1:
+                    raise ValueError('Missing or ambiguous replacement for original acquisition: ' + scene)
+                item = candidates[0]
+                assert item['id'].split('_')[2:4] == parts[2:4]
+            else:
+                response.raise_for_status()
+                item = response.json()
+                assert item['id'] == scene
+            assert item['properties']['platform'] == 'landsat-8'
             points = roi[roi.site_id.isin(selected.site_id)].copy().reset_index(drop=True)
             arrays, keys = [], None
             missing = np.zeros(len(points), dtype=bool)
@@ -72,7 +92,8 @@ def main():
             for row in selected.itertuples():
                 sub = points[points.site_id == row.site_id].drop_duplicates('native_key')
                 rows.append({'site_id': row.site_id, 'season': int(row.season), 'region': row.original_region,
-                             'scene_id': scene, 'historical_points': int((points.site_id == row.site_id).sum()),
+                             'scene_id': scene, 'actual_source_scene_id': item['id'],
+                             'historical_points': int((points.site_id == row.site_id).sum()),
                              'distinct_native_pixels': len(sub), 'qa_valid_native_pixels': int(sub.valid.sum()), 'error': None})
         except Exception as exc:
             rows = [{'site_id': r.site_id, 'season': int(r.season), 'region': r.original_region,
