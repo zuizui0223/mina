@@ -1,0 +1,54 @@
+name: Penguin original published Youngflesh Landsat guano selection scripts source-only
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_original_youngflesh_zenodo_Landsat_guano_selection_scripts_SOURCE_ONLY_20261120.py'
+      - '.github/workflows/penguin-20261120-author-original-Landsat-guano-selection-script-inventory.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original_author_script_source_without_new_L8_outcomes:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Ensure old 2013-21 L7 no-go and separately fixed L8 guano source contracts
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/ARDLEY_44_GUANO_GEO_MASKS_30M_SOURCE_PURITY_AND_INDEPENDENT_REPLICATION_VERDICT_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_original_youngflesh_zenodo_Landsat_guano_selection_scripts_SOURCE_ONLY_20261120.py
+      - name: Retrieve original publisher MD5-pinned 256MB guano study archive and inspect only code filenames/line cues
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_original_youngflesh_zenodo_Landsat_guano_selection_scripts_SOURCE_ONLY_20261120.py \
+            --out build/youngflesh_original_guano_scripts_source_only
+      - name: Guard source, no 2013-21 isotope outcome or polynya refit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('build/youngflesh_original_guano_scripts_source_only')
+          d=json.loads((p/'ORIGINAL_ZENODO_17409948_LANDSAT_GUANO_PIPELINE_SOURCE_CODE_INVENTORY.json').read_text())
+          assert d['status']=='PUBLISHER_VERIFIED_FULL_ORIGINAL_YOUNGFLESH_SOURCE_CODE_INVENTORY_NO_FUTURE_Y'
+          assert d['archive_original_Zenodo']==17409948
+          assert d['original_publisher_md5']=='e29a2f68c84e3a515044d554540def2f'
+          assert d['source_original_archive_bytes']==256425816
+          assert d['new_L8_2013_2021_satellite_Y_not_opened']
+          assert d['winter_coastal_polynya_association_not_refitted']
+          assert not list(p.glob('*TEMP*zip'))
+          print('PUBLISHER_ORIGINAL_GUANO_SCRIPTS',len(d['real_publisher_script_members']))
+          PY
+      - name: Preserve original script metadata, SHA hashes and line-level retrieval cues only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-Youngflesh-original-256MB-code-guano-ROI-script-audit-no-imageY
+          path: |
+            build/youngflesh_original_guano_scripts_source_only/ORIGINAL_ZENODO_17409948_LANDSAT_GUANO_PIPELINE_SOURCE_CODE_INVENTORY.json
+            build/youngflesh_original_guano_scripts_source_only/ORIGINAL_ZENODO_17409948_ALL_FILE_PATHS_METADATA_ONLY.json
+          if-no-files-found: warn
+          retention-days: 30
