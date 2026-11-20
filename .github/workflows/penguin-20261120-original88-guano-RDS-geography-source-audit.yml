@@ -1,0 +1,100 @@
+name: Penguin original 88 guano RDS pixel-ROI geography audit (no future Y)
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_original_88_guano_geometries_RDS_PRE_Y_20261120.R'
+      - '.github/workflows/penguin-20261120-original88-guano-RDS-geography-source-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original88_guano_RDS_geometries_prior_to_new_L8_Y:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+      - name: Verify L8 independent-source contract frozen before new image Y and older source
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/RESULT_L7_2013_2021_FROZEN_TEMPORAL_REPLICATION_SOURCE_GATE_20261120_JA.md
+      - name: Fetch original source-only 88 colony coordinates with exact native data fingerprint
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_original88_guano_roi_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14539723210/zip" > build/penguin_original88_guano_roi_source/DEEPAA_source_only_original88.zip
+          echo '702ab3eeff9ed953c19a9e696492ba9bf5cddce204d40a9c7d9b1234d98f9f96  build/penguin_original88_guano_roi_source/DEEPAA_source_only_original88.zip' | sha256sum --check
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+          root=Path('build/penguin_original88_guano_roi_source')
+          with zipfile.ZipFile(root/'DEEPAA_source_only_original88.zip') as z:
+              assert z.testzip() is None
+              file='source_original_88_site_polynya_25km_100km_native_grid_geography.csv'
+              found=[n for n in z.namelist() if n==file or n.endswith('/'+file)]
+              assert len(found)==1
+              (root/'original88_source_only.csv').write_bytes(z.read(found[0]))
+          PY
+      - name: Fetch verified original Youngflesh publisher Landsat RDS (MD5-original publication only; no new images)
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,urllib.request,zipfile,shutil
+          root=Path('build/penguin_original88_guano_roi_source')
+          headers={'User-Agent':'mina-original88-guano-source-ROI-validation (https://github.com/zuizui0223/mina)'}
+          with urllib.request.urlopen(urllib.request.Request('https://zenodo.org/api/records/17409948',headers=headers),timeout=60) as src:
+              record=json.load(src)
+          assert record['id']==17409948
+          info=next(x for x in record['files'] if x['key']=='data.zip')
+          assert (info['size'],info['checksum'])==(256425816,'md5:e29a2f68c84e3a515044d554540def2f')
+          url=info['links'].get('content') or info['links']['self']
+          raw=root/'TEMP_original_source_256MB.zip'
+          h=hashlib.md5();n=0
+          with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=240) as src,raw.open('wb') as dest:
+              while True:
+                  b=src.read(2**20)
+                  if not b:break
+                  dest.write(b);h.update(b);n+=len(b)
+                  if n>256425816:raise ValueError('Original source exceeded published ZIP size')
+          assert (n,h.hexdigest())==(256425816,'e29a2f68c84e3a515044d554540def2f')
+          with zipfile.ZipFile(raw) as z:
+              assert z.testzip() is None
+              filename='L0/Landsat/landsat_reflectance_L457-2025-07-16.rds'
+              with z.open(filename) as s,(root/'original_landsat_1984_2012.rds').open('wb') as t:
+                  shutil.copyfileobj(s,t)
+          raw.unlink()
+          print('PASS MD5 original RDS source verified, no post-2013 satellite imagery opened')
+          PY
+      - name: Inspect original 88 site pixel geometry, guano_bin and bad flags, without future outcome
+        run: |
+          Rscript --vanilla research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_original_88_guano_geometries_RDS_PRE_Y_20261120.R \
+            build/penguin_original88_guano_roi_source/original_landsat_1984_2012.rds \
+            build/penguin_original88_guano_roi_source/original88_source_only.csv \
+            build/penguin_original88_guano_roi_source/source_geography_receipt
+      - name: Guard original-source-only receipt; no isotope Y and no new guano outcome
+        run: |
+          Rscript --vanilla - <<'RS'
+          d<-dget('build/penguin_original88_guano_roi_source/source_geography_receipt/original_88_guano_RDS_geometry_source_receipt.R')
+          stopifnot(d$original_sites_selected==88L)
+          stopifnot(d$original_pixel_rows_selected>10000)
+          stopifnot(d$no_new_delta15N_proxy_computed, d$no_2013_2021_new_L8_image_values_opened)
+          stopifnot(d$no_source_polynya_response_test_run)
+          cat('ORIGINAL_88_GUANO_SOURCE_GEOMETRY', d$status,'\n')
+          RS
+      - name: Preserve source-only geometry, labels, stable cell coordinates, source limitation (never original RDS)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-88-guano-source-RDS-pixel-geography-ROI-feasibility-no-futureY
+          path: build/penguin_original88_guano_roi_source/source_geography_receipt/
+          if-no-files-found: warn
+          retention-days: 30
