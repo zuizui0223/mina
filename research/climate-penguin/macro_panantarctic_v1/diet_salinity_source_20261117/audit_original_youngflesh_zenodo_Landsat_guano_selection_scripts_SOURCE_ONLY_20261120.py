@@ -20,8 +20,8 @@ SEARCH_PATTERNS={
     "native_site_pixel_selection":r"landsat|etm|tm|surface_reflect|pixel|cell|bad|polygon|site_id",
     "cloud_and_snow_QA":r"cloud|shadow|snow|qa_pixel|quality|saturation|mask",
     "source_sensor_support":r"\bL4\b|\bL5\b|\bL7\b|\bL8\b|[4-9]_TM|OLI|RSR|radiometric",
-    "data_provenance":r"gee|earth ?engine|landsat|USGS|landsat_reflectance|\\.rds",
-    "spatial_polygon_inputs":r"st_read|read_sf|vect\\(|shapefile|\\.shp|roi|buffer|sf::"
+    "data_provenance":r"gee|earth ?engine|landsat|USGS|landsat_reflectance|\.rds",
+    "spatial_polygon_inputs":r"st_read|read_sf|vect\(|shapefile|\.shp|roi|buffer|sf::"
 }
 PATTERNS={k:re.compile(v,re.I) for k,v in SEARCH_PATTERNS.items()}
 def get_record():
