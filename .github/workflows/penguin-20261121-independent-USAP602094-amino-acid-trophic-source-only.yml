@@ -1,0 +1,59 @@
+name: Penguin independent USAP 2026 amino-acid isotope dataset 602094 metadata ONLY
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/independent_aa_isotopes_20261121/**'
+      - '.github/workflows/penguin-20261121-independent-USAP602094-amino-acid-trophic-source-only.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent_baseline_corrected_amino_acid_source_pre_Y:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require frozen independent study and no old isotope outcome leakage
+        run: |
+          set -euo pipefail
+          test -f research/climate-penguin/macro_panantarctic_v1/independent_aa_isotopes_20261121/FROZEN_USAP602094_ADELIE_AA_BASELINE_VS_TP_SOURCE_GATE.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/independent_aa_isotopes_20261121/audit_USAP602094_original_AA_adélie_source_metadata_NO_Y.py
+      - name: Install only original USAP public source downloader
+        run: python -m pip install --disable-pip-version-check 'requests>=2.32,<3'
+      - name: Retrieve official USAP 602094 new amino-acid raw source and MD5, inspect only metadata
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/independent_aa_isotopes_20261121/audit_USAP602094_original_AA_adélie_source_metadata_NO_Y.py \
+            --out build/penguin_USAP602094_2026_new_amino_acid_source_metadata_only
+      - name: Separate trusted published source from HTTP fallback; enforce no TP or baseline regression
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/penguin_USAP602094_2026_new_amino_acid_source_metadata_only/USAP602094_PUBLISHED_AA_TP_SOURCE_METADATA_ONLY_VERDICT.json')
+          d=json.loads(p.read_text())
+          assert d['source_dataset']==602094
+          assert d['dataset_DOI']=='10.15784/602094'
+          assert d['no_trophic_position_or_phenylalanine_isotope_values_read']
+          assert d['no_isotope_regression_or_polynya_alignment_attempted']
+          assert d['status'] in ('USAP602094_ORIGINAL_CSV_SOURCE_MD5_VALIDATED_METADATA_ONLY',
+                                'NO_GO_USAP_SOURCE_DOWNLOAD_UNVERIFIED')
+          if d['status']=='USAP602094_ORIGINAL_CSV_SOURCE_MD5_VALIDATED_METADATA_ONLY':
+              assert d['actual_original_content_md5']=='f9a91c9d9bf3dba9607bf0767df8c206'
+              assert d['real_actual_original_rows']>=1
+          else:
+              assert 'source_error' in d
+          print('INDEPENDENT_USAP_2026_MEASURED_AA_SOURCE_GATE',d['status'],
+                'rows',d.get('real_actual_original_rows'))
+          PY
+      - name: Preserve source metadata and time-site schema only, never individual measured isotope values
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-2026-USAP602094-independent-measured-amino-acid-isotope-time-site-source-only
+          path: build/penguin_USAP602094_2026_new_amino_acid_source_metadata_only/
+          if-no-files-found: warn
+          retention-days: 30
