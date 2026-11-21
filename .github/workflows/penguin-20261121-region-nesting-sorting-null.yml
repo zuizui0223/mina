@@ -1,0 +1,29 @@
+name: Penguin 17-site region-vs-within nesting sorting audit
+
+on:
+  push:
+    branches:
+      - analysis/penguin-decade-redistribution-v1-20261110
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/matched_rosters.csv'
+      - 'research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/decomposition.csv'
+      - 'research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/EXPLORATORY_REGIONAL_SORTING_NULL_FREEZE_20261121.md'
+      - 'research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/test_within_region_sorting_null_20261121.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/REGIONAL_SORTING_NULL_RESULT_20261121.json'
+      - '.github/workflows/penguin-20261121-region-nesting-sorting-null.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate frozen 17-site source split and 49999 permutation draws
+        run: python research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/test_within_region_sorting_null_20261121.py --check
