@@ -317,7 +317,13 @@ def audit(zip_path, reference_csv, out_dir):
         "historical_unique_proximity_groups":complete,
         "modern_unique_proximity_groups":modern,
         "result_file":str(derived_metadata_csv),
-        "biology_effect_estimated":False},indent=2))
+        "biology_effect_estimated":False,
+        "source_field_names":columns,
+        "measurement_names":dict(measured_names.most_common(10)),
+        "exclusion_counts":dict(causes),
+        "window_support":details,
+        "tissue_fields":[x for x in TISSUE_FIELDS if x in columns]
+        },indent=2))
     return report
 
 
