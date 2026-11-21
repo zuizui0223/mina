@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-aadc-2016-author-gazetteer-ufi-gis-crosswalk-20261121",
+  "date": "2026-11-21",
+  "status": "EXACT_AUTHOR_ID_LINEAGE_STOP_NO_NEST_PATCH_GEOMETRY",
+  "source": {
+    "year": "2016",
+    "dataset_uuid": "3F139A80-800D-46BD-A7C0-D29734DAE090",
+    "workbook_sha256": "2236269e754962f9af082a0853993fc65a4afd20c7489a65fae81bdd1899ffaa",
+    "original_rock_shapefile_dbf_sha256": "145379bd78e73d6ee09a09c26416af46cd06df263a643f73475b301000f91d10",
+    "original_workbook_geog_sites": 4884,
+    "original_rock_polygons": 4881,
+    "original_polygon_fields": [
+      "FEATCODE",
+      "UFI",
+      "Subgroup"
+    ],
+    "execution_run": 44851935846,
+    "execution_artifact_id": 14684964739
+  },
+  "strict_original_2025_survey_support": {
+    "observed_A_to_P_records": 16,
+    "distinct_event_site_codes": 14,
+    "source_workflow": 44530909415
+  },
+  "result": {
+    "original_2016_workbook_geog_site_id_found": 14,
+    "site_codes_with_nonmissing_original_SCAR_Gazetteer_Place_ID": 12,
+    "site_codes_missing_original_place_id": [
+      "IS_121",
+      "IS_70694"
+    ],
+    "site_codes_with_exact_workbook_Gazetteer_ID_matching_original_polygon_UFI": 0,
+    "ambiguous_source_Place_ID_to_UFI_matches": 0,
+    "site_codes_found_in_original_2025_continental_SHP_exact_site_ID": 0,
+    "source_polygon_identity_resolved_for_any_nest_patch": false
+  },
+  "interpretation": [
+    "2016 source workbook includes all original 14 observed A->P geographic site IDs. This does not prove the 2016 mapped polygon boundary uniquely corresponds to the site.",
+    "The original publisher GeoJSON/SHP rock attributes have a field named UFI but it is NOT an exact value-equivalent of the original workbook SCAR Gazetteer Place ID for any of these 12 nonmissing original IDs.",
+    "Two source geographic sites have no original Gazetteer Place ID; do not silently impute a nearest rock polygon.",
+    "An unverified numeric prefix/suffix or nearest-polygon join would be new unvalidated spatial identity, not independent original source truth.",
+    "No annual ice-to-rock patch area, true patch-level occupancy or colonization causal effect can be inferred from these records."
+  ],
+  "original_main_paper_1_paper_2_unchanged": true
+}
