@@ -1,5 +1,7 @@
 # USAP-DC 602094 真正2026年アデリー羽毛アミノ酸同位体データの実体監査：取得成功・ポリニヤとの独立検定はNO-GO
 
+**2026-11-21追補：** 真正65個体の独立羽毛4指標を**55 Site×採集年・35原Siteラベル**へ集計した[bulk δ15N vs source-AA Phe / TPの測定解釈比較](RESULT_FROZEN_ORIGINAL602094_BULK_PHE_TP_55_SITEYEAR_20261121_JA.md)を新たに凍結・実行。35 Site丸ごと除外予測はPhe-only RMSE 0.869‰、TP-only 0.816‰、両指標 0.704‰。Phe vs TPの誤差差のsite bootstrap区間が0を含み、単独指標の優位は未確定。同Site複数年に限定すると両指標モデルでもwithin-site R²約6.3%。さらに[実際に元88地点と地理照合](RESULT_USAP602094_AA_FEATHERS_OLD88_REAL_SPATIAL_OVERLAP_NO_GO_20261121_JA.md)したところ、2004–10実AA4指標完全7標本/6 Site×採集年の最寄り距離は30.5–79.9km、25km以内の直接ペア**0/6**。これは別測定系の指標解釈検証と直接新年ポリニヤ追試を明確に区別する結果。
+
 **2026-11-21 JST | PR #214 の別枝のみ | 実際のアップロードされたZIPをPythonで展開して検証 | 同位体・栄養段階の数値は未解析、環境ポリニヤの回帰なし。** 遡及的検証の時期・支持域を固定した事前契約 [`FROZEN_USAP602094_ADELIE_AA_BASELINE_VS_TP_SOURCE_GATE.md`](FROZEN_USAP602094_ADELIE_AA_BASELINE_VS_TP_SOURCE_GATE.md) に従った結果。
 
 ## 1. 取得問題は解決：公開原CSVのMD5に一致
