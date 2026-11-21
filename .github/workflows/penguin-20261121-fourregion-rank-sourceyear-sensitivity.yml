@@ -1,0 +1,54 @@
+name: Penguin frozen four-region growth-alignment rank versus original census-year uncertainty
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - '.github/workflows/penguin-20261121-fourregion-rank-sourceyear-sensitivity.yml'
+      - 'research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/source_year_exact_fourregion_growth_rank_20261121.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-year-source-support:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Confirm pre-outcome sensitivity freeze and code syntax
+        run: |
+          test -s research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/FROZEN_FOUR_REGION_RANK_CENSUS_YEAR_SENSITIVITY_20261121_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/source_year_exact_fourregion_growth_rank_20261121.py
+      - name: Recalculate 4999 original survey-year resamples and exact 24-rank positions
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/source_year_exact_fourregion_growth_rank_20261121.py
+      - name: Validate origin and full documented draw count
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          r=Path("research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120")
+          q=json.loads((r/"FOUR_REGION_RANK_SOURCE_YEAR_SENSITIVITY_20261121.json").read_text())
+          with (r/"FOUR_REGION_RANK_SOURCE_YEAR_SENSITIVITY_20261121.csv").open(newline="") as f:
+              rows=list(csv.DictReader(f))
+          assert len(rows)==q["draws"]==4999
+          assert q["seed"]==20261121
+          assert q["original_exact24_rank"]["parent23"]["rank_highest_1"]==2
+          assert q["original_exact24_rank"]["complete17"]["rank_highest_1"]==3
+          assert q["sensitivity_not_population_confidence_interval"]
+          assert q["permutation_rank_not_p_value"] and q["no_causal_climate_or_migration_inference"]
+          assert all(1<=int(x["parent23_rank_24"])<=24 and 1<=int(x["complete17_rank_24"])<=24 for x in rows)
+          print("PASS original 23/17 median values, 24 exact permutations, 4999 site-year sensitivities")
+          PY
+      - name: Save metadata-only source rank and all conditional draws
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original4-region-exact24-rank-source-year-4999
+          path: |
+            research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/FOUR_REGION_RANK_SOURCE_YEAR_SENSITIVITY_20261121.json
+            research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/FOUR_REGION_RANK_SOURCE_YEAR_SENSITIVITY_20261121.csv
+          if-no-files-found: warn
+          retention-days: 30
