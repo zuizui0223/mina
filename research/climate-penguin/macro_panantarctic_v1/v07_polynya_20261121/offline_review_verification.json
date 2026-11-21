@@ -1,8 +1,12 @@
 {
-  "status": "PASS_OFFLINE_REVIEW_REPRODUCTION",
+  "status": "PASS_OFFLINE_V071_REPRODUCTION",
+  "version": "0.7.1",
   "date": "2026-11-21",
+  "completed_utc": "2026-11-21T14:37:26.625562+00:00",
   "network_required": false,
-  "numeric_checks": 58,
+  "new_data_downloaded": false,
+  "reference": "Current staged v0.7.1 manuscript and deliverables_v071 files, identified below by SHA256; not a claim of a newly published archive.",
+  "execution": "Copied the complete supplied manuscript folder into a fresh scratch directory, removed only the copied generated figure directory, then ran four commands sequentially. Author-information source and builder were refreshed to the parent-confirmed final header correction before Word creation.",
   "commands": [
     [
       "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
@@ -16,35 +20,377 @@
     ],
     [
       "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-      "render_polynya_main_figures.py"
+      "diagnose_region_jackknife.py",
+      "--root",
+      ".",
+      "--out",
+      "fresh_region_jackknife.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "render_polynya_main_figures.py",
+      "--base",
+      "."
     ],
     [
       "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
       "build_review_documents.py",
       "--out",
-      "rebuilt_documents"
+      "/workspace/scratch/4f410519c673/polynya_v071_offline_83yx9of3/rebuilt_documents"
     ]
+  ],
+  "command_exit_codes": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "script_sha256": {
+    "verify_frozen_polynya_results.py": "71325def1da8a14561e03ad65454f7160088cde41b3a9c120acc0745051caeac",
+    "diagnose_region_jackknife.py": "e50236b4a7ece774562ec3308072274869b6310bb75df64973addebc03fa115c",
+    "render_polynya_main_figures.py": "4c522bacea0a601dd5a088a84566f4ba579c99b9d6da001e0ebc25c1b5c030a6",
+    "build_review_documents.py": "7d68e202cdb3c8ff422f0d5f9898064e8942c192567bfbe83ed7b6e0897eab93"
+  },
+  "numeric_checks": 58,
+  "all_frozen_numeric_checks_passed": true,
+  "jackknife_checks": 34,
+  "all_jackknife_checks_passed": true,
+  "jackknife_models_verified": [
+    {
+      "model": "author_R1000_mean_M_P",
+      "numeric_scalar_comparisons": 150,
+      "max_absolute_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "relative_tolerance": 1e-12,
+      "structural_differences": [],
+      "exact_entire_model_object_equal": true,
+      "passed": true
+    },
+    {
+      "model": "author_R1000_mean_M_SP",
+      "numeric_scalar_comparisons": 174,
+      "max_absolute_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "relative_tolerance": 1e-12,
+      "structural_differences": [],
+      "exact_entire_model_object_equal": true,
+      "passed": true
+    },
+    {
+      "model": "author_R1000_mean_P0_minus_P1",
+      "numeric_scalar_comparisons": 204,
+      "max_absolute_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "relative_tolerance": 1e-12,
+      "structural_differences": [],
+      "exact_entire_model_object_equal": true,
+      "passed": true
+    },
+    {
+      "model": "original_M_P",
+      "numeric_scalar_comparisons": 150,
+      "max_absolute_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "relative_tolerance": 1e-12,
+      "structural_differences": [],
+      "exact_entire_model_object_equal": true,
+      "passed": true
+    },
+    {
+      "model": "original_M_SP",
+      "numeric_scalar_comparisons": 174,
+      "max_absolute_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "relative_tolerance": 1e-12,
+      "structural_differences": [],
+      "exact_entire_model_object_equal": true,
+      "passed": true
+    },
+    {
+      "model": "original_P0_minus_P1",
+      "numeric_scalar_comparisons": 204,
+      "max_absolute_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "relative_tolerance": 1e-12,
+      "structural_differences": [],
+      "exact_entire_model_object_equal": true,
+      "passed": true
+    }
   ],
   "byte_identical_outputs": [
     "figures/Fig1_Polynya_source_footprint.png",
-    "figures/Fig1_Polynya_source_footprint.tif",
     "figures/Fig2_Polynya_association_and_sensitivity.png",
-    "figures/Fig2_Polynya_association_and_sensitivity.tif",
     "figures/Fig3_Preceding_following_winter_contrast.png",
-    "figures/Fig3_Preceding_following_winter_contrast.tif",
     "figures/Fig4_Polynya_salinity_conditional_information.png",
-    "figures/Fig4_Polynya_salinity_conditional_information.tif",
     "figures/Fig5_Observation_and_unresolved_pathways.png",
+    "figures/Fig1_Polynya_source_footprint.tif",
+    "figures/Fig2_Polynya_association_and_sensitivity.tif",
+    "figures/Fig3_Preceding_following_winter_contrast.tif",
+    "figures/Fig4_Polynya_salinity_conditional_information.tif",
     "figures/Fig5_Observation_and_unresolved_pathways.tif",
     "figures/numeric_source_extract/fig1_map_geometry.json",
     "figures/numeric_source_extract/fig1_region_support.csv",
     "figures/numeric_source_extract/fig1_site_mean_exposure_and_geography.csv",
+    "figures/numeric_source_extract/fig2_archived_informative8_intervals.csv",
     "figures/numeric_source_extract/fig2_leave_one_region_out.csv",
     "figures/numeric_source_extract/fig2_main_and_measurement_sensitivity.csv",
     "figures/numeric_source_extract/fig2_original_frozen11_intervals.csv",
+    "figures/numeric_source_extract/fig3_CV3_and_archived8_intervals.csv",
     "figures/numeric_source_extract/fig3_reported_temporal_coefficients.csv",
     "figures/numeric_source_extract/fig4_reported_model_information.csv",
     "figures/numeric_source_extract/fig4_same439_fixed_effect_residuals.csv"
   ],
-  "scope": "Frozen derived439/358 results, figures and editable DOCX build; not complete provider-archive extraction or independent ecological validation."
+  "output_counts": {
+    "PNG": 5,
+    "TIFF": 5,
+    "numeric_extracts": 11,
+    "DOCX": 6
+  },
+  "file_hash_comparisons": [
+    {
+      "path": "figures/Fig1_Polynya_source_footprint.png",
+      "canonical_sha256": "04c32703d4c605532b59af1df99ed4df506fb1d8f9e9f5d18e0384b46b7f0495",
+      "fresh_sha256": "04c32703d4c605532b59af1df99ed4df506fb1d8f9e9f5d18e0384b46b7f0495",
+      "bytes": 480914,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/Fig2_Polynya_association_and_sensitivity.png",
+      "canonical_sha256": "501fca29b8a02584a57af1edcb174d0e625abfb6714ca23954407ceb3cd64df1",
+      "fresh_sha256": "501fca29b8a02584a57af1edcb174d0e625abfb6714ca23954407ceb3cd64df1",
+      "bytes": 334662,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/Fig3_Preceding_following_winter_contrast.png",
+      "canonical_sha256": "f701d3cc00b7cefed444703fc0d5e0d77ec53695667d39972d6159c40bb595ef",
+      "fresh_sha256": "f701d3cc00b7cefed444703fc0d5e0d77ec53695667d39972d6159c40bb595ef",
+      "bytes": 298144,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/Fig4_Polynya_salinity_conditional_information.png",
+      "canonical_sha256": "f546f4b540c8d40d5ff9c68c2158c0d5e062d3acea667564f09640cbddd4cbbe",
+      "fresh_sha256": "f546f4b540c8d40d5ff9c68c2158c0d5e062d3acea667564f09640cbddd4cbbe",
+      "bytes": 274599,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/Fig5_Observation_and_unresolved_pathways.png",
+      "canonical_sha256": "0e7195e7dda4225e00c1ea6b338856340f8ad03697d360bbd6ac3159ff3e6edf",
+      "fresh_sha256": "0e7195e7dda4225e00c1ea6b338856340f8ad03697d360bbd6ac3159ff3e6edf",
+      "bytes": 398556,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/Fig1_Polynya_source_footprint.tif",
+      "canonical_sha256": "fca8b8ae4669724a7532764c1f20929b14ede14df43740bebc05f491e7829b1e",
+      "fresh_sha256": "fca8b8ae4669724a7532764c1f20929b14ede14df43740bebc05f491e7829b1e",
+      "bytes": 2921834,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/Fig2_Polynya_association_and_sensitivity.tif",
+      "canonical_sha256": "9c5e8d75e16900b02258096f59239880708045c25d5e7af13faf4fbe3a1fce68",
+      "fresh_sha256": "9c5e8d75e16900b02258096f59239880708045c25d5e7af13faf4fbe3a1fce68",
+      "bytes": 1978348,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/Fig3_Preceding_following_winter_contrast.tif",
+      "canonical_sha256": "6fca024ebb492ccac98918865d0150a88535ec3d05b7e72d0c3083c351d68138",
+      "fresh_sha256": "6fca024ebb492ccac98918865d0150a88535ec3d05b7e72d0c3083c351d68138",
+      "bytes": 1938708,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/Fig4_Polynya_salinity_conditional_information.tif",
+      "canonical_sha256": "3ea4a87a556987c62d479a982d0683540eae952dc91f5006845fa73f4b70b92c",
+      "fresh_sha256": "3ea4a87a556987c62d479a982d0683540eae952dc91f5006845fa73f4b70b92c",
+      "bytes": 1734348,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/Fig5_Observation_and_unresolved_pathways.tif",
+      "canonical_sha256": "aa1d788f8885680c66b03b7e299a9b139878772648bd613018eeb98dcb768b3b",
+      "fresh_sha256": "aa1d788f8885680c66b03b7e299a9b139878772648bd613018eeb98dcb768b3b",
+      "bytes": 2534422,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig1_map_geometry.json",
+      "canonical_sha256": "ce20247bdd289d09b851b2e9ee2669d156a5fcf562cfc28f3b3c3ce69814fe3b",
+      "fresh_sha256": "ce20247bdd289d09b851b2e9ee2669d156a5fcf562cfc28f3b3c3ce69814fe3b",
+      "bytes": 472082,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig1_region_support.csv",
+      "canonical_sha256": "70877509ee8e9580f4d9b0ed1a542a7531e6939c95c17f9bf549013461901d79",
+      "fresh_sha256": "70877509ee8e9580f4d9b0ed1a542a7531e6939c95c17f9bf549013461901d79",
+      "bytes": 503,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig1_site_mean_exposure_and_geography.csv",
+      "canonical_sha256": "9caa605f73cdb88b25208b3dcd4648c70d7f88c89eae641feeb3475e07300428",
+      "fresh_sha256": "9caa605f73cdb88b25208b3dcd4648c70d7f88c89eae641feeb3475e07300428",
+      "bytes": 10660,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig2_archived_informative8_intervals.csv",
+      "canonical_sha256": "27cfcda27347539aee43bc3653cfbcc3b5fe93f6c06ce5e20409789ba0240209",
+      "fresh_sha256": "27cfcda27347539aee43bc3653cfbcc3b5fe93f6c06ce5e20409789ba0240209",
+      "bytes": 994,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig2_leave_one_region_out.csv",
+      "canonical_sha256": "a266835a957c7770d4b2696952e13f4cdcacc4a50b3a39911e8762c7bb225c58",
+      "fresh_sha256": "a266835a957c7770d4b2696952e13f4cdcacc4a50b3a39911e8762c7bb225c58",
+      "bytes": 1411,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig2_main_and_measurement_sensitivity.csv",
+      "canonical_sha256": "62ef8b44322f0e838ed1b163637ff357e1c5ec912e26d9d823e1a051d4f364f1",
+      "fresh_sha256": "62ef8b44322f0e838ed1b163637ff357e1c5ec912e26d9d823e1a051d4f364f1",
+      "bytes": 1170,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig2_original_frozen11_intervals.csv",
+      "canonical_sha256": "beed1cb2085222f93520cde7a368c3d49ba4949c719bfa3d74fc6a6873ce5d9a",
+      "fresh_sha256": "beed1cb2085222f93520cde7a368c3d49ba4949c719bfa3d74fc6a6873ce5d9a",
+      "bytes": 634,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig3_CV3_and_archived8_intervals.csv",
+      "canonical_sha256": "ce2f7ac9243af34fbae3acf6d52c6c2a8beedf54008c793e9abe9092d024d30a",
+      "fresh_sha256": "ce2f7ac9243af34fbae3acf6d52c6c2a8beedf54008c793e9abe9092d024d30a",
+      "bytes": 988,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig3_reported_temporal_coefficients.csv",
+      "canonical_sha256": "f6cd0aa02c582385813567e1c64930b277439e8c3698f83cae0bb39070c99aff",
+      "fresh_sha256": "f6cd0aa02c582385813567e1c64930b277439e8c3698f83cae0bb39070c99aff",
+      "bytes": 785,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig4_reported_model_information.csv",
+      "canonical_sha256": "43012abcd871a68a9d61cd74d7ff55ea79d617ef73ce9d3771d5c636d626422f",
+      "fresh_sha256": "43012abcd871a68a9d61cd74d7ff55ea79d617ef73ce9d3771d5c636d626422f",
+      "bytes": 194,
+      "byte_equal": true
+    },
+    {
+      "path": "figures/numeric_source_extract/fig4_same439_fixed_effect_residuals.csv",
+      "canonical_sha256": "2bc587b2130ee2295901806ec8b30afd39aa41ddd04ff117b79973568165fd94",
+      "fresh_sha256": "2bc587b2130ee2295901806ec8b30afd39aa41ddd04ff117b79973568165fd94",
+      "bytes": 46044,
+      "byte_equal": true
+    }
+  ],
+  "docx_uncompressed_entry_comparisons": [
+    {
+      "name": "Polynya_MEPS_cover_letter_v07.docx",
+      "reference_sha256": "a7e3699c3e1c957686d6c936a616f3582caeadc37adc7f2c2c330db01e4de7d9",
+      "fresh_sha256": "e536d2f12d8762e1b8b11bf7683eb514aaf6a9ab24d6459aa887ac81d21e6f1b",
+      "reference_bytes": 39041,
+      "fresh_bytes": 39041,
+      "whole_zip_bytes_equal": false,
+      "zip_member_name_sets_equal": true,
+      "zip_members_count": 19,
+      "uncompressed_member_bytes_all_equal": true,
+      "different_member_names": [],
+      "both_archives_crc_pass": true,
+      "passed": true
+    },
+    {
+      "name": "Polynya_author_information_v07.docx",
+      "reference_sha256": "94533582a7c4910447ece3c951aba5670e123cba4cb5ae6049e52576574e67a3",
+      "fresh_sha256": "7bd5b1d3b8000a8c973ca033f41e285acd8e4ea3f35bf209df2b6a9eba7bc43a",
+      "reference_bytes": 40746,
+      "fresh_bytes": 40746,
+      "whole_zip_bytes_equal": false,
+      "zip_member_name_sets_equal": true,
+      "zip_members_count": 19,
+      "uncompressed_member_bytes_all_equal": true,
+      "different_member_names": [],
+      "both_archives_crc_pass": true,
+      "passed": true
+    },
+    {
+      "name": "Polynya_foodweb_alt_text_v07.docx",
+      "reference_sha256": "a07cc159682a67c1a3ec33be112d9d2983ae18d7339a80145d2fe2ac3a223c04",
+      "fresh_sha256": "fdd362040ebe196ae86b1ed5b9e2898c3561e6ed33599c8d39ebf387c0ad8e62",
+      "reference_bytes": 39550,
+      "fresh_bytes": 39550,
+      "whole_zip_bytes_equal": false,
+      "zip_member_name_sets_equal": true,
+      "zip_members_count": 19,
+      "uncompressed_member_bytes_all_equal": true,
+      "different_member_names": [],
+      "both_archives_crc_pass": true,
+      "passed": true
+    },
+    {
+      "name": "Polynya_foodweb_figures_v07.docx",
+      "reference_sha256": "0cbe05956a16dbd38de0b621f5c5c48991e48f4fea5293552437a51ade34ccdc",
+      "fresh_sha256": "8b5fa30704f5458b2d63553694a9a4eb0733817912de401213cc995dadf63759",
+      "reference_bytes": 1707405,
+      "fresh_bytes": 1707405,
+      "whole_zip_bytes_equal": false,
+      "zip_member_name_sets_equal": true,
+      "zip_members_count": 24,
+      "uncompressed_member_bytes_all_equal": true,
+      "different_member_names": [],
+      "both_archives_crc_pass": true,
+      "passed": true
+    },
+    {
+      "name": "Polynya_foodweb_manuscript_v07.docx",
+      "reference_sha256": "bc38862f44baf3212a879b6fba0cae1ded1c28739f20f357d02ec74948a13860",
+      "fresh_sha256": "8ef0f5e4f24d3b5a9e345069e1a5ee415dd07dece6d5654a83b90a40b83a93d7",
+      "reference_bytes": 1718740,
+      "fresh_bytes": 1718740,
+      "whole_zip_bytes_equal": false,
+      "zip_member_name_sets_equal": true,
+      "zip_members_count": 24,
+      "uncompressed_member_bytes_all_equal": true,
+      "different_member_names": [],
+      "both_archives_crc_pass": true,
+      "passed": true
+    },
+    {
+      "name": "Polynya_foodweb_supplement_v07.docx",
+      "reference_sha256": "52750e7d1076c42dabf52f1ff54b169f9225d3c4df835c399c2944ac5ee1b0ff",
+      "fresh_sha256": "4508503a34c909c63cc70a928af389c6c3540f56e6e9ef54cac87d16eff061c9",
+      "reference_bytes": 47705,
+      "fresh_bytes": 47705,
+      "whole_zip_bytes_equal": false,
+      "zip_member_name_sets_equal": true,
+      "zip_members_count": 19,
+      "uncompressed_member_bytes_all_equal": true,
+      "different_member_names": [],
+      "both_archives_crc_pass": true,
+      "passed": true
+    }
+  ],
+  "docx_comparison_rule": "Exact equality of every uncompressed ZIP member and member names; archive timestamps/compression bytes are not treated as content changes. No XML normalization or exclusion of properties was applied.",
+  "scope": "Reproduction of frozen derived439/358 results, existing bounded eight-region CV3 uncertainty diagnostic, five figure outputs, all numerical extracts and six editable DOCX builds.",
+  "not_performed": [
+    "Complete provider-archive extraction or satellite ingestion",
+    "Original Youngflesh hierarchical diet-posterior reproduction",
+    "New lag/radius/outcome/model/subset search",
+    "New ecological data collection or independent biological validation",
+    "Full regeneration of every auxiliary S4–S6 analysis",
+    "Additional Word-to-PDF/PNG rendering or visual review; existing page QA remains separate",
+    "Journal submission, merge or DOI publication"
+  ],
+  "issues": []
 }

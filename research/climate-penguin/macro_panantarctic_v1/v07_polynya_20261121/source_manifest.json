@@ -145,6 +145,18 @@
       "source_git_blob": "04811d72fff2701ec67587e30ad8942675b511e3",
       "operation": "All vertices at or south of 60 degrees S; exactly source features 0–7; no geographic clipping. Omit the two exact +/-180 longitude, -90 latitude antimeridian-cap vertices from display geometry only. Adjacent +/-180, -84.71338 coastline endpoints coincide in EPSG:3031; no inland seam is stroked.",
       "use": "Figure 1 display context only; no ecological input, exposure, coefficient or site coordinate is changed"
+    },
+    {
+      "local_file": "source_inputs/region_jackknife_diagnostic.json",
+      "sha256": "deb24378b6aa3cca9f6a1c2ee0443c5b8d85feafb60730a6d0adf4e48b732dd5",
+      "bytes": 67850,
+      "source": "Bounded CV3 delete-one-informative-region jackknife uncertainty audit on frozen 439/358 models",
+      "performed_utc_date": "2026-11-21",
+      "script": "diagnose_region_jackknife.py",
+      "script_sha256": "e50236b4a7ece774562ec3308072274869b6310bb75df64973addebc03fa115c",
+      "original_frozen_result": false,
+      "new_ecological_model_search": false,
+      "interval": "CV3 centred at full coefficients; eight informative regions; t(7); not CR2 or Satterthwaite"
     }
   ],
   "original_provider_archives_not_redistributed": true,
@@ -152,11 +164,12 @@
     "Existing derived numerical tables and reported results are retained, with a separately pinned public-domain generalized Natural Earth land layer for map display only.",
     "The renderer reads estimates and intervals from source result files; it does not fit coefficients or intervals. The dated eight-region covariance sensitivity is separately identified.",
     "Display arithmetic: fractions to percentage points; coefficients per fraction to per 10 percentage points.",
-    "Figure 2 displays the separately disclosed 2026-11-21 informative-eight-region covariance sensitivity; original frozen 11-region intervals are retained in the numerical extract.",
+    "Figures 2 and 3 display the dated CV3 jackknife and archived informative-eight-region CR1 intervals side by side; original frozen eleven-region numeric extracts are retained.",
     "The Figure 1 land addition changes presentation only. All exposure values, colony coordinates, sampling circles, regional support counts, scale calibration, coefficients and interval definitions remain unchanged.",
-    "The raw public-domain Natural Earth land file is a newly added cartographic context source only. It is not used in exposure calculations or as a mask; no ecological inputs, colony coordinates or sample definitions changed."
+    "The raw public-domain Natural Earth land file is a newly added cartographic context source only. It is not used in exposure calculations or as a mask; no ecological inputs, colony coordinates or sample definitions changed.",
+    "The v0.7.1 uncertainty audit adds a separately pinned CV3 delete-one-region diagnostic. Figures 2 and 3 compare these new intervals with archived informative-eight CR1 intervals; original frozen nominal-eleven numeric extracts remain unchanged."
   ],
   "renderer": "render_polynya_main_figures.py",
-  "renderer_sha256": "a57ac9c9469dd7c43210d9b7f95b96ed9dba7fe3ad4c4baecca0f0a2116fb1b5",
+  "renderer_sha256": "4c522bacea0a601dd5a088a84566f4ba579c99b9d6da001e0ebc25c1b5c030a6",
   "offline_rerender": "python render_polynya_main_figures.py (numpy, pandas, matplotlib, Pillow; pyproj unnecessary when verified site and Antarctic-land map caches are present)"
 }

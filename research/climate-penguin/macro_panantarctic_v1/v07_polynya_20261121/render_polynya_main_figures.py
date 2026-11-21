@@ -4,8 +4,8 @@
 No ecological regressions, interval estimates, searches, or new sample selections
 are performed. Coefficients, uncertainty intervals, leave-region-out estimates,
 and residual-variation fractions are read from the verified source artifacts.
-Figure 2 additionally reads the separately disclosed 2026-11-21 informative-
-eight-region covariance sensitivity performed by the manuscript verifier.
+Figures 2 and 3 read the separately disclosed 2026-11-21 CV3 delete-one-region
+uncertainty audit alongside the archived informative-eight-region CR1 results.
 Only the specified 439-row join, descriptive site means, map geometry, and the
 already reported site + region-by-season residualization are recomputed.
 
@@ -42,10 +42,10 @@ from PIL import Image
 HERE = Path(__file__).resolve().parent
 P = "direct_DEEPAA_coastal_polynya_fraction"
 S = "GLORYS_NovFeb_salinity"
-WIDTH_MM = 170.0
+WIDTH_MM = 169.0
+MIN_TEXT_PT = 10.0
 MIN_TIFF_DPI = 800
-# A 170-mm canvas cannot be exactly represented by integer pixels at 800 dpi.
-# Rounding UP gives 5355 px at 800.1 dpi, retaining exactly 170 mm and >=800 dpi.
+# Round up the raster width, then tag its exact DPI to preserve 169 mm.
 TIFF_WIDTH_PX = math.ceil(WIDTH_MM / 25.4 * MIN_TIFF_DPI)
 TIFF_DPI = TIFF_WIDTH_PX / (WIDTH_MM / 25.4)
 INK = "#253449"
@@ -242,6 +242,9 @@ def save_figure(fig, out, name, receipt):
         if not ax.axison:
             ax.set_xticks([])
             ax.set_yticks([])
+    for text in fig.findobj(Text):
+        if text.get_fontsize() < MIN_TEXT_PT:
+            text.set_fontsize(MIN_TEXT_PT)
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
     # Matplotlib retains locator ticks outside the visible axis range, although
@@ -254,9 +257,9 @@ def save_figure(fig, out, name, receipt):
                 if not ax.axison or not axis.get_visible() or not (lo-1e-9 <= tick.get_loc() <= hi+1e-9):
                     hidden_tick_texts.update([tick.label1, tick.label2])
     texts = [t for t in fig.findobj(Text) if t not in hidden_tick_texts and t.get_visible() and t.get_text().strip()]
-    small = [(t.get_text(), t.get_fontsize()) for t in texts if t.get_fontsize() < 8 - 1e-9]
+    small = [(t.get_text(), t.get_fontsize()) for t in texts if t.get_fontsize() < MIN_TEXT_PT - 1e-9]
     if small:
-        raise ValueError(f"Text smaller than 8 pt in {name}: {small}")
+        raise ValueError(f"Text smaller than {MIN_TEXT_PT} pt in {name}: {small}")
     # Check text bounds rather than treating a successful save as visual QA.
     box = fig.bbox
     clipped = []
@@ -294,17 +297,18 @@ def title(ax, s):
     ax.set_title(s, loc="left", fontsize=10, fontweight="bold", pad=8)
 
 
-def coefficient_point(ax, beta, lo, hi, y, color, marker="o", size=33):
+def coefficient_point(ax, beta, lo, hi, y, color, marker="o", size=33, hollow=False):
     ax.plot([lo, hi], [y, y], color=color, lw=1.5, solid_capstyle="round", zorder=2)
     ax.plot([lo, lo], [y - .065, y + .065], color=color, lw=1.0, zorder=2)
     ax.plot([hi, hi], [y - .065, y + .065], color=color, lw=1.0, zorder=2)
-    ax.scatter([beta], [y], s=size, color=color, marker=marker, edgecolors="white", linewidths=.4, zorder=3)
+    ax.scatter([beta], [y], s=size, color="white" if hollow else color, marker=marker,
+               edgecolors=color if hollow else "white", linewidths=.8 if hollow else .4, zorder=3)
 
 
 def figure1(sites, region_support, geo, land, out, receipt):
-    fig = new_figure(133)
+    fig = new_figure(153)
     ax = fig.add_axes([.035, .205, .55, .70])
-    title(ax, "a   Exposure and spatial support")
+    fig.text(.035,.935,"a   Exposure and spatial support",fontsize=10,fontweight="bold")
     for polygon in land["polygons"]:
         ax.add_patch(Polygon(polygon["xy_1000km"], closed=True, facecolor="#E9ECE9",
                              edgecolor="#A1ADA9", linewidth=.65, zorder=-2))
@@ -352,62 +356,69 @@ def figure1(sites, region_support, geo, land, out, receipt):
     ax.plot([x0, x0], [y0-.06, y0+.06], color=INK, lw=1)
     ax.plot([x0+length, x0+length], [y0-.06, y0+.06], color=INK, lw=1)
     ax.text(0, y0-.16, "1000 km · centred at 70°S", ha="center", va="top", fontsize=8)
-    cax = fig.add_axes([.07, .155, .48, .024])
+    cax = fig.add_axes([.07, .205, .48, .024])
     cb = fig.colorbar(scatter, cax=cax, orientation="horizontal", ticks=[0,5,10,15,20])
-    cb.set_label("Mean winter coastal-polynya area fraction (%)", fontsize=8.3, labelpad=4)
+    cb.set_label("Mean winter coastal-polynya\narea fraction (%)", fontsize=10, labelpad=4)
     cb.ax.tick_params(labelsize=8, length=2)
     tx = fig.add_axes([.625, .245, .36, .67]); tx.axis("off")
-    title(tx, "b   Matched observations")
+    fig.text(.625,.935,"b   Matched observations",fontsize=10,fontweight="bold")
     tx.text(0, .93, "Region", fontsize=8, color=GREY)
-    tx.text(.77, .93, "Sites", ha="center", fontsize=8, color=GREY)
+    tx.text(.70, .93, "Sites", ha="center", fontsize=8, color=GREY)
     tx.text(.98, .93, "Rows", ha="right", fontsize=8, color=GREY)
-    labels = {"Northeast Antarctic Peninsula":"NE Antarctic Peninsula",
-              "Southwest Antarctic Peninsula":"SW Antarctic Peninsula", "Adelie Land":"Adélie Land"}
+    labels = {"Northeast Antarctic Peninsula":"NE Antarctic Pen.",
+              "Southwest Antarctic Peninsula":"SW Antarctic Pen.", "Adelie Land":"Adélie Land",
+              "Princess Elizabeth Land":"Princess Elizabeth",
+              "Mac. Robertson Land":"Mac. Robertson"}
     for j, r in enumerate(region_support.itertuples(index=False)):
         yy = .862-j*.069
         tx.text(0, yy, f"{chr(65+j)}  {labels.get(r.source_region,r.source_region)}", fontsize=8)
-        tx.text(.77, yy, str(int(r.n_original_sites)), ha="center", fontsize=8)
+        tx.text(.70, yy, str(int(r.n_original_sites)), ha="center", fontsize=8)
         tx.text(.98, yy, str(int(r.n_observations)), ha="right", fontsize=8)
-    tx.text(0, .045, "Circles: 100 km geodesic support.\nThey are sampling footprints.", fontsize=8, linespacing=1.5)
-    fig.text(.04, .063, "439 colony-seasons · 85 sites · 11 regions · 2004–2010", fontsize=9, fontweight="bold")
-    fig.text(.04, .035, "Colours average each site's available matched June–October winters; EPSG:3031.", fontsize=8)
-    fig.text(.04, .011, "Pale land: Natural Earth 1:110m; generalized geographic context only.", fontsize=8, color=GREY)
+    tx.text(0, .045, "Circles: 100 km geodesic\nsampling footprints.", fontsize=10, linespacing=1.5)
+    fig.text(.04, .075, "439 colony-seasons · 85 sites · 11 regions · 2004–2010", fontsize=10, fontweight="bold")
+    fig.text(.04, .043, "Colours average available June–October winters at each site; EPSG:3031.", fontsize=10)
+    fig.text(.04, .011, "Pale land: Natural Earth 1:110m; geographic context only.", fontsize=10, color=GREY)
     save_figure(fig, out, STEMS[0], receipt)
 
 
 def figure2(effects, leaves, out, receipt):
-    fig = new_figure(167)
-    a = fig.add_axes([.36, .645, .60, .285])
+    fig = new_figure(178)
+    a = fig.add_axes([.35, .69, .61, .23])
     title(a, "a   Association and calibration sensitivity")
     ys = np.array([3.4, 2.7, 1.3, .6])
     for y, r in zip(ys, effects.itertuples(index=False)):
         color = BLUE if r.model == "M_P" else TEAL
-        coefficient_point(a, r.beta_per_10pp, r.lower, r.upper, y, color,
+        coefficient_point(a, r.beta_per_10pp, r.cr1_lower, r.cr1_upper, y-.13, GREY,
+                          marker="o" if r.measurement == "Original single PLSR" else "s", hollow=True)
+        coefficient_point(a, r.beta_per_10pp, r.lower, r.upper, y+.13, color,
                           marker="o" if r.measurement == "Original single PLSR" else "s")
-    a.set_yticks(ys, ["M_P · original single PLSR", "M_P · author R1,000", 
-                     "M_SP · original single PLSR", "M_SP · author R1,000"], fontsize=8.5)
-    a.set_ylim(-.05, 4.15); a.set_xlim(-1.65, .08)
+    a.set_yticks(ys, ["M_P · original", "M_P · R1,000", 
+                     "M_SP · original", "M_SP · R1,000"], fontsize=10)
+    a.set_ylim(-.05, 4.15); a.set_xlim(-1.90, .08)
+    a.set_xticks([-1.5,-1.0,-.5,0])
     a.axvline(0, color=GREY, lw=.9, ls="--")
     a.grid(axis="x", color=LIGHT, lw=.6)
-    fig.text(.04, .595, "M_P adjusts for image timing, summer sea ice and temperature; M_SP also includes salinity.\nIntervals use 425 informative rows / 82 sites / 8 regions; the 439-row coefficients are unchanged.",
-             fontsize=8, linespacing=1.6, va="top")
-    b = fig.add_axes([.36, .13, .60, .365])
+    fig.text(.04,.620,"Filled: CV3 jackknife · Hollow: archived CR1",fontsize=10)
+    fig.text(.04, .600, "M_SP adds salinity; all models include baseline covariates and fixed effects.\n425 informative rows / 82 sites / 8 regions; unchanged 439-row estimates.",
+             fontsize=10, linespacing=1.5, va="top")
+    b = fig.add_axes([.35, .17, .61, .325])
     title(b, "b   Omit one reporting region at a time")
     regions = list(dict.fromkeys(leaves.omitted_original_region))
     for j, region in enumerate(regions):
         for model, dy, color, marker in [("M_P",-.12,BLUE,"o"),("M_SP",.12,TEAL,"s")]:
             value = leaves.loc[leaves.omitted_original_region.eq(region)&leaves.model.eq(model),"beta_per_10pp"].iloc[0]
             b.scatter([value], [j+dy], s=23, color=color, marker=marker, zorder=3)
-    display = {"Northeast Antarctic Peninsula":"NE Antarctic Peninsula", "Southwest Antarctic Peninsula":"SW Antarctic Peninsula", "Adelie Land":"Adélie Land"}
+    display = {"Northeast Antarctic Peninsula":"NE Antarctic Pen.", "Southwest Antarctic Peninsula":"SW Antarctic Pen.", "Adelie Land":"Adélie Land"}
     b.set_yticks(range(len(regions)), [display.get(r,r) for r in regions], fontsize=8.2)
-    b.set_ylim(len(regions)-.4, -.7); b.set_xlim(-1.65, .08)
+    b.set_ylim(len(regions)-.4, -.7); b.set_xlim(-1.90, .08)
+    b.set_xticks([-1.5,-1.0,-.5,0])
     b.axvline(0, color=GREY, ls="--", lw=.9); b.grid(axis="x", color=LIGHT, lw=.6)
-    b.set_xlabel("Optical δ¹⁵N proxy difference (‰) per 10 percentage points", fontsize=8.3)
+    b.set_xlabel("Optical δ¹⁵N proxy difference (‰)\nper 10 percentage points of polynya", fontsize=10)
     b.legend(handles=[Line2D([],[],marker="o",color=BLUE,lw=0,label="M_P"),
                       Line2D([],[],marker="s",color=TEAL,lw=0,label="M_SP")],
              loc="upper right", frameon=False, fontsize=8, handletextpad=.3)
-    fig.text(.04, .057, "Panel a: 8-region t(7) 95% intervals, covariance sensitivity dated 2026-11-21. Same historical images.", fontsize=8)
-    fig.text(.04, .027, "Panel b: point estimates only; all 11 omissions retain negative signs in both models.", fontsize=8)
+    fig.text(.04, .065, "Intervals: 8 informative regions, t(7); same historical images.", fontsize=10)
+    fig.text(.04, .030, "Points: all 11 region omissions retain negative signs in both models.", fontsize=10)
     save_figure(fig, out, STEMS[1], receipt)
 
 
@@ -421,39 +432,45 @@ def rounded_box(ax, xy, width, height, label, color=PALE, fontsize=8.5, edge=LIG
 
 
 def figure3(temporal, out, receipt):
-    fig = new_figure(159)
-    a = fig.add_axes([.045, .735, .91, .20]); a.axis("off")
+    fig = new_figure(178)
+    a = fig.add_axes([.045, .76, .91, .17]); a.axis("off")
     title(a, "a   Matched time order")
     boxes = [(0.005,"P0 · preceding winter\nJune–October, year y",BLUE),
-             (.35,"Optical summer δ¹⁵N proxy\nNovember y–February y+1",TEAL),
-             (.695,"P1 · following winter\nJune–October, year y+1",ORANGE)]
+             (.35,"Summer optical δ¹⁵N\nNovember–February\nseason y / y+1",TEAL),
+             (.695,"P1 · following winter\nJune–October, y+1",ORANGE)]
     for x, label, col in boxes:
-        rounded_box(a, (x,.35), .295, .43, label, fontsize=8.5, edge=col)
+        rounded_box(a, (x,.25), .295, .56, label, fontsize=10, edge=col)
     for x1,x2 in [(.304,.338),(.649,.683)]:
         a.add_patch(FancyArrowPatch((x1,.56),(x2,.56),arrowstyle="-|>",mutation_scale=9,
                                    color=GREY,lw=1,transform=a.transAxes))
-    a.text(.5,.08,"358 matched colony-seasons · 85 sites · 2004–2009 start years",ha="center",fontsize=8.5)
-    b = fig.add_axes([.375, .25, .58, .40])
-    title(b, "b   Eight-region estimates and sensitivity checks")
-    labels = ["P0 · preceding winter", "P1 · following winter", "P0 − P1 · 347 / 8 regions",
-              "P0 − P1 · R1,000, 347 / 8", "P0 − P1 · 358 / 11 regions", "P0 − P1 · R1,000, 358 / 11"]
-    ys = [5.4,4.5,3.4,2.4,1.3,.3]
+    a.text(.5,.04,"358 matched colony-seasons · 85 sites · 2004–2009 start years",ha="center",fontsize=10)
+    b = fig.add_axes([.36, .31, .60, .35])
+    title(b, "b   Uncertainty in the timing contrast")
+    labels = ["P0 · preceding winter", "P1 · following winter", "P0 − P1 · original",
+              "P0 − P1 · R1,000"]
+    ys = [3.5,2.5,1.35,.35]
     for y,r in zip(ys, temporal.itertuples(index=False)):
-        color = (ORANGE if r.measurement == "Author R1000" else TEAL) if r.n == 347 else GREY
-        coefficient_point(b,r.beta_per_10pp,r.lower,r.upper,y,color,
+        color = ORANGE if r.measurement == "Author R1000" else TEAL
+        coefficient_point(b,r.beta_per_10pp,r.cr1_lower,r.cr1_upper,y-.14,GREY,
+                          marker="s" if r.measurement == "Author R1000" else "o",size=36,hollow=True)
+        coefficient_point(b,r.beta_per_10pp,r.lower,r.upper,y+.14,color,
                           marker="s" if r.measurement == "Author R1000" else "o",size=36)
-    b.set_yticks(ys,labels,fontsize=8.2); b.set_ylim(-.4,6.2); b.set_xlim(-2.5,.35)
+    b.set_yticks(ys,labels,fontsize=10); b.set_ylim(-.4,4.15); b.set_xlim(-2.6,.35)
     b.axvline(0,color=GREY,lw=.9,ls="--");b.grid(axis="x",color=LIGHT,lw=.6)
-    b.set_xlabel("Optical δ¹⁵N proxy difference (‰) per 10 percentage points",fontsize=8.3)
-    fig.text(.045,.125,"Both winters enter one model with summer salinity and the original adjustments.",fontsize=8)
-    fig.text(.045,.082,"First four rows: 347 / 8 informative regions, t(7). Last two: 358 / 11 reporting regions, t(10).",fontsize=8)
-    fig.text(.045,.040,"P0 − P1 intervals include covariance. R1,000 uses the same historical images.",fontsize=8)
+    b.set_xlabel("Optical δ¹⁵N proxy difference (‰)\nper 10 percentage points of polynya",fontsize=10)
+    fig.legend(handles=[Line2D([],[],color=INK,marker="o",label="CV3 jackknife"),
+                        Line2D([],[],color=GREY,marker="o",markerfacecolor="white",label="Archived CR1")],
+               loc="lower left",bbox_to_anchor=(.35,.70),ncol=2,frameon=False,fontsize=10,
+               columnspacing=1.2,handlelength=1.5,handletextpad=.5)
+    fig.text(.045,.185,"Both winters enter one model with summer salinity\nand the original adjustments.",fontsize=10,linespacing=1.5,va="top")
+    fig.text(.045,.102,"CV3 intervals for both P0 − P1 contrasts include zero.",fontsize=10,fontweight="bold")
+    fig.text(.045,.053,"347 informative rows / 8 regions; t(7). Original cohort: 358.",fontsize=10)
     save_figure(fig,out,STEMS[2],receipt)
 
 
 def figure4(residuals, fit_information, r_value, out, receipt):
-    fig=new_figure(110)
-    a=fig.add_axes([.11,.28,.36,.58]);title(a,"a   Residual exposure relation")
+    fig=new_figure(132)
+    a=fig.add_axes([.14,.30,.33,.56]);title(a,"a   Residual exposure relation")
     a.scatter(residuals.polynya_residual_percentage_points,residuals.salinity_residual,
               s=10,c=BLUE,alpha=.47,edgecolors="none")
     a.axvline(0,color=GREY,lw=.7,ls=":");a.axhline(0,color=GREY,lw=.7,ls=":")
@@ -462,7 +479,7 @@ def figure4(residuals, fit_information, r_value, out, receipt):
     a.set_xlim(-12,9);a.set_ylim(-1.1,1.3)
     a.text(.04,.94,f"r = {r_value:.5f}",transform=a.transAxes,
            va="top",fontsize=8.5,linespacing=1.6)
-    b=fig.add_axes([.64,.28,.32,.58]);title(b,"b   Model information")
+    b=fig.add_axes([.64,.30,.32,.56]);title(b,"b   Model information")
     vals=fit_information.additional_residual_variation_percent.to_numpy()
     yy=np.arange(3)
     b.barh(yy,vals,color=[GREY,BLUE,TEAL],height=.48)
@@ -470,33 +487,33 @@ def figure4(residuals, fit_information, r_value, out, receipt):
     b.set_xlim(0,6.7);b.set_xticks([0,2,4,6]);b.grid(axis="x",color=LIGHT,lw=.6);b.set_axisbelow(True)
     for y,val in zip(yy,vals):b.text(val+.12,y,f"{val:.2f}%",va="center",fontsize=8.5)
     b.set_xlabel("Residual variation explained\nrelative to M0 (%)",fontsize=8.5)
-    fig.text(.055,.135,"Panel a removes site and region-by-season effects only. Panel b compares the same 439 rows.",fontsize=8)
-    fig.text(.055,.086,"M_S: salinity; M_P: polynya; M_SP: both. M0 includes the original covariates and fixed effects.",fontsize=8)
-    fig.text(.055,.035,"These are modest conditional associations; independent physical causes are not identified.",fontsize=8.5)
+    fig.text(.055,.145,"Panel a: colony and region × season effects removed; n = 439.",fontsize=10)
+    fig.text(.055,.090,"Panel b: same-sample residual SSE reduction from baseline M0.",fontsize=10)
+    fig.text(.055,.035,"M_S: salinity · M_P: polynya · M_SP: both. No causal independence.",fontsize=10)
     save_figure(fig,out,STEMS[3],receipt)
 
 
 def figure5(out,receipt):
-    fig=new_figure(152)
-    a=fig.add_axes([.045,.68,.91,.255]);a.axis("off");title(a,"a   Observed historical association")
-    rounded_box(a,(.005,.36),.355,.39,"Winter coastal-polynya area fraction\nJune–October · within 100 km",edge=BLUE)
-    rounded_box(a,(.64,.36),.355,.39,"Subsequent summer\noptical δ¹⁵N proxy\nNovember–February",edge=TEAL)
+    fig=new_figure(178)
+    a=fig.add_axes([.045,.72,.91,.215]);a.axis("off");title(a,"a   Observed historical association")
+    rounded_box(a,(.005,.35),.355,.46,"Winter coastal-polynya\narea fraction\nJune–October · 100 km",edge=BLUE,fontsize=10)
+    rounded_box(a,(.64,.35),.355,.46,"Subsequent summer\noptical δ¹⁵N proxy\nNovember–February",edge=TEAL,fontsize=10)
     a.plot([.375,.625],[.555,.555],color=BLUE,lw=1.8,transform=a.transAxes)
-    a.text(.5,.80,"Negative conditional\nassociation",ha="center",va="center",fontsize=8.5,transform=a.transAxes)
+    a.text(.5,.84,"Negative\nassociation",ha="center",va="center",fontsize=10,transform=a.transAxes)
     a.text(.5,.19,"439 colony-seasons · 85 sites · 11 regions · 2004–2010",ha="center",fontsize=8.5,transform=a.transAxes)
-    a.text(.5,.015,"Site and region-by-season effects; summer sea ice, temperature and image timing adjusted",ha="center",fontsize=8,transform=a.transAxes)
-    b=fig.add_axes([.045,.335,.91,.295]);b.axis("off");title(b,"b   Candidate explanations remain unresolved")
+    a.text(.5,.02,"Conditional on colony and region × season effects,\nsummer ice, temperature and image timing.",ha="center",fontsize=10,transform=a.transAxes,va="top",linespacing=1.4)
+    b=fig.add_axes([.045,.335,.91,.285]);b.axis("off");title(b,"b   Candidate explanations remain unresolved")
     rounded_box(b,(.005,.36),.18,.28,"Winter\nexposure",edge=BLUE)
     rounded_box(b,(.805,.36),.19,.28,"Optical δ¹⁵N\nproxy",edge=TEAL)
-    pathways=[(.72,"Trophic composition\nNot measured here"),(.40,"Nitrogen-isotope baseline\nNot measured here"),(.08,"Optical mixture and surface effects\nUnresolved")]
+    pathways=[(.70,"Trophic composition\nNot measured here"),(.38,"Prey isotope baseline\nNot measured here"),(.06,"Optical mixture /\nsurface effects\nUnresolved")]
     for y,label in pathways:
-        rounded_box(b,(.33,y),.33,.23,label,fontsize=8.3)
-        b.add_patch(FancyArrowPatch((.20,.50),(.315,y+.115),arrowstyle="-|>",mutation_scale=9,
+        rounded_box(b,(.33,y),.33,.27,label,fontsize=10)
+        b.add_patch(FancyArrowPatch((.20,.50),(.315,y+.135),arrowstyle="-|>",mutation_scale=9,
                                    color=GREY,linestyle="--",lw=.9,transform=b.transAxes))
-        b.add_patch(FancyArrowPatch((.675,y+.115),(.79,.50),arrowstyle="-|>",mutation_scale=9,
+        b.add_patch(FancyArrowPatch((.675,y+.135),(.79,.50),arrowstyle="-|>",mutation_scale=9,
                                    color=GREY,linestyle="--",lw=.9,transform=b.transAxes))
-    fig.text(.06,.302,"Dashed arrows show possible pathways, not identified mechanisms.",fontsize=8.5)
-    c=fig.add_axes([.045,.045,.91,.205]);c.axis("off");title(c,"c   Separate published comparison")
+    fig.text(.06,.296,"Dashed arrows: possible pathways; mechanisms remain unresolved.",fontsize=10)
+    c=fig.add_axes([.045,.040,.91,.19]);c.axis("off");title(c,"c   Separate published comparison")
     rounded_box(c,(.005,.08),.985,.80,"",color=PALE,edge=LIGHT)
     c.text(.5,.76,"Reaves et al. (2025): between-colony context",ha="center",fontsize=8.7,fontweight="bold",transform=c.transAxes)
     c.text(.17,.43,"Southern latent-heat\npolynya settings",ha="center",fontsize=8.5,transform=c.transAxes)
@@ -522,6 +539,9 @@ def main(a):
     readjson=lambda name:json.loads((inputs/name).read_text())
     iso=readcsv("matched_isotope860.csv");physical=readcsv("polynya_physical860.csv")
     main_result=readjson("main439_verdict.json");author=readjson("author_R1000_verdict.json")
+    jackknife=readjson("region_jackknife_diagnostic.json")
+    if jackknife["status"]!="PASS_BOUNDED_FROZEN_DESIGN_REGION_JACKKNIFE_SENSITIVITY":
+        raise ValueError("Bounded jackknife diagnostic did not pass")
     gate=readjson("physical_gate.json")
     if gate["status"]!="PASS_DIRECT_POLYNYA_MACRO_SUPPORT_SOURCE_ONLY_NO_Y_FIT":
         raise ValueError("Frozen physical source gate missing")
@@ -585,7 +605,20 @@ def main(a):
                 beta_per_10pp=value["estimate"],lower=value["ci95"][0],upper=value["ci95"][1],
                 interval="informative-region cluster t(7) 95%; dated 2026-11-21 covariance sensitivity",
                 source="main425_informative8_20261121.json"))
-    effects=pd.DataFrame(effects);effects.to_csv(numbers/"fig2_main_and_measurement_sensitivity.csv",index=False)
+    effects=pd.DataFrame(effects)
+    effects.to_csv(numbers/"fig2_archived_informative8_intervals.csv",index=False)
+    effects["cr1_lower"]=effects.lower;effects["cr1_upper"]=effects.upper
+    for index,row in effects.iterrows():
+        key=("original_" if row.measurement=="Original single PLSR" else "author_R1000_mean_")+row.model
+        result=jackknife["models"][key]
+        if abs(result["estimate_per_10pp"]-row.beta_per_10pp)>1e-10:
+            raise ValueError("Jackknife diagnostic altered a frozen main coefficient")
+        if (result["informative_n"],result["informative_sites"],result["clusters"])!=(425,82,8):
+            raise ValueError("Jackknife main support changed")
+        effects.loc[index,["lower","upper"]]=result["CV3_delete_one_region_t7"]["ci95"]
+        effects.loc[index,"interval"]="CV3 delete-one-region jackknife, eight regions, t(7), 95%; dated 2026-11-21"
+        effects.loc[index,"source"]="region_jackknife_diagnostic.json"
+    effects.to_csv(numbers/"fig2_main_and_measurement_sensitivity.csv",index=False)
     leaves=readcsv("main439_leave_region_out.csv");leaves["beta_per_10pp"]=leaves.polynya_beta*.1
     if len(leaves)!=22 or not leaves.beta_per_10pp.lt(0).all():raise ValueError("Frozen omission signs changed")
     leaves.to_csv(numbers/"fig2_leave_one_region_out.csv",index=False)
@@ -610,7 +643,30 @@ def main(a):
     temporal.append(dict(term="P0_minus_P1",measurement="Author R1000",n=358,regions=11,
        beta_per_10pp=r["author_R1000_PLSR_beta_per_10pp"],lower=r["author_region_cluster_t95"][0],
        upper=r["author_region_cluster_t95"][1],source="author_R1000_verdict.json"))
-    temporal=pd.DataFrame(temporal);temporal.to_csv(numbers/"fig3_reported_temporal_coefficients.csv",index=False)
+    temporal=pd.DataFrame(temporal)
+    temporal.to_csv(numbers/"fig3_reported_temporal_coefficients.csv",index=False)
+    temporal_archived=temporal.copy()
+    temporal=temporal.iloc[:4].copy()
+    temporal["cr1_lower"]=temporal.lower;temporal["cr1_upper"]=temporal.upper
+    for index,row in temporal.iterrows():
+        key="original_P0_minus_P1" if row.measurement=="Original single PLSR" else "author_R1000_mean_P0_minus_P1"
+        result=jackknife["models"][key]
+        if (result["informative_n"],result["informative_sites"],result["clusters"])!=(347,82,8):
+            raise ValueError("Jackknife temporal support changed")
+        if row.term in ["P0","P1"]:
+            value=result["focal_coefficients_per_10pp_CV3"][row.term]
+            estimate=value["estimate"];interval=value["ci95"]
+        else:
+            estimate=result["estimate_per_10pp"];interval=result["CV3_delete_one_region_t7"]["ci95"]
+        if abs(estimate-row.beta_per_10pp)>1e-10:
+            raise ValueError("Jackknife diagnostic altered a frozen temporal coefficient")
+        temporal.loc[index,["lower","upper"]]=interval
+        temporal.loc[index,"source"]="region_jackknife_diagnostic.json"
+        temporal.loc[index,"interval"]="CV3 delete-one-region jackknife, eight regions, t(7), 95%"
+    contrasts=temporal.loc[temporal.term.eq("P0_minus_P1")]
+    if len(contrasts)!=2 or not (contrasts.lower.lt(0)&contrasts.upper.gt(0)).all():
+        raise ValueError("The two CV3 timing contrasts must visibly span zero")
+    temporal.to_csv(numbers/"fig3_CV3_and_archived8_intervals.csv",index=False)
     region_season=d.source_region+"__"+d.season.astype(str)
     rp,pa=project_two_fe(d[P],d.site_id,region_season)
     rs,sa=project_two_fe(d[S],d.site_id,region_season)
@@ -659,7 +715,7 @@ def main(a):
     write_json(base/"source_manifest.json",manifest)
     audit={"status":"PASS_FIVE_VERIFIED_SOURCE_FIGURES_WITH_DATED_COVARIANCE_SENSITIVITY",
        "renderer_performed_no_model_fit":True,"renderer_performed_no_interval_estimation_or_threshold_search":True,
-       "new_dated_result_plotted":"Figure 2 reads the explicitly requested 2026-11-21 main425 informative-eight-region covariance sensitivity from the manuscript verification workflow. It is not an original frozen 11-region result.",
+       "new_dated_result_plotted":"Figures 2 and 3 display the separately dated CV3 delete-one-informative-region jackknife uncertainty audit alongside archived eight-region CR1 intervals. Original frozen eleven-region numeric extracts are retained. The renderer reads all intervals; no ecological fitting or interval calculation is performed here.",
        "recomputed":{"original_join_rows":860,"matched_main_rows":439,"matched_sites":85,"matched_regions":11,
           "winter_years":list(range(2004,2011)),"nonzero_polynya_rows":405,
           "site_mean_exposure_percent_min":float(sites.mean_polynya_percent.min()),
@@ -669,11 +725,14 @@ def main(a):
        "plotted_reported_results":{"main_coefficients_dated_informative8_intervals":effects.to_dict("records"),
           "original_frozen11_intervals_retained_in_numeric_extract":frozen_effects.to_dict("records"),
           "temporal_coefficients":temporal.to_dict("records"),
+          "temporal_original_frozen_coefficients_retained":temporal_archived.to_dict("records"),
+          "both_CV3_temporal_contrasts_include_zero":True,
           "additional_residual_variation_percent":fit_information.to_dict("records"),
           "leave_region_out_M_P_all_11_negative":bool(leaves.query("model == 'M_P'").beta_per_10pp.lt(0).all()),
           "leave_region_out_M_SP_all_11_negative":bool(leaves.query("model == 'M_SP'").beta_per_10pp.lt(0).all())},
        "precision_note":"Temporal original CI endpoints differ by <=9e-12 between the original temporal table and later author-calibration reproduction; Figure 3 retains original temporal table endpoints.",
-       "raster_quantization_note":"170 mm at exactly 800 dpi is 5354.3307 pixels. TIFF width is rounded upward to 5355 pixels and tagged 800.1 dpi, preserving exactly 170 mm and at least 800 dpi.",
+       "raster_quantization_note":f"{WIDTH_MM:g} mm is rounded upward to {TIFF_WIDTH_PX} pixels and tagged {TIFF_DPI:.8f} dpi, preserving the declared width and at least {MIN_TIFF_DPI} dpi.",
+       "review_typography":"All visible text is at least 10 pt at the declared 169-mm width; review layouts were reflowed for readability.",
        "figure1_cartographic_context":{"source":"Natural Earth 1:110m land", "source_sha256":LAND_SOURCE_SHA256,
           "source_git_blob":LAND_SOURCE_GIT_BLOB,"projected_cache_sha256":sha256(inputs/"antarctic_land_EPSG3031.json"),
           "selected_source_feature_indices":[p["feature_index"] for p in land["polygons"]],
@@ -686,8 +745,8 @@ def main(a):
     write_json(out/"polynya_figure_verification_receipt.json",audit)
     alt={
        STEMS[0]:"Antarctic polar stereographic map of the 85 matched Adélie sites, coloured by each site's mean observed June–October coastal-polynya area fraction within 100 km. A pale generalized Natural Earth 1:110m land outline and labelled 0, 90 west and 90 east meridians provide geographic context only; land is not used as an analysis mask. Thin blue outlines show 100-km geodesic sampling circles, not polynya boundaries. A region table totals 439 colony-seasons in 11 regions during 2004–2010. The geodesically calibrated scale bar is centred at 70 degrees south. All original colony locations and exposure values are unchanged.",
-       STEMS[1]:"Forest plot of four polynya coefficients, with original single-PLSR and author-R1000 optical measurements, without and with summer salinity adjustment. The displayed covariance sensitivity, dated 2026-11-21, uses 425 informative rows, 82 sites and 8 regions with t(7) intervals. Coefficients are unchanged from the 439-row cohort; all four intervals are below zero. A separate plot shows the 11 leave-region-out point estimates for each original model; all point estimates are negative, with no omission-specific intervals drawn. Original frozen 11-region intervals are preserved in the numerical extract.",
-       STEMS[2]:"Time order of preceding winter P0, summer optical isotope proxy, and following winter P1 on 358 matched observations. The first four forest-plot rows show simultaneous-model P0, P1, the covariance-based contrast, and the author-R1000 contrast for 347 observations in 8 informative regions with t(7) intervals. Final rows compare original and author-R1000 contrasts on 358 observations in all 11 reporting regions. P1 intervals cross zero; all displayed direct contrast intervals end just below zero.",
+       STEMS[1]:"Forest plot of four unchanged polynya coefficients for original and author-R1000 optical measurements, without and with summer salinity adjustment. Each row pairs a filled coloured CV3 delete-one-region jackknife interval with a hollow grey archived CR1 interval. Both use 425 informative rows, 82 sites, 8 regions and t(7). All four CV3 main-association intervals remain below zero. A separate plot shows all 11 leave-region-out point estimates for each original model; every point remains negative, without omission-specific intervals. Original eleven-region and archived eight-region numeric tables are preserved separately. Layout is 169 mm wide with visible text at least 10 pt.",
+       STEMS[2]:"Time order of preceding winter P0, summer optical isotope proxy, and following winter P1 on 358 matched observations. Four paired forest rows show original P0, original P1, original P0 minus P1, and author-R1000 P0 minus P1. Filled coloured CV3 delete-one-region jackknife intervals are compared with hollow grey archived eight-region CR1 intervals, all with t(7) and 347 informative observations. The original contrast remains minus 0.68769 per mil per 10 percentage points; its CV3 interval is minus 1.47026 to plus 0.09487. The author-R1000 contrast CV3 interval is minus 1.47634 to plus 0.08980. Both CV3 contrast intervals cross zero, so the timing difference is uncertain despite the negative point estimates. Frozen eleven-region intervals remain in the numeric extract rather than the main panel. Layout is 169 mm wide with visible text at least 10 pt.",
        STEMS[3]:"Scatter plot of winter polynya and summer salinity residuals after site and region-by-season effects only, on the same 439 observations, with correlation minus 0.08043. A bar plot reports additional residual variation relative to M0: salinity 2.1429%, polynya 3.7939%, and both 5.2928%. These modest conditional associations do not identify independent physical causes.",
        STEMS[4]:"Conceptual figure separating the observed negative historical within-colony association from three unresolved candidate pathways: trophic composition, nitrogen-isotope baseline, and optical mixture or surface effects. The observed association has no causal arrowhead; candidate pathways use dashed arrows. A distinct shaded panel places the Reaves et al. 2025 southern latent-heat-polynya settings and higher bone delta15N in southern colonies in a separate between-colony context: 15 locations with modern and ancient chick bones. The tissue, timescale and estimand differ; no continuous polynya-area slope, direct sign reversal or proven mechanism is implied."
     }

@@ -1,0 +1,199 @@
+{
+  "status": "PASS_FILE_STRUCTURE_WITH_AUTHOR_COMPLETION_PENDING",
+  "version": "0.7.1",
+  "checked_at_utc": "2026-11-21T14:38:06.730023+00:00",
+  "inspector": "meps_requirements",
+  "build_receipt_sha256": "592026168d132bab31b7fcfc070f85f09c8c1c03f3ca048515ec823b73f6becf",
+  "count_definition": "Join all w:t text runs within each w:p in word/document.xml body and count whitespace-delimited tokens, then sum. Includes title, current author/affiliation placeholders, running head/frontmatter review notes, abstract, keywords, section headings, body, acknowledgements, data/code statement, bibliography and captions; would include editable table text, but main has no tables. Excludes header/footer text, field results/page and line numbers, text inside embedded figure images, and separate supplemental/admin documents. Portal counts may differ. Author replacements will change totals.",
+  "files": [
+    {
+      "name": "Polynya_MEPS_cover_letter_v07.docx",
+      "bytes": 39041,
+      "sha256": "a7e3699c3e1c957686d6c936a616f3582caeadc37adc7f2c2c330db01e4de7d9",
+      "matches_current_build_receipt": true,
+      "zip_crc_valid": true,
+      "all_body_text_words_whitespace": 241,
+      "editable_tables": 0,
+      "embedded_images": 0,
+      "image_widths_mm": [],
+      "page_field_present": true,
+      "cover_preflight": {
+        "research_summary_words": 145,
+        "author_attestation_fields_pending": true,
+        "timing_interval_includes_zero_explicit": true
+      },
+      "render_pdf": {
+        "path": "/workspace/scratch/4f410519c673/docx_qa_v071/Polynya_MEPS_cover_letter_v07/Polynya_MEPS_cover_letter_v07.pdf",
+        "sha256": "b205cc8abc19072dbd02e7358c33fd0b454a60d638f696bc8ce0f8bc3dd87e25",
+        "pages": 1
+      }
+    },
+    {
+      "name": "Polynya_author_information_v07.docx",
+      "bytes": 40746,
+      "sha256": "94533582a7c4910447ece3c951aba5670e123cba4cb5ae6049e52576574e67a3",
+      "matches_current_build_receipt": true,
+      "zip_crc_valid": true,
+      "all_body_text_words_whitespace": 504,
+      "editable_tables": 1,
+      "embedded_images": 0,
+      "image_widths_mm": [],
+      "page_field_present": true,
+      "author_form_preflight": {
+        "table_first_header": "No.",
+        "pending_human_review": true,
+        "code_licence_choice_field": true,
+        "DOI_publication_not_assumed": true
+      },
+      "render_pdf": {
+        "path": "/workspace/scratch/4f410519c673/docx_qa_v071_author_final/Polynya_author_information_v07.pdf",
+        "sha256": "3c9ed0ceb64d6b5cb1c5c6ce345797228211f4109a67b3d2801a46fa0387db43",
+        "pages": 2
+      }
+    },
+    {
+      "name": "Polynya_foodweb_alt_text_v07.docx",
+      "bytes": 39550,
+      "sha256": "a07cc159682a67c1a3ec33be112d9d2983ae18d7339a80145d2fe2ac3a223c04",
+      "matches_current_build_receipt": true,
+      "zip_crc_valid": true,
+      "all_body_text_words_whitespace": 474,
+      "editable_tables": 0,
+      "embedded_images": 0,
+      "image_widths_mm": [],
+      "page_field_present": true,
+      "alt_preflight": {
+        "five_figure_sections": true,
+        "description_words": [
+          94,
+          97,
+          132,
+          51,
+          87
+        ],
+        "contains_digits": true,
+        "guidance_note": "Descriptions exist; plain-word numbers and less technical repetition remain possible editorial polish, not a missing-file failure."
+      },
+      "render_pdf": {
+        "path": "/workspace/scratch/4f410519c673/docx_qa_v071/Polynya_foodweb_alt_text_v07/Polynya_foodweb_alt_text_v07.pdf",
+        "sha256": "84c0aa35b9de32be8ef6e4c862c8c17df079cebde80e4e4c0d15498c40f5c4d6",
+        "pages": 2
+      }
+    },
+    {
+      "name": "Polynya_foodweb_figures_v07.docx",
+      "bytes": 1707405,
+      "sha256": "0cbe05956a16dbd38de0b621f5c5c48991e48f4fea5293552437a51ade34ccdc",
+      "matches_current_build_receipt": true,
+      "zip_crc_valid": true,
+      "all_body_text_words_whitespace": 354,
+      "editable_tables": 0,
+      "embedded_images": 5,
+      "image_widths_mm": [
+        169.0,
+        169.0,
+        169.0,
+        169.0,
+        169.0
+      ],
+      "page_field_present": true,
+      "render_pdf": {
+        "path": "/workspace/scratch/4f410519c673/docx_qa_v071_final/Polynya_foodweb_figures_v07/Polynya_foodweb_figures_v07.pdf",
+        "sha256": "85ef16dfc2b1bf53cdf7c4b96922e9dca99f902dc51cd6c722cb7bbc2ecd308d",
+        "pages": 5
+      }
+    },
+    {
+      "name": "Polynya_foodweb_manuscript_v07.docx",
+      "bytes": 1718740,
+      "sha256": "bc38862f44baf3212a879b6fba0cae1ded1c28739f20f357d02ec74948a13860",
+      "matches_current_build_receipt": true,
+      "zip_crc_valid": true,
+      "all_body_text_words_whitespace": 4633,
+      "editable_tables": 0,
+      "embedded_images": 5,
+      "image_widths_mm": [
+        169.0,
+        169.0,
+        169.0,
+        169.0,
+        169.0
+      ],
+      "page_field_present": true,
+      "manuscript_preflight": {
+        "title_characters_including_spaces": 105,
+        "title_words_whitespace": 14,
+        "running_head_words": 5,
+        "abstract_words_whitespace": 222,
+        "keywords": [
+          "Pygoscelis adeliae",
+          "coastal polynya",
+          "nitrogen isotopes",
+          "satellite reflectance",
+          "seasonal sea ice",
+          "Southern Ocean"
+        ],
+        "keyword_count": 6,
+        "main_IMRAD_through_conclusion_words_with_headings": 3470,
+        "bibliography_entry_words": 248,
+        "bibliography_entries": 8,
+        "figure_caption_words": 354,
+        "figure_captions": 5,
+        "all_images_after_literature": true,
+        "normal_body_font_pt": 12.0,
+        "normal_double_spacing_line_value": "480",
+        "body_and_caption_paragraphs_checked": 42,
+        "body_caption_font_or_spacing_violations": [],
+        "continuous_line_numbering": true,
+        "under_5_million_bytes": true,
+        "author_and_acknowledgement_placeholders_present": true,
+        "main_interval_text_present": true,
+        "timing_uncertainty_text_present": true
+      },
+      "render_pdf": {
+        "path": "/workspace/scratch/4f410519c673/docx_qa_v071_final/Polynya_foodweb_manuscript_v07/Polynya_foodweb_manuscript_v07.pdf",
+        "sha256": "0230ee268eaf3880b4f4cc11740205f01cc1a5e560ff06bc63e98b504672484e",
+        "pages": 22
+      }
+    },
+    {
+      "name": "Polynya_foodweb_supplement_v07.docx",
+      "bytes": 47705,
+      "sha256": "52750e7d1076c42dabf52f1ff54b169f9225d3c4df835c399c2944ac5ee1b0ff",
+      "matches_current_build_receipt": true,
+      "zip_crc_valid": true,
+      "all_body_text_words_whitespace": 2655,
+      "editable_tables": 4,
+      "embedded_images": 0,
+      "image_widths_mm": [],
+      "page_field_present": true,
+      "supplement_preflight": {
+        "tables_S1_to_S4": [
+          "Table S1. Frozen estimates and informative-region uncertainty",
+          "Table S2. Cluster-jackknife uncertainty on the fixed informative support",
+          "Table S3. Salinity and same-sample variance comparisons",
+          "Table S4. Frozen forward prediction and descriptive period refits"
+        ],
+        "own_literature_cited_section": true
+      },
+      "render_pdf": {
+        "path": "/workspace/scratch/4f410519c673/docx_qa_v071/Polynya_foodweb_supplement_v07/Polynya_foodweb_supplement_v07.pdf",
+        "sha256": "92a35e29feb5c746ea58b55dab2017227e947e6f2d42871d0d6456f9255d5d79",
+        "pages": 7
+      }
+    }
+  ],
+  "core_checks_pass": true,
+  "observed_main_total_words": 4633,
+  "remaining_author_facts": [
+    "author identity, affiliations and contributions",
+    "human scientific review and responsibility statement",
+    "funding/conflicts/ethics and publication-history attestations",
+    "own-code licence, release decisions, archival DOI if chosen"
+  ],
+  "visual_QA_boundary": "This preflight inspects OOXML structure and rendered PDF page counts. Full-page visual QA remains in the separate root/agent render records; pages10–17 were individually inspected by this agent earlier.",
+  "guidance_alignment_notes": [
+    "Alt text is supplied but some descriptions retain digits/technical details; the guide recommends word numbers and concise complementary descriptions.",
+    "Main headings and title use display styles; verified 12pt/double-spacing applies to body and all five captions, not headers/footers/title."
+  ]
+}

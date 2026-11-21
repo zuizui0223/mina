@@ -20,7 +20,7 @@ Three single-colony regions provide no residual exposure information after colon
 
 ### Table S1. Frozen estimates and informative-region uncertainty
 
-All entries are in ‰ per 10-percentage-point increase in winter polynya fraction. The P0−P1 contrast uses the full covariance of the simultaneous coefficients. The original 11-region intervals remain archived; the manuscript emphasises the informative-eight-region intervals. The 425-row main sensitivities are new support audits dated 21 November 2026. The 347-row temporal sensitivities were already present in the frozen temporal analyses.
+All entries are in ‰ per 10-percentage-point increase in winter polynya fraction. The P0−P1 contrast uses the full covariance of the simultaneous coefficients. Both archived CR1 conventions remain here for traceability; the manuscript also prominently displays the additional cluster-jackknife intervals in Table S2. The 425-row main CR1 sensitivities are support audits dated 21 November 2026. The 347-row temporal CR1 sensitivities were already present in the frozen temporal analyses.
 
 | Response and model | Estimate | Nominal 11-region 95% interval | Informative 8-region 95% interval |
 |---|---:|---:|---:|
@@ -33,11 +33,35 @@ All entries are in ‰ per 10-percentage-point increase in winter polynya fracti
 
 In the 358-row original simultaneous model, P0 is −1.3790 [−2.2705, −0.4876] and P1 is −0.6913 [−1.4393, +0.0566] under the archived nominal-11-region intervals. Separate P0-only and P1-only regressions are not the basis for the temporal contrast. The raw P0–P1 correlation is +0.796; after the full adjustment it is −0.390. Their adjusted standard deviations are approximately 1.238 and 1.336 percentage points. Reporting per 10 percentage points therefore scales a local conditional slope; it does not demonstrate a typical within-colony change of that magnitude.
 
-### Table S2. Salinity and same-sample variance comparisons
+### Additional uncertainty audit: unequal regional information
+
+Eight nonzero-information regions do not provide equal identifying information. After all M_P covariates and fixed effects are removed, Victoria Land contributes 55.0263% of the residual polynya sum of squares and Wilkes Land 19.0106%. The inverse sum of squared regional information shares is 2.8439 for M_P and 2.8793 for M_SP. These concentration indices describe the design; they are not inferential degrees of freedom or new counts of independent regions.
+
+This concentration motivated one bounded uncertainty diagnostic, selected before calculating its intervals: the cluster-jackknife CV3 of MacKinnon et al. (2023, their Eq. 18). With G = 8, its covariance is (G−1)/G times the sum, over omitted regions, of the outer product of each leave-region-out coefficient vector minus the full coefficient vector. The centre is the full estimate, not the mean leave-out estimate. Each fit reconstructs and absorbs the same colony and region-by-season fixed effects. Every retained slope design has full rank. A t(7) reference gives the intervals below; a temporal contrast uses its complete coefficient covariance. This is an additional 21 November 2026 diagnostic on the frozen design, not a prespecified confirmation of the ecological hypothesis.
+
+### Table S2. Cluster-jackknife uncertainty on the fixed informative support
+
+Units are ‰ per 10 percentage points. M_P and M_SP use 425 informative rows from the unchanged 439-row cohort; the temporal contrast uses 347 informative rows from the unchanged 358-row cohort. Both supports contain eight regions and 82 sites.
+
+| Response and model | Estimate | CV3 with t(7), 95% interval |
+|---|---:|---:|
+| Original response, M_P | −1.0031 | [−1.6753, −0.3309] |
+| Original response, M_SP | −0.9216 | [−1.5151, −0.3281] |
+| Author R1,000 mean, M_P | −1.0233 | [−1.7072, −0.3395] |
+| Author R1,000 mean, M_SP | −0.9411 | [−1.5418, −0.3404] |
+| Original response, P0−P1 | −0.6877 | [−1.4703, +0.0949] |
+| Author R1,000 mean, P0−P1 | −0.6933 | [−1.4763, +0.0898] |
+
+The main polynya intervals remain below zero, but both temporal-contrast intervals include zero. The difference between winters is therefore sensitive to the uncertainty method and remains uncertain. CV3 does not guarantee exact coverage with eight heterogeneous clusters and does not correct exploratory selection, common calibration bias or correlation of errors across regions. The reproducible diagnostic stores all 48 leave-out fits, complete covariance matrices and information shares. Its 34 numerical checks confirm unchanged full/informative coefficients, agreement with archived original-response regional omissions, and agreement between direct scalar and matrix contrast calculations. The R1,000 response is assessed symmetrically with the original response.
+
+### Table S3. Salinity and same-sample variance comparisons
 
 | Quantity | Result | Sample and interpretation |
 |---|---:|---|
-| Salinity coefficient | +0.8341‰ per salinity unit | Separate 860-row panel; 88 sites, 13 regions |
+| Joint-model salinity coefficient | +0.6462‰ per salinity unit | M_SP on the same 439 rows |
+| Joint-model salinity CV3 interval | [−0.1960, +1.4884]‰ | 425 informative rows, 8 regions; t(7) |
+| Joint-model salinity CR1 interval | [+0.1537, +1.1387]‰ | Same informative support; archived correction |
+| Broader-panel salinity coefficient | +0.8341‰ per salinity unit | Separate 860-row panel; 88 sites, 13 regions |
 | Salinity 13-region interval | [−0.0159, +1.6842]‰ | Includes zero; t(12) |
 | Salinity 82-wet-cell interval | [+0.3886, +1.2797]‰ | Different clustering and normal-reference convention |
 | Polynya–salinity adjusted correlation | −0.0804293 | Same 439; colony + region-by-season effects only |
@@ -56,7 +80,7 @@ The author-method sensitivity used R pls::plsr, method oscorespls, scale = FALSE
 
 The original and ensemble-mean 860 reconstructed responses correlated at 0.999880, with difference RMSE 0.05993‰. On the fixed439 panel, 1,000 calibration-specific slopes were all negative; their 2.5–97.5% ranges were [−1.2544, −0.8556]‰ for M_P and [−1.1629, −0.7843]‰ for M_SP. The temporal-contrast range was [−0.8747, −0.5291]‰. These are calibration-split sensitivities, not ecological confidence intervals or independent observations.
 
-### Table S3. Frozen forward prediction and descriptive period refits
+### Table S4. Frozen forward prediction and descriptive period refits
 
 | Comparison | Support | Result |
 |---|---|---|
@@ -98,4 +122,12 @@ The future outputs do not provide a validated projection of the DEEP-AA coastal-
 
 The pre-result direct-polynya protocol specified a positive direction after previous environmental exploration; that directional hypothesis was not supported. The later focus on the negative association, the temporal comparison and this manuscript structure are retrospective. Publicly committed protocols document timing within this project but are not represented as an independent confirmatory preregistration. No radius, outcome, lag, classifier threshold or favourable subset was newly searched during the manuscript restructuring.
 
-The offline package includes source-derived inputs, fixed numerical outputs, manuscript source, plotting and verification scripts, and checksums. It reproduces the frozen 439/358 analyses and all five figures. Large original satellite/calibration archives are linked by DOI and identity rather than silently replaced by simulated data. Publishing a final DOI, resolving any redistribution conditions, confirming author contributions and completing the target journal's current administrative requirements remain author-level publication steps.
+The offline package includes source-derived inputs, fixed numerical outputs, manuscript source, plotting and verification scripts, and checksums. It reproduces the frozen 439/358 analyses, the separately dated CV3 uncertainty diagnostic and all five figures. Large original satellite/calibration archives are linked by DOI and identity rather than silently replaced by simulated data. The source-reuse register records the two principal Zenodo datasets' CC BY 4.0 licences, Copernicus credit and product DOI, and the unresolved historical NSIDC v4 redistribution label. Publication of a final DOI, a licence decision for project-created code, human scientific review and author declarations remain outstanding.
+
+## Literature cited
+
+Lin Y, Nakayama Y, Liang K, Huang Y, Chen D, Yang Q (2024) A dataset of the daily edge of each polynya in the Antarctic. Scientific Data 11:1006. https://doi.org/10.1038/s41597-024-03848-2
+
+MacKinnon JG, Nielsen MØ, Webb MD (2023) Fast and reliable jackknife and bootstrap methods for cluster-robust inference. Journal of Applied Econometrics 38:671–694. https://doi.org/10.1002/jae.2969
+
+Youngflesh C, Che-Castaldo C, Schwaller MR, Polito MJ, Serbin SP, Lynch HJ (2026) Space-based monitoring of penguin diet links sea ice, food webs, and population change. Current Biology 36:3707–3714.e5. https://doi.org/10.1016/j.cub.2026.06.028

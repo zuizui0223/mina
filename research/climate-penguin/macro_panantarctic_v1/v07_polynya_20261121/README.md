@@ -1,14 +1,14 @@
-# Polynya manuscript v0.7 — current author-review candidate
+# Polynya manuscript v0.7.1 — current author-review candidate
 
 This is the single current manuscript candidate in Draft PR #214 of `zuizui0223/mina`. It supersedes the nest-exposure-centred v0.6 presentation; earlier manuscripts and frozen analyses remain historical records. Original source analyses are pinned to `a1cf988df3501794e9add243a8c2be8ecbb7b43a`.
 
 ## Read the manuscript
 
-1. [Main manuscript and 218-word abstract](MANUSCRIPT_POLYNYA_FOODWEB_WORKING.md)
+1. [Main manuscript and 222-word abstract](MANUSCRIPT_POLYNYA_FOODWEB_WORKING.md)
 2. [Supplementary methods and results](SUPPLEMENT_POLYNYA_FOODWEB.md)
 3. [Figure sources and output](figures/), [alt text](figure_alt_text.json)
 4. [Independent numerical reproduction](reproduction_receipt.json), [figure verification](figures/polynya_figure_verification_receipt.json)
-5. [Literature and publication-status notes](REVIEW_NOTES_JA.md)
+5. [Publication-status notes](REVIEW_NOTES_JA.md), [MEPS preparation](submission_preparation/MEPS_REQUIREMENTS.md), [author input](submission_preparation/AUTHOR_INFORMATION.md)
 
 The question is whether June–October coastal-polynya area fraction within 100 km is associated with the subsequent November–February optical Adélie δ¹⁵N signal, after measured summer conditions and fixed effects. This is a retrospective exploratory reanalysis of released source pixels, not direct dietary measurement or a new independent ecological sample.
 
@@ -16,7 +16,9 @@ The question is whether June–October coastal-polynya area fraction within 100 
 
 The main narrative now follows winter polynya association, temporal comparison, salinity distinction, measurement sensitivity and unresolved biological interpretation. Nest-weighted climate exposure is supplementary context. The negative direction contradicts the original positive hypothesis and is disclosed in the abstract. Failed forward prediction, weaker later-period point estimates, selective chlorophyll support, inconclusive Signy stomach-content evidence and the unsuccessful later-period guano-recovery gate remain visible.
 
-An independent support audit found only eight informative regions: three single-colony regions are absorbed by the fixed effects. The full 439 panel remains the observational cohort. Dropping 14 non-informative records leaves 425 records/82 sites/8 regions, with unchanged slopes and residual SSE. The newly dated 21 November 2026 covariance sensitivity is the main displayed interval; the original frozen 11-region intervals are preserved in Supplement Table S1 and the numeric extracts. The matched temporal comparison uses 358 observations, or 347 informative observations in 8 regions for its uncertainty sensitivity. No radius, lag, threshold or favourable biological subset was searched during this revision.
+An independent support audit found only eight informative regions: three single-colony regions are absorbed by the fixed effects. The full 439 panel remains the observational cohort. Dropping 14 non-informative records leaves 425 records/82 sites/8 regions, with unchanged slopes and residual SSE. A subsequent design audit found uneven information: Victoria Land supplies 55.0% and Wilkes Land 19.0% for M_P. We therefore added one explicitly dated delete-one-region CV3 diagnostic, centred at the full coefficient vector with t(7), on the unchanged models and support. It was selected before calculating its new intervals. Figures compare CV3 with the archived eight-region CR1 intervals; original nominal-eleven CR1 results remain in Table S1 and numeric extracts.
+
+The M_P CV3 interval is [−1.675, −0.331]‰/10pp and the salinity-adjusted interval [−1.515, −0.328]. For the matched temporal comparison, the 347 informative rows from the 358-record cohort give a difference −0.688 with CV3 interval [−1.470, +0.095]. Thus the main negative association remains, but the difference between winters is uncertain. No radius, lag, threshold, outcome or favourable biological subset was searched. CV3 is not a guarantee of finite-cluster coverage or a correction for exploratory selection.
 
 ## Reproduce offline
 
@@ -24,17 +26,20 @@ Run from this directory in Python 3.11 or later with the versions in `requiremen
 
 ```bash
 python verify_frozen_polynya_results.py --inputs-dir frozen_archives --temporal-csv verification_inputs/matched_temporal358.csv --out reproduced_numeric_receipt.json
+python diagnose_region_jackknife.py --out reproduced_jackknife_receipt.json
 python render_polynya_main_figures.py
 python build_review_documents.py --out review_documents
 ```
 
 The verifier independently projects explicit fixed-effect dummies and recalculates the archived fits, covariance contrasts, calibration-ensemble response sensitivity, information support and SSE reductions. It does not import the original fitting code. Expected result: `PASS_INDEPENDENT_REPRODUCTION_OF_EXISTING_FROZEN_POLYNYA_RESULTS`, 58 checks. Numerical equality is evaluated with declared tolerances, not a claim of byte-identical floating-point results across arbitrary hardware.
 
+The separate jackknife script uses the same pinned rows, slope definitions and verified fixed-effect projection. It refits the eight regional omissions for six original/ensemble model–contrast combinations and checks 34 identities against frozen coefficients, original regional omissions and direct scalar contrast calculations. The checked input used by the renderer is `source_inputs/region_jackknife_diagnostic.json`; the renderer does not compute new intervals. The audit does not claim to have run CR2/Satterthwaite.
+
 The figure renderer checks input SHA256 values, reconstructs the fixed 439 join, calculates descriptive site exposure means and the specified fixed-effect residual correlation, and plots the supplied coefficients. It does not refit ecological models. Cached verified projected coordinates permit offline rendering without pyproj. Recreating projection caches requires pyproj; the cache itself and its source attribution are supplied. The pale Antarctic land outline in Figure 1 is Natural Earth 1:110m cartographic context (public domain), not an exposure mask. Its source Git blob, checksum and projected cache are recorded in the manifest; adding the outline does not change any ecological input. Official terms: https://www.naturalearthdata.com/about/terms-of-use/.
 
-Figures are 170 mm wide, with editable SVG, PNG previews and approximately 800 dpi TIFF exports. TIFFs and Word outputs are generated deliverables, not required inputs for reproduction.
+Figures are 169 mm wide, with at least 10 pt text for review, editable SVG, PNG previews and approximately 800 dpi TIFF exports. TIFFs and Word outputs are generated deliverables, not required inputs for reproduction.
 
-`build_review_documents.py` uses python-docx to create the double-spaced, line-numbered manuscript, a supplementary document and a five-page figure packet. It also exports the abstract as plain text. Word is a review layout; authorship and submission declarations are not manufactured. Rendering to page images for visual review requires a separate DOCX renderer such as LibreOffice. Python dependencies alone do not supply that application.
+`build_review_documents.py` uses python-docx to create a double-spaced, line-numbered combined manuscript containing all five figures and their captions at the end, below the current 5 MB initial-submission limit. It also creates a supplementary document, a compact figure packet, separate figure Alt text, a cover-letter draft and the author-information form. It exports the 222-word abstract as plain text. Author identities and required attestations remain explicit placeholders. Rendering for visual review requires a separate DOCX renderer such as LibreOffice; Python dependencies alone do not supply that application.
 
 ## Included source-derived inputs
 
@@ -49,10 +54,12 @@ Four compact frozen analysis archives are included under `frozen_archives/`. The
 
 The exact temporal CSV is pinned separately in `verification_inputs/`; its SHA256 and original Git blob are checked by the numerical verifier. Small figure tables and projection caches are under `source_inputs/`, with source identity and content hashes in `source_manifest.json`. Provider data retain their authorship, DOI and original terms; this review bundle does not assign a new licence to those data.
 
+[Source notices](submission_preparation/SOURCE_NOTICES.md) and the [reuse register](submission_preparation/SOURCE_REUSE_REGISTER.json) document attribution, provider-specific licences and transformations. Both principal Zenodo deposits specify CC BY 4.0. The exact historical NSIDC v4 redistribution label and the project's own code-licence choice remain unresolved; neither is replaced by a blanket package licence. Generated using E.U. Copernicus Marine Service Information; https://doi.org/10.48670/moi-00021.
+
 ## Reproduction scope and publication status
 
 This package reproduces the frozen derived 439/358 models and the five main figures. It does not re-download or re-extract all original Landsat/DEEP-AA grids, refit the full published hierarchical diet model, independently validate the guano pixels, or evaluate 2013–2021 ecological outcomes. Its hashes support traceability within that scope.
 
-The main inference remains limited by exploratory selection, only 8 informative regional clusters, an approximate archived CR1 convention, an optical rather than direct isotope response, and unsuccessful prediction/independent-mechanism checks. The broader 860-row salinity coefficient is not a same-sample second effect in the 439-row model. Selected CMIP6 outputs are not used to project this local polynya measure or future diet.
+The main inference remains limited by exploratory selection, eight unevenly informative regional clusters, approximate covariance sensitivities, an optical rather than direct isotope response, and unsuccessful prediction/independent-mechanism checks. The same-sample salinity coefficient is now reported explicitly (+0.646; CV3 interval [−0.196,+1.488]); the broader 860-row +0.834 coefficient remains separate context. Selected CMIP6 outputs are not used to project this local polynya measure or future diet.
 
-This is ready for author review, not certified as administratively ready for journal submission. Current MEPS instructions, author metadata/contributions, funding/competing-interest/AI-use statements, final redistribution conditions and a permanent public archival DOI require completion by the authors. No journal submission or DOI publication is part of this revision.
+Current MEPS instructions and linked publisher policies were retrieved from official pages on 21 November 2026 and used for the initial-review file preparation. [The requirement matrix](submission_preparation/MEPS_REQUIREMENTS.md) separates verified requirements from author-dependent fields. This remains an author-review package: human scientific review, author metadata/contributions, funding/conflict/ethics statements, the accurate AI-use acknowledgement and release decisions need author completion. Generative assistance is disclosed as substantive drafting, code and checks, not just grammar correction; policy eligibility is not automatically certified. No journal submission, new DOI publication, licence assignment or merge is part of this revision.
