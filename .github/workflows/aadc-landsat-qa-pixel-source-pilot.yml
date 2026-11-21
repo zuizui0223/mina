@@ -1,0 +1,49 @@
+name: AADC Landsat site pixel QA two-region engineering gate
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_landsat_pixel_qa_pilot.py
+      - tests/test_aadc_landsat_pixel_qa_pilot.py
+      - .github/workflows/aadc-landsat-qa-pixel-source-pilot.yml
+  workflow_dispatch:
+concurrency:
+  group: aadc-landsat-qa-pixel-pilot-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  qa-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source QA reader dependencies
+        run: python -m pip install numpy pyproj rasterio requests
+      - name: Compile and validate QA bit semantics
+        run: |
+          python -m py_compile scripts/audit_aadc_landsat_pixel_qa_pilot.py
+          python -m unittest discover -s tests -p test_aadc_landsat_pixel_qa_pilot.py -v
+      - name: Retrieve immutable 16-event Landsat metadata source and verify digest
+        run: |
+          mkdir -p build/stac
+          gh run download 44850629480 -n aadc-16-events-landsat-original-scene-source-all -D build/stac
+          echo '988a66154633202af46495b2f6b46cc02e51363451ebc5754a6435a0825f6950  build/stac/AADC_16_AP_LANDSAT_SOURCE_ALL_20261121.json' | sha256sum -c -
+      - name: Read original remote QA_PIXEL COG windows for fixed DUM and LUT examples
+        run: |
+          python -m scripts.audit_aadc_landsat_pixel_qa_pilot \
+            --stac-16-receipt build/stac/AADC_16_AP_LANDSAT_SOURCE_ALL_20261121.json \
+            --out-json build/AADC_LANDSAT_QA_PIXEL_TWO_REGION_20261121.json
+      - name: Preserve asset access failures and source-only QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aadc-landsat-pixel-qa-two-region-original-source-20261121
+          path: build/AADC_LANDSAT_QA_PIXEL_TWO_REGION_20261121.json
+          retention-days: 30
