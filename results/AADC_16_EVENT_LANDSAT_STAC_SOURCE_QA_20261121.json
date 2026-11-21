@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-aadc-16-a2p-landsat-stac-scenes-complete-cohort-20261121",
+  "date": "2026-11-21",
+  "status": "ALL_16_EVENT_SOURCE_SCENE_METADATA_CHECKED_NO_IMAGE_PIXEL_QA",
+  "execution": {
+    "repo": "zuizui0223/mina",
+    "branch": "analysis/postglacial-glims-sourcegate-20261119",
+    "workflow_run_id": 44850629480,
+    "artifact_id": 14684739302,
+    "previous_pilot_run_id": 44537709152,
+    "comparison": "16 immutable AADC A->P observed state transitions in 14 original geographic site IDs",
+    "site_source": "AADC 2025 (sha256 ed5f59d11a0e2ca7491ecf32dc8b04de524e83edf7acd268702963c3b7561294)",
+    "event_source": "AADC expert/absence-grade original result actions 44530909415"
+  },
+  "scene_catalog": {
+    "provider": "Element84 Earth Search STAC",
+    "endpoint": "https://earth-search.aws.element84.com/v1/search",
+    "collection": "landsat-c2-l2",
+    "search_period": "Nov 1 to Mar 31 (austral breeding season) on both successive AADC seasons",
+    "per_query_max_records": 100,
+    "distinct_query_season_windows": 32,
+    "query_error_count": 0,
+    "possible_incomplete_first_page_in_all_positive_windows": true,
+    "sum_returned_first_page_scene_items_across_windows": 349,
+    "first_page_scenes_with_QA_PIXEL_asset_metadata": 349,
+    "nonempty_season_windows": 20
+  },
+  "observed_coverage": {
+    "source_events": 16,
+    "unique_source_site_ids": 14,
+    "both_seasons_have_scene_metadata": 8,
+    "only_P_season_has_scene_metadata": 4,
+    "only_A_season_has_scene_metadata": 0,
+    "neither_season_scene_metadata_or_pre_collection": 4,
+    "site_ids_with_both_seasons_scene_metadata": [
+      "IS_70749",
+      "R_223",
+      "IS_70714",
+      "IS_70731",
+      "IS_70715",
+      "IS_70729",
+      "IS_121",
+      "IS_105"
+    ],
+    "earliest_a_year_with_both_seasons": 2008,
+    "latest_a_year_with_both_seasons": 2017,
+    "both_by_broad_region": {
+      "DUM": 6,
+      "LUT": 2
+    }
+  },
+  "QA_and_inference": {
+    "scene_cloud_percent_is_not_rock_pixel_quality": true,
+    "full_scene_counts_exhaustive": false,
+    "per_pixel_QA_PIXEL_read": false,
+    "actual_ice_to_rock_transition_confirmed": false,
+    "true_penguin_colonization_confirmed": false,
+    "whole_risk_set_sampled": false,
+    "ecological_association_test_fitted": false,
+    "future_observation_needed": "Open paired source QA_PIXEL and reflectance/ice-boundary imagery at independently verified physical nesting patch before causal interpretation."
+  },
+  "stop_conditions": [
+    "14 coordinate points are source geog-site centroids, not nest polygon footprints",
+    "AADC P/A are visited reports with observation limitations; first P is not confirmed colonization",
+    "Event-only optical coverage conditions on observed transitions; no comparison to noncolonized patches",
+    "STAC search may paginate even with <100 records; first page numbers must never be called total scene census",
+    "2024 SCAR compilation is not a dated historical bare-rock change map",
+    "8/16 is only *candidate imagery availability*, not 8 observed glacier retreats"
+  ]
+}
