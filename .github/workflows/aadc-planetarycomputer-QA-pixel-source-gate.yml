@@ -1,0 +1,49 @@
+name: AADC Planetary Computer Landsat signed QA_PIXEL source gate
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_planetarycomputer_pixel_qa.py
+      - tests/test_aadc_planetarycomputer_pixel_qa.py
+      - .github/workflows/aadc-planetarycomputer-QA-pixel-source-gate.yml
+  workflow_dispatch:
+concurrency:
+  group: aadc-signed-qa-pixel-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  signed-pixel-source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public PC STAC and raster QA dependencies
+        run: python -m pip install numpy requests pyproj rasterio pystac-client planetary-computer
+      - name: Verify source-backed signing and code validity
+        run: |
+          python -m py_compile scripts/audit_aadc_planetarycomputer_pixel_qa.py
+          python -m unittest discover -s tests -p test_aadc_planetarycomputer_pixel_qa.py -v
+      - name: Retrieve immutable 16 original AADC event source-scene receipt
+        run: |
+          mkdir -p build/stac
+          gh run download 44850629480 -n aadc-16-events-landsat-original-scene-source-all -D build/stac
+          echo '988a66154633202af46495b2f6b46cc02e51363451ebc5754a6435a0825f6950  build/stac/AADC_16_AP_LANDSAT_SOURCE_ALL_20261121.json' | sha256sum -c -
+      - name: Inspect original public PC QA pixels for same two AADC source cases
+        run: |
+          python -m scripts.audit_aadc_planetarycomputer_pixel_qa \
+            --stac-16-json build/stac/AADC_16_AP_LANDSAT_SOURCE_ALL_20261121.json \
+            --out-json build/AADC_PUBLIC_PC_SIGNED_LANDSAT_QA_PIXEL_20261121.json
+      - name: Retain source pixel QA or explicit access blocker
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aadc-public-pc-landsat-qa-pixel-source-20261121
+          path: build/AADC_PUBLIC_PC_SIGNED_LANDSAT_QA_PIXEL_20261121.json
+          retention-days: 30
