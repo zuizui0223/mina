@@ -188,52 +188,73 @@ def make_figures(a):
     fig.tight_layout()
     commit(fig,out,"Fig3_Positive_salinity_isotope_geography")
 
-    # Fig 4: direct physically projected multi-model spatial coupling and
-    # fixed old-count-weight source sign agreement at two future periods & SSPs.
-    fig,axs=plt.subplots(1,2,figsize=(13.2,5.7),gridspec_kw={"width_ratios":[.85,1.15]})
+    # Fig 4: same 271 counted sites, equal-site versus observed nest-median
+    # weighting is the focal comparison; separate panel shows the three-model
+    # geographic coupling of future SIC and salinity. No future nest forecast.
+    fig,axs=plt.subplots(1,2,figsize=(13.6,5.9),gridspec_kw={"width_ratios":[1.2,.8]})
+    order=[("ssp245","2041-2060"),("ssp245","2081-2100"),
+           ("ssp585","2041-2060"),("ssp585","2081-2100")]
+    labels=["Lower emissions\n2041–2060","Lower emissions\n2081–2100",
+            "Higher emissions\n2041–2060","Higher emissions\n2081–2100"]
+    q271eq=future[future.weight_cohort=="271_source_counted_colonies_equal_site"].copy()
+    q271nest=future[future.weight_cohort=="271_source_counted_colonies_nest_proxy_weight"].copy()
+    if len(q271eq)!=4 or len(q271nest)!=4:
+        raise ValueError("Same-271 site-equal versus recorded-nest-weight source cohorts missing")
+    eq=q271eq.set_index(["scenario","period"]).loc[order]
+    wt=q271nest.set_index(["scenario","period"]).loc[order]
+    if not (eq.n_source_site_ids.eq(271).all() and wt.n_source_site_ids.eq(271).all()
+            and np.isclose(eq.mean_delta_sic_pp.iloc[-1],-28.634,atol=.01)
+            and np.isclose(wt.mean_delta_sic_pp.iloc[-1],-13.276240917274329,atol=.00001)):
+        raise ValueError("Source matched 271 sites and expected future ice exposure changed")
+    delta_equal=eq.mean_delta_sic_pp.to_numpy()
+    delta_nest=wt.mean_delta_sic_pp.to_numpy()
+    if not np.all(delta_equal<delta_nest):
+        raise ValueError("Original 4 scenarios site-vs-nest source contrast drift")
+    ax=axs[0]
+    xx=np.arange(4)
+    ax.bar(xx-.18,delta_equal,.36,color=BLUE,label="271 sites, equal weights")
+    ax.bar(xx+.18,delta_nest,.36,color=ORANGE,label="Same 271 sites, fixed recorded nest medians")
+    ax.set_xticks(xx,labels,fontsize=8.1)
+    ax.set_ylim(-37,2)
+    ax.set_ylabel("Projected change in coastal sea ice (percentage points)")
+    ax.set_title("a. Location counts and recorded nests yield different exposure",loc="left")
+    ax.axhline(0,lw=.9,color=GREY)
+    ax.grid(axis="y",alpha=.17)
+    ax.legend(loc="lower left",fontsize=8.3,frameon=False)
+    ax.annotate("+15.36 points",
+        xy=(xx[-1]+.18,float(delta_nest[-1])),xytext=(2.38,-4.5),
+        arrowprops={"arrowstyle":"->","color":INK,"lw":.9},
+        fontsize=8.6,color=INK)
+    ax.text(.02,.02,
+        "All four bars compare the same counted sites per scenario.\n"
+        "Higher-emissions late-century difference:\n"
+        "+15.66 between regions −0.30 within regions.",
+        transform=ax.transAxes,fontsize=8.1,ha="left",va="bottom",
+        bbox={"facecolor":"white","edgecolor":"none","alpha":.92,"pad":2.5})
+
     modelcol={"ACCESS-CM2":BLUE,"BCC-CSM2-MR":TEAL,"CESM2":ORANGE}
     q=coupling[(coupling.scenario=="ssp585")&(coupling.period=="2081-2100")].sort_values("source_model")
     if len(q)!=3 or not (q.site_equal_within_region_corr_delta_sic_delta_sos.gt(0).sum()==1):
         raise ValueError("Original CMIP6 future coupling model sign split changed")
-    ax=axs[0]
+    ax=axs[1]
     for k,p in enumerate(q.itertuples(index=False)):
-        label=p.source_model
-        c=modelcol[label]
+        c=modelcol[p.source_model]
         ax.plot([p.site_equal_raw_corr_delta_sic_delta_sos,
                  p.model_cell_region_equal_within_region_corr_delta_sic_delta_sos],[k,k],
-                 lw=2,color=c,alpha=.6)
-        ax.scatter([p.site_equal_raw_corr_delta_sic_delta_sos],[k],c=[c],s=68,marker="o")
-        ax.scatter([p.model_cell_region_equal_within_region_corr_delta_sic_delta_sos],[k],c=[c],s=68,marker="s")
+                 lw=2,color=c,alpha=.65)
+        ax.scatter([p.site_equal_raw_corr_delta_sic_delta_sos],[k],c=[c],s=72,marker="o")
+        ax.scatter([p.model_cell_region_equal_within_region_corr_delta_sic_delta_sos],[k],c=[c],s=72,marker="s")
     ax.set_yticks(range(3),q.source_model.tolist())
     ax.set_xlim(-.9,1.0)
     ax.axvline(0,ls="--",color=GREY,lw=.9)
-    ax.set_xlabel("Spatial correlation: projected ΔSIC versus Δsalinity")
-    ax.set_title("a. Same scenario, different model geography",loc="left")
-    ax.text(.04,.05,"Circle: all 595 sites\nSquare: one native sea cell × region\nSSP5-8.5, 2081–2100",
-            transform=ax.transAxes,fontsize=8.6,va="bottom")
-    s=future[future.weight_cohort=="271_source_counted_colonies_nest_proxy_weight"].copy()
-    if len(s)!=4:raise ValueError("Four 271-counted source scenario rows not found")
-    order=[("ssp245","2041-2060"),("ssp245","2081-2100"),
-           ("ssp585","2041-2060"),("ssp585","2081-2100")]
-    data=s.set_index(["scenario","period"]).loc[order]
-    names=["SSP2-4.5\n2041–60","SSP2-4.5\n2081–2100",
-           "SSP5-8.5\n2041–60","SSP5-8.5\n2081–2100"]
-    y1=data.all_three_sos_freshen_weight_fraction.to_numpy()*100
-    y2=data.all_three_joint_ice_loss_and_freshening_weight_fraction.to_numpy()*100
-    if not(np.isclose(y1[-1],93.5425,atol=.01) and np.isclose(y2[-1],59.0808,atol=.01)):
-        raise ValueError("Original counted 271 site nest-weight model-agreement denominator drift")
-    ax=axs[1]
-    loc=np.arange(4)
-    ax.bar(loc-.18,y1,.36,color=TEAL,label="All 3 models: salinity decrease")
-    ax.bar(loc+.18,y2,.36,color=BLUE,label="All 3: salinity + sea-ice decrease")
-    ax.set_xticks(loc,names,fontsize=8.5)
-    ax.set_ylim(0,105)
-    ax.set_ylabel("Share of observed nest-median weight at qualifying sites (%)")
-    ax.set_title("b. Fixed old nesting weights, not future nest counts",loc="left")
-    ax.legend(loc="upper left",fontsize=8.5,frameon=False)
-    ax.grid(axis="y",alpha=.18)
-    fig.suptitle("Figure 4 | Projected marine changes do not form one universal ice–salinity axis",
-                 fontsize=13.4,fontweight="bold")
+    ax.set_xlabel("Spatial correlation: projected sea-ice vs salinity changes")
+    ax.set_title("b. Their joint geography differs across climate models",loc="left")
+    ax.text(.05,.06,
+        "Circle: all 595 known sites\nSquare: one native ocean cell × region\n"
+        "Higher emissions, 2081–2100",
+        transform=ax.transAxes,fontsize=8.5,va="bottom")
+    fig.suptitle("Figure 4 | Nest-weighted climate exposure and marine-model disagreement",
+                 fontsize=13.3,fontweight="bold")
     fig.tight_layout()
     commit(fig,out,"Fig4_Future_ice_freshening_model_disagreement")
 
@@ -260,6 +281,10 @@ def make_figures(a):
         "historical_optical_isotope_region_conservative_CI_crosses_zero":True,
         "n_original_isotope_source_site_seasons":860,
         "future_three_selected_model_only":True,
+        "same_271_counted_sites_equal_weight_late_sic_pp":float(delta_equal[-1]),
+        "same_271_counted_sites_recorded_nest_weight_late_sic_pp":float(delta_nest[-1]),
+        "same_271_counted_sites_late_sic_weighting_gap_pp":float(delta_nest[-1]-delta_equal[-1]),
+        "source_counted_site_denominator_held_fixed_between_weights":True,
         "original_271_counted_sites_not_future_population":True,
         "no_fish_or_krill_fraction_forecast":True,
         "no_salinity_mechanism_or_penguin_abundance_forecast":True,
