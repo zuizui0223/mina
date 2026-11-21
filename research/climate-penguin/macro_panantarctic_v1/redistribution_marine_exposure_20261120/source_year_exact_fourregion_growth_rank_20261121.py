@@ -17,12 +17,11 @@ from recompute_parent23_vs_complete17_SIC_region_sensitivity_20261121 import loa
 from resample_source_census_years_SIC23_vs17_20261121 import (
     xorshift32, records_by_site, historical_pairs, sample_median
 )
-from exact_four_region_growth_alignment_20261121 import REGIONS, quantile
+from exact_four_region_growth_alignment_20261121 import REGIONS, quantile, exact_assignments
 
 HERE=Path(__file__).resolve().parent
 INPUT=HERE/"matched_support.csv"
 FROZEN=HERE/"FROZEN_FOUR_REGION_RANK_CENSUS_YEAR_SENSITIVITY_20261121_JA.md"
-EXACT=HERE/"FOUR_REGION_GROWTH_ASSIGNMENT_EXACT24_20261121.json"
 N=4999
 SEED=20261121
 OUT=HERE/"FOUR_REGION_RANK_SOURCE_YEAR_SENSITIVITY_20261121.json"
@@ -97,7 +96,6 @@ def one_panel(rows):
 
 def main():
     assert FROZEN.is_file()
-    exact=json.loads(EXACT.read_text(encoding="utf8"))
     roster=[r for r in load(INPUT) if r["comparison"]=="long" and r["radius"]=="0"]
     assert len(roster)==23
     sub=[r for r in roster if all(r[k] for k in ("salinity0","salinity1","sst_C0","sst_C1"))]
@@ -105,10 +103,14 @@ def main():
     sub_ids={r["site_id"] for r in sub}
     obs23=one_panel(roster)
     obs17=one_panel(sub)
-    close(obs23["between_observed_pp"],exact["parent23"]["original_observed"]["between_region_pp"],"baseline23")
-    close(obs17["between_observed_pp"],exact["complete17"]["original_observed"]["between_region_pp"],"baseline17")
-    assert obs23["rank_highest_1"]==exact["parent23"]["between_rank_from_highest_with_ties"]
-    assert obs17["rank_highest_1"]==exact["complete17"]["between_rank_from_highest_with_ties"]
+    # Rebuild the prior exact24 reference from the same committed source files;
+    # the previous Actions output JSON is deliberately not committed.
+    exact23=exact_assignments(roster,"parent23_sic_only")
+    exact17=exact_assignments(sub,"complete17_glorys")
+    close(obs23["between_observed_pp"],exact23["original_observed"]["between_region_pp"],"baseline23")
+    close(obs17["between_observed_pp"],exact17["original_observed"]["between_region_pp"],"baseline17")
+    assert obs23["rank_highest_1"]==exact23["between_rank_from_highest_with_ties"]
+    assert obs17["rank_highest_1"]==exact17["between_rank_from_highest_with_ties"]
 
     histories=historical_pairs(roster,records_by_site())
     rng=xorshift32(SEED)
