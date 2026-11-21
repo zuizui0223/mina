@@ -1,0 +1,50 @@
+{
+  "status": "PASS_OFFLINE_REVIEW_REPRODUCTION",
+  "date": "2026-11-21",
+  "network_required": false,
+  "numeric_checks": 58,
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "verify_frozen_polynya_results.py",
+      "--inputs-dir",
+      "frozen_archives",
+      "--temporal-csv",
+      "verification_inputs/matched_temporal358.csv",
+      "--out",
+      "fresh_numeric_receipt.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "render_polynya_main_figures.py"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "build_review_documents.py",
+      "--out",
+      "rebuilt_documents"
+    ]
+  ],
+  "byte_identical_outputs": [
+    "figures/Fig1_Polynya_source_footprint.png",
+    "figures/Fig1_Polynya_source_footprint.tif",
+    "figures/Fig2_Polynya_association_and_sensitivity.png",
+    "figures/Fig2_Polynya_association_and_sensitivity.tif",
+    "figures/Fig3_Preceding_following_winter_contrast.png",
+    "figures/Fig3_Preceding_following_winter_contrast.tif",
+    "figures/Fig4_Polynya_salinity_conditional_information.png",
+    "figures/Fig4_Polynya_salinity_conditional_information.tif",
+    "figures/Fig5_Observation_and_unresolved_pathways.png",
+    "figures/Fig5_Observation_and_unresolved_pathways.tif",
+    "figures/numeric_source_extract/fig1_map_geometry.json",
+    "figures/numeric_source_extract/fig1_region_support.csv",
+    "figures/numeric_source_extract/fig1_site_mean_exposure_and_geography.csv",
+    "figures/numeric_source_extract/fig2_leave_one_region_out.csv",
+    "figures/numeric_source_extract/fig2_main_and_measurement_sensitivity.csv",
+    "figures/numeric_source_extract/fig2_original_frozen11_intervals.csv",
+    "figures/numeric_source_extract/fig3_reported_temporal_coefficients.csv",
+    "figures/numeric_source_extract/fig4_reported_model_information.csv",
+    "figures/numeric_source_extract/fig4_same439_fixed_effect_residuals.csv"
+  ],
+  "scope": "Frozen derived439/358 results, figures and editable DOCX build; not complete provider-archive extraction or independent ecological validation."
+}

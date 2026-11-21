@@ -1,0 +1,57 @@
+{
+  "status": "PASS_DOCUMENT_VISUAL_QA",
+  "date": "2026-11-21",
+  "all_pages_individually_inspected": true,
+  "page_counts": {
+    "manuscript": 17,
+    "supplement": 6,
+    "figures": 5
+  },
+  "resolved": [
+    "Inherited blue title rule removed",
+    "Cover title balanced over two lines",
+    "Header/footer and empty pagebreak line numbers suppressed",
+    "Figure1 has verified generalized land context"
+  ],
+  "release_delta_checks": [
+    {
+      "document": "manuscript",
+      "pages": 17,
+      "unchanged_pages_exactly_equal_except": [
+        16,
+        17
+      ]
+    },
+    {
+      "document": "figures",
+      "pages": 5,
+      "unchanged_pages_exactly_equal_except": [
+        1
+      ]
+    }
+  ],
+  "last_changed_pages_individually_inspected": {
+    "manuscript": [
+      16,
+      17
+    ],
+    "figures": [
+      1
+    ]
+  },
+  "false_positive_resolved": "A visual reading of81wet cells was checked against PDF text and exact grid-coordinate pairs; both are82.",
+  "delivered_docx": [
+    {
+      "name": "Polynya_foodweb_figures_v07.docx",
+      "sha256": "661c57ce71034159a59f0aed72bf1f3a6cf6646f3602a3f19e194d3d44f766d4"
+    },
+    {
+      "name": "Polynya_foodweb_manuscript_v07.docx",
+      "sha256": "7eb96068f2abca69736054d8ff7199522e3002eced99dadede4bcbd0bd298088"
+    },
+    {
+      "name": "Polynya_foodweb_supplement_v07.docx",
+      "sha256": "0283acc51390d7fc795107de653537b53f40461b65a54d7393dde2c68da904b2"
+    }
+  ]
+}
