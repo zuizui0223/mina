@@ -1,0 +1,52 @@
+name: Penguin v0.6 evidence-backed editorial submission-not-ready gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - '.github/workflows/penguin-20261121-v06-editorial-submission-gate.yml'
+      - 'research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/validate_editorial_submission_gate_20261121.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/MANUSCRIPT_V06_MARINE_AXES_NESTING_ISOTOPE_CMIP6_WORKING.md'
+      - 'research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/SUBMISSION_AND_NOVELTY_GATE_20261121_JA.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  manuscript_scope_and_pending_submission:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile source-and-publisher gate
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/validate_editorial_submission_gate_20261121.py
+      - name: Verify complete scientific and journal editorial gate
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/validate_editorial_submission_gate_20261121.py \
+            --out build/penguin_v06_editorial_gate/editorial_source_scope_verdict.json
+      - name: Assert automatic PASS does not imply submission readiness
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          f=Path('build/penguin_v06_editorial_gate/editorial_source_scope_verdict.json')
+          r=json.loads(f.read_text())
+          assert r['gate']=='SUBMISSION_NOT_READY_EXTERNAL_DEPENDENCIES'
+          assert r['automated_text_checks']=='PASS'
+          assert r['no_permission_to_submit'] is True
+          assert r['source_data_recomputed_by_this_script'] is False
+          assert r['main_figure_count']==4
+          assert 250<=r['abstract_word_count']<=350 and r['keyword_count']==6
+          assert len(r['manual_submission_blockers'])>=5
+          assert all(i['status']=='OPEN' for i in r['manual_submission_blockers'])
+          print('PASS manuscript format/source-claims check, submission remains explicitly NO-GO')
+          PY
+      - name: Retain inspectable editorial status only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-v06-editorial-and-source-scope-NO-GO-submission
+          path: build/penguin_v06_editorial_gate/
+          if-no-files-found: warn
+          retention-days: 30
