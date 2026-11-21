@@ -103,7 +103,9 @@ def main():
     ids17={r["site_id"] for r in completed}
     src=records_by_site()
     pairs=historical_pairs(roster,src)
-    assert pairs["PLEN"]==[[0.0]*4,[0.0]*5]
+    assert pairs["PLEN"][0]==[0.0]*4
+    assert statistics.median(pairs["PLEN"][1])==0.0
+    assert sorted(pairs["PLEN"][1])==[0.0,0.0,0.0,0.0,1.0], "True 2017 positive source observation must not be overwritten by decade median zero"
     actual23=decompose(roster)
     actual17=decompose(completed)
     fields=("nest_reallocation_component_pp","between_region_pp","within_region_pp")
