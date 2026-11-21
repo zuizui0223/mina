@@ -91,7 +91,9 @@ def main():
     for r in long:
         assert r["eligible_counts"]=="True", ("not source-qualified",r["site_id"])
         assert all(r[k] for k in ("n0","n1","sic_pp0","sic_pp1","source_region")),r
-        assert float(r["n0"])>0 and float(r["n1"])>0
+        assert float(r["n0"])>=0 and float(r["n1"])>=0
+        if float(r["n0"]) == 0.0:
+            assert float(r["n1"]) == 0.0, "True zero-to-positive colonization needs a separate formula"
     complete = [r for r in long if r["salinity0"] and r["salinity1"] and
                 r["sst_C0"] and r["sst_C1"]]
     assert len(complete)==17
