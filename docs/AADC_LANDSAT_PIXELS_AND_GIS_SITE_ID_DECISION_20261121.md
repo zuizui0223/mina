@@ -36,3 +36,17 @@ QA_PIXELはUSGSのビット定義でfill, dilated cloud, cloud, shadow, snow/ice
 `geog_site_id`に**実際の物理的営巣パッチ境界**が紐付く必要がある。直接一致はなく、候補として元2016 site workbookのSCAR Gazetteer Place IDとoriginal SHPのUFI間の**著者が定義した同一ID規則**を原資料で検証する余地がある。これが確認できない場合は空間結合を後付けの最近傍・数値部分一致で救済しない。
 
 元データだけでは「氷河後退で出現した露岩へコロニーが新規定着」も「島が避難所になる捕食者因果効果」も検定不能。**追加のp値や相関係数は作らず、mainとPaper1/Paper2は変更しない。**
+
+## 最終補足：著者による間接ID対応も検定済み（2026-11-21）
+
+2016年AADC原資料の `2_Geographic sites` 4,884地点を開くと、今回の16 A→P記録に含まれる**14地点IDすべて**が存在した。したがって「古い地点表に載っていない」問題ではない。
+
+ただし、間接的に原GISへ結ぶことも現時点では支持されなかった。2016年スプレッドシートの `SCAR_Gazeteer_Place_ID` は**12/14地点で存在、2地点（IS_121、IS_70694）では空欄**。同じ出版社配布の4,881原ポリゴンDBFの `UFI` と照合すると、**12件中完全一致0、複数一致0**。2025年continental site shape（2,923ポリゴン）の `Site_ID` も14件の原 `geog_site_id` とは完全一致0。
+
+つまり、**原データに地理的ポリゴンが存在しても、今回の実際の地理地点IDから、正確な営巣パッチポリゴンへたどる信頼できる鍵がない**。別系統のID文字列を数値部分や最近傍などで強引に結び付けてはならない。もし取得できるなら著者定義のcrosswalk、UFIの命名ルール、または現地巣分布GISが決定的な追加資料である。
+
+- 原sourceでの独立検証: [Actions #44851935846](https://github.com/zuizui0223/mina/actions/runs/44851935846), artifact **14684964739**
+- 原コード: `scripts/audit_aadc_gazetteer_UFI_original_crosswalk.py`
+- 凍結した判定: `results/AADC_GAZETTEER_UFI_GEO_SOURCE_GATE_20261121.json`
+
+**この時点で本線のGO/NO-GOを確定:** 画像一覧取得GO、局所QA読取GO、対象コロニー巣パッチの同一性確認NO-GO、新たな露岩出現の実証NO-GO、新規定着の因果検定NO-GO。AADCの観測A→P 16件は確実なsource観測差だが、氷河後退因果の16件ではない。凍結済みPaper 1、Paper 2、main、従来の旧PR #180は変更しない。
