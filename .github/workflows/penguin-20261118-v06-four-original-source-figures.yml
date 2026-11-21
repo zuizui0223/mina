@@ -58,6 +58,11 @@ jobs:
           assert (r['strict_actual_Adelie_Gentoo_species_pair_sites'],r['strict_pair_positive_ratios'],r['strict_pair_subtotals_positive'])==(6,6,5)
           assert r['n_original_isotope_source_site_seasons']==860
           assert r['historical_optical_isotope_region_conservative_CI_crosses_zero']
+          assert abs(r['same_271_counted_sites_equal_weight_late_sic_pp']+28.63413394176649)<1e-8
+          assert abs(r['same_271_counted_sites_recorded_nest_weight_late_sic_pp']+13.276240917274327)<1e-8
+          assert abs(r['same_271_counted_sites_late_sic_weighting_gap_pp']-15.357893024492162)<1e-8
+          assert r['source_counted_site_denominator_held_fixed_between_weights'] is True
+          assert r['figures'][3]=='Fig4_Same271_weighting_and_model_coupling'
           assert r['no_salinity_mechanism_or_penguin_abundance_forecast']
           for item in r['figures']:
               assert (root/(item+'.svg')).stat().st_size>5000
