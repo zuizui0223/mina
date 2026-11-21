@@ -1,5 +1,8 @@
 # 実測沿岸ポリニヤはδ¹⁵N光学proxyと正ではなく負に関連：事前の正方向仮説は不支持、時間外予測改善なし
 
+**2026-11-21追加・測定式の構造：** [原著R1,000 PLSRの21センサー×帯域の加算寄与](../optical_band_polynya_20261121/RESULT_FROZEN_OPTICAL_21_BAND_SOURCE_ATTRIBUTION_JA.md)を同439/358に固定して実行。[Actions #44847699374 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/44847699374)。塩分調整後439件の−0.94114‰/10ppは、原L7 **青−1.35014、緑+0.51420、赤−0.14473、NIR+0.05263、SWIR1−0.22580、SWIR2+0.21270** という強い正負寄与の相殺として代数的に再構成される。これは独立化学測定ではなく測定式の分解であり、食性変化・窒素同位体基線・岩雪混合の原因は識別できない。2026年公開の実AA isotopeの独立TP候補[USAP602094](../independent_aa_isotopes_20261121/RESULT_USAP602094_INDEPENDENT_AMINO_ACID_SOURCE_GATE_JA.md)はAPIがCSVでなくHTMLを返したため未取得、独立検証未実施。
+
+
 **2026-11-21 測定方法の固定感度解析：** [原著R `oscorespls`・元103標本×L4/L5/L7別1,000較正係数での同439/358再解析](../author_isotope_polynya_sensitivity_20261121/RESULT_AUTHOR_R1000_HISTORICAL439_358_NEGATIVE_POLYNYA_SENSITIVITY_JA.md)を実行。[GitHub Actions #44838806193 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/44838806193)、artifact 14680080746。元の439観測を一件も変えず、著者方式の光学δ¹⁵N proxyに置換してもM_Pは **−1.0233‰/10pp [−1.4982,−0.5485]**、塩分条件付きM_SPは **−0.9411 [−1.3789,−0.5033]**。11地域全除外で負、原103標本の同じ1,000較正分割全てで傾き負。**同じ歴史的糞画素を使う測定推定器の感度であり、新年代・独立集団での再現ではない。** 元の事前仮説は正で不支持、時間外予測改善なし・実食性不明を保つ。
 
 
