@@ -1,5 +1,7 @@
 # 実測沿岸ポリニヤはδ¹⁵N光学proxyと正ではなく負に関連：事前の正方向仮説は不支持、時間外予測改善なし
 
+**2026-11-21独立実測AAデータの支持監査追加：** USAP-DC [DOI 10.15784/602094](https://doi.org/10.15784/602094)の原108羽毛CSVを配布元MD5に完全一致で取得。[55 Site×採集年のPhe源AA/TP/bulk測定モデル](../independent_aa_isotopes_20261121/RESULT_FROZEN_ORIGINAL602094_BULK_PHE_TP_55_SITEYEAR_20261121_JA.md)は両指標からの予測が単独より良い一方、同Site複数年での説明率は小さい。[2004–10の元88地点との直接地理重複監査](../independent_aa_isotopes_20261121/RESULT_USAP602094_AA_FEATHERS_OLD88_REAL_SPATIAL_OVERLAP_NO_GO_20261121_JA.md)では6 Site×採集年全て元88地点から少なくとも30.5km、25km以内の直接対応**0**。羽毛形成期不明に加え実際に同コロニーの新TPと元ポリニヤ観測を組めないため、元439の冬ポリニヤ負関連の**独立栄養段階再現とは認めない**。元の負係数や時間対照、予測改善不成立の判定を変更しない。
+
 **2026-11-21追加・測定式の構造：** [原著R1,000 PLSRの21センサー×帯域の加算寄与](../optical_band_polynya_20261121/RESULT_FROZEN_OPTICAL_21_BAND_SOURCE_ATTRIBUTION_JA.md)を同439/358に固定して実行。[Actions #44847699374 SUCCESS](https://github.com/zuizui0223/mina/actions/runs/44847699374)。塩分調整後439件の−0.94114‰/10ppは、原L7 **青−1.35014、緑+0.51420、赤−0.14473、NIR+0.05263、SWIR1−0.22580、SWIR2+0.21270** という強い正負寄与の相殺として代数的に再構成される。これは独立化学測定ではなく測定式の分解であり、食性変化・窒素同位体基線・岩雪混合の原因は識別できない。2026年公開の実AA isotopeの独立TP候補[USAP602094](../independent_aa_isotopes_20261121/RESULT_USAP602094_INDEPENDENT_AMINO_ACID_SOURCE_GATE_JA.md)はAPIがCSVでなくHTMLを返したため未取得、独立検証未実施。
 
 
