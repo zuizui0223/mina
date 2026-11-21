@@ -1,0 +1,84 @@
+name: Penguin DEEP-AA original 860 source direct polynya 100km geography
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_original_DEEPAA_100km_25km_source_20261119.py'
+      - '.github/workflows/penguin-20261119-DEEPAA-860-original-direct-polynya-100km-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_real_polynya_100km_860_source_gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify independent polynya and outcome-gate preregistered before running
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/POLYNYA_DIRECT_SOURCE_SUPPORT_GATE_20261119_JA.md
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/DIRECT_POLYNYA_OPTICAL_ISOTOPE_MODEL_FROZEN_20261119_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_original_DEEPAA_100km_25km_source_20261119.py
+      - name: Install native daily NetCDF projection/geodesic and spatial index libraries
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'scipy<2' 'pyproj>=3.6,<4' 'netCDF4>=1.6,<2'
+      - name: Retrieve three original crossvalidated isotope source geography artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/deepaa_original_direct_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/deepaa_original_direct_source/optical860_original.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14324288144/zip" > build/deepaa_original_direct_source/youngflesh_original_centroid.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/deepaa_original_direct_source/mapppd595_original_atlas.zip
+          echo "dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205  build/deepaa_original_direct_source/optical860_original.zip" | sha256sum --check
+      - name: Download only published Lin et al daily 6.25km source with original MD5
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 --retry-delay 5 --connect-timeout 45 --max-time 1200 \
+            --user-agent 'Mozilla/5.0 (compatible; AntarcticScientificResearch/1.0)' \
+            --output build/deepaa_original_direct_source/SIC60_6.25km_20d.zip \
+            'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1'
+          echo "f3f958389cc5e67ac1c4e3a6ee164318  build/deepaa_original_direct_source/SIC60_6.25km_20d.zip" | md5sum --check
+          echo "b05a36aa4e775d69c06e2ffa897a8de8a20318b65f6478298167f73cc9f7c3f9  build/deepaa_original_direct_source/SIC60_6.25km_20d.zip" | sha256sum --check
+      - name: Geodesic 100km daily map extracted from 88 original colony coordinates with no biological response fit
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_original_DEEPAA_100km_25km_source_20261119.py \
+            --deepaa-zip build/deepaa_original_direct_source/SIC60_6.25km_20d.zip \
+            --isotope-zip build/deepaa_original_direct_source/optical860_original.zip \
+            --centroid-zip build/deepaa_original_direct_source/youngflesh_original_centroid.zip \
+            --atlas-zip build/deepaa_original_direct_source/mapppd595_original_atlas.zip \
+            --out build/deepaa_original_direct_source/direct_100km_results
+      - name: Guard actual source native dates, geography, original Y never opened
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          p=Path('build/deepaa_original_direct_source/direct_100km_results')
+          r=json.loads((p/'DEEPAA_ACTUAL_860_SOURCE_GEO_TIME_GATE.json').read_text())
+          d=pd.read_csv(p/'source_original_860_site_seasons_true_DEEPAA100km_no_optical_Y.csv')
+          assert len(d)==860 and not d[['site_id','season']].duplicated().any()
+          assert r['original_n_site']==88
+          assert r['no_outcome_opened_or_fitted'] is True
+          assert r['status'] in ('PASS_DIRECT_POLYNYA_MACRO_SUPPORT_SOURCE_ONLY_NO_Y_FIT','NO_GO_DIRECT_POLYNYA_MACRO_SUPPORT')
+          assert not any(x in d.columns for x in ('predicted_d15N_season_day_equal','fish_fraction','DI'))
+          assert 2011 not in r['real_complete_100km_distinct_winters']
+          assert 2012 not in r['real_complete_100km_distinct_winters']
+          print('ACTUAL_DIRECT_POLYNYA_GEO_TIME_GATE',r['status'])
+          print('SUPPORT',r['real_complete_100km_observations'],
+            r['real_complete_100km_original_sites'],
+            r['real_complete_100km_source_regions'],
+            r['real_complete_100km_distinct_winters'],
+            r['three_prespecified_regions_original_sites'])
+          PY
+      - name: Preserve physically real geodesic daily polynya fractions with original source support decision
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-860-DEEPAA-actual-daily-coastal-polynya-100km-25km-no-Y-source
+          path: build/deepaa_original_direct_source/direct_100km_results/
+          if-no-files-found: warn
+          retention-days: 30

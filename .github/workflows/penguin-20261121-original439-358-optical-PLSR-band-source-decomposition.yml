@@ -1,0 +1,127 @@
+name: Penguin OLD 439 358 original isotope PLSR optical-band additive source decomposition
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/optical_band_polynya_20261121/**'
+      - '.github/workflows/penguin-20261121-original439-358-optical-PLSR-band-source-decomposition.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source_21_spectral_band_identity_same_old439_358_no_independent_isotope:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+      - name: Require pre-committed source optical attribution contract and baseline fixed original code
+        run: |
+          set -euo pipefail
+          test -f research/climate-penguin/macro_panantarctic_v1/optical_band_polynya_20261121/FROZEN_SAME_439_358_AUTHOR_PLSR_BAND_ATTRIBUTION_JA.md
+          test -f research/climate-penguin/macro_panantarctic_v1/author_isotope_polynya_sensitivity_20261121/FROZEN_AUTHOR_1000_PLSR_MEASUREMENT_SENSITIVITY_BEFORE_NEW_Y.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/optical_band_polynya_20261121/decompose_exact_author1000_optical_polynya_439_358_sensor_bands.py
+      - name: Install array/FWL regression and remote publisher ZIP RDS-only extraction
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'statsmodels>=0.14,<1' 'scipy>=1.13,<2' 'requests>=2.32,<3' 'remotezip>=0.12,<1'
+      - name: Reuse exactly archived previous original439/358 1000-ensemble and old860 source data SHA256
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/old439_358_R1000_optical_band_attribution
+          root=build/old439_358_R1000_optical_band_attribution
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > "$root/old860_iso.zip"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14539723210/zip" > "$root/old860_physical.zip"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14602063283/zip" > "$root/L7_R1000_lab.zip"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14680080746/zip" > "$root/previous_same439_358_author_R1000.zip"
+          echo 'dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205  build/old439_358_R1000_optical_band_attribution/old860_iso.zip' | sha256sum --check
+          echo '702ab3eeff9ed953c19a9e696492ba9bf5cddce204d40a9c7d9b1234d98f9f96  build/old439_358_R1000_optical_band_attribution/old860_physical.zip' | sha256sum --check
+          echo 'ac1199ad312df63173f7be73452ccbb5e01b7c55f29d3413ede63e1a1b665669  build/old439_358_R1000_optical_band_attribution/L7_R1000_lab.zip' | sha256sum --check
+          echo 'be0234fef11a11b5b19129c8a84db0ab90dbe80b7cd6a71a3e733e36eaa1e342  build/old439_358_R1000_optical_band_attribution/previous_same439_358_author_R1000.zip' | sha256sum --check
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+          p=Path('build/old439_358_R1000_optical_band_attribution')
+          with zipfile.ZipFile(p/'old860_iso.zip') as z:
+              assert z.testzip() is None
+              (p/'source_860_membership.csv').write_bytes(z.read('matched_860_original_isotope_ocean_ice_site_seasons.csv'))
+          (p/'original_lab_coefficients').mkdir()
+          with zipfile.ZipFile(p/'previous_same439_358_author_R1000.zip') as z:
+              assert z.testzip() is None
+              for sensor in (4,5):
+                  name=f'new_L4L5_R1000/L{sensor}_1000_author_style_5component_PLSR_CV_ensemble_coefficients.csv'
+                  (p/'original_lab_coefficients'/Path(name).name).write_bytes(z.read(name))
+          PY
+      - name: Fetch old pre-2013 publisher 5.37MB original selected-spectra RDS by verified ZIP member, no new image Y
+        run: |
+          python - <<'PY'
+          import requests,hashlib
+          from pathlib import Path
+          from remotezip import RemoteZip
+          p=Path('build/old439_358_R1000_optical_band_attribution')
+          res=requests.get('https://zenodo.org/api/records/17409948',timeout=60)
+          res.raise_for_status()
+          d=res.json()
+          assert d['id']==17409948
+          f=next(x for x in d['files'] if x['key']=='data.zip')
+          assert (f['size'],f['checksum'])==(256425816,'md5:e29a2f68c84e3a515044d554540def2f')
+          url=f['links'].get('content') or f['links']['self']
+          with RemoteZip(url) as z:
+              assert len([x for x in z.infolist() if not x.is_dir()])==1108
+              data=z.read('L0/Landsat/landsat_reflectance_L457-2025-07-16.rds')
+          digest=hashlib.sha256(data).hexdigest()
+          assert digest=='f86ba97f98bca33c1ff57a1ca1b6783f92c29d952710ce7a4256f0109323b50b'
+          (p/'old_selected_spectra.rds').write_bytes(data)
+          print('PASS old pre-2013 native RDS original SHA',digest,len(data),flush=True)
+          PY
+      - name: Verify exactly same 131014 original old selected pixels and 2659 original days
+        run: |
+          Rscript --vanilla research/climate-penguin/macro_panantarctic_v1/author_isotope_polynya_sensitivity_20261121/export_exact_860_original_source_pixels_RDS.R \
+            build/old439_358_R1000_optical_band_attribution/old_selected_spectra.rds \
+            build/old439_358_R1000_optical_band_attribution/source_860_membership.csv \
+            build/old439_358_R1000_optical_band_attribution/_TEMP_original_old860_band_pixels_delete.csv
+      - name: Attribute same already known 439 and 358 slopes to each original sensor and 6 spectral channels EXACTLY
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/optical_band_polynya_20261121/decompose_exact_author1000_optical_polynya_439_358_sensor_bands.py \
+            --old-isotope-zip build/old439_358_R1000_optical_band_attribution/old860_iso.zip \
+            --old-physical-zip build/old439_358_R1000_optical_band_attribution/old860_physical.zip \
+            --original-l7-coefficients-zip build/old439_358_R1000_optical_band_attribution/L7_R1000_lab.zip \
+            --original-pixels build/old439_358_R1000_optical_band_attribution/_TEMP_original_old860_band_pixels_delete.csv \
+            --coefficients-dir build/old439_358_R1000_optical_band_attribution/original_lab_coefficients \
+            --prior-author-sensitivity-zip build/old439_358_R1000_optical_band_attribution/previous_same439_358_author_R1000.zip \
+            --temporal-fixed-358 research/climate-penguin/macro_panantarctic_v1/polynya_temporal_20261120/matched_analysis.csv \
+            --out build/old439_358_R1000_optical_band_attribution/diagnostics
+          rm -f build/old439_358_R1000_optical_band_attribution/_TEMP_original_old860_band_pixels_delete.csv
+      - name: Verify all models exactly reproduce already published coefficients and cannot imply causal bands
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          root=Path('build/old439_358_R1000_optical_band_attribution/diagnostics')
+          d=json.loads((root/'AUTHOR_R1000_SAME_439_358_OPTICAL_BAND_ATTRIBUTION_RECEIPT.json').read_text())
+          assert d['status']=='ORIGINAL_SAME_439_358_AUTHOR_R1000_OPTICAL_BAND_ATTRIBUTION_COMPUTED_NOT_INDEPENDENT_ECOLOGY'
+          assert d['source_original_860_pixel_total']==131014 and d['source_original_observed_days']==2659
+          assert d['source_actual_439_site_seasons']==439 and d['source_actual_358_temporal_site_seasons']==358
+          assert d['same_860_original_author_Y_exact_to_previous_saved_output']
+          assert len(d['original_preregistered_band_attribution_results'])==3
+          assert all(x['aggregation_exact_within_tolerance'] for x in d['original_preregistered_band_attribution_results'])
+          assert not d['no_independent_baseline_corrected_amino_acid_TP'] is False
+          assert not d['no_2013_2021_new_OLI_or_current_guano_Y'] is False
+          rows=pd.read_csv(root/'ORIGINAL439_358_21_SENSORS_BANDS_ADDITIVE_1000_R_PLSR_BETA_ATTRIBUTION.csv')
+          assert len(rows)==63
+          print('OLD439_358_EXACT_OPTICAL_21_COMPONENTS',d['original_preregistered_band_attribution_results'])
+          PY
+      - name: Archive only old published band attribution and source checksums, never raw RDS or external AA values
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-old439-358-source-21-optical-band-attribution-no-new-diet
+          path: build/old439_358_R1000_optical_band_attribution/diagnostics/
+          if-no-files-found: warn
+          retention-days: 30

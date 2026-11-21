@@ -1,0 +1,35 @@
+name: Penguin SCAR Southern Ocean direct-diet original metadata and source schema gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/probe_scar_direct_diet.py'
+      - '.github/workflows/penguin-20261117-scar-direct-diet-source-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  published-scar-diet-original:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install read-only Excel header inspection dependency
+        run: python -m pip install --disable-pip-version-check 'openpyxl>=3,<4'
+      - name: Check source inspection syntax
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/probe_scar_direct_diet.py
+      - name: Retrieve public Zenodo original record 20047874, verify file and inspect schema
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/probe_scar_direct_diet.py \
+            --out build/penguin_scar_true_diet_source
+      - name: Only publisher metadata and small read-only schema may be uploaded
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-SCAR-direct-diet-source-20047874-record-schema-only
+          path: build/penguin_scar_true_diet_source/
+          if-no-files-found: warn
+          retention-days: 30

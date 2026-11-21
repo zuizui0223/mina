@@ -1,0 +1,74 @@
+name: Penguin 8 original repeat-colony Adelie isotope-to-nesting bridge source audit
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/response_support_bridge_20261118/audit_eight_repeated_adelie_isotope_nests.py'
+      - '.github/workflows/penguin-20261118-8-colony-isotope-nests-bridge.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  true-revisited-colony-isotope-nests:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source statistical dependencies
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3' 'statsmodels>=0.14,<1' 'scipy<2'
+      - name: Compile original-source biology bridge code
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/response_support_bridge_20261118/audit_eight_repeated_adelie_isotope_nests.py
+      - name: Retrieve only certified 70 overlap, original 860 image and 2456 real count archives
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_source_eight
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14392141706/zip" > build/penguin_source_eight/original_70_bridge.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_source_eight/original_860_isotope.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_source_eight/original_2456_counts.zip
+      - name: Fit real same-site isotope/nests and test source year, method and region sensitivity
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/response_support_bridge_20261118/audit_eight_repeated_adelie_isotope_nests.py \
+            --bridge build/penguin_source_eight/original_70_bridge.zip \
+            --isotope build/penguin_source_eight/original_860_isotope.zip \
+            --counts build/penguin_source_eight/original_2456_counts.zip \
+            --out build/penguin_source_eight_result
+      - name: Independently assert original observed response and preservation of inconclusive inference
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          p=Path('build/penguin_source_eight_result')
+          j=json.loads((p/'original_eight_site_isotope_nesting_bridge_receipt.json').read_text())
+          assert j['status']=='EXPLORATORY_TRUE_OBSERVED_EIGHT_SITE_ADPE_COUNT_ISOTOPE_BRIDGE'
+          assert (j['source_overlap_n70'] if 'source_overlap_n70' in j else j['original_overlap_any_adpe_site_seasons'])==70
+          assert (j['observed_repeated_site_seasons'],j['observed_repeated_sites'],j['observed_reporting_regions'],j['distinct_source_marine_wet_grid_cells'])==(29,8,4,7)
+          models=j['site_equal_models']
+          assert abs(models['site_fixed']['beta']-.095102806474)<1e-9
+          assert abs(models['site_and_calendar_time']['beta']-.113693475668)<1e-9
+          assert abs(models['site_time_novfeb_sic_temperature_salinity']['beta']-.134079967969)<1e-9
+          assert abs(models['site_time_marine_and_image_support']['beta']-.100377587543)<1e-9
+          assert abs(j['one_record_one_weight_physics_sensitivity']['beta']-.066004612214)<1e-9
+          assert abs(j['exploratory_partial_residual_r2_iso_after_marine']-.175115102403)<1e-9
+          assert abs(next(x['beta'] for x in j['leave_one_source_region_out'] if x['omitted_region']=='Victoria Land')-.004480201765)<1e-9
+          assert (j['observed_intervals']['n'],j['observed_intervals']['actual_consecutive_year_intervals'],j['observed_intervals']['same_direction_raw_changes'])==(21,9,13)
+          assert j['not_climate_causality_or_demographic_predictor']
+          assert models['site_time_novfeb_sic_temperature_salinity']['site_cluster95ci'][0]<0<models['site_time_novfeb_sic_temperature_salinity']['site_cluster95ci'][1]
+          a=pd.read_csv(p/'original_29_Adelie_nests_optical_isotope_and_marine_site_seasons.csv')
+          assert len(a)==29 and a[['site_id','season']].duplicated().sum()==0
+          assert not a[['observed_nest_count','predicted_d15N_season_day_equal']].isna().any().any()
+          print('PASS original 29 actual matching census records, 8 biological sites/7 physical cells, site and time/physical controls, 21 observed intervals')
+          PY
+      - name: Preserve original-source observed panel and conservative coefficient diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-8site-29season-adelie-nests-optical-isotope-bridge-20261118
+          path: build/penguin_source_eight_result/
+          if-no-files-found: warn
+          retention-days: 30

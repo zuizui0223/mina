@@ -1,0 +1,75 @@
+name: Penguin 595 known colonies source-pinned CMIP6 27-Zarr physical-only exposure
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/extract_source_pinned_cmip6_595.py'
+      - '.github/workflows/penguin-source-pinned-595cmip6-physical-20261116.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-595-three-model-physical-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install previously version-pinned original CMIP6 Zarr dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r research/climate-penguin/work/cmip6_projection_v1/requirements.txt
+          python -m pip install --disable-pip-version-check 'aiohttp>=3.10,<4'
+      - name: Verify same frozen 595 source colony coordinates and count methods
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/build.py
+          python -m py_compile research/climate-penguin/work/cmip6_projection_v1/extract.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/extract_source_pinned_cmip6_595.py
+      - name: Confirm exactly original 27 published model Zarr selections prior to values
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/extract_source_pinned_cmip6_595.py \
+            --source-site-inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --output-root build/cmip6_595_source_v1 \
+            --workers 2 --select-only
+      - name: Extract original 595-site monthly physical-only CMIP6 using unchanged 3 models/members and 27 pinned stores
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/extract_source_pinned_cmip6_595.py \
+            --source-site-inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --output-root build/cmip6_595_source_v1 \
+            --workers 2
+      - name: Verify complete real source support, all three model ensemble and no biological output
+        run: |
+          python - <<'PY'
+          import json,pathlib,pandas as pd
+          root=pathlib.Path('build/cmip6_595_source_v1')
+          out=root/'source_root/outputs/cmip6_projection_v1'
+          receipt=json.loads((root/'595_physical_extraction_validation.json').read_text())
+          manifest=json.loads((out/'manifest.json').read_text())
+          assert receipt['status']=='PASS_PHYSICAL_ONLY_595_SELECTED_SOURCE'
+          assert manifest['status']=='complete' and manifest['n_stores_read']==27
+          assert not manifest.get('failures')
+          a=pd.read_csv(out/'site_model_changes.csv')
+          b=pd.read_csv(out/'site_model_ensemble.csv')
+          assert len(a)==21420 and len(b)==7140
+          assert a.site_id.nunique()==595 and b.n_models.eq(3).all()
+          print('PASS source-pinned full 595-site physical CMIP6 model delta (NOT a penguin nest forecast)')
+          PY
+      - name: Archive genuine versioned source receipt and limited physical-only outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-595-known-colony-3model-27store-cmip6-physical-only
+          path: |
+            build/cmip6_595_source_v1/595_model_source_receipt.json
+            build/cmip6_595_source_v1/595_physical_extraction_validation.json
+            build/cmip6_595_source_v1/source_root/outputs/cmip6_projection_v1/manifest.json
+            build/cmip6_595_source_v1/source_root/outputs/cmip6_projection_v1/site_model_changes.csv
+            build/cmip6_595_source_v1/source_root/outputs/cmip6_projection_v1/site_model_ensemble.csv
+            build/cmip6_595_source_v1/source_root/outputs/cmip6_projection_v1/selected_stores.csv
+            build/cmip6_595_source_v1/source_root/outputs/cmip6_projection_v1/coastal_grid_support.csv
+            build/cmip6_595_source_v1/source_root/outputs/cmip6_projection_v1/grid_support_summary.csv
+            build/cmip6_595_source_v1/source_root/outputs/cmip6_projection_v1/model_unique_cell_summary.csv
+            build/cmip6_595_source_v1/source_root/outputs/cmip6_projection_v1/source_metadata.json
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,108 @@
+name: Penguin source-audited Nov-Feb isotope-proxy salinity conditional test
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/fit_source_isotope_salinity_conditional.py'
+      - '.github/workflows/penguin-20261117-source-isotope-salinity-conditional.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify-original-author-and-glorys-nsidc-matched-site-seasons:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original source model calculation dependencies
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'scipy<2' 'pandas<3' 'statsmodels>=0.14,<0.16'
+      - name: Get immutable successful upstream Actions source-derived artifacts, not unverified web tables
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/source_isotope_conditional/source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14326122826/zip" > build/source_isotope_conditional/source/publisher_md5_isotope_plsr5.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14326721399/zip" > build/source_isotope_conditional/source/source_glorys_novfeb_892.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14327796404/zip" > build/source_isotope_conditional/source/source_NSIDC_V4_centers_892.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14324288144/zip" > build/source_isotope_conditional/source/source_author_original_rds_metadata.zip
+      - name: Audit real 103 original calibration samples, 119 pixel-supported sites and 860 strict geographical matches
+        run: |
+          python - <<'PY'
+          import json,zipfile
+          from pathlib import Path
+          import pandas as pd
+          root=Path('build/source_isotope_conditional/source')
+          zipmember={
+            'publisher_md5_isotope_plsr5.zip':['source_d15N_proxy_site_season.csv','source_d15N_proxy_site_season_day.csv','source_plsr5_d15N_proxy_receipt.json'],
+            'source_glorys_novfeb_892.zip':['original_892_matched_site_season_NovFeb_GLORYS.csv','original_novfeb_glorys_receipt.json'],
+            'source_NSIDC_V4_centers_892.zip':['original_892_site_seasons_author_NSIDC_V4_NovFeb_150km_center_mean.csv','nsidc150_source_receipt.json'],
+            'source_author_original_rds_metadata.zip':['publisher_original_zip_scan_receipt.json']
+          }
+          for fname,items in zipmember.items():
+              with zipfile.ZipFile(root/fname) as z:
+                  assert z.testzip() is None,fname
+                  for item in items: (root/item).write_bytes(z.read(item))
+          p=json.loads((root/'source_plsr5_d15N_proxy_receipt.json').read_text())
+          g=json.loads((root/'original_novfeb_glorys_receipt.json').read_text())
+          ice=json.loads((root/'nsidc150_source_receipt.json').read_text())
+          raw=(root/'publisher_original_zip_scan_receipt.json').read_text()
+          audit,end=json.JSONDecoder().raw_decode(raw)
+          assert raw[end:].strip() in ('',chr(92)+'n')
+          assert audit['source_md5']==ice['source_zip']['md5']=='e29a2f68c84e3a515044d554540def2f'
+          assert ice['n_matched_site_seasons_full_four_months']==892
+          assert g['source_image_site_seasons']==892
+          assert p['calibration_isotope_n']==103
+          assert (p['source_landsat_pixel_rows'],p['source_seasons'],p['source_site_days'])==(179462,1410,4038)
+          daily=pd.read_csv(root/'source_d15N_proxy_site_season_day.csv')
+          seasons=pd.read_csv(root/'source_d15N_proxy_site_season.csv')
+          ocean=pd.read_csv(root/'original_892_matched_site_season_NovFeb_GLORYS.csv')
+          avgpix=daily.groupby('site_id').n_original_pixels.agg(lambda q:(q*q).sum()/q.sum())
+          kept=set(avgpix.index[avgpix>=2])
+          original_daily=daily[daily.site_id.isin(kept)]
+          assert (len(kept),len(original_daily),int(original_daily.n_original_pixels.sum()))==(119,3938,179346)
+          keep=seasons[seasons.site_id.isin(kept)]
+          keep=keep.merge(ocean[['site_id','season','source_region']],
+                          on=['site_id','season'],validate='one_to_one')
+          assert (len(keep),keep.site_id.nunique(),keep.source_region.nunique())==(860,88,13)
+          keep.to_csv(root/'verified_original_strict_isotope_proxy_860.csv',index=False)
+          print('PASS original MD5, source RDS pixel author filter 119/3938/179346 and 860 strict site-seasons')
+          PY
+      - name: Fixed site & region-season FE with Nov-Feb original NSIDC and GLORYS, original-source region heterogeneity
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/fit_source_isotope_salinity_conditional.py \
+            --isotope build/source_isotope_conditional/source/verified_original_strict_isotope_proxy_860.csv \
+            --isotope-days build/source_isotope_conditional/source/source_d15N_proxy_site_season_day.csv \
+            --glorys build/source_isotope_conditional/source/original_892_matched_site_season_NovFeb_GLORYS.csv \
+            --nsidc build/source_isotope_conditional/source/original_892_site_seasons_author_NSIDC_V4_NovFeb_150km_center_mean.csv \
+            --out build/source_isotope_conditional/results
+      - name: Recompute and check fixed source denominators and no prospective/causal claim
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/source_isotope_conditional/results')
+          j=json.loads((p/'original_source_salinity_isotope_verdict.json').read_text())
+          a=j['fixed_source_primary_cell_cluster']
+          b=j['original_reporting_region_cluster']
+          assert j['not_original_published_hierarchical_DI']
+          assert j['not_causal_or_out_of_region_prospective']
+          assert (a['n'],a['n_source_sites'],a['n_source_regions'],a['n_wet_grid_cells'])==(860,88,13,82)
+          assert (a['n_clusters'],b['n_clusters'])==(82,13)
+          assert abs(a['beta_salinity']-0.8341458422028283)<1e-7
+          assert abs(a['partial_residual_r2']-0.02880176895240346)<1e-7
+          assert j['n_region_specific_supported']==8
+          print('PASS: verified source matrix reproduces 0.8341 isotope proxy slope, not original DI posterior')
+          PY
+      - name: Preserve derived source data, geographic heterogeneity and model receipt only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-source-original-860-isotope-NovFeb-salinity-conditional-20261117
+          path: build/source_isotope_conditional/results/
+          if-no-files-found: warn
+          retention-days: 30

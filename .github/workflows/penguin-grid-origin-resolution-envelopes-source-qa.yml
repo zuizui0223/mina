@@ -1,0 +1,26 @@
+name: Antarctic penguin 19-26-35 Adélie grid-resolution source-identity QA
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/grid_resolution_20261115/**'
+      - 'research/climate-penguin/macro_panantarctic_v1/latitudinal_scale_20261115/original_adelie_19_26_35_site_growth_cohorts.csv'
+      - '.github/workflows/penguin-grid-origin-resolution-envelopes-source-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-source-grid-geography:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original Antarctic polar projection and independent LP verification packages
+        run: python -m pip install --disable-pip-version-check numpy pandas scipy pyproj==3.7.1
+      - name: Independent original 35-site source geometry and 435-condition 870-bound LP check
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/grid_resolution_20261115/verify_source_shifted_grid_envelopes.py
+          python research/climate-penguin/macro_panantarctic_v1/grid_resolution_20261115/verify_source_shifted_grid_envelopes.py

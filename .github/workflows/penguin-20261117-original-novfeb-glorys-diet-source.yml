@@ -1,0 +1,77 @@
+name: Penguin original Nov-Feb GLORYS at publisher diet image site seasons
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_matched_novfeb_glorys.py'
+      - '.github/workflows/penguin-20261117-original-novfeb-glorys-diet-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-source-same-season-ocean:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned ocean original source readers
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'scipy<2' 'pandas<3' 'xarray==2024.10.0' 'fsspec[http]' 'zarr==2.18.7' 'pyproj==3.7.1'
+      - name: Retrieve verified original Landsat site source, MAPPPD atlas and full marine source grid
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_novfeb_sources/source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14324288144/zip" > build/penguin_novfeb_sources/source/youngflesh_md5_rds_site_seasons.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_novfeb_sources/source/true_595_mapppd.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13828472111/zip" > build/penguin_novfeb_sources/source/real_588_glorys.zip
+      - name: Verify source semantics, exact source row denominators and extract only needed files
+        run: |
+          python - <<'PY'
+          import json,zipfile
+          from pathlib import Path
+          import pandas as pd
+          root=Path('build/penguin_novfeb_sources/source')
+          entries=[
+            ('youngflesh_md5_rds_site_seasons.zip',[
+              'source_site_projected_centroids.csv','source_site_season_landsat_coverage.csv','publisher_original_zip_scan_receipt.json']),
+            ('true_595_mapppd.zip',['panantarctic_595_site_inventory.csv']),
+            ('real_588_glorys.zip',['all_original_18region_1993_2020_real_joint_marine_3var_site_year.csv'])]
+          for zp,names in entries:
+            with zipfile.ZipFile(root/zp) as z:
+              assert z.testzip() is None
+              for name in names:
+                (root/name).write_bytes(z.read(name))
+          raw=(root/'publisher_original_zip_scan_receipt.json').read_text()
+          source,end=json.JSONDecoder().raw_decode(raw)
+          assert raw[end:].strip() in ('', chr(92)+'n'), 'Unexpected original receipt suffix'
+          assert (source['status'],source['source_md5'])==(
+             'PUBLISHER_SOURCE_ZIP_VERIFIED_MD5_MEMBER_INVENTORY',
+             'e29a2f68c84e3a515044d554540def2f')
+          p=pd.read_csv(root/'source_site_season_landsat_coverage.csv')
+          a=pd.read_csv(root/'panantarctic_595_site_inventory.csv')
+          m=pd.read_csv(root/'all_original_18region_1993_2020_real_joint_marine_3var_site_year.csv')
+          assert (p.site_id.nunique(),len(p),a.site_id.nunique(),m.site_id.nunique())==(146,1410,595,588)
+          assert m.year.nunique()==28
+          print('PASS original Landsat, MAPPPD and GLORYS site inventory')
+          PY
+      - name: Pull actual 202311 Copernicus ocean Nov-Feb months and original wet cells, do not impute
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_matched_novfeb_glorys.py \
+            --source-seasons build/penguin_novfeb_sources/source/source_site_season_landsat_coverage.csv \
+            --centroids build/penguin_novfeb_sources/source/source_site_projected_centroids.csv \
+            --atlas build/penguin_novfeb_sources/source/panantarctic_595_site_inventory.csv \
+            --glorys build/penguin_novfeb_sources/source/all_original_18region_1993_2020_real_joint_marine_3var_site_year.csv \
+            --out build/penguin_novfeb_glorys_actual
+      - name: Keep original source derived physical exposures, not outcome associations
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-892-diet-site-seasons-NovFeb-CopernicusGLORYS-physical-only
+          path: build/penguin_novfeb_glorys_actual/
+          if-no-files-found: warn
+          retention-days: 30

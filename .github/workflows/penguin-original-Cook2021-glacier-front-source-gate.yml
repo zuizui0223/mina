@@ -1,0 +1,41 @@
+name: Antarctic peninsula original Cook2021 historic glacier-front archive source access
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/probe_Cook_2021_historic_ice_coastline_repository.py'
+      - '.github/workflows/penguin-original-Cook2021-glacier-front-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-publisher-source-access:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Probe original coastline historical-data publisher entry
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/probe_Cook_2021_historic_ice_coastline_repository.py \
+             --out build/cook_2021_original_historic_front_source
+          python - <<'PY'
+          import json
+          p='build/cook_2021_original_historic_front_source/cook2021_historical_front_repository_discovery.json'
+          x=json.load(open(p))
+          assert x['status']=='COOK_2021_HISTORIC_COASTLINE_OFFICIAL_REPOSITORY_SOURCE_GATE'
+          assert x['n_official_repository_urls_tested']==4
+          assert x['full_glacier_front_geometries_downloaded'] is False
+          assert x['no_new_bare_rock_or_colony_state_inference']
+          print('PASS original publisher access attempted; retrieval result kept separate from ecological hypothesis')
+          PY
+      - name: Preserve exact official source URLs and HTTP gate without fabricated glacier rows
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-Cook2021-historic-peninsula-glacier-front-source-status
+          path: build/cook_2021_original_historic_front_source/
+          if-no-files-found: warn
+          retention-days: 30

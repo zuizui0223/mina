@@ -1,0 +1,77 @@
+name: Penguin independent SCAR original bulk nitrogen isotope source-only gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/independent_scar_isotopes_20261121/**'
+      - '.github/workflows/penguin-20261121-SCAR-original-bulk-isotope-source-only.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independently-measured-bulk-isotope-support:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check frozen gate and script compile
+        run: |
+          test -s research/climate-penguin/macro_panantarctic_v1/independent_scar_isotopes_20261121/FROZEN_SCAR_REAL_ISOTOPE_SOURCE_SUPPORT_GATE_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/independent_scar_isotopes_20261121/audit_original_scar_pygoscelis_isotopes_source_only.py
+      - name: Verify publisher record, exact pinned original archive MD5, and ZIP CRC
+        run: |
+          mkdir -p build/scar_original_isotope_source
+          python - <<'PY'
+          import hashlib, json, pathlib, urllib.request, zipfile, io
+          URL='https://zenodo.org/api/records/20047874'
+          HEAD={'User-Agent':'mina-independent-scar-isotopes-20261121/1.0 (github.com/zuizui0223/mina)','Accept':'application/json'}
+          with urllib.request.urlopen(urllib.request.Request(URL,headers=HEAD),timeout=90) as response:
+              record=json.load(response)
+          assert str(record['id'])=='20047874', 'STOP_SOURCE_RECORD_VERSION_DRIFT'
+          f=next(x for x in record.get('files',[]) if x.get('key')=='SCAR_Diet_Energetics.zip')
+          assert f.get('size')==9543574, 'STOP_PUBLISHER_FILE_SIZE_CHANGED'
+          assert f.get('checksum')=='md5:5e098c268ce0028704bc4b06300cb0ef', 'STOP_PUBLISHER_MD5_CHANGED'
+          url=f['links'].get('content') or f['links']['self']
+          with urllib.request.urlopen(urllib.request.Request(url,headers=HEAD),timeout=160) as response:
+              data=response.read(9543575)
+          assert len(data)==9543574, 'STOP_SOURCE_FILE_SIZE_MISMATCH'
+          assert hashlib.md5(data).hexdigest()=='5e098c268ce0028704bc4b06300cb0ef', 'STOP_SOURCE_MD5_MISMATCH'
+          with zipfile.ZipFile(io.BytesIO(data)) as z:
+              assert z.testzip() is None, 'STOP_ORIGINAL_ZIP_CRC'
+              assert {'scar_isotopes_mv.csv','scar_sources.csv'}.issubset(z.namelist()), 'STOP_SOURCE_MEMBER_MISSING'
+          src=pathlib.Path('build/scar_original_isotope_source/SCAR_original_MD5_verified.zip')
+          src.write_bytes(data)
+          print(json.dumps({'zip_bytes':len(data),'zip_md5':hashlib.md5(data).hexdigest(),
+                            'zip_sha256':hashlib.sha256(data).hexdigest(),
+                            'publisher_record_id':str(record['id']),
+                            'doi':record.get('doi'), 'downloaded_original_verified':True},indent=2))
+          PY
+      - name: Strict source-only taxon, bulk isotope, sampling date and old88 proximity counts
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/independent_scar_isotopes_20261121/audit_original_scar_pygoscelis_isotopes_source_only.py \
+            --source-zip build/scar_original_isotope_source/SCAR_original_MD5_verified.zip \
+            --old88-sites research/climate-penguin/macro_panantarctic_v1/spectral_selector_20261120/source_sites.csv \
+            --out build/scar_original_isotope_metadata_only
+      - name: Guarantee no isotope value or effect was released
+        run: |
+          python - <<'PY'
+          import json,pathlib
+          out=pathlib.Path('build/scar_original_isotope_metadata_only/scar_original_pygoscelis_bulk_d15n_source_support_verdict.json')
+          obj=json.loads(out.read_text())
+          assert obj['climate_effect_fitted'] is False
+          assert obj['not_a_test_of_winter_polynya'] is True
+          assert obj['verdict']=='NO_GO_SCAR_INDEPENDENT_ISOTOPE_POLYNYA_TEST'
+          assert obj['publisher_zip_md5']=='5e098c268ce0028704bc4b06300cb0ef'
+          print('PASS independent source-only metadata audit, no scientific effect fitted')
+          PY
+      - name: Publish only source metadata and aggregate support, never original values
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-SCAR-independent-bulk-isotope-source-support-NO-Y-20261121
+          path: build/scar_original_isotope_metadata_only/
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,25 @@
+name: Adélie original marine support and nesting PC1 overlap audit
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/marine_source_overlap_20261115/**'
+      - '.github/workflows/penguin-marine-nest-source-support-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-exact-original-cohort-marine-joins:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical audit dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas
+      - name: Verify source-joined 80 nest cohort rows, 124 marine-window rows, 24 decompositions, 84 geography omissions
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/marine_source_overlap_20261115/verify_committed_source_marine_panel.py
+          python research/climate-penguin/macro_panantarctic_v1/marine_source_overlap_20261115/verify_committed_source_marine_panel.py

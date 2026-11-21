@@ -1,0 +1,34 @@
+name: Antarctic penguin fixed-roster allocation source support and Simpson diversity audit
+on:
+  push:
+    branches:
+      - analysis/penguin-decade-redistribution-v1-20261110
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/allocation_20261115/**'
+      - '.github/workflows/penguin-allocation-roster-support-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-colony-concentration-observation-rosters:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile real-source 19/26 colony allocation reconstruction
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/allocation_20261115/recompute_fixed_roster_concentration.py
+      - name: Run fixed original census roster identities, physical source co-period and Simpson q2 sensitivity
+        run: |
+          set -euo pipefail
+          cd research/climate-penguin/macro_panantarctic_v1/allocation_20261115
+          python recompute_fixed_roster_concentration.py > summary_recomputed.json
+          python -m json.tool summary_recomputed.json >/dev/null
+      - name: Preserve only reconstructable derived audit (no new unpublished biological source)
+        uses: actions/upload-artifact@v4
+        with:
+          name: antarctic-fixed-roster-allocation-19vs26-source-audit
+          path: research/climate-penguin/macro_panantarctic_v1/allocation_20261115/summary_recomputed.json
+          if-no-files-found: error

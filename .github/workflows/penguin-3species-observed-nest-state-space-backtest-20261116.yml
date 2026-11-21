@@ -1,0 +1,86 @@
+name: Penguin original 3-species colony-nest state-space retrospective validation
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/population_dynamics_20261116/*.py'
+      - '.github/workflows/penguin-3species-observed-nest-state-space-backtest-20261116.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-2456-count-71400-sic-backtest:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install state-space arithmetic dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas scipy
+      - name: Obtain exact original MAPPPD 2456 observed counts and OSI SAF 71400 site-months
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_state_space_original_sources
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_state_space_original_sources/original_counts.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13671496095/zip" > build/penguin_state_space_original_sources/original_sic.zip
+          python - <<'PY'
+          import zipfile,io,pandas as pd
+          root='build/penguin_state_space_original_sources/'
+          with zipfile.ZipFile(root+'original_counts.zip') as z:
+              assert z.testzip() is None
+              c=pd.read_csv(io.BytesIO(z.read('source_observed_2456.csv')))
+              assert len(c)==2456
+          with zipfile.ZipFile(root+'original_sic.zip') as z:
+              assert z.testzip() is None
+              m=pd.read_csv(io.BytesIO(z.read('ice_595_outputs/original_595_site_months_120_source_QA.csv')))
+              assert len(m)==71400 and m.site_id.nunique()==595
+          print('PASS original 2456 real counts and 71400 genuine SIC source months')
+          PY
+      - name: Fit state-space model from original counts using only training years and test hidden future counts
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/population_dynamics_20261116/fit_state_space_backtest.py
+          python research/climate-penguin/macro_panantarctic_v1/population_dynamics_20261116/fit_state_space_backtest.py \
+             --counts-source-zip build/penguin_state_space_original_sources/original_counts.zip \
+             --ice-source-zip build/penguin_state_space_original_sources/original_sic.zip \
+             --output build/penguin_state_space_result
+      - name: Independently verify source years, Gaussian difference covariance and 250-km geographic holdout
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/population_dynamics_20261116/verify_state_space_backtest_independent.py
+          python research/climate-penguin/macro_panantarctic_v1/population_dynamics_20261116/verify_state_space_backtest_independent.py \
+             --counts-source-zip build/penguin_state_space_original_sources/original_counts.zip \
+             --ice-source-zip build/penguin_state_space_original_sources/original_sic.zip \
+             --output build/penguin_state_space_result \
+             --cluster-draws 4000
+          python - <<'PY'
+          import json,pandas as pd
+          root='build/penguin_state_space_result/'
+          r=json.load(open(root+'independent_state_space_250km_validation.json'))
+          assert r['status']=='PASS_ORIGINAL_SOURCE_CHRONOLOGY_250KM_COVARIANCE_MAE'
+          c=r['comparisons']
+          assert [x['n'] for x in c]==[71,78,149]
+          assert [x['n_250km_blocks'] for x in c]==[9,10,10]
+          base='model_persistence_log_n';climate='model_5year_ice_ssm_log_n'
+          assert all(x['scores'][climate]>=x['scores'][base] for x in c)
+          print('PASS true source state-space tested and not outperforming last-observed-nest persistence')
+          PY
+      - name: Archive only derived source-site annual ice and source-matched prediction QA (not all original marine data)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-3species-nest-SSM-2010-2015-retrospective-no-CMIP6-forecast
+          path: build/penguin_state_space_result/*.csv
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Archive model and independent validation machine verdict
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-3species-nest-SSM-20261116-verdict
+          path: build/penguin_state_space_result/*.json
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,44 @@
+name: Antarctic penguin official CCAMLR six-zone protected-area source readiness
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/verify_official_CCAMLR_MPA_zone_source.py'
+      - '.github/workflows/penguin-official-CCAMLR-MPA-source-geometry-gate-20261116.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check-ccamlr-adopted-zone-source-geometry-crs:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve original public official CCAMLR polygons by pinned CCAMLR Git commit
+        uses: actions/checkout@v4
+        with:
+          repository: ccamlr/data
+          ref: 8f17ec7e1e37d139ead6ea277821d5983beabd6a
+          path: build/official_ccamlr_data
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact source blob, CRS, six adopted-area features, management caveats
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/verify_official_CCAMLR_MPA_zone_source.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/verify_official_CCAMLR_MPA_zone_source.py \
+            --official-geojson build/official_ccamlr_data/geographical_data/mpa/CCAMLR_MPA.json \
+            --out build/verified_official_mpa_geometry/ccamlr_MPA_source_gate.json
+          python - <<'PY'
+          import json,pathlib
+          j=json.loads(pathlib.Path('build/verified_official_mpa_geometry/ccamlr_MPA_source_gate.json').read_text())
+          assert j['source_features']==6 and j['status_for_population_protected_fraction']=='NO_GO_PROTECTION_COVERAGE'
+          assert j['source_geometry_CRS'].startswith('EPSG:6932')
+          print('PASS pinned official CCAMLR 6 zones, no fake site-protected-foraging percent')
+          PY
+      - name: Save publisher and geometry provenance, never an unvalidated MPA protection fraction
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-ccamlr-six-official-mpa-source-readiness-no-overlap
+          path: build/verified_official_mpa_geometry/ccamlr_MPA_source_gate.json
+          retention-days: 30

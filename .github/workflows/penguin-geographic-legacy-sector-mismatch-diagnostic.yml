@@ -1,0 +1,58 @@
+name: Penguin geographically replicated climate-memory and marine 60pct sector mismatch audit
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diagnose_geographic_climate_legacy_mismatch.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_geographic_climate_legacy_mismatch.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/GEO_REPLICATION_MISMATCH_DIAGNOSTIC_GATE_20261111.md'
+      - '.github/workflows/penguin-geographic-legacy-sector-mismatch-diagnostic.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diagnose_geographic_climate_legacy_mismatch.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_geographic_climate_legacy_mismatch.py'
+      - '.github/workflows/penguin-geographic-legacy-sector-mismatch-diagnostic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  frozen-existing-source-geographic-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run independent source-free diagnostic unit tests
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diagnose_geographic_climate_legacy_mismatch.py
+          python research/climate-penguin/macro_panantarctic_v1/unit_test_geographic_climate_legacy_mismatch.py -v
+      - name: Restore exact original three-decade colony and same-site SIC panel (no new lag window)
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-three-decade-climate-legacy-and-negative-time-control-v1
+          run-id: 42844104869
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_triple_colony_ice
+      - name: Restore original gridded marine 60 percent isocontour sectors
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-60pct-isocontour-three-decade-tables-v1
+          run-id: 42791019321
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_marine_front
+      - name: Compute original region covariance and geographic-sector physical-versus-colony mismatch
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diagnose_geographic_climate_legacy_mismatch.py \
+            --roster build/original_triple_colony_ice/original_three_decade_census_climate_roster.csv \
+            --front build/original_marine_front/original_60pct_contour_10degree_sector_pairs.csv \
+            --out research/climate-penguin/macro_panantarctic_v1/geographic_mismatch_outputs
+      - name: Archive exact per-original-region, sector and biological source support
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-three-decade-original-regional-lag-and-60pct-sector-mismatch-v1
+          path: research/climate-penguin/macro_panantarctic_v1/geographic_mismatch_outputs/
+          if-no-files-found: warn

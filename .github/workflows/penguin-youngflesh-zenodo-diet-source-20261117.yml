@@ -1,0 +1,118 @@
+name: Penguin 2026 dietary Zenodo original source metadata gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/**'
+      - '.github/workflows/penguin-youngflesh-zenodo-diet-source-20261117.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  youngflesh-diet-original-meta:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source metadata and checksum gate locally
+        run: python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/test_probe_zenodo_diet_source.py -v
+      - name: Retrieve original publisher Zenodo file inventory (not original contents)
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/probe_zenodo_diet_source.py \
+            --out build/youngflesh_2026_zenodo_source_inventory
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+      - name: Verify original 256 MB diet archive MD5 and list embedded data files
+        run: |
+          python - <<'PYCODE'
+          import hashlib,json,urllib.request,zipfile,subprocess,shutil
+          from pathlib import Path
+          root=Path('build/youngflesh_2026_zenodo_source_inventory')
+          receipt=json.loads((root/'original_zenodo_17409948_source_receipt.json').read_text())
+          assert receipt['status']=='ZENODO_METADATA_RETRIEVED_NO_DATA_DOWNLOADED'
+          assert len(receipt['file_inventory'])==1
+          item=receipt['file_inventory'][0]
+          assert (item['key'],item['size_bytes'],item['checksum'])==('data.zip',256425816,'md5:e29a2f68c84e3a515044d554540def2f')
+          result_path=root/'publisher_original_zip_scan_receipt.json'
+          source_zip=root/'publisher_verified_data.zip'
+          try:
+              ua='mina-original-diet-source-audit/0.2 (zuizui0223/mina)'
+              req=urllib.request.Request('https://zenodo.org/api/records/17409948',headers={'User-Agent':ua})
+              with urllib.request.urlopen(req,timeout=50) as r: meta=json.load(r)
+              assert meta['id']==17409948
+              f=next(x for x in meta['files'] if x['key']=='data.zip')
+              url=f['links'].get('content') or f['links']['self']
+              h=hashlib.md5(); n=0
+              with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':ua}),timeout=180) as response,source_zip.open('wb') as out:
+                  while True:
+                      chunk=response.read(1_048_576)
+                      if not chunk:break
+                      out.write(chunk);h.update(chunk);n+=len(chunk)
+                      if n>256425816:raise ValueError('Original source ZIP larger than pinned size')
+              assert n==256425816,('byte_count',n)
+              assert h.hexdigest()=='e29a2f68c84e3a515044d554540def2f',('source_md5',h.hexdigest())
+              with zipfile.ZipFile(source_zip) as z:
+                  members=[{'name':i.filename,'uncompressed_bytes':i.file_size,'compressed_bytes':i.compress_size,'is_dir':i.is_dir()} for i in z.infolist()]
+                  assert not any(i['name'].startswith('/') or '..' in Path(i['name']).parts for i in members)
+                  headers=[]
+                  for info in z.infolist():
+                      if info.filename.lower().endswith(('.csv','.tsv')) and info.file_size<=10_000_000:
+                          try:
+                              with z.open(info) as fd: head=fd.readline(8192).decode('utf-8-sig').strip()
+                              headers.append({'name':info.filename,'header':head[:1500]})
+                          except Exception as e: headers.append({'name':info.filename,'header_error':str(e)[:200]})
+              rds_member='L0/Landsat/landsat_reflectance_L457-2025-07-16.rds'
+              rds_path=root/'_original_landsat_reflectance_temp.rds'
+              with zipfile.ZipFile(source_zip) as z:
+                  with z.open(rds_member) as source, rds_path.open('wb') as target: shutil.copyfileobj(source,target)
+              rexpr=('args <- commandArgs(trailingOnly=TRUE); '
+                     'x <- readRDS(args[1]); '
+                     'stopifnot("site_id" %in% names(x), "season" %in% names(x)); '
+                     'd <- data.frame(site_id=as.character(x$site_id), season=as.integer(x$season)); '
+                     'd <- d[!is.na(d$site_id) & !is.na(d$season),]; '
+                     'q <- aggregate(rep(1L,nrow(d)),list(site_id=d$site_id,season=d$season),length); '
+                     'names(q)[3] <- "n_original_landsat_records"; '
+                     'write.csv(q,args[2],row.names=FALSE); '
+                     'writeLines(paste(names(x),collapse=","),args[3]); '
+                     'if("geometry" %in% names(x)) { '
+                     ' xy <- tryCatch(t(vapply(x$geometry,function(p){a<-as.numeric(unclass(p)); c(a[1],a[2])},numeric(2))),error=function(e)NULL); '
+                     ' if(!is.null(xy)){ coords <- data.frame(site_id=as.character(x$site_id), easting=xy[,1], northing=xy[,2]); '
+                     ' coords <- aggregate(cbind(easting,northing) ~ site_id, data=coords, FUN=mean); '
+                     ' write.csv(coords,args[4],row.names=FALSE) } }')
+              r_status='NOT_STARTED'
+              try:
+                  subprocess.run(['Rscript','--vanilla','-e',rexpr,str(rds_path),
+                                  str(root/'source_site_season_landsat_coverage.csv'),
+                                  str(root/'source_landsat_columns.txt'),
+                                  str(root/'source_site_projected_centroids.csv')],
+                                 check=True,timeout=180)
+                  r_status='ORIGINAL_RDS_SITE_SEASON_AGGREGATED'
+              except Exception as e:
+                  r_status=f'RDS_SUPPORT_EXTRACTION_BLOCKED_{type(e).__name__}_{str(e)[:200]}'
+              finally:
+                  if rds_path.exists():rds_path.unlink()
+              result={'status':'PUBLISHER_SOURCE_ZIP_VERIFIED_MD5_MEMBER_INVENTORY',
+                      'record_id':17409948,'source_bytes':n,'source_md5':h.hexdigest(),
+                      'n_members':len(members),'members':members,'csv_headers':headers,'source_landsat_site_season_status':r_status,
+                      'diet_values_not_yet_linked':True,'original_zip_not_redistributed':True}
+              print('VERIFIED ORIGINAL ZENODO ZIP:',n,'bytes',len(members),'members')
+          except Exception as e:
+              result={'status':'PUBLISHER_SOURCE_ZIP_SCAN_BLOCKED','error':f'{type(e).__name__}: {str(e)[:500]}','diet_values_not_yet_linked':True}
+              print(result)
+              raise
+          finally:
+              if 'result' in locals():result_path.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\\n')
+              if source_zip.exists():source_zip.unlink()
+          PYCODE
+      - name: Store exact source inventory or failure receipt only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-zenodo-17409948-source-file-inventory-only
+          path: build/youngflesh_2026_zenodo_source_inventory/
+          if-no-files-found: warn
+          retention-days: 30

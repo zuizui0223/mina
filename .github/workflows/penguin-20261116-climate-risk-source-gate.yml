@@ -1,0 +1,156 @@
+name: Penguin climate risk frozen cohort and true early-neighborhood source gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/**'
+      - '.github/workflows/penguin-20261116-climate-risk-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-method-cohort-neighbor-pilot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original method and spatial source dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas pyproj==3.7.1
+      - name: Compile strict baseline-neighbor source gate and original data constructor
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/frozen_neighbor_source_gate.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Reconstruct exact old frozen original 595-site 2456 method-selected count rows
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Pilot known 159 source pairs without ever calling them verified 265
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/frozen_neighbor_source_gate.py \
+            --source research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --expected-series 159 --legacy-pilot \
+            --output build/climate_risk_pilot_159
+      - name: Prove predeclared 265-series mismatch fails closed
+        run: |
+          set -euo pipefail
+          set +e
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/frozen_neighbor_source_gate.py \
+            --source research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --expected-series 265 \
+            --output build/climate_risk_gate_265
+          RC=$?
+          set -e
+          test "$RC" -ne 0
+          python - <<'PY'
+          import json,pathlib,pandas as pd
+          base=pathlib.Path('build')
+          pil=json.loads((base/'climate_risk_pilot_159/source_gate.json').read_text())
+          gate=json.loads((base/'climate_risk_gate_265/source_gate.json').read_text())
+          df=pd.read_csv(base/'climate_risk_pilot_159/conspecific_neighborhood_10_25_50_100km.csv')
+          assert pil['observed_series']==159 and gate['observed_series']==159
+          assert pil['status']=='LEGACY_2456_159_PILOT_NOT_265_VERIFICATION'
+          assert gate['status']=='STOP_SOURCE_SERIES_MISMATCH'
+          assert gate['expected_source_series']==265
+          assert len(df)==159 and df[['site_id','species']].drop_duplicates().shape[0]==159
+          for radius in (10,25,50,100):
+              all_sites=df[f'n_all_catalogued_other_sites_{radius}km']
+              measured=df[f'n_observed_early_same_species_positive_{radius}km']
+              zero=df[f'n_actual_early_surveyed_zero_{radius}km']
+              unknown=df[f'n_early_unobserved_species_sites_UNKNOWN_{radius}km']
+              assert (all_sites==measured+zero+unknown).all()
+          print("PASS genuine early-only inventory source gate: old 159 pilot and 265 hard stop")
+          PY
+      - name: Audit archived CMIP6 25-site extent against genuine 2011–2020 nesting weights
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/physical_exposure_source_gate.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/physical_exposure_source_gate.py \
+            --count-csv research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory-csv research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --physical-csv research/climate-penguin/macro_panantarctic_v1/ice_sst_all/physical.csv \
+            --out-dir build/physical_25_source_pilot
+          python - <<'PY'
+          import json,pathlib,pandas as pd
+          root=pathlib.Path('build/physical_25_source_pilot')
+          status=json.loads((root/'physical_exposure_coverage.json').read_text())
+          counts=pd.read_csv(root/'only_archived_25site_physical_exposure_not_antarctic_population.csv')
+          assert status['source_status']=='STOP_SCENARIO_COVERAGE_NOT_PAN_ANTARCTIC'
+          assert status['source_physical_scenarios']==600
+          assert len(status['source_25_cohort_site_ids'])==25
+          assert len(counts)==24
+          assert not counts.is_a_future_penguin_nest_change_forecast.any()
+          assert all(not x for x in counts.all_595_source_coverage)
+          print("PASS 25-site CMIP6 source-only physical exposure, full population risk stopped")
+          PY
+      - name: Compare original 159-pilot static PC1 and observed-only conspecific pressure in the same source support
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/legacy_159_climate_neighbor_pilot.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/legacy_159_climate_neighbor_pilot.py \
+            --neighborhood-csv build/climate_risk_pilot_159/conspecific_neighborhood_10_25_50_100km.csv \
+            --source-gate-json build/climate_risk_pilot_159/source_gate.json \
+            --climate-588-csv research/climate-penguin/macro_panantarctic_v1/source_audit_20261115/source_cohort_climate_support_588_sites.csv \
+            --output build/climate_risk_pilot_fit
+          python - <<'PY'
+          import json,pathlib,pandas as pd
+          root=pathlib.Path('build/climate_risk_pilot_fit')
+          r=json.loads((root/'legacy_159_climate_neighbor_pilot.json').read_text())
+          assert r['n_159_original_pairs']==159
+          assert r['status']=='LEGACY_159_PILOT_NOT_265_COMPARABLE'
+          assert len(r['model_versions'])==7
+          print('PASS original source static PC1 and 4-radii exploratory pilot, no extrapolated warming effects')
+          PY
+      - name: Prove actual Antarctic MPA overlay fails closed without official CCAMLR zones and marine mask
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/ccamlr_mpa_source_gate.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/ccamlr_mpa_source_gate.py \
+            --sites research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --out build/protection_gate_not_evaluated
+          python - <<'PY'
+          import json,pathlib
+          v=json.loads(pathlib.Path('build/protection_gate_not_evaluated/protection_source_gate.json').read_text())
+          assert v['n_known_colony_identifiers']==595
+          assert v['status']=='NO_GO_PROTECTION_COVERAGE'
+          assert v['no_real_protected_fraction_without_verified_shapes']
+          print('PASS marine MPA source absent -> no invented spatial protection percentages')
+          PY
+      - name: Audit existing 106-location CMIP6 3-model atlas using genuine 2011–2020 nesting weights and exact colony coordinates
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/cmip6_106_nesting_weight_source_audit.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/cmip6_106_nesting_weight_source_audit.py \
+            --source-counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --original-site-inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --existing-cmip6-atlas research/climate-penguin/outputs/cmip6_exposure_atlas_v1/site_scenario_exposure.csv \
+            --output build/physical_106_selected_source
+          python - <<'PY'
+          import json,pathlib,pandas as pd
+          b=pathlib.Path("build/physical_106_selected_source")
+          t=json.loads((b/"106_selected_source_exposure_gate.json").read_text())
+          r=pd.read_csv(b/"106_atlas_40macro_real_nest_weighted_exposure.csv")
+          assert len(r)==16
+          assert t["source_quality"]["atlas_source_locations"]==106
+          assert t["source_quality"]["n_original_observed_source_sites_2011_2020"]==271
+          assert t["no_extrapolated_whole_antarctic_nest_change"]
+          assert r.source_nest_median_weight_fraction.between(0,1).all()
+          print("PASS 106 coordinate model atlas vs source 271 truly counted nesting denominator, no 595 extrapolation")
+          PY
+      - name: Archive provenance, original cohort, four-radius source neighbor and intentional NO-GO
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-20261116-climate-risk-original-159-vs-265-source-gate
+          path: |
+            build/climate_risk_pilot_159/*.csv
+            build/climate_risk_pilot_159/*.json
+            build/climate_risk_gate_265/*.json
+            build/physical_25_source_pilot/*.json
+            build/physical_25_source_pilot/*.csv
+            build/climate_risk_pilot_fit/*.csv
+            build/climate_risk_pilot_fit/*.json
+            build/protection_gate_not_evaluated/*.json
+            build/physical_106_selected_source/*.csv
+            build/physical_106_selected_source/*.json
+          retention-days: 30
+          if-no-files-found: warn

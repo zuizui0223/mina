@@ -1,0 +1,52 @@
+name: Penguin original 23-site SIC region versus within allocation support
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - '.github/workflows/penguin-20261121-original-parent23-region-allocation-coverage.yml'
+      - 'research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/recompute_parent23_vs_complete17_SIC_region_sensitivity_20261121.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-matched-23-vs-17:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-only Python syntax and exact 23-versus-17 accounting
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/recompute_parent23_vs_complete17_SIC_region_sensitivity_20261121.py
+          python research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/recompute_parent23_vs_complete17_SIC_region_sensitivity_20261121.py
+      - name: Verify expected immutable source cohort, exact sum and omission verdict
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          f=Path("research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/SIC_23_VS_17_REGION_DECOMPOSITION_20261121.json")
+          x=json.loads(f.read_text())
+          p=x["full23_sic_only"]
+          c=x["complete17_sic_salt_sst"]
+          assert p["n_sites"]==23 and c["n_sites"]==17
+          assert abs(p["between_region_pp"]+p["within_region_pp"]-p["nest_reallocation_component_pp"])<1e-10
+          assert abs(c["between_region_pp"]+c["within_region_pp"]-c["nest_reallocation_component_pp"])<1e-10
+          assert p["between_region_pp"]>0
+          assert p["within_region_pp"]<0<c["within_region_pp"]
+          assert x["sensitivity"]["all23_leave_one_site_between_positive"]
+          assert x["sensitivity"]["all4_leave_one_region_between_positive"]
+          assert x["sensitivity"]["leave_one_site_within_positive"]==["CRZW"]
+          assert not x["sensitivity"]["all4_leave_one_region_total_reallocation_positive"]
+          assert x["no_climate_causal_model_fitted"] and x["not_a_future_penguin_population_forecast"]
+          print("PASS original23/17 region-specific selection effect, six unsupported GLORYS sites, no causal effect")
+          PY
+      - name: Archive reproducible derived numerical result only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-parent23-SIC-region-coverage-20261121
+          path: research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/SIC_23_VS_17_REGION_DECOMPOSITION_20261121.json
+          retention-days: 30
+          if-no-files-found: warn

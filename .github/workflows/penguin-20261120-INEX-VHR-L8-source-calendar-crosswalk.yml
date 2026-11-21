@@ -1,0 +1,64 @@
+name: Penguin original INEX actual VHR guano-area vs L8 new calendar scene source gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/match_INEX_external_VHR_to_L8_dates_source_only_20261120.py'
+      - '.github/workflows/penguin-20261120-INEX-VHR-L8-source-calendar-crosswalk.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_external_VHR_seasons_to_L8_scene_calendar:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require original frozen L8 track, compile no outcome script
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/match_INEX_external_VHR_to_L8_dates_source_only_20261120.py
+      - name: Install source-only CSV parsing
+        run: python -m pip install --disable-pip-version-check 'pandas>=2.2,<3'
+      - name: Retrieve two pinned original GitHub source-derived artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/INEX_original_VHR_L8_dates_only
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14599485662/zip" > build/INEX_original_VHR_L8_dates_only/verified_external_VHR.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14594208565/zip" > build/INEX_original_VHR_L8_dates_only/verified_L8_scenes.zip
+          echo 'cbd2f443e88300caef449eb428e571d9123f77d47e5a1087f5e30f2afd9fcd2e  build/INEX_original_VHR_L8_dates_only/verified_external_VHR.zip' | sha256sum --check
+          echo '575dc514c6103b1aaefb0bce1bf7f5084aedc5d2c4edb3519d0ac03af82a2750  build/INEX_original_VHR_L8_dates_only/verified_L8_scenes.zip' | sha256sum --check
+      - name: Generate independent VHR calendar match to original LC08 metadata only
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/match_INEX_external_VHR_to_L8_dates_source_only_20261120.py \
+            --vhr-zip build/INEX_original_VHR_L8_dates_only/verified_external_VHR.zip \
+            --scene-zip build/INEX_original_VHR_L8_dates_only/verified_L8_scenes.zip \
+            --out build/INEX_original_VHR_L8_dates_only/output
+      - name: Guard one colony and three seasons, no guano truth or future isotope associations
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          p=Path('build/INEX_original_VHR_L8_dates_only/output')
+          j=json.loads((p/'INEX_2013_2017_2018_L8_VHR_SOURCE_DATE_GATE.json').read_text())
+          d=pd.read_csv(p/'INEX_three_independent_VHR_dates_L8_original_scene_source_only.csv')
+          assert len(d)==6 and set(d.season)=={2013,2017,2018}
+          assert j['n_independent_sites']==1 and j['n_independent_regions']==1
+          assert j['VHR_area_not_pixel_level_guano_mask']
+          assert j['no_future_isotope_proxy_computed'] and j['no_new_polynya_effect_fitted']
+          print('STRICT_INEX_VHR_L8_DATE_OVERLAP',d[['season','fixed_scene_rule','day_offset','original_scene_overall_cloud_pct']].to_string(index=False))
+          PY
+      - name: Preserve source-only calendar data and exact scene IDs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-INEX-2013-2017-2018-independent-VHR-L8-date-source-only
+          path: build/INEX_original_VHR_L8_dates_only/output/
+          if-no-files-found: warn
+          retention-days: 30

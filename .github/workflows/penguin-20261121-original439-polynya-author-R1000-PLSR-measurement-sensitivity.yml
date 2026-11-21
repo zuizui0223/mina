@@ -1,0 +1,173 @@
+name: Penguin old439 + old358 negative polynya author 1000 R PLSR measurement sensitivity
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/author_isotope_polynya_sensitivity_20261121/**'
+      - '.github/workflows/penguin-20261121-original439-polynya-author-R1000-PLSR-measurement-sensitivity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  historical_same_439_old_same_358_R_1000_measurement_sensitivity:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+      - name: Guard frozen 439/358 method sensitivity declared before any author-style new Y
+        run: |
+          set -euo pipefail
+          root=research/climate-penguin/macro_panantarctic_v1/author_isotope_polynya_sensitivity_20261121
+          test -f "$root/FROZEN_AUTHOR_1000_PLSR_MEASUREMENT_SENSITIVITY_BEFORE_NEW_Y.md"
+          test -f research/climate-penguin/macro_panantarctic_v1/polynya_temporal_20261120/matched_analysis.csv
+          python -m py_compile "$root/compare_fixed_439_polynya_358_temporal_with_author_1000_PLSR_ensemble.py"
+          grep -q '439 original' "$root/FROZEN_AUTHOR_1000_PLSR_MEASUREMENT_SENSITIVITY_BEFORE_NEW_Y.md"
+      - name: Install original author R PLSR oscorespls and original source spectral XLSX readers
+        run: |
+          Rscript --vanilla -e 'install.packages(c("pls","jsonlite"),repos="https://cloud.r-project.org")'
+          python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'statsmodels>=0.14,<1' 'scipy>=1.13,<2' 'scikit-learn>=1.6,<2' 'openpyxl>=3.1,<4' 'requests>=2.32,<3' 'remotezip>=0.12,<1'
+      - name: Obtain exactly previously verified original 860 isotope, same 860 physical and L7 author 1000 independent archived artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/author_R1000_old439_358_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/author_R1000_old439_358_source/old_860_iso.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14539723210/zip" > build/author_R1000_old439_358_source/old_860_polynya.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14602063283/zip" > build/author_R1000_old439_358_source/old_author_L7_1000.zip
+          echo 'dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205  build/author_R1000_old439_358_source/old_860_iso.zip' | sha256sum --check
+          echo '702ab3eeff9ed953c19a9e696492ba9bf5cddce204d40a9c7d9b1234d98f9f96  build/author_R1000_old439_358_source/old_860_polynya.zip' | sha256sum --check
+          echo 'ac1199ad312df63173f7be73452ccbb5e01b7c55f29d3413ede63e1a1b665669  build/author_R1000_old439_358_source/old_author_L7_1000.zip' | sha256sum --check
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+          p=Path('build/author_R1000_old439_358_source')
+          with zipfile.ZipFile(p/'old_860_iso.zip') as z:
+              assert z.testzip() is None
+              (p/'original_860_matched_membership.csv').write_bytes(
+                  z.read('matched_860_original_isotope_ocean_ice_site_seasons.csv'))
+          PY
+      - name: Read ONLY original author 103 lab data, historical L4/L5 original RSR and pre-2013 original Landsat RDS by HTTP byte ranges
+        run: |
+          python - <<'PY'
+          import hashlib, json,urllib.request
+          from pathlib import Path
+          from remotezip import RemoteZip
+          p=Path('build/author_R1000_old439_358_source')
+          ua={'User-Agent':'mina-source-frozen-439-1000-PLSR-sensitivity (https://github.com/zuizui0223/mina)'}
+          with urllib.request.urlopen(urllib.request.Request('https://zenodo.org/api/records/17409948',headers=ua),timeout=60) as f:
+              obj=json.load(f)
+          assert obj['id']==17409948
+          f=next(v for v in obj['files'] if v['key']=='data.zip')
+          assert (f['size'],f['checksum'])==(256425816,'md5:e29a2f68c84e3a515044d554540def2f')
+          url=f['links'].get('content') or f['links']['self']
+          need={
+            'L1/SIA_spectra.csv':('SIA_spectra.csv','e6822e390a763d6b991819046b8a642fe24f412fe92efdef7a8822e198553d23'),
+            'L0/Landsat/landsat_reflectance_L457-2025-07-16.rds':('old_guano_L457_1984_2012.rds','f86ba97f98bca33c1ff57a1ca1b6783f92c29d952710ce7a4256f0109323b50b'),
+            'L0/RSR/L4_TM_RSR.xlsx':('L4_TM_RSR.xlsx',None),
+            'L0/RSR/L5_TM_RSR.xlsx':('L5_TM_RSR.xlsx',None)
+          }
+          receipt=[]
+          with RemoteZip(url) as z:
+              assert len([m for m in z.infolist() if not m.is_dir()])==1108
+              for key,(name,original_digest) in need.items():
+                  raw=z.read(key)  # native ZIP member CRC verified by zipfile
+                  h=hashlib.sha256(raw).hexdigest()
+                  if original_digest and h!=original_digest:
+                      raise ValueError('Exact original published input changed: '+key)
+                  (p/name).write_bytes(raw)
+                  receipt.append(dict(source_member=key,local_name=name,
+                                      member_SHA256=h,bytes=len(raw),
+                                      exact_old_preverified_digest_checked=bool(original_digest)))
+                  print('SOURCE_ONLY_EXACT_OLD_NATIVE_DATA',key,len(raw),h,flush=True)
+          (p/'original_source_member_hashes.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - name: Extract original exactly 860 site-season publisher-selected 131014 pixel reflectances and calendar-day counts with NO model Y
+        run: |
+          Rscript --vanilla research/climate-penguin/macro_panantarctic_v1/author_isotope_polynya_sensitivity_20261121/export_exact_860_original_source_pixels_RDS.R \
+            build/author_R1000_old439_358_source/old_guano_L457_1984_2012.rds \
+            build/author_R1000_old439_358_source/original_860_matched_membership.csv \
+            build/author_R1000_old439_358_source/original_860_selected_old_pixels_6bands_TEMP.csv
+      - name: Construct fixed original 103 6-band lab convolution for L4 and L5 true original instrument RSR only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import sys,numpy as np,pandas as pd
+          p=Path('build/author_R1000_old439_358_source')
+          sys.path.insert(0,str(Path('research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117').resolve()))
+          from reconstruct_isotope_proxy import weighted_spectra, WAVES
+          lab=pd.read_csv(p/'SIA_spectra.csv')
+          lab['d_15N']=pd.to_numeric(lab.d_15N,errors='coerce')
+          lab=lab[lab.d_15N.notna()].reset_index(drop=True)
+          assert (len(lab),len(WAVES))==(103,2151)
+          l4=weighted_spectra(lab,p/'L4_TM_RSR.xlsx','L4 TM')
+          l5=weighted_spectra(lab,p/'L5_TM_RSR.xlsx','L5 TM')
+          assert l4.shape==l5.shape==(103,6)
+          assert np.isfinite(l4).all() and np.isfinite(l5).all()
+          six=['blue','green','red','nir','swir1','swir2']
+          df=pd.DataFrame(np.column_stack([lab.d_15N,l4,l5]),
+            columns=['d_15N']+[f'L4_{v}' for v in six]+[f'L5_{v}' for v in six])
+          df.to_csv(p/'_TEMP_original103_L4_L5_lab_sixbands_DELETE.csv',index=False)
+          print('PASS original 103 source lab L4/L5 6bands, no future satellite Y',flush=True)
+          PY
+      - name: Author R 1000 exactly five-component original L4 and L5 coefficients (same original isotope training folds as L7)
+        run: |
+          Rscript --vanilla research/climate-penguin/macro_panantarctic_v1/author_isotope_polynya_sensitivity_20261121/fit_author_source_R1000_L4_L5_PLSR5_lab_only.R \
+            build/author_R1000_old439_358_source/_TEMP_original103_L4_L5_lab_sixbands_DELETE.csv \
+            build/author_R1000_old439_358_source/new_L4L5_R1000
+          rm build/author_R1000_old439_358_source/_TEMP_original103_L4_L5_lab_sixbands_DELETE.csv
+      - name: Fit exactly same old 439 M_P/M_SP and 358 original P0/P1 with ONLY Y replaced by published-method 1000 ensemble
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/author_isotope_polynya_sensitivity_20261121/compare_fixed_439_polynya_358_temporal_with_author_1000_PLSR_ensemble.py \
+            --old-isotope-zip build/author_R1000_old439_358_source/old_860_iso.zip \
+            --old-physical-zip build/author_R1000_old439_358_source/old_860_polynya.zip \
+            --original-l7-coefficients-zip build/author_R1000_old439_358_source/old_author_L7_1000.zip \
+            --original-pixels build/author_R1000_old439_358_source/original_860_selected_old_pixels_6bands_TEMP.csv \
+            --coefficients-dir build/author_R1000_old439_358_source/new_L4L5_R1000 \
+            --temporal-fixed-358 research/climate-penguin/macro_panantarctic_v1/polynya_temporal_20261120/matched_analysis.csv \
+            --out build/author_R1000_old439_358_source/old439_358_new_Y_method_sensitivity
+      - name: Verify frozen denominators, author coefficient samples and no post2013 inference
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          p=Path('build/author_R1000_old439_358_source')
+          coef=json.loads((p/'new_L4L5_R1000/L4_L5_AUTHOR_R1000_CV_SOURCE_ONLY_RECEIPT.json').read_text())
+          assert coef['status']=='ORIGINAL_AUTHOR_R1000_L4_L5_LAB_ONLY_PASS'
+          assert coef['same_exact_1000_original_lab_sample_splits']
+          r=json.loads((p/'old439_358_new_Y_method_sensitivity/AUTHOR_R1000_PLSR_ORIGINAL439_358_FIXED_MEASUREMENT_VERDICT.json').read_text())
+          assert r['status']=='HISTORICAL_ONLY_AUTHOR_PLSR1000_MEASUREMENT_SENSITIVITY_COMPLETED'
+          assert r['source_support']['original_old_site_seasons']==860
+          assert r['source_support']['old_source_selected_pixels']==131014
+          assert r['source_support']['original_cohort_main']['rows']==439
+          assert r['source_support']['original_cohort_temporal']['rows']==358
+          assert r['source_old_Y_439_and_358_baseline_regressions_reproduced']
+          assert not r['independent_post2013_external_replicate']
+          assert not r['new_post2013_optical_Y_opened']
+          assert not r['real_prey_fraction_measured']
+          assert not r['author_hierarchical_Stan_isotope_DI_posterior_reproduced']
+          for s in [4,5]:
+              df=pd.read_csv(p/f'new_L4L5_R1000/L{s}_1000_author_style_5component_PLSR_CV_ensemble_coefficients.csv')
+              assert len(df)==1000
+          print('ORIGINAL_OLD_ONLY_AUTHOR_1000_L4_L5_L7_SAME_439_358',r['original439_M_P']['author_R1000_PLSR_beta_per_10pp'],
+            r['original439_M_SP']['author_R1000_PLSR_beta_per_10pp'],
+            r['original358_P0_minus_P1']['author_R1000_PLSR_beta_per_10pp'])
+          PY
+      - name: Preserve old 860 Y replacement and 439/358 measure-sensitivity coefficients, not full old RDS or future image values
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-old-439-358-actual-original-author-R1000-PLSR5-measurement-sensitivity
+          path: |
+            build/author_R1000_old439_358_source/original_source_member_hashes.json
+            build/author_R1000_old439_358_source/new_L4L5_R1000/
+            build/author_R1000_old439_358_source/old439_358_new_Y_method_sensitivity/
+          if-no-files-found: warn
+          retention-days: 30

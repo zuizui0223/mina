@@ -1,0 +1,49 @@
+name: Penguin Antarctic 588-site EN4 original 2015 raw observed salinity QC/coverage gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/pilot_EN4_2015_raw_profile_salinity_coverage.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_EN4_2015_raw_profile_gate.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/EN4_IN_SITU_SALINITY_2015_SOURCE_GATE_20261112.md'
+      - '.github/workflows/penguin-original-EN4-2015-raw-salinity-profile-coverage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-met-office-EN4-2015-raw-profile-seasonal-source-gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original EN4 NetCDF profile reader, geographical QC and source-reconstruction dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy netCDF4 pyproj==3.7.1
+      - name: Check original source QC, real measured upper-10m depth and fixed colony nearest geography
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/pilot_EN4_2015_raw_profile_salinity_coverage.py
+          python research/climate-penguin/macro_panantarctic_v1/unit_test_EN4_2015_raw_profile_gate.py -v
+      - name: Restore verified original 588 marine eligible site coordinates across 18 reporting regions
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-595-colony-GLORYS-wet-grid-2011-september-geo-source-gate
+          run-id: 42957439858
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/verified_original_595_marine_site_coords
+      - name: Read genuine Met Office EN4.2.2 2015 August–November raw quality-controlled observed salinity profiles and report source region coverage
+        run: |
+          SITES="$(find build/verified_original_595_marine_site_coords -name 'all_original_595_sites_frozen_GLORYS_nearest_2011_September_wet_ocean_cells.csv' -print -quit)"
+          test -s "$SITES"
+          python research/climate-penguin/macro_panantarctic_v1/pilot_EN4_2015_raw_profile_salinity_coverage.py \
+            --geography "$SITES" \
+            --out research/climate-penguin/macro_panantarctic_v1/EN4_2015_observation_gate_outputs
+      - name: Preserve publisher annual or monthly original source SHA and aggregate observed profile QC/coverage only (no raw EN4 redistribution)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-EN4-2015-raw-in-situ-QC-coverage-18region-pilot
+          path: research/climate-penguin/macro_panantarctic_v1/EN4_2015_observation_gate_outputs/
+          if-no-files-found: warn

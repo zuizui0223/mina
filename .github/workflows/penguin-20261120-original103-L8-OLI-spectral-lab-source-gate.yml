@@ -1,0 +1,102 @@
+name: Penguin L8 OLI original103 guano laboratory spectral calibration gate NO new images
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/calibrate_original_103_guano_spectra_L8_OLI_SOURCE_ONLY_20261120.py'
+      - '.github/workflows/penguin-20261120-original103-L8-OLI-spectral-lab-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original_guano_lab_L8_OLI_no_new_image_Y:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify different-sensor gate was frozen before new L8 image outcomes
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/reconstruct_isotope_proxy.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/calibrate_original_103_guano_spectra_L8_OLI_SOURCE_ONLY_20261120.py
+      - name: Install numerics and original RSR Excel reader for same 103 lab source
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'scikit-learn==1.7.2' 'openpyxl>=3,<4'
+      - name: Fetch only original 103 lab isotope spectra and original L7 RSR from MD5-pinned 256MB Youngflesh publication
+        run: |
+          python - <<'PY'
+          import hashlib,json,urllib.request,zipfile,shutil
+          from pathlib import Path
+          root=Path('build/penguin_original103_l8_lab_calibration')
+          root.mkdir(parents=True,exist_ok=True)
+          ua={'User-Agent':'mina-original103-new-sensor-L8-optical-spectral-gate (https://github.com/zuizui0223/mina)'}
+          with urllib.request.urlopen(urllib.request.Request('https://zenodo.org/api/records/17409948',headers=ua),timeout=60) as response:
+              rec=json.load(response)
+          assert rec['id']==17409948
+          info=next(f for f in rec['files'] if f['key']=='data.zip')
+          assert info['size']==256425816
+          assert info['checksum']=='md5:e29a2f68c84e3a515044d554540def2f'
+          url=info['links'].get('content') or info['links']['self']
+          raw=root/'original_publisher_256MB_TEMP_DELETE.zip'
+          digest=hashlib.md5()
+          n=0
+          with urllib.request.urlopen(urllib.request.Request(url,headers=ua),timeout=240) as src, raw.open('wb') as dest:
+              while True:
+                  block=src.read(1_048_576)
+                  if not block:break
+                  dest.write(block);digest.update(block);n+=len(block)
+                  if n>256425816:raise RuntimeError('Zenodo source exceeded published original byte count')
+          assert (n,digest.hexdigest())==(256425816,'e29a2f68c84e3a515044d554540def2f')
+          needed=['L1/SIA_spectra.csv','L0/RSR/L7_ETM_RSR.xlsx']
+          with zipfile.ZipFile(raw) as z:
+              assert z.testzip() is None
+              for item in needed:
+                  with z.open(item) as src,(root/Path(item).name).open('wb') as dest:
+                      shutil.copyfileobj(src,dest)
+          raw.unlink()
+          print('PASS original 103 guano lab source and original L7 RSR, no image data downloaded',flush=True)
+          PY
+      - name: Retrieve documented EUMETSAT NWP SAF NASA-derived L8 OLI RSR six native files
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_original103_l8_lab_calibration/l8_oli_srf
+          for band in 02 03 04 05 06 07; do
+            fn="rtcoef_landsat_8_oli_srf_ch$band.txt"
+            curl --fail --location --retry 3 --retry-delay 3 --connect-timeout 45 --max-time 120 \
+              --output "build/penguin_original103_l8_lab_calibration/l8_oli_srf/$fn" \
+              "https://nwp-saf.eumetsat.int/downloads/rtcoef_info/visir_srf/rtcoef_landsat_8_oli_srf/$fn"
+            test -s "build/penguin_original103_l8_lab_calibration/l8_oli_srf/$fn"
+            sha256sum "build/penguin_original103_l8_lab_calibration/l8_oli_srf/$fn"
+          done
+      - name: Recompute old L7 lab validation and L8 six-band instrument-specific new lab CV without future satellite responses
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/calibrate_original_103_guano_spectra_L8_OLI_SOURCE_ONLY_20261120.py \
+            --original-lab build/penguin_original103_l8_lab_calibration \
+            --l8-source-srf build/penguin_original103_l8_lab_calibration/l8_oli_srf \
+            --out build/penguin_original103_l8_lab_calibration/lab_gate_receipt
+      - name: Verify predeclared laboratory-only, no L8 image Y and no ecological model
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/penguin_original103_l8_lab_calibration/lab_gate_receipt/L8_OLI_ORIGINAL_103_LAB_SPECTRAL_CALIBRATION_GATE.json')
+          r=json.loads(p.read_text())
+          assert r['status'] in ('PASS_L8_103_GUANO_LAB_SPECTRAL_CALIBRATION_GATE_SOURCE_ONLY',
+                                'NO_GO_L8_LAB_SPECTRAL_CALIBRATION_GATE')
+          assert r['original_103_sample_n']==103 and r['PLSR_components']==5
+          assert r['PLSRegression_scale'] is False
+          assert r['no_2013_2021_L8_image_pixel_opened'] and r['no_polynya_or_environment_test']
+          assert r['no_2013_2021_isotope_colony_proxy_computed']
+          assert r['no_L7_confirmation_claimed']
+          print('NEW_OLI_SPECTRAL_LAB_SOURCE_GATE',r['status'],r['comparison'])
+          PY
+      - name: Preserve 103 guano-lab original-derived fixed coefficients and CV evidence not full source assays
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-L8-OLI-original103-guano-only-sixband-fixed-lab-spectral-source-gate
+          path: build/penguin_original103_l8_lab_calibration/lab_gate_receipt/
+          if-no-files-found: warn
+          retention-days: 30

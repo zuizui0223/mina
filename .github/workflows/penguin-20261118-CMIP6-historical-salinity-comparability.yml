@@ -1,0 +1,69 @@
+name: Penguin original CMIP6 historical salinity and sea ice vs GLORYS OSI SAF reference
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_CMIP6_vs_historical_GLORYS_SIC_support.py'
+      - '.github/workflows/penguin-20261118-CMIP6-historical-salinity-comparability.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source_original_1995_2014_common_period:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install local evidence arithmetic packages
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3'
+      - name: Compile original comparison
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_CMIP6_vs_historical_GLORYS_SIC_support.py
+      - name: Retrieve frozen original CMIP6, GLORYS and real count source artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_CMIP6_reference_inputs
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14214704362/zip" > build/penguin_CMIP6_reference_inputs/CMIP6_source595.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13828472111/zip" > build/penguin_CMIP6_reference_inputs/GLORYS588_observed_source.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_CMIP6_reference_inputs/true_census_source2456.zip
+      - name: Compare historical model ocean surface physical states on matching 588 original known colony sites
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_CMIP6_vs_historical_GLORYS_SIC_support.py \
+            --cmip6-zip build/penguin_CMIP6_reference_inputs/CMIP6_source595.zip \
+            --glorys-zip build/penguin_CMIP6_reference_inputs/GLORYS588_observed_source.zip \
+            --counts-zip build/penguin_CMIP6_reference_inputs/true_census_source2456.zip \
+            --out build/penguin_CMIP6_reference_gate
+      - name: Assert three original model and twenty-year reference denominators, not raw future-nest skill
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          p=Path('build/penguin_CMIP6_reference_gate')
+          j=json.loads((p/'source_CMIP6_GLORYS_historical_comparability_verdict.json').read_text())
+          assert j['status']=='PASS_REAL_SOURCE_HISTORICAL_GLORYS_VS_CMIP6_COMPARABILITY_ONLY'
+          assert (j['source_original_588_GLORYS_sites'],j['source_coincident_20years_1995_2014'],
+                  j['source_counted_recent_sites_with_reference'])==(588,20,265)
+          assert j['GLORYS_is_reanalysis_not_in_situ_ground_truth']
+          assert j['future_sos_from_model_not_calibrated_GLORYS_or_optical_isotope']
+          a=pd.read_csv(p/'source_588_sites_CMIP6_historical_sos_sic_vs_GLORYS_OSISAF.csv')
+          s=pd.read_csv(p/'source_3model_historical_1995_2014_sos_sic_comparability.csv')
+          assert len(a)==588*3 and len(s)==9
+          assert a[['site_id','source_id']].duplicated().sum()==0
+          assert a[['sos','observed_aug_nov_glorys_surface_salinity',
+                    'siconc','observed_aug_nov_sic_pp']].notna().all().all()
+          assert a.all_models_original_ocean50.groupby(a.source_id).sum().eq(367).all()
+          print('PASS same-period 588 site / 3 model historical sea ice and salinity source comparability')
+          PY
+      - name: Upload original source-derived location-comparison and statistical limits
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-CMIP6-3model-588site-historical-ocean-salinity-ice-comparability
+          path: build/penguin_CMIP6_reference_gate/
+          if-no-files-found: warn
+          retention-days: 30

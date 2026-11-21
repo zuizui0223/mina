@@ -1,0 +1,25 @@
+name: Antarctic penguin original survey-year source support and reweighting QA
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/census_year_support_20261115/**'
+      - 'research/climate-penguin/macro_panantarctic_v1/latitudinal_scale_20261115/original_adelie_19_26_35_site_growth_cohorts.csv'
+      - 'research/climate-penguin/macro_panantarctic_v1/allocation_20261115/original_three_decade_43_source_site_species.csv'
+      - '.github/workflows/penguin-original-census-year-survey-sensitivity-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check-source-censuses-and-source-year-perturbations:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile source-count-only verifier
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/census_year_support_20261115/verify_source_census_year_original_rows.py
+      - name: Verify 514 genuine observed counts, 745 deletions, 300 matched-year anchors and 439 multispecies deletions
+        run: python research/climate-penguin/macro_panantarctic_v1/census_year_support_20261115/verify_source_census_year_original_rows.py

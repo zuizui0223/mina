@@ -1,0 +1,77 @@
+name: Palmer original 5-island nesting allocation versus pre-census marine SIC time-forward gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/palmer_configuration_forecast_20261117/**'
+      - '.github/workflows/penguin-palmer-allocation-vs-climate-forward-20261117.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-pinned-palmer-five-island-allocation-forecast:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install array arithmetic dependencies
+        run: python -m pip install --disable-pip-version-check numpy
+      - name: Compile and test frozen forecasting arithmetic
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/palmer_configuration_forecast_20261117/palmer_fixed_five_island_time_forward.py
+          python research/climate-penguin/macro_panantarctic_v1/palmer_configuration_forecast_20261117/palmer_fixed_five_island_time_forward.py --self-test
+      - name: Refit from exact original 27-year source, score only hidden future allocations
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/palmer_configuration_forecast_20261117/palmer_fixed_five_island_time_forward.py \
+             --counts-source research/climate-penguin/outputs/comparison_audit/palmer_five_island_counts.csv \
+             --ice-source research/climate-penguin/outputs/palmer_ice_nesting_concentration/annual.csv \
+             --output build/palmer_original_island_allocation_forward
+      - name: Independent source-year and held-out proper-composition checks
+        run: |
+          python - <<'PY'
+          import csv,json,numpy as np
+          from pathlib import Path
+          root=Path("build/palmer_original_island_allocation_forward")
+          score=json.loads((root/"original_palmer_5island_source_prediction_rows.json").read_text())
+          report=json.loads((root/"original_palmer_5island_forward_verdict.json").read_text())
+          assert report["status"]=="ORIGINAL_PALMER_5ISLAND_TRUE_FORWARD_ALLOCATION_SIC_COMPARISON"
+          assert report["n_original_island_years"]==135
+          assert report["n_original_distinct_physical_islands"]==5
+          assert report["n_temporal_test_years"]==17
+          assert report["source_total_pairs_first_last"]==[6689.,140.]
+          original=list(csv.DictReader(open("research/climate-penguin/outputs/comparison_audit/palmer_five_island_counts.csv")))
+          by={(int(x["year"]),x["island_name"]):float(x["count"]) for x in original}
+          islands=("CHR","COR","HUM","LIT","TOR")
+          for t in score:
+              year=t["test_year"]
+              assert t["most_recent_source_census_year"]==year-1
+              assert t["training_years"]==year-1991
+              raw=np.array([by[(year,i)] for i in islands])
+              actual=raw/raw.sum()
+              prev=np.array([by[(year-1,i)] for i in islands])
+              prev=prev/prev.sum()
+              assert np.max(abs(actual-np.asarray(t["observed_share"])))<1e-12
+              assert np.max(abs(prev-np.asarray(t["models"]["previous_share"]["forecast"])))<1e-12
+              assert abs(raw.sum()-t["original_census_total_pairs"])<1e-12
+              for name,entry in t["models"].items():
+                  pred=np.asarray(entry["forecast"])
+                  assert np.all(pred>=0) and abs(pred.sum()-1)<1e-10
+                  assert abs(.5*sum(abs(pred-actual))-entry["TV"])<1e-12
+          primary=report["models"]
+          assert primary["previous_share"]["test_mean_total_variation"] < primary["ice_only"]["test_mean_total_variation"]
+          assert report["no_independent_island_climate_replicates"]
+          assert report["not_a_prospective_climate_forecast"]
+          assert report["no_species_transfer_or_future_nests"]
+          print("PASS 27 genuine 5-island source censuses, source-chronological 17 annual tests, conditional climate vs state comparison")
+          PY
+      - name: Archive reproducible source score and status, not future penguin counts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-palmer-five-island-observed-composition-vs-marine-SIC-forward-20261117
+          path: build/palmer_original_island_allocation_forward/
+          if-no-files-found: warn
+          retention-days: 30

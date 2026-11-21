@@ -1,0 +1,48 @@
+name: Penguin 23-versus-17 original census-year median sensitivity
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - '.github/workflows/penguin-20261121-original23-census-year-median-sensitivity.yml'
+      - 'research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/resample_source_census_years_SIC23_vs17_20261121.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-year-replay:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and run genuine original survey-year conditional resampling
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/resample_source_census_years_SIC23_vs17_20261121.py
+          python research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/resample_source_census_years_SIC23_vs17_20261121.py
+      - name: Source median and conditional uncertainty verdict invariants
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/SIC23_VS17_SOURCE_CENSUS_YEAR_RESAMPLING_20261121.json")
+          d=json.loads(p.read_text())
+          assert d["status"]=="POST_RESULT_SOURCE_YEAR_CONDITIONAL_RESAMPLING_NOT_ECOLOGICAL_CI"
+          assert d["sites_23"]==23 and d["sites_17"]==17
+          assert d["seed"]==20261121 and d["n_draws"]==4999
+          assert d["not_an_ecological_randomization_test"]
+          for n in ("full23","matched17"):
+              assert d["conditional_sensitivity"][n]["between_region_pp"]["n"]==4999
+          print("PASS source original count-year median exactness, no pseudo-year records, 4,999 conditionally resampled source panels")
+          PY
+      - name: Archive 4,999 conditional draws and aggregate confidence limits
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-23-17-original-census-year-reweighting-20261121
+          path: |
+            research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/SIC23_VS17_SOURCE_CENSUS_YEAR_RESAMPLING_20261121.json
+            research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/SIC23_VS17_SOURCE_CENSUS_YEAR_RESAMPLING_DRAWS_20261121.csv
+          retention-days: 30
+          if-no-files-found: warn

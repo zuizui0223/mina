@@ -1,0 +1,120 @@
+name: Antarctic penguin original-method cohort 265/159 source reconciliation
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/**'
+      - '.github/workflows/penguin-method-cohort-reconciliation-20261116.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pinned-derived-2999-to-268-to-159:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unit-test CSV reader and same-method criteria
+        run: node research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/audit_method_cohort_bridge.mjs --self-test
+      - name: Rebuild method-dependent biological sample from pinned 2999 original-derived rows
+        run: node research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/audit_method_cohort_bridge.mjs build/penguin_method_cohort_20261116
+      - name: Verify source denominators and explicitly prevent 265-coefficient transport
+        run: |
+          node --input-type=module - <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const p='build/penguin_method_cohort_20261116/method_cohort_reconciliation.json';
+          const r=JSON.parse(readFileSync(p));
+          assert.equal(r.status,'PASS_PINNED_METHOD_COHORT_RECONCILIATION_265_NOT_REPRODUCED');
+          assert.equal(r.candidate_cohorts.each_year_known_single_method.n_site_species_series,268);
+          assert.equal(r.candidate_cohorts.frozen_most_frequent_method.n_site_species_series,159);
+          assert.equal(r.candidate_cohorts.one_identical_method_through_both_periods.n_site_species_series,96);
+          assert.equal(r.audit.no_cross_period_shared_method,107);
+          assert.equal(r.audit.some_shared_method_but_lost_to_dominant_method,2);
+          assert.equal(r.climate_effect_reproduced,false);
+          assert.equal(r.exact_265_row_roster_or_generation_filters_verified,false);
+          console.log('PASS source-method attrition provenance and no-climate-coefficient gate');
+          NODE
+      - name: Independently derive matched marine PC1 slopes across source-method cohorts
+        run: node research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/explore_climate_pc1_method_sensitivity.mjs build/penguin_method_pc1_sensitivity_20261116
+      - name: Fail closed on changed roster, missed marine joins or transported 265 coefficient
+        run: |
+          node --input-type=module - <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const p='build/penguin_method_pc1_sensitivity_20261116/method_selection_pc1_sensitivity.json';
+          const x=JSON.parse(readFileSync(p));
+          assert.equal(x.status,'PASS_EXPLORATORY_METHOD_COHORT_PC1_SENSITIVITY_NO_CLIMATE_DOSE_RESPONSE');
+          const q=x.tested_cohorts;
+          assert.deepEqual([
+            q.per_year_known_method.marine_matched_series,
+            q.most_frequent_method.marine_matched_series,
+            q.strict_single_shared_method.marine_matched_series,
+            q.any_shared_method.marine_matched_series,
+            q.no_shared_method.marine_matched_series],[262,153,90,155,107]);
+          assert(Math.abs(q.most_frequent_method.fit.coefficients.PC1+0.11578532372741632)<1e-9);
+          assert.equal(x.interaction.block_resample_difference_for_no_shared_vs_shared.draws_requested,2000);
+          assert(x.limitations.some(s=>s.includes('NOT reproduced')));
+          console.log('PASS source matched cohort climate sensitivity and no fake independent inference');
+          NODE
+      - name: Set up Python for original MAPPPD v5 source verification
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install publisher source client
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Fetch hash-pinned original publisher 729 sites and 5487 observations
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/reconcile_publisher_v5_longterm_lineage.py
+          python research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/reconcile_publisher_v5_longterm_lineage.py --out build/publisher_v5_longterm_lineage
+      - name: Verify original observation IDs, census calendar and 265 source firewall
+        run: |
+          node --input-type=module - <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const x=JSON.parse(readFileSync('build/publisher_v5_longterm_lineage/publisher_v5_longterm_source_lineage.json'));
+          assert.equal(x.status,'SOURCE_PINNED_PUBLISHER_V5_LONGTERM_LINEAGE_ONLY');
+          assert.equal(x.original_sites,729);
+          assert.equal(x.original_observations,5487);
+          assert.equal(x.frozen_derived_268_vs_original_v5.frozen_derived_268,268);
+          assert(x.season_roster.both_periods_have_known_vantage.total>0);
+          assert(x.calendar_year_roster.has_early_late_unambiguous_counts.total>0);
+          assert.equal(x.external_265_original_observation_roster_available,false);
+          assert.equal(x.external_265_coefficients_verified,false);
+          assert.equal(x.no_climate_dose_response_or_population_forecast,true);
+          console.log('PASS original MAPPPD v5 site×species IDs, geography and source-census provenance');
+          NODE
+      - name: Test accidental 265-label intersection against marine PC1 with original source IDs
+        run: |
+          node research/climate-penguin/macro_panantarctic_v1/method_cohort_20261116/explore_climate_pc1_method_sensitivity.mjs \
+            build/penguin_method_pc1_nominal265_20261117 \
+            --calendar-roster build/publisher_v5_longterm_lineage/publisher_v5_calendar_year_original_ids_no_counts.csv
+          node --input-type=module - <<'NODE'
+          import assert from 'node:assert/strict';
+          import {readFileSync} from 'node:fs';
+          const x=JSON.parse(readFileSync('build/penguin_method_pc1_nominal265_20261117/method_selection_pc1_sensitivity.json'));
+          const p=x.nominal_265_overlap_not_original_265;
+          assert.equal(p.intersection_source_site_species_count,265);
+          assert.deepEqual(p.intersection_species,{ADPE:101,CHPE:113,GEPE:51});
+          assert.deepEqual(p.external_reported_unverified_265_species,{ADPE:102,CHPE:116,GEPE:47});
+          assert.equal(p.same_source_roster_as_external_265,false);
+          const g=x.tested_cohorts.season_and_calendar_intersection_265_NOT_PRIOR_265;
+          assert.equal(g.total_source_series,265);
+          assert(g.bootstrap_250km.draws_valid>1500);
+          console.log('PASS nominal 265 occurrence is not the old 265 biological sample');
+          NODE
+      - name: Archive derived source roster and exact audit receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-20261116-pinned-2999-method-283-268-159-audit
+          path: |
+            build/penguin_method_cohort_20261116/
+            build/penguin_method_pc1_sensitivity_20261116/
+            build/publisher_v5_longterm_lineage/
+            build/penguin_method_pc1_nominal265_20261117/
+          if-no-files-found: warn
+          retention-days: 30

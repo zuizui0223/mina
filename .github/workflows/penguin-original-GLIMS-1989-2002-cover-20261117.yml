@@ -1,0 +1,59 @@
+name: Penguin coastal 1989-2002 dated GLIMS physical glacier coverage
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/derive_GLIMS_1989_2002_fixed_neighborhood_glacier_cover.py'
+      - '.github/workflows/penguin-original-GLIMS-1989-2002-cover-20261117.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-glacier-multiepoch-physical-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original polygon GIS geometry arithmetic
+        run: python -m pip install --disable-pip-version-check "shapely>=2,<3" "pyproj>=3,<4"
+      - name: Verify compiled source
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/derive_GLIMS_1989_2002_fixed_neighborhood_glacier_cover.py
+      - name: Get 1989 and 2002 same glacier outlines and compute physical ice-cover geometry within fixed source-centroid buffers
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/derive_GLIMS_1989_2002_fixed_neighborhood_glacier_cover.py \
+            --out build/penguin_glims_two_epoch_original
+      - name: Validate source epoch identity and ice/land distinction
+        run: |
+          python - <<'PY'
+          import json,csv,math
+          from pathlib import Path
+          root=Path('build/penguin_glims_two_epoch_original')
+          x=json.loads((root/'GLIMS_local_original_1989_2002_glacier_geometry_receipt.json').read_text())
+          data=list(csv.DictReader((root/'original_GLIMS_same_glacier_1989_2002_fixed_buffer_physical.csv').open()))
+          assert x['status']=='GLIMS_HISTORIC_TWO_EPOCH_SAME_GLACIER_ID_LOCAL_GEOMETRY_GATE'
+          assert x['n_target_source_clusters']==3 and len(data)==x['n_retrieved_clipped_distance_rows']
+          assert x['source_ice_change_not_new_land_area']
+          assert x['rock_land_use_and_ice_ramp_connectivity_not_measured']
+          assert x['not_a_joint_site_year_colonization_model']
+          assert x['not_a_causal_claim_or_future_nest_forecast']
+          for r in data:
+              a=float(r['glacier_ice_polygon_cover_1989_km2'])
+              b=float(r['glacier_ice_polygon_cover_2002_km2'])
+              lost=float(r['geometric_polygon_loss_1989_not2002_km2'])
+              gained=float(r['geometric_polygon_gain_2002_not1989_km2'])
+              assert abs(a-b-lost+gained)<1e-6
+              assert 0<=a<=float(r['fixed_buffer_area_km2'])+1e-6
+              assert 0<=b<=float(r['fixed_buffer_area_km2'])+1e-6
+          print('PASS same source glacier ID, geometry accounting, no inferred new terrestrial land or nesting response')
+          PY
+      - name: Archive source-glacier matched polygon-cover and explicit temporal gates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-glims-1989-2002-glacier-only-local-cover
+          path: build/penguin_glims_two_epoch_original/
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,72 @@
+name: Penguin future SIC-salinity spatial coupling vs historical coastal source support
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_future_sic_sos_spatial_coupling_and_historical_support.py'
+      - '.github/workflows/penguin-20261118-CMIP6-future-two-axis-coupling-historical-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_model_marine_spatial_coupling:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numeric science CSV analysis tools only
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3'
+      - name: Confirm source audit syntax
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_future_sic_sos_spatial_coupling_and_historical_support.py
+      - name: Retrieve historical 588, original CMIP6 595 and original MAPPPD 595/2456 archives
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_two_axis_coupling_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14214704362/zip" > build/penguin_two_axis_coupling_source/original_595_CMIP6.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_two_axis_coupling_source/original_595_MAPPPD_count.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14397794445/zip" > build/penguin_two_axis_coupling_source/original_588_historical_comparability.zip
+      - name: Independently calculate 12 full native-grid future spatial relationships and historical model geography
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_future_sic_sos_spatial_coupling_and_historical_support.py \
+            --cmip6-zip build/penguin_two_axis_coupling_source/original_595_CMIP6.zip \
+            --source-counts-zip build/penguin_two_axis_coupling_source/original_595_MAPPPD_count.zip \
+            --historical-zip build/penguin_two_axis_coupling_source/original_588_historical_comparability.zip \
+            --out build/penguin_two_axis_coupling_verified
+      - name: Verify physical source 12 scenario comparisons, 18 region robustness and no future diet/colony inference
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd,numpy as np
+          p=Path('build/penguin_two_axis_coupling_verified')
+          x=json.loads((p/'source_CMIP6_future_coupling_and_historical_local_coverage_verdict.json').read_text())
+          assert x['status']=='PASS_SOURCE_PINNED_CMIP6_SIC_SOS_FUTURE_COUPLING_AND_HISTORICAL_SPATIAL_SUPPORT'
+          assert (x['source_full_595_site_ids'],x['source_original_18_reporting_regions'],x['source_CMIP6_future_model_scenario_rows'],x['source_CMIP6_original_future_site_variable_records'])==(595,18,7140,21420)
+          a=pd.read_csv(p/'original_12_CMIP6_model_SIC_SOS_future_spatial_coupling.csv')
+          h=pd.read_csv(p/'original_3_CMIP6_model_historical_local_SOS_vs_SIC_support.csv')
+          assert (len(a),len(h))==(12,3)
+          assert a[['source_model','scenario','period']].duplicated().sum()==0
+          assert a.n_18_omit_region_same_corr_sign.eq(18).all()
+          assert a.n_original_site_ids.eq(595).all()
+          assert h.n_source_sites.eq(588).all() and h.n_source_reanalysis_wet_cells.eq(378).all()
+          assert h.site_region_centered_SIC_advantage_in_r.gt(0).all()
+          late=a.query("scenario=='ssp585' and period=='2081-2100'").set_index('source_model')
+          assert late.loc['ACCESS-CM2','site_equal_within_region_corr_delta_sic_delta_sos']>.70
+          assert late.loc['BCC-CSM2-MR','site_equal_within_region_corr_delta_sic_delta_sos']<-.30
+          assert late.loc['CESM2','model_cell_region_equal_within_region_corr_delta_sic_delta_sos']<-.34
+          assert x['models_do_not_provide_population_or_d15N_predictions']
+          print('PASS 3 selected source models: future ice–salinity covariance sign split, all 18 spatial region omissions, salinity weaker historical within-region pattern than SIC')
+          PY
+      - name: Preserve only model physical derived pattern statistics and source provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-three-CMIP6-model-future-ice-salt-coupling-local-historical-skill
+          path: build/penguin_two_axis_coupling_verified/
+          if-no-files-found: warn
+          retention-days: 30

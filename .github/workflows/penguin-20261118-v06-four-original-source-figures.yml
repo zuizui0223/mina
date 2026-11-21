@@ -1,0 +1,74 @@
+name: Penguin v0.6 four original-source manuscript figures (candidate only)
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/render_four_original_source_paper_figures.py'
+      - '.github/workflows/penguin-20261118-v06-four-original-source-figures.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_source_four_figures:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original manuscript plot libraries
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3' 'matplotlib>=3.8,<4' 'pyproj==3.7.1'
+      - name: Check plot source script syntax
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/render_four_original_source_paper_figures.py
+      - name: Retrieve unchanged source data from successful original-source workflows
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_v06_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_v06_source/atlas595.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13828472111/zip" > build/penguin_v06_source/ocean588.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_v06_source/isotope860.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14398755921/zip" > build/penguin_v06_source/future595.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14400524546/zip" > build/penguin_v06_source/coupling.zip
+      - name: Render all four figures and machine-verifiable source QA
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/v06_paper_20261118/render_four_original_source_paper_figures.py \
+            --atlas build/penguin_v06_source/atlas595.zip \
+            --ocean build/penguin_v06_source/ocean588.zip \
+            --isotope build/penguin_v06_source/isotope860.zip \
+            --future build/penguin_v06_source/future595.zip \
+            --coupling build/penguin_v06_source/coupling.zip \
+            --roster research/climate-penguin/macro_panantarctic_v1/latitudinal_scale_20261115/adelie_latitude_nesting_scale_3rosters_summary.csv \
+            --pairs research/climate-penguin/macro_panantarctic_v1/strict_pair_20261115/strict_18_pairs_absolute_vs_relative_component_decomposition.csv \
+            --out build/penguin_v06_four_figures
+      - name: Verify all figures rendered and inferential ceiling not silently upgraded
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('build/penguin_v06_four_figures')
+          r=json.loads((root/'v06_four_figure_original_source_receipt.json').read_text())
+          assert r['status']=='PASS_FOUR_V06_ORIGINAL_SOURCE_FIGURES_WITH_DISTINCT_BIOLOGICAL_DENOMINATORS'
+          assert (r['n_original_known_colony_sites'],r['n_original_marine_annual_site_years'],r['n_original_distinct_GLORYS_wet_cells'])==(595,16464,378)
+          assert abs(r['marine_pca_pc1_fraction']-.603654)<.00003
+          assert abs(r['marine_pca_pc2_fraction']-.333773)<.00003
+          assert (r['strict_actual_Adelie_Gentoo_species_pair_sites'],r['strict_pair_positive_ratios'],r['strict_pair_subtotals_positive'])==(6,6,5)
+          assert r['n_original_isotope_source_site_seasons']==860
+          assert r['historical_optical_isotope_region_conservative_CI_crosses_zero']
+          assert r['no_salinity_mechanism_or_penguin_abundance_forecast']
+          for item in r['figures']:
+              assert (root/(item+'.svg')).stat().st_size>5000
+              assert (root/(item+'.png')).stat().st_size>30000
+          print('PASS 4 original-source figures, each PNG+SVG and source-boundary QA')
+          PY
+      - name: Archive figures and original-source ledger, but never republish raw third-party source data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-v06-four-original-source-macroecology-figures-PNG-SVG
+          path: build/penguin_v06_four_figures/
+          if-no-files-found: warn
+          retention-days: 30
