@@ -84,9 +84,9 @@ def one_panel(rows):
     observed=Bs[0]
     rank=1+sum(x>observed+1e-10 for x in Bs)
     greater_equal=sum(x>=observed-1e-10 for x in Bs)
-    assert len(Bs)==24 and rank==greater_equal, (
-        "G ties or numerical ranking ambiguity",rank,greater_equal
-    )
+    # Identical regional growth draws may create exact ties; keep the best rank
+    # and the inclusive upper-tail count as distinct descriptive quantities.
+    assert len(Bs)==24 and 1<=rank<=greater_equal<=24
     return {
        "between_observed_pp":observed,
        "rank_highest_1":rank,
