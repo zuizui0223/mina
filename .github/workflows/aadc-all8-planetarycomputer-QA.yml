@@ -1,0 +1,47 @@
+name: AADC all-eight two-season original Landsat pixel QA gate
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_all8_planetarycomputer_pixel_qa.py
+      - .github/workflows/aadc-all8-planetarycomputer-QA.yml
+  workflow_dispatch:
+concurrency:
+  group: aadc-all8-source-QA-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  eight-stac-site-QA:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 22
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy requests pyproj rasterio pystac-client planetary-computer
+      - name: Validate source QA reader scripts and original scene gate invariants
+        run: |
+          python -m py_compile scripts/audit_aadc_all8_planetarycomputer_pixel_qa.py
+          python -m unittest discover -s tests -p test_aadc_planetarycomputer_pixel_qa.py -v
+      - name: Retrieve frozen original source STAC 16-event result with SHA gate
+        run: |
+          mkdir -p build/stac
+          gh run download 44850629480 -n aadc-16-events-landsat-original-scene-source-all -D build/stac
+          echo '988a66154633202af46495b2f6b46cc02e51363451ebc5754a6435a0825f6950  build/stac/AADC_16_AP_LANDSAT_SOURCE_ALL_20261121.json' | sha256sum -c -
+      - name: QA_PIXEL inspect all 8 fixed original 2-season scene event candidates
+        run: |
+          python -m scripts.audit_aadc_all8_planetarycomputer_pixel_qa \
+            --stac-all16 build/stac/AADC_16_AP_LANDSAT_SOURCE_ALL_20261121.json \
+            --out-json build/AADC_ALL8_SIGNED_LANDSAT_QA_PIXEL_20261121.json
+      - name: Preserve all eight event QA source states and inferred limitations
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-eight-events-two-season-pixel-QA-original-source
+          path: build/AADC_ALL8_SIGNED_LANDSAT_QA_PIXEL_20261121.json
+          retention-days: 30
