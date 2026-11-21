@@ -226,7 +226,7 @@ def make_figures(a):
         arrowprops={"arrowstyle":"->","color":INK,"lw":.9},
         fontsize=8.6,color=INK)
     ax.text(.02,.02,
-        "All four bars compare the same counted sites per scenario.\n"
+        "Both bars in each scenario share the same 271 site IDs.\n"
         "Higher-emissions late-century difference:\n"
         "+15.66 between regions −0.30 within regions.",
         transform=ax.transAxes,fontsize=8.1,ha="left",va="bottom",
@@ -256,7 +256,7 @@ def make_figures(a):
     fig.suptitle("Figure 4 | Nest-weighted climate exposure and marine-model disagreement",
                  fontsize=13.3,fontweight="bold")
     fig.tight_layout()
-    commit(fig,out,"Fig4_Future_ice_freshening_model_disagreement")
+    commit(fig,out,"Fig4_Same271_weighting_and_model_coupling")
 
     report={
         "status":"PASS_FOUR_V06_ORIGINAL_SOURCE_FIGURES_WITH_DISTINCT_BIOLOGICAL_DENOMINATORS",
@@ -264,7 +264,7 @@ def make_figures(a):
             "Fig1_Marine_axes_and_source_footprint",
             "Fig2_Nest_reweighting_and_species_ratio",
             "Fig3_Positive_salinity_isotope_geography",
-            "Fig4_Future_ice_freshening_model_disagreement"
+            "Fig4_Same271_weighting_and_model_coupling"
         ],
         "source_sha256":SOURCE_SHA,
         "n_original_known_colony_sites":595,
