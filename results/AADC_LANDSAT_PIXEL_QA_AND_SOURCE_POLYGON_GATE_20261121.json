@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-aadc-sixteen-reported-AtoP-landsat-QA-and-original-polygons-20261121",
+  "date": "2026-11-21",
+  "status": "NO_VERIFIED_TEMPORAL_ICE_TO_ROCK_TRANSITION_OR_TRUE_NEW_COLONY_FROM_PUBLIC_SOURCE",
+  "original_biological_source": {
+    "original_AADC_2025_event_rows": 33107,
+    "source_reported_A_to_P": 16,
+    "expert_supported_A_to_P": 16,
+    "distinct_geog_site_ids": 14,
+    "a_to_p_is_true_new_settlement": false,
+    "event_source_run": 44530909415
+  },
+  "landsat_source_inventory": {
+    "run": 44850629480,
+    "artifact_id": 14684739302,
+    "austral_season_source_queries": 32,
+    "paired_scene_metadata_events": 8,
+    "only_post_report_season_has_scenes": 4,
+    "no_paired_images_or_outside_archive": 4,
+    "first_page_scene_items_across_queries": 349,
+    "scene_counts_exhaustive": false
+  },
+  "USGS_S3_attempt": {
+    "run": 44851029702,
+    "artifact_id": 14685995012,
+    "source_case_ids": [
+      "IS_70749",
+      "IS_105"
+    ],
+    "QA_assets_tried": 8,
+    "QA_assets_read": 0,
+    "reason": "USGS usgs-landsat S3 Requester Pays rejects anonymous access; not image quality"
+  },
+  "Planetary_Computer_pixel_QA": {
+    "run_first_two": 44851249554,
+    "artifact_id_first_two": 14685526579,
+    "run_all_eight": 44851408828,
+    "artifact_id_all_eight": 14685108425,
+    "source_event_count": 8,
+    "years_per_event": 2,
+    "lowest_global_scene_cloud_original_scenes_per_year": 2,
+    "Landsat_C2_QA_PIXEL_assets_read": 32,
+    "distinct_STAC_scene_ids": 20,
+    "site_center_buffer_pixels_per_scene": 25,
+    "side_rough_extent_m": 150,
+    "source_scenes_with_at_least_one_visible_not_snow_water_candidate": 3,
+    "source_season_windows_with_any_candidate": 2,
+    "site_ids_with_any_candidate": [
+      "IS_70714",
+      "IS_70731"
+    ],
+    "source_images_with_candidate_in_A_season": 3,
+    "source_images_with_candidate_in_P_season": 0,
+    "site_events_with_candidate_both_seasons": 0,
+    "qa_exclusion_flags": [
+      "fill bit0",
+      "dilated cloud bit1",
+      "cloud bit3",
+      "cloud shadow bit4",
+      "snow/ice bit5",
+      "water bit7"
+    ],
+    "Landsat_4to7_clear_bit6_used": false,
+    "does_not_prove_new_bare_rock": true
+  },
+  "physical_geography_source_check": {
+    "run": 44851710270,
+    "artifact_id": 14685966256,
+    "original_2016_source": {
+      "shapefile": "Potential habitat/shapefile/islands_and_continental_rock_by_subgroup8.shp",
+      "polygon_count": 4881,
+      "fields": [
+        "FEATCODE",
+        "UFI",
+        "Subgroup"
+      ],
+      "exact_14_AADC_event_site_ID_matches": 0
+    },
+    "original_2025_continental_source": {
+      "shapefile": "1_Continental spatial reference system/data/Continental geographic sites_30E_to_150E.shp",
+      "polygon_count": 2923,
+      "has_field": "Site_ID",
+      "exact_14_AADC_event_site_ID_matches": 0
+    },
+    "can_map_AADC_siteID_to_verified_nesting_rock_polygon_directly": false,
+    "possible_indirect_crosswalk_to_check": "Original 2016 geographic-site workbook SCAR Gazetteer Place ID -> original SHP UFI; only if exact author-provided mapping validated."
+  },
+  "inference_boundaries": [
+    "Zero QA-visible non-snow/non-water in P-year selected center windows does not mean physically no rock or no glacier retreat. The same central site-coordinate may be snow-covered when nearby breeding patches differ.",
+    "Scene selection and 5x5 center windows are technical availability filters on observational A/P events, not an unbiased test of effect.",
+    "Even positive QA pixels would show only spectral acquisition feasibility, not that rock appeared after glacier retreat.",
+    "AADC geographic site code is not a mapped nest-patch polygon. 2016/2025 GIS SHP files cannot be directly joined on the original 14 site IDs.",
+    "Source A/P represents reported observation status, not independently proven colonization or climate effects.",
+    "No ecological hypothesis coefficient, p-value, future nest count model or predator-based causal claim was produced."
+  ],
+  "main_paper1_paper2_unchanged": true
+}
