@@ -27,7 +27,7 @@ SPECIES = {
 }
 EXACT_D15N = {"delta_15n", "delta 15n", "delta15n", "d15n", "δ15n", "δ 15n"}
 LABELS = ("taxon_name", "taxon_name_original", "taxon_worms_scientific_name")
-TISSUE_FIELDS = ("tissue", "tissue_type", "sample_tissue", "taxon_tissue", "sample_material")
+TISSUE_FIELDS = ("isotopes_body_part_used", "tissue", "tissue_type", "sample_tissue", "taxon_tissue", "sample_material")
 NO_GO = "NO_GO_SCAR_INDEPENDENT_ISOTOPE_POLYNYA_TEST"
 
 
@@ -322,7 +322,8 @@ def audit(zip_path, reference_csv, out_dir):
         "measurement_names":dict(measured_names.most_common(10)),
         "exclusion_counts":dict(causes),
         "window_support":details,
-        "tissue_fields":[x for x in TISSUE_FIELDS if x in columns]
+        "tissue_fields":[x for x in TISSUE_FIELDS if x in columns],
+        "metadata_only_candidate_groups":groups
         },indent=2))
     return report
 
