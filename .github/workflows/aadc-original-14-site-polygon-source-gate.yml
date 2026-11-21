@@ -1,0 +1,45 @@
+name: AADC 14 AtoP original geographic site polygon ID gate
+on:
+  push:
+    branches: [analysis/postglacial-glims-sourcegate-20261119]
+    paths:
+      - scripts/audit_aadc_original_polygon_site_id.py
+      - .github/workflows/aadc-original-14-site-polygon-source-gate.yml
+  workflow_dispatch:
+concurrency:
+  group: aadc-original-event-polygon-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  source-ids:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests pyshp
+      - name: Compile source GIS schema audit
+        run: python -m py_compile scripts/audit_aadc_original_polygon_site_id.py
+      - name: Fetch original expert-validated 16 events in immutable publisher receipt
+        run: |
+          mkdir -p build/aadc
+          gh run download 44530909415 -n aadc-eight-species-high-evidence-source-20261119 -D build/aadc
+          test -f build/aadc/AADC_2025_EIGHT_SPECIES_HIGH_EVIDENCE_TRANSITION_SOURCE_GATE_20261119.json
+      - name: Inspect original 2016 and 2025 polygon-source DBF IDs only
+        run: |
+          python -m scripts.audit_aadc_original_polygon_site_id \
+            --original-event-json build/aadc/AADC_2025_EIGHT_SPECIES_HIGH_EVIDENCE_TRANSITION_SOURCE_GATE_20261119.json \
+            --out-json build/AADC_ORIGINAL_14_EVENT_SITE_POLYGON_SCHEMA_20261121.json
+      - name: Preserve source-only GIS ID match or HOLD receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aadc-original-14-event-site-shape-id-source
+          path: build/AADC_ORIGINAL_14_EVENT_SITE_POLYGON_SCHEMA_20261121.json
+          retention-days: 30
