@@ -29,8 +29,8 @@ class TestSourcePixelQuality(unittest.TestCase):
                     rows.append({"geog_site_id":code,"species_code":sp,"a_season_start":y,
                                  "comparison_side":side,"lat":-66.6,"lon":140.0,
                                  "original_subgroup":"DUM_SG_03","n_scene_items":2})
-            # Other original 12 events provide unselected, source-only placeholders.
-            for i in range(12):
+            # Other original 14 events provide unselected, source-only placeholders.
+            for i in range(14):
                 for side in ("reported_A_season","reported_P_season"):
                     rows.append({"geog_site_id":f"OTHER{i}","species_code":"SK",
                                  "a_season_start":1998+i,"comparison_side":side,
