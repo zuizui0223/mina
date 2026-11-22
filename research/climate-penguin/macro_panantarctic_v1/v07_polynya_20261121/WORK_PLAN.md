@@ -1,34 +1,25 @@
 # Polynya manuscript — current state, 22 November 2026
 
-## Current objective
+## One active objective
 
-The bounded version 0.7.2 editorial closeout is complete. This is the same single polynya manuscript in Draft PR #214, prepared for human author review. The preceding version 0.7.1 numerical and regional-uncertainty audit remains the scientific basis.
+Single polynya-centred **v0.7.3 author-review manuscript** in Draft PR #214. Its fixed 439-colony-season data and v0.7.1 CV3 uncertainty results remain unchanged. Current work concerns reviewer-proof interpretation and manuscript readiness—not more favourable ecological model searches.
 
 ## Completed in this revision
 
-1. Verified the eight bibliography entries against primary metadata and available research records. Reaves access is explicitly limited to metadata, abstract, supplement and data registration; the paywalled full paper was not treated as read.
-2. Rewrote all five figure descriptions for screen readers, matched them to the unchanged figures, embedded the same descriptions in the main Word and figure packet, and kept each standalone description together on one page.
-3. Recorded NOAA daily and monthly version-4 distribution statements while retaining their unresolved DOI mismatch with the original NSIDC release. No new blanket licence or original-data licence clearance is asserted.
-4. Built and checked the updated review files. The combined main Word is 22 pages / 1,718,937 bytes / 4,654 total counted words, including a 222-word abstract. Five changed pages were visually inspected; 34 pages retain prior inspection through exact PNG or DOCX hashes.
-5. Retained 56 protected source files byte for byte. Three unchanged Word files retain their original bytes. The previous statistical verification receipt is unchanged; current editorial verification is recorded separately in `editorial_verification_20261122.json`.
+1. **Measured the support of the effect-size unit from the real frozen 439 rows.** Raw winter coastal-polynya SD was 6.3115 percentage points (pp); after colony and region-by-season effects and frozen M0 covariates, conditional exposure SD was 1.6011pp (1.6273pp on the 425 informative records). The unchanged M_P slope −1.0031‰/10pp corresponds to −0.1606‰ per one conditional residual SD. M_SP is −0.1463‰ per conditional residual SD of 1.5879pp. This is a descriptive algebraic change of unit, not a new p value, environmental intervention, or mechanism.
+2. **Implemented a separate source-locked audit**: `audit_polynya_estimand_scale_20261122.py` with a concise `source_inputs/polynya_estimand_scale_audit_20261122.json`. It checks the original source archive hashes, reconstructs the exact 860→439 join, reabsorbs the frozen fixed effects using independent QR/Frisch–Waugh–Lovell algebra, and verifies unchanged M_P/M_SP coefficients. [GitHub Actions #45009422843 succeeded](https://github.com/zuizui0223/mina/actions/runs/45009422843).
+3. **Revised the main Methods/Results and Supplement S2**, retaining all five main figures, point estimates, CV3 intervals, negative prediction result, exploratory provenance and measurement limitations. Added the bounded [reviewer note](SCIENTIFIC_REVIEW_ESTIMAND_SCALE_V073_JA.md).
+4. **Regenerated MEPS review files**. The main DOCX is 22 pages, 1,719,285 bytes and 4,803 visible document words. The supplement is 8 pages, 48,972 bytes, with the new source-locked table. Figure packet 5 pages, alternate text 2 pages, cover letter 1 page and author sheet 2 pages; six Word deliverables total 40 pages. The [current build receipt](document_build_receipt.json) and [declared visual QA](document_visual_qa_v073.json) record the method and checks. Modified pages were viewed at full size; all 30 current main/supplement pages were reviewed in contact sheets.
 
-## Scientific boundaries retained
+## Scientific status and stop rules
 
-- The original positive hypothesis failed; the negative association is exploratory.
-- The optical isotope proxy is not direct diet measurement. Prey composition, isotope baselines and optical mixing remain unresolved.
-- The cohort has 439 records, 85 sites and 11 nominal regions; fixed-effect information comes from 425 records, 82 sites and eight unevenly informative regions.
-- The main negative association remains under CV3; the preceding-minus-following winter difference includes zero and is uncertain.
-- Failed forward prediction, selected chlorophyll availability, inconclusive independent diet checks and the failed later-period measurement gate remain visible.
-- No new radius, lag, response, threshold, favorable subset or statistical diagnostic was searched in version 0.7.2.
+- The pre-analysis positive direction was not supported: the retained negative association is exploratory. Its M_P CV3 95% interval is [−1.675,−0.331]‰ per 10pp; the direct preceding–following winter difference is −0.688 [−1.470,+0.095] and uncertain.
+- Identifying support is 425 records, 82 sites and eight unequal regions within the original 439-record, 85-site, 11-nominal-region sample. Victoria Land supplies 55.0% of M_P residual-exposure SS.
+- Optical δ¹⁵N remains a proxy rather than a direct seasonal diet measure. Prey fractions, isotope baselines and optical mixing are not separately identified. Same-winter ice extent was not fixed. No out-of-sample predictive improvement or independent biology validation was obtained.
+- Stop searching new radius, lag, threshold, favourable period, or null models on the same data to improve the already selected negative result. Retain all existing negative and no-go checks. The observed 1.6pp residual scale must accompany discussion of the 10pp slope.
 
-## Earlier verification retained
+## Awaiting author-only decisions
 
-The 21 November version 0.7.1 verification passed 58 frozen-result checks and 34 CV3 diagnostic checks. A fresh offline copy reproduced five PNGs, five TIFFs and eleven numerical extracts byte for byte; all expanded entries in six rebuilt DOCX files matched. Those checks and their dates remain in `offline_review_verification.json`; they were not rerun for this editorial revision.
+Scientific author review and facts for name/order, affiliations, contributions, funding, conflicts, ethics/data reuse, prior submission, AI disclosure, code/data rights and release scope are in `submission_preparation/AUTHOR_INFORMATION.md`. **Do not submit, assign a blanket new licence, publish a DOI, or merge PR #214 without author direction.**
 
-## Remaining human input
-
-Actual author scientific review, ordered author names and affiliations, contributions, funding/conflict/ethics/publication-history facts and release decisions are consolidated in `submission_preparation/AUTHOR_INFORMATION.md`. No author identity, approval, signature or declaration is inferred from an account profile. The package remains for author review; journal submission, DOI publication, licence assignment and merge are outside the completed action.
-
-## Version relationship
-
-The existing `v07_polynya_20261121/` folder now contains version 0.7.2. Earlier versions remain in Git history; the v0.6 folder and frozen source analyses remain unchanged. Nest-weighting and future-exposure work remain supplementary context. The preceding PR description is archived as `history/PR214_DESCRIPTION_BEFORE_V072.md`.
+Earlier v0.7.1 and v0.7.2 work is preserved in Git history. The nest-weighted v0.6 and frozen physical datasets remain historical/supplementary, not another active paper.
