@@ -1,3 +1,4 @@
+> **SUPERSEDED for manuscript cohort mapping (2026-11-23).** The correct frozen 439-colony-season / 85-site data have now been recovered from original Draft PR #214. The 472/88 result documented below is retained ONLY as an independent source-reconstruction and historical methods audit, not as the manuscript cohort or definitive MPA map. See [ADELIE_FROZEN_439_85_MPA_AUDIT_20261123.md](ADELIE_FROZEN_439_85_MPA_AUDIT_20261123.md) and the successful [source-matched workflow](https://github.com/zuizui0223/mina/actions/runs/45082480478). Current designated MPA 100-km overlap is **15/85**, not the provisional **18/88**.
 # Source-based Adélie winter-polynya exposure vs current CCAMLR MPA: independent audit (2026-11-22)
 
 **Outcome:** full public-source re-extraction completed, generating a descriptive **472 source-site-years / 88 source sites** map. This is NOT the existing **439-season / 85-site** frozen optical δ15N analysis cohort.
