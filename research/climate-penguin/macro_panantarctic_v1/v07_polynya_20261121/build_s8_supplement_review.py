@@ -24,6 +24,16 @@ def main():
     base=output/"Polynya_foodweb_supplement_v07.docx"
     mainfile=output/"Polynya_foodweb_manuscript_v07.docx"
     doc=Document(base)
+    # The original lightweight Markdown parser does not interpret backtick inline code.
+    # Clean only the newly added S8 review region in the Word deliverable.
+    after_s8=False
+    for paragraph in doc.paragraphs:
+        if paragraph.text.startswith('S8. Ecological scale'):
+            after_s8=True
+        if after_s8:
+            for run in paragraph.runs:
+                if '`' in run.text:
+                    run.text=run.text.replace('`','')
     matches=[p for p in doc.paragraphs if p.text.startswith("Figure S1.")]
     if len(matches)!=1:raise RuntimeError("Figure S1 citation not exactly once")
     anchor=matches[0]
