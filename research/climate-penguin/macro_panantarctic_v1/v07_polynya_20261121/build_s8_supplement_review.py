@@ -24,7 +24,7 @@ def main():
     base=output/"Polynya_foodweb_supplement_v07.docx"
     mainfile=output/"Polynya_foodweb_manuscript_v07.docx"
     doc=Document(base)
-    matches=[p for p in doc.paragraphs if p.text.startswith("Figure S1 (optional, companion file).")]
+    matches=[p for p in doc.paragraphs if p.text.startswith("Figure S1.")]
     if len(matches)!=1:raise RuntimeError("Figure S1 citation not exactly once")
     anchor=matches[0]
     pict=doc.add_paragraph()
