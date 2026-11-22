@@ -61,8 +61,8 @@ jobs:
                   assert z.testzip() is None
                   for i in z.infolist():
                       members.append({'name':i.filename,'bytes':i.file_size})
-                      if i.is_dir() or not i.filename.lower().endswith(('.csv','.tsv')) or i.file_size>=15000000:continue
-                      if not re.search('loc|site|colony|reflect|sic|year|diet|marine|source',i.filename,re.I):continue
+                      if i.is_dir() or not i.filename.lower().endswith(('.csv','.tsv','.rds')) or i.file_size>=15000000:continue
+                      if not re.search('loc|site|colony|reflect|spectra|sic|year|diet|marine|source',i.filename,re.I):continue
                       b=z.read(i);name=f"src{len(samples):02d}_"+Path(i.filename).name
                       (o/'source_files'/name).write_bytes(b)
                       samples.append({'source':i.filename,'saved':name,'n_bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
