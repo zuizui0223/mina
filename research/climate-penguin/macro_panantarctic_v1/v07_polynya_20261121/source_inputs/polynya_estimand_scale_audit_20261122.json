@@ -1,0 +1,45 @@
+{
+  "audit_date": "2026-11-22",
+  "status": "PASS_SOURCE_FIXED_ESTIMAND_SCALE_DESCRIPTIVE_ONLY",
+  "input": "Frozen historical isotope860 + physical 100km source panels; exact 439 site-season join; no new data",
+  "original_records": 439,
+  "original_sites": 85,
+  "nominal_regions": 11,
+  "informative_records": 425,
+  "informative_regions": 8,
+  "units": "polynya area is a 0-1 fraction, residual summaries are in percentage points, response in per mil",
+  "raw_exposure": {
+    "mean_pp": 7.030444381742999,
+    "sd_pop_pp": 6.311495564859758
+  },
+  "site_regionseason_FE_only": {
+    "sd_pop_pp": 1.6162269479701217
+  },
+  "MP": {
+    "slope_per10pp_mil": -1.003109142924483,
+    "conditional_sd439_pp": 1.601131540927318,
+    "conditional_sd425_pp": 1.627289446601422,
+    "conditional_residual_q10_pp": -1.5527399941545106,
+    "conditional_residual_q90_pp": 1.7520811524972923,
+    "slope_per_1conditional_sd439_mil": -0.16061096877289585,
+    "n_abs_residual_ge5pp": 7,
+    "n_abs_residual_ge10pp": 1,
+    "ten_pp_in_conditional_sd_units": 6.245583041983146
+  },
+  "MSP": {
+    "slope_per10pp_mil": -0.9216089250042973,
+    "conditional_sd439_pp": 1.5879202109614812,
+    "conditional_sd425_pp": 1.6138622813252175,
+    "conditional_residual_q10_pp": -1.445699459505695,
+    "conditional_residual_q90_pp": 1.6476096889585707,
+    "slope_per_1conditional_sd439_mil": -0.14634414386168076,
+    "n_abs_residual_ge5pp": 7,
+    "n_abs_residual_ge10pp": 1,
+    "ten_pp_in_conditional_sd_units": 6.297545639239032
+  },
+  "source_verification": "Original 4 ZIP SHA256 hashes verified by verify_frozen_polynya_results.read_sources; numerical model coefficients independently re-computed using FWL explicit QR, maximum coefficient tolerance 1e-8.",
+  "no_new_ecological_test": true,
+  "no_new_pvalue": true,
+  "no_causal_confirmation": true,
+  "caveat": "Rescaling observational slopes describes the empirical conditional exposure variation. It is not a new fit, a typical natural experimental manipulation, or a population effect size."
+}
