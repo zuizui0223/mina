@@ -1,0 +1,59 @@
+name: adelie-youngflesh-rds-site-census
+on:
+  push:
+    branches: [analysis/adelie-polynya-conservation-source-20261122]
+    paths: [.github/workflows/adelie-youngflesh-rds-site-census.yml]
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-polynya-official-source-ccamlr-mpa-gate
+          run-id: 45031126352
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/source
+      - name: Parse author RDS and produce geocoding audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --no-cache-dir 'pyreadr>=0.5' 'pandas>=2'
+          mkdir -p build/out
+          python - <<'PY'
+          from pathlib import Path
+          import json,re,pyreadr,pandas as pd
+          p=Path('build/source/source_files/src00_landsat_reflectance_L457-2025-07-16.rds')
+          if not p.exists():raise FileNotFoundError(p)
+          objects=pyreadr.read_r(str(p)); assert len(objects)==1
+          df=next(iter(objects.values()))
+          assert isinstance(df,pd.DataFrame)
+          cols=list(map(str,df.columns))
+          ident={c:{'type':str(df[c].dtype),'unique':int(df[c].nunique(dropna=True)),'examples':[str(x) for x in df[c].dropna().head(3)]}
+                 for c in cols if re.search('site|loc|colony|lat|lon|date|month|year|species|season|guano|bad',c,re.I)}
+          report={'raw_RDS_rows':len(df),'columns':cols,'identity':ident}
+          Path('build/out/rds_location_date_schema.json').write_text(json.dumps(report,indent=2)+'\n')
+          print('Raw rows:',len(df),'identity candidates:',json.dumps(ident))
+          site=next((c for c in ['site_id','SiteID','site','Site'] if c in cols),None)
+          lat=next((c for c in ['latitude','lat','Latitude','site_lat'] if c in cols),None)
+          lon=next((c for c in ['longitude','lon','Longitude','site_lon'] if c in cols),None)
+          date=next((c for c in ['date','Date','img_date','datetime','time'] if c in cols),None)
+          year=next((c for c in ['year','Year','img_year'] if c in cols),None)
+          if site and lat and lon:
+              loc=df[[site,lat,lon]+([date] if date else [])+([year] if year else [])].drop_duplicates()
+              loc.to_csv('build/out/publisher_original_site_coordinates.csv',index=False)
+              print('Distinct original site IDs:',loc[site].nunique())
+          df.head(5).to_csv('build/out/original_RDS_first5_schema.csv',index=False)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-youngflesh-rds-site-census
+          path: build/out
+          if-no-files-found: warn
+          retention-days: 60
