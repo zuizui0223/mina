@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "date": "2026-11-22",
+  "status": "EXPLORATORY_SELECTED_AFTER_REVIEWING_PRIMARY_NEGATIVE_RESULT_not_pre_registered_confirmation",
+  "forked_from": "https://github.com/zuizui0223/mina/actions/runs/45018808042",
+  "motivation": "Labrousse et al 2019 tracked emperors exploiting ephemeral open-water at fast-ice margins, whereas DEEP-AA SIC60_6.25km_20d filters duration<20d and maximum extent<100km2",
+  "classification": "Use native Map==-1 Other open waters (not identified as polynyas); NOT equivalent to independently validated ephemeral polynyas, cracks, or leads",
+  "metric": "log1p(average daily nominal km2 of Map==-1 grid cells within geodesic 50km of colony) April-Aug",
+  "primary_prediction": "positive coefficient",
+  "one_exploratory_primary_test": "Same 50 colonies 2009–2018 minus 2012; colony+year FE; sea-ice-region grouped t and 2^8 sign-flip p",
+  "fixed_secondary_control": "colony + sea-ice-region-by-year FE",
+  "descriptive_not_fitted": "fraction April-Aug days with any open-water Map==-2,-1,or positive mask within 50km",
+  "holdout": "none; posthoc analysis is for hypothesis development not independent replication",
+  "interpretation": "Even if positive, not sufficient for paper-ready ecological mechanism absent finer sea-ice mapping, landfast geometry, telemetry, response posterior uncertainty and independent transfer",
+  "preserve": "Frozen prespecified persistent coastal polynya null must remain unchanged and reported"
+}
