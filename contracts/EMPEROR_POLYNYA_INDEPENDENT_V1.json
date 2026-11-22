@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "date": "2026-11-22",
+  "status": "outcome_blind_frozen_screening_design_not_empirically_executed",
+  "isolation": "Independent emperor penguin winter polynya lane; do not alter current Adélie isotope manuscript",
+  "question": "Within the same colony and after shared year adjustment, are April-August coastal polynyas associated with emperor penguin spring abundance indices?",
+  "prediction": "positive; test two-sided and retain opposite/null signs",
+  "outcome": {
+    "source": "LaRue et al. (2024) https://github.com/davidiles/EMPE_Global",
+    "path": "analysis/output/model_results/3_Colony_Level/colony_summary.csv",
+    "git_blob_sha1": "133c900c9dfbf2ce23ca403c9a59edecd9b51ace",
+    "annual_rows": 500,
+    "sites": 50,
+    "years": "2009-2018",
+    "variable": "log1p(N_mean)",
+    "caution": "modelled spring attendance index, not direct annual nest count, breeding success, or posterior draws"
+  },
+  "exposure": {
+    "source": "DEEP-AA https://zenodo.org/records/13358042",
+    "file": "SIC60_6.25km_20d.zip",
+    "md5": "f3f958389cc5e67ac1c4e3a6ee164318",
+    "time_window": "April 1 through August 31 of the SAME year",
+    "radius_km": 100,
+    "classification": "positive even integer Map ID = coastal polynya; open ocean -2 is NOT counted",
+    "metric": "log1p(mean daily nominal km2 of coastal polynya pixels within radius)",
+    "nominal_cell_area_km2": 39.0625,
+    "georeference": "LonLat.nc geographical coordinates; NEVER interpret daily x and y as metric coordinates",
+    "minimum_daily_coverage": 0.95,
+    "known_gap": "2011-09-01 through 2012-07-31",
+    "expected_disqualification": "2012 only under April-August primary window"
+  },
+  "model": {
+    "primary": "colony + calendar-year fixed effects",
+    "inference": "sea-ice-region cluster-robust t and 2^G wild cluster sign flips",
+    "sensitivity": "colony + region-by-year fixed effects, leave-one-region-out, 50km and 200km radii",
+    "screen_success": "positive primary coefficient AND signflip two-sided p<=0.05 AND positive stringent model AND every leave-one-region-out coefficient positive"
+  },
+  "stop_conditions": [
+    "Dataset checksum/source SHA mismatch",
+    "LonLat.nc absent or NetCDF shapes mismatch",
+    "less than 95% days in season",
+    "fewer than 300 eligible colony-years",
+    "No within-FE exposure variation"
+  ],
+  "paper_gate": "REQUIRES full LaRue posterior uncertainty propagation and independent sea-ice-concentration baseline; without these only descriptive screening",
+  "audit": {
+    "raw_satellite_images_2009_2018": 599,
+    "raw_satellite_sites": 54,
+    "raw_satellite_unique_site_years": 536,
+    "notes": "Raw images are not independent modelled count estimates, and LaRue filters surveys"
+  },
+  "execution": {
+    "script_syntax_ok": true,
+    "synthetic_unit_tests_passed": 5,
+    "empirical_DEEP_AA_exposure_extracted": false,
+    "empirical_effect_estimate": null
+  }
+}
