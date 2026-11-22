@@ -1,0 +1,51 @@
+name: adelie-deepaa-descriptive-source-exposure
+on:
+  push:
+    branches: [analysis/adelie-polynya-conservation-source-20261122]
+    paths:
+      - .github/workflows/adelie-deepaa-descriptive-source-exposure.yml
+      - scripts/reconstruct_adelie_source_polynya_20261122.py
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  reconstruct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Load source-supported site-year table from original RDS census
+        uses: actions/download-artifact@v4
+        with:
+          name: adelie-youngflesh-rds-site-census
+          run-id: 45031823417
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/youngflesh
+      - name: Install geometry, NetCDF and data dependencies
+        run: python -m pip install --no-cache-dir 'numpy>=1.24' 'pandas>=2' 'scipy>=1.11' 'netCDF4>=1.6' 'pyproj>=3.6'
+      - name: Retrieve original DEEP-AA daily files and verify author checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/deepaa/input build/deepaa/output
+          curl -fLSs --retry 5 --retry-all-errors --connect-timeout 60 --max-time 1200 \
+            'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' \
+            -o build/deepaa/input/SIC60_6.25km_20d.zip
+          echo 'f3f958389cc5e67ac1c4e3a6ee164318  build/deepaa/input/SIC60_6.25km_20d.zip' | md5sum -c -
+          test -s build/youngflesh/raw_2004_2010_site_year_support.csv
+      - name: Compute candidate source-based 2004-2010 colony-winter polynya exposure
+        shell: bash
+        run: |
+          python scripts/reconstruct_adelie_source_polynya_20261122.py \
+            build/deepaa/input/SIC60_6.25km_20d.zip \
+            build/youngflesh/raw_2004_2010_site_year_support.csv \
+            build/deepaa/output/
+      - name: Publish only source-derived tabular results and coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adelie-deepaa-descriptive-source-exposure
+          path: build/deepaa/output
+          if-no-files-found: warn
+          retention-days: 60
