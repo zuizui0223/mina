@@ -1,5 +1,13 @@
 # Polynya manuscript — current state, 22 November 2026
 
+## v0.7.5 current status: external physical event checked, biological sign gate NO-GO
+
+The source-frozen February 2010 Mertz Glacier Tongue/B-09B shock physically altered the original 10 Mertz-area source colonies (winter polynya DiD −5.551pp versus 18 geographically distant controls) over genuine five-year 2006–2010 data. But original optical isotope δ15N DiD was −0.555‰ and the same-source R1,000 calibration −0.545‰, **opposite** to the sign expected if the broad negative site-fixed-effect coefficient were transported to the shock; prior-year Y placebo differences were larger and geographic source-region signs conflicted. Summer SIC, temperature and optical support shifted simultaneously. No independent causal or dietary mechanism has been established.
+
+Completed: pre-outcome [freeze](FROZEN_MERTZ_2010_ICEBERG_EVENT_BIOLOGICAL_GATE_20261122_JA.md), [full original-source CI](https://github.com/zuizui0223/mina/actions/runs/45012884027), [NO-GO report](RESULT_MERTZ_2010_ICEBERG_EVENT_NOGO_20261122_JA.md), and explicit manuscript Results 3.6 + Discussion 4.4 + Supplement S4. All baseline 439/358 fits and five figures are unchanged. The current combined review Word is 25 pages, the supplement 11, and six Word documents total 46; [current layout QA](document_visual_qa_v075.json) and [source hashes](document_build_receipt.json) have been updated. Previous v0.7.4 text below is historical.
+
+**Next necessary boundary:** meaningful stronger ecological mechanism requires spatially/temporally matched *independent* diet isotope-baseline/prey measurements and credible local counterfactual geography. Do not post-select favourable Victoria Land-only, alternative year windows or data-derived event groups. The present paper remains author-review Draft, not a journal submission.
+
 ## v0.7.4 current state (22 November 2026)
 
 The hypothesis fixed before between-colony calculation has been tested and **failed**: original 85-colony site-mean B1 = −1.295‰/10pp (CV3 eight-region 95% [−4.965,+2.376]); the existing within-colony M_P remains −1.003‰/10pp (CV3 [−1.675,−0.331]). A positive spatial-vs-annual sign inversion is **not identified**; dropping Wilkes Land changes the sign of B1. Same-source R1000 and observation-year-sensitivity slopes remain negative but uncertain. [Numerical result](RESULT_BETWEEN_WITHIN_POLYNYA_NO_GO_20261122_JA.md), [pre-result frozen decision](FROZEN_SCALE_BETWEEN_WITHIN_COLONY_TEST_20261122_JA.md) and [CI SUCCESS](https://github.com/zuizui0223/mina/actions/runs/45011139260). The negative test was added to manuscript §3.5 and Supplement S4. No fifth/new figure or further radius/lag tests.
