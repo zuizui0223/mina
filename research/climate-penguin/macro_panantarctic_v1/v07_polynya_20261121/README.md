@@ -1,4 +1,4 @@
-# Polynya manuscript v0.7.2 — current author-review candidate
+# Polynya manuscript v0.7.3 — current author-review candidate
 
 This is the single current manuscript candidate in Draft PR #214 of `zuizui0223/mina`. It supersedes the nest-exposure-centred v0.6 presentation; earlier manuscripts and frozen analyses remain historical records. Original source analyses are pinned to `a1cf988df3501794e9add243a8c2be8ecbb7b43a`.
 
@@ -14,9 +14,9 @@ The question is whether June–October coastal-polynya area fraction within 100 
 
 ## What changed in this revision
 
-Version 0.7.2 closes editorial and provenance items: it improves the five figure descriptions for screen readers, checks the eight bibliography entries against primary records, and records additional version-specific NOAA distribution metadata. Numerical inputs, estimates, uncertainty intervals and figure pixels remain those of v0.7.1. This is a continuation of the same manuscript, not a new analysis or independent validation.
+Version 0.7.2 completed source/citation/figure accessibility edits. **Version 0.7.3 adds one post-result descriptive source-locked scale audit:** the original reported −1.003‰/10pp slope is also given as −0.161‰ per one standard deviation of the fully residualized polynya covariate (1.601pp across 439 original records); the salinity-adjusted slope corresponds to −0.146‰ per a 1.588pp residual SD. No response, coefficient, uncertainty interval, spatial radius, temporal window or figure changed. This is a rescaling of an exploratory association, not new ecological validation. [Scientific reviewer note](SCIENTIFIC_REVIEW_ESTIMAND_SCALE_V073_JA.md), [source-locked code](audit_polynya_estimand_scale_20261122.py), [fixed result](source_inputs/polynya_estimand_scale_audit_20261122.json) and [passing CI](https://github.com/zuizui0223/mina/actions/runs/45009422843) record the checks.
 
-The [editorial verification receipt](editorial_verification_20261122.json) records 56 byte-identical protected source files, three unchanged Word files and current document checks. The [visual review](document_visual_qa.json) covers all 39 pages: five changed pages were newly inspected, while 34 retain prior review through exact file or rendered-page hashes. The original statistical verification receipt is preserved unchanged; this editorial revision does not claim another statistical rerun.
+The version 0.7.2 [editorial verification](editorial_verification_20261122.json) remains a dated record. For v0.7.3, the combined Word has 22 pages/1,719,285 bytes and the supplemented methods eight pages/48,972 bytes; both were newly rendered. All 30 pages were surveyed in contact sheets and the changed main and supplementary pages checked at full size. The [v0.7.3 visual review](document_visual_qa_v073.json) states the scope explicitly; the six review Word files total 40 pages. The original 58-check numerical and 34-check regional CV3 receipts are retained unchanged, while the new descriptive-scale source calculation was separately rerun and checked. Nothing here claims a new ecological model or independent biological confirmation.
 
 The main narrative now follows winter polynya association, temporal comparison, salinity distinction, measurement sensitivity and unresolved biological interpretation. Nest-weighted climate exposure is supplementary context. The negative direction contradicts the original positive hypothesis and is disclosed in the abstract. Failed forward prediction, weaker later-period point estimates, selective chlorophyll support, inconclusive Signy stomach-content evidence and the unsuccessful later-period guano-recovery gate remain visible.
 
@@ -31,6 +31,7 @@ Run from this directory in Python 3.11 or later with the versions in `requiremen
 ```bash
 python verify_frozen_polynya_results.py --inputs-dir frozen_archives --temporal-csv verification_inputs/matched_temporal358.csv --out reproduced_numeric_receipt.json
 python diagnose_region_jackknife.py --out reproduced_jackknife_receipt.json
+python audit_polynya_estimand_scale_20261122.py --out reproduced_estimand_scale_receipt.json
 python render_polynya_main_figures.py
 python build_review_documents.py --out review_documents
 ```
@@ -64,6 +65,6 @@ The exact temporal CSV is pinned separately in `verification_inputs/`; its SHA25
 
 This package reproduces the frozen derived 439/358 models and the five main figures. It does not re-download or re-extract all original Landsat/DEEP-AA grids, refit the full published hierarchical diet model, independently validate the guano pixels, or evaluate 2013–2021 ecological outcomes. Its hashes support traceability within that scope.
 
-The main inference remains limited by exploratory selection, eight unevenly informative regional clusters, approximate covariance sensitivities, an optical rather than direct isotope response, and unsuccessful prediction/independent-mechanism checks. The same-sample salinity coefficient is now reported explicitly (+0.646; CV3 interval [−0.196,+1.488]); the broader 860-row +0.834 coefficient remains separate context. Selected CMIP6 outputs are not used to project this local polynya measure or future diet.
+The main inference remains limited by exploratory selection, eight unevenly informative regional clusters, approximate covariance sensitivities, an optical rather than direct isotope response, and unsuccessful prediction/independent-mechanism checks. The reported 10pp slope unit is much larger than the observed 1.6pp conditional exposure SD; presenting the slope alone would obscure its typical supported scale. The same-sample salinity coefficient is now reported explicitly (+0.646; CV3 interval [−0.196,+1.488]); the broader 860-row +0.834 coefficient remains separate context. Selected CMIP6 outputs are not used to project this local polynya measure or future diet.
 
 Current MEPS instructions and linked publisher policies were retrieved from official pages on 21 November 2026 and used for the initial-review file preparation. [The requirement matrix](submission_preparation/MEPS_REQUIREMENTS.md) separates verified requirements from author-dependent fields. This remains an author-review package: human scientific review, author metadata/contributions, funding/conflict/ethics statements, the accurate AI-use acknowledgement and release decisions need author completion. Generative assistance is disclosed as substantive drafting, code and checks, not just grammar correction; policy eligibility is not automatically certified. No journal submission, new DOI publication, licence assignment or merge is part of this revision.
