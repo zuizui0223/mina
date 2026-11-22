@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "created_at": "2026-11-22",
+  "status": "source_overlap_audited_without_behavioral_outcome_model",
+  "original_question": "Are Adelie tracks within winter polynyas during Jun-Oct contemporaneous observation?",
+  "conclusion": "NO_CONTEMPORANEOUS_JUN_OCT_TRACKS_OVERLAP_WITH_DEEPAA_2003_ONWARD",
+  "source": {
+    "url": "https://zenodo.org/records/3722948",
+    "file": "SCAR_EGBAMM_RAATD-filtered-noTMB.zip",
+    "md5": "168e5b9b5c4ed20bb84dd00145acb0a5",
+    "csv": "ADPE_ssm_by_id_predicted.csv",
+    "n_points": 90202,
+    "source_publication": "https://doi.org/10.1038/s41597-020-0406-x",
+    "total_individuals_reported": 520
+  },
+  "winter": {
+    "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "all_winter_fix_years": {
+      "1993": 765,
+      "1996": 12,
+      "1997": 581,
+      "1998": 2652
+    },
+    "winter_fixes_2003_onward": 0,
+    "winter_fixes_2004_2010": 0
+  },
+  "summer": {
+    "qualifying_breeding_season_starts": "2004-2010",
+    "n_fixes": 22093,
+    "n_individual_ids": 171,
+    "n_breeding_seasons": 6
+  },
+  "data_constraints": [
+    "RAATD filtered fixes are state-space fitted, not independent raw GPS position observations",
+    "No contemporaneous winter tracking in DEEP-AA period",
+    "Summer trip metrics still require deployment metadata, colony identity and breeding stage",
+    "Do not claim 171 independent colony years nor a valid isotope link"
+  ],
+  "future_candidate": "Lagged winter local DEEPAA exposure versus following Nov-Feb foraging trip length on quality-eligible colony-years; only after verifying raw deployment metadata and minimum site-year support",
+  "hypothesis_frozen": false,
+  "behavioral_coefficient": null,
+  "previous_439_isotope_analyses_unchanged": true
+}
