@@ -222,7 +222,7 @@ def build(out: Path) -> dict:
     d.add_paragraph("[AUTHORS IN APPROVED ORDER]")
     d.add_paragraph("[AFFILIATIONS AND AUTHOR–AFFILIATION MAPPING]")
     d.add_paragraph("Corresponding author: [NAME AND EMAIL]")
-    d.add_paragraph("Version 0.7.2 · 22 November 2026 · Author review")
+    d.add_paragraph("Version 0.7.3 · 22 November 2026 · Author review")
     d.add_paragraph("Running title: Winter polynyas and penguin isotopes")
     d.add_paragraph(f"Abstract: {len(abstract.split())} words · Five main figures")
     p = d.add_paragraph("Author details, contributions and declarations remain to be supplied by the authors. Publication status is documented separately in the review notes.")
@@ -305,7 +305,7 @@ def build(out: Path) -> dict:
         outputs.append(output)
     receipt = {"abstract_words_whitespace": len(abstract.split()),
                "figure_count": len(figures), "date": "2026-11-22",
-               "version": "0.7.2",
+               "version": "0.7.3",
                "layout": "US Letter; 0.9-inch side margins; main text and figure captions 12pt double spaced; continuous line numbering; all five figures at end; 169mm figure width",
                "main_docx_contains_five_figures": len(d.inline_shapes) == 5,
                "main_docx_below_5MB": main_path.stat().st_size < 5_000_000,
