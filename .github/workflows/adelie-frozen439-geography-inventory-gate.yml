@@ -1,0 +1,47 @@
+name: adelie-frozen439-geography-inventory-gate
+on:
+  push:
+    branches: [analysis/adelie-polynya-conservation-source-20261122]
+    paths:
+      - scripts/audit_frozen439_geography_site_gate.py
+      - .github/workflows/adelie-frozen439-geography-inventory-gate.yml
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  catalog-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: zuizui0223/mina
+          ref: c67e55c9f4f657ef308c02a85c6ff366dce8e1f4
+          path: build/frozen
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-original-author-site-support
+          run-id: 45081645133
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_source
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --no-cache-dir pandas
+      - name: Validate site-level exclusions without reading isotope outcomes
+        shell: bash
+        run: |
+          set -euo pipefail
+          P=build/frozen/research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/source_inputs
+          python scripts/audit_frozen439_geography_site_gate.py \
+            --original-source build/original_source/published_author_site_level_support_2004_2010.csv \
+            --matched-860 "$P/matched_isotope860.csv" \
+            --geography "$P/colony_geography.csv" \
+            --output build/site_inventory_audit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-frozen439-exact-site-inventory-audit
+          path: build/site_inventory_audit
+          if-no-files-found: warn
+          retention-days: 90
