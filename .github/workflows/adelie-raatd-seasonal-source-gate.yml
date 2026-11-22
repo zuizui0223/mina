@@ -1,0 +1,48 @@
+name: adelie-raatd-seasonal-source-gate
+
+on:
+  push:
+    branches: [analysis/adelie-raatd-polynya-support-20261122]
+    paths:
+      - .github/workflows/adelie-raatd-seasonal-source-gate.yml
+      - scripts/audit_raatd_adpe_source_gate.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-published-tracking:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --no-cache-dir 'pandas>=2.0'
+      - name: Fetch pinned independent RAATD filtered CSV archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/raatd_source
+          cd build/raatd_source
+          curl -fLSs --retry 4 --retry-all-errors --connect-timeout 60 --max-time 1500 \
+            'https://zenodo.org/records/3722948/files/SCAR_EGBAMM_RAATD-filtered-noTMB.zip?download=1' \
+            -o RAATD-filtered-noTMB.zip
+          echo '168e5b9b5c4ed20bb84dd00145acb0a5  RAATD-filtered-noTMB.zip' | md5sum -c -
+          unzip -Z1 RAATD-filtered-noTMB.zip | grep -Ei 'ADPE|metadata' | head -25 || true
+      - name: Count independent study support by time, without ecological outcome
+        shell: bash
+        run: |
+          python scripts/audit_raatd_adpe_source_gate.py \
+            build/raatd_source/RAATD-filtered-noTMB.zip \
+            build/raatd_source/output
+      - name: Publish source audit only (no model fit)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adelie-raatd-seasonal-source-gate-v1
+          path: build/raatd_source/output
+          if-no-files-found: warn
+          retention-days: 60
