@@ -1,0 +1,121 @@
+{
+  "status": "PASS_VISUAL_AND_OFFLINE_RENDER_QA",
+  "inspected_utc_date": "2026-11-21",
+  "all_five_pngs_visually_inspected": true,
+  "visual_findings_resolved": [
+    "Fig1 Sites/Rows header collision",
+    "Fig2 panel-a x-label and model-description collision",
+    "Fig3 footer separation",
+    "Fig4 overwide panel title and scatter-point annotation",
+    "Fig5 long outcome label wrapped within its box"
+  ],
+  "final_visual_findings": "No visible clipped labels or text collisions; point estimates, CI markings, sample labels and pathway distinctions reviewed.",
+  "offline_reproduction": "Fresh directory containing only renderer, source_manifest.json and source_inputs; all five PNG files and all numerical extracts byte-identical, using primary Python without pyproj.",
+  "offline_numeric_extracts_identical": [
+    "fig1_map_geometry.json",
+    "fig1_region_support.csv",
+    "fig1_site_mean_exposure_and_geography.csv",
+    "fig2_leave_one_region_out.csv",
+    "fig2_main_and_measurement_sensitivity.csv",
+    "fig2_original_frozen11_intervals.csv",
+    "fig3_reported_temporal_coefficients.csv",
+    "fig4_reported_model_information.csv",
+    "fig4_same439_fixed_effect_residuals.csv"
+  ],
+  "tiff_files": [
+    {
+      "file": "Fig1_Polynya_source_footprint.tif",
+      "pixels": [
+        5355,
+        4189
+      ],
+      "mode": "CMYK",
+      "dpi": [
+        800.0999755859375,
+        800.0999755859375
+      ],
+      "physical_width_mm": 170.00000518734,
+      "bytes": 2682776,
+      "sha256": "4a8fc3a1dd647e036625a728e597204c249348b77de6fa263b535c091fa9bb55"
+    },
+    {
+      "file": "Fig2_Polynya_association_and_sensitivity.tif",
+      "pixels": [
+        5355,
+        5260
+      ],
+      "mode": "CMYK",
+      "dpi": [
+        800.0999755859375,
+        800.0999755859375
+      ],
+      "physical_width_mm": 170.00000518734,
+      "bytes": 1926540,
+      "sha256": "423798f799f90316e1e50977e990a53a1241062d499be766633cf20c0b2fd594"
+    },
+    {
+      "file": "Fig3_Preceding_following_winter_contrast.tif",
+      "pixels": [
+        5355,
+        5008
+      ],
+      "mode": "CMYK",
+      "dpi": [
+        800.0999755859375,
+        800.0999755859375
+      ],
+      "physical_width_mm": 170.00000518734,
+      "bytes": 1677396,
+      "sha256": "b0e253956cab555374e5eb3cb9178538209d2cd897d997128927f873e925282d"
+    },
+    {
+      "file": "Fig4_Polynya_salinity_conditional_information.tif",
+      "pixels": [
+        5355,
+        3465
+      ],
+      "mode": "CMYK",
+      "dpi": [
+        800.0999755859375,
+        800.0999755859375
+      ],
+      "physical_width_mm": 170.00000518734,
+      "bytes": 1563806,
+      "sha256": "4d9d137c4d1f367e95d22effa2ec65dde58600d2e3b8746597ec3b16798b2dec"
+    },
+    {
+      "file": "Fig5_Observation_and_unresolved_pathways.tif",
+      "pixels": [
+        5355,
+        4787
+      ],
+      "mode": "CMYK",
+      "dpi": [
+        800.0999755859375,
+        800.0999755859375
+      ],
+      "physical_width_mm": 170.00000518734,
+      "bytes": 2237942,
+      "sha256": "c5658de2cbc5eadbe09bb60f98662089e289e3e526bc3d159325a4061fb8f832"
+    }
+  ],
+  "physical_width_tolerance_mm": 0.0001,
+  "metadata_note": "The TIFF writer stores 800.1-dpi resolution with finite precision (800.0999755859375); physical width is 170.00000518734 mm. SVG width is 170 mm within serializer precision.",
+  "numeric_invariance": {
+    "main_coefficient_max_abs_difference_frozen439_vs_dated425_per10pp": 3.219646771412954e-15,
+    "same439_FE_only_correlation": -0.08042928154744855,
+    "same439_correlation_difference_vs_independent_QR_verifier": 2.4841240175987878e-15,
+    "original_frozen_CI_source_values_retained": true,
+    "displayed_dated8_CIs_are_not_claimed_unchanged": true
+  },
+  "figure1_cartographic_update": {
+    "performed_utc_date": "2026-11-21",
+    "final_png_visually_inspected": true,
+    "final_visual_findings": "Pale Antarctic land is recognizable; 0°, 90°W and 90°E labels do not overlap latitude labels, regional callouts or points. No spurious inland antimeridian edge, clipped text or obscured point markers.",
+    "raw_source_new_cartographic_context_only": true,
+    "figures_2_to_5_byte_identical_files": 12,
+    "original_numeric_extract_files_byte_identical": 9,
+    "all_recomputed_and_reported_numerical_values_exactly_unchanged": true,
+    "fresh_offline_run_without_projection_runtime": "All five PNGs and five TIFFs, and all nine numerical extracts, reproduced byte-identically; primary Python has no pyproj and --projection-python pointed to an absent path, so both verified coordinate caches supplied map geometry."
+  }
+}

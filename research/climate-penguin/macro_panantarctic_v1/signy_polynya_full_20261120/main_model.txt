@@ -1,0 +1,27 @@
+                            OLS Regression Results
+==============================================================================
+Dep. Variable:         krill_fraction   R-squared:                       0.123
+Model:                            OLS   Adj. R-squared:                 -0.140
+Method:                 Least Squares   F-statistic:                    0.5674
+Date:                Fri, 20 Nov 2026   Prob (F-statistic):              0.649
+Time:                        14:29:59   Log-Likelihood:                 14.616
+No. Observations:                  14   AIC:                            -21.23
+Df Residuals:                      10   BIC:                            -18.68
+Df Model:                           3
+Covariance Type:                  HAC
+====================================================================================
+                       coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------------
+const                0.9398      0.026     36.283      0.000       0.882       0.998
+polynya_fraction     0.4208      0.893      0.471      0.647      -1.568       2.410
+sampling_day         0.0011      0.003      0.346      0.737      -0.006       0.008
+season              -0.0060      0.005     -1.233      0.246      -0.017       0.005
+==============================================================================
+Omnibus:                       15.953   Durbin-Watson:                   1.317
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               12.599
+Skew:                          -1.697   Prob(JB):                      0.00184
+Kurtosis:                       6.174   Cond. No.                         327.
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 1 lags and without small sample correction

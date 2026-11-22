@@ -1,0 +1,30 @@
+name: Penguin original 60pct contour source geometry diagnosis (no new thresholds)
+on:
+  pull_request:
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/inspect_60pct_source_geometry.py'
+      - '.github/workflows/penguin-60pct-source-geometry-diagnostic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect-source-supported-full-grid-contours:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reuse original successfully sourced full 120-month figure computation, no new thresholds or downloads
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-60pct-isocontour-three-decade-macro-v1
+          run-id: 42790192231
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/previous_original_front
+      - name: Explain why original 60 percent front could not be represented as one closed ring
+        run: |
+          find build/previous_original_front -maxdepth 3 -type f
+          python research/climate-penguin/macro_panantarctic_v1/inspect_60pct_source_geometry.py build/previous_original_front/original_60pct_front_and_colony_overlap_result.json

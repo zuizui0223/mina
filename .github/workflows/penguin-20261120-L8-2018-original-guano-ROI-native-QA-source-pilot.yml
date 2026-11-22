@@ -1,0 +1,69 @@
+name: Penguin L8 2018 original guano ROI native QA-only three-region pilot
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/pilot_original88_fixed_guano_L8_QA_ONLY_2018_20261120.py'
+      - '.github/workflows/penguin-20261120-L8-2018-original-guano-ROI-native-QA-source-pilot.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  no_new_spectrum_or_Y_three_region_native_L8_image_QA:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Ensure different-instrument source and original source pixel geometry policy is fixed
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ORIGINAL_88_GUANO_PIXEL_SOURCE_GEOGRAPHY_VERDICT_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/pilot_original88_fixed_guano_L8_QA_ONLY_2018_20261120.py
+      - name: Install geospatial native source only raster COG and source-projected pixel sample libraries
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'rasterio>=1.4,<2' 'pyproj>=3.6,<4' 'requests>=2.32,<3' 'planetary-computer>=1.0,<2'
+      - name: Retrieve source-only original88 guano point coordinates and L8 scene catalog, exact SHA
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_L8_2018_guano_QA_only
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14594649354/zip" > build/penguin_L8_2018_guano_QA_only/old_guano_roi_geometry.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14594208565/zip" > build/penguin_L8_2018_guano_QA_only/l8_scene_catalog.zip
+          echo "0ee6a774bd960a132b270e34a8873529600dc985015085fdd3351626c653f4e7  build/penguin_L8_2018_guano_QA_only/old_guano_roi_geometry.zip" | sha256sum --check
+          echo "575dc514c6103b1aaefb0bce1bf7f5084aedc5d2c4edb3519d0ac03af82a2750  build/penguin_L8_2018_guano_QA_only/l8_scene_catalog.zip" | sha256sum --check
+      - name: Read same-USGS-scene 2018 C2 L8 QA_PIXEL QA_RADSAT from publicly signed Planetary Computer mirror; old geolocated points only
+        env:
+          GDAL_DISABLE_READDIR_ON_OPEN: 'YES'
+          AWS_NO_SIGN_REQUEST: 'YES'
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/pilot_original88_fixed_guano_L8_QA_ONLY_2018_20261120.py \
+            --old-original-roi-zip build/penguin_L8_2018_guano_QA_only/old_guano_roi_geometry.zip \
+            --l8-scene-zip build/penguin_L8_2018_guano_QA_only/l8_scene_catalog.zip \
+            --out build/penguin_L8_2018_guano_QA_only/native_QA_report
+      - name: Validate no future L8 spectral isotope output or empirical ecological posthoc test
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/penguin_L8_2018_guano_QA_only/native_QA_report/2018_L8_THREE_REGION_NATIVE_QA_ONLY_OLD_SOURCE_GUANO_ROI_PILOT.json')
+          r=json.loads(p.read_text())
+          assert r['status']=='SOURCE_L8_2018_QA_OLD_ROI_READABLE_ONLY_NOT_CURRENT_GUANO'
+          assert r['scenes_attempted']==6 and r['source_qa_scenes_succeeded']==6
+          assert r['no_new_guano_classifier_or_polygon_derived']
+          assert r['no_new_year_guano_pixel_assumed_from_historic_roi']
+          assert r['no_new_L8_spectral_reflectance_opened'] and r['no_new_delta15N_computed']
+          assert r['no_polynya_effect_fitted'] and r['not_full_original_88_L8_image_pixel_eligibility']
+          print('SOURCE_OLD_ROI_L8_2018_QA_ONLY',r['status'])
+          PY
+      - name: Archive native USGS QA result/true 3-region geometry and errors but no original/private reflective image or new Y
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-L8-2018-three-region-old-guano-site-ROI-native-only-QA-no-future-Y
+          path: build/penguin_L8_2018_guano_QA_only/native_QA_report/
+          if-no-files-found: warn
+          retention-days: 30

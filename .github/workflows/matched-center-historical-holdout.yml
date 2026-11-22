@@ -1,0 +1,37 @@
+name: Matched published-center historical SR holdout
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths: ['research/climate-penguin/macro_panantarctic_v1/spectral_selector_20261120/RUN_MATCHED_HOLDOUT.txt']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  extract:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install fixed numerical and raster dependencies
+        run: pip install numpy==2.2.6 pandas==2.3.3 scipy==1.15.3 scikit-learn==1.7.2 rasterio==1.4.4 planetary-computer==1.0.0 pyproj==3.7.1 requests==2.33.1
+      - name: Verify original published inputs
+        run: python research/climate-penguin/macro_panantarctic_v1/spectral_selector_20261120/fetch_grid_evidence.py --data-only
+      - name: Extract fixed historical test shard without ecological responses
+        run: python research/climate-penguin/macro_panantarctic_v1/spectral_selector_20261120/extract_matched_training.py --phase test --shard ${{ matrix.shard }} --n-shards 8
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-center-test-shard-${{ matrix.shard }}
+          path: |
+            research/climate-penguin/macro_panantarctic_v1/spectral_selector_20261120/matched_test_shard*_samples.csv
+            research/climate-penguin/macro_panantarctic_v1/spectral_selector_20261120/matched_test_shard*_receipts.json
+          if-no-files-found: error
+          retention-days: 30

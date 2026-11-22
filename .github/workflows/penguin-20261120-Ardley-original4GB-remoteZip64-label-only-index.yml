@@ -1,0 +1,57 @@
+name: Penguin actual 4.1GB Ardley Zenodo ZIP64 native label index via bytes range only
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inspect_zenodo14503437_remote_zip64_GIS_without_4GB_download_20261120.py'
+      - '.github/workflows/penguin-20261120-Ardley-original4GB-remoteZip64-label-only-index.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  published_Ardley_Zenodo_zip64_vector_manifest_only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require original source-only external ground-truth research contract
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inspect_zenodo14503437_remote_zip64_GIS_without_4GB_download_20261120.py
+      - name: Install HTTP byte-range ZIP64 and small native GIS vector readers only
+        run: |
+          python -m pip install --disable-pip-version-check 'numpy<3' 'requests>=2.32,<3' 'pyshp>=2.3,<3' 'remotezip>=0.12,<1'
+      - name: Verify actual Zenodo 4.1GB published record and list archive without downloading full source
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/inspect_zenodo14503437_remote_zip64_GIS_without_4GB_download_20261120.py \
+            --out build/penguin_Ardley_Zenodo_remoteZIP64_label_source
+      - name: Enforce no false full-download, future response or pan-Antarctic spatial overlap
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/penguin_Ardley_Zenodo_remoteZIP64_label_source/ARDLEY_4GB_REMOTE_ZIP64_GIS_AND_ACTUAL_LABEL_INSPECTION.json')
+          r=json.loads(p.read_text())
+          assert r['source_record_id']==14503437 and r['official_size_bytes']==4109917595
+          assert r['never_downloaded_whole_4GB']
+          assert r['not_future_isotope_reanalysis']
+          assert r['not_direct_2013_2021_guano_pixel_GT_until_dates_and_georeferencing_checked']
+          assert r['original_88_has_Ardley_site_ID'] is False
+          assert r['status'] in ('OFFICIAL_4GB_ZIP_NATIVE_CENTRAL_DIRECTORY_INSPECTED',
+                                 'OFFICIAL_4GB_ARDLEY_ZIP_ONLY_METADATA')
+          print('ARDLEY_PUBLIC_SOURCE_INDEX',r['status'],
+             'native_members',r.get('original_zip_members_total'),
+             'native_GIS',r.get('native_GIS_vector_extensions_count'),
+             'reason_if_no_index',r.get('source_zip_native_index_error'))
+          PY
+      - name: Preserve official ZIP64 file names/native small vector inspection only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-Ardley-Zenodo14503437-4GB-ZIP64-native-GIS-index-no-new-Y
+          path: build/penguin_Ardley_Zenodo_remoteZIP64_label_source/
+          if-no-files-found: warn
+          retention-days: 30

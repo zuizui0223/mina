@@ -1,0 +1,65 @@
+name: Penguin Adélie original regional vs block-locked source geographical bound QA
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/block_locked_20261115/**'
+      - 'research/climate-penguin/macro_panantarctic_v1/latitudinal_scale_20261115/original_adelie_19_26_35_site_growth_cohorts.csv'
+      - '.github/workflows/penguin-adelie-block-locked-latitude-envelope.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reproduce-original-region-and-block-locked-bounds:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical source verification dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas scipy
+      - name: Recompute true 80-row source constrained 50k permutation and analytic group bounds
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/block_locked_20261115/analyze_block_locked_allocation.py \
+            --out build/adelie-block-locked-source-audit \
+            --permutations 50000 --seed 20261115
+      - name: Independently verify 24 published spatial and marine bounds with linear programming
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/block_locked_20261115/verify_block_locked_envelope_independent.py \
+            --summary-csv research/climate-penguin/macro_panantarctic_v1/block_locked_20261115/observed_source_roster_exact_geographic_envelopes.csv \
+            --permutation-csv research/climate-penguin/macro_panantarctic_v1/block_locked_20261115/growth_factor_permutation_source_diagnostics.csv \
+            --out build/adelie-block-locked-source-audit/independent_LP_verification.json
+      - name: Confirm full fixed-seed reproducibility against original committed source results
+        run: |
+          python - <<'PY'
+          import pandas as pd, numpy as np
+          from pathlib import Path
+          a=Path('build/adelie-block-locked-source-audit')
+          b=Path('research/climate-penguin/macro_panantarctic_v1/block_locked_20261115')
+          files=('observed_source_roster_exact_geographic_envelopes.csv',
+                 'growth_factor_permutation_source_diagnostics.csv',
+                 'source_reporting_region_250km_block_counts_and_latitude_limits.csv')
+          for filename in files:
+              new=pd.read_csv(a/filename).sort_values(list(pd.read_csv(a/filename).columns[:2])).reset_index(drop=True)
+              old=pd.read_csv(b/filename).sort_values(list(pd.read_csv(b/filename).columns[:2])).reset_index(drop=True)
+              assert len(new)==len(old),filename
+              assert new.shape==old.shape,filename
+              for key in old.columns:
+                  if pd.api.types.is_numeric_dtype(old[key]) and pd.api.types.is_numeric_dtype(new[key]):
+                      assert np.allclose(old[key],new[key],atol=1e-7,rtol=0,equal_nan=True),(filename,key)
+                  else:
+                      assert old[key].fillna('').astype(str).tolist()==new[key].fillna('').astype(str).tolist(),(filename,key)
+          print('PASS: exact source bounds, 50k seeded geographic relabelings, 24 independent linear-program extrema')
+          PY
+      - name: Archive compact QA receipts only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: antarctic-adelie-block-locked-geography-validated-receipts
+          path: |
+            build/adelie-block-locked-source-audit/source_constrained_allocation_receipt.json
+            build/adelie-block-locked-source-audit/independent_LP_verification.json
+          if-no-files-found: warn
+          retention-days: 14

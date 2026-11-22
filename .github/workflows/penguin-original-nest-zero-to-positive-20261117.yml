@@ -1,0 +1,130 @@
+name: Penguin original recorded zero to positive nesting state transitions
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/**'
+      - '.github/workflows/penguin-original-nest-zero-to-positive-20261117.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-census-status-and-followup:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source annual SIC arithmetic dependency
+        run: python -m pip install --disable-pip-version-check numpy
+      - name: Compile and test census-state geography arithmetic
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/audit_original_zero_to_positive_transitions.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/audit_original_zero_to_positive_transitions.py --self-test
+      - name: Retrieve frozen publisher derived 2456 true source counts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_zero_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_zero_source/source_original_2456.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13671496095/zip" > build/penguin_zero_source/source_original_OSISAF_71400.zip
+          python - <<'PY'
+          from zipfile import ZipFile
+          import io,csv
+          with ZipFile('build/penguin_zero_source/source_original_2456.zip') as z:
+              assert z.testzip() is None
+              assert len(list(csv.DictReader(io.StringIO(z.read('source_observed_2456.csv').decode()))))==2456
+              assert len(list(csv.DictReader(io.StringIO(z.read('panantarctic_595_site_inventory.csv').decode()))))==595
+          print("PASS 2456 true source count rows and original 595 site inventory")
+          PY
+      - name: Rebuild original method-frozen census records, find observed 0-positive transitions
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/audit_original_zero_to_positive_transitions.py \
+            --original-source research/climate-penguin/outputs/comparison_audit/mapppd_unambiguous_site_seasons.csv \
+            --count-zip build/penguin_zero_source/source_original_2456.zip \
+            --out build/penguin_zero_transitions_verified
+      - name: Independently re-evaluate source chronology, zero versus missing, candidate distance
+        run: |
+          python - <<'PY'
+          import csv,json
+          from collections import Counter
+          from pathlib import Path
+          root=Path('build/penguin_zero_transitions_verified')
+          rec=json.loads((root/'original_penguin_nest_zero_to_positive_transition_receipt.json').read_text())
+          with (root/'all_35_original_nest_status_transitions.csv').open() as f: events=list(csv.DictReader(f))
+          with (root/'five_persistent_after_recorded_zero_gentoo_source_sites.csv').open() as f: cand=list(csv.DictReader(f))
+          assert rec['status']=='PASS_REAL_ZERO_TO_POSITIVE_SOURCE_SURVEY_TRANSITION_AUDIT'
+          assert (len(events),len(cand))==(35,5)
+          assert Counter(x['transition'] for x in events)=={'observed_0_to_positive':15,'observed_positive_to_0':20}
+          assert len({(x['site_id'],x['species']) for x in events})==rec['unique_site_species_with_observed_transition']
+          assert {x['site_id'] for x in cand}=={'BISC','GALE','ORNE','TXRX','VERN'}
+          assert {x['species'] for x in cand}=={'GEPE'}
+          assert {x['source_region'] for x in cand}=={'Central-west Antarctic Peninsula'}
+          assert all(int(x['previous_observed_nests'])==0 and int(x['changed_observed_nests'])>0 for x in cand)
+          assert all(x['first_ever_source_census_was_recorded_zero']=='True' and
+                     int(x['n_positive_censuses_before_transition'])==0 and
+                     int(x['n_followup_positive_censuses'])>=4 and
+                     int(x['n_followup_zero_censuses'])==0 for x in cand)
+          assert sorted(len(x) for x in rec['sustained_distinct_geographic_groups_under2km'])==[1,1,1,2]
+          assert sorted(len(x) for x in rec['sustained_distinct_geographic_groups_under10km'])==[1,1,3]
+          assert rec['recorded_zero_not_assumed_species_absence_offsite']
+          assert rec['not_true_foundation_or_discovery_date']
+          print('PASS 35 verified census-only transitions; 5 repeated gentoo positive sites cluster into 3 groups at 10 km')
+          PY
+      - name: Match real zero/positive census times with 595-original-site-year SIC physical context
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/link_true_nesting_transition_to_annual_SIC.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/link_true_nesting_transition_to_annual_SIC.py \
+            --status-events build/penguin_zero_transitions_verified/all_35_original_nest_status_transitions.csv \
+            --source-SIC-zip build/penguin_zero_source/source_original_OSISAF_71400.zip \
+            --out build/penguin_zero_transitions_verified
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          root=Path('build/penguin_zero_transitions_verified')
+          x=json.loads((root/'original_ice_nesting_transition_support_receipt.json').read_text())
+          rows=list(csv.DictReader((root/'five_recorded_gentoo_appearance_events_original_SIC.csv').open()))
+          assert x["status"]=="PASS_SOURCE_CENSUS_EVENT_TO_TRUE_ORIGINAL_SIC_CONTEXT_ONLY"
+          assert x["original_595_1991_2020_AugNov_site_months"]==71400
+          assert x["original_595_1991_2020_site_years"]==595*30
+          assert x["all_original_sustained_gentoo_nesting_cases"]==5
+          assert len(rows)==5 and {r["site_id"] for r in rows}=={'BISC','GALE','ORNE','TXRX','VERN'}
+          assert x["n_five_gentoo_cases_with_both_recorded_0_year_and_first_positive_year_SIC"]==4
+          b=next(r for r in rows if r["site_id"]=="BISC")
+          assert int(b["from_source_count_year"])==1984 and b["true_original_0_year_SIC_AugNov_pp"]==""
+          assert x["no_annual_ice_free_land_or_foraging_behavior_available"] is True
+          assert x["no_independent_regions_or_climate_selection_test"] is True
+          print("PASS original SIC 1991-2020 exact scope, 4/5 before-after cases, and no fabricated 1984 physical exposure")
+          PY
+      - name: Probe actual 1985-2016 original summer Landsat scene availability and GLIMS historical glacier service
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/probe_public_historical_land_source_coverage.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/probe_public_historical_land_source_coverage.py \
+            --out build/penguin_zero_transitions_verified
+          python - <<'PY'
+          import json,csv
+          from pathlib import Path
+          root=Path('build/penguin_zero_transitions_verified')
+          x=json.loads((root/'land_source_metadata_coverage_receipt.json').read_text())
+          rows=list(csv.DictReader((root/'landsat_climate_event_summer_scene_availability.csv').open()))
+          assert x['status']=='PUBLIC_ORIGINAL_HISTORIC_GROUND_SURFACE_SOURCE_PROBE_ONLY'
+          assert x['n_original_gentoo_site_codes']==5 and x['n_spatial_clusters_at_10km']==3
+          assert x['n_landsat_searches_successful']+x['n_landsat_search_errors']==x['n_landsat_searches_requested']==19
+          assert len(rows)==x['n_landsat_searches_successful']
+          assert x['scene_catalog_coverage_cannot_prove_land_pixel_quality']
+          assert x['no_glacier_retreat_area_or_bare_rock_change_calculated']
+          assert x['not_an_independent_breeding_site_nonoccupied_comparator']
+          print('PASS objective historical Landsat metadata support audit (source errors remain separately counted)')
+          PY
+      - name: Preserve all 35 transition records and 5 supported case rows as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-source-observed-zero-to-positive-and-5-recounted-gentoo-20261117
+          path: build/penguin_zero_transitions_verified/
+          if-no-files-found: warn
+          retention-days: 30

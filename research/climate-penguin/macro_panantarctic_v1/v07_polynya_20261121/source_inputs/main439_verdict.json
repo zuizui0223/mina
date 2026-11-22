@@ -1,0 +1,776 @@
+{
+  "status": "NO_GO_DIRECT_POLYNYA_ASSOCIATION",
+  "frozen_preregistered_file": "DIRECT_POLYNYA_OPTICAL_ISOTOPE_MODEL_FROZEN_20261119_JA.md",
+  "source_outcome_gate_was_passed_before_Y_open": true,
+  "same_observations_all_four_comparisons": 439,
+  "same_original_sites_all_four": 85,
+  "source_regions": 11,
+  "source_regions_and_winter_support_original": [
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009,
+    2010
+  ],
+  "response_measures_satellite_optical_delta15N_proxy_NOT_fish_fraction": true,
+  "source_real_coastal_polynya_fraction_100km_not_winter_salinity_proxy": true,
+  "models": {
+    "M0": {
+      "region": {
+        "model": "M0",
+        "cluster": "region",
+        "rows": 439,
+        "sites": 85,
+        "regions": 11,
+        "cells": 79,
+        "sse": 298.4861344264405,
+        "aic_relative_no_FE": -161.35563421564243,
+        "coefficients": [
+          {
+            "feature": "mean_doy_centered",
+            "native_beta": -0.019371201518405823,
+            "se": 0.008173648370092525,
+            "original_feature_std": 21.735284756570877,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.03758322501428326,
+              -0.0011591780225283857
+            ]
+          },
+          {
+            "feature": "mean_doy_sq",
+            "native_beta": 0.0003737868242191685,
+            "se": 0.00019490953682966422,
+            "original_feature_std": 643.2584182891236,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -6.049868741365592e-05,
+              0.0008080723358519929
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_thetao_C",
+            "native_beta": -0.23405661638149738,
+            "se": 0.2991716337376764,
+            "original_feature_std": 0.7345486377363725,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.9006525569246218,
+              0.43253932416162694
+            ]
+          },
+          {
+            "feature": "author_SIC_150km_NovFeb_center_approx_fraction",
+            "native_beta": 0.26999931918423886,
+            "se": 2.0491365250380538,
+            "original_feature_std": 0.23419869951694539,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -4.295761385277193,
+              4.83576002364567
+            ]
+          }
+        ]
+      },
+      "cell": {
+        "model": "M0",
+        "cluster": "cell",
+        "rows": 439,
+        "sites": 85,
+        "regions": 11,
+        "cells": 79,
+        "sse": 298.4861344264405,
+        "aic_relative_no_FE": -161.35563421564243,
+        "coefficients": [
+          {
+            "feature": "mean_doy_centered",
+            "native_beta": -0.019371201518405823,
+            "se": 0.005130089700157662,
+            "original_feature_std": 21.735284756570877,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.02958442556070575,
+              -0.009157977476105897
+            ]
+          },
+          {
+            "feature": "mean_doy_sq",
+            "native_beta": 0.0003737868242191685,
+            "se": 0.00013634264977354111,
+            "original_feature_std": 643.2584182891236,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              0.00010234945956349523,
+              0.0006452241888748418
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_thetao_C",
+            "native_beta": -0.23405661638149738,
+            "se": 0.24935034916012133,
+            "original_feature_std": 0.7345486377363725,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.7304750281140966,
+              0.26236179535110177
+            ]
+          },
+          {
+            "feature": "author_SIC_150km_NovFeb_center_approx_fraction",
+            "native_beta": 0.26999931918423886,
+            "se": 1.062552946673664,
+            "original_feature_std": 0.23419869951694539,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -1.8453811001582499,
+              2.3853797385267277
+            ]
+          }
+        ]
+      },
+      "additional_M0_residual_fraction": 0.0
+    },
+    "M_S": {
+      "region": {
+        "model": "M_S",
+        "cluster": "region",
+        "rows": 439,
+        "sites": 85,
+        "regions": 11,
+        "cells": 79,
+        "sse": 292.0897424568895,
+        "aic_relative_no_FE": -168.86542285058545,
+        "coefficients": [
+          {
+            "feature": "mean_doy_centered",
+            "native_beta": -0.017494779167387474,
+            "se": 0.007206068437338625,
+            "original_feature_std": 21.735284756570877,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.03355090022269368,
+              -0.0014386581120812668
+            ]
+          },
+          {
+            "feature": "mean_doy_sq",
+            "native_beta": 0.0002901595339884944,
+            "se": 0.00019748280208352044,
+            "original_feature_std": 643.2584182891236,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.00014985956993291338,
+              0.0007301786379099021
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_thetao_C",
+            "native_beta": -0.3946309756248334,
+            "se": 0.2509438292451043,
+            "original_feature_std": 0.7345486377363725,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.9537686712320596,
+              0.16450671998239275
+            ]
+          },
+          {
+            "feature": "author_SIC_150km_NovFeb_center_approx_fraction",
+            "native_beta": 1.747131925612001,
+            "se": 1.6930366782794712,
+            "original_feature_std": 0.23419869951694539,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -2.025188875100275,
+              5.5194527263242765
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_salinity",
+            "native_beta": 0.7662979515381971,
+            "se": 0.2244728408409255,
+            "original_feature_std": 0.6618263861893081,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              0.26614129364479977,
+              1.2664546094315945
+            ]
+          }
+        ]
+      },
+      "cell": {
+        "model": "M_S",
+        "cluster": "cell",
+        "rows": 439,
+        "sites": 85,
+        "regions": 11,
+        "cells": 79,
+        "sse": 292.0897424568895,
+        "aic_relative_no_FE": -168.86542285058545,
+        "coefficients": [
+          {
+            "feature": "mean_doy_centered",
+            "native_beta": -0.017494779167387474,
+            "se": 0.005132351965288483,
+            "original_feature_std": 21.735284756570877,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.02771250703359197,
+              -0.0072770513011829775
+            ]
+          },
+          {
+            "feature": "mean_doy_sq",
+            "native_beta": 0.0002901595339884944,
+            "se": 0.00014419148380234817,
+            "original_feature_std": 643.2584182891236,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              3.0963411129811356e-06,
+              0.0005772227268640076
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_thetao_C",
+            "native_beta": -0.3946309756248334,
+            "se": 0.2304886301032933,
+            "original_feature_std": 0.7345486377363725,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.8534985892603968,
+              0.06423663801073004
+            ]
+          },
+          {
+            "feature": "author_SIC_150km_NovFeb_center_approx_fraction",
+            "native_beta": 1.747131925612001,
+            "se": 1.2079361912880053,
+            "original_feature_std": 0.23419869951694539,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.6576843001252819,
+              4.151948151349284
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_salinity",
+            "native_beta": 0.7662979515381971,
+            "se": 0.28469888881483135,
+            "original_feature_std": 0.6618263861893081,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              0.19950600324724477,
+              1.3330898998291496
+            ]
+          }
+        ]
+      },
+      "additional_M0_residual_fraction": 0.021429444224744576
+    },
+    "M_P": {
+      "region": {
+        "model": "M_P",
+        "cluster": "region",
+        "rows": 439,
+        "sites": 85,
+        "regions": 11,
+        "cells": 79,
+        "sse": 287.16174166205667,
+        "aic_relative_no_FE": -176.33521655709933,
+        "coefficients": [
+          {
+            "feature": "mean_doy_centered",
+            "native_beta": -0.02054439509482915,
+            "se": 0.008604308701019489,
+            "original_feature_std": 21.735284756570877,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.03971598960605423,
+              -0.0013728005836040787
+            ]
+          },
+          {
+            "feature": "mean_doy_sq",
+            "native_beta": 0.000401100307902583,
+            "se": 0.0002119889197287796,
+            "original_feature_std": 643.2584182891236,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -7.124044033571036e-05,
+              0.0008734410561408763
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_thetao_C",
+            "native_beta": -0.12650651179096806,
+            "se": 0.2752944263839929,
+            "original_feature_std": 0.7345486377363725,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.7399007189524177,
+              0.4868876953704816
+            ]
+          },
+          {
+            "feature": "author_SIC_150km_NovFeb_center_approx_fraction",
+            "native_beta": 0.49580899138164086,
+            "se": 1.5761829771725115,
+            "original_feature_std": 0.23419869951694539,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -3.0161455378958264,
+              4.0077635206591085
+            ]
+          },
+          {
+            "feature": "direct_DEEPAA_coastal_polynya_fraction",
+            "native_beta": -10.031091429244865,
+            "se": 2.080917641875102,
+            "original_feature_std": 0.06311495564859758,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -14.66766487489044,
+              -5.394517983599291
+            ]
+          }
+        ]
+      },
+      "cell": {
+        "model": "M_P",
+        "cluster": "cell",
+        "rows": 439,
+        "sites": 85,
+        "regions": 11,
+        "cells": 79,
+        "sse": 287.16174166205667,
+        "aic_relative_no_FE": -176.33521655709933,
+        "coefficients": [
+          {
+            "feature": "mean_doy_centered",
+            "native_beta": -0.02054439509482915,
+            "se": 0.005183558336170567,
+            "original_feature_std": 21.735284756570877,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.030864067014408726,
+              -0.010224723175249575
+            ]
+          },
+          {
+            "feature": "mean_doy_sq",
+            "native_beta": 0.000401100307902583,
+            "se": 0.0001428027160416399,
+            "original_feature_std": 643.2584182891236,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              0.00011680193925273601,
+              0.00068539867655243
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_thetao_C",
+            "native_beta": -0.12650651179096806,
+            "se": 0.2417717658467519,
+            "original_feature_std": 0.7345486377363725,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.6078371231484004,
+              0.3548240995664643
+            ]
+          },
+          {
+            "feature": "author_SIC_150km_NovFeb_center_approx_fraction",
+            "native_beta": 0.49580899138164086,
+            "se": 0.9667364681262238,
+            "original_feature_std": 0.23419869951694539,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -1.4288154725008182,
+              2.4204334552641
+            ]
+          },
+          {
+            "feature": "direct_DEEPAA_coastal_polynya_fraction",
+            "native_beta": -10.031091429244865,
+            "se": 2.7981755026492077,
+            "original_feature_std": 0.06311495564859758,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -15.601830926714719,
+              -4.460351931775011
+            ]
+          }
+        ]
+      },
+      "additional_M0_residual_fraction": 0.037939426520244734
+    },
+    "M_SP": {
+      "region": {
+        "model": "M_SP",
+        "cluster": "region",
+        "rows": 439,
+        "sites": 85,
+        "regions": 11,
+        "cells": 79,
+        "sse": 282.6878513505845,
+        "aic_relative_no_FE": -181.22853797238454,
+        "coefficients": [
+          {
+            "feature": "mean_doy_centered",
+            "native_beta": -0.018866720408084126,
+            "se": 0.007819165750535954,
+            "original_feature_std": 21.735284756570877,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.0362889074069737,
+              -0.0014445334091945546
+            ]
+          },
+          {
+            "feature": "mean_doy_sq",
+            "native_beta": 0.0003283596606319252,
+            "se": 0.0002162632196464709,
+            "original_feature_std": 643.2584182891236,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.00015350482131801783,
+              0.0008102241425818682
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_thetao_C",
+            "native_beta": -0.270654366035378,
+            "se": 0.24405092674822465,
+            "original_feature_std": 0.7345486377363725,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -0.8144337177863534,
+              0.27312498571559746
+            ]
+          },
+          {
+            "feature": "author_SIC_150km_NovFeb_center_approx_fraction",
+            "native_beta": 1.723103662683204,
+            "se": 1.3678285721988328,
+            "original_feature_std": 0.23419869951694539,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -1.3246083218899276,
+              4.7708156472563354
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_salinity",
+            "native_beta": 0.6462062176453005,
+            "se": 0.20429410590262562,
+            "original_feature_std": 0.6618263861893081,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              0.19101058305186197,
+              1.101401852238739
+            ]
+          },
+          {
+            "feature": "direct_DEEPAA_coastal_polynya_fraction",
+            "native_beta": -9.216089250042957,
+            "se": 1.9194271495008925,
+            "original_feature_std": 0.06311495564859758,
+            "group_n": 11,
+            "conservative_t_df": 10,
+            "t95ci": [
+              -13.492839455403162,
+              -4.939339044682752
+            ]
+          }
+        ]
+      },
+      "cell": {
+        "model": "M_SP",
+        "cluster": "cell",
+        "rows": 439,
+        "sites": 85,
+        "regions": 11,
+        "cells": 79,
+        "sse": 282.6878513505845,
+        "aic_relative_no_FE": -181.22853797238454,
+        "coefficients": [
+          {
+            "feature": "mean_doy_centered",
+            "native_beta": -0.018866720408084126,
+            "se": 0.005248542464452158,
+            "original_feature_std": 21.735284756570877,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.02931576578897239,
+              -0.00841767502719586
+            ]
+          },
+          {
+            "feature": "mean_doy_sq",
+            "native_beta": 0.0003283596606319252,
+            "se": 0.00015097684533034027,
+            "original_feature_std": 643.2584182891236,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              2.778785064758133e-05,
+              0.0006289314706162692
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_thetao_C",
+            "native_beta": -0.270654366035378,
+            "se": 0.23022680247068553,
+            "original_feature_std": 0.7345486377363725,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.7290007208960304,
+              0.18769198882527438
+            ]
+          },
+          {
+            "feature": "author_SIC_150km_NovFeb_center_approx_fraction",
+            "native_beta": 1.723103662683204,
+            "se": 1.1624637266483007,
+            "original_feature_std": 0.23419869951694539,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -0.5911838401144798,
+              4.037391165480887
+            ]
+          },
+          {
+            "feature": "GLORYS_NovFeb_salinity",
+            "native_beta": 0.6462062176453005,
+            "se": 0.281397913963976,
+            "original_feature_std": 0.6618263861893081,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              0.08598600546039459,
+              1.2064264298302065
+            ]
+          },
+          {
+            "feature": "direct_DEEPAA_coastal_polynya_fraction",
+            "native_beta": -9.216089250042957,
+            "se": 2.8600681071131775,
+            "original_feature_std": 0.06311495564859758,
+            "group_n": 79,
+            "conservative_t_df": 78,
+            "t95ci": [
+              -14.910047457691027,
+              -3.5221310423948875
+            ]
+          }
+        ]
+      },
+      "additional_M0_residual_fraction": 0.052928029994469994
+    }
+  },
+  "M_SP_incremental_residual_fraction_vs_M_S": 0.0321883645321529,
+  "leave_original_region_out": [
+    {
+      "omitted_original_region": "Adelie Land",
+      "model": "M_P",
+      "polynya_beta": -10.031091429244864
+    },
+    {
+      "omitted_original_region": "Adelie Land",
+      "model": "M_SP",
+      "polynya_beta": -9.21608925004296
+    },
+    {
+      "omitted_original_region": "Enderby Land",
+      "model": "M_P",
+      "polynya_beta": -11.663621521115198
+    },
+    {
+      "omitted_original_region": "Enderby Land",
+      "model": "M_SP",
+      "polynya_beta": -10.909979521690172
+    },
+    {
+      "omitted_original_region": "Mac. Robertson Land",
+      "model": "M_P",
+      "polynya_beta": -10.201852622697757
+    },
+    {
+      "omitted_original_region": "Mac. Robertson Land",
+      "model": "M_SP",
+      "polynya_beta": -9.528368961991776
+    },
+    {
+      "omitted_original_region": "Marie Byrd Land",
+      "model": "M_P",
+      "polynya_beta": -9.399252617091792
+    },
+    {
+      "omitted_original_region": "Marie Byrd Land",
+      "model": "M_SP",
+      "polynya_beta": -8.688920968372807
+    },
+    {
+      "omitted_original_region": "Northeast Antarctic Peninsula",
+      "model": "M_P",
+      "polynya_beta": -10.268018920224488
+    },
+    {
+      "omitted_original_region": "Northeast Antarctic Peninsula",
+      "model": "M_SP",
+      "polynya_beta": -9.289212027071168
+    },
+    {
+      "omitted_original_region": "Palmer Land",
+      "model": "M_P",
+      "polynya_beta": -10.031091429244865
+    },
+    {
+      "omitted_original_region": "Palmer Land",
+      "model": "M_SP",
+      "polynya_beta": -9.21608925004296
+    },
+    {
+      "omitted_original_region": "Princess Elizabeth Land",
+      "model": "M_P",
+      "polynya_beta": -9.848917519283567
+    },
+    {
+      "omitted_original_region": "Princess Elizabeth Land",
+      "model": "M_SP",
+      "polynya_beta": -8.83299722694489
+    },
+    {
+      "omitted_original_region": "Queen Mary Land",
+      "model": "M_P",
+      "polynya_beta": -10.031091429244864
+    },
+    {
+      "omitted_original_region": "Queen Mary Land",
+      "model": "M_SP",
+      "polynya_beta": -9.216089250042963
+    },
+    {
+      "omitted_original_region": "Southwest Antarctic Peninsula",
+      "model": "M_P",
+      "polynya_beta": -9.545087345286108
+    },
+    {
+      "omitted_original_region": "Southwest Antarctic Peninsula",
+      "model": "M_SP",
+      "polynya_beta": -8.523844394596948
+    },
+    {
+      "omitted_original_region": "Victoria Land",
+      "model": "M_P",
+      "polynya_beta": -10.131913004091414
+    },
+    {
+      "omitted_original_region": "Victoria Land",
+      "model": "M_SP",
+      "polynya_beta": -8.48618018993593
+    },
+    {
+      "omitted_original_region": "Wilkes Land",
+      "model": "M_P",
+      "polynya_beta": -7.62121982946626
+    },
+    {
+      "omitted_original_region": "Wilkes Land",
+      "model": "M_SP",
+      "polynya_beta": -7.545752800489682
+    }
+  ],
+  "region_CI_positive_M_P_and_M_SP": false,
+  "leave_original_region_out_positive_in_both": false,
+  "heldout": {
+    "status": "HISTORICAL_SPLIT_VALIDATED_NO_REGION_YEAR_LEAKAGE",
+    "support": {
+      "train_n": 132,
+      "test_n": 291,
+      "train_sites": 79,
+      "test_sites": 79,
+      "train_regions": 10,
+      "test_regions": 10,
+      "n_future_new_site_excluded": 16,
+      "no_future_region_year_effects_used": true
+    },
+    "site_equal_RMSE": {
+      "M0": 1.8395376800766832,
+      "M_S": 1.8009034447138756,
+      "M_P": 1.8489347523784112,
+      "M_SP": 1.8122075365409058
+    },
+    "region_cluster_bootstrap_2000_paired_MSE_deltas": {
+      "M_P_minus_M0": {
+        "paired_site_equal_MSE_diff": 0.03466084213071149,
+        "cluster_region_boot_95CI": [
+          -0.13760497273947325,
+          0.2253402207571113
+        ]
+      },
+      "M_P_minus_M_S": {
+        "paired_site_equal_MSE_diff": 0.17530650137031406,
+        "cluster_region_boot_95CI": [
+          -0.20273378083488686,
+          0.5338105656168762
+        ]
+      },
+      "M_SP_minus_M0": {
+        "paired_site_equal_MSE_diff": -0.0998027209262478,
+        "cluster_region_boot_95CI": [
+          -0.5507834939642134,
+          0.4729442592855201
+        ]
+      },
+      "M_SP_minus_M_S": {
+        "paired_site_equal_MSE_diff": 0.040842938313354754,
+        "cluster_region_boot_95CI": [
+          -0.17040259035676295,
+          0.294692050833345
+        ]
+      }
+    },
+    "prediction_improves_M0_and_M_S": false
+  },
+  "cannot_claim_direct_diet_baseline_or_causality": true,
+  "no_anthropogenic_warming_or_2100_future_penguin_population_prediction": true
+}

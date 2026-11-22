@@ -1,0 +1,51 @@
+name: Penguin RAATD publisher source 4060 deployment metadata inventory only
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/tracking_salt_source_20261118/raatd_original_filtered_metadata_inventory.py'
+      - '.github/workflows/penguin-20261118-RAATD-original-metadata-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original_raatd_deployment_source_gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install only source data tabular reader
+        run: python -m pip install --disable-pip-version-check 'pandas>=2.2,<3'
+      - name: Source provenance script syntax
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/tracking_salt_source_20261118/raatd_original_filtered_metadata_inventory.py
+      - name: Retrieve source-verified 2020 SCAR RAATD filtered metadata from publisher ZIP and inspect columns/species
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/tracking_salt_source_20261118/raatd_original_filtered_metadata_inventory.py \
+            --out build/raatd_meta_public_derived \
+            --work build/raatd_meta_original_private_temp
+      - name: Publisher source and no raw personal deployment data archive gate
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/raatd_meta_public_derived')
+          x=json.loads((p/'raatd_source_2020_publisher_metadata_inventory.json').read_text())
+          assert x['original_archive_md5']=='168e5b9b5c4ed20bb84dd00145acb0a5'
+          assert x['original_archive_bytes']>100_000_000
+          assert x['metadata_total_rows']>0, 'Original metadata schema not yet identified'
+          assert x['Adelie_original_metadata_rows']>0, 'No tracked Adelie source?'
+          assert x['original_animal_metadata_not_uploaded']
+          assert x['raw_publisher_zip_not_uploaded']
+          print('PASS source metadata, publisher checksum, positive Adelie metadata')
+          PY
+      - name: Archive only summary schema and source QA, never raw individual tracks
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-RAATD-2020-original-MD5-metadata-species-schema-only
+          path: build/raatd_meta_public_derived/
+          if-no-files-found: warn
+          retention-days: 30

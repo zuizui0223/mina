@@ -1,0 +1,76 @@
+name: Penguin SCAR direct-prey source grain and historical colony support
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_scar_pygoscelis_diet_panel.py'
+      - '.github/workflows/penguin-20261117-scar-pygoscelis-diet-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  exact-source-scar-pygoscelis:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source geodesic and dataframe prerequisites
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'pyproj==3.7.1'
+      - name: Compile source grain audit
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_scar_pygoscelis_diet_panel.py
+      - name: Retrieve original 595 colony map from original frozen MAPPPD source
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p build/scar_pygoscelis_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/scar_pygoscelis_source/original_publisher_595.zip
+      - name: Retrieve MD5-pinned original SCAR direct diet source from Zenodo
+        run: |
+          python - <<'PY'
+          import urllib.request,json,hashlib
+          from pathlib import Path
+          root=Path('build/scar_pygoscelis_source')
+          ua={'User-Agent':'mina-SCAR-original-prey-source/0.1 (github.com/zuizui0223/mina)'}
+          with urllib.request.urlopen(urllib.request.Request('https://zenodo.org/api/records/20047874',headers=ua),timeout=65) as r:meta=json.load(r)
+          assert str(meta['id'])=='20047874'
+          f=next(x for x in meta['files'] if x['key']=='SCAR_Diet_Energetics.zip')
+          assert f['size']==9543574
+          assert f['checksum']=='md5:5e098c268ce0028704bc4b06300cb0ef'
+          link=f['links'].get('content') or f['links']['self']
+          with urllib.request.urlopen(urllib.request.Request(link,headers=ua),timeout=150) as response:
+              raw=response.read(9543575)
+          assert len(raw)==9543574
+          assert hashlib.md5(raw).hexdigest()=='5e098c268ce0028704bc4b06300cb0ef'
+          (root/'original_SCAR_diet_MD5_verified.zip').write_bytes(raw)
+          print('PASS original SCAR 9.5MB zip verified by publisher checksum')
+          PY
+      - name: Count three penguin species and exact-year near-colony diet source-gate
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_scar_pygoscelis_diet_panel.py \
+            --scar-zip build/scar_pygoscelis_source/original_SCAR_diet_MD5_verified.zip \
+            --atlas-zip build/scar_pygoscelis_source/original_publisher_595.zip \
+            --out build/scar_pygoscelis_results
+      - name: Assert source denominators not mistaken for independent records
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('build/scar_pygoscelis_results/original_scar_pygoscelis_diet_source_support_receipt.json').read_text())
+          assert x['md5']=='5e098c268ce0028704bc4b06300cb0ef'
+          assert x['target_pygoscelis_prey_rows']>0
+          assert x['no_false_absences'] and x['no_pool_mixed_diet_methods']
+          assert x['no_climate_response_estimated']
+          print('PASS three penguin species source-gated and real original study-level support')
+          PY
+      - name: Archive only derived panel metadata and source counts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-SCAR-pygoscelis-gut-content-source-1991-2020-colony-support
+          path: build/scar_pygoscelis_results/
+          if-no-files-found: warn
+          retention-days: 30

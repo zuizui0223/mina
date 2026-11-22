@@ -1,0 +1,61 @@
+name: Penguin original 2011–2020 salinity temperature SIC marine axis feasibility and true co-census
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/test_joint_marine_regime_axis.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_joint_marine_regime_axis.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/JOINT_MARINE_REGIME_AXIS_FEASIBILITY_CONTRACT_20261111.md'
+      - '.github/workflows/penguin-original-joint-marine-regime-axis-feasibility.yml'
+  pull_request:
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/test_joint_marine_regime_axis.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_joint_marine_regime_axis.py'
+      - '.github/workflows/penguin-original-joint-marine-regime-axis-feasibility.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  fixed-original-glorys-sic-marine-regime-and-source-18region-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original source marine PCA and polar atlas dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy pyproj==3.7.1
+      - name: Check source-independent PCA/census/vegetation math
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/test_joint_marine_regime_axis.py
+          python research/climate-penguin/macro_panantarctic_v1/unit_test_joint_marine_regime_axis.py -v
+      - name: Rebuild exact original 595 colony source atlas and 2456 actual fixed-method nest observations
+        run: python research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Reuse 71400 actual OSI SAF 1991–2020 monthly source-site concentration values
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-panantarctic-595site-original-1991-2020-monthly-ice
+          run-id: 42612067836
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original_595_ice
+      - name: Audit source coverage and fit genuinely 2011–2020 marine PCA spatial-versus-temporal with static vegetation and true penguin co-counts
+        run: |
+          SIC="$(find build/original_595_ice -name 'original_595_site_months_120_source_QA.csv' -print -quit)"
+          test -s "$SIC"
+          python research/climate-penguin/macro_panantarctic_v1/test_joint_marine_regime_axis.py \
+            --atlas research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --sic "$SIC" \
+            --ocean-grid research/climate-penguin/outputs/climate_penguin/ocean_grid_support.csv \
+            --ocean research/climate-penguin/outputs/climate_penguin/ocean_monthly_2011_2021.csv \
+            --vegetation research/climate-penguin/outputs/climate_penguin/vegetation_all_location_support.csv \
+            --out research/climate-penguin/macro_panantarctic_v1/marine_regime_axis_outputs
+      - name: Archive original 34-site marine PCA, region-year scores, static vegetation and genuine two-species co-count support
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-macro-GLORYS-2011-2020-salinity-thermal-SIC-PCA-source-gate-v1
+          path: research/climate-penguin/macro_panantarctic_v1/marine_regime_axis_outputs/
+          if-no-files-found: warn

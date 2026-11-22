@@ -1,0 +1,69 @@
+name: Penguin original 82-wetcell winter salinity and summer stratification AB
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_original_82_cell_winter_and_50m_density_20261119.py'
+      - '.github/workflows/penguin-20261119-original-82-wetcell-winter-salinity-density-AB.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_physical_AB:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install same original GLORYS stack and TEOS-10 GSW
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'xarray==2024.10.0' 'fsspec[http]' 'zarr==2.18.7' 'gsw>=3.6.19,<4'
+      - name: Compile frozen original physical source and retained gate
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/preflight_original_82_wetcells_glorys_depths_20261119.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_original_82_cell_winter_and_50m_density_20261119.py
+      - name: Retrieve SHA-pinned original 860 source with no repeated author raw ZIP
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_original_AB_20261119
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_original_AB_20261119/source860.zip
+          echo "dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205  build/penguin_original_AB_20261119/source860.zip" | sha256sum --check
+      - name: Derive only same-cell June-October 0m and Nov-Feb 0 to 50m TEOS-10 physical exposures
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_original_82_cell_winter_and_50m_density_20261119.py \
+            --original-isotope-zip build/penguin_original_AB_20261119/source860.zip \
+            --out build/penguin_original_AB_20261119/physical_results
+      - name: Verify original row count, matched Nov-Feb salinity and no biological outcome use
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          p=Path("build/penguin_original_AB_20261119/physical_results")
+          r=json.loads((p/"source_AB_physical_exposure_receipt.json").read_text())
+          d=pd.read_csv(p/"source_860_site_seasons_A_B_physics_only_NO_OUTCOME.csv")
+          assert (r["original_cohort_rows"],r["original_sites"],r["original_wetcells"],r["source_reporting_regions"])==(860,88,82,13)
+          assert (r["source_months_actual"],r["original_cell_by_season_physical_rows"])==(135,1230)
+          assert len(d)==860 and not d[["site_id","season"]].duplicated().any()
+          assert not any(x in d for x in ("predicted_d15N_season_day_equal","DI","fish_fraction","krill_fraction"))
+          assert r["isotope_outcomes_used_in_any_calculation"] is False
+          assert r["original_NovFeb_surface_so_agreement_max_abs"]<=1e-4
+          assert r["no_cdw_200m_biological_mechanism_regression"]
+          print("ORIGINAL_AB_COMPLETED",r["status"])
+          print("ORIGINAL_AB_COHORT_SUPPORT",
+            r["winter_so_complete_original_site_seasons"],
+            r["summer_so_complete_original_site_seasons"],
+            r["50m_density_complete_original_site_seasons"],
+            r["50m_density_complete_wetcells"])
+          PY
+      - name: Archive source geography and physical-only A B exposures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-82-wetcell-all-seasons-winter-salinity-stratification-AB-20261119
+          path: build/penguin_original_AB_20261119/physical_results/
+          if-no-files-found: warn
+          retention-days: 30

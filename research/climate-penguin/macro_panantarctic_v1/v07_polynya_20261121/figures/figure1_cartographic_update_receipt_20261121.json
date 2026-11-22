@@ -1,0 +1,131 @@
+{
+  "status": "PASS_FIGURE1_CARTOGRAPHIC_CONTEXT_ONLY_UPDATE",
+  "performed_utc_date": "2026-11-21",
+  "source_manifest_sha256": "82a385f898d330f79e72a0826591041a23d87b45de5cf8e02fbb8389215471d4",
+  "renderer_sha256": "a57ac9c9469dd7c43210d9b7f95b96ed9dba7fe3ad4c4baecca0f0a2116fb1b5",
+  "raw_source": {
+    "local_file": "source_inputs/ne_110m_land.geojson",
+    "sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9",
+    "bytes": 138160,
+    "repository": "nvkelso/natural-earth-vector",
+    "repository_path": "geojson/ne_110m_land.geojson",
+    "git_blob": "04811d72fff2701ec67587e30ad8942675b511e3",
+    "source": "Natural Earth 1:110m land",
+    "license": "Public domain",
+    "terms_url": "https://www.naturalearthdata.com/about/terms-of-use/",
+    "use": "Pale generalized geographic context in Figure 1 only; never an analysis mask or source of colony coordinates"
+  },
+  "projected_cache": {
+    "local_file": "source_inputs/antarctic_land_EPSG3031.json",
+    "sha256": "23187635cb9393d60cd910180474e47544d99b0f505b9201f28df0e36b98b1d1",
+    "bytes": 64273,
+    "derived_from": "source_inputs/ne_110m_land.geojson",
+    "source_sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9",
+    "source_git_blob": "04811d72fff2701ec67587e30ad8942675b511e3",
+    "operation": "All vertices at or south of 60 degrees S; exactly source features 0–7; no geographic clipping. Omit the two exact +/-180 longitude, -90 latitude antimeridian-cap vertices from display geometry only. Adjacent +/-180, -84.71338 coastline endpoints coincide in EPSG:3031; no inland seam is stroked.",
+    "use": "Figure 1 display context only; no ecological input, exposure, coefficient or site coordinate is changed"
+  },
+  "selected_source_features": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "omitted_synthetic_pole_cap_vertices": [
+    {
+      "feature_index": 7,
+      "polygon_index": 0,
+      "vertex_index": 380,
+      "longitude": 180,
+      "latitude": -90
+    },
+    {
+      "feature_index": 7,
+      "polygon_index": 0,
+      "vertex_index": 381,
+      "longitude": -180,
+      "latitude": -90
+    }
+  ],
+  "display_context_only": true,
+  "exposure_calculations_changed": false,
+  "colony_geometry_changed": false,
+  "main_rows": 439,
+  "main_sites": 85,
+  "main_regions": 11,
+  "all_numerical_receipt_values_exactly_unchanged": true,
+  "figures_2_to_5_unchanged": {
+    "figures/Fig3_Preceding_following_winter_contrast.svg": "72b4e6492d9c21ad83289ade0f511dd2fd3ca3d5d2baf58db6f6fcc4ceb08b88",
+    "figures/Fig2_Polynya_association_and_sensitivity.tif": "423798f799f90316e1e50977e990a53a1241062d499be766633cf20c0b2fd594",
+    "figures/Fig3_Preceding_following_winter_contrast.png": "62eb56e9c90033148d331b3b410cfadc429e949f0962e4ec2e8ed265e4727d47",
+    "figures/Fig3_Preceding_following_winter_contrast.tif": "b0e253956cab555374e5eb3cb9178538209d2cd897d997128927f873e925282d",
+    "figures/Fig4_Polynya_salinity_conditional_information.svg": "ebfe005491800316ab4fb88586982d12906be69a798dc733e34891cb942b2a5d",
+    "figures/Fig4_Polynya_salinity_conditional_information.png": "cbafa73793282d5aa3a8c47e4fed8d93a0c457cf5e296004b6c065837d2e9079",
+    "figures/Fig2_Polynya_association_and_sensitivity.png": "69a9cd33a497823032a4722c63843ede2cf484f15a506059e266eeb087a80cb9",
+    "figures/Fig5_Observation_and_unresolved_pathways.png": "5b1e17435e99b803295db9a534f3dd5454bda180ef6a5479c37d254d3306a640",
+    "figures/Fig2_Polynya_association_and_sensitivity.svg": "51c2980121426ee196ffeec0df30833a55d96c845162fbecf2c4cc43836e195c",
+    "figures/Fig5_Observation_and_unresolved_pathways.svg": "b46c249ffa52506e7195405ab181e888af642e1fecf36c14a79dc64ffdd4aa22",
+    "figures/Fig4_Polynya_salinity_conditional_information.tif": "4d9d137c4d1f367e95d22effa2ec65dde58600d2e3b8746597ec3b16798b2dec",
+    "figures/Fig5_Observation_and_unresolved_pathways.tif": "c5658de2cbc5eadbe09bb60f98662089e289e3e526bc3d159325a4061fb8f832"
+  },
+  "numeric_extracts_unchanged": {
+    "figures/numeric_source_extract/fig2_leave_one_region_out.csv": "a266835a957c7770d4b2696952e13f4cdcacc4a50b3a39911e8762c7bb225c58",
+    "figures/numeric_source_extract/fig2_main_and_measurement_sensitivity.csv": "27cfcda27347539aee43bc3653cfbcc3b5fe93f6c06ce5e20409789ba0240209",
+    "figures/numeric_source_extract/fig1_region_support.csv": "70877509ee8e9580f4d9b0ed1a542a7531e6939c95c17f9bf549013461901d79",
+    "figures/numeric_source_extract/fig1_map_geometry.json": "ce20247bdd289d09b851b2e9ee2669d156a5fcf562cfc28f3b3c3ce69814fe3b",
+    "figures/numeric_source_extract/fig4_reported_model_information.csv": "43012abcd871a68a9d61cd74d7ff55ea79d617ef73ce9d3771d5c636d626422f",
+    "figures/numeric_source_extract/fig2_original_frozen11_intervals.csv": "beed1cb2085222f93520cde7a368c3d49ba4949c719bfa3d74fc6a6873ce5d9a",
+    "figures/numeric_source_extract/fig1_site_mean_exposure_and_geography.csv": "9caa605f73cdb88b25208b3dcd4648c70d7f88c89eae641feeb3475e07300428",
+    "figures/numeric_source_extract/fig3_reported_temporal_coefficients.csv": "f6cd0aa02c582385813567e1c64930b277439e8c3698f83cae0bb39070c99aff",
+    "figures/numeric_source_extract/fig4_same439_fixed_effect_residuals.csv": "2bc587b2130ee2295901806ec8b30afd39aa41ddd04ff117b79973568165fd94"
+  },
+  "new_figure1_files": {
+    "figures/Fig1_Polynya_source_footprint.png": "4ede886306411e21d4180ddd26d26ecdfb69fbbda2ecf4ad5c87561a65a2d8c7",
+    "figures/Fig1_Polynya_source_footprint.svg": "03b7aa97e7b91c404d6424c4f8d2ad4442185a198c03c9aa239b08772319b550",
+    "figures/Fig1_Polynya_source_footprint.tif": "4a8fc3a1dd647e036625a728e597204c249348b77de6fa263b535c091fa9bb55"
+  },
+  "offline_byte_identical_raster_files": [
+    "figures/Fig1_Polynya_source_footprint.png",
+    "figures/Fig1_Polynya_source_footprint.tif",
+    "figures/Fig2_Polynya_association_and_sensitivity.png",
+    "figures/Fig2_Polynya_association_and_sensitivity.tif",
+    "figures/Fig3_Preceding_following_winter_contrast.png",
+    "figures/Fig3_Preceding_following_winter_contrast.tif",
+    "figures/Fig4_Polynya_salinity_conditional_information.png",
+    "figures/Fig4_Polynya_salinity_conditional_information.tif",
+    "figures/Fig5_Observation_and_unresolved_pathways.png",
+    "figures/Fig5_Observation_and_unresolved_pathways.tif"
+  ],
+  "offline_byte_identical_numeric_extracts": [
+    "figures/numeric_source_extract/fig2_leave_one_region_out.csv",
+    "figures/numeric_source_extract/fig2_main_and_measurement_sensitivity.csv",
+    "figures/numeric_source_extract/fig1_region_support.csv",
+    "figures/numeric_source_extract/fig1_map_geometry.json",
+    "figures/numeric_source_extract/fig4_reported_model_information.csv",
+    "figures/numeric_source_extract/fig2_original_frozen11_intervals.csv",
+    "figures/numeric_source_extract/fig1_site_mean_exposure_and_geography.csv",
+    "figures/numeric_source_extract/fig3_reported_temporal_coefficients.csv",
+    "figures/numeric_source_extract/fig4_same439_fixed_effect_residuals.csv"
+  ],
+  "visual_qa": "Final Figure 1 PNG individually inspected; no clipped or overlapping labels. Figures 2–5 preserved byte-for-byte after their prior individual visual inspections.",
+  "dimensions": {
+    "stem": "Fig1_Polynya_source_footprint",
+    "width_mm": 170.0,
+    "height_mm": 133.0,
+    "minimum_text_pt": 8.0,
+    "tiff_pixels": [
+      5355,
+      4189
+    ],
+    "tiff_dpi": 800.0999999999999,
+    "tiff_mode": "CMYK",
+    "tiff_compression": "LZW",
+    "svg_editable_text": true,
+    "outside_canvas_text_count": 0
+  },
+  "caption_addition": "The pale land outline is generalized Natural Earth 1:110m cartographic context and is not used in exposure calculations."
+}

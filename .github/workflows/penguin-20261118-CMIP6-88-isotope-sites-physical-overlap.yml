@@ -1,0 +1,68 @@
+name: Penguin original 88 isotope-observed colonies future sea ice and salinity physical overlap
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_CMIP6_88_isotope_source_exposure.py'
+      - '.github/workflows/penguin-20261118-CMIP6-88-isotope-sites-physical-overlap.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_isotope_cohort_physical_only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install strict source CSV tools
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3'
+      - name: Syntax-compile source geography audit
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_CMIP6_88_isotope_source_exposure.py
+      - name: Retrieve original 595 joint physical and 860 isotope-derived archives
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_iso88_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14398755921/zip" > build/penguin_iso88_source/original_595_cmip6_joint_physics.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_iso88_source/original_860_image_isotope.zip
+      - name: Compare exact 88 original isotope-observed colony sites to actual original CMIP6 salinity future
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_CMIP6_88_isotope_source_exposure.py \
+            --physical-zip build/penguin_iso88_source/original_595_cmip6_joint_physics.zip \
+            --isotope-zip build/penguin_iso88_source/original_860_image_isotope.zip \
+            --out build/penguin_iso88_future_physical
+      - name: Revalidate source date mismatch, exact IDs and no δ15N future projection
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          r=Path('build/penguin_iso88_future_physical')
+          j=json.loads((r/'original_88_isotope_site_CMIP6_physical_only_verdict.json').read_text())
+          assert j['status']=='PASS_88_SOURCE_PENGUIN_ISOTOPE_SITE_FUTURE_PHYSICAL_OVERLAP_ONLY'
+          assert (j['source_image_isotope_site_seasons'],j['source_image_sites'],j['source_original_reporting_regions'])==(860,88,13)
+          assert j['source_CMIP6_all_three_models_wetgrid_within50_sites']==46
+          assert j['do_not_multiply_0p834_isotope_slope_by_future_sos']
+          assert j['no_true_future_trophic_or_nesting_projection']
+          df=pd.read_csv(r/'original_88_isotope_sites_source_model_physical_scenarios_only.csv')
+          assert len(df)==352
+          assert df[['site_id','scenario','period']].duplicated().sum()==0
+          ss=df.query("scenario=='ssp585' and period=='2081-2100'")
+          assert len(ss)==88
+          assert (ss.CMIP6_delta_sos_native_0p001<0).sum()==88
+          assert ss.all_three_sos_freshen.sum()==80
+          assert ss.all_three_joint.sum()==43
+          print('PASS exact 88 isotope source sites, four scenarios, no future isotope or prey causal prediction')
+          PY
+      - name: Archive source-matched physical scenario only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-88-original-adelie-isotope-colonies-matched-future-CMIP6-physical-only
+          path: build/penguin_iso88_future_physical/
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,65 @@
+name: Penguin original 82-wetcell GLORYS winter and deep-layer preflight
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/preflight_original_82_wetcells_glorys_depths_20261119.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/MECHANISM_ABC_PREFLIGHT_FROZEN_CONTRACT_20261119_JA.md'
+      - '.github/workflows/penguin-20261119-original-82-wetcell-GLORYS-depth-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original_82_wetcell_depth_coverage:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install same source Zarr stack as original Nov-Feb ocean match
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'xarray==2024.10.0' 'fsspec[http]' 'zarr==2.18.7'
+      - name: Validate original-source frozen physical test code
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/preflight_original_82_wetcells_glorys_depths_20261119.py
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/MECHANISM_ABC_PREFLIGHT_FROZEN_CONTRACT_20261119_JA.md
+      - name: Retrieve 860 true site-season source and verify SHA256
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_20261119_original_depth_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_20261119_original_depth_source/verified_original_860.zip
+          echo "dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205  build/penguin_20261119_original_depth_source/verified_original_860.zip" | sha256sum --check
+      - name: Extract original indexed 82 GLORYS wet cells at actual 0 50 200 400m levels
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/preflight_original_82_wetcells_glorys_depths_20261119.py \
+            --original-isotope-zip build/penguin_20261119_original_depth_source/verified_original_860.zip \
+            --out build/penguin_20261119_original_depth_gate
+      - name: Confirm exact denominator and source-only no-outcome status
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          d=Path('build/penguin_20261119_original_depth_gate')
+          p=json.loads((d/'original_82_wetcells_glorys_depth_source_verdict.json').read_text())
+          s=pd.read_csv(d/'original_82_wetcells_6months_4depths_GLORYS_source.csv')
+          assert p['status'] in ('PASS_FULL_ABC_DEPTH_SUPPORT_PREFLIGHT','NO_GO_FULL_ABC_EQUAL_SUPPORT')
+          assert (p['original_rows'],p['original_sites'],p['original_regions'],p['original_independent_ocean_wetcells']) == (860,88,13,82)
+          assert len(s)==82*6*4
+          assert s[['source_wet_grid_y','source_wet_grid_x']].drop_duplicates().shape[0]==82
+          assert p['no_isotope_regression_executed'] and p['sample_is_physical_source_depth_coverage_only']
+          assert len(p['prespecified_checks']) == 5
+          print('PASS 82 real wet-cell depth-support source gate',p['status'])
+          print('MODEL_DEPTH_COVERAGE',p['valid_cells_by_depth_in_main_probe'])
+          PY
+      - name: Preserve physical coverage with original source units and fail gate receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-82-wetcell-GLORYS-winter-deep-physical-depth-gate-20261119
+          path: build/penguin_20261119_original_depth_gate/
+          if-no-files-found: warn
+          retention-days: 30

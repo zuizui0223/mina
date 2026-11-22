@@ -1,0 +1,52 @@
+name: Penguin original 34 versus 588 site marine PCA and count-cohort time-factor source audit
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diagnose_regime_species_source_cohort_factorial.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/unit_test_regime_species_cohort_factorial.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/REGIME_COHORT_TIME_AXIS_FACTORIAL_DIAGNOSTIC_20261111.md'
+      - '.github/workflows/penguin-original34-vs588-climate-species-factorial.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-original-two-PCA-calibrations-three-site-time-cohorts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install exact original source PCA arithmetic dependencies
+        run: python -m pip install --disable-pip-version-check 'numpy>=1.26,<2.1' 'pandas>=2.1,<3' 'scipy>=1.10,<2'
+      - name: Verify source-only PCA axis and actual site repeated-year math guards
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diagnose_regime_species_source_cohort_factorial.py
+          python research/climate-penguin/macro_panantarctic_v1/unit_test_regime_species_cohort_factorial.py -v
+      - name: Restore complete original 18region 588 site×28year climate scores and genuine penguin co-census
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-original-full-18region-1993-2020-588site-glorys-osisaf-regime-and-cocensus
+          run-id: 42959103493
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/18region_original28years_source
+      - name: Audit original previously known 34 source-site PCA and 588 continent score under identical geographic/time cohorts
+        run: |
+          MARINE="$(find build/18region_original28years_source -name 'all_original_18region_1993_2020_real_joint_marine_3var_site_year.csv' -print -quit)"
+          PAIRS="$(find build/18region_original28years_source -name 'original_true_cocensus_3species_pairs_1993_2020_with_18region_marine_PC1.csv' -print -quit)"
+          test -s "$MARINE" && test -s "$PAIRS"
+          python research/climate-penguin/macro_panantarctic_v1/diagnose_regime_species_source_cohort_factorial.py \
+            --marine-siteyear "$MARINE" \
+            --cocensus "$PAIRS" \
+            --original40-grid research/climate-penguin/outputs/climate_penguin/ocean_grid_support.csv \
+            --out research/climate-penguin/macro_panantarctic_v1/marine_regime_source_factorial_outputs
+      - name: Archive all 2 climate PCA axes times 3 actual geographic/time co-census sample checks and original benchmark replication
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-34-vs588-original-marine-PCA-regime-species-cocensus-three-cohort-v1
+          path: research/climate-penguin/macro_panantarctic_v1/marine_regime_source_factorial_outputs/
+          if-no-files-found: warn

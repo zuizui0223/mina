@@ -1,0 +1,411 @@
+{
+  "status": "PASS_FIVE_VERIFIED_SOURCE_FIGURES_WITH_DATED_COVARIANCE_SENSITIVITY",
+  "renderer_performed_no_model_fit": true,
+  "renderer_performed_no_interval_estimation_or_threshold_search": true,
+  "new_dated_result_plotted": "Figures 2 and 3 display the separately dated CV3 delete-one-informative-region jackknife uncertainty audit alongside archived eight-region CR1 intervals. Original frozen eleven-region numeric extracts are retained. The renderer reads all intervals; no ecological fitting or interval calculation is performed here.",
+  "recomputed": {
+    "original_join_rows": 860,
+    "matched_main_rows": 439,
+    "matched_sites": 85,
+    "matched_regions": 11,
+    "winter_years": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010
+    ],
+    "nonzero_polynya_rows": 405,
+    "site_mean_exposure_percent_min": 0.0,
+    "site_mean_exposure_percent_max": 20.720949888766125,
+    "same439_P_S_FE_only_correlation": -0.08042928154744855,
+    "source_reported_correlation_rounded": -0.08043,
+    "polynya_FE_projection": {
+      "iterations": 12,
+      "max_abs_site_mean": 6.109085459726771e-12,
+      "max_abs_region_season_mean": 8.673617379884035e-19
+    },
+    "salinity_FE_projection": {
+      "iterations": 14,
+      "max_abs_site_mean": 7.874478846758848e-12,
+      "max_abs_region_season_mean": 1.0408340855860843e-17
+    },
+    "map_scale": {
+      "geodesic_distance_m": 999999.9999999995,
+      "reference_center_latitude_deg": -70,
+      "projected_length_1000km": 1.0034645258464845,
+      "meaning": "Projected chord joining endpoints of a 1000-km WGS84 geodesic centered at 70 S, oriented east-west at its midpoint."
+    }
+  },
+  "plotted_reported_results": {
+    "main_coefficients_dated_informative8_intervals": [
+      {
+        "model": "M_P",
+        "measurement": "Original single PLSR",
+        "n": 425,
+        "sites": 82,
+        "regions": 8,
+        "original_cohort_n": 439,
+        "original_cohort_sites": 85,
+        "original_reporting_regions": 11,
+        "beta_per_10pp": -1.0031091429244874,
+        "lower": -1.6753495870165436,
+        "upper": -0.3308686988324312,
+        "interval": "CV3 delete-one-region jackknife, eight regions, t(7), 95%; dated 2026-11-21",
+        "source": "region_jackknife_diagnostic.json",
+        "cr1_lower": -1.5047382806232439,
+        "cr1_upper": -0.5014800052257309
+      },
+      {
+        "model": "M_P",
+        "measurement": "Author R1000",
+        "n": 425,
+        "sites": 82,
+        "regions": 8,
+        "original_cohort_n": 439,
+        "original_cohort_sites": 85,
+        "original_reporting_regions": 11,
+        "beta_per_10pp": -1.0233403199273323,
+        "lower": -1.707187900709008,
+        "upper": -0.3394927391456565,
+        "interval": "CV3 delete-one-region jackknife, eight regions, t(7), 95%; dated 2026-11-21",
+        "source": "region_jackknife_diagnostic.json",
+        "cr1_lower": -1.5370767036609454,
+        "cr1_upper": -0.5096039361937191
+      },
+      {
+        "model": "M_SP",
+        "measurement": "Original single PLSR",
+        "n": 425,
+        "sites": 82,
+        "regions": 8,
+        "original_cohort_n": 439,
+        "original_cohort_sites": 85,
+        "original_reporting_regions": 11,
+        "beta_per_10pp": -0.9216089250042926,
+        "lower": -1.515075016979291,
+        "upper": -0.32814283302929415,
+        "interval": "CV3 delete-one-region jackknife, eight regions, t(7), 95%; dated 2026-11-21",
+        "source": "region_jackknife_diagnostic.json",
+        "cr1_lower": -1.3843267325147066,
+        "cr1_upper": -0.4588911174938785
+      },
+      {
+        "model": "M_SP",
+        "measurement": "Author R1000",
+        "n": 425,
+        "sites": 82,
+        "regions": 8,
+        "original_cohort_n": 439,
+        "original_cohort_sites": 85,
+        "original_reporting_regions": 11,
+        "beta_per_10pp": -0.9411358938647058,
+        "lower": -1.5418393566677588,
+        "upper": -0.34043243106165266,
+        "interval": "CV3 delete-one-region jackknife, eight regions, t(7), 95%; dated 2026-11-21",
+        "source": "region_jackknife_diagnostic.json",
+        "cr1_lower": -1.4148099191511774,
+        "cr1_upper": -0.46746186857823424
+      }
+    ],
+    "original_frozen11_intervals_retained_in_numeric_extract": [
+      {
+        "model": "M_P",
+        "measurement": "Original single PLSR",
+        "n": 439,
+        "sites": 85,
+        "regions": 11,
+        "beta_per_10pp": -1.0031091429244865,
+        "lower": -1.466766487489044,
+        "upper": -0.5394517983599292,
+        "interval": "region cluster t(10) 95%",
+        "source": "main439_verdict.json"
+      },
+      {
+        "model": "M_P",
+        "measurement": "Author R1000",
+        "n": 439,
+        "sites": 85,
+        "regions": 11,
+        "beta_per_10pp": -1.02334031992733,
+        "lower": -1.4981884289922576,
+        "upper": -0.5484922108624026,
+        "interval": "region cluster t(10) 95%",
+        "source": "author_R1000_verdict.json"
+      },
+      {
+        "model": "M_SP",
+        "measurement": "Original single PLSR",
+        "n": 439,
+        "sites": 85,
+        "regions": 11,
+        "beta_per_10pp": -0.9216089250042958,
+        "lower": -1.3492839455403163,
+        "upper": -0.49393390446827523,
+        "interval": "region cluster t(10) 95%",
+        "source": "main439_verdict.json"
+      },
+      {
+        "model": "M_SP",
+        "measurement": "Author R1000",
+        "n": 439,
+        "sites": 85,
+        "regions": 11,
+        "beta_per_10pp": -0.9411358938647068,
+        "lower": -1.3789373901626656,
+        "upper": -0.5033343975667479,
+        "interval": "region cluster t(10) 95%",
+        "source": "author_R1000_verdict.json"
+      }
+    ],
+    "temporal_coefficients": [
+      {
+        "term": "P0",
+        "measurement": "Original single PLSR",
+        "n": 347,
+        "regions": 8,
+        "beta_per_10pp": -1.3790334706811658,
+        "lower": -2.418503904906939,
+        "upper": -0.33956303645538227,
+        "source": "region_jackknife_diagnostic.json",
+        "cr1_lower": -2.343584230337558,
+        "cr1_upper": -0.4144827110247735,
+        "interval": "CV3 delete-one-region jackknife, eight regions, t(7), 95%"
+      },
+      {
+        "term": "P1",
+        "measurement": "Original single PLSR",
+        "n": 347,
+        "regions": 8,
+        "beta_per_10pp": -0.6913401461235502,
+        "lower": -1.4509240200083817,
+        "upper": 0.06824372776129693,
+        "source": "region_jackknife_diagnostic.json",
+        "cr1_lower": -1.5006299409873796,
+        "cr1_upper": 0.1179496487402792,
+        "interval": "CV3 delete-one-region jackknife, eight regions, t(7), 95%"
+      },
+      {
+        "term": "P0_minus_P1",
+        "measurement": "Original single PLSR",
+        "n": 347,
+        "regions": 8,
+        "beta_per_10pp": -0.6876933245576156,
+        "lower": -1.470258778799951,
+        "upper": 0.09487212968471515,
+        "source": "region_jackknife_diagnostic.json",
+        "cr1_lower": -1.346100338478597,
+        "cr1_upper": -0.0292863106366342,
+        "interval": "CV3 delete-one-region jackknife, eight regions, t(7), 95%"
+      },
+      {
+        "term": "P0_minus_P1",
+        "measurement": "Author R1000",
+        "n": 347,
+        "regions": 8,
+        "beta_per_10pp": -0.6932686855748437,
+        "lower": -1.4763398330133128,
+        "upper": 0.08980246186362417,
+        "source": "region_jackknife_diagnostic.json",
+        "cr1_lower": -1.3598102510691301,
+        "cr1_upper": -0.02672712008055722,
+        "interval": "CV3 delete-one-region jackknife, eight regions, t(7), 95%"
+      }
+    ],
+    "temporal_original_frozen_coefficients_retained": [
+      {
+        "term": "P0",
+        "measurement": "Original single PLSR",
+        "n": 347,
+        "regions": 8,
+        "beta_per_10pp": -1.3790334706811658,
+        "lower": -2.343584230337558,
+        "upper": -0.4144827110247735,
+        "source": "temporal347_informative.csv"
+      },
+      {
+        "term": "P1",
+        "measurement": "Original single PLSR",
+        "n": 347,
+        "regions": 8,
+        "beta_per_10pp": -0.6913401461235502,
+        "lower": -1.5006299409873796,
+        "upper": 0.1179496487402792,
+        "source": "temporal347_informative.csv"
+      },
+      {
+        "term": "P0_minus_P1",
+        "measurement": "Original single PLSR",
+        "n": 347,
+        "regions": 8,
+        "beta_per_10pp": -0.6876933245576156,
+        "lower": -1.346100338478597,
+        "upper": -0.0292863106366342,
+        "source": "temporal347_informative.csv"
+      },
+      {
+        "term": "P0_minus_P1",
+        "measurement": "Author R1000",
+        "n": 347,
+        "regions": 8,
+        "beta_per_10pp": -0.6932686855748437,
+        "lower": -1.3598102510691301,
+        "upper": -0.02672712008055722,
+        "source": "author_R1000_verdict.json"
+      },
+      {
+        "term": "P0_minus_P1",
+        "measurement": "Original single PLSR",
+        "n": 358,
+        "regions": 11,
+        "beta_per_10pp": -0.6876933245576174,
+        "lower": -1.2961881491956246,
+        "upper": -0.0791984999196103,
+        "source": "temporal358_coefficients.csv"
+      },
+      {
+        "term": "P0_minus_P1",
+        "measurement": "Author R1000",
+        "n": 358,
+        "regions": 11,
+        "beta_per_10pp": -0.6932686855748454,
+        "lower": -1.309281401778911,
+        "upper": -0.07725596937077983,
+        "source": "author_R1000_verdict.json"
+      }
+    ],
+    "both_CV3_temporal_contrasts_include_zero": true,
+    "additional_residual_variation_percent": [
+      {
+        "model": "M_S",
+        "n": 439,
+        "additional_residual_variation_percent": 2.1429444224744576,
+        "source": "main439_verdict.json"
+      },
+      {
+        "model": "M_P",
+        "n": 439,
+        "additional_residual_variation_percent": 3.7939426520244734,
+        "source": "main439_verdict.json"
+      },
+      {
+        "model": "M_SP",
+        "n": 439,
+        "additional_residual_variation_percent": 5.292802999447,
+        "source": "main439_verdict.json"
+      }
+    ],
+    "leave_region_out_M_P_all_11_negative": true,
+    "leave_region_out_M_SP_all_11_negative": true
+  },
+  "precision_note": "Temporal original CI endpoints differ by <=9e-12 between the original temporal table and later author-calibration reproduction; Figure 3 retains original temporal table endpoints.",
+  "raster_quantization_note": "169 mm is rounded upward to 5323 pixels and tagged 800.02485207 dpi, preserving the declared width and at least 800 dpi.",
+  "review_typography": "All visible text is at least 10 pt at the declared 169-mm width; review layouts were reflowed for readability.",
+  "figure1_cartographic_context": {
+    "source": "Natural Earth 1:110m land",
+    "source_sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9",
+    "source_git_blob": "04811d72fff2701ec67587e30ad8942675b511e3",
+    "projected_cache_sha256": "23187635cb9393d60cd910180474e47544d99b0f505b9201f28df0e36b98b1d1",
+    "selected_source_feature_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "display_only": true,
+    "exposure_or_site_geography_changed": false,
+    "seam_handling": "Omit the two exact +/-180 longitude, -90 latitude antimeridian-cap vertices from display geometry only. Adjacent +/-180, -84.71338 coastline endpoints coincide in EPSG:3031; no inland seam is stroked.",
+    "longitude_labels": [
+      "0°",
+      "90°W",
+      "90°E"
+    ],
+    "terms": "https://www.naturalearthdata.com/about/terms-of-use/",
+    "license": "Public domain"
+  },
+  "figures": [
+    {
+      "stem": "Fig1_Polynya_source_footprint",
+      "width_mm": 169.0,
+      "height_mm": 153.0,
+      "minimum_text_pt": 10.0,
+      "tiff_pixels": [
+        5323,
+        4819
+      ],
+      "tiff_dpi": 800.0248520710059,
+      "tiff_mode": "CMYK",
+      "tiff_compression": "LZW",
+      "svg_editable_text": true,
+      "outside_canvas_text_count": 0
+    },
+    {
+      "stem": "Fig2_Polynya_association_and_sensitivity",
+      "width_mm": 169.0,
+      "height_mm": 178.0,
+      "minimum_text_pt": 10.0,
+      "tiff_pixels": [
+        5323,
+        5606
+      ],
+      "tiff_dpi": 800.0248520710059,
+      "tiff_mode": "CMYK",
+      "tiff_compression": "LZW",
+      "svg_editable_text": true,
+      "outside_canvas_text_count": 0
+    },
+    {
+      "stem": "Fig3_Preceding_following_winter_contrast",
+      "width_mm": 169.0,
+      "height_mm": 178.0,
+      "minimum_text_pt": 10.0,
+      "tiff_pixels": [
+        5323,
+        5606
+      ],
+      "tiff_dpi": 800.0248520710059,
+      "tiff_mode": "CMYK",
+      "tiff_compression": "LZW",
+      "svg_editable_text": true,
+      "outside_canvas_text_count": 0
+    },
+    {
+      "stem": "Fig4_Polynya_salinity_conditional_information",
+      "width_mm": 169.0,
+      "height_mm": 132.0,
+      "minimum_text_pt": 10.0,
+      "tiff_pixels": [
+        5323,
+        4157
+      ],
+      "tiff_dpi": 800.0248520710059,
+      "tiff_mode": "CMYK",
+      "tiff_compression": "LZW",
+      "svg_editable_text": true,
+      "outside_canvas_text_count": 0
+    },
+    {
+      "stem": "Fig5_Observation_and_unresolved_pathways",
+      "width_mm": 169.0,
+      "height_mm": 178.0,
+      "minimum_text_pt": 10.0,
+      "tiff_pixels": [
+        5323,
+        5606
+      ],
+      "tiff_dpi": 800.0248520710059,
+      "tiff_mode": "CMYK",
+      "tiff_compression": "LZW",
+      "svg_editable_text": true,
+      "outside_canvas_text_count": 0
+    }
+  ],
+  "conceptual_panel_c": "Reaves et al. (2025) primary-abstract context verified by manuscript team: southern latent-heat polynya settings and higher bone delta15N in southern colonies, 15 colony locations with modern and ancient chick bones. No continuous polynya-area slope or direct sign reversal is claimed.",
+  "source_manifest_sha256": "0bf9e06e6efb835f67bfc8baa4b3d72e87584cc1c05cb9356f513c3c1cd1ee16"
+}

@@ -1,0 +1,64 @@
+name: Penguin external guano true GIS vs photo XY source inventory, original88 no Y
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_independent_guano_polygon_external_provider_actual_content_20261120.py'
+      - '.github/workflows/penguin-20261120-external-guano-true-polygon-GT-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source_original88_external_ZenodoGIS_and_photo_DevilIsland:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require old L7 failure and independently frozen new L8 lab and guano label gate
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/FROZEN_2013_2021_L7_NEGATIVE_POLYNYA_TEMPORAL_REPLICATION_20261120_JA.md
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_independent_guano_polygon_external_provider_actual_content_20261120.py
+      - name: Install small source-only original-site and provider-native file tools
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'requests>=2.32,<3'
+      - name: Retrieve true old original88 source-only geography and lock archive hash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_external_GT_sourceonly
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14539723210/zip" > build/penguin_external_GT_sourceonly/original88_only_geography.zip
+          echo '702ab3eeff9ed953c19a9e696492ba9bf5cddce204d40a9c7d9b1234d98f9f96  build/penguin_external_GT_sourceonly/original88_only_geography.zip' | sha256sum --check
+      - name: Verify actual published Ardley Zenodo record and Devil Island exact original site GitHub manual label geometry
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/audit_independent_guano_polygon_external_provider_actual_content_20261120.py \
+            --original88-zip build/penguin_external_GT_sourceonly/original88_only_geography.zip \
+            --out build/penguin_external_GT_sourceonly/provider_results
+      - name: Confirm source-only and no geographic pseudo-labels or outcome Y claim
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/penguin_external_GT_sourceonly/provider_results/EXTERNAL_ARDLEY_ZENODO_DEVI_GITHUB_MANUAL_GUANO_SOURCE_INVENTORY.json')
+          r=json.loads(p.read_text())
+          assert r['status']=='OUTCOME_BLIND_EXTERNAL_GUANO_LABEL_SOURCE_INVENTORY'
+          assert r['original_source_site_overlap']['ARDL_original_id_exact_in88'] is False
+          assert r['original_source_site_overlap']['DEVI_original_id_exact_in88'] is True
+          assert r['new_temporal_δ15N_response_NOT_OPENED']
+          assert r['winter_polynya_association_NOT_FITTED']
+          assert r['geo_referenced_current_2013_2021_external_positive_negative_guano_pixel_mask_verified'] is False
+          print('ACTUAL_ZENODO_SOURCE',r['zenodo_ardley_source']['status'])
+          print('ACTUAL_DEVI_HAND_MASK',r['external_Devil_Island_photo_hand_GT']['status'])
+          PY
+      - name: Preserve external provider metadata, file member listings and ID overlap, no image Y
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-20261120-real-external-guano-Zenodo-GIS-and-DEVI-photoGT-source-only
+          path: build/penguin_external_GT_sourceonly/provider_results/
+          if-no-files-found: warn
+          retention-days: 30

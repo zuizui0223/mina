@@ -1,0 +1,79 @@
+name: Penguin optical isotope true year holdout 1996-2004 vs 2005-2012
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/temporal_isotope_2004freeze_2012holdout.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/FROZEN_TEMPORAL_TRANSFER_AND_TWO_AXIS_TEST_20261118_JA.md'
+      - '.github/workflows/penguin-20261118-original-isotope-temporal-2004freeze-holdout.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  frozen_source_true_temporal_prediction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source numerical/statistics tools
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'statsmodels>=0.14,<1' 'scipy<2'
+      - name: Compile frozen isotope temporal holdout analysis
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/temporal_isotope_2004freeze_2012holdout.py
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/FROZEN_TEMPORAL_TRANSFER_AND_TWO_AXIS_TEST_20261118_JA.md
+      - name: Retrieve only verified original 860 Adelie optical isotope and marine site-season source
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_temporal_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14328755565/zip" > build/penguin_temporal_source/source_original_isotope860.zip
+      - name: Freeze at year 2004 and genuinely hindcast 2005-2012 at original known sites
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/temporal_isotope_2004freeze_2012holdout.py \
+            --original-isotope-zip build/penguin_temporal_source/source_original_isotope860.zip \
+            --out build/penguin_temporal_source_verified
+      - name: Verify no holdout outcome leakage and no unearned future climate-diet projections
+        run: |
+          python - <<'PY'
+          import json,pandas as pd,numpy as np
+          from pathlib import Path
+          d=Path('build/penguin_temporal_source_verified')
+          a=json.loads((d/'frozen_temporal_transfer_result.json').read_text())
+          b=json.loads((d/'double_dissociation_evidence_gate.json').read_text())
+          assert a['status'] in ('GO_OBSERVED_COVARIATE_ISOTOPE_TEMPORAL_HINDCAST_ONLY','NO_GO_FUTURE_ISOTOPE_PROJECTION')
+          assert a['source_archive_sha256']=='dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205'
+          assert (a['original_source_n_all'],a['original_source_all_sites'])==(860,88)
+          assert (a['training']['n_rows'],a['training']['sites'],a['training']['last_year'])==(304,83,2004)
+          assert (a['heldout_known_site']['n_rows'],a['heldout_known_site']['sites'],a['heldout_known_site']['regions'])==(541,82,11)
+          assert a['heldout_new_untrained_sites_rejected']['n_rows']==15
+          assert a['future_region_by_season_fixed_effects_never_fit_or_inferred_from_test_outcome']
+          assert a['known_observed_contemporaneous_marine_predictors_not_future_CMIP6']
+          assert a['outcome_is_satellite_reconstructed_optical_d15N_not_fish_krill_fraction']
+          assert not b['ADPE_nest_counts_PC1_minus0p80_confirmed']
+          assert not b['85_actual_census_series_absence_of_salt_effect_confirmed']
+          assert not b['not_causal_double_dissociation'] is False
+          p=pd.read_csv(d/'frozen_541_holdout_predictions.csv')
+          assert len(p)==541 and p[['site_id','season']].duplicated().sum()==0
+          assert p.season.min()==2005 and p.season.max()==2012
+          assert p['last_training_season'].max()<=2004
+          assert p.PREVIOUS_OBS_YEAR_GAP.ge(1).all()
+          assert p[['PERSIST','SITE_MEAN','ICE_THERMAL','ICE_THERMAL_SALT']].notna().all().all()
+          for key,model in a['models'].items():
+              assert model['site_equal']['RMSE']>0 and model['row_equal']['RMSE']>0
+          assert len(a['paired_region_loss_bootstrap_against_no_salt_and_naives'])==3
+          assert len(a['training_salt_beta_leave_source_region_out'])==12
+          print('PASS frozen original year split 304 train; 541 strictly known-site holdout; 11 regions; all four model losses, no target-year region FE/outcome leak')
+          PY
+      - name: Archive original frozen temporal holdout scores, source denominators and double-dissociation status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-Adelie-isotope-2004freeze-2012-time-holdout-and-dual-axis-gate
+          path: build/penguin_temporal_source_verified/
+          if-no-files-found: warn
+          retention-days: 30

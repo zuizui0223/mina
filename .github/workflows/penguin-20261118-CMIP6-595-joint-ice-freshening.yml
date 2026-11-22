@@ -1,0 +1,82 @@
+name: Penguin original 595-colony CMIP6 sea-ice loss plus ocean freshening
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_CMIP6_joint_ice_freshening_595.py'
+      - '.github/workflows/penguin-20261118-CMIP6-595-joint-ice-freshening.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  all_original_climate_models_nest_weights:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source analysis dependencies only
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3'
+      - name: Compile joint source audit script
+        run: python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_CMIP6_joint_ice_freshening_595.py
+      - name: Retrieve exact prior original 595×3 variable×3 model CMIP6 and 2456 true counts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_joint_ice_sos_input
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14214704362/zip" > build/penguin_joint_ice_sos_input/original_CMIP6_595.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/penguin_joint_ice_sos_input/original_TRUE_2456_counts.zip
+      - name: Independently rebuild all four scenarios, mean, 3-model agreement and regional plus species weights
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_CMIP6_joint_ice_freshening_595.py \
+            --cmip6-zip build/penguin_joint_ice_sos_input/original_CMIP6_595.zip \
+            --counts-zip build/penguin_joint_ice_sos_input/original_TRUE_2456_counts.zip \
+            --out build/penguin_joint_ice_sos_verified
+      - name: Recalculate key tables from original derived raw-cell outputs independently
+        run: |
+          python - <<'PY'
+          import json,numpy as np,pandas as pd
+          from pathlib import Path
+          p=Path('build/penguin_joint_ice_sos_verified')
+          j=json.loads((p/'original_joint_ice_sos_source_audit_verdict.json').read_text())
+          assert j['status']=='PASS_REAL_595_CMIP6_THREE_MODEL_ICE_AND_SALINITY_JOINT_PHYSICAL_EXPOSURE'
+          assert j['source_original_27_zarr_stores']==27
+          assert j['source_original_actual_nest_count_records']==2456
+          assert j['source_censused_2011_2020_site_medians']==271
+          s=pd.read_csv(p/'original_595_CMIP6_4scenario_joint_ice_sos_main_summary.csv')
+          a=pd.read_csv(p/'original_595_four_scenario_site_source_model_sign_concordance.csv')
+          m=pd.read_csv(p/'original_271_CMIP6_3model_freshening_disagreement.csv')
+          r=pd.read_csv(p/'original_271_CMIP6_joint_exposure_16region.csv')
+          species=pd.read_csv(p/'original_331_species_median_3model_ice_sos_exposure.csv')
+          assert (len(s),len(a),len(m),len(r),len(species))==(16,2380,12,64,12)
+          key=s[(s.scenario=='ssp585')&(s.period=='2081-2100')].set_index('weight_cohort')
+          w=key.loc['271_source_counted_colonies_nest_proxy_weight']
+          u=key.loc['595_known_colonies_equal_site']
+          assert abs(w.mean_delta_sos_native_0p001-(-0.2572497134152925))<1e-10
+          assert abs(w.mean_delta_sic_pp-(-13.276240917274329))<1e-10
+          assert abs(u.mean_delta_sic_pp-(-21.442))<0.001
+          assert abs(u.mean_delta_sos_native_0p001-(-0.2516))<0.001
+          assert (w.n_site_all_three_sos_freshen,w.n_site_all_three_joint)==(179,152)
+          assert (u.n_site_all_three_sos_freshen,u.n_site_all_three_joint)==(464,384)
+          assert abs(w.all_three_sos_freshen_weight_fraction-.935)<.002
+          assert abs(w.all_three_joint_ice_loss_and_freshening_weight_fraction-.591)<.002
+          assert a[['site_id','scenario','period']].duplicated().sum()==0
+          assert (a.query("scenario=='ssp585' and period=='2081-2100'").CMIP6_delta_sos_native_0p001<0).sum()==595
+          # Verify species-specific source total weight partitions, not 331 independent climate sites.
+          q=species.query("scenario=='ssp585' and period=='2081-2100'")
+          assert set(q.species)=={'ADPE','CHPE','GEPE'}
+          assert abs(q.observed_species_site_median_weight.sum()-2848329.5)<1e-6
+          print('PASS 595 original model mean freshening, all3-model agreement, 271 original nest medians and 3 species splits')
+          PY
+      - name: Preserve physical scenario source tables with explicit no-future-nest labels
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-CMIP6-595-colony-joint-ice-loss-and-ocean-freshening-v1
+          path: build/penguin_joint_ice_sos_verified/
+          if-no-files-found: warn
+          retention-days: 30

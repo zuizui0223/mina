@@ -1,0 +1,67 @@
+name: Penguin real 44 dated Adélie and gentoo Ardley guano shapefile source geometry
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_ardley_original_true_guano_44_shapefiles_source_only_20261120.py'
+      - '.github/workflows/penguin-20261120-Ardley-44-dated-original-guano-SHP-source-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  actual_external_guano_44_dated_native_polygon_source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require independent post-2013 Landsat8 source and no outcome open preconditions
+        run: |
+          test -f research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/L8_ALT_SENSOR_NEGATIVE_POLYNYA_PRE_Y_SOURCE_AND_CALIBRATION_GATE_20261120_JA.md
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_ardley_original_true_guano_44_shapefiles_source_only_20261120.py
+      - name: Install small original ZIP64 range, Shapefile and geodesic CRS geometry readers
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas>=2.2,<3' 'requests>=2.32,<3' 'pyshp>=2.3,<3' 'remotezip>=0.12,<1' 'pyproj>=3.6,<4' 'shapely>=2,<3'
+      - name: Fetch proven original 4GB Zenodo ZIP64 2448 source file member index not actual 4GB
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/penguin_Ardley_44_native_guano_shapes
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14600415833/zip" > build/penguin_Ardley_44_native_guano_shapes/original_zip64_index.zip
+          echo 'ef4afd6db995ac83cdd51c798d08d00dcd729e2e39c85b096b91785cb36a6ebc  build/penguin_Ardley_44_native_guano_shapes/original_zip64_index.zip' | sha256sum --check
+      - name: Open only genuine 44 dated guano SHP SHX DBF PRJ and geospatially verify masks, not 4GB imagery
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_ardley_original_true_guano_44_shapefiles_source_only_20261120.py \
+            --manifest-artifact-zip build/penguin_Ardley_44_native_guano_shapes/original_zip64_index.zip \
+            --out build/penguin_Ardley_44_native_guano_shapes/mask_quality_results
+      - name: Confirm genuine shapefile original date, CRS, species and zero future isotope tests
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path('build/penguin_Ardley_44_native_guano_shapes/mask_quality_results/ARDLEY_NATIVE_44_GUANO_SHAPEFILE_ACTUAL_GEOGRAPHIC_GATE.json')
+          r=json.loads(path.read_text())
+          assert r['origin_native_ZIP64_2448_file_index_verified']
+          assert r['guano_true_real_shapefiles_expected']==44
+          assert r['source_spans_four_summer_seasons_2013_14_2014_15_2016_17_2017_18']
+          assert r['original_Youngflesh_88_Ardley_exact_ID_present'] is False
+          assert r['source_masks_are_positive_GUANO_geometry_not_yet_validated_30m_OLI_binary_truth']
+          assert r['no_new_2013_2021_optical_delta15N_proxy_computed']
+          assert r['no_new_polynya_or_foodweb_relation_calculated']
+          assert r['original_full_4GB_not_downloaded']
+          assert r['status'] in ('ALL_44_ACTUAL_DATED_ARDLEY_GUANO_SHAPEFILES_GEOGRAPHICALLY_VALIDATED',
+                                'PARTIAL_OR_UNVERIFIED_DATED_ARDLEY_GUANO_SHAPEFILES')
+          print('NATIVE_ARDLEY_GUANO_GEORESULT',r['status'],'successful real polygons',
+                r['actual_guano_shapefiles_opened'])
+          PY
+      - name: Preserve date, actual polygon counts, fields and original CRS, not full UAV imagery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-Ardley-2013-18-44-actual-guano-positive-Shapefiles-verified-geometry-no-Y
+          path: build/penguin_Ardley_44_native_guano_shapes/mask_quality_results/
+          if-no-files-found: warn
+          retention-days: 30

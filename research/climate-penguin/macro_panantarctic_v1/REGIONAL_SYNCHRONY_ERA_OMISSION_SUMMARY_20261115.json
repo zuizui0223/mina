@@ -1,0 +1,91 @@
+{
+  "source_run": 43049546362,
+  "artifact_id": 13869360730,
+  "source_file": "original_source_18_region_28year_PC1_PC2_site_vs_unique_cell.csv",
+  "source_sha256": "99b794fa585ecf7b2ca6651456e0056f2e43c321a58daeb9e82d5b90eb3b3d29",
+  "status": "POST_RESULT_DESCRIPTIVE_STABILITY_NOT_BIOLOGICAL_INFERENCE",
+  "original_region_years": 504,
+  "original_regions": 18,
+  "years": "1993-2020",
+  "n_fixed_axis_runs": 528,
+  "metric": "within-window per-region z-score common calendar-year variance fraction; equal region weights",
+  "all18_site_equal": {
+    "overall": {
+      "pc1": 0.19709975146442987,
+      "pc2": 0.5214067551570148
+    },
+    "within_eras": {
+      "1993-2000": {
+        "pc1": 0.1664180638274994,
+        "pc2": 0.1639095572539929
+      },
+      "2001-2010": {
+        "pc1": 0.1755191503622936,
+        "pc2": 0.2774558726311058
+      },
+      "2011-2020": {
+        "pc1": 0.22124663056050295,
+        "pc2": 0.7127500522146838
+      }
+    },
+    "omit_2011_2020": {
+      "pc1": 0.2025,
+      "pc2": 0.2746
+    },
+    "leave_one_region_out_pc2_minus_pc1_range": [
+      0.2795,
+      0.352
+    ],
+    "leave_one_region_and_era_out_pc2_minus_pc1_range": [
+      0.0337,
+      0.4787
+    ],
+    "leave_one_2011_2020_year_out_pc2_minus_pc1_range": [
+      0.3709,
+      0.638
+    ]
+  },
+  "replicated13_site_equal": {
+    "overall": {
+      "pc1": 0.17798944487894267,
+      "pc2": 0.5874052713088656
+    },
+    "within_eras": {
+      "1993-2000": {
+        "pc1": 0.17009885715034231,
+        "pc2": 0.2417119143346112
+      },
+      "2001-2010": {
+        "pc1": 0.14866409222466828,
+        "pc2": 0.35147560271536815
+      },
+      "2011-2020": {
+        "pc1": 0.19689977501819195,
+        "pc2": 0.726313875077298
+      }
+    },
+    "omit_2011_2020": {
+      "pc1": 0.1842,
+      "pc2": 0.3532
+    },
+    "leave_one_region_out_pc2_minus_pc1_range": [
+      0.3561,
+      0.434
+    ],
+    "leave_one_region_and_era_out_pc2_minus_pc1_range": [
+      0.1272,
+      0.5238
+    ],
+    "leave_one_2011_2020_year_out_pc2_minus_pc1_range": [
+      0.3636,
+      0.6669
+    ]
+  },
+  "caveats": [
+    "same assimilative GLORYS product not independent in-situ validation",
+    "no population or community biological outcomes inspected",
+    "conditional post-result stability not inferential significance",
+    "within-era time windows only 8 or 10 years",
+    "all missingness and source original region identities retained"
+  ]
+}

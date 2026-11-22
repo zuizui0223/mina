@@ -1,0 +1,216 @@
+name: Antarctic penguin exact 595-source CMIP6 exposure and 271-site nesting weight QA
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_595_site_count_weighted_physical_exposure.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/derive_species_geographic_exposure_decomposition.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_species_marine_grid_selection.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/source_match_species_shared_site_exposure.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_shared_site_species_influence.py'
+      - '.github/workflows/penguin-source-audited-595-CMIP6-countweight-20261116.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-595-site-physical-source-271-observed-weight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source and original geospatial row dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas pyproj
+      - name: Rebuild the genuine historical 595-site, 2456-count source
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/build.py
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_595_site_count_weighted_physical_exposure.py
+      - name: Fetch actual completed 595-site 27-source CMIP6 physical artifact from prior verified run
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-595-known-colony-3model-27store-cmip6-physical-only
+          run-id: 43845907301
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/source_595_original_CMIP6
+      - name: Construct explicit original-source ZIPs, no missing or future nests imputed
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile,ZIP_DEFLATED
+          x=Path('build'); x.mkdir(parents=True,exist_ok=True)
+          c=Path('research/climate-penguin/macro_panantarctic_v1/outputs')
+          with ZipFile(x/'source_595_counts.zip','w',ZIP_DEFLATED) as z:
+              for n in ['source_observed_2456.csv','panantarctic_595_site_inventory.csv']:
+                  q=c/n
+                  assert q.is_file(),q
+                  z.write(q,arcname=n)
+          physical=Path('build/source_595_original_CMIP6/source_root/outputs/cmip6_projection_v1/site_model_changes.csv')
+          assert physical.is_file() and physical.stat().st_size>100000, physical
+          with ZipFile(x/'physical_595.zip','w',ZIP_DEFLATED) as z:
+              z.write(physical,arcname='source_root/outputs/cmip6_projection_v1/site_model_changes.csv')
+          PY
+      - name: Compute scenario, source region, species and 10/20/30pp purely physical exposure
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_595_site_count_weighted_physical_exposure.py \
+            --count-zip build/source_595_counts.zip \
+            --physical-zip build/physical_595.zip \
+            --out build/verified_physical_271
+          python - <<'PY'
+          import pandas as pd,json
+          from pathlib import Path
+          p=Path('build/verified_physical_271')
+          x=pd.read_csv(p/'summary.csv')
+          y=pd.read_csv(p/'decomposition.csv')
+          t=pd.read_csv(p/'threshold.csv')
+          m=pd.read_csv(p/'models.csv')
+          receipt=json.loads((p/'source_gate.json').read_text())
+          assert len(x)==36 and len(y)==4 and len(t)==64 and len(m)==12
+          assert receipt['n_source_counted_2011_2020']==271
+          assert receipt['n_original_three_model_future_delta_rows']==21420
+          q=x[(x.variable=='siconc')&(x.experiment=='ssp585')&(x.period=='2081-2100')&(x.cohort=='observed_271')].iloc[0]
+          assert abs(q.equal_sites_delta+28.634133941766486)<1e-9
+          assert abs(q.observed_nest_medians_weighted_delta+13.27624091727433)<1e-9
+          assert y.weighted_minus_equal.notna().all()
+          print('PASS 595 original physical sites and 271 actual site-nesting weights across 4 scenarios; no nest forecast')
+          PY
+      - name: Independently decompose future sea-ice exposure by species geography
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/derive_species_geographic_exposure_decomposition.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/derive_species_geographic_exposure_decomposition.py \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --cmip6-zip build/physical_595.zip \
+            --out build/verified_species_geographic_exposure
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads((Path('build/verified_species_geographic_exposure')/'species_geographic_physical_source_receipt.json').read_text())
+          assert x['status']=='PASS_ORIGINAL_COUNTED_271_SPECIES_GEOGRAPHIC_PHYSICAL_DECOMPOSITION_ONLY'
+          assert x['model_count']==3 and x['scenario_count']==4
+          assert x['original_cmip6_source_rows']==21420
+          assert x['no_future_population_prediction']
+          main=[x for x in x['selected_case'] if x['cohort']=='counted271']
+          assert len(main)==5
+          for v in main:
+              assert abs(v['species_weighted_sic_delta_pp']-v['counterfactual_region_mean_pp']-v['within_region_delta_from_region_mean_pp'])<1e-9
+          print('PASS source-counted species regional vs within-region physical exposure accounting')
+          PY
+      - name: Audit marine50 exclusion and weighted exposure across all 3 source models
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_species_marine_grid_selection.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_species_marine_grid_selection.py \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --cmip6-zip build/physical_595.zip \
+            --out build/verified_species_marine50_selection
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads((Path('build/verified_species_marine50_selection')/'species_50km_source_selection_receipt.json').read_text())
+          assert r['status']=='PASS_SOURCE_SPECIES_MARINE50_COVERAGE_SELECTION_PHYSICAL_ONLY'
+          assert r['n_original_source_sites']==595 and r['n_sites_with_observed_2011_2020_nests']==271
+          assert r['n_both_marine50_sites']==158 and r['n_species_model_scenario_rows']==48
+          assert r['n_source_models']==3 and r['no_future_nests_or_species_vulnerability_estimated']
+          q={x['species']:x for x in r['main_ssp585_late_century']}
+          assert set(q)=={'ADPE','CHPE','GEPE'}
+          assert (q['ADPE']['n_marine50_sites'],q['CHPE']['n_marine50_sites'],q['GEPE']['n_marine50_sites'])==(63,93,37)
+          for sp in q:
+              z=q[sp]
+              assert abs(z['full_species_sic_delta_pp']-
+                z['marine50_species_nest_proxy_fraction']*z['marine50_species_sic_delta_pp']-
+                z['excluded_species_nest_proxy_fraction']*z['excluded_species_sic_delta_pp'])<1e-9
+          print('PASS exact original sea-ice support restriction species coverage and excluded site identity')
+          PY
+      - name: Evaluate identical original regions, sites and true same-year method source supports
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/source_match_species_shared_site_exposure.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/source_match_species_shared_site_exposure.py \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --cmip6-zip build/physical_595.zip \
+            --out build/verified_species_shared_site
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          x=json.loads((Path('build/verified_species_shared_site')/'source_matched_species_geographic_support_receipt.json').read_text())
+          d=pd.read_csv('build/verified_species_shared_site/source_matched_species_geographic_support_comparison.csv')
+          assert x['status']=='PASS_SOURCE_SAME_SITE_SPECIES_PHYSICAL_EXPOSURE_SUPPORT'
+          assert x['n_support_rows']==384 and len(d)==384
+          assert x['no_physiological_or_demographic_inference']
+          assert len(x['main_ensemble'])==24
+          for (a,b,support),g in d.groupby(['species_a','species_b','support']):
+              assert len(g)==32
+          for r in x['main_ensemble']:
+              if r['both_species_exposures_estimable']:
+                  assert abs(r['species_b_minus_a_sic_delta_pp']-(r['species_b_weighted_sic_delta_pp']-r['species_a_weighted_sic_delta_pp']))<1e-9
+              if r['same_site_physical_sic_identical_by_construction']:
+                  assert r['n_support_sites']>=0
+          print('PASS strict source ecology support and algebra: no false cross-species climate reaction')
+          PY
+      - name: Assess leave-one-original-region/block and largest-site source influence
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_shared_site_species_influence.py
+          python research/climate-penguin/macro_panantarctic_v1/climate_risk_frozen_20261116/audit_shared_site_species_influence.py \
+            --counts research/climate-penguin/macro_panantarctic_v1/outputs/source_observed_2456.csv \
+            --inventory research/climate-penguin/macro_panantarctic_v1/outputs/panantarctic_595_site_inventory.csv \
+            --cmip6-zip build/physical_595.zip \
+            --out build/verified_species_common_site_influence
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/verified_species_common_site_influence')/'matched_site_species_influence_receipt.json'
+          x=json.loads(p.read_text())
+          assert x['status']=='PASS_ORIGINAL_COMMON_SITE_REGIONAL_AND_250KM_INFLUENCE_PHYSICAL_ONLY'
+          assert x['n_comparisons']==12 and x['source_595_sites']==595 and x['original_counted_sites']==271
+          assert x['no_inferential_p_or_population_confidence_interval']
+          assert x['no_biological_response_or_future_nests']
+          for z in x['main_results']:
+              assert z['n_matched_site_ids']>=3
+              assert z['delete_one_reporting_region']['number_deletions']==z['n_original_source_regions']
+              assert z['delete_one_original_250km_block']['number_deletions']==z['n_original_polar250_blocks']
+          print('PASS source-correct spatial block and region influence; descriptive only')
+          PY
+      - name: Archive original matched-site influence diagnostics without p-values
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-common-colony-geography-influence-source
+          path: build/verified_species_common_site_influence/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Archive matched species sites and comparable baseline climate weights
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-271-recorded-species-common-region-common-site-physical-sic
+          path: build/verified_species_shared_site/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Archive spatial marine-grid source selection, not climate-risk conclusions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-271-original-species-marine50-selected-vs-excluded
+          path: build/verified_species_marine50_selection/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Archive species-specific exposure decomposition, not a demographic forecast
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-271-counted-species-CMIP6-regional-exposure-accounting
+          path: build/verified_species_geographic_exposure/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Archive original-source deterministic numerical outputs, not biological predictions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-595-model-271-actual-nesting-exposure
+          path: build/verified_physical_271/
+          if-no-files-found: warn
+          retention-days: 30

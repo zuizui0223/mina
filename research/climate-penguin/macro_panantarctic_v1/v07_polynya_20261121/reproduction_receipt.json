@@ -1,0 +1,1976 @@
+{
+  "status": "PASS_INDEPENDENT_REPRODUCTION_OF_EXISTING_FROZEN_POLYNYA_RESULTS",
+  "source_commit": "a1cf988df3501794e9add243a8c2be8ecbb7b43a",
+  "verifier_source_sha256": "71325def1da8a14561e03ad65454f7160088cde41b3a9c120acc0745051caeac",
+  "verification_scope": "Independent reproduction of existing fixed models, plus separately disclosed requested 2026-11-21 main425 informative-group covariance sensitivity; no model search or new ecological hypothesis",
+  "independent_numerical_method": {
+    "fixed_effects": "Explicit site and region-by-season dummy matrix; pivoted QR orthogonal projection",
+    "regression": "NumPy pseudoinverse OLS on projected columns",
+    "covariance": "Sum of source-region block influence outer products times CR1",
+    "source_cr1": "G/(G-1)*(n-1)/(n-k); k counts retained slope columns, not absorbed FE rank",
+    "intervals": "Student t(G-1); P0-P1 uses the full joint covariance",
+    "does_not_import_original_fit_implementation": true,
+    "does_not_refit_laboratory_PLSR": true,
+    "main439_zero_information_subset_refitted": true
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0"
+  },
+  "source_files": {
+    "isotope860.zip": {
+      "sha256": "dfbbe281e50e7d802c43f69255c02878a4c49c14185804acb7e15048189af205",
+      "bytes": 60293,
+      "zip_crc": "PASS",
+      "used_members": {
+        "matched_860_original_isotope_ocean_ice_site_seasons.csv": {
+          "sha256": "a5dea7bfcbc15e81ea5b30152bc610c9748d638f21d864a23b21c2e1807a8827",
+          "bytes": 155245
+        }
+      }
+    },
+    "polynya_physical.zip": {
+      "sha256": "702ab3eeff9ed953c19a9e696492ba9bf5cddce204d40a9c7d9b1234d98f9f96",
+      "bytes": 1548629,
+      "zip_crc": "PASS",
+      "used_members": {
+        "source_original_860_site_seasons_true_DEEPAA100km_no_optical_Y.csv": {
+          "sha256": "86688fd1f5cf1e069305f3ddf47e50cb1323989eb3c12850cc95ba1c3be89ea7",
+          "bytes": 41954
+        },
+        "DEEPAA_ACTUAL_860_SOURCE_GEO_TIME_GATE.json": {
+          "sha256": "4cfa18029dfabf699a5432d34dea1796814da250354620ac1ca09ec4af7b8a5b",
+          "bytes": 4604
+        }
+      }
+    },
+    "polynya_main439.zip": {
+      "sha256": "e413eab31b101c4a9a11c6dc7656d58906527a2146e6ccef442bb677ede6b233",
+      "bytes": 20579,
+      "zip_crc": "PASS",
+      "used_members": {
+        "DEEPAA100km_FROZEN_DIRECT_COASTAL_POLYNYA_OPTICAL_ISOTOPE_VERDICT.json": {
+          "sha256": "98534c7f3028afad35075f03d2cae4aab16f0878d947a9c5d8278d902ed4aef1",
+          "bytes": 23512
+        }
+      }
+    },
+    "author_R1000.zip": {
+      "sha256": "be0234fef11a11b5b19129c8a84db0ab90dbe80b7cd6a71a3e733e36eaa1e342",
+      "bytes": 189984,
+      "zip_crc": "PASS",
+      "used_members": {
+        "old439_358_new_Y_method_sensitivity/original_860_same_source_old_single_vs_author_R1000_PLSR_optical_Y.csv": {
+          "sha256": "4c3c6d1b4effa1bdd48d85a4ffc141700a1dfa9e5f854bf210765e71a238ae9b",
+          "bytes": 61640
+        },
+        "old439_358_new_Y_method_sensitivity/AUTHOR_R1000_PLSR_ORIGINAL439_358_FIXED_MEASUREMENT_VERDICT.json": {
+          "sha256": "e17a8ec829a4a075f31a2da95f3db84b6ef2736be9598a8c136e44c7bdcd58fb",
+          "bytes": 7074
+        }
+      }
+    },
+    "matched_analysis.csv": {
+      "sha256": "7876e7ef687964a3e8c9d29c566b3627c8a210adfa094b65c22d72f8764375db",
+      "git_blob_sha1": "875d374cc3b91df613908cfe6e20d67d3e076c3e",
+      "bytes": 88627,
+      "pinned_commit": "a1cf988df3501794e9add243a8c2be8ecbb7b43a",
+      "repository_path": "research/climate-penguin/macro_panantarctic_v1/polynya_temporal_20261120/matched_analysis.csv"
+    }
+  },
+  "observed_design_hashes_sha256": {
+    "main439": "dfd9732c59c83e540a5346959d5f62ac1e756b799a69ee5305e1db01ae754ad9",
+    "temporal358": "6a6cb7bf5aaaf5890e8c5478c773157c2d98c7ae846235dbad01030e501d2144"
+  },
+  "main439_original_single_plsr": {
+    "M0": {
+      "n": 439,
+      "sites": 85,
+      "reporting_regions": 11,
+      "seasons": [
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010
+      ],
+      "fixed_effect_design_rank": 137,
+      "retained_slopes_k": 4,
+      "cr1_correction": 1.1075862068965519,
+      "interval_t_df": 10,
+      "sse": 298.48613442644023,
+      "response": "predicted_d15N_season_day_equal",
+      "features": [
+        "mean_doy_centered",
+        "mean_doy_sq",
+        "GLORYS_NovFeb_thetao_C",
+        "author_SIC_150km_NovFeb_center_approx_fraction"
+      ],
+      "coefficients_native_units": {
+        "mean_doy_centered": {
+          "estimate": -0.019371201518405854,
+          "se": 0.00817364837009273,
+          "ci95": [
+            -0.037583225014283746,
+            -0.0011591780225279624
+          ]
+        },
+        "mean_doy_sq": {
+          "estimate": 0.0003737868242191683,
+          "se": 0.0001949095368296551,
+          "ci95": [
+            -6.049868741363581e-05,
+            0.0008080723358519725
+          ]
+        },
+        "GLORYS_NovFeb_thetao_C": {
+          "estimate": -0.23405661638149602,
+          "se": 0.2991716337378262,
+          "ci95": [
+            -0.900652556924954,
+            0.43253932416196206
+          ]
+        },
+        "author_SIC_150km_NovFeb_center_approx_fraction": {
+          "estimate": 0.26999931918422077,
+          "se": 2.0491365250380182,
+          "ci95": [
+            -4.295761385277132,
+            4.835760023645573
+          ]
+        }
+      }
+    },
+    "M_S": {
+      "n": 439,
+      "sites": 85,
+      "reporting_regions": 11,
+      "seasons": [
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010
+      ],
+      "fixed_effect_design_rank": 137,
+      "retained_slopes_k": 5,
+      "cr1_correction": 1.1101382488479263,
+      "interval_t_df": 10,
+      "sse": 292.08974245688955,
+      "response": "predicted_d15N_season_day_equal",
+      "features": [
+        "mean_doy_centered",
+        "mean_doy_sq",
+        "GLORYS_NovFeb_thetao_C",
+        "author_SIC_150km_NovFeb_center_approx_fraction",
+        "GLORYS_NovFeb_salinity"
+      ],
+      "coefficients_native_units": {
+        "mean_doy_centered": {
+          "estimate": -0.017494779167387543,
+          "se": 0.007206068437338641,
+          "ci95": [
+            -0.03355090022269379,
+            -0.0014386581120813015
+          ]
+        },
+        "mean_doy_sq": {
+          "estimate": 0.0002901595339884964,
+          "se": 0.00019748280208352028,
+          "ci95": [
+            -0.00014985956993291105,
+            0.0007301786379099039
+          ]
+        },
+        "GLORYS_NovFeb_thetao_C": {
+          "estimate": -0.39463097562482746,
+          "se": 0.25094382924510744,
+          "ci95": [
+            -0.9537686712320608,
+            0.1645067199824058
+          ]
+        },
+        "author_SIC_150km_NovFeb_center_approx_fraction": {
+          "estimate": 1.7471319256119577,
+          "se": 1.6930366782794681,
+          "ci95": [
+            -2.025188875100311,
+            5.519452726324227
+          ]
+        },
+        "GLORYS_NovFeb_salinity": {
+          "estimate": 0.7662979515381761,
+          "se": 0.22447284084093017,
+          "ci95": [
+            0.26614129364476846,
+            1.2664546094315838
+          ]
+        }
+      }
+    },
+    "M_P": {
+      "n": 439,
+      "sites": 85,
+      "reporting_regions": 11,
+      "seasons": [
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010
+      ],
+      "fixed_effect_design_rank": 137,
+      "retained_slopes_k": 5,
+      "cr1_correction": 1.1101382488479263,
+      "interval_t_df": 10,
+      "sse": 287.16174166205644,
+      "response": "predicted_d15N_season_day_equal",
+      "features": [
+        "mean_doy_centered",
+        "mean_doy_sq",
+        "GLORYS_NovFeb_thetao_C",
+        "author_SIC_150km_NovFeb_center_approx_fraction",
+        "direct_DEEPAA_coastal_polynya_fraction"
+      ],
+      "coefficients_native_units": {
+        "mean_doy_centered": {
+          "estimate": -0.020544395094829172,
+          "se": 0.008604308701019699,
+          "ci95": [
+            -0.039715989606054714,
+            -0.0013728005836036346
+          ]
+        },
+        "mean_doy_sq": {
+          "estimate": 0.0004011003079025832,
+          "se": 0.00021198891972876868,
+          "ci95": [
+            -7.12404403356858e-05,
+            0.0008734410561408521
+          ]
+        },
+        "GLORYS_NovFeb_thetao_C": {
+          "estimate": -0.12650651179096659,
+          "se": 0.2752944263841125,
+          "ci95": [
+            -0.7399007189526828,
+            0.4868876953707496
+          ]
+        },
+        "author_SIC_150km_NovFeb_center_approx_fraction": {
+          "estimate": 0.4958089913816225,
+          "se": 1.576182977172484,
+          "ci95": [
+            -3.0161455378957838,
+            4.0077635206590285
+          ]
+        },
+        "direct_DEEPAA_coastal_polynya_fraction": {
+          "estimate": -10.03109142924483,
+          "se": 2.0809176418751,
+          "ci95": [
+            -14.667664874890399,
+            -5.39451798359926
+          ]
+        }
+      },
+      "polynya_per_10pp": {
+        "estimate": -1.003109142924483,
+        "se": 0.20809176418751002,
+        "ci95": [
+          -1.46676648748904,
+          -0.539451798359926
+        ]
+      }
+    },
+    "M_SP": {
+      "n": 439,
+      "sites": 85,
+      "reporting_regions": 11,
+      "seasons": [
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010
+      ],
+      "fixed_effect_design_rank": 137,
+      "retained_slopes_k": 6,
+      "cr1_correction": 1.11270207852194,
+      "interval_t_df": 10,
+      "sse": 282.68785135058437,
+      "response": "predicted_d15N_season_day_equal",
+      "features": [
+        "mean_doy_centered",
+        "mean_doy_sq",
+        "GLORYS_NovFeb_thetao_C",
+        "author_SIC_150km_NovFeb_center_approx_fraction",
+        "GLORYS_NovFeb_salinity",
+        "direct_DEEPAA_coastal_polynya_fraction"
+      ],
+      "coefficients_native_units": {
+        "mean_doy_centered": {
+          "estimate": -0.01886672040808419,
+          "se": 0.007819165750535971,
+          "ci95": [
+            -0.036288907406973804,
+            -0.0014445334091945788
+          ]
+        },
+        "mean_doy_sq": {
+          "estimate": 0.0003283596606319279,
+          "se": 0.00021626321964647073,
+          "ci95": [
+            -0.0001535048213180148,
+            0.0008102241425818706
+          ]
+        },
+        "GLORYS_NovFeb_thetao_C": {
+          "estimate": -0.270654366035372,
+          "se": 0.24405092674822637,
+          "ci95": [
+            -0.8144337177863514,
+            0.27312498571560734
+          ]
+        },
+        "author_SIC_150km_NovFeb_center_approx_fraction": {
+          "estimate": 1.7231036626831682,
+          "se": 1.3678285721988344,
+          "ci95": [
+            -1.324608321889967,
+            4.7708156472563035
+          ]
+        },
+        "GLORYS_NovFeb_salinity": {
+          "estimate": 0.6462062176452825,
+          "se": 0.20429410590262717,
+          "ci95": [
+            0.19101058305184054,
+            1.1014018522387246
+          ]
+        },
+        "direct_DEEPAA_coastal_polynya_fraction": {
+          "estimate": -9.216089250042975,
+          "se": 1.919427149500885,
+          "ci95": [
+            -13.492839455403164,
+            -4.939339044682787
+          ]
+        }
+      },
+      "polynya_per_10pp": {
+        "estimate": -0.9216089250042976,
+        "se": 0.1919427149500885,
+        "ci95": [
+          -1.3492839455403165,
+          -0.4939339044682788
+        ]
+      }
+    }
+  },
+  "main439_residual_sse_reductions_fraction": {
+    "M0": 0.0,
+    "M_S": 0.021429444224743466,
+    "M_P": 0.037939426520244623,
+    "M_SP": 0.05292802999446944,
+    "M_SP_vs_M_S": 0.03218836453215346
+  },
+  "main439_P_S_correlation_after_site_and_region_season_FE_only": -0.08042928154744607,
+  "main439_observation_support": {
+    "criterion": "Each listed exposure has sum of squared site + region-season FE residuals > 1e-16",
+    "threshold": 1e-16,
+    "reporting_regions": 11,
+    "informative_regions": [
+      "Enderby Land",
+      "Mac. Robertson Land",
+      "Marie Byrd Land",
+      "Northeast Antarctic Peninsula",
+      "Princess Elizabeth Land",
+      "Southwest Antarctic Peninsula",
+      "Victoria Land",
+      "Wilkes Land"
+    ],
+    "informative_region_count": 8,
+    "zero_information_regions": [
+      "Adelie Land",
+      "Palmer Land",
+      "Queen Mary Land"
+    ],
+    "informative_rows": 425,
+    "by_region": [
+      {
+        "region": "Adelie Land",
+        "rows": 5,
+        "sites": 1,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 3.490748024201865e-34
+        },
+        "informative_for_all_listed_exposures": false
+      },
+      {
+        "region": "Enderby Land",
+        "rows": 23,
+        "sites": 5,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 0.005242729108800746
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Mac. Robertson Land",
+        "rows": 37,
+        "sites": 7,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 0.0058746503504359246
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Marie Byrd Land",
+        "rows": 34,
+        "sites": 7,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 0.004830362075340974
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Northeast Antarctic Peninsula",
+        "rows": 74,
+        "sites": 13,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 0.0034824592770353415
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Palmer Land",
+        "rows": 6,
+        "sites": 1,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 7.571312093872321e-33
+        },
+        "informative_for_all_listed_exposures": false
+      },
+      {
+        "region": "Princess Elizabeth Land",
+        "rows": 42,
+        "sites": 6,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 0.002633555466617854
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Queen Mary Land",
+        "rows": 3,
+        "sites": 1,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 3.707415142945429e-33
+        },
+        "informative_for_all_listed_exposures": false
+      },
+      {
+        "region": "Southwest Antarctic Peninsula",
+        "rows": 41,
+        "sites": 8,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 0.006223182990347108
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Victoria Land",
+        "rows": 98,
+        "sites": 20,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 0.06289014325769599
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Wilkes Land",
+        "rows": 76,
+        "sites": 16,
+        "exposure_residual_ss": {
+          "direct_DEEPAA_coastal_polynya_fraction": 0.02349803860216341
+        },
+        "informative_for_all_listed_exposures": true
+      }
+    ]
+  },
+  "new_20261121_main425_informative8_support_sensitivity": {
+    "status": "PASS_COEFFICIENTS_AND_SSE_UNCHANGED_NEW_COVARIANCE_SUPPORT_DISCLOSURE",
+    "performed_utc_date": "2026-11-21",
+    "is_original_frozen_11_region_result": false,
+    "explicitly_requested_followup": true,
+    "new_ecological_hypothesis_or_model_search": false,
+    "subset_rule": "Each listed exposure has sum of squared site + region-season FE residuals > 1e-16",
+    "excluded_regions": [
+      "Adelie Land",
+      "Palmer Land",
+      "Queen Mary Land"
+    ],
+    "excluded_rows": 14,
+    "n": 425,
+    "sites": 82,
+    "informative_regions": 8,
+    "interval_t_df": 7,
+    "source_cr1_convention_unchanged": true,
+    "observed_design_sha256": "d18bf2d6251cad86b12eb39899af52bffaf92b9985ceb45cf9f282415b47f359",
+    "original_single_PLSR": {
+      "M_P": {
+        "n": 425,
+        "sites": 82,
+        "reporting_regions": 8,
+        "seasons": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010
+        ],
+        "fixed_effect_design_rank": 123,
+        "retained_slopes_k": 5,
+        "cr1_correction": 1.1537414965986394,
+        "interval_t_df": 7,
+        "sse": 287.16174166205667,
+        "response": "predicted_d15N_season_day_equal",
+        "features": [
+          "mean_doy_centered",
+          "mean_doy_sq",
+          "GLORYS_NovFeb_thetao_C",
+          "author_SIC_150km_NovFeb_center_approx_fraction",
+          "direct_DEEPAA_coastal_polynya_fraction"
+        ],
+        "coefficients_native_units": {
+          "mean_doy_centered": {
+            "estimate": -0.020544395094829093,
+            "se": 0.008771658330545076,
+            "ci95": [
+              -0.04128607110992185,
+              0.00019728092026366495
+            ]
+          },
+          "mean_doy_sq": {
+            "estimate": 0.000401100307902582,
+            "se": 0.00021611200136296093,
+            "ci95": [
+              -0.00010992337158052817,
+              0.0009121239873856922
+            ]
+          },
+          "GLORYS_NovFeb_thetao_C": {
+            "estimate": -0.12650651179096611,
+            "se": 0.28064876940766265,
+            "ci95": [
+              -0.7901353981119963,
+              0.537122374530064
+            ]
+          },
+          "author_SIC_150km_NovFeb_center_approx_fraction": {
+            "estimate": 0.4958089913816343,
+            "se": 1.6068389713330322,
+            "ci95": [
+              -3.3037614086368556,
+              4.295379391400124
+            ]
+          },
+          "direct_DEEPAA_coastal_polynya_fraction": {
+            "estimate": -10.031091429244873,
+            "se": 2.12139048037279,
+            "ci95": [
+              -15.047382806232438,
+              -5.014800052257308
+            ]
+          }
+        },
+        "polynya_per_10pp": {
+          "estimate": -1.0031091429244874,
+          "se": 0.212139048037279,
+          "ci95": [
+            -1.5047382806232439,
+            -0.5014800052257309
+          ]
+        }
+      },
+      "M_SP": {
+        "n": 425,
+        "sites": 82,
+        "reporting_regions": 8,
+        "seasons": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010
+        ],
+        "fixed_effect_design_rank": 123,
+        "retained_slopes_k": 6,
+        "cr1_correction": 1.1564950562563927,
+        "interval_t_df": 7,
+        "sse": 282.68785135058437,
+        "response": "predicted_d15N_season_day_equal",
+        "features": [
+          "mean_doy_centered",
+          "mean_doy_sq",
+          "GLORYS_NovFeb_thetao_C",
+          "author_SIC_150km_NovFeb_center_approx_fraction",
+          "GLORYS_NovFeb_salinity",
+          "direct_DEEPAA_coastal_polynya_fraction"
+        ],
+        "coefficients_native_units": {
+          "mean_doy_centered": {
+            "estimate": -0.018866720408084067,
+            "se": 0.007971551570685588,
+            "ci95": [
+              -0.037716444574949756,
+              -1.6996241218376895e-05
+            ]
+          },
+          "mean_doy_sq": {
+            "estimate": 0.0003283596606319243,
+            "se": 0.00022047792095162812,
+            "ci95": [
+              -0.00019298777819105238,
+              0.000849707099454901
+            ]
+          },
+          "GLORYS_NovFeb_thetao_C": {
+            "estimate": -0.2706543660353771,
+            "se": 0.24880717592074883,
+            "ci95": [
+              -0.8589898481878919,
+              0.31768111611713773
+            ]
+          },
+          "author_SIC_150km_NovFeb_center_approx_fraction": {
+            "estimate": 1.723103662683215,
+            "se": 1.394485850666724,
+            "ci95": [
+              -1.5743313983063136,
+              5.020538723672743
+            ]
+          },
+          "GLORYS_NovFeb_salinity": {
+            "estimate": 0.6462062176453052,
+            "se": 0.20827554406020762,
+            "ci95": [
+              0.1537128151468568,
+              1.1386996201437536
+            ]
+          },
+          "direct_DEEPAA_coastal_polynya_fraction": {
+            "estimate": -9.216089250042925,
+            "se": 1.9568343985254004,
+            "ci95": [
+              -13.843267325147066,
+              -4.588911174938785
+            ]
+          }
+        },
+        "polynya_per_10pp": {
+          "estimate": -0.9216089250042926,
+          "se": 0.19568343985254005,
+          "ci95": [
+            -1.3843267325147066,
+            -0.4588911174938785
+          ]
+        }
+      }
+    },
+    "author_R1000_mean_Y": {
+      "M_P": {
+        "n": 425,
+        "sites": 82,
+        "reporting_regions": 8,
+        "seasons": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010
+        ],
+        "fixed_effect_design_rank": 123,
+        "retained_slopes_k": 5,
+        "cr1_correction": 1.1537414965986394,
+        "interval_t_df": 7,
+        "sse": 290.52364458321523,
+        "response": "author_R1000_delta15N_season_day_equal",
+        "features": [
+          "mean_doy_centered",
+          "mean_doy_sq",
+          "GLORYS_NovFeb_thetao_C",
+          "author_SIC_150km_NovFeb_center_approx_fraction",
+          "direct_DEEPAA_coastal_polynya_fraction"
+        ],
+        "coefficients_native_units": {
+          "mean_doy_centered": {
+            "estimate": -0.02080510183113919,
+            "se": 0.008827573614933732,
+            "ci95": [
+              -0.04167899648373208,
+              6.879282145369134e-05
+            ]
+          },
+          "mean_doy_sq": {
+            "estimate": 0.00040621062474922404,
+            "se": 0.00021762516307164995,
+            "ci95": [
+              -0.00010839111360683385,
+              0.000920812363105282
+            ]
+          },
+          "GLORYS_NovFeb_thetao_C": {
+            "estimate": -0.13565025248902307,
+            "se": 0.2766141837721456,
+            "ci95": [
+              -0.7897388597711816,
+              0.5184383547931355
+            ]
+          },
+          "author_SIC_150km_NovFeb_center_approx_fraction": {
+            "estimate": 0.5088795107637963,
+            "se": 1.6094540850219012,
+            "ci95": [
+              -3.2968746505040656,
+              4.3146336720316585
+            ]
+          },
+          "direct_DEEPAA_coastal_polynya_fraction": {
+            "estimate": -10.233403199273322,
+            "se": 2.172592044539703,
+            "ci95": [
+              -15.370767036609454,
+              -5.096039361937191
+            ]
+          }
+        },
+        "polynya_per_10pp": {
+          "estimate": -1.0233403199273323,
+          "se": 0.21725920445397032,
+          "ci95": [
+            -1.5370767036609454,
+            -0.5096039361937191
+          ]
+        }
+      },
+      "M_SP": {
+        "n": 425,
+        "sites": 82,
+        "reporting_regions": 8,
+        "seasons": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010
+        ],
+        "fixed_effect_design_rank": 123,
+        "retained_slopes_k": 6,
+        "cr1_correction": 1.1564950562563927,
+        "interval_t_df": 7,
+        "sse": 285.9721063503877,
+        "response": "author_R1000_delta15N_season_day_equal",
+        "features": [
+          "mean_doy_centered",
+          "mean_doy_sq",
+          "GLORYS_NovFeb_thetao_C",
+          "author_SIC_150km_NovFeb_center_approx_fraction",
+          "GLORYS_NovFeb_salinity",
+          "direct_DEEPAA_coastal_polynya_fraction"
+        ],
+        "coefficients_native_units": {
+          "mean_doy_centered": {
+            "estimate": -0.019112931082851007,
+            "se": 0.008011766741077104,
+            "ci95": [
+              -0.03805774901690641,
+              -0.00016811314879560182
+            ]
+          },
+          "mean_doy_sq": {
+            "estimate": 0.00033284145699848697,
+            "se": 0.00022198140343922718,
+            "ci95": [
+              -0.00019206115297651144,
+              0.0008577440669734854
+            ]
+          },
+          "GLORYS_NovFeb_thetao_C": {
+            "estimate": -0.28104362601256716,
+            "se": 0.24626692516271667,
+            "ci95": [
+              -0.8633723696175122,
+              0.30128511759237786
+            ]
+          },
+          "author_SIC_150km_NovFeb_center_approx_fraction": {
+            "estimate": 1.7467787046390635,
+            "se": 1.3925626812628118,
+            "ci95": [
+              -1.5461087833380533,
+              5.03966619261618
+            ]
+          },
+          "GLORYS_NovFeb_salinity": {
+            "estimate": 0.651789806153033,
+            "se": 0.2080772778181248,
+            "ci95": [
+              0.15976522881888583,
+              1.1438143834871801
+            ]
+          },
+          "direct_DEEPAA_coastal_polynya_fraction": {
+            "estimate": -9.411358938647057,
+            "se": 2.0031682622192934,
+            "ci95": [
+              -14.148099191511772,
+              -4.674618685782343
+            ]
+          }
+        },
+        "polynya_per_10pp": {
+          "estimate": -0.9411358938647058,
+          "se": 0.20031682622192937,
+          "ci95": [
+            -1.4148099191511774,
+            -0.46746186857823424
+          ]
+        }
+      }
+    },
+    "interpretation": "Dropping FE-absorbed single-site regions leaves coefficients and SSE unchanged, while the source CR1 correction and t reference use eight contributing groups. This is a post-result support sensitivity, not independent replication or proof of causal identification."
+  },
+  "temporal358_original_single_plsr_joint": {
+    "n": 358,
+    "sites": 85,
+    "reporting_regions": 11,
+    "seasons": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009
+    ],
+    "fixed_effect_design_rank": 126,
+    "retained_slopes_k": 7,
+    "cr1_correction": 1.1188034188034188,
+    "interval_t_df": 10,
+    "sse": 238.75063379746027,
+    "response": "predicted_d15N_season_day_equal",
+    "features": [
+      "mean_doy_centered",
+      "mean_doy_sq",
+      "GLORYS_NovFeb_thetao_C",
+      "author_SIC_150km_NovFeb_center_approx_fraction",
+      "GLORYS_NovFeb_salinity",
+      "P0",
+      "P1"
+    ],
+    "coefficients_native_units": {
+      "mean_doy_centered": {
+        "estimate": -0.01650360724159343,
+        "se": 0.007895131133367204,
+        "ci95": [
+          -0.03409505566137532,
+          0.001087841178188463
+        ]
+      },
+      "mean_doy_sq": {
+        "estimate": 0.00023607217538699105,
+        "se": 0.00025054470128774945,
+        "ci95": [
+          -0.00032217620771153897,
+          0.0007943205584855211
+        ]
+      },
+      "GLORYS_NovFeb_thetao_C": {
+        "estimate": -0.2490336254775793,
+        "se": 0.3983349889028682,
+        "ci95": [
+          -1.1365792903575813,
+          0.6385120394024226
+        ]
+      },
+      "author_SIC_150km_NovFeb_center_approx_fraction": {
+        "estimate": 2.4619235829402526,
+        "se": 1.9286833050201282,
+        "ci95": [
+          -1.8354506221523885,
+          6.759297788032894
+        ]
+      },
+      "GLORYS_NovFeb_salinity": {
+        "estimate": 0.9421122855498925,
+        "se": 0.2135253660310099,
+        "ci95": [
+          0.4663481216116091,
+          1.4178764494881757
+        ]
+      },
+      "P0": {
+        "estimate": -13.790334706811686,
+        "se": 4.000785578421152,
+        "ci95": [
+          -22.704640492558234,
+          -4.876028921065139
+        ]
+      },
+      "P1": {
+        "estimate": -6.91340146123546,
+        "se": 3.3567906174352506,
+        "ci95": [
+          -14.392797053925936,
+          0.5659941314550148
+        ]
+      }
+    },
+    "P0_per_10pp": {
+      "estimate": -1.3790334706811687,
+      "se": 0.40007855784211527,
+      "ci95": [
+        -2.2704640492558235,
+        -0.48760289210651386
+      ]
+    },
+    "P1_per_10pp": {
+      "estimate": -0.691340146123546,
+      "se": 0.3356790617435251,
+      "ci95": [
+        -1.4392797053925936,
+        0.05659941314550154
+      ]
+    },
+    "P0_minus_P1_per_10pp": {
+      "estimate": -0.6876933245576227,
+      "se": 0.27309555869976043,
+      "ci95": [
+        -1.2961881492014569,
+        -0.07919849991378836
+      ]
+    },
+    "P0_P1_covariance_per_10pp_squared": 0.09908105037825289,
+    "contrast_uses_joint_covariance": true
+  },
+  "temporal358_observation_support": {
+    "criterion": "Each listed exposure has sum of squared site + region-season FE residuals > 1e-16",
+    "threshold": 1e-16,
+    "reporting_regions": 11,
+    "informative_regions": [
+      "Enderby Land",
+      "Mac. Robertson Land",
+      "Marie Byrd Land",
+      "Northeast Antarctic Peninsula",
+      "Princess Elizabeth Land",
+      "Southwest Antarctic Peninsula",
+      "Victoria Land",
+      "Wilkes Land"
+    ],
+    "informative_region_count": 8,
+    "zero_information_regions": [
+      "Adelie Land",
+      "Palmer Land",
+      "Queen Mary Land"
+    ],
+    "informative_rows": 347,
+    "by_region": [
+      {
+        "region": "Adelie Land",
+        "rows": 4,
+        "sites": 1,
+        "exposure_residual_ss": {
+          "P0": 3.159728815010309e-34,
+          "P1": 1.023150282955719e-34
+        },
+        "informative_for_all_listed_exposures": false
+      },
+      {
+        "region": "Enderby Land",
+        "rows": 20,
+        "sites": 5,
+        "exposure_residual_ss": {
+          "P0": 0.0043366481631083465,
+          "P1": 0.004583601846579164
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Mac. Robertson Land",
+        "rows": 31,
+        "sites": 7,
+        "exposure_residual_ss": {
+          "P0": 0.005613174278955957,
+          "P1": 0.005434309712880099
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Marie Byrd Land",
+        "rows": 27,
+        "sites": 7,
+        "exposure_residual_ss": {
+          "P0": 0.003449487261465805,
+          "P1": 0.0033046028574733686
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Northeast Antarctic Peninsula",
+        "rows": 61,
+        "sites": 13,
+        "exposure_residual_ss": {
+          "P0": 0.002854543548358901,
+          "P1": 0.002674729150990808
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Palmer Land",
+        "rows": 5,
+        "sites": 1,
+        "exposure_residual_ss": {
+          "P0": 3.274080905458301e-33,
+          "P1": 1.2037062152420224e-33
+        },
+        "informative_for_all_listed_exposures": false
+      },
+      {
+        "region": "Princess Elizabeth Land",
+        "rows": 36,
+        "sites": 6,
+        "exposure_residual_ss": {
+          "P0": 0.0021695437148280855,
+          "P1": 0.002556544633328635
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Queen Mary Land",
+        "rows": 2,
+        "sites": 1,
+        "exposure_residual_ss": {
+          "P0": 8.185202263645752e-34,
+          "P1": 3.851859888774472e-34
+        },
+        "informative_for_all_listed_exposures": false
+      },
+      {
+        "region": "Southwest Antarctic Peninsula",
+        "rows": 34,
+        "sites": 8,
+        "exposure_residual_ss": {
+          "P0": 0.003067852274293106,
+          "P1": 0.005290420709846041
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Victoria Land",
+        "rows": 78,
+        "sites": 20,
+        "exposure_residual_ss": {
+          "P0": 0.018893450058198487,
+          "P1": 0.04254231690994858
+        },
+        "informative_for_all_listed_exposures": true
+      },
+      {
+        "region": "Wilkes Land",
+        "rows": 60,
+        "sites": 16,
+        "exposure_residual_ss": {
+          "P0": 0.02235957478492368,
+          "P1": 0.017486460185988678
+        },
+        "informative_for_all_listed_exposures": true
+      }
+    ]
+  },
+  "temporal347_informative8_original_single_plsr_joint": {
+    "n": 347,
+    "sites": 82,
+    "reporting_regions": 8,
+    "seasons": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009
+    ],
+    "fixed_effect_design_rank": 115,
+    "retained_slopes_k": 7,
+    "cr1_correction": 1.1630252100840335,
+    "interval_t_df": 7,
+    "sse": 238.7506337974601,
+    "response": "predicted_d15N_season_day_equal",
+    "features": [
+      "mean_doy_centered",
+      "mean_doy_sq",
+      "GLORYS_NovFeb_thetao_C",
+      "author_SIC_150km_NovFeb_center_approx_fraction",
+      "GLORYS_NovFeb_salinity",
+      "P0",
+      "P1"
+    ],
+    "coefficients_native_units": {
+      "mean_doy_centered": {
+        "estimate": -0.016503607241593353,
+        "se": 0.008049650410492683,
+        "ci95": [
+          -0.035538005819088156,
+          0.0025307913359014535
+        ]
+      },
+      "mean_doy_sq": {
+        "estimate": 0.00023607217538698774,
+        "se": 0.00025544822796471446,
+        "ci95": [
+          -0.00036796689948477806,
+          0.0008401112502587535
+        ]
+      },
+      "GLORYS_NovFeb_thetao_C": {
+        "estimate": -0.24903362547758534,
+        "se": 0.4061309879178731,
+        "ci95": [
+          -1.2093808088315239,
+          0.7113135578763533
+        ]
+      },
+      "author_SIC_150km_NovFeb_center_approx_fraction": {
+        "estimate": 2.4619235829402917,
+        "se": 1.9664304614715606,
+        "ci95": [
+          -2.18794557532615,
+          7.111792741206733
+        ]
+      },
+      "GLORYS_NovFeb_salinity": {
+        "estimate": 0.9421122855499104,
+        "se": 0.21770437010956528,
+        "ci95": [
+          0.42732325231110113,
+          1.4569013187887196
+        ]
+      },
+      "P0": {
+        "estimate": -13.790334706811604,
+        "se": 4.079086810543688,
+        "ci95": [
+          -23.43584230337547,
+          -4.144827110247739
+        ]
+      },
+      "P1": {
+        "estimate": -6.9134014612354235,
+        "se": 3.4224879251690883,
+        "ci95": [
+          -15.00629940987372,
+          1.1794964874028722
+        ]
+      }
+    },
+    "P0_per_10pp": {
+      "estimate": -1.3790334706811604,
+      "se": 0.40790868105436884,
+      "ci95": [
+        -2.343584230337547,
+        -0.41448271102477385
+      ]
+    },
+    "P1_per_10pp": {
+      "estimate": -0.6913401461235424,
+      "se": 0.3422487925169089,
+      "ci95": [
+        -1.500629940987372,
+        0.11794964874028724
+      ]
+    },
+    "P0_minus_P1_per_10pp": {
+      "estimate": -0.687693324557618,
+      "se": 0.278440438677512,
+      "ci95": [
+        -1.3461003384785963,
+        -0.029286310636639667
+      ]
+    },
+    "P0_P1_covariance_per_10pp_squared": 0.1029973250839358,
+    "contrast_uses_joint_covariance": true
+  },
+  "author_R1000_mean_Y_same439_sensitivity": {
+    "M_P": {
+      "n": 439,
+      "sites": 85,
+      "reporting_regions": 11,
+      "seasons": [
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010
+      ],
+      "fixed_effect_design_rank": 137,
+      "retained_slopes_k": 5,
+      "cr1_correction": 1.1101382488479263,
+      "interval_t_df": 10,
+      "sse": 290.5236445832146,
+      "response": "author_R1000_delta15N_season_day_equal",
+      "features": [
+        "mean_doy_centered",
+        "mean_doy_sq",
+        "GLORYS_NovFeb_thetao_C",
+        "author_SIC_150km_NovFeb_center_approx_fraction",
+        "direct_DEEPAA_coastal_polynya_fraction"
+      ],
+      "coefficients_native_units": {
+        "mean_doy_centered": {
+          "estimate": -0.020805101831139226,
+          "se": 0.008659157208548767,
+          "ci95": [
+            -0.040098906432963745,
+            -0.0015112972293147078
+          ]
+        },
+        "mean_doy_sq": {
+          "estimate": 0.0004062106247492244,
+          "se": 0.00021347321266010474,
+          "ci95": [
+            -6.94373342370831e-05,
+            0.0008818585837355319
+          ]
+        },
+        "GLORYS_NovFeb_thetao_C": {
+          "estimate": -0.13565025248902463,
+          "se": 0.2713368143818522,
+          "ci95": [
+            -0.7402263505874175,
+            0.46892584560936823
+          ]
+        },
+        "author_SIC_150km_NovFeb_center_approx_fraction": {
+          "estimate": 0.5088795107637956,
+          "se": 1.5787481985501726,
+          "ci95": [
+            -3.008790687929184,
+            4.026549709456775
+          ]
+        },
+        "direct_DEEPAA_coastal_polynya_fraction": {
+          "estimate": -10.233403199273287,
+          "se": 2.1311423596497305,
+          "ci95": [
+            -14.981884289922556,
+            -5.484922108624017
+          ]
+        }
+      },
+      "polynya_per_10pp": {
+        "estimate": -1.0233403199273288,
+        "se": 0.21311423596497306,
+        "ci95": [
+          -1.4981884289922558,
+          -0.5484922108624017
+        ]
+      }
+    },
+    "M_SP": {
+      "n": 439,
+      "sites": 85,
+      "reporting_regions": 11,
+      "seasons": [
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010
+      ],
+      "fixed_effect_design_rank": 137,
+      "retained_slopes_k": 6,
+      "cr1_correction": 1.11270207852194,
+      "interval_t_df": 10,
+      "sse": 285.9721063503874,
+      "response": "author_R1000_delta15N_season_day_equal",
+      "features": [
+        "mean_doy_centered",
+        "mean_doy_sq",
+        "GLORYS_NovFeb_thetao_C",
+        "author_SIC_150km_NovFeb_center_approx_fraction",
+        "GLORYS_NovFeb_salinity",
+        "direct_DEEPAA_coastal_polynya_fraction"
+      ],
+      "coefficients_native_units": {
+        "mean_doy_centered": {
+          "estimate": -0.019112931082851094,
+          "se": 0.007858612159455112,
+          "ci95": [
+            -0.03662301015802478,
+            -0.0016028520076774092
+          ]
+        },
+        "mean_doy_sq": {
+          "estimate": 0.0003328414569984897,
+          "se": 0.0002177379612534618,
+          "ci95": [
+            -0.00015230895402263051,
+            0.0008179918680196099
+          ]
+        },
+        "GLORYS_NovFeb_thetao_C": {
+          "estimate": -0.2810436260125631,
+          "se": 0.24155923594639775,
+          "ci95": [
+            -0.8192711446808512,
+            0.257183892655725
+          ]
+        },
+        "author_SIC_150km_NovFeb_center_approx_fraction": {
+          "estimate": 1.7467787046390282,
+          "se": 1.3659421664969826,
+          "ci95": [
+            -1.2967301060992027,
+            4.790287515377259
+          ]
+        },
+        "GLORYS_NovFeb_salinity": {
+          "estimate": 0.6517898061530113,
+          "se": 0.2040996297588259,
+          "ci95": [
+            0.1970274914113574,
+            1.1065521208946651
+          ]
+        },
+        "direct_DEEPAA_coastal_polynya_fraction": {
+          "estimate": -9.411358938647094,
+          "se": 1.964875285522172,
+          "ci95": [
+            -13.789373901626668,
+            -5.03334397566752
+          ]
+        }
+      },
+      "polynya_per_10pp": {
+        "estimate": -0.9411358938647094,
+        "se": 0.1964875285522172,
+        "ci95": [
+          -1.378937390162667,
+          -0.5033343975667519
+        ]
+      }
+    }
+  },
+  "author_R1000_mean_Y_same358_joint": {
+    "n": 358,
+    "sites": 85,
+    "reporting_regions": 11,
+    "seasons": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009
+    ],
+    "fixed_effect_design_rank": 126,
+    "retained_slopes_k": 7,
+    "cr1_correction": 1.1188034188034188,
+    "interval_t_df": 10,
+    "sse": 241.8978520884869,
+    "response": "author_R1000_delta15N_season_day_equal",
+    "features": [
+      "mean_doy_centered",
+      "mean_doy_sq",
+      "GLORYS_NovFeb_thetao_C",
+      "author_SIC_150km_NovFeb_center_approx_fraction",
+      "GLORYS_NovFeb_salinity",
+      "P0",
+      "P1"
+    ],
+    "coefficients_native_units": {
+      "mean_doy_centered": {
+        "estimate": -0.016852842398213302,
+        "se": 0.007938499899742438,
+        "ci95": [
+          -0.03454092245131857,
+          0.0008352376548919661
+        ]
+      },
+      "mean_doy_sq": {
+        "estimate": 0.00023673531265478443,
+        "se": 0.0002519545182533313,
+        "ci95": [
+          -0.00032465433839894793,
+          0.0007981249637085167
+        ]
+      },
+      "GLORYS_NovFeb_thetao_C": {
+        "estimate": -0.2647401294825006,
+        "se": 0.4044786633248758,
+        "ci95": [
+          -1.165974754036132,
+          0.6364944950711308
+        ]
+      },
+      "author_SIC_150km_NovFeb_center_approx_fraction": {
+        "estimate": 2.495486440554099,
+        "se": 1.966572428304578,
+        "ci95": [
+          -1.8863099921963227,
+          6.877282873304521
+        ]
+      },
+      "GLORYS_NovFeb_salinity": {
+        "estimate": 0.9650885910914078,
+        "se": 0.21369613746342606,
+        "ci95": [
+          0.4889439246897487,
+          1.4412332574930669
+        ]
+      },
+      "P0": {
+        "estimate": -14.100225656660202,
+        "se": 4.057701868520235,
+        "ci95": [
+          -23.14134883968744,
+          -5.059102473632967
+        ]
+      },
+      "P1": {
+        "estimate": -7.167538800911682,
+        "se": 3.334039920498244,
+        "ci95": [
+          -14.596242681847048,
+          0.2611650800236829
+        ]
+      }
+    },
+    "P0_per_10pp": {
+      "estimate": -1.4100225656660204,
+      "se": 0.40577018685202354,
+      "ci95": [
+        -2.3141348839687437,
+        -0.5059102473632968
+      ]
+    },
+    "P1_per_10pp": {
+      "estimate": -0.7167538800911682,
+      "se": 0.3334039920498244,
+      "ci95": [
+        -1.459624268184705,
+        0.02611650800236831
+      ]
+    },
+    "P0_minus_P1_per_10pp": {
+      "estimate": -0.6932686855748521,
+      "se": 0.27646962650237156,
+      "ci95": [
+        -1.3092814017789203,
+        -0.07725596937078405
+      ]
+    },
+    "P0_P1_covariance_per_10pp_squared": 0.09968610603716233,
+    "contrast_uses_joint_covariance": true
+  },
+  "author_R1000_mean_Y_informative8_joint": {
+    "n": 347,
+    "sites": 82,
+    "reporting_regions": 8,
+    "seasons": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009
+    ],
+    "fixed_effect_design_rank": 115,
+    "retained_slopes_k": 7,
+    "cr1_correction": 1.1630252100840335,
+    "interval_t_df": 7,
+    "sse": 241.897852088487,
+    "response": "author_R1000_delta15N_season_day_equal",
+    "features": [
+      "mean_doy_centered",
+      "mean_doy_sq",
+      "GLORYS_NovFeb_thetao_C",
+      "author_SIC_150km_NovFeb_center_approx_fraction",
+      "GLORYS_NovFeb_salinity",
+      "P0",
+      "P1"
+    ],
+    "coefficients_native_units": {
+      "mean_doy_centered": {
+        "estimate": -0.01685284239821324,
+        "se": 0.00809386796713079,
+        "ci95": [
+          -0.03599179888248069,
+          0.002286114086054211
+        ]
+      },
+      "mean_doy_sq": {
+        "estimate": 0.0002367353126547824,
+        "se": 0.00025688563711270866,
+        "ci95": [
+          -0.0003707026947477918,
+          0.0008441733200573566
+        ]
+      },
+      "GLORYS_NovFeb_thetao_C": {
+        "estimate": -0.26474012948250497,
+        "se": 0.41239490304450543,
+        "ci95": [
+          -1.2398991184547974,
+          0.7104188594897873
+        ]
+      },
+      "author_SIC_150km_NovFeb_center_approx_fraction": {
+        "estimate": 2.4954864405541377,
+        "se": 2.0050611303797514,
+        "ci95": [
+          -2.2457297342678633,
+          7.236702615376139
+        ]
+      },
+      "GLORYS_NovFeb_salinity": {
+        "estimate": 0.9650885910914249,
+        "se": 0.21787848378897487,
+        "ci95": [
+          0.4498878444237496,
+          1.4802893377591002
+        ]
+      },
+      "P0": {
+        "estimate": -14.100225656660129,
+        "se": 4.1371170357825715,
+        "ci95": [
+          -23.882952931149248,
+          -4.317498382171008
+        ]
+      },
+      "P1": {
+        "estimate": -7.167538800911687,
+        "se": 3.399291963779167,
+        "ci95": [
+          -15.205587016708364,
+          0.8705094148849915
+        ]
+      }
+    },
+    "P0_per_10pp": {
+      "estimate": -1.410022565666013,
+      "se": 0.4137117035782572,
+      "ci95": [
+        -2.388295293114925,
+        -0.4317498382171009
+      ]
+    },
+    "P1_per_10pp": {
+      "estimate": -0.7167538800911687,
+      "se": 0.3399291963779167,
+      "ci95": [
+        -1.5205587016708364,
+        0.08705094148849901
+      ]
+    },
+    "P0_minus_P1_per_10pp": {
+      "estimate": -0.6932686855748443,
+      "se": 0.2818805419276712,
+      "ci95": [
+        -1.3598102510691321,
+        -0.026727120080556444
+      ]
+    },
+    "P0_P1_covariance_per_10pp_squared": 0.10362629615516122,
+    "contrast_uses_joint_covariance": true
+  },
+  "explicit_projection_max_abs_dummy_crossproduct": {
+    "main439": 6.139089236967266e-12,
+    "temporal358": 7.958078640513122e-12,
+    "informative347": 9.549694368615746e-12,
+    "main425_new_support_sensitivity": 9.777068044058979e-12
+  },
+  "checks": [
+    {
+      "check": "Original Y identical before author mean replacement",
+      "max_abs_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "check": "358 preserves original439 mean_doy_centered",
+      "max_abs_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "check": "358 preserves original439 mean_doy_sq",
+      "max_abs_difference": 2.842170943040401e-14,
+      "absolute_tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "check": "358 preserves original439 GLORYS_NovFeb_thetao_C",
+      "max_abs_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "check": "358 preserves original439 author_SIC_150km_NovFeb_center_approx_fraction",
+      "max_abs_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "check": "358 preserves original439 GLORYS_NovFeb_salinity",
+      "max_abs_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "check": "358 preserves original439 predicted_d15N_season_day_equal",
+      "max_abs_difference": 0.0,
+      "absolute_tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "check": "358 P0 preserves original physical exposure",
+      "max_abs_difference": 3.570060913560269e-14,
+      "absolute_tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "check": "M0 original439 SSE",
+      "max_abs_difference": 2.8421709430404007e-13,
+      "absolute_tolerance": 1e-06,
+      "passed": true
+    },
+    {
+      "check": "M0 original439 mean_doy_centered",
+      "max_abs_difference": 4.85722573273506e-16,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M0 original439 mean_doy_sq",
+      "max_abs_difference": 2.0383000842727483e-17,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M0 original439 GLORYS_NovFeb_thetao_C",
+      "max_abs_difference": 3.351208199831035e-13,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M0 original439 author_SIC_150km_NovFeb_center_approx_fraction",
+      "max_abs_difference": 9.681144774731365e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_S original439 SSE",
+      "max_abs_difference": 5.684341886080802e-14,
+      "absolute_tolerance": 1e-06,
+      "passed": true
+    },
+    {
+      "check": "M_S original439 mean_doy_centered",
+      "max_abs_difference": 1.1102230246251565e-16,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_S original439 mean_doy_sq",
+      "max_abs_difference": 2.3310346708438345e-18,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_S original439 GLORYS_NovFeb_thetao_C",
+      "max_abs_difference": 1.304512053934559e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_S original439 author_SIC_150km_NovFeb_center_approx_fraction",
+      "max_abs_difference": 4.973799150320701e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_S original439 GLORYS_NovFeb_salinity",
+      "max_abs_difference": 3.1308289294429414e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_P original439 SSE",
+      "max_abs_difference": 2.2737367544323206e-13,
+      "absolute_tolerance": 1e-06,
+      "passed": true
+    },
+    {
+      "check": "M_P original439 mean_doy_centered",
+      "max_abs_difference": 4.85722573273506e-16,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_P original439 mean_doy_sq",
+      "max_abs_difference": 2.4557179206796675e-17,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_P original439 GLORYS_NovFeb_thetao_C",
+      "max_abs_difference": 2.680078381445128e-13,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_P original439 author_SIC_150km_NovFeb_center_approx_fraction",
+      "max_abs_difference": 7.993605777301127e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_P original439 direct_DEEPAA_coastal_polynya_fraction",
+      "max_abs_difference": 4.085620730620576e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_SP original439 SSE",
+      "max_abs_difference": 1.1368683772161603e-13,
+      "absolute_tolerance": 1e-06,
+      "passed": true
+    },
+    {
+      "check": "M_SP original439 mean_doy_centered",
+      "max_abs_difference": 1.0408340855860843e-16,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_SP original439 mean_doy_sq",
+      "max_abs_difference": 3.0357660829594124e-18,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_SP original439 GLORYS_NovFeb_thetao_C",
+      "max_abs_difference": 9.880984919163893e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_SP original439 author_SIC_150km_NovFeb_center_approx_fraction",
+      "max_abs_difference": 3.930189507173054e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_SP original439 GLORYS_NovFeb_salinity",
+      "max_abs_difference": 2.142730437526552e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_SP original439 direct_DEEPAA_coastal_polynya_fraction",
+      "max_abs_difference": 3.4638958368304884e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M0 residual SSE reduction",
+      "max_abs_difference": 0.0,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_S residual SSE reduction",
+      "max_abs_difference": 1.1102230246251565e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_P residual SSE reduction",
+      "max_abs_difference": 1.1102230246251565e-16,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_SP residual SSE reduction",
+      "max_abs_difference": 5.551115123125783e-16,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "M_SP incremental reduction vs M_S",
+      "max_abs_difference": 5.551115123125783e-16,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "FE-only P-S correlation, rounded source report",
+      "max_abs_difference": 7.184525539355446e-07,
+      "absolute_tolerance": 5e-06,
+      "passed": true
+    },
+    {
+      "check": "New support sensitivity preserves SSE: original single PLSR M_P",
+      "max_abs_difference": 2.2737367544323206e-13,
+      "absolute_tolerance": 1e-06,
+      "passed": true
+    },
+    {
+      "check": "New support sensitivity preserves all slopes: original single PLSR M_P",
+      "max_abs_difference": 4.263256414560601e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "New support sensitivity preserves SSE: original single PLSR M_SP",
+      "max_abs_difference": 0.0,
+      "absolute_tolerance": 1e-06,
+      "passed": true
+    },
+    {
+      "check": "New support sensitivity preserves all slopes: original single PLSR M_SP",
+      "max_abs_difference": 4.973799150320701e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "New support sensitivity preserves SSE: author R1000 mean M_P",
+      "max_abs_difference": 6.252776074688882e-13,
+      "absolute_tolerance": 1e-06,
+      "passed": true
+    },
+    {
+      "check": "New support sensitivity preserves all slopes: author R1000 mean M_P",
+      "max_abs_difference": 3.552713678800501e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "New support sensitivity preserves SSE: author R1000 mean M_SP",
+      "max_abs_difference": 3.410605131648481e-13,
+      "absolute_tolerance": 1e-06,
+      "passed": true
+    },
+    {
+      "check": "New support sensitivity preserves all slopes: author R1000 mean M_SP",
+      "max_abs_difference": 3.730349362740526e-14,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "439 M_P old Y",
+      "max_abs_difference": 5.10702591327572e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "439 M_P author R1000 mean Y",
+      "max_abs_difference": 1.7763568394002505e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "439 M_SP old Y",
+      "max_abs_difference": 2.886579864025407e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "439 M_SP author R1000 mean Y",
+      "max_abs_difference": 3.9968028886505635e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "358 joint P0 old Y",
+      "max_abs_difference": 4.107825191113079e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "358 joint P0 author R1000 mean Y",
+      "max_abs_difference": 6.439293542825908e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "358 joint P1 old Y",
+      "max_abs_difference": 4.440892098500626e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "358 joint P1 author R1000 mean Y",
+      "max_abs_difference": 5.329070518200751e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "358 covariance-correct difference old Y",
+      "max_abs_difference": 7.105427357601002e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "358 covariance-correct difference author R1000 mean Y",
+      "max_abs_difference": 9.325873406851315e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "347 informative8 difference old Y",
+      "max_abs_difference": 4.9960036108132044e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    },
+    {
+      "check": "347 informative8 difference author R1000 mean Y",
+      "max_abs_difference": 1.9984014443252818e-15,
+      "absolute_tolerance": 1e-08,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Reproduction uses the original already-selected historical optical pixels and frozen derived physical exposure; native satellite extraction is not repeated.",
+    "The mean outcome of the original-author 1000 calibration fits is reused; laboratory calibrations and their distribution are not refitted or independently validated here.",
+    "The nominal region-cluster intervals follow the original source convention and do not adjust for the prior exploratory search or guarantee small-cluster coverage.",
+    "Numerical agreement is not an independent biological replication, causal confirmation, new-era validation, direct diet measurement, or population forecast.",
+    "The temporal informative8 sensitivity was already frozen. The main425 informative8 covariance sensitivity is newly requested on 2026-11-21 and explicitly separated from original frozen 11-region intervals."
+  ],
+  "new_causal_confirmation": false,
+  "new_model_or_outcome_selection": false,
+  "new_post2013_ecological_replication": false
+}

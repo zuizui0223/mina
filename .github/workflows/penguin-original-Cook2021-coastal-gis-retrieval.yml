@@ -1,0 +1,91 @@
+name: Antarctic Peninsula Cook2021 actual original 1843-2008 historic coastline archive
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/retrieve_original_Cook2021_historic_glacier_fronts.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/map_original_Cook2021_coastline_dates_to_gentoo_sites.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/test_Cook2021_Biscoe_1989_1998_coastline_lineage.py'
+      - '.github/workflows/penguin-original-Cook2021-coastal-gis-retrieval.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publisher-original-historic-ice-coastline-shapefile:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python shapefile reader
+        run: python -m pip install --disable-pip-version-check pyshp "shapely>=2,<3" "pyproj>=3,<4"
+      - name: Compile and fetch actual official ZIP and reconstruct original geographic source schema
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/retrieve_original_Cook2021_historic_glacier_fronts.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/retrieve_original_Cook2021_historic_glacier_fronts.py \
+             --out build/cook2021_original_ice_front_zip
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/cook2021_original_ice_front_zip")
+          d=json.loads((root/"Cook2021_original_GIS_source_inspection_receipt.json").read_text())
+          assert d['status']=='PASS_ACTUAL_ORIGINAL_COOK2021_HISTORIC_COASTAL_CHANGE_SOURCE_ARCHIVE'
+          assert d['n_original_archive_bytes']>5_000_000
+          assert d['n_original_archive_bytes']<35_000_000
+          assert d['size_equal_official_repository_metadata']
+          assert d['vector_validation']['zip_has_usable_shapefile']
+          assert d['glacier_front_lines_not_ice_free_land_polygons']
+          assert d['future_colony_date_or_climate_effect_not_inferred']
+          print('PASS original full BAS 2021 historical Antarctic Peninsula shapefile archive and explicit glacier-front inference limit')
+          PY
+      - name: Match original 13436 coastline records and dated ice vs rock coast within genuine source-nest sites
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/map_original_Cook2021_coastline_dates_to_gentoo_sites.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/map_original_Cook2021_coastline_dates_to_gentoo_sites.py \
+            --original-source-zip build/cook2021_original_ice_front_zip/Cook2021_Coastal_change_EPSG_original.zip \
+            --out build/cook2021_original_ice_front_zip
+          python - <<'PY'
+          import json,csv
+          from pathlib import Path
+          p=Path('build/cook2021_original_ice_front_zip')
+          x=json.loads((p/'Cook2021_official_coastline_local_year_support_receipt.json').read_text())
+          with (p/'Cook2021_original_coast_features_within5km.csv').open() as f:
+              rows=list(csv.DictReader(f))
+          assert x['status']=='PASS_AUTHENTIC_COOK_2021_GLACIER_COASTLINE_SITEYEAR_SOURCE_GRAIN'
+          assert x['n_publisher_original_feature_rows']==13436
+          assert x['n_original_site_clusters']==3
+          assert len(x['results'])==6
+          assert len(rows)==x['n_original_site_proximal_feature_joins_within5km']
+          assert x['no_annual_rock_opportunity_estimate']
+          assert x['never_impute_unsurveyed_glacier_years']
+          assert x['not_a_counterfactual_true_unoccupied_breeding_patch_design']
+          print('PASS publisher-original glacier/rock coastline source year/type support without assuming new nesting land')
+          PY
+      - name: Check identical 1989/1998 Biscoe rock/ice line geometry in the original source
+        run: |
+          python -m py_compile research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/test_Cook2021_Biscoe_1989_1998_coastline_lineage.py
+          python research/climate-penguin/macro_panantarctic_v1/breeding_state_transitions_20261117/test_Cook2021_Biscoe_1989_1998_coastline_lineage.py \
+            --original-source-zip build/cook2021_original_ice_front_zip/Cook2021_Coastal_change_EPSG_original.zip \
+            --out build/cook2021_original_ice_front_zip
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads((Path('build/cook2021_original_ice_front_zip')/'Cook2021_Biscoe_1989_1998_rock_ice_lineage_receipt.json').read_text())
+          assert x['status']=='PASS_COOK2021_BISCOE_1989_1998_GIS_LINEAGE_EQUALITY_CHECK'
+          assert x['n_original_local_source_features']==17
+          assert len(x['by_type'])==2
+          assert all(z['mapped_line_not_true_land_change'] for z in x['by_type'])
+          assert x['same_year_coastline_missing_segments_dont_imply_change']
+          assert x['no_direct_ice_ramp_break_or_new_bare_rock_area']
+          print('PASS exact original mapped-line geometry lineage, never infer new rock or direct colony mechanism')
+          PY
+      - name: Preserve original Cook 2021 archive and all source-schema QA receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-Cook2021-genuine-1843-2008-glacier-front-original-GIS
+          path: build/cook2021_original_ice_front_zip/
+          if-no-files-found: warn
+          retention-days: 30

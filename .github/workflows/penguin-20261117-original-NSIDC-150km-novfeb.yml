@@ -1,0 +1,81 @@
+name: Penguin source original NSIDC v4 Nov-Feb 150km sea ice
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - 'research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/rebuild_author_sic150_novfeb.py'
+      - '.github/workflows/penguin-20261117-original-NSIDC-150km-novfeb.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-ice-months:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original NetCDF and Antarctic projection readers
+        run: python -m pip install --disable-pip-version-check 'numpy<3' 'pandas<3' 'xarray==2024.10.0' 'h5netcdf' 'netCDF4' 'h5py' 'pyproj==3.7.1'
+      - name: Verify fixed 150km native grid computation using synthetic test
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/rebuild_author_sic150_novfeb.py --self-test --archive unused --centroids unused --matched unused --out unused
+      - name: Retrieve publisher-MD5-confirmed author geographic support and original GLORYS site-season roster
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p build/nsidc_source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14324288144/zip" > build/nsidc_source/author_source_centroids.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14326721399/zip" > build/nsidc_source/glorys_true_source_site_seasons.zip
+          python - <<'PY'
+          import zipfile,json
+          from pathlib import Path
+          p=Path('build/nsidc_source')
+          for zipname,member in (
+              ('author_source_centroids.zip','source_site_projected_centroids.csv'),
+              ('glorys_true_source_site_seasons.zip','original_892_matched_site_season_NovFeb_GLORYS.csv')):
+              with zipfile.ZipFile(p/zipname) as z:
+                  assert z.testzip() is None
+                  (p/member).write_bytes(z.read(member))
+          PY
+      - name: Reacquire original Youngflesh publisher archive and verify fixed 256MB source MD5
+        run: |
+          python - <<'PY'
+          import hashlib,json,urllib.request
+          from pathlib import Path
+          root=Path('build/nsidc_source')
+          headers={'User-Agent':'mina-antarctic-penguin-source-reproduction/0.4'}
+          with urllib.request.urlopen(urllib.request.Request('https://zenodo.org/api/records/17409948',headers=headers),timeout=60) as response:
+              meta=json.load(response)
+          assert meta['id']==17409948
+          d=next(v for v in meta['files'] if v['key']=='data.zip')
+          assert d['size']==256425816 and d['checksum']=='md5:e29a2f68c84e3a515044d554540def2f'
+          h=hashlib.md5();n=0
+          url=d['links'].get('content') or d['links']['self']
+          with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=240) as source,(root/'publisher_verified.zip').open('wb') as dest:
+              while True:
+                  chunk=source.read(1048576)
+                  if not chunk: break
+                  dest.write(chunk); h.update(chunk);n+=len(chunk)
+                  if n>256425816:raise ValueError('Overlong source stream')
+          assert n==256425816 and h.hexdigest()=='e29a2f68c84e3a515044d554540def2f'
+          print('PASS original publisher ZIP full MD5',h.hexdigest(),flush=True)
+          PY
+      - name: Extract original NOAA/NSIDC monthly sea-ice support at identical author 150km Nov-Feb source seasons
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/rebuild_author_sic150_novfeb.py \
+            --archive build/nsidc_source/publisher_verified.zip \
+            --centroids build/nsidc_source/source_site_projected_centroids.csv \
+            --matched build/nsidc_source/original_892_matched_site_season_NovFeb_GLORYS.csv \
+            --out build/nsidc_original_150km_source_only
+      - name: Preserve source-only physical series and fail-closed metadata; no raw publisher NetCDF redistribution
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-original-NSIDC-v4-author150km-NovFeb-image-892-source-only
+          path: build/nsidc_original_150km_source_only/
+          if-no-files-found: warn
+          retention-days: 30
