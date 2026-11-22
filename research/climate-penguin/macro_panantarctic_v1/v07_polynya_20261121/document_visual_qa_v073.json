@@ -1,0 +1,36 @@
+{
+  "status": "PASS_V073_RENDERED_PAGE_LAYOUT_REVIEW_WITH_DECLARED_SCOPE",
+  "date": "2026-11-22",
+  "type": "Author-review Word document render and visual layout QA, not an ecological result",
+  "document_build": "python-docx builder v0.7.3",
+  "render_engine": "/home/oai/skills/docx/render_docx.py (LibreOffice)",
+  "main": {
+    "name": "Polynya_foodweb_manuscript_v07.docx",
+    "sha256": "44f2de6a37cd74666818fe0531a0c85af2e85db877aa69f5b12b158af39ff3dd",
+    "bytes": 1719285,
+    "pages": 22
+  },
+  "supplement": {
+    "name": "Polynya_foodweb_supplement_v07.docx",
+    "sha256": "37633fc0a5918cd7a0fc611194d49e1dcd93a0b9d57beaeef52cdf393d8d0bde",
+    "bytes": 48972,
+    "pages": 8
+  },
+  "other_documents": {
+    "figure_packet_pages": 5,
+    "figure_alt_pages": 2,
+    "cover_letter_pages": 1,
+    "author_information_pages": 2,
+    "rebuilt_in_same_toolchain": true
+  },
+  "total_author_review_docx_pages": 40,
+  "review_method": "All pages in main (22) and supplement (8) were rendered and visually surveyed in contact sheets, with the modified main pages 9/10 and new Supplement S2 page 2 additionally opened at original size. Figure pages 18–22 remain unchanged source PNGs. Other generated Word artifacts use unchanged source content. This is not a claim of individual full-resolution review of all 40 pages.",
+  "checks": {
+    "new_supplement_table_stays_within_print_area": true,
+    "main_scaled_coefficient_legible": true,
+    "figure_count_unchanged_5": true,
+    "main_below_MEPS_initial_file_limit_5MB": true,
+    "autor_signoff_not_claimed": true
+  },
+  "limitations": "Word rendering and selected full-size checks do not establish journal scientific acceptance, accessibility certification or author approval."
+}
