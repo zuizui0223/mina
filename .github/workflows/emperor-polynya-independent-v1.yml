@@ -1,0 +1,89 @@
+name: emperor-polynya-independent-v1
+
+on:
+  push:
+    branches:
+      - analysis/emperor-polynya-independent-20261122
+    paths:
+      - scripts/emperor_polynya_action.py
+      - contracts/EMPEROR_POLYNYA_INDEPENDENT_V1.json
+      - .github/workflows/emperor-polynya-independent-v1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-empirical-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install runtime
+        run: python -m pip install --no-cache-dir 'numpy>=1.24' 'pandas>=2.0' 'scipy>=1.11' 'netCDF4>=1.6'
+
+      - name: Retrieve authoritative input files and check hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/emperor_polynya/input build/emperor_polynya/output
+          cd build/emperor_polynya/input
+          curl -fLSs --retry 4 --retry-all-errors --connect-timeout 50 --max-time 1200 \
+            'https://raw.githubusercontent.com/davidiles/EMPE_Global/main/analysis/output/model_results/3_Colony_Level/colony_summary.csv' \
+            -o colony_summary.csv
+          echo '133c900c9dfbf2ce23ca403c9a59edecd9b51ace  colony_summary.csv' | git hash-object --stdin >/dev/null
+          actual_blob=$(git hash-object colony_summary.csv)
+          if [ "$actual_blob" != "133c900c9dfbf2ce23ca403c9a59edecd9b51ace" ]; then
+            echo "::error::LaRue CSV release differs from frozen Git blob"
+            exit 1
+          fi
+          if ! curl -fLSs --retry 4 --retry-all-errors --connect-timeout 50 --max-time 1200 \
+            'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' \
+            -o SIC60_6.25km_20d.zip; then
+            curl -fLSs --retry 4 --retry-all-errors --connect-timeout 50 --max-time 1200 \
+              'https://zenodo.org/api/records/13358042/files/SIC60_6.25km_20d.zip/content' \
+              -o SIC60_6.25km_20d.zip
+          fi
+          echo 'f3f958389cc5e67ac1c4e3a6ee164318  SIC60_6.25km_20d.zip' | md5sum -c -
+          du -h colony_summary.csv SIC60_6.25km_20d.zip
+          unzip -Z1 SIC60_6.25km_20d.zip | head -n 10 || true
+
+      - name: Run frozen empirical analysis (fail closed on incomplete data)
+        shell: bash
+        run: |
+          python scripts/emperor_polynya_action.py \
+            build/emperor_polynya/input/SIC60_6.25km_20d.zip \
+            build/emperor_polynya/input/colony_summary.csv \
+            build/emperor_polynya/output
+
+      - name: Report only validated empirical result
+        if: success()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path('build/emperor_polynya/output/empirical_screening.json')
+          r = json.loads(p.read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write(f"### Emperor × coastal-polynya primary screening\n\n")
+              f.write(f"- Eligible site-years: {r['primary']['n']}\n")
+              f.write(f"- Within-FE effect per 1 SD: {r['primary']['beta_per_sd']:.4f}\n")
+              f.write(f"- Wild-cluster signflip p: {r['primary']['signflip_p']:.4g}\n")
+              f.write(f"- Frozen decision: **{r['screening_decision']}**\n")
+              f.write(f"- Publication gate: {r['publication_gate']}\n")
+          PY
+
+      - name: Preserve computed tables and coverage audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: emperor-polynya-independent-v1-results
+          path: build/emperor_polynya/output/
+          if-no-files-found: warn
+          retention-days: 30
