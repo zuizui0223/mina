@@ -177,7 +177,48 @@ The pre-result direct-polynya protocol specified a positive direction after prev
 
 The offline package includes source-derived inputs, fixed numerical outputs, manuscript source, plotting and verification scripts, and checksums. It reproduces the frozen 439/358 analyses, the separately dated CV3 uncertainty diagnostic and all five figures. Large original satellite/calibration archives are linked by DOI and identity rather than silently replaced by simulated data. The source-reuse register records the two principal Zenodo datasets' CC BY 4.0 licences, Copernicus credit and product DOI, and the unresolved historical NSIDC v4 redistribution label. Publication of a final DOI, a licence decision for project-created code, human scientific review and author declarations remain outstanding.
 
+## S8. Ecological scale and contemporary conservation geography (author-review addition, 23 November 2026)
+
+This section is an **interpretive appendix only**. It is not an independent trophic measurement, a new polynya–diet model, an intervention or evidence of conservation benefits. All existing 439 source-matched colony-seasons, 85 sites, five main figures and original statistical estimates are unchanged.
+
+### S8.1. Interpreting the optical δ¹⁵N scale using a deliberately simplified two-prey contrast
+
+The original adjusted within-colony estimate was −1.0031‰ per ten percentage points (pp) of winter coastal-polynya area fraction (M_P; source-informative eight-region CV3 interval [−1.6753, −0.3309]‰). The exposure remaining after colony, region-by-season and summer covariate adjustment has SD **1.6011 pp**, so the same slope corresponds to **−0.1606‰ per one residual-exposure SD**. A +10-pp change is about 6.25 such SDs, and should not be described as typical year-to-year environmental variation.
+
+For a heuristic unit comparison only, Hong et al. (2021, Table 1, doi:10.3390/ani11092681) report prey δ¹⁵N (‰): Antarctic krill *Euphausia superba* 3.65 ± 0.58; ice krill *E. crystallorophias* 6.12 ± 0.51; Antarctic silverfish *Pleuragramma antarctica* 10.30 ± 0.80. An idealized two-endmember difference with fixed enrichment Δ has \(d\delta^{15}N_{\rm consumer} = (\delta^{15}N_{\rm fish}-\delta^{15}N_{\rm krill})\,df_{\rm fish}\); thus \(df_{\rm fish}=d\delta^{15}N/(\delta^{15}N_{\rm fish}-\delta^{15}N_{\rm krill})\). These values concern **whole-prey measurements in the Ross Sea** (krill sampled in 2019 and silverfish source records from 2002–03), not contemporaneous source values for the pan-Antarctic 2004–2010 optical guano records.
+
+**Table S5. Hypothetical fish-fraction equivalents of the unchanged optical δ¹⁵N slope; these are not observed diet proportions.**
+
+| Illustrative prey endmembers (fish − krill) | δ¹⁵N separation (‰) | M_P: +10-pp polynya equivalent | M_P: +1.6011-pp residual-SD equivalent | M_SP: +1.5879-pp residual-SD equivalent |
+|---|---:|---:|---:|---:|
+| Antarctic silverfish − Antarctic krill | 6.65 | −15.1 percentage points | −2.4 percentage points | −2.2 percentage points |
+| Antarctic silverfish − ice krill | 4.18 | −24.0 percentage points | −3.8 percentage points | −3.5 percentage points |
+
+The salinity-adjusted M_SP slope is −0.9216‰ per +10 pp. Translating these *contrasts* is not a fitted diet-mixture posterior: prey endmembers can vary geographically and through time; prey nitrogen baselines, taxon-specific routing, guano–prey enrichment, macronutrient mixing, and the underlying reflectance-based isotope calibration can change. A constant enrichment factor cancels algebraically in a within-sample **difference**, but this does not establish that enrichment or prey baselines were constant across colony-seasons. Without matched prey isotopes or direct diet observations, even the **sign** of a fish-fraction change remains unidentified.
+
+### S8.2. Exact source-cohort recovery and limits of geographic representation
+
+The original Youngflesh RDS and source-author \`Scripts/4-diet-est.R\` pixel-support rule were independently reproduced: 179,346 qualified pixels at 119 source sites across all years. In 2004–2010 this yields 583 observed site-seasons at 113 original source sites. The frozen optical-isotope-plus-summer-marine source panel retains **439 site-seasons at 85 sites**, with *every available season at each retained site* preserved: the **144 excluded site-seasons are precisely the complete histories of 28 entirely omitted sites**. Those 28 sites are **all absent** from the pinned 88-site \`colony_geography.csv\` catalogue, while the 85 retained sites are present. The geographic catalogue has three other sites without qualifying original-source seasons in 2004–2010. This identifies a **site-inventory/coverage selection gate**, but does not establish whether the 28 sites were omitted for coordinates, site-identity ambiguity, wet-grid eligibility or other upstream matching decisions.
+
+The original frozen \`matched_isotope860.csv\` and \`polynya_physical860.csv\` join on unique \`site_id,season\` keys; selecting records with complete 100-km winter coastal-polynya exposure reproduces exactly 439/85/11, including 34 measured zeros, mean 7.0304% and SD 6.3187 pp. There is **no additional loss of eligible site-seasons at this winter-polynya gate**. The previously prepared 472/88 source-pool map is not interchangeable with this frozen site cohort. No missing year is treated as a measured zero.
+
+### S8.3. Descriptive juxtaposition with *present-day* CCAMLR marine protected areas
+
+For the 85 original frozen sites, annual 2004–2010 June–October polynya area fractions (100-km exposure definition) were summarized separately by site. Only **79 sites observed in at least four winters** were assigned a descriptive standard deviation; **six sites with two or three observed winters** remain visible but unranked. The median within-site SD among the 79 is **2.825 pp**. No colony-specific isotope response sensitivity is estimated by this dispersion measure.
+
+The official CCAMLR designated MPA boundaries (source: \`https://github.com/ccamlr/data/blob/main/geographical_data/mpa/CCAMLR_MPA.json\`, EPSG:6932, six spatial subzones: five Ross Sea and one South Orkney southern shelf) were intersected with a **geodesic 100-km circle** around each original colony coordinate. **15 of 85** circles intersect current designated MPA boundaries, all within **Victoria Land / Ross Sea**; **13** of the 15 have ≥4 winters and therefore a colour-coded SD. Circles for the remaining 70 original colonies do not intersect these polygons. These circle intersections represent *potential proximity to a legally mapped marine area*, **not** actual documented foraging routes, the ocean-only denominator used for polynya exposure, area of protected prey habitat, or the fraction of any individual's feeding inside an MPA. A circle–polygon intersection may include non-ocean portions; polygon status is a current spatial descriptor.
+
+The Ross Sea MPA was adopted by CCAMLR in 2016 and entered into force in **2017**, after the study's 2004–2010 winters; the South Orkney Islands southern-shelf MPA dates to 2009 and does not intersect any of these source-site 100-km discs. Therefore, no pre/post-policy effect, MPA-induced stability or conservation effectiveness can be inferred. The spatial clustering of these intersections in Victoria Land also precludes interpreting differences in winter polynya variability inside and outside current MPAs as a protected-area effect.
+
+**Figure S1 (optional, companion file).** Historical winter coastal-polynya exposure variability at the 85 *Adélie* colony sites in the frozen 439-season optical isotope-proxy panel, alongside *currently designated* CCAMLR MPAs. Point colour encodes within-site SD of winter June–October coastal-polynya fraction (percentage points) from 2004–2010 at 79 colonies with at least four observed winters. Grey crosses denote six colonies with fewer than four available winters, for which no SD category was assigned. Dark outlines denote six currently designated MPA subzones. The 100-km circle around 15 colonies intersects current mapped MPA boundaries; all are located in the Ross Sea region. This retrospective, descriptive geographic overlap must not be interpreted as penguin diet sensitivity, observed foraging inside protection, or any causal protection effect.
+
+**Reproducibility and version boundary.** The source-locked cohort and CCAMLR geospatial intersections, 583→439 site-key crosswalk, region counts and Figure S1 preview are archived with GitHub Actions [frozen 439/85 audit](https://github.com/zuizui0223/mina/actions/runs/45082480478) and [28-site catalogue audit](https://github.com/zuizui0223/mina/actions/runs/45083270769). Analysis and frozen input hashes are documented in \`analysis/adelie-polynya-conservation-source-20261122\` (research-only branch). This is a **23 November 2026 post-result descriptive addition for author review**, not an additional hypothesis test or part of the independent pre-outcome sign gate.
+
 ## Literature cited
+
+Hong S-Y, Gal J-K, Lee B-Y, Son W-J, Jung J-W, La H-S, Shin K-H, Kim J-H, Ha S-Y (2021) Regional differences in the diets of Adélie and Emperor penguins in the Ross Sea, Antarctica. Animals 11:2681. https://doi.org/10.3390/ani11092681
+
+CCAMLR (2016; maintained current geography) Ross Sea region marine protected area, Conservation Measure 91-05, and marine protected area spatial GIS. https://cm.ccamlr.org/ ; https://github.com/ccamlr/data/tree/main/geographical_data/mpa
 
 Lin Y, Nakayama Y, Liang K, Huang Y, Chen D, Yang Q (2024) A dataset of the daily edge of each polynya in the Antarctic. Scientific Data 11:1006. https://doi.org/10.1038/s41597-024-03848-2
 
