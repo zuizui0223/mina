@@ -1,5 +1,7 @@
 # MEPS submission-preparation audit — official pages verified
 
+**Current v0.7.4 reviewer supplement (22 Nov 2026).** The new original-source between-colony NO-GO diagnostic added Methods/Results and one Supplement S4 table. The current combined manuscript is **23 rendered pages, 1,720,183 bytes, approximately 5,145 visible Word body-paragraph words** (counted with Python-docx; the portal may differ), with the original 222-word abstract and five figures still at the end. The separate supplement is **10 rendered pages, 50,651 bytes**, retaining sections S1–S7 and the newly added unnumbered scale-diagnostic table in S4. The 6 Word deliverables total **43 pages**. The latest exact hashes and sizes are recorded in [the v0.7.4 build receipt](../document_build_receipt.json) and [current rendered-layout scope](../document_visual_qa_v074.json). **The v0.7.3 measurements below are dated historical preflight evidence, not the current file sizes/word counts.** Human scientific approval and author declarations remain pending; no journal submission was performed.
+
 Checked 22 November 2026 against the current version 0.7.3 Word deliverables and their build receipt. Publisher requirements below retain their documented retrieval date of 21 November 2026. All six DOCX byte sizes and SHA-256 hashes match that receipt. This is a file-preparation check; human scientific review, author information and publication declarations remain pending.
 
 ## Final deliverables and current counts
