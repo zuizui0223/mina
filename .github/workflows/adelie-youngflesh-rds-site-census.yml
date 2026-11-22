@@ -23,33 +23,47 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m pip install --no-cache-dir 'pyreadr>=0.5' 'pandas>=2'
+          if ! command -v Rscript >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq r-base-core
+          fi
           mkdir -p build/out
-          python - <<'PY'
-          from pathlib import Path
-          import json,re,pyreadr,pandas as pd
-          p=Path('build/source/source_files/src00_landsat_reflectance_L457-2025-07-16.rds')
-          if not p.exists():raise FileNotFoundError(p)
-          objects=pyreadr.read_r(str(p)); assert len(objects)==1
-          df=next(iter(objects.values()))
-          assert isinstance(df,pd.DataFrame)
-          cols=list(map(str,df.columns))
-          ident={c:{'type':str(df[c].dtype),'unique':int(df[c].nunique(dropna=True)),'examples':[str(x) for x in df[c].dropna().head(3)]}
-                 for c in cols if re.search('site|loc|colony|lat|lon|date|month|year|species|season|guano|bad',c,re.I)}
-          report={'raw_RDS_rows':len(df),'columns':cols,'identity':ident}
-          Path('build/out/rds_location_date_schema.json').write_text(json.dumps(report,indent=2)+'\n')
-          print('Raw rows:',len(df),'identity candidates:',json.dumps(ident))
-          site=next((c for c in ['site_id','SiteID','site','Site'] if c in cols),None)
-          lat=next((c for c in ['latitude','lat','Latitude','site_lat'] if c in cols),None)
-          lon=next((c for c in ['longitude','lon','Longitude','site_lon'] if c in cols),None)
-          date=next((c for c in ['date','Date','img_date','datetime','time'] if c in cols),None)
-          year=next((c for c in ['year','Year','img_year'] if c in cols),None)
-          if site and lat and lon:
-              loc=df[[site,lat,lon]+([date] if date else [])+([year] if year else [])].drop_duplicates()
-              loc.to_csv('build/out/publisher_original_site_coordinates.csv',index=False)
-              print('Distinct original site IDs:',loc[site].nunique())
-          df.head(5).to_csv('build/out/original_RDS_first5_schema.csv',index=False)
-          PY
+          Rscript --vanilla - <<'RS'
+          src <- "build/source/source_files/src00_landsat_reflectance_L457-2025-07-16.rds"
+          if (!file.exists(src)) stop("Landsat publisher RDS missing")
+          x <- readRDS(src)
+          writeLines(capture.output(str(x, max.level=2, vec.len=5)), "build/out/native_rds_structure.txt")
+          writeLines(paste("class:", paste(class(x),collapse=","), "length:",length(x)),
+                     "build/out/native_rds_identity.txt")
+          cat("RDS class:",paste(class(x),collapse=","),"\n")
+          if (!is.data.frame(x)) stop("RDS is not a data frame; refer to saved RDS structure")
+          cols <- names(x)
+          usable <- cols[vapply(x, function(z) is.atomic(z) && length(z)==nrow(x), logical(1))]
+          schema <- data.frame(name=cols,
+             class=vapply(x,function(z)paste(class(z),collapse=";"), character(1)),
+             nonmissing=vapply(x,function(z)sum(!is.na(z)),numeric(1)))
+          write.csv(schema,"build/out/native_rds_column_schema.csv",row.names=FALSE)
+          write.csv(utils::head(x[usable],5),"build/out/native_rds_first5.csv",row.names=FALSE)
+          cat("RDS rows:",nrow(x),"columns:",length(cols),"atomic:",length(usable),"\n")
+          cat("Columns:",paste(cols,collapse=", "),"\n")
+          findcol <- function(options) {
+            z <- options[options %in% cols]
+            if (length(z)) z[[1]] else NA_character_
+          }
+          site <- findcol(c("site_id","site","Site","SiteID"))
+          lat <- findcol(c("latitude","lat","Latitude","site_lat"))
+          lon <- findcol(c("longitude","lon","Longitude","site_lon"))
+          day <- findcol(c("date","Date","img_date","datetime"))
+          year <- findcol(c("year","Year","img_year"))
+          if (!is.na(site)&&!is.na(lat)&&!is.na(lon)) {
+            f <- c(site,lat,lon)
+            if(!is.na(day))f<-c(f,day)
+            if(!is.na(year))f<-c(f,year)
+            sub <- unique(x[,f,drop=FALSE])
+            write.csv(sub,"build/out/publisher_unique_geocoded_site_dates.csv",row.names=FALSE)
+            cat("Original unique site ids:",length(unique(x[[site]])),"\n")
+          }
+          RS
       - uses: actions/upload-artifact@v4
         if: always()
         with:
