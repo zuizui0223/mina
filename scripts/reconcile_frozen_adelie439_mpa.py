@@ -110,11 +110,11 @@ def main(args):
     groups["sd_reliable_4y"]=groups.n_valid_winters>=4
     groups.loc[~groups.sd_reliable_4y,"sd_pp"]=np.nan
     # CCAMLR designated, not proposed, MPA polygon, official EPSG:6932.
-    m=json.loads(Path(args.mpa).read_text())
-    check(m.get("type")=="FeatureCollection" and
-          len(m.get("features",[]))==6 and "6932" in str(m.get("crs")),
+    mpa_json=json.loads(Path(args.mpa).read_text())
+    check(mpa_json.get("type")=="FeatureCollection" and
+          len(mpa_json.get("features",[]))==6 and "6932" in str(mpa_json.get("crs")),
           "official MPA GeoJSON does not match EPSG6932 six zones")
-    zgeom={f["properties"]["GAR_Short_Label"]:shape(f["geometry"]) for f in m["features"]}
+    zgeom={f["properties"]["GAR_Short_Label"]:shape(f["geometry"]) for f in mpa_json["features"]}
     check(set(zgeom)=={"GPZi","GPZii","GPZiii","KRZ","SRZ","SOSS"},
           "MPA zones changed")
     combined=unary_union(list(zgeom.values()))
