@@ -63,6 +63,30 @@ jobs:
             write.csv(sub,"build/out/publisher_unique_geocoded_site_dates.csv",row.names=FALSE)
             cat("Original unique site ids:",length(unique(x[[site]])),"\n")
           }
+          crs <- attr(x$geometry,"crs")
+          writeLines(capture.output(str(crs,max.level=2)),"build/out/native_geometry_crs.txt")
+          stopifnot(is.list(x$geometry),length(x$geometry)==nrow(x))
+          pxy <- vapply(x$geometry,function(v)as.numeric(v[1:2]),numeric(2))
+          tab <- data.frame(site_id=x$site_id,season=as.integer(x$season),
+                calendar_year=as.integer(x$year),month=as.integer(x$month),
+                day=as.integer(x$day),x_m=pxy[1,],y_m=pxy[2,],
+                bad=x$bad,guano_bin=x$guano_bin)
+          tab <- tab[!is.na(tab$bad)&tab$bad==0&!is.na(tab$guano_bin)&tab$guano_bin==1,]
+          tab$date_key <- paste(tab$calendar_year,tab$month,tab$day,sep="-")
+          annual <- tab[tab$season>=2004 & tab$season<=2010,]
+          px <- aggregate(date_key~site_id+season,data=annual,FUN=length)
+          names(px)[3] <- "guano_pixels"
+          days <- aggregate(date_key~site_id+season,data=unique(annual[,c("site_id","season","date_key")]),FUN=length)
+          names(days)[3] <- "n_image_days"
+          pos <- aggregate(cbind(x_m,y_m)~site_id+season,data=annual,FUN=median)
+          support <- merge(merge(px,days,by=c("site_id","season")),pos,by=c("site_id","season"))
+          support$avg_pixels_per_image_day <- support$guano_pixels/support$n_image_days
+          write.csv(support,"build/out/raw_2004_2010_site_year_support.csv",row.names=FALSE)
+          write.csv(aggregate(cbind(x_m,y_m)~site_id,data=annual,FUN=median),
+                 "build/out/raw_site_centroids_projected.csv",row.names=FALSE)
+          print(c(pixels=nrow(annual),sites=length(unique(annual$site_id)),site_years=nrow(support)))
+          print(table(support$season))
+          print(head(support,5))
           RS
       - uses: actions/upload-artifact@v4
         if: always()
