@@ -18,6 +18,22 @@ Fixed effects were reproduced with an independent explicit dummy-matrix QR proje
 
 Three single-colony regions provide no residual exposure information after colony and region-by-season effects: Adelie Land (5 main-panel rows), Palmer Land (6) and Queen Mary Land (3). Excluding these 14 rows leaves 425 observations, 82 sites and eight informative regions. All slopes and residual sums of squares remain numerically unchanged. The 21 November 2026 support sensitivity recalculates only the cluster correction and t reference on this support. The corresponding matched temporal support is 347 of 358 rows in the same eight regions. This selection is determined by exposure information after the fixed effects, not by isotope values.
 
+### Source-locked audit of the reporting increment and identifying exposure scale (22 November 2026)
+
+The primary slope was originally reported per **10 percentage points** of polynya area fraction, which remains the coefficient and uncertainty unit in the frozen main results. This is a scaling convention, not evidence that the model frequently observes independent changes of 10 percentage points after adjustment. An additional **descriptive** audit recomputed the variance of the polynya covariate using the exact original 439 rows, independently absorbing the source colony and region-by-season dummies with a pivoted QR, then projecting against the same M0 summer covariates (and additionally salinity for M_SP). No ecological outcome or fitted exposure window was selected or changed.
+
+| Frozen exposure/design | Original/raw SD (pp) | Exposure SD after all model controls (pp) | Same frozen coefficient per 10 pp (‰) | Coefficient per 1 residual-exposure SD (‰) |
+|---|---:|---:|---:|---:|
+| All 439 polynya values | 6.3115 | — | — | — |
+| M_P: 439 original records | — | **1.6011** | **−1.0031** | **−0.1606** |
+| M_SP: same 439, including salinity | — | **1.5879** | **−0.9216** | **−0.1463** |
+| M_P: 425 informative records | — | 1.6273 | −1.0031 | −0.1632 |
+| M_SP: 425 informative records | — | 1.6139 | −0.9216 | −0.1487 |
+
+The full-panel SD uses the observed 439 rows; 14 single-colony-region rows have effectively zero identifying exposure after the fixed effects. Across the full 439 panel, the residualised M_P polynya regressor has a 10th–90th percentile span of approximately **−1.55 to +1.75 percentage points**; only 7 of 439 absolute residuals reach 5 points, and only one reaches 10. The reported 10-point increment is approximately **6.25 residual-exposure SDs** (6.30 after salinity adjustment). These residuals are mathematical deviations after adjustment, not observed interventions, a counterfactual treatment distribution or the raw between-year differences of individual colonies. The slopes, CV3 intervals, model comparisons, source counts and calibration sensitivity are unchanged.
+
+The independent frozen-input script is `audit_polynya_estimand_scale_20261122.py`, with `source_inputs/polynya_estimand_scale_audit_20261122.json` as its concise descriptive receipt. It verifies the frozen four ZIP hashes and original 860→439 site-season join before using Frisch–Waugh–Lovell algebra to reproduce the existing M_P/M_SP coefficients. This post-result scaling audit does not provide a new p value, confirm a biological mechanism, or solve selection and small-region uncertainty.
+
 ### Table S1. Frozen estimates and informative-region uncertainty
 
 All entries are in ‰ per 10-percentage-point increase in winter polynya fraction. The P0−P1 contrast uses the full covariance of the simultaneous coefficients. Both archived CR1 conventions remain here for traceability; the manuscript also prominently displays the additional cluster-jackknife intervals in Table S2. The 425-row main CR1 sensitivities are support audits dated 21 November 2026. The 347-row temporal CR1 sensitivities were already present in the frozen temporal analyses.
