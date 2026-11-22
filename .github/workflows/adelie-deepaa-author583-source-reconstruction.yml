@@ -1,0 +1,48 @@
+name: adelie-deepaa-author583-source-reconstruction
+on:
+  push:
+    branches: [analysis/adelie-polynya-conservation-source-20261122]
+    paths:
+      - scripts/reconstruct_adelie_author583_polynya.py
+      - .github/workflows/adelie-deepaa-author583-source-reconstruction.yml
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  original-author-support-extraction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-original-author-site-support
+          run-id: 45081645133
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/author
+      - run: python -m pip install --no-cache-dir 'numpy>=1.24' 'pandas>=2' 'scipy>=1.11' 'netCDF4>=1.6' 'pyproj>=3.6'
+      - name: Download and checksum original DEEP-AA 2003-2022 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/data build/out
+          curl -fLSs --retry 5 --retry-all-errors --connect-timeout 60 --max-time 1200 \
+            'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' \
+            -o build/data/SIC60_6.25km_20d.zip
+          echo 'f3f958389cc5e67ac1c4e3a6ee164318  build/data/SIC60_6.25km_20d.zip' | md5sum -c -
+      - name: Reconstruct unchanged original author 583 source site-years and characterize missingness
+        shell: bash
+        run: |
+          python scripts/reconstruct_adelie_author583_polynya.py \
+            build/data/SIC60_6.25km_20d.zip \
+            build/author/published_author_site_level_support_2004_2010.csv \
+            build/out/
+      - name: Retain original source data and source-only metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adelie-deepaa-author583-source-reconstruction
+          path: build/out
+          if-no-files-found: warn
+          retention-days: 60
