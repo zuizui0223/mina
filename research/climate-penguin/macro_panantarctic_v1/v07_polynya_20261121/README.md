@@ -1,4 +1,4 @@
-# Polynya manuscript v0.7.4 — current author-review candidate
+# Polynya manuscript v0.7.5 — current author-review candidate
 
 This is the single current manuscript candidate in Draft PR #214 of `zuizui0223/mina`. It supersedes the nest-exposure-centred v0.6 presentation; earlier manuscripts and frozen analyses remain historical records. Original source analyses are pinned to `a1cf988df3501794e9add243a8c2be8ecbb7b43a`.
 
@@ -13,6 +13,10 @@ This is the single current manuscript candidate in Draft PR #214 of `zuizui0223/
 The question is whether June–October coastal-polynya area fraction within 100 km is associated with the subsequent November–February optical Adélie δ¹⁵N signal, after measured summer conditions and fixed effects. This is a retrospective exploratory reanalysis of released source pixels, not direct dietary measurement or a new independent ecological sample.
 
 ## What changed in this revision
+
+**Version 0.7.5 investigated the externally timed 2010 Mertz Glacier Tongue/B-09B iceberg event and failed a pre-outcome fixed biological sign test.** On the complete five-year 28-colony source panel, the 10 affected colonies had a winter coastal polynya contraction of **−5.551 percentage points relative to 18 distant controls**, while the original optical δ¹⁵N changed **−0.555‰**, versus a positive sign that would have been concordant with a naïve transfer of the known overall negative slope. The same-source author R1,000 optical version was −0.545‰; the 2010 optical shift was weaker than several pre-event placebo shifts, and source-region comparisons had opposing signs. Summer sea-ice concentration, temperature and source image support changed simultaneously. This is **NO_GO_EVENT_BIOLOGICAL_RESPONSE and NO_GO_CAUSAL_MEDIATION**. The test is still the same selected 439 optical data, not an independent dietary field study. [Event-date and source-ID freeze](FROZEN_MERTZ_2010_ICEBERG_EVENT_BIOLOGICAL_GATE_20261122_JA.md), [source script](test_mertz_iceberg_event_source439_20261122.py), [negative result](RESULT_MERTZ_2010_ICEBERG_EVENT_NOGO_20261122_JA.md), and [CI pass](https://github.com/zuizui0223/mina/actions/runs/45012884027) retain all 140 original event-site years and pre-period diagnostics. Manuscript §3.6 and Supplement S4 contain the negative result. All five original figures, the baseline 439 main slope and its CV3 interval remain unchanged.
+
+**Current review deliverables:** combined manuscript **25 pages, 1,721,292 bytes, 5,535 visible body-paragraph words** (222-word abstract), Supplement **11 pages, 52,876 bytes**; the other four review Word documents have unchanged content, bringing six Word deliverables to **46 pages**. Main+supplement were freshly rendered (all 36 pages checked in contact sheets, changed pages reviewed at 100%); [QA scope](document_visual_qa_v075.json) and [exact Word hashes](document_build_receipt.json) record this. The v0.7.4 page counts below are historical.
 
 Version 0.7.2 completed source/citation/figure accessibility edits. **Version 0.7.3 adds one post-result descriptive source-locked scale audit:** the original reported −1.003‰/10pp slope is also given as −0.161‰ per one standard deviation of the fully residualized polynya covariate (1.601pp across 439 original records); the salinity-adjusted slope corresponds to −0.146‰ per a 1.588pp residual SD. No response, coefficient, uncertainty interval, spatial radius, temporal window or figure changed. This is a rescaling of an exploratory association, not new ecological validation. [Scientific reviewer note](SCIENTIFIC_REVIEW_ESTIMAND_SCALE_V073_JA.md), [source-locked code](audit_polynya_estimand_scale_20261122.py), [fixed result](source_inputs/polynya_estimand_scale_audit_20261122.json) and [passing CI](https://github.com/zuizui0223/mina/actions/runs/45009422843) record the checks.
 
@@ -35,6 +39,7 @@ python verify_frozen_polynya_results.py --inputs-dir frozen_archives --temporal-
 python diagnose_region_jackknife.py --out reproduced_jackknife_receipt.json
 python audit_polynya_estimand_scale_20261122.py --out reproduced_estimand_scale_receipt.json
 python test_between_within_source439_20261122.py
+python test_mertz_iceberg_event_source439_20261122.py --out-dir mertz_2010_event_outputs
 python render_polynya_main_figures.py
 python build_review_documents.py --out review_documents
 ```
