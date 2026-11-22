@@ -1,0 +1,58 @@
+name: Penguin 2010 Mertz B-09B iceberg event source-439 frozen outcome gate
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - '.github/workflows/penguin-20261122-mertz-iceberg-event-source439-gate.yml'
+      - 'research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/test_mertz_iceberg_event_source439_20261122.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-28-site-complete-2006-2010:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/requirements-review.txt
+      - name: Install matching frozen numerical runtime
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5 pandas==2.2.3 scipy==1.17.0
+      - name: Verify outcome-blind frozen case study and source-identical inputs
+        run: |
+          cd research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121
+          test -s FROZEN_MERTZ_2010_ICEBERG_EVENT_BIOLOGICAL_GATE_20261122_JA.md
+          python -m py_compile test_mertz_iceberg_event_source439_20261122.py
+          python test_mertz_iceberg_event_source439_20261122.py
+      - name: Enforce original 140 rows and no ecological causal extrapolation
+        run: |
+          python - <<'PY'
+          import json,csv
+          from pathlib import Path
+          root=Path("research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/mertz_2010_event_outputs")
+          d=json.loads((root/"MERTZ2010_ICEBERG_POLYNYA_OPTICAL_EVENT_GATE_RESULT.json").read_text())
+          with (root/"MERTZ2010_ORIGINAL28SITE_X_5YEAR_SOURCE_PANEL.csv").open(newline="") as f: rows=list(csv.DictReader(f))
+          assert len(rows)==d["event_panel_rows"]==140
+          assert len(d["treated_site_ids"])==10 and len(d["control_site_ids"])==18
+          assert sorted(set(int(x["season"]) for x in rows))==[2006,2007,2008,2009,2010]
+          assert d["physical_first_stage"]["percentage_points_did"] < -5
+          assert d["biological_outcome_original_optical_proxy"]["difference_in_differences"] < 0
+          assert d["biological_outcome_author_R1000_same_lab_and_pixels"]["difference_in_differences"] < 0
+          assert d["event_biological_status"]=="NO_GO_EVENT_BIOLOGICAL_RESPONSE"
+          assert d["causal_mediation_or_independent_validation"]=="NO_GO_ALWAYS_THIS_DESIGN"
+          assert d["single_post_event_year"] and d["post_winter_summer_covariates_are_not_preintervention_confounds"]
+          assert not all(d["predeclared_event_sign_gate"].values())
+          assert d["n_unique_ocean_wet_cells_treated"]<10
+          print("PASS external iceberg natural physical shock source rows, opposite optical sign, no causal mechanism")
+          PY
+      - name: Archive every site-year, year-placebo and model sensitivity
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: polynya-Mertz2010-iceberg-28-site-event-physical-Y-NOGO
+          path: research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/mertz_2010_event_outputs/
+          if-no-files-found: warn
+          retention-days: 30
