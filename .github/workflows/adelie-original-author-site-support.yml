@@ -1,0 +1,39 @@
+name: adelie-original-author-site-support
+on:
+  push:
+    branches: [analysis/adelie-polynya-conservation-source-20261122]
+    paths:
+      - scripts/reproduce_author_site_support.R
+      - .github/workflows/adelie-original-author-site-support.yml
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  reproduce-support:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-polynya-official-source-ccamlr-mpa-gate
+          run-id: 45031126352
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/author_source
+      - name: Run source-authored image support rule in native R
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v Rscript >/dev/null; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq r-base-core
+          fi
+          Rscript --vanilla scripts/reproduce_author_site_support.R \
+            build/author_source/source_files/src00_landsat_reflectance_L457-2025-07-16.rds \
+            build/output
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-original-author-site-support
+          path: build/output
+          if-no-files-found: warn
+          retention-days: 60
