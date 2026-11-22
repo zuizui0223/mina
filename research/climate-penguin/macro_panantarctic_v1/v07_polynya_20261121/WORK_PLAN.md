@@ -1,5 +1,11 @@
 # Polynya manuscript — current state, 22 November 2026
 
+## v0.7.4 current state (22 November 2026)
+
+The hypothesis fixed before between-colony calculation has been tested and **failed**: original 85-colony site-mean B1 = −1.295‰/10pp (CV3 eight-region 95% [−4.965,+2.376]); the existing within-colony M_P remains −1.003‰/10pp (CV3 [−1.675,−0.331]). A positive spatial-vs-annual sign inversion is **not identified**; dropping Wilkes Land changes the sign of B1. Same-source R1000 and observation-year-sensitivity slopes remain negative but uncertain. [Numerical result](RESULT_BETWEEN_WITHIN_POLYNYA_NO_GO_20261122_JA.md), [pre-result frozen decision](FROZEN_SCALE_BETWEEN_WITHIN_COLONY_TEST_20261122_JA.md) and [CI SUCCESS](https://github.com/zuizui0223/mina/actions/runs/45011139260). The negative test was added to manuscript §3.5 and Supplement S4. No fifth/new figure or further radius/lag tests.
+
+Current review Word: main 23 pages / 1,720,183 bytes; supplement 10 pages / 50,651 bytes; unchanged five figures. No submission, public DOI, merge or new third-party licence. Author-only scientific review and declarations remain the next indispensable input. The earlier v0.7.3 text below remains historical.
+
 ## One active objective
 
 Single polynya-centred **v0.7.3 author-review manuscript** in Draft PR #214. Its fixed 439-colony-season data and v0.7.1 CV3 uncertainty results remain unchanged. Current work concerns reviewer-proof interpretation and manuscript readiness—not more favourable ecological model searches.
