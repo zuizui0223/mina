@@ -77,13 +77,19 @@ def extract(deep, colony):
                 dated[day]=name
         sums=defaultdict(lambda: {r:np.zeros(len(sites),float) for r in RADII})
         daycounts=defaultdict(int)
+        other50=defaultdict(lambda: np.zeros(len(sites),float))
+        access50days=defaultdict(lambda: np.zeros(len(sites),float))
         for day,name in sorted(dated.items()):
             mm,=get_nc(zf.read(name),('Map',))
             if mm.shape!=lon.shape: raise ValueError('Daily Map / LonLat shape mismatch: no blind transpose')
             a=mm.ravel()
             coastal=(a>0)&(a%2==0)
+            other=(a==-1)  # Other open waters, not identified polynyas; exploratory proxy
+            any_open=(a>0)|(a==-1)|(a==-2)
             for radius in RADII:
                 sums[day.year][radius]+=[int(np.count_nonzero(coastal[ix])) for ix in idx[radius]]
+            other50[day.year]+=[int(np.count_nonzero(other[ix])) for ix in idx[50]]
+            access50days[day.year]+=[int(np.any(any_open[ix])) for ix in idx[50]]
             daycounts[day.year]+=1
     out=[]; auditing=[]
     for year in range(2009,2019):
@@ -94,15 +100,17 @@ def extract(deep, colony):
             row=dict(site_id=site.site_id,year=year,eligible=coverage>=.95,coverage=coverage)
             for radius in RADII:
                 row[f'coastal_{radius}km']=float(39.0625*sums[year][radius][i]/ndays) if ndays else np.nan
+            row['other_open_water_50km']=float(39.0625*other50[year][i]/ndays) if ndays else np.nan
+            row['any_open_water_access_days_50km']=float(access50days[year][i]/ndays) if ndays else np.nan
             out.append(row)
     df=colony.merge(pd.DataFrame(out),on=['site_id','year'],validate='one_to_one')
     return df,auditing
 
 
-def fixed_effects(df, regional_year=False, bootstrap=True):
+def fixed_effects(df, regional_year=False, bootstrap=True, predictor='coastal_100km'):
     df=df[df.eligible].copy().reset_index(drop=True)
     if len(df)<300: raise ValueError('Fewer than 300 complete colony years')
-    y=np.log1p(df.N_mean.to_numpy(float)); x=np.log1p(df.coastal_100km.to_numpy(float))
+    y=np.log1p(df.N_mean.to_numpy(float)); x=np.log1p(df[predictor].to_numpy(float))
     if not (np.isfinite(x).all() and np.isfinite(y).all()): raise ValueError('Non-finite values')
     yr=(df.ice_reg.astype(str)+'__'+df.year.astype(str)) if regional_year else df.year.astype(str)
     z=np.column_stack([np.ones(len(df)),pd.get_dummies(df.site_id,drop_first=True,dtype=float).to_numpy(),
@@ -132,12 +140,13 @@ def fixed_effects(df, regional_year=False, bootstrap=True):
     loo={}
     for lab in labels:
         sub=df[df.ice_reg.astype(str)!=lab]
-        xx=np.log1p(sub.coastal_100km.to_numpy(float)); yy=np.log1p(sub.N_mean.to_numpy(float))
+        xx=np.log1p(sub[predictor].to_numpy(float)); yy=np.log1p(sub.N_mean.to_numpy(float))
         subyr=(sub.ice_reg.astype(str)+'__'+sub.year.astype(str)) if regional_year else sub.year.astype(str)
         zz=np.column_stack([np.ones(len(sub)),pd.get_dummies(sub.site_id,drop_first=True,dtype=float).to_numpy(),
                             pd.get_dummies(subyr,drop_first=True,dtype=float).to_numpy(),xx])
         loo[lab]=float(np.linalg.lstsq(zz,yy,rcond=None)[0][-1])
     return dict(model='colony+region_year FE' if regional_year else 'colony+year FE',
+                exposure_name=predictor,
                 n=n,n_colonies=df.site_id.nunique(),n_years=df.year.nunique(),n_regions=g,
                 exposure_within_fe_sd_log_units=sd,beta_per_sd=beta,
                 cluster_se=se,ci95=[beta-student_t.ppf(.975,g-1)*se,beta+student_t.ppf(.975,g-1)*se],
@@ -160,6 +169,20 @@ def main():
     decision='positive_screen_only' if p['beta_per_sd']>0 and p['signflip_p']<=.05 and q['beta_per_sd']>0 and all(v>0 for v in p['leave_region_out_beta_per_log_unit'].values()) else 'frozen_hypothesis_not_supported'
     report.update(primary=p,region_year_control=q,screening_decision=decision,
                   publication_gate='NOT MET: joint response/posterior and independent sea-ice controls not included')
+    if abs(p['beta_per_sd']-0.018271683215944738)>1e-6 or p['n']!=450:
+        raise ValueError('Frozen primary analysis changed unexpectedly')
+    try:
+        access=fixed_effects(joined,predictor='other_open_water_50km')
+        access_adj=fixed_effects(joined,regional_year=True,predictor='other_open_water_50km')
+        report['posthoc_open_water_access']={
+            'status':'POSTHOC exploratory; not prespecified independent confirmation',
+            'proxy':'Map == -1 (open water not labelled a polynya), within 50km',
+            'access_50km_days_fraction_median':float(joined.loc[joined.eligible,'any_open_water_access_days_50km'].median()),
+            'primary':access,'regional_year_adjusted':access_adj,
+            'interpretation':'Proxy can contain spurious openings and excludes unresolved cracks below 6.25 km'
+        }
+    except ValueError as err:
+        report['posthoc_open_water_access']={'status':'NOT IDENTIFIABLE','reason':str(err)}
     (out/'empirical_screening.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(dict(status='EMPIRICAL_SCREEN_DONE',screening_decision=decision,
                            beta=p['beta_per_sd'],p_signflip=p['signflip_p'],n=p['n'])))
