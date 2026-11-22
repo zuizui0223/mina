@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-23",
+  "status": "COMPLETE_FROZEN_439_85_DESCRIPTIVE_MPA_MAP",
+  "analysis_branch": "analysis/adelie-polynya-conservation-source-20261122",
+  "source_pr_url": "https://github.com/zuizui0223/mina/pull/214",
+  "source_commit": "c67e55c9f4f657ef308c02a85c6ff366dce8e1f4",
+  "source_blob_shas": {
+    "matched_iso860": "66184a09576297aea12f408fffc524185a3671f2",
+    "physical860": "5b3d79f65738cb2474c2c7f437cefa81010713c5",
+    "geography": "5662badeedd43bc8e2dacbfdfc157f8d4fdf9a69"
+  },
+  "original_author": {
+    "pixels": 179346,
+    "sites_all_years": 119,
+    "site_years_2004_2010": 583,
+    "sites_2004_2010": 113
+  },
+  "frozen": {
+    "site_years": 439,
+    "sites": 85,
+    "regions": 11,
+    "zero_polynya_records": 34,
+    "polynya_fraction_mean_percent": 7.030444381743004,
+    "sd_percentage_points": 6.318696360772524
+  },
+  "lineage": {
+    "records_excluded_before_matched_iso_marine_source": 144,
+    "records_excluded_by_winter_polynya_missingness": 0,
+    "source_sites_absent_final": 28
+  },
+  "current_mpa": {
+    "zones": 6,
+    "sites_with_100km_buffer_overlap": 15,
+    "sites_without": 70,
+    "sites_with_sd_eligible_n_years_at_least_4": 79,
+    "unranked_sites": 6,
+    "eligible_sd_median_pp": 2.8254695386847173,
+    "eligible_overlap_sites": 13,
+    "overlap_region": "Victoria Land"
+  },
+  "previous_preliminary_472_88": {
+    "shared_sites_with_frozen": 69,
+    "shared_site_years": 371,
+    "only_frozen_sites": 16,
+    "only_preliminary_sites": 19,
+    "previous_18_of_88_mpa_result_superseded": true
+  },
+  "run": "https://github.com/zuizui0223/mina/actions/runs/45082480478",
+  "isotope_manuscript_unchanged": true,
+  "limitations": [
+    "100km circle MPA intersection is not penguin foraging habitat protected",
+    "Current MPA boundary postdates 2004-2010 in Ross Sea",
+    "No diet sensitivity or protection effect measured",
+    "Exact causes of 144 pre-marine-matched exclusions not separated"
+  ]
+}
