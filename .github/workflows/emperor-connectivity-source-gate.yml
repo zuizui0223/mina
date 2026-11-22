@@ -1,0 +1,59 @@
+name: emperor-connectivity-source-gate
+
+on:
+  push:
+    branches: [analysis/emperor-access-connectivity-screen-20261122]
+    paths:
+      - .github/workflows/emperor-connectivity-source-gate.yml
+      - contracts/EMPEROR_CONNECTIVITY_SOURCE_GATE_V1.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve 1984–2024 fast-ice-edge and 2024 breeding-success supplements
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/emperor_connectivity/macdonald build/emperor_connectivity/phenology
+          cd build/emperor_connectivity/macdonald
+          for file in AstridDataUpload.xlsx MertzDataUpload.xlsx SanaeDataUpload2.xlsx; do
+            curl -fLSs --retry 3 --retry-all-errors --max-time 150 "https://zenodo.org/records/17380979/files/${file}?download=1" -o "${file}"
+          done
+          echo 'f41f5106df1f3b5bb91bad43ae96e30d  AstridDataUpload.xlsx' | md5sum -c -
+          echo '6fee82cd5b9b12d5b10638eb0cbbb49b  MertzDataUpload.xlsx' | md5sum -c -
+          echo '13d916e08387d94ae448e129aa8aa442  SanaeDataUpload2.xlsx' | md5sum -c -
+          cd ../phenology
+          for file in S10.xlsx S11.xlsx S19.xlsx S20.xlsx S21.xlsx; do
+            curl -fLSs --retry 3 --retry-all-errors --max-time 150 "https://raw.githubusercontent.com/whoi-mars/EmperorPenguinPhenology/main/Supplement/${file}" -o "${file}"
+          done
+          cd ..
+          sha256sum macdonald/* phenology/* > SOURCES.sha256
+          ls -lh macdonald/* phenology/*
+      - name: Sanity-check actual workbook byte signatures
+        shell: bash
+        run: |
+          python - <<'PY'
+          import glob, zipfile
+          names=glob.glob('build/emperor_connectivity/*/*.xlsx')
+          assert len(names)==8, names
+          for x in names:
+              with zipfile.ZipFile(x) as z:
+                  assert z.testzip() is None
+                  assert 'xl/workbook.xml' in z.namelist()
+                  print(x, 'sheetcount=', len([n for n in z.namelist() if n.startswith('xl/worksheets/sheet') and n.endswith('.xml')]))
+          PY
+      - name: Preserve audited original publisher spreadsheets
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emperor-connectivity-raw-source-gate-v1
+          path: build/emperor_connectivity
+          if-no-files-found: warn
+          retention-days: 60
