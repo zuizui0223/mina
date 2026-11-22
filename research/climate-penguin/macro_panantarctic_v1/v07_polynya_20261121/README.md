@@ -1,4 +1,4 @@
-# Polynya manuscript v0.7.1 — current author-review candidate
+# Polynya manuscript v0.7.2 — current author-review candidate
 
 This is the single current manuscript candidate in Draft PR #214 of `zuizui0223/mina`. It supersedes the nest-exposure-centred v0.6 presentation; earlier manuscripts and frozen analyses remain historical records. Original source analyses are pinned to `a1cf988df3501794e9add243a8c2be8ecbb7b43a`.
 
@@ -13,6 +13,10 @@ This is the single current manuscript candidate in Draft PR #214 of `zuizui0223/
 The question is whether June–October coastal-polynya area fraction within 100 km is associated with the subsequent November–February optical Adélie δ¹⁵N signal, after measured summer conditions and fixed effects. This is a retrospective exploratory reanalysis of released source pixels, not direct dietary measurement or a new independent ecological sample.
 
 ## What changed in this revision
+
+Version 0.7.2 closes editorial and provenance items: it improves the five figure descriptions for screen readers, checks the eight bibliography entries against primary records, and records additional version-specific NOAA distribution metadata. Numerical inputs, estimates, uncertainty intervals and figure pixels remain those of v0.7.1. This is a continuation of the same manuscript, not a new analysis or independent validation.
+
+The [editorial verification receipt](editorial_verification_20261122.json) records 56 byte-identical protected source files, three unchanged Word files and current document checks. The [visual review](document_visual_qa.json) covers all 39 pages: five changed pages were newly inspected, while 34 retain prior review through exact file or rendered-page hashes. The original statistical verification receipt is preserved unchanged; this editorial revision does not claim another statistical rerun.
 
 The main narrative now follows winter polynya association, temporal comparison, salinity distinction, measurement sensitivity and unresolved biological interpretation. Nest-weighted climate exposure is supplementary context. The negative direction contradicts the original positive hypothesis and is disclosed in the abstract. Failed forward prediction, weaker later-period point estimates, selective chlorophyll support, inconclusive Signy stomach-content evidence and the unsuccessful later-period guano-recovery gate remain visible.
 
@@ -54,7 +58,7 @@ Four compact frozen analysis archives are included under `frozen_archives/`. The
 
 The exact temporal CSV is pinned separately in `verification_inputs/`; its SHA256 and original Git blob are checked by the numerical verifier. Small figure tables and projection caches are under `source_inputs/`, with source identity and content hashes in `source_manifest.json`. Provider data retain their authorship, DOI and original terms; this review bundle does not assign a new licence to those data.
 
-[Source notices](submission_preparation/SOURCE_NOTICES.md) and the [reuse register](submission_preparation/SOURCE_REUSE_REGISTER.json) document attribution, provider-specific licences and transformations. Both principal Zenodo deposits specify CC BY 4.0. The exact historical NSIDC v4 redistribution label and the project's own code-licence choice remain unresolved; neither is replaced by a blanket package licence. Generated using E.U. Copernicus Marine Service Information; https://doi.org/10.48670/moi-00021.
+[Source notices](submission_preparation/SOURCE_NOTICES.md) and the [reuse register](submission_preparation/SOURCE_REUSE_REGISTER.json) document attribution, provider-specific licences and transformations. Both principal Zenodo deposits specify CC BY 4.0. The 22 November follow-up verifies unrestricted-access/use statements in NOAA's daily and monthly Version 4 distribution metadata, while recording their unresolved DOI mismatch with the original NSIDC release. This is not an assignment of CC0 or a blanket redistribution licence. The project's own code-licence choice remains an author decision. Generated using E.U. Copernicus Marine Service Information; https://doi.org/10.48670/moi-00021.
 
 ## Reproduction scope and publication status
 

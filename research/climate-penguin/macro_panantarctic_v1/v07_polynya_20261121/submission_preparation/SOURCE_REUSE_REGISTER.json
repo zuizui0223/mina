@@ -62,7 +62,7 @@
       "id": "g02202v4",
       "doi": "10.7265/efmz-2t65",
       "version": "4",
-      "dataset_license": "Not specified in retrieved version-specific metadata",
+      "dataset_license": "Original NSIDC DOI: named licence/express redistribution term not located. NOAA daily/monthly v4 distribution metadata: No constraints on data access or use.",
       "evidence_url": "https://nsidc.org/api/dataset/metadata/v2/oai?verb=GetRecord&metadataPrefix=dif&identifier=G02202.004",
       "observed_condition": "Retired dataset; cite prior/planned use according to NSIDC citation policy",
       "datacite_rightsList": [],
@@ -94,7 +94,50 @@
         "https://nsidc.org/data/data-policies",
         "https://nsidc.org/about/data-use-and-copyright"
       ],
-      "policy_limit": "General policy says most holdings are public domain, but some have restrictions. This is not a version-specific licence for G02202 v4."
+      "policy_limit": "The exact-version NOAA distribution statements are verified, but their DOI differs from the original NSIDC release and could not be resolved. No equivalence, named licence or blanket package licence is assigned.",
+      "noaa_distribution_evidence": [
+        {
+          "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/nsidcG02202v4sh1day.das",
+          "human_readable_url": "https://coastwatch.pfeg.noaa.gov/erddap/pt/info/nsidcG02202v4sh1day/index.html",
+          "access_date": "2026-11-22",
+          "dataset_id": "nsidcG02202v4sh1day",
+          "scope": "Southern Hemisphere, 25 km, science quality, daily",
+          "product_version": "v04r00",
+          "metadata_link_field": "metadata_Link",
+          "metadata_link": "https://nsidc.org/data/g02202/versions/4/",
+          "license_field": "NC_GLOBAL.license",
+          "license_value": "No constraints on data access or use",
+          "nc_global_id": "https://doi.org/10.7265/sr8p-kc62",
+          "response_bytes": 15831,
+          "response_sha256": "0918731d7cdfa42c662c8aabb65d47760f0467da9d999c5f916fd8037b049c2a"
+        },
+        {
+          "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/nsidcG02202v4shmday.das",
+          "human_readable_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/nsidcG02202v4shmday.html",
+          "access_date": "2026-11-22",
+          "dataset_id": "nsidcG02202v4shmday",
+          "scope": "Southern Hemisphere, 25 km, science quality, monthly",
+          "product_version": "v04r00",
+          "metadata_link_field": "metadata_link",
+          "metadata_link": "https://nsidc.org/data/g02202/versions/4/",
+          "license_field": "NC_GLOBAL.license",
+          "license_value": "No constraints on data access or use",
+          "nc_global_id": "https://doi.org/10.7265/sr8p-kc62",
+          "response_bytes": 17746,
+          "response_sha256": "6cc6caf30533955a3cc19b9bca9e79f5af146c80bc43c4da448c7f4ccb16ef77"
+        }
+      ],
+      "distributor_doi_discrepancy": {
+        "access_date": "2026-11-22",
+        "resolver_url": "https://doi.org/10.7265/sr8p-kc62",
+        "resolver_http_status": 404,
+        "resolver_message": "DOI Not Found",
+        "registration_lookup_url": "https://api.datacite.org/dois/10.7265/sr8p-kc62",
+        "registration_lookup_http_status": 404,
+        "equivalence_to_original_doi_verified": false,
+        "interpretation": "NOAA titles, v04r00 labels and metadata links identify the Antarctic Version 4 distributions. The DOI in NC_GLOBAL.id did not resolve, so the distributor licence field is recorded at its observed scope."
+      },
+      "follow_up_evidence": "evidence/nsidc_v4_rights_check_20261122.json"
     },
     {
       "id": "glorys12v1",
@@ -189,5 +232,7 @@
   "scope": "Source reuse evidence for the existing v0.7 compact reproduction package; no new project-code licence is assigned.",
   "reviewed_source_commit": "7867969c640e9e1fce627ed0e172e549fb6b4f0f",
   "registered_attribution_file": "SOURCE_NOTICES.md",
-  "provider_metadata_receipt": "evidence/provider_metadata_receipt.json"
+  "provider_metadata_receipt": "evidence/provider_metadata_receipt.json",
+  "follow_up_date": "2026-11-22",
+  "follow_up_source_commit": "0dfd8462d38b2a8a022700aa3baf58ae168e6e52"
 }

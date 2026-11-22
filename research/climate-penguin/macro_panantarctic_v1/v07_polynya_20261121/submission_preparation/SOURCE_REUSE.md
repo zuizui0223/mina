@@ -2,6 +2,10 @@
 
 Audit date: 21 November 2026. Inspected source commit `7867969c640e9e1fce627ed0e172e549fb6b4f0f`; no canonical manuscript or provider data were edited. This is a record of observed provider statements and package contents, not an assertion that public accessibility alone establishes reuse rights.
 
+## Follow-up on 22 November 2026
+
+The original audit below is retained as a dated record. The [version-4 follow-up](NSIDC_V4_DISTRIBUTION_TERMS.md) adds official NOAA CoastWatch daily and monthly distribution metadata: both identify `v04r00`, link to NSIDC version 4 and state “No constraints on data access or use”. Their DOI field is `10.7265/sr8p-kc62`, which did not resolve and was not verified as equivalent to the original `10.7265/efmz-2t65`. This establishes the observed NOAA distribution statements, while the original-release named licence or explicit redistribution term remains unverified. The canonical NSIDC citation is retained, and no new blanket licence is applied.
+
 ## Findings and completion status
 
 1. **The two central deposited datasets have verified CC BY 4.0 metadata:** Youngflesh Zenodo 17409948 and DEEP-AA Zenodo 13358042. Their attribution, licence links and transformations are recorded in SOURCE_NOTICES.md and SOURCE_REUSE_REGISTER.json. The version-specific Zenodo/API records, rather than the journal article's licence, establish this finding.

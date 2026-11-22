@@ -1,0 +1,107 @@
+{
+  "access_date": "2026-11-22",
+  "dataset": {
+    "title": "NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 4",
+    "nsidc_id": "G02202",
+    "nsidc_dif_id": "G02202.004",
+    "version": "4",
+    "doi": "10.7265/efmz-2t65",
+    "package_representation": "Derived November–February, 150-km colony-season sea-ice concentration values in joined tables",
+    "original_grids_in_review_package": false
+  },
+  "finding": {
+    "version_specific_noaa_distributor_statement": "No constraints on data access or use",
+    "distributor_scope": "NOAA CoastWatch ERDDAP Southern Hemisphere daily and monthly G02202 Version 4 distributions",
+    "original_nsidc_release_redistribution_term": null,
+    "named_licence_for_original_nsidc_release": null,
+    "original_release_rights_status": "No express redistribution term or named licence located for NSIDC DOI 10.7265/efmz-2t65 in the exact release records inspected",
+    "citation_required_by_nsidc": true,
+    "applicable_citation_doi": "10.7265/efmz-2t65"
+  },
+  "original_release_evidence": [
+    {
+      "url": "https://nsidc.org/data/g02202/versions/4",
+      "access_date": "2026-11-22",
+      "scope": "Exact NSIDC Version 4 landing page",
+      "observed": "G02202 Version 4, DOI 10.7265/efmz-2t65, retired status and requirement to cite the data including the subset used where applicable."
+    },
+    {
+      "url": "https://nsidc.org/sites/default/files/g02202-v004-userguide_1_0.pdf",
+      "access_date": "2026-11-22",
+      "scope": "Exact NSIDC Version 4 user guide",
+      "observed": "The guide requires citation, identifies the source DOI and asks users to indicate the subset used and access date."
+    },
+    {
+      "url": "https://nsidc.org/api/dataset/metadata/v2/oai?verb=GetRecord&metadataPrefix=dif&identifier=G02202.004",
+      "access_date": "2026-11-22",
+      "scope": "Exact NSIDC Version 4 DIF metadata",
+      "observed": "Version 4 and Dataset_DOI 10.7265/efmz-2t65. Access_Constraints reports retirement and unavailability. Use_Constraints reports retirement and unavailability for use and directs citation of prior or planned use.",
+      "response_sha256": "3ec98c47ee2df85fb18821fc5852f111636baf33e41c4a4819cdb57d8f99decd"
+    },
+    {
+      "url": "https://api.datacite.org/dois/10.7265/efmz-2t65",
+      "access_date": "2026-11-22",
+      "scope": "Exact original release DOI registration",
+      "landing_url": "https://nsidc.org/data/g02202/versions/4/",
+      "rightsList": [],
+      "response_sha256": "6778259eab253d95c3596826b727d2e8c633122c2da3b3250518922d9f453d9c"
+    }
+  ],
+  "noaa_distributor_evidence": [
+    {
+      "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/nsidcG02202v4sh1day.das",
+      "human_readable_url": "https://coastwatch.pfeg.noaa.gov/erddap/pt/info/nsidcG02202v4sh1day/index.html",
+      "access_date": "2026-11-22",
+      "dataset_id": "nsidcG02202v4sh1day",
+      "scope": "Southern Hemisphere, 25 km, science quality, daily",
+      "product_version": "v04r00",
+      "metadata_link_field": "metadata_Link",
+      "metadata_link": "https://nsidc.org/data/g02202/versions/4/",
+      "license_field": "NC_GLOBAL.license",
+      "license_value": "No constraints on data access or use",
+      "nc_global_id": "https://doi.org/10.7265/sr8p-kc62",
+      "response_bytes": 15831,
+      "response_sha256": "0918731d7cdfa42c662c8aabb65d47760f0467da9d999c5f916fd8037b049c2a"
+    },
+    {
+      "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/nsidcG02202v4shmday.das",
+      "human_readable_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/nsidcG02202v4shmday.html",
+      "access_date": "2026-11-22",
+      "dataset_id": "nsidcG02202v4shmday",
+      "scope": "Southern Hemisphere, 25 km, science quality, monthly",
+      "product_version": "v04r00",
+      "metadata_link_field": "metadata_link",
+      "metadata_link": "https://nsidc.org/data/g02202/versions/4/",
+      "license_field": "NC_GLOBAL.license",
+      "license_value": "No constraints on data access or use",
+      "nc_global_id": "https://doi.org/10.7265/sr8p-kc62",
+      "response_bytes": 17746,
+      "response_sha256": "6cc6caf30533955a3cc19b9bca9e79f5af146c80bc43c4da448c7f4ccb16ef77"
+    }
+  ],
+  "distributor_doi_discrepancy": {
+    "access_date": "2026-11-22",
+    "resolver_url": "https://doi.org/10.7265/sr8p-kc62",
+    "resolver_http_status": 404,
+    "resolver_message": "DOI Not Found",
+    "registration_lookup_url": "https://api.datacite.org/dois/10.7265/sr8p-kc62",
+    "registration_lookup_http_status": 404,
+    "equivalence_to_original_doi_verified": false,
+    "interpretation": "NOAA titles, v04r00 labels and metadata links identify the Antarctic Version 4 distributions. The DOI in NC_GLOBAL.id did not resolve, so the distributor licence field is recorded at its observed scope."
+  },
+  "general_policy_context": [
+    {
+      "url": "https://nsidc.org/data/data-policies",
+      "access_date": "2026-11-22",
+      "scope": "NSIDC holdings in general",
+      "observed": "Most holdings are public domain. NSIDC also holds data for which it has no distribution rights."
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/pub/data/sds/cdr/CDRs/Sea_Ice_Concentration/UseAgreement_01B-11.pdf",
+      "access_date": "2026-11-22",
+      "scope": "General NOAA CDR data policy, included in current Sea Ice Concentration CDR agreement",
+      "observed": "The CDR policy describes data use as unrestricted and treats software separately. The retrieved document cites G02202 Version 6, rather than the historical G02202 Version 4 DOI."
+    }
+  ],
+  "limits": "Scope is public documentation and metadata. No new licence or author authorization established."
+}

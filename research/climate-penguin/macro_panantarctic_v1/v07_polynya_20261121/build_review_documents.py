@@ -222,7 +222,7 @@ def build(out: Path) -> dict:
     d.add_paragraph("[AUTHORS IN APPROVED ORDER]")
     d.add_paragraph("[AFFILIATIONS AND AUTHOR–AFFILIATION MAPPING]")
     d.add_paragraph("Corresponding author: [NAME AND EMAIL]")
-    d.add_paragraph("Version 0.7.1 · 21 November 2026 · Author review")
+    d.add_paragraph("Version 0.7.2 · 22 November 2026 · Author review")
     d.add_paragraph("Running title: Winter polynyas and penguin isotopes")
     d.add_paragraph(f"Abstract: {len(abstract.split())} words · Five main figures")
     p = d.add_paragraph("Author details, contributions and declarations remain to be supplied by the authors. Publication status is documented separately in the review notes.")
@@ -243,6 +243,7 @@ def build(out: Path) -> dict:
         add_inline(p, caption)
         p.paragraph_format.line_spacing = 2.0
     main_path = out / "Polynya_foodweb_manuscript_v07.docx"
+    d.core_properties.modified = datetime(2026, 11, 22, tzinfo=timezone.utc)
     d.save(main_path)
     if main_path.stat().st_size >= 5_000_000:
         raise ValueError("Combined initial manuscript is not below the journal's 5 MB limit")
@@ -269,6 +270,7 @@ def build(out: Path) -> dict:
         for r in p.runs:
             r.font.size = Pt(10)
     figure_path = out / "Polynya_foodweb_figures_v07.docx"
+    f.core_properties.modified = datetime(2026, 11, 22, tzinfo=timezone.utc)
     f.save(figure_path)
 
     abstract_path = out / "Polynya_foodweb_abstract.txt"
@@ -280,8 +282,10 @@ def build(out: Path) -> dict:
     a.add_heading("Figure alternative text", level=1)
     for i, path in enumerate(figures, 1):
         a.add_heading(f"Figure {i}", level=2)
-        a.add_paragraph(alt[path.stem])
+        p = a.add_paragraph(alt[path.stem])
+        p.paragraph_format.keep_together = True
     alt_path = out / "Polynya_foodweb_alt_text_v07.docx"
+    a.core_properties.modified = datetime(2026, 11, 22, tzinfo=timezone.utc)
     a.save(alt_path)
     outputs.append(alt_path)
 
@@ -300,8 +304,8 @@ def build(out: Path) -> dict:
         doc.save(output)
         outputs.append(output)
     receipt = {"abstract_words_whitespace": len(abstract.split()),
-               "figure_count": len(figures), "date": "2026-11-21",
-               "version": "0.7.1",
+               "figure_count": len(figures), "date": "2026-11-22",
+               "version": "0.7.2",
                "layout": "US Letter; 0.9-inch side margins; main text and figure captions 12pt double spaced; continuous line numbering; all five figures at end; 169mm figure width",
                "main_docx_contains_five_figures": len(d.inline_shapes) == 5,
                "main_docx_below_5MB": main_path.stat().st_size < 5_000_000,
