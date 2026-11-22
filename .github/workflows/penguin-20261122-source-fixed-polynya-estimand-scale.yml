@@ -1,0 +1,60 @@
+name: Penguin source-locked polynya estimand scale (no new inference)
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - '.github/workflows/penguin-20261122-source-fixed-polynya-estimand-scale.yml'
+      - 'research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/audit_polynya_estimand_scale_20261122.py'
+      - 'research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/source_inputs/polynya_estimand_scale_audit_20261122.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check-identifying-exposure-support:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/requirements-review.txt
+      - name: Install numerical packages
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5 pandas==2.2.3 scipy==1.17.0
+      - name: Validate syntax, source ZIP checksums and FWL covariate scaling
+        run: |
+          cd research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121
+          python -m py_compile audit_polynya_estimand_scale_20261122.py
+          python audit_polynya_estimand_scale_20261122.py --out source_scale_runtime_result.json
+      - name: Compare with permanent descriptive result; guard against p-value misuse
+        run: |
+          cd research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121
+          python - <<'PY'
+          import json
+          p=json.load(open("source_inputs/polynya_estimand_scale_audit_20261122.json"))
+          q=json.load(open("source_scale_runtime_result.json"))
+          assert p["original_records"]==q["original_observations"]==439
+          assert q["informative_observations"]==425 and q["informative_regions"]==8
+          assert q["status"]=="PASS_FROZEN_SOURCE_ESTIMAND_SCALE_DESCRIPTIVE_ONLY"
+          assert q["no_new_inference_or_hypothesis"]
+          for name,key in (("M_P","MP"),("M_SP","MSP")):
+              src=q["frozen_slope_rescalings"][name]
+              ref=p[key]
+              for a,b in [
+                  (src["slope_per_10pp_per_mil"],ref["slope_per10pp_mil"]),
+                  (src["fully_residualized_439"]["sd_pop_pp"],ref["conditional_sd439_pp"]),
+                  (src["fully_residualized_425_informative"]["sd_pop_pp"],ref["conditional_sd425_pp"]),
+                  (src["slope_per_1sd_of_439_identifying_exposure_per_mil"],ref["slope_per_1conditional_sd439_mil"]),
+                  (src["ten_pp_in_439_residual_standard_deviations"],ref["ten_pp_in_conditional_sd_units"])]:
+                  assert abs(a-b)<1e-8,(name,a,b)
+          print("PASS 439/425 source-pinned same frozen slopes and observed covariate scale, no new statistical inference")
+          PY
+      - name: Save independent descriptive computation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: polynya-original439-exposure-scale-FWL-descriptive-20261122
+          path: research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/source_scale_runtime_result.json
+          retention-days: 30
+          if-no-files-found: warn
