@@ -1,0 +1,90 @@
+name: adelie-polynya-original-source-and-mpa-gate
+
+on:
+  push:
+    branches: [analysis/adelie-polynya-conservation-source-20261122]
+    paths: [.github/workflows/adelie-polynya-original-source-and-mpa-gate.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch original source metadata and CCAMLR MPA polygon (official)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/out/source_files build/raw
+          curl -fLSs --retry 4 --retry-all-errors --max-time 90 https://zenodo.org/api/records/17409948 -o build/out/zenodo_record.json
+          curl -fLSs --retry 4 --retry-all-errors --max-time 120 https://raw.githubusercontent.com/ccamlr/data/main/geographical_data/mpa/CCAMLR_MPA.json -o build/out/CCAMLR_MPA_EPSG6932.geojson
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          p=Path('build/out')
+          v=json.loads((p/'zenodo_record.json').read_text())
+          fs=[{'key':i.get('key'),'size':i.get('size'),'checksum':i.get('checksum'),'url':i.get('links',{}).get('content')} for i in v['files']]
+          (p/'zenodo_manifest.json').write_text(json.dumps(fs,indent=2)+'\n')
+          m=json.loads((p/'CCAMLR_MPA_EPSG6932.geojson').read_text())
+          assert m.get('type')=='FeatureCollection' and len(m.get('features',[]))==6
+          assert '6932' in str(m.get('crs'))
+          props=[{'name':x['properties']['GAR_Name'],'label':x['properties']['GAR_Short_Label'],'start':x['properties']['GAR_Start_Date'],'size_km2':x['properties'].get('GAR_Size')} for x in m['features']]
+          (p/'mpa_registry.json').write_text(json.dumps({'crs':'EPSG:6932','official_repo':'ccamlr/data','boundary_sha256':hashlib.sha256((p/'CCAMLR_MPA_EPSG6932.geojson').read_bytes()).hexdigest(),'zones':props},indent=2)+'\n')
+          print('Original archive metadata:',fs)
+          print('Official MPA zones:',props)
+          PY
+      - name: Inspect published Youngflesh archive; leave original outcome untouched
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL=$(python - <<'PY'
+          import json
+          f=json.load(open('build/out/zenodo_manifest.json'))
+          x=[o for o in f if 'e29a2f68c84e3a515044d554540def2f' in str(o['checksum']) or o['size']==256425816]
+          if len(x)!=1: raise ValueError('Expected unique frozen archive, got '+str(x))
+          print(x[0]['url'])
+          PY
+          )
+          test -n "$URL"
+          curl -fLSs --retry 5 --retry-all-errors --connect-timeout 60 --max-time 1200 "$URL" -o build/raw/source
+          echo 'e29a2f68c84e3a515044d554540def2f  build/raw/source' | md5sum -c -
+          python - <<'PY'
+          import zipfile,tarfile,re,json,hashlib
+          from pathlib import Path
+          p=Path('build/raw/source');o=Path('build/out');members=[];samples=[]
+          if zipfile.is_zipfile(p):
+              with zipfile.ZipFile(p) as z:
+                  assert z.testzip() is None
+                  for i in z.infolist():
+                      members.append({'name':i.filename,'bytes':i.file_size})
+                      if i.is_dir() or not i.filename.lower().endswith(('.csv','.tsv')) or i.file_size>=15000000:continue
+                      if not re.search('loc|site|colony|reflect|sic|year|diet|marine|source',i.filename,re.I):continue
+                      b=z.read(i);name=f"src{len(samples):02d}_"+Path(i.filename).name
+                      (o/'source_files'/name).write_bytes(b)
+                      samples.append({'source':i.filename,'saved':name,'n_bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
+          elif tarfile.is_tarfile(p):
+              with tarfile.open(p) as z:
+                  for i in z.getmembers():
+                      members.append({'name':i.name,'bytes':i.size})
+                      if i.isfile() and i.size<15000000 and i.name.lower().endswith(('.csv','.tsv')):
+                          b=z.extractfile(i).read();name=f"src{len(samples):02d}_"+Path(i.name).name
+                          (o/'source_files'/name).write_bytes(b)
+                          samples.append({'source':i.name,'saved':name,'n_bytes':len(b)})
+          else:
+              members.append({'name':'NONARCHIVE','header':p.open('rb').read(20).hex()})
+          (o/'original_archive_members.json').write_text(json.dumps({'members':members,'small_tables':samples},indent=2)+'\n')
+          print('Archive:',len(members),'members; exported small CSV/TSV:',len(samples))
+          print('Candidate location files:',[x for x in members if re.search('site|colony|locat|coordinates',x['name'],re.I)][:40])
+          PY
+      - name: Publish official-source identity and spatial baseline
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adelie-polynya-official-source-ccamlr-mpa-gate
+          path: build/out
+          if-no-files-found: warn
+          retention-days: 60
