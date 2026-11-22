@@ -1,23 +1,23 @@
 # MEPS submission-preparation audit — official pages verified
 
-Checked 22 November 2026 against the final version 0.7.2 Word deliverables and their build receipt. Publisher requirements below retain their documented retrieval date of 21 November 2026. All six DOCX byte sizes and SHA-256 hashes match that receipt. This is a file-preparation check; human scientific review, author information and publication declarations remain pending.
+Checked 22 November 2026 against the current version 0.7.3 Word deliverables and their build receipt. Publisher requirements below retain their documented retrieval date of 21 November 2026. All six DOCX byte sizes and SHA-256 hashes match that receipt. This is a file-preparation check; human scientific review, author information and publication declarations remain pending.
 
 ## Final deliverables and current counts
 
 | Deliverable | Rendered pages | File size | Observed contents |
 |---|---:|---:|---|
-| Combined manuscript | 22 | 1,718,937 bytes | 17 pages of frontmatter/text/references plus 5 figure pages; all five figures at the end |
-| Supplement | 7 | 47,705 bytes | Sections S1–S7, editable Tables S1–S4 and its own Literature cited |
+| Combined manuscript | 22 | 1,719,285 bytes | 17 pages of frontmatter/text/references plus 5 figure pages; all five figures at the end |
+| Supplement | 8 | 48,972 bytes | Sections S1–S7, editable Tables S1–S4 and its own Literature cited |
 | Figure packet | 5 | 1,707,511 bytes | Five figures with captions |
 | Alt-text file | 2 | 39,494 bytes | Five figure descriptions |
 | Cover letter | 1 | 39,041 bytes | 241 total words; 145-word research summary; author attestations pending |
 | Author-information form | 2 | 40,746 bytes | Consolidated author, approval and release fields; first table header is “No.” |
 
-The combined manuscript contains **4,654 whitespace-delimited words**, including all current frontmatter, title, author/affiliation placeholders, abstract, keyword line, headings, main text, acknowledgements, data/code statement, bibliography and captions. The count sums visible `w:t` text within document-body paragraphs; it excludes running headers/footers, field-generated page and line numbers, text embedded inside figure images, and the separate supplement/admin files. There are no main-document tables. The portal may count differently, and completing author fields will change the count. This total is within the suggested 4,000–12,000-word Research Article range.
+The combined manuscript contains **4,803 whitespace-delimited words**, including all current frontmatter, title, author/affiliation placeholders, abstract, keyword line, headings, main text, acknowledgements, data/code statement, bibliography and captions. The count sums visible `w:t` text within document-body paragraphs; it excludes running headers/footers, field-generated page and line numbers, text embedded inside figure images, and the separate supplement/admin files. There are no main-document tables. The portal may count differently, and completing author fields will change the count. This total is within the suggested 4,000–12,000-word Research Article range.
 
-Specific checks: title **105 characters / 14 words**; running head **5 words**; abstract **222 words**; **6 keywords**; Introduction–Conclusion **3,470 words including headings**; **8 bibliography entries / 258 words**; **5 captions / 354 words**. All five embedded images are exactly **169 mm** wide in OOXML. All 42 checked body/caption paragraphs use 12 pt with double spacing. The section uses continuous line numbering and the footer contains a PAGE field. The combined file is below 5,000,000 bytes.
+Specific checks: title **105 characters / 14 words**; running head **5 words**; abstract **222 words**; **6 keywords**; Introduction–Conclusion **3,614 words including headings**; **8 bibliography entries / 258 words**; **5 captions / 354 words**. All five embedded images are exactly **169 mm** wide in OOXML. The review manuscript continues to use 12 pt double-spaced body/caption text; the v0.7.3 source-scale addition was checked in the rendered main manuscript and supplement. The section uses continuous line numbering and the footer contains a PAGE field. The combined file is below 5,000,000 bytes.
 
-Evidence is recorded in `evidence/preflight_v072.json` and `../editorial_verification_20261122.json`. The three changed documents were rendered again; five changed pages were individually inspected. Prior review of 24 rendered pages is retained because their PNG hashes match, and ten further pages are retained through three byte-identical DOCX files. The complete 39-page review coverage is documented in `../document_visual_qa.json`.
+The original v0.7.2 preflight is retained in `evidence/preflight_v072.json` and `../editorial_verification_20261122.json`. Current v0.7.3 file sizes, hashes and format are in `../document_build_receipt.json`; all 22 main and eight supplementary pages were newly rendered and checked in contact sheets, with the amended manuscript and supplement pages additionally viewed at original size. The declared visual inspection scope is in `../document_visual_qa_v073.json` (40 total pages over the six review documents).
 
 ## Decision and resolved access issue
 
@@ -33,13 +33,13 @@ The rule column gives concise factual constraints; consult the linked publisher 
 
 | Area | Verified rule | Final-file status and remaining action |
 |---|---|---|
-| Category/length [P2] | Research Article suggested 4,000–12,000 total words, not a strict limit. | Final combined DOCX: 4,654 words by the definition above; main body including headings is 3,470. No padding is needed. |
+| Category/length [P2] | Research Article suggested 4,000–12,000 total words, not a strict limit. | Current combined DOCX: 4,803 words by the definition above; main body including headings is 3,614. No padding is needed. |
 | Title/running head [P2] | Title at most 150 characters; running head 3–6 words. | Title 105 characters / 14 words; running head 5 words. |
 | Abstract/keywords [P2] | At most 250 words; 3–8 keywords. | Revised abstract is 222 words with 6 keywords. It retains the exploratory origin and uncertain timing difference. |
-| Main file [P2] | One DOC/DOCX with tables/figures; under 5 MB. | Combined manuscript is 1,718,937 bytes with all five figures and captions after the references. |
+| Main file [P2] | One DOC/DOCX with tables/figures; under 5 MB. | Combined manuscript is 1,719,285 bytes with all five figures and captions after the references. |
 | Layout [P2] | 12 pt, double spacing, numbered sections, continuous lines and page numbers. | Normal body and all five captions verified 12 pt/double spaced; numbered sections, continuous line numbering and PAGE footer present. Display headings/title use their own styles. |
 | Title page [P2] | Authors, affiliations, corresponding email, running head, abstract and keywords. | Names/contact facts are pending. Use superscript affiliation markers and one corresponding-author marker when confirmed. |
-| Supplement [P2] | Separate file; S-numbering; own full bibliography if citing sources. | Seven-page separate supplement contains S1–S7, four editable tables S1–S4 and its own Literature cited. |
+| Supplement [P2] | Separate file; S-numbering; own full bibliography if citing sources. | Eight-page separate supplement contains S1–S7, four editable tables S1–S4 and its own Literature cited. |
 | Figures [P2] | Raster at least 300 dpi; production area 169 × 225 mm. | Five embedded figures are 169 mm wide; source-generated high-resolution files are retained separately. The combined review file is below the size limit. |
 | Figure text [P2] | PDF checklist at least 10 pt; final-size guidance around 8–9 pt. | The page contains two contextual instructions. Figure preparation uses a 10-pt review target at the final 169-mm width; the separate visual checks govern legibility, not OOXML alone. |
 | Alt text [P2] | Separate Word file by potentially final revision. | A two-page Word file supplies five plain-language descriptions with numbers spelled out. Each description remains on one page; all ten embedded figure descriptions in the main document and figure packet match the source text. |
@@ -103,4 +103,4 @@ P2 → Manuscript Formatting Requirements and Preparation Tips → Final checkli
 
 ## Verification boundary
 
-The final six DOCX files passed ZIP integrity and build-receipt byte/hash checks. Structural checks and all counts above were made from those files, not inferred from the previous Markdown. The current author-form SHA-256 is `94533582a7c4910447ece3c951aba5670e123cba4cb5ae6049e52576574e67a3`; the main manuscript is `39ca784a051ebeca29b83c82e445625ed7e734617444c9649f0c5415333303b6`. Rendered PDF page counts are 22/7/5/2/1/2 in the order listed above. This preflight does not claim that all author placeholders have been completed or that editorial acceptance is assured. No journal submission, signature, licence assignment or DOI publication occurred.
+The final six DOCX files passed ZIP integrity and build-receipt byte/hash checks. Structural checks and all counts above were made from those files, not inferred from the previous Markdown. The current author-form SHA-256 is `54dcc99f5ff9ac13140f2b0cbb9d27985377eed82c35cbd0f14f8ad438d98982`; the main manuscript is `44f2de6a37cd74666818fe0531a0c85af2e85db877aa69f5b12b158af39ff3dd`. Rendered PDF page counts are 22/8/5/2/1/2 in the order listed above. This preflight does not claim that all author placeholders have been completed or that editorial acceptance is assured. No journal submission, signature, licence assignment or DOI publication occurred.
