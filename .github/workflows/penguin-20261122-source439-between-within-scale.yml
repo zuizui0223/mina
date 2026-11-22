@@ -1,0 +1,60 @@
+name: Penguin original439 between versus within polynya scale diagnostic
+on:
+  push:
+    branches: [analysis/penguin-decade-redistribution-v1-20261110]
+    paths:
+      - '.github/workflows/penguin-20261122-source439-between-within-scale.yml'
+      - 'research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/test_between_within_source439_20261122.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  frozen-design-sites-not-repeated-years:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/requirements-review.txt
+      - name: Install pinned numeric packages
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5 pandas==2.2.3 scipy==1.17.0
+      - name: Verify the results-blind frozen design exists
+        run: |
+          test -s research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/FROZEN_SCALE_BETWEEN_WITHIN_COLONY_TEST_20261122_JA.md
+      - name: Run source-locked B0, B1, B2, calibration and leave-one-region-out diagnostic
+        run: |
+          cd research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121
+          python -m py_compile test_between_within_source439_20261122.py
+          python test_between_within_source439_20261122.py
+      - name: Enforce exploratory sign-reversal NO-GO and original matched cohort
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=Path("research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121")
+          d=json.loads((r/"BETWEEN_WITHIN_POLYNYA_ORIGINAL439_EXACT_RESULT_20261122.json").read_text())
+          assert d["status"]=="PASS_SOURCE_LOCKED_439_BETWEEN_WITHIN_COMPARISON"
+          assert d["original"]["records"]==439 and d["original"]["sites"]==85
+          assert d["original"]["sites_three_or_more"]==82
+          assert d["B1_primary"]["n_informative_regions"]==8
+          assert d["within_frozen_site_FE_beta_per_10pp_mil"]<0
+          assert d["B1_primary"]["full"]["beta_per_10pp_mil"]<0
+          assert d["B1_primary"]["CV3_t7_95_interval"][0]<0<d["B1_primary"]["CV3_t7_95_interval"][1]
+          assert d["B2_regionseason_standardized"]["full"]["beta_per_10pp_mil"]<0
+          assert d["verdict"]=="NO_GO_BETWEEN_VS_WITHIN_SIGN_INVERSION"
+          assert not all(d["predeclared_inversion_gates"].values())
+          assert d["published_Reaves_chick_bone_is_not_same_estimand"]
+          assert d["same_source_not_independent_ecological_replication"]
+          print("PASS source-verified 439/85 site panel: between-colony sign reversal not established")
+          PY
+      - name: Archive full numerical tests, jackknife omissions and gate status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: polynya-439-between-within-site-source-8region-JK-NO-GO
+          path: research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/BETWEEN_WITHIN_POLYNYA_ORIGINAL439_EXACT_RESULT_20261122.json
+          if-no-files-found: warn
+          retention-days: 30
