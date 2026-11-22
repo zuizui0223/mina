@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "created_date": "2026-11-22",
+  "status": "SOURCE_BASED_DESCRIPTIVE_MAP_COMPLETE_FROZEN_439_PANEL_NOT_REPRODUCED",
+  "source_panel": {
+    "original_manuscript_records": 439,
+    "original_sites": 85,
+    "years": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010
+    ],
+    "original_polynya_fraction_mean_pct": 7.03,
+    "original_polynya_fraction_sd_pp": 6.32
+  },
+  "independent_source_reconstruction": {
+    "candidate_source_site_years": 472,
+    "candidate_sites": 88,
+    "DEEP_AA_daily_maps": 1071,
+    "all_months_2004_2010_complete": true,
+    "polynya_fraction_mean_pct": 7.220692081920022,
+    "polynya_fraction_sd_pp": 6.28001071642973,
+    "zero_area_rows": 28,
+    "range_pp": [
+      0,
+      26.712554391743915
+    ],
+    "exposure_site_sd_median_pp": 2.8229308758154703,
+    "exposure_site_sd_mean_pp": 2.5737914352566427
+  },
+  "mpa": {
+    "official_source": "https://github.com/ccamlr/data/blob/main/geographical_data/mpa/CCAMLR_MPA.json",
+    "designated_zone_count": 6,
+    "candidate_sites_100km_intersect_approved_mpa": 18,
+    "other_sites": 70,
+    "overlap_site_median_sd_pp": 0.7938640312178749,
+    "nonoverlap_site_median_sd_pp": 2.8941226003451748,
+    "all_overlap_sites_in_Ross_Sea": true,
+    "Ross_Sea_designation_date": "2016-11-30",
+    "interpretation": "retrospective geographic exposure only; do not claim protection, dietary sensitivity or causal effect"
+  },
+  "source_authenticity": {
+    "Youngflesh_Zenodo_record": "https://zenodo.org/records/17409948",
+    "Youngflesh_ZIP_MD5": "e29a2f68c84e3a515044d554540def2f",
+    "DEEP_AA_Zenodo_record": "https://zenodo.org/records/13358042",
+    "DEEP_AA_ZIP_MD5": "f3f958389cc5e67ac1c4e3a6ee164318",
+    "candidate_csv_sha256": "845828a7cccdb502eea58fe654e2933e7de4c34874b6f772977d912e40fa45af"
+  },
+  "runs": {
+    "Youngflesh_RDS": "https://github.com/zuizui0223/mina/actions/runs/45031823417",
+    "DEEP_AA_reconstruction": "https://github.com/zuizui0223/mina/actions/runs/45032409092"
+  },
+  "limitations": [
+    "Reconstructed source pool 472/88 is not the frozen analysis sample 439/85",
+    "Original archive is saved in the user's Library but was not authorized for direct raw-byte materialization",
+    "Original image selection and summer covariate support not fully reproduced",
+    "Area fractions reconstructed using approximate geographical pixel-cell Jacobian",
+    "Not the ecological diet sensitivity of individual colonies",
+    "No current MPA causal effect: Ross Sea designation postdates 2004-2010 source winters"
+  ],
+  "claim_status": {
+    "original_adelie_optical_d15N_effect": "UNCHANGED",
+    "map": "SOURCE_ONLY_DESCRIPTIVE",
+    "manuscript_439_site_map": "NOT_COMPLETE",
+    "new_hypothesis_test": false
+  }
+}
