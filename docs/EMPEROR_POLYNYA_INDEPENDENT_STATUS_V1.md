@@ -1,6 +1,6 @@
 # Independent emperor penguin × coastal-polynya validation (v1)
 
-**State (2026-11-22):** outcome-blind protocol frozen; public LaRue source inspected; code and five synthetic tests validated locally; **no DEEP-AA-exposure linkage or empirical effect estimate yet**.
+**State (2026-11-22):** exposure-unseen protocol frozen; public LaRue source inspected; code and five synthetic tests validated locally; **no DEEP-AA-exposure linkage or empirical effect estimate yet**.
 
 ## What is frozen
 - Species: *Aptenodytes forsteri* (not the current Adélie manuscript).
