@@ -12,7 +12,7 @@ The original 439 observations are reproduced from Draft PR #214's pinned commit 
 | Matched optical isotope + summer-marine-source records, 2004–2010 | **439** | **85** |
 | Nonmissing historical winter-polynya exposure | **439** | **85** |
 
-Thus the 583→439 loss of **144 site-years** (28 sites) occurred entirely upstream, in the original isotope and marine-source matching stage, not in the winter-polynya exposure gate. Which individual matching variable excluded each source row remains unresolved. Exact site×year keys are preserved in the successful Actions artifact.
+Thus the 583→439 loss of **144 site-years** (28 sites) occurred entirely upstream, in the original isotope and marine-source matching stage, not in the winter-polynya exposure gate. The original geographic crosswalk is now reproduced: 12 sites (58 source seasons) failed unique-neighbor distance, 8 sites (42) failed nearest MAPPPD ID, 6 sites (33) failed the 2-km distance requirement and 2 sites (11) were absent from the 1997 marine-site source roster. These are sequential *data-linkage* reasons, not evidence of ecological absence. See [ADELIE_28_SITE_GEOGRAPHIC_GATE_RESULTS_20261123.md](ADELIE_28_SITE_GEOGRAPHIC_GATE_RESULTS_20261123.md) and successful [GitHub Actions source audit](https://github.com/zuizui0223/mina/actions/runs/45093939224). Exact site×year keys are preserved in the successful Actions artifact.
 
 The frozen 439 observations cover 11 source regions and seven winter starts (2004–2010), have 34 valid measured zero-polynya records, winter polynya fraction mean **7.030444%** and SD **6.318696 percentage points**. The frozen isotope response and existing model coefficient are untouched.
 
