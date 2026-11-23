@@ -1,0 +1,31 @@
+# Additional independent Adélie colony-region census sources — verified gates, 24 Nov 2026
+
+## Decision
+
+**Qualified pan-Antarctic independent 200-km geographic blocks: still seven, not eight.** Existing 32 MAPPPD long-series sites contain six clusters; original BAS Signy fixed-five colony series adds one independent source at 13 valid source-matched winters (2004–09 and 2013–19). The original Southwell et al. 2015 supplemental census recovers another geographically separate area around Syowa, but only seven consecutive breeding seasons **2004–2010**, spanning **six elapsed years**, below the already frozen ≥8-year population-series requirement. Do **not** widen criteria after observing physical or demographic records to count it as a qualifying eighth block.
+
+## Syowa — original regional breeding-pair series, source-verified
+
+- Source Southwell et al. 2015 PLOS ONE S1 https://doi.org/10.1371/journal.pone.0139877.s001. The archived Word source SHA256 is `c063b1d77e67a83bb945a1b8db276061b452130e7389e79dbdfd3f4675fb8ddb`. Original Table 4 lists the **same eight** Syowa-area breeding locations in seven years. Values are **detection/coverage adjusted regional breeding-pair estimates with published 95% CIs**, *not* raw MAPPPD per-colony nest counts. Eight listed source sites include a pair with identical coordinates after published rounding; physical averages use seven distinct source coordinate points without double-weighting.
+- Verified source-only population series: 2004 3325 (3181–3491), 2005 2634 (2486–2801), 2006 3047 (2931–3170), 2007 2864 (2720–3013), 2008 2255 (2136–2371), 2009 2557 (2454–2669), 2010 2047 (1981–2117). Source original verification [Actions #45244727484](https://github.com/zuizui0223/mina/actions/runs/45244727484); script `scripts/audit_syowa_Southwell2015_original_source.py`.
+- Original Lin et al. 2024 **DEEP-AA** 6.25-km coastal-polynya daily source `SIC60_6.25km_20d.zip`, MD5 `f3f958389cc5e67ac1c4e3a6ee164318`, was acquired and checked. Native 100-km geodesic buffer exposure with daily valid-ocean-area normalization and June–October monthly equal weighting passed at all seven distinct map coordinates, all seven winters (49 coordinate×winter), **1071 original source daily map dates**.
+- Original Syowa adjusted-region coastal-polynya fraction (%, 2004→2010): **1.079807, 0, 1.193030, 0, 0, 0.393308, 0.016053**. Mean **0.383171%**, between-winter SD **0.534869 percentage points**; true measured zero in 2005, 2007, 2008.
+- The archived combined NSIDC v4 source extraction script failed on the actual provider monthly download **HTTP 403** after DEEP-AA extraction, so **there is no Syowa independent continuous NSIDC annual SIC panel**. A separate *DEEP-AA source only* workflow succeeded [Actions #45246315928](https://github.com/zuizui0223/mina/actions/runs/45246315928), preserving the 7-year physical series. No SIC/colony regression, p-value, trend fit or causal claim is supported by this seven-year source.
+
+## Signy vs Syowa, same six 2004–2009 winters (physical descriptive check only)
+
+The original BAS Signy source retains five identical monitored North Point subcolonies and provides 13 complete 100-km winters (2004–09, 2013–19); 13 original years and DEEP-AA/NSIDC source-matching were independently verified [Actions #45208432848](https://github.com/zuizui0223/mina/actions/runs/45208432848).
+
+For the **six years where both original BAS Signy and original Southwell Syowa censuses exist** (2004–2009), seasonal coastal polynya fraction averaged **3.764%** at Signy and **0.444%** at Syowa. The Signy source area fraction was larger in all six winters, giving a mean cross-region difference of **3.319 percentage points**. This is a six-winter descriptive contrast of different habitats and source populations, **not independent replicate support for a new species-wide demographic response model**.
+
+## Post-2010 Syowa original-data access gate
+
+- NIPR 2021 symposium abstract explicitly reports that 5–10 colonies around Syowa have been surveyed annually since 1982 and counts declined until 2014–16 then increased after 2016, https://www.nipr.ac.jp/symposium2021/abstract/PS12-OB.pdf. These are **qualitative trend statements, not the necessary verified year-by-colony numerical count file**.
+- NIPR ADS 2025 published census metadata https://ads.nipr.ac.jp/data/meta/A20260323-004 is outside the available 2004–2022 DEEP-AA original period; cannot bridge the seven-year regional source panel. An ADS 2021 record link was found but had no extractable source observations in this audit. The anonymous GitHub Actions direct ADS source requests received ConnectionRefusedError, [Actions #45245491202](https://github.com/zuizui0223/mina/actions/runs/45245491202); this is **not evidence of absent monitoring**.
+- AADC official public dataset 5516 https://data.aad.gov.au/eds/5516/download (Western Mac. Robertson Land, 1991–2019) has 30 original publicly indexed objects, including `Time series demography and environmental covariates.xlsx` and `W Mac. Robertson Land Adelie penguin population estimates.xlsx`. The current public download workflow requests an email address, so the original file bytes were not retrieved and **this region is not counted as confirmed**. See [anonymous dataset metadata audit](https://github.com/zuizui0223/mina/actions/runs/45210137230). Do not treat indexed source-file names as observed biological values.
+
+## Conclusion and next data requirement
+
+The remaining block is **a numeric, geographically independent, >=8-calendar-year-span, stable-scope annual breeding-pair/nest series** covering >=4 *actually observed* available DEEP-AA winter years (2004–10 and/or 2013–22). AADC 5516 is the strongest catalogued candidate, but its archive must be obtained through the legitimate release path; alternatively, the JARE annual monitoring book/table for *the same eight Syowa sites* after 2012 could extend the Syowa dataset if and only if footprint and counting methodology match. The 2004–2010 source itself cannot support 2004–2022 macro inference.
+
+No independent population regression has been fitted. Prior optical isotope manuscript Draft PR #214 and proposed Supplement Draft PR #216 are unchanged. All physical contrasts are descriptive and remain separate from the existing exploratory optical δ¹⁵N result.
