@@ -1,0 +1,49 @@
+name: adelie-Syowa-seven-year-original-DEEPAA-NSIDC
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/extract_syowa_2004_2010_DEEPAA_NSIDC.py
+      - .github/workflows/adelie-Syowa-seven-year-DEEPAA-NSIDC.yml
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  seven-year-observation-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 46
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-Syowa-Southwell-original-seven-year-source-gate
+          run-id: 45244727484
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/syowa_source
+      - name: Install original satellite readers
+        run: python -m pip install --no-cache-dir 'numpy>=1.24' 'pandas>=2' 'scipy>=1.11' 'netCDF4>=1.6' 'pyproj>=3.6'
+      - name: Check official DEEP-AA original record MD5
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/raw build/syowa_physical
+          curl -fLSs --retry 5 --retry-all-errors --connect-timeout 60 --max-time 1500 \
+            'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' \
+            -o build/raw/SIC60_6.25km_20d.zip
+          echo 'f3f958389cc5e67ac1c4e3a6ee164318  build/raw/SIC60_6.25km_20d.zip' | md5sum -c -
+      - name: Produce seven observed original Syowa winters and physical-only exposure
+        shell: bash
+        run: |
+          python scripts/extract_syowa_2004_2010_DEEPAA_NSIDC.py \
+            --counts build/syowa_source/SYO_Southwell2015_original_8site_7_seasons_2004_2010.csv \
+            --coords build/syowa_source/SYO_Southwell2015_original_8site_coords.csv \
+            --deepaa build/raw/SIC60_6.25km_20d.zip \
+            --out build/syowa_physical
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-Syowa-seven-year-source-DEEPAA-NSIDC-unfit
+          path: build/syowa_physical
+          if-no-files-found: warn
+          retention-days: 90
