@@ -1,0 +1,26 @@
+name: adelie-aadc-mac-robertson-bAS-signy-source-gate
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/acquire_aadc_signy_source_gate.py
+      - .github/workflows/adelie-aadc-signy-original-source.yml
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  aadc-bas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Retrieve original AADC Mac Robertson, Bechervaise and BAS Signy source metadata/files
+        run: python scripts/acquire_aadc_signy_source_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-aadc-mawson-bas-signy-original-sources
+          path: build/adelie_new_region_sources
+          if-no-files-found: warn
+          retention-days: 90
