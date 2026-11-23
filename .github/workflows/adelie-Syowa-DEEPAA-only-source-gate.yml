@@ -1,0 +1,47 @@
+name: adelie-Syowa-seven-year-DEEPAA-source-only
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/audit_syowa_2004_2010_DEEPAA_only.py
+      - .github/workflows/adelie-Syowa-DEEPAA-only-source-gate.yml
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-Syowa-Southwell-original-seven-year-source-gate
+          run-id: 45244727484
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/syowa_original
+      - run: python -m pip install --no-cache-dir 'numpy>=1.24' 'pandas>=2' 'scipy>=1.11' 'netCDF4>=1.6' 'pyproj>=3.6'
+      - name: Verify published original DEEP-AA MD5
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/deepaa build/syowa_source_physics
+          curl -fLSs --retry 5 --retry-all-errors --connect-timeout 60 --max-time 1200 \
+            'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' \
+            -o build/deepaa/SIC60_6.25km_20d.zip
+          echo 'f3f958389cc5e67ac1c4e3a6ee164318  build/deepaa/SIC60_6.25km_20d.zip' | md5sum -c -
+      - name: Reconstruct seven-year Syowa physical exposure only (never fit count response)
+        run: |
+          python scripts/audit_syowa_2004_2010_DEEPAA_only.py \
+            --counts build/syowa_original/SYO_Southwell2015_original_8site_7_seasons_2004_2010.csv \
+            --coords build/syowa_original/SYO_Southwell2015_original_8site_coords.csv \
+            --deepaa build/deepaa/SIC60_6.25km_20d.zip \
+            --out build/syowa_source_physics
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-Syowa-2004-2010-original-DEEPAA-source-only
+          path: build/syowa_source_physics
+          if-no-files-found: warn
+          retention-days: 90
