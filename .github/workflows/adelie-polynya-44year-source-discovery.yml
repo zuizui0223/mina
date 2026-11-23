@@ -1,0 +1,28 @@
+name: adelie-polynya-44year-public-source-discovery
+on:
+  push:
+    branches: [analysis/adelie-polynya-44yr-macro-source-20261123]
+    paths:
+      - scripts/audit_duffy2024_mapppd_v5_sources.py
+      - .github/workflows/adelie-polynya-44year-source-discovery.yml
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  source-manifest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Retrieve publisher Figshare manifest and MAPPPD v5 public release paths
+        run: python scripts/audit_duffy2024_mapppd_v5_sources.py
+      - name: Preserve exact provider response metadata for verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adelie-polynya-44year-duffy-mapppd-v5-source-discovery
+          path: build/polynya44_source_metadata
+          if-no-files-found: warn
+          retention-days: 60
