@@ -1,0 +1,25 @@
+name: adelie-AADC-anonymous-public-dataset-source-probe
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/probe_AADC_EDS_public_dataset_search.py
+      - .github/workflows/adelie-AADC-anonymous-public-dataset-source-probe.yml
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  public-eds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python scripts/probe_AADC_EDS_public_dataset_search.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-AADC-EDS-public-anonymous-source-search
+          path: build/aadc_eds_authorized_public_probe
+          retention-days: 60
+          if-no-files-found: warn
