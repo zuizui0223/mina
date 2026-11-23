@@ -1,0 +1,42 @@
+name: adelie-Syowa-Southwell2015-seven-year-source-gate
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/audit_syowa_Southwell2015_original_source.py
+      - .github/workflows/adelie-Syowa-Southwell2015-seven-year-source.yml
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-independent-source-signy-east-nz-original-receipts
+          run-id: 45204607715
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/original
+      - name: Install original binary DOC extraction program and pandas
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq antiword
+          python -m pip install --no-cache-dir 'pandas>=2'
+      - name: Reproduce original seven 2004–10 Syowa regional adjusted breeding-pair counts
+        shell: bash
+        run: |
+          python scripts/audit_syowa_Southwell2015_original_source.py \
+            --source build/original/southwell2015_east_population_s001.doc \
+            --out build/region_syowa
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-Syowa-Southwell-original-seven-year-source-gate
+          path: build/region_syowa
+          if-no-files-found: warn
+          retention-days: 90
