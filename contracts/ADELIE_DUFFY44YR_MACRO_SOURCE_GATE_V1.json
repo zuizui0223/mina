@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "created_date": "2026-11-23",
+  "type": "independent_macro_source_gate_not_confirmatory_registration",
+  "goal": "Do colony-scale winter coastal-polynya trends explain long-term Adélie nesting trends beyond total sea-ice change within the same regions?",
+  "source": {
+    "duffy": "Duffy et al 2024 PNAS doi:10.1073/pnas.2321595121 Figshare doi:10.6084/m9.figshare.24768654.v1",
+    "physical": "original 1979–2022 satellite concentration <=50% coastal polynya polygons at native 25km geometry; not DEEP-AA 20-day product",
+    "sensitivity": "original <=30% concentration coastal polygon release, tested as physical definition robustness",
+    "penguin": "MAPPPD v5.0 released 21 Oct 2026 729 sites 5487 all species records; original 1979–2022 Adélie nests only"
+  },
+  "primary_exposure": {
+    "threshold_sic_open_water": "<=50%",
+    "classification": "coastal only",
+    "radius_geodesic_km": 100,
+    "season_months": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "annual_metric": "mean of five equal-weight monthly means of geodesically clipped polynya area, km2, on observed satellite dates; valid zero kept",
+    "time_alignment": "winter year y aligned to breeding season_starting y"
+  },
+  "primary_response": {
+    "species": "adelie penguin",
+    "count_type": "nests",
+    "response_year": "season_starting",
+    "allowed_years": [
+      1979,
+      2022
+    ],
+    "count_filter": "finite and positive for source support only; zero nest outcomes audited separately",
+    "site_min_years": 6,
+    "site_min_observed_span_years": 20,
+    "duplicate_site_years": "median of counts within each site×breeding year; flag if >20% spread, sensitivity exclude sites/years with such conflicts; never sum duplicate counts",
+    "within_site_trend": "Theil-Sen slope of log1p annual nest count against year"
+  },
+  "spatial_support": {
+    "primary_grouping": "100 km haversine-connected colony blocks, not nominal 40 independent colonies",
+    "secondary": "250 km grouping and colony-complex aggregation",
+    "already_audited_nominial_sites": 40,
+    "already_audited_100km_blocks": 7,
+    "ross_100km_blocks": 3,
+    "peninsula_100km_blocks": 3,
+    "east_100km_blocks": 1
+  },
+  "publication_gates": [
+    "Matched local June-Oct sea-ice concentration change must be available; without it do not attribute any association specifically to coastal-polynya geometry",
+    "Same site-year census methodology and duplicates must be checked; repeat surveys and subcolonies not treated as independent",
+    "Source-polynya trend signs must survive <=30% versus <=50% SIC operational definition",
+    "Adequate independent regional/spatial blocks required for a macro inference; current >=6y/20y panel has only seven 100-km clusters",
+    "No prospective climate->polynya->penguin causal mediation claims from correlations"
+  ],
+  "context": [
+    "Duffy 2024 source spatial polygons directly fetched and original MD5 verified",
+    "Landrum et al 2026 Cryosphere shows Antarctic polynya trend sensitivity to products/thresholds",
+    "Ainley et al 2024 Antarctica Science already links Cape Royds penguin population to McMurdo Sound polynya and icebergs"
+  ],
+  "disallow": [
+    "search seasons/radii after ecological effect viewed to rescue significance",
+    "call Duffy 50% maps directly comparable to 6.25km 20day DEEPAA",
+    "treat 40 nesting count records as 40 independent blocks",
+    "describe Ross Sea 16-year periodicity as independently replicated by about two cycles",
+    "change original Adélie isotope manuscript or PR214/216"
+  ],
+  "current_status": "original_file_acquisition_verified; local polygon extraction and within-region support pending"
+}
