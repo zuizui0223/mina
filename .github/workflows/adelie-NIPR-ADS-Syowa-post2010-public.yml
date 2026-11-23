@@ -1,0 +1,26 @@
+name: adelie-NIPR-ADS-Syowa-post2010-public-census-discovery
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/audit_NIPR_ADS_Syowa_post2010_public.py
+      - .github/workflows/adelie-NIPR-ADS-Syowa-post2010-public.yml
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Inspect NIPR ADS genuine original metadata and public source paths
+        run: python scripts/audit_NIPR_ADS_Syowa_post2010_public.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-NIPR-ADS-Syowa-post2010-public-source-manifest
+          path: build/NIPR_ADS_Syowa_original_census_public
+          retention-days: 90
+          if-no-files-found: warn
