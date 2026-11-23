@@ -1,0 +1,25 @@
+name: adelie-AADC-5516-official-public-object-catalogue
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/audit_AADC_EDS_5516_public_objects.py
+      - .github/workflows/adelie-AADC-5516-public-object-catalogue.yml
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  public-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python scripts/audit_AADC_EDS_5516_public_objects.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-AADC-5516-anonymous-file-list
+          path: build/aadc_public_dataset5516
+          retention-days: 60
+          if-no-files-found: warn
