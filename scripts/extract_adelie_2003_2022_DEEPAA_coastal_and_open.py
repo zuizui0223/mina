@@ -167,11 +167,17 @@ def extract(deep,source,out):
             fastice=flat==-100
             unclassified=~np.isfinite(flat)|(flat==-999)
             nvalid=1-np.asarray(W @ unclassified.astype(float)).reshape(-1)
+            # Native Map land mask changes by a few percent through the archive.
+            # Do NOT use the fixed first-day ocean denominator as if it were
+            # observed on a partially masked day: renormalize to truly valid
+            # source ocean cells, with a predeclared minimum 80% mapped support.
             co=np.asarray(W @ coastal.astype(float)).reshape(-1)
             op=np.asarray(W @ openwater.astype(float)).reshape(-1)
             fi=np.asarray(W @ fastice.astype(float)).reshape(-1)
-            for i in range(nsites):
-                if nvalid[i]<.98: co[i]=np.nan;op[i]=np.nan;fi[i]=np.nan
+            good=nvalid>=.80
+            co=np.divide(co,nvalid,out=np.full(nsites,np.nan),where=good)
+            op=np.divide(op,nvalid,out=np.full(nsites,np.nan),where=good)
+            fi=np.divide(fi,nvalid,out=np.full(nsites,np.nan),where=good)
             for i in range(nsites):
                 rows.append((sites.site_id.iat[i],day.year,day.month,day.isoformat(),
                              co[i],op[i],fi[i],nvalid[i]))
@@ -218,6 +224,10 @@ def extract(deep,source,out):
         "original_census":"MAPPPD v5 original AllCounts CSV SHA="+MAPPPD_SHA,
         "period":"2003-2022; Jun-Oct, 2011 and 2012 incomplete",
         "n_daily_native_polynya_maps_in_winter_months":len(files),
+        "dynamic_ocean_mask_valid_fraction_minimum":0.8,
+        "ocean_area_denominator":"daily available original ocean cells within fixed 100-km geodesic buffer; relative area computed from original valid pixel area",
+        "october_2003_days_available":dates_by_yearmonth.get((2003,10),0),
+        "n_expected_complete_5month_source_winters":17,
         "n_matched_any_winter_43_sites":len(fy),
         "n_matched_any_winter_32_primary_sites":len(primary),
         "n_mapped_primary_sites":int(primary.site_id.nunique()),
@@ -233,7 +243,7 @@ def extract(deep,source,out):
         "matched_census_source_obs_with_complete_winter":int(counts.has_complete_source_winter.fillna(False).sum()),
         "independent_regions_primary_200km":6,
         "continuous_measured_sea_ice_concentration":"NOT_IN_THIS_EXTRACT; independent NSIDC mandatory before ecology fit",
-        "limitations":["The 60%-SIC class map gives binary open water, not continuous observed SIC",
+        "limitations":["Winter 2003 is not complete (only 15/31 October days); winter 2011/12 has documented product hiatus", "The 60%-SIC class map gives binary open water, not continuous observed SIC",
                        "7 blocks at 100km but 6 blocks at 200km buffer-overlap support",
                        "No independent penguin prey, demographics or method-standardized census response analysed",
                        "No spatial radius/window/hypothesis retuned from results"]
