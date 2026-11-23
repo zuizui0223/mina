@@ -1,0 +1,50 @@
+name: polynya-v076-S8-author-review-docx
+on:
+  push:
+    branches: [analysis/polynya-v076-supplement-review-20261123]
+    paths:
+      - research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/SUPPLEMENT_POLYNYA_FOODWEB.md
+      - research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/build_s8_supplement_review.py
+      - .github/workflows/polynya-v076-s8-review-docx.yml
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  docx-author-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-frozen439-85-ccamlr-mpa-source-audit
+          run-id: 45082480478
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/frozen439_mpa
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Install original reproducible Word builder dependencies
+        run: python -m pip install --no-cache-dir -r research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/requirements-review.txt
+      - name: Verify that original main manuscript and original five figures are untouched
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code c67e55c9f4f657ef308c02a85c6ff366dce8e1f4 -- \
+            research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/MANUSCRIPT_POLYNYA_FOODWEB_WORKING.md \
+            research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/figures
+      - name: Build v0.7.6 supplemental author-review Word, with original MPA map
+        shell: bash
+        run: |
+          python research/climate-penguin/macro_panantarctic_v1/v07_polynya_20261121/build_s8_supplement_review.py \
+            --figure build/frozen439_mpa/FROZEN_85_polynya_variation_designated_MPA.png \
+            --out build/author_review_v076
+      - name: Upload review-only supplemental Word and reproducibility receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: polynya-supplement-v076-S8-review-docx
+          path: |
+            build/author_review_v076/Polynya_foodweb_supplement_review_v076_20261123.docx
+            build/author_review_v076/SUPPLEMENT_S8_DOCX_BUILD_RECEIPT.json
+          if-no-files-found: warn
+          retention-days: 90
