@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "result_id": "spatial-memory-claim-evidence-ledger-v1",
+  "date": "2026-10-07",
+  "status": "post_result_integration_ledger_no_new_effect_search",
+  "manuscript": "docs/MANUSCRIPT_SPATIAL_MEMORY_INTEGRATED_V0_1.md",
+  "classification_contract": "contracts/SPATIAL_MEMORY_PROCESS_CLASSIFICATION_V1.md",
+  "claims": [
+    {
+      "level": 1,
+      "claim": "Aggregate abundance change does not uniquely determine the direction of spatial reallocation.",
+      "status": "directly_supported",
+      "evidence": [
+        "results/BIRD_ISLAND_GENTOO_SIX_UNIT_RECOVERY_ALLOCATION_V1.json",
+        "results/BIRD_ISLAND_GENTOO_SIX_UNIT_TEMPORAL_AUDIT_V1.json",
+        "results/EMPEROR_GLOBAL_DECLINE_SPATIAL_REDUNDANCY_V1.json",
+        "results/HEARD_ISLAND_KING_RECOVERY_TRIANGULATION_V1.json",
+        "results/COLONIAL_BREEDING_AGGREGATE_SPATIAL_DECOUPLING_LEDGER_V1.json"
+      ],
+      "boundary": "The systems and spatial scales differ; this is a qualitative falsification of sign-locking, not a pooled effect estimate."
+    },
+    {
+      "level": 2,
+      "claim": "The documented Ross acute breeding-state/access disturbance was followed by strong inverse-path spatial recovery.",
+      "status": "directly_supported_descriptive_natural_experiment",
+      "evidence": [
+        "results/ROSS_INVERSE_PATH_MISMATCH_V1.json",
+        "results/ROSS_INVERSE_PATH_MISMATCH_CONTEXT_V1.json",
+        "results/ROSS_ICEBERG_SHOCK_REBOUND_AUDIT_V1.json",
+        "docs/ROSS_BREEDING_ABUNDANCE_MEASUREMENT_AUDIT_V1.md"
+      ],
+      "key_numbers": {
+        "breeding_abundance_loss_fraction": -0.5429461311116575,
+        "aggregate_loss_restored_fraction": 0.9696749043183291,
+        "loss_rebound_cosine": 0.9969470572957101,
+        "inverse_path_mismatch_fraction": 0.09405445040386184
+      },
+      "boundary": "The inverse-path decomposition is post-result and does not identify individual returning birds."
+    },
+    {
+      "level": 2,
+      "claim": "Persistent Adélie decline at Palmer and Signy concentrated breeders beyond proportional thinning under the frozen count-error families.",
+      "status": "supported_with_independent_replication",
+      "evidence": [
+        "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+        "results/SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json"
+      ],
+      "key_numbers": {
+        "palmer_fractional_E_changes": {
+          "Cormorant": -0.19113899359974384,
+          "Humble": -0.5059971291433084,
+          "Litchfield": -0.8270791752527236
+        },
+        "signy_fractional_E_change": -0.2965720896481414
+      },
+      "boundary": "The analyses identify unequal attrition, not a single causal vital rate or movement mechanism."
+    },
+    {
+      "level": 2,
+      "claim": "Beaufort capacity release was associated with disproportionate growth of a small/new within-island unit and reduced movement toward Ross Island.",
+      "status": "supported_case_level_conjunction",
+      "evidence": [
+        "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json",
+        "docs/BEAUFORT_ISLAND_MEDIATED_COMPETITION_SYNTHESIS_V1.md"
+      ],
+      "key_numbers": {
+        "island_total_growth_fraction_2004_2010": 0.3430943239597386,
+        "new_unit_growth_fraction": 1.0804347826086957,
+        "new_unit_observed_to_proportional_gain_ratio": 3.149089644326155,
+        "new_unit_share_2004": 0.00954653937947494,
+        "new_unit_share_2010": 0.014787459245638703
+      },
+      "boundary": "Within-island census change and between-island movement are independent evidence streams; the census does not track individual movement."
+    },
+    {
+      "level": 3,
+      "claim": "Breeding-site fidelity can carry a recoverable spatial template after temporary breeding suppression.",
+      "status": "mechanistically_plausible_not_identified",
+      "evidence": [
+        "Ross inverse-path recovery",
+        "Lyver et al. 2014 documented disturbance",
+        "Dugger et al. 2026 breeder movement <0.20% and common breeder-to-nonbreeder transitions"
+      ],
+      "boundary": "No individual-level linkage connects the 1999 loss vector to the 2002 rebound vector."
+    },
+    {
+      "level": 3,
+      "claim": "Demographic turnover and capacity change can rewrite the spatial template future breeding expresses.",
+      "status": "hypothesis_supported_by_contrasting_cases_not_universal_test",
+      "evidence": [
+        "Palmer and Signy attrition signatures",
+        "Beaufort capacity-release signature",
+        "Bird/Heard/Emperor anti-sign-locking boundary cases"
+      ],
+      "boundary": "The three classes do not share a common estimand and were classified after outcomes were known."
+    }
+  ],
+  "forbidden_promotions": [
+    "process class significantly predicts a common spatial-reversibility effect size",
+    "short disturbances are reversible and long disturbances are irreversible",
+    "the same Ross individuals returned to the same breeding units",
+    "philopatry universally increases resilience",
+    "persistent decline necessarily causes irreversible spatial change",
+    "capacity release universally produces within-island spreading",
+    "the present synthesis prospectively confirms the process-dependent spatial-memory law"
+  ],
+  "next_step": "manuscript-level stress test and figure/table integration only; no new ecological endpoint search"
+}

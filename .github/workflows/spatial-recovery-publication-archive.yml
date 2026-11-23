@@ -1,0 +1,278 @@
+name: spatial-recovery-publication-archive-v2-staging
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "submission/SPATIAL_RECOVERY_PUBLICATION_ARCHIVE_MANIFEST_V1.md"
+      - "scripts/build_spatial_recovery_supplement_docx.py"
+      - "src/mina/breeding_patch_concentration.py"
+      - "src/mina/signy_concentration.py"
+      - ".github/workflows/spatial-recovery-publication-archive.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build deterministic publication archive
+        run: |
+          set -euo pipefail
+          mkdir -p build/archive/root
+          python - <<'PY'
+          import ast
+          import hashlib
+          import json
+          import os
+          import shutil
+          from pathlib import Path
+
+          root=Path(".")
+          out=Path("build/archive/root")
+          files=[
+              "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md",
+              "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md",
+              "docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib",
+              "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md",
+              "submission/SUPPLEMENT_SPATIAL_RECOVERY_PATH_STATE_V1.md",
+              "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json",
+              "docs/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.md",
+              "results/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.json",
+              "docs/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.md",
+              "results/ROSS_INVERSE_PATH_MISMATCH_V1.json",
+              "results/ROSS_INVERSE_PATH_MISMATCH_CONTEXT_V1.json",
+              "results/ROSS_ICEBERG_SHOCK_REBOUND_AUDIT_V1.json",
+              "docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md",
+              "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+              "results/SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json",
+              "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json",
+              "docs/BEAUFORT_ISLAND_MEDIATED_COMPETITION_SYNTHESIS_V1.md",
+              "results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V4.json",
+              "docs/SPATIAL_RECOVERY_PATH_STATE_NOVELTY_BOUNDARY_V2.md",
+              "docs/SPATIAL_RECOVERY_PATH_STATE_REVIEWER_STRESS_TEST_V2.md",
+              "submission/SPATIAL_RECOVERY_PATH_STATE_READINESS_V2.md",
+              "submission/SPATIAL_RECOVERY_ECOLOGY_SUBMISSION_MANIFEST_V1.md",
+              "submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_DERIVATION_V1.md",
+              "submission/SPATIAL_RECOVERY_ECOLOGY_PRODUCTION_QA_V2.json",
+              "submission/SPATIAL_MEMORY_V0_4_REINTERPRETATION_HOLD_V1.md",
+              "submission/PENGUIN_MANUSCRIPT_CONSOLIDATION_V1.md",
+              "scripts/analyze_ross_aggregate_vs_spatial_restoration.py",
+              "scripts/analyze_ross_inverse_path_mismatch.py",
+              "scripts/analyze_ross_inverse_path_bounded_count_sensitivity.py",
+              "scripts/analyze_ross_shock_rebound.py",
+              "scripts/build_spatial_recovery_path_state_figures.py",
+              "scripts/build_spatial_recovery_ecology_docx.py",
+              "scripts/build_spatial_recovery_supplement_docx.py",
+              "external/ross_island_v2_frozen_counts.csv",
+              "pyproject.toml",
+              "README.md",
+              "submission/ECOLOGY_SOURCE_DATASET_BIB_ADDENDUM_20261014.bib",
+              "submission/SPATIAL_RECOVERY_ECOLOGY_SCIENTIFIC_FREEZE_V1.md",
+              "submission/ECOLOGY_SPATIAL_RECOVERY_FREEZE_BLOB_VERIFICATION_20261014.md",
+              "contracts/PALMER_BREEDING_PATCH_CONCENTRATION_V1.json",
+              "contracts/SIGNY_CONCENTRATION_REPLICATION_V2.json",
+              "scripts/fetch_lter_census.py",
+              "scripts/audit_signy_replication_support.py",
+              "src/mina/breeding_patch_concentration.py",
+              "src/mina/signy_concentration.py",
+              "src/mina/ecology_ai_submission_disclosure.py",
+              "src/mina/ecology_submission_source_citations.py",
+              "src/mina/ecosphere_submission_metadata.py",
+          ]
+          # Include every local project Python import transitively used by
+          # the original novel Palmer and Signy statistical procedures.
+          # Missing code is a hard error, rather than a posthoc claim of
+          # full source-level reproducibility.
+          discovered=set(files)
+          pending=[p for p in files if p.endswith(".py")]
+          while pending:
+              rel=pending.pop()
+              src=root/rel
+              if not src.is_file():
+                  raise FileNotFoundError(rel)
+              tree=ast.parse(src.read_text(encoding="utf-8"),filename=rel)
+              for node in ast.walk(tree):
+                  mods=[]
+                  if isinstance(node,ast.Import):
+                      mods=[i.name for i in node.names]
+                  elif isinstance(node,ast.ImportFrom):
+                      if node.level and rel.startswith("src/mina/"):
+                          mods=(["mina."+node.module] if node.module else
+                                ["mina."+i.name for i in node.names])
+                      elif node.level and rel.startswith("scripts/"):
+                          mods=(["scripts."+node.module] if node.module else
+                                ["scripts."+i.name for i in node.names])
+                      elif node.module:
+                          mods=[node.module]
+                          if node.module in ("mina","scripts"):
+                              mods.extend(node.module+"."+i.name for i in node.names)
+                  for mod in mods:
+                      candidate=None
+                      if mod.startswith("mina."):
+                          candidate="src/mina/"+mod[len("mina."):].replace(".","/")+".py"
+                      if mod.startswith("scripts."):
+                          candidate="scripts/"+mod[len("scripts."):].replace(".","/")+".py"
+                      if candidate and (root/candidate).is_file() and candidate not in discovered:
+                          discovered.add(candidate)
+                          pending.append(candidate)
+          discovered.add("src/mina/__init__.py")
+          files=sorted(discovered)
+
+          # Freeze verification uses the original eight historical Git blob
+          # SHA-1 receipts, not only newly computed SHA-256 checksums.
+          scientific_blobs={
+              "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_8.md":
+                  "b95ccc5f662b21c77635e5b7273fd400cd51d59f",
+              "docs/REFERENCES_SPATIAL_RECOVERY_PATH_STATE_V0_8.bib":
+                  "09e1e8c6cc7a52cde9d71ebccdb77a26d76b818e",
+              "results/SPATIAL_RECOVERY_CLAIM_EVIDENCE_LEDGER_V4.json":
+                  "e4f5549cbb0b218a0b03fb0bf665459f6ddfcad8",
+              "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json":
+                  "ee274203b373d38dd8fc2035cbde54103706864f",
+              "results/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.json":
+                  "6682dafcf49d0b9d335ce99ce0e6bb8fa6c4e5d0",
+              "docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md":
+                  "c48cf9054f3ee7451c756351cd87da0a5ba4579f",
+              "scripts/build_spatial_recovery_path_state_figures.py":
+                  "a458fa5fe7d1fb03261c0e08ba354a5d78302776",
+              "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_1.md":
+                  "afdd6a6d15dce8e57b8f61858414a87246d830c6",
+          }
+          for rel,expected in scientific_blobs.items():
+              raw=(root/rel).read_bytes()
+              sha=hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\x00"+raw).hexdigest()
+              if sha!=expected:
+                  raise ValueError("Frozen scientific source changed: "+rel)
+          print("PASS original 8 science freeze SHA checks")
+          for rel in (
+              "docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md",
+              "scripts/build_spatial_recovery_supplement_docx.py",
+              "src/mina/breeding_patch_concentration.py",
+              "src/mina/signy_concentration.py",
+              "submission/ECOLOGY_SOURCE_DATASET_BIB_ADDENDUM_20261014.bib",
+          ):
+              if rel not in discovered:
+                  raise ValueError("Current canonical Article source missing: "+rel)
+          print("Including",len(files),"publication data/code files (Palmer/Signy imports closed)")
+          release_readme=(
+              "ECOLOGY v0.9: ANALYSIS CODE/DATA REVIEW STAGING, NOT SUBMITTED OR DOI DEPOSITED\n\n"
+              "The canonical publication manuscript is docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_9.md\n"
+              "Frozen science head: 3e8882742ca2affc6717d373fd9b6d903b01f4c1\n"
+              "The bundle includes all eight frozen scientific Git blobs; source and formal\n"
+              "bibliographic records; original Palmer/Signy null model Python source code\n"
+              "with transitively imported local modules; the 2011/2016 Ross numerical\n"
+              "decomposition source and all four published figure recipes.\n\n"
+              "To rerun Ross with Python 3.12 and matplotlib:\n"
+              "  pip install -e '.[figures]' pandas\n"
+              "  mkdir -p build\n"
+              "  python scripts/analyze_ross_inverse_path_mismatch.py --out build/ross_inverse.json\n"
+              "  python scripts/build_spatial_recovery_path_state_figures.py --repo-root . --outdir build/figs\n\n"
+              "Original Palmer null source is src/mina/breeding_patch_concentration.py\n"
+              "  python -m mina.breeding_patch_concentration --census ORIGINAL_PALMER.csv --out build/palmer.json --simulations 100000 --seed 20260928\n"
+              "Original Signy null source is src/mina/signy_concentration.py\n"
+              "  python -m mina.signy_concentration --official-zip ORIGINAL_SIGNY.zip --out build/signy.json --simulations 100000\n"
+              "DO NOT substitute dummy, other-year or current-edition input records.\n"
+              "Palmer/Signy raw files were NOT included or refitted in this CI, and\n"
+              "must be obtained from original DOI repositories and source-provenance\n"
+              "receipts before original outcome-level Monte Carlo is rerun.\n\n"
+              "Third-party source data rights/redistribution must be verified.\n"
+              "This is NOT a permanent archive, a published version of record,\n"
+              "a source-data licence, author-approved submission or journal submission.\n"
+          )
+          (out/"README_NOT_FOR_SUBMISSION.txt").write_text(
+              release_readme, encoding="utf-8"
+          )
+          records=[]
+          for rel in sorted(files):
+              src=root/rel
+              if not src.exists():
+                  raise FileNotFoundError(rel)
+              dst=out/rel
+              dst.parent.mkdir(parents=True,exist_ok=True)
+              shutil.copy2(src,dst)
+              data=src.read_bytes()
+              records.append({
+                  "path":rel,
+                  "size":len(data),
+                  "sha256":hashlib.sha256(data).hexdigest(),
+              })
+
+          metadata={
+              "schema_version":2,
+              "repository":"zuizui0223/mina",
+              "commit":os.environ["GITHUB_SHA"],
+              "publication_stage":"NOT_SUBMITTED_NOT_AUTHOR_APPROVED_NO_DOI",
+              "canonical_figure_captions":"docs/FIGURE_CAPTIONS_SPATIAL_RECOVERY_PATH_STATE_V0_3.md",
+              "canonical_SI_builder":"scripts/build_spatial_recovery_supplement_docx.py",
+              "external_original_novel_model_sources":[
+                  "src/mina/breeding_patch_concentration.py",
+                  "src/mina/signy_concentration.py",
+              ],
+              "source_code_original_frozen_git_sha1":scientific_blobs,
+              "original_Palmer_Signy_100000_draw_models_not_refitted_in_archive_build":True,
+              "original_data_DOIs":[
+                  "10.7931/kf06-x745",
+                  "10.6073/pasta/89dd52217ca37e3a72a67f7a9bc3c82e",
+                  "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+              ],
+              "files":records,
+              "excluded_third_party_raw_data":[
+                  "Palmer Station raw data: cite original DOI",
+                  "Signy raw data: cite original DOI",
+                  "Ross source workbook: cite original DOI; frozen derived focal counts included",
+              ],
+          }
+          (out/"ARCHIVE_FILE_MANIFEST.json").write_text(
+              json.dumps(metadata,indent=2)+"\n",encoding="utf-8"
+          )
+          PY
+          (
+            cd build/archive/root
+            find . -type f -print0 | sort -z | xargs -0 sha256sum > ARCHIVE_SHA256SUMS.txt
+            find . -type f ! -name ARCHIVE_SHA256SUMS.txt -print0 | sort -z | \
+              tar --null -T - --mtime='UTC 2026-10-07' --owner=0 --group=0 --numeric-owner \
+              -czf ../Ecology_v09_CODE_RESULTS_REVIEW_STAGING_NOT_DEPOSITED.tar.gz
+          )
+          sha256sum build/archive/Ecology_v09_CODE_RESULTS_REVIEW_STAGING_NOT_DEPOSITED.tar.gz | \
+            tee build/archive/BUNDLE_SHA256.txt
+      - name: Independently extract archive and import original model code; regenerate all four publication figures
+        run: |
+          set -euo pipefail
+          python -m pip install -e ".[figures]" pandas
+          mkdir -p /tmp/ecology_v09_archived_code
+          tar -xzf build/archive/Ecology_v09_CODE_RESULTS_REVIEW_STAGING_NOT_DEPOSITED.tar.gz \
+            -C /tmp/ecology_v09_archived_code
+          cd /tmp/ecology_v09_archived_code
+          python - <<'PY'
+          from mina.breeding_patch_concentration import simulate
+          from mina.signy_concentration import analyze
+          import json
+          from pathlib import Path
+          assert callable(simulate) and callable(analyze)
+          report=json.loads(Path("results/ROSS_PATH_STATE_SPATIAL_GRAIN_AUDIT_V1.json").read_text())
+          assert abs(report["six_component"]["inverse_path_fidelity"]-0.9059455495961382)<1e-10
+          print("PASS extracted archive imports original Palmer/Signy simulation modules")
+          PY
+          python scripts/build_spatial_recovery_path_state_figures.py \
+            --repo-root . --outdir build/verified_paper_figures
+          python - <<'PY'
+          from pathlib import Path
+          names=("figure1_three_recovery_dimensions",
+                 "figure2_local_recovery_state_reweighting",
+                 "figure3_ross_path_state_calibration",
+                 "figure4_process_contrasts")
+          root=Path("build/verified_paper_figures")
+          for stem in names:
+              for suffix in (".png",".pdf"):
+                  f=root/(stem+suffix)
+                  assert f.exists() and f.stat().st_size>5000, f
+          print("PASS four main/SI figure recipes regenerated from staged publication archive")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spatial-recovery-publication-archive-v2-staging
+          path: |
+            build/archive/Ecology_v09_CODE_RESULTS_REVIEW_STAGING_NOT_DEPOSITED.tar.gz
+            build/archive/BUNDLE_SHA256.txt
+            build/archive/root/ARCHIVE_FILE_MANIFEST.json
+            build/archive/root/ARCHIVE_SHA256SUMS.txt

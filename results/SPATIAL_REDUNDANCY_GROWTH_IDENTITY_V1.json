@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "result_id": "spatial-redundancy-growth-identity-v1",
+  "date": "2026-10-06",
+  "metric": "E = 1 / sum(p_i^2)",
+  "finite_interval_identity": "E1/E0 = (G_bar/G_D)^2, where G_bar=sum(p_i0*G_i) and G_D=sqrt(sum((p_i0^2/H0)*G_i^2))",
+  "ross_recovery_2001_2012": {
+    "multiplication_factors": {
+      "Royds": 2.2553035844915876,
+      "Bird": 2.876315689478284,
+      "Crozier": 4.057871682807164
+    },
+    "starting_shares": {
+      "Royds": 0.014420135445895483,
+      "Bird": 0.27761134201143484,
+      "Crozier": 0.7079685225426696
+    },
+    "aggregate_growth_factor": 3.7038650604443135,
+    "dominance_weighted_rms_growth_factor": 3.9205523210155016,
+    "dominance_to_aggregate_growth_ratio": 1.0585030115932987,
+    "E0": 1.7286221365129768,
+    "E1": 1.5428221816996246,
+    "E_ratio": 0.8925155759094044,
+    "classification": "differential_amplification"
+  },
+  "ross_decline_1985_1999": {
+    "multiplication_factors": {
+      "Royds": 1.1263223397635345,
+      "Bird": 0.8844846265924452,
+      "Crozier": 0.9330514243790575
+    },
+    "aggregate_growth_factor": 0.9242337822061013,
+    "dominance_weighted_rms_growth_factor": 0.928737821252888,
+    "E0": 1.625192664901886,
+    "E1": 1.609467706666291,
+    "E_ratio": 0.990324249810379,
+    "classification": "weak_differential_attrition_at_three_colony_scale"
+  },
+  "beaufort_recovery_2004_2010": {
+    "multiplication_factors": {
+      "main": 1.3359874279727606,
+      "new": 2.0804347826086955
+    },
+    "aggregate_growth_factor": 1.3430943239597386,
+    "dominance_weighted_rms_growth_factor": 1.3360758462877171,
+    "dominance_to_aggregate_growth_ratio": 0.9947766307657338,
+    "E0": 1.0192753177234224,
+    "E1": 1.03001205938848,
+    "E_ratio": 1.0105337012271016,
+    "classification": "spatial_spreading"
+  },
+  "interpretation": "The sign of change in spatial redundancy is determined by whether initially dominant units change faster or slower than the aggregate, not by whether total abundance rises or falls."
+}

@@ -1,0 +1,75 @@
+name: Ecology Article reviewer science capsule independent figure regeneration
+on:
+  push:
+    branches: [analysis/ross-sea-expansion-intensification-support-v1]
+    paths:
+      - 'scripts/build_ecology_v09_reviewer_capsule_v1.py'
+      - 'tests/test_ecology_v09_reviewer_capsule_v1.py'
+      - '.github/workflows/ecology-reviewer-capsule-v1.yml'
+  pull_request:
+    paths:
+      - 'scripts/build_ecology_v09_reviewer_capsule_v1.py'
+      - 'tests/test_ecology_v09_reviewer_capsule_v1.py'
+      - '.github/workflows/ecology-reviewer-capsule-v1.yml'
+  workflow_dispatch:
+jobs:
+  reviewer-only-capsule:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing frozen numerical/figure dependencies
+        run: python -m pip install -e ".[dev,figures]"
+      - name: Assert no frozen source changes and exact allowlist packaging
+        run: python -m pytest -q tests/test_ecology_v09_reviewer_capsule_v1.py
+      - name: Package compact original Ecology reviewer reproducibility archive
+        run: |
+          python scripts/build_ecology_v09_reviewer_capsule_v1.py \
+            --out /tmp/Ecology_v09_FROZEN_SCIENCE_REVIEW_CAPSULE.zip | tee /tmp/capsule_qa_log.json
+      - name: Independently extract the reviewer ZIP and rerun Ross numerical scripts and 4 figure recipes
+        run: |
+          mkdir -p /tmp/verified_reviewer_capsule
+          unzip -q /tmp/Ecology_v09_FROZEN_SCIENCE_REVIEW_CAPSULE.zip -d /tmp/verified_reviewer_capsule
+          (
+            cd /tmp/verified_reviewer_capsule
+            mkdir -p build
+            python scripts/analyze_ross_aggregate_vs_spatial_restoration.py \
+              --out build/independent_ross_aggregate.json
+            python scripts/analyze_ross_inverse_path_mismatch.py \
+              --out build/independent_ross_inverse.json
+            python scripts/build_spatial_recovery_path_state_figures.py \
+              --repo-root . --outdir build/regenerated_figures
+          )
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          root=Path('/tmp/verified_reviewer_capsule')
+          dest=root/'build/regenerated_figures'
+          expected=("figure1_three_recovery_dimensions",
+                    "figure2_local_recovery_state_reweighting",
+                    "figure3_ross_path_state_calibration",
+                    "figure4_process_contrasts")
+          for label in expected:
+              for ext in ('png','pdf'):
+                  path=dest/(label+'.'+ext)
+                  assert path.is_file() and path.stat().st_size>5000, path
+          values=json.loads((root/'build/independent_ross_inverse.json').read_text())
+          original=json.loads((root/'results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json').read_text())
+          observed=float(values['mismatch_fraction_of_rebound'])
+          frozen=float(original['focal_episode']['path_recovery']['inverse_path_mismatch_fraction'])
+          assert abs(observed-frozen)<1e-10, (observed,frozen)
+          agg=float(values['aggregate_loss_restored_fraction'])
+          frozenagg=float(original['focal_episode']['aggregate']['aggregate_loss_restored_fraction'])
+          assert abs(agg-frozenagg)<1e-10
+          print(f'PASS independently reconstructed Ross mismatch={observed:.6f} and rebound={agg:.6f}')
+          print('PASS four 300-dpi PNG figures and four PDF figures reconstructed from ZIP')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecology-v09-FROZEN-SCIENCE-REVIEW-ONLY-NOT-SUBMITTED
+          path: /tmp/Ecology_v09_FROZEN_SCIENCE_REVIEW_CAPSULE.zip

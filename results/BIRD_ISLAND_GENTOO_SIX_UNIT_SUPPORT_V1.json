@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "result_id": "bird-island-gentoo-six-unit-support-v1",
+  "date": "2026-10-06",
+  "contract": "contracts/BIRD_ISLAND_GENTOO_SIX_UNIT_RECOVERY_ALLOCATION_V1.md",
+  "source": {
+    "doi": "10.5285/8fedb5a0-b98c-4457-9d86-aae9c6d3ed8e",
+    "artifact_id": 11412301564,
+    "artifact_digest": "sha256:ef6d3ccc111e3ed19e1fe09b87b47f47c52e1e27192a9227ab88f7057785532f",
+    "csv": "gentoo_bi_breeding_success_2025.csv"
+  },
+  "schema": {
+    "rows": 287,
+    "columns": [
+      "Species",
+      "Colony",
+      "Date_nests_counted",
+      "Number_of_nests",
+      "Date_chicks_counted",
+      "Number_of_chicks",
+      "Comments"
+    ],
+    "species": ["Gentoo penguin"],
+    "nest_count_calendar_year_min": 1981,
+    "nest_count_calendar_year_max": 2024,
+    "nest_count_months": [10,11,12]
+  },
+  "fixed_unit_mapping": {
+    "Johnson Beach": "Johnson",
+    "Square Pond": "Square Pond",
+    "Upper Natural Arch": "Upper Natural Arch",
+    "Lower Natural Arch": "Lower Natural Arch",
+    "Upper Mountain Cwm": "Upper Mountain Cwm",
+    "Lower Mountain Cwm": "Lower Mountain Cwm"
+  },
+  "support": {
+    "max_rows_per_fixed_unit_per_season": 1,
+    "complete_six_unit_seasons": 43,
+    "incomplete_seasons": {
+      "1982": ["Lower Natural Arch"]
+    },
+    "earliest_complete_season_start_year": 1981,
+    "latest_complete_season_start_year": 2024,
+    "fewer_than_two_complete_seasons": false
+  },
+  "endpoint_freeze": {
+    "start_season_start_year": 1981,
+    "end_season_start_year": 2024,
+    "rule": "earliest and latest complete six-unit season",
+    "count_magnitudes_opened_at_freeze": false
+  },
+  "decision": {
+    "support_pass": true,
+    "endpoint_frozen": true,
+    "recovery_gate_evaluated": false,
+    "E_endpoint_opened": false
+  }
+}

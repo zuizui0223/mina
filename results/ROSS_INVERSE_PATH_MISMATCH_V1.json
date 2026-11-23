@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-inverse-path-mismatch-v1",
+  "date": "2026-10-06",
+  "status": "post_result_effect_size_calibration",
+  "source": "external/ross_island_v2_frozen_counts.csv",
+  "anchors": {
+    "pre_shock": 1999,
+    "shock_trough": 2001,
+    "immediate_rebound": 2002
+  },
+  "six_component": {
+    "units": [
+      "Cape Royds",
+      "Cape Bird South",
+      "Cape Bird Middle",
+      "Cape Bird North",
+      "Cape Crozier West",
+      "Cape Crozier East"
+    ],
+    "shock_loss": [2253,4515,1499,15019,80216,9111],
+    "rebound_gain": [872,487,523,13351,88054,5911],
+    "total_shock_loss": 112613,
+    "total_rebound_gain": 109198,
+    "aggregate_loss_restored_fraction": 0.9696749043183291,
+    "loss_gain_cosine_similarity": 0.9969470572957101,
+    "scaled_inverse_path_expected_rebound": [
+      2184.6775594291958,
+      4378.082192997256,
+      1453.5426815731753,
+      14563.547387956985,
+      77783.4421247991,
+      8834.708053244296
+    ],
+    "observed_minus_scaled_inverse_path": [
+      -1312.6775594291958,
+      -3891.0821929972562,
+      -930.5426815731753,
+      -1212.5473879569854,
+      10270.557875200902,
+      -2923.708053244296
+    ],
+    "half_L1_reallocation_pairs": 10270.557875200906,
+    "half_L1_reallocation_fraction_of_rebound": 0.09405445040386184,
+    "only_positive_excess_component": "Cape Crozier West"
+  },
+  "interpretation": "The shock-loss and rebound-gain vectors point in nearly the same direction, so the rebound is not wholesale spatial relocation. Relative to an exact inverse path scaled to the observed rebound total, 10,270.6 breeding pairs—9.41% of the rebound—would need to be reallocated among components. The balancing positive excess occurs entirely at Cape Crozier West.",
+  "claim_boundary": [
+    "The 9.41% metric is an effect-size calibration generated post-result, not a preregistered hypothesis test.",
+    "It describes redistribution of occupied breeding-territory counts, not movement of identified individuals.",
+    "Cosine similarity and half-L1 mismatch answer complementary questions: directional alignment and amount of compositional reallocation."
+  ]
+}

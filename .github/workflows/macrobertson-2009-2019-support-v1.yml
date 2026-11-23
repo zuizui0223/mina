@@ -1,0 +1,26 @@
+name: MacRobertson 2009-2019 support package v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/MACROBERTSON_2009_2019_SPATIAL_REDUNDANCY_V1.md"
+      - ".github/workflows/macrobertson-2009-2019-support-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download AADC 2022 MacRobertson dataset package
+        run: |
+          mkdir -p build
+          curl -A 'Mozilla/5.0' -L --fail --retry 10 --retry-delay 5 --retry-all-errors \
+            'https://data.aad.gov.au/eds/5516/download' \
+            -o build/macrobertson_2009_2019_download
+          file build/macrobertson_2009_2019_download
+          ls -lh build/macrobertson_2009_2019_download
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macrobertson-2009-2019-support-v1
+          path: build/macrobertson_2009_2019_download

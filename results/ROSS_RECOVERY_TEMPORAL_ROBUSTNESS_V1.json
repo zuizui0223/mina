@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "result_id": "ross-recovery-temporal-robustness-v1",
+  "date": "2026-10-06",
+  "status": "post_result_descriptive_robustness",
+  "frozen_recovery_years": [2001,2002,2003,2004,2005,2006,2007,2009,2010,2011,2012],
+  "E3": {
+    "2001":1.7286221365129768,
+    "2002":1.507430677390489,
+    "2003":1.4757134477012328,
+    "2004":1.4129981442683173,
+    "2005":1.57557414133327,
+    "2006":1.491443355019732,
+    "2007":1.511267964179984,
+    "2009":1.4713840054316463,
+    "2010":1.4845092711819936,
+    "2011":1.4382101912535024,
+    "2012":1.5428221816996246
+  },
+  "E6": {
+    "2001":2.2919284746729964,
+    "2002":1.819023375736499,
+    "2003":1.8125526172514648,
+    "2004":1.8651869360696578,
+    "2005":2.066022334691895,
+    "2006":1.8673463246482869,
+    "2007":1.9162230793209403,
+    "2009":1.8747769120200026,
+    "2010":1.9113837025047213,
+    "2011":1.779824200728374,
+    "2012":1.9702250757190085
+  },
+  "frozen_period_descriptive_regression": {
+    "logE3_slope_per_year": -0.005488637299229355,
+    "logE3_p": 0.2459776212105405,
+    "logE6_slope_per_year": -0.005891651848889854,
+    "logE6_p": 0.35756787683684377
+  },
+  "baseline_sensitivity_from_2002": {
+    "E3_endpoint_fraction": 0.023478031089563478,
+    "logE3_slope_per_year": 0.000217509383976364,
+    "logE3_p": 0.9476914558214475,
+    "E6_endpoint_fraction": 0.08312246120602484,
+    "logE6_slope_per_year": 0.001981182130811811,
+    "logE6_p": 0.6631417773518179
+  },
+  "early_pulse_2001_2002": {
+    "N_fraction": 1.1519441348994705,
+    "E3_fraction": -0.1279562033403737,
+    "E6_fraction": -0.20633766422377726,
+    "all_three_colonies_increased": true,
+    "all_six_components_increased": true,
+    "crozier_share_2001": 0.7079685225426697,
+    "crozier_share_2002": 0.7896184238906645
+  },
+  "interpretation": "The frozen deconcentration prediction fails, but the endpoint E decline is not a monotonic phase-long erosion. Most concentration occurred in an early 2001-2002 recovery pulse and the lower-redundancy state then fluctuated around a broadly persistent level."
+}

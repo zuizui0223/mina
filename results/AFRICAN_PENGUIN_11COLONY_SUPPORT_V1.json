@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "result_id": "african-penguin-11colony-decline-support-v1",
+  "date": "2026-10-06",
+  "contract": "contracts/AFRICAN_PENGUIN_11COLONY_DECLINE_ALLOCATION_V1.md",
+  "source": {
+    "repository": "Henning-Winker/JARA",
+    "path": "Afr_penguin/Fits_Afr_penguin_s1.csv"
+  },
+  "support": {
+    "n_colony_series": 11,
+    "series_names": [
+      "Bird.Island",
+      "Boulders",
+      "Dassen.Island",
+      "Dyer.Island",
+      "Halifax",
+      "Ichaboe",
+      "Mercury",
+      "Possession",
+      "Robben.Island",
+      "St.Croix.Island",
+      "Stony.Point"
+    ],
+    "year_min": 1979,
+    "year_max": 2017,
+    "rows_1989": 6,
+    "rows_2019": 0
+  },
+  "effect_opening": {
+    "colony_magnitudes_summarized": false,
+    "N_computed": false,
+    "E_computed": false
+  },
+  "decision": {
+    "common_11_colony_1989_2019_support": false,
+    "decline_gate_evaluated": false,
+    "status": "SUPPORT_FAIL_FROZEN_ENDPOINT_UNAVAILABLE"
+  },
+  "boundary": "Do not move the terminal endpoint from 2019 to 2017 or subset colonies after support inspection."
+}

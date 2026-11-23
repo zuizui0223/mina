@@ -1,0 +1,88 @@
+{
+  "schema_version": 2,
+  "result_id": "spatial-recovery-claim-evidence-ledger-v2",
+  "date": "2026-10-07",
+  "status": "post_result_integrated_reinterpretation",
+  "manuscript": "docs/MANUSCRIPT_SPATIAL_RECOVERY_PATH_STATE_V0_6.md",
+  "focal_audit": "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json",
+  "local_recovery_decomposition": "docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md",
+  "claim_hierarchy": [
+    {
+      "level": 1,
+      "role": "focal_empirical_result",
+      "claim": "Near-complete Ross aggregate recovery was a loss-weighted average of strongly unequal local restoration and did not restore the pre-disturbance spatial composition.",
+      "key_numbers": {
+        "aggregate_loss_restored_fraction": 0.9696749043183291,
+        "local_restoration_range": [
+          0.10786267995570321,
+          1.097711179814501
+        ],
+        "local_restoration_median": 0.5179078537364515,
+        "local_restoration_unweighted_mean": 0.5798715847608958,
+        "crozier_west_rebound_share": 0.806370080038096,
+        "restoration_excluding_crozier_west": 0.6526530234280952,
+        "inverse_path_fidelity": 0.9059455495961382,
+        "state_distance_restored_fraction": 0.0239611381095024,
+        "baseline_TV_observed": 0.04967242312643739,
+        "baseline_TV_expected_exact_inverse": 0.0007171796194534938
+      },
+      "evidence": [
+        "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json",
+        "docs/ROSS_LOCAL_RECOVERY_RATIO_DECOMPOSITION_V1.md",
+        "results/ROSS_INVERSE_PATH_MISMATCH_V1.json"
+      ],
+      "boundary": "All focal path-versus-state and local-restoration decompositions are post-result."
+    },
+    {
+      "level": 2,
+      "role": "within_system_calibration",
+      "claim": "High inverse-path fidelity co-occurred with weak or negative state restoration in all three complete Ross down-up episodes.",
+      "evidence": [
+        "results/ROSS_PATH_VERSUS_STATE_RECOVERY_AUDIT_V1.json"
+      ],
+      "boundary": "Episodes are descriptive within-series calibration, not independent replicates."
+    },
+    {
+      "level": 3,
+      "role": "process_contrast_attrition",
+      "claim": "Persistent decline at Palmer and Signy reweighted breeding structure beyond proportional thinning.",
+      "evidence": [
+        "results/PALMER_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+        "results/SIGNY_CONCENTRATION_REPLICATION_RESULT_V2.json"
+      ],
+      "boundary": "Specific vital-rate mechanisms are not identified."
+    },
+    {
+      "level": 3,
+      "role": "process_contrast_capacity",
+      "claim": "Beaufort growth after capacity release reweighted breeding structure beyond proportional expansion while independent inter-island export declined.",
+      "evidence": [
+        "results/BEAUFORT_ISLAND_INTENSIFICATION_EXPANSION_RESULT_V1.json",
+        "docs/BEAUFORT_ISLAND_MEDIATED_COMPETITION_SYNTHESIS_V1.md"
+      ],
+      "boundary": "Census and movement evidence are independent streams, not mediation."
+    },
+    {
+      "level": 4,
+      "role": "general_hypothesis",
+      "claim": "Unequal local recovery can produce apparently complete aggregate recovery while changing spatial dominance and redundancy.",
+      "novelty_status": "hypothesis_for_prospective_testing",
+      "boundary": "The focal field result is post-result and does not establish a universal threshold for local-recovery heterogeneity."
+    }
+  ],
+  "exact_identity": {
+    "aggregate_restoration": "A = sum_i L_i q_i / sum_i L_i",
+    "local_restoration": "q_i = R_i / L_i",
+    "inverse_path_residual": "delta_i = L_i(q_i-A)",
+    "mismatch": "M = 0.5 sum_i L_i |q_i-A|",
+    "interpretation": "Aggregate restoration is the loss-weighted mean local restoration ratio; path mismatch is a loss-weighted measure of local-restoration heterogeneity."
+  },
+  "main_sentence": "Near-complete aggregate recovery was produced by differential local recovery, so the population recovered where it had declined but not in the same proportions.",
+  "withdrawn_claims": [
+    "Ross restored or re-expressed the pre-shock spatial state",
+    "high inverse-path fidelity implies state restoration",
+    "near-complete aggregate recovery means most breeding components nearly recovered",
+    "the focal result demonstrates latent spatial memory",
+    "the 9.41% mismatch is biologically minor because it is numerically small"
+  ]
+}

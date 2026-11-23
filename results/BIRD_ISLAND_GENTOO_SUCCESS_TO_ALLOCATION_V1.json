@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "result_id": "bird-island-gentoo-success-to-allocation-v1",
+  "date": "2026-10-06",
+  "status": "frozen_primary_statistical_pass_interpretation_qualified_by_post_effect_diagnostics",
+  "contract": "contracts/BIRD_ISLAND_GENTOO_SUCCESS_TO_ALLOCATION_V1.md",
+  "support_receipt": "results/BIRD_ISLAND_GENTOO_SUCCESS_TO_ALLOCATION_SUPPORT_V1.json",
+  "source": {
+    "doi": "10.5285/8fedb5a0-b98c-4457-9d86-aae9c6d3ed8e",
+    "artifact_id": 11412301564,
+    "artifact_digest": "sha256:ef6d3ccc111e3ed19e1fe09b87b47f47c52e1e27192a9227ab88f7057785532f"
+  },
+  "primary": {
+    "eligible_start_years": 38,
+    "rows": 228,
+    "beta": 0.32382834796046644,
+    "direction": "positive",
+    "permutation_B": 9999,
+    "seed": 20261006,
+    "extreme_permutations_ge_observed": 0,
+    "one_sided_p": 0.0001,
+    "permutation_q05": -0.09286468945195732,
+    "permutation_median": 0.000021125453828558062,
+    "permutation_q95": 0.09209294102441269,
+    "two_way_demeaned_success_sd": 0.4469694404427838,
+    "effect_per_1sd_success_log_share": 0.14474137548740076,
+    "next_year_share_multiplier_per_1sd_success": 1.1557406287560834,
+    "fully_standardized_beta": 0.5790766331242018,
+    "support_criterion_pass": true
+  },
+  "leave_one_unit_out_beta": {
+    "Johnson": 0.3177220060354421,
+    "Square Pond": 0.31650743317488894,
+    "Upper Natural Arch": 0.32325395439570387,
+    "Lower Natural Arch": 0.33121633679476115,
+    "Upper Mountain Cwm": 0.376391325918136,
+    "Lower Mountain Cwm": 0.31450063558182456
+  },
+  "post_effect_metric_audit": {
+    "rows_with_chicks_per_nest_gt_2": 9,
+    "affected_start_years": [2000, 2002, 2005, 2019, 2021, 2023],
+    "maximum_chicks_per_nest": 7.869565217391305,
+    "maximum_row": {
+      "year": 2019,
+      "unit": "Upper Mountain Cwm",
+      "nests": 23,
+      "chicks": 181
+    },
+    "interpretation": "The provider-aligned chicks/nest index can exceed a literal biological fledglings-per-pair maximum, consistent with phenology/count-timing and/or local chick redistribution. It should be called an operational breeding-success index, not a literal per-pair fecundity estimate at all unit-years."
+  },
+  "post_effect_diagnostics": {
+    "success_vs_current_log_share_two_way": {
+      "coefficient": -1.020876079120035,
+      "residual_correlation": -0.6395953398191243,
+      "year_vector_permutation_one_sided_negative_p": 0.0001
+    },
+    "success_vs_previous_share_change": {
+      "beta": -0.3144031319457138,
+      "residual_correlation": -0.5551169623307337,
+      "interpretation": "Near-symmetric backward association indicates that current success index is strongly associated with a locally depressed current share / rebound geometry; shared-denominator and compensatory dynamics can contribute."
+    },
+    "primary_plus_current_log_share_control": {
+      "beta_success": 0.28592700385701086,
+      "year_vector_permutation_p": 0.0001
+    },
+    "ratio_free_log_chick_count_controlling_log_current_nests": {
+      "beta_log1p_chicks": 0.08328035740456916,
+      "year_vector_permutation_p": 0.0126,
+      "status": "post_result_diagnostic_only"
+    },
+    "timing_colonies_only_Johnson_Square_Pond": {
+      "beta": 0.2518023548731699,
+      "year_vector_permutation_p": 0.0082,
+      "status": "post_result_diagnostic_only"
+    },
+    "exclude_years_with_any_chicks_per_nest_gt_2": {
+      "remaining_years": 32,
+      "beta": 0.40536706734463035,
+      "year_vector_permutation_p": 0.0001,
+      "status": "post_result_diagnostic_only"
+    }
+  },
+  "decision": {
+    "frozen_primary_beta_positive": true,
+    "frozen_primary_permutation_pass": true,
+    "loo_all_positive": true,
+    "strong_causal_site_quality_interpretation_allowed": false,
+    "prospective_predictive_information_claim_allowed": true,
+    "mechanism_resolved": false
+  },
+  "interpretation": "Under the frozen design, higher operational chicks-per-nest in a breeding unit predicts a greater next-season increase in that unit's share of the six-unit network. The association is strong and survives unit LOO, current-share adjustment, ratio-free and timing-colony diagnostics, but the primary ratio shares the current nest denominator with the response and is strongly associated with low current share. The safest conclusion is prospective allocation information consistent with compensatory local dynamics, not causal proof that reproductive success drives redistribution."
+}
