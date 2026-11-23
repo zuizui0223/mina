@@ -1,0 +1,25 @@
+name: adelie-aadc-mawson-download-diagnosis
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/diagnose_aadc_5516_data_access.py
+      - .github/workflows/adelie-aadc-mawson-download-diagnosis.yml
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python scripts/diagnose_aadc_5516_data_access.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-aadc-mawson-official-download-diagnostic
+          path: build/aadc_endpoint_diagnostic
+          retention-days: 60
+          if-no-files-found: warn
