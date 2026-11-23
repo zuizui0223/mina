@@ -49,6 +49,31 @@ def main():
             break
         except Exception as e:
             res["probes"].append({"base":base,"status":"failed","error":repr(e)[:280]})
+    # The source-file virtual directory can return HTTP 404 while the ERDDAP griddap
+    # streaming grid still works. Test its documented one-month southern-hemisphere URL.
+    if "selected" not in res:
+        from urllib.parse import quote
+        q="cdr_seaice_conc_monthly[(2018-06-01T00:00:00Z):1:(2018-06-01T00:00:00Z)][(4337500.0):1:(-3937500.0)][(-3937500.0):1:(3937500.0)]"
+        for host in ("https://polarwatch.noaa.gov/erddap/griddap/","https://coastwatch.pfeg.noaa.gov/erddap/griddap/"):
+            url=host+"nsidcG02202v4shmday.nc?"+quote(q,safe=":()/.-_?")
+            try:
+                b,m=load(url,4_000_000)
+                import netCDF4
+                with netCDF4.Dataset("erddap_month",memory=b) as n:
+                    dims={k:len(v) for k,v in n.dimensions.items()}
+                    vars={k:{"dims":v.dimensions,"shape":v.shape,"dtype":str(v.dtype),
+                             "units":getattr(v,"units",None),"fill":getattr(v,"_FillValue",None)}
+                          for k,v in n.variables.items()}
+                    globals={k:str(n.getncattr(k))[:150] for k in n.ncattrs()
+                             if "mapping" in k.lower() or "projection" in k.lower()}
+                    if not {"cdr_seaice_conc_monthly","xgrid","ygrid"}<=set(vars):
+                        raise ValueError("Missing required monthly CDR variables")
+                res["selected"]={"url":url,"sha256":hashlib.sha256(b).hexdigest(),
+                  "bytes":len(b),"netcdf_dimensions":dims,"netcdf_vars":vars,
+                  "netcdf_global_projection_metadata":globals,"original_directory":host}
+                break
+            except Exception as e:
+                res["probes"].append({"base":host,"status":"griddap_failed","error":repr(e)[:250]})
     if "selected" not in res:
         # Guard against a false zero: the independent monthly baseline remains unverified.
         res["status"]="NO_VALIDATED_NSIDC_MONTHLY_SOURCE"
