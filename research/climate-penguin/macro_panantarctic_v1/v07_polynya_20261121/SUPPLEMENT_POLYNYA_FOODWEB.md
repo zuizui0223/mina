@@ -187,14 +187,14 @@ The original adjusted within-colony estimate was −1.0031‰ per ten percentage
 
 For a heuristic unit comparison only, Hong et al. (2021, Table 1, doi:10.3390/ani11092681) report prey δ¹⁵N (‰): Antarctic krill *Euphausia superba* 3.65 ± 0.58; ice krill *E. crystallorophias* 6.12 ± 0.51; Antarctic silverfish *Pleuragramma antarctica* 10.30 ± 0.80. In a two-prey model with a constant nitrogen enrichment offset, the difference obeys Δδ¹⁵N = (δ¹⁵N of fish − δ¹⁵N of krill) × Δfish fraction. Accordingly, Δfish fraction = Δδ¹⁵N divided by (δ¹⁵N of fish − δ¹⁵N of krill). These values concern **whole-prey measurements in the Ross Sea** (krill sampled in 2019 and silverfish source records from 2002–03), not contemporaneous source values for the pan-Antarctic 2004–2010 optical guano records.
 
-**Table S5. Hypothetical fish-fraction equivalents of the unchanged optical δ¹⁵N slope; these are not observed diet proportions.**
+**Table S5. Hypothetical isotope-equivalent changes in the fish-derived contribution to assimilated dietary nitrogen (not measured fish mass, prey biomass or diet proportions).**
 
-| Illustrative prey endmembers (fish − krill) | δ¹⁵N separation (‰) | M_P: +10-pp polynya equivalent | M_P: +1.6011-pp residual-SD equivalent | M_SP: +1.5879-pp residual-SD equivalent |
+| Illustrative prey endmembers (fish − krill) | δ¹⁵N separation (‰) | M_P: +10-pp exposure, fish-N equivalent | M_P: +1.6011-pp SD, fish-N equivalent | M_SP: +1.5879-pp SD, fish-N equivalent |
 |---|---:|---:|---:|---:|
 | Antarctic silverfish − Antarctic krill | 6.65 | −15.1 percentage points | −2.4 percentage points | −2.2 percentage points |
 | Antarctic silverfish − ice krill | 4.18 | −24.0 percentage points | −3.8 percentage points | −3.5 percentage points |
 
-The salinity-adjusted M_SP slope is −0.9216‰ per +10 pp. Translating these *contrasts* is not a fitted diet-mixture posterior: prey endmembers can vary geographically and through time; prey nitrogen baselines, taxon-specific routing, guano–prey enrichment, macronutrient mixing, and the underlying reflectance-based isotope calibration can change. A constant enrichment factor cancels algebraically in a within-sample **difference**, but this does not establish that enrichment or prey baselines were constant across colony-seasons. Without matched prey isotopes or direct diet observations, even the **sign** of a fish-fraction change remains unidentified.
+The salinity-adjusted M_SP slope is −0.9216‰ per +10 pp. Here, the mixing weight is **the fraction of assimilated dietary nitrogen contributed by fish**, not the percentage of fish in the stomach, diet by wet/dry mass, or prey biomass. Deriving a dietary mass fraction additionally requires nitrogen concentrations and assimilation efficiencies for each prey (Phillips and Koch 2002). Translating these *contrasts* is not a fitted diet-mixture posterior: prey endmembers can vary geographically and through time; prey nitrogen baselines, taxon-specific routing, guano–prey enrichment, macronutrient mixing, and the underlying reflectance-based isotope calibration can change. A constant enrichment factor cancels algebraically in a within-sample **difference**, but this does not establish that enrichment or prey baselines were constant across colony-seasons. Without matched prey isotopes or direct diet observations, even the **sign** of a fish-fraction change remains unidentified.
 
 ### S8.2. Exact source-cohort recovery and limits of geographic representation
 
@@ -214,6 +214,8 @@ The excluded observations were spatially uneven: 36/73 source-colony seasons in 
 
 The original frozen `matched_isotope860.csv` and `polynya_physical860.csv` join on unique `site_id,season` keys; selecting records with complete 100-km winter coastal-polynya exposure reproduces exactly 439/85/11, including 34 measured zeros, mean 7.0304% and SD 6.3187 pp. There is **no additional loss of eligible site-seasons at this winter-polynya gate**. The previously prepared 472/88 source-pool map is not interchangeable with this frozen site cohort. No missing year is treated as a measured zero.
 
+A separate **source-only, outcome-unseen representativeness audit** compared all 583 author-supported site-seasons using the same independently re-extracted (approximate pixel-area) DEEP-AA exposure definition. Across the 439 site-seasons retained in the original analysis, mean winter-polynya fraction was **7.075%**, compared with **5.949%** across the 144 excluded source site-seasons, a descriptive difference of **1.127 percentage points**. The corresponding equal-weight average of site means was **7.054%** across 85 retained sites versus **5.830%** across 28 excluded sites. All **34 zero-exposure site-seasons** were in the retained group; none were observed among the 144 excluded records. This comparison uses the *same approximate source re-extraction* for both selected and excluded sites; these values are not substituted for the frozen original 439-row exposure file (mean 7.030%). The groups differ geographically and no coefficient direction, selection mechanism, or ecological effect follows from this descriptive contrast. The comparison was not used to change inclusion criteria, model covariates or the reported association.
+
 ### S8.3. Descriptive juxtaposition with present-day CCAMLR marine protected areas
 
 For the 85 original frozen sites, annual 2004–2010 June–October polynya area fractions (100-km exposure definition) were summarized separately by site. Only **79 sites observed in at least four winters** were assigned a descriptive standard deviation; **six sites with two or three observed winters** remain visible but unranked. The median within-site SD among the 79 is **2.825 pp**. No colony-specific isotope response sensitivity is estimated by this dispersion measure.
@@ -225,6 +227,8 @@ The Ross Sea MPA was adopted by CCAMLR in 2016 and entered into force in **2017*
 **Reproducibility and version boundary.** The source-locked cohort and CCAMLR geospatial intersections, 583→439 site-key crosswalk, region counts and Figure S1 preview are archived with GitHub Actions [frozen 439/85 audit](https://github.com/zuizui0223/mina/actions/runs/45082480478) and [28-site catalogue audit](https://github.com/zuizui0223/mina/actions/runs/45083270769). Analysis and frozen input hashes are documented in `analysis/adelie-polynya-conservation-source-20261122` (research-only branch). This is a **23 November 2026 post-result descriptive addition for author review**, not an additional hypothesis test or part of the independent pre-outcome sign gate.
 
 ## Literature cited
+
+Phillips DL, Koch PL (2002) Incorporating concentration dependence in stable isotope mixing models. Oecologia 130:114–125. https://doi.org/10.1007/s004420100786
 
 Hong S-Y, Gal J-K, Lee B-Y, Son W-J, Jung J-W, La H-S, Shin K-H, Kim J-H, Ha S-Y (2021) Regional differences in the diets of Adélie and Emperor penguins in the Ross Sea, Antarctica. Animals 11:2681. https://doi.org/10.3390/ani11092681
 
