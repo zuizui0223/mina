@@ -1,0 +1,50 @@
+name: adelie-BAS-Signy-DEEPAA-NSIDC-original-13winter-gate
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/extract_signy_BAS_fixed5_DEEPAA_NSIDC.py
+      - .github/workflows/adelie-BAS-Signy-DEEPAA-NSIDC-source.yml
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  signy-original-physical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 48
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-aadc-mawson-bas-signy-original-sources
+          run-id: 45205901651
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/bas
+      - name: Install original NetCDF and coordinate readers
+        run: python -m pip install --no-cache-dir 'numpy>=1.24' 'pandas>=2' 'scipy>=1.11' 'netCDF4>=1.6' 'pyproj>=3.6'
+      - name: Recover pinned original BAS source and DEEP-AA 6.25km native archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s build/bas/bas_signy_entry_zip.zip
+          mkdir -p build/raw build/signy_original
+          curl -fLSs --retry 5 --retry-all-errors --connect-timeout 60 --max-time 1500 \
+            'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' \
+            -o build/raw/SIC60_6.25km_20d.zip
+          echo 'f3f958389cc5e67ac1c4e3a6ee164318  build/raw/SIC60_6.25km_20d.zip' | md5sum -c -
+      - name: Measure independent Signy BAS 13 actual pair-count winters vs DEEP-AA and NSIDC
+        shell: bash
+        run: |
+          python scripts/extract_signy_BAS_fixed5_DEEPAA_NSIDC.py \
+            --signy-zip build/bas/bas_signy_entry_zip.zip \
+            --deepaa build/raw/SIC60_6.25km_20d.zip \
+            --out build/signy_original
+      - name: Save verified observed data without fitting penguin responses
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adelie-BAS-Signy-13winter-original-physical
+          path: build/signy_original
+          if-no-files-found: warn
+          retention-days: 90
