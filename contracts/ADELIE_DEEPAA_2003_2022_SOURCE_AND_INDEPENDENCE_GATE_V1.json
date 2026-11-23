@@ -1,0 +1,78 @@
+{
+  "version": "v1",
+  "created": "2026-11-23",
+  "purpose": "New independent Adélie MAPPPD v5 nest-count × high-resolution DEEP-AA environmental exposure feasibility audit",
+  "source": {
+    "mapppd": "Original MAPPPD all counts v5 2026-10-21, original CSV SHA256 d169c409cf278b137d6df35fbeb9ab3409bdea15f41c39bcaec549a4d4dbca89, downloadable artifact https://github.com/zuizui0223/mina/actions/runs/45095395698",
+    "deepaa": "Lin et al 2024 SIC60_6.25km_20d.zip, Zenodo record 13358042, original MD5 f3f958389cc5e67ac1c4e3a6ee164318",
+    "seaice": "NSIDC G02202 v4 monthly southern-hemisphere 25km SIC continuous (independent baseline), if official source can be fetched and sample sites can be matched without imputation"
+  },
+  "years": {
+    "candidate_start": 2003,
+    "candidate_end": 2022,
+    "winter_months": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "excluded_winters": [
+      2011,
+      2012
+    ],
+    "exclusion_reason": "DEEP-AA dataset hiatus 2011-09-01 to 2012-07-31; no complete June-Oct winter both years",
+    "monthly_daily_coverage_min": 0.8,
+    "available_years_expected": 18
+  },
+  "census": {
+    "species": "adelie penguin",
+    "count_type": "nests",
+    "site_year": "season_starting",
+    "missing_counts": "drop only actual NA; don't impute or convert missing to zero",
+    "observed_true_zero": "retain as 0",
+    "duplicates": "median of same site-season nest counts with number/extent/collection-method QA retained",
+    "primary_eligibility": {
+      "n_census_years": 4,
+      "min_calendar_year_span": 8,
+      "nominal_sites": 32,
+      "buffer100km_connected_blocks": 7,
+      "buffer200km_connected_blocks": 6,
+      "original_rows": 336,
+      "unique_site_years": 284
+    },
+    "sensitivity_eligibility": {
+      "n_census_years": 3,
+      "min_span": 5,
+      "nominal_sites": 43,
+      "buffer100km_connected_blocks": 10,
+      "buffer200km_connected_blocks": 5
+    },
+    "spatial_independence": "Two 100km exposure disks overlap when colony centres are up to approximately 200km apart; 200km-connected groups are the conservative spatial independent units"
+  },
+  "environment": {
+    "radius_km": 100,
+    "coastal_map_rule": "positive even DEEP-AA Map IDs",
+    "total_open_map_rule": "Map==-2 open sea OR Map==-1 other open water OR Map>0 coastal/open-ocean polynyas",
+    "ice": "Map==0 sea ice and Map==-100 fast ice; neither count as open",
+    "land": "NaN/-999 excluded from denominator",
+    "summary": "daily area-weighted site-local class fractions averaged by month then five months equal weighting",
+    "no_direct_continuous_sic_without_nsidc": true,
+    "model_year_match": "winter June-Oct y to subsequent MAPPPD breeding season_starting y",
+    "other_exposure_proxies": "landfast fraction, non-polynya open-water fraction",
+    "predeclared_no_radius_or_lag_search": true
+  },
+  "model_gate": {
+    "allowed": "First fully source-only geography & exposure screening. Only consider a conditional within-colony ecological fit if ≥8 independent 200km regions/blocks and at least 2 distinct geographically independent blocks within multiple reporting regions, plus acceptable repeated census-method support and matched continuous SIC",
+    "initial_status": "NO_GO_FOR_POOLED_PAN_ANTARCTIC_SIGNIFICANCE_WITH_32_SITES_6_200km_BLOCKS",
+    "mechanism_claim": "none before independent prey or demographic mechanism measurements"
+  },
+  "cautions": [
+    "MAPPPD 565 observed 2003-22 (excluding 2011/12), 201 sites; 42 explicitly zero rows across all sites; never treat unsurveyed years as zero",
+    "Of 32 primary site candidates 17 use >1 vantage type; 7 groups at 100km and only 6 groups when respecting 100km circle overlap",
+    "DEEP-AA open/closed classification at 60% threshold is not measured total continuous sea ice concentration; actual NSIDC continuous SIC preferable",
+    "No retuning dates/radii/year eligibility to chase a favorable coefficient",
+    "Duffy 25km 1979-2022 and DEEP-AA 6.25km 2003-2022 physical series are not equivalent data products",
+    "Existing 439-session optical isotope paper and its PRs unchanged"
+  ]
+}
