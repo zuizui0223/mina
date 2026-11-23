@@ -18,12 +18,13 @@
       10
     ],
     "excluded_winters": [
+      2003,
       2011,
       2012
     ],
-    "exclusion_reason": "DEEP-AA dataset hiatus 2011-09-01 to 2012-07-31; no complete June-Oct winter both years",
+    "exclusion_reason": "Complete five-month winter unavailable in source: 2003 October only 15/31 valid satellite days; 2011 Sep–2012 July archival outage",
     "monthly_daily_coverage_min": 0.8,
-    "available_years_expected": 18
+    "available_years_expected": 17
   },
   "census": {
     "species": "adelie penguin",
@@ -60,11 +61,13 @@
     "no_direct_continuous_sic_without_nsidc": true,
     "model_year_match": "winter June-Oct y to subsequent MAPPPD breeding season_starting y",
     "other_exposure_proxies": "landfast fraction, non-polynya open-water fraction",
-    "predeclared_no_radius_or_lag_search": true
+    "predeclared_no_radius_or_lag_search": true,
+    "min_daily_valid_original_ocean_area_fraction": 0.8,
+    "daily_area_normalization": "Each day reweights original native pixel areas by actual valid ocean mask cells (land and missing=-999 excluded); never count missing area as ice"
   },
   "model_gate": {
     "allowed": "First fully source-only geography & exposure screening. Only consider a conditional within-colony ecological fit if ≥8 independent 200km regions/blocks and at least 2 distinct geographically independent blocks within multiple reporting regions, plus acceptable repeated census-method support and matched continuous SIC",
-    "initial_status": "NO_GO_FOR_POOLED_PAN_ANTARCTIC_SIGNIFICANCE_WITH_32_SITES_6_200km_BLOCKS",
+    "initial_status": "NO_GO_FOR_POOLED_PAN_ANTARCTIC_SIGNIFICANCE_WITH_32_SITES_6_200km_BLOCKS; physical site-year completeness under dynamic source-area QA to be independently reaudited",
     "mechanism_claim": "none before independent prey or demographic mechanism measurements"
   },
   "cautions": [
@@ -74,5 +77,11 @@
     "No retuning dates/radii/year eligibility to chase a favorable coefficient",
     "Duffy 25km 1979-2022 and DEEP-AA 6.25km 2003-2022 physical series are not equivalent data products",
     "Existing 439-session optical isotope paper and its PRs unchanged"
-  ]
+  ],
+  "audit_history": {
+    "initial_physical_run": "https://github.com/zuizui0223/mina/actions/runs/45098116158",
+    "initial_98pct_site_day_fraction_narrative": "Overly strict use of 2003-06 first-day ocean mask without daily valid-area renormalization excluded whole stable Ross Sea colony series; documented as failed source-only quality screen; no ecological regression fit",
+    "repair": "Renormalize to dynamically valid area with >=80% original ocean support per day; keep monthly valid days >=80%",
+    "decision_before_population_coefficients": true
+  }
 }
