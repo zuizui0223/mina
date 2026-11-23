@@ -1,0 +1,26 @@
+name: adelie-new-independent-colony-census-raw-discovery
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/discover_adelie_signy_east_nz_original_census.py
+      - .github/workflows/adelie-new-independent-colony-census-raw-discovery.yml
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  original-independent-census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Inspect original BAS, Landcare, AADC, PLOS links and download public source files
+        run: python scripts/discover_adelie_signy_east_nz_original_census.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-independent-source-signy-east-nz-original-receipts
+          path: build/adelie_extra_census
+          retention-days: 60
+          if-no-files-found: warn
