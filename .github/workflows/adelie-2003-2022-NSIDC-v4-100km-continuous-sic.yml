@@ -1,0 +1,38 @@
+name: adelie-2003-2022-NSIDC-V4-continuous-100km-SIC
+on:
+  push:
+    branches: [analysis/adelie-deepaa-2003-2022-demography-20261123]
+    paths:
+      - scripts/extract_adelie_2003_2022_NSIDC_v4_sic.py
+      - .github/workflows/adelie-2003-2022-NSIDC-v4-100km-continuous-sic.yml
+  workflow_dispatch:
+permissions: {contents: read, actions: read}
+jobs:
+  measured-sic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: adelie-duffy2024-mapppd-v5-original-sources
+          run-id: 45095395698
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/originals
+      - name: Independent original gridded monthly SIC reader
+        run: python -m pip install --no-cache-dir 'numpy>=1.24' 'pandas>=2' 'scipy>=1.11' 'netCDF4>=1.6' 'pyproj>=3.6'
+      - name: Extract source-verified measured SIC at original Adélie colony coordinates 2003–2022
+        run: |
+          python scripts/extract_adelie_2003_2022_NSIDC_v4_sic.py \
+            --mapppd build/originals/raw/mapppd_v5_all_counts.csv \
+            --out build/adelie_nsidc_source
+      - name: Retain site-month and site-year aggregated source values, hashes, not original NetCDF
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adelie-2003-2022-NSIDC-v4-25km-continuous-100km-SIC
+          path: build/adelie_nsidc_source
+          if-no-files-found: warn
+          retention-days: 90
