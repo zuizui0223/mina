@@ -40,7 +40,11 @@ def main():
     pict=doc.add_paragraph()
     pic=pict.add_run().add_picture(str(image),width=Mm(149))
     pic._inline.docPr.set("descr", "Antarctic polar map of within-colony polynya-fraction standard deviations for 79 Adélie colonies; six other colonies have grey crosses. Dark outlines are six present-day CCAMLR MPA zones. These are present-day overlaps, not historical protection effects.")
-    pict.paragraph_format.page_break_before=True
+    pict.paragraph_format.page_break_before=False
+    figure_headers=[p for p in doc.paragraphs if p.text.strip()=="Supplementary figure"]
+    if len(figure_headers)!=1:raise RuntimeError("Missing unique figure heading")
+    figure_headers[0].paragraph_format.page_break_before=True
+    figure_headers[0].paragraph_format.keep_with_next=True
     pict.paragraph_format.keep_with_next=True
     pict.paragraph_format.line_spacing=1
     pict.paragraph_format.space_after=Pt(4)
@@ -57,7 +61,7 @@ def main():
     doc.save(revised)
     check=Document(revised)
     full="\n".join(p.text for p in check.paragraphs)
-    required=["S8. Ecological scale","S8.1.","S8.2.","S8.3.","Figure S1","583","439","85","144","15 of 85","Hong et al."]
+    required=["S8. Ecological scale","S8.1.","S8.2.","S8.3.","Figure S1","Table S6.","583","439","85","144","102/146","15 of 85","Hong et al."]
     missing=[s for s in required if s not in full]
     if missing:raise RuntimeError("S8 review manuscript text gate failed "+str(missing))
     if len(check.inline_shapes)!=1:raise RuntimeError("Expected exactly one supplemental map image")
