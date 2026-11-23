@@ -1,0 +1,25 @@
+name: adelie-AADC-EDS-public-endpoint-inventory
+on:
+  push:
+    branches: [analysis/adelie-independent-census-source-20261124]
+    paths:
+      - scripts/audit_AADC_EDS_public_frontend.py
+      - .github/workflows/adelie-AADC-EDS-public-endpoint-inventory.yml
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  public-link-route-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python scripts/audit_AADC_EDS_public_frontend.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adelie-AADC-EDS-public-endpoint-audit
+          path: build/aadc_public_frontend
+          if-no-files-found: warn
+          retention-days: 60
