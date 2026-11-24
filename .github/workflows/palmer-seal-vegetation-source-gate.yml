@@ -1,0 +1,26 @@
+name: Palmer seal vegetation source acquisition
+on:
+  pull_request:
+    paths:
+      - 'research/climate-penguin/multispecies_vegetation_20261124/source_gate_seals.py'
+      - '.github/workflows/palmer-seal-vegetation-source-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax check
+        run: python -m py_compile research/climate-penguin/multispecies_vegetation_20261124/source_gate_seals.py
+      - name: Official source inventory
+        run: python research/climate-penguin/multispecies_vegetation_20261124/source_gate_seals.py /tmp/seal-vegetation-source
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seal-vegetation-source-receipt
+          path: /tmp/seal-vegetation-source/
+          retention-days: 14
+          if-no-files-found: warn

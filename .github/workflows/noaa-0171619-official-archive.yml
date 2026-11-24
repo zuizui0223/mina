@@ -1,0 +1,74 @@
+name: NOAA 0171619 official archive path recovery
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/noaa-0171619-official-archive.yml'
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Recover actual archive using NOAA metadata links
+        run: |
+          python - <<'PY'
+          import urllib.request,urllib.parse,pathlib,hashlib,json,re,zipfile,io
+          from html.parser import HTMLParser
+          out=pathlib.Path('/tmp/noaa-source');out.mkdir()
+          base='https://ftp-oceans.ncei.noaa.gov/nodc/archive/arc0118/0171619/'
+          todo=[base,base+'1.1/',base+'1.1/data/0-data/',base+'1.1/data/1-data/', 'https://www.ncei.noaa.gov/archive/accession/download/171619']
+          class Links(HTMLParser):
+              def __init__(self):super().__init__();self.hrefs=[]
+              def handle_starttag(self,t,a):
+                  if t=='a' and dict(a).get('href'):self.hrefs.append(dict(a)['href'])
+          def get(u,cap=25000000):
+              with urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Public Scientific Data Audit/1.0'}),timeout=20) as r:
+                  b=r.read(cap+1)
+                  if len(b)>cap:raise ValueError('bounded size exceeded')
+                  return b,r.geturl(),r.headers.get('Content-Type','')
+          records=[];files=[];seen=set();total=0
+          def save(name,b,url):
+              global total
+              name=pathlib.Path(name).name
+              if not name or total+len(b)>40000000:raise ValueError('total limit')
+              if name.lower().endswith('.xlsx') and not zipfile.is_zipfile(io.BytesIO(b)):raise ValueError('not xlsx')
+              if b'<html' in b[:1000].lower():raise ValueError('HTML response')
+              p=out/name
+              if p.exists() and p.read_bytes()!=b:raise ValueError('duplicate name differs')
+              if not p.exists():
+                  p.write_bytes(b);total+=len(b);files.append({'name':name,'url':url,'size':len(b),'sha256':hashlib.sha256(b).hexdigest()})
+          for u in todo:
+              if len(records)>=30 or u in seen:continue
+              seen.add(u);r={'url':u}
+              try:
+                  b,f,ct=get(u);r.update(final=f,content_type=ct,bytes=len(b),sha256=hashlib.sha256(b).hexdigest())
+                  name=urllib.parse.unquote(urllib.parse.urlsplit(f).path.rsplit('/',1)[-1])
+                  if zipfile.is_zipfile(io.BytesIO(b)):
+                      with zipfile.ZipFile(io.BytesIO(b)) as z:
+                          assert z.testzip() is None
+                          r['zip_members']=z.namelist()[:200]
+                          for x in z.infolist():
+                              if not x.is_dir() and re.search(r'\.(xlsx|xls|csv|txt|md)$',x.filename,re.I) and x.file_size<=15000000:
+                                  save(x.filename,z.read(x),f+'#'+x.filename)
+                  elif re.search(r'\.(xlsx|xls|csv|txt|md)$',name,re.I):save(name,b,f)
+                  else:
+                      p=Links();p.feed(b.decode('utf-8','replace'));r['links']=p.hrefs[:120]
+                      for h in p.hrefs:
+                          v=urllib.parse.urljoin(f,h);s=urllib.parse.urlsplit(v)
+                          if s.hostname not in ('ftp-oceans.ncei.noaa.gov','www.ncei.noaa.gov','data.ncei.noaa.gov'):continue
+                          if not ('0171619' in v or '/download/171619' in v):continue
+                          if len(todo)>=45 or v in seen or v in todo:continue
+                          if re.search(r'\.(xlsx|xls|csv|txt|zip|md)$',s.path,re.I) or (s.path.startswith('/nodc/archive/arc0118/0171619/') and s.path.endswith('/')):todo.append(v)
+              except Exception as e:r.update(error=repr(e)[:300])
+              records.append(r)
+          receipt={'accession':'0171619','source_locator':'official metadata FTP arc0118 link and NCEI download endpoint','requests':records,'files':files,'status':'original_workbooks' if any(f['name'].lower().endswith('.xlsx') for f in files) else 'not_recovered'}
+          (out/'receipt.json').write_text(json.dumps(receipt,indent=2))
+          print(json.dumps(receipt)[:25000])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: noaa-0171619-official-archive
+          path: /tmp/noaa-source/
+          retention-days: 14

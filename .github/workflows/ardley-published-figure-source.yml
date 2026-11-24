@@ -1,0 +1,59 @@
+name: Ardley published spatial figure source
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ardley-published-figure-source.yml'
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pymupdf
+      - name: Recover checksum-verified publisher PDF and inspect figure encoding
+        run: |
+          python - <<'PY'
+          import fitz,urllib.request,pathlib,hashlib,json,re,collections
+          o=pathlib.Path('/tmp/ardley-report');o.mkdir()
+          u='https://www.umweltbundesamt.de/system/files/medien/11850/publikationen/63_2025_texte.pdf'
+          a={'url':u}
+          try:
+              with urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'PublicScientificSourceAudit/1.0'}),timeout=40) as f:b=f.read(20000001)
+              a.update(bytes=len(b),sha256=hashlib.sha256(b).hexdigest())
+              assert b.startswith(b'%PDF') and len(b)<20000001,'not original PDF'
+              assert a['sha256']=='7c53635e6799c1eafca006e9293baa336288689afc2f1d405c802f832069b8b9','publisher bytes changed'
+              d=fitz.open(stream=b,filetype='pdf')
+              a['pages']=len(d)
+              hits=[]
+              for i,p in enumerate(d):
+                  s=re.sub(r'\s+',' ',p.get_text()).strip()
+                  if 'Spatial changes in the Ardley Island penguin colony' in s and 'Zone 4' in s and re.search(r'Zone\s*7',s):hits.append(i)
+              a['candidate_pages']=hits
+              assert len(hits)==1,'caption/section not unique'
+              i=hits[0];p=d[i];a['page_index']=i;a['page_text']=p.get_text()[:4000]
+              p.get_pixmap(matrix=fitz.Matrix(3,3),alpha=False).save(o/'figure6_page.png')
+              (o/'page_text.txt').write_text(p.get_text())
+              (o/'page_images.json').write_text(json.dumps(p.get_image_info(),default=str,indent=2))
+              dr=p.get_drawings()
+              (o/'page_drawings.json').write_text(json.dumps(dr,default=str))
+              a['image_count']=len(p.get_image_info());a['vector_path_count']=len(dr)
+              a['fill_stroke_histogram']=[(str(k),v) for k,v in collections.Counter((str(x.get('fill')),str(x.get('color'))) for x in dr).most_common(30)]
+              a['images']=[{'bbox':str(x['bbox']),'width':x['width'],'height':x['height']} for x in p.get_image_info()]
+              d2=fitz.open();d2.insert_pdf(d,from_page=i,to_page=i);d2.save(o/'figure6_page.pdf')
+              # Original source remains hosted by publisher. Export only the one relevant page and diagnostics.
+              a['status']='verified_figure_page'
+          except Exception as e:a.update(status='failed',error=repr(e)[:500])
+          (o/'receipt.json').write_text(json.dumps(a,indent=2))
+          print(json.dumps(a))
+          if a['status']!='verified_figure_page':raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ardley-published-figure-source
+          path: /tmp/ardley-report/
+          retention-days: 14

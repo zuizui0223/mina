@@ -1,0 +1,25 @@
+name: Shirley native satellite snow windows
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/shirley-native-satellite-snow.yml'
+      - 'research/climate-penguin/multispecies_vegetation_20261124/acquire_shirley_snow_windows.py'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet numpy rasterio requests planetary-computer pyproj
+      - run: python research/climate-penguin/multispecies_vegetation_20261124/acquire_shirley_snow_windows.py /tmp/shirley-snow
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shirley-native-satellite-snow-windows
+          path: /tmp/shirley-snow/
+          retention-days: 14

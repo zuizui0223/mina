@@ -1,0 +1,52 @@
+name: Signy three species breeding stage source for winter polynya
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/signy-breeding-stage-polynya-source.yml'
+permissions:
+  contents: read
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/climate-penguin-progress
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pandas lxml html5lib beautifulsoup4
+      - name: Recover original BAS stages with pinned original CSV hashes
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/stages /tmp/signy-derived
+          python - <<'PY'
+          import hashlib,pathlib
+          for path,expected in [('research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py','d0a3b8c3132193ea63d3b32496085421660e8b32'),('scripts/audit_signy_replication_support.py','77f42a7a48b865021a30c8a0bed31e178060aa08')]:
+              b=pathlib.Path(path).read_bytes()
+              assert hashlib.sha1(('blob %d\0'%len(b)).encode()+b).hexdigest()==expected,path
+          PY
+          curl -fLSs --retry 2 --connect-timeout 20 --max-time 60 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' -o /tmp/stages/adelie.zip
+          curl -fLSs --retry 2 --connect-timeout 20 --max-time 60 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' -o /tmp/stages/chinstrap.zip
+          curl -fLSs --retry 2 --connect-timeout 20 --max-time 60 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=883c6b40-024e-41e8-9c3e-2668a44b5751&output=zip.tree' -o /tmp/stages/gentoo.zip
+          python research/climate-penguin/work/climate_penguin/signy_trispecies_stage_source_v1.py --source-dir /tmp/stages --out /tmp/signy-derived
+      - name: Record original hatching source separately
+        run: |
+          curl -fLSs --retry 1 --connect-timeout 20 --max-time 60 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=274b49bd-40a4-4e5d-bd5f-69a1ba09d403&output=zip.tree' -o /tmp/hatch.zip
+          python - <<'PY'
+          import zipfile,hashlib,pathlib
+          with zipfile.ZipFile('/tmp/hatch.zip') as z:
+              paths=[p for p in z.namelist() if p.lower().endswith('.csv')]
+              assert len(paths)==1
+              b=z.read(paths[0])
+              assert hashlib.sha256(b).hexdigest()=='d86d42a581ec8f5bdf123a2073de17469714ce85031914c32b2489afc2187c94'
+              pathlib.Path('/tmp/signy-derived/original_hatching.csv').write_bytes(b)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-native-polynya-stage-source
+          path: /tmp/signy-derived/
+          retention-days: 30
+          if-no-files-found: warn

@@ -1,0 +1,68 @@
+name: Palmer penguin 2020 original spatial source gate
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/palmer-penguin-2020-original-spatial-source.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify original public catalogues and discover exact file links
+        run: |
+          python - <<'PY'
+          import json, hashlib, pathlib, re
+          from urllib.request import urlopen, Request
+          from urllib.parse import urljoin
+          from concurrent.futures import ThreadPoolExecutor
+          from html.parser import HTMLParser
+          out=pathlib.Path('/tmp/penguin-source');out.mkdir()
+          class Links(HTMLParser):
+              def __init__(self):super().__init__();self.links=[];self.current=None
+              def handle_starttag(self,tag,attrs):
+                  attrs=dict(attrs)
+                  if tag=='a' and attrs.get('href'):
+                      self.current={'href':attrs['href'],'label':''};self.links.append(self.current)
+                  if tag in ('button','input') and any('download' in str(v).lower() or 'Header_Readme' in str(v) for v in attrs.values()):
+                      self.links.append({'tag':tag,'attrs':attrs})
+              def handle_data(self,d):
+                  if self.current is not None:self.current['label']+=d
+              def handle_endtag(self,tag):
+                  if tag=='a':self.current=None
+          sources={
+              'datacite.json':'https://api.datacite.org/dois/10.7924/r4sf2xs2w',
+              'duke_record.html':'https://research.repository.duke.edu/concern/datasets/r207tq370?locale=en',
+              'duke_orthomosaics.html':'https://research.repository.duke.edu/concern/parent/r207tq370/datasets/pn89d753m?locale=en',
+              'duke_site_guide.txt':'https://research.repository.duke.edu/downloads/1z40kt742?locale=en',
+              'usap_record.html':'https://www.usap-dc.org/view/dataset/602035'
+          }
+          def get(item):
+              name,url=item;r={'name':name,'url':url,'status':'failed'}
+              try:
+                  with urlopen(Request(url,headers={'User-Agent':'mina-public-research-source-audit/1.0'}),timeout=25) as f:
+                      raw=f.read(4000001);r.update(http=f.status,bytes=len(raw),content_type=f.headers.get('Content-Type'))
+                  if len(raw)>4000000 or not raw:raise ValueError('bounded size or empty')
+                  if name.endswith('.json'):
+                      d=json.loads(raw)['data']['attributes'];r['metadata']={k:d.get(k) for k in ('titles','url','sizes','formats','relatedIdentifiers')}
+                  elif name.endswith('.html'):
+                      parser=Links();parser.feed(raw.decode('utf8','replace'))
+                      r['links']=[a for a in parser.links if re.search('download|orthomosaic|Humb|Torg|2020|file_set|Header_Readme|2019-20|child|\.tif|\.zip|\.shp|\.gpkg',str(a),re.I)][:250]
+                  else:r['excerpt']=raw.decode('utf8','replace')[:6000]
+                  r.update(status='retrieved',sha256=hashlib.sha256(raw).hexdigest());(out/name).write_bytes(raw)
+              except Exception as e:r['error']=str(e)[:400]
+              return r
+          with ThreadPoolExecutor(max_workers=5) as p:rows=list(p.map(get,sources.items()))
+          res={'scope':'catalogue and source identity only; no verified colony polygon or GPS outcome','sources':rows}
+          (out/'receipt.json').write_text(json.dumps(res,indent=2))
+          for r in rows:
+              print(json.dumps(r,ensure_ascii=False)[:16000])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-spatial-source-catalogue
+          path: /tmp/penguin-source/
+          retention-days: 14

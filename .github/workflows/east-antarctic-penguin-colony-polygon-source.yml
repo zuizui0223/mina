@@ -1,0 +1,84 @@
+name: East Antarctic independent penguin polygon source inventory
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/east-antarctic-penguin-colony-polygon-source.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Retrieve public official catalogue and check download status
+        run: |
+          python - <<'PY'
+          import json, hashlib, pathlib, re, zipfile, io
+          from urllib.request import Request,urlopen
+          from urllib.parse import urljoin,urlsplit
+          from html.parser import HTMLParser
+          from concurrent.futures import ThreadPoolExecutor
+          out=pathlib.Path('/tmp/colony-polygons');out.mkdir()
+          class Links(HTMLParser):
+              def __init__(self):super().__init__();self.links=[];self.forms=[];self.current=None
+              def handle_starttag(self,t,a):
+                  d=dict(a)
+                  if t=='a' and d.get('href'):self.current={'href':d['href'],'label':''};self.links.append(self.current)
+                  if t=='form':self.forms.append(d)
+              def handle_data(self,d):
+                  if self.current:self.current['label']+=d
+              def handle_endtag(self,t):
+                  if t=='a':self.current=None
+          src={
+            'shirley_doi.json':'https://api.datacite.org/dois/10.4225/15/5549ADA38E017',
+            'east_doi.json':'https://api.datacite.org/dois/10.4225/15/58f59b52edfef',
+            'shirley_metadata.html':'https://data.aad.gov.au/metadata/records/ASAC_1219_AAT_SI_ADPE_Colonies',
+            'shirley_eds.html':'https://data.aad.gov.au/eds/1539/download',
+            'east_metadata.html':'https://data.aad.gov.au/metadata/records/AAS_4088_Adelie_breeding_colony_boundaries',
+            'east_ckan.json':'https://data.gov.au/data/api/3/action/package_show?id=5fee1ceb-6d35-4bf7-a012-9e89dff5a232',
+            'whitney_ckan.json':'https://data.gov.au/data/api/3/action/package_show?id=6b340465-d718-4a91-a1a1-1834cae7ba1'
+          }
+          def get(item):
+              name,url=item; r={'name':name,'url':url,'state':'failed'}
+              try:
+                  with urlopen(Request(url,headers={'User-Agent':'mina-public-source-audit/1.0'}),timeout=20) as f:
+                      raw=f.read(12000001);r.update(http=f.status,content_type=f.headers.get('Content-Type'),bytes=len(raw),final_host=urlsplit(f.geturl()).hostname)
+                      final=f.geturl()
+                  if not raw or len(raw)>12000000:raise ValueError('empty or oversized response')
+                  r['sha256']=hashlib.sha256(raw).hexdigest()
+                  if zipfile.is_zipfile(io.BytesIO(raw)):
+                      with zipfile.ZipFile(io.BytesIO(raw)) as z:r['zip_members']=z.namelist()[:100]
+                      (out/(name+'.zip')).write_bytes(raw);r['state']='zip_received_not_yet_spatially_validated'
+                  elif name.endswith('.json'):
+                      j=json.loads(raw)
+                      if 'data' in j:
+                          a=j['data']['attributes'];r['title']=a.get('titles');r['metadata_url']=a.get('url');r['related_identifiers']=a.get('relatedIdentifiers')
+                      elif j.get('success'):
+                          a=j['result'];r['title']=a.get('title');r['resources']=[{k:x.get(k) for k in ('name','url','format','description')} for x in a.get('resources',[])]
+                      (out/name).write_bytes(raw);r['state']='catalogue_retrieved'
+                  else:
+                      p=Links();p.feed(raw.decode('utf-8','replace'))
+                      r['links']=[{'url':urljoin(final,a['href']),'label':a['label'].strip()} for a in p.links if re.search(r'eds/|download|shapefile|\.zip|data sharing|occupancy',a['href']+' '+a['label'],re.I)][:100]
+                      r['form_count']=len(p.forms);r['state']='html_only';(out/name).write_bytes(raw)
+              except Exception as e:r['error']=repr(e)[:400]
+              return r
+          with ThreadPoolExecutor(max_workers=5) as p: rows=list(p.map(get,src.items()))
+          # Resolve only provider-advertised public EDS GET links, no form submission.
+          targets={}
+          for r in rows:
+              for a in r.get('resources',[])+r.get('links',[]):
+                  u=a.get('url') or ''
+                  if urlsplit(u).hostname=='data.aad.gov.au' and re.fullmatch(r'/eds/[0-9]+/download/?',urlsplit(u).path):
+                      if u!=src['shirley_eds.html']:targets[u]=True
+          for i,u in enumerate(sorted(targets)[:8]):
+              rows.append(get(('provider_eds_%d.html'%i,u)))
+          result={'scope':'source inventory only; no colony outcomes or botanical response','sources':rows}
+          (out/'receipt.json').write_text(json.dumps(result,indent=2))
+          for r in rows:print(json.dumps(r,ensure_ascii=False)[:15000])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: east-antarctic-penguin-polygon-source
+          path: /tmp/colony-polygons/
+          retention-days: 14
