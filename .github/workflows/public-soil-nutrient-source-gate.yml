@@ -1,0 +1,76 @@
+name: Public soil nutrients and moisture data source gate
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/public-soil-nutrient-source-gate.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Retrieve small public publisher originals and verify checksums
+        run: |
+          python - <<'PY'
+          import pathlib,hashlib,json,urllib.request,urllib.parse,re
+          from html.parser import HTMLParser
+          from concurrent.futures import ThreadPoolExecutor
+          out=pathlib.Path('/tmp/nutrient-public-source');out.mkdir()
+          def get(url,cap=8000000):
+              with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'PublicScientificDataSourceAudit/1.0'}),timeout=25) as f:
+                  b=f.read(cap+1)
+                  if len(b)>cap:raise ValueError('size cap')
+                  return b,f.headers.get('Content-Type')
+          expected={'Pygoscelis_metadata.csv':'b58d6e6b476c98afeb9f4e75f8f520fe','Pygoscelis_PP.csv':'fa57915e1d1253a6eeac36e70579ccf9','Methods.txt':'0a2430c1943387e5369159ea950774f2'}
+          def zenodo():
+              report={'source':'https://zenodo.org/records/17742676','files':[]}
+              for name,md5 in expected.items():
+                  r={'name':name,'status':'failed'}
+                  try:
+                      url='https://zenodo.org/records/17742676/files/'+name+'?download=1'
+                      b,typ=get(url);r.update(bytes=len(b),type=typ,md5=hashlib.md5(b).hexdigest())
+                      if r['md5']!=md5:raise ValueError('publisher checksum mismatch')
+                      (out/name).write_bytes(b);r.update(status='verified',sha256=hashlib.sha256(b).hexdigest())
+                  except Exception as e:r['error']=str(e)[:200]
+                  report['files'].append(r)
+              return report
+          class Parser(HTMLParser):
+              def __init__(self):super().__init__();self.inputs=[]
+              def handle_starttag(self,t,a):
+                  d=dict(a)
+                  if t=='input' and d.get('name')=='dl_checkbox':self.inputs.append(d)
+          def usap(id):
+              base='https://www.usap-dc.org/view/dataset/'+str(id);r={'source':base,'files':[]}
+              try:
+                  b,typ=get(base);p=Parser();p.feed(b.decode('utf8','replace'))
+                  r['catalogue_bytes']=len(b);r['catalogue_sha256']=hashlib.sha256(b).hexdigest()
+                  for x in p.inputs:
+                      name=x.get('id','').removeprefix('cbx_');u=x.get('value','')
+                      if not re.search(r'\.(csv|xlsx|txt)$',name,re.I):continue
+                      if not re.fullmatch(r'[A-Za-z0-9 ._()-]+',name):continue
+                      u=urllib.parse.urljoin(base,u)
+                      if urllib.parse.urlsplit(u).hostname!='www.usap-dc.org':continue
+                      f={'name':name,'status':'failed','url':u}
+                      try:
+                          raw,typ=get(u);f.update(bytes=len(raw),type=typ,md5=hashlib.md5(raw).hexdigest())
+                          if 'html' in typ.lower() or raw.lstrip().startswith(b'<'):raise ValueError('HTML, not data')
+                          if name.endswith('.xlsx') and not raw.startswith(b'PK'):raise ValueError('not XLSX')
+                          if name.endswith('.csv') and b',' not in raw.splitlines()[0]:raise ValueError('not CSV')
+                          (out/(str(id)+'_'+name)).write_bytes(raw);f.update(status='retrieved_pending_catalogue_checksum',sha256=hashlib.sha256(raw).hexdigest())
+                      except Exception as e:f['error']=str(e)[:200]
+                      r['files'].append(f)
+              except Exception as e:r['error']=str(e)[:250]
+              return r
+          with ThreadPoolExecutor(max_workers=4) as p:
+              fs=[p.submit(zenodo)]+[p.submit(usap,i) for i in (602015,602021,602039)]
+              rows=[f.result() for f in fs]
+          (out/'receipt.json').write_text(json.dumps(rows,indent=2))
+          print(json.dumps(rows,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-soil-nutrient-sources
+          path: /tmp/nutrient-public-source
+          retention-days: 14
