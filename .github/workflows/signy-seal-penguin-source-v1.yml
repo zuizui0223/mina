@@ -45,6 +45,8 @@ jobs:
         run: python research/climate-penguin/signy_seal_interaction_v1/audit_sources.py --source build/signy_seal_source --out build/signy_seal_receipts/source_receipt.json
       - name: Review actual headers and support-only penguin roster
         run: python research/climate-penguin/signy_seal_interaction_v1/schema_review.py --source build/signy_seal_source --out build/signy_seal_receipts/schema_review.json
+      - name: Verify calendar, zone coverage and fixed roster; run only if frozen gate passes
+        run: python research/climate-penguin/signy_seal_interaction_v1/prepare_panel.py --source build/signy_seal_source --out build/signy_seal_receipts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
