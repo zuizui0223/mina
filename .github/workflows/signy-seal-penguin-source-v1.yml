@@ -1,0 +1,47 @@
+name: signy-seal-penguin-source-v1
+on:
+  push:
+    branches: [analysis/signy-seal-penguin-interactions-20261124]
+    paths:
+      - 'research/climate-penguin/signy_seal_interaction_v1/**'
+      - '.github/workflows/signy-seal-penguin-source-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install numpy pandas scipy openpyxl
+      - name: Test frozen normalized association
+        run: python research/climate-penguin/signy_seal_interaction_v1/analyze.py --selftest
+      - name: Fetch official archives without opening joint outcomes
+        shell: bash
+        run: |
+          mkdir -p build/signy_seal_source
+          while read -r name id; do
+            if ! curl -L --fail --retry 2 --max-time 90 "https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=${id}&output=zip.tree" -o "build/signy_seal_source/${name}.zip"; then
+              rm -f "build/signy_seal_source/${name}.zip"
+              echo "Source unavailable: ${name}"
+            fi
+          done <<'EOF'
+          seals 8e910ac8-6f52-4548-bbcb-78474b559294
+          ice 0283c3e4-2164-4dfb-a066-0c49b816d7b6
+          adelie daf2c4fd-c1e3-4e65-851f-d11f02c5b69d
+          chinstrap d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9
+          gentoo 883c6b40-024e-41e8-9c3e-2668a44b5751
+          EOF
+      - name: Record original-source schema and digest receipt
+        run: python research/climate-penguin/signy_seal_interaction_v1/audit_sources.py --source build/signy_seal_source --out build/signy_seal_receipts/source_receipt.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-seal-penguin-source-v1
+          path: build/signy_seal_receipts/
+          if-no-files-found: warn
+          retention-days: 30
