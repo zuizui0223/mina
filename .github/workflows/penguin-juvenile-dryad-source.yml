@@ -1,0 +1,67 @@
+name: Penguin juvenile bottleneck Dryad original source
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/penguin-juvenile-dryad-source.yml'
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Retrieve original archive through publisher API and verify file identity
+        run: |
+          python - <<'PY'
+          import urllib.request,urllib.parse,hashlib,pathlib,json,zipfile,io,re
+          out=pathlib.Path('/tmp/juvenile-source');out.mkdir()
+          api='https://datadryad.org/api/v2'
+          doi='doi:10.5061/dryad.2v6wwpzkh'
+          receipt={'doi':doi,'requests':[]}
+          def get(url,cap=10000000):
+              a={'url':url};receipt['requests'].append(a)
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'PublicScientificDataAudit/1.0','Accept':'application/json, application/zip, */*'}),timeout=25) as r:
+                      b=r.read(cap+1)
+                      if len(b)>cap:raise ValueError('size cap')
+                      a.update(status=r.status,final_url=r.geturl(),size=len(b),sha256=hashlib.sha256(b).hexdigest())
+                      return b
+              except Exception as e:a['error']=repr(e);raise
+          def link(x):
+              u=x['href'] if isinstance(x,dict) else x
+              return urllib.parse.urljoin('https://datadryad.org',u)
+          try:
+              raw=get(api+'/datasets/'+urllib.parse.quote(doi,safe=''))
+              meta=json.loads(raw);(out/'dataset.json').write_bytes(raw)
+              assert '2v6wwpzkh' in json.dumps(meta).lower()
+              receipt['title']=meta.get('title');receipt['license']=meta.get('license')
+              vl=meta['_links']['stash:version'];v=json.loads(get(link(vl)))
+              (out/'version.json').write_text(json.dumps(v,indent=2))
+              files=json.loads(get(link(v['_links']['stash:files'])))
+              (out/'files.json').write_text(json.dumps(files,indent=2))
+              f=[x for x in files['_embedded']['stash:files'] if x.get('path','').split('/')[-1]=='FledglingBottleneck_Data.zip']
+              assert len(f)==1,f
+              f=f[0];receipt['file_metadata']=f
+              b=get(link(f['_links']['stash:download']))
+              assert zipfile.is_zipfile(io.BytesIO(b)),'not original ZIP'
+              assert len(b)==int(f['size']),'size mismatch'
+              alg=f.get('digestType');d=f.get('digest')
+              if d and alg:
+                  assert hashlib.new(alg.lower().replace('-',''),b).hexdigest().lower()==d.lower(),'digest mismatch'
+              with zipfile.ZipFile(io.BytesIO(b)) as z:
+                  assert z.testzip() is None
+                  receipt['members']=z.namelist()
+                  assert sum(n.lower().endswith('.csv') for n in z.namelist())==8
+              (out/'FledglingBottleneck_Data.zip').write_bytes(b)
+              receipt.update(status='ORIGINAL_ACQUIRED',archive_sha256=hashlib.sha256(b).hexdigest(),archive_md5=hashlib.md5(b).hexdigest(),bytes=len(b))
+          except Exception as e:receipt.update(status='NOT_ACQUIRED',error=repr(e))
+          (out/'receipt.json').write_text(json.dumps(receipt,indent=2))
+          print(json.dumps(receipt,ensure_ascii=False)[:20000])
+          if receipt['status']!='ORIGINAL_ACQUIRED':raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: juvenile-bottleneck-dryad-source
+          path: /tmp/juvenile-source/
+          retention-days: 30
