@@ -1,0 +1,39 @@
+name: ross-sea-adelie-source-audit-v1
+on:
+  push:
+    branches: [analysis/signy-seal-spatial-pressure-20261124]
+    paths:
+      - 'research/signy_seal_spatial_pressure_v1/ross_sea_source_audit.py'
+      - '.github/workflows/ross-sea-adelie-source-audit-v1.yml'
+  pull_request:
+    paths:
+      - 'research/signy_seal_spatial_pressure_v1/ross_sea_source_audit.py'
+      - '.github/workflows/ross-sea-adelie-source-audit-v1.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install requests openpyxl pymupdf
+      - name: Retrieve pinned legacy archive for overlap audit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p build/ross_sea_source_audit
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13669533413/zip" > build/legacy_counts.zip
+      - name: Inventory publisher original, no new count trends
+        run: python research/signy_seal_spatial_pressure_v1/ross_sea_source_audit.py build/legacy_counts.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ross-sea-adelie-source-audit-v1
+          path: build/ross_sea_source_audit/receipt.json
+          retention-days: 60
+          if-no-files-found: error
