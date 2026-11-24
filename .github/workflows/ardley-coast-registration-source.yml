@@ -1,0 +1,52 @@
+name: Ardley independent coastline registration source
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ardley-coast-registration-source.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Retrieve bounded SCAR coastline subset from official feature service
+        run: |
+          python - <<'PY'
+          import json,hashlib,pathlib,urllib.request,urllib.parse
+          o=pathlib.Path('/tmp/ardley-coast');o.mkdir()
+          root='https://services7.arcgis.com/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/High_resolution_vector_polygons_of_the_Antarctic_coastline/FeatureServer'
+          def get(u,params,cap=15000000):
+              with urllib.request.urlopen(urllib.request.Request(u+'?'+urllib.parse.urlencode(params),headers={'User-Agent':'PublicScientificDataAudit/1.0'}),timeout=35) as f:
+                  b=f.read(cap+1)
+              if len(b)>cap:raise ValueError('size cap')
+              j=json.loads(b)
+              if 'error' in j:raise ValueError(str(j['error'])[:500])
+              return b,j
+          r={'source':root,'scope':'official coastline subset for independent map registration; no vegetation outcomes'}
+          try:
+              b,j=get(root,{'f':'json'})
+              (o/'service.json').write_bytes(b)
+              layers=j['layers'];r['layers']=layers
+              assert len(layers)==1
+              u=root+'/'+str(layers[0]['id'])
+              b,m=get(u,{'f':'json'});(o/'layer.json').write_bytes(b)
+              r['layer_name']=m['name']
+              p={'where':'1=1','geometry':'-59.00,-62.24,-58.88,-62.18','geometryType':'esriGeometryEnvelope','inSR':'4326','spatialRel':'esriSpatialRelIntersects','outFields':'*','returnGeometry':'true','outSR':'32721','f':'geojson'}
+              # No simplification or geometry precision reduction.
+              b,j=get(u+'/query',p)
+              assert j.get('type')=='FeatureCollection' and len(j['features'])>0
+              assert not j.get('exceededTransferLimit') and not j.get('properties',{}).get('exceededTransferLimit')
+              (o/'coast.geojson').write_bytes(b)
+              r.update(status='retrieved',count=len(j['features']),sha256=hashlib.sha256(b).hexdigest(),bytes=len(b),query=p,geometry_types=sorted(set(x['geometry']['type'] for x in j['features'])))
+          except Exception as e:r.update(status='failed',error=repr(e)[:500])
+          (o/'receipt.json').write_text(json.dumps(r,indent=2))
+          print(json.dumps(r))
+          if r['status']!='retrieved':raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ardley-coast-registration-source
+          path: /tmp/ardley-coast/
+          retention-days: 14
