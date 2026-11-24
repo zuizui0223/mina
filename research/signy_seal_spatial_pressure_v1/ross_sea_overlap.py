@@ -58,11 +58,20 @@ def read_new(count_bytes,location_bytes):
     it=iter(w["All data"].values);h=next(it)
     if h[0]!="Colony" or tuple(int(v) for v in h[1:45])!=tuple(range(1981,2025)) or any(present(v) for v in h[45:]):
         raise ValueError("new census header")
-    out={}; blanks=0; zeros=0
-    for row in it:
-        if not any(present(v) for v in row):continue
-        if not isinstance(row[0],str) or not row[0].strip() or any(present(v) for v in row[45:]):
-            raise ValueError("unexpected non-table cell")
+    # The verified year header defines the table A:AS (45 columns).
+    # Inventory auxiliary nonblank cells, but do not interpret them as census events.
+    # Candidate overlap only: ancillary annotations require later semantic review.
+    out={}; blanks=0; zeros=0; auxiliary=[]
+    for rownum,row in enumerate(it,2):
+        for j,v in enumerate(row[45:],46):
+            if present(v):
+                aux={"row":rownum,"column":j,"type":type(v).__name__}
+                if isinstance(v,str) and not re.fullmatch(r"[+\-]?\d+(?:[.,]\d+)?",v.strip()):
+                    aux["text_annotation_candidate"]=v[:250]
+                auxiliary.append(aux)
+        if not any(present(v) for v in row[:45]):continue
+        if not isinstance(row[0],str) or not row[0].strip():
+            raise ValueError("missing colony label inside declared table at row "+str(rownum))
         name=row[0].strip();key=norm(name)
         if key in out:raise ValueError("duplicate normalized colony name")
         vals={}
@@ -88,6 +97,8 @@ def read_new(count_bytes,location_bytes):
         loc[k]={"area":area,"coords":coords,"name":name}
     w.close()
     return out,loc,{"n_labels":len(out),"numeric_cells":525,"blank_cells":blanks,"explicit_zero_cells":zeros,
+                    "table_range":"A1:AS41","auxiliary_nonblank_cells":auxiliary,
+                    "auxiliary_semantics_review_required":bool(auxiliary),
                     "location_rows":len(loc),"location_label_overlap":len(set(out)&set(loc)),
                     "count_labels_without_location":[v["name"] for k,v in out.items() if k not in loc],
                     "location_labels_without_count":[v["name"] for k,v in loc.items() if k not in out],
