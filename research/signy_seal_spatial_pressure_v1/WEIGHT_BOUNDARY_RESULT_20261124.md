@@ -14,7 +14,7 @@ Let d_F, d_E, d_W be late-minus-early equal-year mean counts and P = N_F + r_E N
 | 5 | -692.5 | 8.5 | -0.5 | 86.5625 | 81.470588 | 23.928 |
 | 6 | -762.875 | 10.25 | 0.25 | 72.654762 | 72.654762 | 17.211409 |
 
-Island equal-other-weight break-even ranges 32.5896–991.5 across deletions. With r_W fixed at an illustrative 5, island E break-even is 97.9901 (32.9534–1809.7597 across deletions); zone 3 E break-even 16.4741 (9.9237–25.1855). Thus for any 25.18552 < r_E < 32.95336 with r_W=5, zone 3 increases while island total decreases in the full and every deletion panel. Strict inequalities shown rounded conservatively in prose; use exact source code for boundary. Example r_E=30, r_W=5: island -15.9672% (deletion range -23.4904 to -2.3101%); zone 3 +16.6380% (+4.7485 to +38.8580%). This example illustrates the derived feasible region, not a plausible-weight calibration or a result chosen as a test.
+Island equal-other-weight break-even ranges 32.5896–991.5 across deletions. With r_W fixed at an illustrative 5, island E break-even is 97.9901 (32.9534–1809.7597 across deletions); zone 3 E break-even 16.4741 (9.9237–25.1855). Thus for any 25.186 < r_E < 32.953 with r_W=5, zone 3 increases while island total decreases in the full and every deletion panel. The displayed interval is rounded inward; use the source code for exact boundaries. Example r_E=30, r_W=5: island -15.9672% (deletion range -23.4904 to -2.3101%); zone 3 +16.6380% (+4.7485 to +38.8580%). This example illustrates the derived feasible region, not a plausible-weight calibration or a result chosen as a test.
 
 | r_E | r_W | Island change % | Island LOO range % | Zone 3 change % | Zone 3 LOO range % |
 |---:|---:|---:|---|---:|---|
