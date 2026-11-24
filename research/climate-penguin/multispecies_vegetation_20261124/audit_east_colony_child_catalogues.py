@@ -30,6 +30,9 @@ def metadata(entry):
     result={"entry":entry}
     try:
         b=fetch(HOST+"/metadata/records/"+entry);p=parse(b);t=" ".join(p.text)
+        if len(t)<800 or not ("Description" in t and "Temporal Coverages" in t):
+            b=fetch(HOST+"/metadata/records/fulldisplay/"+entry);p=parse(b);t=" ".join(p.text)
+        if len(t)<800 or not ("Description" in t and "Temporal Coverages" in t):raise ValueError("HTML shell, not original metadata")
         ids=sorted(set(int(x) for a in p.links for x in re.findall(r"/eds/(\d+)/download",a)))
         result.update(status="ok",sha256=hashlib.sha256(b).hexdigest(),eds=ids)
         for h,end in [("Description","Quality"),("Quality","Access"),("Temporal Coverages","Spatial Coverages")]:
@@ -49,8 +52,9 @@ def objects(i):
     except Exception as e:result.update(status="failed",error=repr(e)[:250])
     return result
 def main():
-    b=fetch(HOST+"/metadata/records/"+PARENT)
-    children=sorted(set(re.findall(r"AAS_4088_Adelie_occupancy_[A-Za-z0-9_-]+"," ".join(parse(b).links))))
+    # Fixed 32 child records from original parent metadata archived in run 45344865291 artifact 14896599187.
+    children=["AAS_4088_Adelie_occupancy_Balaena","AAS_4088_Adelie_occupancy_Bechervaise_2013","AAS_4088_Adelie_occupancy_Bechervaise_2016","AAS_4088_Adelie_occupancy_Bechervaise_Kista_2013","AAS_4088_Adelie_occupancy_Biscoe","AAS_4088_Adelie_occupancy_Bolingen","AAS_4088_Adelie_occupancy_Chick_Henry_2012","AAS_4088_Adelie_occupancy_Kista_2015","AAS_4088_Adelie_occupancy_Knox_2009-2010","AAS_4088_Adelie_occupancy_Knox_2011","AAS_4088_Adelie_occupancy_Lewis_2012","AAS_4088_Adelie_occupancy_Low_Tongue_2015","AAS_4088_Adelie_occupancy_Mawson_Taylor","AAS_4088_Adelie_occupancy_Murray_2010","AAS_4088_Adelie_occupancy_Rauer_2009","AAS_4088_Adelie_occupancy_Rauer_2010","AAS_4088_Adelie_occupancy_Robinson_2006","AAS_4088_Adelie_occupancy_Robinson_2013","AAS_4088_Adelie_occupancy_Rookery_2013","AAS_4088_Adelie_occupancy_Rookery_2014","AAS_4088_Adelie_occupancy_Rookery_2015","AAS_4088_Adelie_occupancy_Scullin_2010","AAS_4088_Adelie_occupancy_Stanton_2015","AAS_4088_Adelie_occupancy_Stillwell_2015","AAS_4088_Adelie_occupancy_Svenner_2010","AAS_4088_Adelie_occupancy_Vestfold_2009","AAS_4088_Adelie_occupancy_Vestfold_2011","AAS_4088_Adelie_occupancy_Vestfold_2012","AAS_4088_Adelie_occupancy_Welch_2014","AAS_4088_Adelie_occupancy_Wilkes_2011","AAS_4088_Adelie_occupancy_Windmill","AAS_4088_Adelie_occupancy_Windmill_2012-2013"]
+    assert len(children)==32
     search={}
     # Catalogues only; identify exact Whitney entry from authoritative catalogue, not a guessed dataset id.
     for key,query in [("eds","Whitney Point"),("datacite","Whitney Point Adelie Penguin Colonies")]:
