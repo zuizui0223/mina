@@ -1,0 +1,19 @@
+# Peninsula 23 exact colony native winter polynya extraction and audit (2026-11-24)
+
+Completed source acquisition/extraction [run 45400435208](https://github.com/zuizui0223/mina/actions/runs/45400435208), job 138467280323 SUCCESS, [artifact 14922509462](https://github.com/zuizui0223/mina/actions/runs/45400435208/artifacts/14922509462), SHA256 ef75db91527af681df9706a4dc4c88cab80f09f0ccc3bcec7fc2a9a17cd8668b, verified locally. Original Lin et al. DEEP-AA recommended 6.25km source DOI 10.5281/zenodo.13358042, exact source MD5/SHA256 and canonical extraction-code blob pinned in commit 591f0df14cdc1cbcbdc0bd64aadf771a423cf2a6. Actual colony coordinates, positive even coastal-polynya IDs only, actual marine denominators excluding NaN/-999, projected-cell area corrected by EPSG:3412 areal scale. June–October, equally weighted monthly averages, every month >=80% valid calendar days. 100km primary, 25km secondary; no isotope or demographic outcomes in extraction. Source archive 4077 daily maps; 15 complete winters 2004–2010 and 2013–2020, 2003/2011/2012 missing, never filled as zero. 345 site-winters per radius, 16 measured zero exposures at 100km.
+
+| Radius km | Region | Sites | Early % | Late % | Difference pp | Sites increasing |
+|---:|---|---:|---:|---:|---:|---:|
+|100|All|23|1.932280|3.709402|+1.777123|23|
+|100|South Shetland|11|0.553988|1.557420|+1.003432|11|
+|100|Central-west Peninsula|12|3.195714|5.682053|+2.486339|12|
+|25|All|23|2.184135|7.703979|+5.519844|23|
+|25|South Shetland|11|0.322583|1.488457|+1.165875|11|
+|25|Central-west Peninsula|12|3.890558|13.401541|+9.510982|12|
+
+Equal site means of fixed pre/post-gap complete year blocks. At 100km, site changes +0.629643 to +3.821562 pp; omit each complete winter in turn, mean change +1.270885 to +2.375969 pp, all 23 sites positive in all 15 checks. At 25km mean changes +5.163253 to +5.835083 pp, >=22 sites positive in each check. Nearby buffers share native pixels; no inference based on independent 23-site trials. Not a trend test, not monotonic increase, not causal warming attribution. Comparison windows differ from Aug–Nov 1993–2000 vs 2011–2020 sea-ice/salinity comparison, so don't claim synchronized changes or infer climate mechanisms. The source is separate from the historical optical-isotope panel: no new isotope outcome observations produced here.
+
+## Actual join and QA
+Independently reaggregated 105,570 daily site-radius rows to 3450 site-month-radius rows, validated actual calendar coverage and valid ocean denominator. Max monthly and winter mean discrepancies 1.665e-16 and 9.715e-17. Local receipt-generation step initially failed due to argument variable shadowing; renamed and reran successfully. Joined with the 644-row exact physical table from 3988cbaa31456f7a00e9e3585980977f7ca87747, preserves all rows and 345 nonmissing 100km polynya records. Exact co-survey calendar year matches 17/34: ARDL 8/21, LION 4/7, PCHA 5/6. 100km period changes respectively +0.964656, +0.629643, +1.011972 pp. This supports a regional physical contrast but not a universal biological response, especially because counts have differing calendar-season timing and only three sites. No plant/guano flux model fitted.
+
+Integrated local reproduction bundle `peninsula23_marine_polynya_20261124.zip` SHA256 1b7e9c4aa31bc5ce7cd63151e153a925be53b76962af9653dffec3443827f1bf. Includes executed local scripts, original-source compact rosters, 644 joined marine rows, 34 co-survey rows with missing values explicit, regional/site period results and omission checks. Original source archives not redistributed. Main and previous manuscript branches unchanged.
