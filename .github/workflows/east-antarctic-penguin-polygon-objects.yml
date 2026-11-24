@@ -1,0 +1,47 @@
+name: East Antarctic published EDS object catalogue
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/east-antarctic-penguin-polygon-objects.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Read official public dataset and object metadata
+        run: |
+          python - <<'PY'
+          import json,pathlib,urllib.request,hashlib
+          from concurrent.futures import ThreadPoolExecutor
+          o=pathlib.Path('/tmp/eds-colony');o.mkdir()
+          host='https://data.aad.gov.au'
+          urls={f'{i}_{k}':host+f'/eds/api/dataset/{i}'+p for i in [1539,4399] for k,p in [('metadata',''),('objects','/objects?recursive=true&removeBasePath=true')]}
+          def get(it):
+              name,url=it;r={'name':name,'url':url,'status':'failed'}
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'mina-public-metadata-audit/1.0','Accept':'application/json'}),timeout=25) as f:
+                      b=f.read(6000001);r.update(http=f.status,content_type=f.headers.get('Content-Type'),bytes=len(b))
+                  if len(b)>6000000:raise ValueError('bounded catalogue size exceeded')
+                  a=json.loads(b);r['sha256']=hashlib.sha256(b).hexdigest()
+                  if isinstance(a,list):
+                      r['object_count']=len(a)
+                      r['object_inventory']=[{k:v.get(k) for k in ['name','size','hash','isDirectory','lastModified'] if k in v} for v in a[:150] if isinstance(v,dict)]
+                  elif isinstance(a,dict):
+                      r['dataset']={k:a.get(k) for k in ['eds_id','dataset_name','dataset_size','dataset_visibility_status','dataset_visibility_status_reason','metadata_entry_id','status']}
+                      r['response_keys']=list(a)
+                  r['status']='public_metadata_received'
+                  (o/(name+'.json')).write_bytes(b)
+              except Exception as e:r['error']=repr(e)[:300]
+              return r
+          with ThreadPoolExecutor(max_workers=4) as pool:r=list(pool.map(get,urls.items()))
+          (o/'receipt.json').write_text(json.dumps(r,indent=2))
+          for x in r:print(json.dumps(x,ensure_ascii=False)[:18000])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: east-antarctic-public-object-metadata
+          path: /tmp/eds-colony
+          retention-days: 14
