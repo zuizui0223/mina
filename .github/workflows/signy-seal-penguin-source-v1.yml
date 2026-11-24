@@ -47,18 +47,14 @@ jobs:
         run: python research/climate-penguin/signy_seal_interaction_v1/schema_review.py --source build/signy_seal_source --out build/signy_seal_receipts/schema_review.json
       - name: Verify calendar, zone coverage and fixed roster; run only if frozen gate passes
         run: python research/climate-penguin/signy_seal_interaction_v1/prepare_panel.py --source build/signy_seal_source --out build/signy_seal_receipts
-      - name: Run frozen D2 ice onset proxy using publisher-derived table (descriptive only)
-        run: python research/climate-penguin/signy_seal_interaction_v1/descriptive_onset_d2.py --source build/signy_seal_source --out build/signy_seal_d2
-      - name: Audit alternate NOAA PSL transport for one fixed D1 source year only
-        run: python research/climate-penguin/signy_seal_interaction_v1/psl_source_pilot.py --out build/signy_psl_pilot
+      - name: Inspect pinned BAS ice rows and published author code only; do not retry models
+        run: python research/climate-penguin/signy_seal_interaction_v1/source_calendar_diagnostic.py --source build/signy_seal_source --out build/signy_calendar_diagnostic
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: signy-seal-penguin-source-v1
           path: |
             build/signy_seal_receipts/
-            build/signy_seal_d2/onset_receipt.json
-            build/signy_seal_d2/onset_panel.csv
-            build/signy_psl_pilot/psl_source_pilot.json
+            build/signy_calendar_diagnostic/
           if-no-files-found: warn
           retention-days: 30
