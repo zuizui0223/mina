@@ -1,0 +1,20 @@
+# Exact same-site and same-observed-interval species contrasts
+
+Executed locally 2026-11-24 as the next diagnostic after e552b751724a8372a0d761520a8301ef25a982c9. Source result ZIP SHA256 6e87b7cf139689396db7fe9c970f5b2cf2f5318208709804162b8430edc64f50; exact matched_observed_intervals.csv SHA256 523b637d8b3f872c03a2fe9efca623acb5bc0ea78f2b01e3632caeae7342e75f; 460 original intervals. Reopened original strict co-survey source CSV on analysis/penguin-decade-redistribution-v1-20261110, git blob 7e86b2eb5f5a4e012f128101ebec02d51cbfe41c, 183 rows with shared citation and method. Compact transcription SHA256 cc1047fd4ea12b4067ccf56166dcc8e564668a1ba979e8fe3e3c60b39426079f (no final LF), FNV1a 8fb9f028 checked against connector output.
+
+Match exact site, observed consecutive start/end years of both species, both endpoints positive, known same counting method. All 92 broad pair records use ground surveys; strict filter verifies both species' exact endpoint counts against shared-citation/method pair table at both years. Not guaranteed same census day, extent, or effort. No new count interpolation. Exposures, coordinates, region and spatial blocks identical between paired species. Response second-minus-first annualized log count change. Previous minimum model gate retained: site and endpoint-year FE, equal site weights, four slopes (SIC, SSS, SST, P100), at least 3 sites, full slope rank, residual df >=5, at least two intervals/site. Primary annual and secondary 1–5-year intervals. No relaxed gate or outcome-dependent reduced model.
+
+| Pair | Scope | Annual n/sites | Annual residual df | 1–5 yr n/sites | 1–5 yr residual df | 1–5 yr P100 contrast |
+|---|---|---|---:|---|---:|---:|
+| ADPE/CHPE | strict |10/3|0|15/3|0|not fitted|
+| ADPE/GEPE | strict |19/4|1|25/5|4|not fitted|
+| CHPE/GEPE | strict |21/6|0|33/9|8|+0.243628|
+| ADPE/CHPE | same method |10/3|0|17/4|0|not fitted|
+| ADPE/GEPE | same method |19/4|1|26/5|4|not fitted|
+| CHPE/GEPE | same method |33/8|10|45/11|18|+0.144810|
+
+All strict samples span only two regions. ADPE/GEPE strict 25 rows cover 2 blocks, 13 endpoint years; rank of FE 17, 4 covariates, residual df 4. Do not infer a contrast from separate full-atlas species slopes. CHPE/GEPE strict multiyear P25 contrast +0.025103, but both region omissions fail minimum df/rank gate; broader 45-row model changes sign when central-west Antarctic Peninsula is omitted (-0.016890) or a block is omitted (minimum -0.023172). No geographically robust species-by-polynya effect. Strict annual CHPE/GEPE is saturated, not estimable under frozen gate.
+
+Descriptive result on exact strict ADPE/GEPE 25 intervals: site-equal annualized log growth ADPE -0.062994, GEPE +0.019526, relative difference +0.08252025589591783. 5/5 site means positive, 21/25 intervals positive. Some sites both increase or both decrease. This verifies local relative growth contrast, not its environmental attribution, a new independent sample, or demographic forecasts. Independent stdlib calculation of all 25 log contrasts and site-equal mean agrees; all 6 fitted models checked against weighted full dummy regression and identical-support separately fitted species slopes, maximum numerical discrepancy 2.301e-10.
+
+Local reproduction package panantarctic_matched_species_response_20261124.zip SHA256 3062cc158b1f4f0f9c87709cd79981a02702700f3b08f553d37309ca1e644565; analyze_pairs.py SHA256 c939f29015a854e93999c64c813bd50ead0a1df05a2f0c6224aeea7056478e7d, original compact strict source, receipt, pair/support/model/omission/descriptive tables. No new p-values, climate-to-land mechanism, causal effect, or future prediction. Next scientific decision: preserve separate species association as exploratory; do not promote it to a robust species-specific difference. Independent matched colony time series are needed. Main and manuscript unchanged.
