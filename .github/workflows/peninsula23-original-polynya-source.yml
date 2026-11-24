@@ -1,0 +1,76 @@
+name: Peninsula 23 exact colony winter polynya source
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/peninsula23-original-polynya-source.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: a1cf988df3501794e9add243a8c2be8ecbb7b43a
+          path: pinned_marine
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet numpy pandas scipy netCDF4 pyproj
+      - name: Validate exact roster and recover original DEEP-AA
+        run: |
+          mkdir -p /tmp/peninsula23
+          curl -fLSs --retry 2 --connect-timeout 25 --max-time 240 'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' -o /tmp/deepaa.zip
+          echo 'f3f958389cc5e67ac1c4e3a6ee164318  /tmp/deepaa.zip' | md5sum -c -
+          echo 'b05a36aa4e775d69c06e2ffa897a8de8a20318b65f6478298167f73cc9f7c3f9  /tmp/deepaa.zip' | sha256sum -c -
+      - name: Extract original native ocean-area fractions without reading biological outcomes
+        run: |
+          python - <<'PY'
+          import hashlib,importlib.util,json,pathlib,zipfile
+          import pandas as pd
+          root=pathlib.Path('research/climate-penguin/multispecies_vegetation_20261124')
+          src=pathlib.Path('pinned_marine/research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_original_DEEPAA_100km_25km_source_20261119.py')
+          def blob(p):
+              b=p.read_bytes();return hashlib.sha1(('blob %d\0'%len(b)).encode()+b).hexdigest()
+          assert blob(src)=='4cec92b98728dd5538a3d2671dc122e4b16a56bb'
+          p=root/'CROSS_SPECIES_SOURCE_OFFSET_RESULT_20261124.json'
+          assert blob(p)=='141cb5a18b2a59dff2dd12bc3ccec0e8a5401a76'
+          a=pd.DataFrame(json.loads(p.read_text())['rows'])[['id','reg','lat','lon']].drop_duplicates()
+          assert len(a)==21
+          extra=pd.DataFrame([['LION','South Shetland Islands',-62.1331,-58.1229],['PCHA','Central-west Antarctic Peninsula',-65.067,-64.026]],columns=a.columns)
+          sites=pd.concat([a,extra],ignore_index=True).rename(columns={'id':'site_id','reg':'source_region','lat':'colony_lat','lon':'colony_lon'})
+          assert len(sites)==sites.site_id.nunique()==23
+          atlas=pathlib.Path('research/climate-penguin/outputs/comparison_audit/mapppd_unambiguous_site_seasons.csv')
+          assert blob(atlas)=='fc134e364cf38699fa7611d7dee5fbbbcb370c0a'
+          coords=pd.read_csv(atlas,usecols=['site_id','latitude','longitude']).drop_duplicates()
+          z=sites.merge(coords,on='site_id',validate='one_to_one')
+          assert len(z)==23 and ((z.latitude-z.colony_lat).abs()<1e-7).all() and ((z.longitude-z.colony_lon).abs()<1e-7).all()
+          spec=importlib.util.spec_from_file_location('canonical',src);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+          out=pathlib.Path('/tmp/peninsula23')
+          cohort=sites[['site_id']].merge(pd.DataFrame({'season':range(2003,2021)}),how='cross')
+          with zipfile.ZipFile('/tmp/deepaa.zip') as zz:
+              ll,dates=m.native_map_manifest(zz)
+              lat,lon,mask=m.lonlat_grid(zz,ll)
+              member,geometry=m.original_native_pixel_sites(sites,lat,lon,mask)
+              daily,monthly,winter,complete=m.daily_source_only(zz,dates,sites,cohort,member)
+          # Preserve all requested seasons including explicitly missing winters.
+          support=cohort.merge(winter,how='cross') if False else cohort.merge(pd.DataFrame({'radius_km':[100,25]}),how='cross').merge(winter,how='left',on=['site_id','season','radius_km'],validate='one_to_one')
+          assert len(support)==23*18*2
+          assert support.loc[support.season.isin([2011,2012]),'direct_DEEPAA_coastal_polynya_fraction'].isna().all()
+          support=support.merge(sites,on='site_id',validate='many_to_one')
+          daily.to_csv(out/'daily.csv.gz',index=False,compression='gzip')
+          monthly.to_csv(out/'monthly.csv',index=False)
+          support.to_csv(out/'winter.csv',index=False)
+          geometry.to_csv(out/'geometry.csv',index=False)
+          q=support[support.radius_km==100].dropna(subset=['direct_DEEPAA_coastal_polynya_fraction'])
+          receipt={'status':'OBSERVED_PHYSICAL_SOURCE_ONLY_NO_BIOLOGICAL_FIT','source_sha256':m.POLY_SHA256,'canonical_code_git_blob':blob(src),'requested_sites':23,'requested_years':[2003,2020],'complete_native_calendar_winters':[y for y,v in complete.items() if v],'daily_maps_in_original_archive':len(dates),'accepted_100km_sitewinters':len(q),'sites':q.site_id.nunique(),'zero_exposure_sitewinters':int(q.direct_DEEPAA_coastal_polynya_fraction.eq(0).sum()),'no_imputation':True,'no_outcomes_fitted':True}
+          (out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: peninsula23-native-polynya-physical
+          path: /tmp/peninsula23/
+          retention-days: 30
