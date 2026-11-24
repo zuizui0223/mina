@@ -42,7 +42,20 @@ jobs:
               f=[x for x in files['_embedded']['stash:files'] if x.get('path','').split('/')[-1]=='FledglingBottleneck_Data.zip']
               assert len(f)==1,f
               f=f[0];receipt['file_metadata']=f
-              b=get(link(f['_links']['stash:download']))
+              # The API download requires authentication; try only the public UI download routes.
+              b=None
+              for u in ['https://datadryad.org/downloads/file_stream/489106','https://datadryad.org/stash/downloads/file_stream/489106','https://datadryad.org/downloads/download_resource/106988','https://datadryad.org/stash/downloads/download_resource/106988']:
+                  try:
+                      x=get(u)
+                      if hashlib.sha256(x).hexdigest()==f['digest']:b=x;break
+                      if zipfile.is_zipfile(io.BytesIO(x)):
+                          with zipfile.ZipFile(io.BytesIO(x)) as z:
+                              for n in z.namelist():
+                                  if n.rsplit('/',1)[-1]==f['path'] and hashlib.sha256(z.read(n)).hexdigest()==f['digest']:
+                                      b=z.read(n);break
+                      if b is not None:break
+                  except Exception:continue
+              assert b is not None,'No public route returned the checksum-matched original'
               assert zipfile.is_zipfile(io.BytesIO(b)),'not original ZIP'
               assert len(b)==int(f['size']),'size mismatch'
               alg=f.get('digestType');d=f.get('digest')
