@@ -1,0 +1,133 @@
+name: Pan-Antarctic 595 exact colony native winter polynya
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/panantarctic595-native-polynya.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: a1cf988df3501794e9add243a8c2be8ecbb7b43a
+          path: pinned_marine
+      - uses: actions/download-artifact@v4
+        with:
+          name: penguin-panantarctic-original-595-site-count-macro-atlas-v1
+          run-id: 42610664607
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/atlas
+      - uses: actions/download-artifact@v4
+        with:
+          name: peninsula23-native-polynya-physical
+          run-id: 45400435208
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/reference23
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet numpy pandas scipy netCDF4 pyproj
+      - name: Verify publisher archive
+        run: |
+          mkdir -p /tmp/panantarctic595
+          curl -fLSs --retry 2 --connect-timeout 25 --max-time 300 'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' -o /tmp/deepaa.zip
+          echo 'f3f958389cc5e67ac1c4e3a6ee164318  /tmp/deepaa.zip' | md5sum -c -
+          echo 'b05a36aa4e775d69c06e2ffa897a8de8a20318b65f6478298167f73cc9f7c3f9  /tmp/deepaa.zip' | sha256sum -c -
+      - name: Extract native area fractions on fixed atlas and verify against independent earlier extraction
+        run: |
+          python - <<'PY'
+          import pathlib, hashlib, importlib.util, json, calendar, zipfile
+          import pandas as pd, numpy as np
+          from scipy.sparse import csr_matrix
+          from netCDF4 import Dataset
+          out=pathlib.Path('/tmp/panantarctic595')
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          atlas=pathlib.Path('/tmp/atlas/panantarctic_595_site_inventory.csv')
+          assert sha(atlas)=='543056ded5e2b896ba5f447db690f6537ff07cecb78d89d66b4868728e53de24'
+          ref=pathlib.Path('/tmp/reference23/winter.csv')
+          assert sha(ref)=='ad0b569562afc661d4006a805bf2f5c1a4ac3f44a799cb75a1a913655795e4a2'
+          ref_month=pathlib.Path('/tmp/reference23/monthly.csv')
+          assert sha(ref_month)=='b0364ad1c6c349c7abc4d0880facb729e7cb6b369d174f9f4485174bf69c8230'
+          p=pathlib.Path('pinned_marine/research/climate-penguin/macro_panantarctic_v1/diet_salinity_source_20261117/extract_original_DEEPAA_100km_25km_source_20261119.py')
+          b=p.read_bytes(); assert hashlib.sha1(('blob %d\0'%len(b)).encode()+b).hexdigest()=='4cec92b98728dd5538a3d2671dc122e4b16a56bb'
+          spec=importlib.util.spec_from_file_location('native',p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+          sites=pd.read_csv(atlas,usecols=['site_id','source_region','latitude','longitude']).rename(columns={'latitude':'colony_lat','longitude':'colony_lon'}).sort_values('site_id').reset_index(drop=True)
+          assert len(sites)==sites.site_id.nunique()==595 and sites.source_region.nunique()==18
+          years=list(range(2003,2021))
+          expected=[*range(2004,2011),*range(2013,2021)]
+          with zipfile.ZipFile('/tmp/deepaa.zip') as z:
+              ll,dates=m.native_map_manifest(z)
+              lat,lon,valid=m.lonlat_grid(z,ll)
+              # Same independent WGS84 geodesic membership and native EPSG:3412 area weighting.
+              member,geometry=m.original_native_pixel_sites(sites,lat,lon,valid)
+              keys=list(member)
+              assert len(keys)==1190
+              cells=np.unique(np.concatenate([member[k][0] for k in keys]))
+              indptr=np.r_[0,np.cumsum([len(member[k][0]) for k in keys])]
+              ix=np.searchsorted(cells,np.concatenate([member[k][0] for k in keys]))
+              w=np.concatenate([member[k][1] for k in keys])
+              W=csr_matrix((w,ix,indptr),shape=(len(keys),len(cells)))
+              complete=m.valid_daily_days(dates,years)
+              assert [y for y,v in complete.items() if v]==expected
+              base=pd.DataFrame(keys,columns=['site_id','radius_km'])
+              records=[]
+              for yr in expected:
+                  for mo in m.MONTHS:
+                      days=sorted(k for k in dates if k.startswith(f'{yr:04d}-{mo:02d}-'))
+                      sm=np.zeros(len(keys));ct=np.zeros(len(keys),dtype=int)
+                      for day in days:
+                          with Dataset('day.nc','r',memory=z.read(dates[day])) as f:
+                              # Use exactly the previous canonical map interpretation; no static ocean mask.
+                              arr=np.ma.asarray(f.variables['Map'][:],dtype=float).filled(np.nan)
+                          assert arr.shape==(1264,1328)
+                          pix=arr.ravel()[cells]
+                          v=np.isfinite(pix)&(pix!=-999)
+                          assert not ((pix[v]<0)&(~np.isin(pix[v],[-1,-2,-100]))).any()
+                          c=v & (pix>0) & (np.mod(np.where(v,pix,0),2)==0)
+                          den=W@v.astype(float);num=W@c.astype(float)
+                          good=den>0
+                          ratio=np.divide(num,den,out=np.zeros_like(den),where=good)
+                          assert np.all((ratio>=-1e-12)&(ratio<=1+1e-12))
+                          sm+=ratio;ct+=good
+                      nday=calendar.monthrange(yr,mo)[1];ok=ct>=np.ceil(.8*nday)
+                      q=base.assign(season=yr,source_month=f'{yr:04d}-{mo:02d}',observed_days_with_actual_marine_denominator=ct,calendar_days=nday,all_month_days_pass_80pct=ok,month_coastal_polynya_area_fraction=np.divide(sm,ct,out=np.full(len(keys),np.nan),where=ct>0))
+                      records.append(q)
+                  print(json.dumps({'winter':yr,'native_maps_processed':sum(k.startswith(str(yr)) and int(k[5:7]) in m.MONTHS for k in dates),'sites':595}),flush=True)
+          mon=pd.concat(records,ignore_index=True)
+          g=mon.groupby(['site_id','season','radius_km'],as_index=False).agg(n_months=('source_month','nunique'),n_valid_months=('all_month_days_pass_80pct','sum'),direct_DEEPAA_coastal_polynya_fraction=('month_coastal_polynya_area_fraction','mean'))
+          ok=(g.n_months==5)&(g.n_valid_months==5)
+          g.loc[~ok,'direct_DEEPAA_coastal_polynya_fraction']=np.nan
+          allrows=base.merge(pd.DataFrame({'season':years}),how='cross').merge(g,on=['site_id','season','radius_km'],how='left',validate='one_to_one').merge(sites,on='site_id',validate='many_to_one')
+          assert len(allrows)==595*18*2 and not allrows.duplicated(['site_id','season','radius_km']).any()
+          # Same IDs, coordinates, masks, calendar years and monthly/winter values as direct per-site canonical extraction.
+          r=pd.read_csv(ref);a=r.merge(allrows,on=['site_id','season','radius_km'],suffixes=('_ref','_new'),validate='one_to_one')
+          assert len(a)==828
+          assert np.allclose(a.colony_lon_ref,a.colony_lon_new,rtol=0,atol=1e-8) and np.allclose(a.colony_lat_ref,a.colony_lat_new,rtol=0,atol=1e-8)
+          var='direct_DEEPAA_coastal_polynya_fraction'
+          assert np.allclose(a[var+'_ref'],a[var+'_new'],rtol=0,atol=1e-12,equal_nan=True)
+          rm=pd.read_csv(ref_month)
+          am=rm.merge(mon,on=['site_id','season','radius_km','source_month'],suffixes=('_ref','_new'),validate='one_to_one')
+          assert len(am)==3450 and (am.observed_days_with_actual_marine_denominator_ref==am.observed_days_with_actual_marine_denominator_new).all()
+          mv='month_coastal_polynya_area_fraction'
+          assert np.allclose(am[mv+'_ref'],am[mv+'_new'],rtol=0,atol=1e-12,equal_nan=True)
+          allrows.to_csv(out/'winter_595.csv',index=False)
+          mon.to_csv(out/'monthly_595.csv.gz',index=False,compression='gzip')
+          geometry.to_csv(out/'geometry_595.csv',index=False)
+          for rad in [100,25]:
+              w=allrows[allrows.radius_km.eq(rad)]
+              print(json.dumps({'radius':rad,'accepted':int(w[var].notna().sum()),'sites':int(w.dropna(subset=[var]).site_id.nunique()),'zeros':int(w[var].eq(0).sum())}))
+          receipt={'status':'COMPLETE_NATIVE_PHYSICAL_SOURCE_ONLY','atlas_sha256':sha(atlas),'publisher_DEEPAA_sha256':m.POLY_SHA256,'sites':595,'regions':18,'requested_years':years,'complete_calendar_years':expected,'source_daily_maps':len(dates),'sparse_selected_native_pixels':len(cells),'max_winter_ref23_diff':float(np.nanmax(abs(a[var+'_ref']-a[var+'_new']))),'max_monthly_ref23_diff':float(np.nanmax(abs(am[mv+'_ref']-am[mv+'_new']))),'validated_reference_winter_rows':len(a),'validated_reference_months':len(am),'no_biological_outcomes_fitted':True}
+          (out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          print(json.dumps(receipt),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panantarctic595-native-polynya
+          path: /tmp/panantarctic595/
+          retention-days: 30
+          if-no-files-found: warn
