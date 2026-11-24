@@ -50,13 +50,20 @@ def penguin(sp,raw):
     it=csv.reader(io.StringIO(txt));h=[v.strip() for v in next(it)]
     needed={"SEASON","TOTAL_NUMBER_OF_PAIRS","TOTAL_NUMBER_OF_CHICKS","DATE_PAIR_COUNT","DATE_CHICK_COUNT","COMMENTS"}
     if sp!="Gentoo":needed.add("COLONY")
-    if not needed<=set(h) or len(h)!=len(set(h)):raise ValueError("schema "+sp)
-    values={};dates={};repairs={"overflow_comment_rows":0,"short_rows_padded":0}
+    # Original pinned Gentoo header ends with COMMENTS and one unnamed column.
+    # All named fields before COMMENTS retain their original positions.
+    # Treat trailing fields as free-text comments; record repair counts.
+    original_width=len(h)
+    if sp=="Gentoo" and h[-2:]==["COMMENTS",""]:
+        h=h[:-1]
+    if not needed<=set(h) or len(h)!=len(set(h)) or h[-1]!="COMMENTS" or "" in h:raise ValueError("schema "+sp)
+    values={};dates={};repairs={"original_header_width":original_width,"named_header_width":len(h),"overflow_comment_rows":0,"short_rows_padded":0,"rows_with_nonempty_comment_continuations":0}
     for row in it:
         if not any(v.strip() for v in row):continue
         if len(row)>len(h):
-            if h[-1]!="COMMENTS":raise ValueError("unexpected ragged row")
-            row=row[:len(h)-1]+[",".join(row[len(h)-1:])]
+            if any(v.strip() for v in row[len(h):]):
+                repairs["rows_with_nonempty_comment_continuations"]+=1
+            row=row[:len(h)-1]+[",".join(row[len(h)-1:]).rstrip(",")]
             repairs["overflow_comment_rows"]+=1
         if len(row)<len(h):
             row+=[""]*(len(h)-len(row));repairs["short_rows_padded"]+=1
