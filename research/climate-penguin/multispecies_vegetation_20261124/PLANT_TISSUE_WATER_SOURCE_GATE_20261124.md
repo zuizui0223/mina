@@ -1,0 +1,12 @@
+# Plant tissue nitrogen and water: source gate (2026-11-24)
+
+Continuation of CARBON_CONDITIONING_DIAGNOSTIC_20261124.md. Public metadata only; no newly released results from restricted source archives. No additional causal mediation or ecological effect authorized.
+
+- Eppley (2026), Plant Thermal Traits: https://www.usap-dc.org/view/dataset/602038, DOI 10.15784/602038. Publisher lists Plant_Thermal_Traits.csv, MD5 e3d8d64c79e579a7f4b14f5ee63e4234, README_602038.txt. Five moss species collected in 2016 on King George Island.
+- Eppley (2026), Plant Nitrogen: https://www.usap-dc.org/view/dataset/602039. Publisher lists Plant_Nitrogen.csv, MD5 68c94743cf9f567d25bc89b36c635829, README_602039.txt. Three moss species collected along the Ardley Island N gradient in 2016. Dataset catalogue DOI field is incomplete; use record URL.
+- Both catalogue licenses CC BY 4.0. Shared year/species are not a verified sampling-unit join. Prior source gate returned HTML for 602039, current local network cannot resolve provider. No new CSV bytes acquired and no join or plant N–water regression fitted. On receipt validate checksums and README, unit identity, repeated measures, site/species overlap, and explicit matched experimental design; otherwise analyze separately.
+- Clements et al. (2026), DOI 10.1007/s00300-026-03502-0, already reports species-specific moss thermal properties, lower relative water content and thermal conductivity at high-N sites. Replication of that association alone is not novel.
+- Bokhorst et al. (2022), DOI 10.1111/gcb.15979, tested warming and N-dependent grass growth. Current NPDC record https://www.npdc.nl/dataset/5a8ef9fb-db15-5531-9967-5ce65a0530e9 requests consultation before publishing derived results; no files acquired.
+- Waterman et al. (2026), DOI 10.26179/cc3c-5k60, 34 moss cores and >400 segments, five coastal regions: catalogue explicitly embargoed, no acquisition attempted.
+
+A local exploratory temporal water-proxy audit was executed on previously user-supplied AADC fixed-quadrat archive, citation Unreleased data. Its reproducibility bundle `windmill_isotope_water_analysis_20261124.zip` (SHA256 b2f1326a3fb407fe61cbe9c0d42bfda9d1f68820a5b7dcae25f876157ddd91e5) is held locally; no restricted-source records, coordinates, coefficients or results are published in this public branch. The tissue δ13C measurement is not δ15N or a marine N tracer. No claim of animal effects on plant hydration. Main and frozen manuscripts untouched.
