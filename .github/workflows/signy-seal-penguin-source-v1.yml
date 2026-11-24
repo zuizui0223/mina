@@ -5,6 +5,11 @@ on:
     paths:
       - 'research/climate-penguin/signy_seal_interaction_v1/**'
       - '.github/workflows/signy-seal-penguin-source-v1.yml'
+  pull_request:
+    branches: [analysis/penguin-vegetation-multispecies-disturbance-20261124]
+    paths:
+      - 'research/climate-penguin/signy_seal_interaction_v1/**'
+      - '.github/workflows/signy-seal-penguin-source-v1.yml'
   workflow_dispatch:
 permissions:
   contents: read
