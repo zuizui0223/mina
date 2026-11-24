@@ -1,0 +1,218 @@
+{
+  "status": "DESCRIPTIVE_ONLY_EXECUTED_LOCAL_REPRODUCIBLE",
+  "contract_commit": "bbc8f52529209bbde7165996f60635b7fbf6d8e8",
+  "code_commit": "5c795f2debff90119debf0a121cb6255e1ef01cb",
+  "code_git_blob": "4a51a43d6eb235871f80fe8dcc2d2528b1874d6a",
+  "local_code_sha256": "843f3afd347c8c31d79e57144aab5be29f34edeaaa505021ea2a051efa11fa79",
+  "local_full_result_sha256": "9bbe4160d53d8eaa1435811168cbdaea5f28a0940ae7237472ad72ce6253bd4e",
+  "local_derived_series_sha256": "295ccf8321ddcfda3232cb986555010c83d8495182bb9acd7618be545b80aa75",
+  "inputs": {
+    "counts": {
+      "artifact_id": 13669533413,
+      "sha256": "add9f2a4c9a82279a70b4e9edb4156f5dc9d21fbe55122276e5199a02487f38a",
+      "zip_crc_pass": true,
+      "independent_actions_digest_checked": false,
+      "scope": "Previously derived source-selected counts, not a new raw publisher intake"
+    },
+    "climate": {
+      "run_id": 42961084667,
+      "artifact_id": 13829236358,
+      "sha256": "64a8e9832e254171139d78bb22351d6c9a3acf490356931b2635ed5b108d94b5",
+      "zip_crc_pass": true,
+      "independent_actions_digest_checked": true
+    }
+  },
+  "support": {
+    "source_count_rows": 2456,
+    "source_sites": 595,
+    "source_site_species": 707,
+    "marine_sites": 588,
+    "marine_site_years": 16464,
+    "original_same_method_selection": true,
+    "three_decades_at_least_2": 43,
+    "three_decades_at_least_1": 81,
+    "first_last_decades_at_least_2": 50,
+    "middle_last_decades_at_least_2": 72,
+    "disjoint_history_eval_at_least_2": 81,
+    "disjoint_plus_5_year_span": 59,
+    "marine_complete": 53,
+    "primary": {
+      "series": 51,
+      "sites": 41,
+      "regions": 3,
+      "blocks_250km": 6,
+      "strata": 7,
+      "wet_cells": 30,
+      "two_visit_eval_series": 8,
+      "by_species": {
+        "ADPE": 17,
+        "CHPE": 12,
+        "GEPE": 22
+      }
+    },
+    "excluded_singleton_strata": [
+      "ADPE | Adelie Land | PGEO",
+      "CHPE | Elephant Island | STNK"
+    ]
+  },
+  "periods": {
+    "historic_size": [
+      1993,
+      2010
+    ],
+    "evaluation_growth": [
+      2011,
+      2020
+    ],
+    "marine_reference": [
+      2001,
+      2010
+    ],
+    "marine_late": [
+      2011,
+      2020
+    ],
+    "marine_months": [
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  "model": {
+    "predictors": [
+      "historical_log1p_median_nests",
+      "delta_sic_pp",
+      "delta_thetao_C"
+    ],
+    "weighted_rms_scales": [
+      1.7859162148351146,
+      0.7693531271210328,
+      0.023370802940600757
+    ],
+    "within_weighted_response_variance": 1.1887673120071813,
+    "condition_number": 1.2810280612766571,
+    "rank": 3,
+    "size_only_beta": -0.003495841519687057,
+    "size_only_R2": 0.000010280319628019896,
+    "climate_only_beta": [
+      -0.25765731623521093,
+      -0.0667896464713963
+    ],
+    "climate_only_R2": 0.05571455490495081,
+    "full_beta": [
+      -0.009339061182519405,
+      -0.2581033823717442,
+      -0.06491907572751147
+    ],
+    "full_R2": 0.055784624307294584
+  },
+  "deletion_columns": [
+    "type",
+    "omitted",
+    "retained_series",
+    "size_beta",
+    "SIC_beta",
+    "thetao_beta",
+    "within_R2"
+  ],
+  "deletion_results": [
+    [
+      "block",
+      "-10:4",
+      36,
+      0.07419952832482256,
+      -0.19832043237883046,
+      -0.2547723650932381,
+      0.07567681677508742
+    ],
+    [
+      "block",
+      "-10:5",
+      39,
+      -0.010058747641356818,
+      -0.18209588652788627,
+      0.08865138874036764,
+      0.03612681895284253
+    ],
+    [
+      "block",
+      "-11:5",
+      47,
+      0.029297207931476756,
+      -0.5579017695264651,
+      -0.2026231884901909,
+      0.16157739724203413
+    ],
+    [
+      "block",
+      "-11:6",
+      37,
+      -0.1331809007186075,
+      -0.2680979835594743,
+      -0.10890942979601997,
+      0.0855070361301341
+    ],
+    [
+      "block",
+      "1:-7",
+      48,
+      0.027575390824199828,
+      -0.3371874171837874,
+      -0.10779601808361618,
+      0.0678596496496584
+    ],
+    [
+      "block",
+      "1:-8",
+      44,
+      -0.07513235867027988,
+      -0.3898815925112181,
+      -0.12441401089551647,
+      0.09065371991881743
+    ],
+    [
+      "region",
+      "Central-west Antarctic Peninsula",
+      24,
+      0.3823119725684293,
+      -0.330405271536072,
+      0.9341835995292966,
+      0.2402604593008939
+    ],
+    [
+      "region",
+      "South Shetland Islands",
+      37,
+      -0.1331809007186075,
+      -0.2680979835594743,
+      -0.10890942979601997,
+      0.0855070361301341
+    ],
+    [
+      "region",
+      "Victoria Land",
+      41,
+      -0.06385295193943358,
+      -0.3945444842556955,
+      -0.11869601024609655,
+      0.089314329286028
+    ]
+  ],
+  "checks": [
+    "Source ZIP SHA256 pins and CRC checked locally",
+    "Exact count, unique site/species/season, observed zeros, fixed selected survey method and climate month coverage checked",
+    "Weighted least squares coefficients independently checked against normal-equation arithmetic",
+    "All nine deletions completed",
+    "Repository code Git blob matches executed local file exactly"
+  ],
+  "limitations": [
+    "Only three geographic regions; shared sites and cells; equal stratum weighted common slopes",
+    "Historical size and later growth use disjoint counts, not an independent sample or causal size experiment",
+    "R2 is in-sample descriptive, not predictive performance; no significance inference from deletion ranges",
+    "Climate contrasts are contemporaneous calendar-decade means; no actual foraging or individual movement evidence",
+    "At most 51 eligible series from existing archive; no independent newly acquired census source",
+    "No causal climate/competition/vegetation/nutrient or future population claim"
+  ],
+  "reproduction": "python research/signy_seal_spatial_pressure_v1/historical_size_climate.py ORIGINAL_COUNTS_ARTIFACT.zip ORIGINAL_MARINE_ARTIFACT.zip OUTPUT_DIR"
+}
