@@ -1,0 +1,58 @@
+name: Ardley open vector source inventory
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ardley-open-vector-source.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Resolve publisher metadata and inventory small original vector files
+        run: |
+          python - <<'PY'
+          import json,urllib.request,urllib.parse,hashlib,pathlib,re,zipfile,io
+          out=pathlib.Path('/tmp/ardley-vectors');out.mkdir()
+          record='14503437'
+          def get(url,limit):
+              with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'PublicScientificDataAudit/1.0','Accept':'*/*'}),timeout=30) as r:
+                  b=r.read(limit+1)
+                  if len(b)>limit:raise ValueError('size cap')
+                  return b
+          report={'record':record,'files':[],'scope':'catalogue and small public vector originals, no occupied area or vegetation effect'}
+          try:
+              b=get('https://zenodo.org/api/records/'+record,3000000); j=json.loads(b)
+              report['metadata_sha256']=hashlib.sha256(b).hexdigest()
+              report['metadata']={k:j['metadata'].get(k) for k in ('title','description','dates','license','publication_date','doi','related_identifiers')}
+              (out/'catalogue.json').write_bytes(b)
+              for f in j.get('files',[]):
+                  name=f['key'];size=f['size'];checksum=f.get('checksum','')
+                  a={'name':name,'size':size,'checksum':checksum,'status':'inventory_only'}
+                  report['files'].append(a)
+                  if not re.fullmatch(r'[A-Za-z0-9 ._()-]+',name):continue
+                  # Never pull multi-GB imagery; restrict to explicitly vector/readme names and 15 MB total.
+                  if size>5000000 or not (re.search(r'\.(shp|shx|dbf|prj|cpg|gpkg|geojson|kml|csv|txt|md)$',name,re.I) or re.search(r'(vector|shape|gis).*\.zip$',name,re.I)):continue
+                  if sum(x.get('downloaded_bytes',0) for x in report['files'])+size>15000000:continue
+                  try:
+                      u=f['links'].get('self') or f['links'].get('download')
+                      assert urllib.parse.urlsplit(u).hostname=='zenodo.org'
+                      raw=get(u,5000000)
+                      assert len(raw)==size and checksum=='md5:'+hashlib.md5(raw).hexdigest(),'publisher size or checksum mismatch'
+                      (out/name).write_bytes(raw)
+                      a.update(status='verified_original',downloaded_bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+                      if zipfile.is_zipfile(io.BytesIO(raw)):
+                          with zipfile.ZipFile(io.BytesIO(raw)) as z:a['members']=z.namelist()[:150]
+                  except Exception as e:a.update(status='failed',error=repr(e)[:300])
+              report['status']='catalogue_retrieved'
+          except Exception as e:report.update(status='catalogue_failed',error=repr(e)[:400])
+          (out/'receipt.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,ensure_ascii=False)[:28000])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ardley-open-vector-inventory
+          path: /tmp/ardley-vectors/
+          retention-days: 14
