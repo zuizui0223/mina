@@ -9,7 +9,7 @@ permissions:
 jobs:
   source:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 24
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,9 +34,28 @@ jobs:
       - name: Verify publisher archive
         run: |
           mkdir -p /tmp/panantarctic595
-          curl -fLSs --retry 2 --connect-timeout 25 --max-time 300 'https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' -o /tmp/deepaa.zip
-          echo 'f3f958389cc5e67ac1c4e3a6ee164318  /tmp/deepaa.zip' | md5sum -c -
-          echo 'b05a36aa4e775d69c06e2ffa897a8de8a20318b65f6478298167f73cc9f7c3f9  /tmp/deepaa.zip' | sha256sum -c -
+          set -euo pipefail
+          dst=/tmp/deepaa.zip
+          expected_md5=f3f958389cc5e67ac1c4e3a6ee164318
+          expected_sha=b05a36aa4e775d69c06e2ffa897a8de8a20318b65f6478298167f73cc9f7c3f9
+          urls=('https://zenodo.org/records/13358042/files/SIC60_6.25km_20d.zip?download=1' 'https://zenodo.org/api/records/13358042/files/SIC60_6.25km_20d.zip/content')
+          verified=0
+          for attempt in 0 1 2 3; do
+            url="${urls[$((attempt % 2))]}"
+            echo "attempt=$((attempt+1)) existing_bytes=$(stat -c%s "$dst" 2>/dev/null || echo 0)"
+            rc=0
+            curl -fLSs --connect-timeout 30 --max-time 240 --continue-at - --output "$dst" "$url" || rc=$?
+            if [ -f "$dst" ] && printf '%s  %s\n' "$expected_md5" "$dst" | md5sum -c -; then
+              printf '%s  %s\n' "$expected_sha" "$dst" | sha256sum -c -
+              verified=1
+              break
+            fi
+            # Keep partial bytes only for genuine interrupted transfers.
+            # A complete wrong file or rejected Range must not contaminate another attempt.
+            case "$rc" in 18|28|56|92) : ;; *) rm -f "$dst" ;; esac
+            echo "download incomplete or rejected: curl exit $rc"
+          done
+          test "$verified" -eq 1
       - name: Extract native area fractions on fixed atlas and verify against independent earlier extraction
         run: |
           python - <<'PY'
