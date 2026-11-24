@@ -1,0 +1,71 @@
+name: NOAA NCEI 0171619 original nest-level source recovery
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/noaa-0171619-nest-source.yml'
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inventory and retrieve original NOAA files from public archive
+        run: |
+          python - <<'PY'
+          import hashlib, pathlib, json, urllib.request, urllib.parse, re
+          from html.parser import HTMLParser
+          out=pathlib.Path('/tmp/noaa0171619');out.mkdir()
+          base='https://www.ncei.noaa.gov/data/oceans/ncei/archive/0171619/'
+          urls=[base,base+'1.1/data/0-data/',base+'1.1/data/1-data/',base+'1.1/',base+'1.2/data/0-data/','https://www.ncei.noaa.gov/archive/accession/0171619','https://accession.nodc.noaa.gov/0171619','https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0171619']
+          class Links(HTMLParser):
+              def __init__(self):super().__init__();self.links=[]
+              def handle_starttag(self,tag,attrs):
+                  if tag=='a':
+                      href=dict(attrs).get('href')
+                      if href:self.links.append(href)
+          def get(url,cap):
+              with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'Public scientific data source audit/1.0'}),timeout=15) as r:
+                  b=r.read(cap+1)
+                  if len(b)>cap:raise ValueError('size cap')
+                  return b,r.geturl(),r.headers.get('Content-Type','')
+          seen=set(); entries=[]; files=[];total=0
+          for u in urls:
+              if u in seen or len(entries)>=18:continue
+              seen.add(u);d={'url':u}
+              try:
+                  raw,final,ct=get(u,2000000);d.update(final=final,content_type=ct,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+                  p=Links();p.feed(raw.decode('utf-8','replace')); d['links']=p.links[:100]
+                  for h in p.links:
+                      dest=urllib.parse.urljoin(final,h)
+                      s=urllib.parse.urlsplit(dest)
+                      if s.hostname not in ('www.ncei.noaa.gov','data.ncei.noaa.gov','www.nodc.noaa.gov','accession.nodc.noaa.gov') or '0171619' not in dest:continue
+                      name=urllib.parse.unquote(s.path.rsplit('/',1)[-1])
+                      if re.search(r'\.(xlsx|xls|csv|txt|pdf|md|xml)$',name,re.I) and dest not in seen and total<30000000 and len(files)<15:
+                          seen.add(dest)
+                          f={'url':dest,'name':name}
+                          try:
+                              body,furl,typ=get(dest,15000000)
+                              if name.lower().endswith('.xlsx'):assert body[:2]==b'PK','not xlsx'
+                              if b'<html' in body[:1000].lower():raise ValueError('HTML response')
+                              assert pathlib.Path(name).name==name
+                              fp=out/name
+                              if fp.exists() and fp.read_bytes()!=body:raise ValueError('ambiguous duplicate basename')
+                              fp.write_bytes(body);total+=len(body)
+                              f.update(status='retrieved',final=furl,bytes=len(body),sha256=hashlib.sha256(body).hexdigest())
+                          except Exception as e:f.update(status='failed',error=repr(e)[:300])
+                          files.append(f)
+                      elif s.path.endswith('/') and dest.startswith(base) and len(urls)<28 and dest not in seen and dest not in urls and re.search(r'/0171619/(?:\d+\.\d+/)?(?:data/)?(?:[01]-data/)?$',s.path):
+                          urls.append(dest)
+              except Exception as e:d.update(error=repr(e)[:300])
+              entries.append(d)
+          receipt={'accession':'0171619','requests':entries,'files':files,'status':'files_retrieved' if any(x.get('status')=='retrieved' for x in files) else 'no_original_files'}
+          (out/'receipt.json').write_text(json.dumps(receipt,indent=2))
+          print(json.dumps(receipt)[:24000])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: noaa-0171619-original-source
+          path: /tmp/noaa0171619/
+          retention-days: 14
