@@ -61,7 +61,7 @@ def read_new(count_bytes,location_bytes):
     # The verified year header defines the table A:AS (45 columns).
     # Inventory auxiliary nonblank cells, but do not interpret them as census events.
     # Candidate overlap only: ancillary annotations require later semantic review.
-    out={}; blanks=0; zeros=0; auxiliary=[]
+    out={}; blanks=0; zeros=0; auxiliary=[]; quarantined=[]; table_rows=0
     for rownum,row in enumerate(it,2):
         for j,v in enumerate(row[45:],46):
             if present(v):
@@ -70,19 +70,36 @@ def read_new(count_bytes,location_bytes):
                     aux["text_annotation_candidate"]=v[:250]
                 auxiliary.append(aux)
         if not any(present(v) for v in row[:45]):continue
-        if not isinstance(row[0],str) or not row[0].strip():
-            raise ValueError("missing colony label inside declared table at row "+str(rownum))
-        name=row[0].strip();key=norm(name)
-        if key in out:raise ValueError("duplicate normalized colony name")
+        table_rows+=1
+        name=row[0].strip() if isinstance(row[0],str) and row[0].strip() else None
         vals={}
         for y,v in zip(range(1981,2025),row[1:45]):
             if not present(v):blanks+=1;continue
             if not isinstance(v,(int,float)):raise ValueError("non-numeric observed cell")
             n=number(v);vals[y]=n;zeros+=n==0
+        if name is None:
+            quarantined.append({"row":rownum,"label_type":type(row[0]).__name__,"years":vals})
+            continue
+        key=norm(name)
+        if key in out:raise ValueError("duplicate normalized colony name")
         out[key]={"name":name,"years":vals}
     w.close()
-    if len(out)!=40 or sum(len(v["years"]) for v in out.values())!=525 or blanks!=1235:
+    labelled=sum(len(v["years"]) for v in out.values())
+    unlabeled=sum(len(v["years"]) for v in quarantined)
+    if table_rows!=40 or labelled+unlabeled!=525 or blanks!=1235:
         raise ValueError("count schema/coverage drift")
+    # Diagnose every unlabeled row, never count it as a colony or export its raw values.
+    quarantine_receipts=[]
+    for qr in quarantined:
+        diag=[]
+        for y,n in qr["years"].items():
+            v=[g["years"][y] for g in out.values() if y in g["years"]]
+            diag.append({"year":y,"n_labelled_numeric_cells":len(v),
+                         "equals_labelled_sum":bool(v) and n==sum(v),
+                         "equals_labelled_cell_count":n==len(v),
+                         "equals_labelled_max":bool(v) and n==max(v)})
+        quarantine_receipts.append({"row":qr["row"],"label_type":qr["label_type"],
+                                    "n_numeric_cells":len(qr["years"]),"zero_cells":sum(v==0 for v in qr["years"].values()),"aggregate_diagnostic":diag})
     w=load_workbook(io.BytesIO(location_bytes),read_only=True,data_only=True)
     if w.sheetnames!=["Sheet1"]:raise ValueError("location sheet")
     loc={}
@@ -96,7 +113,10 @@ def read_new(count_bytes,location_bytes):
         coords=[a,b] if a is not None and b is not None and -90<=a<=-55 and -180<=b<=180 else None
         loc[k]={"area":area,"coords":coords,"name":name}
     w.close()
-    return out,loc,{"n_labels":len(out),"numeric_cells":525,"blank_cells":blanks,"explicit_zero_cells":zeros,
+    return out,loc,{"n_labels":len(out),"table_rows":table_rows,"numeric_cells":525,
+                    "labelled_numeric_cells":labelled,"quarantined_numeric_cells":unlabeled,
+                    "quarantined_unlabelled_rows":quarantine_receipts,
+                    "blank_cells":blanks,"explicit_zero_cells_all_rows":zeros,
                     "table_range":"A1:AS41","auxiliary_nonblank_cells":auxiliary,
                     "auxiliary_semantics_review_required":bool(auxiliary),
                     "location_rows":len(loc),"location_label_overlap":len(set(out)&set(loc)),
@@ -172,7 +192,8 @@ def run(new,loc,sel,allr,sites):
             recent[str(year)]["selected"][c1]+=1;recent[str(year)]["annual"][c2]+=1
         rec["selected_archive_classes"]=dict(sc);rec["annual_archive_classes"]=dict(ac)
         selected.update(sc);annual.update(ac);rows.append(rec)
-    if sum(selected.values())!=525 or sum(annual.values())!=525:raise ValueError("classification denominator")
+    expected=sum(len(v["years"]) for v in new.values())
+    if sum(selected.values())!=expected or sum(annual.values())!=expected:raise ValueError("labelled classification denominator")
     # Exact names are only candidates. Check noninjective candidate mapping.
     ids=[r["candidate_old_id"] for r in rows if r["mapping_status"]=="EXACT_NAME_WITHIN_5KM_CANDIDATE"]
     if len(ids)!=len(set(ids)):raise ValueError("noninjective candidate mapping")
@@ -195,7 +216,18 @@ def main():
         cb,cm=acquire("counts");lb,lm=acquire("locations");result["source_receipts"]={"counts":cm,"locations":lm}
         new,loc,shape=read_new(cb,lb);result["new_structure"]=shape
         sel,allr,sites=read_old(sys.argv[1],sys.argv[2])
-        result.update(run(new,loc,sel,allr,sites));result["status"]="CANDIDATE_OVERLAP_AUDIT_COMPLETE"
+        result.update(run(new,loc,sel,allr,sites))
+        # Account for every numeric cell, including the explicitly quarantined unlabeled row.
+        for key in ("selected_archive_classes","annual_archive_classes"):
+            if shape["quarantined_numeric_cells"]:
+                result[key]["UNLABELLED_ROW_QUARANTINED"]=shape["quarantined_numeric_cells"]
+            if sum(result[key].values())!=525:raise ValueError("total classification denominator")
+        for row in shape["quarantined_unlabelled_rows"]:
+            for event in row["aggregate_diagnostic"]:
+                yr=result["year_classification"][str(event["year"])]
+                yr["new_numeric_cells"]+=1
+                for key in ("selected","annual"):yr[key]["UNLABELLED_ROW_QUARANTINED"]+=1
+        result["status"]="CANDIDATE_OVERLAP_AUDIT_COMPLETE_WITH_QUARANTINE"
     except Exception as e:result["error"]=str(e)
     (OUT/"result.json").write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n")
     print(json.dumps({k:v for k,v in result.items() if k not in ("year_classification","colony_summaries")},ensure_ascii=False))
