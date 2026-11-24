@@ -1,0 +1,42 @@
+name: Shirley Island original DEM source
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/shirley-island-dem-source.yml'
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check documented publisher DEM and reliability file endpoints
+        run: |
+          python - <<'PY'
+          import json,hashlib,pathlib,urllib.request,zipfile,io
+          from concurrent.futures import ThreadPoolExecutor
+          out=pathlib.Path('/tmp/shirley-dem');out.mkdir()
+          def get(x):
+              i,label=x;u=f'https://data.aad.gov.au/aadc/portal/download_file.cfm?file_id={i}'
+              r={'label':label,'url':u,'status':'not_retrieved'}
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'mina-public-research-source-audit/1.0'}),timeout=25) as f:
+                      b=f.read(30000001);r.update(http=f.status,final_url=f.geturl().split('?')[0],content_type=f.headers.get('Content-Type'),bytes=len(b))
+                  if len(b)>30000000:raise ValueError('bounded size exceeded')
+                  r['sha256']=hashlib.sha256(b).hexdigest()
+                  if zipfile.is_zipfile(io.BytesIO(b)):
+                      with zipfile.ZipFile(io.BytesIO(b)) as z:r['members']=z.namelist()[:200]
+                      (out/(label+'.zip')).write_bytes(b);r['status']='zip_received_not_spatially_validated'
+                  else:r['status']='nonzip_response_not_accepted';r['first160']=b[:160].decode('utf8','replace')
+              except Exception as e:r['error']=repr(e)[:300]
+              return r
+          with ThreadPoolExecutor(max_workers=2) as p:r=list(p.map(get,[(2287,'dem'),(2288,'reliability')]))
+          (out/'receipt.json').write_text(json.dumps(r,indent=2))
+          print(json.dumps(r,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shirley-original-dem-source
+          path: /tmp/shirley-dem/
+          retention-days: 14
