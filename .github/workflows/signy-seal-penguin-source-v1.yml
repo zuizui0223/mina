@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m pip install numpy pandas scipy openpyxl
+      - run: python -m pip install numpy pandas scipy openpyxl lxml html5lib beautifulsoup4
       - name: Test frozen normalized association
         run: python research/climate-penguin/signy_seal_interaction_v1/analyze.py --selftest
       - name: Fetch official archives without opening joint outcomes
@@ -43,6 +43,8 @@ jobs:
           EOF
       - name: Record original-source schema and digest receipt
         run: python research/climate-penguin/signy_seal_interaction_v1/audit_sources.py --source build/signy_seal_source --out build/signy_seal_receipts/source_receipt.json
+      - name: Review actual headers and support-only penguin roster
+        run: python research/climate-penguin/signy_seal_interaction_v1/schema_review.py --source build/signy_seal_source --out build/signy_seal_receipts/schema_review.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
