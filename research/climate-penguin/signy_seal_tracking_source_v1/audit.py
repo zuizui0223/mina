@@ -1,6 +1,6 @@
 """Count concurrent source support only; do not estimate spatial overlap."""
 from __future__ import annotations
-import argparse,hashlib,importlib.util,json,re,zipfile
+import argparse,hashlib,importlib.util,io,json,re,zipfile
 from collections import defaultdict
 from pathlib import Path
 import pandas as pd
@@ -14,6 +14,20 @@ def hashfile(p,kind):
 def field(df,names):
     present=[c for c in names if c in df.columns]
     return present[0] if len(present)==1 else None
+def read_original_csv(z,name,**kwargs):
+    raw=z.read(name)
+    # Decode strictly, checking the entire member even for a header-only read.
+    # The original archive is already pinned; never ignore or replace bytes.
+    errors=[]
+    for encoding in ("utf-8-sig","cp1252"):
+        try:
+            decoded=raw.decode(encoding,errors="strict")
+            return pd.read_csv(io.StringIO(decoded),**kwargs),{
+                "member":name,"encoding":encoding,"member_sha256":hashlib.sha256(raw).hexdigest(),
+                "previous_decode_errors":errors}
+        except UnicodeDecodeError as e:
+            errors.append(str(e))
+    raise ValueError(f"Unsupported source encoding for {name}: {errors}")
 def read_seals(path):
     if hashfile(path,"md5")!=MD5:raise ValueError("RAATD archive MD5 drift")
     with zipfile.ZipFile(path) as z:
@@ -22,11 +36,11 @@ def read_seals(path):
         meta=[]
         for n in names:
             if not n.lower().endswith(".csv") or not re.search("meta",n,re.I):continue
-            h=pd.read_csv(z.open(n),nrows=0)
+            h,_=read_original_csv(z,n,nrows=0)
             if {"individual_id","abbreviated_name"}<=set(h.columns):meta.append(n)
         if len(tracks)!=1 or len(meta)!=1:raise ValueError("RAATD member ambiguity "+str({"tracks":tracks,"metadata":meta,"csv":[n for n in names if n.endswith(".csv")]}))
-        t=pd.read_csv(z.open(tracks[0]),low_memory=False)
-        m=pd.read_csv(z.open(meta[0]),low_memory=False)
+        t,track_decode=read_original_csv(z,tracks[0],low_memory=False)
+        m,meta_decode=read_original_csv(z,meta[0],low_memory=False)
     need={"individual_id","date","decimal_latitude","decimal_longitude"}
     if not need<=set(t):raise ValueError("RAATD tracking schema changed")
     m=m.loc[m.abbreviated_name.eq("ANFS")].copy()
@@ -49,7 +63,7 @@ def read_seals(path):
         la=pd.to_numeric(m[fields["lat"]],errors="coerce");lo=pd.to_numeric(m[fields["lon"]],errors="coerce")
         select=m[fields["sex"]].astype(str).str.strip().str.lower().isin(["m","male"])&la.between(-61.5,-60)&lo.between(-47,-44)&ds.dt.year.eq(2016)&ds.dt.month.eq(1)
         local_ids=set(m.loc[select,"individual_id"])
-    r={"archive_md5":MD5,"archive_sha256":hashfile(path,"sha256"),"track_member":tracks[0],"metadata_member":meta[0],"metadata_columns":list(m.columns),"mapped_fields":fields,"candidate_cohort_metadata":candidates[cohort_cols].fillna("").astype(str).to_dict("records"),"local_male_ids":sorted(map(str,local_ids)),"all_seal_ids_in_box":int(t.individual_id.nunique())}
+    r={"archive_md5":MD5,"archive_sha256":hashfile(path,"sha256"),"track_member":tracks[0],"metadata_member":meta[0],"metadata_columns":list(m.columns),"track_decode":track_decode,"metadata_decode":meta_decode,"mapped_fields":fields,"candidate_cohort_metadata":candidates[cohort_cols].fillna("").astype(str).to_dict("records"),"local_male_ids":sorted(map(str,local_ids)),"all_seal_ids_in_box":int(t.individual_id.nunique())}
     return t,local_ids,r
 def penguins(path):
     s=ROOT/"research/climate-penguin/work/climate_penguin/signy_gps_krill_access_v1.py"
@@ -83,8 +97,10 @@ def main():
                 for sp in ("Adelie","Chinstrap"):unique[sp].update(pdays[sp,day])
                 unique["local_male_seals"].update(sl)
         n={sp:len(unique[sp]) for sp in ("Adelie","Chinstrap","local_male_seals")}
-        report.update(status="DESIGN_SUPPORT_REVIEW_REQUIRED" if len(eligible)>=5 and min(n.values())>=5 else "NO_GO_FIXED_COMMON_DATE_GATE",eligible_days=eligible,unique_tracks_on_eligible_days=n,daily_support=daily)
+        report.update(status=("METADATA_MAPPING_REVIEW_REQUIRED" if not all(seal["mapped_fields"].values()) else "DESIGN_SUPPORT_REVIEW_REQUIRED" if len(eligible)>=5 and min(n.values())>=5 else "NO_GO_FIXED_COMMON_DATE_GATE"),eligible_days=eligible,unique_tracks_on_eligible_days=n,daily_support=daily)
     except Exception as e:report["error"]=str(e)
     (a.out/"source_support.json").write_text(json.dumps(report,indent=2)+"\n")
     print(json.dumps({k:v for k,v in report.items() if k not in ("seal_receipt","gps_receipt","daily_support")}))
+    if "seal_receipt" in report:
+        print(json.dumps({k:v for k,v in report["seal_receipt"].items() if k not in ("candidate_cohort_metadata","local_male_ids")}))
 if __name__=="__main__":main()
