@@ -1,0 +1,62 @@
+name: Palmer penguin GPS original header gate
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/palmer-penguin-gps-header-gate.yml'
+permissions:
+  contents: read
+jobs:
+  header:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Recover exact publisher data file links and inspect original metadata
+        run: |
+          python - <<'PY'
+          import csv, hashlib, io, json, pathlib, re
+          from urllib.request import Request, urlopen
+          from urllib.parse import urljoin,urlsplit
+          from html.parser import HTMLParser
+          out=pathlib.Path('/tmp/penguin-gps-header');out.mkdir()
+          base='https://www.usap-dc.org/view/dataset/602035'
+          class Parser(HTMLParser):
+              def __init__(self):super().__init__();self.items=[]
+              def handle_starttag(self,t,a):
+                  d=dict(a)
+                  if t=='input' and d.get('name')=='dl_checkbox':self.items.append(d)
+          r={'scope':'source metadata and bounded original CSV header only; no ecological inference','files':{}}
+          with urlopen(base,timeout=20) as f:raw=f.read(2000000)
+          p=Parser();p.feed(raw.decode('utf8','replace'))
+          for name in ['Header_Readme.csv','PalmerPenguinTrackingData_2019-20.csv']:
+              links=[x.get('value','') for x in p.items if x.get('id','')=='cbx_'+name]
+              a={'links':links};r['files'][name]=a
+              try:
+                  assert len(links)==1
+                  url=urljoin(base,links[0]);assert urlsplit(url).hostname=='www.usap-dc.org'
+                  meta=name=='Header_Readme.csv'
+                  req=Request(url,headers={} if meta else {'Range':'bytes=0-16383'})
+                  with urlopen(req,timeout=25) as f:
+                      data=f.read(65537 if meta else 16384)
+                      a.update(status=f.status,content_type=f.headers.get('Content-Type'),content_range=f.headers.get('Content-Range'),bytes_read=len(data))
+                  if meta:
+                      assert 0<len(data)<=65536
+                      a['md5']=hashlib.md5(data).hexdigest()
+                      assert a['md5']=='bd79f9c720043b32aedc60d19b8d336f'
+                      (out/name).write_bytes(data)
+                      a['metadata_text']=data.decode('utf-8-sig','replace')
+                  else:
+                      line=data.splitlines()[0].decode('utf-8-sig','replace')
+                      assert '<html' not in line.lower() and ',' in line
+                      a['header']=next(csv.reader([line]))
+                      (out/'tracking_header.txt').write_text(line+'\n')
+                  a['retrieved']=True
+              except Exception as e:a['error']=repr(e)[:500];a['retrieved']=False
+          (out/'receipt.json').write_text(json.dumps(r,indent=2))
+          print(json.dumps(r,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: penguin-gps-original-header
+          path: /tmp/penguin-gps-header/
+          retention-days: 14
