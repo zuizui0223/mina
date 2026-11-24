@@ -1,0 +1,21 @@
+name: East Antarctic independent colony history catalogue
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/east-colony-history-catalogue.yml'
+      - 'research/climate-penguin/multispecies_vegetation_20261124/audit_east_colony_child_catalogues.py'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - run: python research/climate-penguin/multispecies_vegetation_20261124/audit_east_colony_child_catalogues.py /tmp/east-colony-catalogue
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: east-colony-history-catalogue
+          path: /tmp/east-colony-catalogue/
+          retention-days: 14
