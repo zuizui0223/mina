@@ -1,0 +1,8 @@
+# East Antarctic independent penguin GIS object inventory
+
+Executed [official public EDS object metadata run 45345023683](https://github.com/zuizui0223/mina/actions/runs/45345023683); artifact 14896739312. Both datasets Approved and public, metadata and object-list GET HTTP 200. No original shape bytes obtained.
+
+* EDS 1539 (Shirley Island, DOI 10.4225/15/5549ADA38E017): official reported 266.50 kB, 10 listed objects including SI_ADPE_colonies.shp 218220 bytes, dbf 40022, prj 409, shx 980. Priority for exact within-island active/relic comparison, subject to colony history and plant map support. Download https://data.aad.gov.au/eds/1539/download. Status categories describe occupancy in 2005/06, not confirmed present-day occupancy.
+* EDS 4399 (East Antarctica, DOI 10.4225/15/58f59b52edfef): official reported 292.15 kB, 5 objects. Index `Adelie colony boundaries East Antarctica 1981-2017.xlsx` 79459 bytes plus data-use statement, XML, LICENSE and README. No polygons in parent inventory; obtain individual child group/season datasets referenced by spreadsheet and metadata. Download https://data.aad.gov.au/eds/4399/download.
+
+Both download pages returned 1211-byte JavaScript application shells on earlier GET, not ZIP archives. Use publisher UI legitimately. Do not claim independent response estimate until original shapefiles and relevant repeated occupancy dates are verified. No ecological outcomes opened in this source audit.
