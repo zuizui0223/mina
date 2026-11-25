@@ -1,0 +1,29 @@
+name: Unified breeding main figures
+on:
+  push:
+    branches: [analysis/unified-breeding-reorganization-20261125]
+    paths:
+      - 'research/unified_breeding_reorganization_v1/render_main_figures.py'
+      - '.github/workflows/unified-breeding-main-figures.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 58fd7f4d0246c19344098dc5ce309343514346d2
+          path: pinned-ross
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy matplotlib pillow
+      - run: python research/unified_breeding_reorganization_v1/render_main_figures.py --ross pinned-ross/external/ross_island_v2_frozen_counts.csv --out build/unified-figures
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unified-main-figures-v01
+          path: build/unified-figures/
