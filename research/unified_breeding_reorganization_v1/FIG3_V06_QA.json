@@ -1,0 +1,46 @@
+{
+  "status": "RENDERED_V06_MAIN_FIG3",
+  "inputs": {
+    "GEOGRAPHIC_HISTORICAL_V10_SUMMARY.csv": "0c67ee0e900a87f834ad94c870621b7782c0ffdd00a31660a218a8975e825267",
+    "GEOGRAPHIC_FUTURE_SSP585_LATE_V10_SUMMARY.csv": "f12a4f6950422e05ecb75d42101672855aac882e02b22573f864d6c07a88c858",
+    "ANTARCTIC_V8_FIGURE_EXTRACT.csv": "b50527790b414d0e7fec66cc240962a96ea007dc63e2cdae783004021a7e77e9",
+    "GEOGRAPHIC_COVERAGE_FIG3_V0_6.csv": "62a7553a1caf10406ed910c8b53990d3f7d60f3878bac2aac986fd02d4ab5b32"
+  },
+  "figures": {
+    "A3_aligned_change_fields_geography.png": {
+      "sha256": "bbf4e43a9773e78e07dace1c27a78bdb54877d73a0e19d287a0da78f9a910d0d",
+      "bytes": 366794,
+      "pixels": [
+        3226,
+        2296
+      ]
+    },
+    "A3_aligned_change_fields_geography.svg": {
+      "sha256": "755c609c55194dadf649d3dee530c01f214029e3dc269d2f1e906bf751268527",
+      "bytes": 48118
+    }
+  },
+  "historical": [
+    0.370321841,
+    -0.117256037,
+    0.067174641,
+    -0.19482649
+  ],
+  "projected": [
+    -0.140559218,
+    1.465707948,
+    -0.163113924,
+    0.469829309
+  ],
+  "max_model_mean_error": 3.3333341642460823e-10,
+  "limits": "Selected SSP5-8.5 2081–2100 relative to model 1995–2014; historical periods differ. Model spread, not CI. Non-independent nested rosters, no ecological benefits or predictions.",
+  "execution": {
+    "run_id": 45659195769,
+    "head_sha": "2dc7f21550e6a100d5d3e25a923ede475f9b5b95",
+    "job_id": 139364079373,
+    "conclusion": "success",
+    "artifact_id": 15043917914,
+    "artifact_zip_digest": "sha256:a2e448d268e00013026178355f490c5d0fff1fc2e9da13638a95a895c2744c5d",
+    "verification": "Actual downloaded ZIP SHA256 and CRC, PNG/SVG member SHA256/bytes, PNG dimensions, SVG parse and rendered visual review passed. Original full V10 coverage and JSON hashes independently confirmed locally; historical short duplicate 25km SIC row excluded, retaining identical 100km row. No new ecological fit."
+  }
+}
