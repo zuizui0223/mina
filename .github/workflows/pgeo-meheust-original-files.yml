@@ -18,7 +18,7 @@ jobs:
       - name: Retrieve public original files against published checksums
         run: |
           python - <<'PY'
-          import csv,hashlib,io,json
+          import csv,hashlib,io,json,zipfile
           from pathlib import Path
           from urllib.parse import urlparse,urljoin
           import requests
@@ -34,9 +34,10 @@ jobs:
           def get(u,limit):
               for hop in range(5):
                   p=urlparse(u);h=p.hostname or ""
-                  if p.scheme!="https" or p.username or p.password or not (h=="figshare.com" or h.endswith(".figshare.com") or h.endswith(".amazonaws.com") or h.endswith(".figsh.com")):raise ValueError("unreviewed host")
+                  if p.scheme!="https" or p.username or p.password or not (h=="figshare.com" or h.endswith(".figshare.com") or h.endswith(".amazonaws.com") or h.endswith(".figsh.com")):raise ValueError("unreviewed scheme/host: "+p.scheme+"://"+h)
                   with requests.get(u,timeout=(15,60),allow_redirects=False,stream=True) as r:
-                      if r.is_redirect:u=urljoin(u,r.headers.get("Location",""));continue
+                      if r.is_redirect:
+                          u=urljoin(u,r.headers.get("Location",""));print("public redirect host",urlparse(u).scheme,urlparse(u).hostname);continue
                       r.raise_for_status()
                       b=bytearray()
                       for x in r.iter_content(32768):
@@ -52,10 +53,23 @@ jobs:
               assert any("MEHEUST" in a["full_name"].upper() for a in d["authors"])
               ff={f["name"]:f for f in d["files"]};assert set(ff)==set(EXPECT)
               R["metadata_sha256"]=hashlib.sha256(b).hexdigest();R["license"]=d["license"]
+              # Official public version ZIP endpoint; no authentication or access bypass.
+              R["metadata_file_links"]={k:str(f.get("download_url") or "").split("?")[0] for k,f in ff.items()}
+              package=None
+              try:
+                  rawzip=get("https://api.figshare.com/v2/articles/22341229/versions/1/download",2_000_000)
+                  with zipfile.ZipFile(io.BytesIO(rawzip)) as z:
+                      assert z.testzip() is None
+                      names={Path(x.filename).name:x for x in z.infolist() if not x.is_dir()}
+                      assert set(names)==set(EXPECT) and sum(x.file_size for x in names.values())<=500000
+                      package={k:z.read(x) for k,x in names.items()}
+                  R["public_version_zip_sha256"]=hashlib.sha256(rawzip).hexdigest()
+              except Exception as e:
+                  R["version_zip_error"]=type(e).__name__+": "+str(e)[:300]
               for name in ["README.md","raw_109_demo.csv","coordinates.csv","env_variables.csv","key_bs_zspa.csv","key_b_s.csv","main_code.R"]:
                   f=ff[name];i,size,md5=EXPECT[name];assert (f["id"],f["size"],f["computed_md5"],f["supplied_md5"])==(i,size,md5,md5)
                   url=f.get("download_url") or "https://api.figshare.com/v2/file/download/"+str(i)
-                  raw=get(url,size+1)
+                  raw=package[name] if package is not None else get("https://api.figshare.com/v2/file/download/"+str(i),size+1)
                   assert len(raw)==size and hashlib.md5(raw).hexdigest()==md5, name+" content mismatch"
                   (OUT/name).write_bytes(raw)
                   entry={"file_id":i,"bytes":len(raw),"md5":md5,"sha256":hashlib.sha256(raw).hexdigest(),"source_url":url.split("?")[0]}
