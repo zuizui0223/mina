@@ -1,0 +1,220 @@
+{
+  "status": "V22_2023_DIRECT_UAV_NESTS_AUDITED_EXPLORATORY",
+  "original_2023_nest_point_rows_opened": 409012,
+  "source_empty_record_audit": {
+    "macaroni_colony_boundaries_2023": {
+      "original_shape_records": 170,
+      "original_nonempty_polygons": 169,
+      "empty_placeholder_skipped_without_repair": 1,
+      "source_maca_polygon_geometry_repaired": false
+    }
+  },
+  "year": "2023-12-14",
+  "source_doi": "10.5285/7220dc6b-2f52-4160-a6c0-e57c50963308",
+  "historical_baseline": "Jan 2011 redigitization consensus pure CHPE, Jan 2016 maca gain",
+  "original_V18_T_area_m2": {
+    "0": 9938.357,
+    "1": 7003.755,
+    "2": 4753.571,
+    "5": 1216.517
+  },
+  "surveyed_T_area_m2": {
+    "0": 9938.357,
+    "1": 7003.755,
+    "2": 4753.571,
+    "5": 1216.517
+  },
+  "fraction_V18_T_observed_by_2023_survey": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "5": 1
+  },
+  "evaluation_regions": {
+    "T_0m": {
+      "area_m2": 9938.357,
+      "Macaroni_2023_nest_point_rows": 5491,
+      "Chinstrap_2023_nest_point_rows": 3079,
+      "Maca_fraction_of_two_species_nest_points": 0.640723,
+      "Maca_record_point_density_per_ha": 5525.058,
+      "Chinstrap_record_point_density_per_ha": 3098.098,
+      "not_a_2023_breeding_pair_estimate": true
+    },
+    "T_1m": {
+      "area_m2": 7003.755,
+      "Macaroni_2023_nest_point_rows": 3473,
+      "Chinstrap_2023_nest_point_rows": 2418,
+      "Maca_fraction_of_two_species_nest_points": 0.589543,
+      "Maca_record_point_density_per_ha": 4958.768,
+      "Chinstrap_record_point_density_per_ha": 3452.434,
+      "not_a_2023_breeding_pair_estimate": true
+    },
+    "T_2m": {
+      "area_m2": 4753.571,
+      "Macaroni_2023_nest_point_rows": 2049,
+      "Chinstrap_2023_nest_point_rows": 1903,
+      "Maca_fraction_of_two_species_nest_points": 0.518472,
+      "Maca_record_point_density_per_ha": 4310.444,
+      "Chinstrap_record_point_density_per_ha": 4003.306,
+      "not_a_2023_breeding_pair_estimate": true
+    },
+    "T_5m": {
+      "area_m2": 1216.517,
+      "Macaroni_2023_nest_point_rows": 272,
+      "Chinstrap_2023_nest_point_rows": 720,
+      "Maca_fraction_of_two_species_nest_points": 0.274194,
+      "Maca_record_point_density_per_ha": 2235.891,
+      "Chinstrap_record_point_density_per_ha": 5918.536,
+      "not_a_2023_breeding_pair_estimate": true
+    },
+    "P_consensus_persistent_Chinstrap": {
+      "area_m2": 200000.213,
+      "Macaroni_2023_nest_point_rows": 7361,
+      "Chinstrap_2023_nest_point_rows": 66793,
+      "Maca_fraction_of_two_species_nest_points": 0.099266,
+      "Maca_record_point_density_per_ha": 368.05,
+      "Chinstrap_record_point_density_per_ha": 3339.646,
+      "not_a_2023_breeding_pair_estimate": true
+    },
+    "Q_persistent_Macaroni": {
+      "area_m2": 75962.053,
+      "Macaroni_2023_nest_point_rows": 129726,
+      "Chinstrap_2023_nest_point_rows": 1063,
+      "Maca_fraction_of_two_species_nest_points": 0.991872,
+      "Maca_record_point_density_per_ha": 17077.737,
+      "Chinstrap_record_point_density_per_ha": 139.938,
+      "not_a_2023_breeding_pair_estimate": true
+    }
+  },
+  "source_point_QA": {
+    "Macaroni": {
+      "original_source_point_rows": 214481,
+      "distinct_exact_coordinates": 214464,
+      "exact_duplicate_coordinate_rows": 17,
+      "E_range_m": [
+        462589.783,
+        466344.567
+      ],
+      "N_range_m": [
+        3758339.846,
+        3762525.922
+      ]
+    },
+    "Chinstrap": {
+      "original_source_point_rows": 194531,
+      "distinct_exact_coordinates": 193858,
+      "exact_duplicate_coordinate_rows": 673,
+      "E_range_m": [
+        462555.873,
+        466353.184
+      ],
+      "N_range_m": [
+        3758279.108,
+        3762588.794
+      ]
+    }
+  },
+  "same_2023_species_boundary_QA": {
+    "Macaroni": {
+      "within_5m_same_species_colony_polygon_rows": 214436,
+      "fraction_within_5m_same_species_polygon": 0.99979,
+      "within_50m_2023_coastline_land_rows": 214481,
+      "fraction_on_or_near_land": 1,
+      "required_minimum_fraction": 0.9
+    },
+    "Chinstrap": {
+      "within_5m_same_species_colony_polygon_rows": 194527,
+      "fraction_within_5m_same_species_polygon": 0.999979,
+      "within_50m_2023_coastline_land_rows": 194531,
+      "fraction_on_or_near_land": 1,
+      "required_minimum_fraction": 0.9
+    }
+  },
+  "region_point_counts_by_species": {
+    "Macaroni": {
+      "T_0m": {
+        "nest_point_rows": 5491,
+        "distinct_exact_coordinate_points": 5491,
+        "occupied_5m_grid_cells": 370,
+        "occupied_10m_grid_cells": 187
+      },
+      "T_1m": {
+        "nest_point_rows": 3473,
+        "distinct_exact_coordinate_points": 3473,
+        "occupied_5m_grid_cells": 270,
+        "occupied_10m_grid_cells": 139
+      },
+      "T_2m": {
+        "nest_point_rows": 2049,
+        "distinct_exact_coordinate_points": 2049,
+        "occupied_5m_grid_cells": 168,
+        "occupied_10m_grid_cells": 91
+      },
+      "T_5m": {
+        "nest_point_rows": 272,
+        "distinct_exact_coordinate_points": 272,
+        "occupied_5m_grid_cells": 30,
+        "occupied_10m_grid_cells": 21
+      },
+      "P_consensus_persistent_Chinstrap": {
+        "nest_point_rows": 7361,
+        "distinct_exact_coordinate_points": 7360,
+        "occupied_5m_grid_cells": 527,
+        "occupied_10m_grid_cells": 270
+      },
+      "Q_persistent_Macaroni": {
+        "nest_point_rows": 129726,
+        "distinct_exact_coordinate_points": 129722,
+        "occupied_5m_grid_cells": 3581,
+        "occupied_10m_grid_cells": 1166
+      }
+    },
+    "Chinstrap": {
+      "T_0m": {
+        "nest_point_rows": 3079,
+        "distinct_exact_coordinate_points": 3077,
+        "occupied_5m_grid_cells": 299,
+        "occupied_10m_grid_cells": 146
+      },
+      "T_1m": {
+        "nest_point_rows": 2418,
+        "distinct_exact_coordinate_points": 2417,
+        "occupied_5m_grid_cells": 232,
+        "occupied_10m_grid_cells": 111
+      },
+      "T_2m": {
+        "nest_point_rows": 1903,
+        "distinct_exact_coordinate_points": 1902,
+        "occupied_5m_grid_cells": 188,
+        "occupied_10m_grid_cells": 95
+      },
+      "T_5m": {
+        "nest_point_rows": 720,
+        "distinct_exact_coordinate_points": 719,
+        "occupied_5m_grid_cells": 69,
+        "occupied_10m_grid_cells": 37
+      },
+      "P_consensus_persistent_Chinstrap": {
+        "nest_point_rows": 66793,
+        "distinct_exact_coordinate_points": 66389,
+        "occupied_5m_grid_cells": 5898,
+        "occupied_10m_grid_cells": 2439
+      },
+      "Q_persistent_Macaroni": {
+        "nest_point_rows": 1063,
+        "distinct_exact_coordinate_points": 1061,
+        "occupied_5m_grid_cells": 168,
+        "occupied_10m_grid_cells": 110
+      }
+    }
+  },
+  "note": "Semi-automatically classified 2023 nest point observations, NOT individually tracked penguins, 2011 new founders or a causal competition test.",
+  "2023_mac_nest_points_in_V18_T0": 5491,
+  "2023_chinstrap_nest_points_in_V18_T0": 3079,
+  "2023_mac_nest_points_in_V18_T5": 272,
+  "original_2022_chinstrap_uav_rows_read": 0,
+  "ci_run_id": 38424638804,
+  "ci_job_id": 115390696963,
+  "original_full_artifact_url": "https://github.com/zuizui0223/mina/actions/runs/38424638804",
+  "exploratory_not_causal": true
+}

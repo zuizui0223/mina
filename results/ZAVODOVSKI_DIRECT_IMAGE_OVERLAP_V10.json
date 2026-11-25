@@ -1,0 +1,72 @@
+{
+  "status": "DESCRIPTIVE_GIS_OVERLAY_SOURCE_AND_GEOMETRY_GATED",
+  "source_doi": "10.5285/7220dc6b-2f52-4160-a6c0-e57c50963308",
+  "original_biological_polygons_opened": 6,
+  "dictionary_rows": 28,
+  "downloaded_original_shapefile_components": 45,
+  "note": "Underlying survey-footprint uncertainty and image registration persist. No competition or legacy effect identified.",
+  "feature_counts": {
+    "2011/chinstrap_colony_boundaries_2011": 509,
+    "2011/macaroni_colony_boundaries_2011": 86,
+    "2011/cloud_cover_2011": 5,
+    "2016/chinstrap_colony_boundaries_2016": 411,
+    "2016/macaroni_colony_boundaries_2016": 65,
+    "2016/cloud_cover_2016": 1,
+    "2025/chinstrap_colony_boundaries_2025": 1094,
+    "2025/macaroni_colony_boundaries_2025": 131,
+    "2025/cloud_cover_2025": 2
+  },
+  "comparisons": {
+    "2011_2016": {
+      "units": "m2 (provided audited projected CRS)",
+      "chin_area_early_m2": 756473.78491,
+      "chin_area_late_m2": 490804.490298,
+      "mac_area_early_m2": 92338.767073,
+      "mac_area_late_m2": 117048.235376,
+      "chin_lost_area_m2": 345018.59141,
+      "mac_gained_area_m2": 41086.182154,
+      "mac_gain_on_chin_lost_m2": 27511.989814,
+      "mac_gain_on_persistent_chin_m2": 138.993323,
+      "mac_gain_without_chin_at_start_m2": 13435.198974,
+      "chin_gain_on_mac_lost_m2": 11906.143002,
+      "exchange_fraction_of_mac_gain": 0.669617,
+      "reciprocal_exchange_fraction_of_chin_loss": 0.079741,
+      "status": "DESCRIPTIVE_ONLY_NO_CAUSAL_IDENTIFICATION",
+      "comparison": [
+        2011,
+        2016
+      ],
+      "common_visible_support_m2": 929279.421085,
+      "excluded_cloud_in_occupied_envelope_m2": 125208.427746,
+      "interpretation": "APPARENT_POLYGON_OVERLAY_ONLY_NO_CAUSAL_INFERENCE"
+    },
+    "2016_2025": {
+      "units": "m2 (provided audited projected CRS)",
+      "chin_area_early_m2": 520236.779817,
+      "chin_area_late_m2": 208411.007068,
+      "mac_area_early_m2": 122249.069747,
+      "mac_area_late_m2": 122013.821067,
+      "chin_lost_area_m2": 372805.612372,
+      "mac_gained_area_m2": 31521.275114,
+      "mac_gain_on_chin_lost_m2": 21378.117622,
+      "mac_gain_on_persistent_chin_m2": 626.271224,
+      "mac_gain_without_chin_at_start_m2": 9516.886306,
+      "chin_gain_on_mac_lost_m2": 7397.211373,
+      "exchange_fraction_of_mac_gain": 0.678212,
+      "reciprocal_exchange_fraction_of_chin_loss": 0.057344,
+      "status": "DESCRIPTIVE_ONLY_NO_CAUSAL_IDENTIFICATION",
+      "comparison": [
+        2016,
+        2025
+      ],
+      "common_visible_support_m2": 704895.972298,
+      "excluded_cloud_in_occupied_envelope_m2": 24780.019424,
+      "interpretation": "APPARENT_POLYGON_OVERLAY_ONLY_NO_CAUSAL_INFERENCE"
+    }
+  },
+  "ci_run_id": 38364797404,
+  "ci_job_id": 115187229739,
+  "source_dictionary_path": "sources/bas_zavodovski_layer_descriptions_v1.csv",
+  "note_extended": "Observational polygon overlay, incomplete survey-footprint and registration proof, not a causal site-reuse test. Pairs use different common-cloud masks: 2016 area in each pair is not directly comparable.",
+  "original_artifact_url": "https://github.com/zuizui0223/mina/actions/runs/38364797404/artifacts/11796630438"
+}

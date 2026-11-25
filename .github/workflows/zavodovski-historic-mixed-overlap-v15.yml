@@ -1,0 +1,32 @@
+name: Zavodovski historical mixed patch versus apparent new macaroni V15
+on:
+  pull_request:
+    paths:
+      - 'scripts/mixed_zavodovski_2011_historical_overlap_v15.py'
+      - 'tests/test_zavodovski_historic_mixed_overlap_v15.py'
+      - '.github/workflows/zavodovski-historic-mixed-overlap-v15.yml'
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'scripts/mixed_zavodovski_2011_historical_overlap_v15.py'
+      - 'tests/test_zavodovski_historic_mixed_overlap_v15.py'
+      - '.github/workflows/zavodovski-historic-mixed-overlap-v15.yml'
+jobs:
+  original-mixed:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest requests shapely pyshp pyproj
+      - run: python -m pytest -q tests/test_zavodovski_historic_mixed_overlap_v15.py
+      - run: python scripts/mixed_zavodovski_2011_historical_overlap_v15.py --out /tmp/zavodovski_historic_mixed_v15.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-historic-mixed-v15
+          path: /tmp/zavodovski_historic_mixed_v15.json

@@ -1,0 +1,26 @@
+name: Zavodovski archive documentation link audit
+on:
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'scripts/probe_zavodovski_archive_documentation_v7.py'
+      - 'tests/test_zavodovski_archive_documentation_v7.py'
+      - '.github/workflows/zavodovski-archive-documentation-v7.yml'
+  workflow_dispatch:
+jobs:
+  documentation-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests/test_zavodovski_archive_documentation_v7.py
+      - run: python scripts/probe_zavodovski_archive_documentation_v7.py --out /tmp/zavodovski_archive_documentation_v7.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zavodovski-documentation-link-audit-v7
+          path: /tmp/zavodovski_archive_documentation_v7.json

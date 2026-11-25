@@ -1,0 +1,140 @@
+{
+  "status": "POST_OUTCOME_DIAGNOSTIC_ONLY",
+  "original_biological_polygons_opened": 6,
+  "same_year_overlap": {
+    "2011": {
+      "C_and_M_m2": 116.097,
+      "M_m2": 94454.421,
+      "C_and_M_fraction_of_M": 0.001229
+    },
+    "2016": {
+      "C_and_M_m2": 438.893,
+      "M_m2": 122249.07,
+      "C_and_M_fraction_of_M": 0.00359
+    },
+    "2025": {
+      "C_and_M_m2": 896.843,
+      "M_m2": 127834.793,
+      "C_and_M_fraction_of_M": 0.007016
+    }
+  },
+  "pairs": {
+    "2011_2016": {
+      "baseline_E": 0.669617,
+      "baseline_mac_gain_m2": 41086.182,
+      "baseline_chin_loss_m2": 345018.591,
+      "positional_shifts": [
+        {
+          "m": 2,
+          "min": 0.557399,
+          "median": 0.565828,
+          "max": 0.571987,
+          "n_offsets": 8
+        },
+        {
+          "m": 5,
+          "min": 0.416904,
+          "median": 0.435762,
+          "max": 0.444757,
+          "n_offsets": 8
+        },
+        {
+          "m": 10,
+          "min": 0.278809,
+          "median": 0.300514,
+          "max": 0.315373,
+          "n_offsets": 8
+        },
+        {
+          "m": 20,
+          "min": 0.176866,
+          "median": 0.210771,
+          "max": 0.225691,
+          "n_offsets": 8
+        }
+      ],
+      "patch_core": [
+        {
+          "m": 1,
+          "core_E": 0.642227,
+          "gain_core_m2": 28966.154
+        },
+        {
+          "m": 2,
+          "core_E": 0.604296,
+          "gain_core_m2": 19961.179
+        },
+        {
+          "m": 5,
+          "core_E": 0.417032,
+          "gain_core_m2": 6293.468
+        },
+        {
+          "m": 10,
+          "core_E": 0.159822,
+          "gain_core_m2": 961.125
+        }
+      ]
+    },
+    "2016_2025": {
+      "baseline_E": 0.678212,
+      "baseline_mac_gain_m2": 31521.275,
+      "baseline_chin_loss_m2": 372805.612,
+      "positional_shifts": [
+        {
+          "m": 2,
+          "min": 0.590349,
+          "median": 0.601864,
+          "max": 0.617013,
+          "n_offsets": 8
+        },
+        {
+          "m": 5,
+          "min": 0.471447,
+          "median": 0.492126,
+          "max": 0.52244,
+          "n_offsets": 8
+        },
+        {
+          "m": 10,
+          "min": 0.352574,
+          "median": 0.378637,
+          "max": 0.411685,
+          "n_offsets": 8
+        },
+        {
+          "m": 20,
+          "min": 0.261505,
+          "median": 0.286701,
+          "max": 0.318246,
+          "n_offsets": 8
+        }
+      ],
+      "patch_core": [
+        {
+          "m": 1,
+          "core_E": 0.683293,
+          "gain_core_m2": 21025.502
+        },
+        {
+          "m": 2,
+          "core_E": 0.678777,
+          "gain_core_m2": 13857.275
+        },
+        {
+          "m": 5,
+          "core_E": 0.636676,
+          "gain_core_m2": 3951.235
+        },
+        {
+          "m": 10,
+          "core_E": 0.903488,
+          "gain_core_m2": 831.129
+        }
+      ]
+    }
+  },
+  "ci_run_id": 38365416086,
+  "original_v10_run_id": 38364797404,
+  "interpretation_limit": "Eight synthetic shifts are not observed registration errors or ecological replicates; core analysis is geometrically size-biased, and unobserved cloud/noncoverage errors remain."
+}

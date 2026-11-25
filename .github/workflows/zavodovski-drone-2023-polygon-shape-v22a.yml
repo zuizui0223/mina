@@ -1,0 +1,33 @@
+name: Zavodovski V22a source-only empty polygon audit
+on:
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'scripts/audit_zavodovski_2023_polygon_empty_source_v22a.py'
+      - 'tests/test_zavodovski_2023_polygon_empty_source_v22a.py'
+      - '.github/workflows/zavodovski-drone-2023-polygon-shape-v22a.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_zavodovski_2023_polygon_empty_source_v22a.py'
+      - 'tests/test_zavodovski_2023_polygon_empty_source_v22a.py'
+      - '.github/workflows/zavodovski-drone-2023-polygon-shape-v22a.yml'
+jobs:
+  original-source-shape-counts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest requests shapely pyshp pyproj
+      - run: python -m pytest -q tests/test_zavodovski_2023_polygon_empty_source_v22a.py
+      - name: Count original 2023 polygon empty shape records without any bird point opening
+        run: python scripts/audit_zavodovski_2023_polygon_empty_source_v22a.py --out /tmp/zavodovski_2023_polygon_format_v22a.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-polygon-format-before-2023-points-v22a
+          path: /tmp/zavodovski_2023_polygon_format_v22a.json

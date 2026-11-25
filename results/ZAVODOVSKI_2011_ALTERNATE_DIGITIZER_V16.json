@@ -1,0 +1,82 @@
+{
+  "status": "V16_EXPLORATORY_SAME_SCENE_DIGITIZATION_SENSITIVITY",
+  "historical_2011_geometry_rows_opened": 506,
+  "source_doi": "10.5285/7220dc6b-2f52-4160-a6c0-e57c50963308",
+  "image_dates": [
+    "2011-01-08",
+    "2016-01-09"
+  ],
+  "historical_mixed_not_assigned_to_a_species": true,
+  "area_of_all_support_m2": 1128537.28,
+  "historic_mixed_within_support_m2": 171736.763,
+  "historic_pure_code_intersection_m2": 206.561,
+  "area_of_unambiguous_support_m2": 956593.956,
+  "same_scene_2011_per_species_agreement_excluding_mixed": {
+    "chinstrap": {
+      "jaccard": 0.540747,
+      "intersection_m2": 442255.476,
+      "union_m2": 817859.609,
+      "revised_area_m2": 616245.716,
+      "historic_area_m2": 643869.369,
+      "fraction_revised_in_historic": 0.717661,
+      "fraction_historic_in_revised": 0.686871
+    },
+    "macaroni": {
+      "jaccard": 0.512006,
+      "intersection_m2": 55292.589,
+      "union_m2": 107992.137,
+      "revised_area_m2": 87313.341,
+      "historic_area_m2": 75971.385,
+      "fraction_revised_in_historic": 0.633266,
+      "fraction_historic_in_revised": 0.727808
+    }
+  },
+  "revised_2011_by_historic_class_within_common_cloud_free_support_m2": {
+    "chinstrap": {
+      "CHPE": 442333.346,
+      "MCPE": 12952.067,
+      "MIXED": 140159.919
+    },
+    "macaroni": {
+      "CHPE": 10118.496,
+      "MCPE": 55410.178,
+      "MIXED": 4907.838
+    }
+  },
+  "same_support_alternative_2011_digitization": {
+    "all_support_revised_E_check": 0.669617,
+    "all_support_revised_F_check": 0.079741,
+    "nonmixed_support_revised_2011": {
+      "E": 0.626407,
+      "F": 0.073993,
+      "mac_gain_m2": 35640.095328,
+      "chin_loss_m2": 301721.226595,
+      "apparent_exchange_m2": 22325.199563
+    },
+    "nonmixed_support_historic_2011": {
+      "E": 0.325606,
+      "F": 0.047041,
+      "mac_gain_m2": 53703.922096,
+      "chin_loss_m2": 371728.304205,
+      "apparent_exchange_m2": 17486.341531
+    }
+  },
+  "apparent_gain_outside_historic_definite_or_possible_macaroni": {
+    "gain_total_m2": 41086.182,
+    "gain_outside_historic_MCPE_and_MIXED_m2": 29424.221,
+    "fraction_gain_outside_historic_MCPE_and_MIXED": 0.716159,
+    "direct_exchange_total_m2": 27511.99,
+    "direct_exchange_outside_historic_MCPE_and_MIXED_m2": 18434.063,
+    "fraction_exchange_outside_historic_MCPE_and_MIXED": 0.670037
+  },
+  "interpretation": "Independent digitizer comparison of the SAME Jan 2011 scene, not an independent observation year. Historical MIXED patches indicate sub-colony co-occurrence somewhere, not every square meter. No movement, colonization, replacement causality or competition demonstrated.",
+  "2011_historic_sum_polygon_areas_by_species_m2": {
+    "CHPE": 704238.319,
+    "MCPE": 76177.946,
+    "MIXED": 219346.759
+  },
+  "source_commit": "6ece26b377d7268a6237f3e2524fbde846afcda9",
+  "ci_run_id": 38403670954,
+  "ci_job_id": 115317554145,
+  "classification": "POST_OUTCOME_EXPLORATORY_MAP_SENSITIVITY"
+}

@@ -1,0 +1,35 @@
+name: Zavodovski V11 post-outcome geometric sensitivity
+on:
+  pull_request:
+    paths:
+      - 'scripts/reproduce_zavodovski_overlap_sensitivity_v11.py'
+      - 'tests/test_reproduce_zavodovski_overlap_sensitivity_v11.py'
+      - '.github/workflows/zavodovski-geometric-sensitivity-v11.yml'
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'scripts/reproduce_zavodovski_overlap_sensitivity_v11.py'
+      - 'tests/test_reproduce_zavodovski_overlap_sensitivity_v11.py'
+      - '.github/workflows/zavodovski-geometric-sensitivity-v11.yml'
+  workflow_dispatch:
+jobs:
+  descriptive-sensitivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest requests shapely pyshp pyproj
+      - run: python -m pytest -q tests/test_reproduce_zavodovski_overlap_sensitivity_v11.py
+      - name: Independently repeat public source fetch and quantify noncausal positional sensitivity
+        run: |
+          python scripts/reproduce_zavodovski_overlap_sensitivity_v11.py --out /tmp/zavodovski_v11.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-geometric-sensitivity-v11
+          path: /tmp/zavodovski_v11.json

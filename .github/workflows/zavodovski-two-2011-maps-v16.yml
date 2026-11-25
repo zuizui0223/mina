@@ -1,0 +1,38 @@
+name: Zavodovski original 2011 two-digitizer nonmixed map comparison V16
+on:
+  push:
+    branches: [research/zavodovski-site-exchange-v1]
+    paths:
+      - 'scripts/compare_zavodovski_two_2011_maps_v16.py'
+      - 'tests/test_zavodovski_two_2011_maps_v16.py'
+      - '.github/workflows/zavodovski-two-2011-maps-v16.yml'
+  pull_request:
+    paths:
+      - 'scripts/compare_zavodovski_two_2011_maps_v16.py'
+      - 'tests/test_zavodovski_two_2011_maps_v16.py'
+      - '.github/workflows/zavodovski-two-2011-maps-v16.yml'
+  workflow_dispatch:
+jobs:
+  source-backed-nonmixed-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated GIS libraries
+        run: python -m pip install pytest requests shapely pyshp pyproj
+      - name: Test exclusion of mixed and two-digitizer comparison with fabricated polygons
+        run: python -m pytest -q tests/test_zavodovski_two_2011_maps_v16.py
+      - name: Source-backed historic and revised original-year GIS comparison
+        run: |
+          python scripts/compare_zavodovski_two_2011_maps_v16.py \
+            --out /tmp/zavodovski_two_digitizer_v16.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zavodovski-original-2011-two-digitizer-v16
+          path: /tmp/zavodovski_two_digitizer_v16.json
