@@ -30,7 +30,9 @@ try:
         b=get(x['links']['self'],x['size']+1);assert len(b)==x['size'] and hashlib.md5(b).hexdigest()==PINS[name]
         (OUT/name).write_bytes(b)
         f={'name':name,'size':len(b),'md5':PINS[name],'sha256':hashlib.sha256(b).hexdigest()}
-        t=b.decode('utf-8-sig')
+        try:t=b.decode('utf-8-sig');f['encoding']='utf-8-sig'
+        except UnicodeDecodeError:
+            t=b.decode('cp1252');assert t.encode('cp1252')==b;f['encoding']='cp1252'
         if name.endswith('.csv'):
             dialect=csv.Sniffer().sniff(t[:10000],delimiters=',;\t')
             a=list(csv.reader(io.StringIO(t),dialect));f['rows_excluding_header']=len([v for v in a[1:] if any(z.strip() for z in v)]);f['header']=a[0];f['widths']=sorted({len(v) for v in a})
