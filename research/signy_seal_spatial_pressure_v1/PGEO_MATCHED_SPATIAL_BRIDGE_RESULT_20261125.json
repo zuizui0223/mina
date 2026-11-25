@@ -1,0 +1,288 @@
+{
+  "status": "POSITIVE_PRODUCTIVITY_ASSOCIATION_BUT_SPATIAL_BRIDGE_NOT_STABLE",
+  "contract": "830baf03952d673eae88154a65802730bf8592f7",
+  "code_commit": "6e3c56098625ed4d6cd575bfe9c34f9f449a7722",
+  "code_git_blob": "3b5133ccaef3f5f11b2cf8b9baf2201f3f6fdb4f",
+  "code_sha256": "1bb061192572205efa04a76d003e7768de12d28b1acd090a1575e577e45059d4",
+  "local_full_result_sha256": "163118a13b2ac0b8283383eeae3fdc4f60450e1a4ba495490c55315d514fa7d8",
+  "annual_csv_sha256": "a11220e72375bdf785eee1ffffd5bc32d7b65506e74ed6dc393a38a9a5fcb4c3",
+  "island_year_csv_sha256": "503b39d9dc4633a26b72c2f24d96c433c67fc9d55d318364ae2df906c43c0a41",
+  "source_pins": {
+    "14987514463": "d67a47fa9c280da82ace6d471f1ea42a63fdc402f4b6aa6c0734ca68317632ab",
+    "14926710177": "b48ad3c97e35bc487ad6ebca955bbbec5478f75359e9f0300296910821a050b8",
+    "13829236358": "64a8e9832e254171139d78bb22351d6c9a3acf490356931b2635ed5b108d94b5"
+  },
+  "support": {
+    "all_transitions": 1035,
+    "climate_matched": 699,
+    "matched_units": 79,
+    "matched_years": 12,
+    "common_island_rows": 497,
+    "fixed_rows": 248,
+    "fixed_units": 31,
+    "fixed_island_units": {
+      "bernard": 8,
+      "petrel": 21,
+      "rostand": 2
+    },
+    "fixed_next_zero": 1
+  },
+  "annual_columns": [
+    "year",
+    "B",
+    "S",
+    "D",
+    "P100_pp",
+    "mean_source_SIC_pp"
+  ],
+  "annual": [
+    [
+      2004,
+      0.5090220351975039,
+      -0.0022413436545437007,
+      -0.006396704651682628,
+      3.85627745014214,
+      81.15322916666666
+    ],
+    [
+      2007,
+      1.0112397498177914,
+      0.008195866763006302,
+      -0.009308157511984867,
+      1.28492336624121,
+      90.92729166666666
+    ],
+    [
+      2008,
+      1.0845420455523873,
+      0.02930130837543651,
+      0.04013044625262951,
+      1.39826337325589,
+      89.4853125
+    ],
+    [
+      2014,
+      0.22094465411709063,
+      0.006604760494882611,
+      -0.04764209160394295,
+      1.65296362168732,
+      86.57385416666668
+    ],
+    [
+      2017,
+      0.4627210631247298,
+      -0.0019972444419143376,
+      0.003323979851706548,
+      3.31105410022871,
+      82.91604166666667
+    ],
+    [
+      2018,
+      1.0128204884410492,
+      0.012820686168804793,
+      -0.040316186299186485,
+      6.97343229731752,
+      77.85770833333333
+    ],
+    [
+      2019,
+      0.8792336154165855,
+      0.015288400460493902,
+      -0.000785175957613894,
+      6.318171022999421,
+      82.10541666666667
+    ],
+    [
+      2020,
+      1.022116669309215,
+      0.026813232156362967,
+      0.06365139428693588,
+      13.42897004460733,
+      73.6415625
+    ]
+  ],
+  "sorting": {
+    "mean": 0.011848208290316131,
+    "positive_island_years": 21,
+    "total_island_years": 24,
+    "positive_years": 6,
+    "total_years": 8
+  },
+  "exposure_fits": {
+    "B": {
+      "beta": 0.04314525003545723,
+      "partial_R2": 0.16500029602912356,
+      "year_loo": [
+        0.013154252537467572,
+        0.08783090077369574
+      ],
+      "island_loo": [
+        0.036499926204609415,
+        0.05037696168986452
+      ]
+    },
+    "S": {
+      "beta": 0.001242642380862917,
+      "partial_R2": 0.11306271365328649,
+      "year_loo": [
+        -0.0005867189964629639,
+        0.0028994430894521248
+      ],
+      "island_loo": [
+        0.0004896706075861404,
+        0.001671626892078899
+      ]
+    },
+    "D": {
+      "beta": 0.006862129323178129,
+      "partial_R2": 0.32468313947986116,
+      "year_loo": [
+        -0.0015275207923332347,
+        0.009889749611963183
+      ],
+      "island_loo": [
+        0.00516366942424215,
+        0.007892214763220431
+      ]
+    }
+  },
+  "conditional_fits": {
+    "all_matched": {
+      "beta": 0.35960771911316197,
+      "partial_R2": 0.029551099000184045,
+      "year_loo": [
+        0.27014108149271204,
+        0.3998843660977688
+      ],
+      "island_loo": [
+        0.1571341646775873,
+        0.3787518300149752
+      ]
+    },
+    "fixed": {
+      "beta": 0.35639899207893116,
+      "partial_R2": 0.0193556532311987,
+      "year_loo": [
+        0.10651386357219897,
+        0.48407475469869315
+      ],
+      "island_loo": [
+        -0.06220910019067432,
+        0.47229930695289896
+      ]
+    }
+  },
+  "deletion_coefficients_rounded_8dp": {
+    "year_order": [
+      2004,
+      2007,
+      2008,
+      2014,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "B_year": [
+      0.0878309,
+      0.04737295,
+      0.05077505,
+      0.01315425,
+      0.0299456,
+      0.04251129,
+      0.04541246,
+      0.0548937
+    ],
+    "S_year": [
+      0.00289944,
+      0.00124726,
+      0.00167528,
+      0.00114589,
+      0.00044819,
+      0.00124713,
+      0.00127769,
+      -0.00058672
+    ],
+    "D_year": [
+      0.00988975,
+      0.0068311,
+      0.00785731,
+      0.00504153,
+      0.0083706,
+      0.00699395,
+      0.00691622,
+      -0.00152752
+    ],
+    "island_order": [
+      "bernard",
+      "petrel",
+      "rostand"
+    ],
+    "B_island": [
+      0.05037696,
+      0.04255886,
+      0.03649993
+    ],
+    "S_island": [
+      0.00048967,
+      0.00167163,
+      0.00156663
+    ],
+    "D_island": [
+      0.0075305,
+      0.00516367,
+      0.00789221
+    ],
+    "conditional_all_year_order": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2014,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "conditional_all_year": [
+      0.36424759,
+      0.38500991,
+      0.36463837,
+      0.36474484,
+      0.37710826,
+      0.36031532,
+      0.39988437,
+      0.33140693,
+      0.3773871,
+      0.39352306,
+      0.32603277,
+      0.27014108
+    ],
+    "conditional_all_island": [
+      0.37875183,
+      0.15713416,
+      0.37850858
+    ],
+    "conditional_fixed_year": [
+      0.40535016,
+      0.41097303,
+      0.37556796,
+      0.10651386,
+      0.3688034,
+      0.36879706,
+      0.36979334,
+      0.48407475
+    ],
+    "conditional_fixed_island": [
+      0.47229931,
+      -0.0622091,
+      0.3651274
+    ]
+  },
+  "verification": "All three source ZIP SHA256 and CRC; all seven Meheust file MD5 and SHA256 checked; same frozen source footprint and consecutive year rules; FWL checks; complete rerun produced byte-identical JSON; exact committed code blob matches local. Full annual and island-year tables are reproduced with script.",
+  "reproduction": "OPENBLAS_NUM_THREADS=1 python research/signy_seal_spatial_pressure_v1/pgeo_matched_spatial_bridge.py ARTIFACT_DIRECTORY OUTPUT_DIRECTORY",
+  "decision": "Retain positive same-year P100–productivity association (all deletion signs positive) and descriptive prior-productivity sorting in 21/24 island-years. S and D exposure slopes reverse when omitting 2020, highest P100. Conditional fixed roster slope reverses when omitting Petrel. Stop integrated climate-to-spatial claim at this boundary. Eight exposure years, residual df5, no SIC adjustment df4, no independent regional replication or causal mediation, no forecast. No additional radius/window/roster search. Previous results and manuscripts unchanged."
+}
