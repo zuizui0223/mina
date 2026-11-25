@@ -1,0 +1,20 @@
+# V4 measurement comparability audit and figure release — 2026-11-25
+
+## Source and scope
+JNCC official [Seabirds Count](https://jncc.gov.uk/our-work/seabirds-count/) and [2024 revised comparative workbook](https://jncc.gov.uk/resources/63f0ea40-485d-46dd-b967-150df90a7b2b), OGL 3.0. The official national trend caveat names four taxa, only Herring Gull and Lesser Black-backed Gull occur in our data. The original workbook coversheet explicitly restricts these two taxa to natural nesting sites: urban 1-km-square estimates are excluded already. Thus this is a conservative species-level sensitivity, not a correction of demonstrated urban contamination. No full paid species-account review or historical boundary/effort verification.
+
+The original workbook SHA256 was verified. Four worksheets, with explicitly comparable puffin sheet used. NA means no comparable data available. The 9,821 structurally eligible child rows (before the total-count exclusion) all have StartGrid, 5,757 EndGrid; the paired headers contain one start latitude/longitude pair and two years/counts/units, not a pair of epoch-specific geometries or effort histories. StartGrid/EndGrid are NOT before/after survey boundaries. The source columns Total change % and Annual change % are not observation-quality flags. No repeated species×country×Site.ID mapped to different Master Site names in the retained structural cohort (0/9,821); this does not validate historical polygon continuity. The five original count units are AON 5,012, AOS 1,817, AOT 924, AOB 113 and IND 1,955 structural child rows; within-panel units match, but units cannot all be interpreted as nests or individuals. Survey years: earlier 1998–2005, later 2015–2021. Source counts are adjusted counts, not independent individual observations.
+
+## Fixed exclusion sensitivity
+| Cohort | Panels | Networks | Remaining species | Common species | Decline / stable / growth |
+|---|---:|---:|---:|---:|---|
+| Full | 1117 | 589 | 15 | 9 | 765 / 84 / 268 |
+| Exact-year | 573 | 371 | 15 | 6 | 398 / 42 / 133 |
+
+Species-equal ΔU (decline / near-stable / growth): full 0.08827 / 0.05935 / 0.08112; exact-year 0.05648 / 0.04890 / 0.04969. Species-equal C: full 0.09905 / 0.23444 / 0.16417; exact-year 0.11071 / 0.21553 / 0.12257. All above the 95th model percentile under both fixed-total references. Material C fraction also above both in all groups. Full C bootstrap 1937/1999 valid and composition bootstrap 1922/1999 valid; exact-year C 1825/1999 and composition 1830/1999 invalid under 95% rule, no intervals. Exact-year near-stable signed D² = 0.03251, gamma CV20 q95 = 0.04548, multinomial q95 = 0.03475: fails both references, and should be reported without rescue. Growth full local losses 221/268, prior-positive-to-zero 125/268; exact-year 98/133 and 47/133. These remain observed adjusted counts, not extinction. No group difference or causal inference.
+
+## Five main figures
+Rendered PNG and SVG (5 each), readback PNG/XML checks and hashes, pinned Ross count CSV. [Figure CI](https://github.com/zuizui0223/mina/actions/runs/45590461533), [figure artifact](https://github.com/zuizui0223/mina/actions/runs/45590461533/artifacts/15009454284). The original Ross total and TV were recalculated, not copied from prose. Figure source uses original pre-exclusion main estimates; warning exclusion reported in text and sensitivity table. Human visual inspection and independent artifact byte verification pending. Scoped workflow success, not entire repository CI.
+
+## Decision
+The exclusion does not overturn the central descriptive result that aggregate growth can mask local losses and concentration; a specific stable-group distance sensitivity fails. Historical observation comparability is unresolved. Do not claim that a hypothetical gamma CV20 model proves unbiased counts, no causal warming chain or actual extirpation. No new ecological endpoint, no extra taxon or threshold search. Before submission require author review, manuscript overlap decision, historical site-boundary and coverage audit if available, visual figure QA and references verification.
