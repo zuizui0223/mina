@@ -1,0 +1,21 @@
+# Cape Hallett V14 — public overview and historical archive decision (26 November 2026)
+
+**Verified partial success:** 2018 image validity is now measured at reduced-image support; historic plant-grid georeference still requires original GIS. No ecological effect estimated.
+
+## Historical GIS and source custody
+- The 2022 dataset [10.7488/ds/3417](https://doi.org/10.7488/ds/3417) advertises four original files, not the corrected historical GIS.
+- [Brabyn et al. 2006](https://doi.org/10.1017/S0954102006000605), [institutional copy](https://researchcommons.waikato.ac.nz/entities/publication/08115464-9c42-467b-82a1-81abb9353892), describes 21 boulder controls, a nonrectangular corrected historical plot and archiving GIS layers/maps/photos at University of Waikato and Antarctica New Zealand. The original Rudolph notes/maps were in Ohio State University herbarium. This rules out assuming a rectangular 120 x 30 m transform from one origin. The paper text was inspected; PDF screenshot requests failed (cache miss); no digitization from the figures.
+- Three fixed official Antarctic Metadata Catalogue search queries used the documented POST endpoint; all returned HTTP 400. This is an inconclusive search, not proof that the catalogue lacks the GIS.
+- The exact legacy NASA CMR record [C1214593590-SCIOPS](https://cmr.earthdata.nasa.gov/search/collections.umm_json?concept_id=C1214593590-SCIOPS) returned HTTP 200 and one collection (native ID K024_1998_1999_NZ_1). Metadata describes relocated historic plant photo-points, GPS mapping, and 12 additional sites remote from bird influence. The quality statement says original data remain with the investigator. The two advertised download URLs are herbarium links, not plot GIS. No photograph or GIS archive downloaded from these records. This is an explicit historical custody lead, not a new biological dataset or confirmation of present custody.
+## Public 2018 orthomosaic
+[Actions 45716074792](https://github.com/zuizui0223/mina/actions/runs/45716074792) completed successfully; [artifact 15070231399](https://github.com/zuizui0223/mina/actions/runs/45716074792/artifacts/15070231399). Exactly 92 bounded HTTP 206 ranges, 6,029,312 bytes (5.75 MiB), within the fixed 16 MiB cap. No full TIFF downloaded or full-file MD5 verified. Page 6 is 1555 x 1334 x 4 uint8; its explicitly tagged unassociated alpha and reduced-page geotags were verified against the base extent; approximate 0.105 m/pixel, not the full-resolution pixel scale. No additional level selected after observing alpha.
+| 2018 support | pixel centers | percent |
+|---|---:|---:|
+| Official restricted-zone centers within raster rectangle | 734682 | 100 |
+| Alpha positive/opaque | 666801 | 90.7605 |
+| Alpha zero | 67881 | 9.2395 |
+| Whole reduced image alpha positive | 909097 of 2074370 | 43.8251 |
+
+V13's 99.974% was nominal geometric-envelope overlap; V14's 90.7605% is the alpha-valid fraction of zone pixel centers inside that rectangle, not an exact area percentage of the whole zone or valid plant-classification fraction. Actual PNG and independent rasterized mask counts verified locally; all alpha values 0/255. Downloaded ZIP SHA256 2412a6a7b685e1a1b90459689fe8ec62a3e81a9456129f5a60cb67e3ef2ed418, CRC clean, preview SHA256 955130aaf992224f751df20b761340348b6833d4c58dc5415e7a2cee3dfa8816, member dimensions confirmed. A derived annotated preview was inspected locally; blue boundary is the official zone, amber is alpha-zero inside it. No original or inferred 1m plant-grid positions or animal detections. The PNG is a reduced public source extract, Pan et al. 2022, CC BY 4.0, not a new field survey.
+## Decision
+No further full-resolution downloads or alternate plot-corner guesses. Obtain the 2004 georeferenced/warped grid, original CRS/parameters and control points, and 2018 exact trimming/matching layer; the source-data request draft is unsent. Later KOPRI imagery is managed-access; no access request submitted. The legacy photo-point archive may become a distinct animal-proximity comparison ONLY after retrieving actual repeated photographs/measurement, footprint and animal exposure information; not a presumed control. V12 nutrient evidence remains contextual. The broader Antarctic manuscript v0.6 and earlier frozen results remain unchanged. No new animal-plant coefficient, no merge/submission.
