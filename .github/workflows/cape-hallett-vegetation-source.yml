@@ -1,0 +1,25 @@
+name: Cape Hallett temporal vegetation source
+on:
+  push:
+    branches: [analysis/unified-breeding-reorganization-20261125]
+    paths:
+      - 'research/unified_breeding_reorganization_v1/cape_hallett_source.py'
+      - '.github/workflows/cape-hallett-vegetation-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests
+      - run: python research/unified_breeding_reorganization_v1/cape_hallett_source.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cape-hallett-source-gate
+          path: build/cape-hallett-source/
