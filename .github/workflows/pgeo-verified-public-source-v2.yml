@@ -1,0 +1,110 @@
+name: pgeo-verified-public-source-v2
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pgeo-verified-public-source-v2.yml'
+permissions:
+  contents: read
+jobs:
+  public-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install requests
+      - name: Resolve Figshare metadata identity; get exact public Dryad CSV
+        run: |
+          python - <<'PY'
+          import csv,hashlib,io,json,re,zipfile
+          from pathlib import Path
+          from urllib.parse import urlparse,urljoin
+          import requests
+          OUT=Path("build/pgeo_verified_sources");OUT.mkdir(parents=True,exist_ok=True)
+          R={"status":"PUBLIC_SOURCE_IDENTITY_AND_FILE_AUDIT","sources":{},"ecological_fit":False,"raw_counts_printed":False}
+          def sha(b):return hashlib.sha256(b).hexdigest()
+          def public_url(u,download=False):
+              p=urlparse(u);h=p.hostname or ""
+              return p.scheme=="https" and not p.username and not p.password and (h in {"api.figshare.com","figshare.com","api.datacite.org","datadryad.org","www.datadryad.org","api.datadryad.org","ndownloader.figshare.com","zenodo.org"} or download and (h.endswith(".amazonaws.com") or h.endswith(".figshare.com") or h.endswith(".datadryad.org")))
+          def get(u,limit,download=False):
+              for hop in range(5):
+                  if not public_url(u,download):raise ValueError("unreviewed public download host")
+                  with requests.get(u,timeout=(15,60),allow_redirects=False,stream=True,headers={"User-Agent":"mina-public-source-audit/1.0"}) as r:
+                      if r.is_redirect:
+                          u=urljoin(u,r.headers.get("Location",""));continue
+                      r.raise_for_status();b=bytearray()
+                      for p in r.iter_content(32768):
+                          b.extend(p)
+                          if len(b)>limit:raise ValueError("source byte bound")
+                      return bytes(b),{"url_without_query":u.split("?")[0],"bytes":len(b),"sha256":sha(b),"content_type":r.headers.get("Content-Type")}
+              raise ValueError("redirect bound")
+          def js(u):
+              b,m=get(u,3_000_000);return json.loads(b),m
+          def metadata_fields(j):
+              return {k:j.get(k) for k in ("id","doi","version","title","description","authors","references","published_date","is_public","is_embargoed","license","defined_type_name","url_public_html")}
+          # Identity correction only: compare actual record DOI and authors before file access.
+          q={};R["sources"]["meheust_figshare"]=q
+          try:
+              j,m=js("https://api.figshare.com/v2/articles/22341229");q["receipt"]=m
+              q["actual_metadata"]=metadata_fields(j)
+              d,dm=js("https://api.datacite.org/dois/10.6084/m9.figshare.22341229");a=d["data"]["attributes"]
+              q["datacite"]={k:a.get(k) for k in ("doi","titles","creators","relatedIdentifiers","publicationYear","descriptions","rightsList","state")}
+              q["file_inventory"]=[{k:f.get(k) for k in ("id","name","size","downloadUrl","computed_md5","supplied_md5")} for f in j.get("files",[])]
+              # A version suffix is acceptable, but generic title or absent article/author
+              # identity must not be silently accepted. Metadata may be incomplete.
+              root=re.sub(r"\.v\d+$","",str(j.get("doi") or "").lower())
+              names=" ".join(str(x.get("full_name","")) for x in j.get("authors",[])).lower()
+              desc=" ".join(str(j.get(k,"")) for k in ("title","description","references")).lower()
+              q["doi_root_matches"]=root=="10.6084/m9.figshare.22341229"
+              q["research_identity_evidence"]={"author_meheust":any(x in names for x in ("méheust","meheust")),"paper_doi_in_metadata":"10.1007/s00442-024-05523-0" in desc,"topic_in_metadata":any(x in desc for x in ("penguin","pygoscelis","géologie","geologie"))}
+              q["status"]="METADATA_ONLY_REVIEW_REQUIRED"
+          except Exception as e:q["error"]=type(e).__name__+": "+str(e)[:400]
+          
+          q={};R["sources"]["barbraud2015_dryad"]=q
+          try:
+              d,meta=js("https://datadryad.org/api/v2/datasets/doi%3A10.5061%2Fdryad.3c2v9")
+              q["metadata_receipt"]=meta
+              if d.get("identifier","").casefold()!="doi:10.5061/dryad.3c2v9" or "CC0-1.0" not in str(d.get("license")):raise ValueError("DOI/licence mismatch")
+              q["title"]=d["title"];q["license"]=d["license"]
+              q["usageNotes"]=d.get("usageNotes")
+              version_link=d["_links"]["stash:version"]["href"]
+              v,vm=js(urljoin("https://datadryad.org",version_link));q["version_receipt"]=vm
+              q["version_metadata"]={k:v.get(k) for k in ("versionNumber","version","publicationDate","status","_links")}
+              files_link=v.get("_links",{}).get("stash:files",{}).get("href")
+              if not files_link:raise ValueError("no advertised files link in version metadata")
+              f,fm=js(urljoin("https://datadryad.org",files_link));q["file_list_receipt"]=fm
+              ff=f.get("_embedded",{}).get("stash:files",[])
+              if not ff:raise ValueError("empty files list")
+              q["file_inventory"]=[{k:x.get(k) for k in ("path","size","digest","digestType","_links")} for x in ff]
+              matches=[x for x in ff if str(x.get("path","")).strip().casefold()=="seabird and seaice data.csv"]
+              if len(matches)!=1:raise ValueError("exact original CSV not unique")
+              f=matches[0];url=f.get("_links",{}).get("stash:download",{}).get("href")
+              if not url:raise ValueError("no published file download link")
+              b,rm=get(urljoin("https://datadryad.org",url),2_000_000,download=True)
+              q["file_receipt"]=rm
+              if f.get("size") is not None and int(f["size"])!=len(b):raise ValueError("publisher size mismatch")
+              h=str(f.get("digest") or "").lower();alg=str(f.get("digestType") or "").lower().replace("-","")
+              if h and alg in ("md5","sha1","sha256"):
+                  if hashlib.new(alg,b).hexdigest()!=h:raise ValueError("publisher digest mismatch")
+                  q["publisher_digest_verified"]=True
+              else:q["publisher_digest_verified"]=False
+              if b[:100].lstrip().startswith(b"<"):raise ValueError("HTML not original CSV")
+              t=b.decode("utf-8-sig");dialect=csv.Sniffer().sniff(t[:5000],delimiters=",;\t")
+              rows=list(csv.reader(io.StringIO(t),dialect));head=rows[0];body=[x for x in rows[1:] if any(v.strip() for v in x)]
+              if not body or any(len(x)!=len(head) for x in body):raise ValueError("invalid rectangular CSV")
+              q["schema"]={"headers":head,"rows":len(body),"missing_by_field":{k:sum(not x[i].strip() or x[i].strip().lower() in ("na","nan") for x in body) for i,k in enumerate(head)}}
+              (OUT/"barbraud2015_original.csv").write_bytes(b);q["status"]="ORIGINAL_CSV_ACQUIRED_SCHEMA_REVIEW_REQUIRED"
+          except Exception as e:q["status"]="BLOCKED";q["error"]=type(e).__name__+": "+str(e)[:400]
+          (OUT/"receipt.json").write_text(json.dumps(R,ensure_ascii=False,indent=2)+"\n")
+          print(json.dumps(R,ensure_ascii=False))
+          
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pgeo-verified-public-source-v2
+          path: build/pgeo_verified_sources/
+          if-no-files-found: error
+          retention-days: 30
