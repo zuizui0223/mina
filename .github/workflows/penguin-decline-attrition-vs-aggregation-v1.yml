@@ -1,0 +1,40 @@
+name: Penguin decline attrition versus aggregation v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/PENGUIN_DECLINE_ATTRITION_VS_AGGREGATION_V1.md"
+      - "scripts/describe_penguin_decline_attrition_vs_aggregation.py"
+      - ".github/workflows/penguin-decline-attrition-vs-aggregation-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  decompose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas lxml
+      - name: Download frozen sources
+        run: |
+          mkdir -p build
+          python scripts/fetch_lter_census.py build/adelie_census.csv
+          curl -L --fail --retry 10 --retry-delay 10 --retry-all-errors \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=daf2c4fd-c1e3-4e65-851f-d11f02c5b69d&output=zip.tree' \
+            -o build/signy_adelie.zip
+          curl -L --fail --retry 10 --retry-delay 10 --retry-all-errors \
+            'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9&output=zip.tree' \
+            -o build/signy_chinstrap.zip
+      - name: Decompose concentration mechanism
+        run: |
+          python -m scripts.describe_penguin_decline_attrition_vs_aggregation \
+            --palmer-census build/adelie_census.csv \
+            --signy-adelie-zip build/signy_adelie.zip \
+            --signy-chinstrap-zip build/signy_chinstrap.zip \
+            --out build/PENGUIN_DECLINE_ATTRITION_VS_AGGREGATION_RESULT_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: penguin-decline-attrition-vs-aggregation-v1
+          path: build/PENGUIN_DECLINE_ATTRITION_VS_AGGREGATION_RESULT_V1.json
