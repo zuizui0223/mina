@@ -1,0 +1,203 @@
+{
+  "status": "EXECUTED_SOURCE_DERIVED_DESCRIPTIVE_PILOT",
+  "source_rows": {
+    "ross": 26,
+    "counts": 513,
+    "ocean": 720,
+    "polynya": 450
+  },
+  "exclusions": {
+    "duplicate_count_keys": 0,
+    "unknown_method_rows": 0,
+    "insufficient_pair_rosters": 85,
+    "invalid_pair_totals": 0
+  },
+  "ross": {
+    "decline": {
+      "n": 5,
+      "medianTV": 0.02905552379407283,
+      "medianD2": 0.0010218160488724148,
+      "meanD2": 0.0023655274338733713,
+      "medianDeltaU": 0.001961213692097452,
+      "positiveD2": 5,
+      "uniqueLeaders": 5,
+      "leaderSwitch": 0
+    },
+    "near_stable": {
+      "n": 12,
+      "medianTV": 0.033026092282335134,
+      "medianD2": 0.0014811648045437997,
+      "meanD2": 0.001313367550434356,
+      "medianDeltaU": -0.006914995904646004,
+      "positiveD2": 12,
+      "uniqueLeaders": 12,
+      "leaderSwitch": 0
+    },
+    "increase": {
+      "n": 6,
+      "medianTV": 0.03405093124162292,
+      "medianD2": 0.001538711694313133,
+      "meanD2": 0.003323144804949533,
+      "medianDeltaU": -0.0008217940079065789,
+      "positiveD2": 6,
+      "uniqueLeaders": 6,
+      "leaderSwitch": 0
+    }
+  },
+  "antarctic": {
+    "decline": {
+      "n": 10,
+      "medianTV": 0.03349399355703055,
+      "medianD2": 0.0014584587336368138,
+      "meanD2": 0.0058891984987066714,
+      "medianDeltaU": 0.003569693156305065,
+      "positiveD2": 10,
+      "uniqueLeaders": 10,
+      "leaderSwitch": 0
+    },
+    "near_stable": {
+      "n": 20,
+      "medianTV": 0.026211913630356465,
+      "medianD2": 0.0009192071329324758,
+      "meanD2": 0.001186267120791884,
+      "medianDeltaU": -0.0032228564055828968,
+      "positiveD2": 20,
+      "uniqueLeaders": 20,
+      "leaderSwitch": 0
+    },
+    "increase": {
+      "n": 9,
+      "medianTV": 0.03175008246374304,
+      "medianD2": 0.001386776403011214,
+      "meanD2": 0.007852195904564565,
+      "medianDeltaU": -0.0026321329250124648,
+      "positiveD2": 9,
+      "uniqueLeaders": 9,
+      "leaderSwitch": 0
+    }
+  },
+  "antarctic_by_region": {
+    "Victoria Land": {
+      "decline": {
+        "n": 9,
+        "medianTV": 0.030161780019801535,
+        "medianD2": 0.0011155549568151457,
+        "meanD2": 0.0016941168132176153,
+        "medianDeltaU": 0.001961213692097452,
+        "positiveD2": 9,
+        "uniqueLeaders": 9,
+        "leaderSwitch": 0
+      },
+      "near_stable": {
+        "n": 20,
+        "medianTV": 0.026211913630356465,
+        "medianD2": 0.0009192071329324758,
+        "meanD2": 0.001186267120791884,
+        "medianDeltaU": -0.0032228564055828968,
+        "positiveD2": 20,
+        "uniqueLeaders": 20,
+        "leaderSwitch": 0
+      },
+      "increase": {
+        "n": 9,
+        "medianTV": 0.03175008246374304,
+        "medianD2": 0.001386776403011214,
+        "meanD2": 0.007852195904564565,
+        "medianDeltaU": -0.0026321329250124648,
+        "positiveD2": 9,
+        "uniqueLeaders": 9,
+        "leaderSwitch": 0
+      }
+    },
+    "South Shetland Islands": {
+      "decline": {
+        "n": 1,
+        "medianTV": 0.15384286292567378,
+        "medianD2": 0.04364493366810818,
+        "meanD2": 0.04364493366810818,
+        "medianDeltaU": 0.09835322589311352,
+        "positiveD2": 1,
+        "uniqueLeaders": 1,
+        "leaderSwitch": 0
+      },
+      "near_stable": {
+        "n": 0,
+        "medianTV": null,
+        "medianD2": null,
+        "meanD2": null,
+        "medianDeltaU": null,
+        "positiveD2": 0,
+        "uniqueLeaders": 0,
+        "leaderSwitch": 0
+      },
+      "increase": {
+        "n": 0,
+        "medianTV": null,
+        "medianD2": null,
+        "meanD2": null,
+        "medianDeltaU": null,
+        "positiveD2": 0,
+        "uniqueLeaders": 0,
+        "leaderSwitch": 0
+      }
+    }
+  },
+  "h4": {
+    "minimum_independent_geography": 8,
+    "region_upper_bound": 2,
+    "environment_support": {
+      "sic": {
+        "n": 29,
+        "regions": [
+          "South Shetland Islands",
+          "Victoria Land"
+        ],
+        "roster_sites": 17
+      },
+      "salinity": {
+        "n": 1,
+        "regions": [
+          "South Shetland Islands"
+        ],
+        "roster_sites": 3
+      },
+      "polynya": {
+        "n": 11,
+        "regions": [
+          "Victoria Land"
+        ],
+        "roster_sites": 9
+      }
+    },
+    "status": "NO_GO_INDEPENDENT_GEOGRAPHY",
+    "coefficient_fitted": false
+  },
+  "tests": "five synthetic checks and source cohort/duplicate/zero assertions passed",
+  "limitations": "Same-source exploratory extension; annual comparisons are dependent; no actual survey-error calibration; Ross and Antarctic subset potentially overlap, not pooled.",
+  "source": [
+    {
+      "key": "ross",
+      "commit": "58fd7f4d0246c19344098dc5ce309343514346d2",
+      "path": "external/ross_island_v2_frozen_counts.csv",
+      "blob": "eaf47bf87158ef219d75b1be9eb8e50d0703ebaa"
+    },
+    {
+      "key": "counts",
+      "commit": "c67e55c9f4f657ef308c02a85c6ff366dce8e1f4",
+      "path": "research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/observed_counts_used.csv",
+      "blob": "204e5f4e30cc675f9f0bd8ba424a6f01f9db5ee6"
+    },
+    {
+      "key": "ocean",
+      "commit": "c67e55c9f4f657ef308c02a85c6ff366dce8e1f4",
+      "path": "research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/annual_ocean.csv",
+      "blob": "aab9beb4f57a79ad30b516b22593a78fc89efb7f"
+    },
+    {
+      "key": "polynya",
+      "commit": "c67e55c9f4f657ef308c02a85c6ff366dce8e1f4",
+      "path": "research/climate-penguin/macro_panantarctic_v1/redistribution_marine_exposure_20261120/annual_polynya.csv",
+      "blob": "1331cfebb1da9a8ac1de7e197785e75fc2c5672a"
+    }
+  ]
+}
