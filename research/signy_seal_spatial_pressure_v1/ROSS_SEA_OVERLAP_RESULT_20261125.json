@@ -1,0 +1,162 @@
+{
+  "status": "CANDIDATE_OVERLAP_AUDIT_COMPLETE_WITH_QUARANTINE",
+  "doi": "10.7931/kf06-x745",
+  "source_pins": {
+    "counts": "23a95d9e693dd095e085534f2c215b79880a72fe9cfb5a59337501192dae03e6",
+    "locations": "d744e7493f85564f1b634f390a5e4a976b2d5359a6f93cdd9ef345639661b6a6"
+  },
+  "old_annual_git_blob": "fc134e364cf38699fa7611d7dee5fbbbcb370c0a",
+  "distance_gate_km": 5,
+  "independence_established": false,
+  "ecological_fit": false,
+  "new_raw_count_values_exported": false,
+  "notes": [
+    "Exact name and distance are a candidate site crosswalk, not verified event lineage.",
+    "Equal counts and aerial-family methods strongly flag potential reuse; no independent events certified.",
+    "NO_KEY means not in selected or previously consolidated annual archive, not absent from full publisher observations.",
+    "Parent/subcolony footprint and survey dates remain unresolved; no nearby match is accepted automatically."
+  ],
+  "source_receipts": {
+    "counts": {
+      "url": "https://datastore.landcareresearch.co.nz/dataset/fb407798-f399-4875-81a0-51976b4c759c/resource/5fd490e5-92c4-4f2c-a82e-c66db2320eb1/download/ross-sea-adelie-penguin-census-record_1981-2024.xlsx",
+      "bytes": 12578,
+      "sha256": "23a95d9e693dd095e085534f2c215b79880a72fe9cfb5a59337501192dae03e6"
+    },
+    "locations": {
+      "url": "https://datastore.landcareresearch.co.nz/dataset/fb407798-f399-4875-81a0-51976b4c759c/resource/f82c5e1d-f04d-446d-9338-e9d0603360f8/download/colonylocations.xlsx",
+      "bytes": 8025,
+      "sha256": "d744e7493f85564f1b634f390a5e4a976b2d5359a6f93cdd9ef345639661b6a6"
+    }
+  },
+  "new_structure": {
+    "n_labels": 39,
+    "table_rows": 40,
+    "numeric_cells": 525,
+    "labelled_numeric_cells": 524,
+    "quarantined_numeric_cells": 1,
+    "quarantined_unlabelled_rows": [
+      {
+        "row": 41,
+        "label_type": "NoneType",
+        "n_numeric_cells": 1,
+        "zero_cells": 0,
+        "aggregate_diagnostic": [
+          {
+            "year": 2013,
+            "n_labelled_numeric_cells": 26,
+            "equals_labelled_sum": true,
+            "equals_labelled_cell_count": false,
+            "equals_labelled_max": false
+          }
+        ]
+      }
+    ],
+    "blank_cells": 1235,
+    "explicit_zero_cells_all_rows": 2,
+    "table_range": "A1:AS41",
+    "auxiliary_nonblank_cells": [],
+    "auxiliary_semantics_review_required": false,
+    "location_rows": 40,
+    "location_label_overlap": 33,
+    "count_labels_without_location": [
+      "Beaufort Island New",
+      "Terra Nova Bay",
+      "Wood Bay",
+      "Foyn Island",
+      "Thala Island",
+      "Aviation Islands"
+    ],
+    "location_labels_without_count": [
+      "Beaufort Island North",
+      "Conical Island",
+      "Dome Island",
+      "Edmonson Point",
+      "Northern Foothills",
+      "Southwest Island",
+      "Svwend Foyn Island"
+    ],
+    "coordinate_parse_failed": []
+  },
+  "site_mapping": {
+    "EXACT_NAME_WITHIN_5KM_CANDIDATE": 17,
+    "UNRESOLVED_NAME_OR_GEOMETRY": 22
+  },
+  "selected_archive_classes": {
+    "NO_KEY_IN_ARCHIVE": 20,
+    "EQUAL_COUNT_AERIAL_FAMILY": 312,
+    "UNRESOLVED_SITE_MAPPING": 192,
+    "UNLABELLED_ROW_QUARANTINED": 1
+  },
+  "annual_archive_classes": {
+    "NO_KEY_IN_ARCHIVE": 19,
+    "EQUAL_COUNT_AERIAL_FAMILY": 312,
+    "UNRESOLVED_SITE_MAPPING": 192,
+    "EQUAL_COUNT_OTHER_METHOD": 1,
+    "UNLABELLED_ROW_QUARANTINED": 1
+  },
+  "old_selected_ADPE_rows": 1028,
+  "old_annual_ADPE_rows": 1223,
+  "old_selected_Victoria_ADPE_rows": 509,
+  "old_annual_Victoria_ADPE_rows": 559,
+  "execution": {
+    "run_id": 45423565694,
+    "job_id": 138549305671,
+    "head_sha": "e8da0087abee4960401883de920687c8b1d28fa7",
+    "artifact_id": 14935532466,
+    "artifact_sha256": "b18b2a2f5f7a056caac49c3d094e12d3d45aeaf91655d794378418019024cd33",
+    "local_digest_and_crc_verified": true,
+    "local_reconciliation": "All 44 annual classification subtotals and aggregate classes reconciled independently from downloaded result; no raw counts independently re-extracted."
+  },
+  "previous_failed_attempts": [
+    {
+      "run": 45422780539,
+      "artifact": 14934751944,
+      "error": "unexpected non-table cell",
+      "artifact_sha256": "ef1b8d3eddd9052d00e79ead747eb3b53906c06afef34384e930bea04b64e421",
+      "digest_crc_verified": true
+    },
+    {
+      "run": 45423287702,
+      "artifact": 14934054788,
+      "error": "missing colony label inside declared table at row 41"
+    }
+  ],
+  "additional_local_derived_summary": {
+    "labelled_total": 524,
+    "exact_count_matches": 313,
+    "exact_aerial_count_matches": 312,
+    "exact_other_method_count_matches": 1,
+    "candidate_site_matched_records": 332,
+    "missing_key_by_year": {
+      "1981": 1,
+      "1983": 4,
+      "1984": 1,
+      "1987": 6,
+      "1989": 1,
+      "1993": 1,
+      "1994": 1,
+      "1995": 1,
+      "2017": 2,
+      "2018": 1
+    },
+    "recent_2021_24": {
+      "total": 40,
+      "equal_aerial": 30,
+      "unresolved_mapping": 10,
+      "missing_key": 0
+    },
+    "old_victoria_ADPE": {
+      "records": 559,
+      "sites": 51,
+      "methods": {
+        "aerial": 498,
+        "aerial photo": 6,
+        "vhr": 30,
+        "unknown": 19,
+        "ground": 5,
+        "ground photo": 1
+      }
+    }
+  },
+  "next_gate": "Resolve names/footprint via original crosswalk and full event-level MAPPPD provenance; fingerprint numerical equality for diagnostic only, do not accept fuzzy matches, loosen distance threshold or infer independence from missing archive key."
+}

@@ -1,0 +1,28 @@
+# Ross Sea original-source identity and unresolved site diagnostic (2026-11-25 JST)
+
+## Decisive source lineage
+
+Official MAPPPD source catalogue https://penguinmap.com/mapppd/sources/ was retrieved in current web search. Its bibliography explicitly lists Anderson, Shanhun & Macneil (2021), aerial breeding-pair surveys across 39 colonies in 1981–2019, downloaded 4 Jan 2022, DOI 10.7931/kf06-x745. This is the SAME DOI as the 2026 Anderson, Meredyth-Young & Robinson release https://datastore.landcareresearch.co.nz/id/dataset/adelie-penguin-census-data (1981–2024). The publication is a revision of a source already incorporated in MAPPPD, not independent regional validation. Per-event provenance remains necessary to certify any genuinely additional event. The catalogue confirms source reuse, not that every current observation was present in the old snapshot. Official provider https://www.antarcticanz.govt.nz/ad%C3%A9lie-penguin-census also describes a recurring survey programme, annual Ross Island counts and less frequent northern Victoria Land counts. The archive is not a synchronized census of all colonies.
+
+## Metadata diagnostic from the downloaded result
+
+Original executed artifact 14935532466 (run 45423565694), SHA256 b18b2a2f5f7a056caac49c3d094e12d3d45aeaf91655d794378418019024cd33 verified locally and CRC clean. Its per-colony summaries account for 39 named series, 524 observations. The previous 17 literal-name/<=5-km candidates cover 332 observations, 313 exact old consolidated count matches, 19 missing old keys. The other 22 labels cover 192 observations, partitioned below; do not add a category to the accepted crosswalk.
+
+| Diagnostic category | Labels | Observations | Site labels |
+|---|---:|---:|---|
+| Exact normalized name, distance >5 km | 6 | 84 | Cape Crozier East; Beaufort Island; Franklin Island West; Franklin Island East; SE Promontory; Cape Davis |
+| Explicit alias candidates within 5 km, not verified | 7 | 56 | Coulman Island South/Middle/North; Duke of York; Sentry Rock; Unger Rock; Chinstrap Island |
+| No matching location-table label | 6 | 48 | Beaufort Island New; Terra Nova Bay; Wood Bay; Foyn Island; Thala Island; Aviation Islands |
+| Other unresolved | 3 | 4 | Nella Island; Cape Symthe; Cape Cornish |
+
+The location sheet can reuse a coordinate across different colony labels, e.g. Beaufort Island and Beaufort Island North; nearest-point matching cannot establish a common footprint. Cape Crozier East is an exact name candidate 6.77 km from the old coordinate. Coulman Island South and Coulman South are an explicit alias candidate 0.771 km apart, not verified identical observation units. In the selected archive, 2021–24 has 40 new workbook records and 40 old Victoria Land aerial-family records by annual total; counts and names must still be matched to rule out changes.
+
+## Fingerprint audit status and bounded stop
+
+Contract 115424cb0306a4219e66b23e5f7508d413b98da1, script 05aec57c37b9f04487fc0c1f84301d9bb0ecb2e6, workflow 58b31888ce4da32e77ef28c62e447fb05205e921. Compare all 39 new series against all 267 old Adélie annual site series; count >=3 distinct positive exact same-year matches, no conflicting known common-year counts, sole qualifying candidate as strong evidence for reuse; no acceptance of site crosswalk or new event. First attempt run 45424894963 job 138554091449 completed with receipt status BLOCKED, remote server closed connection without response while retrieving original source. Artifact 14936771211, reported digest sha256:0e7938c8a44222ff449b9024486b155f71c5b68b9aaa03af44465e12183d84e1 (Actions metadata, not locally verified). One exact same-job retry requested successfully; latest attempt job 138554667137 was queued at inspection. No fingerprint numerical results from this attempt yet.
+
+Independent validation gate is closed for the release as a whole because same DOI is an explicit MAPPPD source and substantial exact observational overlap has already been measured. Fingerprint audit is optional bounded documentation, not a rescue. Do not expand geographical tolerance, certify absent keys as independent, fit a new ecological model, or repeatedly retry after the one permitted network retry. For the next independent-source route, the official v5.0 landing page https://www.penguinmap.com/mapppd/ (release 21 October 2026, 2025/26 season) explicitly offers a full counts CSV and source metadata. Obtain actual bytes and full original event provenance, audit new vs already observed site-season-method-source keys. Do not infer extra nest counts from headline 5,487 total observations / 729 sites; all count types and six species included. New publication versus new independent observations remain separate. Original climate archive ends 2020 and cannot support extrapolated biological responses in new years. Existing main, frozen manuscripts, and 51-series descriptive marine association unchanged.
+
+## Final retry outcome (supersedes pending status above)
+
+Attempt 2 job 138554667137 succeeded, artifact 14935344054 (SHA256 89cdd97049e3be356257abe03293a927a58662306ea6cc1945c106dd31234541 locally verified; CRC clean). 28 unique strong series, 479/524 positive exact matches; 12 of previously unresolved 22 labels account for 168 more exact matches. All 40 observations in 2021–24 are exact positive matches in strong series. See `ROSS_SEA_FINGERPRINT_RESULT_20261125.json` (commit 19b4f7f8782e3ada07f0bbb7ed9f4c167aa12180). Independent-event gate closed. No further Ross Sea retries or alternative thresholds; direct official MAPPPD v5.0 event provenance is next. No causal or ecological fit performed.

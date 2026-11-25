@@ -1,0 +1,75 @@
+name: maxwell-bay-uba2025-source
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/maxwell-bay-uba2025-source.yml'
+permissions:
+  contents: read
+jobs:
+  official-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install requests pymupdf
+      - name: Retrieve original official PDF and extract relevant appendix pages
+        run: |
+          python - <<'PY'
+          import hashlib,json,re,requests,fitz
+          from pathlib import Path
+          from urllib.parse import urljoin,urlparse
+          out=Path("build/maxwell_source");out.mkdir(parents=True,exist_ok=True)
+          URL="https://www.umweltbundesamt.de/system/files/medien/11850/publikationen/63_2025_texte.pdf"
+          r={"status":"BLOCKED","source_url":URL,"ecological_fit":False}
+          try:
+              u=URL
+              for i in range(5):
+                  p=urlparse(u)
+                  if p.scheme!="https" or p.hostname not in ("www.umweltbundesamt.de","umweltbundesamt.de"):raise ValueError("unreviewed redirect host "+str(p.hostname))
+                  with requests.get(u,allow_redirects=False,stream=True,timeout=(20,90)) as res:
+                      if res.is_redirect:u=urljoin(u,res.headers.get("Location",""));continue
+                      res.raise_for_status()
+                      b=bytearray()
+                      for c in res.iter_content(262144):
+                          b.extend(c)
+                          if len(b)>100_000_000:raise ValueError("bounded original PDF exceeds 100 MB")
+                      break
+              else:raise ValueError("redirect limit")
+              if not b.startswith(b"%PDF"):raise ValueError("not original PDF")
+              r.update(bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),final_url=u)
+              doc=fitz.open(stream=bytes(b),filetype="pdf")
+              r["pdf_pages"]=len(doc);assert len(doc)>=250
+              r["metadata"]={k:doc.metadata.get(k) for k in ("title","author","creationDate","modDate")}
+              hits={}
+              for i in range(205,len(doc)):
+                  page=doc[i];t=page.get_text()
+                  for n in (22,28,32,38):
+                      if re.search(r"Table\s*"+str(n)+r"\s*:",t,re.I):
+                          hits.setdefault(str(n),[]).append(i)
+              r["table_page_candidates_zero_based"]=hits
+              if not all(str(n) in hits for n in (22,28,32,38)):raise ValueError("source table not located")
+              pages=sorted(set([0,1,2,3]+[j for vals in hits.values() for i in vals for j in (i,i+1) if j<len(doc)]+list(range(211,min(len(doc),217)))))
+              assert len(pages)<=35
+              subset=fitz.open()
+              for i in pages:
+                  page=doc[i];(out/f"page_{i:03d}.txt").write_text(page.get_text(sort=True))
+                  if i>=205:
+                      subset.insert_pdf(doc,from_page=i,to_page=i)
+              subset.save(out/"appendix_review_pages.pdf",garbage=4,deflate=True)
+              r["selected_pages_zero_based"]=pages
+              r["appendix_subset_sha256"]=hashlib.sha256((out/"appendix_review_pages.pdf").read_bytes()).hexdigest()
+              r["status"]="OFFICIAL_PDF_ACQUIRED_APPENDIX_REVIEW_REQUIRED"
+          except Exception as e:r["error"]=type(e).__name__+": "+str(e)[:500]
+          (out/"receipt.json").write_text(json.dumps(r,indent=2,ensure_ascii=False)+"\n")
+          print(json.dumps(r,ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: maxwell-bay-uba2025-source-review
+          path: build/maxwell_source/
+          if-no-files-found: error
+          retention-days: 14

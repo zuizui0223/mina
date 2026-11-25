@@ -1,0 +1,866 @@
+{
+  "status": "MATCHED_SUMMER_DESCRIPTIVE_ONLY",
+  "early_february_years": [
+    2010,
+    2012,
+    2013,
+    2014
+  ],
+  "late_february_years": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020
+  ],
+  "source_receipts": {
+    "seals": {
+      "doi": "10.5285/8e910ac8-6f52-4548-bbcb-78474b559294",
+      "member": "Annual population counts of multiple species of seal, Signy Island, 1974-2024/Signy_seal_annual_counts_by_area.csv",
+      "csv_sha256": "58f87d83afdd78f30daf5489f45f4221af30b1e413090c3d9a5493e602eacb3a",
+      "zip_sha256": "87f555eefdcfb08346f05c562a62e2de5422bade9d53ec161e3d32d9c26ce630"
+    },
+    "Adelie": {
+      "doi": "10.5285/daf2c4fd-c1e3-4e65-851f-d11f02c5b69d",
+      "member": "Population size and breeding success of Adelie penguins on Signy Island from 1978 to 2020./signy_adelie_breeding_success.csv",
+      "csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62",
+      "zip_sha256": "04764664958e57ecd3486b96a2f92ba0633a190856789528764e540391135f0c"
+    },
+    "Chinstrap": {
+      "doi": "10.5285/d0633a9b-8c56-4ae5-88bf-6ec6ba9017b9",
+      "member": "Population size and breeding success of chinstrap penguins on Signy Island from 1978 to 2020./signy_chinstrap_breeding_success.csv",
+      "csv_sha256": "e50e98719ba5eedc6f5e617e0c7aa404ebfba15bc22a51e93e78cd4443bf787b",
+      "zip_sha256": "331395a43e6b11d733d5cda5fdd7bb1011b5ad87cca1b7aa4faefd6f5d00aef3"
+    },
+    "Gentoo": {
+      "doi": "10.5285/883c6b40-024e-41e8-9c3e-2668a44b5751",
+      "member": "Population size and breeding success of gentoo penguins on Signy Island from 1978 to 2020./signy_gentoo_breeding_success.csv",
+      "csv_sha256": "53fe3821f313ed35840376fcf4d11c8e0e8fbbd63f01ba84a5e21c2db4df6d6b",
+      "zip_sha256": "28e2a9762ee60e31a75347b351fa42df9eff6f361c32e2251ad92f6c1881ee96"
+    }
+  },
+  "rosters": {
+    "Adelie": [
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "Chinstrap": [
+      "C15",
+      "C16",
+      "C17",
+      "C79",
+      "C80"
+    ],
+    "Gentoo": [
+      "SIGNY_SOURCE_AGGREGATE"
+    ]
+  },
+  "independent_islands": 1,
+  "causal_model": false,
+  "results": {
+    "fur": {
+      "early_mean_count": 14406.5,
+      "late_mean_count": 6805,
+      "count_ratio": 0.4723562280914865,
+      "early_H": 0.2968891250012319,
+      "late_H": 0.25747319800076496,
+      "delta_H": -0.03941592700046692,
+      "early_effective_fraction": 0.5961201951521422,
+      "late_effective_fraction": 0.6595403518909005,
+      "delta_effective_fraction": 0.06342015673875834,
+      "loo_ranges": {
+        "count_ratio": [
+          0.3739284350813869,
+          0.5382708888127191
+        ],
+        "delta_H": [
+          -0.07011439524447183,
+          -0.0016165170005215113
+        ],
+        "delta_effective_fraction": [
+          0.00010151328013285887,
+          0.1359356423077196
+        ]
+      },
+      "annual": {
+        "2010": {
+          "counts": [
+            6226,
+            1693,
+            4429,
+            2202,
+            2314,
+            2835
+          ],
+          "total": 19699,
+          "H": 0.2047937202692171,
+          "effective_fraction": 0.813666651859026
+        },
+        "2012": {
+          "counts": [
+            4983,
+            1305,
+            3713,
+            856,
+            551,
+            555
+          ],
+          "total": 11963,
+          "H": 0.2910668955970985,
+          "effective_fraction": 0.5724894970391537
+        },
+        "2013": {
+          "counts": [
+            6388,
+            694,
+            1987,
+            696,
+            364,
+            467
+          ],
+          "total": 10596,
+          "H": 0.410287355001068,
+          "effective_fraction": 0.4061642647762656
+        },
+        "2014": {
+          "counts": [
+            6038,
+            1001,
+            4958,
+            1770,
+            708,
+            893
+          ],
+          "total": 15368,
+          "H": 0.2814085291375439,
+          "effective_fraction": 0.5921603669341234
+        },
+        "2016": {
+          "counts": [
+            3877,
+            1430,
+            4903,
+            819,
+            490,
+            958
+          ],
+          "total": 12477,
+          "H": 0.27579817720649596,
+          "effective_fraction": 0.6041794764505631
+        },
+        "2017": {
+          "counts": [
+            870,
+            269,
+            1205,
+            421,
+            396,
+            393
+          ],
+          "total": 3554,
+          "H": 0.21906697535082942,
+          "effective_fraction": 0.760039983748479
+        },
+        "2018": {
+          "counts": [
+            3846,
+            834,
+            2620,
+            569,
+            288,
+            523
+          ],
+          "total": 8680,
+          "H": 0.3056164755968509,
+          "effective_fraction": 0.5452031050607217
+        },
+        "2019": {
+          "counts": [
+            2696,
+            775,
+            1533,
+            475,
+            378,
+            424
+          ],
+          "total": 6281,
+          "H": 0.2728158524799796,
+          "effective_fraction": 0.6106535474546738
+        },
+        "2020": {
+          "counts": [
+            1019,
+            237,
+            666,
+            478,
+            268,
+            365
+          ],
+          "total": 3033,
+          "H": 0.2140685093696689,
+          "effective_fraction": 0.777625646740065
+        }
+      }
+    },
+    "elephant": {
+      "early_mean_count": 771.25,
+      "late_mean_count": 847.8,
+      "count_ratio": 1.0992544570502432,
+      "early_H": 0.3248228841604208,
+      "late_H": 0.34618705362305846,
+      "delta_H": 0.02136416946263764,
+      "early_effective_fraction": 0.5139218644838555,
+      "late_effective_fraction": 0.4865919174494894,
+      "delta_effective_fraction": -0.027329947034366087,
+      "loo_ranges": {
+        "count_ratio": [
+          0.9056726094003241,
+          1.3974725274725275
+        ],
+        "delta_H": [
+          0.008222751529675332,
+          0.03666731891638508
+        ],
+        "delta_effective_fraction": [
+          -0.05164046171153408,
+          -0.009915539771438109
+        ]
+      },
+      "annual": {
+        "2010": {
+          "counts": [
+            261,
+            106,
+            145,
+            20,
+            16,
+            40
+          ],
+          "total": 588,
+          "H": 0.29566341016815584,
+          "effective_fraction": 0.5614294900524172
+        },
+        "2012": {
+          "counts": [
+            303,
+            115,
+            153,
+            0,
+            4,
+            28
+          ],
+          "total": 603,
+          "H": 0.35437430786268,
+          "effective_fraction": 0.46889580093312594
+        },
+        "2013": {
+          "counts": [
+            295,
+            126,
+            170,
+            2,
+            3,
+            33
+          ],
+          "total": 629,
+          "H": 0.3348607130922605,
+          "effective_fraction": 0.4961525824598893
+        },
+        "2014": {
+          "counts": [
+            500,
+            397,
+            308,
+            9,
+            18,
+            33
+          ],
+          "total": 1265,
+          "H": 0.31439310551858707,
+          "effective_fraction": 0.5292095844899897
+        },
+        "2016": {
+          "counts": [
+            508,
+            231,
+            476,
+            8,
+            10,
+            61
+          ],
+          "total": 1294,
+          "H": 0.3230998922984421,
+          "effective_fraction": 0.5150025405097505
+        },
+        "2017": {
+          "counts": [
+            525,
+            159,
+            525,
+            64,
+            68,
+            104
+          ],
+          "total": 1445,
+          "H": 0.2849744558080687,
+          "effective_fraction": 0.5838339761581612
+        },
+        "2018": {
+          "counts": [
+            319,
+            41,
+            208,
+            13,
+            7,
+            19
+          ],
+          "total": 607,
+          "H": 0.3987527253549078,
+          "effective_fraction": 0.4169342883977776
+        },
+        "2019": {
+          "counts": [
+            209,
+            59,
+            154,
+            3,
+            7,
+            13
+          ],
+          "total": 445,
+          "H": 0.35762729021155987,
+          "effective_fraction": 0.4641609825844409
+        },
+        "2020": {
+          "counts": [
+            242,
+            46,
+            107,
+            10,
+            3,
+            40
+          ],
+          "total": 448,
+          "H": 0.36648090444231385,
+          "effective_fraction": 0.45302779959731665
+        }
+      }
+    },
+    "weddell": {
+      "early_mean_count": 6.75,
+      "late_mean_count": 12.6,
+      "count_ratio": 1.8666666666666667,
+      "early_H": 0.37927489177489176,
+      "late_H": 0.34824730824730826,
+      "delta_H": -0.031027583527583502,
+      "early_effective_fraction": 0.3561369509043928,
+      "late_effective_fraction": 0.42235075862982835,
+      "delta_effective_fraction": 0.06621380772543556,
+      "loo_ranges": {
+        "count_ratio": [
+          1.643478260869565,
+          2.3625000000000003
+        ],
+        "delta_H": [
+          -0.06048285048285046,
+          0.009214119214119243
+        ],
+        "delta_effective_fraction": [
+          0.03639037964619357,
+          0.10383224011130981
+        ]
+      },
+      "annual": {
+        "2010": {
+          "counts": [
+            2,
+            0,
+            0,
+            2,
+            0,
+            0
+          ],
+          "total": 4,
+          "H": 0.3333333333333333,
+          "effective_fraction": 0.3333333333333333
+        },
+        "2012": {
+          "counts": [
+            0,
+            0,
+            5,
+            0,
+            1,
+            2
+          ],
+          "total": 8,
+          "H": 0.39285714285714285,
+          "effective_fraction": 0.35555555555555557
+        },
+        "2013": {
+          "counts": [
+            0,
+            0,
+            1,
+            1,
+            4,
+            5
+          ],
+          "total": 11,
+          "H": 0.2909090909090909,
+          "effective_fraction": 0.4689922480620155
+        },
+        "2014": {
+          "counts": [
+            1,
+            0,
+            3,
+            0,
+            0,
+            0
+          ],
+          "total": 4,
+          "H": 0.5,
+          "effective_fraction": 0.26666666666666666
+        },
+        "2016": {
+          "counts": [
+            0,
+            0,
+            2,
+            9,
+            2,
+            1
+          ],
+          "total": 14,
+          "H": 0.4175824175824176,
+          "effective_fraction": 0.3629629629629629
+        },
+        "2017": {
+          "counts": [
+            0,
+            0,
+            8,
+            2,
+            0,
+            4
+          ],
+          "total": 14,
+          "H": 0.38461538461538464,
+          "effective_fraction": 0.3888888888888889
+        },
+        "2018": {
+          "counts": [
+            0,
+            0,
+            2,
+            1,
+            3,
+            5
+          ],
+          "total": 11,
+          "H": 0.2545454545454545,
+          "effective_fraction": 0.5170940170940171
+        },
+        "2019": {
+          "counts": [
+            0,
+            1,
+            6,
+            7,
+            0,
+            0
+          ],
+          "total": 14,
+          "H": 0.3956043956043956,
+          "effective_fraction": 0.3798449612403101
+        },
+        "2020": {
+          "counts": [
+            2,
+            0,
+            4,
+            4,
+            0,
+            0
+          ],
+          "total": 10,
+          "H": 0.28888888888888886,
+          "effective_fraction": 0.46296296296296285
+        }
+      }
+    },
+    "Adelie": {
+      "early_mean_count": 486,
+      "late_mean_count": 459.2,
+      "count_ratio": 0.9448559670781893,
+      "early_H": 0.4524405356480983,
+      "late_H": 0.402554447298286,
+      "delta_H": -0.049886088349812285,
+      "early_effective_fraction": 0.7378154293169704,
+      "late_effective_fraction": 0.8281664919387968,
+      "delta_effective_fraction": 0.09035106262182635,
+      "loo_ranges": {
+        "count_ratio": [
+          0.816358024691358,
+          1.1029623698959168
+        ],
+        "delta_H": [
+          -0.06292255961716536,
+          -0.0361993432008601
+        ],
+        "delta_effective_fraction": [
+          0.06891597093480606,
+          0.112683351237018
+        ]
+      },
+      "annual": {
+        "2010": {
+          "counts": [
+            237,
+            72,
+            71
+          ],
+          "total": 380,
+          "H": 0.4583668934870157,
+          "effective_fraction": 0.7249651072888113
+        },
+        "2012": {
+          "counts": [
+            391,
+            174,
+            130
+          ],
+          "total": 695,
+          "H": 0.41333112184603904,
+          "effective_fraction": 0.8048122951625455
+        },
+        "2013": {
+          "counts": [
+            236,
+            66,
+            55
+          ],
+          "total": 357,
+          "H": 0.4935007710949548,
+          "effective_fraction": 0.6735101542559095
+        },
+        "2014": {
+          "counts": [
+            308,
+            126,
+            78
+          ],
+          "total": 512,
+          "H": 0.4445633561643836,
+          "effective_fraction": 0.7479741605606155
+        },
+        "2016": {
+          "counts": [
+            427,
+            163,
+            119
+          ],
+          "total": 709,
+          "H": 0.44295299339405386,
+          "effective_fraction": 0.7511928831983168
+        },
+        "2017": {
+          "counts": [
+            190,
+            86,
+            66
+          ],
+          "total": 342,
+          "H": 0.40738454151017817,
+          "effective_fraction": 0.814762183398813
+        },
+        "2018": {
+          "counts": [
+            238,
+            109,
+            88
+          ],
+          "total": 435,
+          "H": 0.4016844112505959,
+          "effective_fraction": 0.8270070408685047
+        },
+        "2019": {
+          "counts": [
+            232,
+            124,
+            82
+          ],
+          "total": 438,
+          "H": 0.39437635183850034,
+          "effective_fraction": 0.8422633159475265
+        },
+        "2020": {
+          "counts": [
+            172,
+            126,
+            74
+          ],
+          "total": 372,
+          "H": 0.3663739384981016,
+          "effective_fraction": 0.9056070362808231
+        }
+      }
+    },
+    "Chinstrap": {
+      "early_mean_count": 837.25,
+      "late_mean_count": 604.4,
+      "count_ratio": 0.7218871304867124,
+      "early_H": 0.5165562343297145,
+      "late_H": 0.5285421911408906,
+      "delta_H": 0.01198595681117609,
+      "early_effective_fraction": 0.38687503705477966,
+      "late_effective_fraction": 0.3781084820571677,
+      "delta_effective_fraction": -0.008766554997611975,
+      "loo_ranges": {
+        "count_ratio": [
+          0.6700507614213198,
+          0.7890339425587467
+        ],
+        "delta_H": [
+          0.005840879369208629,
+          0.016810330103749993
+        ],
+        "delta_effective_fraction": [
+          -0.012309000116237145,
+          -0.004496427455963736
+        ]
+      },
+      "annual": {
+        "2010": {
+          "counts": [
+            38,
+            81,
+            5,
+            134,
+            618
+          ],
+          "total": 876,
+          "H": 0.5310293542074364,
+          "effective_fraction": 0.37624770169890415
+        },
+        "2012": {
+          "counts": [
+            60,
+            92,
+            16,
+            147,
+            736
+          ],
+          "total": 1051,
+          "H": 0.5206596891849032,
+          "effective_fraction": 0.38379187839305096
+        },
+        "2013": {
+          "counts": [
+            39,
+            66,
+            4,
+            104,
+            468
+          ],
+          "total": 681,
+          "H": 0.5075840027641012,
+          "effective_fraction": 0.39346294324511205
+        },
+        "2014": {
+          "counts": [
+            49,
+            87,
+            2,
+            93,
+            510
+          ],
+          "total": 741,
+          "H": 0.5069518911624175,
+          "effective_fraction": 0.3939976248820514
+        },
+        "2016": {
+          "counts": [
+            55,
+            70,
+            8,
+            106,
+            539
+          ],
+          "total": 778,
+          "H": 0.5111082437560587,
+          "effective_fraction": 0.39082603165174046
+        },
+        "2017": {
+          "counts": [
+            44,
+            54,
+            6,
+            82,
+            455
+          ],
+          "total": 641,
+          "H": 0.5313865054602184,
+          "effective_fraction": 0.3758567854480257
+        },
+        "2018": {
+          "counts": [
+            39,
+            53,
+            2,
+            65,
+            386
+          ],
+          "total": 545,
+          "H": 0.5295804101457097,
+          "effective_fraction": 0.3770429373869442
+        },
+        "2019": {
+          "counts": [
+            42,
+            44,
+            3,
+            72,
+            372
+          ],
+          "total": 533,
+          "H": 0.5175132954337062,
+          "effective_fraction": 0.38578868390855325
+        },
+        "2020": {
+          "counts": [
+            40,
+            32,
+            2,
+            70,
+            381
+          ],
+          "total": 525,
+          "H": 0.5531225009087605,
+          "effective_fraction": 0.3610279718905749
+        }
+      }
+    },
+    "Gentoo": {
+      "early_mean_count": 914.5,
+      "late_mean_count": 1078,
+      "count_ratio": 1.1787862219792236,
+      "loo_ranges": {
+        "count_ratio": [
+          1.1132530120481927,
+          1.2823156225218082
+        ]
+      },
+      "annual": {
+        "2010": {
+          "counts": [
+            753
+          ],
+          "total": 753
+        },
+        "2012": {
+          "counts": [
+            1009
+          ],
+          "total": 1009
+        },
+        "2013": {
+          "counts": [
+            760
+          ],
+          "total": 760
+        },
+        "2014": {
+          "counts": [
+            1136
+          ],
+          "total": 1136
+        },
+        "2016": {
+          "counts": [
+            1315
+          ],
+          "total": 1315
+        },
+        "2017": {
+          "counts": [
+            916
+          ],
+          "total": 916
+        },
+        "2018": {
+          "counts": [
+            937
+          ],
+          "total": 937
+        },
+        "2019": {
+          "counts": [
+            1072
+          ],
+          "total": 1072
+        },
+        "2020": {
+          "counts": [
+            1150
+          ],
+          "total": 1150
+        }
+      }
+    }
+  },
+  "execution": {
+    "run_id": 45408141685,
+    "job_id": 138494323593,
+    "head_sha": "0f0e3645105f59359b7ebd59e336899b80ea7e86",
+    "artifact_id": 14925523068,
+    "artifact_sha256": "9f6d0817e3ac1b4be99fa3b868c66288cdd4ee060d4d66b931cd67d0d1d5c255",
+    "local_digest_and_crc_verified": true,
+    "independent_recalculation": "exact rational arithmetic independently recomputed annual H, effective fraction, period ratios and all nine single-summer-deletion ranges from artifact count vectors; all matched at tolerance 1e-12; all seal vectors also matched earlier artifact 14917157831",
+    "source_check_scope": "Original CSV checksums verified on Actions; local arithmetic verification from derived count vectors, not an independent raw penguin re-extraction.",
+    "roster_date_record_counts": {
+      "Adelie": 27,
+      "Chinstrap": 45,
+      "Gentoo": 9
+    },
+    "gentoo_comment_repair": {
+      "original_header_width": 14,
+      "named_header_width": 13,
+      "overflow_comment_rows": 43,
+      "rows_with_nonempty_comment_continuations": 1
+    }
+  },
+  "prior_adelie_five_unit_diagnostic": {
+    "status": "POST_RESULT_DIAGNOSTIC_EXISTING_FROZEN_ROSTER_NOT_RESCUE",
+    "source_ref": "94fadb8ddd62e2ea6ac53b4d9605fdab61b21ff1",
+    "source_path": "results/SIGNY_BREEDING_PATCH_CONCENTRATION_RESULT_V1.json",
+    "source_blob": "7ad808e34334109918031c2a2685f4dbc5546a14",
+    "roster": [
+      "A1+A60",
+      "A2",
+      "A3",
+      "A4",
+      "A64"
+    ],
+    "annual_neff_by_february_year": {
+      "2010": 2.5336886753500245,
+      "2012": 2.5556564590129227,
+      "2013": 2.0849477413708684,
+      "2014": 2.188847357626981,
+      "2016": 2.3342846269595023,
+      "2017": 2.267980009527326,
+      "2018": 2.153393535555029,
+      "2019": 2.055444388961418,
+      "2020": 1.936162758624296
+    },
+    "early_mean_neff": 2.3407850583401992,
+    "late_mean_neff": 2.149453063925514,
+    "delta_effective_fraction": -0.038266398882937036,
+    "delta_effective_fraction_leave_one_summer_out_range": [
+      -0.05532222001422573,
+      -0.023941638838088773
+    ]
+  }
+}

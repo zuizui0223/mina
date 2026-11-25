@@ -1,0 +1,33 @@
+name: mapppd-v5-original-export-gate
+on:
+  pull_request:
+    paths:
+      - 'research/signy_seal_spatial_pressure_v1/mapppd_v5_source.py'
+      - '.github/workflows/mapppd-v5-original-export-gate.yml'
+permissions:
+  contents: read
+jobs:
+  publisher-export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install requests
+      - run: python research/signy_seal_spatial_pressure_v1/mapppd_v5_source.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mapppd-v5-source-receipt
+          path: build/mapppd_v5_source/receipt.json
+          if-no-files-found: error
+          retention-days: 60
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: mapppd-v5-public-source-temporary
+          path: build/mapppd_v5_source/public_source.csv
+          if-no-files-found: ignore
+          retention-days: 14

@@ -1,0 +1,87 @@
+{
+  "status": "POSITIVE_CONDITIONAL_ASSOCIATION_TEMPORAL_ASYMMETRY_NOT_SUPPORTED",
+  "contract": "ba24ec166478b38b76a6dd38b350388a3898607e",
+  "code_commit": "2336050704fb7227ac15b8587afe413bf1e6fc51",
+  "code_git_blob": "4bee35dfbfda7e66647f2c714e0e976ca7931b3a",
+  "code_sha256": "e2ebc79749eccef50fffbf2464a3a29b66f6a8878e96d947bfcfdff8426a8d71",
+  "local_full_result_sha256": "e8cf3e58bd3dccf1d51e1b40d76c439ae59ffb706107eb05e6e0cd5504ad1d0e",
+  "source_artifact": 14987514463,
+  "source_sha256": "d67a47fa9c280da82ace6d471f1ea42a63fdc402f4b6aa6c0734ca68317632ab",
+  "reproduction": "OPENBLAS_NUM_THREADS=1 python research/signy_seal_spatial_pressure_v1/pgeo_transition.py ARTIFACT_DIRECTORY OUTPUT_DIRECTORY",
+  "support": {
+    "strict_valid_pair_seasons_all_years": 1258,
+    "prior_common_adult_year_subset": 1154,
+    "next_year_transitions": 1035,
+    "next_zero": 4,
+    "units": 79,
+    "start_years": 18,
+    "island_years": 50
+  },
+  "primary": {
+    "forward_beta": 0.4428232529598015,
+    "partial_R2": 0.057618147230927286,
+    "current_size_beta": 0.7103558796859674,
+    "productivity_residual_sd": 0.21240675881256538,
+    "leave_year_range": [
+      0.4038002478556613,
+      0.467073452856517
+    ],
+    "leave_island": {
+      "bernard": 0.44574203,
+      "petrel": 0.2700039497010574,
+      "rostand": 0.4653931550599871
+    },
+    "leave_colony_range": [
+      0.285428009014942,
+      0.46190472576110936
+    ]
+  },
+  "sensitivity": {
+    "equal_island_year": {
+      "beta": 0.35882802080635173,
+      "partial_R2": 0.04869478523134718
+    },
+    "quadratic_current": {
+      "beta": 0.3956035864709043,
+      "partial_R2": 0.04450209509120884
+    },
+    "positive_endpoints_log": {
+      "n": 1031,
+      "beta": 0.40183890160944163,
+      "partial_R2": 0.07755922323725051
+    }
+  },
+  "matched": {
+    "n": 800,
+    "units": 77,
+    "years": 15,
+    "island_years": 39,
+    "forward_beta": 0.2630391222697211,
+    "backward_beta": 0.20847866978697,
+    "contrast": 0.0545604524827511,
+    "forward_partial_R2": 0.05856394490412631,
+    "backward_partial_R2": 0.01813197909971276,
+    "leave_year_contrast_range": [
+      -0.008913721194819979,
+      0.1109791862376305
+    ],
+    "leave_island_contrast_range": [
+      0.04413791588811766,
+      0.06505010863611765
+    ],
+    "omit2019": {
+      "n": 745,
+      "forward": 0.29361200070702853,
+      "backward": 0.3025257219018485,
+      "contrast": -0.008913721194819979
+    }
+  },
+  "deletion_coefficients_rounded_8dp": {
+    "primary_year": "1998:0.44406923,2000:0.43205250,2001:0.42975072,2002:0.44641944,2003:0.40380025,2004:0.44100454,2005:0.46071646,2006:0.44055443,2007:0.44461314,2008:0.45884001,2009:0.43650461,2010:0.46707345,2011:0.43822220,2014:0.42660204,2017:0.46297402,2018:0.46078977,2019:0.45830315,2020:0.42533777",
+    "primary_colony": "B01:0.44184516,B02:0.42309030,B03:0.44770825,B06:0.44211273,B07:0.45792068,B08:0.44415631,B09:0.44125903,B10:0.44962013,B11:0.44318514,B14:0.43979671,B15:0.44545935,BF01:0.44338600,BF02:0.44224746,P01:0.43684546,P05:0.45736229,P07:0.44390873,P08:0.44312883,P11:0.44253900,P12:0.44170393,P15:0.44437697,P21:0.44350834,P27:0.45567148,P29:0.43751011,P30:0.43713773,P31:0.44618415,P32:0.45352020,P35:0.44634621,P37:0.45494986,P38:0.44428722,P39:0.44776743,P40:0.44748210,P41:0.44920956,P48:0.43923786,P49:0.44658090,P51:0.44509995,P52:0.44282325,P55:0.46190473,P56:0.44018549,P57:0.43895487,P58:0.45259370,P59:0.43784963,P60:0.44329956,P63:0.44137645,P65:0.44432399,P66:0.44521350,P70:0.44374689,P71:0.40222875,P72:0.28542801,P74:0.44067022,P75:0.44862211,P81:0.43846166,P84:0.44282325,P85:0.45694293,P86:0.44798657,P87:0.44154212,PF01:0.44382341,PF02:0.44769152,PF03:0.44388271,PF04:0.44397148,PF05:0.44159438,PF06:0.45076271,PF07:0.44674955,PF08:0.44965130,PF09:0.43655451,PF11:0.44611807,PF12:0.44323837,PF13:0.44661731,PF14:0.44506759,PF15:0.44282697,PF16:0.44743030,R01:0.44693627,R04:0.44675845,R05:0.44622514,R08:0.44424200,R13:0.44816122,RF01:0.44364668,RF02:0.44844885,RF03:0.44373781,RF04:0.44293291",
+    "matched_year_forward_backward_contrast": "2000:0.22036012/0.18562362/0.03473651,2001:0.22226865/0.19594308/0.02632557,2002:0.25078435/0.21656464/0.03421970,2003:0.28494232/0.22191249/0.06302983,2004:0.25229792/0.22284335/0.02945457,2005:0.27180873/0.17569214/0.09611659,2006:0.25928724/0.22478083/0.03450641,2007:0.26574557/0.19462778/0.07111780,2008:0.29708604/0.19726036/0.09982567,2009:0.26044510/0.18936715/0.07107795,2010:0.27928156/0.16830238/0.11097919,2011:0.24683696/0.22167534/0.02516162,2018:0.26846958/0.20414715/0.06432243,2019:0.29361200/0.30252572/-0.00891372,2020:0.27543818/0.21159972/0.06383846",
+    "matched_island_forward_backward_contrast": "bernard:0.24195738/0.19781947/0.04413792,petrel:0.19757067/0.13252056/0.06505011,rostand:0.27574968/0.21599900/0.05975067"
+  },
+  "verification": "All seven source checksums and archive CRC checked. Combined committed script rerun produced byte-identical full result JSON. Git blob verified exact match. FWL equivalence verified every fitted model; temporal difference equals regression of difference outcome.",
+  "decision": "Positive descriptive conditional future abundance association, all primary deletion signs positive. Matched temporal asymmetry fails year-deletion criterion. Same data as published growth relationship, not independent replication. No settlement, migration, recruitment, causal pathway or climate effect established. No p-values or forecast. No new lag/window selection to rescue."
+}

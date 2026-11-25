@@ -1,0 +1,32 @@
+name: bird-island-independent-source-gate
+on:
+  pull_request:
+    paths:
+      - 'research/signy_seal_spatial_pressure_v1/bird_island_source.py'
+      - '.github/workflows/bird-island-independent-source-gate.yml'
+permissions:
+  contents: read
+jobs:
+  original-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install requests
+      - run: python research/signy_seal_spatial_pressure_v1/bird_island_source.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bird-island-source-receipt
+          path: build/bird_island_source/receipt.json
+          if-no-files-found: error
+          retention-days: 60
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bird-island-original-ogl-source
+          path: build/bird_island_source/original_source.zip
+          if-no-files-found: ignore
+          retention-days: 30

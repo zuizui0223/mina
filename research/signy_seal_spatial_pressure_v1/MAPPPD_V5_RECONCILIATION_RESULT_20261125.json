@@ -1,0 +1,215 @@
+{
+  "status": "EXACT_LEGACY_REPRODUCTION_NO_NEW_ELIGIBLE_SERIES",
+  "input_zip_sha256": {
+    "v5": "0264797d82bee62df3b14346428abb4a4994ec01224906c3468afbe99a2c56c4",
+    "legacy": "add9f2a4c9a82279a70b4e9edb4156f5dc9d21fbe55122276e5199a02487f38a",
+    "marine": "64a8e9832e254171139d78bb22351d6c9a3acf490356931b2635ed5b108d94b5"
+  },
+  "v5_csv_sha256": "d169c409cf278b137d6df35fbeb9ab3409bdea15f41c39bcaec549a4d4dbca89",
+  "source": {
+    "all_records": 5487,
+    "all_sites": 729,
+    "references": 183,
+    "all_nest_rows": 4055,
+    "numeric_nest_rows": 4032,
+    "focal_numeric_nest_rows": 3885,
+    "focal_numeric_nest_sites": 604,
+    "missing_nest_count_rows": 23,
+    "all_numeric_nest_site_species_seasons": 3399,
+    "conflicting_count_groups": 400,
+    "unambiguous_count_groups": 2999,
+    "focal_agree_groups": 2861,
+    "one_known_method_focal_groups": 2724,
+    "legacy_rebuilt_rows": 2456,
+    "legacy_exact_keys_counts_methods": 2456,
+    "exact_match_season_start": 2456,
+    "exact_match_calendar_year": 1899
+  },
+  "excluded_alternative_methods": {
+    "n_rows": 268,
+    "sites": 226,
+    "new_site_species": 0,
+    "by_species": {
+      "CHPE": 125,
+      "ADPE": 102,
+      "GEPE": 41
+    },
+    "seasons_since_2021": {
+      "2021": 9,
+      "2022": 3,
+      "2023": 11,
+      "2024": 11,
+      "2025": 32
+    }
+  },
+  "support": {
+    "legacy": {
+      "method_or_reference_candidates": 59,
+      "series": 59,
+      "climate_series": 53,
+      "primary_series": 51,
+      "primary_sites": 41,
+      "primary_regions": [
+        "Central-west Antarctic Peninsula",
+        "South Shetland Islands",
+        "Victoria Land"
+      ],
+      "strata": [
+        {
+          "species": "ADPE",
+          "region": "Adelie Land",
+          "n": 1
+        },
+        {
+          "species": "ADPE",
+          "region": "Central-west Antarctic Peninsula",
+          "n": 4
+        },
+        {
+          "species": "ADPE",
+          "region": "South Shetland Islands",
+          "n": 3
+        },
+        {
+          "species": "ADPE",
+          "region": "Victoria Land",
+          "n": 10
+        },
+        {
+          "species": "CHPE",
+          "region": "Central-west Antarctic Peninsula",
+          "n": 5
+        },
+        {
+          "species": "CHPE",
+          "region": "Elephant Island",
+          "n": 1
+        },
+        {
+          "species": "CHPE",
+          "region": "South Shetland Islands",
+          "n": 7
+        },
+        {
+          "species": "GEPE",
+          "region": "Central-west Antarctic Peninsula",
+          "n": 18
+        },
+        {
+          "species": "GEPE",
+          "region": "South Shetland Islands",
+          "n": 4
+        }
+      ]
+    },
+    "all_known_methods_separate": {
+      "method_or_reference_candidates": 59,
+      "series": 59,
+      "climate_series": 53,
+      "primary_series": 51,
+      "primary_sites": 41,
+      "primary_regions": [
+        "Central-west Antarctic Peninsula",
+        "South Shetland Islands",
+        "Victoria Land"
+      ],
+      "strata": [
+        {
+          "species": "ADPE",
+          "region": "Adelie Land",
+          "n": 1
+        },
+        {
+          "species": "ADPE",
+          "region": "Central-west Antarctic Peninsula",
+          "n": 4
+        },
+        {
+          "species": "ADPE",
+          "region": "South Shetland Islands",
+          "n": 3
+        },
+        {
+          "species": "ADPE",
+          "region": "Victoria Land",
+          "n": 10
+        },
+        {
+          "species": "CHPE",
+          "region": "Central-west Antarctic Peninsula",
+          "n": 5
+        },
+        {
+          "species": "CHPE",
+          "region": "Elephant Island",
+          "n": 1
+        },
+        {
+          "species": "CHPE",
+          "region": "South Shetland Islands",
+          "n": 7
+        },
+        {
+          "species": "GEPE",
+          "region": "Central-west Antarctic Peninsula",
+          "n": 18
+        },
+        {
+          "species": "GEPE",
+          "region": "South Shetland Islands",
+          "n": 4
+        }
+      ]
+    },
+    "same_reference_and_method": {
+      "method_or_reference_candidates": 19,
+      "series": 19,
+      "climate_series": 13,
+      "primary_series": 9,
+      "primary_sites": 9,
+      "primary_regions": [
+        "Victoria Land"
+      ],
+      "strata": [
+        {
+          "species": "ADPE",
+          "region": "Adelie Land",
+          "n": 1
+        },
+        {
+          "species": "ADPE",
+          "region": "Central-west Antarctic Peninsula",
+          "n": 1
+        },
+        {
+          "species": "ADPE",
+          "region": "Victoria Land",
+          "n": 9
+        },
+        {
+          "species": "GEPE",
+          "region": "Central-west Antarctic Peninsula",
+          "n": 1
+        },
+        {
+          "species": "GEPE",
+          "region": "South Shetland Islands",
+          "n": 1
+        }
+      ]
+    },
+    "same_eligible_site_species_method_keys": true
+  },
+  "source_boundary": "Same v5 release as earlier API audit; all legacy rows recovered, not an independent observation archive. Alternate methods do not increase the eligible roster. Same-reference support is descriptive, not proof of independence. Missing counts never zero; no ecological refit.",
+  "execution": {
+    "source_run": 45425894196,
+    "source_artifact": 14934334550,
+    "legacy_artifact": 13669533413,
+    "marine_artifact": 13829236358,
+    "local_code_sha256": "49ce3766591f2be030bfd59486e816449e78e6b62f80ea2b0a09207065b66ef0",
+    "executed_code_git_blob": "1bf481d05e1e1c306ca6b3f876fac8972276540a",
+    "code_commit": "8ac2a838ee5bdcab0a8ab56f12fafefc9c02d810",
+    "local_result_sha256": "583aa4f3ae3b2f21d3b35ff0e1abe74bac14216e3d98fa1cbd16518e9dc211dd",
+    "verification": "All three archives locally SHA256-pinned and ZIP CRC checked; v5 and marine ZIPs match official Actions artifact digests. Legacy digest is a local pin only. Exact committed code blob matches executed local file. This receipt reproduces local output with execution provenance appended."
+  }
+}

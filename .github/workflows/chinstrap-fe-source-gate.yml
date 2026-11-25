@@ -1,0 +1,30 @@
+name: chinstrap-fe-source-gate
+on:
+  push:
+    branches: [analysis/signy-seal-spatial-pressure-20261124]
+    paths:
+      - 'research/signy_seal_spatial_pressure_v1/chinstrap_fe_source.py'
+      - '.github/workflows/chinstrap-fe-source-gate.yml'
+  pull_request:
+    paths:
+      - 'research/signy_seal_spatial_pressure_v1/chinstrap_fe_source.py'
+      - '.github/workflows/chinstrap-fe-source-gate.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install requests openpyxl
+      - run: python research/signy_seal_spatial_pressure_v1/chinstrap_fe_source.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinstrap-fe-source-gate
+          path: build/chinstrap_fe_source/receipt.json
+          retention-days: 60
