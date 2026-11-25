@@ -37,13 +37,18 @@ def bounded(x,limit):
 def js(u):return json.loads(get(u))
 def digest(b):return hashlib.sha256(b).hexdigest()
 def inspect(b):
-    t=b.decode('utf-8-sig');d=csv.Sniffer().sniff(t[:12000],delimiters=',;\t')
+    try:t=b.decode('utf-8-sig');encoding='utf-8-sig'
+    except UnicodeDecodeError:
+        # Legacy degree signs in original publisher CSV; preserve byte identity.
+        t=b.decode('cp1252');encoding='cp1252'
+        assert t.encode('cp1252')==b
+    d=csv.Sniffer().sniff(t[:12000],delimiters=',;\t')
     rows=list(csv.reader(io.StringIO(t),d));h=rows[0];a=[x for x in rows[1:] if any(v.strip() for v in x)]
     if any(len(x)!=len(h) for x in a):raise ValueError('ragged CSV')
     def describe(i):
         vals=[x[i].strip() for x in a];u=sorted(set(vals))
         return {'n_blank':vals.count(''),'distinct':len(u),'values_if_small':u if len(u)<=20 else None}
-    return {'rows':len(a),'columns':h,'duplicate_rows':len(a)-len(set(map(tuple,a))),'column_support':{str(i)+':'+k:describe(i) for i,k in enumerate(h)}}
+    return {'encoding':encoding,'rows':len(a),'columns':h,'duplicate_rows':len(a)-len(set(map(tuple,a))),'column_support':{str(i)+':'+k:describe(i) for i,k in enumerate(h)}}
 try:
     item=js(ROOT+'/server/api/core/items/'+UUID)
     if item.get('uuid')!=UUID:raise ValueError('item identity')
@@ -67,7 +72,9 @@ try:
             if cs.get('checkSumAlgorithm','').upper()=='MD5':
                 if hashlib.md5(raw).hexdigest()!=cs.get('value'):raise ValueError('publisher MD5 mismatch')
             rec.update(bytes=len(raw),sha256=digest(raw),source_checksum=cs)
-            if name.endswith('.csv'):rec['schema']=inspect(raw)
+            if name.endswith('.csv'):
+                (OUT/name).write_bytes(raw)
+                rec['schema']=inspect(raw)
             else:
                 import zipfile
                 with zipfile.ZipFile(io.BytesIO(raw)) as z:
