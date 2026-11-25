@@ -1,0 +1,870 @@
+{
+  "status": "EXECUTED_MATCHED_LOCAL_LAGS",
+  "panel_count": 6,
+  "geographic_systems": 3,
+  "sources": {
+    "palmer_sha256": "b4ef04e2275ea779fc8fe54fa13528dc2052d37dd88a60c811d54c7601f67b16",
+    "signy_ad_selected_csv_sha256": "585f87928ed64d8982ef5bd86d8a785c38df65c39223d88ec17425854c786d62",
+    "signy_ch_selected_csv_sha256": "e50e98719ba5eedc6f5e617e0c7aa404ebfba15bc22a51e93e78cd4443bf787b",
+    "ross_blob": "eaf47bf87158ef219d75b1be9eb8e50d0703ebaa"
+  },
+  "panels": {
+    "Palmer_COR": {
+      "first": 1991,
+      "last": 2017,
+      "years": 27,
+      "units": 7,
+      "common_start": {
+        "anchors": [
+          1991,
+          1992,
+          1993,
+          1994,
+          1995,
+          1996,
+          1997,
+          1998,
+          1999,
+          2000,
+          2001,
+          2002,
+          2003,
+          2004,
+          2005,
+          2006,
+          2007
+        ],
+        "n": 17,
+        "lag_medians": {
+          "1": {
+            "TV": 0.04977750632580054,
+            "D2": -0.0018742773951797576,
+            "deltaU": 0.0015912742123134205,
+            "logNratio": -0.0726391836399716
+          },
+          "5": {
+            "TV": 0.14269285208775656,
+            "D2": 0.01358305873231247,
+            "deltaU": 0.007782256036624691,
+            "logNratio": -0.6705728585214064
+          },
+          "10": {
+            "TV": 0.3905638709928568,
+            "D2": 0.1457345070160742,
+            "deltaU": 0.026862430486141342,
+            "logNratio": -1.4966424182887559
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.33482142857142855,
+          "D2": 0.13534343483614258,
+          "deltaU": 0.019826600083623303,
+          "logNratio": -1.3418425985490567
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 17,
+          "D2": 17,
+          "deltaU": 13,
+          "logNratio": 0
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 8,
+            "stable": 8,
+            "increase": 1
+          },
+          "5": {
+            "decline": 17,
+            "stable": 0,
+            "increase": 0
+          },
+          "10": {
+            "decline": 17,
+            "stable": 0,
+            "increase": 0
+          }
+        }
+      },
+      "common_end": {
+        "anchors": [
+          2001,
+          2002,
+          2003,
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017
+        ],
+        "n": 17,
+        "lag_medians": {
+          "1": {
+            "TV": 0.05757135945815192,
+            "D2": -0.0098541629809894,
+            "deltaU": 0.0014519056261343422,
+            "logNratio": -0.21414798840563182
+          },
+          "5": {
+            "TV": 0.14925373134328357,
+            "D2": 0.01358305873231247,
+            "deltaU": 0.007782256036624691,
+            "logNratio": -0.6931471805599453
+          },
+          "10": {
+            "TV": 0.3905638709928568,
+            "D2": 0.1457345070160742,
+            "deltaU": 0.026862430486141342,
+            "logNratio": -1.4966424182887559
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.27725006911327665,
+          "D2": 0.16082994646879117,
+          "deltaU": 0.019826600083623303,
+          "logNratio": -1.3006389165413967
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 17,
+          "D2": 17,
+          "deltaU": 13,
+          "logNratio": 0
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 11,
+            "stable": 5,
+            "increase": 1
+          },
+          "5": {
+            "decline": 17,
+            "stable": 0,
+            "increase": 0
+          },
+          "10": {
+            "decline": 17,
+            "stable": 0,
+            "increase": 0
+          }
+        }
+      }
+    },
+    "Palmer_HUM": {
+      "first": 1991,
+      "last": 2017,
+      "years": 27,
+      "units": 9,
+      "common_start": {
+        "anchors": [
+          1991,
+          1992,
+          1993,
+          1994,
+          1995,
+          1996,
+          1997,
+          1998,
+          1999,
+          2000,
+          2001,
+          2002,
+          2003,
+          2004,
+          2005,
+          2006,
+          2007
+        ],
+        "n": 17,
+        "lag_medians": {
+          "1": {
+            "TV": 0.043768625262683,
+            "D2": -0.0010873161065573234,
+            "deltaU": 0.008572522005357797,
+            "logNratio": -0.07787889342635719
+          },
+          "5": {
+            "TV": 0.11817165695705187,
+            "D2": 0.011169286421330415,
+            "deltaU": 0.030006135479711343,
+            "logNratio": -0.5002435144354537
+          },
+          "10": {
+            "TV": 0.25689003594801363,
+            "D2": 0.05647039092280404,
+            "deltaU": 0.06100931521426106,
+            "logNratio": -1.2495423537953259
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.20461502294147904,
+          "D2": 0.05755770702936136,
+          "deltaU": 0.06320144148943385,
+          "logNratio": -1.0275163669843792
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 17,
+          "D2": 17,
+          "deltaU": 17,
+          "logNratio": 0
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 7,
+            "stable": 9,
+            "increase": 1
+          },
+          "5": {
+            "decline": 17,
+            "stable": 0,
+            "increase": 0
+          },
+          "10": {
+            "decline": 17,
+            "stable": 0,
+            "increase": 0
+          }
+        }
+      },
+      "common_end": {
+        "anchors": [
+          2001,
+          2002,
+          2003,
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017
+        ],
+        "n": 17,
+        "lag_medians": {
+          "1": {
+            "TV": 0.04779411764705882,
+            "D2": -0.005790517164402598,
+            "deltaU": 0.012032029115215004,
+            "logNratio": -0.10660973505825826
+          },
+          "5": {
+            "TV": 0.1255667258032722,
+            "D2": 0.012512173434390483,
+            "deltaU": 0.03484576599174166,
+            "logNratio": -0.503350949349285
+          },
+          "10": {
+            "TV": 0.25689003594801363,
+            "D2": 0.05647039092280404,
+            "deltaU": 0.06100931521426106,
+            "logNratio": -1.2495423537953259
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.20082596272146902,
+          "D2": 0.06018876623206115,
+          "deltaU": 0.0631324605111242,
+          "logNratio": -1.0275163669843794
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 17,
+          "D2": 17,
+          "deltaU": 17,
+          "logNratio": 0
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 10,
+            "stable": 6,
+            "increase": 1
+          },
+          "5": {
+            "decline": 17,
+            "stable": 0,
+            "increase": 0
+          },
+          "10": {
+            "decline": 17,
+            "stable": 0,
+            "increase": 0
+          }
+        }
+      }
+    },
+    "Palmer_LIT": {
+      "first": 1991,
+      "last": 2006,
+      "years": 16,
+      "units": 9,
+      "common_start": {
+        "anchors": [
+          1991,
+          1992,
+          1993,
+          1994,
+          1995,
+          1996
+        ],
+        "n": 6,
+        "lag_medians": {
+          "1": {
+            "TV": 0.03481340047010006,
+            "D2": -0.0026447532790689343,
+            "deltaU": 0.002538015666228466,
+            "logNratio": -0.029179522506753826
+          },
+          "5": {
+            "TV": 0.10282684887352764,
+            "D2": 0.004561290318548572,
+            "deltaU": 0.029512725681277593,
+            "logNratio": -0.3812374798233251
+          },
+          "10": {
+            "TV": 0.6911611961083926,
+            "D2": 0.5777554146118167,
+            "deltaU": 0.7296132845596883,
+            "logNratio": -2.394243389906996
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.6419771440563862,
+          "D2": 0.5809308842843836,
+          "deltaU": 0.7255746618586993,
+          "logNratio": -2.310247524287431
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 6,
+          "D2": 6,
+          "deltaU": 6,
+          "logNratio": 0
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 2,
+            "stable": 4,
+            "increase": 0
+          },
+          "5": {
+            "decline": 6,
+            "stable": 0,
+            "increase": 0
+          },
+          "10": {
+            "decline": 6,
+            "stable": 0,
+            "increase": 0
+          }
+        }
+      },
+      "common_end": {
+        "anchors": [
+          2001,
+          2002,
+          2003,
+          2004,
+          2005,
+          2006
+        ],
+        "n": 6,
+        "lag_medians": {
+          "1": {
+            "TV": 0.0663577693962005,
+            "D2": 0,
+            "deltaU": 0.038302159099938476,
+            "logNratio": -0.6447988391978985
+          },
+          "5": {
+            "TV": 0.5658248378127896,
+            "D2": 0.3999547476483273,
+            "deltaU": 0.6692630913372704,
+            "logNratio": -2.021592083515353
+          },
+          "10": {
+            "TV": 0.6911611961083926,
+            "D2": 0.5777554146118167,
+            "deltaU": 0.7296132845596883,
+            "logNratio": -2.394243389906996
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.4265890537600665,
+          "D2": 0.449330934949965,
+          "deltaU": 0.38333814155360324,
+          "logNratio": -1.6610748555102826
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 6,
+          "D2": 6,
+          "deltaU": 6,
+          "logNratio": 0
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 6,
+            "stable": 0,
+            "increase": 0
+          },
+          "5": {
+            "decline": 6,
+            "stable": 0,
+            "increase": 0
+          },
+          "10": {
+            "decline": 6,
+            "stable": 0,
+            "increase": 0
+          }
+        }
+      }
+    },
+    "Signy_ADPE": {
+      "first": 1996,
+      "last": 2019,
+      "years": 22,
+      "units": 5,
+      "common_start": {
+        "anchors": [
+          1998,
+          1999,
+          2001,
+          2002,
+          2003,
+          2004,
+          2006,
+          2007,
+          2008
+        ],
+        "n": 9,
+        "lag_medians": {
+          "1": {
+            "TV": 0.028787583953958737,
+            "D2": 0.00010156553224549558,
+            "deltaU": 0.009982043722810363,
+            "logNratio": 0.025387298273049915
+          },
+          "5": {
+            "TV": 0.05597269286337726,
+            "D2": 0.0031884846644306686,
+            "deltaU": 0.030976943429909365,
+            "logNratio": -0.0493347250232327
+          },
+          "10": {
+            "TV": 0.08113288802616127,
+            "D2": 0.008508538426820311,
+            "deltaU": 0.07117004716859637,
+            "logNratio": -0.11412080782694577
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.05508437306032528,
+          "D2": 0.008490145122700077,
+          "deltaU": 0.05539641670056178,
+          "logNratio": -0.18546642846364042
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 9,
+          "D2": 9,
+          "deltaU": 9,
+          "logNratio": 3
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 4,
+            "stable": 2,
+            "increase": 3
+          },
+          "5": {
+            "decline": 4,
+            "stable": 4,
+            "increase": 1
+          },
+          "10": {
+            "decline": 5,
+            "stable": 4,
+            "increase": 0
+          }
+        }
+      },
+      "common_end": {
+        "anchors": [
+          2006,
+          2008,
+          2009,
+          2012,
+          2013,
+          2014,
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "n": 10,
+        "lag_medians": {
+          "1": {
+            "TV": 0.029930328506117678,
+            "D2": 0.0001309464066509003,
+            "deltaU": 0.0161615277255254,
+            "logNratio": 0.07077493965497161
+          },
+          "5": {
+            "TV": 0.050544029129218154,
+            "D2": 0.002401849935827538,
+            "deltaU": 0.04865511293674604,
+            "logNratio": -0.06963736732648186
+          },
+          "10": {
+            "TV": 0.08051568033835464,
+            "D2": 0.008428944759681922,
+            "deltaU": 0.07148289107345887,
+            "logNratio": -0.1761312173592953
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.05552393461150513,
+          "D2": 0.008478047058529448,
+          "deltaU": 0.05643715568838653,
+          "logNratio": -0.23317210532890315
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 9,
+          "D2": 9,
+          "deltaU": 10,
+          "logNratio": 3
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 3,
+            "stable": 4,
+            "increase": 3
+          },
+          "5": {
+            "decline": 4,
+            "stable": 4,
+            "increase": 2
+          },
+          "10": {
+            "decline": 6,
+            "stable": 3,
+            "increase": 1
+          }
+        }
+      }
+    },
+    "Signy_CHPE": {
+      "first": 1996,
+      "last": 2019,
+      "years": 22,
+      "units": 9,
+      "common_start": {
+        "anchors": [
+          1998,
+          1999,
+          2001,
+          2002,
+          2003,
+          2004,
+          2006,
+          2007,
+          2008
+        ],
+        "n": 9,
+        "lag_medians": {
+          "1": {
+            "TV": 0.02543620567979952,
+            "D2": -0.00016060402208661895,
+            "deltaU": 0.0021073565059608335,
+            "logNratio": -0.006700192569819562
+          },
+          "5": {
+            "TV": 0.06161745827984597,
+            "D2": 0.0014466175781263635,
+            "deltaU": 0.021715600751201436,
+            "logNratio": -0.1427156603528654
+          },
+          "10": {
+            "TV": 0.09518743977089186,
+            "D2": 0.0050483279611497345,
+            "deltaU": 0.044680565775932546,
+            "logNratio": -0.6022479897313056
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.06208271021320503,
+          "D2": 0.00527059352883863,
+          "deltaU": 0.04949874837952384,
+          "logNratio": -0.56676563964833
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 9,
+          "D2": 9,
+          "deltaU": 8,
+          "logNratio": 1
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 3,
+            "stable": 5,
+            "increase": 1
+          },
+          "5": {
+            "decline": 6,
+            "stable": 2,
+            "increase": 1
+          },
+          "10": {
+            "decline": 9,
+            "stable": 0,
+            "increase": 0
+          }
+        }
+      },
+      "common_end": {
+        "anchors": [
+          2006,
+          2008,
+          2009,
+          2012,
+          2013,
+          2014,
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "n": 10,
+        "lag_medians": {
+          "1": {
+            "TV": 0.06032462712504806,
+            "D2": 0.0018330807134178118,
+            "deltaU": 0.02175452378144882,
+            "logNratio": -0.07184313810949527
+          },
+          "5": {
+            "TV": 0.07799301777501164,
+            "D2": 0.004268145701440407,
+            "deltaU": 0.039947611839329544,
+            "logNratio": -0.4183329573242208
+          },
+          "10": {
+            "TV": 0.09772252005394566,
+            "D2": 0.008464992943393201,
+            "deltaU": 0.06027804777937287,
+            "logNratio": -0.6083591861858096
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.05126980609809129,
+          "D2": 0.008438036510839575,
+          "deltaU": 0.04415356595217701,
+          "logNratio": -0.4987238721039299
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 10,
+          "D2": 10,
+          "deltaU": 9,
+          "logNratio": 1
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 5,
+            "stable": 5,
+            "increase": 0
+          },
+          "5": {
+            "decline": 10,
+            "stable": 0,
+            "increase": 0
+          },
+          "10": {
+            "decline": 9,
+            "stable": 1,
+            "increase": 0
+          }
+        }
+      }
+    },
+    "Ross_ADPE": {
+      "first": 1985,
+      "last": 2012,
+      "years": 26,
+      "units": 6,
+      "common_start": {
+        "anchors": [
+          1985,
+          1986,
+          1987,
+          1988,
+          1989,
+          1991,
+          1992,
+          1993,
+          1994,
+          1996,
+          1997,
+          2001,
+          2002
+        ],
+        "n": 13,
+        "lag_medians": {
+          "1": {
+            "TV": 0.033865966052172625,
+            "D2": 0.0016782101357253332,
+            "deltaU": -0.0008318041794606601,
+            "logNratio": -0.008260717007366598
+          },
+          "5": {
+            "TV": 0.03278190238920026,
+            "D2": 0.0010372218766463437,
+            "deltaU": 0.014930393472787129,
+            "logNratio": -0.021758588163173807
+          },
+          "10": {
+            "TV": 0.05268543472515852,
+            "D2": 0.003334025310647304,
+            "deltaU": 0.04855665302026135,
+            "logNratio": 0.11869768743524352
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.012674795795006473,
+          "D2": 0.0018378026390817315,
+          "deltaU": 0.03487403868794614,
+          "logNratio": 0.23306792542769073
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 12,
+          "D2": 12,
+          "deltaU": 11,
+          "logNratio": 8
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 5,
+            "stable": 5,
+            "increase": 3
+          },
+          "5": {
+            "decline": 6,
+            "stable": 2,
+            "increase": 5
+          },
+          "10": {
+            "decline": 6,
+            "stable": 0,
+            "increase": 7
+          }
+        }
+      },
+      "common_end": {
+        "anchors": [
+          1995,
+          1996,
+          1997,
+          1998,
+          1999,
+          2002,
+          2003,
+          2004,
+          2006,
+          2007,
+          2011,
+          2012
+        ],
+        "n": 12,
+        "lag_medians": {
+          "1": {
+            "TV": 0.031968150488120343,
+            "D2": 0.0013354479381868511,
+            "deltaU": 0.0034892506032700443,
+            "logNratio": 0.003630647015034112
+          },
+          "5": {
+            "TV": 0.029344765586759382,
+            "D2": 0.0008654757071509533,
+            "deltaU": 0.013570114258446536,
+            "logNratio": 0.12285853398764132
+          },
+          "10": {
+            "TV": 0.054764251096440834,
+            "D2": 0.0034430017279030722,
+            "deltaU": 0.050911505107406385,
+            "logNratio": 0.1271698054910084
+          }
+        },
+        "median_within_anchor_10minus1": {
+          "TV": 0.021905636233272376,
+          "D2": 0.00163012891046882,
+          "deltaU": 0.03797922201399989,
+          "logNratio": 0.013531517426045706
+        },
+        "positive_within_anchor_10minus1": {
+          "TV": 9,
+          "D2": 9,
+          "deltaU": 11,
+          "logNratio": 6
+        },
+        "strata_by_lag": {
+          "1": {
+            "decline": 2,
+            "stable": 6,
+            "increase": 4
+          },
+          "5": {
+            "decline": 1,
+            "stable": 4,
+            "increase": 7
+          },
+          "10": {
+            "decline": 5,
+            "stable": 0,
+            "increase": 7
+          }
+        }
+      }
+    }
+  },
+  "common_start_summary": {
+    "supported_panels": 6,
+    "anchors_total": 71,
+    "positive_median_10minus1": {
+      "TV": 6,
+      "D2": 6,
+      "deltaU": 6,
+      "logNratio": 1
+    }
+  },
+  "common_end_summary": {
+    "supported_panels": 6,
+    "anchors_total": 72,
+    "positive_median_10minus1": {
+      "TV": 6,
+      "D2": 6,
+      "deltaU": 6,
+      "logNratio": 1
+    }
+  },
+  "limitations": "Five preselected declining panels; 3 geographic systems; repeated anchors overlap; no temporal scale causal effect, random population sample or new independent replication.",
+  "execution": {
+    "run_id": 45583915094,
+    "job_id": 139100532875,
+    "head_sha": "2d06276f73e7c53bf3beedfca22b6af2d1c0c661",
+    "conclusion": "success",
+    "artifact_id": 15008250718,
+    "artifact_zip_digest": "sha256:dca84e1742bb4bfeb9fb315c8045049c09765b2adc52f149cd8320d91ae2d7e5",
+    "receipt_extraction": "JSON printed by successful source-execution job; artifact metadata verified, ZIP bytes not independently downloaded"
+  }
+}

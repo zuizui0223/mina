@@ -1,0 +1,29 @@
+name: Unified breeding reorganization JNCC all direction
+on:
+  push:
+    branches: [analysis/unified-breeding-reorganization-20261125]
+    paths:
+      - 'research/unified_breeding_reorganization_v1/jncc_all_direction.py'
+      - '.github/workflows/unified-breeding-jncc-all-direction.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e
+          path: pinned-jncc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy requests
+      - run: python research/unified_breeding_reorganization_v1/jncc_all_direction.py --source pinned-jncc --out /tmp/JNCC_ALL_DIRECTION.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unified-jncc-all-direction
+          path: /tmp/JNCC_ALL_DIRECTION.json

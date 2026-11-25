@@ -1,0 +1,26 @@
+name: Cape Hallett public overview and archive catalogue
+on:
+  push:
+    branches: [analysis/unified-breeding-reorganization-20261125]
+    paths:
+      - 'research/unified_breeding_reorganization_v1/cape_hallett_public_overview_v14.py'
+      - '.github/workflows/cape-hallett-public-overview-v14.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests numpy tifffile imagecodecs pillow rasterio affine
+      - run: python research/unified_breeding_reorganization_v1/cape_hallett_public_overview_v14.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cape-hallett-public-overview-v14
+          path: build/cape-hallett-v14/

@@ -1,0 +1,234 @@
+{
+  "status": "PUBLIC_OVERVIEW_VALIDITY_VERIFIED_HISTORICAL_GIS_REQUEST_REQUIRED",
+  "execution": {
+    "run_id": 45716074792,
+    "job_id": 139562330860,
+    "head_sha": "8f465f3b1da3d4099739f156ea070a866d6cc037",
+    "artifact_id": 15070231399,
+    "artifact_zip_digest": "sha256:2412a6a7b685e1a1b90459689fe8ec62a3e81a9456129f5a60cb67e3ef2ed418",
+    "zip_crc_verified_locally": true,
+    "overview_receipt_sha256": "8ed1cae11e439a5c0d2b4cc187ed6fc225b018b81081552111c77c3042e4cce6",
+    "catalogue_receipt_sha256": "40df39541ca40daea3132eeb148ad95d953c85d38e40096899e1a0b8777a122d",
+    "verified_range_count": 92
+  },
+  "catalogue": {
+    "status": "CATALOGUE_SEARCH_ATTEMPTED",
+    "api_doc": "https://antarcticanz.github.io/antcat_docs/qsearch.html",
+    "queries": [
+      {
+        "query": "\"Cape Hallett\"",
+        "url": "https://antcat.antarcticanz.govt.nz/geonetwork/srv/api/search/records/_search",
+        "http": 400,
+        "headers": {
+          "content_type": null,
+          "location": null
+        }
+      },
+      {
+        "query": "Rudolph",
+        "url": "https://antcat.antarcticanz.govt.nz/geonetwork/srv/api/search/records/_search",
+        "http": 400,
+        "headers": {
+          "content_type": null,
+          "location": null
+        }
+      },
+      {
+        "query": "Hallett AND vegetation",
+        "url": "https://antcat.antarcticanz.govt.nz/geonetwork/srv/api/search/records/_search",
+        "http": 400,
+        "headers": {
+          "content_type": null,
+          "location": null
+        }
+      }
+    ],
+    "cmr": {
+      "url": "https://cmr.earthdata.nasa.gov/search/collections.umm_json?concept_id=C1214593590-SCIOPS",
+      "http": 200,
+      "headers": {
+        "content_type": "application/vnd.nasa.cmr.umm_results+json;version=1.18.7; charset=utf-8"
+      },
+      "sha256": "f9e2c37834ab5baa9086ca62d56d969b51b7574662fc839c2428645424ac3424",
+      "hits": 1,
+      "records": [
+        {
+          "meta": {
+            "revision-id": 5,
+            "deleted": false,
+            "format": "application/dif10+xml",
+            "provider-id": "SCIOPS",
+            "has-combine": false,
+            "user-id": "mmorahan",
+            "has-formats": false,
+            "has-spatial-subsetting": false,
+            "native-id": "K024_1998_1999_NZ_1",
+            "has-transforms": false,
+            "has-variables": false,
+            "concept-id": "C1214593590-SCIOPS",
+            "revision-date": "2018-10-01T19:42:37.429Z",
+            "has-temporal-subsetting": false,
+            "concept-type": "collection"
+          },
+          "title": "Comparative studies of vegetation surveys, maps, species lists and lichen growth rates of the Cape Hallett region (Seebee Hook, Willett Cove and the scree slopes surrounding them) with a 1968 study",
+          "related_urls": [
+            {
+              "Description": "Australian Antarctic Division Herbarium",
+              "URLContentType": "DistributionURL",
+              "Type": "GET DATA",
+              "URL": "http://data.gbif.org/datasets/resource/76"
+            },
+            {
+              "Description": "Australian Antarctic Division Herbarium",
+              "URLContentType": "DistributionURL",
+              "Type": "GET DATA",
+              "URL": "http://data.aad.gov.au/aadc/biodiversity/"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "overview": {
+    "status": "PUBLIC_OVERVIEW_ALPHA_SUPPORT_MEASURED",
+    "publisher_doi": "10.7488/ds/3417",
+    "whole_tiff_md5_verified": false,
+    "grid_crosswalk_verified": false,
+    "new_ecological_fit": false,
+    "publisher": {
+      "uuid": "814f5d65-506c-4fd4-8f3c-4b9163b0e484",
+      "name": "Rudy Orthomosaic 2018-11-28 5Ds on M600P.tif",
+      "sizeBytes": 17538362940,
+      "checkSum": {
+        "checkSumAlgorithm": "MD5",
+        "value": "5375a61824f97d927c19ec3bbb5f6619"
+      }
+    },
+    "pages": [
+      {
+        "index": 1,
+        "shape": [
+          49759,
+          42662,
+          4
+        ],
+        "reduced": true
+      },
+      {
+        "index": 2,
+        "shape": [
+          24880,
+          21331,
+          4
+        ],
+        "reduced": true
+      },
+      {
+        "index": 3,
+        "shape": [
+          12440,
+          10666,
+          4
+        ],
+        "reduced": true
+      },
+      {
+        "index": 4,
+        "shape": [
+          6220,
+          5333,
+          4
+        ],
+        "reduced": true
+      },
+      {
+        "index": 5,
+        "shape": [
+          3110,
+          2667,
+          4
+        ],
+        "reduced": true
+      },
+      {
+        "index": 6,
+        "shape": [
+          1555,
+          1334,
+          4
+        ],
+        "reduced": true
+      }
+    ],
+    "chosen": {
+      "index": 6,
+      "shape": [
+        1555,
+        1334,
+        4
+      ],
+      "extrasamples": [
+        2
+      ],
+      "base_extrasamples": [
+        2
+      ],
+      "tilewidth": 256,
+      "tilelength": 256,
+      "compression": "5"
+    },
+    "overview_transform_source": "reduced page tags checked against base extent",
+    "overview_transform": [
+      0.0000031020351999912187,
+      0,
+      170.230656948122,
+      0,
+      -9.426688000006501e-7,
+      -72.3194389700006,
+      0,
+      0,
+      1
+    ],
+    "pixel_decoding": "ONE_REDUCED_PAGE",
+    "alpha_histogram": {
+      "0": 1165273,
+      "255": 909097
+    },
+    "alpha_support": {
+      "image_pixels": 2074370,
+      "image_alpha_positive": 909097,
+      "zone_center_pixels_inside_rectangle": 734682,
+      "zone_alpha_positive": 666801,
+      "zone_alpha_opaque": 666801,
+      "zone_alpha_positive_fraction_within_rectangle": 0.9076049229462543,
+      "zone_alpha_opaque_fraction_within_rectangle": 0.9076049229462543
+    },
+    "preview_sha256": "955130aaf992224f751df20b761340348b6833d4c58dc5415e7a2cee3dfa8816",
+    "bytes_received": 6029312,
+    "limits": "2018 reduced-image alpha support only; alpha is not a snow/plant/animal classifier. No original grid transform, no exact animal positions, no later-image coverage or temporal effect."
+  },
+  "local_independent_image_check": {
+    "zone_pixels": 734682,
+    "alpha_positive": 666801,
+    "alpha_zero": 67881,
+    "alpha_positive_fraction": 0.9076049229462543,
+    "whole_image_pixels": 2074370,
+    "whole_image_alpha_positive": 909097,
+    "preview_mode": "RGBA",
+    "preview_dimensions": [
+      1334,
+      1555
+    ],
+    "preview_sha256": "955130aaf992224f751df20b761340348b6833d4c58dc5415e7a2cee3dfa8816"
+  },
+  "source_access": {
+    "antcat_three_queries_http400": true,
+    "antcat_search_inconclusive": true,
+    "cmr_legacy_record_found": true,
+    "cmr_quality_summary": "Legacy record reports original data held by investigator. Refer to investigator/custodian; current accessibility not confirmed. Related links are herbarium resources, not historical plot GIS.",
+    "published_GIS_custody": "Brabyn et al. 2006 doi:10.1017/S0954102006000605 reports archiving GIS layers and maps with University of Waikato and Antarctica New Zealand.",
+    "public_original_grid_GIS_acquired": false,
+    "KOPRI_request_submitted": false
+  },
+  "decision": "Stop additional image resolution/range search for this crosswalk. Only actual corrected grid GIS, original control coordinates or author-verified transformation can resolve. 2018 alpha support is not observation of vegetation, penguins, or a temporal link. No new ecological fit; manuscript v0.6 unchanged."
+}

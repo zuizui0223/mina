@@ -1,0 +1,1031 @@
+{
+  "status": "EXECUTED_FIXED_WARNING_EXCLUSION",
+  "source_QA": {
+    "original_SHA256": "9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4",
+    "structural_parent_panels": 1483,
+    "strict_structural": 762,
+    "full_panels": 1321,
+    "strict_panels": 663,
+    "species": 17
+  },
+  "metadata": {
+    "original_sha256": "9edf05b8af0a44c3ca770f390120c4b99bcaae3ae35fd844a82982d6ad8116d4",
+    "worksheets": [
+      {
+        "name": "Coversheet",
+        "dimension": "A1:A18",
+        "publisher_first_text_rows": [
+          {
+            "row": "1",
+            "texts": [
+              "Seabirds Count Dataset: Seabirds Count – Seabird 2000 comparative data"
+            ]
+          },
+          {
+            "row": "2",
+            "texts": [
+              "Summary"
+            ]
+          },
+          {
+            "row": "3",
+            "texts": [
+              "This workbook contains the totalled adjusted count of each species in Seabird 2000 and Seabirds Count per breeding site. \nThe workbook consists of 4 worksheets: this coversheet, and three worksheets containing data. Worksheet 1 contains the full dataset (totalled adjusted count of each species in Seabird 2000 and Seabirds Count per breeding site); Worksheet 2 contains the complete Atlantic Puffin dataset; Worksheet 3 contains the comparable Atlantic Pfuffin dataset."
+            ]
+          },
+          {
+            "row": "4",
+            "texts": [
+              "When using the data please cite: Burnell, D., Perkins, A.J., Newton, S.F., Bolton, M., Tierney, T.D. & Dunn, T.E., 2023. Seabirds Count: a census of breeding seabirds in Britain and Ireland (2015–2021). Lynx Nature Books, Barcelona."
+            ]
+          },
+          {
+            "row": "5",
+            "texts": [
+              "Notes"
+            ]
+          },
+          {
+            "row": "6",
+            "texts": [
+              "1. Where NA is given, this means there were no data available at the time of the analysis to produce a comparison. \n2. The Lesser Black-backed and Herring Gull data in this dataset is for natural nest sites only, this does no include the 1 km urban square data.\n3. For Northern Gannet, the previous censuses data is from the 2003-05 Gannet census not Seabird 2000.\n4. Data for Atlantic Puffin are separated out into two separate worksheets: Worksheet 2 is the complete dataset (where all data from bo"
+            ]
+          },
+          {
+            "row": "7",
+            "texts": [
+              "Confidential species"
+            ]
+          },
+          {
+            "row": "8",
+            "texts": [
+              "Some species have been omitted from this dataset as they are regarded as confidential species these are: Little Tern, Roseate Tern and Mediterranean Gull. The datasets for these species are only available by request to seabirdscountcoordinator@jncc.gov.uk"
+            ]
+          },
+          {
+            "row": "9",
+            "texts": [
+              "Units used:"
+            ]
+          },
+          {
+            "row": "10",
+            "texts": [
+              "AON: Apparently Occupied Nest\nAOS: Apparently Occupied Site\nAOT: Apparently Occupied Territory\nAOB: Apparently Occupied Burrow\nIND: Individual adults"
+            ]
+          },
+          {
+            "row": "11",
+            "texts": [
+              "Version 20240708"
+            ]
+          },
+          {
+            "row": "12",
+            "texts": [
+              "Please note that this version was published in July 2024. This version supersedes any earlier copies of this dataset (published in November 2023 and December 2023), which contained some minor errors. "
+            ]
+          }
+        ]
+      },
+      {
+        "name": "1_SC_S2K_dataset",
+        "dimension": "A1:S22131"
+      },
+      {
+        "name": "2_Atlantic_Puffin_complete",
+        "dimension": "A1:R551"
+      },
+      {
+        "name": "3_Atlantic_Puffin_comparable",
+        "dimension": "A1:R189"
+      }
+    ],
+    "paired_sheet_headers": {
+      "1_SC_S2K_dataset": {
+        "A": "Species",
+        "B": "Country",
+        "C": "Admin Area/\nCounty",
+        "D": "Master site",
+        "E": "Site",
+        "F": "Site.ID",
+        "G": "StartGrid",
+        "H": "EndGrid",
+        "I": "Start.Lat",
+        "J": "Start.Long",
+        "K": "S. 2000 Year",
+        "L": "S.2000 adjusted count",
+        "M": "Count Unit (S.2000)",
+        "N": "Seabirds Count Year",
+        "O": "Seabirds Count adjusted count",
+        "P": "Count Unit (Seabirds Count)",
+        "Q": "Total change %",
+        "R": "Annual change %"
+      },
+      "3_Atlantic_Puffin_comparable": {
+        "A": "Species",
+        "B": "Country",
+        "C": "Admin Area/\nCounty",
+        "D": "Master site",
+        "E": "Site",
+        "F": "Site.ID",
+        "G": "StartGrid",
+        "H": "EndGrid",
+        "I": "Start.Lat",
+        "J": "Start.Long",
+        "K": "S. 2000 Year",
+        "L": "S.2000 adjusted count",
+        "M": "Count Unit (S.2000)",
+        "N": "Seabirds Count Year",
+        "O": "Seabirds Count adjusted count",
+        "P": "Count Unit (Seabirds Count)",
+        "Q": "Total change %",
+        "R": "Annual change %"
+      }
+    },
+    "structural_child_rows": 9821,
+    "count_unit_child_rows": {
+      "AOT": 924,
+      "AON": 5012,
+      "AOS": 1817,
+      "IND": 1955,
+      "AOB": 113
+    },
+    "additional_column_nonempty": {
+      "G": 9821,
+      "Q": 9821,
+      "H": 5757,
+      "R": 6863
+    },
+    "species_country_site_ids_with_multiple_master_names": 0,
+    "unique_species_country_site_ids": 9821,
+    "historical_boundary_effort_not_verified": true
+  },
+  "official_flagged_taxa": [
+    "European Storm-petrel",
+    "Herring Gull",
+    "Lesser Black-backed Gull",
+    "Manx Shearwater"
+  ],
+  "flagged_taxa_present": [
+    "Herring Gull",
+    "Lesser Black-backed Gull"
+  ],
+  "cohorts": {
+    "full": {
+      "n_before": 1321,
+      "n_after": 1117,
+      "networks": 589,
+      "remaining_species": 15,
+      "removed_panels_by_species": {
+        "Herring Gull": 175,
+        "Lesser Black-backed Gull": 29
+      },
+      "groups": {
+        "decline": 765,
+        "near_stable": 84,
+        "increase": 268
+      },
+      "fixed_common_species": [
+        "Black Guillemot",
+        "Black-legged Kittiwake",
+        "Common Guillemot",
+        "Common Gull",
+        "European Shag",
+        "Great Black-backed Gull",
+        "Great Skua",
+        "Northern Fulmar",
+        "Razorbil"
+      ],
+      "gain_loss": {
+        "n": 1117,
+        "networks": 589,
+        "fixed_common_species": [
+          "Black Guillemot",
+          "Black-legged Kittiwake",
+          "Common Guillemot",
+          "Common Gull",
+          "European Shag",
+          "Great Black-backed Gull",
+          "Great Skua",
+          "Northern Fulmar",
+          "Razorbil"
+        ],
+        "descriptive": {
+          "decline": {
+            "n": 765,
+            "any_local_gain": 435,
+            "any_local_loss": 765,
+            "mixed": 435,
+            "material_counterflow": 329,
+            "median_C": 0.019202363367799114,
+            "mean_C": 0.09668191366228693,
+            "any_positive_to_zero": 530,
+            "any_zero_to_positive": 61,
+            "mean_fraction_baseline_occupied_later_zero": 0.31151491940126214,
+            "positive_deltaU": 499,
+            "positive_deltaU_mixed": 263,
+            "positive_deltaU_nonmixed": 236
+          },
+          "near_stable": {
+            "n": 84,
+            "any_local_gain": 82,
+            "any_local_loss": 84,
+            "mixed": 82,
+            "material_counterflow": 79,
+            "median_C": 0.23282514586862413,
+            "mean_C": 0.27228015291206525,
+            "any_positive_to_zero": 46,
+            "any_zero_to_positive": 17,
+            "mean_fraction_baseline_occupied_later_zero": 0.17444483232298355,
+            "positive_deltaU": 53,
+            "positive_deltaU_mixed": 51,
+            "positive_deltaU_nonmixed": 2
+          },
+          "increase": {
+            "n": 268,
+            "any_local_gain": 268,
+            "any_local_loss": 221,
+            "mixed": 221,
+            "material_counterflow": 178,
+            "median_C": 0.10872251389093686,
+            "mean_C": 0.15743611748107486,
+            "any_positive_to_zero": 125,
+            "any_zero_to_positive": 63,
+            "mean_fraction_baseline_occupied_later_zero": 0.15548702887509613,
+            "positive_deltaU": 172,
+            "positive_deltaU_mixed": 146,
+            "positive_deltaU_nonmixed": 26
+          }
+        },
+        "common_species_equal_model": {
+          "decline": {
+            "counterflow": {
+              "observed": 0.09904773091313568,
+              "network_bootstrap95": [
+                0.0849697327884161,
+                0.11311609026408967
+              ],
+              "multinomial": {
+                "mean": 0.031746649880985196,
+                "q05_q95": [
+                  0.026954859549124355,
+                  0.03681680758655889
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.03863650725545458,
+                "q05_q95": [
+                  0.033161384709228976,
+                  0.044306609999649554
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            },
+            "material_counterflow": {
+              "observed": 0.4439612771557465,
+              "network_bootstrap95": [
+                0.392710676309667,
+                0.49699774238197064
+              ],
+              "multinomial": {
+                "mean": 0.15768312393528824,
+                "q05_q95": [
+                  0.1372828858050318,
+                  0.17890327560026772
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.20667172288028512,
+                "q05_q95": [
+                  0.1832289161733116,
+                  0.2289064457493243
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            }
+          },
+          "near_stable": {
+            "counterflow": {
+              "observed": 0.2344407179316906,
+              "network_bootstrap95": [
+                0.1939670290343472,
+                0.2736062133247717
+              ],
+              "multinomial": {
+                "mean": 0.09240895411622875,
+                "q05_q95": [
+                  0.07863450151723093,
+                  0.10577330433688772
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.1273795232870489,
+                "q05_q95": [
+                  0.11217814112890463,
+                  0.14250909125705966
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            },
+            "material_counterflow": {
+              "observed": 0.8888888888888888,
+              "network_bootstrap95": [
+                0.8055555555555556,
+                0.9679894179894181
+              ],
+              "multinomial": {
+                "mean": 0.4765734870673142,
+                "q05_q95": [
+                  0.4147376543209876,
+                  0.5347222222222222
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.715809482321828,
+                "q05_q95": [
+                  0.638287037037037,
+                  0.7871913580246913
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            }
+          },
+          "increase": {
+            "counterflow": {
+              "observed": 0.16417287140108902,
+              "network_bootstrap95": [
+                0.13654807116645398,
+                0.19556615541983097
+              ],
+              "multinomial": {
+                "mean": 0.03179505589735061,
+                "q05_q95": [
+                  0.026209585009729943,
+                  0.037919918755458124
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.041736629570661876,
+                "q05_q95": [
+                  0.034832819367324984,
+                  0.04840973238776986
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            },
+            "material_counterflow": {
+              "observed": 0.64639337016358,
+              "network_bootstrap95": [
+                0.5848085383030746,
+                0.7058986135617112
+              ],
+              "multinomial": {
+                "mean": 0.18918844465736387,
+                "q05_q95": [
+                  0.158621506282325,
+                  0.21868607891999697
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.2565332308544733,
+                "q05_q95": [
+                  0.21661900477689952,
+                  0.3005086385031345
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            }
+          }
+        },
+        "bootstrap_valid_draws": 1937,
+        "bootstrap_attempts": 1999,
+        "positive_all_models_and_metrics": {
+          "decline": true,
+          "near_stable": true,
+          "increase": true
+        },
+        "common_species_panel_counts": {
+          "Black Guillemot": {
+            "decline": 75,
+            "near_stable": 16,
+            "increase": 52
+          },
+          "Black-legged Kittiwake": {
+            "decline": 36,
+            "near_stable": 4,
+            "increase": 6
+          },
+          "Common Guillemot": {
+            "decline": 25,
+            "near_stable": 6,
+            "increase": 17
+          },
+          "Common Gull": {
+            "decline": 97,
+            "near_stable": 5,
+            "increase": 13
+          },
+          "European Shag": {
+            "decline": 73,
+            "near_stable": 6,
+            "increase": 36
+          },
+          "Great Black-backed Gull": {
+            "decline": 116,
+            "near_stable": 8,
+            "increase": 21
+          },
+          "Great Skua": {
+            "decline": 23,
+            "near_stable": 9,
+            "increase": 27
+          },
+          "Northern Fulmar": {
+            "decline": 183,
+            "near_stable": 16,
+            "increase": 38
+          },
+          "Razorbil": {
+            "decline": 27,
+            "near_stable": 8,
+            "increase": 28
+          }
+        }
+      },
+      "composition": {
+        "common_species_equal": {
+          "decline": {
+            "D2": {
+              "observed": 0.16713025403512427,
+              "bootstrap95": [
+                0.14173032277422234,
+                0.19204271436527276
+              ],
+              "multinomial": {
+                "mean": 0.00013353311076129114,
+                "q05_q95": [
+                  -0.008584733596813481,
+                  0.009131355162316205
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.01189864605359923,
+                "q05_q95": [
+                  0.002481674959032705,
+                  0.022620804591278614
+                ],
+                "above_q95": true
+              }
+            },
+            "deltaU": {
+              "observed": 0.08826846502350989,
+              "bootstrap95": [
+                0.07011021737021582,
+                0.10731887742554726
+              ],
+              "multinomial": {
+                "mean": 0.00011070579166638775,
+                "q05_q95": [
+                  -0.009609507980880406,
+                  0.01024600449443503
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.0002660125547699645,
+                "q05_q95": [
+                  -0.010814916948467474,
+                  0.010870386826402479
+                ],
+                "above_q95": true
+              }
+            }
+          },
+          "near_stable": {
+            "D2": {
+              "observed": 0.089354453036902,
+              "bootstrap95": [
+                0.04656507701634805,
+                0.13478506608370314
+              ],
+              "multinomial": {
+                "mean": -0.000006259592961645076,
+                "q05_q95": [
+                  -0.013375318116564195,
+                  0.017532696701093763
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.010385624712319791,
+                "q05_q95": [
+                  -0.004201287749688592,
+                  0.028315684505239493
+                ],
+                "above_q95": true
+              }
+            },
+            "deltaU": {
+              "observed": 0.059350408213991894,
+              "bootstrap95": [
+                0.019127091494372146,
+                0.10372078705100307
+              ],
+              "multinomial": {
+                "mean": 0.00025166738803182,
+                "q05_q95": [
+                  -0.01706753245313352,
+                  0.01718349025217055
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": -0.00006791875353205546,
+                "q05_q95": [
+                  -0.019457903185059744,
+                  0.019072257831507563
+                ],
+                "above_q95": true
+              }
+            }
+          },
+          "increase": {
+            "D2": {
+              "observed": 0.16456842855048368,
+              "bootstrap95": [
+                0.11066301270170306,
+                0.2195228018148069
+              ],
+              "multinomial": {
+                "mean": 0.000026693898504135064,
+                "q05_q95": [
+                  -0.009631695546940877,
+                  0.010609452627067568
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.01125421478810807,
+                "q05_q95": [
+                  0.00028302456062144065,
+                  0.023185952477248865
+                ],
+                "above_q95": true
+              }
+            },
+            "deltaU": {
+              "observed": 0.08112082300793996,
+              "bootstrap95": [
+                0.04973248383855524,
+                0.11119288067875609
+              ],
+              "multinomial": {
+                "mean": -0.00003852305115736687,
+                "q05_q95": [
+                  -0.014615274438271339,
+                  0.013740656985733582
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": -0.00015971485823133917,
+                "q05_q95": [
+                  -0.014907436901725343,
+                  0.015723783581812367
+                ],
+                "above_q95": true
+              }
+            }
+          }
+        },
+        "bootstrap_valid_draws": 1922,
+        "bootstrap_attempts": 1999
+      },
+      "primary_all_groups_above_gamma_q95": true
+    },
+    "exact_year": {
+      "n_before": 663,
+      "n_after": 573,
+      "networks": 371,
+      "remaining_species": 15,
+      "removed_panels_by_species": {
+        "Herring Gull": 85,
+        "Lesser Black-backed Gull": 5
+      },
+      "groups": {
+        "decline": 398,
+        "near_stable": 42,
+        "increase": 133
+      },
+      "fixed_common_species": [
+        "Black Guillemot",
+        "European Shag",
+        "Great Black-backed Gull",
+        "Great Skua",
+        "Northern Fulmar",
+        "Razorbil"
+      ],
+      "gain_loss": {
+        "n": 573,
+        "networks": 371,
+        "fixed_common_species": [
+          "Black Guillemot",
+          "European Shag",
+          "Great Black-backed Gull",
+          "Great Skua",
+          "Northern Fulmar",
+          "Razorbil"
+        ],
+        "descriptive": {
+          "decline": {
+            "n": 398,
+            "any_local_gain": 224,
+            "any_local_loss": 398,
+            "mixed": 224,
+            "material_counterflow": 186,
+            "median_C": 0.031060133120123595,
+            "mean_C": 0.11037130668648003,
+            "any_positive_to_zero": 269,
+            "any_zero_to_positive": 38,
+            "mean_fraction_baseline_occupied_later_zero": 0.31035419951611476,
+            "positive_deltaU": 260,
+            "positive_deltaU_mixed": 134,
+            "positive_deltaU_nonmixed": 126
+          },
+          "near_stable": {
+            "n": 42,
+            "any_local_gain": 41,
+            "any_local_loss": 42,
+            "mixed": 41,
+            "material_counterflow": 40,
+            "median_C": 0.2,
+            "mean_C": 0.25840545067363135,
+            "any_positive_to_zero": 23,
+            "any_zero_to_positive": 8,
+            "mean_fraction_baseline_occupied_later_zero": 0.16131392728031382,
+            "positive_deltaU": 27,
+            "positive_deltaU_mixed": 26,
+            "positive_deltaU_nonmixed": 1
+          },
+          "increase": {
+            "n": 133,
+            "any_local_gain": 133,
+            "any_local_loss": 98,
+            "mixed": 98,
+            "material_counterflow": 79,
+            "median_C": 0.09617755856966707,
+            "mean_C": 0.13232915537777923,
+            "any_positive_to_zero": 47,
+            "any_zero_to_positive": 32,
+            "mean_fraction_baseline_occupied_later_zero": 0.12087835584076187,
+            "positive_deltaU": 81,
+            "positive_deltaU_mixed": 60,
+            "positive_deltaU_nonmixed": 21
+          }
+        },
+        "common_species_equal_model": {
+          "decline": {
+            "counterflow": {
+              "observed": 0.1107144543499999,
+              "network_bootstrap95": null,
+              "multinomial": {
+                "mean": 0.048393796564142263,
+                "q05_q95": [
+                  0.03881218640115574,
+                  0.05821939433762282
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.05645355945727605,
+                "q05_q95": [
+                  0.04537942115825208,
+                  0.0685444921934727
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            },
+            "material_counterflow": {
+              "observed": 0.5135071474983756,
+              "network_bootstrap95": null,
+              "multinomial": {
+                "mean": 0.2336127115894822,
+                "q05_q95": [
+                  0.19263310966161842,
+                  0.27519552531613933
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.28064859762796734,
+                "q05_q95": [
+                  0.2362035475083721,
+                  0.32984692857499864
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            }
+          },
+          "near_stable": {
+            "counterflow": {
+              "observed": 0.21552708208886037,
+              "network_bootstrap95": null,
+              "multinomial": {
+                "mean": 0.12595496805743117,
+                "q05_q95": [
+                  0.10095845408757109,
+                  0.1515623572943406
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.15854013577659312,
+                "q05_q95": [
+                  0.13099251540807585,
+                  0.18639881547351664
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            },
+            "material_counterflow": {
+              "observed": 1,
+              "network_bootstrap95": null,
+              "multinomial": {
+                "mean": 0.5827845040808004,
+                "q05_q95": [
+                  0.5062169312169312,
+                  0.6599206349206349
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.7898206407465665,
+                "q05_q95": [
+                  0.688121693121693,
+                  0.8826719576719576
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            }
+          },
+          "increase": {
+            "counterflow": {
+              "observed": 0.12257041347723037,
+              "network_bootstrap95": null,
+              "multinomial": {
+                "mean": 0.046070671709356414,
+                "q05_q95": [
+                  0.03218941877484254,
+                  0.06085137950343045
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.054878166626067766,
+                "q05_q95": [
+                  0.04169015779054454,
+                  0.06929333935832942
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            },
+            "material_counterflow": {
+              "observed": 0.5475694444444444,
+              "network_bootstrap95": null,
+              "multinomial": {
+                "mean": 0.2361707772587402,
+                "q05_q95": [
+                  0.17805555555555555,
+                  0.2942460317460317
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.3006657120083046,
+                "q05_q95": [
+                  0.24001818783068785,
+                  0.36479497354497353
+                ],
+                "tail_upper": 0.001,
+                "above_q95": true
+              }
+            }
+          }
+        },
+        "bootstrap_valid_draws": 1825,
+        "bootstrap_attempts": 1999,
+        "positive_all_models_and_metrics": {
+          "decline": true,
+          "near_stable": true,
+          "increase": true
+        },
+        "common_species_panel_counts": {
+          "Black Guillemot": {
+            "decline": 54,
+            "near_stable": 9,
+            "increase": 32
+          },
+          "European Shag": {
+            "decline": 38,
+            "near_stable": 4,
+            "increase": 16
+          },
+          "Great Black-backed Gull": {
+            "decline": 52,
+            "near_stable": 5,
+            "increase": 9
+          },
+          "Great Skua": {
+            "decline": 16,
+            "near_stable": 3,
+            "increase": 15
+          },
+          "Northern Fulmar": {
+            "decline": 95,
+            "near_stable": 5,
+            "increase": 21
+          },
+          "Razorbil": {
+            "decline": 10,
+            "near_stable": 7,
+            "increase": 9
+          }
+        }
+      },
+      "composition": {
+        "common_species_equal": {
+          "decline": {
+            "D2": {
+              "observed": 0.10812799808613292,
+              "bootstrap95": null,
+              "multinomial": {
+                "mean": 0.000012525600350775984,
+                "q05_q95": [
+                  -0.017006400643483403,
+                  0.020083496233671453
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.011331527687404067,
+                "q05_q95": [
+                  -0.006665353770294245,
+                  0.031007528735509365
+                ],
+                "above_q95": true
+              }
+            },
+            "deltaU": {
+              "observed": 0.05647797398959331,
+              "bootstrap95": null,
+              "multinomial": {
+                "mean": 0.0004432585233760298,
+                "q05_q95": [
+                  -0.018257591172739795,
+                  0.0186851579130274
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.0004829254365897365,
+                "q05_q95": [
+                  -0.01825851611217555,
+                  0.020890539323230005
+                ],
+                "above_q95": true
+              }
+            }
+          },
+          "near_stable": {
+            "D2": {
+              "observed": 0.0325082020665153,
+              "bootstrap95": null,
+              "multinomial": {
+                "mean": 0.00031465642829689574,
+                "q05_q95": [
+                  -0.023368182210985414,
+                  0.03474877412977011
+                ],
+                "above_q95": false
+              },
+              "gammaCV20": {
+                "mean": 0.010696358496303723,
+                "q05_q95": [
+                  -0.015366237330763104,
+                  0.045479942148236675
+                ],
+                "above_q95": false
+              }
+            },
+            "deltaU": {
+              "observed": 0.0488950297552562,
+              "bootstrap95": null,
+              "multinomial": {
+                "mean": -0.0007724045569309562,
+                "q05_q95": [
+                  -0.03840185292753973,
+                  0.035419370897091046
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.0004575146638818081,
+                "q05_q95": [
+                  -0.0379523766490627,
+                  0.03702724483625205
+                ],
+                "above_q95": true
+              }
+            }
+          },
+          "increase": {
+            "D2": {
+              "observed": 0.08431968116809545,
+              "bootstrap95": null,
+              "multinomial": {
+                "mean": -0.00037549128488210514,
+                "q05_q95": [
+                  -0.02304796708899677,
+                  0.027607278771235377
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": 0.01357786238799916,
+                "q05_q95": [
+                  -0.0117389126667063,
+                  0.044666363746987105
+                ],
+                "above_q95": true
+              }
+            },
+            "deltaU": {
+              "observed": 0.04968744639835313,
+              "bootstrap95": null,
+              "multinomial": {
+                "mean": 0.00003487499463612688,
+                "q05_q95": [
+                  -0.03005607830007101,
+                  0.027702839271374926
+                ],
+                "above_q95": true
+              },
+              "gammaCV20": {
+                "mean": -0.0009111323160621854,
+                "q05_q95": [
+                  -0.02895859717620419,
+                  0.027217328976054198
+                ],
+                "above_q95": true
+              }
+            }
+          }
+        },
+        "bootstrap_valid_draws": 1830,
+        "bootstrap_attempts": 1999
+      },
+      "primary_all_groups_above_gamma_q95": true
+    }
+  },
+  "limitations": "National comparability warning exclusion only. Not a validation of historical site polygons or calibrated survey effort, and not an independent dataset.",
+  "execution": {
+    "run_id": 45590313776,
+    "head_sha": "ce171fee410b3e459694adda06641049ee5f8303",
+    "conclusion": "success",
+    "artifact_id": 15011370318,
+    "artifact_zip_digest": "sha256:f9d44bae8d0015ddd7b1c705309ed2d7c6e0c9c85e8e7c92dd782cb9eb505d16",
+    "receipt_extraction": "Successful source job JSON and artifact metadata; ZIP bytes not independently downloaded or visually inspected in chat."
+  }
+}

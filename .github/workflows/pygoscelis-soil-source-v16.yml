@@ -1,0 +1,25 @@
+name: Pygoscelis soil source V16
+on:
+  push:
+    branches: [analysis/unified-breeding-reorganization-20261125]
+    paths:
+      - 'research/unified_breeding_reorganization_v1/pygoscelis_soil_source_v16.py'
+      - '.github/workflows/pygoscelis-soil-source-v16.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests
+      - run: python research/unified_breeding_reorganization_v1/pygoscelis_soil_source_v16.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pygoscelis-soil-source-v16
+          path: build/pygoscelis-soil-v16/
