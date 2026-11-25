@@ -1,0 +1,59 @@
+name: Ross Sea 2026 colony locations official source geography gate
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/ROSS_NZ_39_COLONY_GEOLOCATION_CROSSWALK_SOURCE_V15.json'
+      - 'scripts/audit_nz_39_colony_location_source_v15.py'
+      - 'tests/test_nz_39_colony_location_source_v15.py'
+      - '.github/workflows/nz-39-colony-geolocation-source-v15.yml'
+  pull_request:
+    paths:
+      - 'contracts/ROSS_NZ_39_COLONY_GEOLOCATION_CROSSWALK_SOURCE_V15.json'
+      - 'scripts/audit_nz_39_colony_location_source_v15.py'
+      - 'tests/test_nz_39_colony_location_source_v15.py'
+      - '.github/workflows/nz-39-colony-geolocation-source-v15.yml'
+jobs:
+  source-geography:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify location-source API, hash and no fabricated island ID tests
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_nz_39_colony_location_source_v15.py
+      - name: Get official location XLSX and inspect layout without biological migration analyses
+        run: |
+          python scripts/audit_nz_39_colony_location_source_v15.py \
+            --out /tmp/nz_2026_colony_location_source_v15.json
+      - name: Enforce no invented islet count or causal reconstruction
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/nz_2026_colony_location_source_v15.json'))
+          assert r['status'].startswith(('LOCATION_AND_CENSUS_','LOCATION_OFFICIAL_','HOLD_','OFFICIAL_LOCATION_'))
+          assert r['independent_island_events_validated']==0
+          assert r['recruitment_or_immigrant_biology_rows_read']==0
+          assert r['causal_ecology_effect_estimated'] is False
+          assert r['source_census_location_exact_identity_join_verified'] is False
+          assert r['frozen_Ecology_PR189_unchanged']
+          print('LOCATION_SOURCE_STATUS',r['status'])
+          print('LOCATION_ORIGINAL_MD5',r.get('official_location_md5_verified'))
+          print('PUBLISHER_HASH_STATUS',r.get('location_source_metadata',{}).get('md5_status'))
+          assert r.get('official_location_md5_verified') is not None or r.get('location_source_metadata',{}).get('md5_status') in (None, 'OFFICIAL_PUBLISHER_MD5_NOT_PROVIDED')
+          print('ORIGINAL_SOURCE_SHAPE_ONLY_NO_ISLAND_EVENT_INFERENCE')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: NZ-2026-ross-39-source-colony-locations-schema-v15
+          path: /tmp/nz_2026_colony_location_source_v15.json
+          retention-days: 30
+          if-no-files-found: ignore

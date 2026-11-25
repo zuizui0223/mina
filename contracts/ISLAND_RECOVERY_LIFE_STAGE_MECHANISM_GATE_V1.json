@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-island-recovery-life-stage-mechanism-gate-v1",
+  "date": "2026-10-08",
+  "status": "LITERATURE_PRIOR_ART_AUDITED__INDEPENDENT_COHORT_PANEL_NOT_ESTABLISHED",
+  "stage": "pre_new_focal_outcome",
+  "relation": {
+    "frozen_pr": 189,
+    "prior_art_pr": 190,
+    "distinct_resight_prospecting_pr": 142,
+    "no_frozen_science_changes": true
+  },
+  "question": "Does externally timed island-to-foraging-access obstruction preferentially suppress immediate breeder participation when pre-laying and later chick production and cohort-specific recruitment when post-laying?",
+  "existing_literature_vetoes": [
+    {
+      "claim": "icebergs constrain colony-to-sea access",
+      "source": "Park et al. 2026 doi:10.1038/s43247-026-03764-w and earlier Ross literature",
+      "already_known": true
+    },
+    {
+      "claim": "stage-dependent interruption / early skipping vs chick loss",
+      "source": "Park et al. 2026 discussion of Coulman 2010 versus 2025",
+      "already_known": true
+    },
+    {
+      "claim": "Ross colony demography differs by breeding propensity, survival and recruitment",
+      "source": "Dugger et al. 2026 doi:10.3389/fevo.2026.1868960; Lescroël et al. 2009",
+      "already_known": true
+    },
+    {
+      "claim": "opposing species change on a shared breeding island with different foraging ecology",
+      "source": "Ratcliffe et al. 2026 doi:10.1016/j.cub.2026.09.010",
+      "already_known": true
+    }
+  ],
+  "candidate_competing_mechanisms": [
+    "immediate_breeder_state_suppression",
+    "offspring_failure_delayed_cohort_recruitment_debt",
+    "persistent_fragmentation_site_fidelity_feedback"
+  ],
+  "hard_gates": {
+    "independent_obstruction_events_min": 2,
+    "documented_stage_and_unexposed_controls": true,
+    "matched_breeding_attempt_and_offspring_endpoints_each_event": true,
+    "known_age_birth_cohort_recruitment_for_at_least_one_event": true,
+    "detection_and_natal_dispersal_documented": true,
+    "independent_dynamic_access_geometry": true,
+    "stable_spatial_units_and_common_census_dates": true,
+    "no_existing_ross_endpoint_reopening": true,
+    "freeze_lags_and_models_before_new_focal_outcomes": true
+  },
+  "current_sources": {
+    "ross_census": "open_prior_outcome_no_individual_id",
+    "usap_dc_resights": "api_key_blocked_distinct_test",
+    "coulman_2025": "published_single_case_not_prospective_replication",
+    "zavodovski_polygon_metadata": "visible",
+    "zavodovski_polygon_rows": "not_recovered_http_401",
+    "island_paper2": "nonconfirmatory_p_0_0947_not_part_of_new_model"
+  },
+  "outcomes_opened_in_this_contract": 0,
+  "fit_run": false,
+  "p_values_computed": false,
+  "positive_new_ecological_result": false,
+  "decision": "HOLD_DATA_IDENTIFIABILITY_AND_NOVELTY_REPLICATION"
+}

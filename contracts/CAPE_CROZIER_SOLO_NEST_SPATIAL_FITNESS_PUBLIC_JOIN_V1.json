@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "study": "Cox et al 2024 Polar Biology, 10.1007/s00300-024-03246-9",
+  "reproduction_type": "post-publication source-level audit, not preregistered confirmatory test",
+  "source": {
+    "github_repo": "pointblue/solo_nests",
+    "frozen_commit": "04517cedac18950408abd4d0b510f4aae3447f05",
+    "tag": "PolarBiol-submission",
+    "source_release_date": "2023-08-25",
+    "source_zenodo": "10.5281/zenodo.8284755",
+    "files": {
+      "outcomes": {"path": "data/solo_outcomes.csv","blob_sha": "a21648a25b12f42759ca5d5bd011ec32c36d3dfc"},
+      "locations": {"path": "data/solonest_initial_locations.csv","blob_sha": "9e2dbe1426e47d6cf2dfc84110e8204c7ba92329"},
+      "followup": {"path": "data/solonest_obs_data_entry_2223.csv","blob_sha": "f814feb8100eedeb635c9672e71889dfe0dc6d50"},
+      "original_reoccupancy_analysis": {"path": "code/analytics/solo_return_rates.R","blob_sha": "1c2b61801dcd15728ec5a358b638e9b5e0829d88"}
+    }
+  },
+  "already_published_results_do_not_reclaim": [
+    "50 monitored solitary nests, 36 active in 2021; 102 2021 comparison subcolony nests",
+    "solitary brood-stage and subcolony brood-stage output similarity",
+    "solitary brood-to-creche mortality more than six times reference",
+    "20 of 41 relocated nests reoccupied 2022, all originally active, stage-dependent associations",
+    "four possible new subcolonies formed near historic solitary territories",
+    "behaviorally selective rock shelter and next-season reoccupancy"
+  ],
+  "actual_public_schema": {
+    "nest_id_original_outcomes": "solo1..solo50 plus three KEY/metadata rows",
+    "nest_id_locations": "solo1..solo50",
+    "followup_nestid": "1..50 (numeric character codes, repeated dated checks)",
+    "outcome_fields": ["nestid","breeder","start","egg_n","chick_n","outcome_ka","cr_confirm"],
+    "location_fields": ["nestid","latitude","longitude","dist_nearest_subcol_nest_m","rocksize_cm","pebble_distrib_nearby","area"],
+    "followup_fields": ["nestid","date","status","egg_n","chick_n","n_neighbors"]
+  },
+  "qc_primary": [
+    "assert 50 unique location and 50 unique source outcome IDs and exact 50/50 crosswalk",
+    "assert finite valid geodetic GPS values at original nests but do not claim nests were selected randomly",
+    "count repeated per-nest followup records separately from independent individuals",
+    "identify dates in the nominal 2022/23 followup whose year-month falls outside October 2022 through March 2023",
+    "report post-2023-March observation rows (source released August 2023), without pretending their true year is verified",
+    "count occupied and active followup nest IDs using raw source labels both with and without out-of-season rows; these are source QC only, not reproduction of published inferential models",
+    "respect original paper's ambiguous and lost-to-followup nests",
+    "keep source and scientific claim limited to single 2021/22 cohort at Cape Crozier"
+  ],
+  "stop_rules": [
+    "Original results are already published: do not claim the nest-success/reuse or four new subcolony phenomena as novel",
+    "Do not interpret eggs/chicks in 2022-2023 followup at a different nest as first-time settlers without band/ring ID",
+    "Do not claim within-nest rock shelter or neighbors as exogenous treatments",
+    "Do not use out-of-season rows to assert 2022 breeding status without independently validating whether 2023 December entries are date typos",
+    "No natal dispersal or known-age recruitment data from the unbanded solitary adults",
+    "No within-year ice access disturbance exogenous to first settlement",
+    "Do not use archived static colony point instead of actual solitary nest GPS",
+    "Do not amend frozen Ecology submission PR189"
+  ],
+  "new_confirmatory_biological_causal_effect": false,
+  "ecological_novelty_gate": "HOLD_PREVIOUSLY_PUBLISHED_SINGLE_SITE_NO_INDEPENDENT_SHOCK",
+  "join_eligibility": "PASS_PREVIOUSLY_PUBLISHED_SAME_NEST_GPS_OUTCOME_REUSE_SOURCE_JOIN"
+}

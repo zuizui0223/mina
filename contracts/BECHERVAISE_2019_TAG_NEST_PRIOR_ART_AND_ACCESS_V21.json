@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "id": "BECHERVAISE_EXISTING_ID_NEST_STATUS_AND_EMAIL_SOURCE_V21",
+  "stage": "POST_PUBLICATION_PRIOR_ART_AND_DATA_ACCESS_PROTOCOL_AUDIT_NO_BIRD_RECORDS",
+  "key_prior_art": {
+    "paper": "Emmerson, Walsh and Southwell 2019 Ecology and Evolution",
+    "doi": "10.1002/ece3.5067",
+    "url": "https://doi.org/10.1002/ece3.5067",
+    "actual_original_coupled_years": [
+      "1998/99",
+      "1999/00",
+      "2000/01",
+      "2001/02",
+      "2002/03"
+    ],
+    "individual_identity_link_proven_by_authors": true,
+    "observational_link": "RFID automated weighbridge mass/crossing events + handheld tagged bird nest resight + daily direct nest egg/chick census for subset",
+    "source_adult_status": "breeder observed at a nest during incubation or eggs in daily census; nonbreeder = bird tagged and detected visiting colony but no verified breeding attempt; no data on birds never visited",
+    "nest_scanning_windows": [
+      "23–29 November: predominantly male breeders",
+      "11–18 December: predominantly female breeders"
+    ],
+    "source_tag_detection_condition": "reader >98% when individual was tightly sitting on nest; NOT sensitivity of a breeding population census, and not 98% for arrivals, missed breeders or nonbreeder status",
+    "crossing_number_abundance": "up to 150 tagged breeders and up to 50 tagged nonbreeders during one five-day interval, NOT independent total cohort size",
+    "past_study_primary_outcome": "within-season mass trajectories breeders vs nonbreeders, 2019 published",
+    "past_study_also_knew_failed_breeders_with_direct_eggs": "yes in subset observed via direct daily nest censuses",
+    "does_not_establish_next_year_first_egg_of_same_prior_nonbreeder": "not shown in main analyzed comparisons; original longitudinal tag records required",
+    "nonbreeders_include": "prospective young never breeders AND prior breeding birds skipping years; very early egg failures can be mistaken nonbreeders"
+  },
+  "new_candidate_question_conditional_on_originals": "Among known-age RFID-tagged adults detected visiting the colony before laying, and verified by adequate nest effort as nonbreeders in t, do they initiate their first egg in t+1 and does condition/social access alter transition relative to age/individual quality and environmental variation?",
+  "source_download_truth": {
+    "AADC_4518_original_resight_URL": "https://data.aad.gov.au/eds/5516/download",
+    "AADC_4086_technical_guide_ONLY_URL": "https://data.aad.gov.au/eds/5228/download",
+    "AADC_user_data_access_help": "https://data.aad.gov.au/docs/help/download-guide/",
+    "AADC_data_help_public_evidence": "https://data.aad.gov.au/eds/5455/download",
+    "official_mechanism": "Publisher's EDS download system presents browser/interstitial requiring requester email for ZIP or S3 access keys; entering user email, receipt of credentials and human data-custodian contact have NOT occurred.",
+    "original_gate_crossing_URL_confirmed": false,
+    "most_recent_actual_source_response": "HTML Javascript application shell 206 for 5516 and guide 5228; do not treat as a corrupted binary or read bird IDs",
+    "data_custodian_in_publisher": "Louise Emmerson; 2019 correspondence email published Louise.Emmerson@aad.gov.au; request technical note and data use guidance prior to deep analysis",
+    "publisher_data_policy": "Publisher expects contact with data originator before applying dataset; original weighbridge records are unprocessed and require specialist processing",
+    "credential_secrets_must_never_be_published_on_GitHub": true,
+    "tool_cannot_complete_browser_email_S3_authorization_without_user_action": true
+  },
+  "strict_inference_states": [
+    "source_field_observation: RFID first entrance at a gate within a season is FIRST DETECTED CROSSING, not proven first ever colony ARRIVAL",
+    "tagged/non-tagged sampling frame is selective; tag coverage unknown and a gate spans certain subcolonies",
+    "source_positive_BREEDER: same tag ID at a nest with directly verified egg; tag detected on nest alone may reflect incubation but if direct egg not documented label NEST_PRESENT not EGG_CONFIRMED",
+    "source_negative_NEST_NOT_SEEN: implies UNKNOWN EGG not CONFIRMED NONE, even though >98% of tightly sitting nest adults detected",
+    "source_previously_never_bred: require known-age cohort and adequate previous-at-risk years, not first observed at gate",
+    "do not treat repeated crossings of same tag as independent new arrivals",
+    "if egg was before first gate event that season, disallow direction gate->egg",
+    "if resight tag encoding compatibility unverified, disallow person-level join",
+    "absence of prior nest detection ≠ absence of prior egg; year-specific observation effort required",
+    "photo/census egg confirmation and survival are different outcomes",
+    "2019 observed breeder-vs-nonbreeder mass curves and original tag-state join already prior art; any new paper must ask new actual event transition beyond it"
+  ],
+  "minimum_next_gate": [
+    "official two original raw file manifests including individual tag-ID encoding and year-specific gate uptime and nest search effort",
+    "documented 2006–2018 same-individual-ID collision/reuse QA and breeding attempt/fate fields",
+    "unique at-risk tag cohort in multiple seasons with explicit previous first-breeding history",
+    "add external unexposed colony/island observations and dated independent habitat access for causal island biogeography"
+  ],
+  "status": "KNOWN_SAME_SEASON_TAG_NEST_LINK_IN_2019_PRIOR_ART__V21_PROSPECTIVE_DIFFERENT_YEARS_JOIN_SOURCE_NOT_OBTAINED",
+  "source_animal_rows_read": 0,
+  "new_nesting_transition_effect_fitted": false,
+  "Pr189_unchanged": true,
+  "Pr142_unchanged": true,
+  "Pr195_unchanged": true
+}

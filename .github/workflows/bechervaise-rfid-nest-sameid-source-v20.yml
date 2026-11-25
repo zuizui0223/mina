@@ -1,0 +1,57 @@
+name: Bechervaise RFID individual arrivals vs nest resights source feasibility
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/BECHERVAISE_RFID_GATE_TO_NEST_SAME_ID_SOURCE_V20.json'
+      - 'scripts/probe_bechervaise_original_rfid_vs_nest_resights_v20.py'
+      - 'tests/test_bechervaise_original_rfid_vs_nest_resights_v20.py'
+      - '.github/workflows/bechervaise-rfid-nest-sameid-source-v20.yml'
+  pull_request:
+    paths:
+      - 'contracts/BECHERVAISE_RFID_GATE_TO_NEST_SAME_ID_SOURCE_V20.json'
+      - 'scripts/probe_bechervaise_original_rfid_vs_nest_resights_v20.py'
+      - 'tests/test_bechervaise_original_rfid_vs_nest_resights_v20.py'
+      - '.github/workflows/bechervaise-rfid-nest-sameid-source-v20.yml'
+jobs:
+  source-and-measurement-grain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test publisher route provenance and at-risk visitor crosswalk rules
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_bechervaise_original_rfid_vs_nest_resights_v20.py
+      - name: Source-only bounded original AADC resights/technical-guide availability probe
+        run: |
+          python scripts/probe_bechervaise_original_rfid_vs_nest_resights_v20.py \
+            --out /tmp/bechervaise_2006_2018_tag_entrants_vs_nest_resight_source_v20.json
+      - name: Preserve first-breeding joint-ID and external-replication inferential stop
+        run: |
+          python - <<'PY'
+          import json
+          z=json.load(open('/tmp/bechervaise_2006_2018_tag_entrants_vs_nest_resight_source_v20.json'))
+          assert z['status']=='AADC_PUBLIC_METADATA_WITH_NO_SAME_ID_GATE_TO_NEST_BRIDGE_YET'
+          assert z['original_bird_tag_IDs_read']==0
+          assert not z['same_penguin_tag_ID_join_gate_to_nest_observation_verified']
+          assert not z['at_risk_all_prospective_breeders_across_island_denominator_verified']
+          assert not z['observed_first_egg_by_same_marked_gate_entrant_verified']
+          assert z['Emmerson_Southwell_2022_cohort_size_demographic_feedback_ALREADY_PUBLISHED']
+          assert z['original_gate_data_url_is_missing_from_verified_publisher_source_links']
+          assert z['technical_guide_not_equivalent_to_original_gate_crossings']
+          assert z['PR189_science_unchanged'] and z['PR142_data_gate_unchanged']
+          print('BECHERVAISE_SOURCE_FEASIBILITY_STOP_PASS_NO_CAUSAL_ISLAND_COLONIZATION')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Bechervaise-raw-rfid-versus-nest-resights-joint-ID-source-v20
+          path: /tmp/bechervaise_2006_2018_tag_entrants_vs_nest_resight_source_v20.json
+          retention-days: 21

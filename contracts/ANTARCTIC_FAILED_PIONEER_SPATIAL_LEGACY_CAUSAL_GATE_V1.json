@@ -1,0 +1,53 @@
+{
+  "schema_version":1,
+  "date":"2026-10-08",
+  "hypothesis_id":"ANTARCTIC_FAILED_PIONEER_LEGACY_V1",
+  "research_stage":"PROSPECTIVE_CAUSAL_DESIGN_ONLY_NO_NEW_TARGET_OUTCOMES",
+  "scientific_question":"Can an unsuccessful pioneer leave a physical or social breeding-site legacy that increases subsequent neighborhood settlement even without successful chick production?",
+  "prior_art_beyond_which_novelty_is_required":[
+    "Penney 1968 small new-breeder attractive colonies with low success",
+    "Cox et al 2024 four nascent subcolonies at prior solitary site locations, including two where no active breeder was present",
+    "Historic penguin pebble nest mounds and guano-derived ornithogenic soils are known persistent island landscape features",
+    "Prospective age-dependent penguin dispersal and cohort effects described by Penney 1970 and Dugger et al 2026"
+  ],
+  "alternative_hypotheses":{
+    "H1_physical_legacy_without_success":"Previously attempted but FAILED pioneer patch increases subsequent nearby first settlement relative to matched never-used patches when pre-season physical substrate is held comparable; candidate mechanism pebble nest structure/ornithogenic microterrain remains.",
+    "H2_social_success_only":"Next first settlers preferentially use patches with PRIOR successful breeding, but failed pioneer patches have no residual advantage over never-used patches, consistent with successful reproductive public-information cues.",
+    "H3_static_habitat_sorting":"Past failed and successful site classes are not predictive after accounting for measured pre-settlement shelter, dry gravel, slope, aspect, predator access, adjacent colony density and detection effort; same preferred physical patches are repeatedly selected."
+  },
+  "primary_unit":"independently identified 3–10 m breeding PATCH per austral breeding season; same fixed patch polygons across years, distinct from exact prior nest coordinate and named colony",
+  "prior_class_labels_fixed_before_future_settlement":[
+    "physically_usable_never_previously_occupied",
+    "prior_observed_nesting_attempt_confirmed_failure_NO_CHICKS_CRÈCHED",
+    "prior observed breeding confirmed chicks at crèche",
+    "historical occupancy uncertain (excluded from primary test)"
+  ],
+  "required_prediction_contrasts":{
+    "failed_vs_never_used_under_H1":"positive later FIRST breeding-attempt occupancy only after covariate matching, unexposed comparison; confidence interval excluding zero required for causal language",
+    "successful_vs_failed_under_H2":"successful-only cue contrast positive with failed vs never near zero",
+    "all_prior_use_disappears_under_H3":"all lagged class effects within prespecified negligible-effect range after measured substrate quality and true site availability, with adequacy/power check"
+  },
+  "minimum_data_gate":[
+    "at least two independent island/colony sites and multiple reproductive years, not only Cox Cape Crozier 2021-2022",
+    "exact matched patch boundary and independent pre-settlement snow/ice-free rock access across years",
+    "early-season colonizer ID and first observed nesting attempt, with effort and detectability models",
+    "prior-year egg-to-crèche fate on SAME original patch; failure not inferred from absence of confirmation alone",
+    "clearly measured nest mound/rock/guano cues without disturbing wildlife",
+    "independent candidate-patch risk set including sites still never used, chosen BEFORE seeing settlement outcomes",
+    "disturbance or naturally varying microhabitat exposure measured before colony reoccupation, with credible unexposed comparisons",
+    "prefer marked breeders/offspring origins; otherwise explain inference is site selection only not immigrant rescue"
+  ],
+  "prior_observational_dataset_status":"Cox2024 50 original solitary GPS nest IDs with 3 originally nonbreeding source sites showing next-year near-neighbor counts, but no verified pioneer ID or random/exogenous source of old nest physical cue; hypothesis generated AFTER seeing data.",
+  "no_experiment_authorized":"Do not remove/construct nests, redistribute guano or deploy decoys in Antarctica without applicable environmental and wildlife approvals. Current design uses existing observational natural patch changes.",
+  "forbidden":[
+    "Never label 2021 nonbreeder site as a verified egg failure without prior detected egg",
+    "Do not claim an original nest was reused merely because a nearby n_neighbors count was positive",
+    "Do not call environmental preference or prior nest-site attraction a new result without independent counterfactual",
+    "Do not claim the 1968/2024 colonization observations are newly discovered",
+    "Do not fit the design using already outcome-exposed 36 Crozier original breeder sites as confirmatory independent events",
+    "Do not amend frozen PR189 or unlock frozen PR142"
+  ],
+  "minimum_paper_claim_if_positive":"Previous FAILED nesting attempts can facilitate subsequent nearby breeding settlement without prior breeding success by creating persistent patch-scale opportunity beyond static habitat and experienced breeder reoccupation.",
+  "null_or_habitat_only_outcome_means":"No independent positive founder-legacy effect identified; must report null or HOLD, not switch to a new threshold/adjacency radius post hoc.",
+  "decision":"PROSPECTIVE_DESIGN_ONLY_HOLD_CAUSAL_DATA"
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "source": {
+    "dataset_doi": "10.7931/kf06-x745",
+    "api": "https://datastore.landcareresearch.co.nz/api/3/action/resource_show",
+    "verified_main_census_id": "5fd490e5-92c4-4f2c-a82e-c66db2320eb1",
+    "location_resource_id": "f82c5e1d-f04d-446d-9338-e9d0603360f8",
+    "location_resource_page": "https://datastore.landcareresearch.co.nz/dataset/adelie-penguin-census-data/resource/f82c5e1d-f04d-446d-9338-e9d0603360f8",
+    "license": "CC-BY-NC-4.0"
+  },
+  "phase": "BEFORE_LOCATION_RECORDS_OPENED",
+  "question": "Do all 39 breeding-pair series have grounded geographic site coordinates, and how many geographically distinct island/outcrop systems have comparable surveyed years for a non-Ross-Island test?",
+  "requirements": [
+    "Retrieve first the official CKAN resource_show metadata and validate exact resource ID, official HTTPS origin and file format; refuse third-party or insecure redirects",
+    "Compute actual XLSX checksum and compare published CKAN MD5 if given before parsing; if source hash missing or non-MD5, report checksum warning and hold interpretation",
+    "Count site location rows and coordinate fields; do not infer an island name from a cape/colony label unless source explicitly provides island",
+    "Match exact normalized site names between location and 39 1981–2024 census table; ambiguous many-to-one mapping is HOLD not a guessed geospatial match",
+    "Do not infer source/recipient transfer or movement from nearest-neighbor geographic distance and co-growth",
+    "No assumption that Ross Island Cape Royds/Bird/Crozier are separate islands",
+    "All longitudinal pair-count source blanks remain missing not zero",
+    "If location file is just descriptive metadata and lacks coordinates, return HOLD_LOCATION_NO_GEOMETRY rather than fabricate coordinates",
+    "No new animal survival, arrival or chick outcome is observed",
+    "Keep no copyrighted XLSX in Github; only SHA/site-name QA results",
+    "Freeze future model and new hypotheses before looking at complete geolocated annual responses"
+  ],
+  "science_novelty_prior_art": [
+    "Dugger et al 2026 Ross Island age-colony metapopulation recruits measured, Royds low recruitment already known",
+    "Ainley et al 2024 Cape Royds Ross Gyre/access/predator influences already analyzed",
+    "Aggregate Ross Sea response across years not new without independent physical event and stage/individual outcomes"
+  ],
+  "status": "PENDING_OFFICIAL_LOCATION_XLSX_AND_NAME_IDENTITY_AUDIT",
+  "original_location_rows_read": 0,
+  "causal_recruitment_or_pioneer_success_effect_estimated": false,
+  "locked_Ecology_PR189_unchanged": true
+}

@@ -1,0 +1,56 @@
+name: Bechervaise same bird nest scan versus micro-patch identity V23
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/BECHERVAISE_INDIVIDUAL_VS_PATCH_GEOMETRY_V23.json'
+      - 'scripts/audit_bechervaise_individual_vs_patch_estimand_v23.py'
+      - 'tests/test_bechervaise_individual_vs_patch_estimand_v23.py'
+      - '.github/workflows/bechervaise-individual-vs-patch-identifiability-v23.yml'
+  pull_request:
+    paths:
+      - 'contracts/BECHERVAISE_INDIVIDUAL_VS_PATCH_GEOMETRY_V23.json'
+      - 'scripts/audit_bechervaise_individual_vs_patch_estimand_v23.py'
+      - 'tests/test_bechervaise_individual_vs_patch_estimand_v23.py'
+      - '.github/workflows/bechervaise-individual-vs-patch-identifiability-v23.yml'
+jobs:
+  source-grain-eligibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate field-level preconditions with no real bird tag rows
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_bechervaise_individual_vs_patch_estimand_v23.py
+      - name: Produce source-level eligibility decision from frozen original metadata
+        run: |
+          python scripts/audit_bechervaise_individual_vs_patch_estimand_v23.py \
+            --contract contracts/BECHERVAISE_INDIVIDUAL_VS_PATCH_GEOMETRY_V23.json \
+            --out /tmp/bechervaise_event_vs_patch_source_gates_v23.json
+      - name: No micro-patch prospecting or interisland mechanism smuggled in
+        run: |
+          python - <<'PY'
+          import json
+          z=json.load(open('/tmp/bechervaise_event_vs_patch_source_gates_v23.json'))
+          q=z['candidate_estimand_gates']
+          assert q['E1_FUTURE_ON_NEST_SCAN']['status']=='HOLD_MISSING_OR_UNVERIFIED_SOURCE_FIELDS'
+          assert q['E2_FUTURE_FIRST_OWN_EGG']['status']=='HOLD_MISSING_OR_UNVERIFIED_SOURCE_FIELDS'
+          assert q['E3_FIDELITY_TO_SPECIFIC_PREVIOUSLY_VISITED_NEST_PATCH']['status'].startswith('SOURCE_DESIGN_')
+          assert q['E4_CAUSAL_INTERISLAND_COLONIST_SUPPLY_EFFECT']['status'].startswith('SOURCE_DESIGN_')
+          assert z['source_bird_ID_observations_read']==0
+          assert not z['current_causal_mechanism_discovered']
+          assert z['PR189_unchanged'] and z['PR142_unchanged'] and z['PR195_unchanged']
+          print('BECHERVAISE_PATCH_IDENTITY_V23_HOLD_SOURCE_AND_GEOMETRY')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bechervaise-source-identifiability-of-tag-first-egg-patch-v23
+          path: /tmp/bechervaise_event_vs_patch_source_gates_v23.json
+          retention-days: 30

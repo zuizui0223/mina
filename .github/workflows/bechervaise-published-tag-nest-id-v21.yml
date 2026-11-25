@@ -1,0 +1,57 @@
+name: Bechervaise published 2019 RFID nest-status join and future egg risk gate
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/BECHERVAISE_2019_TAG_NEST_PRIOR_ART_AND_ACCESS_V21.json'
+      - 'scripts/simulate_bechervaise_tag_to_egg_denominator_v21.py'
+      - 'tests/test_bechervaise_tag_to_egg_denominator_v21.py'
+      - '.github/workflows/bechervaise-published-tag-nest-id-v21.yml'
+  pull_request:
+    paths:
+      - 'contracts/BECHERVAISE_2019_TAG_NEST_PRIOR_ART_AND_ACCESS_V21.json'
+      - 'scripts/simulate_bechervaise_tag_to_egg_denominator_v21.py'
+      - 'tests/test_bechervaise_tag_to_egg_denominator_v21.py'
+      - '.github/workflows/bechervaise-published-tag-nest-id-v21.yml'
+jobs:
+  source-prior-art-and-observation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test already-published 2019 tag-to-nest link and nonbreeder observation gap
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_bechervaise_tag_to_egg_denominator_v21.py
+      - name: Demonstrate source-free first observed gate versus own egg event classification
+        run: |
+          python scripts/simulate_bechervaise_tag_to_egg_denominator_v21.py \
+            --out /tmp/bechervaise_tag_to_egg_source_free_v21.json
+      - name: Preserve no original bird data, no promised first-breeding or causal effect
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/bechervaise_tag_to_egg_source_free_v21.json'))
+          assert r['n_unique_tag_seasons_with_gate_in']==4
+          assert r['n_raw_gate_in_rows']==5
+          assert r['n_same_tag_direct_egg_AFTER_first_observed_gate_in']==1
+          assert r['n_same_tag_direct_egg_before_or_at_first_gate_in']==1
+          assert r['n_tag_at_nest_but_NO_DIRECT_EGG']==1
+          assert r['n_unobserved_nest_status_given_tag_gate']==1
+          assert r['first_logged_gate_pass_not_first_island_arrival']
+          assert not r['true_first_breeding_transition_identified']
+          assert r['no_real_original_Bechervaise_source_bird_rows_loaded']
+          assert r['no_new_causal_result']
+          print('V21_PUBLISHED_2019_BREEDER_STATUS_LINK_VALIDATED_AS_PRIOR_ART_ONLY')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Bechervaise-2019-published-ID-breeder-status-vs-future-first-egg-synthetic-gate
+          path: /tmp/bechervaise_tag_to_egg_source_free_v21.json
+          retention-days: 21

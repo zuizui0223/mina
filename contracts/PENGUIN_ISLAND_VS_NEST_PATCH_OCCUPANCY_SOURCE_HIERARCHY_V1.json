@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "date":"2026-10-10",
+  "gate_id":"ANTARCTIC_PENGUIN_NEST_PATCH_VS_ISLAND_OCCUPANCY_GRAIN_V1",
+  "status":"STRUCTURAL_THEORY_AND_SOURCE_LEVEL_TRIAGE_NO_NEW_BIOLOGICAL_OUTCOME",
+  "scientific_question":"Does a verified FAILED former nesting attempt change later breeding in nearby physically comparable never-used patches, rather than reflect already-known static habitat or social reproductive cues?",
+  "site_levels":{
+    "geographic_island_or_coastal_rock_outcrop":{
+      "available_sources":[
+        "AADC AAS_4088_Adelie_Potential_Habitats DOI 10.4225/15/5758F4EC91665",
+        "AADC AAS_4088_Adelie_Occupancy DOI 10.4225/15/57590498D301C",
+        "AADC AAS_4518_Seabird_Breeding_Occupancy DOI 10.26179/5n29-r073"
+      ],
+      "state_taxonomy":["confirmed breeder present in a dated breeding-season survey","confirmed absent in a compatible adequately searched season","uncertain non-reporting despite search","no search/unknown"],
+      "cannot_directly_answer":"3–10m old-failed-nest vs never-used-patch counterfactual, or individual chick survival"
+    },
+    "nest_neighborhood_3_to_10m":{
+      "available_source":"pointblue/solo_nests Cox2024 50 confirmed source nest GPS IDs, source-known breeding and crèche observation",
+      "source_selected_only_prior_monitored_nests":true,
+      "has_never_used_and_truly_surveyed_patch_controls":false,
+      "has_confirmed_failed_egg_attempt_categories_from_cr_confirm_alone":false,
+      "has_exogenous_pioneer_cue_exposure":false,
+      "cannot_directly_answer":"causal H1 FAILED physical engineering vs H3 original dry habitat preference"
+    },
+    "marked_individual_recruitment":{
+      "available_source_metadata":"USAP-DC 601444 official source behind distinct PR142 authentication gate",
+      "matching_official_MD5_author_GitHub_mirror":false,
+      "first_breeding_origin_usable_now":false
+    }
+  },
+  "peer_review_prior_art_veto":{
+    "colonization_reconstructions":"Southwell et al 2017 DOI 10.1642/AUK-16-125.1; 16 proposed satellite colonization/extinctions all invalidated by direct contemporaneous survey",
+    "coastal_island_occupancy_density":"Southwell and Emmerson 2020 DOI 10.1002/ece3.6037; occupied land and slope shift with density",
+    "known_absence_vs_ignorance":"Southwell et al 2025 DOI 10.1111/ddi.70066; 8 seabirds 1910–2020 sites sampled, absence versus non-reporting and unknown",
+    "nest_engineering":"Schmidt et al 2021 DOI 10.1038/s41598-021-94861-7; penguin stones/guano build nesting terrain",
+    "published_subcolony_founding":"Cox et al 2024 DOI 10.1007/s00300-024-03246-9"
+  },
+  "sources_verification":{
+    "aadc_2016_geographic_potential_direct":"https://data.aad.gov.au/aadc/portal/download_file.cfm?file_id=4598",
+    "aadc_2016_occupancy_direct":"https://data.aad.gov.au/eds/4345/download",
+    "probe_run":"https://github.com/zuizui0223/mina/actions/runs/38011152997",
+    "probed_source_potential_result":"HOLD_HTTP_DOWNGRADE_REDIRECT_SAME_AADC_HOST",
+    "probed_occupancy_result":"HOLD_JS_HTML_NOT_ARCHIVE",
+    "source_geographic_site_data_values_loaded":0,
+    "potential_site_grid_join_verified":false
+  },
+  "minimum_valid_cross_scale_dataset":[
+    "Prior-year available terrain mapped BEFORE initial birds arrived, including surveyed never-used patches within a colony",
+    "same 3–10m patch footprint across ≥2 years plus stable island parent feature id",
+    "observed egg/chick/crèche state and adequate failure survey at original nest, not merely crèche not confirmed",
+    "independently measured physical legacy change before next season, not just a previous nest label",
+    "new nest site and banded origin within spatial ring, avoiding original-site reuse misclassification",
+    "replicated independent islands/colonies and pre-existing unmodified site controls",
+    "prespecified falsification test vs static site-quality and success-conditioned public information"
+  ],
+  "truth_table":{
+    "no_observation":"UNKNOWN_NOT_ABSENT",
+    "site_label_ever_occupied":"HISTORIC_OCCUPANCY_NOT_CURRENT_BREEDING",
+    "survey_visited_no_statement":"NO_REPORT_NOT_EVIDENCE_OF_ABSENCE",
+    "date_aligned_absent_with_adequate_effort":"SOURCE_SUPPORTED_ABSENCE_AT_SURVEY_GRAIN_ONLY",
+    "cr_conf_zero":"NOT_DIRECTLY_CONFIRMED_CHICK_NOT_VERIFIED_FAILURE",
+    "2021_nonbreeder_site":"NOT_FAILED_PRIOR_LAYING_ATTEMPT",
+    "2022_adjacent_nest_counter_positive":"NOT_RETURNING_ORIGINAL_INDIVIDUAL_OR_VERIFIED_NEW_COLONY"
+  },
+  "inferential_status":"HOLD_FAILED_PIONEER_CAUSAL_TEST_NOT_CURRENTLY_IDENTIFIABLE",
+  "new_biological_outcome_rows_read":0,
+  "p_values_or_causal_effects_fitted":false,
+  "PR189_unchanged":true,
+  "PR142_unchanged":true
+}

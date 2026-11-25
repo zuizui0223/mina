@@ -1,0 +1,68 @@
+name: Cape Crozier 50 solitary nest GPS fitness and return source audit
+on:
+  push:
+    branches:
+      - research/island-recovery-stage-mechanism-gate-v1
+    paths:
+      - 'contracts/CAPE_CROZIER_SOLO_NEST_SPATIAL_FITNESS_PUBLIC_JOIN_V1.json'
+      - 'scripts/audit_cape_crozier_solo_nest_spatial_outcome_join_v1.py'
+      - 'tests/test_cape_crozier_solo_nest_spatial_outcome_join_v1.py'
+      - '.github/workflows/cape-crozier-solo-nest-join-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/CAPE_CROZIER_SOLO_NEST_SPATIAL_FITNESS_PUBLIC_JOIN_V1.json'
+      - 'scripts/audit_cape_crozier_solo_nest_spatial_outcome_join_v1.py'
+      - 'tests/test_cape_crozier_solo_nest_spatial_outcome_join_v1.py'
+      - '.github/workflows/cape-crozier-solo-nest-join-v1.yml'
+jobs:
+  source-nest-join:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate exact GPS-nest outcome identity and time envelope using synthetic fixtures
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_cape_crozier_solo_nest_spatial_outcome_join_v1.py
+      - name: Retrieve 2023 public author original source at pinned commit
+        env:
+          ROOT: https://raw.githubusercontent.com/pointblue/solo_nests/04517cedac18950408abd4d0b510f4aae3447f05/data
+        run: |
+          set -e
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solo_outcomes.csv" -o /tmp/crozier_original_outcomes.csv
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solonest_initial_locations.csv" -o /tmp/crozier_original_gps.csv
+          curl -fLsS --retry 2 --max-time 35 "$ROOT/solonest_obs_data_entry_2223.csv" -o /tmp/crozier_original_reoccupancy.csv
+      - name: Reproduce real paper nest ID join and publication time-label audit
+        run: |
+          python scripts/audit_cape_crozier_solo_nest_spatial_outcome_join_v1.py \
+            --outcomes /tmp/crozier_original_outcomes.csv \
+            --locations /tmp/crozier_original_gps.csv \
+            --followup /tmp/crozier_original_reoccupancy.csv \
+            --out /tmp/crozier_source_nest_identity_and_dates.json
+      - name: Enforce all included biological interpretations are previously published or unresolved
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/crozier_source_nest_identity_and_dates.json'))
+          assert r['exact_outcome_location_nestid_matches']==50
+          assert r['location_table_valid_georeferenced_nests']==50
+          assert r['followup_unique_nest_ids']==50
+          assert r['source_date_after_public_release_rows']>0
+          assert r['author_followup_occupancy_not_a_marked_individual']
+          assert not r['new_causal_hypothesis_or_p_values_fitted']
+          assert not r['independent_exogenous_ice_or_access_shift_at_nest']
+          assert r['frozen_ecology_pr189_unchanged']
+          print('CROZIER_SOURCE_SPATIAL_ID_JOIN_PASS_NO_NEW_CAUSAL_DISCOVERY')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: crozier-50-solo-nest-location-outcome-date-QA
+          path: /tmp/crozier_source_nest_identity_and_dates.json
+          retention-days: 30
+          if-no-files-found: ignore
