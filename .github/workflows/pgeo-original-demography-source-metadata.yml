@@ -1,0 +1,26 @@
+name: pgeo-original-demography-source-metadata
+on:
+  pull_request:
+    paths:
+      - 'research/signy_seal_spatial_pressure_v1/pgeo_source_metadata.py'
+      - '.github/workflows/pgeo-original-demography-source-metadata.yml'
+permissions:
+  contents: read
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install requests
+      - run: python research/signy_seal_spatial_pressure_v1/pgeo_source_metadata.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pgeo-demography-public-source-receipt
+          path: build/pgeo_source/receipt.json
+          if-no-files-found: error
+          retention-days: 60
