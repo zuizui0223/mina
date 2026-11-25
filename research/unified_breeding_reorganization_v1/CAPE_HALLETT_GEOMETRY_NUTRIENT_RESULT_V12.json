@@ -1,0 +1,405 @@
+{
+  "status": "CAPE_HALLETT_V12_GEOMETRY_AND_NUTRIENT_SOURCE_AUDITED",
+  "latest_UAV": {
+    "url": "https://kpdc.kopri.re.kr/search/d996cb7b-989c-4841-a2a8-0cca68b4be93",
+    "doi": "10.22663/KOPRI-KPDC-00003118",
+    "paper": "10.1038/s41597-026-08053-x",
+    "version": 4,
+    "version_date": "2026-07-22",
+    "license": "CC BY 4.0 (data); MIT code; access approval separately required",
+    "request_required": true,
+    "password_protected": true,
+    "files_not_acquired": true,
+    "coregistration_outputs_kb": 128.88,
+    "reference_points_kb": 2.62,
+    "reports_mb": 8.17,
+    "orthomosaics_gb": 58.55,
+    "median_registration_residual_m": [
+      2.02,
+      2.38
+    ]
+  },
+  "geometry": {
+    "status": "AUTHORITATIVE_ZONE_CONFIRMED_PLOT_GEOREFERENCE_UNRESOLVED",
+    "official_plan": "https://documents.ats.aq/recatt/att680_e.pdf",
+    "table": "Restricted Zone Table 3",
+    "original_plot_doi": "10.7488/ds/3417",
+    "crs": "EPSG:32759",
+    "official_zone_area_m2": 8125.1148540715,
+    "literal_metadata_polygon_area_m2": 8848.493103482282,
+    "grid_area_m2": 3458,
+    "intersection_m2": 1958.5119344047666,
+    "literal_outside_zone_m2": 6889.981169060092,
+    "official_side_lengths_m": {
+      "NE_NW": 58.729419950188365,
+      "NW_SW": 139.3445278824751,
+      "SW_SE": 57.15107269627159,
+      "SE_NE": 141.17651266058982
+    },
+    "metadata_corner_checks": {
+      "NW": {
+        "in_zone": true,
+        "outside_distance_m": 0,
+        "distance_from_official_NE_marker_m": 4.029157542400649
+      },
+      "SE": {
+        "in_zone": true,
+        "outside_distance_m": 0,
+        "distance_from_official_NE_marker_m": 94.15997776088747
+      },
+      "SW": {
+        "in_zone": true,
+        "outside_distance_m": 0,
+        "distance_from_official_NE_marker_m": 97.94797996833469
+      },
+      "NE": {
+        "in_zone": false,
+        "outside_distance_m": 191.70046595598504,
+        "distance_from_official_NE_marker_m": 205.37125185130705
+      }
+    },
+    "zone_inside_published_UAV_bbox": true,
+    "plot_crosswalk_valid": false,
+    "actual_UAV_common_footprint_valid": false,
+    "limits": "Published corner labels conflict; no inferred correction, no new plot polygon or nest coordinates exported. Nominal zone is not observation support."
+  },
+  "nutrient_source": {
+    "status": "SOURCE_ACQUIRED_SCHEMA_REVIEW_REQUIRED",
+    "doi": "10.5285/eba81a75-2e49-4063-92c8-97c26f300ce5",
+    "url": "https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=eba81a75-2e49-4063-92c8-97c26f300ce5&output=zip.tree",
+    "rights": "Open Government Licence v3 (BAS metadata)",
+    "ecological_fit": false,
+    "http": {
+      "status": 200,
+      "content_type": "multipart/x-zip",
+      "content_length": null
+    },
+    "members": [
+      {
+        "name": "Measurements of atmospheric ammonia, and chemical and physiological analyses of ecological materials collected at Cape Hallett, Antarctica/CapeHallett.xlsx",
+        "size": 40815,
+        "sha256": "25c573a356bec6df0ff81a0cdec6e8f99c579acc704f2988a3ca65ddd3280ad9",
+        "worksheets": [
+          {
+            "sheet": "Sheet1",
+            "shape": [
+              219,
+              6
+            ],
+            "first_rows": [
+              [
+                "Replicate values for chemical and physiological analyses of ecological materials at Cape Hallett, Antarctica",
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                "Sheet 1.  Total N and P and δ15N values",
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                " Sheet 2.  The effect of pH on phosphatase activity in lichens",
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                "  Sheet 3.  Response of phosphatase activity in Usnea sphacelata to substrate concentration and rate of activity in lich",
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                "  Sheet 4.  Ammonia concentrations in air",
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
+            ]
+          },
+          {
+            "sheet": "Sheet2",
+            "shape": [
+              77,
+              5
+            ],
+            "first_rows": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
+            ]
+          },
+          {
+            "sheet": "Sheet3",
+            "shape": [
+              61,
+              9
+            ],
+            "first_rows": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
+            ]
+          },
+          {
+            "sheet": "Sheet4",
+            "shape": [
+              18,
+              19
+            ],
+            "first_rows": [
+              [
+                "Replicate values for ammonia concentration in air at sites at and around Cape Hallett.  Values are µg m-3  ",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                "Data were obtained using passive samples positioned at 1.5 m above ground level",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                "8 -14 Dec 2004",
+                null,
+                null,
+                "8  – 24 Jan 2005 ",
+                null,
+                null,
+                "26 Dec 2005 – 10 Jan 2006",
+                null,
+                null,
+                null,
+                "11-17  Jan 2006",
+                null,
+                null,
+                null,
+                "17 – 23 Jan 2006",
+                null,
+                null
+              ],
+              [
+                "Site 1:    Seabee Hook centre",
+                "72° 19.15´ S, 170° 12.84´ E",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "36.07797139768307",
+                "32.431634538075116",
+                "28.75484582887672",
+                null,
+                "78.25439671261189",
+                "74.72335812522384",
+                "72.88118363152142",
+                null,
+                "33.40036311894509",
+                "35.43771026041524",
+                "38.93596644984965"
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "archive_sha256": "46eef5d432515a20426a020baa588ce523d7d3169a4e4bf1b02d7031034ff764",
+    "archive_bytes": 36052
+  },
+  "local_nutrient_support": {
+    "lichen_records": 140,
+    "species_counts": {
+      "Xanthomendosa borealis": 30,
+      "Usnea sphacelata": 58,
+      "Umbilicaria decussata": 52
+    },
+    "site_count": 12,
+    "species_site_groups": 17,
+    "lichen_sites_inside_zone": 0,
+    "closest_lichen_station_m": 86.69694058814773,
+    "closest_lichen_group": {
+      "site": "8",
+      "n": 10,
+      "mean_delta15N": -0.8703770750350346,
+      "mean_percent_N": 2.837524352981652,
+      "mean_percent_P": 0.1790054288904992
+    },
+    "ammonia_sites": 11,
+    "site_periods": 32,
+    "replicate_measurements": 83,
+    "ammonia_sites_inside_zone": 0,
+    "closest_ammonia_station_m": 462.1426396317845,
+    "same_literal_station_ids": [
+      "15",
+      "18",
+      "6"
+    ],
+    "limitations": [
+      "Source label Umbilicaria deccusata normalized to source paper spelling, Xanthomendosa retained as original literal.",
+      "Nominal station coordinates rounded to 0.01 arcminute; no exact grid measurements.",
+      "Height note 2.5 m for some values requires formatting/measurement review before inference.",
+      "No temporal or causal plant effect."
+    ]
+  },
+  "execution": {
+    "run_id": 45713250755,
+    "job_id": 139552741293,
+    "artifact_id": 15068991225,
+    "zip_sha256": "38145b6acf43f6162b6f4a8b57c7bdf3a4c445597f09617e623f211d4a38ffeb",
+    "script_blob": "90ec838cbcde5273f1a0ae092d15c5314f27979f",
+    "script_sha256": "f160832342302d78c60cdcc7e9ba3b0ef1b0e107e2d73f42728f5ba8fc51e152",
+    "full_output_sha256": "30e98adb9ca4a06f49adfda1eb3ab4fdf4e1e4d78c529454c8b0289a24b8decc",
+    "verification": "Local downloaded artifact and inner ZIP SHA256/CRC, XLSX hash verified. Read-only source audit rerun produced byte-identical full JSON. This is a summary with CI geometry/source receipts, not full local output."
+  }
+}
