@@ -55,7 +55,8 @@ try:
     files=d['files'];r['available_files']=[{'key':x['key'],'size':x['size'],'checksum':x['checksum']} for x in files]
     if sum(x['size'] for x in files)>CAP:raise ValueError('total source cap')
     for x in files:
-        name=x['key'];assert Path(name).name==name
+        key=x['key'];assert key=='ingeborgklara/How-the-small-host-the-small-v1.0.0.zip'
+        name=Path(key).name
         b=get(x['links']['self'],x['size']+1)
         assert len(b)==x['size']
         alg,expected=x['checksum'].split(':',1);assert alg in ('md5','sha256') and hashlib.new(alg,b).hexdigest()==expected
