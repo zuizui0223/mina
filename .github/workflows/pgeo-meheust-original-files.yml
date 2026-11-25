@@ -77,7 +77,9 @@ jobs:
                       try:
                           t=raw.decode("utf-8-sig")
                       except UnicodeDecodeError:t=raw.decode("latin-1")
-                      dialect=csv.Sniffer().sniff(t[:10000],delimiters=",;\t");rows=list(csv.reader(io.StringIO(t),dialect))
+                      # These source tables use semicolon delimiters and decimal commas.
+                      delimiter=";" if ";" in t.splitlines()[0] else ","
+                      rows=list(csv.reader(io.StringIO(t,newline=""),delimiter=delimiter))
                       h=rows[0];body=[r for r in rows[1:] if any(x.strip() for x in r)]
                       entry["schema"]={"headers":h,"n_rows":len(body),"row_widths":sorted(set(map(len,body)))}
                   R["files"][name]=entry
