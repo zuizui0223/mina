@@ -1,0 +1,280 @@
+{
+  "status": "EXECUTED_EXACT_YEAR_COMMON_SPECIES",
+  "source_qa": {
+    "original_parent_guarded_panels": 1483,
+    "all_source_rows_not_birth_death_events": true,
+    "original_earlier_year_uniform_parent_n": 1216,
+    "original_later_year_uniform_parent_n": 869,
+    "BOTH_original_epoch_years_uniform_parent_n": 762,
+    "strictly_both_uniform_source_panels_by_species": {
+      "Arctic Skua": 26,
+      "Arctic Tern": 45,
+      "Atlantic Puffin": 11,
+      "Black Guillemot": 95,
+      "Black-headed Gull": 15,
+      "Black-legged Kittiwake": 28,
+      "Common Guillemot": 24,
+      "Common Gull": 59,
+      "Common Tern": 9,
+      "European Shag": 62,
+      "Great Black-backed Gull": 77,
+      "Great Cormorant": 4,
+      "Great Skua": 41,
+      "Herring Gull": 97,
+      "Lesser Black-backed Gull": 14,
+      "Northern Fulmar": 128,
+      "Razorbil": 27
+    },
+    "strictly_both_uniform_source_panels_by_country": {
+      "England": 52,
+      "Isle of Man": 9,
+      "Northern Ireland": 2,
+      "Republic of Ireland": 70,
+      "Scotland": 585,
+      "Wales": 44
+    },
+    "unknown_source_coverage_bias_not_eliminated": true,
+    "source_year_uniform_does_not_guarantee_colony_polygon_identity": true,
+    "original_two_census_counts_opened": 0
+  },
+  "group_summary": {
+    "decline": {
+      "n": 457,
+      "medianTV": 0.3691838291380626,
+      "medianD2": 0.08209151959151958,
+      "medianDeltaU": 0.053303847727413256,
+      "meanDeltaU": 0.11065165329903638,
+      "positiveD2": 390,
+      "leader_switch": 201,
+      "leader_eligible": 389,
+      "duration_min_median_max": [
+        13,
+        19,
+        23
+      ]
+    },
+    "near_stable": {
+      "n": 47,
+      "medianTV": 0.21614264848957193,
+      "medianD2": 0.01824725095057711,
+      "medianDeltaU": 0.028510162185255927,
+      "meanDeltaU": 0.0641941036577102,
+      "positiveD2": 39,
+      "leader_switch": 17,
+      "leader_eligible": 43,
+      "duration_min_median_max": [
+        15,
+        18,
+        21
+      ]
+    },
+    "increase": {
+      "n": 159,
+      "medianTV": 0.29897228277795074,
+      "medianD2": 0.06011600114590143,
+      "medianDeltaU": 0.0345825804822133,
+      "meanDeltaU": 0.0437002925347059,
+      "positiveD2": 135,
+      "leader_switch": 70,
+      "leader_eligible": 136,
+      "duration_min_median_max": [
+        13,
+        18,
+        22
+      ]
+    }
+  },
+  "prior_common_species_support": {
+    "Black Guillemot": {
+      "decline": 54,
+      "near_stable": 9,
+      "increase": 32
+    },
+    "Black-legged Kittiwake": {
+      "decline": 21,
+      "near_stable": 3,
+      "increase": 2
+    },
+    "Common Guillemot": {
+      "decline": 13,
+      "near_stable": 2,
+      "increase": 9
+    },
+    "Common Gull": {
+      "decline": 40,
+      "near_stable": 1,
+      "increase": 4
+    },
+    "European Shag": {
+      "decline": 38,
+      "near_stable": 4,
+      "increase": 16
+    },
+    "Great Black-backed Gull": {
+      "decline": 52,
+      "near_stable": 5,
+      "increase": 9
+    },
+    "Great Skua": {
+      "decline": 16,
+      "near_stable": 3,
+      "increase": 15
+    },
+    "Herring Gull": {
+      "decline": 55,
+      "near_stable": 5,
+      "increase": 25
+    },
+    "Northern Fulmar": {
+      "decline": 95,
+      "near_stable": 5,
+      "increase": 21
+    },
+    "Razorbil": {
+      "decline": 10,
+      "near_stable": 7,
+      "increase": 9
+    }
+  },
+  "common_species": [
+    "Black Guillemot",
+    "European Shag",
+    "Great Black-backed Gull",
+    "Great Skua",
+    "Herring Gull",
+    "Northern Fulmar",
+    "Razorbil"
+  ],
+  "networks": 389,
+  "bootstrap_valid_draws": 1833,
+  "common_species_equal": {
+    "decline": {
+      "TV": {
+        "observed": 0.34785379914236214,
+        "bootstrap95": null,
+        "multinomial_q05_q95": [
+          0.16820199240301006,
+          0.19027601799296665
+        ],
+        "gammaCV20_q05_q95": [
+          0.19462142342608388,
+          0.21780727882313958
+        ]
+      },
+      "D2": {
+        "observed": 0.12335067212615333,
+        "bootstrap95": null,
+        "multinomial_q05_q95": [
+          -0.0149897741079775,
+          0.017718287704405658
+        ],
+        "gammaCV20_q05_q95": [
+          -0.0028501763208449056,
+          0.02817924310006307
+        ]
+      },
+      "deltaU": {
+        "observed": 0.06282115213620376,
+        "bootstrap95": null,
+        "multinomial_q05_q95": [
+          -0.016938087602505546,
+          0.017755029795745954
+        ],
+        "gammaCV20_q05_q95": [
+          -0.01929404330438056,
+          0.016942566624503178
+        ]
+      }
+    },
+    "near_stable": {
+      "TV": {
+        "observed": 0.23720619608873372,
+        "bootstrap95": null,
+        "multinomial_q05_q95": [
+          0.11857795842998342,
+          0.16478802798603231
+        ],
+        "gammaCV20_q05_q95": [
+          0.1514473167408377,
+          0.20027963621114686
+        ]
+      },
+      "D2": {
+        "observed": 0.04314064615673652,
+        "bootstrap95": null,
+        "multinomial_q05_q95": [
+          -0.02036029011972874,
+          0.029215812973220675
+        ],
+        "gammaCV20_q05_q95": [
+          -0.010701380570769144,
+          0.04194707398938334
+        ]
+      },
+      "deltaU": {
+        "observed": 0.05245956755240571,
+        "bootstrap95": null,
+        "multinomial_q05_q95": [
+          -0.031668067591141984,
+          0.031672518323552626
+        ],
+        "gammaCV20_q05_q95": [
+          -0.034465020148676244,
+          0.034088231184042514
+        ]
+      }
+    },
+    "increase": {
+      "TV": {
+        "observed": 0.31640561945205187,
+        "bootstrap95": null,
+        "multinomial_q05_q95": [
+          0.15187754512489435,
+          0.18429572023239524
+        ],
+        "gammaCV20_q05_q95": [
+          0.17960385871837717,
+          0.2137140563636762
+        ]
+      },
+      "D2": {
+        "observed": 0.08582285547900374,
+        "bootstrap95": null,
+        "multinomial_q05_q95": [
+          -0.02050229741893074,
+          0.024969246837668935
+        ],
+        "gammaCV20_q05_q95": [
+          -0.008001497200423495,
+          0.03677991486079431
+        ]
+      },
+      "deltaU": {
+        "observed": 0.05758789857880271,
+        "bootstrap95": null,
+        "multinomial_q05_q95": [
+          -0.024453559740562906,
+          0.024526325959234818
+        ],
+        "gammaCV20_q05_q95": [
+          -0.027776228331384156,
+          0.024002473400589634
+        ]
+      }
+    }
+  },
+  "decline_minus_growth_deltaU": {
+    "observed": 0.005233253557401049,
+    "bootstrap95": null
+  },
+  "limitations": "Same JNCC source as full analysis; exact within-panel census year does not guarantee comparable survey boundaries/effort. Unequal elapsed intervals; not independent temporal test.",
+  "execution": {
+    "run_id": 45584082355,
+    "job_id": 139101103947,
+    "head_sha": "5aa33eeb3e676c31dde9e9dc8d7375a2c856abef",
+    "conclusion": "success",
+    "artifact_id": 15007197974,
+    "artifact_zip_digest": "sha256:b0e8e771e90d044e88b1412d5a1835d2975ed5134c8968e39a29c63e5b78e1b7",
+    "receipt_extraction": "JSON printed by successful source-execution job; artifact metadata verified, ZIP bytes not independently downloaded"
+  }
+}
