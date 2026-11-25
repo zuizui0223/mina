@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-ecology-cross-scale-canonical-target-v1",
+  "date": "2026-10-03",
+  "status": "canonical_target_resolved",
+  "canonical_initial_submission": {
+    "journal": "Ecology",
+    "submission_type": "Article",
+    "contract": "contracts/ECOLOGY_ARTICLE_CROSS_SCALE_SUBMISSION_V1.json",
+    "manuscript": "submission/MANUSCRIPT_ECOLOGY_ARTICLE_CROSS_SCALE_V0_1.md",
+    "rationale": [
+      "The scientific story contains three linked but inferentially distinct components: Palmer discovery, prospective Signy replication, and MAPPPD regional scale transfer.",
+      "Ecology's September 2026 guidance describes Articles as more complicated stories with distinct components and Reports as concise statements on a single simple topic.",
+      "The Article package preserves the evidence hierarchy, statistical differences across scales, and limitations without compressing them into Supporting Information.",
+      "The verified Word Main Document is 24 pages before separate figure pages; with three one-page main figures the expected submission page count is 27, below the 30-page Article limit."
+    ]
+  },
+  "alternate_package": {
+    "journal": "Ecology",
+    "submission_type": "Report",
+    "contract": "contracts/ECOLOGY_REPORT_CROSS_SCALE_SUBMISSION_V1.json",
+    "role": "compact_alternate_not_for_initial_upload",
+    "activation_rule": "Use only after an explicit author decision or an editorial request to recast the paper as a Report. Before activation, render and verify the complete Report package against the 20-page limit.",
+    "scientific_difference": "No new analysis; the Report compresses the same evidence and moves post-hoc/contextual material to Supporting Information."
+  },
+  "canonicality_rule": "Exactly one initial-submission package may be active. The Article package is active; the Report package is retained as an alternate and must not be uploaded in parallel.",
+  "scientific_freeze": "No journal-format choice authorizes new ecological analyses."
+}

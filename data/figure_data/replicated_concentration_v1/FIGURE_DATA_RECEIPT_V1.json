@@ -1,0 +1,26 @@
+{
+  "analysis_id": "mina-replicated-concentration-figure-data-v1",
+  "checks": "All recomputed Palmer and Signy N_eff endpoints and slopes matched frozen receipts.",
+  "n_dominance_populations": 5,
+  "n_summary_populations": 5,
+  "n_trajectory_rows": 114,
+  "populations": [
+    "Cormorant",
+    "Humble",
+    "Litchfield",
+    "Signy Adelie",
+    "Signy chinstrap"
+  ],
+  "schema_version": 1,
+  "source_checked_artifact": {
+    "workflow_run_id": 36953934301,
+    "artifact_id": 11204789237,
+    "artifact_digest": "sha256:76a1d26799fff74ec96104f809f5da5a835a65caefc24550c5a8d9413fabc876"
+  },
+  "normalized_utf8_sha256": {
+    "figure1_trajectories.csv": "01875780b9c1a0b24f32ce352f1735b34cb921d77b710809107acc3389aa678d",
+    "figure2_summary.csv": "ea7c391037a54d0f51eafab374c0fd5aaaa3f4e508bf20c6a096300d4bf2e8e3",
+    "figure3_dominance_routes.csv": "6539956c2cc046eb5d615ae7ca8af34e7762156914900526c23db004ba2229e2"
+  },
+  "note": "The three repository CSVs were checked against the previously source-verified workflow artifact after universal-newline normalization, then frozen in-repository to remove artifact-expiration dependence."
+}

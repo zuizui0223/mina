@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "contract_id": "mina-mapppd-regional-concentration-v1",
+  "date": "2026-10-03",
+  "status": "bounded_existing-data_extension",
+  "purpose": "Test whether the breeding-space concentration rule transfers from within-colony/subcolony systems to regional networks of monitored Antarctic penguin breeding sites using only the already-pinned MAPPPD snapshot.",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502",
+    "cohort_rule": "Reuse the frozen Paper 2 1980-2025 bridged nest-count cohort and observation-calibration code without changing record selection."
+  },
+  "hierarchy": {
+    "system": "species x published APBP region",
+    "component": "site_id",
+    "interpretation": "regional monitored breeding-site network; not assumed to be a closed demographic population"
+  },
+  "support_gate": {
+    "minimum_components": 3,
+    "minimum_complete_seasons": 5,
+    "minimum_calendar_span_years": 10,
+    "fixed_roster_algorithm": [
+      "Start with every frozen-cohort site_id in a species x region.",
+      "Complete seasons are seasons observed at every retained site.",
+      "If support fails, remove the site with the fewest observed seasons; break ties by removing the lexicographically greatest site_id.",
+      "Stop at the first qualifying roster; fail if fewer than three sites remain."
+    ],
+    "selection_uses_count_magnitude": false
+  },
+  "outcome_definition": {
+    "site_season_state": "Reuse Paper 2 method-corrected precision collapse of repeated same-season counts on log1p scale, then transform back with expm1.",
+    "effective_components": "E = 1/sum(p_j^2)",
+    "raw_scaling": "log(E_t) = alpha + kappa_obs log(N_t)",
+    "abundance_direction": "OLS slope of log(N_t) on calendar year; negative denotes a declining monitored network"
+  },
+  "nulls": {
+    "fixed_composition": "Pool adjusted site counts across retained complete seasons to q_j; at each observed total N_t draw multinomial(round(N_t), q), preserving the observed total trajectory.",
+    "observation_error_sensitivity": "After multinomial thinning, add independent normal error on log1p scale using each collapsed site-season observation variance, transform back, and recompute E while keeping observed N_t as the scaling x-axis.",
+    "simulations": 20000,
+    "seed": 20261003
+  },
+  "primary_effect": "delta_kappa = kappa_obs - median(kappa_null)",
+  "support_call": "A panel shows excess regional concentration only if delta_kappa > 0 and one-sided p <= 0.05 under both the fixed-composition null and the observation-error sensitivity.",
+  "bounded_questions": [
+    "How many species x APBP-region networks are structurally estimable?",
+    "Among declining estimable networks, how often is delta_kappa positive and individually supported?",
+    "Does the direction of the previously discovered concentration rule transfer to this larger spatial scale?"
+  ],
+  "stop_rule": "Do not open alternate geographic radii, hand-built clusters, alternate completeness thresholds, alternate abundance transformations, lags, collapse hinges, or trait searches in response to this result."
+}

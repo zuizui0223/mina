@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "result_id": "mina-mapppd-regional-concentration-receipt-v1",
+  "date": "2026-10-03",
+  "analysis_branch": "analysis/mapppd-regional-concentration-v1",
+  "analysis_head_sha": "277673739ed2867993c46a2db18c37defe56f3e1",
+  "source": {
+    "repository": "CCheCastaldo/mapppdr",
+    "commit": "88c73a507e0921b2541c218c71eaf16721bc6502"
+  },
+  "execution": {
+    "workflow_run_id": 37104425699,
+    "artifact_id": 11267836110,
+    "artifact_digest": "sha256:f30ef9b31990df51b5d1eaa2db11e662432ef6d134ae8e48252073d55ea48048",
+    "conclusion": "success"
+  },
+  "support_gate": {
+    "candidate_species_region_groups": 13,
+    "eligible_species_region_networks": 7,
+    "eligible_species": ["ADPE", "CHPE", "GEPE"],
+    "eligible_regions": ["Central-west Antarctic Peninsula", "South Shetland Islands", "Victoria Land"],
+    "minimum_components": 3,
+    "minimum_complete_seasons": 5,
+    "minimum_calendar_span_years": 10
+  },
+  "declining_network_synthesis": {
+    "n": 4,
+    "positive_null_calibrated_kappa": 4,
+    "supported_under_fixed_composition_and_observation_error_nulls": 2,
+    "median_delta_kappa_observation_error_null": 0.09441795386792906,
+    "descriptive_one_sided_sign_p": 0.0625,
+    "independence_warning": "species x region panels within the same region are not independent geographic replicates; the sign test is descriptive only"
+  },
+  "declining_panels": [
+    {"species":"ADPE","region":"Central-west Antarctic Peninsula","sites":3,"seasons":5,"kappa_obs":0.07981625636064967,"delta_kappa_observation_error_null":0.0733522818661441,"p_observation_error_null":0.10789460526973652,"supported":false},
+    {"species":"ADPE","region":"South Shetland Islands","sites":4,"seasons":7,"kappa_obs":0.08793033611688159,"delta_kappa_observation_error_null":0.11548362586971403,"p_observation_error_null":0.014799260036998151,"supported":true},
+    {"species":"CHPE","region":"Central-west Antarctic Peninsula","sites":3,"seasons":10,"kappa_obs":0.021622830127000912,"delta_kappa_observation_error_null":0.0169968228408715,"p_observation_error_null":0.432328383580821,"supported":false},
+    {"species":"CHPE","region":"South Shetland Islands","sites":6,"seasons":8,"kappa_obs":0.44533924022537136,"delta_kappa_observation_error_null":0.4341956069163383,"p_observation_error_null":0.015249237538123094,"supported":true}
+  ],
+  "increasing_panel_descriptive_context": [
+    {"species":"ADPE","region":"Victoria Land","kappa_obs":-0.35826945636505964,"delta_kappa_observation_error_null":-0.35482191942086005,"first_E":4.848207209312533,"last_E":3.5588237735201522},
+    {"species":"GEPE","region":"Central-west Antarctic Peninsula","kappa_obs":-0.23751348503310163,"delta_kappa_observation_error_null":-0.228350506131902,"first_E":4.932981261643182,"last_E":4.127842259489028},
+    {"species":"GEPE","region":"South Shetland Islands","kappa_obs":0.02361236330990017,"delta_kappa_observation_error_null":0.01984752850795281,"first_E":3.9021707981450047,"last_E":3.85871528140124}
+  ],
+  "interpretation": {
+    "supported": "The previously discovered breeding-space concentration direction extends descriptively to all four estimable declining regional Pygoscelis networks, with robust panel-level support in South Shetland Adelie and chinstrap networks.",
+    "not_supported": [
+      "A universal Antarctic regional concentration law",
+      "A cross-seabird or multi-taxon macroecological law",
+      "A single universal kappa exponent",
+      "A claim that regional monitoring networks are closed demographic populations",
+      "A formal ratchet or hysteresis claim from the increasing panels"
+    ],
+    "strongest_current_scope": "cross-scale Antarctic Pygoscelis evidence: strong replicated within-island concentration plus directionally consistent but regionally heterogeneous among-site network concentration"
+  }
+}
