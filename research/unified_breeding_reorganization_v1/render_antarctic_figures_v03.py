@@ -91,15 +91,16 @@ def fig4(d,out,qa):
     f,axs=plt.subplots(2,2,figsize=(10,7.1),layout='constrained')
     ax=axs[0,0];head(ax,'A  Optical isotope proxy (425 informative records)')
     for i,z in enumerate(d['optical']):dotrange(ax,z['beta'],z['lower'],z['upper'],i,BLUE if z['model']=='M_P' else ORANGE)
-    ax.set_yticks(range(4),['P / PLSR','P / R1000','P + S / PLSR','P + S / R1000']);ax.invert_yaxis();zero(ax,'x');ax.set_xlabel('δ¹⁵N proxy change (‰ per 10 pp polynya)');ax.text(.98,.04,'CV3 95% intervals; same optical source',transform=ax.transAxes,ha='right',fontsize=7.5)
+    ax.set_yticks(range(4),['P / PLSR','P / R1000','P + S / PLSR','P + S / R1000']);ax.invert_yaxis();zero(ax,'x');ax.set_xlabel('δ¹⁵N proxy change (‰ per 10 pp polynya)')
     ax=axs[0,1];head(ax,'B  Adélie reproductive-stage associations')
     for i,z in enumerate(d['productivity']):
         dotrange(ax,z['time'],*z['time_range'],i-.12,GREY,'s');dotrange(ax,z['adjusted'],*z['adjusted_range'],i+.12,BLUE)
-    ax.set_yticks(range(4),['Admiralty Bay (14)','Palmer (15)','Signy (13)','Pointe Géologie (15)']);ax.invert_yaxis();zero(ax,'x');ax.set_xlabel('Offspring / nesting female per 1 pp P100');ax.legend(handles=[Line2D([0],[0],marker='s',color=GREY,label='Time-adjusted'),Line2D([0],[0],marker='o',color=BLUE,label='Hydro-adjusted')],frameon=False,fontsize=7.5)
+    ax.set_yticks(range(4),['Admiralty Bay (14)','Palmer (15)','Signy (13)','Pointe Géologie (15)']);ax.invert_yaxis();zero(ax,'x');ax.set_xlabel('Offspring / nesting female per 1 pp P100');ax.set_ylim(3.6,-.65)
     ax=axs[1,0];head(ax,'C  Optical–nest overlap by season')
     z=d['optical_support']['annual'];x=np.arange(len(z));ax.bar(x,[q['optical_rows'] for q in z],color=PALE,label='Optical');ax.bar(x,[q['matched_rows'] for q in z],color=BLUE,label='Matched nests');ax.set_xticks(x,[q['season'] for q in z],rotation=25);ax.set_ylabel('Site-seasons');ax.legend(frameon=False,fontsize=8)
     ax=axs[1,1];head(ax,'D  No multi-site temporal bridge')
     z=d['optical_support']['windows'];x=np.arange(len(z));ax.bar(x,[q['sites'] for q in z],color=BLUE);ax.axhline(3,color=GREY,ls='--',lw=1,label='Minimum site support (3)');ax.set_xticks(x,[str(q['start'])[-2:]+'–'+str(q['end'])[-2:] for q in z],rotation=25);ax.set_ylim(0,3.7);ax.set_ylabel('Same-method matched sites');ax.legend(frameon=False,fontsize=8);ax.text(.5,.69,'Also require ≥2 regions; all windows fail',transform=ax.transAxes,ha='center',fontsize=8)
+    f.legend(handles=[Line2D([0],[0],marker='s',color=GREY,label='B: Time-adjusted'),Line2D([0],[0],marker='o',color=BLUE,label='B: Hydro-adjusted')],loc='outside lower center',ncol=2,frameon=False,fontsize=8)
     title(f,'Marine biological associations differ among outcomes and locations');save(f,'A4_biological_response',out,qa)
 def fig5(d,out,qa):
     f,axs=plt.subplots(2,2,figsize=(9.3,6.8),layout='constrained');keys=['fur','elephant','weddell','Adelie','Chinstrap','Gentoo'];names=['Fur seal','Elephant seal','Weddell seal','Adélie','Chinstrap','Gentoo']
@@ -112,7 +113,7 @@ def fig5(d,out,qa):
         z=d['signy'][k]
         if 'delta_H' in z:dotrange(ax,z['delta_H'],*z['loo_ranges']['delta_H'],i,BLUE if i<3 else ORANGE)
         else:ax.text(0,i,'Not available',va='center',fontsize=8,color=GREY)
-    ax.set_yticks(range(6),names);ax.invert_yaxis();zero(ax,'x');ax.set_xlabel('Change in Simpson H')
+    ax.set_yticks(range(6),names);ax.set_ylim(5.6,-.6);zero(ax,'x');ax.set_xlabel('Change in Simpson H')
     ax=axs[1,0];head(ax,'C  Ross: different recovery summaries')
     a=d['ross'];v=100*np.array([a['aggregate_restoration'],a['six_state_restoration'],a['three_state_restoration']]);labels(ax,ax.bar(['Aggregate\nloss regained','Six-component\nconfiguration','Three-colony\nconfiguration'],v,color=[BLUE,ORANGE,ORANGE]),'{:.1f}%');ax.set_ylim(0,114);ax.set_ylabel('Recovery measure (%)')
     ax=axs[1,1];head(ax,'D  Bird Island: a growth contrast')
@@ -133,7 +134,7 @@ def fig6(d,out,qa):
     ax=axs[1,1];head(ax,'D  Broad-scale vegetation association')
     z=d['vegetation']
     for i,q in enumerate(z):dotrange(ax,q['slope'],*q['range'],i,GREEN)
-    ax.set_yticks(range(3),[q['species']+' ('+str(q['sites'])+' sites)' for q in z]);ax.invert_yaxis();zero(ax,'x');ax.set_xlabel('Regional slope: log nest-count trend\nper log mapped area');ax.text(.98,.04,'Block-resampling ranges; no causal effects',ha='right',transform=ax.transAxes,fontsize=7.5)
+    ax.set_yticks(range(3),[q['species']+' ('+str(q['sites'])+' sites)' for q in z]);ax.invert_yaxis();zero(ax,'x');ax.set_xlabel('Regional slope: log nest-count trend\nper log mapped area')
     title(f,'Animal use and mapped vegetation co-occur, but plant change is unmeasured');save(f,'A6_terrestrial_overlap',out,qa)
 def main():
     a=argparse.ArgumentParser();a.add_argument('--out',type=Path,required=True);args=a.parse_args();out=args.out;out.mkdir(parents=True,exist_ok=True)
