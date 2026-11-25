@@ -1,0 +1,287 @@
+{
+  "status": "EXPLORATORY_STANDALONE_PRODUCTIVITY_ONLY",
+  "source_pins": {
+    "14935924098": "fbeeffce21a8323f8f9afa75986b6d3cc05d7d66053ee872a43a39d7251b0e06",
+    "14934334550": "0264797d82bee62df3b14346428abb4a4994ec01224906c3468afbe99a2c56c4",
+    "13669533413": "add9f2a4c9a82279a70b4e9edb4156f5dc9d21fbe55122276e5199a02487f38a",
+    "14926710177": "b48ad3c97e35bc487ad6ebca955bbbec5478f75359e9f0300296910821a050b8",
+    "13829236358": "64a8e9832e254171139d78bb22351d6c9a3acf490356931b2635ed5b108d94b5"
+  },
+  "denominator_audit": {
+    "BCO_rows": 29,
+    "MAPPPD_selected_rows": 29,
+    "common_years": 25,
+    "equal_denominators_all_common": 0,
+    "joint_climate_nest_years": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017
+    ],
+    "ratio_min_median_max": [
+      0.1880114213441159,
+      0.32642044710174895,
+      0.4577289846942864
+    ]
+  },
+  "year_support": [
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009,
+    2010,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020
+  ],
+  "observed_zero_success_years": [
+    2013,
+    2016
+  ],
+  "P100_raw_range_pp": [
+    1.28492336624121,
+    13.42897004460733
+  ],
+  "fits": {
+    "time": {
+      "status": "DESCRIPTIVE",
+      "n": 15,
+      "rank": 3,
+      "condition": 1.7509831484565248,
+      "df": 12,
+      "beta_per_pp": 0.08055528039344094,
+      "partial_R2": 0.3005492993912945,
+      "P_residual_sd_pp": 3.0183211770008023,
+      "beta_per_residual_sd": 0.2431417087307603,
+      "loo_beta_range": [
+        0.0621055415490828,
+        0.10301380685970786
+      ],
+      "omit_both_failure_seasons": {
+        "n": 13,
+        "beta_per_pp": 0.04062742795984941,
+        "partial_R2": 0.16329785111615625,
+        "rank": 3,
+        "condition": 1.9539517709385394,
+        "df": 10,
+        "P_residual_sd_pp": 2.955201139912829,
+        "beta_per_residual_sd": 0.12006222141867331
+      }
+    },
+    "time_hydro": {
+      "status": "DESCRIPTIVE",
+      "n": 15,
+      "rank": 6,
+      "condition": 5.403856401142229,
+      "df": 9,
+      "beta_per_pp": 0.09134618264866719,
+      "partial_R2": 0.10616308044528988,
+      "P_residual_sd_pp": 1.3661709372784483,
+      "beta_per_residual_sd": 0.12479449996593799,
+      "loo_beta_range": [
+        0.05899619921687141,
+        0.15911950871164704
+      ],
+      "omit_both_failure_seasons": {
+        "n": 13,
+        "beta_per_pp": 0.09900209390954645,
+        "partial_R2": 0.23468721232229806,
+        "rank": 6,
+        "condition": 5.394935897352619,
+        "df": 7,
+        "P_residual_sd_pp": 1.38752795680117,
+        "beta_per_residual_sd": 0.13736817308135055
+      }
+    }
+  },
+  "loo_columns": [
+    "omitted_year",
+    "beta_per_pp",
+    "partial_R2"
+  ],
+  "loo_time": [
+    [
+      2004,
+      0.08732200522470847,
+      0.3395447251153222
+    ],
+    [
+      2005,
+      0.08041743920051463,
+      0.2993403566520252
+    ],
+    [
+      2006,
+      0.08498329537407313,
+      0.283518906788806
+    ],
+    [
+      2007,
+      0.08466752508591717,
+      0.33364121886115694
+    ],
+    [
+      2008,
+      0.08696952385207946,
+      0.3586144582434435
+    ],
+    [
+      2009,
+      0.08704061084498463,
+      0.3457221527993355
+    ],
+    [
+      2010,
+      0.07935210584920388,
+      0.2952210255756431
+    ],
+    [
+      2013,
+      0.06596398452060942,
+      0.2645024503164909
+    ],
+    [
+      2014,
+      0.07157112593522287,
+      0.24518190696720132
+    ],
+    [
+      2015,
+      0.08102404046813001,
+      0.2629406876650937
+    ],
+    [
+      2016,
+      0.0621055415490828,
+      0.2232604369251071
+    ],
+    [
+      2017,
+      0.0832513123089135,
+      0.30171456216191184
+    ],
+    [
+      2018,
+      0.07841774567043086,
+      0.3163906449004006
+    ],
+    [
+      2019,
+      0.08282658780638645,
+      0.3552863238713553
+    ],
+    [
+      2020,
+      0.10301380685970786,
+      0.31795369365642945
+    ]
+  ],
+  "loo_time_hydro": [
+    [
+      2004,
+      0.09204777097621443,
+      0.11813275685908187
+    ],
+    [
+      2005,
+      0.09519143971322559,
+      0.11325786954624073
+    ],
+    [
+      2006,
+      0.09135996919603655,
+      0.1072467269264038
+    ],
+    [
+      2007,
+      0.10265013440365012,
+      0.1532456234875984
+    ],
+    [
+      2008,
+      0.07187220655970651,
+      0.0749329702336784
+    ],
+    [
+      2009,
+      0.05899619921687141,
+      0.043517792516595044
+    ],
+    [
+      2010,
+      0.08840115596203164,
+      0.10389924945769025
+    ],
+    [
+      2013,
+      0.06002585348714361,
+      0.06163555426090961
+    ],
+    [
+      2014,
+      0.06969753275718922,
+      0.055667338194515636
+    ],
+    [
+      2015,
+      0.07634182873382851,
+      0.06173061109126299
+    ],
+    [
+      2016,
+      0.12873589740343735,
+      0.22270462268530722
+    ],
+    [
+      2017,
+      0.0916225468466399,
+      0.07943310081816823
+    ],
+    [
+      2018,
+      0.15911950871164704,
+      0.2906060425457465
+    ],
+    [
+      2019,
+      0.07825569853131052,
+      0.09206229047619852
+    ],
+    [
+      2020,
+      0.15445457985706773,
+      0.21468102799015087
+    ]
+  ],
+  "execution": {
+    "pre_effect_contract_commit": "183543dec6ba0408e76b643ca69f09acc3b9e1e8",
+    "code_commit": "933d902f3eddeedc62864aea2f3dd14d971bc925",
+    "code_git_blob": "f1437cde6f7d6057079c09da57ea80badfaddf4f",
+    "local_code_sha256": "af572cc67633bd48f1d76b36b9310b6f260efabac916b00c1350bd6b0f1d0693",
+    "local_output_sha256": "8eb1230cb5402112cd8314389872f0882c931d1c0ffd31958ac32acf97259649",
+    "checks": "All five archive SHA256 pins/CRC checked; FWL residual regression equals direct standardized full least squares within 1e-10 for all 34 fits. Exact local executed code Git blob verified. This JSON is a summary of the actual local result."
+  },
+  "interpretation": [
+    "Sample-size discrepancy is not proof of distinct geographic footprints; cannot multiply BCO rate by archipelago count without representative sampling evidence.",
+    "Raw outcome retained explicit zeros. Single location, 15 seasons, nine residual df fully adjusted; deletion ranges not confidence intervals.",
+    "Polynya exposure at nominal colony centre; summer foraging, recruitment, diet switching and future demographic effect not identified.",
+    "Positive association with reported annual productivity does not contradict negative optical isotope association: different response variables, periods and populations. No causal chain or independent source event lineage."
+  ],
+  "climate_mediation_or_population_forecast": false,
+  "new_independent_event_lineage": false
+}
