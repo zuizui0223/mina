@@ -1,0 +1,206 @@
+{
+  "status": "VEGETATION_SOURCE_VERIFIED_LOCAL_ANIMAL_LINK_UNRESOLVED",
+  "source_acquisition": {
+    "run_id": 45660128526,
+    "job_id": 139367423470,
+    "head_sha": "0f90627ea3d8d5da92a64047b0a4613465a665f2",
+    "artifact_id": 15043329180,
+    "zip_sha256": "63c4f2d2c2c3163db723fff3250778f2544c4fe5a8251e57304ee7d486392755",
+    "first_run": 45660027448,
+    "first_issue": "Verified raw CSV decoded as UTF8 incorrectly; fixed using reversible cp1252 decoding. No changed source bytes.",
+    "license": "CC BY 4.0",
+    "doi": "10.7488/ds/3417"
+  },
+  "source_pins": {
+    "13669533413": "add9f2a4c9a82279a70b4e9edb4156f5dc9d21fbe55122276e5199a02487f38a",
+    "14934334550": "0264797d82bee62df3b14346428abb4a4994ec01224906c3468afbe99a2c56c4"
+  },
+  "member_pins": {
+    "Plot data for McNemar test.csv": "08af8778cc47daddca306a3bcee175ca86aa1f0febb63ec5a05eff8ec4732f6a",
+    "ground truthing.csv": "fec2a1124335ee6cdfcb742efc68d18b439e3e1d2e1fd98b8971b1fa31ee697e",
+    "Metadata.docx": "371c2c518d60cddc30dab4b143a8d4d7ff30850bf642c78e5fb4bf20d0826e4d"
+  },
+  "vegetation": {
+    "rows": 10374,
+    "grids": 3458,
+    "years": [
+      1962,
+      2004,
+      2018
+    ],
+    "valid_by_year": {
+      "1962": 3343,
+      "2004": 2057,
+      "2018": 3458
+    },
+    "all_three_valid": 2057,
+    "pairs": {
+      "1962-2004": 2057,
+      "2004-2018": 2057,
+      "1962-2018": 3343
+    }
+  },
+  "classification": {
+    "order": "nsph",
+    "n_each": 174,
+    "moss": {
+      "matrix": [
+        [
+          43,
+          0,
+          4,
+          2
+        ],
+        [
+          8,
+          38,
+          6,
+          2
+        ],
+        [
+          0,
+          3,
+          36,
+          2
+        ],
+        [
+          0,
+          6,
+          1,
+          23
+        ]
+      ],
+      "exact": 140,
+      "presence_agreement": 160,
+      "detected": 117,
+      "actual_present": 125
+    },
+    "algae": {
+      "matrix": [
+        [
+          32,
+          2,
+          7,
+          1
+        ],
+        [
+          9,
+          36,
+          17,
+          1
+        ],
+        [
+          4,
+          5,
+          35,
+          4
+        ],
+        [
+          1,
+          0,
+          8,
+          12
+        ]
+      ],
+      "exact": 115,
+      "presence_agreement": 150,
+      "detected": 118,
+      "actual_present": 132
+    },
+    "lichen": {
+      "matrix": [
+        [
+          100,
+          0,
+          0,
+          0
+        ],
+        [
+          51,
+          2,
+          0,
+          0
+        ],
+        [
+          13,
+          6,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0
+        ]
+      ],
+      "exact": 102,
+      "presence_agreement": 109,
+      "detected": 9,
+      "actual_present": 74
+    }
+  },
+  "count_support": {
+    "strict_count_n": 18,
+    "strict_vegetation_overlap": [],
+    "raw_v5_nest_rows": 28,
+    "raw_v5_nest_seasons": 25,
+    "raw_vegetation_overlap": [
+      2018
+    ],
+    "raw_2018_records": [
+      {
+        "count": 43688,
+        "reference_id": "manaakiwhenua2021aerial"
+      },
+      {
+        "count": 46991,
+        "reference_id": "kpri2020report6"
+      }
+    ],
+    "strict_UAV_overlap": [
+      2023
+    ],
+    "vegetation_UAV_overlap": [
+      2018
+    ]
+  },
+  "geometry": {
+    "published_bbox_EPSG32759": [
+      472940,
+      1974587,
+      474305,
+      1975656
+    ],
+    "transformed_corners": {
+      "NW": [
+        474036.51994829293,
+        1975223.7342336476
+      ],
+      "SE": [
+        473990.24339700793,
+        1975145.6752993343
+      ],
+      "SW": [
+        473971.1064537829,
+        1975154.7272781068
+      ],
+      "NE": [
+        474241.7430262258,
+        1975228.8169872342
+      ]
+    },
+    "literal_polygon_area_m2": 8848.49310348228,
+    "grid_area_m2": 3458,
+    "literal_corner_polygon_in_bbox": true,
+    "verified_plot_georeference": false,
+    "verified_image_footprint": false
+  },
+  "execution": {
+    "script_blob": "96d293607c8ab3ea659b1413560d64f41e01c4ed",
+    "script_sha256": "ef5f14c7e9a1104e05bc29dbba40fd4b7b0755ef8e37eb08266bdcf4ba72074e",
+    "full_local_output_sha256": "ff56bc48d95497a8846bf42ff4147ff4a69319de0b72a0579809d6eb7ef28479",
+    "verification": "Three ZIP SHA256/CRC, vegetation member hashes, structural checks, local output reproduced byte-identically. This committed summary is not the full exact output."
+  },
+  "limits": "New original plant source, not a new plant-animal effect. KOPRI latest imagery not acquired; old public metadata shows request required, newer record exists but exact download access unverified. No large image downloads or requests submitted. Source corners inconsistent with the grid; no cell geolocation. Author classification QA not independent validation. No annual vegetation reconstruction or inferred animal occupancy."
+}
