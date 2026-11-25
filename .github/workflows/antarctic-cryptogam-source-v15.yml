@@ -1,0 +1,25 @@
+name: Antarctic terrestrial biotic source V15
+on:
+  push:
+    branches: [analysis/unified-breeding-reorganization-20261125]
+    paths:
+      - 'research/unified_breeding_reorganization_v1/cryptogam_source_v15.py'
+      - '.github/workflows/antarctic-cryptogam-source-v15.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests pandas openpyxl xlrd
+      - run: python research/unified_breeding_reorganization_v1/cryptogam_source_v15.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: antarctic-cryptogam-source-v15
+          path: build/antarctic-cryptogam-v15/
