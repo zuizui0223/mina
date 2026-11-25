@@ -1,0 +1,41 @@
+name: Antarctic official AADC legacy original source download V29
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_LEGACY_FIELD_SURVEY_DOWNLOAD_V29.md'
+      - 'scripts/probe_aadc_legacy_public_downloads_v29.py'
+      - 'tests/test_aadc_legacy_public_downloads_v29.py'
+      - '.github/workflows/antarctic-aadc-legacy-download-v29.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_LEGACY_FIELD_SURVEY_DOWNLOAD_V29.md'
+      - 'scripts/probe_aadc_legacy_public_downloads_v29.py'
+      - 'tests/test_aadc_legacy_public_downloads_v29.py'
+      - '.github/workflows/antarctic-aadc-legacy-download-v29.yml'
+  workflow_dispatch:
+jobs:
+  original_publisher_download_headers_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source probe HTTP client
+        run: python -m pip install requests pytest
+      - name: Test original EDS publisher host boundaries
+        run: python -m pytest -q tests/test_aadc_legacy_public_downloads_v29.py
+      - name: Probe publisher legacy download first 128 KiB only
+        run: |
+          python scripts/probe_aadc_legacy_public_downloads_v29.py \
+            --out /tmp/AADC_LEGACY_SOURCE_DOWNLOAD_V29.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: official-original-aadc-legacy-source-probes-v29
+          path: /tmp/AADC_LEGACY_SOURCE_DOWNLOAD_V29.json
+          if-no-files-found: warn

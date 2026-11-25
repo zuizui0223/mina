@@ -1,0 +1,45 @@
+name: Paper2 V47 Falkland same island-year penguin and flying bird original source gate
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/PAPER2_FALKLAND_FIBD_GUILD_BREEDING_SOURCE_V47_FROZEN.md'
+      - 'scripts/audit_paper2_falkland_guild_breeding_source_v47.py'
+      - 'tests/test_paper2_falkland_guild_breeding_source_v47.py'
+      - '.github/workflows/paper2-falkland-guild-breeding-v47.yml'
+  pull_request:
+    paths:
+      - 'contracts/PAPER2_FALKLAND_FIBD_GUILD_BREEDING_SOURCE_V47_FROZEN.md'
+      - 'scripts/audit_paper2_falkland_guild_breeding_source_v47.py'
+      - 'tests/test_paper2_falkland_guild_breeding_source_v47.py'
+      - '.github/workflows/paper2-falkland-guild-breeding-v47.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  official_falkland_island_year_breeding_support:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install publicly licensed original Excel and source validation
+        run: python -m pip install requests xlrd pytest
+      - name: Test original penguin and flying seabird breeding labels and no false absences
+        run: python -m pytest -q tests/test_paper2_falkland_guild_breeding_source_v47.py
+      - name: Read four original first-party Falkland public XLS and audit genuine overlap only
+        run: |
+          python scripts/audit_paper2_falkland_guild_breeding_source_v47.py \
+            --out /tmp/PAPER2_FALKLAND_FIBD_PENGUIN_V_FLYING_BIRD_MAMMAL_SOURCE_V47.json
+      - name: Retain only nonpersonal source frequencies and identification STOP gates
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v47-falkland-original-penguin-flying-breeding-visit-mammal-source-QA
+          path: /tmp/PAPER2_FALKLAND_FIBD_PENGUIN_V_FLYING_BIRD_MAMMAL_SOURCE_V47.json
+          if-no-files-found: warn

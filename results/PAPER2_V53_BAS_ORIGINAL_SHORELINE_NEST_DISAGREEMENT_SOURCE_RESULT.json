@@ -1,0 +1,111 @@
+{
+  "schema": "PAPER2_V53_BAS_ORIGINAL_SHORELINE_NEST_COORDINATE_DISAGREEMENT_RESULT",
+  "date": "2026-10-28",
+  "original_source_BAS_subantarctic_coast_DOI": "10.5285/c1d83502-8799-4e3c-bdca-21db6a4405d4",
+  "source_2020_coast_ZIP_SHA256": "27b4cd2085b9c845abf7928c336cf82f0d37492bbe2c21522ac4c670750f6cff",
+  "source_2019_20_nests_NPZ_SHA256": "1566f4fef4ac5370f40f6482e9f76f7b252e32ade8915a190cf0d2fc946883ec",
+  "per_original_locality": {
+    "Ashen_Hills": {
+      "original_unique_original_source_points_n": 75255,
+      "strict_original_source_on_land_n": 72903,
+      "strict_original_source_outside_land_n": 2352,
+      "strict_original_source_land_fraction": 0.9687462627067969,
+      "original_off_land_nest_centres_are_not_automatically_actual_sea_nests": true,
+      "no_original_points_snapped_or_reprojected_to_land": true,
+      "original_outside_distance_to_own_island_coast_m": {
+        "source_outside_point_n": 2352,
+        "p05_m": 2.2255464644865093,
+        "median_m": 31.51526336408595,
+        "p95_m": 92.08420446815883,
+        "max_m": 105.53801967132699,
+        "le5m": 258,
+        "le10m": 544,
+        "le30m": 1143,
+        "le100m": 2327,
+        "gt100m": 25,
+        "gt500m": 0,
+        "distinct_30m_grid_cells_outside_original_land": 93
+      },
+      "original_named_locality": "Ashen_Hills",
+      "same_original_physical_island_as": "Saunders"
+    },
+    "Bellingshausen": {
+      "original_unique_original_source_points_n": 14005,
+      "strict_original_source_on_land_n": 13370,
+      "strict_original_source_outside_land_n": 635,
+      "strict_original_source_land_fraction": 0.9546590503391645,
+      "original_off_land_nest_centres_are_not_automatically_actual_sea_nests": true,
+      "no_original_points_snapped_or_reprojected_to_land": true,
+      "original_outside_distance_to_own_island_coast_m": {
+        "source_outside_point_n": 635,
+        "p05_m": 0.36326767993298825,
+        "median_m": 2.9708044246006495,
+        "p95_m": 14.678489510571712,
+        "max_m": 16.583159895043522,
+        "le5m": 398,
+        "le10m": 491,
+        "le30m": 635,
+        "le100m": 635,
+        "gt100m": 0,
+        "gt500m": 0,
+        "distinct_30m_grid_cells_outside_original_land": 10
+      },
+      "original_named_locality": "Bellingshausen",
+      "same_original_physical_island_as": "Bellingshausen"
+    },
+    "Beach_Point": {
+      "original_unique_original_source_points_n": 7089,
+      "strict_original_source_on_land_n": 7089,
+      "strict_original_source_outside_land_n": 0,
+      "strict_original_source_land_fraction": 1,
+      "original_off_land_nest_centres_are_not_automatically_actual_sea_nests": true,
+      "no_original_points_snapped_or_reprojected_to_land": true,
+      "original_outside_distance_to_own_island_coast_m": {
+        "source_outside_point_n": 0,
+        "median_m": null,
+        "p05_m": null,
+        "p95_m": null,
+        "max_m": null,
+        "le5m": 0,
+        "le10m": 0,
+        "le30m": 0,
+        "le100m": 0,
+        "gt100m": 0,
+        "gt500m": 0,
+        "distinct_30m_grid_cells_outside_original_land": 0
+      },
+      "original_named_locality": "Beach_Point",
+      "same_original_physical_island_as": "Thule"
+    },
+    "Hewison_Point": {
+      "original_unique_original_source_points_n": 22424,
+      "strict_original_source_on_land_n": 19203,
+      "strict_original_source_outside_land_n": 3221,
+      "strict_original_source_land_fraction": 0.8563592579379237,
+      "original_off_land_nest_centres_are_not_automatically_actual_sea_nests": true,
+      "no_original_points_snapped_or_reprojected_to_land": true,
+      "original_outside_distance_to_own_island_coast_m": {
+        "source_outside_point_n": 3221,
+        "p05_m": 0.7611687558578606,
+        "median_m": 8.024378595851905,
+        "p95_m": 24.624825400286905,
+        "max_m": 39.26114397726342,
+        "le5m": 1062,
+        "le10m": 1889,
+        "le30m": 3172,
+        "le100m": 3221,
+        "gt100m": 0,
+        "gt500m": 0,
+        "distinct_30m_grid_cells_outside_original_land": 30
+      },
+      "original_named_locality": "Hewison_Point",
+      "same_original_physical_island_as": "Thule"
+    }
+  },
+  "scientific_status": "SOURCE_GEOGRAPHY_DISAGREEMENT_MEASURED_WITHOUT_BIOLOGY",
+  "island_land_membership_original_frozen_95_gate_pass": false,
+  "no_source_points_snapped": true,
+  "interpretation": "In Hewison 3172 of 3221 off-land source nest coordinates are within 30m of original coastline (98.48%), max 39.26m. Could reflect shoreline cartography/resolution/temporal source mismatch, not proof of physical bird nests offshore or path access.",
+  "no_taxon_effect_fitted": true,
+  "actual_workflow": "https://github.com/zuizui0223/mina/actions/runs/40629991959"
+}

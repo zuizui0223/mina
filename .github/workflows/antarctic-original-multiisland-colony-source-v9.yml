@@ -1,0 +1,41 @@
+name: Antarctic independent original multi-island colony source inventory V9
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_MULTIISLAND_GEOMETRY_SOURCE_V9.md'
+      - 'scripts/audit_multiisland_original_colony_sources_v9.py'
+      - 'tests/test_multiisland_original_colony_sources_v9.py'
+      - '.github/workflows/antarctic-original-multiisland-colony-source-v9.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_MULTIISLAND_GEOMETRY_SOURCE_V9.md'
+      - 'scripts/audit_multiisland_original_colony_sources_v9.py'
+      - 'tests/test_multiisland_original_colony_sources_v9.py'
+      - '.github/workflows/antarctic-original-multiisland-colony-source-v9.yml'
+  workflow_dispatch:
+jobs:
+  original_archive_file_manifest_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source-metadata reader and synthetic test runner
+        run: python -m pip install requests pytest
+      - name: Validate AADC/BAS publisher-only archive inventory parser
+        run: python -m pytest -q tests/test_multiisland_original_colony_sources_v9.py
+      - name: Enumerate original multiple Antarctic colony polygons and South Sandwich bird-location CSVs
+        run: |
+          python scripts/audit_multiisland_original_colony_sources_v9.py \
+            --out /tmp/ANTARCTIC_ORIGINAL_MULTIISLAND_COLONY_SOURCE_V9.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: publisher-original-multiisland-colony-source-v9
+          path: /tmp/ANTARCTIC_ORIGINAL_MULTIISLAND_COLONY_SOURCE_V9.json
+          if-no-files-found: warn

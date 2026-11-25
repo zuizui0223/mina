@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "status": "ORIGINAL_SCAR_LANDSAT_MANUAL_ROCK_SITE_SOURCE_DISAGREEMENT_V8",
+  "source_basis": "V7 source-only geography cross-classification; no original bird observations",
+  "source_v7_result": "results/SCAR_LANDSAT_V7_SOURCE_TOPOLOGY.json",
+  "source_v7_result_github_blob_sha": "62dbfa519642d24fc17acba74581da5ed90470c8",
+  "original_AADC_reference_site_IDs": 7785,
+  "source_rock_origins": {
+    "LANDSAT_AUTOMATED_GRIDCODE_1": 359880,
+    "MANUAL_FALLBACK_GRIDCODE_0": 6226
+  },
+  "scales": {
+    "exact_original_source_point_inside_polygon": {
+      "both": 721,
+      "old_only": 1802,
+      "new_only": 1979,
+      "neither": 3283,
+      "old_positive": 2523,
+      "new_positive": 2700,
+      "union_positive": 4502,
+      "jaccard_overlap": 0.16015104398045313,
+      "source_agreement": 0.5143224149004496
+    },
+    "original_source_point_inside_or_within_250m": {
+      "both": 2094,
+      "old_only": 941,
+      "new_only": 3675,
+      "neither": 1075,
+      "old_positive": 3035,
+      "new_positive": 5769,
+      "union_positive": 6710,
+      "jaccard_overlap": 0.3120715350223547,
+      "source_agreement": 0.40706486833654465
+    }
+  },
+  "causal_biological_effects_fitted": 0,
+  "source_rock_presence_is_verified_breeding_nest_location": false,
+  "distinguishing_different_sensor_and_vintage_maps_from_ecological_time_change": true,
+  "original_site_reference_points_may_not_be_actual_nest_GPS": true,
+  "scientific_interpretation": "Original 2020 Landsat and 2025 mainly hand-compiled rock maps disagree strongly about whether each fixed AADC potential-site center lies inside mapped exposed rock. This is static source measurement discordance and cartographic temporal/method inconsistency, not demonstrated habitat turnover, true vacancy or cross-island ecological mechanism."
+}

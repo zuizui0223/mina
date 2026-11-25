@@ -1,0 +1,44 @@
+name: Antarctic original ASI sites to physical SCAR land V34
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_ASI_PHYSICAL_LAND_SOURCE_V34.md'
+      - 'scripts/audit_asi_source_landmass_v34.py'
+      - 'tests/test_asi_source_landmass_v34.py'
+      - '.github/workflows/antarctic-asi-site-landmass-v34.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_ASI_PHYSICAL_LAND_SOURCE_V34.md'
+      - 'scripts/audit_asi_source_landmass_v34.py'
+      - 'tests/test_asi_source_landmass_v34.py'
+      - '.github/workflows/antarctic-asi-site-landmass-v34.yml'
+  workflow_dispatch:
+jobs:
+  source_only_original_113_site_landmass:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original publisher GIS source dependencies and tests
+        run: python -m pip install requests numpy pyproj pyshp 'shapely>=2,<3' openpyxl xlrd pytest
+      - name: Test physical-source land feature versus original site-ID independence
+        run: python -m pytest -q tests/test_asi_source_landmass_v34.py
+      - name: Match all source ASI 113 original census sites against publisher SCAR land v7.12
+        run: |
+          python scripts/audit_asi_source_landmass_v34.py \
+            --out /tmp/ASI_ORIGINAL_113_SITE_LANDMASS_V34.json \
+            --sites /tmp/ASI_ORIGINAL_113_SITE_PHYSICAL_LAND_V34.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: asi-original-113-site-scar-land-geography-v34
+          path: |
+            /tmp/ASI_ORIGINAL_113_SITE_LANDMASS_V34.json
+            /tmp/ASI_ORIGINAL_113_SITE_PHYSICAL_LAND_V34.csv
+          if-no-files-found: warn

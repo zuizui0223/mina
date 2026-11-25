@@ -1,0 +1,54 @@
+name: Antarctic ASI exact observed nest-count one-year transitions V35
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_ASI_LONGITUDINAL_NEST_SOURCE_V35.md'
+      - 'scripts/analyze_asi_direct_nest_growth_source_v35.py'
+      - 'tests/test_asi_direct_nest_growth_source_v35.py'
+      - '.github/workflows/antarctic-asi-nest-change-source-v35.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_ASI_LONGITUDINAL_NEST_SOURCE_V35.md'
+      - 'scripts/analyze_asi_direct_nest_growth_source_v35.py'
+      - 'tests/test_asi_direct_nest_growth_source_v35.py'
+      - '.github/workflows/antarctic-asi-nest-change-source-v35.yml'
+  workflow_dispatch:
+jobs:
+  original_asi_actual_nest_annual_changes_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install actual original field source and change-model maths dependencies
+        run: python -m pip install requests numpy pyproj 'shapely>=2,<3' pyshp openpyxl xlrd pytest
+      - name: Test source season-year, actual nested site and original day offset requirements
+        run: python -m pytest -q tests/test_asi_direct_nest_growth_source_v35.py
+      - name: Fetch official 113 ASI source site SCAR physical land match artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/ASI-source-site-land
+          gh run download 40341465452 --repo "$GITHUB_REPOSITORY" \
+            --name asi-original-113-site-scar-land-geography-v34 \
+            --dir /tmp/ASI-source-site-land
+      - name: Count actual original source ASI 1-year positive nest census changes with fixed breeding-phenology gate
+        run: |
+          python scripts/analyze_asi_direct_nest_growth_source_v35.py \
+            --v34-source-sites /tmp/ASI-source-site-land/ASI_ORIGINAL_113_SITE_PHYSICAL_LAND_V34.csv \
+            --out /tmp/ASI_OBSERVED_STAGEMATCHED_NEST_GROWTH_V35.json \
+            --pairs /tmp/ASI_OBSERVED_STAGEMATCHED_NEST_PAIR_V35.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: asi-original-annual-nest-site-phenology-v35
+          path: |
+            /tmp/ASI_OBSERVED_STAGEMATCHED_NEST_GROWTH_V35.json
+            /tmp/ASI_OBSERVED_STAGEMATCHED_NEST_PAIR_V35.csv
+          if-no-files-found: warn

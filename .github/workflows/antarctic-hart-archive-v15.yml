@@ -1,0 +1,35 @@
+name: Antarctic Hart BAS original island directory V15
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'scripts/audit_hart_southsandwich_archive_dir_v15.py'
+      - '.github/workflows/antarctic-hart-archive-v15.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_hart_southsandwich_archive_dir_v15.py'
+      - '.github/workflows/antarctic-hart-archive-v15.yml'
+  workflow_dispatch:
+jobs:
+  source_directory_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install publisher file index client
+        run: python -m pip install requests
+      - name: Inspect publisher original South Sandwich root and ZAVO coordinates subdirectory file rows
+        run: |
+          python scripts/audit_hart_southsandwich_archive_dir_v15.py \
+            --out /tmp/BAS_HART_DIR_STRUCTURE_V15.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bas-original-hart-archive-dir-v15
+          path: /tmp/BAS_HART_DIR_STRUCTURE_V15.json
+          if-no-files-found: warn

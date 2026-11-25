@@ -1,0 +1,41 @@
+name: Antarctic original 2787 penguin and petrel quantity lineage V31
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_OBIS_MULTI_GUILD_SOURCE_V31.md'
+      - 'scripts/audit_obis_historical_multi_guild_source_v31.py'
+      - 'tests/test_obis_historical_multi_guild_source_v31.py'
+      - '.github/workflows/antarctic-obis-multi-guild-source-v31.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_OBIS_MULTI_GUILD_SOURCE_V31.md'
+      - 'scripts/audit_obis_historical_multi_guild_source_v31.py'
+      - 'tests/test_obis_historical_multi_guild_source_v31.py'
+      - '.github/workflows/antarctic-obis-multi-guild-source-v31.yml'
+  workflow_dispatch:
+jobs:
+  first_party_12_taxon_source_count_stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original archive source and tests
+        run: python -m pip install requests pytest
+      - name: Test original penguin-vs-flying guild, stage and false-absence controls
+        run: python -m pytest -q tests/test_obis_historical_multi_guild_source_v31.py
+      - name: Audit original source-guild census quantity, years, gazetteer and lineage at all 2787 rows
+        run: |
+          python scripts/audit_obis_historical_multi_guild_source_v31.py \
+            --out /tmp/OBIS_12_ORIGINAL_TAXA_GUILD_COUNT_GRAIN_V31.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-obis-12-taxon-penguin-petrel-record-source-v31
+          path: /tmp/OBIS_12_ORIGINAL_TAXA_GUILD_COUNT_GRAIN_V31.json
+          if-no-files-found: warn

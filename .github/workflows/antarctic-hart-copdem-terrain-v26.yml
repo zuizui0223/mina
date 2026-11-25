@@ -1,0 +1,55 @@
+name: Antarctic original South Sandwich Copernicus terrain V26
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/BAS_HART_INDEPENDENT_COP30_TERRAIN_V26.md'
+      - 'scripts/build_hart_copernicus_dem_terrain_v26.py'
+      - 'tests/test_hart_copernicus_dem_terrain_v26.py'
+      - '.github/workflows/antarctic-hart-copdem-terrain-v26.yml'
+  pull_request:
+    paths:
+      - 'contracts/BAS_HART_INDEPENDENT_COP30_TERRAIN_V26.md'
+      - 'scripts/build_hart_copernicus_dem_terrain_v26.py'
+      - 'tests/test_hart_copernicus_dem_terrain_v26.py'
+      - '.github/workflows/antarctic-hart-copdem-terrain-v26.yml'
+  workflow_dispatch:
+jobs:
+  publisher_original_terrain_without_bird_response_fit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original public COG georeference, terrain and tests
+        run: python -m pip install numpy rasterio pyproj requests pytest
+      - name: Test original public DEM tile name, nodata and geodesic metre slope rules
+        run: python -m pytest -q tests/test_hart_copernicus_dem_terrain_v26.py
+      - name: Download source-verified first-party nest coordinates from successful V20
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/hart-original-nests-v20
+          gh run download 40277314934 --repo "$GITHUB_REPOSITORY" \
+            --name bas-original-four-locality-species-nestpoints-v20 \
+            --dir /tmp/hart-original-nests-v20
+      - name: Independently download original Copernicus 2021 DEM source and sample all 122139 nests
+        run: |
+          python scripts/build_hart_copernicus_dem_terrain_v26.py \
+            --v20 /tmp/hart-original-nests-v20/BAS_HART_ORIGINAL_10_FILE_POINT_QA_V20.json \
+            --source-points /tmp/hart-original-nests-v20/BAS_HART_4_LOCALITIES_UTM_NESTS_V20.npz \
+            --out /tmp/BAS_HART_PUBLIC_GLO30_NEST_TERRAIN_V26.json \
+            --point-terrain /tmp/BAS_HART_PUBLIC_GLO30_NEST_TERRAIN_V26.npz
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bas-original-nest-independent-CopDEM-terrain-v26
+          path: |
+            /tmp/BAS_HART_PUBLIC_GLO30_NEST_TERRAIN_V26.json
+            /tmp/BAS_HART_PUBLIC_GLO30_NEST_TERRAIN_V26.npz
+          if-no-files-found: warn

@@ -1,0 +1,41 @@
+name: Antarctic original Woehler spreadsheet source access V32
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_WOEHLER_EXCEL_SOURCE_V32.md'
+      - 'scripts/probe_original_penguin_census_excel_v32.py'
+      - 'tests/test_original_penguin_census_excel_v32.py'
+      - '.github/workflows/antarctic-original-woehler-excel-v32.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_WOEHLER_EXCEL_SOURCE_V32.md'
+      - 'scripts/probe_original_penguin_census_excel_v32.py'
+      - 'tests/test_original_penguin_census_excel_v32.py'
+      - '.github/workflows/antarctic-original-woehler-excel-v32.yml'
+  workflow_dispatch:
+jobs:
+  original_publisher_unmodified_observation_quality_file:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install publisher source probe requirements
+        run: python -m pip install requests pytest
+      - name: Test original unmodified Excel file signature versus publisher SPA fallback
+        run: python -m pytest -q tests/test_original_penguin_census_excel_v32.py
+      - name: Probe exact original AADC Excel download file identifier without loading census values
+        run: |
+          python scripts/probe_original_penguin_census_excel_v32.py \
+            --out /tmp/AADC_HISTORIC_ORIGINAL_COUNT_QUALITY_SOURCE_V32.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-historic-census-excel-source-v32
+          path: /tmp/AADC_HISTORIC_ORIGINAL_COUNT_QUALITY_SOURCE_V32.json
+          if-no-files-found: warn

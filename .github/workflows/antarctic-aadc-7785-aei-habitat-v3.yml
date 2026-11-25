@@ -1,0 +1,57 @@
+name: Antarctic AADC 7785 independent AEI breeding habitat atlas v3
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_7785_AEI_HABITAT_OPTIONS_V3.md'
+      - 'scripts/build_aadc_aei_independent_habitat_v3.py'
+      - 'tests/test_aadc_aei_independent_habitat_v3.py'
+      - '.github/workflows/antarctic-aadc-7785-aei-habitat-v3.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_7785_AEI_HABITAT_OPTIONS_V3.md'
+      - 'scripts/build_aadc_aei_independent_habitat_v3.py'
+      - 'tests/test_aadc_aei_independent_habitat_v3.py'
+      - '.github/workflows/antarctic-aadc-7785-aei-habitat-v3.yml'
+  workflow_dispatch:
+jobs:
+  original_geography_and_raster_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original publisher geography and raster readers
+        run: python -m pip install numpy rasterio pyproj dbfread openpyxl xlrd requests pytest
+      - name: Test animal-derived raster label exclusions without biological data
+        run: python -m pytest -q tests/test_aadc_aei_independent_habitat_v3.py
+      - name: Fetch exact published Antarctic Ecosystem Inventory 100m raster and VAT
+        run: |
+          mkdir -p /tmp/aei-v3
+          curl -L --fail --retry 5 --retry-delay 5 --max-time 600 \
+            'https://zenodo.org/records/11629115/files/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif?download=1' \
+            -o /tmp/aei-v3/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif
+          curl -L --fail --retry 5 --retry-delay 5 --max-time 300 \
+            'https://zenodo.org/records/11629115/files/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf?download=1' \
+            -o /tmp/aei-v3/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf
+          echo 'cde880d73f7f18b44aecf5690aa2dc92  /tmp/aei-v3/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif' | md5sum -c -
+          echo 'fa5363b1c0d882b4343e239d03dc2ba4  /tmp/aei-v3/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf' | md5sum -c -
+      - name: Create independent 7785-site AADC physical habitat raster atlas
+        run: |
+          python scripts/build_aadc_aei_independent_habitat_v3.py \
+            --raster /tmp/aei-v3/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif \
+            --vat /tmp/aei-v3/AntarcticaEcosystemInventory_IceFreeLands_v1_int.tif.vat.dbf \
+            --out /tmp/AADC_7785_AEI_HABITAT_ATLAS_V3.json \
+            --features /tmp/AADC_7785_AEI_HABITAT_ATLAS_V3.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-AADC-7785-AEI-icefree-habitat-v3
+          path: |
+            /tmp/AADC_7785_AEI_HABITAT_ATLAS_V3.json
+            /tmp/AADC_7785_AEI_HABITAT_ATLAS_V3.csv
+          if-no-files-found: warn

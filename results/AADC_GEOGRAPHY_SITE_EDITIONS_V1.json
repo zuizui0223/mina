@@ -1,0 +1,68 @@
+{
+  "status": "AADC_GEOGRAPHY_ONLY_TWO_SOURCE_EDITION_AUDIT",
+  "original_site_n_2021": 4884,
+  "original_site_n_2025": 7785,
+  "common_original_geographic_site_ids": 4862,
+  "only_in_2025_original_site_ids": 2923,
+  "only_in_2021_original_site_ids": 22,
+  "2025_original_geog_site_feature_classes": {
+    "continent": 3307,
+    "island": 4478
+  },
+  "common_sites_with_valid_coordinates_both_editions": 4862,
+  "same_identifier_exactly_identical_latlon": 4862,
+  "same_site_id_original_coordinate_shift_bins": {
+    "EXACT_UNCHANGED": 4862
+  },
+  "source_position_displacement_median_m": 0,
+  "source_position_displacement_p90_m": 0,
+  "source_position_displacement_max_m": 0,
+  "source_2025_distinct_exact_coordinate_pairs": 7785,
+  "source_2025_coordinate_groups_shared_by_multiple_original_site_ids": 0,
+  "source_2025_site_ids_with_nonunique_exact_coordinate_pairs": 0,
+  "new_original_site_id_is_recolonization": false,
+  "old_absent_site_id_is_biological_extinction": false,
+  "source_coordinate_precision_is_independent_field_gps": false,
+  "penguin_or_other_animal_counts_opened": 0,
+  "animal_presence_absence_or_NRs_opened": 0,
+  "ecological_effects_fitted": 0,
+  "original_coordinate_qa": {
+    "2021": {
+      "geographic_site_ids": 4884,
+      "missing_lat_lon": 0,
+      "invalid_lat_lon": 0,
+      "sites_with_valid_coordinates": 4884
+    },
+    "2025": {
+      "geographic_site_ids": 7785,
+      "missing_lat_lon": 0,
+      "invalid_lat_lon": 0,
+      "sites_with_valid_coordinates": 7785
+    }
+  },
+  "original_geographic_source_receipts": {
+    "potential_geography_2021": {
+      "source_doi": "10.26179/53yk-8z83",
+      "source_geographic_file_name": "Potential habitat/Spatial reference systemn coastal East Antarctica.xlsx",
+      "source_geographic_sheet": "2_Geographic sites",
+      "original_SHA256": "2236269e754962f9af082a0853993fc65a4afd20c7489a65fae81bdd1899ffaa",
+      "geographic_rows": 4884,
+      "source_file_bytes": 336800
+    },
+    "potential_geography_2025": {
+      "source_doi": "10.26179/5n29-r073",
+      "source_geographic_file_name": "2_Site and search effort and occupancy data/geog_sites_all.xlsx",
+      "source_geographic_sheet": "2_geog_sites_all",
+      "original_SHA256": "ed5f59d11a0e2ca7491ecf32dc8b04de524e83edf7acd268702963c3b7561294",
+      "geographic_rows": 7785,
+      "source_file_bytes": 533501
+    }
+  },
+  "AADC_original_public_dataset_manifest_sha256": "c6b06ed506536490ba70947950879713c8eb43480a927bdb3e6d1febda0630af",
+  "execution": {
+    "github_actions_run": "https://github.com/zuizui0223/mina/actions/runs/40162883187",
+    "github_actions_artifact": "https://github.com/zuizui0223/mina/actions/runs/40162883187/artifacts/12587261486",
+    "commit_at_source_run": "0f380e7633acd8e315aa6ac8dd811601772e84ba",
+    "note": "Source outcomes were not loaded, only two geographic original workbooks."
+  }
+}

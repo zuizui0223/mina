@@ -1,0 +1,50 @@
+name: Antarctic Hart full South Sandwich nest CSV header V19
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/BAS_HART_NEST_POINT_SOURCE_V19.md'
+      - 'scripts/audit_bas_hart_nest_coordinates_v19.py'
+      - 'tests/test_bas_hart_nest_coordinates_v19.py'
+      - '.github/workflows/antarctic-hart-original-point-v19.yml'
+  pull_request:
+    paths:
+      - 'contracts/BAS_HART_NEST_POINT_SOURCE_V19.md'
+      - 'scripts/audit_bas_hart_nest_coordinates_v19.py'
+      - 'tests/test_bas_hart_nest_coordinates_v19.py'
+      - '.github/workflows/antarctic-hart-original-point-v19.yml'
+  workflow_dispatch:
+jobs:
+  original_csv_first_lines_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install authoritative BAS file schema inspection dependencies
+        run: python -m pip install requests pytest
+      - name: Test original same-year species label and polygon outline boundary
+        run: python -m pytest -q tests/test_bas_hart_nest_coordinates_v19.py
+      - name: Recover source original verified 164-file nested publisher manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/bas-source-v16
+          gh run download 40261490725 --repo "$GITHUB_REPOSITORY" \
+            --name bas-hart-original-all-locality-source-manifest-v16 --dir /tmp/bas-source-v16
+      - name: Inspect original nest point CSV first headers across seven survey localities
+        run: |
+          python scripts/audit_bas_hart_nest_coordinates_v19.py \
+            --manifest /tmp/bas-source-v16/BAS_HART_ALL_ISLANDS_ORIGINAL_MANIFEST_V16.json \
+            --out /tmp/BAS_HART_ALL_LOCALITIES_NEST_CSV_HEADERS_V19.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-bas-hart-all-nest-coordinate-headers-v19
+          path: /tmp/BAS_HART_ALL_LOCALITIES_NEST_CSV_HEADERS_V19.json
+          if-no-files-found: warn

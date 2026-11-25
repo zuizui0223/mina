@@ -1,0 +1,44 @@
+name: Antarctic independent candidate-site network macro geography v1
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_SITE_OPTION_NETWORK_V1.md'
+      - 'scripts/build_aadc_potential_site_network_v1.py'
+      - 'tests/test_aadc_potential_site_network_v1.py'
+      - '.github/workflows/antarctic-aadc-potential-site-network-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_SITE_OPTION_NETWORK_V1.md'
+      - 'scripts/build_aadc_potential_site_network_v1.py'
+      - 'tests/test_aadc_potential_site_network_v1.py'
+      - '.github/workflows/antarctic-aadc-potential-site-network-v1.yml'
+  workflow_dispatch:
+jobs:
+  original_source_geography_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install verified publisher XLS/XLSX readers, geography and tests
+        run: python -m pip install numpy scipy pyproj openpyxl xlrd requests pytest
+      - name: Test original site network and null neighbor semantics
+        run: python -m pytest -q tests/test_aadc_potential_site_network_v1.py
+      - name: Build entire 7,785-site original potential breeding site network
+        run: |
+          python scripts/build_aadc_potential_site_network_v1.py \
+            --summary /tmp/AADC_POTENTIAL_SITE_NETWORK_V1.json \
+            --features /tmp/AADC_POTENTIAL_SITE_NETWORK_V1.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-aadc-antarctic-candidate-site-network-v1
+          path: |
+            /tmp/AADC_POTENTIAL_SITE_NETWORK_V1.json
+            /tmp/AADC_POTENTIAL_SITE_NETWORK_V1.csv
+          if-no-files-found: warn

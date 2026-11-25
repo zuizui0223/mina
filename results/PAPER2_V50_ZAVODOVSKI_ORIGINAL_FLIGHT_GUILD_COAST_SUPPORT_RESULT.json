@@ -1,0 +1,71 @@
+{
+  "schema": "PAPER2_ZAVODOVSKI_SAME_DAY_FLIGHT_GUILD_COAST_V50_ORIGINAL_SOURCE_DECISION",
+  "date": "2026-10-28",
+  "source_publisher": "British Antarctic Survey NERC EDS UK Polar Data Centre",
+  "source_doi": "10.5285/7220dc6b-2f52-4160-a6c0-e57c50963308",
+  "original_UAV_date": "2023-12-14",
+  "coordinate_crs": "EPSG:32726",
+  "geometry_sha256_shp": {
+    "southern_giant_petrel": "7901d02a78655849e76e535427803a7647294f397a0e0b501c4aaaeb7cd8c3ec",
+    "chinstrap_penguin": "348d3b95b3bca31665206283f6b0deab4d38a8f9436c51d12f52d6d7654bcb6b",
+    "macaroni_penguin": "922155539c3201e70a513233c57f7b0ff414dea4a3f48cc9669fc5d743d3419b",
+    "coastline": "27ae6e97df5276f3e4019630dc2e10e6b39d1c075b2b3b6dca8aa7032cb5f136",
+    "outside_original_drone_survey": "5b3a2ff4d9d2058ee719041ecd9999b9e60665464de2de48adf68c8e1fd3d75c"
+  },
+  "original_polygon_records": {
+    "southern_giant_petrel_flying": 4,
+    "chinstrap_penguin_flightless": 2102,
+    "macaroni_penguin_flightless_total": 170,
+    "macaroni_penguin_flightless_nonempty": 169,
+    "original_maca_zero_vertex_placeholder_excluded": 1,
+    "coastline": 1,
+    "unsurveyed_original_polygon": 1,
+    "no_polygons_repaired": true
+  },
+  "original_source_island_land_area_m2": 10331622.721457843,
+  "original_drone_covered_area_m2": 4721665.62130154,
+  "original_unsurveyed_intersect_coast_area_m2": 5609957.100156279,
+  "source_recorded_occupied_polygon_area_m2": {
+    "giant_petrel": 886.7465278617518,
+    "chinstrap_penguin": 208219.67258555198,
+    "macaroni_penguin": 121386.38683546582,
+    "combined_penguin_union": 329506.4655824526
+  },
+  "flying_penguin_overlap_polygons_m2": 0,
+  "fixed_grid_counts": {
+    "10m": {
+      "flying_original_colony": 12,
+      "combined_penguins": 3302,
+      "flying_median_coast_distance_m_descriptive_only": 159.5477828985514,
+      "penguin_median_coast_distance_m_descriptive_only": 96.99162350886014
+    },
+    "20m": {
+      "flying_original_colony": 2,
+      "combined_penguins": 831,
+      "flying_median_coast_distance_m_descriptive_only": 174.49730381040982,
+      "penguin_median_coast_distance_m_descriptive_only": 100.65862622890349
+    },
+    "40m": {
+      "flying_original_colony": 0,
+      "combined_penguins": 206,
+      "flying_median_coast_distance_m_descriptive_only": null,
+      "penguin_median_coast_distance_m_descriptive_only": 85.60727062344739
+    }
+  },
+  "threshold_fixed_before_new_petrel_effect": {
+    "primary_grid_m": 20,
+    "flying_grid_cells_minimum": 20,
+    "penguin_grid_cells_minimum": 100,
+    "actual_flying_cells": 2,
+    "actual_penguin_cells": 831,
+    "support_pass": false,
+    "signed_guild_difference_biological_endpoint_computed": false
+  },
+  "status": "STOP_V50_FLYING_OR_PENGUIN_MAPPED_OCCUPIED_AREA_SUPPORT",
+  "one_island_nonindependent_grid_pseudoreplicates": true,
+  "biological_claim": "Original same-day 2023 giant petrel flight guild polygons exist and share source survey GIS with penguins and coastline, but are only four tiny areas (<0.001 km²) and fail prespecified spatial sample gate. 10m/20m/40m geometry is resolution-sensitive. No valid flight-guild access effect or general island/mammal mechanism is established.",
+  "next_mainline_caution": "Do not lower petrel grid-cell sample threshold after seeing results, or conflate area cells with independent birds/islands. To identify a genuine coast-access flight interaction requires new original multi-island co-survey polygons with adequate flying seabird coverage; mammal exposure requires separately verified field negatives.",
+  "original_successful_GitHub_Actions": "https://github.com/zuizui0223/mina/actions/runs/40534438640",
+  "full_machine_readable_source_artifact": "https://github.com/zuizui0223/mina/actions/runs/40534438640/artifacts/12748121767",
+  "original_artifact_zip_digest": "sha256:a2a1b1c1b79700c263dec80216f83e45354e04e652c1e4e3ca961f10d8868739"
+}

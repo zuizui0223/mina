@@ -1,0 +1,41 @@
+name: Antarctic AADC candidate-site signal V2 falsification
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_SITE_OPTION_NETWORK_V2_FALSIFICATION.md'
+      - 'scripts/audit_aadc_site_option_v2_falsification.py'
+      - 'tests/test_aadc_site_option_v2_falsification.py'
+      - '.github/workflows/antarctic-aadc-site-option-v2-falsification.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_SITE_OPTION_NETWORK_V2_FALSIFICATION.md'
+      - 'scripts/audit_aadc_site_option_v2_falsification.py'
+      - 'tests/test_aadc_site_option_v2_falsification.py'
+      - '.github/workflows/antarctic-aadc-site-option-v2-falsification.yml'
+  workflow_dispatch:
+jobs:
+  independently_audit_positive_source_association:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install statistical and original AADC archive dependencies
+        run: python -m pip install numpy scipy pandas scikit-learn pyproj openpyxl xlrd requests pytest
+      - name: Test post-result adversarial diagnostics without animal records
+        run: python -m pytest -q tests/test_aadc_site_option_v2_falsification.py
+      - name: Replay observed source result and test historical reference plus local site-level placebo
+        run: |
+          python scripts/audit_aadc_site_option_v2_falsification.py \
+            --out /tmp/AADC_SITE_OPTION_V2_FALSIFICATION.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-site-network-v2-falsification
+          path: /tmp/AADC_SITE_OPTION_V2_FALSIFICATION.json
+          if-no-files-found: warn

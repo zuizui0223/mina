@@ -1,0 +1,43 @@
+name: Paper2 V56 independent Macquarie flightless volant original AADC bird GIS source
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/PAPER2_MACQUARIE_ORIGINAL_FLIGHT_PENGUIN_GIS_V56_SOURCE.md'
+      - 'scripts/audit_paper2_macquarie_original_AADC_guild_coast_v56.py'
+      - 'tests/test_paper2_macquarie_original_AADC_guild_coast_v56.py'
+      - '.github/workflows/paper2-v56-macquarie-bird-guild-source.yml'
+  pull_request:
+    paths:
+      - 'contracts/PAPER2_MACQUARIE_ORIGINAL_FLIGHT_PENGUIN_GIS_V56_SOURCE.md'
+      - 'scripts/audit_paper2_macquarie_original_AADC_guild_coast_v56.py'
+      - 'tests/test_paper2_macquarie_original_AADC_guild_coast_v56.py'
+      - '.github/workflows/paper2-v56-macquarie-bird-guild-source.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  original_AADC_both_bird_guilds_geo_source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public original GIS native shapefile header reader
+        run: python -m pip install requests 'pyshp==2.3.1' pyproj pytest
+      - name: Synthetic tests for four-source archive authenticity and no raw animal rows
+        run: python -m pytest -q tests/test_paper2_macquarie_original_AADC_guild_coast_v56.py
+      - name: Fetch ONLY four original CC BY AADC direct archives for source-only schema audit
+        run: |
+          python scripts/audit_paper2_macquarie_original_AADC_guild_coast_v56.py \
+            --out /tmp/PAPER2_V56_MACQUARIE_ORIGINAL_GUILD_GIS_SOURCE.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v56-AADC-original-Macquarie-two-guild-GIS-source-only
+          path: /tmp/PAPER2_V56_MACQUARIE_ORIGINAL_GUILD_GIS_SOURCE.json
+          if-no-files-found: warn

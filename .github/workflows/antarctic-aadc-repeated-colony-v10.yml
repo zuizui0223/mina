@@ -1,0 +1,49 @@
+name: Antarctic original multi-season Adélie colony polygon V10
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_REPEATED_COLONY_POLYGON_V10.md'
+      - 'scripts/derive_aadc_repeated_colony_boundaries_v10.py'
+      - 'tests/test_aadc_repeated_colony_boundaries_v10.py'
+      - 'results/ANTARCTIC_SOURCE_BOUNDARY_MANIFEST_V9.json'
+      - '.github/workflows/antarctic-aadc-repeated-colony-v10.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_REPEATED_COLONY_POLYGON_V10.md'
+      - 'scripts/derive_aadc_repeated_colony_boundaries_v10.py'
+      - 'tests/test_aadc_repeated_colony_boundaries_v10.py'
+      - 'results/ANTARCTIC_SOURCE_BOUNDARY_MANIFEST_V9.json'
+      - '.github/workflows/antarctic-aadc-repeated-colony-v10.yml'
+  workflow_dispatch:
+jobs:
+  original_GIS_28_layers_13_sites:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original AADC source and GIS geometry dependencies
+        run: python -m pip install requests numpy pyproj pyshp 'shapely>=2,<3' pytest
+      - name: Test unmodified source-file selection and descriptive geometry
+        run: python -m pytest -q tests/test_aadc_repeated_colony_boundaries_v10.py
+      - name: Download and compare all source-frozen 28 published repeated colony boundaries
+        run: |
+          python scripts/derive_aadc_repeated_colony_boundaries_v10.py \
+            --v9 results/ANTARCTIC_SOURCE_BOUNDARY_MANIFEST_V9.json \
+            --out /tmp/AADC_REPEATED_ADPE_BOUNDARY_V10.json \
+            --site-metrics /tmp/AADC_ADPE_ORIGINAL_28_SITE_YEAR_V10.csv \
+            --pair-metrics /tmp/AADC_ADPE_ORIGINAL_15_SITE_PAIRS_V10.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-AADC-adelie-repeated-colony-boundary-v10
+          path: |
+            /tmp/AADC_REPEATED_ADPE_BOUNDARY_V10.json
+            /tmp/AADC_ADPE_ORIGINAL_28_SITE_YEAR_V10.csv
+            /tmp/AADC_ADPE_ORIGINAL_15_SITE_PAIRS_V10.csv
+          if-no-files-found: warn

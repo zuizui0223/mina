@@ -1,0 +1,42 @@
+name: Antarctic original OBIS count and locality source lineage V31
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_OBIS_HISTORIC_SOURCE_IDENTIFIABILITY_V31.md'
+      - 'scripts/audit_obis_original_census_identity_v31.py'
+      - 'tests/test_obis_original_census_identity_v31.py'
+      - '.github/workflows/antarctic-obis-original-identifiability-v31.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_OBIS_HISTORIC_SOURCE_IDENTIFIABILITY_V31.md'
+      - 'scripts/audit_obis_original_census_identity_v31.py'
+      - 'tests/test_obis_original_census_identity_v31.py'
+      - '.github/workflows/antarctic-obis-original-identifiability-v31.yml'
+  workflow_dispatch:
+jobs:
+  original_field_count_stage_and_locality_pedigree:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original first-party IPT source validation
+        run: python -m pip install requests pytest
+      - name: Test raw source zero, sentinel, stage, colony-year uniqueness
+        run: python -m pytest -q tests/test_obis_original_census_identity_v31.py
+      - name: Verify source frozen SHA and audit observed original site-year-penguin counts
+        run: |
+          python scripts/audit_obis_original_census_identity_v31.py \
+            --v30 results/OBIS_ORIGINAL_1900_1996_PENGUIN_SOURCE_V30.json \
+            --out /tmp/OBIS_HISTORIC_SOURCE_COUNT_PEDIGREE_V31.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: obis-antarctic-historic-count-origin-stage-v31
+          path: /tmp/OBIS_HISTORIC_SOURCE_COUNT_PEDIGREE_V31.json
+          if-no-files-found: warn

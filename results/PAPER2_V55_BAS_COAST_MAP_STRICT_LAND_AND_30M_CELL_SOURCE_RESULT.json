@@ -1,0 +1,105 @@
+{
+  "schema": "PAPER2_V55_BAS_ORIGINAL_STRICT_LAND_AND_30M_CELL_FALSIFICATION_SOURCE_RESULT",
+  "date": "2026-10-28",
+  "original_nest_dataset_DOI": "10.5285/28222725-c53d-40f4-9350-49c368899f0b",
+  "original_nest_DEM_NPZ_SHA256": "1566f4fef4ac5370f40f6482e9f76f7b252e32ade8915a190cf0d2fc946883ec",
+  "original_BAS_coast_DOI": "10.5285/c1d83502-8799-4e3c-bdca-21db6a4405d4",
+  "original_official_BAS_coast_ZIP_SHA256": "27b4cd2085b9c845abf7928c336cf82f0d37492bbe2c21522ac4c670750f6cff",
+  "preread_diagnostic_design": "contracts/PAPER2_V55_COAST_MAP_STRICT_LAND_AND_30M_CELL_FALSIFICATION.md",
+  "source_V54_full_original_frame_Brier_gain": 0.051613243579301644,
+  "source_V55_strict_2020_land_only_equal_island_Brier_gain": 0.05119701801945679,
+  "source_V55_A_original_real_islands_with_positive_increment": 3,
+  "source_V55_A_strict_land_all_3_island_models": {
+    "Bellingshausen": {
+      "source_heldout_original_localities": [
+        "Bellingshausen"
+      ],
+      "source_train_original_islands": [
+        "Saunders",
+        "Thule"
+      ],
+      "heldout_island_equal_site_B1": 0.210104741401372,
+      "heldout_island_equal_site_B2": 0.1797399054838587,
+      "Brier_gain_from_published_coast_distance_B1_minus_B2": 0.030364835917513294,
+      "source_locality_balanced_Brier": {
+        "Bellingshausen": {
+          "B1_elevation_slope": 0.210104741401372,
+          "original_nest_source_n": 13370,
+          "B2_plus_coastal_access": 0.1797399054838587
+        }
+      }
+    },
+    "Saunders": {
+      "source_heldout_original_localities": [
+        "Ashen_Hills"
+      ],
+      "source_train_original_islands": [
+        "Bellingshausen",
+        "Thule"
+      ],
+      "heldout_island_equal_site_B1": 0.28067685557894007,
+      "heldout_island_equal_site_B2": 0.23751663551271487,
+      "Brier_gain_from_published_coast_distance_B1_minus_B2": 0.04316022006622519,
+      "source_locality_balanced_Brier": {
+        "Ashen_Hills": {
+          "B1_elevation_slope": 0.28067685557894007,
+          "original_nest_source_n": 72433,
+          "B2_plus_coastal_access": 0.23751663551271487
+        }
+      }
+    },
+    "Thule": {
+      "source_heldout_original_localities": [
+        "Beach_Point",
+        "Hewison_Point"
+      ],
+      "source_train_original_islands": [
+        "Bellingshausen",
+        "Saunders"
+      ],
+      "heldout_island_equal_site_B1": 0.4035372100727239,
+      "heldout_island_equal_site_B2": 0.32347121199809203,
+      "Brier_gain_from_published_coast_distance_B1_minus_B2": 0.08006599807463188,
+      "source_locality_balanced_Brier": {
+        "Beach_Point": {
+          "B1_elevation_slope": 0.40445598824060625,
+          "original_nest_source_n": 7089,
+          "B2_plus_coastal_access": 0.4213117251954769
+        },
+        "Hewison_Point": {
+          "B1_elevation_slope": 0.40261843190484164,
+          "original_nest_source_n": 19203,
+          "B2_plus_coastal_access": 0.22563069880070724
+        }
+      }
+    }
+  },
+  "source_V55_B_30m_original_occupied_cell_n_per_locality_by_taxon": {
+    "Ashen_Hills": {
+      "0": 256,
+      "1": 177
+    },
+    "Bellingshausen": {
+      "0": 32,
+      "1": 16
+    },
+    "Beach_Point": {
+      "0": 33,
+      "1": 12
+    },
+    "Hewison_Point": {
+      "0": 66,
+      "1": 110
+    }
+  },
+  "source_V55_B_30m_cell_equal_nesting_test_status": "STOP_SOURCE_CELL_N_PER_TAXON_LT20_AT_BELLINGSHAUSEN_CHINSTRAP_16_AND_BEACH_POINT_CHINSTRAP_12",
+  "source_V55_B_30m_cell_reweighted_model_FITTED": false,
+  "original_source_V51_95percent_all_sites_on_land_gate_UNCHANGED_FAILED": true,
+  "original_V54_3_of_3_positive_map_proximity_after_strict_land_filter": true,
+  "source_spatial_cell_independence_robustness_not_established": true,
+  "source_observation_denominator_limit": "3 source real islands, 4 localities, observed nests of Adélie and chinstrap only, 30m cell counts not independent island replicates",
+  "source_island_Thule_heterogeneity": "Beach Point B1->B2 worsened but Hewison improved strongly; equal-site Thule aggregate improvement does not show all Thule patches improve",
+  "geographical_interpretation_ceiling": "Distance from observed bird nest to independently mapped 2020 coast is a macro predictor for source species identity, not actual beach-entry pathway, physical walking route, available suitable empty sites, predation, or flight trait effect.",
+  "original_actions_run": "https://github.com/zuizui0223/mina/actions/runs/40631659488",
+  "status": "V55_STRICT_LAND_SOURCE_EFFECT_COMPUTED_30M_CELL_GATE_STOP"
+}

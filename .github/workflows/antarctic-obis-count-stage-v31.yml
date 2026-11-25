@@ -1,0 +1,41 @@
+name: Antarctic original OBIS seabird count stage and locality V31
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/OBIS_HISTORICAL_SEABIRD_SOURCE_COUNT_STAGE_V31.md'
+      - 'scripts/audit_obis_original_source_count_stage_v31.py'
+      - 'tests/test_obis_original_source_count_stage_v31.py'
+      - '.github/workflows/antarctic-obis-count-stage-v31.yml'
+  pull_request:
+    paths:
+      - 'contracts/OBIS_HISTORICAL_SEABIRD_SOURCE_COUNT_STAGE_V31.md'
+      - 'scripts/audit_obis_original_source_count_stage_v31.py'
+      - 'tests/test_obis_original_source_count_stage_v31.py'
+      - '.github/workflows/antarctic-obis-count-stage-v31.yml'
+  workflow_dispatch:
+jobs:
+  published_observation_stage_and_repeat_site_support:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original first-party DwC source and test tools
+        run: python -m pip install requests pytest
+      - name: Test exact original locality and count-stage logic
+        run: python -m pytest -q tests/test_obis_original_source_count_stage_v31.py
+      - name: Audit source-defined Antarctic 1900-1996 locality-year colony counts without deriving island effects
+        run: |
+          python scripts/audit_obis_original_source_count_stage_v31.py \
+            --out /tmp/OBIS_ANTARCTIC_ORIGINAL_STAGE_LOCALITY_V31.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-obis-ant-seabird-count-stage-locality-v31
+          path: /tmp/OBIS_ANTARCTIC_ORIGINAL_STAGE_LOCALITY_V31.json
+          if-no-files-found: warn

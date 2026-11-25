@@ -1,0 +1,44 @@
+name: Antarctic independent functional archipelago atlas v1
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_FUNCTIONAL_ARCHIPELAGO_V1.md'
+      - 'scripts/build_functional_archipelago_v1.py'
+      - 'tests/test_functional_archipelago_v1.py'
+      - '.github/workflows/antarctic-functional-archipelago-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_FUNCTIONAL_ARCHIPELAGO_V1.md'
+      - 'scripts/build_functional_archipelago_v1.py'
+      - 'tests/test_functional_archipelago_v1.py'
+      - '.github/workflows/antarctic-functional-archipelago-v1.yml'
+  workflow_dispatch:
+jobs:
+  original_geography_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned-family GIS readers and test tools
+        run: python -m pip install 'shapely>=2,<3' 'pyproj>=3,<4' pyshp requests 'pytest>=8'
+      - name: Test exact whole-rock assignment and gap censoring
+        run: python -m pytest -q tests/test_functional_archipelago_v1.py
+      - name: Build original SCAR two-layer spatial atlas
+        run: |
+          python scripts/build_functional_archipelago_v1.py \
+            --summary /tmp/functional-archipelago-v1-summary.json \
+            --features /tmp/functional-archipelago-v1-rock-patches.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-scar-functional-archipelago-v1
+          path: |
+            /tmp/functional-archipelago-v1-summary.json
+            /tmp/functional-archipelago-v1-rock-patches.csv
+          if-no-files-found: warn

@@ -1,0 +1,66 @@
+{
+  "status": "FUNCTIONAL_ARCHIPELAGO_OUTCOME_BLIND_GEOGRAPHY_V1",
+  "radius_m": 2000,
+  "mapped_land_polygon_n": 17269,
+  "mapped_rock_polygon_n": 31480,
+  "source_rock_assignment_status_n": {
+    "EXACT_WHOLE_ROCK_ONE_LAND": 28099,
+    "HOLD_ROCK_NOT_WHOLE_WITHIN_ONE_LAND": 3381
+  },
+  "unambiguous_rock_polygon_n": 28099,
+  "within_same_land_rock_patch_pairs_within_radius": 49589,
+  "between_different_land_rock_patch_pairs_within_radius": 5,
+  "rocks_with_both_neighborhood_categories": 6,
+  "rocks_with_different_land_neighbor_closer": 1,
+  "disagreement_fraction_conditional_on_both": 0.16666666666666666,
+  "all_original_animal_counts_or_occupancy_opened": 0,
+  "mapped_land_polygon_is_named_physical_island": false,
+  "different_land_polygon_implies_open_ocean_barrier": false,
+  "observed_rock_gap_estimates_ice_crossing_cost": false,
+  "mapped_rock_equals_available_nesting_capacity": false,
+  "distance_to_coastline_not_in_stage_a": true,
+  "provenance": {
+    "land_source_doi": "10.5285/13c4d2f1-8903-4d7f-8977-592121975554",
+    "land_original_zip_sha256": "66d82fa69f86eb8dbe8b04f01505cb2129feafec608455459ee4ed19d1dc38d4",
+    "rock_source_doi": "10.5285/3f0c400f-04b9-4819-98cb-f6b53716aca5",
+    "rock_original_zip_sha256": "4d93119052d3c6bf51d20dab218447686e2273e7489e1b63351b69e4bc3d7d8b",
+    "land_source_geometry": {
+      "polygon_attributes": [
+        "surface"
+      ],
+      "original_surface_counts": {
+        "land": 17269,
+        "ice shelf": 330,
+        "rumple": 64,
+        "ice tongue": 37
+      },
+      "valid_source_land_features": 17269,
+      "invalid_original_land_polygons_far_from_sites": 0
+    },
+    "rock_source_geometry": {
+      "original_field_names": [
+        "source",
+        "revdate",
+        "updater",
+        "revprec",
+        "sourcedate",
+        "sourceprec",
+        "lineage"
+      ],
+      "all_source_surface_labels": {
+        "<EMPTY>": 31480
+      },
+      "invalid_or_empty_polygon_features": 0,
+      "retained_valid_features": 31480
+    },
+    "geometry_crs": "EPSG:3031",
+    "area_note": "EPSG:3031 planar area, not equal-area or ground-truth nesting habitat",
+    "two_source_edition_mismatch": "land v7.12 / rock v7.11"
+  },
+  "execution": {
+    "original_ci_run": "https://github.com/zuizui0223/mina/actions/runs/40163069247",
+    "artifact": "https://github.com/zuizui0223/mina/actions/runs/40163069247/artifacts/12587516366",
+    "source_commit": "6f50a42cbf64de1907ba678164658fc3703e284c",
+    "note": "Official source geometry-only all-feature run; no biological outcomes"
+  }
+}

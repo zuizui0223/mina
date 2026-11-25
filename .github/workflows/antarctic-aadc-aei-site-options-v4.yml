@@ -1,0 +1,53 @@
+name: Antarctic AADC original P-A vs independent AEI habitat V4
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_AEI_SITE_OPTION_COMPARISON_V4.md'
+      - 'scripts/evaluate_aadc_aei_vs_site_network_v4.py'
+      - 'tests/test_aadc_aei_vs_site_network_v4.py'
+      - '.github/workflows/antarctic-aadc-aei-site-options-v4.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_AEI_SITE_OPTION_COMPARISON_V4.md'
+      - 'scripts/evaluate_aadc_aei_vs_site_network_v4.py'
+      - 'tests/test_aadc_aei_vs_site_network_v4.py'
+      - '.github/workflows/antarctic-aadc-aei-site-options-v4.yml'
+  workflow_dispatch:
+jobs:
+  original_AADC_AEI_exploratory_geographic_holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original AADC and statistical dependencies
+        run: python -m pip install numpy scipy pandas scikit-learn pyproj openpyxl xlrd requests pytest
+      - name: Test independent habitat controls and missingness rules
+        run: python -m pytest -q tests/test_aadc_aei_vs_site_network_v4.py
+      - name: Fetch pinned original-source AEI habitat atlas from successful geographical-only run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/aei-atlas-v3
+          gh run download 40210293343 --repo "$GITHUB_REPOSITORY" \
+            --name original-AADC-7785-AEI-icefree-habitat-v3 --dir /tmp/aei-atlas-v3
+          test -s /tmp/aei-atlas-v3/AADC_7785_AEI_HABITAT_ATLAS_V3.json
+          test -s /tmp/aei-atlas-v3/AADC_7785_AEI_HABITAT_ATLAS_V3.csv
+      - name: Fit identical original AADC survey cohorts with administrative density versus mapped habitat
+        run: |
+          python scripts/evaluate_aadc_aei_vs_site_network_v4.py \
+            --atlas-summary /tmp/aei-atlas-v3/AADC_7785_AEI_HABITAT_ATLAS_V3.json \
+            --atlas-features /tmp/aei-atlas-v3/AADC_7785_AEI_HABITAT_ATLAS_V3.csv \
+            --out /tmp/AADC_AEI_VS_SITE_DENSITY_SPATIAL_CV_V4.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-aadc-aei-vs-site-density-v4
+          path: /tmp/AADC_AEI_VS_SITE_DENSITY_SPATIAL_CV_V4.json
+          if-no-files-found: warn

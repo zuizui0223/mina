@@ -1,0 +1,41 @@
+name: Antarctic AADC strict mapped-rock survey-support gate v1
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/AADC_SCAR_STRICT_BIOLOGICAL_SUPPORT_V1.md'
+      - 'scripts/audit_aadc_strict_scar_biological_support_v1.py'
+      - 'tests/test_aadc_strict_scar_biological_support_v1.py'
+      - '.github/workflows/antarctic-aadc-scar-biosupport-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/AADC_SCAR_STRICT_BIOLOGICAL_SUPPORT_V1.md'
+      - 'scripts/audit_aadc_strict_scar_biological_support_v1.py'
+      - 'tests/test_aadc_strict_scar_biological_support_v1.py'
+      - '.github/workflows/antarctic-aadc-scar-biosupport-v1.yml'
+  workflow_dispatch:
+jobs:
+  original_source_eligibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public-source geography and test dependencies
+        run: python -m pip install requests pyproj shapely pyshp openpyxl xlrd pytest
+      - name: Test unchanged original P/A/NR source-gate rules and strict GIS matching
+        run: python -m pytest -q tests/test_aadc_strict_scar_biological_support_v1.py
+      - name: Audit strictly geometrically matched original AADC site-season support
+        run: |
+          python scripts/audit_aadc_strict_scar_biological_support_v1.py \
+            --out /tmp/AADC_SCAR_STRICT_BIOLOGICAL_SUPPORT_V1.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-scar-strict-site-season-sample-gate-v1
+          path: /tmp/AADC_SCAR_STRICT_BIOLOGICAL_SUPPORT_V1.json
+          if-no-files-found: warn

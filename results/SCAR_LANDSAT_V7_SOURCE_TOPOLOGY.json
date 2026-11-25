@@ -1,0 +1,147 @@
+{
+  "status": "SCAR_V73_LANDSAT_ORIGIN_AND_POLYGON_TOPOLOGY_V7_NO_BIOLOGY",
+  "original_AADC_2025_geographic_site_n": 7785,
+  "original_Landsat_source_geometry_QA": {
+    "original_shape_records": 366106,
+    "original_rock_features_with_2km_candidate_bbox": 23312,
+    "original_native_valid_feature_near_candidate": 21968,
+    "original_invalid_feature_near_candidate": 1344,
+    "source_repair_status_POLYGON_VALID_AFTER_MAKE_VALID": 1344
+  },
+  "original_Landsat_source_feature_provenance_by_gridcode_or_source_text": {
+    "LANDSAT_AUTOMATED_GRIDCODE_1": 359880,
+    "MANUAL_FALLBACK_GRIDCODE_0": 6226
+  },
+  "original_rock_native_valid_polygon_only_counts": {
+    "IN_ONE_ROCK": 2159,
+    "OUTSIDE_ROCK_250_TO_2000M": 2038,
+    "OUTSIDE_ROCK_MORE_THAN_2000M": 549,
+    "OUTSIDE_ROCK_NEAR_250M": 3039
+  },
+  "original_plus_make_valid_polygon_geometry_counts": {
+    "IN_ONE_ROCK": 2700,
+    "OUTSIDE_ROCK_250_TO_2000M": 1497,
+    "OUTSIDE_ROCK_MORE_THAN_2000M": 519,
+    "OUTSIDE_ROCK_NEAR_250M": 3069
+  },
+  "native_source_exact_point_in_rock_sites": 2159,
+  "including_source_shape_make_valid_exact_point_in_rock_sites": 2700,
+  "source_geometry_repair_added_exact_site_hits": 541,
+  "source_reference_2025_manual_rock_polygon_exact_point_hits": 2523,
+  "sites_where_only_original_invalid_rock_geometry_contains_point": 541,
+  "comparison_old2025_vs_topology_repaired_2020_source": [
+    {
+      "old_source_manual_geographic_point_class": "POINT_IN_ONE_MAPPED_ROCK",
+      "new_source_repaired_polygon_point_class": "IN_ONE_ROCK",
+      "original_sites": 721
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_IN_ONE_MAPPED_ROCK",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_250_TO_2000M",
+      "original_sites": 625
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_IN_ONE_MAPPED_ROCK",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_MORE_THAN_2000M",
+      "original_sites": 267
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_IN_ONE_MAPPED_ROCK",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_NEAR_250M",
+      "original_sites": 910
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_250_TO_2000M",
+      "new_source_repaired_polygon_point_class": "IN_ONE_ROCK",
+      "original_sites": 483
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_250_TO_2000M",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_250_TO_2000M",
+      "original_sites": 296
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_250_TO_2000M",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_MORE_THAN_2000M",
+      "original_sites": 35
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_250_TO_2000M",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_NEAR_250M",
+      "original_sites": 657
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_GT2000M",
+      "new_source_repaired_polygon_point_class": "IN_ONE_ROCK",
+      "original_sites": 1354
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_GT2000M",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_250_TO_2000M",
+      "original_sites": 542
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_GT2000M",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_MORE_THAN_2000M",
+      "original_sites": 202
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_GT2000M",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_NEAR_250M",
+      "original_sites": 1181
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_LE250M",
+      "new_source_repaired_polygon_point_class": "IN_ONE_ROCK",
+      "original_sites": 142
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_LE250M",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_250_TO_2000M",
+      "original_sites": 34
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_LE250M",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_MORE_THAN_2000M",
+      "original_sites": 15
+    },
+    {
+      "old_source_manual_geographic_point_class": "POINT_OUTSIDE_ROCK_NEAREST_LE250M",
+      "new_source_repaired_polygon_point_class": "OUTSIDE_ROCK_NEAR_250M",
+      "original_sites": 321
+    }
+  ],
+  "source_author_site_class_repaired_geography": {
+    "continent": {
+      "IN_ONE_ROCK": 999,
+      "OUTSIDE_ROCK_250_TO_2000M": 764,
+      "OUTSIDE_ROCK_MORE_THAN_2000M": 385,
+      "OUTSIDE_ROCK_NEAR_250M": 1159
+    },
+    "island": {
+      "IN_ONE_ROCK": 1701,
+      "OUTSIDE_ROCK_250_TO_2000M": 733,
+      "OUTSIDE_ROCK_MORE_THAN_2000M": 134,
+      "OUTSIDE_ROCK_NEAR_250M": 1910
+    }
+  },
+  "ecological_outcomes_downloaded": 0,
+  "map_repair_is_validated_true_breeding_habitat": false,
+  "source_map_classes_or_origins_imply_independent_animal_replication": false,
+  "earlier_AADC_strict_scar_site_fate_gate_reopened": false,
+  "source_original_scar_Landsat_v73_zip_SHA256": "7eb0cae84016b758c98a61977c90d0a8c2c6450c4bf82433e08d03ef2e5a4a5a",
+  "independent_source_2020_Landsat_rock_DOI": "10.5285/178ec50d-1ffb-42a4-a4a3-1145419da2bb",
+  "source_original_aadc_2025_and_2021_geography_sha256": {
+    "potential_geography_2021": "2236269e754962f9af082a0853993fc65a4afd20c7489a65fae81bdd1899ffaa",
+    "potential_geography_2025": "ed5f59d11a0e2ca7491ecf32dc8b04de524e83edf7acd268702963c3b7561294"
+  },
+  "original_source_AADC_manifest_sha256": "2e25746be3b7a708b3b41b6f5f379f3c9c97a35b032474cc14925f154426be95",
+  "original_manual_reference_csv_sha256": "c011eddbf2936d627dd22ff7cf5d0dc6992366f047806bf35f63a60bb1e51100",
+  "derived_original_site_source_geography_CSV_SHA256": "33b430350fc225e9e4bfa5c8b7186cb437142fa7dd332e65db1cacce4ebf000f",
+  "execution": {
+    "github_actions_run": "https://github.com/zuizui0223/mina/actions/runs/40254680093",
+    "artifact": "https://github.com/zuizui0223/mina/actions/runs/40254680093/artifacts/12622146910",
+    "biological_observations_opened": 0,
+    "scientific_boundary": "Geometry source-provenance inference only. Original coastline/nest GPS accuracy and true substrate remain unresolved."
+  }
+}

@@ -1,0 +1,385 @@
+{
+  "status": "BAS_HART_INDEPENDENT_COPDEM_TERRAIN_SPECIES_TRANSFER_V27_EXPLORATORY",
+  "original_source_dem_point_NPZ_SHA256": "1566f4fef4ac5370f40f6482e9f76f7b252e32ade8915a190cf0d2fc946883ec",
+  "original_source_nest_count": 122139,
+  "original_source_CopDEM_tile_references": {
+    "Copernicus_DSM_COG_10_S58_00_W027_00_DEM": {
+      "source_publisher_tile": "Copernicus_DSM_COG_10_S58_00_W027_00_DEM",
+      "source_publisher_HTTPS_object_URL": "https://copernicus-dem-30m.s3.eu-central-1.amazonaws.com/Copernicus_DSM_COG_10_S58_00_W027_00_DEM/Copernicus_DSM_COG_10_S58_00_W027_00_DEM.tif",
+      "source_original_COG_SHA256": "8e235dd28bab594ed33f080d777bb48eec3be41954414eda6eef4caf78f4716c",
+      "source_original_COG_bytes": 358623,
+      "local_source_file": "/tmp/cop30-original-public-dem-inl__3gj/Copernicus_DSM_COG_10_S58_00_W027_00_DEM.tif"
+    },
+    "Copernicus_DSM_COG_10_S60_00_W028_00_DEM": {
+      "source_publisher_tile": "Copernicus_DSM_COG_10_S60_00_W028_00_DEM",
+      "source_publisher_HTTPS_object_URL": "https://copernicus-dem-30m.s3.eu-central-1.amazonaws.com/Copernicus_DSM_COG_10_S60_00_W028_00_DEM/Copernicus_DSM_COG_10_S60_00_W028_00_DEM.tif",
+      "source_original_COG_SHA256": "a232586ae96f00661ea89d1ce110aec9ac9a027c9c447d6a5aeed1f66b50ef30",
+      "source_original_COG_bytes": 305495,
+      "local_source_file": "/tmp/cop30-original-public-dem-inl__3gj/Copernicus_DSM_COG_10_S60_00_W028_00_DEM.tif"
+    }
+  },
+  "original_4_source_site_species_terrain_descriptors": {
+    "Ashen_Hills": {
+      "source_original_geo_coordinate_rows": 77583,
+      "original_coordinate_collision_source_nests_excluded": 2328,
+      "original_source_point_n_after_collision_exclusion": 75255,
+      "source_original_taxa_environment": {
+        "ADELIE": {
+          "source_original_locations_n": 52256,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 52256,
+            "median": 32.0440673828125,
+            "p10": 13.065276145935059,
+            "p90": 66.1334228515625
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 52256,
+            "median": 14.690392971038818,
+            "p10": 6.13900899887085,
+            "p90": 19.60970687866211
+          }
+        },
+        "CHINSTRAP": {
+          "source_original_locations_n": 20876,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 20876,
+            "median": 45.703369140625,
+            "p10": 17.2288761138916,
+            "p90": 76.75328063964844
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 20876,
+            "median": 15.19318437576294,
+            "p10": 8.597290992736816,
+            "p90": 19.38991355895996
+          }
+        },
+        "GENTOO": {
+          "source_original_locations_n": 712,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 712,
+            "median": 1.4938048124313354,
+            "p10": 0,
+            "p90": 4.118492603302002
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 712,
+            "median": 4.113399982452393,
+            "p10": 1.2743923664093018,
+            "p90": 4.858251523971558
+          }
+        },
+        "MACARONI": {
+          "source_original_locations_n": 1411,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 1411,
+            "median": 28.23952293395996,
+            "p10": 14.789863586425781,
+            "p90": 53.036373138427734
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 1411,
+            "median": 25.319374084472656,
+            "p10": 11.152880668640137,
+            "p90": 34.42390441894531
+          }
+        }
+      },
+      "original_A_C_source_nest_counts": {
+        "ADELIE": 52256,
+        "CHINSTRAP": 20876
+      },
+      "median_DSM_elevation_diff_Chinstrap_minus_Adelie_m": 13.6593017578125,
+      "median_DSM_slope_diff_Chinstrap_minus_Adelie_deg": 0.5027914047241211,
+      "source_label_free_combined_AC_median_elev_slope": [
+        35.571163177490234,
+        14.814301490783691
+      ],
+      "source_label_free_combined_AC_IQR_elev_slope": [
+        32.91008949279785,
+        7.710090637207031
+      ],
+      "source_orthomosaic_full_survey_footprint_verified": false
+    },
+    "Bellingshausen": {
+      "source_original_geo_coordinate_rows": 14435,
+      "original_coordinate_collision_source_nests_excluded": 430,
+      "original_source_point_n_after_collision_exclusion": 14005,
+      "source_original_taxa_environment": {
+        "ADELIE": {
+          "source_original_locations_n": 9385,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 9385,
+            "median": 21.887012481689453,
+            "p10": 9.824495315551758,
+            "p90": 31.0784912109375
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 9385,
+            "median": 18.754253387451172,
+            "p10": 13.610355377197266,
+            "p90": 25.11210823059082
+          }
+        },
+        "CHINSTRAP": {
+          "source_original_locations_n": 4620,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 4620,
+            "median": 61.1860237121582,
+            "p10": 51.983402252197266,
+            "p90": 68.30683135986328
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 4620,
+            "median": 18.437405586242676,
+            "p10": 16.04782485961914,
+            "p90": 40.17574691772461
+          }
+        }
+      },
+      "original_A_C_source_nest_counts": {
+        "ADELIE": 9385,
+        "CHINSTRAP": 4620
+      },
+      "median_DSM_elevation_diff_Chinstrap_minus_Adelie_m": 39.29901123046875,
+      "median_DSM_slope_diff_Chinstrap_minus_Adelie_deg": -0.3168478012084961,
+      "source_label_free_combined_AC_median_elev_slope": [
+        27.41214942932129,
+        18.723752975463867
+      ],
+      "source_label_free_combined_AC_IQR_elev_slope": [
+        36.745994567871094,
+        7.878606796264648
+      ],
+      "source_orthomosaic_full_survey_footprint_verified": false
+    },
+    "Beach_Point": {
+      "source_original_geo_coordinate_rows": 7683,
+      "original_coordinate_collision_source_nests_excluded": 594,
+      "original_source_point_n_after_collision_exclusion": 7089,
+      "source_original_taxa_environment": {
+        "ADELIE": {
+          "source_original_locations_n": 4478,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 4478,
+            "median": 15.609052658081055,
+            "p10": 7.238048553466797,
+            "p90": 19.274171829223633
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 4478,
+            "median": 5.320247173309326,
+            "p10": 3.3830583095550537,
+            "p90": 8.839153289794922
+          }
+        },
+        "CHINSTRAP": {
+          "source_original_locations_n": 2611,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 2611,
+            "median": 14.179655075073242,
+            "p10": 11.733100891113281,
+            "p90": 19.228239059448242
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 2611,
+            "median": 6.046535491943359,
+            "p10": 4.812847137451172,
+            "p90": 8.280983924865723
+          }
+        }
+      },
+      "original_A_C_source_nest_counts": {
+        "ADELIE": 4478,
+        "CHINSTRAP": 2611
+      },
+      "median_DSM_elevation_diff_Chinstrap_minus_Adelie_m": -1.4293975830078125,
+      "median_DSM_slope_diff_Chinstrap_minus_Adelie_deg": 0.7262883186340332,
+      "source_label_free_combined_AC_median_elev_slope": [
+        14.96296501159668,
+        5.930050849914551
+      ],
+      "source_label_free_combined_AC_IQR_elev_slope": [
+        6.336696624755859,
+        2.851865291595459
+      ],
+      "source_orthomosaic_full_survey_footprint_verified": false
+    },
+    "Hewison_Point": {
+      "source_original_geo_coordinate_rows": 22438,
+      "original_coordinate_collision_source_nests_excluded": 14,
+      "original_source_point_n_after_collision_exclusion": 22424,
+      "source_original_taxa_environment": {
+        "ADELIE": {
+          "source_original_locations_n": 10320,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 10320,
+            "median": 18.927867889404297,
+            "p10": 16.16067886352539,
+            "p90": 21.952617645263672
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 10320,
+            "median": 3.1497867107391357,
+            "p10": 1.0018635869026185,
+            "p90": 9.87510871887207
+          }
+        },
+        "CHINSTRAP": {
+          "source_original_locations_n": 12104,
+          "source_mapped_DEM_elevation_metres": {
+            "n": 12104,
+            "median": 16.077974319458008,
+            "p10": 13.603416442871094,
+            "p90": 19.357378005981445
+          },
+          "source_mapped_DEM_slope_degrees": {
+            "n": 12104,
+            "median": 5.634136199951172,
+            "p10": 2.532139301300049,
+            "p90": 12.897931098937988
+          }
+        }
+      },
+      "original_A_C_source_nest_counts": {
+        "ADELIE": 10320,
+        "CHINSTRAP": 12104
+      },
+      "median_DSM_elevation_diff_Chinstrap_minus_Adelie_m": -2.849893569946289,
+      "median_DSM_slope_diff_Chinstrap_minus_Adelie_deg": 2.484349489212036,
+      "source_label_free_combined_AC_median_elev_slope": [
+        17.19171905517578,
+        4.540284633636475
+      ],
+      "source_label_free_combined_AC_IQR_elev_slope": [
+        3.7775402069091797,
+        5.033699631690979
+      ],
+      "source_orthomosaic_full_survey_footprint_verified": false
+    }
+  },
+  "original_3_candidate_island_LOIO": {
+    "original_source_parent_named_island_count": 3,
+    "original_localities_nested_within_heldout_islands": {
+      "Ashen_Hills": "Saunders_Island",
+      "Bellingshausen": "Bellingshausen_Island",
+      "Beach_Point": "Thule_Island",
+      "Hewison_Point": "Thule_Island"
+    },
+    "fixed_B0_class_balanced_Brier": 0.25,
+    "fixed_CopDEM_species_terrain_ridge_strength_C": 0.3,
+    "source_parent_island_heldout_cv_results": {
+      "Bellingshausen_Island": {
+        "original_source_heldout_locality_list": [
+          "Bellingshausen"
+        ],
+        "original_source_training_locality_list": [
+          "Ashen_Hills",
+          "Beach_Point",
+          "Hewison_Point"
+        ],
+        "heldout_source_locality_Brier": {
+          "Bellingshausen": {
+            "source_original_labelled_nests": 14005,
+            "source_Adelie_nest_n": 9385,
+            "source_Chinstrap_nest_n": 4620,
+            "balanced_B0_intercept_0p5_Brier": 0.25,
+            "balanced_B1_CopDEM_elevation_plus_slope_Brier": 0.25208246172442217,
+            "positive_Brier_gain_B0_minus_B1": -0.002082461724422169,
+            "balanced_B1_logloss": 0.6965909447900474
+          }
+        },
+        "heldout_island_equal_source_locality_B1_Brier": 0.25208246172442217,
+        "heldout_island_equal_source_locality_B0_Brier": 0.25,
+        "positive_Brier_gain": -0.002082461724422169,
+        "source_coefficient_elevation_normalized": -0.15338709479814103,
+        "source_coefficient_slope_normalized": 0.3643096219219013,
+        "classifier_intercept": 0.006585048105877364,
+        "unique_source_islands_in_training": 2
+      },
+      "Saunders_Island": {
+        "original_source_heldout_locality_list": [
+          "Ashen_Hills"
+        ],
+        "original_source_training_locality_list": [
+          "Bellingshausen",
+          "Beach_Point",
+          "Hewison_Point"
+        ],
+        "heldout_source_locality_Brier": {
+          "Ashen_Hills": {
+            "source_original_labelled_nests": 73132,
+            "source_Adelie_nest_n": 52256,
+            "source_Chinstrap_nest_n": 20876,
+            "balanced_B0_intercept_0p5_Brier": 0.25,
+            "balanced_B1_CopDEM_elevation_plus_slope_Brier": 0.2458483078830883,
+            "positive_Brier_gain_B0_minus_B1": 0.004151692116911687,
+            "balanced_B1_logloss": 0.6841287319923226
+          }
+        },
+        "heldout_island_equal_source_locality_B1_Brier": 0.2458483078830883,
+        "heldout_island_equal_source_locality_B0_Brier": 0.25,
+        "positive_Brier_gain": 0.004151692116911687,
+        "source_coefficient_elevation_normalized": 0.4479019613276389,
+        "source_coefficient_slope_normalized": 0.5315045867871793,
+        "classifier_intercept": -0.23578895332875416,
+        "unique_source_islands_in_training": 2
+      },
+      "Thule_Island": {
+        "original_source_heldout_locality_list": [
+          "Beach_Point",
+          "Hewison_Point"
+        ],
+        "original_source_training_locality_list": [
+          "Ashen_Hills",
+          "Bellingshausen"
+        ],
+        "heldout_source_locality_Brier": {
+          "Beach_Point": {
+            "source_original_labelled_nests": 7089,
+            "source_Adelie_nest_n": 4478,
+            "source_Chinstrap_nest_n": 2611,
+            "balanced_B0_intercept_0p5_Brier": 0.25,
+            "balanced_B1_CopDEM_elevation_plus_slope_Brier": 0.30255530603381725,
+            "positive_Brier_gain_B0_minus_B1": -0.05255530603381725,
+            "balanced_B1_logloss": 0.8154849540375229
+          },
+          "Hewison_Point": {
+            "source_original_labelled_nests": 22424,
+            "source_Adelie_nest_n": 10320,
+            "source_Chinstrap_nest_n": 12104,
+            "balanced_B0_intercept_0p5_Brier": 0.25,
+            "balanced_B1_CopDEM_elevation_plus_slope_Brier": 0.4448855201751097,
+            "positive_Brier_gain_B0_minus_B1": -0.19488552017510968,
+            "balanced_B1_logloss": 1.4985258567139044
+          }
+        },
+        "heldout_island_equal_source_locality_B1_Brier": 0.37372041310446347,
+        "heldout_island_equal_source_locality_B0_Brier": 0.25,
+        "positive_Brier_gain": -0.12372041310446347,
+        "source_coefficient_elevation_normalized": 1.9103769279438847,
+        "source_coefficient_slope_normalized": 0.31076736170602426,
+        "classifier_intercept": -0.5963039214484315,
+        "unique_source_islands_in_training": 2
+      }
+    },
+    "source_island_equal_weighted_mean_Brier_gain": -0.04055039423732465,
+    "source_island_groups_with_positive_terrain_Brier_gain": 1,
+    "source_three_island_exploratory_terrain_transfer_gate": false,
+    "normalization_did_not_use_species_labels": true,
+    "source_physical_island_parent_is_gazetteer_candidate_not_strict_GIS_ID": true,
+    "raw_individual_nests_as_independent_island_replicates": false,
+    "species_habitat_filter_causal_or_resource_competition_identified": false
+  },
+  "original_source_colonial_site_coverage_mask_verified": false,
+  "source_full_available_vs_unavailable_nesting_land_contrast_observed": false,
+  "source_spatial_terrain_resolution_coarser_than_original_nest_spacing": true,
+  "source_original_2019_vs_2020_UAV_campaign_differs_across_islands": true,
+  "independent_Antarctic_Treaty_area_islands_observed": 0,
+  "direct_interspecific_competition_or_coastal_barrier_causally_identified": false,
+  "execution": {
+    "run": "https://github.com/zuizui0223/mina/actions/runs/40280146558",
+    "original_CopDEM_exposure_run": "https://github.com/zuizui0223/mina/actions/runs/40279185790",
+    "source_implications": "Original DEM geography fully measured at source 122139 located nest points; 3 candidate islands, 4 source localities, observed comparative labels not prospectively independent. Fixed leave-one-island-out transfer fails 1/3 positive."
+  }
+}

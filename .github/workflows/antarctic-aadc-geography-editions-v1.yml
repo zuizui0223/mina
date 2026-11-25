@@ -1,0 +1,39 @@
+name: Antarctic AADC original geographic site editions v1
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'scripts/audit_aadc_geography_editions_v1.py'
+      - 'tests/test_aadc_geography_editions_v1.py'
+      - '.github/workflows/antarctic-aadc-geography-editions-v1.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_aadc_geography_editions_v1.py'
+      - 'tests/test_aadc_geography_editions_v1.py'
+      - '.github/workflows/antarctic-aadc-geography-editions-v1.yml'
+  workflow_dispatch:
+jobs:
+  original_geography_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original-source reading and testing dependencies
+        run: python -m pip install pytest requests pyproj openpyxl xlrd
+      - name: Test source geographical IDs and position mismatch behavior
+        run: python -m pytest -q tests/test_aadc_geography_editions_v1.py
+      - name: Audit AADC 2021 and 2025 geographic site editions only
+        run: |
+          python scripts/audit_aadc_geography_editions_v1.py \
+            --out /tmp/AADC_GEOGRAPHIC_SITE_EDITIONS_ONLY_V1.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-aadc-geography-identity-v1
+          path: /tmp/AADC_GEOGRAPHIC_SITE_EDITIONS_ONLY_V1.json
+          if-no-files-found: warn

@@ -1,0 +1,54 @@
+name: Paper2 V51 three physical islands original penguin ocean-to-nest coastline accessibility
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/PAPER2_THREE_ISLAND_PENGUIN_COAST_ACCESS_V51.md'
+      - 'scripts/analyze_paper2_three_island_penguin_coast_access_v51.py'
+      - 'tests/test_paper2_three_island_penguin_coast_access_v51.py'
+      - '.github/workflows/paper2-three-island-penguin-shore-v51.yml'
+  pull_request:
+    paths:
+      - 'contracts/PAPER2_THREE_ISLAND_PENGUIN_COAST_ACCESS_V51.md'
+      - 'scripts/analyze_paper2_three_island_penguin_coast_access_v51.py'
+      - 'tests/test_paper2_three_island_penguin_coast_access_v51.py'
+      - '.github/workflows/paper2-three-island-penguin-shore-v51.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  original_GSHHG_three_island_shore_source_gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install independent geographic and original census-nest dependencies
+        run: python -m pip install requests 'pyshp==2.3.1' 'shapely>=2.0' pyproj numpy scikit-learn pytest
+      - name: Verify all synthetic three-island GIS identity and heldout cohort tests
+        run: python -m pytest -q tests/test_paper2_three_island_penguin_coast_access_v51.py
+      - name: Recover ALREADY frozen V26 public BAS source nest/DEM artifact from identical repo
+        uses: actions/download-artifact@v4
+        with:
+          name: bas-original-nest-independent-CopDEM-terrain-v26
+          run-id: 40279185790
+          github-token: ${{ github.token }}
+          path: /tmp/PAPER2_V51_ORIGINAL_V26_ARTIFACT
+      - name: Verify source NPZ SHA and true 3-island full GSHHG coast before biological model
+        run: |
+          python scripts/analyze_paper2_three_island_penguin_coast_access_v51.py \
+            --v26-npz /tmp/PAPER2_V51_ORIGINAL_V26_ARTIFACT/BAS_HART_PUBLIC_GLO30_NEST_TERRAIN_V26.npz \
+            --out /tmp/PAPER2_V51_ORIGINAL_THREE_ISLAND_COAST_ACCESS_RESULT.json
+      - name: Preserve only SHA-backed aggregate source and geographic predictor results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v51-original-three-island-full-GSHHG-penguin-coast-access
+          path: /tmp/PAPER2_V51_ORIGINAL_THREE_ISLAND_COAST_ACCESS_RESULT.json
+          if-no-files-found: warn

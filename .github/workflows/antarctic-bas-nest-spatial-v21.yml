@@ -1,0 +1,52 @@
+name: Antarctic BAS original multi-island nest spatial source assortativity V21
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/BAS_HART_ORIGINAL_NEST_POINT_SPATIAL_TEST_V20_V21.md'
+      - 'scripts/analyze_bas_hart_nest_spatial_assortativity_v21.py'
+      - 'tests/test_bas_hart_nest_spatial_assortativity_v21.py'
+      - '.github/workflows/antarctic-bas-nest-spatial-v21.yml'
+  pull_request:
+    paths:
+      - 'contracts/BAS_HART_ORIGINAL_NEST_POINT_SPATIAL_TEST_V20_V21.md'
+      - 'scripts/analyze_bas_hart_nest_spatial_assortativity_v21.py'
+      - 'tests/test_bas_hart_nest_spatial_assortativity_v21.py'
+      - '.github/workflows/antarctic-bas-nest-spatial-v21.yml'
+  workflow_dispatch:
+jobs:
+  original_four_locality_point_cloud_spatial_pattern:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install 10m nested original spatial point analysis dependencies
+        run: python -m pip install requests numpy scipy pyproj pytest
+      - name: Test source label segregation vs random mixing and locality-island pseudoreplication
+        run: python -m pytest -q tests/test_bas_hart_nest_spatial_assortativity_v21.py
+      - name: Download source-verifiable original four-locality UTM individual nest points
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/basoriginalv20
+          gh run download 40274662115 --repo "$GITHUB_REPOSITORY" \
+            --name bas-original-four-locality-species-nestpoints-v20 \
+            --dir /tmp/basoriginalv20
+      - name: Evaluate fixed 199 local exchangeable-source-label controls per locality
+        run: |
+          python scripts/analyze_bas_hart_nest_spatial_assortativity_v21.py \
+            --v20 /tmp/basoriginalv20/BAS_HART_ORIGINAL_10_FILE_POINT_QA_V20.json \
+            --points /tmp/basoriginalv20/BAS_HART_4_LOCALITIES_UTM_NESTS_V20.npz \
+            --out /tmp/BAS_HART_4_LOCALITY_SPATIAL_SOURCE_V21.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bas-original-four-locality-nest-source-label-geometry-v21
+          path: /tmp/BAS_HART_4_LOCALITY_SPATIAL_SOURCE_V21.json
+          if-no-files-found: warn

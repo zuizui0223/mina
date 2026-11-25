@@ -1,0 +1,41 @@
+name: Antarctic original OBIS historical penguin colony source V30
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_OBIS_HISTORICAL_PENGUIN_V30.md'
+      - 'scripts/audit_obis_original_penguin_dwc_v30.py'
+      - 'tests/test_obis_original_penguin_dwc_v30.py'
+      - '.github/workflows/antarctic-obis-original-penguin-v30.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_ORIGINAL_OBIS_HISTORICAL_PENGUIN_V30.md'
+      - 'scripts/audit_obis_original_penguin_dwc_v30.py'
+      - 'tests/test_obis_original_penguin_dwc_v30.py'
+      - '.github/workflows/antarctic-obis-original-penguin-v30.yml'
+  workflow_dispatch:
+jobs:
+  genuine_original_historical_DwC_colony_data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source-only validation tool
+        run: python -m pip install requests pytest
+      - name: Test bounded IPT source archive and source data semantics
+        run: python -m pytest -q tests/test_obis_original_penguin_dwc_v30.py
+      - name: Download actual first-party Antarctic historical penguin colony Darwin Core Archive v1.0
+        run: |
+          python scripts/audit_obis_original_penguin_dwc_v30.py \
+            --out /tmp/OBIS_ORIGINAL_1900_1996_PENGUIN_COLONY_SOURCE_V30.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: first-party-obis-antarctic-penguin-historical-source-v30
+          path: /tmp/OBIS_ORIGINAL_1900_1996_PENGUIN_COLONY_SOURCE_V30.json
+          if-no-files-found: warn

@@ -1,0 +1,53 @@
+name: Paper2 V55 official coast positive source signal strict-land + cell falsification
+
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/PAPER2_V55_COAST_MAP_STRICT_LAND_AND_30M_CELL_FALSIFICATION.md'
+      - 'scripts/falsify_paper2_coast_map_proximity_v55.py'
+      - 'tests/test_paper2_coast_map_strict_land_cell_v55.py'
+      - '.github/workflows/paper2-v55-coast-map-land-cells.yml'
+  pull_request:
+    paths:
+      - 'contracts/PAPER2_V55_COAST_MAP_STRICT_LAND_AND_30M_CELL_FALSIFICATION.md'
+      - 'scripts/falsify_paper2_coast_map_proximity_v55.py'
+      - 'tests/test_paper2_coast_map_strict_land_cell_v55.py'
+      - '.github/workflows/paper2-v55-coast-map-land-cells.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  original_three_island_source_map_falsification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install authenticated original BAS GIS and model tools
+        run: python -m pip install requests 'pyshp==2.3.1' 'shapely>=2.0' pyproj numpy scikit-learn pytest
+      - name: Synthetic original strict-land and source 30m cell test
+        run: python -m pytest -q tests/test_paper2_coast_map_strict_land_cell_v55.py
+      - name: Reuse verified original BAS 2019-2020 point and independent CopDEM source
+        uses: actions/download-artifact@v4
+        with:
+          name: bas-original-nest-independent-CopDEM-terrain-v26
+          run-id: 40279185790
+          github-token: ${{ github.token }}
+          path: /tmp/PAPER2_V55_NESTS
+      - name: Falsify existing V54 positive map-proximity transfer on original land and 30m cell-equal nests
+        run: |
+          python scripts/falsify_paper2_coast_map_proximity_v55.py \
+            --v26-npz /tmp/PAPER2_V55_NESTS/BAS_HART_PUBLIC_GLO30_NEST_TERRAIN_V26.npz \
+            --out /tmp/PAPER2_V55_ORIGINAL_STRICT_LAND_CELL_WEIGHTED_RESULT.json
+      - name: Preserve original source SHA and only aggregate sensitivity heldout results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper2-v55-source-strict-land-and-30m-cell-balanced-coast-map-falsification
+          path: /tmp/PAPER2_V55_ORIGINAL_STRICT_LAND_CELL_WEIGHTED_RESULT.json
+          if-no-files-found: warn

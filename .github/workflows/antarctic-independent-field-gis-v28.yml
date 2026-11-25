@@ -1,0 +1,41 @@
+name: Antarctic original independent external field nest island GIS V28
+on:
+  push:
+    branches: [research/antarctic-functional-archipelago-v1]
+    paths:
+      - 'contracts/ANTARCTIC_INDEPENDENT_FIELD_GIS_V28.md'
+      - 'scripts/inventory_external_aadc_nest_gis_v28.py'
+      - 'tests/test_external_aadc_nest_gis_v28.py'
+      - '.github/workflows/antarctic-independent-field-gis-v28.yml'
+  pull_request:
+    paths:
+      - 'contracts/ANTARCTIC_INDEPENDENT_FIELD_GIS_V28.md'
+      - 'scripts/inventory_external_aadc_nest_gis_v28.py'
+      - 'tests/test_external_aadc_nest_gis_v28.py'
+      - '.github/workflows/antarctic-independent-field-gis-v28.yml'
+  workflow_dispatch:
+jobs:
+  original_external_AADC_source_file_metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install official AADC dataset discovery and original source test tools
+        run: python -m pip install pytest requests
+      - name: Test exact original bird nest GIS source identifier safety
+        run: python -m pytest -q tests/test_external_aadc_nest_gis_v28.py
+      - name: Discover original Windmill, Bechervaise, Vestfold and Macquarie independent source GIS files
+        run: |
+          python scripts/inventory_external_aadc_nest_gis_v28.py \
+            --out /tmp/AADC_ORIGINAL_EXTERNAL_PENGUIN_FLYING_BIRD_GIS_V28.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aadc-original-external-antarctic-nest-gis-source-v28
+          path: /tmp/AADC_ORIGINAL_EXTERNAL_PENGUIN_FLYING_BIRD_GIS_V28.json
+          if-no-files-found: warn
