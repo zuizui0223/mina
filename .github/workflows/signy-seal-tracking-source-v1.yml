@@ -1,0 +1,40 @@
+name: signy-seal-tracking-source-v1
+on:
+  push:
+    branches: [analysis/signy-seal-penguin-interactions-20261124]
+    paths:
+      - 'research/climate-penguin/signy_seal_tracking_source_v1/**'
+      - '.github/workflows/signy-seal-tracking-source-v1.yml'
+  pull_request:
+    branches: [analysis/penguin-vegetation-multispecies-disturbance-20261124]
+    paths:
+      - 'research/climate-penguin/signy_seal_tracking_source_v1/**'
+      - '.github/workflows/signy-seal-tracking-source-v1.yml'
+permissions:
+  contents: read
+jobs:
+  source-support:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pandas numpy rasterio
+      - name: Fetch previously validated RAATD archive and three original BAS GPS archives
+        run: |
+          mkdir -p build/seal_tracking/gps
+          curl -fLSs --retry 2 --connect-timeout 40 --max-time 1200 'https://zenodo.org/records/3722948/files/SCAR_EGBAMM_RAATD-filtered-noTMB.zip?download=1' -o build/seal_tracking/raatd.zip
+          echo '168e5b9b5c4ed20bb84dd00145acb0a5  build/seal_tracking/raatd.zip' | md5sum -c -
+          curl -fLSs --retry 2 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=55b4d36f-c5e1-4d64-bb14-0b832dcd4b88&output=zip.tree' -o build/seal_tracking/gps/adelie.zip
+          curl -fLSs --retry 2 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=8f8ccba5-01af-4b00-8a3b-c3c85b24bf92&output=zip.tree' -o build/seal_tracking/gps/chinstrap.zip
+          curl -fLSs --retry 2 --max-time 180 'https://ramadda.data.bas.ac.uk/repository/entry/show?entryid=9cb04ca6-f88f-4368-b715-45ff73ff81eb&output=zip.tree' -o build/seal_tracking/gps/gentoo.zip
+      - name: Audit species, cohort and exact calendar support without overlap outcome
+        run: python research/climate-penguin/signy_seal_tracking_source_v1/audit.py --raatd build/seal_tracking/raatd.zip --gps build/seal_tracking/gps --out build/seal_tracking/receipt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-seal-tracking-source-v1
+          path: build/seal_tracking/receipt/
+          retention-days: 60

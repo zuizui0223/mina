@@ -1,0 +1,147 @@
+name: signy-seal-standardised-source-v1
+# Bounded source audit only: filtered RAATD has zero Jan-Feb 2016 ANFS positions
+# in the frozen broad South Orkney box. Check the raw standardized version
+# once for filtering-related omissions. It is NOT an independent cohort.
+# Previous run 45383533760, artifact 14915775996.
+# No change to the frozen date/geography/cohort support gate. No model fit.
+on:
+  push:
+    branches: [analysis/signy-seal-penguin-interactions-20261124]
+    paths: ['.github/workflows/signy-seal-standardised-source-v1.yml']
+  pull_request:
+    branches: [analysis/penguin-vegetation-multispecies-disturbance-20261124]
+    paths: ['.github/workflows/signy-seal-standardised-source-v1.yml']
+permissions:
+  contents: read
+jobs:
+  standardised-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch public AntOBIS Darwin Core Archive version 1.5
+        run: |
+          mkdir -p build/signy_raw_gate
+          curl -fLSs --retry 1 --connect-timeout 30 --max-time 360 'https://ipt.biodiversity.aq/archive.do?r=scar_raatd_trackingdata&v=1.5' -o build/signy_raw_gate/source.zip
+          sha256sum build/signy_raw_gate/source.zip
+      - name: Audit raw occurrence and deployment support, no co-use estimation
+        shell: bash
+        run: |
+          python - <<'PY'
+          import csv, datetime as dt, hashlib, io, json, math, re, xml.etree.ElementTree as ET, zipfile
+          from pathlib import Path
+          from collections import Counter, defaultdict
+          root=Path("build/signy_raw_gate")
+          path=root/"source.zip"
+          report={"status":"SOURCE_AUDIT_BLOCKED","source":"https://ipt.biodiversity.aq/resource?r=scar_raatd_trackingdata&v=1.5","dataset_version":"1.5","filtered_run":45383533760,"filtered_target_seal_ids":0,"outcome_model_executed":False,"spatial_overlap_calculated":False}
+          def digest(p):
+              h=hashlib.sha256()
+              with p.open("rb") as f:
+                  for b in iter(lambda:f.read(4<<20),b""): h.update(b)
+              return h.hexdigest()
+          def local(tag):
+              return tag.split("}")[-1]
+          def fnum(s):
+              try:
+                  v=float(s)
+                  return v if math.isfinite(v) else None
+              except (TypeError,ValueError): return None
+          def day(s):
+              try: return dt.date.fromisoformat(s.strip()[:10])
+              except (AttributeError,ValueError): return None
+          try:
+              report["archive_sha256"]=digest(path)
+              with zipfile.ZipFile(path) as z:
+                  assert z.testzip() is None, "ZIP CRC"
+                  names=z.namelist()
+                  assert "meta.xml" in names and "eml.xml" in names, "missing DwCA metadata"
+                  meta=ET.fromstring(z.read("meta.xml"))
+                  eml=ET.fromstring(z.read("eml.xml"))
+                  titles=[e.text for e in eml.iter() if local(e.tag)=="title" and e.text]
+                  if not any("antarctic tracking" in t.lower() for t in titles):
+                      raise ValueError("resource title identity mismatch: "+str(titles[:4]))
+                  report["resource_titles"]=titles[:4]
+                  specs=[e for e in meta if local(e.tag) in ("core","extension")]
+                  core=[e for e in specs if local(e.tag)=="core"]
+                  occ=[e for e in specs if e.get("rowType","").endswith("/Occurrence")]
+                  if len(core)!=1 or len(occ)!=1: raise ValueError("ambiguous core or occurrence extension")
+                  def spec(s):
+                      locations=[x.text for x in s.iter() if local(x.tag)=="location"]
+                      if len(locations)!=1: raise ValueError("multiple member paths")
+                      ids=[x for x in s if local(x.tag) in ("id","coreid")]
+                      if len(ids)!=1: raise ValueError("missing unique id specification")
+                      fields={x.get("term","").split("/")[-1]:int(x.get("index")) for x in s if local(x.tag)=="field" and x.get("index") is not None}
+                      defaults={x.get("term","").split("/")[-1]:x.get("default","") for x in s if local(x.tag)=="field" and x.get("index") is None}
+                      return {"name":locations[0],"id":int(ids[0].get("index")),"fields":fields,"defaults":defaults,"delimiter":s.get("fieldsTerminatedBy","\\t").replace("\\t","\t"),"quote":s.get("fieldsEnclosedBy",'"'),"header":int(s.get("ignoreHeaderLines",0)),"encoding":s.get("encoding","UTF-8")}
+                  cs,os=spec(core[0]),spec(occ[0])
+                  report["core_schema"]=cs;report["occurrence_schema"]=os
+                  def rows(s):
+                      with z.open(s["name"]) as f:
+                          text=io.TextIOWrapper(f,encoding=s["encoding"],errors="strict",newline="")
+                          kw={"delimiter":s["delimiter"]}
+                          if s["quote"]:kw["quotechar"]=s["quote"]
+                          else:kw["quoting"]=csv.QUOTE_NONE
+                          it=csv.reader(text,**kw)
+                          for _ in range(s["header"]):next(it,None)
+                          for r in it:
+                              if not r:continue
+                              if len(r)<=max([s["id"],*s["fields"].values()]):raise ValueError("short DwCA row")
+                              yield r[s["id"]],{**s["defaults"],**{k:r[i] for k,i in s["fields"].items()}}
+                  events={}
+                  for eid,r in rows(cs):
+                      if eid in events:raise ValueError("duplicate core event ID")
+                      events[eid]=r
+                  report["core_events"]=len(events)
+                  if len(events)!=4060:raise ValueError("core count differs from published version 1.5")
+                  # Spatial and temporal filters apply only to explicit occurrence-level values.
+                  # Never substitute the deployment site's location or deployment date for a fix.
+                  needed={"eventDate","decimalLatitude","decimalLongitude"}
+                  if not needed<=set(os["fields"]):raise ValueError("occurrence fix fields missing")
+                  species_fields=("scientificName","species")
+                  if not any(k in os["fields"] or k in cs["fields"] for k in species_fields):raise ValueError("explicit taxon field missing")
+                  def species(r,e):
+                      for x in (r,e):
+                          for k in species_fields:
+                              if x.get(k,"").strip():return x[k].strip()
+                      return ""
+                  stats=Counter();selected=Counter();date_counts=Counter();event_days=defaultdict(set)
+                  raw_years=Counter()
+                  for eid,r in rows(os):
+                      stats["all_occurrences"]+=1
+                      if eid not in events:raise ValueError("orphan occurrence ID")
+                      e=events[eid]
+                      taxon=species(r,e)
+                      if not taxon:
+                          stats["missing_taxon"]+=1;continue
+                      if taxon.casefold()!="arctocephalus gazella":continue
+                      stats["seal_occurrences"]+=1
+                      d=day(r.get("eventDate"))
+                      la=fnum(r.get("decimalLatitude"));lo=fnum(r.get("decimalLongitude"))
+                      if d is None or la is None or lo is None:
+                          stats["seal_invalid_fix"]+=1;continue
+                      raw_years[str(d.year)]+=1
+                      if not (d.year==2016 and d.month in (1,2) and -63<=la<=-58 and -48<=lo<=-42):continue
+                      selected[eid]+=1;date_counts[d.isoformat()]+=1;event_days[d.isoformat()].add(eid)
+                  report.update(counts=dict(stats),seal_year_counts=dict(sorted(raw_years.items())),target_raw_positions=sum(selected.values()),target_raw_event_ids=sorted(selected),target_raw_events=len(selected),target_daily_events={d:len(v) for d,v in sorted(event_days.items())},target_daily_fixes=dict(sorted(date_counts.items())))
+                  # Retain only explicit animal/deployment descriptors, no contributor emails.
+                  keep=("eventDate","sex","lifeStage","locationID","locality","decimalLatitude","decimalLongitude","eventRemarks","scientificName","occurrenceID","individualID","organismID")
+                  report["target_event_metadata"]=[{"event_id":eid,"n_raw_positions":selected[eid],**{k:events[eid][k] for k in keep if k in events[eid]}} for eid in sorted(selected)]
+                  if stats["all_occurrences"]!=2331595 or stats["seal_invalid_fix"] or stats["missing_taxon"] or not stats["seal_occurrences"]:
+                      report["status"]="SOURCE_COMPLETENESS_REVIEW_REQUIRED"
+                  else:
+                      report["status"]="RAW_TARGET_FOUND_COHORT_REVIEW_REQUIRED" if selected else "NO_GO_RAW_AND_FILTERED_TARGET_ABSENT"
+          except Exception as ex:
+              report["error"]=str(ex)
+          (root/"receipt.json").write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n")
+          print(json.dumps({k:v for k,v in report.items() if k not in ("target_event_metadata",)},ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signy-seal-standardised-source-v1
+          path: build/signy_raw_gate/receipt.json
+          if-no-files-found: warn
+          retention-days: 60
