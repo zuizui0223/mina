@@ -1,0 +1,236 @@
+{
+  "status": "PUBLIC_RASTER_ENVELOPE_VERIFIED_CELL_CROSSWALK_UNRESOLVED",
+  "source": {
+    "run_id": 45714016009,
+    "job_id": 139555345186,
+    "artifact_id": 15068378991,
+    "zip_sha256": "e3880ab79bb8d0f36502a1ef3386ec3c971af63c1b740eeb4addd83799a2c97c",
+    "receipt_sha256": "19ca72f7100fc4d7b59ee4b5714645b98b80fcd24c6c5da48cda11a633958ffc",
+    "local_zip_crc_verified": true,
+    "range_requests": 90,
+    "bytes_received": 2949120,
+    "whole_file_verified": false,
+    "pixels_decoded": false
+  },
+  "publisher": {
+    "uuid": "814f5d65-506c-4fd4-8f3c-4b9163b0e484",
+    "name": "Rudy Orthomosaic 2018-11-28 5Ds on M600P.tif",
+    "sizeBytes": 17538362940,
+    "checkSum": {
+      "checkSumAlgorithm": "MD5",
+      "value": "5375a61824f97d927c19ec3bbb5f6619"
+    }
+  },
+  "first_page": {
+    "shape": [
+      99517,
+      85323,
+      4
+    ],
+    "dtype": "uint8",
+    "tiled": true,
+    "tilewidth": 256,
+    "tilelength": 256,
+    "compression": "5",
+    "geotags": {
+      "33550": [
+        4.846929999985022e-8,
+        1.4729199999998766e-8,
+        0
+      ],
+      "33922": [
+        0,
+        0,
+        0,
+        170.230656948122,
+        -72.3194389700006,
+        0
+      ],
+      "34735": [
+        1,
+        1,
+        0,
+        14,
+        1024,
+        0,
+        1,
+        2,
+        1025,
+        0,
+        1,
+        1,
+        2048,
+        0,
+        1,
+        4326,
+        2049,
+        34737,
+        7,
+        0,
+        2050,
+        0,
+        1,
+        6326,
+        2051,
+        0,
+        1,
+        8901,
+        2054,
+        0,
+        1,
+        9102,
+        2055,
+        34736,
+        1,
+        0,
+        2056,
+        0,
+        1,
+        7030,
+        2057,
+        34736,
+        1,
+        1,
+        2059,
+        34736,
+        1,
+        2,
+        2061,
+        34736,
+        1,
+        3,
+        2062,
+        34736,
+        7,
+        4,
+        4099,
+        0,
+        1,
+        9001
+      ],
+      "34736": [
+        0.017453292519943278,
+        6378137,
+        298.257223563,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "34737": "WGS 84|"
+    },
+    "geotiff_metadata": {
+      "KeyDirectoryVersion": 1,
+      "KeyRevision": 1,
+      "KeyRevisionMinor": 0,
+      "GTModelTypeGeoKey": 2,
+      "GTRasterTypeGeoKey": 1,
+      "GeographicTypeGeoKey": 4326,
+      "GeogCitationGeoKey": "WGS 84",
+      "GeogGeodeticDatumGeoKey": 6326,
+      "GeogPrimeMeridianGeoKey": 8901,
+      "GeogAngularUnitsGeoKey": 9102,
+      "GeogAngularUnitsSizeGeoKey": 0.017453292519943278,
+      "GeogEllipsoidGeoKey": 7030,
+      "GeogSemiMajorAxisGeoKey": 6378137,
+      "GeogInvFlatteningGeoKey": 298.257223563,
+      "GeogPrimeMeridianLongGeoKey": 0,
+      "GeogTOWGS84GeoKey": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "VerticalUnitsGeoKey": 9001,
+      "ModelPixelScale": [
+        4.846929999985022e-8,
+        1.4729199999998766e-8,
+        0
+      ],
+      "ModelTiepoint": [
+        0,
+        0,
+        0,
+        170.230656948122,
+        -72.3194389700006,
+        0
+      ]
+    }
+  },
+  "pages_probe": [
+    {
+      "index": 1,
+      "shape": [
+        49759,
+        42662,
+        4
+      ],
+      "is_reduced": true
+    },
+    {
+      "index": 2,
+      "shape": [
+        24880,
+        21331,
+        4
+      ],
+      "is_reduced": true
+    },
+    {
+      "index": 3,
+      "shape": [
+        12440,
+        10666,
+        4
+      ],
+      "is_reduced": true
+    },
+    {
+      "index": 4,
+      "shape": [
+        6220,
+        5333,
+        4
+      ],
+      "is_reduced": true
+    }
+  ],
+  "geometry": {
+    "raster_dimensions_m": [
+      140.23909930032903,
+      163.56914733416644
+    ],
+    "pixel_size_mm_at_center": [
+      1.6436260878784732,
+      1.643629587692332
+    ],
+    "raster_envelope_area_m2": 22920.82184748892,
+    "comparisons": {
+      "official_restricted_zone": {
+        "source_area_m2": 8125.1148540715,
+        "intersection_m2": 8123.011104171642,
+        "intersection_fraction": 0.9997410805954572,
+        "covered": false
+      },
+      "literal_conflicting_plot": {
+        "source_area_m2": 8848.493103482282,
+        "intersection_m2": 3920.495612460685,
+        "intersection_fraction": 0.44306929627574587,
+        "covered": false
+      }
+    },
+    "literal_NE_outside_envelope_m": 179.91378157268124,
+    "method": "WGS84 PixelIsArea corner-transformed envelope in EPSG:32759; geodesic center scales. Not actual valid-pixel footprint."
+  },
+  "valid_pixel_footprint_verified": false,
+  "grid_crosswalk_verified": false,
+  "later_UAV_acquired": false,
+  "new_biological_effect_estimated": false
+}
