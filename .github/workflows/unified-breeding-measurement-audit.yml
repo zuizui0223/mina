@@ -1,0 +1,29 @@
+name: Unified breeding measurement audit
+on:
+  push:
+    branches: [analysis/unified-breeding-reorganization-20261125]
+    paths:
+      - 'research/unified_breeding_reorganization_v1/measurement_audit.py'
+      - '.github/workflows/unified-breeding-measurement-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 0f913ecfd4fd03e328dc1a6c78c77e451a99fe9e
+          path: pinned-jncc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy requests
+      - run: python research/unified_breeding_reorganization_v1/measurement_audit.py --source pinned-jncc --out /tmp/MEASUREMENT_AUDIT.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unified-measurement-audit
+          path: /tmp/MEASUREMENT_AUDIT.json
