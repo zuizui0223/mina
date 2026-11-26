@@ -1,0 +1,33 @@
+name: V22 Antarctic continental terrestrial footprint
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-marine-land-footprint-v22.yml']
+permissions:
+  contents: read
+jobs:
+  macro:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: c67e55c9f4f657ef308c02a85c6ff366dce8e1f4
+          path: original
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geographic analysis dependencies
+        run: python -m pip install --disable-pip-version-check numpy pyproj==3.7.1 shapely==2.1.2 pyshp==2.3.1
+      - name: Rebuild frozen full observed-site inventory
+        run: python original/research/climate-penguin/macro_panantarctic_v1/build.py
+      - name: Compute fixed original vegetation proximity and historical reweighting
+        run: python research/macro_marine_land_footprint_v1/macro_footprint_v22.py original v22_result
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-footprint-v22
+          path: v22_result/
+          retention-days: 30
+          if-no-files-found: warn
