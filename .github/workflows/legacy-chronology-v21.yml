@@ -1,0 +1,60 @@
+name: V21 verify dated colony supplementary workbook
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/legacy-chronology-v21.yml']
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Bounded original publisher workbook acquisition and schema audit
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, io, json, pathlib, posixpath, urllib.request, zipfile, xml.etree.ElementTree as E
+          url='https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-025-56925-4/MediaObjects/41467_2025_56925_MOESM4_ESM.xlsx'
+          out=pathlib.Path('v21_source');out.mkdir()
+          result={'url':url,'status':'not_retrieved'}
+          try:
+              req=urllib.request.Request(url,headers={'User-Agent':'mina-research-source-audit/1.0'})
+              with urllib.request.urlopen(req,timeout=40) as resp:
+                  b=resp.read(32000001); result['http_status']=resp.status
+              assert len(b)<=32000000,'bounded byte cap'
+              z=zipfile.ZipFile(io.BytesIO(b));assert z.testzip() is None
+              result.update(bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),status='workbook_verified',sheets=[])
+              ns={'m':'http://schemas.openxmlformats.org/spreadsheetml/2006/main','r':'http://schemas.openxmlformats.org/officeDocument/2006/relationships'}
+              shared=[]
+              if 'xl/sharedStrings.xml' in z.namelist():
+                  root=E.fromstring(z.read('xl/sharedStrings.xml'))
+                  shared=[''.join(t.text or '' for t in si.findall('.//m:t',ns)) for si in root.findall('m:si',ns)]
+              links={r.attrib['Id']:r.attrib['Target'] for r in E.fromstring(z.read('xl/_rels/workbook.xml.rels'))}
+              for s in E.fromstring(z.read('xl/workbook.xml')).findall('.//m:sheet',ns):
+                  target=links[s.attrib['{'+ns['r']+'}id']]
+                  member=target.lstrip('/') if target.startswith('/') else posixpath.normpath('xl/'+target)
+                  tree=E.fromstring(z.read(member))
+                  rows=tree.findall('m:sheetData/m:row',ns)
+                  def v(c):
+                      x=c.find('m:v',ns)
+                      if c.get('t')=='s' and x is not None:return shared[int(x.text)]
+                      if c.get('t')=='inlineStr':return ''.join(t.text or '' for t in c.findall('.//m:t',ns))
+                      return None
+                  # First two rows only; return textual header candidates, not numeric cells.
+                  heads=[]
+                  for row in rows[:2]:
+                      vals=[{'cell':c.get('r'),'text':v(c)[:180]} for c in row.findall('m:c',ns) if v(c) is not None]
+                      heads.append({'row':row.get('r'),'text_fields':vals[:40]})
+                  result['sheets'].append({'name':s.get('name'),'xml_rows':len(rows),'first_two_textual_rows':heads})
+              (out/'publisher_supplement.xlsx').write_bytes(b)
+          except Exception as e:
+              result.update(status='source_or_schema_gate_failed',error=type(e).__name__+': '+str(e)[:500])
+          (out/'receipt.json').write_text(json.dumps(result,indent=2))
+          print(json.dumps(result,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v21-chronology-source
+          path: v21_source
+          retention-days: 7
