@@ -1,0 +1,63 @@
+name: V22 independent accounting QA on archived continental footprint
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-marine-land-footprint-v22-qa.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c67e55c9f4f657ef308c02a85c6ff366dce8e1f4
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 45791422125
+          artifact-ids: 15102313119
+          path: receipt
+      - name: Recompute dynamic ratios and verify full spatial summary receipt
+        run: |
+          python - <<'PY'
+          import csv, hashlib, json, math, pathlib, statistics
+          files=list(pathlib.Path('receipt').rglob('result.json'));assert len(files)==1
+          folder=files[0].parent;r=json.loads(files[0].read_text())
+          assert r['status']=='EXECUTED_FIXED_MAP_GEOGRAPHY_NOT_NUTRIENT_FLUX'
+          def read(p):
+              with open(p,newline='',encoding='utf-8-sig') as f:return list(csv.DictReader(f))
+          src=pathlib.Path('research/climate-penguin/macro_panantarctic_v1/allocation_20261115')
+          pairs=read(src/'original_strict_paired_end_50_source_site_species.csv')
+          three={(x['site_id'],x['species']) for x in read(src/'original_three_decade_43_source_site_species.csv')}
+          ar={(x['site_id'],int(x['radius_m'])):x for x in read(folder/'site_buffer_area.csv')}
+          assert len(ar)==595*3
+          checks=0;maxerr=0.
+          def ck(a,b):
+              global checks,maxerr
+              assert math.isclose(a,b,abs_tol=1e-5,rel_tol=1e-10),(a,b)
+              checks+=1;maxerr=max(maxerr,abs(a-b))
+          for x in r['dynamic']+r['region_omissions']:
+              s=x['species'];rad=x['radius_m'];cl=x['class']
+              a=[p for p in pairs if p['species']==s and (x['roster']=='paired' or (p['site_id'],s) in three) and p['source_region']!=x.get('excluded_region')]
+              assert len(a)==x['n_sites']
+              p0=[float(p['site_median_observed_nests_early']) for p in a];p1=[float(p['site_median_observed_nests_late']) for p in a]
+              areas=[float(ar[p['site_id'],rad][cl+'_m2']) for p in a]
+              m0=math.fsum(v/sum(p0)*u for v,u in zip(p0,areas));m1=math.fsum(v/sum(p1)*u for v,u in zip(p1,areas))
+              ck(m0,x['early_weighted_map_area_m2']);ck(m1,x['late_weighted_map_area_m2']);ck(m1-m0,x['delta_weighted_map_area_m2'])
+              if m0>0:ck(m1/m0,x['late_over_proportional_index'])
+              else:assert x['late_over_proportional_index'] is None
+          for x in r['coverage']:
+              ck(x['union_covered_m2']/r['map_area_m2'][x['class']],x['fraction_all_mapped'])
+              assert 0<=x['union_covered_m2']<=r['map_area_m2'][x['class']]
+          summary={'result_sha256':hashlib.sha256(files[0].read_bytes()).hexdigest(),'checks':checks,'max_abs_difference':maxerr,'scope':'independent count-weight arithmetic and coverage ratios; not independent GIS overlay or ecological replication','support':r['support'],'map_area_m2':r['map_area_m2'],'coverage':[{'group':x['group'],'radius_m':x['radius_m'],'class':x['class'],'fraction':x['fraction_all_mapped'],'area_km2':x['union_covered_m2']/1e6} for x in r['coverage']],'dynamic':[{'species':x['species'],'roster':x['roster'],'radius_m':x['radius_m'],'class':x['class'],'n_sites':x['n_sites'],'ratio':x['late_over_proportional_index']} for x in r['dynamic']],'omissions':[{'species':x['species'],'roster':x['roster'],'excluded_region':x['excluded_region'],'ratio':x['late_over_proportional_index']} for x in r['region_omissions']]}
+          pathlib.Path('qa.json').write_text(json.dumps(summary,indent=2))
+          print('QA_SUMMARY='+json.dumps(summary,separators=(',',':')))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macro-footprint-v22-qa
+          path: qa.json
+          retention-days: 30
