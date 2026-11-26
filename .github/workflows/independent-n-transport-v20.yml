@@ -1,0 +1,54 @@
+name: V20 independent nitrogen transport source gate
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/independent-n-transport-v20.yml']
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch and validate official archive without analyzing outcomes
+        shell: bash
+        run: |
+          python - <<'PY'
+          import csv, hashlib, io, json, pathlib, re, urllib.request, zipfile
+          url='https://zenodo.org/records/15210312/files/dataset.zip?download=1'
+          expected='f400640134e5ed6d2549031faf32cf93'
+          req=urllib.request.Request(url,headers={'User-Agent':'mina-source-audit/1.0'})
+          with urllib.request.urlopen(req, timeout=45) as f:
+              data=f.read(2000001)
+          assert len(data)<2000001, 'Archive exceeds bounded retrieval limit'
+          assert hashlib.md5(data).hexdigest()==expected, 'Publisher checksum mismatch'
+          out=pathlib.Path('source_v20');out.mkdir()
+          (out/'dataset.zip').write_bytes(data)
+          z=zipfile.ZipFile(io.BytesIO(data))
+          assert z.testzip() is None
+          manifest={'source_url':url,'md5':expected,'sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data),'members':[]}
+          for m in z.infolist():
+              if m.is_dir():continue
+              item={'name':m.filename,'bytes':m.file_size}
+              if m.file_size<20000000 and pathlib.PurePosixPath(m.filename).suffix.lower() in ('.csv','.txt','.tsv','.dat'):
+                  raw=z.read(m); s=raw.decode('utf-8-sig',errors='replace'); lines=s.splitlines()
+                  item['lines']=len(lines)
+                  if 'readme' in m.filename.lower():
+                      item['documentation']=s[:10000]
+                  elif lines:
+                      # Report first nonempty line only if all fields resemble column names,
+                      # never print row-level numeric values.
+                      first=next((l for l in lines if l.strip()),'')
+                      parts=re.split(r'[,;\t]',first)
+                      if len(parts)>1 and all(re.search(r'[A-Za-z]',p) and not re.fullmatch(r'[-+\d.eE:/ ]+',p.strip()) for p in parts):
+                          item['possible_header']=first[:1800]
+                      else:item['possible_header']='not verified'
+              manifest['members'].append(item)
+          (out/'manifest.json').write_text(json.dumps(manifest,indent=2))
+          print(json.dumps(manifest,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-v20
+          path: source_v20
+          retention-days: 7
