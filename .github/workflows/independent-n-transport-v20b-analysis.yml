@@ -1,0 +1,33 @@
+name: V20b original NH3 matched pre-post analysis with explicit LOD
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/independent-n-transport-v20b-analysis.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 45789331279
+          artifact-ids: 15102291337
+          path: source
+      - name: Execute fixed analysis after source-semantics repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive=$(find source -name dataset.zip -type f)
+          test -n "$archive"
+          python research/unified_breeding_reorganization_v1/species_weight_sensitivity/n_transport_matched_v20b.py "$archive" v20b_result.json
+          test -f v20b_result.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: matched-v20b-result
+          path: v20b_result.json
+          retention-days: 14
