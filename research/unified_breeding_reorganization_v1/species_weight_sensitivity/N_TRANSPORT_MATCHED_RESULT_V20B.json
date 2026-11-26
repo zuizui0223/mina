@@ -1,0 +1,180 @@
+{
+  "status": "EXECUTED_EXPLICIT_ABOVE_LOD_CONDITIONAL_ONLY",
+  "archive_sha256": "f76c2ab1f5a99dc0ba875cb4968f2a50f124e948db17e1e6dafeb18d328e52e5",
+  "audit": {
+    "rows": 9792,
+    "finite_nh3": 4523,
+    "missing_nh3": 5269,
+    "below_0_0105": 77,
+    "zero": 0,
+    "negative": 0,
+    "explicit_threshold_excluded": 77
+  },
+  "exclusions": {
+    "outside_fixed_windows": 2304,
+    "outside_fixed_sectors": 2184,
+    "pollution": 1409,
+    "invalid_direction_or_calm": 50,
+    "missing_meteorology": 1017
+  },
+  "support": {
+    "pre_south": {
+      "met_rows": 1148,
+      "finite_source_nh3": 727,
+      "available_nh3": 715,
+      "dates_met": 21,
+      "dates_nh3": 19,
+      "availability_fraction": 0.622822299651568
+    },
+    "pre_comparison": {
+      "met_rows": 506,
+      "finite_source_nh3": 283,
+      "available_nh3": 275,
+      "dates_met": 22,
+      "dates_nh3": 21,
+      "availability_fraction": 0.5434782608695652
+    },
+    "post_south": {
+      "met_rows": 701,
+      "finite_source_nh3": 324,
+      "available_nh3": 320,
+      "dates_met": 14,
+      "dates_nh3": 13,
+      "availability_fraction": 0.456490727532097
+    },
+    "post_comparison": {
+      "met_rows": 473,
+      "finite_source_nh3": 232,
+      "available_nh3": 226,
+      "dates_met": 17,
+      "dates_nh3": 14,
+      "availability_fraction": 0.47780126849894294
+    }
+  },
+  "eligible_met_rows": 2828,
+  "qualifying_date_sector_strata": 142,
+  "results": {
+    "four_cell": {
+      "pass": false,
+      "common_strata": [
+        [
+          -2,
+          0
+        ],
+        [
+          -2,
+          1
+        ]
+      ],
+      "n_strata": 2,
+      "distinct_dates_by_cell": {
+        "pre_south": 10,
+        "pre_comparison": 5,
+        "post_south": 7,
+        "post_comparison": 6
+      },
+      "stratum_date_counts": [
+        {
+          "stratum": [
+            -2,
+            0
+          ],
+          "pre_south": 7,
+          "pre_comparison": 3,
+          "post_south": 6,
+          "post_comparison": 4
+        },
+        {
+          "stratum": [
+            -2,
+            1
+          ],
+          "pre_south": 8,
+          "pre_comparison": 3,
+          "post_south": 5,
+          "post_comparison": 4
+        }
+      ]
+    },
+    "south_only": {
+      "pass": true,
+      "common_strata": [
+        [
+          -2,
+          0
+        ],
+        [
+          -2,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "n_strata": 3,
+      "distinct_dates_by_cell": {
+        "pre_south": 12,
+        "post_south": 9
+      },
+      "stratum_date_counts": [
+        {
+          "stratum": [
+            -2,
+            0
+          ],
+          "pre_south": 7,
+          "post_south": 6
+        },
+        {
+          "stratum": [
+            -2,
+            1
+          ],
+          "pre_south": 8,
+          "post_south": 5
+        },
+        {
+          "stratum": [
+            0,
+            1
+          ],
+          "pre_south": 4,
+          "post_south": 3
+        }
+      ],
+      "estimate": {
+        "cell_means_ppb": {
+          "pre_south": 0.3485722225059524,
+          "post_south": 0.09855890322777777
+        },
+        "change_ppb": -0.2500133192781746,
+        "post_pre_ratio": 0.28275030786796196
+      },
+      "leave_date_out_n": 21,
+      "leave_date_out_ranges": {
+        "change_ppb": [
+          -0.32838491727817465,
+          -0.052336902500396854
+        ],
+        "post_pre_ratio": [
+          0.14702650821591487,
+          0.653158666353675
+        ]
+      }
+    }
+  },
+  "limitations": "above-LOD reported NH3 only; missing includes censoring and possible downtime; one station, one season, observational, not emission or deposition",
+  "execution_receipt": {
+    "run_id": 45789716947,
+    "job_id": 139805363050,
+    "source_run_id": 45789331279,
+    "source_artifact_id": 15102291337,
+    "source_artifact_digest": "sha256:750b8558eaeba87001c6088f7de56d6d5eeedc15363894d66375aa0be9d4caf7",
+    "schema_run_id": 45789420492,
+    "failed_initial_run_id": 45789606435,
+    "result_artifact_id": 15102600719,
+    "result_artifact_digest": "sha256:bd4f2f3db98a35f8c8ece5d8c372344b0f9f8fcd18901bcb304c7a6bc651d1b4",
+    "head": "1e0043c0b50770d87de2d2ec8786f6fbe7d4e171"
+  }
+}
