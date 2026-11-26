@@ -1,0 +1,263 @@
+{
+  "status": "published_summary_synthesis_not_age_decay",
+  "soil": {
+    "source": "Smykla et al. 2015 Table 1 p61",
+    "units": "mg/g",
+    "active": {
+      "n": 5,
+      "N": 13.86,
+      "P": 8.028,
+      "Pav": 0.474,
+      "N_P_mean": 2.01,
+      "N_sd": 9.3,
+      "P_sd": 5.47,
+      "Pav_sd": 0.12
+    },
+    "relict": {
+      "n": 5,
+      "N": 9.56,
+      "P": 15.65,
+      "Pav": 0.54,
+      "N_P_mean": 0.31,
+      "N_sd": 11.99,
+      "P_sd": 5.953,
+      "Pav_sd": 0.083
+    },
+    "background": {
+      "n": 6,
+      "N": 0.16,
+      "P": 0.873,
+      "Pav": 0.109,
+      "N_P_mean": 0.11,
+      "N_sd": 0.31,
+      "P_sd": 0.494,
+      "Pav_sd": 0.066
+    }
+  },
+  "water": {
+    "source": "Juchnowicz-Bierbasz and Rakusa-Suszczewski 2002 Table 3 p84",
+    "units": "mg element/L",
+    "stations": [
+      {
+        "id": "L1",
+        "status": "background",
+        "n": 1,
+        "P": 32.34,
+        "NO3": 4.6,
+        "NH4": 12.99,
+        "NO2": 1.87,
+        "DIN": 19.46
+      },
+      {
+        "id": "L2",
+        "status": "background",
+        "n": 5,
+        "P": 103.08,
+        "NO3": 79.52,
+        "NH4": 55.14,
+        "NO2": 1.22,
+        "DIN": 135.88
+      },
+      {
+        "id": "L3",
+        "status": "relict",
+        "n": 8,
+        "P": 157.19,
+        "NO3": 85.42,
+        "NH4": 55.73,
+        "NO2": 1.54,
+        "DIN": 142.69
+      },
+      {
+        "id": "L4",
+        "status": "background",
+        "n": 1,
+        "P": 310.93,
+        "NO3": 607.56,
+        "NH4": 8.48,
+        "NO2": 3.44,
+        "DIN": 619.48
+      },
+      {
+        "id": "L5",
+        "status": "relict",
+        "n": 7,
+        "P": 134.18,
+        "NO3": 6.17,
+        "NH4": 551.97,
+        "NO2": 1.97,
+        "DIN": 560.11
+      },
+      {
+        "id": "L6",
+        "status": "relict",
+        "n": 8,
+        "P": 1559.87,
+        "NO3": 40.12,
+        "NH4": 349.85,
+        "NO2": 1.03,
+        "DIN": 391
+      },
+      {
+        "id": "L7",
+        "status": "background",
+        "n": 8,
+        "P": 3.67,
+        "NO3": 38.79,
+        "NH4": 26.14,
+        "NO2": 0.48,
+        "DIN": 65.41000000000001
+      },
+      {
+        "id": "L8",
+        "status": "active",
+        "n": 8,
+        "P": 1063.43,
+        "NO3": 140.16,
+        "NH4": 3326.51,
+        "NO2": 65.4,
+        "DIN": 3532.07
+      }
+    ]
+  },
+  "soilresult": {
+    "ratios": {
+      "N": {
+        "relict_active": 0.6897546897546898,
+        "relict_background": 59.75,
+        "active_background": 86.625,
+        "background_subtracted_relict_active": 0.6861313868613139
+      },
+      "P": {
+        "relict_active": 1.9494270054808172,
+        "relict_background": 17.926689576174113,
+        "active_background": 9.195876288659795,
+        "background_subtracted_relict_active": 2.0652690426275333
+      },
+      "Pav": {
+        "relict_active": 1.139240506329114,
+        "relict_background": 4.954128440366973,
+        "active_background": 4.348623853211009,
+        "background_subtracted_relict_active": 1.1808219178082193
+      }
+    },
+    "P_N_of_means": {
+      "active": 0.5792207792207793,
+      "relict": 1.6370292887029287,
+      "relative": 2.8262613280297195
+    },
+    "published_mean_N_P": {
+      "active": 2.01,
+      "relict": 0.31,
+      "relative": 0.15422885572139305
+    },
+    "Pav_P_of_means": {
+      "active": 0.059043348281016435,
+      "relict": 0.03450479233226837,
+      "relative": 0.584397622032596
+    }
+  },
+  "waterresult": {
+    "relative_stations": [
+      {
+        "id": "L1",
+        "status": "background",
+        "P_active_ratio": 0.030411028464496958,
+        "DIN_active_ratio": 0.0055095170820510355,
+        "P_DIN": 1.6618705035971224,
+        "P_DIN_relative": 5.519726685950451
+      },
+      {
+        "id": "L2",
+        "status": "background",
+        "P_active_ratio": 0.09693162690539103,
+        "DIN_active_ratio": 0.038470358741474545,
+        "P_DIN": 0.758610538710627,
+        "P_DIN_relative": 2.5196444763300305
+      },
+      {
+        "id": "L3",
+        "status": "relict",
+        "P_active_ratio": 0.1478141485570277,
+        "DIN_active_ratio": 0.04039840660009569,
+        "P_DIN": 1.1016188941061043,
+        "P_DIN_relative": 3.6589103629814352
+      },
+      {
+        "id": "L4",
+        "status": "background",
+        "P_active_ratio": 0.2923840779364885,
+        "DIN_active_ratio": 0.17538723751228033,
+        "P_DIN": 0.50192096597146,
+        "P_DIN_relative": 1.6670772747419338
+      },
+      {
+        "id": "L5",
+        "status": "relict",
+        "P_active_ratio": 0.1261766171727335,
+        "DIN_active_ratio": 0.15857839737038054,
+        "P_DIN": 0.23956008641159773,
+        "P_DIN_relative": 0.7956734288216545
+      },
+      {
+        "id": "L6",
+        "status": "relict",
+        "P_active_ratio": 1.466829034351109,
+        "DIN_active_ratio": 0.11069995781510558,
+        "P_DIN": 3.989437340153452,
+        "P_DIN_relative": 13.250493164604913
+      },
+      {
+        "id": "L7",
+        "status": "background",
+        "P_active_ratio": 0.0034510969222233713,
+        "DIN_active_ratio": 0.0185188855260513,
+        "P_DIN": 0.05610762880293532,
+        "P_DIN_relative": 0.18635554053015596
+      },
+      {
+        "id": "L8",
+        "status": "active",
+        "P_active_ratio": 1,
+        "DIN_active_ratio": 1,
+        "P_DIN": 0.30107840444838296,
+        "P_DIN_relative": 1
+      }
+    ],
+    "relict_P_DIN_geomean_relative": 3.378880941849051,
+    "leave_one_relict_out": [
+      {
+        "excluded": "L3",
+        "geomean_relative": 3.247008674127479
+      },
+      {
+        "excluded": "L5",
+        "geomean_relative": 6.9629280302605165
+      },
+      {
+        "excluded": "L6",
+        "geomean_relative": 1.7062525470353218
+      }
+    ],
+    "equal_station_means": {
+      "active": {
+        "P": 1063.43,
+        "DIN": 3532.07,
+        "P_DIN_ratio_of_station_means": 0.30107840444838296
+      },
+      "relict": {
+        "P": 617.0799999999999,
+        "DIN": 364.59999999999997,
+        "P_DIN_ratio_of_station_means": 1.6924849149753154
+      },
+      "background": {
+        "P": 112.50500000000001,
+        "DIN": 210.0575,
+        "P_DIN_ratio_of_station_means": 0.5355914451995287
+      }
+    },
+    "relict_above_active_P_DIN": 2,
+    "relative_ratio_of_station_means": 5.621409207598866
+  },
+  "limits": "different measurement matrices, distinct sites, no repeated age or deposition rate, one active lysimeter station, no pooled effect, original web screenshots unavailable"
+}
