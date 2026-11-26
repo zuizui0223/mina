@@ -1,0 +1,48 @@
+name: V21b original chronology tables source audit
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/legacy-chronology-v21b.yml']
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Retrieve official supplementary PDF and preserve dated site table
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir v21b_source
+          python - <<'PY'
+          import urllib.request,pathlib,hashlib,json
+          url='https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-025-56925-4/MediaObjects/41467_2025_56925_MOESM1_ESM.pdf'
+          req=urllib.request.Request(url,headers={'User-Agent':'mina-research-source-audit/1.0'})
+          with urllib.request.urlopen(req,timeout=45) as r:
+              b=r.read(50000001);status=r.status
+          assert len(b)<=50000000 and b.startswith(b'%PDF-')
+          pathlib.Path('v21b_source/publisher_supplement.pdf').write_bytes(b)
+          print(json.dumps({'url':url,'status':status,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}))
+          PY
+          command -v pdftotext
+          pdftotext -layout v21b_source/publisher_supplement.pdf v21b_source/supplement.txt
+          python - <<'PY'
+          import pathlib,re,json
+          p=pathlib.Path('v21b_source')
+          pages=(p/'supplement.txt').read_text(errors='replace').split('\f')
+          hits=[]
+          for i,t in enumerate(pages):
+              # Only pages explicitly identified as chronological or site metadata tables.
+              if re.search(r'Supplementary Table\s*[12]\b',t,re.I) and re.search(r'latitude|longitude|GPS|radiocarbon|calibrated|coordinates',t,re.I):
+                  hits.append(i+1)
+                  print('METADATA TABLE PAGE',i+1)
+                  print(t[:14500])
+          print(json.dumps({'pdf_pages':len([x for x in pages if x.strip()]),'candidate_metadata_table_pages':hits}))
+          (p/'metadata_pages.json').write_text(json.dumps({'candidate_pages':hits}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v21b-chronology-pdf
+          path: v21b_source
+          retention-days: 7
