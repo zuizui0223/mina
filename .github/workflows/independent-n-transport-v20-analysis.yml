@@ -1,0 +1,33 @@
+name: V20a original NH3 matched pre-post analysis
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/independent-n-transport-v20-analysis.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 45789331279
+          artifact-ids: 15102291337
+          path: source
+      - name: Execute frozen analysis and verify source
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive=$(find source -name dataset.zip -type f)
+          test -n "$archive"
+          python research/unified_breeding_reorganization_v1/species_weight_sensitivity/n_transport_matched_v20a.py "$archive" v20a_result.json
+          test -f v20a_result.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: matched-v20a-result
+          path: v20a_result.json
+          retention-days: 14
