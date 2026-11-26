@@ -1,0 +1,39 @@
+name: V20 verify NH3 documentation and covariate support
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/independent-n-transport-v20-schema.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 45789331279
+          artifact-ids: 15102291337
+          path: source
+      - name: Read documentation and structural coverage only
+        run: |
+          python - <<'PY'
+          import csv, hashlib, zipfile, pathlib, collections, datetime, json, math, re
+          files=list(pathlib.Path('source').rglob('dataset.zip'));assert len(files)==1
+          b=files[0].read_bytes();assert hashlib.sha256(b).hexdigest()=='f76c2ab1f5a99dc0ba875cb4968f2a50f124e948db17e1e6dafeb18d328e52e5'
+          z=zipfile.ZipFile(files[0]);assert z.testzip() is None
+          print('DOCUMENTATION START')
+          print(z.read('dataset/READ_ME.txt').decode('utf-8-sig',errors='replace'))
+          print('DOCUMENTATION END')
+          rows=list(csv.DictReader(z.read('dataset/data_10min_gridded.csv').decode('utf-8-sig').splitlines()))
+          assert len(rows)==9792
+          def f(v):
+              try:
+                  x=float(v)
+                  return x if math.isfinite(x) else None
+              except (ValueError,TypeError):return None
+          t=[r['time'] for r in rows]
+          print(json.dumps({'n':len(rows),'first_time':t[0],'last_time':t[-1],'unique_time_strings':len(set(t)),'pollution_flag_counts':dict(collections.Counter(r['pollution_flag'] for r in rows)), 'missing_numeric_counts':{k:sum(f(r[k]) is None for r in rows) for k in ['ammonia_mixing_ratio_ppb','wind_direction','wind_speed','ambient_temperature','relative_humidity','global_radiation']},'wind_speed_range':[min(f(r['wind_speed']) for r in rows if f(r['wind_speed']) is not None),max(f(r['wind_speed']) for r in rows if f(r['wind_speed']) is not None)],'temperature_range':[min(f(r['ambient_temperature']) for r in rows if f(r['ambient_temperature']) is not None),max(f(r['ambient_temperature']) for r in rows if f(r['ambient_temperature']) is not None)]},indent=2))
+          PY
