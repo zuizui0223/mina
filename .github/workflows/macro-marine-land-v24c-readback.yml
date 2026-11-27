@@ -1,0 +1,38 @@
+name: V24c sensitivity readback
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-marine-land-v24c-readback.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Read all pre-specified support sensitivities from archived corrected result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15168249196/zip" > result.zip
+          python - <<'PY'
+          import json,hashlib,zipfile,math
+          from pathlib import Path
+          b=Path('result.zip').read_bytes()
+          assert hashlib.sha256(b).hexdigest()=='29f9e6bb8ccd28cf5074ce4e43359e686cec788bc2da0da5e2466f586c15ce1b'
+          with zipfile.ZipFile('result.zip') as z:
+              assert z.testzip() is None
+              path=[p for p in z.namelist() if p.endswith('result.json')];assert len(path)==1
+              q=json.loads(z.read(path[0]))
+          rows=[]
+          for a in q['support']:
+              keys=('dist_m','end_year','no_nz','cohort')
+              if a['cohort'] not in ('sic','joint'):continue
+              d={k:a[k] for k in keys}
+              rs=[x for x in q['summary'] if all(x[k]==a[k] for k in keys) and x['metric']=='sic_alignment']
+              assert sum(x['n'] for x in rs)==a['groups_ge5']
+              rows.append({**d,'groups':a['groups_ge5'],'sites':a['eligible']['sites'],'regions':a['eligible']['regions'],'blocks':a['eligible']['blocks'],'species':{x['species']:{'n':x['n'],'negative':x['negative'],'median':x['median']} for x in rs}})
+          print('V24_SENSITIVITY='+json.dumps(rows,separators=(',',':')))
+          PY
