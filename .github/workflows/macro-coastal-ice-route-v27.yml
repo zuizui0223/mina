@@ -1,0 +1,62 @@
+name: V27 missing sea ice source route diagnostic
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-ice-route-v27.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Check official product routes for fixed missing baseline and earliest month
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13671496095/zip" > ice_reference.zip
+          python - <<'PY'
+          import hashlib, json, pathlib, urllib.request, zipfile, concurrent.futures
+          p=pathlib.Path('ice_reference.zip')
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=='58c9bacc331b8aefb35027ee248a09076cf96e4f71f681543444da1850347bd8'
+          with zipfile.ZipFile(p) as z:
+              assert z.testzip() is None
+              n=[s for s in z.namelist() if pathlib.Path(s).name=='original_monthly_120_source_receipts.json'];assert len(n)==1
+              receipts=json.loads(z.read(n[0]))
+          pins={(r['year'],r['month']):r for r in receipts}
+          out=pathlib.Path('route_receipt');out.mkdir()
+          # Official OSI SAF product page lists both FTP and THREDDS. No substitute product or credentials.
+          tests=[]
+          for y,m in ((1993,9),(1991,8)):
+              r=pins[y,m];fn=f'ice_conc_sh_ease2-250_cdr-v3p1_{y:04d}{m:02d}.nc'
+              tests.append((y,m,'ftp',f'ftp://osisaf.met.no/reprocessed/ice/conc/v3p1/monthly/{y}/{fn}',r['sha256']))
+          r=pins[1993,9]
+          tests.append((1993,9,'catalog','https://thredds.met.no/thredds/catalog/osisaf/met.no/reprocessed/ice/conc_450a1_files/monthly/1993/catalog.xml',None))
+          def probe(x):
+              y,m,kind,url,h=x
+              q={'year':y,'month':m,'route':kind,'url':url}
+              try:
+                  req=urllib.request.Request(url,headers={'User-Agent':'mina-source-audit/1.0'})
+                  with urllib.request.urlopen(req,timeout=25) as f:b=f.read(25000001)
+                  assert len(b)<=25000000
+                  sha=hashlib.sha256(b).hexdigest()
+                  q.update(bytes=len(b),sha256=sha,exact_pin_match=(sha==h) if h else None)
+                  if h and sha==h:
+                      (out/f'verified_{y}_{m:02d}.nc').write_bytes(b)
+                  if kind=='catalog':
+                      q['baseline_filename_listed']='ice_conc_sh_ease2-250_cdr-v3p1_199309.nc' in b.decode('utf-8',errors='replace')
+              except Exception as e:q['error']=type(e).__name__+': '+str(e)[:250]
+              return q
+          with concurrent.futures.ThreadPoolExecutor(max_workers=3) as ex:
+              result=list(ex.map(probe,tests))
+          (out/'receipt.json').write_text(json.dumps(result,indent=2))
+          print('V27_ROUTE='+json.dumps(result),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-ice-route-v27
+          path: route_receipt/
+          retention-days: 30
