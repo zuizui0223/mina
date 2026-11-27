@@ -1,0 +1,36 @@
+name: V24 matched annual marine land geography
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-marine-land-v24.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numeric and geodesic dependencies
+        run: python -m pip install --disable-pip-version-check numpy pyproj==3.7.1
+      - name: Download original archived inputs and verify pinned source in analysis
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p sources
+          for id in 13669533413 13671496095 13829236358 14926710177 15102504516; do
+            gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$id/zip" > "sources/$id.zip"
+          done
+          python research/macro_marine_land_footprint_v1/macro_marine_land_v24.py sources v24_result
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-marine-land-v24
+          path: v24_result/
+          retention-days: 30
+          if-no-files-found: warn
