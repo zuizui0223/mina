@@ -1,0 +1,166 @@
+{
+  "status": "V26_PARTIAL_ICE_SOURCE_AND_VERIFIED_HYDRO_PILOT",
+  "sea_ice": {
+    "verified": 109,
+    "failed": [
+      {
+        "year": 1993,
+        "month": 9,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1991,
+        "month": 8,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1991,
+        "month": 9,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1991,
+        "month": 10,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1991,
+        "month": 11,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1992,
+        "month": 8,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1992,
+        "month": 9,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1992,
+        "month": 10,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1992,
+        "month": 11,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1993,
+        "month": 8,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: ",
+          "HTTPError: HTTP Error 500: "
+        ]
+      },
+      {
+        "year": 1993,
+        "month": 11,
+        "status": "failed",
+        "failures": [
+          "HTTPError: HTTP Error 502: Bad Gateway",
+          "HTTPError: HTTP Error 502: Bad Gateway",
+          "HTTPError: HTTP Error 502: Bad Gateway"
+        ]
+      }
+    ]
+  },
+  "hydro": {
+    "status": "GEOMETRY_AND_NATIVE_PILOT_PASSED",
+    "tiles": 1722,
+    "eligible_tiles": 1525,
+    "distinct_wet_cells": 1077,
+    "blocks": 57,
+    "old_595_exact_wet_cell_matches": 595,
+    "old_max_distance_error_km": 0,
+    "distance_median_km": 4.8757949554539515,
+    "distance_max_km": 123.27875525434689,
+    "groups": {
+      "known": {
+        "tiles": 318,
+        "eligible_tiles": 315
+      },
+      "modern": {
+        "tiles": 114,
+        "eligible_tiles": 111
+      },
+      "ADPE": {
+        "tiles": 35,
+        "eligible_tiles": 32
+      },
+      "CHPE": {
+        "tiles": 64,
+        "eligible_tiles": 64
+      },
+      "GEPE": {
+        "tiles": 37,
+        "eligible_tiles": 37
+      }
+    },
+    "source_old_value_checks": 3464,
+    "max_old_value_difference": 0,
+    "valid_tile_months": 6100
+  },
+  "ice_run": {
+    "id": 45935360426,
+    "artifact": 15169204882,
+    "digest": "sha256:178ad8fe4735be15eab34ec79bf04d18958f0c9ef1b08346e855c2c6b0918134",
+    "note": "Only download receipt retained. No full native field or climate outcome."
+  },
+  "hydro_run": {
+    "id": 45935533849,
+    "artifact": 15170219473,
+    "digest": "sha256:9ab2ceea44658d66d66f3f2b3805e2b15715e51b7a79aa8cba4198a386a91788",
+    "note": "Four months in 2011 only. Not climate mean."
+  }
+}
