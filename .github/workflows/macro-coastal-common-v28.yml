@@ -1,0 +1,33 @@
+name: V28 common-period physical opportunity geography
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-common-v28.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  common:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy
+      - name: Match all 104 original months, verify sea ice arithmetic and compute joint physical axes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15171205908/zip" > ice.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15170756736/zip" > hydro.zip
+          python research/macro_marine_land_footprint_v1/common_period_physical_v28.py ice.zip hydro.zip v28_result
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-coastal-common-v28
+          path: v28_result/
+          retention-days: 30
+          if-no-files-found: warn
