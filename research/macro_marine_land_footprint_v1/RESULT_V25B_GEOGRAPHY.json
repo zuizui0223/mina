@@ -1,0 +1,395 @@
+{
+  "status": "EXECUTED_CONTINENTAL_MAPPED_ROCK_FRAME",
+  "source_receipts": {
+    "rock": {
+      "url": "https://ramadda.data.bas.ac.uk/repository/entry/get/add_rockoutcrop_landsat_v7.3.zip?entryid=synth%3A178ec50d-1ffb-42a4-a4a3-1145419da2bb%3AL2FkZF9yb2Nrb3V0Y3JvcF9sYW5kc2F0X3Y3LjMuemlw",
+      "resolved_host": "ramadda.data.bas.ac.uk",
+      "sha256": "7eb0cae84016b758c98a61977c90d0a8c2c6450c4bf82433e08d03ef2e5a4a5a",
+      "bytes": 40955252,
+      "features": 366106,
+      "crs": "EPSG:3031",
+      "fields": [
+        "gid",
+        "gridcode",
+        "source",
+        "geometry"
+      ],
+      "geometry_types": {
+        "Polygon": 366106
+      },
+      "invalid_n": 14469,
+      "invalid_area_fraction": 0.5842350483501785,
+      "source_polygon_sum_m2": 30987212867.44921,
+      "invalid_reasons": {
+        "Ring Self-intersection": 14469
+      },
+      "linework": {
+        "polygon_parts": 14469,
+        "nonpolygon_only_features": 0,
+        "geometry_collections": 0,
+        "repaired_invalid_polygon_sum_m2": 18103815807.85154,
+        "full_polygon_sum_m2": 30987212867.44929,
+        "hit_pixels": 153991,
+        "mask_sha256": "f2a2a20b42056f9453388a80a1b999e810c411205b9ff5d6ade3f9c114119528"
+      },
+      "structure": {
+        "polygon_parts": 14469,
+        "nonpolygon_only_features": 0,
+        "geometry_collections": 0,
+        "repaired_invalid_polygon_sum_m2": 18103815807.851505,
+        "full_polygon_sum_m2": 30987212867.449257,
+        "hit_pixels": 153991,
+        "mask_sha256": "f2a2a20b42056f9453388a80a1b999e810c411205b9ff5d6ade3f9c114119528"
+      },
+      "repair_QA": {
+        "valid_only_hit_pixels": 132402,
+        "jaccard": 1,
+        "relative_hit_count_difference": 0,
+        "union_hit_pixels": 153991,
+        "intersection_hit_pixels": 153991
+      }
+    },
+    "coast": {
+      "url": "https://ramadda.data.bas.ac.uk/repository/entry/get/add_coastline_high_res_line_v7_12.shp.zip?entryid=synth%3Adbaf29f5-c8dc-4e79-aeb1-1df316e951ec%3AL2FkZF9jb2FzdGxpbmVfaGlnaF9yZXNfbGluZV92N18xMi5zaHAuemlw",
+      "resolved_host": "ramadda.data.bas.ac.uk",
+      "sha256": "5d09ca9b23c726879bfea9e4f8d415fbc8c515d9bbffc9cfd3838ab5e98e2f3f",
+      "bytes": 47193783,
+      "features": 36842,
+      "crs": "EPSG:3031",
+      "fields": [
+        "surface",
+        "sourcedate",
+        "sourceprec",
+        "source",
+        "updater",
+        "revdate",
+        "revprec",
+        "lineage",
+        "geometry"
+      ],
+      "geometry_types": {
+        "LineString": 36840,
+        "MultiLineString": 2
+      },
+      "surface_counts": {
+        "ice coastline": 8716,
+        "rock coastline": 25302,
+        "ice rumples": 62,
+        "rock against ice shelf": 684,
+        "grounding line": 1513,
+        "ice shelf and front": 565
+      }
+    },
+    "plant": {
+      "url": "https://figshare.com/ndownloader/files/43483098",
+      "resolved_host": "s3-eu-west-1.amazonaws.com",
+      "sha256": "7e304e7a610d03287577e91faff05c009cf82039ae5f227763c37730a548a236",
+      "bytes": 5414267,
+      "features": 87391,
+      "crs": "EPSG:3031",
+      "fields": [
+        "fid",
+        "Vegetation",
+        "Area",
+        "Bioregion",
+        "CellCount",
+        "LichenNDVI",
+        "VegNDVI",
+        "ImageCount",
+        "geometry"
+      ],
+      "geometry_types": {
+        "Polygon": 87338,
+        "MultiPolygon": 53
+      },
+      "invalid_n": 0,
+      "invalid_area_fraction": 0,
+      "source_polygon_sum_m2": 43157900
+    }
+  },
+  "all_rock_hit_pixels_south60": 153991,
+  "summaries": [
+    {
+      "coastal_band_km": 1,
+      "mapped_rock_hit_pixels": 19357,
+      "opportunity_tiles": 1526,
+      "spatial_blocks": 59,
+      "mapped_plant_rock_pixels": 5366,
+      "opportunity_plant_tile_fraction": 0.5779816513761468,
+      "opportunity_rock_pixel_plant_fraction": 0.2772123779511288,
+      "groups": {
+        "known": {
+          "source_sites": 594,
+          "source_distinct_tiles": 334,
+          "inside_sites": 566,
+          "inside_tiles": 317,
+          "observed": {
+            "tiles": 317,
+            "blocks": 40,
+            "mean_rock_pixels": 18.858044164037857,
+            "vegetation_tile_fraction": 0.807570977917981,
+            "plant_rock_pixel_fraction": 0.3522917363666778
+          },
+          "block_expected_vegetation_tile_fraction": 0.793015042729935,
+          "block_expected_rock_pixel_plant_fraction": 0.3048706725997475,
+          "observed_equal_tile_plant_rock_fraction": 0.3296183478275954
+        },
+        "modern": {
+          "source_sites": 212,
+          "source_distinct_tiles": 120,
+          "inside_sites": 198,
+          "inside_tiles": 113,
+          "observed": {
+            "tiles": 113,
+            "blocks": 15,
+            "mean_rock_pixels": 23.52212389380531,
+            "vegetation_tile_fraction": 0.8938053097345132,
+            "plant_rock_pixel_fraction": 0.37772761474793076
+          },
+          "block_expected_vegetation_tile_fraction": 0.8466366198956576,
+          "block_expected_rock_pixel_plant_fraction": 0.34399411577636035,
+          "observed_equal_tile_plant_rock_fraction": 0.37747330846200694
+        },
+        "ADPE": {
+          "source_sites": 41,
+          "source_distinct_tiles": 37,
+          "inside_sites": 38,
+          "inside_tiles": 34,
+          "observed": {
+            "tiles": 34,
+            "blocks": 11,
+            "mean_rock_pixels": 23.852941176470587,
+            "vegetation_tile_fraction": 0.8529411764705882,
+            "plant_rock_pixel_fraction": 0.38594327990135635
+          },
+          "block_expected_vegetation_tile_fraction": 0.7648935303350181,
+          "block_expected_rock_pixel_plant_fraction": 0.33003332530467366,
+          "observed_equal_tile_plant_rock_fraction": 0.3371376504970084
+        },
+        "CHPE": {
+          "source_sites": 137,
+          "source_distinct_tiles": 68,
+          "inside_sites": 126,
+          "inside_tiles": 64,
+          "observed": {
+            "tiles": 64,
+            "blocks": 7,
+            "mean_rock_pixels": 25.59375,
+            "vegetation_tile_fraction": 0.9375,
+            "plant_rock_pixel_fraction": 0.42185592185592186
+          },
+          "block_expected_vegetation_tile_fraction": 0.9085618108949407,
+          "block_expected_rock_pixel_plant_fraction": 0.3751406273998498,
+          "observed_equal_tile_plant_rock_fraction": 0.4243394962537657
+        },
+        "GEPE": {
+          "source_sites": 57,
+          "source_distinct_tiles": 38,
+          "inside_sites": 56,
+          "inside_tiles": 37,
+          "observed": {
+            "tiles": 37,
+            "blocks": 6,
+            "mean_rock_pixels": 28.7027027027027,
+            "vegetation_tile_fraction": 0.918918918918919,
+            "plant_rock_pixel_fraction": 0.3709981167608286
+          },
+          "block_expected_vegetation_tile_fraction": 0.8240789543375521,
+          "block_expected_rock_pixel_plant_fraction": 0.336113510016357,
+          "observed_equal_tile_plant_rock_fraction": 0.3884332789067599
+        }
+      }
+    },
+    {
+      "coastal_band_km": 5,
+      "mapped_rock_hit_pixels": 27911,
+      "opportunity_tiles": 1722,
+      "spatial_blocks": 60,
+      "mapped_plant_rock_pixels": 6465,
+      "opportunity_plant_tile_fraction": 0.5435540069686411,
+      "opportunity_rock_pixel_plant_fraction": 0.23162910680376914,
+      "groups": {
+        "known": {
+          "source_sites": 594,
+          "source_distinct_tiles": 334,
+          "inside_sites": 567,
+          "inside_tiles": 318,
+          "observed": {
+            "tiles": 318,
+            "blocks": 40,
+            "mean_rock_pixels": 20.90566037735849,
+            "vegetation_tile_fraction": 0.8050314465408805,
+            "plant_rock_pixel_fraction": 0.32551143200962696
+          },
+          "block_expected_vegetation_tile_fraction": 0.7653851191504456,
+          "block_expected_rock_pixel_plant_fraction": 0.265068653679134,
+          "observed_equal_tile_plant_rock_fraction": 0.3142033363235916
+        },
+        "modern": {
+          "source_sites": 212,
+          "source_distinct_tiles": 120,
+          "inside_sites": 199,
+          "inside_tiles": 114,
+          "observed": {
+            "tiles": 114,
+            "blocks": 15,
+            "mean_rock_pixels": 26.894736842105264,
+            "vegetation_tile_fraction": 0.8859649122807017,
+            "plant_rock_pixel_fraction": 0.3349641226353555
+          },
+          "block_expected_vegetation_tile_fraction": 0.8110782599294908,
+          "block_expected_rock_pixel_plant_fraction": 0.2861123017390904,
+          "observed_equal_tile_plant_rock_fraction": 0.3492671833028578
+        },
+        "ADPE": {
+          "source_sites": 41,
+          "source_distinct_tiles": 37,
+          "inside_sites": 39,
+          "inside_tiles": 35,
+          "observed": {
+            "tiles": 35,
+            "blocks": 11,
+            "mean_rock_pixels": 29.62857142857143,
+            "vegetation_tile_fraction": 0.8285714285714286,
+            "plant_rock_pixel_fraction": 0.3201542912246866
+          },
+          "block_expected_vegetation_tile_fraction": 0.7270368908066918,
+          "block_expected_rock_pixel_plant_fraction": 0.24933689461132647,
+          "observed_equal_tile_plant_rock_fraction": 0.27702530403475045
+        },
+        "CHPE": {
+          "source_sites": 137,
+          "source_distinct_tiles": 68,
+          "inside_sites": 126,
+          "inside_tiles": 64,
+          "observed": {
+            "tiles": 64,
+            "blocks": 7,
+            "mean_rock_pixels": 26.703125,
+            "vegetation_tile_fraction": 0.9375,
+            "plant_rock_pixel_fraction": 0.40550029256875364
+          },
+          "block_expected_vegetation_tile_fraction": 0.8830913098492686,
+          "block_expected_rock_pixel_plant_fraction": 0.32933149979438286,
+          "observed_equal_tile_plant_rock_fraction": 0.41291930656494363
+        },
+        "GEPE": {
+          "source_sites": 57,
+          "source_distinct_tiles": 38,
+          "inside_sites": 56,
+          "inside_tiles": 37,
+          "observed": {
+            "tiles": 37,
+            "blocks": 6,
+            "mean_rock_pixels": 32.86486486486486,
+            "vegetation_tile_fraction": 0.918918918918919,
+            "plant_rock_pixel_fraction": 0.328125
+          },
+          "block_expected_vegetation_tile_fraction": 0.7677038965357261,
+          "block_expected_rock_pixel_plant_fraction": 0.2824263522088469,
+          "observed_equal_tile_plant_rock_fraction": 0.37207252679819525
+        }
+      }
+    },
+    {
+      "coastal_band_km": 10,
+      "mapped_rock_hit_pixels": 33831,
+      "opportunity_tiles": 1918,
+      "spatial_blocks": 62,
+      "mapped_plant_rock_pixels": 6837,
+      "opportunity_plant_tile_fraction": 0.5109489051094891,
+      "opportunity_rock_pixel_plant_fraction": 0.20209275516538086,
+      "groups": {
+        "known": {
+          "source_sites": 594,
+          "source_distinct_tiles": 334,
+          "inside_sites": 567,
+          "inside_tiles": 318,
+          "observed": {
+            "tiles": 318,
+            "blocks": 40,
+            "mean_rock_pixels": 20.99685534591195,
+            "vegetation_tile_fraction": 0.8050314465408805,
+            "plant_rock_pixel_fraction": 0.3240976486446009
+          },
+          "block_expected_vegetation_tile_fraction": 0.7376212819047897,
+          "block_expected_rock_pixel_plant_fraction": 0.24976109782498981,
+          "observed_equal_tile_plant_rock_fraction": 0.31412094052854206
+        },
+        "modern": {
+          "source_sites": 212,
+          "source_distinct_tiles": 120,
+          "inside_sites": 199,
+          "inside_tiles": 114,
+          "observed": {
+            "tiles": 114,
+            "blocks": 15,
+            "mean_rock_pixels": 27.087719298245613,
+            "vegetation_tile_fraction": 0.8859649122807017,
+            "plant_rock_pixel_fraction": 0.3325777202072539
+          },
+          "block_expected_vegetation_tile_fraction": 0.7762084547903434,
+          "block_expected_rock_pixel_plant_fraction": 0.26349268107885165,
+          "observed_equal_tile_plant_rock_fraction": 0.3490958219330412
+        },
+        "ADPE": {
+          "source_sites": 41,
+          "source_distinct_tiles": 37,
+          "inside_sites": 39,
+          "inside_tiles": 35,
+          "observed": {
+            "tiles": 35,
+            "blocks": 11,
+            "mean_rock_pixels": 30.142857142857142,
+            "vegetation_tile_fraction": 0.8285714285714286,
+            "plant_rock_pixel_fraction": 0.31469194312796206
+          },
+          "block_expected_vegetation_tile_fraction": 0.6779041347719033,
+          "block_expected_rock_pixel_plant_fraction": 0.2093014342219563,
+          "observed_equal_tile_plant_rock_fraction": 0.27646715557306206
+        },
+        "CHPE": {
+          "source_sites": 137,
+          "source_distinct_tiles": 68,
+          "inside_sites": 126,
+          "inside_tiles": 64,
+          "observed": {
+            "tiles": 64,
+            "blocks": 7,
+            "mean_rock_pixels": 26.703125,
+            "vegetation_tile_fraction": 0.9375,
+            "plant_rock_pixel_fraction": 0.40550029256875364
+          },
+          "block_expected_vegetation_tile_fraction": 0.8634389237720075,
+          "block_expected_rock_pixel_plant_fraction": 0.3188745160251808,
+          "observed_equal_tile_plant_rock_fraction": 0.41291930656494363
+        },
+        "GEPE": {
+          "source_sites": 57,
+          "source_distinct_tiles": 38,
+          "inside_sites": 56,
+          "inside_tiles": 37,
+          "observed": {
+            "tiles": 37,
+            "blocks": 6,
+            "mean_rock_pixels": 33,
+            "vegetation_tile_fraction": 0.918918918918919,
+            "plant_rock_pixel_fraction": 0.32678132678132676
+          },
+          "block_expected_vegetation_tile_fraction": 0.7150447020517355,
+          "block_expected_rock_pixel_plant_fraction": 0.2559782537280022,
+          "observed_equal_tile_plant_rock_fraction": 0.37194396271614283
+        }
+      }
+    }
+  ],
+  "limits": "all-touched 1km detection pixels, not rock area; no terrain, snow, survey absence or walking access; static mapped geography; rock topology repaired with two raster-equivalent methods",
+  "execution": {
+    "original_failed_run": 45933714037,
+    "corrected_run": 45933852092,
+    "head": "dfae24aafd24b301dd2de4afa7a5f4acf50b098e",
+    "artifact": 15169338322,
+    "digest": "sha256:13bfe5866a27f6fbfad681ed4a44d834f6019c663f94193e1039e96b81c22060",
+    "summary_checks": 63
+  }
+}
