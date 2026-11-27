@@ -1,0 +1,99 @@
+name: V27 hydrographic arithmetic QA and exact pilot months
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-hydro-v27-qa.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Install numeric dependency
+        run: python -m pip install --disable-pip-version-check numpy
+      - name: Verify annual and spatial statistics and same-month physical PCA
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15170756736/zip" > hydro.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15169837655/zip" > ice.zip
+          python - <<'PY'
+          import csv,io,zipfile,json,hashlib,math,statistics
+          from collections import defaultdict
+          from pathlib import Path
+          import numpy as np
+          def read(file,digest):
+              assert hashlib.sha256(Path(file).read_bytes()).hexdigest()==digest
+              z=zipfile.ZipFile(file);assert z.testzip() is None;return z
+          def member(z,name):
+              p=[s for s in z.namelist() if Path(s).name==name];assert len(p)==1;return z.read(p[0])
+          def rows(z,n):return list(csv.DictReader(io.StringIO(member(z,n).decode('utf-8-sig'))))
+          h=read('hydro.zip','b52f0f5f534690fc26b3dd95b8a9db14d840c462362040c3939ba6d06f8d013f')
+          ice=read('ice.zip','00d2d66dc941c563afd7e185b7ab8b19733ce7bbae5f36f70044b50f19149459')
+          tiles=rows(h,'hydro_tiles.csv');annual=rows(h,'hydro_annual.csv');monthly=rows(h,'hydro_monthly.csv')
+          saved=json.loads(member(h,'result.json'))
+          assert (len(tiles),len(annual),len(monthly))==(1722,1722*26,1722*104)
+          md={(x['tile'],int(x['year']),int(x['month'])):x for x in monthly}
+          ad={(x['tile'],int(x['year'])):x for x in annual}
+          assert len(md)==len(monthly) and len(ad)==len(annual)
+          checks=0;err=0.
+          def ck(a,b):
+              global checks,err
+              assert math.isclose(a,b,abs_tol=1e-9,rel_tol=1e-10),(a,b)
+              checks+=1;err=max(err,abs(a-b))
+          years=range(1993,2019);ms=(8,9,10,11);vars=('sss','sst_C')
+          blocks=defaultdict(list);complete=[]
+          for r in tiles:
+              t=r['tile'];a={}
+              for k in vars:
+                  series=[]
+                  for y in years:
+                      q=[md[t,y,m][k] for m in ms];v=ad[t,y][k]
+                      if all(x!='' for x in q):
+                          mean=math.fsum(map(float,q))/4;ck(mean,float(v));series.append(mean)
+                      else:assert v=='';series.append(None)
+                  a[k]=series
+              good=all(v is not None for a1 in a.values() for v in a1);assert good==bool(int(r['complete_104']))
+              if not good:continue
+              complete.append(r);blocks[r['block']].append(r)
+              for k,v in a.items():
+                  x=statistics.mean(v[:8]);y=statistics.mean(v[-8:])
+                  for key,value in [('mean',statistics.mean(v)),('early',x),('late',y),('delta',y-x),('sd',statistics.stdev(v)),('trend',10*statistics.linear_regression(list(years),v).slope)]:
+                      ck(value,float(r[k+'_'+key]))
+          assert len(complete)==saved['complete_tiles']==1525
+          def wm(rr,k):return math.fsum(int(x['rock_pixels'])*float(x[k]) for x in rr)/sum(int(x['rock_pixels']) for x in rr)
+          for g,d in saved['groups'].items():
+              obs=[r for r in complete if int(r['recorded_'+g])];assert len(obs)==d['tiles']
+              for k,v in d['metrics'].items():
+                  ck(statistics.mean(float(r[k]) for r in obs),v['observed'])
+                  ck(statistics.mean(wm(blocks[r['block']],k) for r in obs),v['expected'])
+          # Same fixed 12 original calendar months as V25c, not mixed climatology.
+          im={r['tile']:r for r in rows(ice,'marine_tiles.csv')}
+          cols=['sic12','sss12','sst12']
+          z=[];w=[];match=[]
+          for r in complete:
+              t=r['tile'];i=im[t]
+              if not i['sic12']:continue
+              m=[md[t,y,k] for y in (1993,2008,2018) for k in ms]
+              a=[float(i['sic12'])]+[statistics.mean(float(x[k]) for x in m) for k in vars]
+              z.append(a);w.append(int(r['rock_pixels']));match.append(r)
+          z=np.asarray(z);w=np.asarray(w,float);w/=w.sum()
+          mu=w@z;sd=np.sqrt(w@((z-mu)**2));x=(z-mu)/sd
+          R=(x*w[:,None]).T@x
+          lam,V=np.linalg.eigh(R);order=np.argsort(lam)[::-1];lam=lam[order];V=V[:,order]
+          for j,i in enumerate((2,1,0)):
+              if V[i,j]<0:V[:,j]*=-1
+          score=x@V
+          assert np.allclose((score*w[:,None]).T@score,np.diag(lam),atol=1e-10)
+          result={'qa_checks':checks,'max_abs_discrepancy':err,'same_month_pilot':{'tiles':len(match),'months':[[y,m] for y in (1993,2008,2018) for m in ms],'columns':cols,'weighted_correlation':R.tolist(),'explained':(lam/lam.sum()).tolist(),'loadings':V.tolist()},'limits':'Independent arithmetic readback, not independent data; exact same 12 original months only, not 26-year three-variable climatology.'}
+          Path('qa.json').write_text(json.dumps(result,indent=2))
+          print('V27_QA='+json.dumps(result),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macro-hydro-v27-qa
+          path: qa.json
+          retention-days: 30
