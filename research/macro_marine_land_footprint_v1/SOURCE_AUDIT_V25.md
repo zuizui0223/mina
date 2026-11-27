@@ -1,0 +1,10 @@
+# V25 source audit and first-run topology stop — 27 November 2026
+The full source acquisition passed. V25 original run https://github.com/zuizui0223/mina/actions/runs/45933714037 failed at the frozen geometry validity gate, prior to any spatial outcome. 
+| source | original features | bytes | SHA256 |
+| --- | ---: | ---: | --- |
+| Gerrish 2020 auto rock outcrop v7.3 DOI 10.5285/178ec50d-1ffb-42a4-a4a3-1145419da2bb |366106|40955252|7eb0cae84016b758c98a61977c90d0a8c2c6450c4bf82433e08d03ef2e5a4a5a|
+| Gerrish et al 2026 coast line v7.12 DOI 10.5285/dbaf29f5-c8dc-4e79-aeb1-1df316e951ec |36842|47193783|5d09ca9b23c726879bfea9e4f8d415fbc8c515d9bbffc9cfd3838ab5e98e2f3f|
+| Walshaw et al Plantarctica original Figshare 43483098 |87391|5414267|7e304e7a610d03287577e91faff05c009cf82039ae5f227763c37730a548a236|
+All three EPSG3031 and ZIP CRC verified. Rock invalid features account for 58.4235% of nominal polygon-area sum; nominal areas of invalid shapes are not reliable as a physical area estimate. No ecological effect computed. Never drop this amount of source geometry and infer availability. The frozen V25b two-method repair amendment and code preserve raw source identity and require mask agreement before proceeding. V25b run https://github.com/zuizui0223/mina/actions/runs/45933852092 launched; use result only after verified completion. Marine pilot code exists, not yet run on the new opportunity frame.
+Alternative published raster denominator for independent source-format sensitivity: Toth and Terauds (2023) DOI 10.26179/7mnh-j215, original AADC dataset https://data.aad.gov.au/metadata/AAS_4568_ice-free_rock_outcrop_union, public release about 613 MB. It combines two rock layers and is land-masked, but shares upstream Landsat/ADD sources; not independent ecological replication. Metadata verified only, not downloaded in V25. Do not substitute the Antarctic Ecosystem Inventory predicted habitat classification as an independent outcome because its underlying input includes penguin colonies. 
+No main merge/submission; existing manuscript unchanged.
