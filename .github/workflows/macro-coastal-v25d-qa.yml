@@ -1,0 +1,78 @@
+name: V25d independent opportunity and marine arithmetic QA
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-v25d-qa.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Replay summaries from archived fixed frame and 12 original monthly columns
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15169338322/zip" > frame.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15169837655/zip" > marine.zip
+          python - <<'PY'
+          import csv,io,zipfile,json,hashlib,math,statistics
+          from collections import defaultdict
+          from pathlib import Path
+          checks=0;maxerr=0.
+          def get(p,digest):
+              assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==digest
+              z=zipfile.ZipFile(p);assert z.testzip() is None;return z
+          def read(z,n):
+              paths=[p for p in z.namelist() if Path(p).name==n];assert len(paths)==1;return z.read(paths[0])
+          def rows(z,n):return list(csv.DictReader(io.StringIO(read(z,n).decode('utf-8-sig'))))
+          g=get('frame.zip','13bfe5866a27f6fbfad681ed4a44d834f6019c663f94193e1039e96b81c22060')
+          m=get('marine.zip','00d2d66dc941c563afd7e185b7ab8b19733ce7bbae5f36f70044b50f19149459')
+          gr=json.loads(read(g,'result.json'));mr=json.loads(read(m,'result.json'))
+          tiles=rows(g,'opportunity_tiles.csv');sr=rows(g,'site_tiles.csv');mt=rows(m,'marine_tiles.csv')
+          def ck(a,b):
+              global checks,maxerr
+              assert math.isclose(a,b,abs_tol=1e-9,rel_tol=1e-10),(a,b)
+              checks+=1;maxerr=max(maxerr,abs(a-b))
+          def wm(v,key):
+              return math.fsum(float(x[key])*int(x['rock_pixels']) for x in v)/sum(int(x['rock_pixels']) for x in v)
+          groups=('known','modern','ADPE','CHPE','GEPE')
+          for z in gr['summaries']:
+              t=[x for x in tiles if int(x['band_km'])==z['coastal_band_km']]
+              ids={x['tile'] for x in t};assert len(ids)==len(t)==z['opportunity_tiles']
+              ck(sum(int(x['rock_pixels']) for x in t),z['mapped_rock_hit_pixels'])
+              ck(sum(int(x['plant_rock_pixels']) for x in t),z['mapped_plant_rock_pixels'])
+              blocks=defaultdict(list)
+              for x in t:blocks[x['block']].append(x)
+              for k in groups:
+                  o=z['groups'][k];sites=[x for x in sr if int(x['recorded_'+k])]
+                  seen={x['tile'] for x in sites};rr=[x for x in t if x['tile'] in seen]
+                  assert all(int(x['recorded_'+k])==(x['tile'] in seen) for x in t)
+                  ck(len(sites),o['source_sites']);ck(sum(x['tile'] in ids for x in sites),o['inside_sites'])
+                  ck(len(rr),o['inside_tiles']);ck(statistics.mean(int(x['has_plant']) for x in rr),o['observed']['vegetation_tile_fraction'])
+                  ck(statistics.mean(wm(blocks[x['block']],'has_plant') for x in rr),o['block_expected_vegetation_tile_fraction'])
+          base={x['tile']:x for x in tiles if int(x['band_km'])==5}
+          assert len(base)==len(mt)==1722 and {x['tile'] for x in mt}==set(base)
+          eligible=[]
+          for x in mt:
+              a=base[x['tile']]
+              for k in ('block','rock_pixels','plant_rock_pixels','has_plant')+tuple('recorded_'+k for k in groups):assert x[k]==a[k]
+              v=[float(x['sic_'+str(y)+'_'+str(n)]) for y,n in mr['original_months'] if x['sic_'+str(y)+'_'+str(n)]!='']
+              ck(len(v),int(x['valid_months']))
+              if len(v)==12:
+                  ck(statistics.mean(v),float(x['sic12']));eligible.append(x)
+              else:assert x['sic12']==''
+          ck(len(eligible),mr['complete_tiles'])
+          blocks=defaultdict(list)
+          for x in eligible:blocks[x['block']].append(x)
+          for k in groups:
+              v=[x for x in eligible if int(x['recorded_'+k])]
+              d=mr['groups'][k]
+              ck(len(v),d['complete_observed_tiles']);ck(statistics.mean(float(x['sic12']) for x in v),d['observed_mean_sic_pp'])
+              ck(statistics.mean(wm(blocks[x['block']],'sic12') for x in v),d['same_block_expected_mean_sic_pp'])
+              ck(statistics.mean(int(x['has_plant']) for x in v),d['observed_plant_tile_fraction'])
+          print('V25D_QA='+json.dumps({'checks':checks,'max_abs_difference':maxerr,'scope':'independent arithmetic readback of archived frame and monthly site tile exposure; not independent geography or ecological replication'}))
+          PY
