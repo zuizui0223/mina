@@ -1,0 +1,1873 @@
+{
+  "status": "EXECUTED_CMIP6_CONDITIONAL_PHYSICAL_OPPORTUNITY",
+  "observed_complete_tiles": 1525,
+  "QA": {
+    "checks": 103320,
+    "max_abs_difference": 0
+  },
+  "support": [
+    {
+      "distance_gate_km": 50,
+      "status": "EXECUTED_COMMON_PHYSICAL_SCENARIOS",
+      "tiles": 594
+    },
+    {
+      "distance_gate_km": 100,
+      "status": "EXECUTED_COMMON_PHYSICAL_SCENARIOS",
+      "tiles": 1401
+    },
+    {
+      "distance_gate_km": 200,
+      "status": "EXECUTED_COMMON_PHYSICAL_SCENARIOS",
+      "tiles": 1525
+    },
+    {
+      "distance_gate_km": null,
+      "status": "EXECUTED_COMMON_PHYSICAL_SCENARIOS",
+      "tiles": 1525
+    }
+  ],
+  "primary": {
+    "distance_gate_km": 100,
+    "status": "EXECUTED_COMMON_PHYSICAL_SCENARIOS",
+    "tiles": 1401,
+    "blocks": 56,
+    "rock_pixels": 21667,
+    "mapped_rock_area_km2": 3082.845053725537,
+    "terrain_complete_tiles": 1208,
+    "modern_groups": {
+      "modern": 108,
+      "ADPE": 31,
+      "CHPE": 62,
+      "GEPE": 37
+    },
+    "observed_pca": {
+      "explained": [
+        0.6198755544177196,
+        0.3328965111642408,
+        0.04722793441803955
+      ],
+      "loadings": [
+        [
+          -0.7067649239583587,
+          -0.014294778102234222,
+          0.7073040375829502
+        ],
+        [
+          -0.047669828856219766,
+          0.9984857899173212,
+          -0.027453865848029498
+        ],
+        [
+          0.7058405837573768,
+          0.05312049182933802,
+          0.7063761630100884
+        ]
+      ],
+      "correlation": [
+        [
+          0.9999999999999983,
+          0.04564767984980483,
+          -0.8576695221716871
+        ],
+        [
+          0.0456476798498048,
+          1.0000000000000016,
+          -0.012348506362726538
+        ],
+        [
+          -0.8576695221716871,
+          -0.012348506362726535,
+          1.0000000000000004
+        ]
+      ],
+      "mean": [
+        60.9032762064772,
+        33.980248140979285,
+        -1.6129782363056393
+      ],
+      "sd": [
+        27.144192174945395,
+        0.3665606331680001,
+        0.2602735103968187
+      ]
+    },
+    "baseline_low_sic": {
+      "tiles": 118,
+      "rock_pixel_fraction": 0.11561360594452393,
+      "mapped_rock_area_fraction": 0.11339377809204802
+    },
+    "baseline_joint_bins": 24,
+    "models": {
+      "ACCESS-CM2": {
+        "distinct_native_cells": 183,
+        "historical_model_mean": [
+          51.56451258466041,
+          34.18212911393723,
+          -1.3817558543592694
+        ],
+        "historical_model_minus_observed": [
+          -9.338763621816712,
+          0.20188097295794055,
+          0.2312223819463663
+        ],
+        "scenarios": [
+          {
+            "experiment": "ssp245",
+            "period": "2041-2060",
+            "mean_native_delta": [
+              -4.350264433300578,
+              -0.10537548839630521,
+              0.2239939558379996
+            ],
+            "mean_adjusted_delta": [
+              -4.35112738786066,
+              -0.10537548839630521,
+              0.2239939558379996
+            ],
+            "mean_PC_delta": [
+              0.734449230715063,
+              -0.23902810819099768,
+              0.5024279137013596
+            ],
+            "SIC_clipped": {
+              "tiles": 4,
+              "rock_pixel_fraction": 0.0021691973969631237,
+              "mapped_rock_area_fraction": 0.0012504682957566974
+            },
+            "low_sic": {
+              "tiles": 222,
+              "rock_pixel_fraction": 0.22328887247888493,
+              "mapped_rock_area_fraction": 0.14827983567444525
+            },
+            "new_low_sic": {
+              "tiles": 104,
+              "rock_pixel_fraction": 0.107675266534361,
+              "mapped_rock_area_fraction": 0.03488605758239723
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 300,
+              "rock_pixel_fraction": 0.2875340379378779,
+              "mapped_rock_area_fraction": 0.21165355158426788
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1103,
+                "rock_pixel_fraction": 0.820048922324272,
+                "mapped_rock_area_fraction": 0.7739853806272134
+              },
+              "freshening": {
+                "tiles": 1348,
+                "rock_pixel_fraction": 0.9524622698112337,
+                "mapped_rock_area_fraction": 0.9669543472979063
+              },
+              "sst_increase": {
+                "tiles": 1268,
+                "rock_pixel_fraction": 0.9344163935939447,
+                "mapped_rock_area_fraction": 0.9313286035350847
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 1050,
+                "rock_pixel_fraction": 0.7725111921355056,
+                "mapped_rock_area_fraction": 0.7409397279251198
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 1029,
+                "rock_pixel_fraction": 0.7561268288180182,
+                "mapped_rock_area_fraction": 0.7096669512579175
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -3.889428535070796,
+                  -0.09388698427765493,
+                  0.4023156243750479
+                ],
+                "mean_PC_delta": [
+                  1.2045276002672334,
+                  -0.17158281966791886,
+                  0.9975588914281426
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -1.7191845900097156,
+                  -0.10954705976670774,
+                  0.09771262826285357
+                ],
+                "mean_PC_delta": [
+                  0.32399802336447947,
+                  -0.2775505964563056,
+                  0.2285970970105284
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -5.265290517519744,
+                  -0.06298877269991067,
+                  0.6182872531553002
+                ],
+                "mean_PC_delta": [
+                  1.822030795632007,
+                  -0.04261496408786484,
+                  1.5455354139448365
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -3.57536715009431,
+                  -0.16356721955376652,
+                  0.2902849210482055
+                ],
+                "mean_PC_delta": [
+                  0.9015937494982528,
+                  -0.38441724257750265,
+                  0.7069125549108958
+                ]
+              }
+            }
+          },
+          {
+            "experiment": "ssp245",
+            "period": "2081-2100",
+            "mean_native_delta": [
+              -10.515610573666885,
+              -0.29617156062727196,
+              0.5186324635081088
+            ],
+            "mean_adjusted_delta": [
+              -10.365234847994655,
+              -0.29617156062727196,
+              0.5186324635081088
+            ],
+            "mean_PC_delta": [
+              1.7148890855353367,
+              -0.6954420170813934,
+              1.1596483686478591
+            ],
+            "SIC_clipped": {
+              "tiles": 48,
+              "rock_pixel_fraction": 0.049060783680251074,
+              "mapped_rock_area_fraction": 0.012299636969322592
+            },
+            "low_sic": {
+              "tiles": 267,
+              "rock_pixel_fraction": 0.2657497576960354,
+              "mapped_rock_area_fraction": 0.16189829398714656
+            },
+            "new_low_sic": {
+              "tiles": 149,
+              "rock_pixel_fraction": 0.15013615175151152,
+              "mapped_rock_area_fraction": 0.04850451589509855
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 641,
+              "rock_pixel_fraction": 0.5364840540914755,
+              "mapped_rock_area_fraction": 0.3761903692079264
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1272,
+                "rock_pixel_fraction": 0.9611390593990862,
+                "mapped_rock_area_fraction": 0.9742288875382255
+              },
+              "freshening": {
+                "tiles": 1401,
+                "rock_pixel_fraction": 1,
+                "mapped_rock_area_fraction": 1
+              },
+              "sst_increase": {
+                "tiles": 1297,
+                "rock_pixel_fraction": 0.9342779341856279,
+                "mapped_rock_area_fraction": 0.9043620341772832
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 1272,
+                "rock_pixel_fraction": 0.9611390593990862,
+                "mapped_rock_area_fraction": 0.9742288875382255
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 1210,
+                "rock_pixel_fraction": 0.9052937647113122,
+                "mapped_rock_area_fraction": 0.8833891697117009
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -9.851353765062903,
+                  -0.2808547540947244,
+                  0.8822500825771897
+                ],
+                "mean_PC_delta": [
+                  2.680929717074065,
+                  -0.5798730553777186,
+                  2.16343349434625
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -7.438022352100512,
+                  -0.31609874848396496,
+                  0.2701581379462543
+                ],
+                "mean_PC_delta": [
+                  0.9674213048598514,
+                  -0.8019761757529845,
+                  0.5630625977095656
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -10.543780175013913,
+                  -0.20967072979096468,
+                  1.2928744361971056
+                ],
+                "mean_PC_delta": [
+                  3.7998026058540275,
+                  -0.3018720826047058,
+                  3.257965545436428
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -14.259089428914919,
+                  -0.4477735442084233,
+                  0.7472191377363173
+                ],
+                "mean_PC_delta": [
+                  2.4480442583283977,
+                  -1.0598502211559306,
+                  1.6977787750350668
+                ]
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2041-2060",
+            "mean_native_delta": [
+              -5.860860596474442,
+              -0.13356229872599473,
+              0.2612585594818201
+            ],
+            "mean_adjusted_delta": [
+              -5.864327378293382,
+              -0.13356229872599473,
+              0.2612585594818201
+            ],
+            "mean_PC_delta": [
+              0.878573226702165,
+              -0.3074046262208713,
+              0.5662443548730381
+            ],
+            "SIC_clipped": {
+              "tiles": 13,
+              "rock_pixel_fraction": 0.004246088521715051,
+              "mapped_rock_area_fraction": 0.002427562811061852
+            },
+            "low_sic": {
+              "tiles": 232,
+              "rock_pixel_fraction": 0.23505792218581253,
+              "mapped_rock_area_fraction": 0.1515377678199037
+            },
+            "new_low_sic": {
+              "tiles": 114,
+              "rock_pixel_fraction": 0.1194443162412886,
+              "mapped_rock_area_fraction": 0.038143989727855675
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 348,
+              "rock_pixel_fraction": 0.3247334656389902,
+              "mapped_rock_area_fraction": 0.2285197414491022
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1230,
+                "rock_pixel_fraction": 0.9232934877924955,
+                "mapped_rock_area_fraction": 0.9512451087663741
+              },
+              "freshening": {
+                "tiles": 1386,
+                "rock_pixel_fraction": 0.9891078598790788,
+                "mapped_rock_area_fraction": 0.9882310653478804
+              },
+              "sst_increase": {
+                "tiles": 1263,
+                "rock_pixel_fraction": 0.918401255365302,
+                "mapped_rock_area_fraction": 0.9080188446567906
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 1215,
+                "rock_pixel_fraction": 0.9124013476715743,
+                "mapped_rock_area_fraction": 0.9394761741142544
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 1133,
+                "rock_pixel_fraction": 0.8492177043430101,
+                "mapped_rock_area_fraction": 0.8587245727762616
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -5.211419166917636,
+                  -0.12245722744200004,
+                  0.4428172624407635
+                ],
+                "mean_PC_delta": [
+                  1.3525014345011015,
+                  -0.24044381543512774,
+                  1.075171682485607
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -3.0241334131417004,
+                  -0.15098341357323367,
+                  0.11771277226301123
+                ],
+                "mean_PC_delta": [
+                  0.417602938088266,
+                  -0.3856512116367314,
+                  0.2519769986079839
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -6.602171169117643,
+                  -0.07792833389774524,
+                  0.6691150489371909
+                ],
+                "mean_PC_delta": [
+                  1.9966234084172785,
+                  -0.07223156835309684,
+                  1.64976427839147
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -5.354404464774377,
+                  -0.21545786986479973,
+                  0.3488823589422648
+                ],
+                "mean_PC_delta": [
+                  1.1135749712804361,
+                  -0.5128674612480616,
+                  0.8234741238379767
+                ]
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2081-2100",
+            "mean_native_delta": [
+              -18.542750186690785,
+              -0.4601612354549607,
+              0.960123779477666
+            ],
+            "mean_adjusted_delta": [
+              -17.23964096527693,
+              -0.4601612354549607,
+              0.960123779477666
+            ],
+            "mean_PC_delta": [
+              3.1124957007722807,
+              -1.0484121945033682,
+              2.190999140983745
+            ],
+            "SIC_clipped": {
+              "tiles": 127,
+              "rock_pixel_fraction": 0.11704435316379748,
+              "mapped_rock_area_fraction": 0.031690206693881985
+            },
+            "low_sic": {
+              "tiles": 371,
+              "rock_pixel_fraction": 0.35344071629667234,
+              "mapped_rock_area_fraction": 0.1903558546076457
+            },
+            "new_low_sic": {
+              "tiles": 253,
+              "rock_pixel_fraction": 0.23782711035214843,
+              "mapped_rock_area_fraction": 0.07696207651559767
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 806,
+              "rock_pixel_fraction": 0.687543268565099,
+              "mapped_rock_area_fraction": 0.6333537989659989
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1254,
+                "rock_pixel_fraction": 0.9369548160797526,
+                "mapped_rock_area_fraction": 0.9597469551556232
+              },
+              "freshening": {
+                "tiles": 1401,
+                "rock_pixel_fraction": 1,
+                "mapped_rock_area_fraction": 1
+              },
+              "sst_increase": {
+                "tiles": 1264,
+                "rock_pixel_fraction": 0.9034476392670882,
+                "mapped_rock_area_fraction": 0.8777618406517286
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 1254,
+                "rock_pixel_fraction": 0.9369548160797526,
+                "mapped_rock_area_fraction": 0.9597469551556232
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 1182,
+                "rock_pixel_fraction": 0.8730788757096045,
+                "mapped_rock_area_fraction": 0.8626264059127109
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -19.006939663450822,
+                  -0.3996755432199552,
+                  1.4769323669495251
+                ],
+                "mean_PC_delta": [
+                  4.482689106785566,
+                  -0.7786503363309697,
+                  3.6125767317793116
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -16.148540318912882,
+                  -0.49068497996176436,
+                  0.5176180743826402
+                ],
+                "mean_PC_delta": [
+                  1.8683510804464645,
+                  -1.2228422528726044,
+                  1.0404465250908541
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -14.289596111500812,
+                  -0.26622737453829926,
+                  2.0615605105424857
+                ],
+                "mean_PC_delta": [
+                  5.93956790740453,
+                  -0.2980768631620747,
+                  5.300564572383634
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -37.60304805387489,
+                  -0.6344145169129234,
+                  1.4863393590002898
+                ],
+                "mean_PC_delta": [
+                  4.91218053835388,
+                  -1.4085897930221338,
+                  3.281949675839222
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "BCC-CSM2-MR": {
+        "distinct_native_cells": 143,
+        "historical_model_mean": [
+          56.71383765932804,
+          33.92542967299396,
+          -1.355678010891166
+        ],
+        "historical_model_minus_observed": [
+          -4.189438547149162,
+          -0.05481846798536718,
+          0.2573002254144704
+        ],
+        "scenarios": [
+          {
+            "experiment": "ssp245",
+            "period": "2041-2060",
+            "mean_native_delta": [
+              -14.886877846602353,
+              0.12005443101816803,
+              0.5104750716717426
+            ],
+            "mean_adjusted_delta": [
+              -14.77063732517764,
+              0.12005443101816803,
+              0.5104750716717426
+            ],
+            "mean_PC_delta": [
+              1.7533436267165148,
+              0.4389838792199622,
+              0.9915429634330828
+            ],
+            "SIC_clipped": {
+              "tiles": 17,
+              "rock_pixel_fraction": 0.017584344856232982,
+              "mapped_rock_area_fraction": 0.003752037419467983
+            },
+            "low_sic": {
+              "tiles": 423,
+              "rock_pixel_fraction": 0.34490238611713664,
+              "mapped_rock_area_fraction": 0.19560160664821488
+            },
+            "new_low_sic": {
+              "tiles": 305,
+              "rock_pixel_fraction": 0.22928878017261273,
+              "mapped_rock_area_fraction": 0.08220782855616687
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 493,
+              "rock_pixel_fraction": 0.45322379655697603,
+              "mapped_rock_area_fraction": 0.34741080089964965
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1210,
+                "rock_pixel_fraction": 0.8730327225734988,
+                "mapped_rock_area_fraction": 0.8003802605409202
+              },
+              "freshening": {
+                "tiles": 443,
+                "rock_pixel_fraction": 0.28494946231596435,
+                "mapped_rock_area_fraction": 0.36000566633987213
+              },
+              "sst_increase": {
+                "tiles": 1234,
+                "rock_pixel_fraction": 0.8771865048230028,
+                "mapped_rock_area_fraction": 0.7850966105000189
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 300,
+                "rock_pixel_fraction": 0.193520099690774,
+                "mapped_rock_area_fraction": 0.21829709230882213
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 277,
+                "rock_pixel_fraction": 0.17205889140167074,
+                "mapped_rock_area_fraction": 0.18551659307628282
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -10.729707438996613,
+                  0.1182241378007116,
+                  0.8484715770345232
+                ],
+                "mean_PC_delta": [
+                  2.5626309756181307,
+                  0.5008059779022561,
+                  2.0166463307107385
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -9.776380696775098,
+                  0.04126418175235908,
+                  0.3438118172259323
+                ],
+                "mean_PC_delta": [
+                  1.181575223031343,
+                  0.18771948238420463,
+                  0.6752606711473107
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -7.274564304255989,
+                  0.1402766227722169,
+                  1.077433138905137
+                ],
+                "mean_PC_delta": [
+                  3.0889784994996887,
+                  0.605750414464439,
+                  2.7281706811136504
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -22.49760198912226,
+                  0.17802568512994016,
+                  1.074757780044211
+                ],
+                "mean_PC_delta": [
+                  3.47728375625615,
+                  0.716129979767796,
+                  2.3173073625108813
+                ]
+              }
+            }
+          },
+          {
+            "experiment": "ssp245",
+            "period": "2081-2100",
+            "mean_native_delta": [
+              -11.064413959812285,
+              0.05416703143194357,
+              0.36708517216017483
+            ],
+            "mean_adjusted_delta": [
+              -11.063457626767438,
+              0.05416703143194357,
+              0.36708517216017483
+            ],
+            "mean_PC_delta": [
+              1.2765248727577072,
+              0.22829372975739642,
+              0.7039199028310804
+            ],
+            "SIC_clipped": {
+              "tiles": 2,
+              "rock_pixel_fraction": 0.0022615036691743203,
+              "mapped_rock_area_fraction": 0.0002848586239973656
+            },
+            "low_sic": {
+              "tiles": 333,
+              "rock_pixel_fraction": 0.29173397332348733,
+              "mapped_rock_area_fraction": 0.16230415387615046
+            },
+            "new_low_sic": {
+              "tiles": 215,
+              "rock_pixel_fraction": 0.1761203673789634,
+              "mapped_rock_area_fraction": 0.048910375784102456
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 344,
+              "rock_pixel_fraction": 0.3492407809110629,
+              "mapped_rock_area_fraction": 0.27249799842165046
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1215,
+                "rock_pixel_fraction": 0.8654636082521807,
+                "mapped_rock_area_fraction": 0.7747223459983853
+              },
+              "freshening": {
+                "tiles": 554,
+                "rock_pixel_fraction": 0.31721050445377763,
+                "mapped_rock_area_fraction": 0.4087391256335427
+              },
+              "sst_increase": {
+                "tiles": 1310,
+                "rock_pixel_fraction": 0.9294780080306457,
+                "mapped_rock_area_fraction": 0.8967763561132974
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 368,
+                "rock_pixel_fraction": 0.18267411270595837,
+                "mapped_rock_area_fraction": 0.18346147163192822
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 368,
+                "rock_pixel_fraction": 0.18267411270595837,
+                "mapped_rock_area_fraction": 0.18346147163192822
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -9.25739424337274,
+                  0.05850982092044881,
+                  0.6768366301942383
+                ],
+                "mean_PC_delta": [
+                  2.068955617846557,
+                  0.30239075950208155,
+                  1.5913139048877565
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -9.363811762609961,
+                  0.0016069166121936054,
+                  0.2685987673179743
+                ],
+                "mean_PC_delta": [
+                  0.9720185955238357,
+                  0.06412797008194879,
+                  0.484854820948757
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -6.190061097601495,
+                  0.07054319381713794,
+                  0.8676691012853672
+                ],
+                "mean_PC_delta": [
+                  2.505047395029048,
+                  0.3725014345724927,
+                  2.188253860635306
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -19.828013655939618,
+                  0.11607250909547359,
+                  0.8332404920942237
+                ],
+                "mean_PC_delta": [
+                  2.7608560872659678,
+                  0.4966755053135913,
+                  1.7360374119795117
+                ]
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2041-2060",
+            "mean_native_delta": [
+              -16.349444065335494,
+              0.12032274538783935,
+              0.5301208350595115
+            ],
+            "mean_adjusted_delta": [
+              -16.34243295489098,
+              0.12032274538783935,
+              0.5301208350595115
+            ],
+            "mean_PC_delta": [
+              1.8475119593957623,
+              0.44455209379717375,
+              1.0038842742014031
+            ],
+            "SIC_clipped": {
+              "tiles": 7,
+              "rock_pixel_fraction": 0.007292195504684544,
+              "mapped_rock_area_fraction": 0.0010847934105408775
+            },
+            "low_sic": {
+              "tiles": 398,
+              "rock_pixel_fraction": 0.32888724788849405,
+              "mapped_rock_area_fraction": 0.18620434449379308
+            },
+            "new_low_sic": {
+              "tiles": 280,
+              "rock_pixel_fraction": 0.21327364194397008,
+              "mapped_rock_area_fraction": 0.0728105664017451
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 467,
+              "rock_pixel_fraction": 0.4260395993907786,
+              "mapped_rock_area_fraction": 0.3153854761601932
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1313,
+                "rock_pixel_fraction": 0.9383394101629206,
+                "mapped_rock_area_fraction": 0.9078176992881617
+              },
+              "freshening": {
+                "tiles": 443,
+                "rock_pixel_fraction": 0.30304149166935895,
+                "mapped_rock_area_fraction": 0.37882460787904243
+              },
+              "sst_increase": {
+                "tiles": 1229,
+                "rock_pixel_fraction": 0.8894632390270919,
+                "mapped_rock_area_fraction": 0.8671949959344167
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 355,
+                "rock_pixel_fraction": 0.2413809018322795,
+                "mapped_rock_area_fraction": 0.28664230716720424
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 302,
+                "rock_pixel_fraction": 0.209719850463839,
+                "mapped_rock_area_fraction": 0.2629135764483876
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -10.374248217996804,
+                  0.10675945900104683,
+                  0.893563105388965
+                ],
+                "mean_PC_delta": [
+                  2.6794346536663114,
+                  0.47863892721933854,
+                  2.146859465335381
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -9.897265626348224,
+                  0.0171426127033848,
+                  0.35009848506832053
+                ],
+                "mean_PC_delta": [
+                  1.2049086064051833,
+                  0.12336073571396121,
+                  0.6909792109498778
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -7.025176120872583,
+                  0.13405012776774797,
+                  1.1587308849516686
+                ],
+                "mean_PC_delta": [
+                  3.3077452605962643,
+                  0.6053314425486864,
+                  2.95179494615682
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -21.69326492561202,
+                  0.17742081332851078,
+                  1.0866751887535093
+                ],
+                "mean_PC_delta": [
+                  3.4887385927209253,
+                  0.7164910499418725,
+                  2.3706550734452567
+                ]
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2081-2100",
+            "mean_native_delta": [
+              -17.643920017967996,
+              -0.03569705496090968,
+              0.6578829499288258
+            ],
+            "mean_adjusted_delta": [
+              -17.612412258120532,
+              -0.03569705496090968,
+              0.6578829499288258
+            ],
+            "mean_PC_delta": [
+              2.247349200418951,
+              0.04630935330001004,
+              1.329220654952075
+            ],
+            "SIC_clipped": {
+              "tiles": 69,
+              "rock_pixel_fraction": 0.04564545160843679,
+              "mapped_rock_area_fraction": 0.008883701463524754
+            },
+            "low_sic": {
+              "tiles": 495,
+              "rock_pixel_fraction": 0.37596344671620435,
+              "mapped_rock_area_fraction": 0.1962507543717634
+            },
+            "new_low_sic": {
+              "tiles": 377,
+              "rock_pixel_fraction": 0.26034984077168044,
+              "mapped_rock_area_fraction": 0.08285697627971537
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 628,
+              "rock_pixel_fraction": 0.5272534268703558,
+              "mapped_rock_area_fraction": 0.38620410132875355
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1298,
+                "rock_pixel_fraction": 0.9143397793880094,
+                "mapped_rock_area_fraction": 0.8397364389649786
+              },
+              "freshening": {
+                "tiles": 1094,
+                "rock_pixel_fraction": 0.7648036184058706,
+                "mapped_rock_area_fraction": 0.8902457223590795
+              },
+              "sst_increase": {
+                "tiles": 1336,
+                "rock_pixel_fraction": 0.9535237919416625,
+                "mapped_rock_area_fraction": 0.9211916360316059
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 991,
+                "rock_pixel_fraction": 0.6791433977938801,
+                "mapped_rock_area_fraction": 0.7299821613240585
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 968,
+                "rock_pixel_fraction": 0.6590667835879448,
+                "mapped_rock_area_fraction": 0.686610422656388
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -12.08271002778102,
+                  -0.008852301703558777,
+                  1.1151564390438966
+                ],
+                "mean_PC_delta": [
+                  3.3394939483731747,
+                  0.20983813325998368,
+                  2.7128024272707756
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -15.12628747771207,
+                  -0.036833724667948146,
+                  0.4638062873778249
+                ],
+                "mean_PC_delta": [
+                  1.6564446090652392,
+                  0.0022938373124132623,
+                  0.8673679759587657
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -7.10000661189471,
+                  -0.003558891050277126,
+                  1.4096436755244435
+                ],
+                "mean_PC_delta": [
+                  4.0073429228390305,
+                  0.2817292404452411,
+                  3.641824673337876
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -22.28596856302162,
+                  0.031137463853166448,
+                  1.3800143459080285
+                ],
+                "mean_PC_delta": [
+                  4.318706596208315,
+                  0.3782064853154362,
+                  3.162282385769852
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "CESM2": {
+        "distinct_native_cells": 156,
+        "historical_model_mean": [
+          74.67339947593052,
+          33.65804696050719,
+          -1.7169425359085078
+        ],
+        "historical_model_minus_observed": [
+          13.770123269453372,
+          -0.32220118047214563,
+          -0.10396429960287035
+        ],
+        "scenarios": [
+          {
+            "experiment": "ssp245",
+            "period": "2041-2060",
+            "mean_native_delta": [
+              -11.424174477256503,
+              -0.13981974455351515,
+              0.17453853306775657
+            ],
+            "mean_adjusted_delta": [
+              -9.656877519953328,
+              -0.13981974455351515,
+              0.17453853306775657
+            ],
+            "mean_PC_delta": [
+              0.7429575757496557,
+              -0.3401513419594987,
+              0.23253333507966173
+            ],
+            "SIC_clipped": {
+              "tiles": 227,
+              "rock_pixel_fraction": 0.20916601283057185,
+              "mapped_rock_area_fraction": 0.13078715774352936
+            },
+            "low_sic": {
+              "tiles": 305,
+              "rock_pixel_fraction": 0.27904186089444777,
+              "mapped_rock_area_fraction": 0.1805969804753485
+            },
+            "new_low_sic": {
+              "tiles": 187,
+              "rock_pixel_fraction": 0.16342825494992386,
+              "mapped_rock_area_fraction": 0.06720320238330046
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 267,
+              "rock_pixel_fraction": 0.24733465638990168,
+              "mapped_rock_area_fraction": 0.1582420781695344
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1212,
+                "rock_pixel_fraction": 0.8933401024599622,
+                "mapped_rock_area_fraction": 0.8878524159886091
+              },
+              "freshening": {
+                "tiles": 1401,
+                "rock_pixel_fraction": 1,
+                "mapped_rock_area_fraction": 1
+              },
+              "sst_increase": {
+                "tiles": 1324,
+                "rock_pixel_fraction": 0.9324779618775095,
+                "mapped_rock_area_fraction": 0.901828953616371
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 1212,
+                "rock_pixel_fraction": 0.8933401024599622,
+                "mapped_rock_area_fraction": 0.8878524159886091
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 1212,
+                "rock_pixel_fraction": 0.8933401024599622,
+                "mapped_rock_area_fraction": 0.8878524159886091
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -16.4503667912502,
+                  -0.12849287103723556,
+                  0.2889615750754104
+                ],
+                "mean_PC_delta": [
+                  1.1526306152336236,
+                  -0.28390500932053453,
+                  0.4413094379009758
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -5.340936587925879,
+                  -0.11110008762728793,
+                  0.0862126953253943
+                ],
+                "mean_PC_delta": [
+                  0.3723403853935667,
+                  -0.28252356874597406,
+                  0.11811507664153288
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -22.50498821638338,
+                  -0.12616501239038275,
+                  0.4244454644604458
+                ],
+                "mean_PC_delta": [
+                  1.6318499727674582,
+                  -0.24764520357766953,
+                  0.6966488569604865
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -18.93954063205491,
+                  -0.14525409518061272,
+                  0.257049013717207
+                ],
+                "mean_PC_delta": [
+                  1.1513375256199487,
+                  -0.33439444032837656,
+                  0.2728200332584638
+                ]
+              }
+            }
+          },
+          {
+            "experiment": "ssp245",
+            "period": "2081-2100",
+            "mean_native_delta": [
+              -31.87302057999218,
+              -0.26016742948425714,
+              0.6817719564043795
+            ],
+            "mean_adjusted_delta": [
+              -20.355192262641182,
+              -0.26016742948425714,
+              0.6817719564043795
+            ],
+            "mean_PC_delta": [
+              2.412740702863555,
+              -0.5588123708664736,
+              1.3393973424630348
+            ],
+            "SIC_clipped": {
+              "tiles": 474,
+              "rock_pixel_fraction": 0.397840033230258,
+              "mapped_rock_area_fraction": 0.2308437240632338
+            },
+            "low_sic": {
+              "tiles": 519,
+              "rock_pixel_fraction": 0.42927031891817047,
+              "mapped_rock_area_fraction": 0.23926915564075768
+            },
+            "new_low_sic": {
+              "tiles": 401,
+              "rock_pixel_fraction": 0.31365671297364656,
+              "mapped_rock_area_fraction": 0.12587537754870964
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 626,
+              "rock_pixel_fraction": 0.517468962015969,
+              "mapped_rock_area_fraction": 0.31870676991393815
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1181,
+                "rock_pixel_fraction": 0.8787557114505931,
+                "mapped_rock_area_fraction": 0.8763154998692143
+              },
+              "freshening": {
+                "tiles": 1401,
+                "rock_pixel_fraction": 1,
+                "mapped_rock_area_fraction": 1
+              },
+              "sst_increase": {
+                "tiles": 1324,
+                "rock_pixel_fraction": 0.9324779618775095,
+                "mapped_rock_area_fraction": 0.901828953616371
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 1181,
+                "rock_pixel_fraction": 0.8787557114505931,
+                "mapped_rock_area_fraction": 0.8763154998692143
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 1181,
+                "rock_pixel_fraction": 0.8787557114505931,
+                "mapped_rock_area_fraction": 0.8763154998692143
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -40.52027693143754,
+                  -0.2055637708416684,
+                  1.0307931035571445
+                ],
+                "mean_PC_delta": [
+                  3.3841410615371843,
+                  -0.3381954488927149,
+                  2.2505341076465193
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -22.891184258560525,
+                  -0.24342907782523876,
+                  0.43019827184785553
+                ],
+                "mean_PC_delta": [
+                  1.5872680664814283,
+                  -0.5674159590108442,
+                  0.796534771925377
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -43.05727051644457,
+                  -0.18557781019518335,
+                  1.3096898248074258
+                ],
+                "mean_PC_delta": [
+                  4.159093346998937,
+                  -0.22640477324530123,
+                  2.98473401618564
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -68.16887676742195,
+                  -0.15606465726285412,
+                  1.3573086861815982
+                ],
+                "mean_PC_delta": [
+                  4.552450851050431,
+                  -0.13087259332133452,
+                  2.843498497381243
+                ]
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2041-2060",
+            "mean_native_delta": [
+              -16.175812772111552,
+              -0.18257652955176934,
+              0.26447595209438335
+            ],
+            "mean_adjusted_delta": [
+              -11.994748675891014,
+              -0.18257652955176934,
+              0.26447595209438335
+            ],
+            "mean_PC_delta": [
+              1.0532930470940376,
+              -0.4370309187871877,
+              0.41890509002847515
+            ],
+            "SIC_clipped": {
+              "tiles": 281,
+              "rock_pixel_fraction": 0.25116536668666634,
+              "mapped_rock_area_fraction": 0.16087903356800407
+            },
+            "low_sic": {
+              "tiles": 351,
+              "rock_pixel_fraction": 0.33345640836294826,
+              "mapped_rock_area_fraction": 0.22098417893332353
+            },
+            "new_low_sic": {
+              "tiles": 233,
+              "rock_pixel_fraction": 0.21784280241842433,
+              "mapped_rock_area_fraction": 0.10759040084127551
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 322,
+              "rock_pixel_fraction": 0.2899801541514746,
+              "mapped_rock_area_fraction": 0.21790887841228607
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1128,
+                "rock_pixel_fraction": 0.8564175935754834,
+                "mapped_rock_area_fraction": 0.8638576850969573
+              },
+              "freshening": {
+                "tiles": 1401,
+                "rock_pixel_fraction": 1,
+                "mapped_rock_area_fraction": 1
+              },
+              "sst_increase": {
+                "tiles": 1324,
+                "rock_pixel_fraction": 0.9324779618775095,
+                "mapped_rock_area_fraction": 0.901828953616371
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 1128,
+                "rock_pixel_fraction": 0.8564175935754834,
+                "mapped_rock_area_fraction": 0.8638576850969573
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 1128,
+                "rock_pixel_fraction": 0.8564175935754834,
+                "mapped_rock_area_fraction": 0.8638576850969573
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -23.530357694094544,
+                  -0.15592300185450764,
+                  0.4431332256993674
+                ],
+                "mean_PC_delta": [
+                  1.6703493609080526,
+                  -0.32521445642431535,
+                  0.765658206559698
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -8.048073567478003,
+                  -0.1495769869896662,
+                  0.14021804436596289
+                ],
+                "mean_PC_delta": [
+                  0.5795843538474809,
+                  -0.37518153496973033,
+                  0.211741448527634
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -31.073272296751785,
+                  -0.14378442379736162,
+                  0.6378327779496753
+                ],
+                "mean_PC_delta": [
+                  2.29550943605841,
+                  -0.25041576346524247,
+                  1.194354449414426
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -29.094933327688942,
+                  -0.18440723934689016,
+                  0.4266031807371904
+                ],
+                "mean_PC_delta": [
+                  1.8153167614671126,
+                  -0.40241342876515157,
+                  0.5366961870862518
+                ]
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2081-2100",
+            "mean_native_delta": [
+              -44.95048828354041,
+              -0.42148215235828346,
+              1.4886578962516719
+            ],
+            "mean_adjusted_delta": [
+              -31.83236822998226,
+              -0.42148215235828346,
+              1.4886578962516719
+            ],
+            "mean_PC_delta": [
+              4.920764225569329,
+              -0.8274970628514737,
+              3.2422844551090293
+            ],
+            "SIC_clipped": {
+              "tiles": 591,
+              "rock_pixel_fraction": 0.4878386486361748,
+              "mapped_rock_area_fraction": 0.28119346908187104
+            },
+            "low_sic": {
+              "tiles": 788,
+              "rock_pixel_fraction": 0.5996215442839341,
+              "mapped_rock_area_fraction": 0.40626009261761586
+            },
+            "new_low_sic": {
+              "tiles": 670,
+              "rock_pixel_fraction": 0.48400793833941014,
+              "mapped_rock_area_fraction": 0.29286631452556783
+            },
+            "lost_low_sic": {
+              "tiles": 0,
+              "rock_pixel_fraction": 0,
+              "mapped_rock_area_fraction": 0
+            },
+            "outside_baseline_joint_bins": {
+              "tiles": 900,
+              "rock_pixel_fraction": 0.7204504546083906,
+              "mapped_rock_area_fraction": 0.6366708081227168
+            },
+            "directions": {
+              "sic_decrease": {
+                "tiles": 1277,
+                "rock_pixel_fraction": 0.916232057968339,
+                "mapped_rock_area_fraction": 0.8962083581540282
+              },
+              "freshening": {
+                "tiles": 1401,
+                "rock_pixel_fraction": 1,
+                "mapped_rock_area_fraction": 1
+              },
+              "sst_increase": {
+                "tiles": 1342,
+                "rock_pixel_fraction": 0.9505699912309041,
+                "mapped_rock_area_fraction": 0.9280231747405815
+              },
+              "sic_decrease_and_freshening": {
+                "tiles": 1277,
+                "rock_pixel_fraction": 0.916232057968339,
+                "mapped_rock_area_fraction": 0.8962083581540282
+              },
+              "all_three_warm_fresh_less_ice": {
+                "tiles": 1277,
+                "rock_pixel_fraction": 0.916232057968339,
+                "mapped_rock_area_fraction": 0.8962083581540282
+              }
+            },
+            "observed_modern_groups": {
+              "modern": {
+                "tiles": 108,
+                "mean_native_delta": [
+                  -45.16804356095195,
+                  -0.3363162923742205,
+                  2.1227247009221193
+                ],
+                "mean_PC_delta": [
+                  6.465492261359656,
+                  -0.4694129921986075,
+                  5.120607171320472
+                ]
+              },
+              "ADPE": {
+                "tiles": 31,
+                "mean_native_delta": [
+                  -32.88160067604768,
+                  -0.361356695236697,
+                  0.9900143401994891
+                ],
+                "mean_PC_delta": [
+                  3.34233773171077,
+                  -0.7699058762111152,
+                  2.1029676578447867
+                ]
+              },
+              "CHPE": {
+                "tiles": 62,
+                "mean_native_delta": [
+                  -44.31449261079807,
+                  -0.30534285499203384,
+                  2.662457287756186
+                ],
+                "mean_PC_delta": [
+                  7.86898942931826,
+                  -0.2760232258045304,
+                  6.639337461924692
+                ]
+              },
+              "GEPE": {
+                "tiles": 37,
+                "mean_native_delta": [
+                  -71.4128855353782,
+                  -0.31643408440254595,
+                  2.6339184608609356
+                ],
+                "mean_PC_delta": [
+                  8.107622512376153,
+                  -0.3056968963306788,
+                  6.2478887963339345
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "ensemble": [
+      {
+        "experiment": "ssp245",
+        "period": "2041-2060",
+        "equal_model_mean_native_delta": [
+          -10.220438919053148,
+          -0.04171360064388408,
+          0.3030025201924987
+        ],
+        "model_weighted_mean_delta_min": [
+          -14.886877846602353,
+          -0.13981974455351515,
+          0.17453853306775657
+        ],
+        "model_weighted_mean_delta_max": [
+          -4.350264433300578,
+          0.12005443101816803,
+          0.5104750716717426
+        ],
+        "all_models_sic_decrease": {
+          "tiles": 962,
+          "rock_pixel_fraction": 0.7455577606498361,
+          "mapped_rock_area_fraction": 0.6988198125108032
+        },
+        "all_models_freshening": {
+          "tiles": 443,
+          "rock_pixel_fraction": 0.28494946231596435,
+          "mapped_rock_area_fraction": 0.36000566633987213
+        },
+        "all_models_sst_increase": {
+          "tiles": 1128,
+          "rock_pixel_fraction": 0.8253103798403102,
+          "mapped_rock_area_fraction": 0.7473219014238232
+        },
+        "all_models_less_ice_freshening": {
+          "tiles": 175,
+          "rock_pixel_fraction": 0.11764434393317026,
+          "mapped_rock_area_fraction": 0.14013507127860683
+        },
+        "all_models_new_low_sic": {
+          "tiles": 78,
+          "rock_pixel_fraction": 0.07462962108275258,
+          "mapped_rock_area_fraction": 0.024067146992098908
+        },
+        "all_models_outside_baseline_joint_bins": {
+          "tiles": 225,
+          "rock_pixel_fraction": 0.21761203673789634,
+          "mapped_rock_area_fraction": 0.14316700167685203
+        },
+        "any_model_outside_baseline_joint_bins": {
+          "tiles": 516,
+          "rock_pixel_fraction": 0.47080814141320904,
+          "mapped_rock_area_fraction": 0.3790438698022348
+        }
+      },
+      {
+        "experiment": "ssp245",
+        "period": "2081-2100",
+        "equal_model_mean_native_delta": [
+          -17.81768170449043,
+          -0.1673906528931951,
+          0.5224965306908882
+        ],
+        "model_weighted_mean_delta_min": [
+          -31.87302057999218,
+          -0.29617156062727196,
+          0.36708517216017483
+        ],
+        "model_weighted_mean_delta_max": [
+          -10.515610573666885,
+          0.05416703143194357,
+          0.6817719564043795
+        ],
+        "all_models_sic_decrease": {
+          "tiles": 1038,
+          "rock_pixel_fraction": 0.7934647159274473,
+          "mapped_rock_area_fraction": 0.7301823127469727
+        },
+        "all_models_freshening": {
+          "tiles": 554,
+          "rock_pixel_fraction": 0.31721050445377763,
+          "mapped_rock_area_fraction": 0.4087391256335427
+        },
+        "all_models_sst_increase": {
+          "tiles": 1251,
+          "rock_pixel_fraction": 0.9062168274334241,
+          "mapped_rock_area_fraction": 0.8836854759699745
+        },
+        "all_models_less_ice_freshening": {
+          "tiles": 218,
+          "rock_pixel_fraction": 0.11796741588590945,
+          "mapped_rock_area_fraction": 0.14438009733550852
+        },
+        "all_models_new_low_sic": {
+          "tiles": 113,
+          "rock_pixel_fraction": 0.11132136428670328,
+          "mapped_rock_area_fraction": 0.03645454380720977
+        },
+        "all_models_outside_baseline_joint_bins": {
+          "tiles": 319,
+          "rock_pixel_fraction": 0.31956431439516314,
+          "mapped_rock_area_fraction": 0.19913346590384398
+        },
+        "any_model_outside_baseline_joint_bins": {
+          "tiles": 719,
+          "rock_pixel_fraction": 0.595606221442747,
+          "mapped_rock_area_fraction": 0.44568628214026507
+        }
+      },
+      {
+        "experiment": "ssp585",
+        "period": "2041-2060",
+        "equal_model_mean_native_delta": [
+          -12.795372477973824,
+          -0.0652720276299749,
+          0.3519517822119049
+        ],
+        "model_weighted_mean_delta_min": [
+          -16.349444065335494,
+          -0.18257652955176934,
+          0.2612585594818201
+        ],
+        "model_weighted_mean_delta_max": [
+          -5.860860596474442,
+          0.12032274538783935,
+          0.5301208350595115
+        ],
+        "all_models_sic_decrease": {
+          "tiles": 1021,
+          "rock_pixel_fraction": 0.8083721788895556,
+          "mapped_rock_area_fraction": 0.8325950369115734
+        },
+        "all_models_freshening": {
+          "tiles": 429,
+          "rock_pixel_fraction": 0.2924262703650713,
+          "mapped_rock_area_fraction": 0.3673557856179127
+        },
+        "all_models_sst_increase": {
+          "tiles": 1163,
+          "rock_pixel_fraction": 0.8588637097890802,
+          "mapped_rock_area_fraction": 0.8498037229229553
+        },
+        "all_models_less_ice_freshening": {
+          "tiles": 182,
+          "rock_pixel_fraction": 0.15378224950385377,
+          "mapped_rock_area_fraction": 0.2326479086604877
+        },
+        "all_models_new_low_sic": {
+          "tiles": 90,
+          "rock_pixel_fraction": 0.08990630913370563,
+          "mapped_rock_area_fraction": 0.02852871569253627
+        },
+        "all_models_outside_baseline_joint_bins": {
+          "tiles": 248,
+          "rock_pixel_fraction": 0.23408870632759496,
+          "mapped_rock_area_fraction": 0.15330007663053657
+        },
+        "any_model_outside_baseline_joint_bins": {
+          "tiles": 532,
+          "rock_pixel_fraction": 0.47574652697650804,
+          "mapped_rock_area_fraction": 0.38574777015169837
+        }
+      },
+      {
+        "experiment": "ssp585",
+        "period": "2081-2100",
+        "equal_model_mean_native_delta": [
+          -27.045719496066347,
+          -0.3057801475913844,
+          1.0355548752193864
+        ],
+        "model_weighted_mean_delta_min": [
+          -44.95048828354041,
+          -0.4601612354549607,
+          0.6578829499288258
+        ],
+        "model_weighted_mean_delta_max": [
+          -17.643920017967996,
+          -0.03569705496090968,
+          1.4886578962516719
+        ],
+        "all_models_sic_decrease": {
+          "tiles": 1093,
+          "rock_pixel_fraction": 0.8041260903678404,
+          "mapped_rock_area_fraction": 0.7380602374546492
+        },
+        "all_models_freshening": {
+          "tiles": 1094,
+          "rock_pixel_fraction": 0.7648036184058706,
+          "mapped_rock_area_fraction": 0.8902457223590795
+        },
+        "all_models_sst_increase": {
+          "tiles": 1247,
+          "rock_pixel_fraction": 0.8986015599760003,
+          "mapped_rock_area_fraction": 0.8751095097791501
+        },
+        "all_models_less_ice_freshening": {
+          "tiles": 790,
+          "rock_pixel_fraction": 0.5691143213181336,
+          "mapped_rock_area_fraction": 0.6283097550093348
+        },
+        "all_models_new_low_sic": {
+          "tiles": 181,
+          "rock_pixel_fraction": 0.16656666820510455,
+          "mapped_rock_area_fraction": 0.05345881438326441
+        },
+        "all_models_outside_baseline_joint_bins": {
+          "tiles": 615,
+          "rock_pixel_fraction": 0.5248996169289704,
+          "mapped_rock_area_fraction": 0.3850652506733892
+        },
+        "any_model_outside_baseline_joint_bins": {
+          "tiles": 926,
+          "rock_pixel_fraction": 0.7480038768634328,
+          "mapped_rock_area_fraction": 0.7167114260730542
+        }
+      }
+    ]
+  },
+  "execution": {
+    "run": 46113001061,
+    "head": "b0a637c77ead4def056aec35cc670be23889ab30",
+    "artifact": 15249889624,
+    "digest": "sha256:979132768c36a62fae7119c04630a9b80607e2eb676fbd9c17ba2be47ff0f386"
+  }
+}
