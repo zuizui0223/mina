@@ -1,0 +1,34 @@
+name: V30b terrain matched marine geography and residual diagnostic
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-terrain-match-v30b.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  match:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy
+      - name: Run frozen terrain matching and complementary conditional residual analysis
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249701928/zip" > terrain.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249745700/zip" > marine.zip
+          python research/macro_marine_land_footprint_v1/terrain_match_v30b.py terrain.zip marine.zip v30b_result 531b94c8f38b4117d54bb9f3de0f293fdcf3120d1a7f991fb7eb8926e4536511
+          python research/macro_marine_land_footprint_v1/terrain_residual_v30c.py terrain.zip marine.zip v30b_result 531b94c8f38b4117d54bb9f3de0f293fdcf3120d1a7f991fb7eb8926e4536511
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-coastal-terrain-match-v30b
+          path: v30b_result/
+          retention-days: 30
+          if-no-files-found: warn
