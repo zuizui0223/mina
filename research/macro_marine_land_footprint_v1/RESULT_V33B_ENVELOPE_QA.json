@@ -1,0 +1,337 @@
+{
+  "status": "VERIFIED_PRIMARY_FACTORIAL_AND_ENVELOPE",
+  "checks": 1734,
+  "max_abs_difference": 3.552713678800501e-14,
+  "background_sd": [
+    27.144192174945395,
+    0.3665606331680001,
+    0.2602735103968187
+  ],
+  "references": {
+    "ADPE": {
+      "n": 31,
+      "threshold": 1.5601127142343805,
+      "reference_min": [
+        15.816267857142856,
+        33.21264531346969,
+        -1.832493035774678
+      ],
+      "reference_max": [
+        94.71698780487802,
+        34.57663194509223,
+        -1.2806970220059157
+      ],
+      "axis_tolerance": [
+        42.34799932975369,
+        0.5718759043432017,
+        0.406056012748491
+      ],
+      "necessary_lower": [
+        -26.531731472610836,
+        32.64076940912649,
+        -2.238549048523169
+      ],
+      "necessary_upper": [
+        137.0649871346317,
+        35.14850784943543,
+        -0.8746410092574247
+      ]
+    },
+    "CHPE": {
+      "n": 62,
+      "threshold": 0.7486764850886898,
+      "reference_min": [
+        13.394087500000001,
+        33.79625458444934,
+        -1.7176640921272337
+      ],
+      "reference_max": [
+        52.454300781249984,
+        34.182523543713614,
+        -0.9673482262529433
+      ],
+      "axis_tolerance": [
+        20.322218388110038,
+        0.2744353264121029,
+        0.19486065692558477
+      ],
+      "necessary_lower": [
+        -6.9281308881100365,
+        33.52181925803724,
+        -1.9125247490528186
+      ],
+      "necessary_upper": [
+        72.77651916936003,
+        34.45695887012572,
+        -0.7724875693273585
+      ]
+    },
+    "GEPE": {
+      "n": 37,
+      "threshold": 0.67257889385837,
+      "reference_min": [
+        15.816267857142856,
+        33.55460521182977,
+        -1.7174535144120455
+      ],
+      "reference_max": [
+        61.25836111111109,
+        34.11770985927433,
+        -1.1194494254887104
+      ],
+      "axis_tolerance": [
+        18.256610747703796,
+        0.24654094518815722,
+        0.17505446972332728
+      ],
+      "necessary_lower": [
+        -2.44034289056094,
+        33.30806426664161,
+        -1.892507984135373
+      ],
+      "necessary_upper": [
+        79.51497185881489,
+        34.364250804462486,
+        -0.9443949557653831
+      ]
+    }
+  },
+  "diagnostics": [
+    {
+      "species": "GEPE",
+      "model": "ACCESS-CM2",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "full",
+      "subset": 4,
+      "lost_area_fraction": 0.40006603805592816,
+      "lost_area_km2": 1233.3416065842905,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0,
+        "SST": 0.6367169909714882
+      },
+      "loss_share_any_axis_fail": 0.6367169909714882,
+      "loss_share_all_axes_pass_joint_fail": 0.36328300902851174,
+      "loss_share_above_sst_max_plus_tolerance": 0.6367169909714882,
+      "weighted_mean_sst": -0.9410182286264785
+    },
+    {
+      "species": "GEPE",
+      "model": "ACCESS-CM2",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "full",
+      "subset": 7,
+      "lost_area_fraction": 0.40269587751874003,
+      "lost_area_km2": 1241.4489941643124,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0.3401098450156026,
+        "SST": 0.6325588568484942
+      },
+      "loss_share_any_axis_fail": 0.9124819560926387,
+      "loss_share_all_axes_pass_joint_fail": 0.08751804390736136,
+      "loss_share_above_sst_max_plus_tolerance": 0.6325588568484942,
+      "weighted_mean_sst": -0.9410182286264785
+    },
+    {
+      "species": "GEPE",
+      "model": "ACCESS-CM2",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "common_unclipped",
+      "subset": 4,
+      "lost_area_fraction": 0.24869573540568474,
+      "lost_area_km2": 548.6709986080948,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0,
+        "SST": 0.324282263978714
+      },
+      "loss_share_any_axis_fail": 0.324282263978714,
+      "loss_share_all_axes_pass_joint_fail": 0.675717736021286,
+      "loss_share_above_sst_max_plus_tolerance": 0.324282263978714,
+      "weighted_mean_sst": -1.3813627420694439
+    },
+    {
+      "species": "GEPE",
+      "model": "ACCESS-CM2",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "common_unclipped",
+      "subset": 7,
+      "lost_area_fraction": 0.2521995016896095,
+      "lost_area_km2": 556.4009861881168,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0.5509930474787997,
+        "SST": 0.3197770637091204
+      },
+      "loss_share_any_axis_fail": 0.8707701111879201,
+      "loss_share_all_axes_pass_joint_fail": 0.1292298888120798,
+      "loss_share_above_sst_max_plus_tolerance": 0.3197770637091204,
+      "weighted_mean_sst": -1.3813627420694439
+    },
+    {
+      "species": "GEPE",
+      "model": "BCC-CSM2-MR",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "full",
+      "subset": 4,
+      "lost_area_fraction": 0.40101740360590205,
+      "lost_area_km2": 1236.2745191643123,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0,
+        "SST": 0.5023196584073398
+      },
+      "loss_share_any_axis_fail": 0.5023196584073398,
+      "loss_share_all_axes_pass_joint_fail": 0.49768034159266006,
+      "loss_share_above_sst_max_plus_tolerance": 0.5023196584073398,
+      "weighted_mean_sst": -1.2323168854919004
+    },
+    {
+      "species": "GEPE",
+      "model": "BCC-CSM2-MR",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "full",
+      "subset": 7,
+      "lost_area_fraction": 0.35500794723423323,
+      "lost_area_km2": 1094.4344941643124,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0.00038732331835326635,
+        "SST": 0.5674208894873167
+      },
+      "loss_share_any_axis_fail": 0.5678082128056701,
+      "loss_share_all_axes_pass_joint_fail": 0.4321917871943299,
+      "loss_share_above_sst_max_plus_tolerance": 0.5674208894873167,
+      "weighted_mean_sst": -1.2323168854919004
+    },
+    {
+      "species": "GEPE",
+      "model": "BCC-CSM2-MR",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "common_unclipped",
+      "subset": 4,
+      "lost_area_fraction": 0.25181094788901864,
+      "lost_area_km2": 555.5437611881168,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0,
+        "SST": 0.20416449452252958
+      },
+      "loss_share_any_axis_fail": 0.20416449452252958,
+      "loss_share_all_axes_pass_joint_fail": 0.7958355054774704,
+      "loss_share_above_sst_max_plus_tolerance": 0.20416449452252958,
+      "weighted_mean_sst": -1.539623254187423
+    },
+    {
+      "species": "GEPE",
+      "model": "BCC-CSM2-MR",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "common_unclipped",
+      "subset": 7,
+      "lost_area_fraction": 0.18733626409256965,
+      "lost_area_km2": 413.3001111881167,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0.0010256469536904108,
+        "SST": 0.27443087508992153
+      },
+      "loss_share_any_axis_fail": 0.27545652204361193,
+      "loss_share_all_axes_pass_joint_fail": 0.7245434779563881,
+      "loss_share_above_sst_max_plus_tolerance": 0.27443087508992153,
+      "weighted_mean_sst": -1.539623254187423
+    },
+    {
+      "species": "GEPE",
+      "model": "CESM2",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "full",
+      "subset": 4,
+      "lost_area_fraction": 0.40228613017237397,
+      "lost_area_km2": 1240.1858065842905,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0,
+        "SST": 0.6339242897397702
+      },
+      "loss_share_any_axis_fail": 0.6339242897397702,
+      "loss_share_all_axes_pass_joint_fail": 0.3660757102602297,
+      "loss_share_above_sst_max_plus_tolerance": 0.6339242897397702,
+      "weighted_mean_sst": -0.6857061653481105
+    },
+    {
+      "species": "GEPE",
+      "model": "CESM2",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "full",
+      "subset": 7,
+      "lost_area_fraction": 0.40269587751874003,
+      "lost_area_km2": 1241.4489941643124,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0.3802855089490179,
+        "SST": 0.6332792650200776
+      },
+      "loss_share_any_axis_fail": 1,
+      "loss_share_all_axes_pass_joint_fail": 0,
+      "loss_share_above_sst_max_plus_tolerance": 0.6332792650200776,
+      "weighted_mean_sst": -0.6857061653481105
+    },
+    {
+      "species": "GEPE",
+      "model": "CESM2",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "common_unclipped",
+      "subset": 4,
+      "lost_area_fraction": 0.2516269375027546,
+      "lost_area_km2": 555.1377986080948,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0,
+        "SST": 0.18218161123539847
+      },
+      "loss_share_any_axis_fail": 0.18218161123539847,
+      "loss_share_all_axes_pass_joint_fail": 0.8178183887646017,
+      "loss_share_above_sst_max_plus_tolerance": 0.18218161123539847,
+      "weighted_mean_sst": -1.4094081472261668
+    },
+    {
+      "species": "GEPE",
+      "model": "CESM2",
+      "experiment": "ssp585",
+      "period": "2081-2100",
+      "support": "common_unclipped",
+      "subset": 7,
+      "lost_area_fraction": 0.2521995016896095,
+      "lost_area_km2": 556.4009861881168,
+      "loss_share_axis_fail": {
+        "SIC": 0,
+        "SSS": 0.8197726530013894,
+        "SST": 0.18176800745982366
+      },
+      "loss_share_any_axis_fail": 1,
+      "loss_share_all_axes_pass_joint_fail": 0,
+      "loss_share_above_sst_max_plus_tolerance": 0.18176800745982366,
+      "weighted_mean_sst": -1.4094081472261668
+    }
+  ],
+  "limits": "Necessary coordinate-distance bound in fixed Euclidean reference geometry, not physiological limit or causal mechanism.",
+  "execution": {
+    "run": 46114046530,
+    "head": "470a16d514ed631e38ffa7b89e32e0d182174189",
+    "artifact": 15250134745,
+    "digest": "sha256:61eb4370bfaea6b51977293a2267cf0d33afc59d06be59338d1651807a7393ab",
+    "scope": "Log receipt contains Gentoo late high-emission diagnostic; all species/periods in artifact qa.json."
+  }
+}
