@@ -1,0 +1,994 @@
+{
+  "snow": {
+    "status": "EXECUTED_ERA5_LAND_SUPPORT_AUDIT",
+    "source_url": "https://storage.googleapis.com/gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3",
+    "metadata_sha256": "0e6dfdb71a9ddb129704527caea7299467063f603c6ee0d3c3ef0bfef07ef4d0",
+    "chunk_receipts": {
+      "latitude/0": {
+        "sha256": "ad2559188f8603a7a136eb4b81c1e96a4a78549a184b6e09def2a60a78631c25",
+        "bytes": 844
+      },
+      "longitude/0": {
+        "sha256": "7942ebac63ba4e69e05575019aaebe2b2ebb927b316590cac1dcfc7eb08f09ee",
+        "bytes": 1587
+      },
+      "time/0": {
+        "sha256": "533fae2fa054bdbe47344c72eb6680f0d2d833c57f5a5cd0e818c08c652e5fb4",
+        "bytes": 3573
+      },
+      "time/14": {
+        "sha256": "6be6247cc11861ebd05cc24c1d74c1f4f95f6463ce634d196fa2c051cb16cbe7",
+        "bytes": 3581
+      },
+      "time/15": {
+        "sha256": "253cab9fea3ca06ae53e47ebb0b4bc23f8d94f50525b5730585e3a2e31f16daf",
+        "bytes": 3577
+      },
+      "land_sea_mask/978840.0.0": {
+        "sha256": "03111ffe4a9da8dd3f2bf5201dc37cd5542e8c4c55cf3b220a863a7c201f98a3",
+        "bytes": 808766
+      },
+      "land_sea_mask/1057752.0.0": {
+        "sha256": "03111ffe4a9da8dd3f2bf5201dc37cd5542e8c4c55cf3b220a863a7c201f98a3",
+        "bytes": 808766
+      },
+      "snow_depth/978840.0.0": {
+        "sha256": "627ac8b23ad822e8c8d0ae63056b73a10f6f9b7c85d24484c1869316073bf412",
+        "bytes": 89946
+      },
+      "snow_depth/1057752.0.0": {
+        "sha256": "f71a3997a5ff165cca98dceac68df9dbb9a1d2185f6801e5685da5ca859927b0",
+        "bytes": 90336
+      }
+    },
+    "snapshots": [
+      "2011-09-01T00:00:00",
+      "2020-09-01T00:00:00"
+    ],
+    "all": {
+      "tiles": 1722,
+      "unique_era5_cells": 829,
+      "majority_land_tiles": 783,
+      "majority_land_cells": 375,
+      "majority_land_blocks": 44,
+      "land_gt03_tiles": 1187,
+      "zero_land_tiles": 9,
+      "median_land_fraction": 0.4639647305011749,
+      "max_distance_km": 15.045302535807771
+    },
+    "marine": {
+      "tiles": 1525,
+      "unique_era5_cells": 733,
+      "majority_land_tiles": 612,
+      "majority_land_cells": 295,
+      "majority_land_blocks": 41,
+      "land_gt03_tiles": 994,
+      "zero_land_tiles": 9,
+      "median_land_fraction": 0.4142798185348511,
+      "max_distance_km": 15.045302535807771
+    },
+    "marine_terrain": {
+      "tiles": 1323,
+      "unique_era5_cells": 650,
+      "majority_land_tiles": 542,
+      "majority_land_cells": 263,
+      "majority_land_blocks": 36,
+      "land_gt03_tiles": 868,
+      "zero_land_tiles": 8,
+      "median_land_fraction": 0.4163093566894531,
+      "max_distance_km": 15.045302535807771
+    },
+    "groups": {
+      "modern": {
+        "tiles": 110,
+        "unique_era5_cells": 76,
+        "majority_land_tiles": 14,
+        "majority_land_cells": 11,
+        "majority_land_blocks": 6,
+        "land_gt03_tiles": 48,
+        "zero_land_tiles": 2,
+        "median_land_fraction": 0.2762348800897598,
+        "max_distance_km": 14.110935222316549
+      },
+      "ADPE": {
+        "tiles": 32,
+        "unique_era5_cells": 23,
+        "majority_land_tiles": 6,
+        "majority_land_cells": 5,
+        "majority_land_blocks": 4,
+        "land_gt03_tiles": 22,
+        "zero_land_tiles": 0,
+        "median_land_fraction": 0.36302322149276733,
+        "max_distance_km": 14.097166916503893
+      },
+      "CHPE": {
+        "tiles": 63,
+        "unique_era5_cells": 44,
+        "majority_land_tiles": 4,
+        "majority_land_cells": 3,
+        "majority_land_blocks": 2,
+        "land_gt03_tiles": 12,
+        "zero_land_tiles": 2,
+        "median_land_fraction": 0.19141501188278198,
+        "max_distance_km": 14.110935222316549
+      },
+      "GEPE": {
+        "tiles": 37,
+        "unique_era5_cells": 27,
+        "majority_land_tiles": 4,
+        "majority_land_cells": 3,
+        "majority_land_blocks": 1,
+        "land_gt03_tiles": 20,
+        "zero_land_tiles": 0,
+        "median_land_fraction": 0.3334197998046875,
+        "max_distance_km": 13.795865933252136
+      }
+    },
+    "limits": "0.25deg nearest grid, water equivalent, two snapshots, no seasonal snow or melt, no true local nest snow, no relocation, no fit."
+  },
+  "cmip": {
+    "status": "ALL_THREE_MODEL_METADATA_READY",
+    "original_selection_sha256": "feb5851494fde518f22dcb09fa1010519fc52648d02a29b9e6caf6f346b5a889",
+    "catalog_sha256": "e319cd2bf1daf9b5aa531f92c022d5322ee6bce0b566ac81dfae31dbae203fd9",
+    "selected_stores": 27,
+    "metadata_verified": 27,
+    "complete_models": [
+      "ACCESS-CM2",
+      "BCC-CSM2-MR",
+      "CESM2"
+    ],
+    "missing": [],
+    "metadata_failures": [],
+    "stores": [
+      {
+        "source_id": "ACCESS-CM2",
+        "member_id": "r1i1p1f1",
+        "variable_id": "siconc",
+        "experiment_id": "historical",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/SImon/siconc/gn/v20200817/",
+        "version": "20200817",
+        "status": "verified_metadata",
+        "metadata_sha256": "8022fa5e7730dce34be99c8b29b718d1ccb8cfa0fb96690ae251fa71b18cc86c",
+        "units": "%",
+        "shape": [
+          1980,
+          300,
+          360
+        ],
+        "chunks": [
+          668,
+          300,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "j",
+          "i"
+        ],
+        "calendar": "proleptic_gregorian",
+        "time_units": "hours since 1850-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/a4f561bc-18df-450f-ae74-9cb906caf5ec",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "ACCESS-CM2",
+        "member_id": "r1i1p1f1",
+        "variable_id": "siconc",
+        "experiment_id": "ssp245",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/SImon/siconc/gn/v20200817/",
+        "version": "20200817",
+        "status": "verified_metadata",
+        "metadata_sha256": "efbbd4e354c40aedbcd74b18af1c4c425fd48dbad31db45cc5170ab69cf59f0b",
+        "units": "%",
+        "shape": [
+          1032,
+          300,
+          360
+        ],
+        "chunks": [
+          516,
+          300,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "j",
+          "i"
+        ],
+        "calendar": "proleptic_gregorian",
+        "time_units": "hours since 2015-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/d51e3059-6347-484b-a85d-8edd936db58d",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "ACCESS-CM2",
+        "member_id": "r1i1p1f1",
+        "variable_id": "siconc",
+        "experiment_id": "ssp585",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/SImon/siconc/gn/v20210317/",
+        "version": "20210317",
+        "status": "verified_metadata",
+        "metadata_sha256": "4f7da6223513da74d47c060bfde4e602a6b00503e9428143d7108687fece55b5",
+        "units": "%",
+        "shape": [
+          3432,
+          300,
+          360
+        ],
+        "chunks": [
+          786,
+          300,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "j",
+          "i"
+        ],
+        "calendar": "proleptic_gregorian",
+        "time_units": "hours since 2015-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/158397fd-be5d-481c-b1d0-18de523f4c8e",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "ACCESS-CM2",
+        "member_id": "r1i1p1f1",
+        "variable_id": "sos",
+        "experiment_id": "historical",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Omon/sos/gn/v20191108/",
+        "version": "20191108",
+        "status": "verified_metadata",
+        "metadata_sha256": "4a1adb830a4fe6ba427c950a840a518c291347d9e0969a630ee947df89853691",
+        "units": "0.001",
+        "shape": [
+          1980,
+          300,
+          360
+        ],
+        "chunks": [
+          220,
+          300,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "j",
+          "i"
+        ],
+        "calendar": "proleptic_gregorian",
+        "time_units": "hours since 1850-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/8d3e4b8f-6cac-48e9-9eea-2f6a7057bb8b",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "ACCESS-CM2",
+        "member_id": "r1i1p1f1",
+        "variable_id": "sos",
+        "experiment_id": "ssp245",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Omon/sos/gn/v20191108/",
+        "version": "20191108",
+        "status": "verified_metadata",
+        "metadata_sha256": "1e489e0016cf71aaae53d76dfd7d9ffef549e979f54f0da9b64ee315032dc96d",
+        "units": "0.001",
+        "shape": [
+          1032,
+          300,
+          360
+        ],
+        "chunks": [
+          218,
+          300,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "j",
+          "i"
+        ],
+        "calendar": "proleptic_gregorian",
+        "time_units": "hours since 2015-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/5724ac3e-ae03-4e34-86c9-0800cdca1f75",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "ACCESS-CM2",
+        "member_id": "r1i1p1f1",
+        "variable_id": "sos",
+        "experiment_id": "ssp585",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Omon/sos/gn/v20210317/",
+        "version": "20210317",
+        "status": "verified_metadata",
+        "metadata_sha256": "e36e6a067cd1e992a80dd0b4443406bf5f3b2881f77ff7f111b59cad43b34752",
+        "units": "0.001",
+        "shape": [
+          3432,
+          300,
+          360
+        ],
+        "chunks": [
+          218,
+          300,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "j",
+          "i"
+        ],
+        "calendar": "proleptic_gregorian",
+        "time_units": "hours since 2015-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/f87b2048-75d2-49f1-b287-5f10f8ce9eec",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "BCC-CSM2-MR",
+        "member_id": "r1i1p1f1",
+        "variable_id": "siconc",
+        "experiment_id": "historical",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/SImon/siconc/gn/v20200218/",
+        "version": "20200218",
+        "status": "verified_metadata",
+        "metadata_sha256": "021a11dc260257789501263e25b31e3c70d49cfeacb6ebcbb76bfa202b926136",
+        "units": "%",
+        "shape": [
+          1980,
+          232,
+          360
+        ],
+        "chunks": [
+          149,
+          232,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "lat",
+          "lon"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 1850-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/ce374c1e-20fb-4627-9074-52ca90a07e49",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "BCC-CSM2-MR",
+        "member_id": "r1i1p1f1",
+        "variable_id": "siconc",
+        "experiment_id": "ssp245",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/SImon/siconc/gn/v20200219/",
+        "version": "20200219",
+        "status": "verified_metadata",
+        "metadata_sha256": "af760cb5b5a6e703d147e9466287c02ef0e2f03015014d9e970f658a87271842",
+        "units": "%",
+        "shape": [
+          1032,
+          232,
+          360
+        ],
+        "chunks": [
+          149,
+          232,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "lat",
+          "lon"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 2015-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/c1940c1e-0f87-497e-92a8-c4c07dd66189",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "BCC-CSM2-MR",
+        "member_id": "r1i1p1f1",
+        "variable_id": "siconc",
+        "experiment_id": "ssp585",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/SImon/siconc/gn/v20200219/",
+        "version": "20200219",
+        "status": "verified_metadata",
+        "metadata_sha256": "61f5ec5d8505099fdca24ab01b19ad08d9fa63dcf1ec69470dc730ff58192533",
+        "units": "%",
+        "shape": [
+          1032,
+          232,
+          360
+        ],
+        "chunks": [
+          149,
+          232,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "lat",
+          "lon"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 2015-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/a6ddbae4-20d9-4c09-8e07-c2133089c625",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "BCC-CSM2-MR",
+        "member_id": "r1i1p1f1",
+        "variable_id": "sos",
+        "experiment_id": "historical",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/Omon/sos/gn/v20181126/",
+        "version": "20181126",
+        "status": "verified_metadata",
+        "metadata_sha256": "3871c056afa5aeac1dd9339bbd401e447fc2e7d9aeacd086b548385ac71ffba4",
+        "units": "0.001",
+        "shape": [
+          1980,
+          232,
+          360
+        ],
+        "chunks": [
+          120,
+          232,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "lat",
+          "lon"
+        ],
+        "calendar": "365_day",
+        "time_units": "days since 1850-01-01",
+        "tracking_id": "hdl:21.14100/839a87a8-d7d1-4c09-8c31-e6302d276920",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "BCC-CSM2-MR",
+        "member_id": "r1i1p1f1",
+        "variable_id": "sos",
+        "experiment_id": "ssp245",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/Omon/sos/gn/v20190319/",
+        "version": "20190319",
+        "status": "verified_metadata",
+        "metadata_sha256": "a64b62dc75eedbfe4e69032d67cd233e21b21e95e51140992102c516545652ba",
+        "units": "0.001",
+        "shape": [
+          1032,
+          232,
+          360
+        ],
+        "chunks": [
+          120,
+          232,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "lat",
+          "lon"
+        ],
+        "calendar": "365_day",
+        "time_units": "days since 2015-01-01",
+        "tracking_id": "hdl:21.14100/93a36282-345e-43fd-95d0-fe681a7dc921",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "BCC-CSM2-MR",
+        "member_id": "r1i1p1f1",
+        "variable_id": "sos",
+        "experiment_id": "ssp585",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/Omon/sos/gn/v20190319/",
+        "version": "20190319",
+        "status": "verified_metadata",
+        "metadata_sha256": "4859c4f32c3fe87b017a2adcedbadff785b15aeff4c73312f32fd602a3669233",
+        "units": "0.001",
+        "shape": [
+          1032,
+          232,
+          360
+        ],
+        "chunks": [
+          120,
+          232,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "lat",
+          "lon"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 2015-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/2351fc37-6383-4d09-afd5-e81eac74d751",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "CESM2",
+        "member_id": "r4i1p1f1",
+        "variable_id": "siconc",
+        "experiment_id": "historical",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/SImon/siconc/gn/v20190308/",
+        "version": "20190308",
+        "status": "verified_metadata",
+        "metadata_sha256": "eaf3cc704f2a084fe5856bf760b0d92a9a6fe30205d974bfa77701f5dc247e8a",
+        "units": "%",
+        "shape": [
+          1980,
+          384,
+          320
+        ],
+        "chunks": [
+          600,
+          384,
+          320
+        ],
+        "dimensions": [
+          "time",
+          "nj",
+          "ni"
+        ],
+        "calendar": "noleap",
+        "time_units": "days since 0001-01-01",
+        "tracking_id": "hdl:21.14100/c74fb434-c3a0-4b26-a956-de57b4c1f665",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "CESM2",
+        "member_id": "r4i1p1f1",
+        "variable_id": "siconc",
+        "experiment_id": "ssp245",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/SImon/siconc/gn/v20200528/",
+        "version": "20200528",
+        "status": "verified_metadata",
+        "metadata_sha256": "7c181a90da56d8dbff04e1293d1e1e0e9588a19918af9ace5971343006a1e1d1",
+        "units": "%",
+        "shape": [
+          1032,
+          384,
+          320
+        ],
+        "chunks": [
+          516,
+          384,
+          320
+        ],
+        "dimensions": [
+          "time",
+          "nj",
+          "ni"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 2015-01-15 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/259824d0-ebfd-4eca-a4e2-0e97c4ff520f\nhdl:21.14100/259824d0-ebfd-4eca-a4e2-0e97c4ff520f",
+        "parent_variant_label": "r4i1p1f1"
+      },
+      {
+        "source_id": "CESM2",
+        "member_id": "r4i1p1f1",
+        "variable_id": "siconc",
+        "experiment_id": "ssp585",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/SImon/siconc/gn/v20200528/",
+        "version": "20200528",
+        "status": "verified_metadata",
+        "metadata_sha256": "67e68df6c6c8fbfba4361617776f62848ac33361b234c72a7f3d5e034daf3e3a",
+        "units": "%",
+        "shape": [
+          1032,
+          384,
+          320
+        ],
+        "chunks": [
+          516,
+          384,
+          320
+        ],
+        "dimensions": [
+          "time",
+          "nj",
+          "ni"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 2015-01-15 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/f00095a1-c73b-4f93-8743-0b434de753e5\nhdl:21.14100/f00095a1-c73b-4f93-8743-0b434de753e5",
+        "parent_variant_label": "r4i1p1f1"
+      },
+      {
+        "source_id": "CESM2",
+        "member_id": "r4i1p1f1",
+        "variable_id": "sos",
+        "experiment_id": "historical",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Omon/sos/gn/v20190308/",
+        "version": "20190308",
+        "status": "verified_metadata",
+        "metadata_sha256": "a3324e1feaa24107ac6c639f5a90cc8c62562ef921be5a7ba03254600cdc8e82",
+        "units": "0.001",
+        "shape": [
+          1980,
+          384,
+          320
+        ],
+        "chunks": [
+          471,
+          384,
+          320
+        ],
+        "dimensions": [
+          "time",
+          "nlat",
+          "nlon"
+        ],
+        "calendar": "noleap",
+        "time_units": "days since 0001-01-01",
+        "tracking_id": "hdl:21.14100/fdd67554-4fb2-4e77-a663-24e75bda8e91",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "CESM2",
+        "member_id": "r4i1p1f1",
+        "variable_id": "sos",
+        "experiment_id": "ssp245",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/Omon/sos/gn/v20200528/",
+        "version": "20200528",
+        "status": "verified_metadata",
+        "metadata_sha256": "f830add3777243827e5f05bc66c35f1704e30b84343fb2684e82a5bffb659299",
+        "units": "0.001",
+        "shape": [
+          1032,
+          384,
+          320
+        ],
+        "chunks": [
+          232,
+          384,
+          320
+        ],
+        "dimensions": [
+          "time",
+          "nlat",
+          "nlon"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 2015-01-15 13:00:00.000000",
+        "tracking_id": "hdl:21.14100/601e12ad-a76d-4a17-beb0-f3dfb1105ee7\nhdl:21.14100/601e12ad-a76d-4a17-beb0-f3dfb1105ee7",
+        "parent_variant_label": "r4i1p1f1"
+      },
+      {
+        "source_id": "CESM2",
+        "member_id": "r4i1p1f1",
+        "variable_id": "sos",
+        "experiment_id": "ssp585",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/Omon/sos/gn/v20200528/",
+        "version": "20200528",
+        "status": "verified_metadata",
+        "metadata_sha256": "1779a41594e974dd7c39c3c1cfa4f36be8ab9e9a78c1d1a6cccd80b63a09128a",
+        "units": "0.001",
+        "shape": [
+          1032,
+          384,
+          320
+        ],
+        "chunks": [
+          232,
+          384,
+          320
+        ],
+        "dimensions": [
+          "time",
+          "nlat",
+          "nlon"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 2015-01-15 13:00:00.000000",
+        "tracking_id": "hdl:21.14100/38afa449-ce5d-4e09-a8da-c2231ecf59d5\nhdl:21.14100/38afa449-ce5d-4e09-a8da-c2231ecf59d5",
+        "parent_variant_label": "r4i1p1f1"
+      },
+      {
+        "source_id": "ACCESS-CM2",
+        "member_id": "r1i1p1f1",
+        "variable_id": "tos",
+        "experiment_id": "historical",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/CMIP/CSIRO-ARCCSS/ACCESS-CM2/historical/r1i1p1f1/Omon/tos/gn/v20191108/",
+        "version": "20191108",
+        "status": "verified_metadata",
+        "metadata_sha256": "bcdb26676545ab8f92819dbf7d19749b56279bf33d81215e0ef5b97898d7a19a",
+        "units": "degC",
+        "shape": [
+          1980,
+          300,
+          360
+        ],
+        "chunks": [
+          202,
+          300,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "j",
+          "i"
+        ],
+        "calendar": "proleptic_gregorian",
+        "time_units": "hours since 1850-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/0bcaaa74-aedb-4d45-a5e5-cb3ab467f2b5",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "ACCESS-CM2",
+        "member_id": "r1i1p1f1",
+        "variable_id": "tos",
+        "experiment_id": "ssp245",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp245/r1i1p1f1/Omon/tos/gn/v20191108/",
+        "version": "20191108",
+        "status": "verified_metadata",
+        "metadata_sha256": "64c2ee11756680b91d7a81c05f876502d3b8b2e4ebc69a4136db8d5cb5da1128",
+        "units": "degC",
+        "shape": [
+          1032,
+          300,
+          360
+        ],
+        "chunks": [
+          201,
+          300,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "j",
+          "i"
+        ],
+        "calendar": "proleptic_gregorian",
+        "time_units": "hours since 2015-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/da35486f-5133-40ba-83d1-fae50b37d395",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "ACCESS-CM2",
+        "member_id": "r1i1p1f1",
+        "variable_id": "tos",
+        "experiment_id": "ssp585",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/CSIRO-ARCCSS/ACCESS-CM2/ssp585/r1i1p1f1/Omon/tos/gn/v20210317/",
+        "version": "20210317",
+        "status": "verified_metadata",
+        "metadata_sha256": "9541d479dad3a5d1e72bd723db95343371b3815323641764ec87384d8e8f8243",
+        "units": "degC",
+        "shape": [
+          3432,
+          300,
+          360
+        ],
+        "chunks": [
+          201,
+          300,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "j",
+          "i"
+        ],
+        "calendar": "proleptic_gregorian",
+        "time_units": "hours since 2015-01-16 12:00:00.000000",
+        "tracking_id": "hdl:21.14100/40343764-43b1-4010-9eeb-b31fdafaecda",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "BCC-CSM2-MR",
+        "member_id": "r1i1p1f1",
+        "variable_id": "tos",
+        "experiment_id": "historical",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/CMIP/BCC/BCC-CSM2-MR/historical/r1i1p1f1/Omon/tos/gn/v20181126/",
+        "version": "20181126",
+        "status": "verified_metadata",
+        "metadata_sha256": "09cfa6bd9765676e6f8e7de14474702f0af75cb6fdfd770e87e0e3301ea73f23",
+        "units": "degC",
+        "shape": [
+          1980,
+          232,
+          360
+        ],
+        "chunks": [
+          120,
+          232,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "lat",
+          "lon"
+        ],
+        "calendar": "365_day",
+        "time_units": "days since 1850-01-01",
+        "tracking_id": "hdl:21.14100/45b48654-08fa-4dc2-b66e-3a8d6937c8c0",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "BCC-CSM2-MR",
+        "member_id": "r1i1p1f1",
+        "variable_id": "tos",
+        "experiment_id": "ssp245",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp245/r1i1p1f1/Omon/tos/gn/v20190319/",
+        "version": "20190319",
+        "status": "verified_metadata",
+        "metadata_sha256": "c4ac81fb42a6969822eeb1fee55be913cbe7252ace93ac6413bf7f01a064d622",
+        "units": "degC",
+        "shape": [
+          1032,
+          232,
+          360
+        ],
+        "chunks": [
+          120,
+          232,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "lat",
+          "lon"
+        ],
+        "calendar": "365_day",
+        "time_units": "days since 2015-01-01",
+        "tracking_id": "hdl:21.14100/b7ccb58f-fbbb-4acf-82f4-d24e5269372d",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "BCC-CSM2-MR",
+        "member_id": "r1i1p1f1",
+        "variable_id": "tos",
+        "experiment_id": "ssp585",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/BCC/BCC-CSM2-MR/ssp585/r1i1p1f1/Omon/tos/gn/v20190319/",
+        "version": "20190319",
+        "status": "verified_metadata",
+        "metadata_sha256": "4ea503e1ca45df9400558491f46da7ceb822c394b7eed0e4f2adedffafc8be8a",
+        "units": "degC",
+        "shape": [
+          1032,
+          232,
+          360
+        ],
+        "chunks": [
+          120,
+          232,
+          360
+        ],
+        "dimensions": [
+          "time",
+          "lat",
+          "lon"
+        ],
+        "calendar": "365_day",
+        "time_units": "days since 2015-01-01",
+        "tracking_id": "hdl:21.14100/ea9c176c-c226-43d2-8ba5-f558c82cb62c",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "CESM2",
+        "member_id": "r4i1p1f1",
+        "variable_id": "tos",
+        "experiment_id": "historical",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2/historical/r4i1p1f1/Omon/tos/gn/v20190308/",
+        "version": "20190308",
+        "status": "verified_metadata",
+        "metadata_sha256": "c78df5947606d77ee38487ac6ec5922af0616abdc825b7a8e0fe7c5386f966ce",
+        "units": "degC",
+        "shape": [
+          1980,
+          384,
+          320
+        ],
+        "chunks": [
+          403,
+          384,
+          320
+        ],
+        "dimensions": [
+          "time",
+          "nlat",
+          "nlon"
+        ],
+        "calendar": "noleap",
+        "time_units": "days since 0001-01-01",
+        "tracking_id": "hdl:21.14100/b6db75cc-8b70-49a3-b115-d8ef87c3c263",
+        "parent_variant_label": "r1i1p1f1"
+      },
+      {
+        "source_id": "CESM2",
+        "member_id": "r4i1p1f1",
+        "variable_id": "tos",
+        "experiment_id": "ssp245",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp245/r4i1p1f1/Omon/tos/gn/v20200528/",
+        "version": "20200528",
+        "status": "verified_metadata",
+        "metadata_sha256": "e14cecae7046e456f43f56c85bbc86128c72bc0a48da959fe0ff6b447d0aec55",
+        "units": "degC",
+        "shape": [
+          1032,
+          384,
+          320
+        ],
+        "chunks": [
+          199,
+          384,
+          320
+        ],
+        "dimensions": [
+          "time",
+          "nlat",
+          "nlon"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 2015-01-15 13:00:00.000000",
+        "tracking_id": "hdl:21.14100/d568c0e9-912a-489a-a579-0335dc0b4041\nhdl:21.14100/d568c0e9-912a-489a-a579-0335dc0b4041",
+        "parent_variant_label": "r4i1p1f1"
+      },
+      {
+        "source_id": "CESM2",
+        "member_id": "r4i1p1f1",
+        "variable_id": "tos",
+        "experiment_id": "ssp585",
+        "grid_label": "gn",
+        "zstore": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2/ssp585/r4i1p1f1/Omon/tos/gn/v20200528/",
+        "version": "20200528",
+        "status": "verified_metadata",
+        "metadata_sha256": "7bc6e66ffa3de85a394b4fd4a337aedf8955a67c8bc19b67a215a5650fd5e628",
+        "units": "degC",
+        "shape": [
+          1032,
+          384,
+          320
+        ],
+        "chunks": [
+          199,
+          384,
+          320
+        ],
+        "dimensions": [
+          "time",
+          "nlat",
+          "nlon"
+        ],
+        "calendar": "noleap",
+        "time_units": "hours since 2015-01-15 13:00:00.000000",
+        "tracking_id": "hdl:21.14100/68b741c9-b8f8-479d-b48c-6853b1c71e56\nhdl:21.14100/68b741c9-b8f8-479d-b48c-6853b1c71e56",
+        "parent_variant_label": "r4i1p1f1"
+      }
+    ],
+    "limits": "Source catalog/metadata only; native coordinates, time coverage, climate values and scenario outputs not yet verified."
+  },
+  "execution": {
+    "run": 46112384560,
+    "cmip": {
+      "artifact": 15250056990,
+      "digest": "sha256:9b30ce7d9ed05c12d723b82a9b1951bf80ad4078d5de8636542425927afb23ee"
+    },
+    "snow": {
+      "artifact": 15250845251,
+      "digest": "sha256:22eeefc8baac54f1d69194789ecb4fb0c7c56e6170d800f61bc20752599a1481"
+    }
+  }
+}
