@@ -1,0 +1,198 @@
+{
+  "status": "PARTIAL_NATIVE_FUTURE_SOURCE_AND_COORDINATE_DIAGNOSIS",
+  "bcc": {
+    "status": "EXECUTED_NATIVE_CMIP6_MODEL",
+    "model": "BCC-CSM2-MR",
+    "member": "r1i1p1f1",
+    "source_stores_verified": 9,
+    "geometry": {
+      "model": "BCC-CSM2-MR",
+      "native_joint_wet_cells": 9549,
+      "native_variable_mask_counts": {
+        "siconc": 9549,
+        "sos": 9549,
+        "tos": 9549
+      },
+      "distinct_mapped_cells": 151,
+      "tiles": 1722,
+      "distance_gate": {
+        "50": 965,
+        "100": 1601,
+        "200": 1722
+      },
+      "distance_max_km": 183.33364960789612,
+      "distance_median_km": 45.609055348400105
+    },
+    "periods": [
+      {
+        "experiment": "historical",
+        "period": "1995-2014",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 151,
+        "complete_tiles_le100km": 1601
+      },
+      {
+        "experiment": "ssp245",
+        "period": "2041-2060",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 151,
+        "complete_tiles_le100km": 1601
+      },
+      {
+        "experiment": "ssp245",
+        "period": "2081-2100",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 151,
+        "complete_tiles_le100km": 1601
+      },
+      {
+        "experiment": "ssp585",
+        "period": "2041-2060",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 151,
+        "complete_tiles_le100km": 1601
+      },
+      {
+        "experiment": "ssp585",
+        "period": "2081-2100",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 151,
+        "complete_tiles_le100km": 1601
+      }
+    ],
+    "limits": "Native model physical conditions, not local downscaling, historical observed values or population forecast; static land frame."
+  },
+  "access": {
+    "model": "ACCESS-CM2",
+    "comparisons": [
+      {
+        "comparison": "siconc:historical_to_ssp245",
+        "shape_equal": true,
+        "common_south_centers": 22320,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "siconc:historical_to_ssp585",
+        "shape_equal": true,
+        "common_south_centers": 22320,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "sos:historical_to_ssp245",
+        "shape_equal": true,
+        "common_south_centers": 22320,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "sos:historical_to_ssp585",
+        "shape_equal": true,
+        "common_south_centers": 22320,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "tos:historical_to_ssp245",
+        "shape_equal": true,
+        "common_south_centers": 22320,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "tos:historical_to_ssp585",
+        "shape_equal": true,
+        "common_south_centers": 22320,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "siconc_to_sos",
+        "shape_equal": true,
+        "common_south_centers": 22320,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0.8516967453484592,
+        "median_m": 0,
+        "q95_m": 0.8511573350742195,
+        "above100m": 0,
+        "lat_max_abs_deg": 0.00000762939453125,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "siconc_to_tos",
+        "shape_equal": true,
+        "common_south_centers": 22320,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0.8516967453484592,
+        "median_m": 0,
+        "q95_m": 0.8511573350742195,
+        "above100m": 0,
+        "lat_max_abs_deg": 0.00000762939453125,
+        "lon_max_abs_deg": 0
+      }
+    ],
+    "spacing": {
+      "siconc": {
+        "centers": 22320,
+        "min_spherical_neighbor_m": 23352.591765171128,
+        "median_spherical_neighbor_m": 42590.82341530616,
+        "below200m": 0
+      },
+      "sos": {
+        "centers": 22320,
+        "min_spherical_neighbor_m": 23352.591765171128,
+        "median_spherical_neighbor_m": 42590.82341530616,
+        "below200m": 0
+      },
+      "tos": {
+        "centers": 22320,
+        "min_spherical_neighbor_m": 23352.591765171128,
+        "median_spherical_neighbor_m": 42590.82341530616,
+        "below200m": 0
+      }
+    }
+  },
+  "execution": {
+    "native_run": 46112539488,
+    "bcc_artifact": 15250117023,
+    "bcc_sha256": "57d1b908cb18a0e8f6cd4a3fab116220915e28daacf707bb7639629c87c7cca3",
+    "diagnosis_run": 46112686663,
+    "access_coordinate_artifact": 15250676245,
+    "access_coordinate_sha256": "76c4b3440af01666cf66bd920d3f7d47d57c8d16e54f6f34d4883351578de7e8",
+    "failures": [
+      "ACCESS-CM2 and CESM2 initial cross-variable exact-coordinate mismatch",
+      "CESM2 diagnostic Geod nonfinite; no CESM geometry conclusion"
+    ]
+  }
+}
