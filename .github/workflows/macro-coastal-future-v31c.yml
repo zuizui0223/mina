@@ -1,0 +1,37 @@
+name: V31c common conditional future marine physical opportunity
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-future-v31c.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy
+      - name: Verify original source fields and all three model climates, compute conditional scenarios
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15171205908/zip" > ice.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15170756736/zip" > hydro.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249701928/zip" > terrain.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249954003/zip" > access.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15250117023/zip" > bcc.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249859620/zip" > cesm.zip
+          python research/macro_marine_land_footprint_v1/future_physical_v31c.py ice.zip hydro.zip terrain.zip result access.zip 1c7d282e4d77930679b1bd444f624fc7aa513f1f2b70c857e6e8254defb79bd5 bcc.zip 57d1b908cb18a0e8f6cd4a3fab116220915e28daacf707bb7639629c87c7cca3 cesm.zip f514be11e1ad3d175631a994a326981e6ddd11d75c5ff661212f10c082b2ee87
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-coastal-future-v31c
+          path: result/
+          retention-days: 30
+          if-no-files-found: warn
