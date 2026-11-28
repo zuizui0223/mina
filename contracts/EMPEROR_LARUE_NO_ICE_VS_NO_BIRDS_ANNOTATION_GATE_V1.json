@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "stage": "FIXED_BEFORE_READING_PUBLIC_SOURCE_ANNOTATION_TEXT",
+  "scope": "Post-publication original-source audit of LaRue et al (2024) original 2009-2018 image-observation workbook ONLY; no independent new 2022-2024 outcomes",
+  "source": {
+    "repo": "davidiles/EMPE_Global",
+    "commit": "13f71112da43c1fd082273677757b41c550457ed",
+    "path": "data/empe_satellite_2023-05-25.xlsx",
+    "git_blob_sha": "a964360e2cc9bc6303199e0971a4e7d40f793752"
+  },
+  "known_frozen_counts_from_prior_source_audit": {
+    "full_raw_rows": 669,
+    "period_rows_2009_2018": 599,
+    "literal_bpresent_No_rows": 20,
+    "literal_bpresent_yes_rows": 502,
+    "literal_bpresent_NA_rows": 77
+  },
+  "predefined_classification": {
+    "direct_literal_label": "bpresent=no alone NEVER proves usable ice with vacant birds",
+    "ice_absent_author_annotation": "Only explicit verified annotator text that the nesting fast ice was absent/open-water/broken-up at that site and image date; classifies *annotator interpretation*, not independent validation.",
+    "ice_present_author_annotation": "Only explicit text that stable nesting fast ice was present while colony/birds were absent; if text is ambiguous, negated, conditional, or missing, hold.",
+    "both_conflicting": "If author notes claim ice present and absent for same row, report as ambiguous, not force a category.",
+    "no_explicit_annotation": "UNRESOLVED_ICE_AVAILABILITY",
+    "date_window": "September 1 through November 30, but a zero area after November 1 was EXCLUDED by original population analysis; author row remove flag must be checked separately",
+    "image_quality": "Present q1/q2/q3 counts, do not infer detection p from metadata alone",
+    "minimum_qualifying_vacant_refuge": "Repeat (>=2 separate breeding seasons) adequately imaged and exactly mapped same physical nesting patch with demonstrably physically available ice and no birds, ideally independently verified ice-product; THEN subsequent independently confirmed breeding and persistence"
+  },
+  "observation_fields_to_inspect": [
+    "site_id",
+    "img_year",
+    "img_month",
+    "img_day",
+    "bpresent",
+    "area_m2",
+    "img_qualit",
+    "remove",
+    "comments",
+    "notes"
+  ],
+  "report_allowed": [
+    "Raw No count by season, site, annotation class, image quality and processing eligibility",
+    "No with positive area contradictory codes",
+    "Yes with area zero contradictory codes",
+    "Only aggregate counts and explicit selected five prior dates; no serial reidentification of birds"
+  ],
+  "critical_stops": [
+    "Do not use 'No' as proof of physical vacant nesting options without ice-present annotation plus independent ice confirmation.",
+    "Do not reclassify temporary seasonal postfledging absence as true colony extinction.",
+    "Do not claim origin of adults or successful reproduction from satellite area_m2 or guano alone.",
+    "Original author annotations are same-observer qualitative readings, not independent physical causality.",
+    "Do not interpret any of the 20 No rows as 20 distinct colony-years if multiple images occur per year.",
+    "Do not use source data in frozen PR189, different PR192 or PR194."
+  ],
+  "preannotation_values_opened_here": 0,
+  "causal_claim_preregistered": false
+}

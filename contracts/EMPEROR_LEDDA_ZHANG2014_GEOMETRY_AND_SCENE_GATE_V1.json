@@ -1,0 +1,61 @@
+{
+  "schema_version":1,
+  "fixed_date":"2026-10-08",
+  "status":"PRE_2014_GEOMETRY_OPEN_ENVELOPE",
+  "research_lane":"PR195 independent 2014 location and colony-use ambiguity, external source audit not causal model",
+  "publication":{
+    "citation":"Zhang M and Li XL 2020, Pan-Antarctic Emperor Penguin Colony Dataset (2000, 2014, 2018)",
+    "doi":"10.3974/geodb.2020.05.06.V1",
+    "paper_doi":"10.3974/geodp.2020.03.02",
+    "official_url":"https://www.geodoi.ac.cn/WebEn/doi.aspx?Id=1540",
+    "underlying_archive_name":"PanAnta.PenguinColony.rar",
+    "advertised_compressed_size_bytes_approximate":145828,
+    "files_types":["2014 colony point .shp",".shx",".dbf",".prj","2014 colony polygon shp","Landsat image catalog .xlsx"],
+    "2014_paper_list_includes":"Ledda Bay",
+    "2014_total_listed_sites":49,
+    "2014_Landsat_time_window":"September to October 2014",
+    "detection_method":"Landsat visual guano stain interpretation informed by historical high-resolution location"
+  },
+  "known_different_source_observation":{
+    "source":"LaRue et al 2024 original satellite sheet",
+    "site_code":"LEDD",
+    "image_date":"2014-10-13",
+    "original_interpretation":"fast ice available no birds",
+    "presence_code":"no",
+    "does_not_prove_all_2014_breeding_footprints_empty":true
+  },
+  "frozen_position_candidates":{
+    "LaRue_source_colony_centroid":{"lat":-74.228,"lon":-130.784},
+    "Fretwell_2021_published_Ledda":{"lat":-74.272,"lon":-131.243},
+    "great_circle_separation_km":14.692,
+    "no_location_selected_as_ground_truth":true
+  },
+  "download_structure_gate":{
+    "do_not_treat_2014_table_listing_as_confirmed_live_2014_birds":true,
+    "prefer_official_download_page_only_and_honor_dataset_terms":true,
+    "reject_unverified_RAR_endpoint_and_all_replacement_archives":true,
+    "require_original_RAR_SHA256_before_entry_read":true,
+    "require_archive_2014_point_or_polygon_geometry_and_feature_names":true,
+    "require_originating_Landsat_scene_acquisition_date_to_claim_2014_image_specific_support":true,
+    "inspect_metadata_and_schema_before_feature_level_read":true,
+    "do_not_guess_unreadable_CRS":true,
+    "don't_republish_archive_or_raw_geometry_without_redistribution_rights":true
+  },
+  "allowed_if_archive_readable":[
+    "exact number of Ledda features in 2014, allowing 0,1 or >1",
+    "2014 Ledda geometry CRS and native feature ID, with recorded source image date if available",
+    "distance of reported Ledda 2014 point or polygon to each of two pre-fixed reference locations",
+    "polygon centroid AND minimum polygon-edge distance, never substitute centroid for coverage without declaring it",
+    "2014 source observation state: scene-positive guano stain, historical catalogued site only, or unknown/ambiguous",
+    "exact source scene date relative to 2014-10-13 VHR negative image"
+  ],
+  "stop_and_interpretation":{
+    "no_record_for_Ledda_2014":"2014 paper site table may include historical option; no positive 2014 geometry confirmed",
+    "geometry_without_scene_date":"spatial site support only, not temporal cooccurrence proof",
+    "guano_present":"prior biological use trace, not active birds or successful chick fledging",
+    "different_polygon_positions":"potential relocation OR geocoding/sampling discordance; true bird movement not identified",
+    "no_independently_verified_successful_breeding_or_individual_origin":"cannot identify Allee, social fidelity, migration or island rescue mechanism",
+    "independence_caution":"Zhang source location interpretation used historical high-resolution locations; observational products not wholly independent",
+    "PR189_frozen_science_unchanged":true
+  }
+}

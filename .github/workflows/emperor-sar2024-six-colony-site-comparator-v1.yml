@@ -1,0 +1,72 @@
+name: SAR 2024 six-colony fixed site support comparator
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'contracts/EMPEROR_SAR_2024_SIX_SITE_GEOREFERENCE_COMPARATOR_V1.json'
+      - 'scripts/audit_sar2024_six_colony_static_site_georeference_v1.py'
+      - 'tests/test_sar2024_six_colony_static_site_georeference_v1.py'
+      - '.github/workflows/emperor-sar2024-six-colony-site-comparator-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/EMPEROR_SAR_2024_SIX_SITE_GEOREFERENCE_COMPARATOR_V1.json'
+      - 'scripts/audit_sar2024_six_colony_static_site_georeference_v1.py'
+      - 'tests/test_sar2024_six_colony_static_site_georeference_v1.py'
+      - '.github/workflows/emperor-sar2024-six-colony-site-comparator-v1.yml'
+jobs:
+  source-comparator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify SAR comparison source-level noncausal rules
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_sar2024_six_colony_static_site_georeference_v1.py
+      - name: Fetch two already-published exact source CSVs
+        env:
+          AUTHOR: https://raw.githubusercontent.com/davidiles/EMPE_Global/13f71112da43c1fd082273677757b41c550457ed/data/colony_attributes.csv
+          SAR: https://raw.githubusercontent.com/mla150/SAR-Emperor/main/empe_sar_summary_20250801.csv
+        run: |
+          set -e
+          curl -fLsS --max-time 35 --retry 2 "$AUTHOR" -o /tmp/original_penguin_colony_attributes.csv
+          curl -fLsS --max-time 35 --retry 2 "$SAR" -o /tmp/sar2024_six_colony_huddles.csv
+          test "$(wc -c < /tmp/original_penguin_colony_attributes.csv)" -gt 1000
+          test "$(wc -c < /tmp/sar2024_six_colony_huddles.csv)" -gt 3000
+      - name: Reproduce winter 2024 observed huddle site support, not breeding
+        run: |
+          python scripts/audit_sar2024_six_colony_static_site_georeference_v1.py \
+            --static-csv /tmp/original_penguin_colony_attributes.csv \
+            --sar-csv /tmp/sar2024_six_colony_huddles.csv \
+            --out /tmp/sar2024_site_support_comparison.json
+      - name: Validate exact published 2024 source support
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/sar2024_site_support_comparison.json'))
+          assert r['n_colonies']==6
+          assert r['sar_scene_total']==64
+          assert r['sar_scene_positive_centroid_eligible']==54
+          assert r['zero_area_or_not_detected_sar_rows_EXCLUDED_not_absence']==10
+          assert r['pooled_sar_scene_centroids_outside_threshold']['3']==0
+          assert r['overall_max_km']<3
+          assert not r['new_penguin_causal_or_breeding_success_effect_identified']
+          assert r['never_equate_cross_publication_distance_to_true_ledda_movement']
+          print('SAR_2024_SIX_COLONY_SOURCE_COMPARISON_PASS')
+          print('N_2024_POSITIVE_DATE_CENTROIDS',r['sar_scene_positive_centroid_eligible'])
+          print('MAX_ALL_COLONIES_KM',r['overall_max_km'])
+          print('LEDDA_TWO_SOURCE_DISPLACEMENT_RELATIVE_TO_SAR_MAX',r['ledda_cross_publication_distance_divided_by_largest_2024_sample_distance'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emperor-sar2024-six-sites-spatial-source-comparator
+          path: /tmp/sar2024_site_support_comparison.json
+          if-no-files-found: ignore
+          retention-days: 30

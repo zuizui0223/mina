@@ -1,0 +1,58 @@
+name: Ledda independent fast-ice coordinate and time
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'scripts/probe_fraser_ledda_coordinate_time_v1.py'
+      - 'tests/test_fraser_ledda_coordinate_time_v1.py'
+      - 'contracts/EMPEROR_LEDDA_FRASER_HDF5_TIME_GEO_GATE_V1.json'
+      - '.github/workflows/emperor-ledda-geotime-v1.yml'
+  pull_request:
+    paths:
+      - 'scripts/probe_fraser_ledda_coordinate_time_v1.py'
+      - 'tests/test_fraser_ledda_coordinate_time_v1.py'
+      - 'contracts/EMPEROR_LEDDA_FRASER_HDF5_TIME_GEO_GATE_V1.json'
+      - '.github/workflows/emperor-ledda-geotime-v1.yml'
+jobs:
+  geo-metadata-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install safe numeric / projection / HDF5 deps
+        run: python -m pip install pytest numpy h5py pyproj
+      - name: Test projection selection without biological or ice values
+        run: python -m pytest -q tests/test_fraser_ledda_coordinate_time_v1.py
+      - name: Query x/y/time/lat/lon only via official byte ranges
+        run: |
+          python scripts/probe_fraser_ledda_coordinate_time_v1.py --out /tmp/ledda_fraser_geotime_v1.json
+      - name: Ensure zero opened physical class and penguin records
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/ledda_fraser_geotime_v1.json'))
+          assert r['physical_ice_cell_values_read']==0
+          assert r['penguin_biology_new_values_read']==0
+          assert r['causal_fit_executed'] is False
+          assert r['total_http_download_bytes']<=2*20*1024*1024
+          print('GEO_TIME_DECISION',r['decision'])
+          for s in r['results']:
+              print('SOURCE_YEAR',s['year'],'STATUS',s['status'],'TOTAL_BYTES',s['http_download_bytes'])
+              print('TIME_VALUES',s.get('time_values'))
+              print('DATE_ALT',s.get('date_alt_values'))
+              print('TIME_ATTRS',s.get('time_attrs'))
+              print('PROJECTION_OPTIONS',s.get('geodetic_options'))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledda-2011-2014-independent-geotime-metadata-v1
+          path: /tmp/ledda_fraser_geotime_v1.json
+          if-no-files-found: ignore
+          retention-days: 14

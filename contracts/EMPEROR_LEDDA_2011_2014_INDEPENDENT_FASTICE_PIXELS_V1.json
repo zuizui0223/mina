@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "state": "FROZEN_BEFORE_INDEPENDENT_FASTICE_CELL_VALUES_OPENED",
+  "source": {
+    "doi": "10.26179/5d267d1ceb60c",
+    "uuid": "f88a75e3-257f-4904-99ef-764e5cf9a064",
+    "version": "2.2",
+    "annual_file_template": "fastice_v2_2/FastIce_70_{year}.nc",
+    "official_host": "https://data.aad.gov.au/eds/api/dataset/f88a75e3-257f-4904-99ef-764e5cf9a064/object/download",
+    "pre_exposure_coord_readiness_job": 113231863113,
+    "2011_2014_HDF5_array_shape": [
+      24,
+      4700,
+      5625
+    ],
+    "pixel_class_field": "Fast_Ice_Time_series",
+    "class_fast_ice": 4,
+    "classes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "HDF5_chunk_shape": [
+      4,
+      784,
+      938
+    ],
+    "time_alt_encoding": "YYYYMMDD of START of a 15-day mosaic",
+    "time_units": "days since 2000-1-1 0:0:0"
+  },
+  "historical_annotated_no_birds": {
+    "2011": {
+      "image_date": "2011-09-23",
+      "author_comment": "fast ice available",
+      "raw_bpresent": "no",
+      "raw_image_quality": 3,
+      "original_fit_date_area_gate_pass": true
+    },
+    "2014": {
+      "image_date": "2014-10-13",
+      "author_comment": "fast ice available no birds",
+      "raw_bpresent": "no",
+      "raw_image_quality": 3,
+      "original_fit_date_area_gate_pass": true
+    }
+  },
+  "stationary_centroid": {
+    "id": "LEDD",
+    "latitude": -74.228,
+    "longitude": -130.784,
+    "projection": "EPSG:3412 (source true scale -70 S); rejected EPSG:3031 failed 3km validation",
+    "independent_grid_location": {
+      "row_zero_based": 3432,
+      "col_zero_based": 1389,
+      "cell_lat": -74.22924041748047,
+      "cell_lon": -130.77940368652344,
+      "geodesic_residual_km": 0.19575786031321388
+    },
+    "pixel_identity_note": "Rounded historical colony centroid only; maps may show sea ice on neighbor pixels but not exact former nesting footprint."
+  },
+  "primary_pre_image_composite_by_year": {
+    "2011": {
+      "time_index_zero_based": 16,
+      "start_date": "2011-08-29",
+      "end_date": "2011-09-12",
+      "image_date": "2011-09-23",
+      "non_future": true
+    },
+    "2014": {
+      "time_index_zero_based": 18,
+      "start_date": "2014-09-28",
+      "end_date": "2014-10-12",
+      "image_date": "2014-10-13",
+      "non_future": true
+    }
+  },
+  "contemporaneous_overlap_sensitivity_only": {
+    "2011": {
+      "time_index_zero_based": 17,
+      "composite_start": "2011-09-13",
+      "composite_end": "2011-09-27",
+      "image_date": "2011-09-23",
+      "future_pixels_in_aggregate": true
+    },
+    "2014": {
+      "time_index_zero_based": 19,
+      "composite_start": "2014-10-13",
+      "composite_end": "2014-10-27",
+      "image_date": "2014-10-13",
+      "future_pixels_in_aggregate": true
+    }
+  },
+  "pre_image_seasonal_path": {
+    "2011": {
+      "indices_inclusive": [
+        8,
+        16
+      ],
+      "starts_at": "2011-05-01",
+      "ends_last_full_interval": "2011-09-12"
+    },
+    "2014": {
+      "indices_inclusive": [
+        8,
+        18
+      ],
+      "starts_at": "2014-05-01",
+      "ends_last_full_interval": "2014-10-12"
+    }
+  },
+  "spatial_radius_km": [
+    1,
+    3,
+    5
+  ],
+  "primary_radius_km": 3,
+  "site_geolocation_mask": "Select EPSG:3412 x/y centers no farther than radius_km*1000m from independent projected frozen site centroid, same footprint for both years; 15x15 grid cutout only.",
+  "response_to_summarize": "Per composite and radius 0–6 class histogram, n spatial cells, class4 fraction among entire valid radius, and class4 share among nominal marine classes 0,4,5,6 separately (never count land/ice shelf as physically available). Report class5/6 separately. No imputation if zero marine denom.",
+  "trend_readout": "Descriptive May→pre-image class4 fractions and count of composites with any class4 in 3km mask; do not assert presence for whole season based on single image.",
+  "important_limits": [
+    "2011 and 2014 are already selected from outcome-exposed annotator notes and are NOT independent confirmatory pairs",
+    "Two image negatives from one existing colony, not distinct newly founded colonies",
+    "Even independent MODIS class4 does not prove ice thickness, safe access to sea, nesting success, same exact breeding patch or valid colony-year nonoccupancy",
+    "Same HDF5 15-day mosaic may include image dates and future days; overlap interval CANNOT serve as independent pre-decision exposure",
+    "Boundary/edge classes5/6 and land pixels separately rather than silently reclassifying to fast ice",
+    "Do not change frozen composite indices based on observed physical ice values",
+    "Do not claim social-choice causality"
+  ],
+  "bounded_remote_hdf5": {
+    "max_bytes_network_per_year": 20971520,
+    "source_records_only": [
+      2011,
+      2014
+    ],
+    "max_requests_per_year": 160,
+    "no_full_annual_download": true
+  },
+  "new_independent_fastice_values_read_at_freeze": 0,
+  "penguin_new_image_rows_at_freeze": 0,
+  "PR189_frozen": true,
+  "PR142_locked": true
+}

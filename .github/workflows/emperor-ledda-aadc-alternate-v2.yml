@@ -1,0 +1,55 @@
+name: Ledda AADC official API alternate source
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'scripts/audit_fraser_aadc_official_alternate_http_v2.py'
+      - 'tests/test_fraser_aadc_official_alternate_http_v2.py'
+      - 'contracts/EMPEROR_LEDDA_FRASER_OFFICIAL_ALTERNATE_GATE_V2.json'
+      - '.github/workflows/emperor-ledda-aadc-alternate-v2.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_fraser_aadc_official_alternate_http_v2.py'
+      - 'tests/test_fraser_aadc_official_alternate_http_v2.py'
+      - 'contracts/EMPEROR_LEDDA_FRASER_OFFICIAL_ALTERNATE_GATE_V2.json'
+      - '.github/workflows/emperor-ledda-aadc-alternate-v2.yml'
+jobs:
+  official-eds-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Tests independent of network
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_fraser_aadc_official_alternate_http_v2.py
+      - name: Official public metadata plus max 32 bytes/year file signature
+        run: |
+          python scripts/audit_fraser_aadc_official_alternate_http_v2.py --out /tmp/ledda_fastice_official_alternate_receipt.json
+      - name: Enforce no physical cells or penguin data access
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/ledda_fastice_official_alternate_receipt.json'))
+          assert r['physical_ice_class_values_read']==0
+          assert r['penguin_response_values_read']==0
+          assert r['fit_or_causal_inference_run'] is False
+          assert r['total_payload_bytes_read'] <= 64
+          print('ALTERNATE_SOURCE_STATUS',r['source_readiness'])
+          print('PUBLIC_MANIFEST_STATUS',r['manifest_check']['status'])
+          for z in r['files']:
+              print(z['year'], z['head'], z['range_status'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledda-aadc-eds-official-alternate-v2
+          path: /tmp/ledda_fastice_official_alternate_receipt.json
+          retention-days: 14
+          if-no-files-found: ignore

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "date": "2026-10-08",
+  "phase": "RETROSPECTIVE_SOURCE_IMAGE_CENTER_DISTINCTION",
+  "source": {
+    "repo": "davidiles/EMPE_Global",
+    "commit": "13f71112da43c1fd082273677757b41c550457ed",
+    "path": "data/empe_satellite_2023-05-25.xlsx",
+    "git_blob_sha": "a964360e2cc9bc6303199e0971a4e7d40f793752",
+    "annotation_fields": ["site_id","img_long","img_lat","img_year","img_month","img_day","bpresent","catalog_id"]
+  },
+  "site": "LEDD",
+  "all_years": [2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],
+  "focus_date": "2014-10-13",
+  "frozen_reference_points":{
+    "larue_colony": {"latitude":-74.228,"longitude":-130.784},
+    "fretwell_2021": {"latitude":-74.272,"longitude":-131.243}
+  },
+  "observed_quantity": "distance from source remote-sensing SCENE centroid to fixed printed colony reference centroid",
+  "permitted": [
+    "record img_lat/img_long if finite valid WGS84 in exact source row",
+    "calculate haversine distance to both frozen reference points",
+    "report original 2014 and historical-year image centers, source scene date, qualitative note and raw code",
+    "distinguish missing coordinate from zero, undefined or alternate projections"
+  ],
+  "prohibited": [
+    "do not treat satellite SCENE center as the center of a penguin group, colony or guano polygon",
+    "do not infer actual ground footprint size from scene center distance alone",
+    "do not infer whether either reference point was inside the scene without pixel footprint/corners",
+    "do not infer local colony movement or confirmed breeding from cross-publication disagreement",
+    "do not claim Zhang 2014 feature accessed or independently confirmed if source still unreachable",
+    "do not add outputs to frozen Ecology PR189"
+  ],
+  "source_data_values_not_read_when_frozen":true,
+  "causal_effect_fitted":false
+}

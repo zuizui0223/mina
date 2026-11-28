@@ -1,0 +1,225 @@
+name: Emperor discovery versus colonization evidence
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+  pull_request:
+    paths:
+      - 'external/EMPEROR_FRETWELL_2024_SITE_DETECTION_EVIDENCE_V1.json'
+      - 'scripts/audit_emperor_discovery_vs_formation_v1.py'
+      - 'results/EMPEROR_DISCOVERY_VS_FORMATION_AUDIT_V1.json'
+      - 'tests/test_emperor_discovery_vs_formation_v1.py'
+      - 'scripts/audit_emperor_2024_new_sites_against_66_catalogue.py'
+      - 'results/EMPEROR_66_CATALOGUE_NEWLY_REPORTED_SITES_GEODESIC_V1.json'
+      - 'tests/test_emperor_66_catalogue_new_site_geodesic.py'
+      - 'tests/test_emperor_2008_2018_codebook_empty_site_guard.py'
+      - 'tests/test_larue_original_satellite_image_support_v1.py'
+      - 'scripts/audit_larue_original_satellite_image_support_v1.py'
+      - 'contracts/EMPEROR_LARUE_RAW_SATELLITE_SUPPORT_V1.json'
+      - 'scripts/audit_larue_2024_global_posterior_occupancy_v1.py'
+      - 'scripts/audit_larue_2024_reappearance_mass_allocation_v1.py'
+      - 'results/EMPEROR_LARUE_PUBLISHED_REAPPEARANCE_GROSS_GAIN_ALLOCATION_V1.json'
+      - 'tests/test_emperor_larue_reappearance_mass_allocation_v1.py'
+      - 'tests/test_emperor_larue_five_ice_scene_targets_v1.py'
+      - 'scripts/audit_larue_2024_annotation_ice_bird_state_v1.py'
+      - 'results/EMPEROR_LARUE_AUTHOR_NO_IMAGE_ICE_BIRD_ANNOTATIONS_V1.json'
+      - 'tests/test_emperor_author_fastice_birds_annotations_v1.py'
+      - 'tests/test_emperor_annotation_ci_contract_keys.py'
+      - 'results/EMPEROR_LARUE_FIVE_PRE_SHOCK_ICE_SCENE_TARGETS_V1.json'
+      - 'results/EMPEROR_LARUE_2024_50_BY_10_POSTERIOR_ZERO_AUDIT_V1.json'
+      - 'tests/test_emperor_larue_global_posterior_occupancy.py'
+      - 'results/EMPEROR_2008_2018_SATELLITE_OCCUPANCY_CODEBOOK_GATE_V1.json'
+      - 'docs/EMPEROR_DISCOVERY_VS_TRUE_FOUNDATION_AUDIT_V3.md'
+      - '.github/workflows/emperor-colony-evidence-v1.yml'
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Test published site-year evidence and zero definitions
+        run: python -m pytest -q tests/test_emperor_discovery_vs_formation_v1.py tests/test_emperor_66_catalogue_new_site_geodesic.py tests/test_emperor_2008_2018_codebook_empty_site_guard.py tests/test_emperor_larue_global_posterior_occupancy.py tests/test_emperor_larue_reappearance_mass_allocation_v1.py tests/test_emperor_larue_five_ice_scene_targets_v1.py tests/test_emperor_author_fastice_birds_annotations_v1.py tests/test_emperor_annotation_ci_contract_keys.py
+      - name: Reproduce locked primary publication tally
+        run: |
+          python scripts/audit_emperor_discovery_vs_formation_v1.py --out /tmp/emperor2024crosswalk.json
+          python - <<'PY'
+          import json
+          result=json.load(open('/tmp/emperor2024crosswalk.json'))
+          frozen=json.load(open('results/EMPEROR_DISCOVERY_VS_FORMATION_AUDIT_V1.json'))
+          assert result['newly_reported_sites'] == frozen['four_reported_sites'] == 4
+          assert result['sites_with_verified_positive_image_before_publication'] == frozen['existing_satellite_detection_predates_2024_in'] == 4
+          assert result['sites_with_at_least_one_positive_image_each_year_2018_to_2022'] == frozen['sites_with_documented_presence_each_year_2018_through_2022'] == 3
+          assert result['published_positive_site_years_all_sites'] == frozen['total_published_positive_site_years_at_fixed_roster'] == 16
+          assert result['sites_with_verified_repeated_pre_founding_absences'] == frozen['sites_with_verified_repeated_precolonization_surveyed_absence'] == 0
+          assert result['2026_causal_effect_test_run'] is False
+          assert frozen['new_ecological_causal_result_claimed'] is False
+          print('PUB_HISTORY_CROSSWALK_PASSED: four prior positives, three five-year detected, zero observed pre-founding repeated negatives')
+          PY
+
+      - name: Verify pinned public 66-colony catalogue geometry if accessible
+        env:
+          SOURCE_RAW: https://raw.githubusercontent.com/bilgecansen/Emperor_dispersal/8254f7014dd749e5497165ab854b7f76b276e791/data/empe_sitesNewNB.csv
+        run: |
+          if curl -fLsS --max-time 45 --retry 2 "$SOURCE_RAW" -o /tmp/emperor_66_colonies.csv; then
+            python scripts/audit_emperor_2024_new_sites_against_66_catalogue.py --catalogue-csv /tmp/emperor_66_colonies.csv --out /tmp/emperor_nearest_source_audit.json
+            python - <<'PY'
+          import json, math
+          actual=json.load(open('/tmp/emperor_nearest_source_audit.json'))
+          frozen=json.load(open('results/EMPEROR_66_CATALOGUE_NEWLY_REPORTED_SITES_GEODESIC_V1.json'))
+          assert actual['roster_size']==frozen['roster_size']==66
+          assert actual['reported_site_count']==frozen['reported_site_count']==4
+          assert actual['sites_beyond_100km_nearest_catalogue']==frozen['sites_beyond_100km_nearest_catalogue']==2
+          assert actual['sites_within_414km_nearest_catalogue']==frozen['sites_within_414km_nearest_catalogue']==4
+          for p,q in zip(actual['new_reported_sites'],frozen['new_reported_sites']):
+              assert p['reported_site_id']==q['reported_site_id']
+              assert p['nearest_published_catalogue_site']['existing_catalogue_id']==q['nearest_published_catalogue_site']['existing_catalogue_id']
+              assert math.isclose(p['nearest_published_catalogue_site']['geodesic_km'],q['nearest_published_catalogue_site']['geodesic_km'],abs_tol=1e-6)
+          print('PUBLIC_AUTHOR_66x4_GEODESIC_REPRODUCTION_PASS')
+          PY
+          else
+            echo 'HOLD_SOURCE_FETCH: pinned public author catalogue unavailable to Actions; no new empirical result is inferred'
+          fi
+
+      - name: Reproduce published 50 x 10 posterior-state audit if source accessible
+        env:
+          LARUE50_SOURCE: https://raw.githubusercontent.com/davidiles/EMPE_Global/13f71112da43c1fd082273677757b41c550457ed/analysis/output/model_results/3_Colony_Level/colony_summary.csv
+        run: |
+          if curl -fLsS --max-time 45 --retry 2 "$LARUE50_SOURCE" -o /tmp/larue_50_2009_2018.csv; then
+            python scripts/audit_larue_2024_global_posterior_occupancy_v1.py --input /tmp/larue_50_2009_2018.csv --out /tmp/larue_posterior_audit.json
+            python - <<'PY'
+          import json,math
+          actual=json.load(open('/tmp/larue_posterior_audit.json'))
+          frozen=json.load(open('results/EMPEROR_LARUE_2024_50_BY_10_POSTERIOR_ZERO_AUDIT_V1.json'))
+          for field in ('site_count','posterior_site_years',
+                        'posterior_mean_exact_zero_site_years',
+                        'lower_95_bound_zero_site_years',
+                        'nonzero_mean_but_lower_95_zero_site_years',
+                        'upper_95_bound_zero_site_years',
+                        'distinct_sites_with_a_zero_posterior_mean',
+                        'apparent_mean_zero_to_positive_transitions',
+                        'apparent_mean_positive_to_zero_transitions'):
+              assert actual[field] == frozen[field],field
+          for field in ('halley_model_2016_posterior_mean','halley_model_2016_posterior_lower_95'):
+              assert math.isclose(actual[field],frozen[field],rel_tol=1e-12),field
+          assert actual['mean_transition_is_confirmed_emigration_recolonization'] is False
+          print('AUTHORS_POSTERIOR_50x10_REPRODUCTION_PASS__NO_REAL_FOUNDING_INFERENCE')
+          PY
+          else
+            echo 'HOLD_SOURCE_FETCH: author CSV unavailable; frozen source-grounded receipt untested in this Actions run'
+          fi
+
+      - name: Reproduce published gross population-index allocation to apparent nine reappearances
+        run: |
+          if [ -s /tmp/larue_50_2009_2018.csv ]; then
+            python scripts/audit_larue_2024_reappearance_mass_allocation_v1.py --input /tmp/larue_50_2009_2018.csv --out /tmp/emperor_reappearance_allocation.json
+            python - <<'PY'
+          import json,math
+          actual=json.load(open('/tmp/emperor_reappearance_allocation.json'))
+          frozen=json.load(open('results/EMPEROR_LARUE_PUBLISHED_REAPPEARANCE_GROSS_GAIN_ALLOCATION_V1.json'))
+          for key in (
+              'authors_colony_years',
+              'number_sites',
+              'apparent_model_zero_to_positive_episodes',
+              'sum_gross_positive_posterior_mean_change_across_nine_year_transitions',
+              'sum_gross_negative_posterior_mean_change_across_nine_year_transitions',
+              'sum_of_model_zero_to_positive_allocated_mean_abundance',
+              'share_of_model_gross_positive_change_all_zero_to_positive',
+          ):
+              a,b=actual[key],frozen[key]
+              assert math.isclose(a,b,rel_tol=1e-10) if isinstance(a,float) else a==b,key
+          for cat in frozen['image_evidence_categories']:
+              a,b=actual['image_evidence_categories'][cat],frozen['image_evidence_categories'][cat]
+              assert a['n']==b['n']
+              assert math.isclose(a['positive_mass'],b['positive_mass'],rel_tol=1e-10)
+          assert not actual['biological_causal_effect_fitted']
+          assert actual['verified_prior_physically_available_but_empty_refuge_events']==0
+          print('SOURCE_REPRODUCTION_PASS__MODEL_ALLOCATION_NOT_EMIGRANTS')
+          print('model apparent zero-reappearance share of gross positive changes:',actual['share_of_model_gross_positive_change_all_zero_to_positive'])
+          PY
+          else
+            echo 'HOLD_SOURCE_FETCH: underlying published 50-colony source missing; do not claim independent CI reproduction'
+          fi
+
+      - name: Inspect already published original satellite image rows for nine posterior switches
+        env:
+          XLSX_RAW: https://raw.githubusercontent.com/davidiles/EMPE_Global/13f71112da43c1fd082273677757b41c550457ed/data/empe_satellite_2023-05-25.xlsx
+        run: |
+          if curl -fLsS --max-time 45 --retry 2 "$XLSX_RAW" -o /tmp/larue_published_original_satellite.xlsx; then
+            python scripts/audit_larue_original_satellite_image_support_v1.py --xlsx /tmp/larue_published_original_satellite.xlsx --out /tmp/larue_satellite_9_events.json
+            python - <<'PY'
+          import json
+          o=json.load(open('/tmp/larue_satellite_9_events.json'))
+          frozen=json.load(open('results/EMPEROR_LARUE_RAW_SATELLITE_TRANSITION_SUPPORT_V1.json'))
+          assert o["already_exposed_model_posterior_0_to_positive_events"] == 9
+          assert o["raw_rows_2009_2018"] == frozen["raw_image_rows_2009_2018"] == 599
+          assert o["raw_bpresent_value_counts"] == frozen["raw_bpresent_values_in_2009_2018"]
+          assert o["zero_year_events_with_bpresent_No"] == frozen["n_prev_year_original_no"] == 8
+          assert o["zero_year_events_with_bpresent_yes"] == frozen["n_prev_year_original_yes"] == 1
+          assert o["positive_year_events_with_bpresent_yes"] == frozen["n_next_year_original_yes"] == 7
+          assert o["positive_year_events_with_bpresent_no"] == frozen["n_next_year_original_no"] == 1
+          assert o["positive_year_events_with_bpresent_NA"] == frozen["n_next_year_original_NA"] == 1
+          assert o["raw_bpresent_no_to_yes_event_count"] == frozen["n_raw_no_to_yes_pairs"] == 6
+          assert o["positive_year_without_valid_image_according_to_date_and_area_filter"] == frozen["n_next_year_outside_original_date_and_area_window"] == 3
+          assert o["zero_year_events_with_independent_verified_physically_available_absent_colony"] == 0
+          assert not o["new_causal_effect_estimated"]
+          print("POSTERIOR_SWITCH_IMAGE_SUPPORT:",o["zero_year_events_with_at_least_one_source_image"],"of 9")
+          print("ZERO_YEAR_NO_CODES:",o["zero_year_events_with_bpresent_No"],"of 9; No includes no fast ice")
+          print("RAW_AUTHOR_IMAGES:",o["raw_rows_2009_2018"])
+          print("NEXT_RAW_YES_NO_NA:",o["positive_year_events_with_bpresent_yes"],o["positive_year_events_with_bpresent_no"],o["positive_year_events_with_bpresent_NA"])
+          print("RAW_NO_TO_YES:",o["raw_bpresent_no_to_yes_event_count"])
+          print("NEXT_IMAGE_OUTSIDE_AUTHOR_WINDOW:",o["positive_year_without_valid_image_according_to_date_and_area_filter"])
+          print("NO_REAL_RECOLONIZATION_ESTABLISHED")
+          PY
+            echo 'Pinned author original XLSX retained only for archival source verification artifact (public data; not new outcomes).'
+
+          else
+            echo 'HOLD_RAW_PUBLISHED_XLSX_DOWNLOAD_UNAVAILABLE; no new biological evidence claimed'
+          fi
+      - name: Audit all literal No image states with author notes, ice vs bird nondetection
+        run: |
+          if [ -s /tmp/larue_published_original_satellite.xlsx ]; then
+            python scripts/audit_larue_2024_annotation_ice_bird_state_v1.py --xlsx /tmp/larue_published_original_satellite.xlsx --out /tmp/larue20_annotated_ice_states.json
+            python - <<'PY'
+          import json
+          actual=json.load(open('/tmp/larue20_annotated_ice_states.json'))
+          frozen=json.load(open('results/EMPEROR_LARUE_AUTHOR_NO_IMAGE_ICE_BIRD_ANNOTATIONS_V1.json'))
+          assert actual['raw_image_rows_2009_2018']==frozen['original_2009_2018_usable_and_unusable_image_records']==599
+          assert actual['literal_No_count']==frozen['literal_no_rows']==20
+          assert actual['no_annotation_state_counts']==frozen['literal_no_annotation_categories']
+          assert actual['no_passing_basic_original_fit_filter']==frozen['literal_no_rows_eligible_basic_original_date_area_filters']==15
+          assert len(actual['yes_with_zero_area'])==len(frozen['literal_yes_rows_zero_penguin_area'])==3
+          assert len(actual['no_with_positive_area'])==len(frozen['literal_no_rows_nonzero_penguin_area'])==1
+          assert actual['LEDD_no_fast_ice_years']==frozen['Ledda_explicit_no_fast_ice_years']==[2009,2012,2016]
+          assert actual['LEDD_fast_ice_available_birds_not_seen_years']==frozen['Ledda_explicit_fast_ice_present_and_no_birds_years']==[2011,2014,2015]
+          assert actual['LEDD_fast_ice_available_birds_not_seen_inside_author_basic_fit_years']==frozen['Ledda_fast_ice_present_no_birds_in_original_basic_fit_years']==[2011,2014]
+          assert actual['LEDD_next_image_yes_after_author_ice_annotation']['AUTHOR_NOTES_ICE_ABSENT_OR_ALREADY_BROKEN']==3
+          assert actual['LEDD_next_image_yes_after_author_ice_annotation']['AUTHOR_NOTES_FAST_ICE_PRESENT_BIRDS_UNDETECTED']==0
+          assert actual['LEDD_next_image_yes_where_both_scenes_pass_basic_fit']['AUTHOR_NOTES_ICE_ABSENT_OR_ALREADY_BROKEN']==2
+          assert actual['LEDD_next_image_yes_where_both_scenes_pass_basic_fit']['AUTHOR_NOTES_FAST_ICE_PRESENT_BIRDS_UNDETECTED']==0
+          assert actual['source_image_no_code_identifies_true_biological_vacancy'] is False
+          assert actual['causal_effect_estimated'] is False
+          print('PINNED_RAW_ANNOTATION_AUDIT_PASS:',actual['no_annotation_state_counts'])
+          PY
+          else
+            echo 'HOLD_NO_PINNED_SOURCE_XLSX: no physical-ice inference inferred'
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-larue-2024-original-satellite-xlsx
+          path: /tmp/larue_published_original_satellite.xlsx
+          if-no-files-found: ignore
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emperor-2009-2018-raw-image-source-support
+          path: /tmp/larue_satellite_9_events.json
+          if-no-files-found: ignore
+          retention-days: 14

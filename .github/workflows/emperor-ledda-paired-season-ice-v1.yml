@@ -1,0 +1,57 @@
+name: Ledda paired published-centroid seasonal fast ice
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'scripts/audit_ledda_paired_preimage_physical_trajectories_v1.py'
+      - 'tests/test_ledda_paired_preimage_physical_trajectories_v1.py'
+      - '.github/workflows/emperor-ledda-paired-season-ice-v1.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_ledda_paired_preimage_physical_trajectories_v1.py'
+      - 'tests/test_ledda_paired_preimage_physical_trajectories_v1.py'
+      - '.github/workflows/emperor-ledda-paired-season-ice-v1.yml'
+jobs:
+  physical-seasonal-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test timing and comparison contracts before source physical data
+        run: |
+          python -m pip install pytest numpy pyproj h5py
+          python -m pytest -q tests/test_ledda_paired_preimage_physical_trajectories_v1.py
+      - name: Run paired 2011/2014 source physical-only seasonal time series
+        run: |
+          python scripts/audit_ledda_paired_preimage_physical_trajectories_v1.py --out /tmp/ledda_paired_ice_seasonal.json
+      - name: Enforce preimage, physical/source and science boundaries
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/ledda_paired_ice_seasonal.json'))
+          assert r["status"]=="PAIRED_PREIMAGE_PHYSICAL_TRAJECTORIES_EXTRACTED_NOT_BREEDING_HABITABILITY",r.get("error_message")
+          assert r["years"]==[2011,2014]
+          assert r["comparison_radius_km"]==[1,3,5]
+          assert r["new_penguin_biological_rows_opened"]==0
+          assert r["penguin_causal_social_or_rescue_effect_fitted"] is False
+          assert r["PR189_science_changed"] is False
+          assert r["total_remote_bytes"]<=4*20*1024*1024
+          for y in r["year_results"]:
+              assert y["original"]["status"]=="EXPLORATORY_INDEPENDENT_FASTICE_GRID_EXTRACTED"
+              assert y["alternative"]["status"]=="ALTERNATIVE_PUBLISHED_CENTROID_ICE_PIXEL_CONTEXT_READ"
+              assert y["trajectory_by_radius"]["3"]["n_preimage_composites"] == (9 if y["year"]==2011 else 11)
+          print("PAIRED_PREIMAGE_EXPOSURE_GATES_PASS_NOT_SOCIAL_CAUSAL_TEST")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledda-two-centroid-seasonal-2011-2014-physical-fastice
+          path: /tmp/ledda_paired_ice_seasonal.json
+          retention-days: 30
+          if-no-files-found: ignore

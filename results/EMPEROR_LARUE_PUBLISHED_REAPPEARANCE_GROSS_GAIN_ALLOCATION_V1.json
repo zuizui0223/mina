@@ -1,0 +1,174 @@
+{
+  "result_id": "emperor-2009-2018-published-posterior-gain-allocation-by-raw-image-v1",
+  "date": "2026-10-08",
+  "status": "POST_RESULT_PUBLISHED_MODEL_ALLOCATION_QA_NOT_NEW_MIGRATION_OR_CAUSAL_ECOLOGY",
+  "source_url": "https://github.com/davidiles/EMPE_Global/blob/13f71112da43c1fd082273677757b41c550457ed/analysis/output/model_results/3_Colony_Level/colony_summary.csv",
+  "original_survey_evidence_url": "https://github.com/zuizui0223/mina/blob/research/emperor-unused-refuge-temporal-test-v1/results/EMPEROR_LARUE_RAW_SATELLITE_TRANSITION_SUPPORT_V1.json",
+  "source_pinned_sha": "133c900c9dfbf2ce23ca403c9a59edecd9b51ace",
+  "authors_colony_years": 500,
+  "number_sites": 50,
+  "annual": [
+    {
+      "from": 2009,
+      "to": 2010,
+      "gross_positive_model_change": 10433.65085834252,
+      "gross_negative_model_change": 30241.704039266864
+    },
+    {
+      "from": 2010,
+      "to": 2011,
+      "gross_positive_model_change": 16337.135618709672,
+      "gross_negative_model_change": 28262.753338832612
+    },
+    {
+      "from": 2011,
+      "to": 2012,
+      "gross_positive_model_change": 13291.790598848298,
+      "gross_negative_model_change": 9356.259967734051
+    },
+    {
+      "from": 2012,
+      "to": 2013,
+      "gross_positive_model_change": 9475.897854977913,
+      "gross_negative_model_change": 13971.577985803353
+    },
+    {
+      "from": 2013,
+      "to": 2014,
+      "gross_positive_model_change": 13968.411765800452,
+      "gross_negative_model_change": 12928.435088482542
+    },
+    {
+      "from": 2014,
+      "to": 2015,
+      "gross_positive_model_change": 10277.814461710193,
+      "gross_negative_model_change": 25676.7110000681
+    },
+    {
+      "from": 2015,
+      "to": 2016,
+      "gross_positive_model_change": 13306.805462768869,
+      "gross_negative_model_change": 13509.962160199864
+    },
+    {
+      "from": 2016,
+      "to": 2017,
+      "gross_positive_model_change": 20304.251159093463,
+      "gross_negative_model_change": 12037.76130934981
+    },
+    {
+      "from": 2017,
+      "to": 2018,
+      "gross_positive_model_change": 22064.66492577435,
+      "gross_negative_model_change": 6353.629441564824
+    }
+  ],
+  "sum_gross_positive_posterior_mean_change_across_nine_year_transitions": 129460.42270602571,
+  "sum_gross_negative_posterior_mean_change_across_nine_year_transitions": 152338.79433130202,
+  "apparent_model_zero_to_positive_episodes": 9,
+  "sum_of_model_zero_to_positive_allocated_mean_abundance": 10120.609144903716,
+  "share_of_model_gross_positive_change_all_zero_to_positive": 0.0781753136082774,
+  "image_evidence_categories": {
+    "raw_no_to_yes_but_next_image_only_date_area_gate": {
+      "episodes": [
+        {
+          "site": "AMUN",
+          "zero_year": 2010,
+          "positive_year": 2011,
+          "posterior_mean_gain": 82.9110626657425,
+          "next_raw_status": "yes",
+          "date_area_window_passes_only": true
+        },
+        {
+          "site": "LEDD",
+          "zero_year": 2009,
+          "positive_year": 2010,
+          "posterior_mean_gain": 1862.30943188036,
+          "next_raw_status": "yes",
+          "date_area_window_passes_only": true
+        },
+        {
+          "site": "LEDD",
+          "zero_year": 2012,
+          "positive_year": 2013,
+          "posterior_mean_gain": 823.434518103302,
+          "next_raw_status": "yes",
+          "date_area_window_passes_only": true
+        },
+        {
+          "site": "MERT",
+          "zero_year": 2010,
+          "positive_year": 2011,
+          "posterior_mean_gain": 3865.02945860132,
+          "next_raw_status": "yes",
+          "date_area_window_passes_only": true
+        },
+        {
+          "site": "UMBE",
+          "zero_year": 2012,
+          "positive_year": 2013,
+          "posterior_mean_gain": 161.31580394962,
+          "next_raw_status": "yes",
+          "date_area_window_passes_only": true
+        }
+      ],
+      "positive_mass": 6795.000275200345,
+      "n": 5,
+      "share_of_all_model_gross_positive_change": 0.05248708549816957,
+      "share_of_model_zero_reappearance_mass": 0.6714023017697509
+    },
+    "raw_no_to_yes_next_image_outside_date_area_gate": {
+      "episodes": [
+        {
+          "site": "RUPE",
+          "zero_year": 2016,
+          "positive_year": 2017,
+          "posterior_mean_gain": 2203.99712571883,
+          "next_raw_status": "yes",
+          "date_area_window_passes_only": false
+        }
+      ],
+      "positive_mass": 2203.99712571883,
+      "n": 1,
+      "share_of_all_model_gross_positive_change": 0.017024485782219257,
+      "share_of_model_zero_reappearance_mass": 0.21777316900224963
+    },
+    "raw_observations_not_no_to_yes": {
+      "episodes": [
+        {
+          "site": "AMUN",
+          "zero_year": 2012,
+          "positive_year": 2013,
+          "posterior_mean_gain": 80.3803430301797,
+          "next_raw_status": "NA",
+          "date_area_window_passes_only": false
+        },
+        {
+          "site": "LAZA",
+          "zero_year": 2011,
+          "positive_year": 2012,
+          "posterior_mean_gain": 217.552263409174,
+          "next_raw_status": "yes",
+          "date_area_window_passes_only": true
+        },
+        {
+          "site": "LEDD",
+          "zero_year": 2014,
+          "positive_year": 2015,
+          "posterior_mean_gain": 823.679137545186,
+          "next_raw_status": "no",
+          "date_area_window_passes_only": false
+        }
+      ],
+      "positive_mass": 1121.6117439845398,
+      "n": 3,
+      "share_of_all_model_gross_positive_change": 0.008663742327888557,
+      "share_of_model_zero_reappearance_mass": 0.11082452922799939
+    }
+  },
+  "verified_prior_physically_available_but_empty_refuge_events": 0,
+  "confirmed_first_time_breeding_in_new_site_from_these_episodes": 0,
+  "interpretation": "Repeated annual gross gains from published 50x10 posterior mean estimates are neither distinct birds nor origin-tagged immigrants. Category next-image basic date and area does not verify original removal flags or actual fitted use. No pre-event ice-present documented empty sites or observed founding breeding in these nine transitions.",
+  "biological_causal_effect_fitted": false,
+  "previously_locked_PR189_and_external_PRs_unchanged": true
+}

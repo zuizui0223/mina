@@ -1,0 +1,56 @@
+name: Ledda AADC HDF5 schema probe
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'scripts/probe_fraser_remote_hdf5_schema_v1.py'
+      - 'tests/test_fraser_remote_hdf5_metadata_probe.py'
+      - '.github/workflows/emperor-ledda-hdf5-schema-v1.yml'
+  pull_request:
+    paths:
+      - 'scripts/probe_fraser_remote_hdf5_schema_v1.py'
+      - 'tests/test_fraser_remote_hdf5_metadata_probe.py'
+      - '.github/workflows/emperor-ledda-hdf5-schema-v1.yml'
+jobs:
+  metadata-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic HDF5 range unit tests
+        run: |
+          python -m pip install pytest numpy h5py
+          python -m pytest -q tests/test_fraser_remote_hdf5_metadata_probe.py
+      - name: Bounded remote metadata-only schema for frozen 2011 and 2014
+        run: |
+          python scripts/probe_fraser_remote_hdf5_schema_v1.py --out /tmp/fraser_hdf5_schema_v1.json
+      - name: Verify physical and biological outcomes remain unopened
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/fraser_hdf5_schema_v1.json'))
+          assert x['total_physical_ice_class_values_read']==0
+          assert x['total_penguin_response_values_read']==0
+          assert x['causal_fit_done'] is False
+          assert x['total_bytes_network_read'] <= 2*20*1024*1024
+          assert x['years']==[2011,2014]
+          print('HDF5_SCHEMA_READINESS',x['decision'])
+          for y in x['results']:
+              print('YEAR',y['year'],y['status'],'RANGES',y['remote_range_requests'],'BYTES',y['bytes_network_read'])
+              for c in y.get('dataset_entries',[]):
+                  if c['kind']=='dataset':
+                      print('DATASET',c['name'],'SHAPE',c['shape'],'DTYPE',c['dtype'],'CHUNKS',c['chunks'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledda-official-fraser-hdf5-metadata-schema-v1
+          path: /tmp/fraser_hdf5_schema_v1.json
+          retention-days: 14
+          if-no-files-found: ignore

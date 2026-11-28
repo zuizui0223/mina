@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "status": "FROZEN_PRE_NEW_RAW_IMAGE_ROWS_RETROSPECTIVE_DIAGNOSTIC",
+  "input_author_repo": "davidiles/EMPE_Global",
+  "input_commit": "13f71112da43c1fd082273677757b41c550457ed",
+  "input_path": "data/empe_satellite_2023-05-25.xlsx",
+  "input_git_blob_sha": "a964360e2cc9bc6303199e0971a4e7d40f793752",
+  "input_expected_bytes": 107208,
+  "reference_posterior": "results/EMPEROR_LARUE_2024_50_BY_10_POSTERIOR_ZERO_AUDIT_V1.json",
+  "focus": "Nine already-exposed posterior mean zero-to-positive site-year transitions only",
+  "examination": "2009-2018 image date, original bpresent, image quality, area, source removal flag; raw image observations are not known demographic occupancy or breeding success",
+  "source_codebook": {
+    "No": "either no birds or no fast ice; cannot distinguish physically available vacant refuge",
+    "NA": "missing/unusable image; not biological absence",
+    "cutoff": "LaRue original fitting script excludes >= Nov1 zero penguin-area satellite scenes"
+  },
+  "expected_decision": "No positive refuge reoccupation claim unless independent ice-present site access, qualified pre/post surveys, and verified breeding",
+  "ban": [
+    "zero posterior is not true repeated surveyed zero",
+    "do not classify source bpresent=No as available habitat",
+    "do not infer movement of individual penguins",
+    "no new 2022+ responses or causal tests"
+  ],
+  "output": "results/EMPEROR_LARUE_RAW_SATELLITE_TRANSITION_SUPPORT_V1.json",
+  "raw_image_rows_opened_at_contract_creation": 0,
+  "frozen_PR189_unchanged": true
+}

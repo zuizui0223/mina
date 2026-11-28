@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "stage": "PRE_EXTERNAL_PHYSICAL_ICE_VALUES_2009_2010_2012_2013",
+  "analysis_status": "EXPLORATORY_AUTHOR_OBSERVATIONS_ALREADY_KNOWN",
+  "source": {
+    "independent_ice_dataset": "Fraser and Massom 2020 v2.2 doi:10.26179/5d267d1ceb60c",
+    "http_hdf5_template": "https://data.aad.gov.au/eds/api/dataset/f88a75e3-257f-4904-99ef-764e5cf9a064/object/download?prefix=fastice_v2_2/FastIce_70_{year}.nc",
+    "author_bird_state_dataset": "LaRue et al 2024 original pinned EMPE_Global satellite XLSX"
+  },
+  "target_image_event_metadata": [
+    {"year": 2009, "date": "2009-10-27", "bpresent": "no", "original_annotation": "no fast ice", "season_stage": "October"},
+    {"year": 2010, "date": "2010-10-08", "bpresent": "yes", "original_annotation": "colony observed", "season_stage": "October"},
+    {"year": 2012, "date": "2012-10-22", "bpresent": "no", "original_annotation": "no fast ice", "season_stage": "October"},
+    {"year": 2013, "date": "2013-11-30", "bpresent": "yes", "original_annotation": "small group hand-drawn", "season_stage": "late November, stage-mismatched sensitivity only"}
+  ],
+  "centers": {
+    "larue": {"lat":-74.228,"lon":-130.784,"status":"original frozen site primary"},
+    "fretwell": {"lat":-74.272,"lon":-131.243,"status":"independent published spatial sensitivity"}
+  },
+  "selection": {
+    "all_composites_with_start_date_on_or_after": "MM-05-01 of that calendar year",
+    "pre_image_end_rule": "15-day composite start + 14 days must be strictly before original dated bird image",
+    "prohibit_any_composite_overlapping_or_following_original_image_as_causal_exposure": true,
+    "grid": "EPSG:3412, verified 1km coordinates with independently stored 2D latitude/longitude",
+    "radii_km": [1,3,5],
+    "primary_radius_km": 3,
+    "physical_classes": {"0":"pack/ocean/fill ambiguous","1":"continent","2":"island","3":"ice shelf","4":"landfast sea ice","5":"manual edge","6":"auto edge"},
+    "monitor": "class4 interior count and percentage, edges5/6 separately; paired centers; count available preimage composites and class4 persistence"
+  },
+  "frozen_prior_observed_outcomes": {
+    "2011": "author no birds with available ice; physical class4 fraction 0 at both centers in preceding map",
+    "2014": "author no birds with available ice; primary class4 0/28 vs secondary 30/30 in preceding map"
+  },
+  "inference_boundaries": [
+    "This is NOT confirmatory: event dates and author biological outcomes were already read before physical raster extraction",
+    "Original source annotations and the independent MODIS ice classification have different dates, image resolutions and uncertainty",
+    "No exact annual breeding footprint or nesting success is supplied",
+    "An image class4 location is not automatically physically usable throughout egg/chick season",
+    "2013 November is not stage-matched with October and cannot be pooled as equal timing",
+    "Do not select between two published centroids post hoc; report both even if ecological narrative weakens",
+    "Do not infer social fidelity, immigrant movement, recruitment, colonization or social inhibition"
+  ],
+  "source_budgets": {"annual_years":[2009,2010,2012,2013],"bytes_per_year_max":20971520,"max_range_requests_per_year":160},
+  "PR189_science_unmodified":true,
+  "PR142_individual_outcome_lock_unmodified":true
+}

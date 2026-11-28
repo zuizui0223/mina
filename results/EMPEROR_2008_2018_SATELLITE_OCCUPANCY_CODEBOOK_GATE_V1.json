@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "audit_id": "emperor-pr195-satellite-bpresent-no-ice-not-vacant-gate-v1",
+  "status": "AUTHORS_PUBLISHED_CODEBOOK_STRUCTURAL_EVIDENCE__NO_INDIVIDUAL_RESPONSE_ROWS_OPENED",
+  "sources": [
+    {
+      "type": "Primary Dryad README",
+      "url": "https://datadryad.org/dataset/doi:10.5061/dryad.m63xsj48v",
+      "date": "2024-02-14"
+    },
+    {
+      "type": "Authors' public GitHub source",
+      "url": "https://github.com/davidiles/EMPE_Global/tree/13f71112da43c1fd082273677757b41c550457ed",
+      "git_commit": "13f71112da43c1fd082273677757b41c550457ed"
+    },
+    {
+      "type": "Primary article",
+      "url": "https://doi.org/10.1098/rspb.2023.2067"
+    }
+  ],
+  "scope": {
+    "study": "LaRue et al (2024) Proc R Soc B remote-sensing global emperor colony panel",
+    "satellite_known_colonies": 50,
+    "observation_years": "2009–2018 observational imagery; model 2008–2018",
+    "row_file_name": "data/empe_satellite_2023-05-25.xlsx",
+    "file_public_in_author_GitHub": true,
+    "individual_rows_loaded_in_this_audit": 0
+  },
+  "critical_primary_readme_definitions": {
+    "bpresent_Yes": "Birds detected on the satellite image",
+    "bpresent_No": "No birds visible in inspected image OR no fast ice platform present at that colony site",
+    "bpresent_NA": "No usable image OR corrupted imagery OR image too low quality for presence determination",
+    "catalog_id_missing_literal_NA": "Image unavailable for that location and year",
+    "catalog_id_blank_string": "Fretwell et al (2012) original images not re-analyzed in this study; NOT proof an image was unavailable",
+    "img_qualit": "1 difficult to 3 easiest",
+    "img_date": "actual image observation date, necessary for seasonal stage and ice phenology",
+    "comments": "free-text remote-sensing analyst comments to inspect ONLY with advance-gated outcomes if disambiguation possible",
+    "area_m2": "visible penguin pixel area, not pair count or successful breeding"
+  },
+  "state_logic": {
+    "positive_detected": "bpresent == Yes → image has visible birds; not necessarily successful breeding",
+    "negative_composite": "bpresent == No → could be physically no ice or ice with no birds; cannot be a known available vacant refuge",
+    "missing_composite": "bpresent == NA → not a biological zero",
+    "eligible_biological_empty_when_ice_present": "requires contemporaneously independently verified stable fast ice, adequate imagery at relevant stage and true image-reviewed no birds; not derivable from bpresent alone",
+    "site_formation": "does not establish zero→positive when old site image only/no ice or current group migrates elsewhere within same physical local network"
+  },
+  "causal_nonidentifiability": {
+    "physically_no_breeding_platform_vs_social_unoccupied_platform_from_bpresent_No_alone": false,
+    "declining_visible_colony_index_due_to_no_ice_vs_colony_absence_from_bpresent_No_alone": false,
+    "verified_unused_stable_refuge_for_2022_retrospective_colonization": false,
+    "outcome_collapse_if_No_treated_as_vacant": "FALSE_SOCIAL_FILTER_OR_FALSE_COLONIZATION_INFERENCE"
+  },
+  "derived_note": "P(Y=No) combines P(ice unavailable) and P(ice available, birds visually absent); naive modeling Y=No as vacant suitable habitat conflates the very physical-access vs behavioral-establishment causes under test.",
+  "decision": "STOP_PROSPECTIVE_EMPTY_REFUGE_IDENTIFICATION_FROM_PUBLISHED_BPRESTNT_NO_WITHOUT_INDEPENDENT_ICE_AND_SURVEY",
+  "does_not_impugn_original_population_estimation": true,
+  "new_penguin_occupancy_effect_fitted": false,
+  "frozen_pr189_unchanged": true
+}

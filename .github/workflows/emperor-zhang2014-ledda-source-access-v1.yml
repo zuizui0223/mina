@@ -1,0 +1,54 @@
+name: Zhang 2014 Ledda independent polygon source availability
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'contracts/EMPEROR_LEDDA_ZHANG2014_GEOMETRY_AND_SCENE_GATE_V1.json'
+      - 'scripts/probe_zhang2014_official_archive_structure_v1.py'
+      - 'tests/test_zhang2014_official_archive_structure_v1.py'
+      - '.github/workflows/emperor-zhang2014-ledda-source-access-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/EMPEROR_LEDDA_ZHANG2014_GEOMETRY_AND_SCENE_GATE_V1.json'
+      - 'scripts/probe_zhang2014_official_archive_structure_v1.py'
+      - 'tests/test_zhang2014_official_archive_structure_v1.py'
+      - '.github/workflows/emperor-zhang2014-ledda-source-access-v1.yml'
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source access and prohibited biology
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_zhang2014_official_archive_structure_v1.py
+      - name: Official webpage HTML and link metadata only (no RAR download)
+        run: |
+          python scripts/probe_zhang2014_official_archive_structure_v1.py --out /tmp/zhang_2014_archive_structure_v1.json
+      - name: Record verifiable source gate not supposed 2014 animal outcome
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/zhang_2014_archive_structure_v1.json'))
+          assert x['raw_downloaded_bytes']==0
+          assert x['biological_feature_records_read']==0
+          assert x['causal_mechanism_fitted'] is False
+          assert x['source_2014_Ledda_site_table_listed_NOT_verification_of_live_birds'] is True
+          print('ZHANG2014_SOURCE_GATE',x['status'])
+          if x['status'].startswith('HOLD'):
+              print('HOLD_NO_VERIFIED_2014_POLYGON: do not assert 2014 independent live penguin presence')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emperor-zhang2014-independent-geolocation-archive-source-gate
+          path: /tmp/zhang_2014_archive_structure_v1.json
+          retention-days: 30
+          if-no-files-found: ignore

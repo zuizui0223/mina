@@ -1,0 +1,67 @@
+name: LaRue 599 image-location coordinates versus colony-site lookup
+on:
+  push:
+    branches:
+      - research/emperor-unused-refuge-temporal-test-v1
+    paths:
+      - 'contracts/EMPEROR_LARUE_GLOBAL_IMG_COORDINATE_IDENTITY_AUDIT_V1.json'
+      - 'scripts/audit_larue_global_img_coordinate_identity_v1.py'
+      - 'tests/test_larue_global_img_coordinate_identity_v1.py'
+      - '.github/workflows/emperor-larue-global-img-coord-identity-v1.yml'
+  pull_request:
+    paths:
+      - 'contracts/EMPEROR_LARUE_GLOBAL_IMG_COORDINATE_IDENTITY_AUDIT_V1.json'
+      - 'scripts/audit_larue_global_img_coordinate_identity_v1.py'
+      - 'tests/test_larue_global_img_coordinate_identity_v1.py'
+      - '.github/workflows/emperor-larue-global-img-coord-identity-v1.yml'
+jobs:
+  original-image-coordinates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test source role classification without observational biology
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_larue_global_img_coordinate_identity_v1.py
+      - name: Retrieve pinned original two LaRue site-image sources
+        env:
+          SOURCE_SAT: https://raw.githubusercontent.com/davidiles/EMPE_Global/13f71112da43c1fd082273677757b41c550457ed/data/empe_satellite_2023-05-25.xlsx
+          SOURCE_STATIC: https://raw.githubusercontent.com/davidiles/EMPE_Global/13f71112da43c1fd082273677757b41c550457ed/data/colony_attributes.csv
+        run: |
+          set -e
+          curl -fLsS --retry 2 --max-time 35 "$SOURCE_SAT" -o /tmp/larue_frozen_original_satellite.xlsx
+          curl -fLsS --retry 2 --max-time 35 "$SOURCE_STATIC" -o /tmp/larue_frozen_colony_locations.csv
+      - name: Audit all original survey coordinates without inferring movement
+        run: |
+          python scripts/audit_larue_global_img_coordinate_identity_v1.py \
+            --satellite-xlsx /tmp/larue_frozen_original_satellite.xlsx \
+            --static-csv /tmp/larue_frozen_colony_locations.csv \
+            --out /tmp/larue_global_img_coordinate_identity.json
+      - name: Audit result integrity only
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/larue_global_img_coordinate_identity.json'))
+          assert d['source_observations']==599
+          assert d['Ledda_summary']['n_original_images']==10
+          assert d['source_sites']>=1
+          assert sum(d['original_image_coord_field_classes'].values())==599
+          assert d['actual_satellite_scene_georeference_proven_by_these_fields'] is False
+          assert d['actual_bird_or_guano_polygons_proven_by_these_fields'] is False
+          assert d['real_colony_immobility_or_movement_inferred'] is False
+          assert d['biological_causal_effect_fitted'] is False
+          print('GLOBAL_IMG_COORD_ROLE_AUDIT_PASSED_NO_BIOLOGICAL_MOVEMENT_INFERENCE')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emperor-original-599-images-source-coordinate-role-audit
+          path: /tmp/larue_global_img_coordinate_identity.json
+          if-no-files-found: ignore
+          retention-days: 30

@@ -1,0 +1,54 @@
+{
+  "audit": "Fraser Massom 2020 v2.2 preimage Ledda frozen-center physical code summary",
+  "source_workflow_run": "https://github.com/zuizui0223/mina/actions/runs/37765982575",
+  "source_workflow_job_id": 113273645405,
+  "state": "EXPLORATORY_INDEPENDENT_RASTER_CLASSIFICATION_AT_LARUE_CENTROID_ONLY",
+  "source": "https://doi.org/10.26179/5d267d1ceb60c",
+  "reference_center": {"source":"LaRue et al 2024 colony_attributes.csv","lat":-74.228,"lon":-130.784},
+  "three_km_radius_grid_cells": 28,
+  "result": [
+    {
+      "year":2011,
+      "author_high_resolution_image_date":"2011-09-23",
+      "author_original_image_comment":"fast ice available; no birds detected",
+      "last_fully_preimage_15day_composite":"2011-08-29 through 2011-09-12",
+      "fixed_primary_composite_index":16,
+      "three_km_class_histogram":{"0":28},
+      "three_km_fastice_class_4_pixels":0,
+      "three_km_manual_or_auto_edge_class_5_6_pixels":0,
+      "fraction_class4":0.0,
+      "may_to_preimage_number_composites":9,
+      "may_to_preimage_composites_with_any_class4":2,
+      "may_to_preimage_mean_fraction_class4":0.2222222222222222,
+      "overlap_period_class4_pixels":0
+    },
+    {
+      "year":2014,
+      "author_high_resolution_image_date":"2014-10-13",
+      "author_original_image_comment":"fast ice available; no birds detected",
+      "last_fully_preimage_15day_composite":"2014-09-28 through 2014-10-12",
+      "fixed_primary_composite_index":18,
+      "three_km_class_histogram":{"0":28},
+      "three_km_fastice_class_4_pixels":0,
+      "three_km_manual_or_auto_edge_class_5_6_pixels":0,
+      "fraction_class4":0.0,
+      "may_to_preimage_number_composites":11,
+      "may_to_preimage_composites_with_any_class4":3,
+      "may_to_preimage_mean_fraction_class4":0.21753246753246752,
+      "overlap_period_class4_pixels":0
+    }
+  ],
+  "comparison_pending":"precommitted Fretwell 2021 reported Ledda centroid -74.272,-131.243, 14.69 km from LaRue author colony centroid",
+  "limits":[
+    "Raster 0 means not mapped as landfast ice (pack ice/ocean and possible fill ambiguity), NOT absolute absence of all sea ice or available ice across the entire bay",
+    "The preimage composite for 2011 ends 11 days before the original image; 2014 ends one day before",
+    "15-day MODIS 1km classification and high-resolution interpreter notes may legitimately disagree",
+    "Original author no-birds annotations are not a validated season-wide biological absence",
+    "Fixed centroid is not proven to be the exact nesting footprint",
+    "The separate alternative-coordinate extraction must be read BEFORE ecological habitat-choice claims",
+    "Two years at one historical colony are not replicates for general social-choice causality"
+  ],
+  "no_causal_biology_claimed":true,
+  "no_inferred_emigration_rescue_or_social_effect":true,
+  "frozen_PR189_untouched":true
+}

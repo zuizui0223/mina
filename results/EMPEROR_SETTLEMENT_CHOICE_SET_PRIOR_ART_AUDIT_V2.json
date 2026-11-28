@@ -1,0 +1,98 @@
+{
+  "schema_version": 2,
+  "date": "2026-10-08",
+  "result_id": "emperor-occupied-vs-vacant-refuge-choice-v2",
+  "status": "PUBLISHED_RESULTS_AND_SOURCE_CODE_PRIOR_ART_ONLY__NO_NEW_RESPONSES",
+  "sources": [
+    {
+      "type": "published_demographic_genetic_model",
+      "url": "https://doi.org/10.1002/ece3.71367",
+      "label": "Garnier et al 2025 Ecology and Evolution"
+    },
+    {
+      "type": "frozen_public_source_code",
+      "url": "https://github.com/garnieji/EP_demographic_genetic/blob/bae0db2aedf6d18870287110797b9d8d1818ccc0/EP_project_informed.m",
+      "sha": "bae0db2aedf6d18870287110797b9d8d1818ccc0"
+    },
+    {
+      "type": "2019_published_halley_receiver",
+      "url": "https://doi.org/10.1017/S0954102019000099",
+      "label": "Fretwell & Trathan 2019 Antarctic Science"
+    },
+    {
+      "type": "2025_published_regional_posterior",
+      "url": "https://doi.org/10.1038/s43247-025-02345-7",
+      "label": "Fretwell et al 2025 Communications Earth and Environment"
+    }
+  ],
+  "genetic_demographic_model_prior_art": {
+    "fitted_behavior": "SEMI_INFORMED_INF_EMIGRATION_RANDOM_ESTABLISHMENT_AMONG_FIXED_COLONY_NODES",
+    "DIC": {
+      "random": 684,
+      "semi_informed": -41,
+      "informed": 676
+    },
+    "mean_successful_dispersal_distance_km_model_inferred": 414,
+    "mean_emigration_rate_model_inferred_per_colony_year": 0.157,
+    "median_emigration_rate_across_colony_years": 0,
+    "paper_describes_network_colonies": 66,
+    "public_code_example": {
+      "ncol_literal": 54,
+      "colony_list_input": "COL_EP.xlsx C2:C55,D2:D55,F2:F55",
+      "carrying_capacity_expression": "K=2*BE",
+      "carrying_capacity_timevarying": false,
+      "new_suitable_empty_sites_in_choice_set": false,
+      "dispersal_matrix": "Dmat over existing modeled colony list",
+      "interpretation": "This particular code file cannot assign settlement to a newly physically available site not in its listed nodes; not necessarily exact final 66 site paper code."
+    },
+    "parameter_not_tag_derived": true,
+    "random_settlement_in_model_means_random_among_candidates_that_model_defines": true,
+    "identifies_social_attraction_to_occupied_vs_vacant": false
+  },
+  "halley_dawson_historical_positive_control": {
+    "receiver_had_existing_2015_colony": true,
+    "receiver_2015_pairs": 1280,
+    "receiver_2016_pairs": 5315,
+    "receiver_2017_pairs": 11117,
+    "receiver_2018_pairs": 14612,
+    "receiver_increase_2015_to_2018_pairs": 13332,
+    "receiver_ratio_2018_over_2015": 11.415625,
+    "source_region_exhaustive_2016_2018_no_other_new_colony_in_2019_paper": true,
+    "source_dest_individual_origin_tags_available_in_paper": false,
+    "many_receiver_penguins_2016_17_nonbreeders_possible": true,
+    "dense_group_2018_heavy_guano_consistent_with_breeding": true,
+    "true_vacant_sites_known_to_be_accessible_nearby": false,
+    "reported_distance_2019_km": 55,
+    "reported_distance_2025_km": 85,
+    "geodesic_from_published_coords_km": 62.11763824786552,
+    "previous_40km_screen_includes_receiver": false,
+    "local_100km_screen_includes_receiver": true,
+    "classification": "KNOWN_OCCUPIED_RECEIVER_POSITIVE_CONTROL_NOT_PREVIOUSLY_EMPTY_REFUGE",
+    "effect_and_mechanism_already_published": true
+  },
+  "current_source_support": {
+    "baseline_labrousse_pseudoabsence_has_true_surveyed_zeros": false,
+    "known_prior_empty_site_and_pre_switch_2022_accessibility_jointly_verified": false,
+    "site_year_reproductive_status_and_natal_origin": false,
+    "independent_receiver_success_for_multiple_events": false,
+    "proven_social_attraction_or_alternative_choice": false,
+    "positive_new_observation_from_this_audit": false
+  },
+  "definitive_novel_gap": "Evaluate post-disturbance destination choice among physically available, previously occupied receiving colonies vs repeatedly surveyed unoccupied options; prior inferred semi-informed dispersal conditioned on fixed existing colony nodes does not determine this choice-set expansion.",
+  "warnings": [
+    "Do not equate modeled 414km mean successful dispersal with actual tag-tracked Halley movements.",
+    "Do not call far 200-400km background biologically negative under 414km inferred dispersal.",
+    "Do not interpret 2015-2018 receiver growth as verified reproduction by 13,332 new pairs or immigrant count.",
+    "Do not treat no new colonies in regional satellite scan as proof that previously available empty nesting habitats were attractive or survey-detected.",
+    "Do not infer origin or individual lifetime breeding without band/age data.",
+    "Do not claim fixed 54 code definitively invalidates paper's 66 colony fitting; reconcile versions before methodological criticism."
+  ],
+  "gate_decision": "NEW_REFUGE_COLONIZATION_OUTCOME_NOT_IDENTIFIABLE_FROM_CURRENT_LABROUSSE_PSEUDOABSENCE_AND_FRETWELL_AGGREGATES",
+  "preoutcome_other_PRs_untouched": [
+    189,
+    192,
+    194
+  ],
+  "new_outcome_rows_opened": 0,
+  "new_biological_effect_test_run": false
+}
