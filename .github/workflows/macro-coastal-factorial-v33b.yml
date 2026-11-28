@@ -1,0 +1,115 @@
+name: V33b independent factorial replay and envelope diagnosis
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-factorial-v33b.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy scipy
+      - name: Independently replay the primary factorial and diagnose fixed-reference coordinate limits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15250703543/zip" > factorial.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249889624/zip" > future.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249988185/zip" > analogue.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15169338322/zip" > frame.zip
+          python - <<'PY'
+          import csv,io,zipfile,json,hashlib,math,itertools
+          from pathlib import Path
+          from collections import defaultdict
+          import numpy as np
+          from scipy.spatial.distance import cdist
+          def zread(p,h):
+              assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h
+              z=zipfile.ZipFile(p);assert z.testzip() is None;return z
+          def member(z,n):
+              a=[x for x in z.namelist() if Path(x).name==n];assert len(a)==1;return z.read(a[0])
+          def rows(z,n):return list(csv.DictReader(io.StringIO(member(z,n).decode('utf-8-sig'))))
+          def ix(rs,ks):
+              d={tuple(x[k] for k in ks):x for x in rs};assert len(d)==len(rs);return d
+          v=zread('factorial.zip','8ff99c0054fe84496b8b7366d1eea2164a6858fe6269a8d4bb90b2ca4d4e3df2')
+          f=zread('future.zip','bac958ee1c96168e730a1f5c23c13614da6d3da322d04ee29ee504d857466e94')
+          a=zread('analogue.zip','2b3066535396dd9c5b8d813a7a7870873ee0a885cab1ae5ffdbed02617105dd7')
+          g=zread('frame.zip','13bfe5866a27f6fbfad681ed4a44d834f6019c663f94193e1039e96b81c22060')
+          r=json.loads(member(a,'result.json'))
+          F=ix(rows(f,'primary_tile_scenarios.csv'),('tile','model','experiment','period'))
+          G={x['tile']:x for x in rows(g,'opportunity_tiles.csv') if x['band_km']=='5'}
+          keys=sorted({k[0] for k in F},key=int);assert len(keys)==1401
+          models=('ACCESS-CM2','BCC-CSM2-MR','CESM2');species=('ADPE','CHPE','GEPE')
+          variables=('siconc','sos','tos')
+          periods=[(s,p) for s in ('ssp245','ssp585') for p in ('2041-2060','2081-2100')]
+          X=np.array([[float(F[k,models[0],*periods[0]][c+'_observed']) for c in variables] for k in keys])
+          area=np.array([float(F[k,models[0],*periods[0]]['rock_area_m2']) for k in keys])
+          w=np.array([int(G[k]['rock_pixels']) for k in keys],float)
+          mu=np.array(r['standardization']['mean']);sd=np.array(r['standardization']['sd'])
+          Z=(X-mu)/sd
+          check=0;err=0.
+          def ck(x,y):
+              global check,err
+              assert math.isclose(float(x),float(y),abs_tol=1e-9,rel_tol=1e-10),(x,y)
+              check+=1;err=max(err,abs(float(x)-float(y)))
+          for i in range(3):
+              ck(np.average(X[:,i],weights=w),mu[i])
+              ck(np.sqrt(np.average((X[:,i]-mu[i])**2,weights=w)),sd[i])
+          P=ix(rows(v,'primary_tile_factorial.csv'),('species','tile','model','experiment','period'))
+          assert len(P)==3*1401*12
+          con=ix([x for x in rows(v,'contributions.csv') if x['metric']=='euclidean3' and float(x['quantile'])==.9],('species','model','experiment','period','support','weight'))
+          fac=ix([x for x in rows(v,'factorial.csv') if x['metric']=='euclidean3' and float(x['quantile'])==.9],('species','model','experiment','period','support','weight','subset_mask'))
+          assert len(con)==3*12*2*2 and len(fac)==len(con)*8
+          refs={};diagnostics=[]
+          for sp in species:
+              q=next(x for x in r['analogue_scenarios'] if x['species']==sp and x['metric']=='euclidean3' and x['quantile']==.9)
+              th=q['threshold'];lab=np.array([int(G[k]['recorded_'+sp]) for k in keys],bool);ref=Z[lab]
+              refs[sp]={'n':int(lab.sum()),'threshold':th,'reference_min':X[lab].min(axis=0).tolist(),'reference_max':X[lab].max(axis=0).tolist(),'axis_tolerance':(th*sd).tolist(),'necessary_lower':(X[lab].min(axis=0)-th*sd).tolist(),'necessary_upper':(X[lab].max(axis=0)+th*sd).tolist()}
+              for s,p in periods:
+                  for m in models:
+                      rows1=[P[sp,k,m,s,p] for k in keys]
+                      flags=np.array([[int(x['mask_'+str(j)]) for x in rows1] for j in range(8)],bool)
+                      masks={'full':np.ones(len(keys),bool),'common_unclipped':np.array([int(x['common_unclipped']) for x in rows1],bool)}
+                      D=np.array([[float(F[k,m,s,p][c+'_native_delta']) for c in variables] for k in keys])
+                      for tag,keep in masks.items():
+                          for wt,weight in [('rock_area',area),('rock_hits',w)]:
+                              den=math.fsum(weight[keep])
+                              h=[math.fsum(weight[keep&flag])/den for flag in flags]
+                              for j in range(8):
+                                  ck(h[j],fac[sp,m,s,p,tag,wt,str(j)]['analogue_fraction'])
+                              phi=np.zeros(3)
+                              for order in itertools.permutations(range(3)):
+                                  mask=0
+                                  for j in order:
+                                      nxt=mask|(1<<j);phi[j]+=(h[nxt]-h[mask])/6;mask=nxt
+                              for j,c in enumerate(('SIC','SSS','SST')):ck(phi[j],con[sp,m,s,p,tag,wt]['phi_'+c])
+                              ck(phi.sum(),h[7]-h[0])
+                          for subset in (4,7):
+                              Y=X+D*np.array([bool(subset&(1<<j)) for j in range(3)])
+                              Y[:,0]=np.clip(Y[:,0],0,100)
+                              z=(Y-mu)/sd
+                              nearest=cdist(z,ref).min(axis=1)
+                              actual=nearest<=th+1e-12
+                              assert np.array_equal(actual,flags[subset])
+                              fail=np.stack([np.min(np.abs(z[:,j,None]-ref[None,:,j]),axis=1)>th+1e-12 for j in range(3)],axis=1)
+                              anyfail=fail.any(axis=1);assert not np.any(actual&anyfail)
+                              lost=keep&flags[0]&~actual
+                              den=math.fsum(area[keep]);loss=math.fsum(area[lost])
+                              def share(x):return math.fsum(area[lost&x])/loss if loss else None
+                              diagnostics.append({'species':sp,'model':m,'experiment':s,'period':p,'support':tag,'subset':subset,'lost_area_fraction':loss/den,'lost_area_km2':loss/1e6,'loss_share_axis_fail':{c:share(fail[:,j]) for j,c in enumerate(('SIC','SSS','SST'))},'loss_share_any_axis_fail':share(anyfail),'loss_share_all_axes_pass_joint_fail':share(~anyfail),'loss_share_above_sst_max_plus_tolerance':share(Y[:,2]>refs[sp]['necessary_upper'][2]+1e-12),'weighted_mean_sst':float(np.average(Y[keep,2],weights=area[keep]))})
+          result={'status':'VERIFIED_PRIMARY_FACTORIAL_AND_ENVELOPE','checks':check,'max_abs_difference':err,'background_sd':sd.tolist(),'references':refs,'diagnostics':diagnostics,'limits':'Necessary coordinate-distance bound in fixed Euclidean reference geometry, not physiological limit or causal mechanism.'}
+          Path('qa.json').write_text(json.dumps(result,indent=2,allow_nan=False))
+          print('V33B_QA='+json.dumps({**result,'diagnostics':[x for x in diagnostics if x['species']=='GEPE' and x['experiment']=='ssp585' and x['period']=='2081-2100']}),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macro-coastal-factorial-v33b
+          path: qa.json
+          retention-days: 30
