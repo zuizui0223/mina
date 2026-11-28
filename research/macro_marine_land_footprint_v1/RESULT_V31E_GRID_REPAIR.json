@@ -1,0 +1,205 @@
+{
+  "status": "ACCESS_NATIVE_COMPLETE_CESM_COORDINATE_DIAGNOSIS_COMPLETE",
+  "access": {
+    "status": "EXECUTED_NATIVE_CMIP6_MODEL",
+    "model": "ACCESS-CM2",
+    "member": "r1i1p1f1",
+    "source_stores_verified": 9,
+    "geometry": {
+      "model": "ACCESS-CM2",
+      "coordinate_precision_checks": [
+        {
+          "variable": "sos",
+          "same_index_south_centers": 22320,
+          "max_coordinate_displacement_m": 0.8516967453484592
+        },
+        {
+          "variable": "tos",
+          "same_index_south_centers": 22320,
+          "max_coordinate_displacement_m": 0.8516967453484592
+        }
+      ],
+      "native_joint_wet_cells": 14871,
+      "native_variable_mask_counts": {
+        "siconc": 14871,
+        "sos": 14871,
+        "tos": 14871
+      },
+      "distinct_mapped_cells": 197,
+      "tiles": 1722,
+      "distance_gate": {
+        "50": 1275,
+        "100": 1655,
+        "200": 1722
+      },
+      "distance_max_km": 173.84861260311598,
+      "distance_median_km": 30.35351992198028
+    },
+    "periods": [
+      {
+        "experiment": "historical",
+        "period": "1995-2014",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 197,
+        "complete_tiles_le100km": 1655
+      },
+      {
+        "experiment": "ssp245",
+        "period": "2041-2060",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 197,
+        "complete_tiles_le100km": 1655
+      },
+      {
+        "experiment": "ssp245",
+        "period": "2081-2100",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 197,
+        "complete_tiles_le100km": 1655
+      },
+      {
+        "experiment": "ssp585",
+        "period": "2041-2060",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 197,
+        "complete_tiles_le100km": 1655
+      },
+      {
+        "experiment": "ssp585",
+        "period": "2081-2100",
+        "complete_tiles": 1722,
+        "complete_unique_cells": 197,
+        "complete_tiles_le100km": 1655
+      }
+    ],
+    "limits": "Native model physical conditions, not local downscaling, historical observed values or population forecast; static land frame."
+  },
+  "cesm": {
+    "model": "CESM2",
+    "comparisons": [
+      {
+        "comparison": "siconc:historical_to_ssp245",
+        "shape_equal": true,
+        "common_south_centers": 16810,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "siconc:historical_to_ssp585",
+        "shape_equal": true,
+        "common_south_centers": 16810,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "sos:historical_to_ssp245",
+        "shape_equal": true,
+        "common_south_centers": 20800,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "sos:historical_to_ssp585",
+        "shape_equal": true,
+        "common_south_centers": 20800,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "tos:historical_to_ssp245",
+        "shape_equal": true,
+        "common_south_centers": 20800,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "tos:historical_to_ssp585",
+        "shape_equal": true,
+        "common_south_centers": 20800,
+        "finite_mask_mismatches_south": 0,
+        "max_m": 0,
+        "median_m": 0,
+        "q95_m": 0,
+        "above100m": 0,
+        "lat_max_abs_deg": 0,
+        "lon_max_abs_deg": 0
+      },
+      {
+        "comparison": "siconc_to_sos",
+        "shape_equal": true,
+        "common_south_centers": 16810,
+        "finite_mask_mismatches_south": 3990,
+        "max_m": 0.8076380994695644,
+        "median_m": 0.33440312493008795,
+        "q95_m": 0.6303532143969252,
+        "above100m": 0,
+        "lat_max_abs_deg": 0.0000038114245342057984,
+        "lon_max_abs_deg": 0.000009984867347156978
+      },
+      {
+        "comparison": "siconc_to_tos",
+        "shape_equal": true,
+        "common_south_centers": 16810,
+        "finite_mask_mismatches_south": 3990,
+        "max_m": 0.8076380994695644,
+        "median_m": 0.33440312493008795,
+        "q95_m": 0.6303532143969252,
+        "above100m": 0,
+        "lat_max_abs_deg": 0.0000038114245342057984,
+        "lon_max_abs_deg": 0.000009984867347156978
+      }
+    ],
+    "spacing": {
+      "siconc": {
+        "centers": 16810,
+        "min_spherical_neighbor_m": 23395.96083248311,
+        "median_spherical_neighbor_m": 59403.16126636781,
+        "below200m": 0
+      },
+      "sos": {
+        "centers": 20800,
+        "min_spherical_neighbor_m": 23395.85177768813,
+        "median_spherical_neighbor_m": 58485.454336803756,
+        "below200m": 0
+      },
+      "tos": {
+        "centers": 20800,
+        "min_spherical_neighbor_m": 23395.85177768813,
+        "median_spherical_neighbor_m": 58485.454336803756,
+        "below200m": 0
+      }
+    }
+  },
+  "execution": {
+    "run": 46112820614,
+    "access_artifact": 15249954003,
+    "access_sha256": "1c7d282e4d77930679b1bd444f624fc7aa513f1f2b70c857e6e8254defb79bd5",
+    "cesm_coordinate_artifact": 15249844445,
+    "cesm_coordinate_sha256": "2dd93204d8f70e24b6f6418868c100c75b7ce8aead5895582ba9bf0a9181a24a"
+  }
+}
