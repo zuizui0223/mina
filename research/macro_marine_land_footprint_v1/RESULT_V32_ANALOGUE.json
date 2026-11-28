@@ -1,0 +1,3542 @@
+{
+  "analysis": {
+    "status": "EXECUTED_CONDITIONAL_CLIMATE_ANALOGUES",
+    "tiles": 1401,
+    "blocks": 56,
+    "area_km2": 3082.845053725537,
+    "reference_counts": {
+      "ADPE": 31,
+      "CHPE": 62,
+      "GEPE": 37
+    },
+    "transfer": [
+      {
+        "metric": "euclidean3",
+        "species": "ADPE",
+        "mode": "native_exclusion",
+        "all_reference_records": 31,
+        "reference_blocks": 9,
+        "evaluated_records": 31,
+        "evaluated_blocks": 9,
+        "equal_block_rank": 0.43679504337926683,
+        "equal_record_rank": 0.4435652338015215,
+        "rank_lobo_min": 0.36639442380167514,
+        "rank_lobo_max": 0.48552542317022856,
+        "calibration_support": true,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "euclidean3",
+        "species": "ADPE",
+        "mode": "adjacent_exclusion",
+        "all_reference_records": 31,
+        "reference_blocks": 9,
+        "evaluated_records": 31,
+        "evaluated_blocks": 9,
+        "equal_block_rank": 0.5008343120278412,
+        "equal_record_rank": 0.4854605501178776,
+        "rank_lobo_min": 0.4384386010313214,
+        "rank_lobo_max": 0.5503710191939402,
+        "calibration_support": true,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "euclidean3",
+        "species": "CHPE",
+        "mode": "native_exclusion",
+        "all_reference_records": 62,
+        "reference_blocks": 7,
+        "evaluated_records": 62,
+        "evaluated_blocks": 7,
+        "equal_block_rank": 0.5485784520605737,
+        "equal_record_rank": 0.5270640183740469,
+        "rank_lobo_min": 0.49255285197427556,
+        "rank_lobo_max": 0.5860300479622957,
+        "calibration_support": true,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "euclidean3",
+        "species": "CHPE",
+        "mode": "adjacent_exclusion",
+        "all_reference_records": 62,
+        "reference_blocks": 7,
+        "evaluated_records": 39,
+        "evaluated_blocks": 5,
+        "equal_block_rank": 0.5032347766158769,
+        "equal_record_rank": 0.4357593480879535,
+        "rank_lobo_min": 0.4078604576252556,
+        "rank_lobo_max": 0.5497034789698722,
+        "calibration_support": true,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "euclidean3",
+        "species": "GEPE",
+        "mode": "native_exclusion",
+        "all_reference_records": 37,
+        "reference_blocks": 6,
+        "evaluated_records": 32,
+        "evaluated_blocks": 5,
+        "equal_block_rank": 0.601878002732976,
+        "equal_record_rank": 0.6283239985265197,
+        "rank_lobo_min": 0.5499079188443425,
+        "rank_lobo_max": 0.6285893016190711,
+        "calibration_support": true,
+        "descriptive_transfer_gate": true
+      },
+      {
+        "metric": "euclidean3",
+        "species": "GEPE",
+        "mode": "adjacent_exclusion",
+        "all_reference_records": 37,
+        "reference_blocks": 6,
+        "evaluated_records": 0,
+        "evaluated_blocks": 0,
+        "equal_block_rank": null,
+        "equal_record_rank": null,
+        "rank_lobo_min": null,
+        "rank_lobo_max": null,
+        "calibration_support": false,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "sic_only",
+        "species": "ADPE",
+        "mode": "native_exclusion",
+        "all_reference_records": 31,
+        "reference_blocks": 9,
+        "evaluated_records": 31,
+        "evaluated_blocks": 9,
+        "equal_block_rank": 0.5521133980005993,
+        "equal_record_rank": 0.47113520622912897,
+        "rank_lobo_min": 0.5203707969674993,
+        "rank_lobo_max": 0.5832754994979196,
+        "calibration_support": true,
+        "descriptive_transfer_gate": true
+      },
+      {
+        "metric": "sic_only",
+        "species": "ADPE",
+        "mode": "adjacent_exclusion",
+        "all_reference_records": 31,
+        "reference_blocks": 9,
+        "evaluated_records": 31,
+        "evaluated_blocks": 9,
+        "equal_block_rank": 0.5675135460196039,
+        "equal_record_rank": 0.47598685632303955,
+        "rank_lobo_min": 0.5321138767128126,
+        "rank_lobo_max": 0.6006006660192997,
+        "calibration_support": true,
+        "descriptive_transfer_gate": true
+      },
+      {
+        "metric": "sic_only",
+        "species": "CHPE",
+        "mode": "native_exclusion",
+        "all_reference_records": 62,
+        "reference_blocks": 7,
+        "evaluated_records": 62,
+        "evaluated_blocks": 7,
+        "equal_block_rank": 0.5740036741712639,
+        "equal_record_rank": 0.5081616928838819,
+        "rank_lobo_min": 0.536371323944668,
+        "rank_lobo_max": 0.5985606962881913,
+        "calibration_support": true,
+        "descriptive_transfer_gate": true
+      },
+      {
+        "metric": "sic_only",
+        "species": "CHPE",
+        "mode": "adjacent_exclusion",
+        "all_reference_records": 62,
+        "reference_blocks": 7,
+        "evaluated_records": 39,
+        "evaluated_blocks": 5,
+        "equal_block_rank": 0.5748382923370073,
+        "equal_record_rank": 0.476416648046465,
+        "rank_lobo_min": 0.5185984215385494,
+        "rank_lobo_max": 0.6316992131808088,
+        "calibration_support": true,
+        "descriptive_transfer_gate": true
+      },
+      {
+        "metric": "sic_only",
+        "species": "GEPE",
+        "mode": "native_exclusion",
+        "all_reference_records": 37,
+        "reference_blocks": 6,
+        "evaluated_records": 32,
+        "evaluated_blocks": 5,
+        "equal_block_rank": 0.6234054791900414,
+        "equal_record_rank": 0.6263633509899194,
+        "rank_lobo_min": 0.5899990619977228,
+        "rank_lobo_max": 0.6457657655346901,
+        "calibration_support": true,
+        "descriptive_transfer_gate": true
+      },
+      {
+        "metric": "sic_only",
+        "species": "GEPE",
+        "mode": "adjacent_exclusion",
+        "all_reference_records": 37,
+        "reference_blocks": 6,
+        "evaluated_records": 0,
+        "evaluated_blocks": 0,
+        "equal_block_rank": null,
+        "equal_record_rank": null,
+        "rank_lobo_min": null,
+        "rank_lobo_max": null,
+        "calibration_support": false,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "whitened",
+        "species": "ADPE",
+        "mode": "native_exclusion",
+        "all_reference_records": 31,
+        "reference_blocks": 9,
+        "evaluated_records": 31,
+        "evaluated_blocks": 9,
+        "equal_block_rank": 0.4665584617867973,
+        "equal_record_rank": 0.4473998128099143,
+        "rank_lobo_min": 0.4267943279043075,
+        "rank_lobo_max": 0.5159025567329558,
+        "calibration_support": true,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "whitened",
+        "species": "ADPE",
+        "mode": "adjacent_exclusion",
+        "all_reference_records": 31,
+        "reference_blocks": 9,
+        "evaluated_records": 31,
+        "evaluated_blocks": 9,
+        "equal_block_rank": 0.4617266408690151,
+        "equal_record_rank": 0.4695025141773519,
+        "rank_lobo_min": 0.42135852937180257,
+        "rank_lobo_max": 0.5104667582004508,
+        "calibration_support": true,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "whitened",
+        "species": "CHPE",
+        "mode": "native_exclusion",
+        "all_reference_records": 62,
+        "reference_blocks": 7,
+        "evaluated_records": 62,
+        "evaluated_blocks": 7,
+        "equal_block_rank": 0.5205689901180417,
+        "equal_record_rank": 0.4803534626605171,
+        "rank_lobo_min": 0.4570102997282107,
+        "rank_lobo_max": 0.5627335788779668,
+        "calibration_support": true,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "whitened",
+        "species": "CHPE",
+        "mode": "adjacent_exclusion",
+        "all_reference_records": 62,
+        "reference_blocks": 7,
+        "evaluated_records": 39,
+        "evaluated_blocks": 5,
+        "equal_block_rank": 0.5182766445166755,
+        "equal_record_rank": 0.3964103211562606,
+        "rank_lobo_min": 0.42236552253158754,
+        "rank_lobo_max": 0.5809504412562216,
+        "calibration_support": true,
+        "descriptive_transfer_gate": false
+      },
+      {
+        "metric": "whitened",
+        "species": "GEPE",
+        "mode": "native_exclusion",
+        "all_reference_records": 37,
+        "reference_blocks": 6,
+        "evaluated_records": 32,
+        "evaluated_blocks": 5,
+        "equal_block_rank": 0.6358372169883335,
+        "equal_record_rank": 0.674570396224521,
+        "rank_lobo_min": 0.5967282104478487,
+        "rank_lobo_max": 0.6877386688111682,
+        "calibration_support": true,
+        "descriptive_transfer_gate": true
+      },
+      {
+        "metric": "whitened",
+        "species": "GEPE",
+        "mode": "adjacent_exclusion",
+        "all_reference_records": 37,
+        "reference_blocks": 6,
+        "evaluated_records": 0,
+        "evaluated_blocks": 0,
+        "equal_block_rank": null,
+        "equal_record_rank": null,
+        "rank_lobo_min": null,
+        "rank_lobo_max": null,
+        "calibration_support": false,
+        "descriptive_transfer_gate": false
+      }
+    ],
+    "primary": [
+      {
+        "metric": "euclidean3",
+        "species": "ADPE",
+        "quantile": 0.9,
+        "threshold": 1.5601127142343805,
+        "transfer_gate": false,
+        "baseline": {
+          "tiles": 1384,
+          "rock_area_fraction": 0.9933317724413044,
+          "rock_hit_fraction": 0.9807079891078598
+        },
+        "scenarios": [
+          {
+            "experiment": "ssp245",
+            "period": "2041-2060",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 1384,
+                "rock_area_fraction": 0.9933317724413044,
+                "rock_hit_fraction": 0.9807079891078598
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 1082,
+                    "rock_area_fraction": 0.7741137628408589,
+                    "rock_hit_fraction": 0.702358425254996
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 302,
+                    "rock_area_fraction": 0.21921800960044538,
+                    "rock_hit_fraction": 0.2783495638528638
+                  },
+                  "persistent": {
+                    "tiles": 1082,
+                    "rock_area_fraction": 0.7741137628408589,
+                    "rock_hit_fraction": 0.702358425254996
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 985,
+                    "rock_area_fraction": 0.7528883934630098,
+                    "rock_hit_fraction": 0.6082060275995754
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 399,
+                    "rock_area_fraction": 0.24044337897829463,
+                    "rock_hit_fraction": 0.37250196150828446
+                  },
+                  "persistent": {
+                    "tiles": 985,
+                    "rock_area_fraction": 0.7528883934630098,
+                    "rock_hit_fraction": 0.6082060275995754
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 1134,
+                    "rock_area_fraction": 0.8316170550654134,
+                    "rock_hit_fraction": 0.7504961462131352
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00016027402979688945,
+                    "rock_hit_fraction": 0.00009230627221119675
+                  },
+                  "loss": {
+                    "tiles": 251,
+                    "rock_area_fraction": 0.16187499140568792,
+                    "rock_hit_fraction": 0.2303041491669359
+                  },
+                  "persistent": {
+                    "tiles": 1133,
+                    "rock_area_fraction": 0.8314567810356167,
+                    "rock_hit_fraction": 0.750403839940924
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 232,
+                "rock_area_fraction": 0.1464836080655947,
+                "rock_hit_fraction": 0.21165828218027416
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 1167,
+              "denominator_rock_area_km2": 2671.4453113846616,
+              "baseline": {
+                "tiles": 1157,
+                "rock_area_fraction": 0.9959336385064121,
+                "rock_hit_fraction": 0.9875360103474631
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 1071,
+                    "rock_area_fraction": 0.8892399087006184,
+                    "rock_hit_fraction": 0.8834734552295843
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 86,
+                    "rock_area_fraction": 0.10669372980579363,
+                    "rock_hit_fraction": 0.10406255511787876
+                  },
+                  "persistent": {
+                    "tiles": 1071,
+                    "rock_area_fraction": 0.8892399087006184,
+                    "rock_hit_fraction": 0.8834734552295843
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 980,
+                    "rock_area_fraction": 0.8673721861045228,
+                    "rock_hit_fraction": 0.771826679992945
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 177,
+                    "rock_area_fraction": 0.1285614524018892,
+                    "rock_hit_fraction": 0.2157093303545182
+                  },
+                  "persistent": {
+                    "tiles": 980,
+                    "rock_area_fraction": 0.8673721861045228,
+                    "rock_hit_fraction": 0.771826679992945
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 1116,
+                    "rock_area_fraction": 0.9513739894174198,
+                    "rock_hit_fraction": 0.9395614086660004
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00018495606026233734,
+                    "rock_hit_fraction": 0.00011758480804280087
+                  },
+                  "loss": {
+                    "tiles": 42,
+                    "rock_area_fraction": 0.04474460514925469,
+                    "rock_hit_fraction": 0.048092186489505556
+                  },
+                  "persistent": {
+                    "tiles": 1115,
+                    "rock_area_fraction": 0.9511890333571574,
+                    "rock_hit_fraction": 0.9394438238579575
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 31,
+                "rock_area_fraction": 0.029643659669262704,
+                "rock_hit_fraction": 0.032982538656005644
+              }
+            }
+          },
+          {
+            "experiment": "ssp245",
+            "period": "2081-2100",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 1384,
+                "rock_area_fraction": 0.9933317724413044,
+                "rock_hit_fraction": 0.9807079891078598
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 827,
+                    "rock_area_fraction": 0.6957451546479808,
+                    "rock_hit_fraction": 0.5159920616605899
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00016027402979688945,
+                    "rock_hit_fraction": 0.00009230627221119675
+                  },
+                  "loss": {
+                    "tiles": 558,
+                    "rock_area_fraction": 0.29774689182312064,
+                    "rock_hit_fraction": 0.4648082337194812
+                  },
+                  "persistent": {
+                    "tiles": 826,
+                    "rock_area_fraction": 0.6955848806181839,
+                    "rock_hit_fraction": 0.5158997553883786
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 1045,
+                    "rock_area_fraction": 0.7955625216489245,
+                    "rock_hit_fraction": 0.653066875894217
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 339,
+                    "rock_area_fraction": 0.19776925079237995,
+                    "rock_hit_fraction": 0.32764111321364286
+                  },
+                  "persistent": {
+                    "tiles": 1045,
+                    "rock_area_fraction": 0.7955625216489245,
+                    "rock_hit_fraction": 0.653066875894217
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 842,
+                    "rock_area_fraction": 0.6761274590364674,
+                    "rock_hit_fraction": 0.5323764249780772
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00016027402979688945,
+                    "rock_hit_fraction": 0.00009230627221119675
+                  },
+                  "loss": {
+                    "tiles": 543,
+                    "rock_area_fraction": 0.31736458743463397,
+                    "rock_hit_fraction": 0.44842387040199383
+                  },
+                  "persistent": {
+                    "tiles": 841,
+                    "rock_area_fraction": 0.6759671850066705,
+                    "rock_hit_fraction": 0.5322841187058661
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 309,
+                "rock_area_fraction": 0.17187807997807059,
+                "rock_hit_fraction": 0.3013338256334518
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 917,
+              "denominator_rock_area_km2": 2370.8426708201164,
+              "baseline": {
+                "tiles": 911,
+                "rock_area_fraction": 0.9949315226630858,
+                "rock_hit_fraction": 0.9914779270633397
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 763,
+                    "rock_area_fraction": 0.8688969471003383,
+                    "rock_hit_fraction": 0.8016890595009597
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00020840691205759428,
+                    "rock_hit_fraction": 0.00015355086372360844
+                  },
+                  "loss": {
+                    "tiles": 149,
+                    "rock_area_fraction": 0.1262429824748053,
+                    "rock_hit_fraction": 0.18994241842610365
+                  },
+                  "persistent": {
+                    "tiles": 762,
+                    "rock_area_fraction": 0.8686885401882807,
+                    "rock_hit_fraction": 0.8015355086372361
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 867,
+                    "rock_area_fraction": 0.9518785082794761,
+                    "rock_hit_fraction": 0.9291362763915547
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 44,
+                    "rock_area_fraction": 0.04305301438361001,
+                    "rock_hit_fraction": 0.06234165067178503
+                  },
+                  "persistent": {
+                    "tiles": 867,
+                    "rock_area_fraction": 0.9518785082794761,
+                    "rock_hit_fraction": 0.9291362763915547
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 812,
+                    "rock_area_fraction": 0.8719351112127048,
+                    "rock_hit_fraction": 0.8642610364683301
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00020840691205759428,
+                    "rock_hit_fraction": 0.00015355086372360844
+                  },
+                  "loss": {
+                    "tiles": 100,
+                    "rock_area_fraction": 0.12320481836243873,
+                    "rock_hit_fraction": 0.12737044145873322
+                  },
+                  "persistent": {
+                    "tiles": 811,
+                    "rock_area_fraction": 0.8717267043006472,
+                    "rock_hit_fraction": 0.8641074856046065
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 14,
+                "rock_area_fraction": 0.00938630639726943,
+                "rock_hit_fraction": 0.018579654510556622
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2041-2060",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 1384,
+                "rock_area_fraction": 0.9933317724413044,
+                "rock_hit_fraction": 0.9807079891078598
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 1067,
+                    "rock_area_fraction": 0.7668054811700782,
+                    "rock_hit_fraction": 0.6878201873817326
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 317,
+                    "rock_area_fraction": 0.22652629127122634,
+                    "rock_hit_fraction": 0.2928878017261273
+                  },
+                  "persistent": {
+                    "tiles": 1067,
+                    "rock_area_fraction": 0.7668054811700782,
+                    "rock_hit_fraction": 0.6878201873817326
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 1012,
+                    "rock_area_fraction": 0.7850011003219235,
+                    "rock_hit_fraction": 0.6306364517468962
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 372,
+                    "rock_area_fraction": 0.208330672119381,
+                    "rock_hit_fraction": 0.3500715373609637
+                  },
+                  "persistent": {
+                    "tiles": 1012,
+                    "rock_area_fraction": 0.7850011003219235,
+                    "rock_hit_fraction": 0.6306364517468962
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 1097,
+                    "rock_area_fraction": 0.7784277563683711,
+                    "rock_hit_fraction": 0.7128351871509669
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00016027402979688945,
+                    "rock_hit_fraction": 0.00009230627221119675
+                  },
+                  "loss": {
+                    "tiles": 288,
+                    "rock_area_fraction": 0.21506429010273012,
+                    "rock_hit_fraction": 0.2679651082291042
+                  },
+                  "persistent": {
+                    "tiles": 1096,
+                    "rock_area_fraction": 0.7782674823385742,
+                    "rock_hit_fraction": 0.7127428808787557
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 243,
+                "rock_area_fraction": 0.15243708320931956,
+                "rock_hit_fraction": 0.22601190750911523
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 1107,
+              "denominator_rock_area_km2": 2579.396120837581,
+              "baseline": {
+                "tiles": 1099,
+                "rock_area_fraction": 0.9946486651526955,
+                "rock_hit_fraction": 0.9888427446848075
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 1037,
+                    "rock_area_fraction": 0.9105997973356432,
+                    "rock_hit_fraction": 0.9080766131531643
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 62,
+                    "rock_area_fraction": 0.08404886781705215,
+                    "rock_hit_fraction": 0.08076613153164322
+                  },
+                  "persistent": {
+                    "tiles": 1037,
+                    "rock_area_fraction": 0.9105997973356432,
+                    "rock_hit_fraction": 0.9080766131531643
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 967,
+                    "rock_area_fraction": 0.918112999493771,
+                    "rock_hit_fraction": 0.8149755160230583
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 132,
+                    "rock_area_fraction": 0.07653566565892432,
+                    "rock_hit_fraction": 0.17386722866174922
+                  },
+                  "persistent": {
+                    "tiles": 967,
+                    "rock_area_fraction": 0.918112999493771,
+                    "rock_hit_fraction": 0.8149755160230583
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 1069,
+                    "rock_area_fraction": 0.9246792841250947,
+                    "rock_hit_fraction": 0.9415483790987417
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.000191556463936821,
+                    "rock_hit_fraction": 0.00012396950350213848
+                  },
+                  "loss": {
+                    "tiles": 31,
+                    "rock_area_fraction": 0.07016093749153758,
+                    "rock_hit_fraction": 0.04741833508956796
+                  },
+                  "persistent": {
+                    "tiles": 1068,
+                    "rock_area_fraction": 0.9244877276611578,
+                    "rock_hit_fraction": 0.9414244095952395
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 13,
+                "rock_area_fraction": 0.011901361234129347,
+                "rock_hit_fraction": 0.015930081200024794
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2081-2100",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 1384,
+                "rock_area_fraction": 0.9933317724413044,
+                "rock_hit_fraction": 0.9807079891078598
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 633,
+                    "rock_area_fraction": 0.4694139545645468,
+                    "rock_hit_fraction": 0.35708681404901466
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00016027402979688945,
+                    "rock_hit_fraction": 0.00009230627221119675
+                  },
+                  "loss": {
+                    "tiles": 752,
+                    "rock_area_fraction": 0.5240780919065544,
+                    "rock_hit_fraction": 0.6237134813310564
+                  },
+                  "persistent": {
+                    "tiles": 632,
+                    "rock_area_fraction": 0.46925368053475003,
+                    "rock_hit_fraction": 0.3569945077768034
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 817,
+                    "rock_area_fraction": 0.6816380876608901,
+                    "rock_hit_fraction": 0.5044076244980846
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 567,
+                    "rock_area_fraction": 0.31169368478041426,
+                    "rock_hit_fraction": 0.47630036460977526
+                  },
+                  "persistent": {
+                    "tiles": 817,
+                    "rock_area_fraction": 0.6816380876608901,
+                    "rock_hit_fraction": 0.5044076244980846
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 509,
+                    "rock_area_fraction": 0.3617493306274815,
+                    "rock_hit_fraction": 0.2813956708358333
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00016027402979688945,
+                    "rock_hit_fraction": 0.00009230627221119675
+                  },
+                  "loss": {
+                    "tiles": 876,
+                    "rock_area_fraction": 0.6317427158436199,
+                    "rock_hit_fraction": 0.6994046245442378
+                  },
+                  "persistent": {
+                    "tiles": 508,
+                    "rock_area_fraction": 0.3615890565976846,
+                    "rock_hit_fraction": 0.2813033645636221
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 565,
+                "rock_area_fraction": 0.31165339731937197,
+                "rock_hit_fraction": 0.4760695989292472
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 782,
+              "denominator_rock_area_km2": 2206.1938364687912,
+              "baseline": {
+                "tiles": 779,
+                "rock_area_fraction": 0.996524166544353,
+                "rock_hit_fraction": 0.9970781592403214
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 589,
+                    "rock_area_fraction": 0.6463367993161397,
+                    "rock_hit_fraction": 0.6732103725346968
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00022396037548126364,
+                    "rock_hit_fraction": 0.00018261504747991235
+                  },
+                  "loss": {
+                    "tiles": 191,
+                    "rock_area_fraction": 0.35041132760369437,
+                    "rock_hit_fraction": 0.32405040175310446
+                  },
+                  "persistent": {
+                    "tiles": 588,
+                    "rock_area_fraction": 0.6461128389406585,
+                    "rock_hit_fraction": 0.673027757487217
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 678,
+                    "rock_area_fraction": 0.8383658407253556,
+                    "rock_hit_fraction": 0.8078889700511322
+                  },
+                  "gain": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  },
+                  "loss": {
+                    "tiles": 101,
+                    "rock_area_fraction": 0.1581583258189974,
+                    "rock_hit_fraction": 0.1891891891891892
+                  },
+                  "persistent": {
+                    "tiles": 678,
+                    "rock_area_fraction": 0.8383658407253556,
+                    "rock_hit_fraction": 0.8078889700511322
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 466,
+                    "rock_area_fraction": 0.4960609042949399,
+                    "rock_hit_fraction": 0.5249269539810081
+                  },
+                  "gain": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00022396037548126364,
+                    "rock_hit_fraction": 0.00018261504747991235
+                  },
+                  "loss": {
+                    "tiles": 314,
+                    "rock_area_fraction": 0.5006872226248942,
+                    "rock_hit_fraction": 0.4723338203067933
+                  },
+                  "persistent": {
+                    "tiles": 465,
+                    "rock_area_fraction": 0.4958369439194586,
+                    "rock_hit_fraction": 0.5247443389335281
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 101,
+                "rock_area_fraction": 0.1581583258189974,
+                "rock_hit_fraction": 0.1891891891891892
+              }
+            }
+          }
+        ]
+      },
+      {
+        "metric": "euclidean3",
+        "species": "CHPE",
+        "quantile": 0.9,
+        "threshold": 0.7486764850886898,
+        "transfer_gate": false,
+        "baseline": {
+          "tiles": 499,
+          "rock_area_fraction": 0.36254379467228776,
+          "rock_hit_fraction": 0.4522084275626529
+        },
+        "scenarios": [
+          {
+            "experiment": "ssp245",
+            "period": "2041-2060",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 499,
+                "rock_area_fraction": 0.36254379467228776,
+                "rock_hit_fraction": 0.4522084275626529
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 126,
+                    "rock_area_fraction": 0.10899112378120562,
+                    "rock_hit_fraction": 0.11242903955323764
+                  },
+                  "gain": {
+                    "tiles": 13,
+                    "rock_area_fraction": 0.005565669551930954,
+                    "rock_hit_fraction": 0.005215304379932616
+                  },
+                  "loss": {
+                    "tiles": 386,
+                    "rock_area_fraction": 0.25911834044301313,
+                    "rock_hit_fraction": 0.3449946923893479
+                  },
+                  "persistent": {
+                    "tiles": 113,
+                    "rock_area_fraction": 0.10342545422927468,
+                    "rock_hit_fraction": 0.10721373517330503
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 222,
+                    "rock_area_fraction": 0.18668398002563416,
+                    "rock_hit_fraction": 0.14935154843771634
+                  },
+                  "gain": {
+                    "tiles": 124,
+                    "rock_area_fraction": 0.05392964743746936,
+                    "rock_hit_fraction": 0.0764757465269765
+                  },
+                  "loss": {
+                    "tiles": 401,
+                    "rock_area_fraction": 0.22978946208412296,
+                    "rock_hit_fraction": 0.37933262565191306
+                  },
+                  "persistent": {
+                    "tiles": 98,
+                    "rock_area_fraction": 0.1327543325881648,
+                    "rock_hit_fraction": 0.07287580191073983
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 175,
+                    "rock_area_fraction": 0.09717852937377995,
+                    "rock_hit_fraction": 0.15590529376471132
+                  },
+                  "gain": {
+                    "tiles": 6,
+                    "rock_area_fraction": 0.0023659881937087737,
+                    "rock_hit_fraction": 0.0022615036691743203
+                  },
+                  "loss": {
+                    "tiles": 330,
+                    "rock_area_fraction": 0.2677312534922166,
+                    "rock_hit_fraction": 0.29856463746711587
+                  },
+                  "persistent": {
+                    "tiles": 169,
+                    "rock_area_fraction": 0.0948125411800712,
+                    "rock_hit_fraction": 0.153643790095537
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 1,
+                "rock_area_fraction": 0.001987441760199953,
+                "rock_hit_fraction": 0.0008307564499007707
+              },
+              "all_model_loss": {
+                "tiles": 258,
+                "rock_area_fraction": 0.15834900050726208,
+                "rock_hit_fraction": 0.23704250703835325
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 1167,
+              "denominator_rock_area_km2": 2671.4453113846616,
+              "baseline": {
+                "tiles": 270,
+                "rock_area_fraction": 0.2662416665588537,
+                "rock_hit_fraction": 0.30636721735551764
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 109,
+                    "rock_area_fraction": 0.1222071234090366,
+                    "rock_hit_fraction": 0.12804985595861015
+                  },
+                  "gain": {
+                    "tiles": 13,
+                    "rock_area_fraction": 0.00642277675523434,
+                    "rock_hit_fraction": 0.006643541654418249
+                  },
+                  "loss": {
+                    "tiles": 174,
+                    "rock_area_fraction": 0.1504573199050514,
+                    "rock_hit_fraction": 0.18496090305132576
+                  },
+                  "persistent": {
+                    "tiles": 96,
+                    "rock_area_fraction": 0.11578434665380227,
+                    "rock_hit_fraction": 0.1214063143041919
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 222,
+                    "rock_area_fraction": 0.21543311479340047,
+                    "rock_hit_fraction": 0.1902522194132518
+                  },
+                  "gain": {
+                    "tiles": 124,
+                    "rock_area_fraction": 0.06223475589907937,
+                    "rock_hit_fraction": 0.09741901346346052
+                  },
+                  "loss": {
+                    "tiles": 172,
+                    "rock_area_fraction": 0.11304330766453255,
+                    "rock_hit_fraction": 0.2135340114057264
+                  },
+                  "persistent": {
+                    "tiles": 98,
+                    "rock_area_fraction": 0.1531983588943211,
+                    "rock_hit_fraction": 0.09283320594979129
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 175,
+                    "rock_area_fraction": 0.112143919746947,
+                    "rock_hit_fraction": 0.19860074078429066
+                  },
+                  "gain": {
+                    "tiles": 6,
+                    "rock_area_fraction": 0.0027303478641557905,
+                    "rock_hit_fraction": 0.0028808277970486214
+                  },
+                  "loss": {
+                    "tiles": 101,
+                    "rock_area_fraction": 0.15682809467606243,
+                    "rock_hit_fraction": 0.11064730436827562
+                  },
+                  "persistent": {
+                    "tiles": 169,
+                    "rock_area_fraction": 0.10941357188279123,
+                    "rock_hit_fraction": 0.19571991298724206
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 1,
+                "rock_area_fraction": 0.0022935056816956777,
+                "rock_hit_fraction": 0.0010582632723852077
+              },
+              "all_model_loss": {
+                "tiles": 46,
+                "rock_area_fraction": 0.034169608581064714,
+                "rock_hit_fraction": 0.04744547004527015
+              }
+            }
+          },
+          {
+            "experiment": "ssp245",
+            "period": "2081-2100",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 499,
+                "rock_area_fraction": 0.36254379467228776,
+                "rock_hit_fraction": 0.4522084275626529
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 54,
+                    "rock_area_fraction": 0.06469228094288687,
+                    "rock_hit_fraction": 0.04093783172566576
+                  },
+                  "gain": {
+                    "tiles": 35,
+                    "rock_area_fraction": 0.044413366851993284,
+                    "rock_hit_fraction": 0.026076521899663082
+                  },
+                  "loss": {
+                    "tiles": 480,
+                    "rock_area_fraction": 0.3422648805813942,
+                    "rock_hit_fraction": 0.4373471177366502
+                  },
+                  "persistent": {
+                    "tiles": 19,
+                    "rock_area_fraction": 0.020278914090893586,
+                    "rock_hit_fraction": 0.014861309826002677
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 268,
+                    "rock_area_fraction": 0.20051287810033377,
+                    "rock_hit_fraction": 0.18645866986661744
+                  },
+                  "gain": {
+                    "tiles": 116,
+                    "rock_area_fraction": 0.05463492940596734,
+                    "rock_hit_fraction": 0.07638344025476532
+                  },
+                  "loss": {
+                    "tiles": 347,
+                    "rock_area_fraction": 0.21666584597792132,
+                    "rock_hit_fraction": 0.34213319795080077
+                  },
+                  "persistent": {
+                    "tiles": 152,
+                    "rock_area_fraction": 0.14587794869436646,
+                    "rock_hit_fraction": 0.11007522961185212
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 61,
+                    "rock_area_fraction": 0.0684453793693927,
+                    "rock_hit_fraction": 0.04338394793926247
+                  },
+                  "gain": {
+                    "tiles": 55,
+                    "rock_area_fraction": 0.054216923434835966,
+                    "rock_hit_fraction": 0.036137905570683526
+                  },
+                  "loss": {
+                    "tiles": 493,
+                    "rock_area_fraction": 0.348315338737731,
+                    "rock_hit_fraction": 0.44496238519407394
+                  },
+                  "persistent": {
+                    "tiles": 6,
+                    "rock_area_fraction": 0.014228455934556735,
+                    "rock_hit_fraction": 0.0072460423685789446
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 346,
+                "rock_area_fraction": 0.21662876983623788,
+                "rock_hit_fraction": 0.34194858540637835
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 917,
+              "denominator_rock_area_km2": 2370.8426708201164,
+              "baseline": {
+                "tiles": 122,
+                "rock_area_fraction": 0.18322661876078286,
+                "rock_hit_fraction": 0.16760076775431862
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 54,
+                    "rock_area_fraction": 0.084120418774989,
+                    "rock_hit_fraction": 0.06809980806142034
+                  },
+                  "gain": {
+                    "tiles": 35,
+                    "rock_area_fraction": 0.05775141893814588,
+                    "rock_hit_fraction": 0.04337811900191939
+                  },
+                  "loss": {
+                    "tiles": 103,
+                    "rock_area_fraction": 0.15685761892393968,
+                    "rock_hit_fraction": 0.14287907869481767
+                  },
+                  "persistent": {
+                    "tiles": 19,
+                    "rock_area_fraction": 0.026368999836843137,
+                    "rock_hit_fraction": 0.02472168905950096
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 143,
+                    "rock_area_fraction": 0.18530951668248494,
+                    "rock_hit_fraction": 0.18303262955854127
+                  },
+                  "gain": {
+                    "tiles": 74,
+                    "rock_area_fraction": 0.06794099999225561,
+                    "rock_hit_fraction": 0.09566218809980806
+                  },
+                  "loss": {
+                    "tiles": 53,
+                    "rock_area_fraction": 0.06585810207055348,
+                    "rock_hit_fraction": 0.08023032629558541
+                  },
+                  "persistent": {
+                    "tiles": 69,
+                    "rock_area_fraction": 0.11736851669022934,
+                    "rock_hit_fraction": 0.08737044145873321
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 61,
+                    "rock_area_fraction": 0.08900063333443772,
+                    "rock_hit_fraction": 0.07216890595009597
+                  },
+                  "gain": {
+                    "tiles": 55,
+                    "rock_area_fraction": 0.07049914205461921,
+                    "rock_hit_fraction": 0.06011516314779271
+                  },
+                  "loss": {
+                    "tiles": 116,
+                    "rock_area_fraction": 0.16472512748096435,
+                    "rock_hit_fraction": 0.15554702495201536
+                  },
+                  "persistent": {
+                    "tiles": 6,
+                    "rock_area_fraction": 0.018501491279818504,
+                    "rock_hit_fraction": 0.012053742802303263
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 52,
+                "rock_area_fraction": 0.06580989136412121,
+                "rock_hit_fraction": 0.07992322456813819
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2041-2060",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 499,
+                "rock_area_fraction": 0.36254379467228776,
+                "rock_hit_fraction": 0.4522084275626529
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 112,
+                    "rock_area_fraction": 0.10259465823823812,
+                    "rock_hit_fraction": 0.08261411362902109
+                  },
+                  "gain": {
+                    "tiles": 32,
+                    "rock_area_fraction": 0.010448091469738728,
+                    "rock_hit_fraction": 0.0113536714819772
+                  },
+                  "loss": {
+                    "tiles": 419,
+                    "rock_area_fraction": 0.2703972279037884,
+                    "rock_hit_fraction": 0.380947985415609
+                  },
+                  "persistent": {
+                    "tiles": 80,
+                    "rock_area_fraction": 0.09214656676849937,
+                    "rock_hit_fraction": 0.0712604421470439
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 287,
+                    "rock_area_fraction": 0.22947065539213815,
+                    "rock_hit_fraction": 0.18392024738080953
+                  },
+                  "gain": {
+                    "tiles": 169,
+                    "rock_area_fraction": 0.0951497585051534,
+                    "rock_hit_fraction": 0.10056768357409886
+                  },
+                  "loss": {
+                    "tiles": 381,
+                    "rock_area_fraction": 0.22822289778530302,
+                    "rock_hit_fraction": 0.3688558637559422
+                  },
+                  "persistent": {
+                    "tiles": 118,
+                    "rock_area_fraction": 0.13432089688698476,
+                    "rock_hit_fraction": 0.08335256380671066
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 120,
+                    "rock_area_fraction": 0.0771731856327957,
+                    "rock_hit_fraction": 0.10619836617898186
+                  },
+                  "gain": {
+                    "tiles": 10,
+                    "rock_area_fraction": 0.0025617813618727466,
+                    "rock_hit_fraction": 0.0035076383440254765
+                  },
+                  "loss": {
+                    "tiles": 389,
+                    "rock_area_fraction": 0.2879323904013648,
+                    "rock_hit_fraction": 0.3495176997276965
+                  },
+                  "persistent": {
+                    "tiles": 110,
+                    "rock_area_fraction": 0.07461140427092296,
+                    "rock_hit_fraction": 0.10269072783495639
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 1,
+                "rock_area_fraction": 0.001987441760199953,
+                "rock_hit_fraction": 0.0008307564499007707
+              },
+              "all_model_loss": {
+                "tiles": 284,
+                "rock_area_fraction": 0.16546861716573769,
+                "rock_hit_fraction": 0.27114967462039047
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 1107,
+              "denominator_rock_area_km2": 2579.396120837581,
+              "baseline": {
+                "tiles": 232,
+                "rock_area_fraction": 0.24370807419219837,
+                "rock_hit_fraction": 0.28320833075063534
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 100,
+                    "rock_area_fraction": 0.1203813877907148,
+                    "rock_hit_fraction": 0.10047728258848324
+                  },
+                  "gain": {
+                    "tiles": 32,
+                    "rock_area_fraction": 0.01248735967622408,
+                    "rock_hit_fraction": 0.015248248930763032
+                  },
+                  "loss": {
+                    "tiles": 164,
+                    "rock_area_fraction": 0.13581404607770758,
+                    "rock_hit_fraction": 0.19797929709291515
+                  },
+                  "persistent": {
+                    "tiles": 68,
+                    "rock_area_fraction": 0.10789402811449074,
+                    "rock_hit_fraction": 0.08522903365772021
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 255,
+                    "rock_area_fraction": 0.25616442531339184,
+                    "rock_hit_fraction": 0.22066571623380649
+                  },
+                  "gain": {
+                    "tiles": 162,
+                    "rock_area_fraction": 0.1112379211754253,
+                    "rock_hit_fraction": 0.13165561271927106
+                  },
+                  "loss": {
+                    "tiles": 139,
+                    "rock_area_fraction": 0.09878157005423181,
+                    "rock_hit_fraction": 0.19419822723609992
+                  },
+                  "persistent": {
+                    "tiles": 93,
+                    "rock_area_fraction": 0.14492650413796648,
+                    "rock_hit_fraction": 0.08901010351453542
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 120,
+                    "rock_area_fraction": 0.09223591975126794,
+                    "rock_hit_fraction": 0.1426269137792103
+                  },
+                  "gain": {
+                    "tiles": 10,
+                    "rock_area_fraction": 0.0030617922297297906,
+                    "rock_hit_fraction": 0.004710841133081262
+                  },
+                  "loss": {
+                    "tiles": 122,
+                    "rock_area_fraction": 0.15453394667066014,
+                    "rock_hit_fraction": 0.1452922581045063
+                  },
+                  "persistent": {
+                    "tiles": 110,
+                    "rock_area_fraction": 0.08917412752153815,
+                    "rock_hit_fraction": 0.13791607264612904
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 1,
+                "rock_area_fraction": 0.002375352490648257,
+                "rock_hit_fraction": 0.0011157255315192463
+              },
+              "all_model_loss": {
+                "tiles": 54,
+                "rock_area_fraction": 0.0260166418247574,
+                "rock_hit_fraction": 0.07345193082501704
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2081-2100",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 499,
+                "rock_area_fraction": 0.36254379467228776,
+                "rock_hit_fraction": 0.4522084275626529
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 38,
+                    "rock_area_fraction": 0.013224578277002432,
+                    "rock_hit_fraction": 0.018045876217288963
+                  },
+                  "gain": {
+                    "tiles": 37,
+                    "rock_area_fraction": 0.013136996839943144,
+                    "rock_hit_fraction": 0.017722804264549776
+                  },
+                  "loss": {
+                    "tiles": 498,
+                    "rock_area_fraction": 0.3624562132352284,
+                    "rock_hit_fraction": 0.4518853556099137
+                  },
+                  "persistent": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00008758143705928734,
+                    "rock_hit_fraction": 0.0003230719527391886
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 102,
+                    "rock_area_fraction": 0.08644100473144473,
+                    "rock_hit_fraction": 0.07172197350809988
+                  },
+                  "gain": {
+                    "tiles": 47,
+                    "rock_area_fraction": 0.03637847407862225,
+                    "rock_hit_fraction": 0.025938062491346288
+                  },
+                  "loss": {
+                    "tiles": 444,
+                    "rock_area_fraction": 0.3124812640194653,
+                    "rock_hit_fraction": 0.4064245165458993
+                  },
+                  "persistent": {
+                    "tiles": 55,
+                    "rock_area_fraction": 0.050062530652822484,
+                    "rock_hit_fraction": 0.04578391101675359
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 37,
+                    "rock_area_fraction": 0.01254969017900972,
+                    "rock_hit_fraction": 0.016384363317487424
+                  },
+                  "gain": {
+                    "tiles": 37,
+                    "rock_area_fraction": 0.01254969017900972,
+                    "rock_hit_fraction": 0.016384363317487424
+                  },
+                  "loss": {
+                    "tiles": 499,
+                    "rock_area_fraction": 0.36254379467228776,
+                    "rock_hit_fraction": 0.4522084275626529
+                  },
+                  "persistent": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 3,
+                "rock_area_fraction": 0.0028833755334073457,
+                "rock_hit_fraction": 0.0019384317164351317
+              },
+              "all_model_loss": {
+                "tiles": 444,
+                "rock_area_fraction": 0.3124812640194653,
+                "rock_hit_fraction": 0.4064245165458993
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 782,
+              "denominator_rock_area_km2": 2206.1938364687912,
+              "baseline": {
+                "tiles": 113,
+                "rock_area_fraction": 0.19268174861214968,
+                "rock_hit_fraction": 0.18617604090577064
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 38,
+                    "rock_area_fraction": 0.018479484918749504,
+                    "rock_hit_fraction": 0.03570124178232286
+                  },
+                  "gain": {
+                    "tiles": 37,
+                    "rock_area_fraction": 0.018357102199890788,
+                    "rock_hit_fraction": 0.03506208911614317
+                  },
+                  "loss": {
+                    "tiles": 112,
+                    "rock_area_fraction": 0.19255936589329098,
+                    "rock_hit_fraction": 0.18553688823959094
+                  },
+                  "persistent": {
+                    "tiles": 1,
+                    "rock_area_fraction": 0.00012238271885871884,
+                    "rock_hit_fraction": 0.0006391526661796933
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 68,
+                    "rock_area_fraction": 0.10343353340187189,
+                    "rock_hit_fraction": 0.0850073046018992
+                  },
+                  "gain": {
+                    "tiles": 33,
+                    "rock_area_fraction": 0.03945445428978427,
+                    "rock_hit_fraction": 0.028670562454346238
+                  },
+                  "loss": {
+                    "tiles": 78,
+                    "rock_area_fraction": 0.12870266950006204,
+                    "rock_hit_fraction": 0.12983929875821767
+                  },
+                  "persistent": {
+                    "tiles": 35,
+                    "rock_area_fraction": 0.06397907911208763,
+                    "rock_hit_fraction": 0.05633674214755296
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 32,
+                    "rock_area_fraction": 0.017527041212315648,
+                    "rock_hit_fraction": 0.03177501826150475
+                  },
+                  "gain": {
+                    "tiles": 32,
+                    "rock_area_fraction": 0.017527041212315648,
+                    "rock_hit_fraction": 0.03177501826150475
+                  },
+                  "loss": {
+                    "tiles": 113,
+                    "rock_area_fraction": 0.19268174861214968,
+                    "rock_hit_fraction": 0.18617604090577064
+                  },
+                  "persistent": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 3,
+                "rock_area_fraction": 0.004029111066426376,
+                "rock_hit_fraction": 0.003834915997078159
+              },
+              "all_model_loss": {
+                "tiles": 78,
+                "rock_area_fraction": 0.12870266950006204,
+                "rock_hit_fraction": 0.12983929875821767
+              }
+            }
+          }
+        ]
+      },
+      {
+        "metric": "euclidean3",
+        "species": "GEPE",
+        "quantile": 0.9,
+        "threshold": 0.67257889385837,
+        "transfer_gate": true,
+        "baseline": {
+          "tiles": 546,
+          "rock_area_fraction": 0.40269587751874,
+          "rock_hit_fraction": 0.47080814141320904
+        },
+        "scenarios": [
+          {
+            "experiment": "ssp245",
+            "period": "2041-2060",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 546,
+                "rock_area_fraction": 0.40269587751874,
+                "rock_hit_fraction": 0.47080814141320904
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 187,
+                    "rock_area_fraction": 0.19130437900471,
+                    "rock_hit_fraction": 0.1674897309272165
+                  },
+                  "gain": {
+                    "tiles": 27,
+                    "rock_area_fraction": 0.02382291996866034,
+                    "rock_hit_fraction": 0.022291964739004015
+                  },
+                  "loss": {
+                    "tiles": 386,
+                    "rock_area_fraction": 0.23521441848269029,
+                    "rock_hit_fraction": 0.32561037522499653
+                  },
+                  "persistent": {
+                    "tiles": 160,
+                    "rock_area_fraction": 0.16748145903604966,
+                    "rock_hit_fraction": 0.14519776618821248
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 175,
+                    "rock_area_fraction": 0.15960734752289793,
+                    "rock_hit_fraction": 0.1281672589652467
+                  },
+                  "gain": {
+                    "tiles": 82,
+                    "rock_area_fraction": 0.032806042823008134,
+                    "rock_hit_fraction": 0.05912216735127152
+                  },
+                  "loss": {
+                    "tiles": 453,
+                    "rock_area_fraction": 0.27589457281885016,
+                    "rock_hit_fraction": 0.4017630497992339
+                  },
+                  "persistent": {
+                    "tiles": 93,
+                    "rock_area_fraction": 0.1268013046998898,
+                    "rock_hit_fraction": 0.06904509161397517
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 243,
+                    "rock_area_fraction": 0.1476879884880494,
+                    "rock_hit_fraction": 0.19342779341856278
+                  },
+                  "gain": {
+                    "tiles": 38,
+                    "rock_area_fraction": 0.013831346653446376,
+                    "rock_hit_fraction": 0.03073798864632852
+                  },
+                  "loss": {
+                    "tiles": 341,
+                    "rock_area_fraction": 0.268839235684137,
+                    "rock_hit_fraction": 0.30811833664097477
+                  },
+                  "persistent": {
+                    "tiles": 205,
+                    "rock_area_fraction": 0.13385664183460302,
+                    "rock_hit_fraction": 0.16268980477223427
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 9,
+                "rock_area_fraction": 0.006296894030882486,
+                "rock_hit_fraction": 0.007015276688050953
+              },
+              "all_model_loss": {
+                "tiles": 285,
+                "rock_area_fraction": 0.16527536223737746,
+                "rock_hit_fraction": 0.24945770065075923
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 1167,
+              "denominator_rock_area_km2": 2671.4453113846616,
+              "baseline": {
+                "tiles": 333,
+                "rock_area_fraction": 0.31988631703671927,
+                "rock_hit_fraction": 0.3517549532600388
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 187,
+                    "rock_area_fraction": 0.22076505031091984,
+                    "rock_hit_fraction": 0.2133576341936622
+                  },
+                  "gain": {
+                    "tiles": 27,
+                    "rock_area_fraction": 0.02749162435693556,
+                    "rock_hit_fraction": 0.02839673114233641
+                  },
+                  "loss": {
+                    "tiles": 173,
+                    "rock_area_fraction": 0.126612891082735,
+                    "rock_hit_fraction": 0.16679405020871305
+                  },
+                  "persistent": {
+                    "tiles": 160,
+                    "rock_area_fraction": 0.19327342595398428,
+                    "rock_hit_fraction": 0.18496090305132576
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 175,
+                    "rock_area_fraction": 0.18418670962580272,
+                    "rock_hit_fraction": 0.163266505967429
+                  },
+                  "gain": {
+                    "tiles": 82,
+                    "rock_area_fraction": 0.03785813859569451,
+                    "rock_hit_fraction": 0.07531306955141395
+                  },
+                  "loss": {
+                    "tiles": 240,
+                    "rock_area_fraction": 0.17355774600661109,
+                    "rock_hit_fraction": 0.26380151684402375
+                  },
+                  "persistent": {
+                    "tiles": 93,
+                    "rock_area_fraction": 0.1463285710301082,
+                    "rock_hit_fraction": 0.08795343641601505
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 243,
+                    "rock_area_fraction": 0.1704317819514212,
+                    "rock_hit_fraction": 0.24639896525368923
+                  },
+                  "gain": {
+                    "tiles": 38,
+                    "rock_area_fraction": 0.015961359356759335,
+                    "rock_hit_fraction": 0.03915574107825269
+                  },
+                  "loss": {
+                    "tiles": 128,
+                    "rock_area_fraction": 0.16541589444205743,
+                    "rock_hit_fraction": 0.14451172908460228
+                  },
+                  "persistent": {
+                    "tiles": 205,
+                    "rock_area_fraction": 0.15447042259466187,
+                    "rock_hit_fraction": 0.20724322417543653
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 9,
+                "rock_area_fraction": 0.007266609027784341,
+                "rock_hit_fraction": 0.008936445411252866
+              },
+              "all_model_loss": {
+                "tiles": 72,
+                "rock_area_fraction": 0.04590329441263161,
+                "rock_hit_fraction": 0.06978658357340231
+              }
+            }
+          },
+          {
+            "experiment": "ssp245",
+            "period": "2081-2100",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 546,
+                "rock_area_fraction": 0.40269587751874,
+                "rock_hit_fraction": 0.47080814141320904
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 67,
+                    "rock_area_fraction": 0.13856565790892286,
+                    "rock_hit_fraction": 0.06073752711496746
+                  },
+                  "gain": {
+                    "tiles": 42,
+                    "rock_area_fraction": 0.0660831795145048,
+                    "rock_hit_fraction": 0.034014861309826006
+                  },
+                  "loss": {
+                    "tiles": 521,
+                    "rock_area_fraction": 0.33021339912432185,
+                    "rock_hit_fraction": 0.44408547560806755
+                  },
+                  "persistent": {
+                    "tiles": 25,
+                    "rock_area_fraction": 0.07248247839441811,
+                    "rock_hit_fraction": 0.02672266580514146
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 233,
+                    "rock_area_fraction": 0.18798908535375997,
+                    "rock_hit_fraction": 0.16656666820510455
+                  },
+                  "gain": {
+                    "tiles": 71,
+                    "rock_area_fraction": 0.031230683890795547,
+                    "rock_hit_fraction": 0.055891447823879635
+                  },
+                  "loss": {
+                    "tiles": 384,
+                    "rock_area_fraction": 0.24593747605577554,
+                    "rock_hit_fraction": 0.36013292103198413
+                  },
+                  "persistent": {
+                    "tiles": 162,
+                    "rock_area_fraction": 0.1567584014629644,
+                    "rock_hit_fraction": 0.1106752203812249
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 114,
+                    "rock_area_fraction": 0.10849887944764594,
+                    "rock_hit_fraction": 0.07421424285780219
+                  },
+                  "gain": {
+                    "tiles": 98,
+                    "rock_area_fraction": 0.07052000832063023,
+                    "rock_hit_fraction": 0.05667605113767481
+                  },
+                  "loss": {
+                    "tiles": 530,
+                    "rock_area_fraction": 0.3647170063917243,
+                    "rock_hit_fraction": 0.45326994969308165
+                  },
+                  "persistent": {
+                    "tiles": 16,
+                    "rock_area_fraction": 0.03797887112701571,
+                    "rock_hit_fraction": 0.017538191720127383
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 378,
+                "rock_area_fraction": 0.23632023143812256,
+                "rock_hit_fraction": 0.35482531037984033
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 917,
+              "denominator_rock_area_km2": 2370.8426708201164,
+              "baseline": {
+                "tiles": 155,
+                "rock_area_fraction": 0.2429636488653455,
+                "rock_hit_fraction": 0.21904030710172745
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 65,
+                    "rock_area_fraction": 0.15674648414025616,
+                    "rock_hit_fraction": 0.09351247600767754
+                  },
+                  "gain": {
+                    "tiles": 42,
+                    "rock_area_fraction": 0.08592902667399523,
+                    "rock_hit_fraction": 0.05658349328214971
+                  },
+                  "loss": {
+                    "tiles": 132,
+                    "rock_area_fraction": 0.1721461913990846,
+                    "rock_hit_fraction": 0.18211132437619962
+                  },
+                  "persistent": {
+                    "tiles": 23,
+                    "rock_area_fraction": 0.0708174574662609,
+                    "rock_hit_fraction": 0.03692898272552783
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 141,
+                    "rock_area_fraction": 0.1772325836331752,
+                    "rock_hit_fraction": 0.18771593090211133
+                  },
+                  "gain": {
+                    "tiles": 64,
+                    "rock_area_fraction": 0.039630933977033114,
+                    "rock_hit_fraction": 0.08522072936660269
+                  },
+                  "loss": {
+                    "tiles": 78,
+                    "rock_area_fraction": 0.10536199920920343,
+                    "rock_hit_fraction": 0.1165451055662188
+                  },
+                  "persistent": {
+                    "tiles": 77,
+                    "rock_area_fraction": 0.13760164965614208,
+                    "rock_hit_fraction": 0.10249520153550863
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 114,
+                    "rock_area_fraction": 0.1410828470217445,
+                    "rock_hit_fraction": 0.12345489443378119
+                  },
+                  "gain": {
+                    "tiles": 98,
+                    "rock_area_fraction": 0.09169830689977218,
+                    "rock_hit_fraction": 0.09428023032629558
+                  },
+                  "loss": {
+                    "tiles": 139,
+                    "rock_area_fraction": 0.19357910874337322,
+                    "rock_hit_fraction": 0.18986564299424183
+                  },
+                  "persistent": {
+                    "tiles": 16,
+                    "rock_area_fraction": 0.0493845401219723,
+                    "rock_hit_fraction": 0.029174664107485603
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 72,
+                "rock_area_fraction": 0.09285654055312818,
+                "rock_hit_fraction": 0.10771593090211132
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2041-2060",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 546,
+                "rock_area_fraction": 0.40269587751874,
+                "rock_hit_fraction": 0.47080814141320904
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 166,
+                    "rock_area_fraction": 0.1920691679594146,
+                    "rock_hit_fraction": 0.14376701896893895
+                  },
+                  "gain": {
+                    "tiles": 29,
+                    "rock_area_fraction": 0.031035227255815492,
+                    "rock_hit_fraction": 0.023122721188904787
+                  },
+                  "loss": {
+                    "tiles": 409,
+                    "rock_area_fraction": 0.2416619368151409,
+                    "rock_hit_fraction": 0.3501638436331749
+                  },
+                  "persistent": {
+                    "tiles": 137,
+                    "rock_area_fraction": 0.16103394070359908,
+                    "rock_hit_fraction": 0.12064429778003416
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 230,
+                    "rock_area_fraction": 0.20365360612560937,
+                    "rock_hit_fraction": 0.16365902063045185
+                  },
+                  "gain": {
+                    "tiles": 109,
+                    "rock_area_fraction": 0.05920410256010586,
+                    "rock_hit_fraction": 0.07416808972169658
+                  },
+                  "loss": {
+                    "tiles": 425,
+                    "rock_area_fraction": 0.25824637395323646,
+                    "rock_hit_fraction": 0.3813172105044538
+                  },
+                  "persistent": {
+                    "tiles": 121,
+                    "rock_area_fraction": 0.1444495035655035,
+                    "rock_hit_fraction": 0.08949093090875525
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 191,
+                    "rock_area_fraction": 0.1252882220791302,
+                    "rock_hit_fraction": 0.13513638251719204
+                  },
+                  "gain": {
+                    "tiles": 36,
+                    "rock_area_fraction": 0.007198541980492317,
+                    "rock_hit_fraction": 0.025153459177551116
+                  },
+                  "loss": {
+                    "tiles": 391,
+                    "rock_area_fraction": 0.2846061974201021,
+                    "rock_hit_fraction": 0.3608252180735681
+                  },
+                  "persistent": {
+                    "tiles": 155,
+                    "rock_area_fraction": 0.11808968009863785,
+                    "rock_hit_fraction": 0.10998292333964092
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 284,
+                "rock_area_fraction": 0.16011863209916036,
+                "rock_hit_fraction": 0.25988830941062446
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 1107,
+              "denominator_rock_area_km2": 2579.396120837581,
+              "baseline": {
+                "tiles": 293,
+                "rock_area_fraction": 0.29761078765166304,
+                "rock_hit_fraction": 0.32672162647988595
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 163,
+                    "rock_area_fraction": 0.22944453146835098,
+                    "rock_hit_fraction": 0.1925866236905721
+                  },
+                  "gain": {
+                    "tiles": 29,
+                    "rock_area_fraction": 0.037092711764554656,
+                    "rock_hit_fraction": 0.03105436062728569
+                  },
+                  "loss": {
+                    "tiles": 159,
+                    "rock_area_fraction": 0.10525896794786681,
+                    "rock_hit_fraction": 0.1651893634165995
+                  },
+                  "persistent": {
+                    "tiles": 134,
+                    "rock_area_fraction": 0.19235181970379628,
+                    "rock_hit_fraction": 0.16153226306328644
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 216,
+                    "rock_area_fraction": 0.22880576874173955,
+                    "rock_hit_fraction": 0.20194632120498357
+                  },
+                  "gain": {
+                    "tiles": 109,
+                    "rock_area_fraction": 0.07075961433888445,
+                    "rock_hit_fraction": 0.09960949606396827
+                  },
+                  "loss": {
+                    "tiles": 186,
+                    "rock_area_fraction": 0.13956463324880794,
+                    "rock_hit_fraction": 0.22438480133887065
+                  },
+                  "persistent": {
+                    "tiles": 107,
+                    "rock_area_fraction": 0.15804615440285513,
+                    "rock_hit_fraction": 0.10233682514101532
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 191,
+                    "rock_area_fraction": 0.14974209374296962,
+                    "rock_hit_fraction": 0.18149135312713072
+                  },
+                  "gain": {
+                    "tiles": 36,
+                    "rock_area_fraction": 0.008603560096612922,
+                    "rock_hit_fraction": 0.033781689704332735
+                  },
+                  "loss": {
+                    "tiles": 138,
+                    "rock_area_fraction": 0.15647225400530643,
+                    "rock_hit_fraction": 0.17901196305708797
+                  },
+                  "persistent": {
+                    "tiles": 155,
+                    "rock_area_fraction": 0.14113853364635667,
+                    "rock_hit_fraction": 0.14770966342279798
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 0,
+                "rock_area_fraction": 0,
+                "rock_hit_fraction": 0
+              },
+              "all_model_loss": {
+                "tiles": 48,
+                "rock_area_fraction": 0.022397102768860727,
+                "rock_hit_fraction": 0.06179879749581603
+              }
+            }
+          },
+          {
+            "experiment": "ssp585",
+            "period": "2081-2100",
+            "full": {
+              "denominator_tiles": 1401,
+              "denominator_rock_area_km2": 3082.845053725537,
+              "baseline": {
+                "tiles": 546,
+                "rock_area_fraction": 0.40269587751874,
+                "rock_hit_fraction": 0.47080814141320904
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 49,
+                    "rock_area_fraction": 0.01427502028743153,
+                    "rock_hit_fraction": 0.019107398347717727
+                  },
+                  "gain": {
+                    "tiles": 49,
+                    "rock_area_fraction": 0.01427502028743153,
+                    "rock_hit_fraction": 0.019107398347717727
+                  },
+                  "loss": {
+                    "tiles": 546,
+                    "rock_area_fraction": 0.40269587751874,
+                    "rock_hit_fraction": 0.47080814141320904
+                  },
+                  "persistent": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 90,
+                    "rock_area_fraction": 0.06037951851512024,
+                    "rock_hit_fraction": 0.05829141090137075
+                  },
+                  "gain": {
+                    "tiles": 51,
+                    "rock_area_fraction": 0.012691588230613456,
+                    "rock_hit_fraction": 0.02579960308302949
+                  },
+                  "loss": {
+                    "tiles": 507,
+                    "rock_area_fraction": 0.3550079472342332,
+                    "rock_hit_fraction": 0.43831633359486777
+                  },
+                  "persistent": {
+                    "tiles": 39,
+                    "rock_area_fraction": 0.04768793028450678,
+                    "rock_hit_fraction": 0.03249180781834125
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 27,
+                    "rock_area_fraction": 0.009355935675541879,
+                    "rock_hit_fraction": 0.013015184381778741
+                  },
+                  "gain": {
+                    "tiles": 27,
+                    "rock_area_fraction": 0.009355935675541879,
+                    "rock_hit_fraction": 0.013015184381778741
+                  },
+                  "loss": {
+                    "tiles": 546,
+                    "rock_area_fraction": 0.40269587751874,
+                    "rock_hit_fraction": 0.47080814141320904
+                  },
+                  "persistent": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 1,
+                "rock_area_fraction": 0.000024230864253063355,
+                "rock_hit_fraction": 0.00013845940831679513
+              },
+              "all_model_loss": {
+                "tiles": 507,
+                "rock_area_fraction": 0.3550079472342332,
+                "rock_hit_fraction": 0.43831633359486777
+              }
+            },
+            "common_unclipped": {
+              "denominator_tiles": 782,
+              "denominator_rock_area_km2": 2206.1938364687912,
+              "baseline": {
+                "tiles": 136,
+                "rock_area_fraction": 0.25219950168960936,
+                "rock_hit_fraction": 0.23319941563184807
+              },
+              "models": {
+                "ACCESS-CM2": {
+                  "future": {
+                    "tiles": 49,
+                    "rock_area_fraction": 0.019947329630554213,
+                    "rock_hit_fraction": 0.037801314828341856
+                  },
+                  "gain": {
+                    "tiles": 49,
+                    "rock_area_fraction": 0.019947329630554213,
+                    "rock_hit_fraction": 0.037801314828341856
+                  },
+                  "loss": {
+                    "tiles": 136,
+                    "rock_area_fraction": 0.25219950168960936,
+                    "rock_hit_fraction": 0.23319941563184807
+                  },
+                  "persistent": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  }
+                },
+                "BCC-CSM2-MR": {
+                  "future": {
+                    "tiles": 64,
+                    "rock_area_fraction": 0.0709328425335222,
+                    "rock_hit_fraction": 0.06939371804236669
+                  },
+                  "gain": {
+                    "tiles": 34,
+                    "rock_area_fraction": 0.006069604936482367,
+                    "rock_hit_fraction": 0.01862673484295106
+                  },
+                  "loss": {
+                    "tiles": 106,
+                    "rock_area_fraction": 0.18733626409256962,
+                    "rock_hit_fraction": 0.18243243243243243
+                  },
+                  "persistent": {
+                    "tiles": 30,
+                    "rock_area_fraction": 0.06486323759703982,
+                    "rock_hit_fraction": 0.05076698319941563
+                  }
+                },
+                "CESM2": {
+                  "future": {
+                    "tiles": 26,
+                    "rock_area_fraction": 0.013072786055136966,
+                    "rock_hit_fraction": 0.02556610664718773
+                  },
+                  "gain": {
+                    "tiles": 26,
+                    "rock_area_fraction": 0.013072786055136966,
+                    "rock_hit_fraction": 0.02556610664718773
+                  },
+                  "loss": {
+                    "tiles": 136,
+                    "rock_area_fraction": 0.25219950168960936,
+                    "rock_hit_fraction": 0.23319941563184807
+                  },
+                  "persistent": {
+                    "tiles": 0,
+                    "rock_area_fraction": 0,
+                    "rock_hit_fraction": 0
+                  }
+                }
+              },
+              "all_model_gain": {
+                "tiles": 1,
+                "rock_area_fraction": 0.00003385921888423697,
+                "rock_hit_fraction": 0.0002739225712198685
+              },
+              "all_model_loss": {
+                "tiles": 106,
+                "rock_area_fraction": 0.18733626409256962,
+                "rock_hit_fraction": 0.18243243243243243
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "scenario_records": 27,
+    "QA": {
+      "checks": 119409,
+      "max_abs_difference": 3.3306690738754696e-16
+    },
+    "execution": {
+      "run": 46113685935,
+      "head": "542b71469a5ff7b7d6e6c5673c9a8f4f6dde6f23",
+      "artifact": 15249988185,
+      "digest": "sha256:2b3066535396dd9c5b8d813a7a7870873ee0a885cab1ae5ffdbed02617105dd7"
+    }
+  },
+  "sensitivity_QA": {
+    "status": "VERIFIED_PRIMARY_AREA_AND_SENSITIVITY",
+    "checks": 312,
+    "max_abs_difference": 9.094947017729282e-13,
+    "late_high_emission_sensitivity": [
+      {
+        "metric": "euclidean3",
+        "species": "ADPE",
+        "quantile": 0.8,
+        "threshold": 1.327225440067415,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.9873874954578967,
+          "future": [
+            0.43986689376951765,
+            0.6046534436851193,
+            0.3504302081457031
+          ],
+          "change": [
+            -0.5475206016883791,
+            -0.3827340517727774,
+            -0.6369572873121936
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.38266865763311475
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.9886341141797181,
+          "future": [
+            0.6052200086132541,
+            0.7452059745889955,
+            0.4802440253885438
+          ],
+          "change": [
+            -0.38341410556646405,
+            -0.24342813959072263,
+            -0.5083900887911743
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.24334124786034467
+        }
+      },
+      {
+        "metric": "euclidean3",
+        "species": "ADPE",
+        "quantile": 0.9,
+        "threshold": 1.5601127142343805,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.9933317724413044,
+          "future": [
+            0.4694139545645468,
+            0.6816380876608901,
+            0.3617493306274815
+          ],
+          "change": [
+            -0.5239178178767576,
+            -0.31169368478041437,
+            -0.631582441813823
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.31165339731937197
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.996524166544353,
+          "future": [
+            0.6463367993161397,
+            0.8383658407253556,
+            0.4960609042949399
+          ],
+          "change": [
+            -0.3501873672282133,
+            -0.15815832581899747,
+            -0.5004632622494132
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.1581583258189974
+        }
+      },
+      {
+        "metric": "euclidean3",
+        "species": "ADPE",
+        "quantile": 0.95,
+        "threshold": 1.5753069969922293,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.9933317724413044,
+          "future": [
+            0.4694139545645468,
+            0.6882782121703143,
+            0.3617493306274815
+          ],
+          "change": [
+            -0.5239178178767576,
+            -0.3050535602709902,
+            -0.631582441813823
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.30501327280994783
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.996524166544353,
+          "future": [
+            0.6463367993161397,
+            0.8383896373651304,
+            0.4960609042949399
+          ],
+          "change": [
+            -0.3501873672282133,
+            -0.15813452917922266,
+            -0.5004632622494132
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.1581345291792225
+        }
+      },
+      {
+        "metric": "euclidean3",
+        "species": "CHPE",
+        "quantile": 0.8,
+        "threshold": 0.6902034170753955,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.35520069938026844,
+          "future": [
+            0.01014796377843372,
+            0.08065043643922362,
+            0.009628508658605124
+          ],
+          "change": [
+            -0.3450527356018347,
+            -0.2745502629410448,
+            -0.3455721907216633
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.30970011548602255
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.18320045342662905,
+          "future": [
+            0.014180349624130981,
+            0.09847625148169441,
+            0.013445101605581945
+          ],
+          "change": [
+            -0.16902010380249807,
+            -0.08472420194493464,
+            -0.16975535182104712
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.12483462769025494
+        }
+      },
+      {
+        "metric": "euclidean3",
+        "species": "CHPE",
+        "quantile": 0.9,
+        "threshold": 0.7486764850886898,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.36254379467228776,
+          "future": [
+            0.013224578277002432,
+            0.08644100473144473,
+            0.01254969017900972
+          ],
+          "change": [
+            -0.34931921639528535,
+            -0.27610278994084303,
+            -0.34999410449327806
+          ],
+          "all_model_gain": 0.0028833755334073457,
+          "all_model_loss": 0.3124812640194653
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.19268174861214968,
+          "future": [
+            0.018479484918749504,
+            0.10343353340187189,
+            0.017527041212315648
+          ],
+          "change": [
+            -0.17420226369340017,
+            -0.08924821521027779,
+            -0.17515470739983402
+          ],
+          "all_model_gain": 0.004029111066426376,
+          "all_model_loss": 0.12870266950006204
+        }
+      },
+      {
+        "metric": "euclidean3",
+        "species": "CHPE",
+        "quantile": 0.95,
+        "threshold": 0.798873029027559,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.3712524386463499,
+          "future": [
+            0.06417977522393166,
+            0.11175433499626601,
+            0.012834329891312755
+          ],
+          "change": [
+            -0.30707266342241823,
+            -0.25949810365008386,
+            -0.3584181087550371
+          ],
+          "all_model_gain": 0.00307050787059068,
+          "all_model_loss": 0.29684140889871147
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.2043120276818996,
+          "future": [
+            0.08968219352611422,
+            0.11556254471442955,
+            0.017924785107100428
+          ],
+          "change": [
+            -0.11462983415578538,
+            -0.08874948296747005,
+            -0.18638724257479916
+          ],
+          "all_model_gain": 0.004290602142387825,
+          "all_model_loss": 0.1258666652938249
+        }
+      },
+      {
+        "metric": "euclidean3",
+        "species": "GEPE",
+        "quantile": 0.8,
+        "threshold": 0.5898290009632527,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.38001439655530134,
+          "future": [
+            0.011176072548660543,
+            0.05275166191168315,
+            0.008737708037281189
+          ],
+          "change": [
+            -0.3688383240066408,
+            -0.3272627346436182,
+            -0.37127668851802015
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.33851511658163125
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.23296743137075093,
+          "future": [
+            0.015616986779304379,
+            0.06746315647334993,
+            0.012208900033345266
+          ],
+          "change": [
+            -0.21735044459144656,
+            -0.165504274897401,
+            -0.22075853133740567
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.1763459899837411
+        }
+      },
+      {
+        "metric": "euclidean3",
+        "species": "GEPE",
+        "quantile": 0.9,
+        "threshold": 0.67257889385837,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.40269587751874,
+          "future": [
+            0.01427502028743153,
+            0.06037951851512024,
+            0.009355935675541879
+          ],
+          "change": [
+            -0.3884208572313084,
+            -0.34231635900361973,
+            -0.3933399418431981
+          ],
+          "all_model_gain": 0.000024230864253063355,
+          "all_model_loss": 0.3550079472342332
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.25219950168960936,
+          "future": [
+            0.019947329630554213,
+            0.0709328425335222,
+            0.013072786055136966
+          ],
+          "change": [
+            -0.23225217205905516,
+            -0.18126665915608717,
+            -0.2391267156344724
+          ],
+          "all_model_gain": 0.00003385921888423697,
+          "all_model_loss": 0.18733626409256962
+        }
+      },
+      {
+        "metric": "euclidean3",
+        "species": "GEPE",
+        "quantile": 0.95,
+        "threshold": 0.724278549599927,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.4122635929129139,
+          "future": [
+            0.06310151010009485,
+            0.06769256852525869,
+            0.009838801331862206
+          ],
+          "change": [
+            -0.3491620828128191,
+            -0.34457102438765524,
+            -0.4024247915810517
+          ],
+          "all_model_gain": 0.000024230864253063355,
+          "all_model_loss": 0.36223383231446515
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.2560984111407247,
+          "future": [
+            0.08817546993334704,
+            0.07994639778995039,
+            0.013747522778444871
+          ],
+          "change": [
+            -0.16792294120737764,
+            -0.1761520133507743,
+            -0.2423508883622798
+          ],
+          "all_model_gain": 0.00003385921888423697,
+          "all_model_loss": 0.191038953251141
+        }
+      },
+      {
+        "metric": "sic_only",
+        "species": "ADPE",
+        "quantile": 0.8,
+        "threshold": 0.6552893290957716,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 1,
+          "future": [
+            1,
+            1,
+            1
+          ],
+          "change": [
+            0,
+            0,
+            0
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 1,
+          "future": [
+            1,
+            1,
+            1
+          ],
+          "change": [
+            0,
+            0,
+            0
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0
+        }
+      },
+      {
+        "metric": "sic_only",
+        "species": "ADPE",
+        "quantile": 0.9,
+        "threshold": 0.9223750273588814,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 1,
+          "future": [
+            1,
+            1,
+            1
+          ],
+          "change": [
+            0,
+            0,
+            0
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 1,
+          "future": [
+            1,
+            1,
+            1
+          ],
+          "change": [
+            0,
+            0,
+            0
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0
+        }
+      },
+      {
+        "metric": "sic_only",
+        "species": "ADPE",
+        "quantile": 0.95,
+        "threshold": 0.9327615972447166,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 1,
+          "future": [
+            1,
+            1,
+            1
+          ],
+          "change": [
+            0,
+            0,
+            0
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 1,
+          "future": [
+            1,
+            1,
+            1
+          ],
+          "change": [
+            0,
+            0,
+            0
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0
+        }
+      },
+      {
+        "metric": "sic_only",
+        "species": "CHPE",
+        "quantile": 0.8,
+        "threshold": 0.09540116103988683,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.25055642781360515,
+          "future": [
+            0.43097638646939357,
+            0.4993955517455682,
+            0.27177131430385965
+          ],
+          "change": [
+            0.18041995865578841,
+            0.24883912393196306,
+            0.021214886490254492
+          ],
+          "all_model_gain": 0.16703502479883145,
+          "all_model_loss": 0.01663615884230749
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.08311756571744494,
+          "future": [
+            0.33689399757727223,
+            0.36768148962218,
+            0.3772719209329708
+          ],
+          "change": [
+            0.2537764318598273,
+            0.28456392390473506,
+            0.29415435521552585
+          ],
+          "all_model_gain": 0.23340791343348694,
+          "all_model_loss": 0.0003885538005908242
+        }
+      },
+      {
+        "metric": "sic_only",
+        "species": "CHPE",
+        "quantile": 0.9,
+        "threshold": 0.1660188475960792,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.26629815312067295,
+          "future": [
+            0.4752664416844015,
+            0.5247581222404799,
+            0.30550498329455256
+          ],
+          "change": [
+            0.20896828856372857,
+            0.25845996911980695,
+            0.0392068301738796
+          ],
+          "all_model_gain": 0.1971370485407817,
+          "all_model_loss": 0.014677789253571907
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.0914529280487231,
+          "future": [
+            0.38248471080500357,
+            0.37894387264096935,
+            0.4244099705788834
+          ],
+          "change": [
+            0.2910317827562805,
+            0.2874909445922462,
+            0.33295704253016034
+          ],
+          "all_model_gain": 0.27547125051022103,
+          "all_model_loss": 0.0003885538005908242
+        }
+      },
+      {
+        "metric": "sic_only",
+        "species": "CHPE",
+        "quantile": 0.95,
+        "threshold": 0.3536186298560884,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.3624374318826463,
+          "future": [
+            0.5257013728285983,
+            0.535228539803445,
+            0.37164762977236426
+          ],
+          "change": [
+            0.16326394094595198,
+            0.17279110792079866,
+            0.009210197889717942
+          ],
+          "all_model_gain": 0.13084314747266942,
+          "all_model_loss": 0.0062345413619711385
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.1921992774066049,
+          "future": [
+            0.44648605813850767,
+            0.3827588706050192,
+            0.516690041682109
+          ],
+          "change": [
+            0.2542867807319028,
+            0.19055959319841428,
+            0.32449076427550405
+          ],
+          "all_model_gain": 0.1828348639780574,
+          "all_model_loss": 0
+        }
+      },
+      {
+        "metric": "sic_only",
+        "species": "GEPE",
+        "quantile": 0.8,
+        "threshold": 0.13418743644078668,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.3800826261924486,
+          "future": [
+            0.4953303467614239,
+            0.47528605265282603,
+            0.27989912988656296
+          ],
+          "change": [
+            0.11524772056897531,
+            0.09520342646037744,
+            -0.10018349630588563
+          ],
+          "all_model_gain": 0.10740414916405608,
+          "all_model_loss": 0.028723564907353772
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.22793491799120102,
+          "future": [
+            0.47307233736185805,
+            0.37874697243270855,
+            0.3886293980741617
+          ],
+          "change": [
+            0.24513741937065703,
+            0.15081205444150753,
+            0.16069448008296067
+          ],
+          "all_model_gain": 0.15008216618444623,
+          "all_model_loss": 0.0006376706238340998
+        }
+      },
+      {
+        "metric": "sic_only",
+        "species": "GEPE",
+        "quantile": 0.9,
+        "threshold": 0.28822668424129483,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.4084138505882209,
+          "future": [
+            0.6361264643809353,
+            0.5586666538016718,
+            0.32808745944606615
+          ],
+          "change": [
+            0.22771261379271446,
+            0.15025280321345091,
+            -0.08032639114215473
+          ],
+          "all_model_gain": 0.10827118066385134,
+          "all_model_loss": 0.01431959739483235
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.2553313094575271,
+          "future": [
+            0.6072104883485311,
+            0.4249116711753161,
+            0.4559657993341658
+          ],
+          "change": [
+            0.351879178891004,
+            0.169580361717789,
+            0.20063448987663873
+          ],
+          "all_model_gain": 0.15129372054852075,
+          "all_model_loss": 0.0002959622084001034
+        }
+      },
+      {
+        "metric": "sic_only",
+        "species": "GEPE",
+        "quantile": 0.95,
+        "threshold": 0.37247934173799635,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.41740659899710286,
+          "future": [
+            0.6492135721451022,
+            0.5769887880078225,
+            0.36432488704529603
+          ],
+          "change": [
+            0.23180697314799936,
+            0.15958218901071963,
+            -0.05308171195180683
+          ],
+          "all_model_gain": 0.11683846204433171,
+          "all_model_loss": 0.010792733471891903
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.26735967229358454,
+          "future": [
+            0.6222450695761829,
+            0.4428016000467972,
+            0.5066024988785865
+          ],
+          "change": [
+            0.3548853972825983,
+            0.17544192775321266,
+            0.239242826585002
+          ],
+          "all_model_gain": 0.16326528922535238,
+          "all_model_loss": 0
+        }
+      },
+      {
+        "metric": "whitened",
+        "species": "ADPE",
+        "quantile": 0.8,
+        "threshold": 1.2584815941794996,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.9591363054628557,
+          "future": [
+            0.3595363746571507,
+            0.5485966821842663,
+            0.33894103323778046
+          ],
+          "change": [
+            -0.599599930805705,
+            -0.4105396232785894,
+            -0.6201952722250752
+          ],
+          "all_model_gain": 0.0001547272054714142,
+          "all_model_loss": 0.41089218721907983
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.9804782957558608,
+          "future": [
+            0.49296942599665816,
+            0.710467179170784,
+            0.46622223115678874
+          ],
+          "change": [
+            -0.4875088697592026,
+            -0.2700111165850768,
+            -0.514256064599072
+          ],
+          "all_model_gain": 0.00021620946998374583,
+          "all_model_loss": 0.26963982101421846
+        }
+      },
+      {
+        "metric": "whitened",
+        "species": "ADPE",
+        "quantile": 0.9,
+        "threshold": 1.3532657764047338,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.9650516567430085,
+          "future": [
+            0.43359274019443994,
+            0.5657086977041705,
+            0.34380313166347
+          ],
+          "change": [
+            -0.5314589165485686,
+            -0.399342959038838,
+            -0.6212485250795385
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.36295979736664696
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.986834791365292,
+          "future": [
+            0.5799681960144065,
+            0.7244320044394048,
+            0.4709836196997066
+          ],
+          "change": [
+            -0.40686659535088543,
+            -0.26240278692588714,
+            -0.5158511716655854
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.22805149886259052
+        }
+      },
+      {
+        "metric": "whitened",
+        "species": "ADPE",
+        "quantile": 0.95,
+        "threshold": 1.3825372446879587,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.9744778521851692,
+          "future": [
+            0.44002573470970613,
+            0.5665460766869076,
+            0.3440775534982351
+          ],
+          "change": [
+            -0.5344521174754631,
+            -0.40793177549826165,
+            -0.6304002986869341
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.3723707633718762
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.9907906767684915,
+          "future": [
+            0.5889573994987997,
+            0.7255809105840625,
+            0.4713670855502386
+          ],
+          "change": [
+            -0.40183327726969187,
+            -0.26520976618442904,
+            -0.519423591218253
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.23200731627796725
+        }
+      },
+      {
+        "metric": "whitened",
+        "species": "CHPE",
+        "quantile": 0.8,
+        "threshold": 0.8015994958266428,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.3459636555213326,
+          "future": [
+            0.0017019992424801053,
+            0.10552865720073216,
+            0.010119451175953177
+          ],
+          "change": [
+            -0.3442616562788525,
+            -0.24043499832060045,
+            -0.3358442043453794
+          ],
+          "all_model_gain": 0.0008594658179697788,
+          "all_model_loss": 0.2815781215196925
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.17468700158885705,
+          "future": [
+            0.002378304145080331,
+            0.11047373528505583,
+            0.014131124604219494
+          ],
+          "change": [
+            -0.17230869744377672,
+            -0.06421326630380123,
+            -0.16055587698463755
+          ],
+          "all_model_gain": 0.0012009823896594804,
+          "all_model_loss": 0.11027662536557828
+        }
+      },
+      {
+        "metric": "whitened",
+        "species": "CHPE",
+        "quantile": 0.9,
+        "threshold": 0.9245132423317088,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.36538224415677,
+          "future": [
+            0.027964899475168208,
+            0.13026815088594929,
+            0.01403835572975564
+          ],
+          "change": [
+            -0.3374173446816018,
+            -0.23511409327082072,
+            -0.35134388842701436
+          ],
+          "all_model_gain": 0.005456858647458994,
+          "all_model_loss": 0.2827549321959345
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.19911722119791797,
+          "future": [
+            0.039077007015368724,
+            0.13981978578566495,
+            0.0192376457690301
+          ],
+          "change": [
+            -0.16004021418254924,
+            -0.05929743541225302,
+            -0.17987957542888788
+          ],
+          "all_model_gain": 0.007625191137839696,
+          "all_model_loss": 0.11401638061103302
+        }
+      },
+      {
+        "metric": "whitened",
+        "species": "CHPE",
+        "quantile": 0.95,
+        "threshold": 1.2095541890194947,
+        "transfer_gate": false,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.4705866482592478,
+          "future": [
+            0.10003449667391195,
+            0.2477031520565183,
+            0.17758887256399547
+          ],
+          "change": [
+            -0.37055215158533583,
+            -0.2228834962027295,
+            -0.2929977756952523
+          ],
+          "all_model_gain": 0.0003389401614194203,
+          "all_model_loss": 0.24792733441488657
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.3423024534271419,
+          "future": [
+            0.1396130513020089,
+            0.25765957311326276,
+            0.2468518487644752
+          ],
+          "change": [
+            -0.20268940212513298,
+            -0.08464288031387912,
+            -0.0954506046626667
+          ],
+          "all_model_gain": 0.0004736211219832117,
+          "all_model_loss": 0.100577426579731
+        }
+      },
+      {
+        "metric": "whitened",
+        "species": "GEPE",
+        "quantile": 0.8,
+        "threshold": 0.6528589467831335,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.3636133857630332,
+          "future": [
+            0.007889335915964303,
+            0.06540421154413732,
+            0.09733368726474038
+          ],
+          "change": [
+            -0.3557240498470689,
+            -0.29820917421889587,
+            -0.2662796984982928
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.31567161528015036
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.21583646836455558,
+          "future": [
+            0.011024235406549166,
+            0.0765216080568316,
+            0.13563113603100374
+          ],
+          "change": [
+            -0.2048122329580064,
+            -0.139314860307724,
+            -0.08020533233355184
+          ],
+          "all_model_gain": 0,
+          "all_model_loss": 0.15165712353117905
+        }
+      },
+      {
+        "metric": "whitened",
+        "species": "GEPE",
+        "quantile": 0.9,
+        "threshold": 0.7041099636022337,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.3893353236198112,
+          "future": [
+            0.011144543231318286,
+            0.07354657649690119,
+            0.10635973289219601
+          ],
+          "change": [
+            -0.3781907803884929,
+            -0.31578874712291005,
+            -0.2829755907276152
+          ],
+          "all_model_gain": 0.00018713233718333449,
+          "all_model_loss": 0.33314111923263723
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.2473450886611598,
+          "future": [
+            0.015572929000513961,
+            0.08629375462159754,
+            0.14824376310725396
+          ],
+          "change": [
+            -0.23177215966064585,
+            -0.1610513340395623,
+            -0.09910132555390586
+          ],
+          "all_model_gain": 0.0002614910759614494,
+          "all_model_loss": 0.17277167751140537
+        }
+      },
+      {
+        "metric": "whitened",
+        "species": "GEPE",
+        "quantile": 0.95,
+        "threshold": 0.8417487107755461,
+        "transfer_gate": true,
+        "full": {
+          "tiles": 1401,
+          "baseline": 0.42108391607188944,
+          "future": [
+            0.012552414831993418,
+            0.11340803465494995,
+            0.12928265725217872
+          ],
+          "change": [
+            -0.408531501239896,
+            -0.30767588141693947,
+            -0.29180125881971075
+          ],
+          "all_model_gain": 0.003631904924001123,
+          "all_model_loss": 0.3443937663171812
+        },
+        "common_unclipped": {
+          "tiles": 782,
+          "baseline": 0.27733368200716735,
+          "future": [
+            0.01754023120609393,
+            0.12462478098879183,
+            0.17949451852148282
+          ],
+          "change": [
+            -0.2597934508010734,
+            -0.15270890101837553,
+            -0.09783916348568453
+          ],
+          "all_model_gain": 0.0050750754287662405,
+          "all_model_loss": 0.18051510455041053
+        }
+      }
+    ],
+    "execution": {
+      "run": 46113747774,
+      "head": "0d3586c6c6db7f323ce6fa21fec3dcf75e0b58a4",
+      "artifact": 15249999881,
+      "digest": "sha256:02ba86cb354264218be4da3616f28e07e7a284245cf93dd95f66b50a2b61a0d0"
+    }
+  }
+}
