@@ -1,0 +1,46 @@
+name: V30 fixed coastal terrain frame
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-terrain-v30.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  terrain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy scipy shapely==2.1.2 rasterio geopandas pyogrio pyproj==3.7.1
+      - name: Retrieve original frame and pinned REMA mosaic
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p sources rema
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15169338322/zip" > frame.zip
+          curl -fL --retry 2 --retry-delay 3 --connect-timeout 40 --max-time 420 --max-filesize 1000000000 -o rema.tar.gz 'https://data.pgc.umn.edu/elev/dem/setsm/REMA/mosaic/v2.0/500m/rema_mosaic_500m_v2.0.tar.gz'
+          echo "87c41aee247d058c5e0bdb0cd3f7677a36c00ad91c9881259e058b9b07812c40  rema.tar.gz" | sha256sum -c
+          python - <<'PY'
+          import tarfile,pathlib,hashlib
+          with tarfile.open('rema.tar.gz','r:gz') as t:
+              mm=[x for x in t.getmembers() if pathlib.PurePosixPath(x.name).name=='rema_mosaic_500m_v2.0_dem.tif']
+              assert len(mm)==1 and mm[0].isfile()
+              h=hashlib.sha256()
+              with t.extractfile(mm[0]) as f, open('rema/dem.tif','wb') as out:
+                  for b in iter(lambda:f.read(2**21),b''):h.update(b);out.write(b)
+              assert h.hexdigest()=='e19303a2fef417ed040823f4fcf9b263c4765db15677ca2942c03c4fdbbaaabc'
+          PY
+      - name: Reconstruct fixed rock geometry and extract native terrain
+        run: python research/macro_marine_land_footprint_v1/terrain_frame_v30.py sources v30_result frame.zip rema/dem.tif
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-coastal-terrain-v30
+          path: v30_result/
+          retention-days: 30
+          if-no-files-found: warn
