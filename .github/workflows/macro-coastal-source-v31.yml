@@ -1,0 +1,52 @@
+name: V31 future marine and snow source audit
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-source-v31.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  cmip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: c67e55c9f4f657ef308c02a85c6ff366dce8e1f4
+          path: original
+      - name: Confirm exact source models and all actual SST metadata
+        run: python research/macro_marine_land_footprint_v1/cmip_source_gate_v31.py original/research/climate-penguin/outputs/cmip6_projection_v1/selected_stores.csv cmip_gate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-cmip-source-v31
+          path: cmip_gate/
+          retention-days: 30
+          if-no-files-found: warn
+  snow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy numcodecs pyproj==3.7.1
+      - name: Audit direct ERA5 land fraction at unchanged candidate centroids
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15169338322/zip" > frame.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249701928/zip" > terrain.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249745700/zip" > marine.zip
+          python research/macro_marine_land_footprint_v1/snow_support_v31.py frame.zip terrain.zip marine.zip snow_gate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-snow-source-v31
+          path: snow_gate/
+          retention-days: 30
+          if-no-files-found: warn
