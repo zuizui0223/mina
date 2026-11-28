@@ -1,0 +1,37 @@
+name: V32 geographically held-out climate analogue opportunity
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-climate-analogue-v32.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy scipy
+      - name: Verify original frame, native-cell support and fixed future scenario fields
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249889624/zip" > future.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15169338322/zip" > frame.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249701928/zip" > terrain.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249954003/zip" > access.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15250117023/zip" > bcc.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249859620/zip" > cesm.zip
+          python research/macro_marine_land_footprint_v1/climate_analogue_v32.py future.zip frame.zip terrain.zip v32_result access.zip bcc.zip cesm.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-coastal-climate-analogue-v32
+          path: v32_result/
+          retention-days: 30
+          if-no-files-found: warn
