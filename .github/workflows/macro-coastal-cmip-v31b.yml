@@ -1,0 +1,42 @@
+name: V31b original CMIP6 future physical atlas
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-cmip-v31b.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        model: [ACCESS-CM2, BCC-CSM2-MR, CESM2]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install native Zarr and CF calendar dependencies
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5 pandas==2.2.3 xarray==2025.6.1 fsspec==2026.9.0 zarr==2.18.7 'numcodecs<0.16' cftime==1.6.6.1 pyproj==3.8.0 scipy 'aiohttp>=3.10,<4'
+      - name: Retrieve exact original source and geography receipts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15250056990/zip" > gate.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15169338322/zip" > frame.zip
+      - name: Extract native seasonal climate at frozen tiles
+        env:
+          MODEL: ${{ matrix.model }}
+        run: python research/macro_marine_land_footprint_v1/cmip_native_tiles_v31b.py gate.zip frame.zip v31b_result "$MODEL"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macro-cmip-native-v31b-${{ matrix.model }}
+          path: v31b_result/
+          retention-days: 30
+          if-no-files-found: warn
