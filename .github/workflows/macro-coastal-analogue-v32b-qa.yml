@@ -1,0 +1,77 @@
+name: V32b analogue sensitivity and area arithmetic audit
+on:
+  push:
+    branches: [analysis/pygoscelis-count-functional-sensitivity-20261126]
+    paths: ['.github/workflows/macro-coastal-analogue-v32b-qa.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify original result and recompute primary area fractions from tile classification
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249988185/zip" > analogue.zip
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15249889624/zip" > future.zip
+          python - <<'PY'
+          import csv,io,zipfile,json,hashlib,statistics,math
+          from collections import defaultdict
+          from pathlib import Path
+          def arc(p,h):
+              assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h
+              z=zipfile.ZipFile(p);assert z.testzip() is None;return z
+          def get(z,n):
+              a=[x for x in z.namelist() if Path(x).name==n];assert len(a)==1;return z.read(a[0])
+          def read(z,n):return list(csv.DictReader(io.StringIO(get(z,n).decode('utf-8-sig'))))
+          a=arc('analogue.zip','2b3066535396dd9c5b8d813a7a7870873ee0a885cab1ae5ffdbed02617105dd7')
+          f=arc('future.zip','bac958ee1c96168e730a1f5c23c13614da6d3da322d04ee29ee504d857466e94')
+          r=json.loads(get(a,'result.json'))
+          rows=read(a,'primary_tile_analogues.csv');source=read(f,'primary_tile_scenarios.csv')
+          models=('ACCESS-CM2','BCC-CSM2-MR','CESM2')
+          area={x['tile']:float(x['rock_area_m2']) for x in source}
+          assert len(area)==1401 and len(rows)==3*4*1401
+          groups=defaultdict(list)
+          for x in rows:groups[x['species'],x['experiment'],x['period']].append(x)
+          checks=0;err=0.
+          def ck(x,y):
+              global checks,err
+              assert math.isclose(x,y,rel_tol=1e-10,abs_tol=1e-10),(x,y)
+              checks+=1;err=max(err,abs(x-y))
+          for q in r['analogue_scenarios']:
+              if q['metric']!='euclidean3' or q['quantile']!=.9:continue
+              for s in q['scenarios']:
+                  v=groups[q['species'],s['experiment'],s['period']]
+                  assert len(v)==1401 and len({x['tile'] for x in v})==1401
+                  for key in ('full','common_unclipped'):
+                      vv=[x for x in v if key=='full' or int(x['common_unclipped'])]
+                      p=s[key];n=math.fsum(area[x['tile']] for x in vv)
+                      ck(n/1e6,p['denominator_rock_area_km2'])
+                      def fraction(pred):return math.fsum(area[x['tile']] for x in vv if pred(x))/n
+                      ck(fraction(lambda x:int(x['baseline_analogue'])),p['baseline']['rock_area_fraction'])
+                      for m in models:
+                          for k,fn in [('future',lambda x:int(x[m])),('gain',lambda x:int(x[m]) and not int(x['baseline_analogue'])),('loss',lambda x:not int(x[m]) and int(x['baseline_analogue']))]:
+                              ck(fraction(fn),p['models'][m][k]['rock_area_fraction'])
+                      ck(fraction(lambda x:all(int(x[m]) for m in models) and not int(x['baseline_analogue'])),p['all_model_gain']['rock_area_fraction'])
+                      ck(fraction(lambda x:not any(int(x[m]) for m in models) and int(x['baseline_analogue'])),p['all_model_loss']['rock_area_fraction'])
+          s=[]
+          for q in r['analogue_scenarios']:
+              v=next(x for x in q['scenarios'] if x['experiment']=='ssp585' and x['period']=='2081-2100')
+              row={k:q[k] for k in ('metric','species','quantile','threshold','transfer_gate')}
+              for tag in ('full','common_unclipped'):
+                  p=v[tag];b=p['baseline']['rock_area_fraction'];fs=[p['models'][m]['future']['rock_area_fraction'] for m in models]
+                  row[tag]={'tiles':p['denominator_tiles'],'baseline':b,'future':fs,'change':[x-b for x in fs],'all_model_gain':p['all_model_gain']['rock_area_fraction'],'all_model_loss':p['all_model_loss']['rock_area_fraction']}
+              s.append(row)
+          result={'status':'VERIFIED_PRIMARY_AREA_AND_SENSITIVITY','checks':checks,'max_abs_difference':err,'late_high_emission_sensitivity':s}
+          Path('qa.json').write_text(json.dumps(result,indent=2,allow_nan=False))
+          print('V32B_QA='+json.dumps(result,separators=(',',':')))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macro-coastal-analogue-v32b-qa
+          path: qa.json
+          retention-days: 30
